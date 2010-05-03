@@ -1359,6 +1359,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     // Directory selection
     psJajukWorkspace = new PathSelector(SessionService.getWorkspace());
     psJajukWorkspace.setToolTipText(Messages.getString("ParameterView.208"));
+    // If user provided a forced workspace, he can't change it again here
+    if (SessionService.isForcedWorkspace()) {
+      jlJajukWorkspace.setEnabled(false);
+      psJajukWorkspace.setEnabled(false);
+    }
     jcbCheckUpdates = new JCheckBox(Messages.getString("ParameterView.234"));
     jcbCheckUpdates.setToolTipText(Messages.getString("ParameterView.234"));
     jcbCheckUpdates.setSelected(Conf.getBoolean(Const.CONF_CHECK_FOR_UPDATE));

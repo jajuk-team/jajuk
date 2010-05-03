@@ -176,7 +176,7 @@ public class TestSessionService extends JajukTestCase {
   /**
    * Test method for
    * {@link org.jajuk.services.core.SessionService#discoverWorkspace()}.
-   * 
+   * @TODO : perform more tests
    * @throws Exception
    */
   public void testDiscoverWorkspace() throws Exception {
@@ -239,10 +239,10 @@ public class TestSessionService extends JajukTestCase {
 
   /**
    * Test method for
-   * {@link org.jajuk.services.core.SessionService#getDefaultWorkspace()}.
+   * {@link org.jajuk.services.core.SessionService#getDefaultCollectionPath()}.
    */
   public void testGetDefaultWorkspace() {
-    SessionService.getDefaultWorkspace();
+    SessionService.getDefaultCollectionPath();
   }
 
   /**

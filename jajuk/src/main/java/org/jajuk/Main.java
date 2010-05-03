@@ -73,7 +73,7 @@ public final class Main {
     try {
       // check JVM version
       if (!JVM.current().isOrLater(JVM.JDK1_6)) {
-        System.out.println("Java Runtime Environment 1.6 minimum required." + " You use a JVM "
+        System.out.println("[BOOT] Java Runtime Environment 1.6 minimum required." + " You use a JVM "
             + JVM.current());
         System.exit(2); // error code 2 : wrong JVM
       }
@@ -109,7 +109,7 @@ public final class Main {
       Conf.load();
 
       Log.debug("----------------------------------------------------------------------------");
-      Log.debug("Starting Jajuk" + Const.JAJUK_VERSION + " <" + Const.JAJUK_CODENAME + ">" + " "
+      Log.debug("Starting Jajuk " + Const.JAJUK_VERSION + " <" + Const.JAJUK_CODENAME + ">" + " "
           + Const.JAJUK_VERSION_DATE);
 
       // Full substance configuration now

@@ -69,8 +69,8 @@ public class SessionService {
   /** Workspace PATH*. */
   private static String workspace;
 
-  /** Alternative bootstrap file location (required for some special packaging like portableapps) **/
-  private static String forcedBootstrapPath = null;
+  /** Forced workspace location (required for some special packaging like portableapps) **/
+  private static String forcedWorkspacePath = null;
 
   /** Directory used to flag the current jajuk session. */
   private static File sessionIdFile;
@@ -265,22 +265,24 @@ public class SessionService {
       if (element.equals("-" + Const.CLI_TEST)) {
         bTestMode = true;
       }
-      // Handle special bootstrap file location
-      // Format : -bootstrap=<url of parent directory>
-      if (element.matches("-" + Const.CLI_BOOTSTRAP_LOCATION + "=.*")) {
-        String testedBootstrapPath = null;
+      // Handle special workspace location
+      // Format : -workspace=<url of the workspace>
+      if (element.matches("-" + Const.CLI_WORKSPACE_LOCATION + "=.*")) {
+        String testedForcedWorkspace = null;
         try {
           StringTokenizer st = new StringTokenizer(element, "=");
           st.nextToken();
-          testedBootstrapPath = st.nextToken();
+          testedForcedWorkspace = st.nextToken();
         } catch (Exception e) {
-          throw new JajukRuntimeException("Wrong bootstrap file location : " + testedBootstrapPath);
+          throw new JajukRuntimeException("[BOOT] Wrong forced workspace location : "
+              + testedForcedWorkspace);
         }
-        if (testedBootstrapPath == null || !new File(testedBootstrapPath).canRead()) {
+        if (testedForcedWorkspace == null || !new File(testedForcedWorkspace).canRead()) {
           // Leave jajuk
-          throw new JajukRuntimeException("Wrong bootstrap file location : " + testedBootstrapPath);
+          throw new JajukRuntimeException("[BOOT] Wrong forced workspace location : "
+              + testedForcedWorkspace);
         } else {
-          forcedBootstrapPath = testedBootstrapPath + "/" + Const.FILE_BOOTSTRAP;
+          forcedWorkspacePath = testedForcedWorkspace;
         }
       }
     }
@@ -320,94 +322,152 @@ public class SessionService {
   }
 
   /**
-   * Discover the jajuk workspace by reading the bootstrap file.
-   * 
+   * Discover the jajuk workspace by reading the bootstrap file.<br>
+   * Searched in this order : 
+   * <ul>
+   * <li>forced workspace path provided on command line (-workspace=...)</li>
+   * <li>Bootstrap file content</li>
+   * <li>Default path presence</li>
+   * <li>Human selection</li>
+   * </ul>
    * @throws InterruptedException the interrupted exception
    */
   public static void discoverWorkspace() throws InterruptedException {
-    // Check for bootstrap file presence
-    final File bootstrap = new File(getBootstrapPath());
-    // Default workspace: ~/.jajuk
-    final File fDefaultWorkspace = SessionService.getDefaultWorkspace();
-    if (bootstrap.canRead()) {
-      try {
-        final BufferedReader br = new BufferedReader(new FileReader(bootstrap));
+    // Use any forced workspace location given in CLI. Note that this path has
+    // already been validated in the handleCommand() method
+    if (forcedWorkspacePath != null) {
+      SessionService.setWorkspace(forcedWorkspacePath);
+      System.out.println("[BOOT] Forced workspace location : " + forcedWorkspacePath);
+      // If the workspace not yet exists, display the first time wizard with workspace
+      // location selection disabled
+      String forcedCollectionPath = forcedWorkspacePath + '/'
+          + (isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk");
+      if (!new File(forcedCollectionPath).exists()) {
+        humanWorkspaceSelection();
+      }
+    } else {
+      // Check for bootstrap file presence
+      final File bootstrap = new File(getBootstrapPath());
+      // Default collection path : ~/.jajuk
+      final File fDefaultCollectionPath = SessionService.getDefaultCollectionPath();
+      // Try to find the workspace path in a bootstrap file
+      if (bootstrap.canRead()) {
         try {
-          // The bootstrap file format is <test|final>=<workspace
-          // location>
-          final String sPath;
-          versionWorkspace.load(br);
-          // If none property, means we have a jajuk < 1.8 bootstrap
-          // file that contains only a single directory
-          if (versionWorkspace.size() < 2) {
-            // Read the file again using a new reader (otherwise,
-            // the offset is wrong)
-            final String oldPath;
-            BufferedReader oldReader = new BufferedReader(new FileReader(bootstrap));
-            try {
-              oldPath = oldReader.readLine();
-            } finally {
-              oldReader.close();
-            }
-            versionWorkspace.clear();
-            versionWorkspace.put("final", oldPath);
-            versionWorkspace.put("test", oldPath);
-            sPath = oldPath;
-            // Write it down
-            final Writer bw = new BufferedWriter(new FileWriter(bootstrap));
-            try {
-              versionWorkspace.store(bw, null);
-              bw.flush();
-            } catch (IOException ioe) {
-              Log.error(ioe);
-              Messages.showErrorMessage(24, bootstrap.getAbsolutePath());
-            } finally {
-              bw.close();
-            }
-          } else {
-            if (SessionService.isTestMode()) {
-              sPath = versionWorkspace.getProperty("test");
+          final BufferedReader br = new BufferedReader(new FileReader(bootstrap));
+          try {
+            // The bootstrap file format is <test|final>=<workspace
+            // location>
+            final String sPath;
+            versionWorkspace.load(br);
+            // If none property, means we have a jajuk < 1.8 bootstrap
+            // file that contains only a single directory
+            if (versionWorkspace.size() == 0) {
+              // Read the file again using a new reader (otherwise,
+              // the offset is wrong)
+              final String oldPath;
+              BufferedReader oldReader = new BufferedReader(new FileReader(bootstrap));
+              try {
+                oldPath = oldReader.readLine();
+              } finally {
+                oldReader.close();
+              }
+              versionWorkspace.clear();
+              versionWorkspace.put("final", oldPath);
+              versionWorkspace.put("test", oldPath);
+              sPath = oldPath;
+              // Write it down
+              writeBootstrapFile(bootstrap);
             } else {
-              sPath = versionWorkspace.getProperty("final");
+              if (SessionService.isTestMode()) {
+                sPath = versionWorkspace.getProperty("test");
+              } else {
+                sPath = versionWorkspace.getProperty("final");
+              }
             }
+            // If the bootstrap exists but doesn't contain the workspace property, set default
+            // workspace location and commit the bootstrap file. This can happen when starting test
+            // mode and then starting final mode for the first time.
+            if (sPath == null) {
+              System.out
+                  .println("[BOOT] No workspace given in bootstrap file, using home directory as a workspace");
+              SessionService.setWorkspace(UtilSystem.getUserHome());
+              SessionService.writeBootstrapFile(bootstrap);
+            }
+            // Check if the repository can be found
+            else if (new File(sPath + '/'
+                + (SessionService.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk"))
+                .canRead()) {
+              SessionService.setWorkspace(sPath);
+            } else {
+              System.out
+                  .println("[BOOT] Workspace given in bootstrap file is not accessible, using home directory as a workspace");
+            }
+          } finally {
+            br.close();
           }
-          // Check if the repository can be found
-          if (new File(sPath + '/'
-              + (SessionService.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk"))
-              .canRead()) {
-            SessionService.setWorkspace(sPath);
-          }
-        } finally {
-          br.close();
+        } catch (final IOException e) {
+          // Can be an ioexception or an NPE if the file is void
+          System.out
+              .println("[BOOT] Bootstrap file corrupted, using home directory as a workspace");
         }
-      } catch (final IOException e) {
-        // Can be an ioexception or an NPE if the file is void
-        System.out.println("Cannot read bootstrap file, using ~ directory");
+      }
+      // Try default directory
+      else if (fDefaultCollectionPath.canRead()) {
+        SessionService.setWorkspace(UtilSystem.getUserHome());
+      }
+      // Not better ? Show a first time wizard and let user select
+      // the workspace (~/.jajuk by default)
+      else {
+        humanWorkspaceSelection();
+      }
+      // In all cases, make sure to set a workspace
+      if (SessionService.getWorkspace() == null) {
         SessionService.setWorkspace(UtilSystem.getUserHome());
       }
     }
-    // No bootstrap or unreadable or the path included inside is not
-    // readable, show a wizard to select it
-    if ((!bootstrap.canRead() || SessionService.getWorkspace() == null)
-    // don't launch the first time wizard if a previous release .jajuk dir
-        // exists (upgrade from < 1.4)
-        && !fDefaultWorkspace.canRead()) {
-      // First time session ever
-      UpgradeManager.setFirstSession();
-      // display the first time wizard
-      SwingUtilities.invokeLater(new Runnable() {
-        public void run() {
-          new FirstTimeWizard();
-        }
-      });
-      // Lock until first time wizard is closed
-      synchronized (isFirstTimeWizardClosed) {
+  }
+
+  /**
+   * Let user select himself the workspace path
+   */
+  private static void humanWorkspaceSelection() {
+    // First time session ever
+    UpgradeManager.setFirstSession();
+    // display the first time wizard
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        new FirstTimeWizard();
+      }
+    });
+    // Lock until first time wizard is closed
+    synchronized (isFirstTimeWizardClosed) {
+      try {
         isFirstTimeWizardClosed.wait();
+      } catch (InterruptedException e) {
+        Log.error(e);
       }
     }
-    // In all cases, make sure to set a workspace
-    if (SessionService.getWorkspace() == null) {
-      SessionService.setWorkspace(UtilSystem.getUserHome());
+  }
+
+  /**
+   * Write down the bootstrap file. Manage IO errors.
+   * @param bootstrap
+   */
+  public static void writeBootstrapFile(File bootstrap) {
+    Writer bw = null;
+    try {
+      bw = new BufferedWriter(new FileWriter(bootstrap));
+      versionWorkspace.store(bw, null);
+      bw.flush();
+    } catch (IOException ioe) {
+      Log.error(ioe);
+      Messages.showErrorMessage(24, bootstrap.getAbsolutePath());
+    } finally {
+      try {
+        bw.close();
+      } catch (Exception e) {
+        Log.error(e);
+      }
     }
   }
 
@@ -455,11 +515,19 @@ public class SessionService {
   }
 
   /**
+   * Return whether user provided a forced workspace on command line.
+   * @return whether user provided a forced workspace.
+   */
+  public static boolean isForcedWorkspace() {
+    return (forcedWorkspacePath != null);
+  }
+
+  /**
    * Return default workspace location.
    * 
    * @return default workspace location
    */
-  public static final File getDefaultWorkspace() {
+  public static final File getDefaultCollectionPath() {
     String home = UtilSystem.getUserHome();
     return new File(home + '/' + (isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk")
         + '/');
@@ -509,18 +577,12 @@ public class SessionService {
    * It also fixes #1473 by moving if required the bootstrap file (see See
    * https://trac.jajuk.info/ticket/1473)
    * 
-   * At a first glance, this move code could be better located in UpgradeManager
-   * but we keep it here because of its bootstraping nature that make it easier
-   * in a dynamic method than inside a boot process.
-   * 
-   * This bootstrap file location can be overriden by providing -bootstrap=<URL> progam CLI option
+    * 
+   * This bootstrap file location can be overridden by providing -bootstrap=<URL> CLI option
    * 
    * @return bootstrap file absolute path
    */
   public static String getBootstrapPath() {
-    if (forcedBootstrapPath != null) {
-      cachedBootstrapPath = forcedBootstrapPath;
-    }
     if (cachedBootstrapPath != null) {
       return cachedBootstrapPath;
     }

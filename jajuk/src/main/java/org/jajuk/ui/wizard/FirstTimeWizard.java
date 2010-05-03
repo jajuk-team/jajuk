@@ -27,11 +27,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -72,7 +68,7 @@ import org.jdesktop.swingx.VerticalLayout;
  * First time Wizard.
  */
 public class FirstTimeWizard extends JajukJDialog implements ActionListener, PropertyChangeListener {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -129,7 +125,9 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener, Pro
     setVisible(true);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
@@ -169,21 +167,12 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener, Pro
         return;
       }
       // Set Workspace directory
-      try {
-        final java.io.File bootstrap = new java.io.File(SessionService.getBootstrapPath());
-        final Writer bw = new BufferedWriter(new FileWriter(bootstrap));
-        try {
-          bw.write(sPATH);
-          bw.flush();
-        } finally {
-          bw.close();
-        }
-        // Store the workspace PATH
-        SessionService.setWorkspace(sPATH);
-      } catch (final IOException ex) {
-        Messages.showErrorMessage(24);
-        Log.debug("Cannot write bootstrap file");
-      }
+      SessionService.setWorkspace(sPATH);
+
+      // Write the bootstrap file
+      File bootstrap = new File(SessionService.getBootstrapPath());
+      SessionService.writeBootstrapFile(bootstrap);
+
       // Close window
       dispose();
       // Notify Main to continue startup
@@ -252,6 +241,11 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener, Pro
     jlWorkspace.setToolTipText(Messages.getString("FirstTimeWizard.7"));
     workspacePath = new PathSelector(UtilSystem.getUserHome());
     workspacePath.setToolTipText(Messages.getString("FirstTimeWizard.7"));
+    // If user provided a forced workspace, he can't change it again here
+    if (SessionService.isForcedWorkspace()) {
+      jlWorkspace.setEnabled(false);
+      workspacePath.setEnabled(false);
+    }
 
     jcbHelp = new JCheckBox(Messages.getString("FirstTimeWizard.4"));
     // Refresh time
@@ -269,9 +263,10 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener, Pro
 
     // we need to listen for the animation state property in order to allow to
     // resize the dialog after the advanced-panel is expanded/collapsed
-    // see http://forums.java.net/jive/thread.jspa?threadID=67800&tstart=0 for some related discussion
+    // see http://forums.java.net/jive/thread.jspa?threadID=67800&tstart=0 for some related
+    // discussion
     // why we need to listen on "animationState" to know when the expanding/collapsing is finished
-    advanced.addPropertyChangeListener("animationState", this); 
+    advanced.addPropertyChangeListener("animationState", this);
 
     // Build the toggle link used to expand / collapse the panel
     final ToggleLink toggle = new ToggleLink(Messages.getString("FirstTimeWizard.6"), advanced);
@@ -304,14 +299,13 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener, Pro
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent
-   * )
+   * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent )
    */
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
     // if the property changes to "collapsed" or "expanded" the change of the panel is
-    // finished and we should re-pack() the dialog in order to make space for the panel in the dialog correctly
+    // finished and we should re-pack() the dialog in order to make space for the panel in the
+    // dialog correctly
     if (evt.getNewValue().equals("collapsed") || evt.getNewValue().equals("expanded")) {
       pack(); // repack as size of dialog can be exceeded now
     }

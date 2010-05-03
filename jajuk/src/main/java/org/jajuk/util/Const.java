@@ -404,8 +404,8 @@ public interface Const {
   /** Tells jajuk to use a .jajuk_test repository */
   String CLI_TEST = "test";
 
-  /** Special bootstrap file location option */
-  String CLI_BOOTSTRAP_LOCATION = "bootstrap";
+  /** Special forced workspace location CLI option */
+  String CLI_WORKSPACE_LOCATION = "workspace";
 
   // players impls
   /** DOCUMENT_ME. */
