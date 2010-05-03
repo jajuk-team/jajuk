@@ -19,7 +19,7 @@
  *  $Revision$
  */
 package org.jajuk.util;
- 
+
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.io.FileInputStream;
@@ -303,12 +303,7 @@ public final class Conf implements Const {
     defaults.put(CONF_MPLAYER_ARGS, "");
     defaults.put(CONF_ENV_VARIABLES, "");
     defaults.put(CONF_USE_VOLNORM, "false");
-
-    // If user already disabled tips, don't enable it back
-    // but enable it at first jajuk launch
-    if (defaults.get(CONF_SHOW_TIP_ON_STARTUP) == null) {
-      defaults.put(CONF_SHOW_TIP_ON_STARTUP, TRUE);
-    }
+    defaults.put(CONF_SHOW_TIP_ON_STARTUP, FALSE);
     defaults.put(CONF_CATALOG_PAGE_SIZE, "100");
     defaults.put(CONF_SHOW_POPUPS, FALSE);
     defaults.put(CONF_SHOW_SYSTRAY, TRUE);
