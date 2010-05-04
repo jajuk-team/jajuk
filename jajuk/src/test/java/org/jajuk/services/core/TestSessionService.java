@@ -125,25 +125,25 @@ public class TestSessionService extends JajukTestCase {
   public void testHandleCommandline() {
     SessionService.handleCommandline(new String[] {});
     SessionService.handleCommandline(new String[] { "-test", "-ide", "-something" });
-    assertFalse(parseBootstrap(""));
-    assertFalse(parseBootstrap("/foo"));
+    assertFalse(parseWorkspaceLocation(""));
+    assertFalse(parseWorkspaceLocation("/foo"));
     String tmpDir = System.getProperty("java.io.tmpdir");
-    String rightBootstrapLocation = tmpDir;
-    assertTrue(parseBootstrap(rightBootstrapLocation));
-    SessionService.handleCommandline(new String[] { "-test", "-ide", "-bootstrap=" + tmpDir,
+    String rightWorkspaceLocation = tmpDir;
+    assertTrue(parseWorkspaceLocation(rightWorkspaceLocation));
+    SessionService.handleCommandline(new String[] { "-test", "-ide", "-workspace=" + tmpDir,
         "-something" });
   }
 
   /**
-   * Return true if the bootstrap location is valid
-   * @param bootstrapLocation
-   * @return true if the bootstrap location is valid
+   * Return true if the workspace location is valid
+   * @param workspace Location
+   * @return true if the workspace location is valid
    */
-  private boolean parseBootstrap(String bootstrapLocation) {
+  private boolean parseWorkspaceLocation(String workspaceLocation) {
     try {
       // next line should throw a runtime exception
       SessionService.handleCommandline(new String[] { "-test", "-ide", "-something",
-          "-bootstrap=" + bootstrapLocation });
+          "-workspace=" + workspaceLocation });
       return true;
     } catch (JajukRuntimeException e) {
       return false;
