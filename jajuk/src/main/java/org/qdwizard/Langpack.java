@@ -53,6 +53,7 @@ public class Langpack {
     strings.put(new Locale("nl"), Arrays.asList("Afgerond", "Annuleren", "Vooropgaand",
         "Aanstaande"));
     strings.put(new Locale("ru"), Arrays.asList("Готово", "Отмена", "Назад", "Дальше"));
+    strings.put(new Locale("pt"), Arrays.asList("Terminar", "Cancelar", "Anterior", "Seguinte"));
   }
 
   /** Used locale for the wizard buttons, use English as a default *. */

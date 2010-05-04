@@ -41,7 +41,8 @@ public class LocaleManager {
   /** Supported Locals. */
   private static List<Locale> supportedLocales = Arrays.asList(new Locale[] { Locale.ENGLISH,
       Locale.FRENCH, Locale.GERMAN, new Locale("nl"), new Locale("es"), new Locale("ca"),
-      new Locale("ko"), new Locale("el"), new Locale("ru"), new Locale("gl"), new Locale("cs") });
+      new Locale("ko"), new Locale("el"), new Locale("ru"), new Locale("gl"), new Locale("cs"),
+      new Locale("pt") });
 
   /** Local ( language) to be used, default is English. */
   private static Locale locale = getNativeLocale();
