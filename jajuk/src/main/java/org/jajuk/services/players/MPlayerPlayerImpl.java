@@ -395,11 +395,11 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * @throws IOException Signals that an I/O exception has occurred.
    */
   private void launchMplayer() throws IOException {
-    // Build the file url. Under windows 32 bits, we convert path to short
+    // Build the file url. Under windows, we convert path to short
     // version to fix a mplayer bug when reading some pathnames including
     // special characters (see #1267)
     String pathname = fCurrent.getAbsolutePath();
-    if (UtilSystem.isUnderWindows32bits() && Conf.getBoolean(CONF_SHORT_NAMES)) {
+    if (UtilSystem.isUnderWindows() && Conf.getBoolean(CONF_SHORT_NAMES)) {
       pathname = UtilSystem.getShortPathNameW(pathname);
     }
     ProcessBuilder pb = new ProcessBuilder(buildCommand(pathname));
