@@ -195,6 +195,8 @@ public class TestSessionService extends JajukTestCase {
       assertTrue(bootstrap.canRead());
     }
 
+    // Reset CLI parameters
+    SessionService.handleCommandline(new String[] { "-test", "-ide", "-something" });
     SessionService.discoverWorkspace();
 
     // without test mode...

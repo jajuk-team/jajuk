@@ -20,6 +20,7 @@
  */
 package org.jajuk.services.core;
 
+import java.awt.GraphicsEnvironment;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -54,6 +55,8 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukRuntimeException;
 import org.jajuk.util.log.Log;
+
+import sun.awt.HeadlessToolkit;
 
 /**
  * Multi-session and test/final mode facilities.
@@ -431,20 +434,25 @@ public class SessionService {
    * Let user select himself the workspace path
    */
   private static void humanWorkspaceSelection() {
-    // First time session ever
-    UpgradeManager.setFirstSession();
-    // display the first time wizard
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        new FirstTimeWizard();
-      }
-    });
-    // Lock until first time wizard is closed
-    synchronized (isFirstTimeWizardClosed) {
-      try {
-        isFirstTimeWizardClosed.wait();
-      } catch (InterruptedException e) {
-        Log.error(e);
+    // If running in headless env, force /tmp directory
+    if (GraphicsEnvironment.isHeadless()) {
+      setWorkspace("/tmp");
+    } else {
+      // First time session ever
+      UpgradeManager.setFirstSession();
+      // display the first time wizard
+      SwingUtilities.invokeLater(new Runnable() {
+        public void run() {
+          new FirstTimeWizard();
+        }
+      });
+      // Lock until first time wizard is closed
+      synchronized (isFirstTimeWizardClosed) {
+        try {
+          isFirstTimeWizardClosed.wait();
+        } catch (InterruptedException e) {
+          Log.error(e);
+        }
       }
     }
   }
