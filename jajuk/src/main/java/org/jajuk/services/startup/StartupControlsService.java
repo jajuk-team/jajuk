@@ -103,6 +103,7 @@ public class StartupControlsService {
       if (!file.exists()) {
         // if config file doesn't exit, create
         // it with default values
+        Log.warn("Create missing preference file");
         org.jajuk.util.Conf.commit();
       }
     }
