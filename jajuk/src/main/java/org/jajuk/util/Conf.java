@@ -385,6 +385,7 @@ public final class Conf implements Const {
     try {
       properties.store(str, "User configuration");
     } finally {
+      str.flush();
       str.close();
     }
   }
