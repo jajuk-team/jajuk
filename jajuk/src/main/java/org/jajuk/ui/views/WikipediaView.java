@@ -21,7 +21,6 @@
 
 package org.jajuk.ui.views;
 
-import java.awt.Desktop;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -58,6 +57,7 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -141,7 +141,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
     // Buttons
     JajukAction aCopy = ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD);
     jbCopy = new JButton(aCopy);
-    if (Desktop.isDesktopSupported()) {
+    if (UtilSystem.isBrowserSupported()) {
       jbLaunchInExternalBrowser = new JButton(ActionManager
           .getAction(JajukActions.LAUNCH_IN_BROWSER));
       // Remove text inside the buttons
@@ -173,7 +173,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
     jtb.add(jbTrackSearch);
     jtb.addSeparator();
     jtb.add(jbCopy);
-    if (Desktop.isDesktopSupported()) {
+    if (UtilSystem.isBrowserSupported()) {
       jtb.add(jbLaunchInExternalBrowser);
       jtb.addSeparator();
     }
@@ -295,7 +295,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
               + ".wikipedia.org/wiki/" + lSearch).replaceAll(" ", "_"));
           Log.debug("Wikipedia search: {{" + url + "}}");
           jbCopy.putClientProperty(Const.DETAIL_CONTENT, url.toExternalForm());
-          if (Desktop.isDesktopSupported()) {
+          if (UtilSystem.isBrowserSupported()) {
             jbLaunchInExternalBrowser.putClientProperty(Const.DETAIL_CONTENT, url.toExternalForm());
           }
           browser.setURL(url, LocaleManager

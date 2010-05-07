@@ -24,7 +24,6 @@ package org.jajuk.ui.thumbnails;
 import com.vlsolutions.swing.docking.ShadowBorder;
 
 import java.awt.Color;
-import java.awt.Desktop;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -59,6 +58,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -160,7 +160,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     pjmFiles = new PreferencesJMenu(getItem());
     jmenu.add(pjmFiles, 9);
     // disable inadequate menu items
-    if (Desktop.isDesktopSupported()) {
+    if (UtilSystem.isBrowserSupported()) {
       jmenu.remove(jmiOpenLastFMSite);
     }
     // Set keystrokes

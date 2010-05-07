@@ -26,7 +26,6 @@ import ext.services.lastfm.LastFmService;
 import ext.services.lastfm.TrackInfo;
 
 import java.awt.Color;
-import java.awt.Desktop;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.net.SocketTimeoutException;
@@ -52,6 +51,7 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.border.DropShadowBorder;
 
@@ -249,7 +249,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
       jmiProperties.setEnabled(false);
     }
     // Set URL to open
-    if (Desktop.isDesktopSupported()) {
+    if (UtilSystem.isBrowserSupported()) {
       jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, album.getUrl());
     }
 

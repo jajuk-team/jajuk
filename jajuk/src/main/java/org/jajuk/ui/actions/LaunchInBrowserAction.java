@@ -30,6 +30,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -45,9 +46,9 @@ public class LaunchInBrowserAction extends JajukAction {
    * Instantiates a new launch in browser action.
    */
   LaunchInBrowserAction() {
-    // this action is available only under linux and windows for now
+    // this action is available only under GNU/Linux and windows for now
     super(Messages.getString("LaunchInBrowserAction.0"), IconLoader.getIcon(JajukIcons.LAUNCH),
-        Desktop.isDesktopSupported());
+        UtilSystem.isBrowserSupported());
     setShortDescription(Messages.getString("LaunchInBrowserAction.0"));
   }
 

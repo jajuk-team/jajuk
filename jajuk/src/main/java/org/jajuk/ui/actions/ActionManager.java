@@ -20,7 +20,6 @@
  */
 package org.jajuk.ui.actions;
 
-import java.awt.Desktop;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -30,6 +29,8 @@ import javax.swing.InputMap;
 import javax.swing.KeyStroke;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
+
+import org.jajuk.util.UtilSystem;
 
 /**
  * Helper class used to create, store and lookup actions.
@@ -125,7 +126,7 @@ public final class ActionManager {
     installAction(JajukActions.EXTRA_TAGS_WIZARD, new ShowActivateTagsAction(), false);
     // Install this action only if Desktop class is supported, it is used to
     // open default mail client
-    if (Desktop.isDesktopSupported()) {
+    if (UtilSystem.isBrowserSupported()) {
       installAction(JajukActions.QUALITY, new QualityAction(), false);
     }
     installAction(JajukActions.SHOW_TRACES, new DebugLogAction(), false);
@@ -186,7 +187,7 @@ public final class ActionManager {
     installAction(JajukActions.PREFERENCE_UNSET, new UnsetPreferenceSelectionAction(), false);
     // Install this action only if Desktop class is supported, it is used to
     // open default web browser
-    if (Desktop.isDesktopSupported()) {
+    if (UtilSystem.isBrowserSupported()) {
       installAction(JajukActions.LAUNCH_IN_BROWSER, new LaunchInBrowserAction(), false);
     }
 

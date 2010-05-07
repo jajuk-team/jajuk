@@ -21,7 +21,6 @@
 
 package org.jajuk.ui.views;
 
-import java.awt.Desktop;
 import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -69,6 +68,7 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilSystem;
 import org.jdesktop.swingx.JXBusyLabel;
 
 /**
@@ -151,7 +151,7 @@ public class LyricsView extends ViewAdapter {
       public void handlePopup(final MouseEvent e) {
         final JPopupMenu menu = new JPopupMenu();
         menu.add(getJmiCopyToClipboard());
-        if (Desktop.isDesktopSupported()) {
+        if (UtilSystem.isBrowserSupported()) {
           getJmiLaunchInBrowser().putClientProperty(Const.DETAIL_CONTENT, sURL);
           getJmiCopyToClipboard().putClientProperty(Const.DETAIL_CONTENT, sURL);
           menu.add(getJmiLaunchInBrowser());

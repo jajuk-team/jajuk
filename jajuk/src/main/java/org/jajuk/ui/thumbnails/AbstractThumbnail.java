@@ -23,7 +23,6 @@ package org.jajuk.ui.thumbnails;
 
 import com.vlsolutions.swing.docking.ShadowBorder;
 
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -63,6 +62,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -270,7 +270,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     jmiCDDBWizard.putClientProperty(Const.DETAIL_SELECTION, item);
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
     jmiProperties.putClientProperty(Const.DETAIL_SELECTION, item);
-    if (Desktop.isDesktopSupported()) {
+    if (UtilSystem.isBrowserSupported()) {
       JajukAction actionOpenLastFM = ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER);
       // Change action label
       jmiOpenLastFMSite = new JMenuItem(actionOpenLastFM);
@@ -291,7 +291,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     jmenu.add(jmiCDDBWizard);
     jmenu.add(jmiGetCovers);
     jmenu.add(jmiShowPopup);
-    if (Desktop.isDesktopSupported()) {
+    if (UtilSystem.isBrowserSupported()) {
       jmenu.add(jmiOpenLastFMSite);
     }
     jmenu.addSeparator();

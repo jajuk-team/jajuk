@@ -41,7 +41,6 @@ import static org.jajuk.ui.actions.JajukActions.TIP_OF_THE_DAY;
 import static org.jajuk.ui.actions.JajukActions.VIEW_RESTORE_DEFAULTS;
 
 import java.awt.BorderLayout;
-import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
@@ -400,7 +399,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     help.add(jmiTipOfTheDay);
     // Install this action only if Desktop class is supported, it is used to
     // open default mail client
-    if (Desktop.isDesktopSupported()) {
+    if (UtilSystem.isBrowserSupported()) {
       jmiQualityAgent = new JMenuItem(ActionManager.getAction(QUALITY));
       help.add(jmiQualityAgent);
     }

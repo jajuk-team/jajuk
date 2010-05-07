@@ -26,7 +26,6 @@ import ext.services.lastfm.ArtistInfo;
 import ext.services.lastfm.LastFmService;
 
 import java.awt.Color;
-import java.awt.Desktop;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -50,6 +49,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.border.DropShadowBorder;
 
@@ -243,7 +243,7 @@ public class LastFmArtistThumbnail extends AbstractThumbnail {
       jmiProperties.setEnabled(false);
     }
     // Set URL to open
-    if (Desktop.isDesktopSupported()) {
+    if (UtilSystem.isBrowserSupported()) {
       jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, artist.getUrl());
     }
   }

@@ -1219,4 +1219,15 @@ public final class UtilSystem {
     return shortname;
   }
 
+  /**
+   * Return whether the Desktop BROWSE action is actually supported
+   * Note this bug : http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6486393 
+   * under KDE : isSupported returns true but we get an exception when actually browsing
+   * @return
+   */
+  public static boolean isBrowserSupported() {
+    boolean out = (Desktop.getDesktop().isSupported(Desktop.Action.BROWSE));
+    return out;
+  }
+
 }
