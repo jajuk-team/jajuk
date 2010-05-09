@@ -21,6 +21,7 @@
 package org.jajuk.util;
 
 import java.awt.Desktop;
+import java.awt.GraphicsEnvironment;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -1226,8 +1227,11 @@ public final class UtilSystem {
    * @return
    */
   public static boolean isBrowserSupported() {
-    boolean out = (Desktop.getDesktop().isSupported(Desktop.Action.BROWSE));
-    return out;
+    if (GraphicsEnvironment.isHeadless()) {
+      return false;
+    } else {
+      return (Desktop.getDesktop().isSupported(Desktop.Action.BROWSE));
+    }
   }
 
 }
