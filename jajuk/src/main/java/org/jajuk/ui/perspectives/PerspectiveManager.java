@@ -53,7 +53,7 @@ import org.jajuk.util.log.Log;
  * Perspectives Manager.
  */
 public final class PerspectiveManager {
-  
+
   /** Current perspective. */
   private static IPerspective currentPerspective = null;
 
@@ -90,29 +90,17 @@ public final class PerspectiveManager {
     registerDefaultPerspectives();
     if (UpgradeManager.isUpgradeDetected()) {
       /*
-       * Force loading of defaults perspectives - If this is a migration from a
-       * version n-i with i >1, we force a full reset - If it is a migration
-       * from version n-1, only reset perspectives with changes (see
+       * Force loading of defaults perspectives
+       * 
+       * - If this is a migration from a version n-i with i >1, we force a full reset
+       * 
+       * - If it is a migration from version n-1, only reset perspectives with changes (see
        * perspectiveList)
        */
-
       if (UpgradeManager.doNeedPerspectiveResetAtUpgrade()) {
         // upgrade message
         Messages.showInfoMessage(Messages.getString("Note.0"));
-      }
-
-      List<String> perspectivesToReset = Arrays.asList(PerspectiveManager.perspectivesToReset);
-      for (IPerspective perspective : getPerspectives()) {
-        String className = perspective.getClass().getSimpleName();
-        // Remove current conf file to force using default file from the
-        // jar
-        File loadFile = SessionService.getConfFileByPath(className + ".xml");
-        if (loadFile.exists()
-            && (perspectivesToReset.contains(className) || UpgradeManager.isMajorMigration())) {
-          if (!loadFile.delete()) {
-            Log.warn("Could not delete file " + loadFile);
-          }
-        }
+        resetPerspectives();
       }
     }
     // Load each perspective
@@ -122,6 +110,22 @@ public final class PerspectiveManager {
       }
     } catch (Exception e) {
       throw new JajukException(108, e);
+    }
+  }
+
+  private static void resetPerspectives() {
+    List<String> perspectivesToReset = Arrays.asList(PerspectiveManager.perspectivesToReset);
+    for (IPerspective perspective : getPerspectives()) {
+      String className = perspective.getClass().getSimpleName();
+      // Remove current conf file to force using default file from the
+      // jar
+      File loadFile = SessionService.getConfFileByPath(className + ".xml");
+      if (loadFile.exists()
+          && (perspectivesToReset.contains(className) || UpgradeManager.isMajorMigration())) {
+        if (!loadFile.delete()) {
+          Log.warn("Could not delete file " + loadFile);
+        }
+      }
     }
   }
 
@@ -230,7 +234,6 @@ public final class PerspectiveManager {
     return perspectives;
   }
 
-  
   /**
    * Saves perspectives and views position in the perspective.xml file Must be
    * executed in EDT to avoid dead locks on getComponent()
