@@ -58,8 +58,10 @@ public class JajukInformationDialog extends JDialog {
     // with the toast, it is even worse than the previous issue.
     super(owner);
     setFocusableWindowState(false);
+    setFocusable(false);
     setUndecorated(true);
-    setAlwaysOnTop(true);
+    // Don't use setAlwaysOnTop or the toast steals the focus, see #1636
+    //setAlwaysOnTop(true);
     getRootPane().setWindowDecorationStyle(JRootPane.NONE);
     getRootPane().setBorder(new LineBorder(Color.BLACK));
     JLabel jl = new JLabel(text);

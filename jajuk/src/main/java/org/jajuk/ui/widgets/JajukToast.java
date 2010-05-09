@@ -47,8 +47,6 @@ public class JajukToast extends JajukInformationDialog {
    */
   public JajukToast(String text, Window owner) {
     super(text, owner);
-    setAlwaysOnTop(true);
-    setFocusableWindowState(false);
   }
 
   /*
