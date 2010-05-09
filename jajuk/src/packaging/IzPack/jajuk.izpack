@@ -5,11 +5,9 @@
         <appversion>VERSION_REPLACED_BY_ANT</appversion>
         <javaversion>1.6</javaversion>
         <url>http://jajuk.info</url>
-        <run-privileged/>
     </info>
     <guiprefs height='600' resizable='yes' width='800'>
    	 	<laf name='substance'>
-   	 		<param name="variant" value="business-black" />
    	 		<os family='unix' />
    	 		<os family='windows' />
    	 		<os family='mac' />
