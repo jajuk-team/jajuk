@@ -8,4 +8,4 @@
 %_specdir               %{_topdir}/SPECS
 %_rpmdir                %{_topdir}/RPMS
 %_srcrpmdir            %{_topdir}/SRPMS
-%_rpmfilename      noarch/%%{NAME}-%%{VERSION}.noarch.rpm
+%_rpmfilename      noarch/%%{NAME}-%%{VERSION}-%%{RELEASE}.noarch.rpm

@@ -196,12 +196,6 @@
 			<include name='jajuk.bat' />
 			<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
 		</replace>
-		<!-- Set date in JNLP file -->
-		<replace dir='${srcdir}/packaging/jnlp' value='${TODAY-VERSION}'>
-			<include name='*.jnlp' />
-			<replacetoken>TIMESTAMP_REPLACED_BY_ANT</replacetoken>
-		</replace>
-
 	</target>
 
 	<target name='compile'>
@@ -369,6 +363,11 @@
 		<replace dir='${jnlpdir}/app' value='-${test}'>
 			<include name='*.jnlp' />
 			<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
+		</replace>
+		<!-- Set date in JNLP file -->
+		<replace dir='${jnlpdir}/app' value='${TODAY-VERSION}'>
+			<include name='*.jnlp' />
+			<replacetoken>TIMESTAMP_REPLACED_BY_ANT</replacetoken>
 		</replace>
 
 		<!--Copy previous release jars, comment this if you have no previous release
