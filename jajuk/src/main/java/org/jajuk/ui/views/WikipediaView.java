@@ -256,6 +256,18 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
    * @param bForceReload force the page display
    */
   private void launchSearch(final boolean bForceReload) {
+    // do nothing without internet, 
+    // TODO: display useful text that states this...
+    if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
+      try {
+        browser.setUnknown();
+      } catch (Exception e) {
+        Log.error(e);
+      }
+        
+      return ;
+    }
+    
     Thread t = new Thread("Wikipedia Search Thread") {
       @Override
       public void run() {
