@@ -1148,11 +1148,11 @@ public final class UtilSystem {
   }
 
   /**
-   * Return a process exit value, -100 if the process is stopped.
+   * Return a process exit value, -100 if the process is still running.
    * 
    * @param process the process
    * 
-   * @return the process exit value, -100 if the process is running
+   * @return the process exit value, -100 if the process is still running
    */
   public static int getExitValue(Process process) {
     try {

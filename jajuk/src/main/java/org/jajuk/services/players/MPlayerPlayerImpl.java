@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -64,12 +64,15 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /** Pause time correction *. */
   private long pauseCount = 0;
-  
+
   /** DOCUMENT_ME. */
   private long pauseCountStamp = -1;
 
   /** Does the user made a seek in current track ?*. */
   private boolean seeked;
+
+  /** Is the play is in error */
+  private boolean bInError = false;
 
   /** VBR correction. VBR MP3 files are confusing for mplayer that shows wrong length and seek position. This value is the correction computed with id3 tag when available */
   float vbrCorrection = 1.0f;
@@ -87,7 +90,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * Position and elapsed time getter.
    */
   private class PositionThread extends Thread {
-    
+
     /**
      * Instantiates a new position thread.
      * 
@@ -97,7 +100,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
       super(name);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Thread#run()
      */
     @Override
@@ -145,7 +150,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * Reader : read information from mplayer like position.
    */
   private class ReaderThread extends Thread {
-    
+
     /**
      * Instantiates a new reader thread.
      * 
@@ -155,7 +160,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
       super(name);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Thread#run()
      */
     @Override
@@ -259,12 +266,11 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               }
             } else if (line.matches("ANS_LENGTH.*")) {
               /*
-               * To compute the current track length (used by the information
-               * panel to display remaining time and position), we use the tag
-               * duration first and the mplayer duration then if the tag
-               * duration looks wrong (example : wrongly tagged file or format
-               * that doesn't support tags like wav). Indeed, mplayer duration
-               * is sometimes wrong for VBR MP3.
+               * To compute the current track length (used by the information panel to display
+               * remaining time and position), we use the tag duration first and the mplayer
+               * duration then if the tag duration looks wrong (example : wrongly tagged file or
+               * format that doesn't support tags like wav). Indeed, mplayer duration is sometimes
+               * wrong for VBR MP3.
                */
               StringTokenizer st = new StringTokenizer(line, "=");
               st.nextToken();
@@ -277,13 +283,14 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                 // Save VBR correction, used after seeking
                 vbrCorrection = ((float) tagDuration) / mplayerDuration;
               }
-
             }
             // End of file
             else if (line.matches(".*\\x2e\\x2e\\x2e.*\\(.*\\).*")) {
               bEOF = true;
-              // Update track rate
-              fCurrent.getTrack().updateRate();
+              // Update track rate if it has been opened
+              if (!bOpening) {
+                fCurrent.getTrack().updateRate();
+              }
 
               // Launch next track
               try {
@@ -293,6 +300,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                 // Player on exception processing
                 if (bOpening) {
                   bOpening = false;
+                  bInError = true;
                   break;
                 }
 
@@ -321,7 +329,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     }
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.services.players.AbstractMPlayerImpl#stop()
    */
   @Override
@@ -336,36 +346,29 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
-   *      float)
+   * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long, float)
    */
   @Override
   public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume)
       throws IOException, JajukException {
-    this.lTime = 0;
+
     this.fVolume = fVolume;
     this.length = length;
     this.fPosition = fPosition;
-    this.bFading = false;
-    this.bStop = false;
     this.fCurrent = file;
-    this.bOpening = true;
-    this.bEOF = false;
-    this.vbrCorrection = 1.0f;
-    this.iFadeDuration = 1000 * Conf.getInt(Const.CONF_FADE_DURATION);
-    this.dateStart = System.currentTimeMillis();
-    this.pauseCount = 0;
-    this.pauseCountStamp = -1;
-    this.seeked = false;
-
+    // Reset all states
+    reset();
+   
     // Try to launch mplayer
     launchMplayer();
 
-    // If under windows and the launch failed (no more running), try once again
-    // with other short
-    // names configuration (see #1267)
-    if (UtilSystem.getExitValue(proc) != -100 && UtilSystem.isUnderWindows()) {
+    // If under windows and the launch failed, try once again
+    // with other short names configuration (see #1267)
+    if (bInError && UtilSystem.isUnderWindows()) {
+      Log.warn("Inverting filename scheme for : " + file.getAbsolutePath());
       Conf.invert(CONF_SHORT_NAMES);
+      //Reset any state changed by the previous reader thread
+      reset();
       launchMplayer();
     }
 
@@ -386,6 +389,24 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
       // Notify the problem opening the file
       throw new JajukException(7, Integer.valueOf(MPLAYER_START_TIMEOUT).toString() + " ms");
     }
+  }
+
+  /**
+   * Reset the player impl to initial state
+   */
+  private void reset() {
+    this.lTime = 0;
+    this.bFading = false;
+    this.bInError = false;
+    this.bStop = false;
+    this.bOpening = true;
+    this.bEOF = false;
+    this.vbrCorrection = 1.0f;
+    this.iFadeDuration = 1000 * Conf.getInt(Const.CONF_FADE_DURATION);
+    this.dateStart = System.currentTimeMillis();
+    this.pauseCount = 0;
+    this.pauseCountStamp = -1;
+    this.seeked = false;
   }
 
   /**
@@ -427,7 +448,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     while (UtilSystem.isRunning(proc) && !bStop && bOpening && !bEOF
         && (System.currentTimeMillis() - time) < MPLAYER_START_TIMEOUT) {
       try {
-        Thread.sleep(100);
+        Thread.sleep(50);
       } catch (InterruptedException e) {
         Log.error(e);
       }
@@ -460,8 +481,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.players.IPlayerImpl#seek(float) Ogg vorbis seek not yet
-   *      supported
+   * @see org.jajuk.players.IPlayerImpl#seek(float) Ogg vorbis seek not yet supported
    */
   @Override
   public void seek(float posValue) {
@@ -513,8 +533,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.players.AbstractMPlayerImpl#play(org.jajuk.base.WebRadio,
-   *      float)
+   * @see org.jajuk.players.AbstractMPlayerImpl#play(org.jajuk.base.WebRadio, float)
    */
   @Override
   public void play(WebRadio radio, float volume) {
@@ -528,23 +547,22 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    */
   @Override
   public void setVolume(float fVolume) {
-	  if (!bPaused)
-	  {
-		  super.setVolume(fVolume);
-	  }
-	  else
-	  {
-		this.fVolume = fVolume;
-	  }
+    if (!bPaused) {
+      super.setVolume(fVolume);
+    } else {
+      this.fVolume = fVolume;
+    }
   }
 
-	/* (non-Javadoc)
-	 * @see org.jajuk.services.players.AbstractMPlayerImpl#resume()
-	 */
-	@Override
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.services.players.AbstractMPlayerImpl#resume()
+   */
+  @Override
   public void resume() throws Exception {
-	  super.resume();
-	  setVolume(fVolume);
+    super.resume();
+    setVolume(fVolume);
   }
 
   /**
