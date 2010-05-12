@@ -358,16 +358,16 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     this.fCurrent = file;
     // Reset all states
     reset();
-   
     // Try to launch mplayer
     launchMplayer();
 
     // If under windows and the launch failed, try once again
     // with other short names configuration (see #1267)
     if (bInError && UtilSystem.isUnderWindows()) {
-      Log.warn("Inverting filename scheme for : " + file.getAbsolutePath());
       Conf.invert(CONF_SHORT_NAMES);
-      //Reset any state changed by the previous reader thread
+      Log.warn("Inverted filename scheme (" + Conf.getBoolean(CONF_SHORT_NAMES) + ") for : "
+          + file.getAbsolutePath());
+      // Reset any state changed by the previous reader thread
       reset();
       launchMplayer();
     }
