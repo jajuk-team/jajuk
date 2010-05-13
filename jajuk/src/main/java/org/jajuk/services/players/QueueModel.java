@@ -1096,12 +1096,12 @@ public final class QueueModel {
   public static void shuffle() {
     if (alQueue.size() > 1) {
       if (isStopped()) {
-        Collections.shuffle(alQueue, UtilSystem.getRandom());
+        UtilFeatures.forcedShuffle(alQueue);
       } else {
         // Make sure current track is kept to its position
         // so remove it and add it again after shuffling
         alQueue.remove(index);
-        Collections.shuffle(alQueue, UtilSystem.getRandom());
+        UtilFeatures.forcedShuffle(alQueue);
         alQueue.add(0, itemLast);
         index = 0;
         // Refresh Queue View

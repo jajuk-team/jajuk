@@ -823,7 +823,6 @@ public class TestQueueModel extends JajukTestCase {
 
     QueueModel.shuffle();
 
-    // it's very unlikely that we have the same order afterwards
     assertFalse("Queue: " + QueueModel.getQueue(), QueueModel.getItem(0).getFile().getName()
         .equals("file0")
         && QueueModel.getItem(5).getFile().getName().equals("file5")
