@@ -21,8 +21,6 @@
 
 package org.jajuk.util;
 
-import com.sun.org.apache.xerces.internal.impl.PropertyManager;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;

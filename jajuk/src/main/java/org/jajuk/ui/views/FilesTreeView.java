@@ -377,6 +377,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         try {
           device.mount(true);
           jtree.expandPath(new TreePath(node.getPath()));
+        } catch (JajukException je) {
+          Messages.showErrorMessage(je.getCode());
         } catch (Exception ex) {
           Messages.showErrorMessage(11);
         }

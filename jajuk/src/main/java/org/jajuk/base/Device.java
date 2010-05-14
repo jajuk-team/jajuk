@@ -472,6 +472,11 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       if (i == OPTION_REFRESH_CANCEL) {
         return;
       }
+      // Check that device is still available
+      boolean readyToMount = checkDevice(true);
+      if (!readyToMount) {
+        return;
+      }
       bAlreadyRefreshing = true;
     } catch (JajukException je) {
       Messages.showErrorMessage(je.getCode());
@@ -488,7 +493,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       reporter.cleanupDone();
 
       // Actual refresh
-      refreshCommand((i == Device.OPTION_REFRESH_DEEP) || forcedDeep);
+      refreshCommand(((i == Device.OPTION_REFRESH_DEEP) || forcedDeep), true);
       // cleanup logical items
       org.jajuk.base.Collection.cleanupLogical();
 
@@ -555,9 +560,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     final Device device = this;
     if (!device.isMounted()) {
       try {
-        int resu = device.mount(true);
         // Leave if user canceled device mounting
-        if (resu < 0) {
+        if (!device.mount(true)) {
           return Device.OPTION_REFRESH_CANCEL;
         }
       } catch (final Exception e) {
@@ -573,19 +577,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Mount the device.
-   * 
-   * @param bManual set whether mount is manual or auto
-   * 
-   * @return 0 if operation succeed or a negative value otherwise
-   * 
-   * @throws Exception if device cannot be mounted
+   * Check that the device is available and not void
+   * @return whether the device is ready for mounting
    */
-  public int mount(final boolean bManual) throws Exception {
-    if (bMounted) {
-      Messages.showErrorMessage(111);
-      return 0;
-    }
+  private boolean checkDevice(boolean bManual) throws JajukException {
     try {
       final File file = new File(getUrl());
       if (!file.exists()) {
@@ -604,20 +599,40 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         final int answer = Messages.getChoice("[" + getName() + "] "
             + Messages.getString("Confirmation_void_refresh"), JOptionPane.YES_NO_CANCEL_OPTION,
             JOptionPane.WARNING_MESSAGE);
-        if (answer != JOptionPane.YES_OPTION) {
-          // leave if user doesn't confirm to mount the void device
-          return -1;
-        }
+        // leave if user doesn't confirm to mount the void device
+        return (answer == JOptionPane.YES_OPTION);
       } else {
-        // In auto mode, don't mount a void device
-        return -1;
+        // In auto mode, never mount a void device
+        return false;
       }
+    } else {
+      // Device is not void
+      return true;
     }
-    // Here the device is considered as mounted
-    bMounted = true;
+  }
+
+  /**
+   * Mount the device.
+   * 
+   * @param bManual set whether mount is manual or auto
+   * @return whether the device has been mounted
+   * @throws Exception if device cannot be mounted
+   */
+  public boolean mount(final boolean bManual) throws Exception {
+    if (bMounted) {
+      throw new JajukException(111);
+    }
+    // Check if we can mount the device. It can throw a JajukException if void or unavailable
+    // device
+    boolean readyToMount = checkDevice(bManual);
+    // Effective mounting if available.
+    if (readyToMount) {
+      bMounted = true;
+    }
     // notify views to refresh if needed
     ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_MOUNT));
-    return 0;
+
+    return bMounted;
   }
 
   /**
@@ -707,12 +722,25 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   /**
    * The refresh itself.
    * 
-   * @param bDeepScan DOCUMENT_ME
+   * @param bDeepScan whether it is a deep refresh request or only fast
+   * @param bManual whether it is a manual refresh or auto
    * 
    * @return true if some changes occurred in device
    */
-  public synchronized boolean refreshCommand(final boolean bDeepScan) {
+  public synchronized boolean refreshCommand(final boolean bDeepScan, final boolean bManual) {
     try {
+      // Check if this device is mounted (useful when called by
+      // automatic refresh)
+      if (!isMounted()) {
+        return false;
+      }
+
+      // Check that device is still available
+      boolean readyToMount = checkDevice(bManual);
+      if (!readyToMount) {
+        return false;
+      }
+
       bAlreadyRefreshing = true;
       // reporter is already set in case of manual refresh
       if (reporter == null) {
@@ -726,11 +754,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       if (ExitService.isExiting()) {
         return false;
       }
-      // check if this device is mounted (useful when called by
-      // automatic refresh)
-      if (!isMounted()) {
-        return false;
-      }
       int iNbFilesBeforeRefresh = FileManager.getInstance().getElementCount();
       int iNbDirsBeforeRefresh = DirectoryManager.getInstance().getElementCount();
       int iNbPlaylistsBeforeRefresh = PlaylistManager.getInstance().getElementCount();
@@ -738,15 +761,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       if (bDeepScan && Log.isDebugEnabled()) {
         Log.debug("Starting refresh of device : " + this);
       }
-      final File fTop = new File(getStringValue(Const.XML_URL));
-      if (!fTop.exists()) {
-        Messages.showErrorMessage(101);
-        return false;
-      }
       // Create a directory for device itself and scan files to allow
       // files at the root of the device
       final Directory top = DirectoryManager.getInstance().registerDirectory(this);
-      if(!getDirectories().contains(top)) {
+      if (!getDirectories().contains(top)) {
         addDirectory(top);
       }
 
@@ -899,11 +917,11 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       }
       final Device dSrc = DeviceManager.getInstance().getDeviceByID(sIdSrc);
       // perform a fast refresh
-      refreshCommand(false);
+      refreshCommand(false, true);
       // if bidi sync, refresh the other device as well (new file can
       // have been copied to it)
       if (bidi) {
-        dSrc.refreshCommand(false);
+        dSrc.refreshCommand(false, true);
       }
       // start message
       InformationJPanel.getInstance().setMessage(
@@ -923,11 +941,11 @@ public class Device extends PhysicalItem implements Comparable<Device> {
           iNbCreatedFilesSrc + iNbCreatedFilesDest).append(Messages.getString("Device.35")).append(
           lVolume / 1048576).append(Messages.getString("Device.36")).toString();
       // perform a fast refresh
-      refreshCommand(false);
+      refreshCommand(false, true);
       // if bidi sync, refresh the other device as well (new file can
       // have been copied to it)
       if (bidi) {
-        dSrc.refreshCommand(false);
+        dSrc.refreshCommand(false, true);
       }
       InformationJPanel.getInstance().setMessage(sOut, InformationJPanel.INFORMATIVE);
       Log.debug(sOut);
@@ -1012,14 +1030,14 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       final File[] fSrcFiles = fileSrc.listFiles(filter);
       if (fSrcFiles != null) {
         for (final File element : fSrcFiles) {
-          File[] filesArray =  fileNewDir.listFiles(filter);
+          File[] filesArray = fileNewDir.listFiles(filter);
           if (filesArray == null) {
             // fileNewDir is not a directory or an error occurred (
             // read/write right ? )
             continue;
           }
           final List<File> files = Arrays.asList(filesArray);
-          // Sort  so files are copied in the filesystem order
+          // Sort so files are copied in the filesystem order
           Collections.sort(files);
           boolean bNeedCopy = true;
           for (final File element2 : files) {

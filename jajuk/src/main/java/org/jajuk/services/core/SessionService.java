@@ -56,8 +56,6 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukRuntimeException;
 import org.jajuk.util.log.Log;
 
-import sun.awt.HeadlessToolkit;
-
 /**
  * Multi-session and test/final mode facilities.
  */

@@ -413,7 +413,7 @@ public final class DeviceManager extends ItemManager {
           // cleanup device
           bNeedUIRefresh = bNeedUIRefresh | device.cleanRemovedFiles();
           // refresh the device (deep refresh forced after an upgrade)
-          bNeedUIRefresh = bNeedUIRefresh | device.refreshCommand(bNeedDeepAfterUpgrade);
+          bNeedUIRefresh = bNeedUIRefresh | device.refreshCommand(bNeedDeepAfterUpgrade,false);
 
           // UI refresh if required
           if (bNeedUIRefresh) {

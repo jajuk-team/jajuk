@@ -61,6 +61,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
+import org.jajuk.util.error.JajukException;
 
 /**
  * Device view used to create and modify Jajuk devices
@@ -368,6 +369,8 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
     } else if (ae.getActionCommand().equals(JajukEvents.DEVICE_MOUNT.toString())) {
       try {
         diSelected.getDevice().mount(true);
+      } catch (JajukException je) {
+        Messages.showErrorMessage(je.getCode());
       } catch (Exception e) {
         Messages.showErrorMessage(11);
       }
@@ -512,7 +515,7 @@ class DeviceItem extends JPanel {
    */
   DeviceItem(ImageIcon icon, String sName, Device device) {
     super();
-    
+
     this.device = device;
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

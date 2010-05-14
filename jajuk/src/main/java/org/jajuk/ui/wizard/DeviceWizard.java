@@ -311,8 +311,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcboxSynchronized) {
@@ -441,9 +440,9 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
           try {
             // try to remount the device
             if (!device.isMounted()) {
-              int resu = device.mount(true);
+              boolean mounted = device.mount(true);
               // Leave if user canceled device mounting
-              if (resu < 0) {
+              if (!mounted) {
                 dispose();
                 return;
               }

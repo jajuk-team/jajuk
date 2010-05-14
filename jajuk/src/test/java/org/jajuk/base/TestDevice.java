@@ -36,14 +36,15 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
 
 /**
  * 
  */
 public class TestDevice extends JajukTestCase {
-  
-   /*
+
+  /*
    * (non-Javadoc)
    * 
    * @see junit.framework.TestCase#setUp()
@@ -221,11 +222,11 @@ public class TestDevice extends JajukTestCase {
 
   public void testCleanRemovedFiles() throws Exception {
     JUnitHelpers.createSessionDirectory();
-    
+
     Device device = JUnitHelpers.getDevice();
     device.mount(true);
     device.setUrl("notexisting/testparent\\anotherclientparentthing");
-   
+
     // clean without any stuff
     assertFalse(device.cleanRemovedFiles());
 
@@ -271,7 +272,7 @@ public class TestDevice extends JajukTestCase {
     Device device = new Device("1", "name");
     assertEquals(0, device.getDateLastRefresh());
 
-    device.refreshCommand(false);
+    device.refreshCommand(false, false);
 
     // now it should be set
     assertNotNull(device.getDateLastRefresh());
@@ -580,37 +581,71 @@ public class TestDevice extends JajukTestCase {
    * Test method for {@link org.jajuk.base.Device#refreshCommand(boolean)}.
    */
   public void testRefreshCommand() {
+
+    // We check that a device mounted but no more available cannot be refreshed
     Device device = new Device("1", "name");
-    device.refreshCommand(false);
+
+    device.refreshCommand(false, false);
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Device#refreshCommand(boolean)}.
+   */
+  public void testRefreshCommandNoMoreAvailable() {
+    try {
+      Device device = new Device("1", "name");
+      // Prepare a sample directory with at least a single file
+      java.io.File fileOKDir = new java.io.File(System.getProperty("java.io.tmpdir") + "/foo643");
+      fileOKDir.mkdir();
+      java.io.File sampleFile = new java.io.File(fileOKDir.getAbsoluteFile() + "/foo.mp3");
+      sampleFile.createNewFile();
+      device.setUrl(fileOKDir.getAbsolutePath());
+      device.mount(false);
+      device.refreshCommand(false, false);
+      // fine, now rename the directory
+      sampleFile.delete();
+      fileOKDir.delete();
+      try {
+        // An error should happen here
+        device.refreshCommand(false, false);
+        assertTrue(false);
+      } catch (Exception e) {
+        Log.error(e);
+      }
+
+    } catch (Exception e) {
+      Log.error(e);
+      assertTrue(false);
+    }
   }
 
   // test for a regression that was added
   public void testRefreshCommandDontReaddTopDirectory() throws Exception {
     Device device = JUnitHelpers.getDevice();
     device.mount(true);
-    device.refreshCommand(false);
-    
+    device.refreshCommand(false, false);
+
     // we should not have more than one top-directory!
     assertEquals(1, device.getDirectories().size());
-    
+
     // even if we refresh some more, we should only have one, not multiple
-    device.refreshCommand(false);
-    
+    device.refreshCommand(false, false);
+
     // we should not have more than one top-directory!
     assertEquals(1, device.getDirectories().size());
 
-    device.refreshCommand(false);
-    
+    device.refreshCommand(false, false);
+
     // we should not have more than one top-directory!
     assertEquals(1, device.getDirectories().size());
 
-    device.refreshCommand(false);
-    
+    device.refreshCommand(false, false);
+
     // we should not have more than one top-directory!
     assertEquals(1, device.getDirectories().size());
 
-    device.refreshCommand(false);
-    
+    device.refreshCommand(false, false);
+
     // we should not have more than one top-directory!
     assertEquals(1, device.getDirectories().size());
 
@@ -649,7 +684,7 @@ public class TestDevice extends JajukTestCase {
 
   public void testSynchronizeConfSet() {
     Device device = JUnitHelpers.getDevice();
-    Device dSrc = JUnitHelpers.getDevice("src",0,"/tmp");
+    Device dSrc = JUnitHelpers.getDevice("src", 0, "/tmp");
 
     // set the synchro-device
     device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, dSrc.getID());
