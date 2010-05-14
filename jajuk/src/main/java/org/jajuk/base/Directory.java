@@ -151,7 +151,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     ReadOnlyIterator<Directory> it = DirectoryManager.getInstance().getDirectoriesIterator();
     while (it.hasNext()) {
       Directory directory = it.next();
-      if (directory.getFio().getParentFile().equals(this.getFio())
+      if (directory.getFio() != null && directory.getFio().getParentFile() != null && directory.getFio().getParentFile().equals(this.getFio())
       // check the device of the tested directory to handle directories
           // from cdrom
           && directory.getDevice().equals(getDevice())) {
