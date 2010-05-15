@@ -69,7 +69,7 @@ public class TestDevice extends JajukTestCase {
    */
 
   public void testGetLabel() {
-    Device device = new Device("1", "name");
+    Device device = JUnitHelpers.getDevice();
     assertEquals(Const.XML_DEVICE, device.getLabel());
   }
 
@@ -158,7 +158,7 @@ public class TestDevice extends JajukTestCase {
     // we need the managers registered here
     StartupCollectionService.registerItemManagers();
 
-    Device device = new Device("1", "name");
+    Device device = JUnitHelpers.getDevice();
     assertNotNull(device.getIconRepresentation());
 
     device.setProperty(Const.XML_TYPE, (long) Device.TYPE_DIRECTORY);
@@ -268,10 +268,10 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#getDateLastRefresh()}.
    */
-  public void testGetDateLastRefresh() {
-    Device device = new Device("1", "name");
+  public void testGetDateLastRefresh() throws Exception {
+    Device device = JUnitHelpers.getDevice();
     assertEquals(0, device.getDateLastRefresh());
-
+    device.mount(false);
     device.refreshCommand(false, false);
 
     // now it should be set
@@ -284,7 +284,7 @@ public class TestDevice extends JajukTestCase {
   public void testGetDeviceTypeS() {
     StartupCollectionService.registerDevicesTypes();
 
-    Device device = new Device("1", "name");
+    Device device = JUnitHelpers.getDevice();
     assertNotNull(device.getDeviceTypeS());
   }
 
@@ -381,7 +381,7 @@ public class TestDevice extends JajukTestCase {
    * Test method for {@link org.jajuk.base.Device#getType()}.
    */
   public void testGetType() {
-    Device device = new Device("1", "name");
+    Device device = JUnitHelpers.getDevice();
     assertEquals(0, device.getType());
 
     device.setProperty(Const.XML_TYPE, 2l);
@@ -434,7 +434,7 @@ public class TestDevice extends JajukTestCase {
    * Test method for {@link org.jajuk.base.Device#isRefreshing()}.
    */
   public void testIsRefreshing() {
-    Device device = new Device("1", "name");
+    Device device = JUnitHelpers.getDevice();
     assertFalse(device.isRefreshing());
 
   }
@@ -443,7 +443,7 @@ public class TestDevice extends JajukTestCase {
    * Test method for {@link org.jajuk.base.Device#isSynchronizing()}.
    */
   public void testIsSynchronizing() {
-    Device device = new Device("1", "name");
+    Device device = JUnitHelpers.getDevice();
     assertFalse(device.isSynchronizing());
   }
 
@@ -518,8 +518,13 @@ public class TestDevice extends JajukTestCase {
     device.setUrl(System.getProperty("java.io.tmpdir"));
     device.mount(true);
 
-    // try a second time
-    device.mount(true);
+    // try a second time, should fail
+    try {
+      device.mount(true);
+      fail();
+    } catch (Exception e) {
+      Log.error(e);
+    }
 
     // try a device that has an invalid URL
     device = new Device("1", "name");
@@ -582,8 +587,13 @@ public class TestDevice extends JajukTestCase {
    */
   public void testRefreshCommand() {
 
-    // We check that a device mounted but no more available cannot be refreshed
-    Device device = new Device("1", "name");
+    Device device = JUnitHelpers.getDevice();
+    try {
+      device.mount(false);
+    } catch (Exception e) {
+      Log.error(e);
+      fail();
+    }
 
     device.refreshCommand(false, false);
   }
@@ -592,6 +602,7 @@ public class TestDevice extends JajukTestCase {
    * Test method for {@link org.jajuk.base.Device#refreshCommand(boolean)}.
    */
   public void testRefreshCommandNoMoreAvailable() {
+    // We check that a device mounted but no more available cannot be refreshed
     try {
       Device device = new Device("1", "name");
       // Prepare a sample directory with at least a single file
@@ -608,7 +619,7 @@ public class TestDevice extends JajukTestCase {
       try {
         // An error should happen here
         device.refreshCommand(false, false);
-        assertTrue(false);
+        fail();
       } catch (Exception e) {
         Log.error(e);
       }
@@ -704,7 +715,12 @@ public class TestDevice extends JajukTestCase {
 
   public void testSynchronizeCommandSyncDevice() {
     Device device = JUnitHelpers.getDevice();
-
+    try {
+      device.mount(false);
+    } catch (Exception e) {
+      Log.error(e);
+      fail();
+    }
     // set the synchro-device
     Device sync = DeviceManager.getInstance().registerDevice("name2", 0,
         System.getProperty("java.io.tmpdir") + "/device2");
@@ -715,11 +731,28 @@ public class TestDevice extends JajukTestCase {
 
   public void testSynchronizeCommandSyncDeviceBidi() {
     Device device = JUnitHelpers.getDevice();
+    try {
+      if (!device.mount(false)) {
+        fail();
+      }
+    } catch (Exception e) {
+      Log.error(e);
+      fail();
+    }
 
     // set the synchro-device
     Device sync = DeviceManager.getInstance().registerDevice("name2", 0,
-        System.getProperty("java.io.tmpdir") + "/device2");
-    sync.setUrl(System.getProperty("java.io.tmpdir") + "/device2");
+        System.getProperty("java.io.tmpdir") + "/jajuk_tests/device_2");
+    try {
+      new java.io.File(sync.getUrl()).mkdirs();
+      new java.io.File(sync.getUrl() + "/audio1.mp3").createNewFile();
+      if (!sync.mount(false)) {
+        fail();
+      }
+    } catch (Exception e) {
+      Log.error(e);
+      fail();
+    }
     device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, sync.getID());
     device.setProperty(Const.XML_DEVICE_SYNCHRO_MODE, Const.DEVICE_SYNCHRO_MODE_BI);
 
@@ -727,6 +760,7 @@ public class TestDevice extends JajukTestCase {
     sync.setProperty(Const.XML_DEVICE_SYNCHRO_MODE, Const.DEVICE_SYNCHRO_MODE_BI);
 
     device.synchronizeCommand();
+    new java.io.File(sync.getUrl()).delete();
   }
 
   /**

@@ -563,7 +563,7 @@ public class JUnitHelpers {
   }
 
   public static Device getDevice() {
-    return getDevice("name", Device.TYPE_DIRECTORY, System.getProperty("java.io.tmpdir"));
+    return getDevice("name", Device.TYPE_DIRECTORY, System.getProperty("java.io.tmpdir")+"/jajuk_tests/device_1");
   }
 
   public static Directory getDirectory(String name, Directory parent, Device device) {

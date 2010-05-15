@@ -20,6 +20,8 @@
  */
 package org.jajuk;
 
+import java.io.File;
+
 import org.jajuk.base.Collection;
 import org.jajuk.services.startup.StartupCollectionService;
 
@@ -42,6 +44,10 @@ public abstract class JajukTestCase extends TestCase {
     // Clean the collection
     StartupCollectionService.registerItemManagers();
     Collection.clearCollection();
+    // Create the jajuk test device if required
+    new File(JUnitHelpers.getDevice().getUrl()).mkdirs();
+    // Create at least a void file in the device
+    new File(JUnitHelpers.getDevice().getUrl()+"/audio1.mp3").createNewFile();
     super.setUp();
   }
 }
