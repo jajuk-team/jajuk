@@ -112,10 +112,9 @@ public class TestPreparePartyAction extends JajukTestCase {
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
 
-    Device device = JUnitHelpers.getDevice("JajukDevice", Device.TYPE_DIRECTORY, System
-        .getProperty("java.io.tmpdir"));
+    Device device = JUnitHelpers.getDevice();
     device.mount(true);
-
+   
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     Log.debug("Dir: " + dir.getFio());
     dir.getFio().mkdirs();

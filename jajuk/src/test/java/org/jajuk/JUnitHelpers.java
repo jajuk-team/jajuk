@@ -513,7 +513,7 @@ public class JUnitHelpers {
         1, type, 1);
 
     Device device = getDevice("name", Device.TYPE_DIRECTORY, System.getProperty("java.io.tmpdir"));
-    if (mount) {
+    if (mount & !device.isMounted()) {
       try {
         device.mount(true);
       } catch (Exception e) {
