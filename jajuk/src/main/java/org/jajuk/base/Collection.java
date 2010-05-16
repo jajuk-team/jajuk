@@ -410,6 +410,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     FileManager.getInstance().clear();
     DirectoryManager.getInstance().clear();
     PlaylistManager.getInstance().clear();
+    DeviceManager.getInstance().clear();
   }
 
   /**
