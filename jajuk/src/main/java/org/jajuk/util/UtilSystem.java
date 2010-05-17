@@ -1209,10 +1209,18 @@ public final class UtilSystem {
         fw.flush();
         fw.close();
       }
-      // Remove any '&' character from the longname, it makes the batch fails 
+      // Remove any special character from the longname, it makes the batch fails 
       // because it is seen as a commands separator
-      longname = longname.replaceAll("&", "");
-      ProcessBuilder pc = new ProcessBuilder(fileConverter.getAbsolutePath(), longname);
+      String cLongname = longname.replaceAll("&", "");
+      cLongname = cLongname.replaceAll("\"", "");
+      cLongname = cLongname.replaceAll("/", "");
+      cLongname = cLongname.replaceAll("\\", "");
+      cLongname = cLongname.replaceAll("[", "");
+      cLongname = cLongname.replaceAll("]", "");
+      cLongname = cLongname.replaceAll(":", "");
+      cLongname = cLongname.replaceAll(";", "");
+      cLongname = cLongname.replaceAll("=", "");
+      ProcessBuilder pc = new ProcessBuilder(fileConverter.getAbsolutePath(), cLongname);
       Process process = pc.start();
       BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
       shortname = br.readLine();
