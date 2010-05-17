@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.ConstTest;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.services.bookmark.Bookmarks;
@@ -100,7 +101,7 @@ public class TestPlaylist extends JajukTestCase {
     // this is what we read here...
     play.setProperty(Const.XML_DIRECTORY, play.getDirectory().getDevice().getID());
 
-    String str1 = System.getProperty("java.io.tmpdir");
+    String str1 = ConstTest.PATH_DEVICE;
     String str2 = play.getHumanValue(Const.XML_DIRECTORY);
     str1 = StringUtils.stripEnd(str1, java.io.File.separator);
     str2 = StringUtils.stripEnd(str2, java.io.File.separator);
@@ -140,7 +141,7 @@ public class TestPlaylist extends JajukTestCase {
     dir.getFio().delete();
     dir.getFio().mkdirs();
 
-    java.io.File fioPlaylist = new java.io.File(dir.getAbsolutePath() + "/playlist.txt");
+    java.io.File fioPlaylist = new java.io.File(dir.getAbsolutePath() + "/playlist.m3u");
     Playlist play = PlaylistManager.getInstance().registerPlaylistFile(fioPlaylist, dir);
 
     List<org.jajuk.base.File> list = new ArrayList<org.jajuk.base.File>();
@@ -248,7 +249,6 @@ public class TestPlaylist extends JajukTestCase {
     assertEquals(1, QueueModel.getQueueSize());
 
     file = JUnitHelpers.getFile("file1", false);
-    file.getDirectory().getDevice().mount(true);
     play.addFile(1, file);
 
     // wait a bit to let the "push" be done in a separate thread
@@ -262,7 +262,6 @@ public class TestPlaylist extends JajukTestCase {
     QueueModel.getItem(0).setRepeat(true);
 
     file = JUnitHelpers.getFile("file1", false);
-    file.getDirectory().getDevice().mount(true);
     play.addFile(1, file);
 
     // wait a bit to let the "push" be done in a separate thread
@@ -364,7 +363,7 @@ public class TestPlaylist extends JajukTestCase {
   public final void testClearEmptyList() throws Exception {
     Device device = JUnitHelpers.getDevice();
     device.mount(true);
-    Playlist play = new Playlist(Playlist.Type.NORMAL, "1", "playlist.txt", JUnitHelpers
+    Playlist play = new Playlist(Playlist.Type.NORMAL, "1", "playlist.m3u", JUnitHelpers
         .getDirectory());
     play.clear();
   }
@@ -527,14 +526,12 @@ public class TestPlaylist extends JajukTestCase {
   */
   public final void testGetAbsolutePath() throws Exception {
     Playlist play = createPlaylist();
-    assertEquals(System.getProperty("java.io.tmpdir") + java.io.File.separator + "dir"
-        + java.io.File.separator + "testdir" + java.io.File.separator + "playlist.txt", play
-        .getAbsolutePath());
+    assertEquals(ConstTest.PATH_DEVICE + java.io.File.separator + "dir" + java.io.File.separator
+        + "testdir" + java.io.File.separator + "playlist.m3u", play.getAbsolutePath());
 
     // call it a second time to use the cached version
-    assertEquals(System.getProperty("java.io.tmpdir") + java.io.File.separator + "dir"
-        + java.io.File.separator + "testdir" + java.io.File.separator + "playlist.txt", play
-        .getAbsolutePath());
+    assertEquals(ConstTest.PATH_DEVICE + java.io.File.separator + "dir" + java.io.File.separator
+        + "testdir" + java.io.File.separator + "playlist.m3u", play.getAbsolutePath());
   }
 
   public final void testGetAbsolutePathNotNormal() {
@@ -552,7 +549,7 @@ public class TestPlaylist extends JajukTestCase {
     Playlist play = new Playlist("1", "name", null);
     assertNull(play.getDirectory());
 
-    play = new Playlist(Playlist.Type.NORMAL, "1", "playlist.txt", JUnitHelpers.getDirectory());
+    play = new Playlist(Playlist.Type.NORMAL, "1", "playlist.m3u", JUnitHelpers.getDirectory());
     assertNotNull(play.getDirectory());
   }
 
@@ -583,20 +580,20 @@ public class TestPlaylist extends JajukTestCase {
     Directory dir = JUnitHelpers.getDirectory();
     device.mount(true);
 
-    Playlist play = new SmartPlaylist(Playlist.Type.NOVELTIES, "1", "playlist.txt", dir);
+    Playlist play = new SmartPlaylist(Playlist.Type.NOVELTIES, "1", "playlist.m3u", dir);
 
     assertNotNull(play.getFiles());
   }
 
   public final void testGetFilesBestOf() throws Exception {
-    Playlist play = new SmartPlaylist(Playlist.Type.BESTOF, "1", "playlist.txt", JUnitHelpers
+    Playlist play = new SmartPlaylist(Playlist.Type.BESTOF, "1", "playlist.m3u", JUnitHelpers
         .getDirectory());
 
     assertNotNull(play.getFiles());
   }
 
   public final void testGetFilesNew() throws Exception {
-    Playlist play = new SmartPlaylist(Playlist.Type.NEW, "1", "playlist.txt", JUnitHelpers
+    Playlist play = new SmartPlaylist(Playlist.Type.NEW, "1", "playlist.m3u", JUnitHelpers
         .getDirectory());
 
     assertNotNull(play.getFiles());
@@ -645,20 +642,11 @@ public class TestPlaylist extends JajukTestCase {
       Playlist play = createPlaylist();
 
       play.addFile(JUnitHelpers.getFile("file1", false));
-
-      // need to have URL set for device
-      play.getFiles().get(0).getDirectory().getDevice()
-          .setUrl(System.getProperty("java.io.tmpdir"));
-      play.getFiles().get(1).getDirectory().getDevice()
-          .setUrl(System.getProperty("java.io.tmpdir"));
-      play.getFiles().get(2).getDirectory().getDevice()
-          .setUrl(System.getProperty("java.io.tmpdir"));
-
       new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator + "testdir")
           .mkdir();
 
       play.setFIO(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
-          + "testdir" + java.io.File.separator + "playlist.txt"));
+          + "testdir" + java.io.File.separator + "playlist.m3u"));
 
       play.commit();
     }
@@ -742,16 +730,10 @@ public class TestPlaylist extends JajukTestCase {
 
     play.addFile(JUnitHelpers.getFile("file1", false));
 
-    // need to have URLs set for Devices here
-    play.getFiles().get(0).getDirectory().getDevice().setUrl(System.getProperty("java.io.tmpdir"));
-    play.getFiles().get(1).getDirectory().getDevice().setUrl(System.getProperty("java.io.tmpdir"));
-    play.getFiles().get(2).getDirectory().getDevice().setUrl(System.getProperty("java.io.tmpdir"));
-
     File file = JUnitHelpers.getFile("file1", false);
-    file.getDirectory().getDevice().setUrl(System.getProperty("java.io.tmpdir"));
-
+  
     play.setFIO(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
-        + "testdir" + java.io.File.separator + "playlist.txt"));
+        + "testdir" + java.io.File.separator + "playlist.m3u"));
 
     play.replaceFile(play.getFiles().get(0), file);
   }
@@ -806,10 +788,6 @@ public class TestPlaylist extends JajukTestCase {
   public final void testSaveAs() throws Exception {
     Playlist play = createPlaylist();
 
-    // need to have URLs set for Devices here
-    play.getFiles().get(0).getDirectory().getDevice().setUrl(System.getProperty("java.io.tmpdir"));
-    play.getFiles().get(1).getDirectory().getDevice().setUrl(System.getProperty("java.io.tmpdir"));
-
     try {
       play.saveAs();
     } catch (InvocationTargetException e) {
@@ -822,7 +800,7 @@ public class TestPlaylist extends JajukTestCase {
   public final void testSaveAsBestOf() throws Exception {
     Directory dir = JUnitHelpers.getDirectory();
 
-    Playlist play = new Playlist(Playlist.Type.BESTOF, "1", "playlist.txt", dir);
+    Playlist play = new Playlist(Playlist.Type.BESTOF, "1", "playlist.m3u", dir);
 
     List<File> list = new ArrayList<File>();
     list.add(JUnitHelpers.getFile("file1", false));
@@ -854,7 +832,7 @@ public class TestPlaylist extends JajukTestCase {
   public final void testSaveAsNovelities() throws Exception {
     Directory dir = JUnitHelpers.getDirectory();
 
-    Playlist play = new Playlist(Playlist.Type.NOVELTIES, "1", "playlist.txt", dir);
+    Playlist play = new Playlist(Playlist.Type.NOVELTIES, "1", "playlist.m3u", dir);
 
     List<File> list = new ArrayList<File>();
     list.add(JUnitHelpers.getFile("file1", false));

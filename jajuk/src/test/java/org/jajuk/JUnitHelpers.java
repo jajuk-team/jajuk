@@ -55,6 +55,7 @@ import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Const;
+import org.jajuk.util.log.Log;
 
 /**
  * Small helper class with functionality that is used in multiple unit tests
@@ -512,7 +513,7 @@ public class JUnitHelpers {
     Track track = TrackManager.getInstance().registerTrack(name, album, genre, artist, 120, year,
         1, type, 1);
 
-    Device device = getDevice("name", Device.TYPE_DIRECTORY, System.getProperty("java.io.tmpdir"));
+    Device device = getDevice();
     if (mount & !device.isMounted()) {
       try {
         device.mount(true);
@@ -563,7 +564,16 @@ public class JUnitHelpers {
   }
 
   public static Device getDevice() {
-    return getDevice("name", Device.TYPE_DIRECTORY, System.getProperty("java.io.tmpdir")+"/jajuk_tests/device_1");
+    Device device = getDevice("name", Device.TYPE_DIRECTORY, ConstTest.PATH_DEVICE);
+    // Create the jajuk test device if required
+    new File(device.getUrl()).mkdirs();
+    // Create at least a void file in the device
+    try {
+      new File(device.getUrl() + "/audio1.mp3").createNewFile();
+    } catch (IOException e) {
+      Log.error(e);
+    }
+    return device;
   }
 
   public static Directory getDirectory(String name, Directory parent, Device device) {

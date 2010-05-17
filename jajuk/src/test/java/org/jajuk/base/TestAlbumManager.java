@@ -524,7 +524,9 @@ public class TestAlbumManager extends JajukTestCase {
 
     Device device = JUnitHelpers.getDevice();
     Directory dir = JUnitHelpers.getDirectory();
-    device.mount(true);
+    if (!device.isMounted()) {
+      device.mount(true);
+    }
     File file = FileManager.getInstance().registerFile("file_" + i + ".tst", dir, track, 200, 100);
     file.getFIO().createNewFile();
     track.addFile(file);

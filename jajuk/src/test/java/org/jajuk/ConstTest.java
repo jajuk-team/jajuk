@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -20,30 +20,11 @@
  */
 package org.jajuk;
 
-import java.io.File;
-
-import org.jajuk.base.Collection;
-import org.jajuk.services.startup.StartupCollectionService;
-
-import junit.framework.TestCase;
-
 /**
- * 
+ * Contains common constants shared by jajuk unit tests 
  */
-public abstract class JajukTestCase extends TestCase {
+public interface ConstTest {
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
-   */
-  @Override
-  protected void setUp() throws Exception {
-    // let's clean up before we begin any test
-    JUnitHelpers.waitForAllWorkToFinishAndCleanup();
-    // Clean the collection
-    StartupCollectionService.registerItemManagers();
-    Collection.clearCollection();
-    super.setUp();
-  }
+  String PATH_DEVICE = System.getProperty("java.io.tmpdir") + "/jajuk_tests/device_1";
+
 }

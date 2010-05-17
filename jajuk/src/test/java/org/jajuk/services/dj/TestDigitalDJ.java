@@ -213,7 +213,10 @@ public class TestDigitalDJ extends JajukTestCase {
         1, type, 1);
 
     Device device = JUnitHelpers.getDevice();
-    device.mount(true);
+    if (!device.isMounted()) {
+      device.mount(true);
+    }
+
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     return FileManager.getInstance().registerFile("test.tst", dir, track, 120, 70);
   }
