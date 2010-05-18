@@ -186,7 +186,7 @@ public class PlaylistTableModel extends JajukTableModel {
     idList.add(Const.XML_DIRECTORY);
 
     // File name
-    vColNames.add(Messages.getHumanPropertyName(Const.XML_FILE));
+    vColNames.add(Messages.getString("Property_filename"));
     idList.add(Const.XML_FILE);
 
     // Hits
