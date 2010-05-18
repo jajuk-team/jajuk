@@ -73,6 +73,9 @@ public final class UtilSystem {
   /** The Constant LOCAL_IP.  DOCUMENT_ME */
   private static final String LOCAL_IP = "127.0.0.1";
 
+  /** Size of the short names converter in bytes */
+  private static final int CONVERTER_FILE_SIZE = 74;
+
   /**
    * MPlayer status possible values *.
    */
@@ -1199,28 +1202,22 @@ public final class UtilSystem {
     // Find the shortname .bat converter, create it if it doesn't yet exist
     String shortname = null;
     try {
+
       File fileConverter = SessionService.getConfFileByPath(Const.FILE_FILENAME_CONVERTER);
-      if (!fileConverter.exists()) {
+      if (!fileConverter.exists()
+      // Test that the converter version has not been updated
+          // IMPORTANT ! Don't forget to update the CONVERTER_FILE_SIZE constant if you change the
+          // script !
+          || (fileConverter.exists() && fileConverter.length() != CONVERTER_FILE_SIZE)) {
         FileWriter fw = new FileWriter(fileConverter);
         fw.write("@echo off\n");
         fw.write("set name=%*\n");
-        fw.write("for %%X in (%name%) do set name=%%~sX\n");
+        fw.write("for %%X in (%name%) do set name=\"%%~sX\"\n");
         fw.write("echo %name%\n");
         fw.flush();
         fw.close();
       }
-      // Remove any special character from the longname, it makes the batch fails 
-      // because it is seen as a commands separator
-      String cLongname = longname.replaceAll("&", "");
-      cLongname = cLongname.replaceAll("\"", "");
-      cLongname = cLongname.replaceAll("/", "");
-      cLongname = cLongname.replaceAll("\\", "");
-      cLongname = cLongname.replaceAll("[", "");
-      cLongname = cLongname.replaceAll("]", "");
-      cLongname = cLongname.replaceAll(":", "");
-      cLongname = cLongname.replaceAll(";", "");
-      cLongname = cLongname.replaceAll("=", "");
-      ProcessBuilder pc = new ProcessBuilder(fileConverter.getAbsolutePath(), cLongname);
+      ProcessBuilder pc = new ProcessBuilder(fileConverter.getAbsolutePath(), longname);
       Process process = pc.start();
       BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
       shortname = br.readLine();
