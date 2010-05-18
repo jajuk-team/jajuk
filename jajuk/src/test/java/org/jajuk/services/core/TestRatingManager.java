@@ -72,6 +72,8 @@ public class TestRatingManager extends JajukTestCase {
    * {@link org.jajuk.services.core.RatingManager#getMaxPlaycount()}.
    */
   public void testGetAndSetMaxPlaycount() {
+    // Reset the rating manager
+    RatingManager.getInstance().update(new JajukEvent(JajukEvents.RATE_RESET, null));
     assertEquals(0, RatingManager.getMaxPlaycount());
     RatingManager.setMaxPlaycount(10);
     assertEquals(10, RatingManager.getMaxPlaycount());
@@ -158,21 +160,12 @@ public class TestRatingManager extends JajukTestCase {
     Type type = JUnitHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack(Integer.valueOf(i).toString(), "name",
         album, genre, artist, 120, year, 1, type, 1);
-
     album.getTracksCache().add(track);
-
     Device device = JUnitHelpers.getDevice();
-    device.setUrl(System.getProperty("java.io.tmpdir"));
-    device.mount(true);
-
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
-
     File file = FileManager.getInstance().registerFile("test.tst", dir, track, 120, 70);
-
     track.addFile(file);
-
     TypeManager.getInstance().registerType("test", "tst", cl, tl);
-
     return track;
   }
 

@@ -398,6 +398,9 @@ public class TestAlbum extends JajukTestCase {
 
   private File getFile(int i, Track track) throws Exception {
     Device device = JUnitHelpers.getDevice();
+    if (!device.isMounted()) {
+      device.mount(true);
+    }
     Directory dir = new Directory(Integer.valueOf(i).toString(), "", null, device);
 
     return new org.jajuk.base.File(Integer.valueOf(i).toString(), "test.tst", dir, track, 120, 70);
@@ -523,7 +526,6 @@ public class TestAlbum extends JajukTestCase {
     album.setAvailableThumb(100, false);
   }
 
-
   public final void testGetArtistOrAlbumArtist_Unknown() {
     StartupCollectionService.registerItemManagers();
 
@@ -542,12 +544,14 @@ public class TestAlbum extends JajukTestCase {
     // add a genre and year and check again
     Track track = getTrack(album);
     track.setAlbumArtist(new AlbumArtist("4", "albumartist"));
-    
+
     album.getTracksCache().add(track);
-    album.getTracksCache().add(new Track("1", "trackname", album, getGenre(), new Artist("2", "artistname2"), 123, getYear(), 1, new Type(
-        "3", "typename", "ext", null, null), 1));
-    
-    // here we should get the album artist from the Track because we have two tracks with different artists
+    album.getTracksCache().add(
+        new Track("1", "trackname", album, getGenre(), new Artist("2", "artistname2"), 123,
+            getYear(), 1, new Type("3", "typename", "ext", null, null), 1));
+
+    // here we should get the album artist from the Track because we have two tracks with different
+    // artists
     assertEquals("albumartist", album.getArtistOrALbumArtist());
   }
 
@@ -589,11 +593,12 @@ public class TestAlbum extends JajukTestCase {
     // add a genre and year and check again
     Track track = getTrack(album);
     track.setAlbumArtist(new AlbumArtist("4", Const.UNKNOWN_ARTIST));
-    
+
     album.getTracksCache().add(track);
-    album.getTracksCache().add(new Track("1", "trackname", album, getGenre(), new Artist("2", "artistname2"), 123, getYear(), 1, new Type(
-        "3", "typename", "ext", null, null), 1));
-    
+    album.getTracksCache().add(
+        new Track("1", "trackname", album, getGenre(), new Artist("2", "artistname2"), 123,
+            getYear(), 1, new Type("3", "typename", "ext", null, null), 1));
+
     // here we should get the artist from the first Track as the album artist is "unknown"
     assertEquals("artistname", album.getArtistOrALbumArtist());
   }

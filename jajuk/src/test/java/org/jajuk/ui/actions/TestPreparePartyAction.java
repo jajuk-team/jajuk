@@ -113,8 +113,9 @@ public class TestPreparePartyAction extends JajukTestCase {
         1, type, 1);
 
     Device device = JUnitHelpers.getDevice();
-    device.mount(true);
-   
+    if (!device.isMounted()) {
+      device.mount(true);
+    }
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     Log.debug("Dir: " + dir.getFio());
     dir.getFio().mkdirs();
