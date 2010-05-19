@@ -96,8 +96,7 @@ public class StartupControlsService {
 
     // checking preference file
     File file = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION);
-    File fTempFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION_TEMP);
-    if (!file.exists() && !fTempFile.exists()) {
+    if (!file.exists()) {
       // if config file doesn't exit, create
       // it with default values
       Log.warn("Create missing preference file");

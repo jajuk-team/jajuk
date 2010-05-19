@@ -459,20 +459,9 @@ public final class Conf implements Const {
 
   /**
    * Load properties from in file.
-   * If the property file is not available (@see commit()),
-   * we try to read the temporary file.
    */
   public static void load() {
-    File fTempFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION_TEMP);
     try {
-      if (fTempFile.exists()) {
-        Log.debug("Restore preferences file");
-        // Check if it is valid
-        checkTempPreferenceFile();
-        // try to override the preference file
-        overridePreferenceFile();
-      }
-      // Now we work against the regular preference file
       InputStream str = new FileInputStream(SessionService
           .getConfFileByPath(Const.FILE_CONFIGURATION));
       try {
