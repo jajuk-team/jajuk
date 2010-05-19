@@ -25,6 +25,7 @@ import java.io.IOException;
 
 import javax.swing.ImageIcon;
 
+import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -36,9 +37,6 @@ import org.jajuk.util.log.Log;
  * Startup facilities for configuration controls.
  */
 public class StartupControlsService {
-
-  /** The Constant CONFIG_CHECKS.  DOCUMENT_ME */
-  private static final String[] CONFIG_CHECKS = { Const.FILE_CONFIGURATION, Const.FILE_HISTORY };
 
   /** The Constant DIR_CHECKS.  DOCUMENT_ME */
   private static final String[] DIR_CHECKS = {
@@ -96,23 +94,29 @@ public class StartupControlsService {
       }
     }
 
-    // checking required internal configuration files
-    for (final String check : CONFIG_CHECKS) {
-      final File file = SessionService.getConfFileByPath(check);
+    // checking preference file
+    File file = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION);
+    File fTempFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION_TEMP);
+    if (!file.exists() && !fTempFile.exists()) {
+      // if config file doesn't exit, create
+      // it with default values
+      Log.warn("Create missing preference file");
+      org.jajuk.util.Conf.commit();
+    }
 
-      if (!file.exists()) {
-        // if config file doesn't exit, create
-        // it with default values
-        Log.warn("Create missing preference file");
-        org.jajuk.util.Conf.commit();
-      }
+    // checking required history file
+    file = SessionService.getConfFileByPath(Const.FILE_HISTORY);
+    if (!file.exists()) {
+      // if config file doesn't exit, create
+      // it with default values
+      Log.warn("Create missing history file");
+      History.commit();
     }
 
     // checking required internal directories
     for (final String check : DIR_CHECKS) {
-      final File file = SessionService.getConfFileByPath(check);
-
-      if (!file.exists() && !file.mkdir()) {
+      final File dir = SessionService.getConfFileByPath(check);
+      if (!dir.exists() && !dir.mkdir()) {
         Log.warn("Could not create missing required directory [" + check + "]");
       }
     }
