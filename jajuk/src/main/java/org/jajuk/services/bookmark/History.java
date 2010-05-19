@@ -36,7 +36,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.SwingUtilities;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -66,7 +65,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * .sun.com/javase/6/docs/api/javax/swing/package-summary.html#threading
  */
 public final class History extends DefaultHandler implements HighPriorityObserver {
-  
+
   /** Self instance. */
   private static History history;
 
@@ -110,7 +109,9 @@ public final class History extends DefaultHandler implements HighPriorityObserve
     formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"), Locale.getDefault());
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
@@ -284,25 +285,9 @@ public final class History extends DefaultHandler implements HighPriorityObserve
       SAXParser saxParser = spf.newSAXParser();
       File frt = SessionService.getConfFileByPath(Const.FILE_HISTORY);
       saxParser.parse(frt.toURI().toURL().toString(), getInstance());
-      getInstance().clear(Integer.parseInt(Conf.getString(Const.CONF_HISTORY))); // delete
-      // old
-      // history items
-    } catch (IOException e) {
-      Log.error(new JajukException(119));
-      try {
-        commit(); // this history looks corrupted, write a void one
-      } catch (Exception e2) {
-        Log.error(e2);
-      }
-    } catch (SAXException e) {
-      Log.error(e);
-      Log.error(new JajukException(119));
-      try {
-        commit(); // this history looks corrupted, write a void one
-      } catch (Exception e2) {
-        Log.error(e2);
-      }
-    } catch (ParserConfigurationException e) {
+      // delete old history items
+      getInstance().clear(Integer.parseInt(Conf.getString(Const.CONF_HISTORY)));
+    } catch (Exception e) {
       Log.error(new JajukException(119));
       try {
         commit(); // this history looks corrupted, write a void one
@@ -414,8 +399,8 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   public void startElement(String sUri, String sName, String sQName, Attributes attributes)
       throws SAXException {
     if ("history".equals(sQName)) {
-      setStartDate(UtilString.fastLongParser(attributes.getValue(attributes
-          .getIndex("begin_date"))));
+      setStartDate(UtilString
+          .fastLongParser(attributes.getValue(attributes.getIndex("begin_date"))));
     } else if ("play".equals(sQName)) {
       String sID = attributes.getValue(attributes.getIndex("file"));
       // check id has not been changed
