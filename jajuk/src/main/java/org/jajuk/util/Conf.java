@@ -22,6 +22,7 @@ package org.jajuk.util;
 
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -370,23 +371,77 @@ public final class Conf implements Const {
    *          DOCUMENT_ME
    */
   public static void setProperty(String sName, String sValue) {
-    properties.setProperty(sName, sValue);
+    // Use unicode representation for non-ascii chars
+    StringBuffer finalValue = new StringBuffer(sValue.length());
+    for (char c : sValue.toCharArray()) {
+      if (((int) c) > 127) {
+        char[] tabChar = new char[] { c };
+        finalValue.append(UtilString.encodeToUnicode(new String(tabChar)));
+      } else {
+        finalValue.append(c);
+      }
+    }
+    properties.setProperty(sName, finalValue.toString());
   }
 
   /**
-   * Commit properties in a file.
+   * Commit properties into a file. Some preferences corruption 
+   * have been reported (see https://trac.jajuk.info/ticket/1611)
+   * so we added more robust commit features : we commit the properties
+   * to a temporary file, try to parse it back (to detect invalid characters like \n) and 
+   * if the parsing is ok, we override the old preference file with the 
+   * temporary one.  
    * 
    * @throws IOException
    *           Signals that an I/O exception has occurred.
    */
   public static void commit() throws IOException {
-    OutputStream str = new FileOutputStream(SessionService
-        .getConfFileByPath(Const.FILE_CONFIGURATION));
+    File fTempFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION_TEMP);
+    OutputStream str = new FileOutputStream(fTempFile);
+    // Write the temporary file
     try {
       properties.store(str, "User configuration");
     } finally {
       str.flush();
       str.close();
+    }
+    // Check if it is valid
+    checkTempPreferenceFile();
+    // If still here, we override the old preference file
+    // by the temporary one.
+    // Note that the system may crash then. It is why'll try
+    // to load the temp file at next startup if we can't find
+    // the regular file.
+    overridePreferenceFile();
+  }
+
+  /**
+   * Check if the temporary preference file is valid
+   * @throws IOException if the file is invalid
+   */
+  private static void checkTempPreferenceFile() throws IOException {
+    File fTempFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION_TEMP);
+    // Try to parse it again
+    InputStream in = null;
+    try {
+      in = new FileInputStream(fTempFile);
+      new Properties().load(in);
+    } finally {
+      in.close();
+    }
+  }
+
+  /**
+   * Override 
+   * @throws IOException
+   */
+  private static void overridePreferenceFile() throws IOException {
+    File finalFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION);
+    File fTempFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION_TEMP);
+    try {
+      UtilSystem.move(fTempFile, finalFile);
+    } catch (Exception e) {
+      throw new IOException(e);
     }
   }
 
@@ -404,9 +459,20 @@ public final class Conf implements Const {
 
   /**
    * Load properties from in file.
+   * If the property file is not available (@see commit()),
+   * we try to read the temporary file.
    */
   public static void load() {
+    File fTempFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION_TEMP);
     try {
+      if (fTempFile.exists()) {
+        Log.debug("Restore preferences file");
+        // Check if it is valid
+        checkTempPreferenceFile();
+        // try to override the preference file
+        overridePreferenceFile();
+      }
+      // Now we work against the regular preference file
       InputStream str = new FileInputStream(SessionService
           .getConfFileByPath(Const.FILE_CONFIGURATION));
       try {

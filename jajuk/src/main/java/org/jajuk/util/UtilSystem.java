@@ -259,6 +259,26 @@ public final class UtilSystem {
   }
 
   /**
+   * Move a file to another file.
+   * 
+   * Note that it may be better to use this method than java.io.File.renameTo() method that 
+   * doesn't seem to work always under windows (in special directories)and because this method 
+   * always return an exception in case of problem.
+   *
+   * @param file : file to move
+   * @param fNew : destination file
+   * 
+   * @throws JajukException the jajuk exception
+   * @throws IOException Signals that an I/O exception has occurred.
+   */
+  public static void move(final File file, final File fNew) throws JajukException, IOException {
+    copy(file, fNew);
+    if (!file.delete()) {
+      throw new IOException("Cannot delete file: " + file.getAbsolutePath());
+    }
+  }
+
+  /**
    * Copy a file.
    * 
    * @param file : source file

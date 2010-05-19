@@ -198,8 +198,11 @@ public interface Const {
   /** DOCUMENT_ME. */
   String FILE_REPORTING_CACHE_FILE = "cache/report";
 
-  /** DOCUMENT_ME. */
+  /** Name of the preferences property file */
   String FILE_CONFIGURATION = "conf.properties";
+
+  /** Name of the temporary preferences property file  */
+  String FILE_CONFIGURATION_TEMP = "temp_conf.properties";
 
   /** DOCUMENT_ME. */
   String FILE_HISTORY = "history.xml";
