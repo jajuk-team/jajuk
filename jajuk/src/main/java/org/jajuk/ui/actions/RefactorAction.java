@@ -21,6 +21,7 @@
 
 package org.jajuk.ui.actions;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -144,8 +145,13 @@ public class RefactorAction {
       try {
         final java.io.File fCover = tCurrent.getAlbum().findCoverFile();
         if (fCover != null) {
-          fCover
-              .renameTo(new java.io.File(fNew.getParent() + RefactorAction.sFS + fCover.getName()));
+          java.io.File destFile = new java.io.File(fNew.getParent() + RefactorAction.sFS
+              + fCover.getName());
+          if (!fCover.renameTo(destFile)) {
+            throw new IOException("Cannot move item: " + fCover.getAbsolutePath() + " to "
+                + destFile.getAbsolutePath());
+          }
+
         }
       } catch (Exception e) {
         // This exception can be thrown by instance if default cover is not

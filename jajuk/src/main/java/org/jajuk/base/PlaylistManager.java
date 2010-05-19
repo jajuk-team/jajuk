@@ -21,6 +21,7 @@
 
 package org.jajuk.base;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -223,7 +224,10 @@ public final class PlaylistManager extends ItemManager implements Observer {
     }
     // try to rename file on disk
     try {
-      plfOld.getFIO().renameTo(ioNew);
+      boolean result = plfOld.getFIO().renameTo(ioNew);
+      if (!result){
+        throw new IOException();
+      }
     } catch (Exception e) {
       throw new JajukException(134, e);
     }
