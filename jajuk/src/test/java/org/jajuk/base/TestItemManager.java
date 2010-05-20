@@ -497,6 +497,79 @@ public class TestItemManager extends JajukTestCase {
     assertEquals("10", it.next().getID());
   }
 
+  public final void testSorting() {
+    // first run without "ordered state"
+    ItemManager man = new LocalIM();
+    runSortingTest(man, true);
+    
+    // now use one with ordered state
+    man = new LocalIM();
+    man.switchToOrderState();
+    runSortingTest(man, false);
+  }
+
+  /**
+   * 
+   */
+  private void runSortingTest(ItemManager man, boolean notYetOrderedState) {
+    Item item = new TestItem("9", "name9");
+    man.registerItem(item);
+    item = new TestItem("10", "name10");
+    man.registerItem(item);
+    item = new TestItem("8", "name8");
+    man.registerItem(item);
+    item = new TestItem("11", "name11");
+    man.registerItem(item);
+    // will be added again because there is no exists-checking done
+    item = new TestItem("8", "name8");
+    man.registerItem(item);
+    item = new TestItem("7", "name7");
+    man.registerItem(item);
+    item = new TestItem("12", "name12");
+    man.registerItem(item);
+
+    // only ordered as long as we have not switched to ordered state
+    if(notYetOrderedState) {
+      // now the order is in there, first 9, then 10
+      Iterator<? extends Item> it = man.getItemsIterator();
+      assertEquals("9", it.next().getID());
+      assertEquals("10", it.next().getID());
+      assertEquals("8", it.next().getID());
+      assertEquals("11", it.next().getID());
+      assertEquals("8", it.next().getID());
+      assertEquals("7", it.next().getID());
+      assertEquals("12", it.next().getID());
+    }
+
+    // in ordered state we do not add items multiple times
+    if(notYetOrderedState) {
+      assertEquals(7, man.getElementCount());
+    } else {
+      assertEquals(6, man.getElementCount());
+    }
+    man.forceSorting();
+
+    // still the same size
+    // in ordered state we do not add items multiple times
+    if(notYetOrderedState) {
+      assertEquals(7, man.getElementCount());
+    } else {
+      assertEquals(6, man.getElementCount());
+    }
+
+    if(notYetOrderedState) {
+      // the iterator should still return 9 before 10
+      Iterator<? extends Item> it = man.getItemsIterator();
+      assertEquals("9", it.next().getID());
+      assertEquals("10", it.next().getID());
+      assertEquals("8", it.next().getID());
+      assertEquals("11", it.next().getID());
+      assertEquals("8", it.next().getID());
+      assertEquals("7", it.next().getID());
+      assertEquals("12", it.next().getID());
+    }
+  }
+
   private static class LocalIM extends ItemManager {
     @Override
     public String getLabel() {
@@ -512,7 +585,11 @@ public class TestItemManager extends JajukTestCase {
     }
   }
 
-  private static class TestItem extends Item {
+  private static class TestItem extends Item implements Comparable<Item> {
+    @Override
+    public int compareTo(Item o) {
+      return getID().compareTo(o.getID());
+    }
 
     public TestItem(String id, String name) {
       super(id, name);

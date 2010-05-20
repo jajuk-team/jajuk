@@ -20,11 +20,19 @@
  */
 package org.jajuk;
 
+import java.io.File;
+
 /**
  * Contains common constants shared by jajuk unit tests 
  */
 public interface ConstTest {
 
-  String PATH_DEVICE = System.getProperty("java.io.tmpdir") + "/jajuk_tests/device_1";
+  // sometimes temporary path has trailing separator, we try to handle this here
+  String PATH_DEVICE = (
+      System.getProperty("java.io.tmpdir").endsWith(File.separator) ? 
+          System.getProperty("java.io.tmpdir") + "jajuk_tests" + File.separator + "device_1" :
+            System.getProperty("java.io.tmpdir") + File.separator + "jajuk_tests" + File.separator + "device_1"
+            );
+      
 
 }

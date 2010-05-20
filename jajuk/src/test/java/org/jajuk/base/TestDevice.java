@@ -696,11 +696,20 @@ public class TestDevice extends JajukTestCase {
   public void testSynchronizeConfSet() {
     Device device = JUnitHelpers.getDevice();
     Device dSrc = JUnitHelpers.getDevice("src", 0, "/tmp");
+    assertNotNull(dSrc);
+    assertNotNull(dSrc.getID());
+    assertNotNull(DeviceManager.getInstance().getDeviceByID(dSrc.getID()));
 
     // set the synchro-device
     device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, dSrc.getID());
+    assertNotNull(DeviceManager.getInstance().getDeviceByID(dSrc.getID()));
+    assertNotNull(DeviceManager.getInstance().getDeviceByID(device.getID()));
     device.synchronize(false);
+    assertNotNull(DeviceManager.getInstance().getDeviceByID(dSrc.getID()));
+    assertNotNull(DeviceManager.getInstance().getDeviceByID(device.getID()));
     device.synchronize(true);
+    assertNotNull(DeviceManager.getInstance().getDeviceByID(dSrc.getID()));
+    assertNotNull(DeviceManager.getInstance().getDeviceByID(device.getID()));
   }
 
   /**

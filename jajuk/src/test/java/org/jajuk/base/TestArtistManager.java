@@ -21,6 +21,7 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -317,6 +318,36 @@ public class TestArtistManager extends JajukTestCase {
     assertEquals(artist.getID(), artist2.getID());
   }
 
+  public final void testSorting() {
+    // make sure we have "ordered state"
+    ArtistManager.getInstance().switchToOrderState();
+    
+    List<String> ids = new ArrayList<String>();
+    ids.add(ArtistManager.getInstance().registerArtist("anothernewartist").getID());
+    ids.add(ArtistManager.getInstance().registerArtist("yet another artist").getID());
+    ids.add(ArtistManager.getInstance().registerArtist("one more artist").getID());
+    ids.add(ArtistManager.getInstance().registerArtist("number 10").getID());
+    ids.add(ArtistManager.getInstance().registerArtist("number 11").getID());
+
+    // now they are sorted by name
+    Iterator<? extends Item> it = ArtistManager.getInstance().getItemsIterator();
+    assertEquals("anothernewartist", it.next().getName());
+    assertEquals("number 10", it.next().getName());
+    assertEquals("number 11", it.next().getName());
+    assertEquals("one more artist", it.next().getName());
+    assertEquals("yet another artist", it.next().getName());
+    assertFalse(it.hasNext());
+
+    // make sure we can fetch all of these by ID
+    for(String id : ids) {
+      assertNotNull("Did not find ID: " + id, ArtistManager.getInstance().getArtistByID(id));
+    }
+
+    assertNull(ArtistManager.getInstance().getArtistByID("notexisting"));
+    assertNull(ArtistManager.getInstance().getArtistByID("number 12"));
+    assertNull(ArtistManager.getInstance().getArtistByID("number 09"));
+  }
+  
   public static class MyTagImpl implements ITagImpl {
 
     @Override
