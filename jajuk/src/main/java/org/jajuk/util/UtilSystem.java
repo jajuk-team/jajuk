@@ -839,6 +839,15 @@ public final class UtilSystem {
   }
 
   /**
+  * Checks if is under OSX (Intel or PowerPC)
+  * 
+  * @return whether we are under OS X 
+  */
+  public static boolean isUnderOSX() {
+    return isUnderOSXintel() || isUnderOSXpower();
+  }
+
+  /**
    * Checks if is under os xpower.
    * 
    * @return whether we are under OS X Power
