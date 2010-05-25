@@ -78,9 +78,13 @@ public final class Main {
             + " You use a JVM " + JVM.current());
         System.exit(2); // error code 2 : wrong JVM
       }
+      
       // set flags from command line options
       SessionService.handleCommandline(args);
 
+      // Set System properties
+      setSystemProperties();
+     
       // set flags from system properties
       SessionService.handleSystemProperties();
 
@@ -258,6 +262,19 @@ public final class Main {
     SessionService.setTestMode(bTest);
     SessionService.setWorkspace(workspace);
     SessionService.setInThumbMaker(true);
+  }
+
+  /*
+   * Initialize some useful System properties
+   * For some reasons (at least with Apple JVM), this method must be in the Main class.
+   * Should be called ASAP in the startup process
+   */
+  public static void setSystemProperties() {
+    if (UtilSystem.isUnderOSX()){
+      String title = "Jajuk"+ (SessionService.isTestMode() ? " (test)":"");
+      System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
+      System.setProperty("apple.laf.useScreenMenuBar", "true");
+    }
   }
 
 }
