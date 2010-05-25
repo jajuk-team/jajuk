@@ -173,14 +173,6 @@ public class StartupGUIService {
           // Start up action manager
           ActionManager.getInstance();
 
-          // Startup EDT hanging monitor in test mode only
-          if (SessionService.isTestMode()) {
-            Log.debug("Starting EDT hanging monitor");
-            // Disable the Event Dispatch Thread Monitor, it is incompatible
-            // with Substance for some reasons...
-            // EventDispatchThreadHangMonitor.initMonitoring();
-          }
-
           // Display progress
           sc.setProgress(80, Messages.getString("SplashScreen.3"));
 
