@@ -124,13 +124,6 @@ public final class UtilGUI {
   /** Alternate color rows highlighter used in every table. */
   private static Highlighter alternateColorHighlighter;
 
-  // OSX widgets configuration storage
-  private static Object osxMenuUI;
-  private static Object osxMenuBarUI;
-  private static Object osxMenuItemUI;
-  private static Object osxCheckBoxMenuItemUI;
-  private static Object osxRadioButtonMenuItemUI;
-  private static Object osxPopupMenuUI;
 
   /**
    * Return whether the given highlighter is the alternateColorHighlighter
@@ -400,40 +393,8 @@ public final class UtilGUI {
     }
     return UtilGUI.getResizedImage(img, iNewWidth, iNewHeight);
   }
-
-  /**
-   * Stores the OSX LAF widgets configuration (useful to make the menu bar work he OSX way)
-   */
-  public static void storeOSXWidgetConf() {
-    try {
-      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-      osxMenuBarUI = UIManager.get("MenuBarUI");
-      osxMenuUI = UIManager.get("MenuUI");
-      osxMenuItemUI = UIManager.get("MenuItemUI");
-      osxCheckBoxMenuItemUI = UIManager.get("CheckBoxMenuItemUI");
-      osxRadioButtonMenuItemUI = UIManager.get("RadioButtonMenuItemUI");
-      osxPopupMenuUI = UIManager.get("PopupMenuUI");
-    } catch (Exception e) {
-      Log.error(e);
-    }
-  }
-
-  /**
-   * Apply stored the OSX LAF widgets configuration (useful to make the menu bar work he OSX way)
-   */
-  public static void applyOSXWidgetConf() {
-    try {
-      UIManager.put("MenuBarUI", osxMenuBarUI);
-      UIManager.put("MenuUI", osxMenuUI);
-      UIManager.put("MenuItemUI", osxMenuItemUI);
-      UIManager.put("CheckBoxMenuItemUI", osxCheckBoxMenuItemUI);
-      UIManager.put("RadioButtonMenuItemUI", osxRadioButtonMenuItemUI);
-      UIManager.put("PopupMenuUI", osxPopupMenuUI);
-    } catch (Exception e) {
-      Log.error(e);
-    }
-  }
-
+ 
+  
   /**
    * Setup Substance look and feel.
    * 
@@ -493,11 +454,7 @@ public final class UtilGUI {
     // Set windows decoration to look and feel
     JFrame.setDefaultLookAndFeelDecorated(true);
     JDialog.setDefaultLookAndFeelDecorated(true);
-
-    // Reaply OSX widgets configuration if required
-    if (UtilSystem.isUnderOSX()) {
-      applyOSXWidgetConf();
-    }
+   
   }
 
   /**

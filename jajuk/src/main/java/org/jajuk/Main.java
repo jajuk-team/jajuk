@@ -88,12 +88,6 @@ public final class Main {
       // set flags from system properties
       SessionService.handleSystemProperties();
 
-      // If under OSX, store menu bar widget configuration
-      // (see http://www.pushing-pixels.org/?p=366)
-      if (UtilSystem.isUnderOSX()) {
-        UtilGUI.storeOSXWidgetConf();
-      }
-
       // Set substance theme (for raw error windows displayed by initial
       // checkups only)
       // (must be done in the EDT)
@@ -273,7 +267,8 @@ public final class Main {
     if (UtilSystem.isUnderOSX()){
       String title = "Jajuk"+ (SessionService.isTestMode() ? " (test)":"");
       System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
-      System.setProperty("apple.laf.useScreenMenuBar", "true");
+      // Make sure to disable Mac native menu, it can't display jajuk menu property
+      System.setProperty("apple.laf.useScreenMenuBar", "false");
     }
   }
 
