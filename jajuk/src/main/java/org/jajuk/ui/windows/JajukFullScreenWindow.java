@@ -28,7 +28,6 @@ import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -62,6 +61,7 @@ import org.jajuk.ui.widgets.TrackPositionSliderToolbar;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.jvnet.substance.SubstanceLookAndFeel;
 
@@ -158,21 +158,34 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
       instance.decorator = new WindowStateDecorator(instance) {
         @Override
         public void specificBeforeShown() {
-          instance.graphicsDevice = UtilGUI.getGraphicsDeviceOfMainFrame();
+          instance.graphicsDevice = instance.graphicsDevice = UtilGUI
+              .getGraphicsDeviceOfMainFrame();
+
+          if (UtilSystem.isUnderOSX() && instance.graphicsDevice.isFullScreenSupported()) {
+            instance.graphicsDevice.setFullScreenWindow(instance);
+          }
         }
 
         @Override
         public void specificAfterShown() {
-          instance.setSize(instance.graphicsDevice.getDisplayMode().getWidth(),
-              instance.graphicsDevice.getDisplayMode().getHeight());
-          instance.setLocation(instance.graphicsDevice.getDefaultConfiguration().getBounds()
-              .getLocation());
-          owner.setVisible(true);
-          owner.requestFocus();
+          // Do not show the owner frame under OSX, it makes the full screen blank 
+          // as the owner is displayed over
+          if (!UtilSystem.isUnderOSX()) {
+            instance.setSize(instance.graphicsDevice.getDisplayMode().getWidth(),
+                instance.graphicsDevice.getDisplayMode().getHeight());
+            instance.setLocation(instance.graphicsDevice.getDefaultConfiguration().getBounds()
+                .getLocation());
+            owner.setVisible(true);
+            owner.requestFocus();
+          }
+
         }
 
         @Override
         public void specificAfterHidden() {
+          if (UtilSystem.isUnderOSX() && instance.graphicsDevice.isFullScreenSupported()) {
+            instance.graphicsDevice.setFullScreenWindow(null);
+          }
           owner.setVisible(false);
           instance.dispose();
         }
@@ -224,9 +237,7 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
   public JajukFullScreenWindow() {
     super(owner);
     setAlwaysOnTop(true);
-    this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment()
-        .getDefaultScreenDevice();
-
+    
     // Add Mouse Listener to disable mouse cursor
     addMouseListener(new MouseAdapter() {
       @Override

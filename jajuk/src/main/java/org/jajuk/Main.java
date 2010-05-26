@@ -269,6 +269,10 @@ public final class Main {
       System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
       // Make sure to disable Mac native menu, it can't display jajuk menu property
       System.setProperty("apple.laf.useScreenMenuBar", "false");
+      // Allow file selection of a directory
+      System.setProperty("apple.awt.fileDialogForDirectories","true");
+      // In full screen mode, only use a single screen instead of darkening others
+      System.setProperty("apple.awt.fullscreencapturealldisplays","false");
     }
   }
 
