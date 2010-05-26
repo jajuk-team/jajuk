@@ -358,7 +358,7 @@ public class SessionService {
           try {
             // The bootstrap file format is <test|final>=<workspace
             // location>
-            final String sPath;
+            String sPath = null;
             versionWorkspace.load(br);
             // If none property, means we have a jajuk < 1.8 bootstrap
             // file that contains only a single directory
@@ -369,15 +369,18 @@ public class SessionService {
               BufferedReader oldReader = new BufferedReader(new FileReader(bootstrap));
               try {
                 oldPath = oldReader.readLine();
+                // oldPath is null id bootstrap file empty
               } finally {
                 oldReader.close();
               }
-              versionWorkspace.clear();
-              versionWorkspace.put("final", oldPath);
-              versionWorkspace.put("test", oldPath);
-              sPath = oldPath;
-              // Write it down
-              writeBootstrapFile(bootstrap);
+              if (oldReader != null) {
+                versionWorkspace.clear();
+                versionWorkspace.put("final", oldPath);
+                versionWorkspace.put("test", oldPath);
+                sPath = oldPath;
+                // Write it down
+                writeBootstrapFile(bootstrap);
+              }
             } else {
               if (SessionService.isTestMode()) {
                 sPath = versionWorkspace.getProperty("test");
