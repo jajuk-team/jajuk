@@ -437,6 +437,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       reporter.notifyNewFile();
     }
 
+    // Store oldDiscID, it is used to clone album and track 
+    // properties when album disc ID was unset to avoid loosing ratings or custom properties
     long oldDiscID = 0;
     if (fileRef != null) {
       oldDiscID = fileRef.getTrack().getAlbum().getDiscID();
