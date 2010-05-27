@@ -151,8 +151,9 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     ReadOnlyIterator<Directory> it = DirectoryManager.getInstance().getDirectoriesIterator();
     while (it.hasNext()) {
       Directory directory = it.next();
-      if (directory.getFio() != null && directory.getFio().getParentFile() != null && directory.getFio().getParentFile().equals(this.getFio())
-      // check the device of the tested directory to handle directories
+      if (directory.getFio() != null && directory.getFio().getParentFile() != null
+          && directory.getFio().getParentFile().equals(this.getFio())
+          // check the device of the tested directory to handle directories
           // from cdrom
           && directory.getDevice().equals(getDevice())) {
         out.add(directory);
@@ -436,8 +437,13 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       reporter.notifyNewFile();
     }
 
+    long oldDiscID = 0;
+    if (fileRef != null) {
+      oldDiscID = fileRef.getTrack().getAlbum().getDiscID();
+    }
+
     Track track = registerFile(music, sId, sTrackName, sAlbumName, sArtistName, sGenre, length,
-        sYear, lQuality, sComment, lOrder, sAlbumArtist, discID, discNumber);
+        sYear, lQuality, sComment, lOrder, sAlbumArtist, oldDiscID, discID, discNumber);
 
     for (String s : Tag.getActivatedExtraTags()) {
       track.setProperty(s, tag.getTagField(s));
@@ -459,12 +465,14 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @param sComment DOCUMENT_ME
    * @param lOrder DOCUMENT_ME
    * @param sAlbumArtist DOCUMENT_ME
+   * @param oldDiscID Previously known discID
    * @param discID DOCUMENT_ME
    * @param discNumber DOCUMENT_ME
    */
   private Track registerFile(java.io.File music, String sFileId, String sTrackName,
       String sAlbumName, String sArtistName, String sGenre, long length, String sYear,
-      long lQuality, String sComment, long lOrder, String sAlbumArtist, long discID, long discNumber) {
+      long lQuality, String sComment, long lOrder, String sAlbumArtist, long oldDiskID,
+      long discID, long discNumber) {
     Album album = AlbumManager.getInstance().registerAlbum(sAlbumName, discID);
     Genre genre = GenreManager.getInstance().registerGenre(sGenre);
     Year year = YearManager.getInstance().registerYear(sYear);
@@ -475,6 +483,23 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     long trackNumber = TrackManager.getInstance().getElementCount();
     Track track = TrackManager.getInstance().registerTrack(sTrackName, album, genre, artist,
         length, year, lOrder, type, discNumber);
+    // Fix for #1630 : if a album discID = 0 or -1 (when upgrading from older releases), we 
+    // clone the properties from the old track mapped with the old album id so we keep rating 
+    // (among other data)
+    if (oldDiskID == -1 || oldDiskID == 0) {
+      String oldAlbumID = AlbumManager.createID(sAlbumName, oldDiskID);
+      Album oldAlbum = AlbumManager.getInstance().getAlbumByID(oldAlbumID);
+      if (oldAlbum != null) {
+        // Also clone album properties (useful to keep custom tags)
+        album.cloneProperties(oldAlbum);
+        String oldTrackID = TrackManager.createID(sTrackName, oldAlbum, genre, artist, length,
+            year, lOrder, type, discNumber);
+        Track oldTrack = TrackManager.getInstance().getTrackByID(oldTrackID);
+        if (oldTrack != null) {
+          track.cloneProperties(oldTrack);
+        }
+      }
+    }
 
     // Note date for file date property. CAUTION: do not try to
     // check current date to accelerate refreshing if file has not
