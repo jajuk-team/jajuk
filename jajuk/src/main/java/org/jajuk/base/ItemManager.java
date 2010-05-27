@@ -602,7 +602,8 @@ public abstract class ItemManager {
   /**
    * ***************************************************************************
    * Return all registered enumeration CAUTION : do not call remove() on this
-   * iterator, you should remove effective items
+   * iterator, you would effectively remove items instead of using regular 
+   * removeItem() primitive
    * **************************************************************************.
    * 
    * @return the items iterator
