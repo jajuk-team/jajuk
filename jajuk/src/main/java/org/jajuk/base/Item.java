@@ -28,10 +28,7 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
-import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.Const;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukIcons;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
@@ -55,12 +52,7 @@ public abstract class Item implements Const {
   /** Item properties, singleton use very high load factor as this size will not change often. */
   private Map<String, Object> properties = new HashMap<String, Object>(2, 1f);
 
-  /** DOCUMENT_ME. */
-  @SuppressWarnings("unchecked")
-  private static Map map[] = { new HashMap<Long, IconLabel>(), new HashMap<Long, IconLabel>(),
-      new HashMap<Long, IconLabel>(), new HashMap<Long, IconLabel>(),
-      new HashMap<Long, IconLabel>() };
-
+ 
   /**
    * Constructor.
    * 
@@ -523,82 +515,7 @@ public abstract class Item implements Const {
    * @return an icon representation for this item or null if none available
    */
   public abstract ImageIcon getIconRepresentation();
-
-  /**
-   * Gets the stars.
-   * 
-   * @return the stars icon or ban icon if banned
-   */
-  @SuppressWarnings("unchecked")
-  public IconLabel getStars() {
-    long rate = getRate();
-    if (this instanceof Track && getBooleanValue(XML_TRACK_BANNED)) {
-      return IconLabel.getIcon(JajukIcons.BAN);
-    } else {
-      int starsNumber = getStarsNumber();
-
-      if (!map[starsNumber].containsKey(rate)) {
-        map[starsNumber].put(rate, new IconLabel(getIcon(starsNumber), "", null, null, null, Long
-            .toString(rate)));
-
-        ((IconLabel) (map[starsNumber].get(rate))).setInteger(starsNumber+1);   // plus one to make room for "ban" at zero
-      }
-
-      return (IconLabel) (map[starsNumber].get(rate));
-    }
-  }
-
-  /**
-   * Gets the icon.
-   * 
-   * @param starsNumber DOCUMENT_ME
-   * 
-   * @return the icon
-   */
-  private ImageIcon getIcon(int starsNumber) {
-    switch (starsNumber) {
-    case 0:
-      return IconLoader.getIcon(JajukIcons.STAR_0);
-    case 1:
-      return IconLoader.getIcon(JajukIcons.STAR_1);
-    case 2:
-      return IconLoader.getIcon(JajukIcons.STAR_2);
-    case 3:
-      return IconLoader.getIcon(JajukIcons.STAR_3);
-    case 4:
-      return IconLoader.getIcon(JajukIcons.STAR_4);
-    default:
-      return null;
-    }
-  }
-
-  /**
-   * Gets the stars number.
-   * 
-   * @return Number of stars based on the rate of this item
-   */
-  public int getStarsNumber() {
-    long lInterval = 1;
-    if (this instanceof Track) {
-      lInterval = 100;
-    } else if ((this instanceof Album) ||
-                  (this instanceof Playlist)) {
-      lInterval = AlbumManager.getInstance().getMaxRate();
-    }
-    lInterval = lInterval / 4;
-    long lRate = getRate();
-    if (lRate == 0) {
-      return 0;
-    } else if (lRate <= lInterval) {
-      return 1;
-    } else if (lRate <= 2 * lInterval) {
-      return 2;
-    } else if (lRate <= 3 * lInterval) {
-      return 3;
-    } else {
-      return 4;
-    }
-  }
+ 
 
   /**
    * Item rate. Should be overwritten by sub classes

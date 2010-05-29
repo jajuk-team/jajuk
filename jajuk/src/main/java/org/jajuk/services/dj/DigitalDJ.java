@@ -28,6 +28,7 @@ import java.util.Set;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
+import org.jajuk.ui.helpers.StarsHelper;
 import org.jajuk.util.Const;
 
 /**
@@ -127,7 +128,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
       Iterator<File> it = files.iterator();
       while (it.hasNext()) {
         File file = it.next();
-        if (file.getTrack().getStarsNumber() < iRatingLevel
+        if (StarsHelper.getStarsNumber(file.getTrack()) < iRatingLevel
             || selectedTracks.contains(file.getTrack())) {
           it.remove();
         } else {

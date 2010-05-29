@@ -271,7 +271,7 @@ public class FilesTableModel extends JajukTableModel {
 
       // Rate
       if (bRate) {
-        oValues[iRow][6] = file.getTrack().getStars();
+        oValues[iRow][6] = StarsHelper.getStarIconLabel(file.getTrack());
       } else {
         oValues[iRow][6] = "";
       }

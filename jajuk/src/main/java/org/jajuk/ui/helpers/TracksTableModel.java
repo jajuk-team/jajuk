@@ -256,7 +256,7 @@ public class TracksTableModel extends JajukTableModel {
 
       // Rate
       if (bRate) {
-        oValues[iRow][6] = track.getStars();
+        oValues[iRow][6] = StarsHelper.getStarIconLabel(track);
       } else {
         oValues[iRow][6] = "";
       }

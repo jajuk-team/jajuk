@@ -53,6 +53,7 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.CatalogViewTransferHandler;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.PreferencesJMenu;
+import org.jajuk.ui.helpers.StarsHelper;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
@@ -236,7 +237,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
           + Messages.getHumanPropertyName(Const.XML_TRACK_RATE)
           + ": <img src='"
           + SessionService.getConfFileByPath(
-              "cache/internal/star" + album.getStarsNumber() + "_16x16.png").toURI().toURL()
+              "cache/internal/star" + StarsHelper.getStarIconLabel(album) + "_16x16.png").toURI().toURL()
               .toExternalForm() + "'> (" + album.getRate() + ")";
     } catch (MalformedURLException e) {
       Log.error(e);

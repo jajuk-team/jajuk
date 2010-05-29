@@ -228,7 +228,7 @@ public class AlbumsTableModel extends JajukTableModel {
 
       // Rate
       if (bRate) {
-        oValues[iRow][5] = album.getStars();
+        oValues[iRow][5] = StarsHelper.getStarIconLabel(album);
       } else {
         oValues[iRow][5] = "";
       }

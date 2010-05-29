@@ -58,9 +58,6 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
   /** Tooltip. */
   private String sTooltip;
 
-  /** Whether this is a integer. */
-  private int nValue = -1;
-
   /** DOCUMENT_ME. */
   private static Map<JajukIcons, IconLabel> cachedIcons = new HashMap<JajukIcons, IconLabel>();
 
@@ -90,7 +87,7 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
    * @param icon DOCUMENT_ME
    * @param sText DOCUMENT_ME
    */
-  public IconLabel(ImageIcon icon, String sText) {
+  private IconLabel(ImageIcon icon, String sText) {
     super(icon.getImage());
     this.sText = sText;
   }
@@ -156,36 +153,23 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
    * @see java.lang.Comparable#compareTo(T)
    */
   public int compareTo(IconLabel ilOther) {
-    // are both items integer-values ?
-    if (nValue != -1 && ilOther.nValue != -1) {
-      return nValue - ilOther.nValue;
+    // if no integer value then simply compare tooltip strings
+    if (ilOther.getTooltip() != null && this.getTooltip() != null) {
+      return ilOther.getTooltip().compareTo(getTooltip());
     } else {
-      // if no integer value then simply compare tooltip strings
-      if (ilOther.getTooltip() != null && this.getTooltip() != null) {
-        return ilOther.getTooltip().compareTo(getTooltip());
-      } else {
-        return 0;
-      }
+      return 0;
     }
   }
 
   /**
-   * Sets the integer.
-   * 
-   * @param integer DOCUMENT_ME
-   */
-  public void setInteger(int integer) {
-    nValue = integer;
-  }
-
-  /**
-   * Gets the icon.
+   * Gets an IconLabel from a cache for memory saving reasons.
+   * Note that this doesn't handle StarIconLabel that owns its own cache. 
    * 
    * @param icon DOCUMENT_ME
    * 
    * @return the icon
    */
-  public static IconLabel getIcon(JajukIcons icon) {
+  public static IconLabel getIconLabel(JajukIcons icon) {
     if (icon == JajukIcons.TRACK_FIFO_PLANNED) {
       if (!cachedIcons.containsKey(icon)) {
         cachedIcons.put(icon, new IconLabel(IconLoader.getIcon(JajukIcons.TRACK_FIFO_PLANNED), "",
@@ -202,17 +186,10 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
         cachedIcons.put(icon, new IconLabel(IconLoader.getIcon(icon), "", null, null, null,
             Messages.getString("AbstractPlaylistEditorView.18")));
       }
-    } else if (icon == JajukIcons.BAN) {
-      if (!cachedIcons.containsKey(icon)) {
-        IconLabel ban = new IconLabel(IconLoader.getIcon(icon), "", null, null, null, "-1");
-        ban.setInteger(0);
-        cachedIcons.put(icon, ban);
-      }
     } else {
       Log.warn("Unsupported icon requested in IconLabel.getIcon(): " + icon.toString());
       return null;
     }
-
     return cachedIcons.get(icon);
   }
 }

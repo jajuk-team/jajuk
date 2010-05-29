@@ -47,6 +47,7 @@ import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.dj.DigitalDJ;
 import org.jajuk.services.dj.DigitalDJManager;
+import org.jajuk.ui.helpers.StarsHelper;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -81,7 +82,7 @@ public class UtilPrepareParty {
     final List<org.jajuk.base.File> newFiles = new ArrayList<org.jajuk.base.File>();
     for (org.jajuk.base.File file : files) {
       // only add files that have a rate equal or higher than the level set
-      if (file.getTrack().getStarsNumber() >= rate) {
+      if (StarsHelper.getStarsNumber(file.getTrack()) >= rate) {
         newFiles.add(file);
       }
     }

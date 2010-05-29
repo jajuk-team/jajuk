@@ -247,16 +247,16 @@ public class PlaylistTableModel extends JajukTableModel {
       // Play
       if (bQueue) {
         if (item.isPlanned()) {
-          oValues[iRow][0] = IconLabel.getIcon(JajukIcons.TRACK_FIFO_PLANNED);
+          oValues[iRow][0] = IconLabel.getIconLabel(JajukIcons.TRACK_FIFO_PLANNED);
         } else if (item.isRepeat()) {
           // normal file, repeated
-          oValues[iRow][0] = IconLabel.getIcon(JajukIcons.TRACK_FIFO_REPEAT);
+          oValues[iRow][0] = IconLabel.getIconLabel(JajukIcons.TRACK_FIFO_REPEAT);
         } else {
           // normal file, not repeated
-          oValues[iRow][0] = IconLabel.getIcon(JajukIcons.TRACK_FIFO_NORM);
+          oValues[iRow][0] = IconLabel.getIconLabel(JajukIcons.TRACK_FIFO_NORM);
         }
       } else {
-        oValues[iRow][0] = IconLabel.getIcon(JajukIcons.TRACK_FIFO_NORM);
+        oValues[iRow][0] = IconLabel.getIconLabel(JajukIcons.TRACK_FIFO_NORM);
       }
 
       File bf = item.getFile();
@@ -298,7 +298,7 @@ public class PlaylistTableModel extends JajukTableModel {
 
       // Rate
       if (bRate) {
-        oValues[iRow][6] = bf.getTrack().getStars();
+        oValues[iRow][6] = StarsHelper.getStarIconLabel(bf.getTrack());
       } else {
         oValues[iRow][6] = "";
       }
