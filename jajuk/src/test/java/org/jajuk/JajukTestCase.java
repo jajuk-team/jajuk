@@ -20,12 +20,10 @@
  */
 package org.jajuk;
 
-import java.io.File;
+import junit.framework.TestCase;
 
 import org.jajuk.base.Collection;
 import org.jajuk.services.startup.StartupCollectionService;
-
-import junit.framework.TestCase;
 
 /**
  * 

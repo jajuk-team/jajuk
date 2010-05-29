@@ -374,7 +374,7 @@ public final class Conf implements Const {
     // Use unicode representation for non-ascii chars
     StringBuffer finalValue = new StringBuffer(sValue.length());
     for (char c : sValue.toCharArray()) {
-      if (((int) c) > 127) {
+      if ( c > 127) {
         char[] tabChar = new char[] { c };
         finalValue.append(UtilString.encodeToUnicode(new String(tabChar)));
       } else {
