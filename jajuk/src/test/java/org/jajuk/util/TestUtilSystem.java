@@ -450,7 +450,7 @@ public class TestUtilSystem extends JajukTestCase {
    * {@link org.jajuk.util.UtilSystem#getMplayerStatus(java.lang.String)}.
    */
   public void testGetMplayerStatus() {
-    UtilSystem.getMplayerStatus(UtilSystem.getMPlayerOSXPath());
+    UtilSystem.getMplayerStatus(UtilSystem.getMPlayerOSXPath().getAbsolutePath());
   }
 
   /**
@@ -515,21 +515,13 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.util.UtilSystem#isUnderOSXintel()}.
+   * Test method for {@link org.jajuk.util.UtilSystem#isUnderOSX()}.
    */
-  public void testIsUnderOSXintel() {
-    // might be wrong for power-macos...
-    assertEquals(SystemUtils.IS_OS_MAC_OSX, UtilSystem.isUnderOSXintel());
+  public void testIsUnderOSX() {
+       assertEquals(SystemUtils.IS_OS_MAC_OSX, UtilSystem.isUnderOSX());
   }
 
-  /**
-   * Test method for {@link org.jajuk.util.UtilSystem#isUnderOSXpower()}.
-   */
-  public void testIsUnderOSXpower() {
-    // might be wrong for intel-macos...
-    assertEquals(SystemUtils.IS_OS_MAC_OSX, UtilSystem.isUnderOSXpower());
-  }
-
+  
   /**
    * Test method for {@link org.jajuk.util.UtilSystem#isUnderWindows()}.
    */

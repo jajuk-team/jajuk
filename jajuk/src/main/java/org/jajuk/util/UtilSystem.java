@@ -104,10 +104,7 @@ public final class UtilSystem {
   private static final boolean UNDER_LINUX;
 
   /** Are we under MAC OS Intel ? *. */
-  private static final boolean UNDER_OSX_INTEL;
-
-  /** Are we under MAC OS power ? *. */
-  private static final boolean UNDER_OSX_POWER;
+  private static final boolean UNDER_OSX;
 
   /** Are we under Windows ? *. */
   private static final boolean UNDER_WINDOWS;
@@ -152,16 +149,12 @@ public final class UtilSystem {
 
   static {
     final String sArch = System.getProperty("os.arch");
-    UNDER_OSX_INTEL = org.jdesktop.swingx.util.OS.isMacOSX()
-        && ((sArch != null) && sArch.matches(".*86"));
+    UNDER_OSX = org.jdesktop.swingx.util.OS.isMacOSX()
+    // We only support Intel OSX
+        && ((sArch != null) && sArch.matches(".*86.*"));
   }
 
-  static {
-    final String sArch = System.getProperty("os.arch");
-    UNDER_OSX_POWER = org.jdesktop.swingx.util.OS.isMacOSX()
-        && ((sArch != null) && !sArch.matches(".*86"));
-  }
-
+  
   /** Icons cache. */
   static Map<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>(200);
 
@@ -616,26 +609,101 @@ public final class UtilSystem {
   public static URL getJarLocation(final Class<?> cClass) {
     return cClass.getProtectionDomain().getCodeSource().getLocation();
   }
+  
+  /**
+   * Gets the m player windows path.
+   * 
+   * @return MPlayer exe file
+   */
+  public static File getMPlayerWindowsPath() {
+    // Use cache
+    if (UtilSystem.mplayerPath != null) {
+      return UtilSystem.mplayerPath;
+    }
+    File file = null;
+    // Check in ~/.jajuk directory (used by webstart distribution
+    // installers). Test exe size as well to detect unfinished downloads of
+    // mplayer.exe in JNLP mode
+    file = SessionService.getConfFileByPath(Const.FILE_MPLAYER_WINDOWS_EXE);
+    if (file.exists() && file.length() == Const.MPLAYER_WINDOWS_EXE_SIZE) {
+      UtilSystem.mplayerPath = file;
+      return UtilSystem.mplayerPath;
+    } else {
+      // Check in the path where jajuk.jar is executed (all others
+      // distributions)
+      String sPATH = null;
+      try {
+        // Extract file name from URL. URI returns jar path, its parent
+        // is the bin directory and the right dir is the parent of bin
+        // dir
+        // Note: When starting from jnlp, next line throws an exception
+        // as URI is invalid (contains %20), the method returns null and
+        // the file is downloaded again. This url is used only when
+        // using stand-alone version
+        if (SessionService.isIdeMode()) {
+          // If under dev, take mplayer exe file from the packaging
+          // directory
+          sPATH = "./src/packaging";
+        } else {
+          sPATH = new File(getJarLocation(Main.class).toURI()).getParentFile().getParentFile()
+              .getAbsolutePath();
+        }
+        // Add MPlayer file name
+        file = new File(sPATH + '/' + Const.FILE_MPLAYER_WINDOWS_EXE);
+        if (file.exists() && file.length() == Const.MPLAYER_WINDOWS_EXE_SIZE) {
+          UtilSystem.mplayerPath = file;
+        } else {
+          // For bundle project, Jajuk should check if mplayer was
+          // installed along with aTunes. In this case, mplayer is
+          // found in sPATH\win_tools\ directory. Hence, changed sPATH
+          // Note that we don't test mplayer.exe size in this case
+          file = new File(sPATH + "/win_tools/" + Const.MPLAYER_WINDOWS_EXE_SIZE);
+          if (file.exists()) {
+            UtilSystem.mplayerPath = file;
+          }
+        }
+
+      } catch (URISyntaxException e) {
+        return UtilSystem.mplayerPath;
+      }
+    }
+    return UtilSystem.mplayerPath; // can be null if none suitable file found
+  }
 
   /**
-   * Gets the m player osx path.
+   * Gets the m player OSX path.
+   * It is mainly based upon Windows getWindowsPath() path method, see comments over there
    * 
    * @return MPLayer binary MAC full path
    */
-  public static String getMPlayerOSXPath() {
-    final String forced = Conf.getString(Const.CONF_MPLAYER_PATH_FORCED);
-    if (!StringUtils.isBlank(forced)) {
-      return forced;
-    } else if (UtilSystem.isUnderOSXintel()
-        && new File(Const.FILE_DEFAULT_MPLAYER_X86_OSX_PATH).exists()) {
-      return Const.FILE_DEFAULT_MPLAYER_X86_OSX_PATH;
-    } else if (UtilSystem.isUnderOSXpower()
-        && new File(Const.FILE_DEFAULT_MPLAYER_POWER_OSX_PATH).exists()) {
-      return Const.FILE_DEFAULT_MPLAYER_POWER_OSX_PATH;
-    } else {
-      // Simply return mplayer from PATH, works if app is launch from CLI
-      return "mplayer";
+  public static File getMPlayerOSXPath() {
+    if (UtilSystem.mplayerPath != null) {
+      return UtilSystem.mplayerPath;
     }
+    File file = null;
+    file = SessionService.getConfFileByPath(Const.FILE_MPLAYER_OSX_EXE);
+    if (file.exists() && file.length() == Const.MPLAYER_OSX_EXE_SIZE) {
+      UtilSystem.mplayerPath = file;
+      return UtilSystem.mplayerPath;
+    } else {
+      String sPATH = null;
+      try {
+        if (SessionService.isIdeMode()) {
+          // If under dev, take mplayer exe file from /Applications (the mplayer osx binary is not in SCM)
+          sPATH = "/Applications";
+        } else {
+          sPATH = new File(getJarLocation(Main.class).toURI()).getParentFile().getParentFile()
+              .getAbsolutePath();
+        }
+        file = new File(sPATH + '/' + Const.FILE_MPLAYER_OSX_EXE);
+        if (file.exists() && file.length() == Const.MPLAYER_OSX_EXE_SIZE) {
+          UtilSystem.mplayerPath = file;
+        }
+      } catch (URISyntaxException e) {
+        return UtilSystem.mplayerPath;
+      }
+    }
+    return UtilSystem.mplayerPath; // can be null if none suitable file found
   }
 
   /**
@@ -682,65 +750,7 @@ public final class UtilSystem {
     return mplayerStatus;
   }
 
-  /**
-   * Gets the m player windows path.
-   * 
-   * @return MPlayer exe file
-   */
-  public static File getMPlayerWindowsPath() {
-    // Use cache
-    if (UtilSystem.mplayerPath != null) {
-      return UtilSystem.mplayerPath;
-    }
-    File file = null;
-    // Check in ~/.jajuk directory (used by webstart distribution
-    // installers). Test exe size as well to detect unfinished downloads of
-    // mplayer.exe in JNLP mode
-    file = SessionService.getConfFileByPath(Const.FILE_MPLAYER_EXE);
-    if (file.exists() && file.length() == Const.MPLAYER_EXE_SIZE) {
-      UtilSystem.mplayerPath = file;
-      return UtilSystem.mplayerPath;
-    } else {
-      // Check in the path where jajuk.jar is executed (all others
-      // distributions)
-      String sPATH = null;
-      try {
-        // Extract file name from URL. URI returns jar path, its parent
-        // is the bin directory and the right dir is the parent of bin
-        // dir
-        // Note: When starting from jnlp, next line throws an exception
-        // as URI is invalid (contains %20), the method returns null and
-        // the file is downloaded again. This url is used only when
-        // using stand-alone version
-        if (SessionService.isIdeMode()) {
-          // If under dev, take mplayer exe file from the packaging
-          // directory
-          sPATH = "./src/packaging";
-        } else {
-          sPATH = new File(getJarLocation(Main.class).toURI()).getParentFile().getParentFile()
-              .getAbsolutePath();
-        }
-        // Add MPlayer file name
-        file = new File(sPATH + '/' + Const.FILE_MPLAYER_EXE);
-        if (file.exists() && file.length() == Const.MPLAYER_EXE_SIZE) {
-          UtilSystem.mplayerPath = file;
-        } else {
-          // For bundle project, Jajuk should check if mplayer was
-          // installed along with aTunes. In this case, mplayer is
-          // found in sPATH\win_tools\ directory. Hence, changed sPATH
-          // Note that we don't test mplayer.exe size in this case
-          file = new File(sPATH + "/win_tools/" + Const.FILE_MPLAYER_EXE);
-          if (file.exists()) {
-            UtilSystem.mplayerPath = file;
-          }
-        }
-
-      } catch (URISyntaxException e) {
-        return UtilSystem.mplayerPath;
-      }
-    }
-    return UtilSystem.mplayerPath; // can be null if none suitable file found
-  }
+  
 
   /**
    * This method intends to cleanup a future filename so it can be created on
@@ -829,33 +839,16 @@ public final class UtilSystem {
     return UtilSystem.UNDER_LINUX;
   }
 
-  /**
-   * Checks if is under os xintel.
-   * 
-   * @return whether we are under OS X Intel
-   */
-  public static boolean isUnderOSXintel() {
-    return UtilSystem.UNDER_OSX_INTEL;
-  }
-
-  /**
+   /**
   * Checks if is under OSX (Intel or PowerPC)
   * 
   * @return whether we are under OS X 
   */
   public static boolean isUnderOSX() {
-    return isUnderOSXintel() || isUnderOSXpower();
+    return UtilSystem.UNDER_OSX;
   }
 
-  /**
-   * Checks if is under os xpower.
-   * 
-   * @return whether we are under OS X Power
-   */
-  public static boolean isUnderOSXpower() {
-    return UtilSystem.UNDER_OSX_POWER;
-  }
-
+  
   /**
    * Checks if is under windows.
    * 

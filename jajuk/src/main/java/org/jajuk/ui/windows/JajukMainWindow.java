@@ -169,7 +169,7 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
    * @see org.jajuk.ui.windows.IJajukWindow#initUI()
    */
   public void initUI() {
-    if (UtilSystem.isUnderOSXintel() || UtilSystem.isUnderOSXpower()) {
+    if (UtilSystem.isUnderOSX() ) {
       // mac integration
       System.setProperty("apple.laf.useScreenMenuBar", "true");
       System.setProperty("apple.laf.useScreenMenuBar", "true");

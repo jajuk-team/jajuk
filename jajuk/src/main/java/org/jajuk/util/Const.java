@@ -153,13 +153,10 @@ public interface Const {
   int FORMAT_TIME_ELAPSED_MAX = 4;
 
   /** Mplayer windows exe size in bytes. */
-  long MPLAYER_EXE_SIZE = 15265280l;
+  long MPLAYER_WINDOWS_EXE_SIZE = 15265280l;
 
-  /** DOCUMENT_ME. */
-  String FILE_DEFAULT_MPLAYER_X86_OSX_PATH = "/Applications/MPlayer OSX.app/Contents/Resources/External_Binaries/mplayer_intel.app/Contents/MacOS/mplayer";
-
-  /** DOCUMENT_ME. */
-  String FILE_DEFAULT_MPLAYER_POWER_OSX_PATH = "/Applications/MPlayer OSX PPC.app/Contents/Resources/External_Binaries/mplayer_ppc.app/Contents/MacOS/mplayer";
+  /** Mplayer windows exe size in bytes. */
+  long MPLAYER_OSX_EXE_SIZE = 21490476l;
 
   /** Update URL = PAD file URL. */
   String CHECK_FOR_UPDATE_URL = "http://jajuk.svn.sourceforge.net/svnroot/jajuk/trunk/jajuk/src/site/resources/jajuk_pad.xml";
@@ -303,7 +300,10 @@ public interface Const {
   String FILE_BOOTSTRAP = ".jajuk_bootstrap";
 
   /** DOCUMENT_ME. */
-  String FILE_MPLAYER_EXE = "mplayer.exe";
+  String FILE_MPLAYER_WINDOWS_EXE = "mplayer.exe";
+  
+  /** DOCUMENT_ME. */
+  String FILE_MPLAYER_OSX_EXE = "mplayer";
 
   /** DOCUMENT_ME. */
   String FILE_TOOLBARS_CONF = "toolbars.xml";
@@ -328,8 +328,11 @@ public interface Const {
   URL FILE_REPORTING_CSS_PRINT_PATH = UtilSystem.getResource("xslt/"
       + FILE_REPORTING_CSS_PRINT_FILENAME);
 
-  /** DOCUMENT_ME. */
-  String URL_MPLAYER = "http://repository.jajuk.info/mplayer/20090114/mplayer.exe";
+  /** Mplayer Windows exe provided by jajuk URL . */
+  String URL_MPLAYER_WINDOWS = "http://repository.jajuk.info/mplayer/20090114/mplayer.exe";
+  
+  /** Mplayer OSX exe provided by jajuk URL . */
+  String URL_MPLAYER_OSX = "http://repository.jajuk.info/mplayer/osx/1.0rc2/mplayer";
 
   /** DOCUMENT_ME. */
   String URL_DEFAULT_WEBRADIOS = "http://svn2.assembla.com/svn/common-jukebox/common-jukebox/src/main/resources/preset_radios.xml";

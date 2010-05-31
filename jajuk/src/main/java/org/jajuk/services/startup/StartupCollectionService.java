@@ -122,12 +122,12 @@ public class StartupCollectionService {
         // try to find mplayer executable in know locations first
         if (mplayerPath == null) {
           try {
-            Log.debug("Download Mplayer from: " + Const.URL_MPLAYER);
-            File fMPlayer = SessionService.getConfFileByPath(Const.FILE_MPLAYER_EXE);
-            DownloadManager.download(new URL(Const.URL_MPLAYER), fMPlayer);
+            Log.debug("Download Mplayer from: " + Const.URL_MPLAYER_WINDOWS);
+            File fMPlayer = SessionService.getConfFileByPath(Const.FILE_MPLAYER_WINDOWS_EXE);
+            DownloadManager.download(new URL(Const.URL_MPLAYER_WINDOWS), fMPlayer);
             // make sure to delete corrupted mplayer in case of
             // download problem
-            if (fMPlayer.length() != Const.MPLAYER_EXE_SIZE) {
+            if (fMPlayer.length() != Const.MPLAYER_WINDOWS_EXE_SIZE) {
               if (!fMPlayer.delete()) {
                 Log.warn("Could not delete file " + fMPlayer);
               }
@@ -138,7 +138,26 @@ public class StartupCollectionService {
           }
         }
       }
-      // Under non-windows OS, we assume mplayer has been installed
+      else if (UtilSystem.isUnderOSX()) {
+        final File mplayerPath = UtilSystem.getMPlayerOSXPath();
+        // try to find mplayer executable in known locations first
+        if (mplayerPath == null) {
+          try {
+            Log.debug("Download Mplayer from: " + Const.URL_MPLAYER_OSX);
+            File fMPlayer = SessionService.getConfFileByPath(Const.FILE_MPLAYER_OSX_EXE);
+            DownloadManager.download(new URL(Const.URL_MPLAYER_OSX), fMPlayer);
+           if (fMPlayer.length() != Const.MPLAYER_OSX_EXE_SIZE) {
+              if (!fMPlayer.delete()) {
+                Log.warn("Could not delete file " + fMPlayer);
+              }
+              mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
+            }
+          } catch (IOException e) {
+            mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
+          }
+        }
+      }
+      // Under others OS, we assume mplayer has been installed
       // using external standard distributions
       else {
         // If a forced mplayer path is defined, test it
@@ -151,18 +170,7 @@ public class StartupCollectionService {
         }
         if (mplayerStatus != UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK) {
           // try to find a correct mplayer from the path
-          // Under OSX, it will work only if jajuk is launched from
-          // command line
           mplayerStatus = UtilSystem.getMplayerStatus("");
-          if (mplayerStatus != UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK) {
-            // OK, try to find MPlayer in standards OSX directories
-            if (UtilSystem.isUnderOSXpower()) {
-              mplayerStatus = UtilSystem
-                  .getMplayerStatus(Const.FILE_DEFAULT_MPLAYER_POWER_OSX_PATH);
-            } else {
-              mplayerStatus = UtilSystem.getMplayerStatus(Const.FILE_DEFAULT_MPLAYER_X86_OSX_PATH);
-            }
-          }
         }
       }
       // Choose player according to mplayer presence or not

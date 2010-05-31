@@ -333,7 +333,7 @@ public final class Conf implements Const {
     // Display slimbar at the lower part of the screen to fix #768 : under MAC,
     // it overlays the menu bar
     int slimbarYPos = 0;
-    if (UtilSystem.isUnderOSXintel() || UtilSystem.isUnderOSXpower()) {
+    if (UtilSystem.isUnderOSX() ) {
       slimbarYPos = ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()) - 25;
       if (slimbarYPos < 0) {
         slimbarYPos = 0;

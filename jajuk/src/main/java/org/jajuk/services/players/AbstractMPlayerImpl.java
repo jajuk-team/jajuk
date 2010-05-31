@@ -164,8 +164,8 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     } else {
       if (UtilSystem.isUnderWindows()) {
         sCommand = UtilSystem.getMPlayerWindowsPath().getAbsolutePath();
-      } else if (UtilSystem.isUnderOSXintel() || UtilSystem.isUnderOSXpower()) {
-        sCommand = UtilSystem.getMPlayerOSXPath();
+      } else if (UtilSystem.isUnderOSX()) {
+        sCommand = UtilSystem.getMPlayerOSXPath().getAbsolutePath();
       }
     }
     String sAdditionalArgs = Conf.getString(Const.CONF_MPLAYER_ARGS);
