@@ -442,16 +442,9 @@ public class TestUtilSystem extends JajukTestCase {
    * Test method for {@link org.jajuk.util.UtilSystem#getMPlayerOSXPath()}.
    */
   public void testGetMPlayerOSXPath() {
-    assertNotNull(UtilSystem.getMPlayerOSXPath());
+    UtilSystem.getMPlayerOSXPath();
   }
 
-  /**
-   * Test method for
-   * {@link org.jajuk.util.UtilSystem#getMplayerStatus(java.lang.String)}.
-   */
-  public void testGetMplayerStatus() {
-    UtilSystem.getMplayerStatus(UtilSystem.getMPlayerOSXPath().getAbsolutePath());
-  }
 
   /**
    * Test method for {@link org.jajuk.util.UtilSystem#getMPlayerWindowsPath()}.
