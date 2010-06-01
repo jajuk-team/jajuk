@@ -1,103 +1,129 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <installation version='1.0'>
-    <info>
-        <appname>Jajuk</appname>
-        <appversion>VERSION_REPLACED_BY_ANT</appversion>
-        <javaversion>1.6</javaversion>
-        <url>http://jajuk.info</url>
-        <run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7|izpack.macinstall"/>
-    </info>
-    <guiprefs height='600' resizable='yes' width='800'>
-   	 	<laf name='substance'>
-   	 		<os family='unix' />
-   	 		<os family='windows' />
-   	 		<os family='mac' />
-   	 	</laf>	 
-   	 </guiprefs>
-   	 
-   	<!-- See ISO3 country codes in /prog/IzPack/bin/langpacks/installer -->
-    <locale>
-        <langpack iso3='eng'/>
-        <langpack iso3='cat'/>
-        <langpack iso3='chn'/>
-        <langpack iso3='deu'/>
-        <langpack iso3='ell'/>
-        <langpack iso3='fra'/>
-        <langpack iso3='hun'/>
-        <langpack iso3='ita'/>
-        <langpack iso3='jpn'/>
-        <langpack iso3='ned'/>
-        <langpack iso3='pol'/>
-        <langpack iso3='por'/>
-        <langpack iso3='rus'/>
-        <langpack iso3='spa'/>
-        <langpack iso3='swe'/>        
-        <langpack iso3='glg'/>
-        <langpack iso3='cze'/>
-    </locale>
-    <native name='ShellLink.dll' type='izpack'/>
-    <resources>
-        <res id='LicencePanel.licence' src='legals/LICENSE-GPL.txt'/>
-        <res id='shortcutSpec.xml' src='/tmp/jajuk-dist/java/shortcutSpec.xml' />
-        <res id='installer.langsel.img' src='main/resources/images/jajuk-installer.jpg' />
-        <res id='ImgPacksPanel.img.0' src='main/resources/images/core.png'  />
-        <res id='ImgPacksPanel.img.1' src='main/resources/images/src.png'  />
-        <res id='TargetPanel.dir.unix' src='/tmp/jajuk-dist/java/installDirectory.unix.txt' />
-    </resources>
-    <panels>
-        <panel classname='LicencePanel'/>
-        <panel classname='TargetPanel'/>
-        <panel classname='InstallPanel'/>
-        <panel classname='ShortcutPanel'/> 
-        <panel classname='SimpleFinishPanel'/>
-    </panels>
-    <packs>
-        <pack name='main pack' required='yes'>
-            <description>Main pack</description>
-            <file override='true' targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/bin/jajuk.jar'/>
-            <dir override='true' targetdir='$INSTALL_PATH/lib' src='/tmp/jajuk-dist/jajuk/lib/windows'>
-            	<os family='windows'/>
-            </dir>
-            <fileset override='true' targetdir='$INSTALL_PATH/dist-files' dir='/tmp/jajuk-dist/jajuk/dist-files'/>
-           <fileset override='true' targetdir='$INSTALL_PATH/lib' dir='/tmp/jajuk-dist/jajuk/lib'>
-            	<os family='unix'/>
-            	<exclude name="**/*.dll"/>
-            </fileset>
-             <fileset override='true' targetdir='$INSTALL_PATH/lib' dir='/tmp/jajuk-dist/jajuk/lib'>
-            	<os family='windows'/>
-            	<exclude name="lib*"/>
-            </fileset>
-            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk-icon-shortcut_64x64.png'/>
-            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/LICENSE-GPL.txt'/>
-            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/DERIVATED.txt'/>
-            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README.html'/>
-            <!-- Windows specific -->
-            <file override='true' targetdir='$INSTALL_PATH' src='packaging/mplayer/mplayer.exe'>
-            	<os family='windows'/>
-            </file>
-            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk.bat'>
-            	<os family='windows'/>
-           	</file>
-            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-icon.ico'>
-            	<os family='windows'/>
-           	</file>
-            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-uninstall.ico'>
-            	<os family='windows'/>
-           	</file>
-            <file override='true' targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/lib/JIntellitype.dll'>
-            	<os family='windows'/>
-           	</file>
-            <!--Unix specific -->
-            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk'>
-            	<os family='unix'/>
-           </file>
-          
-           <executable targetfile="$INSTALL_PATH/jajuk" stage="never">
-             	<os family='unix'/>
-           </executable>
-           <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-uninstall.png'>
-           	<os family='windows'/>
-           </file>
-        </pack>
-    </packs>
+	<info>
+		<appname>Jajuk</appname>
+		<appversion>VERSION_REPLACED_BY_ANT</appversion>
+		<javaversion>1.6</javaversion>
+		<url>http://jajuk.info</url>
+		<run-privileged
+			condition="izpack.windowsinstall.vista|izpack.windowsinstall.7|izpack.macinstall" />
+	</info>
+	<guiprefs height='600' resizable='yes' width='800'>
+		<laf name='substance'>
+			<os family='unix' />
+			<os family='windows' />
+			<os family='mac' />
+		</laf>
+	</guiprefs>
+
+	<!-- See ISO3 country codes in /prog/IzPack/bin/langpacks/installer -->
+	<locale>
+		<langpack iso3='eng' />
+		<langpack iso3='cat' />
+		<langpack iso3='chn' />
+		<langpack iso3='deu' />
+		<langpack iso3='ell' />
+		<langpack iso3='fra' />
+		<langpack iso3='hun' />
+		<langpack iso3='ita' />
+		<langpack iso3='jpn' />
+		<langpack iso3='ned' />
+		<langpack iso3='pol' />
+		<langpack iso3='por' />
+		<langpack iso3='rus' />
+		<langpack iso3='spa' />
+		<langpack iso3='swe' />
+		<langpack iso3='glg' />
+		<langpack iso3='cze' />
+	</locale>
+	<native name='ShellLink.dll' type='izpack' />
+	<resources>
+		<res id='LicencePanel.licence' src='legals/LICENSE-GPL.txt' />
+		<res id='shortcutSpec.xml' src='/tmp/jajuk-dist/java/shortcutSpec.xml' />
+		<res id='installer.langsel.img' src='main/resources/images/jajuk-installer.jpg' />
+		<res id='ImgPacksPanel.img.0' src='main/resources/images/core.png' />
+		<res id='ImgPacksPanel.img.1' src='main/resources/images/src.png' />
+		<res id='TargetPanel.dir.unix' src='/tmp/jajuk-dist/java/installDirectory.unix.txt' />
+	</resources>
+	<panels>
+		<panel classname='LicencePanel' />
+		<panel classname='TargetPanel' />
+		<panel classname='InstallPanel' />
+		<panel classname='ShortcutPanel' />
+		<panel classname='SimpleFinishPanel' />
+	</panels>
+	<packs>
+		<pack name='main pack' required='yes'>
+			<description>Main pack</description>
+			<file override='true' targetdir='$INSTALL_PATH/bin'
+				src='/tmp/jajuk-dist/jajuk/bin/jajuk.jar' />
+			<dir override='true' targetdir='$INSTALL_PATH/lib'
+				src='/tmp/jajuk-dist/jajuk/lib/windows'>
+				<os family='windows' />
+			</dir>
+			<fileset override='true' targetdir='$INSTALL_PATH/dist-files'
+				dir='/tmp/jajuk-dist/jajuk/dist-files' />
+			<fileset override='true' targetdir='$INSTALL_PATH/lib'
+				dir='/tmp/jajuk-dist/jajuk/lib'>
+				<os family='unix' />
+				<exclude name="**/*.dll" />
+			</fileset>
+			<fileset override='true' targetdir='$INSTALL_PATH/lib'
+				dir='/tmp/jajuk-dist/jajuk/lib'>
+				<os family='windows' />
+				<exclude name="lib*" />
+			</fileset>
+			<file override='true' targetdir='$INSTALL_PATH'
+				src='/tmp/jajuk-dist/jajuk/jajuk-icon-shortcut_64x64.png' />
+			<file override='true' targetdir='$INSTALL_PATH'
+				src='/tmp/jajuk-dist/jajuk/LICENSE-GPL.txt' />
+			<file override='true' targetdir='$INSTALL_PATH'
+				src='/tmp/jajuk-dist/jajuk/DERIVATED.txt' />
+			<file override='true' targetdir='$INSTALL_PATH'
+				src='/tmp/jajuk-dist/jajuk/README.html' />
+
+			<!-- Windows specific -->
+			<file override='true' targetdir='$INSTALL_PATH'
+				src='/tmp/mplayer/windows/mplayer.exe'>
+				<os family='windows' />
+			</file>
+			<file override='true' targetdir='$INSTALL_PATH'
+				src='/tmp/jajuk-dist/jajuk/jajuk.bat'>
+				<os family='windows' />
+			</file>
+			<file override='true' targetdir='$INSTALL_PATH'
+				src='/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-icon.ico'>
+				<os family='windows' />
+			</file>
+			<file override='true' targetdir='$INSTALL_PATH'
+				src='/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-uninstall.ico'>
+				<os family='windows' />
+			</file>
+			<file override='true' targetdir='$INSTALL_PATH/bin'
+				src='/tmp/jajuk-dist/jajuk/lib/JIntellitype.dll'>
+				<os family='windows' />
+			</file>
+			<file override='true' targetdir='$INSTALL_PATH'
+				src='/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-uninstall.png'>
+				<os family='windows' />
+			</file>
+
+			<!--Unix specific -->
+			<file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk'>
+				<os family='unix' />
+			</file>
+			<executable targetfile="$INSTALL_PATH/jajuk" stage="never">
+				<os family='unix' />
+			</executable>
+
+			<!--OSX specific -->
+			<!--
+				We don't include the mplayer binary here to save space. The binairy
+				will be embedded into app only
+			-->
+			<executable targetfile="$INSTALL_PATH/jajuk" stage="never">
+				<os family='mac' />
+			</executable>
+		</pack>
+	</packs>
 </installation>

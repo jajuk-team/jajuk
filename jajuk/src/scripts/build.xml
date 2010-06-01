@@ -6,12 +6,12 @@
 	<!--VARIABLES-->
 
 	<tstamp>
-		<format property="TODAY" pattern="yyyyMMdd" locale="en,UK" />
+		<format property='TODAY' pattern='yyyyMMdd' locale='en,UK' />
 	</tstamp>
 
 	<!-- Current date to be included into JNLP timestamp file -->
 	<tstamp>
-		<format property="TODAY-VERSION" pattern="yyyy-MM-dd hh:mm:ss" locale="en,UK" />
+		<format property='TODAY-VERSION' pattern='yyyy-MM-dd hh:mm:ss' locale='en,UK' />
 	</tstamp>
 
 	<!--Distribution release  
@@ -21,7 +21,7 @@
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
 
-	<!--Test flag: values: "test" or "notest" -->
+	<!--Test flag: values: 'test' or 'notest' -->
 	<property name='test' value='test' />
 
 	<!-- ======================= -->
@@ -71,6 +71,8 @@
 	<property name='jarname' value='jajuk.jar' />
 	<property name='distjarname' value='jajuk-java-installer-' />
 	<property name='sourcesdist' value='${sourcesdir}/jajuk-sources-${version}.zip' />
+	<property name='mplayerdir' value='/tmp/mplayer' />
+		
 	<!-- This used to be the intermediate directory used to build war file, we used a persisitent 
  	directory to use jar files in next war (each war contains current and previous jars for 
  	incremental upgrade). We don't use incremental udated anymore as it does require too much 
@@ -79,20 +81,20 @@
 	<property name='previousjnlpdir' value='${conf_jnlp-dist}/${previous_version}' />
 	<property name='srcdir' value='${basedir}/src' />
 
-	<target name="get-jvm">
+	<target name='get-jvm'>
 		<echo message='Verifying Java Version used for building, found version ${java.specification.version}, expecting ${jajuk.java.build.version6} or ${jajuk.java.build.version7}' />
-		<condition property="jvm.not.ok">
+		<condition property='jvm.not.ok'>
 			<not>
 				<or>
-					<equals arg1="${java.specification.version}" arg2="${jajuk.java.build.version6}" />
-					<equals arg1="${java.specification.version}" arg2="${jajuk.java.build.version7}" />
+					<equals arg1='${java.specification.version}' arg2='${jajuk.java.build.version6}' />
+					<equals arg1='${java.specification.version}' arg2='${jajuk.java.build.version7}' />
 				</or>
 			</not>
 		</condition>
 	</target>
 
-	<target name="check-jvm" depends="get-jvm" if="jvm.not.ok">
-		<fail message="Wrong Java version used for building: ${java.specification.version}, the build requires version ${jajuk.java.build.version6} or ${jajuk.java.build.version7}" />
+	<target name='check-jvm' depends='get-jvm' if='jvm.not.ok'>
+		<fail message='Wrong Java version used for building: ${java.specification.version}, the build requires version ${jajuk.java.build.version6} or ${jajuk.java.build.version7}' />
 	</target>
 
 	<target name='startup' depends='check-jvm'>
@@ -101,13 +103,14 @@
 		<echo message='Basedir: ${basedir}' />
 		<!--Prepare timestamp-->
 		<tstamp>
-			<format property="JAJUK_TIMESTAMP" pattern="yyyy-MM-dd HH:mm:ss" />
+			<format property='JAJUK_TIMESTAMP' pattern='yyyy-MM-dd HH:mm:ss' />
 		</tstamp>
 	</target>
 
 	<target name='clean' description='o Clean up previous build files'>
 		<delete failonerror='true' dir='${rootdir}' />
 		<delete failonerror='true' dir='${jnlpdir}' />
+		<delete failonerror='true' dir='${mplayerdir}' />
 	</target>
 
 
@@ -197,11 +200,22 @@
 			<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
 		</replace>
 	</target>
+	
+	<target name='download_mplayer'>
+		<!-- We include the mplayer staticaly linked binary under OSX and Windows --> 
+		<echo message='Download mplayer for inclusion inside packages' />
+		<!-- OSX mplayer -->
+		<mkdir dir='${mplayerdir}/osx'/>
+		<get src='http://repository.jajuk.info/mplayer/osx/1.0rc2/mplayer' dest='${mplayerdir}/osx'/>
+		<!-- Windows mplayer -->
+		<mkdir dir='${mplayerdir}/windows'/>
+		<get src='http://repository.jajuk.info/mplayer/20090114/mplayer.exe' dest='${mplayerdir}/osx'/>
+	</target>
 
 	<target name='compile'>
 		<echo message='Compile the code' />
 		<javac destdir='${distdir}/${classdir}' source='1.6' target='1.6' deprecation='true' debug='true' optimize='true' excludes='**/package.html' encoding='UTF-8'>
-			<compilerarg value="-Xlint:all" />
+			<compilerarg value='-Xlint:all' />
 			<src>
 				<pathelement path='${distdir}/src'>
 				</pathelement>
@@ -238,7 +252,7 @@
 		</copy>
 	</target>
 
-	<target name='package_jar' description='o Create Jajuk jar file' depends='startup,clean,mkdist_jar,compile'>
+	<target name='package_jar' description='o Create Jajuk jar file' depends='startup,clean,mkdist_jar,download_mplayer,compile'>
 		<echo message='Create Jajuk jar file' />
 		<jar jarfile='${distdir}/bin/${jarname}' excludes='**/package.html' manifest='${srcdir}/packaging/MANIFEST.MF' compress='true'>
 			<fileset dir='${distdir}/${classdir}' />
@@ -293,16 +307,16 @@
 	<target name='package_macos' description='o Create Jajuk MAC OS package' depends='startup,clean,mkdist_macos,package_jar,jarbundler'>
 		<echo message='Create Jajuk MAC OS package' />
 		<!-- Create the distribution directory -->
-		<mkdir dir="${distdir}/macos" />
-		<zip zipfile="${distdir}/jajuk-macos-${version}.zip">
-			<zipfileset dir="${distdir}/jarbundler/Jajuk.app/Contents" filemode="755" prefix="Jajuk.app/Contents">
-				<include name="MacOS/JavaApplicationStub" />
-				<include name="PkgInfo" />
-				<include name="Info.plist" />
-				<include name="Resources/**" />
+		<mkdir dir='${distdir}/macos' />
+		<zip zipfile='${distdir}/jajuk-macos-${version}.zip'>
+			<zipfileset dir='${distdir}/jarbundler/Jajuk.app/Contents' filemode='755' prefix='Jajuk.app/Contents'>
+				<include name='MacOS/JavaApplicationStub' />
+				<include name='PkgInfo' />
+				<include name='Info.plist' />
+				<include name='Resources/**' />
 			</zipfileset>
-			<fileset file="${basedir}/src/doc/README.html" />
-			<fileset file="${basedir}/src/legals/LICENSE.txt" />
+			<fileset file='${basedir}/src/doc/README.html' />
+			<fileset file='${basedir}/src/legals/LICENSE.txt' />
 		</zip>
 	</target>
 
@@ -314,9 +328,9 @@
 
 	<!-- Windows EXE creation-->
 	<target name='package_sfx' description='o Create Jajuk Windows executable file' depends='startup,clean,mkdist_sfx,package_jar,package_izpack'>
-		<taskdef name="jsmoothgen" classname="net.charabia.jsmoothgen.ant.JSmoothGen" classpath="${conf_jsmoothgendir}/lib/jsmoothgen-ant.jar" />
+		<taskdef name='jsmoothgen' classname='net.charabia.jsmoothgen.ant.JSmoothGen' classpath='${conf_jsmoothgendir}/lib/jsmoothgen-ant.jar' />
 		<echo message='Create Jajuk Windows executable file' />
-		<jsmoothgen project="${rootdir}/windows/jajuk.jsmooth" skeletonroot="${conf_jsmoothgendir}/skeletons" />
+		<jsmoothgen project='${rootdir}/windows/jajuk.jsmooth' skeletonroot='${conf_jsmoothgendir}/skeletons' />
 	</target>
 
 
@@ -347,11 +361,11 @@
 			<fileset file='${srcdir}/packaging/jnlp/windows/*.jar' />
 		</copy>
 		<!-- Rename all jars to add JNLP-way release: <name>__V<release>.jar -->
-		<move todir="${jnlpdir}">
-			<fileset dir="${jnlpdir}">
-				<include name="**/*.jar" />
+		<move todir='${jnlpdir}'>
+			<fileset dir='${jnlpdir}'>
+				<include name='**/*.jar' />
 			</fileset>
-			<mapper type="glob" from="*.jar" to="*__V${version}.jar" />
+			<mapper type='glob' from='*.jar' to='*__V${version}.jar' />
 		</move>
 
 		<!-- Set release in user jnlp file-->
@@ -372,13 +386,13 @@
 
 		<!--Copy previous release jars, comment this if you have no previous release
 		<copy todir='${jnlpdir}/app'>
-			<fileset dir="${previousjnlpdir}/app">
-				<include name="**/*.jar" />
+			<fileset dir='${previousjnlpdir}/app'>
+				<include name='**/*.jar' />
 			</fileset>
 		</copy>
 		-->
 		<!-- Sign all jars -->
-		<signjar alias="jajukteam" storepass="passpass">
+		<signjar alias='jajukteam' storepass='passpass'>
 			<fileset dir='${jnlpdir}'>
 				<include name='**/*.jar' />
 			</fileset>
@@ -446,14 +460,14 @@
 		</copy>
 		<!--DO SOMETHING BETTER HERE -->
 		<copy todir='${rpmdistdir}${installdir}/lib'>
-			<fileset file="${basedir}/lib/*.jar">
+			<fileset file='${basedir}/lib/*.jar'>
 			</fileset>
 		</copy>
 		<copy todir='${rpmdistdir}${installdir}/lib'>
-			<fileset file="${basedir}/lib/lib32/*.so" />
+			<fileset file='${basedir}/lib/lib32/*.so' />
 		</copy>
 		<copy todir='${rpmdistdir}${installdir}/lib64'>
-			<fileset file="${basedir}/lib/lib64/*.so" />
+			<fileset file='${basedir}/lib/lib64/*.so' />
 		</copy>
 		<copy todir='${rpmdistdir}${installdir}/lib'>
 			<fileset file='${basedir}/src/legals/*.*' />
@@ -534,15 +548,15 @@
 
 	<!--jarbundler Mac OS X package creation -->
 	<target name='jarbundler' depends='package_jar'>
-		<taskdef name='jarbundler' classpath='${conf_jarbundler}/${conf_jarbundler-jar}' classname="net.sourceforge.jarbundler.JarBundler" />
+		<taskdef name='jarbundler' classpath='${conf_jarbundler}/${conf_jarbundler-jar}' classname='net.sourceforge.jarbundler.JarBundler' />
 		<echo message='jarbundler' />
 		<mkdir dir='${distdir}/jarbundler/' />
-		<jarbundler dir="${distdir}/jarbundler/" name="Jajuk" mainclass="org.jajuk.Main" icon="${distdir}/dist-files/images/jajuk-icon_source.icns" jvmversion="1.6+" version="${version}" infostring="Jajuk" stubfile="${basedir}/src/packaging/jarbundler/JavaApplicationStub" build="${version}" vmoptions="-client -Xms20M -Xmx512M -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -jar jajuk.jar TEST_FLAG_REPLACED_BY_ANT">
-			<jarfileset dir="${distdir}/lib">
-				<include name="**/*.jar" />
+		<jarbundler dir='${distdir}/jarbundler/' name='Jajuk' mainclass='org.jajuk.Main' icon='${distdir}/dist-files/images/jajuk-icon_source.icns' jvmversion='1.6+' version='${version}' infostring='Jajuk' stubfile='${basedir}/src/packaging/jarbundler/JavaApplicationStub' build='${version}' vmoptions='-client -Xms20M -Xmx512M -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -jar jajuk.jar TEST_FLAG_REPLACED_BY_ANT'>
+			<jarfileset dir='${distdir}/lib'>
+				<include name='**/*.jar' />
 			</jarfileset>
-			<jarfileset dir="${distdir}/bin">
-				<include name="**/*.jar" />
+			<jarfileset dir='${distdir}/bin'>
+				<include name='**/*.jar' />
 			</jarfileset>
 		</jarbundler>
 	</target>
@@ -560,18 +574,18 @@
 		</copy>
 
 		<!-- Generate MD5 http://ant.apache.org/manual/CoreTasks/checksum.html -->
-		<checksum file="${conf_uploaddir}/jajuk-sources-${version}.zip" forceOverwrite="yes" fileext=".md5" />
-		<checksum file="${conf_uploaddir}/jajuk-${version}-1.noarch.rpm" forceOverwrite="yes" fileext=".md5" />
-		<checksum file="${conf_uploaddir}/jajuk-${version}-win32-setup.exe" forceOverwrite="yes" fileext=".md5" />
-		<checksum file="${conf_uploaddir}/jajuk-java-installer-${version}.jar" forceOverwrite="yes" fileext=".md5" />
-		<checksum file="${conf_uploaddir}/jajuk-macos-${version}.zip" forceOverwrite="yes" fileext=".md5" />
+		<checksum file='${conf_uploaddir}/jajuk-sources-${version}.zip' forceOverwrite='yes' fileext='.md5' />
+		<checksum file='${conf_uploaddir}/jajuk-${version}-1.noarch.rpm' forceOverwrite='yes' fileext='.md5' />
+		<checksum file='${conf_uploaddir}/jajuk-${version}-win32-setup.exe' forceOverwrite='yes' fileext='.md5' />
+		<checksum file='${conf_uploaddir}/jajuk-java-installer-${version}.jar' forceOverwrite='yes' fileext='.md5' />
+		<checksum file='${conf_uploaddir}/jajuk-macos-${version}.zip' forceOverwrite='yes' fileext='.md5' />
 
 		<!-- Generate SHA http://ant.apache.org/manual/CoreTasks/checksum.html -->
-		<checksum file="${conf_uploaddir}/jajuk-sources-${version}.zip" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
-		<checksum file="${conf_uploaddir}/jajuk-${version}-1.noarch.rpm" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
-		<checksum file="${conf_uploaddir}/jajuk-${version}-win32-setup.exe" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
-		<checksum file="${conf_uploaddir}/jajuk-java-installer-${version}.jar" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
-		<checksum file="${conf_uploaddir}/jajuk-macos-${version}.zip" forceOverwrite="yes" algorithm="SHA" fileext=".asc" />
+		<checksum file='${conf_uploaddir}/jajuk-sources-${version}.zip' forceOverwrite='yes' algorithm='SHA' fileext='.asc' />
+		<checksum file='${conf_uploaddir}/jajuk-${version}-1.noarch.rpm' forceOverwrite='yes' algorithm='SHA' fileext='.asc' />
+		<checksum file='${conf_uploaddir}/jajuk-${version}-win32-setup.exe' forceOverwrite='yes' algorithm='SHA' fileext='.asc' />
+		<checksum file='${conf_uploaddir}/jajuk-java-installer-${version}.jar' forceOverwrite='yes' algorithm='SHA' fileext='.asc' />
+		<checksum file='${conf_uploaddir}/jajuk-macos-${version}.zip' forceOverwrite='yes' algorithm='SHA' fileext='.asc' />
 	</target>
 
 	<!-- Light build target -->
