@@ -74,7 +74,7 @@ public final class UtilSystem {
   private static final String LOCAL_IP = "127.0.0.1";
 
   /** Size of the short names converter in bytes */
-  private static final int CONVERTER_FILE_SIZE = 74;
+  private static final int CONVERTER_FILE_SIZE = 78;
 
   /**
    * MPlayer status possible values *.
@@ -154,7 +154,6 @@ public final class UtilSystem {
         && ((sArch != null) && sArch.matches(".*86.*"));
   }
 
-  
   /** Icons cache. */
   static Map<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>(200);
 
@@ -609,7 +608,7 @@ public final class UtilSystem {
   public static URL getJarLocation(final Class<?> cClass) {
     return cClass.getProtectionDomain().getCodeSource().getLocation();
   }
-  
+
   /**
    * Gets the m player windows path.
    * 
@@ -689,7 +688,8 @@ public final class UtilSystem {
       String sPATH = null;
       try {
         if (SessionService.isIdeMode()) {
-          // If under dev, take mplayer exe file from /Applications (the mplayer osx binary is not in SCM)
+          // If under dev, take mplayer exe file from /Applications (the mplayer osx binary is not
+          // in SCM)
           sPATH = "/Applications";
         } else {
           sPATH = new File(getJarLocation(Main.class).toURI()).getParentFile().getParentFile()
@@ -749,8 +749,6 @@ public final class UtilSystem {
     }
     return mplayerStatus;
   }
-
-  
 
   /**
    * This method intends to cleanup a future filename so it can be created on
@@ -839,7 +837,7 @@ public final class UtilSystem {
     return UtilSystem.UNDER_LINUX;
   }
 
-   /**
+  /**
   * Checks if is under OSX (Intel or PowerPC)
   * 
   * @return whether we are under OS X 
@@ -848,7 +846,6 @@ public final class UtilSystem {
     return UtilSystem.UNDER_OSX;
   }
 
-  
   /**
    * Checks if is under windows.
    * 
@@ -1233,16 +1230,20 @@ public final class UtilSystem {
           || (fileConverter.exists() && fileConverter.length() != CONVERTER_FILE_SIZE)) {
         FileWriter fw = new FileWriter(fileConverter);
         fw.write("@echo off\n");
-        fw.write("set name=%*\n");
-        fw.write("for %%X in (%name%) do set name=\"%%~sX\"\n");
+        fw.write("set name=%~s1\n");
+        fw.write("for %%X in (\"%name%\") do set name=\"%%~sX\"\n");
         fw.write("echo %name%\n");
         fw.flush();
         fw.close();
       }
-      ProcessBuilder pc = new ProcessBuilder(fileConverter.getAbsolutePath(), longname);
+      // these two quotes are required in the case where both directory and file are non-ascii
+      ProcessBuilder pc = new ProcessBuilder(fileConverter.getAbsolutePath(), "\"" + longname
+          + "\"");
       Process process = pc.start();
       BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
       shortname = br.readLine();
+      // Drop the two quotes
+      shortname = shortname.replaceAll("\"", "");
       process.destroy();
     } catch (Exception e) {
       throw new JajukRuntimeException("Cannot convert the filename to 8.3 format", e);
