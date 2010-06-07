@@ -679,7 +679,13 @@ public final class UtilSystem {
     if (UtilSystem.mplayerPath != null) {
       return UtilSystem.mplayerPath;
     }
-    File file = null;
+    // Search in /Applications first
+    File file = new File("/Applications/Jajuk.app/Contents/Resources/External_Binaries/"+Const.FILE_MPLAYER_OSX_EXE);
+    if (file.canExecute() && file.length() == Const.MPLAYER_OSX_EXE_SIZE){
+      UtilSystem.mplayerPath = file;
+      return UtilSystem.mplayerPath;
+    }
+    // Search in collection path
     file = SessionService.getConfFileByPath(Const.FILE_MPLAYER_OSX_EXE);
     if (file.exists() && file.length() == Const.MPLAYER_OSX_EXE_SIZE) {
       UtilSystem.mplayerPath = file;
