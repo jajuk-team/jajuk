@@ -371,17 +371,7 @@ public final class Conf implements Const {
    *          DOCUMENT_ME
    */
   public static void setProperty(String sName, String sValue) {
-    // Use unicode representation for non-ascii chars
-    StringBuffer finalValue = new StringBuffer(sValue.length());
-    for (char c : sValue.toCharArray()) {
-      if ( c > 127) {
-        char[] tabChar = new char[] { c };
-        finalValue.append(UtilString.encodeToUnicode(new String(tabChar)));
-      } else {
-        finalValue.append(c);
-      }
-    }
-    properties.setProperty(sName, finalValue.toString());
+   properties.setProperty(sName, sValue);
   }
 
   /**
