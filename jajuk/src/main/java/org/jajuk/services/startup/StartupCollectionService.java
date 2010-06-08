@@ -146,6 +146,7 @@ public class StartupCollectionService {
             Log.debug("Download Mplayer from: " + Const.URL_MPLAYER_OSX);
             File fMPlayer = SessionService.getConfFileByPath(Const.FILE_MPLAYER_OSX_EXE);
             DownloadManager.download(new URL(Const.URL_MPLAYER_OSX), fMPlayer);
+            fMPlayer.setExecutable(true);
            if (fMPlayer.length() != Const.MPLAYER_OSX_EXE_SIZE) {
               if (!fMPlayer.delete()) {
                 Log.warn("Could not delete file " + fMPlayer);
