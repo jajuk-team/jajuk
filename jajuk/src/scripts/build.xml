@@ -310,7 +310,7 @@
 		<mkdir dir='${distdir}/macos' />
 		<!-- Copy mplayer OSX binary into it -->
 		<mkdir dir='${distdir}/jarbundler/Jajuk.app/Contents/Resources/External_Binaries'/>
-		<copy file='${mplayerdir}/osx/mplayer' to='${distdir}/jarbundler/Jajuk.app/Contents/Resources/External_Binaries'/>
+		<copy file='${mplayerdir}/osx/mplayer' todir='${distdir}/jarbundler/Jajuk.app/Contents/Resources/External_Binaries'/>
 		<zip zipfile='${distdir}/jajuk-macos-${version}.zip'>
 			<zipfileset dir='${distdir}/jarbundler/Jajuk.app/Contents' filemode='755' prefix='Jajuk.app/Contents'>
 				<include name='MacOS/JavaApplicationStub' />
