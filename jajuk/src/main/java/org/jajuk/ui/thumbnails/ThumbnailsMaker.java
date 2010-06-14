@@ -129,9 +129,9 @@ public final class ThumbnailsMaker {
     // don't figured out so far how to
     // build proper JAR path. We keep things like it for the moment, pictures
     // are built in the main JVM instead of separated ones
-    final String jarPath = new File(UtilSystem.getJarLocation(Main.class).toURI())
-        .getAbsolutePath()
-        + File.separator + "jajuk.jar";
+    String jarPath = UtilSystem.getJarLocation(Main.class).getPath();
+    jarPath = jarPath.replaceAll(".*:", "");
+    jarPath = jarPath  +"jajuk.jar";
     final List<String> commands = new ArrayList<String>(10);
     commands.add(jvmPath);
     commands.add("-Xms50M");
