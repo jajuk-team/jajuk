@@ -31,6 +31,7 @@ import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -48,7 +49,6 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.widgets.JajukFileChooser;
-import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.ui.widgets.PathSelector;
 import org.jajuk.ui.widgets.ToggleLink;
@@ -66,8 +66,11 @@ import org.jdesktop.swingx.VerticalLayout;
 
 /**
  * First time Wizard.
+ * 
  */
-public class FirstTimeWizard extends JajukJDialog implements ActionListener, PropertyChangeListener {
+public class FirstTimeWizard extends JDialog implements ActionListener, PropertyChangeListener {
+  // Do not extend JajukJDialog because it requires main window to be instanciated and it comes with
+  // many trouble (like Global keystrokes issues in file path selection) in this low-level dialog
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
@@ -116,7 +119,7 @@ public class FirstTimeWizard extends JajukJDialog implements ActionListener, Pro
    */
   public FirstTimeWizard() {
     super();
-
+    setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
     initUI();
     pack();
     final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
