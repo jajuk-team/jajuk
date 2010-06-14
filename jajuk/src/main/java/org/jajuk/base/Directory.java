@@ -437,7 +437,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       reporter.notifyNewFile();
     }
 
-    // Store oldDiscID, it is used to clone album and track 
+    // Store oldDiscID, it is used to clone album and track
     // properties when album disc ID was unset to avoid loosing ratings or custom properties
     long oldDiscID = 0;
     if (fileRef != null) {
@@ -485,8 +485,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     long trackNumber = TrackManager.getInstance().getElementCount();
     Track track = TrackManager.getInstance().registerTrack(sTrackName, album, genre, artist,
         length, year, lOrder, type, discNumber);
-    // Fix for #1630 : if a album discID = 0 or -1 (when upgrading from older releases), we 
-    // clone the properties from the old track mapped with the old album id so we keep rating 
+    // Fix for #1630 : if a album discID = 0 or -1 (when upgrading from older releases), we
+    // clone the properties from the old track mapped with the old album id so we keep rating
     // (among other data)
     if (oldDiskID == -1 || oldDiskID == 0) {
       String oldAlbumID = AlbumManager.createID(sAlbumName, oldDiskID);
@@ -863,7 +863,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           // sub-directories
           && (plf.getDirectory().equals(this) || plf.getDirectory().isChildOf(this))
           && plf.isReady() && !plf.getFIO().exists()) {
-        PlaylistManager.getInstance().removePlaylistFile(plf);
+        PlaylistManager.getInstance().removeItem(plf);
         Log.debug("Removed: " + plf);
         bChanges = true;
       }

@@ -792,7 +792,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
           // Remove the session file to avoid getting a message when
           // switching to new workspace
           java.io.File session = SessionService.getSessionIdFile();
-          session.delete();
+          UtilSystem.deleteFile(session);
 
           UtilSystem.copyRecursively(from, dest);
           bPreviousPathExist = false;

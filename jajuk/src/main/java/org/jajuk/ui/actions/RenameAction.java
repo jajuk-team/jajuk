@@ -40,6 +40,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -109,7 +110,7 @@ public class RenameAction extends JajukAction {
               java.io.File newFile = new java.io.File(((Directory) currentItem)
                   .getParentDirectory().getAbsolutePath()
                   + "/" + newName);
-              ((Directory) currentItem).getFio().renameTo(newFile);
+              UtilSystem.move(((Directory) currentItem).getFio(), newFile);
               DirectoryManager.getInstance().removeDirectory(((Directory) currentItem).getID());
               (((Directory) currentItem).getParentDirectory()).refresh(false, null);
               ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));

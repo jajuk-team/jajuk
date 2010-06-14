@@ -489,9 +489,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     try {
       final File file = new File(cover.getURL().getFile());
       if (file.isFile() && file.exists()) {
-        if (!file.delete()) {
-          throw new Exception("Deleting file " + file.toString() + " failed");
-        }
+        UtilSystem.deleteFile(file);
       } else { // not a file, must have a problem
         throw new Exception("Encountered file which either is not a file or does not exist: "
             + file);

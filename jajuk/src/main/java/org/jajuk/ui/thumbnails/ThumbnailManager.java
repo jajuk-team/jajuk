@@ -67,15 +67,21 @@ public final class ThumbnailManager {
     if (fThumb.exists()) {
       File[] files = fThumb.listFiles();
       for (File file : files) {
-        if (!file.getAbsolutePath().matches(".*" + Const.FILE_THUMB_NO_COVER) && !file.delete()) {
-          Log.warn("Could not delete " + file.toString());
+        if (!file.getAbsolutePath().matches(".*" + Const.FILE_THUMB_NO_COVER)) {
+          try {
+            UtilSystem.deleteFile(file);
+          } catch (IOException e) {
+            Log.error(e);
+          }
         }
       }
       // Refresh default cover
       File fDefault = SessionService.getConfFileByPath(Const.FILE_THUMBS + "/" + size + "/"
           + Const.FILE_THUMB_NO_COVER);
-      if (fDefault.exists() && !fDefault.delete()) {
-        Log.warn("Could not delete " + fDefault.toString());
+      if (fDefault.exists()) {
+        if (!fDefault.delete()) {
+          Log.warn("Could not delete " + fDefault.toString());
+        }
       }
       try {
         int iSize = Integer.parseInt(new StringTokenizer(size, "x").nextToken());

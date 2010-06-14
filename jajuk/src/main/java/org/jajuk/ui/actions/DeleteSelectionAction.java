@@ -33,10 +33,10 @@ import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.Genre;
 import org.jajuk.base.Item;
 import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistManager;
-import org.jajuk.base.Genre;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.events.JajukEvent;
@@ -57,7 +57,7 @@ import org.jajuk.util.log.Log;
  * DOCUMENT_ME.
  */
 public class DeleteSelectionAction extends SelectionAction {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -70,7 +70,9 @@ public class DeleteSelectionAction extends SelectionAction {
     setShortDescription(Messages.getString("FilesTreeView.7"));
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.actions.SelectionAction#perform(java.awt.event.ActionEvent)
    */
   @Override
@@ -113,9 +115,14 @@ public class DeleteSelectionAction extends SelectionAction {
           int i = Messages.getChoice(sMessage, JOptionPane.YES_NO_CANCEL_OPTION,
               JOptionPane.WARNING_MESSAGE);
           if (i == JOptionPane.YES_OPTION) {
-            PlaylistManager.getInstance().removePlaylistFile(plf);
-            // requires device refresh
-            ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+            try {
+              PlaylistManager.getInstance().deletePlaylistFile(plf);
+              // requires device refresh
+              ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+            } catch (Exception e2) {
+              Log.error(e2);
+              Messages.showErrorMessage(131);
+            }
           }
         }
       }

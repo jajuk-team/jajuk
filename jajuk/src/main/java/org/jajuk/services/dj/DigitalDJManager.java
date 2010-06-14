@@ -25,6 +25,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,6 +52,7 @@ import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
@@ -188,10 +190,11 @@ public final class DigitalDJManager implements Observer {
    * 
    * @param dj DOCUMENT_ME
    */
-  public void remove(DigitalDJ dj) {
+  public void remove(DigitalDJ dj) throws IOException {
     djs.remove(dj.getID());
-    SessionService.getConfFileByPath(
-        Const.FILE_DJ_DIR + "/" + dj.getID() + "." + Const.XML_DJ_EXTENSION).delete();
+    File file = SessionService.getConfFileByPath(Const.FILE_DJ_DIR + "/" + dj.getID() + "."
+        + Const.XML_DJ_EXTENSION);
+    UtilSystem.deleteFile(file);
     // reset default DJ if this DJ was default
     if (Conf.getString(Const.CONF_DEFAULT_DJ).equals(dj.getID())) {
       Conf.setProperty(Const.CONF_DEFAULT_DJ, "");
@@ -226,7 +229,11 @@ public final class DigitalDJManager implements Observer {
           int i = Messages.getChoice(Messages.getString("DigitalDJWizard.61") + " " + lDJ.getName()
               + " ?", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
           if (i == JOptionPane.YES_OPTION) {
-            remove(lDJ);
+            try {
+              remove(lDJ);
+            } catch (IOException e) {
+              Log.error(e);
+            }
           } else {
             return;
           }
@@ -397,8 +404,10 @@ abstract class DigitalDJFactory extends DefaultHandler {
     catch (Exception e) {
       Log.error(e);
       Log.debug("Corrupted DJ: {{" + file.getAbsolutePath() + "}} deleted");
-      if (!file.delete()) {
-        Log.warn("Could not delete file: " + file.toString());
+      try {
+        UtilSystem.deleteFile(file);
+      } catch (IOException ioe) {
+        Log.error(ioe);
       }
     }
     return null;

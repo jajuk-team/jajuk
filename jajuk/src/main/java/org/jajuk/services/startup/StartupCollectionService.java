@@ -254,12 +254,13 @@ public class StartupCollectionService {
     // commited during last jajuk session
     try {
       if (fCollectionExit.exists() && fCollectionExitProof.exists()) {
-        fCollectionExitProof.delete(); // delete this file created just
+        // delete this file created just
         // after collection exit commit
+        UtilSystem.deleteFile(fCollectionExitProof);
         Collection.load(fCollectionExit);
         // Remove the collection (required by renameTo next line under
         // Windows)
-        fCollection.delete();
+        UtilSystem.deleteFile(fCollection);
         // parsing of collection exit ok, use this collection file as
         // final collection
         if (!fCollectionExit.renameTo(fCollection)) {
@@ -277,7 +278,11 @@ public class StartupCollectionService {
           + "we try to load a backup file");
       // Remove the corrupted collection file
       if (fCollectionExit.exists()) {
-        fCollectionExit.delete();
+        try {
+          UtilSystem.deleteFile(fCollectionExit);
+        } catch (IOException e1) {
+          Log.error(e1);
+        }
       }
 
     }

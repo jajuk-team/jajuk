@@ -23,6 +23,7 @@ package org.jajuk.ui.perspectives;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -46,6 +47,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -100,7 +102,11 @@ public final class PerspectiveManager {
       if (UpgradeManager.doNeedPerspectiveResetAtUpgrade()) {
         // upgrade message
         Messages.showInfoMessage(Messages.getString("Note.0"));
-        resetPerspectives();
+        try {
+          resetPerspectives();
+        } catch (IOException e) {
+          Log.error(e);
+        }
       }
     }
     // Load each perspective
@@ -113,7 +119,7 @@ public final class PerspectiveManager {
     }
   }
 
-  private static void resetPerspectives() {
+  private static void resetPerspectives() throws IOException {
     List<String> perspectivesToReset = Arrays.asList(PerspectiveManager.perspectivesToReset);
     for (IPerspective perspective : getPerspectives()) {
       String className = perspective.getClass().getSimpleName();
@@ -122,9 +128,7 @@ public final class PerspectiveManager {
       File loadFile = SessionService.getConfFileByPath(className + ".xml");
       if (loadFile.exists()
           && (perspectivesToReset.contains(className) || UpgradeManager.isMajorMigration())) {
-        if (!loadFile.delete()) {
-          Log.warn("Could not delete file " + loadFile);
-        }
+        UtilSystem.deleteFile(loadFile);
       }
     }
   }

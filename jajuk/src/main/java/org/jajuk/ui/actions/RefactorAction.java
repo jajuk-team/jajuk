@@ -123,7 +123,7 @@ public class RefactorAction {
       final java.io.File fOld = fCurrent.getFIO();
       final String sPathname = fCurrent.getDevice().getFio().getPath() + RefactorAction.sFS
           + filename;
-      final java.io.File fNew = new java.io.File(sPathname);
+      java.io.File fNew = new java.io.File(sPathname);
 
       // Confirm if destination dir already exist
       if (fNew.getParentFile().exists() && !bOKToOverwrite) {
@@ -201,9 +201,24 @@ public class RefactorAction {
         DirectoryManager.getInstance().removeDirectory(fOld.getParent());
       } else if (list.length != 0) {
         for (final java.io.File f : list) {
-          f.renameTo(new java.io.File(fNew.getParent() + RefactorAction.sFS + f.getName()));
+          fNew = new java.io.File(fNew.getParent() + RefactorAction.sFS + f.getName());
+          try {
+            bRenameSuccess = f.renameTo(fNew);
+            if (!bRenameSuccess) {
+              sErrors += f.getAbsolutePath() + " (" + Messages.getString("Error.154") + ")\n";
+            }
+            Log.debug("[Refactoring] {{" + fNew.getAbsolutePath() + "}} Success ? "
+                + bRenameSuccess);
+
+          } catch (Exception e) {
+            Log.error(e);
+            sErrors += f.getAbsolutePath() + " (" + Messages.getString("Error.161") + ")\n";
+          }
         }
-      } else if (list.length == 0 && dOld.delete()) {
+      }
+      // Only try to remove old directory, will work if actually empty, 
+      // do not force deletion here
+      else if (list.length == 0 && dOld.delete()) {
         DirectoryManager.getInstance().removeDirectory(fOld.getParent());
       }
 

@@ -60,7 +60,11 @@ public class TxtPersister implements ILyricsPersister {
       return true;
     } catch (Exception e) {
       Log.error(e);
-      lyricsFile.delete();
+      try {
+        UtilSystem.deleteFile(lyricsFile);
+      } catch (IOException e1) {
+        Log.error(e1);
+      }
       lyricsFile = null;
       return false;
     }
@@ -70,10 +74,10 @@ public class TxtPersister implements ILyricsPersister {
   /* (non-Javadoc)
    * @see org.jajuk.services.lyrics.persisters.ILyricsPersister#deleteLyrics(org.jajuk.services.lyrics.providers.JajukLyricsProvider)
    */
-  public void deleteLyrics(JajukLyricsProvider jProvider) {
+  public void deleteLyrics(JajukLyricsProvider jProvider) throws IOException{
     provider = jProvider;
     lyricsFile = getLyricsFile();
-    lyricsFile.delete();    
+    UtilSystem.deleteFile(lyricsFile);    
   }
 
   /**

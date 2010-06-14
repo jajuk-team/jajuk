@@ -21,6 +21,8 @@
 
 package org.jajuk.services.lyrics.persisters;
 
+import java.io.IOException;
+
 import org.jajuk.services.lyrics.providers.JajukLyricsProvider;
 
 /**
@@ -36,14 +38,15 @@ public interface ILyricsPersister {
    * 
    * @return true if OK, false otherwise
    */
-  boolean commitLyrics(JajukLyricsProvider provider);
+  boolean commitLyrics(JajukLyricsProvider provider) throws IOException;
   
   /**
    * Deletes Lyrics that user has saved <br>
    * in Tag or in a Txt file.
    * 
    * @param provider DOCUMENT_ME
+   * @throws IOException 
    */
-  void deleteLyrics(JajukLyricsProvider provider);
+  void deleteLyrics(JajukLyricsProvider provider) throws IOException;
 
 }

@@ -23,6 +23,7 @@ package org.jajuk.services.lyrics;
 
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -149,8 +150,9 @@ public final class LyricsService {
    * DOCUMENT_ME
    * 
    * @param provider DOCUMENT_ME
+   * @throws IOException 
    */
-  public static void commitLyrics(JajukLyricsProvider provider) {
+  public static void commitLyrics(JajukLyricsProvider provider) throws IOException {
     boolean commitOK = false;
     Log.debug("Commiting lyrics for file {{" + provider + "}}");
     for (final ILyricsPersister persister : getPersisters()) {    
@@ -173,8 +175,9 @@ public final class LyricsService {
    * DOCUMENT_ME
    * 
    * @param provider DOCUMENT_ME
+   * @throws IOException 
    */
-  public static void deleteLyrics(JajukLyricsProvider provider) {
+  public static void deleteLyrics(JajukLyricsProvider provider) throws IOException {
     for (final ILyricsPersister persister : getPersisters()) {    
       persister.deleteLyrics(provider);
     }

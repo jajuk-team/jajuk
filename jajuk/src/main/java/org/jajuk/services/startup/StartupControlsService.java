@@ -31,6 +31,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -88,8 +89,8 @@ public class StartupControlsService {
       final File[] cacheFiles = fCache.listFiles();
       for (final File element : cacheFiles) {
         long fileAge = System.currentTimeMillis() - element.lastModified();
-        if (element.isFile() && fileAge > Const.CACHE_MAX_AGE && !element.delete()) {
-          Log.warn("Could not delete file " + element.toString());
+        if (element.isFile() && fileAge > Const.CACHE_MAX_AGE ) {
+          UtilSystem.deleteFile(element);
         }
       }
     }

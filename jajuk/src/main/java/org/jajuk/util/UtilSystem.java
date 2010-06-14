@@ -203,8 +203,10 @@ public final class UtilSystem {
         // too much backup files, delete older
         if (((lUsedMB - file.length()) / 1048576 > iMB) && (alFiles.size() > 0)) {
           final File fileToDelete = alFiles.get(0);
-          if ((fileToDelete != null) && (!fileToDelete.delete())) {
-            Log.warn("Could not delete file " + fileToDelete);
+          if (fileToDelete != null) {
+            if (!fileToDelete.delete()) {
+              Log.warn("Could not delete file " + fileToDelete);
+            }
           }
         }
       }
@@ -390,7 +392,7 @@ public final class UtilSystem {
   }
 
   /**
-   * Delete a directory.
+   * Delete recursively a directory (use with caution!).
    * 
    * @param dir : source directory
    * 
@@ -916,7 +918,7 @@ public final class UtilSystem {
         }
         // remove test file
         if (f.exists()) {
-          f.delete();
+          UtilSystem.deleteFile(f);
         }
         return b;
       } catch (final IOException ioe) {

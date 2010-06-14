@@ -301,9 +301,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
       // Remove current conf file to force using default file from the
       // jar
       File loadFile = SessionService.getConfFileByPath(getClass().getSimpleName() + XML_EXT);
-      if (!loadFile.delete()) {
-        Log.warn("Could not delete file " + loadFile.toString());
-      }
+      UtilSystem.deleteFile(loadFile);
 
       // Remove all registered dockables
       DockableState[] ds = getDockables();

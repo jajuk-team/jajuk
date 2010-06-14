@@ -22,6 +22,7 @@ package org.jajuk.ui.wizard;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -1484,7 +1485,11 @@ public class DigitalDJWizard extends Wizard {
     DigitalDJ dj = null;
     String sAction = (String) data.get(KEY_ACTION);
     if (ActionSelectionPanel.ACTION_DELETE.equals(sAction)) {
-      DigitalDJManager.getInstance().remove((DigitalDJ) data.get(KEY_REMOVE));
+      try {
+        DigitalDJManager.getInstance().remove((DigitalDJ) data.get(KEY_REMOVE));
+      } catch (IOException e) {
+        Log.error(e);
+      }
     } else if (ActionSelectionPanel.ACTION_CREATION.equals(sAction)) {
       String sType = (String) data.get(KEY_DJ_TYPE);
       // create a unique ID for this DJ, simply use current time in ms

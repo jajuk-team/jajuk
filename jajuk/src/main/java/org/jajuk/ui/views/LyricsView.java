@@ -26,6 +26,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -69,6 +70,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
+import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
 
 /**
@@ -208,7 +210,11 @@ public class LyricsView extends ViewAdapter {
       @Override
       public void mouseClicked(final MouseEvent ev) {
         jajukLyricsProvider.setLyrics(textarea.getText());
-        LyricsService.commitLyrics(jajukLyricsProvider);
+        try {
+          LyricsService.commitLyrics(jajukLyricsProvider);
+        } catch (IOException e) {
+          Log.error(e);
+        }
         exitEditLyrics(false);
       }
     });
@@ -219,7 +225,11 @@ public class LyricsView extends ViewAdapter {
     jbDelete.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(final MouseEvent ev) {
-        LyricsService.deleteLyrics(jajukLyricsProvider);
+        try {
+          LyricsService.deleteLyrics(jajukLyricsProvider);
+        } catch (IOException e) {
+          Log.error(e);
+        }
         exitEditLyrics(true);
       }
     });

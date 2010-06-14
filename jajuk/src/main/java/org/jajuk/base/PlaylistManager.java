@@ -43,7 +43,7 @@ import org.jajuk.util.log.Log;
  * Convenient class to manage playlists.
  */
 public final class PlaylistManager extends ItemManager implements Observer {
-  
+
   /** Self instance. */
   private static PlaylistManager singleton;
 
@@ -103,28 +103,35 @@ public final class PlaylistManager extends ItemManager implements Observer {
   }
 
   /**
-   * Delete a playlist.
+   * Remove a playlist.
    * 
-   * @param plf DOCUMENT_ME
+   * @param plf the playlist
    */
-  public synchronized void removePlaylistFile(Playlist plf) {
+  public synchronized void removePlaylistFile(Playlist plf) throws IOException{
     String sFileToDelete = plf.getDirectory().getFio().getAbsoluteFile().toString()
         + java.io.File.separatorChar + plf.getName();
     java.io.File fileToDelete = new java.io.File(sFileToDelete);
     if (fileToDelete.exists()) {
-      if (!fileToDelete.delete()) {
-        Log.warn("Could not delete file: " + fileToDelete.toString());
-      }
-      // check that file has been really deleted (sometimes, we get no
-      // exception)
-      if (fileToDelete.exists()) {
-        Log.error("131", new JajukException(131));
-        Messages.showErrorMessage(131);
-        return;
-      }
+      UtilSystem.deleteFile(fileToDelete);
     }
     // remove playlist
     removeItem(plf);
+  }
+  
+   /**
+   * Delete physicaly a playlist.
+   * 
+   * @param plf the playlist
+   */
+  public synchronized void deletePlaylistFile(Playlist plf) throws IOException{
+    String sFileToDelete = plf.getDirectory().getFio().getAbsoluteFile().toString()
+        + java.io.File.separatorChar + plf.getName();
+    java.io.File fileToDelete = new java.io.File(sFileToDelete);
+    if (fileToDelete.exists()) {
+      UtilSystem.deleteFile(fileToDelete);
+    }
+    // remove playlist
+    removePlaylistFile(plf);
   }
 
   /**
@@ -225,7 +232,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
     // try to rename file on disk
     try {
       boolean result = plfOld.getFIO().renameTo(ioNew);
-      if (!result){
+      if (!result) {
         throw new IOException();
       }
     } catch (Exception e) {
@@ -267,7 +274,9 @@ public final class PlaylistManager extends ItemManager implements Observer {
     }
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
@@ -315,9 +324,9 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * @return The playlist if found, null otherwise.
    */
   public Playlist getPlaylistByName(String name) {
-    for(Playlist pl : getPlaylists()) {
+    for (Playlist pl : getPlaylists()) {
       // if this is the correct playlist, return it
-      if(pl.getName().equals(name)) {
+      if (pl.getName().equals(name)) {
         return pl;
       }
     }

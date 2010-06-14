@@ -189,10 +189,11 @@ public final class UpgradeManager {
 
   /**
    * For Jajuk < 0.2 : remove backup file : collection~.xml
+   * @throws IOException 
    */
-  private static void upgradeOldCollectionBackupFile() {
+  private static void upgradeOldCollectionBackupFile() throws IOException {
     File file = SessionService.getConfFileByPath(Const.FILE_COLLECTION + "~");
-    file.delete();
+    UtilSystem.deleteFile(file);
   }
 
   /**
@@ -225,34 +226,37 @@ public final class UpgradeManager {
     for (File element : files) {
       // delete all .ser files
       if (UtilSystem.getExtension(element).equals("ser")) {
-        element.delete();
+        try {
+          UtilSystem.deleteFile(element);
+        } catch (IOException e) {
+          Log.error(e);
+        }
       }
     }
   }
 
   /**
-   * For Jajuk < 1.3: force nocover icon replacement
+   * For Jajuk < 1.3: force nocover thumb replacement
    */
   private static void upgradeNocover() {
-    File fThumbs = SessionService.getConfFileByPath(Const.FILE_THUMBS + "/50x50/"
+    upgradeNocoverDelete("50x50");
+    upgradeNocoverDelete("100x100");
+    upgradeNocoverDelete("150x150");
+    upgradeNocoverDelete("200x200");
+  }
+
+  /**
+   * For Jajuk < 1.3: delete thumb for given size 
+   */
+  private static void upgradeNocoverDelete(String size) {
+    File fThumbs = SessionService.getConfFileByPath(Const.FILE_THUMBS + "/" + size + "/"
         + Const.FILE_THUMB_NO_COVER);
     if (fThumbs.exists()) {
-      fThumbs.delete();
-    }
-    fThumbs = SessionService.getConfFileByPath(Const.FILE_THUMBS + "/100x100/"
-        + Const.FILE_THUMB_NO_COVER);
-    if (fThumbs.exists()) {
-      fThumbs.delete();
-    }
-    fThumbs = SessionService.getConfFileByPath(Const.FILE_THUMBS + "/150x150/"
-        + Const.FILE_THUMB_NO_COVER);
-    if (fThumbs.exists()) {
-      fThumbs.delete();
-    }
-    fThumbs = SessionService.getConfFileByPath(Const.FILE_THUMBS + "/200x200/"
-        + Const.FILE_THUMB_NO_COVER);
-    if (fThumbs.exists()) {
-      fThumbs.delete();
+      try {
+        UtilSystem.deleteFile(fThumbs);
+      } catch (IOException e) {
+        Log.error(e);
+      }
     }
   }
 
@@ -276,25 +280,25 @@ public final class UpgradeManager {
    * For jajuk <1.4 (or early 1.4), some perspectives have been renamed
    */
   private static void upgradePerspectivesRename() {
-    File fPerspective = SessionService.getConfFileByPath("LogicalPerspective.xml");
+    upgradePerspectivesRenameDelete("LogicalPerspective.xml");
+    upgradePerspectivesRenameDelete("PhysicalPerspective.xml");
+    upgradePerspectivesRenameDelete("CatalogPerspective.xml");
+    upgradePerspectivesRenameDelete("PlayerPerspective.xml");
+    upgradePerspectivesRenameDelete("HelpPerspective.xml");
+  }
+
+  /**
+  * For jajuk <1.4 (or early 1.4), delete renamed perspectives names
+  * @param name : perspective filename
+  */
+  private static void upgradePerspectivesRenameDelete(String name) {
+    File fPerspective = SessionService.getConfFileByPath(name);
     if (fPerspective.exists()) {
-      fPerspective.delete();
-    }
-    fPerspective = SessionService.getConfFileByPath("PhysicalPerspective.xml");
-    if (fPerspective.exists()) {
-      fPerspective.delete();
-    }
-    fPerspective = SessionService.getConfFileByPath("CatalogPerspective.xml");
-    if (fPerspective.exists()) {
-      fPerspective.delete();
-    }
-    fPerspective = SessionService.getConfFileByPath("PlayerPerspective.xml");
-    if (fPerspective.exists()) {
-      fPerspective.delete();
-    }
-    fPerspective = SessionService.getConfFileByPath("HelpPerspective.xml");
-    if (fPerspective.exists()) {
-      fPerspective.delete();
+      try {
+        UtilSystem.deleteFile(fPerspective);
+      } catch (IOException e) {
+        Log.error(e);
+      }
     }
   }
 

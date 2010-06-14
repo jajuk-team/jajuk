@@ -22,6 +22,7 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
@@ -29,11 +30,12 @@ import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 /**
  * DOCUMENT_ME.
@@ -73,10 +75,12 @@ public class RestoreAllViewsAction extends JajukAction {
         for (IPerspective perspective : PerspectiveManager.getPerspectives()) {
           File loadFile = SessionService.getConfFileByPath(perspective.getClass().getSimpleName()
               + ".xml");
-          loadFile.delete();
+          try {
+            UtilSystem.deleteFile(loadFile);
+          } catch (IOException e) {
+            Log.error(e);
+          }
         }
-        // Delete toolbars configuration too
-        SessionService.getConfFileByPath(Const.FILE_TOOLBARS_CONF).delete();
         // Indicates to not commiting current configuration
         fullRestore = true;
         // Exit Jajuk

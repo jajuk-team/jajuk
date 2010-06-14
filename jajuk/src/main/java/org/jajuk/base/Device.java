@@ -184,7 +184,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     for (final Playlist plf : plfiles) {
       if (!ExitService.isExiting() && plf.getDirectory().getDevice().equals(this) && plf.isReady()
           && !plf.getFIO().exists()) {
-        PlaylistManager.getInstance().removePlaylistFile(plf);
+        PlaylistManager.getInstance().removeItem(plf);
         Log.debug("Removed: " + plf);
         bChanges = true;
       }

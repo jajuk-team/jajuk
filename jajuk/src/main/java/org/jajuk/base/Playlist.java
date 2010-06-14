@@ -276,21 +276,18 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @throws JajukException the jajuk exception
    */
   private void moveTempPlaylistFile(java.io.File temp) throws JajukException {
+    
     if (temp.exists() && temp.length() > 0) {
       try {
         UtilSystem.copy(temp, getFIO());
-        if (!temp.delete()) {
-          Log.warn("Could not delete temporary file: {{" + temp.getAbsolutePath() + "}}");
-        }
+        UtilSystem.deleteFile(temp);
       } catch (final Exception e1) {
         throw new JajukException(28, getName(), e1);
       }
     } else {
       try {
         // Try to remove the temp file
-        if (!temp.delete()) {
-          Log.warn("Could not delete temporary file: {{" + temp.getAbsolutePath() + "}}");
-        }
+        UtilSystem.deleteFile(temp);
       } catch (final Exception e1) {
         Log.error(e1);
       }

@@ -549,7 +549,11 @@ public class SessionService {
     final File fCache = getConfFileByPath(Const.FILE_CACHE);
     final File[] files = fCache.listFiles();
     for (final File element : files) {
-      element.delete();
+      try {
+        UtilSystem.deleteFile(element);
+      } catch (IOException e) {
+        Log.error(e);
+      }
     }
   }
 
@@ -601,7 +605,8 @@ public class SessionService {
         try {
           FileUtils.copyFileToDirectory(new File(System.getProperty("user.home") + "/"
               + Const.FILE_BOOTSTRAP), new File(UtilSystem.getUserHome()));
-          new File(System.getProperty("user.home") + "/" + Const.FILE_BOOTSTRAP).delete();
+          File file = new File(System.getProperty("user.home") + "/" + Const.FILE_BOOTSTRAP);
+          UtilSystem.deleteFile(file);
         } catch (IOException ex) {
           Log.error(ex);
         }
