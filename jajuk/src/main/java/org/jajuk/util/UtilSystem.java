@@ -76,6 +76,9 @@ public final class UtilSystem {
   /** Size of the short names converter in bytes */
   private static final int CONVERTER_FILE_SIZE = 78;
 
+  /** Is browser supported ? */
+  private static Boolean browserSupported;
+
   /**
    * MPlayer status possible values *.
    */
@@ -680,8 +683,9 @@ public final class UtilSystem {
       return UtilSystem.mplayerPath;
     }
     // Search in /Applications first
-    File file = new File("/Applications/Jajuk.app/Contents/Resources/External_Binaries/"+Const.FILE_MPLAYER_OSX_EXE);
-    if (file.canExecute() && file.length() == Const.MPLAYER_OSX_EXE_SIZE){
+    File file = new File("/Applications/Jajuk.app/Contents/Resources/External_Binaries/"
+        + Const.FILE_MPLAYER_OSX_EXE);
+    if (file.canExecute() && file.length() == Const.MPLAYER_OSX_EXE_SIZE) {
       UtilSystem.mplayerPath = file;
       return UtilSystem.mplayerPath;
     }
@@ -1264,11 +1268,50 @@ public final class UtilSystem {
    * @return
    */
   public static boolean isBrowserSupported() {
+    // value stored for perf
+    if (browserSupported != null) {
+      return browserSupported;
+    }
+    // In server UT mode, just return false
     if (GraphicsEnvironment.isHeadless()) {
       return false;
     } else {
-      return (Desktop.getDesktop().isSupported(Desktop.Action.BROWSE));
+      if (Desktop.isDesktopSupported()) {
+        // If under Linux, check if we're under KDE because of a sun bug,
+        // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6486393 and #1612
+        if (isUnderLinux() && isUnderKDE()) {
+          return false;
+        } else {
+          return (Desktop.getDesktop().isSupported(Desktop.Action.BROWSE));
+        }
+      } else {
+        return false;
+      }
     }
+  }
+
+  /**
+   * Are we running in a KDE environment ?
+   * 
+   * We check it by using ps command + a grep searching 'kdeinit' process
+   * @return whether we are running in a KDE environment
+   */
+  public static boolean isUnderKDE() {
+    try {
+      ProcessBuilder pb = new ProcessBuilder("ps", "-eaf");
+      Process proc = pb.start();
+      BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+      proc.waitFor();
+      String s;
+      while ((s = stdInput.readLine()) != null) {
+        if (s.matches(".*kdeinit.*")) {
+          return true;
+        }
+      }
+    } catch (Throwable e) {
+      Log.error(e);
+    }
+    return false;
   }
 
 }
