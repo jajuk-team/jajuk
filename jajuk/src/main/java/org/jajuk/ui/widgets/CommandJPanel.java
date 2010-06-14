@@ -36,6 +36,7 @@ import ext.scrollablepopupmenu.XJPopupMenu;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.HashSet;
@@ -75,6 +76,7 @@ import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.MuteAction;
+import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.helpers.PlayerStateMediator;
 import org.jajuk.ui.substance.CircleButtonShaper;
 import org.jajuk.ui.substance.LeftConcaveButtonShaper;
@@ -111,7 +113,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
 
   /** Continue mode button */
   private JajukToggleButton jbContinue;
-  
+
   /** DOCUMENT_ME. */
   private JajukToggleButton jbRepeat;
 
@@ -376,6 +378,17 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
 
     // Play buttons
     jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
+    jbPrevious.addMouseListener(new JajukMouseAdapter() {
+      public void handlePopup(final MouseEvent me) {
+        // Create an ActionEvent from this MouseEvent with a custom modifier : the right click
+        ActionEvent ae = new ActionEvent(jbPrevious, 0, PREVIOUS_TRACK.name(), 4332424);
+        try {
+          ActionManager.getAction(PREVIOUS_TRACK).perform(ae);
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    });
     // Compute concavity of player icon
     int concavity = IconLoader.getIcon(JajukIcons.PLAYER_PLAY).getIconHeight();
     jbPrevious.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
@@ -415,7 +428,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
 
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
@@ -464,7 +479,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   /*
    * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent )
    */
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
    */
   public void stateChanged(ChangeEvent e) {
@@ -477,8 +494,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   /*
    * (non-Javadoc)
    * 
-   * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.
-   * MouseWheelEvent)
+   * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event. MouseWheelEvent)
    */
   public void mouseWheelMoved(MouseWheelEvent e) {
     if (e.getSource() == jsVolume || e.getSource() == jbMute) {

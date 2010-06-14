@@ -168,7 +168,7 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
 
         @Override
         public void specificAfterShown() {
-          // Do not show the owner frame under OSX, it makes the full screen blank 
+          // Do not show the owner frame under OSX, it makes the full screen blank
           // as the owner is displayed over
           if (!UtilSystem.isUnderOSX()) {
             instance.setSize(instance.graphicsDevice.getDisplayMode().getWidth(),
@@ -237,7 +237,7 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
   public JajukFullScreenWindow() {
     super(owner);
     setAlwaysOnTop(true);
-    
+
     // Add Mouse Listener to disable mouse cursor
     addMouseListener(new MouseAdapter() {
       @Override
@@ -330,6 +330,17 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
     jbPrevious.setBorderPainted(true);
     jbPrevious.setContentAreaFilled(true);
     jbPrevious.setFocusPainted(true);
+    jbPrevious.addMouseListener(new JajukMouseAdapter() {
+      public void handlePopup(final MouseEvent me) {
+        // Create an ActionEvent from this MouseEvent with a custom modifier : the right click
+        ActionEvent ae = new ActionEvent(jbPrevious, 0, PREVIOUS_TRACK.name(), 4332424);
+        try {
+          ActionManager.getAction(PREVIOUS_TRACK).perform(ae);
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    });
 
     // next
     jbNext = new JajukButton(ActionManager.getAction(NEXT_TRACK));

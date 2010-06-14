@@ -54,20 +54,23 @@ public class PreviousTrackAction extends JajukAction {
     setShortDescription(Messages.getString("CommandJPanel.8"));
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
    */
   @Override
-  public void perform(ActionEvent evt) {
+  public void perform(final ActionEvent evt) {
     // check modifiers to see if it is a movement inside track, between
     // tracks or between albums
     if (evt != null &&
     // evt == null when using hotkeys
         (evt.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK) {
+      // CTRL + previous = replay album
       ActionManager.getAction(JajukActions.REPLAY_ALBUM).actionPerformed(evt);
-    } else if (evt != null &&
-    // evt == null when using hotkeys
-        (evt.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
+    } else if (evt != null
+        && (evt.getModifiers() & ActionEvent.SHIFT_MASK) == ActionEvent.SHIFT_MASK) {
+      // SHIFT + previous = replay album
       ActionManager.getAction(JajukActions.PREVIOUS_ALBUM).actionPerformed(evt);
     } else {
       // if playing a radio, launch next radio station
@@ -92,10 +95,18 @@ public class PreviousTrackAction extends JajukAction {
           @Override
           public void run() {
             synchronized (QueueModel.class) {
-              try {
-                QueueModel.playPrevious();
-              } catch (Exception e) {
-                Log.error(e);
+              // ALT + previous = replay track
+              if (evt != null
+                  && (evt.getModifiers() == 4332424 )) {
+                // replay the entire file
+                Player.seek(0);
+              } else {
+                // No key modifier : play previous track
+                try {
+                  QueueModel.playPrevious();
+                } catch (Exception e) {
+                  Log.error(e);
+                }
               }
               // Player was paused, reset pause button when
               // changing of track
