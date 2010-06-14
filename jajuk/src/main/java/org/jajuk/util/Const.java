@@ -306,9 +306,6 @@ public interface Const {
   String FILE_MPLAYER_OSX_EXE = "mplayer";
 
   /** DOCUMENT_ME. */
-  String FILE_TOOLBARS_CONF = "toolbars.xml";
-
-  /** DOCUMENT_ME. */
   String FILE_DEFAULT_PERSPECTIVES_PATH = "perspectives";
 
   /** DOCUMENT_ME. */
