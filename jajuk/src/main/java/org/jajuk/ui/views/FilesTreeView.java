@@ -513,16 +513,38 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    */
   @Override
   void scrollTo(Item item) {
-    // make sure the main element is expanded, for the expand method to actually work (JRE doc
-    // is
-    // unclear on this), we have to expand all parent nodes explicitely, it doesn't work
-    // recursively.
-    jtree.expandRow(0);
-
-    // item is etiher a file or a playlist
+    // Clear selection so we only select new synchronized item
+    jtree.getSelectionModel().clearSelection();
+    // Expand recursively item's directory because of the lazy loading stuff
+    expandRecursively(item);
+    // Now scroll to the item and select it
     for (int i = 0; i < jtree.getRowCount(); i++) {
       Object o = jtree.getPathForRow(i).getLastPathComponent();
+      if (o instanceof FileNode) {
+        o = ((FileNode) o).getFile();
+      } else if (o instanceof PlaylistFileNode) {
+        o = ((PlaylistFileNode) o).getPlaylistFile();
+      } else {
+        continue;
+      }
+      if (item.equals(o)) {
+        jtree.scrollRowToVisible(i);
+        jtree.getSelectionModel().addSelectionPath(jtree.getPathForRow(i));
+      }
+    }
 
+  }
+
+  /**
+   * Expand recursively all directory nodes of given item
+   * @param item : file or playlist
+   */
+  private void expandRecursively(Item item) {
+    jtree.expandRow(0);
+    boolean stopLoop = false;
+    // item is either a file or a playlist
+    for (int i = 0; i < jtree.getRowCount(); i++) {
+      Object o = jtree.getPathForRow(i).getLastPathComponent();
       if (o instanceof DirectoryNode || o instanceof DeviceNode) {
         Directory testedDirectory = null;
         // If the node is a device, search its root directory and check it
@@ -536,17 +558,25 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           File file = (File) item;
           if (file.hasAncestor(testedDirectory)) {
             jtree.expandRow(i);
-            jtree.scrollPathToVisible(jtree.getPathForRow(i));
+          }
+          if (testedDirectory.equals(file.getDirectory())) {
+            stopLoop = true;
           }
         } else if (item instanceof Playlist) {
           Playlist playlist = (Playlist) item;
           if (playlist.hasAncestor(testedDirectory)) {
             jtree.expandRow(i);
-            jtree.scrollPathToVisible(jtree.getPathForRow(i));
+          }
+          if (testedDirectory.equals(playlist.getDirectory())) {
+            stopLoop = true;
           }
         }
       }
     }
+    if (!stopLoop) {
+      expandRecursively(item);
+    }
+
   }
 
   /**

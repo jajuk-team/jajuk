@@ -133,7 +133,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   }
 
   /**
-   * Gets the parent directory.
+   * Gets the parent directory (null if this directory is a top directory).
    * 
    * @return the parent directory
    */

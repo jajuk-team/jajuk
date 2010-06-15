@@ -884,6 +884,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
    */
   @Override
   void scrollTo(Item item) {
+    // Clear selection so we only select new synchronized item
+    jtree.getSelectionModel().clearSelection();
     // make sure the main element is expanded
     jtree.expandRow(0);
     Track track = null;
@@ -926,6 +928,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         if (tested.getID() == track.getID()) {
           jtree.expandRow(i);
           jtree.scrollPathToVisible(jtree.getPathForRow(i));
+          jtree.getSelectionModel().addSelectionPath(jtree.getPathForRow(i));
         }
       }
     }
