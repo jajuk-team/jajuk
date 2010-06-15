@@ -193,7 +193,9 @@ public final class UpgradeManager {
    */
   private static void upgradeOldCollectionBackupFile() throws IOException {
     File file = SessionService.getConfFileByPath(Const.FILE_COLLECTION + "~");
-    UtilSystem.deleteFile(file);
+    if (file.exists()) {
+      UtilSystem.deleteFile(file);
+    }
   }
 
   /**
