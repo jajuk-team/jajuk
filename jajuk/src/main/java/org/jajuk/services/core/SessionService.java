@@ -91,6 +91,12 @@ public class SessionService {
   /** For performances, store conf root path. */
   private static String confRoot;
 
+  /**Boostrap file test workspace path key */
+  private static final String KEY_TEST = "test";
+
+  /**Boostrap file final workspace path key */
+  private static final String KEY_FINAL = "final";
+
   /**
    * private constructor for utility class with only static methods.
    */
@@ -219,9 +225,16 @@ public class SessionService {
   public static void setWorkspace(String workspace) {
     SessionService.workspace = workspace;
     if (isTestMode()) {
-      versionWorkspace.put("test", workspace);
+      versionWorkspace.put(KEY_TEST, workspace);
     } else {
-      versionWorkspace.put("final", workspace);
+      versionWorkspace.put(KEY_FINAL, workspace);
+    }
+    // Make sure to set all paths
+    if (!versionWorkspace.containsKey(KEY_FINAL)) {
+      versionWorkspace.put(KEY_FINAL, workspace);
+    }
+    if (!versionWorkspace.containsKey(KEY_TEST)) {
+      versionWorkspace.put(KEY_TEST, workspace);
     }
   }
 
@@ -347,6 +360,7 @@ public class SessionService {
         humanWorkspaceSelection();
       }
     } else {
+
       // Check for bootstrap file presence
       final File bootstrap = new File(getBootstrapPath());
       // Default collection path : ~/.jajuk
@@ -360,9 +374,9 @@ public class SessionService {
             // location>
             String sPath = null;
             versionWorkspace.load(br);
-            // If none property, means we have a jajuk < 1.8 bootstrap
-            // file that contains only a single directory
-            if (versionWorkspace.size() == 0) {
+            // If none property, means we have a old jajuk bootstrap
+            // file that contains only a single directory, we use it
+            if (!versionWorkspace.containsKey(KEY_TEST) && !versionWorkspace.containsKey(KEY_FINAL)) {
               // Read the file again using a new reader (otherwise,
               // the offset is wrong)
               final String oldPath;
@@ -375,17 +389,17 @@ public class SessionService {
               }
               if (oldReader != null) {
                 versionWorkspace.clear();
-                versionWorkspace.put("final", oldPath);
-                versionWorkspace.put("test", oldPath);
+                versionWorkspace.put(KEY_FINAL, oldPath);
+                versionWorkspace.put(KEY_TEST, oldPath);
                 sPath = oldPath;
                 // Write it down
                 writeBootstrapFile(bootstrap);
               }
             } else {
               if (SessionService.isTestMode()) {
-                sPath = versionWorkspace.getProperty("test");
+                sPath = versionWorkspace.getProperty(KEY_TEST);
               } else {
-                sPath = versionWorkspace.getProperty("final");
+                sPath = versionWorkspace.getProperty(KEY_FINAL);
               }
             }
             // If the bootstrap exists but doesn't contain the workspace property, set default
