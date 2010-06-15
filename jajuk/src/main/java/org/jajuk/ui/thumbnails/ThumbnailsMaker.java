@@ -90,6 +90,8 @@ public final class ThumbnailsMaker {
         try {
           for (int i = 50; i <= 300; i += 50) {
             ThumbnailsMaker.launchProcessus(i);
+            // Force thumbs existence refreshing
+            ThumbnailManager.populateCache(i);
           }
         } catch (Exception e) {
           Log.error(e);
@@ -124,31 +126,22 @@ public final class ThumbnailsMaker {
   private static int launchProcessus(final int size) throws URISyntaxException, IOException {
     final String jvmPath = System.getProperty("java.home") + File.separatorChar + "bin"
         + File.separatorChar + "java";
-    // TODO Under JNLP mode, following line throw an URI malformed exception
-    // (contains %20 for ie). We
-    // don't figured out so far how to
-    // build proper JAR path. We keep things like it for the moment, pictures
-    // are built in the main JVM instead of separated ones
-    String jarPath = UtilSystem.getJarLocation(Main.class).getPath();
-    jarPath = jarPath.replaceAll(".*:", "");
-    jarPath = jarPath  +"jajuk.jar";
     final List<String> commands = new ArrayList<String>(10);
     commands.add(jvmPath);
     commands.add("-Xms50M");
     commands.add("-Xmx600M");
     commands.add("-cp");
-    // Add the bin directory that contains classes
-    String cp = new File(UtilSystem.getJarLocation(Main.class).toURI()).getAbsolutePath();
-    cp += ThumbnailsMaker.getJarSeparator();
-    final File libDir = new File(UtilSystem.getJarLocation(Appender.class).toURI()).getParentFile();
+    // Add the bin (in test mode) or the jajuk jar (regular mode) 
+    String jajukJarPath = UtilSystem.getJarLocation(Main.class).getPath();
+   
+    // Add others jars from lib directory
+    String cp = jajukJarPath + ThumbnailsMaker.getJarSeparator();
+    File libDir = new File(UtilSystem.getJarLocation(Appender.class).getPath()).getParentFile();
     final File[] files = libDir.listFiles(JarFilter.getInstance());
     for (final File element : files) {
       cp += element.getAbsolutePath() + ThumbnailsMaker.getJarSeparator();
     }
-    // If we are not in dev, add jajuk jar itself to the classpath
-    if (!SessionService.isIdeMode()) {
-      cp += ThumbnailsMaker.getJarSeparator() + jarPath;
-    }
+   
     // remove last separator
     cp = cp.substring(0, cp.length() - 1);
     commands.add(cp);
