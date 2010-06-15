@@ -57,7 +57,9 @@ public class RestoreAllViewsAction extends JajukAction {
     setShortDescription(Messages.getString("JajukJMenuBar.26"));
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
    */
   @Override
@@ -75,11 +77,8 @@ public class RestoreAllViewsAction extends JajukAction {
         for (IPerspective perspective : PerspectiveManager.getPerspectives()) {
           File loadFile = SessionService.getConfFileByPath(perspective.getClass().getSimpleName()
               + ".xml");
-          try {
-            UtilSystem.deleteFile(loadFile);
-          } catch (IOException e) {
-            Log.error(e);
-          }
+          // Lazy deletion, this file have already been removed by a previous reset
+          loadFile.delete();
         }
         // Indicates to not commiting current configuration
         fullRestore = true;

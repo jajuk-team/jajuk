@@ -181,13 +181,14 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
             // the menu entries to add new views and ViewFactory)
             unregisterDockable(obj);
 
-            // workaround for DockingDesktop-leaks, we need to remove the Dockable from the "TitleBar"
+            // workaround for DockingDesktop-leaks, we need to remove the Dockable from the
+            // "TitleBar"
             // if it is one of those that are hidden on the left side.
             removeFromDockingDesktop(PerspectiveAdapter.this, obj);
-            
+
             // do some additional cleanup on the View itself if necessary
-            if(obj instanceof ViewAdapter) {
-              ((ViewAdapter)obj).cleanup();
+            if (obj instanceof ViewAdapter) {
+              ((ViewAdapter) obj).cleanup();
             }
           }
         }
@@ -233,7 +234,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
      */
     for (int i = 0; i < c.getComponentCount(); i++) {
       Component comp = c.getComponent(i);
-      
+
       // on the AutoHideExpandPanel, we need to set a new Dockable on the TitleBar
       // as it otherwise keeps the Dockable as "target"
       if (comp instanceof AutoHideExpandPanel) {
@@ -251,7 +252,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
           }
         });
       }
-      
+
       // the AutoHideButton points at the dockable, replace it with a new one here as well
       if (comp instanceof AutoHideButton) {
         AutoHideButton button = (AutoHideButton) comp;
@@ -271,8 +272,8 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
             }
           }, button.getZone());
         }
-      } 
-      
+      }
+
       // recursively call the Container to also look at it's components
       if (comp instanceof Container) {
         removeFromDockingDesktop((Container) comp, dockable);
@@ -301,7 +302,8 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
       // Remove current conf file to force using default file from the
       // jar
       File loadFile = SessionService.getConfFileByPath(getClass().getSimpleName() + XML_EXT);
-      UtilSystem.deleteFile(loadFile);
+      // lazy deletion, the file can be already removed by a previous reset
+      loadFile.delete();
 
       // Remove all registered dockables
       DockableState[] ds = getDockables();
