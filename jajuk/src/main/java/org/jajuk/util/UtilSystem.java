@@ -118,6 +118,9 @@ public final class UtilSystem {
   /** Are we under Windows 64 bits ? *. */
   private static final boolean UNDER_WINDOWS_64BIT;
 
+  /** Are we in JNLP mode ? *. */
+  private static final boolean UNDER_JNLP;
+
   /** Directory filter used in refresh. */
   private static JajukFileFilter dirFilter;
 
@@ -155,6 +158,10 @@ public final class UtilSystem {
     UNDER_OSX = org.jdesktop.swingx.util.OS.isMacOSX()
     // We only support Intel OSX
         && ((sArch != null) && sArch.matches(".*86.*"));
+  }
+
+  static {
+    UNDER_JNLP = System.getProperties().contains("jnlpx.jvm");
   }
 
   /** Icons cache. */
@@ -847,6 +854,15 @@ public final class UtilSystem {
    */
   public static boolean isUnderLinux() {
     return UtilSystem.UNDER_LINUX;
+  }
+
+  /**
+  * Checks if we are running as jnlp app.
+  * 
+  * @return whether we are running as jnlp app
+  */
+  public static boolean isUnderJNLP() {
+    return UtilSystem.UNDER_JNLP;
   }
 
   /**

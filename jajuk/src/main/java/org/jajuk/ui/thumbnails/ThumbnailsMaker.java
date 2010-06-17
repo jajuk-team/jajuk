@@ -74,6 +74,13 @@ public final class ThumbnailsMaker {
    * @param bSynchronous do you have to wait all process done ?
    */
   public static void launchAllSizes(final boolean bSynchronous) {
+
+    // It doesn't work in jnlp due to current jar discovery issues
+    if (UtilSystem.isUnderJNLP()) {
+      Log.warn("JNLP mode detected, thumb mass refresh not supported");
+      return;
+    }
+
     // We need this mutex to make sure auto-refresh cannot launch several times
     // the full thumbs rebuild:
     // autorefresh at time t launch this method asynchronously, then autorefresh
@@ -131,19 +138,17 @@ public final class ThumbnailsMaker {
     commands.add("-Xms50M");
     commands.add("-Xmx600M");
     commands.add("-cp");
-    // Add the bin (in test mode) or the jajuk jar (regular mode) 
+    // Add the bin (in test mode) or the jajuk jar (regular mode)
     String jajukJarPath = UtilSystem.getJarLocation(Main.class).getPath();
-   
+
     // Add others jars from lib directory
     String cp = jajukJarPath + ThumbnailsMaker.getJarSeparator();
-    System.out.println(UtilSystem.getJarLocation(Appender.class).getPath());
-    System.out.println(new File(UtilSystem.getJarLocation(Appender.class).getPath()).getParentFile().getAbsolutePath());
     File libDir = new File(UtilSystem.getJarLocation(Appender.class).getPath()).getParentFile();
     final File[] files = libDir.listFiles(JarFilter.getInstance());
     for (final File element : files) {
       cp += element.getAbsolutePath() + ThumbnailsMaker.getJarSeparator();
     }
-   
+
     // remove last separator
     cp = cp.substring(0, cp.length() - 1);
     commands.add(cp);
