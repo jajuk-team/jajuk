@@ -155,11 +155,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     jmenu = new JPopupMenu();
     setShowGrid(false);
     init(bSortable);
-    // Force to use Jajuk cell render for all columns, except for boolean
-    // that should use default renderer (checkbox)
-    for (TableColumn col : getColumns()) {
-      col.setCellRenderer(new JajukCellRenderer());
-    }
+
     // Listen for row selection
     getSelectionModel().addListSelectionListener(this);
     // Listen for clicks
@@ -210,14 +206,15 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
       }
     }
     reorderColumns();
+    // Force to use Jajuk cell render for all columns
+    for (TableColumn col : getColumns()) {
+      col.setCellRenderer(new JajukCellRenderer());
+    }
     acceptColumnsEvents = acceptColumnsEventsSave;
   }
 
   /*
    * Reorder columns order according to given conf
-   */
-  /**
-   * Reorder columns. DOCUMENT_ME
    */
   private void reorderColumns() {
     // Build the index array
@@ -251,7 +248,8 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     }
 
     // set stored column width
-    int arm = getAutoResizeMode();
+
+    // disable auto-resize temporary to set stored sizes
     setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     String tableID = getTableId();
 
@@ -264,13 +262,11 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
         getColumnModel().getColumn(currentColumnIndex).setPreferredWidth(Conf.getInt(confId));
       }
     }
-    setAutoResizeMode(arm);
+    setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
 
     // must be done here and not before we add columns
     if (Conf.containsProperty(getConfKeyForIsHorizontalScrollable())) {
       setHorizontalScrollEnabled(Conf.getBoolean(getConfKeyForIsHorizontalScrollable()));
-    } else {
-      setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
     }
   }
 

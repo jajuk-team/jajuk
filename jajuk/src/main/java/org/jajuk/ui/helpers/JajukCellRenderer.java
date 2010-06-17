@@ -27,6 +27,7 @@ import java.util.Date;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.IconLabel;
@@ -81,6 +82,7 @@ public class JajukCellRenderer extends SubstanceDefaultTableCellRenderer impleme
         .getTableCellRendererComponent(table, oValue, selected, focused, row, column);
     if (oValue instanceof IconLabel) {
       ((JLabel) c).setOpaque(false);
+      ((JLabel) c).setHorizontalAlignment(SwingConstants.LEFT);
       ((JLabel) c).setIcon(((IconLabel) oValue));
       ((JLabel) c).setToolTipText(((IconLabel) oValue).getTooltip());
       ((JLabel) c).setFont(((IconLabel) oValue).getFont());

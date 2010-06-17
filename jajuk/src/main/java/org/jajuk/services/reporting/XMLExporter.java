@@ -542,8 +542,8 @@ public class XMLExporter extends Exporter {
       writer
           .write('\t' + Tag.tagData("ReportAction.artist", Messages.getHumanPropertyName(Const.XML_ARTIST)));
       writer.write('\t' + Tag.tagData("ReportAction.genre", Messages.getHumanPropertyName(Const.XML_GENRE)));
-      writer.write('\t' + Tag.tagData("ReportAction.order", Messages.getHumanPropertyName(Const.XML_TRACK)));
-      writer.write('\t' + Tag.tagData("ReportAction.track", Messages.getString("Item_Track")));
+      writer.write('\t' + Tag.tagData("ReportAction.order", Messages.getHumanPropertyName(Const.XML_TRACK_ORDER)));
+      writer.write('\t' + Tag.tagData("ReportAction.track", Messages.getHumanPropertyName(Const.XML_TRACK)));
       writer.write('\t' + Tag.tagData("ReportAction.album", Messages.getHumanPropertyName(Const.XML_ALBUM)));
       writer
           .write('\t' + Tag.tagData("ReportAction.length", Messages.getHumanPropertyName(Const.XML_TRACK_LENGTH)));
