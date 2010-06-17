@@ -36,6 +36,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
@@ -51,7 +52,7 @@ import org.jajuk.util.log.Log;
  * Convenient class to manage files.
  */
 public final class FileManager extends ItemManager {
-  
+
   /** Best of files. */
   private final List<File> alBestofFiles = new ArrayList<File>(20);
 
@@ -147,7 +148,7 @@ public final class FileManager extends ItemManager {
     track.addFile(file);
     return file;
   }
-  
+
   /**
    * Register an File without known id.
    * 
@@ -159,8 +160,8 @@ public final class FileManager extends ItemManager {
    * 
    * @return the file
    */
-  public synchronized File registerFile(String sName, Directory directory, Track track,
-      long lSize, long lQuality) {
+  public synchronized File registerFile(String sName, Directory directory, Track track, long lSize,
+      long lQuality) {
     String sId = createID(sName);
     return registerFile(sId, sName, directory, track, lSize, lQuality);
   }
@@ -208,6 +209,12 @@ public final class FileManager extends ItemManager {
     if (!fileOld.getFIO().exists()) {
       throw new CannotRenameException(135);
     }
+    // check that the file is not currently played
+    if (QueueModel.getCurrentItem() != null
+        && QueueModel.getCurrentItem().getFile().equals(fileOld)) {
+      throw new CannotRenameException(172);
+    }
+
     java.io.File fileNew = new java.io.File(fileOld.getFIO().getParentFile().getAbsolutePath()
         + java.io.File.separator + sNewName);
 
@@ -580,10 +587,10 @@ public final class FileManager extends ItemManager {
    */
   public void refreshBestOfFiles() {
     Log.debug("Invoking Refresh of BestOf-Files");
-    
+
     // clear data
     alBestofFiles.clear();
-    
+
     // create a temporary table to remove unmounted files
     int iNbBestofFiles = Integer.parseInt(Conf.getString(Const.CONF_BESTOF_TRACKS_SIZE));
     List<File> alEligibleFiles = new ArrayList<File>(iNbBestofFiles);
@@ -598,7 +605,7 @@ public final class FileManager extends ItemManager {
       }
     }
     Collections.sort(alEligibleFiles, rateComparator);
-    
+
     // Keep as much items as we can
     int i = 0;
     while (i < alEligibleFiles.size() && i < iNbBestofFiles) {

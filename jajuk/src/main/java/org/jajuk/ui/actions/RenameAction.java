@@ -47,7 +47,7 @@ import org.jajuk.util.log.Log;
  * DOCUMENT_ME.
  */
 public class RenameAction extends JajukAction {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -60,7 +60,9 @@ public class RenameAction extends JajukAction {
     setShortDescription(Messages.getString("RenameAction.0"));
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
    */
   @Override
@@ -75,55 +77,55 @@ public class RenameAction extends JajukAction {
       Messages.showErrorMessage(134);
       return;
     }
-    new Thread("Rename Thread") {
-      @Override
-      public void run() {
-        if (currentItem instanceof File) {
-          String newName = JOptionPane.showInputDialog(null, Messages.getString("RenameAction.1")
-              + "\n\n", ((File) currentItem).getName());
-          if ((newName != null) && (newName.length() > 0)) {
-            try {
-              UtilGUI.waiting();
-              FileManager.getInstance().changeFileName((File) currentItem, newName);
-              ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-            } catch (Exception er) {
-              Messages.showErrorMessage(134);
-              Log.error(er);
-            } finally {
-              UtilGUI.stopWaiting();
-            }
-          }
-        } else if (currentItem instanceof Directory) {
-          /*
-           * Renaming of a directory
-           * 
-           * @TODO Note that this implementation is trivial and looses all
-           * custom properties applied on files (hopefully not the tracks ones)
-           * because we simply remove the directory and force its scan again. A
-           * better implementation would clone all files recursively
-           */
-          String newName = JOptionPane.showInputDialog(null, Messages.getString("RenameAction.2")
-              + "\n\n", ((Directory) currentItem).getName());
-          if ((newName != null) && (newName.length() > 0)) {
-            try {
-              UtilGUI.waiting();
-              java.io.File newFile = new java.io.File(((Directory) currentItem)
-                  .getParentDirectory().getAbsolutePath()
-                  + "/" + newName);
-              UtilSystem.move(((Directory) currentItem).getFio(), newFile);
-              DirectoryManager.getInstance().removeDirectory(((Directory) currentItem).getID());
-              (((Directory) currentItem).getParentDirectory()).refresh(false, null);
-              ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-            } catch (Exception er) {
-              Log.error(er);
-              Messages.showErrorMessage(134);
-            } finally {
-              UtilGUI.stopWaiting();
-            }
-          }
+    if (currentItem instanceof File) {
+      String newName = JOptionPane.showInputDialog(null, Messages.getString("RenameAction.1")
+          + "\n\n", ((File) currentItem).getName());
+      if ((newName != null) && (newName.length() > 0)) {
+        try {
+          UtilGUI.waiting();
+          FileManager.getInstance().changeFileName((File) currentItem, newName);
+          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+        } catch (Exception er) {
+          Messages.showErrorMessage(134);
+          Log.error(er);
+        } finally {
+          UtilGUI.stopWaiting();
         }
-
       }
-    }.start();
+    } else if (currentItem instanceof Directory) {
+      /*
+       * Renaming of a directory
+       * 
+       * @TODO Note that this implementation is trivial and looses all custom properties applied on
+       * files (hopefully not the tracks ones) because we simply remove the directory and force its
+       * scan again. A better implementation would clone all files recursively
+       */
+
+      // check that the directory is not an ancestor of the currently played file
+      if (QueueModel.getCurrentItem() != null
+          && QueueModel.getCurrentItem().getFile().hasAncestor((Directory) currentItem)) {
+        Messages.showWarningMessage(Messages.getErrorMessage(172));
+        return;
+      }
+      String newName = JOptionPane.showInputDialog(null, Messages.getString("RenameAction.2")
+          + "\n\n", ((Directory) currentItem).getName());
+      if ((newName != null) && (newName.length() > 0)) {
+        try {
+          UtilGUI.waiting();
+          java.io.File newFile = new java.io.File(((Directory) currentItem).getParentDirectory()
+              .getAbsolutePath()
+              + "/" + newName);
+          UtilSystem.move(((Directory) currentItem).getFio(), newFile);
+          DirectoryManager.getInstance().removeDirectory(((Directory) currentItem).getID());
+          (((Directory) currentItem).getParentDirectory()).refresh(false, null);
+          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+        } catch (Exception er) {
+          Log.error(er);
+          Messages.showErrorMessage(134);
+        } finally {
+          UtilGUI.stopWaiting();
+        }
+      }
+    }
   }
 }
