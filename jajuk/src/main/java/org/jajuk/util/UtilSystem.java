@@ -161,7 +161,7 @@ public final class UtilSystem {
   }
 
   static {
-    UNDER_JNLP = System.getProperties().contains("jnlpx.jvm");
+    UNDER_JNLP = (System.getProperty("jnlpx.jvm") != null);
   }
 
   /** Icons cache. */
