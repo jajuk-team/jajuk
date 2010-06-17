@@ -171,9 +171,9 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
         .getString(PROPERTIES_WIZARD_6));
     this.alItems = alItems1;
     this.alItems2 = alItems2;
-    // computes filter
-    refreshFileFilter();
     if (alItems1.size() > 0) {
+      // computes filter
+      refreshFileFilter();
       if (alItems1.size() == 1) {
         panel1 = new PropertiesPanel(alItems1, UtilString.getLimitedString(alItems1.get(0)
             .getDesc(), 50), false);
