@@ -106,9 +106,6 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /** Stores the last index of column move to*. */
   private int lastToIndex = 0;
 
-  /** Last time the selection changed (ms). */
-  private long dateLastSelectionUpdate = 0l;
-
   /** The Jajuk table mouse adapter used to handle click events. */
   JajukMouseAdapter ma = new JajukMouseAdapter() {
 
@@ -464,14 +461,8 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    */
   @Override
   public void valueChanged(ListSelectionEvent e) {
-    // Ignore adjusting event. For unknown reasons, this doesn't work on some JVM, we have to handle
-    // it by ourself : we ignore duplicate events launched less than 50 ms after the previous one.
-    if (e.getValueIsAdjusting() || (System.currentTimeMillis() - dateLastSelectionUpdate < 50)) {
-      return;
-    }
-    dateLastSelectionUpdate = System.currentTimeMillis();
-    // Make sure this table uses a Jajuk table model
-    if (!(getModel() instanceof JajukTableModel)) {
+    // Ignore adjusting event. 
+    if (e.getValueIsAdjusting()) {
       return;
     }
     JajukTableModel model = (JajukTableModel) getModel();

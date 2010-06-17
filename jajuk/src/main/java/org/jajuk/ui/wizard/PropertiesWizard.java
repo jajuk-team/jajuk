@@ -121,6 +121,9 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
   /** Second property panel. */
   private PropertiesPanel panel2;
 
+  /** Did user chnaged something ? */
+  private boolean changes = false;
+
   /**
    * Constructor for normal wizard with only one wizard panel and n items to
    * display.
@@ -278,9 +281,9 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
             Log.error(104, ex.getMessage(), ex);
           } finally {
             // -UI refresh-
-            // clear tables selection
-            ObservationManager.notify(new JajukEvent(JajukEvents.TABLE_CLEAR_SELECTION));
-            ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+            if (changes) {
+              ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+            }
           }
         }
       };
@@ -769,6 +772,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
             if (!UtilString.format(oValue, meta, true).equals(sOldValue)) {
               try {
                 newItem = ItemManager.changeItem(item, meta.getName(), oValue, filter);
+                changes = true;
               }
               // none accessible file for this track, for this error,
               // we display an error and leave completely
