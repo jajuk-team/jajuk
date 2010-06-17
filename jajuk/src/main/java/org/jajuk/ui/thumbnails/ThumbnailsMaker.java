@@ -136,6 +136,8 @@ public final class ThumbnailsMaker {
    
     // Add others jars from lib directory
     String cp = jajukJarPath + ThumbnailsMaker.getJarSeparator();
+    System.out.println(UtilSystem.getJarLocation(Appender.class).getPath());
+    System.out.println(new File(UtilSystem.getJarLocation(Appender.class).getPath()).getParentFile().getAbsolutePath());
     File libDir = new File(UtilSystem.getJarLocation(Appender.class).getPath()).getParentFile();
     final File[] files = libDir.listFiles(JarFilter.getInstance());
     for (final File element : files) {
