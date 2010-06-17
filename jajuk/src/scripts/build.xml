@@ -374,19 +374,15 @@
 			<fileset dir='${jnlpdir}'>
 				<include name='**/*.jar' />
 			</fileset>
-			<mapper type='glob' from='*.jar' to='*__V${version}.jar' />
+			<mapper type='glob' from='*.jar' to='*__V${jnlp_version}.jar' />
 		</move>
-
-		<!-- Set release in user jnlp file-->
-		<replace dir='${jnlpdir}/app' value='${version}'>
-			<include name='*.jnlp' />
-			<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
-		</replace>
+	
 		<!-- Set test or no test in jnlp file-->
 		<replace dir='${jnlpdir}/app' value='-${test}'>
 			<include name='*.jnlp' />
 			<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
 		</replace>
+		
 		<!-- Set JNLP_VERSION -->
 		<replace dir='${jnlpdir}/app' value='${jnlp_version}'>
 			<include name='*.jnlp' />
