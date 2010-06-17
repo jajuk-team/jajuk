@@ -91,6 +91,9 @@ public class QueueView extends PlaylistView {
   /** DOCUMENT_ME. */
   private JajukToggleButton jtbAutoScroll;
 
+  /** Last scrolled-to index **/
+  private int lastScrolledIndex;
+
   /*
    * (non-Javadoc)
    * 
@@ -316,10 +319,12 @@ public class QueueView extends PlaylistView {
             editorModel.getItems().clear();
             editorModel.getPlanned().clear();
             refreshQueue();
-
-            if (Conf.getBoolean(CONF_AUTO_SCROLL)) {
+            // Only scroll if song actually changed, otherwise, any queue refresh
+            // would scroll and annoy users
+            if (Conf.getBoolean(CONF_AUTO_SCROLL) && lastScrolledIndex != QueueModel.getIndex()) {
               SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
+                  lastScrolledIndex = QueueModel.getIndex();
                   if (QueueModel.getQueueSize() > 0) {
                     double index = QueueModel.getIndex();
                     double size = QueueModel.getQueueSize() + QueueModel.getPlanned().size();

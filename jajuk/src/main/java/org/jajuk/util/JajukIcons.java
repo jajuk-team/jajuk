@@ -431,6 +431,9 @@ public enum JajukIcons {
 
   /** DOCUMENT_ME. */
   TRACK_FIFO_REPEAT,
+  
+   /** DOCUMENT_ME. */
+  TRACK_FIFO_PLAYING,
 
   /** DOCUMENT_ME. */
   WIZARD,

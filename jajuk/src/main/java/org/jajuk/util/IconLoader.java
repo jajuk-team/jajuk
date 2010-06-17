@@ -80,7 +80,7 @@ final public class IconLoader {
     else if (icon == JajukIcons.NONE) {
       out = new ImageIcon(UtilSystem.getResource("images/included/" + Const.FILE_THUMB_NONE));
     }
-    
+
     else if (icon == JajukIcons.NO_COVER_50X50) {
       out = UtilGUI.getResizedImage(getIcon(JajukIcons.NO_COVER), 50, 50);
     }
@@ -652,8 +652,12 @@ final public class IconLoader {
 
     else if (icon == JajukIcons.TRACK_FIFO_REPEAT) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/repeat_16x16.png"));
-    }
-
+    } 
+    
+    else if (icon == JajukIcons.TRACK_FIFO_PLAYING) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/ok_16x16.png"));
+    } 
+    
     else if (icon == JajukIcons.WIZARD) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/wizard_16x16.png"));
     }
@@ -897,15 +901,15 @@ final public class IconLoader {
     else if (icon == JajukIcons.TREE_TABLE_SYNC) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/tree-table-sync_16x16.png"));
     }
-    
+
     else if (icon == JajukIcons.DONATE) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/donate_16x16.png"));
     }
-    
+
     else if (icon == JajukIcons.DISC_NUMBER) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/disc_number_16x16.png"));
     }
-    
+
     // Cache the result
     if (!cache.containsKey(icon)) {
       cache.put(icon, out);

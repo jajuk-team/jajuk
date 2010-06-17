@@ -181,6 +181,11 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
         cachedIcons.put(icon, new IconLabel(IconLoader.getIcon(icon), "", null, null, null,
             Messages.getString("AbstractPlaylistEditorView.19")));
       }
+    } else if (icon == JajukIcons.TRACK_FIFO_PLAYING) {
+      if (!cachedIcons.containsKey(icon)) {
+        cachedIcons.put(icon, new IconLabel(IconLoader.getIcon(icon), "", null, null, null,
+            Messages.getString("AbstractPlaylistEditorView.29")));
+      }
     } else if (icon == JajukIcons.TRACK_FIFO_NORM) {
       if (!cachedIcons.containsKey(icon)) {
         cachedIcons.put(icon, new IconLabel(IconLoader.getIcon(icon), "", null, null, null,

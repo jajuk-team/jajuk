@@ -30,6 +30,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.TrackManager;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.Const;
@@ -251,6 +252,9 @@ public class PlaylistTableModel extends JajukTableModel {
         } else if (item.isRepeat()) {
           // normal file, repeated
           oValues[iRow][0] = IconLabel.getIconLabel(JajukIcons.TRACK_FIFO_REPEAT);
+        } else if (item.equals(QueueModel.getCurrentItem())) {
+          // Played file
+          oValues[iRow][0] = IconLabel.getIconLabel(JajukIcons.TRACK_FIFO_PLAYING);
         } else {
           // normal file, not repeated
           oValues[iRow][0] = IconLabel.getIconLabel(JajukIcons.TRACK_FIFO_NORM);
