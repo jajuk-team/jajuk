@@ -9,14 +9,20 @@
 		<format property='TODAY' pattern='yyyyMMdd' locale='en,UK' />
 	</tstamp>
 
-	<!-- Current date to be included into JNLP timestamp file -->
+	<!-- JNLP date -->
 	<tstamp>
-		<format property='TODAY-VERSION' pattern='yyyy-MM-dd hh:mm:ss' locale='en,UK' />
+		<format property='JNLP_DATE' pattern='yyyyMMdd_hhmm' locale='en,UK' />
 	</tstamp>
-
+	
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
 	<property name='version' value='1.9RC5dev' />
+	
+	<!--JNLP version-->
+	<!-- In final releases, jnlp_version=version. 
+	In maintenance or trunk, jnlp_version=JNLP_DATE : we don't use regular version 
+	so the version changes each day -->
+	<property name='jnlp_version' value='${JNLP_DATE}' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
@@ -381,10 +387,10 @@
 			<include name='*.jnlp' />
 			<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
 		</replace>
-		<!-- Set date in JNLP file -->
-		<replace dir='${jnlpdir}/app' value='${TODAY-VERSION}'>
+		<!-- Set JNLP_VERSION -->
+		<replace dir='${jnlpdir}/app' value='${jnlp_version}'>
 			<include name='*.jnlp' />
-			<replacetoken>TIMESTAMP_REPLACED_BY_ANT</replacetoken>
+			<replacetoken>JNLP_VERSION_REPLACED_BY_ANT</replacetoken>
 		</replace>
 
 		<!--Copy previous release jars, comment this if you have no previous release

@@ -5,7 +5,7 @@
         <vendor>Javazoom</vendor>
     </information>
     <resources>
-        <jar href="basicplayer-3.0.jar" version='VERSION_REPLACED_BY_ANT'/>
+        <jar href="basicplayer-3.0.jar" version='JNLP_VERSION_REPLACED_BY_ANT'/>
     </resources>
     <security> 
            <all-permissions/>

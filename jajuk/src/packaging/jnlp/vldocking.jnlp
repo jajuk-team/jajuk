@@ -5,7 +5,7 @@
         <vendor>Hans Bickel</vendor>
     </information>
     <resources>
-        <jar href="vldocking-2.1.5.jar" version='VERSION_REPLACED_BY_ANT'/>
+        <jar href="vldocking-2.1.5.jar" version='JNLP_VERSION_REPLACED_BY_ANT'/>
     </resources>
     <security> 
            <all-permissions/>

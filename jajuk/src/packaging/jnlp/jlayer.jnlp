@@ -5,13 +5,13 @@
         <vendor>Javazoom</vendor>
     </information>
     <resources>
-        <jar href="jlayer-1.0.jar" version='VERSION_REPLACED_BY_ANT'/>
-        <jar href="jspeex-0.9.3.jar" version='VERSION_REPLACED_BY_ANT'/>
-        <jar href="mp3spi-1.9.4.jar" version='VERSION_REPLACED_BY_ANT'/>
-        <jar href="tritonus_share-release.jar" version='VERSION_REPLACED_BY_ANT'/>
-        <jar href="vorbisspi-1.0.1.jar" version='VERSION_REPLACED_BY_ANT'/>
-        <jar href="jorbis-0.0.13.jar" version='VERSION_REPLACED_BY_ANT'/>
-        <jar href="jogg-0.0.7.jar" version='VERSION_REPLACED_BY_ANT'/>
+        <jar href="jlayer-1.0.jar" version='JNLP_VERSION_REPLACED_BY_ANT'/>
+        <jar href="jspeex-0.9.3.jar" version='JNLP_VERSION_REPLACED_BY_ANT'/>
+        <jar href="mp3spi-1.9.4.jar" version='JNLP_VERSION_REPLACED_BY_ANT'/>
+        <jar href="tritonus_share-release.jar" version='JNLP_VERSION_REPLACED_BY_ANT'/>
+        <jar href="vorbisspi-1.0.1.jar" version='JNLP_VERSION_REPLACED_BY_ANT'/>
+        <jar href="jorbis-0.0.13.jar" version='JNLP_VERSION_REPLACED_BY_ANT'/>
+        <jar href="jogg-0.0.7.jar" version='JNLP_VERSION_REPLACED_BY_ANT'/>
     </resources>
     <security> 
            <all-permissions/>

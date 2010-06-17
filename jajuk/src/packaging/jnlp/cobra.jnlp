@@ -5,8 +5,8 @@
         <vendor>Cobra Team</vendor>
     </information>
     <resources>
-        <jar href="cobra-0.98.4.jar" version='VERSION_REPLACED_BY_ANT'/>
-        <jar href="js-0.98.4.jar" version='VERSION_REPLACED_BY_ANT'/>
+        <jar href="cobra-0.98.4.jar" version='JNLP_VERSION_REPLACED_BY_ANT'/>
+        <jar href="js-0.98.4.jar" version='JNLP_VERSION_REPLACED_BY_ANT'/>
     </resources>
     <security> 
            <all-permissions/>

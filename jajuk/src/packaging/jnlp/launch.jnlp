@@ -21,7 +21,7 @@
        <resources>
            <j2se version='1.6+' java-vm-args='-client -Xms20M -Xmx256M -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10'/>
            <property name='test' value='TEST_FLAG_REPLACED_BY_ANT'/>
-           <jar href='jajuk.jar' version='VERSION_REPLACED_BY_ANT'/> 
+           <jar href='jajuk.jar' version='JNLP_VERSION_REPLACED_BY_ANT'/> 
    		<extension name='Animation' href='animation.jnlp' />
         	<extension name='BasicPlayer' href='basic_player.jnlp'/>
         	<extension name='ApacheCommons' href='apache_commons.jnlp'/>
@@ -41,7 +41,7 @@
         	<extension name='bindings' href='bindings.jnlp'/>
        </resources>
        <resources os='Windows'>
-      	<nativelib href='windows/jintellitype-native.jar' version='VERSION_REPLACED_BY_ANT'/>
+      	<nativelib href='windows/jintellitype-native.jar' version='JNLP_VERSION_REPLACED_BY_ANT'/>
        </resources>
        <application-desc main-class='org.jajuk.Main'>
       	<argument>TEST_FLAG_REPLACED_BY_ANT</argument>

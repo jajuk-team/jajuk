@@ -5,7 +5,7 @@
         <vendor>Apache Fondation</vendor>
     </information>
     <resources>
-        <jar href="log4j_reduced-1.2.6.jar" version='VERSION_REPLACED_BY_ANT'/>
+        <jar href="log4j_reduced-1.2.6.jar" version='JNLP_VERSION_REPLACED_BY_ANT'/>
     </resources>
     <security> 
            <all-permissions/>

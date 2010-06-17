@@ -8,7 +8,7 @@
            <all-permissions/>
     </security> 
     <resources>
-        <jar href="jintellitype-1.3.jar" version='VERSION_REPLACED_BY_ANT'/>
+        <jar href="jintellitype-1.3.jar" version='JNLP_VERSION_REPLACED_BY_ANT'/>
     </resources>
     <component-desc/>
 </jnlp>
