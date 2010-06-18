@@ -513,24 +513,32 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    */
   @Override
   void scrollTo(Item item) {
-    // Clear selection so we only select new synchronized item
-    jtree.getSelectionModel().clearSelection();
-    // Expand recursively item's directory because of the lazy loading stuff
-    expandRecursively(item);
-    // Now scroll to the item and select it
-    for (int i = 0; i < jtree.getRowCount(); i++) {
-      Object o = jtree.getPathForRow(i).getLastPathComponent();
-      if (o instanceof FileNode) {
-        o = ((FileNode) o).getFile();
-      } else if (o instanceof PlaylistFileNode) {
-        o = ((PlaylistFileNode) o).getPlaylistFile();
-      } else {
-        continue;
+    // Remove selection listener because we force here tree selection and
+    // we don't want to force table views to synchronize
+    TreeSelectionListener tsl = jtree.getTreeSelectionListeners()[0];
+    jtree.removeTreeSelectionListener(tsl);
+    try {
+      // Clear selection so we only select new synchronized item
+      jtree.getSelectionModel().clearSelection();
+      // Expand recursively item's directory because of the lazy loading stuff
+      expandRecursively(item);
+      // Now scroll to the item and select it
+      for (int i = 0; i < jtree.getRowCount(); i++) {
+        Object o = jtree.getPathForRow(i).getLastPathComponent();
+        if (o instanceof FileNode) {
+          o = ((FileNode) o).getFile();
+        } else if (o instanceof PlaylistFileNode) {
+          o = ((PlaylistFileNode) o).getPlaylistFile();
+        } else {
+          continue;
+        }
+        if (item.equals(o)) {
+          jtree.scrollRowToVisible(i);
+          jtree.getSelectionModel().addSelectionPath(jtree.getPathForRow(i));
+        }
       }
-      if (item.equals(o)) {
-        jtree.scrollRowToVisible(i);
-        jtree.getSelectionModel().addSelectionPath(jtree.getPathForRow(i));
-      }
+    } finally {
+      jtree.addTreeSelectionListener(tsl);
     }
 
   }
@@ -542,9 +550,16 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   private void expandRecursively(Item item) {
     jtree.expandRow(0);
     boolean stopLoop = false;
-    // item is either a file or a playlist
+    // Keep tree path list here, do not put this call in the loop as
+    // it would change at each node expand
+    List<TreePath> paths = new ArrayList<TreePath>();
     for (int i = 0; i < jtree.getRowCount(); i++) {
-      Object o = jtree.getPathForRow(i).getLastPathComponent();
+      TreePath path = jtree.getPathForRow(i);
+      paths.add(path);
+    }
+    // item is either a file or a playlist
+    for (int i = 0; i < paths.size(); i++) {
+      Object o = paths.get(i).getLastPathComponent();
       if (o instanceof DirectoryNode || o instanceof DeviceNode) {
         Directory testedDirectory = null;
         // If the node is a device, search its root directory and check it

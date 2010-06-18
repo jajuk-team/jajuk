@@ -884,53 +884,61 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
    */
   @Override
   void scrollTo(Item item) {
-    // Clear selection so we only select new synchronized item
-    jtree.getSelectionModel().clearSelection();
-    // make sure the main element is expanded
-    jtree.expandRow(0);
-    Track track = null;
-    // received item is a file when the event comes from a queue view in the
-    // track perspective
-    if (item instanceof File) {
-      track = ((File) item).getTrack();
-    } else {
-      track = (Track) item;
-    }
-    for (int i = 0; i < jtree.getRowCount(); i++) {
-      Object o = jtree.getPathForRow(i).getLastPathComponent();
-      if (o instanceof AlbumNode) {
-        Album testedAlbum = ((AlbumNode) o).getAlbum();
-        if (track.getAlbum().equals(testedAlbum)) {
-          jtree.expandRow(i);
-          jtree.scrollPathToVisible(jtree.getPathForRow(i));
-        }
-      } else if (o instanceof ArtistNode) {
-        Artist testedArtist = ((ArtistNode) o).getArtist();
-        if (track.getArtist().equals(testedArtist)) {
-          jtree.expandRow(i);
-          jtree.scrollPathToVisible(jtree.getPathForRow(i));
-        }
-      } else if (o instanceof GenreNode) {
-        Genre testedGenre = ((GenreNode) o).getGenre();
-        if (track.getGenre().equals(testedGenre)) {
-          jtree.expandRow(i);
-          jtree.scrollPathToVisible(jtree.getPathForRow(i));
-        }
-      } else if (o instanceof YearNode) {
-        Year testedYear = ((YearNode) o).getYear();
-        if (track.getYear().equals(testedYear)) {
-          jtree.expandRow(i);
-          jtree.scrollPathToVisible(jtree.getPathForRow(i));
-        }
-      } else if (o instanceof TrackNode) {
-        Track tested = ((TrackNode) o).getTrack();
-        // == here thanks to .intern optimization
-        if (tested.getID() == track.getID()) {
-          jtree.expandRow(i);
-          jtree.scrollPathToVisible(jtree.getPathForRow(i));
-          jtree.getSelectionModel().addSelectionPath(jtree.getPathForRow(i));
+    // Remove selection listener because we force here tree selection and 
+    // we don't want to force table views to synchronize
+    TreeSelectionListener tsl = jtree.getTreeSelectionListeners()[0];
+    jtree.removeTreeSelectionListener(tsl);
+    try {
+      // Clear selection so we only select new synchronized item
+      jtree.getSelectionModel().clearSelection();
+      // make sure the main element is expanded
+      jtree.expandRow(0);
+      Track track = null;
+      // received item is a file when the event comes from a queue view in the
+      // track perspective
+      if (item instanceof File) {
+        track = ((File) item).getTrack();
+      } else {
+        track = (Track) item;
+      }
+      for (int i = 0; i < jtree.getRowCount(); i++) {
+        Object o = jtree.getPathForRow(i).getLastPathComponent();
+        if (o instanceof AlbumNode) {
+          Album testedAlbum = ((AlbumNode) o).getAlbum();
+          if (track.getAlbum().equals(testedAlbum)) {
+            jtree.expandRow(i);
+            jtree.scrollPathToVisible(jtree.getPathForRow(i));
+          }
+        } else if (o instanceof ArtistNode) {
+          Artist testedArtist = ((ArtistNode) o).getArtist();
+          if (track.getArtist().equals(testedArtist)) {
+            jtree.expandRow(i);
+            jtree.scrollPathToVisible(jtree.getPathForRow(i));
+          }
+        } else if (o instanceof GenreNode) {
+          Genre testedGenre = ((GenreNode) o).getGenre();
+          if (track.getGenre().equals(testedGenre)) {
+            jtree.expandRow(i);
+            jtree.scrollPathToVisible(jtree.getPathForRow(i));
+          }
+        } else if (o instanceof YearNode) {
+          Year testedYear = ((YearNode) o).getYear();
+          if (track.getYear().equals(testedYear)) {
+            jtree.expandRow(i);
+            jtree.scrollPathToVisible(jtree.getPathForRow(i));
+          }
+        } else if (o instanceof TrackNode) {
+          Track tested = ((TrackNode) o).getTrack();
+          // == here thanks to .intern optimization
+          if (tested.getID() == track.getID()) {
+            jtree.expandRow(i);
+            jtree.scrollPathToVisible(jtree.getPathForRow(i));
+            jtree.getSelectionModel().addSelectionPath(jtree.getPathForRow(i));
+          }
         }
       }
+    } finally {
+      jtree.addTreeSelectionListener(tsl);
     }
   }
 }
