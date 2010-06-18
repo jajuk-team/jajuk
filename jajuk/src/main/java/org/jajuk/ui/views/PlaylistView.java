@@ -168,6 +168,9 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   private JMenuItem jmiFileAddFavorites;
 
   /** DOCUMENT_ME. */
+  JMenuItem jmiFileRemove;
+
+  /** DOCUMENT_ME. */
   JMenuItem jmiFileUp;
 
   /** DOCUMENT_ME. */
@@ -430,6 +433,9 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     jmiFileAddFavorites.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
     jmiFileProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
     jmiFileProperties.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
+    jmiFileRemove = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.5"), IconLoader
+        .getIcon(JajukIcons.REMOVE));
+    jmiFileRemove.addActionListener(this);
     jmiFileUp = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.6"), IconLoader
         .getIcon(JajukIcons.UP));
     jmiFileUp.addActionListener(this);
@@ -444,6 +450,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     editorTable.getMenu().add(jmiFileFrontPush);
     editorTable.getMenu().add(jmiFilePush);
     editorTable.getMenu().addSeparator();
+    editorTable.getMenu().add(jmiFileRemove);
     editorTable.getMenu().add(jmiFileUp);
     editorTable.getMenu().add(jmiFileDown);
     editorTable.getMenu().addSeparator();
@@ -818,7 +825,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
             }
           }
         }
-      } else if (ae.getSource() == jbRemove) {
+      } else if (ae.getSource() == jbRemove || ae.getSource() == jmiFileRemove) {
         removeSelection();
       } else if (ae.getSource() == jbAddShuffle) {
         int iRow = editorTable.getSelectedRow();

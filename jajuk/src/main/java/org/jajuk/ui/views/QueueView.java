@@ -482,7 +482,7 @@ public class QueueView extends PlaylistView {
             }
           }
         }
-      } else if (ae.getSource() == jbRemove) {
+      } else if (ae.getSource() == jbRemove || ae.getSource() == jmiFileRemove) {
         removeSelection();
         refreshQueue();
       } else if (ae.getSource() == jbAddShuffle) {
