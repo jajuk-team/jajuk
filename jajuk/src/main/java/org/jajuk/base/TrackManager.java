@@ -269,6 +269,22 @@ public final class TrackManager extends ItemManager {
         tag.commit();
       } catch (Exception e) {
         Log.error(e);
+        try {
+          // If actual tag commit fails, we have to undo changes made in memory for current track
+          // The best solution for this complex issue is to force a deep refresh of the directory
+          // and to clear the tag cache to force tags reload
+          Tag.clearCache();
+          Directory dir = null;
+          File file = FileManager.getInstance().getFileByPath(tag.getFio().getAbsolutePath());
+          if (file != null) {
+            dir = file.getDirectory();
+          }
+          dir.refresh(true, null);
+          // refresh views
+          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+        } catch (Exception e2) {
+          Log.error(e2);
+        }
         throw new JajukException(104, e);
       }
     }
