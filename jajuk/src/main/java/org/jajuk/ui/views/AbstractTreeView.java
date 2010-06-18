@@ -151,6 +151,9 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
   /** Used to differentiate user action tree collapse from code tree collapse. */
   boolean bManualAction = true;
+  
+  /** Used to differentiate tree/table sync due to internal events from users's ones. */
+  boolean bInternalAction = false;
 
   /*
    * (non-Javadoc)

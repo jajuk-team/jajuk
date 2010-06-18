@@ -513,10 +513,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    */
   @Override
   void scrollTo(Item item) {
-    // Remove selection listener because we force here tree selection and
+    // Set manual change because we force here tree selection and
     // we don't want to force table views to synchronize
-    TreeSelectionListener tsl = jtree.getTreeSelectionListeners()[0];
-    jtree.removeTreeSelectionListener(tsl);
+    bInternalAction = true;
     try {
       // Clear selection so we only select new synchronized item
       jtree.getSelectionModel().clearSelection();
@@ -538,7 +537,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         }
       }
     } finally {
-      jtree.addTreeSelectionListener(tsl);
+      bInternalAction = false;
     }
 
   }
@@ -930,11 +929,14 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       InformationJPanel.getInstance().setSelection(sbOut.toString());
 
       // Notify the tree selection change (used by tree/table sync)
-      Properties properties = new Properties();
-      properties.put(Const.DETAIL_SELECTION, selectedRecursively);
-      properties.put(Const.DETAIL_PERSPECTIVE, PerspectiveManager.getCurrentPerspective().getID());
-      properties.put(Const.DETAIL_VIEW, getID());
-      ObservationManager.notify(new JajukEvent(JajukEvents.TREE_SELECTION_CHANGED, properties));
+      if (!bInternalAction) {
+        Properties properties = new Properties();
+        properties.put(Const.DETAIL_SELECTION, selectedRecursively);
+        properties
+            .put(Const.DETAIL_PERSPECTIVE, PerspectiveManager.getCurrentPerspective().getID());
+        properties.put(Const.DETAIL_VIEW, getID());
+        ObservationManager.notify(new JajukEvent(JajukEvents.TREE_SELECTION_CHANGED, properties));
+      }
 
       // Enable CDDB retagging only for a single directory selection
       jmiCDDBWizard.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
