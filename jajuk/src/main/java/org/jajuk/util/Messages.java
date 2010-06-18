@@ -32,10 +32,8 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -46,6 +44,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import net.miginfocom.swing.MigLayout;
+
+import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.log.Log;
 import org.xml.sax.SAXException;
@@ -651,17 +652,16 @@ class DetailsMessageDialog extends JajukDialog {
       // details
       final JDialog dialogDetail = new JDialog(dialog, Messages.getString("Details"));
       final JPanel jp = new JPanel();
-      jp.setLayout(new BoxLayout(jp, BoxLayout.Y_AXIS));
+      jp.setLayout(new MigLayout("ins 5","[800]","[600][]"));
       final JTextArea jta = new JTextArea(sDetails);
       jta.setEditable(false);
-      jp.add(new JScrollPane(jta));
-      final JButton jbOK = new JButton(Messages.getString("Ok"));
-      jbOK.addActionListener(new ActionListener() {
+      jp.add(new JScrollPane(jta),"wrap");
+      final OKCancelPanel jbOKC = new OKCancelPanel(new ActionListener() {
         public void actionPerformed(final ActionEvent arg0) {
           dialogDetail.dispose();
         }
       });
-      jp.add(UtilGUI.getCentredPanel(jbOK));
+      jp.add(jbOKC,"span,alignx center");
       dialogDetail.setModal(true);
       dialogDetail.setAlwaysOnTop(true);
       dialogDetail.setContentPane(jp);
