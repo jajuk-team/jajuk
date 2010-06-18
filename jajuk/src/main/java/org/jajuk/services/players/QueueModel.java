@@ -1121,6 +1121,9 @@ public final class QueueModel {
     List<StackItem> alStack = new ArrayList<StackItem>(1);
     alStack.add(item);
     insert(alStack, iPos);
+    if (iPos <= index) {
+      index++;
+    }
     // refresh queue
     ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
 
@@ -1141,6 +1144,9 @@ public final class QueueModel {
       // size() position to allow increasing
       // FIFO at the end
       alQueue.addAll(iPos, alFiles);
+      if (iPos <= index) {
+        index += alFiles.size();
+      }
       JajukTimer.getInstance().addTrackTime(alFiles);
     }
     computesPlanned(false);
@@ -1155,7 +1161,7 @@ public final class QueueModel {
    *          The index to move up in the queue.
    */
   public static void up(int lIndex) {
-    if (lIndex == 0 || lIndex == alQueue.size()) {
+    if (lIndex == 0 || lIndex >= alQueue.size()) {
       // Can't put up first track in queue or
       // first planned track.
       // This should be already made by ui behavior
@@ -1165,11 +1171,9 @@ public final class QueueModel {
       StackItem item = alQueue.get(lIndex);
       alQueue.remove(lIndex); // remove the item
       alQueue.add(lIndex - 1, item); // add it again above
-    } else { // planned track
-      StackItem item = alQueue.getPlanned(lIndex - alQueue.size());
-      alQueue.remove(lIndex - alQueue.size()); // remove the item
-      // add it again above
-      alQueue.add(lIndex - alQueue.size() - 1, item);
+      if (lIndex == index) {
+        index--;
+      }
     }
   }
 
@@ -1180,19 +1184,16 @@ public final class QueueModel {
    *          The index to move down in the queue.
    */
   public static void down(int lIndex) {
-    if (/* lIndex == 0 || */lIndex == alQueue.size() - 1
-        || lIndex == alQueue.size() + alQueue.sizePlanned() - 1) {
-      // Can't put down current track, nor last track in FIFO, nor last
-      // planned track. This should be already made by ui behavior
+    if (lIndex >= alQueue.size() - 1) {
+      // Can't put down last track in FIFO. This should be already made by ui behavior
       return;
     }
-    if (lIndex < alQueue.size()) {
-      StackItem item = alQueue.get(lIndex);
-      alQueue.remove(lIndex); // remove the item
-      alQueue.add(lIndex + 1, item); // add it again above
+    StackItem item = alQueue.get(lIndex);
+    alQueue.remove(lIndex); // remove the item
+    alQueue.add(lIndex + 1, item); // add it again above
+    if (lIndex == index) {
+      index++;
     }
-    // TODO: this seems to not take the planned queue into account, but up()
-    // does!
   }
 
   /**
@@ -1258,12 +1259,14 @@ public final class QueueModel {
           alQueue.removePlanned(i - alQueue.size());
           // complete missing planned tracks
           computesPlanned(false);
-
-        } else { // planned items
+        } else { // regular items
           StackItem item = alQueue.get(i);
           JajukTimer.getInstance().removeTrackTime(item.getFile());
           // remove this file from fifo
           alQueue.remove(i);
+          if (i <= index) {
+            index--;
+          }
           // Recomputes all planned tracks from last file in fifo
           computesPlanned(true);
         }
@@ -1398,11 +1401,16 @@ public final class QueueModel {
    */
   public static synchronized void clean() {
     Iterator<StackItem> it = alQueue.iterator();
+    int i = 0;
     while (it.hasNext()) {
       StackItem si = it.next();
       if (FileManager.getInstance().getFileByID(si.getFile().getID()) == null) {
         it.remove();
+        if (i <= index) {
+          index--;
+        }
       }
+      i++;
     }
     computesPlanned(true);
   }
