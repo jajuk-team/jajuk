@@ -22,7 +22,6 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
@@ -33,9 +32,7 @@ import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
 
 /**
  * DOCUMENT_ME.
