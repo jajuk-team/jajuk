@@ -217,16 +217,18 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   private String buildAudioFilters() {
     // Audio filters syntax : -af
     // <filter1[=parameter1:parameter2:...],filter2,...>
+    // Add -volnorm (audio normalization) if option is set
+    StringBuilder audiofilters = new StringBuilder();
+    if (Conf.getBoolean(CONF_USE_VOLNORM)) {
+      audiofilters.append("volnorm,");
+    }
     // gain = -200 = mute
     int volume = -200;
     if (fVolume != 0) {
       volume = ((int) (25 * fVolume) - 20);
     }
-    StringBuilder audiofilters = new StringBuilder("volume=" + volume);
-    // Add -volnorm (audio normalization) if option is set
-    if (Conf.getBoolean(CONF_USE_VOLNORM)) {
-      audiofilters.append(",volnorm");
-    }
+    audiofilters.append("volume=" + volume);
+   
     // Add karaoke state if required
     if (Conf.getBoolean(CONF_STATE_KARAOKE)) {
       audiofilters.append(",karaoke");
