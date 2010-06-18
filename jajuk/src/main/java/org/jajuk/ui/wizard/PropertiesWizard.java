@@ -799,17 +799,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
                 if (!alInError.contains(item)) {
                   alInError.add(item);
                   // create details label with 3 levels deep
-                  sDetails += je.getMessage();
-                  if (je.getCause() != null) {
-                    sDetails += "\nCaused by:" + je.getCause();
-                    if (je.getCause().getCause() != null) {
-                      sDetails += "\nCaused by:" + je.getCause().getCause();
-                      if (je.getCause().getCause().getCause() != null) {
-                        sDetails += "\nCaused by:" + je.getCause().getCause().getCause();
-                      }
-                    }
-                  }
-                  sDetails += "\n\n";
+                  sDetails += buidlDetailsString(je);
                 }
                 continue;
               }
@@ -841,6 +831,8 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
             Log.error(e);
             if (!alInError.contains(item)) {
               alInError.add(item);
+              // create details label with 3 levels deep
+              sDetails += buidlDetailsString(e);
             }
           }
         }
@@ -883,6 +875,26 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
         // file name change)
         FileManager.getInstance().forceSorting();
       }
+    }
+
+    /**
+     * Build the errors details message
+     * @param e the exception
+     * @return the errors details message
+     */
+    private String buidlDetailsString(Exception e) {
+      String sDetails = e.getMessage();
+      if (e.getCause() != null) {
+        sDetails += "\nCaused by:" + e.getCause();
+        if (e.getCause().getCause() != null) {
+          sDetails += "\nCaused by:" + e.getCause().getCause();
+          if (e.getCause().getCause().getCause() != null) {
+            sDetails += "\nCaused by:" + e.getCause().getCause().getCause();
+          }
+        }
+      }
+      sDetails += "\n\n";
+      return sDetails;
     }
 
     /**
