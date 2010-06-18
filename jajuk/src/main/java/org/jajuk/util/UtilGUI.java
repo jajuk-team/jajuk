@@ -124,7 +124,6 @@ public final class UtilGUI {
   /** Alternate color rows highlighter used in every table. */
   private static Highlighter alternateColorHighlighter;
 
-
   /**
    * Return whether the given highlighter is the alternateColorHighlighter
    * @return whether the given highlighter is the alternateColorHighlighter
@@ -393,8 +392,7 @@ public final class UtilGUI {
     }
     return UtilGUI.getResizedImage(img, iNewWidth, iNewHeight);
   }
- 
-  
+
   /**
    * Setup Substance look and feel.
    * 
@@ -454,7 +452,7 @@ public final class UtilGUI {
     // Set windows decoration to look and feel
     JFrame.setDefaultLookAndFeelDecorated(true);
     JDialog.setDefaultLookAndFeelDecorated(true);
-   
+
   }
 
   /**
@@ -665,26 +663,25 @@ public final class UtilGUI {
    * @return true if the specified image has transparent pixels
    */
   public static boolean hasAlpha(Image image) {
-    // If buffered image, the color model is readily available
-    if (image instanceof BufferedImage) {
-      BufferedImage bimage = (BufferedImage) image;
-      return bimage.getColorModel().hasAlpha();
-    }
-    // Use a pixel grabber to retrieve the image's color model;
-    // grabbing a single pixel is usually sufficient
-    PixelGrabber pg = new PixelGrabber(image, 0, 0, 1, 1, false);
     try {
+      // If buffered image, the color model is readily available
+      if (image instanceof BufferedImage) {
+        BufferedImage bimage = (BufferedImage) image;
+        return bimage.getColorModel().hasAlpha();
+      }
+      // Use a pixel grabber to retrieve the image's color model;
+      // grabbing a single pixel is usually sufficient
+      PixelGrabber pg = new PixelGrabber(image, 0, 0, 1, 1, false);
       pg.grabPixels();
-    } catch (InterruptedException e) {
+      // Get the image's color model
+      ColorModel cm = pg.getColorModel();
+      if (cm != null) {
+        return cm.hasAlpha();
+      }
+    } catch (Exception e) {
       Log.error(e);
     }
-    // Get the image's color model
-    ColorModel cm = pg.getColorModel();
-    if (cm == null) {
-      return false;
-    } else {
-      return cm.hasAlpha();
-    }
+    return false;
   }
 
   /**
