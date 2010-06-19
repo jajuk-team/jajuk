@@ -65,13 +65,6 @@ public class ShuffleModeAction extends JajukAction {
     CommandJPanel.getInstance().setRandomSelected(!b);
     if (!b) { // enabled button
       QueueModel.shuffle(); // shuffle current selection
-      // now make sure we can't have a single repeated file after a
-      // non-repeated file (by design)
-      if (QueueModel.containsRepeat() && !QueueModel.containsOnlyRepeat()) {
-        QueueModel.setRepeatModeToAll(false); // yes?
-        // un-repeat all
-      }
-
     }
     // computes planned tracks
     QueueModel.computesPlanned(true);

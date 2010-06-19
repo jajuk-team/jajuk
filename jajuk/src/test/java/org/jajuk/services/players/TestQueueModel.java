@@ -110,7 +110,7 @@ public class TestQueueModel extends JajukTestCase {
     QueueModel.setIndex(4);
     QueueModel.reset();
     assertEquals(0, QueueModel.getQueueSize());
-    assertEquals(0, QueueModel.getIndex());
+    assertEquals(-1, QueueModel.getIndex());
   }
 
   /**
@@ -319,7 +319,6 @@ public class TestQueueModel extends JajukTestCase {
   */
   public void testFinishedRepeatAndShuffle() throws Exception {
     QueueModel.clear();
-
     addItems(5);
     StackItem firstItem = QueueModel.getItem(0);
     QueueModel.setRepeatModeToAll(true);
@@ -333,10 +332,8 @@ public class TestQueueModel extends JajukTestCase {
     QueueModel.finished();
     assertTrue(QueueModel.getItem(0).equals(firstItem));
     QueueModel.finished();
-    // Queue should be shuffled then. We test position of two items, not only once to avoid false
-    // positive, indeed, when the playlist is shuffled, the first track could remain at its previous
-    // position but it is very unlikely that 2 consecutive tracks remain at the same position
-    assertFalse("Item0: " + QueueModel.getItem(0) + "\nFirstItem: " + firstItem, (QueueModel
+   // Make sure that first item is no more the same
+    assertFalse("Item0: " + QueueModel.getItem(0) + "\nFirstItem: " + firstItem, !(QueueModel
         .getItem(0).equals(firstItem)));
   }
 
@@ -593,7 +590,7 @@ public class TestQueueModel extends JajukTestCase {
     QueueModel.setIndex(4);
     QueueModel.clear();
     assertEquals(0, QueueModel.getQueueSize());
-    assertEquals(0, QueueModel.getIndex());
+    assertEquals(-1, QueueModel.getIndex());
   }
 
   /**
@@ -718,10 +715,9 @@ public class TestQueueModel extends JajukTestCase {
   public void testGetCurrentItem() throws Exception {
     // no item without items
     assertNull(QueueModel.getCurrentItem());
-
     addItems(10);
-    QueueModel.playNext();
-    assertEquals("file1", QueueModel.getCurrentItem().getFile().getName());
+    QueueModel.goTo(2);
+    assertEquals("file2", QueueModel.getCurrentItem().getFile().getName());
   }
 
   /**

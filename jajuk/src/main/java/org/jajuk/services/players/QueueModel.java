@@ -72,7 +72,7 @@ import org.jajuk.util.log.Log;
  */
 public final class QueueModel {
 
-  /** Currently played track index. */
+  /** Currently played track index or -1 if none playing item */
   private static int index;
 
   /** Last played track. */
@@ -730,7 +730,7 @@ public final class QueueModel {
    */
   public static void clear() {
     alQueue.clear();
-    index = 0;
+    index = -1;
     alQueue.clearPlanned();
   }
 
@@ -978,7 +978,7 @@ public final class QueueModel {
    * @return stack item
    */
   public static StackItem getCurrentItem() {
-    if (index < alQueue.size()) {
+    if (index < alQueue.size() && index >= 0) {
       return alQueue.get(index);
     } else {
       return null;
@@ -1093,18 +1093,16 @@ public final class QueueModel {
    */
   public static void shuffle() {
     if (alQueue.size() > 1) {
-      if (isStopped()) {
-        UtilFeatures.forcedShuffle(alQueue);
-      } else {
-        // Make sure current track is kept to its position
-        // so remove it and add it again after shuffling
-        alQueue.remove(index);
-        UtilFeatures.forcedShuffle(alQueue);
-        alQueue.add(0, itemLast);
-        index = 0;
-        // Refresh Queue View
-        ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
+      StackItem currentItem = null;
+      if (index >= 0) {
+        alQueue.get(index);
       }
+      UtilFeatures.forcedShuffle(alQueue);
+      if (currentItem != null) {
+        index = alQueue.indexOf(currentItem);
+      }
+      // Refresh Queue View
+      ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
     }
     alQueue.clearPlanned(); // force recomputes planned tracks
   }
@@ -1311,6 +1309,9 @@ public final class QueueModel {
    * @return the count tracks left
    */
   public static int getCountTracksLeft() {
+    if (index == -1) {
+      return alQueue.size();
+    }
     return alQueue.size() - index;
   }
 
