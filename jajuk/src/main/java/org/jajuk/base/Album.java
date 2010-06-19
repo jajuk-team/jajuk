@@ -100,8 +100,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   @Override
   public String toString() {
-    return "Album[ID=" + getID() + " Name={{" + getName() + "}}" 
-        + " disk ID={{" + getDiscID() + "}}]";
+    return "Album[ID=" + getID() + " Name={{" + getName() + "}}" + " disk ID={{" + getDiscID()
+        + "}}]";
   }
 
   /**
@@ -254,7 +254,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     // Try to add album artist
     Track first = getTracksCache().get(0);
     // (every track maps at minimum an "unknown artist" album artist
-    if(first.getAlbumArtist() != null) {
+    if (first.getAlbumArtist() != null) {
       sb.append(first.getAlbumArtist().getName2());
     }
 
@@ -287,7 +287,11 @@ public class Album extends LogicalItem implements Comparable<Album> {
     // afterwards (performance factor x2 or x3 in catalog view)
     if (COVER_NONE.equals(cachedCoverPath)) {
       return null;
-    } else if (!StringUtils.isBlank(cachedCoverPath)) {
+    } else if (!StringUtils.isBlank(cachedCoverPath) 
+        // Check if cover still exist. There is an overhead 
+        // drawback but otherwise, the album's cover 
+        // property may be stuck to an old device's cover url.
+        && new File(cachedCoverPath).exists()) {
       return new File(cachedCoverPath);
     }
     File fDir = null; // analyzed directory
@@ -331,8 +335,9 @@ public class Album extends LogicalItem implements Comparable<Album> {
             // Test the image is not corrupted
             try {
               ImageIcon ii = new ImageIcon(files[i].getAbsolutePath());
-              // Note that at this point, the image is fully loaded (done in the ImageIcon constructor)
-              if (ii.getImageLoadStatus()!= MediaTracker.COMPLETE) {
+              // Note that at this point, the image is fully loaded (done in the ImageIcon
+              // constructor)
+              if (ii.getImageLoadStatus() != MediaTracker.COMPLETE) {
                 setProperty(XML_ALBUM_COVER, files[i].getAbsolutePath());
                 return files[i];
               }
