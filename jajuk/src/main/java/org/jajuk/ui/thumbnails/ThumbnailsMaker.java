@@ -256,6 +256,8 @@ public final class ThumbnailsMaker {
         return;
       }
       if (ThumbnailManager.refreshThumbnail(album, size)) {
+        // Slow down thumbs creation to avoid sound glitches due too high cpu usage
+        Thread.sleep(100);
         stat++;
       }
       // Call GC to avoid increasing too much memory
