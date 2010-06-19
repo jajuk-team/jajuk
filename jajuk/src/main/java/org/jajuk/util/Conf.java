@@ -207,7 +207,7 @@ public final class Conf implements Const {
     defaults.put(CONF_OPTIONS_TAB, "0");
     defaults.put(CONF_OPTIONS_INTRO_BEGIN, "0");
     defaults.put(CONF_OPTIONS_INTRO_LENGTH, "20");
-    defaults.put(CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
+    defaults.put(CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.NONE.name());
     defaults.put(CONF_P2P_SHARE, FALSE);
     defaults.put(CONF_P2P_ADD_REMOTE_PROPERTIES, FALSE);
     defaults.put(CONF_P2P_HIDE_LOCAL_PROPERTIES, TRUE);
