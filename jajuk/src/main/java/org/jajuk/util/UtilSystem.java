@@ -35,12 +35,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.RandomAccessFile;
 import java.io.Writer;
 import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -118,8 +120,11 @@ public final class UtilSystem {
   /** Are we under Windows 64 bits ? *. */
   private static final boolean UNDER_WINDOWS_64BIT;
 
-  /** Are we in JNLP mode ? *. */
+  /** Are we in JNLP mode ? **/
   private static final boolean UNDER_JNLP;
+
+  /** Are we under KDE ? **/
+  private static final boolean UNDER_KDE;
 
   /** Directory filter used in refresh. */
   private static JajukFileFilter dirFilter;
@@ -162,6 +167,41 @@ public final class UtilSystem {
 
   static {
     UNDER_JNLP = (System.getProperty("jnlpx.jvm") != null);
+  }
+
+  /**
+  * Are we running in a KDE environment ?
+  * 
+  * We check it by using ps command + a grep searching 'kdeinit' process*/
+  static {
+    boolean underKDE = false;
+    if (isUnderLinux()) {
+      BufferedReader stdInput = null;
+      try {
+        ProcessBuilder pb = new ProcessBuilder("ps", "-eaf");
+        Process proc = pb.start();
+        stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+        proc.waitFor();
+        String s;
+        while ((s = stdInput.readLine()) != null) {
+          if (s.matches(".*kdeinit.*")) {
+            underKDE = true;
+            break;
+          }
+        }
+      } catch (Throwable e) {
+        Log.error(e);
+      } finally {
+        if (stdInput != null) {
+          try {
+            stdInput.close();
+          } catch (IOException e) {
+            Log.error(e);
+          }
+        }
+      }
+    }
+    UNDER_KDE = underKDE;
   }
 
   /** Icons cache. */
@@ -1315,21 +1355,24 @@ public final class UtilSystem {
    * @return whether we are running in a KDE environment
    */
   public static boolean isUnderKDE() {
+    return UtilSystem.UNDER_KDE;
+  }
+
+  /**
+   * Attempt to acquire a file lock for given file
+   * @param file the file to lock
+   * @return a FileLock or null if it can't be acquired
+   */
+  public static FileLock tryLockFile(File file) {
+    FileLock lock = null;
     try {
-      ProcessBuilder pb = new ProcessBuilder("ps", "-eaf");
-      Process proc = pb.start();
-      BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-      proc.waitFor();
-      String s;
-      while ((s = stdInput.readLine()) != null) {
-        if (s.matches(".*kdeinit.*")) {
-          return true;
-        }
-      }
-    } catch (Throwable e) {
-      Log.error(e);
+      FileChannel channel = new RandomAccessFile(file, "rw").getChannel();
+      // Get an exclusive lock on the whole file
+      lock = channel.tryLock();
+    } catch (Exception e) {
+      Log.warn("Cannot acquire lock for file : " + file.getAbsolutePath());
     }
-    return false;
+    return lock;
   }
 
 }

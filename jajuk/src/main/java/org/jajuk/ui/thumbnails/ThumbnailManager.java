@@ -26,6 +26,7 @@ import java.awt.MediaTracker;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.channels.FileLock;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -156,31 +157,56 @@ public final class ThumbnailManager {
   public static void createThumbnail(final ImageIcon ii, final File thumb, final int maxDim)
       throws InterruptedException, IOException {
     // Synchronize the file to avoid any concurrency between several threads refreshing the thumb
-    // like the catalog view and the artist view. However, it can't prevent collision between
-    // jajuk and the thumb builder process (different JVM)
+    // like the catalog view and the artist view.
     synchronized (thumb.getAbsolutePath().intern()) {
-      // Note that at this point, the image is fully loaded (done in the ImageIcon constructor)
-      final Image image = ii.getImage();
-      // determine thumbnail size from WIDTH and HEIGHT
-      int thumbWidth = maxDim;
-      int thumbHeight = maxDim;
-      final double thumbRatio = (double) thumbWidth / (double) thumbHeight;
-      final int imageWidth = image.getWidth(null);
-      final int imageHeight = image.getHeight(null);
-      final double imageRatio = (double) imageWidth / (double) imageHeight;
-      if (thumbRatio < imageRatio) {
-        thumbHeight = (int) (thumbWidth / imageRatio);
-      } else {
-        thumbWidth = (int) (thumbHeight * imageRatio);
+      // We perform here synchronization between jajuk and the thumb builder process (different JVM)
+      // thanks a FileLocker
+      FileLock lock = UtilSystem.tryLockFile(thumb);
+      try {
+        if (lock == null) {
+          int count = 0;
+          // We retry and wait a while before leaving
+          while (lock == null && count < 10) {
+            lock = UtilSystem.tryLockFile(thumb);
+            Thread.sleep(1000);
+            count++;
+          }
+        }
+        if (lock == null) {
+          throw new IOException("Cannot acquire exclusive lock on file : "
+              + thumb.getAbsolutePath());
+        }
+        // Note that at this point, the image is fully loaded (done in the ImageIcon constructor)
+        final Image image = ii.getImage();
+        // determine thumbnail size from WIDTH and HEIGHT
+        int thumbWidth = maxDim;
+        int thumbHeight = maxDim;
+        final double thumbRatio = (double) thumbWidth / (double) thumbHeight;
+        final int imageWidth = image.getWidth(null);
+        final int imageHeight = image.getHeight(null);
+        final double imageRatio = (double) imageWidth / (double) imageHeight;
+        if (thumbRatio < imageRatio) {
+          thumbHeight = (int) (thumbWidth / imageRatio);
+        } else {
+          thumbWidth = (int) (thumbHeight * imageRatio);
+        }
+        // draw original image to thumbnail image object and
+        // scale it to the new size on-the-fly
+        final BufferedImage thumbImage = UtilGUI.toBufferedImage(image, thumbWidth, thumbHeight);
+        // save thumbnail image to OUTFILE
+        ImageIO.write(thumbImage, UtilSystem.getExtension(thumb), thumb);
+        // Free thumb memory
+        thumbImage.flush();
+      } finally {
+        // Make sure to release the lock{
+        if (lock != null) {
+          lock.release();
+          lock.channel().close();
+        }
       }
-      // draw original image to thumbnail image object and
-      // scale it to the new size on-the-fly
-      final BufferedImage thumbImage = UtilGUI.toBufferedImage(image, thumbWidth, thumbHeight);
-      // save thumbnail image to OUTFILE
-      ImageIO.write(thumbImage, UtilSystem.getExtension(thumb), thumb);
-      // Free thumb memory
-      thumbImage.flush();
+
     }
+
   }
 
   /**
@@ -216,7 +242,6 @@ public final class ThumbnailManager {
         Log.debug("Cannot read cover : " + fCover.getAbsolutePath());
         return false;
       }
-
       try {
         createThumbnail(fCover, fThumb, size);
         // Update thumb availability
