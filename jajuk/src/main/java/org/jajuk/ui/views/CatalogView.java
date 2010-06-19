@@ -459,8 +459,10 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
    */
   @Override
   public Object longCall() {
-    // The final album list we will display
+    // Every albums
     List<Album> albums = null;
+    // The final album list we will display
+    List<Album> pageAlbums = new ArrayList<Album>(Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE));
 
     try {
       Filter filter = null;
@@ -535,11 +537,38 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
           }
         }
       }
-      // Force thumbs build if required, this is the longest task of this worker
-      for (Album album : albums) {
-        ThumbnailManager.refreshThumbnail(album, getSelectedSize());
-      }
 
+      // Force thumbs build if required, this is the longest task of this worker
+      // we only keep albums for this page
+      // computes the number of pages
+      int iSize = Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE);
+      if (iSize == 0) {
+        iNbPages = 1;
+      } else {
+        // add one page for trailing items
+        iNbPages = albums.size() / iSize + ((albums.size() % iSize == 0) ? 0 : 1);
+      }
+      if (iNbPages > 0) {
+        // After user changed the number of thumbs on a page, we can be
+        // out of bounds exception so make sure to reinit the page index in
+        // this case
+        if (page >= jcbPage.getItemCount()) {
+          page = 0;
+        }
+        // Add all items
+        int max = albums.size(); // upper limit
+        if (page < (iNbPages - 1)) {
+          // if last page, take simply to total number of
+          // items to display
+          max = (page + 1) * Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE);
+        }
+        // Populate each thumb if required (THIS IS LOOOOOONG)
+        for (int i = page * Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE); i < max; i++) {
+          Album album = albums.get(i);
+          pageAlbums.add(album);
+          ThumbnailManager.refreshThumbnail(album, getSelectedSize());
+        }
+      }
     } finally {
       // Make sure to reset the populating flag in case of problem
       // Note that this flag is reseted here and not in the shortCall() method
@@ -547,7 +576,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       // in the longCall() method.
       bPopulating = false;
     }
-    return albums;
+    return pageAlbums;
   }
 
   /**
@@ -563,58 +592,34 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       stopAllBusyLabels();
       return;
     }
-    // computes the number of pages
-    int iSize = Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE);
-    if (iSize == 0) {
-      iNbPages = 1;
-    } else {
-      // add one page for trailing items
-      iNbPages = albums.size() / iSize + ((albums.size() % iSize == 0) ? 0 : 1);
-    }
-    if (iNbPages > 0) {
-      // After user changed the number of thumbs on a page, we can be
-      // out of bounds exception so make sure to reinit the page index in
-      // this case
-      if (page >= jcbPage.getItemCount()) {
-        page = 0;
-      }
-      // Add all items
-      int max = albums.size(); // upper limit
-      if (page < (iNbPages - 1)) {
-        // if last page, take simply to total number of
-        // items to display
-        max = (page + 1) * Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE);
-      }
-      // Populate each thumb if required (THIS IS LOOOOOONG)
-      for (int i = page * Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE); i < max; i++) {
-        final LocalAlbumThumbnail thumb = new LocalAlbumThumbnail(albums.get(i), getSelectedSize(),
-            true);
-        thumb.populate();
-        thumbs.add(thumb);
+    // Populate each thumb if required (THIS IS LOOOOOONG)
+    for (Album album : albums) {
+      final LocalAlbumThumbnail thumb = new LocalAlbumThumbnail(album, getSelectedSize(), true);
+      thumb.populate();
+      thumbs.add(thumb);
 
-        // restore previous selected item if still set
-        if (item != null) {
-          if (((Album) thumb.getItem()).equals(item.getItem())) {
-            CatalogView.this.item = thumb;
-            CatalogView.this.item.setSelected(true);
-          }
+      // restore previous selected item if still set
+      if (item != null) {
+        if (((Album) thumb.getItem()).equals(item.getItem())) {
+          CatalogView.this.item = thumb;
+          CatalogView.this.item.setSelected(true);
         }
-
-        thumb.getIcon().addMouseListener(new MouseAdapter() {
-          @Override
-          public void mousePressed(MouseEvent e) {
-            LocalAlbumThumbnail thumb = (LocalAlbumThumbnail) ((JLabel) e.getSource()).getParent();
-            // Unselect previous thumb
-            if (CatalogView.this.item != null && CatalogView.this.item != thumb) {
-              CatalogView.this.item.setSelected(false);
-            }
-            // Select new thumb
-            thumb.setSelected(true);
-            CatalogView.this.item = thumb;
-          }
-        });
-
       }
+
+      thumb.getIcon().addMouseListener(new MouseAdapter() {
+        @Override
+        public void mousePressed(MouseEvent e) {
+          LocalAlbumThumbnail thumb = (LocalAlbumThumbnail) ((JLabel) e.getSource()).getParent();
+          // Unselect previous thumb
+          if (CatalogView.this.item != null && CatalogView.this.item != thumb) {
+            CatalogView.this.item.setSelected(false);
+          }
+          // Select new thumb
+          thumb.setSelected(true);
+          CatalogView.this.item = thumb;
+        }
+      });
+
     }
 
     // populate page selector
