@@ -393,24 +393,7 @@ public class TestQueueList extends JajukTestCase {
     assertEquals(2, impl.sizePlanned());
   }
 
-  /**
-   * Test method for {@link org.jajuk.services.players.QueueList#removePlanned(int)}.
-   */
-  public void testRemovePlanned() throws Exception {
-    QueueList impl = new QueueList();
-    prepareQueueImpl(impl);
-
-    prepareQueueImplPlanned(impl);
-
-    assertNotNull(impl.removePlanned(0));
-    assertNotNull(impl.removePlanned(0));
-    try {
-      assertNull(impl.removePlanned(0));
-    } catch (IndexOutOfBoundsException e) {
-      assertTrue(e.getMessage(), e.getMessage().contains("Index: 0, Size: 0"));
-    }
-  }
-
+  
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#getPlanned(int)}.
    */

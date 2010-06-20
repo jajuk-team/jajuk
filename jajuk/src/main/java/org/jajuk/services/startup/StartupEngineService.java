@@ -196,27 +196,14 @@ public class StartupEngineService {
           break;
         }
       }
-
       if (index == -1) {
         // Track not stored, push it first
         alToPlay.add(0, fileToPlay);
-
         index = 0;
       }
-
-      QueueModel.insert(UtilFeatures.createStackItems(alToPlay, false, false), 0);
-      QueueModel.setIndex(index);
-
-      if (Conf.getBoolean(Const.CONF_STATE_REPEAT)) {
-        if (index < QueueModel.getQueueSize()) {
-          QueueModel.getItem(index).setRepeat(true);
-        }
-      }
-
-      if (Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL)) {
-        QueueModel.setRepeatModeToAll(true);
-      }
-
+      boolean bRepeat =  Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL) ||  Conf.getBoolean(Const.CONF_STATE_REPEAT);
+      QueueModel.insert(UtilFeatures.createStackItems(alToPlay,bRepeat, false), 0);
+     
       // do not start playing if do nothing at startup is selected
       if (!Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOTHING)) {
         final int finalIndex = index;

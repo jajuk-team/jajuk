@@ -866,12 +866,10 @@ public final class UtilGUI {
    */
   public static void setRepeatSingleGui(boolean enable) {
     // always disable repeat all
-    Conf.setProperty(Const.CONF_STATE_REPEAT_ALL, Boolean.toString(false));
+    Conf.setProperty(Const.CONF_STATE_REPEAT_ALL, Const.FALSE);
     JajukJMenuBar.getInstance().setRepeatAllSelected(false);
     CommandJPanel.getInstance().setRepeatAllSelected(false);
-
     Conf.setProperty(Const.CONF_STATE_REPEAT, Boolean.toString(enable));
-
     JajukJMenuBar.getInstance().setRepeatSelected(enable);
     CommandJPanel.getInstance().setRepeatSelected(enable);
 

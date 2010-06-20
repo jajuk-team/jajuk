@@ -310,23 +310,12 @@ public class QueueList implements List<StackItem> {
   }
 
   /**
-   * Removes the item from the list of planned tracks.
-   * 
-   * @param index The position in the list of planned items to remove.
-   * 
-   * @return the stack item that was removed.
-   */
-  public StackItem removePlanned(int index) {
-    return alPlanned.remove(index);
-  }
-
-  /**
-   * Retrieve the planned track on a specified position.
-   * 
-   * @param index The position in the list of planned items to retrieve.
-   * 
-   * @return The StackItem at position index.
-   */
+  * Retrieve the planned track on a specified position.
+  * 
+  * @param index The position in the list of planned items to retrieve.
+  * 
+  * @return The StackItem at position index.
+  */
   public StackItem getPlanned(int index) {
     return alPlanned.get(index);
   }
@@ -386,7 +375,7 @@ public class QueueList implements List<StackItem> {
   public StackItem popNextPlanned() {
     if (sizePlanned() != 0) {
       // return and remove the planned track
-      return removePlanned(0);
+      return alPlanned.remove(0);
     } else {
       return null;
     }

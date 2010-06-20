@@ -38,7 +38,7 @@ import org.jajuk.util.UtilGUI;
  * DOCUMENT_ME.
  */
 public class RepeatModeAction extends JajukAction {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -58,10 +58,10 @@ public class RepeatModeAction extends JajukAction {
    */
   @Override
   public void perform(ActionEvent evt) {
-
     boolean b = Conf.getBoolean(Const.CONF_STATE_REPEAT);
-
     UtilGUI.setRepeatSingleGui(!b);
+    // disabling repeat for an item forced unset for all items and enabling single repeat unset
+    // repeat for all items and then set it only for current track
     QueueModel.setRepeatModeToAll(false);
 
     if (!b) { // enabled button
@@ -69,12 +69,6 @@ public class RepeatModeAction extends JajukAction {
       StackItem item = QueueModel.getCurrentItem();
       if (item != null) {
         item.setRepeat(true);
-      }
-    } else {// disable repeat mode
-      if (Conf.getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
-        // remove tracks before current position
-        QueueModel.remove(0, QueueModel.getIndex() - 1);
-        QueueModel.setIndex(0); // select first track
       }
     }
     // computes planned tracks

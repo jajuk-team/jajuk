@@ -107,7 +107,7 @@ public class TestQueueModel extends JajukTestCase {
 
     // things are reset with queued items
     addItems(10);
-    QueueModel.setIndex(4);
+    QueueModel.goTo(4);
     QueueModel.reset();
     assertEquals(0, QueueModel.getQueueSize());
     assertEquals(-1, QueueModel.getIndex());
@@ -305,7 +305,7 @@ public class TestQueueModel extends JajukTestCase {
 
     // with items, it will go to the next ine
     addItems(10);
-    QueueModel.setIndex(0);
+    QueueModel.goTo(0);
     assertEquals(0, QueueModel.getIndex());
     QueueModel.finished();
     assertEquals(1, QueueModel.getIndex());
@@ -347,7 +347,7 @@ public class TestQueueModel extends JajukTestCase {
 
     // with items, it will go to the next line
     addItems(10);
-    QueueModel.setIndex(0);
+    QueueModel.goTo(0);
     assertEquals(0, QueueModel.getIndex());
     QueueModel.finished(true);
     assertEquals(1, QueueModel.getIndex());
@@ -365,7 +365,7 @@ public class TestQueueModel extends JajukTestCase {
 
     // with items, it will go to the next line
     addItems(10);
-    QueueModel.setIndex(0);
+    QueueModel.goTo(0);
     assertEquals(0, QueueModel.getIndex());
     QueueModel.finished(true);
     assertEquals(0, QueueModel.getIndex());
@@ -380,7 +380,7 @@ public class TestQueueModel extends JajukTestCase {
 
     // with items, it will go to the next line
     addItems(2);
-    QueueModel.setIndex(0);
+    QueueModel.goTo(0);
     assertEquals(0, QueueModel.getIndex());
     QueueModel.finished(true);
     assertEquals(1, QueueModel.getIndex());
@@ -390,7 +390,7 @@ public class TestQueueModel extends JajukTestCase {
 
     // next time it will reset the index as we do not "plan" new tracks automatically
     QueueModel.finished(true);
-    assertEquals(0, QueueModel.getIndex());
+    assertEquals(-1, QueueModel.getIndex());
   }
 
   public void testFinishedEndOfQueueWithPlanned() throws Exception {
@@ -400,7 +400,7 @@ public class TestQueueModel extends JajukTestCase {
 
     // with items, it will go to the next line
     addItems(2);
-    QueueModel.setIndex(0);
+    QueueModel.goTo(0);
     assertEquals(0, QueueModel.getIndex());
     QueueModel.finished(true);
     assertEquals(1, QueueModel.getIndex());
@@ -437,7 +437,7 @@ public class TestQueueModel extends JajukTestCase {
     StackItem si = QueueModel.getItem(0);
     si.setRepeat(true);
 
-    QueueModel.setIndex(0);
+    QueueModel.goTo(0);
     // Finish the track, should play again
     QueueModel.finished();
 
@@ -457,7 +457,7 @@ public class TestQueueModel extends JajukTestCase {
     addItems(10);
     StackItem si = QueueModel.getItem(9);
     si.setRepeat(true);
-    QueueModel.setIndex(9);
+    QueueModel.goTo(9);
     // Finish the track, should play again
     QueueModel.finished();
 
@@ -482,7 +482,7 @@ public class TestQueueModel extends JajukTestCase {
     addItems(10);
     StackItem si = QueueModel.getItem(5);
     si.setRepeat(true);
-    QueueModel.setIndex(5);
+    QueueModel.goTo(5);
     // Finish the track, should play again
     QueueModel.finished();
 
@@ -511,7 +511,7 @@ public class TestQueueModel extends JajukTestCase {
     addItems(10);
     StackItem si = QueueModel.getItem(5);
     si.setRepeat(true);
-    QueueModel.setIndex(5);
+    QueueModel.goTo(5);
     // Finish the track, should play again
     QueueModel.finished();
 
@@ -531,16 +531,16 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueModel#setIndex(int)}
+   * Test method for {@link org.jajuk.services.players.QueueModel#goTo(int)}
    * .
    */
 
   public void testSetAndGetIndex() throws Exception {
     // with items, it will go to the next ine
     addItems(10);
-    QueueModel.setIndex(0);
+    QueueModel.goTo(0);
     assertEquals(0, QueueModel.getIndex());
-    QueueModel.setIndex(3);
+    QueueModel.goTo(3);
     assertEquals(3, QueueModel.getIndex());
   }
 
@@ -587,7 +587,7 @@ public class TestQueueModel extends JajukTestCase {
 
     // things are reset with queued items
     addItems(10);
-    QueueModel.setIndex(4);
+    QueueModel.goTo(4);
     QueueModel.clear();
     assertEquals(0, QueueModel.getQueueSize());
     assertEquals(-1, QueueModel.getIndex());
@@ -617,7 +617,7 @@ public class TestQueueModel extends JajukTestCase {
 
     // with items:
     addItems(10);
-    QueueModel.setIndex(2);
+    QueueModel.goTo(2);
     QueueModel.playPrevious();
     assertEquals(1, QueueModel.getIndex());
   }
@@ -628,7 +628,7 @@ public class TestQueueModel extends JajukTestCase {
 
     // with items:
     addItems(10);
-    QueueModel.setIndex(0);
+    QueueModel.goTo(0);
     QueueModel.playPrevious();
     assertEquals(0, QueueModel.getIndex());
   }
@@ -639,7 +639,7 @@ public class TestQueueModel extends JajukTestCase {
 
     // with items:
     addItems(10);
-    QueueModel.setIndex(0);
+    QueueModel.goTo(0);
     QueueModel.getItem(0).setRepeat(true);
     QueueModel.playPrevious();
     assertEquals(0, QueueModel.getIndex());
@@ -664,7 +664,7 @@ public class TestQueueModel extends JajukTestCase {
 
     // with items:
     addItems(10);
-    QueueModel.setIndex(2);
+    QueueModel.goTo(2);
     QueueModel.playNext();
     assertEquals(3, QueueModel.getIndex());
   }
@@ -956,21 +956,16 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testGoTo() throws Exception {
     QueueModel.goTo(0);
-
     addItems(5);
-    QueueModel.setIndex(2);
-    QueueModel.playNext();
-
+    QueueModel.goTo(2);
     QueueModel.goTo(4);
-
     assertEquals("file4", QueueModel.getCurrentItem().getFile().getName());
   }
 
   public void testGoToRepeat() throws Exception {
     addItems(5);
-    QueueModel.setIndex(2);
-    QueueModel.playNext();
-
+    QueueModel.goTo(2);
+    
     { // first choose one that is not set to repeat
       // now set some repeat
       QueueModel.getItem(2).setRepeat(true);
@@ -978,9 +973,6 @@ public class TestQueueModel extends JajukTestCase {
       QueueModel.goTo(4);
 
       assertEquals("file4", QueueModel.getCurrentItem().getFile().getName());
-
-      // item 2 is now not repeated any more
-      assertFalse(QueueModel.getItem(2).isRepeat());
     }
 
     { // and then try to go to a repeated one
@@ -1012,38 +1004,7 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(QueueModel.getQueue().toString(), 7, QueueModel.getQueueSize());
   }
 
-  public void testRemovePlanned() throws Exception {
-    StartupCollectionService.registerItemManagers();
-
-    // now add some items
-    addItems(5);
-
-    // we also need to enable continuous play for tracks to be planned
-    Conf.setProperty(Const.CONF_STATE_CONTINUE, "true");
-
-    // register some file
-    File file = JUnitHelpers.getFile("file11", true);
-    FileManager.getInstance().registerFile(file.getID(), file.getName(), file.getDirectory(),
-        file.getTrack(), file.getSize(), file.getQuality());
-    file = JUnitHelpers.getFile("file12", true);
-    FileManager.getInstance().registerFile(file.getID(), file.getName(), file.getDirectory(),
-        file.getTrack(), file.getSize(), file.getQuality());
-
-    QueueModel.computesPlanned(false);
-
-    // now we have planned items
-    assertEquals(10, QueueModel.getPlanned().size());
-
-    QueueModel.remove(5, 6);
-
-    // still 5 queue items
-    assertEquals(QueueModel.getQueue().toString(), 5, QueueModel.getQueueSize());
-
-    // again planned items are added now
-    assertEquals(QueueModel.getPlanned().toString(), 10, QueueModel.getPlanned().size());
-    // assertEquals("12", QueueModel.getPlanned().get(0).getFile().getName());
-  }
-
+ 
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#getLast()}.
    */
@@ -1087,14 +1048,11 @@ public class TestQueueModel extends JajukTestCase {
 
   public void testGetCountTracksLeft() throws Exception {
     assertEquals(0, QueueModel.getCountTracksLeft());
-
     addItems(10);
-
     assertEquals(10, QueueModel.getCountTracksLeft());
-
+    QueueModel.goTo(0);
     QueueModel.playNext();
     QueueModel.playNext();
-
     assertEquals(8, QueueModel.getCountTracksLeft());
   }
 
