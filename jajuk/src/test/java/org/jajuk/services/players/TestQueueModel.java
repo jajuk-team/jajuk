@@ -27,7 +27,6 @@ import org.apache.commons.io.FileUtils;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
-import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
@@ -61,6 +60,7 @@ public class TestQueueModel extends JajukTestCase {
     // reset before each test to have a clean start for each test as most
     // data is held statically for QueueModel
     QueueModel.reset();
+    QueueModel.itemLast = null;
     QueueModel.stopRequest();
 
     // reset conf changes to default
@@ -113,21 +113,6 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(-1, QueueModel.getIndex());
   }
 
-  /**
-   * Test method for
-   * {@link org.jajuk.services.players.QueueModel#resetAround(int, org.jajuk.base.Album)}
-   * .
-   */
-
-  public void testResetAround() throws Exception {
-    addItems(10);
-
-    // empty call, does not find anything
-    QueueModel.resetAround(1, JUnitHelpers.getAlbum("name", 23));
-
-    // do a normal call
-    QueueModel.resetAround(1, AlbumManager.getInstance().getAlbumByID("1"));
-  }
 
   /**
    * Test method for

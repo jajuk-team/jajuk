@@ -73,10 +73,10 @@ import org.jajuk.util.log.Log;
 public final class QueueModel {
 
   /** Currently played track index or -1 if none playing item */
-  private static int index;
+  private static volatile int index;
 
   /** Last played track. */
-  private static StackItem itemLast;
+  static volatile StackItem itemLast;
 
   /** The Fifo itself, contains jajuk File objects. This also includes an optional bunch of planned tracks which are accessible with separate methods. */
   private static volatile QueueList queue = new QueueList();
@@ -88,10 +88,10 @@ public final class QueueModel {
   private static boolean bFirstFile = true;
 
   /** Whether we are currently playing radio. */
-  private static boolean playingRadio = false;
+  private static volatile boolean playingRadio = false;
 
   /** Current played radio. */
-  private static WebRadio currentRadio;
+  private static volatile WebRadio currentRadio;
 
   /**
    * No constructor, this class is used statically only.
@@ -101,11 +101,12 @@ public final class QueueModel {
 
   /**
    * FIFO total re-initialization.
+   * 
+   * Do not set  itemLast to null as we need to keep this information in some places
    */
   public static void reset() {
     clear();
     JajukTimer.getInstance().reset();
-    itemLast = null;
     bStop = true;
     playingRadio = false;
     currentRadio = null;
@@ -145,7 +146,6 @@ public final class QueueModel {
       }
     }
     remove(begin, end);
-
   }
 
   /**
@@ -474,8 +474,6 @@ public final class QueueModel {
           // if next track is repeat, inc index
           if (itemNext.isRepeat() || forceNext) {
             index++;
-            // no next track in repeat mode, come back to first
-            // element in fifo
           }
         } else { // We reached end of fifo
           // make to shuffle the fifo before playing back repeated selection if any
@@ -491,12 +489,9 @@ public final class QueueModel {
       } else if (index < queue.size()) {
         StackItem item = queue.get(index);
         JajukTimer.getInstance().removeTrackTime(item.getFile());
-        if (Conf.getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
-          queue.remove(index); // remove this file from fifo
-        } else {
-          index++;
-        }
+        index++;
       }
+
       // Nothing more to play ? check if we in continue mode
       if (queue.size() == 0 || index >= queue.size()) {
         if (Conf.getBoolean(Const.CONF_STATE_CONTINUE) && itemLast != null) {
@@ -524,6 +519,17 @@ public final class QueueModel {
         // something more in FIFO
         launch();
       }
+
+      // Clean up trailing tracks in CONF_DROP_PLAYED_TRACKS_FROM_QUEUE mode
+      if (index > 0 && Conf.getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
+        int lastItemtoRemove = -1;
+        for (int i = 0; i < index; i++) {
+          if (!getItem(i).isRepeat()) {
+            lastItemtoRemove = i;
+          }
+        }
+        remove(0, lastItemtoRemove);
+      }
       // computes planned tracks
       computesPlanned(false);
     } catch (Exception e) {
@@ -547,10 +553,14 @@ public final class QueueModel {
   }
 
   /**
-   * Launch track at given index in the fifo.
+   * Launch track at 'index' position in the fifo.
    */
   private static void launch() {
     try {
+      // If no track playing at all, set first in queue
+      if (index < 0) {
+        index = 0;
+      }
       UtilGUI.waiting();
       File fCurrent = getPlayingFile();
       /**
@@ -561,7 +571,7 @@ public final class QueueModel {
        */
       ObservationManager.notifySync(new JajukEvent(JajukEvents.PLAY_OPENING));
 
-      // check if we are in single repeat mode, transfer it to new launched
+      // Check if we are in single repeat mode, transfer it to new launched
       // track
       if (Conf.getBoolean(Const.CONF_STATE_REPEAT)) {
         setRepeatModeToAll(false);
@@ -602,7 +612,7 @@ public final class QueueModel {
         pDetails.put(Const.DETAIL_CURRENT_FILE_ID, fCurrent.getID());
         pDetails.put(Const.DETAIL_CURRENT_DATE, Long.valueOf(System.currentTimeMillis()));
         ObservationManager.notify(new JajukEvent(JajukEvents.FILE_LAUNCHED, pDetails));
-        // save the last played track (even files in error are stored here as
+        // Save the last played track (even files in error are stored here as
         // we need this for computes next track to launch after an error)
         // We have to set this line here as we make directory change analyze
         // before for cover change
@@ -731,28 +741,6 @@ public final class QueueModel {
   }
 
   /**
-   * Set previous track index
-   * 
-   * @throws JajukException
-   *           the jajuk exception
-   */
-  private static void setPreviousIndex() throws JajukException {
-    StackItem itemFirst = getItem(0);
-    if (itemFirst != null) {
-      if (index > 0) { // if we have some repeat files
-        index--;
-      } else { // we are at the first position
-        if (itemFirst.isRepeat()) {
-          // restart last repeated item in the loop
-          index = getLastRepeatedItem();
-        } else {
-          index = 0;
-        }
-      }
-    }
-  }
-
-  /**
    * Play previous track.
    */
   public static void playPrevious() {
@@ -764,7 +752,10 @@ public final class QueueModel {
       }
       JajukTimer.getInstance().reset();
       JajukTimer.getInstance().addTrackTime(queue);
-      setPreviousIndex();
+      // If we are playing first item, keep index = 0
+      if (index > 0) {
+        index--;
+      }
       launch();
     } catch (Exception e) {
       Log.error(e);
@@ -776,16 +767,10 @@ public final class QueueModel {
    */
   public static void playPreviousAlbum() {
     try {
-      bStop = false;
-      // if playing, stop all playing players
-      if (Player.isPlaying()) {
-        Player.stop(true);
-      }
-      // we don't support album navigation inside repeated tracks
-      if (getQueueSize() > 0 && getItem(0).isRepeat()) {
-        playPrevious();
+      if (index <= 0) {
         return;
       }
+      bStop = false;
       boolean bOK = false;
       Directory dir = null;
       if (getPlayingFile() != null) {
@@ -794,7 +779,10 @@ public final class QueueModel {
         return;
       }
       while (!bOK) {
-        setPreviousIndex();
+        // If we are playing first item, keep index = 0
+        if (index > 0) {
+          index--;
+        }
         Directory dirTested = null;
         File file = queue.get(index).getFile();
         dirTested = file.getDirectory();
@@ -1054,7 +1042,7 @@ public final class QueueModel {
   }
 
   /**
-   * Not for performance reasons.
+   * Return queue size
    * 
    * @return FIFO size (do not use getFIFO().size() for performance reasons)
    */
