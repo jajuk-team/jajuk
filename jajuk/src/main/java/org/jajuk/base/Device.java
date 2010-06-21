@@ -805,10 +805,13 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     } finally {
       // make sure to unlock refreshing even if an error occurred
       bAlreadyRefreshing = false;
-      // Notify the reporter of the actual refresh startup
-      reporter.done();
-      // Reset the reporter as next time, it could be another type
-      reporter = null;
+      // reporter is null if mount is not mounted due to early return
+      if (reporter != null) {
+        // Notify the reporter of the actual refresh startup
+        reporter.done();
+        // Reset the reporter as next time, it could be another type
+        reporter = null;
+      }
     }
   }
 
