@@ -713,9 +713,8 @@ public final class UtilSystem {
             UtilSystem.mplayerPath = file;
           }
         }
-
-      } catch (URISyntaxException e) {
-        return UtilSystem.mplayerPath;
+      } catch (Exception e) {
+        Log.error(e);
       }
     }
     return UtilSystem.mplayerPath; // can be null if none suitable file found
@@ -758,8 +757,8 @@ public final class UtilSystem {
         if (file.exists() && file.length() == Const.MPLAYER_OSX_EXE_SIZE) {
           UtilSystem.mplayerPath = file;
         }
-      } catch (URISyntaxException e) {
-        return UtilSystem.mplayerPath;
+      } catch (Exception e) {
+        Log.error(e);
       }
     }
     return UtilSystem.mplayerPath; // can be null if none suitable file found
@@ -794,7 +793,6 @@ public final class UtilSystem {
           if (line == null) {
             break;
           }
-
           if (line.matches("get_time_pos.*")) {
             mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK;
             break;
