@@ -143,7 +143,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
 
   /**
    * Set right combo selection for given selection.
-   * 
+   *
    * @param preference DOCUMENT_ME
    */
   public final void setPreference(long preference) {
@@ -154,7 +154,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   public final void update(final JajukEvent event) {
@@ -175,8 +175,10 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
           jcbPreference.setEnabled(true);
           jbBan.setEnabled(true);
           updateBanIcon();
-          setPreference(QueueModel.getPlayingFile().getTrack().getLongValue(
-              Const.XML_TRACK_PREFERENCE));
+          File file = QueueModel.getPlayingFile();
+          if(file != null) {
+            setPreference(file.getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
+          }
         } else if (JajukEvents.ZERO.equals(event.getSubject())
             || JajukEvents.PLAYER_STOP.equals(event.getSubject())) {
           jcbPreference.setEnabled(false);
@@ -212,7 +214,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
    * DOCUMENT_ME.
    */
   private class ComboBoxRenderer extends BasicComboBoxRenderer {
-    
+
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = -6943363556191659895L;
 
