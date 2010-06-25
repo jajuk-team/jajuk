@@ -40,13 +40,13 @@ import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
 
 /**
- * 
+ *
  */
 public class TestDevice extends JajukTestCase {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see junit.framework.TestCase#setUp()
    */
   @Override
@@ -150,7 +150,7 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#getIconRepresentation()}.
-   * 
+   *
    * @throws Exception
    */
 
@@ -359,7 +359,7 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#getRootDirectory()}.
-   * 
+   *
    * @throws Exception
    */
   public void testGetRootDirectory() throws Exception {
@@ -404,7 +404,7 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#isMounted()}.
-   * 
+   *
    * @throws Exception
    */
   public void testIsMounted() throws Exception {
@@ -418,7 +418,7 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#isReady()}.
-   * 
+   *
    * @throws Exception
    */
   public void testIsReady() throws Exception {
@@ -449,7 +449,7 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#prepareRefresh(boolean)}.
-   * 
+   *
    * @throws Exception
    */
   public void testPrepareRefresh() throws Exception {
@@ -510,7 +510,7 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#mount(boolean)}.
-   * 
+   *
    * @throws Exception
    */
   public void testMount() throws Exception {
@@ -541,7 +541,7 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#refresh(boolean)}.
-   * 
+   *
    * @throws Exception
    */
   public void testRefreshBoolean() throws Exception {
@@ -565,7 +565,7 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#refresh(boolean, boolean)}.
-   * 
+   *
    * @throws Exception
    */
   public void testRefreshBooleanBoolean() throws Exception {
@@ -600,34 +600,25 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#refreshCommand(boolean)}.
+   * @throws Exception
    */
-  public void testRefreshCommandNoMoreAvailable() {
+  public void testRefreshCommandNoMoreAvailable() throws Exception {
     // We check that a device mounted but no more available cannot be refreshed
-    try {
-      Device device = new Device("1", "name");
-      // Prepare a sample directory with at least a single file
-      java.io.File fileOKDir = new java.io.File(System.getProperty("java.io.tmpdir") + "/foo643");
-      fileOKDir.mkdir();
-      java.io.File sampleFile = new java.io.File(fileOKDir.getAbsoluteFile() + "/foo.mp3");
-      sampleFile.createNewFile();
-      device.setUrl(fileOKDir.getAbsolutePath());
-      device.mount(false);
-      device.refreshCommand(false, false);
-      // fine, now rename the directory
-      sampleFile.delete();
-      fileOKDir.delete();
-      try {
-        // An error should happen here
-        device.refreshCommand(false, false);
-        fail();
-      } catch (Exception e) {
-        Log.error(e);
-      }
+    Device device = new Device("1", "name");
+    // Prepare a sample directory with at least a single file
+    java.io.File fileOKDir = new java.io.File(System.getProperty("java.io.tmpdir") + "/foo643");
+    fileOKDir.mkdir();
+    java.io.File sampleFile = new java.io.File(fileOKDir.getAbsoluteFile() + "/foo.mp3");
+    sampleFile.createNewFile();
+    device.setUrl(fileOKDir.getAbsolutePath());
+    device.mount(false);
+    device.refreshCommand(false, false);
+    // fine, now rename the directory
+    sampleFile.delete();
+    fileOKDir.delete();
 
-    } catch (Exception e) {
-      Log.error(e);
-      assertTrue(false);
-    }
+    // An error should happen here
+    device.refreshCommand(false, false);
   }
 
   // test for a regression that was added
@@ -664,7 +655,7 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#setUrl(java.lang.String)}.
-   * 
+   *
    * @throws Exception
    */
   public void testSetUrl() throws Exception {
@@ -803,7 +794,7 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#unmount()}.
-   * 
+   *
    * @throws Exception
    */
   public void testUnmount() throws Exception {
@@ -820,7 +811,7 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#unmount(boolean, boolean)}.
-   * 
+   *
    * @throws Exception
    */
   public void testUnmountBooleanBoolean() throws Exception {
