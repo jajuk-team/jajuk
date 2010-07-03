@@ -76,7 +76,7 @@ public final class UtilSystem {
   private static final String LOCAL_IP = "127.0.0.1";
 
   /** Size of the short names converter in bytes */
-  private static final int CONVERTER_FILE_SIZE = 78;
+  private static final int CONVERTER_FILE_SIZE = 23;
 
   /** Is browser supported ? */
   private static Boolean browserSupported;
@@ -1296,9 +1296,7 @@ public final class UtilSystem {
           || (fileConverter.exists() && fileConverter.length() != CONVERTER_FILE_SIZE)) {
         FileWriter fw = new FileWriter(fileConverter);
         fw.write("@echo off\n");
-        fw.write("set name=%~s1\n");
-        fw.write("for %%X in (\"%name%\") do set name=\"%%~sX\"\n");
-        fw.write("echo %name%\n");
+        fw.write("dir /x \"%~s1\"");
         fw.flush();
         fw.close();
       }
@@ -1306,10 +1304,40 @@ public final class UtilSystem {
       ProcessBuilder pc = new ProcessBuilder(fileConverter.getAbsolutePath(), "\"" + longname
           + "\"");
       Process process = pc.start();
+
+      /*
+       * dir /x parsing : Sample output (in French but should work with any language): Le volume
+       * dans le lecteur D s'appelle Données Le numéro de série du volume est C880-0321
+       * 
+       * Répertoire de D:\MESDOC~1\MAMUSI~1\FILES_~1\1F19~1
+       * 
+       * 07/06/2010 21:49 <REP> . 07/06/2010 21:49 <REP> .. 07/06/2010 14:41 20 108 -(_)~1.MP3
+       * µ×ùÕ│» - µÿÄÕñ®õ╗ÑÕ¥î (µ×ùÕ│»+µ│ÕàÆÕÉêÕö▒).mp3
+       */
       BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-      shortname = br.readLine();
-      // Drop the two quotes
-      shortname = shortname.replaceAll("\"", "");
+      String line = "";
+      String lineDirectory = null;
+      while ((line = br.readLine()) != null) {
+        String ext = UtilSystem.getExtension(new File(longname));
+        if (StringUtils.isNotBlank(line)) {
+          // Index of the file extension in short name
+          int indexExtension = line.indexOf(longname.substring(0, 3).toUpperCase());
+          if (line.endsWith(ext)) {
+            int indexEnd = line.indexOf(ext.toUpperCase());
+            int indexBegin = indexEnd;
+            // Find the previous space
+            while (line.charAt(indexBegin) != ' ') {
+              indexBegin--;
+            }
+            shortname = line.substring(indexBegin, indexEnd + 4).trim();
+            break;
+          } else if (indexExtension != -1) {
+            // We get parent directory full path in shortname thanks the %~s1 in the script
+            lineDirectory = line.substring(indexExtension, line.length()).trim();
+          }
+        }
+      }
+      shortname = lineDirectory + "\\" + shortname;
       process.destroy();
     } catch (Exception e) {
       throw new JajukRuntimeException("Cannot convert the filename to 8.3 format", e);
