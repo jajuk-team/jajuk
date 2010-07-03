@@ -1287,7 +1287,6 @@ public final class UtilSystem {
     // Find the shortname .bat converter, create it if it doesn't yet exist
     String shortname = null;
     try {
-
       File fileConverter = SessionService.getConfFileByPath(Const.FILE_FILENAME_CONVERTER);
       if (!fileConverter.exists()
       // Test that the converter version has not been updated
@@ -1304,15 +1303,20 @@ public final class UtilSystem {
       ProcessBuilder pc = new ProcessBuilder(fileConverter.getAbsolutePath(), "\"" + longname
           + "\"");
       Process process = pc.start();
-
       /*
-       * dir /x parsing : Sample output (in French but should work with any language): Le volume
-       * dans le lecteur D s'appelle Données Le numéro de série du volume est C880-0321
+       * dir /x parsing : Sample output (in French but should work with any language):
+       * 
+       * Le volume dans le lecteur D s'appelle Données
+       * 
+       * Le numéro de série du volume est C880-0321
        * 
        * Répertoire de D:\MESDOC~1\MAMUSI~1\FILES_~1\1F19~1
        * 
-       * 07/06/2010 21:49 <REP> . 07/06/2010 21:49 <REP> .. 07/06/2010 14:41 20 108 -(_)~1.MP3
-       * µ×ùÕ│» - µÿÄÕñ®õ╗ÑÕ¥î (µ×ùÕ│»+µ│ÕàÆÕÉêÕö▒).mp3
+       * 07/06/2010 21:49 <REP> .
+       * 
+       * 07/06/2010 21:49 <REP> ..
+       * 
+       * 07/06/2010 14:41 20 108 -(_)~1.MP3 µ×ùÕ│» - µÿÄÕñ®õ╗ÑÕ¥î (µ×ùÕ│»+µ│ÕàÆÕÉêÕö▒).mp3
        */
       BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
       String line = "";
