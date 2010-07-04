@@ -211,7 +211,7 @@ public final class FileManager extends ItemManager {
     }
     // check that the file is not currently played
     if (QueueModel.getCurrentItem() != null
-        && QueueModel.getCurrentItem().getFile().equals(fileOld)) {
+        && QueueModel.getCurrentItem().getFile().equals(fileOld) && QueueModel.isPlayingTrack()) {
       throw new CannotRenameException(172);
     }
 
