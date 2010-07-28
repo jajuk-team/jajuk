@@ -1309,8 +1309,7 @@ public final class UtilSystem {
       fw.append(scriptBuilder);
       fw.close();
       Process process = Runtime.getRuntime().exec(
-          new String[] { "cscript.exe", fileConverter.getAbsolutePath(),
-              "//NoLogo" });
+          new String[] { "cscript.exe", fileConverter.getAbsolutePath(), "//NoLogo" });
       process.waitFor();
       BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
       shortname = br.readLine();

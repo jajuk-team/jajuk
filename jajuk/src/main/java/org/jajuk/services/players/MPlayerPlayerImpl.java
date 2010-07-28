@@ -83,8 +83,11 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /** Total play time is refreshed every TOTAL_PLAYTIME_UPDATE_INTERVAL times. */
   private static final int TOTAL_PLAYTIME_UPDATE_INTERVAL = 2;
 
-  /** current file. */
+  /** Current file. */
   private org.jajuk.base.File fCurrent;
+
+  /** [Windows only] Force use of shortnames */
+  private boolean bForcedShortnames = false;
 
   /**
    * Position and elapsed time getter.
@@ -364,12 +367,13 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     // If under windows and the launch failed, try once again
     // with other short names configuration (see #1267)
     if (bInError && UtilSystem.isUnderWindows()) {
-      Conf.invert(CONF_SHORT_NAMES);
-      Log.warn("Inverted filename scheme (" + Conf.getBoolean(CONF_SHORT_NAMES) + ") for : "
-          + file.getAbsolutePath());
+      bForcedShortnames = true;
+      Log.warn("Force shortname filename scheme" + " for : " + file.getAbsolutePath());
       // Reset any state changed by the previous reader thread
       reset();
       launchMplayer();
+      // Disable forced shortnames because the shortnames converter takes a while (2 secs)
+      bForcedShortnames = false;
     }
 
     // Check the file has been property opened
@@ -420,7 +424,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     // version to fix a mplayer bug when reading some pathnames including
     // special characters (see #1267)
     String pathname = fCurrent.getAbsolutePath();
-    if (UtilSystem.isUnderWindows() && Conf.getBoolean(CONF_SHORT_NAMES)) {
+    if (UtilSystem.isUnderWindows() && bForcedShortnames) {
       pathname = UtilSystem.getShortPathNameW(pathname);
     }
     ProcessBuilder pb = new ProcessBuilder(buildCommand(pathname));
