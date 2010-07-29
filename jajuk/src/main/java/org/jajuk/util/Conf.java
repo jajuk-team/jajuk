@@ -235,7 +235,7 @@ public final class Conf implements Const {
     defaults.put(CONF_COVERS_MIRROW_COVER, TRUE);
     defaults.put(CONF_COVERS_SHUFFLE, FALSE);
     defaults.put(CONF_COVERS_SAVE_EXPLORER_FRIENDLY, FALSE);
-    defaults.put(FILE_DEFAULT_COVER, "jajuk;folder;cover;front");
+    defaults.put(FILE_DEFAULT_COVER, "front;cover;folder;back;jajuk");
     defaults.put(CONF_COVERS_SIZE, "3"); // medium and large
     defaults.put(CONF_TRACKS_TABLE_EDITION, FALSE);
     defaults.put(CONF_FILES_TABLE_EDITION, FALSE);
@@ -332,7 +332,7 @@ public final class Conf implements Const {
     // Display slimbar at the lower part of the screen to fix #768 : under MAC,
     // it overlays the menu bar
     int slimbarYPos = 0;
-    if (UtilSystem.isUnderOSX() ) {
+    if (UtilSystem.isUnderOSX()) {
       slimbarYPos = ((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()) - 25;
       if (slimbarYPos < 0) {
         slimbarYPos = 0;
@@ -362,6 +362,23 @@ public final class Conf implements Const {
   }
 
   /**
+   * Return default property for given key
+   * @param key
+   * @return default property for given key
+   */
+  public static String getDefaultProperty(String key) {
+    return defaults.getProperty(key);
+  }
+
+  /**
+   * Restore a specific property
+   * @param key property name to restore
+   */
+  public static void restoreValue(String key) {
+    setProperty(key, defaults.getProperty(key));
+  }
+
+  /**
    * Set a property.
    * 
    * @param sName
@@ -370,7 +387,7 @@ public final class Conf implements Const {
    *          DOCUMENT_ME
    */
   public static void setProperty(String sName, String sValue) {
-   properties.setProperty(sName, sValue);
+    properties.setProperty(sName, sValue);
   }
 
   /**

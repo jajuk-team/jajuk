@@ -31,7 +31,7 @@ public interface Const {
   // Misc
 
   /** Maximum size for covers in KB. */
-  int MAX_COVER_SIZE = 1025;
+  int MAX_COVER_SIZE = 2048;
 
   /** Maximum number of remote covers. */
   int MAX_REMOTE_COVERS = 10;

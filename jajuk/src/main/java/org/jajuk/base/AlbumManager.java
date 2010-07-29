@@ -76,14 +76,15 @@ public final class AlbumManager extends ItemManager implements Observer {
     registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_COVER, false, false, false, false,
         false, String.class, null));
     // Disc id
-    registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_DISC_ID, false, true, true,
-        false, false, Long.class, -1l));
+    registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_DISC_ID, false, true, true, false,
+        false, Long.class, -1l));
     // Register events
     ObservationManager.register(this);
   }
 
   /*
    * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
@@ -193,7 +194,7 @@ public final class AlbumManager extends ItemManager implements Observer {
 
     return newItem;
   }
- 
+
   /**
    * Format the album name to be normalized :
    * <p>
@@ -513,6 +514,16 @@ public final class AlbumManager extends ItemManager implements Observer {
     for (ReadOnlyIterator<Album> it = getAlbumsIterator(); it.hasNext();) {
       Album album = it.next();
       Collections.sort(album.getTracksCache(), new TrackComparator(TrackComparatorType.ALBUM));
+    }
+  }
+
+  /**
+   * Reset cached cover url for every album
+   */
+  public void resetCoverCache() {
+    for (ReadOnlyIterator<Album> it = getAlbumsIterator(); it.hasNext();) {
+      Album album = it.next();
+      album.setProperty(Const.XML_ALBUM_COVER, "");
     }
   }
 

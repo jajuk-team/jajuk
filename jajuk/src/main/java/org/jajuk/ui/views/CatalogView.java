@@ -548,26 +548,24 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
         // add one page for trailing items
         iNbPages = albums.size() / iSize + ((albums.size() % iSize == 0) ? 0 : 1);
       }
-      if (iNbPages > 0) {
-        // After user changed the number of thumbs on a page, we can be
-        // out of bounds exception so make sure to reinit the page index in
-        // this case
-        if (page >= jcbPage.getItemCount()) {
-          page = 0;
-        }
-        // Add all items
-        int max = albums.size(); // upper limit
-        if (page < (iNbPages - 1)) {
-          // if last page, take simply to total number of
-          // items to display
-          max = (page + 1) * Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE);
-        }
-        // Populate each thumb if required (THIS IS LOOOOOONG)
-        for (int i = page * Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE); i < max; i++) {
-          Album album = albums.get(i);
-          pageAlbums.add(album);
-          ThumbnailManager.refreshThumbnail(album, getSelectedSize());
-        }
+      // After user changed the number of thumbs on a page, we can be
+      // out of bounds exception so make sure to reinit the page index in
+      // this case
+      if (page >= jcbPage.getItemCount()) {
+        page = 0;
+      }
+      // Add all items
+      int max = albums.size(); // upper limit
+      if (page < (iNbPages - 1)) {
+        // if last page, take simply to total number of
+        // items to display
+        max = (page + 1) * Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE);
+      }
+      // Populate each thumb if required (THIS IS LOOOOOONG)
+      for (int i = page * Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE); i < max; i++) {
+        Album album = albums.get(i);
+        pageAlbums.add(album);
+        ThumbnailManager.refreshThumbnail(album, getSelectedSize());
       }
     } finally {
       // Make sure to reset the populating flag in case of problem
@@ -592,7 +590,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       stopAllBusyLabels();
       return;
     }
-    // Populate each thumb if required (THIS IS LOOOOOONG)
+    // Populate each thumb if required (this is short because the thumb should have already been built in the long call )
     for (Album album : albums) {
       final LocalAlbumThumbnail thumb = new LocalAlbumThumbnail(album, getSelectedSize(), true);
       thumb.populate();
@@ -605,7 +603,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
           CatalogView.this.item.setSelected(true);
         }
       }
-
+      // Thumb selection mouse listener 
       thumb.getIcon().addMouseListener(new MouseAdapter() {
         @Override
         public void mousePressed(MouseEvent e) {

@@ -28,11 +28,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Scanner;
 
 import javax.swing.ImageIcon;
 
 import org.jajuk.services.core.SessionService;
 import org.jajuk.ui.windows.JajukMainWindow;
+import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.UtilGUI;
@@ -65,19 +67,19 @@ public class Cover implements Comparable<Cover>, Const {
    * </p>
    */
   public enum CoverType {
-    
+
     /** DOCUMENT_ME. */
-    NO_COVER, 
- /** DOCUMENT_ME. */
- REMOTE_COVER, 
- /** DOCUMENT_ME. */
- LOCAL_COVER, 
- /** DOCUMENT_ME. */
- STANDARD_COVER, 
- /** DOCUMENT_ME. */
- SELECTED_COVER,
- //cover stored in the tag of a file
- TAG_COVER
+    NO_COVER,
+    /** DOCUMENT_ME. */
+    REMOTE_COVER,
+    /** DOCUMENT_ME. */
+    LOCAL_COVER,
+    /** DOCUMENT_ME. */
+    STANDARD_COVER,
+    /** DOCUMENT_ME. */
+    SELECTED_COVER,
+    // cover stored in the tag of a file
+    TAG_COVER
   }
 
   /** Cover URL*. */
@@ -123,19 +125,49 @@ public class Cover implements Comparable<Cover>, Const {
   }
 
   /*
-   * (non-Javadoc) The priority order is : SELECTED > STANDARD > LOCAL > REMOTE >
-   * NO_COVER
+   * (non-Javadoc) The priority order is : SELECTED > STANDARD > LOCAL > REMOTE > NO_COVER
    * 
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
   public int compareTo(Cover cOther) {
     // should be able to handle null
-    if(cOther == null) {
+    if (cOther == null) {
       return -1;
     }
-
     // We leverage the enum ordering for comparison
-    return getType().ordinal() - cOther.getType().ordinal();
+    // If both covers are standard covers, order according to FILE_DEFAULT_COVER values order
+    int comparison = getType().ordinal() - cOther.getType().ordinal();
+    if (comparison != 0 || getType() != CoverType.STANDARD_COVER) {
+      return comparison;
+    } else {
+      // Compute for the current file and the other the associated index in the FILE_DEFAULT_COVER
+      // pattern list
+      String fileName = file.getName();
+      String fileNameNoExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+      int fileIndex = 0;
+      String fileNameOther = cOther.getFile().getName();
+      String fileNameOtherNoExtension = fileNameOther.substring(0, fileNameOther.lastIndexOf('.'));
+      int fileOtherIndex = 0;
+      Scanner s = new Scanner(Conf.getString(Const.FILE_DEFAULT_COVER)).useDelimiter(";");
+      for (int i = 0; s.hasNext(); i++) {
+        String pattern = s.next();
+        if (fileNameNoExtension.matches(".*" + pattern + ".*")) {
+          fileIndex = i;
+          // We keep the index of the first found matching pattern if the file matches
+          // several file patterns (like xxx_font_jajuk.jpg)
+          break;
+        }
+      }
+      s = new Scanner(Conf.getString(Const.FILE_DEFAULT_COVER)).useDelimiter(";");
+      for (int i = 0; s.hasNext(); i++) {
+        String pattern = s.next();
+        if (fileNameOtherNoExtension.matches(".*" + pattern + ".*")) {
+          fileOtherIndex = i;
+          break;
+        }
+      }
+      return fileOtherIndex - fileIndex;
+    }
   }
 
   /**

@@ -20,7 +20,7 @@
  */
 
 package org.jajuk.ui.views;
- 
+
 import java.awt.Component;
 import java.awt.SystemTray;
 import java.awt.event.ActionEvent;
@@ -65,6 +65,7 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.jajuk.base.AlbumManager;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
@@ -584,6 +585,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       new Thread("Parameter Catalog refresh Thread") {
         @Override
         public void run() {
+          // Force albums to search for new covers
+          AlbumManager.getInstance().resetCoverCache();
           // Clean thumbs
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_50X50);
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_100X100);
@@ -868,7 +871,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
         .toString(jcbSaveExplorerFriendly.isSelected()));
     Conf.setProperty(Const.CONF_COVERS_SIZE, Integer.toString(jcbCoverSize.getSelectedIndex()));
     Conf.setProperty(Const.FILE_DEFAULT_COVER, jtfDefaultCoverSearchPattern.getText());
-
+  
     // Force LastFM manager configuration reload
     LastFmManager.getInstance().configure();
 

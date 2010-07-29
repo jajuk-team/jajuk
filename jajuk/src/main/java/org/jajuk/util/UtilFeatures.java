@@ -262,8 +262,9 @@ public final class UtilFeatures {
     while (s.hasNext()) {
       String next = s.next();
       defaultCover = sFileName.toLowerCase(Locale.getDefault()).matches(".*" + next + ".*");
-      if (defaultCover)
+      if (defaultCover) {
         break;
+      }
     }
     s.close();
 
@@ -439,7 +440,7 @@ public final class UtilFeatures {
     StackItem first = list.get(0);
     StackItem newFirst = first;
     while (newFirst.equals(first)) {
-      Collections.shuffle(list,UtilSystem.getRandom());
+      Collections.shuffle(list, UtilSystem.getRandom());
       newFirst = list.get(0);
     }
   }

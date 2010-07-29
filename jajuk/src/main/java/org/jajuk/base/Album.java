@@ -20,7 +20,6 @@
  */
 package org.jajuk.base;
 
-import java.awt.Container;
 import java.awt.MediaTracker;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -39,11 +38,12 @@ import org.apache.commons.lang.StringUtils;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilString;
-import org.jajuk.util.UtilSystem;
+import org.jajuk.util.filters.ImageFilter;
 import org.jajuk.util.log.Log;
 
 /**
@@ -287,14 +287,13 @@ public class Album extends LogicalItem implements Comparable<Album> {
     // afterwards (performance factor x2 or x3 in catalog view)
     if (COVER_NONE.equals(cachedCoverPath)) {
       return null;
-    } else if (!StringUtils.isBlank(cachedCoverPath) 
-        // Check if cover still exist. There is an overhead 
-        // drawback but otherwise, the album's cover 
+    } else if (!StringUtils.isBlank(cachedCoverPath)
+    // Check if cover still exist. There is an overhead
+        // drawback but otherwise, the album's cover
         // property may be stuck to an old device's cover url.
         && new File(cachedCoverPath).exists()) {
       return new File(cachedCoverPath);
     }
-    File fDir = null; // analyzed directory
     // search for local covers in all directories mapping the current track
     // to reach other devices covers and display them together
     List<Track> lTracks = TrackManager.getInstance().getAssociatedTracks(this, false);
@@ -302,7 +301,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
       setProperty(XML_ALBUM_COVER, COVER_NONE);
       return null;
     }
-    // List if directories we have to look in
+    // List at directories we have to look in
     Set<Directory> dirs = new HashSet<Directory>(2);
     for (Track track : lTracks) {
       for (org.jajuk.base.File file : track.getFiles()) {
@@ -319,66 +318,60 @@ public class Album extends LogicalItem implements Comparable<Album> {
     }
 
     // look for standard cover in collection
-    for (Directory dir : dirs) {
-      fDir = dir.getFio(); // store this dir
-      java.io.File[] files = fDir.listFiles();// null if none file
-      // found
-      for (int i = 0; files != null && i < files.length; i++) {
-        // test file exists, do not use the File.canRead() method: it can be
-        // very costly when using a NAS under Windows
-        if (files[i].exists() && files[i].length() < MAX_COVER_SIZE * 1024) {
-          // check size to avoid out of memory errors
-          String sExt = UtilSystem.getExtension(files[i]);
-          if ((sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt
-              .equalsIgnoreCase("gif"))
-              && (UtilFeatures.isStandardCover(files[i]))) {
-            // Test the image is not corrupted
-            try {
-              ImageIcon ii = new ImageIcon(files[i].getAbsolutePath());
-              // Note that at this point, the image is fully loaded (done in the ImageIcon
-              // constructor)
-              if (ii.getImageLoadStatus() != MediaTracker.COMPLETE) {
-                setProperty(XML_ALBUM_COVER, files[i].getAbsolutePath());
-                return files[i];
-              }
-            } catch (Exception e) {
-              Log.error(e);
-            }
-          }
-        }
-      }
-    }
+    File cover = findCover(dirs, true);
+
     // none ? OK, return first cover file we find
+    if (cover == null) {
+      cover = findCover(dirs, false);
+    }
+
+    // Still nothing ? ok, set no cover
+    if (cover == null) {
+      setProperty(XML_ALBUM_COVER, COVER_NONE);
+    }
+    return cover;
+  }
+
+  /**
+   * Return a cover file matching criteria or null
+   * @param dirs : list of directories to search in
+   * @param onlyStandardCovers to we considere only standard covers ?
+   * @return a cover file matching criteria or null
+   */
+  private File findCover(Set<Directory> dirs, boolean onlyStandardCovers) {
+    JajukFileFilter filter = new JajukFileFilter(ImageFilter.getInstance());
     for (Directory dir : dirs) {
-      fDir = dir.getFio(); // store this dir
+      File fDir = dir.getFio(); // store this dir
       java.io.File[] files = fDir.listFiles();// null if none file
       // found
       for (int i = 0; files != null && i < files.length; i++) {
-        // test file exists, do not use the File.canRead() method: it can be
-        // very costly when using a NAS under Windows
-        if (files[i].exists() && files[i].length() < MAX_COVER_SIZE * 1024) {
-          // check size to avoid out of memory errors
-          String sExt = UtilSystem.getExtension(files[i]);
-          if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png")
-              || sExt.equalsIgnoreCase("gif")) {
-            // Test the image is not corrupted
-            try {
-              MediaTracker mediaTracker = new MediaTracker(new Container());
-              ImageIcon ii = new ImageIcon(files[i].getAbsolutePath());
-              mediaTracker.addImage(ii.getImage(), 0);
-              mediaTracker.waitForID(0); // wait for image
-              if (!mediaTracker.isErrorAny()) {
-                setProperty(XML_ALBUM_COVER, files[i].getAbsolutePath());
-                return files[i];
-              }
-            } catch (Exception e) {
-              Log.error(e);
+        if (files[i].exists()
+        // check size to avoid out of memory errors
+            && files[i].length() < MAX_COVER_SIZE * 1024
+            // Is it an image ?
+            && filter.accept(files[i])) {
+          // Filter standard view if required
+          if (onlyStandardCovers && !UtilFeatures.isStandardCover(files[i])) {
+            continue;
+          }
+
+          // Test the image is not corrupted
+          try {
+            ImageIcon ii = new ImageIcon(files[i].getAbsolutePath());
+            // Note that at this point, the image is fully loaded (done in the ImageIcon
+            // constructor)
+            if (ii.getImageLoadStatus() == MediaTracker.COMPLETE) {
+              setProperty(XML_ALBUM_COVER, files[i].getAbsolutePath());
+              return files[i];
+            } else {
+              Log.debug("Problem loading: " + files[i].getAbsolutePath());
             }
+          } catch (Exception e) {
+            Log.error(e);
           }
         }
       }
     }
-    setProperty(XML_ALBUM_COVER, COVER_NONE);
     return null;
   }
 
