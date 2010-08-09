@@ -167,6 +167,7 @@ public class TrackComparator implements Comparator<Track>, Serializable {
     }
     sb.append(track.getDuration());
     sb.append(track.getOrder());
+    sb.append(track.getType().getID());
     sb.append(track.getDiscNumber());
     if (!track.getAlbumArtist().isUnknown()) {
       sb.append(track.getAlbumArtist().getName());
