@@ -29,6 +29,7 @@ import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.RatingManager;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.dbus.DBusManager;
+import org.jajuk.services.lastfm.LastFmManager;
 import org.jajuk.services.players.QueueController;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.thumbnails.ThumbnailsMaker;
@@ -128,6 +129,12 @@ public class StartupAsyncService {
             // Launch thumbs creation in another process
             ThumbnailsMaker.launchAllSizes(true);
           }
+
+          // Submit any LastFM submission cache
+          if (Conf.getBoolean(Const.CONF_LASTFM_ENABLE)) {
+            LastFmManager.getInstance().submitCache();
+          }
+
         } catch (final Exception e) {
           Log.error(e);
         }

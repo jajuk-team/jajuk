@@ -22,6 +22,7 @@
 package ext.services.xml;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
@@ -49,9 +50,9 @@ import org.xml.sax.InputSource;
  * DOCUMENT_ME.
  */
 public final class XMLUtils {
-  
+
   /** The x stream. */
-  private static XStream xStream = new XStream();
+  private static XStream xStream = new XStream(new DomDriver());
 
   /**
    * private constructor to avoid instantiating utility class.
@@ -165,7 +166,6 @@ public final class XMLUtils {
     }
   }
 
-
   /**
    * Writes an object to a file as xml.
    * 
@@ -204,7 +204,7 @@ public final class XMLUtils {
       out = builder.parse(new InputSource(reader));
     } catch (Exception e) {
       // print first 500 characters of string that cannot be parsed...
-      Log.debug("First 500 characters of XML: " + StringUtils.substring(xml, 0, 500));      
+      Log.debug("First 500 characters of XML: " + StringUtils.substring(xml, 0, 500));
       Log.error(e);
     }
     return out;

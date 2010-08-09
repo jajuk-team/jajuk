@@ -49,7 +49,7 @@ import org.jajuk.util.log.Log;
  * </p>
  */
 public final class LastFmManager implements Observer, Const {
-  
+
   /** Self instance. */
   private static LastFmManager self;
 
@@ -117,7 +117,8 @@ public final class LastFmManager implements Observer, Const {
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
   public void update(final JajukEvent event) {
-    if (JajukEvents.FILE_FINISHED == event.getSubject()) {
+    if (JajukEvents.FILE_FINISHED == event.getSubject()
+        && !Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
       new Thread("LastFM Update Thread") {
         @Override
         public void run() {
@@ -139,6 +140,19 @@ public final class LastFmManager implements Observer, Const {
 
         }
       }.start();
+    }
+  }
+
+  /**
+   * Submit the cache if it exists
+   */
+  public void submitCache() {
+    try {
+      if (!Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
+        service.submitCache();
+      }
+    } catch (Exception e) {
+      Log.error(e);
     }
   }
 
