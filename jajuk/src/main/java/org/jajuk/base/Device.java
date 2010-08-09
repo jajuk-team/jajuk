@@ -465,7 +465,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * @param bAfterMove is this refresh done after a device location change ?
    * @param forcedDeep : override bAsk and force a deep refresh
    */
-  private void manualRefresh(final boolean bAsk, final boolean bAfterMove, final boolean forcedDeep) {
+  public void manualRefresh(final boolean bAsk, final boolean bAfterMove, final boolean forcedDeep) {
     int i = 0;
     try {
       i = prepareRefresh(bAsk);
@@ -686,8 +686,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * 
    * @param bAsynchronous :
    * set asynchronous or synchronous mode
-   * @param bAsk DOCUMENT_ME
-   * @param bAfterMove DOCUMENT_ME
+   * @param bAsk whether we ask for fast/deep scan
+   * @param bAfterMove whether this is called after a device move
    */
   public void refresh(final boolean bAsynchronous, final boolean bAsk, final boolean bAfterMove) {
     if (bAsynchronous) {
