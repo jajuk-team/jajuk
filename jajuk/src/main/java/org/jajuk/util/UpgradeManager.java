@@ -241,16 +241,16 @@ public final class UpgradeManager {
    * For Jajuk < 1.3: force nocover thumb replacement
    */
   private static void upgradeNocover() {
-    upgradeNocoverDelete("50x50");
-    upgradeNocoverDelete("100x100");
-    upgradeNocoverDelete("150x150");
-    upgradeNocoverDelete("200x200");
+    upgradeNoCoverDelete("50x50");
+    upgradeNoCoverDelete("100x100");
+    upgradeNoCoverDelete("150x150");
+    upgradeNoCoverDelete("200x200");
   }
 
   /**
    * For Jajuk < 1.3: delete thumb for given size 
    */
-  private static void upgradeNocoverDelete(String size) {
+  private static void upgradeNoCoverDelete(String size) {
     File fThumbs = SessionService.getConfFileByPath(Const.FILE_THUMBS + "/" + size + "/"
         + Const.FILE_THUMB_NO_COVER);
     if (fThumbs.exists()) {
@@ -399,7 +399,7 @@ public final class UpgradeManager {
   /**
   * For jajuk < 1.9, remove album artist property for albums
   */
-  private static void upgradeNoMoreAlbumArtistsforAlbums() {
+  private static void upgradeNoMoreAlbumArtistsForAlbums() {
     if (AlbumManager.getInstance().getMetaInformation(Const.XML_ALBUM_ARTIST) != null) {
       AlbumManager.getInstance().removeProperty(Const.XML_ALBUM_ARTIST);
     }
@@ -439,7 +439,7 @@ public final class UpgradeManager {
         // For Jajuk < 1.7
         upgradeCollectionRating();
         // For Jajuk < 1.9
-        upgradeNoMoreAlbumArtistsforAlbums();
+        upgradeNoMoreAlbumArtistsForAlbums();
       }
       // Major releases upgrade specific operations
       if (isMajorMigration()) {
@@ -569,7 +569,7 @@ public final class UpgradeManager {
           List<Device> devices = DeviceManager.getInstance().getDevices();
           for (Device device : devices) {
             if (device.isReady()) {
-              device.manualRefreshDeep();
+              device.manualRefresh(false, false, true);
             }
           }
         }
