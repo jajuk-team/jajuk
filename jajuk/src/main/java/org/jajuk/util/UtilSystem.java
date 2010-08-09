@@ -75,9 +75,6 @@ public final class UtilSystem {
   /** The Constant LOCAL_IP.  DOCUMENT_ME */
   private static final String LOCAL_IP = "127.0.0.1";
 
-  /** Size of the short names converter in bytes */
-  private static final int CONVERTER_FILE_SIZE = 23;
-
   /** Is browser supported ? */
   private static Boolean browserSupported;
 
