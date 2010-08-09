@@ -24,7 +24,10 @@ package org.jajuk.ui.actions;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -34,13 +37,14 @@ import javax.swing.SwingWorker;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
+import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
+import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.ui.widgets.DuplicateTracksList;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilGUI;
 
 /**
@@ -60,7 +64,9 @@ public class FindDuplicateTracksAction extends JajukAction {
     setShortDescription(Messages.getString("FindDuplicateTracksAction.2"));
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
    */
   @Override
@@ -68,18 +74,34 @@ public class FindDuplicateTracksAction extends JajukAction {
     UtilGUI.waiting();
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
 
-      private List<List<File>> duplicateFilesList = null;
+      private List<List<File>> duplicateTracksList = null;
 
       @Override
       protected Void doInBackground() throws Exception {
-        duplicateFilesList = new ArrayList<List<File>>();
-        ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
-        while (tracks.hasNext()) {
-          Track track = tracks.next();
-          List<File> trackFileList = track.getReadyFiles();
-          if (trackFileList.size() > 1) {
-            duplicateFilesList.add(trackFileList);
+        duplicateTracksList = new ArrayList<List<File>>();
+        List<Track> tracks = TrackManager.getInstance().getTracks();
+        // For finding duplicate files, we don't just rely on the number of files associated with
+        // a track (>1), we also find almost-identical tracks, ie based on album name, not its ID
+        // because then, we can't detect identical files located in several directories with a
+        // different
+        // set of files (because track uses album id in its hashcode and album id uses CDDB discid
+        // computed
+        // by jajuk based on the duration of all files in a given directory)
+
+        // Sort using the ALMOST-IDENTICAL
+        TrackComparator comparator = new TrackComparator(TrackComparatorType.ALMOST_IDENTICAL);
+        Collections.sort(tracks, comparator);
+        // Now re-compare each track to find adjacent duplicates
+        Track previous = null;
+        for (Track track : tracks) {
+          if (previous != null && comparator.compare(previous, track) == 0) {
+            Set<File> duplicateFilesSet = new HashSet<File>();
+            // Only consider ready files because we want user to be able to drop files
+            duplicateFilesSet.addAll(previous.getReadyFiles());
+            duplicateFilesSet.addAll(track.getReadyFiles());
+            duplicateTracksList.add(new ArrayList<File>(duplicateFilesSet));
           }
+          previous = track;
         }
         return null;
       }
@@ -87,7 +109,7 @@ public class FindDuplicateTracksAction extends JajukAction {
       @Override
       public void done() {
         try {
-          if (duplicateFilesList.size() < 1) {
+          if (duplicateTracksList.size() < 1) {
             Messages.showInfoMessage(Messages.getString("FindDuplicateTracksAction.0"));
           } else {
             final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(100);
@@ -103,7 +125,7 @@ public class FindDuplicateTracksAction extends JajukAction {
             });
 
             // Create and set up the content pane.
-            JComponent newContentPane = new DuplicateTracksList(duplicateFilesList, jbClose);
+            JComponent newContentPane = new DuplicateTracksList(duplicateTracksList, jbClose);
             newContentPane.setOpaque(true);
             UtilGUI.setEscapeKeyboardAction(duplicateFiles, newContentPane);
             duplicateFiles.setContentPane(newContentPane);

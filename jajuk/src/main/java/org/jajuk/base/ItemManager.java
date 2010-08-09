@@ -575,9 +575,9 @@ public abstract class ItemManager {
   }
 
   /**
-   * Return a shallow copy of all registered items.
+   * Return a copy of all registered items.
    * 
-   * @return a shallow copy of all registered items
+   * @return a copy of all registered items
    */
   public synchronized List<? extends Item> getItems() {
     return new ArrayList<Item>(items);

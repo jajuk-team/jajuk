@@ -57,7 +57,9 @@ public class TrackComparator implements Comparator<Track>, Serializable {
     /** Compare on the number of hits and then on the album. */
     HITS_ALBUM,
     /** Compare on disc number and order of the track in the album. */
-    ORDER
+    ORDER,
+    /** Compare to find identifical tracks */
+    ALMOST_IDENTICAL
   }
 
   /** The Constant FORMATTER. Used to correctly compare dates. */
@@ -134,8 +136,43 @@ public class TrackComparator implements Comparator<Track>, Serializable {
           UtilString.padNumber(track.getDiscNumber(), 5)
               + UtilString.padNumber(track.getOrder(), 5) + track.getName()).toString();
     }
+    // We want to find identical tracks but using album name, not album id.
+    // We only use set tags, not unknown ones
+    else if (comparatorType == TrackComparatorType.ALMOST_IDENTICAL) {
+      sHashCompare = buildIdenticalTestFootprint(track);
+    }
 
     return sHashCompare;
+  }
+
+  /**
+   * Return a footprint used to find almost-identical track 
+   * @param track
+   * @return a footprint used to find almost-identical track 
+   */
+  private String buildIdenticalTestFootprint(Track track) {
+    StringBuilder sb = new StringBuilder();
+    if (!track.getGenre().isUnknown()) {
+      sb.append(track.getGenre().getID());
+    }
+    if (!track.getArtist().isUnknown()) {
+      sb.append(track.getArtist().getID());
+    }
+    if (!track.getAlbum().isUnknown()) {
+      sb.append(track.getAlbum().getName());
+    }
+    sb.append(track.getName());
+    if (track.getYear().looksValid()) {
+      sb.append(track.getYear().getValue());
+    }
+    sb.append(track.getDuration());
+    sb.append(track.getOrder());
+    sb.append(track.getDiscNumber());
+    if (!track.getAlbumArtist().isUnknown()) {
+      sb.append(track.getAlbumArtist().getName());
+    }
+    return sb.toString();
+
   }
 
   /**
