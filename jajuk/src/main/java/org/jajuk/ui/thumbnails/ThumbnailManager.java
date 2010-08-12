@@ -163,9 +163,7 @@ public final class ThumbnailManager {
     // Windows doesn't support share mode for locks but only exclusive
     File thumbLock = new File(thumb.getAbsolutePath() + ".lock");
     thumbLock.createNewFile();
-    // Make sure to delete it at JVM shutdown
-    thumbLock.deleteOnExit();
-
+  
     synchronized (thumbLock.getAbsolutePath().intern()) {
       // We perform here synchronization between jajuk and the thumb builder process (different JVM)
       // thanks a FileLocker
