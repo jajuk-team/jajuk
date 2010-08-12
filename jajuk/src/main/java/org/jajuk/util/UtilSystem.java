@@ -1367,6 +1367,9 @@ public final class UtilSystem {
       FileChannel channel = new RandomAccessFile(file, "rw").getChannel();
       // Get an exclusive lock on the whole file
       lock = channel.tryLock();
+      if (!lock.isValid()) {
+        throw new IOException("Lock invalid for : " + file.getAbsolutePath());
+      }
     } catch (Exception e) {
       Log.warn("Cannot acquire lock for file : " + file.getAbsolutePath());
     }

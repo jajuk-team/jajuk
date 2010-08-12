@@ -158,23 +158,31 @@ public final class ThumbnailManager {
       throws InterruptedException, IOException {
     // Synchronize the file to avoid any concurrency between several threads refreshing the thumb
     // like the catalog view and the artist view.
-    synchronized (thumb.getAbsolutePath().intern()) {
+
+    // Don't lock the thumb file itself because we have to write in in this method and
+    // Windows doesn't support share mode for locks but only exclusive
+    File thumbLock = new File(thumb.getAbsolutePath() + ".lock");
+    thumbLock.createNewFile();
+    // Make sure to delete it at JVM shutdown
+    thumbLock.deleteOnExit();
+
+    synchronized (thumbLock.getAbsolutePath().intern()) {
       // We perform here synchronization between jajuk and the thumb builder process (different JVM)
       // thanks a FileLocker
-      FileLock lock = UtilSystem.tryLockFile(thumb);
+      FileLock lock = UtilSystem.tryLockFile(thumbLock);
       try {
         if (lock == null) {
           int count = 0;
           // We retry and wait a while before leaving
           while (lock == null && count < 10) {
-            lock = UtilSystem.tryLockFile(thumb);
+            lock = UtilSystem.tryLockFile(thumbLock);
             Thread.sleep(1000);
             count++;
           }
         }
         if (lock == null) {
           throw new IOException("Cannot acquire exclusive lock on file : "
-              + thumb.getAbsolutePath());
+              + thumbLock.getAbsolutePath());
         }
         // Note that at this point, the image is fully loaded (done in the ImageIcon constructor)
         final Image image = ii.getImage();
