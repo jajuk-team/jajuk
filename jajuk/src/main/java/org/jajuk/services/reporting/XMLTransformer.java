@@ -27,8 +27,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
@@ -69,10 +67,6 @@ public final class XMLTransformer {
    */
   public static void xmlToHTML(File xml, File html, URL xsl) throws ParserConfigurationException,
       SAXException, IOException, TransformerException {
-    // DOM source creation
-    DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder domBuilder = domFactory.newDocumentBuilder();
-    domBuilder.parse(xml);
     Source source = new SAXSource(
         new InputSource(new BufferedInputStream(new FileInputStream(xml))));
 
