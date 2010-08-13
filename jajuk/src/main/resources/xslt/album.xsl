@@ -59,7 +59,7 @@
 				</th>
 				<th>
 					<xsl:value-of
-						select='/collection/i18n/ReportAction.artist' />
+						select='/collection/i18n/ReportAction.author' />
 				</th>
 				<th>
 					<xsl:value-of
@@ -67,7 +67,7 @@
 				</th>
 				<th>
 					<xsl:value-of
-						select='/collection/i18n/ReportAction.genre' />
+						select='/collection/i18n/ReportAction.style' />
 				</th>
 			</tr>
 			<xsl:for-each select='album'>
@@ -79,13 +79,13 @@
 						</a>
 					</td>
 					<td width='30%'>
-						<xsl:value-of select='artist' />
+						<xsl:value-of select='author' />
 					</td>
 					<td width='5%'>
 						<xsl:value-of select='year' />
 					</td>
 					<td width='15%'>
-						<xsl:value-of select='genre' />
+						<xsl:value-of select='style' />
 					</td>
 				</tr>
 			</xsl:for-each>
@@ -98,7 +98,7 @@
 			<h3 id='a{id}'>
 				<xsl:value-of select='name' />
 				(
-				<xsl:value-of select='artist' />
+				<xsl:value-of select='author' />
 				)
 			</h3>
 		<table border='0' cellspacing='5'>
@@ -117,11 +117,11 @@
 				</th>
 				<th>
 					<xsl:value-of
-						select='/collection/i18n/ReportAction.artist' />
+						select='/collection/i18n/ReportAction.author' />
 				</th>
 				<th>
 					<xsl:value-of
-						select='/collection/i18n/ReportAction.genre' />
+						select='/collection/i18n/ReportAction.style' />
 				</th>
 				<th>
 					<xsl:value-of
@@ -149,10 +149,10 @@
 						<xsl:value-of select='album' />
 					</td>
 					<td width='10%'>
-						<xsl:value-of select='artist' />
+						<xsl:value-of select='author' />
 					</td>
 					<td width='10%'>
-						<xsl:value-of select='genre' />
+						<xsl:value-of select='style' />
 					</td>
 					<td width='10%'>
 						<xsl:value-of select='length' />

@@ -42,25 +42,25 @@
 					<xsl:value-of
 						select='/collection/i18n/ReportAction.7' />
 				</h2>
-				<xsl:call-template name='genres' />
+				<xsl:call-template name='styles' />
 				<h2 id='a2'>
 					<xsl:value-of
 						select='/collection/i18n/ReportAction.8' />
 				</h2>
-				<xsl:call-template name='genre-album' />
+				<xsl:call-template name='style-album' />
 				<h2 id='a3'>
 					<xsl:value-of
 						select='/collection/i18n/ReportAction.9' />
 				</h2>
-				<xsl:call-template name='genre-artist-album' />
+				<xsl:call-template name='style-author-album' />
 			</body>
 		</html>
 	</xsl:template>
 
 
-	<xsl:template name='genres'>
+	<xsl:template name='styles'>
 		<table border='0' cellspacing='5'>
-			<xsl:for-each select='/collection/genre'>
+			<xsl:for-each select='/collection/style'>
 				<tr>
 					<xsl:variable name='id' select='id' />
 					<td>
@@ -73,8 +73,8 @@
 		</table>
 	</xsl:template>
 
-	<xsl:template name='genre-album'>
-		<xsl:for-each select='/collection/genre'>
+	<xsl:template name='style-album'>
+		<xsl:for-each select='/collection/style'>
 			<xsl:variable name='id' select='id' />
 			<h3 id='a{id}'>
 				<xsl:value-of select='name' />
@@ -87,7 +87,7 @@
 						</th>
 						<th>
 							<xsl:value-of
-								select='/collection/i18n/ReportAction.artist' />
+								select='/collection/i18n/ReportAction.author' />
 						</th>
 						<th>
 							<xsl:value-of
@@ -101,7 +101,7 @@
 								<xsl:value-of select='name' />
 							</td>
 							<td width='30%'>
-								<xsl:value-of select='artist' />
+								<xsl:value-of select='author' />
 							</td>
 							<td width='5%'>
 								<xsl:value-of select='year' />
@@ -112,11 +112,11 @@
 			</xsl:for-each>
 	</xsl:template>
 
-	<xsl:template name='genre-artist-album'>
-			<xsl:for-each select='/collection/genre'>
+	<xsl:template name='style-author-album'>
+			<xsl:for-each select='/collection/style'>
 				<xsl:variable name='id' select='id' />
 				<h3><xsl:value-of select='name' /></h3>
-				<xsl:for-each select='artist'>
+				<xsl:for-each select='author'>
 					<h4><xsl:value-of select='name' /> </h4>
 					<table border='0' cellspacing='5'>
 						<tr>
