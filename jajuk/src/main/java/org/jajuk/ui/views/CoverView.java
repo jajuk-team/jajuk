@@ -233,7 +233,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     // Control panel
     jlSearching = new JLabel("", IconLoader.getIcon(JajukIcons.NET_SEARCH), SwingConstants.CENTER);
     jpControl = new JPanel();
-    jpControl.setBorder(BorderFactory.createEtchedBorder());
+    if (includeControls) {
+      jpControl.setBorder(BorderFactory.createEtchedBorder());
+    }
 
     final JToolBar jtb = new JajukJToolbar();
     jbPrevious = new JajukButton(IconLoader.getIcon(JajukIcons.PLAYER_PREVIOUS_SMALL));
@@ -1139,8 +1141,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     }
     return null;
   }
-
- 
 
   /**
    * Refresh default cover thumb (used in catalog view).
