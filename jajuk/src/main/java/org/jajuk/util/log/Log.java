@@ -38,9 +38,6 @@ import org.jajuk.util.error.JajukException;
  */
 public final class Log {
   
-  /**
-   * 
-   */
   private static final String FONT_END = "</font>";
 
   /** The Constant LOGGER_APACHE_HTTPCLIENT.  DOCUMENT_ME */
@@ -65,11 +62,7 @@ public final class Log {
   /** Verbosity level of the logger( between 1 and 5 ) <p> Default used at statup is INFO. */
   private static int verbosity = INFO;
 
-  /** Self instance used for singleton pattern. */
-  private static Log log = null;
-
-  // Jajuk logger
-  /** DOCUMENT_ME. */
+  /** Jajuk logger. */
   private static Logger logger;
 
   /** Debug traces spool. */
@@ -79,9 +72,9 @@ public final class Log {
   private static final String FULL_QUALIFIED_CLASS_NAME = Log.class.getName();
 
   /**
-   * Constructor for the Log object.
+   * Log system initialization
    */
-  private Log() {
+  public static void init() {
     try {
       // set env variable used in the log4j conf file
       System.setProperty("jajuk.log", SessionService.getConfFileByPath(Const.FILE_LOGS)
@@ -98,20 +91,7 @@ public final class Log {
     Log.info("Version: " + Const.JAJUK_VERSION);
   }
 
-  /**
-   * Return a self instance
-   * <p>
-   * Implementation of the singleton pattern.
-   * 
-   * @return the instance
-   */
-  public static synchronized Log getInstance() {
-    if (Log.log == null) {
-      Log.log = new Log();
-    }
-    return Log.log;
-  }
-
+  
   /**
    * Log a debug-level message.
    * 
@@ -119,7 +99,7 @@ public final class Log {
    */
   public static void debug(String s) {
     // Just display the message if Log is not yet enabled
-    if (log == null) {
+    if (logger == null) {
       System.out.println("[DEBUG] " + s);
       return;
     }
@@ -147,7 +127,7 @@ public final class Log {
   public static void debug(String sInfosup, Throwable t) {
     // Just make a print stake trace if Log is not yet enabled (example:
     // collection commit problem in initialCheckups)
-    if (log == null) {
+    if (logger == null) {
       System.out.println("[DEBUG] " + sInfosup);
       stack(t);
       return;
@@ -172,7 +152,7 @@ public final class Log {
    */
   public static void info(String s) {
     // Just display the message if Log is not yet enabled
-    if (log == null) {
+    if (logger == null) {
       System.out.println("[INFO] " + s);
       return;
     }
@@ -187,7 +167,7 @@ public final class Log {
    */
   public static void warn(String s) {
     // Just display the message if Log is not yet enabled
-    if (log == null) {
+    if (logger == null) {
       System.out.println("[WARN] " + s);
       return;
     }
@@ -204,7 +184,7 @@ public final class Log {
   public static void warn(String s, String sInfoSup) {
     String sOut = s + ": " + sInfoSup;
     // Just display the message if Log is not yet enabled
-    if (log == null) {
+    if (logger == null) {
       System.out.println("[WARN] " + sOut);
       return;
     }
@@ -228,7 +208,7 @@ public final class Log {
       sOut = "(" + code + ") " + ((sInfosup == null) ? "" : ":" + sInfosup);
     }
     // Just display the message if Log is not yet enabled
-    if (log == null) {
+    if (logger == null) {
       System.out.println("[WARN] " + sOut);
       stack(t);
       return;
@@ -248,7 +228,7 @@ public final class Log {
   public static void error(int code, String sInfosup, Throwable t) {
     // Just make a print stake trace if Log is not yet enabled (example:
     // collection commit problem in initialCheckups)
-    if (log == null) {
+    if (logger == null) {
       System.out.println("[ERROR] " + code + " / " + sInfosup);
       stack(t);
       return;
@@ -281,7 +261,7 @@ public final class Log {
     }
     // Just make a print stake trace if Log is not yet enabled (example:
     // collection commit problem in initialCheckups)
-    if (log == null) {
+    if (logger == null) {
       System.out.println("[ERROR] " + sOut);
       return;
     }
@@ -297,7 +277,7 @@ public final class Log {
   public static void error(Throwable t) {
     // Just make a print stake trace if Log is not yet enabled (example:
     // collection commit problem in initialCheckups)
-    if (log == null) {
+    if (logger == null) {
       stack(t);
       return;
     }
@@ -342,7 +322,7 @@ public final class Log {
   public static void fatal(String s) {
     // Just make a print stake trace if Log is not yet enabled (example:
     // collection commit problem in initialCheckups)
-    if (log == null) {
+    if (logger == null) {
       System.out.println("[FATAL] " + s);
       return;
     }

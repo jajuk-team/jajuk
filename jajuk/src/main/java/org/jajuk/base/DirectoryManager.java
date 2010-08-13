@@ -37,7 +37,7 @@ import org.jajuk.util.UtilSystem;
 public final class DirectoryManager extends ItemManager {
 
   /** Self instance. */
-  private static DirectoryManager singleton;
+  private static DirectoryManager singleton = new DirectoryManager();
 
   /**
    * Return hashcode for this item.
@@ -72,9 +72,6 @@ public final class DirectoryManager extends ItemManager {
    * @return singleton
    */
   public static DirectoryManager getInstance() {
-    if (DirectoryManager.singleton == null) {
-      DirectoryManager.singleton = new DirectoryManager();
-    }
     return DirectoryManager.singleton;
   }
 

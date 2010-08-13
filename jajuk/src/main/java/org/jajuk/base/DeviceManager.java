@@ -47,23 +47,22 @@ import org.jajuk.util.log.Log;
  * Convenient class to manage devices.
  */
 public final class DeviceManager extends ItemManager {
-  
+
   /** Supported device types names. */
   private final List<String> alDevicesTypes = new ArrayList<String>(10);
 
   /** Self instance. */
-  private static DeviceManager singleton;
+  private static DeviceManager singleton = new DeviceManager();
 
   /** Date last global refresh. */
   private long lDateLastGlobalRefresh = 0;
 
   /** List of deep-refresh devices after an upgrade. */
   private final Set<Device> devicesDeepRefreshed = new HashSet<Device>();
-  
+
   /** DeviceTypes Identification strings  Note: this needs to correspond with the constants in @see org.jajuk.base.Device !! */
   public static final String[] DEVICE_TYPES = { "Device_type.directory", "Device_type.file_cd",
       "Device_type.network_drive", "Device_type.extdd", "Device_type.player" };
-
 
   /** Auto-refresh thread. */
   private final Thread tAutoRefresh = new Thread("Device Auto Refresh Thread") {
@@ -123,7 +122,7 @@ public final class DeviceManager extends ItemManager {
    * DOCUMENT_ME
    */
   public void startAutoRefreshThread() {
-    if(!tAutoRefresh.isAlive()) {
+    if (!tAutoRefresh.isAlive()) {
       tAutoRefresh.setPriority(Thread.MIN_PRIORITY);
       tAutoRefresh.start();
     }
@@ -135,9 +134,6 @@ public final class DeviceManager extends ItemManager {
    * @return singleton
    */
   public static DeviceManager getInstance() {
-    if (singleton == null) {
-      singleton = new DeviceManager();
-    }
     return singleton;
   }
 
@@ -199,8 +195,7 @@ public final class DeviceManager extends ItemManager {
         continue;
       }
       // check for a new device with an existing name
-      if (bNew
-          && (sName.equalsIgnoreCase(deviceToCheck.getName()))) {
+      if (bNew && (sName.equalsIgnoreCase(deviceToCheck.getName()))) {
         return 19;
       }
       String sUrlChecked = deviceToCheck.getUrl();
@@ -395,9 +390,8 @@ public final class DeviceManager extends ItemManager {
           continue;
         }
         /*
-         * Check if devices contains files, otherwise it is not mounted we have
-         * to check this because of the automatic cleaner thread musn't remove
-         * all references
+         * Check if devices contains files, otherwise it is not mounted we have to check this
+         * because of the automatic cleaner thread musn't remove all references
          */
         File[] files = new File(device.getUrl()).listFiles();
         if (!device.isRefreshing() && files != null && files.length > 0) {
@@ -413,15 +407,15 @@ public final class DeviceManager extends ItemManager {
           // cleanup device
           bNeedUIRefresh = bNeedUIRefresh | device.cleanRemovedFiles();
           // refresh the device (deep refresh forced after an upgrade)
-          bNeedUIRefresh = bNeedUIRefresh | device.refreshCommand(bNeedDeepAfterUpgrade,false);
+          bNeedUIRefresh = bNeedUIRefresh | device.refreshCommand(bNeedDeepAfterUpgrade, false);
 
           // UI refresh if required
           if (bNeedUIRefresh) {
             // Cleanup logical items
             Collection.cleanupLogical();
             /*
-             * Notify views to refresh once the device is refreshed, do not wait
-             * all devices refreshing as it may be tool long
+             * Notify views to refresh once the device is refreshed, do not wait all devices
+             * refreshing as it may be tool long
              */
             ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
           }

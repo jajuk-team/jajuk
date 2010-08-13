@@ -42,10 +42,10 @@ import org.jajuk.util.error.JajukException;
  * Convenient class to manage artists.
  */
 public final class ArtistManager extends ItemManager {
-  
+
   /** Self instance. */
-  private static ArtistManager singleton;
-  
+  private static ArtistManager singleton = new ArtistManager();
+
   /** List of all known artists */
   private Vector<String> artistsList = new Vector<String>(100);
 
@@ -73,9 +73,6 @@ public final class ArtistManager extends ItemManager {
    * @return singleton
    */
   public static ArtistManager getInstance() {
-    if (singleton == null) {
-      singleton = new ArtistManager();
-   }
     return singleton;
   }
 
@@ -144,7 +141,7 @@ public final class ArtistManager extends ItemManager {
           && QueueModel.getPlayingFile().getTrack().getArtist().equals(old)) {
         queueNeedsUpdate = true;
       }
-      
+
       Artist newItem = registerArtist(sNewName);
       // re apply old properties from old item
       newItem.cloneProperties(old);
@@ -165,7 +162,6 @@ public final class ArtistManager extends ItemManager {
     }
   }
 
-  
   /*
    * (non-Javadoc)
    * 

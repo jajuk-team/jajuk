@@ -74,7 +74,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
   public static final int WARNING = 2;
 
   /** Self instance. */
-  private static InformationJPanel ijp = null;
+  private static InformationJPanel ijp = new InformationJPanel();
 
   /** Swing Timer to refresh the component. */
   private final Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
@@ -94,9 +94,6 @@ public final class InformationJPanel extends JXPanel implements Observer {
    * @return the instance
    */
   public static InformationJPanel getInstance() {
-    if (ijp == null) {
-      ijp = new InformationJPanel();
-    }
     return ijp;
   }
 
@@ -379,7 +376,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
               String filename = properties.getProperty(Const.DETAIL_CONTENT);
               if (filename != null) {
                 setMessage(Messages.getString("Device.45") + filename + "]",
-                        InformationJPanel.INFORMATIVE);
+                    InformationJPanel.INFORMATIVE);
               }
             }
           } else if (JajukEvents.FILE_CONVERSION.equals(subject)) {
@@ -391,8 +388,8 @@ public final class InformationJPanel extends JXPanel implements Observer {
               String filename = properties.getProperty(Const.DETAIL_CONTENT);
               String target = properties.getProperty(Const.DETAIL_NEW);
               if (filename != null) {
-                setMessage(Messages.getString("Device.46") + filename + Messages.getString("Device.47") + target + "]",
-                        InformationJPanel.INFORMATIVE);
+                setMessage(Messages.getString("Device.46") + filename
+                    + Messages.getString("Device.47") + target + "]", InformationJPanel.INFORMATIVE);
               }
             }
           }

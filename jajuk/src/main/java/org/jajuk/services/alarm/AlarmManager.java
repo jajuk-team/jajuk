@@ -47,9 +47,20 @@ import org.jajuk.util.log.Log;
  */
 
 public class AlarmManager implements Observer {
-  
+
   /** DOCUMENT_ME. */
-  private static AlarmManager singleton;
+  private static AlarmManager singleton = new AlarmManager();
+
+  static {
+    // Start the clock
+    singleton.clock.start();
+
+    // register the instance so that it receives updates of changes to the configured Alarm
+    ObservationManager.register(singleton);
+
+    // force last event update
+    singleton.update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
+  }
 
   /** DOCUMENT_ME. */
   private Alarm alarm;
@@ -83,24 +94,12 @@ public class AlarmManager implements Observer {
    * @return single instance of AlarmManager
    */
   public static AlarmManager getInstance() {
-    if (singleton == null) {
-      // create the singleton
-      singleton = new AlarmManager();
-      
-      // Start the clock
-      singleton.clock.start();
-      
-      // register the instance so that it receives updates of changes to the configured Alarm 
-      ObservationManager.register(singleton);
-      
-      // force last event update
-      singleton.update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
-    }
-
     return singleton;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
    */
   public void update(JajukEvent event) {
@@ -118,18 +117,18 @@ public class AlarmManager implements Observer {
         cal.set(Calendar.HOUR_OF_DAY, hours);
         cal.set(Calendar.MINUTE, minutes);
         cal.set(Calendar.SECOND, seconds);
-        
+
         // If chosen date is already past, consider that user meant
         // tomorrow
         Date alarmDate = cal.getTime();
         if (alarmDate.before(new Date())) {
-          alarmDate = DateUtils.addDays(alarmDate, 1);          
+          alarmDate = DateUtils.addDays(alarmDate, 1);
         }
         // Compute playlist if required
         List<File> alToPlay = null;
         if (alarmAction.equals(Const.ALARM_START_ACTION)) {
           String mode = Conf.getString(Const.CONF_ALARM_MODE);
-          
+
           alToPlay = new ArrayList<File>();
           if (mode.equals(Const.STARTUP_MODE_FILE)) {
             File fileToPlay = FileManager.getInstance().getFileByID(

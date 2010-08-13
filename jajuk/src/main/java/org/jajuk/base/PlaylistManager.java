@@ -45,7 +45,7 @@ import org.jajuk.util.log.Log;
 public final class PlaylistManager extends ItemManager implements Observer {
 
   /** Self instance. */
-  private static PlaylistManager singleton;
+  private static PlaylistManager singleton = new PlaylistManager();
 
   /**
    * No constructor available, only static access.
@@ -70,9 +70,6 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * @return singleton
    */
   public static PlaylistManager getInstance() {
-    if (singleton == null) {
-      singleton = new PlaylistManager();
-    }
     return singleton;
   }
 
@@ -107,7 +104,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * 
    * @param plf the playlist
    */
-  public synchronized void removePlaylistFile(Playlist plf) throws IOException{
+  public synchronized void removePlaylistFile(Playlist plf) throws IOException {
     String sFileToDelete = plf.getDirectory().getFio().getAbsoluteFile().toString()
         + java.io.File.separatorChar + plf.getName();
     java.io.File fileToDelete = new java.io.File(sFileToDelete);
@@ -117,13 +114,13 @@ public final class PlaylistManager extends ItemManager implements Observer {
     // remove playlist
     removeItem(plf);
   }
-  
-   /**
-   * Delete physicaly a playlist.
-   * 
-   * @param plf the playlist
-   */
-  public synchronized void deletePlaylistFile(Playlist plf) throws IOException{
+
+  /**
+  * Delete physically a playlist.
+  * 
+  * @param plf the playlist
+  */
+  public synchronized void deletePlaylistFile(Playlist plf) throws IOException {
     String sFileToDelete = plf.getDirectory().getFio().getAbsoluteFile().toString()
         + java.io.File.separatorChar + plf.getName();
     java.io.File fileToDelete = new java.io.File(sFileToDelete);

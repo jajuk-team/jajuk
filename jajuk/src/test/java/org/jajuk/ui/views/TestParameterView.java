@@ -62,7 +62,7 @@ public class TestParameterView extends JajukTestCase {
     JUnitHelpers.waitForAllWorkToFinishAndCleanup();
 
     // make sure the logger is initialized
-    assertNotNull(Log.getInstance());
+    Log.init();
 
     // iterate over all components of the view
     for (Component comp : view.getComponents()) {

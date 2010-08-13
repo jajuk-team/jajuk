@@ -28,7 +28,7 @@ import org.jajuk.util.JajukFileFilter;
 public class XMLFilter extends JajukFileFilter {
 
   /** Self instance. */
-  private static XMLFilter self = null;
+  private static XMLFilter self = new XMLFilter();
 
   /**
    * Gets the instance.
@@ -36,10 +36,7 @@ public class XMLFilter extends JajukFileFilter {
    * @return singleton
    */
   public static XMLFilter getInstance() {
-    if (XMLFilter.self == null) {
-      XMLFilter.self = new XMLFilter();
-    }
-    return XMLFilter.self;
+    return self;
   }
 
   /**

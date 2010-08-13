@@ -57,7 +57,7 @@ public final class FileManager extends ItemManager {
   private final List<File> alBestofFiles = new ArrayList<File>(20);
 
   /** Self instance. */
-  private static FileManager singleton;
+  private static FileManager singleton = new FileManager();
 
   /** File comparator based on rate. */
   private final Comparator<File> rateComparator = new Comparator<File>() {
@@ -109,9 +109,6 @@ public final class FileManager extends ItemManager {
    * @return singleton
    */
   public static FileManager getInstance() {
-    if (singleton == null) {
-      singleton = new FileManager();
-    }
     return singleton;
   }
 

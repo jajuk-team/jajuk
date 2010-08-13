@@ -50,7 +50,7 @@ import org.jajuk.util.log.Log;
 public final class RatingManager extends Thread implements Observer {
 
   /** DOCUMENT_ME. */
-  private static RatingManager self;
+  private static RatingManager self = new RatingManager();
 
   /** Flag the fact a rate has change for a track, used by bestof view refresh for perfs. */
   private static boolean bRateHasChanged = true;
@@ -75,13 +75,12 @@ public final class RatingManager extends Thread implements Observer {
    * @return single instance of RatingManager
    */
   public static RatingManager getInstance() {
-    if (self == null) {
-      self = new RatingManager();
-    }
     return self;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see java.lang.Thread#run()
    */
   @Override
@@ -169,8 +168,8 @@ public final class RatingManager extends Thread implements Observer {
       // Reset playcount
       setMaxPlaycount(0);
       /*
-       * Reset rates, use a track list, not an iterator as this can be called
-       * during a refresh and cause a ConcurrentModificationException
+       * Reset rates, use a track list, not an iterator as this can be called during a refresh and
+       * cause a ConcurrentModificationException
        */
       for (Track track : TrackManager.getInstance().getTracks()) {
         track.setProperty(Const.XML_TRACK_RATE, 0l);

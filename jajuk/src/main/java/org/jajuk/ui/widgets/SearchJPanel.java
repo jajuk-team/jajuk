@@ -69,7 +69,7 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
   private static final long serialVersionUID = 1L;
 
   /** Self instance. */
-  private static SearchJPanel ijp = null;
+  private static SearchJPanel ijp = new SearchJPanel();
 
   /** The search box (text field). */
   private SearchBox sbSearch;
@@ -86,9 +86,6 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
    * @return the instance
    */
   public static SearchJPanel getInstance() {
-    if (ijp == null) {
-      ijp = new SearchJPanel();
-    }
     return ijp;
   }
 
@@ -176,8 +173,7 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent ae) {
     // do not run this in a separate thread because Player actions would die

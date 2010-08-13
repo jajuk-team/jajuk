@@ -78,13 +78,13 @@ public final class Main {
             + " You use a JVM " + JVM.current());
         System.exit(2); // error code 2 : wrong JVM
       }
-      
+
       // set flags from command line options
       SessionService.handleCommandline(args);
 
       // Set System properties
       setSystemProperties();
-     
+
       // set flags from system properties
       SessionService.handleSystemProperties();
 
@@ -107,7 +107,7 @@ public final class Main {
       StartupControlsService.initialCheckups();
 
       // log startup depends on : initialCheckups
-      Log.getInstance();
+      Log.init();
       Log.setVerbosity(Log.DEBUG);
 
       // Load user configuration. Depends on: initialCheckups
@@ -259,20 +259,19 @@ public final class Main {
   }
 
   /*
-   * Initialize some useful System properties
-   * For some reasons (at least with Apple JVM), this method must be in the Main class.
-   * Should be called ASAP in the startup process
+   * Initialize some useful System properties For some reasons (at least with Apple JVM), this
+   * method must be in the Main class. Should be called ASAP in the startup process
    */
   public static void setSystemProperties() {
-    if (UtilSystem.isUnderOSX()){
-      String title = "Jajuk"+ (SessionService.isTestMode() ? " (test)":"");
+    if (UtilSystem.isUnderOSX()) {
+      String title = "Jajuk" + (SessionService.isTestMode() ? " (test)" : "");
       System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
       // Make sure to disable Mac native menu, it can't display jajuk menu property
       System.setProperty("apple.laf.useScreenMenuBar", "false");
       // Allow file selection of a directory
-      System.setProperty("apple.awt.fileDialogForDirectories","true");
+      System.setProperty("apple.awt.fileDialogForDirectories", "true");
       // In full screen mode, only use a single screen instead of darkening others
-      System.setProperty("apple.awt.fullscreencapturealldisplays","false");
+      System.setProperty("apple.awt.fullscreencapturealldisplays", "false");
     }
   }
 

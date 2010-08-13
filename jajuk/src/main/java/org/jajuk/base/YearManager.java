@@ -31,9 +31,9 @@ import org.jajuk.util.ReadOnlyIterator;
  * Convenient class to manage years.
  */
 public final class YearManager extends ItemManager {
-  
+
   /** Self instance. */
-  private static YearManager singleton;
+  private static YearManager singleton = new YearManager();
 
   /**
    * No constructor available, only static access.
@@ -58,9 +58,6 @@ public final class YearManager extends ItemManager {
    * @return singleton
    */
   public static YearManager getInstance() {
-    if (singleton == null) {
-      singleton = new YearManager();
-    }
     return singleton;
   }
 

@@ -59,19 +59,18 @@ public final class WebRadioManager extends DefaultHandler {
   /** DOCUMENT_ME. */
   private static Set<WebRadio> webradios = new TreeSet<WebRadio>();
 
-  // Self instance
-  /** DOCUMENT_ME. */
-  private static WebRadioManager self;
+  /** Self instance. */
+  private static WebRadioManager self = new WebRadioManager();
 
   /** DOCUMENT_ME. */
   private StringBuilder buffer;
 
   /** DOCUMENT_ME. */
   private boolean inRadio;
-  
+
   /** DOCUMENT_ME. */
   private String radioName;
-  
+
   /** DOCUMENT_ME. */
   private String radioUrl;
 
@@ -171,9 +170,6 @@ public final class WebRadioManager extends DefaultHandler {
    * @return single instance of WebRadioManager
    */
   public static WebRadioManager getInstance() {
-    if (self == null) {
-      self = new WebRadioManager();
-    }
     return self;
   }
 
@@ -283,7 +279,9 @@ public final class WebRadioManager extends DefaultHandler {
     }
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
    */
   @Override
@@ -362,7 +360,6 @@ public final class WebRadioManager extends DefaultHandler {
     }
     return null;
   }
-
 
   /**
    * Gets the current web radio tooltip.

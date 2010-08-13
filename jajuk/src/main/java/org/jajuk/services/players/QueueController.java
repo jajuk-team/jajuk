@@ -34,12 +34,11 @@ import org.jajuk.events.Observer;
 public final class QueueController implements Observer {
 
   /** DOCUMENT_ME. */
-  private static QueueController self;
+  private static QueueController self = new QueueController();
 
-  /**
-   * Instantiates a new queue controller.
-   */
-  private QueueController() {
+  // Register this item, do not do this in the constructor as the instance is not yet available
+  static {
+    ObservationManager.register(self);
   }
 
   /**
@@ -48,10 +47,6 @@ public final class QueueController implements Observer {
    * @return single instance of QueueController
    */
   public static QueueController getInstance() {
-    if (self == null) {
-      self = new QueueController();
-      ObservationManager.register(self);
-    }
     return self;
   }
 

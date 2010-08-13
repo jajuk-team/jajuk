@@ -51,7 +51,7 @@ import org.jajuk.util.log.Log;
 public final class LastFmManager implements Observer, Const {
 
   /** Self instance. */
-  private static LastFmManager self;
+  private static LastFmManager self = new LastFmManager();
 
   /** Lastfm service. */
   private LastFmService service;
@@ -84,9 +84,6 @@ public final class LastFmManager implements Observer, Const {
    * @return single instance of LastFmManager
    */
   public static LastFmManager getInstance() {
-    if (self == null) {
-      self = new LastFmManager();
-    }
     return self;
   }
 

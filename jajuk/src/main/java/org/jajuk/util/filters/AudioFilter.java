@@ -34,7 +34,7 @@ import org.jajuk.util.UtilSystem;
 public final class AudioFilter extends JajukFileFilter {
 
   /** Self instance. */
-  private static AudioFilter self = null;
+  private static AudioFilter self = new AudioFilter();
 
   /**
    * Gets the instance.
@@ -42,9 +42,6 @@ public final class AudioFilter extends JajukFileFilter {
    * @return singleton
    */
   public static AudioFilter getInstance() {
-    if (AudioFilter.self == null) {
-      AudioFilter.self = new AudioFilter();
-    }
     return AudioFilter.self;
   }
 

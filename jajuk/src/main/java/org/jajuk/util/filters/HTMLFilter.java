@@ -28,7 +28,7 @@ import org.jajuk.util.JajukFileFilter;
 public class HTMLFilter extends JajukFileFilter {
 
   /** Self instance. */
-  private static HTMLFilter self = null;
+  private static HTMLFilter self = new HTMLFilter();
 
   /**
    * Gets the instance.
@@ -36,9 +36,6 @@ public class HTMLFilter extends JajukFileFilter {
    * @return singleton
    */
   public static HTMLFilter getInstance() {
-    if (HTMLFilter.self == null) {
-      HTMLFilter.self = new HTMLFilter();
-    }
     return HTMLFilter.self;
   }
 

@@ -74,7 +74,7 @@ public final class TypeManager extends ItemManager {
   private final Map<String, Type> hmSupportedTypes = new HashMap<String, Type>(10);
 
   /** Self instance. */
-  private static TypeManager singleton;
+  private static TypeManager singleton = new TypeManager();
 
   /**
    * No constructor available, only static access.
@@ -114,9 +114,6 @@ public final class TypeManager extends ItemManager {
    * @return singleton
    */
   public static TypeManager getInstance() {
-    if (singleton == null) {
-      singleton = new TypeManager();
-    }
     return singleton;
   }
 

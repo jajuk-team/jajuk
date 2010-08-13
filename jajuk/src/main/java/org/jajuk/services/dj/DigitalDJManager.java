@@ -71,7 +71,7 @@ public final class DigitalDJManager implements Observer {
   private final Map<String, DigitalDJ> djs;
 
   /** self instance. */
-  private static DigitalDJManager dj;
+  private static DigitalDJManager dj = new DigitalDJManager();
 
   /** Currently selected DJ. */
   private static DigitalDJ current;
@@ -101,9 +101,6 @@ public final class DigitalDJManager implements Observer {
    * @return self instance
    */
   public static DigitalDJManager getInstance() {
-    if (dj == null) {
-      dj = new DigitalDJManager();
-    }
     return dj;
   }
 

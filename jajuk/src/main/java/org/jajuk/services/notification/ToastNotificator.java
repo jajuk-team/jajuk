@@ -38,7 +38,7 @@ import org.jajuk.util.UtilGUI;
 public class ToastNotificator implements INotificator {
 
   /** Self instance *. */
-  private static ToastNotificator self;
+  private static ToastNotificator self = new ToastNotificator();
 
   /**
    * Instantiates a new toast notificator.
@@ -52,9 +52,6 @@ public class ToastNotificator implements INotificator {
    * @return an instance of this singleton
    */
   public static ToastNotificator getInstance() {
-    if (self == null) {
-      self = new ToastNotificator();
-    }
     return self;
   }
 

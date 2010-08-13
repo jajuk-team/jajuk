@@ -73,8 +73,8 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
-  private static DeviceView dv; // self instance
+  /** self instance. */
+  private static DeviceView dv = new DeviceView();
 
   /** DOCUMENT_ME. */
   FlowScrollPanel jpDevices;
@@ -340,9 +340,6 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
    * @return the instance
    */
   public static DeviceView getInstance() {
-    if (dv == null) {
-      dv = new DeviceView();
-    }
     return dv;
   }
 

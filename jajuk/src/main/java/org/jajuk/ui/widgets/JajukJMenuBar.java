@@ -89,8 +89,8 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
-  static JajukJMenuBar jjmb;
+  /** The singleton. */
+  static JajukJMenuBar jjmb = new JajukJMenuBar();
 
   /** DOCUMENT_ME. */
   JMenu file;
@@ -482,9 +482,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
    * @return single instance of JajukJMenuBar
    */
   public static JajukJMenuBar getInstance() {
-    if (jjmb == null) {
-      jjmb = new JajukJMenuBar();
-    }
     return jjmb;
   }
 

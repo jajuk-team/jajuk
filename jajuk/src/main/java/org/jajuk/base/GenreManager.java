@@ -42,9 +42,9 @@ import org.jajuk.util.error.JajukException;
  * Convenient class to manage genres.
  */
 public final class GenreManager extends ItemManager {
-  
+
   /** Self instance. */
-  private static GenreManager singleton;
+  private static GenreManager singleton = new GenreManager();
 
   /* List of all known genres */
   /** DOCUMENT_ME. */
@@ -75,9 +75,6 @@ public final class GenreManager extends ItemManager {
    * @return singleton
    */
   public static GenreManager getInstance() {
-    if (singleton == null) {
-      singleton = new GenreManager();
-    }
     return singleton;
   }
 

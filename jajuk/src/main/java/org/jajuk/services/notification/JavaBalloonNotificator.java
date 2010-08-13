@@ -45,7 +45,7 @@ public class JavaBalloonNotificator implements INotificator {
   TrayIcon trayIcon;
 
   /** Self instance *. */
-  private static JavaBalloonNotificator self;
+  private static JavaBalloonNotificator self = new JavaBalloonNotificator();
 
   /**
    * Return an instance of this singleton.
@@ -53,9 +53,6 @@ public class JavaBalloonNotificator implements INotificator {
    * @return an instance of this singleton
    */
   public static JavaBalloonNotificator getInstance() {
-    if (self == null) {
-      self = new JavaBalloonNotificator();
-    }
     return self;
   }
 
@@ -80,9 +77,7 @@ public class JavaBalloonNotificator implements INotificator {
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * org.jajuk.services.notification.INotificator#notify(org.jajuk.services.
-   * webradio.WebRadio)
+   * @see org.jajuk.services.notification.INotificator#notify(org.jajuk.services. webradio.WebRadio)
    */
   @Override
   public void notify(WebRadio webradio) {
@@ -95,8 +90,7 @@ public class JavaBalloonNotificator implements INotificator {
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * org.jajuk.services.notification.INotificator#notify(org.jajuk.base.File)
+   * @see org.jajuk.services.notification.INotificator#notify(org.jajuk.base.File)
    */
   @Override
   public void notify(File file) {
@@ -115,8 +109,7 @@ public class JavaBalloonNotificator implements INotificator {
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * org.jajuk.services.notification.INotificator#notify(String)
+   * @see org.jajuk.services.notification.INotificator#notify(String)
    */
   @Override
   public void notify(String title, String status) {

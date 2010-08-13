@@ -49,7 +49,7 @@ import org.jajuk.util.error.JajukException;
 public final class AlbumManager extends ItemManager implements Observer {
 
   /** Self instance. */
-  private static AlbumManager singleton;
+  private static AlbumManager singleton = new AlbumManager();
 
   /** Album max rating. */
   private long maxRate = 0l;
@@ -99,9 +99,6 @@ public final class AlbumManager extends ItemManager implements Observer {
    * @return singleton
    */
   public static AlbumManager getInstance() {
-    if (singleton == null) {
-      singleton = new AlbumManager();
-    }
     return singleton;
   }
 

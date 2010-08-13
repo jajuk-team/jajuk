@@ -37,7 +37,7 @@ import org.jajuk.services.players.StackItem;
 public final class JajukTimer {
 
   /** Self instance. */
-  private static JajukTimer timer;
+  private static JajukTimer timer = new JajukTimer();
 
   /** Total time to play in secs. */
   private long lTimeToPlay = 0;
@@ -54,9 +54,6 @@ public final class JajukTimer {
    * @return JajukTimer singleton
    */
   public static JajukTimer getInstance() {
-    if (timer == null) {
-      timer = new JajukTimer();
-    }
     return timer;
   }
 

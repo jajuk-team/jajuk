@@ -30,8 +30,9 @@ package org.jajuk.ui.windows;
  * <p>- Hidden (the display(true) has not yet been called or the display(false)
  * has been called)
  * <p>
- * These states are listed in the WindowState enum These states are managed by
- * the WindowStateDecorator
+ * These states are listed in the WindowState enum 
+ * 
+ * These states are managed by the WindowStateDecorator
  */
 public interface IJajukWindow {
 

@@ -28,7 +28,7 @@ import org.jajuk.util.JajukFileFilter;
 public final class ImageFilter extends JajukFileFilter {
 
   /** Self instance. */
-  private static ImageFilter self = null;
+  private static ImageFilter self = new ImageFilter();
 
   /**
    * Gets the instance.
@@ -36,9 +36,6 @@ public final class ImageFilter extends JajukFileFilter {
    * @return singleton
    */
   public static ImageFilter getInstance() {
-    if (ImageFilter.self == null) {
-      ImageFilter.self = new ImageFilter();
-    }
     return ImageFilter.self;
   }
 

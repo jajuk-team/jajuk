@@ -33,7 +33,7 @@ import org.jajuk.util.UtilSystem;
 public final class KnownTypeFilter extends JajukFileFilter {
 
   /** Self instance. */
-  private static KnownTypeFilter self = null;
+  private static KnownTypeFilter self = new KnownTypeFilter();
 
   /**
    * Gets the instance.
@@ -41,9 +41,6 @@ public final class KnownTypeFilter extends JajukFileFilter {
    * @return singleton
    */
   public static KnownTypeFilter getInstance() {
-    if (KnownTypeFilter.self == null) {
-      KnownTypeFilter.self = new KnownTypeFilter();
-    }
     return KnownTypeFilter.self;
   }
 

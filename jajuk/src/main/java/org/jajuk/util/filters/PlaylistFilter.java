@@ -34,7 +34,7 @@ import org.jajuk.util.UtilSystem;
 public final class PlaylistFilter extends JajukFileFilter {
 
   /** Self instance. */
-  private static PlaylistFilter self = null;
+  private static PlaylistFilter self = new PlaylistFilter();
 
   /**
    * Gets the instance.
@@ -42,9 +42,6 @@ public final class PlaylistFilter extends JajukFileFilter {
    * @return singleton
    */
   public static PlaylistFilter getInstance() {
-    if (PlaylistFilter.self == null) {
-      PlaylistFilter.self = new PlaylistFilter();
-    }
     return PlaylistFilter.self;
   }
 

@@ -59,7 +59,7 @@ public final class PerspectiveBarJPanel extends JXPanel {
   private JToolBar jtbPerspective;
 
   /** Self instance. */
-  private static PerspectiveBarJPanel pb;
+  private static PerspectiveBarJPanel pb = new PerspectiveBarJPanel();
 
   /** Perspective button. */
   private final List<JButton> alButtons = new ArrayList<JButton>(10);
@@ -70,9 +70,6 @@ public final class PerspectiveBarJPanel extends JXPanel {
    * @return the instance
    */
   public static PerspectiveBarJPanel getInstance() {
-    if (pb == null) {
-      pb = new PerspectiveBarJPanel();
-    }
     return pb;
   }
 
@@ -100,7 +97,7 @@ public final class PerspectiveBarJPanel extends JXPanel {
       if (Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
         icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
       }
-      
+
       JButton jb = new JButton(icon);
       jb.setToolTipText(perspective.getDesc());
       jb.setBorder(new EmptyBorder(5, 5, 0, 5));

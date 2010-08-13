@@ -62,8 +62,15 @@ import org.jajuk.util.log.Log;
  */
 public class PlayerStateMediator implements Observer {
 
-  /** DOCUMENT_ME. */
-  private static PlayerStateMediator self;
+  /** Singleton */
+  private static PlayerStateMediator self = new PlayerStateMediator();
+
+  // Register this item, do not do this in the constructor as the instance is not yet available
+  static {
+    ObservationManager.register(self);
+    // Update initial status
+    UtilFeatures.updateStatus(self);
+  }
 
   /**
    * Instantiates a new player state mediator.
@@ -77,12 +84,6 @@ public class PlayerStateMediator implements Observer {
    * @return single instance of PlayerStateMediator
    */
   public static PlayerStateMediator getInstance() {
-    if (self == null) {
-      self = new PlayerStateMediator();
-      ObservationManager.register(self);
-      // Update initial status
-      UtilFeatures.updateStatus(self);
-    }
     return self;
   }
 
@@ -252,7 +253,8 @@ public class PlayerStateMediator implements Observer {
 
         // For all events except Volume Change/Mute, refresh the queue
         if (!JajukEvents.VOLUME_CHANGED.equals(subject) && !JajukEvents.MUTE_STATE.equals(subject)
-            && !JajukEvents.FILE_LAUNCHED.equals(subject) && !JajukEvents.SHOW_CURRENTLY_PLAYING.equals(subject)) {
+            && !JajukEvents.FILE_LAUNCHED.equals(subject)
+            && !JajukEvents.SHOW_CURRENTLY_PLAYING.equals(subject)) {
           ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
         }
       }

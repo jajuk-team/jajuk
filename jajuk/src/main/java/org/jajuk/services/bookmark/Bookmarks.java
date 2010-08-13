@@ -37,7 +37,7 @@ import org.jajuk.util.Const;
 public final class Bookmarks {
 
   /** Singleton self-instance. */
-  private static Bookmarks bookmarks;
+  private static Bookmarks bookmarks = new Bookmarks();
 
   /** Bookmarked files. */
   private List<File> alFiles = new ArrayList<File>(100);
@@ -48,9 +48,6 @@ public final class Bookmarks {
    * @return single instance of Bookmarks
    */
   public static Bookmarks getInstance() {
-    if (bookmarks == null) {
-      bookmarks = new Bookmarks();
-    }
     return bookmarks;
   }
 
@@ -84,8 +81,8 @@ public final class Bookmarks {
     for (File file : alFiles) {
       sbOut.append(file.getID()).append(',');
     }
-    
-    if(sbOut.length() > 0) {
+
+    if (sbOut.length() > 0) {
       return sbOut.substring(0, sbOut.length() - 1);// remove last ','
     } else {
       return "";
@@ -117,7 +114,7 @@ public final class Bookmarks {
   public synchronized void down(int index) {
     if (index < alFiles.size() - 1) { // the last track cannot go
       // deeper
-      Collections.swap(alFiles, index, index+1);
+      Collections.swap(alFiles, index, index + 1);
       Conf.setProperty(Const.CONF_BOOKMARKS, toString());
     }
   }
@@ -129,7 +126,7 @@ public final class Bookmarks {
    */
   public synchronized void up(int index) {
     if (index > 0) { // the first track cannot go further
-      Collections.swap(alFiles, index, index-1);
+      Collections.swap(alFiles, index, index - 1);
       Conf.setProperty(Const.CONF_BOOKMARKS, toString());
     }
   }

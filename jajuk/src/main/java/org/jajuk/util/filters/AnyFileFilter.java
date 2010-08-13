@@ -33,7 +33,7 @@ import org.jajuk.util.JajukFileFilter;
 public final class AnyFileFilter extends JajukFileFilter {
 
   /** Self instance. */
-  private static AnyFileFilter self = null;
+  private static AnyFileFilter self = new AnyFileFilter();
 
   /**
    * Gets the instance.
@@ -41,9 +41,6 @@ public final class AnyFileFilter extends JajukFileFilter {
    * @return singleton
    */
   public static AnyFileFilter getInstance() {
-    if (AnyFileFilter.self == null) {
-      AnyFileFilter.self = new AnyFileFilter();
-    }
     return AnyFileFilter.self;
   }
 

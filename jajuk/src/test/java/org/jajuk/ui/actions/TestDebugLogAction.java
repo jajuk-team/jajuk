@@ -37,7 +37,7 @@ public class TestDebugLogAction extends JajukTestCase {
    */
   public void testPerform() {
     // initialize Log
-    assertNotNull(Log.getInstance());
+    Log.init();
 
     DebugLogAction action = new DebugLogAction();
     try {

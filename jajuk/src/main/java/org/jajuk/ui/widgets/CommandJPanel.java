@@ -107,7 +107,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
 
   // singleton
   /** DOCUMENT_ME. */
-  private static CommandJPanel command;
+  private static CommandJPanel command = new CommandJPanel();
 
   // widgets declaration
 
@@ -202,9 +202,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
    * @return singleton
    */
   public static CommandJPanel getInstance() {
-    if (command == null) {
-      command = new CommandJPanel();
-    }
     return command;
   }
 

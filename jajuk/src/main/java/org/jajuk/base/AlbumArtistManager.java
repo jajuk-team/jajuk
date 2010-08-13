@@ -42,9 +42,9 @@ import org.jajuk.util.error.JajukException;
  * Convenient class to manage album-artists.
  */
 public final class AlbumArtistManager extends ItemManager {
-  
+
   /** Self instance. */
-  private static AlbumArtistManager singleton;
+  private static AlbumArtistManager singleton = new AlbumArtistManager();
 
   /** List of all known album-artists */
   private static Vector<String> albumArtistsList = new Vector<String>(100);
@@ -72,9 +72,6 @@ public final class AlbumArtistManager extends ItemManager {
    * @return singleton
    */
   public static AlbumArtistManager getInstance() {
-    if (singleton == null) {
-      singleton = new AlbumArtistManager();
-    }
     return singleton;
   }
 
@@ -143,7 +140,7 @@ public final class AlbumArtistManager extends ItemManager {
           && QueueModel.getPlayingFile().getTrack().getAlbumArtist().equals(old)) {
         queueNeedsUpdate = true;
       }
-      
+
       AlbumArtist newItem = registerAlbumArtist(sNewName);
       // re apply old properties from old item
       newItem.cloneProperties(old);
@@ -163,7 +160,7 @@ public final class AlbumArtistManager extends ItemManager {
     }
   }
 
-   /*
+  /*
    * (non-Javadoc)
    * 
    * @see org.jajuk.base.ItemManager#getIdentifier()

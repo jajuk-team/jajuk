@@ -67,7 +67,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public final class History extends DefaultHandler implements HighPriorityObserver {
 
   /** Self instance. */
-  private static History history;
+  private static History history = new History();
 
   /** History repository, last play first. */
   private static Vector<HistoryItem> vHistory = new Vector<HistoryItem>(100);
@@ -84,9 +84,6 @@ public final class History extends DefaultHandler implements HighPriorityObserve
    * @return the instance
    */
   public static History getInstance() {
-    if (history == null) {
-      history = new History();
-    }
     return history;
   }
 

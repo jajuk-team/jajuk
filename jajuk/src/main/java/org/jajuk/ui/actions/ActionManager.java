@@ -48,7 +48,7 @@ public final class ActionManager {
   private static final List<KeyStroke> STROKE_LIST = new ArrayList<KeyStroke>();
 
   /** Self instance. */
-  private static ActionManager self = null;
+  private static ActionManager self = new ActionManager();
 
   /**
    * Gets the instance.
@@ -56,9 +56,6 @@ public final class ActionManager {
    * @return singleton
    */
   public static ActionManager getInstance() {
-    if (self == null) {
-      self = new ActionManager();
-    }
     return self;
   }
 

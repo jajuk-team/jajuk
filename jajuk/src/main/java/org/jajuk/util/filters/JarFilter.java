@@ -28,7 +28,7 @@ import org.jajuk.util.JajukFileFilter;
 public class JarFilter extends JajukFileFilter {
 
   /** Self instance. */
-  private static JarFilter self = null;
+  private static JarFilter self = new JarFilter();
 
   /**
    * Gets the instance.
@@ -36,9 +36,6 @@ public class JarFilter extends JajukFileFilter {
    * @return singleton
    */
   public static JarFilter getInstance() {
-    if (JarFilter.self == null) {
-      JarFilter.self = new JarFilter();
-    }
     return JarFilter.self;
   }
 

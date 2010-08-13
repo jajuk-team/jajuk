@@ -54,7 +54,7 @@ public final class AmbienceManager implements Observer {
   private final Map<String, Ambience> ambiences = new HashMap<String, Ambience>(10);
 
   /** Self instance. */
-  private static AmbienceManager self;
+  private static AmbienceManager self = new AmbienceManager();
 
   /**
    * No direct constructor.
@@ -63,7 +63,9 @@ public final class AmbienceManager implements Observer {
     ObservationManager.register(this);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
@@ -78,9 +80,6 @@ public final class AmbienceManager implements Observer {
    * @return singleton
    */
   public static AmbienceManager getInstance() {
-    if (self == null) {
-      self = new AmbienceManager();
-    }
     return self;
   }
 

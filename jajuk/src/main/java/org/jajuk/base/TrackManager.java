@@ -51,7 +51,7 @@ import org.jajuk.util.log.Log;
 public final class TrackManager extends ItemManager {
 
   /** Self instance. */
-  private static TrackManager singleton;
+  private static TrackManager singleton = new TrackManager();
 
   /** Autocommit flag for tags *. */
   private boolean bAutocommit = true;
@@ -136,9 +136,6 @@ public final class TrackManager extends ItemManager {
    * @return singleton
    */
   public static TrackManager getInstance() {
-    if (singleton == null) {
-      singleton = new TrackManager();
-    }
     return singleton;
   }
 

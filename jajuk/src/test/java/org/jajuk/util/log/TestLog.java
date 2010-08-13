@@ -39,7 +39,7 @@ public class TestLog extends JajukTestCase {
   @Override
   protected void setUp() throws Exception {
     // make sure we have logging initialized for these tests
-    Log.getInstance();
+    Log.init();
 
     super.setUp();
   }
@@ -48,7 +48,7 @@ public class TestLog extends JajukTestCase {
    * Test method for {@link org.jajuk.util.log.Log#getInstance()}.
    */
   public void testGetInstance() {
-    assertNotNull(Log.getInstance());
+    Log.init();
   }
 
   /**

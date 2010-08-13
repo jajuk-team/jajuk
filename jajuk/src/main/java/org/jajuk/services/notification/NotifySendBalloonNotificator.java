@@ -51,7 +51,7 @@ public class NotifySendBalloonNotificator implements INotificator {
   private static final String DISPLAY_TIME_MSECS = "8000";
 
   /** Self instance *. */
-  private static NotifySendBalloonNotificator self;
+  private static NotifySendBalloonNotificator self = new NotifySendBalloonNotificator();
 
   /** Availability state [perf] *. */
   private boolean availability = false;
@@ -70,9 +70,6 @@ public class NotifySendBalloonNotificator implements INotificator {
    * @return an instance of this singleton
    */
   public static NotifySendBalloonNotificator getInstance() {
-    if (self == null) {
-      self = new NotifySendBalloonNotificator();
-    }
     return self;
   }
 
@@ -126,7 +123,7 @@ public class NotifySendBalloonNotificator implements INotificator {
       Log
           .info("Cannot use notify-send functionality, application 'notify-send' seems to be not available correctly.");
       availability = false;
-	    return;
+      return;
     }
 
     // notify-send is enabled and seems to be supported by the OS
@@ -134,8 +131,7 @@ public class NotifySendBalloonNotificator implements INotificator {
   }
 
   /*
-   * Notification from two strings (code shared between webradio and track
-   * notifications)
+   * Notification from two strings (code shared between webradio and track notifications)
    */
   /**
    * Notify. DOCUMENT_ME
@@ -202,9 +198,7 @@ public class NotifySendBalloonNotificator implements INotificator {
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * org.jajuk.services.notification.INotificator#notify(org.jajuk.services.
-   * webradio.WebRadio)
+   * @see org.jajuk.services.notification.INotificator#notify(org.jajuk.services. webradio.WebRadio)
    */
   @Override
   public void notify(WebRadio webradio) {
@@ -216,8 +210,7 @@ public class NotifySendBalloonNotificator implements INotificator {
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * org.jajuk.services.notification.INotificator#notify(org.jajuk.base.File)
+   * @see org.jajuk.services.notification.INotificator#notify(org.jajuk.base.File)
    */
   @Override
   public void notify(File file) {

@@ -28,7 +28,7 @@ import org.jajuk.util.JajukFileFilter;
 public class ReportFilter extends JajukFileFilter {
 
   /** Self instance. */
-  private static ReportFilter self = null;
+  private static ReportFilter self = new ReportFilter();
 
   /**
    * Gets the instance.
@@ -36,9 +36,6 @@ public class ReportFilter extends JajukFileFilter {
    * @return singleton
    */
   public static ReportFilter getInstance() {
-    if (ReportFilter.self == null) {
-      ReportFilter.self = new ReportFilter();
-    }
     return ReportFilter.self;
   }
 

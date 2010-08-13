@@ -233,7 +233,7 @@ public final class ThumbnailsMaker {
     final long lTime = System.currentTimeMillis();
     Main.initializeFromThumbnailsMaker(bTest, workspace);
     // log startup depends on : setExecLocation, initialCheckups
-    Log.getInstance();
+    Log.init();
     Log.setVerbosity(Log.FATAL);
     StartupControlsService.initialCheckups();
     StartupCollectionService.registerItemManagers();

@@ -34,7 +34,7 @@ import org.jajuk.util.Messages;
 public final class DirectoryFilter extends JajukFileFilter {
 
   /** Self instance. */
-  private static DirectoryFilter self = null;
+  private static DirectoryFilter self = new DirectoryFilter();
 
   /**
    * Gets the instance.
@@ -42,9 +42,6 @@ public final class DirectoryFilter extends JajukFileFilter {
    * @return singleton
    */
   public static DirectoryFilter getInstance() {
-    if (DirectoryFilter.self == null) {
-      DirectoryFilter.self = new DirectoryFilter();
-    }
     return DirectoryFilter.self;
   }
 
