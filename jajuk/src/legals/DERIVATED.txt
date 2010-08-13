@@ -113,4 +113,12 @@ LGPL, Copyright 2003
 Author: Christian d'Heureuse, Inventec Informatik AG, Switzerland.
 
 Used for: Proxy management
+
+-------------------------------------------------------
+MersenneTwister (ext package, jajuk >= 1.9)
+Custom license compatible with GPL (provided in the MersenneTwister.java header), Copyright 2003
+Author: Sean Luke, portions copyright (c) 1993 by Michael Lecuyer.
+
+Used for: Random numbers generator
+
       

@@ -20,6 +20,8 @@
  */
 package org.jajuk.util;
 
+import ext.MersenneTwister;
+
 import java.awt.Desktop;
 import java.awt.GraphicsEnvironment;
 import java.io.BufferedReader;
@@ -97,7 +99,7 @@ public final class UtilSystem {
   public static final Date TODAY = new Date();
 
   /** Central random object for all Jajuk *. */
-  private static final Random RANDOM = new Random();
+  private static final Random RANDOM = new MersenneTwister();
 
   /** Cached user home directory *. */
   private static String cachedUserHomeDir;
