@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Random;
-import java.util.zip.ZipException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.SystemUtils;
@@ -350,23 +349,7 @@ public class TestUtilSystem extends JajukTestCase {
     assertFalse(file1.exists());
   }
 
-  /**
-   * Test method for
-   * {@link org.jajuk.util.UtilSystem#extractFile(java.lang.String, java.lang.String)}
-   * .
-   */
-  public void testExtractFile() throws Exception {
-    try {
-      UtilSystem.extractFile("org/jajuk/util/error/JajukException.class", file1.getParent());
-    } catch (FileNotFoundException e) {
-      // TODO: currently can not be tested in Eclipse as no Jajuk.jar file is
-      // available...
-    } catch (ZipException e) {
-      // TODO: seems to fail in Hudson because of some problem with opening the
-      // ZipFile...
-    }
-  }
-
+ 
   /**
    * Test method for
    * {@link org.jajuk.util.UtilSystem#getExtension(java.io.File)}.

@@ -40,7 +40,6 @@ import java.io.OutputStreamWriter;
 import java.io.RandomAccessFile;
 import java.io.Writer;
 import java.net.InetAddress;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -54,8 +53,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 import javax.swing.ImageIcon;
 
@@ -488,75 +485,6 @@ public final class UtilSystem {
   }
 
   /**
-   * Extract files from current jar to "cache/internal" directory
-   * <p>
-   * Thanks several websites, especially
-   * http://www.developer.com/java/other/article.php/607931
-   * 
-   * @param entryName name of the file to extract. Example: img.png
-   * @param destName DOCUMENT_ME
-   * 
-   * @throws IOException Signals that an I/O exception has occurred.
-   */
-  public static void extractFile(final String entryName, final String destName) throws IOException {
-    JarFile jar = null;
-    // Open the jar.
-    try {
-      final File dir = new File(UtilSystem.getJarLocation(Main.class).toURI()).getParentFile();
-      // We have to call getParentFile() method because the toURI() method
-      // returns an URI than is not always valid (contains %20 for spaces
-      // for instance)
-      final File jarFile = new File(dir.getAbsolutePath() + "/jajuk.jar");
-      Log.debug("Open jar: " + jarFile.getAbsolutePath());
-      jar = new JarFile(jarFile);
-    } catch (final URISyntaxException e) {
-      Log.error(e);
-      return;
-    }
-    try {
-      // Get the entry and its input stream.
-      final JarEntry entry = jar.getJarEntry(entryName);
-      // If the entry is not null, extract it. Otherwise, print a
-      // message.
-      if (entry != null) {
-        // Get an input stream for the entry.
-        final InputStream entryStream = jar.getInputStream(entry);
-        try {
-          // Create the output file (clobbering the file if it
-          // exists).
-          final OutputStream file = new FileOutputStream(SessionService
-              .getConfFileByPath(Const.FILE_CACHE + '/' + Const.FILE_INTERNAL_CACHE + '/'
-                  + destName));
-          try {
-            // Allocate a buffer for reading the entry data.
-            final byte[] buffer = new byte[1024];
-            int bytesRead;
-            // Read the entry data and write it to the output file.
-            while ((bytesRead = entryStream.read(buffer)) != -1) {
-              file.write(buffer, 0, bytesRead);
-            }
-            file.flush();
-          } catch (final IOException e) {
-            Log.error(e);
-          } finally {
-            file.close();
-          }
-        } catch (final IOException e) {
-          Log.error(e);
-        } finally {
-          entryStream.close();
-        }
-      } else {
-        Log.debug(entryName + " not found.");
-      } // end if
-    } catch (final IOException e) {
-      Log.error(e);
-    } finally {
-      jar.close();
-    }
-  }
-
-  /**
    * Get a file extension.
    * 
    * @param file DOCUMENT_ME
@@ -652,12 +580,18 @@ public final class UtilSystem {
   /**
    * Return url of jar we are executing.
    * 
+   * Seems that this code no more work with last JRE 6 (it returns only partial URL), to be investigated
+   * 
    * @param cClass DOCUMENT_ME
    * 
    * @return URL of jar we are executing
    */
   public static URL getJarLocation(final Class<?> cClass) {
-    return cClass.getProtectionDomain().getCodeSource().getLocation();
+    URL url = cClass.getProtectionDomain().getCodeSource().getLocation();
+    if (UtilSystem.isUnderJNLP()) {
+      Log.debug("JAR location: " + url.getFile());
+    }
+    return url;
   }
 
   /**
@@ -720,7 +654,7 @@ public final class UtilSystem {
   }
 
   /**
-   * Gets the m player OSX path.
+   * Gets the mplayer OSX path.
    * It is mainly based upon Windows getWindowsPath() path method, see comments over there
    * 
    * @return MPLayer binary MAC full path

@@ -66,8 +66,7 @@ public final class Main {
   /**
    * Main entry.
    * 
-   * @param args
-   *          DOCUMENT_ME
+   * @param args CLI arguments
    */
   public static void main(final String[] args) {
     // non ui init

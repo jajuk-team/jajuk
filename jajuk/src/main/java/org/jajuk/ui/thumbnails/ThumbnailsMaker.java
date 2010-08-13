@@ -96,7 +96,7 @@ public final class ThumbnailsMaker {
       public void run() {
         try {
           for (int i = 50; i <= 300; i += 50) {
-            ThumbnailsMaker.launchProcessus(i);
+            ThumbnailsMaker.launchProcess(i);
             // Force thumbs existence refreshing
             ThumbnailManager.populateCache(i);
           }
@@ -130,7 +130,7 @@ public final class ThumbnailsMaker {
    * @throws URISyntaxException the URI syntax exception
    * @throws IOException Signals that an I/O exception has occurred.
    */
-  private static int launchProcessus(final int size) throws URISyntaxException, IOException {
+  private static int launchProcess(final int size) throws URISyntaxException, IOException {
     final String jvmPath = System.getProperty("java.home") + File.separatorChar + "bin"
         + File.separatorChar + "java";
     final List<String> commands = new ArrayList<String>(10);
