@@ -2,6 +2,11 @@
  *  Jajuk
  *  Copyright (C) 2003-2009 The Jajuk Team
  *  http://jajuk.info
+ *  
+ *  Code modified from Alexander Potochkin's JXTray class at 
+ *  https://swinghelper.dev.java.net/source/browse/swinghelper/src/java/org/jdesktop/swinghelper/tray/JXTrayIcon.java?view=markup
+ *  Copyright 2008 Sun Microsystems, Inc., 4150 Network Circle,
+ * Santa Clara, California 95054, U.S.A. All rights reserved.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -23,7 +28,6 @@ package ext;
 
 import java.awt.AWTException;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -31,7 +35,6 @@ import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
@@ -46,13 +49,15 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 /**
- * DOCUMENT_ME.
+ * This class allow to add a Swing JDialog into an AWT Systray
+ * 
+ * See http://weblogs.java.net/blog/alexfromsun/archive/2008/02/jtrayicon_updat.html
  */
 public class JXTrayIcon extends TrayIcon {
-  
+
   /** DOCUMENT_ME. */
   private JPopupMenu menu;
-  
+
   /** DOCUMENT_ME. */
   private static JDialog dialog;
   static {
@@ -83,17 +88,6 @@ public class JXTrayIcon extends TrayIcon {
    */
   public JXTrayIcon(Image image) {
     super(image);
-    addMouseListener(new MouseAdapter() {
-      @Override
-      public void mousePressed(MouseEvent e) {
-        showJPopupMenu(e);
-      }
-
-      @Override
-      public void mouseReleased(MouseEvent e) {
-        showJPopupMenu(e);
-      }
-    });
   }
 
   /**
@@ -102,10 +96,9 @@ public class JXTrayIcon extends TrayIcon {
    * 
    * @param e DOCUMENT_ME
    */
-  private void showJPopupMenu(MouseEvent e) {
-    if (e.isPopupTrigger() && menu != null) {
-      Dimension size = menu.getPreferredSize();
-      dialog.setLocation(e.getX(), e.getY() - size.height);
+  public void showJPopupMenu(MouseEvent e) {
+    if (menu != null) {
+      dialog.setLocation(e.getXOnScreen(), e.getYOnScreen());
       dialog.setVisible(true);
       menu.show(dialog.getContentPane(), 0, 0);
       // popup works only for focused windows
@@ -114,18 +107,18 @@ public class JXTrayIcon extends TrayIcon {
   }
 
   /**
-   * Gets the j popu menu.
+   * Gets the JPopupMenu.
    * 
-   * @return the j popu menu
+   * @return the JPopupMenu
    */
   public JPopupMenu getJPopuMenu() {
     return menu;
   }
 
   /**
-   * Sets the j popu menu.
+   * Sets the JPopupMenu.
    * 
-   * @param menu the new j popu menu
+   * @param menu the new JPopupMenu
    */
   public void setJPopuMenu(JPopupMenu menu) {
     if (this.menu != null) {

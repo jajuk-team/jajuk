@@ -278,7 +278,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     }
 
     trayIcon = new JXTrayIcon(IconLoader.getIcon(JajukIcons.TRAY).getImage());
-    if (UtilSystem.isUnderWindows()) {
+    if (!UtilSystem.isUnderLinux()) {
       // auto-resize looks OK under Windows but is ugly under Linux/KDE
       trayIcon.setImageAutoSize(true);
     }
@@ -311,31 +311,39 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
       }
     });
     trayIcon.setJPopuMenu(jmenu);
-    trayIcon.addMouseListener(new JajukMouseAdapter() {
+    // Note that under OSX, popup gesture recognition is inverted : a left click return true
+    if (UtilSystem.isUnderOSX()) {
 
-      @Override
-      public void handleActionSingleClick(MouseEvent e) {
-        // Invert current window visibility with a left click on the tray icon
-        WindowStateDecorator windowDecorator = null;
-        if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_MAIN_WINDOW) {
-          windowDecorator = JajukMainWindow.getInstance().getWindowStateDecorator();
-        } else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_SLIMBAR_TRAY) {
-          windowDecorator = JajukSlimbar.getInstance().getWindowStateDecorator();
-        } else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_FULLSCREEN) {
-          windowDecorator = JajukFullScreenWindow.getInstance().getWindowStateDecorator();
+      // Don't use a JajukMouseAdapter here because tray has specific behavior under OSX
+      trayIcon.addMouseListener(new MouseAdapter() {
+
+        // Under OSX, the event to consider is PRESSED, not RELEASED, 
+        // see http://developer.apple.com/mac/library/documentation/Java/Conceptual/Java14Development/07-NativePlatformIntegration/NativePlatformIntegration.html
+        public void mousePressed(MouseEvent e) {
+          System.out.println(e.isPopupTrigger());
+          if (!e.isPopupTrigger()) { //we invert here because it is a systray item
+            // popup gesture recognized, display the jdialog
+            trayIcon.showJPopupMenu(e);
+          } else {
+            showHideWindow(e);
+          }
+        }
+      });
+
+    } else {
+      trayIcon.addMouseListener(new JajukMouseAdapter() {
+
+        @Override
+        public void handleActionSingleClick(MouseEvent e) {
+          showHideWindow(e);
         }
 
-        // show Main if no other found, i.e. only Systray is displayed
-        if (windowDecorator == null) {
-          windowDecorator = JajukMainWindow.getInstance().getWindowStateDecorator();
+        @Override
+        public void handlePopup(final MouseEvent e) {
+          trayIcon.showJPopupMenu(e);
         }
-
-        // Invert visibility for the current window
-        boolean bShouldDisplay = !(windowDecorator.getWindowState() == WindowState.BUILT_DISPLAYED);
-        windowDecorator.display(bShouldDisplay);
-      }
-
-    });
+      });
+    }
     try {
       stray.add(trayIcon);
     } catch (AWTException e) {
@@ -345,6 +353,30 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     // Register needed events
     ObservationManager.register(this);
 
+  }
+
+  /**
+   * Invert current window visibility with a left click on the tray icon
+   * @param e
+   */
+  private void showHideWindow(MouseEvent e) {
+    WindowStateDecorator windowDecorator = null;
+    if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_MAIN_WINDOW) {
+      windowDecorator = JajukMainWindow.getInstance().getWindowStateDecorator();
+    } else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_SLIMBAR_TRAY) {
+      windowDecorator = JajukSlimbar.getInstance().getWindowStateDecorator();
+    } else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_FULLSCREEN) {
+      windowDecorator = JajukFullScreenWindow.getInstance().getWindowStateDecorator();
+    }
+
+    // show Main if no other found, i.e. only Systray is displayed
+    if (windowDecorator == null) {
+      windowDecorator = JajukMainWindow.getInstance().getWindowStateDecorator();
+    }
+
+    // Invert visibility for the current window
+    boolean bShouldDisplay = !(windowDecorator.getWindowState() == WindowState.BUILT_DISPLAYED);
+    windowDecorator.display(bShouldDisplay);
   }
 
   /*
