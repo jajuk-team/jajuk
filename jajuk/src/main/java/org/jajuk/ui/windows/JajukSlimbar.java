@@ -452,11 +452,12 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
 
     // Set location
     String lastPosition = Conf.getString(Const.CONF_SLIMBAR_POSITION);
-    int x = 0;
-    int y = 0;
+   
     int iScreenWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
     int iScreenHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
-
+    int x = iScreenWidth/2;
+    int y =iScreenHeight/2;
+    
     try {
       StringTokenizer st = new StringTokenizer(lastPosition, ",");
       x = Integer.parseInt(st.nextToken());
@@ -475,8 +476,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
       Log.debug("Cannot restore slimbar position");
       Log.error(e);
     }
-    pack();
-
+   
     // Force initial message refresh
     UtilFeatures.updateStatus(this);
 
