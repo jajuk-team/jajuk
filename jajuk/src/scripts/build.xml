@@ -568,7 +568,7 @@
 			stubfile='${basedir}/src/packaging/jarbundler/JavaApplicationStub' 
 			build='${version}' 
 			vmoptions='-client -Xms20M -Xmx512M -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10' 
-			arguments='TEST_FLAG_REPLACED_BY_ANT'
+			arguments='-${test}'
 			verbose='true'>
 			<jarfileset dir='${distdir}/lib'>
 				<include name='**/*.jar' />
