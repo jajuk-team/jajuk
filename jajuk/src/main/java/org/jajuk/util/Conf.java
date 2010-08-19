@@ -329,13 +329,11 @@ public final class Conf implements Const {
     defaults.put(CONF_SHOW_DUPLICATE_PLAYLISTS, FALSE);
     defaults.put(CONF_FORMAT_TIME_ELAPSED, "0");
     defaults.put(CONF_AUTO_SCROLL, TRUE);
-   
+
     // By defaults, display slimbar at the center of the screen to fix #768 : under MAC,
     // it is overlaid the menu bar (the menu bar can't be overlaid, even by always on top frames)
-    int iScreenWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
-    int iScreenHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
-    defaults.put(CONF_SLIMBAR_POSITION, (iScreenWidth / 2)+","+(iScreenHeight/2));
-   
+    defaults.put(CONF_SLIMBAR_POSITION, (width / 2) + "," + (height / 2));
+
     defaults.put(CONF_SLIMBAR_DISPLAY_QUEUE, FALSE);
     defaults.put(CONF_SLIMBAR_SMART_MODE, JajukActions.SHUFFLE_GLOBAL.toString());
     defaults.put(CONF_ALARM_ACTION, ALARM_START_ACTION);
