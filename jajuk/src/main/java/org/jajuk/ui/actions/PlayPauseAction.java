@@ -71,7 +71,7 @@ public class PlayPauseAction extends JajukAction {
           }
         }
       }.start();
-      setIcon(IconLoader.getIcon(JajukIcons.PLAYER_PAUSE));
+      setIcon(IconLoader.getIcon(JajukIcons.PLAYER_PLAY));
       setName(Messages.getString("JajukWindow.12"));
     } else if (Player.isPaused()) { // player was paused, resume it
       Player.resume();
