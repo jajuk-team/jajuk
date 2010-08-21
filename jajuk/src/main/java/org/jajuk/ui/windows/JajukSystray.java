@@ -320,7 +320,6 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
         // Under OSX, the event to consider is PRESSED, not RELEASED, 
         // see http://developer.apple.com/mac/library/documentation/Java/Conceptual/Java14Development/07-NativePlatformIntegration/NativePlatformIntegration.html
         public void mousePressed(MouseEvent e) {
-          System.out.println(e.isPopupTrigger());
           if (!e.isPopupTrigger()) { //we invert here because it is a systray item
             // popup gesture recognized, display the jdialog
             trayIcon.showJPopupMenu(e);
