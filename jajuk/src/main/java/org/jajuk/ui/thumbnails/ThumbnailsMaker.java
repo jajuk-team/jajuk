@@ -123,6 +123,8 @@ public final class ThumbnailsMaker {
   /**
    * Convenient method to launch the thumb creation in another JVM.
    * 
+   * Do not call this in JNLP mode
+   * 
    * @param size DOCUMENT_ME
    * 
    * @return status : 0 if OK, 1 ok error

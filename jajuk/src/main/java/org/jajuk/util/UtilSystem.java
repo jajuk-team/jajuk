@@ -580,7 +580,7 @@ public final class UtilSystem {
   /**
    * Return url of jar we are executing.
    * 
-   * Seems that this code no more work with last JRE 6 (it returns only partial URL), to be investigated
+   * This code no more work with last JRE 6  under JNLP (it returns only partial URL)
    * 
    * @param cClass DOCUMENT_ME
    * 
@@ -605,25 +605,21 @@ public final class UtilSystem {
       return UtilSystem.mplayerPath;
     }
     File file = null;
-    // Check in ~/.jajuk directory (used by webstart distribution
-    // installers). Test exe size as well to detect unfinished downloads of
+    // Check in ~/.jajuk directory (used by JNLP distribution
+    // as well). Test exe size as well to detect unfinished downloads of
     // mplayer.exe in JNLP mode
     file = SessionService.getConfFileByPath(Const.FILE_MPLAYER_WINDOWS_EXE);
     if (file.exists() && file.length() == Const.MPLAYER_WINDOWS_EXE_SIZE) {
       UtilSystem.mplayerPath = file;
       return UtilSystem.mplayerPath;
-    } else {
+    } else if (!UtilSystem.isUnderJNLP() ){
       // Check in the path where jajuk.jar is executed (all others
-      // distributions)
+      // distributions). does not work under JNLP
       String sPATH = null;
       try {
         // Extract file name from URL. URI returns jar path, its parent
         // is the bin directory and the right dir is the parent of bin
         // dir
-        // Note: When starting from jnlp, next line throws an exception
-        // as URI is invalid (contains %20), the method returns null and
-        // the file is downloaded again. This url is used only when
-        // using stand-alone version
         if (SessionService.isIdeMode()) {
           // If under dev, take mplayer exe file from the packaging
           // directory
@@ -675,7 +671,8 @@ public final class UtilSystem {
     if (file.exists() && file.length() == Const.MPLAYER_OSX_EXE_SIZE) {
       UtilSystem.mplayerPath = file;
       return UtilSystem.mplayerPath;
-    } else {
+    } else if (!UtilSystem.isUnderJNLP()){
+      // Search in jajuk installation directory, do not work under JNLP
       String sPATH = null;
       try {
         if (SessionService.isIdeMode()) {
