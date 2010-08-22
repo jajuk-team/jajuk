@@ -207,10 +207,9 @@ public class StartupGUIService {
             tipsView.setLocationRelativeTo(JajukMainWindow.getInstance());
             tipsView.setVisible(true);
           }
-        } catch (final Exception e) { // last chance to catch any
-          // error for
+        } catch (final Exception e) { 
+          // last chance to catch any error for
           // logging purpose
-          e.printStackTrace();
           Log.error(106, e);
         } finally {
           if (sc != null) {

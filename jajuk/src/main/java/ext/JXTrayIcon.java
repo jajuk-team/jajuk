@@ -48,6 +48,8 @@ import javax.swing.UIManager;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+import org.jajuk.util.log.Log;
+
 /**
  * This class allow to add a Swing JDialog into an AWT Systray
  * 
@@ -138,7 +140,7 @@ public class JXTrayIcon extends TrayIcon {
     try {
       SystemTray.getSystemTray().add(tray);
     } catch (AWTException e) {
-      e.printStackTrace();
+      Log.error(e);
     }
   }
 

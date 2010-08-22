@@ -193,7 +193,7 @@ public final class Player {
             // wait for the line
             QueueModel.class.wait(Const.WAIT_AFTER_ERROR);
           } catch (InterruptedException e1) {
-            e1.printStackTrace();
+            Log.error(e1);
           }
         }
       }
