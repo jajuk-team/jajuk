@@ -58,7 +58,7 @@ if [ "/usr/bin/jajuk" = "$0" ] && [ -e /usr/share/jajuk/bin/jajuk.jar ] ; then
     JAJUK_HOME="/usr/share/jajuk/bin"
     cd /usr/share/jajuk/bin
 else
-    JAJUK_HOME=`dirname "$0"`/bin
+    JAJUK_HOME=$(pwd)/`dirname "$0"`/bin
     cd "$JAJUK_HOME"
 fi
 
