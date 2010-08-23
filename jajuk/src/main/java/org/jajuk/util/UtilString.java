@@ -717,8 +717,8 @@ public final class UtilString {
   /**
    * Make sure to reduce a string to the given size.
    * 
-   * @param sIn Input string, exemple: blabla
-   * @param iSize max size, exemple: 3
+   * @param sIn Input string, example: blabla
+   * @param iSize max size, example: 3
    * 
    * @return bla...
    */

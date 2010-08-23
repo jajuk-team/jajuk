@@ -365,7 +365,7 @@ public final class Player {
 
   /**
    * Force the bPaused state to allow to cancel a pause without restarting the
-   * current played track (rew for exemple).
+   * current played track (rew for example).
    * 
    * @param bPaused DOCUMENT_ME
    */

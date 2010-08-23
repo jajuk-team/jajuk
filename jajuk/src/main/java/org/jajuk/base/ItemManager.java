@@ -197,7 +197,7 @@ public abstract class ItemManager {
    * <p>
    * -All in lower case expect first letter of first word
    * <p>
-   * exemple: "My artist".
+   * example: "My artist".
    * 
    * @param sName The name to format.
    * 

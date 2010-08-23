@@ -198,7 +198,7 @@ public final class GenreManager extends ItemManager {
    * <p>
    * -All in upper case
    * <p>
-   * exemple: "ROCK".
+   * example: "ROCK".
    * 
    * @param sName DOCUMENT_ME
    * 
