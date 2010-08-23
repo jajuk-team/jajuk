@@ -131,7 +131,7 @@ public class StartupAsyncService {
           }
 
           // Submit any LastFM submission cache
-          if (Conf.getBoolean(Const.CONF_LASTFM_ENABLE)) {
+          if (Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE)) {
             LastFmManager.getInstance().submitCache();
           }
 

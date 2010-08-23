@@ -315,7 +315,7 @@ public final class Conf implements Const {
     defaults.put(CONF_DEFAULT_WEB_RADIO, DEFAULT_WEBRADIO);
     defaults.put(CONF_CHECK_FOR_UPDATE, TRUE);
     defaults.put(CONF_IGNORED_RELEASES, "");
-    defaults.put(CONF_LASTFM_ENABLE, FALSE);
+    defaults.put(CONF_LASTFM_AUDIOSCROBBLER_ENABLE, FALSE);
     defaults.put(CONF_LASTFM_INFO, TRUE);
     defaults.put(CONF_WEBRADIO_WAS_PLAYING, FALSE);
     defaults.put(CONF_PERSPECTIVE_ICONS_SIZE, "32");

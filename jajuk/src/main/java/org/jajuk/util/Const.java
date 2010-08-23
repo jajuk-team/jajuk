@@ -773,7 +773,7 @@ public interface Const {
   String CONF_NETWORK_PROXY_PWD = "jajuk.network.proxy_pwd";
 
   /** DOCUMENT_ME. */
-  String CONF_LASTFM_ENABLE = "jajuk.network.audioscrobbler";
+  String CONF_LASTFM_AUDIOSCROBBLER_ENABLE = "jajuk.network.audioscrobbler";
 
   /** DOCUMENT_ME. */
   String CONF_LASTFM_USER = "jajuk.network.ASUser";

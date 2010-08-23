@@ -616,7 +616,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     Conf.setProperty(Const.CONF_OPTIONS_DEFAULT_ACTION_DROP, Boolean.toString(jcbDefaultActionDrop
         .isSelected()));
     Conf.setProperty(Const.CONF_OPTIONS_HOTKEYS, Boolean.toString(jcbHotkeys.isSelected()));
-    Conf.setProperty(Const.CONF_LASTFM_ENABLE, Boolean.toString(jcbAudioScrobbler.isSelected()));
+    Conf.setProperty(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE, Boolean.toString(jcbAudioScrobbler.isSelected()));
     Conf.setProperty(Const.CONF_LASTFM_INFO, Boolean.toString(jcbEnableLastFMInformation
         .isSelected()));
     Conf.setProperty(Const.CONF_LASTFM_USER, jtfASUser.getText());
@@ -1867,11 +1867,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbShuffleCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_SHUFFLE));
     jcbSaveExplorerFriendly.setSelected(Conf.getBoolean(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY));
     jtfDefaultCoverSearchPattern.setText(Conf.getString(Const.FILE_DEFAULT_COVER));
-    jcbAudioScrobbler.setSelected(Conf.getBoolean(Const.CONF_LASTFM_ENABLE));
+    jcbAudioScrobbler.setSelected(Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE));
     jcbEnableLastFMInformation.setSelected(Conf.getBoolean(Const.CONF_LASTFM_INFO));
     jtfASUser.setText(Conf.getString(Const.CONF_LASTFM_USER));
     jpfASPassword.setText(UtilString.rot13(Conf.getString(Const.CONF_LASTFM_PASSWORD)));
-    if (!Conf.getBoolean(Const.CONF_LASTFM_ENABLE)) {
+    if (!Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE)) {
       jlASUser.setEnabled(false);
       jtfASUser.setEnabled(false);
       jlASPassword.setEnabled(false);
