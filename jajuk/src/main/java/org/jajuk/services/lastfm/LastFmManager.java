@@ -64,7 +64,7 @@ public final class LastFmManager implements Observer, Const {
     ObservationManager.register(this);
     // Display an hideable message to user if audioscrobber is disable
     // Show this message only one time by jajuk session
-    if (!Conf.getBoolean(Const.CONF_LASTFM_ENABLE)
+    if (!Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE)
     // don't show this message if first jajuk launch: already too many
         // popups.
         && !UpgradeManager.isFirstSession()
@@ -114,27 +114,25 @@ public final class LastFmManager implements Observer, Const {
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
   public void update(final JajukEvent event) {
-    if (JajukEvents.FILE_FINISHED == event.getSubject()
+    if (Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE)
+        && JajukEvents.FILE_FINISHED == event.getSubject()
         && !Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
       new Thread("LastFM Update Thread") {
         @Override
         public void run() {
-          if (Conf.getBoolean(Const.CONF_LASTFM_ENABLE)) {
-            File file = (File) event.getDetails().get(Const.DETAIL_CURRENT_FILE);
-            long playedTime = file.getTrack().getDuration();
-            // If we are in intro mode, computes actually listened
-            // time
-            if (Conf.getBoolean(Const.CONF_STATE_INTRO)) {
-              playedTime = (playedTime * Conf.getInt(Const.CONF_OPTIONS_INTRO_BEGIN) / 100)
-                  - Conf.getInt(Const.CONF_OPTIONS_INTRO_BEGIN);
-            }
+          File file = (File) event.getDetails().get(Const.DETAIL_CURRENT_FILE);
+          long playedTime = (Long) event.getDetails().get(Const.DETAIL_CONTENT);
+          // Last.FM rule : only submit >= 30secs playbacks
+          if (playedTime >= 30000) {
             try {
               service.submit(file.getTrack(), playedTime);
             } catch (ScrobblerException e) {
               Log.error(e);
             }
+          } else {
+            Log.info("Playback too short for this song (" + playedTime / 1000
+                + " secs), not submitted to LastFM");
           }
-
         }
       }.start();
     }

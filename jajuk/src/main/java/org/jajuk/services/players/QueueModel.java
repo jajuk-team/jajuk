@@ -92,6 +92,16 @@ public final class QueueModel {
 
   /** Current played radio. */
   private static volatile WebRadio currentRadio;
+  
+  /** Last played track actually played duration in ms before a stop*/
+  private static long lastDuration;
+
+  /**
+   * @return Last played track actually played duration in ms before a stop
+   */
+  public static long getLastDuration() {
+    return lastDuration;
+  }
 
   /**
    * No constructor, this class is used statically only.
@@ -447,7 +457,7 @@ public final class QueueModel {
 
   /**
    * Finished method, called by the PlayerImpl when the track is finished or
-   * should be finished (in case of intro mode or crass fade). 
+   * should be finished (in case of intro mode, crass fade, previous/next track ...). 
    * 
    * @param forceNext whether to play the next track, even in single repeat.
    *         
@@ -462,6 +472,7 @@ public final class QueueModel {
       if (getPlayingFile() != null) {
         Properties details = new Properties();
         details.put(Const.DETAIL_CURRENT_FILE, getPlayingFile());
+        details.put(Const.DETAIL_CONTENT, Player.getElapsedTime());
         ObservationManager.notify(new JajukEvent(JajukEvents.FILE_FINISHED, details));
       }
 
