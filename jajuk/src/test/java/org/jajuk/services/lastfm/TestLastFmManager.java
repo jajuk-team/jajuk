@@ -69,7 +69,7 @@ public class TestLastFmManager extends JajukTestCase {
   public void testUpdate() throws Exception {
     // nothing happens if
     {
-      Conf.setProperty(Const.CONF_LASTFM_ENABLE, "false");
+      Conf.setProperty(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE, "false");
       LastFmManager.getInstance().update(new JajukEvent(JajukEvents.FILE_FINISHED, null));
 
       // wait for thread to finish
