@@ -72,8 +72,11 @@ public class FlyWebLyricsProvider extends GenericWebLyricsProvider {
       }
       Document document = XMLUtils.getDocument(xml);
       lyrics = XMLUtils.getChildElementContent(document.getDocumentElement(), "tx");
-      lyrics = lyrics.replace("[br]", "");
-
+      // Fix for #1700, seems that in some case, we get <line1>[BR]<line2> without \n
+      // so we drop every \n and we replace every [BR] by a \n to make sure to get
+      // a single carriage return
+      lyrics = lyrics.replace("\n", "");
+      lyrics = lyrics.replace("[br]", "\n");
       if (StringUtils.isBlank(lyrics)) {
         return null;
       }
