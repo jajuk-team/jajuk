@@ -53,6 +53,9 @@ public class PlayPauseAction extends JajukAction {
    */
   @Override
   public void perform(ActionEvent evt) {
+    // Note that we don't change here the label and icon, already done in
+    // PlayerstateMediator
+    
     if (QueueModel.isStopped()) {
       // We use here a flag to avoid launching the goTo() thread twice. In case
       // of playing error, this would create several looping threads trying to
@@ -71,17 +74,10 @@ public class PlayPauseAction extends JajukAction {
           }
         }
       }.start();
-      setIcon(IconLoader.getIcon(JajukIcons.PLAYER_PLAY));
-      setName(Messages.getString("JajukWindow.12"));
     } else if (Player.isPaused()) { // player was paused, resume it
       Player.resume();
-      setIcon(IconLoader.getIcon(JajukIcons.PLAYER_PAUSE));
-      setName(Messages.getString("JajukWindow.10"));
     } else { // player is not paused, pause it
       Player.pause();
-      // notify of this event
-      setIcon(IconLoader.getIcon(JajukIcons.PLAYER_PLAY));
-      setName(Messages.getString("JajukWindow.12"));
     }
   }
 }

@@ -24,9 +24,6 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jajuk.events.JajukEvent;
-import org.jajuk.events.JajukEvents;
-import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
@@ -96,8 +93,7 @@ public class PreviousTrackAction extends JajukAction {
           public void run() {
             synchronized (QueueModel.class) {
               // ALT + previous = replay track
-              if (evt != null
-                  && (evt.getModifiers() == 4332424 )) {
+              if (evt != null && (evt.getModifiers() == 4332424)) {
                 // replay the entire file
                 Player.seek(0);
               } else {
@@ -107,12 +103,6 @@ public class PreviousTrackAction extends JajukAction {
                 } catch (Exception e) {
                   Log.error(e);
                 }
-              }
-              // Player was paused, reset pause button when
-              // changing of track
-              if (Player.isPaused()) {
-                Player.setPaused(false);
-                ObservationManager.notify(new JajukEvent(JajukEvents.PLAYER_RESUME));
               }
             }
           }

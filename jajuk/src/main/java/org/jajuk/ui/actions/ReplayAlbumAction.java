@@ -26,10 +26,6 @@ import java.util.List;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
-import org.jajuk.events.JajukEvent;
-import org.jajuk.events.JajukEvents;
-import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -74,12 +70,6 @@ public class ReplayAlbumAction extends JajukAction {
             }
           } catch (Exception e) {
             Log.error(e);
-          }
-          if (Player.isPaused()) { // player was paused, reset
-            // pause button
-            // when changing of track
-            Player.setPaused(false);
-            ObservationManager.notify(new JajukEvent(JajukEvents.PLAYER_RESUME));
           }
         }
       }

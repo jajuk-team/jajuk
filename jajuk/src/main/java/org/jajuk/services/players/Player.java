@@ -334,6 +334,7 @@ public final class Player {
         playerImpl.pause();
       }
       bPaused = true;
+      ObservationManager.notify(new JajukEvent(JajukEvents.PLAYER_PAUSE));
     } catch (Exception e) {
       Log.error(e);
     }
@@ -349,6 +350,7 @@ public final class Player {
       }
       playerImpl.resume();
       bPaused = false;
+      ObservationManager.notify(new JajukEvent(JajukEvents.PLAYER_RESUME));
     } catch (Exception e) {
       Log.error(e);
     }
@@ -361,16 +363,6 @@ public final class Player {
    */
   public static boolean isPaused() {
     return bPaused;
-  }
-
-  /**
-   * Force the bPaused state to allow to cancel a pause without restarting the
-   * current played track (rew for example).
-   * 
-   * @param bPaused DOCUMENT_ME
-   */
-  public static void setPaused(boolean bPaused) {
-    Player.bPaused = bPaused;
   }
 
   /**

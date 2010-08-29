@@ -24,10 +24,6 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jajuk.events.JajukEvent;
-import org.jajuk.events.JajukEvents;
-import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
@@ -94,12 +90,6 @@ public class NextTrackAction extends JajukAction {
                 QueueModel.playNext();
               } catch (Exception e) {
                 Log.error(e);
-              }
-              // Player was paused, reset pause button when
-              // changing of track
-              if (Player.isPaused()) {
-                Player.setPaused(false);
-                ObservationManager.notify(new JajukEvent(JajukEvents.PLAYER_RESUME));
               }
             }
           }

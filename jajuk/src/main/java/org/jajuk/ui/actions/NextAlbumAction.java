@@ -22,10 +22,6 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.events.JajukEvent;
-import org.jajuk.events.JajukEvents;
-import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.log.Log;
 
@@ -34,7 +30,7 @@ import org.jajuk.util.log.Log;
  * <code>CTRL + SHIFT + RIGHT ARROW</code>.
  */
 public class NextAlbumAction extends JajukAction {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -59,12 +55,6 @@ public class NextAlbumAction extends JajukAction {
             QueueModel.playNextAlbum();
           } catch (Exception e) {
             Log.error(e);
-          }
-          if (Player.isPaused()) {
-            // player was paused, reset pause button
-            // when changing of track
-            Player.setPaused(false);
-            ObservationManager.notify(new JajukEvent(JajukEvents.PLAYER_RESUME));
           }
         }
       }
