@@ -433,6 +433,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
+    eventSubjectSet.add(JajukEvents.PLAYER_PLAY);
     eventSubjectSet.add(JajukEvents.PLAYER_PAUSE);
     eventSubjectSet.add(JajukEvents.PLAYER_RESUME);
     eventSubjectSet.add(JajukEvents.SPECIAL_MODE);
@@ -532,6 +533,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
           jsVolume.setEnabled(true);
           jbMute.addMouseWheelListener(CommandJPanel.this);
           jsVolume.addMouseWheelListener(CommandJPanel.this);
+        } else if (JajukEvents.PLAYER_PLAY.equals(subject)) {
+          jsVolume.setEnabled(true);
         } else if (JajukEvents.SPECIAL_MODE.equals(subject)) {
           if (ObservationManager.getDetail(event, Const.DETAIL_ORIGIN).equals(
               Const.DETAIL_SPECIAL_MODE_NORMAL)) {
