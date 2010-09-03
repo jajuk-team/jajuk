@@ -27,15 +27,12 @@ import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JTable;
-import javax.swing.TransferHandler;
 
 import org.jajuk.base.File;
-import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
 import org.jajuk.base.Playlist;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.views.PlaylistView;
-import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilFeatures;
@@ -45,65 +42,18 @@ import org.jajuk.util.log.Log;
  * DND handler for table.
  */
 
-public class PlaylistEditorTransferHandler extends TransferHandler {
+public class PlaylistEditorTransferHandler extends TableTransferHandler {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** DOCUMENT_ME. */
-  private final JTable jtable;
-
-  /** DOCUMENT_ME. */
-  private static int iSelectedRow = 0;
 
   /**
    * Constructor.
    * 
    * @param jtable DOCUMENT_ME
    */
-  public PlaylistEditorTransferHandler(JTable jtable) {
-    super();
-
-    this.jtable = jtable;
-  }
-
-  /**
-   * Called when dragging.
-   * 
-   * @param c DOCUMENT_ME
-   * 
-   * @return the transferable
-   */
-  @Override
-  protected Transferable createTransferable(JComponent c) {
-    // make sure to remove others selected rows (can occur during the drag)
-    jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
-    if (jtable instanceof JajukTable) {// sorting only for jajuk table
-      iSelectedRow = ((JajukTable) jtable).convertRowIndexToModel(iSelectedRow);
-      // selected row in model
-    }
-    Object o = ((JajukTableModel) jtable.getModel()).getItemAt(iSelectedRow);
-    if (o == null) { // no? try to find a file for this id
-      o = FileManager.getInstance().getFileByID(
-          jtable.getModel().getValueAt(iSelectedRow, 0).toString());
-    }
-    if (o != null) {
-      return new TransferableTableRow(o);
-    }
-
-    return null;
-  }
-
-  /**
-   * return action type.
-   * 
-   * @param c DOCUMENT_ME
-   * 
-   * @return the source actions
-   */
-  @Override
-  public int getSourceActions(JComponent c) {
-    return COPY_OR_MOVE;
+  public PlaylistEditorTransferHandler(final JTable jtable) {
+    super(jtable);
   }
 
   /**

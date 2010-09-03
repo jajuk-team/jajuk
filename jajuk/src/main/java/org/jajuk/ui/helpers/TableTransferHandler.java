@@ -22,6 +22,10 @@
 package org.jajuk.ui.helpers;
 
 import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DragGestureEvent;
+import java.awt.dnd.DragGestureListener;
+import java.awt.dnd.DragSource;
 
 import javax.swing.JComponent;
 import javax.swing.JTable;
@@ -40,18 +44,33 @@ public class TableTransferHandler extends TransferHandler {
   private static final long serialVersionUID = 1L;
 
   /** DOCUMENT_ME. */
-  private final JTable jtable;
+  final JTable jtable;
 
   /** DOCUMENT_ME. */
-  private static int iSelectedRow = 0;
+  static int iSelectedRow = 0;
 
   /**
    * Constructor.
    * 
    * @param jtable DOCUMENT_ME
    */
-  public TableTransferHandler(JTable jtable) {
+  public TableTransferHandler(final JTable jtable) {
     this.jtable = jtable;
+    DragSource source = DragSource.getDefaultDragSource();
+    // Override the drag gesture recognizer as it doesn't work well when draging from a jtable :
+    // 1 select row 1
+    // 2 start draging row 2 : the drag gesture is not recognized because the row 2 is not yet selected
+    source.createDefaultDragGestureRecognizer(jtable, DnDConstants.ACTION_COPY,
+        new DragGestureListener() {
+
+          @Override
+          public void dragGestureRecognized(DragGestureEvent dge) {
+            Transferable transferable = createTransferable(jtable);
+
+            //and this is the magic right here
+            dge.startDrag(null, transferable);
+          }
+        });
   }
 
   /**
@@ -63,6 +82,7 @@ public class TableTransferHandler extends TransferHandler {
    */
   @Override
   protected Transferable createTransferable(JComponent c) {
+    iSelectedRow = jtable.getSelectionModel().getMinSelectionIndex();
     // make sure to remove others selected rows (can occur during the drag)
     jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
     if (jtable instanceof JajukTable) {// sorting only for jajuk table
@@ -77,7 +97,6 @@ public class TableTransferHandler extends TransferHandler {
     if (o != null) {
       return new TransferableTableRow(o);
     }
-
     return null;
   }
 
@@ -91,15 +110,6 @@ public class TableTransferHandler extends TransferHandler {
   @Override
   public int getSourceActions(JComponent c) {
     return COPY_OR_MOVE;
-  }
-
-  /**
-   * Sets the selected row.
-   * 
-   * @param selectedRow the new selected row
-   */
-  public static void setSelectedRow(int selectedRow) {
-    iSelectedRow = selectedRow;
   }
 
 }

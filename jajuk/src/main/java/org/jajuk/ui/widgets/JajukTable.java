@@ -55,7 +55,6 @@ import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukCellRenderer;
 import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.helpers.JajukTableModel;
-import org.jajuk.ui.helpers.TableTransferHandler;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.views.IView;
 import org.jajuk.util.Conf;
@@ -112,8 +111,6 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     @Override
     public void handlePopup(MouseEvent e) {
       int iSelectedRow = rowAtPoint(e.getPoint());
-      // Store real row index
-      TableTransferHandler.setSelectedRow(iSelectedRow);
       // right click on a selected node set if none or 1 node is
       // selected, a right click on another node
       // select it if more than 1, we keep selection and display a
@@ -129,9 +126,6 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     @Override
     public void handleAction(final MouseEvent e) {
       command.launch(e.getClickCount());
-      int iSelectedRow = rowAtPoint(e.getPoint());
-      // Store real row index for drag and drop
-      TableTransferHandler.setSelectedRow(iSelectedRow);
     }
   };
 
