@@ -32,7 +32,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 /**
  * Transferable table row ( for DND ).
  */
-public class TransferableTableRow extends DefaultMutableTreeNode implements Transferable {
+public class TransferableTableRows extends DefaultMutableTreeNode implements Transferable {
   
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
@@ -46,7 +46,7 @@ public class TransferableTableRow extends DefaultMutableTreeNode implements Tran
    * 
    * @param oData DOCUMENT_ME
    */
-  public TransferableTableRow(Object oData) {
+  public TransferableTableRows(Object oData) {
     super(oData);
   }
 

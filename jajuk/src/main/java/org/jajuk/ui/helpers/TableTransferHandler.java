@@ -28,10 +28,8 @@ import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
 
 import javax.swing.JComponent;
-import javax.swing.JTable;
 import javax.swing.TransferHandler;
 
-import org.jajuk.base.FileManager;
 import org.jajuk.ui.widgets.JajukTable;
 
 /**
@@ -44,17 +42,14 @@ public class TableTransferHandler extends TransferHandler {
   private static final long serialVersionUID = 1L;
 
   /** DOCUMENT_ME. */
-  final JTable jtable;
-
-  /** DOCUMENT_ME. */
-  static int iSelectedRow = 0;
+  final JajukTable jtable;
 
   /**
-   * Constructor.
-   * 
-   * @param jtable DOCUMENT_ME
-   */
-  public TableTransferHandler(final JTable jtable) {
+  * Constructor.
+  * 
+  * @param jtable DOCUMENT_ME
+  */
+  public TableTransferHandler(final JajukTable jtable) {
     this.jtable = jtable;
     DragSource source = DragSource.getDefaultDragSource();
     // Override the drag gesture recognizer as it doesn't work well when draging from a jtable :
@@ -69,6 +64,7 @@ public class TableTransferHandler extends TransferHandler {
 
             //and this is the magic right here
             dge.startDrag(null, transferable);
+
           }
         });
   }
@@ -82,22 +78,7 @@ public class TableTransferHandler extends TransferHandler {
    */
   @Override
   protected Transferable createTransferable(JComponent c) {
-    iSelectedRow = jtable.getSelectionModel().getMinSelectionIndex();
-    // make sure to remove others selected rows (can occur during the drag)
-    jtable.getSelectionModel().setSelectionInterval(iSelectedRow, iSelectedRow);
-    if (jtable instanceof JajukTable) {// sorting only for jajuk table
-      // selected row in model
-      iSelectedRow = ((JajukTable) jtable).convertRowIndexToModel(iSelectedRow);
-    }
-    Object o = ((JajukTableModel) jtable.getModel()).getItemAt(iSelectedRow);
-    if (o == null) { // no? try to find a file for this id
-      o = FileManager.getInstance().getFileByID(
-          jtable.getModel().getValueAt(iSelectedRow, 0).toString());
-    }
-    if (o != null) {
-      return new TransferableTableRow(o);
-    }
-    return null;
+    return new TransferableTableRows(jtable.getSelection());
   }
 
   /**

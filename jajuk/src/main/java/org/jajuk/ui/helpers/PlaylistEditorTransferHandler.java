@@ -26,13 +26,12 @@ import java.awt.datatransfer.Transferable;
 import java.util.List;
 
 import javax.swing.JComponent;
-import javax.swing.JTable;
 
 import org.jajuk.base.File;
-import org.jajuk.base.Item;
 import org.jajuk.base.Playlist;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.views.PlaylistView;
+import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilFeatures;
@@ -52,7 +51,7 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
    * 
    * @param jtable DOCUMENT_ME
    */
-  public PlaylistEditorTransferHandler(final JTable jtable) {
+  public PlaylistEditorTransferHandler(final JajukTable jtable) {
     super(jtable);
   }
 
@@ -64,6 +63,7 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
    * 
    * @return true, if import data
    */
+  @SuppressWarnings("unchecked")
   @Override
   public boolean importData(JComponent c, Transferable t) {
     try {
@@ -79,9 +79,9 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
         Object oData = null;
         DataFlavor flavor = t.getTransferDataFlavors()[0];
         if (flavor.getHumanPresentableName().equals(
-            TransferableTableRow.ROW_FLAVOR.getHumanPresentableName())) {
-          TransferableTableRow ttr = (TransferableTableRow) t
-              .getTransferData(TransferableTableRow.ROW_FLAVOR);
+            TransferableTableRows.ROW_FLAVOR.getHumanPresentableName())) {
+          TransferableTableRows ttr = (TransferableTableRows) t
+              .getTransferData(TransferableTableRows.ROW_FLAVOR);
           oData = ttr.getUserObject();
         } else if (flavor.getHumanPresentableName().equals(
             TransferableTreeNode.NODE_FLAVOR.getHumanPresentableName())) {
@@ -94,7 +94,7 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
               .getTransferData(TransferableAlbum.ALBUM_FLAVOR);
           oData = ttn.getUserObject();
         }
-        List<File> alSelectedFiles = UtilFeatures.getPlayableFiles((Item) oData);
+        List<File> alSelectedFiles = (List<File>) oData;
         // queue case
         if (plf.getType() == Playlist.Type.QUEUE) {
           QueueModel.push(UtilFeatures

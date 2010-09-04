@@ -656,4 +656,15 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     }
     super.updateUI();
   }
+
+  /**
+   * Set selection availability (row/columns/cells) for this table
+   * @param b whether the selection is available or not
+   */
+  public void setSelectionAllowed(boolean b) {
+    setRowSelectionAllowed(b);
+    setColumnSelectionAllowed(b);
+    setCellSelectionEnabled(b);
+  }
+
 }
