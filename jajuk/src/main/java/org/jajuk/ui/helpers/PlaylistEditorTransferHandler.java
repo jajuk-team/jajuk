@@ -78,6 +78,9 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
           comp = (JComponent) comp.getParent();
         }
         PlaylistView view = ((PlaylistView) comp);
+        JajukTable jtable = view.getTable();
+        // fetch the drop location
+        int row = jtable.getDropRow();
         Playlist plf = view.getCurrentPlaylist();
         Object oData = null;
         DataFlavor flavor = t.getTransferDataFlavors()[0];
@@ -106,18 +109,26 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
           Messages.showErrorMessage(je.getCode());
           return false;
         }
-        
+
         // If we get zero playing files, just leave, do not display a dummy message in Queue code:
-        if (alSelectedFiles.size() == 0){
+        if (alSelectedFiles.size() == 0) {
           return false;
         }
-        
+
         // queue case
         if (plf.getType() == Playlist.Type.QUEUE) {
-          QueueModel.push(UtilFeatures
-              .createStackItems(UtilFeatures.applyPlayOption(alSelectedFiles), Conf
-                  .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
-              .getBoolean(Const.CONF_OPTIONS_DEFAULT_ACTION_DROP));
+          // If user selected "push on drop" option or if none item in list (then drop row = -1), 
+          // just push the selection
+          if (Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_DROP) || row < 0) {
+            QueueModel.push(UtilFeatures.createStackItems(UtilFeatures
+                .applyPlayOption(alSelectedFiles), Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL),
+                true), true);
+          } else {
+            // Insert the selection at drop target
+            QueueModel.insert(UtilFeatures.createStackItems(UtilFeatures
+                .applyPlayOption(alSelectedFiles), Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL),
+                true), row);
+          }
         }
         // normal or new playlist case
         else if (plf.getType() == Playlist.Type.NORMAL || plf.getType() == Playlist.Type.NEW

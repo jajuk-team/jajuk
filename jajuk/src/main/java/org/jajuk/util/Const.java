@@ -668,7 +668,7 @@ public interface Const {
   String CONF_OPTIONS_PUSH_ON_CLICK = "jajuk.options.default_action_click";
 
   /** Default action (play or push) when dropping on an item. */
-  String CONF_OPTIONS_DEFAULT_ACTION_DROP = "jajuk.options.default_action_drop";
+  String CONF_OPTIONS_PUSH_ON_DROP = "jajuk.options.default_action_drop";
 
   /** Table / tree sync option prefix. */
   String CONF_SYNC_TABLE_TREE = "jajuk.sync_table_tree";

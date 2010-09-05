@@ -613,7 +613,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
         .isSelected()));
     Conf.setProperty(Const.CONF_OPTIONS_PUSH_ON_CLICK, Boolean.toString(jcbDefaultActionClick
         .isSelected()));
-    Conf.setProperty(Const.CONF_OPTIONS_DEFAULT_ACTION_DROP, Boolean.toString(jcbDefaultActionDrop
+    Conf.setProperty(Const.CONF_OPTIONS_PUSH_ON_DROP, Boolean.toString(jcbDefaultActionDrop
         .isSelected()));
     Conf.setProperty(Const.CONF_OPTIONS_HOTKEYS, Boolean.toString(jcbHotkeys.isSelected()));
     Conf.setProperty(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE, Boolean.toString(jcbAudioScrobbler.isSelected()));
@@ -1787,7 +1787,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     // options
     jcbDisplayUnmounted.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
     jcbDefaultActionClick.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
-    jcbDefaultActionDrop.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_DEFAULT_ACTION_DROP));
+    jcbDefaultActionDrop.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_DROP));
     jcbHotkeys.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HOTKEYS));
 
     String rightLanguageDesc = LocaleManager.getDescForLocale(Conf

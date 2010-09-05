@@ -130,6 +130,16 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   };
 
   /**
+   * Return drop row 
+   * @return drop row
+   */
+  @SuppressWarnings("cast")
+  public int getDropRow() {
+    JTable.DropLocation dl = (JTable.DropLocation) getDropLocation();
+    return dl.getRow();
+  }
+
+  /**
    * Constructor.
    * 
    * @param model : model to use

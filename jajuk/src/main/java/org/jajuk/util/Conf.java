@@ -192,7 +192,7 @@ public final class Conf implements Const {
     defaults.put(CONF_CONFIRMATIONS_REFACTOR_FILES, TRUE);
     defaults.put(CONF_OPTIONS_HIDE_UNMOUNTED, FALSE);
     defaults.put(CONF_OPTIONS_PUSH_ON_CLICK, FALSE);
-    defaults.put(CONF_OPTIONS_DEFAULT_ACTION_DROP, TRUE);
+    defaults.put(CONF_OPTIONS_PUSH_ON_DROP, FALSE);
     defaults.put(CONF_OPTIONS_NOVELTIES_AGE, "30");
     defaults.put(CONF_OPTIONS_VISIBLE_PLANNED, "10");
     defaults.put(CONF_BUFFER_SIZE, "16000");

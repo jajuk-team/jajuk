@@ -298,6 +298,14 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
           .getPlaylist());
     }
   }
+  
+  /**
+   * Return the editor table
+   * @return the editor table
+   */
+  public JajukTable getTable(){
+    return this.editorTable;
+  }
 
   /**
    * Inits the editor panel. DOCUMENT_ME
