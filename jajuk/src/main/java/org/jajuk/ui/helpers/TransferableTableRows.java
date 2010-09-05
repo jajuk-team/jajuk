@@ -26,14 +26,15 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
+import org.jajuk.base.Item;
 
 /**
  * Transferable table row ( for DND ).
  */
-public class TransferableTableRows extends DefaultMutableTreeNode implements Transferable {
-  
+public class TransferableTableRows implements Transferable {
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -42,12 +43,17 @@ public class TransferableTableRows extends DefaultMutableTreeNode implements Tra
       "Row");
 
   /**
+   * Transferable model
+   */
+  private List<Item> items;
+
+  /**
    * Instantiates a new transferable table row.
    * 
    * @param oData DOCUMENT_ME
    */
-  public TransferableTableRows(Object oData) {
-    super(oData);
+  public TransferableTableRows(List<Item> items) {
+    this.items = items;
   }
 
   /** DOCUMENT_ME. */
@@ -81,5 +87,12 @@ public class TransferableTableRows extends DefaultMutableTreeNode implements Tra
       return this;
     }
     throw new UnsupportedFlavorException(flavor);
+  }
+
+  /**
+   * @return transferable model
+   */
+  public Object getUserObject() {
+    return items;
   }
 }

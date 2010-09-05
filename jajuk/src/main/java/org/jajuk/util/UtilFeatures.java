@@ -20,17 +20,19 @@
  */
 package org.jajuk.util;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
+import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.LogicalItem;
 import org.jajuk.base.Playlist;
@@ -43,6 +45,7 @@ import org.jajuk.events.Observer;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
+import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -185,12 +188,11 @@ public final class UtilFeatures {
     for (Item item : selection) {
       // computes logical selection if any
       if (item instanceof Track) {
-        files.add(((Track) item).getPlayeableFile(Conf
-            .getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)));
+        files.add(((Track) item).getBestFile(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)));
       } else if (item instanceof LogicalItem) {
         List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item, true);
         for (Track track : tracks) {
-          files.add(track.getPlayeableFile(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)));
+          files.add(track.getBestFile(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)));
         }
       }
       // computes physical selection if any
@@ -254,7 +256,7 @@ public final class UtilFeatures {
    * 
    * @return whether the given filename is a standard cover or not
    */
-  public static boolean isStandardCover(final File file) {
+  public static boolean isStandardCover(final java.io.File file) {
     boolean defaultCover = false;
     String sFileName = file.getName();
 
@@ -443,5 +445,48 @@ public final class UtilFeatures {
       Collections.shuffle(list, UtilSystem.getRandom());
       newFirst = list.get(0);
     }
+  }
+
+  /**
+   * Return a flat list of files for given input list without duplicates nor sorting
+   * @return a flat list of files for given input list
+   * @throws JajukException if a playlist cannot be read
+   */
+  public static List<File> getFilesForItems(List<Item> in) throws JajukException {
+    // We use a set to drop duplicates, for ie if user select both a directory and its files
+    Set<File> out = new LinkedHashSet<File>(in.size());
+    for (Item item : in) {
+      if (item instanceof File) {
+        out.add((File) item);
+      } else if (item instanceof Directory) {
+        Directory dir = (Directory) item;
+        out.addAll(dir.getFilesRecursively());
+      } else if (item instanceof Directory) {
+        Directory dir = (Directory) item;
+        out.addAll(dir.getFilesRecursively());
+      } else if (item instanceof Device) {
+        Device device = (Device) item;
+        out.addAll(device.getFilesRecursively());
+      } else if (item instanceof Playlist) {
+        Playlist playlist = (Playlist) item;
+        out.addAll(playlist.getFiles());
+      } else if (item instanceof LogicalItem) {
+        LogicalItem logical = (LogicalItem) item;
+        List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(logical, false);
+        for (Track track : tracks) {
+          // Only keep available tracks, show a warning if no available file
+          File file = track.getBestFile(true);
+          if (file == null) {
+            InformationJPanel.getInstance().setMessage(
+                Messages.getString("Error.010") + " : " + track.getName(),
+                InformationJPanel.MessageType.WARNING);
+          } else {
+            out.add(track.getBestFile(true));
+          }
+
+        }
+      }
+    }
+    return new ArrayList<File>(out);
   }
 }

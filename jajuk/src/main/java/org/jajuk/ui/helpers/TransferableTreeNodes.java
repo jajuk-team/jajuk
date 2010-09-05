@@ -26,14 +26,15 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
+import org.jajuk.base.Item;
 
 /**
- * Transferable tree node ( for DND ).
+ * Transferable tree nodes ( for DND ).
  */
-public abstract class TransferableTreeNode extends DefaultMutableTreeNode implements Transferable {
-  
+public class TransferableTreeNodes implements Transferable {
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -42,13 +43,18 @@ public abstract class TransferableTreeNode extends DefaultMutableTreeNode implem
       DataFlavor.javaJVMLocalObjectMimeType, "Node");
 
   /**
+  * Transferable model
+  */
+  private List<Item> items;
+
+  /**
    * Instantiates a new transferable tree node.
    * 
    * @param userObject an Object provided by the user that constitutes
      *                   the node's data
    */
-  public TransferableTreeNode(Object userObject) {
-    super(userObject);
+  public TransferableTreeNodes(List<Item> items) {
+    this.items = items;
   }
 
   /** DOCUMENT_ME. */
@@ -83,5 +89,12 @@ public abstract class TransferableTreeNode extends DefaultMutableTreeNode implem
     } else {
       throw new UnsupportedFlavorException(flavor);
     }
+  }
+
+  /**
+   * @return the tranferable data
+   */
+  public Object getUserObject() {
+    return items;
   }
 }

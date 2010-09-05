@@ -460,7 +460,7 @@ public final class FileManager extends ItemManager {
       if (alEligibleFiles.size() > Const.NB_TRACKS_ON_ACTION) {
         break;
       }
-      File file = track.getPlayeableFile(bHideUnmounted);
+      File file = track.getBestFile(bHideUnmounted);
       // try to get a mounted file
       // (can return null)
       if (file == null) {// none mounted file, take first file we find
@@ -596,7 +596,7 @@ public final class FileManager extends ItemManager {
     // filter banned tracks
     CollectionUtils.filter(tracks, new JajukPredicates.BannedTrackPredicate());
     for (Track track : tracks) {
-      File file = track.getPlayeableFile(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
+      File file = track.getBestFile(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
       if (file != null) {
         alEligibleFiles.add(file);
       }

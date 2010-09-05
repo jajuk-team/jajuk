@@ -591,11 +591,11 @@ public class Tag {
       InformationJPanel.getInstance().setMessage(
           Messages.getString("PropertiesWizard.11") + " "
               + UtilString.getLimitedString(fio.getParentFile().getAbsolutePath(), 60)
-              + File.separatorChar + fio.getName(), InformationJPanel.INFORMATIVE);
+              + File.separatorChar + fio.getName(), InformationJPanel.MessageType.INFORMATIVE);
 
     } catch (Exception e) {
       // reset information panel to avoid leaving with a "writting xxx message"
-      InformationJPanel.getInstance().setMessage("", InformationJPanel.INFORMATIVE);
+      InformationJPanel.getInstance().setMessage("", InformationJPanel.MessageType.INFORMATIVE);
       throw new JajukException(104, fio.getName() + "\n" + e.getMessage(), e);
     }
   }

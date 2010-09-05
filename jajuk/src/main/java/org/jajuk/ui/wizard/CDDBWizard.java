@@ -251,7 +251,8 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
             + UtilString.getLimitedString((foundAlbum.getArtist() + " / " + foundAlbum.getAlbum()),
                 40));
         if (foundAlbum.isExactMatch()) {
-          InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.17"), 0);
+          InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.17"),
+              InformationJPanel.MessageType.INFORMATIVE);
         }
       }
       return foundAlbums.length;
@@ -303,7 +304,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
         }
       }
       InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
-          InformationJPanel.INFORMATIVE);
+          InformationJPanel.MessageType.INFORMATIVE);
       // Force files resorting to ensure the sorting consistency, indeed,
       // files are sorted by name *and* track order and we need to force a files
       // resort after an order change (this is already done in case of file name

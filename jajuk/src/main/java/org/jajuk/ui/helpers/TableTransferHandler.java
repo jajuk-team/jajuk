@@ -52,9 +52,9 @@ public class TableTransferHandler extends TransferHandler {
   public TableTransferHandler(final JajukTable jtable) {
     this.jtable = jtable;
     DragSource source = DragSource.getDefaultDragSource();
-    // Override the drag gesture recognizer as it doesn't work well when draging from a jtable :
+    // Override the drag gesture recognizer as it doesn't work well when dragging from a jtable :
     // 1 select row 1
-    // 2 start draging row 2 : the drag gesture is not recognized because the row 2 is not yet selected
+    // 2 start dragging row 2 : the drag gesture is not recognized because the row 2 is not yet selected
     source.createDefaultDragGestureRecognizer(jtable, DnDConstants.ACTION_COPY,
         new DragGestureListener() {
 

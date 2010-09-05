@@ -521,7 +521,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
         Conf.setDefaultProperties();
         updateSelection();// update UI
         InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.110"),
-            InformationJPanel.INFORMATIVE);
+            InformationJPanel.MessageType.INFORMATIVE);
         applyParameters();
         Messages.showInfoMessage(Messages.getString("ParameterView.198"));
       }
@@ -886,7 +886,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
     // display a message
     InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.109"),
-        InformationJPanel.INFORMATIVE);
+        InformationJPanel.MessageType.INFORMATIVE);
   }
 
   /*

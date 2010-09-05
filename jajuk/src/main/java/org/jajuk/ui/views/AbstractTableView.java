@@ -662,7 +662,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       // user message
       InformationJPanel.getInstance().setMessage(
           Messages.getString("PropertiesWizard.8") + ": " + Messages.getHumanPropertyName(sKey),
-          InformationJPanel.INFORMATIVE);
+          InformationJPanel.MessageType.INFORMATIVE);
       // Require refresh of all tables
       Properties properties = new Properties();
       properties.put(Const.DETAIL_ORIGIN, AbstractTableView.this);

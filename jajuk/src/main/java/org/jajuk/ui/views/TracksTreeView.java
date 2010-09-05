@@ -22,10 +22,10 @@
 package org.jajuk.ui.views;
 
 import java.awt.Component;
-import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
@@ -70,7 +70,7 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.JajukMouseAdapter;
-import org.jajuk.ui.helpers.TransferableTreeNode;
+import org.jajuk.ui.helpers.TransferableTreeNodes;
 import org.jajuk.ui.helpers.TreeRootElement;
 import org.jajuk.ui.helpers.TreeTransferHandler;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
@@ -176,7 +176,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     jtree.addTreeExpansionListener(new TracksTreeExpansionListener());
     jtree.setAutoscrolls(true);
     // DND support
-    new TreeTransferHandler(jtree, DnDConstants.ACTION_COPY_OR_MOVE, true);
+    jtree.setTransferHandler(new TreeTransferHandler(jtree));
+    jtree.setDragEnabled(true);
+
     jspTree = new JScrollPane(jtree);
     jspTree.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
     setLayout(new MigLayout("ins 3", "[][grow][][]", "[][grow]"));
@@ -681,10 +683,10 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
           List<Track> allTracks = TrackManager.getInstance().getTracks();
           selectedRecursively.addAll(allTracks);
           break;
-        } else if (o instanceof TransferableTreeNode) {
+        } else if (o instanceof TransferableTreeNodes) {
           // this is a standard node except "by date"
           // discovery nodes
-          alSelected.add((Item) ((TransferableTreeNode) o).getUserObject());
+          alSelected.add((Item) ((DefaultMutableTreeNode) o).getUserObject());
         }
 
         // return all child nodes recursively
@@ -732,7 +734,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         Object o = path.getLastPathComponent();
         if (o instanceof TrackNode) {
           Track track = ((TrackNode) o).getTrack();
-          File file = track.getPlayeableFile(false);
+          File file = track.getBestFile(false);
           if (file != null) {
             try {
               QueueModel.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL),
@@ -948,7 +950,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 /**
  * Genre node
  */
-class GenreNode extends TransferableTreeNode {
+class GenreNode extends DefaultMutableTreeNode {
 
   private static final long serialVersionUID = 1L;
 
@@ -980,7 +982,7 @@ class GenreNode extends TransferableTreeNode {
 /**
  * Artist node
  */
-class ArtistNode extends TransferableTreeNode {
+class ArtistNode extends DefaultMutableTreeNode {
 
   /**
    * 
@@ -1015,7 +1017,7 @@ class ArtistNode extends TransferableTreeNode {
 /**
  * Year node
  */
-class YearNode extends TransferableTreeNode {
+class YearNode extends DefaultMutableTreeNode {
 
   /**
    * 
@@ -1054,7 +1056,7 @@ class YearNode extends TransferableTreeNode {
 /**
  * Album node
  */
-class AlbumNode extends TransferableTreeNode {
+class AlbumNode extends DefaultMutableTreeNode {
 
   private static final long serialVersionUID = 1L;
 
@@ -1086,7 +1088,7 @@ class AlbumNode extends TransferableTreeNode {
 /**
  * Track node
  */
-class TrackNode extends TransferableTreeNode {
+class TrackNode extends DefaultMutableTreeNode {
 
   private static final long serialVersionUID = 1L;
 
@@ -1126,6 +1128,24 @@ class DiscoveryDateNode extends DefaultMutableTreeNode {
    */
   public DiscoveryDateNode(String string) {
     super(string);
+  }
+
+  /**
+   * We have to override this method for drag and drop
+   * whish waits for an item. A period is not an item. 
+   * 
+   * @see DefaultMutableTreeNode.getUserObject() 
+   */
+  @SuppressWarnings("unchecked")
+  @Override
+  public Object getUserObject() {
+    List<Item> out = new ArrayList<Item>(10);
+    Enumeration<DefaultMutableTreeNode> childrens = children();
+    while (childrens.hasMoreElements()) {
+      DefaultMutableTreeNode node = childrens.nextElement();
+      out.add((Item) node.getUserObject());
+    }
+    return out;
   }
 
   private static final long serialVersionUID = 7123195836014138019L;

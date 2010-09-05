@@ -223,7 +223,8 @@ public class RefactorAction {
       }
 
       InformationJPanel.getInstance().setMessage(
-          Messages.getString("RefactorWizard.0") + sPathname, 0);
+          Messages.getString("RefactorWizard.0") + sPathname,
+          InformationJPanel.MessageType.INFORMATIVE);
     }
     // Refresh and cleanup required directories
     for (final Directory dir : toBeRefreshed) {
@@ -239,7 +240,7 @@ public class RefactorAction {
       Messages.showDetailedErrorMessage(147, "", sErrors);
     } else {
       InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
-          InformationJPanel.INFORMATIVE);
+          InformationJPanel.MessageType.INFORMATIVE);
     }
 
   }

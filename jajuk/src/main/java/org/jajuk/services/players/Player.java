@@ -133,7 +133,7 @@ public final class Player {
           bWaitingLine = true;
           Log.debug("Line occupied, waiting");
           InformationJPanel.getInstance().setMessage(Messages.getString(PLAYER_0),
-              InformationJPanel.WARNING);
+              InformationJPanel.MessageType.WARNING);
           // wait for the line
           QueueModel.class.wait(Const.WAIT_AFTER_ERROR);
         }
@@ -188,7 +188,7 @@ public final class Player {
           bWaitingLine = true;
           Log.debug("Line occupied, waiting");
           InformationJPanel.getInstance().setMessage(Messages.getString(PLAYER_0),
-              InformationJPanel.WARNING);
+              InformationJPanel.MessageType.WARNING);
           try {
             // wait for the line
             QueueModel.class.wait(Const.WAIT_AFTER_ERROR);

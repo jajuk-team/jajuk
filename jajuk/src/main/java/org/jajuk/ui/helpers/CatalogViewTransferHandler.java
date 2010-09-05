@@ -27,6 +27,7 @@ import java.awt.datatransfer.Transferable;
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
+import org.jajuk.base.Album;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 
 /**
@@ -61,7 +62,7 @@ public class CatalogViewTransferHandler extends TransferHandler {
   protected Transferable createTransferable(JComponent c) {
     Object o = item.getItem();
     if (o != null) {
-      return new TransferableAlbum(o);
+      return new TransferableAlbum((Album) o);
     }
     return null;
   }

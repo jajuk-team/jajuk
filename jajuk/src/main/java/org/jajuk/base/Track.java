@@ -63,7 +63,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /** Track type. */
   private final Type type;
-  
+
   /** Album Artist */
   private AlbumArtist albumArtist;
 
@@ -84,8 +84,8 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @param lOrder DOCUMENT_ME
    * @param lDiscNumber DOCUMENT_ME
    */
-  Track(String sId, String sName, Album album, Genre genre, Artist artist, long length,
-      Year year, long lOrder, Type type, long lDiscNumber) {
+  Track(String sId, String sName, Album album, Genre genre, Artist artist, long length, Year year,
+      long lOrder, Type type, long lDiscNumber) {
     super(sId, sName);
     // album
     this.album = album;
@@ -250,17 +250,17 @@ public class Track extends LogicalItem implements Comparable<Track> {
   /**
    * Gets the playeable file.
    * 
-   * @param bHideUnmounted Do we return unmounted files
+   * @param bIgnoreUnmounted Do we return unmounted files
    * 
    * @return best file to play for this track or null if none available
    */
-  public File getPlayeableFile(boolean bHideUnmounted) {
+  public File getBestFile(boolean bIgnoreUnmounted) {
     File fileOut = null;
     final List<File> alMountedFiles = new ArrayList<File>(2);
 
     // firstly, filter mounted files if needed
     for (final File file : alFiles) {
-      if (!bHideUnmounted || file.isReady()) {
+      if (!bIgnoreUnmounted || file.isReady()) {
         alMountedFiles.add(file);
       }
     }
@@ -327,7 +327,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   public long getDiscNumber() {
     return getLongValue(Const.XML_TRACK_DISC_NUMBER);
   }
-  
+
   /**
    * Get album artist.
    * 
@@ -362,6 +362,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
       return artist.getName2();
     }
   }
+
   /**
    * Gets the year.
    * 
@@ -557,7 +558,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   public void setComment(String sComment) {
     setProperty(Const.XML_TRACK_COMMENT, sComment);
   }
-  
+
   /**
    * Sets the album artist
    * 
@@ -584,7 +585,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @return whether this item should be hidden with hide option
    */
   public boolean shouldBeHidden() {
-    if (getPlayeableFile(true) != null || !Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
+    if (getBestFile(true) != null || !Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
       return false;
     }
     return true;
@@ -630,7 +631,8 @@ public class Track extends LogicalItem implements Comparable<Track> {
       }
       return null;
     } else if (Const.XML_ALBUM_ARTIST.equals(sKey)) {
-      AlbumArtist albumArtist = AlbumArtistManager.getInstance().getAlbumArtistByID(getStringValue(sKey));
+      AlbumArtist albumArtist = AlbumArtistManager.getInstance().getAlbumArtistByID(
+          getStringValue(sKey));
       if (albumArtist != null) { // can be null after a fresh change
         return albumArtist.getName2();
       }

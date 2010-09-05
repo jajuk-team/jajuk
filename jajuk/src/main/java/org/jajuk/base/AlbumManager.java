@@ -346,7 +346,7 @@ public final class AlbumManager extends ItemManager implements Observer {
     ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
     while (it.hasNext()) {
       Track track = it.next();
-      if (track.getPlayeableFile(bHideUnmounted) != null) {
+      if (track.getBestFile(bHideUnmounted) != null) {
         cache.put(track.getAlbum(), track.getDiscoveryDate());
       }
     }
@@ -382,7 +382,7 @@ public final class AlbumManager extends ItemManager implements Observer {
     ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
     while (it.hasNext()) {
       Track track = it.next();
-      if (track.getPlayeableFile(bHideUnmounted) != null) {
+      if (track.getBestFile(bHideUnmounted) != null) {
         float newHits = 0f;
         Integer nb = cacheNb.get(track.getAlbum());
         if (nb == null) {

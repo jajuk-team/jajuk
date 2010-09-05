@@ -560,7 +560,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
           final File file = new File(sFilePath);
           UtilSystem.copy(fSource, file);
           InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
-              InformationJPanel.INFORMATIVE);
+              InformationJPanel.MessageType.INFORMATIVE);
           final Cover cover2 = new Cover(file, CoverType.SELECTED_COVER);
           if (!alCovers.contains(cover2)) {
             alCovers.add(cover2);
@@ -644,7 +644,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
           try {
             UtilSystem.copy(cover.getFile(), fNew);
             InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
-                InformationJPanel.INFORMATIVE);
+                InformationJPanel.MessageType.INFORMATIVE);
             // Reset cached cover
             org.jajuk.base.File fCurrent = fileReference;
             if (fCurrent == null) {
@@ -694,7 +694,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         ThumbnailManager.cleanThumbs(fCurrent.getTrack().getAlbum());
         refreshThumbs(cover);
         InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
-            InformationJPanel.INFORMATIVE);
+            InformationJPanel.MessageType.INFORMATIVE);
 
         // set default
         fCurrent.getTrack().getAlbum().setProperty(XML_ALBUM_COVER, destFile.getAbsolutePath());
@@ -729,7 +729,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         // fCurrent.getTrack().getAlbum().setProperty(XML_ALBUM_COVER, null);
         refreshThumbs(cover);
         InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
-            InformationJPanel.INFORMATIVE);
+            InformationJPanel.MessageType.INFORMATIVE);
       } catch (final IOException ex) {
         Log.error(24, ex);
         Messages.showErrorMessage(24);
@@ -743,7 +743,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     } else {
       refreshThumbs(cover);
       InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
-          InformationJPanel.INFORMATIVE);
+          InformationJPanel.MessageType.INFORMATIVE);
     }
     ObservationManager.notify(new JajukEvent(JajukEvents.COVER_DEFAULT_CHANGED));
     // then make it the default cover for this album
@@ -1515,7 +1515,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
           if (CoverView.iErrorCounter == Const.STOP_TO_SEARCH) {
             Log.warn("Too many connection fails," + " stop to search for covers online");
             InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),
-                InformationJPanel.WARNING);
+                InformationJPanel.MessageType.WARNING);
           }
         } catch (final Exception e) {
           Log.error(e);

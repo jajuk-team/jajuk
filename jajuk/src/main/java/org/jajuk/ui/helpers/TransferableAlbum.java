@@ -27,13 +27,14 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.Arrays;
 
-import javax.swing.tree.DefaultMutableTreeNode;
+import org.jajuk.base.Album;
+import org.jajuk.base.TrackManager;
 
 /**
  * Transferable album ( for DND ).
  */
-public class TransferableAlbum extends DefaultMutableTreeNode implements Transferable {
-  
+public class TransferableAlbum implements Transferable {
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -41,13 +42,15 @@ public class TransferableAlbum extends DefaultMutableTreeNode implements Transfe
   public static final DataFlavor ALBUM_FLAVOR = new DataFlavor(
       DataFlavor.javaJVMLocalObjectMimeType, "Album");
 
+  private Album album;
+
   /**
    * Instantiates a new transferable album.
    * 
    * @param oData DOCUMENT_ME
    */
-  public TransferableAlbum(Object oData) {
-    super(oData);
+  public TransferableAlbum(Album album) {
+    this.album = album;
   }
 
   /** DOCUMENT_ME. */
@@ -81,5 +84,12 @@ public class TransferableAlbum extends DefaultMutableTreeNode implements Transfe
       return this;
     }
     throw new UnsupportedFlavorException(flavor);
+  }
+
+  /**
+   * @return associated album
+   */
+  public Object getUserObject() {
+    return TrackManager.getInstance().getAssociatedTracks(this.album, true);
   }
 }

@@ -165,7 +165,8 @@ public class DeleteSelectionAction extends SelectionAction {
             }
           }
           UtilGUI.stopWaiting();
-          InformationJPanel.getInstance().setMessage(Messages.getString("ActionDelete.0"), 1);
+          InformationJPanel.getInstance().setMessage(Messages.getString("ActionDelete.0"),
+              InformationJPanel.MessageType.ERROR);
           if (rejFiles.size() > 0) {
             String rejString = "";
             for (File f : rejFiles) {
@@ -251,7 +252,8 @@ public class DeleteSelectionAction extends SelectionAction {
             }
           }
           UtilGUI.stopWaiting();
-          InformationJPanel.getInstance().setMessage(Messages.getString("ActionDelete.1"), 1);
+          InformationJPanel.getInstance().setMessage(Messages.getString("ActionDelete.1"),
+              InformationJPanel.MessageType.ERROR);
 
           if (rejDirs.size() > 0) {
             String rejString = "";

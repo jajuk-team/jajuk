@@ -1093,7 +1093,7 @@ public final class TrackManager extends ItemManager {
     ReadOnlyIterator<Track> tracks = getTracksIterator();
     while (tracks.hasNext()) {
       Track track = tracks.next();
-      File playable = track.getPlayeableFile(hide);
+      File playable = track.getBestFile(hide);
       if (playable != null) {
         String sResu = track.getAny();
         if (sResu.toLowerCase(Locale.getDefault()).indexOf(

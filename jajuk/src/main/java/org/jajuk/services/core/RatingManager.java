@@ -184,7 +184,7 @@ public final class RatingManager extends Thread implements Observer {
       // Computes bestof
       FileManager.getInstance().refreshBestOfFiles();
       InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.252"),
-          InformationJPanel.INFORMATIVE);
+          InformationJPanel.MessageType.INFORMATIVE);
     }
     // Reset the manual part of the rating system : preferences
     else if (subject.equals(JajukEvents.PREFERENCES_RESET)) {
@@ -203,7 +203,7 @@ public final class RatingManager extends Thread implements Observer {
       // Computes bestof
       FileManager.getInstance().refreshBestOfFiles();
       InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.253"),
-          InformationJPanel.INFORMATIVE);
+          InformationJPanel.MessageType.INFORMATIVE);
     }
   }
 

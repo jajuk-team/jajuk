@@ -21,6 +21,7 @@
 package org.jajuk.ui.helpers;
 
 import javax.swing.SwingUtilities;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 
@@ -29,7 +30,7 @@ import javax.swing.tree.MutableTreeNode;
  * with many sub-branches this can reduce the number of nodes that are actually
  * created a lot.
  */
-public abstract class LazyLoadingTreeNode extends TransferableTreeNode {
+public abstract class LazyLoadingTreeNode extends DefaultMutableTreeNode {
   private static final long serialVersionUID = 1L;
 
   /**

@@ -759,7 +759,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
           try {
             plf.commit();
             InformationJPanel.getInstance().setMessage(
-                Messages.getString("AbstractPlaylistEditorView.22"), InformationJPanel.INFORMATIVE);
+                Messages.getString("AbstractPlaylistEditorView.22"), InformationJPanel.MessageType.INFORMATIVE);
           } catch (JajukException je) {
             Log.error(je);
             Messages.showErrorMessage(je.getCode());

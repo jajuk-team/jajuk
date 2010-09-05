@@ -20,6 +20,7 @@
  */
 package org.jajuk.ui.widgets;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -62,16 +63,9 @@ public final class InformationJPanel extends JXPanel implements Observer {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  // consts
-  /** Informative message type ( displayed in blue ) *. */
-
-  public static final int INFORMATIVE = 0;
-
-  /** Informative message type ( displayed in red )*. */
-  public static final int ERROR = 1;
-
-  /** Warning message type ( displayed in orange )*. */
-  public static final int WARNING = 2;
+  public static enum MessageType {
+    INFORMATIVE, ERROR, WARNING
+  }
 
   /** Self instance. */
   private static InformationJPanel ijp = new InformationJPanel();
@@ -114,7 +108,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
   String sMessage;
 
   /** Current message type. */
-  int iType = 0;
+  MessageType type = MessageType.INFORMATIVE;
 
   /** DOCUMENT_ME. */
   String sSelection;
@@ -136,7 +130,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
     jtbMessage.setMinimumSize(new Dimension(0, 0));
     // We use toolbar to display vertical separator lines
     jlMessage = new JLabel();
-    setMessage(Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE);
+    setMessage(Messages.getString("JajukWindow.18"), MessageType.INFORMATIVE);
     jtbMessage.add(jlMessage);
     jtbMessage.add(Box.createHorizontalGlue());
     jtbMessage.addSeparator();
@@ -227,14 +221,20 @@ public final class InformationJPanel extends JXPanel implements Observer {
    * @param iMessageType
    *          DOCUMENT_ME
    */
-  public void setMessage(final String sMessage, final int iMessageType) {
+  public void setMessage(final String sMessage, final MessageType messageType) {
     this.sMessage = sMessage;
-    this.iType = iMessageType;
+    this.type = messageType;
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         InformationJPanel.this.sMessage = sMessage;
         jlMessage.setText(sMessage);
         jlMessage.setToolTipText(sMessage);
+        //Use default look and feel color for informative
+        if (messageType == MessageType.ERROR) {
+          jlMessage.setForeground(Color.RED);
+        } else if (messageType == MessageType.WARNING) {
+          jlMessage.setForeground(Color.ORANGE);
+        }
       }
     });
   }
@@ -300,10 +300,10 @@ public final class InformationJPanel extends JXPanel implements Observer {
             File fCurrent = (File) o;
             if (detail != null) {
               setMessage(Messages.getErrorMessage(errorCode) + ": " + fCurrent.getAbsolutePath(),
-                  InformationJPanel.ERROR);
+                  InformationJPanel.MessageType.ERROR);
             } else {// default message
               setMessage(Messages.getString("Error.007") + fCurrent.getName(),
-                  InformationJPanel.ERROR);
+                  InformationJPanel.MessageType.ERROR);
             }
           } else if (o instanceof WebRadio) {
             WebRadio radio = (WebRadio) o;
@@ -311,10 +311,10 @@ public final class InformationJPanel extends JXPanel implements Observer {
             // display associated error code is given
             if (detail != null) {
               setMessage(Messages.getErrorMessage(errorCode) + ": " + radio.toString(),
-                  InformationJPanel.ERROR);
+                  InformationJPanel.MessageType.ERROR);
             } else {// default message
               setMessage(Messages.getString("Error.007") + radio.toString(),
-                  InformationJPanel.ERROR);
+                  InformationJPanel.MessageType.ERROR);
             }
           }
         }
@@ -324,7 +324,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
     } else if (JajukEvents.THUMB_CREATED.equals(subject)) {
       Album album = (Album) event.getDetails().get(Const.DETAIL_CONTENT);
       setMessage(Messages.getString("CatalogView.5") + " " + album.getName2(),
-          InformationJPanel.INFORMATIVE);
+          InformationJPanel.MessageType.INFORMATIVE);
     } else {
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
@@ -344,7 +344,8 @@ public final class InformationJPanel extends JXPanel implements Observer {
             // reset startup position
             Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, "0");
             setTotalTimeMessage("00:00:00");
-            setMessage(Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE);
+            setMessage(Messages.getString("JajukWindow.18"),
+                InformationJPanel.MessageType.INFORMATIVE);
           } else if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
             File file = QueueModel.getPlayingFile();
             if (file != null) {
@@ -355,7 +356,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
               } catch (JajukException e) {
                 Log.error(e);
               }
-              setMessage(message, InformationJPanel.INFORMATIVE);
+              setMessage(message, InformationJPanel.MessageType.INFORMATIVE);
             }
           } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(subject)) {
             setTotalTimeMessage("00:00:00");
@@ -365,31 +366,32 @@ public final class InformationJPanel extends JXPanel implements Observer {
             WebRadio radio = (WebRadio) event.getDetails().get(Const.DETAIL_CONTENT);
             if (radio != null) {
               String message = Messages.getString("FIFO.14") + " " + radio.getName();
-              setMessage(message, InformationJPanel.INFORMATIVE);
+              setMessage(message, InformationJPanel.MessageType.INFORMATIVE);
             }
           } else if (JajukEvents.FILE_COPIED.equals(subject)) {
             Properties properties = event.getDetails();
             if (properties == null) {
               // if no property, the party is done
-              setMessage("", InformationJPanel.INFORMATIVE);
+              setMessage("", InformationJPanel.MessageType.INFORMATIVE);
             } else {
               String filename = properties.getProperty(Const.DETAIL_CONTENT);
               if (filename != null) {
                 setMessage(Messages.getString("Device.45") + filename + "]",
-                    InformationJPanel.INFORMATIVE);
+                    InformationJPanel.MessageType.INFORMATIVE);
               }
             }
           } else if (JajukEvents.FILE_CONVERSION.equals(subject)) {
             Properties properties = event.getDetails();
             if (properties == null) {
               // if no property, the party is done
-              setMessage("", InformationJPanel.INFORMATIVE);
+              setMessage("", InformationJPanel.MessageType.INFORMATIVE);
             } else {
               String filename = properties.getProperty(Const.DETAIL_CONTENT);
               String target = properties.getProperty(Const.DETAIL_NEW);
               if (filename != null) {
                 setMessage(Messages.getString("Device.46") + filename
-                    + Messages.getString("Device.47") + target + "]", InformationJPanel.INFORMATIVE);
+                    + Messages.getString("Device.47") + target + "]",
+                    InformationJPanel.MessageType.INFORMATIVE);
               }
             }
           }
@@ -413,8 +415,8 @@ public final class InformationJPanel extends JXPanel implements Observer {
    * 
    * @return the message type
    */
-  public int getMessageType() {
-    return iType;
+  public MessageType getMessageType() {
+    return type;
   }
 
 }

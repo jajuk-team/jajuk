@@ -450,7 +450,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
           } else if (JajukEvents.CLEAR_HISTORY.equals(subject)) {
             clear();
             InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.251"),
-                InformationJPanel.INFORMATIVE);
+                InformationJPanel.MessageType.INFORMATIVE);
           } else if (JajukEvents.LANGUAGE_CHANGED.equals(subject)) {
             // reset formatter
             formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"), Locale

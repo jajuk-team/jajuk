@@ -22,7 +22,6 @@
 package org.jajuk.ui.views;
 
 import java.awt.Component;
-import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -78,7 +77,6 @@ import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.ItemMoveManager;
 import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.helpers.LazyLoadingTreeNode;
-import org.jajuk.ui.helpers.TransferableTreeNode;
 import org.jajuk.ui.helpers.TreeRootElement;
 import org.jajuk.ui.helpers.TreeTransferHandler;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
@@ -294,7 +292,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     jspTree.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
 
     // DND support
-    new TreeTransferHandler(jtree, DnDConstants.ACTION_COPY_OR_MOVE, true);
+    jtree.setDragEnabled(true);
+    jtree.setTransferHandler(new TreeTransferHandler(jtree));
 
     // layout : the tree takes all the available height and we display the
     // command buttons on a different layer (because we don't want to use a
@@ -892,7 +891,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           // return all childs nodes recursively, do not count on the tree's
           // model as it is lazy loaded
           Object o = element.getLastPathComponent();
-          Item item = (Item) ((TransferableTreeNode) o).getUserObject();
+          Item item = (Item) ((DefaultMutableTreeNode) o).getUserObject();
           alSelected.add(item);
           Directory directory = null;
           if (o instanceof DeviceNode) {
@@ -1039,7 +1038,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
 /**
  * File node
  */
-class FileNode extends TransferableTreeNode {
+class FileNode extends DefaultMutableTreeNode {
 
   private static final long serialVersionUID = 1L;
 
@@ -1169,7 +1168,7 @@ class DirectoryNode extends LazyLoadingTreeNode {
 /**
  * Playlist node
  */
-class PlaylistFileNode extends TransferableTreeNode {
+class PlaylistFileNode extends DefaultMutableTreeNode {
   private static final long serialVersionUID = 1L;
 
   /**

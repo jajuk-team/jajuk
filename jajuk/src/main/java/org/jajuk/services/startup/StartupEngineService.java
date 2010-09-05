@@ -176,7 +176,7 @@ public class StartupEngineService {
       } else {
         // Alert user that no novelties have been found
         InformationJPanel.getInstance().setMessage(Messages.getString("Error.127"),
-            InformationJPanel.ERROR);
+            InformationJPanel.MessageType.ERROR);
       }
     }
     // Launch selected file

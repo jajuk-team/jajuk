@@ -88,7 +88,7 @@ public class ThumbnailPopup extends JWindow {
   private void launchLink(List<Track> tracks) {
     List<org.jajuk.base.File> toPlay = new ArrayList<org.jajuk.base.File>(1);
     for (Track track : tracks) {
-      File file = track.getPlayeableFile(true);
+      File file = track.getBestFile(true);
       if (file != null) {
         toPlay.add(file);
       }

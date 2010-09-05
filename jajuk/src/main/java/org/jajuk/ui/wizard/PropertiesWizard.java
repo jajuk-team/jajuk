@@ -863,7 +863,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
           sbChanged.append('}');
           InformationJPanel.getInstance().setMessage(
               alChanged.size() + " " + Messages.getString("PropertiesWizard.10") + ": "
-                  + sbChanged.toString(), InformationJPanel.INFORMATIVE);
+                  + sbChanged.toString(), InformationJPanel.MessageType.INFORMATIVE);
         }
       } finally {
         UtilGUI.stopWaiting();

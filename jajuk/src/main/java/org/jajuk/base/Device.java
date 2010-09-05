@@ -929,7 +929,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       // start message
       InformationJPanel.getInstance().setMessage(
           new StringBuilder(Messages.getString("Device.31")).append(dSrc.getName()).append(',')
-              .append(getName()).append("]").toString(), InformationJPanel.INFORMATIVE);
+              .append(getName()).append("]").toString(), InformationJPanel.MessageType.INFORMATIVE);
       // in both cases (bi or uni-directional), make an unidirectional
       // sync from source device to this one
       iNbCreatedFilesDest = synchronizeUnidirectonal(dSrc, this);
@@ -950,7 +950,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       if (bidi) {
         dSrc.refreshCommand(false, true);
       }
-      InformationJPanel.getInstance().setMessage(sOut, InformationJPanel.INFORMATIVE);
+      InformationJPanel.getInstance().setMessage(sOut, InformationJPanel.MessageType.INFORMATIVE);
       Log.debug(sOut);
     } catch (final RuntimeException e) {
       // runtime errors are thrown
@@ -1057,7 +1057,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
                   new StringBuilder(Messages.getString("Device.41")).append(dSrc.getName()).append(
                       ',').append(dest.getName()).append(Messages.getString("Device.42")).append(
                       element.getAbsolutePath()).append("]").toString(),
-                  InformationJPanel.INFORMATIVE);
+                  InformationJPanel.MessageType.INFORMATIVE);
             } catch (final JajukException je) {
               Messages.showErrorMessage(je.getCode(), element.getAbsolutePath());
               Messages.showErrorMessage(27);

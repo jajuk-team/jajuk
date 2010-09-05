@@ -356,7 +356,7 @@ public class PasteAction extends JajukAction {
         UtilGUI.stopWaiting();
         if (!bErrorOccured) {
           InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
-              InformationJPanel.INFORMATIVE);
+              InformationJPanel.MessageType.INFORMATIVE);
         }
 
       }
@@ -371,7 +371,7 @@ public class PasteAction extends JajukAction {
   private void showMessage(java.io.File file) {
     String message = Messages.getString("Device.45");
     message += file.getAbsolutePath() + "]";
-    InformationJPanel.getInstance().setMessage(message, InformationJPanel.INFORMATIVE);
+    InformationJPanel.getInstance().setMessage(message, InformationJPanel.MessageType.INFORMATIVE);
 
   }
 }

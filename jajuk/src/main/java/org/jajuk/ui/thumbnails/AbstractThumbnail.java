@@ -419,7 +419,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
       if (tracks.size() > 0) {
         // Take first track found
         Track track = tracks.iterator().next();
-        file = track.getPlayeableFile(false);
+        file = track.getBestFile(false);
       }
       CoverView cv = null;
       if (file != null) {

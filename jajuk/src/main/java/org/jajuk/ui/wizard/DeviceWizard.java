@@ -459,7 +459,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
         dispose();
         if (bNew) {
           InformationJPanel.getInstance().setMessage(Messages.getString("DeviceWizard.44"),
-              InformationJPanel.INFORMATIVE);
+              InformationJPanel.MessageType.INFORMATIVE);
         }
       }
     }.start();

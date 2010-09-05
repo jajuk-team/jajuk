@@ -196,7 +196,7 @@ public class TracksTableModel extends JajukTableModel {
       oItems[iRow] = track;
       // Play
       IconLabel il = null;
-      if (track.getPlayeableFile(true) != null) {
+      if (track.getBestFile(true) != null) {
         il = getIcon(false);
       } else {
         il = getIcon(true);

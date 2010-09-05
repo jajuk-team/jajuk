@@ -28,13 +28,16 @@ import java.util.List;
 import javax.swing.JComponent;
 
 import org.jajuk.base.File;
+import org.jajuk.base.Item;
 import org.jajuk.base.Playlist;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.views.PlaylistView;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
+import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -84,9 +87,9 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
               .getTransferData(TransferableTableRows.ROW_FLAVOR);
           oData = ttr.getUserObject();
         } else if (flavor.getHumanPresentableName().equals(
-            TransferableTreeNode.NODE_FLAVOR.getHumanPresentableName())) {
-          TransferableTreeNode ttn = (TransferableTreeNode) t
-              .getTransferData(TransferableTreeNode.NODE_FLAVOR);
+            TransferableTreeNodes.NODE_FLAVOR.getHumanPresentableName())) {
+          TransferableTreeNodes ttn = (TransferableTreeNodes) t
+              .getTransferData(TransferableTreeNodes.NODE_FLAVOR);
           oData = ttn.getUserObject();
         } else if (flavor.getHumanPresentableName().equals(
             TransferableAlbum.ALBUM_FLAVOR.getHumanPresentableName())) {
@@ -94,7 +97,21 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
               .getTransferData(TransferableAlbum.ALBUM_FLAVOR);
           oData = ttn.getUserObject();
         }
-        List<File> alSelectedFiles = (List<File>) oData;
+
+        List<File> alSelectedFiles = null;
+        try {
+          alSelectedFiles = UtilFeatures.getFilesForItems((List<Item>) oData);
+        } catch (JajukException je) {
+          Log.error(je);
+          Messages.showErrorMessage(je.getCode());
+          return false;
+        }
+        
+        // If we get zero playing files, just leave, do not display a dummy message in Queue code:
+        if (alSelectedFiles.size() == 0){
+          return false;
+        }
+        
         // queue case
         if (plf.getType() == Playlist.Type.QUEUE) {
           QueueModel.push(UtilFeatures

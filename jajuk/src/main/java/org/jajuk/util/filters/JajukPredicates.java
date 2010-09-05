@@ -138,7 +138,7 @@ public class JajukPredicates {
      */
     public boolean evaluate(Object o) {
       Track track = ((File) o).getTrack();
-      return track.getPlayeableFile(true) != null;
+      return track.getBestFile(true) != null;
     }
 
   }

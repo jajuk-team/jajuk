@@ -776,7 +776,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
             return;
           }
           InformationJPanel.getInstance().setMessage(
-              Messages.getString("ActionRefresh.1") + " : " + Directory.this.getName(), 1);
+              Messages.getString("ActionRefresh.1") + " : " + Directory.this.getName(),
+              InformationJPanel.MessageType.ERROR);
           boolean deep = (result == Device.OPTION_REFRESH_DEEP);
           // start counting
           reporter.startup();
