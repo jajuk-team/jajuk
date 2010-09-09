@@ -114,7 +114,8 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
         if (alSelectedFiles.size() == 0) {
           return false;
         }
-
+        
+      
         // queue case
         if (plf.getType() == Playlist.Type.QUEUE) {
           // If user selected "push on drop" option or if none item in list (then drop row = -1), 
@@ -133,12 +134,23 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
         // normal or new playlist case
         else if (plf.getType() == Playlist.Type.NORMAL || plf.getType() == Playlist.Type.NEW
             || plf.getType() == Playlist.Type.BOOKMARK) {
-          view.importFiles(UtilFeatures.applyPlayOption(alSelectedFiles));
+          //  By default, inset at the end of the playlist
+          int position = plf.getNbOfTracks() - 1;
+          if (position < 0) {
+            position = 0;
+          }
+          if (!Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_DROP) && row >= 0) {
+            position = row;
+          }
+          view.importFiles(UtilFeatures.applyPlayOption(alSelectedFiles), position);
         }
         return true;
       }
     } catch (Exception e) {
       Log.error(e);
+    }
+    finally{
+       jtable.getSelectionModel().setValueIsAdjusting(false);
     }
     return false;
 

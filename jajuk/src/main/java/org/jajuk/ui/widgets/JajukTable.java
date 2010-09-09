@@ -105,6 +105,9 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /** Stores the last index of column move to*. */
   private int lastToIndex = 0;
 
+  /** Mouse draging flag */
+  private boolean isMouseDragging;
+
   /** The Jajuk table mouse adapter used to handle click events. */
   JajukMouseAdapter ma = new JajukMouseAdapter() {
 
@@ -149,6 +152,9 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    * @sConf: configuration variable used to store columns conf
    */
   public JajukTable(TableModel model, boolean bSortable, String sConf) {
+    // Note that JTable automatically create a default ListSelectionModel
+    // executing this.valueChanged() at selection changes
+    // so don't add a new listener to avoid double events consumption
     super(model);
     acceptColumnsEvents = true;
     this.sConf = sConf;
@@ -157,8 +163,6 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     setShowGrid(false);
     init(bSortable);
 
-    // Listen for row selection
-    getSelectionModel().addListSelectionListener(this);
     // Listen for clicks
     addMouseListener(ma);
     // Add the Alternate Highlighter
@@ -465,10 +469,6 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    */
   @Override
   public void valueChanged(ListSelectionEvent e) {
-    // Ignore adjusting event. 
-    if (e.getValueIsAdjusting()) {
-      return;
-    }
     JajukTableModel model = (JajukTableModel) getModel();
     selection.clear();
     int[] rows = getSelectedRows();
@@ -487,6 +487,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
       properties.put(Const.DETAIL_VIEW, parentView);
     }
     ObservationManager.notify(new JajukEvent(JajukEvents.TABLE_SELECTION_CHANGED, properties));
+
   }
 
   /**
@@ -667,14 +668,49 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     super.updateUI();
   }
 
-  /**
-   * Set selection availability (row/columns/cells) for this table
-   * @param b whether the selection is available or not
-   */
-  public void setSelectionAllowed(boolean b) {
-    setRowSelectionAllowed(b);
-    setColumnSelectionAllowed(b);
-    setCellSelectionEnabled(b);
+  // Fix for a JRE issue,see   :
+  // During a single adjusting ListSelectionEvent, several rows can be selected
+  // before the drag actually begins (except when using SINGLE_SELECTION selection mode). 
+  // For instance, select row 1 and release mouse
+  // then select row 2 without releasing the mouse and begin to drag from the top to the bottom :
+  // in some cases, when dragging quickly, rows 2 AND 3 are selected. There is no way to 
+  // fully fix that as it depends on a single event threshold. But in this case, we only update selection
+  // to first selected row. 
+  // Note that this fix only works when dragging to the bottom, not to the top but it should fix most of cases
+  // as the queue view is usually located at the lower part of the window.
+  // Fix thanks jeffsabin  in http://forums.sun.com/thread.jspa?threadID=5436355
+
+  @Override
+  protected void processMouseEvent(MouseEvent e) {
+    isMouseDragging = (e.getID() == MouseEvent.MOUSE_DRAGGED);
+    super.processMouseEvent(e);
+  }
+
+  @Override
+  protected void processMouseMotionEvent(MouseEvent e) {
+    isMouseDragging = (e.getID() == MouseEvent.MOUSE_DRAGGED);
+    super.processMouseMotionEvent(e);
+  }
+
+  @Override
+  public void setRowSelectionInterval(int index0, int index1) {
+    if (!isMouseDragging) {
+      super.setRowSelectionInterval(index0, index1);
+    }
+  }
+
+  @Override
+  public void setColumnSelectionInterval(int index0, int index1) {
+    if (!isMouseDragging) {
+      super.setColumnSelectionInterval(index0, index1);
+    }
+  }
+
+  @Override
+  public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
+    if (!isMouseDragging) {
+      super.changeSelection(rowIndex, columnIndex, toggle, extend);
+    }
   }
 
 }

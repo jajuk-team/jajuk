@@ -161,7 +161,6 @@ public class QueueView extends PlaylistView {
     editorTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION); // multi-row
     // selection
     editorTable.setSortable(false);
-    editorTable.setDragEnabled(true);
     editorTable.setTransferHandler(new PlaylistEditorTransferHandler(editorTable));
     setRenderers();
     // just an icon
@@ -169,8 +168,6 @@ public class QueueView extends PlaylistView {
     editorTable.getColumnModel().getColumn(0).setMaxWidth(20);
     editorTable.getTableHeader().setPreferredSize(new Dimension(0, 20));
     editorTable.showColumns(editorTable.getColumnsConf());
-    ListSelectionModel lsm = editorTable.getSelectionModel();
-    lsm.addListSelectionListener(this);
     setLayout(new BorderLayout());
     add(jpEditorControl, BorderLayout.NORTH);
     jsp = new JScrollPane(editorTable);
@@ -245,7 +242,7 @@ public class QueueView extends PlaylistView {
   }
 
   /**
-   * Go to selected row, do it asynchronously because FIFO.goTO() can frezze the
+   * Go to selected row, do it asynchronously because FIFO.goTO() can freeze the
    * GUI
    */
   private void goToSelection() {

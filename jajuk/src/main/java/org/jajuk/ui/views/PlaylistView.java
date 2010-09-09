@@ -363,7 +363,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     editorTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION); // multi-row
     // selection
     editorTable.setSortable(false);
-    editorTable.setDragEnabled(true);
     editorTable.setTransferHandler(new PlaylistEditorTransferHandler(editorTable));
     setRenderers();
     // just an icon
@@ -371,8 +370,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     editorTable.getColumnModel().getColumn(0).setMaxWidth(20);
     editorTable.getTableHeader().setPreferredSize(new Dimension(0, 20));
     editorTable.showColumns(editorTable.getColumnsConf());
-    ListSelectionModel lsm = editorTable.getSelectionModel();
-    lsm.addListSelectionListener(this);
     jpEditor.setLayout(new MigLayout("ins 0", "[grow]"));
     jpEditor.add(jpEditorControl, "growx,wrap");
     JScrollPane jsp = new JScrollPane(editorTable);
@@ -861,11 +858,12 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   /**
    * Import files, used when drag / dropping for ie.
    * 
-   * @param files
-   *          DOCUMENT_ME
+   * @param files files to be imported
+   *  @param insert position
+   *          
    */
-  public void importFiles(List<File> files) {
-    plf.addFiles(UtilFeatures.applyPlayOption(files));
+  public void importFiles(List<File> files,int position) {
+    plf.addFiles(UtilFeatures.applyPlayOption(files),position);
     refreshCurrentPlaylist();
   }
 
@@ -1088,8 +1086,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       // Add this generic menu item manually to ensure it's the last one in
       // the list for GUI reasons
       jtable.getMenu().add(jmiProperties);
-      jtable.getSelectionModel().addListSelectionListener(PlaylistRepository.this);
-
       jtbEditable.setVisible(false);
     }
 

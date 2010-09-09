@@ -58,25 +58,25 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
 
   /** DOCUMENT_ME. */
   private final JList list;
-  
+
   /** DOCUMENT_ME. */
   private final JScrollPane listScrollPane;
-  
+
   /** DOCUMENT_ME. */
   private final DefaultListModel listModel = new DefaultListModel();
-  
+
   /** DOCUMENT_ME. */
   private final List<List<File>> allFiles;
-  
+
   /** DOCUMENT_ME. */
   private List<File> flatFilesList;
 
   /** DOCUMENT_ME. */
   private final JButton deleteButton;
-  
+
   /** DOCUMENT_ME. */
   private final JButton selectAllButton;
-  
+
   /** DOCUMENT_ME. */
   private final JButton closeButton;
 
@@ -93,7 +93,6 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
     populateList(files);
 
     list = new JList(listModel);
-    list.addListSelectionListener(this);
     list.setVisibleRowCount(20);
     listScrollPane = new JScrollPane(list);
 
@@ -106,10 +105,10 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
     selectAllButton.addActionListener(new SelectAllListener());
 
     JPanel buttonPane = new JPanel(new MigLayout("ins 5,right"));
-    
-    buttonPane.add(deleteButton,"sg buttons,center");
-    buttonPane.add(selectAllButton,"sg buttons,center");
-    buttonPane.add(closeButton,"sg buttons,center");
+
+    buttonPane.add(deleteButton, "sg buttons,center");
+    buttonPane.add(selectAllButton, "sg buttons,center");
+    buttonPane.add(closeButton, "sg buttons,center");
 
     buttonPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
@@ -146,7 +145,7 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
    * DOCUMENT_ME.
    */
   class DeleteListener implements ActionListener {
-    
+
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -201,13 +200,13 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
             if (allFiles.get(r).size() <= 2) {
               // if only one file is left now, remove the whole element
               allFiles.remove(r);
-              
+
               // done, the required index was removed 
               return;
             } else {
               // remove the file that is removed
               allFiles.get(r).remove(c);
-              
+
               // done, the required index was removed
               return;
             }
@@ -237,7 +236,7 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
    * DOCUMENT_ME.
    */
   class SelectAllListener implements ActionListener {
-    
+
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

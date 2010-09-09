@@ -323,7 +323,7 @@ public class TestPlaylist extends JajukTestCase {
     List<File> files = new ArrayList<File>();
 
     // empty add does not do anything
-    play.addFiles(files);
+    play.addFiles(files, 0);
 
     assertEquals(0, play.getFiles().size());
 
@@ -334,7 +334,7 @@ public class TestPlaylist extends JajukTestCase {
     files.add(JUnitHelpers.getFile("file1", false));
 
     assertEquals(0, play.getFiles().size());
-    play.addFiles(files);
+    play.addFiles(files, 0);
     assertEquals(4, play.getFiles().size());
   }
 
@@ -731,7 +731,7 @@ public class TestPlaylist extends JajukTestCase {
     play.addFile(JUnitHelpers.getFile("file1", false));
 
     File file = JUnitHelpers.getFile("file1", false);
-  
+
     play.setFIO(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
         + "testdir" + java.io.File.separator + "playlist.m3u"));
 

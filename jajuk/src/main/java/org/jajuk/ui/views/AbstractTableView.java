@@ -361,7 +361,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     setLayout(new MigLayout("ins 0", "[grow]", "[][grow]"));
     add(jpControl, "wrap,grow");
     add(jsp, "grow");
-    jtable.setDragEnabled(true);
     jtable.setTransferHandler(new TableTransferHandler(jtable));
     jtable.showColumns(jtable.getColumnsConf());
     applyFilter(null, null);
@@ -370,7 +369,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     // as the getMenu() method enable all menu items
     jtable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
       public void valueChanged(ListSelectionEvent e) {
-        jmiFileCopyURL.setVisible(jtable.getSelectedRowCount() < 2);
+         jmiFileCopyURL.setVisible(jtable.getSelectedRowCount() < 2);
       }
     });
     // Register on the list for subject we are interested in

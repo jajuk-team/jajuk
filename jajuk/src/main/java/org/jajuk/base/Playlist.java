@@ -196,13 +196,15 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * Add some files to this playlist.
    * 
-   * @param alFilesToAdd :
-   * List of File
+   * @param alFilesToAdd :   List of Files
+   * @param insert position
    */
-  public void addFiles(final List<File> alFilesToAdd) {
+  public void addFiles(final List<File> alFilesToAdd, int position) {
     try {
+      int offset = 0;
       for (File file : alFilesToAdd) {
-        addFile(file);
+        addFile(position + offset, file);
+        offset ++;
       }
     } catch (final Exception e) {
       Log.error(e);
@@ -276,7 +278,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @throws JajukException the jajuk exception
    */
   private void moveTempPlaylistFile(java.io.File temp) throws JajukException {
-    
+
     if (temp.exists() && temp.length() > 0) {
       try {
         UtilSystem.copy(temp, getFIO());
