@@ -165,6 +165,11 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
     // Listen for clicks
     addMouseListener(ma);
+
+    //Let Laf handle drag gesture recognition (don't remove it or
+    // a mouse clik disable multiple selection)
+    setDragEnabled(true);
+
     // Add the Alternate Highlighter
     addHighlighter(UtilGUI.getAlternateHighlighter());
     // Register itself to incoming events
@@ -673,11 +678,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   // before the drag actually begins (except when using SINGLE_SELECTION selection mode). 
   // For instance, select row 1 and release mouse
   // then select row 2 without releasing the mouse and begin to drag from the top to the bottom :
-  // in some cases, when dragging quickly, rows 2 AND 3 are selected. There is no way to 
-  // fully fix that as it depends on a single event threshold. But in this case, we only update selection
-  // to first selected row. 
-  // Note that this fix only works when dragging to the bottom, not to the top but it should fix most of cases
-  // as the queue view is usually located at the lower part of the window.
+  // in some cases, when dragging quickly, rows 2 AND 3 (and even row 4 sometimes) are selected.
   // Fix thanks jeffsabin  in http://forums.sun.com/thread.jspa?threadID=5436355
 
   @Override
