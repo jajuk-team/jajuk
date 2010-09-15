@@ -35,13 +35,13 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -68,7 +68,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
@@ -903,13 +902,16 @@ public final class UtilGUI {
    *          DOCUMENT_ME
    */
   public static void setEscapeKeyboardAction(final Window window, JComponent pane) {
-    KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
-    pane.registerKeyboardAction(new ActionListener() {
-      public void actionPerformed(ActionEvent actionEvent) {
-        // setVisible(false);
-        window.dispose();
-      }
-    }, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
+    // Add keystroke to close window when pressing escape
+    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
+        new KeyEventDispatcher() {
+          public boolean dispatchKeyEvent(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+              window.dispose();
+            }
+            return false;
+          }
+        });
   }
 
   /**
