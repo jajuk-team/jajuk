@@ -127,7 +127,7 @@ public abstract class JajukAction extends AbstractAction {
    * {@link javax.swing.KeyStroke#getKeyStroke(String)}, null is used
    * instead.
    * @param enabled By default enable or disable the action.
-   * @param bHotkey DOCUMENT_ME
+   * @param bHotkey is it a hotkey (available even when window has not the focus) ?
    */
   protected JajukAction(String name, Icon icon, String stroke, boolean enabled, boolean bHotkey) {
     this(name, icon, KeyStroke.getKeyStroke(stroke), enabled, bHotkey);
@@ -142,7 +142,7 @@ public abstract class JajukAction extends AbstractAction {
    * mnemonic key for the action.
    * @param stroke The keystroke to use.
    * @param enabled By default enable or disable the action.
-   * @param bHotkey DOCUMENT_ME
+   * @param bHotkey is it a hotkey (available even when window has not the focus) ?
    */
   protected JajukAction(String name, KeyStroke stroke, boolean enabled, boolean bHotkey) {
     this(name, null, stroke, enabled, bHotkey);
@@ -160,7 +160,7 @@ public abstract class JajukAction extends AbstractAction {
    * {@link javax.swing.KeyStroke#getKeyStroke(String)}, null is used
    * instead.
    * @param enabled By default enable or disable the action.
-   * @param bHotkey DOCUMENT_ME
+   * @param bHotkey is it a hotkey (available even when window has not the focus) ?
    */
   protected JajukAction(String name, String stroke, boolean enabled, boolean bHotkey) {
     this(name, null, stroke, enabled, bHotkey);
@@ -172,7 +172,7 @@ public abstract class JajukAction extends AbstractAction {
    * @param icon The icon to use for visualization of the action.
    * @param stroke The keystroke to use.
    * @param enabled By default enable or disable the action.
-   * @param bHotkey DOCUMENT_ME
+   * @param bHotkey is it a hotkey (available even when window has not the focus) ?
    * 
    * @see javax.swing.KeyStroke#getKeyStroke(String)
    */
@@ -189,7 +189,7 @@ public abstract class JajukAction extends AbstractAction {
    * {@link javax.swing.KeyStroke#getKeyStroke(String)}, null is used
    * instead.
    * @param enabled By default enable or disable the action.
-   * @param bHotkey DOCUMENT_ME
+   * @param bHotkey is it a hotkey (available even when window has not the focus) ?
    * 
    * @see javax.swing.KeyStroke#getKeyStroke(String)
    */

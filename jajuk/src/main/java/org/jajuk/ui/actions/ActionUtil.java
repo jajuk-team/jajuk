@@ -107,6 +107,6 @@ public final class ActionUtil {
    */
   public static boolean matches(Action action, KeyEvent ke) {
     KeyStroke key = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
-    return ke.getKeyCode() == key.getKeyCode() && ke.getModifiers() == key.getModifiers();
+    return KeyStroke.getKeyStrokeForEvent(ke).equals(key);
   }
 }
