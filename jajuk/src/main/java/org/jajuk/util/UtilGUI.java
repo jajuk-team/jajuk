@@ -906,8 +906,12 @@ public final class UtilGUI {
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
         new KeyEventDispatcher() {
           public boolean dispatchKeyEvent(KeyEvent e) {
-            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            // For some reasons (under Linux at least), pressing escape only trigger PRESSED 
+            // and RELEASED key events 
+            if (e.getKeyCode() == KeyEvent.VK_ESCAPE && e.getID() == KeyEvent.KEY_PRESSED
+                && window.isFocused()) {
               window.dispose();
+              return true;
             }
             return false;
           }
