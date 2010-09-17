@@ -39,8 +39,6 @@ import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 
-import javax.swing.KeyStroke;
-
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukAction;
@@ -87,16 +85,15 @@ public class WindowGlobalKeystrokeManager {
           JajukAction action = ActionManager.getAction(actionName);
           if (ActionUtil.matches(action, ke)) {
             try {
-              System.out.println("here2");
               action.perform(null);
-              // No need to dispatch to components
+              // No need to dispatch to others keystroke managers
               return true;
             } catch (Exception e) {
               Log.error(e);
             }
           }
         }
-        // Unknown keystrokes : let the others GlobalKeystrokeManage manage
+        // Unknown keystroke : let the others KeystrokeManager handle it
         return false;
       }
     };
