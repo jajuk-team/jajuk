@@ -39,7 +39,6 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
-import org.jajuk.ui.thumbnails.ThumbnailsMaker;
 import org.jajuk.util.log.Log;
 
 /**
@@ -422,8 +421,6 @@ public final class UpgradeManager {
         ThumbnailManager.cleanThumbs(Const.THUMBNAIL_SIZE_200X200);
         ThumbnailManager.cleanThumbs(Const.THUMBNAIL_SIZE_250X250);
         ThumbnailManager.cleanThumbs(Const.THUMBNAIL_SIZE_300X300);
-        // Launch thumbs creation in another process
-        ThumbnailsMaker.launchAllSizes(true);
       }
     }.start();
   }

@@ -44,7 +44,6 @@ import org.jajuk.services.core.SessionService;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.helpers.ManualDeviceRefreshReporter;
 import org.jajuk.ui.helpers.RefreshReporter;
-import org.jajuk.ui.thumbnails.ThumbnailsMaker;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -773,23 +772,14 @@ public class Device extends PhysicalItem implements Comparable<Device> {
 
       // Force cover detection (after done once, the cover file is cached as album property)
       // We need this to avoid bug #1550 : if the device is created, then unplugged, catalog
-      // view cover/nocover filter is doomed because the findCover() method always return null
+      // view cover/no-cover filter is doomed because the findCover() method always return null
       for (Album album : AlbumManager.getInstance().getAlbums()) {
         album.findCoverFile();
       }
 
-      // refresh thumbs required if nb of files or dirs changed, but it is
-      // costly, do it only if many albums was discovered
-      if (((FileManager.getInstance().getElementCount() - iNbFilesBeforeRefresh) > 200)
-          || ((DirectoryManager.getInstance().getElementCount() - iNbDirsBeforeRefresh) > 20)) {
-        // Refresh thumbs for new albums
-        ThumbnailsMaker.launchAllSizes(false);
-        return true;
-      }
-
-      // force a GUI refresh if new files or directories discovered or have been
+      // Force a GUI refresh if new files or directories discovered or have been
       // removed
-      else if (((FileManager.getInstance().getElementCount() - iNbFilesBeforeRefresh) != 0)
+      if (((FileManager.getInstance().getElementCount() - iNbFilesBeforeRefresh) != 0)
           || ((DirectoryManager.getInstance().getElementCount() - iNbDirsBeforeRefresh) != 0)
           || ((PlaylistManager.getInstance().getElementCount() - iNbPlaylistsBeforeRefresh) != 0)) {
         return true;

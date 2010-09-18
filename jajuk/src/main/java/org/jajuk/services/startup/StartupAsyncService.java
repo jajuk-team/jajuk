@@ -21,7 +21,6 @@
 package org.jajuk.services.startup;
 
 import org.jajuk.base.AlbumManager;
-import org.jajuk.base.Collection;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.ItemManager;
 import org.jajuk.services.alarm.AlarmManager;
@@ -32,7 +31,6 @@ import org.jajuk.services.dbus.DBusManager;
 import org.jajuk.services.lastfm.LastFmManager;
 import org.jajuk.services.players.QueueController;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
-import org.jajuk.ui.thumbnails.ThumbnailsMaker;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilSystem;
@@ -121,13 +119,6 @@ public class StartupAsyncService {
           // Start alarm clock
           if (Conf.getBoolean(Const.CONF_ALARM_ENABLED)) {
             AlarmManager.getInstance();
-          }
-
-          // Force rebuilding thumbs (after an album id hashcode
-          // method change for eg)
-          if (Collection.getInstance().getWrongRightAlbumIDs().size() > 0) {
-            // Launch thumbs creation in another process
-            ThumbnailsMaker.launchAllSizes(true);
           }
 
           // Submit any LastFM submission cache

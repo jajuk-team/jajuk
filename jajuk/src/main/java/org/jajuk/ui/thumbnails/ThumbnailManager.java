@@ -26,7 +26,6 @@ import java.awt.MediaTracker;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.channels.FileLock;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -153,7 +152,6 @@ public final class ThumbnailManager {
    * @throws InterruptedException the interrupted exception
    * @throws IOException Signals that an I/O exception has occurred.
    * @throws Exception    */
-  @SuppressWarnings("ucd")
   public static void createThumbnail(final ImageIcon ii, final File thumb, final int maxDim)
       throws InterruptedException, IOException {
     // Synchronize the file to avoid any concurrency between several threads refreshing the thumb
@@ -165,23 +163,6 @@ public final class ThumbnailManager {
     thumbLock.createNewFile();
   
     synchronized (thumbLock.getAbsolutePath().intern()) {
-      // We perform here synchronization between jajuk and the thumb builder process (different JVM)
-      // thanks a FileLocker
-      FileLock lock = UtilSystem.tryLockFile(thumbLock);
-      try {
-        if (lock == null) {
-          int count = 0;
-          // We retry and wait a while before leaving
-          while (lock == null && count < 10) {
-            lock = UtilSystem.tryLockFile(thumbLock);
-            Thread.sleep(1000);
-            count++;
-          }
-        }
-        if (lock == null) {
-          throw new IOException("Cannot acquire exclusive lock on file : "
-              + thumbLock.getAbsolutePath());
-        }
         // Note that at this point, the image is fully loaded (done in the ImageIcon constructor)
         final Image image = ii.getImage();
         // determine thumbnail size from WIDTH and HEIGHT
@@ -203,14 +184,6 @@ public final class ThumbnailManager {
         ImageIO.write(thumbImage, UtilSystem.getExtension(thumb), thumb);
         // Free thumb memory
         thumbImage.flush();
-      } finally {
-        // Make sure to release the lock{
-        if (lock != null) {
-          lock.release();
-          lock.channel().close();
-        }
-      }
-
     }
 
   }

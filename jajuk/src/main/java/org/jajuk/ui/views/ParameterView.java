@@ -78,7 +78,6 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.helpers.PatternInputVerifier;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
-import org.jajuk.ui.thumbnails.ThumbnailsMaker;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.PathSelector;
@@ -592,8 +591,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_300X300);
           // Display the catalog view voided
           ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-          // Launch thumbs creation in another process
-          ThumbnailsMaker.launchAllSizes(true);
         }
       }.start();
     }
