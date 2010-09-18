@@ -82,7 +82,7 @@ public final class UtilFeatures {
    * 
    * @param alFiles DOCUMENT_ME
    * 
-   * @return Given list to play with shuffle or others runles applied
+   * @return Given list to play with shuffle or others rules applied
    */
   @SuppressWarnings("unchecked")
   public static List<org.jajuk.base.File> applyPlayOption(final List<org.jajuk.base.File> alFiles) {
