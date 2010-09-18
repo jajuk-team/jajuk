@@ -572,11 +572,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     } else if (e.getSource() == jcbHotkeys) {
       someOptionsAppliedAtNextStartup = true;
     } else if (e.getSource() == jbCatalogRefresh) {
-      int resu = Messages.getChoice(Messages.getString("Confirmation_rebuild_thumbs"),
-          JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-      if (resu != JOptionPane.YES_OPTION) {
-        return;
-      }
       new Thread("Parameter Catalog refresh Thread") {
         @Override
         public void run() {
