@@ -58,7 +58,6 @@ import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
-import org.jajuk.util.UtilSystem;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXCollapsiblePane;
@@ -114,18 +113,23 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
   /** Selected directory. */
   private File fDir;
 
+  /** Default workspace location */
+  private String defaultWorkspacePath;
+
+  /** User chosen workspace location */
+  private String userWorkspacePath;
+
+  public String getUserWorkspacePath() {
+    return this.userWorkspacePath;
+  }
+
   /**
    * First time wizard.
+   * @param defaultWorkspacePath the default workspace path set in the textfield
    */
-  public FirstTimeWizard() {
+  public FirstTimeWizard(String defaultWorkspacePath) {
     super();
-    setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
-    initUI();
-    pack();
-    final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-    setLocation(((int) dim.getWidth() / 3), ((int) dim.getHeight() / 3));
-    setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-    setVisible(true);
+    this.defaultWorkspacePath = defaultWorkspacePath;
   }
 
   /*
@@ -136,7 +140,7 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jbCancel) {
       dispose(); // close window
-      // alert Main to continue startup
+      // alert SessionService to continue startup
       SessionService.notifyFirstTimeWizardClosed();
     } else if (e.getSource() == jbFileSelection) {
       final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
@@ -163,21 +167,18 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
       }
     } else if (e.getSource() == jbOk) {
       final boolean bShowHelp = jcbHelp.isSelected();
-      final String sPATH = workspacePath.getUrl().trim();
+      String sPATH = workspacePath.getUrl().trim();
       // Check workspace directory
       if ((!sPATH.isEmpty()) && (!new File(sPATH).canRead())) {
         Messages.showErrorMessage(165);
         return;
       }
-      // Set Workspace directory
-      SessionService.setWorkspace(sPATH);
-
-      // Write the bootstrap file
-      File bootstrap = new File(SessionService.getBootstrapPath());
-      SessionService.writeBootstrapFile(bootstrap);
-
       // Close window
       dispose();
+
+      // update the user chosen workspace path (read afterward by the SessionService)
+      userWorkspacePath = workspacePath.getUrl().trim();
+
       // Notify Main to continue startup
       SessionService.notifyFirstTimeWizardClosed();
       new Thread("First Time Wizard Action Thread") {
@@ -224,9 +225,9 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
 
   /**
    * Inits the ui.
-   * DOCUMENT_ME
-   */
-  private void initUI() {
+   **/
+  public void initUI() {
+    setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
     setTitle(Messages.getString("FirstTimeWizard.0"));
     jlLeftIcon = new JLabel(UtilGUI.getImage(Const.IMAGE_SEARCH));
     jlLeftIcon.setBorder(new EmptyBorder(0, 20, 0, 0));
@@ -242,7 +243,7 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
 
     final JLabel jlWorkspace = new JLabel(Messages.getString("FirstTimeWizard.7"));
     jlWorkspace.setToolTipText(Messages.getString("FirstTimeWizard.7"));
-    workspacePath = new PathSelector(UtilSystem.getUserHome());
+    workspacePath = new PathSelector(defaultWorkspacePath);
     workspacePath.setToolTipText(Messages.getString("FirstTimeWizard.7"));
     // If user provided a forced workspace, he can't change it again here
     if (SessionService.isForcedWorkspace()) {
@@ -297,6 +298,12 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
     add(okp, "right,span,cell 1 6");
 
     getRootPane().setDefaultButton(jbOk);
+
+    pack();
+    final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+    setLocation(((int) dim.getWidth() / 3), ((int) dim.getHeight() / 3));
+    setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    setVisible(true);
   }
 
   /*

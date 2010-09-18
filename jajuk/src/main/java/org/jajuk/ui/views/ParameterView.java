@@ -27,10 +27,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
@@ -604,7 +600,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   }
 
   /**
-   * Apply parameters. DOCUMENT_ME
+   * Apply parameters. 
    */
   private void applyParameters() {
     // **Read all parameters**
@@ -810,19 +806,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
           // The workspace already exists, we set this value
           SessionService.setWorkspace(psJajukWorkspace.getUrl());
         }
-        // OK, now write down the bootstrap file if
-        // everything's OK
-        final java.io.File bootstrap = new java.io.File(SessionService.getBootstrapPath());
-        final Writer bw = new BufferedWriter(new FileWriter(bootstrap));
-        try {
-          SessionService.getVersionWorkspace().store(bw, null);
-          bw.flush();
-        } catch (IOException ioe) {
-          Log.error(ioe);
-          Messages.showErrorMessage(24, bootstrap.getAbsolutePath());
-        } finally {
-          bw.close();
-        }
         UtilGUI.stopWaiting();
         // Display a warning message and restart Jajuk
         if (bPreviousPathExist) {
@@ -841,7 +824,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
       } catch (final Exception e) {
         Messages.showErrorMessage(24);
-        Log.debug("Cannot write bootstrap file");
+        Log.error(e);
       }
     }
 
@@ -871,7 +854,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
         .toString(jcbSaveExplorerFriendly.isSelected()));
     Conf.setProperty(Const.CONF_COVERS_SIZE, Integer.toString(jcbCoverSize.getSelectedIndex()));
     Conf.setProperty(Const.FILE_DEFAULT_COVER, jtfDefaultCoverSearchPattern.getText());
-  
+
     // Force LastFM manager configuration reload
     LastFmManager.getInstance().configure();
 

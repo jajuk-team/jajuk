@@ -92,14 +92,7 @@ public class TestSessionService extends JajukTestCase {
     SessionService.setTestMode(true);
   }
 
-  /**
-   * Test method for
-   * {@link org.jajuk.services.core.SessionService#setIdeMode(boolean)}.
-   */
-  public void testSetIdeMode() {
-    SessionService.setIdeMode(true);
-  }
-
+ 
   /**
    * Test method for
    * {@link org.jajuk.services.core.SessionService#setWorkspace(java.lang.String)}
