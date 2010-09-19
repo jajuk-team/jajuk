@@ -231,7 +231,7 @@ public interface Const {
   String FILE_CACHE = "cache";
 
   /** Bat Converter to DOS 8.3 format */
-  String FILE_FILENAME_CONVERTER = "converter.vbs";
+  String FILE_FILENAME_CONVERTER = "converter.bat";
 
   /** DOCUMENT_ME. */
   String LASTFM_CACHE = "lastfm";

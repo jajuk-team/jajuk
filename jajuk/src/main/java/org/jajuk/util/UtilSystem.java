@@ -76,6 +76,9 @@ public final class UtilSystem {
 
   /** Is browser supported ? */
   private static Boolean browserSupported;
+  
+  /** Size of the short names converter in bytes */
+  private static final int CONVERTER_FILE_SIZE = 23;
 
   /**
    * MPlayer status possible values *.
@@ -612,7 +615,7 @@ public final class UtilSystem {
     if (file.exists() && file.length() == Const.MPLAYER_WINDOWS_EXE_SIZE) {
       UtilSystem.mplayerPath = file;
       return UtilSystem.mplayerPath;
-    } else if (!UtilSystem.isUnderJNLP() ){
+    } else if (!UtilSystem.isUnderJNLP()) {
       // Check in the path where jajuk.jar is executed (all others
       // distributions). does not work under JNLP
       String sPATH = null;
@@ -671,7 +674,7 @@ public final class UtilSystem {
     if (file.exists() && file.length() == Const.MPLAYER_OSX_EXE_SIZE) {
       UtilSystem.mplayerPath = file;
       return UtilSystem.mplayerPath;
-    } else if (!UtilSystem.isUnderJNLP()){
+    } else if (!UtilSystem.isUnderJNLP()) {
       // Search in jajuk installation directory, do not work under JNLP
       String sPATH = null;
       try {
@@ -1107,7 +1110,13 @@ public final class UtilSystem {
      * Needed for UNC filenames with spaces -> http://bugs.sun.com/view_bug.do?bug_id=6550588
      */
     if (isUnderWindows()) {
-      directoryToOpen = new File(getShortPathNameW(directory.getAbsolutePath()));
+      String shortPath = getShortPathNameW(directory.getAbsolutePath());
+      // If shortnames conversion doesn't work, try the initial path
+      if (shortPath == null || !new File(shortPath).exists()) {
+        directoryToOpen = directory;
+      } else {
+        directoryToOpen = new File(shortPath);
+      }
     } else {
       directoryToOpen = directory;
     }
@@ -1210,39 +1219,68 @@ public final class UtilSystem {
 
   /**
    * Convert a full regular Windows path to 8.3 DOS format 
-   * <p>We create on the fly a VBS script to convert it. Note that we can't send 
-   * the path as a argument to the script because of JRE bug #4947220. 
-   * DOS shells doesn't work always (for special Chinese characters or files with '&' for instance)</p>
    * @param longname the regular absolute path
-   * @return the short name absolute path
+   * @return the shortname absolute path
    */
   public static String getShortPathNameW(String longname) {
+    // Find the shortname .bat converter, create it if it doesn't yet exist
     String shortname = null;
     try {
       File fileConverter = SessionService.getConfFileByPath(Const.FILE_FILENAME_CONVERTER);
-      StringBuilder scriptBuilder = new StringBuilder(longname.length() * 10);
-      scriptBuilder.append("Set fso = CreateObject(\"Scripting.FileSystemObject\")\n").append(
-          "Set fsoFile = fso.GetFile(");
-      scriptBuilder.append("ChrW(").append(longname.codePointAt(0)).append(")");
-      int length = longname.length();
-      // Unicode characters from the Supplementary Multilingual Plane can use two chars instead of a
-      // single one. this is why we use an offset and the charCount() method
-      for (int offset = Character.charCount(longname.codePointAt(0)); offset < length;) {
-        int codepoint = longname.codePointAt(offset);
-        scriptBuilder.append(" + ChrW(").append(codepoint).append(")");
-        offset += Character.charCount(codepoint);
+      if (!fileConverter.exists()
+      // Test that the converter version has not been updated
+          // IMPORTANT ! Don't forget to update the CONVERTER_FILE_SIZE constant if you change the
+          // script !
+          || (fileConverter.exists() && fileConverter.length() != CONVERTER_FILE_SIZE)) {
+        FileWriter fw = new FileWriter(fileConverter);
+        fw.write("@echo off\n");
+        fw.write("dir /x \"%~s1\"");
+        fw.flush();
+        fw.close();
       }
-      scriptBuilder.append(")\n").append("Wscript.StdOut.WriteLine(fsoFile.ShortPath)");
-      fileConverter.delete();
-      fileConverter.createNewFile();
-      FileWriter fw = new FileWriter(fileConverter);
-      fw.append(scriptBuilder);
-      fw.close();
-      Process process = Runtime.getRuntime().exec(
-          new String[] { "cscript.exe", fileConverter.getAbsolutePath(), "//NoLogo" });
-      process.waitFor();
+      // these two quotes are required in the case where both directory and file are non-ascii
+      ProcessBuilder pc = new ProcessBuilder(fileConverter.getAbsolutePath(), "\"" + longname
+          + "\"");
+      Process process = pc.start();
+      /*
+       * dir /x parsing : Sample output (in French but should work with any language):
+       * 
+       * Le volume dans le lecteur D s'appelle DonnÃ©es
+       * 
+       * Le numÃ©ro de sÃ©rie du volume est C880-0321
+       * 
+       * RÃ©pertoire de D:\MESDOC~1\MAMUSI~1\FILES_~1\1F19~1
+       * 
+       * 07/06/2010 21:49 <REP> .
+       * 
+       * 07/06/2010 21:49 <REP> ..
+       * 
+       * 07/06/2010 14:41 20Â 108 -(_)~1.MP3 ÂµÃ—Ã¹Ã•â”‚Â» - ÂµÃ¿Ã„Ã•Ã±Â®Ãµâ•—Ã‘Ã•Â¥Ã® (ÂµÃ—Ã¹Ã•â”‚Â»+Âµâ”‚Ã•Ã Ã†Ã•Ã‰ÃªÃ•Ã¶â–’).mp3
+       */
       BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-      shortname = br.readLine();
+      String line = "";
+      String lineDirectory = null;
+      while ((line = br.readLine()) != null) {
+        String ext = UtilSystem.getExtension(new File(longname));
+        if (StringUtils.isNotBlank(line)) {
+          // Index of the file extension in short name
+          int indexExtension = line.indexOf(longname.substring(0, 3).toUpperCase());
+          if (line.endsWith(ext)) {
+            int indexEnd = line.indexOf(ext.toUpperCase());
+            int indexBegin = indexEnd;
+            // Find the previous space
+            while (line.charAt(indexBegin) != ' ') {
+              indexBegin--;
+            }
+            shortname = line.substring(indexBegin, indexEnd + 4).trim();
+            break;
+          } else if (indexExtension != -1) {
+            // We get parent directory full path in shortname thanks the %~s1 in the script
+            lineDirectory = line.substring(indexExtension, line.length()).trim();
+          }
+        }
+      }
+      shortname = lineDirectory + "\\" + shortname;
       process.destroy();
     } catch (Exception e) {
       throw new JajukRuntimeException("Cannot convert the filename to 8.3 format", e);
