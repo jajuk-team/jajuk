@@ -584,8 +584,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_200X200);
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_250X250);
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_300X300);
-          // Display the catalog view voided
+          // For catalog view's update
           ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+          // Display a message
+          Messages.showInfoMessage(Messages.getString("Success"));
+          
         }
       }.start();
     }
@@ -989,7 +992,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       @Override
       public void valueChanged(final ListSelectionEvent e) {
         if (!e.getValueIsAdjusting()) {
-          final SearchResult sr = sbSearch.getResult(sbSearch.getSelectedIndex());
+          final SearchResult sr = sbSearch.getResult();
           sbSearch.setText(sr.getFile().getTrack().getName());
           Conf.setProperty(Const.CONF_STARTUP_FILE, sr.getFile().getID());
           sbSearch.hidePopup();
