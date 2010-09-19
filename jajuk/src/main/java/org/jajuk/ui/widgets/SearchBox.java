@@ -322,19 +322,21 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
   }
 
   /**
-   * Gets the result.
+   * Gets the result or 
    * 
-   * @param index
-   *          DOCUMENT_ME
+   * @param index item or null if none search already performed
    * 
-   * @return the result
+   * @return the result 
    */
-  public SearchResult getResult(final int index) {
-    return alResults.get(index);
+  public SearchResult getResult() {
+    if (jlist == null){
+      return null;
+    }
+    return alResults.get(getSelectedIndex());
   }
 
   /**
-   * Hide popup. DOCUMENT_ME
+   * Hide popup. 
    */
   public void hidePopup() {
     popup.hide();
@@ -344,7 +346,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
    * Display the search icon inside the texfield.
    * 
    * @param g
-   *          DOCUMENT_ME
+   *          the graphics
    */
   @Override
   public void paint(Graphics g) {
@@ -364,7 +366,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
       @Override
       public Void doInBackground() {
         if (!e.getValueIsAdjusting()) {
-          SearchResult sr = getResult(getSelectedIndex());
+          SearchResult sr = getResult();
           try {
             // If user selected a file
             if (sr.getType() == SearchResultType.FILE) {

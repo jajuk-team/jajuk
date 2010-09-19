@@ -31,11 +31,14 @@ import java.util.Set;
 import org.apache.commons.lang.time.DateUtils;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.services.core.ExitService;
+import org.jajuk.services.webradio.WebRadio;
+import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
@@ -44,6 +47,7 @@ import org.jajuk.util.log.Log;
  * Manages alarms
  * 
  * TODO: We could use Timer instead of implementing the Timer loop ourselves here!.
+ * TODO : multi-alarms management
  */
 
 public class AlarmManager implements Observer {
@@ -126,14 +130,22 @@ public class AlarmManager implements Observer {
         }
         // Compute playlist if required
         List<File> alToPlay = null;
+        WebRadio radio = null;
         if (alarmAction.equals(Const.ALARM_START_ACTION)) {
           String mode = Conf.getString(Const.CONF_ALARM_MODE);
-
+          String conf = Conf.getString(Const.CONF_ALARM_FILE);
+          String item = conf.substring(conf.indexOf('/') + 1, conf.length());
           alToPlay = new ArrayList<File>();
           if (mode.equals(Const.STARTUP_MODE_FILE)) {
-            File fileToPlay = FileManager.getInstance().getFileByID(
-                Conf.getString(Const.CONF_ALARM_FILE));
-            alToPlay.add(fileToPlay);
+            if (conf.matches(SearchResultType.FILE.name() + ".*")) {
+              File file = FileManager.getInstance().getFileByID(item);
+              if (file != null) {
+                alToPlay.add(file);
+              }
+            } else if (conf.matches(SearchResultType.WEBRADIO.name() + ".*")) {
+              radio = WebRadioManager.getInstance().getWebRadioByName(item);
+            }
+
           } else if (mode.equals(Const.STARTUP_MODE_SHUFFLE)) {
             alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
           } else if (mode.equals(Const.STARTUP_MODE_BESTOF)) {
@@ -144,7 +156,12 @@ public class AlarmManager implements Observer {
             Log.warn("Undefined alarm mode found: " + mode);
           }
         }
-        alarm = new Alarm(alarmDate, alToPlay, alarmAction);
+        // Instanciate either the files list or the web radio
+        if (radio == null) {
+          alarm = new Alarm(alarmDate, alToPlay, alarmAction);
+        } else {
+          alarm = new Alarm(alarmDate, radio, alarmAction);
+        }
       }
     }
   }

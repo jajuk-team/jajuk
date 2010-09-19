@@ -41,10 +41,13 @@ import net.miginfocom.swing.MigLayout;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.SearchResult;
+import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.alarm.AlarmManager;
+import org.jajuk.services.webradio.WebRadio;
+import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.ui.widgets.SearchBox;
@@ -56,9 +59,11 @@ import org.jajuk.util.log.Log;
 
 /**
  * Alarm Clock Dialog window.
+ * 
+ * TODO : add validation on fields
  */
 public class AlarmClockDialog extends JajukJDialog implements ActionListener, ItemListener, Const {
-  
+
   /** 
    * Constant for MigLayout hint.
    */
@@ -102,7 +107,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
 
   /** DOCUMENT_ME. */
   private SearchResult sr;
-  
+
   private OKCancelPanel okCancelPanel;
 
   /**
@@ -147,9 +152,14 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
       @Override
       public void valueChanged(final ListSelectionEvent e) {
         if (!e.getValueIsAdjusting()) {
-          sr = sbSearch.getResult(sbSearch.getSelectedIndex());
-          sbSearch.setText(sr.getFile().getTrack().getName());
+          sr = sbSearch.getResult();
+          if (sr.getType() == SearchResultType.FILE) {
+            sbSearch.setText(sr.getFile().getTrack().getName());
+          } else if (sr.getType() == SearchResultType.WEBRADIO) {
+            sbSearch.setText(sr.getWebradio().getName());
+          }
           sbSearch.hidePopup();
+          sr = sbSearch.getResult();
         }
       }
     };
@@ -165,7 +175,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
 
     jrbShuffle.setSelected(true);
     okCancelPanel = new OKCancelPanel(this);
-    
+
     setLayout(new MigLayout("insets 5,gapy 15", "[grow][grow]"));
     add(jcbTime, "right");
     add(jtfHour, "left,split 5,width 30!");
@@ -181,14 +191,13 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
     add(jrbNovelties, LEFT_WRAP);
     add(jrbFile, "left");
     add(sbSearch, "left,wrap,grow");
-    add(okCancelPanel , "right,span");
+    add(okCancelPanel, "right,span");
 
     // Reload on GUI saved values
     loadValues();
-    
+
     setTitle(Messages.getString("AlarmClock.0"));
     setMinimumSize(new Dimension(250, 100));
-    setModal(true);
     pack();
     setLocationRelativeTo(JajukMainWindow.getInstance());
     setVisible(true);
@@ -250,8 +259,10 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
    */
   public void itemStateChanged(final ItemEvent e) {
     if (e.getSource() == jrbFile) {
+      sr = sbSearch.getResult();
       sbSearch.setEnabled(jrbFile.isSelected());
     }
+
   }
 
   /**
@@ -281,7 +292,15 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
       Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_FILE);
       // sr = null means none search occurred in this session
       if (sr != null) {
-        Conf.setProperty(Const.CONF_ALARM_FILE, sr.getFile().getID());
+        sr = sbSearch.getResult();
+        if (sr.getType() == SearchResultType.FILE) {
+          Conf.setProperty(Const.CONF_ALARM_FILE, SearchResultType.FILE.name() + '/'
+              + sr.getFile().getID());
+        } else if (sr.getType() == SearchResultType.WEBRADIO) {
+          Conf.setProperty(Const.CONF_ALARM_FILE, SearchResultType.WEBRADIO.name() + '/'
+              + sr.getWebradio().getName());
+        }
+
       }
     } else if (jrbBestof.isSelected()) {
       Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_BESTOF);
@@ -325,10 +344,18 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
       jrbNovelties.setSelected(true);
     } else if (Const.STARTUP_MODE_FILE.equals(Conf.getString(CONF_ALARM_MODE))) {
       jrbFile.setSelected(true);
-      File file = FileManager.getInstance()
-      .getFileByID(Conf.getString(Const.CONF_ALARM_FILE));
-      if(file != null) {
-        sbSearch.setText(file.getName());
+      String conf = Conf.getString(Const.CONF_ALARM_FILE);
+      String item = conf.substring(conf.indexOf('/') + 1, conf.length());
+      if (conf.matches(SearchResultType.FILE.name() + ".*")) {
+        File file = FileManager.getInstance().getFileByID(item);
+        if (file != null) {
+          sbSearch.setText(file.getTrack().getName());
+        }
+      } else if (conf.matches(SearchResultType.WEBRADIO.name() + ".*")) {
+        WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(item);
+        if (radio != null) {
+          sbSearch.setText(radio.getName());
+        }
       }
     } else if (Const.STARTUP_MODE_SHUFFLE.equals(Conf.getString(CONF_ALARM_MODE))) {
       jrbShuffle.setSelected(true);
@@ -344,7 +371,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
   public void dispose() {
     // there are some resources to close in the Search-Box that I could not get rid of with any of the default dispose-methods in Swing...
     sbSearch.close();
-    
+
     super.dispose();
   }
 }

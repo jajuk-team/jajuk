@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.commons.lang.time.DateUtils;
 import org.jajuk.base.File;
 import org.jajuk.services.players.QueueModel;
+import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilFeatures;
@@ -35,13 +36,16 @@ import org.jajuk.util.log.Log;
  * An Alarm.
  */
 public class Alarm {
-  
+
+  /** The files to play */
+  private List<File> alToPlay;
+
+  /** The webradio to play. */
+  private WebRadio radio;
+
   /** DOCUMENT_ME. */
-  private final List<File> alToPlay;
-  
-  /** DOCUMENT_ME. */
-  private final String alarmAction;
-  
+  private String alarmAction;
+
   /** DOCUMENT_ME. */
   private Date aTime;
 
@@ -59,13 +63,31 @@ public class Alarm {
   }
 
   /**
+   * Instantiates a new alarm.
+   * 
+   * @param aTime DOCUMENT_ME
+   * @param radio DOCUMENT_ME
+   * @param mode DOCUMENT_ME
+   **/
+  public Alarm(java.util.Date aTime, WebRadio radio, String mode) {
+    this.aTime = aTime;
+    this.radio = radio;
+    this.alarmAction = mode;
+  }
+
+  /**
    * Effective action to perform by the alarm.
    */
   public void wakeUpSleeper() {
     Log.debug("Wake up at " + new Date());
     if (alarmAction.equals(Const.ALARM_START_ACTION)) {
-      QueueModel.push(UtilFeatures.createStackItems(alToPlay, Conf
-          .getBoolean(Const.CONF_STATE_REPEAT_ALL), false), false);
+      if (alToPlay != null) {
+        QueueModel.push(UtilFeatures.createStackItems(alToPlay, Conf
+            .getBoolean(Const.CONF_STATE_REPEAT_ALL), false), false);
+      } else if (radio != null) {
+        QueueModel.launchRadio(radio);
+
+      }
     } else {
       QueueModel.stopRequest();
     }

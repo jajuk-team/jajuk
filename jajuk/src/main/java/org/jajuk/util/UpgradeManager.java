@@ -36,6 +36,7 @@ import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
+import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
@@ -128,6 +129,10 @@ public final class UpgradeManager {
     } catch (Exception e) {
       Log.error(e);
     }
+    if (SessionService.isTestMode()) {
+      // In test mode, we are always in upgraded mode
+      bUpgraded = true;
+    }
     // Now set current release in the conf
     Conf.setProperty(Const.CONF_RELEASE, Const.JAJUK_VERSION);
   }
@@ -179,6 +184,9 @@ public final class UpgradeManager {
 
         // For Jajuk < 1.7
         upgradeElapsedTimeFormat();
+
+        // for Jajuk < 1.9
+        upgradeAlarmConfFile();
 
       }
     } catch (Exception e) {
@@ -274,6 +282,17 @@ public final class UpgradeManager {
       } else {
         Conf.setProperty(Const.CONF_OPTIONS_HOTKEYS, Const.FALSE);
       }
+    }
+  }
+
+  /**
+   * For jajuk < 1.9: Alarm configuration, file / webradio to be launched
+   */
+  private static void upgradeAlarmConfFile() {
+    String conf = Conf.getString(Const.CONF_ALARM_FILE);
+    if (conf.indexOf('/') == -1) {
+      conf = SearchResultType.FILE.name() + '/' + conf;
+      Conf.setProperty(Const.CONF_ALARM_FILE, conf);
     }
   }
 
