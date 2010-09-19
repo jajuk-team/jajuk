@@ -41,7 +41,7 @@ public class TestAlarm extends JajukTestCase {
    */
 
   public void testAlarm() {
-    new Alarm(new Date(), null, "mode");
+    new Alarm(new Date(), new ArrayList<File>(), "mode");
   }
 
   /**
@@ -49,7 +49,7 @@ public class TestAlarm extends JajukTestCase {
    */
 
   public void testWakeUpSleeper() {
-    Alarm alarm = new Alarm(new Date(), null, "mode");
+    Alarm alarm = new Alarm(new Date(), new ArrayList<File>(), "mode");
     alarm.wakeUpSleeper();
 
     List<File> list = new ArrayList<File>();
@@ -63,7 +63,7 @@ public class TestAlarm extends JajukTestCase {
 
   public void testGetAlarmTime() {
     Date date = new Date();
-    Alarm alarm = new Alarm(date, null, "mode");
+    Alarm alarm = new Alarm(date, new ArrayList<File>(), "mode");
     assertEquals(date, alarm.getAlarmTime());
   }
 
@@ -73,7 +73,7 @@ public class TestAlarm extends JajukTestCase {
 
   public void testNextDay() {
     Date date = new Date();
-    Alarm alarm = new Alarm(date, null, "mode");
+    Alarm alarm = new Alarm(date, new ArrayList<File>(), "mode");
     assertEquals(date, alarm.getAlarmTime());
     alarm.nextDay();
 
