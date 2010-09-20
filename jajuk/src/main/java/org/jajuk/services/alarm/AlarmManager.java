@@ -136,7 +136,7 @@ public class AlarmManager implements Observer {
           String conf = Conf.getString(Const.CONF_ALARM_FILE);
           String item = conf.substring(conf.indexOf('/') + 1, conf.length());
           alToPlay = new ArrayList<File>();
-          if (mode.equals(Const.STARTUP_MODE_FILE)) {
+          if (mode.equals(Const.STARTUP_MODE_ITEM)) {
             if (conf.matches(SearchResultType.FILE.name() + ".*")) {
               File file = FileManager.getInstance().getFileByID(item);
               if (file != null) {

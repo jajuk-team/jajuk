@@ -187,6 +187,7 @@ public final class UpgradeManager {
 
         // for Jajuk < 1.9
         upgradeAlarmConfFile();
+        upgradeStartupConf();
 
       }
     } catch (Exception e) {
@@ -293,6 +294,17 @@ public final class UpgradeManager {
     if (conf.indexOf('/') == -1) {
       conf = SearchResultType.FILE.name() + '/' + conf;
       Conf.setProperty(Const.CONF_ALARM_FILE, conf);
+    }
+  }
+
+  /**
+   * For jajuk < 1.9: Startup configuration, file / webradio to be launched
+   */
+  private static void upgradeStartupConf() {
+    String conf = Conf.getString(Const.CONF_STARTUP_ITEM);
+    if (conf.indexOf('/') == -1) {
+      conf = SearchResultType.FILE.name() + '/' + conf;
+      Conf.setProperty(Const.CONF_STARTUP_ITEM, conf);
     }
   }
 

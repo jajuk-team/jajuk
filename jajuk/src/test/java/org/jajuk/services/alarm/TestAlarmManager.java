@@ -80,7 +80,7 @@ public class TestAlarmManager extends JajukTestCase {
 
   public void testUpdate3() {
     Conf.setProperty(Const.CONF_ALARM_ENABLED, "true");
-    Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_FILE);
+    Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_ITEM);
 
     AlarmManager.getInstance().update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
   }
@@ -114,7 +114,7 @@ public class TestAlarmManager extends JajukTestCase {
     cal.add(Calendar.SECOND, 1);
 
     Conf.setProperty(Const.CONF_ALARM_ENABLED, "true");
-    Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_FILE);
+    Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_ITEM);
     Conf.setProperty(Const.CONF_ALARM_TIME_HOUR, Integer.toString(cal.get(Calendar.HOUR_OF_DAY)));
     Conf.setProperty(Const.CONF_ALARM_TIME_MINUTES, Integer.toString(cal.get(Calendar.MINUTE)));
     Conf.setProperty(Const.CONF_ALARM_TIME_SECONDS, Integer.toString(cal.get(Calendar.SECOND)));

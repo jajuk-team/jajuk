@@ -34,6 +34,7 @@ import javax.swing.JOptionPane;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -70,25 +71,27 @@ public class StartupEngineService {
     List<org.jajuk.base.File> alToPlay = new ArrayList<org.jajuk.base.File>();
     // File to play
     org.jajuk.base.File fileToPlay = null;
+    final WebRadio radio;
     if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST)
         || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)
-        || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_FILE)
+        || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_ITEM)
         || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOTHING)) {
-      if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_FILE)) {
-        fileToPlay = FileManager.getInstance().getFileByID(Conf.getString(Const.CONF_STARTUP_FILE));
+      if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_ITEM)) {
+        String conf = Conf.getString(Const.CONF_STARTUP_ITEM);
+        String item = conf.substring(conf.indexOf('/') + 1, conf.length());
+        if (conf.matches(SearchResultType.FILE.name() + ".*")) {
+          fileToPlay = FileManager.getInstance().getFileByID(item);
+        } else if (conf.matches(SearchResultType.WEBRADIO.name() + ".*")) {
+          radio = WebRadioManager.getInstance().getWebRadioByName(item);
+          launchRadio(radio);
+          return;
+        }
       } else {
         // If we were playing a webradio when leaving, launch it
         if (Conf.getBoolean(Const.CONF_WEBRADIO_WAS_PLAYING)) {
-          final WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(
+          radio = WebRadioManager.getInstance().getWebRadioByName(
               Conf.getString(Const.CONF_DEFAULT_WEB_RADIO));
-          if (radio != null) {
-            new Thread("WebRadio launch thread") {
-              @Override
-              public void run() {
-                QueueModel.launchRadio(radio);
-              }
-            }.start();
-          }
+          launchRadio(radio);
           return;
         }
         // last file from beginning or last file keep position
@@ -201,9 +204,10 @@ public class StartupEngineService {
         alToPlay.add(0, fileToPlay);
         index = 0;
       }
-      boolean bRepeat =  Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL) ||  Conf.getBoolean(Const.CONF_STATE_REPEAT);
-      QueueModel.insert(UtilFeatures.createStackItems(alToPlay,bRepeat, false), 0);
-     
+      boolean bRepeat = Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL)
+          || Conf.getBoolean(Const.CONF_STATE_REPEAT);
+      QueueModel.insert(UtilFeatures.createStackItems(alToPlay, bRepeat, false), 0);
+
       // do not start playing if do nothing at startup is selected
       if (!Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOTHING)) {
         final int finalIndex = index;
@@ -214,6 +218,23 @@ public class StartupEngineService {
           }
         }.start();
       }
+    }
+  }
+
+  /**
+   * Launch the given webradio
+   * @param radio the radio
+   */
+  private static void launchRadio(final WebRadio radio) {
+    if (radio != null) {
+      new Thread("WebRadio launch thread") {
+        @Override
+        public void run() {
+          QueueModel.launchRadio(radio);
+        }
+      }.start();
+    } else {
+      Log.warn("Unknwon webradio : " + radio.getName());
     }
   }
 

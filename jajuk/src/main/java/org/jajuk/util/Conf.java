@@ -180,7 +180,7 @@ public final class Conf implements Const {
     defaults.put(CONF_STATE_CONTINUE, FALSE);
     defaults.put(CONF_STATE_INTRO, FALSE);
     // no startup file by default
-    defaults.put(CONF_STARTUP_FILE, "");
+    defaults.put(CONF_STARTUP_ITEM, "");
     defaults.put(CONF_STARTUP_MODE, STARTUP_MODE_LAST_KEEP_POS);
     defaults.put(CONF_STARTUP_LAST_POSITION, "0");
     defaults.put(CONF_CONFIRMATIONS_DELETE_FILE, TRUE);

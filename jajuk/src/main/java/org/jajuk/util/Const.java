@@ -569,7 +569,7 @@ public interface Const {
   String STARTUP_MODE_SHUFFLE = "shuffle";
 
   /** DOCUMENT_ME. */
-  String STARTUP_MODE_FILE = "file";
+  String STARTUP_MODE_ITEM = "file";
 
   /** DOCUMENT_ME. */
   String STARTUP_MODE_LAST = "last";
@@ -610,7 +610,7 @@ public interface Const {
   String CONF_STATE_INTRO = "jajuk.state.mode.intro";
 
   /** DOCUMENT_ME. */
-  String CONF_STARTUP_FILE = "jajuk.startup.file";
+  String CONF_STARTUP_ITEM = "jajuk.startup.file";
 
   /** DOCUMENT_ME. */
   String CONF_STARTUP_MODE = "jajuk.startup.mode";

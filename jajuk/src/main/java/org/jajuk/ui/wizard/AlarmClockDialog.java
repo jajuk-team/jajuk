@@ -289,7 +289,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
     if (jrbShuffle.isSelected()) {
       Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_SHUFFLE);
     } else if (jrbFile.isSelected()) {
-      Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_FILE);
+      Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_ITEM);
       // sr = null means none search occurred in this session
       if (sr != null) {
         sr = sbSearch.getResult();
@@ -342,7 +342,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
       jrbBestof.setSelected(true);
     } else if (Const.STARTUP_MODE_NOVELTIES.equals(Conf.getString(CONF_ALARM_MODE))) {
       jrbNovelties.setSelected(true);
-    } else if (Const.STARTUP_MODE_FILE.equals(Conf.getString(CONF_ALARM_MODE))) {
+    } else if (Const.STARTUP_MODE_ITEM.equals(Conf.getString(CONF_ALARM_MODE))) {
       jrbFile.setSelected(true);
       String conf = Conf.getString(Const.CONF_ALARM_FILE);
       String item = conf.substring(conf.indexOf('/') + 1, conf.length());
