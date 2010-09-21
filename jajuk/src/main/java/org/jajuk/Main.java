@@ -242,21 +242,6 @@ public final class Main {
     }
   }
 
-  /**
-   * Called when starting Jajuk from the thumb maker process, set jajuk in light
-   * mode.
-   * 
-   * @param bTest
-   *          DOCUMENT_ME
-   * @param workspace
-   *          DOCUMENT_ME
-   */
-  public static void initializeFromThumbnailsMaker(final boolean bTest, final String workspace) {
-    SessionService.setTestMode(bTest);
-    SessionService.setWorkspace(workspace);
-    SessionService.setInThumbMaker(true);
-  }
-
   /*
    * Initialize some useful System properties For some reasons (at least with Apple JVM), this
    * method must be in the Main class. Should be called ASAP in the startup process

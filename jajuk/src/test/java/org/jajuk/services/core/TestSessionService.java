@@ -101,6 +101,8 @@ public class TestSessionService extends JajukTestCase {
   public void testSetWorkspace() {
     SessionService.setWorkspace("testworkspace");
   }
+  
+  
 
   /**
    * Test method for
@@ -254,14 +256,6 @@ public class TestSessionService extends JajukTestCase {
     assertNotNull(file);
     File.createTempFile("cache", ".tst", file);
     SessionService.clearCache();
-  }
-
-  /**
-   * Test method for
-   * {@link org.jajuk.services.core.SessionService#getVersionWorkspace()}.
-   */
-  public void testGetVersionWorkspace() {
-    assertNotNull(SessionService.getVersionWorkspace());
   }
 
   // helper method to emma-coverage of the unused constructor

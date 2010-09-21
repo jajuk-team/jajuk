@@ -84,9 +84,6 @@ public class SessionService {
   /** Bootstrap file content as key/value format */
   private static Map<String, String> bootstrapContent = new HashMap<String, String>(2);
 
-  /** Whether we are regular process are a thumb builder process *. */
-  private static boolean inThumbMaker = false;
-
   /** Cached bootstrap absolute file path. */
   private static String cachedBootstrapPath;
 
@@ -231,11 +228,6 @@ public class SessionService {
     }
     if (!bootstrapContent.containsKey(KEY_TEST)) {
       bootstrapContent.put(KEY_TEST, workspace);
-    }
-
-    // Commit the bootstrap file if not in forced workspace case
-    if (!isForcedWorkspace() && !new File(getBootstrapPath()).exists()) {
-      writeBootstrapFile();
     }
   }
 
@@ -404,7 +396,7 @@ public class SessionService {
             // Commit the boostrap file if required (should be done after
             //the reader stream is closed)
             if (needOverride) {
-              writeBootstrapFile();
+              commitBootstrapFile();
             }
 
             // Compute the final workspace path
@@ -436,6 +428,8 @@ public class SessionService {
           System.out
               .println("[BOOT] Bootstrap file does not exist or is not readable, using home directory as a workspace");
           setWorkspace(UtilSystem.getUserHome());
+          // Commit the bootstrap file
+          commitBootstrapFile();
         }
         // Not better ? Show a first time wizard and let user select
         // the workspace (~/.jajuk by default)
@@ -443,6 +437,8 @@ public class SessionService {
           System.out
               .println("[BOOT] Bootstrap file does not exist or is not readable and home directory is not readable neither");
           humanWorkspaceSelection();
+          // Commit the bootstrap file
+          commitBootstrapFile();
         }
       }
     } finally {
@@ -490,9 +486,8 @@ public class SessionService {
 
   /**
    * Write down the bootstrap file. Manage IO errors.
-   * @param bootstrap
    */
-  private static void writeBootstrapFile() {
+  public static void commitBootstrapFile() {
     Writer bw = null;
     File bootstrap = new File(getBootstrapPath());
     try {
@@ -585,33 +580,6 @@ public class SessionService {
       // note that this will note delete non-empty directories like lastfm cache in purpose
       element.delete();
     }
-  }
-
-  /**
-   * Return the bootstrap file content.
-   * 
-   * @return the bootstrap file content as a property object
-   */
-  public static Map<String, String> getVersionWorkspace() {
-    return bootstrapContent;
-  }
-
-  /**
-   * Checks if is in thumb maker.
-   * 
-   * @return whether we are regular process are a thumb builder process
-   */
-  public static boolean isInThumbMaker() {
-    return inThumbMaker;
-  }
-
-  /**
-   * Sets the in thumb maker.
-   * 
-   * @param inThumbMaker the inThumbMaker to set
-   */
-  public static void setInThumbMaker(boolean inThumbMaker) {
-    SessionService.inThumbMaker = inThumbMaker;
   }
 
   /**

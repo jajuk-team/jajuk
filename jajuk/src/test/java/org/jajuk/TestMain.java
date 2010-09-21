@@ -20,7 +20,6 @@
  */
 package org.jajuk;
 
-import org.jajuk.services.core.SessionService;
 
 /**
  * 
@@ -35,17 +34,5 @@ public class TestMain extends JajukTestCase {
     // HeadlessException
     // Main.main(new String[]{});
   }
-
-  /**
-   * Test method for
-   * {@link org.jajuk.Main#initializeFromThumbnailsMaker(boolean, java.lang.String)}
-   * .
-   * 
-   * @throws Exception
-   */
-  public void testInitializeFromThumbnailsMaker() throws Exception {
-    JUnitHelpers.createSessionDirectory();
-    Main.initializeFromThumbnailsMaker(true, SessionService.getWorkspace());
-  }
-
+  
 }

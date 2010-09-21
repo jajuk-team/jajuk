@@ -113,7 +113,7 @@ import org.jvnet.substance.skin.SkinInfo;
 public class ParameterView extends ViewAdapter implements ActionListener, ItemListener,
     ChangeListener {
 
-   /** Generated serialVersionUID. */
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
   /** The Constant NOTIFICATOR_PREFIX. DOCUMENT_ME */
@@ -786,17 +786,16 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
           UtilSystem.copyRecursively(from, dest);
           bPreviousPathExist = false;
-          // Change the workspace so the very last conf (like current
-          // track)
-          // will be saved directly to target workspace. We don't do
-          // this if the
-          // workspace already exist to avoid overwriting other
-          // configuration.
-          SessionService.setWorkspace(psJajukWorkspace.getUrl());
-        } else {
-          // The workspace already exists, we set this value
-          SessionService.setWorkspace(psJajukWorkspace.getUrl());
         }
+        // Change the workspace so the very last conf (like current
+        // track)
+        // will be saved directly to target workspace. We don't do
+        // this if the workspace already exist to avoid overwriting other
+        // configuration.
+        SessionService.setWorkspace(psJajukWorkspace.getUrl());
+        //Commit the bootstrap file
+        SessionService.commitBootstrapFile();
+        
         UtilGUI.stopWaiting();
         // Display a warning message and restart Jajuk
         if (bPreviousPathExist) {
