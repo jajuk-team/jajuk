@@ -346,7 +346,6 @@ public final class Conf implements Const {
     defaults.put(CONF_EXPLORER_PATH, "");
 
     // NOT SHOW AGAIN
-    defaults.put(CONF_NOT_SHOW_AGAIN_LASTFM_DISABLED, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_CROSS_FADE, FALSE);

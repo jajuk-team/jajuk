@@ -911,9 +911,6 @@ public interface Const {
   /** Laf change not show again flag *. */
   String CONF_NOT_SHOW_AGAIN_LAF_CHANGE = "jajuk.not_show_laf_change";
 
-  /** Last.FM disabled not show again flag * */
-  String CONF_NOT_SHOW_AGAIN_LASTFM_DISABLED = "jajuk.not_show_lastfm_disable";
-
   /** Global random mode: song or album level ? *. */
   String CONF_GLOBAL_RANDOM_MODE = "jajuk.global_random.mode";
 

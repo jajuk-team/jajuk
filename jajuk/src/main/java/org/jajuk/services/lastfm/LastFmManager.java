@@ -27,7 +27,6 @@ import ext.services.lastfm.ScrobblerException;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.File;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -36,8 +35,6 @@ import org.jajuk.events.Observer;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.Messages;
-import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
@@ -62,17 +59,7 @@ public final class LastFmManager implements Observer, Const {
   private LastFmManager() {
     // Register on the list for subject we are interested in
     ObservationManager.register(this);
-    // Display an hideable message to user if audioscrobber is disable
-    // Show this message only one time by jajuk session
-    if (!Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE)
-    // don't show this message if first jajuk launch: already too many
-        // popups.
-        && !UpgradeManager.isFirstSession()
-        // don't show neither if last.fm login is already provided but disabled
-        && StringUtils.isBlank(Conf.getString(Const.CONF_LASTFM_USER))) {
-      Messages.showHideableWarningMessage(Messages.getString("LastFmManager.0"),
-          CONF_NOT_SHOW_AGAIN_LASTFM_DISABLED);
-    }
+   
     // Create the service
     service = LastFmService.getInstance();
 
