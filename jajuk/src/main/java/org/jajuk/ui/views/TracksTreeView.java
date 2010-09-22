@@ -70,7 +70,6 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.JajukMouseAdapter;
-import org.jajuk.ui.helpers.TransferableTreeNodes;
 import org.jajuk.ui.helpers.TreeRootElement;
 import org.jajuk.ui.helpers.TreeTransferHandler;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
@@ -683,10 +682,11 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
           List<Track> allTracks = TrackManager.getInstance().getTracks();
           selectedRecursively.addAll(allTracks);
           break;
-        } else if (o instanceof TransferableTreeNodes) {
-          // this is a standard node except "by date"
-          // discovery nodes
-          alSelected.add((Item) ((DefaultMutableTreeNode) o).getUserObject());
+        } else {
+          Object userObject = ((DefaultMutableTreeNode) o).getUserObject();
+          if (userObject instanceof Item) {
+            alSelected.add((Item) userObject);
+          }
         }
 
         // return all child nodes recursively
