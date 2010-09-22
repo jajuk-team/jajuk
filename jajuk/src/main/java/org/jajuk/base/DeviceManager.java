@@ -398,7 +398,7 @@ public final class DeviceManager extends ItemManager {
           /*
            * Check if this device should be deep-refresh after an upgrade
            */
-          boolean bNeedDeepAfterUpgrade = UpgradeManager.isUpgradeDetected()
+          boolean bNeedDeepAfterUpgrade = UpgradeManager.isMajorMigration()
               && !devicesDeepRefreshed.contains(device);
           if (bNeedDeepAfterUpgrade) {
             // Store this device to avoid duplicate deep refreshes
