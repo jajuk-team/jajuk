@@ -113,18 +113,13 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
 
     @Override
     public void handleActionSingleClick(final MouseEvent e) {
-      boolean bSameDevice = ((diSelected != null) && e.getSource().equals(diSelected));// be
       selectItem(e);
-      if (bSameDevice) {
-        // one device already selected + right click
-        DeviceWizard dw = new DeviceWizard();
-        dw.updateWidgets(diSelected.getDevice());
-        dw.pack();
-        dw.setVisible(true);
-      } else {
-        // a new device is selected
-        diSelected.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
-      }
+      diSelected.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+      // one device already selected + right click
+      DeviceWizard dw = new DeviceWizard();
+      dw.updateWidgets(diSelected.getDevice());
+      dw.pack();
+      dw.setVisible(true);
     }
 
     @Override
