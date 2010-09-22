@@ -23,13 +23,16 @@ package org.jajuk.util;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Properties;
 import java.util.StringTokenizer;
 
 import javax.swing.JOptionPane;
 
+import org.apache.commons.io.FileUtils;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Collection;
 import org.jajuk.base.Device;
@@ -138,9 +141,9 @@ public final class UpgradeManager {
   }
 
   /**
-   * Checks if is first sesion.
+   * Checks if is first session.
    * 
-   * @return true, if is first sesion
+   * @return true, if is first session
    */
   public static boolean isFirstSession() {
     return bFirstSession;
@@ -188,7 +191,6 @@ public final class UpgradeManager {
         // for Jajuk < 1.9
         upgradeAlarmConfFile();
         upgradeStartupConf();
-
       }
     } catch (Exception e) {
       Log.error(e);
@@ -242,6 +244,74 @@ public final class UpgradeManager {
           Log.error(e);
         }
       }
+    }
+  }
+
+  /**
+   * For Jajuk < 1.9: bootstrap file is now in XML format
+   * <br>
+   * If it exists and contains data in 1.7 or 1.8 format, it convert it to new XML
+   * format (to handle backslashes properly, old format just drop them)
+   * <br>
+   * This method doesn't yet validate provided workspace paths but only the bootstrap file 
+   * structure itself.
+   */
+  public static void upgradeBootstrapFile() {
+    try {
+      String KEY_TEST = "test";
+      String KEY_FINAL = "final";
+      File bootstrapOld = new File(SessionService.getBootstrapPath(Const.FILE_BOOTSTRAP_OLD));
+      File bootstrapOldOldHome = new File(System.getProperty("user.home") + "/"
+          + Const.FILE_BOOTSTRAP_OLD);
+      File bootstrapNew = new File(SessionService.getBootstrapPath());
+
+      // Fix for #1473 : move the bootstrap file if required (See https://trac.jajuk.info/ticket/1473)
+      if (UtilSystem.isUnderWindows() && !bootstrapOld.equals(bootstrapOldOldHome)
+          && !bootstrapOld.exists() && bootstrapOldOldHome.exists()) {
+        try {
+          FileUtils.copyFileToDirectory(bootstrapOldOldHome, new File(UtilSystem.getUserHome()));
+          UtilSystem.deleteFile(bootstrapOldOldHome);
+        } catch (IOException ex) {
+          ex.printStackTrace();
+        }
+      }
+
+      if (bootstrapOld.exists() && !bootstrapNew.exists()) {
+        Properties prop = null;
+        // Try to load a bootstrap file using plain text old format
+        prop = new Properties();
+        FileInputStream fis = new FileInputStream(SessionService.getBootstrapPath(Const.FILE_BOOTSTRAP_OLD)); 
+        prop.load(fis);
+        fis.close();
+        
+
+        // If it exists and contains pre-1.7 bootstrap format (a single line with a raw path),
+        // convert it to 1.7 format first
+        if (prop.size() == 1) {
+          // We get something like <... path ...> = <nothing>
+          String path = (String) prop.keys().nextElement();
+          // we use this path for both test and final workspace
+          prop.clear();
+          prop.put(KEY_TEST, path);
+          prop.put(KEY_FINAL, path);
+        }
+        // Make sure to populate both test and final release
+        if (!prop.containsKey(KEY_TEST)) {
+          prop.put(KEY_TEST, UtilSystem.getUserHome());
+        }
+        if (!prop.containsKey(KEY_FINAL)) {
+          prop.put(KEY_FINAL, UtilSystem.getUserHome());
+        }
+        // Write down the new bootstrap file
+        SessionService.commitBootstrapFile(prop);
+
+        // Delete old bootstrap file
+        bootstrapOld.delete();
+      }
+    } catch (Exception e) {
+      // Do not throw any exception from here. display raw stack trace, Logs facilities 
+      // are not yet available.
+      e.printStackTrace();
     }
   }
 

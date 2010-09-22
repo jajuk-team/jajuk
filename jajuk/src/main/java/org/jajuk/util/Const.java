@@ -297,7 +297,10 @@ public interface Const {
   String FILE_FIFO = "fifo.lst";
   
   /** Bootstrap file name */
-  String FILE_BOOTSTRAP = ".jajuk_bootstrap";
+  String FILE_BOOTSTRAP = ".jajuk_bootstrap.xml";
+  
+  /** Old (pre-1.9) bootstrap file name */
+  String FILE_BOOTSTRAP_OLD = ".jajuk_bootstrap";
 
   /** DOCUMENT_ME. */
   String FILE_MPLAYER_WINDOWS_EXE = "mplayer.exe";
