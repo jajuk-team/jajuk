@@ -147,9 +147,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   JajukButton jbClear;
 
   /** DOCUMENT_ME. */
-  private JajukButton jbPrepParty;
-
-  /** DOCUMENT_ME. */
   JLabel jlTitle;
 
   /** DOCUMENT_ME. */
@@ -298,12 +295,12 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
           .getPlaylist());
     }
   }
-  
+
   /**
    * Return the editor table
    * @return the editor table
    */
-  public JajukTable getTable(){
+  public JajukTable getTable() {
     return this.editorTable;
   }
 
@@ -337,8 +334,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     jbClear = new JajukButton(IconLoader.getIcon(JajukIcons.CLEAR));
     jbClear.setToolTipText(Messages.getString("AbstractPlaylistEditorView.9"));
     jbClear.addActionListener(this);
-    jbPrepParty = new JajukButton(ActionManager.getAction(JajukActions.PREPARE_PARTY));
-    jbPrepParty.setText(null);
     jlTitle = new JLabel("");
 
     JToolBar jtb = new JajukJToolbar();
@@ -351,7 +346,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     jtb.add(jbAddShuffle);
     jtb.add(jbUp);
     jtb.add(jbDown);
-    jtb.add(jbPrepParty);
     jtb.addSeparator();
     jtb.add(jbClear);
 
@@ -403,13 +397,13 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     // Add specific behavior on left click
     editorTable.setCommand(new ILaunchCommand() {
       public void launch(int nbClicks) {
-        
-         int iSelectedCol = editorTable.getSelectedColumn();
+
+        int iSelectedCol = editorTable.getSelectedColumn();
         // Convert column selection as columns may have been moved
         iSelectedCol = editorTable.convertColumnIndexToModel(iSelectedCol);
         // double click, launches selected track and all after
-        if (nbClicks == 2 
-              // click on play icon
+        if (nbClicks == 2
+        // click on play icon
             || (nbClicks == 1 && iSelectedCol == 0)) {
           StackItem item = editorModel.getStackItem(editorTable.getSelectedRow());
           if (item != null) {
@@ -423,7 +417,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       }
     });
   }
-  
+
   /**
    * This factorizes edit panel code between regular playlist view and queue
    * view for all menu items except the play that is queue-specific.
@@ -681,7 +675,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     // remove selection
     editorTable.getSelectionModel().clearSelection();
     PlaylistView.this.plf = plf;
-    jbPrepParty.putClientProperty(Const.DETAIL_SELECTION, plf);
 
     // set title label
     jlTitle.setText(plf.getName());
@@ -719,7 +712,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
         jbAddShuffle.setEnabled(false);
         jbRemove.setEnabled(false);
         jbUp.setEnabled(false);
-        jbPrepParty.setEnabled(false);
         jbSave.setEnabled(false);
       } else {
         if (plf.getType() == Playlist.Type.BESTOF || plf.getType() == Playlist.Type.NOVELTIES) {
@@ -728,7 +720,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
           jbAddShuffle.setEnabled(false);
           jbRemove.setEnabled(false);
           jbUp.setEnabled(false);
-          jbPrepParty.setEnabled(true);
         } else {
           jbClear.setEnabled(true);
           // set it to false just for startup because nothing is selected
@@ -739,7 +730,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
           jbAddShuffle.setEnabled(true);
           // set it to false just for startup because nothing is selected
           jbRemove.setEnabled(false);
-          jbPrepParty.setEnabled(true);
         }
         // Run button is available only if the playlist is not void
         jbRun.setEnabled(plf.isReady() && plf.getFiles().size() > 0);
@@ -764,7 +754,8 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
           try {
             plf.commit();
             InformationJPanel.getInstance().setMessage(
-                Messages.getString("AbstractPlaylistEditorView.22"), InformationJPanel.MessageType.INFORMATIVE);
+                Messages.getString("AbstractPlaylistEditorView.22"),
+                InformationJPanel.MessageType.INFORMATIVE);
           } catch (JajukException je) {
             Log.error(je);
             Messages.showErrorMessage(je.getCode());
@@ -862,8 +853,8 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
    *  @param insert position
    *          
    */
-  public void importFiles(List<File> files,int position) {
-    plf.addFiles(UtilFeatures.applyPlayOption(files),position);
+  public void importFiles(List<File> files, int position) {
+    plf.addFiles(UtilFeatures.applyPlayOption(files), position);
     refreshCurrentPlaylist();
   }
 
