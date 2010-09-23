@@ -50,6 +50,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -234,6 +235,8 @@ public final class InformationJPanel extends JXPanel implements Observer {
           jlMessage.setForeground(Color.RED);
         } else if (messageType == MessageType.WARNING) {
           jlMessage.setForeground(Color.ORANGE);
+        } else if (messageType == MessageType.INFORMATIVE) {
+          jlMessage.setForeground(UtilGUI.getForegroundColor());
         }
       }
     });
