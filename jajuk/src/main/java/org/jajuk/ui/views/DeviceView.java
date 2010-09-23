@@ -23,7 +23,6 @@ package org.jajuk.ui.views;
 
 import ext.FlowScrollPanel;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -114,7 +113,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
     @Override
     public void handleActionSingleClick(final MouseEvent e) {
       selectItem(e);
-      diSelected.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+      diSelected.setBorder(BorderFactory.createLineBorder(UtilGUI.getForegroundColor(), 5));
       // one device already selected + right click
       DeviceWizard dw = new DeviceWizard();
       dw.updateWidgets(diSelected.getDevice());
@@ -126,7 +125,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
     public void handlePopup(final MouseEvent e) {
       selectItem(e);
       // a new device is selected
-      diSelected.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+      diSelected.setBorder(BorderFactory.createLineBorder(UtilGUI.getForegroundColor(), 5));
       jpmenu.show(e.getComponent(), e.getX(), e.getY());
     }
   };
