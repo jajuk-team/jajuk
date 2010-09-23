@@ -188,7 +188,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             }
             // Very verbose :
             // Log.debug("Output from MPlayer: " + line);
-            if (line.matches(".*ANS_TIME_POSITION.*")) {
+            if (line.indexOf("ANS_TIME_POSITION") != -1) {
               // Stream is actually opened now
               bOpening = false;
 
@@ -267,7 +267,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                 callFinish();
                 return;
               }
-            } else if (line.matches("ANS_LENGTH.*")) {
+            } else if (line.indexOf("ANS_LENGTH") != -1) {
               /*
                * To compute the current track length (used by the information panel to display
                * remaining time and position), we use the tag duration first and the mplayer
@@ -288,7 +288,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               }
             }
             // End of file
-            else if (line.matches(".*\\x2e\\x2e\\x2e.*\\(.*\\).*")) {
+            else if (line.indexOf("\\x2e\\x2e\\x2e.*\\(.*\\)") != -1) {
               bEOF = true;
               // Update track rate if it has been opened
               if (!bOpening) {
