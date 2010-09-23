@@ -105,7 +105,7 @@ public final class TrackManager extends ItemManager {
         false, Long.class, 0));
     // Addition date
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_DISCOVERY_DATE, false, false,
-        true, true, true, Date.class, null));
+        true, false, true, Date.class, null));
     // Comment
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_COMMENT, false, false, true, true,
         true, String.class, null));
