@@ -338,6 +338,18 @@ public final class FileManager extends ItemManager {
         break;
       }
     }
+    // Fix  #1717 (Cannot load some playlists) : if the file is not found, second chance ignoring the case
+    // This can happen under Unix when using an SMB drive
+    if (fOut == null) {
+      it = getFilesIterator();
+      while (it.hasNext()) {
+        File file = it.next();
+        if (file.getFIO().getAbsolutePath().equalsIgnoreCase(fToCompare.getAbsolutePath())) {
+          fOut = file;
+          break;
+        }
+      }
+    }
     return fOut;
   }
 
