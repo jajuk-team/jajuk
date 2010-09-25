@@ -279,24 +279,22 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * <p>Can be a long action</p>
    * 
    * @return associated best cover file available or null if none. The returned
-   * file can not be readable, so use a try/catch around a future access
+   * file can not be readable, so use a try/catch around a future access to it.
    */
   public File findCoverFile() {
     String cachedCoverPath = getStringValue(XML_ALBUM_COVER);
-    // If none cover is found, we save this information to save discovery time
-    // afterwards (performance factor x2 or x3 in catalog view)
-    if (COVER_NONE.equals(cachedCoverPath)) {
-      return null;
-    } else if (!StringUtils.isBlank(cachedCoverPath)
+    if (!StringUtils.isBlank(cachedCoverPath)
     // Check if cover still exist. There is an overhead
         // drawback but otherwise, the album's cover
         // property may be stuck to an old device's cover url.
         && new File(cachedCoverPath).exists()) {
       return new File(cachedCoverPath);
+    } else if (COVER_NONE.equals(cachedCoverPath)) {
+      return null;
     }
     // search for local covers in all directories mapping the current track
     // to reach other devices covers and display them together
-    List<Track> lTracks = TrackManager.getInstance().getAssociatedTracks(this, false);
+    List<Track> lTracks = cache;
     if (lTracks.size() == 0) {
       setProperty(XML_ALBUM_COVER, COVER_NONE);
       return null;
@@ -335,7 +333,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
   /**
    * Return a cover file matching criteria or null
    * @param dirs : list of directories to search in
-   * @param onlyStandardCovers to we considere only standard covers ?
+   * @param onlyStandardCovers to we consider only standard covers ?
    * @return a cover file matching criteria or null
    */
   private File findCover(Set<Directory> dirs, boolean onlyStandardCovers) {
