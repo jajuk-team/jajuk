@@ -94,7 +94,7 @@ public class ExitService extends Thread {
       for (int i = 0; i < 10; i++) {
         if (DeviceManager.getInstance().isAnyDeviceRefreshing()) {
           Thread.sleep(1000);
-          Log.debug("Exiting waiting for refresh process end...");
+          Log.debug("Waiting for refresh process end...");
         } else {
           continue;
         }
