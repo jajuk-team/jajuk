@@ -48,7 +48,7 @@ public final class GenreManager extends ItemManager {
 
   /* List of all known genres */
   /** DOCUMENT_ME. */
-  private Vector<String> genresList;
+  private Vector<String> genresList;    // NOPMD
 
   /**
    * No constructor available, only static access.
@@ -71,7 +71,7 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Gets the instance.
-   * 
+   *
    * @return singleton
    */
   public static GenreManager getInstance() {
@@ -80,9 +80,9 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Register a genre.
-   * 
+   *
    * @param sName DOCUMENT_ME
-   * 
+   *
    * @return the genre
    */
   public Genre registerGenre(String sName) {
@@ -92,10 +92,10 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Register a genre with a known id.
-   * 
+   *
    * @param sName DOCUMENT_ME
    * @param sId DOCUMENT_ME
-   * 
+   *
    * @return the genre
    */
   public synchronized Genre registerGenre(String sId, String sName) {
@@ -110,6 +110,7 @@ public final class GenreManager extends ItemManager {
       genresList.add(genre.getName2());
       // Sort items ignoring case
       Collections.sort(genresList, new Comparator<String>() {
+        @Override
         public int compare(String o1, String o2) {
           return o1.compareToIgnoreCase(o2);
         }
@@ -133,9 +134,9 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Return genre by name.
-   * 
+   *
    * @param name DOCUMENT_ME
-   * 
+   *
    * @return the genre by name
    */
   public Genre getGenreByName(String name) {
@@ -152,12 +153,12 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Change the item name.
-   * 
+   *
    * @param old DOCUMENT_ME
    * @param sNewName DOCUMENT_ME
-   * 
+   *
    * @return new item
-   * 
+   *
    * @throws JajukException the jajuk exception
    */
   public Genre changeGenreName(Genre old, String sNewName) throws JajukException {
@@ -199,9 +200,9 @@ public final class GenreManager extends ItemManager {
    * -All in upper case
    * <p>
    * example: "ROCK".
-   * 
+   *
    * @param sName DOCUMENT_ME
-   * 
+   *
    * @return the string
    */
   public static String format(String sName) {
@@ -215,7 +216,7 @@ public final class GenreManager extends ItemManager {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
@@ -225,7 +226,7 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Gets the genres list.
-   * 
+   *
    * @return Human readable list of registrated genres <br>
    * ordered (alphabeticaly)
    */
@@ -235,9 +236,9 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Gets the genre by id.
-   * 
+   *
    * @param sID Item ID
-   * 
+   *
    * @return item
    */
   public Genre getGenreByID(String sID) {
@@ -246,7 +247,7 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Gets the genres.
-   * 
+   *
    * @return ordered genres list
    */
   @SuppressWarnings("unchecked")
@@ -256,7 +257,7 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Gets the genres iterator.
-   * 
+   *
    * @return genres iterator
    */
   @SuppressWarnings("unchecked")

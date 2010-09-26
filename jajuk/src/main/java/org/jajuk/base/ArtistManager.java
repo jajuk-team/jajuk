@@ -47,7 +47,7 @@ public final class ArtistManager extends ItemManager {
   private static ArtistManager singleton = new ArtistManager();
 
   /** List of all known artists */
-  private Vector<String> artistsList = new Vector<String>(100);
+  private Vector<String> artistsList = new Vector<String>(100); // NOPMD
 
   /**
    * No constructor available, only static access.
@@ -69,7 +69,7 @@ public final class ArtistManager extends ItemManager {
 
   /**
    * Gets the instance.
-   * 
+   *
    * @return singleton
    */
   public static ArtistManager getInstance() {
@@ -78,9 +78,9 @@ public final class ArtistManager extends ItemManager {
 
   /**
    * Register an artist.
-   * 
+   *
    * @param sName The name of the artist to search for.
-   * 
+   *
    * @return the artist
    */
   public Artist registerArtist(String sName) {
@@ -90,10 +90,10 @@ public final class ArtistManager extends ItemManager {
 
   /**
    * Register an artist with a known id.
-   * 
+   *
    * @param sName The name of the new artist.
    * @param sId the ID of the new artist.
-   * 
+   *
    * @return the artist
    */
   public synchronized Artist registerArtist(String sId, String sName) {
@@ -109,6 +109,7 @@ public final class ArtistManager extends ItemManager {
       artistsList.add(artist.getName2());
       // Sort items ignoring case
       Collections.sort(artistsList, new Comparator<String>() {
+        @Override
         public int compare(String o1, String o2) {
           return o1.compareToIgnoreCase(o2);
         }
@@ -120,12 +121,12 @@ public final class ArtistManager extends ItemManager {
 
   /**
    * Change the item name.
-   * 
+   *
    * @param old The name of the artist to update.
    * @param sNewName The new name of the artist.
-   * 
+   *
    * @return The new Album-Instance.
-   * 
+   *
    * @throws JajukException Thrown if adjusting the name fails for some reason.
    */
   public Artist changeArtistName(Artist old, String sNewName) throws JajukException {
@@ -164,7 +165,7 @@ public final class ArtistManager extends ItemManager {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
@@ -174,7 +175,7 @@ public final class ArtistManager extends ItemManager {
 
   /**
    * Gets the artists list.
-   * 
+   *
    * @return artists as a string list (used for artists combos)
    */
   public static Vector<String> getArtistsList() {
@@ -183,9 +184,9 @@ public final class ArtistManager extends ItemManager {
 
   /**
    * Gets the artist by id.
-   * 
+   *
    * @param sID Item ID
-   * 
+   *
    * @return Element
    */
   public Artist getArtistByID(String sID) {
@@ -194,7 +195,7 @@ public final class ArtistManager extends ItemManager {
 
   /**
    * Gets the artists.
-   * 
+   *
    * @return ordered albums list
    */
   @SuppressWarnings("unchecked")
@@ -204,7 +205,7 @@ public final class ArtistManager extends ItemManager {
 
   /**
    * Gets the artists iterator.
-   * 
+   *
    * @return artists iterator
    */
   @SuppressWarnings("unchecked")
@@ -214,9 +215,9 @@ public final class ArtistManager extends ItemManager {
 
   /**
    * Get ordered list of artists associated with this item.
-   * 
+   *
    * @param item The artist item to look for.
-   * 
+   *
    * @return the associated artists
    */
   public synchronized List<Artist> getAssociatedArtists(Item item) {
@@ -241,9 +242,9 @@ public final class ArtistManager extends ItemManager {
 
   /**
    * Gets the artist by name.
-   * 
+   *
    * @param name The name of the artist.
-   * 
+   *
    * @return associated artist (case insensitive) or null if no match
    */
   public Artist getArtistByName(String name) {
