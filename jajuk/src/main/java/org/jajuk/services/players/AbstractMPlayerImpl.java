@@ -60,7 +60,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   protected volatile boolean bPaused = false;
 
   /*
-   * 
+   *
    * Kill abruptly the mplayer process (this way, killing is synchronous, and
    * easier than sending a quit command). Do not try to send a 'quit' command to
    * mplayer because then, it's not possible to differentiate end of file from
@@ -69,6 +69,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   /* (non-Javadoc)
    * @see org.jajuk.services.players.IPlayerImpl#stop()
    */
+  @Override
   public void stop() throws Exception {
     bFading = false;
     this.bStop = true;
@@ -82,7 +83,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
          * slave mode ?). Even worse, these processes block the dsp audio line
          * and then all new mplayer processes fail. To avoid this, we force a
          * kill on every process call under Linux.
-         * 
+         *
          * Note also that mplayer slave mode opens two processes with different
          * pids. When we try to kill them with -9 (abruptly) only the parent
          * process dies and the second process is left hanging in the
@@ -108,9 +109,10 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.IPlayerImpl#setVolume(float)
    */
+  @Override
   public void setVolume(float fVolume) {
     this.fVolume = fVolume;
     sendCommand("volume " + (int) (100 * fVolume) + " 2");
@@ -122,7 +124,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /**
    * Send a command to mplayer slave.
-   * 
+   *
    * @param command DOCUMENT_ME
    */
   protected void sendCommand(String command) {
@@ -141,18 +143,19 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /**
    * Gets the current volume.
-   * 
+   *
    * @return current volume as a float ex: 0.2f
    */
+  @Override
   public float getCurrentVolume() {
     return fVolume;
   }
 
   /**
    * Build the mplayer command line.
-   * 
+   *
    * @param url to play
-   * 
+   *
    * @return command line as a String array
    */
   List<String> buildCommand(String url) {
@@ -211,7 +214,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /**
    * Build the -af audio filters command part.
-   * 
+   *
    * @return the string
    */
   private String buildAudioFilters() {
@@ -228,7 +231,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
       volume = ((int) (25 * fVolume) - 20);
     }
     audiofilters.append("volume=" + volume);
-   
+
     // Add karaoke state if required
     if (Conf.getBoolean(CONF_STATE_KARAOKE)) {
       audiofilters.append(",karaoke");
@@ -238,9 +241,10 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#getCurrentLength()
    */
+  @Override
   public long getCurrentLength() {
 
     return 0;
@@ -248,9 +252,10 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#getCurrentPosition()
    */
+  @Override
   public float getCurrentPosition() {
 
     return 0;
@@ -258,9 +263,10 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#getElapsedTime()
    */
+  @Override
   public long getElapsedTime() {
 
     return 0;
@@ -268,43 +274,48 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
    *      float)
    */
+  @Override
   public abstract void play(File file, float fPosition, long length, float fVolume)
       throws Exception;
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.WebRadio, float)
    */
+  @Override
   public abstract void play(WebRadio radio, float fVolume) throws Exception;
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#seek(float)
    */
+  @Override
   public void seek(float fPosition) {
     // required by interface, but nothing to do here...
   }
 
   /**
    * Gets the state.
-   * 
+   *
    * @return player state, -1 if player is null.
    */
+  @Override
   public int getState() {
     return -1;
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#pause()
    */
+  @Override
   public void pause() throws Exception {
     bPaused = true;
     sendCommand("pause");
@@ -312,9 +323,10 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#resume()
    */
+  @Override
   public void resume() throws Exception {
     // This test is required because we in case of volume change, mplayer is
     // already resumed and we don't want to send another pause command

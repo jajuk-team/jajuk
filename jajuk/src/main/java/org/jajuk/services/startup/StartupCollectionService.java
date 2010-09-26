@@ -43,9 +43,9 @@ import org.jajuk.base.Collection;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.GenreManager;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.PlaylistManager;
-import org.jajuk.base.GenreManager;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.TypeManager;
 import org.jajuk.base.YearManager;
@@ -217,7 +217,7 @@ public class StartupCollectionService {
           // call the overall "commit" to store things like Queue and
           // configuration periodically as well
           ExitService.commit(false);
-          
+
           // workaround to free space in MigLayout
           // see http://migcalendar.com/forum/viewtopic.php?f=8&t=3236&p=7012
           LinkHandler.getValue("", "", 1); // simulated read
@@ -311,6 +311,7 @@ public class StartupCollectionService {
     if (!bParsingOK) {
       // try to restore a backup file
       final File[] fBackups = SessionService.getConfFileByPath("").listFiles(new FilenameFilter() {
+        @Override
         public boolean accept(File dir, String name) {
           if (name.indexOf("backup") != -1) {
             return true;
@@ -363,12 +364,12 @@ public class StartupCollectionService {
       }
     }
 
-    Log.debug("Loaded " + FileManager.getInstance().getElementCount() + " files with " + TrackManager.getInstance().getElementCount() + " tracks, " + 
+    Log.debug("Loaded " + FileManager.getInstance().getElementCount() + " files with " + TrackManager.getInstance().getElementCount() + " tracks, " +
         AlbumManager.getInstance().getElementCount() + " albums, " +
-        ArtistManager.getInstance().getElementCount() + " artists, " + 
-        AlbumArtistManager.getInstance().getElementCount() + " album-artists, " + 
-        PlaylistManager.getInstance().getElementCount() + " playlists in " + 
-        DirectoryManager.getInstance().getElementCount() + " directories on " + 
+        ArtistManager.getInstance().getElementCount() + " artists, " +
+        AlbumArtistManager.getInstance().getElementCount() + " album-artists, " +
+        PlaylistManager.getInstance().getElementCount() + " playlists in " +
+        DirectoryManager.getInstance().getElementCount() + " directories on " +
         DeviceManager.getInstance().getElementCount() + "devices.");
 
     // start auto commit thread
@@ -390,7 +391,7 @@ public class StartupCollectionService {
 
   /**
    * Checks if is collection load recover.
-   * 
+   *
    * @return true, if is collection load recover
    */
   public static boolean isCollectionLoadRecover() {
