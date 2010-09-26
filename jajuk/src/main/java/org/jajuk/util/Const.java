@@ -295,7 +295,7 @@ public interface Const {
 
   /** DOCUMENT_ME. */
   String FILE_FIFO = "fifo.lst";
-  
+
   /** Bootstrap file name */
   String FILE_BOOTSTRAP = ".jajuk_bootstrap.xml";
   
@@ -304,7 +304,7 @@ public interface Const {
 
   /** DOCUMENT_ME. */
   String FILE_MPLAYER_WINDOWS_EXE = "mplayer.exe";
-  
+
   /** DOCUMENT_ME. */
   String FILE_MPLAYER_OSX_EXE = "mplayer";
 
@@ -330,7 +330,7 @@ public interface Const {
 
   /** Mplayer Windows exe provided by jajuk URL . */
   String URL_MPLAYER_WINDOWS = "http://repository.jajuk.info/mplayer/20090114/mplayer.exe";
-  
+
   /** Mplayer OSX exe provided by jajuk URL . */
   String URL_MPLAYER_OSX = "http://repository.jajuk.info/mplayer/osx/1.0rc2/mplayer";
 
@@ -457,6 +457,12 @@ public interface Const {
 
   /** DOCUMENT_ME. */
   String EXT_AU = "au";
+
+  /** DOCUMENT_ME. */
+  String EXT_AIF = "aif";
+
+  /** DOCUMENT_ME. */
+  String EXT_AIFF = "aiff";
 
   /** DOCUMENT_ME. */
   String EXT_FLAC = "flac";

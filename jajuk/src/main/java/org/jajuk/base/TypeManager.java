@@ -110,7 +110,7 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Gets the instance.
-   * 
+   *
    * @return singleton
    */
   public static TypeManager getInstance() {
@@ -119,7 +119,7 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Register a type jajuk can read.
-   * 
+   *
    * @param sName
    *          The human readable name of the type.
    * @param sExtension
@@ -130,7 +130,7 @@ public final class TypeManager extends ItemManager {
    * @param cTagImpl
    *          The class used to retrieve and write tags for this file type.
    *          Needs to implement the interface ITagImpl, @see ITagImpl
-   * 
+   *
    * @return the type
    */
   @SuppressWarnings("unchecked")
@@ -157,10 +157,10 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Tells if the type is supported.
-   * 
+   *
    * @param sExt
    *          The extension to check (without leading dot)
-   * 
+   *
    * @return true, if checks if is extension supported
    */
   public boolean isExtensionSupported(String sExt) {
@@ -169,10 +169,10 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Return type for a given extension.
-   * 
+   *
    * @param sExtension
    *          The extension to retrieve (without leading dot)
-   * 
+   *
    * @return the type by extension
    */
   public Type getTypeByExtension(String sExtension) {
@@ -181,7 +181,7 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Return all music types.
-   * 
+   *
    * @return the all music types
    */
   public List<Type> getAllMusicTypes() {
@@ -198,7 +198,7 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Return a list "a,b,c" of registered extensions, used by FileChooser.
-   * 
+   *
    * @return the types as one string.
    */
   public String getTypeListString() {
@@ -218,7 +218,7 @@ public final class TypeManager extends ItemManager {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
@@ -228,10 +228,10 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Gets the type by id.
-   * 
+   *
    * @param sID
    *          Item ID
-   * 
+   *
    * @return item
    */
   public Type getTypeByID(String sID) {
@@ -240,7 +240,7 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Gets the types.
-   * 
+   *
    * @return types list
    */
   @SuppressWarnings("unchecked")
@@ -250,7 +250,7 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Gets the types iterator.
-   * 
+   *
    * @return types iterator
    */
   @SuppressWarnings("unchecked")
@@ -264,7 +264,7 @@ public final class TypeManager extends ItemManager {
    * Note that we use explicite strings for icon location. It's to avoid loading
    * all icons at startup, we do it asynchronously to accelerate startup
    * </p>
-   * 
+   *
    * @throws ClassNotFoundException
    *           the class not found exception
    */
@@ -313,7 +313,7 @@ public final class TypeManager extends ItemManager {
    * Note that we use explicite strings for icon location. It's to avoid loading
    * all icons at startup, we do it asynchronously to accelerate startup
    * </p>
-   * 
+   *
    * @throws ClassNotFoundException
    *           the class not found exception
    * @throws Exception
@@ -348,6 +348,20 @@ public final class TypeManager extends ItemManager {
         .toExternalForm());
     // au
     type = TypeManager.getInstance().registerType(Messages.getString("Type.au"), Const.EXT_AU,
+        Class.forName(Const.PLAYER_IMPL_MPLAYER), Class.forName(Const.TAG_IMPL_NO_TAGS));
+    type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
+    type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, true);
+    type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICONS_16X16_TYPE_WAV)
+        .toExternalForm());
+    // aiff
+    type = TypeManager.getInstance().registerType(Messages.getString("Type.aiff"), Const.EXT_AIFF,
+        Class.forName(Const.PLAYER_IMPL_MPLAYER), Class.forName(Const.TAG_IMPL_NO_TAGS));
+    type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
+    type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, true);
+    type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICONS_16X16_TYPE_WAV)
+        .toExternalForm());
+    // aiff
+    type = TypeManager.getInstance().registerType(Messages.getString("Type.aiff"), Const.EXT_AIF,
         Class.forName(Const.PLAYER_IMPL_MPLAYER), Class.forName(Const.TAG_IMPL_NO_TAGS));
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, true);
@@ -527,7 +541,7 @@ public final class TypeManager extends ItemManager {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.ItemManager#clear()
    */
   @Override
