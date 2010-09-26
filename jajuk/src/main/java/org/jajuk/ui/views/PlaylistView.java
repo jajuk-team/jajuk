@@ -31,7 +31,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -46,12 +45,14 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.MenuElement;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
@@ -245,22 +246,48 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       SmartPlaylistView sp = (SmartPlaylistView) e.getComponent();
       if (sp == spSelected) {
         // right click
-        showMenu(e);
+        showSmartMenu(e);
       } else {
         selectSmartPlaylist(sp);
-        showMenu(e);
+        showSmartMenu(e);
       }
     }
 
     /**
      * Display the playlist menu
      */
-    private void showMenu(MouseEvent e) {
+    private void showSmartMenu(MouseEvent e) {
       // We use for smart playlists panels the same popup menu than the one from
       // the repository table
       // but we disable some items like delete or properties
-      List<Integer> indexToDisable = Arrays.asList(new Integer[] { 4, 5, 9 });
-      repositoryPanel.jtable.getMenu(indexToDisable).show(e.getComponent(), e.getX(), e.getY());
+      // Add generic menus
+      JPopupMenu menu = new JPopupMenu();
+
+      JMenuItem jmiPlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
+      JMenuItem jmiFrontPush = new JMenuItem(ActionManager
+          .getAction(JajukActions.PUSH_FRONT_SELECTION));
+      JMenuItem jmiPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
+      JMenuItem jmiPlayRepeat = new JMenuItem(ActionManager
+          .getAction(JajukActions.PLAY_REPEAT_SELECTION));
+      JMenuItem jmiPlayShuffle = new JMenuItem(ActionManager
+          .getAction(JajukActions.PLAY_SHUFFLE_SELECTION));
+      JMenuItem jmiPrepareParty = new JMenuItem(ActionManager.getAction(JajukActions.PREPARE_PARTY));
+      JMenuItem jmiRepositorySaveAs = new JMenuItem(ActionManager.getAction(JajukActions.SAVE_AS));
+
+      menu.add(jmiPlay);
+      menu.add(jmiFrontPush);
+      menu.add(jmiPush);
+      menu.add(jmiPlayRepeat);
+      menu.add(jmiPlayShuffle);
+      menu.addSeparator();
+      menu.add(jmiPrepareParty);
+      menu.add(jmiRepositorySaveAs);
+
+      for (MenuElement item : menu.getSubElements()) {
+        ((JComponent) item).putClientProperty(Const.DETAIL_SELECTION, spSelected.getPlaylist());
+      }
+
+      menu.show(e.getComponent(), e.getX(), e.getY());
     }
   };
 
@@ -287,13 +314,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     }
     // Update playlist editor
     selectPlaylist(sp.getPlaylist());
-    if (repositoryPanel.jmiPrepareParty != null) {
-      repositoryPanel.jmiPrepareParty.putClientProperty(Const.DETAIL_SELECTION, sp.getPlaylist());
-    }
-    if (repositoryPanel.jmiRepositorySaveAs != null) {
-      repositoryPanel.jmiRepositorySaveAs.putClientProperty(Const.DETAIL_SELECTION, sp
-          .getPlaylist());
-    }
   }
 
   /**
@@ -364,6 +384,8 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     editorTable.getColumnModel().getColumn(0).setMaxWidth(20);
     editorTable.getTableHeader().setPreferredSize(new Dimension(0, 20));
     editorTable.showColumns(editorTable.getColumnsConf());
+    ListSelectionModel lsm = editorTable.getSelectionModel();
+    lsm.addListSelectionListener(this);
     jpEditor.setLayout(new MigLayout("ins 0", "[grow]"));
     jpEditor.add(jpEditorControl, "growx,wrap");
     JScrollPane jsp = new JScrollPane(editorTable);
@@ -1063,8 +1085,9 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       jtable = new JajukTable(model, true, columnsConf);
       super.shortCall(null);
       jmiRepositorySaveAs = new JMenuItem(ActionManager.getAction(JajukActions.SAVE_AS));
-
+      jmiRepositorySaveAs.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
       jmiPrepareParty = new JMenuItem(ActionManager.getAction(JajukActions.PREPARE_PARTY));
+      jmiPrepareParty.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
       pjmTracks = new PreferencesJMenu(jtable.getSelection());
 
       jtable.getMenu().add(jmiPrepareParty);
@@ -1077,7 +1100,10 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       // Add this generic menu item manually to ensure it's the last one in
       // the list for GUI reasons
       jtable.getMenu().add(jmiProperties);
+      jtable.getSelectionModel().addListSelectionListener(PlaylistRepository.this);
       jtbEditable.setVisible(false);
+      jtbSync.setVisible(false);
+
     }
 
     /*
@@ -1138,8 +1164,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
           }
           if (playlist != null) {
             selectPlaylist(playlist);
-            jmiPrepareParty.putClientProperty(Const.DETAIL_SELECTION, playlist);
-            jmiRepositorySaveAs.putClientProperty(Const.DETAIL_SELECTION, playlist);
           }
         }
 

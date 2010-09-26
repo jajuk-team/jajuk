@@ -35,8 +35,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
@@ -520,27 +518,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     return this.jmenu;
   }
 
-  /**
-   * Return generic popup menu for items in a table. <br>
-   * The provided list allow to disable some items
-   * 
-   * @param indexToDisable list of integer of indexes of items to disable
-   * 
-   * @return generic popup menu for items in a table with filter
-   */
-  public JPopupMenu getMenu(List<Integer> indexToDisable) {
-    Component[] components = this.jmenu.getComponents();
-    int index = 0;
-    for (Component component2 : components) {
-      if (component2 instanceof JMenuItem || component2 instanceof JMenu) {
-        // disable the item if its index is in the index list to disable
-        component2.setEnabled(!indexToDisable.contains(index));
-        index++;
-      }
-    }
-    return this.jmenu;
-  }
-
+  
   /*
    * (non-Javadoc)
    * 

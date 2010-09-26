@@ -185,7 +185,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   PreferencesJMenu pjmTracks;
 
   /** The table/tree sync toggle button */
-  private JajukToggleButton jtbSync;
+  JajukToggleButton jtbSync;
 
   private boolean bStopThread = false;
   
