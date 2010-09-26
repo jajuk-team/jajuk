@@ -23,6 +23,7 @@ package org.jajuk.services.tags;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javazoom.jlgui.basicplayer.BasicController;
@@ -39,19 +40,20 @@ import org.jajuk.util.UtilFeatures;
 public class NoTagsTagImpl implements ITagImpl {
 
   /** Analyzed file. */
-  File fio;
+  private File fio;
 
   /** Current file data. */
-  Map<String, Object> mapInfo;
-  
+  private Map<String, Object> mapInfo;
+
   /** DOCUMENT_ME. */
-  private static ArrayList<String> tagFieldKeyArrayList = new ArrayList<String>();
+  private static List<String> tagFieldKeyArrayList = new ArrayList<String>();
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#getTrackName()
    */
+  @Override
   public String getTrackName() {
     return ""; // doing that, the item wil be the default jajuk unknown
     // string
@@ -59,9 +61,10 @@ public class NoTagsTagImpl implements ITagImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#getAlbumName()
    */
+  @Override
   public String getAlbumName() {
     return ""; // doing that, the item will be the default jajuk unknown
     // string
@@ -69,9 +72,10 @@ public class NoTagsTagImpl implements ITagImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#getArtistName()
    */
+  @Override
   public String getArtistName() {
     return ""; // doing that, the item will be the default jajuk unknown
     // string
@@ -79,9 +83,10 @@ public class NoTagsTagImpl implements ITagImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#getGenreName()
    */
+  @Override
   public String getGenreName() {
     return ""; // doing that, the item will be the default jajuk unknown
     // string
@@ -89,27 +94,32 @@ public class NoTagsTagImpl implements ITagImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#getLength()
    */
+  @Override
   public long getLength() throws BasicPlayerException {
     // we have to open the file to get length
     BasicPlayer player = new BasicPlayer();
     player.addBasicPlayerListener(new BasicPlayerListener() {
-      @SuppressWarnings("unchecked")
+      @Override
+      @SuppressWarnings({ "unchecked", "rawtypes" })
       public void opened(Object arg0, Map mProperties) {
         NoTagsTagImpl.this.mapInfo = mProperties;
       }
 
-      @SuppressWarnings("unchecked")
+      @Override
+      @SuppressWarnings({ "rawtypes" })
       public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata, Map mProperties) {
         // required by interface, but nothing to do here...
       }
 
+      @Override
       public void stateUpdated(BasicPlayerEvent bpe) {
         // required by interface, but nothing to do here...
       }
 
+      @Override
       public void setController(BasicController arg0) {
         // required by interface, but nothing to do here...
       }
@@ -123,9 +133,10 @@ public class NoTagsTagImpl implements ITagImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#getComment()
    */
+  @Override
   public String getComment() {
     return ""; // by doing that, the item will be the default jajuk
     // unknown string
@@ -133,151 +144,167 @@ public class NoTagsTagImpl implements ITagImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#setTrackName(java.lang.String)
    */
+  @Override
   public void setTrackName(String sTrackName) {
     // nothing to do here
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#setAlbumName(java.lang.String)
    */
+  @Override
   public void setAlbumName(String sAlbumName) {
     // required by interface, but nothing to do here...
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#setComment(java.lang.String)
    */
+  @Override
   public void setComment(String sComment) {
     // nothing to do here
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#setArtistName(java.lang.String)
    */
+  @Override
   public void setArtistName(String sArtistName) {
     // nothing to do here
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#setGenreName(java.lang.String)
    */
+  @Override
   public void setGenreName(String genre) {
     // nothing to do here
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#setFile(java.io.File)
    */
+  @Override
   public void setFile(File fio) {
     this.fio = fio;
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.tag.ITagImpl#commit()
    */
+  @Override
   public void commit() {
     // nothing to do here
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.tag.ITagImpl#getOrder()
    */
+  @Override
   public long getOrder() {
     return 0l;
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.tag.ITagImpl#setOrder(java.lang.String)
    */
+  @Override
   public void setOrder(long lOrder) {
     // nothing to do here
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.tag.ITagImpl#setYear(int)
    */
+  @Override
   public void setYear(String year) {
     // nothing to do here
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.tag.ITagImpl#getYear()
    */
+  @Override
   public String getYear() {
     return "0";
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.tag.ITagImpl#getQuality()
    */
+  @Override
   public long getQuality() {
     return 0l;
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#getAlbumArtist()
    */
+  @Override
   public String getAlbumArtist() {
     return "";
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#getDiscNumber()
    */
+  @Override
   public long getDiscNumber() {
     return 01;
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#setAlbumArtist(java.lang.String)
    */
+  @Override
   public void setAlbumArtist(String albumArtist) {
     // nothing to do here
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#setDiscNumber(int)
    */
+  @Override
   public void setDiscNumber(long discnumber) {
     // nothing to do here
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#deleteLyrics()
    */
   @Override
@@ -287,7 +314,7 @@ public class NoTagsTagImpl implements ITagImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#getLyrics()
    */
   @Override
@@ -297,7 +324,7 @@ public class NoTagsTagImpl implements ITagImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#setLyrics(java.lang.String)
    */
   @Override
@@ -307,7 +334,7 @@ public class NoTagsTagImpl implements ITagImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#getTagField(java.lang.String)
    */
   @Override
@@ -317,7 +344,7 @@ public class NoTagsTagImpl implements ITagImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.tags.ITagImpl#setTagField(java.lang.String,
    * java.lang.String)
    */
@@ -330,7 +357,7 @@ public class NoTagsTagImpl implements ITagImpl {
    * @see org.jajuk.services.tags.ITagImpl#getSupportedTagFields()
    */
   @Override
-  public ArrayList<String> getSupportedTagFields() {
+  public List<String> getSupportedTagFields() {
     return tagFieldKeyArrayList;
   }
 

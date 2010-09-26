@@ -26,6 +26,7 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javax.swing.BorderFactory;
@@ -69,8 +70,8 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
   /** OK/Cancel buttons */
   private OKCancelPanel okp;
 
-  private ArrayList<String> availableList = new ArrayList<String>();
-  private ArrayList<String> activatedList = new ArrayList<String>();
+  private List<String> availableList = new ArrayList<String>();
+  private List<String> activatedList = new ArrayList<String>();
 
   public ExtraTagsConfigurationWizard() {
     super(JajukMainWindow.getInstance(), true);
@@ -123,7 +124,7 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
 
       /**
        * Display an info label in the text area
-       * 
+       *
        * @param g
        *          DOCUMENT_ME
        */
@@ -204,7 +205,7 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
   }
 
   /**
-   * 
+   *
    */
   private void okAction() {
     TrackManager tm = TrackManager.getInstance();

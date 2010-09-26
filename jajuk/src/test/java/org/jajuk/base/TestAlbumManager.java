@@ -39,13 +39,13 @@ import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.KeyNotFoundException;
 
 /**
- * 
+ *
  */
 public class TestAlbumManager extends JajukTestCase {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see junit.framework.TestCase#setUp()
    */
   @Override
@@ -118,7 +118,7 @@ public class TestAlbumManager extends JajukTestCase {
    * Test method for
    * {@link org.jajuk.base.AlbumManager#changeAlbumName(org.jajuk.base.Album, java.lang.String)}
    * .
-   * 
+   *
    * @throws Exception
    */
   public void testChangeAlbumName() throws Exception {
@@ -230,7 +230,7 @@ public class TestAlbumManager extends JajukTestCase {
    * Test method for
    * {@link org.jajuk.base.AlbumManager#getAssociatedAlbums(org.jajuk.base.Item)}
    * .
-   * 
+   *
    * @throws Exception
    */
   public void testGetAssociatedAlbums() throws Exception {
@@ -262,7 +262,7 @@ public class TestAlbumManager extends JajukTestCase {
   /**
    * Test method for
    * {@link org.jajuk.base.AlbumManager#getBestOfAlbums(boolean, int)}.
-   * 
+   *
    * @throws Exception
    */
   public void testGetBestOfAlbums() throws Exception {
@@ -333,7 +333,7 @@ public class TestAlbumManager extends JajukTestCase {
   /**
    * Test method for
    * {@link org.jajuk.base.AlbumManager#getNewestAlbums(boolean, int)}.
-   * 
+   *
    * @throws Exception
    */
   public void testGetNewestAlbums() throws Exception {
@@ -366,7 +366,7 @@ public class TestAlbumManager extends JajukTestCase {
   /**
    * Test method for
    * {@link org.jajuk.base.AlbumManager#getRarelyListenAlbums(boolean, int)}.
-   * 
+   *
    * @throws Exception
    */
   public void testGetRarelyListenAlbums() throws Exception {
@@ -400,7 +400,7 @@ public class TestAlbumManager extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.AlbumManager#getMaxRate()}.
-   * 
+   *
    * @throws Exception
    */
   public void testGetMaxRate() throws Exception {
@@ -487,7 +487,7 @@ public class TestAlbumManager extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.AlbumManager#orderCache()}.
-   * 
+   *
    * @throws Exception
    */
   public void testOrderCache() throws Exception {
@@ -540,7 +540,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#commit()
      */
     @Override
@@ -550,7 +550,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#getAlbumArtist()
      */
     @Override
@@ -561,7 +561,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#getAlbumName()
      */
     @Override
@@ -572,7 +572,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#getName()
      */
     @Override
@@ -583,7 +583,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#getComment()
      */
     @Override
@@ -594,7 +594,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#getDiscNumber()
      */
     @Override
@@ -605,7 +605,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#getLength()
      */
     @Override
@@ -616,7 +616,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#getOrder()
      */
     @Override
@@ -627,7 +627,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#getQuality()
      */
     @Override
@@ -638,7 +638,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#getGenreName()
      */
     @Override
@@ -649,7 +649,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#getTrackName()
      */
     @Override
@@ -660,7 +660,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#getYear()
      */
     @Override
@@ -671,7 +671,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#setAlbumArtist(java.lang.String)
      */
     @Override
@@ -681,7 +681,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#setAlbumName(java.lang.String)
      */
     @Override
@@ -691,7 +691,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#setArtistName(java.lang.String)
      */
     @Override
@@ -701,7 +701,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#setComment(java.lang.String)
      */
     @Override
@@ -711,7 +711,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#setDiscNumber(long)
      */
     @Override
@@ -721,7 +721,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#setFile(java.io.File)
      */
     @Override
@@ -731,7 +731,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#setOrder(long)
      */
     @Override
@@ -741,7 +741,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#setGenreName(java.lang.String)
      */
     @Override
@@ -751,7 +751,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#setTrackName(java.lang.String)
      */
     @Override
@@ -761,7 +761,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#setYear(java.lang.String)
      */
     @Override
@@ -771,7 +771,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#getTagField(java.lang.String)
      */
     @Override
@@ -782,7 +782,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#setTagField(java.lang.String, java.lang.String)
      */
     @Override
@@ -793,7 +793,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#deleteLyrics()
      */
     @Override
@@ -803,7 +803,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#getLyrics()
      */
     @Override
@@ -814,7 +814,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#setLyrics(java.lang.String)
      */
     @Override
@@ -824,7 +824,7 @@ public class TestAlbumManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#getSupportedTagFields()
      */
     @Override
@@ -837,54 +837,66 @@ public class TestAlbumManager extends JajukTestCase {
 
   // needs to be public to be callable from the outside...
   public static class MockPlayer implements IPlayerImpl {
+    @Override
     public void stop() throws Exception {
 
     }
 
+    @Override
     public void setVolume(float fVolume) throws Exception {
 
     }
 
+    @Override
     public void seek(float fPosition) {
 
     }
 
+    @Override
     public void resume() throws Exception {
 
     }
 
+    @Override
     public void play(WebRadio radio, float fVolume) throws Exception {
 
     }
 
+    @Override
     public void play(File file, float fPosition, long length, float fVolume) throws Exception {
 
     }
 
+    @Override
     public void pause() throws Exception {
 
     }
 
+    @Override
     public int getState() {
 
       return 0;
     }
 
+    @Override
     public long getElapsedTime() {
 
       return 0;
     }
 
+    @Override
     public float getCurrentVolume() {
 
       return 0;
     }
 
+    @Override
     public float getCurrentPosition() {
 
       return 0;
     }
 
+    @Override
     public long getCurrentLength() {
 
       return 0;

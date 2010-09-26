@@ -64,7 +64,7 @@ public class JUnitHelpers {
 
   /**
    * Set a temporary session directory and make sure it exists and is writeable.
-   * 
+   *
    * @throws IOException
    *           If the temporary directory can not be created or is not writeable
    */
@@ -110,19 +110,19 @@ public class JUnitHelpers {
    * see
    * http://sourceforge.net/tracker/index.php?func=detail&aid=1173251&group_id
    * =108932&atid=651900
-   * 
+   *
    * add this to the test case for any class that has only static methods where
    * EMMA reports the default constructor as not covered
-   * 
+   *
    * Template: <code>
-   
+
    // helper method to emma-coverage of the unused constructor
    public void testPrivateConstructor() throws Exception {
-     JUnitHelpers.executePrivateConstructor(<yourclass>.class); 
+     JUnitHelpers.executePrivateConstructor(<yourclass>.class);
    }
 
    * </code>
-   * 
+   *
    * @param targetClass
    */
   public static <T> T executePrivateConstructor(final Class<T> targetClass) throws Exception {
@@ -268,11 +268,11 @@ public class JUnitHelpers {
   /**
    * Run some general tests on the toString method. This static method is used
    * in tests for classes that overwrite toString().
-   * 
+   *
    * @param obj
    *          The object to test toString(). This should be an object of a type
    *          that overwrites toString()
-   * 
+   *
    */
   public static void ToStringTest(final Object obj) {
     // toString should not return null
@@ -293,10 +293,10 @@ public class JUnitHelpers {
 
   /**
    * Run some generic tests on the derived clone-method.
-   * 
+   *
    * We need to do this via reflection as the clone()-method in Object is
    * protected and the Cloneable interface does not include a public "clone()".
-   * 
+   *
    * @param obj
    *          The object to test clone for.
    */
@@ -326,10 +326,10 @@ public class JUnitHelpers {
 
   /**
    * Checks certain assumption that are made for the hashCode() method
-   * 
+   *
    * @param obj
    *          An Object that override the hasCode() method.
-   * 
+   *
    * @throws Exception
    */
   public static void HashCodeTest(final Object obj, final Object equ) {
@@ -362,7 +362,7 @@ public class JUnitHelpers {
         .hashCode(), equ.hashCode());
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public static void EnumTest(Enum enumtype, Class enumclass, String element)
       throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
     // check valueOf()
@@ -601,55 +601,67 @@ public class JUnitHelpers {
 
   // needs to be public to be callable from the outside...
   public static class MockPlayer implements IPlayerImpl {
+    @Override
     public void stop() throws Exception {
 
     }
 
+    @Override
     public void setVolume(float fVolume) throws Exception {
 
     }
 
+    @Override
     public void seek(float fPosition) {
 
     }
 
+    @Override
     public void resume() throws Exception {
 
     }
 
+    @Override
     public void play(WebRadio radio, float fVolume) throws Exception {
 
     }
 
+    @Override
     public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume)
         throws Exception {
 
     }
 
+    @Override
     public void pause() throws Exception {
 
     }
 
+    @Override
     public int getState() {
 
       return 0;
     }
 
+    @Override
     public long getElapsedTime() {
 
       return 0;
     }
 
+    @Override
     public float getCurrentVolume() {
 
       return 0;
     }
 
+    @Override
     public float getCurrentPosition() {
 
       return 0;
     }
 
+    @Override
     public long getCurrentLength() {
 
       return 0;

@@ -23,7 +23,6 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
@@ -40,7 +39,7 @@ import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.KeyNotFoundException;
 
 /**
- * 
+ *
  */
 public class TestArtistManager extends JajukTestCase {
 
@@ -102,7 +101,7 @@ public class TestArtistManager extends JajukTestCase {
    * Test method for
    * {@link org.jajuk.base.ArtistManager#changeArtistName(org.jajuk.base.Artist, java.lang.String)}
    * .
-   * 
+   *
    * @throws Exception
    */
   public final void testChangeArtistName() throws Exception {
@@ -155,10 +154,12 @@ public class TestArtistManager extends JajukTestCase {
     ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS, NUMBER_OF_TESTS);
 
     helper.executeTest(new ThreadTestHelper.TestRunnable() {
+      @Override
       public void doEnd(int threadnum) throws Exception {
         // do stuff at the end, nothing here for now
       }
 
+      @Override
       public void run(int threadnum, int iter) throws Exception {
         // just call the method in a thread multiple times at the same time
         ArtistManager.getInstance().changeArtistName(artistold, "namenew");
@@ -223,7 +224,7 @@ public class TestArtistManager extends JajukTestCase {
    * Test method for {@link org.jajuk.base.ArtistManager#getArtistsList()}.
    */
   public final void testGetArtistsList() {
-    Vector<String> list = ArtistManager.getArtistsList();
+    List<String> list = ArtistManager.getArtistsList();
     assertNotNull(list);
 
     // not sure how many elements we should expect as this is static and other
@@ -282,7 +283,7 @@ public class TestArtistManager extends JajukTestCase {
    * Test method for
    * {@link org.jajuk.base.ArtistManager#getAssociatedArtists(org.jajuk.base.Item)}
    * .
-   * 
+   *
    * @throws Exception
    */
   public final void testGetAssociatedArtists() throws Exception {
@@ -321,7 +322,7 @@ public class TestArtistManager extends JajukTestCase {
   public final void testSorting() {
     // make sure we have "ordered state"
     ArtistManager.getInstance().switchToOrderState();
-    
+
     List<String> ids = new ArrayList<String>();
     ids.add(ArtistManager.getInstance().registerArtist("anothernewartist").getID());
     ids.add(ArtistManager.getInstance().registerArtist("yet another artist").getID());
@@ -347,7 +348,7 @@ public class TestArtistManager extends JajukTestCase {
     assertNull(ArtistManager.getInstance().getArtistByID("number 12"));
     assertNull(ArtistManager.getInstance().getArtistByID("number 09"));
   }
-  
+
   public static class MyTagImpl implements ITagImpl {
 
     @Override
@@ -473,7 +474,7 @@ public class TestArtistManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#getTagField(java.lang.String)
      */
     @Override
@@ -484,7 +485,7 @@ public class TestArtistManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#setTagField(java.lang.String,
      * java.lang.String)
      */
@@ -496,7 +497,7 @@ public class TestArtistManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#deleteLyrics()
      */
     @Override
@@ -506,7 +507,7 @@ public class TestArtistManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#getLyrics()
      */
     @Override
@@ -517,7 +518,7 @@ public class TestArtistManager extends JajukTestCase {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jajuk.services.tags.ITagImpl#setLyrics(java.lang.String)
      */
     @Override
@@ -529,7 +530,7 @@ public class TestArtistManager extends JajukTestCase {
      * @see org.jajuk.services.tags.ITagImpl#getSupportedTagFields()
      */
     @Override
-    public ArrayList<String> getSupportedTagFields() {
+    public List<String> getSupportedTagFields() {
       // TODO Auto-generated method stub
       return null;
     }
