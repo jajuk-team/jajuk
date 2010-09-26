@@ -23,6 +23,7 @@ package org.jajuk.services.tags;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.jajuk.base.PropertyMetaInformation;
@@ -55,19 +56,19 @@ public class Tag {
   /** File -> tag cache This is required by the autocommit=false operations. */
   static private Map<File, Tag> tagsCache = new HashMap<File, Tag>(10);
 
-  private static ArrayList<String> supportedTagFields = null;
+  private static List<String> supportedTagFields = null;
 
   /**
    * Tag constructor.
-   * 
+   *
    * @param fio
    *          DOCUMENT_ME
    * @param bIgnoreErrors
    *          DOCUMENT_ME
-   * 
+   *
    * @throws JajukException
    *           the jajuk exception
-   * 
+   *
    * @bIgnoreError : ignore error and keep instance
    */
   public Tag(java.io.File fio, boolean bIgnoreErrors) throws JajukException {
@@ -87,7 +88,7 @@ public class Tag {
 
   /**
    * Gets the track name.
-   * 
+   *
    * @return track name as defined in tags are file name otherwise
    */
   public String getTrackName() {
@@ -111,7 +112,7 @@ public class Tag {
 
   /**
    * Gets the album name.
-   * 
+   *
    * @return album name
    */
   public String getAlbumName() {
@@ -153,7 +154,7 @@ public class Tag {
 
   /**
    * Gets the artist name.
-   * 
+   *
    * @return artist name
    */
   public String getArtistName() {
@@ -183,7 +184,7 @@ public class Tag {
 
   /**
    * Gets the album artist.
-   * 
+   *
    * @return album artist
    */
   public String getAlbumArtist() {
@@ -210,7 +211,7 @@ public class Tag {
 
   /**
    * Gets the genre name.
-   * 
+   *
    * @return genre name
    */
   public String getGenreName() {
@@ -243,7 +244,7 @@ public class Tag {
 
   /**
    * Gets the length.
-   * 
+   *
    * @return length in sec
    */
   public long getLength() {
@@ -262,7 +263,7 @@ public class Tag {
 
   /**
    * Gets the disc number.
-   * 
+   *
    * @return disc number, by default, return 0
    */
   public long getDiscNumber() {
@@ -281,7 +282,7 @@ public class Tag {
 
   /**
    * Gets the year.
-   * 
+   *
    * @return creation year
    */
   public String getYear() {
@@ -302,7 +303,7 @@ public class Tag {
 
   /**
    * Gets the quality.
-   * 
+   *
    * @return quality
    */
   public long getQuality() {
@@ -321,7 +322,7 @@ public class Tag {
 
   /**
    * Gets the comment.
-   * 
+   *
    * @return comment
    */
   public String getComment() {
@@ -345,7 +346,7 @@ public class Tag {
 
   /**
    * Gets the order.
-   * 
+   *
    * @return comment
    */
   public long getOrder() {
@@ -366,7 +367,7 @@ public class Tag {
 
   /**
    * Gets the lyrics.
-   * 
+   *
    * @return the lyrics
    */
   public String getLyrics() {
@@ -387,10 +388,10 @@ public class Tag {
 
   /**
    * Sets the track name.
-   * 
+   *
    * @param sTrackName
    *          DOCUMENT_ME
-   * 
+   *
    * @throws JajukException
    *           the jajuk exception
    */
@@ -404,10 +405,10 @@ public class Tag {
 
   /**
    * Sets the album name.
-   * 
+   *
    * @param sAlbumName
    *          DOCUMENT_ME
-   * 
+   *
    * @throws JajukException
    *           the jajuk exception
    */
@@ -421,10 +422,10 @@ public class Tag {
 
   /**
    * Sets the artist name.
-   * 
+   *
    * @param sArtistName
    *          DOCUMENT_ME
-   * 
+   *
    * @throws JajukException
    *           the jajuk exception
    */
@@ -438,10 +439,10 @@ public class Tag {
 
   /**
    * Sets the album artist.
-   * 
+   *
    * @param sAlbumArtist
    *          DOCUMENT_ME
-   * 
+   *
    * @throws JajukException
    *           the jajuk exception
    */
@@ -455,10 +456,10 @@ public class Tag {
 
   /**
    * Sets the genre name.
-   * 
+   *
    * @param genre
    *          DOCUMENT_ME
-   * 
+   *
    * @throws JajukException
    *           the jajuk exception
    */
@@ -472,10 +473,10 @@ public class Tag {
 
   /**
    * Sets the order.
-   * 
+   *
    * @param lOrder
    *          DOCUMENT_ME
-   * 
+   *
    * @throws JajukException
    *           the jajuk exception
    */
@@ -489,10 +490,10 @@ public class Tag {
 
   /**
    * Sets the year.
-   * 
+   *
    * @param sYear
    *          DOCUMENT_ME
-   * 
+   *
    * @throws JajukException
    *           the jajuk exception
    */
@@ -506,10 +507,10 @@ public class Tag {
 
   /**
    * Sets the disc number.
-   * 
+   *
    * @param discnumber
    *          DOCUMENT_ME
-   * 
+   *
    * @throws JajukException
    *           the jajuk exception
    */
@@ -523,10 +524,10 @@ public class Tag {
 
   /**
    * Sets the comment.
-   * 
+   *
    * @param sComment
    *          DOCUMENT_ME
-   * 
+   *
    * @throws JajukException
    *           the jajuk exception
    */
@@ -540,10 +541,10 @@ public class Tag {
 
   /**
    * Sets the lyrics.
-   * 
+   *
    * @param sLyrics
    *          the new lyrics
-   * 
+   *
    * @throws JajukException
    *           the jajuk exception
    */
@@ -560,7 +561,7 @@ public class Tag {
 
   /**
    * Delete lyrics. DOCUMENT_ME
-   * 
+   *
    * @throws JajukException
    *           the jajuk exception
    */
@@ -574,7 +575,7 @@ public class Tag {
 
   /**
    * Commit tags.
-   * 
+   *
    * @throws JajukException
    *           the jajuk exception
    */
@@ -602,7 +603,7 @@ public class Tag {
 
   /**
    * Checks if is corrupted.
-   * 
+   *
    * @return true, if is corrupted
    */
   public boolean isCorrupted() {
@@ -611,7 +612,7 @@ public class Tag {
 
   /**
    * Sets the corrupted.
-   * 
+   *
    * @param corrupted
    *          the new corrupted
    */
@@ -621,7 +622,7 @@ public class Tag {
 
   /**
    * Gets the fio.
-   * 
+   *
    * @return the fio
    */
   public File getFio() {
@@ -630,7 +631,7 @@ public class Tag {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
@@ -643,7 +644,7 @@ public class Tag {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.lang.Object#hashCode()
    */
   @Override
@@ -653,7 +654,7 @@ public class Tag {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.lang.Object#toString()
    */
   @Override
@@ -663,17 +664,17 @@ public class Tag {
 
   /**
    * Return cached tag or new tag if non already in cache.
-   * 
+   *
    * @param fio
    *          the audio file containing the tag
    * @param bIgnoreErrors
    *          DOCUMENT_ME
-   * 
+   *
    * @return cached tag or new tag if non already in cache
-   * 
+   *
    * @throws JajukException
    *           the jajuk exception
-   * 
+   *
    * @bIgnoreError : ignore any error and keep instance in cache
    */
   public static Tag getTagForFio(File fio, boolean bIgnoreErrors) throws JajukException {
@@ -702,12 +703,12 @@ public class Tag {
     return "";
   }
 
-  public static ArrayList<String> getSupportedTagFields() {
+  public static List<String> getSupportedTagFields() {
     if (supportedTagFields == null) {
       supportedTagFields = new ArrayList<String>();
 
       // get all available tag impls
-      ArrayList<ITagImpl> tagImplList = new ArrayList<ITagImpl>(2);
+      List<ITagImpl> tagImplList = new ArrayList<ITagImpl>(2);
       for (Type t : TypeManager.getInstance().getAllMusicTypes()) {
         if (t.getTaggerClass() != null && !tagImplList.contains(t.getTaggerClass())) {
           try {
@@ -719,7 +720,7 @@ public class Tag {
           }
         }
       }
-      
+
       for (ITagImpl t : tagImplList) {
         for (String s : t.getSupportedTagFields()) {
           if (!supportedTagFields.contains(s)) {
@@ -735,9 +736,9 @@ public class Tag {
   /**
    * @return the activatedExtraTags
    */
-  public static ArrayList<String> getActivatedExtraTags() {
+  public static List<String> getActivatedExtraTags() {
 
-    ArrayList<String> activeExtraTagsArrayList = new ArrayList<String>();
+    List<String> activeExtraTagsArrayList = new ArrayList<String>();
 
     // check all custom properties
     for (PropertyMetaInformation m : TrackManager.getInstance().getCustomProperties()) {
