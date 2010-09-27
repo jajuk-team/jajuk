@@ -113,8 +113,8 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   private static final long serialVersionUID = -2851288035506442507L;
 
   /*
-   * Some widgets are private to make sure QueueView that extends this class will not use them TODO
-   * : refactoring : check for unifying smart and regular playlists (a single mouse adapter for ie)
+   * Some widgets are private to make sure QueueView that extends this class will not use them 
+   * TODO refactoring : check for unifying smart and regular playlists (a single mouse adapter for ie)
    */
   /** DOCUMENT_ME. */
   private JajukJSplitPane split;
@@ -186,8 +186,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   /** Selection set flag. */
   boolean bSettingSelection = false;
 
-  /** Last selected directory using add button. */
-  // private java.io.File fileLast;
   /** Editor Model */
   protected PlaylistTableModel editorModel;
 
@@ -292,10 +290,10 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   };
 
   /**
-   * Select smart playlist. DOCUMENT_ME
+   * Select smart playlist. 
    * 
-   * @param sp
-   *          DOCUMENT_ME
+   * @param sp the smart playlist
+   *          
    */
   void selectSmartPlaylist(SmartPlaylistView sp) {
     // remove item border
@@ -325,7 +323,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   }
 
   /**
-   * Inits the editor panel. DOCUMENT_ME
+   * Inits the editor panel.
    */
   public void initEditorPanel() {
     jpEditor = new JPanel();
@@ -391,10 +389,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     JScrollPane jsp = new JScrollPane(editorTable);
     jpEditor.add(jsp, "growx");
 
-    jmiFilePlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
-    jmiFilePlay.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
-    editorTable.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
-
     initMenuItems();
 
     ColorHighlighter colorHighlighter = new ColorHighlighter(new PlayHighlighterPredicate(
@@ -445,7 +439,8 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
    * view for all menu items except the play that is queue-specific.
    */
   void initMenuItems() {
-    // menu items
+    jmiFilePlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
+    jmiFilePlay.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
     jmiFileFrontPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_FRONT_SELECTION));
     jmiFileFrontPush.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
     jmiFilePush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
@@ -688,10 +683,9 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   }
 
   /**
-   * Select playlist. DOCUMENT_ME
+   * Select playlist.
    * 
-   * @param plf
-   *          DOCUMENT_ME
+   * @param plf the playlist (smart or not)
    */
   private void selectPlaylist(Playlist plf) {
     // remove selection
@@ -719,6 +713,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     jlTitle.setToolTipText(plf.getName());
     setButtonState();
     refreshCurrentPlaylist();
+    updatePlaylistMenuItems();
     UtilGUI.stopWaiting(); // stop waiting
   }
 
@@ -738,6 +733,12 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       } else {
         if (plf.getType() == Playlist.Type.BESTOF || plf.getType() == Playlist.Type.NOVELTIES) {
           jbClear.setEnabled(false);
+          jbDown.setEnabled(false);
+          jbAddShuffle.setEnabled(false);
+          jbRemove.setEnabled(false);
+          jbUp.setEnabled(false);
+        } else if (plf.getType() == Playlist.Type.BOOKMARK) {
+          jbClear.setEnabled(true);
           jbDown.setEnabled(false);
           jbAddShuffle.setEnabled(false);
           jbRemove.setEnabled(false);
@@ -946,7 +947,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       // Add shuffle button
       if (plf.getType() == Playlist.Type.BESTOF
           // neither for bestof playlist
-          || plf.getType() == Playlist.Type.NOVELTIES
+          || plf.getType() == Playlist.Type.NOVELTIES || plf.getType() == Playlist.Type.BOOKMARK
           || selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()
       // multiple selection not supported
       ) {
@@ -956,9 +957,10 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       }
       // Up button
       if (selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()
-      // check if several rows have been selected :
+          // check if several rows have been selected :
           // doesn't supported yet
-          || plf.getType() == Playlist.Type.BESTOF || plf.getType() == Playlist.Type.NOVELTIES) {
+          || plf.getType() == Playlist.Type.BESTOF || plf.getType() == Playlist.Type.NOVELTIES
+          || plf.getType() == Playlist.Type.BOOKMARK) {
         // neither for bestof nor novelties playlist
         jbUp.setEnabled(false);
       } else {
@@ -978,9 +980,10 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       }
       // Down button
       if (selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()
-      // check if several rows have been selected :
+          // check if several rows have been selected :
           // doesn't supported yet
-          || plf.getType() == Playlist.Type.BESTOF || plf.getType() == Playlist.Type.NOVELTIES) {
+          || plf.getType() == Playlist.Type.BESTOF || plf.getType() == Playlist.Type.NOVELTIES
+          || plf.getType() == Playlist.Type.BOOKMARK) {
         jbDown.setEnabled(false);
       } else { // yet here ?
         if (bPlanned) {
@@ -996,6 +999,17 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
         }
       }
     }
+  }
+
+  /**
+   * Disables some tracks menu items if in smart playlist 
+   */
+  private void updatePlaylistMenuItems() {
+    final boolean isReadOnly = (plf.getType() == Playlist.Type.BESTOF
+        || plf.getType() == Playlist.Type.NOVELTIES || plf.getType() == Playlist.Type.BOOKMARK);
+     jmiFileDown.setEnabled(!isReadOnly);
+     jmiFileUp.setEnabled(!isReadOnly);
+     jmiFileRemove.setEnabled(!isReadOnly);
   }
 
   /**

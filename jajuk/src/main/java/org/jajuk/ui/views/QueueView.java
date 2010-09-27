@@ -235,7 +235,6 @@ public class QueueView extends PlaylistView {
       }
     });
     // Register keystrokes over table
-    editorTable.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
     super.setKeystrokes();
     // Force a first need refresh event
     update(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));

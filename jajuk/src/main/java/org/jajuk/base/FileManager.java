@@ -586,14 +586,17 @@ public final class FileManager extends ItemManager {
    * @return top files
    */
   public List<File> getBestOfFiles() {
-    refreshBestOfFiles();
+    // Don't refresh best of files at each call because it makes  the playlist view
+    // unusable for bestof files : each time a file is played, the view is changed
+    if (alBestofFiles.size() == 0){
+      refreshBestOfFiles();
+    }
     return alBestofFiles;
   }
 
   /**
    * Refresh best of files.
-   * DOCUMENT_ME
-   */
+   **/
   public void refreshBestOfFiles() {
     Log.debug("Invoking Refresh of BestOf-Files");
 
