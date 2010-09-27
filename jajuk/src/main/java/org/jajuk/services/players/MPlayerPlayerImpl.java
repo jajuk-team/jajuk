@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.regex.Pattern;
 
 import org.jajuk.base.Track;
 import org.jajuk.services.webradio.WebRadio;
@@ -171,6 +172,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     @Override
     public void run() {
       try {
+        Pattern patternEndOfFile = Pattern.compile(".*\\x2e\\x2e\\x2e.*\\(.*\\).*");
         BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
         try {
           String line = null;
@@ -205,8 +207,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               // - If user seeked, take the mplayer time but use a vbr
               // correction.
               // Note however that the resulting time, while being better than
-              // the
-              // raw mplayer time can be pretty wrong (10 secs or more in some
+              // the raw mplayer time can be pretty wrong (10 secs or more in some
               // cases)
               if (seeked) {
                 lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
@@ -288,7 +289,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               }
             }
             // End of file
-            else if (line.indexOf("\\x2e\\x2e\\x2e.*\\(.*\\)") != -1) {
+            else if (patternEndOfFile.matcher(line).matches()) {
               bEOF = true;
               // Update track rate if it has been opened
               if (!bOpening) {
