@@ -298,7 +298,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   void selectSmartPlaylist(SmartPlaylistView sp) {
     // remove table selection so an event will be thrown if user click on the table
     repositoryPanel.jtable.getSelectionModel().clearSelection();
-    
+
     // remove item border
     if (spSelected != null) {
       spSelected.getIcon().setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -1010,9 +1010,9 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   private void updatePlaylistMenuItems() {
     final boolean isReadOnly = (plf.getType() == Playlist.Type.BESTOF
         || plf.getType() == Playlist.Type.NOVELTIES || plf.getType() == Playlist.Type.BOOKMARK);
-     jmiFileDown.setEnabled(!isReadOnly);
-     jmiFileUp.setEnabled(!isReadOnly);
-     jmiFileRemove.setEnabled(!isReadOnly);
+    jmiFileDown.setEnabled(!isReadOnly);
+    jmiFileUp.setEnabled(!isReadOnly);
+    jmiFileRemove.setEnabled(!isReadOnly);
   }
 
   /**

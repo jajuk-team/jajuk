@@ -21,7 +21,6 @@
 
 package org.jajuk.ui.widgets;
 
-import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -504,21 +503,14 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /**
    * Return generic popup menu for items in a table. <br>
-   * All items are forced to enable state
-   * 
+     * 
    * @return generic popup menu for items in a table
    * 
-   * @TODO : this is probably not a good idea to force menu items to enable
-   */
+     */
   public JPopupMenu getMenu() {
-    Component[] components = this.jmenu.getComponents();
-    for (Component component2 : components) {
-      component2.setEnabled(true);
-    }
     return this.jmenu;
   }
 
-  
   /*
    * (non-Javadoc)
    * 
