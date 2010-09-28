@@ -114,13 +114,16 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
         if (alSelectedFiles.size() == 0) {
           return false;
         }
-        
-      
+        // row = -1 if none item in the table or if we drop after the last row,
+        // we set table's size as an index
+        if (row < 0) {
+          row = plf.getFiles().size();
+        }
+
         // queue case
         if (plf.getType() == Playlist.Type.QUEUE) {
-          // If user selected "push on drop" option or if none item in list (then drop row = -1), 
-          // just push the selection
-          if (Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_DROP) || row < 0) {
+          // If user selected "push on drop" option just push the selection
+          if (Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_DROP)) {
             QueueModel.push(UtilFeatures.createStackItems(UtilFeatures
                 .applyPlayOption(alSelectedFiles), Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL),
                 true), true);
@@ -139,7 +142,7 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
           if (position < 0) {
             position = 0;
           }
-          if (!Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_DROP) && row >= 0) {
+          if (!Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_DROP)) {
             position = row;
           }
           view.importFiles(UtilFeatures.applyPlayOption(alSelectedFiles), position);
@@ -148,9 +151,8 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
       }
     } catch (Exception e) {
       Log.error(e);
-    }
-    finally{
-       jtable.getSelectionModel().setValueIsAdjusting(false);
+    } finally {
+      jtable.getSelectionModel().setValueIsAdjusting(false);
     }
     return false;
 
