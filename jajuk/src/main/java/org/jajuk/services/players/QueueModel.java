@@ -591,6 +591,10 @@ public final class QueueModel {
       }
 
       boolean bPlayOK = false;
+      
+      // bfirstFile flag is used to set a offset (in %) if required (if we are playing the last item at given position) 
+      // Known limitation : if the last session's last played item is no more available, the offset is applied
+      // to another file. We think that it doesn't worth making things more complicated.
       if (bFirstFile && !Conf.getBoolean(Const.CONF_STATE_INTRO)
           && Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)) {
         // if it is the first played file of the session and we are in
@@ -668,7 +672,8 @@ public final class QueueModel {
       UtilGUI.stopWaiting(); // stop the waiting cursor
     }
   }
-
+  
+ 
   /**
   * Computes planned tracks.
   * 
@@ -1265,18 +1270,7 @@ public final class QueueModel {
     return queue.getPlanned();
   }
 
-  /**
-   * Set the first file flag. This is used mainly to reposition into the file at
-   * the position where playing was stopped before.
-   * 
-   * @param bFirstFile
-   *          If this is the first file after startup.
-   */
-  public static void setFirstFile(boolean bFirstFile) {
-    QueueModel.bFirstFile = bFirstFile;
-  }
-
-  /**
+   /**
    * Store current FIFO as a list.
    * 
    * @throws IOException

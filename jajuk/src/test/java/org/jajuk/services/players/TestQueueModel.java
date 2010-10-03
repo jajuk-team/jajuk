@@ -1070,17 +1070,7 @@ public class TestQueueModel extends JajukTestCase {
     assertTrue(QueueModel.getPlanned().size() > 0);
   }
 
-  /**
-   * Test method for
-   * {@link org.jajuk.services.players.QueueModel#setFirstFile(boolean)}.
-   */
-
-  public void testSetFirstFile() {
-    QueueModel.setFirstFile(true);
-
-    // no way to test the effect right now...
-  }
-
+ 
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#commit()}.
    */
