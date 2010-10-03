@@ -138,6 +138,9 @@ public final class Player {
           QueueModel.class.wait(Const.WAIT_AFTER_ERROR);
         }
       }
+      // Save playing state    
+      Conf.setProperty(Const.CONF_STARTUP_STOPPED, "false");
+
       return true;
     } catch (final Throwable t) {
       Properties pDetails = new Properties();
@@ -197,6 +200,9 @@ public final class Player {
           }
         }
       }
+       // Save playing state    
+      Conf.setProperty(Const.CONF_STARTUP_STOPPED, "false");
+
       return true;
     } catch (final Throwable t) {
       Properties pDetails = new Properties();
@@ -224,6 +230,7 @@ public final class Player {
       }
       bPaused = false; // cancel any current pause
       bPlaying = false;
+     
     } catch (Exception e) {
       Log.debug(Messages.getString("Error.008") + e);
     }

@@ -280,10 +280,10 @@ public final class UpgradeManager {
         Properties prop = null;
         // Try to load a bootstrap file using plain text old format
         prop = new Properties();
-        FileInputStream fis = new FileInputStream(SessionService.getBootstrapPath(Const.FILE_BOOTSTRAP_OLD)); 
+        FileInputStream fis = new FileInputStream(SessionService
+            .getBootstrapPath(Const.FILE_BOOTSTRAP_OLD));
         prop.load(fis);
         fis.close();
-        
 
         // If it exists and contains pre-1.7 bootstrap format (a single line with a raw path),
         // convert it to 1.7 format first
@@ -372,7 +372,9 @@ public final class UpgradeManager {
    */
   private static void upgradeStartupConf() {
     String conf = Conf.getString(Const.CONF_STARTUP_ITEM);
-    if (conf.indexOf('/') == -1) {
+    // conf = "" if none track has never been launched or if 
+    // jajuk was closed in stopped state
+    if (!conf.equals("") && conf.indexOf('/') == -1) {
       conf = SearchResultType.FILE.name() + '/' + conf;
       Conf.setProperty(Const.CONF_STARTUP_ITEM, conf);
     }

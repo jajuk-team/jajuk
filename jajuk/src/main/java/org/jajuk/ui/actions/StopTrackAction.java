@@ -23,6 +23,8 @@ package org.jajuk.ui.actions;
 import java.awt.event.ActionEvent;
 
 import org.jajuk.services.players.QueueModel;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -32,7 +34,7 @@ import org.jajuk.util.log.Log;
  * DOCUMENT_ME.
  */
 public class StopTrackAction extends JajukAction {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -55,6 +57,11 @@ public class StopTrackAction extends JajukAction {
       public void run() {
         try {
           QueueModel.stopRequest();
+
+          // Save the stopped state (do not do it in the QueueModel.stopRequest() 
+          // method because it must be set only on a human request, not at jajuk engine shutdown      
+          Conf.setProperty(Const.CONF_STARTUP_STOPPED, "true");
+
         } catch (Exception e) {
           Log.error(e);
         }

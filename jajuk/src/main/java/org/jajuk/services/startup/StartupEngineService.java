@@ -56,6 +56,18 @@ import org.jajuk.util.log.Log;
  */
 public class StartupEngineService {
 
+  /** List of items to play at startup */
+  private static List<org.jajuk.base.File> alToPlay = new ArrayList<org.jajuk.base.File>();
+
+  /** File to play */
+  private static org.jajuk.base.File fileToPlay;
+
+  /** Web radio to play */
+  private static WebRadio radio;
+
+  /** Index in the queue of the startup file */
+  private static int index = 0;
+
   /**
    * Instantiates a new startup engine service.
    */
@@ -67,109 +79,155 @@ public class StartupEngineService {
    * Launch initial track at startup.
    */
   public static void launchInitialTrack() {
-    // List of items to play at startup
-    List<org.jajuk.base.File> alToPlay = new ArrayList<org.jajuk.base.File>();
-    // File to play
-    org.jajuk.base.File fileToPlay = null;
-    final WebRadio radio;
-    if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST)
-        || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)
-        || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_ITEM)
-        || Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOTHING)) {
-      if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_ITEM)) {
-        String conf = Conf.getString(Const.CONF_STARTUP_ITEM);
-        String item = conf.substring(conf.indexOf('/') + 1, conf.length());
-        if (conf.matches(SearchResultType.FILE.name() + ".*")) {
-          fileToPlay = FileManager.getInstance().getFileByID(item);
-        } else if (conf.matches(SearchResultType.WEBRADIO.name() + ".*")) {
-          radio = WebRadioManager.getInstance().getWebRadioByName(item);
-          launchRadio(radio);
-          return;
-        }
-      } else {
-        // If we were playing a webradio when leaving, launch it
-        if (Conf.getBoolean(Const.CONF_WEBRADIO_WAS_PLAYING)) {
-          radio = WebRadioManager.getInstance().getWebRadioByName(
-              Conf.getString(Const.CONF_DEFAULT_WEB_RADIO));
-          launchRadio(radio);
-          return;
-        }
-        // last file from beginning or last file keep position
-        else if (History.getInstance().getHistory().size() > 0) {
-          // make sure user didn't exit jajuk in the stopped state
-          // and that history is not void
-          fileToPlay = FileManager.getInstance().getFileByID(History.getInstance().getLastFile());
-        } else {
-          // do not try to launch anything, stay in stop state
-          return;
-        }
+    String startupMode = Conf.getString(Const.CONF_STARTUP_MODE);
+
+    // User explicitely required nothing to start or he left jajuk stopped
+    boolean doNotStartAnything = Const.STARTUP_MODE_NOTHING.equals(startupMode)
+        || Conf.getBoolean(Const.CONF_STARTUP_STOPPED);
+
+    // Populate item to start and stored queue
+    populateStartupItems();
+
+    // Check that the file to play is not null and try to mount its device if required 
+    if (!doNotStartAnything && !isWebradioStartup()) {
+      boolean readyToPlay = checkFileToPlay();
+      // OK, set the index of the file to play within the queue
+      if (readyToPlay) {
+        setIndex();
       }
-      // Try to mount the file to play
-      if (fileToPlay != null) {
-        if (!fileToPlay.isReady()) {
-          // file exists but is not mounted, just notify the error
-          // without annoying dialog at each startup try to mount
-          // device
-          Log.debug("Startup file located on an unmounted device" + ", try to mount it");
-          try {
-            fileToPlay.getDevice().mount(false);
-            Log.debug("Mount OK");
-          } catch (final Exception e) {
-            Log.debug("Mount failed");
-            final Properties pDetail = new Properties();
-            pDetail.put(Const.DETAIL_CONTENT, fileToPlay);
-            pDetail.put(Const.DETAIL_REASON, "10");
-            ObservationManager.notify(new JajukEvent(JajukEvents.PLAY_ERROR, pDetail));
-            QueueModel.setFirstFile(false); // no more first file
-          }
-        }
-      } else {
-        // file no more exists
-        Messages.getChoice(Messages.getErrorMessage(23), JOptionPane.DEFAULT_OPTION,
-            JOptionPane.WARNING_MESSAGE);
-        QueueModel.setFirstFile(false);
-        // no more first file, we ignore any stored fifo as it may contains
-        // others disappeared files
-        return;
+    }
+
+    // Push the new queue
+    boolean bRepeat = Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL)
+        || Conf.getBoolean(Const.CONF_STATE_REPEAT);
+    QueueModel.insert(UtilFeatures.createStackItems(alToPlay, bRepeat, false), 0);
+
+    // Start the file or the radio
+    // If user leaved jajuk in stopped mode, do nothing
+    if (!doNotStartAnything && radio != null) {
+      launchRadio();
+    } else if (!doNotStartAnything && fileToPlay != null) {
+      launchFile();
+    }
+  }
+
+  /**
+   * Launch fileToPlay
+   */
+  private static void launchFile() {
+    new Thread("Track Startup Thread") {
+      @Override
+      public void run() {
+        QueueModel.goTo(index);
       }
-      // For last tracks playing, add all ready files from last
-      // session stored FIFO
-      final File fifo = SessionService.getConfFileByPath(Const.FILE_FIFO);
-      if (!fifo.exists()) {
-        Log.debug("No fifo file");
-      } else {
+    }.start();
+  }
+
+  /**
+   * Return whether a webradio startup is required (it may be null if the webradio is unknown by the collection)
+   * @return whether a webradio startup is required
+   */
+  private static boolean isWebradioStartup() {
+    if (Conf.getBoolean(Const.CONF_WEBRADIO_WAS_PLAYING)) {
+      return true;
+    }
+    String startupMode = Conf.getString(Const.CONF_STARTUP_MODE);
+    if (Const.STARTUP_MODE_ITEM.equals(startupMode)) {
+      String conf = Conf.getString(Const.CONF_STARTUP_ITEM);
+      if (conf.matches(SearchResultType.WEBRADIO.name() + ".*")) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Restore the queue we got at last session exit
+   */
+  private static void restoreQueue() {
+    final File fifo = SessionService.getConfFileByPath(Const.FILE_FIFO);
+    if (!fifo.exists()) {
+      Log.debug("No fifo file");
+    } else {
+      try {
+        final BufferedReader br = new BufferedReader(new FileReader(SessionService
+            .getConfFileByPath(Const.FILE_FIFO)));
         try {
-          final BufferedReader br = new BufferedReader(new FileReader(SessionService
-              .getConfFileByPath(Const.FILE_FIFO)));
-          try {
-            String s = null;
-            for (;;) {
-              s = br.readLine();
-              if (s == null) {
-                break;
-              }
-              final org.jajuk.base.File file = FileManager.getInstance().getFileByID(s);
-              if ((file != null) && file.isReady()) {
-                alToPlay.add(file);
-              }
+          String s = null;
+          for (;;) {
+            s = br.readLine();
+            if (s == null) {
+              break;
             }
-          } finally {
-            br.close();
+            final org.jajuk.base.File file = FileManager.getInstance().getFileByID(s);
+            if ((file != null) && file.isReady()) {
+              alToPlay.add(file);
+            }
           }
-        } catch (final IOException ioe) {
-          Log.error(ioe);
+        } finally {
+          br.close();
+        }
+      } catch (final IOException ioe) {
+        Log.error(ioe);
+      }
+    }
+  }
+
+  /**
+   * Find item to play and build the queue
+   */
+  private static void populateStartupItems() {
+    String startupMode = Conf.getString(Const.CONF_STARTUP_MODE);
+
+    // an item (track or radio) has been forced by user
+    if (Const.STARTUP_MODE_ITEM.equals(startupMode)) {
+      String conf = Conf.getString(Const.CONF_STARTUP_ITEM);
+      String item = conf.substring(conf.indexOf('/') + 1, conf.length());
+      if (conf.matches(SearchResultType.FILE.name() + ".*")) {
+        fileToPlay = FileManager.getInstance().getFileByID(item);
+        if (fileToPlay == null) {
+          Log.warn("Unknown startup file : " + fileToPlay.getAbsolutePath());
+        }
+      } else if (conf.matches(SearchResultType.WEBRADIO.name() + ".*")) {
+        radio = WebRadioManager.getInstance().getWebRadioByName(item);
+        if (radio == null) {
+          Log.warn("Unknown startup webradio : " + radio.getName());
         }
       }
-    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_SHUFFLE)) {
+    }
+
+    // We play last item
+    else if (Const.STARTUP_MODE_LAST.equals(startupMode)
+        || Const.STARTUP_MODE_LAST_KEEP_POS.equals(startupMode)) {
+
+      // If we were playing a webradio when leaving, launch it
+      if (Conf.getBoolean(Const.CONF_WEBRADIO_WAS_PLAYING)) {
+        radio = WebRadioManager.getInstance().getWebRadioByName(
+            Conf.getString(Const.CONF_DEFAULT_WEB_RADIO));
+      }
+      // last file from beginning or last file keep position
+      else if (History.getInstance().getHistory().size() > 0) {
+        fileToPlay = FileManager.getInstance().getFileByID(History.getInstance().getLastFile());
+      }
+      //Restore the queue in these cases
+      restoreQueue();
+    }
+
+    // Shuffle mode
+    else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_SHUFFLE)) {
       alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
       if (alToPlay.size() > 0) {
         fileToPlay = alToPlay.get(0);
       }
+
+      // Best of mode
     } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_BESTOF)) {
       alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
       if (alToPlay.size() > 0) {
         fileToPlay = alToPlay.get(0);
       }
+
+      // Novelties mode
     } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOVELTIES)) {
       alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
       if ((alToPlay != null) && (alToPlay.size() > 0)) {
@@ -182,60 +240,79 @@ public class StartupEngineService {
             InformationJPanel.MessageType.ERROR);
       }
     }
-    // Launch selected file
 
     // If the queue was empty and a file to play is provided, build a new queue
     // with this track alone
-    if (alToPlay != null && alToPlay.size() == 0 && fileToPlay != null) {
+    if (alToPlay.size() == 0 && fileToPlay != null) {
       alToPlay.add(fileToPlay);
-    }
-
-    // find the index of last played track
-    if (alToPlay != null && alToPlay.size() > 0 && fileToPlay != null) {
-      int index = -1;
-      for (int i = 0; i < alToPlay.size(); i++) {
-        if (fileToPlay.getID().equals(alToPlay.get(i).getID())) {
-          index = i;
-          break;
-        }
-      }
-      if (index == -1) {
-        // Track not stored, push it first
-        alToPlay.add(0, fileToPlay);
-        index = 0;
-      }
-      boolean bRepeat = Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL)
-          || Conf.getBoolean(Const.CONF_STATE_REPEAT);
-      QueueModel.insert(UtilFeatures.createStackItems(alToPlay, bRepeat, false), 0);
-
-      // do not start playing if do nothing at startup is selected
-      if (!Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOTHING)) {
-        final int finalIndex = index;
-        new Thread("Track Startup Thread") {
-          @Override
-          public void run() {
-            QueueModel.goTo(finalIndex);
-          }
-        }.start();
-      }
     }
   }
 
   /**
-   * Launch the given webradio
-   * @param radio the radio
+   * Check that the file can actually be played and handle errors if it's not the case
+   * @return whether the file can actually be played
    */
-  private static void launchRadio(final WebRadio radio) {
-    if (radio != null) {
-      new Thread("WebRadio launch thread") {
-        @Override
-        public void run() {
-          QueueModel.launchRadio(radio);
+  private static boolean checkFileToPlay() {
+    boolean result = true;
+    // Try to mount the file to play
+    if (fileToPlay != null) {
+      if (!fileToPlay.isReady()) {
+        // File exists but is not mounted, just notify the error
+        // without annoying dialog at each startup try to mount
+        // device
+        Log.debug("Startup file located on an unmounted device" + ", try to mount it");
+        try {
+          fileToPlay.getDevice().mount(false);
+          Log.debug("Mount OK");
+        } catch (final Exception e) {
+          Log.debug("Mount failed");
+          final Properties pDetail = new Properties();
+          pDetail.put(Const.DETAIL_CONTENT, fileToPlay);
+          pDetail.put(Const.DETAIL_REASON, "10");
+          ObservationManager.notify(new JajukEvent(JajukEvents.PLAY_ERROR, pDetail));
+          result = false;
         }
-      }.start();
+      }
     } else {
-      Log.warn("Unknwon webradio : " + radio.getName());
+      // file no more exists
+      Messages.getChoice(Messages.getErrorMessage(23), JOptionPane.DEFAULT_OPTION,
+          JOptionPane.WARNING_MESSAGE);
+      // no more first file, we ignore any stored fifo as it may contains
+      // others disappeared files
+      result = false;
     }
+    return result;
+  }
+
+  /**
+   * Set index of fileToPlay among alToPlay list
+   */
+  private static void setIndex() {
+    // find the index of last played track
+    index = -1;
+    for (int i = 0; i < alToPlay.size(); i++) {
+      if (fileToPlay.getID().equals(alToPlay.get(i).getID())) {
+        index = i;
+        break;
+      }
+    }
+    if (index == -1) {
+      // Track not stored, push it first
+      alToPlay.add(0, fileToPlay);
+      index = 0;
+    }
+  }
+
+  /**
+   * Launch the startup webradio
+   */
+  private static void launchRadio() {
+    new Thread("WebRadio launch thread") {
+      @Override
+      public void run() {
+        QueueModel.launchRadio(radio);
+      }
+    }.start();
   }
 
   /**

@@ -624,6 +624,9 @@ public interface Const {
   /** DOCUMENT_ME. */
   String CONF_STARTUP_MODE = "jajuk.startup.mode";
 
+  /** Tell if last jajuk session was closed in stopped mode */
+  String CONF_STARTUP_STOPPED = "jajuk.startup.stopped";
+
   /** DOCUMENT_ME. */
   String CONF_CONFIRMATIONS_DELETE_FILE = "jajuk.confirmations.delete_file";
 
