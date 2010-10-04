@@ -85,7 +85,7 @@ public class StartupEngineService {
     boolean doNotStartAnything = Const.STARTUP_MODE_NOTHING.equals(startupMode)
         || Conf.getBoolean(Const.CONF_STARTUP_STOPPED);
 
-    // Populate item to start and stored queue
+    // Populate item to be started and load the stored queue
     populateStartupItems();
 
     // Check that the file to play is not null and try to mount its device if required 
@@ -104,7 +104,7 @@ public class StartupEngineService {
 
     // Start the file or the radio
     // If user leaved jajuk in stopped mode, do nothing
-    if (!doNotStartAnything && radio != null) {
+    if (!doNotStartAnything && isWebradioStartup() && radio != null) {
       launchRadio();
     } else if (!doNotStartAnything && fileToPlay != null) {
       launchFile();
@@ -128,10 +128,13 @@ public class StartupEngineService {
    * @return whether a webradio startup is required
    */
   private static boolean isWebradioStartup() {
-    if (Conf.getBoolean(Const.CONF_WEBRADIO_WAS_PLAYING)) {
+    String startupMode = Conf.getString(Const.CONF_STARTUP_MODE);
+    if (Conf.getBoolean(Const.CONF_WEBRADIO_WAS_PLAYING)
+        && (Const.STARTUP_MODE_LAST_KEEP_POS.equals(startupMode) || Const.STARTUP_MODE_LAST
+            .equals(startupMode))) {
       return true;
     }
-    String startupMode = Conf.getString(Const.CONF_STARTUP_MODE);
+
     if (Const.STARTUP_MODE_ITEM.equals(startupMode)) {
       String conf = Conf.getString(Const.CONF_STARTUP_ITEM);
       if (conf.matches(SearchResultType.WEBRADIO.name() + ".*")) {

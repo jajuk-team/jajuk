@@ -400,7 +400,7 @@ public final class Player {
   /**
    * Gets the current position.
    * 
-   * @return position in track in %
+   * @return position in track in % [0;1]
    */
   public static float getCurrentPosition() {
     if (playerImpl != null) {
