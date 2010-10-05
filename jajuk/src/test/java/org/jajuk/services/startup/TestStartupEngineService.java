@@ -22,6 +22,8 @@ package org.jajuk.services.startup;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
@@ -70,19 +72,40 @@ public class TestStartupEngineService extends JajukTestCase {
     radio1 = new WebRadio("myRadio", "http://foo.bar");
     WebRadioManager.getInstance().addWebRadio(radio1);
     Conf.setProperty(Const.CONF_DEFAULT_WEB_RADIO, "myRadio");
-    
+
     // Populate FIFO
     java.io.File fifo = SessionService.getConfFileByPath(Const.FILE_FIFO);
     fifo.delete();
-    BufferedWriter bw = new BufferedWriter(new FileWriter(fifo));
-    bw.write(file1.getID()+"\n");
-    bw.write(file2.getID()+"\n");
-    bw.write(file3.getID()+"\n");
+    BufferedWriter bw = new BufferedWriter(new FileWriter(fifo,false));
+    bw.write(file1.getID() + "\n");
+    bw.write(file2.getID() + "\n");
+    bw.write(file3.getID() + "\n");
     bw.close();
 
     // Set others properties
     Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, POSITION + "");
     Conf.setProperty(Const.CONF_STARTUP_STOPPED, "false");
+
+    // Reset the queue
+    QueueModel.reset();
+    
+    // Reset the Startup service
+    Field alToPlay = StartupEngineService.class.getDeclaredField("alToPlay");
+    alToPlay.setAccessible(true);
+    alToPlay.set(null, new ArrayList<org.jajuk.base.File>());
+    
+    Field fileToPlay = StartupEngineService.class.getDeclaredField("fileToPlay");
+    fileToPlay.setAccessible(true);
+    fileToPlay.set(null, null);
+    
+    Field radio = StartupEngineService.class.getDeclaredField("radio");
+    radio.setAccessible(true);
+    radio.set(null, null);
+    
+    Field index = StartupEngineService.class.getDeclaredField("index");
+    index.setAccessible(true);
+    index.set(null, 0);
+    
 
   }
 
@@ -163,6 +186,9 @@ public class TestStartupEngineService extends JajukTestCase {
 
     assertFalse(QueueModel.isPlayingRadio());
     assertFalse(QueueModel.isPlayingTrack());
+    
+    // Check that queue is filled up
+    assertTrue(QueueModel.getQueue().size() == 3);
   }
 
   public final void testStoppedRadio() throws InterruptedException {
@@ -196,7 +222,7 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_ITEM);
     Conf.setProperty(Const.CONF_STARTUP_ITEM, SearchResultType.FILE.name() + "/" + file1.getID());
 
-    // Radio was playing but we don't ware, we should launch the file
+    // Radio was playing but we don't care, we should launch the file
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "true");
 
     StartupEngineService.launchInitialTrack();
@@ -223,7 +249,7 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_STARTUP_ITEM, SearchResultType.WEBRADIO.name() + "/"
         + radio1.getName());
 
-    // Radio was playing but we don't ware, we should launch the file
+    // Radio was playing but we don't care, we should launch the file
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "true");
 
     StartupEngineService.launchInitialTrack();
@@ -240,6 +266,24 @@ public class TestStartupEngineService extends JajukTestCase {
     Thread.sleep(100);
 
     assertEquals(QueueModel.getCurrentRadio(), radio1);
+  }
+
+  /**
+  * User selected a radio to launch at startup but it leaved jajuk stopped 
+  * @throws InterruptedException
+  */
+  public final void testStartGivenRadioStopped() throws InterruptedException {
+    Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_ITEM);
+    Conf.setProperty(Const.CONF_STARTUP_ITEM, SearchResultType.WEBRADIO.name() + "/"
+        + radio1.getName());
+    Conf.setProperty(Const.CONF_STARTUP_STOPPED, "true");
+
+    StartupEngineService.launchInitialTrack();
+    // Wait for track to be actually launched
+    Thread.sleep(100);
+
+    assertEquals(QueueModel.getCurrentRadio(), null);
+
   }
 
   /**
