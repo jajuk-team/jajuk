@@ -516,8 +516,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     split.add(jpEditor);
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     add(split);
-    // Select "New" playlist as default
-    selectSmartPlaylist(spNew);
     // Register keystrokes over table
     setKeystrokes();
   }
@@ -1120,6 +1118,9 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       jtable.getSelectionModel().addListSelectionListener(PlaylistRepository.this);
       jtbEditable.setVisible(false);
       jtbSync.setVisible(false);
+
+      // Select "New" playlist as default
+      selectSmartPlaylist(spNew);
 
     }
 
