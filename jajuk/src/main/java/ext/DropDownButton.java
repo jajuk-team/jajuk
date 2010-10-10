@@ -82,6 +82,7 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
   /* (non-Javadoc)
    * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
    */
+  @Override
   public void propertyChange(PropertyChangeEvent evt) {
     arrowButton.setEnabled(isEnabled());
   }
@@ -91,6 +92,7 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
   /* (non-Javadoc)
    * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
    */
+  @Override
   public void stateChanged(ChangeEvent e) {
     if (e.getSource() == getModel()) {
       if (popupVisible && !getModel().isRollover()) {
@@ -113,6 +115,7 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
   /* (non-Javadoc)
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(ActionEvent ae) {
     JPopupMenu popup = getPopupMenu();
     popup.addPopupMenuListener(this);
@@ -124,6 +127,7 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
   /* (non-Javadoc)
    * @see javax.swing.event.PopupMenuListener#popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent)
    */
+  @Override
   public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
     popupVisible = true;
     getModel().setRollover(true);
@@ -133,6 +137,7 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
   /* (non-Javadoc)
    * @see javax.swing.event.PopupMenuListener#popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent)
    */
+  @Override
   public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
     popupVisible = false;
 
@@ -145,6 +150,7 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
   /* (non-Javadoc)
    * @see javax.swing.event.PopupMenuListener#popupMenuCanceled(javax.swing.event.PopupMenuEvent)
    */
+  @Override
   public void popupMenuCanceled(PopupMenuEvent e) {
     popupVisible = false;
   }

@@ -210,6 +210,7 @@ public final class AutoCompleteDecorator {
     // would not be autocompletion-enabled. The new editor needs to be
     // set-up.
     comboBox.addPropertyChangeListener("editor", new PropertyChangeListener() {
+      @Override
       public void propertyChange(PropertyChangeEvent e) {
         ComboBoxEditor editor = (ComboBoxEditor) e.getNewValue();
         if (editor != null && editor.getEditorComponent() != null) {
@@ -314,6 +315,7 @@ public final class AutoCompleteDecorator {
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
       if (adaptor.listContainsSelectedItem()) {
         selectionBackward.actionPerformed(e);
@@ -327,6 +329,7 @@ public final class AutoCompleteDecorator {
   static Object errorFeedbackAction = new TextAction("provide-error-feedback") {
     private static final long serialVersionUID = -3868819565696640330L;
 
+    @Override
     public void actionPerformed(ActionEvent e) {
       UIManager.getLookAndFeel().provideErrorFeedback(getTextComponent(e));
     }

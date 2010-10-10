@@ -287,6 +287,7 @@ public class ProcessLauncher {
    */
   private void createStreamThread(final InputStream is, final OutputStream os) {
     new Thread(new Runnable() {
+      @Override
       public void run() {
         BufferedInputStream bis = new BufferedInputStream(is);
         BufferedOutputStream bos = null;
