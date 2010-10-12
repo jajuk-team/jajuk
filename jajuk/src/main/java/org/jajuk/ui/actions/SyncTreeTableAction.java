@@ -21,6 +21,7 @@
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
+import java.util.Properties;
 
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -70,6 +71,19 @@ public class SyncTreeTableAction extends JajukAction {
     // refreshing but not the tree view's one.
     if (!source.isSelected()) {
       ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
+    }
+    // Re-apply last interesting events so effect is token live
+    Properties detailsTableEvent = ObservationManager
+        .getDetailsLastOccurence(JajukEvents.TABLE_SELECTION_CHANGED);
+    if (detailsTableEvent != null) {
+      ObservationManager.notify(new JajukEvent(JajukEvents.TABLE_SELECTION_CHANGED,
+          detailsTableEvent));
+    }
+    Properties detailsTreeEvent = ObservationManager
+        .getDetailsLastOccurence(JajukEvents.TREE_SELECTION_CHANGED);
+    if (detailsTableEvent != null) {
+      ObservationManager
+          .notify(new JajukEvent(JajukEvents.TREE_SELECTION_CHANGED, detailsTreeEvent));
     }
   }
 
