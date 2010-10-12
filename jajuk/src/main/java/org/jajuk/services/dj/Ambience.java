@@ -26,7 +26,6 @@ import java.util.Set;
 
 import org.jajuk.base.Genre;
 import org.jajuk.base.GenreManager;
-import org.jajuk.util.log.Log;
 
 /**
  * An ambience is a set of genres <br>
@@ -71,8 +70,6 @@ public class Ambience implements Comparable<Ambience> {
       Genre genre = GenreManager.getInstance().getGenreByName(element);
       if (genre != null) {
         hgenres.add(genre);
-      } else {
-        Log.debug("Unknown genre");
       }
     }
     this.sID = sID;
@@ -173,10 +170,10 @@ public class Ambience implements Comparable<Ambience> {
    */
   public String getGenresDesc() {
     // check if we have genres at all
-    if(getGenres().size() == 0) {
+    if (getGenres().size() == 0) {
       return "";
     }
-    
+
     StringBuilder out = new StringBuilder();
     for (Genre s : getGenres()) {
       out.append(s.getName2()).append(',');
@@ -236,7 +233,7 @@ public class Ambience implements Comparable<Ambience> {
    */
   public int compareTo(Ambience ambience) {
     // check for null
-    if(ambience == null) {
+    if (ambience == null) {
       return -1;
     }
 
@@ -251,15 +248,15 @@ public class Ambience implements Comparable<Ambience> {
    */
   public String toXML() {
     // check if we have genres at all 
-    if(getGenres().size() == 0) {
+    if (getGenres().size() == 0) {
       return "";
     }
-    
+
     StringBuilder s = new StringBuilder();
     for (Genre genre : getGenres()) {
       s.append(genre.getID()).append(',');
     }
-    
+
     return s.substring(0, s.length() - 1); // remove last coma
   }
 }
