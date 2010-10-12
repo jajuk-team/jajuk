@@ -90,11 +90,10 @@ public class StartupAsyncService {
           // try to start up D-Bus support if available. Currently this is only
           // implemented on Linux
           if (UtilSystem.isUnderLinux()) {
-            // make sure the singleton is initialized here
             try {
               DBusManager.connect();
             } catch (Exception e) {
-              // Make sure to catch this error propertly, otherwise the rest of the initalization is
+              // Make sure to catch this error properly, otherwise the rest of the initialization is
               // not done
               Log.error(e);
             }
