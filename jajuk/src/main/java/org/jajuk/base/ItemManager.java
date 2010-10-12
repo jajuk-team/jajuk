@@ -30,13 +30,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
-import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -53,20 +54,18 @@ public abstract class ItemManager {
   private final Map<String, PropertyMetaInformation> hmPropertiesMetaInformation = new LinkedHashMap<String, PropertyMetaInformation>(
       10);
 
-  /** *************************************************************************** Items collection <p> We use a concrete type here and not an upper bounded wildcard type (? extends Item) because this prevent from calling methods in it like put(String,Album) </p> **************************************************************************. */
+  /** The Lock */
+  ReadWriteLock lock = new ReentrantReadWriteLock();
 
-  // use an array list during startup which is faster during loading the
-  // collection
+  /**Use an array list during startup which is faster during loading the
+   collection*/
   private List<Item> startupItems = new ArrayList<Item>(100);
 
-  // also store the items by ID to have quick access if necessary
-  /** DOCUMENT_ME. */
+  /** Stores the items by ID to have quick access if necessary*/
   private final Map<String, Item> internalMap = new HashMap<String, Item>(100);
 
-  // at the beginning point to the ArrayList, later this is replaced by a
-  // TreeSet to have
-  // correct ordering.
-  /** DOCUMENT_ME. */
+  /** Collection pointer : at the beginning point to the ArrayList, later this is replaced by a
+   TreeSet to have correct ordering. */
   private Collection<Item> items = startupItems;
 
   /**
@@ -79,7 +78,7 @@ public abstract class ItemManager {
    * Switch all item managers to ordered mode See
    * ItemManager.switchToOrderState() for more details
    */
-  public static synchronized void switchAllManagersToOrderState() {
+  public static void switchAllManagersToOrderState() {
     Log.debug("Switching to sorted mode");
     for (ItemManager manager : hmItemManagers.values()) {
       manager.switchToOrderState();
@@ -93,13 +92,18 @@ public abstract class ItemManager {
    * before user could make changes to the collection, we populate a TreeSet
    * from the ArrayList and begin to use it.
    */
-  public synchronized void switchToOrderState() {
-    // populate a new TreeSet with the startup-items
-    if (startupItems != null) {
-      items = new TreeSet<Item>(startupItems);
+  public void switchToOrderState() {
+    lock.writeLock().lock();
+    try {
+      // populate a new TreeSet with the startup-items
+      if (startupItems != null) {
+        items = new TreeSet<Item>(startupItems);
 
-      // Free startup memory
-      startupItems = null;
+        // Free startup memory
+        startupItems = null;
+      }
+    } finally {
+      lock.writeLock().unlock();
     }
   }
 
@@ -131,7 +135,6 @@ public abstract class ItemManager {
     return hmPropertiesMetaInformation.get(sPropertyName);
   }
 
-  
   /**
    * Remove a property *.
    * 
@@ -148,9 +151,14 @@ public abstract class ItemManager {
    * 
    * @param meta DOCUMENT_ME
    */
-  public synchronized void applyRemoveProperty(PropertyMetaInformation meta) {
-    for (Item item : items) {
-      item.removeProperty(meta.getName());
+  public void applyRemoveProperty(PropertyMetaInformation meta) {
+    lock.readLock().lock();
+    try {
+      for (Item item : items) {
+        item.removeProperty(meta.getName());
+      }
+    } finally {
+      lock.readLock().unlock();
     }
   }
 
@@ -165,9 +173,14 @@ public abstract class ItemManager {
    */
 
   /** Add a custom property to all items for the given manager */
-  public synchronized void applyNewProperty(PropertyMetaInformation meta) {
-    for (Item item : items) {
-      item.setProperty(meta.getName(), meta.getDefaultValue());
+  public void applyNewProperty(PropertyMetaInformation meta) {
+    lock.readLock().lock();
+    try {
+      for (Item item : items) {
+        item.setProperty(meta.getName(), meta.getDefaultValue());
+      }
+    } finally {
+      lock.readLock().unlock();
     }
   }
 
@@ -187,7 +200,15 @@ public abstract class ItemManager {
     }
     return sb.append('\n').toString();
   }
-  
+
+  /**
+   * Return the associated read write lock
+   * @return the associated read write lock
+   */
+  public ReadWriteLock getLock() {
+    return lock;
+  }
+
   /**
    * Format the item name to be normalized :
    * <p>
@@ -241,7 +262,7 @@ public abstract class ItemManager {
     }
     return col;
   }
-  
+
   /**
    * Gets the custom properties without the activated extra tags.
    * 
@@ -334,50 +355,56 @@ public abstract class ItemManager {
    * Perform cleanup : delete useless items.
    */
   @SuppressWarnings("unchecked")
-  public synchronized void cleanup() {
-    // Prefetch item manager type for performances
-    short managerType = 0; // Album
-    if (this instanceof ArtistManager) {
-      managerType = 1;
-    } else if (this instanceof GenreManager) {
-      Log.debug("Genre cleanup not allowed");
-      return;
-    } else if (this instanceof YearManager) {
-      managerType = 2;
-    } else if (this instanceof AlbumArtistManager) {
-      managerType = 3;
-    }
-    // build used items set
-    List<Item> lItems = new ArrayList<Item>(100);
-    ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
-    while (tracks.hasNext()) {
-      Track track = tracks.next();
-      switch (managerType) {
-      case 0:
-        lItems.add(track.getAlbum());
-        break;
-      case 1:
-        lItems.add(track.getArtist());
-        break;
-      case 2:
-        lItems.add(track.getYear());
-        break;
-      case 3:
-        lItems.add(track.getAlbumArtist());
-        break;
+  public void cleanup() {
+    lock.writeLock().lock();
+    try {
+
+      // Prefetch item manager type for performances
+      short managerType = 0; // Album
+      if (this instanceof ArtistManager) {
+        managerType = 1;
+      } else if (this instanceof GenreManager) {
+        Log.debug("Genre cleanup not allowed");
+        return;
+      } else if (this instanceof YearManager) {
+        managerType = 2;
+      } else if (this instanceof AlbumArtistManager) {
+        managerType = 3;
       }
-    }
-    // Now iterate over this manager items to check if it is present in the
-    // items list
-    Iterator<Item> it = (Iterator<Item>) getItemsIterator();
-    while (it.hasNext()) {
-      Item item = it.next();
-      // check if this item still maps some tracks
-      if (!lItems.contains(item)) {
-        it.remove();
-        internalMap.remove(item.getID());
+      // build used items set
+      List<Item> lItems = new ArrayList<Item>(100);
+      List<Track> tracks = TrackManager.getInstance().getTracks();
+      for (Track track : tracks) {
+        switch (managerType) {
+        case 0:
+          lItems.add(track.getAlbum());
+          break;
+        case 1:
+          lItems.add(track.getArtist());
+          break;
+        case 2:
+          lItems.add(track.getYear());
+          break;
+        case 3:
+          lItems.add(track.getAlbumArtist());
+          break;
+        }
       }
+      // Now iterate over this manager items to check if it is present in the
+      // items list
+      Iterator<Item> it = (Iterator<Item>) getItemsIterator();
+      while (it.hasNext()) {
+        Item item = it.next();
+        // check if this item still maps some tracks
+        if (!lItems.contains(item)) {
+          it.remove();
+          internalMap.remove(item.getID());
+        }
+      }
+    } finally {
+      lock.writeLock().unlock();
     }
+
   }
 
   /**
@@ -385,7 +412,7 @@ public abstract class ItemManager {
    * 
    * @param item item whose associated tracks should be checked for cleanup
    */
-  protected synchronized void cleanOrphanTracks(Item item) {
+  protected void cleanOrphanTracks(Item item) {
     if (TrackManager.getInstance().getAssociatedTracks(item, false).isEmpty()) {
       removeItem(item);
     }
@@ -396,10 +423,15 @@ public abstract class ItemManager {
    * 
    * @param item DOCUMENT_ME
    */
-  protected synchronized void removeItem(Item item) {
-    if (item != null) {
-      items.remove(item);
-      internalMap.remove(item.getID());
+  protected void removeItem(Item item) {
+    lock.writeLock().lock();
+    try {
+      if (item != null) {
+        items.remove(item);
+        internalMap.remove(item.getID());
+      }
+    } finally {
+      lock.writeLock().unlock();
     }
   }
 
@@ -408,9 +440,14 @@ public abstract class ItemManager {
    * 
    * @param item : the item to add
    */
-  protected synchronized void registerItem(Item item) {
-    items.add(item);
-    internalMap.put(item.getID(), item);
+  protected void registerItem(Item item) {
+    lock.writeLock().lock();
+    try {
+      items.add(item);
+      internalMap.put(item.getID(), item);
+    } finally {
+      lock.writeLock().unlock();
+    }
   }
 
   /**
@@ -515,7 +552,7 @@ public abstract class ItemManager {
       } else if (Const.XML_ALBUM_ARTIST.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackAlbumArtist((Track) itemToChange,
             (String) oValue, filter);
-      }else if (Const.XML_TRACK_COMMENT.equals(sKey)) {
+      } else if (Const.XML_TRACK_COMMENT.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackComment((Track) itemToChange,
             (String) oValue, filter);
       } else if (Const.XML_TRACK_ORDER.equals(sKey)) {
@@ -579,7 +616,7 @@ public abstract class ItemManager {
    * 
    * @return a copy of all registered items
    */
-  public synchronized List<? extends Item> getItems() {
+  public List<? extends Item> getItems() {
     return new ArrayList<Item>(items);
   }
 
@@ -593,7 +630,7 @@ public abstract class ItemManager {
    * 
    * @arg predicate : the predicate
    */
-  public synchronized List<? extends Item> getFilteredItems(Predicate predicate) {
+  public List<? extends Item> getFilteredItems(Predicate predicate) {
     ArrayList<Item> itemsCopy = new ArrayList<Item>(items);
     CollectionUtils.filter(itemsCopy, predicate);
     return itemsCopy;
@@ -608,16 +645,21 @@ public abstract class ItemManager {
    * 
    * @return the items iterator
    */
-  protected synchronized Iterator<? extends Item> getItemsIterator() {
+  protected Iterator<? extends Item> getItemsIterator() {
     return items.iterator();
   }
 
   /**
    * Clear any entries from this manager.
    */
-  public synchronized void clear() {
-    items.clear();
-    internalMap.clear();
+  public void clear() {
+    lock.writeLock().lock();
+    try {
+      items.clear();
+      internalMap.clear();
+    } finally {
+      lock.writeLock().unlock();
+    }
   }
 
   /**
@@ -625,19 +667,24 @@ public abstract class ItemManager {
    * sorting contract <br>
    * We remove all items and add them all again to force sorting
    */
-  public synchronized void forceSorting() {
-    // first create a copy
-    ArrayList<Item> itemsCopy = new ArrayList<Item>(items);
-    
-    // then remove all elements
-    clear();
-    
-    // and then re-add all items again to make them correctly sorted again
-    for (Item item : itemsCopy) {
-      registerItem(item);
+  public void forceSorting() {
+    lock.writeLock().lock();
+    try {
+      // first create a copy
+      ArrayList<Item> itemsCopy = new ArrayList<Item>(items);
+
+      // then remove all elements
+      clear();
+
+      // and then re-add all items again to make them correctly sorted again
+      for (Item item : itemsCopy) {
+        registerItem(item);
+      }
+    } finally {
+      lock.writeLock().unlock();
     }
   }
-  
+
   /**
    * Basic implementation for item hashcode computation
    * 

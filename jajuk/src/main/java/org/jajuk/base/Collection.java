@@ -30,6 +30,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -226,61 +227,66 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
 
       // Devices
       writeItemList(bw, DeviceManager.getInstance().toXML(), DeviceManager.getInstance()
-          .getDevicesIterator(), DeviceManager.getInstance().getLabel(), 40);
+          .getDevices(), DeviceManager.getInstance().getLabel(), 40);
       Log.debug("Devices committed.");
 
       // Genres
-      writeItemList(bw, GenreManager.getInstance().toXML(), GenreManager.getInstance()
-          .getGenresIterator(), GenreManager.getInstance().getLabel(), 40);
+      writeItemList(bw, GenreManager.getInstance().toXML(), GenreManager.getInstance().getGenres(),
+          GenreManager.getInstance().getLabel(), 40);
       Log.debug("Genres committed.");
 
       // Artists
       writeItemList(bw, ArtistManager.getInstance().toXML(), ArtistManager.getInstance()
-          .getArtistsIterator(), ArtistManager.getInstance().getLabel(), 40);
+          .getArtists(), ArtistManager.getInstance().getLabel(), 40);
       Log.debug("Artists committed.");
 
       // Album artists
       writeItemList(bw, AlbumArtistManager.getInstance().toXML(), AlbumArtistManager.getInstance()
-          .getAlbumArtistsIterator(), AlbumArtistManager.getInstance().getLabel(), 40);
+          .getAlbumArtists(), AlbumArtistManager.getInstance().getLabel(), 40);
       Log.debug("Album-artists committed.");
 
       // Albums
-      writeItemList(bw, AlbumManager.getInstance().toXML(), AlbumManager.getInstance()
-          .getAlbumsIterator(), AlbumManager.getInstance().getLabel(), 40);
+      writeItemList(bw, AlbumManager.getInstance().toXML(), AlbumManager.getInstance().getAlbums(),
+          AlbumManager.getInstance().getLabel(), 40);
       Log.debug("Albums committed.");
 
       // Years
-      writeItemList(bw, YearManager.getInstance().toXML(), YearManager.getInstance()
-          .getYearsIterator(), YearManager.getInstance().getLabel(), 40);
+      writeItemList(bw, YearManager.getInstance().toXML(), YearManager.getInstance().getYears(),
+          YearManager.getInstance().getLabel(), 40);
       Log.debug("Years committed.");
 
       // Tracks
-      // Cannot use method as we have a bit of special handling inside the loop here
-      ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
-      bw.write(TrackManager.getInstance().toXML());
-      while (tracks.hasNext()) {
-        Track track = tracks.next();
-        // We clean up all orphan tracks
-        if (track.getFiles().size() > 0) {
-          bw.write(track.toXml());
+      // Cannot use writeItemList() method as we have a bit of special handling inside the loop here
+      TrackManager.getInstance().getLock().readLock().lock();
+      try {
+        ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
+        bw.write(TrackManager.getInstance().toXML());
+        while (tracks.hasNext()) {
+          Track track = tracks.next();
+          // We clean up all orphan tracks
+          if (track.getFiles().size() > 0) {
+            bw.write(track.toXml());
+          }
         }
+      } finally {
+        TrackManager.getInstance().getLock().readLock().unlock();
       }
       writeString(bw, TrackManager.getInstance().getLabel(), 200);
       Log.debug("Tracks committed.");
 
       // Directories
       writeItemList(bw, DirectoryManager.getInstance().toXML(), DirectoryManager.getInstance()
-          .getDirectoriesIterator(), DirectoryManager.getInstance().getLabel(), 100);
+          .getDirectories(), DirectoryManager.getInstance().getLabel(), 100);
       Log.debug("Directories committed.");
 
       // Files
-      writeItemList(bw, FileManager.getInstance().toXML(), FileManager.getInstance()
-          .getFilesIterator(), FileManager.getInstance().getLabel(), 200);
+      writeItemList(bw, FileManager.getInstance().toXML(), FileManager.getInstance().getFiles(),
+          FileManager.getInstance().getLabel(), 200);
       Log.debug("Files committed.");
 
       // Playlists
       writeItemList(bw, PlaylistManager.getInstance().toXML(), PlaylistManager.getInstance()
-          .getPlaylistsIterator(), PlaylistManager.getInstance().getLabel(), 200);
+          .getPlaylists(), PlaylistManager.getInstance().getLabel(), 200);
       Log.debug("Playlists committed.");
 
       // end of collection
@@ -309,12 +315,11 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    * @throws IOException
    *           Signals that an I/O exception has occurred.
    */
-  private static void writeItemList(BufferedWriter bw, String header,
-      ReadOnlyIterator<? extends Item> items, String footer, int buffer) throws IOException {
+  private static void writeItemList(BufferedWriter bw, String header, List<? extends Item> items,
+      String footer, int buffer) throws IOException {
     bw.write(header);
-
-    while (items.hasNext()) {
-      bw.write(items.next().toXml());
+    for (Item item : items) {
+      bw.write(item.toXml());
     }
 
     writeString(bw, footer, buffer);

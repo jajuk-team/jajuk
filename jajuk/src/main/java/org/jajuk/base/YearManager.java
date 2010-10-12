@@ -81,7 +81,7 @@ public final class YearManager extends ItemManager {
    * 
    * @return the year
    */
-  public synchronized Year registerYear(String sId, String pYear) {
+  public Year registerYear(String sId, String pYear) {
     Year year = getYearByID(sId);
     if (year != null) {
       return year;
@@ -118,7 +118,7 @@ public final class YearManager extends ItemManager {
    * @return ordered years list
    */
   @SuppressWarnings("unchecked")
-  public synchronized List<Year> getYears() {
+  public List<Year> getYears() {
     return (List<Year>) getItems();
   }
 
@@ -128,7 +128,7 @@ public final class YearManager extends ItemManager {
    * @return years iterator
    */
   @SuppressWarnings("unchecked")
-  public synchronized ReadOnlyIterator<Year> getYearsIterator() {
+  public ReadOnlyIterator<Year> getYearsIterator() {
     return new ReadOnlyIterator<Year>((Iterator<Year>) getItemsIterator());
   }
 

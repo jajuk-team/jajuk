@@ -110,11 +110,16 @@ public final class DirectoryManager extends ItemManager {
    * @param sId :
    * Device id
    */
-  public synchronized void cleanDevice(final String sId) {
-    for (Directory directory : getDirectories()) {
-      if (directory.getDevice().getID().equals(sId)) {
-        removeItem(directory);
+  public void cleanDevice(final String sId) {
+    lock.writeLock().lock();
+    try {
+      for (Directory directory : getDirectories()) {
+        if (directory.getDevice().getID().equals(sId)) {
+          removeItem(directory);
+        }
       }
+    } finally {
+      lock.writeLock().unlock();
     }
   }
 
@@ -124,7 +129,7 @@ public final class DirectoryManager extends ItemManager {
    * @return ordered directories list
    */
   @SuppressWarnings("unchecked")
-  public synchronized List<Directory> getDirectories() {
+  public List<Directory> getDirectories() {
     return (List<Directory>) getItems();
   }
 
@@ -134,7 +139,7 @@ public final class DirectoryManager extends ItemManager {
    * @return directories iterator
    */
   @SuppressWarnings("unchecked")
-  public synchronized ReadOnlyIterator<Directory> getDirectoriesIterator() {
+  public ReadOnlyIterator<Directory> getDirectoriesIterator() {
     return new ReadOnlyIterator<Directory>((Iterator<Directory>) getItemsIterator());
   }
 
@@ -157,16 +162,21 @@ public final class DirectoryManager extends ItemManager {
    * 
    * @return Directory matching the io file
    */
-  public synchronized Directory getDirectoryForIO(final java.io.File fio, Device device) {
-    ReadOnlyIterator<Directory> dirs = getDirectoriesIterator();
-    while (dirs.hasNext()) {
-      Directory dir = dirs.next();
-      // we have to test the device because of cdroms : all CD have the same IO
-      if (dir.getFio().equals(fio) && dir.getDevice().equals(device)) {
-        return dir;
+  public Directory getDirectoryForIO(final java.io.File fio, Device device) {
+    lock.readLock().lock();
+    try {
+      ReadOnlyIterator<Directory> dirs = getDirectoriesIterator();
+      while (dirs.hasNext()) {
+        Directory dir = dirs.next();
+        // we have to test the device because of cdroms : all CD have the same IO
+        if (dir.getFio().equals(fio) && dir.getDevice().equals(device)) {
+          return dir;
+        }
       }
+      return null;
+    } finally {
+      lock.readLock().unlock();
     }
-    return null;
   }
 
   /*
@@ -199,7 +209,7 @@ public final class DirectoryManager extends ItemManager {
    * 
    * @return the directory
    */
-  public synchronized Directory registerDirectory(final String sName, final Directory dParent,
+  public Directory registerDirectory(final String sName, final Directory dParent,
       final Device device) {
     return registerDirectory(DirectoryManager.createID(sName, device, dParent), sName, dParent,
         device);
@@ -215,8 +225,8 @@ public final class DirectoryManager extends ItemManager {
    * 
    * @return the directory
    */
-  public synchronized Directory registerDirectory(final String sId, final String sName,
-      final Directory dParent, final Device device) {
+  public Directory registerDirectory(final String sId, final String sName, final Directory dParent,
+      final Device device) {
     Directory directory = getDirectoryByID(sId);
     if (directory != null) {
       return directory;
@@ -232,31 +242,36 @@ public final class DirectoryManager extends ItemManager {
    * 
    * @param sId DOCUMENT_ME
    */
-  public synchronized void removeDirectory(final String sId) {
-    final Directory dir = getDirectoryByID(sId);
-    if (dir == null) {// check the directory has not already been
-      // removed
-      return;
+  public void removeDirectory(final String sId) {
+    lock.writeLock().lock();
+    try {
+      final Directory dir = getDirectoryByID(sId);
+      if (dir == null) {// check the directory has not already been
+        // removed
+        return;
+      }
+      // remove all files
+      // need to use a shallow copy to avoid concurrent exceptions
+      final List<File> alFiles = new ArrayList<File>(dir.getFiles());
+      for (final File file : alFiles) {
+        FileManager.getInstance().removeFile(file);
+      }
+      // remove all playlists
+      for (final Playlist plf : dir.getPlaylistFiles()) {
+        PlaylistManager.getInstance().removeItem(plf);
+      }
+      // remove all sub dirs
+      final Iterator<Directory> it = dir.getDirectories().iterator();
+      while (it.hasNext()) {
+        final Directory dSub = it.next();
+        removeDirectory(dSub.getID()); // self call
+        // remove it
+        it.remove();
+      }
+      // remove this dir from collection
+      removeItem(dir);
+    } finally {
+      lock.writeLock().unlock();
     }
-    // remove all files
-    // need to use a shallow copy to avoid concurrent exceptions
-    final List<File> alFiles = new ArrayList<File>(dir.getFiles());
-    for (final File file : alFiles) {
-      FileManager.getInstance().removeFile(file);
-    }
-    // remove all playlists
-    for (final Playlist plf : dir.getPlaylistFiles()) {
-      PlaylistManager.getInstance().removeItem(plf);
-    }
-    // remove all sub dirs
-    final Iterator<Directory> it = dir.getDirectories().iterator();
-    while (it.hasNext()) {
-      final Directory dSub = it.next();
-      removeDirectory(dSub.getID()); // self call
-      // remove it
-      it.remove();
-    }
-    // remove this dir from collection
-    removeItem(dir);
   }
 }

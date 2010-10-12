@@ -59,8 +59,11 @@ public class ReplayAlbumAction extends JajukAction {
           try {
             File current = QueueModel.getPlayingFile();
             if (current != null) {
-              List<Track> tracks = current.getTrack().getAlbum().getTracksCache();
-              List<File> files = new ArrayList<File>(tracks.size());
+              // Create a new cache list to avoid synchronization of the album cache
+              List<Track> tracks = new ArrayList<Track>(current.getTrack().getAlbum()
+                  .getTracksCache());
+              List<File> files = null;
+              files = new ArrayList<File>(tracks.size());
               for (Track track : tracks) {
                 files.add(track.getBestFile(true));
               }

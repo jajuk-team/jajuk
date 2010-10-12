@@ -81,7 +81,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * 
    * @return the playlist
    */
-  public synchronized Playlist registerPlaylistFile(java.io.File fio, Directory dParentDirectory) {
+  public Playlist registerPlaylistFile(java.io.File fio, Directory dParentDirectory) {
     String sId = createID(fio.getName(), dParentDirectory);
     return registerPlaylistFile(sId, fio.getName(), dParentDirectory);
   }
@@ -104,15 +104,21 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * 
    * @param plf the playlist
    */
-  public synchronized void removePlaylistFile(Playlist plf) throws IOException {
+  public void removePlaylistFile(Playlist plf) throws IOException {
     String sFileToDelete = plf.getDirectory().getFio().getAbsoluteFile().toString()
         + java.io.File.separatorChar + plf.getName();
-    java.io.File fileToDelete = new java.io.File(sFileToDelete);
-    if (fileToDelete.exists()) {
-      UtilSystem.deleteFile(fileToDelete);
+    lock.writeLock().lock();
+    try {
+      java.io.File fileToDelete = new java.io.File(sFileToDelete);
+      if (fileToDelete.exists()) {
+        UtilSystem.deleteFile(fileToDelete);
+      }
+
+      // remove playlist
+      removeItem(plf);
+    } finally {
+      lock.writeLock().unlock();
     }
-    // remove playlist
-    removeItem(plf);
   }
 
   /**
@@ -120,15 +126,20 @@ public final class PlaylistManager extends ItemManager implements Observer {
   * 
   * @param plf the playlist
   */
-  public synchronized void deletePlaylistFile(Playlist plf) throws IOException {
-    String sFileToDelete = plf.getDirectory().getFio().getAbsoluteFile().toString()
-        + java.io.File.separatorChar + plf.getName();
-    java.io.File fileToDelete = new java.io.File(sFileToDelete);
-    if (fileToDelete.exists()) {
-      UtilSystem.deleteFile(fileToDelete);
+  public void deletePlaylistFile(Playlist plf) throws IOException {
+    lock.writeLock().lock();
+    try {
+      String sFileToDelete = plf.getDirectory().getFio().getAbsoluteFile().toString()
+          + java.io.File.separatorChar + plf.getName();
+      java.io.File fileToDelete = new java.io.File(sFileToDelete);
+      if (fileToDelete.exists()) {
+        UtilSystem.deleteFile(fileToDelete);
+      }
+      // remove playlist
+      removePlaylistFile(plf);
+    } finally {
+      lock.writeLock().unlock();
     }
-    // remove playlist
-    removePlaylistFile(plf);
   }
 
   /**
@@ -140,17 +151,13 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * 
    * @return the playlist
    */
-  public synchronized Playlist registerPlaylistFile(String sId, String sName,
-      Directory dParentDirectory) {
+  public Playlist registerPlaylistFile(String sId, String sName, Directory dParentDirectory) {
     Playlist playlistFile = getPlaylistByID(sId);
     if (playlistFile != null) {
       return playlistFile;
     }
     playlistFile = new Playlist(sId, sName, dParentDirectory);
     registerItem(playlistFile);
-    if (dParentDirectory.getDevice().isRefreshing()) {
-      Log.debug("Registered new playlist: " + playlistFile);
-    }
     return playlistFile;
   }
 
@@ -160,7 +167,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * @param sId :
    * Device id
    */
-  public synchronized void cleanDevice(String sId) {
+  public void cleanDevice(String sId) {
     for (Playlist plf : getPlaylists()) {
       if (plf.getDirectory() == null || plf.getDirectory().getDevice().getID().equals(sId)) {
         removeItem(plf);
@@ -188,57 +195,61 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * 
    * @throws JajukException the jajuk exception
    */
-  public synchronized Playlist changePlaylistFileName(Playlist plfOld, String sNewName)
-      throws JajukException {
-    // check given name is different
-    if (plfOld.getName().equals(sNewName)) {
-      return plfOld;
-    }
-    // check if this file still exists
-    if (!plfOld.getFIO().exists()) {
-      throw new JajukException(135);
-    }
-    java.io.File ioNew = new java.io.File(plfOld.getFIO().getParentFile().getAbsolutePath()
-        + java.io.File.separator + sNewName);
-    // recalculate file ID
-    plfOld.getDirectory();
-    String sNewId = PlaylistManager.createID(sNewName, plfOld.getDirectory());
-    // create a new playlist (with own fio and sAbs)
-    Playlist plfNew = new Playlist(sNewId, sNewName, plfOld.getDirectory());
-    // Transfer all properties (id and name)
-    // We use a shallow copy of properties to avoid any properties share between
-    // two items
-    plfNew.setProperties(plfOld.getShallowProperties());
-    plfNew.setProperty(Const.XML_ID, sNewId); // reset new id and name
-    plfNew.setProperty(Const.XML_NAME, sNewName); // reset new id and name
-    // check file name and extension
-    if (plfNew.getName().lastIndexOf('.') != plfNew.getName().indexOf('.')// just
-        // one
-        // '.'
-        || !(UtilSystem.getExtension(ioNew).equals(Const.EXT_PLAYLIST))) { // check
-      // extension
-      Messages.showErrorMessage(134);
-      throw new JajukException(134);
-    }
-    // check if future file exists (under windows, file.exists
-    // return true even with different case so we test file name is
-    // different)
-    if (!ioNew.getName().equalsIgnoreCase(plfOld.getName()) && ioNew.exists()) {
-      throw new JajukException(134);
-    }
-    // try to rename file on disk
+  public Playlist changePlaylistFileName(Playlist plfOld, String sNewName) throws JajukException {
+    lock.writeLock().lock();
     try {
-      boolean result = plfOld.getFIO().renameTo(ioNew);
-      if (!result) {
-        throw new IOException();
+      // check given name is different
+      if (plfOld.getName().equals(sNewName)) {
+        return plfOld;
       }
-    } catch (Exception e) {
-      throw new JajukException(134, e);
+      // check if this file still exists
+      if (!plfOld.getFIO().exists()) {
+        throw new JajukException(135);
+      }
+      java.io.File ioNew = new java.io.File(plfOld.getFIO().getParentFile().getAbsolutePath()
+          + java.io.File.separator + sNewName);
+      // recalculate file ID
+      plfOld.getDirectory();
+      String sNewId = PlaylistManager.createID(sNewName, plfOld.getDirectory());
+      // create a new playlist (with own fio and sAbs)
+      Playlist plfNew = new Playlist(sNewId, sNewName, plfOld.getDirectory());
+      // Transfer all properties (id and name)
+      // We use a shallow copy of properties to avoid any properties share between
+      // two items
+      plfNew.setProperties(plfOld.getShallowProperties());
+      plfNew.setProperty(Const.XML_ID, sNewId); // reset new id and name
+      plfNew.setProperty(Const.XML_NAME, sNewName); // reset new id and name
+      // check file name and extension
+      if (plfNew.getName().lastIndexOf('.') != plfNew.getName().indexOf('.')// just
+          // one
+          // '.'
+          || !(UtilSystem.getExtension(ioNew).equals(Const.EXT_PLAYLIST))) { // check
+        // extension
+        Messages.showErrorMessage(134);
+        throw new JajukException(134);
+      }
+      // check if future file exists (under windows, file.exists
+      // return true even with different case so we test file name is
+      // different)
+      if (!ioNew.getName().equalsIgnoreCase(plfOld.getName()) && ioNew.exists()) {
+        throw new JajukException(134);
+      }
+      // try to rename file on disk
+      try {
+        boolean result = plfOld.getFIO().renameTo(ioNew);
+        if (!result) {
+          throw new IOException();
+        }
+      } catch (Exception e) {
+        throw new JajukException(134, e);
+      }
+      // OK, remove old file and register this new file
+      removeItem(plfOld);
+      registerItem(plfNew);
+      return plfNew;
+    } finally {
+      lock.writeLock().unlock();
     }
-    // OK, remove old file and register this new file
-    removeItem(plfOld);
-    registerItem(plfNew);
-    return plfNew;
   }
 
   /*
@@ -249,24 +260,29 @@ public final class PlaylistManager extends ItemManager implements Observer {
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) {
-      Properties properties = event.getDetails();
-      File fNew = (File) properties.get(Const.DETAIL_NEW);
-      File fileOld = (File) properties.get(Const.DETAIL_OLD);
-      // search references in playlists
-      ReadOnlyIterator<Playlist> it = getPlaylistsIterator();
-      while (it.hasNext()) {
-        Playlist plf = it.next();
-        if (plf.isReady()) { // check only in mounted
-          // playlists, note that we can't
-          // change unmounted playlists
-          try {
-            if (plf.getFiles().contains(fileOld)) {
-              plf.replaceFile(fileOld, fNew);
+      lock.writeLock().lock();
+      try {
+        Properties properties = event.getDetails();
+        File fNew = (File) properties.get(Const.DETAIL_NEW);
+        File fileOld = (File) properties.get(Const.DETAIL_OLD);
+        // search references in playlists
+        ReadOnlyIterator<Playlist> it = getPlaylistsIterator();
+        while (it.hasNext()) {
+          Playlist plf = it.next();
+          if (plf.isReady()) { // check only in mounted
+            // playlists, note that we can't
+            // change unmounted playlists
+            try {
+              if (plf.getFiles().contains(fileOld)) {
+                plf.replaceFile(fileOld, fNew);
+              }
+            } catch (Exception e) {
+              Log.error(17, e);
             }
-          } catch (Exception e) {
-            Log.error(17, e);
           }
         }
+      } finally {
+        lock.writeLock().unlock();
       }
     }
   }
@@ -299,7 +315,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * @return ordered playlists list
    */
   @SuppressWarnings("unchecked")
-  public synchronized List<Playlist> getPlaylists() {
+  public List<Playlist> getPlaylists() {
     return (List<Playlist>) getItems();
   }
 
@@ -309,7 +325,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * @return playlists iterator
    */
   @SuppressWarnings("unchecked")
-  public synchronized ReadOnlyIterator<Playlist> getPlaylistsIterator() {
+  public ReadOnlyIterator<Playlist> getPlaylistsIterator() {
     return new ReadOnlyIterator<Playlist>((Iterator<Playlist>) getItemsIterator());
   }
 

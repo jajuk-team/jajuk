@@ -48,7 +48,7 @@ public final class GenreManager extends ItemManager {
 
   /* List of all known genres */
   /** DOCUMENT_ME. */
-  private Vector<String> genresList;    // NOPMD
+  private Vector<String> genresList; // NOPMD
 
   /**
    * No constructor available, only static access.
@@ -98,7 +98,7 @@ public final class GenreManager extends ItemManager {
    *
    * @return the genre
    */
-  public synchronized Genre registerGenre(String sId, String sName) {
+  public Genre registerGenre(String sId, String sName) {
     Genre genre = getGenreByID(sId);
     if (genre != null) {
       return genre;
@@ -123,7 +123,7 @@ public final class GenreManager extends ItemManager {
    * Register preset genres.
    * DOCUMENT_ME
    */
-  public synchronized void registerPresetGenres() {
+  public void registerPresetGenres() {
     // create default genre list
     genresList = new Vector<String>(Arrays.asList(UtilFeatures.GENRES));
     Collections.sort(genresList);
@@ -141,8 +141,7 @@ public final class GenreManager extends ItemManager {
    */
   public Genre getGenreByName(String name) {
     Genre out = null;
-    for (ReadOnlyIterator<Genre> it = getGenresIterator(); it.hasNext();) {
-      Genre genre = it.next();
+    for (Genre genre : getGenres()) {
       if (genre.getName().equals(name)) {
         out = genre;
         break;
@@ -162,32 +161,30 @@ public final class GenreManager extends ItemManager {
    * @throws JajukException the jajuk exception
    */
   public Genre changeGenreName(Genre old, String sNewName) throws JajukException {
-    synchronized (TrackManager.getInstance()) {
-      // check there is actually a change
-      if (old.getName2().equals(sNewName)) {
-        return old;
-      }
-      Genre newItem = registerGenre(sNewName);
-      // re apply old properties from old item
-      newItem.cloneProperties(old);
-      // update tracks
-      List<Track> alTracks = TrackManager.getInstance().getTracks();
-      // we need to create a new list to avoid concurrent exceptions
-      Iterator<Track> it = alTracks.iterator();
-      while (it.hasNext()) {
-        Track track = it.next();
-        if (track.getGenre().equals(old)) {
-          TrackManager.getInstance().changeTrackGenre(track, sNewName, null);
-        }
-      }
-      // notify everybody for the file change
-      Properties properties = new Properties();
-      properties.put(Const.DETAIL_OLD, old);
-      properties.put(Const.DETAIL_NEW, newItem);
-      // Notify interested items (like ambience manager)
-      ObservationManager.notifySync(new JajukEvent(JajukEvents.GENRE_NAME_CHANGED, properties));
-      return newItem;
+    // check there is actually a change
+    if (old.getName2().equals(sNewName)) {
+      return old;
     }
+    Genre newItem = registerGenre(sNewName);
+    // re apply old properties from old item
+    newItem.cloneProperties(old);
+    // update tracks
+    List<Track> alTracks = TrackManager.getInstance().getTracks();
+    // we need to create a new list to avoid concurrent exceptions
+    Iterator<Track> it = alTracks.iterator();
+    while (it.hasNext()) {
+      Track track = it.next();
+      if (track.getGenre().equals(old)) {
+        TrackManager.getInstance().changeTrackGenre(track, sNewName, null);
+      }
+    }
+    // notify everybody for the file change
+    Properties properties = new Properties();
+    properties.put(Const.DETAIL_OLD, old);
+    properties.put(Const.DETAIL_NEW, newItem);
+    // Notify interested items (like ambience manager)
+    ObservationManager.notifySync(new JajukEvent(JajukEvents.GENRE_NAME_CHANGED, properties));
+    return newItem;
   }
 
   /**
@@ -251,7 +248,7 @@ public final class GenreManager extends ItemManager {
    * @return ordered genres list
    */
   @SuppressWarnings("unchecked")
-  public synchronized List<Genre> getGenres() {
+  public List<Genre> getGenres() {
     return (List<Genre>) getItems();
   }
 
@@ -261,7 +258,7 @@ public final class GenreManager extends ItemManager {
    * @return genres iterator
    */
   @SuppressWarnings("unchecked")
-  public synchronized ReadOnlyIterator<Genre> getGenresIterator() {
+  public ReadOnlyIterator<Genre> getGenresIterator() {
     return new ReadOnlyIterator<Genre>((Iterator<Genre>) getItemsIterator());
   }
 

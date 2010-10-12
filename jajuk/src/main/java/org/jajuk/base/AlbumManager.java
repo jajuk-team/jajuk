@@ -123,7 +123,7 @@ public final class AlbumManager extends ItemManager implements Observer {
    * 
    * @return the album
    */
-  public synchronized Album registerAlbum(String sId, String sName, long discID) {
+  public Album registerAlbum(String sId, String sName, long discID) {
     Album album = getAlbumByID(sId);
     if (album != null) {
       return album;
@@ -244,7 +244,7 @@ public final class AlbumManager extends ItemManager implements Observer {
    * @return ordered albums list
    */
   @SuppressWarnings("unchecked")
-  public synchronized List<Album> getAlbums() {
+  public List<Album> getAlbums() {
     return (List<Album>) getItems();
   }
 
@@ -254,7 +254,7 @@ public final class AlbumManager extends ItemManager implements Observer {
    * @return albums iterator
    */
   @SuppressWarnings("unchecked")
-  public synchronized ReadOnlyIterator<Album> getAlbumsIterator() {
+  public ReadOnlyIterator<Album> getAlbumsIterator() {
     return new ReadOnlyIterator<Album>((Iterator<Album>) getItemsIterator());
   }
 
@@ -265,33 +265,42 @@ public final class AlbumManager extends ItemManager implements Observer {
    * 
    * @return a list of item, void list if no result
    */
-  public synchronized List<Album> getAssociatedAlbums(Item item) {
+  public List<Album> getAssociatedAlbums(Item item) {
     List<Album> out;
     // [Perf] If item is a track, just return its album
     if (item instanceof Track) {
       out = new ArrayList<Album>(1);
       out.add(((Track) item).getAlbum());
     } else {
-      ReadOnlyIterator<Album> albums = getAlbumsIterator();
-      // Use a set to avoid dups
-      Set<Album> albumSet = new HashSet<Album>();
-      while (albums.hasNext()) {
-        Album album = albums.next();
-        for (Track track : album.getTracksCache()) {
-          if (item instanceof Artist && track.getArtist().equals(item)) {
-            albumSet.add(album);
-          } else if (item instanceof Genre && track.getGenre().equals(item)) {
-            albumSet.add(album);
-          }
-          if (item instanceof Year && track.getYear().equals(item)) {
-            albumSet.add(album);
+      try {
+        lock.readLock().lock();
+        ReadOnlyIterator<Album> albums = getAlbumsIterator();
+        // Use a set to avoid dups
+        Set<Album> albumSet = new HashSet<Album>();
+        while (albums.hasNext()) {
+          Album album = albums.next();
+          List<Track> cache = album.getTracksCache();
+          synchronized (cache) {
+            for (Track track : cache) {
+              if (item instanceof Artist && track.getArtist().equals(item)) {
+                albumSet.add(album);
+              } else if (item instanceof Genre && track.getGenre().equals(item)) {
+                albumSet.add(album);
+              }
+              if (item instanceof Year && track.getYear().equals(item)) {
+                albumSet.add(album);
+              }
+            }
           }
         }
+        out = new ArrayList<Album>(albumSet);
+        Collections.sort(out);
+      } finally {
+        lock.readLock().unlock();
       }
-      out = new ArrayList<Album>(albumSet);
-      Collections.sort(out);
     }
     return out;
+
   }
 
   /**
@@ -304,29 +313,32 @@ public final class AlbumManager extends ItemManager implements Observer {
    * available albums
    */
   public List<Album> getBestOfAlbums(boolean bHideUnmounted, int iNbBestofAlbums) {
-    // TODO: this code does not look at "bHideUnmounted" at all, so most of this
-    // method and
-    // the double copying is not necessary, or?
-
-    // create a temporary table to remove unmounted albums
-    // We consider an album as mounted if a least one track is mounted
-    // This hashmap contains album-> album rates
-    final Map<Album, Float> cacheRate = new HashMap<Album, Float>(AlbumManager.getInstance()
-        .getElementCount());
-    ReadOnlyIterator<Album> it = AlbumManager.getInstance().getAlbumsIterator();
-    while (it.hasNext()) {
-      Album album = it.next();
-      cacheRate.put(album, (float) album.getRate());
-    }
-    // Now sort albums by rating
-    List<Album> sortedAlbums = new ArrayList<Album>(cacheRate.keySet());
-    Collections.sort(sortedAlbums, new Comparator<Album>() {
-      public int compare(Album o1, Album o2) {
-        // lowest first
-        return (int) (cacheRate.get(o1) - cacheRate.get(o2));
+    lock.readLock().lock();
+    try {
+      // Create a temporary table to remove unmounted albums
+      // We consider an album as mounted if a least one track is mounted
+      // This hashmap contains album-> album rates
+      final Map<Album, Float> cacheRate = new HashMap<Album, Float>(AlbumManager.getInstance()
+          .getElementCount());
+      ReadOnlyIterator<Album> it = AlbumManager.getInstance().getAlbumsIterator();
+      while (it.hasNext()) {
+        Album album = it.next();
+        if (!bHideUnmounted || album.containsReadyFiles()) {
+          cacheRate.put(album, (float) album.getRate());
+        }
       }
-    });
-    return getTopAlbums(sortedAlbums, iNbBestofAlbums);
+      // Now sort albums by rating
+      List<Album> sortedAlbums = new ArrayList<Album>(cacheRate.keySet());
+      Collections.sort(sortedAlbums, new Comparator<Album>() {
+        public int compare(Album o1, Album o2) {
+          // lowest first
+          return (int) (cacheRate.get(o1) - cacheRate.get(o2));
+        }
+      });
+      return getTopAlbums(sortedAlbums, iNbBestofAlbums);
+    } finally {
+      lock.readLock().unlock();
+    }
   }
 
   /**
@@ -338,26 +350,31 @@ public final class AlbumManager extends ItemManager implements Observer {
    * @return newest albums
    */
   public List<Album> getNewestAlbums(boolean bHideUnmounted, int iNb) {
-    // create a temporary table to remove unmounted albums
-    // We consider an album as mounted if a least one track is mounted
-    // This hashmap contains album-> discovery date
-    final Map<Album, Date> cache = new HashMap<Album, Date>(AlbumManager.getInstance()
-        .getElementCount());
-    ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
-    while (it.hasNext()) {
-      Track track = it.next();
-      if (track.getBestFile(bHideUnmounted) != null) {
-        cache.put(track.getAlbum(), track.getDiscoveryDate());
+    lock.readLock().lock();
+    try {
+      // create a temporary table to remove unmounted albums
+      // We consider an album as mounted if a least one track is mounted
+      // This hashmap contains album-> discovery date
+      final Map<Album, Date> cache = new HashMap<Album, Date>(AlbumManager.getInstance()
+          .getElementCount());
+      ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
+      while (it.hasNext()) {
+        Track track = it.next();
+        if (track.getBestFile(bHideUnmounted) != null) {
+          cache.put(track.getAlbum(), track.getDiscoveryDate());
+        }
       }
+      // Now sort albums by discovery date
+      List<Album> sortedAlbums = new ArrayList<Album>(cache.keySet());
+      Collections.sort(sortedAlbums, new Comparator<Album>() {
+        public int compare(Album o1, Album o2) {
+          return cache.get(o1).compareTo(cache.get(o2));
+        }
+      });
+      return getTopAlbums(sortedAlbums, iNb);
+    } finally {
+      lock.readLock().unlock();
     }
-    // Now sort albums by discovery date
-    List<Album> sortedAlbums = new ArrayList<Album>(cache.keySet());
-    Collections.sort(sortedAlbums, new Comparator<Album>() {
-      public int compare(Album o1, Album o2) {
-        return cache.get(o1).compareTo(cache.get(o2));
-      }
-    });
-    return getTopAlbums(sortedAlbums, iNb);
   }
 
   /**
@@ -370,43 +387,48 @@ public final class AlbumManager extends ItemManager implements Observer {
    * available albums
    */
   public List<Album> getRarelyListenAlbums(boolean bHideUnmounted, int iNb) {
-    // create a temporary table to remove unmounted albums
-    // We consider an album as mounted if a least one track is mounted
-    // This hashmap contains album-> album hits (each track hit average)
-    final Map<Album, Float> cache = new HashMap<Album, Float>(AlbumManager.getInstance()
-        .getElementCount());
-    // This hashmap contains album-> nb of tracks already taken into account
-    // for average
-    Map<Album, Integer> cacheNb = new HashMap<Album, Integer>(AlbumManager.getInstance()
-        .getElementCount());
-    ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
-    while (it.hasNext()) {
-      Track track = it.next();
-      if (track.getBestFile(bHideUnmounted) != null) {
-        float newHits = 0f;
-        Integer nb = cacheNb.get(track.getAlbum());
-        if (nb == null) {
-          nb = 0;
+    lock.readLock().lock();
+    try {
+      // create a temporary table to remove unmounted albums
+      // We consider an album as mounted if a least one track is mounted
+      // This hashmap contains album-> album hits (each track hit average)
+      final Map<Album, Float> cache = new HashMap<Album, Float>(AlbumManager.getInstance()
+          .getElementCount());
+      // This hashmap contains album-> nb of tracks already taken into account
+      // for average
+      Map<Album, Integer> cacheNb = new HashMap<Album, Integer>(AlbumManager.getInstance()
+          .getElementCount());
+      ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
+      while (it.hasNext()) {
+        Track track = it.next();
+        if (track.getBestFile(bHideUnmounted) != null) {
+          float newHits = 0f;
+          Integer nb = cacheNb.get(track.getAlbum());
+          if (nb == null) {
+            nb = 0;
+          }
+          Float previousRate = cache.get(track.getAlbum());
+          if (previousRate == null) {
+            newHits = track.getHits();
+          } else {
+            newHits = ((previousRate * nb) + track.getHits()) / (nb + 1);
+          }
+          cacheNb.put(track.getAlbum(), nb + 1);
+          cache.put(track.getAlbum(), newHits);
         }
-        Float previousRate = cache.get(track.getAlbum());
-        if (previousRate == null) {
-          newHits = track.getHits();
-        } else {
-          newHits = ((previousRate * nb) + track.getHits()) / (nb + 1);
-        }
-        cacheNb.put(track.getAlbum(), nb + 1);
-        cache.put(track.getAlbum(), newHits);
       }
+      // Now sort albums by rating
+      List<Album> sortedAlbums = new ArrayList<Album>(cache.keySet());
+      Collections.sort(sortedAlbums, new Comparator<Album>() {
+        public int compare(Album o1, Album o2) {
+          // We inverse comparison as we want lowest scores
+          return (int) (cache.get(o2) - cache.get(o1));
+        }
+      });
+      return getTopAlbums(sortedAlbums, iNb);
+    } finally {
+      lock.readLock().unlock();
     }
-    // Now sort albums by rating
-    List<Album> sortedAlbums = new ArrayList<Album>(cache.keySet());
-    Collections.sort(sortedAlbums, new Comparator<Album>() {
-      public int compare(Album o1, Album o2) {
-        // We inverse comparison as we want lowest scores
-        return (int) (cache.get(o2) - cache.get(o1));
-      }
-    });
-    return getTopAlbums(sortedAlbums, iNb);
   }
 
   /**
@@ -448,7 +470,7 @@ public final class AlbumManager extends ItemManager implements Observer {
 
   /**
    * Force to refresh the album max rating, it is not done soon as it is pretty
-   * CPU consumming and we don't need a track by track rating precision.
+   * CPU consuming and we don't need a track by track rating precision.
    */
   public void refreshMaxRating() {
     // create a temporary table to remove unmounted albums
@@ -456,9 +478,7 @@ public final class AlbumManager extends ItemManager implements Observer {
     // This hashmap contains album-> album rates
     final Map<Album, Float> cacheRate = new HashMap<Album, Float>(AlbumManager.getInstance()
         .getElementCount());
-    ReadOnlyIterator<Album> it = AlbumManager.getInstance().getAlbumsIterator();
-    while (it.hasNext()) {
-      Album album = it.next();
+    for (Album album : AlbumManager.getInstance().getAlbums()) {
       cacheRate.put(album, (float) album.getRate());
     }
     // OK, now keep only the highest score
@@ -493,24 +513,34 @@ public final class AlbumManager extends ItemManager implements Observer {
    * @return associated album (case insensitive) or null if no match
    */
   public Album getAlbumByName(String name) {
-    Album out = null;
-    for (ReadOnlyIterator<Album> it = getAlbumsIterator(); it.hasNext();) {
-      Album album = it.next();
-      if (album.getName().equalsIgnoreCase(name)) {
-        out = album;
-        break;
+    lock.readLock().lock();
+    try {
+      Album out = null;
+      for (ReadOnlyIterator<Album> it = getAlbumsIterator(); it.hasNext();) {
+        Album album = it.next();
+        if (album.getName().equalsIgnoreCase(name)) {
+          out = album;
+          break;
+        }
       }
+      return out;
+    } finally {
+      lock.readLock().unlock();
     }
-    return out;
+
   }
 
   /**
    * Specialize switchToOrderState, here we sort the album cache in addition.
    */
-  public synchronized void orderCache() {
-    for (ReadOnlyIterator<Album> it = getAlbumsIterator(); it.hasNext();) {
-      Album album = it.next();
-      Collections.sort(album.getTracksCache(), new TrackComparator(TrackComparatorType.ALBUM));
+  public void orderCache() {
+    // read lock, not write lock because we need a write lock only when performing 
+    // structural changes to items collection 
+    for (Album album : getAlbums()) {
+      List<Track> cache = album.getTracksCache();
+      synchronized (cache) {
+        Collections.sort(cache, new TrackComparator(TrackComparatorType.ALBUM));
+      }
     }
   }
 
@@ -518,8 +548,7 @@ public final class AlbumManager extends ItemManager implements Observer {
    * Reset cached cover url for every album
    */
   public void resetCoverCache() {
-    for (ReadOnlyIterator<Album> it = getAlbumsIterator(); it.hasNext();) {
-      Album album = it.next();
+    for (Album album : getAlbums()) {
       album.setProperty(Const.XML_ALBUM_COVER, "");
     }
   }

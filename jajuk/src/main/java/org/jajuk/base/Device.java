@@ -51,7 +51,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
@@ -1090,9 +1089,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         // and is readable
         // check if this device was void
         boolean bVoid = true;
-        ReadOnlyIterator<org.jajuk.base.File> it = FileManager.getInstance().getFilesIterator();
-        while (it.hasNext()) {
-          final org.jajuk.base.File f = it.next();
+        for (org.jajuk.base.File f : FileManager.getInstance().getFiles()) {
           if (f.getDirectory().getDevice().equals(this)) {
             // at least one field in this device
             bVoid = false;

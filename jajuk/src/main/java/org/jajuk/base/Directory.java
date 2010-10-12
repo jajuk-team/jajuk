@@ -45,7 +45,6 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
@@ -142,19 +141,20 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   }
 
   /**
-   * Gets the directories.
+   * Gets the sub-directories.
    * 
    * @return all sub directories
    */
   public Set<Directory> getDirectories() {
     Set<Directory> out = new LinkedHashSet<Directory>(2);
-    ReadOnlyIterator<Directory> it = DirectoryManager.getInstance().getDirectoriesIterator();
-    while (it.hasNext()) {
-      Directory directory = it.next();
-      if (directory.getFio() != null && directory.getFio().getParentFile() != null
+    // Iterate against a copy of directories, not a ReadOnlyIterator to avoid handling 
+    // synchronization issues, this method is not in a critical sequence
+    List<Directory> dirs = DirectoryManager.getInstance().getDirectories();
+    for (Directory directory : dirs) {
+      if (directory.getFio().getParentFile() != null
           && directory.getFio().getParentFile().equals(this.getFio())
           // check the device of the tested directory to handle directories
-          // from cdrom
+          // from cdroms for ie
           && directory.getDevice().equals(getDevice())) {
         out.add(directory);
       }
@@ -169,9 +169,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    */
   public Set<org.jajuk.base.File> getFiles() {
     Set<org.jajuk.base.File> out = new LinkedHashSet<org.jajuk.base.File>(2);
-    ReadOnlyIterator<org.jajuk.base.File> it = FileManager.getInstance().getFilesIterator();
-    while (it.hasNext()) {
-      org.jajuk.base.File file = it.next();
+    for (org.jajuk.base.File file : FileManager.getInstance().getFiles()) {
       if (file.getFIO().getParentFile().equals(this.getFio())) {
         out.add(file);
       }
@@ -186,9 +184,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    */
   public Set<Playlist> getPlaylistFiles() {
     Set<Playlist> out = new LinkedHashSet<Playlist>(2);
-    ReadOnlyIterator<Playlist> it = PlaylistManager.getInstance().getPlaylistsIterator();
-    while (it.hasNext()) {
-      Playlist plf = it.next();
+    for (Playlist plf : PlaylistManager.getInstance().getPlaylists()) {
       if (plf.getFIO().getParentFile().equals(this.getFio())) {
         out.add(plf);
       }

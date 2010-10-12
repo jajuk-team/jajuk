@@ -96,7 +96,7 @@ public final class ArtistManager extends ItemManager {
    *
    * @return the artist
    */
-  public synchronized Artist registerArtist(String sId, String sName) {
+  public Artist registerArtist(String sId, String sName) {
     Artist artist = getArtistByID(sId);
     // if we have this artist already, simply return the existing one
     if (artist != null) {
@@ -115,7 +115,6 @@ public final class ArtistManager extends ItemManager {
         }
       });
     }
-
     return artist;
   }
 
@@ -130,37 +129,36 @@ public final class ArtistManager extends ItemManager {
    * @throws JajukException Thrown if adjusting the name fails for some reason.
    */
   public Artist changeArtistName(Artist old, String sNewName) throws JajukException {
-    synchronized (TrackManager.getInstance()) {
-      // check there is actually a change
-      if (old.getName2().equals(sNewName)) {
-        return old;
-      }
 
-      // find out if the QueueModel is playing this track before we change the track!
-      boolean queueNeedsUpdate = false;
-      if (QueueModel.getPlayingFile() != null
-          && QueueModel.getPlayingFile().getTrack().getArtist().equals(old)) {
-        queueNeedsUpdate = true;
-      }
-
-      Artist newItem = registerArtist(sNewName);
-      // re apply old properties from old item
-      newItem.cloneProperties(old);
-
-      // update tracks
-      for (Track track : TrackManager.getInstance().getTracks()) {
-        if (track.getArtist().equals(old)) {
-          TrackManager.getInstance().changeTrackArtist(track, sNewName, null);
-        }
-      }
-
-      // if current track artist name is changed, notify it
-      if (queueNeedsUpdate) {
-        ObservationManager.notify(new JajukEvent(JajukEvents.ARTIST_CHANGED));
-      }
-
-      return newItem;
+    // check if there is actually a change
+    if (old.getName2().equals(sNewName)) {
+      return old;
     }
+
+    // find out if the QueueModel is playing this track before we change the track!
+    boolean queueNeedsUpdate = false;
+    if (QueueModel.getPlayingFile() != null
+        && QueueModel.getPlayingFile().getTrack().getArtist().equals(old)) {
+      queueNeedsUpdate = true;
+    }
+
+    Artist newItem = registerArtist(sNewName);
+    // re apply old properties from old item
+    newItem.cloneProperties(old);
+
+    // update tracks
+    for (Track track : TrackManager.getInstance().getTracks()) {
+      if (track.getArtist().equals(old)) {
+        TrackManager.getInstance().changeTrackArtist(track, sNewName, null);
+      }
+    }
+
+    // if current track artist name is changed, notify it
+    if (queueNeedsUpdate) {
+      ObservationManager.notify(new JajukEvent(JajukEvents.ARTIST_CHANGED));
+    }
+
+    return newItem;
   }
 
   /*
@@ -209,7 +207,7 @@ public final class ArtistManager extends ItemManager {
    * @return artists iterator
    */
   @SuppressWarnings("unchecked")
-  public synchronized ReadOnlyIterator<Artist> getArtistsIterator() {
+  public ReadOnlyIterator<Artist> getArtistsIterator() {
     return new ReadOnlyIterator<Artist>((Iterator<Artist>) getItemsIterator());
   }
 
@@ -220,24 +218,29 @@ public final class ArtistManager extends ItemManager {
    *
    * @return the associated artists
    */
-  public synchronized List<Artist> getAssociatedArtists(Item item) {
-    List<Artist> out;
-    if (item instanceof Track) {
-      out = new ArrayList<Artist>(1);
-      out.add(((Track) item).getArtist());
-    } else {
-      // [Perf] If item is a track, just return its artist
-      // Use a set to avoid dups
-      Set<Artist> artistSet = new HashSet<Artist>();
+  public List<Artist> getAssociatedArtists(Item item) {
+    lock.readLock().lock();
+    try {
+      List<Artist> out;
+      if (item instanceof Track) {
+        out = new ArrayList<Artist>(1);
+        out.add(((Track) item).getArtist());
+      } else {
+        // [Perf] If item is a track, just return its artist
+        // Use a set to avoid dups
+        Set<Artist> artistSet = new HashSet<Artist>();
 
-      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item, true);
-      for (Track track : tracks) {
-        artistSet.add(track.getArtist());
+        List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item, true);
+        for (Track track : tracks) {
+          artistSet.add(track.getArtist());
+        }
+        out = new ArrayList<Artist>(artistSet);
+        Collections.sort(out);
       }
-      out = new ArrayList<Artist>(artistSet);
-      Collections.sort(out);
+      return out;
+    } finally {
+      lock.readLock().unlock();
     }
-    return out;
   }
 
   /**
@@ -248,14 +251,19 @@ public final class ArtistManager extends ItemManager {
    * @return associated artist (case insensitive) or null if no match
    */
   public Artist getArtistByName(String name) {
-    Artist out = null;
-    for (ReadOnlyIterator<Artist> it = getArtistsIterator(); it.hasNext();) {
-      Artist artist = it.next();
-      if (artist.getName().equals(name)) {
-        out = artist;
-        break;
+    lock.readLock().lock();
+    try {
+      Artist out = null;
+      for (ReadOnlyIterator<Artist> it = getArtistsIterator(); it.hasNext();) {
+        Artist artist = it.next();
+        if (artist.getName().equals(name)) {
+          out = artist;
+          break;
+        }
       }
+      return out;
+    } finally {
+      lock.readLock().unlock();
     }
-    return out;
   }
 }

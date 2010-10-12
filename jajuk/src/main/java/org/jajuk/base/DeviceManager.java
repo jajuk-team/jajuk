@@ -161,7 +161,7 @@ public final class DeviceManager extends ItemManager {
    * 
    * @return device
    */
-  public synchronized Device registerDevice(String sId, String sName, long lDeviceType, String sUrl) {
+  public Device registerDevice(String sId, String sName, long lDeviceType, String sUrl) {
     Device device = getDeviceByID(sId);
     if (device != null) {
       return device;
@@ -238,6 +238,20 @@ public final class DeviceManager extends ItemManager {
   }
 
   /**
+   * Return first device found being parent of the provided path
+   * @param path
+   * @return  first device found being parent of the provided path
+   */
+  public Device getDeviceByPath(File path){
+    for ( Device device: getDevices()){
+      if (UtilSystem.isAncestor(device.getFio(), path)){
+        return device;
+      }
+    }
+    return null;
+  }
+
+  /**
    * Gets the device types.
    * 
    * @return Device types iteration
@@ -262,52 +276,57 @@ public final class DeviceManager extends ItemManager {
    * 
    * @param device DOCUMENT_ME
    */
-  public synchronized void removeDevice(Device device) {
-    // show confirmation message if required
-    if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE)) {
-      int iResu = Messages.getChoice(Messages.getString("Confirmation_remove_device"),
-          JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-      if (iResu != JOptionPane.YES_OPTION) {
-        return;
+  public void removeDevice(Device device) {
+    lock.writeLock().lock();
+    try {
+      // show confirmation message if required
+      if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE)) {
+        int iResu = Messages.getChoice(Messages.getString("Confirmation_remove_device"),
+            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (iResu != JOptionPane.YES_OPTION) {
+          return;
+        }
       }
-    }
-    // if device is refreshing or synchronizing, just leave
-    if (device.isSynchronizing() || device.isRefreshing()) {
-      Messages.showErrorMessage(13);
-      return;
-    }
-    // check if device can be unmounted
-    if (!QueueModel.canUnmount(device)) {
-      Messages.showErrorMessage(121);
-      return;
-    }
-    // if it is mounted, try to unmount it
-    if (device.isMounted()) {
-      try {
-        device.unmount();
-      } catch (Exception e) {
+      // if device is refreshing or synchronizing, just leave
+      if (device.isSynchronizing() || device.isRefreshing()) {
         Messages.showErrorMessage(13);
         return;
       }
-    }
-    removeItem(device);
-    DirectoryManager.getInstance().cleanDevice(device.getID());
-    FileManager.getInstance().cleanDevice(device.getID());
-    PlaylistManager.getInstance().cleanDevice(device.getID());
-    // Clean the collection up
-    org.jajuk.base.Collection.cleanupLogical();
-    // remove synchronization if another device was synchronized
-    // with this device
-    for (Device deviceToCheck : getDevices()) {
-      if (deviceToCheck.containsProperty(Const.XML_DEVICE_SYNCHRO_SOURCE)) {
-        String sSyncSource = deviceToCheck.getStringValue(Const.XML_DEVICE_SYNCHRO_SOURCE);
-        if (sSyncSource.equals(device.getID())) {
-          deviceToCheck.removeProperty(Const.XML_DEVICE_SYNCHRO_SOURCE);
+      // check if device can be unmounted
+      if (!QueueModel.canUnmount(device)) {
+        Messages.showErrorMessage(121);
+        return;
+      }
+      // if it is mounted, try to unmount it
+      if (device.isMounted()) {
+        try {
+          device.unmount();
+        } catch (Exception e) {
+          Messages.showErrorMessage(13);
+          return;
         }
       }
+      removeItem(device);
+      DirectoryManager.getInstance().cleanDevice(device.getID());
+      FileManager.getInstance().cleanDevice(device.getID());
+      PlaylistManager.getInstance().cleanDevice(device.getID());
+      // Clean the collection up
+      org.jajuk.base.Collection.cleanupLogical();
+      // remove synchronization if another device was synchronized
+      // with this device
+      for (Device deviceToCheck : getDevices()) {
+        if (deviceToCheck.containsProperty(Const.XML_DEVICE_SYNCHRO_SOURCE)) {
+          String sSyncSource = deviceToCheck.getStringValue(Const.XML_DEVICE_SYNCHRO_SOURCE);
+          if (sSyncSource.equals(device.getID())) {
+            deviceToCheck.removeProperty(Const.XML_DEVICE_SYNCHRO_SOURCE);
+          }
+        }
+      }
+      // Force suggestion view refresh to avoid showing removed albums
+      ObservationManager.notify(new JajukEvent(JajukEvents.SUGGESTIONS_REFRESH));
+    } finally {
+      lock.writeLock().unlock();
     }
-    // Force suggestion view refresh to avoid showing removed albums
-    ObservationManager.notify(new JajukEvent(JajukEvents.SUGGESTIONS_REFRESH));
   }
 
   /**
@@ -317,9 +336,7 @@ public final class DeviceManager extends ItemManager {
    */
   public boolean isAnyDeviceRefreshing() {
     boolean bOut = false;
-    ReadOnlyIterator<Device> it = DeviceManager.getInstance().getDevicesIterator();
-    while (it.hasNext()) {
-      Device device = it.next();
+    for (Device device : DeviceManager.getInstance().getDevices()) {
       if (device.isRefreshing()) {
         bOut = true;
         break;
@@ -331,18 +348,23 @@ public final class DeviceManager extends ItemManager {
   /**
    * Clean all devices.
    */
-  public synchronized void cleanAllDevices() {
-    for (Device device : getDevices()) {
-      // Do not auto-refresh CD as several CD may share the same mount
-      // point
-      if (device.getType() == Device.TYPE_CD) {
-        continue;
+  public void cleanAllDevices() {
+    lock.writeLock().lock();
+    try {
+      for (Device device : getDevices()) {
+        // Do not auto-refresh CD as several CD may share the same mount
+        // point
+        if (device.getType() == Device.TYPE_CD) {
+          continue;
+        }
+        FileManager.getInstance().cleanDevice(device.getName());
+        DirectoryManager.getInstance().cleanDevice(device.getName());
+        PlaylistManager.getInstance().cleanDevice(device.getName());
       }
-      FileManager.getInstance().cleanDevice(device.getName());
-      DirectoryManager.getInstance().cleanDevice(device.getName());
-      PlaylistManager.getInstance().cleanDevice(device.getName());
+      clear();
+    } finally {
+      lock.writeLock().unlock();
     }
-    clear();
   }
 
   /*
@@ -462,7 +484,7 @@ public final class DeviceManager extends ItemManager {
    * @return ordered devices list
    */
   @SuppressWarnings("unchecked")
-  public synchronized List<Device> getDevices() {
+  public List<Device> getDevices() {
     return (List<Device>) getItems();
   }
 
@@ -472,7 +494,7 @@ public final class DeviceManager extends ItemManager {
    * @return devices iterator
    */
   @SuppressWarnings("unchecked")
-  public synchronized ReadOnlyIterator<Device> getDevicesIterator() {
+  public ReadOnlyIterator<Device> getDevicesIterator() {
     return new ReadOnlyIterator<Device>((Iterator<Device>) getItemsIterator());
   }
 }

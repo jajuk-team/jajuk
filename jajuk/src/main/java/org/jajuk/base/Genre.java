@@ -20,16 +20,12 @@
  */
 package org.jajuk.base;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.ImageIcon;
 
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.ReadOnlyIterator;
 
 /**
  * A music genre ( jazz, rock...)
@@ -120,23 +116,7 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
     }
   }
 
-  /**
-   * Gets the tracks recursively.
-   * 
-   * @return all tracks associated with this genre
-   */
-  public List<Track> getTracksRecursively() {
-    List<Track> alTracks = new ArrayList<Track>(1000);
-    ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
-    while (it.hasNext()) {
-      Track track = it.next();
-      if (track.getGenre().equals(this)) {
-        alTracks.add(track);
-      }
-    }
-    return alTracks;
-  }
-
+ 
   /*
    * (non-Javadoc)
    * 

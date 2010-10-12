@@ -248,7 +248,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
-   * Gets the playeable file.
+   * Gets the playable file.
    * 
    * @param bIgnoreUnmounted Do we return unmounted files
    * 

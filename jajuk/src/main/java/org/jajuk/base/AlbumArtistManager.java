@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
@@ -35,7 +34,6 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Const;
-import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.error.JajukException;
 
 /**
@@ -114,7 +112,6 @@ public final class AlbumArtistManager extends ItemManager {
         }
       });
     }
-
     return albumArtist;
   }
 
@@ -201,16 +198,7 @@ public final class AlbumArtistManager extends ItemManager {
     return (List<AlbumArtist>) getItems();
   }
 
-  /**
-   * Gets the albumArtists iterator.
-   *
-   * @return albumArtists iterator
-   */
-  @SuppressWarnings("unchecked")
-  public synchronized ReadOnlyIterator<AlbumArtist> getAlbumArtistsIterator() {
-    return new ReadOnlyIterator<AlbumArtist>((Iterator<AlbumArtist>) getItemsIterator());
-  }
-
+  
   /**
    * Get ordered list of albumArtists associated with this item.
    *
@@ -237,23 +225,5 @@ public final class AlbumArtistManager extends ItemManager {
     }
     return out;
   }
-
-  /**
-   * Gets the albumArtist by name.
-   *
-   * @param name The name of the albumArtist.
-   *
-   * @return associated albumArtist (case insensitive) or null if no match
-   */
-  public AlbumArtist getAlbumArtistByName(String name) {
-    AlbumArtist out = null;
-    for (ReadOnlyIterator<AlbumArtist> it = getAlbumArtistsIterator(); it.hasNext();) {
-      AlbumArtist albumArtist = it.next();
-      if (albumArtist.getName().equals(name)) {
-        out = albumArtist;
-        break;
-      }
-    }
-    return out;
-  }
+  
 }

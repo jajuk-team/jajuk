@@ -252,7 +252,11 @@ public class Album extends LogicalItem implements Comparable<Album> {
       sb.append(artist.getName2());
     }
     // Try to add album artist
-    Track first = getTracksCache().get(0);
+    Track first = null;
+    List<Track> cache = getTracksCache();
+    synchronized (cache) {
+      first = cache.get(0);
+    }
     // (every track maps at minimum an "unknown artist" album artist
     if (first.getAlbumArtist() != null) {
       sb.append(first.getAlbumArtist().getName2());
@@ -283,12 +287,19 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   public File findCoverFile() {
     String cachedCoverPath = getStringValue(XML_ALBUM_COVER);
-    if (!StringUtils.isBlank(cachedCoverPath)
-    // Check if cover still exist. There is an overhead
-        // drawback but otherwise, the album's cover
-        // property may be stuck to an old device's cover url.
-        && new File(cachedCoverPath).exists()) {
-      return new File(cachedCoverPath);
+    if (!StringUtils.isBlank(cachedCoverPath)) {
+      // Check if cover still exist. There is an overhead
+      // drawback but otherwise, the album's cover
+      // property may be stuck to an old device's cover url.
+      Device device = DeviceManager.getInstance().getDeviceByPath(new File(cachedCoverPath));
+      // If the device is not mounted, do not perform this existence check up
+      if (device != null && device.isMounted()) {
+        if (new File(cachedCoverPath).exists()) {
+          return new File(cachedCoverPath);
+        }
+      } else {
+        return new File(cachedCoverPath);
+      }
     } else if (COVER_NONE.equals(cachedCoverPath)) {
       return null;
     }

@@ -151,7 +151,6 @@ public final class TypeManager extends ItemManager {
         (Class<ITagImpl>) cTagImpl);
     registerItem(type);
     hmSupportedTypes.put(type.getExtension(), type);
-
     return type;
   }
 
@@ -244,7 +243,7 @@ public final class TypeManager extends ItemManager {
    * @return types list
    */
   @SuppressWarnings("unchecked")
-  public synchronized List<Type> getTypes() {
+  public List<Type> getTypes() {
     return (List<Type>) getItems();
   }
 
@@ -254,7 +253,7 @@ public final class TypeManager extends ItemManager {
    * @return types iterator
    */
   @SuppressWarnings("unchecked")
-  public synchronized ReadOnlyIterator<Type> getTypesIterator() {
+  public ReadOnlyIterator<Type> getTypesIterator() {
     return new ReadOnlyIterator<Type>((Iterator<Type>) getItemsIterator());
   }
 
@@ -545,10 +544,13 @@ public final class TypeManager extends ItemManager {
    * @see org.jajuk.base.ItemManager#clear()
    */
   @Override
-  public synchronized void clear() {
-    // we should clear the types as well
-    hmSupportedTypes.clear();
-
-    super.clear();
+  public void clear() {
+    lock.writeLock().lock();
+    try {
+      hmSupportedTypes.clear();
+      super.clear();
+    } finally {
+      lock.writeLock().unlock();
+    }
   }
 }

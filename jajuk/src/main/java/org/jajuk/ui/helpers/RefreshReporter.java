@@ -21,11 +21,12 @@
 
 package org.jajuk.ui.helpers;
 
+import java.util.List;
+
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.util.Messages;
-import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.log.Log;
 
 /**
@@ -79,9 +80,9 @@ public class RefreshReporter {
     this.iNbNewFiles = 0;
     this.iNbCorruptedFiles = 0;
     this.lRefreshDateStart = System.currentTimeMillis();
-    ReadOnlyIterator<Directory> dirs = DirectoryManager.getInstance().getDirectoriesIterator();
-    while (dirs.hasNext()) {
-      if (dirs.next().getDevice().equals(device)) {
+    List<Directory> dirs = DirectoryManager.getInstance().getDirectories();
+    for (Directory dir : dirs) {
+      if (dir.getDevice().equals(device)) {
         dirTotal++;
       }
     }
