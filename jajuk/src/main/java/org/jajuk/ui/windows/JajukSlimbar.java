@@ -69,6 +69,7 @@ import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.actions.MuteAction;
+import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.helpers.PlayerStateMediator;
 import org.jajuk.ui.views.QueueView;
 import org.jajuk.ui.widgets.AmbienceComboBox;
@@ -310,7 +311,19 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
 
     jbPrevious = new SizedButton(ActionManager.getAction(PREVIOUS_TRACK), false);
     jbPrevious.addMouseMotionListener(motionAdapter);
-   
+    // Manage right click : replay the track (this not triggers an action so we use a MouseAdapter here)
+    jbPrevious.addMouseListener(new JajukMouseAdapter() {
+      public void handlePopup(final MouseEvent me) {
+        // Create an ActionEvent from this MouseEvent with a custom modifier : the right click
+        ActionEvent ae = new ActionEvent(jbPrevious, 0, PREVIOUS_TRACK.name(), 4332424);
+        try {
+          ActionManager.getAction(PREVIOUS_TRACK).perform(ae);
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    });
+
     jbNext = new SizedButton(ActionManager.getAction(NEXT_TRACK), false);
     jbNext.addMouseMotionListener(motionAdapter);
 
@@ -419,7 +432,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     slimJajuk = new JajukJToolbar();
 
     AmbienceComboBox ambienceCombo = new AmbienceComboBox();
-    ambienceCombo.setPreferredSize(new Dimension(40, 20));
+    ambienceCombo.setPreferredSize(new Dimension(42, 20));
     ambienceCombo.addMouseMotionListener(motionAdapter);
 
     slimJajuk.add(Box.createHorizontalStrut(4));
@@ -452,12 +465,12 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
 
     // Set location
     String lastPosition = Conf.getString(Const.CONF_SLIMBAR_POSITION);
-   
+
     int iScreenWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
     int iScreenHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
-    int x = iScreenWidth/2;
-    int y =iScreenHeight/2;
-    
+    int x = iScreenWidth / 2;
+    int y = iScreenHeight / 2;
+
     try {
       StringTokenizer st = new StringTokenizer(lastPosition, ",");
       x = Integer.parseInt(st.nextToken());
@@ -476,7 +489,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
       Log.debug("Cannot restore slimbar position");
       Log.error(e);
     }
-   
+
     // Force initial message refresh
     UtilFeatures.updateStatus(this);
 
