@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -75,6 +76,7 @@ import org.jajuk.services.covers.Cover;
 import org.jajuk.services.covers.Cover.CoverType;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
+import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
@@ -872,8 +874,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       }
       final String size = cover.getSize();
       jl = new JLabel(ii);
-      // jl.setBorder(new DropShadowBorder(Color.BLACK, 5, 0.5f, 5, false, true,
-      // false, true));
       jl.setMinimumSize(new Dimension(0, 0)); // required for info
       // node resizing
       if (cover.getType() == CoverType.TAG_COVER) {
@@ -915,6 +915,15 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     if (includeControls) {
       add(jpControl, "grow,wrap");
     }
+    // Invert the mirrow option when clicking on the cover
+    jl.addMouseListener(new JajukMouseAdapter() {
+      @Override
+      public void mousePressed(MouseEvent e) {
+        boolean isMirrowed = Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER);
+        Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER, !isMirrowed + "");
+        ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
+      }
+    });
     add(jl, "center,wrap");
     // make sure the image is repainted to avoid overlapping covers
     CoverView.this.revalidate();
