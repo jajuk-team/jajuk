@@ -81,7 +81,7 @@ public class SyncTreeTableAction extends JajukAction {
     }
     Properties detailsTreeEvent = ObservationManager
         .getDetailsLastOccurence(JajukEvents.TREE_SELECTION_CHANGED);
-    if (detailsTableEvent != null) {
+    if (detailsTreeEvent != null) {
       ObservationManager
           .notify(new JajukEvent(JajukEvents.TREE_SELECTION_CHANGED, detailsTreeEvent));
     }
