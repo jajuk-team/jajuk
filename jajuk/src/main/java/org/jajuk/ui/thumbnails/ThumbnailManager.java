@@ -161,29 +161,29 @@ public final class ThumbnailManager {
     // Windows doesn't support share mode for locks but only exclusive
     File thumbLock = new File(thumb.getAbsolutePath() + ".lock");
     thumbLock.createNewFile();
-  
+
     synchronized (thumbLock.getAbsolutePath().intern()) {
-        // Note that at this point, the image is fully loaded (done in the ImageIcon constructor)
-        final Image image = ii.getImage();
-        // determine thumbnail size from WIDTH and HEIGHT
-        int thumbWidth = maxDim;
-        int thumbHeight = maxDim;
-        final double thumbRatio = (double) thumbWidth / (double) thumbHeight;
-        final int imageWidth = image.getWidth(null);
-        final int imageHeight = image.getHeight(null);
-        final double imageRatio = (double) imageWidth / (double) imageHeight;
-        if (thumbRatio < imageRatio) {
-          thumbHeight = (int) (thumbWidth / imageRatio);
-        } else {
-          thumbWidth = (int) (thumbHeight * imageRatio);
-        }
-        // draw original image to thumbnail image object and
-        // scale it to the new size on-the-fly
-        final BufferedImage thumbImage = UtilGUI.toBufferedImage(image, thumbWidth, thumbHeight);
-        // save thumbnail image to OUTFILE
-        ImageIO.write(thumbImage, UtilSystem.getExtension(thumb), thumb);
-        // Free thumb memory
-        thumbImage.flush();
+      // Note that at this point, the image is fully loaded (done in the ImageIcon constructor)
+      final Image image = ii.getImage();
+      // determine thumbnail size from WIDTH and HEIGHT
+      int thumbWidth = maxDim;
+      int thumbHeight = maxDim;
+      final double thumbRatio = (double) thumbWidth / (double) thumbHeight;
+      final int imageWidth = image.getWidth(null);
+      final int imageHeight = image.getHeight(null);
+      final double imageRatio = (double) imageWidth / (double) imageHeight;
+      if (thumbRatio < imageRatio) {
+        thumbHeight = (int) (thumbWidth / imageRatio);
+      } else {
+        thumbWidth = (int) (thumbHeight * imageRatio);
+      }
+      // draw original image to thumbnail image object and
+      // scale it to the new size on-the-fly
+      final BufferedImage thumbImage = UtilGUI.toBufferedImage(image, thumbWidth, thumbHeight);
+      // save thumbnail image to OUTFILE
+      ImageIO.write(thumbImage, UtilSystem.getExtension(thumb), thumb);
+      // Free thumb memory
+      thumbImage.flush();
     }
 
   }
@@ -210,6 +210,9 @@ public final class ThumbnailManager {
    * @return whether a new cover has been created
    */
   public static boolean refreshThumbnail(final Album album, final int size) {
+    if (Const.COVER_NONE.equals(album.getStringValue(Const.XML_ALBUM_COVER))) {
+      return false;
+    }
     // Check if the thumb is known in cache
     if (album.isThumbAvailable(size)) {
       return false;
