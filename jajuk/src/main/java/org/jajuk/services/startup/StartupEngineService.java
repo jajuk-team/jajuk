@@ -31,6 +31,7 @@ import java.util.Properties;
 
 import javax.swing.JOptionPane;
 
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.FileManager;
@@ -83,7 +84,9 @@ public class StartupEngineService {
 
     // User explicitely required nothing to start or he left jajuk stopped
     boolean doNotStartAnything = Const.STARTUP_MODE_NOTHING.equals(startupMode)
-        || Conf.getBoolean(Const.CONF_STARTUP_STOPPED);
+        || Conf.getBoolean(Const.CONF_STARTUP_STOPPED)
+        //  CONF_STARTUP_ITEM is void at first jajuk session and until user launched an item
+        || StringUtils.isBlank(Conf.getString(Const.CONF_STARTUP_ITEM));
 
     // Populate item to be started and load the stored queue
     populateStartupItems();
