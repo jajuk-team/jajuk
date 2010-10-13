@@ -356,6 +356,9 @@ public abstract class AbstractTreeView extends ViewAdapter {
           String sourcePerspective = details.getProperty(Const.DETAIL_PERSPECTIVE);
           IView sourceView = (IView) details.get(Const.DETAIL_VIEW);
           if (!(sourcePerspective.equals(getPerspective().getID()))
+              //source view is null if the table is outside a view like CDDB dialog
+              || sourceView == null
+              // Same view ? ignore...
               || sourceView.getID().equals(getID())) {
             return;
           }
