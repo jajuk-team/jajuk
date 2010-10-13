@@ -287,7 +287,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   public File findCoverFile() {
     String cachedCoverPath = getStringValue(XML_ALBUM_COVER);
-    if (!StringUtils.isBlank(cachedCoverPath)) {
+    if (COVER_NONE.equals(cachedCoverPath)) {
+      return null;
+    }
+    else if (!StringUtils.isBlank(cachedCoverPath)) {
       // Check if cover still exist. There is an overhead
       // drawback but otherwise, the album's cover
       // property may be stuck to an old device's cover url.
@@ -300,8 +303,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
       } else {
         return new File(cachedCoverPath);
       }
-    } else if (COVER_NONE.equals(cachedCoverPath)) {
-      return null;
     }
     // search for local covers in all directories mapping the current track
     // to reach other devices covers and display them together

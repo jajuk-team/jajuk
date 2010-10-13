@@ -248,17 +248,22 @@ public class TestAlbum extends JajukTestCase {
     assertNull(album.findCoverFile());
 
     // set a cover file which does not exist
+    // We need to make the cover inside a known device
+    Device tmpDevice = DeviceManager.getInstance().registerDevice("tmp", "tmpDevice",
+        Device.TYPE_DIRECTORY, System.getProperty("java.io.tmpdir"));
+    tmpDevice.mount(false);
     new java.io.File(System.getProperty("java.io.tmpdir"), "cover.tst").delete();
     album.setProperty(Const.XML_ALBUM_COVER, System.getProperty("java.io.tmpdir")
         + java.io.File.separator + "cover.tst");
     assertNull(album.findCoverFile());
 
     // then create the file and try again
-    FileUtils.writeStringToFile(new java.io.File(System.getProperty("java.io.tmpdir"), "cover.tst"), "");
+    FileUtils.writeStringToFile(
+        new java.io.File(System.getProperty("java.io.tmpdir"), "cover.tst"), "");
     album.setProperty(Const.XML_ALBUM_COVER, System.getProperty("java.io.tmpdir")
         + java.io.File.separator + "cover.tst");
     assertNotNull(album.findCoverFile());
-    
+
     // try with a track and no cover file set
     album.removeProperty(Const.XML_ALBUM_COVER);
     Track track = getTrack(album);
@@ -266,6 +271,9 @@ public class TestAlbum extends JajukTestCase {
     track.addFile(getFile(8, track));
     album.getTracksCache().add(track);
     assertNull(album.findCoverFile());
+
+    // Unregister the tmp device
+    DeviceManager.getInstance().removeDevice(tmpDevice);
 
     // TODO: some code is still not covered here, need to find out how to do
     // that...
