@@ -37,10 +37,13 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.services.core.ExitService;
+import org.jajuk.services.dj.Ambience;
+import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.log.Log;
 
 /**
@@ -131,6 +134,7 @@ public class AlarmManager implements Observer {
         // Compute playlist if required
         List<File> alToPlay = null;
         WebRadio radio = null;
+        Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
         if (alarmAction.equals(Const.ALARM_START_ACTION)) {
           String mode = Conf.getString(Const.CONF_ALARM_MODE);
           String conf = Conf.getString(Const.CONF_ALARM_FILE);
@@ -147,11 +151,26 @@ public class AlarmManager implements Observer {
             }
 
           } else if (mode.equals(Const.STARTUP_MODE_SHUFFLE)) {
-            alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
+            // Filter files by ambience or if none ambience matches, perform a global shuffle 
+            // ignoring current ambience
+            alToPlay = UtilFeatures.filterByAmbience(FileManager.getInstance()
+                .getGlobalShufflePlaylist(), ambience);
+            if (alToPlay.size() == 0) {
+              alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
+            }
           } else if (mode.equals(Const.STARTUP_MODE_BESTOF)) {
-            alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
+            alToPlay = UtilFeatures.filterByAmbience(FileManager.getInstance()
+                .getGlobalBestofPlaylist(), ambience);
+            if (alToPlay.size() == 0) {
+              alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
+            }
+
           } else if (mode.equals(Const.STARTUP_MODE_NOVELTIES)) {
-            alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
+            alToPlay = UtilFeatures.filterByAmbience(FileManager.getInstance()
+                .getGlobalNoveltiesPlaylist(), ambience);
+            if (alToPlay.size() == 0) {
+              alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
+            }
           } else {
             Log.warn("Undefined alarm mode found: " + mode);
           }

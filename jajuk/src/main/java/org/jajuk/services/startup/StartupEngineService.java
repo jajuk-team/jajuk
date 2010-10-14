@@ -41,6 +41,8 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.SessionService;
+import org.jajuk.services.dj.Ambience;
+import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
@@ -184,6 +186,7 @@ public class StartupEngineService {
    */
   private static void populateStartupItems() {
     String startupMode = Conf.getString(Const.CONF_STARTUP_MODE);
+    Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
 
     // an item (track or radio) has been forced by user
     if (Const.STARTUP_MODE_ITEM.equals(startupMode)) {
@@ -221,22 +224,40 @@ public class StartupEngineService {
 
     // Shuffle mode
     else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_SHUFFLE)) {
-      alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
-      if (alToPlay.size() > 0) {
+      // Filter files by ambience or if none ambience matches, perform a global shuffle 
+      // ignoring current ambience
+      alToPlay = UtilFeatures.filterByAmbience(
+          FileManager.getInstance().getGlobalShufflePlaylist(), ambience);
+      if (alToPlay.size() == 0) {
+        alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
+      }
+      if (alToPlay != null && alToPlay.size() > 0) {
         fileToPlay = alToPlay.get(0);
       }
 
       // Best of mode
     } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_BESTOF)) {
-      alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
-      if (alToPlay.size() > 0) {
+      // Filter files by ambience or if none ambience matches, perform a global best-of selection 
+      // ignoring current ambience
+      alToPlay = UtilFeatures.filterByAmbience(FileManager.getInstance().getGlobalBestofPlaylist(),
+          ambience);
+      if (alToPlay.size() == 0) {
+        alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
+      }
+      if (alToPlay != null && alToPlay.size() > 0) {
         fileToPlay = alToPlay.get(0);
       }
 
       // Novelties mode
     } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOVELTIES)) {
-      alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
-      if ((alToPlay != null) && (alToPlay.size() > 0)) {
+      // Filter files by ambience or if none ambience matches, perform a global novelties selection 
+      // ignoring current ambience
+      alToPlay = UtilFeatures.filterByAmbience(FileManager.getInstance()
+          .getGlobalNoveltiesPlaylist(), ambience);
+      if (alToPlay.size() == 0) {
+        alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
+      }
+      if (alToPlay != null && alToPlay.size() > 0) {
         // shuffle the selection
         Collections.shuffle(alToPlay, UtilSystem.getRandom());
         fileToPlay = alToPlay.get(0);
