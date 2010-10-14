@@ -116,7 +116,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   public void setVolume(float fVolume) {
     this.fVolume = fVolume;
     sendCommand("volume " + (int) (100 * fVolume) + " 2");
-    // Not not log this when fading, generates too mush logs
+    // Not not log this when fading, generates too much logs
     if (!bFading) {
       Log.debug("Set Volume= " + (int) (100 * fVolume) + " %");
     }
@@ -228,7 +228,8 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     // gain = -200 = mute
     int volume = -200;
     if (fVolume != 0) {
-      volume = ((int) (25 * fVolume) - 20);
+      // Gain = 10 * log(fVolume)
+      volume = (int) (10 * Math.log(fVolume));
     }
     audiofilters.append("volume=" + volume);
 
