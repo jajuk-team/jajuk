@@ -775,6 +775,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       // view cover/no-cover filter is doomed because the findCover() method always return null
       for (Album album : AlbumManager.getInstance().getAlbums()) {
         album.findCoverFile();
+        // Give a chance to leave this loop when user required end of session
+        if (ExitService.isExiting()) {
+          break;
+        }
       }
 
       // Force a GUI refresh if new files or directories discovered or have been
