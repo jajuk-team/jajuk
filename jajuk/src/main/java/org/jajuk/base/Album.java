@@ -290,8 +290,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     String cachedCoverPath = getStringValue(XML_ALBUM_COVER);
     if (COVER_NONE.equals(cachedCoverPath)) {
       return null;
-    }
-    else if (!StringUtils.isBlank(cachedCoverPath)) {
+    } else if (!StringUtils.isBlank(cachedCoverPath)) {
       // Check if cover still exist. There is an overhead
       // drawback but otherwise, the album's cover
       // property may be stuck to an old device's cover url.
@@ -315,11 +314,9 @@ public class Album extends LogicalItem implements Comparable<Album> {
     // List at directories we have to look in
     Set<Directory> dirs = new HashSet<Directory>(2);
     for (Track track : lTracks) {
-      for (org.jajuk.base.File file : track.getFiles()) {
-        if (file.isReady()) {
-          // note that hashset ensures directory unicity
-          dirs.add(file.getDirectory());
-        }
+      for (org.jajuk.base.File file : track.getReadyFiles()) {
+        // note that hashset ensures directory unicity
+        dirs.add(file.getDirectory());
       }
     }
     // If none available dir, we can't search for cover for now (may be better

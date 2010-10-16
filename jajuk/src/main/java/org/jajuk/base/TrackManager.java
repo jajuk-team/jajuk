@@ -942,7 +942,6 @@ public final class TrackManager extends ItemManager {
         continue;
       }
       // Cleanup all files no more attached to a track
-      // We use files shallow copy to avoid indirect concurrency exception
       for (File file : track.getFiles()) {
         if (FileManager.getInstance().getFileByID(file.getID()) == null) {
           FileManager.getInstance().removeFile(file);
@@ -973,7 +972,7 @@ public final class TrackManager extends ItemManager {
         // anymore to any physical item, just remove it
         removeItem(track);
       } else {
-        track.getFiles().remove(file);
+        track.removeFile(file);
       }
     } finally {
       lock.writeLock().unlock();

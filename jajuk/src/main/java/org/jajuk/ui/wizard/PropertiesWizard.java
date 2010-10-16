@@ -684,7 +684,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
         String sProperty = meta.getName();
         if (Const.XML_FILES.equals(sProperty)) {
           Track track = (Track) alItems.get(0);
-          List<Item> alFiles = new ArrayList<Item>(track.getFiles().size());
+          List<Item> alFiles = new ArrayList<Item>(1);
           alFiles.addAll(track.getFiles());
           // show properties window for this item
           new PropertiesWizard(alFiles);
