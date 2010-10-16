@@ -36,6 +36,7 @@ public class TagPersister implements ILyricsPersister {
   /* (non-Javadoc)
    * @see org.jajuk.services.lyrics.persisters.ILyricsPersister#commitLyrics(java.lang.String, org.jajuk.base.File)
    */
+  @Override
   public boolean commitLyrics(JajukLyricsProvider iProvider) {
     provider = iProvider;
     
@@ -53,6 +54,7 @@ public class TagPersister implements ILyricsPersister {
   /* (non-Javadoc)
    * @see org.jajuk.services.lyrics.persisters.ILyricsPersister#deleteLyrics(org.jajuk.services.lyrics.providers.ILyricsProvider)
    */
+  @Override
   public void deleteLyrics(JajukLyricsProvider provider) {
     try {
       Tag g = Tag.getTagForFio(provider.getFile().getFIO(), true);

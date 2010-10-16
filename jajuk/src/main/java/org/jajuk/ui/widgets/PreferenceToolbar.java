@@ -106,6 +106,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
 
     listener = new ActionListener() {
 
+      @Override
       public void actionPerformed(ActionEvent e) {
         File file = QueueModel.getPlayingFile();
         if (file != null) {
@@ -130,6 +131,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
   /* (non-Javadoc)
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.RATE_CHANGED);
@@ -157,8 +159,10 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
    *
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
+  @Override
   public final void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         // current is null when stopped or when playing web radios, disable the
         // preference controls

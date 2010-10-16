@@ -51,6 +51,7 @@ public class PlayHighlighterPredicate implements HighlightPredicate {
   /* (non-Javadoc)
    * @see org.jdesktop.swingx.decorator.HighlightPredicate#isHighlighted(java.awt.Component, org.jdesktop.swingx.decorator.ComponentAdapter)
    */
+  @Override
   public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
     if (QueueModel.isStopped()) {
       return false;

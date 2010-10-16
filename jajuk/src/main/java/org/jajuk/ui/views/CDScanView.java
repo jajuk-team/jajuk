@@ -86,6 +86,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
    * 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jbScan) {
       if ((e.getModifiers() & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK) {
@@ -152,6 +153,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
    * 
    * @see org.jajuk.ui.IView#getDesc()
    */
+  @Override
   public String getDesc() {
     return Messages.getString("CDScanView.12");
   }
@@ -161,6 +163,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
    * 
    * @see org.jajuk.ui.IView#display()
    */
+  @Override
   public void initUI() {
     JLabel jlName = new JLabel(Messages.getString("CDScanView.0"));
     jlName.setToolTipText(Messages.getString("CDScanView.1"));
@@ -190,6 +193,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     return null;
   }
@@ -199,6 +203,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
    * 
    * @see org.jajuk.events.Observer#update(org.jajuk.events.Event)
    */
+  @Override
   public void update(JajukEvent event) {
     // nothing to do here...
   }

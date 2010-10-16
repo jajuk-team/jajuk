@@ -73,6 +73,7 @@ public class LastFmArtist implements ArtistInfo {
    * 
    * @return the image
    */
+  @Override
   public ImageIcon getImage() {
     return image;
   }
@@ -82,6 +83,7 @@ public class LastFmArtist implements ArtistInfo {
    * 
    * @return the image url
    */
+  @Override
   public String getImageUrl() {
     return imageUrl;
   }
@@ -91,6 +93,7 @@ public class LastFmArtist implements ArtistInfo {
    * 
    * @return the match
    */
+  @Override
   public String getMatch() {
     return match;
   }
@@ -100,6 +103,7 @@ public class LastFmArtist implements ArtistInfo {
    * 
    * @return the name
    */
+  @Override
   public String getName() {
     return name;
   }
@@ -109,6 +113,7 @@ public class LastFmArtist implements ArtistInfo {
    * 
    * @return the url
    */
+  @Override
   public String getUrl() {
     return url;
   }
@@ -118,6 +123,7 @@ public class LastFmArtist implements ArtistInfo {
    * 
    * @param image the new image
    */
+  @Override
   public void setImage(ImageIcon image) {
     this.image = image;
   }
@@ -127,6 +133,7 @@ public class LastFmArtist implements ArtistInfo {
    * 
    * @param imageUrl the imageUrl to set
    */
+  @Override
   public void setImageUrl(String imageUrl) {
     this.imageUrl = imageUrl;
   }
@@ -136,6 +143,7 @@ public class LastFmArtist implements ArtistInfo {
    * 
    * @param match the match to set
    */
+  @Override
   public void setMatch(String match) {
     this.match = match;
   }
@@ -145,6 +153,7 @@ public class LastFmArtist implements ArtistInfo {
    * 
    * @param name the name to set
    */
+  @Override
   public void setName(String name) {
     this.name = name;
   }
@@ -154,6 +163,7 @@ public class LastFmArtist implements ArtistInfo {
    * 
    * @param url the url to set
    */
+  @Override
   public void setUrl(String url) {
     this.url = url;
   }
@@ -163,6 +173,7 @@ public class LastFmArtist implements ArtistInfo {
    * 
    * @return the available
    */
+  @Override
   public boolean isAvailable() {
     return available;
   }
@@ -172,6 +183,7 @@ public class LastFmArtist implements ArtistInfo {
    * 
    * @param available the available to set
    */
+  @Override
   public void setAvailable(boolean available) {
     this.available = available;
   }

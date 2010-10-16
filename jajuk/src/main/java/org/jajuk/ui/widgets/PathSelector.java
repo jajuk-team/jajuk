@@ -67,6 +67,7 @@ public class PathSelector extends JPanel {
 
     initUI(sDefault);
     button.addActionListener(new ActionListener() {
+      @Override
       public void actionPerformed(final ActionEvent e) {
         final JajukFileChooser jfc = new JajukFileChooser(filter);
         jfc.setAcceptDirectories(true);
@@ -102,6 +103,7 @@ public class PathSelector extends JPanel {
 
     initUI(sDefault);
     button.addActionListener(new ActionListener() {
+      @Override
       public void actionPerformed(final ActionEvent e) {
         final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
             .getInstance()));

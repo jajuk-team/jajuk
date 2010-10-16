@@ -109,6 +109,7 @@ public class AlarmManager implements Observer {
    * 
    * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
    */
+  @Override
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     // Reset rate and total play time (automatic part of rating system)
@@ -190,6 +191,7 @@ public class AlarmManager implements Observer {
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> keys = new HashSet<JajukEvents>();
     keys.add(JajukEvents.ALARMS_CHANGE);

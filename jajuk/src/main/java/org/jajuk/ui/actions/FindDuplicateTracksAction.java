@@ -119,6 +119,7 @@ public class FindDuplicateTracksAction extends JajukAction {
 
             JButton jbClose = new JButton(Messages.getString("Close"));
             jbClose.addActionListener(new ActionListener() {
+              @Override
               public void actionPerformed(ActionEvent e) {
                 duplicateFiles.dispose();
               }

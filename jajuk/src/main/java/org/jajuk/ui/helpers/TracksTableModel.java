@@ -137,6 +137,7 @@ public class TracksTableModel extends JajukTableModel {
 
     CollectionUtils.filter(alToShow, new Predicate() {
 
+      @Override
       public boolean evaluate(Object o) {
         Track track = (Track) o;
         // show it if no sync option or if item is in the selection

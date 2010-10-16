@@ -40,6 +40,7 @@ public class InfoPerspective extends PerspectiveAdapter {
    * 
    * @see org.jajuk.ui.perspectives.IPerspective#getDesc()
    */
+  @Override
   public String getDesc() {
     return Messages.getString("Perspective_Description_Info");
   }

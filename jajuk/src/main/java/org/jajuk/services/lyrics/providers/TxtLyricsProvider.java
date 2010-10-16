@@ -44,6 +44,7 @@ public class TxtLyricsProvider implements ILyricsProvider {
   /* (non-Javadoc)
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics(java.lang.String, java.lang.String)
    */
+  @Override
   public String getLyrics(File audioFile) {
     readerPath = UtilSystem.removeExtension(audioFile.getAbsolutePath()) + ".txt";
 
@@ -81,6 +82,7 @@ public class TxtLyricsProvider implements ILyricsProvider {
   /* (non-Javadoc)
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getResponseEncoding()
    */
+  @Override
   public String getResponseEncoding() {
     return "UTF-8";
   }

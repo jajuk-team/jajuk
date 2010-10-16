@@ -93,6 +93,7 @@ public class StatView extends ViewAdapter {
    * 
    * @see org.jajuk.ui.IView#display()
    */
+  @Override
   public void initUI() {
     setLayout(new MigLayout("ins 0,gapx 4,gapy 5", "[grow][grow]", "[grow][grow]"));
     ObservationManager.register(this);
@@ -102,6 +103,7 @@ public class StatView extends ViewAdapter {
   /* (non-Javadoc)
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.DEVICE_DELETE);
@@ -415,6 +417,7 @@ public class StatView extends ViewAdapter {
    * 
    * @see org.jajuk.ui.IView#getDesc()
    */
+  @Override
   public String getDesc() {
     return Messages.getString("StatView.16");
   }
@@ -424,6 +427,7 @@ public class StatView extends ViewAdapter {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
+  @Override
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.DEVICE_REFRESH.equals(subject) || JajukEvents.DEVICE_DELETE.equals(subject)) {

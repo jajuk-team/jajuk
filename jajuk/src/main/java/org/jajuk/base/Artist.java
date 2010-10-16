@@ -74,6 +74,7 @@ public class Artist extends LogicalItem implements Comparable<Artist> {
    * 
    * @return comparison result
    */
+  @Override
   public int compareTo(Artist otherItem) {
     // not equal if other is null
     if(otherItem == null) {

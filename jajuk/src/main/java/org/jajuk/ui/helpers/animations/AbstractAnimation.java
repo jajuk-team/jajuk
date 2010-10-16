@@ -48,6 +48,7 @@ public abstract class AbstractAnimation implements IAnimation {
   /* (non-Javadoc)
    * @see org.jajuk.ui.helpers.animations.IAnimation#getWindow()
    */
+  @Override
   public Window getWindow() {
     return window;
   }

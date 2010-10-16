@@ -173,6 +173,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    * 
    * @see org.jajuk.ui.IView#getDesc()
    */
+  @Override
   public String getDesc() {
     return Messages.getString("FilesTreeView.0");
   }
@@ -350,6 +351,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    * 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(final ActionEvent e) {
     // multiple selection on properties(note we handle files and dirs
     // properties later)
@@ -870,6 +872,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
      * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event
      * .TreeSelectionEvent)
      */
+    @Override
     public void valueChanged(TreeSelectionEvent e) {
       paths = jtree.getSelectionModel().getSelectionPaths();
       // nothing selected, can be called during dnd
@@ -971,6 +974,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
      * @see javax.swing.event.TreeExpansionListener#treeCollapsed(javax.swing.event
      * .TreeExpansionEvent)
      */
+    @Override
     public void treeCollapsed(TreeExpansionEvent event) {
       Object o = event.getPath().getLastPathComponent();
       if (o instanceof DirectoryNode && bManualAction) {
@@ -988,6 +992,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
      * @see javax.swing.event.TreeExpansionListener#treeExpanded(javax.swing.event
      * .TreeExpansionEvent)
      */
+    @Override
     public void treeExpanded(TreeExpansionEvent event) {
       Object o = event.getPath().getLastPathComponent();
       if (o instanceof DirectoryNode && bManualAction) {

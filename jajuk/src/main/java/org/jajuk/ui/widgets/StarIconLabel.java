@@ -73,6 +73,7 @@ public class StarIconLabel extends IconLabel {
    * 
    * @see java.lang.Comparable#compareTo(T)
    */
+  @Override
   public int compareTo(IconLabel ilOther) {
     StarIconLabel silOther = (StarIconLabel) ilOther;
     // star Number == -1 means banned track, we want banned track to be the lowest

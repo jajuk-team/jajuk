@@ -162,10 +162,12 @@ public class GenresSelectionDialog extends JajukJDialog implements ActionListene
     jlist = new JList(new AbstractListModel() {
       private static final long serialVersionUID = 1L;
 
+      @Override
       public int getSize() {
         return list.size();
       }
 
+      @Override
       public Object getElementAt(int i) {
         return list.get(i);
       }
@@ -175,6 +177,7 @@ public class GenresSelectionDialog extends JajukJDialog implements ActionListene
     jsp.setPreferredSize(new Dimension(600, 600));
     jlist.setVisibleRowCount(-1);
     okc = new OKCancelPanel(new ActionListener() {
+      @Override
       public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == okc.getOKButton()) {
           int[] selection = jlist.getSelectedIndices();
@@ -208,6 +211,7 @@ public class GenresSelectionDialog extends JajukJDialog implements ActionListene
    * 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(ActionEvent ae) {
     if (ae.getSource().equals(jcbAmbiences)) {
       List<Ambience> alAmbiences = new ArrayList<Ambience>(AmbienceManager.getInstance()

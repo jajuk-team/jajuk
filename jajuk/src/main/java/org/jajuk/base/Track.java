@@ -162,6 +162,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * 
    * @return comparison result
    */
+  @Override
   public int compareTo(Track otherTrack) {
     return getID().compareTo(otherTrack.getID());
   }
@@ -269,6 +270,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
     } else if (alMountedFiles.size() > 0) {
       // then keep best quality and mounted first
       Collections.sort(alMountedFiles, new Comparator<File>() {
+        @Override
         public int compare(File file1, File file2) {
           long lQuality1 = file1.getQuality();
           boolean bMounted1 = file1.isReady();

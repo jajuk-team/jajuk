@@ -87,6 +87,7 @@ public class StartupGUIService {
     // Launch splashscreen. Depends on: log.setVerbosity,
     // configurationManager.load (for local)
     SwingUtilities.invokeAndWait(new Runnable() {
+      @Override
       public void run() {
         sc = new JSplash(Const.IMAGES_SPLASHSCREEN, true, true, false, Const.JAJUK_COPYRIGHT,
             Const.JAJUK_VERSION + " \"" + Const.JAJUK_CODENAME + "\"" + " "
@@ -108,6 +109,7 @@ public class StartupGUIService {
   public static void fireStepOneOver() {
     if (sc != null) {
       SwingUtilities.invokeLater(new Runnable() {
+        @Override
         public void run() {
           sc.setProgress(5, Messages.getString("Main.22"));
         }
@@ -122,6 +124,7 @@ public class StartupGUIService {
   public static void fireStepTwoOver() {
     if (sc != null) {
       SwingUtilities.invokeLater(new Runnable() {
+        @Override
         public void run() {
           sc.setProgress(10, Messages.getString("SplashScreen.1"));
         }
@@ -136,6 +139,7 @@ public class StartupGUIService {
   public static void fireStepThreeOver() {
     if (sc != null) {
       SwingUtilities.invokeLater(new Runnable() {
+        @Override
         public void run() {
           sc.setProgress(70, Messages.getString("SplashScreen.2"));
         }
@@ -150,6 +154,7 @@ public class StartupGUIService {
    */
   public static void startupOver() {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         if (sc != null) {
           sc.setProgress(100);
@@ -167,6 +172,7 @@ public class StartupGUIService {
   public static void launchUI() {
     // ui init
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         try {
           // Start up action manager

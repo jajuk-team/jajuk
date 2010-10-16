@@ -76,6 +76,7 @@ public class DebugLogAction extends JajukAction {
     JButton jbRefresh = new JButton(Messages.getString("DebugLogAction.1"), IconLoader
         .getIcon(JajukIcons.REFRESH));
     jbRefresh.addActionListener(new ActionListener() {
+      @Override
       public void actionPerformed(ActionEvent e) {
         // Refresh traces
         text.setText(getTraces());
@@ -83,6 +84,7 @@ public class DebugLogAction extends JajukAction {
     });
     JButton jbClose = new JButton(Messages.getString("Close"), IconLoader.getIcon(JajukIcons.CLOSE));
     jbClose.addActionListener(new ActionListener() {
+      @Override
       public void actionPerformed(ActionEvent e) {
         dialog.dispose();
       }

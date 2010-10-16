@@ -87,6 +87,7 @@ public class LastFmAlbumsRunnable implements Runnable {
    * 
    * @see java.lang.Runnable#run()
    */
+  @Override
   public void run() {
     if (!interrupted) {
       listener.setLastAlbumRetrieved(null, id);
@@ -100,6 +101,7 @@ public class LastFmAlbumsRunnable implements Runnable {
     final String wikiText = service.getWikiText(audioObject.getArtist());
     final String wikiURL = service.getWikiURL(audioObject.getArtist());
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         listener.notifyWikiInfoRetrieved(wikiText, wikiURL, id);
       }
@@ -123,6 +125,7 @@ public class LastFmAlbumsRunnable implements Runnable {
     }
     if (image != null && !interrupted) {
       SwingUtilities.invokeLater(new Runnable() {
+        @Override
         public void run() {
           listener.notifyAlbumRetrieved(audioObject, id);
         }
@@ -199,6 +202,7 @@ public class LastFmAlbumsRunnable implements Runnable {
       }
       if (!interrupted && auxAlbum != null) {
         SwingUtilities.invokeLater(new Runnable() {
+          @Override
           public void run() {
             listener.notifyAlbumRetrieved(audioObject, id);
           }

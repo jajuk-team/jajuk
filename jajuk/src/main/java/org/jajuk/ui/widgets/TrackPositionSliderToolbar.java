@@ -76,6 +76,7 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
   /** Swing Timer to refresh the component. */
   private final Timer timer = new Timer(JajukTimer.D_MS_HEARTBEAT, new ActionListener() {
 
+    @Override
     public void actionPerformed(ActionEvent e) {
       try {
         update(new JajukEvent(JajukEvents.HEART_BEAT));
@@ -134,6 +135,7 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
    * javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent
    * )
    */
+  @Override
   public void stateChanged(ChangeEvent e) {
     if (e.getSource() == jsPosition && !jsPosition.getValueIsAdjusting()) {
       lDateLastAdjust = System.currentTimeMillis();
@@ -163,6 +165,7 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
    * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.
    * MouseWheelEvent)
    */
+  @Override
   public void mouseWheelMoved(MouseWheelEvent e) {
     if (e.getSource() == jsPosition) {
       int iOld = jsPosition.getValue();
@@ -233,6 +236,7 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.ZERO);
@@ -248,6 +252,7 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
    * 
    * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
    */
+  @Override
   public final void update(final JajukEvent event) {
     final JajukEvents subject = event.getSubject();
     // do not insert this subject inside the invokeLater because we have to
@@ -266,6 +271,7 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
       }
     } else {
       SwingUtilities.invokeLater(new Runnable() {
+        @Override
         public void run() {
           if (JajukEvents.HEART_BEAT.equals(subject) && !QueueModel.isStopped()
               && !Player.isPaused()) {

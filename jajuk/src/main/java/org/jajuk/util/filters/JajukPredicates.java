@@ -61,6 +61,7 @@ public class JajukPredicates {
      * 
      * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
      */
+    @Override
     public boolean evaluate(Object o) {
       if (!(o instanceof Track)) {
         return false;
@@ -86,6 +87,7 @@ public class JajukPredicates {
      * 
      * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
      */
+    @Override
     public boolean evaluate(Object o) {
       return ((File) o).isReady();
     }
@@ -102,6 +104,7 @@ public class JajukPredicates {
      * 
      * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
      */
+    @Override
     public boolean evaluate(Object o) {
       Track track = (Track) o;
       return !(track.getBooleanValue(Const.XML_TRACK_BANNED));
@@ -119,6 +122,7 @@ public class JajukPredicates {
      * 
      * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
      */
+    @Override
     public boolean evaluate(Object o) {
       Track track = ((File) o).getTrack();
       return !(track.getBooleanValue(Const.XML_TRACK_BANNED));
@@ -136,6 +140,7 @@ public class JajukPredicates {
      * 
      * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
      */
+    @Override
     public boolean evaluate(Object o) {
       Track track = ((File) o).getTrack();
       return track.getBestFile(true) != null;
@@ -153,6 +158,7 @@ public class JajukPredicates {
      * 
      * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
      */
+    @Override
     public boolean evaluate(Object o) {
       return ((Playlist) o).isReady();
     }
@@ -181,6 +187,7 @@ public class JajukPredicates {
      * 
      * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
      */
+    @Override
     public boolean evaluate(Object o) {
       File tested = (File) o;
       return ambience.getGenres().contains(tested.getTrack().getGenre());
@@ -198,6 +205,7 @@ public class JajukPredicates {
      * 
      * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
      */
+    @Override
     public boolean evaluate(Object o) {
       Track tested = (Track) o;
       List<File> files = tested.getFiles();

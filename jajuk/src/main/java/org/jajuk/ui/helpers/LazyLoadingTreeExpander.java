@@ -33,6 +33,7 @@ public class LazyLoadingTreeExpander implements TreeWillExpandListener {
     this.model = model;
   }
 
+  @Override
   public void treeWillCollapse(TreeExpansionEvent event) throws ExpandVetoException {
     // Do nothing on collapse.
   }
@@ -42,6 +43,7 @@ public class LazyLoadingTreeExpander implements TreeWillExpandListener {
    * 
    * If the Node is a LazyLoadingTreeNode load it's children.
    */
+  @Override
   public void treeWillExpand(TreeExpansionEvent event) throws ExpandVetoException {
     TreePath path = event.getPath();
     Object lastPathComponent = path.getLastPathComponent();

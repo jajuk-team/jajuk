@@ -89,6 +89,7 @@ public final class DigitalDJManager implements Observer {
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.AMBIENCE_REMOVED);
@@ -216,6 +217,7 @@ public final class DigitalDJManager implements Observer {
    * 
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
+  @Override
   public void update(JajukEvent event) {
     if (JajukEvents.AMBIENCE_REMOVED.equals(event.getSubject())) {
       Properties properties = event.getDetails();
@@ -248,6 +250,7 @@ public final class DigitalDJManager implements Observer {
       // DJs
       File[] files = SessionService.getConfFileByPath(Const.FILE_DJ_DIR).listFiles(
           new FileFilter() {
+            @Override
             public boolean accept(File file) {
               if (file.isFile() && file.getPath().endsWith('.' + Const.XML_DJ_EXTENSION)) {
                 return true;

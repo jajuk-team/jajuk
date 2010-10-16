@@ -247,6 +247,7 @@ public abstract class Screen extends JPanel {
   private void notifyGUI() {
     SwingUtilities.invokeLater(new Runnable() {
 
+      @Override
       public void run() {
         Screen.this.wizard.updateGUI();
       }

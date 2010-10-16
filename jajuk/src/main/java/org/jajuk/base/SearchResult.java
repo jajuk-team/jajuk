@@ -95,6 +95,7 @@ public class SearchResult implements Comparable<SearchResult> {
    * 
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
+  @Override
   public int compareTo(SearchResult sr) {
     if(sr == null) {
       return -1;

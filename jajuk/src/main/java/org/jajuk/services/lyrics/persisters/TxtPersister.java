@@ -46,6 +46,7 @@ public class TxtPersister implements ILyricsPersister {
   /* (non-Javadoc)
    * @see org.jajuk.services.lyrics.persisters.ILyricsPersister#commitLyrics(java.lang.String, java.io.File)
    */
+  @Override
   public boolean commitLyrics(JajukLyricsProvider iProvider) {
     provider = iProvider;
     try {
@@ -74,6 +75,7 @@ public class TxtPersister implements ILyricsPersister {
   /* (non-Javadoc)
    * @see org.jajuk.services.lyrics.persisters.ILyricsPersister#deleteLyrics(org.jajuk.services.lyrics.providers.JajukLyricsProvider)
    */
+  @Override
   public void deleteLyrics(JajukLyricsProvider jProvider) throws IOException{
     provider = jProvider;
     lyricsFile = getLyricsFile();

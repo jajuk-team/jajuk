@@ -56,6 +56,7 @@ public class AmbienceConfigurationAction extends JajukAction {
      */
     SwingUtilities.invokeLater(new Runnable() {
 
+      @Override
       public void run() {
         AmbienceWizard ambience = new AmbienceWizard();
         ambience.show();

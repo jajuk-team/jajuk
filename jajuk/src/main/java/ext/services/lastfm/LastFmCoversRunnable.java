@@ -79,9 +79,11 @@ public class LastFmCoversRunnable implements Runnable {
    * 
    * @see java.lang.Runnable#run()
    */
+  @Override
   public void run() {
     if (albums != null) {
       SwingUtilities.invokeLater(new Runnable() {
+        @Override
         public void run() {
           listener.notifyStartRetrievingCovers(id);
         }
@@ -97,6 +99,7 @@ public class LastFmCoversRunnable implements Runnable {
 
         if (!interrupted) {
           SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
               listener.notifyCoverRetrieved(album, img, id);
             }

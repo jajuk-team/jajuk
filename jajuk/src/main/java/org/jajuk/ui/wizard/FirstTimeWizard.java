@@ -137,6 +137,7 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
    * 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jbCancel) {
       dispose(); // close window

@@ -152,6 +152,7 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
    * 
    * @see java.lang.Comparable#compareTo(T)
    */
+  @Override
   public int compareTo(IconLabel ilOther) {
     // if no integer value then simply compare tooltip strings
     if (ilOther.getTooltip() != null && this.getTooltip() != null) {

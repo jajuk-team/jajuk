@@ -136,6 +136,7 @@ public class LyricsView extends ViewAdapter {
    * 
    * @see org.jajuk.ui.IView#initUI()
    */
+  @Override
   public void initUI() {
     final JTextArea ta = getTextArea();
     final JLabel title = getJlTitle();
@@ -192,6 +193,7 @@ public class LyricsView extends ViewAdapter {
     jtbEdit = getJtbEdit();
     jtbEdit.setToolTipText(Messages.getString("LyricsView.2"));
     jtbEdit.addItemListener(new ItemListener() {
+      @Override
       public void itemStateChanged(ItemEvent ev) {
         if (jtbEdit.isSelected()) {
           editLyrics(QueueModel.getPlayingFile());
@@ -274,6 +276,7 @@ public class LyricsView extends ViewAdapter {
    * 
    * @see org.jajuk.base.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     final Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
 
@@ -290,6 +293,7 @@ public class LyricsView extends ViewAdapter {
    * 
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
+  @Override
   public void update(final JajukEvent event) {
     if (jtbEdit.isSelected()) {
       return;
@@ -308,6 +312,7 @@ public class LyricsView extends ViewAdapter {
       // If Internet access is allowed, download lyrics
       if (Conf.getBoolean(CONF_NETWORK_NONE_INTERNET_ACCESS)) {
         SwingUtilities.invokeLater(new Runnable() {
+          @Override
           public void run() {
             removeAll();
             add(p);
@@ -324,6 +329,7 @@ public class LyricsView extends ViewAdapter {
       }
 
       SwingUtilities.invokeLater(new Runnable() {
+        @Override
         public void run() {
           removeAll();
           final JXBusyLabel busy = new JXBusyLabel();
@@ -362,6 +368,7 @@ public class LyricsView extends ViewAdapter {
       reset();
     } else if (subject.equals(JajukEvents.WEBRADIO_LAUNCHED)) {
       SwingUtilities.invokeLater(new Runnable() {
+        @Override
         public void run() {
           final WebRadio radio = (WebRadio) event.getDetails().get(Const.DETAIL_CONTENT);
           if (radio != null) {
@@ -375,6 +382,7 @@ public class LyricsView extends ViewAdapter {
       });
     } else if (subject.equals(JajukEvents.LYRICS_DOWNLOADED)) {
       SwingUtilities.invokeLater(new Runnable() {
+        @Override
         public void run() {
           removeAll();
           add(p);
@@ -388,6 +396,7 @@ public class LyricsView extends ViewAdapter {
           // done in a thread to be executed when textarea display
           // is actually finished)
           SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
               jsp.getVerticalScrollBar().setValue(0);
             }
@@ -408,6 +417,7 @@ public class LyricsView extends ViewAdapter {
   private void reset() {
     SwingUtilities.invokeLater(new Runnable() {
 
+      @Override
       public void run() {
         jsp.setVisible(false);
         jtbEdit.setVisible(false);
@@ -422,6 +432,7 @@ public class LyricsView extends ViewAdapter {
    * 
    * @see org.jajuk.ui.IView#getDesc()
    */
+  @Override
   public String getDesc() {
     return Messages.getString("LyricsView.0");
   }

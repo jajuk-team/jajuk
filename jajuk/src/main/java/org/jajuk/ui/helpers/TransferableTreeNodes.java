@@ -65,6 +65,7 @@ public class TransferableTreeNodes implements Transferable {
    * 
    * @see java.awt.datatransfer.Transferable#getTransferDataFlavors()
    */
+  @Override
   public DataFlavor[] getTransferDataFlavors() {
     return flavors;
   }
@@ -74,6 +75,7 @@ public class TransferableTreeNodes implements Transferable {
    * 
    * @see java.awt.datatransfer.Transferable#isDataFlavorSupported(java.awt.datatransfer.DataFlavor)
    */
+  @Override
   public boolean isDataFlavorSupported(DataFlavor flavor) {
     return Arrays.asList(flavors).contains(flavor);
   }
@@ -83,6 +85,7 @@ public class TransferableTreeNodes implements Transferable {
    * 
    * @see java.awt.datatransfer.Transferable#getTransferData(java.awt.datatransfer.DataFlavor)
    */
+  @Override
   public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
     if (flavor == NODE_FLAVOR) {
       return this;

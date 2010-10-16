@@ -74,6 +74,7 @@ public class Type extends PhysicalItem implements Comparable<Type> {
    * 
    * @return comparison result
    */
+  @Override
   public int compareTo(final Type other) {
     return toString().compareTo(other.toString());
   }

@@ -214,6 +214,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    * 
    * @return comparison result
    */
+  @Override
   public int compareTo(File otherFile) {
     // Begin by comparing file parent directory for performances
     if (directory.equals(otherFile.getDirectory())) {

@@ -44,6 +44,7 @@ public class CDDBTrack implements FreedbTrack {
   /* (non-Javadoc)
    * @see entagged.freedb.FreedbTrack#getLength()
    */
+  @Override
   public int getLength() {
     return (int) track.getDuration();
 
@@ -52,6 +53,7 @@ public class CDDBTrack implements FreedbTrack {
   /* (non-Javadoc)
    * @see entagged.freedb.FreedbTrack#getPreciseLength()
    */
+  @Override
   public float getPreciseLength() {
     return track.getDuration();
   }

@@ -70,6 +70,7 @@ public class AboutWindow extends JajukJDialog {
     super();
     
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         setTitle(Messages.getString("JajukJMenuBar.16"));
         initUI();

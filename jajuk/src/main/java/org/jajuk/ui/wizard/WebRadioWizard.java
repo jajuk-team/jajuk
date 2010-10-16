@@ -158,6 +158,7 @@ public class WebRadioWizard extends Wizard {
         final JTextField jtfName = new JTextField();
         jtfName.setText(radios.get(index).getName());
         jtfName.addCaretListener(new CaretListener() {
+          @Override
           public void caretUpdate(CaretEvent arg0) {
             int index1 = getWidgetIndex(widgets, (JComponent) arg0.getSource());
             String s = jtfName.getText();
@@ -188,6 +189,7 @@ public class WebRadioWizard extends Wizard {
         final JRadioButton jrbRadio = new JRadioButton();
         group.add(jrbRadio);
         jrbRadio.addActionListener(new ActionListener() {
+          @Override
           public void actionPerformed(ActionEvent ae) {
             ((JTextField) widgets[getWidgetIndex(widgets, jrbRadio)][1]).getText();
             radioIndex = getWidgetIndex(widgets, jrbRadio);
@@ -205,6 +207,7 @@ public class WebRadioWizard extends Wizard {
           jtfURL.setToolTipText(jtfURL.getText());
         }
         jtfURL.addCaretListener(new CaretListener() {
+          @Override
           public void caretUpdate(CaretEvent arg0) {
             int index1 = getWidgetIndex(widgets, (JComponent) arg0.getSource());
             String s = jtfURL.getText();
@@ -262,6 +265,7 @@ public class WebRadioWizard extends Wizard {
      * 
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
       if (ae.getSource() == jbNew) {
         radios.add(new WebRadio("", null));

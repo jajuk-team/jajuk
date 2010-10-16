@@ -241,6 +241,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * 
    * @return comparison result
    */
+  @Override
   public int compareTo(final Device otherDevice) {
     // should handle null
     if (otherDevice == null) {

@@ -185,6 +185,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
    * 
    * @see org.jajuk.ui.widgets.JajukWindow#getWindowStateDecorator()
    */
+  @Override
   public WindowStateDecorator getWindowStateDecorator() {
     return decorator;
   }
@@ -319,6 +320,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
 
         // Under OSX, the event to consider is PRESSED, not RELEASED, 
         // see http://developer.apple.com/mac/library/documentation/Java/Conceptual/Java14Development/07-NativePlatformIntegration/NativePlatformIntegration.html
+        @Override
         public void mousePressed(MouseEvent e) {
           if (!e.isPopupTrigger()) { //we invert here because it is a systray item
             // popup gesture recognized, display the jdialog
@@ -403,6 +405,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
   @Override
   public final void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         JajukEvents subject = event.getSubject();
         if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
@@ -463,6 +466,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
   final void populateAmbiences() {
     // Ambience selection listener
     ActionListener al = new ActionListener() {
+      @Override
       public void actionPerformed(ActionEvent ae) {
         JMenuItem jmi = (JMenuItem) ae.getSource();
         // Selected 'Any" ambience

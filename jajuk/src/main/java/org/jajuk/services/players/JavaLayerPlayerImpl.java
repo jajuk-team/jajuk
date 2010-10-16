@@ -103,6 +103,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
    *      float)
    */
+  @Override
   public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume)
       throws Exception {
     this.fPos = 0;
@@ -143,6 +144,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    * 
    * @see org.jajuk.base.IPlayerImpl#stop()
    */
+  @Override
   public void stop() throws Exception {
     bFading = false;
     if (player != null) {
@@ -157,6 +159,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    * 
    * @see org.jajuk.base.IPlayerImpl#setVolume(float)
    */
+  @Override
   public void setVolume(float fVolume) throws Exception {
     this.fVolume = fVolume;
     player.setGain(fVolume * 0.6);
@@ -168,6 +171,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    * 
    * @return current position as a float ex: 0.2f
    */
+  @Override
   public float getCurrentPosition() {
     return fPos;
   }
@@ -177,6 +181,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    * 
    * @return current volume as a float ex: 0.2f
    */
+  @Override
   public float getCurrentVolume() {
     return fVolume;
   }
@@ -186,6 +191,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    * 
    * @return Returns the lTime in ms
    */
+  @Override
   public long getElapsedTime() {
     return lTime;
   }
@@ -195,6 +201,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    * 
    * @see org.jajuk.players.IPlayerImpl#pause()
    */
+  @Override
   public void pause() throws Exception {
     player.pause();
   }
@@ -202,6 +209,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   /* (non-Javadoc)
    * @see org.jajuk.services.players.IPlayerImpl#resume()
    */
+  @Override
   public void resume() throws Exception {
     player.resume();
   }
@@ -212,6 +220,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    * @see org.jajuk.players.IPlayerImpl#seek(float) Ogg vorbis seek not yet
    *      supported
    */
+  @Override
   public void seek(float pPosValue) {
     float posValue = pPosValue;
     // if fading, ignore
@@ -256,6 +265,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    * 
    * @return player state, -1 if player is null.
    */
+  @Override
   public int getState() {
     if (bFading) {
       return FADING_STATUS;
@@ -272,6 +282,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    * @param arg0 DOCUMENT_ME
    * @param arg1 DOCUMENT_ME
    */
+  @Override
   @SuppressWarnings("unchecked")
   public void opened(Object arg0, Map arg1) {
     this.mPlayingData = arg1;
@@ -286,6 +297,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    * @param bPcmdata DOCUMENT_ME
    * @param mProperties DOCUMENT_ME
    */
+  @Override
   @SuppressWarnings("unchecked")
   public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata, Map mProperties) {
     if ((System.currentTimeMillis() - lDateLastUpdate) > PROGRESS_STEP) {
@@ -375,6 +387,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    * 
    * @param bpe DOCUMENT_ME
    */
+  @Override
   public void stateUpdated(BasicPlayerEvent bpe) {
     if (bpe.getCode() != 10) { // do not trace volume changes
       Log.debug("Player state changed: " + bpe);
@@ -402,6 +415,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    * 
    * @param arg0 DOCUMENT_ME
    */
+  @Override
   public void setController(BasicController arg0) {
     // nothing to do here
   }
@@ -411,6 +425,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    * 
    * @see org.jajuk.players.IPlayerImpl#getCurrentLength()
    */
+  @Override
   public long getCurrentLength() {
     return lDuration;
   }
@@ -430,6 +445,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    * 
    * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.WebRadio, float)
    */
+  @Override
   public void play(WebRadio radio, float fVolume) throws Exception {
     // not needed right now
   }

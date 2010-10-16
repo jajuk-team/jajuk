@@ -159,6 +159,7 @@ public class FilesTableModel extends JajukTableModel {
     oItems = new Item[iRowNum];
     CollectionUtils.filter(alToShow, new Predicate() {
 
+      @Override
       public boolean evaluate(Object o) {
         File file = (File) o;
         // show it if no sync option or if item is in the selection

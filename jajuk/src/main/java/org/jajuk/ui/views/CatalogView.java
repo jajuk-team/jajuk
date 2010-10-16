@@ -186,6 +186,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
 
   /** Swing Timer to refresh the component. */
   private final Timer timerSearch = new Timer(WAIT_TIME, new ActionListener() {
+    @Override
     public void actionPerformed(ActionEvent e) {
       if (bNeedSearch && !bPopulating && (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
         // reset paging
@@ -210,6 +211,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
    * 
    * @see org.jajuk.ui.IView#display()
    */
+  @Override
   public void initUI() {
     initMetaInformation();
 
@@ -415,6 +417,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
@@ -641,6 +644,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     // effective,
     // so queue it
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         jsp.getVerticalScrollBar().setValue(scrollPosition);
       }
@@ -654,6 +658,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
+  @Override
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.DEVICE_REFRESH.equals(subject)
@@ -662,6 +667,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
         || JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
       SwingUtilities.invokeLater(new Runnable() {
 
+        @Override
         public void run() {
           populateCatalog();
         }
@@ -676,6 +682,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
    * 
    * @see org.jajuk.ui.IView#getDesc()
    */
+  @Override
   public String getDesc() {
     return Messages.getString("CatalogView.0");
   }
@@ -685,6 +692,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
    * 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcbFilter) {
       if (jtfValue.getText().trim().equals("")) {

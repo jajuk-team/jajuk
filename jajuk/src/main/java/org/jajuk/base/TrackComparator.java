@@ -189,6 +189,7 @@ public class TrackComparator implements Comparator<Track>, Serializable {
    *         than <code>0</code> if track1 is less than track2; and a value
    *         greater than <code>0</code> if track1 is greater than track2.
    */
+  @Override
   public int compare(Track track1, Track track2) {
     String sHashCompare = getCompareString(track1);
     String sHashCompareOther = getCompareString(track2);

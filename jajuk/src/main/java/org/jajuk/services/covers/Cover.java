@@ -129,6 +129,7 @@ public class Cover implements Comparable<Cover>, Const {
    * 
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
+  @Override
   public int compareTo(Cover cOther) {
     // should be able to handle null
     if (cOther == null) {

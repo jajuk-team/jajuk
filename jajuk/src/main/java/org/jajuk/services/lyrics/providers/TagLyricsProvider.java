@@ -34,6 +34,7 @@ public class TagLyricsProvider implements ILyricsProvider {
   /* (non-Javadoc)
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics(java.lang.String, java.lang.String)
    */
+  @Override
   public String getLyrics(File audioFile) {
     String lyrics = null;
     try {
@@ -54,6 +55,7 @@ public class TagLyricsProvider implements ILyricsProvider {
   /* (non-Javadoc)
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getResponseEncoding()
    */
+  @Override
   public String getResponseEncoding() {
     return "UTF-8";
   }

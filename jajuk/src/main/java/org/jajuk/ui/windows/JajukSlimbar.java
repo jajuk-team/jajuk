@@ -234,6 +234,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    * 
    * @see org.jajuk.ui.widgets.JajukWindow#getWindowStateDecorator()
    */
+  @Override
   public WindowStateDecorator getWindowStateDecorator() {
     return decorator;
   }
@@ -276,6 +277,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    * 
    * @see org.jajuk.ui.windows.IJajukWindow#initUI()
    */
+  @Override
   public void initUI() {
     // Instanciate the PlayerStateMediator to listen for player basic controls
     PlayerStateMediator.getInstance();
@@ -531,6 +533,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     }
     // Update window title
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         setTitle(title);
       }
@@ -569,6 +572,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    * 
    * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event. MouseWheelEvent)
    */
+  @Override
   public void mouseWheelMoved(MouseWheelEvent e) {
     if (e.getSource().equals(jbVolume)) {
       int oldVolume = (int) (100 * Player.getCurrentVolume());
@@ -630,6 +634,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
@@ -644,6 +649,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    * 
    * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
    */
+  @Override
   public void update(final JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.FILE_LAUNCHED.equals(subject) || JajukEvents.WEBRADIO_LAUNCHED.equals(subject)
@@ -657,6 +663,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    * 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(final ActionEvent ae) {
     if (ae.getSource() == jbBestof) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.BEST_OF));

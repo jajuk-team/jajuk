@@ -70,6 +70,7 @@ public abstract class WindowsHotKeyManager extends AbstractAction {
        * 
        * @see com.melloware.jintellitype.IntellitypeListener#onIntellitype(int)
        */
+      @Override
       public void onIntellitype(int aCommand) {
         try {
           // Perform right action according to intellitype command
@@ -127,6 +128,7 @@ public abstract class WindowsHotKeyManager extends AbstractAction {
     // add the listener
     jintellitype.addHotKeyListener(new HotkeyListener() {
 
+      @Override
       public void onHotKey(int key) {
         // Leave if user disabled hotkeys
         if (!Conf.getBoolean(Const.CONF_OPTIONS_HOTKEYS)) {

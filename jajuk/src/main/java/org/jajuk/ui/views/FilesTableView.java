@@ -59,6 +59,7 @@ public class FilesTableView extends AbstractTableView implements TwoStepsDisplay
    * 
    * @see org.jajuk.ui.IView#getDesc()
    */
+  @Override
   public String getDesc() {
     return Messages.getString("FilesTableView.0");
   }
@@ -68,6 +69,7 @@ public class FilesTableView extends AbstractTableView implements TwoStepsDisplay
    * 
    * @see org.jajuk.ui.views.IView#initUI()
    */
+  @Override
   public void initUI() {
     UtilGUI.populate(this);
   }

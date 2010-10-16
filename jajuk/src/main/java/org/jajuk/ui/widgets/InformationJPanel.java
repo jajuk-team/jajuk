@@ -74,6 +74,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
   /** Swing Timer to refresh the component. */
   private final Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
 
+    @Override
     public void actionPerformed(ActionEvent e) {
       try {
         update(new JajukEvent(JajukEvents.HEART_BEAT));
@@ -183,6 +184,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.ZERO);
@@ -226,6 +228,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
     this.sMessage = sMessage;
     this.type = messageType;
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         InformationJPanel.this.sMessage = sMessage;
         jlMessage.setText(sMessage);
@@ -279,6 +282,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
+  @Override
   public void update(final JajukEvent event) {
     final JajukEvents subject = event.getSubject();
     // do not insert this subject inside the invokeLater because we have to
@@ -330,6 +334,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
           InformationJPanel.MessageType.INFORMATIVE);
     } else {
       SwingUtilities.invokeLater(new Runnable() {
+        @Override
         public void run() {
           if (JajukEvents.HEART_BEAT.equals(subject) && !QueueModel.isStopped()
               && !Player.isPaused() && !QueueModel.isPlayingRadio()) {

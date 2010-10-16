@@ -76,6 +76,7 @@ public class LastFmSimilarArtistsRunnable implements Runnable {
    * 
    * @see java.lang.Runnable#run()
    */
+  @Override
   public void run() {
     if (!interrupted && StringUtils.isNotBlank(artist)
         && !artist.equalsIgnoreCase(Messages.getString("unknown_artist"))) {
@@ -83,6 +84,7 @@ public class LastFmSimilarArtistsRunnable implements Runnable {
 
       if (!interrupted && artists != null) {
         SwingUtilities.invokeLater(new Runnable() {
+          @Override
           public void run() {
             listener.notifyStartRetrievingArtistImages(id);
           }
@@ -90,6 +92,7 @@ public class LastFmSimilarArtistsRunnable implements Runnable {
         final Image artistImage = service.getImage(artists);
         if (!interrupted && artistImage != null) {
           SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
               listener.notifyArtistImage(artistImage, id);
             }
@@ -107,6 +110,7 @@ public class LastFmSimilarArtistsRunnable implements Runnable {
 
           if (!interrupted) {
             SwingUtilities.invokeLater(new Runnable() {
+              @Override
               public void run() {
                 listener.notifyFinishGetSimilarArtist(a, img, id);
               }

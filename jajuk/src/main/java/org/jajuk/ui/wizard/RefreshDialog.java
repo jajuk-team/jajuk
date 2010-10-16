@@ -69,6 +69,7 @@ public class RefreshDialog extends JFrame {
   public RefreshDialog(final boolean indeterminate) {
     this.indeterminate = indeterminate;
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         setUndecorated(true);
         setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
@@ -96,6 +97,7 @@ public class RefreshDialog extends JFrame {
    */
   public void setAction(final String action, final Icon icon) {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         jlAction.setText(action);
         jlAction.setIcon(icon);
@@ -116,6 +118,7 @@ public class RefreshDialog extends JFrame {
     }
     dateLastUpdateRefresh = System.currentTimeMillis();
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         jlRefreshing.setText(path);
         jlRefreshing.setToolTipText(path);
@@ -136,6 +139,7 @@ public class RefreshDialog extends JFrame {
       }
       dateLastUpdateProgress = System.currentTimeMillis();
       SwingUtilities.invokeLater(new Runnable() {
+        @Override
         public void run() {
           progress.setValue(pos);
         }

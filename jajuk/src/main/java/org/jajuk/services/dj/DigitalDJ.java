@@ -80,6 +80,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
    * 
    * @return the int
    */
+  @Override
   public int compareTo(DigitalDJ other) {
     // 
     if (other == null) {

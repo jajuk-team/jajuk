@@ -313,6 +313,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
    * 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcboxSynchronized) {
       handleSynchronized();

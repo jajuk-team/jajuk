@@ -128,6 +128,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * @see org.jajuk.services.dbus.DBusSupport#forward()
    */
+  @Override
   public void forward() throws Exception {
     Log.info("Invoking D-Bus action for 'forward'");
     ActionManager.getAction(FORWARD_TRACK).perform(null);
@@ -138,6 +139,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * @see org.jajuk.services.dbus.DBusSupport#next()
    */
+  @Override
   public void next() throws Exception {
     Log.info("Invoking D-Bus action for 'next'");
     ActionManager.getAction(NEXT_TRACK).perform(null);
@@ -148,6 +150,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * @see org.jajuk.services.dbus.DBusSupport#playPause()
    */
+  @Override
   public void playPause() throws Exception {
     Log.info("Invoking D-Bus action for 'play/pause'");
     ActionManager.getAction(PAUSE_RESUME_TRACK).perform(null);
@@ -158,6 +161,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * @see org.jajuk.services.dbus.DBusSupport#previous()
    */
+  @Override
   public void previous() throws Exception {
     Log.info("Invoking D-Bus action for 'previous'");
     ActionManager.getAction(PREVIOUS_TRACK).perform(null);
@@ -168,6 +172,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * @see org.jajuk.services.dbus.DBusSupport#rewind()
    */
+  @Override
   public void rewind() throws Exception {
     Log.info("Invoking D-Bus action for 'rewind'");
     ActionManager.getAction(REWIND_TRACK).perform(null);
@@ -178,6 +183,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * @see org.jajuk.services.dbus.DBusSupport#stop()
    */
+  @Override
   public void stop() throws Exception {
     Log.info("Invoking D-Bus action for 'stop'");
     ActionManager.getAction(STOP_TRACK).perform(null);
@@ -188,6 +194,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * @see org.jajuk.services.dbus.DBusSupport#decreaseVolume()
    */
+  @Override
   public void decreaseVolume() throws Exception {
     Log.info("Invoking D-Bus action for 'decreaseVolume'");
     ActionManager.getAction(DECREASE_VOLUME).perform(null);
@@ -198,6 +205,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * @see org.jajuk.services.dbus.DBusSupport#exit()
    */
+  @Override
   public void exit() throws Exception {
     Log.info("Invoking D-Bus action for 'exit'");
     ActionManager.getAction(EXIT).perform(null);
@@ -208,6 +216,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * @see org.jajuk.services.dbus.DBusSupport#increaseVolume()
    */
+  @Override
   public void increaseVolume() throws Exception {
     Log.info("Invoking D-Bus action for 'increaseVolume'");
     ActionManager.getAction(INCREASE_VOLUME).perform(null);
@@ -218,6 +227,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * @see org.jajuk.services.dbus.DBusSupport#nextAlbum()
    */
+  @Override
   public void nextAlbum() throws Exception {
     Log.info("Invoking D-Bus action for 'nextAlbum'");
     ActionManager.getAction(NEXT_ALBUM).perform(null);
@@ -228,6 +238,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * @see org.jajuk.services.dbus.DBusSupport#previousAlbum()
    */
+  @Override
   public void previousAlbum() throws Exception {
     Log.info("Invoking D-Bus action for 'previousAlbum'");
     ActionManager.getAction(PREVIOUS_ALBUM).perform(null);
@@ -238,6 +249,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * @see org.jajuk.services.dbus.DBusSupport#shuffleGlobal()
    */
+  @Override
   public void shuffleGlobal() throws Exception {
     Log.info("Invoking D-Bus action for 'shuffleGlobal'");
     ActionManager.getAction(SHUFFLE_GLOBAL).perform(null);
@@ -248,6 +260,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * @see org.jajuk.services.dbus.DBusSupport#mute()
    */
+  @Override
   public void mute() throws Exception {
     Log.info("Invoking D-Bus action for 'mute'");
     ActionManager.getAction(JajukActions.MUTE_STATE).perform(null);
@@ -258,6 +271,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * @see org.jajuk.services.dbus.DBusSupport#currentHTML()
    */
+  @Override
   public String currentHTML() throws Exception {
     Log.info("Invoking D-Bus action for 'currentHTML'");
     return QueueModel.getCurrentFileTitle();
@@ -268,6 +282,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * @see org.jajuk.services.dbus.DBusSupport#current()
    */
+  @Override
   public String current() throws Exception {
     Log.info("Invoking D-Bus action for 'current'");
 
@@ -293,6 +308,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * @see org.jajuk.services.dbus.DBusSupport#banCurrent()
    */
+  @Override
   public void banCurrent() throws Exception {
     Log.info("Invoking D-Bus action for 'banCurrent'");
     ActionManager.getAction(JajukActions.BAN).perform(null);
@@ -303,6 +319,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * @see org.jajuk.services.dbus.DBusSupport#showCurrentlyPlaying()
    */
+  @Override
   public void showCurrentlyPlaying() throws Exception {
     // simply raise the event so any registered handler will take care of it
     Log.info("Invoking D-Bus action for 'showCurrentlyPlaying'");
@@ -338,6 +355,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * @return true, if checks if is remote
    */
+  @Override
   public boolean isRemote() {
     return false;
   }
@@ -347,6 +365,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> keys = new HashSet<JajukEvents>();
     // keys.add(JajukEvents.PLAYER_STOP);
@@ -361,6 +380,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * 
    * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
    */
+  @Override
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     // Reset rate and total play time (automatic part of rating system)

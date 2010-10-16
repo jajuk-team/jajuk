@@ -276,6 +276,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
         continue;
       }
       jmi.addActionListener(new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent e) {
           // Simply add the new view in the current perspective
           PerspectiveAdapter current = (PerspectiveAdapter) PerspectiveManager
@@ -355,6 +356,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     jcbShowPopups = new JCheckBoxMenuItem(Messages.getString("ParameterView.228"));
     jcbShowPopups.setSelected(Conf.getBoolean(Const.CONF_SHOW_POPUPS));
     jcbShowPopups.addActionListener(new ActionListener() {
+      @Override
       public void actionPerformed(ActionEvent e) {
         Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
         // force parameter view to take this into account
@@ -366,6 +368,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     jcbNoneInternetAccess.setToolTipText(Messages.getString("ParameterView.265"));
     jcbNoneInternetAccess.setSelected(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
     jcbNoneInternetAccess.addActionListener(new ActionListener() {
+      @Override
       public void actionPerformed(ActionEvent e) {
         Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, Boolean
             .toString(jcbNoneInternetAccess.isSelected()));
@@ -490,6 +493,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
@@ -516,9 +520,11 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
+  @Override
   public void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
 
+      @Override
       public void run() {
         if (JajukEvents.PARAMETERS_CHANGE.equals(event.getSubject())
             || JajukEvents.SLIMBAR_VISIBILTY_CHANGED.equals(event.getSubject())) {

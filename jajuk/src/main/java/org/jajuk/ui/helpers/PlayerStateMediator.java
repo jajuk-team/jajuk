@@ -92,6 +92,7 @@ public class PlayerStateMediator implements Observer {
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.PLAYER_PLAY);
@@ -117,8 +118,10 @@ public class PlayerStateMediator implements Observer {
    * 
    * @see org.jajuk.events.Observer#update(org.jajuk.events.Event)
    */
+  @Override
   public void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         JajukEvents subject = event.getSubject();
         if (JajukEvents.PLAYER_STOP.equals(subject)) {

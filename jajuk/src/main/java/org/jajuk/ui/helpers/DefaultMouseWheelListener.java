@@ -49,6 +49,7 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
    * 
    * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
    */
+  @Override
   public void mouseWheelMoved(MouseWheelEvent mwe) {
     int iOld = js.getValue();
     int iNew = iOld - mwe.getWheelRotation();

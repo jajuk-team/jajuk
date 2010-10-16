@@ -91,6 +91,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    * 
    * @return Returns the bIsPopulated.
    */
+  @Override
   public boolean isPopulated() {
     return bIsPopulated;
   }
@@ -101,6 +102,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    * @param isPopulated
    *          Defines, if this View is populated fully.
    */
+  @Override
   public void setIsPopulated(boolean isPopulated) {
     bIsPopulated = isPopulated;
   }
@@ -112,6 +114,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    * java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent
    * )
    */
+  @Override
   public void componentHidden(ComponentEvent e) {
     // required by interface, but nothing to do here...
   }
@@ -123,6 +126,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    * java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent
    * )
    */
+  @Override
   public void componentMoved(ComponentEvent e) {
     // required by interface, but nothing to do here...
   }
@@ -134,6 +138,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    * java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent
    * )
    */
+  @Override
   public void componentResized(ComponentEvent e) {
     // required by interface, but nothing to do here...
   }
@@ -145,6 +150,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    * java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent
    * )
    */
+  @Override
   public void componentShown(ComponentEvent e) {
     // required by interface, but nothing to do here...
   }
@@ -154,6 +160,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    * 
    * @see com.vlsolutions.swing.docking.Dockable#getDockKey()
    */
+  @Override
   public DockKey getDockKey() {
     return key;
   }
@@ -163,6 +170,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    * 
    * @see com.vlsolutions.swing.docking.Dockable#getComponent()
    */
+  @Override
   public Component getComponent() {
     return this;
   }
@@ -172,6 +180,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    * 
    * @return the ID
    */
+  @Override
   public String getID() {
     return sID;
   }
@@ -182,6 +191,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    * @param sID
    *          The new ID of this view.
    */
+  @Override
   public void setID(String sID) {
     key.setKey(sID);
     this.sID = sID;
@@ -192,6 +202,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    * 
    * @see org.jajuk.ui.IView#getPerspective()
    */
+  @Override
   public IPerspective getPerspective() {
     return perspective;
   }
@@ -201,6 +212,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    * 
    * @see org.jajuk.ui.IView#setPerspective(org.jajuk.ui.IPerspective)
    */
+  @Override
   public void setPerspective(IPerspective perspective) {
     this.perspective = perspective;
   }
@@ -213,6 +225,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    * 
    * @return Natural order
    */
+  @Override
   public int compareTo(IView other) {
     return getDesc().compareTo(other.getDesc());
   }
@@ -220,6 +233,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   /**
    * Called when the view perspective is selected.
    */
+  @Override
   public void onPerspectiveSelection() {
     // required by interface, but nothing to do here...
   }

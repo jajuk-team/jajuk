@@ -159,6 +159,7 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
@@ -175,6 +176,7 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
    * 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(final ActionEvent ae) {
     // do not run this in a separate thread because Player actions would die
     // with the thread
@@ -207,8 +209,10 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
+  @Override
   public void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         JajukEvents subject = event.getSubject();
         if (JajukEvents.PLAYER_STOP.equals(subject)) {

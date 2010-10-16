@@ -183,6 +183,7 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
   /* (non-Javadoc)
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(ActionEvent e) {
     this.hidemenu();
   }

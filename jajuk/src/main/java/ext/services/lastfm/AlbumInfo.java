@@ -189,6 +189,7 @@ public interface AlbumInfo {
    * 
    * @return the string
    */
+  @Override
   public String toString();
 
 }

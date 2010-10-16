@@ -91,6 +91,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
    * 
    * @see org.jajuk.ui.perspectives.IPerspective#getID()
    */
+  @Override
   public String getID() {
     return sID;
   }
@@ -110,6 +111,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
    * 
    * @see org.jajuk.ui.perspectives.IPerspective#commit()
    */
+  @Override
   public void commit() throws IOException {
     // workaround for a VLDocking issue + performances
     if (!bAsBeenSelected) {
@@ -132,6 +134,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
    * 
    * @see org.jajuk.ui.perspectives.IPerspective#load()
    */
+  @Override
   public void load() throws IOException, ParserConfigurationException, SAXException {
 
     // Try to read XML conf file from home directory
@@ -148,6 +151,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     try {
       DockingContext ctx = new DockingContext();
       DockableResolver resolver = new DockableResolver() {
+        @Override
         public Dockable resolveDockable(String keyName) {
           Dockable view = null;
           try {
@@ -286,6 +290,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
    * 
    * @see org.jajuk.ui.perspectives.IPerspective#getContentPane()
    */
+  @Override
   public Container getContentPane() {
     return this;
   }
@@ -295,6 +300,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
    * 
    * @see org.jajuk.ui.IPerspective#restaureDefaults()
    */
+  @Override
   public void restoreDefaults() {
     // SHOULD BE CALLED ONLY FOR THE CURRENT PERSPECTIVE
     // to ensure views are not invisible
@@ -327,6 +333,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
    * 
    * @see org.jajuk.ui.IPerspective#setAsBeenSelected()
    */
+  @Override
   public void setAsBeenSelected(boolean b) {
     bAsBeenSelected = b;
   }
@@ -336,6 +343,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
    * 
    * @see org.jajuk.ui.perspectives.IPerspective#getViews()
    */
+  @Override
   public Set<IView> getViews() {
     Set<IView> views = new HashSet<IView>();
     DockableState[] dockables = getDockables();

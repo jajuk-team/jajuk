@@ -159,6 +159,7 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
    * 
    * @see org.jajuk.ui.widgets.JajukWindow#getWindowStateDecorator()
    */
+  @Override
   public WindowStateDecorator getWindowStateDecorator() {
     return decorator;
   }
@@ -168,6 +169,7 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
    * 
    * @see org.jajuk.ui.windows.IJajukWindow#initUI()
    */
+  @Override
   public void initUI() {
     if (UtilSystem.isUnderOSX()) {
       // mac integration
@@ -270,6 +272,7 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
@@ -429,9 +432,11 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
+  @Override
   public final void update(JajukEvent event) {
     final JajukEvents subject = event.getSubject();
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
           String title = QueueModel.getPlayingFileTitle();

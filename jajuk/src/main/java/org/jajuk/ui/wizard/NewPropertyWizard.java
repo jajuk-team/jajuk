@@ -139,6 +139,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
    * 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(ActionEvent ae) {
     if (ae.getSource().equals(this.okp.getOKButton())) {
       // check the property is not already used internally
@@ -226,6 +227,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
    * 
    * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
    */
+  @Override
   public void itemStateChanged(ItemEvent e) {
     // Date format
     if (jcbClass.getSelectedIndex() == DATE) {
@@ -259,6 +261,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
    * 
    * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
    */
+  @Override
   public void keyTyped(KeyEvent e) {
     // required by interface, but nothing to do here...
   }
@@ -268,6 +271,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
    * 
    * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
    */
+  @Override
   public void keyPressed(KeyEvent e) {
     // required by interface, but nothing to do here...
   }
@@ -277,6 +281,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
    * 
    * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
    */
+  @Override
   public void keyReleased(KeyEvent e) {
     if (jcbItemChoice.getSelectedIndex() != -1 && jcbClass.getSelectedIndex() != -1
         && jtfName.getText().length() > 0) {

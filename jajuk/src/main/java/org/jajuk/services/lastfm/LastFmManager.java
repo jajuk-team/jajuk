@@ -79,6 +79,7 @@ public final class LastFmManager implements Observer, Const {
    * 
    * @see org.jajuk.base.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_FINISHED);
@@ -100,6 +101,7 @@ public final class LastFmManager implements Observer, Const {
    * 
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
+  @Override
   public void update(final JajukEvent event) {
     if (Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE)
         && JajukEvents.FILE_FINISHED == event.getSubject()

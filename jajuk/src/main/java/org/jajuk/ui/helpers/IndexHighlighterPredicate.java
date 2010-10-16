@@ -42,6 +42,7 @@ public class IndexHighlighterPredicate implements HighlightPredicate {
   /* (non-Javadoc)
    * @see org.jdesktop.swingx.decorator.HighlightPredicate#isHighlighted(java.awt.Component, org.jdesktop.swingx.decorator.ComponentAdapter)
    */
+  @Override
   public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
     // always highlight the current index
     if (QueueModel.getIndex() == adapter.row) {

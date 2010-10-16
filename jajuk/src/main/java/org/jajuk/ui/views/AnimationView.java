@@ -90,6 +90,7 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
    * 
    * @see org.jajuk.ui.views.IView#getDesc()
    */
+  @Override
   public String getDesc() {
     return Messages.getString("AnimationView.0");
   }
@@ -99,6 +100,7 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
    * 
    * @see org.jajuk.ui.views.IView#populate()
    */
+  @Override
   public void initUI() {
     setLayout(new BorderLayout());
     addComponentListener(this);
@@ -114,6 +116,7 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
   /* (non-Javadoc)
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
@@ -132,6 +135,7 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
     SwingUtilities.invokeLater(new Runnable() {
       // this is mandatory to
       // get actual getWitdth
+      @Override
       public void run() {
         iSize = AnimationView.this.getWidth();
         // current width. Must be called inside an invoke and wait,
@@ -182,6 +186,7 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
+  @Override
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
@@ -214,6 +219,7 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
   @Override
   public void componentResized(ComponentEvent e) {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         iSize = SwingUtilities.getRootPane(AnimationView.this).getWidth();
         UtilFeatures.updateStatus(AnimationView.this);

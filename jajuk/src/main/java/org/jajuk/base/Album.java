@@ -113,6 +113,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * 
    * @return comparison result
    */
+  @Override
   public int compareTo(Album otherAlbum) {
     if (otherAlbum == null) {
       return -1;

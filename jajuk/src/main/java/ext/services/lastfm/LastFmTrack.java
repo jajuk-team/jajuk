@@ -55,6 +55,7 @@ public class LastFmTrack implements TrackInfo {
    * 
    * @return the title
    */
+  @Override
   public String getTitle() {
     return title;
   }
@@ -64,6 +65,7 @@ public class LastFmTrack implements TrackInfo {
    * 
    * @return the url
    */
+  @Override
   public String getUrl() {
     return url;
   }
@@ -73,6 +75,7 @@ public class LastFmTrack implements TrackInfo {
    * 
    * @param title the title to set
    */
+  @Override
   public void setTitle(String title) {
     this.title = title;
   }
@@ -82,6 +85,7 @@ public class LastFmTrack implements TrackInfo {
    * 
    * @param url the url to set
    */
+  @Override
   public void setUrl(String url) {
     this.url = url;
   }

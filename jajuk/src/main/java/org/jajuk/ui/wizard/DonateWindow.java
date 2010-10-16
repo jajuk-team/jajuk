@@ -62,6 +62,7 @@ public class DonateWindow extends JajukJDialog {
     super();
 
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         setTitle(Messages.getString("JajukDonate.1"));
         initUI();

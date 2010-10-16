@@ -55,6 +55,7 @@ public class MuteAction extends JajukAction {
   public void perform(ActionEvent evt) {
     Player.mute();
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         if (Player.isMuted()) {
           setName(Messages.getString("JajukWindow.1"));

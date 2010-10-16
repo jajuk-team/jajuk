@@ -55,6 +55,7 @@ public final class QueueController implements Observer {
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> keys = new HashSet<JajukEvents>();
     keys.add(JajukEvents.DEVICE_REFRESH);
@@ -66,6 +67,7 @@ public final class QueueController implements Observer {
    * 
    * @see org.jajuk.events.Observer#update(org.jajuk.events.Event)
    */
+  @Override
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     // In case of device refresh, we force fifo cleanup, for ie to remove

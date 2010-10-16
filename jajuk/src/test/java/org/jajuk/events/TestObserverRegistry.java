@@ -114,10 +114,12 @@ public class TestObserverRegistry extends JajukTestCase {
     ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS, NUMBER_OF_TESTS);
 
     helper.executeTest(new ThreadTestHelper.TestRunnable() {
+      @Override
       public void doEnd(int threadnum) throws Exception {
         // nothing to do
       }
 
+      @Override
       public void run(int threadnum, int iter) {
         // then notifySync
         registry.notifySync(new JajukEvent(JajukEvents.FILE_FINISHED));
@@ -146,10 +148,12 @@ public class TestObserverRegistry extends JajukTestCase {
     ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS * 2, NUMBER_OF_TESTS / 20);
 
     helper.executeTest(new ThreadTestHelper.TestRunnable() {
+      @Override
       public void doEnd(int threadnum) throws Exception {
         // nothing to do
       }
 
+      @Override
       public void run(int threadnum, int iter) {
         // then notifySync
         registry.notifySync(new JajukEvent(JajukEvents.FILE_FINISHED));
@@ -177,10 +181,12 @@ public class TestObserverRegistry extends JajukTestCase {
     ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS, NUMBER_OF_TESTS);
 
     helper.executeTest(new ThreadTestHelper.TestRunnable() {
+      @Override
       public void doEnd(int threadnum) throws Exception {
         // nothing to do
       }
 
+      @Override
       public void run(int threadnum, int iter) {
         // then notifySync
         registry.notifySync(new JajukEvent(JajukEvents.FILE_FINISHED));
@@ -209,10 +215,12 @@ public class TestObserverRegistry extends JajukTestCase {
     ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS, NUMBER_OF_TESTS);
 
     helper.executeTest(new ThreadTestHelper.TestRunnable() {
+      @Override
       public void doEnd(int threadnum) throws Exception {
         // nothing to do
       }
 
+      @Override
       public void run(int threadnum, int iter) {
         // then notifySync
         registry.notifySync(new JajukEvent(JajukEvents.FILE_FINISHED));

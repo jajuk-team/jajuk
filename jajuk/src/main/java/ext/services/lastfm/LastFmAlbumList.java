@@ -64,6 +64,7 @@ public class LastFmAlbumList implements AlbumListInfo {
    * 
    * @return the albums
    */
+  @Override
   public List<AlbumInfo> getAlbums() {
     return albums;
   }
@@ -73,6 +74,7 @@ public class LastFmAlbumList implements AlbumListInfo {
    * 
    * @return the artist
    */
+  @Override
   public String getArtist() {
     return artist;
   }
@@ -82,6 +84,7 @@ public class LastFmAlbumList implements AlbumListInfo {
    * 
    * @param albums the albums to set
    */
+  @Override
   public void setAlbums(List<? extends AlbumInfo> albums) {
     this.albums = albums != null ? new ArrayList<AlbumInfo>(albums) : null;
   }
@@ -91,6 +94,7 @@ public class LastFmAlbumList implements AlbumListInfo {
    * 
    * @param artist the artist to set
    */
+  @Override
   public void setArtist(String artist) {
     this.artist = artist;
   }

@@ -126,6 +126,7 @@ public class ThumbnailPopup extends JWindow {
     text.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
     text.setFont(FontManager.getInstance().getFont(JajukFont.DEFAULT));
     text.addHyperlinkListener(new HyperlinkListener() {
+      @Override
       public void hyperlinkUpdate(HyperlinkEvent e) {
         if (e.getEventType() == EventType.ACTIVATED) {
           URL url = e.getURL();
@@ -161,12 +162,14 @@ public class ThumbnailPopup extends JWindow {
         // hyperlinks
         else if (e.getEventType() == EventType.ENTERED) {
           SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
               text.setCursor(UtilGUI.LINK_CURSOR);
             }
           });
         } else if (e.getEventType() == EventType.EXITED) {
           SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
               text.setCursor(UtilGUI.DEFAULT_CURSOR);
             }
@@ -219,6 +222,7 @@ public class ThumbnailPopup extends JWindow {
     setVisible(true);
     // Force scrollbar to stay on top
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         jspText.getVerticalScrollBar().setValue(0);
       }
@@ -241,6 +245,7 @@ public class ThumbnailPopup extends JWindow {
     removeKeystrokes();
     
     dispatcher = new KeyEventDispatcher() {
+      @Override
       public boolean dispatchKeyEvent(KeyEvent e) {
         dispose();
         return false;

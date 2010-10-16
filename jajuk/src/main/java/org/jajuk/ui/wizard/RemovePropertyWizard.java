@@ -72,6 +72,7 @@ public class RemovePropertyWizard extends CustomPropertyWizard {
    * 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(ActionEvent ae) {
     if (ae.getSource().equals(this.okp.getOKButton())) {
       ItemManager im = getItemManager();
@@ -92,6 +93,7 @@ public class RemovePropertyWizard extends CustomPropertyWizard {
    * 
    * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
    */
+  @Override
   public void itemStateChanged(ItemEvent e) {
     if (e.getSource() == jcbItemChoice) {
       populateProperties();

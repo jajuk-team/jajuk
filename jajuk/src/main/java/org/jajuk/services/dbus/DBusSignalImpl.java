@@ -67,6 +67,7 @@ public class DBusSignalImpl implements DBusInterface {
    * 
    * @see org.freedesktop.dbus.DBusInterface#isRemote()
    */
+  @Override
   public boolean isRemote() {
     return false;
   }

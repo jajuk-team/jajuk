@@ -620,6 +620,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * 
    * @return comparison result
    */
+  @Override
   public int compareTo(Directory otherDirectory) {
     if (otherDirectory == null) {
       return -1;

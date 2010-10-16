@@ -377,6 +377,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
      // Manage right click : replay the track (this not triggers an action so we use a MouseAdapter here)
     jbPrevious.addMouseListener(new JajukMouseAdapter() {
+      @Override
       public void handlePopup(final MouseEvent me) {
         // Create an ActionEvent from this MouseEvent with a custom modifier : the right click
         ActionEvent ae = new ActionEvent(jbPrevious, 0, PREVIOUS_TRACK.name(), 4332424);
@@ -431,6 +432,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
@@ -453,6 +455,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
    * 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(final ActionEvent ae) {
     // do not run this in a separate thread because Player actions would die
     // with the thread
@@ -483,6 +486,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
    * 
    * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
    */
+  @Override
   public void stateChanged(ChangeEvent e) {
     if (e.getSource() == jsVolume) {
       float newVolume = (float) jsVolume.getValue() / 100;
@@ -495,6 +499,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
    * 
    * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event. MouseWheelEvent)
    */
+  @Override
   public void mouseWheelMoved(MouseWheelEvent e) {
     if (e.getSource() == jsVolume || e.getSource() == jbMute) {
       int iOld = jsVolume.getValue();
@@ -517,8 +522,10 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
+  @Override
   public void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         JajukEvents subject = event.getSubject();
         if (JajukEvents.PLAYER_PAUSE.equals(subject)) {
@@ -598,6 +605,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
         JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(dj.getName(), IconLoader
             .getIcon(JajukIcons.DIGITAL_DJ_16X16));
         jmi.addActionListener(new ActionListener() {
+          @Override
           public void actionPerformed(ActionEvent arg0) {
             Conf.setProperty(Const.CONF_DEFAULT_DJ, dj.getID());
             DigitalDJManager.setCurrentDJ(dj);
@@ -637,6 +645,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
       for (final WebRadio radio : WebRadioManager.getInstance().getWebRadios()) {
         XCheckedButton jmi = new XCheckedButton(radio.getName());
         jmi.addActionListener(new ActionListener() {
+          @Override
           public void actionPerformed(ActionEvent e) {
             Conf.setProperty(Const.CONF_DEFAULT_WEB_RADIO, radio.getName());
             // force to reselect the item

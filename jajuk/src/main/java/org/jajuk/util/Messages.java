@@ -367,6 +367,7 @@ public class Messages extends DefaultHandler {
    */
   public static void showWarningMessage(final String sMessage) {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.WARNING_MESSAGE),
             JOptionPane.WARNING_MESSAGE, null, null);
@@ -386,6 +387,7 @@ public class Messages extends DefaultHandler {
       return;
     }
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         final HideableMessageDialog message = new HideableMessageDialog(sMessage,
             getTitleForType(JOptionPane.WARNING_MESSAGE), sProperty, JOptionPane.WARNING_MESSAGE,
@@ -404,6 +406,7 @@ public class Messages extends DefaultHandler {
    */
   public static void showInfoMessage(final String sMessage, final Icon icon) {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.INFORMATION_MESSAGE),
             JOptionPane.INFORMATION_MESSAGE, null, icon);
@@ -419,6 +422,7 @@ public class Messages extends DefaultHandler {
    */
   public static void showErrorMessage(final int code, final String sInfoSup) {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         new ErrorMessageDialog(code, sInfoSup);
       }
@@ -444,6 +448,7 @@ public class Messages extends DefaultHandler {
   public static void showDetailedErrorMessage(final int code, final String sInfoSup,
       final String sDetails) {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         new DetailsMessageDialog(Messages.getErrorMessage(code) + " : " + sInfoSup,
             getTitleForType(JOptionPane.ERROR_MESSAGE), JOptionPane.ERROR_MESSAGE, sDetails, null);
@@ -459,6 +464,7 @@ public class Messages extends DefaultHandler {
    */
   public static void showInfoMessage(final String sMessage, final String sInfoSup) {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         new DetailsMessageDialog(sMessage + " : " + sInfoSup,
             getTitleForType(JOptionPane.INFORMATION_MESSAGE), JOptionPane.INFORMATION_MESSAGE,
@@ -474,6 +480,7 @@ public class Messages extends DefaultHandler {
    */
   public static void showInfoMessage(final String sMessage) {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.INFORMATION_MESSAGE),
             JOptionPane.INFORMATION_MESSAGE, null, null);
@@ -657,6 +664,7 @@ class DetailsMessageDialog extends JajukDialog {
       jta.setEditable(false);
       jp.add(new JScrollPane(jta),"wrap");
       final OKCancelPanel jbOKC = new OKCancelPanel(new ActionListener() {
+        @Override
         public void actionPerformed(final ActionEvent arg0) {
           dialogDetail.dispose();
         }

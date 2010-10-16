@@ -207,6 +207,7 @@ public class LyrcWebLyricsProvider extends GenericWebLyricsProvider {
    * 
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getResponseEncoding()
    */
+  @Override
   public String getResponseEncoding() {
     return "ISO-8859-1";
   }
@@ -226,6 +227,7 @@ public class LyrcWebLyricsProvider extends GenericWebLyricsProvider {
   /* (non-Javadoc)
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics(org.jajuk.base.File)
    */
+  @Override
   public String getLyrics(File audioFile) {
     return getLyrics(audioFile.getTrack().getArtist().getName2(), 
         audioFile.getTrack().getName());

@@ -62,6 +62,7 @@ public class TracksTableView extends AbstractTableView implements TwoStepsDispla
    * 
    * @see org.jajuk.ui.IView#getDesc()
    */
+  @Override
   public String getDesc() {
     return Messages.getString("TracksTableView.0");
   }
@@ -71,6 +72,7 @@ public class TracksTableView extends AbstractTableView implements TwoStepsDispla
    * 
    * @see org.jajuk.ui.views.IView#initUI()
    */
+  @Override
   public void initUI() {
     UtilGUI.populate(this);
   }

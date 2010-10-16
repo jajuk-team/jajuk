@@ -880,6 +880,7 @@ public class LastFmCache {
     List<FullSubmissionData> submissionDataList = getSubmissionData();
     submissionDataList.add(submissionData);
     Collections.sort(submissionDataList, new Comparator<FullSubmissionData>() {
+      @Override
       public int compare(FullSubmissionData o1, FullSubmissionData o2) {
         return Integer.valueOf(o1.getStartTime()).compareTo(o2.getStartTime());
       }

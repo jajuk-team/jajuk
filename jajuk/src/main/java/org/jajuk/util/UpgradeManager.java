@@ -430,6 +430,7 @@ public final class UpgradeManager {
    */
   private static void upgradeDJClassChanges() {
     File[] files = SessionService.getConfFileByPath(Const.FILE_DJ_DIR).listFiles(new FileFilter() {
+      @Override
       public boolean accept(File file) {
         if (file.isFile() && file.getPath().endsWith('.' + Const.XML_DJ_EXTENSION)) {
           return true;

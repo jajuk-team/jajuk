@@ -113,6 +113,7 @@ public final class PerspectiveBarJPanel extends JXPanel {
       jb.setHorizontalTextPosition(SwingConstants.CENTER);
       jb.setFont(font);
       jb.addActionListener(new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent e) {
           // no thread, it causes ugly screen repaint
           PerspectiveManager.setCurrentPerspective(perspective.getID());

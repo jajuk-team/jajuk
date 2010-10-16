@@ -74,6 +74,7 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
    * 
    * @return comparison result
    */
+  @Override
   public int compareTo(Genre otherItem) {
     // compare using name and id to differentiate unknown items
     StringBuilder current = new StringBuilder(getName2());

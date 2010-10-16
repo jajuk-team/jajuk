@@ -55,6 +55,7 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
    * @see ext.services.lyrics.providers.GenericProvider#getLyrics(java.lang.String,
    * java.lang.String)
    */
+  @Override
   public String getLyrics(final String artist, final String title) {
     try {
       // This provider waits for '_' instead of regular '+' for spaces in URL
@@ -140,6 +141,7 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
    * 
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getResponseEncoding()
    */
+  @Override
   public String getResponseEncoding() {
     return "UTF-8";
   }
@@ -150,6 +152,7 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getWebURL(java.lang .String,
    * java.lang.String)
    */
+  @Override
   public java.net.URL getWebURL(final String pArtist, final String pTitle) {
     String queryString = WEB_URL;
     // Replace spaces by _
@@ -175,6 +178,7 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
    * 
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics(org.jajuk.base.File)
    */
+  @Override
   public String getLyrics(File audioFile) {
     return getLyrics(audioFile.getTrack().getArtist().getName2(), audioFile.getTrack().getName());
   }

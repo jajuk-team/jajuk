@@ -231,6 +231,7 @@ public class Ambience implements Comparable<Ambience> {
    * 
    * @return the int
    */
+  @Override
   public int compareTo(Ambience ambience) {
     // check for null
     if (ambience == null) {

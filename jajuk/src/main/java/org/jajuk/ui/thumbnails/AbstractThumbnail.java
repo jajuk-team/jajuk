@@ -144,6 +144,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   /** Timer used to launch popup */
   static {
     Timer timerPopup = new Timer(200, new ActionListener() {
+      @Override
       public void actionPerformed(ActionEvent arg0) {
         try {
           // Close popup ASAP when over none catalog item
@@ -410,6 +411,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
    * 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == jmiGetCovers) {
       // This item is enabled only for albums
@@ -444,6 +446,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
    * 
    * @see java.awt.datatransfer.Transferable#getTransferData(java.awt.datatransfer.DataFlavor)
    */
+  @Override
   public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
     return null;
   }
@@ -453,6 +456,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
    * 
    * @see java.awt.datatransfer.Transferable#getTransferDataFlavors()
    */
+  @Override
   public DataFlavor[] getTransferDataFlavors() {
     return null;
   }
@@ -462,6 +466,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
    * 
    * @see java.awt.datatransfer.Transferable#isDataFlavorSupported(java.awt.datatransfer.DataFlavor)
    */
+  @Override
   public boolean isDataFlavorSupported(DataFlavor flavor) {
     return false;
   }

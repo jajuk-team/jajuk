@@ -205,6 +205,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     jcbAlbum.setModel(new DefaultComboBoxModel(jcbFoundAlbums.toArray()));
     jcbAlbum.setSelectedIndex(jcbAlbum.getSelectedIndex());
     jcbAlbum.addActionListener(new ActionListener() {
+      @Override
       public void actionPerformed(ActionEvent arg0) {
         // Update table
         model = populateModel();
@@ -372,6 +373,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
    * 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == okc.getCancelButton()) {
       dispose();

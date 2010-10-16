@@ -60,6 +60,7 @@ public class PasswordDialog extends JajukJDialog implements ActionListener {
     optionPane = new JOptionPane(new Object[] { Messages.getString("DownloadManager.0"), pf },
         JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
     optionPane.addPropertyChangeListener(new PropertyChangeListener() {
+      @Override
       public void propertyChange(PropertyChangeEvent e) {
         String prop = e.getPropertyName();
         if (prop.equals(JOptionPane.VALUE_PROPERTY)) {
@@ -102,6 +103,7 @@ public class PasswordDialog extends JajukJDialog implements ActionListener {
    * 
    * @param e DOCUMENT_ME
    */
+  @Override
   public void actionPerformed(ActionEvent e) {
     optionPane.setValue(new String(pf.getPassword()));
     dispose();

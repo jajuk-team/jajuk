@@ -101,6 +101,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
    * 
    * @see org.jajuk.ui.IView#getDesc()
    */
+  @Override
   public String getDesc() {
     return Messages.getString("TracksTreeView.0");
   }
@@ -568,6 +569,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
    * 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == jcbSort) {
       UtilGUI.waiting();
@@ -634,6 +636,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
      * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event
      * .TreeSelectionEvent)
      */
+    @Override
     public void valueChanged(TreeSelectionEvent e) {
       TreePath[] tpSelected = jtree.getSelectionModel().getSelectionPaths();
       if (tpSelected == null) {
@@ -1184,6 +1187,7 @@ class TracksTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
 }
 
 class TracksTreeExpansionListener implements TreeExpansionListener {
+  @Override
   public void treeCollapsed(TreeExpansionEvent event) {
     Object o = event.getPath().getLastPathComponent();
     if (o instanceof GenreNode) {
@@ -1201,6 +1205,7 @@ class TracksTreeExpansionListener implements TreeExpansionListener {
     }
   }
 
+  @Override
   public void treeExpanded(TreeExpansionEvent event) {
     Object o = event.getPath().getLastPathComponent();
     if (o instanceof GenreNode) {

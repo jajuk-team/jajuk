@@ -78,6 +78,7 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
    * 
    * @return the artist name
    */
+  @Override
   public String getArtistName() {
     return artistName;
   }
@@ -87,6 +88,7 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
    * 
    * @return the artists
    */
+  @Override
   public List<ArtistInfo> getArtists() {
     // artists is null for void (unknown) similar artists
     if (artists != null) {
@@ -106,6 +108,7 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
    * 
    * @return the picture
    */
+  @Override
   public String getPicture() {
     return picture;
   }
@@ -115,6 +118,7 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
    * 
    * @param artistName the artistName to set
    */
+  @Override
   public void setArtistName(String artistName) {
     this.artistName = artistName;
   }
@@ -124,6 +128,7 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
    * 
    * @param artists the artists to set
    */
+  @Override
   public void setArtists(List<ArtistInfo> artists) {
     this.artists = artists != null ? artists : new ArrayList<ArtistInfo>();
   }
@@ -133,6 +138,7 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
    * 
    * @param picture the picture to set
    */
+  @Override
   public void setPicture(String picture) {
     this.picture = picture;
   }

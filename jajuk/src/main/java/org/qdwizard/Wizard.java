@@ -296,6 +296,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(ActionEvent ae) {
     dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
     try {
@@ -380,10 +381,12 @@ public abstract class Wizard implements ActionListener, WindowListener {
       // resized
       jlIcon.addComponentListener(new ComponentListener() {
 
+        @Override
         public void componentShown(ComponentEvent e) {
           // nothing to do here
         }
 
+        @Override
         public void componentResized(ComponentEvent e) {
           Wizard.this.icon = getResizedImage(icon, jlIcon.getWidth(), jlIcon.getHeight());
           jlIcon.setIcon(Wizard.this.icon);
@@ -394,10 +397,12 @@ public abstract class Wizard implements ActionListener, WindowListener {
               + jlIcon.getIcon().getIconHeight());
         }
 
+        @Override
         public void componentMoved(ComponentEvent e) {
           // nothing to do here
         }
 
+        @Override
         public void componentHidden(ComponentEvent e) {
           // nothing to do here
         }
@@ -544,6 +549,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
   /* (non-Javadoc)
    * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
    */
+  @Override
   public void windowClosing(WindowEvent windowEvent) {
     // if cancel is disabled, then don't call the onCancel function and
     // don't dispose
@@ -564,6 +570,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * 
    * @see java.awt.event.WindowListener#windowOpened(java.awt.event.WindowEvent)
    */
+  @Override
   public void windowOpened(WindowEvent windowEvent) {
     // nothing to do here
   }
@@ -582,6 +589,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * 
    * @see java.awt.event.WindowListener#windowClosed(java.awt.event.WindowEvent)
    */
+  @Override
   public void windowClosed(WindowEvent windowEvent) {
     // nothing to do here
   }
@@ -597,6 +605,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * 
    * @see java.awt.event.WindowListener#windowIconified(java.awt.event.WindowEvent)
    */
+  @Override
   public void windowIconified(WindowEvent windowEvent) {
     // nothing to do here
   }
@@ -612,6 +621,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * 
    * @see java.awt.event.WindowListener#windowDeiconified(java.awt.event.WindowEvent)
    */
+  @Override
   public void windowDeiconified(WindowEvent windowEvent) {
     // nothing to do here
   }
@@ -627,6 +637,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * 
    * @see java.awt.event.WindowListener#windowActivated(java.awt.event.WindowEvent)
    */
+  @Override
   public void windowActivated(WindowEvent windowEvent) {
     // nothing to do here
   }
@@ -642,6 +653,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * 
    * @see java.awt.event.WindowListener#windowDeactivated(java.awt.event.WindowEvent)
    */
+  @Override
   public void windowDeactivated(WindowEvent windowEvent) {
     // nothing to do here
   }

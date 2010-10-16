@@ -61,6 +61,7 @@ public class TransferableAlbum implements Transferable {
    * 
    * @see java.awt.datatransfer.Transferable#getTransferDataFlavors()
    */
+  @Override
   public DataFlavor[] getTransferDataFlavors() {
     return flavors;
   }
@@ -70,6 +71,7 @@ public class TransferableAlbum implements Transferable {
    * 
    * @see java.awt.datatransfer.Transferable#isDataFlavorSupported(java.awt.datatransfer.DataFlavor)
    */
+  @Override
   public boolean isDataFlavorSupported(DataFlavor flavor) {
     return Arrays.asList(flavors).contains(flavor);
   }
@@ -79,6 +81,7 @@ public class TransferableAlbum implements Transferable {
    * 
    * @see java.awt.datatransfer.Transferable#getTransferData(java.awt.datatransfer.DataFlavor)
    */
+  @Override
   public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
     if (flavor == ALBUM_FLAVOR) {
       return this;

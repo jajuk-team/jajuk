@@ -257,6 +257,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * 
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
+  @Override
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) {
@@ -292,6 +293,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_NAME_CHANGED);

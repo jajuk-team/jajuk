@@ -96,6 +96,7 @@ public class AmbienceWizard extends Wizard {
      * 
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(final ActionEvent ae) {
       if (ae.getSource() == jbNew) {
         // create a void ambience
@@ -205,6 +206,7 @@ public class AmbienceWizard extends Wizard {
         final JTextField jtfName = new JTextField();
         jtfName.setText(AmbienceWizard.ambiences.get(index).getName());
         jtfName.addCaretListener(new CaretListener() {
+          @Override
           public void caretUpdate(final CaretEvent arg0) {
             final int index = AmbienceWizard.getWidgetIndex(widgets, (JComponent) arg0.getSource());
             final String s = jtfName.getText();
@@ -237,6 +239,7 @@ public class AmbienceWizard extends Wizard {
         final JRadioButton jrbAmbience = new JRadioButton();
         group.add(jrbAmbience);
         jrbAmbience.addActionListener(new ActionListener() {
+          @Override
           public void actionPerformed(final ActionEvent ae) {
             ((JTextField) widgets[AmbienceWizard.getWidgetIndex(widgets, jrbAmbience)][1])
                 .getText();
@@ -258,6 +261,7 @@ public class AmbienceWizard extends Wizard {
           jbGenre.setToolTipText(ambience.getGenresDesc());
         }
         jbGenre.addActionListener(new ActionListener() {
+          @Override
           public void actionPerformed(final ActionEvent ae) {
             final int row = AmbienceWizard.getWidgetIndex(widgets, (JComponent) ae.getSource());
             addGenre(row);

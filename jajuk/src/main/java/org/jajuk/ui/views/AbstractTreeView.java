@@ -160,6 +160,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
@@ -198,6 +199,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
    * 
    * @see org.jajuk.ui.views.IView#initUI()
    */
+  @Override
   public void initUI() {
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
     jmiPlay.putClientProperty(Const.DETAIL_SELECTION, alSelected);
@@ -311,6 +313,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
    * 
    * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
    */
+  @Override
   public void update(JajukEvent event) {
     final JajukEvents subject = event.getSubject();
     if (subject.equals(JajukEvents.DEVICE_MOUNT) || subject.equals(JajukEvents.DEVICE_UNMOUNT)
@@ -336,6 +339,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
           // The scrollbar must be set after current EDT work to be effective,
           // so queue it
           SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
               if (jspTree != null) {
                 jspTree.getVerticalScrollBar().setValue(pos);

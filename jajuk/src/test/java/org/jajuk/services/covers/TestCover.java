@@ -48,6 +48,7 @@ public class TestCover extends JajukTestCase {
     JUnitHelpers.HashCodeTest(cover, equal);
   }
 
+  @Override
   protected void setUp() throws Exception {
     // Make sure to reset default conf for this option :
     Conf.restoreValue(Const.FILE_DEFAULT_COVER);

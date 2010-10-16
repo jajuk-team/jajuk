@@ -68,6 +68,7 @@ public class AlbumsTableView extends AbstractTableView {
    * 
    * @see org.jajuk.ui.views.IView#getDesc()
    */
+  @Override
   public String getDesc() {
     return Messages.getString("AlbumsTableView.0");
   }
@@ -77,6 +78,7 @@ public class AlbumsTableView extends AbstractTableView {
    * 
    * @see org.jajuk.ui.views.IView#initUI()
    */
+  @Override
   public void initUI() {
     UtilGUI.populate(this);
   }
@@ -145,6 +147,7 @@ public class AlbumsTableView extends AbstractTableView {
     jtable.addMouseMotionListener(new MouseMotionListener() {
       Album current = null;
 
+      @Override
       public void mouseMoved(MouseEvent e) {
         if (!Conf.getBoolean(Const.CONF_SHOW_POPUPS)) {
           return;
@@ -169,6 +172,7 @@ public class AlbumsTableView extends AbstractTableView {
         }
       }
 
+      @Override
       public void mouseDragged(MouseEvent e) {
         // nothing to do here
       }

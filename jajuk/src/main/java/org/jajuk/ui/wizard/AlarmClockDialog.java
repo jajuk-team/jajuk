@@ -206,6 +206,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
   /* (non-Javadoc)
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public final void actionPerformed(final ActionEvent e) {
     boolean playAction = (jcbAlarmAction.getSelectedIndex() == 0);
     if (e.getSource() == jcbAlarmAction) {
@@ -257,6 +258,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
   /* (non-Javadoc)
    * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
    */
+  @Override
   public void itemStateChanged(final ItemEvent e) {
     if (e.getSource() == jrbFile) {
       sr = sbSearch.getResult();

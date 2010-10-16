@@ -176,6 +176,7 @@ public final class FontManager implements Observer {
       public void run() {
         // Create the wrapper font set
         FontPolicy newFontPolicy = new FontPolicy() {
+          @Override
           public FontSet getFontSet(String lafName, UIDefaults table) {
             return new CustomFontSet(fontCache.get(JajukFont.DEFAULT));
           }
@@ -196,6 +197,7 @@ public final class FontManager implements Observer {
    * 
    * @see org.jajuk.base.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> subjects = new HashSet<JajukEvents>(2);
     // Register parameter changes to check new font size
@@ -232,6 +234,7 @@ public final class FontManager implements Observer {
    * 
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
+  @Override
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
@@ -262,6 +265,7 @@ public final class FontManager implements Observer {
      * 
      * @see org.jvnet.substance.fonts.FontSet#getControlFont()
      */
+    @Override
     public FontUIResource getControlFont() {
       return this.font;
     }
@@ -271,6 +275,7 @@ public final class FontManager implements Observer {
      * 
      * @see org.jvnet.substance.fonts.FontSet#getMenuFont()
      */
+    @Override
     public FontUIResource getMenuFont() {
       return this.font;
     }
@@ -280,6 +285,7 @@ public final class FontManager implements Observer {
      * 
      * @see org.jvnet.substance.fonts.FontSet#getMessageFont()
      */
+    @Override
     public FontUIResource getMessageFont() {
       return this.font;
     }
@@ -289,6 +295,7 @@ public final class FontManager implements Observer {
      * 
      * @see org.jvnet.substance.fonts.FontSet#getSmallFont()
      */
+    @Override
     public FontUIResource getSmallFont() {
       return this.font;
     }
@@ -298,6 +305,7 @@ public final class FontManager implements Observer {
      * 
      * @see org.jvnet.substance.fonts.FontSet#getTitleFont()
      */
+    @Override
     public FontUIResource getTitleFont() {
       return this.font;
     }
@@ -307,6 +315,7 @@ public final class FontManager implements Observer {
      * 
      * @see org.jvnet.substance.fonts.FontSet#getWindowTitleFont()
      */
+    @Override
     public FontUIResource getWindowTitleFont() {
       return this.font;
     }

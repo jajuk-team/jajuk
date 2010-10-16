@@ -149,6 +149,7 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
       int indices[] = list.getSelectedIndices();
       String sFiles = getSelectedFiles(indices);
@@ -240,6 +241,7 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
       List<Integer> iList = new ArrayList<Integer>();
       int i = 0;
@@ -261,6 +263,7 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
   /* (non-Javadoc)
    * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
    */
+  @Override
   public void valueChanged(ListSelectionEvent e) {
     if (!e.getValueIsAdjusting()) {
 

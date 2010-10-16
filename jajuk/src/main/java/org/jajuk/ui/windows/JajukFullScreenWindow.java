@@ -262,6 +262,7 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
    * 
    * @see org.jajuk.ui.windows.IJajukWindow#initUI()
    */
+  @Override
   public void initUI() {
     // Full screen switch button
     jbFull = new JajukButton(ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK));
@@ -331,6 +332,7 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
     jbPrevious.setContentAreaFilled(true);
     jbPrevious.setFocusPainted(true);
     jbPrevious.addMouseListener(new JajukMouseAdapter() {
+      @Override
       public void handlePopup(final MouseEvent me) {
         // Create an ActionEvent from this MouseEvent with a custom modifier : the right click
         ActionEvent ae = new ActionEvent(jbPrevious, 0, PREVIOUS_TRACK.name(), 4332424);
@@ -370,6 +372,7 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
    * 
    * @see org.jajuk.ui.widgets.JajukWindow#getWindowStateDecorator()
    */
+  @Override
   public WindowStateDecorator getWindowStateDecorator() {
     return decorator;
   }

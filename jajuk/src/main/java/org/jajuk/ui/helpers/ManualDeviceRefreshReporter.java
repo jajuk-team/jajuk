@@ -170,6 +170,7 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
    */
   Timer updateDialogTitle = new Timer(1000, new ActionListener() {
 
+    @Override
     public void actionPerformed(ActionEvent e) {
       String sTitle = Messages.getString("RefreshDialog.2") + " " + device.getName() + " ("
           + progress + " %)";

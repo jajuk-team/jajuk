@@ -101,6 +101,7 @@ public class LastFmRunnable implements Runnable {
    * 
    * @see java.lang.Runnable#run()
    */
+  @Override
   public void run() {
     albumsRunnable = new LastFmAlbumsRunnable(listener, service, audioObject, id);
     albumsRunnable.setRetrieveArtistInfo(retrieveArtistInfo);

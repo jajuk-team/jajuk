@@ -81,6 +81,7 @@ public class Year extends LogicalItem implements Comparable<Year> {
    * 
    * @return comparison result
    */
+  @Override
   public int compareTo(Year other) {
     if (other == null) {
       return -1;

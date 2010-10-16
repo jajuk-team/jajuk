@@ -149,6 +149,7 @@ public final class RatingManager extends Thread implements Observer {
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.RATE_RESET);
@@ -161,6 +162,7 @@ public final class RatingManager extends Thread implements Observer {
    * 
    * @see org.jajuk.events.Observer#update(org.jajuk.events.Event)
    */
+  @Override
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     // Reset rate and total play time (automatic part of rating system)

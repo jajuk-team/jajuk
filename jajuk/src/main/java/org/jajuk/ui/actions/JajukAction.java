@@ -334,6 +334,7 @@ public abstract class JajukAction extends AbstractAction {
    * 
    * @param evt The event.
    */
+  @Override
   public final void actionPerformed(ActionEvent evt) {
     try {
       perform(evt);

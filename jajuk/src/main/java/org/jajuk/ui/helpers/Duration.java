@@ -66,6 +66,7 @@ public class Duration implements Comparable<Duration> {
   /* (non-Javadoc)
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
+  @Override
   public int compareTo(Duration other) {
     if(other == null) {
       // not equal if the other element is null

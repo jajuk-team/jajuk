@@ -65,6 +65,7 @@ public class AmbienceComboBox extends SteppedComboBox  {
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
       // Ambience Configuration
       if (getSelectedIndex() == 0) {

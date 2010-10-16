@@ -79,6 +79,7 @@ public class WindowGlobalKeystrokeManager {
   public WindowGlobalKeystrokeManager() {
     KeyEventDispatcher ked = new KeyEventDispatcher() {
 
+      @Override
       public boolean dispatchKeyEvent(KeyEvent ke) {
         // Add all global keys to this dispatcher
         for (JajukActions actionName : globalActions) {

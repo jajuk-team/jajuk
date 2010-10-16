@@ -160,6 +160,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @return the artist
    */
+  @Override
   public String getArtist() {
     return artist;
   }
@@ -169,6 +170,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @return the artist url
    */
+  @Override
   public String getArtistUrl() {
     if(url == null) {
       return null;
@@ -185,6 +187,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @return the bigCoverURL
    */
+  @Override
   public String getBigCoverURL() {
     return bigCoverURL;
   }
@@ -194,6 +197,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @return the cover
    */
+  @Override
   public ImageIcon getCover() {
     return cover;
   }
@@ -203,6 +207,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @return the cover url
    */
+  @Override
   public String getCoverURL() {
     return coverURL;
   }
@@ -212,6 +217,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @return the release date
    */
+  @Override
   public Date getReleaseDate() {
     if(releaseDateString == null) {
       return null;
@@ -229,6 +235,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @return the releaseDateString
    */
+  @Override
   public String getReleaseDateString() {
     return releaseDateString;
   }
@@ -238,6 +245,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @return the small cover url
    */
+  @Override
   public String getSmallCoverURL() {
     return smallCoverURL;
   }
@@ -247,6 +255,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @return the title
    */
+  @Override
   public String getTitle() {
     return title;
   }
@@ -256,6 +265,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @return the tracks
    */
+  @Override
   public List<TrackInfo> getTracks() {
     return tracks;
   }
@@ -265,6 +275,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @return the url
    */
+  @Override
   public String getUrl() {
     return url;
   }
@@ -274,6 +285,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @return the year
    */
+  @Override
   public String getYear() {
     Date releaseDate = getReleaseDate();
     if (releaseDate == null) {
@@ -289,6 +301,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @param artist the artist to set
    */
+  @Override
   public void setArtist(String artist) {
     this.artist = artist;
   }
@@ -298,6 +311,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @param bigCoverURL the bigCoverURL to set
    */
+  @Override
   public void setBigCoverURL(String bigCoverURL) {
     this.bigCoverURL = bigCoverURL;
   }
@@ -307,6 +321,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @param cover the cover to set
    */
+  @Override
   public void setCover(ImageIcon cover) {
     this.cover = cover;
   }
@@ -316,6 +331,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @param coverURL the coverURL to set
    */
+  @Override
   public void setCoverURL(String coverURL) {
     this.coverURL = coverURL;
   }
@@ -325,6 +341,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @param releaseDateString the releaseDateString to set
    */
+  @Override
   public void setReleaseDateString(String releaseDateString) {
     this.releaseDateString = releaseDateString;
   }
@@ -334,6 +351,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @param smallCoverURL the smallCoverURL to set
    */
+  @Override
   public void setSmallCoverURL(String smallCoverURL) {
     this.smallCoverURL = smallCoverURL;
   }
@@ -343,6 +361,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @param title the title to set
    */
+  @Override
   public void setTitle(String title) {
     this.title = title;
   }
@@ -352,6 +371,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @param tracks the tracks to set
    */
+  @Override
   public void setTracks(List<? extends TrackInfo> tracks) {
     this.tracks = tracks != null ? new ArrayList<TrackInfo>(tracks) : null;
   }
@@ -361,6 +381,7 @@ public class LastFmAlbum implements AlbumInfo {
    * 
    * @param url the url to set
    */
+  @Override
   public void setUrl(String url) {
     this.url = url;
   }

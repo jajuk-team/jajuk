@@ -142,6 +142,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
    * 
    * @see org.jajuk.ui.IView#display()
    */
+  @Override
   public void initUI() {
     // devices
     jpDevices = new FlowScrollPanel();
@@ -213,6 +214,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.DEVICE_MOUNT);
@@ -342,6 +344,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
    * 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(final ActionEvent ae) {
     if (ae.getActionCommand().equals(JajukEvents.DEVICE_NEW.toString())) {
       DeviceWizard dw = new DeviceWizard();
@@ -413,6 +416,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
    * 
    * @see org.jajuk.ui.IView#getDesc()
    */
+  @Override
   public String getDesc() {
     return Messages.getString("DeviceView.23");
   }
@@ -422,11 +426,13 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
+  @Override
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.DEVICE_MOUNT.equals(subject) || JajukEvents.DEVICE_UNMOUNT.equals(subject)
         || JajukEvents.DEVICE_REFRESH.equals(subject)) {
       SwingUtilities.invokeLater(new Runnable() {
+        @Override
         public void run() {
           UtilGUI.waiting();
           refreshDevices();

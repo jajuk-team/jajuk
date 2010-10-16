@@ -119,6 +119,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
    * 
    * @see org.jajuk.ui.views.IView#getDesc()
    */
+  @Override
   public String getDesc() {
     return Messages.getString("WikipediaView.0");
   }
@@ -128,6 +129,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
    * 
    * @see org.jajuk.ui.views.IView#populate()
    */
+  @Override
   public void initUI() {
     jlLanguage = new JLabel(Messages.getString("WikipediaView.1"));
     jcbLanguage = new JComboBox();
@@ -207,6 +209,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
   /* (non-Javadoc)
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
@@ -224,6 +227,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
+  @Override
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     // Make a search after a stop period
@@ -359,6 +363,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
    * 
    * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
    */
+  @Override
   public void actionPerformed(ActionEvent arg0) {
     if (arg0.getSource() == jcbLanguage) {
       // update index
