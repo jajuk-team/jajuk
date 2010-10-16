@@ -63,10 +63,10 @@ public final class Conf implements Const {
 
   /**
    * Return the value of a property, or null if the property is not found.
-   * 
+   *
    * @param pName
    *          Name of the property.
-   * 
+   *
    * @return String Value of the property named pName.
    */
   public static String getString(String pName) {
@@ -76,10 +76,10 @@ public final class Conf implements Const {
   /**
    * Return the value of a property as a boolean or default value or default
    * value if value cannot be parsed.
-   * 
+   *
    * @param pName
    *          Name of the property.
-   * 
+   *
    * @return boolean value of the property named pName.
    */
   public static boolean getBoolean(String pName) {
@@ -96,7 +96,7 @@ public final class Conf implements Const {
 
   /**
    * Invert a boolean value.
-   * 
+   *
    * @param pName
    *          DOCUMENT_ME
    */
@@ -108,10 +108,10 @@ public final class Conf implements Const {
   /**
    * Return the value of a property as a float or default value or default value
    * if value cannot be parsed.
-   * 
+   *
    * @param pName
    *          Name of the property.
-   * 
+   *
    * @return float value of the property named pName.
    */
   public static float getFloat(String pName) {
@@ -129,10 +129,10 @@ public final class Conf implements Const {
   /**
    * Return the value of a property as an integer or default value if value
    * cannot be parsed.
-   * 
+   *
    * @param pName
    *          Name of the property.
-   * 
+   *
    * @return int value of the property named pName.
    */
   public static int getInt(String pName) {
@@ -149,7 +149,7 @@ public final class Conf implements Const {
 
   /**
    * Reset a given property to its defaults.
-   * 
+   *
    * @param property
    *          DOCUMENT_ME
    */
@@ -375,7 +375,7 @@ public final class Conf implements Const {
 
   /**
    * Set a property.
-   * 
+   *
    * @param sName
    *          DOCUMENT_ME
    * @param sValue
@@ -386,13 +386,13 @@ public final class Conf implements Const {
   }
 
   /**
-   * Commit properties into a file. Some preferences corruption 
+   * Commit properties into a file. Some preferences corruption
    * have been reported (see https://trac.jajuk.info/ticket/1611)
    * so we added more robust commit features : we commit the properties
-   * to a temporary file, try to parse it back (to detect invalid characters like \n) and 
-   * if the parsing is ok, we override the old preference file with the 
-   * temporary one.  
-   * 
+   * to a temporary file, try to parse it back (to detect invalid characters like \n) and
+   * if the parsing is ok, we override the old preference file with the
+   * temporary one.
+   *
    * @throws IOException
    *           Signals that an I/O exception has occurred.
    */
@@ -423,9 +423,8 @@ public final class Conf implements Const {
   private static void checkTempPreferenceFile() throws IOException {
     File fTempFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION_TEMP);
     // Try to parse it again
-    InputStream in = null;
+    InputStream in = new FileInputStream(fTempFile);
     try {
-      in = new FileInputStream(fTempFile);
       new Properties().load(in);
     } finally {
       in.close();
@@ -433,7 +432,7 @@ public final class Conf implements Const {
   }
 
   /**
-   * Override 
+   * Override
    * @throws IOException
    */
   private static void overridePreferenceFile() throws IOException {
@@ -448,10 +447,10 @@ public final class Conf implements Const {
 
   /**
    * Contains property.
-   * 
+   *
    * @param property
    *          DOCUMENT_ME
-   * 
+   *
    * @return whether the given property is known
    */
   public static boolean containsProperty(String property) {
@@ -478,7 +477,7 @@ public final class Conf implements Const {
 
   /**
    * Gets the properties.
-   * 
+   *
    * @return Returns the properties.
    */
   public static Properties getProperties() {
@@ -487,7 +486,7 @@ public final class Conf implements Const {
 
   /**
    * Remove a property.
-   * 
+   *
    * @param sKey
    *          property key to remove
    */
