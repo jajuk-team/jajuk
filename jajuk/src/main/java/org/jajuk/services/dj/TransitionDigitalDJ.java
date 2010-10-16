@@ -162,7 +162,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
       }
       if (files != null && files.size() >= nbTracks) {
         for (int i = 0; i < nbTracks && files.size() > 0; i++) {
-          File file = (File) UtilFeatures.getShuffleItem(files);
+          File file = UtilFeatures.getShuffleItem(files);
           out.add(file);
           items--;
           // Unicity in selection, remove it from this ambience

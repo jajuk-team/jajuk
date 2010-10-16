@@ -198,7 +198,7 @@ public class Transition {
       return to.getGenres().iterator().next();
     } else {
       // several destination genres, return a shuffle one
-      return (Genre) UtilFeatures.getShuffleItem(to.getGenres());
+      return UtilFeatures.getShuffleItem(to.getGenres());
     }
   }
 

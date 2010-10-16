@@ -221,15 +221,15 @@ public final class UtilFeatures {
    * @return a single shuffle element from a list, null if none element in
    * provided collection
    */
-  public static Object getShuffleItem(final Collection<? extends Object> col) {
+  public static <T> T getShuffleItem(final Collection<T> col) {
     if (col.size() == 0) {
       return null;
     }
-    List<? extends Object> list = null;
+    List<T> list = null;
     if (col instanceof List<?>) {
-      list = (List<? extends Object>) col;
+      list = (List<T>) col;
     } else {
-      list = new ArrayList<Object>(col);
+      list = new ArrayList<T>(col);
     }
     return list.get((int) (Math.random() * list.size()));
   }
