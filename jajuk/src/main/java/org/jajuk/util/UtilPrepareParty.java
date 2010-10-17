@@ -613,7 +613,11 @@ public class UtilPrepareParty {
     ByteArrayOutputStream err = new ByteArrayOutputStream();
 
     int ret = 0;
-    Log.debug("Using this pacpl command: {{" + list.toString() + "}}");
+    StringBuffer commandLog = new StringBuffer();
+    for (String arg : list) {
+      commandLog.append(arg + " ");
+    }
+    Log.debug("Using this pacpl command: {{" + commandLog.toString() + "}}");
     final ProcessLauncher launcher = new ProcessLauncher(out, err);
     try {
       ret = launcher.exec(list.toArray(new String[list.size()]), null, new java.io.File(System
@@ -626,12 +630,18 @@ public class UtilPrepareParty {
     // log out the results
     if (!out.toString().isEmpty()) {
       Log.debug("pacpl command returned to out(" + ret + "): " + out.toString());
+      if (out.toString().indexOf("encode failed") != -1) {
+        ret = -1;
+      }
     } else {
       Log.debug("pacpl command returned: " + ret);
     }
 
     if (!err.toString().isEmpty()) {
       Log.debug("pacpl command returned to err: " + err.toString());
+      if (err.toString().indexOf("encode failed") != -1) {
+        ret = -1;
+      }
     }
 
     return ret;
@@ -643,14 +653,15 @@ public class UtilPrepareParty {
    * @param files The list of flies to copy.
    * @param destDir The target location.
    */
-  public static void copyFiles(final List<org.jajuk.base.File> files, final java.io.File destDir, 
-      final boolean isNormalize, final boolean isConvertMedia, final String media, 
+  public static void copyFiles(final List<org.jajuk.base.File> files, final java.io.File destDir,
+      final boolean isNormalize, final boolean isConvertMedia, final String media,
       final String convertCommand) {
 
     Thread thread = new Thread("PrepareParty - File Copy") {
 
       @Override
       public void run() {
+        UtilGUI.waiting();
         // start time to display elapsed time at the end
         long lRefreshDateStart = System.currentTimeMillis();
 
@@ -663,6 +674,7 @@ public class UtilPrepareParty {
             bw.write(Const.PLAYLIST_NOTE);
             int count = 0;
             for (final org.jajuk.base.File entry : files) {
+
               // update progress
               count++;
 
@@ -689,18 +701,20 @@ public class UtilPrepareParty {
                     destDir, name);
                 if (ret != 0) {
                   convert_errors++;
+                  // do a normal copy of original format if it cannot be converted
+                  FileUtils.copyFile(entry.getFIO(), new File(destDir, name));
                 } else {
-                  // increase hits for this track/file as it is likely played outside of Jajuk
-                  entry.getTrack().incHits();
+                  // Conversion is done, new filename is <oldname.old_extension.target_extension>
+                  name = name + "." + media;
                 }
 
               } else {
                 // do a normal copy otherwise
                 FileUtils.copyFile(entry.getFIO(), new File(destDir, name));
-
-                // increase hits for this track/file as it is likely played outside of Jajuk
-                entry.getTrack().incHits();
               }
+
+              // increase hits for this track/file as it is likely played outside of Jajuk
+              entry.getTrack().incHits();
 
               // write playlist as well
               bw.newLine();
@@ -746,13 +760,15 @@ public class UtilPrepareParty {
 
           Log.debug(message);
 
+          UtilGUI.stopWaiting();
+
           // Display end of copy message with stats
           Messages.showInfoMessage(message);
         }
       }
 
     };
-    
+
     thread.start();
   }
 }

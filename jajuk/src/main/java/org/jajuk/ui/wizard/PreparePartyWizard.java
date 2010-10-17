@@ -112,31 +112,31 @@ public class PreparePartyWizard extends Wizard {
 
   /** Max number of tracks to use. */
   private static final String KEY_MAX_TRACKS_ON = "MAXTRACKS_ENABLED";
-  
+
   /** Key for max. number of track */
   private static final String KEY_MAX_TRACKS = "MAXTRACKS";
 
   /** Max size to use. */
   private static final String KEY_MAX_SIZE_ON = "MAXSIZE_ENABLED";
-  
+
   /** Key for max. size of party */
   private static final String KEY_MAX_SIZE = "MAXSIZE";
 
   /** Max playing length of tracks to use. */
   private static final String KEY_MAX_LENGTH_ON = "MAXLENGTH_ENABLED";
-  
+
   /** Key for max length of party */
   private static final String KEY_MAX_LENGTH = "MAXLENGTH";
 
   /** Max number of tracks to queue. */
   private static final String KEY_ONE_MEDIA_ON = "ONE_MEDIA_ENABLED";
-  
+
   /** Key for limit to one audio type */
   private static final String KEY_MEDIA = "ONE_MEDIA";
-  
+
   /** Key for audio type conversion */
   private static final String KEY_CONVERT_MEDIA = "CONVERT_MEDIA";
-  
+
   /** Key for the command to use for audio conversion */
   private static final String KEY_CONVERT_COMMAND = "CONVERT_COMMAND";
 
@@ -156,7 +156,7 @@ public class PreparePartyWizard extends Wizard {
 
   /** Indicator to only restore properties once and not overwrite them again later. */
   private static boolean bPropertiesRestored = false;
-  
+
   /** Indicates if the PACPL tool for audio conversion is available */
   private static boolean bPACPLAvailable = false;
 
@@ -164,9 +164,9 @@ public class PreparePartyWizard extends Wizard {
    * The source of the Party.
    */
   private enum Mode {
-    
+
     /** Use one of the available DJs */
-    DJ, 
+    DJ,
     /** Use one of hte available Ambiences*/
     Ambience,
     /** Use random tracks from all available track */
@@ -238,10 +238,10 @@ public class PreparePartyWizard extends Wizard {
    */
   @Override
   public void finish() {
+    
     // write properties to keep the selected directory
     try {
       storeProperties();
-
       Conf.commit();
     } catch (IOException e1) {
       Log.error(e1);
@@ -268,10 +268,11 @@ public class PreparePartyWizard extends Wizard {
         + destDir.getAbsolutePath() + "}}");
 
     // perform the actual copying
-    UtilPrepareParty.copyFiles(files, destDir, isTrue(KEY_NORMALIZE_FILENAME_ON), isTrue(KEY_ONE_MEDIA_ON) && isTrue(KEY_CONVERT_MEDIA), 
-        (String)data.get(KEY_MEDIA), (String)data.get(KEY_CONVERT_COMMAND));
-  }
+    UtilPrepareParty.copyFiles(files, destDir, isTrue(KEY_NORMALIZE_FILENAME_ON),
+        isTrue(KEY_ONE_MEDIA_ON) && isTrue(KEY_CONVERT_MEDIA), (String) data.get(KEY_MEDIA),
+        (String) data.get(KEY_CONVERT_COMMAND));
 
+  }
 
   /**
    * Gets the list of files to copy depending on the current mode.
@@ -536,7 +537,7 @@ public class PreparePartyWizard extends Wizard {
 
     return null;
   }
-  
+
   /* (non-Javadoc)
    * @see org.qdwizard.Wizard#onCancel()
    */
@@ -544,7 +545,7 @@ public class PreparePartyWizard extends Wizard {
   public boolean onCancel() {
     // this also clears "data", so we need to reset the restore-state
     bPropertiesRestored = false;
-    
+
     return super.onCancel();
   }
 
@@ -561,19 +562,19 @@ public class PreparePartyWizard extends Wizard {
 
     /** DJ */
     private JRadioButton jrbDJ;
-    
+
     /** DJ */
     private JComboBox jcbDJ;
 
     /** Ambience */
     private JRadioButton jrbAmbience;
-    
+
     /** Ambience */
     private JComboBox jcbAmbience;
 
     /** Playlist */
     private JRadioButton jrbPlaylist;
-    
+
     /** Playlist */
     private JComboBox jcbPlaylist;
 
@@ -582,13 +583,13 @@ public class PreparePartyWizard extends Wizard {
 
     /** Shuffle */
     private JRadioButton jrbBestOf;
-    
+
     /** Novelties */
     private JRadioButton jrbNovelties;
-    
+
     /** Queue */
     private JRadioButton jrbQueue;
-    
+
     /** Bookmarks */
     private JRadioButton jrbBookmark;
 
@@ -788,16 +789,7 @@ public class PreparePartyWizard extends Wizard {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-      // enable/disable sliders if checkboxes are clicked
-      if (e.getSource().equals(jcbDJ)) {
-        bgActions.setSelected(jrbDJ.getModel(), true);
-      } else if (e.getSource().equals(jcbAmbience)) {
-        bgActions.setSelected(jrbAmbience.getModel(), true);
-      } else if (e.getSource().equals(jcbPlaylist)) {
-        bgActions.setSelected(jrbPlaylist.getModel(), true);
-      }
-
-      // now update all the values that are needed later
+      // Update all the values that are needed later
       updateData();
     }
 
@@ -875,49 +867,49 @@ public class PreparePartyWizard extends Wizard {
 
     /** Enable limit on number of tracks */
     private JCheckBox jcbMaxTracks;
-    
+
     /** The max. number of tracks */
     private JSlider jsMaxTracks;
-    
+
     /** The max. number of tracks */
     private JLabel jnMaxTracks;
 
     /** Enable limit on max size */
     private JCheckBox jcbMaxSize;
-    
+
     /** Max size (in MB) of party */
     private JSlider jsMaxSize;
-    
+
     /** Max size (in MB) of party */
     private JLabel jnMaxSize;
 
     /** Enable limit on max playing length */
     private JCheckBox jcbMaxLength;
-    
+
     /** Max playing length of party (in minutes) */
     private JSlider jsMaxLength;
-    
+
     /** Max playing length of party (in minutes) */
     private JLabel jnMaxLength;
 
     /** Enable limit on specific audio type */
     private JCheckBox jcbOneMedia;
-    
+
     /** Limit to one type of audo file */
     private JComboBox jcbMedia;
-    
+
     /** Enable conversion to the selected audio type */
     private JCheckBox jcbConvertMedia;
-    
+
     /** Audio conversion */
     private JLabel jlConvertMedia;
-    
+
     /** Button to configure audio conversion */
     private JButton jbConvertConfig;
 
     /** Limit on rate of tracks */
     private JLabel jlRatingLevel;
-    
+
     /** The min. number of stars a track needs to have */
     private JSlider jsRatingLevel;
 
@@ -1272,7 +1264,7 @@ public class PreparePartyWizard extends Wizard {
           @Override
           public void stateChanged(ChangeEvent e) {
             // no need for re-checking if the same command is chosen as before
-            if(e.getSource().toString().equals(data.get(KEY_CONVERT_COMMAND))) {
+            if (e.getSource().toString().equals(data.get(KEY_CONVERT_COMMAND))) {
               Log.debug("Same pacpl-command as before: " + e.getSource().toString());
               return;
             }
@@ -1391,7 +1383,7 @@ public class PreparePartyWizard extends Wizard {
    * Panel for selecting the location in the filesystem.
    */
   public static class PathSelectionPanel extends Screen implements ActionListener {
-    
+
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = -236180699495019177L;
 
@@ -1496,7 +1488,7 @@ public class PreparePartyWizard extends Wizard {
    * Compare two types.
    */
   private static final class TypeComparator implements Comparator<Type> {
-    
+
     /* (non-Javadoc)
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
