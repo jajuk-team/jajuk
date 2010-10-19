@@ -597,21 +597,21 @@ class ConfirmDialog extends JajukDialog {
       iResu = JOptionPane.CANCEL_OPTION;
     } else if (resu instanceof String) {
       // Options are string when using custom options
-      if (resu.equals(Messages.getString("All"))) {
+      if (resu.equals(Messages.getString("YestoAll"))) {
         iResu = Messages.ALL_OPTION;
       } else if (resu.equals(Messages.getString("Yes"))) {
         iResu = JOptionPane.YES_OPTION;
       }
-      if (resu.equals(Messages.getString("No"))) {
+      else if (resu.equals(Messages.getString("No"))) {
         iResu = JOptionPane.NO_OPTION;
       }
-      if (resu.equals(Messages.getString("Cancel"))) {
+      else if (resu.equals(Messages.getString("Cancel"))) {
         iResu = JOptionPane.CANCEL_OPTION;
       }
-      if (resu.equals(Messages.getString("Ok"))) {
+      else if (resu.equals(Messages.getString("Ok"))) {
         iResu = JOptionPane.OK_OPTION;
       }
-      if (resu.equals(Messages.getString("Default"))) {
+      else if (resu.equals(Messages.getString("Default"))) {
         iResu = JOptionPane.DEFAULT_OPTION;
       }
     } else if (resu instanceof Integer) {
