@@ -180,7 +180,7 @@ public class PasteAction extends JajukAction {
                 int iResu = Messages.getChoice(Messages.getString("Confirmation_file_overwrite")
                     + " : \n\n" + f.getName(), Messages.YES_NO_ALL_CANCEL_OPTION,
                     JOptionPane.INFORMATION_MESSAGE);
-                if (iResu != JOptionPane.YES_OPTION) {
+                if (iResu == JOptionPane.NO_OPTION || iResu == JOptionPane.CANCEL_OPTION) {
                   UtilGUI.stopWaiting();
                   return;
                 }
@@ -212,7 +212,7 @@ public class PasteAction extends JajukAction {
                 int iResu = Messages.getChoice(Messages.getString("Confirmation_file_overwrite")
                     + " : \n\n" + pl.getName(), Messages.YES_NO_ALL_CANCEL_OPTION,
                     JOptionPane.INFORMATION_MESSAGE);
-                if (iResu != JOptionPane.YES_OPTION) {
+                if (iResu == JOptionPane.NO_OPTION || iResu == JOptionPane.CANCEL_OPTION) {
                   UtilGUI.stopWaiting();
                   return;
                 }
@@ -283,7 +283,7 @@ public class PasteAction extends JajukAction {
                 int iResu = Messages.getChoice(Messages.getString("Confirmation_file_overwrite")
                     + " : \n\n" + f.getName(), Messages.YES_NO_ALL_CANCEL_OPTION,
                     JOptionPane.INFORMATION_MESSAGE);
-                if (iResu != JOptionPane.YES_OPTION) {
+                if (iResu == JOptionPane.NO_OPTION || iResu == JOptionPane.CANCEL_OPTION) {
                   UtilGUI.stopWaiting();
                   return;
                 }
@@ -308,7 +308,7 @@ public class PasteAction extends JajukAction {
                 int iResu = Messages.getChoice(Messages.getString("Confirmation_file_overwrite")
                     + " : \n\n" + pl.getName(), Messages.YES_NO_ALL_CANCEL_OPTION,
                     JOptionPane.INFORMATION_MESSAGE);
-                if (iResu != JOptionPane.YES_OPTION) {
+                if (iResu == JOptionPane.NO_OPTION || iResu == JOptionPane.CANCEL_OPTION) {
                   UtilGUI.stopWaiting();
                   return;
                 }
