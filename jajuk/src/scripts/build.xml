@@ -48,7 +48,7 @@
 	<property name='conf_izpackdir' value='/data/build_tools/IzPack' />
 	<property name='conf_jsmoothgendir' value='/data/build_tools/jsmooth' />
 	<property name='conf_jnlp-dist' value='/tmp/jajuk-dist/jnlp-dist' />
-	<property name='conf_homeuser' value='/home/jbuild' />
+	<property name='conf_homeuser' value='/home/tomcat55' />
 	<property name='conf_uploaddir' value='/tmp/jajuk-dist/packages/' />
 	<property name='conf_jarbundler' value='/data/build_tools/jarbundler' />
 	<property name='conf_jarbundler-jar' value='jarbundler-1.9.jar' />
