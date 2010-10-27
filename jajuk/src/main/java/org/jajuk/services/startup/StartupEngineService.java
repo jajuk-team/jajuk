@@ -95,17 +95,20 @@ public class StartupEngineService {
 
     // Check that the file to play is not null and try to mount its device if required 
     if (!doNotStartAnything && !isWebradioStartup()) {
-      boolean readyToPlay = checkFileToPlay();
-      // OK, set the index of the file to play within the queue
-      if (readyToPlay) {
-        setIndex();
-      }
+      checkFileToPlay();
     }
+    // Set the index of the file to play within the queue.
+    // We still need to compute index of file to play even if we play nothing or a radio
+    // because user may do a "play" and the next file index must be ready.
+    // However, we don't need to test file availability with checkFileToPlay() method.
+    setIndex();
 
     // Push the new queue
     boolean bRepeat = Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL)
         || Conf.getBoolean(Const.CONF_STATE_REPEAT);
     QueueModel.insert(UtilFeatures.createStackItems(alToPlay, bRepeat, false), 0);
+    // Force queue index because insert increase it so it would be set to queue size after the insert
+    QueueModel.setIndex(index);
 
     // Start the file or the radio
     // If user leaved jajuk in stopped mode, do nothing
@@ -222,6 +225,11 @@ public class StartupEngineService {
       restoreQueue();
     }
 
+    else if (Const.STARTUP_MODE_NOTHING.equals(startupMode)) {
+      //Restore the queue in these cases
+      restoreQueue();
+    }
+
     // Shuffle mode
     else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_SHUFFLE)) {
       // Filter files by ambience or if none ambience matches, perform a global shuffle 
@@ -315,18 +323,21 @@ public class StartupEngineService {
    * Set index of fileToPlay among alToPlay list
    */
   private static void setIndex() {
-    // find the index of last played track
-    index = -1;
-    for (int i = 0; i < alToPlay.size(); i++) {
-      if (fileToPlay.getID().equals(alToPlay.get(i).getID())) {
-        index = i;
-        break;
+    // fileToPlay is null if nothing has to be played, then we keep default index value (0)
+    if (fileToPlay != null) {
+      // find the index of last played track
+      index = -1;
+      for (int i = 0; i < alToPlay.size(); i++) {
+        if (fileToPlay.getID().equals(alToPlay.get(i).getID())) {
+          index = i;
+          break;
+        }
       }
-    }
-    if (index == -1) {
-      // Track not stored, push it first
-      alToPlay.add(0, fileToPlay);
-      index = 0;
+      if (index == -1) {
+        // Track not stored, push it first
+        alToPlay.add(0, fileToPlay);
+        index = 0;
+      }
     }
   }
 

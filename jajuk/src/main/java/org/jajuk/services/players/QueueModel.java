@@ -92,7 +92,7 @@ public final class QueueModel {
 
   /** Current played radio. */
   private static volatile WebRadio currentRadio;
-  
+
   /** Last played track actually played duration in ms before a stop*/
   private static long lastDuration;
 
@@ -573,7 +573,7 @@ public final class QueueModel {
         index = 0;
       }
       UtilGUI.waiting();
-      File fCurrent = getPlayingFile();
+      File toPlay = getItem(index).getFile();
       /**
        * Force buttons to opening mode by default, then if they start correctly,
        * a PLAYER_PLAY event will be notified to update to final state. We
@@ -591,7 +591,7 @@ public final class QueueModel {
       }
 
       boolean bPlayOK = false;
-      
+
       // bfirstFile flag is used to set a offset (in %) if required (if we are playing the last item at given position) 
       // Known limitation : if the last session's last played item is no more available, the offset is applied
       // to another file. We think that it doesn't worth making things more complicated.
@@ -601,16 +601,16 @@ public final class QueueModel {
         // startup mode keep position
         float fPos = Conf.getFloat(Const.CONF_STARTUP_LAST_POSITION);
         // play it
-        bPlayOK = Player.play(fCurrent, fPos, Const.TO_THE_END);
+        bPlayOK = Player.play(toPlay, fPos, Const.TO_THE_END);
       } else {
         if (Conf.getBoolean(Const.CONF_STATE_INTRO)) {
           // intro mode enabled
-          bPlayOK = Player.play(fCurrent, Float.parseFloat(Conf
+          bPlayOK = Player.play(toPlay, Float.parseFloat(Conf
               .getString(Const.CONF_OPTIONS_INTRO_BEGIN)) / 100, 1000 * Integer.parseInt(Conf
               .getString(Const.CONF_OPTIONS_INTRO_LENGTH)));
         } else {
           // normal mode
-          bPlayOK = Player.play(fCurrent, 0.0f, Const.TO_THE_END);
+          bPlayOK = Player.play(toPlay, 0.0f, Const.TO_THE_END);
         }
       }
 
@@ -618,13 +618,13 @@ public final class QueueModel {
         // notify to devices like commandJPanel to update UI when the play
         // button has been pressed
         ObservationManager.notify(new JajukEvent(JajukEvents.PLAYER_PLAY));
-        Log.debug("Now playing :" + fCurrent);
+        Log.debug("Now playing :" + toPlay);
         // Send an event that a track has been launched
         Properties pDetails = new Properties();
         if (itemLast != null) {
           pDetails.put(Const.DETAIL_OLD, itemLast);
         }
-        pDetails.put(Const.DETAIL_CURRENT_FILE_ID, fCurrent.getID());
+        pDetails.put(Const.DETAIL_CURRENT_FILE_ID, toPlay.getID());
         pDetails.put(Const.DETAIL_CURRENT_DATE, Long.valueOf(System.currentTimeMillis()));
         ObservationManager.notify(new JajukEvent(JajukEvents.FILE_LAUNCHED, pDetails));
         // Save the last played track (even files in error are stored here as
@@ -635,7 +635,7 @@ public final class QueueModel {
         playingRadio = false;
         bFirstFile = false;
         // add hits number
-        fCurrent.getTrack().incHits(); // inc hits number
+        toPlay.getTrack().incHits(); // inc hits number
 
         // recalculate the total time left
         JajukTimer.getInstance().reset();
@@ -672,8 +672,7 @@ public final class QueueModel {
       UtilGUI.stopWaiting(); // stop the waiting cursor
     }
   }
-  
- 
+
   /**
   * Computes planned tracks.
   * 
@@ -1097,9 +1096,6 @@ public final class QueueModel {
     List<StackItem> alStack = new ArrayList<StackItem>(1);
     alStack.add(item);
     insert(alStack, iPos);
-    // refresh queue
-    ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
-
   }
 
   /**
@@ -1184,7 +1180,7 @@ public final class QueueModel {
       } else {
         index = pIndex;
       }
-      // need to stop before launching! this fix a
+      // need to stop before launching! this fixes a
       // wrong EOM event in BasicPlayer
       Player.stop(false);
       launch();
@@ -1270,12 +1266,12 @@ public final class QueueModel {
     return queue.getPlanned();
   }
 
-   /**
-   * Store current FIFO as a list.
-   * 
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
-   */
+  /**
+  * Store current FIFO as a list.
+  * 
+  * @throws IOException
+  *           Signals that an I/O exception has occurred.
+  */
   public static void commit() throws IOException {
     java.io.File file = SessionService.getConfFileByPath(Const.FILE_FIFO);
     PrintWriter writer = new PrintWriter(
@@ -1349,5 +1345,13 @@ public final class QueueModel {
       i++;
     }
     computesPlanned(true);
+  }
+
+  /**
+    * Force FIFO index
+    * @pram index index to set
+    */
+  public static synchronized void setIndex(int index) {
+    QueueModel.index = index;
   }
 }

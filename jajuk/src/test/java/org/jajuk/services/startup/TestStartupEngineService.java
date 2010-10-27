@@ -86,8 +86,6 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, POSITION + "");
     Conf.setProperty(Const.CONF_STARTUP_STOPPED, "false");
     Conf.setProperty(Const.CONF_STARTUP_ITEM, file3.getID());
-    
-    
 
     // Reset the queue
     QueueModel.reset();
@@ -119,6 +117,9 @@ public class TestStartupEngineService extends JajukTestCase {
     Thread.sleep(100);
 
     assertEquals(QueueModel.getPlayingFile(), null);
+   
+    // Check that queue is filled up
+    assertTrue(QueueModel.getQueue().size() == 3);
   }
 
   public final void testLastItem() throws InterruptedException {
