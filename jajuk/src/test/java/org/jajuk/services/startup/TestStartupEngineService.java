@@ -86,6 +86,7 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, POSITION + "");
     Conf.setProperty(Const.CONF_STARTUP_STOPPED, "false");
     Conf.setProperty(Const.CONF_STARTUP_ITEM, file3.getID());
+    Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "false");
 
     // Reset the queue
     QueueModel.reset();
@@ -117,26 +118,24 @@ public class TestStartupEngineService extends JajukTestCase {
     Thread.sleep(100);
 
     assertEquals(QueueModel.getPlayingFile(), null);
-   
+
     // Check that queue is filled up
     assertTrue(QueueModel.getQueue().size() == 3);
   }
 
   public final void testLastItem() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST);
-    Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "false");
-
+  
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
 
     assertEquals(QueueModel.getPlayingFile(), file3);
-
   }
 
   public final void testLastItemLastPos() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
-    Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "false");
+    
 
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
@@ -172,14 +171,13 @@ public class TestStartupEngineService extends JajukTestCase {
   public final void testFirstSession() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
-    Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "false");
-
+    History.getInstance().clear();
+  
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
 
     assertEquals(QueueModel.getPlayingFile(), null);
-
   }
 
   public final void testShuffle() throws InterruptedException {
@@ -316,6 +314,22 @@ public class TestStartupEngineService extends JajukTestCase {
     Thread.sleep(100);
 
     assertEquals(QueueModel.getPlayingFile(), null);
+  }
+
+  /**
+   * Regression test for a 2010/11/01 bug :
+   * If startup item is unset, last track doesn't work
+   * @throws InterruptedException
+   */
+  public final void test2() throws InterruptedException {
+    Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
+    Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
+
+    StartupEngineService.launchInitialTrack();
+    // Wait for track to be actually launched
+    Thread.sleep(100);
+
+    assertEquals(QueueModel.getPlayingFile(), file3);
   }
 
 }

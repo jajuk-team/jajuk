@@ -88,7 +88,8 @@ public class StartupEngineService {
     boolean doNotStartAnything = Const.STARTUP_MODE_NOTHING.equals(startupMode)
         || Conf.getBoolean(Const.CONF_STARTUP_STOPPED)
         //  CONF_STARTUP_ITEM is void at first jajuk session and until user launched an item
-        || StringUtils.isBlank(Conf.getString(Const.CONF_STARTUP_ITEM));
+        || (Const.STARTUP_MODE_ITEM.equals(startupMode) && StringUtils.isBlank(Conf
+            .getString(Const.CONF_STARTUP_ITEM)));
 
     // Populate item to be started and load the stored queue
     populateStartupItems();
