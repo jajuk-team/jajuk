@@ -188,7 +188,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   JajukToggleButton jtbSync;
 
   private boolean bStopThread = false;
-  
+
   /** Launches a thread used to perform dynamic filtering when user is typing. */
   private Thread filteringThread = new Thread("Dynamic user input filtering thread") {
     @Override
@@ -364,12 +364,38 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jtable.setTransferHandler(new TableTransferHandler(jtable));
     jtable.showColumns(jtable.getColumnsConf());
     applyFilter(null, null);
-  
+
     // Hide the copy url if several items selection. Do not simply disable them
     // as the getMenu() method enable all menu items
     jtable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
       public void valueChanged(ListSelectionEvent e) {
-         jmiFileCopyURL.setVisible(jtable.getSelectedRowCount() < 2);
+        jmiFileCopyURL.setVisible(jtable.getSelectedRowCount() < 2);
+        if (AbstractTableView.this instanceof TracksTableView) {
+          int rows = jtable.getSelection().size();
+          StringBuilder sbOut = new StringBuilder().append(rows).append(
+              Messages.getString("TracksTreeView.31"));
+          InformationJPanel.getInstance().setSelection(sbOut.toString());
+        } else if (AbstractTableView.this instanceof FilesTableView) {
+          // Compute recursive selection size, nb of items...
+          long lSize = 0l;
+          int items = 0;
+          for (Item item : jtable.getSelection()) {
+            if (item instanceof File) {
+              lSize += ((File) item).getSize();
+            }
+          }
+          items = jtable.getSelection().size();
+          lSize /= 1048576; // set size in MB
+          StringBuilder sbOut = new StringBuilder().append(items).append(
+              Messages.getString("FilesTreeView.52"));
+          if (lSize > 1024) { // more than 1024 MB -> in GB
+            sbOut.append(lSize / 1024).append('.').append(lSize % 1024).append(
+                Messages.getString("FilesTreeView.53"));
+          } else {
+            sbOut.append(lSize).append(Messages.getString("FilesTreeView.54"));
+          }
+          InformationJPanel.getInstance().setSelection(sbOut.toString());
+        }
       }
     });
     // Register on the list for subject we are interested in
@@ -706,7 +732,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   @Override
   public void cleanup() {
     // stop the thread that is waiting for input
-    if(filteringThread != null) {
+    if (filteringThread != null) {
       bStopThread = true;
       try {
         filteringThread.join();
@@ -715,10 +741,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         Log.error(e);
       }
     }
-    
+
     super.cleanup();
   }
-  
-  
 
 }
