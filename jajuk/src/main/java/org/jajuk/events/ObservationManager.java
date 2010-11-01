@@ -45,7 +45,7 @@ public final class ObservationManager {
   /** Last event for a given subject (used for new objects that just registrated to this subject). */
   static Map<JajukEvents, Properties> hLastEventBySubject = new HashMap<JajukEvents, Properties>(10);
 
-  /** The queue itself. Must be synchronized, so we use a ConcurrentLinkedQueue which is tread-safe */
+  /** The queue itself. Must be synchronized, so we use a ConcurrentLinkedQueue which is thread-safe */
   static BlockingQueue<JajukEvent> queue = new LinkedBlockingQueue<JajukEvent>();
 
   /** The observation fifo. */

@@ -127,7 +127,9 @@ public class JajukEvent {
     int hash = 7;
     hash = 31 * hash + subject.hashCode();
     if (pDetails != null) {
-      hash = 31 * hash + pDetails.hashCode();
+      // Use only properties size, not hashcode because it is too heavy for large selection
+      // in properties and causes concurrent modification exceptions
+      hash = 31 * hash + pDetails.size();
     }
     return hash;
   }
