@@ -25,9 +25,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -40,8 +42,10 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.TrackComparator.TrackComparatorType;
-import org.jajuk.ui.widgets.DuplicateTracksList;
 import org.jajuk.ui.windows.JajukMainWindow;
+import org.jajuk.ui.wizard.DuplicateTracksDialog;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -55,6 +59,15 @@ public class FindDuplicateTracksAction extends JajukAction {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /**Result : a list of dups files for a given track */
+  List<List<File>> duplicateTracksList;
+
+  /** Temporary storage during dups detection */
+  private Map<String, Set<File>> mapTrackDups;
+
+  /** Track comparator */
+  TrackComparator comparator = new TrackComparator(TrackComparatorType.ALMOST_IDENTICAL);
+
   /**
    * Instantiates a new find duplicate tracks action.
    */
@@ -62,6 +75,96 @@ public class FindDuplicateTracksAction extends JajukAction {
     super(Messages.getString("FindDuplicateTracksAction.2"), IconLoader.getIcon(JajukIcons.SEARCH),
         true);
     setShortDescription(Messages.getString("FindDuplicateTracksAction.2"));
+  }
+
+  /**
+     * Add a dup for a given track
+     * @param footprint : fuzzy search footprint
+     * @param files list of files
+     */
+  private void addDup(Track track, List<File> files) {
+    // Ignore case where thy are none ready files
+    if (files.size() > 0) {
+      String key = comparator.buildIdenticalTestFootprint(track).toLowerCase();
+      Set<File> dups = mapTrackDups.get(key);
+      if (dups == null) {
+        // We sort files by path because we don't want to allow user to drop files from different directories
+        dups = new TreeSet<File>();
+        mapTrackDups.put(key, dups);
+      }
+      dups.addAll(files);
+    }
+  }
+
+  /*
+   * Return the next track relative to current position or null if it is the last track
+   * @return the next track relative to current position or null if it is the last track
+   */
+  private Track getNextTrack(List<Track> tracks, int index) {
+    Track next = null;
+    if (index < tracks.size() - 1) {
+      next = tracks.get(index + 1);
+    }
+    return next;
+  }
+
+  /**
+   * Return either all or only mounted files for given track
+   * according to OPTIONS_HIDE_UNMOUNTED option
+   * @param track
+   * @return either all or only mounted files for given track
+   */
+  private List<File> getFiles(Track track) {
+    if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
+      return track.getReadyFiles();
+    } else {
+      return track.getFiles();
+    }
+  }
+
+  /**
+   * Create the dups list
+   */
+  void populateDups() {
+    duplicateTracksList = new ArrayList<List<File>>();
+    // Use a tree map so footprints are sorted
+    mapTrackDups = new TreeMap<String, Set<File>>();
+
+    List<Track> tracks = TrackManager.getInstance().getTracks();
+
+    // For finding duplicate files, we don't just rely on the number of files associated with
+    // a track (>1), we also find almost-identical tracks, ie based on album name, not its ID
+    // because then, we can't detect identical files located in several directories with a
+    // different set of files (because track uses album id in its hashcode and album id uses CDDB discid
+    // computed by jajuk based on the duration of all files in a given directory)
+
+    // Sort using the ALMOST-IDENTICAL
+    Collections.sort(tracks, comparator);
+
+    int index = 0;
+    while (index <= tracks.size() - 1) {
+      Track track = tracks.get(index);
+      Track next = getNextTrack(tracks, index);
+      // 1- Find dups files for the same track
+      if (getFiles(track).size() > 1) {
+        addDup(track, getFiles(track));
+      }
+      // 2- Compare each track to find adjacent duplicates (different tracks)
+      if (next != null && comparator.compare(track, next) == 0) {
+        addDup(track, getFiles(track));
+        addDup(next, getFiles(next));
+      }
+      index++;
+    }
+
+    // Build final list (note that it is already sorted by track, mapTrackDups is a TreeMap)
+    for (String footprint : mapTrackDups.keySet()) {
+      Set<File> dups = mapTrackDups.get(footprint);
+      // dups can be 1 in fuzzy search if track1 ~= track2 and track1 files are mounted and not the tracks2's ones
+      if (dups.size() > 1) {
+        duplicateTracksList.add(new ArrayList<File>(dups));
+      }
+    }
   }
 
   /*
@@ -74,42 +177,16 @@ public class FindDuplicateTracksAction extends JajukAction {
     UtilGUI.waiting();
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
 
-      private List<List<File>> duplicateTracksList = null;
-
       @Override
       protected Void doInBackground() throws Exception {
-        duplicateTracksList = new ArrayList<List<File>>();
-        List<Track> tracks = TrackManager.getInstance().getTracks();
-        // For finding duplicate files, we don't just rely on the number of files associated with
-        // a track (>1), we also find almost-identical tracks, ie based on album name, not its ID
-        // because then, we can't detect identical files located in several directories with a
-        // different
-        // set of files (because track uses album id in its hashcode and album id uses CDDB discid
-        // computed
-        // by jajuk based on the duration of all files in a given directory)
-
-        // Sort using the ALMOST-IDENTICAL
-        TrackComparator comparator = new TrackComparator(TrackComparatorType.ALMOST_IDENTICAL);
-        Collections.sort(tracks, comparator);
-        // Now re-compare each track to find adjacent duplicates
-        Track previous = null;
-        for (Track track : tracks) {
-          if (previous != null && comparator.compare(previous, track) == 0) {
-            Set<File> duplicateFilesSet = new HashSet<File>();
-            // Only consider ready files because we want user to be able to drop files
-            duplicateFilesSet.addAll(previous.getReadyFiles());
-            duplicateFilesSet.addAll(track.getReadyFiles());
-            duplicateTracksList.add(new ArrayList<File>(duplicateFilesSet));
-          }
-          previous = track;
-        }
+        populateDups();
         return null;
       }
 
       @Override
       public void done() {
         try {
-          if (duplicateTracksList.size() < 1) {
+          if (duplicateTracksList.size() == 0) {
             Messages.showInfoMessage(Messages.getString("FindDuplicateTracksAction.0"));
           } else {
             final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(100);
@@ -126,13 +203,13 @@ public class FindDuplicateTracksAction extends JajukAction {
             });
 
             // Create and set up the content pane.
-            JComponent newContentPane = new DuplicateTracksList(duplicateTracksList, jbClose);
+            JComponent newContentPane = new DuplicateTracksDialog(duplicateTracksList, jbClose);
             newContentPane.setOpaque(true);
             UtilGUI.setEscapeKeyboardAction(duplicateFiles, newContentPane);
             duplicateFiles.setContentPane(newContentPane);
 
             // Display the window.
-            duplicateFiles.pack();
+            duplicateFiles.setSize(800,600);
             duplicateFiles.setLocationRelativeTo(JajukMainWindow.getInstance());
             duplicateFiles.setVisible(true);
           }

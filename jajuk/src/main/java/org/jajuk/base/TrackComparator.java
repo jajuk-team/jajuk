@@ -150,7 +150,7 @@ public class TrackComparator implements Comparator<Track>, Serializable {
    * @param track
    * @return a footprint used to find almost-identical track 
    */
-  private String buildIdenticalTestFootprint(Track track) {
+  public String buildIdenticalTestFootprint(Track track) {
     StringBuilder sb = new StringBuilder();
     if (!track.getGenre().isUnknown()) {
       sb.append(track.getGenre().getID());
@@ -173,7 +173,6 @@ public class TrackComparator implements Comparator<Track>, Serializable {
       sb.append(track.getAlbumArtist().getName());
     }
     return sb.toString();
-
   }
 
   /**

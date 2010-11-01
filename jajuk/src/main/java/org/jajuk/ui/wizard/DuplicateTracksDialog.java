@@ -19,7 +19,7 @@
  *  $Revision$
  */
 
-package org.jajuk.ui.widgets;
+package org.jajuk.ui.wizard;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -51,7 +51,7 @@ import org.jajuk.util.log.Log;
 /**
  * DOCUMENT_ME.
  */
-public class DuplicateTracksList extends JPanel implements ListSelectionListener {
+public class DuplicateTracksDialog extends JPanel implements ListSelectionListener {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
@@ -86,7 +86,7 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
    * @param files DOCUMENT_ME
    * @param jbClose DOCUMENT_ME
    */
-  public DuplicateTracksList(List<List<File>> files, JButton jbClose) {
+  public DuplicateTracksDialog(List<List<File>> files, JButton jbClose) {
     super(new BorderLayout());
     allFiles = files;
     closeButton = jbClose;
@@ -131,12 +131,13 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
     }
 
     listModel.removeAllElements();
-    for (List<File> lFiles : allFiles) {
-      listModel.addElement(lFiles.get(0).getName() + " ( "
-          + lFiles.get(0).getDirectory().getAbsolutePath() + " ) ");
-      for (int i = 1; i < lFiles.size(); i++) {
-        listModel.addElement("  + " + lFiles.get(i).getName() + " ( "
-            + lFiles.get(i).getDirectory().getAbsolutePath() + " ) ");
+    for (List<File> dups : allFiles) {
+      // dups's size can be 0 if dups are found among unmounted devices
+      listModel.addElement(dups.get(0).getName() + " ( "
+          + dups.get(0).getDirectory().getAbsolutePath() + " ) ");
+      for (int i = 1; i < dups.size(); i++) {
+        listModel.addElement("  + " + dups.get(i).getName() + " ( "
+            + dups.get(i).getDirectory().getAbsolutePath() + " ) ");
       }
     }
   }
@@ -255,7 +256,6 @@ public class DuplicateTracksList extends JPanel implements ListSelectionListener
       for (int k = 0; k < iList.size(); k++) {
         indices[k] = iList.get(k);
       }
-
       list.setSelectedIndices(indices);
     }
   }
