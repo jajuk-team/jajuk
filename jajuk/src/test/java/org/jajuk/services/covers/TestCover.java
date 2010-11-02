@@ -165,7 +165,7 @@ public class TestCover extends JajukTestCase {
     // for no-cover, we get back a default image
     assertNotNull(cover.getImage());
 
-    cover = new Cover(new URL("http://jajuk.info/skins/jajuk2007/jajuk_logotype.png"),
+    cover = new Cover(new URL("http://jajuk.info/skins/jajuk2010/jajuk_logotype.png"),
         CoverType.REMOTE_COVER);
     try {
       assertNotNull(cover.getImage());
