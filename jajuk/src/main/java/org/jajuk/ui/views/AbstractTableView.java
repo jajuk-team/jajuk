@@ -101,7 +101,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * views.
  */
 public abstract class AbstractTableView extends ViewAdapter implements ActionListener,
-    ItemListener, TableModelListener, TwoStepsDisplayable {
+    ItemListener, TableModelListener, TwoStepsDisplayable, ListSelectionListener {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -4418626517605128694L;
@@ -365,39 +365,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jtable.showColumns(jtable.getColumnsConf());
     applyFilter(null, null);
 
-    // Hide the copy url if several items selection. Do not simply disable them
-    // as the getMenu() method enable all menu items
-    jtable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-      public void valueChanged(ListSelectionEvent e) {
-        jmiFileCopyURL.setVisible(jtable.getSelectedRowCount() < 2);
-        if (AbstractTableView.this instanceof TracksTableView) {
-          int rows = jtable.getSelection().size();
-          StringBuilder sbOut = new StringBuilder().append(rows).append(
-              Messages.getString("TracksTreeView.31"));
-          InformationJPanel.getInstance().setSelection(sbOut.toString());
-        } else if (AbstractTableView.this instanceof FilesTableView) {
-          // Compute recursive selection size, nb of items...
-          long lSize = 0l;
-          int items = 0;
-          for (Item item : jtable.getSelection()) {
-            if (item instanceof File) {
-              lSize += ((File) item).getSize();
-            }
-          }
-          items = jtable.getSelection().size();
-          lSize /= 1048576; // set size in MB
-          StringBuilder sbOut = new StringBuilder().append(items).append(
-              Messages.getString("FilesTreeView.52"));
-          if (lSize > 1024) { // more than 1024 MB -> in GB
-            sbOut.append(lSize / 1024).append('.').append(lSize % 1024).append(
-                Messages.getString("FilesTreeView.53"));
-          } else {
-            sbOut.append(lSize).append(Messages.getString("FilesTreeView.54"));
-          }
-          InformationJPanel.getInstance().setSelection(sbOut.toString());
-        }
-      }
-    });
+    jtable.getSelectionModel().addListSelectionListener(this);
+
     // Register on the list for subject we are interested in
     ObservationManager.register(this);
     // refresh columns conf in case of some attributes been removed
@@ -429,7 +398,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     eventSubjectSet.add(JajukEvents.TABLE_CLEAR_SELECTION);
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     eventSubjectSet.add(JajukEvents.VIEW_REFRESH_REQUEST);
-    eventSubjectSet.add(JajukEvents.TABLE_SELECTION_CHANGED);
     eventSubjectSet.add(JajukEvents.TREE_SELECTION_CHANGED);
     return eventSubjectSet;
   }
@@ -564,9 +532,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
             jtable.showColumns(jtable.getColumnsConf());
             applyFilter(sAppliedCriteria, sAppliedFilter);
             jcbProperty.removeItem(properties.get(Const.DETAIL_CONTENT));
-          } else if (JajukEvents.TABLE_SELECTION_CHANGED.equals(subject)) {
-            // Refresh the preference menu according to the selection
-            pjmTracks.resetUI(jtable.getSelection());
           }
         } catch (Exception e) {
           Log.error(e);
@@ -743,6 +708,65 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     }
 
     super.cleanup();
+  }
+
+  /**
+  * Called when table selection changed.
+  * 
+  * @param e
+  *          the List selection event
+  */
+  public void valueChanged(ListSelectionEvent e) {
+    if (e.getValueIsAdjusting()) {
+      // leave during normal refresh
+      return;
+    }
+
+    // Call view specific behavior on selection change
+    onSelectionChange();
+
+    // Hide the copy url if several items selection. Do not simply disable them
+    // as the getMenu() method enable all menu items
+    jmiFileCopyURL.setVisible(jtable.getSelectedRowCount() < 2);
+
+    // Compute Information view message
+    if (AbstractTableView.this instanceof TracksTableView) {
+      int rows = jtable.getSelection().size();
+      StringBuilder sbOut = new StringBuilder().append(rows).append(
+          Messages.getString("TracksTreeView.31"));
+      InformationJPanel.getInstance().setSelection(sbOut.toString());
+    } else if (AbstractTableView.this instanceof FilesTableView) {
+      // Compute recursive selection size, nb of items...
+      long lSize = 0l;
+      int items = 0;
+      for (Item item : jtable.getSelection()) {
+        if (item instanceof File) {
+          lSize += ((File) item).getSize();
+        }
+      }
+      items = jtable.getSelection().size();
+      lSize /= 1048576; // set size in MB
+      StringBuilder sbOut = new StringBuilder().append(items).append(
+          Messages.getString("FilesTreeView.52"));
+      if (lSize > 1024) { // more than 1024 MB -> in GB
+        sbOut.append(lSize / 1024).append('.').append(lSize % 1024).append(
+            Messages.getString("FilesTreeView.53"));
+      } else {
+        sbOut.append(lSize).append(Messages.getString("FilesTreeView.54"));
+      }
+      InformationJPanel.getInstance().setSelection(sbOut.toString());
+    }
+
+    // Refresh the preference menu according to the selection
+    pjmTracks.resetUI(jtable.getSelection());
+  }
+
+  /**
+   * Callback method called on table selection change
+   */
+  void onSelectionChange() {
+    // Do nothing by default
+    Log.debug("Table selection changed for : " + this);
   }
 
 }

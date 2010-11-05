@@ -1084,7 +1084,7 @@ public final class TrackManager extends ItemManager {
         try {
           files = pl.getFiles();
         } catch (JajukException e) {
-          Log.error(e);
+          Log.warn("Cannot parse playlist : " + pl.getAbsolutePath());
           return out;
         }
         for (File file : files) {

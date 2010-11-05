@@ -35,7 +35,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
@@ -54,7 +53,6 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.MenuElement;
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
@@ -190,7 +188,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   protected PlaylistTableModel editorModel;
 
   /** DOCUMENT_ME. */
-  private PreferencesJMenu pjmFilesEditor;
+  PreferencesJMenu pjmFilesEditor;
 
   // --- Repository ---
   /** DOCUMENT_ME. */
@@ -211,7 +209,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   /** Selected smart playlist. */
   private SmartPlaylistView spSelected;
 
-  /** DOCUMENT_ME. */
+  /** List of selected files in the editor table. */
   List<File> selectedFiles = new ArrayList<File>(20);
 
   /** Mouse adapter for smart playlist items. */
@@ -547,7 +545,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
     eventSubjectSet.add(JajukEvents.VIEW_REFRESH_REQUEST);
     eventSubjectSet.add(JajukEvents.QUEUE_NEED_REFRESH);
-    eventSubjectSet.add(JajukEvents.TABLE_SELECTION_CHANGED);
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     return eventSubjectSet;
   }
@@ -631,8 +628,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
             if (table.equals(editorTable)) {
               refreshCurrentPlaylist();
             }
-          } else if (JajukEvents.TABLE_SELECTION_CHANGED.equals(subject)) {
-            handleTableSelectionChange();
           }
         } catch (Exception e) {
           Log.error(e);
@@ -644,43 +639,42 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   }
 
   /**
-   * Called when table selection changed
-   */
-  protected void handleTableSelectionChange() {
-    // Refresh the preference menu according to the selection
-    pjmFilesEditor.resetUI(editorTable.getSelection());
-  }
-
-  /**
    * Refresh current playlist. DOCUMENT_ME
    */
   private void refreshCurrentPlaylist() {
     if (plf == null) { // nothing ? leave
       return;
     }
-    // when nothing is selected, set default button state
-    if (editorTable.getSelectionModel().getMinSelectionIndex() == -1) {
-      setButtonState();
-    }
+    List<File> files = null;
+
+    // Try to get playlist content
     try {
-      editorModel.setItems(UtilFeatures.createStackItems(plf.getFiles(), Conf
-          .getBoolean(Const.CONF_STATE_REPEAT_ALL), true)); // PERF
-      ((JajukTableModel) editorTable.getModel()).populateModel(editorTable.getColumnsConf());
-    } catch (JajukException je) { // don't trace because
-      // it is called in a loop
-    }
-    int[] rows = editorTable.getSelectedRows();
+      files = plf.getFiles();
+      // When nothing is selected, set default button state
+      if (editorTable.getSelectionModel().getMinSelectionIndex() == -1) {
+        setButtonState();
+      }
+      editorModel.setItems(UtilFeatures.createStackItems(files, Conf
+          .getBoolean(Const.CONF_STATE_REPEAT_ALL), true));
+      editorModel.populateModel(editorTable.getColumnsConf());
+      int[] rows = editorTable.getSelectedRows();
 
-    // Force table refreshing
-    editorModel.fireTableDataChanged();
+      // Force table refreshing
+      editorModel.fireTableDataChanged();
 
-    // Save selection
-    bSettingSelection = true;
-    for (int element : rows) {
-      // set saved selection after a refresh
-      editorTable.getSelectionModel().addSelectionInterval(element, element);
+      // Save selection
+      bSettingSelection = true;
+      for (int element : rows) {
+        // set saved selection after a refresh
+        editorTable.getSelectionModel().addSelectionInterval(element, element);
+      }
+      bSettingSelection = false;
+    } catch (JajukException je) {
+      Log.warn("Cannot parse playlist : " + plf.getAbsolutePath());
+      // Clear the model so we don't keep previous playlist tracks
+      editorModel.clear();
     }
-    bSettingSelection = false;
+
   }
 
   /**
@@ -689,6 +683,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
    * @param plf the playlist (smart or not)
    */
   private void selectPlaylist(Playlist plf) {
+
     // remove selection
     editorTable.getSelectionModel().clearSelection();
     PlaylistView.this.plf = plf;
@@ -924,26 +919,21 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     }
     ListSelectionModel selection = (ListSelectionModel) e.getSource();
     if (!selection.isSelectionEmpty()) {
-      int selectedRow = selection.getMaxSelectionIndex();
-      // true if selected line is a planned track
-      boolean bPlanned = false;
-      if (selectedRow > editorModel.getItems().size() - 1) {
-        // means it is a planned track
-        bPlanned = true;
-      }
+      updateSelection();
+      updateInformationView(selectedFiles);
+
+      // Refresh the preference menu according to the selection
+      pjmFilesEditor.resetUI(editorTable.getSelection());
+
       // -- now analyze each button --
       // Remove button
-      if (bPlanned) {// not for planned track
-        jbRemove.setEnabled(true);
+      // check for first row remove case : we can't remove currently
+      // played track
+      if (plf.getType() == Playlist.Type.BESTOF || plf.getType() == Playlist.Type.NOVELTIES) {
+        // neither for bestof nor novelties playlist
+        jbRemove.setEnabled(false);
       } else {
-        // check for first row remove case : we can't remove currently
-        // played track
-        if (plf.getType() == Playlist.Type.BESTOF || plf.getType() == Playlist.Type.NOVELTIES) {
-          // neither for bestof nor novelties playlist
-          jbRemove.setEnabled(false);
-        } else {
-          jbRemove.setEnabled(true);
-        }
+        jbRemove.setEnabled(true);
       }
       // Add shuffle button
       if (plf.getType() == Playlist.Type.BESTOF
@@ -966,17 +956,12 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
         jbUp.setEnabled(false);
       } else {
         // still here ?
-        if (bPlanned) {
-          // No up/down buttons for planned tracks
-          jbUp.setEnabled(false);
-        } else { // normal item
-          if (selection.getMinSelectionIndex() == 0) {
-            // check if we selected second track just after current
-            // tracks
-            jbUp.setEnabled(false); // already at the top
-          } else {
-            jbUp.setEnabled(true);
-          }
+        if (selection.getMinSelectionIndex() == 0) {
+          // check if we selected second track just after current
+          // tracks
+          jbUp.setEnabled(false); // already at the top
+        } else {
+          jbUp.setEnabled(true);
         }
       }
       // Down button
@@ -987,18 +972,49 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
           || plf.getType() == Playlist.Type.BOOKMARK) {
         jbDown.setEnabled(false);
       } else { // yet here ?
-        if (bPlanned) {
-          // No up/down buttons for planned tracks
+        if (selection.getMaxSelectionIndex() < editorModel.getItems().size() - 1) {
+          // a normal item can't go in the planned items
+          jbDown.setEnabled(true);
+        } else {
           jbDown.setEnabled(false);
-        } else { // normal item
-          if (selection.getMaxSelectionIndex() < editorModel.getItems().size() - 1) {
-            // a normal item can't go in the planned items
-            jbDown.setEnabled(true);
-          } else {
-            jbDown.setEnabled(false);
-          }
         }
       }
+    }
+  }
+
+  /**
+   * Update the Information View with selection size
+   * @param files : selection to consider
+   */
+  void updateInformationView(List<File> files) {
+    // Update information view
+    // Compute recursive selection size, nb of items...
+    long lSize = 0l;
+    for (File file : files) {
+      lSize += file.getSize();
+    }
+    lSize /= 1048576; // set size in MB
+    StringBuilder sbOut = new StringBuilder().append(files.size()).append(
+        Messages.getString("FilesTreeView.52"));
+    if (lSize > 1024) { // more than 1024 MB -> in GB
+      sbOut.append(lSize / 1024).append('.').append(lSize % 1024).append(
+          Messages.getString("FilesTreeView.53"));
+    } else {
+      sbOut.append(lSize).append(Messages.getString("FilesTreeView.54"));
+    }
+    InformationJPanel.getInstance().setSelection(sbOut.toString());
+  }
+
+  /**
+   * Update editor files selection
+   */
+  void updateSelection() {
+    JajukTableModel model = (JajukTableModel) editorTable.getModel();
+    selectedFiles.clear();
+    int[] rows = editorTable.getSelectedRows();
+    for (int element : rows) {
+      File file = (File) model.getItemAt(editorTable.convertRowIndexToModel(element));
+      selectedFiles.add(file);
     }
   }
 
@@ -1017,8 +1033,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
    * This class is not a view but the playlist upper panel of the PlaylistView
    * It leverages the Abstract Playlist code (filters...)
    */
-  class PlaylistRepository extends AbstractTableView implements ListSelectionListener,
-      TwoStepsDisplayable {
+  class PlaylistRepository extends AbstractTableView implements TwoStepsDisplayable {
 
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 3842568503545896845L;
@@ -1115,7 +1130,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       // Add this generic menu item manually to ensure it's the last one in
       // the list for GUI reasons
       jtable.getMenu().add(jmiProperties);
-      jtable.getSelectionModel().addListSelectionListener(PlaylistRepository.this);
       jtbEditable.setVisible(false);
       jtbSync.setVisible(false);
 
@@ -1135,58 +1149,39 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event
-     * .ListSelectionEvent)
-     */
-    public void valueChanged(ListSelectionEvent e) {
-      if (e.getValueIsAdjusting()) {
-        return;
+    /* (non-Javadoc)
+    * @see org.jajuk.ui.views.AbstractTableView#onSelectionChange()
+    */
+    @Override
+    void onSelectionChange() {
+      Playlist playlist = null;
+      List<File> files = null;
+      try {
+        int selectedRow = jtable.getSelectedRow();
+        if (selectedRow < 0) {
+          return;
+        }
+        int row = jtable.convertRowIndexToModel(selectedRow);
+        JajukTableModel model = (JajukTableModel) jtable.getModel();
+        playlist = (Playlist) model.getItemAt(row);
+        // load the playlist
+        files = playlist.getFiles();
+        if (!alreadyWarned.contains(playlist) && playlist.containsExtFiles()) {
+          Messages.showWarningMessage(Messages.getErrorMessage(142));
+          alreadyWarned.add(playlist);
+        }
+      } catch (JajukException e1) {
+        // Display a warning if the playlist is not parsable but still select it 
+        Log.warn("Cannot parse playlist : " + plf.getAbsolutePath());
       }
-
-      SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
-        Playlist playlist;
-
-        @Override
-        public Void doInBackground() throws JajukException {
-          int selectedRow = jtable.getSelectedRow();
-          if (selectedRow < 0) {
-            return null;
-          }
-          int row = jtable.convertRowIndexToModel(selectedRow);
-          JajukTableModel model = (JajukTableModel) jtable.getModel();
-          playlist = (Playlist) model.getItemAt(row);
-          // load the playlist
-          playlist.getFiles();
-          if (!alreadyWarned.contains(playlist) && playlist.containsExtFiles()) {
-            Messages.showWarningMessage(Messages.getErrorMessage(142));
-            alreadyWarned.add(playlist);
-          }
-          return null;
-        }
-
-        @Override
-        public void done() {
-          try {
-            get();
-          } catch (InterruptedException e) {
-            Log.error(e);
-          } catch (ExecutionException e) {
-            Log.error(e);
-          } catch (Exception e1) {
-            Log.error(e1);
-            Messages.showErrorMessage(17);
-            return;
-          }
-          if (playlist != null) {
-            selectPlaylist(playlist);
-          }
-        }
-
-      };
-      sw.execute();
+      // Select the playlist even if it cannot be read (we still have some titles)
+      selectPlaylist(playlist);
+      if (files != null) {
+        updateInformationView(files);
+      } else {
+        // Reset selection tip
+        InformationJPanel.getInstance().setSelection(Messages.getString("InformationJPanel.9"));
+      }
     }
 
   }

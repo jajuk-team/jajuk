@@ -291,6 +291,15 @@ public abstract class JajukTableModel extends DefaultTableModel {
   }
 
   /**
+   * Clear the model
+   */
+  public void clear() {
+    oValues = new Object[0][0];
+    iRowNum = 0;
+    fireTableDataChanged();
+  }
+
+  /**
    * Gets the icon.
    * 
    * @param unmount DOCUMENT_ME

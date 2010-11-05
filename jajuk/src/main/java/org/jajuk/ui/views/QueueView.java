@@ -234,6 +234,9 @@ public class QueueView extends PlaylistView {
         }
       }
     });
+    // Add selection listener
+    ListSelectionModel lsm = editorTable.getSelectionModel();
+    lsm.addListSelectionListener(this);
     // Register keystrokes over table
     super.setKeystrokes();
     // Force a first need refresh event
@@ -279,7 +282,6 @@ public class QueueView extends PlaylistView {
     eventSubjectSet.add(JajukEvents.CUSTOM_PROPERTIES_REMOVE);
     eventSubjectSet.add(JajukEvents.VIEW_REFRESH_REQUEST);
     eventSubjectSet.add(JajukEvents.RATE_CHANGED);
-    eventSubjectSet.add(JajukEvents.TABLE_SELECTION_CHANGED);
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     return eventSubjectSet;
   }
@@ -366,8 +368,6 @@ public class QueueView extends PlaylistView {
               editorModel.getPlanned().clear();
               refreshQueue();
             }
-          } else if (JajukEvents.TABLE_SELECTION_CHANGED.equals(subject)) {
-            handleTableSelectionChange();
           }
         } catch (Exception e) {
           Log.error(e);
@@ -555,6 +555,11 @@ public class QueueView extends PlaylistView {
     }
     ListSelectionModel selection = (ListSelectionModel) e.getSource();
     if (!selection.isSelectionEmpty()) {
+
+      updateSelection();
+      updateInformationView(selectedFiles);
+      // Refresh the preference menu according to the selection
+      pjmFilesEditor.resetUI(editorTable.getSelection());
       int selectedRow = selection.getMaxSelectionIndex();
       // true if selected line is a planned track
       boolean bPlanned = false;
@@ -566,10 +571,12 @@ public class QueueView extends PlaylistView {
       // Remove button
       if (bPlanned) {
         jbRemove.setEnabled(false);
+        jmiFileRemove.setEnabled(false);
       } else {
         // check for current track case : we can't remove currently
         // played track
         jbRemove.setEnabled(!selectionContainsCurrentTrack(selection));
+        jmiFileRemove.setEnabled(!selectionContainsCurrentTrack(selection));
       }
 
       // Add shuffle button
@@ -581,17 +588,21 @@ public class QueueView extends PlaylistView {
         // check if several rows have been selected :
         // doesn't supported yet
         jbUp.setEnabled(false);
+        jmiFileUp.setEnabled(false);
       } else {
         // still here ?
         if (bPlanned) {
           // No up/down buttons for planned tracks
           jbUp.setEnabled(false);
+          jmiFileUp.setEnabled(false);
         } else { // normal item
           if (selection.getMinSelectionIndex() == 0) {
             // already at the top
             jbUp.setEnabled(false);
+            jmiFileUp.setEnabled(false);
           } else {
             jbUp.setEnabled(true);
+            jmiFileUp.setEnabled(true);
           }
         }
       }
@@ -600,16 +611,20 @@ public class QueueView extends PlaylistView {
         // check if several rows have been selected :
         // doesn't supported yet
         jbDown.setEnabled(false);
+        jmiFileDown.setEnabled(false);
       } else { // yet here ?
         if (bPlanned) {
           // No up/down buttons for planned tracks
           jbDown.setEnabled(false);
+          jmiFileDown.setEnabled(false);
         } else { // normal item
           if (selection.getMaxSelectionIndex() < editorModel.getItems().size() - 1) {
             // a normal item can't go in the planned items
             jbDown.setEnabled(true);
+            jmiFileDown.setEnabled(true);
           } else {
             jbDown.setEnabled(false);
+            jmiFileDown.setEnabled(false);
           }
         }
       }

@@ -195,7 +195,7 @@ public class AlbumsTableView extends AbstractTableView {
         }
       }
     });
-    
-  }
 
+  }
+  
 }

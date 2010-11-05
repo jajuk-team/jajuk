@@ -204,7 +204,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       int offset = 0;
       for (File file : alFilesToAdd) {
         addFile(position + offset, file);
-        offset ++;
+        offset++;
       }
     } catch (final Exception e) {
       Log.error(e);
@@ -439,7 +439,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * 
    * @return Returns the list of files this playlist maps to
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException if the playlist cannot be mounted or cannot be read
    */
   public List<File> getFiles() throws JajukException {
     // if normal playlist, propose to mount device if unmounted
