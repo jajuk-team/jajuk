@@ -29,6 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
+import org.jajuk.base.Year;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.Const;
@@ -94,6 +95,8 @@ public class JajukCellRenderer extends SubstanceDefaultTableCellRenderer impleme
           column);
     } else if (oValue instanceof Duration) {
       ((JLabel) c).setText(((Duration) oValue).toString());
+    } else if (oValue instanceof Year) {
+      ((JLabel) c).setText(((Year) oValue).toString());
     }
     c.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
     if (color != null) {
