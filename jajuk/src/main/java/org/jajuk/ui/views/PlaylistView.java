@@ -65,6 +65,7 @@ import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.Item;
 import org.jajuk.base.Playlist;
 import org.jajuk.base.Playlist.Type;
 import org.jajuk.events.JajukEvent;
@@ -381,8 +382,9 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     editorTable.getColumnModel().getColumn(0).setMaxWidth(20);
     editorTable.getTableHeader().setPreferredSize(new Dimension(0, 20));
     editorTable.showColumns(editorTable.getColumnsConf());
-    ListSelectionModel lsm = editorTable.getSelectionModel();
-    lsm.addListSelectionListener(this);
+    //  Note : don't add a ListSelectionListener here, see JajukTable code, 
+    //  all the event code is centralized over there 
+    editorTable.addListSelectionListener(this);
     jpEditor.setLayout(new MigLayout("ins 0", "[grow]"));
     jpEditor.add(jpEditorControl, "growx,wrap");
     JScrollPane jsp = new JScrollPane(editorTable);
@@ -544,6 +546,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     eventSubjectSet.add(JajukEvents.VIEW_REFRESH_REQUEST);
     eventSubjectSet.add(JajukEvents.QUEUE_NEED_REFRESH);
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
+    eventSubjectSet.add(JajukEvents.RATE_CHANGED);
     return eventSubjectSet;
   }
 
@@ -671,6 +674,10 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       } finally {
         editorModel.setRefreshing(false);
       }
+
+      // Refresh the preference menu according to the selection
+      // (useful on rating change for a single-row model for ie)
+      pjmFilesEditor.resetUI(editorTable.getSelection());
 
     } catch (JajukException je) {
       Log.warn("Cannot parse playlist : " + plf.getAbsolutePath());
@@ -916,16 +923,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
    *          DOCUMENT_ME
    */
   public void valueChanged(ListSelectionEvent e) {
-    if (e.getValueIsAdjusting()) {
-      // leave during normal refresh
-      return;
-    }
-
-    // Ignore event if the model is refreshing
-    if (editorModel.isRefreshing()) {
-      return;
-    }
-
     ListSelectionModel selection = (ListSelectionModel) e.getSource();
     if (!selection.isSelectionEmpty()) {
       updateSelection();
@@ -1018,11 +1015,9 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
    * Update editor files selection
    */
   void updateSelection() {
-    JajukTableModel model = (JajukTableModel) editorTable.getModel();
     selectedFiles.clear();
-    int[] rows = editorTable.getSelectedRows();
-    for (int element : rows) {
-      File file = (File) model.getItemAt(editorTable.convertRowIndexToModel(element));
+    for (Item item : editorTable.getSelection()) {
+      File file = (File) item;
       selectedFiles.add(file);
     }
   }

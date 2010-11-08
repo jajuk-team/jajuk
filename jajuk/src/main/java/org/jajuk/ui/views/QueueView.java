@@ -234,9 +234,9 @@ public class QueueView extends PlaylistView {
         }
       }
     });
-    // Add selection listener
-    ListSelectionModel lsm = editorTable.getSelectionModel();
-    lsm.addListSelectionListener(this);
+    //  Note : don't add a ListSelectionListener here, see JajukTable code, 
+    //  all the event code is centralized over there 
+    editorTable.addListSelectionListener(this);
     // Register keystrokes over table
     super.setKeystrokes();
     // Force a first need refresh event
@@ -439,6 +439,9 @@ public class QueueView extends PlaylistView {
     } finally {
       editorModel.setRefreshing(false);
     }
+    // Refresh the preference menu according to the selection 
+    // (useful on rating change for a single-row model for ie)
+    pjmFilesEditor.resetUI(editorTable.getSelection());
   }
 
   /**
@@ -553,22 +556,12 @@ public class QueueView extends PlaylistView {
    */
   @Override
   public void valueChanged(ListSelectionEvent e) {
-    if (e.getValueIsAdjusting()) {
-      // leave during normal refresh
-      return;
-    }
-
-    // Ignore event if the model is refreshing
-    if (editorModel.isRefreshing()) {
-      return;
-    }
-
     ListSelectionModel selection = (ListSelectionModel) e.getSource();
     if (!selection.isSelectionEmpty()) {
-
       updateSelection();
       updateInformationView(selectedFiles);
       // Refresh the preference menu according to the selection
+      System.out.println(editorTable.getSelection());
       pjmFilesEditor.resetUI(editorTable.getSelection());
       int selectedRow = selection.getMaxSelectionIndex();
       // true if selected line is a planned track

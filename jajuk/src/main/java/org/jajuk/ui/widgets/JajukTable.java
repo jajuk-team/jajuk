@@ -85,7 +85,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   private final String sConf;
 
   /** User Selection*. */
-  private final List<Item> selection;
+  private final List<Item> selection = new ArrayList<Item>();
 
   /** DOCUMENT_ME. */
   private final JPopupMenu jmenu;
@@ -104,6 +104,13 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /** Mouse draging flag */
   private boolean isMouseDragging;
+
+  /** List of list selection listeners whose valueChanged() method is called
+   * by this class valueChanged() method to avoid concurrency between 
+   * them. Otherwise, the preference menu item could be set with the 
+   * previous selection value.
+   */
+  List<ListSelectionListener> listeners = new ArrayList<ListSelectionListener>(1);
 
   /** The Jajuk table mouse adapter used to handle click events. */
   JajukMouseAdapter ma = new JajukMouseAdapter() {
@@ -155,7 +162,6 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     super(model);
     acceptColumnsEvents = true;
     this.sConf = sConf;
-    selection = new ArrayList<Item>();
     jmenu = new JPopupMenu();
     setShowGrid(false);
     init(bSortable);
@@ -171,6 +177,15 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     addHighlighter(UtilGUI.getAlternateHighlighter());
     // Register itself to incoming events
     ObservationManager.register(this);
+  }
+
+  /**
+   * Register a new list selection listener 
+   * @param listener the listener to register
+   * 
+   */
+  public void addListSelectionListener(ListSelectionListener listener) {
+    listeners.add(listener);
   }
 
   /**
@@ -480,13 +495,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
         return;
       }
     }
-    JajukTableModel model = (JajukTableModel) getModel();
-    selection.clear();
-    int[] rows = getSelectedRows();
-    for (int element : rows) {
-      Item o = model.getItemAt(convertRowIndexToModel(element));
-      selection.add(o);
-    }
+    updateSelection();
     // throw a table selection changed event providing the current perspective, view and
     // selection (used for tree/table sync)
     Properties properties = new Properties();
@@ -498,6 +507,24 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
       properties.put(Const.DETAIL_VIEW, parentView);
     }
     ObservationManager.notify(new JajukEvent(JajukEvents.TABLE_SELECTION_CHANGED, properties));
+
+    // Call specific behaviors
+    for (ListSelectionListener listener : listeners) {
+      listener.valueChanged(e);
+    }
+  }
+
+  /**
+   * Update the selection
+   */
+  private void updateSelection() {
+    JajukTableModel model = (JajukTableModel) getModel();
+    selection.clear();
+    int[] rows = getSelectedRows();
+    for (int element : rows) {
+      Item o = model.getItemAt(convertRowIndexToModel(element));
+      selection.add(o);
+    }
   }
 
   /**
