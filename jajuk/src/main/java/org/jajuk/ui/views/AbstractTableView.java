@@ -722,6 +722,11 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       return;
     }
 
+    // Ignore event if the model is refreshing
+    if (((JajukTableModel) jtable.getModel()).isRefreshing()) {
+      return;
+    }
+
     // Call view specific behavior on selection change
     onSelectionChange();
 

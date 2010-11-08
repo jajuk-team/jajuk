@@ -471,6 +471,15 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    */
   @Override
   public void valueChanged(ListSelectionEvent e) {
+    if (e.getValueIsAdjusting()) {
+      return;
+    }
+    // Ignore event if the model is refreshing
+    if (getModel() instanceof JajukTableModel) {
+      if (((JajukTableModel) getModel()).isRefreshing()) {
+        return;
+      }
+    }
     JajukTableModel model = (JajukTableModel) getModel();
     selection.clear();
     int[] rows = getSelectedRows();
@@ -489,7 +498,6 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
       properties.put(Const.DETAIL_VIEW, parentView);
     }
     ObservationManager.notify(new JajukEvent(JajukEvents.TABLE_SELECTION_CHANGED, properties));
-
   }
 
   /**

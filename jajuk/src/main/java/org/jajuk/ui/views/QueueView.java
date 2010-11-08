@@ -255,12 +255,13 @@ public class QueueView extends PlaylistView {
           QueueModel.goTo(editorTable.getSelectedRow());
           // remove selection for planned tracks
           ListSelectionModel lsm = editorTable.getSelectionModel();
-          bSettingSelection = true;
+          editorModel.setRefreshing(true);
           editorTable.getSelectionModel().removeSelectionInterval(lsm.getMinSelectionIndex(),
               lsm.getMaxSelectionIndex());
-          bSettingSelection = false;
         } catch (Exception e) {
           Log.error(e);
+        } finally {
+          editorModel.setRefreshing(false);
         }
       }
     }.start();
@@ -426,15 +427,18 @@ public class QueueView extends PlaylistView {
     // save selection to avoid reseting selection the user is doing
     int[] rows = editorTable.getSelectedRows();
 
-    // force table refresh
-    editorModel.fireTableDataChanged();
+    try {
+      editorModel.setRefreshing(true);
+      // force table refresh
+      editorModel.fireTableDataChanged();
 
-    bSettingSelection = true;
-    for (int element : rows) {
-      // set saved selection after a refresh
-      editorTable.getSelectionModel().addSelectionInterval(element, element);
+      for (int element : rows) {
+        // set saved selection after a refresh
+        editorTable.getSelectionModel().addSelectionInterval(element, element);
+      }
+    } finally {
+      editorModel.setRefreshing(false);
     }
-    bSettingSelection = false;
   }
 
   /**
@@ -549,10 +553,16 @@ public class QueueView extends PlaylistView {
    */
   @Override
   public void valueChanged(ListSelectionEvent e) {
-    if (e.getValueIsAdjusting() || bSettingSelection) {
+    if (e.getValueIsAdjusting()) {
       // leave during normal refresh
       return;
     }
+
+    // Ignore event if the model is refreshing
+    if (editorModel.isRefreshing()) {
+      return;
+    }
+
     ListSelectionModel selection = (ListSelectionModel) e.getSource();
     if (!selection.isSelectionEmpty()) {
 

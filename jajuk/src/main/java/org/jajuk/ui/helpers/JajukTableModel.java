@@ -85,6 +85,23 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /** DOCUMENT_ME. */
   protected IconLabel unmount_play_icon = null;
+  
+  /** Whether the model is refreshing so we must ignore selection changes events */ 
+  private boolean refreshing = false;
+
+  /**
+   * @return the refreshing
+   */
+  public boolean isRefreshing() {
+    return this.refreshing;
+  }
+
+  /**
+   * @param refreshing the refreshing to set
+   */
+  public void setRefreshing(boolean refreshing) {
+    this.refreshing = refreshing;
+  }
 
   /**
    * The Constructor.

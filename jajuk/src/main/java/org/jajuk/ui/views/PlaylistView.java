@@ -181,9 +181,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   /** Current playlist. */
   Playlist plf;
 
-  /** Selection set flag. */
-  boolean bSettingSelection = false;
-
   /** Editor Model */
   protected PlaylistTableModel editorModel;
 
@@ -209,7 +206,8 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   /** Selected smart playlist. */
   private SmartPlaylistView spSelected;
 
-  /** List of selected files in the editor table. */
+  /** List of selected files in the editor table. We don't just rely upon JajukTable's selection because
+   * we need here a deep selection computation including playlists contents*/
   List<File> selectedFiles = new ArrayList<File>(20);
 
   /** Mouse adapter for smart playlist items. */
@@ -659,16 +657,21 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       editorModel.populateModel(editorTable.getColumnsConf());
       int[] rows = editorTable.getSelectedRows();
 
-      // Force table refreshing
-      editorModel.fireTableDataChanged();
+      try {
+        editorModel.setRefreshing(true);
 
-      // Save selection
-      bSettingSelection = true;
-      for (int element : rows) {
-        // set saved selection after a refresh
-        editorTable.getSelectionModel().addSelectionInterval(element, element);
+        // Force table refreshing
+        editorModel.fireTableDataChanged();
+
+        // Save selection
+        for (int element : rows) {
+          // set saved selection after a refresh
+          editorTable.getSelectionModel().addSelectionInterval(element, element);
+        }
+      } finally {
+        editorModel.setRefreshing(false);
       }
-      bSettingSelection = false;
+
     } catch (JajukException je) {
       Log.warn("Cannot parse playlist : " + plf.getAbsolutePath());
       // Clear the model so we don't keep previous playlist tracks
@@ -913,10 +916,16 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
    *          DOCUMENT_ME
    */
   public void valueChanged(ListSelectionEvent e) {
-    if (e.getValueIsAdjusting() || bSettingSelection) {
+    if (e.getValueIsAdjusting()) {
       // leave during normal refresh
       return;
     }
+
+    // Ignore event if the model is refreshing
+    if (editorModel.isRefreshing()) {
+      return;
+    }
+
     ListSelectionModel selection = (ListSelectionModel) e.getSource();
     if (!selection.isSelectionEmpty()) {
       updateSelection();
