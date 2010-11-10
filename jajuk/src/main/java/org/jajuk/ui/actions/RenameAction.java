@@ -102,7 +102,7 @@ public class RenameAction extends JajukAction {
        */
 
       // check that the directory is not an ancestor of the currently played file
-      if (QueueModel.getCurrentItem() != null
+      if ( QueueModel.getPlayingFile() != null
           && QueueModel.getCurrentItem().getFile().hasAncestor((Directory) currentItem)) {
         Messages.showWarningMessage(Messages.getErrorMessage(172));
         return;
