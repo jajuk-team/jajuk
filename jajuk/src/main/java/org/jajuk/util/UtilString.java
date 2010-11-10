@@ -318,8 +318,7 @@ public final class UtilString {
     // Check Artist name
     out = UtilString.applyArtistPattern(file, sPattern, bMandatory, normalize, out, track);
 
-    // Check Album artist
-    // Check Artist name
+    // Check Album artist, use artist name if no album artist
     out = UtilString.applyAlbumArtistPattern(sPattern, normalize, out, track);
 
     // Check Genre name
