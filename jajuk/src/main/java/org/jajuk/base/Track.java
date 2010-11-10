@@ -359,7 +359,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    */
   public String getAlbumArtistOrArtist() {
     // If the album artist tag is provided, perfect, let's use it !
-    String albumArtist = getAlbumArtist().getName2();
+    String albumArtist = getAlbumArtist().getName();
     if (StringUtils.isNotBlank(albumArtist) && !(Const.UNKNOWN_ARTIST.equals(albumArtist))) {
       return albumArtist;
     }
