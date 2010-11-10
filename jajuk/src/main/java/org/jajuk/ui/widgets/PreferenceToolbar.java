@@ -84,8 +84,8 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
     jcbPreference = new JComboBox();
     // Add tooltips on combo items
     jcbPreference.setRenderer(new ComboBoxRenderer());
-    jcbPreference.setMinimumSize(new Dimension(40, 0));
-    jcbPreference.setPreferredSize(new Dimension(46, 0));
+    jcbPreference.setMinimumSize(new Dimension(45, 0));
+    jcbPreference.setPreferredSize(new Dimension(45, 0));
     jcbPreference.setToolTipText(Messages.getString("Preference.0"));
 
     jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_ADORE));
