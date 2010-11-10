@@ -302,10 +302,10 @@ public final class UtilSystem {
   }
 
   /**
-   * Move a file to another file.
+   * Move a file to another file (directories are not supported).
    * 
    * Note that it may be better to use this method than java.io.File.renameTo() method that 
-   * doesn't seem to work always under windows (in special directories)and because this method 
+   * doesn't seem to work always under windows (in special directories) and because this method 
    * always return an exception in case of problem.
    *
    * @param file : file to move

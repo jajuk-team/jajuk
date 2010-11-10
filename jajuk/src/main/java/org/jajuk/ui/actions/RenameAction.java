@@ -21,6 +21,7 @@
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JComponent;
@@ -40,7 +41,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
-import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -115,7 +115,13 @@ public class RenameAction extends JajukAction {
           java.io.File newFile = new java.io.File(((Directory) currentItem).getParentDirectory()
               .getAbsolutePath()
               + "/" + newName);
-          UtilSystem.move(((Directory) currentItem).getFio(), newFile);
+          java.io.File dir = ((Directory) currentItem).getFio();
+          // For directories, we don't copy / delete, we just rename for performance reasons
+          // and because the Utilsystem.move() code only works for files.
+          // We check that the directory has actually been renamed.
+          if (!dir.renameTo(newFile)) {
+            throw new IOException("Cannot rename directory : " + dir.getAbsolutePath());
+          }
           DirectoryManager.getInstance().removeDirectory(((Directory) currentItem).getID());
           (((Directory) currentItem).getParentDirectory()).refresh(false, null);
           ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
