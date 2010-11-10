@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -61,6 +61,21 @@ public class DeleteSelectionAction extends SelectionAction {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** DOCUMENT_ME. */
+  private List<File> alFiles;
+
+  /** DOCUMENT_ME. */
+  private List<File> rejFiles;
+
+  /** DOCUMENT_ME. */
+  private List<Directory> alDirs;
+
+  /** DOCUMENT_ME. */
+  private List<Directory> rejDirs;
+
+  /** DOCUMENT_ME. */
+  private List<Directory> emptyDirs;
+
   /**
    * Instantiates a new delete selection action.
    */
@@ -68,6 +83,99 @@ public class DeleteSelectionAction extends SelectionAction {
     super(Messages.getString("FilesTreeView.7"), IconLoader.getIcon(JajukIcons.DELETE), true);
     setAcceleratorKey(KeyStroke.getKeyStroke("DELETE"));
     setShortDescription(Messages.getString("FilesTreeView.7"));
+  }
+
+  /**
+   * Called on files deletion (long task)
+   */
+  class FilesDeletionThread extends Thread {
+
+    /**
+     * Instantiates a new files deletion thread.
+     */
+    FilesDeletionThread() {
+      super("Files Deletion Thread");
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Thread#run()
+     */
+    @Override
+    public void run() {
+      UtilGUI.waiting();
+      for (File f : alFiles) {
+        try {
+          Directory d = f.getDirectory();
+          UtilSystem.deleteFile(f.getFIO());
+          FileManager.getInstance().removeFile(f);
+          if (d.getFiles().size() == 0) {
+            emptyDirs.add(f.getDirectory());
+          }
+        } catch (Exception ioe) {
+          Log.error(131, ioe);
+          rejFiles.add(f);
+        }
+      }
+      UtilGUI.stopWaiting();
+      InformationJPanel.getInstance().setMessage(Messages.getString("ActionDelete.0"),
+          InformationJPanel.MessageType.INFORMATIVE);
+      if (rejFiles.size() > 0) {
+        String rejString = "";
+        for (File f : rejFiles) {
+          rejString += f.getName() + "\n";
+        }
+        // Operation failed... display list of files in error
+        Messages.showWarningMessage(Messages.getErrorMessage(136) + "\n" + rejString);
+      }
+      // requires device refresh
+      ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+    }
+  }
+
+  /**
+   * Called on directories deletion (long task)
+   */
+  class DirectoriesDeletionThread extends Thread {
+
+    /**
+     * Instantiates a new directories deletion thread.
+     */
+    DirectoriesDeletionThread() {
+      super("Directories Deletion Thread");
+    }
+
+    @Override
+    public void run() {
+      UtilGUI.waiting();
+      for (Directory d : alDirs) {
+        try {
+          for (File f : d.getFiles()) {
+            if (QueueModel.getPlayingFile() != null && f.equals(QueueModel.getPlayingFile())) {
+              throw new Exception("File currently in use");
+            }
+          }
+          UtilSystem.deleteDir(new java.io.File(d.getAbsolutePath()));
+          DirectoryManager.getInstance().removeDirectory(d.getID());
+        } catch (Exception ioe) {
+          Log.error(131, ioe);
+          rejDirs.add(d);
+        }
+      }
+      UtilGUI.stopWaiting();
+      InformationJPanel.getInstance().setMessage(Messages.getString("ActionDelete.1"),
+          InformationJPanel.MessageType.INFORMATIVE);
+
+      if (rejDirs.size() > 0) {
+        String rejString = "";
+        for (Directory d : rejDirs) {
+          rejString += d.getName() + "\n";
+        }
+        // Operation failed... display list of files in error
+        Messages.showWarningMessage(Messages.getErrorMessage(136) + "\n\n" + rejString);
+      }
+      // requires device refresh
+      ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+    }
   }
 
   /*
@@ -81,11 +189,11 @@ public class DeleteSelectionAction extends SelectionAction {
     expandPlaylists = false;
     super.perform(e);
     // Get required data from the tree (selected node and node type)
-    final List<File> alFiles = new ArrayList<File>(selection.size());
-    final List<File> rejFiles = new ArrayList<File>(selection.size());
-    final List<Directory> alDirs = new ArrayList<Directory>(selection.size());
-    final List<Directory> rejDirs = new ArrayList<Directory>(selection.size());
-    final List<Directory> emptyDirs = new ArrayList<Directory>(selection.size());
+    alFiles = new ArrayList<File>(selection.size());
+    rejFiles = new ArrayList<File>(selection.size());
+    alDirs = new ArrayList<Directory>(selection.size());
+    rejDirs = new ArrayList<Directory>(selection.size());
+    emptyDirs = new ArrayList<Directory>(selection.size());
 
     // Compute all files to move from various items list
     if (selection.size() == 0) {
@@ -127,145 +235,114 @@ public class DeleteSelectionAction extends SelectionAction {
         }
       }
     }
-
+    //  Consider files (selection can contain both files and directories)
     if (alFiles.size() > 0) {
-      // Ask if a confirmation is required
-      if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_FILE)) {
-        String sFiles = "";
-        for (File f : alFiles) {
-          sFiles += f.getName() + "\n";
-        }
-        int iResu = Messages.getChoice(
-            Messages.getString("Confirmation_delete_files") + " : \n\n" + sFiles + "\n"
-                + alFiles.size() + " " + Messages.getString("Confirmation_file_number"),
-            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-        if (iResu != JOptionPane.YES_OPTION) {
-          return;
-        }
-      }
-
-      new Thread("Delete Selection Thread") {
-        @Override
-        public void run() {
-          UtilGUI.waiting();
-          for (File f : alFiles) {
-            try {
-              if (QueueModel.getPlayingFile() != null && f.equals(QueueModel.getPlayingFile())) {
-                throw new Exception("File currently in use");
-              }
-              Directory d = f.getDirectory();
-              UtilSystem.deleteFile(f.getFIO());
-              FileManager.getInstance().removeFile(f);
-              if (d.getFiles().size() == 0) {
-                emptyDirs.add(f.getDirectory());
-              }
-            } catch (Exception ioe) {
-              Log.error(131, ioe);
-              rejFiles.add(f);
-            }
-          }
-          UtilGUI.stopWaiting();
-          InformationJPanel.getInstance().setMessage(Messages.getString("ActionDelete.0"),
-              InformationJPanel.MessageType.ERROR);
-          if (rejFiles.size() > 0) {
-            String rejString = "";
-            for (File f : rejFiles) {
-              rejString += f.getName() + "\n";
-            }
-            Messages.showWarningMessage(Messages.getErrorMessage(172) + "\n\n" + rejString);
-          }
-          // requires device refresh
-          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-        }
-      }.start();
-
-      if (emptyDirs.size() > 0) {
-        String emptyDirsString = "";
-        for (Directory d : emptyDirs) {
-          emptyDirsString += d.getName() + "\n";
-        }
-
-        int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_empty_dirs")
-            + " : \n\n" + emptyDirsString, JOptionPane.YES_NO_CANCEL_OPTION,
-            JOptionPane.INFORMATION_MESSAGE);
-        if (iResu != JOptionPane.YES_OPTION) {
-          return;
-        } else {
-          for (Directory d : emptyDirs) {
-            try {
-              UtilSystem.deleteDir(new java.io.File(d.getAbsolutePath()));
-              DirectoryManager.getInstance().removeDirectory(d.getID());
-            } catch (Exception ioe) {
-              Log.error(131, ioe);
-              rejDirs.add(d);
-            }
-          }
-          if (rejDirs.size() > 0) {
-            String rejString = "";
-            for (Directory d : rejDirs) {
-              rejString += d.getName() + "\n";
-            }
-            Messages.showWarningMessage(Messages.getErrorMessage(173) + "\n\n" + rejString);
-          }
-          // requires device refresh
-          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-        }
-      }
+      handleFiles();
     }
 
+    // Now consider directories (selection can contain both files and directories)
     if (alDirs.size() > 0) {
-      // Ask if a confirmation is required
-      if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_FILE)) {
-        String sFiles = "";
-        int count = 0;
-        for (Directory d : alDirs) {
-          sFiles += d.getAbsolutePath() + "\n";
-          count += d.getFilesRecursively().size();
-          for (File f : d.getFilesRecursively()) {
-            sFiles += "  + " + f.getName() + "\n";
-          }
-
-        }
-        int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_dirs") + " : \n"
-            + sFiles + "\n" + count + " " + Messages.getString("Confirmation_file_number"),
-            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-        if (iResu != JOptionPane.YES_OPTION) {
-          return;
-        }
-      }
-      new Thread("Delete Selection Thread") {
-        @Override
-        public void run() {
-          UtilGUI.waiting();
-          for (Directory d : alDirs) {
-            try {
-              for (File f : d.getFiles()) {
-                if (QueueModel.getPlayingFile() != null && f.equals(QueueModel.getPlayingFile())) {
-                  throw new Exception("File currently in use");
-                }
-              }
-              UtilSystem.deleteDir(new java.io.File(d.getAbsolutePath()));
-              DirectoryManager.getInstance().removeDirectory(d.getID());
-            } catch (Exception ioe) {
-              Log.error(131, ioe);
-              rejDirs.add(d);
-            }
-          }
-          UtilGUI.stopWaiting();
-          InformationJPanel.getInstance().setMessage(Messages.getString("ActionDelete.1"),
-              InformationJPanel.MessageType.ERROR);
-
-          if (rejDirs.size() > 0) {
-            String rejString = "";
-            for (Directory d : rejDirs) {
-              rejString += d.getName() + "\n";
-            }
-            Messages.showWarningMessage(Messages.getErrorMessage(173) + "\n\n" + rejString);
-          }
-          // requires device refresh
-          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-        }
-      }.start();
+      handleDirectories();
     }
   }
+
+  /**
+   * Handle directories.
+   */
+  private void handleDirectories() {
+    // Ask if a confirmation is required
+    if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_FILE)) {
+      String sFiles = "";
+      int count = 0;
+      for (Directory d : alDirs) {
+        sFiles += d.getAbsolutePath() + "\n";
+        count += d.getFilesRecursively().size();
+        for (File f : d.getFilesRecursively()) {
+          sFiles += "  + " + f.getName() + "\n";
+        }
+      }
+      int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_dirs") + " : \n"
+          + sFiles + "\n" + count + " " + Messages.getString("Confirmation_file_number"),
+          JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+      if (iResu != JOptionPane.YES_OPTION) {
+        return;
+      }
+
+      // Check if selection doesn't contain playing file's directory
+      for (Directory dir : alDirs) {
+        if (QueueModel.getPlayingFile() != null && QueueModel.getPlayingFile().hasAncestor(dir)) {
+          Messages
+              .showWarningMessage(Messages.getErrorMessage(172) + " : " + dir.getAbsolutePath());
+          return;
+        }
+      }
+    }
+    //Actual deletion
+    new DirectoriesDeletionThread().start();
+  }
+
+  /**
+   * Handle files.
+   */
+  private void handleFiles() {
+    // Ask if a confirmation is required
+    if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_FILE)) {
+      String sFiles = "";
+      for (File f : alFiles) {
+        sFiles += f.getName() + "\n";
+      }
+      int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_files") + " : \n\n"
+          + sFiles + "\n" + alFiles.size() + " " + Messages.getString("Confirmation_file_number"),
+          JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+      if (iResu != JOptionPane.YES_OPTION) {
+        return;
+      }
+    }
+
+    // Check if selection doesn't contain playing file
+    for (File f : alFiles) {
+      if (QueueModel.getPlayingFile() != null && f.equals(QueueModel.getPlayingFile())) {
+        Messages.showWarningMessage(Messages.getErrorMessage(172) + " : " + f.getAbsolutePath());
+        return;
+      }
+    }
+    //Actual deletion
+    new FilesDeletionThread().start();
+
+    // Cleanup empty directories
+    if (emptyDirs.size() > 0) {
+      String emptyDirsString = "";
+      for (Directory d : emptyDirs) {
+        emptyDirsString += d.getName() + "\n";
+      }
+
+      int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_empty_dirs")
+          + " : \n\n" + emptyDirsString, JOptionPane.YES_NO_CANCEL_OPTION,
+          JOptionPane.INFORMATION_MESSAGE);
+      if (iResu != JOptionPane.YES_OPTION) {
+        return;
+      } else {
+        for (Directory d : emptyDirs) {
+          try {
+            UtilSystem.deleteDir(new java.io.File(d.getAbsolutePath()));
+            DirectoryManager.getInstance().removeDirectory(d.getID());
+          } catch (Exception ioe) {
+            Log.error(131, ioe);
+            rejDirs.add(d);
+          }
+        }
+        if (rejDirs.size() > 0) {
+          String rejString = "";
+          for (Directory d : rejDirs) {
+            rejString += d.getName() + "\n";
+          }
+          // Operation failed... display list of files in error
+          Messages.showWarningMessage(Messages.getErrorMessage(136) + "\n" + rejString);
+        }
+        // requires device refresh
+        ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+      }
+    }
+  }
+
 }
