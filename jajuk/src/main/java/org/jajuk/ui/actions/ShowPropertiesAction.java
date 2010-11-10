@@ -30,7 +30,7 @@ import org.jajuk.base.Item;
 import org.jajuk.base.LogicalItem;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.ui.wizard.PropertiesWizard;
+import org.jajuk.ui.wizard.PropertiesDialog;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -82,18 +82,18 @@ public class ShowPropertiesAction extends SelectionAction {
           tracks.add(((File) file).getTrack());
         }
       }
-      new PropertiesWizard(selection, tracks);
+      new PropertiesDialog(selection, tracks);
     } else if (first instanceof Track) {
-      new PropertiesWizard(selection);
+      new PropertiesDialog(selection);
     } else if (first instanceof LogicalItem || first instanceof Directory) {
       // Artist, Album, Genre... : display the dual properties panel: one for
       // the item itself, the other with all tracks
       List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(selection, false);
       List<Item> items = new ArrayList<Item>(tracks);
-      new PropertiesWizard(selection, items);
+      new PropertiesDialog(selection, items);
     } else {
       // All others types: just display the properties window
-      new PropertiesWizard(selection);
+      new PropertiesDialog(selection);
     }
   }
 

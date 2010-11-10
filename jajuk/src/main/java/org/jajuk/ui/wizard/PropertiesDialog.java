@@ -86,9 +86,9 @@ import org.jdesktop.swingx.JXDatePicker;
 import org.jdesktop.swingx.VerticalLayout;
 
 /**
- * ItemManager properties wizard for any jajuk item.
+ * ItemManager properties dialog for any jajuk item.
  */
-public class PropertiesWizard extends JajukJDialog implements ActionListener {
+public class PropertiesDialog extends JajukJDialog implements ActionListener {
 
   /** The Constant PROPERTIES_WIZARD_6. DOCUMENT_ME */
   private static final String PROPERTIES_WIZARD_6 = "PropertiesWizard.6";
@@ -130,7 +130,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
    * 
    * @param alItems items to display
    */
-  public PropertiesWizard(List<Item> alItems) {
+  public PropertiesDialog(List<Item> alItems) {
     super();
 
     // windows title: name of the element if there is
@@ -149,7 +149,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
         .get(0).getDesc(), 50) : Messages.getString(PROPERTIES_WIZARD_6) + " [" + alItems.size()
         + "]", bMerged);
     // OK/Cancel buttons
-    okc = new OKCancelPanel(PropertiesWizard.this, Messages.getString("Apply"), Messages
+    okc = new OKCancelPanel(PropertiesDialog.this, Messages.getString("Apply"), Messages
         .getString("Close"));
     // Add items
     jpMain = new JPanel(new MigLayout("insets 5,gapx 5,gapy 5", "[grow]"));
@@ -165,7 +165,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
    * @param alItems1 items to display in the first wizard panel (file for ie)
    * @param alItems2 items to display in the second panel (associated track for ie )
    */
-  public PropertiesWizard(List<Item> alItems1, List<Item> alItems2) {
+  public PropertiesDialog(List<Item> alItems1, List<Item> alItems2) {
     super();
 
     // windows title: name of the element of only one item, or "selection"
@@ -539,10 +539,14 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
                   .getName()))) {
             // for artists or album-artists
             Vector<String> artists = null;
+            // This string is the artist or the album artist value, used to find combo box index to set
+            String valueToCheck = null;
             if (Const.XML_ARTIST.equals(meta.getName())) {
               artists = ArtistManager.getArtistsList();
+              valueToCheck = pa.getHumanValue(Const.XML_ARTIST);
             } else if (Const.XML_ALBUM_ARTIST.equals(meta.getName())) {
               artists = AlbumArtistManager.getAlbumArtistsList();
+              valueToCheck = pa.getHumanValue(Const.XML_ALBUM_ARTIST);
             }
             final JComboBox jcb = new JComboBox(artists);
             jcb.setEditable(true);
@@ -550,9 +554,8 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
             // set current genre to combo
             int i = -1;
             int comp = 0;
-            String sCurrentArtist = pa.getHumanValue(Const.XML_ARTIST);
             for (String s : artists) {
-              if (s.equals(sCurrentArtist)) {
+              if (s.equals(valueToCheck)) {
                 i = comp;
                 break;
               }
@@ -687,7 +690,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
           List<Item> alFiles = new ArrayList<Item>(1);
           alFiles.addAll(track.getFiles());
           // show properties window for this item
-          new PropertiesWizard(alFiles);
+          new PropertiesDialog(alFiles);
         } else if (Const.XML_PLAYLIST_FILES.equals(sProperty)) {
           // can only be a set a files
           String sValue = alItems.get(0).getStringValue(sProperty);
@@ -700,7 +703,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
               items.add(pa);
             }
           }
-          new PropertiesWizard(items);
+          new PropertiesDialog(items);
           // show properties window for this item
         } else {
           String sValue = alItems.get(0).getStringValue(sProperty);
@@ -710,7 +713,7 @@ public class PropertiesWizard extends JajukJDialog implements ActionListener {
             List<Item> items = new ArrayList<Item>(1);
             items.add(pa);
             // show properties window for this item
-            new PropertiesWizard(items);
+            new PropertiesDialog(items);
           }
         }
       }

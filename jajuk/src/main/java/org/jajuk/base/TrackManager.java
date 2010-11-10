@@ -592,7 +592,7 @@ public final class TrackManager extends ItemManager {
           tag.commit();
           // Force files resorting to ensure the sorting consistency
           // Do it here only because the sorting is a long operation already done
-          // by the TrackManager.commit() method caller (PropertiesWizard for ie).
+          // by the TrackManager.commit() method caller (PropertiesDialog for ie).
           // When called for a table change for ie, the sorting must be done for
           // each change.
           FileManager.getInstance().forceSorting();
@@ -795,7 +795,7 @@ public final class TrackManager extends ItemManager {
           tag.commit();
           // Force files resorting to ensure the sorting consistency
           // Do it here only because the sorting is a long operation already done
-          // by the TrackManager.commit() method caller (PropertiesWizard for ie).
+          // by the TrackManager.commit() method caller (PropertiesDialog for ie).
           // When called for a table change for ie, the sorting must be done for
           // each change.
           FileManager.getInstance().forceSorting();
