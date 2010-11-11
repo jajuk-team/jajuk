@@ -123,7 +123,7 @@ public class RenameAction extends JajukAction {
             throw new IOException("Cannot rename directory : " + dir.getAbsolutePath());
           }
           DirectoryManager.getInstance().removeDirectory(((Directory) currentItem).getID());
-          (((Directory) currentItem).getParentDirectory()).refresh(false, null);
+          (((Directory) currentItem).getParentDirectory()).refresh(false);
           ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
         } catch (Exception er) {
           Log.error(er);

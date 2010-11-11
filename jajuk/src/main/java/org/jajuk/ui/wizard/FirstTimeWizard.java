@@ -205,7 +205,7 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
           device.setProperty(Const.XML_DEVICE_AUTO_REFRESH, dRefreshTime);
           try {
             // Refresh device synchronously
-            device.refresh(false, false, false);
+            device.refresh(false, false, false, null);
           } catch (final Exception e2) {
             Log.error(112, device.getName(), e2);
             Messages.showErrorMessage(112, device.getName());

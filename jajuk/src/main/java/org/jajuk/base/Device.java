@@ -144,19 +144,19 @@ public class Device extends PhysicalItem implements Comparable<Device> {
 
   /**
    * Scan directories to cleanup removed files and playlists.
-   * 
+   * @param dirsToRefresh list of the directory to refresh, null if all of them
    * @return whether some items have been removed
    */
-  public boolean cleanRemovedFiles() {
+  public boolean cleanRemovedFiles(List<Directory> dirsToRefresh) {
     long l = System.currentTimeMillis();
     // directories cleanup
-    boolean bChanges = cleanDirectories();
+    boolean bChanges = cleanDirectories(dirsToRefresh);
 
     // files cleanup
-    bChanges = bChanges | cleanFiles();
+    bChanges = bChanges | cleanFiles(dirsToRefresh);
 
     // Playlist cleanup
-    bChanges = bChanges | cleanPlaylist();
+    bChanges = bChanges | cleanPlaylist(dirsToRefresh);
 
     // clear history to remove old files referenced in it
     if (Conf.getString(Const.CONF_HISTORY) != null) {
@@ -173,13 +173,27 @@ public class Device extends PhysicalItem implements Comparable<Device> {
 
   /**
    * Walk through all Playlists and remove the ones for the current device.
+   * @param dirsToRefresh list of the directory to refresh, null if all of them
    * 
    * @return true if there was any playlist removed
    */
-  private boolean cleanPlaylist() {
+  private boolean cleanPlaylist(List<Directory> dirsToRefresh) {
     boolean bChanges = false;
     final List<Playlist> plfiles = PlaylistManager.getInstance().getPlaylists();
     for (final Playlist plf : plfiles) {
+      // check if it is a playlist located inside refreshed directory
+      if (dirsToRefresh != null) {
+        boolean checkIt = false;
+        for (Directory directory : dirsToRefresh) {
+          if (plf.hasAncestor(directory)) {
+            checkIt = true;
+          }
+        }
+        // This item is not in given directories, just continue
+        if (!checkIt) {
+          continue;
+        }
+      }
       if (!ExitService.isExiting() && plf.getDirectory().getDevice().equals(this) && plf.isReady()
           && !plf.getFIO().exists()) {
         PlaylistManager.getInstance().removeItem(plf);
@@ -192,13 +206,27 @@ public class Device extends PhysicalItem implements Comparable<Device> {
 
   /**
    * Walk through tall Files and remove the ones for the current device.
+   * @param dirsToRefresh list of the directory to refresh, null if all of them
    * 
    * @return true if there was any file removed.
    */
-  private boolean cleanFiles() {
+  private boolean cleanFiles(List<Directory> dirsToRefresh) {
     boolean bChanges = false;
     final List<org.jajuk.base.File> files = FileManager.getInstance().getFiles();
     for (final org.jajuk.base.File file : files) {
+      // check if it is a file located inside refreshed directory
+      if (dirsToRefresh != null) {
+        boolean checkIt = false;
+        for (Directory directory : dirsToRefresh) {
+          if (file.hasAncestor(directory)) {
+            checkIt = true;
+          }
+        }
+        // This item is not in given directories, just continue
+        if (!checkIt) {
+          continue;
+        }
+      }
       if (!ExitService.isExiting() && file.getDirectory().getDevice().equals(this)
           && file.isReady() &&
           // Remove file if it doesn't exist any more or if it is a iTunes
@@ -214,13 +242,19 @@ public class Device extends PhysicalItem implements Comparable<Device> {
 
   /**
    * Walks through all directories and removes the ones for this device.
-   * 
+   * @param dirsToRefresh list of the directory to refresh, null if all of them
    * @return true if there was any directory removed
    */
-  private boolean cleanDirectories() {
+  private boolean cleanDirectories(List<Directory> dirsToRefresh) {
     boolean bChanges = false;
     // need to use a shallow copy to avoid concurrent exceptions
-    final List<Directory> dirs = DirectoryManager.getInstance().getDirectories();
+
+    List<Directory> dirs = null;
+    if (dirsToRefresh == null) {
+      dirs = DirectoryManager.getInstance().getDirectories();
+    } else {
+      dirs = dirsToRefresh;
+    }
 
     for (final Directory dir : dirs) {
       if (!ExitService.isExiting() && dir.getDevice().equals(this) && dir.getDevice().isMounted()
@@ -458,13 +492,15 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Manual refresh.
+   * Manual refresh, displays a dialog
    * 
-   * @param bAsk DOCUMENT_ME
+   * @param bAsk ask for refreshing type (deep or fast ?)
    * @param bAfterMove is this refresh done after a device location change ?
    * @param forcedDeep : override bAsk and force a deep refresh
+   * @param dirsToRefresh : only refresh specified dirs, or all of them if null
    */
-  public void manualRefresh(final boolean bAsk, final boolean bAfterMove, final boolean forcedDeep) {
+  public void manualRefresh(final boolean bAsk, final boolean bAfterMove, final boolean forcedDeep,
+      List<Directory> dirsToRefresh) {
     int i = 0;
     try {
       i = prepareRefresh(bAsk);
@@ -487,18 +523,18 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       reporter.startup();
       // clean old files up (takes a while)
       if (!bAfterMove) {
-        cleanRemovedFiles();
+        cleanRemovedFiles(dirsToRefresh);
       }
       reporter.cleanupDone();
 
       // Actual refresh
-      refreshCommand(((i == Device.OPTION_REFRESH_DEEP) || forcedDeep), true);
+      refreshCommand(((i == Device.OPTION_REFRESH_DEEP) || forcedDeep), true, dirsToRefresh);
       // cleanup logical items
       org.jajuk.base.Collection.cleanupLogical();
 
       // if it is a move, clean old files *after* the refresh
       if (bAfterMove) {
-        cleanRemovedFiles();
+        cleanRemovedFiles(dirsToRefresh);
       }
 
       // notify views to refresh
@@ -687,31 +723,33 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * set asynchronous or synchronous mode
    * @param bAsk whether we ask for fast/deep scan
    * @param bAfterMove whether this is called after a device move
+   * @param dirsToRefresh : only refresh specified dirs, or all of them if null
    */
-  public void refresh(final boolean bAsynchronous, final boolean bAsk, final boolean bAfterMove) {
+  public void refresh(final boolean bAsynchronous, final boolean bAsk, final boolean bAfterMove,
+      final List<Directory> dirsToRefresh) {
     if (bAsynchronous) {
       final Thread t = new Thread("Device Refresh Thread for : " + name) {
         @Override
         public void run() {
-          manualRefresh(bAsk, bAfterMove, false);
+          manualRefresh(bAsk, bAfterMove, false, dirsToRefresh);
         }
       };
       t.setPriority(Thread.MIN_PRIORITY);
       t.start();
     } else {
-      manualRefresh(bAsk, bAfterMove, false);
+      manualRefresh(bAsk, bAfterMove, false, dirsToRefresh);
     }
   }
 
   /**
-   * Deep Refresh with GUI 
+   * Deep / full Refresh with GUI 
    * 
    */
   public void manualRefreshDeep() {
     final Thread t = new Thread("Device Deep Refresh Thread for : " + name) {
       @Override
       public void run() {
-        manualRefresh(false, false, true);
+        manualRefresh(false, false, true, null);
       }
     };
     t.setPriority(Thread.MIN_PRIORITY);
@@ -723,10 +761,11 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * 
    * @param bDeepScan whether it is a deep refresh request or only fast
    * @param bManual whether it is a manual refresh or auto
-   * 
+   * @param dirsToRefresh list of the directory to refresh, null if all of them
    * @return true if some changes occurred in device
    */
-  public synchronized boolean refreshCommand(final boolean bDeepScan, final boolean bManual) {
+  public synchronized boolean refreshCommand(final boolean bDeepScan, final boolean bManual,
+      List<Directory> dirsToRefresh) {
     try {
       // Check if this device is mounted (useful when called by
       // automatic refresh)
@@ -768,12 +807,23 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       }
 
       // Start actual scan
-      scanRecursively(top, bDeepScan);
+      List<Directory> dirs = null;
+      if (dirsToRefresh == null) {
+        // No directory specified ? refresh the top directory
+        dirs = new ArrayList<Directory>(1);
+        dirs.add(top);
+      } else {
+        dirs = dirsToRefresh;
+      }
+      for (Directory dir : dirs) {
+        scanRecursively(dir, bDeepScan);
+      }
 
       // Force cover detection (after done once, the cover file is cached as album property)
       // We need this to avoid bug #1550 : if the device is created, then unplugged, catalog
-      // view cover/no-cover filter is doomed because the findCover() method always return null
-      for (Album album : AlbumManager.getInstance().getAlbums()) {
+      // view cover/no-cover filter is messed-up because the findCover() method always return null.
+      Set<Album> albumsToCheck = getAlbumsForDirectories(dirs);
+      for (Album album : albumsToCheck) {
         album.findCoverFile();
         // Give a chance to leave this loop when user required end of session
         if (ExitService.isExiting()) {
@@ -807,6 +857,22 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         reporter = null;
       }
     }
+  }
+
+  /**
+   * Return list of albums for a list of directories 
+   * @param dirs the directories to extract albums from recursively
+   * @return list of albums for a list of directories 
+   */
+  private Set<Album> getAlbumsForDirectories(List<Directory> dirs) {
+    Set<Album> out = new HashSet<Album>(dirs.size() * 10);
+    for (Directory dir : dirs) {
+      List<org.jajuk.base.File> files = dir.getFilesRecursively();
+      for (org.jajuk.base.File file : files) {
+        out.add(file.getTrack().getAlbum());
+      }
+    }
+    return out;
   }
 
   /**
@@ -859,7 +925,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Synchroning asynchronously.
+   * Synchronizing asynchronously.
    * 
    * @param bAsynchronous :
    * set asynchronous or synchronous mode
@@ -914,11 +980,11 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       }
       final Device dSrc = DeviceManager.getInstance().getDeviceByID(sIdSrc);
       // perform a fast refresh
-      refreshCommand(false, true);
+      refreshCommand(false, true, null);
       // if bidi sync, refresh the other device as well (new file can
       // have been copied to it)
       if (bidi) {
-        dSrc.refreshCommand(false, true);
+        dSrc.refreshCommand(false, true, null);
       }
       // start message
       InformationJPanel.getInstance().setMessage(
@@ -938,11 +1004,11 @@ public class Device extends PhysicalItem implements Comparable<Device> {
           iNbCreatedFilesSrc + iNbCreatedFilesDest).append(Messages.getString("Device.35")).append(
           lVolume / 1048576).append(Messages.getString("Device.36")).toString();
       // perform a fast refresh
-      refreshCommand(false, true);
+      refreshCommand(false, true, null);
       // if bidi sync, refresh the other device as well (new file can
       // have been copied to it)
       if (bidi) {
-        dSrc.refreshCommand(false, true);
+        dSrc.refreshCommand(false, true, null);
       }
       InformationJPanel.getInstance().setMessage(sOut, InformationJPanel.MessageType.INFORMATIVE);
       Log.debug(sOut);

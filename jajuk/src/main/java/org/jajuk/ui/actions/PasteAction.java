@@ -34,9 +34,9 @@ import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.Genre;
 import org.jajuk.base.Item;
 import org.jajuk.base.Playlist;
-import org.jajuk.base.Genre;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.events.JajukEvent;
@@ -50,7 +50,6 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
-import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -232,11 +231,11 @@ public class PasteAction extends JajukAction {
               }
 
               // Refresh source and destination
-              destDir.refresh(false, null);
+              destDir.refresh(false);
               // Refresh source directories as well
               for (Directory srcDir : srcDirs) {
                 srcDir.cleanRemovedFiles();
-                srcDir.refresh(false, null);
+                srcDir.refresh(false);
               }
             } catch (Exception ioe) {
               Log.error(131, ioe);
@@ -257,7 +256,7 @@ public class PasteAction extends JajukAction {
                     + dst.getAbsolutePath());
               }
               DirectoryManager.getInstance().removeDirectory(d.getID());
-              destDir.refresh(false, null);
+              destDir.refresh(false);
             } catch (Exception ioe) {
               Log.error(131, ioe);
               Messages.showErrorMessage(131);
@@ -265,14 +264,13 @@ public class PasteAction extends JajukAction {
             }
           }
           try {
-            destDir.refresh(false, null);
+            destDir.refresh(false);
             // Refresh source directories as well
             for (Directory srcDir : srcDirs) {
-              srcDir.refresh(false, null);
+              srcDir.refresh(false);
             }
-          } catch (JajukException e1) {
+          } catch (Exception e1) {
             Log.error(e1);
-            Messages.showErrorMessage(e1.getCode());
             bErrorOccured = true;
           }
         } else if (moveAction == ItemMoveManager.MoveActions.COPY) {
@@ -321,10 +319,10 @@ public class PasteAction extends JajukAction {
               showMessage(pl.getFIO());
               UtilSystem.copyToDir(pl.getFIO(), dir);
               // Refresh source and destination
-              destDir.refresh(false, null);
+              destDir.refresh(false);
               // Refresh source directories as well
               for (Directory srcDir : srcDirs) {
-                srcDir.refresh(false, null);
+                srcDir.refresh(false);
               }
             } catch (Exception ioe) {
               Log.error(131, ioe);
@@ -345,10 +343,9 @@ public class PasteAction extends JajukAction {
             }
           }
           try {
-            destDir.refresh(false, null);
-          } catch (JajukException e1) {
+            destDir.refresh(false);
+          } catch (Exception e1) {
             Log.error(e1);
-            Messages.showErrorMessage(e1.getCode());
             bErrorOccured = true;
           }
         }

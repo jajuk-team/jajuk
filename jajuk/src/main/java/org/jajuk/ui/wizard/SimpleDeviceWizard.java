@@ -52,7 +52,7 @@ import org.jajuk.util.log.Log;
  * directory.
  */
 public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -152,10 +152,10 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
 
         okp.getOKButton().setEnabled(true);
         okp.getOKButton().grabFocus();
-        
+
         jlSelectedFile.setText(fDir.getAbsolutePath());
         pack(); // repack as size of dialog can be exceeded now
-    }
+      }
     } else if (e.getSource() == okp.getOKButton()) {
       try {
         // Create a directory device
@@ -174,7 +174,7 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
         }
         device.setProperty(Const.XML_DEVICE_AUTO_REFRESH, dRefreshTime);
         try {
-          device.refresh(true, false, false);
+          device.refresh(true, false, false, null);
         } catch (final Exception e2) {
           Log.error(112, device.getName(), e2);
           Messages.showErrorMessage(112, device.getName());

@@ -813,7 +813,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
                 if (known) {
                   Directory directory = DirectoryManager.getInstance().getDirectoryForIO(
                       plf.getFIO().getParentFile(), knownDevice);
-                  directory.refresh(false, null);
+                  directory.refresh(false);
                   // Force a table refresh to show the new playlist if it has
                   // been
                   // saved in a known device

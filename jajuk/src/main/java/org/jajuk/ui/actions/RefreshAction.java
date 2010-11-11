@@ -22,23 +22,22 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import javax.swing.JComponent;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Item;
-import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.log.Log;
 
 /**
  * DOCUMENT_ME.
  */
-public class RefreshAction extends JajukAction {
-  
+public class RefreshAction extends SelectionAction {
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -54,23 +53,37 @@ public class RefreshAction extends JajukAction {
    * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
    */
   @Override
-  @SuppressWarnings("unchecked")
   public void perform(ActionEvent e) {
-    JComponent source = (JComponent) e.getSource();
-    // Get required data from the tree (selected node and node type)
-    // A single item (directory or device) is allowed
-    final List<Item> alSelected = (ArrayList<Item>) source
-        .getClientProperty(Const.DETAIL_SELECTION);
-    Item item = alSelected.get(0);
-    final Directory dir;
-    if (item instanceof Directory) {
-      dir = (Directory) item;
-      dir.manualRefresh(true, true);
-    } else if (item instanceof Device) {
-      Device device = (Device) item;
-      // ask user if he wants to make deep or fast scan
-      device.refresh(true, true, false);
+    try {
+      RefreshAction.super.perform(e);
+    } catch (Exception ex) {
+      Log.error(ex);
     }
-
+    // Note that we already tested void or mixed-up selection in 
+    // FilesTreeView.isRefreshSelectionValid() method.
+    // The GUI allows only single device selection.
+    if (selection.get(0) instanceof Device) {
+      // ask user if he wants to make deep or fast scan
+      Device device = (Device) selection.get(0);
+      device.refresh(true, true, false, null);
+    } else {
+      // Directory selection, we have to group directories of the same device
+      HashMap<Device, List<Directory>> devicesDirectories = new HashMap<Device, List<Directory>>(
+          selection.size());
+      for (Item item : selection) {
+        Directory dir = (Directory) item;
+        Device device = dir.getDevice();
+        List<Directory> dirs = devicesDirectories.get(device);
+        if (dirs == null) {
+          dirs = new ArrayList<Directory>();
+          devicesDirectories.put(device, dirs);
+        }
+        dirs.add(dir);
+      }
+      for (Device device : devicesDirectories.keySet()) {
+        List<Directory> dirs = devicesDirectories.get(device);
+        device.refresh(true, true, false, dirs);
+      }
+    }
   }
 }

@@ -459,25 +459,7 @@ public class TestDirectory extends JajukTestCase {
     assertEquals("newname", dir.getName());
   }
 
-  /**
-   * Test method for {@link org.jajuk.base.Directory#refresh(boolean, org.jajuk.ui.helpers.RefreshReporter)}.
-   * @throws Exception 
-   */
-
-  public void testRefresh() throws Exception {
-    Directory dir = dir1;
-    dir.refresh(true, null);
-  }
-
-  /**
-   * Test method for {@link org.jajuk.base.Directory#manualRefresh(boolean, boolean)}.
-   */
-
-  public void testManualRefresh() {
-    Directory dir = dir1;
-    dir.manualRefresh(false, false);
-  }
-
+  
   /**
    * Test method for {@link org.jajuk.base.Directory#cleanRemovedFiles()}.
    */

@@ -287,7 +287,7 @@ public final class TrackManager extends ItemManager {
             if (file != null) {
               dir = file.getDirectory();
             }
-            dir.refresh(true, null);
+            dir.refresh(true);
             // refresh views
             ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
           } catch (Exception e2) {

@@ -229,12 +229,11 @@ public class RefactorAction {
     // Refresh and cleanup required directories
     for (final Directory dir : toBeRefreshed) {
       try {
-        dir.refresh(false, null);
-      } catch (JajukException e) {
+        dir.refresh(false);
+      } catch (Exception e) {
         Log.error(e);
-        Messages.showErrorMessage(e.getCode());
       }
-      dir.getDevice().cleanRemovedFiles();
+      dir.getDevice().cleanRemovedFiles(null);
     }
     if (!sErrors.isEmpty()) {
       Messages.showDetailedErrorMessage(147, "", sErrors);

@@ -228,7 +228,7 @@ public class TestDevice extends JajukTestCase {
     device.setUrl("notexisting/testparent\\anotherclientparentthing");
 
     // clean without any stuff
-    assertFalse(device.cleanRemovedFiles());
+    assertFalse(device.cleanRemovedFiles(null));
 
     // add some directory, then the remove should kick in!
     Directory topdir = DirectoryManager.getInstance().registerDirectory(device);
@@ -244,13 +244,13 @@ public class TestDevice extends JajukTestCase {
     assertFalse(ExitService.isExiting());
 
     // now we have removals
-    assertTrue(device.cleanRemovedFiles());
+    assertTrue(device.cleanRemovedFiles(null));
 
     // enable history to also clean that
     Conf.setProperty(Const.CONF_HISTORY, "10");
 
     // no removals any more now
-    assertFalse(device.cleanRemovedFiles());
+    assertFalse(device.cleanRemovedFiles(null));
   }
 
   /**
@@ -272,7 +272,7 @@ public class TestDevice extends JajukTestCase {
     Device device = JUnitHelpers.getDevice();
     assertEquals(0, device.getDateLastRefresh());
     device.mount(false);
-    device.refreshCommand(false, false);
+    device.refreshCommand(false, false, null);
 
     // now it should be set
     assertNotNull(device.getDateLastRefresh());
@@ -549,7 +549,7 @@ public class TestDevice extends JajukTestCase {
     device.setUrl(System.getProperty("java.io.tmpdir"));
 
     try {
-      device.refresh(false, false, false);
+      device.refresh(false, false, false, null);
     } catch (RuntimeException e) {
       // there can be a hidden HeadlessException here
       assertTrue(e.getCause().getMessage(), e.getCause() instanceof InvocationTargetException);
@@ -560,7 +560,7 @@ public class TestDevice extends JajukTestCase {
 
     }
 
-    device.refresh(true, false, false);
+    device.refresh(true, false, false, null);
   }
 
   /**
@@ -573,13 +573,13 @@ public class TestDevice extends JajukTestCase {
     device.setUrl(System.getProperty("java.io.tmpdir"));
 
     try {
-      device.refresh(false, false, false);
+      device.refresh(false, false, false, null);
     } catch (RuntimeException e) {
       // there can be a hidden HeadlessException here
       assertTrue(e.getCause().getMessage(), e.getCause() instanceof InvocationTargetException);
     }
 
-    device.refresh(true, false, false);
+    device.refresh(true, false, false, null);
   }
 
   /**
@@ -595,7 +595,7 @@ public class TestDevice extends JajukTestCase {
       fail();
     }
 
-    device.refreshCommand(false, false);
+    device.refreshCommand(false, false, null);
   }
 
   /**
@@ -612,41 +612,41 @@ public class TestDevice extends JajukTestCase {
     sampleFile.createNewFile();
     device.setUrl(fileOKDir.getAbsolutePath());
     device.mount(false);
-    device.refreshCommand(false, false);
+    device.refreshCommand(false, false, null);
     // fine, now rename the directory
     sampleFile.delete();
     fileOKDir.delete();
 
     // An error should happen here
-    device.refreshCommand(false, false);
+    device.refreshCommand(false, false, null);
   }
 
   // test for a regression that was added
   public void testRefreshCommandDontReaddTopDirectory() throws Exception {
     Device device = JUnitHelpers.getDevice();
     device.mount(true);
-    device.refreshCommand(false, false);
+    device.refreshCommand(false, false, null);
 
     // we should not have more than one top-directory!
     assertEquals(1, device.getDirectories().size());
 
     // even if we refresh some more, we should only have one, not multiple
-    device.refreshCommand(false, false);
+    device.refreshCommand(false, false, null);
 
     // we should not have more than one top-directory!
     assertEquals(1, device.getDirectories().size());
 
-    device.refreshCommand(false, false);
+    device.refreshCommand(false, false, null);
 
     // we should not have more than one top-directory!
     assertEquals(1, device.getDirectories().size());
 
-    device.refreshCommand(false, false);
+    device.refreshCommand(false, false, null);
 
     // we should not have more than one top-directory!
     assertEquals(1, device.getDirectories().size());
 
-    device.refreshCommand(false, false);
+    device.refreshCommand(false, false, null);
 
     // we should not have more than one top-directory!
     assertEquals(1, device.getDirectories().size());

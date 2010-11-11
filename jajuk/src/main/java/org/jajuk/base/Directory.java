@@ -21,7 +21,6 @@
 package org.jajuk.base;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -30,16 +29,10 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 
-import org.jajuk.events.JajukEvent;
-import org.jajuk.events.JajukEvents;
-import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.ExitService;
-import org.jajuk.services.core.SessionService;
 import org.jajuk.services.tags.Tag;
-import org.jajuk.ui.helpers.ManualDirectoryRefreshReporter;
 import org.jajuk.ui.helpers.RefreshReporter;
-import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -734,85 +727,16 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   }
 
   /**
-   * Refresh synchronously the directory recursively.
-   * 
-   * @param deep refresh ?
-   * @param reporter DOCUMENT_ME
-   * 
-   * @throws JajukException the jajuk exception
-   */
-  public void refresh(boolean deep, RefreshReporter reporter) throws JajukException {
-    scan(deep, reporter);
-    final java.io.File[] lFiles = getFio().listFiles(UtilSystem.getDirFilter());
-    if (lFiles != null) {
-      for (final java.io.File element : lFiles) {
-        final Directory subdir = DirectoryManager.getInstance().registerDirectory(
-            element.getName(), this, getDevice());
-        subdir.refresh(deep, reporter);
-      }
-    }
-  }
-
-  /**
-   * Refresh : scan asynchronously the directory to find tracks.
-   * 
-   * @param bAsynchronous :
-   * set asynchronous or synchronous mode
-   * @param bAsk :
-   * should we ask user if he wants to perform a deep or fast scan?
-   * default=deep
-   */
-  public void manualRefresh(final boolean bAsynchronous, final boolean bAsk) {
-    final RefreshReporter reporter = new ManualDirectoryRefreshReporter(getDevice());
-    final Thread t = new Thread("Manual Refresh Thread") {
-      @Override
-      public void run() {
-        try {
-          int result = getDevice().prepareRefresh(bAsk);
-          if (result == Device.OPTION_REFRESH_CANCEL) {
-            return;
-          }
-          InformationJPanel.getInstance().setMessage(
-              Messages.getString("ActionRefresh.1") + " : " + Directory.this.getName(),
-              InformationJPanel.MessageType.INFORMATIVE);
-          boolean deep = (result == Device.OPTION_REFRESH_DEEP);
-          // start counting
-          reporter.startup();
-          // Cleanup old files/directories/playlists
-          cleanRemovedFiles();
-          // Actual refresh
-          refresh(deep, reporter);
-          // cleanup logical items
-          org.jajuk.base.Collection.cleanupLogical();
-          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-          reporter.done();
-          // Commit collection at each refresh (can be useful if
-          // application
-          // is closed brutally with control-C or shutdown and that
-          // exit hook has no time to perform commit).
-          // But don't commit when any device is refreshing to avoid collisions.
-          if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-            try {
-              org.jajuk.base.Collection.commit(SessionService
-                  .getConfFileByPath(Const.FILE_COLLECTION));
-            } catch (final IOException e) {
-              Log.error(e);
-            }
-          }
-        } catch (JajukException e) {
-          Messages.showErrorMessage(e.getCode());
-          Log.debug(e);
-          return;
-        }
-      }
-    };
-    if (bAsynchronous) {
-      t.setPriority(Thread.MIN_PRIORITY);
-      t.start();
-    } else {
-      // simply call the run method
-      t.run();
-    }
+  * Refresh the directory synchronously, no dialog. <br>
+  * This method is only a wrapper to Device.refreshCommand() method
+  * 
+  * @param bDeepScan whether it is a deep refresh request or only fast
+  * @return true if some changes occurred in device
+  */
+  public synchronized boolean refresh(final boolean bDeepScan) {
+    List<Directory> dirsToRefresh = new ArrayList<Directory>(1);
+    dirsToRefresh.add(this);
+    return getDevice().refreshCommand(bDeepScan, false, dirsToRefresh);
   }
 
   /**

@@ -399,7 +399,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       Device device = ((DeviceNode) (paths[0].getLastPathComponent())).getDevice();
       // ask user if he wants to make deep
       // or fast scan
-      device.refresh(true, true, false);
+      device.refresh(true, true, false, null);
     } else if (e.getSource() == jmiDevSynchronize) {
       Device device = ((DeviceNode) (paths[0].getLastPathComponent())).getDevice();
       device.synchronize(true);
@@ -946,9 +946,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       // Enable device refresh for a single item
       jmiDevRefresh.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Device);
 
-      // Enable directory refresh for a single item
-      jmiDirRefresh.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
-
       // Enable Copy url for a single item only
       jmiCopyURL.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof File);
       jmiDirCopyURL.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
@@ -963,6 +960,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     }
   }
 
+  
   /**
    * DOCUMENT_ME.
    */

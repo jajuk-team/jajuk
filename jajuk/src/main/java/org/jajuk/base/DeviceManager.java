@@ -242,9 +242,9 @@ public final class DeviceManager extends ItemManager {
    * @param path
    * @return  first device found being parent of the provided path
    */
-  public Device getDeviceByPath(File path){
-    for ( Device device: getDevices()){
-      if (UtilSystem.isAncestor(device.getFio(), path)){
+  public Device getDeviceByPath(File path) {
+    for (Device device : getDevices()) {
+      if (UtilSystem.isAncestor(device.getFio(), path)) {
         return device;
       }
     }
@@ -427,9 +427,10 @@ public final class DeviceManager extends ItemManager {
             devicesDeepRefreshed.add(device);
           }
           // cleanup device
-          bNeedUIRefresh = bNeedUIRefresh | device.cleanRemovedFiles();
+          bNeedUIRefresh = bNeedUIRefresh | device.cleanRemovedFiles(null);
           // refresh the device (deep refresh forced after an upgrade)
-          bNeedUIRefresh = bNeedUIRefresh | device.refreshCommand(bNeedDeepAfterUpgrade, false);
+          bNeedUIRefresh = bNeedUIRefresh
+              | device.refreshCommand(bNeedDeepAfterUpgrade, false, null);
 
           // UI refresh if required
           if (bNeedUIRefresh) {

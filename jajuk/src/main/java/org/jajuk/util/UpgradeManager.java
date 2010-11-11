@@ -670,7 +670,7 @@ public final class UpgradeManager {
           List<Device> devices = DeviceManager.getInstance().getDevices();
           for (Device device : devices) {
             if (device.isReady()) {
-              device.manualRefresh(false, false, true);
+              device.manualRefresh(false, false, true, null);
             }
           }
         }
