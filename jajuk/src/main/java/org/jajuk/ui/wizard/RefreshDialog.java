@@ -99,9 +99,12 @@ public class RefreshDialog extends JFrame {
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
-        jlAction.setText(action);
-        jlAction.setIcon(icon);
-        jlAction.setBusy(true);
+        // check if the dialog is still visible, may be closed before this code is executed
+        if (jlAction != null) {
+          jlAction.setText(action);
+          jlAction.setIcon(icon);
+          jlAction.setBusy(true);
+        }
       }
     });
   }
@@ -120,8 +123,11 @@ public class RefreshDialog extends JFrame {
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
-        jlRefreshing.setText(path);
-        jlRefreshing.setToolTipText(path);
+        // check if the dialog is still visible, may be closed before this code is executed
+        if (jlRefreshing != null) {
+          jlRefreshing.setText(path);
+          jlRefreshing.setToolTipText(path);
+        }
       }
     });
   }
@@ -141,7 +147,10 @@ public class RefreshDialog extends JFrame {
       SwingUtilities.invokeLater(new Runnable() {
         @Override
         public void run() {
-          progress.setValue(pos);
+          // check if the dialog is still visible, may be closed before this code is executed
+          if (progress != null) {
+            progress.setValue(pos);
+          }
         }
       });
     }
@@ -152,7 +161,7 @@ public class RefreshDialog extends JFrame {
    */
   @Override
   public void dispose() {
-    if(jlAction != null) {
+    if (jlAction != null) {
       jlAction.setBusy(false);
       jlAction = null;
     }
