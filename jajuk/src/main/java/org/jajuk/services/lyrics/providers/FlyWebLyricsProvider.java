@@ -26,11 +26,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.lang.StringUtils;
-import org.jajuk.base.File;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 import org.w3c.dom.Document;
-
 
 /**
  * Fly (http://www.lyricsfly.com/) lyrics provider <br>
@@ -44,7 +42,7 @@ public class FlyWebLyricsProvider extends GenericWebLyricsProvider {
   /** URL pattern used by jajuk to retrieve lyrics. */
   private static final String URL = "http://api.lyricsfly.com/api/api.php?i="
       + UtilString.rot13(USER_ID) + "&a=%artist&t=%title";
-  
+
   /** URL pattern to web page (see ILyricsProvider interface for details). */
   private static final String WEB_URL = "http://www.lyricsfly.com/";
 
@@ -66,7 +64,7 @@ public class FlyWebLyricsProvider extends GenericWebLyricsProvider {
     String lyrics = null;
     try {
       String xml = callProvider(artist, title);
-      if(StringUtils.isBlank(xml)) {
+      if (StringUtils.isBlank(xml)) {
         Log.debug("No lyrics found for: {{" + artist + "/" + title + "}}");
         return null;
       }
@@ -96,7 +94,7 @@ public class FlyWebLyricsProvider extends GenericWebLyricsProvider {
   public String getResponseEncoding() {
     return "UTF-8";
   }
-  
+
   /*
    * (non-Javadoc)
    * 
@@ -119,8 +117,8 @@ public class FlyWebLyricsProvider extends GenericWebLyricsProvider {
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics(org.jajuk.base.File)
    */
   @Override
-  public String getLyrics(File audioFile) {
-    return getLyrics(audioFile.getTrack().getArtist().getName2(), 
-        audioFile.getTrack().getName());
+  public String getLyrics() {
+    return getLyrics(audioFile.getTrack().getArtist().getName2(), audioFile.getTrack().getName());
   }
+  
 }

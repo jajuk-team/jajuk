@@ -25,7 +25,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.jajuk.services.lyrics.providers.JajukLyricsProvider;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
@@ -36,50 +35,55 @@ public class TxtPersister implements ILyricsPersister {
 
   /** DOCUMENT_ME. */
   private java.io.File lyricsFile = null;
-  
+
   /** DOCUMENT_ME. */
   private Writer lyricsWriter = null;
-  
-  /** DOCUMENT_ME. */
-  private JajukLyricsProvider provider = null;
-  
+
+  /** Audio file to set lyrics to. */
+  private org.jajuk.base.File file = null;
+
   /* (non-Javadoc)
-   * @see org.jajuk.services.lyrics.persisters.ILyricsPersister#commitLyrics(java.lang.String, java.io.File)
-   */
+    * @see org.jajuk.services.lyrics.persisters.ILyricsPersister#commitLyrics(String,String,String)
+    */
   @Override
-  public boolean commitLyrics(JajukLyricsProvider iProvider) {
-    provider = iProvider;
+  public boolean commitLyrics(String artist, String title, String lyrics) {
     try {
-      lyricsWriter = getLyricsWriter();      
+      lyricsWriter = getLyricsWriter();
       lyricsWriter.write("# This is a Jajuk generated lyrics file\n");
-      lyricsWriter.write("# Artist:\t" + provider.getArtist() + "\n");
-      lyricsWriter.write("# Title:\t" + provider.getTitle() + "\n#");
-      lyricsWriter.write("\n" + provider.getLyrics() + "\n");
+      lyricsWriter.write("# Artist:\t" + artist + "\n");
+      lyricsWriter.write("# Title:\t" + title + "\n#");
+      lyricsWriter.write("\n" + lyrics + "\n");
       lyricsWriter.close();
       lyricsWriter = null;
-      System.out.println("POTSON2 ");
       return true;
     } catch (Exception e) {
       Log.error(e);
       try {
-        UtilSystem.deleteFile(lyricsFile);
+        if (lyricsFile.exists()) {
+          UtilSystem.deleteFile(lyricsFile);
+        }
       } catch (IOException e1) {
         Log.error(e1);
       }
       lyricsFile = null;
       return false;
     }
-    
+
   }
-  
+
   /* (non-Javadoc)
-   * @see org.jajuk.services.lyrics.persisters.ILyricsPersister#deleteLyrics(org.jajuk.services.lyrics.providers.JajukLyricsProvider)
+   * @see org.jajuk.services.lyrics.persisters.ILyricsPersister#deleteLyrics()
    */
   @Override
-  public void deleteLyrics(JajukLyricsProvider jProvider) throws IOException{
-    provider = jProvider;
-    lyricsFile = getLyricsFile();
-    UtilSystem.deleteFile(lyricsFile);    
+  public boolean deleteLyrics() {
+    lyricsFile = getDestinationFile();
+    try {
+      UtilSystem.deleteFile(lyricsFile);
+      return true;
+    } catch (IOException e) {
+      Log.error(e);
+      return false;
+    }
   }
 
   /**
@@ -87,14 +91,13 @@ public class TxtPersister implements ILyricsPersister {
    * 
    * @return the lyrics file
    */
-  private java.io.File getLyricsFile() {
+  public java.io.File getDestinationFile() {
     if (lyricsFile == null) {
-      lyricsFile = new java.io.File(UtilSystem.removeExtension(
-          provider.getFile().getAbsolutePath()) + ".txt");
+      lyricsFile = new java.io.File(UtilSystem.removeExtension(file.getAbsolutePath()) + ".txt");
     }
     return lyricsFile;
   }
-  
+
   /**
    * Gets the lyrics writer.
    * 
@@ -103,11 +106,19 @@ public class TxtPersister implements ILyricsPersister {
    * @throws IOException Signals that an I/O exception has occurred.
    */
   private Writer getLyricsWriter() throws IOException {
-    lyricsFile = getLyricsFile();
+    lyricsFile = getDestinationFile();
     if (lyricsWriter == null) {
       lyricsWriter = new FileWriter(lyricsFile);
     }
     return lyricsWriter;
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.lyrics.persisters.ILyricsPersister#setAudioFile(java.io.File)
+   */
+  @Override
+  public void setAudioFile(org.jajuk.base.File file) {
+    this.file = file;
   }
 
 }

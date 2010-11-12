@@ -26,6 +26,8 @@ import ext.services.network.NetworkUtils;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.jajuk.base.File;
+import org.jajuk.base.Track;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.log.Log;
@@ -42,9 +44,12 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
 
   /** DOCUMENT_ME. */
   private String source = null;
-  
+
   /** DOCUMENT_ME. */
   private String queryUrlTemplate = null;
+
+  /** audio file we search lyrics for */
+  File audioFile = null;
 
   /**
    * Instantiates a new generic web lyrics provider.
@@ -128,7 +133,7 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
       return null;
     }
   }
-  
+
   /**
    * Return the URL from where the lyrics can be displayed from out of Jajuk
    * <br>
@@ -153,5 +158,31 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
    * @return the lyrics
    */
   public abstract String getLyrics(String artist, String title);
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics()
+   */
+  @Override
+  public String getLyrics() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#setAudioFile(org.jajuk.base.File)
+   */
+  @Override
+  public void setAudioFile(File file) {
+    this.audioFile = file;
+  }
+  
+  /* (non-Javadoc)
+  * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getSourceAddress()
+  */
+  @Override
+  public String getSourceAddress() {
+    Track track = audioFile.getTrack();
+    return getWebURL(track.getArtist().getName2(), track.getName()).toString();
+  }
 
 }

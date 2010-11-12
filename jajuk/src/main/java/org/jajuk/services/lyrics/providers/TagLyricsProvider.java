@@ -30,20 +30,22 @@ import org.jajuk.util.log.Log;
  * DOCUMENT_ME.
  */
 public class TagLyricsProvider implements ILyricsProvider {
-  
+
+  /** audio file we search lyrics for */
+  private File audioFile = null;
+
   /* (non-Javadoc)
-   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics(java.lang.String, java.lang.String)
+   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics()
    */
   @Override
-  public String getLyrics(File audioFile) {
+  public String getLyrics() {
     String lyrics = null;
     try {
       Tag g = Tag.getTagForFio(audioFile.getFIO(), true);
       lyrics = g.getLyrics();
-      
       if (StringUtils.isBlank(lyrics)) {
         return null;
-      }      
+      }
     } catch (JajukException e) {
       Log.error(e);
       Log.warn(e.getMessage());
@@ -58,6 +60,22 @@ public class TagLyricsProvider implements ILyricsProvider {
   @Override
   public String getResponseEncoding() {
     return "UTF-8";
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#setAudioFile(org.jajuk.base.File)
+   */
+  @Override
+  public void setAudioFile(File file) {
+    this.audioFile = file;
+  }
+
+  /* (non-Javadoc)
+  * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getSourceAddress()
+  */
+  @Override
+  public String getSourceAddress() {
+    return audioFile.getAbsolutePath();
   }
 
 }

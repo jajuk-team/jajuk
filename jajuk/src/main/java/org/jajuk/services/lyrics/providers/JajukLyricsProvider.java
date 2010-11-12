@@ -23,31 +23,31 @@ package org.jajuk.services.lyrics.providers;
 import org.jajuk.base.File;
 
 /**
- * Class container of lyrics written by user.
+ * Class container of lyrics written by user from Jajuk GUI itself
  */
-public class JajukLyricsProvider {
-  
+public class JajukLyricsProvider implements ILyricsProvider {
+
   /** DOCUMENT_ME. */
   private String sLyrics = null;
-  
+
   /** DOCUMENT_ME. */
   private String sArtist = null;
-  
+
   /** DOCUMENT_ME. */
   private String sTitle = null;
-  
+
   /** DOCUMENT_ME. */
   private File audioFile = null;
-  
+
   /**
    * Instantiates a new jajuk lyrics provider.
    */
   public JajukLyricsProvider() {
-    
-  }  
+
+  }
 
   /* (non-Javadoc)
-   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics(org.jajuk.base.File)
+   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics()
    */
   /**
    * Gets the lyrics.
@@ -78,7 +78,7 @@ public class JajukLyricsProvider {
   public String getArtist() {
     return sArtist;
   }
-  
+
   /**
    * Gets the title.
    * 
@@ -87,7 +87,7 @@ public class JajukLyricsProvider {
   public String getTitle() {
     return sTitle;
   }
-  
+
   /**
    * Gets the file.
    * 
@@ -95,9 +95,9 @@ public class JajukLyricsProvider {
    */
   public File getFile() {
     return audioFile;
-    
+
   }
-  
+
   /**
    * Sets the lyrics.
    * 
@@ -106,16 +106,23 @@ public class JajukLyricsProvider {
   public void setLyrics(String sLyrics) {
     this.sLyrics = sLyrics;
   }
-  
-  /**
-   * Sets the file.
-   * 
-   * @param audioFile the new file
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#setAudioFile(org.jajuk.base.File)
    */
-  public void setFile(File audioFile) {
+  @Override
+  public void setAudioFile(File audioFile) {
     this.audioFile = audioFile;
     sArtist = this.audioFile.getTrack().getArtist().getName2();
     sTitle = this.audioFile.getTrack().getName();
+  }
+
+  /* (non-Javadoc)
+  * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getSourceAddress()
+  */
+  @Override
+  public String getSourceAddress() {
+    return "<Jajuk>";
   }
 
 }

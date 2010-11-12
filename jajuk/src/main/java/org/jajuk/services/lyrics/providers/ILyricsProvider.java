@@ -29,14 +29,13 @@ import org.jajuk.base.File;
 public interface ILyricsProvider {
 
   /**
-   * Return lyrics for a given artist and title <br>
+   * Return lyrics for given audio file <br>
    * Returns null if none lyrics found or technical error.
    * 
-   * @param audioFile DOCUMENT_ME
    * 
    * @return the lyrics
    */
-  String getLyrics(final File audioFile);
+  String getLyrics();
 
   /**
    * Return lyrics provider response encoding (ISO8859-1, UTF-8..)
@@ -45,4 +44,21 @@ public interface ILyricsProvider {
    */
   String getResponseEncoding();
 
+  /**
+   * Sets the audio file to search lyrics for.
+   * 
+   * @param file the audio file
+   */
+  void setAudioFile(File file);
+  
+  /**
+   * Gets the lyrics source address.
+   * <p>
+   * We don't use an URL here as it's better for users to get paths for further search in files explorers
+   * 
+   * @return the lyrics source address
+   */
+  String getSourceAddress();
+
+ 
 }

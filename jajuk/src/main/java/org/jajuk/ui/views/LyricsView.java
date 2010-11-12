@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -22,11 +22,11 @@
 package org.jajuk.ui.views;
 
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,11 +39,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.File;
-import org.jajuk.base.Track;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -51,7 +52,6 @@ import org.jajuk.services.lyrics.LyricsService;
 import org.jajuk.services.lyrics.providers.GenericWebLyricsProvider;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;
 import org.jajuk.services.lyrics.providers.JajukLyricsProvider;
-import org.jajuk.services.lyrics.providers.TagLyricsProvider;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.actions.ActionManager;
@@ -70,6 +70,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
+import org.jajuk.util.error.LyricsPersistenceException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
 
@@ -80,49 +81,75 @@ import org.jdesktop.swingx.JXBusyLabel;
  * www.lyrc.com.ar, lyrics.wikia.com or lyricsfly.com
  * </p>
  */
-public class LyricsView extends ViewAdapter {
+public class LyricsView extends ViewAdapter implements DocumentListener {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 2229941034734574056L;
 
   /** DOCUMENT_ME. */
-  private JTextArea textarea = null;
+  private JTextArea jtaLyrics;
 
   /** DOCUMENT_ME. */
-  private JScrollPane jsp = null;
+  private JScrollPane jspLyrics;
 
   /** DOCUMENT_ME. */
-  private JLabel jlTitle = null;
+  private JLabel jlTitle;
 
   /** DOCUMENT_ME. */
-  private String sURL = null;
+  private String sURL;
+
+  /** Currently analyzed file. */
+  private File file;
 
   /** DOCUMENT_ME. */
-  private Track track = null;
+  private String lyrics;
 
   /** DOCUMENT_ME. */
-  private String lyrics = null;
+  private JMenuItem jmiCopyToClipboard;
 
   /** DOCUMENT_ME. */
-  private JMenuItem jmiCopyToClipboard = null;
+  private JMenuItem jmiLaunchInBrowser;
 
   /** DOCUMENT_ME. */
-  private JMenuItem jmiLaunchInBrowser = null;
+  private JPanel jpMain;
 
   /** DOCUMENT_ME. */
-  private JPanel p;
+  private JajukButton jbSave;
 
   /** DOCUMENT_ME. */
-  private JajukButton jbSave = null;
+  private JajukButton jbDelete;
 
   /** DOCUMENT_ME. */
-  private JajukButton jbDelete = null;
+  private JajukToggleButton jtbEdit;
 
-  /** DOCUMENT_ME. */
-  private JajukToggleButton jtbEdit = null;
+  /** Edition toolbar. */
+  private JToolBar toolbarEdit;
 
-  /** DOCUMENT_ME. */
-  private JajukLyricsProvider jajukLyricsProvider = null;
+  private boolean changeDetected = false;
+
+  class LyricsUpdateThread extends Thread {
+
+    LyricsUpdateThread() {
+      super("Lyrics Update Thread-" + file.getTrack().getArtist().getName2() + "-"
+          + file.getTrack().getName());
+    }
+
+    @Override
+    public void run() {
+      // Launch lyrics service asynchronously and out of the
+      // AWT dispatcher thread
+      lyrics = LyricsService.getLyrics(file);
+      if (lyrics != null) {
+        ILyricsProvider provider = LyricsService.getCurrentProvider();
+        sURL = provider.getSourceAddress();
+      } else {
+        sURL = "<none>";
+      }
+      // Notify to make UI changes
+      ObservationManager.notify(new JajukEvent(JajukEvents.LYRICS_DOWNLOADED));
+    }
+
+  }
 
   /**
    * Instantiates a new lyrics view.
@@ -138,50 +165,61 @@ public class LyricsView extends ViewAdapter {
    */
   @Override
   public void initUI() {
-    final JTextArea ta = getTextArea();
-    final JLabel title = getJlTitle();
-    final JScrollPane jspLyrics = getJsp();
     final FontManager fmgr = FontManager.getInstance();
+    jtaLyrics = new JTextArea();
+    jtaLyrics.setFont(fmgr.getFont(JajukFont.PLAIN));
+    jlTitle = new JLabel();
+    jlTitle.setFont(fmgr.getFont(JajukFont.PLAIN_L));
+    jspLyrics = new JScrollPane(jtaLyrics);
 
-    ta.setLineWrap(true);
-    ta.setWrapStyleWord(true);
-    ta.setEditable(false);
-    ta.setMargin(new Insets(10, 10, 10, 10));
-    ta.setFont(fmgr.getFont(JajukFont.BOLD));
-    ta.addMouseListener(new JajukMouseAdapter() {
+    jtaLyrics.setLineWrap(true);
+    jtaLyrics.setWrapStyleWord(true);
+    jtaLyrics.setEditable(false);
+    jtaLyrics.setMargin(new Insets(10, 10, 10, 10));
+    jtaLyrics.setFont(fmgr.getFont(JajukFont.BOLD));
+    jtaLyrics.addMouseListener(new JajukMouseAdapter() {
 
       @Override
       public void handlePopup(final MouseEvent e) {
         final JPopupMenu menu = new JPopupMenu();
-        menu.add(getJmiCopyToClipboard());
+        menu.add(jmiCopyToClipboard);
         if (UtilSystem.isBrowserSupported()) {
-          getJmiLaunchInBrowser().putClientProperty(Const.DETAIL_CONTENT, sURL);
-          getJmiCopyToClipboard().putClientProperty(Const.DETAIL_CONTENT, sURL);
-          menu.add(getJmiLaunchInBrowser());
+          jmiLaunchInBrowser.putClientProperty(Const.DETAIL_CONTENT, sURL);
+          jmiCopyToClipboard.putClientProperty(Const.DETAIL_CONTENT, sURL);
+          menu.add(jmiLaunchInBrowser);
         }
-        menu.show(getTextArea(), e.getX(), e.getY());
+        menu.show(jtaLyrics, e.getX(), e.getY());
       }
     });
-
-    title.setFont(fmgr.getFont(JajukFont.PLAIN_XL));
-    ta.setFont(fmgr.getFont(JajukFont.PLAIN));
+    // Detect text area content change to enable save button on changes
+    jtaLyrics.getDocument().addDocumentListener(this);
     initEditUI();
 
     //Create a toolbar to group edition commands
-    JToolBar toolbarEdit = new JajukJToolbar();
-    jtbEdit.add(toolbarEdit);
-    jtbEdit.add(jbSave);
-    jtbEdit.add(jbDelete);
-    
+    toolbarEdit = new JajukJToolbar();
+    toolbarEdit.add(jtbEdit);
+    toolbarEdit.add(jbSave);
+    toolbarEdit.add(jbDelete);
+
+    // Menu items
+    jmiCopyToClipboard = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
+    jmiLaunchInBrowser = new JMenuItem(ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER));
+
     // Add items
-    p = new JPanel(new MigLayout("insets 5,gapx 3, gapy 5,filly", "[][grow]", "[][grow]"));
-    p.add(jtbEdit, "left");
-    p.add(jlTitle, "center,wrap");
-    p.add(jspLyrics, "span,grow");
+    jpMain = new JPanel(new MigLayout("insets 5,gapx 3, gapy 5,filly", "[95][grow]", "[][grow]"));
+    jpMain.add(jtbEdit, "left,split 3");
+    jpMain.add(jbSave, "left");
+    jpMain.add(jbDelete, "left");
+    jpMain.add(jlTitle, "left,wrap");
+    jpMain.add(jspLyrics, "span,grow");
 
     setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-    add(p);
+    add(jpMain);
     ObservationManager.register(this);
+
+    // force initial buttons states
+    updateButtonsState();
+
     // Force initial message refresh
     UtilFeatures.updateStatus(this);
   }
@@ -190,13 +228,20 @@ public class LyricsView extends ViewAdapter {
    * Initializes the UI of edit lyrics mode.
    */
   public void initEditUI() {
-    jtbEdit = getJtbEdit();
+    jtbEdit = new JajukToggleButton(IconLoader.getIcon(JajukIcons.EDIT));
     jtbEdit.setToolTipText(Messages.getString("LyricsView.2"));
     jtbEdit.addItemListener(new ItemListener() {
       @Override
       public void itemStateChanged(ItemEvent ev) {
         if (jtbEdit.isSelected()) {
-          editLyrics(QueueModel.getPlayingFile());
+          jtaLyrics.setEditable(true);
+          // Don't keep "No result found" text
+          if (jtaLyrics.getText().equals(Messages.getString("WikipediaView.3"))) {
+            jtaLyrics.getDocument().removeDocumentListener(LyricsView.this);
+            jtaLyrics.setText("");
+            jtaLyrics.getDocument().addDocumentListener(LyricsView.this);
+          }
+          jtaLyrics.requestFocus();
           jtbEdit.setToolTipText(Messages.getString("LyricsView.3"));
         } else {
           exitEditLyrics(true);
@@ -205,32 +250,34 @@ public class LyricsView extends ViewAdapter {
       }
     });
 
-    jbSave = getJbSave();
+    jbSave = new JajukButton(IconLoader.getIcon(JajukIcons.SAVE));
     jbSave.setToolTipText(Messages.getString("LyricsView.4"));
-    jbSave.setVisible(false);
-    jbSave.addMouseListener(new MouseAdapter() {
+    jbSave.addActionListener(new ActionListener() {
       @Override
-      public void mouseClicked(final MouseEvent ev) {
-        jajukLyricsProvider.setLyrics(textarea.getText());
+      public void actionPerformed(ActionEvent e) {
         try {
-          LyricsService.commitLyrics(jajukLyricsProvider);
-        } catch (IOException e) {
-          Log.error(e);
+          JajukLyricsProvider provider = getJajukProvider();
+          LyricsService.commitLyrics(provider);
+        } catch (LyricsPersistenceException lpe) {
+          Log.error(lpe);
+          // Always the same i18n message : "Operation failed"
+          Messages.showErrorMessage(136, lpe.getMessage());
         }
         exitEditLyrics(false);
       }
     });
 
-    jbDelete = getJbDelete();
+    jbDelete = new JajukButton(IconLoader.getIcon(JajukIcons.DELETE));
     jbDelete.setToolTipText(Messages.getString("LyricsView.5"));
-    jbDelete.setVisible(false);
-    jbDelete.addMouseListener(new MouseAdapter() {
+    jbDelete.addActionListener(new ActionListener() {
       @Override
-      public void mouseClicked(final MouseEvent ev) {
+      public void actionPerformed(ActionEvent ae) {
         try {
-          LyricsService.deleteLyrics(jajukLyricsProvider);
-        } catch (IOException e) {
-          Log.error(e);
+          JajukLyricsProvider provider = getJajukProvider();
+          LyricsService.deleteLyrics(provider);
+        } catch (LyricsPersistenceException lpe) {
+          Log.error(lpe);
+          Messages.showErrorMessage(136, lpe.getMessage());
         }
         exitEditLyrics(true);
       }
@@ -238,21 +285,14 @@ public class LyricsView extends ViewAdapter {
   }
 
   /**
-   * Switch from lyrics view to edit mode.
+   * Get the GUI provider
    * 
-   * @param file
-   *          The file to edit lyrics for
    */
-  public void editLyrics(final File file) {
-    jajukLyricsProvider = getJajukLyricsProvider();
-    jajukLyricsProvider.setFile(file);
-
-    jbSave.setVisible(true);
-    textarea.setEditable(true);
-    // If lyrics already exist in tag or txt show delete button
-    if (!(LyricsService.getCurrentProvider() instanceof GenericWebLyricsProvider)) {
-      jbDelete.setVisible(true);
-    }
+  public JajukLyricsProvider getJajukProvider() {
+    JajukLyricsProvider jajukLyricsProvider = new JajukLyricsProvider();
+    jajukLyricsProvider.setAudioFile(file);
+    jajukLyricsProvider.setLyrics(jtaLyrics.getText());
+    return jajukLyricsProvider;
   }
 
   /**
@@ -262,10 +302,10 @@ public class LyricsView extends ViewAdapter {
    *          Whether to call an update after switching
    */
   public void exitEditLyrics(boolean callUpdate) {
-    textarea.setEditable(false);
-    jbSave.setVisible(false);
-    jbDelete.setVisible(false);
+    changeDetected = false;
+    jtaLyrics.setEditable(false);
     jtbEdit.setSelected(false);
+    updateButtonsState();
     if (callUpdate) {
       update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
     }
@@ -279,7 +319,6 @@ public class LyricsView extends ViewAdapter {
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
     final Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.ZERO);
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
@@ -295,120 +334,140 @@ public class LyricsView extends ViewAdapter {
    */
   @Override
   public void update(final JajukEvent event) {
+    // Ignore any event while we are editing
     if (jtbEdit.isSelected()) {
       return;
     }
     final JajukEvents subject = event.getSubject();
     if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
-      final File file = QueueModel.getPlayingFile();
+      file = QueueModel.getPlayingFile();
       // file is null is view started with no playing track (the event is
       // simulated in initUI())
       if (file == null) {
         return;
       }
-      track = QueueModel.getPlayingFile().getTrack();
-
-      exitEditLyrics(false);
       // If Internet access is allowed, download lyrics
       if (Conf.getBoolean(CONF_NETWORK_NONE_INTERNET_ACCESS)) {
+        resetNoInternet();
+      } else {
+        showBuzyLabel();
+        // Launch lyrics search asynchronously
+        new LyricsUpdateThread().start();
+      }
+    } else if (JajukEvents.ZERO.equals(subject) || JajukEvents.PLAYER_STOP.equals(subject)) {
+      reset();
+      file = null;
+    } else if (subject.equals(JajukEvents.WEBRADIO_LAUNCHED)) {
+      resetWebradio((WebRadio) event.getDetails().get(Const.DETAIL_CONTENT));
+      file = null;
+    } else if (subject.equals(JajukEvents.LYRICS_DOWNLOADED)) {
+      refreshLyrics();
+    }
+  }
+
+  /**
+   * Reset GUI in case of Internet disabled
+   */
+  private void resetNoInternet() {
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        removeAll();
+        add(jpMain);
+        jlTitle.setText(file.getTrack().getName());
+        jlTitle.setToolTipText(file.getTrack().getName());
+        updateButtonsState();
+        jtaLyrics.setText(Messages.getString("LyricsView.1"));
+        jspLyrics.setEnabled(true);
+        sURL = "<none>";
+        revalidate();
+        repaint();
+      }
+    });
+  }
+
+  /**
+   * Show buzy label when searching lyrics
+   */
+  private void showBuzyLabel() {
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        removeAll();
+        final JXBusyLabel busy = new JXBusyLabel();
+        busy.setBusy(true);
+        add(UtilGUI.getCentredPanel(busy, BoxLayout.X_AXIS));
+        revalidate();
+        repaint();
+      }
+    });
+  }
+
+  /**
+   * Reset webradio.
+   * 
+   * @param radio DOCUMENT_ME
+   */
+  private void resetWebradio(final WebRadio radio) {
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        if (radio != null) {
+          jlTitle.setText(radio.getName());
+          updateButtonsState();
+          jspLyrics.setEnabled(false);
+          updateButtonsState();
+          revalidate();
+          repaint();
+        }
+      }
+    });
+  }
+
+  /**
+   * Compute buttons states
+   */
+  private void updateButtonsState() {
+    // Delete button
+    jbDelete.setEnabled(file != null);
+
+    // Save button : enabled only for changes in the text area or if we just got lyrics from the web
+    ILyricsProvider provider = LyricsService.getCurrentProvider();
+    jbSave.setEnabled((jtbEdit.isSelected() && changeDetected)
+        || provider instanceof GenericWebLyricsProvider);
+  }
+
+  /**
+   * Refresh lyrics once downloaded.
+   */
+  private void refreshLyrics() {
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        removeAll();
+        add(jpMain);
+        jtaLyrics.setToolTipText(sURL);
+        if ((lyrics != null) && (lyrics.length() > 0)) {
+          jtaLyrics.setText(lyrics);
+        } else {
+          jtaLyrics.setText(Messages.getString("WikipediaView.3"));
+        }
+        // Make sure to display the begin of the text (must be
+        // done in a thread to be executed when textarea display
+        // is actually finished)
         SwingUtilities.invokeLater(new Runnable() {
           @Override
           public void run() {
-            removeAll();
-            add(p);
-            jlTitle.setText(track.getName());
-            jtbEdit.setVisible(true);
-            textarea.setText(Messages.getString("LyricsView.1"));
-            jsp.setVisible(true);
-            sURL = "<none>";
-            revalidate();
-            repaint();
+            jspLyrics.getVerticalScrollBar().setValue(0);
           }
         });
-        return;
+        jlTitle.setText(file.getTrack().getName());
+        jspLyrics.setEnabled(true);
+        updateButtonsState();
+        revalidate();
+        repaint();
       }
-
-      SwingUtilities.invokeLater(new Runnable() {
-        @Override
-        public void run() {
-          removeAll();
-          final JXBusyLabel busy = new JXBusyLabel();
-          busy.setBusy(true);
-          add(UtilGUI.getCentredPanel(busy, BoxLayout.X_AXIS));
-          revalidate();
-          repaint();
-        }
-      });
-      new Thread("Lyrics Update Thread-" + track.getArtist().getName2() + "-" + track.getName()) {
-        @Override
-        public void run() {
-          // Launch lyrics service asynchronously and out of the
-          // AWT dispatcher thread
-          lyrics = LyricsService.getLyrics(file);
-          if (lyrics != null) {
-            ILyricsProvider provider = LyricsService.getCurrentProvider();
-            if (provider instanceof GenericWebLyricsProvider) {
-              sURL = ((GenericWebLyricsProvider) provider).getWebURL(track.getArtist().getName2(),
-                  track.getName()).toString();
-            } else if (provider instanceof TagLyricsProvider) {
-              sURL = "<Tag>";
-            } else {
-              sURL = "<Txt>";
-            }
-
-          } else {
-            sURL = "<none>";
-          }
-          // Notify to make UI changes
-          ObservationManager.notify(new JajukEvent(JajukEvents.LYRICS_DOWNLOADED));
-        }
-      }.start();
-
-    } else if (JajukEvents.ZERO.equals(subject) || JajukEvents.PLAYER_STOP.equals(subject)) {
-      reset();
-    } else if (subject.equals(JajukEvents.WEBRADIO_LAUNCHED)) {
-      SwingUtilities.invokeLater(new Runnable() {
-        @Override
-        public void run() {
-          final WebRadio radio = (WebRadio) event.getDetails().get(Const.DETAIL_CONTENT);
-          if (radio != null) {
-            jlTitle.setText(radio.getName());
-            jtbEdit.setVisible(false);
-            jsp.setVisible(false);
-            revalidate();
-            repaint();
-          }
-        }
-      });
-    } else if (subject.equals(JajukEvents.LYRICS_DOWNLOADED)) {
-      SwingUtilities.invokeLater(new Runnable() {
-        @Override
-        public void run() {
-          removeAll();
-          add(p);
-          textarea.setToolTipText(sURL);
-          if ((lyrics != null) && (lyrics.length() > 0)) {
-            textarea.setText(lyrics);
-          } else {
-            textarea.setText(Messages.getString("WikipediaView.3"));
-          }
-          // Make sure to display the begin of the text (must be
-          // done in a thread to be executed when textarea display
-          // is actually finished)
-          SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-              jsp.getVerticalScrollBar().setValue(0);
-            }
-          });
-          jlTitle.setText(track.getName());
-          jsp.setVisible(true);
-          jtbEdit.setVisible(true);
-          revalidate();
-          repaint();
-        }
-      });
-    }
+    });
   }
 
   /**
@@ -416,14 +475,12 @@ public class LyricsView extends ViewAdapter {
    */
   private void reset() {
     SwingUtilities.invokeLater(new Runnable() {
-
       @Override
       public void run() {
-        jsp.setVisible(false);
-        jtbEdit.setVisible(false);
+        jspLyrics.setEnabled(false);
+        updateButtonsState();
         jlTitle.setText(Messages.getString("JajukWindow.18"));
       }
-
     });
   }
 
@@ -437,114 +494,22 @@ public class LyricsView extends ViewAdapter {
     return Messages.getString("LyricsView.0");
   }
 
-  /**
-   * Gets the text area.
-   * 
-   * @return the text area
-   */
-  private JTextArea getTextArea() {
-    if (textarea == null) {
-      textarea = new JTextArea();
-    }
-    return textarea;
+  @Override
+  public void removeUpdate(DocumentEvent e) {
+    changeDetected = true;
+    updateButtonsState();
   }
 
-  /**
-   * Gets the jsp.
-   * 
-   * @return the jsp
-   */
-  private JScrollPane getJsp() {
-    if (jsp == null) {
-      jsp = new JScrollPane(getTextArea());
-    }
-    return jsp;
+  @Override
+  public void insertUpdate(DocumentEvent e) {
+    changeDetected = true;
+    updateButtonsState();
   }
 
-  /**
-   * Gets the jl title.
-   * 
-   * @return the jl title
-   */
-  private JLabel getJlTitle() {
-    if (jlTitle == null) {
-      jlTitle = new JLabel();
-    }
-    return jlTitle;
-  }
-
-
-  /**
-   * Gets the jb save.
-   * 
-   * @return the jb save
-   */
-  private JajukButton getJbSave() {
-    if (jbSave == null) {
-      jbSave = new JajukButton(IconLoader.getIcon(JajukIcons.SAVE));
-    }
-    return jbSave;
-  }
-
-  /**
-   * Gets the jb delete.
-   * 
-   * @return the jb delete
-   */
-  private JajukButton getJbDelete() {
-    if (jbDelete == null) {
-      jbDelete = new JajukButton(IconLoader.getIcon(JajukIcons.DELETE));
-    }
-    return jbDelete;
-  }
-
-  /**
-   * Gets the jtb edit.
-   * 
-   * @return the jtb edit
-   */
-  private JajukToggleButton getJtbEdit() {
-    if (jtbEdit == null) {
-      jtbEdit = new JajukToggleButton(IconLoader.getIcon(JajukIcons.EDIT));
-      jtbEdit.setEnabled(true);
-    }
-    return jtbEdit;
-  }
-
-  /**
-   * Gets the jmi copy to clipboard.
-   * 
-   * @return the jmi copy to clipboard
-   */
-  private JMenuItem getJmiCopyToClipboard() {
-    if (jmiCopyToClipboard == null) {
-      jmiCopyToClipboard = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
-    }
-    return jmiCopyToClipboard;
-  }
-
-  /**
-   * Gets the jmi launch in browser.
-   * 
-   * @return the jmi launch in browser
-   */
-  private JMenuItem getJmiLaunchInBrowser() {
-    if (jmiLaunchInBrowser == null) {
-      jmiLaunchInBrowser = new JMenuItem(ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER));
-    }
-    return jmiLaunchInBrowser;
-  }
-
-  /**
-   * Gets the jajuk lyrics provider.
-   * 
-   * @return the jajuk lyrics provider
-   */
-  private JajukLyricsProvider getJajukLyricsProvider() {
-    if (jajukLyricsProvider == null) {
-      jajukLyricsProvider = new JajukLyricsProvider();
-    }
-    return jajukLyricsProvider;
+  @Override
+  public void changedUpdate(DocumentEvent e) {
+    changeDetected = true;
+    updateButtonsState();
   }
 
 }

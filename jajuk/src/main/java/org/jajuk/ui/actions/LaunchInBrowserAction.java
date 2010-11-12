@@ -22,6 +22,7 @@ package org.jajuk.ui.actions;
 
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.net.URI;
 
 import javax.swing.JComponent;
@@ -63,7 +64,14 @@ public class LaunchInBrowserAction extends JajukAction {
         try {
           JComponent source = (JComponent) evt.getSource();
           String url = (String) source.getClientProperty(Const.DETAIL_CONTENT);
-          Desktop.getDesktop().browse(new URI(url));
+          // If URL is a file, open the file with default editor
+          File file = new File(url);
+          if (file.exists()) {
+            Desktop.getDesktop().open(file);
+          } else {
+            // Open a browser for HTTP URLs
+            Desktop.getDesktop().browse(new URI(url));
+          }
         } catch (Exception e) {
           Log.error(e);
         }

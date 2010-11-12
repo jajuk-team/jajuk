@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -20,7 +20,8 @@
  */
 package org.jajuk.services.lyrics.persisters;
 
-import org.jajuk.services.lyrics.providers.JajukLyricsProvider;
+
+import org.jajuk.base.File;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -30,19 +31,17 @@ import org.jajuk.util.log.Log;
  */
 public class TagPersister implements ILyricsPersister {
 
-  /** DOCUMENT_ME. */
-  private JajukLyricsProvider provider = null;
-  
+  /** Audio file to set lyrics to. */
+  private File file = null;
+
   /* (non-Javadoc)
-   * @see org.jajuk.services.lyrics.persisters.ILyricsPersister#commitLyrics(java.lang.String, org.jajuk.base.File)
+   * @see org.jajuk.services.lyrics.persisters.ILyricsPersister#commitLyrics(String,String,String)
    */
   @Override
-  public boolean commitLyrics(JajukLyricsProvider iProvider) {
-    provider = iProvider;
-    
+  public boolean commitLyrics(String artist, String title, String lyrics) {
     try {
-      Tag g = Tag.getTagForFio(provider.getFile().getFIO(), true);
-      g.setLyrics(provider.getLyrics());
+      Tag g = Tag.getTagForFio(file.getFIO(), true);
+      g.setLyrics(lyrics);
       return true;
     } catch (JajukException e) {
       Log.error(e);
@@ -52,16 +51,35 @@ public class TagPersister implements ILyricsPersister {
   }
 
   /* (non-Javadoc)
-   * @see org.jajuk.services.lyrics.persisters.ILyricsPersister#deleteLyrics(org.jajuk.services.lyrics.providers.ILyricsProvider)
+   * @see org.jajuk.services.lyrics.persisters.ILyricsPersister#deleteLyrics()
    */
   @Override
-  public void deleteLyrics(JajukLyricsProvider provider) {
+  public boolean deleteLyrics() {
     try {
-      Tag g = Tag.getTagForFio(provider.getFile().getFIO(), true);
+      Tag g = Tag.getTagForFio(file.getFIO(), true);
       g.deleteLyrics();
+      return true;
     } catch (JajukException e) {
       Log.error(e);
-    }    
+      return false;
+    }
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.lyrics.persisters.ILyricsPersister#getDestinationFile()
+   */
+  @Override
+  public java.io.File getDestinationFile() {
+    // For tag persister, destination file is audio file itself
+    return file.getFIO();
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.lyrics.persisters.ILyricsPersister#setAudioFile(java.io.File)
+   */
+  @Override
+  public void setAudioFile(File file) {
+    this.file = file;
   }
 
 }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -21,32 +21,48 @@
 
 package org.jajuk.services.lyrics.persisters;
 
-import java.io.IOException;
-
-import org.jajuk.services.lyrics.providers.JajukLyricsProvider;
+import org.jajuk.base.File;
 
 /**
  * Interface for lyrics persisters to be used by the modified LyricsService.
  */
 public interface ILyricsPersister {
-  
+
+  /**
+   * Sets the audio file to set lyrics to.
+   * 
+   * @param file the new audio file
+   */
+  void setAudioFile(File file);
+
   /**
    * Commit lyrics for a given filename <br>
    * Returns true if commited correctly, false otherwise.
    * 
-   * @param provider DOCUMENT_ME
+   * @param track's artist
+   * @param track's title
+   * @param lyrics lyrics as a string
    * 
    * @return true if OK, false otherwise
    */
-  boolean commitLyrics(JajukLyricsProvider provider) throws IOException;
-  
+  boolean commitLyrics(String artist, String title, String lyrics);
+
   /**
    * Deletes Lyrics that user has saved <br>
    * in Tag or in a Txt file.
+   * Returns true if deleted correctly, false otherwise.
    * 
    * @param provider DOCUMENT_ME
-   * @throws IOException 
+   * 
+   * @return true, if delete lyrics
    */
-  void deleteLyrics(JajukLyricsProvider provider) throws IOException;
+  boolean deleteLyrics();
+
+  /**
+   * Gets the destination file.
+   * 
+   * @return the destination file
+   */
+  java.io.File getDestinationFile();
 
 }

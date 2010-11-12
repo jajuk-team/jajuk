@@ -21,9 +21,6 @@
 
 package org.jajuk.services.lyrics;
 
-
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,27 +29,28 @@ import org.jajuk.base.File;
 import org.jajuk.services.lyrics.persisters.ILyricsPersister;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;
 import org.jajuk.services.lyrics.providers.JajukLyricsProvider;
+import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.ui.widgets.InformationJPanel.MessageType;
+import org.jajuk.util.Messages;
+import org.jajuk.util.error.LyricsPersistenceException;
 import org.jajuk.util.log.Log;
-
-
 
 /**
  * Lyrics retrieval service. This service will retrieves lyrics from various
- * providers, querying all of them until one returns some valid input. (TODO:
- * user-selectable multi-input-sources. edit the LyricsService so that it will
- * notify about various valid sources, so we could propose various inputs to the
- * user)
+ * providers, querying all of them until one returns some valid input. 
  * 
- * For now the lyrics providers list is static and stored directly in this class
+ * TODO: user-selectable multi-input-sources. edit the LyricsService so that it will
+ * notify about various valid sources, so we could propose various inputs to the
+ * user. For now the lyrics providers list is static and stored directly in this class.
  */
 public final class LyricsService {
 
   /** DOCUMENT_ME. */
   private static List<ILyricsProvider> providers = null;
-  
+
   /** DOCUMENT_ME. */
   private static ILyricsProvider current = null;
-  
+
   /** DOCUMENT_ME. */
   private static List<ILyricsPersister> persisters = null;
 
@@ -61,14 +59,12 @@ public final class LyricsService {
       "org.jajuk.services.lyrics.providers.TagLyricsProvider",
       "org.jajuk.services.lyrics.providers.TxtLyricsProvider",
       "org.jajuk.services.lyrics.providers.LyricWikiWebLyricsProvider",
-      "org.jajuk.services.lyrics.providers.FlyWebLyricsProvider",
-      "org.jajuk.services.lyrics.providers.LyrcWebLyricsProvider"};
-  
+      "org.jajuk.services.lyrics.providers.FlyWebLyricsProvider", };
+
   /** Persisters list. */
   private static String[] persisterClasses = new String[] {
-    "org.jajuk.services.lyrics.persisters.TagPersister",
-    "org.jajuk.services.lyrics.persisters.TxtPersister"
-  };
+      "org.jajuk.services.lyrics.persisters.TagPersister",
+      "org.jajuk.services.lyrics.persisters.TxtPersister" };
 
   /**
    * Empty private constructor to avoid instantiating utility class.
@@ -132,55 +128,80 @@ public final class LyricsService {
    */
   public static String getLyrics(final File audioFile) {
     String lyrics = null;
-    
     current = null;
     Log.debug("Retrieving lyrics for file {{" + audioFile + "}}");
     for (final ILyricsProvider provider : getProviders()) {
-      lyrics = provider.getLyrics(audioFile);
+      provider.setAudioFile(audioFile);
+      lyrics = provider.getLyrics();
       current = provider;
       if (lyrics != null) {
         break;
       }
     }
+    // None provider found lyrics so reset current
+    if (lyrics == null) {
+      current = null;
+    }
     return lyrics;
   }
-  
+
   /**
-   * Commit lyrics.
-   * DOCUMENT_ME
+   * Commit lyrics for a jajuk lyrics provider (jajuk GUI).
    * 
-   * @param provider DOCUMENT_ME
-   * @throws IOException 
+   * @param provider the JajukLyricsProvider
+   * @throws LyricsPersistenceException if lyrics cannot be written 
    */
-  public static void commitLyrics(JajukLyricsProvider provider) throws IOException {
+  public static void commitLyrics(JajukLyricsProvider provider) throws LyricsPersistenceException {
     boolean commitOK = false;
-    Log.debug("Commiting lyrics for file {{" + provider + "}}");
-    for (final ILyricsPersister persister : getPersisters()) {    
-      commitOK = persister.commitLyrics(provider);
+    String destinationPath = null;
+    Log.debug("Commiting lyrics for file {{" + provider.getFile().getAbsolutePath() + "}}");
+    // Try each persister until we actually persist lyrics
+    for (final ILyricsPersister persister : getPersisters()) {
+      persister.setAudioFile(provider.getFile());
+      destinationPath = persister.getDestinationFile().getAbsolutePath();
+      commitOK = persister.commitLyrics(provider.getArtist(), provider.getTitle(), provider
+          .getLyrics());
       if (commitOK) {
         break;
       }
     }
-    
     if (commitOK) {
-      Log.info("Lyrics successfully commited to " + provider.getFile().getName());
-    }
-    else {
-      Log.warn("Lyrics could not be commited to " + provider.getFile().getName());
+      Log.info("Lyrics successfully commited for file : " + provider.getFile().getAbsolutePath());
+      InformationJPanel.getInstance().setMessage(
+          Messages.getString("Success") + " [" + destinationPath + "]", MessageType.INFORMATIVE);
+    } else {
+      throw new LyricsPersistenceException("Lyrics could not be commited to "
+          + provider.getFile().getAbsolutePath());
     }
   }
-  
+
   /**
-   * Delete lyrics.
-   * DOCUMENT_ME
+   * Delete lyrics from any persister support.
    * 
    * @param provider DOCUMENT_ME
-   * @throws IOException 
+   * @throws LyricsPersistenceException if the lyrics cannot be removed 
    */
-  public static void deleteLyrics(JajukLyricsProvider provider) throws IOException {
-    for (final ILyricsPersister persister : getPersisters()) {    
-      persister.deleteLyrics(provider);
+  public static void deleteLyrics(JajukLyricsProvider provider) throws LyricsPersistenceException {
+    boolean deleteOK = false;
+    String destinationPath = null;
+    Log.debug("deleting lyrics for file {{" + provider.getFile().getAbsolutePath() + "}}");
+    for (final ILyricsPersister persister : getPersisters()) {
+      persister.setAudioFile(provider.getFile());
+      destinationPath = persister.getDestinationFile().getAbsolutePath();
+      deleteOK = persister.deleteLyrics();
+      if (deleteOK) {
+        break;
+      }
     }
+    if (deleteOK) {
+      Log.info("Lyrics successfully deleted for file : " + provider.getFile().getAbsolutePath());
+      InformationJPanel.getInstance().setMessage(
+          Messages.getString("Success") + " [" + destinationPath + "]", MessageType.INFORMATIVE);
+    } else {
+      throw new LyricsPersistenceException("Lyrics could not be deleted from "
+          + provider.getFile().getName());
+    }
+
   }
 
   /**
@@ -203,7 +224,7 @@ public final class LyricsService {
   public static ILyricsProvider getCurrentProvider() {
     return current;
   }
-  
+
   /**
    * Gets the persisters.
    * 
@@ -213,8 +234,7 @@ public final class LyricsService {
     if (persisters == null) {
       loadPersisters();
     }
-    
     return persisters;
   }
-  
+
 }

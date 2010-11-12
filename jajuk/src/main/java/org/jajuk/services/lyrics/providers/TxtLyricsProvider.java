@@ -37,25 +37,25 @@ public class TxtLyricsProvider implements ILyricsProvider {
 
   /** DOCUMENT_ME. */
   private BufferedReader lyricsReader = null;
-  
+
   /** DOCUMENT_ME. */
   private String readerPath = null;
-  
+
+  /** audio file we search lyrics for */
+  private File audioFile = null;
+
   /* (non-Javadoc)
-   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics(java.lang.String, java.lang.String)
+   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics()
    */
   @Override
-  public String getLyrics(File audioFile) {
+  public String getLyrics() {
     readerPath = UtilSystem.removeExtension(audioFile.getAbsolutePath()) + ".txt";
-
-    if(!new java.io.File(readerPath).exists()) {
+    if (!new java.io.File(readerPath).exists()) {
       Log.debug("Lyrics Txt file not found, can not read lyrics for Txt-Provider");
       return null;
     }
-    
     try {
       String lyrics = "";
-
       lyricsReader = getLyricsReader();
       String s = null;
       while ((s = lyricsReader.readLine()) != null) {
@@ -86,7 +86,7 @@ public class TxtLyricsProvider implements ILyricsProvider {
   public String getResponseEncoding() {
     return "UTF-8";
   }
-  
+
   /**
    * Gets the lyrics reader.
    * 
@@ -95,10 +95,26 @@ public class TxtLyricsProvider implements ILyricsProvider {
    * @throws FileNotFoundException the file not found exception
    */
   private BufferedReader getLyricsReader() throws FileNotFoundException {
-    if (lyricsReader == null) {    
+    if (lyricsReader == null) {
       lyricsReader = new BufferedReader(new FileReader(readerPath));
     }
     return lyricsReader;
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#setAudioFile(org.jajuk.base.File)
+   */
+  @Override
+  public void setAudioFile(File file) {
+    this.audioFile = file;
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getSourceAddress()
+   */
+  @Override
+  public String getSourceAddress() {
+    return UtilSystem.removeExtension(audioFile.getAbsolutePath()) + ".txt";
   }
 
 }

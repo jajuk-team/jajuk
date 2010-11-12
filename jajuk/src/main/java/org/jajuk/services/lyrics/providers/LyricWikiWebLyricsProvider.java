@@ -27,7 +27,6 @@ import java.net.MalformedURLException;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
-import org.jajuk.base.File;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
@@ -176,10 +175,10 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics(org.jajuk.base.File)
+   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics()
    */
   @Override
-  public String getLyrics(File audioFile) {
+  public String getLyrics() {
     return getLyrics(audioFile.getTrack().getArtist().getName2(), audioFile.getTrack().getName());
   }
 
