@@ -29,7 +29,7 @@ import java.util.Comparator;
  * @TODO Convert criteria from int to an enum
  */
 public class AlbumComparator implements Comparator<Album>, Serializable {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -5927167916548652076L;
 

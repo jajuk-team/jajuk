@@ -145,7 +145,8 @@ public class JajukHtmlPanel extends HtmlPanel {
         } catch (IOException e) {
           // report IOException only as warning here as we can expect this to
           // happen frequently with images on the net
-          Log.warn("Could not read page: {{" + url.toString() + " Cache: " + page + "}}", e.getMessage());
+          Log.warn("Could not read page: {{" + url.toString() + " Cache: " + page + "}}", e
+              .getMessage());
 
           try {
             setFailedToLoad(URL_COLON + url + COLON + e.getClass().getSimpleName() + COLON

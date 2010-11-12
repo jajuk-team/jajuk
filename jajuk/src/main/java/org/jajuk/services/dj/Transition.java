@@ -28,7 +28,7 @@ import org.jajuk.util.UtilFeatures;
  * Represents a transition from one genre to another (used by digital DJs).
  */
 public class Transition {
-  
+
   /** From genres. */
   private Ambience from;
 

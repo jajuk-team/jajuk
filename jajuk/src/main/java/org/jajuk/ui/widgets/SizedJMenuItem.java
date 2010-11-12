@@ -32,10 +32,9 @@ import org.jajuk.util.UtilGUI;
  * Menu item whose icon has a fixed size.
  */
 public class SizedJMenuItem extends JMenuItem {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -3859493402696496345L;
-
 
   /**
    * Menu item with a fixed 16x216 icon dimension.

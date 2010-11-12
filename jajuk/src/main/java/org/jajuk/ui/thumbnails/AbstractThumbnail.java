@@ -246,7 +246,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   void postPopulate() {
     // do this only once as it might be a costly operation...
     Item item = getItem();
-    
+
     // Album menu
     jmenu = new JPopupMenu();
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));

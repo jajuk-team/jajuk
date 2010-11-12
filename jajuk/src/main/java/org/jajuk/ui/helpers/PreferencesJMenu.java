@@ -44,28 +44,28 @@ public class PreferencesJMenu extends JMenu {
 
   /** DOCUMENT_ME. */
   private JMenuItem jmiBan;
-  
+
   /** DOCUMENT_ME. */
   private JMenuItem jmiUnBan;
-  
+
   /** DOCUMENT_ME. */
   private JMenuItem jmiAdore;
-  
+
   /** DOCUMENT_ME. */
   private JMenuItem jmiLove;
-  
+
   /** DOCUMENT_ME. */
   private JMenuItem jmiLike;
-  
+
   /** DOCUMENT_ME. */
   private JMenuItem jmiUnset;
-  
+
   /** DOCUMENT_ME. */
   private JMenuItem jmiAverage;
-  
+
   /** DOCUMENT_ME. */
   private JMenuItem jmiPoor;
-  
+
   /** DOCUMENT_ME. */
   private JMenuItem jmiHate;
 

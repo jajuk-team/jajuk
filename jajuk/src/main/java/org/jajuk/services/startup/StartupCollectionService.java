@@ -99,7 +99,8 @@ public class StartupCollectionService {
   public static void registerItemManagers() {
     ItemManager.registerItemManager(org.jajuk.base.Album.class, AlbumManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Artist.class, ArtistManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.AlbumArtist.class, AlbumArtistManager.getInstance());
+    ItemManager.registerItemManager(org.jajuk.base.AlbumArtist.class, AlbumArtistManager
+        .getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Device.class, DeviceManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.File.class, FileManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Directory.class, DirectoryManager.getInstance());
@@ -137,8 +138,7 @@ public class StartupCollectionService {
             mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
           }
         }
-      }
-      else if (UtilSystem.isUnderOSX()) {
+      } else if (UtilSystem.isUnderOSX()) {
         final File mplayerPath = UtilSystem.getMPlayerOSXPath();
         // try to find mplayer executable in known locations first
         if (mplayerPath == null) {
@@ -147,7 +147,7 @@ public class StartupCollectionService {
             File fMPlayer = SessionService.getConfFileByPath(Const.FILE_MPLAYER_OSX_EXE);
             DownloadManager.download(new URL(Const.URL_MPLAYER_OSX), fMPlayer);
             fMPlayer.setExecutable(true);
-           if (fMPlayer.length() != Const.MPLAYER_OSX_EXE_SIZE) {
+            if (fMPlayer.length() != Const.MPLAYER_OSX_EXE_SIZE) {
               if (!fMPlayer.delete()) {
                 Log.warn("Could not delete file " + fMPlayer);
               }
@@ -364,13 +364,14 @@ public class StartupCollectionService {
       }
     }
 
-    Log.debug("Loaded " + FileManager.getInstance().getElementCount() + " files with " + TrackManager.getInstance().getElementCount() + " tracks, " +
-        AlbumManager.getInstance().getElementCount() + " albums, " +
-        ArtistManager.getInstance().getElementCount() + " artists, " +
-        AlbumArtistManager.getInstance().getElementCount() + " album-artists, " +
-        PlaylistManager.getInstance().getElementCount() + " playlists in " +
-        DirectoryManager.getInstance().getElementCount() + " directories on " +
-        DeviceManager.getInstance().getElementCount() + "devices.");
+    Log.debug("Loaded " + FileManager.getInstance().getElementCount() + " files with "
+        + TrackManager.getInstance().getElementCount() + " tracks, "
+        + AlbumManager.getInstance().getElementCount() + " albums, "
+        + ArtistManager.getInstance().getElementCount() + " artists, "
+        + AlbumArtistManager.getInstance().getElementCount() + " album-artists, "
+        + PlaylistManager.getInstance().getElementCount() + " playlists in "
+        + DirectoryManager.getInstance().getElementCount() + " directories on "
+        + DeviceManager.getInstance().getElementCount() + "devices.");
 
     // start auto commit thread
     tAutoCommit.start();

@@ -49,7 +49,7 @@ public class JajukFileChooser extends JFileChooser {
    */
   public JajukFileChooser(JajukFileFilter jfilter) {
     super();
-    
+
     this.filter = jfilter;
     for (int i = 0; i < jfilter.getFilters().length; i++) {
       addChoosableFileFilter(jfilter.getFilters()[i]);
@@ -66,7 +66,7 @@ public class JajukFileChooser extends JFileChooser {
    */
   public JajukFileChooser(JajukFileFilter jfilter, File file) {
     super(file);
-    
+
     this.filter = jfilter;
     for (int i = 0; i < jfilter.getFilters().length; i++) {
       addChoosableFileFilter(jfilter.getFilters()[i]);

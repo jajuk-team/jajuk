@@ -210,7 +210,7 @@ public class XCheckedButton extends JButton {
    * DOCUMENT_ME.
    */
   private class XCheckedButtonModel extends JToggleButton.ToggleButtonModel {
-    
+
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 4628990599914525833L;
 

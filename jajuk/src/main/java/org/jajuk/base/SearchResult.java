@@ -32,11 +32,11 @@ public class SearchResult implements Comparable<SearchResult> {
    * Result type *.
    */
   public enum SearchResultType {
-    
+
     /** DOCUMENT_ME. */
-    FILE, 
- /** DOCUMENT_ME. */
- WEBRADIO
+    FILE,
+    /** DOCUMENT_ME. */
+    WEBRADIO
   }
 
   /** The associated file. */
@@ -89,7 +89,6 @@ public class SearchResult implements Comparable<SearchResult> {
     return sResu.hashCode();
   }
 
- 
   /*
    * (non-Javadoc)
    * 
@@ -97,7 +96,7 @@ public class SearchResult implements Comparable<SearchResult> {
    */
   @Override
   public int compareTo(SearchResult sr) {
-    if(sr == null) {
+    if (sr == null) {
       return -1;
     }
 

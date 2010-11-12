@@ -145,7 +145,7 @@ public class LastFmCache {
       Log.info("Could not delete all files from submission data cache");
       exception = true;
     }
-    
+
     return exception;
   }
 

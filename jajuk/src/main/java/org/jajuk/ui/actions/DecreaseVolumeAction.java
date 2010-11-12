@@ -30,7 +30,7 @@ import org.jajuk.util.log.Log;
  * <code>CTRL + DOWN ARROW</code>.
  */
 public class DecreaseVolumeAction extends JajukAction {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

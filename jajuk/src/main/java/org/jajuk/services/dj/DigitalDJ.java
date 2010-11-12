@@ -149,13 +149,13 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
     // cut off some tracks if less are selected for queuing
     if (iMaxTracks > 0) {
       // return without any copying if we have less entries than max
-      if(iMaxTracks > files.size()) {
+      if (iMaxTracks > files.size()) {
         return;
       }
-      
+
       // remove until we have less than max tracks
-      while(files.size() > iMaxTracks) {
-        files.remove(files.size()-1);
+      while (files.size() > iMaxTracks) {
+        files.remove(files.size() - 1);
       }
     }
   }

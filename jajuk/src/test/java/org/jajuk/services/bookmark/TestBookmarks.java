@@ -227,7 +227,7 @@ public class TestBookmarks extends JajukTestCase {
     // For EMMA code-coverage tests
     JUnitHelpers.executePrivateConstructor(Bookmarks.class);
   }
-  
+
   public void testCoverage() throws Exception {
     Conf.setProperty(Const.CONF_BOOKMARKS, "");
     // For EMMA code-coverage tests
@@ -236,7 +236,7 @@ public class TestBookmarks extends JajukTestCase {
     Conf.removeProperty(Const.CONF_BOOKMARKS);
     // For EMMA code-coverage tests
     JUnitHelpers.executePrivateConstructor(Bookmarks.class);
-    
+
     Conf.setProperty(Const.CONF_BOOKMARKS, "1,2,3,4");
     // For EMMA code-coverage tests
     JUnitHelpers.executePrivateConstructor(Bookmarks.class);

@@ -439,8 +439,8 @@ public class TestTracksTreeView extends JajukTestCase {
    * @return
    */
   private Track getTrack() {
-    return TrackManager.getInstance().registerTrack("name", getAlbum(), getGenre(), getArtist(), 123, getYear(), 1,
-        JUnitHelpers.getType(), 1);
+    return TrackManager.getInstance().registerTrack("name", getAlbum(), getGenre(), getArtist(),
+        123, getYear(), 1, JUnitHelpers.getType(), 1);
   }
 
   public final void testDiscoveryDateNode() {

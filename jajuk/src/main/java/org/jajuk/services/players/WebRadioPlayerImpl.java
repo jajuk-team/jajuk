@@ -44,7 +44,7 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
    * Reader : read information from mplayer like position.
    */
   private class ReaderThread extends Thread {
-    
+
     /**
      * Implemented to set a useful thread name.
      */

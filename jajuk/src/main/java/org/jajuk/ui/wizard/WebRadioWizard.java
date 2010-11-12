@@ -238,7 +238,7 @@ public class WebRadioWizard extends Wizard {
         out.add(widgets[i][1], "grow,left,width 200!");
         out.add(widgets[i][2], "grow,left,wrap,width 250:250");
       }
-      
+
       jsp = new JScrollPane(out);
       // select first ambiance found
       if (radios.size() > 0) {

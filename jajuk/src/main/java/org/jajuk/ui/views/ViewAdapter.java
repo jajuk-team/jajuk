@@ -282,7 +282,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
       }
     }
   }
-  
+
   public void cleanup() {
     // unregister any component that is still registered as observer
     cleanupRecursive(this);
@@ -294,18 +294,18 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   private static void cleanupRecursive(Container c) {
     for (int i = 0; i < c.getComponentCount(); i++) {
       Component comp = c.getComponent(i);
-      
+
       // unregister any Observer that is contained as Component here, e.g. JajukTable instances
       if (comp instanceof Observer) {
         ObservationManager.unregister((Observer) comp);
       }
-      
+
       // iterate over all KeyListeners and remove them
-      for(KeyListener key : comp.getKeyListeners()) {
+      for (KeyListener key : comp.getKeyListeners()) {
         comp.removeKeyListener(key);
       }
-      
-      if(comp instanceof JajukTable) {
+
+      if (comp instanceof JajukTable) {
         // JajukTable sends TABLE_SELECTION_CHANGED with views as part of the properties. Therefore try to clean up these references 
         // here for every JajukTable that we find by sending an empty TABLE_SELECTION_CHANGED event which clears the last one that is still stored
         // in the ObservationManager
@@ -313,11 +313,11 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
       }
       // if the component is a nested ViewAdapter (e.g. PlaylistView$PlaylistRepository, 
       // we need to do this cleanup in the nested object as well
-      if(comp instanceof ViewAdapter) {
+      if (comp instanceof ViewAdapter) {
         // we also need to cleanup the RepositoryPanel
-        ((ViewAdapter)comp).cleanup();
+        ((ViewAdapter) comp).cleanup();
       }
-      
+
       // recursively call any Container to also look at it's components
       if (comp instanceof Container) {
         cleanupRecursive((Container) comp);

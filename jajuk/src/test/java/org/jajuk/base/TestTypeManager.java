@@ -65,11 +65,11 @@ public class TestTypeManager extends TestCase {
   public void testRegisterType() {
     Type type = TypeManager.getInstance().registerType("testtype", "tst", null, null);
     assertNotNull(type);
-        
+
     // try to register the same thing, we get back the same type
     Type type2 = TypeManager.getInstance().registerType("testtype", "tst", null, null);
-    assertTrue(type == type2);  // instance compare on purpose!
-    
+    assertTrue(type == type2); // instance compare on purpose!
+
     // register the same type
   }
 

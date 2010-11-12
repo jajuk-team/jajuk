@@ -103,7 +103,7 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
     Track track = JUnitHelpers.getTrack(3);
     track.getAlbum().setProperty(Const.XML_ALBUM_COVER,
         System.getProperty("java.io.tmpdir") + "nonexist"); // don't read covers
-                                                            // for
+    // for
     LastFmAlbumsRunnable.getImageForAudioFile(track, 100, 100);
   }
 
@@ -111,9 +111,9 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
     Track track = JUnitHelpers.getTrack(3);
     File file = File.createTempFile("test", ".img");
     track.getAlbum().setProperty(Const.XML_ALBUM_COVER, file.getAbsolutePath()); // don't
-                                                                                 // read
-                                                                                 // covers
-                                                                                 // for
+    // read
+    // covers
+    // for
 
     assertNotNull(LastFmAlbumsRunnable.getImageForAudioFile(track, 200, 100));
 
@@ -126,9 +126,9 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
     Track track = JUnitHelpers.getTrack(3);
     File file = File.createTempFile("test", ".img");
     track.getAlbum().setProperty(Const.XML_ALBUM_COVER, file.getAbsolutePath()); // don't
-                                                                                 // read
-                                                                                 // covers
-                                                                                 // for
+    // read
+    // covers
+    // for
 
     assertNotNull(LastFmAlbumsRunnable.getImageForAudioFile(track, 100, 200));
 
@@ -141,9 +141,9 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
     Track track = JUnitHelpers.getTrack(3);
     File file = File.createTempFile("test", ".img");
     track.getAlbum().setProperty(Const.XML_ALBUM_COVER, file.getAbsolutePath()); // don't
-                                                                                 // read
-                                                                                 // covers
-                                                                                 // for
+    // read
+    // covers
+    // for
 
     assertNotNull(LastFmAlbumsRunnable.getImageForAudioFile(track, -1, -1));
 

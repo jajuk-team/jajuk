@@ -150,7 +150,7 @@ public class TestHistory extends JajukTestCase {
 
     // register one more file
     File max = JUnitHelpers.getFile("file" + Const.MAX_HISTORY_SIZE, false);
-    
+
     // now when we add one item, we should loose the oldest one (i.e. ID "1")
     History.getInstance().addItem(max.getID(), 123);
 
@@ -158,14 +158,14 @@ public class TestHistory extends JajukTestCase {
     assertEquals(Const.MAX_HISTORY_SIZE, History.getInstance().getHistory().size());
 
     // new element should be in the History at position 0 now
-    assertEquals(History.getInstance().getHistory().toString(), max
-        .getID(), History.getInstance().getHistoryItem(0).getFileId());
-    
+    assertEquals(History.getInstance().getHistory().toString(), max.getID(), History.getInstance()
+        .getHistoryItem(0).getFileId());
+
     // check that the existing items were moved by one (items are always added at the front, so 
     // we have to check in reverse order, i.e. the one before the last added one is at pos 1
-    for(int i = 1;i < Const.MAX_HISTORY_SIZE;i++) {
-      assertEquals(History.getInstance().getHistory().toString(), files[Const.MAX_HISTORY_SIZE-i].getID(), History
-          .getInstance().getHistoryItem(i).getFileId());
+    for (int i = 1; i < Const.MAX_HISTORY_SIZE; i++) {
+      assertEquals(History.getInstance().getHistory().toString(), files[Const.MAX_HISTORY_SIZE - i]
+          .getID(), History.getInstance().getHistoryItem(i).getFileId());
     }
 
     // also check clear

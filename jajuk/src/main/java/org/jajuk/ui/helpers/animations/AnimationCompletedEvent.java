@@ -27,10 +27,10 @@ import java.awt.Window;
  * Event thrown when the naimation is done.
  */
 public class AnimationCompletedEvent {
-  
+
   /** DOCUMENT_ME. */
   private IAnimation source;
-  
+
   /** DOCUMENT_ME. */
   private Window window;
 

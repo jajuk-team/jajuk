@@ -120,5 +120,5 @@ public class FlyWebLyricsProvider extends GenericWebLyricsProvider {
   public String getLyrics() {
     return getLyrics(audioFile.getTrack().getArtist().getName2(), audioFile.getTrack().getName());
   }
-  
+
 }

@@ -49,7 +49,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
   // that is overwritten later on, we should investigate if we can separate those two concerns...
   // also some filters do not really depend on JajukFileFilter, e.g. DirectoryFilter, and thus
   // might return incorrect data in certain cases, e.g. extension...
-  
+
   /** Filters. */
   private JajukFileFilter[] filters = {};
 
@@ -58,7 +58,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
 
   /** List of Extensions for the current filter. */
   protected String[] extensions = {};
-  
+
   /** DOCUMENT_ME. */
   protected String extensionsString = "";
 

@@ -65,7 +65,8 @@ public class BanCurrentAction extends SelectionAction {
       // Alert GUI so we can switch buttons from ban icon to unban one
       ObservationManager.notify(new JajukEvent(JajukEvents.BANNED));
       // Go to next track if it is banned
-      if ( ActionManager.getAction(JajukActions.NEXT_TRACK).isEnabled() && track.getBooleanValue(Const.XML_TRACK_BANNED)) {
+      if (ActionManager.getAction(JajukActions.NEXT_TRACK).isEnabled()
+          && track.getBooleanValue(Const.XML_TRACK_BANNED)) {
         ActionManager.getAction(JajukActions.NEXT_TRACK).perform(null);
       }
     }

@@ -146,7 +146,6 @@ public class StartupGUIService {
       });
     }
   }
-    
 
   /**
    * Startup over.
@@ -213,7 +212,7 @@ public class StartupGUIService {
             tipsView.setLocationRelativeTo(JajukMainWindow.getInstance());
             tipsView.setVisible(true);
           }
-        } catch (final Exception e) { 
+        } catch (final Exception e) {
           // last chance to catch any error for
           // logging purpose
           Log.error(106, e);

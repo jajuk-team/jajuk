@@ -38,7 +38,7 @@ import org.jajuk.util.Messages;
  * DOCUMENT_ME.
  */
 public class ShuffleModeAction extends JajukAction {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

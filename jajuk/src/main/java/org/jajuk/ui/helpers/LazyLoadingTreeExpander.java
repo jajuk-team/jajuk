@@ -8,7 +8,6 @@ import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 
-
 /**
  * This class handles the lazy loading of nodes. It calls the necessary methods
  * on the current tree node to ask it for it's actual children.
@@ -57,7 +56,7 @@ public class LazyLoadingTreeExpander implements TreeWillExpandListener {
       }
     }
   }
-  
+
   /**
    * Define nodes children
    * 
@@ -74,5 +73,5 @@ public class LazyLoadingTreeExpander implements TreeWillExpandListener {
     for (int i = 0; nodes != null && i < nodes.length; i++) {
       model.insertNodeInto(nodes[i], lazyNode, i);
     }
-  }  
+  }
 }

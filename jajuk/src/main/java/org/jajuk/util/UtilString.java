@@ -19,7 +19,7 @@
  *  $Revision$
  */
 package org.jajuk.util;
- 
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -139,8 +139,8 @@ public final class UtilString {
    * 
    * @return the string
    */
-  private static String applyTrackPattern(final String sPattern, final boolean normalize, final String out,
-      final Track track) {
+  private static String applyTrackPattern(final String sPattern, final boolean normalize,
+      final String out, final Track track) {
     String ret = out;
     String sValue;
     if (sPattern.contains(Const.PATTERN_TRACKNAME)) {
@@ -166,8 +166,9 @@ public final class UtilString {
    * 
    * @throws JajukException the jajuk exception
    */
-  private static String applyTrackOrderPattern(final org.jajuk.base.File file, final String sPattern,
-      final boolean bMandatory, final String out, final Track track) throws JajukException {
+  private static String applyTrackOrderPattern(final org.jajuk.base.File file,
+      final String sPattern, final boolean bMandatory, final String out, final Track track)
+      throws JajukException {
     if (sPattern.contains(Const.PATTERN_TRACKORDER)) {
       // override Order from filename if not set explicitly
       long lOrder = handleOrder(file, bMandatory, track);
@@ -352,8 +353,8 @@ public final class UtilString {
    * 
    * @return the string
    */
-  private static String applyAlbumArtistPattern(String sPattern, boolean normalize,
-      String out, Track track) {
+  private static String applyAlbumArtistPattern(String sPattern, boolean normalize, String out,
+      Track track) {
     String ret = out;
     String sValue;
     if (sPattern.contains(Const.PATTERN_ALBUM_ARTIST)) {

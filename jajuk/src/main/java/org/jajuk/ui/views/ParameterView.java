@@ -795,7 +795,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
         SessionService.setWorkspace(psJajukWorkspace.getUrl());
         //Commit the bootstrap file
         SessionService.commitBootstrapFile();
-        
+
         UtilGUI.stopWaiting();
         // Display a warning message and restart Jajuk
         if (bPreviousPathExist) {

@@ -50,7 +50,7 @@ import javax.swing.plaf.basic.BasicSeparatorUI;
  * http://www.beginner-java-tutorial.com/scrollable-jpopupmenu.html
  */
 public class XJPopupMenu extends JPopupMenu implements ActionListener {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1;
 
@@ -200,7 +200,7 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
    * DOCUMENT_ME.
    */
   private static class XSeperator extends JSeparator {
-    
+
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = -6249719411021239596L;
 

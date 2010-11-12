@@ -125,7 +125,7 @@ public class TestStartupEngineService extends JajukTestCase {
 
   public final void testLastItem() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST);
-  
+
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
@@ -135,7 +135,6 @@ public class TestStartupEngineService extends JajukTestCase {
 
   public final void testLastItemLastPos() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
-    
 
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
@@ -172,7 +171,7 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     History.getInstance().clear();
-  
+
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);

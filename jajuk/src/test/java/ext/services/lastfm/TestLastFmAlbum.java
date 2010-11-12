@@ -142,8 +142,8 @@ public class TestLastFmAlbum extends JajukTestCase {
     LastFmAlbum album = new LastFmAlbum();
     assertNull(album.getReleaseDate());
     album.setReleaseDateString("1 January 2009, 00:00");
-    assertEquals(new SimpleDateFormat("d MMM yyyy, HH:mm", Locale.ENGLISH).parse("1 January 2009, 00:00"), album
-        .getReleaseDate());
+    assertEquals(new SimpleDateFormat("d MMM yyyy, HH:mm", Locale.ENGLISH)
+        .parse("1 January 2009, 00:00"), album.getReleaseDate());
 
   }
 

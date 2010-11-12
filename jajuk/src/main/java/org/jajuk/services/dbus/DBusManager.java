@@ -20,7 +20,6 @@
  */
 package org.jajuk.services.dbus;
 
-
 /**
  * Base class to connect/disconnect to the session wide DBus daemon.
  */

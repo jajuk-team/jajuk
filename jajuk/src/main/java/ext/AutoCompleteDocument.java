@@ -248,10 +248,10 @@ public class AutoCompleteDocument extends PlainDocument {
    * DOCUMENT_ME.
    */
   private static class LookupResult {
-    
+
     /** DOCUMENT_ME. */
     Object matchingItem;
-    
+
     /** DOCUMENT_ME. */
     String matchingString;
 

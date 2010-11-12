@@ -29,10 +29,9 @@ import org.jajuk.util.log.Log;
  * Factory returning a INotifictor according to user choice.
  */
 public class NotificatorFactory {
-  
+
   /** DOCUMENT_ME. */
   private static INotificator notificator;
-  
 
   /**
    * retrieve the system preferred notificator system.

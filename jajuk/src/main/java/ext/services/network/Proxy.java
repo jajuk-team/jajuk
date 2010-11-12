@@ -36,16 +36,16 @@ public class Proxy extends java.net.Proxy {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 7495084217081194366L;
-  
+
   /** DOCUMENT_ME. */
   private final String url;
-  
+
   /** DOCUMENT_ME. */
   private final int port;
-  
+
   /** DOCUMENT_ME. */
   private final String user;
-  
+
   /** DOCUMENT_ME. */
   private final String password;
 

@@ -342,7 +342,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
 
       // only set the discnumber if we have a useful one
       String discno = tag.getFirst(FieldKey.DISC_NO);
-      if(StringUtils.isNotEmpty(discno) && StringUtils.isNumeric(discno)) {
+      if (StringUtils.isNotEmpty(discno) && StringUtils.isNumeric(discno)) {
         newTag.setField(FieldKey.DISC_NO, discno);
       }
 
@@ -425,13 +425,13 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
     }
   }
 
-   /**
-   * Gets the supported tag fields.
-   *
-   * @return the supported tag fields
-   */
+  /**
+  * Gets the supported tag fields.
+  *
+  * @return the supported tag fields
+  */
   @Override
-  public  List<String> getSupportedTagFields() {
+  public List<String> getSupportedTagFields() {
     return tagFieldKeyArrayList;
   }
 

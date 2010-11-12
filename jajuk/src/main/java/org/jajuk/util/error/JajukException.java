@@ -26,7 +26,7 @@ import org.jajuk.util.Messages;
  * JajukException.
  */
 public class JajukException extends Exception {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

@@ -48,20 +48,19 @@ import org.jajuk.util.log.Log;
 /**
  * Ambience selection combo box.
  */
-public class AmbienceComboBox extends SteppedComboBox  {
-  
+public class AmbienceComboBox extends SteppedComboBox {
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-  
+
   /** An instance of the ambience combo listener. */
   private AmbienceListener ambienceListener;
 
-  
   /**
    * Ambience combo listener.
    */
   private class AmbienceListener implements ActionListener {
-    
+
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -118,8 +117,8 @@ public class AmbienceComboBox extends SteppedComboBox  {
     removeAllItems();
     addItem(new JLabel(Messages.getString("CommandJPanel.19"), IconLoader
         .getIcon(JajukIcons.CONFIGURATION), SwingConstants.LEFT));
-    addItem(new JLabel("<html><i>" + Messages.getString("DigitalDJWizard.64")
-        + "</i></html>", IconLoader.getIcon(JajukIcons.GENRE), SwingConstants.LEFT));
+    addItem(new JLabel("<html><i>" + Messages.getString("DigitalDJWizard.64") + "</i></html>",
+        IconLoader.getIcon(JajukIcons.GENRE), SwingConstants.LEFT));
     // Add available ambiences
     for (final Ambience ambience : AmbienceManager.getInstance().getAmbiences()) {
       addItem(new JLabel(ambience.getName(), IconLoader.getIcon(JajukIcons.GENRE),
@@ -141,7 +140,7 @@ public class AmbienceComboBox extends SteppedComboBox  {
     }
     addActionListener(ambienceListener);
   }
-  
+
   /**
    * Instantiates a new ambience combo box.
    */
@@ -168,6 +167,5 @@ public class AmbienceComboBox extends SteppedComboBox  {
     ambienceListener = new AmbienceListener();
     addActionListener(ambienceListener);
   }
-   
 
 }

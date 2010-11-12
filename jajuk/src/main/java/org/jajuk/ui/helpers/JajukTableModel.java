@@ -85,8 +85,8 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /** DOCUMENT_ME. */
   protected IconLabel unmount_play_icon = null;
-  
-  /** Whether the model is refreshing so we must ignore selection changes events */ 
+
+  /** Whether the model is refreshing so we must ignore selection changes events */
   private boolean refreshing = false;
 
   /**

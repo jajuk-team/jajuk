@@ -51,7 +51,7 @@ import org.jdesktop.swingx.JXDatePicker;
  * New property wizard.
  */
 public class NewPropertyWizard extends CustomPropertyWizard implements KeyListener {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

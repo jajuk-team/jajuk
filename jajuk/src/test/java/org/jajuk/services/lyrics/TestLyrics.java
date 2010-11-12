@@ -98,7 +98,7 @@ public class TestLyrics extends JajukTestCase {
     String lyrics = provider.getLyrics(ARTIST, TITLE);
     Log.debug("Resulting Lyrics(" + provider.getProviderHostname() + "): " + lyrics);
 
-    if(provider.getProviderHostname().equals("api.lyricsfly.com") && lyrics == null) {
+    if (provider.getProviderHostname().equals("api.lyricsfly.com") && lyrics == null) {
       Log.fatal("In Sonar this can happen, seems we do not have internet access there...");
       return;
     }
@@ -117,7 +117,7 @@ public class TestLyrics extends JajukTestCase {
     assertNotNull(url);
     try {
       DownloadManager.download(url, tmp);
-    } catch (SocketTimeoutException e){
+    } catch (SocketTimeoutException e) {
       Log.fatal("In Sonar this exception occurs, seems we do not have internet access there...");
       return;
     }
@@ -259,6 +259,5 @@ public class TestLyrics extends JajukTestCase {
     GenericWebLyricsProvider provider = new LyricWikiWebLyricsProvider();
     testWeb(provider);
   }
-
 
 }

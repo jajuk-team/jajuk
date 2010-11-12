@@ -35,7 +35,6 @@ public class TestUpgradeManager extends JajukTestCase {
   String v6 = "1.9";
   String v7 = "1.9.2RC4";
 
-
   /*
    * (non-Javadoc)
    * 

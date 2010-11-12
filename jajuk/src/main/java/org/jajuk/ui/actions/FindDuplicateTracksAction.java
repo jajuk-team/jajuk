@@ -209,7 +209,7 @@ public class FindDuplicateTracksAction extends JajukAction {
             duplicateFiles.setContentPane(newContentPane);
 
             // Display the window.
-            duplicateFiles.setSize(800,600);
+            duplicateFiles.setSize(800, 600);
             duplicateFiles.setLocationRelativeTo(JajukMainWindow.getInstance());
             duplicateFiles.setVisible(true);
           }

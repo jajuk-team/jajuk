@@ -71,13 +71,13 @@ public class SaveAsAction extends JajukAction {
         try {
           if (o instanceof List) {
             playlist = ((List<Playlist>) o).get(0);
-          }
-          else{
-            playlist = (Playlist)o;
+          } else {
+            playlist = (Playlist) o;
           }
           playlist.saveAs();
           InformationJPanel.getInstance().setMessage(
-              Messages.getString("AbstractPlaylistEditorView.22"), InformationJPanel.MessageType.INFORMATIVE);
+              Messages.getString("AbstractPlaylistEditorView.22"),
+              InformationJPanel.MessageType.INFORMATIVE);
           ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
         } catch (JajukException je) {
           Log.error(je);

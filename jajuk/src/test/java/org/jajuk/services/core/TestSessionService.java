@@ -92,7 +92,6 @@ public class TestSessionService extends JajukTestCase {
     SessionService.setTestMode(true);
   }
 
- 
   /**
    * Test method for
    * {@link org.jajuk.services.core.SessionService#setWorkspace(java.lang.String)}
@@ -101,8 +100,6 @@ public class TestSessionService extends JajukTestCase {
   public void testSetWorkspace() {
     SessionService.setWorkspace("testworkspace");
   }
-  
-  
 
   /**
    * Test method for

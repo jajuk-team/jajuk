@@ -44,7 +44,7 @@ public class JajukJDialog extends JDialog {
    */
   public JajukJDialog() {
     super(JajukMainWindow.getInstance());
-    
+
     setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
   }
 

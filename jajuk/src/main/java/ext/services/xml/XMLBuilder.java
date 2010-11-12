@@ -36,7 +36,7 @@ import org.xml.sax.SAXException;
  * DOCUMENT_ME.
  */
 public final class XMLBuilder {
-  
+
   /**
    * private constructor to avoid instantiating utility class.
    */

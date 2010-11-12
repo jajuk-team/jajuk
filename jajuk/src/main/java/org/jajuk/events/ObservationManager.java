@@ -83,13 +83,13 @@ public final class ObservationManager {
     Set<JajukEvents> eventSubjectSet = observer.getRegistrationKeys();
 
     // can return null if no keys are registered
-    if(eventSubjectSet == null) {
+    if (eventSubjectSet == null) {
       return;
     }
 
     for (JajukEvents subject : eventSubjectSet) {
       boolean bRemoved = observerRegistry.unregister(subject, observer);
-      if(bRemoved) {
+      if (bRemoved) {
         Log.debug("Unregister: \"" + subject + "\" from: " + observer);
       }
     }
@@ -105,22 +105,22 @@ public final class ObservationManager {
     // asynchronous notification by default to avoid
     // exception throw in the register current thread
     try {
-        /*
-         * do not launch it in a regular thread because EDT waits thread end to
-         * display
-         */
-        queue.add(event);
-        // synchronize here to avoid creating more than one observation manager
-        // thread
-        synchronized (ObservationManager.class) {
-          if (observationThread == null || !observationThread.isAlive()) {
-            // If the thread is terminated, a new thread must be instantiated
-            // Otherwise an IllegalThreadStateException is thrown
-            Log.debug("Observation Manager thread not running, start a new one");
-            observationThread = new ObservationManagerThread();
-            observationThread.start();
-          }
+      /*
+       * do not launch it in a regular thread because EDT waits thread end to
+       * display
+       */
+      queue.add(event);
+      // synchronize here to avoid creating more than one observation manager
+      // thread
+      synchronized (ObservationManager.class) {
+        if (observationThread == null || !observationThread.isAlive()) {
+          // If the thread is terminated, a new thread must be instantiated
+          // Otherwise an IllegalThreadStateException is thrown
+          Log.debug("Observation Manager thread not running, start a new one");
+          observationThread = new ObservationManagerThread();
+          observationThread.start();
         }
+      }
     } catch (Error e) {
       // Make sure to catch any error (Memory or IllegalThreadStateException for
       // ie, this notification musn't stop the current work)

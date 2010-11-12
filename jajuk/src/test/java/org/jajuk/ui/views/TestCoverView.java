@@ -90,11 +90,12 @@ public class TestCoverView extends JajukTestCase {
 
   private File getFile() {
     Genre genre = JUnitHelpers.getGenre();
-    Album album = JUnitHelpers.getAlbum("name",0);
+    Album album = JUnitHelpers.getAlbum("name", 0);
     Artist artist = JUnitHelpers.getArtist("name");
     Year year = JUnitHelpers.getYear(2000);
     Type type = JUnitHelpers.getType();
-    Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year, 1, type, 1);
+    Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
+        1, type, 1);
     Device device = JUnitHelpers.getDevice();
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     File file = FileManager.getInstance().registerFile("test.tst", dir, track, 120, 70);

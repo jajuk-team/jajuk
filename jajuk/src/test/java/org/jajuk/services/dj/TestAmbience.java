@@ -225,7 +225,7 @@ public class TestAmbience extends JajukTestCase {
     // and also compares on genres
     Ambience notequal2 = new Ambience("1", "name");
     notequal2.addGenre(JUnitHelpers.getGenre("mygenre2"));
-   
+
     JUnitHelpers.EqualsTest(amb, equal, notequal1);
     JUnitHelpers.EqualsTest(amb, equal, notequal2);
   }

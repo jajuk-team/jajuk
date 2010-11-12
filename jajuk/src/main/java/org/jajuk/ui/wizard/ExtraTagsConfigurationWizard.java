@@ -211,8 +211,7 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
     TrackManager tm = TrackManager.getInstance();
     // cleanup removed tags
     for (PropertyMetaInformation m : tm.getCustomProperties()) {
-      if (Tag.getSupportedTagFields().contains(m.getName())
-          && !activatedList.contains(m.getName())) {
+      if (Tag.getSupportedTagFields().contains(m.getName()) && !activatedList.contains(m.getName())) {
         tm.removeProperty(m.getName());
         Properties properties = new Properties();
         properties.put(Const.DETAIL_CONTENT, m.getName());

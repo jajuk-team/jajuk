@@ -375,7 +375,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
 
     // Play buttons
     jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
-     // Manage right click : replay the track (this not triggers an action so we use a MouseAdapter here)
+    // Manage right click : replay the track (this not triggers an action so we use a MouseAdapter here)
     jbPrevious.addMouseListener(new JajukMouseAdapter() {
       @Override
       public void handlePopup(final MouseEvent me) {

@@ -68,7 +68,7 @@ public class AboutWindow extends JajukJDialog {
    */
   public AboutWindow() {
     super();
-    
+
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {

@@ -180,7 +180,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
           jbBan.setEnabled(true);
           updateBanIcon();
           File file = QueueModel.getPlayingFile();
-          if(file != null) {
+          if (file != null) {
             setPreference(file.getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
           }
         } else if (JajukEvents.ZERO.equals(event.getSubject())

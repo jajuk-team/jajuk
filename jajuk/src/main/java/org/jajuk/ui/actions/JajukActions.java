@@ -369,8 +369,8 @@ public enum JajukActions {
   PREPARE_PARTY,
 
   /** fullscreen. */
-  FULLSCREEN_JAJUK, 
-  
+  FULLSCREEN_JAJUK,
+
   /** display donate dialog. */
   SHOW_DONATE
 

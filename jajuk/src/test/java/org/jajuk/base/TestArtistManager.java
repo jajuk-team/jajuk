@@ -173,9 +173,9 @@ public class TestArtistManager extends JajukTestCase {
   @SuppressWarnings("unchecked")
   private File getFile(int i, Artist artist) throws Exception {
     Genre genre = JUnitHelpers.getGenre("name");
-    Album album = JUnitHelpers.getAlbum("myalbum",0);
+    Album album = JUnitHelpers.getAlbum("myalbum", 0);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read
-                                                                // covers for
+    // covers for
     // this test
 
     Year year = new Year(Integer.valueOf(i).toString(), "2000");
@@ -340,7 +340,7 @@ public class TestArtistManager extends JajukTestCase {
     assertFalse(it.hasNext());
 
     // make sure we can fetch all of these by ID
-    for(String id : ids) {
+    for (String id : ids) {
       assertNotNull("Did not find ID: " + id, ArtistManager.getInstance().getArtistByID(id));
     }
 

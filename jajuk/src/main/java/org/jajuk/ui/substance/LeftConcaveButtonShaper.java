@@ -30,7 +30,6 @@ import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.AbstractButton;
 
-
 /*
  * based on code from Xtreme Media Player
  */
@@ -39,42 +38,42 @@ import javax.swing.AbstractButton;
  */
 public class LeftConcaveButtonShaper extends ButtonShaper {
 
-    /** DOCUMENT_ME. */
-    private int concaveDiameter;
+  /** DOCUMENT_ME. */
+  private int concaveDiameter;
 
-    /**
-     * Instantiates a new left concave button shaper.
-     * 
-     * @param concaveDiameter DOCUMENT_ME
-     */
-    public LeftConcaveButtonShaper(int concaveDiameter) {
-        super();
-        this.concaveDiameter = concaveDiameter;
-    }
+  /**
+   * Instantiates a new left concave button shaper.
+   * 
+   * @param concaveDiameter DOCUMENT_ME
+   */
+  public LeftConcaveButtonShaper(int concaveDiameter) {
+    super();
+    this.concaveDiameter = concaveDiameter;
+  }
 
-    /* (non-Javadoc)
-     * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getDisplayName()
-     */
-    @Override
-    public String getDisplayName() {
-        return "LeftConcave";
-    }
+  /* (non-Javadoc)
+   * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getDisplayName()
+   */
+  @Override
+  public String getDisplayName() {
+    return "LeftConcave";
+  }
 
-    /* (non-Javadoc)
-     * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getButtonOutline(javax.swing.AbstractButton, java.awt.Insets, int, int, boolean)
-     */
-    @Override
-    public Shape getButtonOutline(AbstractButton button, Insets insets, int w, int h, boolean isInner) {
-        int width = w - 1;
-        int height = h - 1;
+  /* (non-Javadoc)
+   * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getButtonOutline(javax.swing.AbstractButton, java.awt.Insets, int, int, boolean)
+   */
+  @Override
+  public Shape getButtonOutline(AbstractButton button, Insets insets, int w, int h, boolean isInner) {
+    int width = w - 1;
+    int height = h - 1;
 
-        int z = concaveDiameter / 3;
+    int z = concaveDiameter / 3;
 
-        Shape shape = new Ellipse2D.Double(0, 0, z, height);
-        Area area = new Area(new RoundRectangle2D.Double(z / 2d, 0, width - z, height, z, z));
-        area.subtract(new Area(shape));
+    Shape shape = new Ellipse2D.Double(0, 0, z, height);
+    Area area = new Area(new RoundRectangle2D.Double(z / 2d, 0, width - z, height, z, z));
+    area.subtract(new Area(shape));
 
-        return new GeneralPath(area);
-    }
+    return new GeneralPath(area);
+  }
 
 }

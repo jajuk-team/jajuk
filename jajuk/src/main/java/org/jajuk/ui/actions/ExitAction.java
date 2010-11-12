@@ -109,6 +109,4 @@ public class ExitAction extends JajukAction {
     ExitService.exit(0);
   }
 
-
-  
 }

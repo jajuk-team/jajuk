@@ -656,8 +656,7 @@ public class DigitalDJWizard extends Wizard {
     public void actionPerformed(ActionEvent ae) {
       if (ae.getSource() == jcbUnicity) {
         data.put(KEY_UNICITY, jcbUnicity.isSelected());
-      } else 
-      if (ae.getSource() == jcbMaxTracks) {
+      } else if (ae.getSource() == jcbMaxTracks) {
         jsMaxTracks.setEnabled(jcbMaxTracks.isSelected());
         updateMaxTracks();
       }

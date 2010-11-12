@@ -601,17 +601,13 @@ class ConfirmDialog extends JajukDialog {
         iResu = Messages.ALL_OPTION;
       } else if (resu.equals(Messages.getString("Yes"))) {
         iResu = JOptionPane.YES_OPTION;
-      }
-      else if (resu.equals(Messages.getString("No"))) {
+      } else if (resu.equals(Messages.getString("No"))) {
         iResu = JOptionPane.NO_OPTION;
-      }
-      else if (resu.equals(Messages.getString("Cancel"))) {
+      } else if (resu.equals(Messages.getString("Cancel"))) {
         iResu = JOptionPane.CANCEL_OPTION;
-      }
-      else if (resu.equals(Messages.getString("Ok"))) {
+      } else if (resu.equals(Messages.getString("Ok"))) {
         iResu = JOptionPane.OK_OPTION;
-      }
-      else if (resu.equals(Messages.getString("Default"))) {
+      } else if (resu.equals(Messages.getString("Default"))) {
         iResu = JOptionPane.DEFAULT_OPTION;
       }
     } else if (resu instanceof Integer) {
@@ -659,17 +655,17 @@ class DetailsMessageDialog extends JajukDialog {
       // details
       final JDialog dialogDetail = new JDialog(dialog, Messages.getString("Details"));
       final JPanel jp = new JPanel();
-      jp.setLayout(new MigLayout("ins 5","[800]","[600][]"));
+      jp.setLayout(new MigLayout("ins 5", "[800]", "[600][]"));
       final JTextArea jta = new JTextArea(sDetails);
       jta.setEditable(false);
-      jp.add(new JScrollPane(jta),"wrap");
+      jp.add(new JScrollPane(jta), "wrap");
       final OKCancelPanel jbOKC = new OKCancelPanel(new ActionListener() {
         @Override
         public void actionPerformed(final ActionEvent arg0) {
           dialogDetail.dispose();
         }
       });
-      jp.add(jbOKC,"span,alignx center");
+      jp.add(jbOKC, "span,alignx center");
       dialogDetail.setModal(true);
       dialogDetail.setAlwaysOnTop(true);
       dialogDetail.setContentPane(jp);

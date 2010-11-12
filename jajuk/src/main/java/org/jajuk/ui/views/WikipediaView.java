@@ -99,13 +99,13 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
    * DOCUMENT_ME.
    */
   enum Type {
-    
+
     /** DOCUMENT_ME. */
-    ARTIST, 
- /** DOCUMENT_ME. */
- ALBUM, 
- /** DOCUMENT_ME. */
- TRACK
+    ARTIST,
+    /** DOCUMENT_ME. */
+    ALBUM,
+    /** DOCUMENT_ME. */
+    TRACK
   }
 
   /** DOCUMENT_ME. */
@@ -268,10 +268,10 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
       } catch (Exception e) {
         Log.error(e);
       }
-        
-      return ;
+
+      return;
     }
-    
+
     Thread t = new Thread("Wikipedia Search Thread") {
       @Override
       public void run() {

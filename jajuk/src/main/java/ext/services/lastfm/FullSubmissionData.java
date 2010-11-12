@@ -28,22 +28,22 @@ public class FullSubmissionData {
 
   /** DOCUMENT_ME. */
   private String artist;
-  
+
   /** DOCUMENT_ME. */
   private String title;
-  
+
   /** DOCUMENT_ME. */
   private String album;
-  
+
   /** DOCUMENT_ME. */
   private int duration;
-  
+
   /** DOCUMENT_ME. */
   private int trackNumber;
-  
+
   /** DOCUMENT_ME. */
   private String source;
-  
+
   /** DOCUMENT_ME. */
   private int startTime;
 

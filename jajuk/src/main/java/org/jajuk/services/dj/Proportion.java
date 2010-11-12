@@ -29,7 +29,7 @@ import org.jajuk.base.Genre;
  * Represent a genre proportion (used by digital DJs).
  */
 public class Proportion {
-  
+
   /** genres. */
   private Ambience ambience;
 

@@ -37,7 +37,7 @@ import org.jajuk.util.error.JajukException;
  * Singleton.
  */
 public final class Log {
-  
+
   private static final String FONT_END = "</font>";
 
   /** The Constant LOGGER_APACHE_HTTPCLIENT.  DOCUMENT_ME */
@@ -91,7 +91,6 @@ public final class Log {
     Log.info("Version: " + Const.JAJUK_VERSION);
   }
 
-  
   /**
    * Log a debug-level message.
    * 

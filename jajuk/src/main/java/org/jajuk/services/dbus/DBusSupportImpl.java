@@ -326,24 +326,24 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     ObservationManager.notify(new JajukEvent(JajukEvents.SHOW_CURRENTLY_PLAYING));
   }
 
-
   /* (non-Javadoc)
    * @see org.jajuk.services.dbus.DBusSupport#bookmarkCurrentTrack()
    */
   @Override
   public void bookmarkCurrentlyPlaying() throws Exception {
     File file = QueueModel.getPlayingFile();
-    Log.info("Invoking D-Bus action for 'bookmarkCurrentTrack', file: " + (file == null ? "<null>" : file.toString()));
+    Log.info("Invoking D-Bus action for 'bookmarkCurrentTrack', file: "
+        + (file == null ? "<null>" : file.toString()));
     if (!QueueModel.isPlayingRadio() && file != null && !QueueModel.isStopped()) {
       // the action expects a JComponent, which we do not have here, therefore we do it directly here
       // ActionManager.getAction(JajukActions.BOOKMARK_SELECTION).perform()
       Bookmarks.getInstance().addFile(file);
-      
+
       INotificator notifier = NotificatorFactory.getNotificator();
       if (notifier != null) {
         String pattern = Conf.getString(Const.CONF_PATTERN_BALLOON_NOTIFIER);
         String text = UtilString.applyPattern(file, pattern, false, false);
-        
+
         notifier.notify("Bookmarked", text);
       }
 

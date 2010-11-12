@@ -37,18 +37,18 @@ public class TestSearchResult extends TestCase {
    */
   public void testHashCode() throws Exception {
     // TODO: this fails currently because there is no equals in SearchResult, should we add one? For now we just cover hashCode()
-    
+
     // hashcode only looks at "sResu" parameter
     SearchResult res = new SearchResult(JUnitHelpers.getFile("file2", true));
     SearchResult equ = new SearchResult(JUnitHelpers.getFile("file2", true));
-    
+
     assertEquals(res.hashCode(), equ.hashCode());
-    
+
     //JUnitHelpers.HashCodeTest(res, equ);
 
-//    res = new SearchResult(new WebRadio("web", "url"), "webradio");
-//    equ = new SearchResult(new WebRadio("web", "url"), "webradio");
-//    JUnitHelpers.HashCodeTest(res, equ);
+    //    res = new SearchResult(new WebRadio("web", "url"), "webradio");
+    //    equ = new SearchResult(new WebRadio("web", "url"), "webradio");
+    //    JUnitHelpers.HashCodeTest(res, equ);
   }
 
   /**
@@ -67,7 +67,7 @@ public class TestSearchResult extends TestCase {
   public void testSearchResultFileString() throws Exception {
     SearchResult res = new SearchResult(JUnitHelpers.getFile("file2", true), "testresult");
     assertNotNull(res);
-    
+
   }
 
   /**
@@ -106,7 +106,7 @@ public class TestSearchResult extends TestCase {
   public void testGetType() throws Exception {
     SearchResult res = new SearchResult(JUnitHelpers.getFile("file2", true), "testresu");
     assertEquals(SearchResultType.FILE, res.getType());
-    
+
     res = new SearchResult(new WebRadio("web", "testurl"), "testresu");
     assertEquals(SearchResultType.WEBRADIO, res.getType());
   }

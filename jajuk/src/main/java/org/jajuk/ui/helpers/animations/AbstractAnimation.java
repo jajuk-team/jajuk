@@ -24,12 +24,11 @@ package org.jajuk.ui.helpers.animations;
 import java.awt.Window;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-
 /**
  * Base implementation of IAnimation.
  */
 public abstract class AbstractAnimation implements IAnimation {
-  
+
   /** DOCUMENT_ME. */
   protected Window window;
 

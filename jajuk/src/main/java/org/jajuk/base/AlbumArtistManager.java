@@ -198,7 +198,6 @@ public final class AlbumArtistManager extends ItemManager {
     return (List<AlbumArtist>) getItems();
   }
 
-  
   /**
    * Get ordered list of albumArtists associated with this item.
    *
@@ -225,5 +224,5 @@ public final class AlbumArtistManager extends ItemManager {
     }
     return out;
   }
-  
+
 }

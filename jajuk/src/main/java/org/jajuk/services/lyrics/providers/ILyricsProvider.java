@@ -50,7 +50,7 @@ public interface ILyricsProvider {
    * @param file the audio file
    */
   void setAudioFile(File file);
-  
+
   /**
    * Gets the lyrics source address.
    * <p>
@@ -60,5 +60,4 @@ public interface ILyricsProvider {
    */
   String getSourceAddress();
 
- 
 }

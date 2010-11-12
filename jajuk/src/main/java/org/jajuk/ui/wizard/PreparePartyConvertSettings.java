@@ -41,7 +41,7 @@ import org.jajuk.util.Messages;
  * directory.
  */
 public class PreparePartyConvertSettings extends JajukJDialog implements ActionListener {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -63,9 +63,9 @@ public class PreparePartyConvertSettings extends JajukJDialog implements ActionL
    */
   public PreparePartyConvertSettings(ChangeListener listener, String command, Frame parent) {
     super(parent, true);
-    
+
     setLocationRelativeTo(parent);
-    
+
     this.listener = listener;
 
     setTitle(Messages.getString("PreparePartyWizard.38"));

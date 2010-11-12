@@ -20,7 +20,6 @@
  */
 package org.jajuk.base;
 
-
 /**
  * A smart playlist a special "logical" playlist built automatically by Jajuk
  * <p>Example of smart playlists includes : bestof, novelties, new and bookmarks </p> 

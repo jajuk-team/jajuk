@@ -238,7 +238,7 @@ public class PreparePartyWizard extends Wizard {
    */
   @Override
   public void finish() {
-    
+
     // write properties to keep the selected directory
     try {
       storeProperties();

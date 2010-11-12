@@ -103,13 +103,13 @@ public class NoTagsTagImpl implements ITagImpl {
     BasicPlayer player = new BasicPlayer();
     player.addBasicPlayerListener(new BasicPlayerListener() {
       @Override
-      @SuppressWarnings({ "unchecked", "rawtypes" })
+      @SuppressWarnings( { "unchecked", "rawtypes" })
       public void opened(Object arg0, Map mProperties) {
         NoTagsTagImpl.this.mapInfo = mProperties;
       }
 
       @Override
-      @SuppressWarnings({ "rawtypes", "unchecked" })
+      @SuppressWarnings( { "rawtypes", "unchecked" })
       public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata, Map mProperties) {
         // required by interface, but nothing to do here...
       }

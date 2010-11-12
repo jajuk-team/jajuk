@@ -69,10 +69,10 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
 
   /** DOCUMENT_ME. */
   private JScrollPane jspAlbums;
-  
+
   /** DOCUMENT_ME. */
   private String bio;
-  
+
   /** DOCUMENT_ME. */
   private ArtistInfo artistInfo;
 

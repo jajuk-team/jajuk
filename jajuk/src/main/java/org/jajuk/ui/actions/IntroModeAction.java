@@ -33,7 +33,7 @@ import org.jajuk.util.Messages;
  * DOCUMENT_ME.
  */
 public class IntroModeAction extends JajukAction {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

@@ -130,5 +130,4 @@ public class FilesTableView extends AbstractTableView implements TwoStepsDisplay
     jtbEditable.setSelected(bEditable);
   }
 
-  
 }

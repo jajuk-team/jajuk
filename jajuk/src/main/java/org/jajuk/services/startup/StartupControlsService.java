@@ -89,7 +89,7 @@ public class StartupControlsService {
       final File[] cacheFiles = fCache.listFiles();
       for (final File element : cacheFiles) {
         long fileAge = System.currentTimeMillis() - element.lastModified();
-        if (element.isFile() && fileAge > Const.CACHE_MAX_AGE ) {
+        if (element.isFile() && fileAge > Const.CACHE_MAX_AGE) {
           UtilSystem.deleteFile(element);
         }
       }

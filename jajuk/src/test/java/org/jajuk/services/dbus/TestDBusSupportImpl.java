@@ -298,7 +298,7 @@ public class TestDBusSupportImpl extends JajukTestCase {
 
     impl.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, null));
   }
-  
+
   public final void testShowCurrentlyPlaying() throws Exception {
     DBusSupportImpl impl = new DBusSupportImpl();
     impl.showCurrentlyPlaying();

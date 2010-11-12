@@ -38,7 +38,7 @@ import org.jajuk.util.Messages;
  * A password dialog.
  */
 public class PasswordDialog extends JajukJDialog implements ActionListener {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

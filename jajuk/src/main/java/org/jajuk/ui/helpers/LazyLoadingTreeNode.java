@@ -56,7 +56,7 @@ public abstract class LazyLoadingTreeNode extends DefaultMutableTreeNode {
   public boolean areChildrenLoaded() {
     return getChildCount() > 0 && getAllowsChildren();
   }
-  
+
   /**
    * If the 
    * @see #getAllowsChildren()
@@ -66,7 +66,7 @@ public abstract class LazyLoadingTreeNode extends DefaultMutableTreeNode {
   public boolean isLeaf() {
     return !getAllowsChildren();
   }
-  
+
   /**
    * This is the point where the actual implementation can create the actual
    * child nodes of the current node at the point when the node is expanded.

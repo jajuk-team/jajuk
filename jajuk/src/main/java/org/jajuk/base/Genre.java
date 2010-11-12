@@ -84,11 +84,11 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
     return current.toString().compareToIgnoreCase(other.toString());
   }
 
-   /**
-    * Checks if is unknown.
-    * 
-    * @return whether the genre is Unknown or not
-    */
+  /**
+   * Checks if is unknown.
+   * 
+   * @return whether the genre is Unknown or not
+   */
   public boolean isUnknown() {
     return this.getName().equals(UNKNOWN_GENRE);
   }
@@ -117,7 +117,6 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
     }
   }
 
- 
   /*
    * (non-Javadoc)
    * 

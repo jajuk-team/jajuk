@@ -37,7 +37,7 @@ import org.jajuk.util.log.Log;
  * <code>CTRL + RIGHT ARROW</code>.
  */
 public class NextTrackAction extends JajukAction {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

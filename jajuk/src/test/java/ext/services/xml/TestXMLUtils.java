@@ -117,8 +117,8 @@ public class TestXMLUtils extends JajukTestCase {
     Document doc = XMLUtils.getDocument("<xmlinvalid>adsasd<asdksdtest value=\"1\"/></xml>");
     assertNull(doc);
     doc = XMLUtils.getDocument(StringUtils.repeat("1", 1000)); // more than 500
-                                                               // characters for
-                                                               // log.debug
+    // characters for
+    // log.debug
     assertNull(doc);
   }
 

@@ -36,7 +36,7 @@ public class TestAutoCompleteDecorator extends TestCase {
   /**
    * Test method for {@link ext.AutoCompleteDecorator#decorate(javax.swing.text.JTextComponent, java.util.List, boolean)}.
    */
-  
+
   public void testDecorateJTextComponentListOfObjectBoolean() {
     // TODO: make working
     // AutoCompleteDecorator.decorate(null, null, false);
@@ -45,7 +45,7 @@ public class TestAutoCompleteDecorator extends TestCase {
   /**
    * Test method for {@link ext.AutoCompleteDecorator#decorate(javax.swing.text.JTextComponent, java.util.List, boolean, org.jdesktop.swingx.autocomplete.ObjectToStringConverter)}.
    */
-  
+
   public void testDecorateJTextComponentListOfObjectBooleanObjectToStringConverter() {
     // TODO: make working
     // AutoCompleteDecorator.decorate(null, null, false, null);
@@ -54,7 +54,7 @@ public class TestAutoCompleteDecorator extends TestCase {
   /**
    * Test method for {@link ext.AutoCompleteDecorator#decorate(javax.swing.JList, javax.swing.text.JTextComponent)}.
    */
-  
+
   public void testDecorateJListJTextComponent() {
     AutoCompleteDecorator.decorate(new JList(), new JTextComponent() {
 
@@ -67,14 +67,14 @@ public class TestAutoCompleteDecorator extends TestCase {
       public String getText() {
         return "testtext";
       }
-      
+
     });
   }
 
   /**
    * Test method for {@link ext.AutoCompleteDecorator#decorate(javax.swing.JList, javax.swing.text.JTextComponent, org.jdesktop.swingx.autocomplete.ObjectToStringConverter)}.
    */
-  
+
   public void testDecorateJListJTextComponentObjectToStringConverter() {
     // TODO: make working
     //AutoCompleteDecorator.decorate(new JList(), new JTextComponent() {
@@ -84,7 +84,7 @@ public class TestAutoCompleteDecorator extends TestCase {
   /**
    * Test method for {@link ext.AutoCompleteDecorator#decorate(javax.swing.JComboBox)}.
    */
-  
+
   public void testDecorateJComboBox() {
     // TODO: make working
     // AutoCompleteDecorator.decorate(null);
@@ -93,7 +93,7 @@ public class TestAutoCompleteDecorator extends TestCase {
   /**
    * Test method for {@link ext.AutoCompleteDecorator#decorate(javax.swing.JComboBox, org.jdesktop.swingx.autocomplete.ObjectToStringConverter)}.
    */
-  
+
   public void testDecorateJComboBoxObjectToStringConverter() {
     // TODO: make working
     // AutoCompleteDecorator.decorate((JComboBox)null, null);
@@ -102,7 +102,7 @@ public class TestAutoCompleteDecorator extends TestCase {
   /**
    * Test method for {@link ext.AutoCompleteDecorator#decorate(javax.swing.text.JTextComponent, ext.AutoCompleteDocument, org.jdesktop.swingx.autocomplete.AbstractAutoCompleteAdaptor)}.
    */
-  
+
   public void testDecorateJTextComponentAutoCompleteDocumentAbstractAutoCompleteAdaptor() {
     // TODO: make working
     // AutoCompleteDecorator.decorate((JTextComponent)null, null, null);
@@ -110,59 +110,59 @@ public class TestAutoCompleteDecorator extends TestCase {
 
   ///////////////////////7
   // Tests from singx itself
-  
+
   private JComboBox combo;
-  
+
   @Override
   protected void setUp() {
-      combo = new JComboBox(new String[]{"Alpha", "Bravo", "Charlie", "Delta"});
+    combo = new JComboBox(new String[] { "Alpha", "Bravo", "Charlie", "Delta" });
   }
-  
+
   /**
    * SwingX Issue #299.
    */
   public void testDecorationFocusListeners() {
-      Component editor = combo.getEditor().getEditorComponent();
-      //current count plus 2 from UI delegate and 1 from AutoComplete
-      int expectedFocusListenerCount = editor.getFocusListeners().length + 3;
-      AutoCompleteDecorator.decorate(combo);
-      assertEquals(expectedFocusListenerCount, editor.getFocusListeners().length);
-      
-      //redecorating should not increase listener count
-      AutoCompleteDecorator.decorate(combo);
-      // TODO: make working
-      // assertEquals(expectedFocusListenerCount, editor.getFocusListeners().length);
+    Component editor = combo.getEditor().getEditorComponent();
+    //current count plus 2 from UI delegate and 1 from AutoComplete
+    int expectedFocusListenerCount = editor.getFocusListeners().length + 3;
+    AutoCompleteDecorator.decorate(combo);
+    assertEquals(expectedFocusListenerCount, editor.getFocusListeners().length);
+
+    //redecorating should not increase listener count
+    AutoCompleteDecorator.decorate(combo);
+    // TODO: make working
+    // assertEquals(expectedFocusListenerCount, editor.getFocusListeners().length);
   }
-  
+
   /**
    * SwingX Issue #299.
    */
   public void testDecorationKeyListeners() {
-      Component editor = combo.getEditor().getEditorComponent();
-      //current count 1 from AutoComplete
-      int expectedKeyListenerCount = editor.getKeyListeners().length + 1;
-      AutoCompleteDecorator.decorate(combo);
-      assertEquals(expectedKeyListenerCount, editor.getKeyListeners().length);
-      
-      //redecorating should not increase listener count
-      AutoCompleteDecorator.decorate(combo);
-      // TODO: make working
-      // assertEquals(expectedKeyListenerCount, editor.getKeyListeners().length);
+    Component editor = combo.getEditor().getEditorComponent();
+    //current count 1 from AutoComplete
+    int expectedKeyListenerCount = editor.getKeyListeners().length + 1;
+    AutoCompleteDecorator.decorate(combo);
+    assertEquals(expectedKeyListenerCount, editor.getKeyListeners().length);
+
+    //redecorating should not increase listener count
+    AutoCompleteDecorator.decorate(combo);
+    // TODO: make working
+    // assertEquals(expectedKeyListenerCount, editor.getKeyListeners().length);
   }
-  
+
   /**
    * SwingX Issue #299.
    */
   public void testDecorationPropertyListeners() {
-      //current count 1 from AutoComplete
-      int expectedPropListenerCount = combo.getPropertyChangeListeners("editor").length + 1;
-      AutoCompleteDecorator.decorate(combo);
-      assertEquals(expectedPropListenerCount, combo.getPropertyChangeListeners("editor").length);
-      
-      //redecorating should not increase listener count
-      AutoCompleteDecorator.decorate(combo);
-      // TODO: make working
-      // assertEquals(expectedPropListenerCount, combo.getPropertyChangeListeners("editor").length);
+    //current count 1 from AutoComplete
+    int expectedPropListenerCount = combo.getPropertyChangeListeners("editor").length + 1;
+    AutoCompleteDecorator.decorate(combo);
+    assertEquals(expectedPropListenerCount, combo.getPropertyChangeListeners("editor").length);
+
+    //redecorating should not increase listener count
+    AutoCompleteDecorator.decorate(combo);
+    // TODO: make working
+    // assertEquals(expectedPropListenerCount, combo.getPropertyChangeListeners("editor").length);
   }
-  
+
 }

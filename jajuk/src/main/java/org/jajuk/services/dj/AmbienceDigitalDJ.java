@@ -83,10 +83,10 @@ public class AmbienceDigitalDJ extends DigitalDJ {
     }
     // Select by rate if needed
     filterFilesByRate(out);
-    
+
     // finally ensure that we don't select more than the max number of tracks
     filterFilesByMaxTrack(out);
-    
+
     return out;
   }
 

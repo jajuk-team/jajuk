@@ -36,7 +36,7 @@ import org.jajuk.util.Messages;
  * A physical playlist icon + text.
  */
 public class SmartPlaylistView extends JPanel {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -58,11 +58,12 @@ public class SmartPlaylistView extends JPanel {
     this.type = type;
     if (type == Type.NEW) {
       jlIcon = new JLabel(IconLoader.getIcon(JajukIcons.PLAYLIST_NEW));
-      plf = new SmartPlaylist(Type.NEW, Integer.toString(Playlist.Type.NEW.ordinal()), getName(), null);
+      plf = new SmartPlaylist(Type.NEW, Integer.toString(Playlist.Type.NEW.ordinal()), getName(),
+          null);
     } else if (type == Type.BESTOF) {
       jlIcon = new JLabel(IconLoader.getIcon(JajukIcons.PLAYLIST_BESTOF));
-      plf = new SmartPlaylist(Type.BESTOF, Integer.toString(Playlist.Type.BESTOF.ordinal()), getName(),
-          null);
+      plf = new SmartPlaylist(Type.BESTOF, Integer.toString(Playlist.Type.BESTOF.ordinal()),
+          getName(), null);
     } else if (type == Type.BOOKMARK) {
       jlIcon = new JLabel(IconLoader.getIcon(JajukIcons.PLAYLIST_BOOKMARK));
       plf = new SmartPlaylist(Type.BOOKMARK, Integer.toString(Playlist.Type.BOOKMARK.ordinal()),

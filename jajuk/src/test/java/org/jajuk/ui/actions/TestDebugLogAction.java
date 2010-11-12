@@ -42,7 +42,7 @@ public class TestDebugLogAction extends JajukTestCase {
     DebugLogAction action = new DebugLogAction();
     try {
       action.perform(null); // it doesn't look at the actionevent at all right
-                            // now...
+      // now...
     } catch (HeadlessException e) {
       // thrown on Hudson/Sonar as they do not support tests that require UI
     }

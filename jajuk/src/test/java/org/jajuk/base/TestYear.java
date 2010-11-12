@@ -112,7 +112,7 @@ public class TestYear extends TestCase {
     assertTrue(new Year("1", "1998").looksValid());
     assertTrue(new Year("1", "1001").looksValid());
     assertTrue(new Year("1", "2999").looksValid());
-    
+
     assertFalse(new Year("1", "1000").looksValid());
     assertFalse(new Year("1", "-340").looksValid());
     assertFalse(new Year("1", "10000").looksValid());

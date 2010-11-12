@@ -33,7 +33,7 @@ import org.jajuk.util.Messages;
  * Karaoke mode state change action.
  */
 public class KaraokeModeAction extends JajukAction {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

@@ -33,7 +33,7 @@ public class DBusSignalImpl implements DBusInterface {
    * DOCUMENT_ME.
    */
   public static class FileChangedSignal extends DBusSignal {
-    
+
     /** DOCUMENT_ME. */
     String filename;
 

@@ -129,7 +129,7 @@ public class JScrollingText extends JLabel {
   }
 
   Timer timer;
-  
+
   /**
    * Start.
    * DOCUMENT_ME
@@ -151,14 +151,14 @@ public class JScrollingText extends JLabel {
    */
   @Override
   public void removeNotify() {
-//    System.out.println("Removing Notify in JSCrollingText");
-    
+    //    System.out.println("Removing Notify in JSCrollingText");
+
     // clean out the timer
-    if(timer != null) {
+    if (timer != null) {
       timer.cancel();
       timer = null;
     }
-    
+
     super.removeNotify();
   }
 }

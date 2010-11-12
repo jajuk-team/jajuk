@@ -37,11 +37,11 @@ public class TreeRootElement extends DefaultMutableTreeNode {
     super();
   }
 
-   /**
-   * The Constructor.
-   * 
-   * @param userObject DOCUMENT_ME
-   */
+  /**
+  * The Constructor.
+  * 
+  * @param userObject DOCUMENT_ME
+  */
   public TreeRootElement(Object userObject) {
     super(userObject);
   }

@@ -104,7 +104,8 @@ public class TestHistoryItem extends JajukTestCase {
       Year year = JUnitHelpers.getYear(2000);
 
       Type type = JUnitHelpers.getType();
-      Track track = TrackManager.getInstance().registerTrack("trackname", album, genre, artist, 120, year, 1, type, 1);
+      Track track = TrackManager.getInstance().registerTrack("trackname", album, genre, artist,
+          120, year, 1, type, 1);
 
       Device device = JUnitHelpers.getDevice("devicename", Device.TYPE_DIRECTORY, System
           .getProperty("java.io.tmpdir"));

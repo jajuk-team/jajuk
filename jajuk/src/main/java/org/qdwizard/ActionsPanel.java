@@ -113,16 +113,16 @@ class ActionsPanel extends JPanel {
     jbCancel.setActionCommand("Cancel"); //$NON-NLS-1$
     jbCancel.setPreferredSize(dimButtons);
 
-    jpButtons.add(Box.createHorizontalStrut(10)); 
-    jpButtons.add(Box.createHorizontalGlue()); 
-    jpButtons.add(jbPrevious); 
-    jpButtons.add(Box.createHorizontalStrut(5)); 
-    jpButtons.add(jbNext); 
-    jpButtons.add(Box.createHorizontalStrut(10)); 
-    jpButtons.add(jbFinish); 
-    jpButtons.add(Box.createHorizontalStrut(20)); 
-    jpButtons.add(jbCancel); 
-    jpButtons.add(Box.createHorizontalStrut(10)); 
+    jpButtons.add(Box.createHorizontalStrut(10));
+    jpButtons.add(Box.createHorizontalGlue());
+    jpButtons.add(jbPrevious);
+    jpButtons.add(Box.createHorizontalStrut(5));
+    jpButtons.add(jbNext);
+    jpButtons.add(Box.createHorizontalStrut(10));
+    jpButtons.add(jbFinish);
+    jpButtons.add(Box.createHorizontalStrut(20));
+    jpButtons.add(jbCancel);
+    jpButtons.add(Box.createHorizontalStrut(10));
     jpButtons.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 
     jpButtons.setOpaque(false);
@@ -131,8 +131,8 @@ class ActionsPanel extends JPanel {
 
     // Main panel
     setLayout(new GridLayout(2, 1));
-    add(jlProblem); 
-    add(jpButtons); 
+    add(jlProblem);
+    add(jpButtons);
   }
 
   /**

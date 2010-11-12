@@ -30,7 +30,7 @@ import org.jajuk.ThreadTestHelper;
 public class TestObserverRegistry extends JajukTestCase {
 
   private static final int NUMBER_OF_THREADS = 15; // 15 is the limit on
-                                                   // concurrent events
+  // concurrent events
   private static final int NUMBER_OF_TESTS = 1000;
 
   private AtomicInteger called = new AtomicInteger(0);

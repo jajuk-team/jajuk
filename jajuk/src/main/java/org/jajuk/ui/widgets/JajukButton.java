@@ -48,11 +48,11 @@ public class JajukButton extends JButton {
     this(null, icon);
   }
 
-   /**
-   * Instantiates a new jajuk button.
-   * 
-   * @param a DOCUMENT_ME
-   */
+  /**
+  * Instantiates a new jajuk button.
+  * 
+  * @param a DOCUMENT_ME
+  */
   public JajukButton(Action a) {
     super(a);
     setOpaque(false);

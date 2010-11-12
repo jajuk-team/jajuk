@@ -39,7 +39,7 @@ import org.jdesktop.swingx.JXPanel;
  * DOCUMENT_ME.
  */
 public class FlowScrollPanel extends JXPanel {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

@@ -27,7 +27,7 @@ import java.awt.Window;
  * Interface for any kind of animation.
  */
 public interface IAnimation {
-  
+
   /**
    * What the animation is supposed to do.
    * 

@@ -960,7 +960,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     }
   }
 
-  
   /**
    * DOCUMENT_ME.
    */

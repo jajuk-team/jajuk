@@ -341,10 +341,10 @@ public class TestDirectory extends JajukTestCase {
     assertFalse(dir1.hasAncestor(dir2));
     assertFalse(dir1.hasAncestor(dir1));
   }
-  
-   /**
-   * Test method for {@link org.jajuk.base.Directory#getDirectoriesRecursively()}.
-   */
+
+  /**
+  * Test method for {@link org.jajuk.base.Directory#getDirectoriesRecursively()}.
+  */
   public void testGetDirectoriesRecursively() throws Exception {
     List<Directory> dirs = topdir1.getDirectoriesRecursively();
     assertTrue(dirs.size() == 2);
@@ -459,7 +459,6 @@ public class TestDirectory extends JajukTestCase {
     assertEquals("newname", dir.getName());
   }
 
-  
   /**
    * Test method for {@link org.jajuk.base.Directory#cleanRemovedFiles()}.
    */

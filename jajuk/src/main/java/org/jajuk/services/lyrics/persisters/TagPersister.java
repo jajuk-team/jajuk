@@ -20,7 +20,6 @@
  */
 package org.jajuk.services.lyrics.persisters;
 
-
 import org.jajuk.base.File;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.util.error.JajukException;

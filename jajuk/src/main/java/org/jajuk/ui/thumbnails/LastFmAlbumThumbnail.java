@@ -177,7 +177,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
       fCover = DownloadManager.downloadToCache(remote);
       BufferedImage image = ImageIO.read(fCover);
       if (image == null) {
-        Log.warn("Could not read cover from: {{" + fCover.getAbsolutePath()+"}}");
+        Log.warn("Could not read cover from: {{" + fCover.getAbsolutePath() + "}}");
         return;
       }
       ImageIcon downloadedImage = new ImageIcon(image);

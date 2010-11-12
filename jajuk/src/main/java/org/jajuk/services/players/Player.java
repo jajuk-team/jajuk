@@ -200,7 +200,7 @@ public final class Player {
           }
         }
       }
-       // Save playing state    
+      // Save playing state    
       Conf.setProperty(Const.CONF_STARTUP_STOPPED, "false");
 
       return true;
@@ -230,7 +230,7 @@ public final class Player {
       }
       bPaused = false; // cancel any current pause
       bPlaying = false;
-     
+
     } catch (Exception e) {
       Log.debug(Messages.getString("Error.008") + e);
     }

@@ -176,7 +176,7 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
         anim = Animations.repeat(Float.POSITIVE_INFINITY, animAll);
         animator = new Animator(anim, DEFAULT_FRAME_RATE);
         animator.start();
-       
+
       }
     });
   }
@@ -237,7 +237,7 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
       animator.stop();
       animator = null;
     }
-    
+
     super.cleanup();
   }
 }

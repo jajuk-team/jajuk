@@ -76,7 +76,7 @@ public final class UtilSystem {
 
   /** Is browser supported ? */
   private static Boolean browserSupported;
-  
+
   /** Size of the short names converter in bytes */
   private static final int CONVERTER_FILE_SIZE = 23;
 

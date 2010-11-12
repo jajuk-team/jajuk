@@ -35,7 +35,7 @@ public abstract class LogicalItem extends Item {
   LogicalItem(String sId, String sName) {
     super(sId, sName);
   }
-  
+
   /**
    * toString method.
    * 
@@ -44,7 +44,7 @@ public abstract class LogicalItem extends Item {
   @Override
   public String toString() {
     // Use class metadata because this method is used by several logical items
-    return getClass().getCanonicalName()+"[ID=" + getID() + " Name={{" + getName() + "}}]";
+    return getClass().getCanonicalName() + "[ID=" + getID() + " Name={{" + getName() + "}}]";
   }
 
 }

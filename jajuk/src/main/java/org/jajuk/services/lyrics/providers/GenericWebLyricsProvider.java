@@ -175,7 +175,7 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
   public void setAudioFile(File file) {
     this.audioFile = file;
   }
-  
+
   /* (non-Javadoc)
   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getSourceAddress()
   */

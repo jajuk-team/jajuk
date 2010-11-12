@@ -362,7 +362,7 @@ public class JUnitHelpers {
         .hashCode(), equ.hashCode());
   }
 
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @SuppressWarnings( { "unchecked", "rawtypes" })
   public static void EnumTest(Enum enumtype, Class enumclass, String element)
       throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
     // check valueOf()

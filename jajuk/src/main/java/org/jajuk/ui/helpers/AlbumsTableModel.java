@@ -127,7 +127,7 @@ public class AlbumsTableModel extends JajukTableModel {
     Filter.filterItems(alToShow, filter);
 
     // Filter unmounted files if required
-    if(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
+    if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
       Iterator<Album> it = alToShow.iterator();
       while (it.hasNext()) {
         Album album = it.next();

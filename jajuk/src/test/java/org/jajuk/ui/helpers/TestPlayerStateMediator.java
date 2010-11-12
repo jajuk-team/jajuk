@@ -109,7 +109,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
     // test with queue size > 0
     Device device = JUnitHelpers.getDevice();
-    
+
     // no files without a directory
     List<File> files = device.getFilesRecursively();
     assertEquals(0, files.size()); // no file available
@@ -126,14 +126,14 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   private File getFile(int i, Directory dir) {
     Genre genre = JUnitHelpers.getGenre();
-    Album album = JUnitHelpers.getAlbum("name",0);
+    Album album = JUnitHelpers.getAlbum("name", 0);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
     Artist artist = JUnitHelpers.getArtist("name");
     Year year = JUnitHelpers.getYear(2000);
 
-    Type type =JUnitHelpers.getType();
+    Type type = JUnitHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
 

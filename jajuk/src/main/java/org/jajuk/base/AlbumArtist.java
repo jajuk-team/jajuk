@@ -38,13 +38,13 @@ import org.jajuk.util.Messages;
  * 
  */
 public class AlbumArtist extends Artist {
-  
-   /**
-   * Builds an album-artist.
-   * 
-   * @param sName album-artist string
-   * @param sId album-artist guid
-   */
+
+  /**
+  * Builds an album-artist.
+  * 
+  * @param sName album-artist string
+  * @param sId album-artist guid
+  */
   AlbumArtist(String sId, String sName) {
     super(sId, sName);
   }
@@ -69,7 +69,6 @@ public class AlbumArtist extends Artist {
     return Messages.getString("Item_AlbumArtist") + " : " + getName2();
   }
 
- 
   /*
    * (non-Javadoc)
    * 

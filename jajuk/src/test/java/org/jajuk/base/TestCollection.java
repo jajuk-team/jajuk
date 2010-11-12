@@ -100,7 +100,6 @@ public class TestCollection extends JajukTestCase {
       Album album = AlbumManager.getInstance().registerAlbum("name", 23);
       album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
       // this test
-      
 
       Artist artist = ArtistManager.getInstance().registerArtist("name");
       Year year = YearManager.getInstance().registerYear("2000");
@@ -115,17 +114,16 @@ public class TestCollection extends JajukTestCase {
     Device device = new Device("6", System.getProperty("java.io.tmpdir"));
     device.setUrl(System.getProperty("java.io.tmpdir"));
     Directory dir = JUnitHelpers.getDirectory();
-    PlaylistManager.getInstance().registerPlaylistFile("4", "plf",
-        dir);
+    PlaylistManager.getInstance().registerPlaylistFile("4", "plf", dir);
     ArtistManager.getInstance().registerArtist("testartist");
     AlbumManager.getInstance().registerAlbum("album2", "artist1", 0);
 
-    device = DeviceManager.getInstance().registerDevice("7", 0,System.getProperty("java.io.tmpdir"));
+    device = DeviceManager.getInstance().registerDevice("7", 0,
+        System.getProperty("java.io.tmpdir"));
     DirectoryManager.getInstance().registerDirectory(device);
     device = new Device("6", System.getProperty("java.io.tmpdir"));
     device.setUrl(System.getProperty("java.io.tmpdir"));
-    FileManager.getInstance().registerFile("thisfile.mp3",
-        dir,
+    FileManager.getInstance().registerFile("thisfile.mp3", dir,
         TrackManager.getInstance().getTracks().get(0), 120, 100);
 
     // delete the file before writing the collection

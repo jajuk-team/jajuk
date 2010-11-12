@@ -119,5 +119,4 @@ public class JXTrayIcon extends TrayIcon {
     menu.addPopupMenuListener(popupListener);
   }
 
-    
 }

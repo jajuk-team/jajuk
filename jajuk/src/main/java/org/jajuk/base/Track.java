@@ -184,13 +184,12 @@ public class Track extends LogicalItem implements Comparable<Track> {
   public List<org.jajuk.base.File> getFiles() {
     return new ArrayList<File>(alFiles);
   }
-  
-  
+
   /**
    * Remove specified file from associated files
    * @param file : the file to remove
    */
-  public void removeFile(File file){
+  public void removeFile(File file) {
     alFiles.remove(file);
   }
 

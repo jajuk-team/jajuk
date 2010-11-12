@@ -30,7 +30,7 @@ import java.util.Locale;
  * Manages locales used in jajuk.
  */
 public class LocaleManager {
-  
+
   /**
    * private constructor for utility class with only static methods.
    */

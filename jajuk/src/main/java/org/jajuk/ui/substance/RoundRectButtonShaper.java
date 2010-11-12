@@ -28,7 +28,6 @@ import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.AbstractButton;
 
-
 /*
  * based on code from Xtreme Media Player
  */
@@ -37,26 +36,26 @@ import javax.swing.AbstractButton;
  */
 public class RoundRectButtonShaper extends ButtonShaper {
 
-    /* (non-Javadoc)
-     * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getDisplayName()
-     */
-    @Override
-    public String getDisplayName() {
-        return "RoundRect";
-    }
+  /* (non-Javadoc)
+   * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getDisplayName()
+   */
+  @Override
+  public String getDisplayName() {
+    return "RoundRect";
+  }
 
-    /* (non-Javadoc)
-     * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getButtonOutline(javax.swing.AbstractButton, java.awt.Insets, int, int, boolean)
-     */
-    @Override
-    public Shape getButtonOutline(AbstractButton button, Insets insets, int w, int h, boolean isInner) {
-        int width = w - 1;
-        int height = h - 1;
+  /* (non-Javadoc)
+   * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getButtonOutline(javax.swing.AbstractButton, java.awt.Insets, int, int, boolean)
+   */
+  @Override
+  public Shape getButtonOutline(AbstractButton button, Insets insets, int w, int h, boolean isInner) {
+    int width = w - 1;
+    int height = h - 1;
 
-        Shape shape = new RoundRectangle2D.Double(0, 0, width, height, width / 3d, height / 3d);
-        GeneralPath generalPath = new GeneralPath(shape);
+    Shape shape = new RoundRectangle2D.Double(0, 0, width, height, width / 3d, height / 3d);
+    GeneralPath generalPath = new GeneralPath(shape);
 
-        return generalPath;
-    }
+    return generalPath;
+  }
 
 }

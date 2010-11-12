@@ -20,7 +20,6 @@
  */
 package org.jajuk.util.error;
 
-
 /**
  * JajukException runtime exception : to be thown in case of internal bug only
  */
@@ -62,6 +61,4 @@ public class JajukRuntimeException extends RuntimeException {
     // TODO Auto-generated constructor stub
   }
 
-  
-  
 }

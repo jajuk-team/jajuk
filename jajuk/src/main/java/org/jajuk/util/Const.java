@@ -298,7 +298,7 @@ public interface Const {
 
   /** Bootstrap file name */
   String FILE_BOOTSTRAP = ".jajuk_bootstrap.xml";
-  
+
   /** Old (pre-1.9) bootstrap file name */
   String FILE_BOOTSTRAP_OLD = ".jajuk_bootstrap";
 

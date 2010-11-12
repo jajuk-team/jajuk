@@ -57,7 +57,7 @@ public class TestArtist extends JajukTestCase {
 
     Artist artist = JUnitHelpers.getArtist();
     assertEquals("name", artist.getHumanValue(Const.XML_NAME));
-   }
+  }
 
   /**
    * Test method for {@link org.jajuk.base.Artist#getIconRepresentation()}.

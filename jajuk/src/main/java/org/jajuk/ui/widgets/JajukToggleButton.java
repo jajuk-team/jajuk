@@ -31,7 +31,7 @@ import javax.swing.border.Border;
  * A Jajuk button with two states.
  */
 public class JajukToggleButton extends JajukButton {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

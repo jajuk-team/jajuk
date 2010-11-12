@@ -83,11 +83,10 @@ public class TestQueueList extends JajukTestCase {
 
     impl.add(new StackItem(JUnitHelpers.getFile("file10", false)));
     assertEquals(1, impl.size());
-    
+
     File file1 = JUnitHelpers.getFile("file1", false);
     File file2 = JUnitHelpers.getFile("file2", false);
     File file3 = JUnitHelpers.getFile("file3", false);
-    
 
     List<StackItem> set = new ArrayList<StackItem>();
     set.add(new StackItem(file1));
@@ -393,7 +392,6 @@ public class TestQueueList extends JajukTestCase {
     assertEquals(2, impl.sizePlanned());
   }
 
-  
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#getPlanned(int)}.
    */

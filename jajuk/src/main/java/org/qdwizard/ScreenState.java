@@ -30,7 +30,7 @@ package org.qdwizard;
  * </ul>.
  */
 public class ScreenState {
-  
+
   /** DOCUMENT_ME. */
   private boolean bCanFinish;
 

@@ -37,7 +37,7 @@ import org.jajuk.util.log.Log;
  */
 
 public class SteppedComboBox extends JComboBox {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

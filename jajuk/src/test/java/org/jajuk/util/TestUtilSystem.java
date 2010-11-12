@@ -349,7 +349,6 @@ public class TestUtilSystem extends JajukTestCase {
     assertFalse(file1.exists());
   }
 
- 
   /**
    * Test method for
    * {@link org.jajuk.util.UtilSystem#getExtension(java.io.File)}.
@@ -428,7 +427,6 @@ public class TestUtilSystem extends JajukTestCase {
     UtilSystem.getMPlayerOSXPath();
   }
 
-
   /**
    * Test method for {@link org.jajuk.util.UtilSystem#getMPlayerWindowsPath()}.
    */
@@ -494,10 +492,9 @@ public class TestUtilSystem extends JajukTestCase {
    * Test method for {@link org.jajuk.util.UtilSystem#isUnderOSX()}.
    */
   public void testIsUnderOSX() {
-       assertEquals(SystemUtils.IS_OS_MAC_OSX, UtilSystem.isUnderOSX());
+    assertEquals(SystemUtils.IS_OS_MAC_OSX, UtilSystem.isUnderOSX());
   }
 
-  
   /**
    * Test method for {@link org.jajuk.util.UtilSystem#isUnderWindows()}.
    */

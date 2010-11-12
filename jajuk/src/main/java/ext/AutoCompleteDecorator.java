@@ -76,7 +76,7 @@ import org.jdesktop.swingx.autocomplete.TextComponentAdaptor;
  * @author Thomas Bierhance
  */
 public final class AutoCompleteDecorator {
-  
+
   /**
    * private constructor to avoid instantiating utility class.
    */
@@ -284,12 +284,12 @@ public final class AutoCompleteDecorator {
    * DOCUMENT_ME.
    */
   static class NonStrictBackspaceAction extends TextAction {
-    
+
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = -5508607690462561673L;
 
     /** DOCUMENT_ME. */
-   private  Action backspace;
+    private Action backspace;
 
     /** DOCUMENT_ME. */
     private Action selectionBackward;

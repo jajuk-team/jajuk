@@ -100,7 +100,7 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
   }
 
   private File getFile(int i, Genre genre) throws Exception {
-    Album album = JUnitHelpers.getAlbum("myalbum",0);
+    Album album = JUnitHelpers.getAlbum("myalbum", 0);
     album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
@@ -110,7 +110,7 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
     // IPlayerImpl imp = new MockPlayer();
     // Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
 
-    Type type =  JUnitHelpers.getType();
+    Type type = JUnitHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
 

@@ -113,7 +113,8 @@ public class TestItemManager extends JajukTestCase {
 
   public final void testGetHumanType() {
     assertEquals("anykey", Messages.getHumanPropertyName("anykey"));
-    assertFalse(Messages.getHumanPropertyName("disc_number"), "disc_number".equals(Messages.getHumanPropertyName("disc_number")));
+    assertFalse(Messages.getHumanPropertyName("disc_number"), "disc_number".equals(Messages
+        .getHumanPropertyName("disc_number")));
   }
 
   /**
@@ -204,7 +205,7 @@ public class TestItemManager extends JajukTestCase {
 
     assertNotNull(man.getCustomProperties());
     assertEquals(1, man.getCustomProperties().size()); // now one property is
-                                                       // registered
+    // registered
   }
 
   /**
@@ -223,8 +224,8 @@ public class TestItemManager extends JajukTestCase {
 
     assertNotNull(man.getVisibleProperties());
     assertEquals(1, man.getVisibleProperties().size()); // now one visible
-                                                        // property is
-                                                        // registered
+    // property is
+    // registered
   }
 
   /**
@@ -501,7 +502,7 @@ public class TestItemManager extends JajukTestCase {
     // first run without "ordered state"
     ItemManager man = new LocalIM();
     runSortingTest(man, true);
-    
+
     // now use one with ordered state
     man = new LocalIM();
     man.switchToOrderState();
@@ -529,7 +530,7 @@ public class TestItemManager extends JajukTestCase {
     man.registerItem(item);
 
     // only ordered as long as we have not switched to ordered state
-    if(notYetOrderedState) {
+    if (notYetOrderedState) {
       // now the order is in there, first 9, then 10
       Iterator<? extends Item> it = man.getItemsIterator();
       assertEquals("9", it.next().getID());
@@ -542,7 +543,7 @@ public class TestItemManager extends JajukTestCase {
     }
 
     // in ordered state we do not add items multiple times
-    if(notYetOrderedState) {
+    if (notYetOrderedState) {
       assertEquals(7, man.getElementCount());
     } else {
       assertEquals(6, man.getElementCount());
@@ -551,13 +552,13 @@ public class TestItemManager extends JajukTestCase {
 
     // still the same size
     // in ordered state we do not add items multiple times
-    if(notYetOrderedState) {
+    if (notYetOrderedState) {
       assertEquals(7, man.getElementCount());
     } else {
       assertEquals(6, man.getElementCount());
     }
 
-    if(notYetOrderedState) {
+    if (notYetOrderedState) {
       // the iterator should still return 9 before 10
       Iterator<? extends Item> it = man.getItemsIterator();
       assertEquals("9", it.next().getID());

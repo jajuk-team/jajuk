@@ -122,7 +122,7 @@ public final class JSplash extends JFrame {
     panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     setContentPane(panel);
 
-    if(url == null) {
+    if (url == null) {
       throw new IllegalArgumentException("Invalid URL specified for Splashscreen");
     }
     // build a label and set it's icon

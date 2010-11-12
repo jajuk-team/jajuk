@@ -28,11 +28,9 @@ import java.io.File;
 public interface ConstTest {
 
   // sometimes temporary path has trailing separator, we try to handle this here
-  String PATH_DEVICE = (
-      System.getProperty("java.io.tmpdir").endsWith(File.separator) ? 
-          System.getProperty("java.io.tmpdir") + "jajuk_tests" + File.separator + "device_1" :
-            System.getProperty("java.io.tmpdir") + File.separator + "jajuk_tests" + File.separator + "device_1"
-            );
-      
+  String PATH_DEVICE = (System.getProperty("java.io.tmpdir").endsWith(File.separator) ? System
+      .getProperty("java.io.tmpdir")
+      + "jajuk_tests" + File.separator + "device_1" : System.getProperty("java.io.tmpdir")
+      + File.separator + "jajuk_tests" + File.separator + "device_1");
 
 }

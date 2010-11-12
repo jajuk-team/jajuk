@@ -25,7 +25,7 @@ package org.jajuk.ui.helpers.animations;
  * Listener used to track for animation ending.
  */
 public interface AnimationCompletedListener {
-  
+
   /**
    * Animation completed.
    * DOCUMENT_ME

@@ -55,7 +55,7 @@ public class PlayPauseAction extends JajukAction {
   public void perform(ActionEvent evt) {
     // Note that we don't change here the label and icon, already done in
     // PlayerstateMediator
-    
+
     if (QueueModel.isStopped()) {
       // We use here a flag to avoid launching the goTo() thread twice. In case
       // of playing error, this would create several looping threads trying to

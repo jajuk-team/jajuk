@@ -40,28 +40,28 @@ import org.jajuk.util.log.Log;
  * Slide animation implementation.
  */
 public class SlideAnimation extends AbstractAnimation {
-  
+
   /** DOCUMENT_ME. */
   private ScreenPosition screenPosition;
-  
+
   /** DOCUMENT_ME. */
   private StartingPosition startingPosition;
-  
+
   /** DOCUMENT_ME. */
   private Direction direction;
 
   /** DOCUMENT_ME. */
   private Timer animationTimer;
-  
+
   /** DOCUMENT_ME. */
   private long animationStart;
-  
+
   /** DOCUMENT_ME. */
   private Rectangle start;
-  
+
   /** DOCUMENT_ME. */
   private Rectangle windowBounds;
-  
+
   /** Time (ms) of a frame displaying */
   private static final int FRAME_DURATION = 5;
 
@@ -169,7 +169,7 @@ public class SlideAnimation extends AbstractAnimation {
    * DOCUMENT_ME.
    */
   public interface ScreenPosition {
-    
+
     /**
      * Gets the screen position.
      * 
@@ -184,7 +184,7 @@ public class SlideAnimation extends AbstractAnimation {
    * DOCUMENT_ME.
    */
   public interface StartingPosition {
-    
+
     /**
      * Gets the starting position.
      * 
@@ -199,7 +199,7 @@ public class SlideAnimation extends AbstractAnimation {
    * DOCUMENT_ME.
    */
   public interface Direction {
-    
+
     /**
      * Gets the current location.
      * 
@@ -225,7 +225,7 @@ public class SlideAnimation extends AbstractAnimation {
    * DOCUMENT_ME.
    */
   public enum ScreenPositions implements ScreenPosition {
-    
+
     /** DOCUMENT_ME. */
     TOP_LEFT {
       @Override
@@ -239,7 +239,7 @@ public class SlideAnimation extends AbstractAnimation {
         return position;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     TOP_RIGHT {
       @Override
@@ -253,7 +253,7 @@ public class SlideAnimation extends AbstractAnimation {
         return position;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     BOTTOM_LEFT {
       @Override
@@ -267,7 +267,7 @@ public class SlideAnimation extends AbstractAnimation {
         return position;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     BOTTOM_RIGHT {
       @Override
@@ -275,13 +275,13 @@ public class SlideAnimation extends AbstractAnimation {
         Rectangle bounds = getDesktopBounds();
         Rectangle position = new Rectangle();
         position.x = bounds.x + bounds.width - size.width;
-		position.y = bounds.y + bounds.height - size.height;
+        position.y = bounds.y + bounds.height - size.height;
         position.width = size.width;
         position.height = size.height;
         return position;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     CURRENT {
       @Override
@@ -296,15 +296,18 @@ public class SlideAnimation extends AbstractAnimation {
      * @return the desktop bounds
      */
     protected Rectangle getDesktopBounds() {
-		// Remove 50 px is useful under Linux as we can't get actual desktop
-        // insets and popup is too low in most cases (see
-        // http://forums.sun.com/thread.jspa?threadID=5169228)
-		Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration());
-		if (insets.equals(new Insets(0, 0, 0, 0))) {
-			insets.bottom = 50;
-		}
-		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-		return new Rectangle(insets.left, insets.top, size.width - insets.left - insets.right, size.height - insets.top - insets.bottom);
+      // Remove 50 px is useful under Linux as we can't get actual desktop
+      // insets and popup is too low in most cases (see
+      // http://forums.sun.com/thread.jspa?threadID=5169228)
+      Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(
+          GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()
+              .getDefaultConfiguration());
+      if (insets.equals(new Insets(0, 0, 0, 0))) {
+        insets.bottom = 50;
+      }
+      Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+      return new Rectangle(insets.left, insets.top, size.width - insets.left - insets.right,
+          size.height - insets.top - insets.bottom);
     }
   }
 
@@ -312,7 +315,7 @@ public class SlideAnimation extends AbstractAnimation {
    * DOCUMENT_ME.
    */
   public enum StartingPositions implements StartingPosition {
-    
+
     /** DOCUMENT_ME. */
     TOP {
       @Override
@@ -325,7 +328,7 @@ public class SlideAnimation extends AbstractAnimation {
         return size;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     BOTTOM {
       @Override
@@ -338,7 +341,7 @@ public class SlideAnimation extends AbstractAnimation {
         return size;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     LEFT {
       @Override
@@ -351,7 +354,7 @@ public class SlideAnimation extends AbstractAnimation {
         return size;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     RIGHT {
       @Override
@@ -364,7 +367,7 @@ public class SlideAnimation extends AbstractAnimation {
         return size;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     TOP_LEFT {
       @Override
@@ -377,7 +380,7 @@ public class SlideAnimation extends AbstractAnimation {
         return size;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     TOP_RIGHT {
       @Override
@@ -390,7 +393,7 @@ public class SlideAnimation extends AbstractAnimation {
         return size;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     BOTTOM_LEFT {
       @Override
@@ -403,7 +406,7 @@ public class SlideAnimation extends AbstractAnimation {
         return size;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     BOTTOM_RIGHT {
       @Override
@@ -416,7 +419,7 @@ public class SlideAnimation extends AbstractAnimation {
         return size;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     FULL {
       @Override
@@ -430,7 +433,7 @@ public class SlideAnimation extends AbstractAnimation {
    * DOCUMENT_ME.
    */
   public enum InDirections implements Direction {
-    
+
     /** DOCUMENT_ME. */
     UP {
       @Override
@@ -451,7 +454,7 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     DOWN {
       @Override
@@ -472,7 +475,7 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     LEFT {
       @Override
@@ -493,7 +496,7 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     RIGHT {
       @Override
@@ -514,7 +517,7 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     UP_LEFT {
       @Override
@@ -535,7 +538,7 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     UP_RIGHT {
       @Override
@@ -556,7 +559,7 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     DOWN_LEFT {
       @Override
@@ -577,7 +580,7 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     DOWN_RIGHT {
       @Override
@@ -604,7 +607,7 @@ public class SlideAnimation extends AbstractAnimation {
    * DOCUMENT_ME.
    */
   public enum OutDirections implements Direction {
-    
+
     /** DOCUMENT_ME. */
     UP {
       @Override
@@ -625,7 +628,7 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     DOWN {
       @Override
@@ -646,7 +649,7 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     LEFT {
       @Override
@@ -667,7 +670,7 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     RIGHT {
       @Override
@@ -688,7 +691,7 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     UP_LEFT {
       @Override
@@ -709,7 +712,7 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     UP_RIGHT {
       @Override
@@ -730,7 +733,7 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     DOWN_LEFT {
       @Override
@@ -751,7 +754,7 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-    
+
     /** DOCUMENT_ME. */
     DOWN_RIGHT {
       @Override

@@ -42,7 +42,7 @@ import org.jajuk.util.Messages;
  * Remove property wizard.
  */
 public class RemovePropertyWizard extends CustomPropertyWizard {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

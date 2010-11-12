@@ -35,13 +35,13 @@ public interface TwoStepsDisplayable {
    * 
    * @return a resulting object (can be null)
    */
-  Object longCall(); 
-  
+  Object longCall();
+
   /**
    * Fast call done in the EDT, must be fast !.
    * 
    * @param in DOCUMENT_ME
    */
   void shortCall(Object in);
-  
+
 }

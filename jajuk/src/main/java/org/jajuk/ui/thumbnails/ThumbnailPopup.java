@@ -75,11 +75,11 @@ public class ThumbnailPopup extends JWindow {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -8131528719972829954L;
 
-    /** DOCUMENT_ME. */
+  /** DOCUMENT_ME. */
   private final JEditorPane text;
 
   private KeyEventDispatcher dispatcher = null;
-  
+
   /**
    * Launch selection and set right cursor.
    * 
@@ -243,7 +243,7 @@ public class ThumbnailPopup extends JWindow {
    */
   private void setKeystrokes() {
     removeKeystrokes();
-    
+
     dispatcher = new KeyEventDispatcher() {
       @Override
       public boolean dispatchKeyEvent(KeyEvent e) {
@@ -251,13 +251,12 @@ public class ThumbnailPopup extends JWindow {
         return false;
       }
     };
-    
-    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
-        dispatcher);
+
+    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(dispatcher);
   }
 
   private void removeKeystrokes() {
-    if(dispatcher != null) {
+    if (dispatcher != null) {
       KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(dispatcher);
       dispatcher = null;
     }

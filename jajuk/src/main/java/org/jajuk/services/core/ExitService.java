@@ -71,7 +71,7 @@ public class ExitService extends Thread {
 
     // Store current FIFO for next session
     QueueModel.commit();
-    
+
     // commit ambiences
     AmbienceManager.getInstance().commit();
 
@@ -79,8 +79,8 @@ public class ExitService extends Thread {
     WebRadioManager.getInstance().commit();
 
     // Store webradio state
-    Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(QueueModel
-        .isPlayingRadio()));
+    Conf
+        .setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(QueueModel.isPlayingRadio()));
 
     // commit configuration
     org.jajuk.util.Conf.commit();
@@ -105,13 +105,13 @@ public class ExitService extends Thread {
     if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
       Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION_EXIT));
       // create an exit proof file if required
-      if(bExit) {
+      if (bExit) {
         UtilSystem.createEmptyFile(SessionService
             .getConfFileByPath(Const.FILE_COLLECTION_EXIT_PROOF));
       }
     }
   }
-  
+
   /* (non-Javadoc)
    * @see java.lang.Thread#run()
    */

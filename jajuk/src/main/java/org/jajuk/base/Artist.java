@@ -60,10 +60,10 @@ public class Artist extends LogicalItem implements Comparable<Artist> {
    * @return artist name
    */
   public String getName2() {
-    if(isUnknown()) {
+    if (isUnknown()) {
       return Messages.getString(UNKNOWN_ARTIST);
     }
-    
+
     return getName();
   }
 
@@ -77,10 +77,10 @@ public class Artist extends LogicalItem implements Comparable<Artist> {
   @Override
   public int compareTo(Artist otherItem) {
     // not equal if other is null
-    if(otherItem == null) {
+    if (otherItem == null) {
       return 1;
     }
-    
+
     // compare using name and id to differentiate unknown items
     StringBuilder current = new StringBuilder(getName2());
     current.append(getID());

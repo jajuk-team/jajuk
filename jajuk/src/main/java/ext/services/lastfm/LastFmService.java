@@ -66,23 +66,23 @@ public class LastFmService {
    */
   /** The Constant API_KEY.  DOCUMENT_ME */
   private static final String API_KEY = "711591ss6q695ps349o6681pr1oq1467";
-  
+
   /** The Constant CLIENT_ID.  DOCUMENT_ME */
   private static final String CLIENT_ID = "jaj";
-  
+
   /** The Constant CLIENT_VERSION.  DOCUMENT_ME */
   private static final String CLIENT_VERSION = "0.2"; // Assigned by Last.FM
   // team
 
   /** The Constant ARTIST_WILDCARD.  DOCUMENT_ME */
   private static final String ARTIST_WILDCARD = "(%ARTIST%)";
-  
+
   /** The Constant LANGUAGE_PARAM.  DOCUMENT_ME */
   private static final String LANGUAGE_PARAM = "?setlang=";
-  
+
   /** The Constant LANGUAGE_WILDCARD.  DOCUMENT_ME */
   private static final String LANGUAGE_WILDCARD = "(%LANGUAGE%)";
-  
+
   /** The Constant ARTIST_WIKI_URL.  DOCUMENT_ME */
   private static final String ARTIST_WIKI_URL = UtilString.concat("http://www.lastfm.com/music/",
       ARTIST_WILDCARD, "/+wiki", LANGUAGE_PARAM, LANGUAGE_WILDCARD);
@@ -101,16 +101,16 @@ public class LastFmService {
 
   /** DOCUMENT_ME. */
   private Scrobbler scrobbler;
-  
+
   /** DOCUMENT_ME. */
   private String user;
-  
+
   /** DOCUMENT_ME. */
   private String password;
-  
+
   /** DOCUMENT_ME. */
   private boolean handshakePerformed;
-  
+
   /** DOCUMENT_ME. */
   private Locale locale;
 
@@ -465,7 +465,7 @@ public class LastFmService {
 
         Artist a = Artist.getInfo(artist, locale, UtilString.rot13(API_KEY));
         wikiText = a != null ? a.getWikiSummary() : "";
-        if(wikiText != null) {
+        if (wikiText != null) {
           wikiText = wikiText.replaceAll("<.*?>", "");
           wikiText = StringEscapeUtils.unescapeHtml(wikiText);
         }

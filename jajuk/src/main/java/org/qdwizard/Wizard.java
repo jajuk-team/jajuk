@@ -85,7 +85,7 @@ import org.jajuk.util.log.Log;
  * @created 1 may 2006
  */
 public abstract class Wizard implements ActionListener, WindowListener {
-  
+
   /** Wizard name. */
   private String sName;
 

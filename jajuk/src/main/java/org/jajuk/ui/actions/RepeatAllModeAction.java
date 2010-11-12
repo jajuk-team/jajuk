@@ -37,7 +37,7 @@ import org.jajuk.util.UtilGUI;
  * DOCUMENT_ME.
  */
 public class RepeatAllModeAction extends JajukAction {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

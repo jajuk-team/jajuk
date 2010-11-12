@@ -113,7 +113,6 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(-1, QueueModel.getIndex());
   }
 
-
   /**
    * Test method for
    * {@link org.jajuk.services.players.QueueModel#setRepeatModeToAll(boolean)}.
@@ -317,7 +316,7 @@ public class TestQueueModel extends JajukTestCase {
     QueueModel.finished();
     assertTrue(QueueModel.getItem(0).equals(firstItem));
     QueueModel.finished();
-   // Make sure that first item is no more the same
+    // Make sure that first item is no more the same
     assertFalse("Item0: " + QueueModel.getItem(0) + "\nFirstItem: " + firstItem, !(QueueModel
         .getItem(0).equals(firstItem)));
   }
@@ -950,7 +949,7 @@ public class TestQueueModel extends JajukTestCase {
   public void testGoToRepeat() throws Exception {
     addItems(5);
     QueueModel.goTo(2);
-    
+
     { // first choose one that is not set to repeat
       // now set some repeat
       QueueModel.getItem(2).setRepeat(true);
@@ -989,7 +988,6 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(QueueModel.getQueue().toString(), 7, QueueModel.getQueueSize());
   }
 
- 
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#getLast()}.
    */
@@ -1070,7 +1068,6 @@ public class TestQueueModel extends JajukTestCase {
     assertTrue(QueueModel.getPlanned().size() > 0);
   }
 
- 
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#commit()}.
    */

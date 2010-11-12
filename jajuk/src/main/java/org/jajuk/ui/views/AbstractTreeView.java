@@ -151,7 +151,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
   /** Used to differentiate user action tree collapse from code tree collapse. */
   boolean bManualAction = true;
-  
+
   /** Used to differentiate tree/table sync due to internal events from users's ones. */
   boolean bInternalAction = false;
 
@@ -360,7 +360,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
           String sourcePerspective = details.getProperty(Const.DETAIL_PERSPECTIVE);
           IView sourceView = (IView) details.get(Const.DETAIL_VIEW);
           if (!(sourcePerspective.equals(getPerspective().getID()))
-              //source view is null if the table is outside a view like CDDB dialog
+          //source view is null if the table is outside a view like CDDB dialog
               || sourceView == null
               // Same view ? ignore...
               || sourceView.getID().equals(getID())) {

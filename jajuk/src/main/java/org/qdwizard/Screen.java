@@ -40,7 +40,7 @@ import javax.swing.SwingUtilities;
  * @created 1 may 2006
  */
 public abstract class Screen extends JPanel {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

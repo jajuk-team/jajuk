@@ -27,17 +27,17 @@ public enum JajukIcons {
 
   /** DOCUMENT_ME. */
   NO_COVER,
-  
+
   /** DOCUMENT_ME. */
   NONE,
 
   /** DOCUMENT_ME. */
   NO_COVER_50X50, /** DOCUMENT_ME. */
- NO_COVER_100X100, /** DOCUMENT_ME. */
- NO_COVER_150X150, /** DOCUMENT_ME. */
- NO_COVER_200X200, /** DOCUMENT_ME. */
- NO_COVER_250X250, /** DOCUMENT_ME. */
- NO_COVER_300X300,
+  NO_COVER_100X100, /** DOCUMENT_ME. */
+  NO_COVER_150X150, /** DOCUMENT_ME. */
+  NO_COVER_200X200, /** DOCUMENT_ME. */
+  NO_COVER_250X250, /** DOCUMENT_ME. */
+  NO_COVER_300X300,
 
   /** DOCUMENT_ME. */
   LOGO,
@@ -431,8 +431,8 @@ public enum JajukIcons {
 
   /** DOCUMENT_ME. */
   TRACK_FIFO_REPEAT,
-  
-   /** DOCUMENT_ME. */
+
+  /** DOCUMENT_ME. */
   TRACK_FIFO_PLAYING,
 
   /** DOCUMENT_ME. */
@@ -605,7 +605,7 @@ public enum JajukIcons {
 
   /** Larger icon for Prepare Party Wizard */
   PREPARE_PARTY_32X32,
-  
+
   /** DOCUMENT_ME. */
   COPY_TO_CLIPBOARD,
 
@@ -632,13 +632,13 @@ public enum JajukIcons {
 
   /** DOCUMENT_ME. */
   AUTOSCROLL,
-  
+
   /** Tree/table synchronization icon. */
   TREE_TABLE_SYNC,
-  
+
   /** Money */
   DONATE,
-  
+
   /** Disc number */
   DISC_NUMBER
 }

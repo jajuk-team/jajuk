@@ -59,7 +59,7 @@ public final class LastFmManager implements Observer, Const {
   private LastFmManager() {
     // Register on the list for subject we are interested in
     ObservationManager.register(this);
-   
+
     // Create the service
     service = LastFmService.getInstance();
 

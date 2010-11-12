@@ -126,8 +126,8 @@ public class LastFmAlbum implements AlbumInfo {
   private static void handleTracks(List<TrackInfo> ts) {
     String firstTrackTitle = ts.get(0).getTitle();
     // Get all text between () [] {}
-    List<String> tokensOfFirstTrackTitle = UtilString.getTextBetweenChars(firstTrackTitle, '(',
-        ')');
+    List<String> tokensOfFirstTrackTitle = UtilString
+        .getTextBetweenChars(firstTrackTitle, '(', ')');
     tokensOfFirstTrackTitle.addAll(UtilString.getTextBetweenChars(firstTrackTitle, '[', ']'));
     tokensOfFirstTrackTitle.addAll(UtilString.getTextBetweenChars(firstTrackTitle, '{', '}'));
 
@@ -172,10 +172,10 @@ public class LastFmAlbum implements AlbumInfo {
    */
   @Override
   public String getArtistUrl() {
-    if(url == null) {
+    if (url == null) {
       return null;
     }
-    if(!url.contains("/")) {
+    if (!url.contains("/")) {
       return url;
     }
 
@@ -219,7 +219,7 @@ public class LastFmAlbum implements AlbumInfo {
    */
   @Override
   public Date getReleaseDate() {
-    if(releaseDateString == null) {
+    if (releaseDateString == null) {
       return null;
     }
 

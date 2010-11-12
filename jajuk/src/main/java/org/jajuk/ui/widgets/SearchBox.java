@@ -329,7 +329,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
    * @return the result 
    */
   public SearchResult getResult() {
-    if (jlist == null){
+    if (jlist == null) {
       return null;
     }
     return alResults.get(getSelectedIndex());

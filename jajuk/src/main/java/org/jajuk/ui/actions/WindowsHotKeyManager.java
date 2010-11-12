@@ -46,7 +46,7 @@ import org.jajuk.util.log.Log;
  * </p>.
  */
 public abstract class WindowsHotKeyManager extends AbstractAction {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -6948447651091264530L;
 

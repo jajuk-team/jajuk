@@ -30,7 +30,7 @@ import org.jajuk.base.FileManager;
  * An history item.
  */
 public class HistoryItem {
-  
+
   /** File Id. */
   private String sFileId;
 
