@@ -1,6 +1,11 @@
 package ext;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 /** 
  * <h3>MersenneTwister and MersenneTwisterFast</h3>

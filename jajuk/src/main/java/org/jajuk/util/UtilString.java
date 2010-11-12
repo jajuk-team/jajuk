@@ -35,8 +35,8 @@ import org.jajuk.base.AlbumArtistManager;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.ArtistManager;
 import org.jajuk.base.File;
-import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.GenreManager;
+import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Track;
 import org.jajuk.util.error.JajukException;
 
