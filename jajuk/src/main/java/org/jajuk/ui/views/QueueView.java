@@ -561,7 +561,6 @@ public class QueueView extends PlaylistView {
       updateSelection();
       updateInformationView(selectedFiles);
       // Refresh the preference menu according to the selection
-      System.out.println(editorTable.getSelection());
       pjmFilesEditor.resetUI(editorTable.getSelection());
       int selectedRow = selection.getMaxSelectionIndex();
       // true if selected line is a planned track
