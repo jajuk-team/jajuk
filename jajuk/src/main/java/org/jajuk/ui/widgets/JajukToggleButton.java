@@ -28,7 +28,7 @@ import javax.swing.Icon;
 import javax.swing.border.Border;
 
 /**
- * DOCUMENT_ME.
+ * A Jajuk button with two states.
  */
 public class JajukToggleButton extends JajukButton {
   
