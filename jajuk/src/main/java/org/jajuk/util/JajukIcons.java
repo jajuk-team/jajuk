@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -32,11 +32,16 @@ public enum JajukIcons {
   NONE,
 
   /** DOCUMENT_ME. */
-  NO_COVER_50X50, /** DOCUMENT_ME. */
-  NO_COVER_100X100, /** DOCUMENT_ME. */
-  NO_COVER_150X150, /** DOCUMENT_ME. */
-  NO_COVER_200X200, /** DOCUMENT_ME. */
-  NO_COVER_250X250, /** DOCUMENT_ME. */
+  NO_COVER_50X50, 
+ /** DOCUMENT_ME. */
+  NO_COVER_100X100, 
+ /** DOCUMENT_ME. */
+  NO_COVER_150X150, 
+ /** DOCUMENT_ME. */
+  NO_COVER_200X200, 
+ /** DOCUMENT_ME. */
+  NO_COVER_250X250, 
+ /** DOCUMENT_ME. */
   NO_COVER_300X300,
 
   /** DOCUMENT_ME. */
@@ -603,7 +608,7 @@ public enum JajukIcons {
   /** DOCUMENT_ME. */
   PREPARE_PARTY,
 
-  /** Larger icon for Prepare Party Wizard */
+  /** Larger icon for Prepare Party Wizard. */
   PREPARE_PARTY_32X32,
 
   /** DOCUMENT_ME. */
@@ -636,9 +641,9 @@ public enum JajukIcons {
   /** Tree/table synchronization icon. */
   TREE_TABLE_SYNC,
 
-  /** Money */
+  /** Money. */
   DONATE,
 
-  /** Disc number */
+  /** Disc number. */
   DISC_NUMBER
 }

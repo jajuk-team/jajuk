@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -62,7 +62,7 @@ import org.jajuk.util.log.Log;
  */
 public class PlayerStateMediator implements Observer {
 
-  /** Singleton */
+  /** Singleton. */
   private static PlayerStateMediator self = new PlayerStateMediator();
 
   // Register this item, do not do this in the constructor as the instance is not yet available
@@ -257,7 +257,7 @@ public class PlayerStateMediator implements Observer {
   }
 
   /**
-   * Set play/pause button label/icon to pause state
+   * Set play/pause button label/icon to pause state.
    */
   private void setToPause() {
     ActionManager.getAction(PAUSE_RESUME_TRACK)
@@ -266,7 +266,7 @@ public class PlayerStateMediator implements Observer {
   }
 
   /**
-   * Set play/pause button label/icon to play state
+   * Set play/pause button label/icon to play state.
    */
   private void setToPlay() {
     ActionManager.getAction(PAUSE_RESUME_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PLAYER_PLAY));

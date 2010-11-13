@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -124,7 +124,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /**
    * Send a command to mplayer slave.
-   *
+   * 
    * @param command DOCUMENT_ME
    */
   protected void sendCommand(String command) {
@@ -143,7 +143,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /**
    * Gets the current volume.
-   *
+   * 
    * @return current volume as a float ex: 0.2f
    */
   @Override
@@ -153,9 +153,9 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /**
    * Build the mplayer command line.
-   *
+   * 
    * @param url to play
-   *
+   * 
    * @return command line as a String array
    */
   List<String> buildCommand(String url) {
@@ -214,7 +214,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /**
    * Build the -af audio filters command part.
-   *
+   * 
    * @return the string
    */
   private String buildAudioFilters() {
@@ -303,7 +303,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /**
    * Gets the state.
-   *
+   * 
    * @return player state, -1 if player is null.
    */
   @Override

@@ -72,7 +72,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /** Does the user made a seek in current track ?*. */
   private boolean seeked;
 
-  /** Is the play is in error */
+  /** Is the play is in error. */
   private boolean bInError = false;
 
   /** VBR correction. VBR MP3 files are confusing for mplayer that shows wrong length and seek position. This value is the correction computed with id3 tag when available */
@@ -87,7 +87,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /** Current file. */
   private org.jajuk.base.File fCurrent;
 
-  /** [Windows only] Force use of shortnames */
+  /** [Windows only] Force use of shortnames. */
   private boolean bForcedShortnames = false;
 
   /**
@@ -397,7 +397,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   }
 
   /**
-   * Reset the player impl to initial state
+   * Reset the player impl to initial state.
    */
   private void reset() {
     this.lTime = 0;

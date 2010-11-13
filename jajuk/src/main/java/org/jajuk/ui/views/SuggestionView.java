@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -97,12 +97,16 @@ public class SuggestionView extends ViewAdapter {
 
     /** DOCUMENT_ME. */
     BEST_OF,
+    
     /** DOCUMENT_ME. */
     NEWEST,
+    
     /** DOCUMENT_ME. */
     RARE,
+    
     /** DOCUMENT_ME. */
     OTHERS_ALBUMS,
+    
     /** DOCUMENT_ME. */
     SIMILAR_ARTISTS
   }

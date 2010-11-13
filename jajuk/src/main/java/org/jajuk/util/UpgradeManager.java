@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -64,12 +64,12 @@ public final class UpgradeManager {
   /** Is it an old migration (more than 1 major release) ?. */
   private static boolean majorMigration = false;
 
-  /** List of versions that doesn't require perspective reset at upgrade */
+  /** List of versions that doesn't require perspective reset at upgrade. */
   private static String[] versionsNoNeedPerspectiveReset = new String[] { "1.9" };
 
   /**
-  * private constructor to avoid instantiating utility class.
-  */
+   * private constructor to avoid instantiating utility class.
+   */
   private UpgradeManager() {
   }
 
@@ -77,6 +77,8 @@ public final class UpgradeManager {
    * Return Jajuk number version = integer format of the padded release
    * 
    * Jajuk version scheme is XX.YY.ZZ[RCn] (two digits possible for each part of the release)
+   * 
+   * @param pStringRelease DOCUMENT_ME
    * 
    * @return Jajuk number version = integer format of the padded release
    */
@@ -199,7 +201,8 @@ public final class UpgradeManager {
 
   /**
    * For Jajuk < 0.2 : remove backup file : collection~.xml
-   * @throws IOException 
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private static void upgradeOldCollectionBackupFile() throws IOException {
     File file = SessionService.getConfFileByPath(Const.FILE_COLLECTION + "~");
@@ -253,7 +256,7 @@ public final class UpgradeManager {
    * If it exists and contains data in 1.7 or 1.8 format, it convert it to new XML
    * format (to handle backslashes properly, old format just drop them)
    * <br>
-   * This method doesn't yet validate provided workspace paths but only the bootstrap file 
+   * This method doesn't yet validate provided workspace paths but only the bootstrap file
    * structure itself.
    */
   public static void upgradeBootstrapFile() {
@@ -326,7 +329,9 @@ public final class UpgradeManager {
   }
 
   /**
-   * For Jajuk < 1.3: delete thumb for given size 
+   * For Jajuk < 1.3: delete thumb for given size
+   * 
+   * @param size DOCUMENT_ME
    */
   private static void upgradeNoCoverDelete(String size) {
     File fThumbs = SessionService.getConfFileByPath(Const.FILE_THUMBS + "/" + size + "/"
@@ -392,9 +397,10 @@ public final class UpgradeManager {
   }
 
   /**
-  * For jajuk <1.4 (or early 1.4), delete renamed perspectives names
-  * @param name : perspective filename
-  */
+   * For jajuk <1.4 (or early 1.4), delete renamed perspectives names
+   * 
+   * @param name : perspective filename
+   */
   private static void upgradePerspectivesRenameDelete(String name) {
     File fPerspective = SessionService.getConfFileByPath(name);
     if (fPerspective.exists()) {
@@ -500,8 +506,8 @@ public final class UpgradeManager {
   }
 
   /**
-  * For jajuk < 1.9, remove album artist property for albums
-  */
+   * For jajuk < 1.9, remove album artist property for albums
+   */
   private static void upgradeNoMoreAlbumArtistsForAlbums() {
     if (AlbumManager.getInstance().getMetaInformation(Const.XML_ALBUM_ARTIST) != null) {
       AlbumManager.getInstance().removeProperty(Const.XML_ALBUM_ARTIST);
@@ -631,9 +637,11 @@ public final class UpgradeManager {
   }
 
   /**
-   * Return whether two releases switch is a major upgrade or not
-   * @param currentRelease
-   * @param comparedRelease
+   * Return whether two releases switch is a major upgrade or not.
+   * 
+   * @param currentRelease DOCUMENT_ME
+   * @param comparedRelease DOCUMENT_ME
+   * 
    * @return whether two releases switch is a major upgrade or not
    */
   protected static boolean isMajorMigration(String currentRelease, String comparedRelease) {
@@ -643,11 +651,13 @@ public final class UpgradeManager {
   }
 
   /**
-  * Return whether second release is newer than first
-  * @param currentRelease
-  * @param comparedRelease
-  * @return whether second release is newer than first
-  */
+   * Return whether second release is newer than first.
+   * 
+   * @param currentRelease DOCUMENT_ME
+   * @param comparedRelease DOCUMENT_ME
+   * 
+   * @return whether second release is newer than first
+   */
   protected static boolean isNewer(String currentRelease, String comparedRelease) {
     int iCurrentRelease = getNumberRelease(currentRelease);
     int iComparedRelease = getNumberRelease(comparedRelease);
@@ -655,7 +665,7 @@ public final class UpgradeManager {
   }
 
   /**
-   * Require user to perform a deep scan
+   * Require user to perform a deep scan.
    */
   private static void deepScanRequest() {
     int reply = Messages.getChoice(Messages.getString("Warning.7"),
@@ -682,7 +692,8 @@ public final class UpgradeManager {
 
   /**
    * Return whether this version need a perspective reset at upgrade.
-   * We reset perspectives only at major upgrade and if it comes with new views.  
+   * We reset perspectives only at major upgrade and if it comes with new views.
+   * 
    * @return whether this version need a perspective reset at upgrade
    */
   public static boolean doNeedPerspectiveResetAtUpgrade() {

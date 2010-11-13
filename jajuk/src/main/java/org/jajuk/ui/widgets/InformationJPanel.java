@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -64,8 +64,17 @@ public final class InformationJPanel extends JXPanel implements Observer {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /**
+   * DOCUMENT_ME.
+   */
   public static enum MessageType {
-    INFORMATIVE, ERROR, WARNING
+    
+    /** DOCUMENT_ME. */
+    INFORMATIVE, 
+ /** DOCUMENT_ME. */
+ ERROR, 
+ /** DOCUMENT_ME. */
+ WARNING
   }
 
   /** Self instance. */
@@ -219,10 +228,8 @@ public final class InformationJPanel extends JXPanel implements Observer {
   /**
    * Sets the message.
    * 
-   * @param sMessage
-   *          DOCUMENT_ME
-   * @param iMessageType
-   *          DOCUMENT_ME
+   * @param sMessage DOCUMENT_ME
+   * @param messageType DOCUMENT_ME
    */
   public void setMessage(final String sMessage, final MessageType messageType) {
     this.sMessage = sMessage;
@@ -248,8 +255,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
   /**
    * Sets the selection.
    * 
-   * @param sSelection
-   *          DOCUMENT_ME
+   * @param sSelection DOCUMENT_ME
    */
   public void setSelection(String sSelection) {
     this.sSelection = sSelection;
@@ -269,8 +275,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
   /**
    * Sets the total time message.
    * 
-   * @param string
-   *          DOCUMENT_ME
+   * @param string DOCUMENT_ME
    */
   public void setTotalTimeMessage(String string) {
     sTotalStatus = string;

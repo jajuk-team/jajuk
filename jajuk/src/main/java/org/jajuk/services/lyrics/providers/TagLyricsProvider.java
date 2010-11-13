@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@ import org.jajuk.util.log.Log;
  */
 public class TagLyricsProvider implements ILyricsProvider {
 
-  /** audio file we search lyrics for */
+  /** audio file we search lyrics for. */
   private File audioFile = null;
 
   /* (non-Javadoc)

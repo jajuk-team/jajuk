@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -59,16 +59,16 @@ import org.jajuk.util.log.Log;
  */
 public class StartupEngineService {
 
-  /** List of items to play at startup */
+  /** List of items to play at startup. */
   private static List<org.jajuk.base.File> alToPlay = new ArrayList<org.jajuk.base.File>();
 
-  /** File to play */
+  /** File to play. */
   private static org.jajuk.base.File fileToPlay;
 
-  /** Web radio to play */
+  /** Web radio to play. */
   private static WebRadio radio;
 
-  /** Index in the queue of the startup file */
+  /** Index in the queue of the startup file. */
   private static int index = 0;
 
   /**
@@ -121,7 +121,7 @@ public class StartupEngineService {
   }
 
   /**
-   * Launch fileToPlay
+   * Launch fileToPlay.
    */
   private static void launchFile() {
     new Thread("Track Startup Thread") {
@@ -133,7 +133,8 @@ public class StartupEngineService {
   }
 
   /**
-   * Return whether a webradio startup is required (it may be null if the webradio is unknown by the collection)
+   * Return whether a webradio startup is required (it may be null if the webradio is unknown by the collection).
+   * 
    * @return whether a webradio startup is required
    */
   private static boolean isWebradioStartup() {
@@ -154,7 +155,7 @@ public class StartupEngineService {
   }
 
   /**
-   * Restore the queue we got at last session exit
+   * Restore the queue we got at last session exit.
    */
   private static void restoreQueue() {
     final File fifo = SessionService.getConfFileByPath(Const.FILE_FIFO);
@@ -186,7 +187,7 @@ public class StartupEngineService {
   }
 
   /**
-   * Find item to play and build the queue
+   * Find item to play and build the queue.
    */
   private static void populateStartupItems() {
     String startupMode = Conf.getString(Const.CONF_STARTUP_MODE);
@@ -285,7 +286,8 @@ public class StartupEngineService {
   }
 
   /**
-   * Check that the file can actually be played and handle errors if it's not the case
+   * Check that the file can actually be played and handle errors if it's not the case.
+   * 
    * @return whether the file can actually be played
    */
   private static boolean checkFileToPlay() {
@@ -321,7 +323,7 @@ public class StartupEngineService {
   }
 
   /**
-   * Set index of fileToPlay among alToPlay list
+   * Set index of fileToPlay among alToPlay list.
    */
   private static void setIndex() {
     // fileToPlay is null if nothing has to be played, then we keep default index value (0)
@@ -343,7 +345,7 @@ public class StartupEngineService {
   }
 
   /**
-   * Launch the startup webradio
+   * Launch the startup webradio.
    */
   private static void launchRadio() {
     new Thread("WebRadio launch thread") {

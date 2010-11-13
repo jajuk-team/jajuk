@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -70,15 +70,20 @@ public class Cover implements Comparable<Cover>, Const {
 
     /** DOCUMENT_ME. */
     NO_COVER,
+    
     /** DOCUMENT_ME. */
     REMOTE_COVER,
+    
     /** DOCUMENT_ME. */
     LOCAL_COVER,
+    
     /** DOCUMENT_ME. */
     STANDARD_COVER,
+    
     /** DOCUMENT_ME. */
     SELECTED_COVER,
     // cover stored in the tag of a file
+    /** DOCUMENT_ME. */
     TAG_COVER
   }
 

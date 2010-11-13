@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -120,8 +120,12 @@ public class DebugLogAction extends JajukAction {
     return traces.toString();
   }
 
-  /** Replace some HTML in the properties to make them suitable for printing
-   * @param properties
+  /**
+   * Replace some HTML in the properties to make them suitable for printing.
+   * 
+   * @param str DOCUMENT_ME
+   * 
+   * @return the string
    */
   private static String cleanHTML(String str) {
     // don't allow HTML-formatting

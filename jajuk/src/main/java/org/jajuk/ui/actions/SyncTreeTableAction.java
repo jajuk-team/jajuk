@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -44,9 +44,7 @@ public class SyncTreeTableAction extends JajukAction {
   private static final long serialVersionUID = 1L;
 
   /**
-   * @param name
-   * @param icon
-   * @param enabled
+   * The Constructor.
    */
   protected SyncTreeTableAction() {
     super(Messages.getString("SyncTreeTableAction.0"), IconLoader

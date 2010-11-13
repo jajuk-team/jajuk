@@ -86,7 +86,7 @@ public class DeleteSelectionAction extends SelectionAction {
   }
 
   /**
-   * Called on files deletion (long task)
+   * Called on files deletion (long task).
    */
   class FilesDeletionThread extends Thread {
 
@@ -133,7 +133,7 @@ public class DeleteSelectionAction extends SelectionAction {
   }
 
   /**
-   * Called on directories deletion (long task)
+   * Called on directories deletion (long task).
    */
   class DirectoriesDeletionThread extends Thread {
 
@@ -144,6 +144,9 @@ public class DeleteSelectionAction extends SelectionAction {
       super("Directories Deletion Thread");
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Thread#run()
+     */
     @Override
     public void run() {
       UtilGUI.waiting();

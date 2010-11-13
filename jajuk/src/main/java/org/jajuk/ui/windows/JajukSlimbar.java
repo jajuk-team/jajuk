@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -102,8 +102,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** A queue view to be used by the show queue view slimbar switch button. 
-   * Don't use it directly, use the getQueueWindow() method instead that lazy-load it. */
+  /** A queue view to be used by the show queue view slimbar switch button. Don't use it directly, use the getQueueWindow() method instead that lazy-load it. */
   private JWindow queueViewWindow;
 
   /** DOCUMENT_ME. */
@@ -206,8 +205,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
   /**
    * Sets the display queue.
    * 
-   * @param display
-   *          the new display queue
+   * @param display the new display queue
    */
   public void setDisplayQueue(boolean display) {
     if (display) {
@@ -500,7 +498,9 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
   }
 
   /**
-   * Returns or create a queue window to be displayed though the queue view slimbar button
+   * Returns or create a queue window to be displayed though the queue view slimbar button.
+   * 
+   * @return the queue window
    */
   private JWindow getQueueWindow() {
     if (queueViewWindow == null) {
@@ -599,8 +599,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    * Force tooltip refresh Thanks Santhosh Kumar
    * http://www.jroller.com/santhosh/entry/tooltips_can_say_more
    * 
-   * @param comp
-   *          DOCUMENT_ME
+   * @param comp DOCUMENT_ME
    */
   public static void postToolTip(JComponent comp) {
     Action action = comp.getActionMap().get("postTip");
@@ -616,8 +615,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    * Remove tooltip Thanks Santhosh Kumar
    * http://www.jroller.com/santhosh/entry/tooltips_can_say_more
    * 
-   * @param comp
-   *          DOCUMENT_ME
+   * @param comp DOCUMENT_ME
    */
   public static void hideToolTip(JComponent comp) {
     Action action = comp.getActionMap().get("hideTip");

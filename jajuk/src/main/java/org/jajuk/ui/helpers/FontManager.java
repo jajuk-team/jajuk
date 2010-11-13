@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -59,34 +59,49 @@ public final class FontManager implements Observer {
 
     /** DOCUMENT_ME. */
     DEFAULT,
+    
     /** DOCUMENT_ME. */
     PLAIN,
+    
     /** DOCUMENT_ME. */
     PLAIN_S,
+    
     /** DOCUMENT_ME. */
     PLAIN_L,
+    
     /** DOCUMENT_ME. */
     PLAIN_XL,
+    
     /** DOCUMENT_ME. */
     BOLD,
+    
     /** DOCUMENT_ME. */
     BOLD_L,
+    
     /** DOCUMENT_ME. */
     BOLD_XL,
+    
     /** DOCUMENT_ME. */
     BOLD_XXL,
+    
     /** DOCUMENT_ME. */
     BOLD_TITLE,
+    
     /** DOCUMENT_ME. */
     PERSPECTIVES,
+    
     /** DOCUMENT_ME. */
     PLANNED,
+    
     /** DOCUMENT_ME. */
     SEARCHBOX,
+    
     /** DOCUMENT_ME. */
     SPLASH,
+    
     /** DOCUMENT_ME. */
     SPLASH_PROGRESS,
+    
     /** DOCUMENT_ME. */
     VIEW_FONT
   }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -74,10 +74,10 @@ public final class UtilSystem {
   /** The Constant LOCAL_IP.  DOCUMENT_ME */
   private static final String LOCAL_IP = "127.0.0.1";
 
-  /** Is browser supported ? */
+  /** Is browser supported ?. */
   private static Boolean browserSupported;
 
-  /** Size of the short names converter in bytes */
+  /** Size of the short names converter in bytes. */
   private static final int CONVERTER_FILE_SIZE = 23;
 
   /**
@@ -87,10 +87,13 @@ public final class UtilSystem {
 
     /** DOCUMENT_ME. */
     MPLAYER_STATUS_OK,
+    
     /** DOCUMENT_ME. */
     MPLAYER_STATUS_NOT_FOUND,
+    
     /** DOCUMENT_ME. */
     MPLAYER_STATUS_WRONG_VERSION,
+    
     /** DOCUMENT_ME. */
     MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
   }
@@ -119,10 +122,10 @@ public final class UtilSystem {
   /** Are we under Windows 64 bits ? *. */
   private static final boolean UNDER_WINDOWS_64BIT;
 
-  /** Are we in JNLP mode ? **/
+  /** Are we in JNLP mode ? *. */
   private static final boolean UNDER_JNLP;
 
-  /** Are we under KDE ? **/
+  /** Are we under KDE ? *. */
   private static final boolean UNDER_KDE;
 
   /** Directory filter used in refresh. */
@@ -304,10 +307,10 @@ public final class UtilSystem {
   /**
    * Move a file to another file (directories are not supported).
    * 
-   * Note that it may be better to use this method than java.io.File.renameTo() method that 
-   * doesn't seem to work always under windows (in special directories) and because this method 
+   * Note that it may be better to use this method than java.io.File.renameTo() method that
+   * doesn't seem to work always under windows (in special directories) and because this method
    * always return an exception in case of problem.
-   *
+   * 
    * @param file : file to move
    * @param fNew : destination file
    * 
@@ -828,19 +831,19 @@ public final class UtilSystem {
   }
 
   /**
-  * Checks if we are running as jnlp app.
-  * 
-  * @return whether we are running as jnlp app
-  */
+   * Checks if we are running as jnlp app.
+   * 
+   * @return whether we are running as jnlp app
+   */
   public static boolean isUnderJNLP() {
     return UtilSystem.UNDER_JNLP;
   }
 
   /**
-  * Checks if is under OSX (Intel or PowerPC)
-  * 
-  * @return whether we are under OS X 
-  */
+   * Checks if is under OSX (Intel or PowerPC).
+   * 
+   * @return whether we are under OS X
+   */
   public static boolean isUnderOSX() {
     return UtilSystem.UNDER_OSX;
   }
@@ -1218,8 +1221,10 @@ public final class UtilSystem {
   }
 
   /**
-   * Convert a full regular Windows path to 8.3 DOS format 
+   * Convert a full regular Windows path to 8.3 DOS format
+   * 
    * @param longname the regular absolute path
+   * 
    * @return the shortname absolute path
    */
   public static String getShortPathNameW(String longname) {
@@ -1290,9 +1295,10 @@ public final class UtilSystem {
 
   /**
    * Return whether the Desktop BROWSE action is actually supported
-   * Note this bug : http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6486393 
+   * Note this bug : http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6486393
    * under KDE : isSupported returns true but we get an exception when actually browsing
-   * @return
+   * 
+   * @return true, if checks if is browser supported
    */
   public static boolean isBrowserSupported() {
     // value stored for perf
@@ -1320,7 +1326,8 @@ public final class UtilSystem {
   /**
    * Are we running in a KDE environment ?
    * 
-   * We check it by using ps command + a grep searching 'kdeinit' process
+   * We check it by using ps command + a grep searching 'kdeinit' process.
+   * 
    * @return whether we are running in a KDE environment
    */
   public static boolean isUnderKDE() {
@@ -1328,8 +1335,10 @@ public final class UtilSystem {
   }
 
   /**
-   * Attempt to acquire a file lock for given file
+   * Attempt to acquire a file lock for given file.
+   * 
    * @param file the file to lock
+   * 
    * @return a FileLock or null if it can't be acquired
    */
   public static FileLock tryLockFile(File file) {

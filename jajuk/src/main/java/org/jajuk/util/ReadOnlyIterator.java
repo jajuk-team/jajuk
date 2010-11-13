@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -50,7 +50,7 @@ public class ReadOnlyIterator<V> {
   }
 
   /**
-   * Checks if there is another element in the collection. 
+   * Checks if there is another element in the collection.
    * 
    * @return true if there is another element, false otherwise.
    */

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -187,6 +187,8 @@ public final class DigitalDJManager implements Observer {
    * Remove a DJ.
    * 
    * @param dj DOCUMENT_ME
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public void remove(DigitalDJ dj) throws IOException {
     djs.remove(dj.getID());

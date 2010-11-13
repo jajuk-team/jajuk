@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -48,10 +48,10 @@ public class PreparePartyConvertSettings extends JajukJDialog implements ActionL
   /** Listener which is informed about changes to the settings. */
   ChangeListener listener;
 
-  /** Text field for the input of the command */
+  /** Text field for the input of the command. */
   JTextField jtfPACPLCommand;
 
-  /** OK/Cancel buttons */
+  /** OK/Cancel buttons. */
   OKCancelPanel okp;
 
   /**

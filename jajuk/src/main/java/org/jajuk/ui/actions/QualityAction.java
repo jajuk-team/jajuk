@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -54,8 +54,7 @@ public class QualityAction extends JajukAction {
   /**
    * Invoked when the user chooses to report a ticket.
    * 
-   * @param evt
-   *          The event, not used currently.
+   * @param evt The event, not used currently.
    */
   @Override
   public void perform(ActionEvent evt) {

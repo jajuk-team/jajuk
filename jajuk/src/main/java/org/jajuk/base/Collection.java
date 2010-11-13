@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -124,15 +124,16 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /** [Perf] flag used to accelerate conversion. */
   private boolean needCheckConversions = true;
 
-  /**
-   * [PERF] Does the type has been checked once for ID computation change ?
-   * Indeed, we check only one element of each type to check if this computation
-   * changed for perfs.
-   */
+  /** [PERF] Does the type has been checked once for ID computation change ? Indeed, we check only one element of each type to check if this computation changed for perfs. */
   private boolean needCheckID = false;
 
   // Constants value, use lower value for mist numerous items to parse
+  /**
+   * DOCUMENT_ME.
+   */
   private enum Stage {
+    
+    /** DOCUMENT_ME. */
     STAGE_NONE,
 
     /** The Constant STAGE_FILES. DOCUMENT_ME */
@@ -168,16 +169,11 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     /** The Constant STAGE_YEARS. DOCUMENT_ME */
     STAGE_YEARS,
 
-    /** STAGE_ALBUM_ARTIST */
+    /** STAGE_ALBUM_ARTIST. */
     STAGE_ALBUM_ARTIST
   }
 
-  /**
-   * ***************************************************************************
-   * [PERF] provide current stage (files, tracks...) used to optimize switch
-   * when parsing the collection
-   * **************************************************************************
-   */
+  /** *************************************************************************** [PERF] provide current stage (files, tracks...) used to optimize switch when parsing the collection ************************************************************************** */
   private Stage stage = Stage.STAGE_NONE;
 
   /** The Constant ADDITION_FORMATTER. DOCUMENT_ME */
@@ -203,11 +199,9 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    * Write current collection to collection file for persistence between
    * sessions.
    * 
-   * @param collectionFile
-   *          DOCUMENT_ME
+   * @param collectionFile DOCUMENT_ME
    * 
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static synchronized void commit(File collectionFile) throws IOException {
     long time = System.currentTimeMillis();
@@ -301,19 +295,13 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * Write item list. DOCUMENT_ME
    * 
-   * @param bw
-   *          DOCUMENT_ME
-   * @param header
-   *          DOCUMENT_ME
-   * @param items
-   *          DOCUMENT_ME
-   * @param footer
-   *          DOCUMENT_ME
-   * @param buffer
-   *          DOCUMENT_ME
+   * @param bw DOCUMENT_ME
+   * @param header DOCUMENT_ME
+   * @param items DOCUMENT_ME
+   * @param footer DOCUMENT_ME
+   * @param buffer DOCUMENT_ME
    * 
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private static void writeItemList(BufferedWriter bw, String header, List<? extends Item> items,
       String footer, int buffer) throws IOException {
@@ -328,15 +316,11 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * Write string. DOCUMENT_ME
    * 
-   * @param bw
-   *          DOCUMENT_ME
-   * @param toWrite
-   *          DOCUMENT_ME
-   * @param buffer
-   *          DOCUMENT_ME
+   * @param bw DOCUMENT_ME
+   * @param toWrite DOCUMENT_ME
+   * @param buffer DOCUMENT_ME
    * 
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private static void writeString(BufferedWriter bw, String toWrite, int buffer) throws IOException {
     StringBuilder sb = new StringBuilder(buffer);
@@ -349,17 +333,12 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * Parse collection.xml file and put all collection information into memory
    * 
-   * @param file
-   *          DOCUMENT_ME
+   * @param file DOCUMENT_ME
    * 
-   * @throws SAXException
-   *           the SAX exception
-   * @throws ParserConfigurationException
-   *           the parser configuration exception
-   * @throws JajukException
-   *           the jajuk exception
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * @throws SAXException the SAX exception
+   * @throws ParserConfigurationException the parser configuration exception
+   * @throws JajukException the jajuk exception
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void load(File file) throws SAXException, ParserConfigurationException,
       JajukException, IOException {
@@ -421,11 +400,9 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * parsing warning.
    * 
-   * @param spe
-   *          DOCUMENT_ME
+   * @param spe DOCUMENT_ME
    * 
-   * @throws SAXException
-   *           the SAX exception
+   * @throws SAXException the SAX exception
    * 
    * @exception SAXException
    */
@@ -438,11 +415,9 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * parsing error.
    * 
-   * @param spe
-   *          DOCUMENT_ME
+   * @param spe DOCUMENT_ME
    * 
-   * @throws SAXException
-   *           the SAX exception
+   * @throws SAXException the SAX exception
    * 
    * @exception SAXException
    */
@@ -455,11 +430,9 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * parsing fatal error.
    * 
-   * @param spe
-   *          DOCUMENT_ME
+   * @param spe DOCUMENT_ME
    * 
-   * @throws SAXException
-   *           the SAX exception
+   * @throws SAXException the SAX exception
    * 
    * @exception SAXException
    */
@@ -500,17 +473,12 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    * raw items, we don't perform equals on item name but we compare the string
    * hashcode
    * 
-   * @param sUri
-   *          DOCUMENT_ME
-   * @param s
-   *          DOCUMENT_ME
-   * @param sQName
-   *          DOCUMENT_ME
-   * @param attributes
-   *          DOCUMENT_ME
+   * @param sUri DOCUMENT_ME
+   * @param s DOCUMENT_ME
+   * @param sQName DOCUMENT_ME
+   * @param attributes DOCUMENT_ME
    * 
-   * @throws SAXException
-   *           the SAX exception
+   * @throws SAXException the SAX exception
    */
   @Override
   public void startElement(String sUri, String s, String sQName, Attributes attributes)
@@ -668,10 +636,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * Handle files. DOCUMENT_ME
    * 
-   * @param attributes
-   *          DOCUMENT_ME
-   * @param idIndex
-   *          DOCUMENT_ME
+   * @param attributes DOCUMENT_ME
+   * @param idIndex DOCUMENT_ME
    */
   private void handleFiles(Attributes attributes, int idIndex) {
     String sItemName = attributes.getValue(Const.XML_NAME);
@@ -746,10 +712,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * Handle directories. DOCUMENT_ME
    * 
-   * @param attributes
-   *          DOCUMENT_ME
-   * @param idIndex
-   *          DOCUMENT_ME
+   * @param attributes DOCUMENT_ME
+   * @param idIndex DOCUMENT_ME
    */
   private void handleDirectories(Attributes attributes, int idIndex) {
     Directory dParent = null;
@@ -805,13 +769,10 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * Handle tracks. DOCUMENT_ME
    * 
-   * @param attributes
-   *          DOCUMENT_ME
-   * @param idIndex
-   *          DOCUMENT_ME
+   * @param attributes DOCUMENT_ME
+   * @param idIndex DOCUMENT_ME
    * 
-   * @throws ParseException
-   *           the parse exception
+   * @throws ParseException the parse exception
    */
   private void handleTracks(Attributes attributes, int idIndex) throws ParseException {
     String sID = attributes.getValue(idIndex).intern();
@@ -939,10 +900,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * Handle albums. DOCUMENT_ME
    * 
-   * @param attributes
-   *          DOCUMENT_ME
-   * @param idIndex
-   *          DOCUMENT_ME
+   * @param attributes DOCUMENT_ME
+   * @param idIndex DOCUMENT_ME
    */
   private void handleAlbums(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
@@ -976,10 +935,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * Handle artists. DOCUMENT_ME
    * 
-   * @param attributes
-   *          DOCUMENT_ME
-   * @param idIndex
-   *          DOCUMENT_ME
+   * @param attributes DOCUMENT_ME
+   * @param idIndex DOCUMENT_ME
    */
   private void handleArtists(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
@@ -1004,10 +961,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * Handle genres. DOCUMENT_ME
    * 
-   * @param attributes
-   *          DOCUMENT_ME
-   * @param idIndex
-   *          DOCUMENT_ME
+   * @param attributes DOCUMENT_ME
+   * @param idIndex DOCUMENT_ME
    */
   private void handleGenres(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
@@ -1032,10 +987,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * Handle playlist files. DOCUMENT_ME
    * 
-   * @param attributes
-   *          DOCUMENT_ME
-   * @param idIndex
-   *          DOCUMENT_ME
+   * @param attributes DOCUMENT_ME
+   * @param idIndex DOCUMENT_ME
    */
   private void handlePlaylistFiles(Attributes attributes, int idIndex) {
     String sParentID = attributes.getValue(Const.XML_DIRECTORY).intern();
@@ -1071,10 +1024,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * Handle devices. DOCUMENT_ME
    * 
-   * @param attributes
-   *          DOCUMENT_ME
-   * @param idIndex
-   *          DOCUMENT_ME
+   * @param attributes DOCUMENT_ME
+   * @param idIndex DOCUMENT_ME
    */
   private void handleDevices(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
@@ -1101,10 +1052,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   /**
    * Handle years. DOCUMENT_ME
    * 
-   * @param attributes
-   *          DOCUMENT_ME
-   * @param idIndex
-   *          DOCUMENT_ME
+   * @param attributes DOCUMENT_ME
+   * @param idIndex DOCUMENT_ME
    */
   private void handleYears(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
@@ -1116,12 +1065,10 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
   }
 
   /**
-   * Handle album artists
+   * Handle album artists.
    * 
-   * @param attributes
-   *          DOCUMENT_ME
-   * @param idIndex
-   *          DOCUMENT_ME
+   * @param attributes DOCUMENT_ME
+   * @param idIndex DOCUMENT_ME
    */
   private void handleAlbumArtists(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();

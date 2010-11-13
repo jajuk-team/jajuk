@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -179,7 +179,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
    * Constructor.
    * 
    * @param size :
-   *          size of the thumbnail
+   * size of the thumbnail
    */
   protected AbstractThumbnail(int size) {
     this.size = size;
@@ -198,8 +198,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   /**
    * Sets the artist view.
    * 
-   * @param artistBioThumb
-   *          the new artist view
+   * @param artistBioThumb the new artist view
    */
   public void setArtistView(boolean artistBioThumb) {
     this.artistView = artistBioThumb;
@@ -377,8 +376,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   /**
    * Sets the selected.
    * 
-   * @param b
-   *          DOCUMENT_ME
+   * @param b DOCUMENT_ME
    */
   public final void setSelected(boolean b) {
     requestFocusInWindow();

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -128,6 +128,7 @@ public class JScrollingText extends JLabel {
     g.drawString(getText(), textX + (speed > 0 ? -width : width), textY);
   }
 
+  /** DOCUMENT_ME. */
   Timer timer;
 
   /**

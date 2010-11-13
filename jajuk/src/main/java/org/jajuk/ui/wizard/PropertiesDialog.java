@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -121,7 +121,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
   /** Second property panel. */
   private PropertiesPanel panel2;
 
-  /** Did user chnaged something ? */
+  /** Did user chnaged something ?. */
   private boolean changes = false;
 
   /**
@@ -214,11 +214,11 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
   }
 
   /**
-    * Refresh the file filter used to update only selected files even 
-    * if the associated track is changed and can map several files.
-    * Note that this method should be called after a file panel save
-    * because files may have changed then (if user changed the file name). 
-    */
+   * Refresh the file filter used to update only selected files even
+   * if the associated track is changed and can map several files.
+   * Note that this method should be called after a file panel save
+   * because files may have changed then (if user changed the file name).
+   */
   private void refreshFileFilter() {
     if (alItems.get(0) instanceof Directory) {
       filter = new HashSet<File>(alItems.size() * 10);
@@ -881,8 +881,10 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
     }
 
     /**
-     * Build the errors details message
+     * Build the errors details message.
+     * 
      * @param e the exception
+     * 
      * @return the errors details message
      */
     private String buidlDetailsString(Exception e) {

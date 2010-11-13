@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -103,6 +103,8 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * Remove a playlist.
    * 
    * @param plf the playlist
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public void removePlaylistFile(Playlist plf) throws IOException {
     String sFileToDelete = plf.getDirectory().getFio().getAbsoluteFile().toString()
@@ -122,10 +124,12 @@ public final class PlaylistManager extends ItemManager implements Observer {
   }
 
   /**
-  * Delete physically a playlist.
-  * 
-  * @param plf the playlist
-  */
+   * Delete physically a playlist.
+   * 
+   * @param plf the playlist
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   */
   public void deletePlaylistFile(Playlist plf) throws IOException {
     lock.writeLock().lock();
     try {

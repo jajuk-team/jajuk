@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -42,12 +42,13 @@ public class TransferableAlbum implements Transferable {
   public static final DataFlavor ALBUM_FLAVOR = new DataFlavor(
       DataFlavor.javaJVMLocalObjectMimeType, "Album");
 
+  /** DOCUMENT_ME. */
   private Album album;
 
   /**
    * Instantiates a new transferable album.
    * 
-   * @param oData DOCUMENT_ME
+   * @param album DOCUMENT_ME
    */
   public TransferableAlbum(Album album) {
     this.album = album;
@@ -90,6 +91,8 @@ public class TransferableAlbum implements Transferable {
   }
 
   /**
+   * Gets the user object.
+   * 
    * @return associated album
    */
   public Object getUserObject() {

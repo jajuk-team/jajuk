@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -76,10 +76,7 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
   /** the current audio file instance (set by {@link #setFile(File)}).<br> */
   private AudioFile audioFile;
 
-  /**
-   * the current {@linkplain Tag tag} ( {@link AudioFile#getTag()} ) set by
-   * {@link #setFile(File)}.<br>
-   */
+  /** the current {@linkplain Tag tag} ( {@link AudioFile#getTag()} ) set by {@link #setFile(File)}.<br> */
   private Tag tag;
 
   /*
@@ -312,9 +309,8 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
   /**
    * Create a void tag is needed and convert an ID3 V1.0 tag into V2.4 if any <br>
    * Tags are committed when leaving this method
-   *
-   * @throws Exception
-   *           the exception
+   * 
+   * @throws Exception the exception
    */
   private void createTagIfNeeded() throws Exception {
     // No tag ? create one
@@ -426,10 +422,10 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
   }
 
   /**
-  * Gets the supported tag fields.
-  *
-  * @return the supported tag fields
-  */
+   * Gets the supported tag fields.
+   * 
+   * @return the supported tag fields
+   */
   @Override
   public List<String> getSupportedTagFields() {
     return tagFieldKeyArrayList;

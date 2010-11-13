@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -54,18 +54,16 @@ public abstract class ItemManager {
   private final Map<String, PropertyMetaInformation> hmPropertiesMetaInformation = new LinkedHashMap<String, PropertyMetaInformation>(
       10);
 
-  /** The Lock */
+  /** The Lock. */
   ReadWriteLock lock = new ReentrantReadWriteLock();
 
-  /**Use an array list during startup which is faster during loading the
-   collection*/
+  /** Use an array list during startup which is faster during loading the collection. */
   private List<Item> startupItems = new ArrayList<Item>(100);
 
-  /** Stores the items by ID to have quick access if necessary*/
+  /** Stores the items by ID to have quick access if necessary. */
   private final Map<String, Item> internalMap = new HashMap<String, Item>(100);
 
-  /** Collection pointer : at the beginning point to the ArrayList, later this is replaced by a
-   TreeSet to have correct ordering. */
+  /** Collection pointer : at the beginning point to the ArrayList, later this is replaced by a TreeSet to have correct ordering. */
   private Collection<Item> items = startupItems;
 
   /**
@@ -202,7 +200,8 @@ public abstract class ItemManager {
   }
 
   /**
-   * Return the associated read write lock
+   * Return the associated read write lock.
+   * 
    * @return the associated read write lock
    */
   public ReadWriteLock getLock() {
@@ -639,7 +638,7 @@ public abstract class ItemManager {
   /**
    * ***************************************************************************
    * Return all registered enumeration CAUTION : do not call remove() on this
-   * iterator, you would effectively remove items instead of using regular 
+   * iterator, you would effectively remove items instead of using regular
    * removeItem() primitive
    * **************************************************************************.
    * 
@@ -686,7 +685,7 @@ public abstract class ItemManager {
   }
 
   /**
-   * Basic implementation for item hashcode computation
+   * Basic implementation for item hashcode computation.
    * 
    * @param sName item name
    * 

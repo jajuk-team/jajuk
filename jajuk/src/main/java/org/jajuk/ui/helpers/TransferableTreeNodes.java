@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -42,16 +42,13 @@ public class TransferableTreeNodes implements Transferable {
   public static final DataFlavor NODE_FLAVOR = new DataFlavor(
       DataFlavor.javaJVMLocalObjectMimeType, "Node");
 
-  /**
-  * Transferable model
-  */
+  /** Transferable model. */
   private List<Item> items;
 
   /**
    * Instantiates a new transferable tree node.
    * 
-   * @param userObject an Object provided by the user that constitutes
-     *                   the node's data
+   * @param items DOCUMENT_ME
    */
   public TransferableTreeNodes(List<Item> items) {
     this.items = items;
@@ -95,6 +92,8 @@ public class TransferableTreeNodes implements Transferable {
   }
 
   /**
+   * Gets the user object.
+   * 
    * @return the tranferable data
    */
   public Object getUserObject() {

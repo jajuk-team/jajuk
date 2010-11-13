@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -40,34 +40,34 @@ import org.jajuk.util.UtilSystem;
  */
 public final class TypeManager extends ItemManager {
 
-  /** The Constant ICON_16X16_VIDEO for the supported media types */
+  /** The Constant ICON_16X16_VIDEO for the supported media types. */
   private static final String ICON_16X16_VIDEO = "icons/16x16/type_video_16x16.png";
 
-  /** The Constant ICONS_16X16_TYPE_APE for the supported media types */
+  /** The Constant ICONS_16X16_TYPE_APE for the supported media types. */
   private static final String ICONS_16X16_TYPE_APE = "icons/16x16/type_ape_16x16.png";
 
-  /** The Constant ICONS_16X16_TYPE_MP2 for the supported media types */
+  /** The Constant ICONS_16X16_TYPE_MP2 for the supported media types. */
   private static final String ICONS_16X16_TYPE_MP2 = "icons/16x16/type_mp2_16x16.png";
 
-  /** The Constant ICONS_16X16_TYPE_AAC for the supported media types */
+  /** The Constant ICONS_16X16_TYPE_AAC for the supported media types. */
   private static final String ICONS_16X16_TYPE_AAC = "icons/16x16/type_aac_16x16.png";
 
-  /** The Constant ICONS_16X16_TYPE_WMA for the supported media types */
+  /** The Constant ICONS_16X16_TYPE_WMA for the supported media types. */
   private static final String ICONS_16X16_TYPE_WMA = "icons/16x16/type_wma_16x16.png";
 
-  /** The Constant ICONS_16X16_TYPE_FLAC for the supported media types */
+  /** The Constant ICONS_16X16_TYPE_FLAC for the supported media types. */
   private static final String ICONS_16X16_TYPE_FLAC = "icons/16x16/type_flac_16x16.png";
 
-  /** The Constant ICONS_16X16_TYPE_RAM for the supported media types */
+  /** The Constant ICONS_16X16_TYPE_RAM for the supported media types. */
   private static final String ICONS_16X16_TYPE_RAM = "icons/16x16/type_ram_16x16.png";
 
-  /** The Constant ICONS_16X16_TYPE_OGG for the supported media types */
+  /** The Constant ICONS_16X16_TYPE_OGG for the supported media types. */
   private static final String ICONS_16X16_TYPE_OGG = "icons/16x16/type_ogg_16x16.png";
 
-  /** The Constant ICONS_16X16_TYPE_WAV for the supported media types */
+  /** The Constant ICONS_16X16_TYPE_WAV for the supported media types. */
   private static final String ICONS_16X16_TYPE_WAV = "icons/16x16/type_wav_16x16.png";
 
-  /** The Constant ICONS_16X16_TYPE_MP3 for the supported media types */
+  /** The Constant ICONS_16X16_TYPE_MP3 for the supported media types. */
   private static final String ICONS_16X16_TYPE_MP3 = "icons/16x16/type_mp3_16x16.png";
 
   /** extensions->types. */
@@ -110,7 +110,7 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Gets the instance.
-   *
+   * 
    * @return singleton
    */
   public static TypeManager getInstance() {
@@ -119,18 +119,14 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Register a type jajuk can read.
-   *
-   * @param sName
-   *          The human readable name of the type.
-   * @param sExtension
-   *          The extension for the type, without a dot.
-   * @param cPlayerImpl
-   *          The class used to play files of this type. Needs to implement the
-   *          interface IPlayerImpl, @see IPlayerImpl
-   * @param cTagImpl
-   *          The class used to retrieve and write tags for this file type.
-   *          Needs to implement the interface ITagImpl, @see ITagImpl
-   *
+   * 
+   * @param sName The human readable name of the type.
+   * @param sExtension The extension for the type, without a dot.
+   * @param cPlayerImpl The class used to play files of this type. Needs to implement the
+   * interface IPlayerImpl, @see IPlayerImpl
+   * @param cTagImpl The class used to retrieve and write tags for this file type.
+   * Needs to implement the interface ITagImpl, @see ITagImpl
+   * 
    * @return the type
    */
   @SuppressWarnings("unchecked")
@@ -156,10 +152,9 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Tells if the type is supported.
-   *
-   * @param sExt
-   *          The extension to check (without leading dot)
-   *
+   * 
+   * @param sExt The extension to check (without leading dot)
+   * 
    * @return true, if checks if is extension supported
    */
   public boolean isExtensionSupported(String sExt) {
@@ -168,10 +163,9 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Return type for a given extension.
-   *
-   * @param sExtension
-   *          The extension to retrieve (without leading dot)
-   *
+   * 
+   * @param sExtension The extension to retrieve (without leading dot)
+   * 
    * @return the type by extension
    */
   public Type getTypeByExtension(String sExtension) {
@@ -180,7 +174,7 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Return all music types.
-   *
+   * 
    * @return the all music types
    */
   public List<Type> getAllMusicTypes() {
@@ -197,7 +191,7 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Return a list "a,b,c" of registered extensions, used by FileChooser.
-   *
+   * 
    * @return the types as one string.
    */
   public String getTypeListString() {
@@ -227,10 +221,9 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Gets the type by id.
-   *
-   * @param sID
-   *          Item ID
-   *
+   * 
+   * @param sID Item ID
+   * 
    * @return item
    */
   public Type getTypeByID(String sID) {
@@ -239,7 +232,7 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Gets the types.
-   *
+   * 
    * @return types list
    */
   @SuppressWarnings("unchecked")
@@ -249,7 +242,7 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Gets the types iterator.
-   *
+   * 
    * @return types iterator
    */
   @SuppressWarnings("unchecked")
@@ -263,9 +256,8 @@ public final class TypeManager extends ItemManager {
    * Note that we use explicite strings for icon location. It's to avoid loading
    * all icons at startup, we do it asynchronously to accelerate startup
    * </p>
-   *
-   * @throws ClassNotFoundException
-   *           the class not found exception
+   * 
+   * @throws ClassNotFoundException the class not found exception
    */
   public static void registerTypesNoMplayer() throws ClassNotFoundException {
     // mp3
@@ -312,11 +304,9 @@ public final class TypeManager extends ItemManager {
    * Note that we use explicite strings for icon location. It's to avoid loading
    * all icons at startup, we do it asynchronously to accelerate startup
    * </p>
-   *
-   * @throws ClassNotFoundException
-   *           the class not found exception
-   * @throws Exception
-   */
+   * 
+   * @throws ClassNotFoundException the class not found exception
+   * @throws Exception    */
   public static void registerTypesMplayerAvailable() throws ClassNotFoundException {
     // mp3
     Type type = TypeManager.getInstance().registerType(Messages.getString("Type.mp3"),

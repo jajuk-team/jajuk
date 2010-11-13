@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@ import org.jajuk.util.log.Log;
 
 /**
  * Lyrics retrieval service. This service will retrieves lyrics from various
- * providers, querying all of them until one returns some valid input. 
+ * providers, querying all of them until one returns some valid input.
  * 
  * TODO: user-selectable multi-input-sources. edit the LyricsService so that it will
  * notify about various valid sources, so we could propose various inputs to the
@@ -149,7 +149,8 @@ public final class LyricsService {
    * Commit lyrics for a jajuk lyrics provider (jajuk GUI).
    * 
    * @param provider the JajukLyricsProvider
-   * @throws LyricsPersistenceException if lyrics cannot be written 
+   * 
+   * @throws LyricsPersistenceException if lyrics cannot be written
    */
   public static void commitLyrics(JajukLyricsProvider provider) throws LyricsPersistenceException {
     boolean commitOK = false;
@@ -179,7 +180,8 @@ public final class LyricsService {
    * Delete lyrics from any persister support.
    * 
    * @param provider DOCUMENT_ME
-   * @throws LyricsPersistenceException if the lyrics cannot be removed 
+   * 
+   * @throws LyricsPersistenceException if the lyrics cannot be removed
    */
   public static void deleteLyrics(JajukLyricsProvider provider) throws LyricsPersistenceException {
     boolean deleteOK = false;

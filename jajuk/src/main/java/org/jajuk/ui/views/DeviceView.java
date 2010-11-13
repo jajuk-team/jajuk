@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -105,9 +105,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
   /** DOCUMENT_ME. */
   DeviceItem diSelected;
 
-  /**
-   * Mouse adapter used over device items to manage action or popup clicks
-   */
+  /** Mouse adapter used over device items to manage action or popup clicks. */
   MouseAdapter ma = new JajukMouseAdapter() {
 
     @Override
@@ -447,8 +445,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
   /**
    * Select item. DOCUMENT_ME
    * 
-   * @param e
-   *          DOCUMENT_ME
+   * @param e DOCUMENT_ME
    */
   private void selectItem(final MouseEvent e) {
     boolean bSameDevice = ((diSelected != null) && e.getSource().equals(diSelected));

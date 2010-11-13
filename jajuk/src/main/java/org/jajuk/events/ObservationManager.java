@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -74,10 +74,11 @@ public final class ObservationManager {
 
   /**
    * Unregister a component for a list of subjects.
-   * @see Observer.getRegistrationKeys() is called on the Observer
-   * to get the list of events.
    * 
    * @param observer The Observer to unregister.
+   * 
+   * @see Observer.getRegistrationKeys() is called on the Observer
+   * to get the list of events.
    */
   public static synchronized void unregister(Observer observer) {
     Set<JajukEvents> eventSubjectSet = observer.getRegistrationKeys();
@@ -99,7 +100,7 @@ public final class ObservationManager {
    * Notify all components having registered for the given subject.
    * 
    * @param event The event that is triggered including any additional
-   * data that is of interest as part of the event. 
+   * data that is of interest as part of the event.
    */
   public static void notify(JajukEvent event) {
     // asynchronous notification by default to avoid
@@ -132,7 +133,7 @@ public final class ObservationManager {
    * Notify synchronously all components having registered for the given subject.
    * 
    * @param event The event that is triggered including any additional
-   * data that is of interest as part of the event. 
+   * data that is of interest as part of the event.
    */
   public static void notifySync(JajukEvent event) {
     JajukEvents subject = event.getSubject();

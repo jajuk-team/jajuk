@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -200,7 +200,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
   /**
    * Constructor.
-   *
+   * 
    * @param file Reference file
    */
   public CoverView(final org.jajuk.base.File file) {
@@ -227,7 +227,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /**
    * Inits the ui.
    * DOCUMENT_ME
-   *
+   * 
    * @param includeControls DOCUMENT_ME
    */
   public void initUI(boolean includeControls) {
@@ -588,9 +588,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
   /**
    * Gets the cover file path.
-   *
+   * 
    * @param sFilePath DOCUMENT_ME
-   *
+   * 
    * @return the cover file path
    */
   private String getCoverFilePath(String sFilePath) {
@@ -778,9 +778,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
   /**
    * Creates the query.
-   *
+   * 
    * @param file DOCUMENT_ME
-   *
+   * 
    * @return an accurate google search query for a file
    */
   public String createQuery(final org.jajuk.base.File file) {
@@ -844,7 +844,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
   /**
    * Display given cover.
-   *
+   * 
    * @param index index of the cover to display
    */
   private void displayCover(final int index) {
@@ -1008,7 +1008,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
   /**
    * Gets the cover number.
-   *
+   * 
    * @return number of real covers (not default) covers found
    */
   private int getCoverNumber() {
@@ -1043,11 +1043,11 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
   /**
    * Long action to compute image to display (download, resizing...)
-   *
+   * 
    * @param index DOCUMENT_ME
-   *
+   * 
    * @return null (just used by the SwingWorker)
-   *
+   * 
    * @throws JajukException the jajuk exception
    */
   private Object prepareDisplay(final int index) throws JajukException {
@@ -1157,7 +1157,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
   /**
    * Refresh default cover thumb (used in catalog view).
-   *
+   * 
    * @param cover DOCUMENT_ME
    */
   private void refreshThumbs(final Cover cover) {
@@ -1184,7 +1184,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
   /**
    * Display or hide search icon.
-   *
+   * 
    * @param bSearching DOCUMENT_ME
    */
   public void searching(final boolean bSearching) {
@@ -1220,7 +1220,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
   /**
    * Set the cover Found text.
-   *
+   * 
    * @param sFound specified text
    */
   private void setFoundText(final String sFound) {
@@ -1236,7 +1236,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
   /**
    * Set the cover size text.
-   *
+   * 
    * @param sSize DOCUMENT_ME
    */
   private void setSizeText(final String sSize) {
@@ -1252,9 +1252,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
   /**
    * Gets the current image.
-   *
+   * 
    * @return the current image
-   *
+   * 
    * @throws IOException Signals that an I/O exception has occurred.
    * @throws InterruptedException the interrupted exception
    * @throws JajukException the jajuk exception
@@ -1321,10 +1321,10 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
   /**
    * Update file launched.
-   *
+   * 
    * @param event DOCUMENT_ME
    * @param iLocalEventID DOCUMENT_ME
-   *
+   * 
    * @throws IOException Signals that an I/O exception has occurred.
    */
   private void updateFileLaunched(final JajukEvent event, final int iLocalEventID)
@@ -1366,7 +1366,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
   /**
    * Convenient method to massively enable/disable this view buttons.
-   *
+   * 
    * @param enable DOCUMENT_ME
    */
   private void enableCommands(final boolean enable) {
@@ -1392,9 +1392,10 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
    * <p>
    * Must be called outside the EDT, contains network access
    * </p>.
-   *
+   * 
    * @param iLocalEventID DOCUMENT_ME
-   *
+   * @param dirChanged DOCUMENT_ME
+   * 
    * @throws IOException Signals that an I/O exception has occurred.
    */
   private void refreshCovers(int iLocalEventID, boolean dirChanged) throws IOException {

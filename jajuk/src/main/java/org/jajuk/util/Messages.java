@@ -500,9 +500,9 @@ public class Messages extends DefaultHandler {
   }
 
   /**
-   * Gets localized and human property name for given key
+   * Gets localized and human property name for given key.
    * 
-   * @param key the property name like XML_ARTIST, always use XML_? constants
+   * @param sKey DOCUMENT_ME
    * 
    * @return the human property name or the property itself if not translated
    */

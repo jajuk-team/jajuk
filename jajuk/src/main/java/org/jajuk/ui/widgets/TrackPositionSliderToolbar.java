@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -146,8 +146,7 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
   /**
    * Call a seek.
    * 
-   * @param fPosition
-   *          DOCUMENT_ME
+   * @param fPosition DOCUMENT_ME
    */
   private void setPosition(final float fPosition) {
     new Thread("TrackSlider Position Thread") {
@@ -186,10 +185,8 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
   /**
    * Set the current status for current track ex : 01:01:01/02:02:02.
    * 
-   * @param lTime
-   *          DOCUMENT_ME
-   * @param length
-   *          DOCUMENT_ME
+   * @param lTime DOCUMENT_ME
+   * @param length DOCUMENT_ME
    */
   public final void setCurrentTimeMessage(long lTime, long length) {
     String string;
@@ -338,9 +335,13 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
 
   /**
    * Small MouseAdapter to loop through the different ways of displaying the
-   * elapsed time
+   * elapsed time.
    */
   private final class TimeDisplaySwitchMouseAdapter extends MouseAdapter {
+    
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
       int currentFormat = Conf.getInt(Const.CONF_FORMAT_TIME_ELAPSED);

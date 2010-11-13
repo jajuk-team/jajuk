@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -54,18 +54,12 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
   /**
    * File instanciation.
    * 
-   * @param sId
-   *          DOCUMENT_ME
-   * @param sName
-   *          DOCUMENT_ME
-   * @param directory
-   *          DOCUMENT_ME
-   * @param track
-   *          DOCUMENT_ME
-   * @param lSize
-   *          DOCUMENT_ME
-   * @param lQuality
-   *          DOCUMENT_ME
+   * @param sId DOCUMENT_ME
+   * @param sName DOCUMENT_ME
+   * @param directory DOCUMENT_ME
+   * @param track DOCUMENT_ME
+   * @param lSize DOCUMENT_ME
+   * @param lQuality DOCUMENT_ME
    */
   File(String sId, String sName, Directory directory, Track track, long lSize, long lQuality) {
     super(sId, sName);
@@ -114,8 +108,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
   /**
    * Return true is the specified directory is an ancestor for this file.
    * 
-   * @param directory
-   *          DOCUMENT_ME
+   * @param directory DOCUMENT_ME
    * 
    * @return true, if checks for ancestor
    */
@@ -209,8 +202,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    * </p>
    * .
    * 
-   * @param otherFile
-   *          DOCUMENT_ME
+   * @param otherFile DOCUMENT_ME
    * 
    * @return comparison result
    */
@@ -291,8 +283,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
   /**
    * Sets the track.
    * 
-   * @param track
-   *          The track to set.
+   * @param track The track to set.
    */
   public void setTrack(Track track) {
     // We remove previous track so it will be cleanup (if it maps no more
@@ -427,8 +418,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
   /**
    * Set name (useful for Windows because same object can have different cases).
    * 
-   * @param name
-   *          Item name
+   * @param name Item name
    */
   protected void setName(String name) {
     setProperty(Const.XML_NAME, name);
@@ -439,7 +429,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    * Gets the html format text.
    * 
    * @return text to be displayed in the tray balloon and tooltip with HTML
-   *         formating that is used correctly under Linux
+   * formating that is used correctly under Linux
    */
   public String getHTMLFormatText() {
     String sOut = "";

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -237,8 +237,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /**
    * Return true is the specified directory is an ancestor for this directory.
    * 
-   * @param directory
-   *          directory to check
+   * @param directory directory to check
    * 
    * @return true, if given directory is a parent directory of this directory
    */
@@ -257,10 +256,10 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   }
 
   /**
-  * return ordered child playlists recursively.
-  * 
-  * @return child playlists recursively
-  */
+   * return ordered child playlists recursively.
+   * 
+   * @return child playlists recursively
+   */
   public List<Playlist> getPlaylistsRecursively() {
     List<Playlist> alPlaylists = new ArrayList<Playlist>(100);
     for (Item item : PlaylistManager.getInstance().getPlaylists()) {
@@ -445,7 +444,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * Register file.
    * 
    * @param music DOCUMENT_ME
-   * @param sId DOCUMENT_ME
    * @param sTrackName DOCUMENT_ME
    * @param sAlbumName DOCUMENT_ME
    * @param sArtistName DOCUMENT_ME
@@ -456,9 +454,12 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @param sComment DOCUMENT_ME
    * @param lOrder DOCUMENT_ME
    * @param sAlbumArtist DOCUMENT_ME
-   * @param oldDiscID Previously known discID
    * @param discID DOCUMENT_ME
    * @param discNumber DOCUMENT_ME
+   * @param sFileId DOCUMENT_ME
+   * @param oldDiskID DOCUMENT_ME
+   * 
+   * @return the track
    */
   private Track registerFile(java.io.File music, String sFileId, String sTrackName,
       String sAlbumName, String sArtistName, String sGenre, long length, String sYear,
@@ -727,12 +728,13 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   }
 
   /**
-  * Refresh the directory synchronously, no dialog. <br>
-  * This method is only a wrapper to Device.refreshCommand() method
-  * 
-  * @param bDeepScan whether it is a deep refresh request or only fast
-  * @return true if some changes occurred in device
-  */
+   * Refresh the directory synchronously, no dialog. <br>
+   * This method is only a wrapper to Device.refreshCommand() method
+   * 
+   * @param bDeepScan whether it is a deep refresh request or only fast
+   * 
+   * @return true if some changes occurred in device
+   */
   public synchronized boolean refresh(final boolean bDeepScan) {
     List<Directory> dirsToRefresh = new ArrayList<Directory>(1);
     dirsToRefresh.add(this);

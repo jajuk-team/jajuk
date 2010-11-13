@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -245,6 +245,10 @@ public final class Main {
   /*
    * Initialize some useful System properties For some reasons (at least with Apple JVM), this
    * method must be in the Main class. Should be called ASAP in the startup process
+   */
+  /**
+   * Sets the system properties.
+   * DOCUMENT_ME
    */
   public static void setSystemProperties() {
     if (UtilSystem.isUnderOSX()) {

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -32,12 +32,12 @@ import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
- * Registry of Observers for each of the JajukEvents. Used by ObservationManager 
+ * Registry of Observers for each of the JajukEvents. Used by ObservationManager
  * to handle informing observers about events happening in other objects.
  */
 class ObserverRegistry {
 
-  /** The list of Observers per JajukEvents */
+  /** The list of Observers per JajukEvents. */
   private final Map<JajukEvents, List<Observer>> hEventComponents = new Hashtable<JajukEvents, List<Observer>>(
       10);
 
@@ -108,7 +108,7 @@ class ObserverRegistry {
    * Register an Observer for an event.
    * 
    * @param subject The event to register for.
-   * @param observer The Observer that should be informed about 
+   * @param observer The Observer that should be informed about
    * the event as soon as it is reported somewhere else.
    */
   synchronized void register(JajukEvents subject, Observer observer) {
@@ -134,7 +134,7 @@ class ObserverRegistry {
    * @param subject The event to unregister from.
    * @param observer The Observer that is no longer interested in this event.
    * 
-   * @return true if the event was unregistered, false if it was not 
+   * @return true if the event was unregistered, false if it was not
    * registered (any more) and thus did not need to be removed
    */
   synchronized boolean unregister(JajukEvents subject, Observer observer) {
@@ -146,8 +146,8 @@ class ObserverRegistry {
   }
 
   /**
-   * Remove any registered item. This is mainly used in UnitTests to 
-   * get a clean state again. 
+   * Remove any registered item. This is mainly used in UnitTests to
+   * get a clean state again.
    */
   synchronized public void clear() {
     hEventComponents.clear();

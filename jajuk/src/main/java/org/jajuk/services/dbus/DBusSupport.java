@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -192,7 +192,7 @@ public interface DBusSupport extends DBusInterface {
   void showCurrentlyPlaying() throws Exception;
 
   /**
-   * Bookmark current track
+   * Bookmark current track.
    * 
    * @throws Exception the exception
    */

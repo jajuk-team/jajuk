@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -164,7 +164,7 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
 
   /**
    * Gets an IconLabel from a cache for memory saving reasons.
-   * Note that this doesn't handle StarIconLabel that owns its own cache. 
+   * Note that this doesn't handle StarIconLabel that owns its own cache.
    * 
    * @param icon DOCUMENT_ME
    * 

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -392,7 +392,7 @@ public class StartupCollectionService {
 
   /**
    * Checks if is collection load recover.
-   *
+   * 
    * @return true, if is collection load recover
    */
   public static boolean isCollectionLoadRecover() {

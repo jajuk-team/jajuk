@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -65,7 +65,6 @@ import org.jdesktop.swingx.VerticalLayout;
 
 /**
  * First time Wizard.
- * 
  */
 public class FirstTimeWizard extends JDialog implements ActionListener, PropertyChangeListener {
   // Do not extend JajukJDialog because it requires main window to be instanciated and it comes with
@@ -113,18 +112,24 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
   /** Selected directory. */
   private File fDir;
 
-  /** Default workspace location */
+  /** Default workspace location. */
   private String defaultWorkspacePath;
 
-  /** User chosen workspace location */
+  /** User chosen workspace location. */
   private String userWorkspacePath;
 
+  /**
+   * Gets the user workspace path.
+   * 
+   * @return the user workspace path
+   */
   public String getUserWorkspacePath() {
     return this.userWorkspacePath;
   }
 
   /**
    * First time wizard.
+   * 
    * @param defaultWorkspacePath the default workspace path set in the textfield
    */
   public FirstTimeWizard(String defaultWorkspacePath) {
@@ -226,7 +231,7 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
 
   /**
    * Inits the ui.
-   **/
+   */
   public void initUI() {
     setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
     setTitle(Messages.getString("FirstTimeWizard.0"));

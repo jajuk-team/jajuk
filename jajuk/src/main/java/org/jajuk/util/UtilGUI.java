@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -124,7 +124,10 @@ public final class UtilGUI {
   private static Highlighter alternateColorHighlighter;
 
   /**
-   * Return whether the given highlighter is the alternateColorHighlighter
+   * Return whether the given highlighter is the alternateColorHighlighter.
+   * 
+   * @param other DOCUMENT_ME
+   * 
    * @return whether the given highlighter is the alternateColorHighlighter
    */
   public static boolean isAlternateColorHighlighter(Highlighter other) {
@@ -132,7 +135,7 @@ public final class UtilGUI {
   }
 
   /**
-   * Reset the alternateColorHighlighter (during a theme change for eg)
+   * Reset the alternateColorHighlighter (during a theme change for eg).
    */
   public static void resetAlternateColorHighlighter() {
     alternateColorHighlighter = null;
@@ -166,8 +169,7 @@ public final class UtilGUI {
   /**
    * Display a given image in a frame (for debuging purpose).
    * 
-   * @param ii
-   *          DOCUMENT_ME
+   * @param ii DOCUMENT_ME
    */
   public static void displayImage(final ImageIcon ii) {
     final JFrame jf = new JFrame();
@@ -179,10 +181,8 @@ public final class UtilGUI {
   /**
    * Write down a memory image to a file.
    * 
-   * @param src
-   *          DOCUMENT_ME
-   * @param dest
-   *          DOCUMENT_ME
+   * @param src DOCUMENT_ME
+   * @param dest DOCUMENT_ME
    */
   public static void extractImage(final Image src, final File dest) {
     final BufferedImage bi = UtilGUI.toBufferedImage(src);
@@ -215,8 +215,7 @@ public final class UtilGUI {
   /**
    * Gets the centred panel.
    * 
-   * @param jc
-   *          DOCUMENT_ME
+   * @param jc DOCUMENT_ME
    * 
    * @return an horizontaly centred panel
    */
@@ -227,11 +226,9 @@ public final class UtilGUI {
   /**
    * Gets the centred panel.
    * 
-   * @param jc
-   *          DOCUMENT_ME
-   * @param iOrientation
-   *          : vertical or horizontal orientation, use BoxLayout.X_AXIS or
-   *          BoxLayout.Y_AXIS
+   * @param jc DOCUMENT_ME
+   * @param iOrientation : vertical or horizontal orientation, use BoxLayout.X_AXIS or
+   * BoxLayout.Y_AXIS
    * 
    * @return a centred panel
    */
@@ -253,8 +250,7 @@ public final class UtilGUI {
   /**
    * Gets the html color.
    * 
-   * @param color
-   *          java color
+   * @param color java color
    * 
    * @return HTML RGB color ex: FF0000
    */
@@ -267,8 +263,7 @@ public final class UtilGUI {
   /**
    * Get required image with specified url.
    * 
-   * @param url
-   *          DOCUMENT_ME
+   * @param url DOCUMENT_ME
    * 
    * @return the image
    */
@@ -292,10 +287,8 @@ public final class UtilGUI {
   /**
    * Gets the limited message.
    * 
-   * @param sText
-   *          text to display, lines separated by \n characters
-   * @param limit
-   *          : max number of lines to be displayed without scroller
+   * @param sText text to display, lines separated by \n characters
+   * @param limit : max number of lines to be displayed without scroller
    * 
    * @return formated message: either a string, or a textarea
    */
@@ -319,8 +312,7 @@ public final class UtilGUI {
    * http://java.sun.com/developer/onlineTraining/new2java/supplements/
    * 2005/July05.html#1 Used to correctly display long messages
    * 
-   * @param maxCharactersPerLineCount
-   *          DOCUMENT_ME
+   * @param maxCharactersPerLineCount DOCUMENT_ME
    * 
    * @return the narrow option pane
    */
@@ -348,12 +340,9 @@ public final class UtilGUI {
   /**
    * Resize an image.
    * 
-   * @param img
-   *          image to resize
-   * @param iNewWidth
-   *          DOCUMENT_ME
-   * @param iNewHeight
-   *          DOCUMENT_ME
+   * @param img image to resize
+   * @param iNewWidth DOCUMENT_ME
+   * @param iNewHeight DOCUMENT_ME
    * 
    * @return resized image
    */
@@ -368,10 +357,8 @@ public final class UtilGUI {
   /**
    * Gets the scaled image.
    * 
-   * @param img
-   *          DOCUMENT_ME
-   * @param iScale
-   *          DOCUMENT_ME
+   * @param img DOCUMENT_ME
+   * @param iScale DOCUMENT_ME
    * 
    * @return a scaled image
    */
@@ -395,8 +382,7 @@ public final class UtilGUI {
   /**
    * Setup Substance look and feel.
    * 
-   * @param pTheme
-   *          DOCUMENT_ME
+   * @param pTheme DOCUMENT_ME
    */
   public static void setupSubstanceLookAndFeel(final String pTheme) {
     // Check the theme is known, if not take the default theme
@@ -457,12 +443,9 @@ public final class UtilGUI {
   /**
    * Display given container at given position.
    * 
-   * @param iFromTop
-   *          max number of pixels from top
-   * @param iFromLeft
-   *          max number of pixels from left
-   * @param window
-   *          DOCUMENT_ME
+   * @param iFromTop max number of pixels from top
+   * @param iFromLeft max number of pixels from left
+   * @param window DOCUMENT_ME
    */
   public static void setShuffleLocation(final Window window, final int iFromTop, final int iFromLeft) {
     window.setLocation((int) (Math.random() * iFromTop), (int) (Math.random() * iFromLeft));
@@ -491,8 +474,7 @@ public final class UtilGUI {
   /**
    * To buffered image. DOCUMENT_ME
    * 
-   * @param image
-   *          the input image
+   * @param image the input image
    * 
    * @return the buffered image
    */
@@ -501,14 +483,13 @@ public final class UtilGUI {
   }
 
   /**
-   * Create a buffered image without forced alpha channel
-   * @param image
-   *          the input image
-   * @param width
-   *          target image width
-   * @param height
-   *          target image height
-   * @return
+   * Create a buffered image without forced alpha channel.
+   * 
+   * @param image the input image
+   * @param targetWidth DOCUMENT_ME
+   * @param targetHeight DOCUMENT_ME
+   * 
+   * @return the buffered image
    */
   public static BufferedImage toBufferedImage(final Image image, final int targetWidth,
       final int targetHeight) {
@@ -519,17 +500,12 @@ public final class UtilGUI {
    * Transform an image to a BufferedImage
    * <p>
    * Code adapted from from http://today.java.net/pub/a/today/2007/04/03/perils-of-image-getscaledinstance.html
-  
    * </p>
    * 
-   * @param image
-   *          the input image
-   * @param width
-   *          target image width
-   * @param height
-   *          target image height
-   * @param forcedAlpha 
-   *    Force using an alpha chanel for target image
+   * @param image the input image
+   * @param forcedAlpha Force using an alpha chanel for target image
+   * @param targetWidth DOCUMENT_ME
+   * @param targetHeight DOCUMENT_ME
    * 
    * @return buffered image from an image
    */
@@ -596,12 +572,12 @@ public final class UtilGUI {
   }
 
   /**
-  * Get3d image.
-  * 
-  * @param img DOCUMENT_ME
-  * 
-  * @return the 3d image
-  */
+   * Get3d image.
+   * 
+   * @param img DOCUMENT_ME
+   * 
+   * @return the 3d image
+   */
   public static BufferedImage get3dImage(Image img) {
     int angle = 30;
     int gap = 10;
@@ -654,11 +630,12 @@ public final class UtilGUI {
     return finalImage;
   }
 
-  /** 
+  /**
    * This method returns true if the specified image has transparent pixels
    * Found at http://www.exampledepot.com/egs/java.awt.image/HasAlpha.html
    * 
-   * @param image
+   * @param image DOCUMENT_ME
+   * 
    * @return true if the specified image has transparent pixels
    */
   public static boolean hasAlpha(Image image) {
@@ -707,8 +684,7 @@ public final class UtilGUI {
    * SwingUtilities.updateComponentTreeUI, but ensures that the update happens
    * on the components of a JToolbar before the JToolbar itself.
    * 
-   * @param c
-   *          DOCUMENT_ME
+   * @param c DOCUMENT_ME
    */
   public static void updateComponentTreeUI(final Component c) {
     UtilGUI.updateComponentTreeUI0(c);
@@ -720,8 +696,7 @@ public final class UtilGUI {
   /**
    * Update component tree u i0. DOCUMENT_ME
    * 
-   * @param c
-   *          DOCUMENT_ME
+   * @param c DOCUMENT_ME
    */
   private static void updateComponentTreeUI0(final Component c) {
 
@@ -760,9 +735,8 @@ public final class UtilGUI {
    * Method to attempt a dynamic update for all components of the given
    * <code>Window</code>.
    * 
-   * @param window
-   *          The <code>Window</code> for which the look and feel update has to
-   *          be performed against.
+   * @param window The <code>Window</code> for which the look and feel update has to
+   * be performed against.
    */
   public static void updateWindowUI(final Window window) {
     try {
@@ -799,10 +773,8 @@ public final class UtilGUI {
   /**
    * Checks if is over.
    * 
-   * @param location
-   *          DOCUMENT_ME
-   * @param dimension
-   *          DOCUMENT_ME
+   * @param location DOCUMENT_ME
+   * @param dimension DOCUMENT_ME
    * 
    * @return whether the current mouse cursor if above a given component
    */
@@ -838,11 +810,9 @@ public final class UtilGUI {
   /**
    * Display a dialog with given url picture.
    * 
-   * @param url
-   *          DOCUMENT_ME
+   * @param url DOCUMENT_ME
    * 
-   * @throws MalformedURLException
-   *           the malformed url exception
+   * @throws MalformedURLException the malformed url exception
    */
   static public void showPictureDialog(String url) throws MalformedURLException {
     JDialog jd = new JDialog(JajukMainWindow.getInstance());
@@ -860,8 +830,7 @@ public final class UtilGUI {
   /**
    * configures gui for repeat single enable/disable.
    * 
-   * @param enable
-   *          DOCUMENT_ME
+   * @param enable DOCUMENT_ME
    */
   public static void setRepeatSingleGui(boolean enable) {
     // always disable repeat all
@@ -877,8 +846,7 @@ public final class UtilGUI {
   /**
    * configures gui for repeat all enable/disable.
    * 
-   * @param enable
-   *          DOCUMENT_ME
+   * @param enable DOCUMENT_ME
    */
   public static void setRepeatAllGui(boolean enable) {
     // always disable repeat single
@@ -896,10 +864,8 @@ public final class UtilGUI {
   /**
    * Registers the ESCAPE key on the Panel so that it closes the Dialog.
    * 
-   * @param window
-   *          DOCUMENT_ME
-   * @param pane
-   *          DOCUMENT_ME
+   * @param window DOCUMENT_ME
+   * @param pane DOCUMENT_ME
    */
   public static void setEscapeKeyboardAction(final Window window, JComponent pane) {
     // Add keystroke to close window when pressing escape
@@ -925,8 +891,7 @@ public final class UtilGUI {
    * it to the fastCall() one.
    * </p>
    * 
-   * @param displayable
-   *          DOCUMENT_ME
+   * @param displayable DOCUMENT_ME
    */
   public static void populate(final TwoStepsDisplayable displayable) {
     SwingWorker<Object, Void> sw = new SwingWorker<Object, Void>() {
@@ -954,8 +919,7 @@ public final class UtilGUI {
   /**
    * Center a given window to the center of the screen.
    * 
-   * @param window
-   *          DOCUMENT_ME
+   * @param window DOCUMENT_ME
    */
   public static void centerWindow(Window window) {
     Toolkit tk = Toolkit.getDefaultToolkit();
@@ -1005,7 +969,7 @@ public final class UtilGUI {
   }
 
   /**
-   * Store window-type configuration
+   * Store window-type configuration.
    */
   public static void storeWindowSate() {
     WindowStateDecorator sdSlimbar = JajukSlimbar.getInstance().getWindowStateDecorator();

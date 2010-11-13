@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -182,7 +182,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   /** Current playlist. */
   Playlist plf;
 
-  /** Editor Model */
+  /** Editor Model. */
   protected PlaylistTableModel editorModel;
 
   /** DOCUMENT_ME. */
@@ -207,8 +207,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   /** Selected smart playlist. */
   private SmartPlaylistView spSelected;
 
-  /** List of selected files in the editor table. We don't just rely upon JajukTable's selection because
-   * we need here a deep selection computation including playlists contents*/
+  /** List of selected files in the editor table. We don't just rely upon JajukTable's selection because we need here a deep selection computation including playlists contents */
   List<File> selectedFiles = new ArrayList<File>(20);
 
   /** Mouse adapter for smart playlist items. */
@@ -287,10 +286,9 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   };
 
   /**
-   * Select smart playlist. 
+   * Select smart playlist.
    * 
    * @param sp the smart playlist
-   *          
    */
   void selectSmartPlaylist(SmartPlaylistView sp) {
     // remove table selection so an event will be thrown if user click on the table
@@ -315,7 +313,8 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   }
 
   /**
-   * Return the editor table
+   * Return the editor table.
+   * 
    * @return the editor table
    */
   public JajukTable getTable() {
@@ -879,8 +878,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
    * Import files, used when drag / dropping for ie.
    * 
    * @param files files to be imported
-   *  @param insert position
-   *          
+   * @param position DOCUMENT_ME
    */
   public void importFiles(List<File> files, int position) {
     plf.addFiles(UtilFeatures.applyPlayOption(files), position);
@@ -919,8 +917,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   /**
    * Called when table selection changed.
    * 
-   * @param e
-   *          DOCUMENT_ME
+   * @param e DOCUMENT_ME
    */
   public void valueChanged(ListSelectionEvent e) {
     ListSelectionModel selection = (ListSelectionModel) e.getSource();
@@ -989,7 +986,8 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   }
 
   /**
-   * Update the Information View with selection size
+   * Update the Information View with selection size.
+   * 
    * @param files : selection to consider
    */
   void updateInformationView(List<File> files) {
@@ -1012,7 +1010,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   }
 
   /**
-   * Update editor files selection
+   * Update editor files selection.
    */
   void updateSelection() {
     selectedFiles.clear();
@@ -1023,7 +1021,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   }
 
   /**
-   * Disables some tracks menu items if in smart playlist 
+   * Disables some tracks menu items if in smart playlist.
    */
   private void updatePlaylistMenuItems() {
     final boolean isReadOnly = (plf.getType() == Playlist.Type.BESTOF
@@ -1048,10 +1046,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     /** DOCUMENT_ME. */
     JMenuItem jmiPrepareParty;
 
-    /**
-     * List of playlists for which we already displayed a warning message if it
-     * contains old or external entries.
-     */
+    /** List of playlists for which we already displayed a warning message if it contains old or external entries. */
     private final List<Playlist> alreadyWarned = new ArrayList<Playlist>(10);
 
     /**
@@ -1093,7 +1088,9 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
 
     /**
      * Override this method to make sure to provide a non-null view ID when
-     * required
+     * required.
+     * 
+     * @return the ID
      */
     @Override
     public String getID() {

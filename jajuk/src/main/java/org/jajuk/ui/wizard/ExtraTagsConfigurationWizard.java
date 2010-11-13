@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.wizard;
 
@@ -59,20 +59,31 @@ import org.jajuk.util.Messages;
 import org.jdesktop.swingx.VerticalLayout;
 
 /**
- * Wizard allowing user to select the extra tags to be displayed by jajuk
+ * Wizard allowing user to select the extra tags to be displayed by jajuk.
  */
 public class ExtraTagsConfigurationWizard extends JajukJDialog {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
+  
+  /** DOCUMENT_ME. */
   private JList availableTagsJList;
+  
+  /** DOCUMENT_ME. */
   private JList activatedTagsJList;
 
-  /** OK/Cancel buttons */
+  /** OK/Cancel buttons. */
   private OKCancelPanel okp;
 
+  /** DOCUMENT_ME. */
   private List<String> availableList = new ArrayList<String>();
+  
+  /** DOCUMENT_ME. */
   private List<String> activatedList = new ArrayList<String>();
 
+  /**
+   * Instantiates a new extra tags configuration wizard.
+   */
   public ExtraTagsConfigurationWizard() {
     super(JajukMainWindow.getInstance(), true);
     setTitle(Messages.getString("JajukWindow.40"));
@@ -86,6 +97,10 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
     setVisible(true);
   }
 
+  /**
+   * Refresh list.
+   * DOCUMENT_ME
+   */
   private void refreshList() {
     availableList.clear();
     for (String s : Tag.getSupportedTagFields()) {
@@ -100,6 +115,10 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
     }
   }
 
+  /**
+   * Populate.
+   * DOCUMENT_ME
+   */
   private void populate() {
     availableTagsJList.clearSelection();
     DefaultListModel model = (DefaultListModel) availableTagsJList.getModel();
@@ -118,6 +137,10 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
     activatedTagsJList.setModel(model);
   }
 
+  /**
+   * Inits the ui.
+   * DOCUMENT_ME
+   */
   private void initUI() {
     JTextArea jta = new JTextArea() {
       private static final long serialVersionUID = 1L;
@@ -205,7 +228,8 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
   }
 
   /**
-   *
+   * Ok action.
+   * DOCUMENT_ME
    */
   private void okAction() {
     TrackManager tm = TrackManager.getInstance();

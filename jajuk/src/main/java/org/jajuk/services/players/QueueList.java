@@ -302,6 +302,12 @@ public class QueueList implements List<StackItem> {
     return alPlanned.add(e);
   }
 
+  /**
+   * Adds the planned.
+   * DOCUMENT_ME
+   * 
+   * @param c DOCUMENT_ME
+   */
   public void addPlanned(Collection<? extends StackItem> c) {
     for (StackItem item : c) {
       item.setPlanned(true);
@@ -310,12 +316,12 @@ public class QueueList implements List<StackItem> {
   }
 
   /**
-  * Retrieve the planned track on a specified position.
-  * 
-  * @param index The position in the list of planned items to retrieve.
-  * 
-  * @return The StackItem at position index.
-  */
+   * Retrieve the planned track on a specified position.
+   * 
+   * @param index The position in the list of planned items to retrieve.
+   * 
+   * @return The StackItem at position index.
+   */
   public StackItem getPlanned(int index) {
     return alPlanned.get(index);
   }
@@ -331,7 +337,9 @@ public class QueueList implements List<StackItem> {
   }
 
   /**
-   * @param alFiles
+   * Removes the planned from list.
+   * 
+   * @param alFiles DOCUMENT_ME
    */
   public void removePlannedFromList(List<File> alFiles) {
     for (StackItem item : alPlanned) {

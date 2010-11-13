@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -74,10 +74,10 @@ public abstract class AbstractTreeView extends ViewAdapter {
   /** The phyical tree. */
   JXTree jtree;
 
-  /** The table/tree sync toggle button */
+  /** The table/tree sync toggle button. */
   JajukToggleButton jtbSync;
 
-  /** the collapse all button */
+  /** the collapse all button. */
   JButton jbCollapseAll;
 
   /** Current selection. */
@@ -176,6 +176,8 @@ public abstract class AbstractTreeView extends ViewAdapter {
   /**
    * Creates the tree. DOCUMENT_ME
    * 
+   * @param bLazy DOCUMENT_ME
+   * 
    * @return the j tree
    */
   protected JTree createTree(boolean bLazy) {
@@ -270,7 +272,9 @@ public abstract class AbstractTreeView extends ViewAdapter {
   abstract void expand();
 
   /**
-   * Expand a given item
+   * Expand a given item.
+   * 
+   * @param item DOCUMENT_ME
    */
   abstract void scrollTo(Item item);
 

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -65,7 +65,7 @@ public class SessionService {
   /** Workspace PATH*. */
   private static String workspace;
 
-  /** Forced workspace location (required for some special packaging like portableapps) **/
+  /** Forced workspace location (required for some special packaging like portableapps) *. */
   private static String forcedWorkspacePath = null;
 
   /** Directory used to flag the current jajuk session. */
@@ -74,19 +74,19 @@ public class SessionService {
   /** Lock used to trigger first time wizard window close*. */
   private static short[] isFirstTimeWizardClosed = new short[0];
 
-  /** Bootstrap file content as key/value format */
+  /** Bootstrap file content as key/value format. */
   private static Properties bootstrapContent = new Properties();
 
   /** For performances, store conf root path. */
   private static String confRoot;
 
-  /**Boostrap file test workspace path key */
+  /** Boostrap file test workspace path key. */
   private static final String KEY_TEST = "test";
 
-  /**Boostrap file final workspace path key */
+  /** Boostrap file final workspace path key. */
   private static final String KEY_FINAL = "final";
 
-  /** First time wizard instance if required */
+  /** First time wizard instance if required. */
   private static FirstTimeWizard ftw;
 
   /**
@@ -320,13 +320,14 @@ public class SessionService {
 
   /**
    * Discover the jajuk workspace by reading the bootstrap file.<br>
-   * Searched in this order : 
+   * Searched in this order :
    * <ul>
    * <li>Forced workspace path provided on command line (-workspace=...)</li>
    * <li>Bootstrap file content</li>
    * <li>Default path presence</li>
    * <li>Human selection</li>
    * </ul>
+   * 
    * @throws InterruptedException the interrupted exception
    */
   public static void discoverWorkspace() throws InterruptedException {
@@ -414,7 +415,7 @@ public class SessionService {
   }
 
   /**
-   * Let user select himself the workspace path
+   * Let user select himself the workspace path.
    */
   private static void humanWorkspaceSelection() {
     // If running in headless env, force /tmp directory
@@ -449,8 +450,10 @@ public class SessionService {
   }
 
   /**
-   * Write down the bootstrap file
+   * Write down the bootstrap file.
+   * 
    * @param prop : the properties to write to the file
+   * 
    * @throws an IOException if the bootstrap file cannot be written down
    */
   public static void commitBootstrapFile(Properties prop) {
@@ -471,7 +474,7 @@ public class SessionService {
   }
 
   /**
-   * Write down the bootstrap file
+   * Write down the bootstrap file.
    */
   public static void commitBootstrapFile() {
     commitBootstrapFile(bootstrapContent);
@@ -521,6 +524,7 @@ public class SessionService {
 
   /**
    * Return whether user provided a forced workspace on command line.
+   * 
    * @return whether user provided a forced workspace.
    */
   public static boolean isForcedWorkspace() {
@@ -553,12 +557,14 @@ public class SessionService {
   /**
    * Return bootstrap file absolute path
    * 
-   
    * 
-    * 
-   * This bootstrap file location can be overridden by providing -bootstrap=<URL> CLI option
+   * 
+   * This bootstrap file location can be overridden by providing -bootstrap=<URL> CLI option.
+   * 
+   * @param filename DOCUMENT_ME
    * 
    * @return bootstrap file absolute path
+   * 
    * @filename filename of the bootstrap path
    */
   public static String getBootstrapPath(String filename) {
@@ -571,7 +577,7 @@ public class SessionService {
    * It also fixes #1473 by moving if required the bootstrap file (see See
    * https://trac.jajuk.info/ticket/1473)
    * 
-    * 
+   * 
    * This bootstrap file location can be overridden by providing -bootstrap=<URL> CLI option
    * 
    * @return bootstrap file absolute path

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -59,13 +59,13 @@ public class FindDuplicateTracksAction extends JajukAction {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /**Result : a list of dups files for a given track */
+  /** Result : a list of dups files for a given track. */
   List<List<File>> duplicateTracksList;
 
-  /** Temporary storage during dups detection */
+  /** Temporary storage during dups detection. */
   private Map<String, Set<File>> mapTrackDups;
 
-  /** Track comparator */
+  /** Track comparator. */
   TrackComparator comparator = new TrackComparator(TrackComparatorType.ALMOST_IDENTICAL);
 
   /**
@@ -78,10 +78,11 @@ public class FindDuplicateTracksAction extends JajukAction {
   }
 
   /**
-     * Add a dup for a given track
-     * @param footprint : fuzzy search footprint
-     * @param files list of files
-     */
+   * Add a dup for a given track.
+   * 
+   * @param files list of files
+   * @param track DOCUMENT_ME
+   */
   private void addDup(Track track, List<File> files) {
     // Ignore case where thy are none ready files
     if (files.size() > 0) {
@@ -100,6 +101,14 @@ public class FindDuplicateTracksAction extends JajukAction {
    * Return the next track relative to current position or null if it is the last track
    * @return the next track relative to current position or null if it is the last track
    */
+  /**
+   * Gets the next track.
+   * 
+   * @param tracks DOCUMENT_ME
+   * @param index DOCUMENT_ME
+   * 
+   * @return the next track
+   */
   private Track getNextTrack(List<Track> tracks, int index) {
     Track next = null;
     if (index < tracks.size() - 1) {
@@ -110,8 +119,10 @@ public class FindDuplicateTracksAction extends JajukAction {
 
   /**
    * Return either all or only mounted files for given track
-   * according to OPTIONS_HIDE_UNMOUNTED option
-   * @param track
+   * according to OPTIONS_HIDE_UNMOUNTED option.
+   * 
+   * @param track DOCUMENT_ME
+   * 
    * @return either all or only mounted files for given track
    */
   private List<File> getFiles(Track track) {
@@ -123,7 +134,7 @@ public class FindDuplicateTracksAction extends JajukAction {
   }
 
   /**
-   * Create the dups list
+   * Create the dups list.
    */
   void populateDups() {
     duplicateTracksList = new ArrayList<List<File>>();

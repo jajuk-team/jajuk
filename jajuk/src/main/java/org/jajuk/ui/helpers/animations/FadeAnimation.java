@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ public class FadeAnimation extends AbstractAnimation {
   /** DOCUMENT_ME. */
   private Direction opacity;
 
-  /** Number of frames */
+  /** Number of frames. */
   private static final int FRAME_NUMBER = 50;
 
   /**

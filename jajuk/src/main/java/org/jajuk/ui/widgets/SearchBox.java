@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -322,11 +322,9 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
   }
 
   /**
-   * Gets the result or 
+   * Gets the result or.
    * 
-   * @param index item or null if none search already performed
-   * 
-   * @return the result 
+   * @return the result
    */
   public SearchResult getResult() {
     if (jlist == null) {
@@ -336,7 +334,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
   }
 
   /**
-   * Hide popup. 
+   * Hide popup.
    */
   public void hidePopup() {
     popup.hide();
@@ -345,8 +343,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
   /**
    * Display the search icon inside the texfield.
    * 
-   * @param g
-   *          the graphics
+   * @param g the graphics
    */
   @Override
   public void paint(Graphics g) {
@@ -358,8 +355,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
    * Default list selection implementation (may be overwritten for different
    * behavior).
    * 
-   * @param e
-   *          DOCUMENT_ME
+   * @param e DOCUMENT_ME
    */
   public void valueChanged(final ListSelectionEvent e) {
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
@@ -408,7 +404,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
   }
 
   /**
-   * Search box specific keystrokes
+   * Search box specific keystrokes.
    */
   private void installKeysrokes() {
     InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);

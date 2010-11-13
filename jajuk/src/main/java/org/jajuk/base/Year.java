@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -34,17 +34,15 @@ import org.jajuk.util.UtilString;
  */
 public class Year extends LogicalItem implements Comparable<Year> {
 
-  /** The year that is stored in this object */
+  /** The year that is stored in this object. */
   private final long value;
 
   /**
    * Year constructor.
    * 
-   * @param sId
-   *          The generated id (usually a md5hash)
-   * @param sValue
-   *          The Year-Value as string. Only a simple parsing is done, things
-   *          like AC, BC, ... are not supported.
+   * @param sId The generated id (usually a md5hash)
+   * @param sValue The Year-Value as string. Only a simple parsing is done, things
+   * like AC, BC, ... are not supported.
    */
   Year(String sId, String sValue) {
     super(sId, sValue);
@@ -76,8 +74,7 @@ public class Year extends LogicalItem implements Comparable<Year> {
   /**
    * Alphabetical comparator used to display ordered lists.
    * 
-   * @param other
-   *          item to be compared
+   * @param other item to be compared
    * 
    * @return comparison result
    */

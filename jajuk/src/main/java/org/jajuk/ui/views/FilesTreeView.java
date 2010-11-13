@@ -450,7 +450,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   }
 
   /**
-   * Sets the synchronization state recursively for all files selected
+   * Sets the synchronization state recursively for all files selected.
    * 
    * @param sync whether the directories should be synchronized
    */
@@ -544,7 +544,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   }
 
   /**
-   * Expand recursively all directory nodes of given item
+   * Expand recursively all directory nodes of given item.
+   * 
    * @param item : file or playlist
    */
   private void expandRecursively(Item item) {

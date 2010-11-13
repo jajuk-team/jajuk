@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -148,10 +148,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /** Editable table configuration name, must be overwritten by child classes. */
   String editableConf;
 
-  /**
-   * Columns to show table configuration name, must be overwritten by child
-   * classes.
-   */
+  /** Columns to show table configuration name, must be overwritten by child classes. */
   String columnsConf;
 
   /** DOCUMENT_ME. */
@@ -184,9 +181,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /** DOCUMENT_ME. */
   PreferencesJMenu pjmTracks;
 
-  /** The table/tree sync toggle button */
+  /** The table/tree sync toggle button. */
   JajukToggleButton jtbSync;
 
+  /** DOCUMENT_ME. */
   private boolean bStopThread = false;
 
   /** Launches a thread used to perform dynamic filtering when user is typing. */
@@ -239,8 +237,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
    * Code used in child class SwingWorker for display computations (used in
    * initUI()).
    * 
-   * @param in
-   *          DOCUMENT_ME
+   * @param in DOCUMENT_ME
    */
   public void shortCall(Object in) {
     // Add generic menus
@@ -406,10 +403,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
    * Apply a filter, to be implemented by files and tracks tables, alter the
    * model.
    * 
-   * @param sPropertyName
-   *          DOCUMENT_ME
-   * @param sPropertyValue
-   *          DOCUMENT_ME
+   * @param sPropertyName DOCUMENT_ME
+   * @param sPropertyValue DOCUMENT_ME
    */
   public void applyFilter(final String sPropertyName, final String sPropertyValue) {
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
@@ -613,8 +608,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /**
    * Detect property change.
    * 
-   * @param ie
-   *          DOCUMENT_ME
+   * @param ie DOCUMENT_ME
    */
   public void itemStateChanged(ItemEvent ie) {
     if (ie.getSource() == jcbProperty) {
@@ -711,11 +705,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   }
 
   /**
-  * Called when table selection changed.
-  * 
-  * @param e
-  *          the List selection event
-  */
+   * Called when table selection changed.
+   * 
+   * @param e the List selection event
+   */
   public void valueChanged(ListSelectionEvent e) {
     if (e.getValueIsAdjusting()) {
       // leave during normal refresh
@@ -767,7 +760,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   }
 
   /**
-   * Callback method called on table selection change
+   * Callback method called on table selection change.
    */
   void onSelectionChange() {
     // Do nothing by default

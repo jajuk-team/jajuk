@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -341,9 +341,11 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Return a cover file matching criteria or null
+   * Return a cover file matching criteria or null.
+   * 
    * @param dirs : list of directories to search in
    * @param onlyStandardCovers to we consider only standard covers ?
+   * 
    * @return a cover file matching criteria or null
    */
   private File findCover(Set<Directory> dirs, boolean onlyStandardCovers) {
@@ -481,12 +483,13 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * Gets the artist or the album artist if not available
    * 
    * <u>Used algorithm is following :
-   *  <li>If none available tags : return "unknown artist"</li>
-   *  <li>If the album contains tracks with different artists, display the first album artist found if any</li>
-   *  <li>In this case, if no album artist is available, display the first artist found</li>
-   * </u>
+   * <li>If none available tags : return "unknown artist"</li>
+   * <li>If the album contains tracks with different artists, display the first album artist found if any</li>
+   * <li>In this case, if no album artist is available, display the first artist found</li>
+   * </u>.
+   * 
    * @return artist for the album. <br>
-   * Return Always an artist, eventually a "Unknown Artist" one 
+   * Return Always an artist, eventually a "Unknown Artist" one
    */
   public String getArtistOrALbumArtist() {
     // no track => no artist

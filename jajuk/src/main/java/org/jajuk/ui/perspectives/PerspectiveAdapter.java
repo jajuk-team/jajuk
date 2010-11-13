@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -227,8 +227,8 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
   /**
    * Helper method that performs some additional cleanup for the Dockable.
    * 
-   * @param c The Container to look at, usually the DockingDesktop, i.e. 
-   *            the PerspectiveAdapter in this case. 
+   * @param c The Container to look at, usually the DockingDesktop, i.e.
+   * the PerspectiveAdapter in this case.
    * @param dockable The Dockable to remove/replace.
    */
   private static void removeFromDockingDesktop(Container c, Dockable dockable) {

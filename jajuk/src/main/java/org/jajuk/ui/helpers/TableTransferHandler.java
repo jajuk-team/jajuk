@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -45,10 +45,10 @@ public class TableTransferHandler extends TransferHandler {
   final JajukTable jtable;
 
   /**
-  * Constructor.
-  * 
-  * @param jtable DOCUMENT_ME
-  */
+   * Constructor.
+   * 
+   * @param jtable DOCUMENT_ME
+   */
   public TableTransferHandler(final JajukTable jtable) {
     this.jtable = jtable;
     DragSource source = DragSource.getDefaultDragSource();

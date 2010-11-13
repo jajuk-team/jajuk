@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 5520 $
+ *  $Revision$
  */
 package org.jajuk.base;
 
@@ -31,20 +31,19 @@ import org.jajuk.util.Messages;
  * <br>
  * Logical item.
  * <p>
- * Album artist objects are not widely used in jajuk (mainly in tracks tree view), 
- * so we leverage the Artist and ArtistManager classes to limit complexity and 
+ * Album artist objects are not widely used in jajuk (mainly in tracks tree view),
+ * so we leverage the Artist and ArtistManager classes to limit complexity and
  * code duplication. The drawback is the need for casts from Artist to AlbumArtist.
  * </p>
- * 
  */
 public class AlbumArtist extends Artist {
 
   /**
-  * Builds an album-artist.
-  * 
-  * @param sName album-artist string
-  * @param sId album-artist guid
-  */
+   * Builds an album-artist.
+   * 
+   * @param sName album-artist string
+   * @param sId album-artist guid
+   */
   AlbumArtist(String sId, String sName) {
     super(sId, sName);
   }

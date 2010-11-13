@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -35,10 +35,10 @@ import org.jajuk.util.log.Log;
  */
 public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
 
-  /** URL pattern used by jajuk to retrieve lyrics */
+  /** URL pattern used by jajuk to retrieve lyrics. */
   private static final String URL = "http://lyrics.wikia.com/%artist:%title";
 
-  /** URL pattern to web page (see ILyricsProvider interface for details) */
+  /** URL pattern to web page (see ILyricsProvider interface for details). */
   private static final String WEB_URL = "http://lyrics.wikia.com/%artist:%title";
 
   /**
@@ -95,6 +95,8 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
   /**
    * Extracts lyrics from the HTML page. The correct subsection is to be
    * extracted first, before being cleaned and stripped from useless HTML tags.
+   * 
+   * @param html DOCUMENT_ME
    * 
    * @return the lyrics
    */

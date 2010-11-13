@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -63,10 +63,9 @@ public final class Conf implements Const {
 
   /**
    * Return the value of a property, or null if the property is not found.
-   *
-   * @param pName
-   *          Name of the property.
-   *
+   * 
+   * @param pName Name of the property.
+   * 
    * @return String Value of the property named pName.
    */
   public static String getString(String pName) {
@@ -76,10 +75,9 @@ public final class Conf implements Const {
   /**
    * Return the value of a property as a boolean or default value or default
    * value if value cannot be parsed.
-   *
-   * @param pName
-   *          Name of the property.
-   *
+   * 
+   * @param pName Name of the property.
+   * 
    * @return boolean value of the property named pName.
    */
   public static boolean getBoolean(String pName) {
@@ -96,9 +94,8 @@ public final class Conf implements Const {
 
   /**
    * Invert a boolean value.
-   *
-   * @param pName
-   *          DOCUMENT_ME
+   * 
+   * @param pName DOCUMENT_ME
    */
   public static void invert(String pName) {
     boolean b = Boolean.parseBoolean(properties.getProperty(pName));
@@ -108,10 +105,9 @@ public final class Conf implements Const {
   /**
    * Return the value of a property as a float or default value or default value
    * if value cannot be parsed.
-   *
-   * @param pName
-   *          Name of the property.
-   *
+   * 
+   * @param pName Name of the property.
+   * 
    * @return float value of the property named pName.
    */
   public static float getFloat(String pName) {
@@ -129,10 +125,9 @@ public final class Conf implements Const {
   /**
    * Return the value of a property as an integer or default value if value
    * cannot be parsed.
-   *
-   * @param pName
-   *          Name of the property.
-   *
+   * 
+   * @param pName Name of the property.
+   * 
    * @return int value of the property named pName.
    */
   public static int getInt(String pName) {
@@ -149,9 +144,8 @@ public final class Conf implements Const {
 
   /**
    * Reset a given property to its defaults.
-   *
-   * @param property
-   *          DOCUMENT_ME
+   * 
+   * @param property DOCUMENT_ME
    */
   public static void setDefaultProperty(String property) {
     String defaultValue = (String) defaults.get(property);
@@ -357,8 +351,10 @@ public final class Conf implements Const {
   }
 
   /**
-   * Return default property for given key
-   * @param key
+   * Return default property for given key.
+   * 
+   * @param key DOCUMENT_ME
+   * 
    * @return default property for given key
    */
   public static String getDefaultProperty(String key) {
@@ -366,7 +362,8 @@ public final class Conf implements Const {
   }
 
   /**
-   * Restore a specific property
+   * Restore a specific property.
+   * 
    * @param key property name to restore
    */
   public static void restoreValue(String key) {
@@ -375,11 +372,9 @@ public final class Conf implements Const {
 
   /**
    * Set a property.
-   *
-   * @param sName
-   *          DOCUMENT_ME
-   * @param sValue
-   *          DOCUMENT_ME
+   * 
+   * @param sName DOCUMENT_ME
+   * @param sValue DOCUMENT_ME
    */
   public static void setProperty(String sName, String sValue) {
     properties.setProperty(sName, sValue);
@@ -392,9 +387,8 @@ public final class Conf implements Const {
    * to a temporary file, try to parse it back (to detect invalid characters like \n) and
    * if the parsing is ok, we override the old preference file with the
    * temporary one.
-   *
-   * @throws IOException
-   *           Signals that an I/O exception has occurred.
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void commit() throws IOException {
     File fTempFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION_TEMP);
@@ -417,7 +411,8 @@ public final class Conf implements Const {
   }
 
   /**
-   * Check if the temporary preference file is valid
+   * Check if the temporary preference file is valid.
+   * 
    * @throws IOException if the file is invalid
    */
   private static void checkTempPreferenceFile() throws IOException {
@@ -432,8 +427,9 @@ public final class Conf implements Const {
   }
 
   /**
-   * Override
-   * @throws IOException
+   * Override.
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private static void overridePreferenceFile() throws IOException {
     File finalFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION);
@@ -447,10 +443,9 @@ public final class Conf implements Const {
 
   /**
    * Contains property.
-   *
-   * @param property
-   *          DOCUMENT_ME
-   *
+   * 
+   * @param property DOCUMENT_ME
+   * 
    * @return whether the given property is known
    */
   public static boolean containsProperty(String property) {
@@ -477,7 +472,7 @@ public final class Conf implements Const {
 
   /**
    * Gets the properties.
-   *
+   * 
    * @return Returns the properties.
    */
   public static Properties getProperties() {
@@ -486,9 +481,8 @@ public final class Conf implements Const {
 
   /**
    * Remove a property.
-   *
-   * @param sKey
-   *          property key to remove
+   * 
+   * @param sKey property key to remove
    */
   public static void removeProperty(String sKey) {
     properties.remove(sKey);

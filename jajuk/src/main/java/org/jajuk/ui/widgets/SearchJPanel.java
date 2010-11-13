@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -61,7 +61,7 @@ import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
 
 /**
- * Ambience + History + search panel used in main jajuk window
+ * Ambience + History + search panel used in main jajuk window.
  */
 public final class SearchJPanel extends JXPanel implements Observer, ActionListener {
 

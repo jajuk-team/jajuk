@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -64,7 +64,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   /** Track type. */
   private final Type type;
 
-  /** Album Artist */
+  /** Album Artist. */
   private AlbumArtist albumArtist;
 
   /** Track associated files. */
@@ -186,7 +186,8 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
-   * Remove specified file from associated files
+   * Remove specified file from associated files.
+   * 
    * @param file : the file to remove
    */
   public void removeFile(File file) {
@@ -570,7 +571,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
-   * Sets the album artist
+   * Sets the album artist.
    * 
    * @param albumArtist : the album artist
    */

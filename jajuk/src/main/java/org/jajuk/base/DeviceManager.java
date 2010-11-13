@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -238,8 +238,10 @@ public final class DeviceManager extends ItemManager {
   }
 
   /**
-   * Return first device found being parent of the provided path
-   * @param path
+   * Return first device found being parent of the provided path.
+   * 
+   * @param path DOCUMENT_ME
+   * 
    * @return  first device found being parent of the provided path
    */
   public Device getDeviceByPath(File path) {

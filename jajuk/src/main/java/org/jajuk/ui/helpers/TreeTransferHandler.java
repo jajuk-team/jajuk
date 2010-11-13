@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.jajuk.base.Item;
 
 /**
- * DND handler for jtree
+ * DND handler for jtree.
  */
 public class TreeTransferHandler extends TransferHandler {
 
@@ -44,10 +44,10 @@ public class TreeTransferHandler extends TransferHandler {
   final JTree jtree;
 
   /**
-  * Constructor.
-  * 
-  * @param jtable DOCUMENT_ME
-  */
+   * Constructor.
+   * 
+   * @param jtree DOCUMENT_ME
+   */
   public TreeTransferHandler(final JTree jtree) {
     this.jtree = jtree;
   }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -72,10 +72,7 @@ public interface Const {
   /** Play time to get rate +1 in secs. */
   int INC_RATE_TIME = 20;
 
-  /**
-  * Max number of concurrent executions by observation manager for a given
-  * event.
-  */
+  /** Max number of concurrent executions by observation manager for a given event. */
   int MAX_EVENT_EXECUTIONS = 15;
 
   /** Min number of tracks in a DJ selection without track unicity. */
@@ -139,10 +136,7 @@ public interface Const {
   /** Default auto-refresh delay for directory-type devices (mins). */
   double DEFAULT_REFRESH_INTERVAL_PLAYER = 3.0d;
 
-  /**
-   * The time we wait for mplayer to start up in ms. It can take some time on
-   * slow or heavily loaded machines...
-   */
+  /** The time we wait for mplayer to start up in ms. It can take some time on slow or heavily loaded machines... */
   int MPLAYER_START_TIMEOUT = 15000;
 
   /** Number of milliseconds in a day. */
@@ -195,10 +189,10 @@ public interface Const {
   /** DOCUMENT_ME. */
   String FILE_REPORTING_CACHE_FILE = "cache/report";
 
-  /** Name of the preferences property file */
+  /** Name of the preferences property file. */
   String FILE_CONFIGURATION = "conf.properties";
 
-  /** Name of the temporary preferences property file  */
+  /** Name of the temporary preferences property file. */
   String FILE_CONFIGURATION_TEMP = "temp_conf.properties";
 
   /** DOCUMENT_ME. */
@@ -296,7 +290,7 @@ public interface Const {
   /** DOCUMENT_ME. */
   String FILE_FIFO = "fifo.lst";
 
-  /** Bootstrap file name */
+  /** Bootstrap file name. */
   String FILE_BOOTSTRAP = ".jajuk_bootstrap.xml";
 
   /** Old (pre-1.9) bootstrap file name */
@@ -365,6 +359,7 @@ public interface Const {
   /** DOCUMENT_ME. */
   String VARIOUS_ARTIST = "various_artist";
 
+  /** DOCUMENT_ME. */
   String COVER_NONE = "none";
 
   // images
@@ -404,13 +399,13 @@ public interface Const {
 
   // -- Command line options --
 
-  /** Tells jajuk it is inside the IDE */
+  /** Tells jajuk it is inside the IDE. */
   String CLI_IDE = "ide";
 
   /** Tells jajuk to use a .jajuk_test repository */
   String CLI_TEST = "test";
 
-  /** Special forced workspace location CLI option */
+  /** Special forced workspace location CLI option. */
   String CLI_WORKSPACE_LOCATION = "workspace";
 
   // players impls
@@ -624,7 +619,7 @@ public interface Const {
   /** DOCUMENT_ME. */
   String CONF_STARTUP_MODE = "jajuk.startup.mode";
 
-  /** Tell if last jajuk session was closed in stopped mode */
+  /** Tell if last jajuk session was closed in stopped mode. */
   String CONF_STARTUP_STOPPED = "jajuk.startup.stopped";
 
   /** DOCUMENT_ME. */
@@ -712,10 +707,7 @@ public interface Const {
   /** Contains files id separated by a colon. */
   String CONF_BOOKMARKS = "jajuk.bookmarks";
 
-  /**
-   * Startup display mode: 0= main window + tray, 1: tray only, 2: slimbar +
-   * tray 3 : full screen.
-   */
+  /** Startup display mode: 0= main window + tray, 1: tray only, 2: slimbar + tray 3 : full screen. */
   String CONF_STARTUP_DISPLAY = "jajuk.startup_display_mode";
 
   /** DOCUMENT_ME. */
@@ -1217,7 +1209,7 @@ public interface Const {
   /** comment tag. */
   String XML_TRACK_COMMENT = "comment";
 
-  /** "any" criteria */
+  /** "any" criteria. */
   String XML_ANY = "any";
 
   // constructor property flag
@@ -1474,7 +1466,7 @@ public interface Const {
   /** DOCUMENT_ME. */
   String HTML = "<html>";
 
-  /** File name where the tag cover is stored in */
+  /** File name where the tag cover is stored in. */
   String TAG_COVER_FILE = "tag_cover.png";
 
 }

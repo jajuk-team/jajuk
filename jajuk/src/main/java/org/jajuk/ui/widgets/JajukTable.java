@@ -102,14 +102,10 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /** Stores the last index of column move to*. */
   private int lastToIndex = 0;
 
-  /** Mouse draging flag */
+  /** Mouse draging flag. */
   private boolean isMouseDragging;
 
-  /** List of list selection listeners whose valueChanged() method is called
-   * by this class valueChanged() method to avoid concurrency between 
-   * them. Otherwise, the preference menu item could be set with the 
-   * previous selection value.
-   */
+  /** List of list selection listeners whose valueChanged() method is called by this class valueChanged() method to avoid concurrency between them. Otherwise, the preference menu item could be set with the previous selection value. */
   List<ListSelectionListener> listeners = new ArrayList<ListSelectionListener>(1);
 
   /** The Jajuk table mouse adapter used to handle click events. */
@@ -137,7 +133,8 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   };
 
   /**
-   * Return drop row 
+   * Return drop row.
+   * 
    * @return drop row
    */
   @SuppressWarnings("cast")
@@ -180,9 +177,9 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   }
 
   /**
-   * Register a new list selection listener 
-   * @param listener the listener to register
+   * Register a new list selection listener.
    * 
+   * @param listener the listener to register
    */
   public void addListSelectionListener(ListSelectionListener listener) {
     listeners.add(listener);
@@ -237,6 +234,10 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /*
    * Reorder columns order according to given conf
+   */
+  /**
+   * Reorder columns.
+   * DOCUMENT_ME
    */
   private void reorderColumns() {
     // Build the index array
@@ -515,7 +516,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   }
 
   /**
-   * Update the selection
+   * Update the selection.
    */
   private void updateSelection() {
     JajukTableModel model = (JajukTableModel) getModel();
@@ -538,10 +539,9 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /**
    * Return generic popup menu for items in a table. <br>
-     * 
-   * @return generic popup menu for items in a table
    * 
-     */
+   * @return generic popup menu for items in a table
+   */
   public JPopupMenu getMenu() {
     return this.jmenu;
   }
@@ -551,7 +551,13 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    * 
    * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
    */
-  public void mouseClicked(@SuppressWarnings("unused") MouseEvent e) {
+  /**
+   * Mouse clicked.
+   * DOCUMENT_ME
+   * 
+   * @param e DOCUMENT_ME
+   */
+  public void mouseClicked(MouseEvent e) {
     // nothing to do here for now
   }
 
@@ -560,7 +566,13 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    * 
    * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
    */
-  public void mouseEntered(@SuppressWarnings("unused") MouseEvent e) {
+  /**
+   * Mouse entered.
+   * DOCUMENT_ME
+   * 
+   * @param e DOCUMENT_ME
+   */
+  public void mouseEntered(MouseEvent e) {
     // nothing to do here for now
   }
 
@@ -569,7 +581,13 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    * 
    * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
    */
-  public void mouseExited(@SuppressWarnings("unused") MouseEvent e) {
+  /**
+   * Mouse exited.
+   * DOCUMENT_ME
+   * 
+   * @param e DOCUMENT_ME
+   */
+  public void mouseExited(MouseEvent e) {
     // nothing to do here for now
   }
 
@@ -661,7 +679,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /**
    * Remove previous alternate highlighter and add a new one
    * It is required because after theme change, the alternate
-   * highlighter colors are no more valid
+   * highlighter colors are no more valid.
    * 
    * @see org.jdesktop.swingx.JXTable#updateUI()
    */
@@ -686,18 +704,27 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   // in some cases, when dragging quickly, rows 2 AND 3 (and even row 4 sometimes) are selected.
   // Fix thanks jeffsabin  in http://forums.sun.com/thread.jspa?threadID=5436355
 
+  /* (non-Javadoc)
+   * @see javax.swing.JComponent#processMouseEvent(java.awt.event.MouseEvent)
+   */
   @Override
   protected void processMouseEvent(MouseEvent e) {
     isMouseDragging = (e.getID() == MouseEvent.MOUSE_DRAGGED);
     super.processMouseEvent(e);
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.JComponent#processMouseMotionEvent(java.awt.event.MouseEvent)
+   */
   @Override
   protected void processMouseMotionEvent(MouseEvent e) {
     isMouseDragging = (e.getID() == MouseEvent.MOUSE_DRAGGED);
     super.processMouseMotionEvent(e);
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.JTable#setRowSelectionInterval(int, int)
+   */
   @Override
   public void setRowSelectionInterval(int index0, int index1) {
     if (!isMouseDragging) {
@@ -705,6 +732,9 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     }
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.JTable#setColumnSelectionInterval(int, int)
+   */
   @Override
   public void setColumnSelectionInterval(int index0, int index1) {
     if (!isMouseDragging) {
@@ -712,6 +742,9 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     }
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.JTable#changeSelection(int, int, boolean, boolean)
+   */
   @Override
   public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
     if (!isMouseDragging) {

@@ -48,7 +48,7 @@ public class FilesTableModel extends JajukTableModel {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** Associated view ID */
+  /** Associated view ID. */
   private String viewID;
 
   /**

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -78,6 +78,7 @@ public class ThumbnailPopup extends JWindow {
   /** DOCUMENT_ME. */
   private final JEditorPane text;
 
+  /** DOCUMENT_ME. */
   private KeyEventDispatcher dispatcher = null;
 
   /**
@@ -255,6 +256,10 @@ public class ThumbnailPopup extends JWindow {
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(dispatcher);
   }
 
+  /**
+   * Removes the keystrokes.
+   * DOCUMENT_ME
+   */
   private void removeKeystrokes() {
     if (dispatcher != null) {
       KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(dispatcher);

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -80,7 +80,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * Instance getter.
-   *
+   * 
    * @return the instance
    */
   public static History getInstance() {
@@ -125,7 +125,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * Gets the history.
-   *
+   * 
    * @return the history
    */
   public Vector<HistoryItem> getHistory() { // NOPMD
@@ -134,7 +134,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * Add an history item.
-   *
+   * 
    * @param sFileId DOCUMENT_ME
    * @param lDate DOCUMENT_ME
    */
@@ -193,7 +193,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * Change ID for a file.
-   *
+   * 
    * @param sIDOld DOCUMENT_ME
    * @param sIDNew DOCUMENT_ME
    */
@@ -214,7 +214,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * Clear history for all history items before iDays days.
-   *
+   * 
    * @param iDays DOCUMENT_ME
    */
   public void clear(final int iDays) {
@@ -247,9 +247,9 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * Write history on disk.
-   *
+   * 
    * @throws IOException Signals that an I/O exception has occurred.
-   *
+   * 
    * @exception IOException
    */
   public static void commit() throws IOException {
@@ -276,7 +276,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * Read history from disk.
-   *
+   * 
    * @exception JajukException
    */
   public static void load() {
@@ -300,7 +300,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * Gets the last file.
-   *
+   * 
    * @return id of last played registered track or null if history is empty
    */
   public String getLastFile() {
@@ -316,9 +316,9 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * Return the history item by index.
-   *
+   * 
    * @param index DOCUMENT_ME
-   *
+   * 
    * @return the history item
    */
   public HistoryItem getHistoryItem(int index) {
@@ -327,11 +327,11 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * parsing warning.
-   *
+   * 
    * @param spe DOCUMENT_ME
-   *
+   * 
    * @throws SAXException the SAX exception
-   *
+   * 
    * @exception SAXException
    */
   @Override
@@ -342,11 +342,11 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * parsing error.
-   *
+   * 
    * @param spe DOCUMENT_ME
-   *
+   * 
    * @throws SAXException the SAX exception
-   *
+   * 
    * @exception SAXException
    */
   @Override
@@ -357,11 +357,11 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * parsing fatal error.
-   *
+   * 
    * @param spe DOCUMENT_ME
-   *
+   * 
    * @throws SAXException the SAX exception
-   *
+   * 
    * @exception SAXException
    */
   @Override
@@ -388,12 +388,12 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * Called when we start an element.
-   *
+   * 
    * @param sUri DOCUMENT_ME
    * @param sName DOCUMENT_ME
    * @param sQName DOCUMENT_ME
    * @param attributes DOCUMENT_ME
-   *
+   * 
    * @throws SAXException the SAX exception
    */
   @Override
@@ -421,11 +421,11 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * Called when we reach the end of an element.
-   *
+   * 
    * @param sUri DOCUMENT_ME
    * @param sName DOCUMENT_ME
    * @param sQName DOCUMENT_ME
-   *
+   * 
    * @throws SAXException the SAX exception
    */
   @Override
@@ -479,7 +479,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * Gets the date formatter.
-   *
+   * 
    * @return Cached date formatter
    */
   public SimpleDateFormat getDateFormatter() {
@@ -488,7 +488,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * Sets the start date.
-   *
+   * 
    * @param start the new start date
    */
   public static void setStartDate(long start) {

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -125,19 +125,19 @@ public class PreparePartyWizard extends Wizard {
   /** Max playing length of tracks to use. */
   private static final String KEY_MAX_LENGTH_ON = "MAXLENGTH_ENABLED";
 
-  /** Key for max length of party */
+  /** Key for max length of party. */
   private static final String KEY_MAX_LENGTH = "MAXLENGTH";
 
   /** Max number of tracks to queue. */
   private static final String KEY_ONE_MEDIA_ON = "ONE_MEDIA_ENABLED";
 
-  /** Key for limit to one audio type */
+  /** Key for limit to one audio type. */
   private static final String KEY_MEDIA = "ONE_MEDIA";
 
-  /** Key for audio type conversion */
+  /** Key for audio type conversion. */
   private static final String KEY_CONVERT_MEDIA = "CONVERT_MEDIA";
 
-  /** Key for the command to use for audio conversion */
+  /** Key for the command to use for audio conversion. */
   private static final String KEY_CONVERT_COMMAND = "CONVERT_COMMAND";
 
   /** Used to enable replacing characters outside the normal range. */
@@ -146,18 +146,13 @@ public class PreparePartyWizard extends Wizard {
   /** Ratings level. */
   private static final String KEY_RATINGS_LEVEL = "RATING_LEVEL";
 
-  /**
-   *  store a temporary playlist that is provided by the PlaylistView without storing it in the 
-   *  PlaylistManager we keep it here to be able to re-display it in the Pages later on
-   *  
-   *  We need to keep it outside the ActionSelectionPanel because the panel is re-created during back-forward operations
-   */
+  /** store a temporary playlist that is provided by the PlaylistView without storing it in the PlaylistManager we keep it here to be able to re-display it in the Pages later on  We need to keep it outside the ActionSelectionPanel because the panel is re-created during back-forward operations. */
   private static Playlist tempPlaylist;
 
   /** Indicator to only restore properties once and not overwrite them again later. */
   private static boolean bPropertiesRestored = false;
 
-  /** Indicates if the PACPL tool for audio conversion is available */
+  /** Indicates if the PACPL tool for audio conversion is available. */
   private static boolean bPACPLAvailable = false;
 
   /**
@@ -165,23 +160,31 @@ public class PreparePartyWizard extends Wizard {
    */
   private enum Mode {
 
-    /** Use one of the available DJs */
+    /** Use one of the available DJs. */
     DJ,
-    /** Use one of hte available Ambiences*/
+    
+    /** Use one of hte available Ambiences. */
     Ambience,
-    /** Use random tracks from all available track */
+    
+    /** Use random tracks from all available track. */
     Shuffle,
-    /** Use a playlist */
+    
+    /** Use a playlist. */
     Playlist,
-    /** Use songs from the BestOf list */
+    
+    /** Use songs from the BestOf list. */
     BestOf,
-    /** Use songs from the Novelties list */
+    
+    /** Use songs from the Novelties list. */
     Novelties,
-    /** Use songs from the current play queue */
+    
+    /** Use songs from the current play queue. */
     Queue,
-    /** Use the available bookmarks */
+    
+    /** Use the available bookmarks. */
     Bookmarks,
-    /** Special mode for when the dialog is invoked with a newly created playlist */
+    
+    /** Special mode for when the dialog is invoked with a newly created playlist. */
     ProvidedPlaylist
   }
 
@@ -380,7 +383,7 @@ public class PreparePartyWizard extends Wizard {
   /**
    * Store one value as String.
    * 
-   * @param key The name of the property to store in the overall configuration 
+   * @param key The name of the property to store in the overall configuration
    */
   private static void storeValue(final String key) {
     // nothing to do?
@@ -550,47 +553,47 @@ public class PreparePartyWizard extends Wizard {
   }
 
   /**
-   * First Panel of the Wizard, it shows a selection of sources where the user can choose one, e.g. DJs, Ambiences, ... 
+   * First Panel of the Wizard, it shows a selection of sources where the user can choose one, e.g. DJs, Ambiences, ...
    */
   public static class ActionSelectionPanel extends Screen implements ActionListener, ClearPoint {
 
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = -6981770030816500259L;
 
-    /** The group for the various sources */
+    /** The group for the various sources. */
     private ButtonGroup bgActions;
 
-    /** DJ */
+    /** DJ. */
     private JRadioButton jrbDJ;
 
-    /** DJ */
+    /** DJ. */
     private JComboBox jcbDJ;
 
-    /** Ambience */
+    /** Ambience. */
     private JRadioButton jrbAmbience;
 
-    /** Ambience */
+    /** Ambience. */
     private JComboBox jcbAmbience;
 
-    /** Playlist */
+    /** Playlist. */
     private JRadioButton jrbPlaylist;
 
-    /** Playlist */
+    /** Playlist. */
     private JComboBox jcbPlaylist;
 
-    /** Shuffle */
+    /** Shuffle. */
     private JRadioButton jrbShuffle;
 
-    /** Shuffle */
+    /** Shuffle. */
     private JRadioButton jrbBestOf;
 
-    /** Novelties */
+    /** Novelties. */
     private JRadioButton jrbNovelties;
 
-    /** Queue */
+    /** Queue. */
     private JRadioButton jrbQueue;
 
-    /** Bookmarks */
+    /** Bookmarks. */
     private JRadioButton jrbBookmark;
 
     /**
@@ -862,10 +865,10 @@ public class PreparePartyWizard extends Wizard {
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
-    /** Empty value */
+    /** Empty value. */
     private static final String NO_VALUE = " ";
 
-    /** Enable limit on number of tracks */
+    /** Enable limit on number of tracks. */
     private JCheckBox jcbMaxTracks;
 
     /** The max. number of tracks */
@@ -874,46 +877,46 @@ public class PreparePartyWizard extends Wizard {
     /** The max. number of tracks */
     private JLabel jnMaxTracks;
 
-    /** Enable limit on max size */
+    /** Enable limit on max size. */
     private JCheckBox jcbMaxSize;
 
-    /** Max size (in MB) of party */
+    /** Max size (in MB) of party. */
     private JSlider jsMaxSize;
 
-    /** Max size (in MB) of party */
+    /** Max size (in MB) of party. */
     private JLabel jnMaxSize;
 
-    /** Enable limit on max playing length */
+    /** Enable limit on max playing length. */
     private JCheckBox jcbMaxLength;
 
-    /** Max playing length of party (in minutes) */
+    /** Max playing length of party (in minutes). */
     private JSlider jsMaxLength;
 
-    /** Max playing length of party (in minutes) */
+    /** Max playing length of party (in minutes). */
     private JLabel jnMaxLength;
 
-    /** Enable limit on specific audio type */
+    /** Enable limit on specific audio type. */
     private JCheckBox jcbOneMedia;
 
-    /** Limit to one type of audo file */
+    /** Limit to one type of audo file. */
     private JComboBox jcbMedia;
 
-    /** Enable conversion to the selected audio type */
+    /** Enable conversion to the selected audio type. */
     private JCheckBox jcbConvertMedia;
 
-    /** Audio conversion */
+    /** Audio conversion. */
     private JLabel jlConvertMedia;
 
-    /** Button to configure audio conversion */
+    /** Button to configure audio conversion. */
     private JButton jbConvertConfig;
 
-    /** Limit on rate of tracks */
+    /** Limit on rate of tracks. */
     private JLabel jlRatingLevel;
 
     /** The min. number of stars a track needs to have */
     private JSlider jsRatingLevel;
 
-    /** Enable normalizing filenames so they can be stored on windows fileshares */
+    /** Enable normalizing filenames so they can be stored on windows fileshares. */
     private JCheckBox jcbNormalizeFilename;
 
     /* (non-Javadoc)
@@ -1387,10 +1390,10 @@ public class PreparePartyWizard extends Wizard {
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = -236180699495019177L;
 
-    /** Button for file chooser dialog */
+    /** Button for file chooser dialog. */
     JButton jbFileSelection;
 
-    /** The selected file */
+    /** The selected file. */
     JLabel jlSelectedFile;
 
     /** Selected directory. */

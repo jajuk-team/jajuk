@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@ package org.jajuk.services.lyrics.providers;
 import org.jajuk.base.File;
 
 /**
- * Class container of lyrics written by user from Jajuk GUI itself
+ * Class container of lyrics written by user from Jajuk GUI itself.
  */
 public class JajukLyricsProvider implements ILyricsProvider {
 

@@ -1,3 +1,23 @@
+/*
+ *  Jajuk
+ *  Copyright (C) 2003-2010 The Jajuk Team
+ *  http://jajuk.info
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
+ */
 package org.jajuk.ui.helpers;
 
 import javax.swing.event.TreeExpansionEvent;
@@ -19,19 +39,22 @@ import javax.swing.tree.TreePath;
  * requests involved.
  */
 public class LazyLoadingTreeExpander implements TreeWillExpandListener {
-  /** Tree Model */
+  
+  /** Tree Model. */
   private DefaultTreeModel model;
 
   /**
-   * Default constructor
+   * Default constructor.
    * 
-   * @param model
-   *          Tree model
+   * @param model Tree model
    */
   public LazyLoadingTreeExpander(DefaultTreeModel model) {
     this.model = model;
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.event.TreeWillExpandListener#treeWillCollapse(javax.swing.event.TreeExpansionEvent)
+   */
   @Override
   public void treeWillCollapse(TreeExpansionEvent event) throws ExpandVetoException {
     // Do nothing on collapse.
@@ -41,6 +64,10 @@ public class LazyLoadingTreeExpander implements TreeWillExpandListener {
    * Invoked whenever a node in the tree is about to be expanded.
    * 
    * If the Node is a LazyLoadingTreeNode load it's children.
+   * 
+   * @param event DOCUMENT_ME
+   * 
+   * @throws ExpandVetoException the expand veto exception
    */
   @Override
   public void treeWillExpand(TreeExpansionEvent event) throws ExpandVetoException {
@@ -58,10 +85,10 @@ public class LazyLoadingTreeExpander implements TreeWillExpandListener {
   }
 
   /**
-   * Define nodes children
+   * Define nodes children.
    * 
-   * @param nodes
-   *          new nodes
+   * @param nodes new nodes
+   * @param lazyNode DOCUMENT_ME
    */
   private void setChildren(LazyLoadingTreeNode lazyNode, MutableTreeNode... nodes) {
     int childCount = lazyNode.getChildCount();

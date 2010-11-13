@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -86,10 +86,12 @@ public abstract class JajukTableModel extends DefaultTableModel {
   /** DOCUMENT_ME. */
   protected IconLabel unmount_play_icon = null;
 
-  /** Whether the model is refreshing so we must ignore selection changes events */
+  /** Whether the model is refreshing so we must ignore selection changes events. */
   private boolean refreshing = false;
 
   /**
+   * Checks if is refreshing.
+   * 
    * @return the refreshing
    */
   public boolean isRefreshing() {
@@ -97,6 +99,8 @@ public abstract class JajukTableModel extends DefaultTableModel {
   }
 
   /**
+   * Sets the refreshing.
+   * 
    * @param refreshing the refreshing to set
    */
   public void setRefreshing(boolean refreshing) {
@@ -308,7 +312,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
   }
 
   /**
-   * Clear the model
+   * Clear the model.
    */
   public void clear() {
     oValues = new Object[0][0];

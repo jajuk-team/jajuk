@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -50,10 +50,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   /** Populated state. */
   private boolean bIsPopulated = false;
 
-  /**
-   * View ID; note that a same view can be used several times in the same or in
-   * others perspectives.
-   */
+  /** View ID; note that a same view can be used several times in the same or in others perspectives. */
   private String sID;
 
   /** Associated perspective*. */
@@ -99,8 +96,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   /**
    * Sets the is populated.
    * 
-   * @param isPopulated
-   *          Defines, if this View is populated fully.
+   * @param isPopulated Defines, if this View is populated fully.
    */
   @Override
   public void setIsPopulated(boolean isPopulated) {
@@ -188,8 +184,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   /**
    * Set the view ID.
    * 
-   * @param sID
-   *          The new ID of this view.
+   * @param sID The new ID of this view.
    */
   @Override
   public void setID(String sID) {
@@ -220,8 +215,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   /**
    * Compare this view with another view-object.
    * 
-   * @param other
-   *          The second view to compare to.
+   * @param other The second view to compare to.
    * 
    * @return Natural order
    */
@@ -255,14 +249,16 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   }
 
   /**
-   * walk through the list of components and stop any BusyLabel
+   * walk through the list of components and stop any BusyLabel.
    */
   public void stopAllBusyLabels() {
     stopAllBusyLabels(this);
   }
 
   /**
-   * walk through the list of components and stop any BusyLabel
+   * walk through the list of components and stop any BusyLabel.
+   * 
+   * @param c DOCUMENT_ME
    */
   private static void stopAllBusyLabels(Container c) {
     for (int i = 0; i < c.getComponentCount(); i++) {
@@ -283,13 +279,19 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
     }
   }
 
+  /**
+   * Cleanup.
+   * DOCUMENT_ME
+   */
   public void cleanup() {
     // unregister any component that is still registered as observer
     cleanupRecursive(this);
   }
 
   /**
-   * walk through the list of components and unregister any Observer to free all references
+   * walk through the list of components and unregister any Observer to free all references.
+   * 
+   * @param c DOCUMENT_ME
    */
   private static void cleanupRecursive(Container c) {
     for (int i = 0; i < c.getComponentCount(); i++) {

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -75,14 +75,19 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
 
     /** DOCUMENT_ME. */
     NORMAL,
+    
     /** DOCUMENT_ME. */
     QUEUE,
+    
     /** DOCUMENT_ME. */
     NEW,
+    
     /** DOCUMENT_ME. */
     BOOKMARK,
+    
     /** DOCUMENT_ME. */
     BESTOF,
+    
     /** DOCUMENT_ME. */
     NOVELTIES
   }
@@ -105,7 +110,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /** Contains files outside device flag. */
   private boolean bContainsExtFiles = false;
 
-  /** Whether we ask for device mounting if required */
+  /** Whether we ask for device mounting if required. */
   private boolean askForMounting = true;
 
   /**
@@ -197,7 +202,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * Add some files to this playlist.
    * 
    * @param alFilesToAdd :   List of Files
-   * @param insert position
+   * @param position DOCUMENT_ME
    */
   public void addFiles(final List<File> alFilesToAdd, int position) {
     try {
@@ -873,13 +878,12 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   }
 
   /**
-  * Return true is the specified directory is an ancestor for this playlist.
-  * 
-  * @param directory
-  *          DOCUMENT_ME
-  * 
-  * @return true, if checks for ancestor
-  */
+   * Return true is the specified directory is an ancestor for this playlist.
+   * 
+   * @param directory DOCUMENT_ME
+   * 
+   * @return true, if checks for ancestor
+   */
   public boolean hasAncestor(Directory directory) {
     Directory dirTested = getDirectory();
     while (true) {

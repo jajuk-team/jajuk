@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,12 +16,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 5520 $
+ *  $Revision$
  */
 package org.jajuk.util.error;
 
 /**
- * JajukException runtime exception : to be thown in case of internal bug only
+ * JajukException runtime exception : to be thown in case of internal bug only.
  */
 public class JajukRuntimeException extends RuntimeException {
 
@@ -29,7 +29,7 @@ public class JajukRuntimeException extends RuntimeException {
   private static final long serialVersionUID = 1L;
 
   /**
-   * 
+   * Instantiates a new jajuk runtime exception.
    */
   public JajukRuntimeException() {
     super();
@@ -37,8 +37,10 @@ public class JajukRuntimeException extends RuntimeException {
   }
 
   /**
-   * @param message
-   * @param cause
+   * The Constructor.
+   * 
+   * @param message DOCUMENT_ME
+   * @param cause DOCUMENT_ME
    */
   public JajukRuntimeException(String message, Throwable cause) {
     super(message, cause);
@@ -46,7 +48,9 @@ public class JajukRuntimeException extends RuntimeException {
   }
 
   /**
-   * @param message
+   * The Constructor.
+   * 
+   * @param message DOCUMENT_ME
    */
   public JajukRuntimeException(String message) {
     super(message);
@@ -54,7 +58,9 @@ public class JajukRuntimeException extends RuntimeException {
   }
 
   /**
-   * @param cause
+   * The Constructor.
+   * 
+   * @param cause DOCUMENT_ME
    */
   public JajukRuntimeException(Throwable cause) {
     super(cause);

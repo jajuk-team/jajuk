@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -71,7 +71,7 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Gets the instance.
-   *
+   * 
    * @return singleton
    */
   public static GenreManager getInstance() {
@@ -80,9 +80,9 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Register a genre.
-   *
+   * 
    * @param sName DOCUMENT_ME
-   *
+   * 
    * @return the genre
    */
   public Genre registerGenre(String sName) {
@@ -92,10 +92,10 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Register a genre with a known id.
-   *
+   * 
    * @param sName DOCUMENT_ME
    * @param sId DOCUMENT_ME
-   *
+   * 
    * @return the genre
    */
   public Genre registerGenre(String sId, String sName) {
@@ -134,9 +134,9 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Return genre by name.
-   *
+   * 
    * @param name DOCUMENT_ME
-   *
+   * 
    * @return the genre by name
    */
   public Genre getGenreByName(String name) {
@@ -152,12 +152,12 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Change the item name.
-   *
+   * 
    * @param old DOCUMENT_ME
    * @param sNewName DOCUMENT_ME
-   *
+   * 
    * @return new item
-   *
+   * 
    * @throws JajukException the jajuk exception
    */
   public Genre changeGenreName(Genre old, String sNewName) throws JajukException {
@@ -197,9 +197,9 @@ public final class GenreManager extends ItemManager {
    * -All in upper case
    * <p>
    * example: "ROCK".
-   *
+   * 
    * @param sName DOCUMENT_ME
-   *
+   * 
    * @return the string
    */
   public static String format(String sName) {
@@ -223,7 +223,7 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Gets the genres list.
-   *
+   * 
    * @return Human readable list of registrated genres <br>
    * ordered (alphabeticaly)
    */
@@ -233,9 +233,9 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Gets the genre by id.
-   *
+   * 
    * @param sID Item ID
-   *
+   * 
    * @return item
    */
   public Genre getGenreByID(String sID) {
@@ -244,7 +244,7 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Gets the genres.
-   *
+   * 
    * @return ordered genres list
    */
   @SuppressWarnings("unchecked")
@@ -254,7 +254,7 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Gets the genres iterator.
-   *
+   * 
    * @return genres iterator
    */
   @SuppressWarnings("unchecked")

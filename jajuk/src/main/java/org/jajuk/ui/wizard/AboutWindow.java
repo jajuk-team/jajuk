@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -48,6 +48,7 @@ import org.jfree.ui.about.SystemPropertiesPanel;
  * Help perspective *
  */
 public class AboutWindow extends JajukJDialog {
+  
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -42,15 +42,13 @@ public class TransferableTableRows implements Transferable {
   public static final DataFlavor ROW_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType,
       "Row");
 
-  /**
-   * Transferable model
-   */
+  /** Transferable model. */
   private List<Item> items;
 
   /**
    * Instantiates a new transferable table row.
    * 
-   * @param oData DOCUMENT_ME
+   * @param items DOCUMENT_ME
    */
   public TransferableTableRows(List<Item> items) {
     this.items = items;
@@ -93,6 +91,8 @@ public class TransferableTableRows implements Transferable {
   }
 
   /**
+   * Gets the user object.
+   * 
    * @return transferable model
    */
   public Object getUserObject() {

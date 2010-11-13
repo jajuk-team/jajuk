@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -357,8 +357,9 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
   }
 
   /**
-   * Invert current window visibility with a left click on the tray icon
-   * @param e
+   * Invert current window visibility with a left click on the tray icon.
+   * 
+   * @param e DOCUMENT_ME
    */
   private void showHideWindow(MouseEvent e) {
     WindowStateDecorator windowDecorator = null;

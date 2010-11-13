@@ -16,24 +16,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.util.error;
 
 /**
- * Error in lyrics persistence
+ * Error in lyrics persistence.
  */
 public class LyricsPersistenceException extends Exception {
 
-  /**
-   * Default serial UID
-   */
+  /** Default serial UID. */
   private static final long serialVersionUID = 1L;
 
   /**
-   * @param code
-   * @param pMessage
-   * @param pCause
+   * The Constructor.
+   * 
+   * @param pMessage DOCUMENT_ME
    */
   public LyricsPersistenceException(String pMessage) {
     super(pMessage);

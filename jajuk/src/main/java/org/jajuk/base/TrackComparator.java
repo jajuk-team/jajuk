@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -42,23 +42,32 @@ public class TrackComparator implements Comparator<Track>, Serializable {
    * Sorting methods constants.
    */
   public enum TrackComparatorType {
+    
     /** Compare first based on the genre, then on artist and then on album. */
     GENRE_ARTIST_ALBUM,
+    
     /** Compare based on artist and then album. */
     ARTIST_ALBUM,
+    
     /** Compare only on album. */
     ALBUM,
+    
     /** Compare only on year. */
     YEAR_ALBUM,
+    
     /** Compare only on the discovery date of the album. */
     DISCOVERY_ALBUM,
+    
     /** Compare on the rate and then the album. */
     RATE_ALBUM,
+    
     /** Compare on the number of hits and then on the album. */
     HITS_ALBUM,
+    
     /** Compare on disc number and order of the track in the album. */
     ORDER,
-    /** Compare to find identifical tracks */
+    
+    /** Compare to find identifical tracks. */
     ALMOST_IDENTICAL
   }
 
@@ -68,8 +77,7 @@ public class TrackComparator implements Comparator<Track>, Serializable {
   /**
    * Constructor.
    * 
-   * @param comparatorType
-   *          Specifies the type of comparison that should be done.
+   * @param comparatorType Specifies the type of comparison that should be done.
    */
   public TrackComparator(TrackComparatorType comparatorType) {
     this.comparatorType = comparatorType;
@@ -79,11 +87,10 @@ public class TrackComparator implements Comparator<Track>, Serializable {
    * Gets the compare string based on the input-track and the type of comparison
    * that is selected when constructing the comparator.
    * 
-   * @param track
-   *          The track that should be used for constructing the string.
+   * @param track The track that should be used for constructing the string.
    * 
    * @return Hashcode string used to compare two tracks in accordance with the
-   *         sorting method
+   * sorting method
    */
   private String getCompareString(Track track) {
     String sHashCompare = null;
@@ -146,9 +153,11 @@ public class TrackComparator implements Comparator<Track>, Serializable {
   }
 
   /**
-   * Return a footprint used to find almost-identical track 
-   * @param track
-   * @return a footprint used to find almost-identical track 
+   * Return a footprint used to find almost-identical track.
+   * 
+   * @param track DOCUMENT_ME
+   * 
+   * @return a footprint used to find almost-identical track
    */
   public String buildIdenticalTestFootprint(Track track) {
     StringBuilder sb = new StringBuilder();
@@ -179,14 +188,12 @@ public class TrackComparator implements Comparator<Track>, Serializable {
    * Compares two tracks according to the type selected during constructing of
    * the comparator..
    * 
-   * @param track1
-   *          The first track for comparison.
-   * @param track2
-   *          The second track for comparison.
+   * @param track1 The first track for comparison.
+   * @param track2 The second track for comparison.
    * 
    * @return the value <code>0</code> if track1 is equal to track2; a value less
-   *         than <code>0</code> if track1 is less than track2; and a value
-   *         greater than <code>0</code> if track1 is greater than track2.
+   * than <code>0</code> if track1 is less than track2; and a value
+   * greater than <code>0</code> if track1 is greater than track2.
    */
   @Override
   public int compare(Track track1, Track track2) {

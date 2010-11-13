@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -386,6 +386,9 @@ public abstract class Wizard implements ActionListener, WindowListener {
           // nothing to do here
         }
 
+        /* (non-Javadoc)
+         * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
+         */
         @Override
         public void componentResized(ComponentEvent e) {
           Wizard.this.icon = getResizedImage(icon, jlIcon.getWidth(), jlIcon.getHeight());

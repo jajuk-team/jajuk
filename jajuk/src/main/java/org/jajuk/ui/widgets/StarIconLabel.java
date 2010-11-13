@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.widgets;
 
@@ -26,19 +26,22 @@ import java.awt.Font;
 import javax.swing.ImageIcon;
 
 /**
- * Icon Label supporting rating stars
+ * Icon Label supporting rating stars.
  */
 public class StarIconLabel extends IconLabel {
 
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /**Number of stars. */
+  /** Number of stars. */
   private int starsNumber = -1;
 
-  /** Rate **/
+  /** Rate *. */
   private int rate = 0;
 
   /**
+   * Gets the rate.
+   * 
    * @return the rate
    */
   public long getRate() {
@@ -46,20 +49,24 @@ public class StarIconLabel extends IconLabel {
   }
 
   /**
-  * @return the starsNumber
-  */
+   * Gets the stars number.
+   * 
+   * @return the starsNumber
+   */
   public int getStarsNumber() {
     return this.starsNumber;
   }
 
   /**
-   * @param icon
-   * @param sText
-   * @param cBackground
-   * @param cForeground
-   * @param font
-   * @param rate
-   * @param starNumber
+   * The Constructor.
+   * 
+   * @param icon DOCUMENT_ME
+   * @param sText DOCUMENT_ME
+   * @param cBackground DOCUMENT_ME
+   * @param cForeground DOCUMENT_ME
+   * @param font DOCUMENT_ME
+   * @param rate DOCUMENT_ME
+   * @param starNumber DOCUMENT_ME
    */
   public StarIconLabel(ImageIcon icon, String sText, Color cBackground, Color cForeground,
       Font font, int rate, int starNumber) {

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -179,7 +179,7 @@ public enum JajukEvents {
   /** A file has been copied (used by prepare party). */
   FILE_COPIED,
 
-  /** A file is converted from one media type to another */
+  /** A file is converted from one media type to another. */
   FILE_CONVERSION,
 
   /** Covers should be refreshed. */

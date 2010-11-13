@@ -39,9 +39,9 @@ public interface ILyricsPersister {
    * Commit lyrics for a given filename <br>
    * Returns true if commited correctly, false otherwise.
    * 
-   * @param track's artist
-   * @param track's title
    * @param lyrics lyrics as a string
+   * @param artist DOCUMENT_ME
+   * @param title DOCUMENT_ME
    * 
    * @return true if OK, false otherwise
    */
@@ -51,8 +51,6 @@ public interface ILyricsPersister {
    * Deletes Lyrics that user has saved <br>
    * in Tag or in a Txt file.
    * Returns true if deleted correctly, false otherwise.
-   * 
-   * @param provider DOCUMENT_ME
    * 
    * @return true, if delete lyrics
    */

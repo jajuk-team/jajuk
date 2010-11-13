@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.helpers;
 
@@ -41,11 +41,13 @@ import java.awt.event.MouseEvent;
  * </p>
  */
 public class JajukMouseAdapter extends MouseAdapter {
-  /**
-   * Whether a popup request gesture has been recognized
-   */
+  
+  /** Whether a popup request gesture has been recognized. */
   private boolean popupTrigger = false;
 
+  /* (non-Javadoc)
+   * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
+   */
   @Override
   public void mousePressed(final MouseEvent e) {
     // Note that this method is not final as we sometimes need additional tests
@@ -60,6 +62,9 @@ public class JajukMouseAdapter extends MouseAdapter {
     }
   }
 
+  /* (non-Javadoc)
+   * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
+   */
   @Override
   public void mouseReleased(final MouseEvent e) {
     // Note that this method is not final as we sometimes need additional tests
@@ -81,10 +86,9 @@ public class JajukMouseAdapter extends MouseAdapter {
   }
 
   /**
-   * What do do when a popup has been required ?
+   * What do do when a popup has been required ?.
    * 
-   * @param e
-   *          the mouse event
+   * @param e the mouse event
    */
   public void handlePopup(final MouseEvent e) {
     // Not abstract as we don't want to force user to override every methods
@@ -92,10 +96,9 @@ public class JajukMouseAdapter extends MouseAdapter {
 
   /**
    * What do do when an action (left click under Windows/Linux) has been
-   * required with a single click ?
+   * required with a single click ?.
    * 
-   * @param e
-   *          the mouse event
+   * @param e the mouse event
    */
   public void handleActionSingleClick(final MouseEvent e) {
     // Not abstract as we don't want to force user to override every methods
@@ -103,10 +106,9 @@ public class JajukMouseAdapter extends MouseAdapter {
 
   /**
    * What do do when an action (left click under Windows/Linux) has been
-   * required with several clicks ?
+   * required with several clicks ?.
    * 
-   * @param e
-   *          the mouse event
+   * @param e the mouse event
    */
   public void handleActionSeveralClicks(final MouseEvent e) {
     // Not abstract as we don't want to force user to override every methods
@@ -120,8 +122,7 @@ public class JajukMouseAdapter extends MouseAdapter {
    * or handleActionSingleClick() as both will be executed.
    * <p>
    * 
-   * @param e
-   *          the mouse event
+   * @param e the mouse event
    */
   public void handleAction(final MouseEvent e) {
     // Not abstract as we don't want to force user to override every methods

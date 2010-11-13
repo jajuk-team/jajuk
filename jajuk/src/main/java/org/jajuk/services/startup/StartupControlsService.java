@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -65,6 +65,7 @@ public class StartupControlsService {
    * 
    * @throws InterruptedException the interrupted exception
    * @throws Exception    * @throws IOException Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void initialCheckups() throws IOException, InterruptedException {
     // Populate workspace path

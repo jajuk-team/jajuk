@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -433,9 +433,12 @@ public final class UtilFeatures {
   }
 
   /**
-   * Shuffle a list of items and ensure that final list first element 
+   * Shuffle a list of items and ensure that final list first element
    * is different from the initial list's one
-   * <p>The list should not be void</p>  
+   * <p>The list should not be void</p>.
+   * 
+   * @param list DOCUMENT_ME
+   * 
    * @return shuffled list
    */
   public static void forcedShuffle(List<StackItem> list) {
@@ -448,8 +451,12 @@ public final class UtilFeatures {
   }
 
   /**
-   * Return a flat list of files for given input list without duplicates nor sorting
+   * Return a flat list of files for given input list without duplicates nor sorting.
+   * 
+   * @param in DOCUMENT_ME
+   * 
    * @return a flat list of files for given input list
+   * 
    * @throws JajukException if a playlist cannot be read
    */
   public static List<File> getFilesForItems(List<Item> in) throws JajukException {

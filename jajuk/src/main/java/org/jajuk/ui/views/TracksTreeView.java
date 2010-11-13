@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -93,7 +93,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** Sorting method selection combo */
+  /** Sorting method selection combo. */
   private JComboBox jcbSort;
 
   /*
@@ -535,10 +535,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   /**
    * Utility method used by populateByDiscovery method.
    * 
-   * @param node
-   *          DOCUMENT_ME
-   * @param track
-   *          DOCUMENT_ME
+   * @param node DOCUMENT_ME
+   * @param track DOCUMENT_ME
    */
   @SuppressWarnings("unchecked")
   private void addTrackAndAlbum(DefaultMutableTreeNode node, Track track) {
@@ -669,8 +667,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     /**
      * Handle selected.
      * 
-     * @param tpSelected
-     *          DOCUMENT_ME
+     * @param tpSelected DOCUMENT_ME
      * 
      * @return the int
      */
@@ -712,7 +709,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   }
 
   /**
-   * Tracks Tree view mouse adapter
+   * Tracks Tree view mouse adapter.
    */
   class TracksMouseAdapter extends JajukMouseAdapter {
 
@@ -722,14 +719,16 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     /**
      * Instantiates a new tracks mouse adapter.
      * 
-     * @param jmiShowAlbumDetails
-     *          DOCUMENT_ME
+     * @param jmiShowAlbumDetails DOCUMENT_ME
      */
     public TracksMouseAdapter(JMenuItem jmiShowAlbumDetails) {
       super();
       this.jmiShowAlbumDetails = jmiShowAlbumDetails;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.ui.helpers.JajukMouseAdapter#handleActionSeveralClicks(java.awt.event.MouseEvent)
+     */
     @Override
     public void handleActionSeveralClicks(final MouseEvent e) {
       TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
@@ -752,6 +751,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
       }
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.ui.helpers.JajukMouseAdapter#handlePopup(java.awt.event.MouseEvent)
+     */
     @Override
     public void handlePopup(final MouseEvent e) {
       TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
@@ -783,8 +785,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     /**
      * Builds the menu.
      * 
-     * @param e
-     *          DOCUMENT_ME
+     * @param e DOCUMENT_ME
      */
     private void buildMenu(final MouseEvent e) {
       if (paths[0].getLastPathComponent() instanceof TrackNode) {

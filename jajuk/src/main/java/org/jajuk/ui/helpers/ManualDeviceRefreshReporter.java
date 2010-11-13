@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -50,8 +50,7 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
   /**
    * Instantiates a new manual device refresh reporter.
    * 
-   * @param device
-   *          DOCUMENT_ME
+   * @param device DOCUMENT_ME
    */
   public ManualDeviceRefreshReporter(Device device) {
     super(device);
@@ -163,11 +162,7 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
     }
   }
 
-  /**
-   * This timer limit dialog title changes (this can have side effect on
-   * performances or other in some window managers. Too many window title change
-   * causes others menu bar items freezes under KDE for ie)
-   */
+  /** This timer limit dialog title changes (this can have side effect on performances or other in some window managers. Too many window title change causes others menu bar items freezes under KDE for ie) */
   Timer updateDialogTitle = new Timer(1000, new ActionListener() {
 
     @Override

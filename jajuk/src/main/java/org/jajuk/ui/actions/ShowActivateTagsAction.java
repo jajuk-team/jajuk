@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 5520 $
+ *  $Revision$
  */
 package org.jajuk.ui.actions;
 
@@ -46,8 +46,7 @@ public class ShowActivateTagsAction extends JajukAction {
   /**
    * Invoked when an action occurs.
    * 
-   * @param evt
-   *          DOCUMENT_ME
+   * @param evt DOCUMENT_ME
    */
   @Override
   public void perform(ActionEvent evt) {

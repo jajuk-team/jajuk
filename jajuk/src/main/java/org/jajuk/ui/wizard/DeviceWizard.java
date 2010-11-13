@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -102,10 +102,10 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   /** Auto-refresh interval. */
   private final JTextField jtfAutoRefresh;
 
-  /** Device sync checkbox */
+  /** Device sync checkbox. */
   private final JCheckBox jcboxSynchronized;
 
-  /** Other device combo */
+  /** Other device combo. */
   private final JComboBox jcbSynchronized;
 
   /** Bidi sync choice. */
@@ -129,10 +129,10 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   /** Initial URL*. */
   private String sInitialURL;
 
-  /** A convenient NumberFormat instance */
+  /** A convenient NumberFormat instance. */
   private NumberFormat nformat = NumberFormat.getInstance();
 
-  /** Validation group */
+  /** Validation group. */
   private ValidationGroup vg;
 
   /**
@@ -370,8 +370,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   /**
    * Handle url.
    * 
-   * @throws HeadlessException
-   *           the headless exception
+   * @throws HeadlessException the headless exception
    */
   private void handleUrl() throws HeadlessException {
     final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
@@ -484,8 +483,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   /**
    * Update widgets for device property state.
    * 
-   * @param device1
-   *          DOCUMENT_ME
+   * @param device1 DOCUMENT_ME
    */
   public void updateWidgets(final Device device1) {
     bNew = false;

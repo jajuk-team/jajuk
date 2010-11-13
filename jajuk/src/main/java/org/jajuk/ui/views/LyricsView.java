@@ -125,15 +125,25 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
   /** Edition toolbar. */
   private JToolBar toolbarEdit;
 
+  /** DOCUMENT_ME. */
   private boolean changeDetected = false;
 
+  /**
+   * DOCUMENT_ME.
+   */
   class LyricsUpdateThread extends Thread {
 
+    /**
+     * Instantiates a new lyrics update thread.
+     */
     LyricsUpdateThread() {
       super("Lyrics Update Thread-" + file.getTrack().getArtist().getName2() + "-"
           + file.getTrack().getName());
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Thread#run()
+     */
     @Override
     public void run() {
       // Launch lyrics service asynchronously and out of the
@@ -285,8 +295,9 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
   }
 
   /**
-   * Get the GUI provider
+   * Get the GUI provider.
    * 
+   * @return the jajuk provider
    */
   public JajukLyricsProvider getJajukProvider() {
     JajukLyricsProvider jajukLyricsProvider = new JajukLyricsProvider();
@@ -298,8 +309,7 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
   /**
    * Switch from lyrics edit to view mode.
    * 
-   * @param callUpdate
-   *          Whether to call an update after switching
+   * @param callUpdate Whether to call an update after switching
    */
   public void exitEditLyrics(boolean callUpdate) {
     changeDetected = false;
@@ -366,7 +376,7 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
   }
 
   /**
-   * Reset GUI in case of Internet disabled
+   * Reset GUI in case of Internet disabled.
    */
   private void resetNoInternet() {
     SwingUtilities.invokeLater(new Runnable() {
@@ -387,7 +397,7 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
   }
 
   /**
-   * Show buzy label when searching lyrics
+   * Show buzy label when searching lyrics.
    */
   private void showBuzyLabel() {
     SwingUtilities.invokeLater(new Runnable() {
@@ -425,7 +435,7 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
   }
 
   /**
-   * Compute buttons states
+   * Compute buttons states.
    */
   private void updateButtonsState() {
     // Delete button
@@ -494,18 +504,27 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
     return Messages.getString("LyricsView.0");
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
+   */
   @Override
   public void removeUpdate(DocumentEvent e) {
     changeDetected = true;
     updateButtonsState();
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
+   */
   @Override
   public void insertUpdate(DocumentEvent e) {
     changeDetected = true;
     updateButtonsState();
   }
 
+  /* (non-Javadoc)
+   * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
+   */
   @Override
   public void changedUpdate(DocumentEvent e) {
     changeDetected = true;

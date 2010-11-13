@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -113,6 +113,10 @@ public final class PerspectiveManager {
     }
   }
 
+  /**
+   * Reset perspectives.
+   * DOCUMENT_ME
+   */
   private static void resetPerspectives() {
     List<String> perspectivesToReset = Arrays.asList(PerspectiveManager.perspectivesToReset);
     for (IPerspective perspective : getPerspectives()) {

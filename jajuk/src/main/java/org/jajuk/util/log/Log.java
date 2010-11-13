@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -38,6 +38,7 @@ import org.jajuk.util.error.JajukException;
  */
 public final class Log {
 
+  /** The Constant FONT_END.  DOCUMENT_ME */
   private static final String FONT_END = "</font>";
 
   /** The Constant LOGGER_APACHE_HTTPCLIENT.  DOCUMENT_ME */
@@ -72,7 +73,7 @@ public final class Log {
   private static final String FULL_QUALIFIED_CLASS_NAME = Log.class.getName();
 
   /**
-   * Log system initialization
+   * Log system initialization.
    */
   public static void init() {
     try {

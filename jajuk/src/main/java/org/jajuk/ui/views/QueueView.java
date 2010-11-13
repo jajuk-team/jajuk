@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -93,7 +93,7 @@ public class QueueView extends PlaylistView {
   /** DOCUMENT_ME. */
   private JajukToggleButton jtbAutoScroll;
 
-  /** Last scrolled-item **/
+  /** Last scrolled-item *. */
   private StackItem lastScrolledItem;
 
   /*
@@ -383,7 +383,7 @@ public class QueueView extends PlaylistView {
   }
 
   /**
-   * Auto scroll to played track if option is enabled
+   * Auto scroll to played track if option is enabled.
    */
   private void autoScroll() {
 
@@ -551,8 +551,7 @@ public class QueueView extends PlaylistView {
   /**
    * Called when table selection changed.
    * 
-   * @param e
-   *          DOCUMENT_ME
+   * @param e DOCUMENT_ME
    */
   @Override
   public void valueChanged(ListSelectionEvent e) {
@@ -634,8 +633,10 @@ public class QueueView extends PlaylistView {
   }
 
   /**
-   * Return whether a given row selection contains the current played track
+   * Return whether a given row selection contains the current played track.
+   * 
    * @param selection the selection
+   * 
    * @return whether a given row selection contains the current played track
    */
   private boolean selectionContainsCurrentTrack(ListSelectionModel selection) {

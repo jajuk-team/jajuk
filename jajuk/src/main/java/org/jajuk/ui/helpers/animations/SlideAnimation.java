@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -62,7 +62,7 @@ public class SlideAnimation extends AbstractAnimation {
   /** DOCUMENT_ME. */
   private Rectangle windowBounds;
 
-  /** Time (ms) of a frame displaying */
+  /** Time (ms) of a frame displaying. */
   private static final int FRAME_DURATION = 5;
 
   /**

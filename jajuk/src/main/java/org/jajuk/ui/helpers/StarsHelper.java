@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.helpers;
 
@@ -49,12 +49,12 @@ public class StarsHelper {
       new HashMap<Long, StarIconLabel>() };
 
   /**
-  * Gets the icon.
-  * 
-  * @param starsNumber DOCUMENT_ME
-  * 
-  * @return the icon
-  */
+   * Gets the icon.
+   * 
+   * @param starsNumber DOCUMENT_ME
+   * 
+   * @return the icon
+   */
   static public ImageIcon getIcon(int starsNumber) {
     switch (starsNumber) {
     case -1:
@@ -75,10 +75,12 @@ public class StarsHelper {
   }
 
   /**
-  * Gets the stars number.
-  * 
-  * @return Number of stars based on the rate of this item
-  */
+   * Gets the stars number.
+   * 
+   * @param item DOCUMENT_ME
+   * 
+   * @return Number of stars based on the rate of this item
+   */
   static public int getStarsNumber(Item item) {
     long lInterval = 1;
     if (item instanceof Track) {
@@ -103,6 +105,8 @@ public class StarsHelper {
 
   /**
    * Gets the stars.
+   * 
+   * @param item DOCUMENT_ME
    * 
    * @return the stars icon or ban icon if banned
    */

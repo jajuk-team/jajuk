@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -212,10 +212,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   /** DOCUMENT_ME. */
   private JTextField jtfFrameTitle;
 
-  /** Balloon notifier pattern text field */
+  /** Balloon notifier pattern text field. */
   private JTextField jtfBalloonNotifierPattern;
 
-  /** Information pattern textfield */
+  /** Information pattern textfield. */
   private JTextField jtfInformationPattern;
 
   /** DOCUMENT_ME. */
@@ -419,10 +419,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   /** DOCUMENT_ME. */
   private JTextField jtfExplorerPath;
 
-  /**
-   * whether the "theme will be token into account" message has been already
-   * displayed.
-   */
+  /** Whether the "theme will be token into account" message has been already displayed. */
   boolean bLAFMessage = false;
 
   /** DOCUMENT_ME. */
@@ -590,7 +587,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   }
 
   /**
-   * Apply parameters. 
+   * Apply parameters.
    */
   private void applyParameters() {
     // **Read all parameters**

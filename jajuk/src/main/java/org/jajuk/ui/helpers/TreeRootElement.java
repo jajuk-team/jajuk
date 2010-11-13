@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -38,10 +38,10 @@ public class TreeRootElement extends DefaultMutableTreeNode {
   }
 
   /**
-  * The Constructor.
-  * 
-  * @param userObject DOCUMENT_ME
-  */
+   * The Constructor.
+   * 
+   * @param userObject DOCUMENT_ME
+   */
   public TreeRootElement(Object userObject) {
     super(userObject);
   }

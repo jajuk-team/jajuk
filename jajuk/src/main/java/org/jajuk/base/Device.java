@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -144,7 +144,9 @@ public class Device extends PhysicalItem implements Comparable<Device> {
 
   /**
    * Scan directories to cleanup removed files and playlists.
+   * 
    * @param dirsToRefresh list of the directory to refresh, null if all of them
+   * 
    * @return whether some items have been removed
    */
   public boolean cleanRemovedFiles(List<Directory> dirsToRefresh) {
@@ -173,6 +175,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
 
   /**
    * Walk through all Playlists and remove the ones for the current device.
+   * 
    * @param dirsToRefresh list of the directory to refresh, null if all of them
    * 
    * @return true if there was any playlist removed
@@ -206,6 +209,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
 
   /**
    * Walk through tall Files and remove the ones for the current device.
+   * 
    * @param dirsToRefresh list of the directory to refresh, null if all of them
    * 
    * @return true if there was any file removed.
@@ -242,7 +246,9 @@ public class Device extends PhysicalItem implements Comparable<Device> {
 
   /**
    * Walks through all directories and removes the ones for this device.
+   * 
    * @param dirsToRefresh list of the directory to refresh, null if all of them
+   * 
    * @return true if there was any directory removed
    */
   private boolean cleanDirectories(List<Directory> dirsToRefresh) {
@@ -321,7 +327,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Gets the directories directly under the device root (not recursive)
+   * Gets the directories directly under the device root (not recursive).
    * 
    * @return the directories
    */
@@ -492,7 +498,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Manual refresh, displays a dialog
+   * Manual refresh, displays a dialog.
    * 
    * @param bAsk ask for refreshing type (deep or fast ?)
    * @param bAfterMove is this refresh done after a device location change ?
@@ -612,8 +618,13 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Check that the device is available and not void
+   * Check that the device is available and not void.
+   * 
+   * @param bManual DOCUMENT_ME
+   * 
    * @return whether the device is ready for mounting
+   * 
+   * @throws JajukException the jajuk exception
    */
   private boolean checkDevice(boolean bManual) throws JajukException {
     try {
@@ -650,7 +661,9 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * Mount the device.
    * 
    * @param bManual set whether mount is manual or auto
+   * 
    * @return whether the device has been mounted
+   * 
    * @throws Exception if device cannot be mounted
    */
   public boolean mount(final boolean bManual) throws Exception {
@@ -716,7 +729,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Refresh : scan the device to find tracks. 
+   * Refresh : scan the device to find tracks.
    * This method is only called from GUI. auto-refresh uses refreshCommand() directly.
    * 
    * @param bAsynchronous :
@@ -742,8 +755,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Deep / full Refresh with GUI 
-   * 
+   * Deep / full Refresh with GUI.
    */
   public void manualRefreshDeep() {
     final Thread t = new Thread("Device Deep Refresh Thread for : " + name) {
@@ -762,6 +774,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * @param bDeepScan whether it is a deep refresh request or only fast
    * @param bManual whether it is a manual refresh or auto
    * @param dirsToRefresh list of the directory to refresh, null if all of them
+   * 
    * @return true if some changes occurred in device
    */
   public synchronized boolean refreshCommand(final boolean bDeepScan, final boolean bManual,
@@ -860,9 +873,11 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Return list of albums for a list of directories 
+   * Return list of albums for a list of directories.
+   * 
    * @param dirs the directories to extract albums from recursively
-   * @return list of albums for a list of directories 
+   * 
+   * @return list of albums for a list of directories
    */
   private Set<Album> getAlbumsForDirectories(List<Directory> dirs) {
     Set<Album> out = new HashSet<Album>(dirs.size() * 10);

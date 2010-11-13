@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@ import org.jajuk.util.log.Log;
  */
 public class Alarm {
 
-  /** The files to play */
+  /** The files to play. */
   private List<File> alToPlay;
 
   /** The webradio to play. */
@@ -68,7 +68,7 @@ public class Alarm {
    * @param aTime DOCUMENT_ME
    * @param radio DOCUMENT_ME
    * @param mode DOCUMENT_ME
-   **/
+   */
   public Alarm(java.util.Date aTime, WebRadio radio, String mode) {
     this.aTime = aTime;
     this.radio = radio;

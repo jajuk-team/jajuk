@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -34,6 +34,8 @@ public final class DBusManager {
    * 
    * This call will usually not return an exception if there is a problem with
    * D-Bus, but will only report problems to the Log.
+   * 
+   * @throws Exception the exception
    * 
    * @see disconnect()
    */

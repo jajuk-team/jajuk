@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -97,8 +97,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   /**
    * CDDB wizard.
    * 
-   * @param tracks
-   *          DOCUMENT_ME
+   * @param tracks DOCUMENT_ME
    */
   public CDDBWizard(final List<Track> tracks) {
     super();
@@ -318,15 +317,12 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   /**
    * Retag internal.
    * 
-   * @param iRow
-   *          DOCUMENT_ME
-   * @param trackin
-   *          DOCUMENT_ME
+   * @param iRow DOCUMENT_ME
+   * @param trackin DOCUMENT_ME
    * 
    * @return the track
    * 
-   * @throws JajukException
-   *           the jajuk exception
+   * @throws JajukException the jajuk exception
    */
   private Track retagInternal(final int iRow, final Track trackin) throws JajukException {
     Track track = trackin;

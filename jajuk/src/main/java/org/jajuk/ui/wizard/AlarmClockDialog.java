@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -64,9 +64,7 @@ import org.jajuk.util.log.Log;
  */
 public class AlarmClockDialog extends JajukJDialog implements ActionListener, ItemListener, Const {
 
-  /** 
-   * Constant for MigLayout hint.
-   */
+  /** Constant for MigLayout hint. */
   private static final String LEFT_WRAP = "left,wrap";
 
   /** Generated serialVersionUID. */
@@ -108,6 +106,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
   /** DOCUMENT_ME. */
   private SearchResult sr;
 
+  /** DOCUMENT_ME. */
   private OKCancelPanel okCancelPanel;
 
   /**

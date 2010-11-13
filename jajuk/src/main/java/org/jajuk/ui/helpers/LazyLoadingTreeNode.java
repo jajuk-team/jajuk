@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2010 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.helpers;
 
@@ -31,17 +31,14 @@ import javax.swing.tree.MutableTreeNode;
  * created a lot.
  */
 public abstract class LazyLoadingTreeNode extends DefaultMutableTreeNode {
+  
+  /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
   /**
    * Instantiates a new transferable tree node.
    * 
-   * @param userObject
-   *          an Object provided by the user that constitutes the node's data
-   * 
-   * @param model
-   *          The model from the JTree is required during lazy loading of
-   *          child-nodes.
+   * @param userObject an Object provided by the user that constitutes the node's data
    */
   public LazyLoadingTreeNode(Object userObject) {
     super(userObject);
@@ -58,9 +55,11 @@ public abstract class LazyLoadingTreeNode extends DefaultMutableTreeNode {
   }
 
   /**
-   * If the 
-   * @see #getAllowsChildren()
+   * If the.
+   * 
    * @return false, this node can't be a leaf
+   * 
+   * @see #getAllowsChildren()
    */
   @Override
   public boolean isLeaf() {
@@ -74,9 +73,8 @@ public abstract class LazyLoadingTreeNode extends DefaultMutableTreeNode {
    * This method will be executed in a background thread. If you have to do some
    * GUI stuff use {@link SwingUtilities#invokeLater(Runnable)}
    * 
-   * @param tree
-   *          The model of the tree.
-   *          
+   * @param model DOCUMENT_ME
+   * 
    * @return The created nodes.
    */
   public abstract MutableTreeNode[] loadChildren(DefaultTreeModel model);
