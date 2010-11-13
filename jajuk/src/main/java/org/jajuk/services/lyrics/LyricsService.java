@@ -167,7 +167,7 @@ public final class LyricsService {
       }
     }
     if (commitOK) {
-      Log.info("Lyrics successfully commited for file : " + provider.getFile().getAbsolutePath());
+      Log.info("Lyrics successfully commited to : " + destinationPath);
       InformationJPanel.getInstance().setMessage(
           Messages.getString("Success") + " [" + destinationPath + "]", MessageType.INFORMATIVE);
     } else {
