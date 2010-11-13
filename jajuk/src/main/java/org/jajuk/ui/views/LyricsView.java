@@ -52,6 +52,7 @@ import org.jajuk.services.lyrics.LyricsService;
 import org.jajuk.services.lyrics.providers.GenericWebLyricsProvider;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;
 import org.jajuk.services.lyrics.providers.JajukLyricsProvider;
+import org.jajuk.services.lyrics.providers.TxtLyricsProvider;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.actions.ActionManager;
@@ -441,10 +442,12 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
     // Delete button
     jbDelete.setEnabled(file != null);
 
-    // Save button : enabled only for changes in the text area or if we just got lyrics from the web
+    // Save button : enabled only for changes in the text area or 
+    // if we just got lyrics from the web or form a txt file 
+    // (so user can try to commit it to the tag)
     ILyricsProvider provider = LyricsService.getCurrentProvider();
     jbSave.setEnabled((jtbEdit.isSelected() && changeDetected)
-        || provider instanceof GenericWebLyricsProvider);
+        || provider instanceof GenericWebLyricsProvider || provider instanceof TxtLyricsProvider);
   }
 
   /**
