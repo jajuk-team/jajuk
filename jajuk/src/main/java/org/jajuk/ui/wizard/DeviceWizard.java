@@ -239,7 +239,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
     add(jcbSynchronized, "grow,wrap");
     add(jrbUnidirSynchro, "left,gap left 20,span,wrap");
     add(jrbBidirSynchro, "left,gap left 20,span,wrap");
-    add(vp, "height 25!,span,wrap");
+    add(vp, "height 50!,span,wrap");
     add(okp, "span,right");
 
     // Set default behaviors
@@ -310,7 +310,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   @Override
@@ -369,7 +369,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
 
   /**
    * Handle url.
-   * 
+   *
    * @throws HeadlessException the headless exception
    */
   private void handleUrl() throws HeadlessException {
@@ -482,7 +482,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
 
   /**
    * Update widgets for device property state.
-   * 
+   *
    * @param device1 DOCUMENT_ME
    */
   public void updateWidgets(final Device device1) {
