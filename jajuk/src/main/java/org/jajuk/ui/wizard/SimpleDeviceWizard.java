@@ -158,6 +158,11 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
       }
     } else if (e.getSource() == okp.getOKButton()) {
       try {
+        if(fDir == null) {
+          Messages.showErrorMessage(143);
+          return;
+        }
+
         // Create a directory device
         final Device device = DeviceManager.getInstance().registerDevice(deviceName, 0,
             fDir.getAbsolutePath());
