@@ -58,8 +58,8 @@ import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukJToolbar;
 import org.jajuk.ui.widgets.JajukToggleButton;
@@ -171,7 +171,7 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.IView#initUI()
    */
   @Override
@@ -214,7 +214,9 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
 
     // Menu items
     jmiCopyToClipboard = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
-    jmiLaunchInBrowser = new JMenuItem(ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER));
+    if (UtilSystem.isBrowserSupported()) {
+      jmiLaunchInBrowser = new JMenuItem(ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER));
+    }
 
     // Add items
     jpMain = new JPanel(new MigLayout("insets 5,gapx 3, gapy 5,filly", "[95][grow]", "[][grow]"));
@@ -297,7 +299,7 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
 
   /**
    * Get the GUI provider.
-   * 
+   *
    * @return the jajuk provider
    */
   public JajukLyricsProvider getJajukProvider() {
@@ -309,7 +311,7 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
 
   /**
    * Switch from lyrics edit to view mode.
-   * 
+   *
    * @param callUpdate Whether to call an update after switching
    */
   public void exitEditLyrics(boolean callUpdate) {
@@ -324,7 +326,7 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Observer#getRegistrationKeys()
    */
   @Override
@@ -340,7 +342,7 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
   @Override
@@ -416,7 +418,7 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
 
   /**
    * Reset webradio.
-   * 
+   *
    * @param radio DOCUMENT_ME
    */
   private void resetWebradio(final WebRadio radio) {
@@ -443,8 +445,8 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
     // Delete button
     jbDelete.setEnabled(file != null && !(provider instanceof GenericWebLyricsProvider));
 
-    // Save button : enabled only for changes in the text area or 
-    // if we just got lyrics from the web or form a txt file 
+    // Save button : enabled only for changes in the text area or
+    // if we just got lyrics from the web or form a txt file
     // (so user can try to commit it to the tag)
     jbSave.setEnabled((jtbEdit.isSelected() && changeDetected)
         || provider instanceof GenericWebLyricsProvider || provider instanceof TxtLyricsProvider);
@@ -499,7 +501,7 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.IView#getDesc()
    */
   @Override
