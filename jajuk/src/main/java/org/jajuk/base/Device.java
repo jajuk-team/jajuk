@@ -123,6 +123,9 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   /** Refresh deepness choice *. */
   private int choice = Device.OPTION_REFRESH_DEEP;
 
+  /** [PERF] cache rootDir directory */
+  private Directory rootDir;
+
   /**
    * Device constructor.
    * 
@@ -437,7 +440,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * @return Associated root directory
    */
   public Directory getRootDirectory() {
-    return DirectoryManager.getInstance().getDirectoryForIO(getFio(), this);
+    if (rootDir == null) {
+      rootDir = DirectoryManager.getInstance().getDirectoryForIO(getFio(), this);
+    }
+    return rootDir;
   }
 
   /**
@@ -937,6 +943,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     for (final Directory dir : DirectoryManager.getInstance().getDirectories()) {
       dir.reset();
     }
+    // Reset the root dir
+    rootDir = null;
   }
 
   /**

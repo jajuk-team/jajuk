@@ -124,7 +124,7 @@ public final class DirectoryManager extends ItemManager {
   }
 
   /**
-   * Gets the directories.
+   * Gets a shallow copy of all directories.
    * 
    * @return ordered directories list
    */
@@ -163,20 +163,13 @@ public final class DirectoryManager extends ItemManager {
    * @return Directory matching the io file
    */
   public Directory getDirectoryForIO(final java.io.File fio, Device device) {
-    lock.readLock().lock();
-    try {
-      ReadOnlyIterator<Directory> dirs = getDirectoriesIterator();
-      while (dirs.hasNext()) {
-        Directory dir = dirs.next();
-        // we have to test the device because of cdroms : all CD have the same IO
-        if (dir.getFio().equals(fio) && dir.getDevice().equals(device)) {
-          return dir;
-        }
+    for (Directory dir : getDirectories()) {
+      // we have to test the device because of cdroms : all CD have the same IO
+      if (dir.getFio().equals(fio) && dir.getDevice().equals(device)) {
+        return dir;
       }
-      return null;
-    } finally {
-      lock.readLock().unlock();
     }
+    return null;
   }
 
   /*

@@ -892,7 +892,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       } else {
         // Regular selection, one or more nodes
         for (TreePath element : paths) {
-          // return all childs nodes recursively, do not count on the tree's
+          // return all child nodes recursively, do not count on the tree's
           // model as it is lazy loaded
           Object o = element.getLastPathComponent();
           Item item = (Item) ((DefaultMutableTreeNode) o).getUserObject();
