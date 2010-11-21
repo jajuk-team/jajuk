@@ -160,10 +160,10 @@ public interface Const {
   String JAJUK_VERSION = "VERSION_REPLACED_BY_ANT";
 
   /** DOCUMENT_ME. */
-  String JAJUK_CODENAME = "Killer Queen";
+  String JAJUK_CODENAME = "Gute Laune";
 
   /** Extention to the .jajuk_test directory in test mode only */
-  String TEST_VERSION = "1.9";
+  String TEST_VERSION = "1.10";
 
   /** DOCUMENT_ME. */
   String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
