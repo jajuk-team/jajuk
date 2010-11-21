@@ -247,54 +247,11 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
     // Add devices
     List<Device> devices = DeviceManager.getInstance().getDevices();
     for (Device device : devices) {
-      ImageIcon icon = IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED);
-      String sTooltip = "";
-      switch ((int) device.getType()) {
-      case 0:
-        sTooltip = Messages.getString("Device_type.directory");
-        if (device.isMounted()) {
-          icon = IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED);
-        } else {
-          icon = IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_UNMOUNTED);
-        }
-        break;
-      case 1:
-        sTooltip = Messages.getString("Device_type.file_cd");
-        if (device.isMounted()) {
-          icon = IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED);
-        } else {
-          icon = IconLoader.getIcon(JajukIcons.DEVICE_CD_UNMOUNTED);
-        }
-        break;
-      case 2:
-        sTooltip = Messages.getString("Device_type.network_drive");
-        if (device.isMounted()) {
-          icon = IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_MOUNTED);
-        } else {
-          icon = IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_UNMOUNTED);
-        }
-        break;
-      case 3:
-        sTooltip = Messages.getString("Device_type.extdd");
-        if (device.isMounted()) {
-          icon = IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED);
-        } else {
-          icon = IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_UNMOUNTED);
-        }
-        break;
-      case 4:
-        sTooltip = Messages.getString("Device_type.player");
-        if (device.isMounted()) {
-          icon = IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED);
-        } else {
-          icon = IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_UNMOUNTED);
-        }
-        break;
-      }
+      ImageIcon icon = device.getIconRepresentationLarge();
+      String sTooltip =   device.getHumanValue(XML_TYPE);
       DeviceItem di = new DeviceItem(icon, device.getName(), device);
       di.setToolTipText(sTooltip);
       di.addMouseListener(ma);
-      di.setToolTipText(device.getDeviceTypeS());
       di.addKeyListener(new KeyAdapter() {
         @Override
         public void keyTyped(KeyEvent e) {
@@ -508,8 +465,6 @@ class DeviceItem extends JPanel {
    * Constructor
    */
   DeviceItem(ImageIcon icon, String sName, Device device) {
-    super();
-
     this.device = device;
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

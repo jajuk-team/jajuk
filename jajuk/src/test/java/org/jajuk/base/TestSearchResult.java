@@ -39,8 +39,8 @@ public class TestSearchResult extends TestCase {
     // TODO: this fails currently because there is no equals in SearchResult, should we add one? For now we just cover hashCode()
 
     // hashcode only looks at "sResu" parameter
-    SearchResult res = new SearchResult(JUnitHelpers.getFile("file2", true));
-    SearchResult equ = new SearchResult(JUnitHelpers.getFile("file2", true));
+    SearchResult res = new SearchResult(JUnitHelpers.getFile("file2", true), "");
+    SearchResult equ = new SearchResult(JUnitHelpers.getFile("file2", true), "");
 
     assertEquals(res.hashCode(), equ.hashCode());
 
@@ -56,7 +56,7 @@ public class TestSearchResult extends TestCase {
    * @throws Exception 
    */
   public void testSearchResultFile() throws Exception {
-    SearchResult res = new SearchResult(JUnitHelpers.getFile("file2", true));
+    SearchResult res = new SearchResult(JUnitHelpers.getFile("file2", true), "");
     assertNotNull(res);
   }
 

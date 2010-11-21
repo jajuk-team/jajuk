@@ -21,7 +21,6 @@
 package ext;
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -275,27 +274,6 @@ public class MersenneTwister extends java.util.Random implements Serializable, C
     mti = stream.readInt();
     __nextNextGaussian = stream.readDouble();
     __haveNextNextGaussian = stream.readBoolean();
-  }
-
-  /**
-   * Writes the entire state of the MersenneTwister RNG to the stream.
-   * 
-   * @param stream DOCUMENT_ME
-   * 
-   * @throws IOException Signals that an I/O exception has occurred.
-   */
-  public void writeState(DataOutputStream stream) throws IOException {
-    int len = mt.length;
-    for (int x = 0; x < len; x++)
-      stream.writeInt(mt[x]);
-
-    len = mag01.length;
-    for (int x = 0; x < len; x++)
-      stream.writeInt(mag01[x]);
-
-    stream.writeInt(mti);
-    stream.writeDouble(__nextNextGaussian);
-    stream.writeBoolean(__haveNextNextGaussian);
   }
 
   /**

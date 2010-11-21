@@ -33,8 +33,6 @@ import java.util.TreeSet;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
@@ -90,7 +88,7 @@ public abstract class ItemManager {
    * before user could make changes to the collection, we populate a TreeSet
    * from the ArrayList and begin to use it.
    */
-  public void switchToOrderState() {
+  void switchToOrderState() {
     lock.writeLock().lock();
     try {
       // populate a new TreeSet with the startup-items
@@ -149,7 +147,7 @@ public abstract class ItemManager {
    * 
    * @param meta DOCUMENT_ME
    */
-  public void applyRemoveProperty(PropertyMetaInformation meta) {
+  void applyRemoveProperty(PropertyMetaInformation meta) {
     lock.readLock().lock();
     try {
       for (Item item : items) {
@@ -188,7 +186,7 @@ public abstract class ItemManager {
    * 
    * @return (partial) XML representation of this manager
    */
-  public String toXML() {
+  String toXML() {
     StringBuilder sb = new StringBuilder("<").append(getLabel() + ">");
     Iterator<String> it = hmPropertiesMetaInformation.keySet().iterator();
     while (it.hasNext()) {
@@ -339,15 +337,6 @@ public abstract class ItemManager {
    */
   public static ItemManager getItemManager(Class<?> c) {
     return hmItemManagers.get(c);
-  }
-
-  /**
-   * Return an iteration over item managers.
-   * 
-   * @return the item managers
-   */
-  public static Iterator<ItemManager> getItemManagers() {
-    return hmItemManagers.values().iterator();
   }
 
   /**
@@ -620,30 +609,14 @@ public abstract class ItemManager {
   }
 
   /**
-   * Return a shallow copy of all registered items filtered using the provided
-   * predicate*.
-   * 
-   * @param predicate DOCUMENT_ME
-   * 
-   * @return a shallow copy of all registered items filtered using the provided
-   * 
-   * @arg predicate : the predicate
-   */
-  public List<? extends Item> getFilteredItems(Predicate predicate) {
-    ArrayList<Item> itemsCopy = new ArrayList<Item>(items);
-    CollectionUtils.filter(itemsCopy, predicate);
-    return itemsCopy;
-  }
-
-  /**
-   * ***************************************************************************
-   * Return all registered enumeration CAUTION : do not call remove() on this
-   * iterator, you would effectively remove items instead of using regular
-   * removeItem() primitive
-   * **************************************************************************.
-   * 
-   * @return the items iterator
-   */
+  * ***************************************************************************
+  * Return all registered enumeration CAUTION : do not call remove() on this
+  * iterator, you would effectively remove items instead of using regular
+  * removeItem() primitive
+  * **************************************************************************.
+  * 
+  * @return the items iterator
+  */
   protected Iterator<? extends Item> getItemsIterator() {
     return items.iterator();
   }

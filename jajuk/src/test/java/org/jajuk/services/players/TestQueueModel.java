@@ -720,7 +720,7 @@ public class TestQueueModel extends JajukTestCase {
    */
 
   public void testCanUnmount() throws Exception {
-    Device device = JUnitHelpers.getDevice("anydevice", 0, "/foo");
+    Device device = JUnitHelpers.getDevice("anydevice", Device.Type.DIRECTORY, "/foo");
     assertTrue(QueueModel.canUnmount(device));
 
     addItems(10);

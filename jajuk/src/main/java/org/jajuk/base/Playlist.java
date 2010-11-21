@@ -75,19 +75,19 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
 
     /** DOCUMENT_ME. */
     NORMAL,
-    
+
     /** DOCUMENT_ME. */
     QUEUE,
-    
+
     /** DOCUMENT_ME. */
     NEW,
-    
+
     /** DOCUMENT_ME. */
     BOOKMARK,
-    
+
     /** DOCUMENT_ME. */
     BESTOF,
-    
+
     /** DOCUMENT_ME. */
     NOVELTIES
   }
@@ -140,7 +140,16 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   }
 
   /**
-   * Add a file to this playlist.
+   * Gets the type.
+   * 
+   * @return Returns the Type.
+   */
+  public Type getType() {
+    return type;
+  }
+
+  /**
+   * Add a file at the end of this playlist.
    * 
    * @param file DOCUMENT_ME
    * 
@@ -151,18 +160,9 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     final int index = al.size();
     addFile(index, file);
   }
-
+  
   /**
-   * Gets the type.
-   * 
-   * @return Returns the Type.
-   */
-  public Type getType() {
-    return type;
-  }
-
-  /**
-   * Add a file to this playlist.
+   * Add a file to this playlist. at a given index.
    * 
    * @param index DOCUMENT_ME
    * @param file DOCUMENT_ME
@@ -388,7 +388,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * 
    * @throws JajukException the jajuk exception
    */
-  public void forceRefresh() throws JajukException {
+  void forceRefresh() throws JajukException {
     alFiles = load(); // populate playlist
   }
 
@@ -567,7 +567,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * 
    * @throws JajukException the jajuk exception
    */
-  public List<File> load() throws JajukException {
+  List<File> load() throws JajukException {
     final List<File> files = new ArrayList<File>(10);
 
     try {
@@ -669,7 +669,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * 
    * @throws JajukException the jajuk exception
    */
-  public void replaceFile(final File fOld, final File fNew) throws JajukException {
+  void replaceFile(final File fOld, final File fNew) throws JajukException {
     if (type == Type.BOOKMARK) {
       List<File> files = Bookmarks.getInstance().getFiles();
       final Iterator<File> it = files.iterator();
@@ -751,16 +751,6 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   public void setFIO(final java.io.File fio) {
     this.fio = fio;
-  }
-
-  /**
-   * Sets the parent directory.
-   * 
-   * @param parentDirectory The dParentDirectory to set.
-   */
-  protected void setParentDirectory(final Directory parentDirectory) {
-    dParentDirectory = parentDirectory;
-    setProperty(Const.XML_DIRECTORY, parentDirectory == null ? "-1" : parentDirectory.getID());
   }
 
   /**

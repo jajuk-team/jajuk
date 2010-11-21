@@ -517,12 +517,11 @@ public final class TrackManager extends ItemManager {
    * @param track DOCUMENT_ME
    * @param sNewItem DOCUMENT_ME
    * 
-   * @return new track or null if wronf format
+   * @return new track or null if wrong format
    * 
    * @throws JajukException the jajuk exception
    */
-  public Track changeTrackComment(Track track, String sNewItem, Set<File> filter)
-      throws JajukException {
+  Track changeTrackComment(Track track, String sNewItem, Set<File> filter) throws JajukException {
     lock.writeLock().lock();
     try {
       // check there is actually a change
@@ -710,8 +709,7 @@ public final class TrackManager extends ItemManager {
    * 
    * @throws JajukException the jajuk exception
    */
-  public Item changeTrackAlbumArtist(Track track, String sNewItem, Set<File> filter)
-      throws JajukException {
+  Item changeTrackAlbumArtist(Track track, String sNewItem, Set<File> filter) throws JajukException {
     lock.writeLock().lock();
     try {
       // check there is actually a change
@@ -744,68 +742,6 @@ public final class TrackManager extends ItemManager {
       AlbumArtist newAlbumArtist = AlbumArtistManager.getInstance().registerAlbumArtist(sNewItem);
       track.setAlbumArtist(newAlbumArtist);
       return track;
-    } finally {
-      lock.writeLock().unlock();
-    }
-  }
-
-  /**
-   * Change track disc number.
-   * 
-   * @param track DOCUMENT_ME
-   * @param filter DOCUMENT_ME
-   * @param lNewDiscNumber DOCUMENT_ME
-   * 
-   * @return the item
-   * 
-   * @throws JajukException the jajuk exception
-   */
-  public Item changeTrackDiscNumber(Track track, long lNewDiscNumber, Set<File> filter)
-      throws JajukException {
-    lock.writeLock().lock();
-    try {
-      // check there is actually a change
-      if (track.getDiscNumber() == lNewDiscNumber) {
-        return track;
-      }
-      // check format
-      if (lNewDiscNumber < 0) {
-        throw new JajukException(137);
-      }
-      List<File> alReady = null;
-      // check if files are accessible
-      alReady = track.getReadyFiles(filter);
-      if (alReady.size() == 0) {
-        throw new NoneAccessibleFileException(10);
-      }
-      // change tag in files
-      for (File file : alReady) {
-        Tag tag = Tag.getTagForFio(file.getFIO(), false);
-        tag.setDiscNumber(lNewDiscNumber);
-        if (bAutocommit) {
-          tag.commit();
-        } else {
-          tagsToCommit.add(tag);
-        }
-      }
-
-      // Remove the track from the old album
-      List<Track> cache = track.getAlbum().getTracksCache();
-      synchronized (cache) {
-        cache.remove(track);
-      }
-
-      // if current track album name is changed, notify it
-      if (QueueModel.getPlayingFile() != null
-          && QueueModel.getPlayingFile().getTrack().getAlbum().equals(track.getAlbum())) {
-        ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
-      }
-
-      Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(), track
-          .getArtist(), track.getDuration(), track.getYear(), track.getDiscNumber(), track
-          .getType(), lNewDiscNumber);
-      postChange(track, newTrack, filter);
-      return newTrack;
     } finally {
       lock.writeLock().unlock();
     }
@@ -887,7 +823,7 @@ public final class TrackManager extends ItemManager {
    * @param track DOCUMENT_ME
    * @param file DOCUMENT_ME
    */
-  public void removefile(Track track, File file) {
+  void removefile(Track track, File file) {
     lock.writeLock().lock();
     try {
       // If the track contained a single file, it will be empty after this removal
@@ -1077,7 +1013,7 @@ public final class TrackManager extends ItemManager {
    * 
    * @return item
    */
-  public Track getTrackByID(String sID) {
+  Track getTrackByID(String sID) {
     return (Track) getItemByID(sID);
   }
 

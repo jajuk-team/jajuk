@@ -81,7 +81,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * 
    * @return the playlist
    */
-  public Playlist registerPlaylistFile(java.io.File fio, Directory dParentDirectory) {
+  Playlist registerPlaylistFile(java.io.File fio, Directory dParentDirectory) {
     String sId = createID(fio.getName(), dParentDirectory);
     return registerPlaylistFile(sId, fio.getName(), dParentDirectory);
   }
@@ -106,7 +106,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * 
    * @throws IOException Signals that an I/O exception has occurred.
    */
-  public void removePlaylistFile(Playlist plf) throws IOException {
+  private void removePlaylistFile(Playlist plf) throws IOException {
     String sFileToDelete = plf.getDirectory().getFio().getAbsoluteFile().toString()
         + java.io.File.separatorChar + plf.getName();
     lock.writeLock().lock();
@@ -199,7 +199,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * 
    * @throws JajukException the jajuk exception
    */
-  public Playlist changePlaylistFileName(Playlist plfOld, String sNewName) throws JajukException {
+  Playlist changePlaylistFileName(Playlist plfOld, String sNewName) throws JajukException {
     lock.writeLock().lock();
     try {
       // check given name is different

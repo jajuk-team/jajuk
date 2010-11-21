@@ -205,9 +205,6 @@ public class TestDigitalDJ extends JajukTestCase {
     Artist artist = JUnitHelpers.getArtist("name");
     Year year = JUnitHelpers.getYear(2000);
 
-    // IPlayerImpl imp = new MockPlayer();
-    // Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
-
     Type type = JUnitHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);

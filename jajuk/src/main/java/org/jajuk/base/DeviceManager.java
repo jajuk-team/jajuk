@@ -22,7 +22,6 @@
 package org.jajuk.base;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -48,9 +47,6 @@ import org.jajuk.util.log.Log;
  */
 public final class DeviceManager extends ItemManager {
 
-  /** Supported device types names. */
-  private final List<String> alDevicesTypes = new ArrayList<String>(10);
-
   /** Self instance. */
   private static DeviceManager singleton = new DeviceManager();
 
@@ -59,10 +55,6 @@ public final class DeviceManager extends ItemManager {
 
   /** List of deep-refresh devices after an upgrade. */
   private final Set<Device> devicesDeepRefreshed = new HashSet<Device>();
-
-  /** DeviceTypes Identification strings  Note: this needs to correspond with the constants in @see org.jajuk.base.Device !! */
-  public static final String[] DEVICE_TYPES = { "Device_type.directory", "Device_type.file_cd",
-      "Device_type.network_drive", "Device_type.extdd", "Device_type.player" };
 
   /** Auto-refresh thread. */
   private final Thread tAutoRefresh = new Thread("Device Auto Refresh Thread") {
@@ -141,14 +133,14 @@ public final class DeviceManager extends ItemManager {
    * Register a device.
    * 
    * @param sName DOCUMENT_ME
-   * @param lDeviceType DOCUMENT_ME
+   * @param deviceType DOCUMENT_ME
    * @param sUrl DOCUMENT_ME
    * 
    * @return device
    */
-  public Device registerDevice(String sName, long lDeviceType, String sUrl) {
+  public Device registerDevice(String sName, Device.Type deviceType, String sUrl) {
     String sId = createID(sName);
-    return registerDevice(sId, sName, lDeviceType, sUrl);
+    return registerDevice(sId, sName, deviceType, sUrl);
   }
 
   /**
@@ -161,13 +153,13 @@ public final class DeviceManager extends ItemManager {
    * 
    * @return device
    */
-  public Device registerDevice(String sId, String sName, long lDeviceType, String sUrl) {
+  Device registerDevice(String sId, String sName, Device.Type deviceType, String sUrl) {
     Device device = getDeviceByID(sId);
     if (device != null) {
       return device;
     }
     device = new Device(sId, sName);
-    device.setProperty(Const.XML_TYPE, lDeviceType);
+    device.setProperty(Const.XML_TYPE, (long) deviceType.ordinal());
     device.setUrl(sUrl);
     registerItem(device);
     return device;
@@ -183,9 +175,9 @@ public final class DeviceManager extends ItemManager {
    * 
    * @return 0:ok or error code
    */
-  public int checkDeviceAvailablity(String sName, int iDeviceType, String sUrl, boolean bNew) {
+  public int checkDeviceAvailablity(String sName, Device.Type deviceType, String sUrl, boolean bNew) {
     // don't check if it is a CD as all CDs may use the same mount point
-    if (iDeviceType == Device.TYPE_CD) {
+    if (deviceType == Device.Type.FILES_CD) {
       return 0;
     }
     // check name and path
@@ -208,7 +200,7 @@ public final class DeviceManager extends ItemManager {
       }
     }
     // check availability
-    if (iDeviceType != Device.TYPE_EXT_DD) { // not a remote device, TBI for remote
+    if (deviceType != Device.Type.EXTDD) { // not a remote device, TBI for remote
       // test directory is available
       File file = new File(sUrl);
       // check if the url exists and is readable
@@ -220,31 +212,13 @@ public final class DeviceManager extends ItemManager {
   }
 
   /**
-   * Register a device type.
-   * 
-   * @param sDeviceType DOCUMENT_ME
-   */
-  public void registerDeviceType(String sDeviceType) {
-    alDevicesTypes.add(sDeviceType);
-  }
-
-  /**
-   * Gets the device types number.
-   * 
-   * @return number of registered devices
-   */
-  public int getDeviceTypesNumber() {
-    return alDevicesTypes.size();
-  }
-
-  /**
    * Return first device found being parent of the provided path.
    * 
    * @param path DOCUMENT_ME
    * 
    * @return  first device found being parent of the provided path
    */
-  public Device getDeviceByPath(File path) {
+  Device getDeviceByPath(File path) {
     for (Device device : getDevices()) {
       if (UtilSystem.isAncestor(device.getFio(), path)) {
         return device;
@@ -254,30 +228,10 @@ public final class DeviceManager extends ItemManager {
   }
 
   /**
-   * Gets the device types.
-   * 
-   * @return Device types iteration
-   */
-  public Iterator<String> getDeviceTypes() {
-    return alDevicesTypes.iterator();
-  }
-
-  /**
-   * Get a device type name for a given index.
-   * 
-   * @param index DOCUMENT_ME
-   * 
-   * @return device name for a given index
-   */
-  public String getDeviceType(long index) {
-    return alDevicesTypes.get((int) index);
-  }
-
-  /**
-   * Remove a device.
-   * 
-   * @param device DOCUMENT_ME
-   */
+  * Remove a device.
+  * 
+  * @param device DOCUMENT_ME
+  */
   public void removeDevice(Device device) {
     lock.writeLock().lock();
     try {
@@ -347,28 +301,6 @@ public final class DeviceManager extends ItemManager {
     return bOut;
   }
 
-  /**
-   * Clean all devices.
-   */
-  public void cleanAllDevices() {
-    lock.writeLock().lock();
-    try {
-      for (Device device : getDevices()) {
-        // Do not auto-refresh CD as several CD may share the same mount
-        // point
-        if (device.getType() == Device.TYPE_CD) {
-          continue;
-        }
-        FileManager.getInstance().cleanDevice(device.getName());
-        DirectoryManager.getInstance().cleanDevice(device.getName());
-        PlaylistManager.getInstance().cleanDevice(device.getName());
-      }
-      clear();
-    } finally {
-      lock.writeLock().unlock();
-    }
-  }
-
   /*
    * (non-Javadoc)
    * 
@@ -392,7 +324,7 @@ public final class DeviceManager extends ItemManager {
    * Refresh of all devices with auto-refresh enabled (used in automatic mode)
    * Must be the shortest possible.
    */
-  public void refreshAllDevices() {
+  void refreshAllDevices() {
     try {
       // check thread is not already refreshing
       if (bGlobalRefreshing) {
@@ -404,7 +336,7 @@ public final class DeviceManager extends ItemManager {
       for (Device device : getDevices()) {
         // Do not auto-refresh CD as several CD may share the same mount
         // point
-        if (device.getType() == Device.TYPE_CD) {
+        if (device.getType() == Device.Type.FILES_CD) {
           continue;
         }
         double frequency = 60000 * device.getDoubleValue(Const.XML_DEVICE_AUTO_REFRESH);

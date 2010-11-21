@@ -87,7 +87,7 @@ public class DigitalDJWizard extends Wizard {
   private static final String KEY_ACTION = "ACTION";
 
   /** DJ type variable name. */
-  private static final String KEY_DJ_TYPE = "TYPE";
+  private static final String KEY_DJ_TYPE = "Type";
 
   /** DJ name variable name. */
   private static final String KEY_DJ_NAME = "NAME";

@@ -35,36 +35,27 @@ public class SearchResult implements Comparable<SearchResult> {
 
     /** DOCUMENT_ME. */
     FILE,
-    
+
     /** DOCUMENT_ME. */
     WEBRADIO
   }
 
   /** The associated file. */
-  File file;
+  private File file;
 
   /** The associated web radio. */
-  WebRadio radio;
+  private WebRadio radio;
 
   /** Pre-calculated search string. */
-  String sResu;
+  private String sResu;
 
   /**
-   * Instantiates a new search result.
-   * 
-   * @param file DOCUMENT_ME
-   */
-  public SearchResult(File file) {
-    this(file, file.toStringSearch());
-  }
-
-  /**
-   * Instantiates a new search result.
-   * 
-   * @param file DOCUMENT_ME
-   * @param sResu DOCUMENT_ME
-   */
-  public SearchResult(File file, String sResu) {
+  * Instantiates a new search result.
+  * 
+  * @param file DOCUMENT_ME
+  * @param sResu DOCUMENT_ME
+  */
+  SearchResult(File file, String sResu) {
     this.file = file;
     this.sResu = sResu;
   }

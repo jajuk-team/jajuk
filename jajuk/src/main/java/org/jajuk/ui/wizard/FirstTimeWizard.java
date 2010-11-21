@@ -158,7 +158,8 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
       if (returnVal == JFileChooser.APPROVE_OPTION) {
         fDir = jfc.getSelectedFile();
         // First, check device availability
-        int code = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(), 0,
+        int code = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(),
+            Device.Type.DIRECTORY,
             fDir.getAbsolutePath(), true);
         if (code != 0) {
           Messages.showErrorMessage(code);
@@ -194,7 +195,7 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
           StartupCollectionService.waitForLaunchRefresh();
 
           // Create a directory device
-          final Device device = DeviceManager.getInstance().registerDevice(fDir.getName(), 0,
+          final Device device = DeviceManager.getInstance().registerDevice(fDir.getName(), Device.Type.DIRECTORY,
               fDir.getAbsolutePath());
           device.setProperty(Const.XML_DEVICE_AUTO_MOUNT, true);
           // Set refresh time

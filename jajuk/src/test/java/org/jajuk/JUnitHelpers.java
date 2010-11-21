@@ -23,6 +23,7 @@ package org.jajuk;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -41,6 +42,7 @@ import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Genre;
 import org.jajuk.base.GenreManager;
+import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
@@ -72,7 +74,7 @@ public class JUnitHelpers {
     // get a temporary file name
     File tempdir = File.createTempFile("test", "");
     if (!tempdir.delete()) {
-      throw new IOException("Could not create the temporary session directory at "
+      throw new IOException("Could not create the temporary session DIRECTORY at "
           + tempdir.getAbsolutePath() + ", could not remove the temporary file.");
     }
 
@@ -87,15 +89,15 @@ public class JUnitHelpers {
 
     // do some checks
     if (!sessiondir.exists()) {
-      throw new IOException("Could not create the temporary session directory at "
+      throw new IOException("Could not create the temporary session DIRECTORY at "
           + sessiondir.getAbsolutePath());
     }
     if (!sessiondir.isDirectory()) {
-      throw new IOException("Could not create the temporary session directory at "
-          + sessiondir.getAbsolutePath() + ", not a directory!");
+      throw new IOException("Could not create the temporary session DIRECTORY at "
+          + sessiondir.getAbsolutePath() + ", not a DIRECTORY!");
     }
     if (!sessiondir.canWrite()) {
-      throw new IOException("Could not create the temporary session directory at "
+      throw new IOException("Could not create the temporary session DIRECTORY at "
           + sessiondir.getAbsolutePath() + ", not writeable!");
     }
 
@@ -435,7 +437,7 @@ public class JUnitHelpers {
 
     FileManager.getInstance().clear();
     DirectoryManager.getInstance().clear();
-    DeviceManager.getInstance().cleanAllDevices();
+    cleanAllDevices();
     History.getInstance().clear();
 
     // wait a bit to let deferred actions take place before we shut down
@@ -494,6 +496,23 @@ public class JUnitHelpers {
     JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.ZERO.toString());
 
     JUnitHelpers.clearSwingUtilitiesQueue();
+  }
+
+  /**
+  * Clean all devices.
+  */
+  public static void cleanAllDevices() {
+    for (Device device : DeviceManager.getInstance().getDevices()) {
+      // Do not auto-refresh CD as several CD may share the same mount
+      // point
+      if (device.getType() == Device.Type.FILES_CD) {
+        continue;
+      }
+      FileManager.getInstance().cleanDevice(device.getName());
+      DirectoryManager.getInstance().cleanDevice(device.getName());
+      PlaylistManager.getInstance().cleanDevice(device.getName());
+    }
+    DeviceManager.getInstance().clear();
   }
 
   public static org.jajuk.base.File getFile() {
@@ -559,12 +578,12 @@ public class JUnitHelpers {
     return getYear(2000);
   }
 
-  public static Device getDevice(String name, long type, String url) {
+  public static Device getDevice(String name, Device.Type type, String url) {
     return DeviceManager.getInstance().registerDevice(name, type, url);
   }
 
   public static Device getDevice() {
-    Device device = getDevice("name", Device.TYPE_DIRECTORY, ConstTest.PATH_DEVICE);
+    Device device = getDevice("name", Device.Type.DIRECTORY, ConstTest.PATH_DEVICE);
     // Create the jajuk test device if required
     new File(device.getUrl()).mkdirs();
     // Create at least a void file in the device
@@ -681,4 +700,23 @@ public class JUnitHelpers {
     return TrackManager.getInstance().registerTrack("track_" + i, album, genre, artist, 120, year,
         1, type, 1);
   }
+
+  /**
+   * Helper to set a private field
+   * @param obj the object to work on
+   * @param fieldName the field name
+   * @param value the field value to set
+   * @throws SecurityException
+   * @throws NoSuchFieldException
+   * @throws IllegalArgumentException
+   * @throws IllegalAccessException
+   */
+  public static void setAttribute(Object obj, String fieldName, Object value)
+      throws SecurityException, NoSuchFieldException, IllegalArgumentException,
+      IllegalAccessException {
+    Field field = obj.getClass().getDeclaredField(fieldName);
+    field.setAccessible(true);
+    field.set(obj, value);
+  }
+
 }

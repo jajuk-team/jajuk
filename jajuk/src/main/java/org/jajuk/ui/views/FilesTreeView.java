@@ -598,7 +598,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   /**
    * DOCUMENT_ME.
    */
-  class FilesMouseAdapter extends JajukMouseAdapter {
+  private class FilesMouseAdapter extends JajukMouseAdapter {
 
     /*
      * (non-Javadoc)
@@ -865,7 +865,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   /**
    * DOCUMENT_ME.
    */
-  class FilesTreeSelectionListener implements TreeSelectionListener {
+  private class FilesTreeSelectionListener implements TreeSelectionListener {
 
     /*
      * (non-Javadoc)
@@ -964,7 +964,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
   /**
    * DOCUMENT_ME.
    */
-  class FilesTreeExpansionListener implements TreeExpansionListener {
+  private class FilesTreeExpansionListener implements TreeExpansionListener {
 
     /*
      * (non-Javadoc)
@@ -1237,43 +1237,8 @@ class FilesTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
     } else if (value instanceof DeviceNode) {
       setBorder(BorderFactory.createEmptyBorder(2, 0, 3, 0));
       Device device = ((DeviceNode) value).getDevice();
-      switch ((int) device.getType()) {
-      case 0:
-        if (device.isMounted()) {
-          setIcon(IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED_SMALL));
-        } else {
-          setIcon(IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_UNMOUNTED_SMALL));
-        }
-        break;
-      case 1:
-        if (device.isMounted()) {
-          setIcon(IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED_SMALL));
-        } else {
-          setIcon(IconLoader.getIcon(JajukIcons.DEVICE_CD_UNMOUNTED_SMALL));
-        }
-        break;
-      case 2:
-        if (device.isMounted()) {
-          setIcon(IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_MOUNTED_SMALL));
-        } else {
-          setIcon(IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL));
-        }
-        break;
-      case 3:
-        if (device.isMounted()) {
-          setIcon(IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED_SMALL));
-        } else {
-          setIcon(IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_UNMOUNTED_SMALL));
-        }
-        break;
-      case 4:
-        if (device.isMounted()) {
-          setIcon(IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED_SMALL));
-        } else {
-          setIcon(IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_UNMOUNTED_SMALL));
-        }
-        break;
-      }
+      ImageIcon deviceIconSmall = device.getIconRepresentation();
+      setIcon(deviceIconSmall);
     } else if (value instanceof DirectoryNode) {
       setBorder(null);
       Directory dir = ((DirectoryNode) value).getDirectory();

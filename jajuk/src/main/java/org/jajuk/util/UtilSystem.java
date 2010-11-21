@@ -37,13 +37,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.RandomAccessFile;
 import java.io.Writer;
 import java.net.InetAddress;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,13 +85,13 @@ public final class UtilSystem {
 
     /** DOCUMENT_ME. */
     MPLAYER_STATUS_OK,
-    
+
     /** DOCUMENT_ME. */
     MPLAYER_STATUS_NOT_FOUND,
-    
+
     /** DOCUMENT_ME. */
     MPLAYER_STATUS_WRONG_VERSION,
-    
+
     /** DOCUMENT_ME. */
     MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
   }
@@ -1332,28 +1330,6 @@ public final class UtilSystem {
    */
   public static boolean isUnderKDE() {
     return UtilSystem.UNDER_KDE;
-  }
-
-  /**
-   * Attempt to acquire a file lock for given file.
-   * 
-   * @param file the file to lock
-   * 
-   * @return a FileLock or null if it can't be acquired
-   */
-  public static FileLock tryLockFile(File file) {
-    FileLock lock = null;
-    try {
-      FileChannel channel = new RandomAccessFile(file, "rw").getChannel();
-      // Get an exclusive lock on the whole file
-      lock = channel.tryLock();
-      if (!lock.isValid()) {
-        throw new IOException("Lock invalid for : " + file.getAbsolutePath());
-      }
-    } catch (Exception e) {
-      Log.warn("Cannot acquire lock for file : " + file.getAbsolutePath());
-    }
-    return lock;
   }
 
 }

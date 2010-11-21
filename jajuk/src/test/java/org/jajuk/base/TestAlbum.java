@@ -20,7 +20,9 @@
  */
 package org.jajuk.base;
 
+import java.lang.reflect.Field;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.jajuk.JUnitHelpers;
@@ -250,7 +252,7 @@ public class TestAlbum extends JajukTestCase {
     // set a cover file which does not exist
     // We need to make the cover inside a known device
     Device tmpDevice = DeviceManager.getInstance().registerDevice("tmp", "tmpDevice",
-        Device.TYPE_DIRECTORY, System.getProperty("java.io.tmpdir"));
+        Device.Type.DIRECTORY, System.getProperty("java.io.tmpdir"));
     tmpDevice.mount(false);
     new java.io.File(System.getProperty("java.io.tmpdir"), "cover.tst").delete();
     album.setProperty(Const.XML_ALBUM_COVER, System.getProperty("java.io.tmpdir")
@@ -454,43 +456,17 @@ public class TestAlbum extends JajukTestCase {
   }
 
   /**
-   * Test method for
-   * {@link org.jajuk.base.Album#matches(java.lang.String, java.lang.String)}.
-   */
-  public final void testMatches() {
-    Album album = new Album("1", "myname", 123);
-
-    // true if either of both is null !?
-    assertTrue(album.matches(null, null));
-    assertTrue(album.matches(Const.XML_ALBUM, null));
-    assertTrue(album.matches(null, ".*art.*"));
-
-    // false when not "ALBUM" or "GENRE"
-    assertFalse(album.matches(Const.XML_ALBUM_ARTIST, ".*art.*"));
-
-    // useful match?
-    assertTrue(album.matches(Const.XML_ALBUM, "my"));
-    assertTrue(album.matches(Const.XML_ALBUM, "name"));
-    assertFalse(album.matches(Const.XML_ALBUM, "notexist"));
-
-    // false without Genre
-    assertFalse(album.matches(Const.XML_GENRE, "."));
-
-    Track track = getTrack(album);
-    album.getTracksCache().add(track);
-
-    // now the genre should be found as well
-    assertTrue(album.matches(Const.XML_GENRE, "genrename"));
-  }
-
-  /**
    * Test method for {@link org.jajuk.base.Album#resetTracks()}.
    */
-  public final void testResetTracks() {
+  @SuppressWarnings("unchecked")
+  public final void testResetTracks() throws IllegalAccessException, NoSuchFieldException {
     Album album = new Album("1", "name", 123);
 
     // nothing happens without tracks
-    album.resetTracks();
+    Field field = Album.class.getField("cache");
+    field.setAccessible(true);
+    List<Track> cache = (List<Track>) field.get(album);
+    cache.clear();
 
     // add tracks
     Track track = getTrack(album);
@@ -499,7 +475,7 @@ public class TestAlbum extends JajukTestCase {
     assertEquals(1, album.getTracksCache().size());
 
     // reset purges the tracks
-    album.resetTracks();
+    cache.clear();
     assertEquals(0, album.getTracksCache().size());
   }
 

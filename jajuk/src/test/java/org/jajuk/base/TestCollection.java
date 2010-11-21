@@ -92,7 +92,7 @@ public class TestCollection extends JajukTestCase {
     assertTrue(str, str.contains("<" + Const.XML_COLLECTION));
 
     // now with some content
-    DeviceManager.getInstance().registerDevice("testdevice", 1,
+    DeviceManager.getInstance().registerDevice("testdevice", Device.Type.FILES_CD,
         System.getProperty("java.io.tmpdir"));
     GenreManager.getInstance().registerGenre("cooldown");
     {
@@ -118,7 +118,7 @@ public class TestCollection extends JajukTestCase {
     ArtistManager.getInstance().registerArtist("testartist");
     AlbumManager.getInstance().registerAlbum("album2", "artist1", 0);
 
-    device = DeviceManager.getInstance().registerDevice("7", 0,
+    device = DeviceManager.getInstance().registerDevice("7", Device.Type.DIRECTORY,
         System.getProperty("java.io.tmpdir"));
     DirectoryManager.getInstance().registerDirectory(device);
     device = new Device("6", System.getProperty("java.io.tmpdir"));

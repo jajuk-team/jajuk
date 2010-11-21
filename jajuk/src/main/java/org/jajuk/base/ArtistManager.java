@@ -96,7 +96,7 @@ public final class ArtistManager extends ItemManager {
    * 
    * @return the artist
    */
-  public Artist registerArtist(String sId, String sName) {
+  Artist registerArtist(String sId, String sName) {
     Artist artist = getArtistByID(sId);
     // if we have this artist already, simply return the existing one
     if (artist != null) {
@@ -128,7 +128,7 @@ public final class ArtistManager extends ItemManager {
    * 
    * @throws JajukException Thrown if adjusting the name fails for some reason.
    */
-  public Artist changeArtistName(Artist old, String sNewName) throws JajukException {
+  Artist changeArtistName(Artist old, String sNewName) throws JajukException {
 
     // check if there is actually a change
     if (old.getName2().equals(sNewName)) {
@@ -187,7 +187,7 @@ public final class ArtistManager extends ItemManager {
    * 
    * @return Element
    */
-  public Artist getArtistByID(String sID) {
+  Artist getArtistByID(String sID) {
     return (Artist) getItemByID(sID);
   }
 

@@ -165,9 +165,6 @@ public final class Main {
       // Create a session file
       SessionService.createSessionFile();
 
-      // Register device types
-      StartupCollectionService.registerDevicesTypes();
-
       // registers supported audio supports and default properties. Display a
       // "Downloading mplayer" message by default in the splash screen in case
       // of it is downloaded

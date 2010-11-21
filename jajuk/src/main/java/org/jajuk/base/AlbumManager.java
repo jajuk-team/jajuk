@@ -157,7 +157,7 @@ public final class AlbumManager extends ItemManager implements Observer {
    * 
    * @throws JajukException the jajuk exception
    */
-  public Album changeAlbumName(Album old, String sNewName) throws JajukException {
+  Album changeAlbumName(Album old, String sNewName) throws JajukException {
     // check there is actually a change
     if (old.getName2().equals(sNewName)) {
       return old;
@@ -234,7 +234,7 @@ public final class AlbumManager extends ItemManager implements Observer {
    * 
    * @return Element
    */
-  public Album getAlbumByID(String sID) {
+  Album getAlbumByID(String sID) {
     return (Album) getItemByID(sID);
   }
 

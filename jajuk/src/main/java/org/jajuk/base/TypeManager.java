@@ -226,7 +226,7 @@ public final class TypeManager extends ItemManager {
    * 
    * @return item
    */
-  public Type getTypeByID(String sID) {
+  Type getTypeByID(String sID) {
     return (Type) getItemByID(sID);
   }
 

@@ -132,7 +132,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    * DOCUMENT_ME.
    */
   private enum Stage {
-    
+
     /** DOCUMENT_ME. */
     STAGE_NONE,
 
@@ -407,6 +407,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    * @exception SAXException
    */
   @Override
+  @SuppressWarnings("ucd")
   public void warning(SAXParseException spe) throws SAXException {
     throw new SAXException(Messages.getErrorMessage(5) + " / " + spe.getSystemId() + "/"
         + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
@@ -422,6 +423,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    * @exception SAXException
    */
   @Override
+  @SuppressWarnings("ucd")
   public void error(SAXParseException spe) throws SAXException {
     throw new SAXException(Messages.getErrorMessage(5) + " / " + spe.getSystemId() + "/"
         + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
@@ -437,6 +439,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    * @exception SAXException
    */
   @Override
+  @SuppressWarnings("ucd")
   public void fatalError(SAXParseException spe) throws SAXException {
     throw new SAXException(Messages.getErrorMessage(5) + " / " + spe.getSystemId() + "/"
         + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
@@ -446,6 +449,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    * Called at parsing start.
    */
   @Override
+  @SuppressWarnings("ucd")
   public void startDocument() {
     Log.debug("Starting collection file parsing...");
   }
@@ -454,7 +458,8 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
    * Called at parsing end.
    */
   @Override
-  public void endDocument() {
+@SuppressWarnings("ucd")
+    public void endDocument() {
     long l = (System.currentTimeMillis() - lTime);
     Log.debug("Collection file parsing done : " + l + " ms");
   }
@@ -1031,6 +1036,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     String sID = attributes.getValue(idIndex).intern();
     String sItemName = attributes.getValue(Const.XML_NAME);
     long lType = UtilString.fastLongParser(attributes.getValue(Const.XML_TYPE));
+    Device.Type type = Device.Type.values()[(int) lType];
     // UPGRADE test
     String sRightID = sID;
     if (needCheckID) {
@@ -1043,7 +1049,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
       }
     }
     String sURL = attributes.getValue(Const.XML_URL);
-    Device device = DeviceManager.getInstance().registerDevice(sRightID, sItemName, lType, sURL);
+    Device device = DeviceManager.getInstance().registerDevice(sRightID, sItemName, type, sURL);
     if (device != null) {
       device.populateProperties(attributes);
     }

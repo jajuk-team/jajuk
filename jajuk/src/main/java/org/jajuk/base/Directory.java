@@ -241,7 +241,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * 
    * @return true, if given directory is a parent directory of this directory
    */
-  public boolean hasAncestor(Directory directory) {
+  boolean hasAncestor(Directory directory) {
     Directory dirTested = this;
     while (true) {
       if (!dirTested.equals(this) && dirTested.equals(directory)) {
@@ -278,7 +278,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * force files tag read
    * @param reporter Refresh handler
    */
-  public void scan(boolean bDeepScan, RefreshReporter reporter) {
+  void scan(boolean bDeepScan, RefreshReporter reporter) {
 
     // Make sure to reset the disc ID
     this.discID = -1;
@@ -717,16 +717,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     return icon;
   }
 
-  /**
-   * Set name (useful for Windows because same object can have different cases).
-   * 
-   * @param name Item name
-   */
-  protected void setName(String name) {
-    setProperty(Const.XML_NAME, name);
-    this.name = name;
-  }
-
+ 
   /**
    * Refresh the directory synchronously, no dialog. <br>
    * This method is only a wrapper to Device.refreshCommand() method

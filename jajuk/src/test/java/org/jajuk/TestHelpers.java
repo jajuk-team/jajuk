@@ -124,7 +124,8 @@ public class TestHelpers extends JajukTestCase {
     Year year = YearManager.getInstance().registerYear("2000");
     Track track = TrackManager.getInstance().registerTrack("track name", album, genre, artist, 12l,
         year, 1l, type, 1l);
-    Device device = DeviceManager.getInstance().registerDevice("device name", 1l, "/tmp");
+    Device device = DeviceManager.getInstance().registerDevice("device name", Device.Type.FILES_CD,
+        "/tmp");
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     File file = FileManager.getInstance().registerFile("file name", dir, track, 12, 128);
     return file;

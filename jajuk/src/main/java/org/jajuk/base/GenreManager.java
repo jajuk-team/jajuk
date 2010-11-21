@@ -98,7 +98,7 @@ public final class GenreManager extends ItemManager {
    * 
    * @return the genre
    */
-  public Genre registerGenre(String sId, String sName) {
+  Genre registerGenre(String sId, String sName) {
     Genre genre = getGenreByID(sId);
     if (genre != null) {
       return genre;
@@ -123,7 +123,7 @@ public final class GenreManager extends ItemManager {
    * Register preset genres.
    * DOCUMENT_ME
    */
-  public void registerPresetGenres() {
+  private void registerPresetGenres() {
     // create default genre list
     genresList = new Vector<String>(Arrays.asList(UtilFeatures.GENRES));
     Collections.sort(genresList);
@@ -160,7 +160,7 @@ public final class GenreManager extends ItemManager {
    * 
    * @throws JajukException the jajuk exception
    */
-  public Genre changeGenreName(Genre old, String sNewName) throws JajukException {
+  Genre changeGenreName(Genre old, String sNewName) throws JajukException {
     // check there is actually a change
     if (old.getName2().equals(sNewName)) {
       return old;

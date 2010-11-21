@@ -125,7 +125,7 @@ public class Year extends LogicalItem implements Comparable<Year> {
    * 
    * @return true, if looks valid
    */
-  public boolean looksValid() {
+  boolean looksValid() {
     return value > 1000 && value < 3000;
   }
 }

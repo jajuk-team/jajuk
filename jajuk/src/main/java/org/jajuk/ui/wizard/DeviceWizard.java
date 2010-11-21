@@ -29,7 +29,6 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -154,10 +153,8 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
         JajukMainWindow.getInstance().getY() + 100);
     JLabel jlType = new JLabel(Messages.getString("DeviceWizard.1"));
     jcbType = new JComboBox();
-
-    final Iterator<String> itDevicesTypes = DeviceManager.getInstance().getDeviceTypes();
-    while (itDevicesTypes.hasNext()) {
-      jcbType.addItem(itDevicesTypes.next());
+    for (Device.Type type : Device.Type.values()) {
+      jcbType.addItem(Device.getTypeLabel(type));
     }
     JLabel jlName = new JLabel(Messages.getString("DeviceWizard.2"));
     jtfName = new JTextField();
@@ -398,8 +395,10 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
       @Override
       public void run() {
         if (bNew) {
-          device = DeviceManager.getInstance().registerDevice(jtfName.getText(),
-              jcbType.getSelectedIndex(), jtfUrl.getText());
+          int indexType = jcbType.getSelectedIndex();
+          Device.Type type = Device.Type.values()[indexType];
+          device = DeviceManager.getInstance().registerDevice(jtfName.getText(), type,
+              jtfUrl.getText());
         }
         device.setProperty(Const.XML_DEVICE_AUTO_MOUNT, jcbAutoMount.isSelected());
         try {

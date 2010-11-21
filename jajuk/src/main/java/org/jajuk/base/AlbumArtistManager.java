@@ -21,20 +21,12 @@
 
 package org.jajuk.base;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.Vector;
 
-import org.jajuk.events.JajukEvent;
-import org.jajuk.events.JajukEvents;
-import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Const;
-import org.jajuk.util.error.JajukException;
 
 /**
  * Convenient class to manage album-artists.
@@ -93,7 +85,7 @@ public final class AlbumArtistManager extends ItemManager {
    * 
    * @return the albumArtist
    */
-  public synchronized AlbumArtist registerAlbumArtist(String sId, String sName) {
+  synchronized AlbumArtist registerAlbumArtist(String sId, String sName) {
     AlbumArtist albumArtist = getAlbumArtistByID(sId);
     // if we have this albumArtist already, simply return the existing one
     if (albumArtist != null) {
@@ -113,49 +105,6 @@ public final class AlbumArtistManager extends ItemManager {
       });
     }
     return albumArtist;
-  }
-
-  /**
-   * Change the item name.
-   * 
-   * @param old The name of the albumArtist to update.
-   * @param sNewName The new name of the albumArtist.
-   * 
-   * @return The new Album-Instance.
-   * 
-   * @throws JajukException Thrown if adjusting the name fails for some reason.
-   */
-  public AlbumArtist changeAlbumArtistName(AlbumArtist old, String sNewName) throws JajukException {
-    synchronized (TrackManager.getInstance()) {
-      // check there is actually a change
-      if (old.getName2().equals(sNewName)) {
-        return old;
-      }
-
-      // find out if the QueueModel is playing this track before we change the track!
-      boolean queueNeedsUpdate = false;
-      if (QueueModel.getPlayingFile() != null
-          && QueueModel.getPlayingFile().getTrack().getAlbumArtist().equals(old)) {
-        queueNeedsUpdate = true;
-      }
-
-      AlbumArtist newItem = registerAlbumArtist(sNewName);
-      // re apply old properties from old item
-      newItem.cloneProperties(old);
-
-      // update tracks
-      for (Track track : TrackManager.getInstance().getTracks()) {
-        if (track.getAlbumArtist().equals(old)) {
-          TrackManager.getInstance().changeTrackAlbumArtist(track, sNewName, null);
-        }
-      }
-      // if current track albumArtist name is changed, notify it
-      if (queueNeedsUpdate) {
-        // We use the same event than for artists to keep things simple
-        ObservationManager.notify(new JajukEvent(JajukEvents.ARTIST_CHANGED));
-      }
-      return newItem;
-    }
   }
 
   /*
@@ -184,7 +133,7 @@ public final class AlbumArtistManager extends ItemManager {
    * 
    * @return Element
    */
-  public AlbumArtist getAlbumArtistByID(String sID) {
+  AlbumArtist getAlbumArtistByID(String sID) {
     return (AlbumArtist) getItemByID(sID);
   }
 
@@ -197,32 +146,5 @@ public final class AlbumArtistManager extends ItemManager {
   public List<AlbumArtist> getAlbumArtists() {
     return (List<AlbumArtist>) getItems();
   }
-
-  /**
-   * Get ordered list of albumArtists associated with this item.
-   * 
-   * @param item The albumArtist-item to look for.
-   * 
-   * @return the associated albumArtists
-   */
-  public synchronized List<AlbumArtist> getAssociatedAlbumArtists(Item item) {
-    List<AlbumArtist> out;
-    if (item instanceof Track) {
-      out = new ArrayList<AlbumArtist>(1);
-      out.add(((Track) item).getAlbumArtist());
-    } else {
-      // [Perf] If item is a track, just return its album-artist
-      // Use a set to avoid dups
-      Set<AlbumArtist> albumArtistSet = new HashSet<AlbumArtist>();
-
-      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item, true);
-      for (Track track : tracks) {
-        albumArtistSet.add(track.getAlbumArtist());
-      }
-      out = new ArrayList<AlbumArtist>(albumArtistSet);
-      Collections.sort(out);
-    }
-    return out;
-  }
-
+  
 }

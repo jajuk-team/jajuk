@@ -83,16 +83,7 @@ public class StartupCollectionService {
     // private constructor to hide it from the outside
   }
 
-  /**
-   * Register device types*.
-   */
-  public static void registerDevicesTypes() {
-    for (final String deviceTypeId : DeviceManager.DEVICE_TYPES) {
-      DeviceManager.getInstance().registerDeviceType(Messages.getString(deviceTypeId));
-    }
-  }
-
-  /**
+   /**
    * Register all the different managers for the types of items that we know
    * about.
    */

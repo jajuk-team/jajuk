@@ -103,7 +103,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
         public Void doInBackground() {
           if (!"".equals(jtfName.getText().trim()) && !"".equals(jtfMountPoint.getText().trim())) {
             Device device = null;
-            device = DeviceManager.getInstance().registerDevice(jtfName.getText().trim(), 1,
+            device = DeviceManager.getInstance().registerDevice(jtfName.getText().trim(), Device.Type.FILES_CD,
                 jtfMountPoint.getText().trim());
             try {
               device.mount(true);

@@ -43,10 +43,10 @@ import org.jajuk.util.log.Log;
 public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /** Parent directory. */
-  protected final Directory directory;
+  private final Directory directory;
 
   /** Associated track. */
-  protected Track track;
+  private Track track;
 
   /** IO file associated with this file. */
   private java.io.File fio;
@@ -97,7 +97,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    * 
    * @return the string
    */
-  public String toStringSearch() {
+  String toStringSearch() {
     StringBuilder sb = new StringBuilder(track.getGenre().getName2()).append('/').append(
         track.getArtist().getName2()).append('/').append(track.getAlbum().getName2()).append('/')
         .append(track.getName()).append(" [").append(directory.getName()).append('/').append(

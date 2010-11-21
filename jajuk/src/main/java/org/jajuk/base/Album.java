@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
@@ -590,51 +589,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
     } else {
       return null;
     }
-  }
-
-  /**
-   * Returns true, if the pattern matches the specified property.
-   * 
-   * Currently only Const.XML_ALBUM and Const.XML_GENRE are supported
-   * properties. The pattern is used for a case-insensitive sub-string match,
-   * no regular expression is used!
-   * 
-   * @param property The property to use for the match, currently either Cosnt.XML_ALBUM
-   * or Const.XML_GENRE
-   * @param pattern The string to search for as case-insensitive sub-string
-   * 
-   * @return true if either parameter is null or if the pattern matches, false otherwise.
-   */
-  public boolean matches(String property, String pattern) {
-    if (StringUtils.isBlank(property) || StringUtils.isBlank(pattern)) {
-      return true;
-    }
-
-    String sValue = null;
-    if (Const.XML_ALBUM.equals(property)) {
-      sValue = getName2();
-    } else if (Const.XML_GENRE.equals(property)) {
-      Genre genre = getGenre();
-      if (genre == null) {
-        return false;
-      }
-      sValue = genre.getName2();
-    }
-    if (sValue == null) {
-      return false;
-    }
-
-    // do not use regexp matches(<string>) because the string may contain
-    // characters to be escaped
-    return (sValue.toLowerCase(Locale.getDefault()).indexOf(
-        pattern.toLowerCase(Locale.getDefault())) != -1);
-  }
-
-  /**
-   * Reset tracks cache.
-   */
-  protected void resetTracks() {
-    cache.clear();
   }
 
   /**

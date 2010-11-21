@@ -44,7 +44,7 @@ import org.xml.sax.Attributes;
 public abstract class Item implements Const {
 
   /** We cache the ID to avoid getting it from properties for CPU performance reasons. */
-  String sID;
+  private String sID;
 
   /** We cache the name to avoid getting it from properties for CPU performance reasons. */
   String name;
@@ -262,7 +262,7 @@ public abstract class Item implements Const {
    * 
    * @return the default value
    */
-  public Object getDefaultValue(String sKey) {
+  private Object getDefaultValue(String sKey) {
     PropertyMetaInformation meta = getMeta(sKey);
     return meta.getDefaultValue();
   }
@@ -330,28 +330,13 @@ public abstract class Item implements Const {
     return sb.toString();
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.base.Item#setDefaultProperty(java.lang.String,
-   *      java.lang.String)
-   */
-  /**
-   * Populate default property.
-   * DOCUMENT_ME
-   * 
-   * @param meta DOCUMENT_ME
-   */
-  public void populateDefaultProperty(PropertyMetaInformation meta) {
-    properties.put(meta.getName(), meta.getDefaultValue());
-  }
-
+ 
   /**
    * Return an XML representation of this item.
    * 
    * @return the string
    */
-  public String toXml() {
+  String toXml() {
     try {
       StringBuilder sb = new StringBuilder("<").append(getLabel());
       sb.append(getPropertiesXml());
@@ -497,7 +482,7 @@ public abstract class Item implements Const {
    * 
    * @param propertiesSource DOCUMENT_ME
    */
-  public void cloneProperties(Item propertiesSource) {
+  void cloneProperties(Item propertiesSource) {
     Iterator<String> it = propertiesSource.getProperties().keySet().iterator();
     while (it.hasNext()) {
       String sProperty = it.next();

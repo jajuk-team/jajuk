@@ -33,17 +33,6 @@ public class SmartPlaylist extends Playlist {
   /**
    * The Constructor.
    * 
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param dParentDirectory DOCUMENT_ME
-   */
-  public SmartPlaylist(String sId, String sName, Directory dParentDirectory) {
-    super(sId, sName, dParentDirectory);
-  }
-
-  /**
-   * The Constructor.
-   * 
    * @param type DOCUMENT_ME
    * @param sId DOCUMENT_ME
    * @param sName DOCUMENT_ME

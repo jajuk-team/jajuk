@@ -131,19 +131,19 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
 
         // First, check device *name* availability, otherwise, use a <name>~<nb>
         // name
-        int code = DeviceManager.getInstance().checkDeviceAvailablity(deviceName, 0,
-            fDir.getAbsolutePath(), true);
+        int code = DeviceManager.getInstance().checkDeviceAvailablity(deviceName,
+            Device.Type.DIRECTORY, fDir.getAbsolutePath(), true);
         int prefix = 1;
         while (code == 19) { // code 19 means a device already exists with this
           // name
           deviceName = fDir.getName() + '~' + prefix;
-          code = DeviceManager.getInstance().checkDeviceAvailablity(deviceName, 0,
-              fDir.getAbsolutePath(), true);
+          code = DeviceManager.getInstance().checkDeviceAvailablity(deviceName,
+              Device.Type.DIRECTORY, fDir.getAbsolutePath(), true);
           prefix++;
         }
         // Now, test again to detected others availability issues like wrong URL
-        code = DeviceManager.getInstance().checkDeviceAvailablity(deviceName, 0,
-            fDir.getAbsolutePath(), true);
+        code = DeviceManager.getInstance().checkDeviceAvailablity(deviceName,
+            Device.Type.DIRECTORY, fDir.getAbsolutePath(), true);
         if (code != 0 && code != 19) {
           Messages.showErrorMessage(code);
           okp.getOKButton().setEnabled(false);
@@ -164,8 +164,8 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
         }
 
         // Create a directory device
-        final Device device = DeviceManager.getInstance().registerDevice(deviceName, 0,
-            fDir.getAbsolutePath());
+        final Device device = DeviceManager.getInstance().registerDevice(deviceName,
+            Device.Type.DIRECTORY, fDir.getAbsolutePath());
         device.setProperty(Const.XML_DEVICE_AUTO_MOUNT, true);
         // Set refresh time
         double dRefreshTime;

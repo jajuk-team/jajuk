@@ -24,7 +24,7 @@ package org.jajuk.base;
 /**
  * A physical Item (file, directory, device...)
  */
-public abstract class PhysicalItem extends Item {
+abstract class PhysicalItem extends Item {
 
   /**
    * The Constructor.

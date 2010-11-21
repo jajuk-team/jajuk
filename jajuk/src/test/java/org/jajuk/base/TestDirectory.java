@@ -68,7 +68,7 @@ public class TestDirectory extends JajukTestCase {
     new java.io.File(pathDevice1 + "/dir1").mkdirs();
     new java.io.File(pathDevice1 + "/dir2").mkdirs();
 
-    device1 = DeviceManager.getInstance().registerDevice("device1", Device.TYPE_DIRECTORY,
+    device1 = DeviceManager.getInstance().registerDevice("device1", Device.Type.DIRECTORY,
         pathDevice1);
     topdir1 = DirectoryManager.getInstance().registerDirectory(device1);
     dir1 = DirectoryManager.getInstance().registerDirectory("dir1", topdir1, device1);
@@ -369,7 +369,7 @@ public class TestDirectory extends JajukTestCase {
     StartupCollectionService.registerTypes();
 
     // create temp file
-    Device dev = DeviceManager.getInstance().registerDevice("test1", Device.TYPE_DIRECTORY,
+    Device dev = DeviceManager.getInstance().registerDevice("test1", Device.Type.DIRECTORY,
         System.getProperty("java.io.tmpdir"));
     Directory dir = dir1;
 
@@ -446,17 +446,6 @@ public class TestDirectory extends JajukTestCase {
 
     // now false because device is mounted now
     assertFalse(dir.shouldBeHidden());
-  }
-
-  /**
-   * Test method for {@link org.jajuk.base.Directory#setName(java.lang.String)}.
-   */
-
-  public void testSetName() {
-    Directory dir = dir1;
-    assertEquals("dir1", dir.getName());
-    dir.setName("newname");
-    assertEquals("newname", dir.getName());
   }
 
   /**

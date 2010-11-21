@@ -24,11 +24,9 @@ import ext.services.xml.XMLUtils;
 
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JajukTestCase;
 import org.jajuk.services.startup.StartupCollectionService;
@@ -263,17 +261,8 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.ItemManager#getItemManagers()}.
-   */
-
-  public final void testGetItemManagers() {
-    // cannot check the count as there can be some from previous tests
-    assertNotNull(ItemManager.getItemManagers());
-  }
-
-  /**
-   * Test method for {@link org.jajuk.base.ItemManager#cleanup()}.
-   */
+  * Test method for {@link org.jajuk.base.ItemManager#cleanup()}.
+  */
 
   public final void testCleanup() {
     ItemManager man = new LocalIM();
@@ -398,40 +387,6 @@ public class TestItemManager extends JajukTestCase {
     assertEquals(man.getItems().toString(), 2, man.getItems().size());
   }
 
-  /**
-   * Test method for
-   * {@link org.jajuk.base.ItemManager#getFilteredItems(org.apache.commons.collections.Predicate)}
-   * .
-   */
-
-  public final void testGetFilteredItems() {
-    ItemManager man = new LocalIM();
-
-    Item item = new TestItem("7", "name7");
-    man.registerItem(item);
-    item = new TestItem("8", "name8");
-    man.registerItem(item);
-
-    // first find all
-    List<? extends Item> list = man.getFilteredItems(new Predicate() {
-      @Override
-      public boolean evaluate(Object obj) {
-        return true;
-      }
-    });
-
-    assertEquals(list.toString(), 2, list.size());
-
-    // then none
-    list = man.getFilteredItems(new Predicate() {
-      @Override
-      public boolean evaluate(Object obj) {
-        return false;
-      }
-    });
-
-    assertEquals(list.toString(), 0, list.size());
-  }
 
   /**
    * Test method for {@link org.jajuk.base.ItemManager#getItemsIterator()}.

@@ -81,7 +81,7 @@ public final class YearManager extends ItemManager {
    * 
    * @return the year
    */
-  public Year registerYear(String sId, String pYear) {
+  Year registerYear(String sId, String pYear) {
     Year year = getYearByID(sId);
     if (year != null) {
       return year;
@@ -108,7 +108,7 @@ public final class YearManager extends ItemManager {
    * 
    * @return Element
    */
-  public Year getYearByID(String sID) {
+  Year getYearByID(String sID) {
     return (Year) getItemByID(sID);
   }
 

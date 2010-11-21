@@ -56,6 +56,7 @@ public class AlbumComparator implements Comparator<Album>, Serializable {
    * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
    */
   @Override
+  @SuppressWarnings("ucd")
   public int compare(Album album1, Album album2) {
     // for albums, perform a fast compare
     if (criteria == 2) {

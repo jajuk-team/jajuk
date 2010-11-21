@@ -150,7 +150,7 @@ public final class DirectoryManager extends ItemManager {
    * 
    * @return Directory matching the id
    */
-  public Directory getDirectoryByID(final String sID) {
+  Directory getDirectoryByID(final String sID) {
     return (Directory) getItemByID(sID);
   }
 
@@ -218,7 +218,7 @@ public final class DirectoryManager extends ItemManager {
    * 
    * @return the directory
    */
-  public Directory registerDirectory(final String sId, final String sName, final Directory dParent,
+  Directory registerDirectory(final String sId, final String sName, final Directory dParent,
       final Device device) {
     Directory directory = getDirectoryByID(sId);
     if (directory != null) {

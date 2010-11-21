@@ -190,28 +190,11 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * 
    * @param file : the file to remove
    */
-  public void removeFile(File file) {
+  void removeFile(File file) {
     alFiles.remove(file);
   }
 
-  /**
-   * Gets the files.
-   * 
-   * @param filter files we want to deal with, null means no filter
-   * 
-   * @return all associated files
-   */
-  public List<org.jajuk.base.File> getFiles(Set<File> filter) {
-    List<File> out = new ArrayList<File>(alFiles.size());
-    for (File file : alFiles) {
-      if (filter == null || filter.contains(file)) {
-        out.add(file);
-      }
-    }
-    return out;
-  }
-
-  /**
+   /**
    * Gets the ready files.
    * 
    * @return ready files
@@ -233,7 +216,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * 
    * @return ready files with given filter
    */
-  public List<File> getReadyFiles(Set<File> filter) {
+  List<File> getReadyFiles(Set<File> filter) {
     List<File> alReadyFiles = new ArrayList<File>(alFiles.size());
     for (File file : alFiles) {
       if (file.isReady() && (filter == null || filter.contains(file))) {

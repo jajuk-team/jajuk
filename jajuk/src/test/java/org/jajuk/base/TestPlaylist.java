@@ -768,12 +768,18 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Playlist#reset()}.
+   * @throws IllegalAccessException 
+   * @throws NoSuchFieldException 
+   * @throws IllegalArgumentException 
+   * @throws SecurityException 
    */
-  public final void testReset() {
+  public final void testReset() throws SecurityException, IllegalArgumentException,
+      NoSuchFieldException, IllegalAccessException {
     Playlist play = new Playlist("1", "name", null);
 
     Directory dir = JUnitHelpers.getDirectory();
-    play.setParentDirectory(dir);
+    JUnitHelpers.setAttribute(play, "dParentDirectory", dir);
+    dir.setProperty(Const.XML_DIRECTORY, dir == null ? "-1" : dir.getID());
 
     play.setFIO(new java.io.File("testfile"));
     play.reset();
@@ -882,26 +888,6 @@ public class TestPlaylist extends JajukTestCase {
    */
   public final void testSetFIO() {
     // tested above in getFIO();
-  }
-
-  /**
-   * Test method for
-   * {@link org.jajuk.base.Playlist#setParentDirectory(org.jajuk.base.Directory)}
-   * .
-   */
-  public final void testSetParentDirectory() {
-    Playlist play = new Playlist("1", "name", null);
-    assertNull(play.getDirectory());
-
-    Directory dir = JUnitHelpers.getDirectory();
-
-    play.setParentDirectory(dir);
-
-    assertNotNull(play.getDirectory());
-
-    // also try setting it to null
-    play.setParentDirectory(null);
-    assertNull(play.getDirectory());
   }
 
   /**

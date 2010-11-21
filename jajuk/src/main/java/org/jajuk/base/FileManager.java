@@ -348,7 +348,7 @@ public final class FileManager extends ItemManager {
    * @return file or null if given path is not known
    */
 
-  public File getFileByPath(String sPath) {
+  File getFileByPath(String sPath) {
     lock.readLock().lock();
     try {
       File fOut = null;
@@ -487,7 +487,7 @@ public final class FileManager extends ItemManager {
    * 
    * @return The entire accessible novelties collection
    */
-  public List<File> getGlobalNoveltiesPlaylist(boolean bHideUnmounted) {
+  List<File> getGlobalNoveltiesPlaylist(boolean bHideUnmounted) {
     List<File> alEligibleFiles = new ArrayList<File>(1000);
     List<Track> tracks = TrackManager.getInstance().getTracks();
     // Filter by age

@@ -50,24 +50,21 @@ public class PropertyMetaInformation {
   private final Class<?> cType;
 
   /** Default value (null: no default). */
-  Object oDefaultValue;
+  private Object oDefaultValue;
 
   /** This property should be displayed to UI?. */
-  boolean bShouldBeDisplayed = true;
+  private boolean bShouldBeDisplayed = true;
 
   /** Editable?. */
-  boolean bEditable = true;
+  private boolean bEditable = true;
 
   /** Unique?. */
-  boolean bMergeable = false;
+  private boolean bMergeable = false;
 
   /** Human Type. */
   private String sHumanType;
 
-  /** Today. */
-  public static final Date TODAY = new Date();
-
-  /**
+   /**
    * constructor.
    * 
    * @param sName Property name
@@ -181,7 +178,7 @@ public class PropertyMetaInformation {
    * 
    * @return property meta information XML description
    */
-  public String toXML() {
+  String toXML() {
     String sDefault = "";
     try {
       if (oDefaultValue != null) {

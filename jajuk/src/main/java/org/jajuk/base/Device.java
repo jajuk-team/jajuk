@@ -63,35 +63,22 @@ import org.xml.sax.Attributes;
 /**
  * A device ( music files repository )
  * <p>
- * Some properties of a device are immuatable : name, url and type *
+ * Some properties of a device are immutable : name, url and type *
  * <p>
  * Physical item.
  */
 public class Device extends PhysicalItem implements Comparable<Device> {
 
-  /** The Constant OPTION_REFRESH_DEEP.  DOCUMENT_ME */
-  protected static final int OPTION_REFRESH_DEEP = 1;
+  /** The Constant OPTION_REFRESH_DEEP.*/
+  private static final int OPTION_REFRESH_DEEP = 1;
 
-  /** The Constant OPTION_REFRESH_CANCEL.  DOCUMENT_ME */
-  protected static final int OPTION_REFRESH_CANCEL = 2;
+  /** The Constant OPTION_REFRESH_CANCEL. */
+  private static final int OPTION_REFRESH_CANCEL = 2;
 
   // Device type constants
-  // Note: these need to correspond with the static array in @see
-  // org.jajuk.base.DeviceManager !!
-  /** The Constant TYPE_DIRECTORY.  DOCUMENT_ME */
-  public static final int TYPE_DIRECTORY = 0;
-
-  /** The Constant TYPE_CD.  DOCUMENT_ME */
-  public static final int TYPE_CD = 1;
-
-  /** The Constant TYPE_NETWORK_DRIVE.  DOCUMENT_ME */
-  public static final int TYPE_NETWORK_DRIVE = 2;
-
-  /** The Constant TYPE_EXT_DD.  DOCUMENT_ME */
-  public static final int TYPE_EXT_DD = 3;
-
-  /** The Constant TYPE_PLAYER.  DOCUMENT_ME */
-  public static final int TYPE_PLAYER = 4;
+  public enum Type {
+    DIRECTORY, FILES_CD, NETWORK_DRIVE, EXTDD, PLAYER
+  }
 
   /** Device URL (performances). */
   private String sUrl;
@@ -141,7 +128,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * 
    * @param directory DOCUMENT_ME
    */
-  public void addDirectory(final Directory directory) {
+  void addDirectory(final Directory directory) {
     alDirectories.add(directory);
   }
 
@@ -321,12 +308,12 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Gets the device type s.
+   * Gets the device type as a string.
    * 
-   * @return the device type s
+   * @return the device type as string
    */
   public String getDeviceTypeS() {
-    return DeviceManager.getInstance().getDeviceType(getType());
+    return getType().name();
   }
 
   /**
@@ -371,10 +358,30 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   @Override
   public String getHumanValue(final String sKey) {
     if (Const.XML_TYPE.equals(sKey)) {
-      final long lType = getLongValue(sKey);
-      return DeviceManager.getInstance().getDeviceType(lType);
+      return getTypeLabel(getType());
     } else {// default
       return super.getHumanValue(sKey);
+    }
+  }
+
+  /**
+   * Return label for a type
+   * @param type
+   * @return label for a type
+   */
+  public static String getTypeLabel(Type type) {
+    if (type == Type.DIRECTORY) {
+      return Messages.getString("Device_type.directory");
+    } else if (type == Type.FILES_CD) {
+      return Messages.getString("Device_type.file_cd");
+    } else if (type == Type.EXTDD) {
+      return Messages.getString("Device_type.extdd");
+    } else if (type == Type.PLAYER) {
+      return Messages.getString("Device_type.player");
+    } else if (type == Type.NETWORK_DRIVE) {
+      return Messages.getString("Device_type.network_drive");
+    } else {
+      return null;
     }
   }
 
@@ -385,30 +392,55 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    */
   @Override
   public ImageIcon getIconRepresentation() {
-    switch ((int) getType()) {
-    case 0:
-      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED_SMALL), IconLoader
+    if (getType() == Type.DIRECTORY) {
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED_SMALL), IconLoader
           .getIcon(JajukIcons.DEVICE_DIRECTORY_UNMOUNTED_SMALL));
-    case 1:
-      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED_SMALL), IconLoader
+    } else if (getType() == Type.FILES_CD) {
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED_SMALL), IconLoader
           .getIcon(JajukIcons.DEVICE_CD_UNMOUNTED_SMALL));
-    case 2:
-      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_MOUNTED_SMALL), IconLoader
-          .getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL));
-    case 3:
-      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED_SMALL), IconLoader
+    } else if (getType() == Type.NETWORK_DRIVE) {
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_MOUNTED_SMALL),
+          IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL));
+    } else if (getType() == Type.EXTDD) {
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED_SMALL), IconLoader
           .getIcon(JajukIcons.DEVICE_EXT_DD_UNMOUNTED_SMALL));
-    case 4:
-      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED_SMALL), IconLoader
+    } else if (getType() == Type.PLAYER) {
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED_SMALL), IconLoader
           .getIcon(JajukIcons.DEVICE_PLAYER_UNMOUNTED_SMALL));
-    default:
-      Log.warn("Unknown type of device detected: " + getType());
+    } else {
+      Log.warn("Unknown type of device detected: " + getType().name());
+      return null;
+    }
+  }
+
+  /*
+   * Return large icon representation of the device
+   * @Return large icon representation of the device
+   */
+  public ImageIcon getIconRepresentationLarge() {
+    if (getType() == Type.DIRECTORY) {
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED), IconLoader
+          .getIcon(JajukIcons.DEVICE_DIRECTORY_UNMOUNTED));
+    } else if (getType() == Type.FILES_CD) {
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED), IconLoader
+          .getIcon(JajukIcons.DEVICE_CD_UNMOUNTED));
+    } else if (getType() == Type.NETWORK_DRIVE) {
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_MOUNTED), IconLoader
+          .getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_UNMOUNTED));
+    } else if (getType() == Type.EXTDD) {
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED), IconLoader
+          .getIcon(JajukIcons.DEVICE_EXT_DD_UNMOUNTED));
+    } else if (getType() == Type.PLAYER) {
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED), IconLoader
+          .getIcon(JajukIcons.DEVICE_PLAYER_UNMOUNTED));
+    } else {
+      Log.warn("Unknown type of device detected: " + getType().name());
       return null;
     }
   }
 
   /**
-   * Sets the icon.
+   * Return the right icon between mounted or unmounted
    * 
    * @param mountedIcon The icon to return for a mounted device
    * @param unmountedIcon The icon to return for an unmounted device
@@ -416,7 +448,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * @return Returns either of the two provided icons depending on the state of
    * the device
    */
-  private ImageIcon setIcon(ImageIcon mountedIcon, ImageIcon unmountedIcon) {
+  private ImageIcon rightIcon(ImageIcon mountedIcon, ImageIcon unmountedIcon) {
     if (isMounted()) {
       return mountedIcon;
     } else {
@@ -451,8 +483,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * 
    * @return the type
    */
-  public long getType() {
-    return getLongValue(Const.XML_TYPE);
+  public Device.Type getType() {
+    return Type.values()[(int) getLongValue(Const.XML_TYPE)];
   }
 
   /**
@@ -575,14 +607,14 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   /**
    * Prepare manual refresh.
    * 
-   * @param bAsk DOCUMENT_ME
+   * @param bAsk ask user to perform deep or fast refresh 
    * 
    * @return the user choice (deep or fast)
    * 
    * @throws JajukException if user canceled, device cannot be refreshed or device already
    * refreshing
    */
-  public int prepareRefresh(final boolean bAsk) throws JajukException {
+  int prepareRefresh(final boolean bAsk) throws JajukException {
     if (bAsk) {
       final Object[] possibleValues = { Messages.getString("FilesTreeView.60"),// fast
           Messages.getString("FilesTreeView.61"),// deep
@@ -707,22 +739,20 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         // no more a boolean
         if (meta.getName().equals(Const.XML_DEVICE_AUTO_REFRESH)
             && (sValue.equalsIgnoreCase(Const.TRUE) || sValue.equalsIgnoreCase(Const.FALSE))) {
-          switch ((int) getType()) {
-          case TYPE_DIRECTORY: // directory
+          if (getType() == Type.DIRECTORY) {
             sValue = "0.5d";
-            break;
-          case TYPE_CD: // file cd
+          }
+          if (getType() == Type.FILES_CD) {
             sValue = "0d";
-            break;
-          case TYPE_NETWORK_DRIVE: // network drive
+          }
+          if (getType() == Type.NETWORK_DRIVE) {
             sValue = "0d";
-            break;
-          case TYPE_EXT_DD: // ext dd
+          }
+          if (getType() == Type.EXTDD) {
             sValue = "3d";
-            break;
-          case TYPE_PLAYER: // player
+          }
+          if (getType() == Type.PLAYER) {
             sValue = "3d";
-            break;
           }
         }
         try {
@@ -783,7 +813,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * 
    * @return true if some changes occurred in device
    */
-  public synchronized boolean refreshCommand(final boolean bDeepScan, final boolean bManual,
+  synchronized boolean refreshCommand(final boolean bDeepScan, final boolean bManual,
       List<Directory> dirsToRefresh) {
     try {
       // Check if this device is mounted (useful when called by
@@ -986,7 +1016,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   /**
    * Synchronize action itself.
    */
-  public void synchronizeCommand() {
+  void synchronizeCommand() {
     try {
       bAlreadySynchronizing = true;
       long lTime = System.currentTimeMillis();
@@ -1222,9 +1252,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    */
   @Override
   public String toString() {
-    return "Device[ID=" + getID() + " Name=" + getName() + " Type="
-        + DeviceManager.getInstance().getDeviceType(getLongValue(Const.XML_TYPE)) + " URL=" + sUrl
-        + "]";
+    return "Device[ID=" + getID() + " Name=" + getName() + " Type=" + getType().name() + " URL="
+        + sUrl + "]";
   }
 
   /**
