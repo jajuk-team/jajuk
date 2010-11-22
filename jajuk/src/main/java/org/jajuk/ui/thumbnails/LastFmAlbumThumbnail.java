@@ -195,6 +195,14 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
       Log.warn("Could not load image, timed out while reading address: {{" + e.getMessage() + "}}");
     } catch (Exception e) {
       Log.error(e);
+      
+      // check for empty file to remove invalid cache entries
+      if(fCover.exists() && fCover.length() == 0) {
+        Log.warn("Removing empty file from cache: " + fCover.getAbsolutePath());
+        if(!fCover.delete()) {
+          Log.warn("Error removing file: " + fCover.getAbsolutePath());
+        }
+      }
     }
   }
 
