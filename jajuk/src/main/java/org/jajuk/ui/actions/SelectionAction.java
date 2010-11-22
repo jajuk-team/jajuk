@@ -48,7 +48,7 @@ public abstract class SelectionAction extends JajukAction {
 
   /**
    * Instantiates a new selection action.
-   * 
+   *
    * @param msg DOCUMENT_ME
    * @param icon DOCUMENT_ME
    * @param enabled DOCUMENT_ME
@@ -57,9 +57,21 @@ public abstract class SelectionAction extends JajukAction {
     super(msg, icon, enabled);
   }
 
+  /**
+   * Instantiates a new selection action.
+   *
+   * @param msg DOCUMENT_ME
+   * @param stroke DOCUMENT_ME
+   * @param icon DOCUMENT_ME
+   * @param enabled DOCUMENT_ME
+   */
+  public SelectionAction(String name, ImageIcon icon, String stroke, boolean enabled, boolean bHotkey) {
+    super(name, icon, stroke, enabled, bHotkey);
+  }
+
   /*
    * This method transforms various entries to a list of items
-   * 
+   *
    * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
    */
   /* (non-Javadoc)
