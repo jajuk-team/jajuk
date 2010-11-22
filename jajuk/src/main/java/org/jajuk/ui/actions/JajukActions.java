@@ -278,6 +278,9 @@ public enum JajukActions {
   /** Show properties on a single or a selection of items. */
   SHOW_PROPERTIES,
 
+  /** Display the currently playing track via the notification system. */
+  SHOW_CURRENTLY_PLAYING,
+
   /** Play a selection. */
   PLAY_SELECTION,
 

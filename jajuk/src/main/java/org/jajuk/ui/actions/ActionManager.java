@@ -170,6 +170,8 @@ public final class ActionManager {
     installAction(JajukActions.CDDB_SELECTION, new CDDBSelectionAction(), false);
     installAction(JajukActions.SAVE_AS, new SaveAsAction(), false);
     installAction(JajukActions.SYNC_TREE_TABLE, new SyncTreeTableAction(), false);
+    installAction(JajukActions.SHOW_CURRENTLY_PLAYING, new ShowCurrentlyPlayingAction(), false);
+    
 
     // Preferences
     installAction(JajukActions.BAN, new BanCurrentAction(), false);
