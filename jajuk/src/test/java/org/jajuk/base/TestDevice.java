@@ -160,36 +160,27 @@ public class TestDevice extends JajukTestCase {
     Device device = JUnitHelpers.getDevice();
     assertNotNull(device.getIconRepresentation());
 
-    device.setProperty(Const.XML_TYPE, Device.Type.DIRECTORY);
+    device.setProperty(Const.XML_TYPE, (long)Device.Type.DIRECTORY.ordinal());
     assertNotNull(device.getIconRepresentation());
 
-    device.setProperty(Const.XML_TYPE, Device.Type.FILES_CD);
+    device.setProperty(Const.XML_TYPE, (long)Device.Type.FILES_CD.ordinal());
     assertNotNull(device.getIconRepresentation());
 
-    device.setProperty(Const.XML_TYPE, Device.Type.NETWORK_DRIVE);
+    device.setProperty(Const.XML_TYPE, (long)Device.Type.NETWORK_DRIVE.ordinal());
     assertNotNull(device.getIconRepresentation());
 
-    device.setProperty(Const.XML_TYPE, Device.Type.EXTDD);
+    device.setProperty(Const.XML_TYPE, (long)Device.Type.EXTDD.ordinal());
     assertNotNull(device.getIconRepresentation());
 
-    device.setProperty(Const.XML_TYPE, Device.Type.PLAYER);
+    device.setProperty(Const.XML_TYPE, (long)Device.Type.PLAYER.ordinal());
     assertNotNull(device.getIconRepresentation());
 
     // test with mounted device
     device.setUrl(System.getProperty("java.io.tmpdir"));
     device.mount(true);
 
-    device.setProperty(Const.XML_TYPE, Device.Type.PLAYER);
+    device.setProperty(Const.XML_TYPE, (long)Device.Type.PLAYER.ordinal());
     assertNotNull(device.getIconRepresentation());
-  }
-
-  /**
-   * Test method for
-   * {@link org.jajuk.base.Device#Device(java.lang.String, java.lang.String)}.
-   */
-
-  public void testDevice() {
-    new Device("1", "name");
   }
 
   /**

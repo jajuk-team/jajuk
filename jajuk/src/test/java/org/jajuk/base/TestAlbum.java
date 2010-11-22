@@ -463,7 +463,7 @@ public class TestAlbum extends JajukTestCase {
     Album album = new Album("1", "name", 123);
 
     // nothing happens without tracks
-    Field field = Album.class.getField("cache");
+    Field field = Album.class.getDeclaredField("cache");
     field.setAccessible(true);
     List<Track> cache = (List<Track>) field.get(album);
     cache.clear();
