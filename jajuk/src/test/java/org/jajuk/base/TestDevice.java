@@ -366,10 +366,10 @@ public class TestDevice extends JajukTestCase {
    */
   public void testGetType() {
     Device device = JUnitHelpers.getDevice();
-    assertEquals(0, device.getType());
+    assertEquals(Device.Type.DIRECTORY, device.getType());
 
     device.setProperty(Const.XML_TYPE, 2l);
-    assertEquals(2, device.getType());
+    assertEquals(Device.Type.NETWORK_DRIVE, device.getType());
   }
 
   /**
