@@ -98,7 +98,7 @@ public class QueueView extends PlaylistView {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.IView#display()
    */
   @Override
@@ -133,6 +133,7 @@ public class QueueView extends PlaylistView {
     jtbAutoScroll.setToolTipText(Messages.getString("QueueView.2"));
     jtbAutoScroll.setSelected(Conf.getBoolean(Const.CONF_AUTO_SCROLL));
     jtbAutoScroll.addActionListener(new ActionListener() {
+      @Override
       public void actionPerformed(ActionEvent e) {
         Conf.setProperty(Const.CONF_AUTO_SCROLL, Boolean.toString(jtbAutoScroll.isSelected()));
         if (jtbAutoScroll.isSelected()) {
@@ -180,6 +181,7 @@ public class QueueView extends PlaylistView {
     // behavior here in the queue view : it must go to selection without keeping
     // previous FIFO
     jmiFilePlay.addActionListener(new ActionListener() {
+      @Override
       public void actionPerformed(ActionEvent e) {
         goToSelection();
       }
@@ -214,6 +216,7 @@ public class QueueView extends PlaylistView {
     });
     // Add specific behavior on left click
     editorTable.setCommand(new ILaunchCommand() {
+      @Override
       public void launch(int nbClicks) {
         int iSelectedCol = editorTable.getSelectedColumn();
         // Convert column selection as columns may have been moved
@@ -234,8 +237,8 @@ public class QueueView extends PlaylistView {
         }
       }
     });
-    //  Note : don't add a ListSelectionListener here, see JajukTable code, 
-    //  all the event code is centralized over there 
+    //  Note : don't add a ListSelectionListener here, see JajukTable code,
+    //  all the event code is centralized over there
     editorTable.addListSelectionListener(this);
     // Register keystrokes over table
     super.setKeystrokes();
@@ -269,7 +272,7 @@ public class QueueView extends PlaylistView {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.views.PlaylistView#getRegistrationKeys()
    */
   @Override
@@ -289,7 +292,7 @@ public class QueueView extends PlaylistView {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.IView#getDesc()
    */
   @Override
@@ -299,12 +302,13 @@ public class QueueView extends PlaylistView {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   @Override
   public void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         try {
           JajukEvents subject = event.getSubject();
@@ -388,6 +392,7 @@ public class QueueView extends PlaylistView {
   private void autoScroll() {
 
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
 
         if (QueueModel.getQueueSize() > 0) {
@@ -439,7 +444,7 @@ public class QueueView extends PlaylistView {
     } finally {
       editorModel.setRefreshing(false);
     }
-    // Refresh the preference menu according to the selection 
+    // Refresh the preference menu according to the selection
     // (useful on rating change for a single-row model for ie)
     pjmFilesEditor.resetUI(editorTable.getSelection());
   }
@@ -464,7 +469,7 @@ public class QueueView extends PlaylistView {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.views.PlaylistView#actionPerformed(java.awt.event.ActionEvent)
    */
   @Override
@@ -550,7 +555,7 @@ public class QueueView extends PlaylistView {
 
   /**
    * Called when table selection changed.
-   * 
+   *
    * @param e DOCUMENT_ME
    */
   @Override
