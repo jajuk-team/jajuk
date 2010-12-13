@@ -97,16 +97,16 @@ public class SuggestionView extends ViewAdapter {
 
     /** DOCUMENT_ME. */
     BEST_OF,
-    
+
     /** DOCUMENT_ME. */
     NEWEST,
-    
+
     /** DOCUMENT_ME. */
     RARE,
-    
+
     /** DOCUMENT_ME. */
     OTHERS_ALBUMS,
-    
+
     /** DOCUMENT_ME. */
     SIMILAR_ARTISTS
   }
@@ -154,7 +154,7 @@ public class SuggestionView extends ViewAdapter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
      */
     @Override
@@ -180,18 +180,20 @@ public class SuggestionView extends ViewAdapter {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.views.IView#getDesc()
    */
+  @Override
   public String getDesc() {
     return Messages.getString("SuggestionView.0");
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.views.IView#populate()
    */
+  @Override
   public void initUI() {
     tabs = new JTabbedPane();
     // Remove tab border, see
@@ -225,6 +227,7 @@ public class SuggestionView extends ViewAdapter {
     // Refresh tabs on demand only, add changelisterner after tab creation to
     // avoid that the stored tab is overwrited at startup
     tabs.addChangeListener(new ChangeListener() {
+      @Override
       public void stateChanged(ChangeEvent arg0) {
         refreshLastFMCollectionTabs();
         // store the selected tab
@@ -254,9 +257,10 @@ public class SuggestionView extends ViewAdapter {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
@@ -272,6 +276,7 @@ public class SuggestionView extends ViewAdapter {
   private void refreshLocalCollectionTabs() {
     // Display a busy panel in the mean-time
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         JXBusyLabel busy1 = new JXBusyLabel();
         busy1.setBusy(true);
@@ -350,6 +355,7 @@ public class SuggestionView extends ViewAdapter {
         || (newArtist == null || newArtist.equals(Messages.getString(UNKNOWN_ARTIST)))) {
       // Set empty panels
       SwingUtilities.invokeLater(new Runnable() {
+        @Override
         public void run() {
           stopAllBusyLabels();
           tabs.setComponentAt(3, new JLabel(Messages.getString("SuggestionView.7")));
@@ -366,6 +372,7 @@ public class SuggestionView extends ViewAdapter {
     artist = newArtist;
     // Display a busy panel in the mean-time
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         JXBusyLabel busy1 = new JXBusyLabel();
         busy1.setBusy(true);
@@ -410,7 +417,7 @@ public class SuggestionView extends ViewAdapter {
 
   /**
    * Pre-load other album (done outside the EDT).
-   * 
+   *
    * @throws Exception the exception
    */
   void preFetchOthersAlbum() throws Exception {
@@ -433,7 +440,7 @@ public class SuggestionView extends ViewAdapter {
 
   /**
    * Pre-load other album (done outside the EDT).
-   * 
+   *
    * @throws Exception the exception
    */
   void preFetchSimilarArtists() throws Exception {
@@ -458,9 +465,9 @@ public class SuggestionView extends ViewAdapter {
 
   /**
    * Return the result panel for local albums.
-   * 
+   *
    * @param type DOCUMENT_ME
-   * 
+   *
    * @return the local suggestions panel
    */
   JScrollPane getLocalSuggestionsPanel(SuggestionType type) {
@@ -493,10 +500,10 @@ public class SuggestionView extends ViewAdapter {
 
   /**
    * Return the result panel for lastFM information.
-   * 
+   *
    * @param type DOCUMENT_ME
    * @param artistView DOCUMENT_ME
-   * 
+   *
    * @return the last fm suggestions panel
    */
   JScrollPane getLastFMSuggestionsPanel(SuggestionType type, boolean artistView) {
@@ -546,9 +553,10 @@ public class SuggestionView extends ViewAdapter {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
+  @Override
   public void update(JajukEvent event) {
     synchronized (SuggestionView.class) {
       JajukEvents subject = event.getSubject();
@@ -574,7 +582,7 @@ public class SuggestionView extends ViewAdapter {
 
   /**
    * [Perf].
-   * 
+   *
    * @return whether LastFM tabs are visible or not
    */
   private boolean isLastFMTabsVisible() {
@@ -594,7 +602,7 @@ public class SuggestionView extends ViewAdapter {
 
   /**
    * Gets the nothing found panel.
-   * 
+   *
    * @return a panel with text explaining why no item has been found
    */
   JPanel getNothingFoundPanel() {
