@@ -25,6 +25,7 @@ import ext.services.lastfm.LastFmService;
 
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Set;
@@ -78,7 +79,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.views.IView#getDesc()
    */
   @Override
@@ -88,7 +89,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.views.IView#initUI()
    */
   @Override
@@ -105,7 +106,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   @Override
@@ -129,12 +130,13 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
    */
   @Override
   public void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         // If internet access or lastfm is disable, just reset
         if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)
@@ -207,7 +209,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.helpers.TwoStepsDisplayable#longCall()
    */
   @Override
@@ -221,6 +223,14 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
       preFetchSimilarArtists();
     } catch (UnknownHostException e) {
       Log.warn("Could not contact host for loading album information: {{" + e.getMessage() + "}}");
+    } catch (IOException e) {
+      if(e.getMessage().contains(" 403 ")) {
+        // server responded with code "forbidden"
+        Log.warn("Server returned an error while fetching images: " + e.getMessage());
+      } else {
+        // other exception
+        Log.error(e);
+      }
     } catch (Exception e) {
       Log.error(e);
     }
@@ -229,7 +239,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.helpers.TwoStepsDisplayable#shortCall(java.lang.Object)
    */
   @Override
