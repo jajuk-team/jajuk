@@ -171,7 +171,7 @@ public final class Conf implements Const {
     defaults.put(CONF_STATE_REPEAT_ALL, FALSE);
     defaults.put(CONF_STATE_KARAOKE, FALSE);
     defaults.put(CONF_STATE_SHUFFLE, FALSE);
-    defaults.put(CONF_STATE_CONTINUE, FALSE);
+    defaults.put(CONF_STATE_CONTINUE, TRUE);
     defaults.put(CONF_STATE_INTRO, FALSE);
     // no startup file by default
     defaults.put(CONF_STARTUP_ITEM, "");
