@@ -97,16 +97,17 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
     /**
      * Instantiates a new position thread.
-     * 
+     *
      * @param name DOCUMENT_ME
      */
     public PositionThread(String name) {
       super(name);
+      setDaemon(true);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Thread#run()
      */
     @Override
@@ -157,16 +158,17 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
     /**
      * Instantiates a new reader thread.
-     * 
+     *
      * @param name DOCUMENT_ME
      */
     public ReaderThread(String name) {
       super(name);
+      setDaemon(true);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Thread#run()
      */
     @Override
@@ -335,7 +337,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.players.AbstractMPlayerImpl#stop()
    */
   @Override
@@ -349,7 +351,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long, float)
    */
   @Override
@@ -417,7 +419,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /**
    * Launch mplayer.
    * DOCUMENT_ME
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   private void launchMplayer() throws IOException {
@@ -462,7 +464,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /**
    * Gets the current position.
-   * 
+   *
    * @return current position as a float ex: 0.2f
    */
   @Override
@@ -475,7 +477,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /**
    * Gets the elapsed time.
-   * 
+   *
    * @return Returns the lTime in ms
    */
   @Override
@@ -485,7 +487,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#seek(float) Ogg vorbis seek not yet supported
    */
   @Override
@@ -513,7 +515,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /**
    * Gets the state.
-   * 
+   *
    * @return player state, -1 if player is null.
    */
   @Override
@@ -527,7 +529,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#getCurrentLength()
    */
   @Override
@@ -537,7 +539,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.AbstractMPlayerImpl#play(org.jajuk.base.WebRadio, float)
    */
   @Override
@@ -547,7 +549,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.IPlayerImpl#setVolume(float)
    */
   @Override
@@ -561,7 +563,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.players.AbstractMPlayerImpl#resume()
    */
   @Override
