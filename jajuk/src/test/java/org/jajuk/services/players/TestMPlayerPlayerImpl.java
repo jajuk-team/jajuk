@@ -59,7 +59,9 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void setUp() throws IOException {
     Log.info("Setting up testcase");
 
-    scriptFile = java.io.File.createTempFile("dummy", "mplayer.sh");
+    // we previously stored this file in the default tmp-directry, but could not be executed there
+    // on the CI machine, therefore trying to put it into the bin-directory where we put the compiled code
+    scriptFile = java.io.File.createTempFile("dummy", "mplayer.sh", new java.io.File("bin"));
     scriptFile.setExecutable(true);
 
     FileUtils.writeStringToFile(scriptFile, "#!/bin/sh\n\n" + findJavaExecutable() + " -cp bin "
