@@ -21,6 +21,8 @@
 package org.jajuk.services.players;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
 import org.jajuk.JUnitHelpers;
@@ -48,24 +50,25 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   protected static final String PROPERTY_JAVA_HOME = "java.home";
 
   private String findJavaExecutable() {
-    assertNotNull("Need to have a property 'java.home' to run this test!",
-        System.getProperty(PROPERTY_JAVA_HOME));
+    assertNotNull("Need to have a property 'java.home' to run this test!", System
+        .getProperty(PROPERTY_JAVA_HOME));
 
     return "\"" + System.getProperty(PROPERTY_JAVA_HOME) + java.io.File.separator + "bin"
         + java.io.File.separator + JAVA_PROCESS + "\"";
   }
 
   @Override
-  public void setUp() throws IOException {
+  public void setUp() throws IOException, URISyntaxException {
     Log.info("Setting up testcase");
 
-    // we previously stored this file in the default tmp-directry, but could not be executed there
-    // on the CI machine, therefore trying to put it into the bin-directory where we put the compiled code
-    scriptFile = java.io.File.createTempFile("dummy", "mplayer.sh", new java.io.File("bin"));
+    scriptFile = java.io.File.createTempFile("dummy", "mplayer.sh");
     scriptFile.setExecutable(true);
 
-    FileUtils.writeStringToFile(scriptFile, "#!/bin/sh\n\n" + findJavaExecutable() + " -cp bin "
-        + MAIN_CLASS);
+    URL thisClassAbsUrl = getClass().getProtectionDomain().getCodeSource().getLocation();
+
+    String thisClassAbsPath = new java.io.File(thisClassAbsUrl.toURI()).getAbsolutePath();
+    FileUtils.writeStringToFile(scriptFile, "#!/bin/sh\n\n" + findJavaExecutable() + " -cp "
+        + thisClassAbsPath +" "+ MAIN_CLASS);
 
     Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, scriptFile.getAbsolutePath());
 
