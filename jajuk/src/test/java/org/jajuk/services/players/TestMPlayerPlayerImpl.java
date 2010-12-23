@@ -67,8 +67,8 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
     URL thisClassAbsUrl = getClass().getProtectionDomain().getCodeSource().getLocation();
 
     String thisClassAbsPath = new java.io.File(thisClassAbsUrl.toURI()).getAbsolutePath();
-    FileUtils.writeStringToFile(scriptFile, "#!/bin/sh\n\n" + findJavaExecutable() + " -cp "
-        + thisClassAbsPath +" "+ MAIN_CLASS);
+    FileUtils.writeStringToFile(scriptFile, "#!/bin/sh\n\n" + findJavaExecutable() + " -cp \""
+        + thisClassAbsPath +"\" "+ MAIN_CLASS);
 
     Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, scriptFile.getAbsolutePath());
 
