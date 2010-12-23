@@ -379,10 +379,11 @@ public class SessionService {
                 + (isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk")).canRead()) {
               setWorkspace(workspacePath);
             } else {
+              // Use default directory but do not commit the bootstrap file because the workspace could
+              // be available again later, especially if located in a detachable device
               System.out
                   .println("[BOOT] Workspace given in bootstrap file is not accessible, using home directory as a workspace");
               setWorkspace(UtilSystem.getUserHome());
-              commitBootstrapFile();
             }
 
           } catch (final Exception e) {
