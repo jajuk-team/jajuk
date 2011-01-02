@@ -1,7 +1,12 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2010 The Jajuk Team
+ *  Copyright (C) 2003-2009 The Jajuk Team
  *  http://jajuk.info
+ *  
+ *  Code modified from Alexander Potochkin's JXTray class at 
+ *  https://swinghelper.dev.java.net/source/browse/swinghelper/src/java/org/jdesktop/swinghelper/tray/JXTrayIcon.java?view=markup
+ *  Copyright 2008 Sun Microsystems, Inc., 4150 Network Circle,
+ *  Santa Clara, California 95054, U.S.A. All rights reserved.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
