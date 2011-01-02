@@ -531,9 +531,9 @@
 		<echo message='Prepare files to build source package' />
 		<mkdir dir='${sourcesdir}/jajuk-src-${version}' />
 		<copy todir='${sourcesdir}/jajuk-src-${version}'>
-			<fileset file='${basedir}/**' />
+			<!--Exclude files created during the maven execution -->
+			<fileset file='${basedir}/**' excludes='test*,**/target/**' />
 		</copy>
-
 	</target>
 
 	<target name='javadoc'>
