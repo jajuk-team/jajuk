@@ -443,7 +443,8 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
   private void updateButtonsState() {
     ILyricsProvider provider = LyricsService.getCurrentProvider();
     // Delete button
-    jbDelete.setEnabled(file != null && !(provider instanceof GenericWebLyricsProvider));
+    jbDelete.setEnabled(file != null && provider != null
+        && !(provider instanceof GenericWebLyricsProvider));
 
     // Save button : enabled only for changes in the text area or
     // if we just got lyrics from the web or form a txt file
