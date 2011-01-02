@@ -510,8 +510,8 @@ public class LastFmService {
       return;
     }
 
-    // Get started to play
-    long startedToPlay = System.currentTimeMillis() / 1000 - secondsPlayed;
+    // Get started to play in secs UTC and not in MS (lastfm-bindings API was unclear about it)
+    long startedToPlay = (System.currentTimeMillis() - secondsPlayed) / 1000;
 
     Log.info("Trying to submit song to Last.fm");
     try {
