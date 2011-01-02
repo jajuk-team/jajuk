@@ -42,6 +42,9 @@ public interface Const {
   /** Time we wait after an error in ms. */
   int WAIT_AFTER_ERROR = 2000;
 
+  /** We need a fix size to have the same angle effect for every cover*/
+  int MIRROW_COVER_SIZE = 600;
+
   /** Default playlist name. */
   String DEFAULT_PLAYLIST_FILE = "playlist";
 
