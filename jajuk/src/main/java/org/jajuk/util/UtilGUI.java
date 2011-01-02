@@ -585,12 +585,12 @@ public final class UtilGUI {
     float fadeHeight = 0.6f;
 
     // cover
-    BufferedImage coverImage = UtilGUI.toBufferedImage(img, img.getWidth(null),
-        img.getHeight(null), true);
+    BufferedImage coverImage = UtilGUI.toBufferedImage(img, Const.MIRROW_COVER_SIZE,
+        Const.MIRROW_COVER_SIZE, true);
 
-    PerspectiveFilter filter1 = new PerspectiveFilter(0, angle, coverImage.getHeight() - angle / 2,
-        (int) (angle * (5.0 / 3.0)), coverImage.getHeight() - angle / 2, coverImage.getHeight(), 0,
-        coverImage.getHeight() + angle);
+    PerspectiveFilter filter1 = new PerspectiveFilter(0, angle, Const.MIRROW_COVER_SIZE - angle / 2,
+        (int) (angle * (5.0 / 3.0)), Const.MIRROW_COVER_SIZE - angle / 2, Const.MIRROW_COVER_SIZE, 0,
+        Const.MIRROW_COVER_SIZE + angle);
     coverImage = filter1.filter(coverImage, null);
 
     // reflection
