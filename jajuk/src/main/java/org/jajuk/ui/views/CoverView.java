@@ -919,9 +919,19 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     jl.addMouseListener(new JajukMouseAdapter() {
       @Override
       public void mousePressed(MouseEvent e) {
-        boolean isMirrowed = Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER);
-        Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER, !isMirrowed + "");
-        ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
+        if (!(cover.getType().equals(CoverType.NO_COVER))) {
+          boolean isMirrowed = includeControls ? Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER)
+              : Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER_FS_MODE);
+          // Normal cover view
+          if (includeControls) {
+            Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER, !isMirrowed + "");
+          } else {
+            // Full screen mode
+            Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER_FS_MODE, !isMirrowed + "");
+          }
+          ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
+          ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE));
+        }
       }
     });
     add(jl, "center,wrap");
@@ -1061,12 +1071,19 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       if (iEventID == iLocalEventID) {
         cover = alCovers.get(index); // take image at the given index
         Image img = cover.getImage();
-
-        if (!Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER)
-            || cover.getType().equals(CoverType.NO_COVER)) {
+        // Never mirror our no cover image
+        if (cover.getType().equals(CoverType.NO_COVER)) {
           icon = new ImageIcon(img);
         } else {
-          icon = new ImageIcon(UtilGUI.get3dImage(img));
+          if (
+          // should we mirror in our GUI
+          (includeControls && Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER))
+          // should we mirror in fullscreen mode
+              || (!includeControls && Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER_FS_MODE))) {
+            icon = new ImageIcon(UtilGUI.get3dImage(img));
+          } else {
+            icon = new ImageIcon(img);
+          }
         }
 
         if (icon.getIconHeight() == 0 || icon.getIconWidth() == 0) {

@@ -437,6 +437,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   /** DOCUMENT_ME. */
   private JCheckBox jcb3dCover;
 
+  private JCheckBox jcb3dCoverFS;
+
   /**
    * View providing main jajuk configuration GUI. Known in the doc as
    * "Preferences view"
@@ -834,6 +836,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     DownloadManager.setDefaultProxySettings();
     // Covers
     Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER, Boolean.toString(jcb3dCover.isSelected()));
+    Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER_FS_MODE, Boolean.toString(jcb3dCoverFS
+        .isSelected()));
     ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
     Conf.setProperty(Const.CONF_COVERS_AUTO_COVER, Boolean.toString(jcbAutoCover.isSelected()));
     Conf.setProperty(Const.CONF_COVERS_SHUFFLE, Boolean.toString(jcbShuffleCover.isSelected()));
@@ -1519,6 +1523,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcb3dCover = new JCheckBox(Messages.getString("ParameterView.273"));
     jcb3dCover.setToolTipText(Messages.getString("ParameterView.274"));
 
+    jcb3dCoverFS = new JCheckBox(Messages.getString("ParameterView.283"));
+    jcb3dCoverFS.setToolTipText(Messages.getString("ParameterView.284"));
+
     jlDefaultCoverSearchPattern = new JLabel();
     jlDefaultCoverSearchPattern.setText(Messages.getString("ParameterView.256"));
     jlDefaultCoverSearchPattern.setToolTipText(Messages.getString("ParameterView.257"));
@@ -1533,7 +1540,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpCovers = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10"));
     jpCovers.add(jcbShuffleCover, "wrap");
     jpCovers.add(jcbAutoCover, "wrap");
-    jpCovers.add(jcb3dCover, "wrap");
+    jpCovers.add(jcb3dCover, "split 2");
+    jpCovers.add(jcb3dCoverFS, "wrap");
     jpCovers.add(jcbSaveExplorerFriendly, "wrap");
     jpCovers.add(jlCoverSize);
     jpCovers.add(jcbCoverSize, "wrap,grow");
@@ -1850,6 +1858,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbAutoCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
     jlCoverSize.setEnabled(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
     jcb3dCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER));
+    jcb3dCoverFS.setSelected(Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER_FS_MODE));
     jcbCoverSize.setEnabled(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
     jcbCoverSize.setSelectedIndex(Conf.getInt(Const.CONF_COVERS_SIZE));
     jcbShuffleCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_SHUFFLE));

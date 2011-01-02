@@ -790,6 +790,9 @@ public interface Const {
 
   /** DOCUMENT_ME. */
   String CONF_COVERS_MIRROW_COVER = "jajuk.covers.mirrow_cover";
+  
+  /** DOCUMENT_ME. */
+  String CONF_COVERS_MIRROW_COVER_FS_MODE = "jajuk.covers.mirrow_cover_fs_mode";
 
   /** DOCUMENT_ME. */
   String CONF_COVERS_SHUFFLE = "jajuk.covers.shuffle";
