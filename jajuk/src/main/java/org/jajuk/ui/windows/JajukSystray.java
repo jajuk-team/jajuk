@@ -32,6 +32,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseWheelEvent;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -49,9 +50,11 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
+import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
+import org.jajuk.ui.actions.MuteAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.helpers.PlayerStateMediator;
@@ -214,6 +217,8 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
 
     // force icon to be display in 16x16
     jmiMute = new SizedJMenuItem(ActionManager.getAction(JajukActions.MUTE_STATE));
+    jmiMute.addMouseWheelListener(this);
+    
     jmiShuffle = new SizedJMenuItem(ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL));
 
     jmiBestof = new SizedJMenuItem(ActionManager.getAction(JajukActions.BEST_OF));
@@ -521,6 +526,29 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
    */
   public TrayIcon getTrayIcon() {
     return this.trayIcon;
+  }
+  
+   /*
+   * (non-Javadoc)
+   * 
+   * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event. MouseWheelEvent)
+   */
+  @Override
+  public void mouseWheelMoved(MouseWheelEvent e) {
+    if (e.getSource().equals(jmiMute)) {
+      int oldVolume = (int) (100 * Player.getCurrentVolume());
+      int newVolume = oldVolume - (e.getUnitsToScroll() * 3);
+      if (Player.isMuted()) {
+        Player.mute(false);
+      }
+      if (newVolume > 100) {
+        newVolume = 100;
+      } else if (newVolume < 0) {
+        newVolume = 0;
+      }
+      Player.setVolume((float) newVolume / 100);
+      MuteAction.setVolumeIcon(newVolume);
+    }
   }
 
 }
