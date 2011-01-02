@@ -25,8 +25,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -38,6 +40,7 @@ import org.jajuk.base.File;
 import org.jajuk.base.GenreManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
 import org.jajuk.util.error.JajukException;
 
 /**
@@ -340,7 +343,46 @@ public final class UtilString {
     // Check Disc Value
     out = UtilString.applyDiscPattern(file, sPattern, bMandatory, out, track);
 
+    // Check Custom Properties
+    out = UtilString.applyCustomPattern(sPattern, normalize, out, track);
+
     return out;
+  }
+
+  /**
+  * Apply Custom property pattern.
+  * 
+  * @param normalize DOCUMENT_ME
+  * @param out DOCUMENT_ME
+  * @param track DOCUMENT_ME
+  * @param sPattern DOCUMENT_ME
+  * 
+  * @return the string
+  */
+  private static String applyCustomPattern(String sPattern, boolean normalize, String out,
+      Track track) {
+    String ret = out;
+    String sValue;
+
+    Map<String, Object> properties = track.getProperties();
+    Iterator<PropertyMetaInformation> it2 = TrackManager.getInstance().getCustomProperties()
+        .iterator();
+    for (int i = 0; it2.hasNext(); i++) {
+      PropertyMetaInformation meta = it2.next();
+      if (sPattern.contains("%" + meta.getName())) {
+        Object o = properties.get(meta.getName());
+        if (o != null) {
+          sValue = o.toString();
+        } else {
+          sValue = meta.getDefaultValue().toString();
+        }
+        if (normalize) {
+          sValue = UtilSystem.getNormalizedFilename(sValue);
+        }
+        ret = ret.replaceAll("%" + meta.getName(), sValue);
+      }
+    }
+    return ret;
   }
 
   /**
