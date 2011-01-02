@@ -495,6 +495,10 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
         jspLyrics.setEnabled(false);
         updateButtonsState();
         jlTitle.setText(Messages.getString("JajukWindow.18"));
+        jtaLyrics.getDocument().removeDocumentListener(LyricsView.this);
+        jtaLyrics.setText("");
+        jtaLyrics.getDocument().addDocumentListener(LyricsView.this);
+        jtaLyrics.setToolTipText(Messages.getString("JajukWindow.18"));
       }
     });
   }
