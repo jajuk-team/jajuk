@@ -156,7 +156,7 @@ public interface Const {
   long MPLAYER_OSX_EXE_SIZE = 21490476l;
 
   /** Update URL = PAD file URL. */
-  String CHECK_FOR_UPDATE_URL = "http://jajuk.svn.sourceforge.net/svnroot/jajuk/trunk/jajuk/src/site/resources/jajuk_pad.xml";
+  String CHECK_FOR_UPDATE_URL = "http://gitorious.org/jajuk/jajuk/blobs/raw/master/jajuk/src/packaging/pad/jajuk_pad.xml";
 
   // Jajuk version
   /** DOCUMENT_ME. */
