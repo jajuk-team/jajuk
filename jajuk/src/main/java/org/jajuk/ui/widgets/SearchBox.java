@@ -132,7 +132,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing .JList,
      * java.lang.Object, int, boolean, boolean)
      */
@@ -159,7 +159,6 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
    */
   public SearchBox() {
     setMargin(new Insets(0, 20, 0, 0));
-    timer.start();
     addKeyListener(this);
     setToolTipText(Messages.getString("SearchBox.0"));
     // We use a font whose size cannot change with font size selected by user
@@ -195,7 +194,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
    */
   @Override
@@ -205,7 +204,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
    */
   @Override
@@ -224,6 +223,11 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
       } else {
         bNeedSearch = true;
         lDateTyped = System.currentTimeMillis();
+
+        // make sure the timer is started before it is first used
+        if(!timer.isRunning()) {
+          timer.start();
+        }
       }
     } else if (popup != null) {
       popup.hide();
@@ -232,7 +236,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
    */
   @Override
@@ -334,7 +338,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
 
   /**
    * Gets the selected index.
-   * 
+   *
    * @return the selected index
    */
   public int getSelectedIndex() {
@@ -362,7 +366,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
 
   /**
    * Display the search icon inside the texfield.
-   * 
+   *
    * @param g the graphics
    */
   @Override
@@ -374,7 +378,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
   /**
    * Default list selection implementation (may be overwritten for different
    * behavior).
-   * 
+   *
    * @param e DOCUMENT_ME
    */
   @Override
@@ -415,7 +419,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
 
   /**
    * Free up resources, timers, ...
-   * 
+   *
    * TODO: I could not find out any way to do this automatically! How can I
    * listen on some event that is sent when the enclosing dialog is closed?
    */
@@ -431,7 +435,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
     InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
     ActionMap actionMap = getActionMap();
     inputMap.put(KeyStroke.getKeyStroke("ctrl F"), "search");
-    // We don't create a JajukAction dedicated class for this very simple case 
+    // We don't create a JajukAction dedicated class for this very simple case
     actionMap.put("search", new JajukAction("search", true) {
       private static final long serialVersionUID = 1L;
 
