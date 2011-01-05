@@ -149,8 +149,7 @@ public final class WebRadioManager extends DefaultHandler {
    * @return the download thread
    */
   private void downloadRepository() {
-    // try to download the default directory (from jajuk SVN trunk
-    // directly)
+    // try to download the default directory
     try {
       DownloadManager.download(new URL(Const.URL_DEFAULT_WEBRADIOS), SessionService
           .getConfFileByPath(Const.FILE_WEB_RADIOS_REPOS));
