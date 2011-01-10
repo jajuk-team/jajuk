@@ -27,6 +27,8 @@ import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
@@ -301,9 +303,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
           List<File> files = UtilFeatures.getPlayableFiles(item);
           if (files.size() > 0) {
             // launch it
-            QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
-                .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
-                .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+            QueueModel.push(
+                UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files),
+                    Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true),
+                Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
           } else {
             Messages.showErrorMessage(10);
           }
@@ -345,7 +348,21 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         lDateTyped = System.currentTimeMillis();
       }
     });
+    // Add a focus listener to select all the text and ease previous text cleanup
+    jtfValue.addFocusListener(new FocusListener() {
+
+      @Override
+      public void focusLost(FocusEvent e) {
+        jtfValue.setCaretPosition(jtfValue.getText().length());
+      }
+
+      @Override
+      public void focusGained(FocusEvent e) {
+        jtfValue.selectAll();
+      }
+    });
     jtfValue.setToolTipText(Messages.getString("AbstractTableView.3"));
+    // jtfValue.setToolTipText(Messages.getString("AbstractTableView.3"));
     jpControl.setLayout(new MigLayout("insets 5", "[][20][grow,gp 70][grow]"));
     jpControl.add(jtbSync, "gapleft 5");
     jpControl.add(jtbEditable, "gapright 15");
@@ -747,8 +764,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       StringBuilder sbOut = new StringBuilder().append(items).append(
           Messages.getString("FilesTreeView.52"));
       if (lSize > 1024) { // more than 1024 MB -> in GB
-        sbOut.append(lSize / 1024).append('.').append(lSize % 1024).append(
-            Messages.getString("FilesTreeView.53"));
+        sbOut.append(lSize / 1024).append('.').append(lSize % 1024)
+            .append(Messages.getString("FilesTreeView.53"));
       } else {
         sbOut.append(lSize).append(Messages.getString("FilesTreeView.54"));
       }

@@ -31,6 +31,8 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -174,6 +176,19 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
         }
       }
     });
+    // Add a focus listener to select all the text and ease previous text cleanup
+    addFocusListener(new FocusListener() {
+
+      @Override
+      public void focusLost(FocusEvent e) {
+        setCaretPosition(getText().length());
+      }
+
+      @Override
+      public void focusGained(FocusEvent e) {
+        selectAll();
+      }
+    });
   }
 
   /*
@@ -283,11 +298,11 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
             // widgets)
             SwingUtilities.convertPointToScreen(point, SearchBox.this);
             if (((int) point.getY() > 300) && (((int) point.getX() + 500 - (width)) > 0)) {
-              popup = factory.getPopup(null, jsp, (int) point.getX() + 500 - (width), (int) point
-                  .getY() - 250);
+              popup = factory.getPopup(null, jsp, (int) point.getX() + 500 - (width),
+                  (int) point.getY() - 250);
             } else if (((int) point.getX() + 500 - (width)) > 0) {
-              popup = factory.getPopup(null, jsp, (int) point.getX() + 500 - (width), (int) point
-                  .getY() + 30);
+              popup = factory.getPopup(null, jsp, (int) point.getX() + 500 - (width),
+                  (int) point.getY() + 30);
             } else {
               popup = factory.getPopup(null, jsp, 10, (int) point.getY() + 30);
             }
@@ -366,9 +381,9 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
           try {
             // If user selected a file
             if (sr.getType() == SearchResultType.FILE) {
-              QueueModel.push(new StackItem(sr.getFile(), Conf
-                  .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
-                  .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+              QueueModel.push(
+                  new StackItem(sr.getFile(), Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true),
+                  Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
             }
             // User selected a web radio
             else if (sr.getType() == SearchResultType.WEBRADIO) {
