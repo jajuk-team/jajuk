@@ -81,6 +81,14 @@ public class WindowGlobalKeystrokeManager {
 
       @Override
       public boolean dispatchKeyEvent(KeyEvent ke) {
+
+        //--- Drop disabled keystrokes ---
+
+        // Disable CTRL-Backspace : it closes the views due to VLDocking keystroke 
+        if (ke.getKeyCode() == KeyEvent.VK_BACK_SPACE && ke.getModifiers() == KeyEvent.CTRL_MASK) {
+          return true;
+        }
+
         // Add all global keys to this dispatcher
         for (JajukActions actionName : globalActions) {
           JajukAction action = ActionManager.getAction(actionName);
