@@ -277,7 +277,7 @@
 		<echo message=' Java installer in:     ${izpackdir}/jajuk-java-installer-${version}.jar' />
 		<echo message=' MAC OS X in:           ${distdir}/jajuk-macos-${version}.zip' />
 		<echo message=' Source archive in:     ${sourcesdist}' />
-		<echo message=' JNLP war file in:      ${rootdir}/jajuk-trunk-${test}.war' />
+		<echo message=' JNLP war file in:      ${rootdir}/jajuk-${test}.war' />
 	</target>
 
 
@@ -406,7 +406,7 @@
 
 
 		<!-- Create the war file -->
-		<war destfile='${rootdir}/jajuk-trunk-${test}.war' webxml='${srcdir}/packaging/jnlp/web.xml'>
+		<war destfile='${rootdir}/jajuk-${test}.war' webxml='${srcdir}/packaging/jnlp/web.xml'>
 			<fileset dir='${jnlpdir}' />
 			<lib file='${srcdir}/packaging/jnlp/jnlp-servlet.jar' />
 		</war>
@@ -578,20 +578,6 @@
 			<fileset file='${izpackdir}/jajuk-java-installer-${version}.jar' />
 			<fileset file='${distdir}/jajuk-macos-${version}.zip' />
 		</copy>
-
-		<!-- Generate MD5 http://ant.apache.org/manual/CoreTasks/checksum.html -->
-		<checksum file='${conf_uploaddir}/jajuk-sources-${version}.zip' forceOverwrite='yes' fileext='.md5' />
-		<checksum file='${conf_uploaddir}/jajuk-${version}-1.noarch.rpm' forceOverwrite='yes' fileext='.md5' />
-		<checksum file='${conf_uploaddir}/jajuk-${version}-win32-setup.exe' forceOverwrite='yes' fileext='.md5' />
-		<checksum file='${conf_uploaddir}/jajuk-java-installer-${version}.jar' forceOverwrite='yes' fileext='.md5' />
-		<checksum file='${conf_uploaddir}/jajuk-macos-${version}.zip' forceOverwrite='yes' fileext='.md5' />
-
-		<!-- Generate SHA http://ant.apache.org/manual/CoreTasks/checksum.html -->
-		<checksum file='${conf_uploaddir}/jajuk-sources-${version}.zip' forceOverwrite='yes' algorithm='SHA' fileext='.asc' />
-		<checksum file='${conf_uploaddir}/jajuk-${version}-1.noarch.rpm' forceOverwrite='yes' algorithm='SHA' fileext='.asc' />
-		<checksum file='${conf_uploaddir}/jajuk-${version}-win32-setup.exe' forceOverwrite='yes' algorithm='SHA' fileext='.asc' />
-		<checksum file='${conf_uploaddir}/jajuk-java-installer-${version}.jar' forceOverwrite='yes' algorithm='SHA' fileext='.asc' />
-		<checksum file='${conf_uploaddir}/jajuk-macos-${version}.zip' forceOverwrite='yes' algorithm='SHA' fileext='.asc' />
 	</target>
 
 	<!-- Light build target -->
