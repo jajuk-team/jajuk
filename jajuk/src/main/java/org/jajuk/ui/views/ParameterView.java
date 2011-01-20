@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2010 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -162,9 +162,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   private SearchBox sbSearch;
 
   /** DOCUMENT_ME. */
-  private JPanel jpConfirmations;
-
-  /** DOCUMENT_ME. */
   private JCheckBox jcbBeforeDelete;
 
   /** DOCUMENT_ME. */
@@ -184,9 +181,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /** DOCUMENT_ME. */
   private JCheckBox jcbBeforeRefactorFiles;
-
-  /** DOCUMENT_ME. */
-  private JPanel jpOptions;
 
   /** DOCUMENT_ME. */
   private JCheckBox jcbDisplayUnmounted;
@@ -261,9 +255,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   private JCheckBox jcbHotkeys;
 
   /** DOCUMENT_ME. */
-  private JPanel jpTags;
-
-  /** DOCUMENT_ME. */
   private JCheckBox jcbUseParentDir;
 
   /** DOCUMENT_ME. */
@@ -271,9 +262,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /** DOCUMENT_ME. */
   private JTextField jtfAnimationPattern;
-
-  /** DOCUMENT_ME. */
-  private JPanel jpAdvanced;
 
   /** DOCUMENT_ME. */
   private JCheckBox jcbBackup;
@@ -286,9 +274,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /** DOCUMENT_ME. */
   private JCheckBox jcbRegexp;
-
-  /** DOCUMENT_ME. */
-  private JPanel jpNetwork;
 
   /** DOCUMENT_ME. */
   private ButtonGroup bgProxy;
@@ -336,9 +321,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   private JSlider connectionTO;
 
   /** DOCUMENT_ME. */
-  private JPanel jpCovers;
-
-  /** DOCUMENT_ME. */
   private JCheckBox jcbAutoCover;
 
   /** DOCUMENT_ME. */
@@ -379,9 +361,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /** DOCUMENT_ME. */
   private JCheckBox jcbMinimizeToTray;
-
-  /** DOCUMENT_ME. */
-  private JPanel jpUI;
 
   /** DOCUMENT_ME. */
   private JLabel jlFonts;
@@ -437,7 +416,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   /** DOCUMENT_ME. */
   private JCheckBox jcb3dCover;
 
+  /** DOCUMENT_ME. */
   private JCheckBox jcb3dCoverFS;
+
+  /** Multi-purpose action listener. */
+  private ActionListener alUI;
 
   /**
    * View providing main jajuk configuration GUI. Known in the doc as
@@ -589,34 +572,32 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   }
 
   /**
-   * Apply parameters.
+   * Apply parameters options.
+   * DOCUMENT_ME
    */
-  private void applyParameters() {
-    // **Read all parameters**
-    // Options
-    Conf.setProperty(Const.CONF_OPTIONS_HIDE_UNMOUNTED, Boolean.toString(jcbDisplayUnmounted
-        .isSelected()));
-    Conf.setProperty(Const.CONF_OPTIONS_PUSH_ON_CLICK, Boolean.toString(jcbDefaultActionClick
-        .isSelected()));
-    Conf.setProperty(Const.CONF_OPTIONS_PUSH_ON_DROP, Boolean.toString(jcbDefaultActionDrop
-        .isSelected()));
+  private void applyParametersOptions() {
+    Conf.setProperty(Const.CONF_OPTIONS_HIDE_UNMOUNTED,
+        Boolean.toString(jcbDisplayUnmounted.isSelected()));
+    Conf.setProperty(Const.CONF_OPTIONS_PUSH_ON_CLICK,
+        Boolean.toString(jcbDefaultActionClick.isSelected()));
+    Conf.setProperty(Const.CONF_OPTIONS_PUSH_ON_DROP,
+        Boolean.toString(jcbDefaultActionDrop.isSelected()));
     Conf.setProperty(Const.CONF_OPTIONS_HOTKEYS, Boolean.toString(jcbHotkeys.isSelected()));
-    Conf.setProperty(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE, Boolean.toString(jcbAudioScrobbler
-        .isSelected()));
-    Conf.setProperty(Const.CONF_LASTFM_INFO, Boolean.toString(jcbEnableLastFMInformation
-        .isSelected()));
+    Conf.setProperty(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE,
+        Boolean.toString(jcbAudioScrobbler.isSelected()));
+    Conf.setProperty(Const.CONF_LASTFM_INFO,
+        Boolean.toString(jcbEnableLastFMInformation.isSelected()));
     Conf.setProperty(Const.CONF_LASTFM_USER, jtfASUser.getText());
-    Conf.setProperty(Const.CONF_LASTFM_PASSWORD, UtilString.rot13(new String(jpfASPassword
-        .getPassword())));
+    Conf.setProperty(Const.CONF_LASTFM_PASSWORD,
+        UtilString.rot13(new String(jpfASPassword.getPassword())));
     final int iLogLevel = scbLogLevel.getSelectedIndex();
     Log.setVerbosity(iLogLevel);
     Conf.setProperty(Const.CONF_OPTIONS_LOG_LEVEL, Integer.toString(iLogLevel));
     Conf.setProperty(Const.CONF_OPTIONS_INTRO_BEGIN, Integer.toString(introPosition.getValue()));
     Conf.setProperty(Const.CONF_OPTIONS_INTRO_LENGTH, Integer.toString(introLength.getValue()));
-    Conf
-        .setProperty(Const.CONF_TAGS_USE_PARENT_DIR, Boolean.toString(jcbUseParentDir.isSelected()));
-    Conf.setProperty(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE, Boolean
-        .toString(jcbDropPlayedTracksFromQueue.isSelected()));
+    Conf.setProperty(Const.CONF_TAGS_USE_PARENT_DIR, Boolean.toString(jcbUseParentDir.isSelected()));
+    Conf.setProperty(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE,
+        Boolean.toString(jcbDropPlayedTracksFromQueue.isSelected()));
     final String sBestofSize = jtfBestofSize.getText();
     if (!sBestofSize.isEmpty()) {
       Conf.setProperty(Const.CONF_BESTOF_TRACKS_SIZE, sBestofSize);
@@ -644,7 +625,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
           Const.CONF_NOT_SHOW_AGAIN_CROSS_FADE);
     }
     Conf.setProperty(Const.CONF_FADE_DURATION, Integer.toString(crossFadeDuration.getValue()));
-    // Startup
+  }
+
+  /**
+   * Apply parameters startup.
+   * DOCUMENT_ME
+   */
+  private void applyParametersStartup() {
     if (jrbNothing.isSelected()) {
       Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOTHING);
     } else if (jrbLast.isSelected()) {
@@ -660,31 +647,54 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     } else if (jrbNovelties.isSelected()) {
       Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOVELTIES);
     }
-    // Confirmations
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_DELETE_FILE, Boolean.toString(jcbBeforeDelete
-        .isSelected()));
+  }
+
+  /**
+   * Apply parameters confirmation.
+   * DOCUMENT_ME
+   */
+  private void applyParametersConfirmation() {
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_DELETE_FILE,
+        Boolean.toString(jcbBeforeDelete.isSelected()));
     Conf.setProperty(Const.CONF_CONFIRMATIONS_EXIT, Boolean.toString(jcbBeforeExit.isSelected()));
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE, Boolean.toString(jcbBeforeRemoveDevice
-        .isSelected()));
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_DELETE_COVER, Boolean.toString(jcbBeforeDeleteCover
-        .isSelected()));
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY, Boolean
-        .toString(jcbBeforeClearingHistory.isSelected()));
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_RESET_RATINGS, Boolean
-        .toString(jcbBeforeResetingRatings.isSelected()));
-    // History
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE,
+        Boolean.toString(jcbBeforeRemoveDevice.isSelected()));
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_DELETE_COVER,
+        Boolean.toString(jcbBeforeDeleteCover.isSelected()));
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY,
+        Boolean.toString(jcbBeforeClearingHistory.isSelected()));
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_RESET_RATINGS,
+        Boolean.toString(jcbBeforeResetingRatings.isSelected()));
+  }
+
+  /**
+   * Apply parameters history.
+   * 
+   */
+  private void applyParametersHistory() {
     final String sHistoryDuration = jtfHistory.getText();
     if (!sHistoryDuration.isEmpty()) {
       Conf.setProperty(Const.CONF_HISTORY, sHistoryDuration);
     }
-    // Patterns
+  }
+
+  /**
+   * Apply parameters patterns.
+   * 
+   */
+  private void applyParametersPatterns() {
     Conf.setProperty(Const.CONF_PATTERN_REFACTOR, jtfRefactorPattern.getText());
     Conf.setProperty(Const.CONF_PATTERN_ANIMATION, jtfAnimationPattern.getText());
     Conf.setProperty(Const.CONF_PATTERN_FRAME_TITLE, jtfFrameTitle.getText());
     Conf.setProperty(Const.CONF_PATTERN_BALLOON_NOTIFIER, jtfBalloonNotifierPattern.getText());
     Conf.setProperty(Const.CONF_PATTERN_INFORMATION, jtfInformationPattern.getText());
+  }
 
-    // Advanced
+  /**
+   * Apply parameters advanced.
+   * 
+   */
+  private void applyParametersAdvanced() {
     Conf.setProperty(Const.CONF_BACKUP_SIZE, Integer.toString(backupSize.getValue()));
     Conf.setProperty(Const.CONF_COLLECTION_CHARSET, jcbCollectionEncoding.getSelectedItem()
         .toString());
@@ -701,8 +711,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     Conf.setProperty(Const.CONF_MPLAYER_ARGS, jtfMPlayerArgs.getText());
     Conf.setProperty(Const.CONF_ENV_VARIABLES, jtfEnvVariables.getText());
     Conf.setProperty(Const.CONF_EXPLORER_PATH, jtfExplorerPath.getText());
+  }
 
-    // GUI
+  /**
+   * Apply parameters gui.
+   * 
+   */
+  private void applyParametersGUI() {
     Conf.setProperty(Const.CONF_CATALOG_PAGE_SIZE, Integer.toString(jsCatalogPages.getValue()));
     Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
     final int oldFont = Conf.getInt(Const.CONF_FONTS_SIZE);
@@ -735,8 +750,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     if (oldPerspectiveSize != jsPerspectiveSize.getValue()) {
       someOptionsAppliedAtNextStartup = true;
     }
-    Conf.setProperty(Const.CONF_PERSPECTIVE_ICONS_SIZE, Integer.toString(jsPerspectiveSize
-        .getValue()));
+    Conf.setProperty(Const.CONF_PERSPECTIVE_ICONS_SIZE,
+        Integer.toString(jsPerspectiveSize.getValue()));
     // LAF change
     final String oldTheme = Conf.getString(Const.CONF_OPTIONS_LNF);
     Conf.setProperty(Const.CONF_OPTIONS_LNF, (String) scbLAF.getSelectedItem());
@@ -746,7 +761,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
           Const.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
       bLAFMessage = true;
     }
-    // If jajuk home changes, write new path in bootstrap file
+  }
+
+  /**
+   * Handle workspace change.
+   * 
+   */
+  private void handleWorkspaceCnange() {
     if ((SessionService.getWorkspace() != null)
         && !SessionService.getWorkspace().equals(psJajukWorkspace.getUrl())) {
       // Check workspace directory
@@ -817,9 +838,15 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       }
     }
 
-    // Network
-    Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, Boolean
-        .toString(jcbNoneInternetAccess.isSelected()));
+  }
+
+  /**
+   * Apply parameters network.
+   * 
+   */
+  private void applyParametersNetwork() {
+    Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS,
+        Boolean.toString(jcbNoneInternetAccess.isSelected()));
     Conf.setProperty(Const.CONF_NETWORK_USE_PROXY, Boolean.toString(!jcbProxyNone.isSelected()));
     if (jcbProxyHttp.isSelected()) {
       Conf.setProperty(Const.CONF_NETWORK_PROXY_TYPE, Const.PROXY_TYPE_HTTP);
@@ -829,26 +856,65 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     Conf.setProperty(Const.CONF_NETWORK_PROXY_HOSTNAME, jtfProxyHostname.getText());
     Conf.setProperty(Const.CONF_NETWORK_PROXY_PORT, jtfProxyPort.getText());
     Conf.setProperty(Const.CONF_NETWORK_PROXY_LOGIN, jtfProxyLogin.getText());
-    Conf.setProperty(Const.CONF_NETWORK_PROXY_PWD, UtilString.rot13(new String(jtfProxyPwd
-        .getPassword())));
+    Conf.setProperty(Const.CONF_NETWORK_PROXY_PWD,
+        UtilString.rot13(new String(jtfProxyPwd.getPassword())));
     Conf.setProperty(Const.CONF_NETWORK_CONNECTION_TO, Integer.toString(connectionTO.getValue()));
     // Force global reload of proxy variables
     DownloadManager.setDefaultProxySettings();
-    // Covers
+  }
+
+  /**
+   * Apply parameters cover.
+   * 
+   */
+  private void applyParametersCover() {
     Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER, Boolean.toString(jcb3dCover.isSelected()));
-    Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER_FS_MODE, Boolean.toString(jcb3dCoverFS
-        .isSelected()));
+    Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER_FS_MODE,
+        Boolean.toString(jcb3dCoverFS.isSelected()));
     ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
     Conf.setProperty(Const.CONF_COVERS_AUTO_COVER, Boolean.toString(jcbAutoCover.isSelected()));
     Conf.setProperty(Const.CONF_COVERS_SHUFFLE, Boolean.toString(jcbShuffleCover.isSelected()));
-    Conf.setProperty(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY, Boolean
-        .toString(jcbSaveExplorerFriendly.isSelected()));
+    Conf.setProperty(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY,
+        Boolean.toString(jcbSaveExplorerFriendly.isSelected()));
     Conf.setProperty(Const.CONF_COVERS_SIZE, Integer.toString(jcbCoverSize.getSelectedIndex()));
     Conf.setProperty(Const.FILE_DEFAULT_COVER, jtfDefaultCoverSearchPattern.getText());
 
     // Force LastFM manager configuration reload
     LastFmManager.getInstance().configure();
+  }
 
+  /**
+   * Apply parameters from GUI to configuration.
+   */
+  private void applyParameters() {
+    // Options
+    applyParametersOptions();
+    // Startup
+    applyParametersStartup();
+
+    // Confirmations
+    applyParametersConfirmation();
+
+    // History
+    applyParametersHistory();
+
+    // Patterns
+    applyParametersPatterns();
+
+    // Advanced
+    applyParametersAdvanced();
+
+    // GUI
+    applyParametersGUI();
+
+    // If jajuk home changes, write new path in bootstrap file
+    handleWorkspaceCnange();
+
+    // Network
+    applyParametersNetwork();
+
+    // Covers
+    applyParametersCover();
     // configuration
     try {
       Conf.commit();
@@ -883,31 +949,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     return eventSubjectSet;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.IView#display()
+  /**
+   * Inits the ui history.
+   * DOCUMENT_ME
+   *
+   * @return the j panel
    */
-  public void initUI() {
-    // Use this common action listener for UI options that need to launch
-    // event
-    final ActionListener alUI = new ActionListener() {
-
-      public void actionPerformed(ActionEvent e) {
-        // Store configuration
-        Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
-        Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, Boolean
-            .toString(jcbNoneInternetAccess.isSelected()));
-        // Launch an event that can be trapped by the tray to
-        // synchronize the state
-        Properties details = new Properties();
-        details.put(Const.DETAIL_ORIGIN, ParameterView.this);
-        ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE, details));
-      }
-
-    };
-
-    // --History
+  private JPanel initUIHistory() {
     JPanel jpHistory = new JPanel(new MigLayout("insets 10, gapy 15"));
     jtfHistory = new JTextField();
     jtfHistory.setInputVerifier(new InputVerifier() {
@@ -935,18 +983,18 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       }
     });
     jtfHistory.setToolTipText(Messages.getString("ParameterView.2"));
-    jbClearHistory = new JButton(Messages.getString("ParameterView.3"), IconLoader
-        .getIcon(JajukIcons.CLEAR));
+    jbClearHistory = new JButton(Messages.getString("ParameterView.3"),
+        IconLoader.getIcon(JajukIcons.CLEAR));
     jbClearHistory.setToolTipText(Messages.getString("ParameterView.4"));
     jbClearHistory.addActionListener(this);
 
-    jbResetRatings = new JButton(Messages.getString("ParameterView.186"), IconLoader
-        .getIcon(JajukIcons.CLEAR));
+    jbResetRatings = new JButton(Messages.getString("ParameterView.186"),
+        IconLoader.getIcon(JajukIcons.CLEAR));
     jbResetRatings.setToolTipText(Messages.getString("ParameterView.187"));
     jbResetRatings.addActionListener(this);
 
-    jbResetPreferences = new JButton(Messages.getString("ParameterView.249"), IconLoader
-        .getIcon(JajukIcons.CLEAR));
+    jbResetPreferences = new JButton(Messages.getString("ParameterView.249"),
+        IconLoader.getIcon(JajukIcons.CLEAR));
     jbResetPreferences.setToolTipText(Messages.getString("ParameterView.250"));
     jbResetPreferences.addActionListener(this);
 
@@ -957,8 +1005,16 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpHistory.add(jbClearHistory, "wrap");
     jpHistory.add(jbResetRatings);
     jpHistory.add(jbResetPreferences);
+    return jpHistory;
+  }
 
-    // --Startup
+  /**
+   * Inits the ui startup.
+   * DOCUMENT_ME
+   *
+   * @return the j panel
+   */
+  private JPanel initUIStartup() {
     JPanel jpStart = new JPanel(new MigLayout("insets 10,gapy 15", "[][grow][]"));
     bgStart = new ButtonGroup();
     jrbNothing = new JRadioButton(Messages.getString("ParameterView.10"));
@@ -1043,9 +1099,17 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpStart.add(jrbNovelties, "wrap");
     jpStart.add(jrbFile);
     jpStart.add(sbSearch, "grow,wrap");
+    return jpStart;
+  }
 
-    // --Confirmations
-    jpConfirmations = new JPanel(new MigLayout("insets 10,gapy 15"));
+  /**
+   * Inits the ui confirmations.
+   * DOCUMENT_ME
+   *
+   * @return the j panel
+   */
+  private JPanel initUIConfirmations() {
+    JPanel jpConfirmations = new JPanel(new MigLayout("insets 10,gapy 15"));
 
     jcbBeforeDelete = new JCheckBox(Messages.getString("ParameterView.27"));
     jcbBeforeDelete.setToolTipText(Messages.getString("ParameterView.28"));
@@ -1075,8 +1139,16 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpConfirmations.add(jcbBeforeClearingHistory, "wrap");
     jpConfirmations.add(jcbBeforeResetingRatings, "wrap");
     jpConfirmations.add(jcbBeforeRefactorFiles, "wrap");
+    return jpConfirmations;
+  }
 
-    // --- Modes ---
+  /**
+   * Inits the ui modes.
+   * DOCUMENT_ME
+   *
+   * @return the j panel
+   */
+  private JPanel initUIModes() {
     // Intro
     // intro position
     introPosition = new JSlider(0, 100, 0);
@@ -1212,8 +1284,16 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpModes.add(jlVisiblePlanned);
     jpModes.add(jtfVisiblePlanned, "grow,wrap");
     jpModes.add(jcbUseVolnorm);
+    return jpModes;
+  }
 
-    // --Options
+  /**
+   * Inits the ui options.
+   * 
+   *
+   * @return the j panel
+   */
+  private JPanel initUIOptions() {
     jcbDisplayUnmounted = new JCheckBox(Messages.getString("JajukJMenuBar.24"));
     jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35"));
     jcbDisplayUnmounted.addActionListener(alUI);
@@ -1257,7 +1337,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbDropPlayedTracksFromQueue = new JCheckBox(Messages.getString("ParameterView.266"));
     jcbDropPlayedTracksFromQueue.setToolTipText(Messages.getString("ParameterView.267"));
 
-    jpOptions = new JPanel(new MigLayout("insets 10, gapy 15, wrap 1"));
+    JPanel jpOptions = new JPanel(new MigLayout("insets 10, gapy 15, wrap 1"));
     jpOptions.add(new JLabel(Messages.getString("ParameterView.38")), "split 2,gapleft 5");
     jpOptions.add(scbLanguage);
     jpOptions.add(jcbDisplayUnmounted);
@@ -1266,9 +1346,17 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpOptions.add(jcbHotkeys);
     jpOptions.add(jcbUseParentDir);
     jpOptions.add(jcbDropPlayedTracksFromQueue);
+    return jpOptions;
+  }
 
-    // --Patterns
-    jpTags = new JPanel(new MigLayout("insets 10, gapy 15, wrap 2", "[][grow]"));
+  /**
+   * Inits the ui patterns.
+   * DOCUMENT_ME
+   *
+   * @return the j panel
+   */
+  private JPanel initUIPatterns() {
+    JPanel Patterns = new JPanel(new MigLayout("insets 10, gapy 15, wrap 2", "[][grow]"));
     JLabel jlRefactorPattern = new JLabel(Messages.getString("ParameterView.192"));
     jlRefactorPattern.setToolTipText(Messages.getString("ParameterView.193"));
     jtfRefactorPattern = new JFormattedTextField();
@@ -1297,18 +1385,26 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jtfInformationPattern = new JTextField();
     jtfInformationPattern.setToolTipText(Messages.getString("ParameterView.280"));
 
-    jpTags.add(jlRefactorPattern);
-    jpTags.add(jtfRefactorPattern, "grow");
-    jpTags.add(jlAnimationPattern);
-    jpTags.add(jtfAnimationPattern, "grow");
-    jpTags.add(jlFrameTitle);
-    jpTags.add(jtfFrameTitle, "grow");
-    jpTags.add(jlBalloonNotifierPattern);
-    jpTags.add(jtfBalloonNotifierPattern, "grow");
-    jpTags.add(jlInformationPattern);
-    jpTags.add(jtfInformationPattern, "grow");
+    Patterns.add(jlRefactorPattern);
+    Patterns.add(jtfRefactorPattern, "grow");
+    Patterns.add(jlAnimationPattern);
+    Patterns.add(jtfAnimationPattern, "grow");
+    Patterns.add(jlFrameTitle);
+    Patterns.add(jtfFrameTitle, "grow");
+    Patterns.add(jlBalloonNotifierPattern);
+    Patterns.add(jtfBalloonNotifierPattern, "grow");
+    Patterns.add(jlInformationPattern);
+    Patterns.add(jtfInformationPattern, "grow");
+    return Patterns;
+  }
 
-    // --Advanced
+  /**
+   * Inits the ui advanced.
+   * DOCUMENT_ME
+   *
+   * @return the j panel
+   */
+  private JPanel initUIAdvanced() {
     jcbBackup = new JCheckBox(Messages.getString("ParameterView.116"));
     jcbBackup.addActionListener(this);
     jcbBackup.setToolTipText(Messages.getString("ParameterView.117"));
@@ -1371,7 +1467,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jtfExplorerPath = new JTextField();
     jtfExplorerPath.setToolTipText(Messages.getString("ParameterView.270"));
 
-    jpAdvanced = new JPanel(new MigLayout("insets 10,gapy 15, gapx 10", "[][grow][fill]"));
+    JPanel jpAdvanced = new JPanel(new MigLayout("insets 10,gapy 15, gapx 10", "[][grow][fill]"));
     jpAdvanced.add(jcbBackup);
     jpAdvanced.add(backupSize, "wrap,grow");
     jpAdvanced.add(jlCollectionEncoding);
@@ -1391,8 +1487,16 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpAdvanced.add(jcbRegexp, "wrap");
     jpAdvanced.add(jcbCheckUpdates, "wrap");
     jpAdvanced.add(jcbForceFileDate, "wrap");
+    return jpAdvanced;
+  }
 
-    // - Network
+  /**
+   * Inits the ui network.
+   * DOCUMENT_ME
+   *
+   * @return the j panel
+   */
+  private JPanel initUINetwork() {
     bgProxy = new ButtonGroup();
     jcbProxyNone = new JRadioButton(Messages.getString("ParameterView.236"));
     jcbProxyNone.setToolTipText(Messages.getString("ParameterView.236"));
@@ -1476,13 +1580,21 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpProxy.add(jlProxyPwd);
     jpProxy.add(jtfProxyPwd, "wrap,grow");
 
-    jpNetwork = new JPanel(new MigLayout("insets 10,gapy 15, gapx 10", "[grow]"));
+    JPanel jpNetwork = new JPanel(new MigLayout("insets 10,gapy 15, gapx 10", "[grow]"));
     jpNetwork.add(jcbNoneInternetAccess, "wrap");
     jpNetwork.add(jlConnectionTO, "split 2");
     jpNetwork.add(connectionTO, "wrap,grow,width 200!");
     jpNetwork.add(jpProxy, "span");
+    return jpNetwork;
+  }
 
-    // - Last.FM
+  /**
+   * Inits the ui last fm.
+   * DOCUMENT_ME
+   *
+   * @return the j panel
+   */
+  private JPanel initUILastFM() {
     jcbAudioScrobbler = new JCheckBox(Messages.getString("ParameterView.199"));
     jcbAudioScrobbler.setToolTipText(Messages.getString("ParameterView.200"));
     jcbAudioScrobbler.addActionListener(this);
@@ -1502,8 +1614,16 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpLastFM.add(jtfASUser, "wrap,grow,width 100:300:300");
     jpLastFM.add(jlASPassword);
     jpLastFM.add(jpfASPassword, "wrap,grow,width 100:300:300");
+    return jpLastFM;
+  }
 
-    // - Cover
+  /**
+   * Inits the ui covers.
+   * DOCUMENT_ME
+   *
+   * @return the j panel
+   */
+  private JPanel initUICovers() {
     jcbAutoCover = new JCheckBox(Messages.getString("ParameterView.148"));
     jcbAutoCover.setToolTipText(Messages.getString("ParameterView.149"));
     jcbAutoCover.addActionListener(this);
@@ -1537,7 +1657,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbSaveExplorerFriendly.addActionListener(this);
 
     // Add items
-    jpCovers = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10"));
+    JPanel jpCovers = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10"));
     jpCovers.add(jcbShuffleCover, "wrap");
     jpCovers.add(jcbAutoCover, "wrap");
     jpCovers.add(jcb3dCover, "split 2");
@@ -1547,8 +1667,16 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpCovers.add(jcbCoverSize, "wrap,grow");
     jpCovers.add(jlDefaultCoverSearchPattern);
     jpCovers.add(jtfDefaultCoverSearchPattern, "wrap,grow");
+    return jpCovers;
+  }
 
-    // -- User interface --
+  /**
+   * Inits the uigui.
+   * DOCUMENT_ME
+   *
+   * @return the j panel
+   */
+  private JPanel initUIGUI() {
     // Catalog view
     jlCatalogPages = new JLabel(Messages.getString("ParameterView.221"));
     jlCatalogPages.setToolTipText(Messages.getString("ParameterView.222"));
@@ -1592,8 +1720,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jsPerspectiveSize.setPaintTicks(true);
     jsPerspectiveSize.setPaintLabels(true);
     jsPerspectiveSize.setToolTipText(Messages.getString("ParameterView.246"));
-    jbCatalogRefresh = new JajukButton(Messages.getString("CatalogView.19"), IconLoader
-        .getIcon(JajukIcons.REFRESH));
+    jbCatalogRefresh = new JajukButton(Messages.getString("CatalogView.19"),
+        IconLoader.getIcon(JajukIcons.REFRESH));
     jbCatalogRefresh.setToolTipText(Messages.getString("CatalogView.3"));
     jbCatalogRefresh.addActionListener(this);
     final JXCollapsiblePane catalogView = new JXCollapsiblePane();
@@ -1643,7 +1771,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     scbLAF.addActionListener(this);
 
     // Add items
-    jpUI = new JPanel(new MigLayout("insets 10,gapx 10,gapy 15"));
+    JPanel jpUI = new JPanel(new MigLayout("insets 10,gapx 10,gapy 15"));
     jpUI.add(jcbShowPopups, "wrap");
     jpUI.add(jcbShowSystray, "split 2");
     jpUI.add(jcbMinimizeToTray, "wrap");
@@ -1657,12 +1785,71 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpUI.add(jsPerspectiveSize, "wrap,grow");
     jpUI.add(toggle, "wrap,grow");
     jpUI.add(catalogView, "wrap,grow,span");
+    return jpUI;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.IView#display()
+   */
+  public void initUI() {
+    // Use this common action listener for UI options that need to launch
+    // event
+    alUI = new ActionListener() {
+
+      public void actionPerformed(ActionEvent e) {
+        // Store configuration
+        Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
+        Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS,
+            Boolean.toString(jcbNoneInternetAccess.isSelected()));
+        // Launch an event that can be trapped by the tray to
+        // synchronize the state
+        Properties details = new Properties();
+        details.put(Const.DETAIL_ORIGIN, ParameterView.this);
+        ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE, details));
+      }
+
+    };
+
+    // --History
+    JPanel jpHistory = initUIHistory();
+
+    // --Startup
+    JPanel jpStartup = initUIStartup();
+
+    // --Confirmations
+    JPanel jpConfirmations = initUIConfirmations();
+
+    // --- Modes ---
+    JPanel jpModes = initUIModes();
+
+    // --Options
+    JPanel jpOptions = initUIOptions();
+
+    // --Patterns
+    JPanel jpPatterns = initUIPatterns();
+
+    // --Advanced
+    JPanel jpAdvanced = initUIAdvanced();
+
+    // - Network
+    JPanel jpNetwork = initUINetwork();
+
+    // - Last.FM
+    JPanel jpLastFM = initUILastFM();
+
+    // - Cover
+    JPanel jpCovers = initUICovers();
+
+    // -- User interface --
+    JPanel jpUI = initUIGUI();
 
     // --OK/cancel panel
     jbOK = new JButton(Messages.getString("ParameterView.85"), IconLoader.getIcon(JajukIcons.OK));
     jbOK.addActionListener(this);
-    jbDefault = new JButton(Messages.getString("ParameterView.86"), IconLoader
-        .getIcon(JajukIcons.DEFAULTS_BIG));
+    jbDefault = new JButton(Messages.getString("ParameterView.86"),
+        IconLoader.getIcon(JajukIcons.DEFAULTS_BIG));
     jbDefault.addActionListener(this);
 
     // --Global layout
@@ -1680,8 +1867,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jtpMain.addTab(Messages.getString("ParameterView.33"), new JajukJScrollPane(jpOptions));
     jtpMain.addTab(Messages.getString("ParameterView.226"), new JajukJScrollPane(jpModes));
     jtpMain.addTab(Messages.getString("ParameterView.225"), new JajukJScrollPane(jpUI));
-    jtpMain.addTab(Messages.getString("ParameterView.19"), new JajukJScrollPane(jpStart));
-    jtpMain.addTab(Messages.getString("ParameterView.98"), new JajukJScrollPane(jpTags));
+    jtpMain.addTab(Messages.getString("ParameterView.19"), new JajukJScrollPane(jpStartup));
+    jtpMain.addTab(Messages.getString("ParameterView.98"), new JajukJScrollPane(jpPatterns));
     jtpMain.addTab(Messages.getString("ParameterView.8"), new JajukJScrollPane(jpHistory));
     jtpMain.addTab(Messages.getString("ParameterView.235"), new JajukJScrollPane(jpLastFM));
     jtpMain.addTab(Messages.getString("ParameterView.159"), new JajukJScrollPane(jpCovers));
@@ -1752,9 +1939,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   }
 
   /**
-   * Set widgets to specified value in options.
+   * Update selection history.
+   * DOCUMENT_ME
    */
-  private void updateSelection() {
+  private void updateSelectionHistory() {
     jtfHistory.setText(Conf.getString(Const.CONF_HISTORY));
     if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_ITEM)) {
       jrbFile.setSelected(true);
@@ -1772,7 +1960,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOVELTIES)) {
       jrbNovelties.setSelected(true);
     }
-    // Confirmations
+  }
+
+  /**
+   * Update selection confirmations.
+   * DOCUMENT_ME
+   */
+  private void updateSelectionConfirmations() {
     jcbBeforeDelete.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_FILE));
     jcbBeforeExit.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_EXIT));
     jcbBeforeRemoveDevice.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE));
@@ -1780,7 +1974,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbBeforeClearingHistory.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY));
     jcbBeforeResetingRatings.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS));
     jcbBeforeRefactorFiles.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_REFACTOR_FILES));
-    // options
+  }
+
+  /**
+   * Update selection options.
+   * DOCUMENT_ME
+   */
+  private void updateSelectionOptions() {
     jcbDisplayUnmounted.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
     jcbDefaultActionClick.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
     jcbDefaultActionDrop.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_DROP));
@@ -1808,7 +2008,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbUseParentDir.setSelected(Conf.getBoolean(Const.CONF_TAGS_USE_PARENT_DIR));
     jcbDropPlayedTracksFromQueue.setSelected(Conf
         .getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE));
-    // advanced
+  }
+
+  /**
+   * Update selection advanced.
+   * DOCUMENT_ME
+   */
+  private void updateSelectionAdvanced() {
     final int iBackupSize = Conf.getInt(Const.CONF_BACKUP_SIZE);
     if (iBackupSize <= 0) { // backup size =0 means no backup
       jcbBackup.setSelected(false);
@@ -1829,8 +2035,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jtfMPlayerArgs.setText(Conf.getString(Const.CONF_MPLAYER_ARGS));
     jtfEnvVariables.setText(Conf.getString(Const.CONF_ENV_VARIABLES));
     jtfExplorerPath.setText(Conf.getString(Const.CONF_EXPLORER_PATH));
+  }
 
-    // Network
+  /**
+   * Update selection network.
+   * DOCUMENT_ME
+   */
+  private void updateSelectionNetwork() {
     jcbNoneInternetAccess.setSelected(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
     final boolean bUseProxy = Conf.getBoolean(Const.CONF_NETWORK_USE_PROXY);
     jcbProxyNone.setSelected(bUseProxy);
@@ -1854,7 +2065,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     } else if (Const.PROXY_TYPE_SOCKS.equals(Conf.getString(Const.CONF_NETWORK_PROXY_TYPE))) {
       jcbProxySocks.setSelected(true);
     }
-    // Covers
+  }
+
+  /**
+   * Update selection covers.
+   * DOCUMENT_ME
+   */
+  private void updateSelectionCovers() {
     jcbAutoCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
     jlCoverSize.setEnabled(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
     jcb3dCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER));
@@ -1874,7 +2091,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       jlASPassword.setEnabled(false);
       jpfASPassword.setEnabled(false);
     }
-    // UI
+  }
+
+  /**
+   * Update selection gui.
+   * DOCUMENT_ME
+   */
+  private void updateSelectionGUI() {
     String notificatorType = Messages.getString(NOTIFICATOR_PREFIX
         + Conf.getString(Const.CONF_UI_NOTIFICATOR_TYPE));
     jcbNotificationType.setSelectedItem(notificatorType);
@@ -1886,6 +2109,33 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     scbLAF.setSelectedItem(Conf.getString(Const.CONF_OPTIONS_LNF));
     scbLAF.addActionListener(this);
     jsPerspectiveSize.setValue(Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE));
+  }
+
+  /**
+   * Set widgets to specified value in options.
+   */
+  private void updateSelection() {
+    // History
+    updateSelectionHistory();
+
+    // Confirmations
+    updateSelectionConfirmations();
+
+    // Options
+    updateSelectionOptions();
+
+    // Advanced
+    updateSelectionAdvanced();
+
+    // Network
+    updateSelectionNetwork();
+
+    // Covers
+    updateSelectionCovers();
+
+    // UI
+    updateSelectionGUI();
+
   }
 
   /*
