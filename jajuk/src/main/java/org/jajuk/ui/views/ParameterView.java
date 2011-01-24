@@ -1000,29 +1000,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     };
     // disabled by default, is enabled only if jrbFile is enabled
     sbSearch.setEnabled(false);
-    // set chosen track in file selection
-    String conf = Conf.getString(Const.CONF_STARTUP_ITEM);
-    String item = conf.substring(conf.indexOf('/') + 1, conf.length());
-    if (!StringUtils.isBlank(item)) {
-      if (conf.matches(SearchResultType.FILE.name() + ".*")) {
-        File file = FileManager.getInstance().getFileByID(item);
-        if (file != null) {
-          sbSearch.setText(file.getTrack().getName());
-        } else {
-          // the file exists no more, remove its id as startup file
-          Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
-        }
-      } else if (conf.matches(SearchResultType.WEBRADIO.name() + ".*")) {
-        WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(item);
-        if (radio != null) {
-          sbSearch.setText(radio.getName());
-        } else {
-          // the file exists no more, remove its id as startup file
-          Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
-        }
-      }
-    }
-
     sbSearch.setToolTipText(Messages.getString("ParameterView.18"));
     bgStart.add(jrbNothing);
     bgStart.add(jrbLast);
@@ -1189,7 +1166,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     crossFadeDuration.setToolTipText(Messages.getString("ParameterView.191"));
     crossFadeDuration.addMouseWheelListener(new DefaultMouseWheelListener(crossFadeDuration));
     jcbUseVolnorm = new JCheckBox(Messages.getString("ParameterView.262"));
-    jcbUseVolnorm.setSelected(Conf.getBoolean(Const.CONF_USE_VOLNORM));
     jcbUseVolnorm.setToolTipText(Messages.getString("ParameterView.263"));
 
     // add panels
@@ -1764,6 +1740,31 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOVELTIES)) {
       jrbNovelties.setSelected(true);
     }
+    // set chosen track in file selection
+    String conf = Conf.getString(Const.CONF_STARTUP_ITEM);
+    String item = conf.substring(conf.indexOf('/') + 1, conf.length());
+    if (!StringUtils.isBlank(item)) {
+      if (conf.matches(SearchResultType.FILE.name() + ".*")) {
+        File file = FileManager.getInstance().getFileByID(item);
+        if (file != null) {
+          sbSearch.setText(file.getTrack().getName());
+        } else {
+          // the file exists no more, remove its id as startup file
+          Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
+        }
+      } else if (conf.matches(SearchResultType.WEBRADIO.name() + ".*")) {
+        WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(item);
+        if (radio != null) {
+          sbSearch.setText(radio.getName());
+        } else {
+          // the file exists no more, remove its id as startup file
+          Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
+        }
+      }
+    }
+    else{
+      sbSearch.setText("");
+    }
     // Confirmations
     jcbBeforeDelete.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_FILE));
     jcbBeforeExit.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_EXIT));
@@ -1800,6 +1801,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbUseParentDir.setSelected(Conf.getBoolean(Const.CONF_TAGS_USE_PARENT_DIR));
     jcbDropPlayedTracksFromQueue.setSelected(Conf
         .getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE));
+     jcbUseVolnorm.setSelected(Conf.getBoolean(Const.CONF_USE_VOLNORM));
     // advanced
     final int iBackupSize = Conf.getInt(Const.CONF_BACKUP_SIZE);
     if (iBackupSize <= 0) { // backup size =0 means no backup
