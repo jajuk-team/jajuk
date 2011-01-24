@@ -1329,23 +1329,23 @@ public interface Const {
       XML_DEVICE_SYNCHRO_SOURCE, XML_FILE_DATE, XML_TRACK_TOTAL_PLAYTIME, XML_TRACK_PREFERENCE,
       XML_TRACK_BANNED, XML_TRACK_DISC_NUMBER, XML_ALBUM_ARTIST, XML_ALBUM_DISC_ID };
 
-  /** DOCUMENT_ME. */
+   /** Option name. */
   String PROPERTY_SEPARATOR = "Property_";
 
   // Formats
-  /** DOCUMENT_ME. */
+   /** Option name. */
   String FORMAT_STRING = "Property_Format_String";
 
-  /** DOCUMENT_ME. */
+   /** Option name. */
   String FORMAT_NUMBER = "Property_Format_Number";
 
-  /** DOCUMENT_ME. */
+   /** Option name. */
   String FORMAT_BOOLEAN = "Property_Format_Boolean";
 
-  /** DOCUMENT_ME. */
+  /** Option name.. */
   String FORMAT_FLOAT = "Property_Format_Float";
 
-  /** DOCUMENT_ME. */
+  /** Option name.. */
   String FORMAT_DATE = "Property_Format_Date";
 
   // Thumbs
@@ -1428,11 +1428,14 @@ public interface Const {
   /** DOCUMENT_ME. */
   String CONF_ALARM_ENABLED = "jajuk.alarm.enabled";
 
-  /** DOCUMENT_ME. */
+  /** Option name. */
   String CONF_AUTO_SCROLL = "jajuk.auto_scroll";
 
-  /** DOCUMENT_ME. */
+  /** Option name. */
   String CONF_EXPLORER_PATH = "jajuk.explorer_path";
+  
+   /** Option name. */
+  String CONF_BIT_PERFECT = "jajuk.bit_perfect";
 
   // Alarm actions
   /** DOCUMENT_ME. */

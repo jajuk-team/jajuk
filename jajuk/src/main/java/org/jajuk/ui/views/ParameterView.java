@@ -389,8 +389,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   /** DOCUMENT_ME. */
   private JSlider jsPerspectiveSize;
 
-  /** DOCUMENT_ME. */
+  /** VolNorm checkbox. */
   private JCheckBox jcbUseVolnorm;
+
+  /** Bit-perfect checkbox. */
+  private JCheckBox jcbEnableBitPerfect;
 
   /** DOCUMENT_ME. */
   private boolean someOptionsAppliedAtNextStartup = false;
@@ -476,7 +479,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
         Messages.showErrorMessage(120);
       }
     } else if (e.getSource() == jbOK) {
-      applyParameters();
+      updateConfFromGUI();
       // Notify any client than wait for parameters updates
       final Properties details = new Properties();
       details.put(Const.DETAIL_ORIGIN, this);
@@ -491,10 +494,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
           JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
       if (resu == JOptionPane.OK_OPTION) {
         Conf.setDefaultProperties();
-        updateSelection();// update UI
+        updateGUIFromConf();// update UI
         InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.110"),
             InformationJPanel.MessageType.INFORMATIVE);
-        applyParameters();
+        updateConfFromGUI();
         Messages.showInfoMessage(Messages.getString("ParameterView.198"));
       }
     } else if (e.getSource() == jcbBackup) {
@@ -573,9 +576,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /**
    * Apply parameters options.
-   * DOCUMENT_ME
+   * Options for "Options", "LastFM" and "Modes" tabs
+   * 
    */
-  private void applyParametersOptions() {
+  private void updateConfFromGUIOptions() {
     Conf.setProperty(Const.CONF_OPTIONS_HIDE_UNMOUNTED,
         Boolean.toString(jcbDisplayUnmounted.isSelected()));
     Conf.setProperty(Const.CONF_OPTIONS_PUSH_ON_CLICK,
@@ -625,13 +629,15 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
           Const.CONF_NOT_SHOW_AGAIN_CROSS_FADE);
     }
     Conf.setProperty(Const.CONF_FADE_DURATION, Integer.toString(crossFadeDuration.getValue()));
+    Conf.setProperty(Const.CONF_USE_VOLNORM, Boolean.toString(jcbUseVolnorm.isSelected()));
+    Conf.setProperty(Const.CONF_BIT_PERFECT, Boolean.toString(jcbEnableBitPerfect.isSelected()));
   }
 
   /**
    * Apply parameters startup.
    * DOCUMENT_ME
    */
-  private void applyParametersStartup() {
+  private void updateConfFromGUIStartup() {
     if (jrbNothing.isSelected()) {
       Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOTHING);
     } else if (jrbLast.isSelected()) {
@@ -653,7 +659,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
    * Apply parameters confirmation.
    * DOCUMENT_ME
    */
-  private void applyParametersConfirmation() {
+  private void updateConfFromGUIConfirmation() {
     Conf.setProperty(Const.CONF_CONFIRMATIONS_DELETE_FILE,
         Boolean.toString(jcbBeforeDelete.isSelected()));
     Conf.setProperty(Const.CONF_CONFIRMATIONS_EXIT, Boolean.toString(jcbBeforeExit.isSelected()));
@@ -671,7 +677,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
    * Apply parameters history.
    * 
    */
-  private void applyParametersHistory() {
+  private void updateConfFromGUIHistory() {
     final String sHistoryDuration = jtfHistory.getText();
     if (!sHistoryDuration.isEmpty()) {
       Conf.setProperty(Const.CONF_HISTORY, sHistoryDuration);
@@ -682,7 +688,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
    * Apply parameters patterns.
    * 
    */
-  private void applyParametersPatterns() {
+  private void updateConfFromGUIPatterns() {
     Conf.setProperty(Const.CONF_PATTERN_REFACTOR, jtfRefactorPattern.getText());
     Conf.setProperty(Const.CONF_PATTERN_ANIMATION, jtfAnimationPattern.getText());
     Conf.setProperty(Const.CONF_PATTERN_FRAME_TITLE, jtfFrameTitle.getText());
@@ -694,12 +700,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
    * Apply parameters advanced.
    * 
    */
-  private void applyParametersAdvanced() {
+  private void updateConfFromGUIAdvanced() {
     Conf.setProperty(Const.CONF_BACKUP_SIZE, Integer.toString(backupSize.getValue()));
     Conf.setProperty(Const.CONF_COLLECTION_CHARSET, jcbCollectionEncoding.getSelectedItem()
         .toString());
     Conf.setProperty(Const.CONF_REGEXP, Boolean.toString(jcbRegexp.isSelected()));
-    Conf.setProperty(Const.CONF_USE_VOLNORM, Boolean.toString(jcbUseVolnorm.isSelected()));
     Conf.setProperty(Const.CONF_CHECK_FOR_UPDATE, Boolean.toString(jcbCheckUpdates.isSelected()));
     Conf.setProperty(Const.CONF_FORCE_FILE_DATE, Boolean.toString(jcbForceFileDate.isSelected()));
     // Apply new mplayer path and display a warning message if changed
@@ -717,7 +722,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
    * Apply parameters gui.
    * 
    */
-  private void applyParametersGUI() {
+  private void updateConfFromGUIGUI() {
     Conf.setProperty(Const.CONF_CATALOG_PAGE_SIZE, Integer.toString(jsCatalogPages.getValue()));
     Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
     final int oldFont = Conf.getInt(Const.CONF_FONTS_SIZE);
@@ -767,7 +772,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
    * Handle workspace change.
    * 
    */
-  private void handleWorkspaceCnange() {
+  private void handleWorkspaceChange() {
     if ((SessionService.getWorkspace() != null)
         && !SessionService.getWorkspace().equals(psJajukWorkspace.getUrl())) {
       // Check workspace directory
@@ -844,7 +849,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
    * Apply parameters network.
    * 
    */
-  private void applyParametersNetwork() {
+  private void updateConfFromGUINetwork() {
     Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS,
         Boolean.toString(jcbNoneInternetAccess.isSelected()));
     Conf.setProperty(Const.CONF_NETWORK_USE_PROXY, Boolean.toString(!jcbProxyNone.isSelected()));
@@ -867,7 +872,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
    * Apply parameters cover.
    * 
    */
-  private void applyParametersCover() {
+  private void updateConfFromGUICover() {
     Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER, Boolean.toString(jcb3dCover.isSelected()));
     Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER_FS_MODE,
         Boolean.toString(jcb3dCoverFS.isSelected()));
@@ -886,35 +891,36 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   /**
    * Apply parameters from GUI to configuration.
    */
-  private void applyParameters() {
+  private void updateConfFromGUI() {
     // Options
-    applyParametersOptions();
+    updateConfFromGUIOptions();
+
     // Startup
-    applyParametersStartup();
+    updateConfFromGUIStartup();
 
     // Confirmations
-    applyParametersConfirmation();
+    updateConfFromGUIConfirmation();
 
     // History
-    applyParametersHistory();
+    updateConfFromGUIHistory();
 
     // Patterns
-    applyParametersPatterns();
+    updateConfFromGUIPatterns();
 
     // Advanced
-    applyParametersAdvanced();
+    updateConfFromGUIAdvanced();
 
     // GUI
-    applyParametersGUI();
+    updateConfFromGUIGUI();
 
     // If jajuk home changes, write new path in bootstrap file
-    handleWorkspaceCnange();
+    handleWorkspaceChange();
 
     // Network
-    applyParametersNetwork();
+    updateConfFromGUINetwork();
 
     // Covers
-    applyParametersCover();
+    updateConfFromGUICover();
     // configuration
     try {
       Conf.commit();
@@ -951,7 +957,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /**
    * Inits the ui history.
-   * DOCUMENT_ME
+   * 
    *
    * @return the j panel
    */
@@ -1010,9 +1016,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /**
    * Inits the ui startup.
-   * DOCUMENT_ME
+   * 
    *
-   * @return the j panel
+   * @return the jpanel
    */
   private JPanel initUIStartup() {
     JPanel jpStart = new JPanel(new MigLayout("insets 10,gapy 15", "[][grow][]"));
@@ -1060,29 +1066,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     };
     // disabled by default, is enabled only if jrbFile is enabled
     sbSearch.setEnabled(false);
-    // set chosen track in file selection
-    String conf = Conf.getString(Const.CONF_STARTUP_ITEM);
-    String item = conf.substring(conf.indexOf('/') + 1, conf.length());
-    if (!StringUtils.isBlank(item)) {
-      if (conf.matches(SearchResultType.FILE.name() + ".*")) {
-        File file = FileManager.getInstance().getFileByID(item);
-        if (file != null) {
-          sbSearch.setText(file.getTrack().getName());
-        } else {
-          // the file exists no more, remove its id as startup file
-          Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
-        }
-      } else if (conf.matches(SearchResultType.WEBRADIO.name() + ".*")) {
-        WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(item);
-        if (radio != null) {
-          sbSearch.setText(radio.getName());
-        } else {
-          // the file exists no more, remove its id as startup file
-          Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
-        }
-      }
-    }
-
     sbSearch.setToolTipText(Messages.getString("ParameterView.18"));
     bgStart.add(jrbNothing);
     bgStart.add(jrbLast);
@@ -1104,9 +1087,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /**
    * Inits the ui confirmations.
-   * DOCUMENT_ME
+   * 
    *
-   * @return the j panel
+   * @return the jpanel
    */
   private JPanel initUIConfirmations() {
     JPanel jpConfirmations = new JPanel(new MigLayout("insets 10,gapy 15"));
@@ -1144,9 +1127,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /**
    * Inits the ui modes.
-   * DOCUMENT_ME
-   *
-   * @return the j panel
+   * 
+   * @return the jpanel
    */
   private JPanel initUIModes() {
     // Intro
@@ -1265,8 +1247,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     crossFadeDuration.setToolTipText(Messages.getString("ParameterView.191"));
     crossFadeDuration.addMouseWheelListener(new DefaultMouseWheelListener(crossFadeDuration));
     jcbUseVolnorm = new JCheckBox(Messages.getString("ParameterView.262"));
-    jcbUseVolnorm.setSelected(Conf.getBoolean(Const.CONF_USE_VOLNORM));
     jcbUseVolnorm.setToolTipText(Messages.getString("ParameterView.263"));
+    jcbEnableBitPerfect = new JCheckBox(Messages.getString("ParameterView.285"));
+    jcbEnableBitPerfect.setToolTipText(Messages.getString("ParameterView.286"));
 
     // add panels
     JPanel jpModes = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10",
@@ -1291,7 +1274,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
    * Inits the ui options.
    * 
    *
-   * @return the j panel
+   * @return the jpanel
    */
   private JPanel initUIOptions() {
     jcbDisplayUnmounted = new JCheckBox(Messages.getString("JajukJMenuBar.24"));
@@ -1351,9 +1334,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /**
    * Inits the ui patterns.
-   * DOCUMENT_ME
+   * 
    *
-   * @return the j panel
+   * @return the jpanel
    */
   private JPanel initUIPatterns() {
     JPanel Patterns = new JPanel(new MigLayout("insets 10, gapy 15, wrap 2", "[][grow]"));
@@ -1400,9 +1383,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /**
    * Inits the ui advanced.
-   * DOCUMENT_ME
+   * 
    *
-   * @return the j panel
+   * @return the jpanel
    */
   private JPanel initUIAdvanced() {
     jcbBackup = new JCheckBox(Messages.getString("ParameterView.116"));
@@ -1492,9 +1475,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /**
    * Inits the ui network.
-   * DOCUMENT_ME
+   * 
    *
-   * @return the j panel
+   * @return the jpanel
    */
   private JPanel initUINetwork() {
     bgProxy = new ButtonGroup();
@@ -1590,9 +1573,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /**
    * Inits the ui last fm.
-   * DOCUMENT_ME
+   * 
    *
-   * @return the j panel
+   * @return the jpanel
    */
   private JPanel initUILastFM() {
     jcbAudioScrobbler = new JCheckBox(Messages.getString("ParameterView.199"));
@@ -1619,9 +1602,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /**
    * Inits the ui covers.
-   * DOCUMENT_ME
+   * 
    *
-   * @return the j panel
+   * @return the jpanel
    */
   private JPanel initUICovers() {
     jcbAutoCover = new JCheckBox(Messages.getString("ParameterView.148"));
@@ -1646,8 +1629,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcb3dCoverFS = new JCheckBox(Messages.getString("ParameterView.283"));
     jcb3dCoverFS.setToolTipText(Messages.getString("ParameterView.284"));
 
-    jlDefaultCoverSearchPattern = new JLabel();
-    jlDefaultCoverSearchPattern.setText(Messages.getString("ParameterView.256"));
+    jlDefaultCoverSearchPattern = new JLabel(Messages.getString("ParameterView.256"));
     jlDefaultCoverSearchPattern.setToolTipText(Messages.getString("ParameterView.257"));
     jtfDefaultCoverSearchPattern = new JTextField();
     jtfDefaultCoverSearchPattern.setToolTipText(Messages.getString("ParameterView.257"));
@@ -1671,10 +1653,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   }
 
   /**
-   * Inits the uigui.
-   * DOCUMENT_ME
-   *
-   * @return the j panel
+   * Inits the GUI tab.
+   *  
+   * @return the jpanel
    */
   private JPanel initUIGUI() {
     // Catalog view
@@ -1697,7 +1678,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbShowSystray = new JCheckBox(Messages.getString("ParameterView.271"));
     // Disable this option if the tray is not supported by the platform
     jcbShowSystray.setEnabled(SystemTray.isSupported());
-    // Disable minimize to systray optino if unchecked
+    // Disable minimize to systray option if unchecked
     jcbShowSystray.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -1889,7 +1870,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     add(jbOK, "split 2,right,sg group1");
     add(jbDefault, "sg group1");
     // update widgets state
-    updateSelection();
+    updateGUIFromConf();
     ObservationManager.register(this);
   }
 
@@ -1932,17 +1913,17 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       SwingUtilities.invokeLater(new Runnable() {
         @Override
         public void run() {
-          updateSelection();
+          updateGUIFromConf();
         }
       });
     }
   }
 
   /**
-   * Update selection history.
-   * DOCUMENT_ME
+   * Update history tab.
+   * 
    */
-  private void updateSelectionHistory() {
+  private void updateGUIFromConfHistory() {
     jtfHistory.setText(Conf.getString(Const.CONF_HISTORY));
     if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_ITEM)) {
       jrbFile.setSelected(true);
@@ -1963,10 +1944,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   }
 
   /**
-   * Update selection confirmations.
-   * DOCUMENT_ME
+   * Update Confirmations tab.
+   * 
    */
-  private void updateSelectionConfirmations() {
+  private void updateGUIFromConfConfirmations() {
     jcbBeforeDelete.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_FILE));
     jcbBeforeExit.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_EXIT));
     jcbBeforeRemoveDevice.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE));
@@ -1977,10 +1958,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   }
 
   /**
-   * Update selection options.
-   * DOCUMENT_ME
+   * Update "Options", "LastFM" and "Modes" tabs
+   * 
    */
-  private void updateSelectionOptions() {
+  private void updateGUIFromConfOptions() {
     jcbDisplayUnmounted.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
     jcbDefaultActionClick.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
     jcbDefaultActionDrop.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_DROP));
@@ -2008,13 +1989,46 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbUseParentDir.setSelected(Conf.getBoolean(Const.CONF_TAGS_USE_PARENT_DIR));
     jcbDropPlayedTracksFromQueue.setSelected(Conf
         .getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE));
+    jcbUseVolnorm.setSelected(Conf.getBoolean(Const.CONF_USE_VOLNORM));
+    jcbEnableBitPerfect.setSelected(Conf.getBoolean(Const.CONF_BIT_PERFECT));
   }
 
   /**
-   * Update selection advanced.
-   * DOCUMENT_ME
+   * Update Start-up tab
+   * 
    */
-  private void updateSelectionAdvanced() {
+  private void updateGUIFromConfStartup() {
+    // set chosen track in file selection
+    String conf = Conf.getString(Const.CONF_STARTUP_ITEM);
+    String item = conf.substring(conf.indexOf('/') + 1, conf.length());
+    if (!StringUtils.isBlank(item)) {
+      if (conf.matches(SearchResultType.FILE.name() + ".*")) {
+        File file = FileManager.getInstance().getFileByID(item);
+        if (file != null) {
+          sbSearch.setText(file.getTrack().getName());
+        } else {
+          // the file exists no more, remove its id as startup file
+          Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
+        }
+      } else if (conf.matches(SearchResultType.WEBRADIO.name() + ".*")) {
+        WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(item);
+        if (radio != null) {
+          sbSearch.setText(radio.getName());
+        } else {
+          // the file exists no more, remove its id as startup file
+          Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
+        }
+      }
+    } else {
+      sbSearch.setText("");
+    }
+  }
+
+  /**
+   * Update advanced tab.
+   * 
+   */
+  private void updateGUIFromConfAdvanced() {
     final int iBackupSize = Conf.getInt(Const.CONF_BACKUP_SIZE);
     if (iBackupSize <= 0) { // backup size =0 means no backup
       jcbBackup.setSelected(false);
@@ -2039,9 +2053,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /**
    * Update selection network.
-   * DOCUMENT_ME
+   * 
    */
-  private void updateSelectionNetwork() {
+  private void updateGUIFromConfNetwork() {
     jcbNoneInternetAccess.setSelected(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
     final boolean bUseProxy = Conf.getBoolean(Const.CONF_NETWORK_USE_PROXY);
     jcbProxyNone.setSelected(bUseProxy);
@@ -2069,9 +2083,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /**
    * Update selection covers.
-   * DOCUMENT_ME
+   * 
    */
-  private void updateSelectionCovers() {
+  private void updateGUIFromConfCovers() {
     jcbAutoCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
     jlCoverSize.setEnabled(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
     jcb3dCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER));
@@ -2094,10 +2108,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   }
 
   /**
-   * Update selection gui.
-   * DOCUMENT_ME
+   * Update GUI tab
+   * 
    */
-  private void updateSelectionGUI() {
+  private void updateGUIFromConfGUI() {
     String notificatorType = Messages.getString(NOTIFICATOR_PREFIX
         + Conf.getString(Const.CONF_UI_NOTIFICATOR_TYPE));
     jcbNotificationType.setSelectedItem(notificatorType);
@@ -2114,28 +2128,30 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   /**
    * Set widgets to specified value in options.
    */
-  private void updateSelection() {
+  private void updateGUIFromConf() {
     // History
-    updateSelectionHistory();
+    updateGUIFromConfHistory();
 
     // Confirmations
-    updateSelectionConfirmations();
+    updateGUIFromConfConfirmations();
 
     // Options
-    updateSelectionOptions();
+    updateGUIFromConfOptions();
 
     // Advanced
-    updateSelectionAdvanced();
+    updateGUIFromConfAdvanced();
+
+    //Startup
+    updateGUIFromConfStartup();
 
     // Network
-    updateSelectionNetwork();
+    updateGUIFromConfNetwork();
 
     // Covers
-    updateSelectionCovers();
+    updateGUIFromConfCovers();
 
     // UI
-    updateSelectionGUI();
-
+    updateGUIFromConfGUI();
   }
 
   /*

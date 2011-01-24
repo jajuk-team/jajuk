@@ -260,8 +260,7 @@ public final class Conf implements Const {
       // Default Window position: X,Y,X_size,Y_size
       width = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
       // Limit initial screen size (reported as problematic by some users on
-      // dual
-      // heads)
+      // dual heads)
       if (width > 1400) {
         width = 1200;
       } else {
@@ -340,6 +339,7 @@ public final class Conf implements Const {
     defaults.put(CONF_ALARM_TIME_MINUTES, "00");
     defaults.put(CONF_ALARM_TIME_SECONDS, "00");
     defaults.put(CONF_EXPLORER_PATH, "");
+    defaults.put(CONF_BIT_PERFECT, FALSE);
 
     // NOT SHOW AGAIN
     defaults.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
