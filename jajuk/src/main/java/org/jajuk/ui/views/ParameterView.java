@@ -586,7 +586,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /**
    * Apply parameters options.
-   * Options for "Options", "LastFM" and "Modes" tabs
+   * Options for "Options", "LastFM", "Sound" and "Modes" tabs
    * 
    */
   private void updateConfFromGUIOptions() {
@@ -1136,6 +1136,36 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   }
 
   /**
+  * Inits the sound tab
+  * 
+  *
+  * @return the jpanel
+  */
+  private JPanel initUISound() {
+    JPanel jpSound = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[][grow,200:300:300]"));
+    JLabel jlCrossFadeDuration = new JLabel(Messages.getString("ParameterView.190"));
+    jlCrossFadeDuration.setToolTipText(Messages.getString("ParameterView.191"));
+    crossFadeDuration = new JSlider(0, 30, 0);
+    crossFadeDuration.setMajorTickSpacing(10);
+    crossFadeDuration.setMinorTickSpacing(1);
+    crossFadeDuration.setPaintTicks(true);
+    crossFadeDuration.setPaintLabels(true);
+    crossFadeDuration.setToolTipText(Messages.getString("ParameterView.191"));
+    crossFadeDuration.addMouseWheelListener(new DefaultMouseWheelListener(crossFadeDuration));
+    jcbUseVolnorm = new JCheckBox(Messages.getString("ParameterView.262"));
+    jcbUseVolnorm.setToolTipText(Messages.getString("ParameterView.263"));
+    jcbUseVolnorm.addActionListener(this);
+    jcbEnableBitPerfect = new JCheckBox(Messages.getString("ParameterView.285"));
+    jcbEnableBitPerfect.setToolTipText(Messages.getString("ParameterView.286"));
+    jcbEnableBitPerfect.addActionListener(this);
+    jpSound.add(jlCrossFadeDuration);
+    jpSound.add(crossFadeDuration, "grow,wrap");
+    jpSound.add(jcbUseVolnorm, "wrap");
+    jpSound.add(jcbEnableBitPerfect);
+    return jpSound;
+  }
+
+  /**
    * Inits the ui modes.
    * 
    * @return the jpanel
@@ -1247,39 +1277,20 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
         return true;
       }
     });
-    JLabel jlCrossFadeDuration = new JLabel(Messages.getString("ParameterView.190"));
-    jlCrossFadeDuration.setToolTipText(Messages.getString("ParameterView.191"));
-    crossFadeDuration = new JSlider(0, 30, 0);
-    crossFadeDuration.setMajorTickSpacing(10);
-    crossFadeDuration.setMinorTickSpacing(1);
-    crossFadeDuration.setPaintTicks(true);
-    crossFadeDuration.setPaintLabels(true);
-    crossFadeDuration.setToolTipText(Messages.getString("ParameterView.191"));
-    crossFadeDuration.addMouseWheelListener(new DefaultMouseWheelListener(crossFadeDuration));
-    jcbUseVolnorm = new JCheckBox(Messages.getString("ParameterView.262"));
-    jcbUseVolnorm.setToolTipText(Messages.getString("ParameterView.263"));
-    jcbUseVolnorm.addActionListener(this);
-    jcbEnableBitPerfect = new JCheckBox(Messages.getString("ParameterView.285"));
-    jcbEnableBitPerfect.setToolTipText(Messages.getString("ParameterView.286"));
-    jcbEnableBitPerfect.addActionListener(this);
 
     // add panels
-    JPanel jpModes = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10",
-        "[][grow,200:300:300][fill]"));
+    JPanel jpModes = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[][grow,200:300:300]"));
     jpModes.add(new JLabel(Messages.getString("ParameterView.59")));
     jpModes.add(introPosition, "grow,wrap");
     jpModes.add(jlIntroLength);
     jpModes.add(introLength, "grow,wrap");
-    jpModes.add(jlCrossFadeDuration);
-    jpModes.add(crossFadeDuration, "grow,wrap");
     jpModes.add(jlBestofSize);
     jpModes.add(jtfBestofSize, "grow,wrap");
     jpModes.add(jlNoveltiesAge);
     jpModes.add(jtfNoveltiesAge, "grow,wrap");
     jpModes.add(jlVisiblePlanned);
     jpModes.add(jtfVisiblePlanned, "grow,wrap");
-    jpModes.add(jcbUseVolnorm, "wrap");
-    jpModes.add(jcbEnableBitPerfect);
+    
     return jpModes;
   }
 
@@ -1292,7 +1303,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   private JPanel initUIOptions() {
     jcbDisplayUnmounted = new JCheckBox(Messages.getString("JajukJMenuBar.24"));
     jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35"));
-    
+
     jcbDefaultActionClick = new JCheckBox(Messages.getString("ParameterView.179"));
     jcbDefaultActionClick.setToolTipText(Messages.getString("ParameterView.180"));
 
@@ -1499,7 +1510,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
     jcbNoneInternetAccess = new JCheckBox(Messages.getString("ParameterView.264"));
     jcbNoneInternetAccess.setToolTipText(Messages.getString("ParameterView.265"));
-    
+
     jcbProxyHttp = new JRadioButton(Messages.getString("ParameterView.237"));
     jcbProxyHttp.setToolTipText(Messages.getString("ParameterView.237"));
     jcbProxyHttp.addActionListener(this);
@@ -1784,37 +1795,17 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
    * @see org.jajuk.ui.IView#display()
    */
   public void initUI() {
-    // --History
     JPanel jpHistory = initUIHistory();
-
-    // --Startup
     JPanel jpStartup = initUIStartup();
-
-    // --Confirmations
     JPanel jpConfirmations = initUIConfirmations();
-
-    // --- Modes ---
     JPanel jpModes = initUIModes();
-
-    // --Options
+    JPanel jpSound = initUISound();
     JPanel jpOptions = initUIOptions();
-
-    // --Patterns
     JPanel jpPatterns = initUIPatterns();
-
-    // --Advanced
     JPanel jpAdvanced = initUIAdvanced();
-
-    // - Network
     JPanel jpNetwork = initUINetwork();
-
-    // - Last.FM
     JPanel jpLastFM = initUILastFM();
-
-    // - Cover
     JPanel jpCovers = initUICovers();
-
-    // -- User interface --
     JPanel jpUI = initUIGUI();
 
     // --OK/cancel panel
@@ -1838,6 +1829,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     }
     jtpMain.addTab(Messages.getString("ParameterView.33"), new JajukJScrollPane(jpOptions));
     jtpMain.addTab(Messages.getString("ParameterView.226"), new JajukJScrollPane(jpModes));
+    jtpMain.addTab(Messages.getString("ParameterView.287"), new JajukJScrollPane(jpSound));
     jtpMain.addTab(Messages.getString("ParameterView.225"), new JajukJScrollPane(jpUI));
     jtpMain.addTab(Messages.getString("ParameterView.19"), new JajukJScrollPane(jpStartup));
     jtpMain.addTab(Messages.getString("ParameterView.98"), new JajukJScrollPane(jpPatterns));
