@@ -367,7 +367,7 @@ public final class UtilFeatures {
   /**
    * Perform updates on this view to reflect current playing item status.
    * 
-   * @param oberver DOCUMENT_ME
+   * @param oberver the observer to update
    */
   public static void updateStatus(Observer oberver) {
     // check if a track or a webradio has already been launched
@@ -387,6 +387,8 @@ public final class UtilFeatures {
         oberver.update(new JajukEvent(JajukEvents.ZERO));
       }
     }
+    // Force update due to parameter changes
+    oberver.update(new JajukEvent(JajukEvents.PARAMETERS_CHANGE));
   }
 
   /**

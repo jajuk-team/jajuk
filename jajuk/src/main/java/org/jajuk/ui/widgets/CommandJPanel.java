@@ -215,7 +215,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
 
   /**
    * Inits the ui.
-   * DOCUMENT_ME
+   * 
    */
   public void initUI() {
     // Instanciate the PlayerStateMediator to listen for player basic controls
@@ -447,6 +447,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     eventSubjectSet.add(JajukEvents.DJS_CHANGE);
     eventSubjectSet.add(JajukEvents.WEBRADIOS_CHANGE);
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     return eventSubjectSet;
   }
 
@@ -501,7 +502,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
    */
   @Override
   public void mouseWheelMoved(MouseWheelEvent e) {
-    if (e.getSource() == jsVolume || e.getSource() == jbMute) {
+    if (e.getSource() == jsVolume
+        || (e.getSource() == jbMute && !Conf.getBoolean(Const.CONF_BIT_PERFECT))) {
       int iOld = jsVolume.getValue();
       float newVolume = ((float) (iOld - (e.getUnitsToScroll() * 3))) / 100;
       Player.setVolume(newVolume);
@@ -538,11 +540,11 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
         } else if (JajukEvents.PLAYER_RESUME.equals(subject)) {
           // Enable the volume when resuming (fix a mplayer issue, see
           // above)
-          jsVolume.setEnabled(true);
+          jsVolume.setEnabled(!Conf.getBoolean(Const.CONF_BIT_PERFECT));
           jbMute.addMouseWheelListener(CommandJPanel.this);
           jsVolume.addMouseWheelListener(CommandJPanel.this);
         } else if (JajukEvents.PLAYER_PLAY.equals(subject)) {
-          jsVolume.setEnabled(true);
+          jsVolume.setEnabled(!Conf.getBoolean(Const.CONF_BIT_PERFECT));
         } else if (JajukEvents.SPECIAL_MODE.equals(subject)) {
           if (ObservationManager.getDetail(event, Const.DETAIL_ORIGIN).equals(
               Const.DETAIL_SPECIAL_MODE_NORMAL)) {
@@ -584,6 +586,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
           populateWebRadios();
         } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(event.getSubject())) {
           populateWebRadios();
+        } else if (JajukEvents.PARAMETERS_CHANGE.equals(event.getSubject())) {
+          // Disable volume GUI in bit perfect mode
+          jsVolume.setEnabled(!Conf.getBoolean(Const.CONF_BIT_PERFECT));
         }
       }
     });
@@ -602,8 +607,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
       Iterator<DigitalDJ> it = DigitalDJManager.getInstance().getDJs().iterator();
       while (it.hasNext()) {
         final DigitalDJ dj = it.next();
-        JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(dj.getName(), IconLoader
-            .getIcon(JajukIcons.DIGITAL_DJ_16X16));
+        JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(dj.getName(),
+            IconLoader.getIcon(JajukIcons.DIGITAL_DJ_16X16));
         jmi.addActionListener(new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent arg0) {

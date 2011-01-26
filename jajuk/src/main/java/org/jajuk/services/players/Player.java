@@ -289,6 +289,11 @@ public final class Player {
    * 
    * @throws Exception    */
   public static void setVolume(float pVolume) {
+    // Ignore volume changes if Bit-perfect mode is enabled
+    if (Conf.getBoolean(Const.CONF_BIT_PERFECT)) {
+      Log.warn("Bit-perfect option enabled, software volume changes ignored");
+      return;
+    }
     float fVolume = pVolume;
     try {
       // if user move the volume slider, unmute

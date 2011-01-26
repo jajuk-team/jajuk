@@ -218,7 +218,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     // force icon to be display in 16x16
     jmiMute = new SizedJMenuItem(ActionManager.getAction(JajukActions.MUTE_STATE));
     jmiMute.addMouseWheelListener(this);
-    
+
     jmiShuffle = new SizedJMenuItem(ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL));
 
     jmiBestof = new SizedJMenuItem(ActionManager.getAction(JajukActions.BEST_OF));
@@ -255,8 +255,8 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     Ambience defaultAmbience = AmbienceManager.getInstance().getSelectedAmbience();
     jmAmbience = new JMenu(Messages.getString("JajukWindow.36")
         + " "
-        + ((defaultAmbience == null) ? Messages.getString("DigitalDJWizard.64") : defaultAmbience
-            .getName()));
+        + ((defaultAmbience == null) ? Messages.getString("DigitalDJWizard.64")
+            : defaultAmbience.getName()));
     populateAmbiences();
 
     jmenu.add(jpTitle);
@@ -527,15 +527,15 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
   public TrayIcon getTrayIcon() {
     return this.trayIcon;
   }
-  
-   /*
-   * (non-Javadoc)
-   * 
-   * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event. MouseWheelEvent)
-   */
+
+  /*
+  * (non-Javadoc)
+  * 
+  * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event. MouseWheelEvent)
+  */
   @Override
   public void mouseWheelMoved(MouseWheelEvent e) {
-    if (e.getSource().equals(jmiMute)) {
+    if (e.getSource().equals(jmiMute) && !Conf.getBoolean(Const.CONF_BIT_PERFECT)) {
       int oldVolume = (int) (100 * Player.getCurrentVolume());
       int newVolume = oldVolume - (e.getUnitsToScroll() * 3);
       if (Player.isMuted()) {

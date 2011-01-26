@@ -422,9 +422,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   /** DOCUMENT_ME. */
   private JCheckBox jcb3dCoverFS;
 
-  /** Multi-purpose action listener. */
-  private ActionListener alUI;
-
   /**
    * View providing main jajuk configuration GUI. Known in the doc as
    * "Preferences view"
@@ -483,6 +480,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       // Notify any client than wait for parameters updates
       final Properties details = new Properties();
       details.put(Const.DETAIL_ORIGIN, this);
+      ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE, details));
       if (someOptionsAppliedAtNextStartup) {
         // Inform user that some parameters will apply only at
         // next startup
@@ -572,6 +570,18 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
         }
       }.start();
     }
+    // Bit-perfect and audio normalization options are mutually exclusive
+    if (e.getSource().equals(jcbUseVolnorm) && jcbEnableBitPerfect.isSelected()) {
+      jcbEnableBitPerfect.removeActionListener(this);
+      jcbEnableBitPerfect.setSelected(false);
+      jcbEnableBitPerfect.addActionListener(this);
+    }
+    if (e.getSource().equals(jcbEnableBitPerfect) && jcbUseVolnorm.isSelected()) {
+      jcbUseVolnorm.removeActionListener(this);
+      jcbUseVolnorm.setSelected(false);
+      jcbUseVolnorm.addActionListener(this);
+    }
+
   }
 
   /**
@@ -635,7 +645,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /**
    * Apply parameters startup.
-   * DOCUMENT_ME
+   * 
    */
   private void updateConfFromGUIStartup() {
     if (jrbNothing.isSelected()) {
@@ -657,7 +667,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /**
    * Apply parameters confirmation.
-   * DOCUMENT_ME
+   * 
    */
   private void updateConfFromGUIConfirmation() {
     Conf.setProperty(Const.CONF_CONFIRMATIONS_DELETE_FILE,
@@ -1248,8 +1258,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     crossFadeDuration.addMouseWheelListener(new DefaultMouseWheelListener(crossFadeDuration));
     jcbUseVolnorm = new JCheckBox(Messages.getString("ParameterView.262"));
     jcbUseVolnorm.setToolTipText(Messages.getString("ParameterView.263"));
+    jcbUseVolnorm.addActionListener(this);
     jcbEnableBitPerfect = new JCheckBox(Messages.getString("ParameterView.285"));
     jcbEnableBitPerfect.setToolTipText(Messages.getString("ParameterView.286"));
+    jcbEnableBitPerfect.addActionListener(this);
 
     // add panels
     JPanel jpModes = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10",
@@ -1266,7 +1278,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpModes.add(jtfNoveltiesAge, "grow,wrap");
     jpModes.add(jlVisiblePlanned);
     jpModes.add(jtfVisiblePlanned, "grow,wrap");
-    jpModes.add(jcbUseVolnorm);
+    jpModes.add(jcbUseVolnorm, "wrap");
+    jpModes.add(jcbEnableBitPerfect);
     return jpModes;
   }
 
@@ -1279,8 +1292,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   private JPanel initUIOptions() {
     jcbDisplayUnmounted = new JCheckBox(Messages.getString("JajukJMenuBar.24"));
     jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35"));
-    jcbDisplayUnmounted.addActionListener(alUI);
-
+    
     jcbDefaultActionClick = new JCheckBox(Messages.getString("ParameterView.179"));
     jcbDefaultActionClick.setToolTipText(Messages.getString("ParameterView.180"));
 
@@ -1487,8 +1499,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
     jcbNoneInternetAccess = new JCheckBox(Messages.getString("ParameterView.264"));
     jcbNoneInternetAccess.setToolTipText(Messages.getString("ParameterView.265"));
-    jcbNoneInternetAccess.addActionListener(alUI);
-
+    
     jcbProxyHttp = new JRadioButton(Messages.getString("ParameterView.237"));
     jcbProxyHttp.setToolTipText(Messages.getString("ParameterView.237"));
     jcbProxyHttp.addActionListener(this);
@@ -1673,8 +1684,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       }
     });
     jcbShowPopups = new JCheckBox(Messages.getString("ParameterView.228"));
-    jcbShowPopups.addActionListener(alUI);
-
     jcbShowSystray = new JCheckBox(Messages.getString("ParameterView.271"));
     // Disable this option if the tray is not supported by the platform
     jcbShowSystray.setEnabled(SystemTray.isSupported());
@@ -1775,24 +1784,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
    * @see org.jajuk.ui.IView#display()
    */
   public void initUI() {
-    // Use this common action listener for UI options that need to launch
-    // event
-    alUI = new ActionListener() {
-
-      public void actionPerformed(ActionEvent e) {
-        // Store configuration
-        Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
-        Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS,
-            Boolean.toString(jcbNoneInternetAccess.isSelected()));
-        // Launch an event that can be trapped by the tray to
-        // synchronize the state
-        Properties details = new Properties();
-        details.put(Const.DETAIL_ORIGIN, ParameterView.this);
-        ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE, details));
-      }
-
-    };
-
     // --History
     JPanel jpHistory = initUIHistory();
 

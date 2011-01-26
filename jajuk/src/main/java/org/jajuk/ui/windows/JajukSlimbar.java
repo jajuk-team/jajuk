@@ -202,6 +202,22 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     return self;
   }
 
+  /*
+  * (non-Javadoc)
+  * 
+  * @see org.jajuk.events.Observer#getRegistrationKeys()
+  */
+  @Override
+  public Set<JajukEvents> getRegistrationKeys() {
+    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.QUEUE_NEED_REFRESH);
+    eventSubjectSet.add(JajukEvents.PLAYER_STOP);
+    eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
+    return eventSubjectSet;
+  }
+
   /**
    * Sets the display queue.
    * 
@@ -580,7 +596,6 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
       if (Player.isMuted()) {
         Player.mute(false);
       }
-
       if (newVolume > 100) {
         newVolume = 100;
       } else if (newVolume < 0) {
@@ -606,8 +621,8 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     if (action == null) { // no tooltip
       return;
     }
-    ActionEvent ae = new ActionEvent(comp, ActionEvent.ACTION_PERFORMED, "postTip", EventQueue
-        .getMostRecentEventTime(), 0);
+    ActionEvent ae = new ActionEvent(comp, ActionEvent.ACTION_PERFORMED, "postTip",
+        EventQueue.getMostRecentEventTime(), 0);
     action.actionPerformed(ae);
   }
 
@@ -622,24 +637,9 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     if (action == null) { // no tooltip
       return;
     }
-    ActionEvent ae = new ActionEvent(comp, ActionEvent.ACTION_PERFORMED, "hideTip", EventQueue
-        .getMostRecentEventTime(), 0);
+    ActionEvent ae = new ActionEvent(comp, ActionEvent.ACTION_PERFORMED, "hideTip",
+        EventQueue.getMostRecentEventTime(), 0);
     action.actionPerformed(ae);
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.events.Observer#getRegistrationKeys()
-   */
-  @Override
-  public Set<JajukEvents> getRegistrationKeys() {
-    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
-    eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.QUEUE_NEED_REFRESH);
-    eventSubjectSet.add(JajukEvents.PLAYER_STOP);
-    return eventSubjectSet;
   }
 
   /*
@@ -653,6 +653,9 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     if (JajukEvents.FILE_LAUNCHED.equals(subject) || JajukEvents.WEBRADIO_LAUNCHED.equals(subject)
         || JajukEvents.PLAYER_STOP.equals(subject)) {
       updateCurrentTitle();
+    } else if (JajukEvents.PARAMETERS_CHANGE.equals(event.getSubject())) {
+      // Disable volume GUI in bit perfect mode
+      jbVolume.setEnabled(!Conf.getBoolean(Const.CONF_BIT_PERFECT));
     }
   }
 

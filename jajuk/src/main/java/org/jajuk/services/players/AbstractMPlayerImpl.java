@@ -179,13 +179,17 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     cmd.add("-quiet");
     // slave: slave mode (control with stdin)
     cmd.add("-slave");
-    // -af volume: Use volnorm to limit gain to max
-    // If mute, use -200db otherwise, use a linear scale
-    cmd.add("-af");
-    cmd.add(buildAudioFilters());
-    // -softvol : use soft mixer, allows to set volume only to this mplayer
-    // instance, not others programs
-    cmd.add("-softvol");
+
+    // No af options if bit perfect is enabled
+    if (!Conf.getBoolean(CONF_BIT_PERFECT)) {
+      // -af volume: Use volnorm to limit gain to max
+      // If mute, use -200db otherwise, use a linear scale
+      cmd.add("-af");
+      cmd.add(buildAudioFilters());
+      // -softvol : use soft mixer, allows to set volume only to this mplayer
+      // instance, not others programs
+      cmd.add("-softvol");
+    }
     // Define a cache. It is useful to avoid sound gliches but also to
     // overide a local mplayer large cache configuration in
     // ~/.mplayer/config file. User can set a large cache for video for ie.
