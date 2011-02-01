@@ -317,10 +317,10 @@ public final class Conf implements Const {
     // We use trailing pattern to allow scripting like MSN plugins to
     // detect jajuk frames and extract current track
     defaults.put(CONF_PATTERN_FRAME_TITLE, '~' + PATTERN_TRACKNAME + " (" + PATTERN_ARTIST + ")~");
-    defaults.put(CONF_PATTERN_BALLOON_NOTIFIER, Messages.getString("FIFO.10") + " "
-        + Messages.getString("InformationJPanel.8"));
-    defaults.put(CONF_PATTERN_INFORMATION, Messages.getString("FIFO.10") + " "
-        + Messages.getString("InformationJPanel.8"));
+    defaults.put(CONF_PATTERN_BALLOON_NOTIFIER,
+        Messages.getString("FIFO.10") + " " + Messages.getString("InformationJPanel.8"));
+    defaults.put(CONF_PATTERN_INFORMATION,
+        Messages.getString("FIFO.10") + " " + Messages.getString("InformationJPanel.8"));
     defaults.put(CONF_SHOW_DUPLICATE_PLAYLISTS, FALSE);
     defaults.put(CONF_FORMAT_TIME_ELAPSED, "0");
     defaults.put(CONF_AUTO_SCROLL, TRUE);
@@ -340,6 +340,7 @@ public final class Conf implements Const {
     defaults.put(CONF_ALARM_TIME_SECONDS, "00");
     defaults.put(CONF_EXPLORER_PATH, "");
     defaults.put(CONF_BIT_PERFECT, FALSE);
+    defaults.put(CONF_TITLE_ANIMATION, FALSE);
 
     // NOT SHOW AGAIN
     defaults.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
@@ -458,8 +459,8 @@ public final class Conf implements Const {
    */
   public static void load() {
     try {
-      InputStream str = new FileInputStream(SessionService
-          .getConfFileByPath(Const.FILE_CONFIGURATION));
+      InputStream str = new FileInputStream(
+          SessionService.getConfFileByPath(Const.FILE_CONFIGURATION));
       try {
         properties.load(str);
       } finally {

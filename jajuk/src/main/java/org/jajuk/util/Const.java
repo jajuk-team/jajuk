@@ -951,6 +951,9 @@ public interface Const {
 
   /** Show systray. */
   String CONF_SHOW_SYSTRAY = "jajuk.show_systray";
+  
+  /** Enable Title view Animation. */
+  String CONF_TITLE_ANIMATION = "jajuk.title_animation";
 
   /** Minimize to tray. */
   String CONF_MINIMIZE_TO_TRAY = "jajuk.minimize_to_tray";

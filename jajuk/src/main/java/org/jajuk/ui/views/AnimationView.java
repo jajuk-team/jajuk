@@ -27,16 +27,18 @@ import com.jgoodies.animation.Animator;
 import com.jgoodies.animation.animations.BasicTextAnimation;
 import com.jgoodies.animation.components.BasicTextLabel;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.SwingUtilities;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.File;
 import org.jajuk.events.JajukEvent;
@@ -44,6 +46,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
+import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -102,12 +105,20 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
    */
   @Override
   public void initUI() {
-    setLayout(new BorderLayout());
-    addComponentListener(this);
+    setLayout(new MigLayout("", "[cente,grow]", "[center,grow]"));
     btl1 = new BasicTextLabel(" ");
-    add(btl1);
+    // Allow to stop animation by left clicking on it
+    btl1.addMouseListener(new JajukMouseAdapter() {
+      public void handleAction(final MouseEvent e) {
+        if (animator != null) {
+          animator.stop();
+        }
+      }
+    });
+    add(btl1, "grow,center");
     // Force initial message refresh
     UtilFeatures.updateStatus(this);
+    addComponentListener(this);
 
     ObservationManager.register(this);
 
@@ -133,14 +144,17 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
    */
   public void setText(final String sText) {
     SwingUtilities.invokeLater(new Runnable() {
-      // this is mandatory to
-      // get actual getWitdth
+      // This is mandatory to get actual getWitdth
       @Override
       public void run() {
+        // Make sure to stop any animation
+        if (animator != null) {
+          animator.stop();
+        }
+        btl1.setText("");
         iSize = AnimationView.this.getWidth();
-        // current width. Must be called inside an invoke and wait,
-        // otherwise, returns zero
         Font font = null;
+        // Find optimal target font size
         boolean bOk = false;
         int i = 40;
         while (!bOk) {
@@ -154,29 +168,46 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
           }
         }
         btl1.setFont(font);
-        if (animator != null) {
-          animator.stop();
-        }
         Animation animPause = Animations.pause(DEFAULT_PAUSE);
         Animation anim = null;
-        // select a random animation
-        int iShuffle = (int) (Math.random() * 3);
-        switch (iShuffle) {
-        case 0:
-          anim = BasicTextAnimation.defaultScale(btl1, DEFAULT_DURATION, sText, Color.darkGray);
-          break;
-        case 1:
-          anim = BasicTextAnimation.defaultSpace(btl1, DEFAULT_DURATION, sText, Color.darkGray);
-          break;
-        case 2:
+        // Select a random animation or fade animation if no animation (because 
+        // we want to make sure that long labels are not cut  after animation stop)
+        if (!Conf.getBoolean(Const.CONF_TITLE_ANIMATION)) {
           anim = BasicTextAnimation.defaultFade(btl1, DEFAULT_DURATION, sText, Color.darkGray);
-          break;
+        } else {
+          int iShuffle = (int) (Math.random() * 3);
+          switch (iShuffle) {
+          case 0:
+            anim = BasicTextAnimation.defaultScale(btl1, DEFAULT_DURATION, sText, Color.darkGray);
+            break;
+          case 1:
+            anim = BasicTextAnimation.defaultSpace(btl1, DEFAULT_DURATION, sText, Color.darkGray);
+            break;
+          case 2:
+            anim = BasicTextAnimation.defaultFade(btl1, DEFAULT_DURATION, sText, Color.darkGray);
+            break;
+          }
         }
         Animation animAll = Animations.sequential(anim, animPause);
         anim = Animations.repeat(Float.POSITIVE_INFINITY, animAll);
         animator = new Animator(anim, DEFAULT_FRAME_RATE);
         animator.start();
-
+        if (!Conf.getBoolean(Const.CONF_TITLE_ANIMATION)) {
+          // Stop animation after few seconds if still the same label
+          new Thread() {
+            public void run() {
+              String title = sText;
+              try {
+                Thread.sleep(3000);
+              } catch (InterruptedException e) {
+                Log.error(e);
+              }
+              if (btl1.getText().equals(title) && animator != null) {
+                animator.stop();
+              }
+            }
+          }.start();
+        }
       }
     });
   }

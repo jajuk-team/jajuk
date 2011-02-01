@@ -422,6 +422,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   /** DOCUMENT_ME. */
   private JCheckBox jcb3dCoverFS;
 
+  /** Enable Title view animation effect. */
+  private JCheckBox jcbTitleAnimation;
+
   /**
    * View providing main jajuk configuration GUI. Known in the doc as
    * "Preferences view"
@@ -755,6 +758,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       someOptionsAppliedAtNextStartup = true;
     }
     Conf.setProperty(Const.CONF_SHOW_SYSTRAY, Boolean.toString(jcbShowSystray.isSelected()));
+    Conf.setProperty(Const.CONF_TITLE_ANIMATION, Boolean.toString(jcbTitleAnimation.isSelected()));
 
     // Minimize to tray
     Conf.setProperty(Const.CONF_MINIMIZE_TO_TRAY, Boolean.toString(jcbMinimizeToTray.isSelected()));
@@ -775,6 +779,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
           Const.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
       bLAFMessage = true;
+
     }
   }
 
@@ -1290,7 +1295,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpModes.add(jtfNoveltiesAge, "grow,wrap");
     jpModes.add(jlVisiblePlanned);
     jpModes.add(jtfVisiblePlanned, "grow,wrap");
-    
+
     return jpModes;
   }
 
@@ -1728,13 +1733,22 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     final JXCollapsiblePane catalogView = new JXCollapsiblePane();
     catalogView.setLayout(new VerticalLayout(10));
     catalogView.setCollapsed(true);
-    final ToggleLink toggle = new ToggleLink(Messages.getString("ParameterView.229"), catalogView);
+    final ToggleLink toggleCatalog = new ToggleLink(Messages.getString("ParameterView.229"), catalogView);
     final JPanel jpCatalogSize = new JPanel();
     jpCatalogSize.setLayout(new HorizontalLayout());
     jpCatalogSize.add(jlCatalogPages);
     jpCatalogSize.add(jsCatalogPages);
     catalogView.add(jpCatalogSize);
     catalogView.add(jbCatalogRefresh);
+
+    //Title view
+    jcbTitleAnimation = new JCheckBox(Messages.getString("ParameterView.288"));
+    jcbTitleAnimation.setToolTipText(Messages.getString("ParameterView.288"));
+    final JXCollapsiblePane titleView = new JXCollapsiblePane();
+    titleView.add(jcbTitleAnimation);
+    titleView.setCollapsed(true);
+    final ToggleLink toggleTitle = new ToggleLink(Messages.getString("ParameterView.289"),
+        titleView);
 
     // Font selector
     jlFonts = new JLabel(Messages.getString("ParameterView.223"));
@@ -1784,8 +1798,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpUI.add(scbLAF, "wrap,grow");
     jpUI.add(jlPerspectiveSize);
     jpUI.add(jsPerspectiveSize, "wrap,grow");
-    jpUI.add(toggle, "wrap,grow");
+    jpUI.add(toggleCatalog, "wrap,grow");
     jpUI.add(catalogView, "wrap,grow,span");
+    jpUI.add(toggleTitle, "wrap,grow");
+    jpUI.add(titleView, "wrap,grow,span");
     return jpUI;
   }
 
@@ -2106,6 +2122,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     scbLAF.setSelectedItem(Conf.getString(Const.CONF_OPTIONS_LNF));
     scbLAF.addActionListener(this);
     jsPerspectiveSize.setValue(Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE));
+    jcbTitleAnimation.setSelected(Conf.getBoolean(Const.CONF_TITLE_ANIMATION));
   }
 
   /**
