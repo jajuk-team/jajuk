@@ -169,7 +169,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
 
             ArtistView.this.artist = artist.getName();
             // Display the panel only if the artist is not unknown
-            if (!artist.isUnknown()) {
+            if (!artist.seemsUnknown()) {
               // This is done in a swing worker
               displayArtist();
             } else {
