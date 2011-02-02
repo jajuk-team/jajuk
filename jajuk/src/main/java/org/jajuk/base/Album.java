@@ -127,12 +127,22 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Checks if is unknown.
+   * Return whether this item is strictly unknown : contains no tag
    * 
-   * @return whether the album is Unknown or not
+   * @return whether this item is Unknown or not
    */
   public boolean isUnknown() {
     return this.getName().equals(UNKNOWN_ALBUM);
+  }
+
+  /**
+  * Return whether this item seems unknown (fuzzy search)
+  * 
+  * @return whether this item seems unknown
+  */
+  public boolean seemsUnknown() {
+    return isUnknown() || "unknown".equalsIgnoreCase(getName())
+        || Messages.getString(UNKNOWN_ALBUM).equalsIgnoreCase(getName());
   }
 
   /*

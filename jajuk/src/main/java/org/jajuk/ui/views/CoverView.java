@@ -798,38 +798,38 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     final Album album = track.getAlbum();
     switch (iAccuracy) {
     case 0: // low, default
-      if (!artist.isUnknown()) {
+      if (!artist.seemsUnknown()) {
         sQuery += artist.getName() + " ";
       }
-      if (!album.isUnknown()) {
+      if (!album.seemsUnknown()) {
         sQuery += album.getName() + " ";
       }
       break;
     case 1: // medium
-      if (!artist.isUnknown()) {
+      if (!artist.seemsUnknown()) {
         sQuery += '\"' + artist.getName() + QUOTE_BLANK;
         // put quotes around it
       }
-      if (!album.isUnknown()) {
+      if (!album.seemsUnknown()) {
         sQuery += '\"' + album.getName() + QUOTE_BLANK;
       }
       break;
     case 2: // high
-      if (!artist.isUnknown()) {
+      if (!artist.seemsUnknown()) {
         sQuery += PLUS_QUOTE + artist.getName() + QUOTE_BLANK;
         // put "" around it
       }
-      if (!album.isUnknown()) {
+      if (!album.seemsUnknown()) {
         sQuery += PLUS_QUOTE + album.getName() + QUOTE_BLANK;
       }
       break;
     case 3: // by artist
-      if (!artist.isUnknown()) {
+      if (!artist.seemsUnknown()) {
         sQuery += artist.getName() + " ";
       }
       break;
     case 4: // by album
-      if (!album.isUnknown()) {
+      if (!album.seemsUnknown()) {
         sQuery += album.getName() + " ";
       }
       break;

@@ -85,12 +85,22 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
   }
 
   /**
-   * Checks if is unknown.
-   * 
-   * @return whether the genre is Unknown or not
-   */
+  * Return whether this item is strictly unknown : contains no tag
+  * 
+  * @return whether this item is Unknown or not
+  */
   public boolean isUnknown() {
     return this.getName().equals(UNKNOWN_GENRE);
+  }
+
+  /**
+  * Return whether this item seems unknown (fuzzy search)
+  * 
+  * @return whether this item seems unknown
+  */
+  public boolean seemsUnknown() {
+    return isUnknown() || "unknown".equalsIgnoreCase(getName())
+        || Messages.getString(UNKNOWN_GENRE).equalsIgnoreCase(getName());
   }
 
   /**
