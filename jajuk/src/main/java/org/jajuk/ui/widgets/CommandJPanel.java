@@ -30,8 +30,6 @@ import static org.jajuk.ui.actions.JajukActions.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 import ext.DropDownButton;
-import ext.scrollablepopupmenu.XCheckedButton;
-import ext.scrollablepopupmenu.XJPopupMenu;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -43,9 +41,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.swing.Action;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JLabel;
@@ -69,8 +65,6 @@ import org.jajuk.services.dj.DigitalDJ;
 import org.jajuk.services.dj.DigitalDJManager;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
-import org.jajuk.services.webradio.WebRadio;
-import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukAction;
@@ -82,7 +76,6 @@ import org.jajuk.ui.substance.CircleButtonShaper;
 import org.jajuk.ui.substance.LeftConcaveButtonShaper;
 import org.jajuk.ui.substance.RightConcaveButtonShaper;
 import org.jajuk.ui.substance.RoundRectButtonShaper;
-import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -148,10 +141,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   private JPopupMenu popupNovelties;
 
   /** DOCUMENT_ME. */
-  private DropDownButton ddbWebRadio;
-
-  /** DOCUMENT_ME. */
-  private XJPopupMenu popupWebRadio;
+  private WebRadioButton webRadioButton;
 
   /** DOCUMENT_ME. */
   private JRadioButtonMenuItem jmiNoveltiesModeSong;
@@ -351,21 +341,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     // no text visible
     ddbDDJ.setText("");
 
-    popupWebRadio = new XJPopupMenu(JajukMainWindow.getInstance());
-    ddbWebRadio = new DropDownButton(IconLoader.getIcon(JajukIcons.WEBRADIO)) {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      protected JPopupMenu getPopupMenu() {
-        return popupWebRadio;
-      }
-    };
-    ddbWebRadio.setAction(ActionManager.getAction(JajukActions.WEB_RADIO));
-    populateWebRadios();
-    // no text
-    ddbWebRadio.setText("");
+    webRadioButton = new WebRadioButton(IconLoader.getIcon(JajukIcons.WEBRADIO));
     JToolBar jtbWebRadio = new JajukJToolbar();
-    ddbWebRadio.addToToolBar(jtbWebRadio);
+    webRadioButton.addToToolBar(jtbWebRadio);
 
     ddbDDJ.addToToolBar(jtbSpecial);
     ddbNovelties.addToToolBar(jtbSpecial);
@@ -583,9 +561,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
             action.setShortDescription(Messages.getString("CommandJPanel.18"));
           }
         } else if (JajukEvents.WEBRADIOS_CHANGE.equals(event.getSubject())) {
-          populateWebRadios();
+          webRadioButton.populateWebRadios();
         } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(event.getSubject())) {
-          populateWebRadios();
+          webRadioButton.populateWebRadios();
         } else if (JajukEvents.PARAMETERS_CHANGE.equals(event.getSubject())) {
           // Disable volume GUI in bit perfect mode
           jsVolume.setEnabled(!Conf.getBoolean(Const.CONF_BIT_PERFECT));
@@ -624,47 +602,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
         });
         popupDDJ.add(jmi);
         jmi.setSelected(Conf.getString(Const.CONF_DEFAULT_DJ).equals(dj.getID()));
-      }
-    } catch (Exception e) {
-      Log.error(e);
-    }
-  }
-
-  /**
-   * Populate webradios.
-   */
-  private void populateWebRadios() {
-    try {
-      // Update button tooltip
-      ddbWebRadio.setToolTipText(WebRadioManager.getCurrentWebRadioTooltip());
-      // Clear previous elements
-      popupWebRadio.removeAll();
-      // Add configure radios item
-      JajukAction actionConf = ActionManager.getAction(JajukActions.CONFIGURE_WEBRADIOS);
-      XCheckedButton jmiConf = new XCheckedButton(actionConf);
-      // Set icon so it is correctly displayed after a selection
-      jmiConf.setCheckedIcon((ImageIcon) actionConf.getValue(Action.SMALL_ICON));
-      // The icon should be always displayed
-      jmiConf.setIconAlwaysVisible(true);
-      popupWebRadio.add(jmiConf);
-      for (final WebRadio radio : WebRadioManager.getInstance().getWebRadios()) {
-        XCheckedButton jmi = new XCheckedButton(radio.getName());
-        jmi.addActionListener(new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            Conf.setProperty(Const.CONF_DEFAULT_WEB_RADIO, radio.getName());
-            // force to reselect the item
-            populateWebRadios();
-            // update action tooltip on main button with right item
-            JajukAction action = ActionManager.getAction(JajukActions.WEB_RADIO);
-            action.setShortDescription(Const.HTML + Messages.getString("CommandJPanel.25")
-                + Const.P_B + radio.getName() + Const.B_P_HTML);
-          }
-        });
-        jmi.setSelected(Conf.getString(Const.CONF_DEFAULT_WEB_RADIO).equals(radio.getName()));
-        // Show the check icon
-        jmi.setDisplayCheck(true);
-        popupWebRadio.add(jmi);
       }
     } catch (Exception e) {
       Log.error(e);
