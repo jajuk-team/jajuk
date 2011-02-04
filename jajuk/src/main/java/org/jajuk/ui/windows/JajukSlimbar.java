@@ -156,8 +156,8 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
 
   /** DOCUMENT_ME. */
   private JToolBar jtbPlay;
-  
- /** DOCUMENT_ME. */
+
+  /** DOCUMENT_ME. */
   private DropDownButton webRadioButton;
 
   /** DOCUMENT_ME. */
@@ -454,16 +454,18 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     AmbienceComboBox ambienceCombo = new AmbienceComboBox();
     ambienceCombo.setPreferredSize(new Dimension(42, 20));
     ambienceCombo.addMouseMotionListener(motionAdapter);
-    
+
     // Webradio button
     webRadioButton = new WebRadioButton(IconLoader.getIcon(JajukIcons.WEBRADIO_16X16));
+    JToolBar jtbWebRadio = new JajukJToolbar();
+    webRadioButton.addToToolBar(jtbWebRadio);
 
     slimJajuk.add(Box.createHorizontalStrut(4));
     slimJajuk.add(jbInfo);
     slimJajuk.addSeparator();
     slimJajuk.add(sbSearch);
     slimJajuk.addSeparator();
-    slimJajuk.add(webRadioButton);
+    slimJajuk.add(jtbWebRadio);
     slimJajuk.add(jtbSmart);
     slimJajuk.add(jbFinishAlbum);
     slimJajuk.addSeparator();
