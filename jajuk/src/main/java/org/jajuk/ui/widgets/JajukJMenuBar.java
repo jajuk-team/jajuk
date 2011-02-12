@@ -260,8 +260,8 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     // View menu
     views = new JMenu(Messages.getString("JajukJMenuBar.8"));
     jmiRestoreDefaultViews = new JMenuItem(ActionManager.getAction(VIEW_RESTORE_DEFAULTS));
-    jmiRestoreDefaultViewsAllPerpsectives = new JMenuItem(ActionManager
-        .getAction(JajukActions.ALL_VIEW_RESTORE_DEFAULTS));
+    jmiRestoreDefaultViewsAllPerpsectives = new JMenuItem(
+        ActionManager.getAction(JajukActions.ALL_VIEW_RESTORE_DEFAULTS));
 
     views.add(jmiRestoreDefaultViews);
     views.add(jmiRestoreDefaultViewsAllPerpsectives);
@@ -308,8 +308,13 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     jcbmiIntro = new JCheckBoxMenuItem(ActionManager.getAction(INTRO_MODE));
     jcbmiIntro.setSelected(Conf.getBoolean(Const.CONF_STATE_INTRO));
     jcbmiKaraoke = new JCheckBoxMenuItem(ActionManager.getAction(JajukActions.KARAOKE_MODE));
-    jcbmiKaraoke.setSelected(Conf.getBoolean(Const.CONF_STATE_KARAOKE));
-
+    if (Conf.getBoolean(Const.CONF_BIT_PERFECT)) {
+      jcbmiKaraoke.setEnabled(false);
+      jcbmiKaraoke.setSelected(false);
+      Conf.setProperty(Const.CONF_STATE_KARAOKE, Const.FALSE);
+    } else {
+      jcbmiKaraoke.setSelected(Conf.getBoolean(Const.CONF_STATE_KARAOKE));
+    }
     mode.add(jcbmiRepeat);
     mode.add(jcbmiRepeatAll);
     mode.add(jcbmiShuffle);
@@ -371,8 +376,8 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     jcbNoneInternetAccess.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, Boolean
-            .toString(jcbNoneInternetAccess.isSelected()));
+        Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS,
+            Boolean.toString(jcbNoneInternetAccess.isSelected()));
         // force parameter view to take this into account
         ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE));
       }
@@ -533,6 +538,14 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
           jmiUnmounted.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
           jcbNoneInternetAccess.setSelected(Conf
               .getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
+          // No karaoke mode and bit-perfect options are mutually exclusive
+          if (Conf.getBoolean(Const.CONF_BIT_PERFECT)) {
+            jcbmiKaraoke.setSelected(false);
+            jcbmiKaraoke.setEnabled(false);
+            Conf.setProperty(Const.CONF_STATE_KARAOKE, Const.FALSE);
+          } else {
+            jcbmiKaraoke.setEnabled(true);
+          }
         }
       }
 

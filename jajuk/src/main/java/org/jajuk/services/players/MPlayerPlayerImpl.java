@@ -221,8 +221,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                 lTime = System.currentTimeMillis() - dateStart - pauseCount;
               }
               // Store current position for use at next startup
-              Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, Float
-                  .toString(getCurrentPosition()));
+              Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION,
+                  Float.toString(getCurrentPosition()));
               // Cross-Fade test
               if (!bFading && iFadeDuration > 0
               // Length = 0 for some buggy audio headers
@@ -230,7 +230,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                   // Does fading time happened ?
                   && lTime > (lDuration - iFadeDuration)
                   // Do not fade if the track is very short
-                  && (lDuration > 3 * iFadeDuration)) {
+                  && (lDuration > 3 * iFadeDuration)
+                  //Do not fade if bit perfect mode
+                  && !Conf.getBoolean(CONF_BIT_PERFECT)) {
                 bFading = true;
                 fadingVolume = fVolume;
                 // Call finish (do not leave thread to allow cross fading)
@@ -242,9 +244,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                 // at last progress()
                 float fVolumeStep = fadingVolume
                 // we double the refresh period to make sure to
-                    // reach 0 at the end of iterations because
-                    // we don't as many mplayer response as queries,
-                    // tested on 10 & 20 sec of fading
+                // reach 0 at the end of iterations because
+                // we don't as many mplayer response as queries,
+                // tested on 10 & 20 sec of fading
                     * ((float) PROGRESS_STEP / iFadeDuration);
                 float fNewVolume = fVolume - fVolumeStep;
                 // decrease volume by n% of initial volume
@@ -509,7 +511,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     // save current position
     String command = "seek " + (int) (100 * posValue) + " 1";
     sendCommand(command);
-    setVolume(fVolume); // need this because a seek reset volume
+    if (!Conf.getBoolean(CONF_BIT_PERFECT)) {
+      setVolume(fVolume); // need this because a seek reset volume
+    }
     this.seeked = true;
   }
 
@@ -569,7 +573,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   @Override
   public void resume() throws Exception {
     super.resume();
-    setVolume(fVolume);
+    if (!Conf.getBoolean(CONF_BIT_PERFECT)) {
+      setVolume(fVolume);
+    }
   }
 
   /**

@@ -490,6 +490,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
         Messages.showInfoMessage(Messages.getString("ParameterView.198"));
         someOptionsAppliedAtNextStartup = false;
       }
+      // Update Mute state according to bit-perfect mode
+      ActionManager.getAction(JajukActions.MUTE_STATE).setEnabled(
+          !Conf.getBoolean(Const.CONF_BIT_PERFECT));
     } else if (e.getSource() == jbDefault) {
       int resu = Messages.getChoice(Messages.getString("Confirmation_defaults"),
           JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
@@ -573,16 +576,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
         }
       }.start();
     }
-    // Bit-perfect and audio normalization options are mutually exclusive
-    if (e.getSource().equals(jcbUseVolnorm) && jcbEnableBitPerfect.isSelected()) {
-      jcbEnableBitPerfect.removeActionListener(this);
-      jcbEnableBitPerfect.setSelected(false);
-      jcbEnableBitPerfect.addActionListener(this);
-    }
-    if (e.getSource().equals(jcbEnableBitPerfect) && jcbUseVolnorm.isSelected()) {
-      jcbUseVolnorm.removeActionListener(this);
-      jcbUseVolnorm.setSelected(false);
-      jcbUseVolnorm.addActionListener(this);
+    // Bit-perfect and audio normalization/cross fade options are mutually exclusive
+    if (e.getSource().equals(jcbEnableBitPerfect)) {
+      jcbUseVolnorm.setEnabled(!jcbEnableBitPerfect.isSelected());
+      if (jcbUseVolnorm.isSelected() && jcbEnableBitPerfect.isSelected()) {
+        jcbUseVolnorm.setSelected(false);
+      }
+      crossFadeDuration.setEnabled(!jcbEnableBitPerfect.isSelected());
     }
 
   }
@@ -1733,7 +1733,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     final JXCollapsiblePane catalogView = new JXCollapsiblePane();
     catalogView.setLayout(new VerticalLayout(10));
     catalogView.setCollapsed(true);
-    final ToggleLink toggleCatalog = new ToggleLink(Messages.getString("ParameterView.229"), catalogView);
+    final ToggleLink toggleCatalog = new ToggleLink(Messages.getString("ParameterView.229"),
+        catalogView);
     final JPanel jpCatalogSize = new JPanel();
     jpCatalogSize.setLayout(new HorizontalLayout());
     jpCatalogSize.add(jlCatalogPages);
@@ -1990,6 +1991,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
         .getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE));
     jcbUseVolnorm.setSelected(Conf.getBoolean(Const.CONF_USE_VOLNORM));
     jcbEnableBitPerfect.setSelected(Conf.getBoolean(Const.CONF_BIT_PERFECT));
+    // Disable features incompatible with Bit-perfect mode
+    jcbUseVolnorm.setEnabled(!jcbEnableBitPerfect.isSelected());
+    crossFadeDuration.setEnabled(!jcbEnableBitPerfect.isSelected());
   }
 
   /**

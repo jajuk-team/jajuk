@@ -557,13 +557,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     } else {
       title = Messages.getString("JajukWindow.18");
     }
-    // Update window title
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        setTitle(title);
-      }
-    });
+    setTitle(title);
   }
 
   /**
@@ -600,7 +594,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    */
   @Override
   public void mouseWheelMoved(MouseWheelEvent e) {
-    if (e.getSource().equals(jbVolume)) {
+    if (e.getSource().equals(jbVolume) && !Conf.getBoolean(Const.CONF_BIT_PERFECT)) {
       int oldVolume = (int) (100 * Player.getCurrentVolume());
       int newVolume = oldVolume - (e.getUnitsToScroll() * 3);
       if (Player.isMuted()) {
@@ -659,14 +653,21 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    */
   @Override
   public void update(final JajukEvent event) {
-    JajukEvents subject = event.getSubject();
-    if (JajukEvents.FILE_LAUNCHED.equals(subject) || JajukEvents.WEBRADIO_LAUNCHED.equals(subject)
-        || JajukEvents.PLAYER_STOP.equals(subject)) {
-      updateCurrentTitle();
-    } else if (JajukEvents.PARAMETERS_CHANGE.equals(event.getSubject())) {
-      // Disable volume GUI in bit perfect mode
-      jbVolume.setEnabled(!Conf.getBoolean(Const.CONF_BIT_PERFECT));
-    }
+    // Update window title
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        JajukEvents subject = event.getSubject();
+        if (JajukEvents.FILE_LAUNCHED.equals(subject)
+            || JajukEvents.WEBRADIO_LAUNCHED.equals(subject)
+            || JajukEvents.PLAYER_STOP.equals(subject)) {
+          updateCurrentTitle();
+        } else if (JajukEvents.PARAMETERS_CHANGE.equals(event.getSubject())) {
+          // Disable volume GUI in bit perfect mode
+          jbVolume.setEnabled(!Conf.getBoolean(Const.CONF_BIT_PERFECT));
+        }
+      }
+    });
   }
 
   /*

@@ -241,6 +241,13 @@ public final class Player {
    * 
    * @throws Exception    */
   public static void mute() {
+    // Ignore mute changes if Bit-perfect mode is enabled
+    // See code should not normally be called because we
+    // disable associated GUI
+    if (Conf.getBoolean(Const.CONF_BIT_PERFECT)) {
+      Log.warn("Bit-perfect option enabled, software mutes ignored");
+      return;
+    }
     Player.bMute = !Player.bMute;
     mute(Player.bMute);
   }
@@ -252,6 +259,13 @@ public final class Player {
    * 
    * @throws Exception    */
   public static void mute(boolean pMute) {
+    // Ignore mute changes if Bit-perfect mode is enabled
+    // See code should not normally be called because we
+    // disable associated GUI
+    if (Conf.getBoolean(Const.CONF_BIT_PERFECT)) {
+      Log.warn("Bit-perfect option enabled, software mutes ignored");
+      return;
+    }
     try {
       if (playerImpl == null) { // none current player, leave
         return;
@@ -290,6 +304,8 @@ public final class Player {
    * @throws Exception    */
   public static void setVolume(float pVolume) {
     // Ignore volume changes if Bit-perfect mode is enabled
+    // See code should not normally be called because we
+    // disable associated GUI
     if (Conf.getBoolean(Const.CONF_BIT_PERFECT)) {
       Log.warn("Bit-perfect option enabled, software volume changes ignored");
       return;
