@@ -1103,14 +1103,10 @@ public final class QueueModel {
    */
   public static void shuffle() {
     if (queue.size() > 1) {
-      StackItem currentItem = null;
       if (index >= 0) {
         queue.get(index);
       }
       UtilFeatures.forcedShuffle(queue);
-      if (currentItem != null) {
-        index = queue.indexOf(currentItem);
-      }
       // Refresh Queue View
       ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
     }
