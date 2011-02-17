@@ -317,8 +317,8 @@ public class TestQueueModel extends JajukTestCase {
     assertTrue(QueueModel.getItem(0).equals(firstItem));
     QueueModel.finished();
     // Make sure that first item is no more the same
-    assertFalse("Item0: " + QueueModel.getItem(0) + "\nFirstItem: " + firstItem, !(QueueModel
-        .getItem(0).equals(firstItem)));
+    assertFalse("Item0: " + QueueModel.getItem(0) + "\nFirstItem: " + firstItem,
+        !(QueueModel.getItem(0).equals(firstItem)));
   }
 
   /**
@@ -1193,5 +1193,33 @@ public class TestQueueModel extends JajukTestCase {
 
     // should be 10 again now
     assertEquals(10, QueueModel.getQueueSize());
+  }
+
+  /**
+  * Test method for
+  * {@link org.jajuk.services.players.QueueModel#setStopAfter()}.
+  */
+
+  public void testStopAfter() throws Exception {
+    assertTrue(QueueModel.isStopped());
+    assertFalse(QueueModel.isPlayingTrack());
+    addItems(3);
+    QueueModel.playNext();
+    assertTrue(QueueModel.isPlayingTrack());
+    
+    // Test next track will be stopped 
+    QueueModel.setStopAfter(true);
+    // Simulate end of file 
+    QueueModel.finished();
+    assertTrue(QueueModel.isStopped());
+    QueueModel.playNext();
+    assertTrue(QueueModel.isPlayingTrack());
+    
+    // Now test without the stop after option
+    QueueModel.setStopAfter(false);
+    // Simulate end of file 
+    QueueModel.finished();
+    assertTrue(QueueModel.isPlayingTrack());
+
   }
 }
