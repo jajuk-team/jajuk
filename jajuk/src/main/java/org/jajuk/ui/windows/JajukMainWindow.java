@@ -63,6 +63,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
@@ -128,9 +129,9 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
           jw.setState(Frame.NORMAL);
           // Need focus for keystrokes
           jw.requestFocus();
-          // display right title if a track is launched at startup
-          jw.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, ObservationManager
-              .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
+          // Make sure to display right title if a track or a webradio is launched at startup
+          // Indeed, the window can appear after the track/webradio has been launched and miss this event 
+          UtilFeatures.updateStatus(jw);
         }
 
         @Override
