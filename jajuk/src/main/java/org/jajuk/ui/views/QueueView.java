@@ -96,9 +96,31 @@ public class QueueView extends PlaylistView {
   /** Last scrolled-item *. */
   private StackItem lastScrolledItem;
 
+  /** Stop after button */
+  private JajukToggleButton jtbStopAfter;
+
+  /** Action when user clicks on stop after */
+  ActionListener alStopAfter = new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      QueueModel.setStopAfter(jtbStopAfter.isSelected());
+    }
+  };
+
+  /** Action for auto scrolling */
+  ActionListener alAutoScroll = new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      Conf.setProperty(Const.CONF_AUTO_SCROLL, Boolean.toString(jtbAutoScroll.isSelected()));
+      if (jtbAutoScroll.isSelected()) {
+        autoScroll();
+      }
+    }
+  };
+
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see org.jajuk.ui.IView#display()
    */
   @Override
@@ -129,18 +151,14 @@ public class QueueView extends PlaylistView {
     jbClear.setToolTipText(Messages.getString("QueueView.1"));
     jbClear.addActionListener(this);
 
+    jtbStopAfter = new JajukToggleButton(IconLoader.getIcon(JajukIcons.STOP_AFTER));
+    jtbStopAfter.setToolTipText(Messages.getString("QueueView.3"));
+    jtbStopAfter.addActionListener(alStopAfter);
+
     jtbAutoScroll = new JajukToggleButton(IconLoader.getIcon(JajukIcons.AUTOSCROLL));
     jtbAutoScroll.setToolTipText(Messages.getString("QueueView.2"));
     jtbAutoScroll.setSelected(Conf.getBoolean(Const.CONF_AUTO_SCROLL));
-    jtbAutoScroll.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Conf.setProperty(Const.CONF_AUTO_SCROLL, Boolean.toString(jtbAutoScroll.isSelected()));
-        if (jtbAutoScroll.isSelected()) {
-          autoScroll();
-        }
-      }
-    });
+    jtbAutoScroll.addActionListener(alAutoScroll);
 
     JToolBar jtb = new JajukJToolbar();
     jtb.add(jbSave);
@@ -148,13 +166,13 @@ public class QueueView extends PlaylistView {
     jtb.add(jbAddShuffle);
     jtb.add(jbUp);
     jtb.add(jbDown);
-    jtb.addSeparator();
     jtb.add(jbClear);
-
+  
     // Add items
     jpEditorControl.setLayout(new MigLayout("insets 5", "[][grow][]"));
     jpEditorControl.add(jtb, "left,gapright 15::");
     jpEditorControl.add(jlTitle, "right,gapright 5");
+    jpEditorControl.add(jtbStopAfter, "right");
     jpEditorControl.add(jtbAutoScroll, "right");
     editorModel = new PlaylistTableModel(true);
     editorTable = new JajukTable(editorModel, CONF_QUEUE_COLUMNS);
@@ -175,11 +193,11 @@ public class QueueView extends PlaylistView {
     jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
     add(jsp, BorderLayout.CENTER);
     // menu items
-    jmiFilePlay = new JMenuItem(Messages.getString("TracksTableView.7"), IconLoader
-        .getIcon(JajukIcons.PLAY_16X16));
+    jmiFilePlay = new JMenuItem(Messages.getString("TracksTableView.7"),
+        IconLoader.getIcon(JajukIcons.PLAY_16X16));
     // We don't use regular action for the play because it has very special
-    // behavior here in the queue view : it must go to selection without keeping
-    // previous FIFO
+    // behavior here in the queue view : it must go to selection without
+    // keeping previous FIFO
     jmiFilePlay.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -237,8 +255,8 @@ public class QueueView extends PlaylistView {
         }
       }
     });
-    //  Note : don't add a ListSelectionListener here, see JajukTable code,
-    //  all the event code is centralized over there
+    // Note : don't add a ListSelectionListener here, see JajukTable code,
+    // all the event code is centralized over there
     editorTable.addListSelectionListener(this);
     // Register keystrokes over table
     super.setKeystrokes();
@@ -247,8 +265,8 @@ public class QueueView extends PlaylistView {
   }
 
   /**
-   * Go to selected row, do it asynchronously because FIFO.goTO() can freeze the
-   * GUI
+   * Go to selected row, do it asynchronously because FIFO.goTO() can freeze
+   * the GUI
    */
   private void goToSelection() {
     new Thread("Queue Selection Thread") {
@@ -272,7 +290,7 @@ public class QueueView extends PlaylistView {
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see org.jajuk.ui.views.PlaylistView#getRegistrationKeys()
    */
   @Override
@@ -287,12 +305,13 @@ public class QueueView extends PlaylistView {
     eventSubjectSet.add(JajukEvents.VIEW_REFRESH_REQUEST);
     eventSubjectSet.add(JajukEvents.RATE_CHANGED);
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
+    eventSubjectSet.add(JajukEvents.PLAYER_STOP);
     return eventSubjectSet;
   }
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see org.jajuk.ui.IView#getDesc()
    */
   @Override
@@ -302,7 +321,7 @@ public class QueueView extends PlaylistView {
 
   /*
    * (non-Javadoc)
-   *
+   * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   @Override
@@ -312,7 +331,8 @@ public class QueueView extends PlaylistView {
       public void run() {
         try {
           JajukEvents subject = event.getSubject();
-          editorTable.setAcceptColumnsEvents(false); // flag reloading to avoid
+          editorTable.setAcceptColumnsEvents(false); // flag reloading
+          // to avoid
           // wrong
           if (JajukEvents.QUEUE_NEED_REFRESH.equals(subject)
               || JajukEvents.DEVICE_REFRESH.equals(subject)
@@ -323,7 +343,8 @@ public class QueueView extends PlaylistView {
             editorModel.getItems().clear();
             editorModel.getPlanned().clear();
             refreshQueue();
-            // Only scroll if song actually changed, otherwise, any queue refresh
+            // Only scroll if song actually changed, otherwise, any
+            // queue refresh
             // would scroll and annoy users
             if (Conf.getBoolean(CONF_AUTO_SCROLL) && QueueModel.getCurrentItem() != null
                 && !QueueModel.getCurrentItem().equals(lastScrolledItem)) {
@@ -365,7 +386,8 @@ public class QueueView extends PlaylistView {
             editorModel.getPlanned().clear();
             refreshQueue();
           } else if (JajukEvents.VIEW_REFRESH_REQUEST.equals(subject)) {
-            // force filter to refresh if the events has been triggered by the
+            // force filter to refresh if the events has been
+            // triggered by the
             // table itself after a column change
             JTable table = (JTable) event.getDetails().get(Const.DETAIL_CONTENT);
             if (table.equals(editorTable)) {
@@ -373,6 +395,9 @@ public class QueueView extends PlaylistView {
               editorModel.getPlanned().clear();
               refreshQueue();
             }
+          } else if (JajukEvents.PLAYER_STOP.equals(subject)) {
+            // Reset stop after button on a player stop
+            jtbStopAfter.setSelected(false);
           }
         } catch (Exception e) {
           Log.error(e);
@@ -469,8 +494,10 @@ public class QueueView extends PlaylistView {
 
   /*
    * (non-Javadoc)
-   *
-   * @see org.jajuk.ui.views.PlaylistView#actionPerformed(java.awt.event.ActionEvent)
+   * 
+   * @see
+   * org.jajuk.ui.views.PlaylistView#actionPerformed(java.awt.event.ActionEvent
+   * )
    */
   @Override
   public void actionPerformed(ActionEvent ae) {
@@ -508,15 +535,16 @@ public class QueueView extends PlaylistView {
         if (iRow < 0
         // no row is selected, add to the end
             || iRow > QueueModel.getQueue().size()) {
-          // row can be on planned track if user select a planned track and if
+          // row can be on planned track if user select a planned
+          // track and if
           // fifo is reduced after tracks have been played
           iRow = QueueModel.getQueue().size();
         }
         File file = FileManager.getInstance().getShuffleFile();
         List<File> files = new ArrayList<File>();
         files.add(file);
-        QueueModel.insert(UtilFeatures.createStackItems(files, Conf
-            .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), iRow);
+        QueueModel.insert(UtilFeatures.createStackItems(files,
+            Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), iRow);
         refreshQueue();
       } else if (ae.getSource() == jbClear) {
         // Reset the FIFO
@@ -555,8 +583,9 @@ public class QueueView extends PlaylistView {
 
   /**
    * Called when table selection changed.
-   *
-   * @param e DOCUMENT_ME
+   * 
+   * @param e
+   *            DOCUMENT_ME
    */
   @Override
   public void valueChanged(ListSelectionEvent e) {
@@ -640,7 +669,8 @@ public class QueueView extends PlaylistView {
   /**
    * Return whether a given row selection contains the current played track.
    * 
-   * @param selection the selection
+   * @param selection
+   *            the selection
    * 
    * @return whether a given row selection contains the current played track
    */

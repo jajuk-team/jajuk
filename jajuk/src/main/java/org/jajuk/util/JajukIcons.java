@@ -174,7 +174,7 @@ public enum JajukIcons {
   FULL_SCREEN,
 
   /** DOCUMENT_ME. */
-  POSITION,
+  STOP_AFTER,
 
   /** DOCUMENT_ME. */
   INFO,

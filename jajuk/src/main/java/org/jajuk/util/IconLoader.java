@@ -302,7 +302,7 @@ final public class IconLoader {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/full_window_16x16.png"));
     }
 
-    else if (icon == JajukIcons.POSITION) {
+    else if (icon == JajukIcons.STOP_AFTER) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/position_16x16.png"));
     }
 
