@@ -309,7 +309,7 @@ public class PlaylistTableModel extends JajukTableModel {
 
       // Year
       if (bYear) {
-        oValues[iRow][7] = bf.getTrack().getYear().getValue();
+        oValues[iRow][7] = bf.getTrack().getYear();
       } else {
         oValues[iRow][7] = "";
       }
