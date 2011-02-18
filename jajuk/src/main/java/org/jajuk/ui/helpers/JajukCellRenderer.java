@@ -96,7 +96,8 @@ public class JajukCellRenderer extends SubstanceDefaultTableCellRenderer impleme
     } else if (oValue instanceof Duration) {
       ((JLabel) c).setText(((Duration) oValue).toString());
     } else if (oValue instanceof Year) {
-      ((JLabel) c).setText(((Year) oValue).toString());
+      Long year = ((Year) oValue).getValue();
+      ((JLabel) c).setText(year.toString());
     }
     c.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
     if (color != null) {
