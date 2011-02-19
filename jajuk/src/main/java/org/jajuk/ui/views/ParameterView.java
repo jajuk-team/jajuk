@@ -1666,7 +1666,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbSaveExplorerFriendly.addActionListener(this);
 
     // Add items
-    JPanel jpCovers = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10"));
+    JPanel jpCovers = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10","[40%][40%]"));
     jpCovers.add(jcbShuffleCover, "wrap");
     jpCovers.add(jcbAutoCover, "wrap");
     jpCovers.add(jcb3dCover, "split 2");

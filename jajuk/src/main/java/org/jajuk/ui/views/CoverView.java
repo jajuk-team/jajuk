@@ -226,8 +226,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
    */
   /**
    * Inits the ui.
-   * DOCUMENT_ME
-   * 
+   *  
    * @param includeControls DOCUMENT_ME
    */
   public void initUI(boolean includeControls) {
@@ -364,8 +363,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
           } else {
             // check if a track has already been launched
             if (QueueModel.isPlayingRadio()) {
-              update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
-                  .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
+              update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED,
+                  ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
             } else {
               update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
             }
@@ -415,8 +414,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     // Note that we have to store/retrieve accuracy using an id. When
     // this view is used from a popup, we can't use perspective id
     Conf.setProperty(Const.CONF_COVERS_ACCURACY + "_"
-        + ((getPerspective() == null) ? "popup" : getPerspective().getID()), Integer
-        .toString(jcbAccuracy.getSelectedIndex()));
+        + ((getPerspective() == null) ? "popup" : getPerspective().getID()),
+        Integer.toString(jcbAccuracy.getSelectedIndex()));
 
     new Thread("Cover Accuracy Thread") {
       @Override
@@ -550,14 +549,10 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
           Log.debug("Try to save a local cover");
           return;
         }
-
         String sFilePath = null;
-
         sFilePath = dirReference.getFio().getPath() + "/"
             + UtilSystem.getOnlyFile(cover.getURL().toString());
-
-        sFilePath = getCoverFilePath(sFilePath);
-
+        sFilePath = convertCoverPath(sFilePath);
         try {
           // copy file from cache
           final File fSource = DownloadManager.downloadToCache(cover.getURL());
@@ -587,25 +582,21 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * Gets the cover file path.
+   * Converts a cover path according to options and jajuk conventions
    * 
-   * @param sFilePath DOCUMENT_ME
+   * @param sFilePath current cover path
    * 
-   * @return the cover file path
+   * @return the converted cover file path
    */
-  private String getCoverFilePath(String sFilePath) {
-
+  private String convertCoverPath(String sFilePath) {
     int pos = sFilePath.lastIndexOf('.');
-
     if (Conf.getBoolean(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY)) {
-      // covers should be stored as folder.xxx for windows
-      // explorer
+      // Covers should be stored as folder.xxx for windows explorer
       String ext = sFilePath.substring(pos, sFilePath.length());
       String parent = new File(sFilePath).getParent();
       return parent + System.getProperty("file.separator") + "Folder" + ext;
     } else {
-      // Add a jajuk suffix to know this cover has been downloaded
-      // by jajuk
+      // Add a jajuk suffix to know this cover has been downloaded by jajuk
       return new StringBuilder(sFilePath).insert(pos, Const.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX)
           .toString();
     }
@@ -629,8 +620,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       @Override
       public void run() {
         final Cover cover = alCovers.get(index);
-        final JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(GIFFilter
-            .getInstance(), PNGFilter.getInstance(), JPGFilter.getInstance()));
+        final JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(
+            GIFFilter.getInstance(), PNGFilter.getInstance(), JPGFilter.getInstance()));
         jfchooser.setAcceptDirectories(true);
         jfchooser.setCurrentDirectory(dirReference.getFio());
         jfchooser.setDialogTitle(Messages.getString("CoverView.10"));
@@ -678,84 +669,69 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       Log.warn("Cannot default cover with invalid index.");
       return;
     }
-
-    // choose a default
-    // first commit this cover on the disk if it is a remote cover
-    org.jajuk.base.File fCurrent = fileReference;
-    if (fCurrent == null) {
-      fCurrent = QueueModel.getPlayingFile();
-    }
-    final Cover cover = alCovers.get(index);
-
-    if (cover.getType() == CoverType.TAG_COVER) {
-      String sFilePath = getCoverFilePath(dirReference.getFio().getPath() + "/"
-          + cover.getFile().getName());
-      File destFile = new File(sFilePath);
-      try {
-        // copy file
-        UtilSystem.copy(cover.getFile(), destFile);
-        alCovers.add(new Cover(destFile, CoverType.SELECTED_COVER));
-        ThumbnailManager.cleanThumbs(fCurrent.getTrack().getAlbum());
-        refreshThumbs(cover);
-        InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
-            InformationJPanel.MessageType.INFORMATIVE);
-
-        // set default
-        fCurrent.getTrack().getAlbum().setProperty(XML_ALBUM_COVER, destFile.getAbsolutePath());
-
-        ObservationManager.notify(new JajukEvent(JajukEvents.COVER_DEFAULT_CHANGED));
-        ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
-
-        return;
-      } catch (JajukException e) {
-        Log.error(e);
-      } catch (IOException e) {
-        Log.error(e);
-      }
-    } else if (cover.getType() == CoverType.REMOTE_COVER) {
-      final String sFilename = UtilSystem.getOnlyFile(cover.getURL().toString());
-      String sFilePath = dirReference.getFio().getPath() + "/" + sFilename;
-
-      sFilePath = getCoverFilePath(sFilePath);
-      try {
-        // copy file from cache
-        final File fSource = DownloadManager.downloadToCache(cover.getURL());
-        final File file = new File(sFilePath);
-        UtilSystem.copy(fSource, file);
-        final Cover cover2 = new Cover(file, CoverType.SELECTED_COVER);
-        if (!alCovers.contains(cover2)) {
-          alCovers.add(cover2);
-          setFoundText();
+    new Thread("Default cover thread") {
+      public void run() {
+        Cover cover = alCovers.get(index);
+        org.jajuk.base.File fCurrent = fileReference;
+        // Path of the default cover, it is simply the URL of the current cover for local covers
+        // but it is another path to a newly created image for tag or remote covers
+        String destPath = cover.getFile().getAbsolutePath();
+        if (fCurrent == null) {
+          fCurrent = QueueModel.getPlayingFile();
+        }
+        if (cover.getType() == CoverType.TAG_COVER) {
+          destPath = dirReference.getFio().getPath() + "/" + cover.getFile().getName();
+          destPath = convertCoverPath(destPath);
+          File destFile = new File(destPath);
+          try {
+            // Copy cached file to music directory
+            // Note that the refreshCover() methods automatically 
+            // extract any track cover tag to an image file in the cache
+            UtilSystem.copy(cover.getFile(), destFile);
+            Cover cover2 = new Cover(destFile, CoverType.SELECTED_COVER);
+            alCovers.add(cover2);
+          } catch (Exception ex) {
+            Log.error(24, ex);
+            Messages.showErrorMessage(24);
+            return;
+          }
+        } else if (cover.getType() == CoverType.REMOTE_COVER) {
+          String sFilename = UtilSystem.getOnlyFile(cover.getURL().toString());
+          destPath = dirReference.getFio().getPath() + "/" + sFilename;
+          destPath = convertCoverPath(destPath);
+          try {
+            // Download cover and copy file from cache to music directory
+            File fSource = DownloadManager.downloadToCache(cover.getURL());
+            File fileDest = new File(destPath);
+            UtilSystem.copy(fSource, new File(destPath));
+            Cover cover2 = new Cover(fileDest, CoverType.SELECTED_COVER);
+            if (!alCovers.contains(cover2)) {
+              alCovers.add(cover2);
+              setFoundText();
+            }
+          } catch (Exception ex) {
+            Log.error(24, ex);
+            Messages.showErrorMessage(24);
+            return;
+          }
         }
         // Remove previous thumbs to avoid using outdated images
         // Reset cached cover
         ThumbnailManager.cleanThumbs(fCurrent.getTrack().getAlbum());
-        // fCurrent.getTrack().getAlbum().setProperty(XML_ALBUM_COVER, null);
         refreshThumbs(cover);
-        InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
+        InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
             InformationJPanel.MessageType.INFORMATIVE);
-      } catch (final IOException ex) {
-        Log.error(24, ex);
-        Messages.showErrorMessage(24);
-      } catch (final JajukException ex) {
-        Log.error(24, ex);
-        Messages.showErrorMessage(24);
-      } catch (final RuntimeException ex) {
-        Log.error(24, ex);
-        Messages.showErrorMessage(24);
+        // For every kind of cover types :
+        ObservationManager.notify(new JajukEvent(JajukEvents.COVER_DEFAULT_CHANGED));
+        ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
+        // then make it the default cover for this album
+        if (fCurrent != null && fCurrent.getTrack() != null
+            && fCurrent.getTrack().getAlbum() != null && cover.getFile() != null) {
+          Album album = fCurrent.getTrack().getAlbum();
+          album.setProperty(XML_ALBUM_COVER, destPath);
+        }
       }
-    } else {
-      refreshThumbs(cover);
-      InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
-          InformationJPanel.MessageType.INFORMATIVE);
-    }
-    ObservationManager.notify(new JajukEvent(JajukEvents.COVER_DEFAULT_CHANGED));
-    // then make it the default cover for this album
-    if (fCurrent != null && fCurrent.getTrack() != null && fCurrent.getTrack().getAlbum() != null
-        && cover.getFile() != null) {
-      fCurrent.getTrack().getAlbum()
-          .setProperty(XML_ALBUM_COVER, cover.getFile().getAbsolutePath());
-    }
+    }.start();
   }
 
   /*
@@ -1182,7 +1158,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       Log.warn("Cannot refresh thumbnails without reference directory");
       return;
     }
-
     // refresh thumbs
     try {
       for (int size = 50; size <= 300; size += 50) {
@@ -1418,7 +1393,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   private void refreshCovers(int iLocalEventID, boolean dirChanged) throws IOException {
     // Reset this flag
     bForceCoverReload = false;
-
     org.jajuk.base.File fCurrent = fileReference;
     // check if a file has been given for this cover view
     // if not, take current cover
@@ -1432,7 +1406,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       // store this dir
       dirReference = fCurrent.getDirectory();
     }
-
     if (dirReference == null) {
       alCovers.clear();
       alCovers.add(CoverView.nocover);
@@ -1446,7 +1419,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
           + "variable fCurrent should not be empty. dirReference: " + dirReference);
     }
 
-    // we only need to refresh the other covers if the directory changed, save cpu
+    // We only need to refresh the other covers if the directory changed, save CPU
     if (dirChanged) {
       // remove all existing covers
       alCovers.clear();
@@ -1495,6 +1468,30 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
             }
           }
         }
+      }
+
+      // Check for tag covers 
+      try {
+        AudioFile f = AudioFileIO.read(fCurrent.getFIO());
+        Tag tag = f.getTag();
+        if (tag != null) {
+          Artwork artwork = tag.getFirstArtwork();
+          byte[] imageRawData = artwork != null ? artwork.getBinaryData() : null;
+
+          if (imageRawData != null) {
+            BufferedImage bi = ImageIO.read(new ByteArrayInputStream(imageRawData));
+            if (bi != null) {
+              File coverFile = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
+                  + Const.TAG_COVER_FILE);
+              ImageIO.write(bi, "png", coverFile);
+              Cover cover = new Cover(coverFile, CoverType.TAG_COVER);
+              alCovers.add(cover);
+            }
+          }
+        }
+      } catch (Exception e1) {
+        // current file is not supported by jaudiotagger
+        Log.error(e1);
       }
 
       // Then we search for web covers online if max
@@ -1558,47 +1555,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
           Log.error(e);
         }
       }
-    }
-
-    // if the last file had a tag cover, we must remove it
-    // we can not use the cover type because a tag cover could be set as default.
-    if (!dirChanged) {
-      Cover coverToRemove = null;
-      for (Cover c : alCovers) {
-        if (c.getFile().getName().equalsIgnoreCase(Const.TAG_COVER_FILE)
-            || c.getType().equals(CoverType.NO_COVER)) {
-          coverToRemove = c;
-          break;
-        }
-      }
-      if (coverToRemove != null)
-        alCovers.remove(coverToRemove);
-    }
-
-    // check if a cover is stored in the file
-    try {
-      AudioFile f = AudioFileIO.read(fCurrent.getFIO());
-      Tag tag = f.getTag();
-      if (tag != null) {
-        Artwork artwork = tag.getFirstArtwork();
-        byte[] imageRawData = artwork != null ? artwork.getBinaryData() : null;
-
-        if (imageRawData != null) {
-          BufferedImage bi = ImageIO.read(new ByteArrayInputStream(imageRawData));
-          if (bi != null) {
-            File coverFile = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
-                + Const.TAG_COVER_FILE);
-            ImageIO.write(bi, "png", coverFile);
-            Cover cover = new Cover(coverFile, CoverType.TAG_COVER);
-            alCovers.addLast(cover);
-          }
-
-        }
-
-      }
-    } catch (Exception e1) {
-      // current file is not supported by jaudiotagger
-      Log.error(e1);
     }
 
     if (alCovers.size() == 0) {// add the default cover if none

@@ -55,6 +55,9 @@ public class Cover implements Comparable<Cover>, Const {
    * LOCAL_COVER : cover located on the disk and not a standard one
    * </p>
    * <p>
+   * TAG_COVER : tag cover located inside the audio files as a tag
+   * </p>
+   * <p>
    * STANDARD COVER : cover located on the disk with a obvious name (cover.png,
    * front.png...)
    * </p>
@@ -62,7 +65,7 @@ public class Cover implements Comparable<Cover>, Const {
    * REMOTE_COVER : cover from the web (HTTP protocol)
    * </p>
    * <p>
-   * SELECTED_COVER : local cover selected by user as the default local cover to
+   * SELECTED_COVER : local or tag cover selected by user as the default local cover to
    * display in thumbs..
    * </p>
    */
@@ -70,21 +73,21 @@ public class Cover implements Comparable<Cover>, Const {
 
     /** DOCUMENT_ME. */
     NO_COVER,
-    
+
     /** DOCUMENT_ME. */
     REMOTE_COVER,
-    
+
     /** DOCUMENT_ME. */
     LOCAL_COVER,
+
+    // cover stored in the tag of a file
+    TAG_COVER,
     
     /** DOCUMENT_ME. */
     STANDARD_COVER,
     
     /** DOCUMENT_ME. */
-    SELECTED_COVER,
-    // cover stored in the tag of a file
-    /** DOCUMENT_ME. */
-    TAG_COVER
+    SELECTED_COVER
   }
 
   /** Cover URL*. */
