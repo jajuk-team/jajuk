@@ -144,8 +144,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     jcbSort.addActionListener(this);
 
     // Album details
-    final JMenuItem jmiShowAlbumDetails = new JMenuItem(ActionManager
-        .getAction(JajukActions.SHOW_ALBUM_DETAILS));
+    final JMenuItem jmiShowAlbumDetails = new JMenuItem(
+        ActionManager.getAction(JajukActions.SHOW_ALBUM_DETAILS));
     jmiShowAlbumDetails.putClientProperty(Const.DETAIL_SELECTION, alSelected);
 
     top = new TreeRootElement(Messages.getString("TracksTreeView.27"));
@@ -195,42 +195,52 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
    */
 
   @Override
-  public synchronized void populateTree() {
-    // delete previous tree
-    top.removeAllChildren();
+  public void populateTree() {
+    // Use a refreshing flag, not a 'synchronized' here (see deadlock, bug #1756 (Deadlock in AbstractTreeView and PerspectiveManager) 
+    if (refreshing) {
+      Log.debug("Tree view already refreshing. Leaving.");
+      return;
+    }
+    try {
+      refreshing = true;
+      // delete previous tree
+      top.removeAllChildren();
 
-    // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a
-    // small memory leak that is caused here...
-    if (jtree != null && jtree.getModel() != null) {
-      ((DefaultTreeModel) (jtree.getModel())).reload();
-    }
-    TrackComparatorType comparatorType = TrackComparatorType.values()[Conf
-        .getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER)];
-    if (comparatorType == TrackComparatorType.GENRE_ARTIST_ALBUM) {
-      populateTreeByGenre();
-    }// Artist/album
-    else if (comparatorType == TrackComparatorType.ARTIST_ALBUM) {
-      populateTreeByArtist();
-    }
-    // Album
-    else if (comparatorType == TrackComparatorType.ALBUM) {
-      populateTreeByAlbum();
-    }
-    // Year / album
-    else if (comparatorType == TrackComparatorType.YEAR_ALBUM) {
-      populateTreeByYear();
-    }
-    // discovery date / album
-    else if (comparatorType == TrackComparatorType.DISCOVERY_ALBUM) {
-      populateTreeByDiscovery();
-    }
-    // Rate / album
-    else if (comparatorType == TrackComparatorType.RATE_ALBUM) {
-      populateTreeByRate();
-    }
-    // Hits / album
-    else if (comparatorType == TrackComparatorType.HITS_ALBUM) {
-      populateTreeByHits();
+      // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a
+      // small memory leak that is caused here...
+      if (jtree != null && jtree.getModel() != null) {
+        ((DefaultTreeModel) (jtree.getModel())).reload();
+      }
+      TrackComparatorType comparatorType = TrackComparatorType.values()[Conf
+          .getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER)];
+      if (comparatorType == TrackComparatorType.GENRE_ARTIST_ALBUM) {
+        populateTreeByGenre();
+      }// Artist/album
+      else if (comparatorType == TrackComparatorType.ARTIST_ALBUM) {
+        populateTreeByArtist();
+      }
+      // Album
+      else if (comparatorType == TrackComparatorType.ALBUM) {
+        populateTreeByAlbum();
+      }
+      // Year / album
+      else if (comparatorType == TrackComparatorType.YEAR_ALBUM) {
+        populateTreeByYear();
+      }
+      // discovery date / album
+      else if (comparatorType == TrackComparatorType.DISCOVERY_ALBUM) {
+        populateTreeByDiscovery();
+      }
+      // Rate / album
+      else if (comparatorType == TrackComparatorType.RATE_ALBUM) {
+        populateTreeByRate();
+      }
+      // Hits / album
+      else if (comparatorType == TrackComparatorType.HITS_ALBUM) {
+        populateTreeByHits();
+      }
+    } finally {
+      refreshing = false;
     }
   }
 
@@ -448,24 +458,24 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     List<Track> tracks = TrackManager.getInstance().getTracks();
     Collections.sort(tracks, TrackManager.getInstance().getComparator());
     // Create separator nodes
-    DefaultMutableTreeNode nodeWeekly = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.36"));
-    DefaultMutableTreeNode nodeMontly = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.37"));
-    DefaultMutableTreeNode nodeThreeMontly = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.44"));
-    DefaultMutableTreeNode nodeSixMontly = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.38"));
-    DefaultMutableTreeNode nodeYearly = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.40"));
-    DefaultMutableTreeNode nodeTwoYearly = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.41"));
-    DefaultMutableTreeNode nodeFiveYearly = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.42"));
-    DefaultMutableTreeNode nodeTenYearly = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.43"));
-    DefaultMutableTreeNode nodeOlder = new DiscoveryDateNode(Messages
-        .getString("TracksTreeView.39"));
+    DefaultMutableTreeNode nodeWeekly = new DiscoveryDateNode(
+        Messages.getString("TracksTreeView.36"));
+    DefaultMutableTreeNode nodeMontly = new DiscoveryDateNode(
+        Messages.getString("TracksTreeView.37"));
+    DefaultMutableTreeNode nodeThreeMontly = new DiscoveryDateNode(
+        Messages.getString("TracksTreeView.44"));
+    DefaultMutableTreeNode nodeSixMontly = new DiscoveryDateNode(
+        Messages.getString("TracksTreeView.38"));
+    DefaultMutableTreeNode nodeYearly = new DiscoveryDateNode(
+        Messages.getString("TracksTreeView.40"));
+    DefaultMutableTreeNode nodeTwoYearly = new DiscoveryDateNode(
+        Messages.getString("TracksTreeView.41"));
+    DefaultMutableTreeNode nodeFiveYearly = new DiscoveryDateNode(
+        Messages.getString("TracksTreeView.42"));
+    DefaultMutableTreeNode nodeTenYearly = new DiscoveryDateNode(
+        Messages.getString("TracksTreeView.43"));
+    DefaultMutableTreeNode nodeOlder = new DiscoveryDateNode(
+        Messages.getString("TracksTreeView.39"));
     // Add separator nodes
     top.add(nodeWeekly);
     top.add(nodeMontly);
@@ -575,8 +585,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         @Override
         public Void doInBackground() {
           // Set comparator
-          Conf.setProperty(Const.CONF_LOGICAL_TREE_SORT_ORDER, Integer.toString(jcbSort
-              .getSelectedIndex()));
+          Conf.setProperty(Const.CONF_LOGICAL_TREE_SORT_ORDER,
+              Integer.toString(jcbSort.getSelectedIndex()));
           populateTree();
           return null;
         }
