@@ -592,29 +592,28 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   private void applyParameters() {
     // **Read all parameters**
     // Options
-    Conf.setProperty(Const.CONF_OPTIONS_HIDE_UNMOUNTED, Boolean.toString(jcbDisplayUnmounted
-        .isSelected()));
-    Conf.setProperty(Const.CONF_OPTIONS_PUSH_ON_CLICK, Boolean.toString(jcbDefaultActionClick
-        .isSelected()));
-    Conf.setProperty(Const.CONF_OPTIONS_PUSH_ON_DROP, Boolean.toString(jcbDefaultActionDrop
-        .isSelected()));
+    Conf.setProperty(Const.CONF_OPTIONS_HIDE_UNMOUNTED,
+        Boolean.toString(jcbDisplayUnmounted.isSelected()));
+    Conf.setProperty(Const.CONF_OPTIONS_PUSH_ON_CLICK,
+        Boolean.toString(jcbDefaultActionClick.isSelected()));
+    Conf.setProperty(Const.CONF_OPTIONS_PUSH_ON_DROP,
+        Boolean.toString(jcbDefaultActionDrop.isSelected()));
     Conf.setProperty(Const.CONF_OPTIONS_HOTKEYS, Boolean.toString(jcbHotkeys.isSelected()));
-    Conf.setProperty(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE, Boolean.toString(jcbAudioScrobbler
-        .isSelected()));
-    Conf.setProperty(Const.CONF_LASTFM_INFO, Boolean.toString(jcbEnableLastFMInformation
-        .isSelected()));
+    Conf.setProperty(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE,
+        Boolean.toString(jcbAudioScrobbler.isSelected()));
+    Conf.setProperty(Const.CONF_LASTFM_INFO,
+        Boolean.toString(jcbEnableLastFMInformation.isSelected()));
     Conf.setProperty(Const.CONF_LASTFM_USER, jtfASUser.getText());
-    Conf.setProperty(Const.CONF_LASTFM_PASSWORD, UtilString.rot13(new String(jpfASPassword
-        .getPassword())));
+    Conf.setProperty(Const.CONF_LASTFM_PASSWORD,
+        UtilString.rot13(new String(jpfASPassword.getPassword())));
     final int iLogLevel = scbLogLevel.getSelectedIndex();
     Log.setVerbosity(iLogLevel);
     Conf.setProperty(Const.CONF_OPTIONS_LOG_LEVEL, Integer.toString(iLogLevel));
     Conf.setProperty(Const.CONF_OPTIONS_INTRO_BEGIN, Integer.toString(introPosition.getValue()));
     Conf.setProperty(Const.CONF_OPTIONS_INTRO_LENGTH, Integer.toString(introLength.getValue()));
-    Conf
-        .setProperty(Const.CONF_TAGS_USE_PARENT_DIR, Boolean.toString(jcbUseParentDir.isSelected()));
-    Conf.setProperty(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE, Boolean
-        .toString(jcbDropPlayedTracksFromQueue.isSelected()));
+    Conf.setProperty(Const.CONF_TAGS_USE_PARENT_DIR, Boolean.toString(jcbUseParentDir.isSelected()));
+    Conf.setProperty(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE,
+        Boolean.toString(jcbDropPlayedTracksFromQueue.isSelected()));
     final String sBestofSize = jtfBestofSize.getText();
     if (!sBestofSize.isEmpty()) {
       Conf.setProperty(Const.CONF_BESTOF_TRACKS_SIZE, sBestofSize);
@@ -659,17 +658,17 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOVELTIES);
     }
     // Confirmations
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_DELETE_FILE, Boolean.toString(jcbBeforeDelete
-        .isSelected()));
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_DELETE_FILE,
+        Boolean.toString(jcbBeforeDelete.isSelected()));
     Conf.setProperty(Const.CONF_CONFIRMATIONS_EXIT, Boolean.toString(jcbBeforeExit.isSelected()));
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE, Boolean.toString(jcbBeforeRemoveDevice
-        .isSelected()));
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_DELETE_COVER, Boolean.toString(jcbBeforeDeleteCover
-        .isSelected()));
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY, Boolean
-        .toString(jcbBeforeClearingHistory.isSelected()));
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_RESET_RATINGS, Boolean
-        .toString(jcbBeforeResetingRatings.isSelected()));
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE,
+        Boolean.toString(jcbBeforeRemoveDevice.isSelected()));
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_DELETE_COVER,
+        Boolean.toString(jcbBeforeDeleteCover.isSelected()));
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY,
+        Boolean.toString(jcbBeforeClearingHistory.isSelected()));
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_RESET_RATINGS,
+        Boolean.toString(jcbBeforeResetingRatings.isSelected()));
     // History
     final String sHistoryDuration = jtfHistory.getText();
     if (!sHistoryDuration.isEmpty()) {
@@ -733,8 +732,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     if (oldPerspectiveSize != jsPerspectiveSize.getValue()) {
       someOptionsAppliedAtNextStartup = true;
     }
-    Conf.setProperty(Const.CONF_PERSPECTIVE_ICONS_SIZE, Integer.toString(jsPerspectiveSize
-        .getValue()));
+    Conf.setProperty(Const.CONF_PERSPECTIVE_ICONS_SIZE,
+        Integer.toString(jsPerspectiveSize.getValue()));
     // LAF change
     final String oldTheme = Conf.getString(Const.CONF_OPTIONS_LNF);
     Conf.setProperty(Const.CONF_OPTIONS_LNF, (String) scbLAF.getSelectedItem());
@@ -816,8 +815,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     }
 
     // Network
-    Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, Boolean
-        .toString(jcbNoneInternetAccess.isSelected()));
+    Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS,
+        Boolean.toString(jcbNoneInternetAccess.isSelected()));
     Conf.setProperty(Const.CONF_NETWORK_USE_PROXY, Boolean.toString(!jcbProxyNone.isSelected()));
     if (jcbProxyHttp.isSelected()) {
       Conf.setProperty(Const.CONF_NETWORK_PROXY_TYPE, Const.PROXY_TYPE_HTTP);
@@ -827,8 +826,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     Conf.setProperty(Const.CONF_NETWORK_PROXY_HOSTNAME, jtfProxyHostname.getText());
     Conf.setProperty(Const.CONF_NETWORK_PROXY_PORT, jtfProxyPort.getText());
     Conf.setProperty(Const.CONF_NETWORK_PROXY_LOGIN, jtfProxyLogin.getText());
-    Conf.setProperty(Const.CONF_NETWORK_PROXY_PWD, UtilString.rot13(new String(jtfProxyPwd
-        .getPassword())));
+    Conf.setProperty(Const.CONF_NETWORK_PROXY_PWD,
+        UtilString.rot13(new String(jtfProxyPwd.getPassword())));
     Conf.setProperty(Const.CONF_NETWORK_CONNECTION_TO, Integer.toString(connectionTO.getValue()));
     // Force global reload of proxy variables
     DownloadManager.setDefaultProxySettings();
@@ -837,8 +836,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
     Conf.setProperty(Const.CONF_COVERS_AUTO_COVER, Boolean.toString(jcbAutoCover.isSelected()));
     Conf.setProperty(Const.CONF_COVERS_SHUFFLE, Boolean.toString(jcbShuffleCover.isSelected()));
-    Conf.setProperty(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY, Boolean
-        .toString(jcbSaveExplorerFriendly.isSelected()));
+    Conf.setProperty(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY,
+        Boolean.toString(jcbSaveExplorerFriendly.isSelected()));
     Conf.setProperty(Const.CONF_COVERS_SIZE, Integer.toString(jcbCoverSize.getSelectedIndex()));
     Conf.setProperty(Const.FILE_DEFAULT_COVER, jtfDefaultCoverSearchPattern.getText());
 
@@ -892,8 +891,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       public void actionPerformed(ActionEvent e) {
         // Store configuration
         Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
-        Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, Boolean
-            .toString(jcbNoneInternetAccess.isSelected()));
+        Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS,
+            Boolean.toString(jcbNoneInternetAccess.isSelected()));
         // Launch an event that can be trapped by the tray to
         // synchronize the state
         Properties details = new Properties();
@@ -931,18 +930,18 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       }
     });
     jtfHistory.setToolTipText(Messages.getString("ParameterView.2"));
-    jbClearHistory = new JButton(Messages.getString("ParameterView.3"), IconLoader
-        .getIcon(JajukIcons.CLEAR));
+    jbClearHistory = new JButton(Messages.getString("ParameterView.3"),
+        IconLoader.getIcon(JajukIcons.CLEAR));
     jbClearHistory.setToolTipText(Messages.getString("ParameterView.4"));
     jbClearHistory.addActionListener(this);
 
-    jbResetRatings = new JButton(Messages.getString("ParameterView.186"), IconLoader
-        .getIcon(JajukIcons.CLEAR));
+    jbResetRatings = new JButton(Messages.getString("ParameterView.186"),
+        IconLoader.getIcon(JajukIcons.CLEAR));
     jbResetRatings.setToolTipText(Messages.getString("ParameterView.187"));
     jbResetRatings.addActionListener(this);
 
-    jbResetPreferences = new JButton(Messages.getString("ParameterView.249"), IconLoader
-        .getIcon(JajukIcons.CLEAR));
+    jbResetPreferences = new JButton(Messages.getString("ParameterView.249"),
+        IconLoader.getIcon(JajukIcons.CLEAR));
     jbResetPreferences.setToolTipText(Messages.getString("ParameterView.250"));
     jbResetPreferences.addActionListener(this);
 
@@ -1506,7 +1505,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbSaveExplorerFriendly.addActionListener(this);
 
     // Add items
-    jpCovers = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10"));
+    jpCovers = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[40%][40%]"));
     jpCovers.add(jcbShuffleCover, "wrap");
     jpCovers.add(jcbAutoCover, "wrap");
     jpCovers.add(jcb3dCover, "wrap");
@@ -1560,8 +1559,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jsPerspectiveSize.setPaintTicks(true);
     jsPerspectiveSize.setPaintLabels(true);
     jsPerspectiveSize.setToolTipText(Messages.getString("ParameterView.246"));
-    jbCatalogRefresh = new JajukButton(Messages.getString("CatalogView.19"), IconLoader
-        .getIcon(JajukIcons.REFRESH));
+    jbCatalogRefresh = new JajukButton(Messages.getString("CatalogView.19"),
+        IconLoader.getIcon(JajukIcons.REFRESH));
     jbCatalogRefresh.setToolTipText(Messages.getString("CatalogView.3"));
     jbCatalogRefresh.addActionListener(this);
     final JXCollapsiblePane catalogView = new JXCollapsiblePane();
@@ -1629,8 +1628,8 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     // --OK/cancel panel
     jbOK = new JButton(Messages.getString("ParameterView.85"), IconLoader.getIcon(JajukIcons.OK));
     jbOK.addActionListener(this);
-    jbDefault = new JButton(Messages.getString("ParameterView.86"), IconLoader
-        .getIcon(JajukIcons.DEFAULTS_BIG));
+    jbDefault = new JButton(Messages.getString("ParameterView.86"),
+        IconLoader.getIcon(JajukIcons.DEFAULTS_BIG));
     jbDefault.addActionListener(this);
 
     // --Global layout
@@ -1761,8 +1760,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
           Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
         }
       }
-    }
-    else{
+    } else {
       sbSearch.setText("");
     }
     // Confirmations
@@ -1801,7 +1799,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbUseParentDir.setSelected(Conf.getBoolean(Const.CONF_TAGS_USE_PARENT_DIR));
     jcbDropPlayedTracksFromQueue.setSelected(Conf
         .getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE));
-     jcbUseVolnorm.setSelected(Conf.getBoolean(Const.CONF_USE_VOLNORM));
+    jcbUseVolnorm.setSelected(Conf.getBoolean(Const.CONF_USE_VOLNORM));
     // advanced
     final int iBackupSize = Conf.getInt(Const.CONF_BACKUP_SIZE);
     if (iBackupSize <= 0) { // backup size =0 means no backup

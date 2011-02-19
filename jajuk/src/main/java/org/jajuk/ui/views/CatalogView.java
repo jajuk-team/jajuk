@@ -666,7 +666,6 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
         || JajukEvents.DEVICE_MOUNT.equals(subject) || JajukEvents.DEVICE_UNMOUNT.equals(subject)
         || JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
       SwingUtilities.invokeLater(new Runnable() {
-
         @Override
         public void run() {
           populateCatalog();
