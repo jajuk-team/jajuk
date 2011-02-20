@@ -44,6 +44,8 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.log.Log;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.w3c.dom.Document;
 
 /**
@@ -131,7 +133,6 @@ public class TestLyrics extends JajukTestCase {
    *
    * @throws Exception
    */
-  // TODO: re-enable after we added a new userid
   public void testFlyService() throws Exception {
     GenericWebLyricsProvider provider = new FlyWebLyricsProvider();
     testWebService(provider);
@@ -142,6 +143,8 @@ public class TestLyrics extends JajukTestCase {
   }
 
   // TODO: re-enable after we added a new userid
+  @Test
+  @Ignore
   public void testFlyServiceSonar() throws Exception {
     // ensure that this is not configured somehow
     assertFalse(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
