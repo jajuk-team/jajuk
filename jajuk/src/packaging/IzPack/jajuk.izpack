@@ -54,9 +54,9 @@
 	</panels>
 	<packs>
 		<pack name='main pack' required='yes'>
+			<!-- Note that we don't bring the jajuk.jar file under windows because 
+			we built a .exe launcher-->
 			<description>Main pack</description>
-			<file override='true' targetdir='$INSTALL_PATH/bin'
-				src='/tmp/jajuk-dist/jajuk/bin/jajuk.jar' />
 			<dir override='true' targetdir='$INSTALL_PATH/lib'
 				src='/tmp/jajuk-dist/jajuk/lib/windows'>
 				<os family='windows' />
@@ -109,6 +109,10 @@
 			</file>
 
 			<!--Unix specific -->
+			<file override='true' targetdir='$INSTALL_PATH/bin'
+				src='/tmp/jajuk-dist/jajuk/bin/jajuk.jar'>
+				<os family='unix' />
+			</file>
 			<file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk'>
 				<os family='unix' />
 			</file>
@@ -117,10 +121,12 @@
 			</executable>
 
 			<!--OSX specific -->
-			<!--
-				We don't include the mplayer binary here to save space. The binairy
-				will be embedded into app only
-			-->
+			<!-- We don't include the mplayer binary here to save space. The binary 
+				will be embedded into the .app only -->
+			<file override='true' targetdir='$INSTALL_PATH/bin'
+				src='/tmp/jajuk-dist/jajuk/bin/jajuk.jar'>
+				<os family='mac' />
+			</file>
 			<executable targetfile="$INSTALL_PATH/jajuk" stage="never">
 				<os family='mac' />
 			</executable>

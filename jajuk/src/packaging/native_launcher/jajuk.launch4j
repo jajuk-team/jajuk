@@ -1,0 +1,25 @@
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>/tmp/jajuk-dist/jajuk/bin/jajuk.jar</jar>
+  <outfile>/tmp/jajuk-dist/jajuk/bin/jajuk.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine>TEST_FLAG_REPLACED_BY_ANT</cmdLine>
+  <chdir></chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl>http://trac.jajuk.info/</supportUrl>
+  <customProcName>false</customProcName>
+  <stayAlive>false</stayAlive>
+  <manifest></manifest>
+  <icon>/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-icon.ico</icon>
+  <jre>
+    <path></path>
+    <minVersion>1.6.0</minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+    <initialHeapSize>20</initialHeapSize>
+    <maxHeapSize>512</maxHeapSize>
+    <opt>-XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10</opt>
+  </jre>
+</launch4jConfig>

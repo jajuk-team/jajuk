@@ -52,6 +52,7 @@
 	<property name='conf_uploaddir' value='/tmp/jajuk-dist/packages/' />
 	<property name='conf_jarbundler' value='/data/build_tools/jarbundler' />
 	<property name='conf_jarbundler-jar' value='jarbundler-1.9.jar' />
+	<property name="launch4j.dir" location="/data/build_tools/launch4j" />
 
 	<!-- ============================== -->
 	<!-- | End of configuration paths | -->
@@ -335,14 +336,20 @@
 		<zip basedir='${sourcesdir}' destfile='${sourcesdist}' />
 	</target>
 
-
-	<!-- Windows EXE creation-->
-	<target name='package_sfx' description='o Create Jajuk Windows executable file' depends='startup,clean,mkdist_sfx,package_jar,package_izpack'>
-		<taskdef name='jsmoothgen' classname='net.charabia.jsmoothgen.ant.JSmoothGen' classpath='${conf_jsmoothgendir}/lib/jsmoothgen-ant.jar' />
+	<!-- Windows EXE creation using launch4j-->
+	<target name='package_exe' description='o Create Jajuk Windows executable file' depends='startup,clean,mkdist_sfx,package_jar'>
+		<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
+	        :${launch4j.dir}/lib/xstream.jar" />
 		<echo message='Create Jajuk Windows executable file' />
-		<jsmoothgen project='${rootdir}/windows/jajuk.jsmooth' skeletonroot='${conf_jsmoothgendir}/skeletons' />
+		<launch4j configFile="${windowsdir}/jajuk.launch4j" />
 	</target>
 
+	<!-- Windows installer EXE creation from IzPack jar-->
+	<target name='package_sfx' description='o Create IzPack Windows executable file' depends='package_exe,package_izpack'>
+		<taskdef name='jsmoothgen' classname='net.charabia.jsmoothgen.ant.JSmoothGen' classpath='${conf_jsmoothgendir}/lib/jsmoothgen-ant.jar' />
+		<echo message='Create IzPack Windows executable file' />
+		<jsmoothgen project='${rootdir}/windows/jajuk.jsmooth' skeletonroot='${conf_jsmoothgendir}/skeletons' />
+	</target>
 
 	<target name='package_jnlp' description='o Create Java Web Start war distribution' depends='startup,clean,package_jar'>
 		<echo message='Create Java Web Start war distribution' />
@@ -422,7 +429,7 @@
 			<fileset file='${srcdir}/packaging/IzPack/shortcutSpec.xml' />
 			<fileset file='${srcdir}/packaging/IzPack/installDirectory.unix.txt' />
 		</copy>
-		<!-- Set release in IzPack descriptor file-->
+		<!-- Set release in IzPack descriptor file -->
 		<replace dir='${izpackdir}' value='${version}'>
 			<include name='jajuk.izpack' />
 			<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
@@ -519,10 +526,15 @@
 		<copy todir='${windowsdir}'>
 			<fileset file='${srcdir}/packaging/native_launcher/*' />
 		</copy>
-		<!-- Set release in native launcher descriptor file-->
+		<!-- Set release in native launcher descriptor files-->
 		<replace dir='${windowsdir}' value='${version}'>
 			<include name='jajuk.jsmooth' />
 			<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+		</replace>
+		<!-- Set test value in launch4j descriptor files-->
+		<replace dir='${windowsdir}' value='-${test}'>
+			<include name='jajuk.launch4j' />
+			<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
 		</replace>
 	</target>
 
