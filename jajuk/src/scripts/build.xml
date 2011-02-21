@@ -284,7 +284,7 @@
 
 	<!--IzPack package creation -->
 
-	<target name='package_izpack' description='o Create Jajuk IzPack package' depends='package_exe'>
+	<target name='package_izpack' description='o Create Jajuk IzPack package' depends='startup,clean,package_jar,mkdist_izpack'>
 		<taskdef name='izpack' classpath='${conf_izpackdir}/lib/compiler.jar' classname='com.izforge.izpack.ant.IzPackTask' />
 		<echo message='Create Jajuk IzPack package' />
 		<echo message='Makes the installer using IzPack' />
@@ -337,7 +337,7 @@
 	</target>
 
 	<!-- Windows EXE creation using launch4j-->
-	<target name='package_exe' description='o Create Jajuk Windows executable file' depends='startup,clean,mkdist_izpack,package_jar'>
+	<target name='package_exe' description='o Create Jajuk Windows executable file' depends='startup,clean,package_jar,mkdist_windows'>
 		<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
 	        :${launch4j.dir}/lib/xstream.jar" />
 		<echo message='Create Jajuk Windows executable file' />
@@ -345,7 +345,7 @@
 	</target>
 
 	<!-- Windows installer EXE creation from IzPack jar-->
-	<target name='package_sfx' description='o Create IzPack Windows executable file' depends='startup,clean,mkdist_sfx,package_jar,package_izpack'>
+	<target name='package_sfx' description='o Create IzPack Windows executable file' depends='package_exe,package_izpack'>
 		<taskdef name='jsmoothgen' classname='net.charabia.jsmoothgen.ant.JSmoothGen' classpath='${conf_jsmoothgendir}/lib/jsmoothgen-ant.jar' />
 		<echo message='Create IzPack Windows executable file' />
 		<jsmoothgen project='${rootdir}/windows/jajuk.jsmooth' skeletonroot='${conf_jsmoothgendir}/skeletons' />
@@ -519,7 +519,7 @@
 	</target>
 
 
-	<target name='mkdist_sfx'>
+	<target name='mkdist_windows'>
 		<echo message='Prepare files to build Windows executable' />
 		<mkdir dir='${windowsdir}' />
 		<!--Windows specific -->
@@ -579,7 +579,6 @@
 		</jarbundler>
 	</target>
 
-
 	<!-- Create hash files and upload packages-->
 	<target name='deploy_new_release' description='o Put all generated packages and checksums into Jajuk webserver repository directory' depends='package_all'>
 		<mkdir dir='${conf_uploaddir}' />
@@ -591,18 +590,4 @@
 			<fileset file='${distdir}/jajuk-macos-${version}.zip' />
 		</copy>
 	</target>
-
-	<!-- Light build target -->
-	<target name='light_build' description='o Light build for continuous integration' depends='package_izpack,package_rpm,package_source,package_sfx,package_macos'>
-		<mkdir dir='${conf_uploaddir}' />
-		<copy todir='${conf_uploaddir}'>
-			<fileset file='${sourcesdist}' />
-			<fileset file='${rpmbuilddir}/RPMS/noarch/*' />
-			<fileset file='${windowsdir}/jajuk-${version}-win32-setup.exe' />
-			<fileset file='${izpackdir}/jajuk-java-installer-${version}.jar' />
-			<fileset file='${distdir}/jajuk-macos-${version}.zip' />
-		</copy>
-	</target>
-
-
 </project>
