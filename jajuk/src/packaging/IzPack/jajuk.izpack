@@ -54,9 +54,13 @@
 	</panels>
 	<packs>
 		<pack name='main pack' required='yes'>
-			<!-- Note that we don't bring the jajuk.jar file under windows because 
-			we built a .exe launcher-->
+			<!-- Note that we don't bring the jajuk.jar file under windows, we take 
+			the jajuk.exe file built using launch4j-->
 			<description>Main pack</description>
+			<file override='true' targetdir='$INSTALL_PATH/bin'
+				src='/tmp/jajuk-dist/windows/jajuk.exe'>
+				<os family='windows' />
+			</file>
 			<dir override='true' targetdir='$INSTALL_PATH/lib'
 				src='/tmp/jajuk-dist/jajuk/lib/windows'>
 				<os family='windows' />

@@ -2,7 +2,7 @@
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
   <jar>/tmp/jajuk-dist/jajuk/bin/jajuk.jar</jar>
-  <outfile>/tmp/jajuk-dist/jajuk/bin/jajuk.exe</outfile>
+  <outfile>/tmp/jajuk-dist/windows/jajuk.exe</outfile>
   <errTitle></errTitle>
   <cmdLine>TEST_FLAG_REPLACED_BY_ANT</cmdLine>
   <chdir></chdir>
