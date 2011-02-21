@@ -88,7 +88,7 @@
 				<os family='windows' />
 			</file>
 			<file override='true' targetdir='$INSTALL_PATH'
-				src='/tmp/jajuk-dist/jajuk/jajuk.bat'>
+				src='/tmp/jajuk-dist/jajuk/jajuk.exe'>
 				<os family='windows' />
 			</file>
 			<file override='true' targetdir='$INSTALL_PATH'

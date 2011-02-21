@@ -2,7 +2,7 @@
 	<logfiledir>$INSTALL_PATH</logfiledir>
 	<job name='jajuk'>
 		<os family='windows' />
-		<executefile name='$INSTALL_PATH/jajuk.bat'>
+		<executefile name='$INSTALL_PATH/jajuk.exe'>
 			<arg></arg>
 		</executefile> 
 	</job>
