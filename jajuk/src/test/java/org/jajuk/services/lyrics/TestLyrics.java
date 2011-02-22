@@ -143,7 +143,6 @@ public class TestLyrics extends JajukTestCase {
   }
 
   // TODO: re-enable after we added a new userid
-  @Test
   @Ignore
   public void testFlyServiceSonar() throws Exception {
     // ensure that this is not configured somehow
