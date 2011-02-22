@@ -105,10 +105,10 @@ public class TestLyrics extends JajukTestCase {
       return;
     }
 
-    assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics, StringUtils
-        .isNotBlank(lyrics));
-    assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics, lyrics
-        .indexOf(TESTED_WORD) != -1);
+    assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics,
+        StringUtils.isNotBlank(lyrics));
+    assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics,
+        lyrics.indexOf(TESTED_WORD) != -1);
   }
 
   /**
@@ -142,9 +142,9 @@ public class TestLyrics extends JajukTestCase {
     Thread.sleep(FLY_DELAY);
   }
 
-  // TODO: re-enable after we added a new userid
   @Ignore
   public void testFlyServiceSonar() throws Exception {
+    // TODO: re-enable after we added a new userid
     // ensure that this is not configured somehow
     assertFalse(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
 
@@ -154,11 +154,11 @@ public class TestLyrics extends JajukTestCase {
     urlField.setAccessible(true);
     String queryString = (String) (urlField.get(null));
 
-    queryString = queryString.replace(Const.PATTERN_ARTIST, (ARTIST != null) ? NetworkUtils
-        .encodeString(ARTIST) : "");
+    queryString = queryString.replace(Const.PATTERN_ARTIST,
+        (ARTIST != null) ? NetworkUtils.encodeString(ARTIST) : "");
 
-    queryString = queryString.replace(Const.PATTERN_TRACKNAME, (TITLE != null) ? NetworkUtils
-        .encodeString(TITLE) : "");
+    queryString = queryString.replace(Const.PATTERN_TRACKNAME,
+        (TITLE != null) ? NetworkUtils.encodeString(TITLE) : "");
 
     URL url = new URL(queryString);
 
