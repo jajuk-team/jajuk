@@ -5,7 +5,7 @@
   <outfile>/tmp/jajuk-dist/windows/jajuk.exe</outfile>
   <errTitle></errTitle>
   <cmdLine>TEST_FLAG_REPLACED_BY_ANT</cmdLine>
-  <chdir></chdir>
+  <chdir>bin</chdir>
   <priority>normal</priority>
   <downloadUrl>http://java.com/download</downloadUrl>
   <supportUrl>http://trac.jajuk.info/</supportUrl>

@@ -57,7 +57,7 @@
 			<!-- Note that we don't bring the jajuk.jar file under windows, we take 
 			the jajuk.exe file built using launch4j-->
 			<description>Main pack</description>
-			<file override='true' targetdir='$INSTALL_PATH/bin'
+			<file override='true' targetdir='$INSTALL_PATH'
 				src='/tmp/jajuk-dist/windows/jajuk.exe'>
 				<os family='windows' />
 			</file>
@@ -89,10 +89,6 @@
 			<!-- Windows specific -->
 			<file override='true' targetdir='$INSTALL_PATH'
 				src='/tmp/mplayer/windows/mplayer.exe'>
-				<os family='windows' />
-			</file>
-			<file override='true' targetdir='$INSTALL_PATH'
-				src='/tmp/jajuk-dist/jajuk/jajuk.exe'>
 				<os family='windows' />
 			</file>
 			<file override='true' targetdir='$INSTALL_PATH'
