@@ -142,9 +142,9 @@ public class TestLyrics extends JajukTestCase {
     Thread.sleep(FLY_DELAY);
   }
 
-  @Ignore
+  // TODO: re-enable after we added a new userid
+  /*  
   public void testFlyServiceSonar() throws Exception {
-    // TODO: re-enable after we added a new userid
     // ensure that this is not configured somehow
     assertFalse(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
 
@@ -232,7 +232,7 @@ public class TestLyrics extends JajukTestCase {
     // delay a bit as LyricsFly puts a min. delay before the next request is
     // allowed
     Thread.sleep(FLY_DELAY);
-  }
+  }*/
 
   /**
    * Test Fly web url availability
