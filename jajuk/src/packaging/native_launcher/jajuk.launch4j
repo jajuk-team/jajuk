@@ -6,6 +6,7 @@
   <errTitle></errTitle>
   <cmdLine>TEST_FLAG_REPLACED_BY_ANT</cmdLine>
   <chdir>bin</chdir>
+  <jarPath>bin</jarPath>
   <priority>normal</priority>
   <downloadUrl>http://java.com/download</downloadUrl>
   <supportUrl>http://trac.jajuk.info/</supportUrl>
