@@ -54,29 +54,14 @@
 	</panels>
 	<packs>
 		<pack name='main pack' required='yes'>
-			<!-- Note that we don't bring the jajuk.jar file under windows, we take 
-			the jajuk.exe file built using launch4j-->
 			<description>Main pack</description>
-			<file override='true' targetdir='$INSTALL_PATH'
-				src='/tmp/jajuk-dist/windows/jajuk.exe'>
-				<os family='windows' />
+			
+			<!-- Files to include in every platform -->
+			<file override='true' targetdir='$INSTALL_PATH/bin'
+				src='/tmp/jajuk-dist/jajuk/bin/jajuk.jar'>
 			</file>
-			<dir override='true' targetdir='$INSTALL_PATH/lib'
-				src='/tmp/jajuk-dist/jajuk/lib/windows'>
-				<os family='windows' />
-			</dir>
 			<fileset override='true' targetdir='$INSTALL_PATH/dist-files'
 				dir='/tmp/jajuk-dist/jajuk/dist-files' />
-			<fileset override='true' targetdir='$INSTALL_PATH/lib'
-				dir='/tmp/jajuk-dist/jajuk/lib'>
-				<os family='unix' />
-				<exclude name="**/*.dll" />
-			</fileset>
-			<fileset override='true' targetdir='$INSTALL_PATH/lib'
-				dir='/tmp/jajuk-dist/jajuk/lib'>
-				<os family='windows' />
-				<exclude name="lib*" />
-			</fileset>
 			<file override='true' targetdir='$INSTALL_PATH'
 				src='/tmp/jajuk-dist/jajuk/jajuk-icon-shortcut_64x64.png' />
 			<file override='true' targetdir='$INSTALL_PATH'
@@ -88,13 +73,26 @@
 
 			<!-- Windows specific -->
 			<file override='true' targetdir='$INSTALL_PATH'
+				src='/tmp/jajuk-dist/windows/jajuk.exe'>
+				<os family='windows' />
+			</file>
+			<file override='true' targetdir='$INSTALL_PATH'
 				src='/tmp/mplayer/windows/mplayer.exe'>
 				<os family='windows' />
 			</file>
+			<dir override='true' targetdir='$INSTALL_PATH/lib'
+				src='/tmp/jajuk-dist/jajuk/lib/windows'>
+				<os family='windows' />
+			</dir>
 			<file override='true' targetdir='$INSTALL_PATH'
 				src='/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-icon.ico'>
 				<os family='windows' />
 			</file>
+			<fileset override='true' targetdir='$INSTALL_PATH/lib'
+				dir='/tmp/jajuk-dist/jajuk/lib'>
+				<os family='windows' />
+				<exclude name="lib*" />
+			</fileset>
 			<file override='true' targetdir='$INSTALL_PATH'
 				src='/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-uninstall.ico'>
 				<os family='windows' />
@@ -109,24 +107,21 @@
 			</file>
 
 			<!--Unix specific -->
-			<file override='true' targetdir='$INSTALL_PATH/bin'
-				src='/tmp/jajuk-dist/jajuk/bin/jajuk.jar'>
-				<os family='unix' />
-			</file>
 			<file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk'>
 				<os family='unix' />
 			</file>
 			<executable targetfile="$INSTALL_PATH/jajuk" stage="never">
 				<os family='unix' />
 			</executable>
+			<fileset override='true' targetdir='$INSTALL_PATH/lib'
+				dir='/tmp/jajuk-dist/jajuk/lib'>
+				<os family='unix' />
+				<exclude name="**/*.dll" />
+			</fileset>
 
 			<!--OSX specific -->
 			<!-- We don't include the mplayer binary here to save space. The binary 
 				will be embedded into the .app only -->
-			<file override='true' targetdir='$INSTALL_PATH/bin'
-				src='/tmp/jajuk-dist/jajuk/bin/jajuk.jar'>
-				<os family='mac' />
-			</file>
 			<executable targetfile="$INSTALL_PATH/jajuk" stage="never">
 				<os family='mac' />
 			</executable>

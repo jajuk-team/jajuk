@@ -37,7 +37,6 @@
 
 	<!-- Conf for local build 
 	<property name='conf_izpackdir' value='/prog/IzPack' />
-	<property name='conf_jsmoothgendir' value='/prog/jsmooth-0.9.7' />
 	<property name='conf_jnlp-dist' value='/data/java/jnlp-dist' />
 	<property name='conf_homeuser' value='/home/bflorat' />
 	<property name='conf_uploaddir' value='${rootdir}/upload' />
@@ -46,7 +45,6 @@
 
 	<!-- Conf for Jajuk Continuous Integration  server -->
 	<property name='conf_izpackdir' value='/data/build_tools/IzPack' />
-	<property name='conf_jsmoothgendir' value='/data/build_tools/jsmooth' />
 	<property name='conf_jnlp-dist' value='/tmp/jajuk-dist/jnlp-dist' />
 	<property name='conf_homeuser' value='/home/tomcat55' />
 	<property name='conf_uploaddir' value='/tmp/jajuk-dist/packages/' />
@@ -346,9 +344,10 @@
 
 	<!-- Windows installer EXE creation from IzPack jar-->
 	<target name='package_sfx' description='o Create IzPack Windows executable file' depends='package_exe,package_izpack'>
-		<taskdef name='jsmoothgen' classname='net.charabia.jsmoothgen.ant.JSmoothGen' classpath='${conf_jsmoothgendir}/lib/jsmoothgen-ant.jar' />
-		<echo message='Create IzPack Windows executable file' />
-		<jsmoothgen project='${rootdir}/windows/jajuk.jsmooth' skeletonroot='${conf_jsmoothgendir}/skeletons' />
+		<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
+			        :${launch4j.dir}/lib/xstream.jar" />
+				<echo message='Create Jajuk Windows executable file' />
+				<launch4j configFile="${windowsdir}/jajuk.launch4j" />
 	</target>
 
 	<target name='package_jnlp' description='o Create Java Web Start war distribution' depends='startup,clean,package_jar'>
@@ -528,7 +527,7 @@
 		</copy>
 		<!-- Set release in native launcher descriptor files-->
 		<replace dir='${windowsdir}' value='${version}'>
-			<include name='jajuk.jsmooth' />
+			<include name='installer.launch4j' />
 			<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
 		</replace>
 		<!-- Set test value in launch4j descriptor files-->

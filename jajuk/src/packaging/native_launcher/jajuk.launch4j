@@ -1,5 +1,5 @@
 <launch4jConfig>
-  <dontWrapJar>false</dontWrapJar>
+  <dontWrapJar>true</dontWrapJar>
   <headerType>gui</headerType>
   <jar>/tmp/jajuk-dist/jajuk/bin/jajuk.jar</jar>
   <outfile>/tmp/jajuk-dist/windows/jajuk.exe</outfile>
