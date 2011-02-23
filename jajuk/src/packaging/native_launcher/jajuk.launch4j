@@ -1,9 +1,10 @@
 <launch4jConfig>
   <dontWrapJar>true</dontWrapJar>
-  <jarPath>bin/jajuk.jar</jarPath>
+  <jar>bin/jajuk.jar</jar>
   <headerType>gui</headerType>
   <outfile>/tmp/jajuk-dist/windows/jajuk.exe</outfile>
   <errTitle></errTitle>
+  <chdir>bin</chdir>
   <cmdLine>TEST_FLAG_REPLACED_BY_ANT</cmdLine>
   <priority>normal</priority>
   <downloadUrl>http://java.com/download</downloadUrl>
