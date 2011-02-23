@@ -347,7 +347,7 @@
 		<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
 			        :${launch4j.dir}/lib/xstream.jar" />
 				<echo message='Create Jajuk Windows executable file' />
-				<launch4j configFile="${windowsdir}/jajuk.launch4j" />
+				<launch4j configFile="${windowsdir}/installer.launch4j" />
 	</target>
 
 	<target name='package_jnlp' description='o Create Java Web Start war distribution' depends='startup,clean,package_jar'>
