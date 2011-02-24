@@ -425,11 +425,13 @@ public final class Log {
    * @param e DOCUMENT_ME
    */
   private static void spool(Throwable e) {
-    spool("[ERROR] " + e.getClass() + " / {{" + e.getMessage() + "}} / " + e.getCause());
+    spool("<font color='red'>" + "[ERROR] " + e.getClass() + " / {{" + e.getMessage() + "}} / "
+        + e.getCause());
     StackTraceElement[] ste = e.getStackTrace();
     for (StackTraceElement element : ste) {
-      spool("<font color='red'>" + element.toString() + FONT_END);
+      spool(element.toString());
     }
+    spool(FONT_END);
   }
 
   /**
