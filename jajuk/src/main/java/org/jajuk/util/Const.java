@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2010 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -172,7 +172,7 @@ public interface Const {
   String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
 
   /** DOCUMENT_ME. */
-  String JAJUK_COPYRIGHT = "Copyright 2003-2010 The Jajuk Team";
+  String JAJUK_COPYRIGHT = "Copyright 2003-2011 The Jajuk Team";
 
   /** DOCUMENT_ME. */
   String TYPE_VIDEO = "Type.video";

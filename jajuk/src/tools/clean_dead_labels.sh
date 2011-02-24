@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2010, jajuk team
+# Copyright 2011, jajuk team
 # This script is a tool available for jajuk developers to manage langpack files
 
 # Launch this script from its directory

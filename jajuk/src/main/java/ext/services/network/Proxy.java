@@ -1,6 +1,6 @@
 /*
  * Adapted by Jajuk team
- * Copyright (C) 2003-2009 the Jajuk Team
+ * Copyright (C) 2003-2011 the Jajuk Team
  * http://jajuk.info
  * 
  * aTunes 1.14.0
