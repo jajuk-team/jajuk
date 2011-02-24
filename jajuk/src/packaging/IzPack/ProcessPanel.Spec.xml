@@ -11,5 +11,11 @@
 		<executefile name='sh'>
 			<arg>$INSTALL_PATH/jajuk</arg>
 		</executefile> 
-	</job> 
+	</job>
+	<job name='jajuk'> 
+		<os family='mac' />
+		<executefile name='sh'>
+			<arg>$INSTALL_PATH/jajuk</arg>
+		</executefile> 
+	</job>
 </processing>
