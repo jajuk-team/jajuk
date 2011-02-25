@@ -427,6 +427,7 @@
 			<fileset file='${srcdir}/packaging/IzPack/jajuk.izpack' />
 			<fileset file='${srcdir}/packaging/IzPack/shortcutSpec.xml' />
 			<fileset file='${srcdir}/packaging/IzPack/installDirectory.unix.txt' />
+			<fileset file='${srcdir}/packaging/IzPack/ProcessPanel.Spec.xml' />
 		</copy>
 		<!-- Set release in IzPack descriptor file -->
 		<replace dir='${izpackdir}' value='${version}'>
