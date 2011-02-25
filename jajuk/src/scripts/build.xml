@@ -272,7 +272,7 @@
 		<echo message='Successfully built packages:' />
 		<echo message=' Jajuk Jar file in:     ${distdir}/bin/${jarname}' />
 		<echo message=' RPM package in:        ${rpmbuilddir}/RPMS/noarch/jajuk-${version}-1.noarch.rpm' />
-		<echo message=' Windows executable in: ${windowsdir}/jajuk-${version}-win32-setup.exe' />
+		<echo message=' Windows executable in: ${windowsdir}/jajuk-${version}-setup.exe' />
 		<echo message=' Java installer in:     ${izpackdir}/jajuk-java-installer-${version}.jar' />
 		<echo message=' MAC OS X in:           ${distdir}/jajuk-macos-${version}.zip' />
 		<echo message=' Source archive in:     ${sourcesdist}' />
@@ -584,7 +584,7 @@
 		<copy todir='${conf_uploaddir}'>
 			<fileset file='${sourcesdist}' />
 			<fileset file='${rpmbuilddir}/RPMS/noarch/*' />
-			<fileset file='${windowsdir}/jajuk-${version}-win32-setup.exe' />
+			<fileset file='${windowsdir}/jajuk-${version}-setup.exe' />
 			<fileset file='${izpackdir}/jajuk-java-installer-${version}.jar' />
 			<fileset file='${distdir}/jajuk-macos-${version}.zip' />
 		</copy>
