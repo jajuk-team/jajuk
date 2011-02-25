@@ -44,14 +44,13 @@
 		<res id='ImgPacksPanel.img.0' src='main/resources/images/core.png' />
 		<res id='ImgPacksPanel.img.1' src='main/resources/images/src.png' />
 		<res id='TargetPanel.dir.unix' src='/tmp/jajuk-dist/java/installDirectory.unix.txt' />
-		<res id="ProcessPanel.Spec.xml" src="/tmp/jajuk-dist/java/ProcessPanel.Spec.xml"/>
 	</resources>
 	<panels>
 		<panel classname='LicencePanel' />
 		<panel classname='TargetPanel' />
 		<panel classname='InstallPanel' />
 		<panel classname='ShortcutPanel' />
-		<panel classname='ProcessPanel' />
+		<panel classname='SimpleFinishPanel' />
 	</panels>
 	<packs>
 		<pack name='main pack' required='yes'>
