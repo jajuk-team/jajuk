@@ -158,10 +158,10 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
       instance.decorator = new WindowStateDecorator(instance) {
         @Override
         public void specificBeforeShown() {
-          instance.graphicsDevice = instance.graphicsDevice = UtilGUI
-              .getGraphicsDeviceOfMainFrame();
-
-          if (instance.graphicsDevice.isFullScreenSupported()) {
+          instance.graphicsDevice = UtilGUI.getGraphicsDeviceOfMainFrame();
+          // Use real full screen mode only under OSX to override the taskbar, otherwise, 
+          // we only maximize the frame to make keystrokes working.
+          if (UtilSystem.isUnderOSX() && instance.graphicsDevice.isFullScreenSupported()) {
             instance.graphicsDevice.setFullScreenWindow(instance);
           }
         }
@@ -171,6 +171,7 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
           // Do not show the owner frame under OSX, it makes the full screen blank
           // as the owner is displayed over
           if (!UtilSystem.isUnderOSX()) {
+            Log.debug("******" + instance.graphicsDevice);
             instance.setSize(instance.graphicsDevice.getDisplayMode().getWidth(),
                 instance.graphicsDevice.getDisplayMode().getHeight());
             instance.setLocation(instance.graphicsDevice.getDefaultConfiguration().getBounds()
@@ -178,9 +179,8 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
             owner.setVisible(true);
             owner.requestFocus();
           }
-
         }
-
+        
         @Override
         public void specificAfterHidden() {
           if (UtilSystem.isUnderOSX() && instance.graphicsDevice.isFullScreenSupported()) {
