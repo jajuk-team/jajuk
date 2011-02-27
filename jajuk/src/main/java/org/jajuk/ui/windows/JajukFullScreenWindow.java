@@ -161,7 +161,7 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
           instance.graphicsDevice = instance.graphicsDevice = UtilGUI
               .getGraphicsDeviceOfMainFrame();
 
-          if (UtilSystem.isUnderOSX() && instance.graphicsDevice.isFullScreenSupported()) {
+          if (instance.graphicsDevice.isFullScreenSupported()) {
             instance.graphicsDevice.setFullScreenWindow(instance);
           }
         }
