@@ -1,3 +1,7 @@
 
 # Ignore classes
 bin/
+
+# maven built directories
+target/
+
