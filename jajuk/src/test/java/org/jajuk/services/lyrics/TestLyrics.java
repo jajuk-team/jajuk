@@ -28,7 +28,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
-import org.jajuk.services.lyrics.providers.FlyWebLyricsProvider;
 import org.jajuk.services.lyrics.providers.GenericWebLyricsProvider;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;
 import org.jajuk.services.lyrics.providers.LyricWikiWebLyricsProvider;
@@ -113,124 +112,6 @@ public class TestLyrics extends JajukTestCase {
 
     assertTrue(tmp.exists());
     assertTrue(tmp.length() > 0);
-  }
-
-  /**
-   * Test Fly provider response to get lyrics
-   *
-   * @throws Exception
-   */
-  public void testFlyService() throws Exception {
-    GenericWebLyricsProvider provider = new FlyWebLyricsProvider();
-    testWebService(provider);
-
-    // delay a bit as LyricsFly puts a min. delay before the next request is
-    // allowed
-    Thread.sleep(FLY_DELAY);
-  }
-
-  // TODO: re-enable after we added a new userid
-  /**@Ignore
-  public void testFlyServiceSonar() throws Exception {
-    // ensure that this is not configured somehow
-    assertFalse(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
-
-    // do some in-depth test here to find out why this fails in Sonar
-
-    Field urlField = FlyWebLyricsProvider.class.getDeclaredField("URL");
-    urlField.setAccessible(true);
-    String queryString = (String) (urlField.get(null));
-
-    queryString = queryString.replace(Const.PATTERN_ARTIST, (ARTIST != null) ? NetworkUtils
-        .encodeString(ARTIST) : "");
-
-    queryString = queryString.replace(Const.PATTERN_TRACKNAME, (TITLE != null) ? NetworkUtils
-        .encodeString(TITLE) : "");
-
-    URL url = new URL(queryString);
-
-    Log.info("Downloading: " + url);
-
-    String xml = null;
-
-    // xml = DownloadManager.getTextFromCachedFile(url, "UTF-8");
-    // Drop the query if user required "none Internet access from jajuk".
-    // This method shouldn't be called anyway because we views have to deal with
-    // this option at their level, this is a additional control.
-    assertFalse(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
-
-    // make sure that we remove any existing cache for this file before we run
-    // this test
-    {
-      File file = SessionService.getCachePath(url);
-      assertNotNull(file);
-      if (file.exists()) {
-        Log.info("Removing existing cache file: " + file);
-        assertTrue(file.toString(), file.delete());
-      }
-    }
-
-    final File file;
-    try {
-      file = DownloadManager.downloadToCache(url);
-      assertNotNull(file);
-    } catch (SocketTimeoutException e) {
-      Log.fatal("In Sonar this exception occurs, seems we do not have internet access there...");
-      return;
-    }
-
-    // make sure the file is available correctly
-    assertTrue(file.toString(), file.exists());
-    assertTrue(file.toString(), file.canRead());
-    assertTrue(file.toString(), file.isFile());
-    assertFalse(file.toString(), file.isHidden());
-    assertTrue(file.toString(), file.length() > 0);
-
-    StringBuilder builder = new StringBuilder();
-    InputStream input = new BufferedInputStream(new FileInputStream(file));
-    boolean bRead = false;
-    try {
-      byte[] array = new byte[1024];
-      int read;
-      while ((read = input.read(array)) > 0) {
-        builder.append(new String(array, 0, read, "UTF-8"));
-        bRead = true;
-      }
-    } finally {
-      input.close();
-    }
-
-    // make sure we read at least some bytes/chars
-    assertTrue(file.toString(), bRead);
-
-    xml = builder.toString();
-    assertTrue(xml, StringUtils.isNotBlank(xml));
-
-    // FlyProvider.getLyrics()
-    Document document = XMLUtils.getDocument(xml);
-    assertNotNull(document);
-
-    String lyrics = null;
-    lyrics = XMLUtils.getChildElementContent(document.getDocumentElement(), "tx");
-    lyrics = lyrics.replace("[br]", "");
-
-    assertTrue(xml, StringUtils.isNotBlank(lyrics));
-
-    // delay a bit as LyricsFly puts a min. delay before the next request is
-    // allowed
-    Thread.sleep(FLY_DELAY);
-  }**/
-
-  /**
-   * Test Fly web url availability
-   */
-  public void testFlyWeb() throws Exception {
-    GenericWebLyricsProvider provider = new FlyWebLyricsProvider();
-    testWeb(provider);
-
-    // delay a bit as LyricsFly puts a min. delay before the next request is
-    // allowed
-    Thread.sleep(FLY_DELAY);
   }
 
   /**
