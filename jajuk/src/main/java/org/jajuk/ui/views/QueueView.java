@@ -171,7 +171,7 @@ public class QueueView extends PlaylistView {
     // Add items
     jpEditorControl.setLayout(new MigLayout("insets 5", "[][grow][]"));
     jpEditorControl.add(jtb, "left,gapright 15::");
-    jpEditorControl.add(jlTitle, "right,gapright 5");
+    jpEditorControl.add(jlTitle, "center,gapright 5,grow");
     jpEditorControl.add(jtbStopAfter, "right");
     jpEditorControl.add(jtbAutoScroll, "right");
     editorModel = new PlaylistTableModel(true);

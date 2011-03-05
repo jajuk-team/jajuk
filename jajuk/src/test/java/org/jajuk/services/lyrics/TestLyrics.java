@@ -19,15 +19,8 @@
  */
 package org.jajuk.services.lyrics;
 
-import ext.services.network.NetworkUtils;
-import ext.services.xml.XMLUtils;
-
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.List;
@@ -35,18 +28,12 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
-import org.jajuk.services.core.SessionService;
 import org.jajuk.services.lyrics.providers.FlyWebLyricsProvider;
 import org.jajuk.services.lyrics.providers.GenericWebLyricsProvider;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;
 import org.jajuk.services.lyrics.providers.LyricWikiWebLyricsProvider;
-import org.jajuk.util.Conf;
-import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.log.Log;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.w3c.dom.Document;
 
 /**
  * Lyrics unit tests
