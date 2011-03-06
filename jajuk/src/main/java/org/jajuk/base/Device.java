@@ -551,11 +551,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       if (i == OPTION_REFRESH_CANCEL) {
         return;
       }
-      // Check that device is still available
-      boolean readyToMount = checkDevice(true);
-      if (!readyToMount) {
-        return;
-      }
       bAlreadyRefreshing = true;
     } catch (JajukException je) {
       Messages.showErrorMessage(je.getCode());
@@ -636,17 +631,13 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         return choice;
       }
     }
+    
+    // JajukException are not trapped, will be thrown to the caller
     final Device device = this;
     if (!device.isMounted()) {
-      try {
-        // Leave if user canceled device mounting
-        if (!device.mount(true)) {
-          return Device.OPTION_REFRESH_CANCEL;
-        }
-      } catch (final Exception e) {
-        Log.error(11, getName(), e); // mount failed
-        Messages.showErrorMessage(11, getName());
-        throw new JajukException(11);
+      // Leave if user canceled device mounting
+      if (!device.mount(true)) {
+        return Device.OPTION_REFRESH_CANCEL;
       }
     }
     if (bAlreadyRefreshing) {
@@ -658,31 +649,26 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   /**
    * Check that the device is available and not void.
    * 
-   * @param bManual DOCUMENT_ME
+   * @param bManual manual or automatic refresh ?
    * 
-   * @return whether the device is ready for mounting
+   * @return true if the device is ready for mounting, false if the device is void
    * 
-   * @throws JajukException the jajuk exception
+   * @throws JajukException if the device is not accessible
    */
   private boolean checkDevice(boolean bManual) throws JajukException {
-    try {
-      final File file = new File(getUrl());
-      if (!file.exists()) {
-        throw new Exception("Path does not exist: " + file.toString());
-      }
-    } catch (final Exception e) {
-      throw new JajukException(11, getName(), e);
+    final File file = new File(getUrl());
+    if (!file.exists()) {
+      throw new JajukException(11, "\""+getName() +"\" at URL : " + getUrl());
     }
     /*
-     * Cannot mount void devices because of reference garbager thread ( a refresh would clear the
-     * device)
+     * Cannot mount void devices because of the jajuk reference cleanup thread 
+     * ( a refresh would clear the entire device collection)
      */
-    final File file = new File(getUrl());
-    if ((file.listFiles() == null) || (file.listFiles().length == 0)) {
+    if (file.listFiles() == null || file.listFiles().length == 0) {
       if (bManual) {
-        final int answer = Messages.getChoice("[" + getName() + "] "
-            + Messages.getString("Confirmation_void_refresh"), JOptionPane.YES_NO_CANCEL_OPTION,
-            JOptionPane.WARNING_MESSAGE);
+        final int answer = Messages.getChoice(
+            "[" + getName() + "] " + Messages.getString("Confirmation_void_refresh"),
+            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
         // leave if user doesn't confirm to mount the void device
         return (answer == JOptionPane.YES_OPTION);
       } else {
@@ -702,9 +688,9 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * 
    * @return whether the device has been mounted
    * 
-   * @throws Exception if device cannot be mounted
+   * @throws JajukException if device cannot be mounted
    */
-  public boolean mount(final boolean bManual) throws Exception {
+  public boolean mount(final boolean bManual) throws JajukException {
     if (bMounted) {
       throw new JajukException(111);
     }
@@ -717,7 +703,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     }
     // notify views to refresh if needed
     ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_MOUNT));
-
     return bMounted;
   }
 
@@ -1052,10 +1037,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       }
       // end message
       lTime = System.currentTimeMillis() - lTime;
-      final String sOut = new StringBuilder(Messages.getString("Device.33")).append(
-          ((lTime < 1000) ? lTime + " ms" : lTime / 1000 + " s")).append(" - ").append(
-          iNbCreatedFilesSrc + iNbCreatedFilesDest).append(Messages.getString("Device.35")).append(
-          lVolume / 1048576).append(Messages.getString("Device.36")).toString();
+      final String sOut = new StringBuilder(Messages.getString("Device.33"))
+          .append(((lTime < 1000) ? lTime + " ms" : lTime / 1000 + " s")).append(" - ")
+          .append(iNbCreatedFilesSrc + iNbCreatedFilesDest).append(Messages.getString("Device.35"))
+          .append(lVolume / 1048576).append(Messages.getString("Device.36")).toString();
       // perform a fast refresh
       refreshCommand(false, true, null);
       // if bidi sync, refresh the other device as well (new file can
@@ -1167,9 +1152,9 @@ public class Device extends PhysicalItem implements Comparable<Device> {
               iNbCreatedFiles++;
               lVolume += element.length();
               InformationJPanel.getInstance().setMessage(
-                  new StringBuilder(Messages.getString("Device.41")).append(dSrc.getName()).append(
-                      ',').append(dest.getName()).append(Messages.getString("Device.42")).append(
-                      element.getAbsolutePath()).append("]").toString(),
+                  new StringBuilder(Messages.getString("Device.41")).append(dSrc.getName())
+                      .append(',').append(dest.getName()).append(Messages.getString("Device.42"))
+                      .append(element.getAbsolutePath()).append("]").toString(),
                   InformationJPanel.MessageType.INFORMATIVE);
             } catch (final JajukException je) {
               Messages.showErrorMessage(je.getCode(), element.getAbsolutePath());
