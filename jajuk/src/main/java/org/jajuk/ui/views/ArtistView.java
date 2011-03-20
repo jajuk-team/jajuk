@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2010 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -169,7 +169,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
 
             ArtistView.this.artist = artist.getName();
             // Display the panel only if the artist is not unknown
-            if (!artist.isUnknown()) {
+            if (!artist.seemsUnknown()) {
               // This is done in a swing worker
               displayArtist();
             } else {

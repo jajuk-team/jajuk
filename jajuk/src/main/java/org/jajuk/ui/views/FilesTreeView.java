@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2010 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -198,17 +198,17 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     jmiDirRefresh = new JMenuItem(actionRefreshDir);
     jmiDirRefresh.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     jmiDirRefresh.addActionListener(this);
-    jmiDirDesynchro = new JMenuItem(Messages.getString("FilesTreeView.14"), IconLoader
-        .getIcon(JajukIcons.DIRECTORY_DESYNCHRO));
+    jmiDirDesynchro = new JMenuItem(Messages.getString("FilesTreeView.14"),
+        IconLoader.getIcon(JajukIcons.DIRECTORY_DESYNCHRO));
     jmiDirDesynchro.addActionListener(this);
-    jmiDirResynchro = new JMenuItem(Messages.getString("FilesTreeView.15"), IconLoader
-        .getIcon(JajukIcons.DIRECTORY_SYNCHRO));
+    jmiDirResynchro = new JMenuItem(Messages.getString("FilesTreeView.15"),
+        IconLoader.getIcon(JajukIcons.DIRECTORY_SYNCHRO));
     jmiDirResynchro.addActionListener(this);
     jmiDirCreatePlaylist = new JMenuItem(Messages.getString("FilesTreeView.16"));
     jmiDirCreatePlaylist.setEnabled(false);
     jmiDirCreatePlaylist.addActionListener(this);
-    jmiDirRefactor = new JMenuItem(Messages.getString(("FilesTreeView.62")), IconLoader
-        .getIcon(JajukIcons.REORGANIZE));
+    jmiDirRefactor = new JMenuItem(Messages.getString(("FilesTreeView.62")),
+        IconLoader.getIcon(JajukIcons.REORGANIZE));
     jmiDirRefactor.addActionListener(this);
     jmiDirCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     jmiDirCopyURL.putClientProperty(Const.DETAIL_CONTENT, alSelected);
@@ -216,29 +216,29 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
     jmiDirOpenExplorer.putClientProperty(Const.DETAIL_CONTENT, alSelected);
 
     // Device menu
-    jmiDevMount = new JMenuItem(Messages.getString("FilesTreeView.28"), IconLoader
-        .getIcon(JajukIcons.UNMOUNT));
+    jmiDevMount = new JMenuItem(Messages.getString("FilesTreeView.28"),
+        IconLoader.getIcon(JajukIcons.UNMOUNT));
     jmiDevMount.addActionListener(this);
-    jmiDevUnmount = new JMenuItem(Messages.getString("FilesTreeView.29"), IconLoader
-        .getIcon(JajukIcons.UNMOUNT));
+    jmiDevUnmount = new JMenuItem(Messages.getString("FilesTreeView.29"),
+        IconLoader.getIcon(JajukIcons.UNMOUNT));
     jmiDevUnmount.addActionListener(this);
-    jmiDevRefresh = new JMenuItem(Messages.getString("FilesTreeView.30"), IconLoader
-        .getIcon(JajukIcons.REFRESH));
+    jmiDevRefresh = new JMenuItem(Messages.getString("FilesTreeView.30"),
+        IconLoader.getIcon(JajukIcons.REFRESH));
     jmiDevRefresh.addActionListener(this);
-    jmiDevSynchronize = new JMenuItem(Messages.getString("FilesTreeView.31"), IconLoader
-        .getIcon(JajukIcons.SYNCHRO));
+    jmiDevSynchronize = new JMenuItem(Messages.getString("FilesTreeView.31"),
+        IconLoader.getIcon(JajukIcons.SYNCHRO));
     jmiDevSynchronize.addActionListener(this);
-    jmiDevTest = new JMenuItem(Messages.getString("FilesTreeView.32"), IconLoader
-        .getIcon(JajukIcons.TEST));
+    jmiDevTest = new JMenuItem(Messages.getString("FilesTreeView.32"),
+        IconLoader.getIcon(JajukIcons.TEST));
     jmiDevTest.addActionListener(this);
-    jmiDevConfiguration = new JMenuItem(Messages.getString("FilesTreeView.55"), IconLoader
-        .getIcon(JajukIcons.CONFIGURATION));
+    jmiDevConfiguration = new JMenuItem(Messages.getString("FilesTreeView.55"),
+        IconLoader.getIcon(JajukIcons.CONFIGURATION));
     jmiDevConfiguration.addActionListener(this);
-    jmiDevDelete = new JMenuItem(Messages.getString("DeviceView.13"), IconLoader
-        .getIcon(JajukIcons.DELETE));
+    jmiDevDelete = new JMenuItem(Messages.getString("DeviceView.13"),
+        IconLoader.getIcon(JajukIcons.DELETE));
     jmiDevDelete.addActionListener(this);
-    jmiDevOrganize = new JMenuItem(Messages.getString(("FilesTreeView.62")), IconLoader
-        .getIcon(JajukIcons.REORGANIZE));
+    jmiDevOrganize = new JMenuItem(Messages.getString(("FilesTreeView.62")),
+        IconLoader.getIcon(JajukIcons.REORGANIZE));
     jmiDevOrganize.addActionListener(this);
 
     // playlist menu
@@ -328,21 +328,31 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
    * Fill the tree.
    */
   @Override
-  public synchronized void populateTree() {
-    top.removeAllChildren();
-
-    // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a
-    // small memory leak that is caused here...
-    if (jtree != null && jtree.getModel() != null) {
-      ((DefaultTreeModel) (jtree.getModel())).reload();
+  public void populateTree() {
+    // Use a refreshing flag, not a 'synchronized' here (see deadlock, bug #1756 (Deadlock in AbstractTreeView and PerspectiveManager) 
+    if (refreshing) {
+      Log.debug("Tree view already refreshing. Leaving.");
+      return;
     }
+    try {
+      refreshing = true;
+      top.removeAllChildren();
 
-    // add all devices as "LazyLoading" nodes so all subsequent elements are
-    // only populated if necessary
-    List<Device> devices = DeviceManager.getInstance().getDevices();
-    for (Device device : devices) {
-      DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
-      top.add(nodeDevice);
+      // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a
+      // small memory leak that is caused here...
+      if (jtree != null && jtree.getModel() != null) {
+        ((DefaultTreeModel) (jtree.getModel())).reload();
+      }
+
+      // add all devices as "LazyLoading" nodes so all subsequent elements are
+      // only populated if necessary
+      List<Device> devices = DeviceManager.getInstance().getDevices();
+      for (Device device : devices) {
+        DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
+        top.add(nodeDevice);
+      }
+    } finally {
+      refreshing = false;
     }
   }
 
@@ -411,11 +421,11 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
         public void run() {
           Device device = ((DeviceNode) (paths[0].getLastPathComponent())).getDevice();
           if (device.test()) {
-            Messages.showInfoMessage(Messages.getString("DeviceView.21"), IconLoader
-                .getIcon(JajukIcons.OK));
+            Messages.showInfoMessage(Messages.getString("DeviceView.21"),
+                IconLoader.getIcon(JajukIcons.OK));
           } else {
-            Messages.showInfoMessage(Messages.getString("DeviceView.22"), IconLoader
-                .getIcon(JajukIcons.KO));
+            Messages.showInfoMessage(Messages.getString("DeviceView.22"),
+                IconLoader.getIcon(JajukIcons.KO));
           }
         }
       }.start();
@@ -639,8 +649,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
           Messages.showErrorMessage(18);
           return;
         } else {
-          QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay),
-              Conf.getBoolean(Const.CONF_STATE_REPEAT), true), false);
+          QueueModel.push(
+              UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay),
+                  Conf.getBoolean(Const.CONF_STATE_REPEAT), true), false);
         }
       }
     }
@@ -924,8 +935,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener,
       StringBuilder sbOut = new StringBuilder().append(items).append(
           Messages.getString("FilesTreeView.52"));
       if (lSize > 1024) { // more than 1024 MB -> in GB
-        sbOut.append(lSize / 1024).append('.').append(lSize % 1024).append(
-            Messages.getString("FilesTreeView.53"));
+        sbOut.append(lSize / 1024).append('.').append(lSize % 1024)
+            .append(Messages.getString("FilesTreeView.53"));
       } else {
         sbOut.append(lSize).append(Messages.getString("FilesTreeView.54"));
       }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2010 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -41,6 +41,9 @@ public interface Const {
 
   /** Time we wait after an error in ms. */
   int WAIT_AFTER_ERROR = 2000;
+
+  /** We need a fix size to have the same angle effect for every cover*/
+  int MIRROW_COVER_SIZE = 600;
 
   /** Default playlist name. */
   String DEFAULT_PLAYLIST_FILE = "playlist";
@@ -153,7 +156,7 @@ public interface Const {
   long MPLAYER_OSX_EXE_SIZE = 21490476l;
 
   /** Update URL = PAD file URL. */
-  String CHECK_FOR_UPDATE_URL = "http://jajuk.svn.sourceforge.net/svnroot/jajuk/trunk/jajuk/src/site/resources/jajuk_pad.xml";
+  String CHECK_FOR_UPDATE_URL = "http://gitorious.org/jajuk/jajuk/blobs/raw/master/jajuk/src/packaging/pad/jajuk_pad.xml";
 
   // Jajuk version
   /** DOCUMENT_ME. */
@@ -169,7 +172,7 @@ public interface Const {
   String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
 
   /** DOCUMENT_ME. */
-  String JAJUK_COPYRIGHT = "Copyright 2003-2010 The Jajuk Team";
+  String JAJUK_COPYRIGHT = "Copyright 2003-2011 The Jajuk Team";
 
   /** DOCUMENT_ME. */
   String TYPE_VIDEO = "Type.video";

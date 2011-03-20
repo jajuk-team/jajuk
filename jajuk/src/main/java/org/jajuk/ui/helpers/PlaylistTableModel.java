@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2010 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -309,7 +309,7 @@ public class PlaylistTableModel extends JajukTableModel {
 
       // Year
       if (bYear) {
-        oValues[iRow][7] = bf.getTrack().getYear().getValue();
+        oValues[iRow][7] = bf.getTrack().getYear();
       } else {
         oValues[iRow][7] = "";
       }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2010 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -425,11 +425,13 @@ public final class Log {
    * @param e DOCUMENT_ME
    */
   private static void spool(Throwable e) {
-    spool("[ERROR] " + e.getClass() + " / {{" + e.getMessage() + "}} / " + e.getCause());
+    spool("<font color='red'>" + "[ERROR] " + e.getClass() + " / {{" + e.getMessage() + "}} / "
+        + e.getCause());
     StackTraceElement[] ste = e.getStackTrace();
     for (StackTraceElement element : ste) {
-      spool("<font color='red'>" + element.toString() + FONT_END);
+      spool(element.toString());
     }
+    spool(FONT_END);
   }
 
   /**

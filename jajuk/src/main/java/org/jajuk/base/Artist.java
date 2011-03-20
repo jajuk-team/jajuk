@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2010 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -63,7 +63,6 @@ public class Artist extends LogicalItem implements Comparable<Artist> {
     if (isUnknown()) {
       return Messages.getString(UNKNOWN_ARTIST);
     }
-
     return getName();
   }
 
@@ -90,12 +89,22 @@ public class Artist extends LogicalItem implements Comparable<Artist> {
   }
 
   /**
-   * Checks if is unknown.
-   * 
-   * @return whether the artist is Unknown or not
-   */
+    * Return whether this item is strictly unknown : contains no tag
+    * 
+    * @return whether this item is Unknown or not
+    */
   public boolean isUnknown() {
     return this.getName().equals(UNKNOWN_ARTIST);
+  }
+
+  /**
+  * Return whether this item seems unknown (fuzzy search)
+  * 
+  * @return whether this item seems unknown
+  */
+  public boolean seemsUnknown() {
+    return isUnknown() || "unknown".equalsIgnoreCase(getName())
+        || Messages.getString(UNKNOWN_ARTIST).equalsIgnoreCase(getName());
   }
 
   /**

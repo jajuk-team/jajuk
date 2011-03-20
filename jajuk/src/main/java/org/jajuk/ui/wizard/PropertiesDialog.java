@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2010 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -68,6 +68,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.ui.widgets.CopyableLabel;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.widgets.OKCancelPanel;
@@ -600,13 +601,13 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
             widgets[index][1] = jtfValue;
           }
         } else {
-          JLabel jl = null;
+          CopyableLabel jl = null;
           if (meta.getName().equals(Const.XML_ALBUM_DISC_ID)) {
             // Specific rendering : the album disc id should be translated from decimal to hex
-            jl = new JLabel((Long.toString(((Long) pa.getValue(meta.getName())), 16)));
+            jl = new CopyableLabel((Long.toString(((Long) pa.getValue(meta.getName())), 16)));
           } else {
             // Regular un-editable item rendering
-            jl = new JLabel(pa.getHumanValue(meta.getName()));
+            jl = new CopyableLabel(pa.getHumanValue(meta.getName()));
           }
           // If several items, take first value found
           if (bAllEquals) {

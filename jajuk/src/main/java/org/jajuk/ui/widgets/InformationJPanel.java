@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2010 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -33,6 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -148,29 +149,22 @@ public final class InformationJPanel extends JXPanel implements Observer {
 
     trackPositionSliderToolbar = new TrackPositionSliderToolbar();
 
-    // total progress bar
-    JToolBar jtbTotal = new JajukJToolbar();
-
-    jtbTotal.addSeparator();
     jlTotal = new JLabel();
+    // Make sure to get always 5 px at the left and right of the label
+    jlTotal.setBorder(new EmptyBorder(0,5,0,5));
     jlTotal.setToolTipText(Messages.getString("InformationJPanel.5"));
-    jtbTotal.add(Box.createHorizontalGlue());
-    jtbTotal.add(jlTotal);
-    jtbTotal.add(Box.createHorizontalGlue());
-    jtbTotal.addSeparator();
-
+ 
     // selection bar
-    JToolBar jtbSelection = new JajukJToolbar();
     jlSelection = new JLabel(Messages.getString("InformationJPanel.9"));
-    jtbSelection.add(jlSelection);
-    jtbSelection.add(Box.createHorizontalGlue());
-
+    // Make sure to get always 5 px at the left and right of the label
+    jlSelection.setBorder(new EmptyBorder(0,5,0,3));
+  
     // add widgets
     setLayout(new MigLayout("insets 2", "[40%,grow][40%,grow][10%,grow][10%,grow]"));
     add(jtbMessage, "grow,left");
     add(trackPositionSliderToolbar, "grow");
-    add(jtbTotal, "grow");
-    add(jtbSelection, "grow,right");
+    add(jlTotal, "grow");
+    add(jlSelection, "grow,right");
 
     // check if some errors occurred before the view has been displayed
     if (ObservationManager.containsEvent(JajukEvents.PLAY_ERROR)) {

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2010 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -30,13 +30,15 @@ import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.Box;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -55,7 +57,7 @@ import org.jajuk.util.log.Log;
 /**
  * DOCUMENT_ME.
  */
-public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeListener,
+public class TrackPositionSliderToolbar extends JPanel implements ChangeListener,
     MouseWheelListener, Observer {
 
   /** Generic playing position toolbar, used in information panel a full screen. */
@@ -96,8 +98,8 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
 
     // check if some errors occurred before the view has been displayed
     if (ObservationManager.containsEvent(JajukEvents.PLAY_ERROR)) {
-      update(new JajukEvent(JajukEvents.PLAY_ERROR, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.PLAY_ERROR)));
+      update(new JajukEvent(JajukEvents.PLAY_ERROR,
+          ObservationManager.getDetailsLastOccurence(JajukEvents.PLAY_ERROR)));
     }
 
     // check if some track has been launched before the view has been
@@ -114,18 +116,18 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
    * Inits the gui. DOCUMENT_ME
    */
   private void initGui() {
+    setLayout(new MigLayout("ins 0 5 0 5", "[70%,fill][30%,grow]"));
     setToolTipText(Messages.getString("InformationJPanel.7"));
     jsPosition = new JSlider(0, 100, 0);
     jsPosition.addChangeListener(this);
     jsPosition.setOpaque(false);
     jsPosition.addMouseWheelListener(this);
     jsPosition.setEnabled(false);
-    add(jsPosition);
     jlCurrent = new JLabel();
     jlCurrent.setToolTipText(Messages.getString("CommandJPanel.15"));
     jlCurrent.addMouseListener(new TimeDisplaySwitchMouseAdapter());
-    add(jlCurrent);
-    add(Box.createHorizontalStrut(6));
+    add(jsPosition,"grow");
+    add(jlCurrent,"grow,left");
   }
 
   /*
@@ -338,15 +340,15 @@ public class TrackPositionSliderToolbar extends JajukJToolbar implements ChangeL
    * elapsed time.
    */
   private final class TimeDisplaySwitchMouseAdapter extends MouseAdapter {
-    
+
     /* (non-Javadoc)
      * @see java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
      */
     @Override
     public void mouseClicked(MouseEvent e) {
       int currentFormat = Conf.getInt(Const.CONF_FORMAT_TIME_ELAPSED);
-      Conf.setProperty(Const.CONF_FORMAT_TIME_ELAPSED, Integer
-          .toString(((currentFormat + 1) % Const.FORMAT_TIME_ELAPSED_MAX)));
+      Conf.setProperty(Const.CONF_FORMAT_TIME_ELAPSED,
+          Integer.toString(((currentFormat + 1) % Const.FORMAT_TIME_ELAPSED_MAX)));
     }
   }
 }

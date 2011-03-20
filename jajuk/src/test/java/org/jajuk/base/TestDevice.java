@@ -532,9 +532,6 @@ public class TestDevice extends JajukTestCase {
     try {
       device.mount(true);
     } catch (JajukException e) {
-      assertTrue(e.getCause().getMessage(), e.getCause().getMessage().contains(
-          "Path does not exist"));
-      assertTrue(e.getCause().getMessage(), e.getCause().getMessage().contains("notexisting"));
       assertEquals(11, e.getCode());
     }
   }

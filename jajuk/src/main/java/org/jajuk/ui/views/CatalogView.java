@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2010 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -666,7 +666,6 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
         || JajukEvents.DEVICE_MOUNT.equals(subject) || JajukEvents.DEVICE_UNMOUNT.equals(subject)
         || JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
       SwingUtilities.invokeLater(new Runnable() {
-
         @Override
         public void run() {
           populateCatalog();

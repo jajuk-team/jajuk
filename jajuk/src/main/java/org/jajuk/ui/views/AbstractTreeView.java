@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2010 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -154,6 +154,9 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
   /** Used to differentiate tree/table sync due to internal events from users's ones. */
   boolean bInternalAction = false;
+  
+  /** Flag used to set tree is refreshing */
+  boolean refreshing = false;
 
   /*
    * (non-Javadoc)

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2010 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -161,7 +161,6 @@ public class Tag {
     if (tagImpl == null) {
       return sArtistName;
     }
-
     try {
       String sTemp = tagImpl.getArtistName().trim();
       if (Messages.getString(Const.UNKNOWN_ARTIST).equals(sTemp)) {
@@ -177,7 +176,6 @@ public class Tag {
     }
     // We internalize the artist name for memory saving reasons
     return sArtistName.intern();
-
   }
 
   /**

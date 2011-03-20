@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2010 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -161,13 +161,13 @@ public class TrackComparator implements Comparator<Track>, Serializable {
    */
   public String buildIdenticalTestFootprint(Track track) {
     StringBuilder sb = new StringBuilder();
-    if (!track.getGenre().isUnknown()) {
+    if (!track.getGenre().seemsUnknown()) {
       sb.append(track.getGenre().getID());
     }
-    if (!track.getArtist().isUnknown()) {
+    if (!track.getArtist().seemsUnknown()) {
       sb.append(track.getArtist().getID());
     }
-    if (!track.getAlbum().isUnknown()) {
+    if (!track.getAlbum().seemsUnknown()) {
       sb.append(track.getAlbum().getName());
     }
     sb.append(track.getName());
@@ -178,7 +178,7 @@ public class TrackComparator implements Comparator<Track>, Serializable {
     sb.append(track.getOrder());
     sb.append(track.getType().getID());
     sb.append(track.getDiscNumber());
-    if (!track.getAlbumArtist().isUnknown()) {
+    if (!track.getAlbumArtist().seemsUnknown()) {
       sb.append(track.getAlbumArtist().getName());
     }
     return sb.toString();
