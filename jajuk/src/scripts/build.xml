@@ -16,20 +16,20 @@
 
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.9.2~dev' />
+	<property name='version' value='1.9.2' />
 
 	<!--JNLP version-->
 	<!-- In final releases (including RC), jnlp_version=${version} 
 	In maintenance or trunk daily builds, jnlp_version=${JNLP_DATE} : we don't use regular version 
 	so the version changes each day -->
-	<property name='jnlp_version' value='${JNLP_DATE}' />
-	<!--<property name='jnlp_version' value='${version}' />-->
+	<!--<property name='jnlp_version' value='${JNLP_DATE}' />-->
+	<property name='jnlp_version' value='${version}' />
 
 	<!--Previous release used for JNLP incremental upgrade-->
 	<property name='previous_version' value='null' />
 
 	<!--Test flag: values: 'test' or 'notest' -->
-	<property name='test' value='test' />
+	<property name='test' value='notest' />
 
 	<!-- ======================= -->
 	<!-- | Configuration paths | -->
