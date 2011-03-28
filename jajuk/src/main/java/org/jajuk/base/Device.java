@@ -393,20 +393,20 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   @Override
   public ImageIcon getIconRepresentation() {
     if (getType() == Type.DIRECTORY) {
-      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED_SMALL), IconLoader
-          .getIcon(JajukIcons.DEVICE_DIRECTORY_UNMOUNTED_SMALL));
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED_SMALL),
+          IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_UNMOUNTED_SMALL));
     } else if (getType() == Type.FILES_CD) {
-      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED_SMALL), IconLoader
-          .getIcon(JajukIcons.DEVICE_CD_UNMOUNTED_SMALL));
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED_SMALL),
+          IconLoader.getIcon(JajukIcons.DEVICE_CD_UNMOUNTED_SMALL));
     } else if (getType() == Type.NETWORK_DRIVE) {
       return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_MOUNTED_SMALL),
           IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL));
     } else if (getType() == Type.EXTDD) {
-      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED_SMALL), IconLoader
-          .getIcon(JajukIcons.DEVICE_EXT_DD_UNMOUNTED_SMALL));
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED_SMALL),
+          IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_UNMOUNTED_SMALL));
     } else if (getType() == Type.PLAYER) {
-      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED_SMALL), IconLoader
-          .getIcon(JajukIcons.DEVICE_PLAYER_UNMOUNTED_SMALL));
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED_SMALL),
+          IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_UNMOUNTED_SMALL));
     } else {
       Log.warn("Unknown type of device detected: " + getType().name());
       return null;
@@ -419,20 +419,20 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    */
   public ImageIcon getIconRepresentationLarge() {
     if (getType() == Type.DIRECTORY) {
-      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED), IconLoader
-          .getIcon(JajukIcons.DEVICE_DIRECTORY_UNMOUNTED));
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED),
+          IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_UNMOUNTED));
     } else if (getType() == Type.FILES_CD) {
-      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED), IconLoader
-          .getIcon(JajukIcons.DEVICE_CD_UNMOUNTED));
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED),
+          IconLoader.getIcon(JajukIcons.DEVICE_CD_UNMOUNTED));
     } else if (getType() == Type.NETWORK_DRIVE) {
-      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_MOUNTED), IconLoader
-          .getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_UNMOUNTED));
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_MOUNTED),
+          IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_UNMOUNTED));
     } else if (getType() == Type.EXTDD) {
-      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED), IconLoader
-          .getIcon(JajukIcons.DEVICE_EXT_DD_UNMOUNTED));
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED),
+          IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_UNMOUNTED));
     } else if (getType() == Type.PLAYER) {
-      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED), IconLoader
-          .getIcon(JajukIcons.DEVICE_PLAYER_UNMOUNTED));
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED),
+          IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_UNMOUNTED));
     } else {
       Log.warn("Unknown type of device detected: " + getType().name());
       return null;
@@ -631,7 +631,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         return choice;
       }
     }
-    
+
     // JajukException are not trapped, will be thrown to the caller
     final Device device = this;
     if (!device.isMounted()) {
@@ -648,37 +648,32 @@ public class Device extends PhysicalItem implements Comparable<Device> {
 
   /**
    * Check that the device is available and not void.
-   * 
-   * @param bManual manual or automatic refresh ?
+   * <p>We Cannot mount void devices because of the jajuk reference cleanup thread 
+   * ( a refresh would clear the entire device collection)</p>
    * 
    * @return true if the device is ready for mounting, false if the device is void
    * 
-   * @throws JajukException if the device is not accessible
    */
-  private boolean checkDevice(boolean bManual) throws JajukException {
+  private boolean checkDevice() {
+    return pathExists() && !isVoid();
+  }
+
+  /**
+   * Return whether a device maps a void directory
+   * @return whether a device maps a void directory
+   */
+  private boolean isVoid() {
     final File file = new File(getUrl());
-    if (!file.exists()) {
-      throw new JajukException(11, "\""+getName() +"\" at URL : " + getUrl());
-    }
-    /*
-     * Cannot mount void devices because of the jajuk reference cleanup thread 
-     * ( a refresh would clear the entire device collection)
-     */
-    if (file.listFiles() == null || file.listFiles().length == 0) {
-      if (bManual) {
-        final int answer = Messages.getChoice(
-            "[" + getName() + "] " + Messages.getString("Confirmation_void_refresh"),
-            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-        // leave if user doesn't confirm to mount the void device
-        return (answer == JOptionPane.YES_OPTION);
-      } else {
-        // In auto mode, never mount a void device
-        return false;
-      }
-    } else {
-      // Device is not void
-      return true;
-    }
+    return (file.listFiles() == null || file.listFiles().length == 0);
+  }
+
+  /**
+   * Return whether the device path exists at this time
+   * @return whether the device path exists at this time
+   */
+  private boolean pathExists() {
+    final File file = new File(getUrl());
+    return file.exists();
   }
 
   /**
@@ -686,20 +681,34 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * 
    * @param bManual set whether mount is manual or auto
    * 
-   * @return whether the device has been mounted
+   * @return whether the device has been mounted. If user is asked for mounting but cancel, this method returns false.
    * 
-   * @throws JajukException if device cannot be mounted
+   * @throws JajukException if device cannot be mounted due to technical reason.
    */
   public boolean mount(final boolean bManual) throws JajukException {
     if (bMounted) {
+      // Device already mounted
       throw new JajukException(111);
     }
-    // Check if we can mount the device. It can throw a JajukException if void or unavailable
-    // device
-    boolean readyToMount = checkDevice(bManual);
+    // Check if we can mount the device. 
+    boolean readyToMount = checkDevice();
     // Effective mounting if available.
     if (readyToMount) {
       bMounted = true;
+    } else if (pathExists() && isVoid() && bManual) {
+      // If the device is void and in manual mode, leave a chance to the user to 
+      // force it
+      final int answer = Messages.getChoice(
+          "[" + getName() + "] " + Messages.getString("Confirmation_void_refresh"),
+          JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+      // leave if user doesn't confirm to mount the void device
+      if (answer != JOptionPane.YES_OPTION) {
+        return false;
+      } else {
+        bMounted = true;
+      }
+    } else {
+      throw new JajukException(11, "\"" + getName() + "\" at URL : " + getUrl());
     }
     // notify views to refresh if needed
     ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_MOUNT));
@@ -808,7 +817,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       }
 
       // Check that device is still available
-      boolean readyToMount = checkDevice(bManual);
+      boolean readyToMount = checkDevice();
       if (!readyToMount) {
         return false;
       }
@@ -913,8 +922,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
 
   /**
    * Scan recursively.
-   * DOCUMENT_ME
-   * 
+   *  
    * @param dir DOCUMENT_ME
    * @param bDeepScan DOCUMENT_ME
    */
