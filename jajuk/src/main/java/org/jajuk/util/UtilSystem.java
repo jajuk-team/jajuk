@@ -172,7 +172,7 @@ public final class UtilSystem {
   /**
   * Are we running in a KDE environment ?
   * 
-  * We check it by using ps command + a grep searching 'kdeinit' process*/
+  * We check it by using ps command + a grep searching 'ksmserver' process*/
   static {
     boolean underKDE = false;
     if (isUnderLinux()) {
@@ -184,7 +184,7 @@ public final class UtilSystem {
         proc.waitFor();
         String s;
         while ((s = stdInput.readLine()) != null) {
-          if (s.matches(".*kdeinit.*")) {
+          if (s.matches(".*ksmserver.*")) {
             underKDE = true;
             break;
           }
@@ -1324,7 +1324,7 @@ public final class UtilSystem {
   /**
    * Are we running in a KDE environment ?
    * 
-   * We check it by using ps command + a grep searching 'kdeinit' process.
+   * We check it by using ps command + a grep searching 'ksmserver' process.
    * 
    * @return whether we are running in a KDE environment
    */
