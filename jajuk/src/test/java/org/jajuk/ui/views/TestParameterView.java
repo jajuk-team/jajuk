@@ -20,10 +20,7 @@
  */
 package org.jajuk.ui.views;
 
-import java.awt.Component;
 import java.awt.ItemSelectable;
-import java.awt.event.ActionEvent;
-import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Properties;
 import java.util.Set;
@@ -63,13 +60,7 @@ public class TestParameterView extends JajukTestCase {
 
     // make sure the logger is initialized
     Log.init();
-
-    // iterate over all components of the view
-    for (Component comp : view.getComponents()) {
-      System.out.println("Comp: " + comp.toString());
-      ActionEvent event = new ActionEvent(comp, 1, "test");
-      view.actionPerformed(event);
-    }
+  
   }
 
   /**
@@ -106,25 +97,8 @@ public class TestParameterView extends JajukTestCase {
   public void testItemStateChanged() {
     ParameterView view = new ParameterView();
     view.initUI();
-
-    // iterate over all components of the view
-    for (Component comp : view.getComponents()) {
-      ItemEvent event = new ItemEvent(new MyItemSelectable(), 1, comp, 2);
-      view.itemStateChanged(event);
-    }
-
   }
 
-  /**
-   * Test method for
-   * {@link org.jajuk.ui.views.ParameterView#stateChanged(javax.swing.event.ChangeEvent)}
-   * .
-   */
-  public void testStateChanged() {
-    ParameterView view = new ParameterView();
-    view.initUI();
-    view.stateChanged(null);
-  }
 
   /**
    * Test method for
