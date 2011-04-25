@@ -991,6 +991,9 @@ public interface Const {
   /** Remembered directory for parties. */
   String CONF_PREPARE_PARTY = "jajuk.prepare_party.";
 
+  /** Slashscreen flag */
+  String CONF_SPLASH_SCREEN = "jajuk.splashscreen";
+  
   /** Shuffle/novelties mode. */
   String MODE_ALBUM = "album";
 

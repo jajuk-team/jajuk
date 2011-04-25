@@ -424,6 +424,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
   /** Enable Title view animation effect. */
   private JCheckBox jcbTitleAnimation;
+  
+  /** Splashscreen flag. */
+  private JCheckBox jcbSplashscreen;
 
   /**
    * View providing main jajuk configuration GUI. Known in the doc as
@@ -439,7 +442,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   public void actionPerformed(final ActionEvent e) {
-
     if (e.getSource() == jbClearHistory) {
       // show confirmation message if required
       if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY)) {
@@ -738,6 +740,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   private void updateConfFromGUIGUI() {
     Conf.setProperty(Const.CONF_CATALOG_PAGE_SIZE, Integer.toString(jsCatalogPages.getValue()));
     Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
+    Conf.setProperty(Const.CONF_SPLASH_SCREEN, Boolean.toString(jcbSplashscreen.isSelected()));
     final int oldFont = Conf.getInt(Const.CONF_FONTS_SIZE);
     // Display a message if font size changed
     if (oldFont != jsFonts.getValue()) {
@@ -1700,6 +1703,11 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       }
     });
     jcbShowPopups = new JCheckBox(Messages.getString("ParameterView.228"));
+    jcbShowPopups.setToolTipText(Messages.getString("ParameterView.292"));
+    // Splashscreen
+    jcbSplashscreen = new JCheckBox(Messages.getString("ParameterView.290"));
+    jcbSplashscreen.setToolTipText(Messages.getString("ParameterView.291"));
+    
     jcbShowSystray = new JCheckBox(Messages.getString("ParameterView.271"));
     // Disable this option if the tray is not supported by the platform
     jcbShowSystray.setEnabled(SystemTray.isSupported());
@@ -1789,6 +1797,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     // Add items
     JPanel jpUI = new JPanel(new MigLayout("insets 10,gapx 10,gapy 15"));
     jpUI.add(jcbShowPopups, "wrap");
+    jpUI.add(jcbSplashscreen, "wrap");
     jpUI.add(jcbShowSystray, "split 2");
     jpUI.add(jcbMinimizeToTray, "wrap");
     jpUI.add(jlFonts);
@@ -2118,10 +2127,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     String notificatorType = Messages.getString(NOTIFICATOR_PREFIX
         + Conf.getString(Const.CONF_UI_NOTIFICATOR_TYPE));
     jcbNotificationType.setSelectedItem(notificatorType);
-
     jcbShowSystray.setSelected(Conf.getBoolean(Const.CONF_SHOW_SYSTRAY));
-    jcbMinimizeToTray.setSelected(Conf.getBoolean(Const.CONF_MINIMIZE_TO_TRAY));
-
+    jcbShowSystray.setSelected(Conf.getBoolean(Const.CONF_SHOW_SYSTRAY));
+    jcbSplashscreen.setSelected(Conf.getBoolean(Const.CONF_SPLASH_SCREEN));
     scbLAF.removeActionListener(this);
     scbLAF.setSelectedItem(Conf.getString(Const.CONF_OPTIONS_LNF));
     scbLAF.addActionListener(this);

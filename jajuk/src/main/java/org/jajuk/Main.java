@@ -141,7 +141,9 @@ public final class Main {
       LocaleManager.setLocale(new Locale(Conf.getString(Const.CONF_OPTIONS_LANGUAGE)));
 
       // Display the splash screen through a invokeAndWait
-      StartupGUIService.launchSplashScreen();
+      if (Conf.getBoolean(Const.CONF_SPLASH_SCREEN)) {
+        StartupGUIService.launchSplashScreen();
+      }
 
       // Apply any proxy (requires load conf)
       DownloadManager.setDefaultProxySettings();

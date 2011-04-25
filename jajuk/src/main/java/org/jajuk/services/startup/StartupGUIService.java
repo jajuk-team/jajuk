@@ -149,19 +149,19 @@ public class StartupGUIService {
 
   /**
    * Startup over.
-   * DOCUMENT_ME
+   * 
    */
   public static void startupOver() {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        if (sc != null) {
+    if (sc != null) {
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
           sc.setProgress(100);
           sc.splashOff();
           sc = null;
         }
-      }
-    });
+      });
+    }
 
   }
 
@@ -178,7 +178,9 @@ public class StartupGUIService {
           ActionManager.getInstance();
 
           // Display progress
-          sc.setProgress(80, Messages.getString("SplashScreen.3"));
+          if (sc != null) {
+            sc.setProgress(80, Messages.getString("SplashScreen.3"));
+          }
 
           // show window according to startup mode
           if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_MAIN_WINDOW) {
@@ -192,7 +194,9 @@ public class StartupGUIService {
             // important that the fs frame is shown on the correct display
             JajukMainWindow.getInstance().applyStoredSize();
             // Display progress
-            sc.setProgress(80, Messages.getString("SplashScreen.3"));
+            if (sc != null) {
+              sc.setProgress(80, Messages.getString("SplashScreen.3"));
+            }
             ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK).perform(null);
           }
           // Start the slimbar if required
