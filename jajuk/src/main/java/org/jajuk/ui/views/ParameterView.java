@@ -1434,7 +1434,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbCollectionEncoding = new JComboBox();
     jcbCollectionEncoding.setToolTipText(Messages.getString("ParameterView.121"));
     jcbRegexp = new JCheckBox(Messages.getString("ParameterView.113"));
-    jcbRegexp.setSelected(Conf.getBoolean(Const.CONF_REGEXP));
     jcbRegexp.setToolTipText(Messages.getString("ParameterView.114"));
 
     jcbCollectionEncoding.addItem("UTF-8");
@@ -1471,11 +1470,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     }
     jcbCheckUpdates = new JCheckBox(Messages.getString("ParameterView.234"));
     jcbCheckUpdates.setToolTipText(Messages.getString("ParameterView.234"));
-    jcbCheckUpdates.setSelected(Conf.getBoolean(Const.CONF_CHECK_FOR_UPDATE));
     jcbForceFileDate = new JCheckBox(Messages.getString("ParameterView.244"));
     jcbForceFileDate.setToolTipText(Messages.getString("ParameterView.245"));
-    jcbForceFileDate.setSelected(Conf.getBoolean(Const.CONF_FORCE_FILE_DATE));
-
+    
     JLabel jlExplorer = new JLabel(Messages.getString("ParameterView.269"));
     jlExplorer.setToolTipText(Messages.getString("ParameterView.270"));
     jtfExplorerPath = new JTextField();
@@ -2061,6 +2058,9 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jtfMPlayerArgs.setText(Conf.getString(Const.CONF_MPLAYER_ARGS));
     jtfEnvVariables.setText(Conf.getString(Const.CONF_ENV_VARIABLES));
     jtfExplorerPath.setText(Conf.getString(Const.CONF_EXPLORER_PATH));
+    jcbRegexp.setSelected(Conf.getBoolean(Const.CONF_REGEXP));
+    jcbCheckUpdates.setSelected(Conf.getBoolean(Const.CONF_CHECK_FOR_UPDATE));
+    jcbForceFileDate.setSelected(Conf.getBoolean(Const.CONF_FORCE_FILE_DATE));
   }
 
   /**
