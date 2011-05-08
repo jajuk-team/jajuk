@@ -29,7 +29,6 @@ import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -73,8 +72,8 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.widgets.InformationJPanel;
@@ -95,7 +94,7 @@ import org.jdesktop.swingx.JXBusyLabel;
  * <p>
  * Catalog perspectives
  */
-public class CatalogView extends ViewAdapter implements ComponentListener, ActionListener,
+public class CatalogView extends ViewAdapter implements ActionListener,
     TwoStepsDisplayable {
 
   /** Generated serialVersionUID. */

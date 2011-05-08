@@ -27,7 +27,6 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -107,7 +106,7 @@ import org.jaudiotagger.tag.datatype.Artwork;
 /**
  * Cover view. Displays an image for the current album
  */
-public class CoverView extends ViewAdapter implements ComponentListener, ActionListener {
+public class CoverView extends ViewAdapter implements ActionListener {
 
   /** The Constant PLUS_QUOTE.  DOCUMENT_ME */
   private static final String PLUS_QUOTE = "+\"";

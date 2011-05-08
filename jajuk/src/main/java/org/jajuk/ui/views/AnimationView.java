@@ -31,7 +31,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.util.HashSet;
 import java.util.Set;
@@ -59,7 +58,7 @@ import org.jajuk.util.log.Log;
 /**
  * Animation-based view.
  */
-public class AnimationView extends ViewAdapter implements ComponentListener {
+public class AnimationView extends ViewAdapter {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;

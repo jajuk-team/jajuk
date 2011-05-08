@@ -39,7 +39,6 @@ import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableColumnModelEvent;
-import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
@@ -75,8 +74,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * <p>
  * Bring a menu displayed on right click.
  */
-public class JajukTable extends JXTable implements Observer, TableColumnModelListener,
-    ListSelectionListener {
+public class JajukTable extends JXTable implements Observer, ListSelectionListener {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
@@ -639,8 +637,8 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.EXITING.equals(subject)) {
-      Conf.setProperty(getConfKeyForIsHorizontalScrollable(), Boolean
-          .toString(isHorizontalScrollEnabled()));
+      Conf.setProperty(getConfKeyForIsHorizontalScrollable(),
+          Boolean.toString(isHorizontalScrollEnabled()));
 
       // store column margin
       String tableID = getTableId();

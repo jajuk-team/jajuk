@@ -99,8 +99,7 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 /**
  * Physical tree view.
  */
-public class FilesTreeView extends AbstractTreeView implements ActionListener,
-    org.jajuk.events.Observer {
+public class FilesTreeView extends AbstractTreeView implements ActionListener {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;

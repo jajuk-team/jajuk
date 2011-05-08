@@ -60,7 +60,7 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * Items root container.
  */
-public final class Collection extends DefaultHandler implements ErrorHandler {
+public final class Collection extends DefaultHandler {
 
   /** The Constant TAG_CLOSE_NEWLINE. DOCUMENT_ME */
   private static final String TAG_CLOSE_NEWLINE = ">\n";

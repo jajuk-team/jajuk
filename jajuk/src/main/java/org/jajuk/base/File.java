@@ -40,7 +40,7 @@ import org.jajuk.util.log.Log;
  * <p>
  * Physical item.
  */
-public class File extends PhysicalItem implements Comparable<File>, Const {
+public class File extends PhysicalItem implements Comparable<File> {
 
   /** Parent directory. */
   private final Directory directory;
@@ -52,7 +52,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
   private java.io.File fio;
 
   /**
-   * File instanciation.
+   * File instantiation.
    * 
    * @param sId DOCUMENT_ME
    * @param sName DOCUMENT_ME

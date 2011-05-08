@@ -67,7 +67,7 @@ import org.jajuk.util.error.JajukException;
  * <p>
  * Configuration perspective.
  */
-public class DeviceView extends ViewAdapter implements IView, ActionListener {
+public class DeviceView extends ViewAdapter implements ActionListener {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;

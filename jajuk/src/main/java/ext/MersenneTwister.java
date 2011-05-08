@@ -24,7 +24,6 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 
 /**
  * <h3>MersenneTwister and MersenneTwisterFast</h3>
@@ -167,7 +166,7 @@ import java.io.Serializable;
  * @version 13
  */
 
-public class MersenneTwister extends java.util.Random implements Serializable, Cloneable {
+public class MersenneTwister extends java.util.Random implements Cloneable {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;

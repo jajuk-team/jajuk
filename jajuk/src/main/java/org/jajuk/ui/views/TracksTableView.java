@@ -27,7 +27,6 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.TracksTableModel;
-import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -37,7 +36,7 @@ import org.jajuk.util.UtilGUI;
 /**
  * Logical table view.
  */
-public class TracksTableView extends AbstractTableView implements TwoStepsDisplayable {
+public class TracksTableView extends AbstractTableView {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
