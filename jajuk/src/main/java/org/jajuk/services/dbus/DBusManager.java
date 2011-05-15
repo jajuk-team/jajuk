@@ -44,7 +44,7 @@ public final class DBusManager {
       if (dbus == null) {
         dbus = new DBusSupportImpl();
 
-        // the connect method will internally catch errors and report them to the
+        // The connect method will internally catch errors and report them to the
         // logfile
         dbus.connect();
       }

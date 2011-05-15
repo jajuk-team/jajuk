@@ -51,7 +51,6 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -176,8 +175,8 @@ public final class Collection extends DefaultHandler {
   /** *************************************************************************** [PERF] provide current stage (files, tracks...) used to optimize switch when parsing the collection ************************************************************************** */
   private Stage stage = Stage.STAGE_NONE;
 
-  /** The Constant ADDITION_FORMATTER. DOCUMENT_ME */
-  private static final DateFormat ADDITION_FORMATTER = UtilString.getAdditionDateFormatter();
+  /** The Constant additionFormatter. DOCUMENT_ME */
+  private final DateFormat additionFormatter = UtilString.getAdditionDateFormatter();
 
   /**
    * Instance getter.
@@ -407,7 +406,7 @@ public final class Collection extends DefaultHandler {
    * @exception SAXException
    */
   @Override
-  @SuppressWarnings("ucd")
+  @SuppressWarnings("ucd") //NOSONAR
   public void warning(SAXParseException spe) throws SAXException {
     throw new SAXException(Messages.getErrorMessage(5) + " / " + spe.getSystemId() + "/"
         + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
@@ -493,58 +492,59 @@ public final class Collection extends DefaultHandler {
       // [PERF] Manage top tags to set current stage. Manages 'properties'
       // tags as well
       if (idIndex == -1) {
-        if (Const.XML_DEVICES == sQName) {
+        // Note that we compare string with '==' for performance reasons and it is safe here.
+        if (Const.XML_DEVICES == sQName) { //NOSONAR
           manager = DeviceManager.getInstance();
           stage = Stage.STAGE_DEVICES;
           needCheckID = true;
-        } else if (Const.XML_ALBUMS == sQName) {
+        } else if (Const.XML_ALBUMS == sQName) {//NOSONAR
           manager = AlbumManager.getInstance();
           stage = Stage.STAGE_ALBUMS;
           needCheckID = true;
-        } else if (Const.XML_ARTISTS == sQName) {
+        } else if (Const.XML_ARTISTS == sQName) {//NOSONAR
           manager = ArtistManager.getInstance();
           stage = Stage.STAGE_ARTISTS;
           needCheckID = true;
-        } else if (Const.XML_ALBUM_ARTISTS == sQName) {
+        } else if (Const.XML_ALBUM_ARTISTS == sQName) {//NOSONAR
           manager = AlbumArtistManager.getInstance();
           stage = Stage.STAGE_ALBUM_ARTIST;
           needCheckID = true;
-        } else if (Const.XML_DIRECTORIES == sQName) {
+        } else if (Const.XML_DIRECTORIES == sQName) {//NOSONAR
           manager = DirectoryManager.getInstance();
           stage = Stage.STAGE_DIRECTORIES;
           needCheckID = true;
-        } else if (Const.XML_FILES == sQName) {
+        } else if (Const.XML_FILES == sQName) {//NOSONAR
           manager = FileManager.getInstance();
           stage = Stage.STAGE_FILES;
           needCheckID = true;
-        } else if (Const.XML_PLAYLISTS == sQName) {
+        } else if (Const.XML_PLAYLISTS == sQName) {//NOSONAR
           // This code is here for Jajuk < 1.6 compatibility
           manager = PlaylistManager.getInstance();
           stage = Stage.STAGE_PLAYLISTS;
           needCheckID = true;
-        } else if (Const.XML_PLAYLIST_FILES == sQName) {
+        } else if (Const.XML_PLAYLIST_FILES == sQName) {//NOSONAR
           manager = PlaylistManager.getInstance();
           stage = Stage.STAGE_PLAYLIST_FILES;
           needCheckID = true;
-        } else if (Const.XML_GENRES == sQName) {
+        } else if (Const.XML_GENRES == sQName) {//NOSONAR
           manager = GenreManager.getInstance();
           stage = Stage.STAGE_GENRES;
           needCheckID = true;
-        } else if (Const.XML_TRACKS == sQName) {
+        } else if (Const.XML_TRACKS == sQName) {//NOSONAR
           manager = TrackManager.getInstance();
           stage = Stage.STAGE_TRACKS;
           needCheckID = true;
-        } else if (Const.XML_YEARS == sQName) {
+        } else if (Const.XML_YEARS == sQName) {//NOSONAR
           manager = YearManager.getInstance();
           stage = Stage.STAGE_YEARS;
           needCheckID = true;
-        } else if (Const.XML_TYPES == sQName) {
+        } else if (Const.XML_TYPES == sQName) {//NOSONAR
           // This is here for pre-1.7 collections, after we don't commit types
           // anymore (they are set programmatically)
           manager = TypeManager.getInstance();
           stage = Stage.STAGE_TYPES;
           needCheckID = false;
-        } else if (Const.XML_PROPERTY == sQName) {
+        } else if (Const.XML_PROPERTY == sQName) {//NOSONAR
           // A property description
           boolean bCustom = Boolean.parseBoolean(attributes.getValue(attributes
               .getIndex(Const.XML_CUSTOM)));
@@ -567,7 +567,7 @@ public final class Collection extends DefaultHandler {
               // from 1.2
               // we reset default value to "today"
               oDefaultValue = UtilString.parse(sDefaultValue, cType);
-            } catch (Exception e) {
+            } catch (ParseException e) {
               oDefaultValue = new Date();
             }
           }
@@ -580,7 +580,7 @@ public final class Collection extends DefaultHandler {
           }
         }
 
-        if (Const.XML_PROPERTY == sQName) {
+        if (Const.XML_PROPERTY == sQName) {//NOSONAR
           Log.debug("Found property: " + attributes.getValue(Const.XML_NAME));
         } else {
           Log.debug("Starting stage: '" + stage + "' with property: '" + sQName + "' manager: "
@@ -626,7 +626,7 @@ public final class Collection extends DefaultHandler {
           Log.warn("Unexpected Stage: " + stage);
         }
       }
-    } catch (Throwable e) {
+    } catch (Throwable e) {//NOSONAR
       // Make sure to catch every issue here (including runtime exceptions) so we make sure to start
       // jajuk
       StringBuilder sAttributes = new StringBuilder();
@@ -702,7 +702,7 @@ public final class Collection extends DefaultHandler {
     String sRightID = sID;
     if (needCheckID) {
       sRightID = FileManager.createID(sItemName, dParent).intern();
-      if (sRightID == sID) {
+      if (sRightID == sID) {  //NOSONAR
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
         Log.debug("** Wrong file Id, upgraded: " + sItemName);
@@ -730,7 +730,7 @@ public final class Collection extends DefaultHandler {
       sParentID = hmWrongRightDirectoryID.get(sParentID);
     }
     // We use intern() here for performances
-    if (sParentID != "-1") {
+    if (sParentID != "-1") {  //NOSONAR
       // Parent directory should be already referenced
       // because of order conservation
       dParent = DirectoryManager.getInstance().getDirectoryByID(sParentID);
@@ -754,7 +754,7 @@ public final class Collection extends DefaultHandler {
     String sRightID = sID;
     if (needCheckID) {
       sRightID = DirectoryManager.createID(sItemName, device, dParent).intern();
-      if (sRightID == sID) {
+      if (sRightID == sID) {//NOSONAR
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
         Log.debug("** Wrong directory Id, upgraded: " + sItemName);
@@ -873,7 +873,7 @@ public final class Collection extends DefaultHandler {
     if (needCheckID) {
       sRightID = TrackManager.createID(sTrackName, album, genre, artist, length, year, lOrder,
           type, lDiscNumber).intern();
-      if (sRightID == sID) {
+      if (sRightID == sID) {//NOSONAR
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
         Log.debug("** Wrong Track Id, upgraded: " + sTrackName);
@@ -888,7 +888,7 @@ public final class Collection extends DefaultHandler {
     // only set discovery date if it is available in the file
     if (attributes.getValue(Const.XML_TRACK_DISCOVERY_DATE) != null) {
       // Date format should be OK
-      Date dAdditionDate = ADDITION_FORMATTER.parse(attributes
+      Date dAdditionDate = additionFormatter.parse(attributes
           .getValue(Const.XML_TRACK_DISCOVERY_DATE));
       track.setDiscoveryDate(dAdditionDate);
     }
@@ -913,7 +913,8 @@ public final class Collection extends DefaultHandler {
     String sItemName = attributes.getValue(Const.XML_NAME).intern();
     String sAttributeAlbumArtist = attributes.getValue(Const.XML_ALBUM_ARTIST);
     if (sAttributeAlbumArtist != null) {
-      sAttributeAlbumArtist = sAttributeAlbumArtist.intern();
+      // Make sure to store the string into the String pool to save memory
+      sAttributeAlbumArtist.intern();//NOSONAR
     }
     long lItemDiscID = 0;
     String sAttributeDiskId = attributes.getValue(Const.XML_ALBUM_DISC_ID);
@@ -924,7 +925,7 @@ public final class Collection extends DefaultHandler {
     String sRightID = sID;
     if (needCheckID) {
       sRightID = AlbumManager.createID(sItemName, lItemDiscID).intern();
-      if (sRightID == sID) {
+      if (sRightID == sID) {//NOSONAR
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
         Log.debug("** Wrong album Id, upgraded: " + sItemName);
@@ -950,7 +951,7 @@ public final class Collection extends DefaultHandler {
     String sRightID = sID;
     if (needCheckID) {
       sRightID = ArtistManager.createID(sItemName).intern();
-      if (sRightID == sID) {
+      if (sRightID == sID) {//NOSONAR
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
         Log.debug("** Wrong artist Id, upgraded: " + sItemName);
@@ -976,7 +977,7 @@ public final class Collection extends DefaultHandler {
     String sRightID = sID;
     if (needCheckID) {
       sRightID = GenreManager.createID(sItemName).intern();
-      if (sRightID == sID) {
+      if (sRightID == sID) {//NOSONAR
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
         Log.debug("** Wrong genre Id, upgraded: " + sItemName);
@@ -1013,7 +1014,7 @@ public final class Collection extends DefaultHandler {
     String sRightID = sID;
     if (needCheckID) {
       sRightID = PlaylistManager.createID(sItemName, dParent).intern();
-      if (sRightID == sID) {
+      if (sRightID == sID) {//NOSONAR
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
         Log.debug("** Wrong playlist Id, upgraded: " + sItemName);
@@ -1041,7 +1042,7 @@ public final class Collection extends DefaultHandler {
     String sRightID = sID;
     if (needCheckID) {
       sRightID = DeviceManager.createID(sItemName).intern();
-      if (sRightID == sID) {
+      if (sRightID == sID) {//NOSONAR
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
         Log.debug("** Wrong device Id, upgraded: " + sItemName);

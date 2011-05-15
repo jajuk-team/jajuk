@@ -338,7 +338,9 @@ public abstract class JajukAction extends AbstractAction {
   public final void actionPerformed(ActionEvent evt) {
     try {
       perform(evt);
-    } catch (Throwable e2) {
+    } catch (Throwable e2) {//NOSONAR
+      // We want to catch even throwables because there is no point to 
+      // throw them again, caller can't do anything anyway.
       Log.error(e2);
     }
   }
