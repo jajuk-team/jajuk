@@ -174,7 +174,7 @@ public class AnimationView extends ViewAdapter {
         if (!Conf.getBoolean(Const.CONF_TITLE_ANIMATION)) {
           anim = BasicTextAnimation.defaultFade(btl1, DEFAULT_DURATION, sText, Color.darkGray);
         } else {
-          int iShuffle = (int) (Math.random() * 3);
+          int iShuffle = (int) (Math.random() * 3);  //NOSONAR
           switch (iShuffle) {
           case 0:
             anim = BasicTextAnimation.defaultScale(btl1, DEFAULT_DURATION, sText, Color.darkGray);

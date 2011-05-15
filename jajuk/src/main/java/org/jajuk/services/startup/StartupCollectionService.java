@@ -65,9 +65,9 @@ import org.xml.sax.SAXException;
 /**
  * Startup facilities of the collection.
  */
-public class StartupCollectionService {
+public final class StartupCollectionService {
 
-  /** Mplayer state. */
+  /** MPlayer state. */
   private static UtilSystem.MPlayerStatus mplayerStatus;
 
   /** Does a collection parsing error occurred ? *. */
@@ -328,18 +328,12 @@ public class StartupCollectionService {
           final int i = Messages.getChoice(Messages.getString("Error.133") + ":\n"
               + file.getAbsolutePath(), JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
           if (i == JOptionPane.CANCEL_OPTION) {
-            System.exit(-1);
+            System.exit(-1); //NOSONAR
           }
           break;
-        } catch (final SAXException e2) {
+        } catch (final Exception e2) {
           Log.error(5, file.getAbsolutePath(), e2);
-        } catch (final ParserConfigurationException e2) {
-          Log.error(5, file.getAbsolutePath(), e2);
-        } catch (final JajukException e2) {
-          Log.error(5, file.getAbsolutePath(), e2);
-        } catch (final IOException e2) {
-          Log.error(5, file.getAbsolutePath(), e2);
-        }
+        } 
       }
     }
 
@@ -347,7 +341,6 @@ public class StartupCollectionService {
     // collection (and a void collection is loaded)
     if (!bParsingOK) {
       Collection.clearCollection();
-      System.gc();
       try {
         Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
       } catch (final Exception e2) {

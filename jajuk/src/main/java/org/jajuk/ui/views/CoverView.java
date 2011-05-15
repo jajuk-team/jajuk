@@ -118,7 +118,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   private static final long serialVersionUID = 1L;
 
   /** No cover cover. */
-  private static Cover nocover;
+  private static Cover nocover = new Cover(Const.IMAGES_SPLASHSCREEN, CoverType.NO_COVER);
 
   /** Error counter to check connection availability. */
   private static int iErrorCounter = 0;
@@ -175,8 +175,8 @@ public class CoverView extends ViewAdapter implements ActionListener {
   /** Used Cover index. */
   private int index = 0;
 
-  /** Event ID. */
-  private volatile int iEventID;
+  /** Event ID., it should be volatile because this mutable field can be set by different threads */
+  private volatile int iEventID;//NOSONAR
 
   /** Flag telling that user wants to display a better cover. */
   private boolean bGotoBetter = false;
@@ -327,14 +327,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
     // Cover view used in catalog view should not listen events
     if (fileReference == null) {
       ObservationManager.register(this);
-    }
-    try {
-      // instantiate default cover
-      if (CoverView.nocover == null) {
-        CoverView.nocover = new Cover(Const.IMAGES_SPLASHSCREEN, CoverType.NO_COVER);
-      }
-    } catch (final Exception e) {
-      Log.error(e);
     }
     // global layout
     MigLayout globalLayout = null;
@@ -564,11 +556,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
             alCovers.add(cover2);
             setFoundText();
           }
-          // Reset cached cover
-          org.jajuk.base.File fCurrent = fileReference;
-          if (fCurrent == null) {
-            fCurrent = QueueModel.getPlayingFile();
-          }
           // Notify cover change
           ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
           // add new cover in others cover views
@@ -639,11 +626,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
             UtilSystem.copy(cover.getFile(), fNew);
             InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
                 InformationJPanel.MessageType.INFORMATIVE);
-            // Reset cached cover
-            org.jajuk.base.File fCurrent = fileReference;
-            if (fCurrent == null) {
-              fCurrent = QueueModel.getPlayingFile();
-            }
             // Notify cover change
             ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
           } catch (final Exception ex) {
@@ -1036,14 +1018,14 @@ public class CoverView extends ViewAdapter implements ActionListener {
    * @throws JajukException the jajuk exception
    */
   private Object prepareDisplay(final int index) throws JajukException {
-    final int iLocalEventID = iEventID;
+    final int iLocalEventID = this.iEventID;
     Log.debug("display index: " + index);
     searching(true); // lookup icon
     // find next correct cover
     ImageIcon icon = null;
     Cover cover = null;
     try {
-      if (iEventID == iLocalEventID) {
+      if (this.iEventID == iLocalEventID) {
         cover = alCovers.get(index); // take image at the given index
         Image img = cover.getImage();
         // Never mirror our no cover image
@@ -1133,7 +1115,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
         iNewWidth = (int) (icon.getIconWidth() * ((float) iNewHeight / icon.getIconHeight()));
       }
     }
-    if (iEventID == iLocalEventID) {
+    if (this.iEventID == iLocalEventID) {
       // Note that at this point, the image is fully loaded (done in the ImageIcon constructor)
       ii = UtilGUI.getResizedImage(icon, iNewWidth, iNewHeight);
       // Free source and destination image buffer, see
@@ -1265,7 +1247,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   @Override
   public void update(final JajukEvent event) {
     final JajukEvents subject = event.getSubject();
-    iEventID = (int) (Integer.MAX_VALUE * Math.random());
+    this.iEventID = UtilSystem.getRandom().nextInt();
     final int iLocalEventID = iEventID;
     try {
       searching(true);
@@ -1338,8 +1320,9 @@ public class CoverView extends ViewAdapter implements ActionListener {
     // save cpu
     boolean dirChanged = last == null ? true : !last.getDirectory().equals(
         QueueModel.getPlayingFile().getDirectory());
-    if (bForceCoverReload)
+    if (bForceCoverReload){
       dirChanged = true;
+    }
 
     refreshCovers(iLocalEventID, dirChanged);
 

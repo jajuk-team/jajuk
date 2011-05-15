@@ -283,7 +283,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
           PerspectiveAdapter current = (PerspectiveAdapter) PerspectiveManager
               .getCurrentPerspective();
           IView newView = ViewFactory.createView(view, current,
-              (int) (Integer.MAX_VALUE * UtilSystem.getRandom().nextDouble()));
+              Math.abs(UtilSystem.getRandom().nextInt()));
           newView.initUI();
           newView.setIsPopulated(true);
           current.addDockable(newView);

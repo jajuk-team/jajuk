@@ -448,7 +448,7 @@ public final class UtilGUI {
    * @param window DOCUMENT_ME
    */
   public static void setShuffleLocation(final Window window, final int iFromTop, final int iFromLeft) {
-    window.setLocation((int) (Math.random() * iFromTop), (int) (Math.random() * iFromLeft));
+    window.setLocation((int) (Math.random() * iFromTop), (int) (Math.random() * iFromLeft)); //NOSONAR
   }
 
   /**
