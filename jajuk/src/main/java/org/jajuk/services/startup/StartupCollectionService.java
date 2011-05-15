@@ -73,8 +73,6 @@ public final class StartupCollectionService {
   /** Does a collection parsing error occurred ? *. */
   private static boolean bCollectionLoadRecover = true;
 
-  /** Lock used to trigger a first time wizard device creation and refresh *. */
-  static short[] canLaunchRefresh = new short[0];
 
   /**
    * Instantiates a new startup collection service.
@@ -83,15 +81,15 @@ public final class StartupCollectionService {
     // private constructor to hide it from the outside
   }
 
-   /**
-   * Register all the different managers for the types of items that we know
-   * about.
-   */
+  /**
+  * Register all the different managers for the types of items that we know
+  * about.
+  */
   public static void registerItemManagers() {
     ItemManager.registerItemManager(org.jajuk.base.Album.class, AlbumManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Artist.class, ArtistManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.AlbumArtist.class, AlbumArtistManager
-        .getInstance());
+    ItemManager.registerItemManager(org.jajuk.base.AlbumArtist.class,
+        AlbumArtistManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Device.class, DeviceManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.File.class, FileManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Directory.class, DirectoryManager.getInstance());
@@ -325,15 +323,16 @@ public final class StartupCollectionService {
           Collection.load(file);
           bParsingOK = true;
           // Show a message telling user that we use a backup file
-          final int i = Messages.getChoice(Messages.getString("Error.133") + ":\n"
-              + file.getAbsolutePath(), JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
+          final int i = Messages.getChoice(
+              Messages.getString("Error.133") + ":\n" + file.getAbsolutePath(),
+              JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
           if (i == JOptionPane.CANCEL_OPTION) {
             System.exit(-1); //NOSONAR
           }
           break;
         } catch (final Exception e2) {
           Log.error(5, file.getAbsolutePath(), e2);
-        } 
+        }
       }
     }
 
@@ -359,19 +358,6 @@ public final class StartupCollectionService {
 
     // start auto commit thread
     tAutoCommit.start();
-  }
-
-  /**
-   * Wait until user selected a device path in first time wizard.
-   */
-  public static void waitForLaunchRefresh() {
-    synchronized (canLaunchRefresh) {
-      try {
-        canLaunchRefresh.wait();
-      } catch (final InterruptedException e) {
-        Log.error(e);
-      }
-    }
   }
 
   /**

@@ -21,6 +21,7 @@
 package org.jajuk.services.startup;
 
 import org.jajuk.base.AlbumManager;
+import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.ItemManager;
 import org.jajuk.services.alarm.AlarmManager;
@@ -31,8 +32,10 @@ import org.jajuk.services.dbus.DBusManager;
 import org.jajuk.services.lastfm.LastFmManager;
 import org.jajuk.services.players.QueueController;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
+import org.jajuk.ui.wizard.FirstTimeWizard;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
+import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
@@ -40,7 +43,7 @@ import org.jajuk.util.log.Log;
  * Startup facilities of asynchronous tasks
  * <p>Called after collection loading<p>.
  */
-public class StartupAsyncService {
+public final class StartupAsyncService {
 
   /**
    * Instantiates a new startup async service.
@@ -105,6 +108,18 @@ public class StartupAsyncService {
           // Switch to sorted mode, must be done before starting auto-refresh
           // thread !
           ItemManager.switchAllManagersToOrderState();
+          
+          // Refresh any new device from first Time Wizard
+          Device newDevice = FirstTimeWizard.getNewDevice();
+          try {
+            // Refresh device asynchronously
+            if (newDevice != null) {
+              newDevice.refresh(true, false, false, null);
+            }
+          } catch (final Exception e2) {
+            Log.error(112, newDevice.getName(), e2);
+            Messages.showErrorMessage(112, newDevice.getName());
+          }
 
           // Clear covers images cache
           SessionService.clearCache();

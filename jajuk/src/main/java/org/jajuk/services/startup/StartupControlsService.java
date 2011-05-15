@@ -37,7 +37,7 @@ import org.jajuk.util.log.Log;
 /**
  * Startup facilities for configuration controls.
  */
-public class StartupControlsService {
+public final class StartupControlsService {
 
   /** The Constant DIR_CHECKS.  DOCUMENT_ME */
   private static final String[] DIR_CHECKS = {

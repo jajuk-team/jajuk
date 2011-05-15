@@ -57,7 +57,7 @@ import org.jajuk.util.log.Log;
 /**
  * Startup facilities for sound engine.
  */
-public class StartupEngineService {
+public final class StartupEngineService {
 
   /** List of items to play at startup. */
   private static List<org.jajuk.base.File> alToPlay = new ArrayList<org.jajuk.base.File>();

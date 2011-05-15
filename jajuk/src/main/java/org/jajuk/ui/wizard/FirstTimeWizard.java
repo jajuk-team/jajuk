@@ -30,7 +30,6 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -45,9 +44,6 @@ import net.miginfocom.swing.MigLayout;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.services.core.SessionService;
-import org.jajuk.services.startup.StartupCollectionService;
-import org.jajuk.ui.actions.ActionManager;
-import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.ui.widgets.PathSelector;
@@ -59,7 +55,6 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.filters.DirectoryFilter;
-import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXCollapsiblePane;
 import org.jdesktop.swingx.VerticalLayout;
 
@@ -95,9 +90,6 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
   private JTextField jtfRefreshTime;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbHelp;
-
-  /** DOCUMENT_ME. */
   private JXCollapsiblePane advanced;
 
   /** DOCUMENT_ME. */
@@ -118,6 +110,9 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
   /** User chosen workspace location. */
   private String userWorkspacePath;
 
+  /** Any new device we created using this wizard */
+  private static Device newDevice;
+
   /**
    * Gets the user workspace path.
    * 
@@ -125,6 +120,14 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
    */
   public String getUserWorkspacePath() {
     return this.userWorkspacePath;
+  }
+
+  /**
+   * Gets any new device created through this wizard
+   * @return any new device created through this wizard
+   */
+  public static Device getNewDevice() {
+    return newDevice;
   }
 
   /**
@@ -149,8 +152,8 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
       // alert SessionService to continue startup
       SessionService.notifyFirstTimeWizardClosed();
     } else if (e.getSource() == jbFileSelection) {
-      final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
-          .getInstance()));
+      final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
+          DirectoryFilter.getInstance()));
       jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
       jfc.setDialogTitle(Messages.getString("FirstTimeWizard.5"));
       jfc.setMultiSelectionEnabled(false);
@@ -159,8 +162,7 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
         fDir = jfc.getSelectedFile();
         // First, check device availability
         int code = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(),
-            Device.Type.DIRECTORY,
-            fDir.getAbsolutePath(), true);
+            Device.Type.DIRECTORY, fDir.getAbsolutePath(), true);
         if (code != 0) {
           Messages.showErrorMessage(code);
           jbOk.setEnabled(false);
@@ -173,7 +175,6 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
         pack(); // repack as size of dialog can be exceeded now
       }
     } else if (e.getSource() == jbOk) {
-      final boolean bShowHelp = jcbHelp.isSelected();
       String sPATH = workspacePath.getUrl().trim();
       // Check workspace directory
       if ((!sPATH.isEmpty()) && (!new File(sPATH).canRead())) {
@@ -188,45 +189,22 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
 
       // Notify Main to continue startup
       SessionService.notifyFirstTimeWizardClosed();
-      new Thread("First Time Wizard Action Thread") {
-        @Override
-        public void run() {
-          // Wait for context loading (default configuration...)
-          StartupCollectionService.waitForLaunchRefresh();
 
-          // Create a directory device
-          final Device device = DeviceManager.getInstance().registerDevice(fDir.getName(), Device.Type.DIRECTORY,
-              fDir.getAbsolutePath());
-          device.setProperty(Const.XML_DEVICE_AUTO_MOUNT, true);
-          // Set refresh time
-          double dRefreshTime = 5d;
-          try {
-            dRefreshTime = Double.parseDouble(jtfRefreshTime.getText());
-            if (dRefreshTime < 0) {
-              dRefreshTime = 0;
-            }
-          } catch (final NumberFormatException e1) {
-            dRefreshTime = 0;
-          }
-          device.setProperty(Const.XML_DEVICE_AUTO_REFRESH, dRefreshTime);
-          try {
-            // Refresh device synchronously
-            device.refresh(false, false, false, null);
-          } catch (final Exception e2) {
-            Log.error(112, device.getName(), e2);
-            Messages.showErrorMessage(112, device.getName());
-          }
-          // Show Help window if required
-          if (bShowHelp) {
-            // Display help window
-            try {
-              ActionManager.getAction(JajukActions.HELP_REQUIRED).perform(null);
-            } catch (Exception e1) {
-              Log.error(e1);
-            }
-          }
+      // Create the new device
+      newDevice = DeviceManager.getInstance().registerDevice(fDir.getName(), Device.Type.DIRECTORY,
+          fDir.getAbsolutePath());
+      newDevice.setProperty(Const.XML_DEVICE_AUTO_MOUNT, true);
+      // Set refresh time
+      double dRefreshTime = 5d;
+      try {
+        dRefreshTime = Double.parseDouble(jtfRefreshTime.getText());
+        if (dRefreshTime < 0) {
+          dRefreshTime = 0;
         }
-      }.start();
+      } catch (final NumberFormatException e1) {
+        dRefreshTime = 0;
+      }
+      newDevice.setProperty(Const.XML_DEVICE_AUTO_REFRESH, dRefreshTime);
     }
   }
 
@@ -258,7 +236,6 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
       workspacePath.setEnabled(false);
     }
 
-    jcbHelp = new JCheckBox(Messages.getString("FirstTimeWizard.4"));
     // Refresh time
     jlRefreshTime = new JLabel(Messages.getString("DeviceWizard.53"));
     jtfRefreshTime = new JTextField("5");// 5 mins by default
@@ -287,7 +264,6 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
     advanced.setCollapsed(true);
     advanced.add(jlWorkspace);
     advanced.add(workspacePath);
-    advanced.add(jcbHelp);
 
     // Add items
     setLayout(new MigLayout("insets 10,gapx 10,gapy 15", "[][grow]", "[][][][][][]"));
