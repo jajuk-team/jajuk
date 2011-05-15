@@ -250,7 +250,7 @@ public final class UtilSystem {
         // too much backup files, delete older
         if (((lUsedMB - file.length()) / 1048576 > iMB) && (alFiles.size() > 0)) {
           final File fileToDelete = alFiles.get(0);
-          if (fileToDelete != null) {
+          if (fileToDelete != null) { //NOSONAR
             if (!fileToDelete.delete()) {
               Log.warn("Could not delete file " + fileToDelete);
             }

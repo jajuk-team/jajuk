@@ -126,7 +126,7 @@ public final class UpgradeManager {
         bUpgraded = true;
         // Now check if this is an old migration.
         if (!SessionService.isTestMode()) {
-          if (isMajorMigration(Const.JAJUK_VERSION, sStoredRelease)) {
+          if (isMajorMigration(Const.JAJUK_VERSION, sStoredRelease)) { //NOSONAR
             majorMigration = true;
           }
         }

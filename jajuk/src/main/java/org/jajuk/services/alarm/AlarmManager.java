@@ -129,7 +129,7 @@ public class AlarmManager implements Observer {
         // If chosen date is already past, consider that user meant
         // tomorrow
         Date alarmDate = cal.getTime();
-        if (alarmDate.before(new Date())) {
+        if (alarmDate.before(new Date())) {  //NOSONAR
           alarmDate = DateUtils.addDays(alarmDate, 1);
         }
         // Compute playlist if required
@@ -142,7 +142,7 @@ public class AlarmManager implements Observer {
           String item = conf.substring(conf.indexOf('/') + 1, conf.length());
           alToPlay = new ArrayList<File>();
           if (mode.equals(Const.STARTUP_MODE_ITEM)) {
-            if (conf.matches(SearchResultType.FILE.name() + ".*")) {
+            if (conf.matches(SearchResultType.FILE.name() + ".*")) { //NOSONAR
               File file = FileManager.getInstance().getFileByID(item);
               if (file != null) {
                 alToPlay.add(file);
@@ -156,20 +156,20 @@ public class AlarmManager implements Observer {
             // ignoring current ambience
             alToPlay = UtilFeatures.filterByAmbience(FileManager.getInstance()
                 .getGlobalShufflePlaylist(), ambience);
-            if (alToPlay.size() == 0) {
+            if (alToPlay.size() == 0) { //NOSONAR
               alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
             }
           } else if (mode.equals(Const.STARTUP_MODE_BESTOF)) {
             alToPlay = UtilFeatures.filterByAmbience(FileManager.getInstance()
                 .getGlobalBestofPlaylist(), ambience);
-            if (alToPlay.size() == 0) {
+            if (alToPlay.size() == 0) { //NOSONAR
               alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
             }
 
           } else if (mode.equals(Const.STARTUP_MODE_NOVELTIES)) {
             alToPlay = UtilFeatures.filterByAmbience(FileManager.getInstance()
                 .getGlobalNoveltiesPlaylist(), ambience);
-            if (alToPlay.size() == 0) {
+            if (alToPlay.size() == 0) { //NOSONAR
               alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
             }
           } else {

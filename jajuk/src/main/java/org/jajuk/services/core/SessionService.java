@@ -150,7 +150,7 @@ public class SessionService {
               // Clean up old locks directories in session folder
               files = sessions.listFiles();
               for (int i = 0; i < files.length; i++) {
-                if (!files[i].delete()) {
+                if (!files[i].delete()) { //NOSONAR
                   Messages.showDetailedErrorMessage(131, "Cannot delete : "
                       + files[i].getAbsolutePath(), "");
                   Log.error(131);

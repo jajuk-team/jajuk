@@ -238,7 +238,7 @@ public class LastFmService {
 
           List<AlbumInfo> result = new ArrayList<AlbumInfo>();
           for (AlbumInfo a : albums.getAlbums()) {
-            if (a.getBigCoverURL() != null && !a.getBigCoverURL().isEmpty()) {
+            if (a.getBigCoverURL() != null && !a.getBigCoverURL().isEmpty()) { //NOSONAR
               result.add(a);
             }
           }
@@ -257,7 +257,7 @@ public class LastFmService {
         if (hideVariousArtists) {
           albumsFiltered = new ArrayList<AlbumInfo>();
           for (AlbumInfo albumInfo : albumList.getAlbums()) {
-            if (!albumInfo.getArtist().equals(VARIOUS_ARTISTS)) {
+            if (!albumInfo.getArtist().equals(VARIOUS_ARTISTS)) { //NOSONAR
               albumsFiltered.add(albumInfo);
             }
           }
@@ -269,7 +269,7 @@ public class LastFmService {
           albumsFiltered = new ArrayList<AlbumInfo>();
           for (AlbumInfo albumInfo : albumList.getAlbums()) {
             AlbumInfo extendedAlbumInfo = getAlbum(artist, albumInfo.getTitle());
-            if (extendedAlbumInfo != null && extendedAlbumInfo.getTracks() != null
+            if (extendedAlbumInfo != null && extendedAlbumInfo.getTracks() != null //NOSONAR
                 && extendedAlbumInfo.getTracks().size() >= minimumSongNumber) {
               albumsFiltered.add(albumInfo);
             }

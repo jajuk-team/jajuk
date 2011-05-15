@@ -118,7 +118,7 @@ public final class StartupCollectionService {
             // make sure to delete corrupted mplayer in case of
             // download problem
             if (fMPlayer.length() != Const.MPLAYER_WINDOWS_EXE_SIZE) {
-              if (!fMPlayer.delete()) {
+              if (!fMPlayer.delete()) { //NOSONAR
                 Log.warn("Could not delete file " + fMPlayer);
               }
               mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
@@ -137,7 +137,7 @@ public final class StartupCollectionService {
             DownloadManager.download(new URL(Const.URL_MPLAYER_OSX), fMPlayer);
             fMPlayer.setExecutable(true);
             if (fMPlayer.length() != Const.MPLAYER_OSX_EXE_SIZE) {
-              if (!fMPlayer.delete()) {
+              if (!fMPlayer.delete()) { //NOSONAR
                 Log.warn("Could not delete file " + fMPlayer);
               }
               mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;

@@ -417,8 +417,9 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
           // default size, if frame is unmaximized
           setSize(iScreenWidth - 2 * Const.FRAME_INITIAL_BORDER, iScreenHeight - 2
               * Const.FRAME_INITIAL_BORDER);
-          if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH))
+          if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) { //NOSONAR
             setExtendedState(Frame.MAXIMIZED_BOTH);
+          }
         } else {
           // setExtendedState not be used on the other displays, because Java
           // takes always the solution of the primary display...
