@@ -350,9 +350,6 @@ public class ParameterView extends ViewAdapter {
   JSlider jsFonts;
 
   /** DOCUMENT_ME. */
-  JPanel jpLastFM;
-
-  /** DOCUMENT_ME. */
   JCheckBox jcbEnableLastFMInformation;
 
   /** DOCUMENT_ME. */
@@ -562,7 +559,7 @@ public class ParameterView extends ViewAdapter {
     jpStart.add(jrbBestof, "wrap");
     jpStart.add(jrbNovelties, "wrap");
     jpStart.add(jrbFile);
-    jpStart.add(sbSearch, "grow,wrap");
+    jpStart.add(sbSearch, "grow,wrap"); //NOSONAR
     return jpStart;
   }
 
@@ -613,7 +610,7 @@ public class ParameterView extends ViewAdapter {
   * @return the jpanel
   */
   private JPanel initUISound() {
-    JPanel jpSound = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[][grow,200:300:300]"));
+    JPanel jpSound = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[][grow,200:300:300]"));//NOSONAR
     JLabel jlCrossFadeDuration = new JLabel(Messages.getString("ParameterView.190"));
     jlCrossFadeDuration.setToolTipText(Messages.getString("ParameterView.191"));
     crossFadeDuration = new JSlider(0, 30, 0);
@@ -676,7 +673,7 @@ public class ParameterView extends ViewAdapter {
 
       @Override
       public boolean verify(final JComponent input) {
-        final JTextField tf = (JTextField) input;
+        final JTextField tf = (JTextField) input;  //NOSONAR
         final String sText = tf.getText();
         try {
           final int iValue = Integer.parseInt(sText);
@@ -684,7 +681,7 @@ public class ParameterView extends ViewAdapter {
             jbOK.setEnabled(false);
             return false;
           }
-        } catch (final Exception e) {
+        } catch (final RuntimeException e) {
           return false;
         }
         jbOK.setEnabled(true);
@@ -704,7 +701,7 @@ public class ParameterView extends ViewAdapter {
 
       @Override
       public boolean verify(final JComponent input) {
-        final JTextField tf = (JTextField) input;
+        final JTextField tf = (JTextField) input; //NOSONAR
         final String sText = tf.getText();
         try {
           final int iValue = Integer.parseInt(sText);
@@ -733,7 +730,7 @@ public class ParameterView extends ViewAdapter {
 
       @Override
       public boolean verify(final JComponent input) {
-        final JTextField tf = (JTextField) input;
+        final JTextField tf = (JTextField) input;//NOSONAR
         final String sText = tf.getText();
         try {
           final int iValue = Integer.parseInt(sText);
@@ -833,9 +830,9 @@ public class ParameterView extends ViewAdapter {
    * @return the jpanel
    */
   private JPanel initUIPatterns() {
-    JPanel Patterns = new JPanel(new MigLayout("insets 10, gapy 15, wrap 2", "[][grow]"));
+    JPanel patterns = new JPanel(new MigLayout("insets 10, gapy 15, wrap 2", "[][grow]"));
     JLabel jlRefactorPattern = new JLabel(Messages.getString("ParameterView.192"));
-    jlRefactorPattern.setToolTipText(Messages.getString("ParameterView.193"));
+    jlRefactorPattern.setToolTipText(Messages.getString("ParameterView.193"));//NOSONAR
     jtfRefactorPattern = new JFormattedTextField();
     jtfRefactorPattern.setToolTipText(Messages.getString("ParameterView.193"));
     jtfRefactorPattern.setInputVerifier(new PatternInputVerifier());
@@ -862,17 +859,17 @@ public class ParameterView extends ViewAdapter {
     jtfInformationPattern = new JTextField();
     jtfInformationPattern.setToolTipText(Messages.getString("ParameterView.280"));
 
-    Patterns.add(jlRefactorPattern);
-    Patterns.add(jtfRefactorPattern, "grow");
-    Patterns.add(jlAnimationPattern);
-    Patterns.add(jtfAnimationPattern, "grow");
-    Patterns.add(jlFrameTitle);
-    Patterns.add(jtfFrameTitle, "grow");
-    Patterns.add(jlBalloonNotifierPattern);
-    Patterns.add(jtfBalloonNotifierPattern, "grow");
-    Patterns.add(jlInformationPattern);
-    Patterns.add(jtfInformationPattern, "grow");
-    return Patterns;
+    patterns.add(jlRefactorPattern);
+    patterns.add(jtfRefactorPattern, "grow"); //NOSONAR
+    patterns.add(jlAnimationPattern);
+    patterns.add(jtfAnimationPattern, "grow");
+    patterns.add(jlFrameTitle);
+    patterns.add(jtfFrameTitle, "grow");
+    patterns.add(jlBalloonNotifierPattern);
+    patterns.add(jtfBalloonNotifierPattern, "grow");
+    patterns.add(jlInformationPattern);
+    patterns.add(jtfInformationPattern, "grow");
+    return patterns;
   }
 
   /**
@@ -1004,7 +1001,7 @@ public class ParameterView extends ViewAdapter {
 
       @Override
       public boolean verify(final JComponent input) {
-        final JTextField tf = (JTextField) input;
+        final JTextField tf = (JTextField) input;//NOSONAR
         final String sText = tf.getText();
         try {
           final int iValue = Integer.parseInt(sText);
@@ -1080,7 +1077,7 @@ public class ParameterView extends ViewAdapter {
     jcbEnableLastFMInformation = new JCheckBox(Messages.getString("ParameterView.240"));
     jcbEnableLastFMInformation.setToolTipText(Messages.getString("ParameterView.241"));
     // Add items
-    jpLastFM = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[grow]"));
+    JPanel jpLastFM = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[grow]"));
     jpLastFM.add(jcbEnableLastFMInformation, "wrap");
     jpLastFM.add(jcbAudioScrobbler, "wrap");
     jpLastFM.add(jlASUser);
@@ -1305,7 +1302,7 @@ public class ParameterView extends ViewAdapter {
     // add main panels
     jtpMain = new JTabbedPane(SwingConstants.TOP);
     // ScrollPane without border
-    class JajukJScrollPane extends JScrollPane {
+    final class JajukJScrollPane extends JScrollPane {
       private static final long serialVersionUID = 4564343623724771988L;
 
       private JajukJScrollPane(final Component view) {

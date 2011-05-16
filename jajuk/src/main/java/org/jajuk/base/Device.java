@@ -93,10 +93,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   private final List<Directory> alDirectories = new ArrayList<Directory>(20);
 
   /** Already refreshing flag. */
-  private volatile boolean bAlreadyRefreshing = false;
+  private volatile boolean bAlreadyRefreshing = false;  //NOSONAR
 
   /** Already synchronizing flag. */
-  private volatile boolean bAlreadySynchronizing = false;
+  private volatile boolean bAlreadySynchronizing = false;  //NOSONAR
 
   /** Volume of created files during synchronization. */
   private long lVolume = 0;
@@ -346,7 +346,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * 
    * @return Returns the IO file reference to this directory.
    */
-  public File getFio() {
+  public File getFIO() {
     return fio;
   }
 
@@ -473,7 +473,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    */
   public Directory getRootDirectory() {
     if (rootDir == null) {
-      rootDir = DirectoryManager.getInstance().getDirectoryForIO(getFio(), this);
+      rootDir = DirectoryManager.getInstance().getDirectoryForIO(getFIO(), this);
     }
     return rootDir;
   }
@@ -807,7 +807,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * 
    * @return true if some changes occurred in device
    */
-  synchronized boolean refreshCommand(final boolean bDeepScan, final boolean bManual,
+  boolean refreshCommand(final boolean bDeepScan, final boolean bManual,
       List<Directory> dirsToRefresh) {
     try {
       // Check if this device is mounted (useful when called by
@@ -1260,7 +1260,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * Unmount the device with ejection.
    * 
    * @param bEjection set whether the device must be ejected
-   * @param bUIRefresh set wheter the UI should be refreshed
+   * @param bUIRefresh set whether the UI should be refreshed
    */
   public void unmount(final boolean bEjection, final boolean bUIRefresh) {
     // look to see if the device is already mounted

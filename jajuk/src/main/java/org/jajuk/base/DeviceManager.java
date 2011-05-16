@@ -220,7 +220,7 @@ public final class DeviceManager extends ItemManager {
    */
   Device getDeviceByPath(File path) {
     for (Device device : getDevices()) {
-      if (UtilSystem.isAncestor(device.getFio(), path)) {
+      if (UtilSystem.isAncestor(device.getFIO(), path)) {
         return device;
       }
     }

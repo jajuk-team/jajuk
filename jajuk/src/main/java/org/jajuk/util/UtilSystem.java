@@ -100,7 +100,7 @@ public final class UtilSystem {
   public static final Date TODAY = new Date();
 
   /** Central random object for all Jajuk *. */
-  private static final Random RANDOM = new MersenneTwister();
+  private static final Random RANDOM = MersenneTwister.getInstance();
 
   /** Cached user home directory *. */
   private static String cachedUserHomeDir;

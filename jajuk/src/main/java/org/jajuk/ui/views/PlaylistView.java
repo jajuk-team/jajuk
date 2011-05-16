@@ -789,7 +789,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
                 boolean known = false;
                 Device knownDevice = null;
                 for (Device device : DeviceManager.getInstance().getDevices()) {
-                  if (UtilSystem.isAncestor(device.getFio(), plf.getFIO())) {
+                  if (UtilSystem.isAncestor(device.getFIO(), plf.getFIO())) {
                     known = true;
                     knownDevice = device;
                     break;

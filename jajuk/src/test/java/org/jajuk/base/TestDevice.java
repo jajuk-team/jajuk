@@ -329,16 +329,16 @@ public class TestDevice extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Device#getFio()}.
+   * Test method for {@link org.jajuk.base.Device#getFIO()}.
    */
   public void testGetFio() {
     Device device = new Device("1", "name");
 
-    assertNull(device.getFio());
+    assertNull(device.getFIO());
 
     device.setUrl(System.getProperty("java.io.tmpdir"));
 
-    assertNotNull(device.getFio());
+    assertNotNull(device.getFIO());
   }
 
   /**

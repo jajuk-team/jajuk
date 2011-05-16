@@ -1,4 +1,5 @@
 /*
+ *  
  *  Jajuk
  *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
@@ -16,14 +17,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ 
+ *  
+ *  This file has been adapted (and deeply reduced) to Jajuk by the Jajuk Team.
+ *  See original MersenneRwister copyright notice bellow
+ *  
  *  $Revision$
  */
 package ext;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 /**
  * <h3>MersenneTwister and MersenneTwisterFast</h3>
@@ -166,7 +168,7 @@ import java.io.ObjectOutputStream;
  * @version 13
  */
 
-public class MersenneTwister extends java.util.Random implements Cloneable {
+public final class MersenneTwister extends java.util.Random  {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
@@ -201,84 +203,25 @@ public class MersenneTwister extends java.util.Random implements Cloneable {
   
   /** DOCUMENT_ME. */
   private int mag01[];
+ 
+  /** Singleton */
+  private static MersenneTwister self = new MersenneTwister();
 
-  // a good initial seed (of int size, though stored in a long)
-  // private static final long GOOD_SEED = 4357;
-
-  /*
-   * implemented here because there's a bug in Random's implementation of the Gaussian code (divide
-   * by zero, and log(0), ugh!), yet its gaussian variables are private so we can't access them
-   * here. :-(
-   */
-
-  /** DOCUMENT_ME. */
-  private double __nextNextGaussian;
   
-  /** DOCUMENT_ME. */
-  private boolean __haveNextNextGaussian;
-
-  /* We're overriding all internal data, to my knowledge, so this should be okay */
-  /* (non-Javadoc)
-   * @see java.lang.Object#clone()
-   */
-  @Override
-  public Object clone() throws CloneNotSupportedException {
-    MersenneTwister f = (MersenneTwister) (super.clone());
-    f.mt = mt.clone();
-    f.mag01 = mag01.clone();
-    return f;
-  }
-
   /**
-   * State equals.
-   * DOCUMENT_ME
-   * 
-   * @param o DOCUMENT_ME
-   * 
-   * @return true if...
+   * Return the singleton
+   * @return the singleton
    */
-  public boolean stateEquals(Object o) {
-    if (o == this)
-      return true;
-    if (o == null || !(o instanceof MersenneTwister))
-      return false;
-    MersenneTwister other = (MersenneTwister) o;
-    if (mti != other.mti)
-      return false;
-    for (int x = 0; x < mag01.length; x++)
-      if (mag01[x] != other.mag01[x])
-        return false;
-    for (int x = 0; x < mt.length; x++)
-      if (mt[x] != other.mt[x])
-        return false;
-    return true;
+  public static MersenneTwister getInstance(){
+    return self;
   }
-
-  /**
-   * Reads the entire state of the MersenneTwister RNG from the stream.
-   * 
-   * @param stream DOCUMENT_ME
-   * 
-   * @throws IOException Signals that an I/O exception has occurred.
-   */
-  public void readState(DataInputStream stream) throws IOException {
-    int len = mt.length;
-    for (int x = 0; x < len; x++)
-      mt[x] = stream.readInt();
-
-    len = mag01.length;
-    for (int x = 0; x < len; x++)
-      mag01[x] = stream.readInt();
-
-    mti = stream.readInt();
-    __nextNextGaussian = stream.readDouble();
-    __haveNextNextGaussian = stream.readBoolean();
-  }
+  
+  
 
   /**
    * Constructor using the default seed.
    */
-  public MersenneTwister() {
+  private MersenneTwister() {
     this(System.currentTimeMillis());
   }
 
@@ -288,26 +231,14 @@ public class MersenneTwister extends java.util.Random implements Cloneable {
    * 
    * @param seed DOCUMENT_ME
    */
-  public MersenneTwister(final long seed) {
+  private  MersenneTwister(final long seed) {
     super(seed); /* just in case */
     setSeed(seed);
   }
 
-  /**
-   * Constructor using an array of integers as seed.
-   * Your array must have a non-zero length.  Only the first 624 integers
-   * in the array are used; if the array is shorter than this then
-   * integers are repeatedly used in a wrap-around fashion.
-   * 
-   * @param array DOCUMENT_ME
-   */
-  public MersenneTwister(final int[] array) {
-    super(System.currentTimeMillis()); /* pick something at random just in case */
-    setSeed(array);
-  }
 
   /**
-   * Initalize the pseudo random number generator.  Don't
+   * Initialize the pseudo random number generator.  Don't
    * pass in a long that's bigger than an int (Mersenne Twister
    * only uses the first 32 bits for its seed).
    * 
@@ -315,20 +246,13 @@ public class MersenneTwister extends java.util.Random implements Cloneable {
    */
 
   @Override
-  synchronized public void setSeed(final long seed) {
+  public final void setSeed(final long seed) {
     // it's always good style to call super
     super.setSeed(seed);
-
-    // Due to a bug in java.util.Random clear up to 1.2, we're
-    // doing our own Gaussian variable.
-    __haveNextNextGaussian = false;
-
     mt = new int[N];
-
     mag01 = new int[2];
     mag01[0] = 0x0;
     mag01[1] = MATRIX_A;
-
     mt[0] = (int) (seed & 0xffffffff);
     for (mti = 1; mti < N; mti++) {
       mt[mti] = (1812433253 * (mt[mti - 1] ^ (mt[mti - 1] >>> 30)) + mti);
@@ -341,48 +265,7 @@ public class MersenneTwister extends java.util.Random implements Cloneable {
     }
   }
 
-  /**
-   * Sets the seed of the MersenneTwister using an array of integers.
-   * Your array must have a non-zero length.  Only the first 624 integers
-   * in the array are used; if the array is shorter than this then
-   * integers are repeatedly used in a wrap-around fashion.
-   * 
-   * @param array DOCUMENT_ME
-   */
-
-  synchronized public void setSeed(final int[] array) {
-    if (array.length == 0)
-      throw new IllegalArgumentException("Array length must be greater than zero");
-    int i, j, k;
-    setSeed(19650218);
-    i = 1;
-    j = 0;
-    k = (N > array.length ? N : array.length);
-    for (; k != 0; k--) {
-      mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >>> 30)) * 1664525)) + array[j] + j; /* non linear */
-      mt[i] &= 0xffffffff; /* for WORDSIZE > 32 machines */
-      i++;
-      j++;
-      if (i >= N) {
-        mt[0] = mt[N - 1];
-        i = 1;
-      }
-      if (j >= array.length)
-        j = 0;
-    }
-    for (k = N - 1; k != 0; k--) {
-      mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >>> 30)) * 1566083941)) - i; /* non linear */
-      mt[i] &= 0xffffffff; /* for WORDSIZE > 32 machines */
-      i++;
-      if (i >= N) {
-        mt[0] = mt[N - 1];
-        i = 1;
-      }
-    }
-    mt[0] = 0x80000000; /* MSB is 1; assuring non-zero initial array */
-  }
-
-  /**
+   /**
    * Returns an integer with <i>bits</i> bits filled with a random number.
    * 
    * @param bits DOCUMENT_ME
@@ -426,34 +309,7 @@ public class MersenneTwister extends java.util.Random implements Cloneable {
    * If you've got a truly old version of Java, you can omit these two next methods.
    */
 
-  /**
-   * Write object.
-   * DOCUMENT_ME
-   * 
-   * @param out DOCUMENT_ME
-   * 
-   * @throws IOException Signals that an I/O exception has occurred.
-   */
-  private synchronized void writeObject(final ObjectOutputStream out) throws IOException {
-    // just so we're synchronized.
-    out.defaultWriteObject();
-  }
-
-  /**
-   * Read object.
-   * DOCUMENT_ME
-   * 
-   * @param in DOCUMENT_ME
-   * 
-   * @throws IOException Signals that an I/O exception has occurred.
-   * @throws ClassNotFoundException the class not found exception
-   */
-  private synchronized void readObject(final ObjectInputStream in) throws IOException,
-      ClassNotFoundException {
-    // just so we're synchronized.
-    in.defaultReadObject();
-  }
-
+ 
   /**
    * This method is missing from jdk 1.0.x and below.  JDK 1.1
    * includes this for us, but what the heck.
@@ -587,8 +443,9 @@ public class MersenneTwister extends java.util.Random implements Cloneable {
 
   @Override
   public void nextBytes(final byte[] bytes) {
-    for (int x = 0; x < bytes.length; x++)
+    for (int x = 0; x < bytes.length; x++){
       bytes[x] = (byte) next(8);
+    }
   }
 
   /**
@@ -602,16 +459,7 @@ public class MersenneTwister extends java.util.Random implements Cloneable {
     return (char) (next(16));
   }
 
-  /**
-   * For completeness' sake, though it's not in java.util.Random.
-   * 
-   * @return the short
-   */
-
-  public short nextShort() {
-    return (short) (next(16));
-  }
-
+ 
   /**
    * For completeness' sake, though it's not in java.util.Random.
    * 
@@ -621,33 +469,5 @@ public class MersenneTwister extends java.util.Random implements Cloneable {
   public byte nextByte() {
     return (byte) (next(8));
   }
-
-  /**
-   * A bug fix for all JDK code including 1.2.  nextGaussian can theoretically
-   * ask for the log of 0 and divide it by 0! See Java bug
-   * <a href="http://developer.java.sun.com/developer/bugParade/bugs/4254501.html">
-   * http://developer.java.sun.com/developer/bugParade/bugs/4254501.html</a>
-   * 
-   * @return the double
-   */
-
-  @Override
-  synchronized public double nextGaussian() {
-    if (__haveNextNextGaussian) {
-      __haveNextNextGaussian = false;
-      return __nextNextGaussian;
-    } else {
-      double v1, v2, s;
-      do {
-        v1 = 2 * nextDouble() - 1; // between -1.0 and 1.0
-        v2 = 2 * nextDouble() - 1; // between -1.0 and 1.0
-        s = v1 * v1 + v2 * v2;
-      } while (s >= 1 || s == 0);
-      double multiplier = /* Strict */Math.sqrt(-2 * /* Strict */Math.log(s) / s);
-      __nextNextGaussian = v2 * multiplier;
-      __haveNextNextGaussian = true;
-      return v1 * multiplier;
-    }
-  }
- 
+   
 }

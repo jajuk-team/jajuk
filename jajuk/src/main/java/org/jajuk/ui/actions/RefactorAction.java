@@ -121,7 +121,7 @@ public class RefactorAction {
       filename += "." + tCurrent.getType().getExtension();
       filename = filename.replace("/", RefactorAction.sFS);
       final java.io.File fOld = fCurrent.getFIO();
-      final String sPathname = fCurrent.getDevice().getFio().getPath() + RefactorAction.sFS
+      final String sPathname = fCurrent.getDevice().getFIO().getPath() + RefactorAction.sFS
           + filename;
       java.io.File fNew = new java.io.File(sPathname);
 
@@ -180,13 +180,13 @@ public class RefactorAction {
 
       // Register and scans new directories
       String sFirstDir = null;
-      final String sTest[] = sPathname.split(fCurrent.getDevice().getFio().getPath().replace("\\",
+      final String sTest[] = sPathname.split(fCurrent.getDevice().getFIO().getPath().replace("\\",
           "\\\\"));
       sFirstDir = sTest[1].split("\\" + RefactorAction.sFS)[1];
 
       final Directory dir = DirectoryManager.getInstance().registerDirectory(
           sFirstDir,
-          DirectoryManager.getInstance().getDirectoryForIO(fCurrent.getDevice().getFio(),
+          DirectoryManager.getInstance().getDirectoryForIO(fCurrent.getDevice().getFIO(),
               fCurrent.getDevice()), fCurrent.getDevice());
 
       // Ask to refresh this directory afterward
