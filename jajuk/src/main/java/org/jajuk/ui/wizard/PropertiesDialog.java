@@ -24,6 +24,9 @@ package org.jajuk.ui.wizard;
 import ext.AutoCompleteDecorator;
 
 import java.awt.Color;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -48,6 +51,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.text.JTextComponent;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -107,9 +111,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
   /** Items. */
   private List<Item> alItems;
 
-  /** Items2. */
-  private List<Item> alItems2;
-
   /** Files filter. */
   private Set<File> filter = null;
 
@@ -128,7 +129,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
   /**
    * Constructor for normal wizard with only one wizard panel and n items to
    * display.
-   * 
+   *
    * @param alItems items to display
    */
   public PropertiesDialog(List<Item> alItems) {
@@ -149,20 +150,23 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
     panel1 = new PropertiesPanel(alItems, alItems.size() == 1 ? UtilString.getLimitedString(alItems
         .get(0).getDesc(), 50) : Messages.getString(PROPERTIES_WIZARD_6) + " [" + alItems.size()
         + "]", bMerged);
+
     // OK/Cancel buttons
     okc = new OKCancelPanel(PropertiesDialog.this, Messages.getString("Apply"), Messages
         .getString("Close"));
+
     // Add items
     jpMain = new JPanel(new MigLayout("insets 5,gapx 5,gapy 5", "[grow]"));
     jpMain.add(panel1, "grow,wrap");
     jpMain.add(okc, "span,right");
+
     display();
   }
 
   /**
    * Constructor for file wizard for ie with 2 wizard panels and n items to
    * display.
-   * 
+   *
    * @param alItems1 items to display in the first wizard panel (file for ie)
    * @param alItems2 items to display in the second panel (associated track for ie )
    */
@@ -174,7 +178,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
     setTitle(alItems1.size() == 1 ? alItems1.get(0).getDesc() : Messages
         .getString(PROPERTIES_WIZARD_6));
     this.alItems = alItems1;
-    this.alItems2 = alItems2;
     if (alItems1.size() > 0) {
       // computes filter
       refreshFileFilter();
@@ -221,6 +224,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
    * because files may have changed then (if user changed the file name).
    */
   private void refreshFileFilter() {
+    // TODO: alItems can be empty here!
     if (alItems.get(0) instanceof Directory) {
       filter = new HashSet<File>(alItems.size() * 10);
       for (Item item : alItems) {
@@ -242,7 +246,10 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
    */
   private void display() {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
+        UtilGUI.setEscapeKeyboardAction(PropertiesDialog.this, jpMain);
+
         // If none editable item, save button is disabled
         if (iEditable == 0) {
           okc.getOKButton().setEnabled(false);
@@ -250,6 +257,10 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
         getRootPane().setDefaultButton(okc.getOKButton());
         getContentPane().add(new JScrollPane(jpMain));
         pack();
+
+        // set default focus to make escape work
+        okc.getOKButton().requestFocusInWindow();
+
         setLocationRelativeTo(JajukMainWindow.getInstance());
         setVisible(true);
       }
@@ -258,9 +269,10 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == okc.getCancelButton()) {
       dispose();
@@ -297,9 +309,9 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
 
   /**
    * Tells whether a link button should be shown for a given property.
-   * 
+   *
    * @param meta DOCUMENT_ME
-   * 
+   *
    * @return true, if checks if is linkable
    */
   public boolean isLinkable(PropertyMetaInformation meta) {
@@ -319,6 +331,25 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
    * A properties panel.
    */
   class PropertiesPanel extends JPanel implements ActionListener {
+    /**
+     *
+     */
+    private static final int IDX_NAME = 0;
+
+    /**
+     *
+     */
+    private static final int IDX_VALUE = 1;
+
+    /**
+     *
+     */
+    private static final int IDX_COPY = 2;
+
+    /**
+     *
+     */
+    private static final int IDX_LINK = 3;
 
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
@@ -336,7 +367,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
     List<PropertyMetaInformation> alToDisplay;
 
     /** Items. */
-    List<Item> alItems;
+    List<Item> propItems;
 
     /** Changed properties. */
     Map<PropertyMetaInformation, Object> hmPropertyToChange = new HashMap<PropertyMetaInformation, Object>();
@@ -346,7 +377,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
 
     /**
      * Property panel for single types elements.
-     * 
+     *
      * @param alItems items to display
      * @param sDesc Description (title)
      * @param bMerged : whether this panel contains merged values
@@ -354,7 +385,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
     PropertiesPanel(List<Item> alItems, String sDesc, boolean bMerged) {
       super();
 
-      this.alItems = alItems;
+      this.propItems = alItems;
       this.bMerged = bMerged;
       Item pa = alItems.get(0);
       // first item Process properties to display
@@ -392,7 +423,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
           jlName.setForeground(Color.BLUE);
         }
         // Property value computes editable state
-        widgets[index][0] = jlName;
+        widgets[index][IDX_NAME] = jlName;
         // property editable ?
         boolean bEditable = meta.isEditable();
         // Check meta-data is supported for the file type
@@ -422,6 +453,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
           if (meta.getType().equals(Date.class)) {
             final JXDatePicker jdp = new JXDatePicker();
             jdp.addActionListener(new ActionListener() {
+              @Override
               public void actionPerformed(ActionEvent arg0) {
                 Object oValue = jdp.getDate();
                 hmPropertyToChange.put(meta, oValue);
@@ -436,11 +468,12 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
               // to detect a change
               jdp.setDate(new Date(0));
             }
-            widgets[index][1] = jdp;
+            widgets[index][IDX_VALUE] = jdp;
           } else if (meta.getType().equals(Boolean.class)) {
             // for a boolean, value is a checkbox
             final JCheckBox jcb = new JCheckBox();
             jcb.addActionListener(new ActionListener() {
+              @Override
               public void actionPerformed(ActionEvent arg0) {
                 Object oValue = jcb.isSelected();
                 hmPropertyToChange.put(meta, oValue);
@@ -454,7 +487,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
             else {
               jcb.setSelected(!pa.getBooleanValue(meta.getName()));
             }
-            widgets[index][1] = jcb;
+            widgets[index][IDX_VALUE] = jcb;
           } else if (meta.getType().equals(Double.class) || meta.getType().equals(Integer.class)
               || meta.getType().equals(Long.class)) {
             // Note : we manage field validation by ourself, and we
@@ -493,7 +526,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
               jtfValue.setText(pa.getHumanValue(meta.getName()));
               // If several items, take first value found
             }
-            widgets[index][1] = jtfValue;
+            widgets[index][IDX_VALUE] = jtfValue;
           } else if (meta.getType().equals(String.class)
           // for genres
               && meta.getName().equals(Const.XML_GENRE)) {
@@ -518,6 +551,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
               jcb.setSelectedIndex(-1);
             }
             jcb.addActionListener(new ActionListener() {
+              @Override
               public void actionPerformed(ActionEvent arg0) {
                 Object oValue = jcb.getSelectedItem();
                 if (oValue == null || ((String) oValue).trim().length() == 0) {
@@ -534,7 +568,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
                 hmPropertyToChange.put(meta, oValue);
               }
             });
-            widgets[index][1] = jcb;
+            widgets[index][IDX_VALUE] = jcb;
           } else if (meta.getType().equals(String.class)
               && (Const.XML_ARTIST.equals(meta.getName()) || Const.XML_ALBUM_ARTIST.equals(meta
                   .getName()))) {
@@ -549,6 +583,11 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
               artists = AlbumArtistManager.getAlbumArtistsList();
               valueToCheck = pa.getHumanValue(Const.XML_ALBUM_ARTIST);
             }
+
+            if(artists == null) {
+              throw new IllegalStateException("Could not get a list of Artists!");
+            }
+
             final JComboBox jcb = new JComboBox(artists);
             jcb.setEditable(true);
             AutoCompleteDecorator.decorate(jcb);
@@ -563,11 +602,14 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
               comp++;
             }
             jcb.setSelectedIndex(i);
+
+
             // if different artist, don't show anything
             if (!bAllEquals) {
               jcb.setSelectedIndex(-1);
             }
             jcb.addActionListener(new ActionListener() {
+              @Override
               public void actionPerformed(ActionEvent arg0) {
                 Object oValue = jcb.getSelectedItem();
                 if (oValue == null || ((String) oValue).trim().length() == 0) {
@@ -584,7 +626,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
                 hmPropertyToChange.put(meta, oValue);
               }
             });
-            widgets[index][1] = jcb;
+            widgets[index][IDX_VALUE] = jcb;
           } else { // for all others formats (string, class)
             final JTextField jtfValue = new JTextField();
             jtfValue.addKeyListener(new KeyAdapter() {
@@ -598,7 +640,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
               // If several items, take first value found
               jtfValue.setText(pa.getHumanValue(meta.getName()));
             }
-            widgets[index][1] = jtfValue;
+            widgets[index][IDX_VALUE] = jtfValue;
           }
         } else {
           CopyableLabel jl = null;
@@ -625,7 +667,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
               jl.setToolTipText(s);
             }
           }
-          widgets[index][1] = jl;
+          widgets[index][IDX_VALUE] = jl;
 
         }
         // Link
@@ -634,37 +676,58 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
           jbLink.addActionListener(this);
           jbLink.setActionCommand("link");
           jbLink.setToolTipText(Messages.getString("PropertiesWizard.12"));
-          widgets[index][2] = jbLink;
+          widgets[index][IDX_LINK] = jbLink;
         }
+
+        // Copy
+        if (isCopyable(widgets[index][IDX_VALUE])) {
+          JButton jbCopy = new JButton(IconLoader.getIcon(JajukIcons.COPY_TO_CLIPBOARD));
+          jbCopy.addActionListener(this);
+          jbCopy.setActionCommand("copy");
+          jbCopy.setToolTipText(Messages.getString("PropertiesWizard.14"));
+          widgets[index][IDX_COPY] = jbCopy;
+        }
+
         index++;
       }
 
       // Add title
       JLabel jlName = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.1")
           + "</b></html>");
-      jlName.setToolTipText(Messages.getString("PropertiesWizard.1"));
       JLabel jlValue = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.2")
           + "</b></html>");
-      jlValue.setToolTipText(Messages.getString("PropertiesWizard.2"));
       JLabel jlLink = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.4")
           + "</b></html>");
-      jlLink.setToolTipText(Messages.getString("PropertiesWizard.4"));
+      JLabel jlCopy = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.13")
+          + "</b></html>");
 
       jpProperties = new JPanel(new MigLayout("insets 10,gapx 5,gapy 10", "[][grow][]"));
       jpProperties.add(jlName);
       jpProperties.add(jlValue, "grow");
+      jpProperties.add(jlCopy, "");
       jpProperties.add(jlLink, "wrap");
       // Add widgets
       int i = 0;
       int j = 4;
       // for (PropertyMetaInformation meta : alToDisplay) {
       for (int k = 0; k < alToDisplay.size(); k++) {
-        jpProperties.add(widgets[i][0]);
-        if (widgets[i][2] == null) { // link widget can be null
-          jpProperties.add(widgets[i][1], "grow,width 200:200, wrap");
+        jpProperties.add(widgets[i][IDX_NAME]);
+        if (widgets[i][IDX_LINK] == null) { // link widget can be null
+          if (widgets[i][IDX_COPY] == null) {
+            jpProperties.add(widgets[i][IDX_VALUE], "grow,width 200:200, wrap");
+          } else {
+            jpProperties.add(widgets[i][IDX_VALUE], "grow,width 200:200");
+            jpProperties.add(widgets[i][IDX_COPY], "wrap");
+          }
         } else {
-          jpProperties.add(widgets[i][1], "grow,width 200:200");
-          jpProperties.add(widgets[i][2], "wrap");
+          if (widgets[i][IDX_COPY] == null) {
+            jpProperties.add(widgets[i][IDX_VALUE], "grow,width 200:200");
+            jpProperties.add(widgets[i][IDX_LINK], "wrap");
+          }  else {
+            jpProperties.add(widgets[i][IDX_VALUE], "grow,width 200:200");
+            jpProperties.add(widgets[i][IDX_COPY], "");
+            jpProperties.add(widgets[i][IDX_LINK], "wrap");
+          }
         }
         i++;
         j += 2;
@@ -676,25 +739,46 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
       add(jpProperties);
     }
 
+    /**
+     * @param jComponent
+     * @return
+     */
+    private boolean isCopyable(JComponent jComponent) {
+      if(jComponent instanceof JXDatePicker ||
+          jComponent instanceof JTextComponent ||
+          jComponent instanceof JComboBox ||
+          jComponent instanceof JLabel) {
+        // ignore some useless values...
+        if("0".equals(extractValue(jComponent))) {
+          return false;
+        }
+
+        return true;
+      }
+
+      return false;
+    }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
       // Link
       if (ae.getActionCommand().equals("link")) {
         PropertyMetaInformation meta = alToDisplay.get(getWidgetIndex((JComponent) ae.getSource()));
         String sProperty = meta.getName();
         if (Const.XML_FILES.equals(sProperty)) {
-          Track track = (Track) alItems.get(0);
+          Track track = (Track) propItems.get(0);
           List<Item> alFiles = new ArrayList<Item>(1);
           alFiles.addAll(track.getFiles());
           // show properties window for this item
           new PropertiesDialog(alFiles);
         } else if (Const.XML_PLAYLIST_FILES.equals(sProperty)) {
           // can only be a set a files
-          String sValue = alItems.get(0).getStringValue(sProperty);
+          String sValue = propItems.get(0).getStringValue(sProperty);
           StringTokenizer st = new StringTokenizer(sValue, ",");
           List<Item> items = new ArrayList<Item>(3);
           while (st.hasMoreTokens()) {
@@ -707,7 +791,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
           new PropertiesDialog(items);
           // show properties window for this item
         } else {
-          String sValue = alItems.get(0).getStringValue(sProperty);
+          String sValue = propItems.get(0).getStringValue(sProperty);
           // can be only an ID
           Item pa = ItemManager.getItemManager(sProperty).getItemByID(sValue);
           if (pa != null) {
@@ -717,7 +801,30 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
             new PropertiesDialog(items);
           }
         }
+      } else if (ae.getActionCommand().equals("copy")) {
+        int i = getWidgetIndex((JComponent) ae.getSource());
+
+        JComponent jComponent = widgets[i][IDX_VALUE];
+        StringSelection data = new StringSelection(extractValue(jComponent));
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(data, data);
       }
+    }
+
+    private String extractValue(JComponent jComponent) {
+      String sValue = null;
+      if(jComponent instanceof JXDatePicker) {
+        sValue = ((JXDatePicker)jComponent).getDate().toString();
+      } else if(jComponent instanceof JTextComponent) {
+        sValue = ((JTextComponent)jComponent).getText();
+      } else if(jComponent instanceof JComboBox) {
+        sValue = ((JComboBox)jComponent).getSelectedItem().toString();
+      } else if(jComponent instanceof JLabel) {
+        sValue = ((JLabel)jComponent).getText();
+      } else {
+        throw new IllegalArgumentException("Unexpected type of component: " + jComponent.getClass().getName());
+      }
+      return sValue;
     }
 
     /**
@@ -739,7 +846,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
         }
         // Computes all items to change
         // contains items to be changed
-        List<Item> itemsToChange = new ArrayList<Item>(alItems);
+        List<Item> itemsToChange = new ArrayList<Item>(propItems);
         // Items in error
         List<Item> alInError = new ArrayList<Item>(itemsToChange.size());
         // details for errors
@@ -809,9 +916,9 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
               }
               // if this item was element of property panel elements,
               // update it
-              if (alItems.contains(item)) {
-                alItems.remove(item);
-                alItems.add(newItem);
+              if (propItems.contains(item)) {
+                propItems.remove(item);
+                propItems.add(newItem);
               }
               // Update itemsToChange to replace the item. Indeed, if we change
               // several properties to the same item, the item itself must
@@ -883,9 +990,9 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
 
     /**
      * Build the errors details message.
-     * 
+     *
      * @param e the exception
-     * 
+     *
      * @return the errors details message
      */
     private String buidlDetailsString(Exception e) {
@@ -905,9 +1012,9 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
 
     /**
      * Gets the widget index.
-     * 
+     *
      * @param widget DOCUMENT_ME
-     * 
+     *
      * @return index of a given widget in the widget table
      */
     private int getWidgetIndex(JComponent widget) {
