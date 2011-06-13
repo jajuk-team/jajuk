@@ -606,8 +606,8 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     if (action == null) { // no tooltip
       return;
     }
-    ActionEvent ae = new ActionEvent(comp, ActionEvent.ACTION_PERFORMED, "postTip", EventQueue
-        .getMostRecentEventTime(), 0);
+    ActionEvent ae = new ActionEvent(comp, ActionEvent.ACTION_PERFORMED, "postTip",
+        EventQueue.getMostRecentEventTime(), 0);
     action.actionPerformed(ae);
   }
 
@@ -622,8 +622,8 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     if (action == null) { // no tooltip
       return;
     }
-    ActionEvent ae = new ActionEvent(comp, ActionEvent.ACTION_PERFORMED, "hideTip", EventQueue
-        .getMostRecentEventTime(), 0);
+    ActionEvent ae = new ActionEvent(comp, ActionEvent.ACTION_PERFORMED, "hideTip",
+        EventQueue.getMostRecentEventTime(), 0);
     action.actionPerformed(ae);
   }
 
@@ -685,7 +685,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    * when clicking on it.
    */
   private void showBalloon() {
-    // Leave if baloon already visible
+    // Leave if balloon already visible
     if (balloon != null && balloon.isVisible()) {
       return;
     }
