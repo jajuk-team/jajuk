@@ -699,7 +699,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    * when clicking on it.
    */
   private void showBalloon() {
-    // Leave if baloon already visible
+    // Leave if balloon already visible
     if (balloon != null && balloon.isVisible()) {
       return;
     }
