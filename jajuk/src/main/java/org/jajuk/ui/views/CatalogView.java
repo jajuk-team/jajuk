@@ -491,7 +491,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
             && album.findCoverFile() == null) {
           itAlbums.remove();
         }
-        if (jcbShowCover.getSelectedIndex() == Const.CATALOG_VIEW_COVER_MODE_WITHOUT
+        else if (jcbShowCover.getSelectedIndex() == Const.CATALOG_VIEW_COVER_MODE_WITHOUT
             && album.findCoverFile() != null) {
           itAlbums.remove();
         }
