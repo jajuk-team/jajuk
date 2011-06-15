@@ -28,6 +28,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.ThreadTestHelper;
+import org.jajuk.services.covers.Cover;
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
@@ -531,6 +532,15 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public List<String> getSupportedTagFields() {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#getCovers()
+     */
+    @Override
+    public List<Cover> getCovers() throws Exception {
       // TODO Auto-generated method stub
       return null;
     }
