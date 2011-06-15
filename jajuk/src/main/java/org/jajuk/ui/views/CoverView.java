@@ -28,8 +28,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -44,7 +42,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -70,11 +67,11 @@ import org.jajuk.base.Track;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.core.SessionService;
 import org.jajuk.services.covers.Cover;
 import org.jajuk.services.covers.Cover.CoverType;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
+import org.jajuk.services.tags.Tag;
 import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.widgets.InformationJPanel;
@@ -98,10 +95,6 @@ import org.jajuk.util.filters.ImageFilter;
 import org.jajuk.util.filters.JPGFilter;
 import org.jajuk.util.filters.PNGFilter;
 import org.jajuk.util.log.Log;
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.tag.Tag;
-import org.jaudiotagger.tag.datatype.Artwork;
 
 /**
  * Cover view. Displays an image for the current album
@@ -1401,7 +1394,16 @@ public class CoverView extends ViewAdapter implements ActionListener {
           + "variable fCurrent should not be empty. dirReference: " + dirReference);
     }
 
-    // We only need to refresh the other covers if the directory changed, save CPU
+    // We only need to refresh the other covers if the directory changed 
+    // but we still clear tag-based covers even if directory didn't change
+    // so the song-specific tag is token into account. 
+    Iterator<Cover> it = alCovers.iterator();
+    while (it.hasNext()) {
+      Cover cover = it.next();
+      if (cover.getType() == CoverType.TAG_COVER) {
+        it.remove();
+      }
+    }
     if (dirChanged) {
       // remove all existing covers
       alCovers.clear();
@@ -1450,30 +1452,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
             }
           }
         }
-      }
-
-      // Check for tag covers 
-      try {
-        AudioFile f = AudioFileIO.read(fCurrent.getFIO());
-        Tag tag = f.getTag();
-        if (tag != null) {
-          Artwork artwork = tag.getFirstArtwork();
-          byte[] imageRawData = artwork != null ? artwork.getBinaryData() : null;
-
-          if (imageRawData != null) {
-            BufferedImage bi = ImageIO.read(new ByteArrayInputStream(imageRawData));
-            if (bi != null) {
-              File coverFile = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
-                  + Const.TAG_COVER_FILE);
-              ImageIO.write(bi, "png", coverFile);
-              Cover cover = new Cover(coverFile, CoverType.TAG_COVER);
-              alCovers.add(cover);
-            }
-          }
-        }
-      } catch (Exception e1) {
-        // current file is not supported by jaudiotagger
-        Log.error(e1);
       }
 
       // Then we search for web covers online if max
@@ -1537,6 +1515,14 @@ public class CoverView extends ViewAdapter implements ActionListener {
           Log.error(e);
         }
       }
+    }
+
+    // Check for tag covers 
+    try {
+      Tag tag = new Tag(fCurrent.getFIO(), false);
+      alCovers.addAll(tag.getCovers());
+    } catch (JajukException e1) {
+      Log.error(e1);
     }
 
     if (alCovers.size() == 0) {// add the default cover if none

@@ -25,6 +25,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -34,6 +35,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.services.covers.Cover;
+import org.jajuk.services.tags.Tag;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -42,6 +45,7 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilString;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.ImageFilter;
 import org.jajuk.util.log.Log;
 
@@ -293,7 +297,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * <p>Can be a long action</p>
    * 
    * @return associated best cover file available or null if none. The returned
-   * file can not be readable, so use a try/catch around a future access to it.
+   * file can not be readable, so use a try/catch around a future access to this method.
    */
   public File findCoverFile() {
     String cachedCoverPath = getStringValue(XML_ALBUM_COVER);
@@ -303,6 +307,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
       // Check if cover still exist. There is an overhead
       // drawback but otherwise, the album's cover
       // property may be stuck to an old device's cover url.
+      // Moreover, cover tags are extracted to cache directory so they are 
+      // Regularly dropped.
       Device device = DeviceManager.getInstance().getDeviceByPath(new File(cachedCoverPath));
       // If the device is not mounted, do not perform this existence check up
       if (device != null && device.isMounted()) {
@@ -334,8 +340,13 @@ public class Album extends LogicalItem implements Comparable<Album> {
       return null;
     }
 
-    // look for standard cover in collection
-    File cover = findCover(dirs, true);
+    // look for tag cover
+    File cover = findTagCover();
+
+    // none ? look for standard cover in collection
+    if (cover == null) {
+      cover = findCover(dirs, true);
+    }
 
     // none ? OK, return first cover file we find
     if (cover == null) {
@@ -347,6 +358,31 @@ public class Album extends LogicalItem implements Comparable<Album> {
       setProperty(XML_ALBUM_COVER, COVER_NONE);
     }
     return cover;
+  }
+
+  /**
+   * Return a tag cover file from given directories. If a cover tags are found, 
+   * they are extracted to the cache directory. 
+   * 
+   * @return a tag cover file or null if none.
+   */
+  private File findTagCover() {
+    //Make sure to sort the cache
+    Collections.sort(cache);
+    for (Track track : cache) {
+      for (org.jajuk.base.File file : track.getFiles()) {
+        try {
+          Tag tag = new Tag(file.getFIO(), false);
+          List<Cover> covers = tag.getCovers();
+          if (covers.size() > 0) {
+            return covers.get(0).getFile();
+          }
+        } catch (JajukException e1) {
+          Log.error(e1);
+        }
+      }
+    }
+    return null;
   }
 
   /**

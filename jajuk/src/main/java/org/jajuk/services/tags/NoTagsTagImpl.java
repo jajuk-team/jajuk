@@ -32,6 +32,7 @@ import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 
+import org.jajuk.services.covers.Cover;
 import org.jajuk.util.UtilFeatures;
 
 /**
@@ -359,6 +360,15 @@ public class NoTagsTagImpl implements ITagImpl {
   @Override
   public List<String> getSupportedTagFields() {
     return tagFieldKeyArrayList;
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.tags.ITagImpl#getCovers()
+   */
+  @Override
+  public List<Cover> getCovers() throws Exception {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }
