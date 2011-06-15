@@ -20,14 +20,21 @@
  */
 package org.jajuk.services.tags;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.LogManager;
 
+import javax.imageio.ImageIO;
+
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.services.core.SessionService;
+import org.jajuk.services.covers.Cover;
+import org.jajuk.services.covers.Cover.CoverType;
 import org.jajuk.util.Const;
+import org.jajuk.util.MD5Processor;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -38,6 +45,7 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.KeyNotFoundException;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagField;
+import org.jaudiotagger.tag.datatype.Artwork;
 import org.jaudiotagger.tag.id3.ID3v1Tag;
 import org.jaudiotagger.tag.id3.ID3v24Tag;
 
@@ -479,6 +487,35 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
   public void setDiscNumber(long discnumber) throws Exception {
     createTagIfNeeded();
     tag.setField(FieldKey.DISC_NO, Long.toString(discnumber));
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.tags.ITagImpl#getCovers()
+   */
+  @Override
+  public List<Cover> getCovers() throws Exception {
+    List<Cover> covers = new ArrayList<Cover>(1);
+    List<Artwork> artworkList = tag.getArtworkList();
+    // index : prefix for cover file extracted into the cache directory
+    int index = 1;
+    for (Artwork artwork : artworkList) {
+      byte[] imageRawData = artwork != null ? artwork.getBinaryData() : null;
+      if (imageRawData != null) {
+        BufferedImage bi = ImageIO.read(new ByteArrayInputStream(imageRawData));
+        if (bi != null) {
+          // Compute a hash of the audiofile absolute path to avoid overriding of tags between files, each 
+          // Potentially containing several artworks
+          String hash = MD5Processor.hash(audioFile.getFile().getAbsolutePath());
+          File coverFile = SessionService.getConfFileByPath(Const.FILE_CACHE + '/' + hash + "_"
+              + index + "_" + Const.TAG_COVER_FILE);
+          ImageIO.write(bi, "png", coverFile);
+          Cover cover = new Cover(coverFile, CoverType.TAG_COVER);
+          covers.add(cover);
+          index ++;
+        }
+      }
+    }
+    return covers;
   }
 
 }
