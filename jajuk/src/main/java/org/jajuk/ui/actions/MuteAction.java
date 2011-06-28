@@ -73,7 +73,9 @@ public class MuteAction extends JajukAction {
    * @param fVolume DOCUMENT_ME
    */
   public static void setVolumeIcon(final float fVolume) {
-    if (fVolume <= 0) {
+    if (fVolume <= 0 || Player.isMuted()) {
+      // We need to check if player is mute to handle cases when volume > 0
+      // and user muted jajuk in stopped state.
       ActionManager.getAction(MUTE_STATE).setIcon(IconLoader.getIcon(JajukIcons.MUTED));
     } else if (fVolume <= 33) {
       ActionManager.getAction(MUTE_STATE).setIcon(IconLoader.getIcon(JajukIcons.VOLUME_LEVEL1));
