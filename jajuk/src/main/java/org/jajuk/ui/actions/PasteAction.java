@@ -223,7 +223,7 @@ public class PasteAction extends JajukAction {
                 throw new Exception("Cannot move item: " + pl.getFIO().getAbsolutePath() + " to "
                     + fileNew.getAbsolutePath());
               }
-
+              
               // Refresh source and destination
               destDir.refresh(false);
               // Refresh source directories as well
@@ -236,8 +236,9 @@ public class PasteAction extends JajukAction {
               Messages.showErrorMessage(131);
               bErrorOccured = true;
             }
-
           }
+          
+        
           for (Directory d : alDirs) {
             try {
               java.io.File src = new java.io.File(d.getAbsolutePath());
@@ -250,13 +251,13 @@ public class PasteAction extends JajukAction {
                     + dst.getAbsolutePath());
               }
               DirectoryManager.getInstance().removeDirectory(d.getID());
-              destDir.refresh(false);
             } catch (Exception ioe) {
               Log.error(131, ioe);
               Messages.showErrorMessage(131);
               bErrorOccured = true;
             }
           }
+         
           try {
             destDir.refresh(false);
             // Refresh source directories as well
@@ -267,6 +268,7 @@ public class PasteAction extends JajukAction {
             Log.error(e1);
             bErrorOccured = true;
           }
+    
         } else if (moveAction == ItemMoveManager.MoveActions.COPY) {
           for (File f : alFiles) {
             if (!overwriteAll) {
@@ -343,13 +345,14 @@ public class PasteAction extends JajukAction {
             bErrorOccured = true;
           }
         }
+     
         ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
         UtilGUI.stopWaiting();
         if (!bErrorOccured) {
           InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
               InformationJPanel.MessageType.INFORMATIVE);
         }
-
+      
       }
     }.start();
   }
