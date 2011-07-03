@@ -178,8 +178,9 @@ public final class TrackManager extends ItemManager {
   protected static String createID(String sName, Album album, Genre genre, Artist artist,
       long length, Year year, long lOrder, Type type, long lDiscNumber) {
     StringBuilder sb = new StringBuilder(100);
-    sb.append(genre.getID()).append(artist.getID()).append(album.getID()).append(sName).append(
-        year.getValue()).append(length).append(lOrder).append(type.getID()).append(lDiscNumber);
+    sb.append(genre.getID()).append(artist.getID()).append(album.getID()).append(sName)
+        .append(year.getValue()).append(length).append(lOrder).append(type.getID())
+        .append(lDiscNumber);
     // distinguish tracks by type because we can't find best file
     // on different quality levels by format
     return MD5Processor.hash(sb.toString());
@@ -324,8 +325,8 @@ public final class TrackManager extends ItemManager {
       Album newAlbum = AlbumManager.getInstance().registerAlbum(sNewAlbum,
           track.getAlbum().getDiscID());
       Track newTrack = registerTrack(track.getName(), newAlbum, track.getGenre(),
-          track.getArtist(), track.getDuration(), track.getYear(), track.getOrder(), track
-              .getType(), track.getDiscNumber());
+          track.getArtist(), track.getDuration(), track.getYear(), track.getOrder(),
+          track.getType(), track.getDiscNumber());
       postChange(track, newTrack, filter);
       // remove this album if no more references
       AlbumManager.getInstance().cleanOrphanTracks(track.getAlbum());
@@ -385,8 +386,8 @@ public final class TrackManager extends ItemManager {
       // register the new item
       Artist newArtist = ArtistManager.getInstance().registerArtist(sNewArtist);
       Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(),
-          newArtist, track.getDuration(), track.getYear(), track.getOrder(), track.getType(), track
-              .getDiscNumber());
+          newArtist, track.getDuration(), track.getYear(), track.getOrder(), track.getType(),
+          track.getDiscNumber());
       postChange(track, newTrack, filter);
       // remove this item if no more references
       ArtistManager.getInstance().cleanOrphanTracks(track.getArtist());
@@ -442,8 +443,8 @@ public final class TrackManager extends ItemManager {
       // register the new item
       Genre newGenre = GenreManager.getInstance().registerGenre(sNewGenre);
       Track newTrack = registerTrack(track.getName(), track.getAlbum(), newGenre,
-          track.getArtist(), track.getDuration(), track.getYear(), track.getOrder(), track
-              .getType(), track.getDiscNumber());
+          track.getArtist(), track.getDuration(), track.getYear(), track.getOrder(),
+          track.getType(), track.getDiscNumber());
       postChange(track, newTrack, filter);
       // remove this item if no more references
       GenreManager.getInstance().cleanOrphanTracks(track.getGenre());
@@ -500,9 +501,9 @@ public final class TrackManager extends ItemManager {
 
       // Register new item
       Year newYear = YearManager.getInstance().registerYear(newItem);
-      Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(), track
-          .getArtist(), track.getDuration(), newYear, track.getOrder(), track.getType(), track
-          .getDiscNumber());
+      Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(),
+          track.getArtist(), track.getDuration(), newYear, track.getOrder(), track.getType(),
+          track.getDiscNumber());
       postChange(track, newTrack, filter);
       return newTrack;
     } finally {
@@ -632,9 +633,9 @@ public final class TrackManager extends ItemManager {
         cache.remove(track);
       }
 
-      Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(), track
-          .getArtist(), track.getDuration(), track.getYear(), lNewOrder, track.getType(), track
-          .getDiscNumber());
+      Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(),
+          track.getArtist(), track.getDuration(), track.getYear(), lNewOrder, track.getType(),
+          track.getDiscNumber());
       postChange(track, newTrack, filter);
       return newTrack;
     } finally {
@@ -684,9 +685,9 @@ public final class TrackManager extends ItemManager {
         cache.remove(track);
       }
 
-      Track newTrack = registerTrack(sNewItem, track.getAlbum(), track.getGenre(), track
-          .getArtist(), track.getDuration(), track.getYear(), track.getOrder(), track.getType(),
-          track.getDiscNumber());
+      Track newTrack = registerTrack(sNewItem, track.getAlbum(), track.getGenre(),
+          track.getArtist(), track.getDuration(), track.getYear(), track.getOrder(),
+          track.getType(), track.getDiscNumber());
       postChange(track, newTrack, filter);
       // if current track name is changed, notify it
       if (QueueModel.getPlayingFile() != null
@@ -801,9 +802,9 @@ public final class TrackManager extends ItemManager {
         ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
       }
 
-      Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(), track
-          .getArtist(), track.getDuration(), track.getYear(), track.getDiscNumber(), track
-          .getType(), lNewDiscNumber);
+      Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(),
+          track.getArtist(), track.getDuration(), track.getYear(), track.getDiscNumber(),
+          track.getType(), lNewDiscNumber);
       postChange(track, newTrack, filter);
       return newTrack;
     } finally {
@@ -826,7 +827,7 @@ public final class TrackManager extends ItemManager {
         file.setTrack(newTrack);// set new track for the changed file
         newTrack.addFile(file); // add changed file
         // remove file from old track
-        removefile(oldTrack, file);
+        removeFile(file);
       }
     } finally {
       lock.writeLock().unlock();
@@ -884,20 +885,20 @@ public final class TrackManager extends ItemManager {
   /**
    * Remove a file mapping from a track.
    * 
-   * @param track DOCUMENT_ME
    * @param file DOCUMENT_ME
    */
-  public void removefile(Track track, File file) {
+  public void removeFile(File file) {
+    Track track = file.getTrack();
     lock.writeLock().lock();
     try {
-      // If the track contained a single file, it will be empty after this removal
-      // so drop it
-      if (track.getFiles().size() == 1) {
+      // Remove file reference
+      track.removeFile(file);
+
+      // If the track contained a single file, drop it
+      if (track.getFiles().size() == 0) {
         // the track don't map
         // anymore to any physical item, just remove it
         removeItem(track);
-      } else {
-        track.removeFile(file);
       }
     } finally {
       lock.writeLock().unlock();
@@ -1066,8 +1067,8 @@ public final class TrackManager extends ItemManager {
    * @return the comparator
    */
   public TrackComparator getComparator() {
-    return new TrackComparator(TrackComparatorType.values()[Conf
-        .getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER)]);
+    return new TrackComparator(
+        TrackComparatorType.values()[Conf.getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER)]);
   }
 
   /**
