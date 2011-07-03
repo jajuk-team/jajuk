@@ -75,6 +75,7 @@ public class PasteAction extends JajukAction {
   @Override
   @SuppressWarnings("unchecked")
   public void perform(ActionEvent e) {
+    //TODO : rework this method into smaller units
     JComponent source = (JComponent) e.getSource();
     final List<Item> alSelected = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
     final List<Item> itemsToMove = ItemMoveManager.getInstance().getAll();
@@ -190,13 +191,6 @@ public class PasteAction extends JajukAction {
             }
             try {
               showMessage(f.getFIO());
-              final java.io.File fileNew = new java.io.File(
-                  new StringBuilder(dir.getAbsolutePath()).append("/").append(f.getName())
-                      .toString());
-              if (!f.getFIO().renameTo(fileNew)) {
-                throw new Exception("Cannot move item: " + f.getAbsolutePath() + " to "
-                    + fileNew.getAbsolutePath());
-              }
               FileManager.getInstance().changeFileDirectory(f, destDir);
             } catch (Exception ioe) {
               Log.error(131, ioe);
@@ -249,8 +243,8 @@ public class PasteAction extends JajukAction {
               java.io.File src = new java.io.File(d.getAbsolutePath());
               java.io.File dst = new java.io.File(dir.getAbsolutePath() + "/" + d.getName());
               showMessage(src);
-              java.io.File newDir = new java.io.File(new StringBuilder(dst.getAbsolutePath())
-                  .toString());
+              java.io.File newDir = new java.io.File(
+                  new StringBuilder(dst.getAbsolutePath()).toString());
               if (!src.renameTo(newDir)) {
                 throw new Exception("Cannot move item: " + src.getAbsolutePath() + " to "
                     + dst.getAbsolutePath());

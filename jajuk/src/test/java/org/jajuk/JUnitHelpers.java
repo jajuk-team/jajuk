@@ -146,45 +146,45 @@ public class JUnitHelpers {
         obj == notequal);
 
     // make sure correct objects are passed
-    Assert.assertTrue("Classes of objects in EqualsTest should be equal!", obj.getClass().equals(
-        equal.getClass()));
-    Assert.assertTrue("Classes of objects in EqualsTest should be equal!", obj.getClass().equals(
-        notequal.getClass()));
+    Assert.assertTrue("Classes of objects in EqualsTest should be equal!",
+        obj.getClass().equals(equal.getClass()));
+    Assert.assertTrue("Classes of objects in EqualsTest should be equal!",
+        obj.getClass().equals(notequal.getClass()));
 
     // make sure correct parameters are passed
     // equal should be equal to obj, not-equal should not be equal to obj!
     Assert.assertTrue("Object and equal-object should be equal in EqualsTest!", obj.equals(equal));
-    Assert.assertFalse("Object and non-equal-object should not be equal in EqualsTest!", obj
-        .equals(notequal));
+    Assert.assertFalse("Object and non-equal-object should not be equal in EqualsTest!",
+        obj.equals(notequal));
 
     // first test some general things that should be true with equals
 
     // reflexive: equals to itself
     Assert
         .assertTrue("Reflexive: object should be equal to itself in EqualsTest!", obj.equals(obj));
-    Assert.assertTrue("Reflexive: equal-object should be equal to itself in EqualsTest!", equal
-        .equals(equal));
+    Assert.assertTrue("Reflexive: equal-object should be equal to itself in EqualsTest!",
+        equal.equals(equal));
     Assert.assertTrue("Reflexive: non-equal-object should be equal to itself in EqualsTest!",
         notequal.equals(notequal));
 
     // not equals to null
     Assert.assertFalse("Object should not be equal to null in EqualsTest!", obj.equals(null));
-    Assert.assertFalse("Equal-object should not be equal to null in EqualsTest!", equal
-        .equals(null));
-    Assert.assertFalse("Non-equal-object should not be equal to null in EqualsTest!", notequal
-        .equals(null));
+    Assert.assertFalse("Equal-object should not be equal to null in EqualsTest!",
+        equal.equals(null));
+    Assert.assertFalse("Non-equal-object should not be equal to null in EqualsTest!",
+        notequal.equals(null));
 
     // not equals to a different type of object
-    Assert.assertFalse("Object should not be equal to an arbitrary string in EqualsTest!", obj
-        .equals("TestString"));
+    Assert.assertFalse("Object should not be equal to an arbitrary string in EqualsTest!",
+        obj.equals("TestString"));
 
     // then test some things with another object that should be equal
 
     // symmetric, if one is (not) equal to another then the reverse must be true
-    Assert.assertTrue("Symmetric: Object should be equal to equal-object in EqualsTest", obj
-        .equals(equal));
-    Assert.assertTrue("Symmetric: Equals-object should be equal to object in EqualsTest!", equal
-        .equals(obj));
+    Assert.assertTrue("Symmetric: Object should be equal to equal-object in EqualsTest",
+        obj.equals(equal));
+    Assert.assertTrue("Symmetric: Equals-object should be equal to object in EqualsTest!",
+        equal.equals(obj));
     Assert.assertFalse("Symmetric: Object should NOT be equal to non-equal-object in EqualsTest",
         obj.equals(notequal));
     Assert.assertFalse("Symmetric: Non-equals-object should NOT be equal to object in EqualsTest!",
@@ -194,12 +194,12 @@ public class JUnitHelpers {
     // not tested right now
 
     // hashCode: equal objects should have equal hash code
-    Assert.assertTrue("Transitive: Equal objects should have equal hash-code in EqualsTest!", obj
-        .hashCode() == equal.hashCode());
-    Assert.assertTrue("Transitive: Equal objects should have equal hash-code in EqualsTest!", obj
-        .hashCode() == obj.hashCode());
-    Assert.assertTrue("Transitive: Equal objects should have equal hash-code in EqualsTest!", equal
-        .hashCode() == equal.hashCode());
+    Assert.assertTrue("Transitive: Equal objects should have equal hash-code in EqualsTest!",
+        obj.hashCode() == equal.hashCode());
+    Assert.assertTrue("Transitive: Equal objects should have equal hash-code in EqualsTest!",
+        obj.hashCode() == obj.hashCode());
+    Assert.assertTrue("Transitive: Equal objects should have equal hash-code in EqualsTest!",
+        equal.hashCode() == equal.hashCode());
     Assert.assertTrue("Transitive: Equal objects should have equal hash-code in EqualsTest!",
         notequal.hashCode() == notequal.hashCode());
   }
@@ -220,26 +220,26 @@ public class JUnitHelpers {
 
     // make sure correct parameters are passed
     // equal should be equal to obj, not-equal should not be equal to obj!
-    Assert.assertEquals("Object and equal-object should compare in CompareToTest!", 0, obj
-        .compareTo((T) equal));
-    Assert.assertFalse("Object and non-equal-object should not compare in CompareToTest!", 0 == obj
-        .compareTo((T) notequal));
+    Assert.assertEquals("Object and equal-object should compare in CompareToTest!", 0,
+        obj.compareTo((T) equal));
+    Assert.assertFalse("Object and non-equal-object should not compare in CompareToTest!",
+        0 == obj.compareTo((T) notequal));
 
     // first test some general things that should be true with equals
 
     // reflexive: equals to itself
-    Assert.assertEquals("Reflexive: object should be equal to itself in CompareToTest!", 0, obj
-        .compareTo((T) obj));
+    Assert.assertEquals("Reflexive: object should be equal to itself in CompareToTest!", 0,
+        obj.compareTo((T) obj));
     Assert.assertEquals("Reflexive: equal-object should be equal to itself in CompareToTest!", 0,
         equal.compareTo((T) equal));
     Assert.assertEquals("Reflexive: non-equal-object should be equal to itself in CompareToTest!",
         0, notequal.compareTo((T) notequal));
 
     // not equals to null
-    Assert.assertFalse("Object should not be equal to null in CompareToTest!", 0 == obj
-        .compareTo(null));
-    Assert.assertFalse("Equal-object should not be equal to null in CompareToTest!", 0 == equal
-        .compareTo(null));
+    Assert.assertFalse("Object should not be equal to null in CompareToTest!",
+        0 == obj.compareTo(null));
+    Assert.assertFalse("Equal-object should not be equal to null in CompareToTest!",
+        0 == equal.compareTo(null));
     Assert.assertFalse("Non-equal-object should not be equal to null in CompareToTest!",
         0 == notequal.compareTo(null));
 
@@ -257,8 +257,8 @@ public class JUnitHelpers {
     Assert.assertEquals("Symmetric: Equals-object should be equal to object in CompareToTest!", 0,
         equal.compareTo((T) obj));
     Assert.assertFalse(
-        "Symmetric: Object should NOT be equal to non-equal-object in CompareToTest", 0 == obj
-            .compareTo((T) notequal));
+        "Symmetric: Object should NOT be equal to non-equal-object in CompareToTest",
+        0 == obj.compareTo((T) notequal));
     Assert.assertFalse(
         "Symmetric: Non-equals-object should NOT be equal to object in CompareToTest!",
         0 == notequal.compareTo((T) obj));
@@ -288,8 +288,8 @@ public class JUnitHelpers {
     String value = obj.toString();
     for (int i = 0; i < 10; i++) {
       Assert.assertEquals(
-          "toString() is expected to result in the same result across repeated calls!", value, obj
-              .toString());
+          "toString() is expected to result in the same result across repeated calls!", value,
+          obj.toString());
     }
   }
 
@@ -312,8 +312,8 @@ public class JUnitHelpers {
     // m.isAccessible());
 
     // clone should return a different object, not the same again
-    Assert.assertTrue("clone() should not return the object itself in CloneTest!", obj != m.invoke(
-        obj, new Object[] {}));
+    Assert.assertTrue("clone() should not return the object itself in CloneTest!",
+        obj != m.invoke(obj, new Object[] {}));
 
     // should return the same type of object
     Assert.assertTrue(
@@ -360,11 +360,11 @@ public class JUnitHelpers {
         .assertEquals(
             "Equal Assert failed, but input to HashCodeTest should be two equal objects! Check if the class implements equals() as well to fullfill this contract",
             obj, equ);
-    Assert.assertEquals("Equal objects should have equal hashCode() by Java contract!", obj
-        .hashCode(), equ.hashCode());
+    Assert.assertEquals("Equal objects should have equal hashCode() by Java contract!",
+        obj.hashCode(), equ.hashCode());
   }
 
-  @SuppressWarnings( { "unchecked", "rawtypes" })
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public static void EnumTest(Enum enumtype, Class enumclass, String element)
       throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
     // check valueOf()
@@ -515,6 +515,10 @@ public class JUnitHelpers {
     DeviceManager.getInstance().clear();
   }
 
+  /**
+     * Return a file named "test.tst" on a mounted device.
+     * @return a file named "test.tst" on a mounted device.
+     */
   public static org.jajuk.base.File getFile() {
     return getFile("test.tst", true);
   }
