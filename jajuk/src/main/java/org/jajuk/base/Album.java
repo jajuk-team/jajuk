@@ -319,7 +319,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
         return new File(cachedCoverPath);
       }
     }
-    // search for local covers in all directories mapping the current track
+    // None cover yet set or it is no more accessible.
+    // Search for local covers in all directories mapping the current track
     // to reach other devices covers and display them together
     List<Track> lTracks = cache;
     if (lTracks.size() == 0) {
