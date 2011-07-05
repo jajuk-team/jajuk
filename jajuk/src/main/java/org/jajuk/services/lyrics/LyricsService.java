@@ -58,8 +58,7 @@ public final class LyricsService {
   private static String[] providersClasses = new String[] {
       "org.jajuk.services.lyrics.providers.TagLyricsProvider",
       "org.jajuk.services.lyrics.providers.TxtLyricsProvider",
-      "org.jajuk.services.lyrics.providers.LyricWikiWebLyricsProvider",
-      "org.jajuk.services.lyrics.providers.FlyWebLyricsProvider", };
+      "org.jajuk.services.lyrics.providers.LyricWikiWebLyricsProvider", };
 
   /** Persisters list. */
   private static String[] persisterClasses = new String[] {
@@ -160,8 +159,8 @@ public final class LyricsService {
     for (final ILyricsPersister persister : getPersisters()) {
       persister.setAudioFile(provider.getFile());
       destinationPath = persister.getDestinationFile().getAbsolutePath();
-      commitOK = persister.commitLyrics(provider.getArtist(), provider.getTitle(), provider
-          .getLyrics());
+      commitOK = persister.commitLyrics(provider.getArtist(), provider.getTitle(),
+          provider.getLyrics());
       if (commitOK) {
         break;
       }

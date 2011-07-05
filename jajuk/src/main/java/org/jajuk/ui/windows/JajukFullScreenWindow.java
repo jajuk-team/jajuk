@@ -147,6 +147,19 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
   }
 
   /**
+   * Return whether we should try to switch to fullscreen mode (and lose keystrokes controls) 
+   * @return whether we should try to switch to fullscreen mode
+   */
+  private static boolean shouldTryNativeFullScreenmode() {
+    return
+    // Check full screen mode is actually supported
+    (instance.graphicsDevice.isFullScreenSupported() &&
+    // Use real full screen mode only under OSX to override the task bar, otherwise, 
+    // we only maximize the frame to make keystrokes working.
+    UtilSystem.isUnderOSX());
+  }
+
+  /**
    * Gets the single instance of JajukFullScreenWindow.
    * 
    * @return single instance of JajukFullScreenWindow
@@ -158,32 +171,44 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
       instance.decorator = new WindowStateDecorator(instance) {
         @Override
         public void specificBeforeShown() {
-          instance.graphicsDevice = instance.graphicsDevice = UtilGUI
-              .getGraphicsDeviceOfMainFrame();
-
-          if (UtilSystem.isUnderOSX() && instance.graphicsDevice.isFullScreenSupported()) {
+          instance.graphicsDevice = UtilGUI.getGraphicsDeviceOfMainFrame();
+          if (shouldTryNativeFullScreenmode()) {
             instance.graphicsDevice.setFullScreenWindow(instance);
           }
         }
 
         @Override
         public void specificAfterShown() {
-          // Do not show the owner frame under OSX, it makes the full screen blank
-          // as the owner is displayed over
-          if (!UtilSystem.isUnderOSX()) {
-            instance.setSize(instance.graphicsDevice.getDisplayMode().getWidth(),
-                instance.graphicsDevice.getDisplayMode().getHeight());
-            instance.setLocation(instance.graphicsDevice.getDefaultConfiguration().getBounds()
-                .getLocation());
+          if (!shouldTryNativeFullScreenmode()) {
+            Dimension dimension = null;
+            Point point = null;
+            // Probably due to JRE bug #6921661, instance.graphicsDevice.getDisplayMode() sometimes 
+            // returns null under some OS like Fedora as a VMWare guest OS. Then, we can enter properly 
+            // into fullscreen mode but we we cannot leave it anymore 
+            // (java.lang.IllegalArgumentException: Invalid display mode ).
+            // So we try to detect defunct configurations and we use Toolkit (dual screen unaware)
+            // To find single screen size.
+            if (instance.graphicsDevice.getDisplayMode() != null) {
+              // No full screen mode but no JRE bug
+              dimension = new Dimension(instance.graphicsDevice.getDisplayMode().getWidth(),
+                  instance.graphicsDevice.getDisplayMode().getHeight());
+              point = new Point(instance.graphicsDevice.getDefaultConfiguration().getBounds()
+                  .getLocation());
+            } else {
+              // No full screen mode AND JRE bug
+              dimension = Toolkit.getDefaultToolkit().getScreenSize();
+              point = new Point(0, 0);
+            }
+            instance.setSize(dimension);
+            instance.setLocation(point);
             owner.setVisible(true);
             owner.requestFocus();
           }
-
         }
 
         @Override
         public void specificAfterHidden() {
-          if (UtilSystem.isUnderOSX() && instance.graphicsDevice.isFullScreenSupported()) {
+          if (shouldTryNativeFullScreenmode()) {
             instance.graphicsDevice.setFullScreenWindow(null);
           }
           owner.setVisible(false);
@@ -193,10 +218,10 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
         @Override
         public void specificBeforeHidden() {
           if (instance.graphicsDevice.isFullScreenSupported()) {
-            // set everything like it was before entering fullscreen mode
+            // Make sure to reset everything like it was before entering fullscreen mode
+            // (even if it wasn't the case)
             instance.graphicsDevice.setFullScreenWindow(null);
           }
-
         }
       };
     }
@@ -205,8 +230,7 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
 
   /**
    * Hide mouse timer.
-   * DOCUMENT_ME
-   */
+   * */
   private void hideMouseTimer() {
     setCursor(Cursor.getDefaultCursor());
     if (hideMouseTimer != null) {
@@ -218,8 +242,7 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
 
   /**
    * Inits the mouse timer.
-   * DOCUMENT_ME
-   */
+   * */
   private void initMouseTimer() {
     hideMouseTimer = new Timer(3000, new ActionListener() {
       @Override

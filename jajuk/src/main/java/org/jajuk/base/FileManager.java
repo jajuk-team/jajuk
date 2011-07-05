@@ -180,12 +180,12 @@ public final class FileManager extends ItemManager {
     // Under windows, all files/directories with different cases should get
     // the same ID
     if (UtilSystem.isUnderWindows()) {
-      id = MD5Processor.hash(new StringBuilder(dir.getDevice().getName()).append(
-          dir.getRelativePath().toLowerCase(Locale.getDefault())).append(
-          sName.toLowerCase(Locale.getDefault())).toString());
+      id = MD5Processor.hash(new StringBuilder(dir.getDevice().getName())
+          .append(dir.getRelativePath().toLowerCase(Locale.getDefault()))
+          .append(sName.toLowerCase(Locale.getDefault())).toString());
     } else {
-      id = MD5Processor.hash(new StringBuilder(dir.getDevice().getName()).append(
-          dir.getRelativePath()).append(sName).toString());
+      id = MD5Processor.hash(new StringBuilder(dir.getDevice().getName())
+          .append(dir.getRelativePath()).append(sName).toString());
     }
     return id;
   }
@@ -247,8 +247,8 @@ public final class FileManager extends ItemManager {
       Track track = fileOld.getTrack();
       // Remove old file from associated track
       track.removeFile(fileOld);
-      org.jajuk.base.File fNew = new File(sNewId, sNewName, fileOld.getDirectory(), track, fileOld
-          .getSize(), fileOld.getQuality());
+      org.jajuk.base.File fNew = new File(sNewId, sNewName, fileOld.getDirectory(), track,
+          fileOld.getSize(), fileOld.getQuality());
       // transfer all properties and reset id and name
       // We use a shallow copy of properties to avoid any properties share between
       // two items
@@ -272,14 +272,15 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Change a file directory.
+   * Change a file directory and actually move the old file to the new directory.
    * 
    * @param old old file
    * @param newDir new dir
    * 
    * @return new file or null if an error occurs
+   * @throws JajukException the jajuk exception
    */
-  public File changeFileDirectory(File old, Directory newDir) {
+  public File changeFileDirectory(File old, Directory newDir) throws JajukException {
     lock.writeLock().lock();
     try {
       // recalculate file ID
@@ -293,6 +294,15 @@ public final class FileManager extends ItemManager {
       fNew.setProperties(old.getShallowProperties());
       fNew.setProperty(Const.XML_ID, sNewId);
       fNew.setProperty(Const.XML_DIRECTORY, newDir.getID());
+
+      // Real IO move
+      try {
+        if (!old.getFIO().renameTo(fNew.getFIO())) {
+          throw new CannotRenameException(134);
+        }
+      } catch (Exception e) {
+        throw new CannotRenameException(134, e);
+      }
 
       // OK, remove old file and register this new file
       removeFile(old);
@@ -332,7 +342,7 @@ public final class FileManager extends ItemManager {
     lock.writeLock().lock();
     try {
       // We need to remove the file from the track !
-      TrackManager.getInstance().removefile(file.getTrack(), file);
+      TrackManager.getInstance().removeFile(file);
       removeItem(file);
     } finally {
       lock.writeLock().unlock();
@@ -491,8 +501,8 @@ public final class FileManager extends ItemManager {
     List<File> alEligibleFiles = new ArrayList<File>(1000);
     List<Track> tracks = TrackManager.getInstance().getTracks();
     // Filter by age
-    CollectionUtils.filter(tracks, new JajukPredicates.AgePredicate(Conf
-        .getInt(Const.CONF_OPTIONS_NOVELTIES_AGE)));
+    CollectionUtils.filter(tracks,
+        new JajukPredicates.AgePredicate(Conf.getInt(Const.CONF_OPTIONS_NOVELTIES_AGE)));
     // filter banned tracks
     CollectionUtils.filter(tracks, new JajukPredicates.BannedTrackPredicate());
     for (Track track : tracks) {

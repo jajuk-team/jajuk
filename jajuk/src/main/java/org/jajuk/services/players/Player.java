@@ -241,8 +241,7 @@ public final class Player {
    * 
    * @throws Exception    */
   public static void mute() {
-    Player.bMute = !Player.bMute;
-    mute(Player.bMute);
+    mute(!Player.bMute);
   }
 
   /**
@@ -253,7 +252,8 @@ public final class Player {
    * @throws Exception    */
   public static void mute(boolean pMute) {
     try {
-      if (playerImpl == null) { // none current player, leave
+      if (playerImpl == null) { // none current player, set mute state and leave
+        Player.bMute = pMute;
         return;
       }
       if (pMute) {

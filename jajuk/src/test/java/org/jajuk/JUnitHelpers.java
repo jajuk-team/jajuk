@@ -496,6 +496,10 @@ public class JUnitHelpers {
     JUnitHelpers.clearSwingUtilitiesQueue();
   }
 
+  /**
+   * Return a file named "test.tst" on a mounted device.
+   * @return a file named "test.tst" on a mounted device.
+   */
   public static org.jajuk.base.File getFile() {
     return getFile("test.tst", true);
   }

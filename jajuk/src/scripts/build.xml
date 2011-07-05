@@ -16,7 +16,7 @@
 
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.9.2~dev' />
+	<property name='version' value='1.9.3~dev' />
 
 	<!--JNLP version-->
 	<!-- In final releases (including RC), jnlp_version=${version} 
@@ -258,7 +258,7 @@
 		</copy>
 	</target>
 
-	<target name='package_jar' description='o Create Jajuk jar file' depends='startup,clean,mkdist_jar,download_mplayer,compile'>
+	<target name='package_jar' description='o Create Jajuk jar file' depends='startup,clean,mkdist_jar,compile'>
 		<echo message='Create Jajuk jar file' />
 		<jar jarfile='${distdir}/bin/${jarname}' excludes='**/package.html' manifest='${srcdir}/packaging/MANIFEST.MF' compress='true'>
 			<fileset dir='${distdir}/${classdir}' />
@@ -282,7 +282,7 @@
 
 	<!--IzPack package creation -->
 
-	<target name='package_izpack' description='o Create Jajuk IzPack package' depends='startup,clean,package_jar,mkdist_izpack'>
+	<target name='package_izpack' description='o Create Jajuk IzPack package' depends='download_mplayer,startup,clean,package_jar,mkdist_izpack'>
 		<taskdef name='izpack' classpath='${conf_izpackdir}/lib/compiler.jar' classname='com.izforge.izpack.ant.IzPackTask' />
 		<echo message='Create Jajuk IzPack package' />
 		<echo message='Makes the installer using IzPack' />

@@ -30,6 +30,7 @@ import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
+import org.jajuk.services.covers.Cover;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -380,6 +381,25 @@ public class Tag {
     }
 
     return sLyrics;
+  }
+
+  /**
+   * Gets the embedded covers. 
+   * 
+   * @return the covers or a void list if none.
+   */
+  public List<Cover> getCovers() {
+    List<Cover> covers = new ArrayList<Cover>(1);
+    // if the type doesn't support tags ( like wav )
+    if (tagImpl == null) {
+      return covers;
+    }
+    try {
+      covers = tagImpl.getCovers();
+    } catch (Exception e) {
+      Log.info("Wrong covers:{{" + fio.getName() + "}}");
+    }
+    return covers;
   }
 
   /**

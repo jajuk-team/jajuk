@@ -22,6 +22,7 @@ package org.jajuk.services.tags;
 
 import java.util.List;
 
+import org.jajuk.services.covers.Cover;
 import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.KeyNotFoundException;
 
@@ -280,5 +281,12 @@ public interface ITagImpl {
    * @return the supported tag fields
    */
   public List<String> getSupportedTagFields();
+  
+  /**
+   * Gets the embedded covers. 
+   * 
+   * @return the covers or a void list if none.
+   */
+  public List<Cover> getCovers() throws Exception;
 
 }
