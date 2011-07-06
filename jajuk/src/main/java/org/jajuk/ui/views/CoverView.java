@@ -549,6 +549,11 @@ public class CoverView extends ViewAdapter implements ActionListener {
             alCovers.add(cover2);
             setFoundText();
           }
+
+          // Reset cached cover in associated albums to make sure that new covers
+          // will be discovered in various views like Catalog View.
+          resetCachedCover();
+
           // Notify cover change
           ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
           // add new cover in others cover views
@@ -558,6 +563,26 @@ public class CoverView extends ViewAdapter implements ActionListener {
         }
       }
     }.start();
+  }
+
+  /**
+   * Reset cached cover in associated albums to make sure that new covers
+   *  will be discovered in various views like Catalog View.
+   */
+  private void resetCachedCover() {
+    org.jajuk.base.File fCurrent = fileReference;
+    if (fCurrent == null) {
+      fCurrent = QueueModel.getPlayingFile();
+    }
+    Set<Album> albums = fCurrent.getDirectory().getAlbums();
+    // If we cached NO_COVER for this album, make sure to reset this value
+    for (Album album : albums) {
+      String cachedCoverPath = album.getStringValue(XML_ALBUM_COVER);
+      if (COVER_NONE.equals(cachedCoverPath)) {
+        album.setProperty(XML_ALBUM_COVER, "");
+      }
+      ObservationManager.notify(new JajukEvent(JajukEvents.COVER_DEFAULT_CHANGED));
+    }
   }
 
   /**
@@ -619,6 +644,11 @@ public class CoverView extends ViewAdapter implements ActionListener {
             UtilSystem.copy(cover.getFile(), fNew);
             InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
                 InformationJPanel.MessageType.INFORMATIVE);
+
+            // Reset cached cover in associated albums to make sure that new covers
+            // will be discovered in various views like Catalog View.
+            resetCachedCover();
+
             // Notify cover change
             ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
           } catch (final Exception ex) {
