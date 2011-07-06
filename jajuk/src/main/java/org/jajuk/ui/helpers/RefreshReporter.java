@@ -87,14 +87,13 @@ public class RefreshReporter {
       }
     }
     // To avoid "freezing" at 100% if new files have been added since last
-    // refresh, take
-    // 5 % of new files
+    // refresh, take 5 % of new files
     dirTotal *= 1.05;
   }
 
   /**
    * Notify corrupted file.
-   * DOCUMENT_ME
+   * 
    */
   public void notifyCorruptedFile() {
     iNbCorruptedFiles++;
@@ -102,7 +101,7 @@ public class RefreshReporter {
 
   /**
    * Notify new file.
-   * DOCUMENT_ME
+   * 
    */
   public void notifyNewFile() {
     iNbNewFiles++;
@@ -110,7 +109,7 @@ public class RefreshReporter {
 
   /**
    * Refresh started.
-   * DOCUMENT_ME
+   * 
    */
   public void refreshStarted() {
     lRefreshDateStart = System.currentTimeMillis();
@@ -118,7 +117,7 @@ public class RefreshReporter {
 
   /**
    * Builds the final message.
-   * DOCUMENT_ME
+   * 
    * 
    * @param time DOCUMENT_ME
    * 
