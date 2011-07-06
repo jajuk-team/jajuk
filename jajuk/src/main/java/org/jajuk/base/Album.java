@@ -36,6 +36,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.services.covers.Cover;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
@@ -383,9 +384,11 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   private File findTagCover() {
     //Make sure to sort the cache
-    Collections.sort(cache);
-    for (Track track : cache) {
-      for (org.jajuk.base.File file : track.getFiles()) {
+    List<Track> sortedTracks = new ArrayList<Track>(cache);
+    Collections.sort(sortedTracks, new TrackComparator(TrackComparatorType.ALBUM));
+
+    for (Track track : sortedTracks) {
+      for (org.jajuk.base.File file : track.getReadyFiles()) {
         try {
           Tag tag = new Tag(file.getFIO(), false);
           List<Cover> covers = tag.getCovers();
