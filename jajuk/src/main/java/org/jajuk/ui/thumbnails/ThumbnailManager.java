@@ -208,20 +208,13 @@ public final class ThumbnailManager {
    * @return whether a new cover has been created
    */
   public static boolean refreshThumbnail(final Album album, final int size) {
-    if (Const.COVER_NONE.equals(album.getStringValue(Const.XML_ALBUM_COVER))) {
-      return false;
-    }
     // Check if the thumb is known in cache
     if (album.isThumbAvailable(size)) {
       return false;
     }
     final File fThumb = getThumbBySize(album, size);
-    final File fCover = album.findCoverFile();
+    final File fCover = album.findCover();
     if (fCover != null) {
-      if (!fCover.canRead()) {
-        Log.debug("Cannot read cover : " + fCover.getAbsolutePath());
-        return false;
-      }
       try {
         createThumbnail(fCover, fThumb, size);
         // Update thumb availability
@@ -235,7 +228,7 @@ public final class ThumbnailManager {
         Log.error(e);
       }
     }
-    return false; // thumb already exists
+    return false; // thumb already exists or source file cannot be read (an exception occurred)
   }
 
   /**

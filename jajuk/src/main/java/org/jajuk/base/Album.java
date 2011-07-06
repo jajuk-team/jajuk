@@ -293,13 +293,13 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Gets the cover file.
+   * Gets the best associated cover as a file.
    * <p>Can be a long action</p>
    * 
-   * @return associated best cover file available or null if none. The returned
-   * file can not be readable, so use a try/catch around a future access to this method.
+   * @return Associated best cover file available or null if none. The returned
+   * file is not guarantee to exist, so use a try/catch around a future access to this method.
    */
-  public File findCoverFile() {
+  public File findCover() {
     String cachedCoverPath = getStringValue(XML_ALBUM_COVER);
     if (COVER_NONE.equals(cachedCoverPath)) {
       return null;
@@ -345,19 +345,32 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
     // none ? look for standard cover in collection
     if (cover == null) {
-      cover = findCover(dirs, true);
+      cover = findCoverFile(dirs, true);
     }
 
     // none ? OK, return first cover file we find
     if (cover == null) {
-      cover = findCover(dirs, false);
+      cover = findCoverFile(dirs, false);
     }
 
-    // Still nothing ? ok, set no cover
+    // [PERF] Still nothing ? ok, set no cover to avoid further searches 
     if (cover == null) {
       setProperty(XML_ALBUM_COVER, COVER_NONE);
+    } else { //[PERF] if we found a cover, we store it to avoid further covers 
+      // searches including a full tags picture extraction  
+      setProperty(XML_ALBUM_COVER, cover.getAbsolutePath());
     }
     return cover;
+  }
+
+  /**
+   * Return whether this album owns a default cover (this method doesn't check
+   * cover file existence)
+   * @return whether this album owns a default cover.
+   */
+  public boolean containsDefaultCover() {
+    String coverPath = getStringValue(XML_ALBUM_COVER);
+    return !StringUtils.isBlank(coverPath) && !coverPath.equals(COVER_NONE);
   }
 
   /**
@@ -393,7 +406,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * 
    * @return a cover file matching criteria or null
    */
-  private File findCover(Set<Directory> dirs, boolean onlyStandardCovers) {
+  private File findCoverFile(Set<Directory> dirs, boolean onlyStandardCovers) {
     JajukFileFilter filter = new JajukFileFilter(ImageFilter.getInstance());
     for (Directory dir : dirs) {
       File fDir = dir.getFio(); // store this dir

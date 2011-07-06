@@ -93,10 +93,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   private final List<Directory> alDirectories = new ArrayList<Directory>(20);
 
   /** Already refreshing flag. */
-  private volatile boolean bAlreadyRefreshing = false;  //NOSONAR
+  private volatile boolean bAlreadyRefreshing = false; //NOSONAR
 
   /** Already synchronizing flag. */
-  private volatile boolean bAlreadySynchronizing = false;  //NOSONAR
+  private volatile boolean bAlreadySynchronizing = false; //NOSONAR
 
   /** Volume of created files during synchronization. */
   private long lVolume = 0;
@@ -861,19 +861,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       for (Directory dir : dirs) {
         scanRecursively(dir, bDeepScan);
       }
-
-      // Force cover detection (after done once, the cover file is cached as album property)
-      // We need this to avoid bug #1550 : if the device is created, then unplugged, catalog
-      // view cover/no-cover filter is messed-up because the findCover() method always return null.
-      Set<Album> albumsToCheck = getAlbumsForDirectories(dirs);
-      for (Album album : albumsToCheck) {
-        album.findCoverFile();
-        // Give a chance to leave this loop when user required end of session
-        if (ExitService.isExiting()) {
-          break;
-        }
-      }
-
       // Force a GUI refresh if new files or directories discovered or have been
       // removed
       if (((FileManager.getInstance().getElementCount() - iNbFilesBeforeRefresh) != 0)
@@ -903,28 +890,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Return list of albums for a list of directories.
-   * 
-   * @param dirs the directories to extract albums from recursively
-   * 
-   * @return list of albums for a list of directories
-   */
-  private Set<Album> getAlbumsForDirectories(List<Directory> dirs) {
-    Set<Album> out = new HashSet<Album>(dirs.size() * 10);
-    for (Directory dir : dirs) {
-      List<org.jajuk.base.File> files = dir.getFilesRecursively();
-      for (org.jajuk.base.File file : files) {
-        out.add(file.getTrack().getAlbum());
-      }
-    }
-    return out;
-  }
-
-  /**
    * Scan recursively.
    *  
-   * @param dir DOCUMENT_ME
-   * @param bDeepScan DOCUMENT_ME
+   * @param dir top directory to scan
+   * @param bDeepScan whether we want to perform a deep scan (read tags again)
    */
   private void scanRecursively(final Directory dir, final boolean bDeepScan) {
     dir.scan(bDeepScan, reporter);

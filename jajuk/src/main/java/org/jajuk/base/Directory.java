@@ -23,6 +23,7 @@ package org.jajuk.base;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -355,6 +356,30 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     }
     // Clear the tag cache so tags are actually read at next deep refresh
     Tag.clearCache();
+
+    // Force cover detection (after done once, the cover file is cached as album property)
+    // We need this to avoid bug #1550 : if the device is created, then unplugged, catalog
+    // view cover/no-cover filter is messed-up because the findCover() method always return null.
+    Set<Album> albumsToCheck = getAlbums();
+    for (Album album : albumsToCheck) {
+      album.findCover();
+    }
+  }
+
+  /**
+   * Return list of albums for current directory.
+   * 
+   * @param 
+   * 
+   * @return list of albums for current directory
+   */
+  public Set<Album> getAlbums() {
+    Set<Album> out = new HashSet<Album>(1);
+    Set<org.jajuk.base.File> files = this.getFiles();
+    for (org.jajuk.base.File file : files) {
+      out.add(file.getTrack().getAlbum());
+    }
+    return out;
   }
 
   /**
