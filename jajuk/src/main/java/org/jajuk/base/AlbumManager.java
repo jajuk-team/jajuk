@@ -42,6 +42,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.error.JajukRuntimeException;
 
 /**
  * Convenient class to manage Albums.
@@ -261,7 +262,7 @@ public final class AlbumManager extends ItemManager implements Observer {
   /**
    * Get sorted list of albums associated with this item.
    * 
-   * @param item DOCUMENT_ME
+   * @param item the item
    * 
    * @return a list of item, void list if no result
    */
@@ -286,9 +287,10 @@ public final class AlbumManager extends ItemManager implements Observer {
                 albumSet.add(album);
               } else if (item instanceof Genre && track.getGenre().equals(item)) {
                 albumSet.add(album);
-              }
-              if (item instanceof Year && track.getYear().equals(item)) {
+              } else if (item instanceof Year && track.getYear().equals(item)) {
                 albumSet.add(album);
+              } else {
+                throw new JajukRuntimeException("Association not implemented " + item);
               }
             }
           }
@@ -453,8 +455,8 @@ public final class AlbumManager extends ItemManager implements Observer {
     if (sortedAlbums.size() == 0) {
       return new ArrayList<Album>();
     }
-    List<Album> sublist = sortedAlbums.subList(sortedAlbums.size() - (1 + size), sortedAlbums
-        .size() - 1);
+    List<Album> sublist = sortedAlbums.subList(sortedAlbums.size() - (1 + size),
+        sortedAlbums.size() - 1);
     // Shuffle the result
     Collections.shuffle(sublist);
     // The result is a sublist of shuffled albums, if we have less
