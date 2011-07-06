@@ -467,7 +467,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
     if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_COVER)) {
       final int iResu = Messages
           .getChoice(Messages.getString("Confirmation_delete_cover") + " : "
-              + cover.getURL().getFile(), JOptionPane.YES_NO_CANCEL_OPTION,
+              + cover.getFile(), JOptionPane.YES_NO_CANCEL_OPTION,
               JOptionPane.WARNING_MESSAGE);
       if (iResu != JOptionPane.YES_OPTION) {
         return;
@@ -476,7 +476,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
 
     // yet there? ok, delete the cover
     try {
-      final File file = new File(cover.getURL().getFile());
+      final File file = cover.getFile();
       if (file.isFile() && file.exists()) {
         UtilSystem.deleteFile(file);
       } else { // not a file, must have a problem
