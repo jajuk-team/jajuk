@@ -487,11 +487,10 @@ public class CatalogView extends ViewAdapter implements ActionListener,
       while (itAlbums.hasNext()) {
         Album album = itAlbums.next();
         if (jcbShowCover.getSelectedIndex() == Const.CATALOG_VIEW_COVER_MODE_WITH
-            && album.findCoverFile() == null) {
+            && !album.containsDefaultCover()) {
           itAlbums.remove();
-        }
-        else if (jcbShowCover.getSelectedIndex() == Const.CATALOG_VIEW_COVER_MODE_WITHOUT
-            && album.findCoverFile() != null) {
+        } else if (jcbShowCover.getSelectedIndex() == Const.CATALOG_VIEW_COVER_MODE_WITHOUT
+            && album.containsDefaultCover()) {
           itAlbums.remove();
         }
       }
@@ -706,8 +705,8 @@ public class CatalogView extends ViewAdapter implements ActionListener,
       lDateTyped = System.currentTimeMillis();
       Conf.setProperty(Const.CONF_THUMBS_SORTER, Integer.toString(jcbSorter.getSelectedIndex()));
     } else if (e.getSource() == jcbShowCover) {
-      Conf.setProperty(Const.CONF_THUMBS_SHOW_COVER, Integer.toString(jcbShowCover
-          .getSelectedIndex()));
+      Conf.setProperty(Const.CONF_THUMBS_SHOW_COVER,
+          Integer.toString(jcbShowCover.getSelectedIndex()));
       // Reset page to zero to avoid out of bounds exceptions, when restricting
       // the filter, less pages are available
       page = 0;
