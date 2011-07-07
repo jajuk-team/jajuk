@@ -434,7 +434,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
             // Note that at this point, the image is fully loaded (done in the ImageIcon
             // constructor)
             if (ii.getImageLoadStatus() == MediaTracker.COMPLETE) {
-              setProperty(XML_ALBUM_COVER, files[i].getAbsolutePath());
               return files[i];
             } else {
               Log.debug("Problem loading: " + files[i].getAbsolutePath());
