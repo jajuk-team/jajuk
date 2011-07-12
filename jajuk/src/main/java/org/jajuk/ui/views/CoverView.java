@@ -344,12 +344,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     new Thread() {
       @Override
       public void run() {
-        // Wait a while to make sure that the view has been fully displayed
-        try {
-          Thread.sleep(2000);
-        } catch (InterruptedException e) {
-          Log.error(e);
-        }
         if (fileReference == null) {
           if (QueueModel.isStopped()) {
             update(new JajukEvent(JajukEvents.ZERO));
@@ -474,10 +468,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
     // show confirmation message if required
     if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_COVER)) {
-      final int iResu = Messages
-          .getChoice(Messages.getString("Confirmation_delete_cover") + " : "
-              + cover.getFile(), JOptionPane.YES_NO_CANCEL_OPTION,
-              JOptionPane.WARNING_MESSAGE);
+      final int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_cover") + " : "
+          + cover.getFile(), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
       if (iResu != JOptionPane.YES_OPTION) {
         return;
       }
@@ -586,9 +578,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     Set<Album> albums = fCurrent.getDirectory().getAlbums();
     // If we cached NO_COVER for this album, make sure to reset this value
     for (Album album : albums) {
-      String cachedCoverPath = album.getStringValue(XML_ALBUM_COVER);
+      String cachedCoverPath = album.getStringValue(XML_ALBUM_DISCOVERED_COVER);
       if (COVER_NONE.equals(cachedCoverPath)) {
-        album.setProperty(XML_ALBUM_COVER, "");
+        album.setProperty(XML_ALBUM_DISCOVERED_COVER, "");
       }
       ObservationManager.notify(new JajukEvent(JajukEvents.COVER_DEFAULT_CHANGED));
     }
@@ -741,7 +733,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         if (fCurrent != null && fCurrent.getTrack() != null
             && fCurrent.getTrack().getAlbum() != null && cover.getFile() != null) {
           Album album = fCurrent.getTrack().getAlbum();
-          album.setProperty(XML_ALBUM_COVER, destPath);
+          album.setProperty(XML_ALBUM_SELECTED_COVER, destPath);
+          album.setProperty(XML_ALBUM_DISCOVERED_COVER, destPath);
         }
       }
     }.start();
@@ -1429,19 +1422,22 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       // remove all existing covers
       alCovers.clear();
 
-      // search for local covers in all directories mapping
+      // Search for local covers in all directories mapping
       // the current track to reach other devices covers and
       // display them together
       final Track trackCurrent = fCurrent.getTrack();
       final List<org.jajuk.base.File> alFiles = trackCurrent.getFiles();
 
-      // Add any absolute default cover
-      String defaultCoverPath = trackCurrent.getAlbum().getStringValue(XML_ALBUM_COVER);
+      // Add any selected default cover
+      String defaultCoverPath = trackCurrent.getAlbum().getStringValue(XML_ALBUM_SELECTED_COVER);
       if (StringUtils.isNotBlank(defaultCoverPath)) {
         File coverFile = new File(defaultCoverPath);
         if (coverFile.exists()) {
           final Cover cover = new Cover(coverFile, CoverType.SELECTED_COVER);
-          alCovers.add(cover);
+          // Avoid dups
+          if (!alCovers.contains(cover)) {
+            alCovers.add(cover);
+          }
         }
       }
 
@@ -1452,7 +1448,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
           // if the device is not ready, just ignore it
           continue;
         }
-        // Now search for regular local covers
+        // Now search for regular or standard local covers
         // null if none file found
         final java.io.File[] files = dirScanned.getFio().listFiles();
         for (int i = 0; (files != null) && (i < files.length); i++) {
@@ -1541,7 +1537,16 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     // Check for tag covers 
     try {
       Tag tag = new Tag(fCurrent.getFIO(), false);
-      alCovers.addAll(tag.getCovers());
+      List<Cover> tagCovers = tag.getCovers();
+      // Reverse order of the found tag covers because we want best last
+      // in alCovers and we want to keep tag order.
+      Collections.reverse(tagCovers);
+      for (Cover cover : tagCovers) {
+        // Avoid dups
+        if (!alCovers.contains(cover)) {
+          alCovers.add(cover);
+        }
+      }
     } catch (JajukException e1) {
       Log.error(e1);
     }
