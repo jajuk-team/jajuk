@@ -147,8 +147,8 @@ public class SessionService {
               files = sessions.listFiles();
               for (int i = 0; i < files.length; i++) {
                 if (!files[i].delete()) {
-                  Messages.showDetailedErrorMessage(131, "Cannot delete : "
-                      + files[i].getAbsolutePath(), "");
+                  Messages.showDetailedErrorMessage(131,
+                      "Cannot delete : " + files[i].getAbsolutePath(), "");
                   Log.error(131);
                   break;
                 }
@@ -544,15 +544,22 @@ public class SessionService {
   }
 
   /**
-   * Clear locale images cache.
+   * Clear locale images cache once a given size is reached.
    */
   public static void clearCache() {
     final File fCache = getConfFileByPath(Const.FILE_CACHE);
     final File[] files = fCache.listFiles();
+    long totalSize = 0l;
     for (final File element : files) {
-      // note that this will note delete non-empty directories like lastfm cache in purpose
-      element.delete();
+      totalSize += element.length();
     }
+    if ((totalSize / 1048576) > Const.MAX_IMAGES_CACHE_SIZE) {
+      for (final File element : files) {
+        // note that this will not delete non-empty directories like last.fm cache in purpose
+        element.delete();
+      }
+    }
+
   }
 
   /**

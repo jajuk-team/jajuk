@@ -104,6 +104,9 @@ public interface Const {
 
   /** Number of pixels around window at initial startup. */
   int FRAME_INITIAL_BORDER = 60;
+  
+  /** Maximum images cache size in MB */
+  int MAX_IMAGES_CACHE_SIZE = 100;
 
   /** Default webradio. */
   String DEFAULT_WEBRADIO = "Bluemars [Ambient/Space-Music]";
@@ -224,9 +227,9 @@ public interface Const {
   /** DOCUMENT_ME. */
   URL FILE_LOG4J_CONF = UtilSystem.getResource("org/jajuk/util/log/jajuk-log4j-conf.xml");
 
-  /** DOCUMENT_ME. */
+  /** Cache directory name. */
   String FILE_CACHE = "cache";
-
+ 
   /** Bat Converter to DOS 8.3 format */
   String FILE_FILENAME_CONVERTER = "converter.bat";
 
@@ -1181,9 +1184,12 @@ public interface Const {
   /** DOCUMENT_ME. */
   String XML_EXPANDED = "exp"; // can be 'y' or 'n'
 
-  /** DOCUMENT_ME. */
-  String XML_ALBUM_COVER = "cover";
-
+  /** Cached cover. */
+  String XML_ALBUM_DISCOVERED_COVER = "cover_cache";
+  
+  /** Selected cover. */
+  String XML_ALBUM_SELECTED_COVER = "cover";
+  
   /** DOCUMENT_ME. */
   String XML_DIRECTORY_PARENT = "parent";
 
