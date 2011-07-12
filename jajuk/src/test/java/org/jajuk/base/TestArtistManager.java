@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.base;
 
@@ -40,11 +40,14 @@ import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.KeyNotFoundException;
 
 /**
- *
+ * DOCUMENT_ME.
  */
 public class TestArtistManager extends JajukTestCase {
 
+  /** The Constant NUMBER_OF_TESTS.  DOCUMENT_ME */
   private static final int NUMBER_OF_TESTS = 10;
+  
+  /** The Constant NUMBER_OF_THREADS.  DOCUMENT_ME */
   private static final int NUMBER_OF_THREADS = 10;
 
   /**
@@ -62,7 +65,8 @@ public class TestArtistManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.ArtistManager#registerArtist(java.lang.String)}.
    */
   public final void testRegisterArtistString() {
@@ -73,7 +77,8 @@ public class TestArtistManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.ArtistManager#createID(java.lang.String)}.
    */
   public final void testCreateID() {
@@ -87,7 +92,8 @@ public class TestArtistManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.ArtistManager#registerArtist(java.lang.String, java.lang.String)}
    * .
    */
@@ -99,11 +105,11 @@ public class TestArtistManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.base.ArtistManager#changeArtistName(org.jajuk.base.Artist, java.lang.String)}
    * .
-   *
-   * @throws Exception
    */
   public final void testChangeArtistName() throws Exception {
     StartupCollectionService.registerItemManagers();
@@ -144,6 +150,12 @@ public class TestArtistManager extends JajukTestCase {
   }
 
   // test this in a thread as well to cover the synchronized block...
+  /**
+   * Test change artist name threads.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testChangeArtistNameThreads() throws Exception {
     StartupCollectionService.registerItemManagers();
 
@@ -168,9 +180,21 @@ public class TestArtistManager extends JajukTestCase {
     });
   }
 
+  /**
+   * Test multiple threads.
+   * DOCUMENT_ME
+   */
   public void testMultipleThreads() {
   }
 
+  /**
+   * Gets the file.
+   *
+   * @param i DOCUMENT_ME
+   * @param artist DOCUMENT_ME
+   * @return the file
+   * @throws Exception the exception
+   */
   @SuppressWarnings("unchecked")
   private File getFile(int i, Artist artist) throws Exception {
     Genre genre = JUnitHelpers.getGenre("name");
@@ -202,7 +226,8 @@ public class TestArtistManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.ArtistManager#format(java.lang.String)}.
    */
   public final void testFormat() {
@@ -241,7 +266,8 @@ public class TestArtistManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.ArtistManager#getArtistByID(java.lang.String)}.
    */
   public final void testGetArtistByID() {
@@ -281,11 +307,11 @@ public class TestArtistManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.base.ArtistManager#getAssociatedArtists(org.jajuk.base.Item)}
    * .
-   *
-   * @throws Exception
    */
   public final void testGetAssociatedArtists() throws Exception {
     // empty list with invalid item
@@ -310,7 +336,8 @@ public class TestArtistManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.ArtistManager#getArtistByName(java.lang.String)}.
    */
   public final void testGetArtistByName() {
@@ -320,6 +347,10 @@ public class TestArtistManager extends JajukTestCase {
     assertEquals(artist.getID(), artist2.getID());
   }
 
+  /**
+   * Test sorting.
+   * DOCUMENT_ME
+   */
   public final void testSorting() {
     // make sure we have "ordered state"
     ArtistManager.getInstance().switchToOrderState();
@@ -350,124 +381,193 @@ public class TestArtistManager extends JajukTestCase {
     assertNull(ArtistManager.getInstance().getArtistByID("number 09"));
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   public static class MyTagImpl implements ITagImpl {
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#commit()
+     */
     @Override
     public void commit() throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#getAlbumArtist()
+     */
     @Override
     public String getAlbumArtist() throws Exception {
 
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#getAlbumName()
+     */
     @Override
     public String getAlbumName() throws Exception {
 
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#getArtistName()
+     */
     @Override
     public String getArtistName() throws Exception {
 
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#getComment()
+     */
     @Override
     public String getComment() throws Exception {
 
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#getDiscNumber()
+     */
     @Override
     public long getDiscNumber() throws Exception {
 
       return 0;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#getLength()
+     */
     @Override
     public long getLength() throws Exception {
 
       return 0;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#getOrder()
+     */
     @Override
     public long getOrder() throws Exception {
 
       return 0;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#getQuality()
+     */
     @Override
     public long getQuality() throws Exception {
 
       return 0;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#getGenreName()
+     */
     @Override
     public String getGenreName() throws Exception {
 
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#getTrackName()
+     */
     @Override
     public String getTrackName() throws Exception {
 
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#getYear()
+     */
     @Override
     public String getYear() throws Exception {
 
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#setAlbumArtist(java.lang.String)
+     */
     @Override
     public void setAlbumArtist(String albumArtist) throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#setAlbumName(java.lang.String)
+     */
     @Override
     public void setAlbumName(String albumName) throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#setArtistName(java.lang.String)
+     */
     @Override
     public void setArtistName(String artistName) throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#setComment(java.lang.String)
+     */
     @Override
     public void setComment(String comment) throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#setDiscNumber(long)
+     */
     @Override
     public void setDiscNumber(long discnumber) throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#setFile(java.io.File)
+     */
     @Override
     public void setFile(java.io.File fio) throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#setOrder(long)
+     */
     @Override
     public void setOrder(long order) throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#setGenreName(java.lang.String)
+     */
     @Override
     public void setGenreName(String genre) throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#setTrackName(java.lang.String)
+     */
     @Override
     public void setTrackName(String trackName) throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#setYear(java.lang.String)
+     */
     @Override
     public void setYear(String year) throws Exception {
 

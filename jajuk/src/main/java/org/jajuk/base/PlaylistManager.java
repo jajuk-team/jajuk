@@ -148,11 +148,10 @@ public final class PlaylistManager extends ItemManager implements Observer {
 
   /**
    * Register an Playlist with a known id.
-   * 
-   * @param sName DOCUMENT_ME
+   *
    * @param sId DOCUMENT_ME
+   * @param sName DOCUMENT_ME
    * @param dParentDirectory DOCUMENT_ME
-   * 
    * @return the playlist
    */
   public Playlist registerPlaylistFile(String sId, String sName, Directory dParentDirectory) {

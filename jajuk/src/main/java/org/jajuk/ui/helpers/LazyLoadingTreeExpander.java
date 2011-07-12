@@ -86,9 +86,9 @@ public class LazyLoadingTreeExpander implements TreeWillExpandListener {
 
   /**
    * Define nodes children.
-   * 
-   * @param nodes new nodes
+   *
    * @param lazyNode DOCUMENT_ME
+   * @param nodes new nodes
    */
   private void setChildren(LazyLoadingTreeNode lazyNode, MutableTreeNode... nodes) {
     int childCount = lazyNode.getChildCount();

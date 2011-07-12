@@ -67,10 +67,10 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
 
   /**
    * Filter constructor.
-   * 
+   *
+   * @param bAND DOCUMENT_ME
    * @param filters undefined list of jajuk filter to be applied (logical AND applied
    * between filters)
-   * @param bAND DOCUMENT_ME
    */
   public JajukFileFilter(final boolean bAND, final JajukFileFilter... filters) {
     super();

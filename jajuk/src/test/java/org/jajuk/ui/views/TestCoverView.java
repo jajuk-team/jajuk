@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.views;
 
@@ -46,11 +46,13 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestCoverView extends JajukTestCase {
+  
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.views.CoverView#componentResized(java.awt.event.ComponentEvent)}
    * .
    */
@@ -80,7 +82,8 @@ public class TestCoverView extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.views.CoverView#CoverView(org.jajuk.base.File)}.
    */
 
@@ -88,6 +91,11 @@ public class TestCoverView extends JajukTestCase {
     new CoverView(getFile());
   }
 
+  /**
+   * Gets the file.
+   *
+   * @return the file
+   */
   private File getFile() {
     Genre genre = JUnitHelpers.getGenre();
     Album album = JUnitHelpers.getAlbum("name", 0);
@@ -128,7 +136,8 @@ public class TestCoverView extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.views.CoverView#actionPerformed(java.awt.event.ActionEvent)}
    * .
    */
@@ -149,7 +158,11 @@ public class TestCoverView extends JajukTestCase {
   }
 
   /**
-   * @param view
+   * Recursive action performed.
+   * DOCUMENT_ME
+   *
+   * @param cmp DOCUMENT_ME
+   * @param view DOCUMENT_ME
    */
   private void recursiveActionPerformed(Container cmp, CoverView view) {
     for (int i = 0; i < cmp.getComponentCount(); i++) {
@@ -172,7 +185,8 @@ public class TestCoverView extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.views.CoverView#createQuery(org.jajuk.base.File)}.
    */
 
@@ -218,6 +232,8 @@ public class TestCoverView extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.ui.views.CoverView#getCurrentImage()}.
+   *
+   * @throws Exception the exception
    */
 
   public final void testGetCurrentImage() throws Exception {
@@ -231,7 +247,8 @@ public class TestCoverView extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.views.CoverView#update(org.jajuk.events.JajukEvent)}.
    */
 

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.base;
 
@@ -26,10 +26,13 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestDeviceManager extends JajukTestCase {
 
+  /* (non-Javadoc)
+   * @see org.jajuk.JajukTestCase#setUp()
+   */
   @Override
   protected void setUp() throws Exception {
     // avoid UI:
@@ -45,7 +48,8 @@ public class TestDeviceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.DeviceManager#startAutoRefreshThread()}.
    */
   public final void testStartAutoRefreshThread() {
@@ -63,7 +67,8 @@ public class TestDeviceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.DeviceManager#registerDevice(java.lang.String, long, java.lang.String)}
    * .
    */
@@ -74,6 +79,10 @@ public class TestDeviceManager extends JajukTestCase {
     assertNotNull(DeviceManager.getInstance().getDeviceByName("device"));
   }
 
+  /**
+   * Test register device twice.
+   * DOCUMENT_ME
+   */
   public final void testRegisterDeviceTwice() {
     assertNotNull(DeviceManager.getInstance().registerDevice("device", 0,
         System.getProperty("java.io.tmpdir")));
@@ -84,7 +93,8 @@ public class TestDeviceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.DeviceManager#registerDevice(java.lang.String, java.lang.String, long, java.lang.String)}
    * .
    */
@@ -96,7 +106,8 @@ public class TestDeviceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.DeviceManager#createID(java.lang.String)}.
    */
   public final void testCreateID() {
@@ -104,7 +115,8 @@ public class TestDeviceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.DeviceManager#checkDeviceAvailablity(java.lang.String, int, java.lang.String, boolean)}
    * .
    */
@@ -114,6 +126,10 @@ public class TestDeviceManager extends JajukTestCase {
 
   }
 
+  /**
+   * Test check device availablity existing name.
+   * DOCUMENT_ME
+   */
   public final void testCheckDeviceAvailablityExistingName() {
     assertNotNull(DeviceManager.getInstance().registerDevice("device4", Device.TYPE_DIRECTORY,
         System.getProperty("java.io.tmpdir")));
@@ -123,6 +139,10 @@ public class TestDeviceManager extends JajukTestCase {
         Device.TYPE_DIRECTORY, System.getProperty("java.io.tmpdir"), true));
   }
 
+  /**
+   * Test check device availablity existing name not new.
+   * DOCUMENT_ME
+   */
   public final void testCheckDeviceAvailablityExistingNameNotNew() {
     assertNotNull(DeviceManager.getInstance().registerDevice("device4", Device.TYPE_DIRECTORY,
         System.getProperty("java.io.tmpdir")));
@@ -132,6 +152,10 @@ public class TestDeviceManager extends JajukTestCase {
         Device.TYPE_DIRECTORY, System.getProperty("java.io.tmpdir"), false));
   }
 
+  /**
+   * Test check device availablity parent or descendant.
+   * DOCUMENT_ME
+   */
   public final void testCheckDeviceAvailablityParentOrDescendant() {
     assertNotNull(DeviceManager.getInstance().registerDevice("device5", Device.TYPE_DIRECTORY,
         System.getProperty("java.io.tmpdir")));
@@ -148,12 +172,20 @@ public class TestDeviceManager extends JajukTestCase {
 
   }
 
+  /**
+   * Test check device availablity not exists.
+   * DOCUMENT_ME
+   */
   public final void testCheckDeviceAvailablityNotExists() {
     assertEquals(143, DeviceManager.getInstance().checkDeviceAvailablity("device3", 0,
         "notexistingpath", true));
 
   }
 
+  /**
+   * Test check device availablity exists.
+   * DOCUMENT_ME
+   */
   public final void testCheckDeviceAvailablityExists() {
     assertEquals(0, DeviceManager.getInstance().checkDeviceAvailablity("device3", 0,
         System.getProperty("java.io.tmpdir"), true));
@@ -161,7 +193,8 @@ public class TestDeviceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.DeviceManager#registerDeviceType(java.lang.String)}.
    */
   public final void testRegisterDeviceType() {
@@ -199,7 +232,8 @@ public class TestDeviceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.DeviceManager#removeDevice(org.jajuk.base.Device)}.
    */
   public final void testRemoveDevice() {
@@ -213,6 +247,12 @@ public class TestDeviceManager extends JajukTestCase {
     assertNull(DeviceManager.getInstance().getDeviceByID("5"));
   }
 
+  /**
+   * Test remove device mounted.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testRemoveDeviceMounted() throws Exception {
     Device device = DeviceManager.getInstance().registerDevice("14", "device14",
         Device.TYPE_DIRECTORY, System.getProperty("java.io.tmpdir"));
@@ -226,7 +266,8 @@ public class TestDeviceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.DeviceManager#isAnyDeviceRefreshing()}.
    */
   public final void testIsAnyDeviceRefreshing() {
@@ -251,7 +292,8 @@ public class TestDeviceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.DeviceManager#getDateLastGlobalRefresh()}.
    */
   public final void testGetDateLastGlobalRefresh() {
@@ -285,7 +327,8 @@ public class TestDeviceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.DeviceManager#getDeviceByID(java.lang.String)}.
    */
   public final void testGetDeviceByID() {
@@ -293,7 +336,8 @@ public class TestDeviceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.DeviceManager#getDeviceByName(java.lang.String)}.
    */
   public final void testGetDeviceByName() {

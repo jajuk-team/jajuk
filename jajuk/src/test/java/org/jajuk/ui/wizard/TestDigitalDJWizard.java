@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.wizard;
 
@@ -30,11 +30,14 @@ import org.jajuk.services.dj.TransitionDigitalDJ;
 import org.qdwizard.Screen;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestDigitalDJWizard extends JajukTestCase {
+  
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.ui.wizard.DigitalDJWizard#getPreviousScreen(java.lang.Class)}
    * .
    */
@@ -59,7 +62,9 @@ public class TestDigitalDJWizard extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.ui.wizard.DigitalDJWizard#getNextScreen(java.lang.Class)}.
    */
 
@@ -78,7 +83,8 @@ public class TestDigitalDJWizard extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.wizard.DigitalDJWizard#DigitalDJWizard()}.
    */
 
@@ -90,6 +96,10 @@ public class TestDigitalDJWizard extends JajukTestCase {
     }
   }
 
+  /**
+   * Test panels action selection.
+   * DOCUMENT_ME
+   */
   public void testPanelsActionSelection() {
     try {
       // to initialize static data...,
@@ -103,6 +113,10 @@ public class TestDigitalDJWizard extends JajukTestCase {
     }
   }
 
+  /**
+   * Test panels ambience.
+   * DOCUMENT_ME
+   */
   public void testPanelsAmbience() {
     try {
       // to initialize static data...,
@@ -119,6 +133,10 @@ public class TestDigitalDJWizard extends JajukTestCase {
     }
   }
 
+  /**
+   * Test panels change.
+   * DOCUMENT_ME
+   */
   public void testPanelsChange() {
     try {
       // to initialize static data...,
@@ -138,6 +156,10 @@ public class TestDigitalDJWizard extends JajukTestCase {
     }
   }
 
+  /**
+   * Test panels general option.
+   * DOCUMENT_ME
+   */
   public void testPanelsGeneralOption() {
     try {
       // to initialize static data...,
@@ -151,6 +173,10 @@ public class TestDigitalDJWizard extends JajukTestCase {
     }
   }
 
+  /**
+   * Test panels proportions.
+   * DOCUMENT_ME
+   */
   public void testPanelsProportions() {
     try {
       // to initialize static data...,
@@ -164,6 +190,10 @@ public class TestDigitalDJWizard extends JajukTestCase {
     }
   }
 
+  /**
+   * Test panels remove.
+   * DOCUMENT_ME
+   */
   public void testPanelsRemove() {
     try {
       // to initialize static data...,
@@ -180,6 +210,10 @@ public class TestDigitalDJWizard extends JajukTestCase {
     }
   }
 
+  /**
+   * Test panels transition.
+   * DOCUMENT_ME
+   */
   public void testPanelsTransition() {
     try {
       // to initialize static data...,
@@ -193,6 +227,10 @@ public class TestDigitalDJWizard extends JajukTestCase {
     }
   }
 
+  /**
+   * Test panels type selection.
+   * DOCUMENT_ME
+   */
   public void testPanelsTypeSelection() {
     try {
       // to initialize static data...,
@@ -206,6 +244,12 @@ public class TestDigitalDJWizard extends JajukTestCase {
     }
   }
 
+  /**
+   * Cover screen.
+   * DOCUMENT_ME
+   *
+   * @param screen DOCUMENT_ME
+   */
   private void coverScreen(Screen screen) {
     screen.initUI();
     assertNotNull(screen.getDescription());

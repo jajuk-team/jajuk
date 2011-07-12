@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.base;
 
@@ -26,7 +26,7 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestTypeManager extends TestCase {
 
@@ -58,7 +58,8 @@ public class TestTypeManager extends TestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.TypeManager#registerType(java.lang.String, java.lang.String, java.lang.Class, java.lang.Class)}
    * .
    */
@@ -74,7 +75,8 @@ public class TestTypeManager extends TestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.TypeManager#isExtensionSupported(java.lang.String)}.
    */
   public void testIsExtensionSupported() {
@@ -89,7 +91,8 @@ public class TestTypeManager extends TestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.TypeManager#getTypeByExtension(java.lang.String)}.
    */
   public void testGetTypeByExtension() {
@@ -105,8 +108,8 @@ public class TestTypeManager extends TestCase {
 
   /**
    * Test method for {@link org.jajuk.base.TypeManager#getAllMusicTypes()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testGetAllMusicTypes() throws Exception {
     // we need the ItemManagers when using properties
@@ -137,8 +140,8 @@ public class TestTypeManager extends TestCase {
 
   /**
    * Test method for {@link org.jajuk.base.TypeManager#getTypeListString()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testGetTypeListString() throws Exception {
     // no type initially
@@ -158,7 +161,8 @@ public class TestTypeManager extends TestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.TypeManager#getTypeByID(java.lang.String)}.
    */
   public void testGetTypeByID() {
@@ -177,8 +181,8 @@ public class TestTypeManager extends TestCase {
 
   /**
    * Test method for {@link org.jajuk.base.TypeManager#getTypes()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testGetTypes() throws Exception {
     // no type initially
@@ -199,8 +203,8 @@ public class TestTypeManager extends TestCase {
 
   /**
    * Test method for {@link org.jajuk.base.TypeManager#getTypesIterator()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testGetTypesIterator() throws Exception {
     // no type initially
@@ -222,8 +226,8 @@ public class TestTypeManager extends TestCase {
   /**
    * Test method for {@link org.jajuk.base.TypeManager#registerTypesNoMplayer()}
    * .
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testRegisterTypesNoMplayer() throws Exception {
     TypeManager.registerTypesNoMplayer();
@@ -232,10 +236,10 @@ public class TestTypeManager extends TestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.base.TypeManager#registerTypesMplayerAvailable()}.
-   * 
-   * @throws Exception
    */
   public void testRegisterTypesMplayerAvailable() throws Exception {
     TypeManager.registerTypesMplayerAvailable();

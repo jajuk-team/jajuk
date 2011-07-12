@@ -121,11 +121,10 @@ public final class AlbumManager extends ItemManager implements Observer {
 
   /**
    * Register an Album with a known id.
-   * 
-   * @param sName DOCUMENT_ME
+   *
    * @param sId DOCUMENT_ME
+   * @param sName DOCUMENT_ME
    * @param discID DOCUMENT_ME
-   * 
    * @return the album
    */
   public Album registerAlbum(String sId, String sName, long discID) {

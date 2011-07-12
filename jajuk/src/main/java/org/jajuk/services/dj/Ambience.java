@@ -79,9 +79,9 @@ public class Ambience implements Comparable<Ambience> {
 
   /**
    * Constructor.
-   * 
-   * @param sName Ambience name
+   *
    * @param sID DOCUMENT_ME
+   * @param sName Ambience name
    */
   public Ambience(String sID, String sName) {
     this(sID, sName, new HashSet<Genre>(10));

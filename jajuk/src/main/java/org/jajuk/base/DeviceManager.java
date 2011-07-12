@@ -153,12 +153,11 @@ public final class DeviceManager extends ItemManager {
 
   /**
    * Register a device with a known id.
-   * 
-   * @param sName DOCUMENT_ME
+   *
    * @param sId DOCUMENT_ME
+   * @param sName DOCUMENT_ME
    * @param lDeviceType DOCUMENT_ME
    * @param sUrl DOCUMENT_ME
-   * 
    * @return device
    */
   public Device registerDevice(String sId, String sName, long lDeviceType, String sUrl) {

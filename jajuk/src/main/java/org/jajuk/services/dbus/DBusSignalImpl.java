@@ -39,11 +39,10 @@ public class DBusSignalImpl implements DBusInterface {
 
     /**
      * The Constructor.
-     * 
+     *
+     * @param filename DOCUMENT_ME
      * @param path DOCUMENT_ME
      * @param args DOCUMENT_ME
-     * @param filename DOCUMENT_ME
-     * 
      * @throws DBusException the d bus exception
      */
     public FileChangedSignal(String filename, String path, Object... args) throws DBusException {

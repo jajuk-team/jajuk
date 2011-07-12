@@ -721,10 +721,10 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
 
   /**
    * Save as... the playlist
-   * 
+   *
    * @throws JajukException the jajuk exception
-   * @throws InvocationTargetException the invocation target exception
    * @throws InterruptedException the interrupted exception
+   * @throws InvocationTargetException the invocation target exception
    */
   public void saveAs() throws JajukException, InterruptedException, InvocationTargetException {
     FileChooserRunnable runnable = new FileChooserRunnable();

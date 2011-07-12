@@ -352,12 +352,11 @@ public final class UtilString {
 
   /**
    * Apply album artist pattern.
-   * 
+   *
+   * @param sPattern DOCUMENT_ME
    * @param normalize DOCUMENT_ME
    * @param out DOCUMENT_ME
    * @param track DOCUMENT_ME
-   * @param sPattern DOCUMENT_ME
-   * 
    * @return the string
    */
   private static String applyAlbumArtistPattern(String sPattern, boolean normalize, String out,
@@ -376,15 +375,13 @@ public final class UtilString {
 
   /**
    * Apply disc pattern.
-   * 
+   *
    * @param file DOCUMENT_ME
-   * @param out DOCUMENT_ME
-   * @param track DOCUMENT_ME
    * @param sPattern DOCUMENT_ME
    * @param bMandatory DOCUMENT_ME
-   * 
+   * @param out DOCUMENT_ME
+   * @param track DOCUMENT_ME
    * @return the string
-   * 
    * @throws JajukException the jajuk exception
    */
   private static String applyDiscPattern(File file, String sPattern, boolean bMandatory,
@@ -501,11 +498,10 @@ public final class UtilString {
 
   /**
    * Format an object to a string.
-   * 
-   * @param bHuman is this string intended to be human-readable ?
+   *
    * @param oValue DOCUMENT_ME
    * @param meta DOCUMENT_ME
-   * 
+   * @param bHuman is this string intended to be human-readable ?
    * @return the string
    */
   public static String format(final Object oValue, final PropertyMetaInformation meta,
@@ -1009,10 +1005,9 @@ public final class UtilString {
   }
 
   /**
-   * Normalize filenames so they should be correct under any OS
-   * 
+   * Normalize filenames so they should be correct under any OS.
+   *
    * @param name Name that should be normalized
-   * 
    * @return the filename where special characters are replaced/removed
    */
   public static synchronized String normalizeFilename(String name) {

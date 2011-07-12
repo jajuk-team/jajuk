@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.views;
 
@@ -48,10 +48,13 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestTracksTreeView extends JajukTestCase {
 
+  /* (non-Javadoc)
+   * @see org.jajuk.JajukTestCase#setUp()
+   */
   @Override
   protected void setUp() throws Exception {
     try {
@@ -74,7 +77,10 @@ public class TestTracksTreeView extends JajukTestCase {
   }
 
   /**
-   * @param view
+   * Try init ui.
+   * DOCUMENT_ME
+   *
+   * @param view DOCUMENT_ME
    */
   private void tryInitUI(TracksTreeView view) {
     try {
@@ -190,7 +196,8 @@ public class TestTracksTreeView extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.views.TracksTreeView#getRegistrationKeys()}.
    */
   public final void testGetRegistrationKeys() {
@@ -201,7 +208,8 @@ public class TestTracksTreeView extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.views.TracksTreeView#populateTreeByGenre()}.
    */
   public final void testPopulateTreeByGenre() {
@@ -215,7 +223,8 @@ public class TestTracksTreeView extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.views.TracksTreeView#populateTreeByArtist()}.
    */
   public final void testPopulateTreeByArtist() {
@@ -229,7 +238,8 @@ public class TestTracksTreeView extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.views.TracksTreeView#populateTreeByYear()}.
    */
   public final void testPopulateTreeByYear() {
@@ -243,7 +253,8 @@ public class TestTracksTreeView extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.views.TracksTreeView#populateTreeByAlbum()}.
    */
   public final void testPopulateTreeByAlbum() {
@@ -257,7 +268,8 @@ public class TestTracksTreeView extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.views.TracksTreeView#populateTreeByDiscovery()}.
    */
   public final void testPopulateTreeByDiscovery() {
@@ -271,7 +283,8 @@ public class TestTracksTreeView extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.views.TracksTreeView#populateTreeByRate()}.
    */
   public final void testPopulateTreeByRate() {
@@ -285,7 +298,8 @@ public class TestTracksTreeView extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.views.TracksTreeView#populateTreeByHits()}.
    */
   public final void testPopulateTreeByHits() {
@@ -299,7 +313,8 @@ public class TestTracksTreeView extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.views.TracksTreeView#actionPerformed(java.awt.event.ActionEvent)}
    * .
    */
@@ -308,6 +323,10 @@ public class TestTracksTreeView extends JajukTestCase {
     view.actionPerformed(new ActionEvent(this, 1, ""));
   }
 
+  /**
+   * Test tracks tree selection listener.
+   * DOCUMENT_ME
+   */
   public final void testTracksTreeSelectionListener() {
     TracksTreeView view = new TracksTreeView();
     TracksTreeView.TracksTreeSelectionListener task = view.new TracksTreeSelectionListener();
@@ -319,6 +338,10 @@ public class TestTracksTreeView extends JajukTestCase {
     }
   }
 
+  /**
+   * Test tracks mouse adapter.
+   * DOCUMENT_ME
+   */
   public final void testTracksMouseAdapter() {
     TracksTreeView view = new TracksTreeView();
     TracksMouseAdapter ad = view.new TracksMouseAdapter(null);
@@ -362,6 +385,10 @@ public class TestTracksTreeView extends JajukTestCase {
     }
   }
 
+  /**
+   * Test genre node.
+   * DOCUMENT_ME
+   */
   public final void testGenreNode() {
     GenreNode ad = new GenreNode(getGenre());
     assertNotNull(ad);
@@ -372,12 +399,18 @@ public class TestTracksTreeView extends JajukTestCase {
   }
 
   /**
-   * @return
+   * Gets the genre.
+   *
+   * @return the genre
    */
   private Genre getGenre() {
     return JUnitHelpers.getGenre();
   }
 
+  /**
+   * Test artist node.
+   * DOCUMENT_ME
+   */
   public final void testArtistNode() {
     ArtistNode ad = new ArtistNode(getArtist());
     assertNotNull(ad);
@@ -388,12 +421,18 @@ public class TestTracksTreeView extends JajukTestCase {
   }
 
   /**
-   * @return
+   * Gets the artist.
+   *
+   * @return the artist
    */
   private Artist getArtist() {
     return JUnitHelpers.getArtist("name");
   }
 
+  /**
+   * Test year node.
+   * DOCUMENT_ME
+   */
   public final void testYearNode() {
     YearNode ad = new YearNode(getYear());
     assertNotNull(ad);
@@ -404,12 +443,18 @@ public class TestTracksTreeView extends JajukTestCase {
   }
 
   /**
-   * @return
+   * Gets the year.
+   *
+   * @return the year
    */
   private Year getYear() {
     return JUnitHelpers.getYear(2000);
   }
 
+  /**
+   * Test album node.
+   * DOCUMENT_ME
+   */
   public final void testAlbumNode() {
     AlbumNode ad = new AlbumNode(getAlbum());
     assertNotNull(ad);
@@ -420,12 +465,18 @@ public class TestTracksTreeView extends JajukTestCase {
   }
 
   /**
-   * @return
+   * Gets the album.
+   *
+   * @return the album
    */
   private Album getAlbum() {
     return JUnitHelpers.getAlbum("name", 234);
   }
 
+  /**
+   * Test track node.
+   * DOCUMENT_ME
+   */
   public final void testTrackNode() {
     TrackNode ad = new TrackNode(getTrack());
     assertNotNull(ad);
@@ -436,18 +487,28 @@ public class TestTracksTreeView extends JajukTestCase {
   }
 
   /**
-   * @return
+   * Gets the track.
+   *
+   * @return the track
    */
   private Track getTrack() {
     return TrackManager.getInstance().registerTrack("name", getAlbum(), getGenre(), getArtist(),
         123, getYear(), 1, JUnitHelpers.getType(), 1);
   }
 
+  /**
+   * Test discovery date node.
+   * DOCUMENT_ME
+   */
   public final void testDiscoveryDateNode() {
     DiscoveryDateNode ad = new DiscoveryDateNode(null);
     assertNotNull(ad);
   }
 
+  /**
+   * Test tracks tree cell renderer.
+   * DOCUMENT_ME
+   */
   public final void testTracksTreeCellRenderer() {
     TracksTreeCellRenderer ad = new TracksTreeCellRenderer();
     assertNotNull(ad);
@@ -484,6 +545,10 @@ public class TestTracksTreeView extends JajukTestCase {
     icon = ad.getIcon();
   }
 
+  /**
+   * Test tracks tree expansion listener.
+   * DOCUMENT_ME
+   */
   public final void testTracksTreeExpansionListener() {
     TracksTreeExpansionListener ad = new TracksTreeExpansionListener();
     assertNotNull(ad);

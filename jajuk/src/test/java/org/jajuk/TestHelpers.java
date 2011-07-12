@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk;
 
@@ -46,13 +46,22 @@ import org.jajuk.services.players.MPlayerPlayerImpl;
 import org.jajuk.services.tags.JAudioTaggerTagImpl;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestHelpers extends JajukTestCase {
 
+  /** DOCUMENT_ME. */
   Exception exc = null;
+  
+  /** DOCUMENT_ME. */
   boolean finished = false;
 
+  /**
+   * Test clear swing utilities queue.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testClearSwingUtilitiesQueue() throws Exception {
     // verify test-helper to clear the Swing Utilities Queue
 
@@ -78,9 +87,18 @@ public class TestHelpers extends JajukTestCase {
     assertTrue("Elapsed time(ms): " + (System.currentTimeMillis() - now), finished);
   }
 
+  /** DOCUMENT_ME. */
   private final int COUNT = 10;
+  
+  /** DOCUMENT_ME. */
   private AtomicInteger count = new AtomicInteger(0);
 
+  /**
+   * Test clear swing utilities queue multiple.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testClearSwingUtilitiesQueueMultiple() throws Exception {
     // verify test-helper to clear the Swing Utilities Queue
 
@@ -111,8 +129,8 @@ public class TestHelpers extends JajukTestCase {
   }
 
   /**
-   * Return a mock file for testing purposes
-   * 
+   * Return a mock file for testing purposes.
+   *
    * @return a mock file for testing purposes
    */
   public static File getMockFile() {

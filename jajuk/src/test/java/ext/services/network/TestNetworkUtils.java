@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package ext.services.network;
 
@@ -34,12 +34,17 @@ import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestNetworkUtils extends JajukTestCase {
 
+  /** The Constant PROXY_PORT.  DOCUMENT_ME */
   private static final int PROXY_PORT = 0; // auto-choose
+  
+  /** The Constant URL.  DOCUMENT_ME */
   private static final String URL = "http://www.google.com/";
+  
+  /** The Constant FTP_URL.  DOCUMENT_ME */
   private static final String FTP_URL = "ftp://www.google.com/";
 
   /*
@@ -55,11 +60,11 @@ public class TestNetworkUtils extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link ext.services.network.NetworkUtils#getConnection(java.lang.String, ext.services.network.Proxy)}
    * .
-   * 
-   * @throws Exception
    */
   public void testGetConnectionStringProxy() throws Exception {
     // null when no connection is allowed
@@ -73,6 +78,12 @@ public class TestNetworkUtils extends JajukTestCase {
     connection.disconnect();
   }
 
+  /**
+   * Test get connection string proxy invalid url.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testGetConnectionStringProxyInvalidURL() throws Exception {
     // useful content when inet access is allowed
     Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, "false");
@@ -87,11 +98,11 @@ public class TestNetworkUtils extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link ext.services.network.NetworkUtils#getConnection(java.net.URL, ext.services.network.Proxy)}
    * .
-   * 
-   * @throws Exception
    */
   public void testGetConnectionURLProxy() throws Exception {
     // null when no connection is allowed
@@ -105,8 +116,15 @@ public class TestNetworkUtils extends JajukTestCase {
     connection.disconnect();
   }
 
+  /** DOCUMENT_ME. */
   boolean bStop = false;
 
+  /**
+   * Test get connection url proxy with proxy.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testGetConnectionURLProxyWithProxy() throws Exception {
     final ServerSocket socket = new ServerSocket(PROXY_PORT);
 
@@ -146,11 +164,11 @@ public class TestNetworkUtils extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link ext.services.network.NetworkUtils#readURL(java.net.URLConnection, java.lang.String)}
    * .
-   * 
-   * @throws Exception
    */
   public void testReadURLURLConnectionString() throws Exception {
     HttpURLConnection connection = NetworkUtils.getConnection(URL, null);
@@ -161,6 +179,12 @@ public class TestNetworkUtils extends JajukTestCase {
     connection.disconnect();
   }
 
+  /**
+   * Test read urlurl connection string disabled.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testReadURLURLConnectionStringDisabled() throws Exception {
     HttpURLConnection connection = NetworkUtils.getConnection(URL, null);
     assertNotNull(connection);
@@ -170,10 +194,10 @@ public class TestNetworkUtils extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link ext.services.network.NetworkUtils#readURL(java.net.URLConnection)}.
-   * 
-   * @throws Exception
    */
   public void testReadURLURLConnection() throws Exception {
     HttpURLConnection connection = NetworkUtils.getConnection(URL, null);
@@ -185,11 +209,11 @@ public class TestNetworkUtils extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link ext.services.network.NetworkUtils#readPostURL(java.net.HttpURLConnection, java.lang.String)}
    * .
-   * 
-   * @throws Exception
    */
   public void testReadPostURL() throws Exception {
     HttpURLConnection connection = NetworkUtils.getConnection(URL, null);
@@ -207,6 +231,12 @@ public class TestNetworkUtils extends JajukTestCase {
     connection.disconnect();
   }
 
+  /**
+   * Test read post url disabled.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testReadPostURLDisabled() throws Exception {
     HttpURLConnection connection = NetworkUtils.getConnection(URL, null);
     assertNotNull(connection);
@@ -218,10 +248,10 @@ public class TestNetworkUtils extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link ext.services.network.NetworkUtils#getImage(java.net.URLConnection)}.
-   * 
-   * @throws Exception
    */
   public void testGetImage() throws Exception {
     HttpURLConnection connection = NetworkUtils.getConnection(URL, null);
@@ -231,6 +261,12 @@ public class TestNetworkUtils extends JajukTestCase {
     assertNull(NetworkUtils.getImage(connection));
   }
 
+  /**
+   * Test get image disabled.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testGetImageDisabled() throws Exception {
     HttpURLConnection connection = NetworkUtils.getConnection(URL, null);
     assertNotNull(connection);
@@ -241,7 +277,8 @@ public class TestNetworkUtils extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.network.NetworkUtils#encodeString(java.lang.String)}.
    */
   public void testEncodeString() {
@@ -252,6 +289,12 @@ public class TestNetworkUtils extends JajukTestCase {
   }
 
   // helper method to emma-coverage of the unused constructor
+  /**
+   * Test private constructor.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPrivateConstructor() throws Exception { // For EMMA
     // code-coverage tests
     JUnitHelpers.executePrivateConstructor(NetworkUtils.class);

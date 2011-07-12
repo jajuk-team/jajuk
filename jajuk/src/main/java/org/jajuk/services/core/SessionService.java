@@ -454,10 +454,8 @@ public class SessionService {
 
   /**
    * Write down the bootstrap file.
-   * 
+   *
    * @param prop : the properties to write to the file
-   * 
-   * @throws an IOException if the bootstrap file cannot be written down
    */
   public static void commitBootstrapFile(Properties prop) {
     File bootstrap = null;

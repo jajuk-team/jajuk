@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package ext.services.xml;
 
@@ -24,12 +24,13 @@ import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestXMLBuilder extends JajukTestCase {
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.xml.XMLBuilder#getXMLDocument(java.lang.String)}.
    */
   public void testGetXMLDocument() {
@@ -45,6 +46,12 @@ public class TestXMLBuilder extends JajukTestCase {
   }
 
   // helper method to emma-coverage of the unused constructor
+  /**
+   * Test private constructor.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPrivateConstructor() throws Exception {
     JUnitHelpers.executePrivateConstructor(XMLBuilder.class);
   }

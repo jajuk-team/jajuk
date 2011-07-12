@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.core;
 
@@ -31,7 +31,7 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukRuntimeException;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestSessionService extends JajukTestCase {
   /*
@@ -48,10 +48,10 @@ public class TestSessionService extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.core.SessionService#checkOtherSession()}.
-   * 
-   * @throws Exception
    */
   public void testCheckOtherSession() throws Exception {
     SessionService.checkOtherSession();
@@ -75,17 +75,18 @@ public class TestSessionService extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.core.SessionService#getWorkspace()}.
-   * 
-   * @throws Exception
    */
   public void testGetWorkspace() throws Exception {
     assertNotNull(SessionService.getWorkspace());
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.core.SessionService#setTestMode(boolean)}.
    */
   public void testSetTestMode() {
@@ -93,7 +94,8 @@ public class TestSessionService extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.core.SessionService#setWorkspace(java.lang.String)}
    * .
    */
@@ -102,7 +104,8 @@ public class TestSessionService extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.core.SessionService#getSessionIdFile()}.
    */
   public void testGetSessionIdFile() {
@@ -110,7 +113,8 @@ public class TestSessionService extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.core.SessionService#handleCommandline(java.lang.String[])}
    * .
    */
@@ -127,8 +131,9 @@ public class TestSessionService extends JajukTestCase {
   }
 
   /**
-   * Return true if the workspace location is valid
-   * @param workspace Location
+   * Return true if the workspace location is valid.
+   *
+   * @param workspaceLocation DOCUMENT_ME
    * @return true if the workspace location is valid
    */
   private boolean parseWorkspaceLocation(String workspaceLocation) {
@@ -143,7 +148,8 @@ public class TestSessionService extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.core.SessionService#handleSystemProperties()}.
    */
   public void testHandleSystemProperties() {
@@ -155,7 +161,8 @@ public class TestSessionService extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.core.SessionService#createSessionFile()}.
    */
   public void testCreateSessionFile() {
@@ -166,10 +173,11 @@ public class TestSessionService extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.core.SessionService#discoverWorkspace()}.
    * @TODO : perform more tests
-   * @throws Exception
    */
   public void testDiscoverWorkspace() throws Exception {
     { // ensure that the base jajuk-directory exists, otherwise the
@@ -197,7 +205,8 @@ public class TestSessionService extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.core.SessionService#notifyFirstTimeWizardClosed()}
    * .
    */
@@ -206,10 +215,10 @@ public class TestSessionService extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.core.SessionService#getCachePath(java.net.URL)}.
-   * 
-   * @throws Exception
    */
   public void testGetCachePath() throws Exception {
     assertNotNull(SessionService.getCachePath(new URL("ftp://example.com/")));
@@ -217,7 +226,8 @@ public class TestSessionService extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.core.SessionService#getConfFileByPath(java.lang.String)}
    * .
    */
@@ -232,7 +242,8 @@ public class TestSessionService extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.core.SessionService#getDefaultCollectionPath()}.
    */
   public void testGetDefaultWorkspace() {
@@ -242,8 +253,8 @@ public class TestSessionService extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.core.SessionService#clearCache()}
    * .
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testClearCache() throws Exception {
     SessionService.clearCache();
@@ -257,6 +268,12 @@ public class TestSessionService extends JajukTestCase {
 
   // helper method to emma-coverage of the unused constructor
   // For EMMA code-coverage tests
+  /**
+   * Test private constructor.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPrivateConstructor() throws Exception {
     JUnitHelpers.executePrivateConstructor(SessionService.class);
   }

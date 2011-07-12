@@ -79,9 +79,9 @@ public class FindDuplicateTracksAction extends JajukAction {
 
   /**
    * Add a dup for a given track.
-   * 
-   * @param files list of files
+   *
    * @param track DOCUMENT_ME
+   * @param files list of files
    */
   private void addDup(Track track, List<File> files) {
     // Ignore case where thy are none ready files

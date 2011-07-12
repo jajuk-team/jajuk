@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.base;
 
@@ -30,7 +30,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestAlbum extends JajukTestCase {
 
@@ -67,6 +67,10 @@ public class TestAlbum extends JajukTestCase {
      */
   }
 
+  /**
+   * Test get any album artist.
+   * DOCUMENT_ME
+   */
   public final void testGetAnyAlbumArtist() {
     // need item managers to do this step
     StartupCollectionService.registerItemManagers();
@@ -90,19 +94,40 @@ public class TestAlbum extends JajukTestCase {
      */
   }
 
+  /**
+   * Gets the track.
+   *
+   * @param album DOCUMENT_ME
+   * @return the track
+   */
   private Track getTrack(Album album) {
     return new Track("1", "trackname", album, getGenre(), getArtist(), 123, getYear(), 1, new Type(
         "3", "typename", "ext", null, null), 1);
   }
 
+  /**
+   * Gets the artist.
+   *
+   * @return the artist
+   */
   private Artist getArtist() {
     return new Artist("1", "artistname");
   }
 
+  /**
+   * Gets the genre.
+   *
+   * @return the genre
+   */
   private Genre getGenre() {
     return new Genre("1", "genrename");
   }
 
+  /**
+   * Gets the year.
+   *
+   * @return the year
+   */
   private Year getYear() {
     return new Year("1", "yearname");
   }
@@ -116,7 +141,8 @@ public class TestAlbum extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.Album#getHumanValue(java.lang.String)}.
    */
   public final void testGetHumanValue() {
@@ -174,7 +200,8 @@ public class TestAlbum extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.Album#Album(java.lang.String, java.lang.String, java.lang.String, long)}
    * .
    */
@@ -210,7 +237,8 @@ public class TestAlbum extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.Album#compareTo(org.jajuk.base.Album)}.
    */
   public final void testCompareTo() {
@@ -234,8 +262,8 @@ public class TestAlbum extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Album#findCover()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testGetCoverFile() throws Exception {
     Album album = new Album("1", "name", 123);
@@ -281,8 +309,8 @@ public class TestAlbum extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Album#getThumbnail(int)}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testGetThumbnail() throws Exception {
     JUnitHelpers.createSessionDirectory();
@@ -412,6 +440,14 @@ public class TestAlbum extends JajukTestCase {
     assertEquals(8, album.getHits());
   }
 
+  /**
+   * Gets the file.
+   *
+   * @param i DOCUMENT_ME
+   * @param track DOCUMENT_ME
+   * @return the file
+   * @throws Exception the exception
+   */
   private File getFile(int i, Track track) throws Exception {
     Device device = JUnitHelpers.getDevice();
     if (!device.isMounted()) {
@@ -424,8 +460,8 @@ public class TestAlbum extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Album#containsReadyFiles()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testContainsReadyFiles() throws Exception {
     Album album = new Album("1", "name", 123);
@@ -454,7 +490,8 @@ public class TestAlbum extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.Album#matches(java.lang.String, java.lang.String)}.
    */
   public final void testMatches() {
@@ -528,7 +565,8 @@ public class TestAlbum extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.Album#setAvailableThumb(int, boolean)}.
    */
   public final void testSetAndIsAvailableThumb() {
@@ -542,6 +580,10 @@ public class TestAlbum extends JajukTestCase {
     album.setAvailableThumb(100, false);
   }
 
+  /**
+   * Test get artist or album artist_ unknown.
+   * DOCUMENT_ME
+   */
   public final void testGetArtistOrAlbumArtist_Unknown() {
     StartupCollectionService.registerItemManagers();
 
@@ -551,6 +593,10 @@ public class TestAlbum extends JajukTestCase {
     assertEquals(Const.UNKNOWN_ARTIST, album.getArtistOrALbumArtist());
   }
 
+  /**
+   * Test get artist or album artist_ album artist.
+   * DOCUMENT_ME
+   */
   public final void testGetArtistOrAlbumArtist_AlbumArtist() {
     // need item managers to do this step
     StartupCollectionService.registerItemManagers();
@@ -571,6 +617,10 @@ public class TestAlbum extends JajukTestCase {
     assertEquals("albumartist", album.getArtistOrALbumArtist());
   }
 
+  /**
+   * Test get artist or album artist_ track artist.
+   * DOCUMENT_ME
+   */
   public final void testGetArtistOrAlbumArtist_TrackArtist() {
     // need item managers to do this step
     StartupCollectionService.registerItemManagers();
@@ -585,6 +635,10 @@ public class TestAlbum extends JajukTestCase {
     assertEquals("artistname", album.getArtistOrALbumArtist());
   }
 
+  /**
+   * Test get artist or album artist_ track artist2.
+   * DOCUMENT_ME
+   */
   public final void testGetArtistOrAlbumArtist_TrackArtist2() {
     // need item managers to do this step
     StartupCollectionService.registerItemManagers();
@@ -600,6 +654,10 @@ public class TestAlbum extends JajukTestCase {
     assertEquals("artistname", album.getArtistOrALbumArtist());
   }
 
+  /**
+   * Test get artist or album artist_ album artist unknown.
+   * DOCUMENT_ME
+   */
   public final void testGetArtistOrAlbumArtist_AlbumArtistUnknown() {
     // need item managers to do this step
     StartupCollectionService.registerItemManagers();

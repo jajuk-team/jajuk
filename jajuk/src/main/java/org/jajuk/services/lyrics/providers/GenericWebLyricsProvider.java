@@ -48,7 +48,7 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
   /** DOCUMENT_ME. */
   private String queryUrlTemplate = null;
 
-  /** audio file we search lyrics for */
+  /** audio file we search lyrics for. */
   File audioFile = null;
 
   /**

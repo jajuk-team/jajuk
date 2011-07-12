@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.events;
 
@@ -28,9 +28,11 @@ import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestObservationManager extends JajukTestCase {
+  
+  /** DOCUMENT_ME. */
   AtomicInteger called = new AtomicInteger(0);
 
   /*
@@ -44,7 +46,8 @@ public class TestObservationManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.events.ObservationManager#register(org.jajuk.events.Observer)}
    * .
    */
@@ -53,7 +56,8 @@ public class TestObservationManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.events.ObservationManager#unregister(org.jajuk.events.JajukEvents, org.jajuk.events.Observer)}
    * .
    */
@@ -61,6 +65,10 @@ public class TestObservationManager extends JajukTestCase {
     ObservationManager.unregister(new TestObserverRegistry.LocalObserver(called));
   }
 
+  /**
+   * Test unregister null.
+   * DOCUMENT_ME
+   */
   public void testUnregisterNull() {
     ObservationManager.unregister(new Observer() {
 
@@ -79,7 +87,8 @@ public class TestObservationManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.events.ObservationManager#notify(org.jajuk.events.JajukEvent)}
    * .
    */
@@ -88,7 +97,8 @@ public class TestObservationManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.events.ObservationManager#notifySync(org.jajuk.events.JajukEvent)}
    * .
    */
@@ -97,7 +107,8 @@ public class TestObservationManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.events.ObservationManager#containsEvent(org.jajuk.events.JajukEvents)}
    * .
    */
@@ -108,7 +119,8 @@ public class TestObservationManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.events.ObservationManager#notify(org.jajuk.events.JajukEvent, boolean)}
    * .
    */
@@ -118,7 +130,8 @@ public class TestObservationManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.events.ObservationManager#getDetailLastOccurence(org.jajuk.events.JajukEvents, java.lang.String)}
    * .
    */
@@ -132,7 +145,8 @@ public class TestObservationManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.events.ObservationManager#getDetail(org.jajuk.events.JajukEvent, java.lang.String)}
    * .
    */
@@ -143,6 +157,10 @@ public class TestObservationManager extends JajukTestCase {
         prop), "test"));
   }
 
+  /**
+   * Test get detail null.
+   * DOCUMENT_ME
+   */
   public void testGetDetailNull() {
     Properties prop = new Properties();
     prop.setProperty("test", "value");
@@ -154,7 +172,8 @@ public class TestObservationManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.events.ObservationManager#getDetailsLastOccurence(org.jajuk.events.JajukEvents)}
    * .
    */
@@ -169,11 +188,21 @@ public class TestObservationManager extends JajukTestCase {
   }
 
   // helper method to emma-coverage of the unused constructor
+  /**
+   * Test private constructor.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPrivateConstructor() throws Exception {
     // For EMMA code-coverage tests
     JUnitHelpers.executePrivateConstructor(ObservationManager.class);
   }
 
+  /**
+   * Test exception.
+   * DOCUMENT_ME
+   */
   public void testException() {
     Observer observer = new TestObserverRegistry.LocalObserver(true, called);
     ObservationManager.register(observer);

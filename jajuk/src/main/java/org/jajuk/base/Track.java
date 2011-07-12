@@ -72,16 +72,16 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Track constructor.
-   * 
+   *
    * @param sId DOCUMENT_ME
    * @param sName DOCUMENT_ME
    * @param album DOCUMENT_ME
    * @param genre DOCUMENT_ME
    * @param artist DOCUMENT_ME
    * @param length DOCUMENT_ME
-   * @param type DOCUMENT_ME
    * @param year DOCUMENT_ME
    * @param lOrder DOCUMENT_ME
+   * @param type DOCUMENT_ME
    * @param lDiscNumber DOCUMENT_ME
    */
   Track(String sId, String sName, Album album, Genre genre, Artist artist, long length, Year year,

@@ -36,9 +36,9 @@ public class Artist extends LogicalItem implements Comparable<Artist> {
 
   /**
    * Artist constructor.
-   * 
-   * @param sName DOCUMENT_ME
+   *
    * @param sId DOCUMENT_ME
+   * @param sName DOCUMENT_ME
    */
   Artist(String sId, String sName) {
     super(sId, sName);
@@ -89,19 +89,19 @@ public class Artist extends LogicalItem implements Comparable<Artist> {
   }
 
   /**
-    * Return whether this item is strictly unknown : contains no tag
-    * 
-    * @return whether this item is Unknown or not
-    */
+   * Return whether this item is strictly unknown : contains no tag.
+   *
+   * @return whether this item is Unknown or not
+   */
   public boolean isUnknown() {
     return this.getName().equals(UNKNOWN_ARTIST);
   }
 
   /**
-  * Return whether this item seems unknown (fuzzy search)
-  * 
-  * @return whether this item seems unknown
-  */
+   * Return whether this item seems unknown (fuzzy search).
+   *
+   * @return whether this item seems unknown
+   */
   public boolean seemsUnknown() {
     return isUnknown() || "unknown".equalsIgnoreCase(getName())
         || Messages.getString(UNKNOWN_ARTIST).equalsIgnoreCase(getName());

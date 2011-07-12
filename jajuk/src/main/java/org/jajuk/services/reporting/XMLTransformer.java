@@ -55,14 +55,13 @@ public final class XMLTransformer {
   /**
    * This method will convert an XML file into an HTML file using an xslt
    * transformation.
-   * 
+   *
    * @param xml The XML file to convert.
    * @param html The HTML file to convert.
    * @param xsl The url of the XSLT genre sheet to use.
-   * 
    * @throws ParserConfigurationException if the XML Parser can not be instantiated.
-   * @throws IOException If the file cannot be opened.
    * @throws SAXException If an exception during parsing the XML file occurs.
+   * @throws IOException If the file cannot be opened.
    * @throws TransformerException If processing the XSL script causes an error.
    */
   public static void xmlToHTML(File xml, File html, URL xsl) throws ParserConfigurationException,

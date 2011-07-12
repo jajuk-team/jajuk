@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package ext.services.lastfm;
 
@@ -35,13 +35,16 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.UtilString;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestLastFmAlbum extends JajukTestCase {
+  
+  /** The Constant API_KEY.  DOCUMENT_ME */
   private static final String API_KEY = "711591ss6q695ps349o6681pr1oq1467";
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmAlbum#getAlbum(net.roarsoftware.lastfm.Album, net.roarsoftware.lastfm.Playlist)}
    * .
    */
@@ -51,6 +54,10 @@ public class TestLastFmAlbum extends JajukTestCase {
     LastFmAlbum.getAlbum(a, null);
   }
 
+  /**
+   * Test get album playlist.
+   * DOCUMENT_ME
+   */
   public void testGetAlbumPlaylist() {
     Album a = Album.getInfo("Red Hot Chilli Peppers", "By The Way", UtilString.rot13(API_KEY));
     assertNotNull(a);
@@ -135,8 +142,8 @@ public class TestLastFmAlbum extends JajukTestCase {
 
   /**
    * Test method for {@link ext.services.lastfm.LastFmAlbum#getReleaseDate()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testGetReleaseDate() throws Exception {
     LastFmAlbum album = new LastFmAlbum();
@@ -147,6 +154,10 @@ public class TestLastFmAlbum extends JajukTestCase {
 
   }
 
+  /**
+   * Test get release date invalid.
+   * DOCUMENT_ME
+   */
   public void testGetReleaseDateInvalid() {
     LastFmAlbum album = new LastFmAlbum();
     assertNull(album.getReleaseDate());
@@ -155,7 +166,8 @@ public class TestLastFmAlbum extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmAlbum#getReleaseDateString()}.
    */
   public void testGetReleaseDateString() {
@@ -220,7 +232,8 @@ public class TestLastFmAlbum extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmAlbum#setArtist(java.lang.String)}.
    */
   public void testSetArtist() {
@@ -228,7 +241,8 @@ public class TestLastFmAlbum extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmAlbum#setBigCoverURL(java.lang.String)}.
    */
   public void testSetBigCoverURL() {
@@ -236,7 +250,8 @@ public class TestLastFmAlbum extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmAlbum#setCover(javax.swing.ImageIcon)}.
    */
   public void testSetCover() {
@@ -244,7 +259,8 @@ public class TestLastFmAlbum extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmAlbum#setCoverURL(java.lang.String)}.
    */
   public void testSetCoverURL() {
@@ -252,7 +268,8 @@ public class TestLastFmAlbum extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmAlbum#setReleaseDateString(java.lang.String)}
    * .
    */
@@ -261,7 +278,8 @@ public class TestLastFmAlbum extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmAlbum#setSmallCoverURL(java.lang.String)}.
    */
   public void testSetSmallCoverURL() {
@@ -269,7 +287,8 @@ public class TestLastFmAlbum extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmAlbum#setTitle(java.lang.String)}.
    */
   public void testSetTitle() {
@@ -277,7 +296,8 @@ public class TestLastFmAlbum extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmAlbum#setTracks(java.util.List)}.
    */
   public void testSetTracks() {
@@ -285,7 +305,8 @@ public class TestLastFmAlbum extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmAlbum#setUrl(java.lang.String)}.
    */
   public void testSetUrl() {

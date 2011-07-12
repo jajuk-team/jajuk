@@ -1,3 +1,23 @@
+/*
+ *  Jajuk
+ *  Copyright (C) 2003-2011 The Jajuk Team
+ *  http://jajuk.info
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
+ */
 package org.jajuk;
 
 import java.util.LinkedList;
@@ -22,19 +42,24 @@ import org.jajuk.util.log.Log;
  * } }); }
  */
 public class ThreadTestHelper {
+  
+  /** DOCUMENT_ME. */
   private final int threadCount;
+  
+  /** DOCUMENT_ME. */
   private final int testsPerThread;
 
+  /** DOCUMENT_ME. */
   private boolean failed = false;
+  
+  /** DOCUMENT_ME. */
   private int executions[] = null;
 
   /**
-   * Initialize the class with the number of tests that should be executed
-   * 
-   * @param threadCount
-   *          The number of threads to start running in parallel.
-   * @param testsPerThread
-   *          The number of single test-executions that are done in each thread
+   * Initialize the class with the number of tests that should be executed.
+   *
+   * @param threadCount The number of threads to start running in parallel.
+   * @param testsPerThread The number of single test-executions that are done in each thread
    */
   public ThreadTestHelper(int threadCount, int testsPerThread) {
     this.threadCount = threadCount;
@@ -44,6 +69,13 @@ public class ThreadTestHelper {
     executions = new int[threadCount];
   }
 
+  /**
+   * Execute test.
+   * DOCUMENT_ME
+   *
+   * @param run DOCUMENT_ME
+   * @throws Exception the exception
+   */
   public void executeTest(TestRunnable run) throws Exception {
     Log.debug("Starting thread test");
 
@@ -119,7 +151,11 @@ public class ThreadTestHelper {
     return t1;
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   public interface TestRunnable {
+    
     /**
      * When an object implementing interface <code>Runnable</code> is used to
      * create a thread, starting the thread causes the object's <code>run</code>
@@ -127,12 +163,10 @@ public class ThreadTestHelper {
      * <p>
      * The general contract of the method <code>run</code> is that it may take
      * any action whatsoever.
-     * 
-     * @param threadnum
-     *          The number of the thread executing this run()
-     * @param iter
-     *          The count of how many times this thread executed the method
-     * 
+     *
+     * @param threadnum The number of the thread executing this run()
+     * @param iter The count of how many times this thread executed the method
+     * @throws Exception the exception
      * @see java.lang.Thread#run()
      */
     public abstract void run(int threadnum, int iter) throws Exception;
@@ -141,10 +175,17 @@ public class ThreadTestHelper {
      * Perform any action that should be done at the end.
      * 
      * This method should throw an Exception if any check fails at this point.
+     *
+     * @param threadnum DOCUMENT_ME
+     * @throws Exception the exception
      */
     void doEnd(int threadnum) throws Exception;
   }
 
+  /**
+   * Test dummy.
+   * DOCUMENT_ME
+   */
   public void testDummy() {
     // small empty test to not fail if this class is executed as test case by
     // Hudson/Sonar

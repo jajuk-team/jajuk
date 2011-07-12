@@ -87,10 +87,9 @@ public final class AlbumArtistManager extends ItemManager {
 
   /**
    * Register an albumArtist with a known id.
-   * 
-   * @param sName The name of the new albumArtist.
+   *
    * @param sId the ID of the new albumArtist.
-   * 
+   * @param sName The name of the new albumArtist.
    * @return the albumArtist
    */
   public synchronized AlbumArtist registerAlbumArtist(String sId, String sName) {

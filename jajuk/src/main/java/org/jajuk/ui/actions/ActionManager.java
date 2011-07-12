@@ -248,9 +248,9 @@ public final class ActionManager {
 
   /**
    * Enable or disable the action.
-   * 
-   * @param enable DOCUMENT_ME
+   *
    * @param action DOCUMENT_ME
+   * @param enable DOCUMENT_ME
    */
   public void enable(JajukAction action, boolean enable) {
     action.enable(enable);

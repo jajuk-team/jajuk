@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.dbus;
 
@@ -30,10 +30,13 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.util.Const;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestDBusSupportImpl extends JajukTestCase {
 
+  /* (non-Javadoc)
+   * @see org.jajuk.JajukTestCase#setUp()
+   */
   @Override
   protected void setUp() throws Exception {
     // make sure this is initialized with Actions
@@ -54,7 +57,8 @@ public class TestDBusSupportImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dbus.DBusSupportImpl#disconnect()}.
    */
 
@@ -72,8 +76,8 @@ public class TestDBusSupportImpl extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.dbus.DBusSupportImpl#forward()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
 
   public final void testForward() throws Exception {
@@ -83,8 +87,8 @@ public class TestDBusSupportImpl extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.dbus.DBusSupportImpl#next()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
 
   public final void testNext() throws Exception {
@@ -95,8 +99,8 @@ public class TestDBusSupportImpl extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dbus.DBusSupportImpl#playPause()}
    * .
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
 
   public final void testPlayPause() throws Exception {
@@ -106,8 +110,8 @@ public class TestDBusSupportImpl extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.dbus.DBusSupportImpl#previous()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
 
   public final void testPrevious() throws Exception {
@@ -117,8 +121,8 @@ public class TestDBusSupportImpl extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.dbus.DBusSupportImpl#rewind()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
 
   public final void testRewind() throws Exception {
@@ -128,8 +132,8 @@ public class TestDBusSupportImpl extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.dbus.DBusSupportImpl#stop()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
 
   public final void testStop() throws Exception {
@@ -138,10 +142,10 @@ public class TestDBusSupportImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.dbus.DBusSupportImpl#decreaseVolume()}.
-   * 
-   * @throws Exception
    */
 
   public final void testDecreaseVolume() throws Exception {
@@ -160,10 +164,10 @@ public class TestDBusSupportImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.dbus.DBusSupportImpl#increaseVolume()}.
-   * 
-   * @throws Exception
    */
 
   public final void testIncreaseVolume() throws Exception {
@@ -174,8 +178,8 @@ public class TestDBusSupportImpl extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dbus.DBusSupportImpl#nextAlbum()}
    * .
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
 
   public final void testNextAlbum() throws Exception {
@@ -184,10 +188,10 @@ public class TestDBusSupportImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.dbus.DBusSupportImpl#previousAlbum()}.
-   * 
-   * @throws Exception
    */
 
   public final void testPreviousAlbum() throws Exception {
@@ -196,10 +200,10 @@ public class TestDBusSupportImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.dbus.DBusSupportImpl#shuffleGlobal()}.
-   * 
-   * @throws Exception
    */
 
   public final void testShuffleGlobal() throws Exception {
@@ -209,8 +213,8 @@ public class TestDBusSupportImpl extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.dbus.DBusSupportImpl#mute()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
 
   public final void testMute() throws Exception {
@@ -219,10 +223,10 @@ public class TestDBusSupportImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.dbus.DBusSupportImpl#currentHTML()}.
-   * 
-   * @throws Exception
    */
 
   public final void testCurrentHTML() throws Exception {
@@ -232,8 +236,8 @@ public class TestDBusSupportImpl extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.dbus.DBusSupportImpl#current()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
 
   public final void testCurrent() throws Exception {
@@ -242,10 +246,10 @@ public class TestDBusSupportImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.dbus.DBusSupportImpl#banCurrent()}.
-   * 
-   * @throws Exception
    */
 
   public final void testBanCurrent() throws Exception {
@@ -263,7 +267,8 @@ public class TestDBusSupportImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dbus.DBusSupportImpl#getRegistrationKeys()}.
    */
 
@@ -274,7 +279,8 @@ public class TestDBusSupportImpl extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dbus.DBusSupportImpl#update(org.jajuk.events.JajukEvent)}
    * .
    */
@@ -287,6 +293,10 @@ public class TestDBusSupportImpl extends JajukTestCase {
     impl.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, null));
   }
 
+  /**
+   * Test update connect.
+   * DOCUMENT_ME
+   */
   public final void testUpdateConnect() {
     Properties prop = new Properties();
     prop.setProperty(Const.DETAIL_CURRENT_FILE_ID, "testfile");
@@ -299,11 +309,23 @@ public class TestDBusSupportImpl extends JajukTestCase {
     impl.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, null));
   }
 
+  /**
+   * Test show currently playing.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testShowCurrentlyPlaying() throws Exception {
     DBusSupportImpl impl = new DBusSupportImpl();
     impl.showCurrentlyPlaying();
   }
 
+  /**
+   * Test bookmark currently playing.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testBookmarkCurrentlyPlaying() throws Exception {
     DBusSupportImpl impl = new DBusSupportImpl();
     impl.bookmarkCurrentlyPlaying();

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package ext.services.lastfm;
 
@@ -29,7 +29,7 @@ import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestLastFmCache extends JajukTestCase {
 
@@ -59,7 +59,8 @@ public class TestLastFmCache extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmCache#retrieveAlbumCover(ext.services.lastfm.AlbumInfo)}
    * .
    */
@@ -72,7 +73,8 @@ public class TestLastFmCache extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmCache#retrieveAlbumInfo(java.lang.String, java.lang.String)}
    * .
    */
@@ -83,7 +85,8 @@ public class TestLastFmCache extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmCache#retrieveArtistInfo(java.lang.String)}
    * .
    */
@@ -94,7 +97,8 @@ public class TestLastFmCache extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmCache#retrieveArtistImage(ext.services.lastfm.SimilarArtistsInfo)}
    * .
    */
@@ -108,7 +112,8 @@ public class TestLastFmCache extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmCache#retrieveAlbumList(java.lang.String)}
    * .
    */
@@ -119,7 +124,8 @@ public class TestLastFmCache extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmCache#retrieveArtistSimilar(java.lang.String)}
    * .
    */
@@ -130,7 +136,8 @@ public class TestLastFmCache extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmCache#retrieveArtistThumbImage(ext.services.lastfm.ArtistInfo)}
    * .
    */
@@ -143,7 +150,8 @@ public class TestLastFmCache extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmCache#retrieveArtistWiki(java.lang.String)}
    * .
    */
@@ -154,7 +162,8 @@ public class TestLastFmCache extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmCache#storeAlbumCover(ext.services.lastfm.AlbumInfo, java.awt.Image)}
    * .
    */
@@ -173,7 +182,8 @@ public class TestLastFmCache extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmCache#storeAlbumInfo(java.lang.String, java.lang.String, ext.services.lastfm.AlbumInfo)}
    * .
    */
@@ -189,7 +199,8 @@ public class TestLastFmCache extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmCache#storeArtistInfo(java.lang.String, ext.services.lastfm.ArtistInfo)}
    * .
    */
@@ -207,7 +218,8 @@ public class TestLastFmCache extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmCache#storeArtistImage(ext.services.lastfm.SimilarArtistsInfo, java.awt.Image)}
    * .
    */
@@ -225,7 +237,8 @@ public class TestLastFmCache extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmCache#storeAlbumList(java.lang.String, ext.services.lastfm.AlbumListInfo)}
    * .
    */
@@ -264,7 +277,8 @@ public class TestLastFmCache extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmCache#storeArtistSimilar(java.lang.String, ext.services.lastfm.SimilarArtistsInfo)}
    * .
    */
@@ -282,7 +296,8 @@ public class TestLastFmCache extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmCache#storeArtistThumbImage(ext.services.lastfm.ArtistInfo, java.awt.Image)}
    * .
    */
@@ -300,7 +315,8 @@ public class TestLastFmCache extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmCache#storeArtistWiki(java.lang.String, java.lang.String)}
    * .
    */
@@ -314,7 +330,8 @@ public class TestLastFmCache extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmCache#addSubmissionData(ext.services.lastfm.FullSubmissionData)}
    * .
    */
@@ -350,7 +367,8 @@ public class TestLastFmCache extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmCache#removeSubmissionData()}.
    */
   public void testRemoveSubmissionData() {

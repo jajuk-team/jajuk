@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.bookmark;
 
@@ -37,10 +37,13 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestHistory extends JajukTestCase {
 
+  /* (non-Javadoc)
+   * @see org.jajuk.JajukTestCase#setUp()
+   */
   @Override
   protected void setUp() throws Exception {
     super.setUp();
@@ -69,7 +72,8 @@ public class TestHistory extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.bookmark.History#getRegistrationKeys()}.
    */
   public final void testGetRegistrationKeys() {
@@ -80,7 +84,8 @@ public class TestHistory extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.bookmark.History#getHistory()}.
-   * @throws Exception 
+   *
+   * @throws Exception the exception
    */
   public final void testGetHistory() throws Exception {
     assertNotNull(History.getInstance().getHistory());
@@ -128,6 +133,12 @@ public class TestHistory extends JajukTestCase {
         .getInstance().getHistoryItem(0).getDate());
   }
 
+  /**
+   * Test get history max size.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testGetHistoryMaxSize() throws Exception {
     // enable history, should still not be added unless we have the file in the
     // FileManager
@@ -179,7 +190,8 @@ public class TestHistory extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.bookmark.History#addItem(java.lang.String, long)}
    * .
    */
@@ -196,8 +208,8 @@ public class TestHistory extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.bookmark.History#cleanup()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testCleanup() throws Exception {
     // enable history
@@ -243,11 +255,11 @@ public class TestHistory extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.bookmark.History#changeID(java.lang.String, java.lang.String)}
    * .
-   * 
-   * @throws Exception
    */
   public final void testChangeID() throws Exception {
     // enable history
@@ -275,8 +287,8 @@ public class TestHistory extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.bookmark.History#clear(int)}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testClearInt() throws Exception {
     // enable history
@@ -306,6 +318,12 @@ public class TestHistory extends JajukTestCase {
     assertEquals(0, History.getInstance().getHistory().size());
   }
 
+  /**
+   * Test clear int keep.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testClearIntKeep() throws Exception {
     addHistoryItem(2, System.currentTimeMillis());
 
@@ -320,6 +338,12 @@ public class TestHistory extends JajukTestCase {
     assertEquals(1, History.getInstance().getHistory().size());
   }
 
+  /**
+   * Test clear int removed.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testClearIntRemoved() throws Exception {
     addHistoryItem(2, System.currentTimeMillis());
 
@@ -337,8 +361,8 @@ public class TestHistory extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.bookmark.History#commit()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testCommit() throws Exception {
     long date = System.currentTimeMillis();
@@ -371,13 +395,13 @@ public class TestHistory extends JajukTestCase {
   }
 
   /**
-   * @param sID
-   *          The id of the item to create
-   * @param timestamp
-   *          The timestamp to use for the HistoryItem
-   * @throws Exception 
-   * @throws NumberFormatException 
-   * 
+   * Adds the history item.
+   * DOCUMENT_ME
+   *
+   * @param nID DOCUMENT_ME
+   * @param timestamp The timestamp to use for the HistoryItem
+   * @throws NumberFormatException the number format exception
+   * @throws Exception the exception
    */
   private void addHistoryItem(int nID, long timestamp) throws NumberFormatException, Exception {
     // enable history
@@ -397,6 +421,12 @@ public class TestHistory extends JajukTestCase {
     // tested as part of "testCommit()"
   }
 
+  /**
+   * Test load corrupt file.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testLoadCorruptFile() throws Exception {
     JUnitHelpers.createSessionDirectory();
 
@@ -414,8 +444,9 @@ public class TestHistory extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.bookmark.History#getLastFile()}.
-   * @throws Exception 
-   * @throws NumberFormatException 
+   *
+   * @throws NumberFormatException the number format exception
+   * @throws Exception the exception
    */
   public final void testGetLastFile() throws NumberFormatException, Exception {
     // null without history
@@ -442,10 +473,11 @@ public class TestHistory extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws NumberFormatException the number format exception
+   * @throws Exception the exception
    * {@link org.jajuk.services.bookmark.History#getHistoryItem(int)}.
-   * @throws Exception 
-   * @throws NumberFormatException 
    */
   public final void testGetHistoryItem() throws NumberFormatException, Exception {
     // null without any history
@@ -472,7 +504,8 @@ public class TestHistory extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.bookmark.History#warning(org.xml.sax.SAXParseException)}
    * .
    */
@@ -486,7 +519,8 @@ public class TestHistory extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.bookmark.History#error(org.xml.sax.SAXParseException)}
    * .
    */
@@ -500,7 +534,8 @@ public class TestHistory extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.bookmark.History#fatalError(org.xml.sax.SAXParseException)}
    * .
    */
@@ -514,7 +549,8 @@ public class TestHistory extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.bookmark.History#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)}
    * .
    */
@@ -523,7 +559,8 @@ public class TestHistory extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.bookmark.History#endElement(java.lang.String, java.lang.String, java.lang.String)}
    * .
    */
@@ -532,11 +569,11 @@ public class TestHistory extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.bookmark.History#update(org.jajuk.events.JajukEvent)}
    * .
-   * 
-   * @throws Exception
    */
   public final void testUpdateFileLaunched() throws Exception {
     // enable history
@@ -560,6 +597,12 @@ public class TestHistory extends JajukTestCase {
     assertEquals(file3.getID(), History.getInstance().getHistoryItem(0).getFileId());
   }
 
+  /**
+   * Test update device refresh.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testUpdateDeviceRefresh() throws Exception {
     // enable history
     Conf.setProperty(Const.CONF_HISTORY, "1");
@@ -583,6 +626,12 @@ public class TestHistory extends JajukTestCase {
     assertEquals(0, History.getInstance().getHistory().size());
   }
 
+  /**
+   * Test update clear history.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testUpdateClearHistory() throws Exception {
     // enable history
     Conf.setProperty(Const.CONF_HISTORY, "1");
@@ -607,10 +656,20 @@ public class TestHistory extends JajukTestCase {
     // assertEquals(0, History.getInstance().getHistory().size());
   }
 
+  /**
+   * Test update language changed.
+   * DOCUMENT_ME
+   */
   public final void testUpdateLanguageChanged() {
     History.getInstance().update(new JajukEvent(JajukEvents.LANGUAGE_CHANGED, null));
   }
 
+  /**
+   * Test update file name changed.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testUpdateFileNameChanged() throws Exception {
     // it seems there are some rare cases where we still have some threads doing
     // some updates,
@@ -668,18 +727,29 @@ public class TestHistory extends JajukTestCase {
     // assertEquals("3", History.getInstance().getHistoryItem(0).getFileId());
   }
 
+  /**
+   * Test update unhandled event.
+   * DOCUMENT_ME
+   */
   public final void testUpdateUnhandledEvent() {
     History.getInstance().update(new JajukEvent(JajukEvents.BANNED, null));
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.bookmark.History#getDateFormatter()}.
    */
   public final void testGetDateFormatter() {
     assertNotNull(History.getInstance().getDateFormatter());
   }
 
+  /**
+   * Test constructor already launched.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testConstructorAlreadyLaunched() throws Exception {
     // it seems there are some cases where we still have some Queues doing some
     // updates,

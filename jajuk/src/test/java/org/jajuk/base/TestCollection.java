@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.base;
 
@@ -32,7 +32,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestCollection extends JajukTestCase {
 
@@ -68,8 +68,8 @@ public class TestCollection extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Collection#commit(java.io.File)}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testCommit() throws Exception {
     StartupCollectionService.registerItemManagers();
@@ -158,6 +158,12 @@ public class TestCollection extends JajukTestCase {
     // tested above
   }
 
+  /**
+   * Test load not exists.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testLoadNotExists() throws Exception {
     try {
       Collection.load(new java.io.File("Notexistingfile"));
@@ -182,7 +188,8 @@ public class TestCollection extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.Collection#warning(org.xml.sax.SAXParseException)}.
    */
   public final void testWarningSAXParseException() {
@@ -196,10 +203,10 @@ public class TestCollection extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.base.Collection#error(org.xml.sax.SAXParseException)}.
-   * 
-   * @throws Exception
    */
   public final void testErrorSAXParseException() throws Exception {
     Collection coll = Collection.getInstance();
@@ -212,11 +219,11 @@ public class TestCollection extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.base.Collection#fatalError(org.xml.sax.SAXParseException)}
    * .
-   * 
-   * @throws Exception
    */
   public final void testFatalErrorSAXParseException() throws Exception {
     Collection coll = Collection.getInstance();
@@ -229,7 +236,8 @@ public class TestCollection extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.Collection#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)}
    * .
    */

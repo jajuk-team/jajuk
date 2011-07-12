@@ -1,28 +1,22 @@
-/** Jajuk Specific version of this swingx class to fix 
- * this: https://swingx.dev.java.net/issues/show_bug.cgi?id=464
+/*
+ *  Jajuk
+ *  Copyright (C) 2003-2011 The Jajuk Team
+ *  http://jajuk.info
  *
- * This file has been adapted to Jajuk by the Jajuk Team.
- * Jajuk Copyright (C) 2007 The Jajuk Team
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
  *
- * The original copyrights and license follow:
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * Copyright 2004 Sun Microsystems, Inc., 4150
- * Network Circle, Santa Clara, California 95054, U.S.A. All rights
- * reserved.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
  */
 
 package ext;
@@ -106,9 +100,9 @@ public final class AutoCompleteDecorator {
   /**
    * Enables automatic completion for the given JTextComponent based on the
    * items contained in the given <tt>List</tt>.
-   * 
-   * @param items contains the items that are used for autocompletion
+   *
    * @param textComponent the text component that will be used for automatic completion.
+   * @param items contains the items that are used for autocompletion
    * @param strictMatching <tt>true</tt>, if only given items should be allowed to be
    * entered
    * @param stringConverter the converter used to transform items to strings

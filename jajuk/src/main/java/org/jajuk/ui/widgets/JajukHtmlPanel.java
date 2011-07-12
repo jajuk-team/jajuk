@@ -88,11 +88,10 @@ public class JajukHtmlPanel extends HtmlPanel {
 
   /**
    * Display a wikipedia url.
-   * 
+   *
    * @param url DOCUMENT_ME
    * @param lang DOCUMENT_ME
-   * 
-   * @throws SAXException    */
+   */
   public void setURL(final URL url, final String lang) {
 
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
@@ -179,10 +178,9 @@ public class JajukHtmlPanel extends HtmlPanel {
 
   /**
    * Display a "nothing found" page.
-   * 
-   * @throws SAXException the SAX exception
-   * @throws Exception    * @throws IOException Signals that an I/O exception has occurred.
+   *
    * @throws IOException Signals that an I/O exception has occurred.
+   * @throws SAXException the SAX exception
    */
   public void setUnknown() throws IOException, SAXException {
     File page = new File(SessionService.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath() + '/'

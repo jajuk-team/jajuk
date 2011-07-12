@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.base;
 
@@ -39,7 +39,7 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestPlaylist extends JajukTestCase {
 
@@ -88,10 +88,10 @@ public class TestPlaylist extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.base.Playlist#getHumanValue(java.lang.String)}.
-   * 
-   * @throws Exception
    */
   public final void testGetHumanValue() throws Exception {
     Playlist play = createPlaylist();
@@ -125,8 +125,11 @@ public class TestPlaylist extends JajukTestCase {
   }
 
   /**
-   * @return
-   * @throws Exception
+   * Creates the playlist.
+   * DOCUMENT_ME
+   *
+   * @return the playlist
+   * @throws Exception the exception
    */
   private Playlist createPlaylist() throws Exception {
     Device device = JUnitHelpers.getDevice();
@@ -167,8 +170,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Playlist#getRate()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testGetRate() throws Exception {
     Playlist play = createPlaylist();
@@ -196,6 +199,12 @@ public class TestPlaylist extends JajukTestCase {
     assertEquals(3, play.getRate());
   }
 
+  /**
+   * Test get rate null.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testGetRateNull() throws Exception {
     Playlist play = createPlaylist();
     play.setFiles(null);
@@ -204,7 +213,8 @@ public class TestPlaylist extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.Playlist#Playlist(org.jajuk.base.Playlist.Type, java.lang.String, java.lang.String, org.jajuk.base.Directory)}
    * .
    */
@@ -213,7 +223,8 @@ public class TestPlaylist extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.Playlist#Playlist(java.lang.String, java.lang.String, org.jajuk.base.Directory)}
    * .
    */
@@ -222,10 +233,10 @@ public class TestPlaylist extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.base.Playlist#addFile(org.jajuk.base.File)}.
-   * 
-   * @throws Exception
    */
   public final void testAddFileFile() throws Exception {
     Playlist play = createPlaylist();
@@ -236,6 +247,12 @@ public class TestPlaylist extends JajukTestCase {
     assertEquals(1, play.getFiles().size());
   }
 
+  /**
+   * Test add file queue.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testAddFileQueue() throws Exception {
     Playlist play = getPlaylistQueue();
 
@@ -280,10 +297,10 @@ public class TestPlaylist extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.base.Playlist#addFile(int, org.jajuk.base.File)}.
-   * 
-   * @throws Exception
    */
   public final void testAddFileIntFile() throws Exception {
     Playlist play = createPlaylist();
@@ -312,8 +329,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Playlist#addFiles(java.util.List)}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testAddFiles() throws Exception {
     Playlist play = createPlaylist();
@@ -340,8 +357,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Playlist#clear()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testClear() throws Exception {
     Playlist play = createPlaylist();
@@ -360,6 +377,12 @@ public class TestPlaylist extends JajukTestCase {
     assertEquals(0, play.getFiles().size());
   }
 
+  /**
+   * Test clear empty list.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testClearEmptyList() throws Exception {
     Device device = JUnitHelpers.getDevice();
     device.mount(true);
@@ -368,11 +391,19 @@ public class TestPlaylist extends JajukTestCase {
     play.clear();
   }
 
+  /**
+   * Test clear queue.
+   * DOCUMENT_ME
+   */
   public final void testClearQueue() {
     Playlist play = getPlaylistQueue();
     play.clear();
   }
 
+  /**
+   * Test clear bookmark.
+   * DOCUMENT_ME
+   */
   public final void testClearBookmark() {
     Playlist play = getPlaylistBookmark();
     play.clear();
@@ -380,8 +411,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Playlist#commit()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testCommit() throws Exception {
     Playlist playlist = createPlaylist();
@@ -389,7 +420,8 @@ public class TestPlaylist extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.Playlist#compareTo(org.jajuk.base.Playlist)}.
    */
   public final void testCompareTo() {
@@ -428,8 +460,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Playlist#down(int)}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testDown() throws Exception {
     Playlist play = createPlaylist();
@@ -479,6 +511,10 @@ public class TestPlaylist extends JajukTestCase {
     assertEquals("name4", play.getFiles().get(3).getName());
   }
 
+  /**
+   * Test down bookmark.
+   * DOCUMENT_ME
+   */
   public final void testDownBookmark() {
     Playlist play = getPlaylistBookmark();
     play.down(0);
@@ -486,12 +522,18 @@ public class TestPlaylist extends JajukTestCase {
   }
 
   /**
-   * @return
+   * Gets the playlist bookmark.
+   *
+   * @return the playlist bookmark
    */
   private Playlist getPlaylistBookmark() {
     return new Playlist(Playlist.Type.BOOKMARK, "1", "name", null);
   }
 
+  /**
+   * Test down queue.
+   * DOCUMENT_ME
+   */
   public final void testDownQueue() {
     Playlist play = getPlaylistQueue();
     play.down(-1);
@@ -499,7 +541,9 @@ public class TestPlaylist extends JajukTestCase {
   }
 
   /**
-   * @return
+   * Gets the playlist queue.
+   *
+   * @return the playlist queue
    */
   private Playlist getPlaylistQueue() {
     // make sure the Queue is empty before creating a playlist on it
@@ -510,8 +554,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Playlist#forceRefresh()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testForceRefresh() throws Exception {
     // make sure we have a playlist stored before
@@ -520,10 +564,10 @@ public class TestPlaylist extends JajukTestCase {
   }
 
   /**
-  * Test method for {@link org.jajuk.base.Playlist#getAbsolutePath()}.
-  * 
-  * @throws Exception
-  */
+   * Test method for {@link org.jajuk.base.Playlist#getAbsolutePath()}.
+   *
+   * @throws Exception the exception
+   */
   public final void testGetAbsolutePath() throws Exception {
     Playlist play = createPlaylist();
     assertEquals(ConstTest.PATH_DEVICE + java.io.File.separator + "dir" + java.io.File.separator
@@ -534,6 +578,10 @@ public class TestPlaylist extends JajukTestCase {
         + "testdir" + java.io.File.separator + "playlist.m3u", play.getAbsolutePath());
   }
 
+  /**
+   * Test get absolute path not normal.
+   * DOCUMENT_ME
+   */
   public final void testGetAbsolutePathNotNormal() {
     Playlist play = new Playlist(Playlist.Type.BESTOF, "1", "name", null);
     assertTrue(StringUtils.isBlank(play.getAbsolutePath()));
@@ -555,8 +603,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Playlist#getFiles()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testGetFiles() throws Exception {
     Playlist play = createPlaylist();
@@ -569,12 +617,24 @@ public class TestPlaylist extends JajukTestCase {
     assertEquals(1, play.getFiles().size());
   }
 
+  /**
+   * Test get files null.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testGetFilesNull() throws Exception {
     Playlist play = createPlaylist();
     play.setFiles(null); // null as list!
     assertEquals(2, play.getFiles().size());
   }
 
+  /**
+   * Test get files novelities.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testGetFilesNovelities() throws Exception {
     Device device = JUnitHelpers.getDevice();
     Directory dir = JUnitHelpers.getDirectory();
@@ -585,6 +645,12 @@ public class TestPlaylist extends JajukTestCase {
     assertNotNull(play.getFiles());
   }
 
+  /**
+   * Test get files best of.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testGetFilesBestOf() throws Exception {
     Playlist play = new SmartPlaylist(Playlist.Type.BESTOF, "1", "playlist.m3u", JUnitHelpers
         .getDirectory());
@@ -592,6 +658,12 @@ public class TestPlaylist extends JajukTestCase {
     assertNotNull(play.getFiles());
   }
 
+  /**
+   * Test get files new.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testGetFilesNew() throws Exception {
     Playlist play = new SmartPlaylist(Playlist.Type.NEW, "1", "playlist.m3u", JUnitHelpers
         .getDirectory());
@@ -617,8 +689,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Playlist#isReady()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testIsReady() throws Exception {
     Playlist play = createPlaylist();
@@ -633,8 +705,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Playlist#load()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testLoad() throws Exception {
     // first commit a playlist
@@ -662,8 +734,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Playlist#play()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testPlay() throws Exception {
     Playlist play = createPlaylist();
@@ -677,6 +749,12 @@ public class TestPlaylist extends JajukTestCase {
     play.play();
   }
 
+  /**
+   * Test play null.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testPlayNull() throws Exception {
     Playlist play = createPlaylist();
 
@@ -697,8 +775,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Playlist#remove(int)}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testRemove() throws Exception {
     Playlist play = createPlaylist();
@@ -706,6 +784,12 @@ public class TestPlaylist extends JajukTestCase {
     play.remove(0);
   }
 
+  /**
+   * Test remove bookmark.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testRemoveBookmark() throws Exception {
     Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file1", false));
 
@@ -713,17 +797,21 @@ public class TestPlaylist extends JajukTestCase {
     play.remove(0);
   }
 
+  /**
+   * Test remove queue.
+   * DOCUMENT_ME
+   */
   public final void testRemoveQueue() {
     Playlist play = getPlaylistQueue();
     play.remove(0);
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.base.Playlist#replaceFile(org.jajuk.base.File, org.jajuk.base.File)}
    * .
-   * 
-   * @throws Exception
    */
   public final void testReplaceFile() throws Exception {
     Playlist play = createPlaylist();
@@ -738,6 +826,12 @@ public class TestPlaylist extends JajukTestCase {
     play.replaceFile(play.getFiles().get(0), file);
   }
 
+  /**
+   * Test replace file bookmark.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testReplaceFileBookmark() throws Exception {
     Playlist play = getPlaylistBookmark();
 
@@ -749,6 +843,12 @@ public class TestPlaylist extends JajukTestCase {
     play.replaceFile(play.getFiles().get(0), JUnitHelpers.getFile("file1", false));
   }
 
+  /**
+   * Test replace file queue.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testReplaceFileQueue() throws Exception {
     // make sure Queue is empty
     QueueModel.clear();
@@ -782,8 +882,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Playlist#saveAs()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testSaveAs() throws Exception {
     Playlist play = createPlaylist();
@@ -797,6 +897,12 @@ public class TestPlaylist extends JajukTestCase {
     }
   }
 
+  /**
+   * Test save as best of.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testSaveAsBestOf() throws Exception {
     Directory dir = JUnitHelpers.getDirectory();
 
@@ -817,6 +923,12 @@ public class TestPlaylist extends JajukTestCase {
     }
   }
 
+  /**
+   * Test save as bookmark.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testSaveAsBookmark() throws Exception {
     Playlist play = getPlaylistBookmark();
 
@@ -829,6 +941,12 @@ public class TestPlaylist extends JajukTestCase {
     }
   }
 
+  /**
+   * Test save as novelities.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testSaveAsNovelities() throws Exception {
     Directory dir = JUnitHelpers.getDirectory();
 
@@ -849,6 +967,12 @@ public class TestPlaylist extends JajukTestCase {
     }
   }
 
+  /**
+   * Test save as queue.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testSaveAsQueue() throws Exception {
     Playlist play = getPlaylistQueue();
 
@@ -863,8 +987,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Playlist#setFiles(java.util.List)}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testSetFiles() throws Exception {
     Playlist play = createPlaylist();
@@ -885,7 +1009,8 @@ public class TestPlaylist extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.Playlist#setParentDirectory(org.jajuk.base.Directory)}
    * .
    */
@@ -906,8 +1031,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Playlist#shouldBeHidden()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testShouldBeHidden() throws Exception {
 
@@ -959,8 +1084,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Playlist#getHits()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testGetHits() throws Exception {
     FileManager.getInstance().clear();
@@ -993,6 +1118,12 @@ public class TestPlaylist extends JajukTestCase {
     assertEquals(14, play.getHits());
   }
 
+  /**
+   * Test get hits null.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testGetHitsNull() throws Exception {
     Playlist play = createPlaylist();
     play.setFiles(null);
@@ -1003,8 +1134,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Playlist#getDuration()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testGetDuration() throws Exception {
     Playlist play = createPlaylist();
@@ -1027,6 +1158,12 @@ public class TestPlaylist extends JajukTestCase {
     assertEquals(240, play.getDuration());
   }
 
+  /**
+   * Test get duration null.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testGetDurationNull() throws Exception {
     Playlist play = createPlaylist();
     play.setFiles(null);
@@ -1037,8 +1174,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Playlist#getNbOfTracks()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testGetNbOfTracks() throws Exception {
     Playlist play = createPlaylist();
@@ -1056,6 +1193,12 @@ public class TestPlaylist extends JajukTestCase {
     assertEquals(2, play.getNbOfTracks());
   }
 
+  /**
+   * Test get nb of tracks null.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testGetNbOfTracksNull() throws Exception {
     Playlist play = createPlaylist();
     play.setFiles(null);
