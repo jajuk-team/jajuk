@@ -839,12 +839,12 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     final Cover cover = alCovers.get(index); // take image at the given index
     final URL url = cover.getURL();
     // enable delete button only for local covers
-    if (cover.getType() == CoverType.LOCAL_COVER || cover.getType() == CoverType.SELECTED_COVER
-        || cover.getType() == CoverType.STANDARD_COVER) {
-      jbDelete.setEnabled(true);
-    } else {
-      jbDelete.setEnabled(false);
-    }
+    jbDelete.setEnabled(cover.getType() == CoverType.LOCAL_COVER || cover.getType() == CoverType.SELECTED_COVER
+        || cover.getType() == CoverType.STANDARD_COVER);
+    
+    //Disable default command for "none" cover
+    jbDefault.setEnabled(cover.getType() != CoverType.NO_COVER);
+    
     if (url != null) {
       jbSave.setEnabled(false);
       String sType = " (L)"; // local cover
