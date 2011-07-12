@@ -302,30 +302,34 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * file is not guarantee to exist, so use a try/catch around a future access to this method.
    */
   public File findCover() {
-    String cachedCoverPath = getStringValue(XML_ALBUM_COVER);
-    if (COVER_NONE.equals(cachedCoverPath)) {
+    String discoveredCoverPath = getStringValue(XML_ALBUM_DISCOVERED_COVER);
+    String selectedCoverPath = getStringValue(XML_ALBUM_SELECTED_COVER);
+    if (StringUtils.isNotBlank(selectedCoverPath) && new File(selectedCoverPath).exists()) {
+      // If user-selected cover is available, just return its path
+      return new File(selectedCoverPath);
+    } else if (StringUtils.isNotBlank(discoveredCoverPath) && COVER_NONE.equals(discoveredCoverPath)) {
       return null;
-    } else if (!StringUtils.isBlank(cachedCoverPath)) {
-      // Check if cover still exist. There is an overhead
+    } else if (StringUtils.isNotBlank(discoveredCoverPath)) {
+      // Check if discovered cover still exist. There is an overhead
       // drawback but otherwise, the album's cover
       // property may be stuck to an old device's cover url.
       // Moreover, cover tags are extracted to cache directory so they are 
       // Regularly dropped.
-      Device device = DeviceManager.getInstance().getDeviceByPath(new File(cachedCoverPath));
+      Device device = DeviceManager.getInstance().getDeviceByPath(new File(discoveredCoverPath));
       // If the device is not mounted, do not perform this existence check up
       if (device != null && device.isMounted()) {
-        if (new File(cachedCoverPath).exists()) {
-          return new File(cachedCoverPath);
+        if (new File(discoveredCoverPath).exists()) {
+          return new File(discoveredCoverPath);
         }
       } else {
-        return new File(cachedCoverPath);
+        return new File(discoveredCoverPath);
       }
     }
     // search for local covers in all directories mapping the current track
     // to reach other devices covers and display them together
     List<Track> lTracks = cache;
     if (lTracks.size() == 0) {
-      setProperty(XML_ALBUM_COVER, COVER_NONE);
+      setProperty(XML_ALBUM_DISCOVERED_COVER, COVER_NONE);
       return null;
     }
     // List at directories we have to look in
@@ -357,22 +361,22 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
     // [PERF] Still nothing ? ok, set no cover to avoid further searches 
     if (cover == null) {
-      setProperty(XML_ALBUM_COVER, COVER_NONE);
+      setProperty(XML_ALBUM_DISCOVERED_COVER, COVER_NONE);
     } else { //[PERF] if we found a cover, we store it to avoid further covers 
       // searches including a full tags picture extraction  
-      setProperty(XML_ALBUM_COVER, cover.getAbsolutePath());
+      setProperty(XML_ALBUM_DISCOVERED_COVER, cover.getAbsolutePath());
     }
     return cover;
   }
 
   /**
-   * Return whether this album owns a default cover (this method doesn't check
-   * cover file existence)
-   * @return whether this album owns a default cover.
+   * Return whether this album owns a cover (this method doesn't check
+   * cover file existence). 
+   * @return whether this album owns a cover.
    */
-  public boolean containsDefaultCover() {
-    String coverPath = getStringValue(XML_ALBUM_COVER);
-    return !StringUtils.isBlank(coverPath) && !coverPath.equals(COVER_NONE);
+  public boolean containsCover() {
+    String discoveredCoverPath = getStringValue(XML_ALBUM_DISCOVERED_COVER);
+    return !StringUtils.isBlank(discoveredCoverPath) && !discoveredCoverPath.equals(COVER_NONE);
   }
 
   /**

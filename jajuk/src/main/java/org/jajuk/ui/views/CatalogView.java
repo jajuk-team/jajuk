@@ -487,10 +487,10 @@ public class CatalogView extends ViewAdapter implements ActionListener,
       while (itAlbums.hasNext()) {
         Album album = itAlbums.next();
         if (jcbShowCover.getSelectedIndex() == Const.CATALOG_VIEW_COVER_MODE_WITH
-            && !album.containsDefaultCover()) {
+            && !album.containsCover()) {
           itAlbums.remove();
         } else if (jcbShowCover.getSelectedIndex() == Const.CATALOG_VIEW_COVER_MODE_WITHOUT
-            && album.containsDefaultCover()) {
+            && album.containsCover()) {
           itAlbums.remove();
         }
       }

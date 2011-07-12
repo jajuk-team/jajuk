@@ -150,7 +150,7 @@ public class TestAlbum extends JajukTestCase {
         .getHumanValue(Const.XML_TRACK_HITS));
     assertFalse(album.getHumanValue(Const.XML_ANY).isEmpty());
     assertTrue(album.getHumanValue(Const.XML_ALBUM_ARTIST).isEmpty());
-    assertTrue(album.getHumanValue(Const.XML_ALBUM_COVER).isEmpty());
+    assertTrue(album.getHumanValue(Const.XML_ALBUM_DISCOVERED_COVER).isEmpty());
   }
 
   /**
@@ -246,7 +246,7 @@ public class TestAlbum extends JajukTestCase {
     assertNull(album.findCover());
 
     // none
-    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE);
+    album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE);
     assertNull(album.findCover());
 
     // set a cover file which does not exist
@@ -255,19 +255,19 @@ public class TestAlbum extends JajukTestCase {
         Device.Type.DIRECTORY, System.getProperty("java.io.tmpdir"));
     tmpDevice.mount(false);
     new java.io.File(System.getProperty("java.io.tmpdir"), "cover.tst").delete();
-    album.setProperty(Const.XML_ALBUM_COVER, System.getProperty("java.io.tmpdir")
+    album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, System.getProperty("java.io.tmpdir")
         + java.io.File.separator + "cover.tst");
     assertNull(album.findCover());
 
     // then create the file and try again
     FileUtils.writeStringToFile(
         new java.io.File(System.getProperty("java.io.tmpdir"), "cover.tst"), "");
-    album.setProperty(Const.XML_ALBUM_COVER, System.getProperty("java.io.tmpdir")
+    album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, System.getProperty("java.io.tmpdir")
         + java.io.File.separator + "cover.tst");
     assertNotNull(album.findCover());
 
     // try with a track and no cover file set
-    album.removeProperty(Const.XML_ALBUM_COVER);
+    album.removeProperty(Const.XML_ALBUM_DISCOVERED_COVER);
     Track track = getTrack(album);
     track.addFile(getFile(7, track));
     track.addFile(getFile(8, track));
