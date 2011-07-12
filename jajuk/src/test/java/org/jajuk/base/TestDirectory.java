@@ -213,7 +213,7 @@ public class TestDirectory extends JajukTestCase {
   public static org.jajuk.base.File getFileInDir(int i, Directory dir) throws Exception {
     Genre genre = JUnitHelpers.getGenre("name");
     Album album = JUnitHelpers.getAlbum("myalbum", 0);
-    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
+    album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
     Artist artist = JUnitHelpers.getArtist("name");

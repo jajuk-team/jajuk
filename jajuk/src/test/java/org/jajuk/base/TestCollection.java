@@ -98,7 +98,7 @@ public class TestCollection extends JajukTestCase {
     {
       Genre genre = GenreManager.getInstance().registerGenre("name");
       Album album = AlbumManager.getInstance().registerAlbum("name", 23);
-      album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
+      album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
       // this test
 
       Artist artist = ArtistManager.getInstance().registerArtist("name");

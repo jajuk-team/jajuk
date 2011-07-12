@@ -507,7 +507,7 @@ public class JUnitHelpers {
   public static org.jajuk.base.File getFile(String name, boolean mount) {
     Genre genre = getGenre();
     Album album = getAlbum("name", 0);
-    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
+    album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
     Artist artist = getArtist("myartist");
@@ -675,7 +675,7 @@ public class JUnitHelpers {
   public static Track getTrack(int i) {
     Genre genre = getGenre();
     Album album = getAlbum("myalbum", 0);
-    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
+    album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
     Artist artist = getArtist("myartist_" + i);

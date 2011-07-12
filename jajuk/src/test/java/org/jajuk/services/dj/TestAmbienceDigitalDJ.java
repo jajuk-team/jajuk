@@ -101,7 +101,7 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
 
   private File getFile(int i, Genre genre) throws Exception {
     Album album = JUnitHelpers.getAlbum("myalbum", 0);
-    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
+    album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
     Artist artist = JUnitHelpers.getArtist("name");
