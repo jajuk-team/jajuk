@@ -74,8 +74,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.views.IView;

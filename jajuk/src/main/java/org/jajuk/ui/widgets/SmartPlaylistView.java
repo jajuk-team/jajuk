@@ -26,8 +26,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.jajuk.base.Playlist;
-import org.jajuk.base.SmartPlaylist;
 import org.jajuk.base.Playlist.Type;
+import org.jajuk.base.SmartPlaylist;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;

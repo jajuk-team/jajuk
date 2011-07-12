@@ -20,9 +20,6 @@
  */
 package org.jajuk.base;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.junit.Test;

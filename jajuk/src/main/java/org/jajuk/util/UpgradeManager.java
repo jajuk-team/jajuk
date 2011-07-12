@@ -45,7 +45,6 @@ import org.jajuk.services.core.SessionService;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.log.Log;
-import org.jajuk.util.Const;
 
 /**
  * Maintain all behavior needed upgrades from releases to releases.

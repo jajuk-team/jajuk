@@ -60,8 +60,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.jajuk.base.SearchResult;
-import org.jajuk.base.TrackManager;
 import org.jajuk.base.SearchResult.SearchResultType;
+import org.jajuk.base.TrackManager;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.services.webradio.WebRadioManager;

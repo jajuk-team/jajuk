@@ -21,11 +21,11 @@
 package ext.services.network;
 
 import java.io.IOException;
+import java.net.Proxy.Type;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.net.Proxy.Type;
 
 import org.jajuk.JajukTestCase;
 import org.jajuk.util.log.Log;

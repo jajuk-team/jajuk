@@ -39,8 +39,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import javax.swing.event.HyperlinkEvent.EventType;
+import javax.swing.event.HyperlinkListener;
 
 import org.jajuk.base.Artist;
 import org.jajuk.base.ArtistManager;

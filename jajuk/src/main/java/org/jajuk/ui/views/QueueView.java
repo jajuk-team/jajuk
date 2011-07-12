@@ -43,7 +43,6 @@ import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.EtchedBorder;
 import javax.swing.event.ListSelectionEvent;
 
 import net.miginfocom.swing.MigLayout;
@@ -76,7 +75,6 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
-import org.jfree.chart.block.LineBorder;
 import org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.api.SubstanceColorScheme;
 import org.jvnet.substance.api.SubstanceSkin;

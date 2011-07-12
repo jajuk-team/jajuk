@@ -22,9 +22,9 @@ package ext.services.network;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.Proxy.Type;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.Proxy.Type;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
