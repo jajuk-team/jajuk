@@ -133,7 +133,7 @@ public class Cover implements Comparable<Cover>, Const {
   }
 
   /*
-   * (non-Javadoc) The priority order is : SELECTED > STANDARD > LOCAL > REMOTE > NO_COVER
+   * (non-Javadoc) The priority order is : SELECTED > STANDARD > TAG > LOCAL > REMOTE > NO_COVER
    * 
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
