@@ -101,7 +101,7 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
 
   public void testGetImageForAudioFileNotExists() {
     Track track = JUnitHelpers.getTrack(3);
-    track.getAlbum().setProperty(Const.XML_ALBUM_COVER,
+    track.getAlbum().setProperty(Const.XML_ALBUM_DISCOVERED_COVER,
         System.getProperty("java.io.tmpdir") + "nonexist"); // don't read covers
     // for
     LastFmAlbumsRunnable.getImageForAudioFile(track, 100, 100);
@@ -110,11 +110,7 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
   public void testGetImageForAudioFileExists() throws Exception {
     Track track = JUnitHelpers.getTrack(3);
     File file = File.createTempFile("test", ".img");
-    track.getAlbum().setProperty(Const.XML_ALBUM_COVER, file.getAbsolutePath()); // don't
-    // read
-    // covers
-    // for
-
+    track.getAlbum().setProperty(Const.XML_ALBUM_DISCOVERED_COVER, file.getAbsolutePath()); 
     assertNotNull(LastFmAlbumsRunnable.getImageForAudioFile(track, 200, 100));
 
     // TODO: cleanup does not work on Windows because the file seems to still be
@@ -125,7 +121,7 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
   public void testGetImageForAudioFileExistsMaxSize() throws Exception {
     Track track = JUnitHelpers.getTrack(3);
     File file = File.createTempFile("test", ".img");
-    track.getAlbum().setProperty(Const.XML_ALBUM_COVER, file.getAbsolutePath()); // don't
+    track.getAlbum().setProperty(Const.XML_ALBUM_DISCOVERED_COVER, file.getAbsolutePath()); // don't
     // read
     // covers
     // for
@@ -140,7 +136,7 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
   public void testGetImageForAudioFileExistsNoResize() throws Exception {
     Track track = JUnitHelpers.getTrack(3);
     File file = File.createTempFile("test", ".img");
-    track.getAlbum().setProperty(Const.XML_ALBUM_COVER, file.getAbsolutePath()); // don't
+    track.getAlbum().setProperty(Const.XML_ALBUM_DISCOVERED_COVER, file.getAbsolutePath()); // don't
     // read
     // covers
     // for

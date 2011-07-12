@@ -33,24 +33,26 @@ import java.util.StringTokenizer;
 import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FileUtils;
+import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Collection;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
+import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.log.Log;
+import org.jajuk.util.Const;
 
 /**
  * Maintain all behavior needed upgrades from releases to releases.
  * 
  * Jajuk version sheme is XX.YY.ZZ (two digits possible for each part of the release)
  */
-public final class UpgradeManager {
+public final class UpgradeManager implements Const {
 
   /** Last jajuk release known from Internet (parsed from a pad file). */
   private static String newVersionName;
@@ -251,6 +253,18 @@ public final class UpgradeManager {
   }
 
   /**
+   * For Jajuk < 1.9.3: 'cover' tag can't contain "none" string
+   */
+  private static void upgradeNoneCover() {
+    for (Album album : AlbumManager.getInstance().getAlbums()) {
+      if (COVER_NONE.equals(album.getStringValue(XML_ALBUM_SELECTED_COVER))) {
+        album.setProperty(XML_ALBUM_SELECTED_COVER, "");
+      }
+    }
+
+  }
+
+  /**
    * For Jajuk < 1.9: bootstrap file is now in XML format
    * <br>
    * If it exists and contains data in 1.7 or 1.8 format, it convert it to new XML
@@ -283,8 +297,8 @@ public final class UpgradeManager {
         Properties prop = null;
         // Try to load a bootstrap file using plain text old format
         prop = new Properties();
-        FileInputStream fis = new FileInputStream(SessionService
-            .getBootstrapPath(Const.FILE_BOOTSTRAP_OLD));
+        FileInputStream fis = new FileInputStream(
+            SessionService.getBootstrapPath(Const.FILE_BOOTSTRAP_OLD));
         prop.load(fis);
         fis.close();
 
@@ -547,6 +561,8 @@ public final class UpgradeManager {
         upgradeCollectionRating();
         // For Jajuk < 1.9
         upgradeNoMoreAlbumArtistsForAlbums();
+        // For Jajuk < 1.9.3
+        upgradeNoneCover();
       }
       // Major releases upgrade specific operations
       if (isMajorMigration()) {
