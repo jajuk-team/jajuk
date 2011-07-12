@@ -112,6 +112,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
 
   /** Search when typing timer. */
   Timer timer = new Timer(100, new ActionListener() {
+    @Override
     public void actionPerformed(ActionEvent arg0) {
       if (bNeedSearch && (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
         search();
@@ -133,6 +134,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
      * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing .JList,
      * java.lang.Object, int, boolean, boolean)
      */
+    @Override
     public Component getListCellRendererComponent(JList list, Object value, int index,
         boolean isSelected, boolean cellHasFocus) {
       SearchResult sr = (SearchResult) value;
@@ -181,6 +183,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
    * 
    * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
    */
+  @Override
   public void keyPressed(KeyEvent e) {
     // required by interface, but nothing to do here...
   }
@@ -190,6 +193,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
    * 
    * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
    */
+  @Override
   public void keyReleased(KeyEvent e) {
     if (e.getKeyChar() == KeyEvent.VK_ESCAPE && popup != null) {
       popup.hide();
@@ -216,6 +220,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
    * 
    * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
    */
+  @Override
   public void keyTyped(KeyEvent e) {
     // required by interface, but nothing to do here...
   }
@@ -357,6 +362,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
    * 
    * @param e DOCUMENT_ME
    */
+  @Override
   public void valueChanged(final ListSelectionEvent e) {
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
       @Override

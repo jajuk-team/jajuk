@@ -100,7 +100,7 @@ public class TestDeviceManager extends JajukTestCase {
    * {@link org.jajuk.base.DeviceManager#createID(java.lang.String)}.
    */
   public final void testCreateID() {
-    assertNotNull(DeviceManager.createID("device123"));
+    assertNotNull(ItemManager.createID("device123"));
   }
 
   /**

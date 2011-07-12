@@ -312,6 +312,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * 
    * @return comparison result
    */
+  @Override
   public int compareTo(final Playlist o) {
     // not equal if other is null
     if (o == null) {

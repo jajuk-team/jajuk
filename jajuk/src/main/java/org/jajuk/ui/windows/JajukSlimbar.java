@@ -313,6 +313,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     jbPrevious.addMouseMotionListener(motionAdapter);
     // Manage right click : replay the track (this not triggers an action so we use a MouseAdapter here)
     jbPrevious.addMouseListener(new JajukMouseAdapter() {
+      @Override
       public void handlePopup(final MouseEvent me) {
         // Create an ActionEvent from this MouseEvent with a custom modifier : the right click
         ActionEvent ae = new ActionEvent(jbPrevious, 0, PREVIOUS_TRACK.name(), 4332424);

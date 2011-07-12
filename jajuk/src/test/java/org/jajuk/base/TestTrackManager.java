@@ -29,6 +29,7 @@ import org.junit.Test;
  */
 public class TestTrackManager extends JajukTestCase {
 
+  @Override
   protected void setUp() throws Exception {
     super.setUp();
   }

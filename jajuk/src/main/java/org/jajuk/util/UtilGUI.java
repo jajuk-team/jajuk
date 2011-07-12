@@ -146,6 +146,7 @@ public final class UtilGUI {
 
   /** Set cursor thread, stored to avoid construction. */
   private static Runnable setCursorThread = new Runnable() {
+    @Override
     public void run() {
       Container container = null;
       IPerspective perspective = PerspectiveManager.getCurrentPerspective();
@@ -871,6 +872,7 @@ public final class UtilGUI {
     // Add keystroke to close window when pressing escape
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
         new KeyEventDispatcher() {
+          @Override
           public boolean dispatchKeyEvent(KeyEvent e) {
             // For some reasons (under Linux at least), pressing escape only trigger PRESSED 
             // and RELEASED key events 

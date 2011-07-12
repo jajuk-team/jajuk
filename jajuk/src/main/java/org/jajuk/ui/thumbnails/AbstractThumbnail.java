@@ -46,6 +46,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 import javax.swing.TransferHandler;
+import javax.swing.WindowConstants;
 
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
@@ -431,7 +432,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
         jd.add(cv);
         jd.setSize(600, 450);
         jd.setLocationByPlatform(true);
-        jd.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        jd.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         jd.setVisible(true);
       } else {
         Messages.showErrorMessage(166);

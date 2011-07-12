@@ -412,6 +412,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     });
     // Add specific behavior on left click
     editorTable.setCommand(new ILaunchCommand() {
+      @Override
       public void launch(int nbClicks) {
 
         int iSelectedCol = editorTable.getSelectedColumn();
@@ -483,6 +484,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
    * 
    * @see org.jajuk.ui.IView#display()
    */
+  @Override
   public void initUI() {
     initEditorPanel();
 
@@ -535,6 +537,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.CUSTOM_PROPERTIES_ADD);
@@ -554,6 +557,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
    * 
    * @see org.jajuk.ui.IView#getDesc()
    */
+  @Override
   public String getDesc() {
     return Messages.getString("AbstractPlaylistEditorView.15");
   }
@@ -578,8 +582,10 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
+  @Override
   public void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         try {
           JajukEvents subject = event.getSubject();
@@ -772,6 +778,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
    * 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(ActionEvent ae) {
     try {
       if (ae.getSource() == jbRun) {
@@ -919,6 +926,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
    * 
    * @param e DOCUMENT_ME
    */
+  @Override
   public void valueChanged(ListSelectionEvent e) {
     ListSelectionModel selection = (ListSelectionModel) e.getSource();
     if (!selection.isSelectionEmpty()) {
@@ -1082,6 +1090,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
      * 
      * @see org.jajuk.ui.views.IView#getDesc()
      */
+    @Override
     public String getDesc() {
       return null;
     }
@@ -1102,6 +1111,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
      * 
      * @see org.jajuk.ui.views.IView#initUI()
      */
+    @Override
     public void initUI() {
       UtilGUI.populate(this);
     }

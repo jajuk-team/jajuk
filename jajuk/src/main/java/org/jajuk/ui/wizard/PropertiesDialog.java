@@ -242,6 +242,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
    */
   private void display() {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         // If none editable item, save button is disabled
         if (iEditable == 0) {
@@ -261,6 +262,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
    * 
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
+  @Override
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == okc.getCancelButton()) {
       dispose();
@@ -422,6 +424,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
           if (meta.getType().equals(Date.class)) {
             final JXDatePicker jdp = new JXDatePicker();
             jdp.addActionListener(new ActionListener() {
+              @Override
               public void actionPerformed(ActionEvent arg0) {
                 Object oValue = jdp.getDate();
                 hmPropertyToChange.put(meta, oValue);
@@ -441,6 +444,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
             // for a boolean, value is a checkbox
             final JCheckBox jcb = new JCheckBox();
             jcb.addActionListener(new ActionListener() {
+              @Override
               public void actionPerformed(ActionEvent arg0) {
                 Object oValue = jcb.isSelected();
                 hmPropertyToChange.put(meta, oValue);
@@ -518,6 +522,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
               jcb.setSelectedIndex(-1);
             }
             jcb.addActionListener(new ActionListener() {
+              @Override
               public void actionPerformed(ActionEvent arg0) {
                 Object oValue = jcb.getSelectedItem();
                 if (oValue == null || ((String) oValue).trim().length() == 0) {
@@ -568,6 +573,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
               jcb.setSelectedIndex(-1);
             }
             jcb.addActionListener(new ActionListener() {
+              @Override
               public void actionPerformed(ActionEvent arg0) {
                 Object oValue = jcb.getSelectedItem();
                 if (oValue == null || ((String) oValue).trim().length() == 0) {
@@ -681,6 +687,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
      * 
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
       // Link
       if (ae.getActionCommand().equals("link")) {

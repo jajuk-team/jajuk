@@ -175,6 +175,7 @@ public final class PerspectiveManager {
     UtilGUI.waiting();
     // views display
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         perspective.setAsBeenSelected(true);
         PerspectiveManager.currentPerspective = perspective;

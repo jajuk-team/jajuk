@@ -39,6 +39,7 @@ import org.jajuk.base.AlbumManager;
 import org.jajuk.base.ArtistManager;
 import org.jajuk.base.File;
 import org.jajuk.base.GenreManager;
+import org.jajuk.base.ItemManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Track;
 import org.jajuk.util.error.JajukException;
@@ -290,7 +291,7 @@ public final class UtilString {
         sValue = UtilSystem.getNormalizedFilename(sValue);
       }
       if (!sValue.equals(Const.UNKNOWN_ARTIST)) {
-        ret = ret.replaceAll(Const.PATTERN_ARTIST, ArtistManager.format(sValue));
+        ret = ret.replaceAll(Const.PATTERN_ARTIST, ItemManager.format(sValue));
       } else {
         if (bMandatory) {
           throw new JajukException(150, file.getAbsolutePath());
@@ -368,7 +369,7 @@ public final class UtilString {
       if (normalize) {
         sValue = UtilSystem.getNormalizedFilename(sValue);
       }
-      ret = ret.replaceAll(Const.PATTERN_ALBUM_ARTIST, AlbumArtistManager.format(sValue));
+      ret = ret.replaceAll(Const.PATTERN_ALBUM_ARTIST, ItemManager.format(sValue));
     }
     return ret;
   }
@@ -1031,7 +1032,7 @@ public final class UtilString {
         20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 58, 42, 63, 92, 34, 60, 62, 124 };
     StringBuilder cleanName = new StringBuilder();
     for (int i = 0; i < temp.length(); i++) {
-      int c = (int) temp.charAt(i);
+      int c = temp.charAt(i);
       if (Arrays.binarySearch(illegalChars, c) < 0) {
         cleanName.append((char) c);
       } else {

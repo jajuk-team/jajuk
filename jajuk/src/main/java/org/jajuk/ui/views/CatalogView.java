@@ -27,6 +27,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentListener;
@@ -827,7 +828,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
 
     // we specifically request the focus for jtfValue, therefore we should make sure that we release
     // that focus to let this be destroyed
-    FocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
+    KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
 
     // call the parent class to do more cleanup if necessary
     super.cleanup();

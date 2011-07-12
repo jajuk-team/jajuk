@@ -103,6 +103,7 @@ public class SessionService {
 
     try {
       SwingUtilities.invokeAndWait(new Runnable() {
+        @Override
         public void run() {
           // Check for remote concurrent users using the same
           // configuration
@@ -427,6 +428,7 @@ public class SessionService {
       UpgradeManager.setFirstSession();
       // display the first time wizard
       SwingUtilities.invokeLater(new Runnable() {
+        @Override
         public void run() {
           // default workspace displayed in the first time wizard is either the user home 
           // or the forced path if provided (can't be changed by the user from the wizard anyway)

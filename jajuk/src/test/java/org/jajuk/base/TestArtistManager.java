@@ -77,13 +77,13 @@ public class TestArtistManager extends JajukTestCase {
    * {@link org.jajuk.base.ArtistManager#createID(java.lang.String)}.
    */
   public final void testCreateID() {
-    String id = ArtistManager.createID("name");
+    String id = ItemManager.createID("name");
 
     // same for same name
-    assertEquals(id, ArtistManager.createID("name"));
+    assertEquals(id, ItemManager.createID("name"));
 
     // different for other name
-    assertFalse(id.equals(ArtistManager.createID("name2")));
+    assertFalse(id.equals(ItemManager.createID("name2")));
   }
 
   /**
@@ -206,19 +206,19 @@ public class TestArtistManager extends JajukTestCase {
    * {@link org.jajuk.base.ArtistManager#format(java.lang.String)}.
    */
   public final void testFormat() {
-    assertEquals("Testname", ArtistManager.format("testname"));
+    assertEquals("Testname", ItemManager.format("testname"));
 
     // trim spaces
-    assertEquals("Testname", ArtistManager.format("  testname  "));
+    assertEquals("Testname", ItemManager.format("  testname  "));
 
     // -
-    assertEquals("Te s tname", ArtistManager.format("  te-s-tname  "));
+    assertEquals("Te s tname", ItemManager.format("  te-s-tname  "));
 
     // _
-    assertEquals("Te s tname", ArtistManager.format("  te_s_tname  "));
+    assertEquals("Te s tname", ItemManager.format("  te_s_tname  "));
 
     // all of them
-    assertEquals("TE s tnam  e ", ArtistManager.format("  tE_s_tnam--e-  "));
+    assertEquals("TE s tnam  e ", ItemManager.format("  tE_s_tnam--e-  "));
   }
 
   /**

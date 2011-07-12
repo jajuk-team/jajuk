@@ -61,6 +61,7 @@ public final class FileManager extends ItemManager {
 
   /** File comparator based on rate. */
   private final Comparator<File> rateComparator = new Comparator<File>() {
+    @Override
     public int compare(File file1, File file2) {
       long lRate1 = file1.getTrack().getRate();
       long lRate2 = file2.getTrack().getRate();
@@ -447,6 +448,7 @@ public final class FileManager extends ItemManager {
       }
       Collections.sort(alEligibleFiles, new Comparator<File>() {
 
+        @Override
         public int compare(File f1, File f2) {
           if (f1.getTrack().getAlbum().equals(f2.getTrack().getAlbum())) {
             int comp = (int) (f1.getTrack().getOrder() - f2.getTrack().getOrder());
@@ -519,6 +521,7 @@ public final class FileManager extends ItemManager {
     }
     // sort alphabetically and by date, newest first
     Collections.sort(alEligibleFiles, new Comparator<File>() {
+      @Override
       public int compare(File file1, File file2) {
         String sCompared1 = file1.getTrack().getDiscoveryDate().getTime() + file1.getAbsolutePath();
         String sCompared2 = file2.getTrack().getDiscoveryDate().getTime() + file2.getAbsolutePath();
