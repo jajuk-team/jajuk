@@ -35,6 +35,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.services.covers.Cover;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
@@ -45,6 +46,7 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.ImageFilter;
 import org.jajuk.util.log.Log;
@@ -293,30 +295,34 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Gets the cover file.
+   * Gets the best associated cover as a file.
    * <p>Can be a long action</p>
    * 
-   * @return associated best cover file available or null if none. The returned
-   * file can not be readable, so use a try/catch around a future access to this method.
+   * @return Associated best cover file available or null if none. The returned
+   * file is not guarantee to exist, so use a try/catch around a future access to this method.
    */
-  public File findCoverFile() {
-    String cachedCoverPath = getStringValue(XML_ALBUM_COVER);
-    if (COVER_NONE.equals(cachedCoverPath)) {
+  public File findCover() {
+    String discoveredCoverPath = getStringValue(XML_ALBUM_DISCOVERED_COVER);
+    String selectedCoverPath = getStringValue(XML_ALBUM_SELECTED_COVER);
+    if (StringUtils.isNotBlank(selectedCoverPath) && new File(selectedCoverPath).exists()) {
+      // If user-selected cover is available, just return its path
+      return new File(selectedCoverPath);
+    } else if (StringUtils.isNotBlank(discoveredCoverPath) && COVER_NONE.equals(discoveredCoverPath)) {
       return null;
-    } else if (!StringUtils.isBlank(cachedCoverPath)) {
-      // Check if cover still exist. There is an overhead
+    } else if (StringUtils.isNotBlank(discoveredCoverPath)) {
+      // Check if discovered cover still exist. There is an overhead
       // drawback but otherwise, the album's cover
       // property may be stuck to an old device's cover url.
       // Moreover, cover tags are extracted to cache directory so they are 
       // Regularly dropped.
-      Device device = DeviceManager.getInstance().getDeviceByPath(new File(cachedCoverPath));
+      Device device = DeviceManager.getInstance().getDeviceByPath(new File(discoveredCoverPath));
       // If the device is not mounted, do not perform this existence check up
       if (device != null && device.isMounted()) {
-        if (new File(cachedCoverPath).exists()) {
-          return new File(cachedCoverPath);
+        if (new File(discoveredCoverPath).exists()) {
+          return new File(discoveredCoverPath);
         }
       } else {
-        return new File(cachedCoverPath);
+        return new File(discoveredCoverPath);
       }
     }
     // None cover yet set or it is no more accessible.
@@ -324,7 +330,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     // to reach other devices covers and display them together
     List<Track> lTracks = cache;
     if (lTracks.size() == 0) {
-      setProperty(XML_ALBUM_COVER, COVER_NONE);
+      setProperty(XML_ALBUM_DISCOVERED_COVER, COVER_NONE);
       return null;
     }
     // List at directories we have to look in
@@ -346,19 +352,32 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
     // none ? look for standard cover in collection
     if (cover == null) {
-      cover = findCover(dirs, true);
+      cover = findCoverFile(dirs, true);
     }
 
     // none ? OK, return first cover file we find
     if (cover == null) {
-      cover = findCover(dirs, false);
+      cover = findCoverFile(dirs, false);
     }
 
-    // Still nothing ? ok, set no cover
+    // [PERF] Still nothing ? ok, set no cover to avoid further searches 
     if (cover == null) {
-      setProperty(XML_ALBUM_COVER, COVER_NONE);
+      setProperty(XML_ALBUM_DISCOVERED_COVER, COVER_NONE);
+    } else { //[PERF] if we found a cover, we store it to avoid further covers 
+      // searches including a full tags picture extraction  
+      setProperty(XML_ALBUM_DISCOVERED_COVER, cover.getAbsolutePath());
     }
     return cover;
+  }
+
+  /**
+   * Return whether this album owns a cover (this method doesn't check
+   * cover file existence). 
+   * @return whether this album owns a cover.
+   */
+  public boolean containsCover() {
+    String discoveredCoverPath = getStringValue(XML_ALBUM_DISCOVERED_COVER);
+    return !StringUtils.isBlank(discoveredCoverPath) && !discoveredCoverPath.equals(COVER_NONE);
   }
 
   /**
@@ -369,9 +388,11 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   private File findTagCover() {
     //Make sure to sort the cache
-    Collections.sort(cache);
-    for (Track track : cache) {
-      for (org.jajuk.base.File file : track.getFiles()) {
+    List<Track> sortedTracks = new ArrayList<Track>(cache);
+    Collections.sort(sortedTracks, new TrackComparator(TrackComparatorType.ALBUM));
+
+    for (Track track : sortedTracks) {
+      for (org.jajuk.base.File file : track.getReadyFiles()) {
         try {
           Tag tag = new Tag(file.getFIO(), false);
           List<Cover> covers = tag.getCovers();
@@ -394,7 +415,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * 
    * @return a cover file matching criteria or null
    */
-  private File findCover(Set<Directory> dirs, boolean onlyStandardCovers) {
+  private File findCoverFile(Set<Directory> dirs, boolean onlyStandardCovers) {
     JajukFileFilter filter = new JajukFileFilter(ImageFilter.getInstance());
     for (Directory dir : dirs) {
       File fDir = dir.getFio(); // store this dir
@@ -417,7 +438,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
             // Note that at this point, the image is fully loaded (done in the ImageIcon
             // constructor)
             if (ii.getImageLoadStatus() == MediaTracker.COMPLETE) {
-              setProperty(XML_ALBUM_COVER, files[i].getAbsolutePath());
               return files[i];
             } else {
               Log.debug("Problem loading: " + files[i].getAbsolutePath());

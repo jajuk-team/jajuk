@@ -508,7 +508,7 @@ public class TestAlbumManager extends JajukTestCase {
   @SuppressWarnings("unchecked")
   private Track getTrack(int i, Album album) throws Exception {
     Genre genre = JUnitHelpers.getGenre("name");
-    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE);
+    album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE);
     // don't read covers for this test
 
     Artist artist = JUnitHelpers.getArtist("atist_" + i);

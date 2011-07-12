@@ -277,6 +277,7 @@
 		<echo message=' MAC OS X in:           ${distdir}/jajuk-macos-${version}.zip' />
 		<echo message=' Source archive in:     ${sourcesdist}' />
 		<echo message=' JNLP war file in:      ${rootdir}/jajuk-trunk-${test}.war' />
+		<echo message=' Jajuk binary file in:  ${distdir}/bin/${jarname}' />
 	</target>
 
 

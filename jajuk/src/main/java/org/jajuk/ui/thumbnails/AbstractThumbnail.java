@@ -415,7 +415,9 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
       // This item is enabled only for albums
       JDialog jd = new JDialog(JajukMainWindow.getInstance(), Messages.getString("CatalogView.18"));
       org.jajuk.base.File file = null;
-      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem(), false);
+      // We sort associated tracks because we want to analyze the first file of the set
+      // as it is more likely to contain global cover tag.
+      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem(), true);
       if (tracks.size() > 0) {
         // Take first track found
         Track track = tracks.iterator().next();
