@@ -73,9 +73,12 @@ public final class AlbumManager extends ItemManager implements Observer {
     // Expand
     registerProperty(new PropertyMetaInformation(Const.XML_EXPANDED, false, false, false, false,
         true, Boolean.class, false));
-    // Cover path
-    registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_COVER, false, false, false, false,
-        false, String.class, null));
+    // Discovered Cover path
+    registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_DISCOVERED_COVER, false, false,
+        false, false, false, String.class, null));
+    // Selected Cover path
+    registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_SELECTED_COVER, false, false,
+        false, false, false, String.class, null));
     // Disc id
     registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_DISC_ID, false, true, true, false,
         false, Long.class, -1l));
@@ -552,10 +555,11 @@ public final class AlbumManager extends ItemManager implements Observer {
 
   /**
    * Reset cached cover url for every album.
+   * Note that we reset only cached/discovered covers, not user-selected covers.
    */
   public void resetCoverCache() {
     for (Album album : getAlbums()) {
-      album.setProperty(Const.XML_ALBUM_COVER, "");
+      album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, "");
     }
   }
 
