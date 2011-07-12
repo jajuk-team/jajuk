@@ -499,23 +499,40 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
     // index : prefix for cover file extracted into the cache directory
     int index = 1;
     for (Artwork artwork : artworkList) {
-      byte[] imageRawData = artwork != null ? artwork.getBinaryData() : null;
-      if (imageRawData != null) {
-        BufferedImage bi = ImageIO.read(new ByteArrayInputStream(imageRawData));
-        if (bi != null) {
-          // Compute a hash of the audiofile absolute path to avoid overriding of tags between files, each 
-          // Potentially containing several artworks
-          String hash = MD5Processor.hash(audioFile.getFile().getAbsolutePath());
-          File coverFile = SessionService.getConfFileByPath(Const.FILE_CACHE + '/' + hash + "_"
-              + index + "_" + Const.TAG_COVER_FILE);
-          ImageIO.write(bi, "png", coverFile);
-          Cover cover = new Cover(coverFile, CoverType.TAG_COVER);
-          covers.add(cover);
-          index ++;
+      File coverFile = buildTagCacheFile(index);
+      // [PERF] Only extract artworks if the cache file doesn't yet exist.
+      if (!coverFile.exists()) {
+        byte[] imageRawData = artwork != null ? artwork.getBinaryData() : null;
+        if (imageRawData != null) {
+          BufferedImage bi = ImageIO.read(new ByteArrayInputStream(imageRawData));
+          if (bi != null) {
+            ImageIO.write(bi, "png", coverFile);
+          }
         }
       }
+      Cover cover = new Cover(coverFile, CoverType.TAG_COVER);
+      covers.add(cover);
+      index++;
     }
     return covers;
+  }
+
+  /**
+   * Build target cover path. The cover tag is extracted and copied to a file in the cache
+   * it is uniquely identified by absolute filename AND file last change so we force recreating the 
+   * cache if user add/remove cover tags from audio files using another tool.
+   * To avoid overriding of tags between files, each potentially containing several artworks.
+   * @param index index of the tag
+   * @return file for upcoming cache
+   */
+  private File buildTagCacheFile(int index) {
+    File fio = audioFile.getFile();
+    String absolutePath = fio.getAbsolutePath();
+    long lastChange = fio.lastModified();
+    String hash = MD5Processor.hash(absolutePath + lastChange);
+    File coverFile = SessionService.getConfFileByPath(Const.FILE_CACHE + '/' + hash + "_" + index
+        + "_" + Const.TAG_COVER_FILE);
+    return coverFile;
   }
 
 }
