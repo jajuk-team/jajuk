@@ -25,12 +25,8 @@ import java.awt.Component;
 import java.awt.SystemTray;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -44,7 +40,6 @@ import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
@@ -61,28 +56,15 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.apache.commons.lang.StringUtils;
-import org.jajuk.base.AlbumManager;
-import org.jajuk.base.DeviceManager;
-import org.jajuk.base.File;
-import org.jajuk.base.FileManager;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.core.RatingManager;
 import org.jajuk.services.core.SessionService;
-import org.jajuk.services.lastfm.LastFmManager;
 import org.jajuk.services.notification.NotificatorTypes;
-import org.jajuk.services.webradio.WebRadio;
-import org.jajuk.services.webradio.WebRadioManager;
-import org.jajuk.ui.actions.ActionManager;
-import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.helpers.PatternInputVerifier;
-import org.jajuk.ui.thumbnails.ThumbnailManager;
-import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.PathSelector;
 import org.jajuk.ui.widgets.SearchBox;
@@ -90,13 +72,10 @@ import org.jajuk.ui.widgets.SteppedComboBox;
 import org.jajuk.ui.widgets.ToggleLink;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
-import org.jajuk.util.DownloadManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
-import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.HorizontalLayout;
@@ -110,332 +89,319 @@ import org.jvnet.substance.skin.SkinInfo;
  * <p>
  * Configuration perspective *
  */
-public class ParameterView extends ViewAdapter implements ActionListener, ItemListener,
-    ChangeListener {
+public class ParameterView extends ViewAdapter {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /** GUI updater */
+  private ParameterViewGUIHelper updateHelper = new ParameterViewGUIHelper(this);
+
   /** The Constant NOTIFICATOR_PREFIX. DOCUMENT_ME */
-  private static final String NOTIFICATOR_PREFIX = "Notificator.";
+  static final String NOTIFICATOR_PREFIX = "Notificator.";
 
   /** DOCUMENT_ME. */
-  private JTabbedPane jtpMain;
+  JTabbedPane jtpMain;
 
   /** DOCUMENT_ME. */
-  private JTextField jtfHistory;
+  JTextField jtfHistory;
 
   /** DOCUMENT_ME. */
-  private JButton jbClearHistory;
+  JButton jbClearHistory;
 
   /** DOCUMENT_ME. */
-  private JButton jbResetRatings;
+  JButton jbResetRatings;
 
   /** DOCUMENT_ME. */
-  private JButton jbResetPreferences;
+  JButton jbResetPreferences;
 
   /** DOCUMENT_ME. */
-  private ButtonGroup bgStart;
+  ButtonGroup bgStart;
 
   /** DOCUMENT_ME. */
-  private JRadioButton jrbNothing;
+  JRadioButton jrbNothing;
 
   /** DOCUMENT_ME. */
-  private JRadioButton jrbLast;
+  JRadioButton jrbLast;
 
   /** DOCUMENT_ME. */
-  private JRadioButton jrbLastKeepPos;
+  JRadioButton jrbLastKeepPos;
 
   /** DOCUMENT_ME. */
-  private JRadioButton jrbShuffle;
+  JRadioButton jrbShuffle;
 
   /** DOCUMENT_ME. */
-  private JRadioButton jrbBestof;
+  JRadioButton jrbBestof;
 
   /** DOCUMENT_ME. */
-  private JRadioButton jrbNovelties;
+  JRadioButton jrbNovelties;
 
   /** DOCUMENT_ME. */
-  private JRadioButton jrbFile;
+  JRadioButton jrbFile;
 
   /** DOCUMENT_ME. */
-  private SearchBox sbSearch;
+  SearchBox sbSearch;
 
   /** DOCUMENT_ME. */
-  private JPanel jpConfirmations;
+  JCheckBox jcbBeforeDelete;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbBeforeDelete;
+  JCheckBox jcbBeforeExit;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbBeforeExit;
+  JCheckBox jcbBeforeRemoveDevice;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbBeforeRemoveDevice;
+  JCheckBox jcbBeforeDeleteCover;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbBeforeDeleteCover;
+  JCheckBox jcbBeforeClearingHistory;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbBeforeClearingHistory;
+  JCheckBox jcbBeforeResetingRatings;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbBeforeResetingRatings;
+  JCheckBox jcbBeforeRefactorFiles;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbBeforeRefactorFiles;
+  JCheckBox jcbDisplayUnmounted;
 
   /** DOCUMENT_ME. */
-  private JPanel jpOptions;
+  JCheckBox jcbAudioScrobbler;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbDisplayUnmounted;
+  JLabel jlASUser;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbAudioScrobbler;
+  JTextField jtfASUser;
 
   /** DOCUMENT_ME. */
-  private JLabel jlASUser;
+  JLabel jlASPassword;
 
   /** DOCUMENT_ME. */
-  private JTextField jtfASUser;
+  JPasswordField jpfASPassword;
 
   /** DOCUMENT_ME. */
-  private JLabel jlASPassword;
+  SteppedComboBox scbLanguage;
 
   /** DOCUMENT_ME. */
-  private JPasswordField jpfASPassword;
-
-  /** DOCUMENT_ME. */
-  private SteppedComboBox scbLanguage;
-
-  /** DOCUMENT_ME. */
-  private JTextField jtfFrameTitle;
+  JTextField jtfFrameTitle;
 
   /** Balloon notifier pattern text field. */
-  private JTextField jtfBalloonNotifierPattern;
+  JTextField jtfBalloonNotifierPattern;
 
   /** Information pattern textfield. */
-  private JTextField jtfInformationPattern;
+  JTextField jtfInformationPattern;
 
   /** DOCUMENT_ME. */
-  private JLabel jlLAF;
+  JLabel jlLAF;
 
   /** DOCUMENT_ME. */
-  private SteppedComboBox scbLAF;
+  SteppedComboBox scbLAF;
 
   /** DOCUMENT_ME. */
-  private SteppedComboBox scbLogLevel;
+  SteppedComboBox scbLogLevel;
 
   /** DOCUMENT_ME. */
-  private JSlider introPosition;
+  JSlider introPosition;
 
   /** DOCUMENT_ME. */
-  private JSlider introLength;
+  JSlider introLength;
 
   /** DOCUMENT_ME. */
-  private JTextField jtfBestofSize;
+  JTextField jtfBestofSize;
 
   /** DOCUMENT_ME. */
-  private JTextField jtfNoveltiesAge;
+  JTextField jtfNoveltiesAge;
 
   /** DOCUMENT_ME. */
-  private JTextField jtfVisiblePlanned;
+  JTextField jtfVisiblePlanned;
 
   /** DOCUMENT_ME. */
-  private JSlider crossFadeDuration;
+  JSlider crossFadeDuration;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbDefaultActionClick;
+  JCheckBox jcbDefaultActionClick;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbDefaultActionDrop;
+  JCheckBox jcbDefaultActionDrop;
 
   /** DOCUMENT_ME. */
-  private JLabel jlNotificationType;
+  JLabel jlNotificationType;
 
   /** DOCUMENT_ME. */
-  private JComboBox jcbNotificationType;
+  JComboBox jcbNotificationType;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbHotkeys;
+  JCheckBox jcbHotkeys;
 
   /** DOCUMENT_ME. */
-  private JPanel jpTags;
+  JCheckBox jcbUseParentDir;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbUseParentDir;
+  JFormattedTextField jtfRefactorPattern;
 
   /** DOCUMENT_ME. */
-  private JFormattedTextField jtfRefactorPattern;
+  JTextField jtfAnimationPattern;
 
   /** DOCUMENT_ME. */
-  private JTextField jtfAnimationPattern;
+  JCheckBox jcbBackup;
 
   /** DOCUMENT_ME. */
-  private JPanel jpAdvanced;
+  JSlider backupSize;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbBackup;
+  JComboBox jcbCollectionEncoding;
 
   /** DOCUMENT_ME. */
-  private JSlider backupSize;
+  JCheckBox jcbRegexp;
 
   /** DOCUMENT_ME. */
-  private JComboBox jcbCollectionEncoding;
+  ButtonGroup bgProxy;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbRegexp;
+  JCheckBox jcbNoneInternetAccess;
 
   /** DOCUMENT_ME. */
-  private JPanel jpNetwork;
+  JRadioButton jcbProxyNone;
 
   /** DOCUMENT_ME. */
-  private ButtonGroup bgProxy;
+  JRadioButton jcbProxyHttp;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbNoneInternetAccess;
+  JRadioButton jcbProxySocks;
 
   /** DOCUMENT_ME. */
-  private JRadioButton jcbProxyNone;
+  JLabel jlProxyHostname;
 
   /** DOCUMENT_ME. */
-  private JRadioButton jcbProxyHttp;
+  JTextField jtfProxyHostname;
 
   /** DOCUMENT_ME. */
-  private JRadioButton jcbProxySocks;
+  JLabel jlProxyPort;
 
   /** DOCUMENT_ME. */
-  private JLabel jlProxyHostname;
+  JTextField jtfProxyPort;
 
   /** DOCUMENT_ME. */
-  private JTextField jtfProxyHostname;
+  JLabel jlProxyLogin;
 
   /** DOCUMENT_ME. */
-  private JLabel jlProxyPort;
+  JTextField jtfProxyLogin;
 
   /** DOCUMENT_ME. */
-  private JTextField jtfProxyPort;
+  JLabel jlProxyPwd;
 
   /** DOCUMENT_ME. */
-  private JLabel jlProxyLogin;
+  JPasswordField jtfProxyPwd;
 
   /** DOCUMENT_ME. */
-  private JTextField jtfProxyLogin;
+  JLabel jlConnectionTO;
 
   /** DOCUMENT_ME. */
-  private JLabel jlProxyPwd;
+  JSlider connectionTO;
 
   /** DOCUMENT_ME. */
-  private JPasswordField jtfProxyPwd;
+  JCheckBox jcbAutoCover;
 
   /** DOCUMENT_ME. */
-  private JLabel jlConnectionTO;
+  JCheckBox jcbShuffleCover;
 
   /** DOCUMENT_ME. */
-  private JSlider connectionTO;
+  JLabel jlCoverSize;
 
   /** DOCUMENT_ME. */
-  private JPanel jpCovers;
+  JComboBox jcbCoverSize;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbAutoCover;
+  JTextField jtfMPlayerArgs;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbShuffleCover;
+  JTextField jtfEnvVariables;
 
   /** DOCUMENT_ME. */
-  private JLabel jlCoverSize;
+  JTextField jtfMPlayerPath;
 
   /** DOCUMENT_ME. */
-  private JComboBox jcbCoverSize;
+  PathSelector psJajukWorkspace;
 
   /** DOCUMENT_ME. */
-  private JTextField jtfMPlayerArgs;
+  JLabel jlCatalogPages;
 
   /** DOCUMENT_ME. */
-  private JTextField jtfEnvVariables;
+  JSlider jsCatalogPages;
 
   /** DOCUMENT_ME. */
-  private JTextField jtfMPlayerPath;
+  JButton jbCatalogRefresh;
 
   /** DOCUMENT_ME. */
-  private PathSelector psJajukWorkspace;
+  JCheckBox jcbShowPopups;
 
   /** DOCUMENT_ME. */
-  private JLabel jlCatalogPages;
+  JCheckBox jcbShowSystray;
 
   /** DOCUMENT_ME. */
-  private JSlider jsCatalogPages;
+  JCheckBox jcbMinimizeToTray;
 
   /** DOCUMENT_ME. */
-  private JButton jbCatalogRefresh;
+  JLabel jlFonts;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbShowPopups;
+  JSlider jsFonts;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbShowSystray;
+  JCheckBox jcbEnableLastFMInformation;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbMinimizeToTray;
+  JButton jbOK;
 
   /** DOCUMENT_ME. */
-  private JPanel jpUI;
+  JButton jbDefault;
 
   /** DOCUMENT_ME. */
-  private JLabel jlFonts;
+  JCheckBox jcbCheckUpdates;
 
   /** DOCUMENT_ME. */
-  private JSlider jsFonts;
+  JCheckBox jcbForceFileDate;
 
   /** DOCUMENT_ME. */
-  private JPanel jpLastFM;
+  JSlider jsPerspectiveSize;
 
-  /** DOCUMENT_ME. */
-  private JCheckBox jcbEnableLastFMInformation;
-
-  /** DOCUMENT_ME. */
-  private JButton jbOK;
-
-  /** DOCUMENT_ME. */
-  private JButton jbDefault;
-
-  /** DOCUMENT_ME. */
-  private JCheckBox jcbCheckUpdates;
+  /** VolNorm checkbox. */
+  JCheckBox jcbUseVolnorm;
 
-  /** DOCUMENT_ME. */
-  private JCheckBox jcbForceFileDate;
-
-  /** DOCUMENT_ME. */
-  private JSlider jsPerspectiveSize;
-
-  /** DOCUMENT_ME. */
-  private JCheckBox jcbUseVolnorm;
-
-  /** DOCUMENT_ME. */
-  private boolean someOptionsAppliedAtNextStartup = false;
+  /** Bit-perfect checkbox. */
+  JCheckBox jcbEnableBitPerfect;
 
   /** DOCUMENT_ME. */
-  private JTextField jtfExplorerPath;
+  JTextField jtfExplorerPath;
 
   /** Whether the "theme will be token into account" message has been already displayed. */
   boolean bLAFMessage = false;
 
   /** DOCUMENT_ME. */
-  private JLabel jlDefaultCoverSearchPattern;
+  JLabel jlDefaultCoverSearchPattern;
 
   /** DOCUMENT_ME. */
-  private JTextField jtfDefaultCoverSearchPattern;
+  JTextField jtfDefaultCoverSearchPattern;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbSaveExplorerFriendly;
+  JCheckBox jcbSaveExplorerFriendly;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcbDropPlayedTracksFromQueue;
+  JCheckBox jcbDropPlayedTracksFromQueue;
 
   /** DOCUMENT_ME. */
-  private JCheckBox jcb3dCover;
+  JCheckBox jcb3dCover;
+
+  /** DOCUMENT_ME. */
+  JCheckBox jcb3dCoverFS;
+
+  /** Enable Title view animation effect. */
+  JCheckBox jcbTitleAnimation;
+
+  /** Splashscreen flag. */
+  JCheckBox jcbSplashscreen;
 
   /**
    * View providing main jajuk configuration GUI. Known in the doc as
@@ -445,420 +411,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     super();
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-   */
-  public void actionPerformed(final ActionEvent e) {
-
-    if (e.getSource() == jbClearHistory) {
-      // show confirmation message if required
-      if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY)) {
-        final int iResu = Messages.getChoice(Messages.getString("Confirmation_clear_history"),
-            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-        if (iResu != JOptionPane.YES_OPTION) {
-          return;
-        }
-      }
-      ObservationManager.notify(new JajukEvent(JajukEvents.CLEAR_HISTORY));
-    } else if (e.getSource() == scbLAF) {
-      // Refresh full GUI at each LAF change as a preview
-      UtilGUI.setupSubstanceLookAndFeel((String) scbLAF.getSelectedItem());
-      UtilGUI.updateAllUIs();
-    } else if (e.getSource() == jbResetRatings) {
-      // show confirmation message if required
-      if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS)) {
-        final int iResu = Messages.getChoice(Messages.getString("Confirmation_reset_ratings"),
-            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-        if (iResu != JOptionPane.YES_OPTION) {
-          return;
-        }
-      }
-      ObservationManager.notify(new JajukEvent(JajukEvents.RATE_RESET));
-    } else if (e.getSource() == jbResetPreferences) {
-      // show confirmation message if required
-      if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS)) {
-        final int iResu = Messages.getChoice(Messages.getString("Confirmation_reset_preferences"),
-            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-        if (iResu != JOptionPane.YES_OPTION) {
-          return;
-        }
-      }
-      if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-        ObservationManager.notify(new JajukEvent(JajukEvents.PREFERENCES_RESET));
-      } else {
-        Messages.showErrorMessage(120);
-      }
-    } else if (e.getSource() == jbOK) {
-      applyParameters();
-      // Notify any client than wait for parameters updates
-      final Properties details = new Properties();
-      details.put(Const.DETAIL_ORIGIN, this);
-      if (someOptionsAppliedAtNextStartup) {
-        // Inform user that some parameters will apply only at
-        // next startup
-        Messages.showInfoMessage(Messages.getString("ParameterView.198"));
-        someOptionsAppliedAtNextStartup = false;
-      }
-    } else if (e.getSource() == jbDefault) {
-      int resu = Messages.getChoice(Messages.getString("Confirmation_defaults"),
-          JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-      if (resu == JOptionPane.OK_OPTION) {
-        Conf.setDefaultProperties();
-        updateSelection();// update UI
-        InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.110"),
-            InformationJPanel.MessageType.INFORMATIVE);
-        applyParameters();
-        Messages.showInfoMessage(Messages.getString("ParameterView.198"));
-      }
-    } else if (e.getSource() == jcbBackup) {
-      // if backup option is unchecked, reset backup size
-      if (jcbBackup.isSelected()) {
-        backupSize.setEnabled(true);
-        backupSize.setValue(Conf.getInt(Const.CONF_BACKUP_SIZE));
-      } else {
-        backupSize.setEnabled(false);
-        backupSize.setValue(0);
-      }
-    } else if ((e.getSource() == jcbProxyNone) || (e.getSource() == jcbProxyHttp)
-        || (e.getSource() == jcbProxySocks)) {
-      final boolean bUseProxy = !jcbProxyNone.isSelected();
-      jtfProxyHostname.setEnabled(bUseProxy);
-      jtfProxyPort.setEnabled(bUseProxy);
-      jtfProxyLogin.setEnabled(bUseProxy);
-      jtfProxyPwd.setEnabled(bUseProxy);
-      jlProxyHostname.setEnabled(bUseProxy);
-      jlProxyPort.setEnabled(bUseProxy);
-      jlProxyLogin.setEnabled(bUseProxy);
-      jlProxyPwd.setEnabled(bUseProxy);
-    } else if (e.getSource() == jcbAutoCover) {
-      if (jcbAutoCover.isSelected()) {
-        jcbCoverSize.setEnabled(true);
-        jlCoverSize.setEnabled(true);
-      } else {
-        jlCoverSize.setEnabled(false);
-        jcbCoverSize.setEnabled(false);
-      }
-    } else if (e.getSource() == jcbAudioScrobbler) {
-      if (jcbAudioScrobbler.isSelected()) {
-        jlASUser.setEnabled(true);
-        jtfASUser.setEnabled(true);
-        jlASPassword.setEnabled(true);
-        jpfASPassword.setEnabled(true);
-      } else {
-        jlASUser.setEnabled(false);
-        jtfASUser.setEnabled(false);
-        jlASPassword.setEnabled(false);
-        jpfASPassword.setEnabled(false);
-      }
-    } else if (e.getSource() == scbLanguage) {
-      Locale locale = LocaleManager.getLocaleForDesc(((JLabel) scbLanguage.getSelectedItem())
-          .getText());
-      final String sLocal = locale.getLanguage();
-      final String sPreviousLocal = LocaleManager.getLocale().getLanguage();
-      if (!sPreviousLocal.equals(sLocal)) {
-        // local has changed
-        someOptionsAppliedAtNextStartup = true;
-      }
-    } else if (e.getSource() == jcbHotkeys) {
-      someOptionsAppliedAtNextStartup = true;
-    } else if (e.getSource() == jbCatalogRefresh) {
-      new Thread("Parameter Catalog refresh Thread") {
-        @Override
-        public void run() {
-          UtilGUI.waiting();
-          // Force albums to search for new covers
-          AlbumManager.getInstance().resetCoverCache();
-          // Clean thumbs
-          ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_50X50);
-          ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_100X100);
-          ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_150X150);
-          ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_200X200);
-          ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_250X250);
-          ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_300X300);
-          UtilGUI.stopWaiting();
-          // For catalog view's update
-          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-          // Display a message
-          Messages.showInfoMessage(Messages.getString("Success"));
-
-        }
-      }.start();
-    }
-  }
-
-  /**
-   * Apply parameters.
-   */
-  private void applyParameters() {
-    // **Read all parameters**
-    // Options
-    Conf.setProperty(Const.CONF_OPTIONS_HIDE_UNMOUNTED,
-        Boolean.toString(jcbDisplayUnmounted.isSelected()));
-    Conf.setProperty(Const.CONF_OPTIONS_PUSH_ON_CLICK,
-        Boolean.toString(jcbDefaultActionClick.isSelected()));
-    Conf.setProperty(Const.CONF_OPTIONS_PUSH_ON_DROP,
-        Boolean.toString(jcbDefaultActionDrop.isSelected()));
-    Conf.setProperty(Const.CONF_OPTIONS_HOTKEYS, Boolean.toString(jcbHotkeys.isSelected()));
-    Conf.setProperty(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE,
-        Boolean.toString(jcbAudioScrobbler.isSelected()));
-    Conf.setProperty(Const.CONF_LASTFM_INFO,
-        Boolean.toString(jcbEnableLastFMInformation.isSelected()));
-    Conf.setProperty(Const.CONF_LASTFM_USER, jtfASUser.getText());
-    Conf.setProperty(Const.CONF_LASTFM_PASSWORD,
-        UtilString.rot13(new String(jpfASPassword.getPassword())));
-    final int iLogLevel = scbLogLevel.getSelectedIndex();
-    Log.setVerbosity(iLogLevel);
-    Conf.setProperty(Const.CONF_OPTIONS_LOG_LEVEL, Integer.toString(iLogLevel));
-    Conf.setProperty(Const.CONF_OPTIONS_INTRO_BEGIN, Integer.toString(introPosition.getValue()));
-    Conf.setProperty(Const.CONF_OPTIONS_INTRO_LENGTH, Integer.toString(introLength.getValue()));
-    Conf.setProperty(Const.CONF_TAGS_USE_PARENT_DIR, Boolean.toString(jcbUseParentDir.isSelected()));
-    Conf.setProperty(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE,
-        Boolean.toString(jcbDropPlayedTracksFromQueue.isSelected()));
-    final String sBestofSize = jtfBestofSize.getText();
-    if (!sBestofSize.isEmpty()) {
-      Conf.setProperty(Const.CONF_BESTOF_TRACKS_SIZE, sBestofSize);
-    }
-    Locale locale = LocaleManager.getLocaleForDesc(((JLabel) scbLanguage.getSelectedItem())
-        .getText());
-    final String sLocal = locale.getLanguage();
-    Conf.setProperty(Const.CONF_OPTIONS_LANGUAGE, sLocal);
-    // force refresh of bestof files
-    RatingManager.setRateHasChanged(true);
-    final String sNoveltiesAge = jtfNoveltiesAge.getText();
-    if (!sNoveltiesAge.isEmpty()) {
-      Conf.setProperty(Const.CONF_OPTIONS_NOVELTIES_AGE, sNoveltiesAge);
-    }
-    final String sVisiblePlanned = jtfVisiblePlanned.getText();
-    if (!sVisiblePlanned.isEmpty()) {
-      Conf.setProperty(Const.CONF_OPTIONS_VISIBLE_PLANNED, sVisiblePlanned);
-    }
-    final int oldDuration = Conf.getInt(Const.CONF_FADE_DURATION);
-    // Show an hideable message if user set cross fade under linux for sound
-    // server information
-    if (UtilSystem.isUnderLinux() && (oldDuration == 0)
-        && (oldDuration != crossFadeDuration.getValue())) {
-      Messages.showHideableWarningMessage(Messages.getString("ParameterView.210"),
-          Const.CONF_NOT_SHOW_AGAIN_CROSS_FADE);
-    }
-    Conf.setProperty(Const.CONF_FADE_DURATION, Integer.toString(crossFadeDuration.getValue()));
-    // Startup
-    if (jrbNothing.isSelected()) {
-      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOTHING);
-    } else if (jrbLast.isSelected()) {
-      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST);
-    } else if (jrbLastKeepPos.isSelected()) {
-      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
-    } else if (jrbShuffle.isSelected()) {
-      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_SHUFFLE);
-    } else if (jrbFile.isSelected()) {
-      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_ITEM);
-    } else if (jrbBestof.isSelected()) {
-      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_BESTOF);
-    } else if (jrbNovelties.isSelected()) {
-      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOVELTIES);
-    }
-    // Confirmations
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_DELETE_FILE,
-        Boolean.toString(jcbBeforeDelete.isSelected()));
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_EXIT, Boolean.toString(jcbBeforeExit.isSelected()));
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE,
-        Boolean.toString(jcbBeforeRemoveDevice.isSelected()));
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_DELETE_COVER,
-        Boolean.toString(jcbBeforeDeleteCover.isSelected()));
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY,
-        Boolean.toString(jcbBeforeClearingHistory.isSelected()));
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_RESET_RATINGS,
-        Boolean.toString(jcbBeforeResetingRatings.isSelected()));
-    // History
-    final String sHistoryDuration = jtfHistory.getText();
-    if (!sHistoryDuration.isEmpty()) {
-      Conf.setProperty(Const.CONF_HISTORY, sHistoryDuration);
-    }
-    // Patterns
-    Conf.setProperty(Const.CONF_PATTERN_REFACTOR, jtfRefactorPattern.getText());
-    Conf.setProperty(Const.CONF_PATTERN_ANIMATION, jtfAnimationPattern.getText());
-    Conf.setProperty(Const.CONF_PATTERN_FRAME_TITLE, jtfFrameTitle.getText());
-    Conf.setProperty(Const.CONF_PATTERN_BALLOON_NOTIFIER, jtfBalloonNotifierPattern.getText());
-    Conf.setProperty(Const.CONF_PATTERN_INFORMATION, jtfInformationPattern.getText());
-
-    // Advanced
-    Conf.setProperty(Const.CONF_BACKUP_SIZE, Integer.toString(backupSize.getValue()));
-    Conf.setProperty(Const.CONF_COLLECTION_CHARSET, jcbCollectionEncoding.getSelectedItem()
-        .toString());
-    Conf.setProperty(Const.CONF_REGEXP, Boolean.toString(jcbRegexp.isSelected()));
-    Conf.setProperty(Const.CONF_USE_VOLNORM, Boolean.toString(jcbUseVolnorm.isSelected()));
-    Conf.setProperty(Const.CONF_CHECK_FOR_UPDATE, Boolean.toString(jcbCheckUpdates.isSelected()));
-    Conf.setProperty(Const.CONF_FORCE_FILE_DATE, Boolean.toString(jcbForceFileDate.isSelected()));
-    // Apply new mplayer path and display a warning message if changed
-    final String oldMplayerPath = Conf.getString(Const.CONF_MPLAYER_PATH_FORCED);
-    if (!(oldMplayerPath.equals(jtfMPlayerPath.getText()))) {
-      this.someOptionsAppliedAtNextStartup = true;
-    }
-    Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, jtfMPlayerPath.getText());
-    Conf.setProperty(Const.CONF_MPLAYER_ARGS, jtfMPlayerArgs.getText());
-    Conf.setProperty(Const.CONF_ENV_VARIABLES, jtfEnvVariables.getText());
-    Conf.setProperty(Const.CONF_EXPLORER_PATH, jtfExplorerPath.getText());
-
-    // GUI
-    Conf.setProperty(Const.CONF_CATALOG_PAGE_SIZE, Integer.toString(jsCatalogPages.getValue()));
-    Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
-    final int oldFont = Conf.getInt(Const.CONF_FONTS_SIZE);
-    // Display a message if font size changed
-    if (oldFont != jsFonts.getValue()) {
-      someOptionsAppliedAtNextStartup = true;
-    }
-    Conf.setProperty(Const.CONF_FONTS_SIZE, Integer.toString(jsFonts.getValue()));
-    // Notificator type
-    String notificatorTypeDisplayed = (String) jcbNotificationType.getSelectedItem();
-    for (NotificatorTypes notificatorType : NotificatorTypes.values()) {
-      if (Messages.getString(NOTIFICATOR_PREFIX + notificatorType).equals(notificatorTypeDisplayed)) {
-        Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, notificatorType.name());
-      }
-    }
-
-    // Message if show systray is changed
-    final boolean bOldShowSystray = Conf.getBoolean(Const.CONF_SHOW_SYSTRAY);
-    if (bOldShowSystray != jcbShowSystray.isSelected()) {
-      someOptionsAppliedAtNextStartup = true;
-    }
-    Conf.setProperty(Const.CONF_SHOW_SYSTRAY, Boolean.toString(jcbShowSystray.isSelected()));
-
-    // Minimize to tray
-    Conf.setProperty(Const.CONF_MINIMIZE_TO_TRAY, Boolean.toString(jcbMinimizeToTray.isSelected()));
-
-    final int oldPerspectiveSize = Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE);
-    // If we perspective size changed and no font message have been already
-    // displayed, display a message
-    if (oldPerspectiveSize != jsPerspectiveSize.getValue()) {
-      someOptionsAppliedAtNextStartup = true;
-    }
-    Conf.setProperty(Const.CONF_PERSPECTIVE_ICONS_SIZE,
-        Integer.toString(jsPerspectiveSize.getValue()));
-    // LAF change
-    final String oldTheme = Conf.getString(Const.CONF_OPTIONS_LNF);
-    Conf.setProperty(Const.CONF_OPTIONS_LNF, (String) scbLAF.getSelectedItem());
-    if (!oldTheme.equals(scbLAF.getSelectedItem())) {
-      // theme will be applied at next startup
-      Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
-          Const.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
-      bLAFMessage = true;
-    }
-    // If jajuk home changes, write new path in bootstrap file
-    if ((SessionService.getWorkspace() != null)
-        && !SessionService.getWorkspace().equals(psJajukWorkspace.getUrl())) {
-      // Check workspace directory
-      if (!psJajukWorkspace.getUrl().trim().isEmpty()) {
-        // Check workspace presence and create it if required
-        final java.io.File fWorkspace = new java.io.File(psJajukWorkspace.getUrl());
-        if (!fWorkspace.exists() && !fWorkspace.mkdirs()) {
-          Log.warn("Could not create directory " + fWorkspace.toString());
-        }
-        if (!fWorkspace.canRead()) {
-          Messages.showErrorMessage(165);
-          return;
-        }
-      }
-      try {
-        final String newWorkspace = psJajukWorkspace.getUrl();
-        // If target workspace doesn't exist, copy current repository to
-        // the new workspace
-        // (keep old repository for security and for use
-        // by others users in multi-session mode)
-        boolean bPreviousPathExist = true;
-        // bPreviousPathExist is true if destination workspace already
-        // exists,
-        // it is then only a workspace switch
-        if (!new java.io.File(psJajukWorkspace.getUrl() + '/'
-            + (SessionService.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk"))
-            .exists()) {
-          UtilGUI.waiting();
-          final java.io.File from = SessionService.getConfFileByPath("");
-          final java.io.File dest = new java.io.File(newWorkspace + '/'
-              + (SessionService.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk"));
-          // Remove the session file to avoid getting a message when
-          // switching to new workspace
-          java.io.File session = SessionService.getSessionIdFile();
-          session.delete();
-
-          UtilSystem.copyRecursively(from, dest);
-          bPreviousPathExist = false;
-        }
-        // Change the workspace so the very last conf (like current
-        // track)
-        // will be saved directly to target workspace. We don't do
-        // this if the workspace already exist to avoid overwriting other
-        // configuration.
-        SessionService.setWorkspace(psJajukWorkspace.getUrl());
-        //Commit the bootstrap file
-        SessionService.commitBootstrapFile();
-
-        UtilGUI.stopWaiting();
-        // Display a warning message and restart Jajuk
-        if (bPreviousPathExist) {
-          Messages.getChoice(Messages.getString("ParameterView.247"), JOptionPane.DEFAULT_OPTION,
-              JOptionPane.INFORMATION_MESSAGE);
-        } else {
-          Messages.getChoice(Messages.getString("ParameterView.209"), JOptionPane.DEFAULT_OPTION,
-              JOptionPane.INFORMATION_MESSAGE);
-        }
-        // Exit Jajuk
-        try {
-          ActionManager.getAction(JajukActions.EXIT).perform(null);
-        } catch (Exception e1) {
-          Log.error(e1);
-        }
-
-      } catch (final Exception e) {
-        Messages.showErrorMessage(24);
-        Log.error(e);
-      }
-    }
-
-    // Network
-    Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS,
-        Boolean.toString(jcbNoneInternetAccess.isSelected()));
-    Conf.setProperty(Const.CONF_NETWORK_USE_PROXY, Boolean.toString(!jcbProxyNone.isSelected()));
-    if (jcbProxyHttp.isSelected()) {
-      Conf.setProperty(Const.CONF_NETWORK_PROXY_TYPE, Const.PROXY_TYPE_HTTP);
-    } else if (jcbProxySocks.isSelected()) {
-      Conf.setProperty(Const.CONF_NETWORK_PROXY_TYPE, Const.PROXY_TYPE_SOCKS);
-    }
-    Conf.setProperty(Const.CONF_NETWORK_PROXY_HOSTNAME, jtfProxyHostname.getText());
-    Conf.setProperty(Const.CONF_NETWORK_PROXY_PORT, jtfProxyPort.getText());
-    Conf.setProperty(Const.CONF_NETWORK_PROXY_LOGIN, jtfProxyLogin.getText());
-    Conf.setProperty(Const.CONF_NETWORK_PROXY_PWD,
-        UtilString.rot13(new String(jtfProxyPwd.getPassword())));
-    Conf.setProperty(Const.CONF_NETWORK_CONNECTION_TO, Integer.toString(connectionTO.getValue()));
-    // Force global reload of proxy variables
-    DownloadManager.setDefaultProxySettings();
-    // Covers
-    Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER, Boolean.toString(jcb3dCover.isSelected()));
-    ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
-    Conf.setProperty(Const.CONF_COVERS_AUTO_COVER, Boolean.toString(jcbAutoCover.isSelected()));
-    Conf.setProperty(Const.CONF_COVERS_SHUFFLE, Boolean.toString(jcbShuffleCover.isSelected()));
-    Conf.setProperty(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY,
-        Boolean.toString(jcbSaveExplorerFriendly.isSelected()));
-    Conf.setProperty(Const.CONF_COVERS_SIZE, Integer.toString(jcbCoverSize.getSelectedIndex()));
-    Conf.setProperty(Const.FILE_DEFAULT_COVER, jtfDefaultCoverSearchPattern.getText());
-
-    // Force LastFM manager configuration reload
-    LastFmManager.getInstance().configure();
-
-    // configuration
-    try {
-      Conf.commit();
-    } catch (final Exception e) {
-      Log.error(113, e);
-      Messages.showErrorMessage(113);
-    }
-    // Force a full refresh (useful for catalog view for instance)
-    ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-    // display a message
-    InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.109"),
-        InformationJPanel.MessageType.INFORMATIVE);
-  }
+ 
 
   /*
    * (non-Javadoc)
@@ -880,31 +433,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     return eventSubjectSet;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * Inits the ui history.
    * 
-   * @see org.jajuk.ui.IView#display()
+   *
+   * @return the j panel
    */
-  public void initUI() {
-    // Use this common action listener for UI options that need to launch
-    // event
-    final ActionListener alUI = new ActionListener() {
-
-      public void actionPerformed(ActionEvent e) {
-        // Store configuration
-        Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
-        Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS,
-            Boolean.toString(jcbNoneInternetAccess.isSelected()));
-        // Launch an event that can be trapped by the tray to
-        // synchronize the state
-        Properties details = new Properties();
-        details.put(Const.DETAIL_ORIGIN, ParameterView.this);
-        ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE, details));
-      }
-
-    };
-
-    // --History
+  private JPanel initUIHistory() {
     JPanel jpHistory = new JPanel(new MigLayout("insets 10, gapy 15"));
     jtfHistory = new JTextField();
     jtfHistory.setInputVerifier(new InputVerifier() {
@@ -935,17 +470,17 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jbClearHistory = new JButton(Messages.getString("ParameterView.3"),
         IconLoader.getIcon(JajukIcons.CLEAR));
     jbClearHistory.setToolTipText(Messages.getString("ParameterView.4"));
-    jbClearHistory.addActionListener(this);
+    jbClearHistory.addActionListener(updateHelper);
 
     jbResetRatings = new JButton(Messages.getString("ParameterView.186"),
         IconLoader.getIcon(JajukIcons.CLEAR));
     jbResetRatings.setToolTipText(Messages.getString("ParameterView.187"));
-    jbResetRatings.addActionListener(this);
+    jbResetRatings.addActionListener(updateHelper);
 
     jbResetPreferences = new JButton(Messages.getString("ParameterView.249"),
         IconLoader.getIcon(JajukIcons.CLEAR));
     jbResetPreferences.setToolTipText(Messages.getString("ParameterView.250"));
-    jbResetPreferences.addActionListener(this);
+    jbResetPreferences.addActionListener(updateHelper);
 
     JLabel jlHistory = new JLabel(Messages.getString("ParameterView.0"));
     jlHistory.setToolTipText(Messages.getString("ParameterView.2"));
@@ -954,31 +489,39 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpHistory.add(jbClearHistory, "wrap");
     jpHistory.add(jbResetRatings);
     jpHistory.add(jbResetPreferences);
+    return jpHistory;
+  }
 
-    // --Startup
+  /**
+   * Inits the ui startup.
+   * 
+   *
+   * @return the jpanel
+   */
+  private JPanel initUIStartup() {
     JPanel jpStart = new JPanel(new MigLayout("insets 10,gapy 15", "[][grow][]"));
     bgStart = new ButtonGroup();
     jrbNothing = new JRadioButton(Messages.getString("ParameterView.10"));
     jrbNothing.setToolTipText(Messages.getString("ParameterView.11"));
-    jrbNothing.addItemListener(this);
+    jrbNothing.addItemListener(updateHelper);
     jrbLast = new JRadioButton(Messages.getString("ParameterView.12"));
     jrbLast.setToolTipText(Messages.getString("ParameterView.13"));
-    jrbLast.addItemListener(this);
+    jrbLast.addItemListener(updateHelper);
     jrbLastKeepPos = new JRadioButton(Messages.getString("ParameterView.135"));
     jrbLastKeepPos.setToolTipText(Messages.getString("ParameterView.136"));
-    jrbLastKeepPos.addItemListener(this);
+    jrbLastKeepPos.addItemListener(updateHelper);
     jrbShuffle = new JRadioButton(Messages.getString("ParameterView.14"));
     jrbShuffle.setToolTipText(Messages.getString("ParameterView.15"));
-    jrbShuffle.addItemListener(this);
+    jrbShuffle.addItemListener(updateHelper);
     jrbBestof = new JRadioButton(Messages.getString("ParameterView.131"));
     jrbBestof.setToolTipText(Messages.getString("ParameterView.132"));
-    jrbBestof.addItemListener(this);
+    jrbBestof.addItemListener(updateHelper);
     jrbNovelties = new JRadioButton(Messages.getString("ParameterView.133"));
     jrbNovelties.setToolTipText(Messages.getString("ParameterView.134"));
-    jrbNovelties.addItemListener(this);
+    jrbNovelties.addItemListener(updateHelper);
     jrbFile = new JRadioButton(Messages.getString("ParameterView.16"));
     jrbFile.setToolTipText(Messages.getString("ParameterView.17"));
-    jrbFile.addItemListener(this);
+    jrbFile.addItemListener(updateHelper);
     sbSearch = new SearchBox() {
       private static final long serialVersionUID = 1L;
 
@@ -1016,10 +559,18 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpStart.add(jrbBestof, "wrap");
     jpStart.add(jrbNovelties, "wrap");
     jpStart.add(jrbFile);
-    jpStart.add(sbSearch, "grow,wrap");
+    jpStart.add(sbSearch, "grow,wrap"); //NOSONAR
+    return jpStart;
+  }
 
-    // --Confirmations
-    jpConfirmations = new JPanel(new MigLayout("insets 10,gapy 15"));
+  /**
+   * Inits the ui confirmations.
+   * 
+   *
+   * @return the jpanel
+   */
+  private JPanel initUIConfirmations() {
+    JPanel jpConfirmations = new JPanel(new MigLayout("insets 10,gapy 15"));
 
     jcbBeforeDelete = new JCheckBox(Messages.getString("ParameterView.27"));
     jcbBeforeDelete.setToolTipText(Messages.getString("ParameterView.28"));
@@ -1049,8 +600,45 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpConfirmations.add(jcbBeforeClearingHistory, "wrap");
     jpConfirmations.add(jcbBeforeResetingRatings, "wrap");
     jpConfirmations.add(jcbBeforeRefactorFiles, "wrap");
+    return jpConfirmations;
+  }
 
-    // --- Modes ---
+  /**
+  * Inits the sound tab
+  * 
+  *
+  * @return the jpanel
+  */
+  private JPanel initUISound() {
+    JPanel jpSound = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[][grow,200:300:300]"));//NOSONAR
+    JLabel jlCrossFadeDuration = new JLabel(Messages.getString("ParameterView.190"));
+    jlCrossFadeDuration.setToolTipText(Messages.getString("ParameterView.191"));
+    crossFadeDuration = new JSlider(0, 30, 0);
+    crossFadeDuration.setMajorTickSpacing(10);
+    crossFadeDuration.setMinorTickSpacing(1);
+    crossFadeDuration.setPaintTicks(true);
+    crossFadeDuration.setPaintLabels(true);
+    crossFadeDuration.setToolTipText(Messages.getString("ParameterView.191"));
+    crossFadeDuration.addMouseWheelListener(new DefaultMouseWheelListener(crossFadeDuration));
+    jcbUseVolnorm = new JCheckBox(Messages.getString("ParameterView.262"));
+    jcbUseVolnorm.setToolTipText(Messages.getString("ParameterView.263"));
+    jcbUseVolnorm.addActionListener(updateHelper);
+    jcbEnableBitPerfect = new JCheckBox(Messages.getString("ParameterView.285"));
+    jcbEnableBitPerfect.setToolTipText(Messages.getString("ParameterView.286"));
+    jcbEnableBitPerfect.addActionListener(updateHelper);
+    jpSound.add(jlCrossFadeDuration);
+    jpSound.add(crossFadeDuration, "grow,wrap");
+    jpSound.add(jcbUseVolnorm, "wrap");
+    jpSound.add(jcbEnableBitPerfect);
+    return jpSound;
+  }
+
+  /**
+   * Inits the ui modes.
+   * 
+   * @return the jpanel
+   */
+  private JPanel initUIModes() {
     // Intro
     // intro position
     introPosition = new JSlider(0, 100, 0);
@@ -1085,7 +673,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
       @Override
       public boolean verify(final JComponent input) {
-        final JTextField tf = (JTextField) input;
+        final JTextField tf = (JTextField) input;  //NOSONAR
         final String sText = tf.getText();
         try {
           final int iValue = Integer.parseInt(sText);
@@ -1093,7 +681,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
             jbOK.setEnabled(false);
             return false;
           }
-        } catch (final Exception e) {
+        } catch (final RuntimeException e) {
           return false;
         }
         jbOK.setEnabled(true);
@@ -1113,7 +701,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
       @Override
       public boolean verify(final JComponent input) {
-        final JTextField tf = (JTextField) input;
+        final JTextField tf = (JTextField) input; //NOSONAR
         final String sText = tf.getText();
         try {
           final int iValue = Integer.parseInt(sText);
@@ -1142,7 +730,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
       @Override
       public boolean verify(final JComponent input) {
-        final JTextField tf = (JTextField) input;
+        final JTextField tf = (JTextField) input;//NOSONAR
         final String sText = tf.getText();
         try {
           final int iValue = Integer.parseInt(sText);
@@ -1157,39 +745,32 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
         return true;
       }
     });
-    JLabel jlCrossFadeDuration = new JLabel(Messages.getString("ParameterView.190"));
-    jlCrossFadeDuration.setToolTipText(Messages.getString("ParameterView.191"));
-    crossFadeDuration = new JSlider(0, 30, 0);
-    crossFadeDuration.setMajorTickSpacing(10);
-    crossFadeDuration.setMinorTickSpacing(1);
-    crossFadeDuration.setPaintTicks(true);
-    crossFadeDuration.setPaintLabels(true);
-    crossFadeDuration.setToolTipText(Messages.getString("ParameterView.191"));
-    crossFadeDuration.addMouseWheelListener(new DefaultMouseWheelListener(crossFadeDuration));
-    jcbUseVolnorm = new JCheckBox(Messages.getString("ParameterView.262"));
-    jcbUseVolnorm.setToolTipText(Messages.getString("ParameterView.263"));
 
     // add panels
-    JPanel jpModes = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10",
-        "[][grow,200:300:300][fill]"));
+    JPanel jpModes = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[][grow,200:300:300]"));
     jpModes.add(new JLabel(Messages.getString("ParameterView.59")));
     jpModes.add(introPosition, "grow,wrap");
     jpModes.add(jlIntroLength);
     jpModes.add(introLength, "grow,wrap");
-    jpModes.add(jlCrossFadeDuration);
-    jpModes.add(crossFadeDuration, "grow,wrap");
     jpModes.add(jlBestofSize);
     jpModes.add(jtfBestofSize, "grow,wrap");
     jpModes.add(jlNoveltiesAge);
     jpModes.add(jtfNoveltiesAge, "grow,wrap");
     jpModes.add(jlVisiblePlanned);
     jpModes.add(jtfVisiblePlanned, "grow,wrap");
-    jpModes.add(jcbUseVolnorm);
 
-    // --Options
+    return jpModes;
+  }
+
+  /**
+   * Inits the ui options.
+   * 
+   *
+   * @return the jpanel
+   */
+  private JPanel initUIOptions() {
     jcbDisplayUnmounted = new JCheckBox(Messages.getString("JajukJMenuBar.24"));
     jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35"));
-    jcbDisplayUnmounted.addActionListener(alUI);
 
     jcbDefaultActionClick = new JCheckBox(Messages.getString("ParameterView.179"));
     jcbDefaultActionClick.setToolTipText(Messages.getString("ParameterView.180"));
@@ -1198,7 +779,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbDefaultActionDrop.setToolTipText(Messages.getString("ParameterView.182"));
 
     jcbHotkeys = new JCheckBox(Messages.getString("ParameterView.196"));
-    jcbHotkeys.addActionListener(this);
+    jcbHotkeys.addActionListener(updateHelper);
     jcbHotkeys.setToolTipText(Messages.getString("ParameterView.197"));
     // Disable this option if not under windows
     jcbHotkeys.setEnabled(UtilSystem.isUnderWindows());
@@ -1224,13 +805,13 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       scbLanguage.addItem(new JLabel(sDesc, Messages.getIcon(sDesc), SwingConstants.LEFT));
     }
     scbLanguage.setToolTipText(Messages.getString("ParameterView.42"));
-    scbLanguage.addActionListener(this);
+    scbLanguage.addActionListener(updateHelper);
     jcbUseParentDir = new JCheckBox(Messages.getString("ParameterView.101"));
     jcbUseParentDir.setToolTipText(Messages.getString("ParameterView.102"));
     jcbDropPlayedTracksFromQueue = new JCheckBox(Messages.getString("ParameterView.266"));
     jcbDropPlayedTracksFromQueue.setToolTipText(Messages.getString("ParameterView.267"));
 
-    jpOptions = new JPanel(new MigLayout("insets 10, gapy 15, wrap 1"));
+    JPanel jpOptions = new JPanel(new MigLayout("insets 10, gapy 15, wrap 1"));
     jpOptions.add(new JLabel(Messages.getString("ParameterView.38")), "split 2,gapleft 5");
     jpOptions.add(scbLanguage);
     jpOptions.add(jcbDisplayUnmounted);
@@ -1239,11 +820,19 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpOptions.add(jcbHotkeys);
     jpOptions.add(jcbUseParentDir);
     jpOptions.add(jcbDropPlayedTracksFromQueue);
+    return jpOptions;
+  }
 
-    // --Patterns
-    jpTags = new JPanel(new MigLayout("insets 10, gapy 15, wrap 2", "[][grow]"));
+  /**
+   * Inits the ui patterns.
+   * 
+   *
+   * @return the jpanel
+   */
+  private JPanel initUIPatterns() {
+    JPanel patterns = new JPanel(new MigLayout("insets 10, gapy 15, wrap 2", "[][grow]"));
     JLabel jlRefactorPattern = new JLabel(Messages.getString("ParameterView.192"));
-    jlRefactorPattern.setToolTipText(Messages.getString("ParameterView.193"));
+    jlRefactorPattern.setToolTipText(Messages.getString("ParameterView.193"));//NOSONAR
     jtfRefactorPattern = new JFormattedTextField();
     jtfRefactorPattern.setToolTipText(Messages.getString("ParameterView.193"));
     jtfRefactorPattern.setInputVerifier(new PatternInputVerifier());
@@ -1270,20 +859,28 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jtfInformationPattern = new JTextField();
     jtfInformationPattern.setToolTipText(Messages.getString("ParameterView.280"));
 
-    jpTags.add(jlRefactorPattern);
-    jpTags.add(jtfRefactorPattern, "grow");
-    jpTags.add(jlAnimationPattern);
-    jpTags.add(jtfAnimationPattern, "grow");
-    jpTags.add(jlFrameTitle);
-    jpTags.add(jtfFrameTitle, "grow");
-    jpTags.add(jlBalloonNotifierPattern);
-    jpTags.add(jtfBalloonNotifierPattern, "grow");
-    jpTags.add(jlInformationPattern);
-    jpTags.add(jtfInformationPattern, "grow");
+    patterns.add(jlRefactorPattern);
+    patterns.add(jtfRefactorPattern, "grow"); //NOSONAR
+    patterns.add(jlAnimationPattern);
+    patterns.add(jtfAnimationPattern, "grow");
+    patterns.add(jlFrameTitle);
+    patterns.add(jtfFrameTitle, "grow");
+    patterns.add(jlBalloonNotifierPattern);
+    patterns.add(jtfBalloonNotifierPattern, "grow");
+    patterns.add(jlInformationPattern);
+    patterns.add(jtfInformationPattern, "grow");
+    return patterns;
+  }
 
-    // --Advanced
+  /**
+   * Inits the ui advanced.
+   * 
+   *
+   * @return the jpanel
+   */
+  private JPanel initUIAdvanced() {
     jcbBackup = new JCheckBox(Messages.getString("ParameterView.116"));
-    jcbBackup.addActionListener(this);
+    jcbBackup.addActionListener(updateHelper);
     jcbBackup.setToolTipText(Messages.getString("ParameterView.117"));
     backupSize = new JSlider(0, 100);
     backupSize.setMajorTickSpacing(20);
@@ -1297,7 +894,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbCollectionEncoding = new JComboBox();
     jcbCollectionEncoding.setToolTipText(Messages.getString("ParameterView.121"));
     jcbRegexp = new JCheckBox(Messages.getString("ParameterView.113"));
-    jcbRegexp.setSelected(Conf.getBoolean(Const.CONF_REGEXP));
     jcbRegexp.setToolTipText(Messages.getString("ParameterView.114"));
 
     jcbCollectionEncoding.addItem("UTF-8");
@@ -1334,17 +930,15 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     }
     jcbCheckUpdates = new JCheckBox(Messages.getString("ParameterView.234"));
     jcbCheckUpdates.setToolTipText(Messages.getString("ParameterView.234"));
-    jcbCheckUpdates.setSelected(Conf.getBoolean(Const.CONF_CHECK_FOR_UPDATE));
     jcbForceFileDate = new JCheckBox(Messages.getString("ParameterView.244"));
     jcbForceFileDate.setToolTipText(Messages.getString("ParameterView.245"));
-    jcbForceFileDate.setSelected(Conf.getBoolean(Const.CONF_FORCE_FILE_DATE));
 
     JLabel jlExplorer = new JLabel(Messages.getString("ParameterView.269"));
     jlExplorer.setToolTipText(Messages.getString("ParameterView.270"));
     jtfExplorerPath = new JTextField();
     jtfExplorerPath.setToolTipText(Messages.getString("ParameterView.270"));
 
-    jpAdvanced = new JPanel(new MigLayout("insets 10,gapy 15, gapx 10", "[][grow][fill]"));
+    JPanel jpAdvanced = new JPanel(new MigLayout("insets 10,gapy 15, gapx 10", "[][grow][fill]"));
     jpAdvanced.add(jcbBackup);
     jpAdvanced.add(backupSize, "wrap,grow");
     jpAdvanced.add(jlCollectionEncoding);
@@ -1364,23 +958,30 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpAdvanced.add(jcbRegexp, "wrap");
     jpAdvanced.add(jcbCheckUpdates, "wrap");
     jpAdvanced.add(jcbForceFileDate, "wrap");
+    return jpAdvanced;
+  }
 
-    // - Network
+  /**
+   * Inits the ui network.
+   * 
+   *
+   * @return the jpanel
+   */
+  private JPanel initUINetwork() {
     bgProxy = new ButtonGroup();
     jcbProxyNone = new JRadioButton(Messages.getString("ParameterView.236"));
     jcbProxyNone.setToolTipText(Messages.getString("ParameterView.236"));
-    jcbProxyNone.addActionListener(this);
+    jcbProxyNone.addActionListener(updateHelper);
 
     jcbNoneInternetAccess = new JCheckBox(Messages.getString("ParameterView.264"));
     jcbNoneInternetAccess.setToolTipText(Messages.getString("ParameterView.265"));
-    jcbNoneInternetAccess.addActionListener(alUI);
 
     jcbProxyHttp = new JRadioButton(Messages.getString("ParameterView.237"));
     jcbProxyHttp.setToolTipText(Messages.getString("ParameterView.237"));
-    jcbProxyHttp.addActionListener(this);
+    jcbProxyHttp.addActionListener(updateHelper);
     jcbProxySocks = new JRadioButton(Messages.getString("ParameterView.238"));
     jcbProxySocks.setToolTipText(Messages.getString("ParameterView.238"));
-    jcbProxySocks.addActionListener(this);
+    jcbProxySocks.addActionListener(updateHelper);
     bgProxy.add(jcbProxyNone);
     bgProxy.add(jcbProxyHttp);
     bgProxy.add(jcbProxySocks);
@@ -1400,7 +1001,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
 
       @Override
       public boolean verify(final JComponent input) {
-        final JTextField tf = (JTextField) input;
+        final JTextField tf = (JTextField) input;//NOSONAR
         final String sText = tf.getText();
         try {
           final int iValue = Integer.parseInt(sText);
@@ -1449,16 +1050,24 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpProxy.add(jlProxyPwd);
     jpProxy.add(jtfProxyPwd, "wrap,grow");
 
-    jpNetwork = new JPanel(new MigLayout("insets 10,gapy 15, gapx 10", "[grow]"));
+    JPanel jpNetwork = new JPanel(new MigLayout("insets 10,gapy 15, gapx 10", "[grow]"));
     jpNetwork.add(jcbNoneInternetAccess, "wrap");
     jpNetwork.add(jlConnectionTO, "split 2");
     jpNetwork.add(connectionTO, "wrap,grow,width 200!");
     jpNetwork.add(jpProxy, "span");
+    return jpNetwork;
+  }
 
-    // - Last.FM
+  /**
+   * Inits the ui last fm.
+   * 
+   *
+   * @return the jpanel
+   */
+  private JPanel initUILastFM() {
     jcbAudioScrobbler = new JCheckBox(Messages.getString("ParameterView.199"));
     jcbAudioScrobbler.setToolTipText(Messages.getString("ParameterView.200"));
-    jcbAudioScrobbler.addActionListener(this);
+    jcbAudioScrobbler.addActionListener(updateHelper);
     jlASUser = new JLabel(Messages.getString("ParameterView.201"));
     jtfASUser = new JTextField();
     jtfASUser.setToolTipText(Messages.getString("ParameterView.202"));
@@ -1468,21 +1077,29 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcbEnableLastFMInformation = new JCheckBox(Messages.getString("ParameterView.240"));
     jcbEnableLastFMInformation.setToolTipText(Messages.getString("ParameterView.241"));
     // Add items
-    jpLastFM = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[grow]"));
+    JPanel jpLastFM = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[grow]"));
     jpLastFM.add(jcbEnableLastFMInformation, "wrap");
     jpLastFM.add(jcbAudioScrobbler, "wrap");
     jpLastFM.add(jlASUser);
     jpLastFM.add(jtfASUser, "wrap,grow,width 100:300:300");
     jpLastFM.add(jlASPassword);
     jpLastFM.add(jpfASPassword, "wrap,grow,width 100:300:300");
+    return jpLastFM;
+  }
 
-    // - Cover
+  /**
+   * Inits the ui covers.
+   * 
+   *
+   * @return the jpanel
+   */
+  private JPanel initUICovers() {
     jcbAutoCover = new JCheckBox(Messages.getString("ParameterView.148"));
     jcbAutoCover.setToolTipText(Messages.getString("ParameterView.149"));
-    jcbAutoCover.addActionListener(this);
+    jcbAutoCover.addActionListener(updateHelper);
     jcbShuffleCover = new JCheckBox(Messages.getString("ParameterView.166"));
     jcbShuffleCover.setToolTipText(Messages.getString("ParameterView.167"));
-    jcbShuffleCover.addActionListener(this);
+    jcbShuffleCover.addActionListener(updateHelper);
     jlCoverSize = new JLabel(Messages.getString("ParameterView.150"));
     jlCoverSize.setToolTipText(Messages.getString("ParameterView.151"));
     jcbCoverSize = new JComboBox();
@@ -1496,28 +1113,38 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jcb3dCover = new JCheckBox(Messages.getString("ParameterView.273"));
     jcb3dCover.setToolTipText(Messages.getString("ParameterView.274"));
 
-    jlDefaultCoverSearchPattern = new JLabel();
-    jlDefaultCoverSearchPattern.setText(Messages.getString("ParameterView.256"));
+    jcb3dCoverFS = new JCheckBox(Messages.getString("ParameterView.283"));
+    jcb3dCoverFS.setToolTipText(Messages.getString("ParameterView.284"));
+
+    jlDefaultCoverSearchPattern = new JLabel(Messages.getString("ParameterView.256"));
     jlDefaultCoverSearchPattern.setToolTipText(Messages.getString("ParameterView.257"));
     jtfDefaultCoverSearchPattern = new JTextField();
     jtfDefaultCoverSearchPattern.setToolTipText(Messages.getString("ParameterView.257"));
 
     jcbSaveExplorerFriendly = new JCheckBox(Messages.getString("ParameterView.260"));
     jcbSaveExplorerFriendly.setToolTipText(Messages.getString("ParameterView.261"));
-    jcbSaveExplorerFriendly.addActionListener(this);
+    jcbSaveExplorerFriendly.addActionListener(updateHelper);
 
     // Add items
-    jpCovers = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[40%][40%]"));
+    JPanel jpCovers = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[40%][40%]"));
     jpCovers.add(jcbShuffleCover, "wrap");
     jpCovers.add(jcbAutoCover, "wrap");
-    jpCovers.add(jcb3dCover, "wrap");
+    jpCovers.add(jcb3dCover, "split 2");
+    jpCovers.add(jcb3dCoverFS, "wrap");
     jpCovers.add(jcbSaveExplorerFriendly, "wrap");
     jpCovers.add(jlCoverSize);
     jpCovers.add(jcbCoverSize, "wrap,grow");
     jpCovers.add(jlDefaultCoverSearchPattern);
     jpCovers.add(jtfDefaultCoverSearchPattern, "wrap,grow");
+    return jpCovers;
+  }
 
-    // -- User interface --
+  /**
+   * Inits the GUI tab.
+   *  
+   * @return the jpanel
+   */
+  private JPanel initUIGUI() {
     // Catalog view
     jlCatalogPages = new JLabel(Messages.getString("ParameterView.221"));
     jlCatalogPages.setToolTipText(Messages.getString("ParameterView.222"));
@@ -1533,12 +1160,15 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       }
     });
     jcbShowPopups = new JCheckBox(Messages.getString("ParameterView.228"));
-    jcbShowPopups.addActionListener(alUI);
+    jcbShowPopups.setToolTipText(Messages.getString("ParameterView.292"));
+    // Splashscreen
+    jcbSplashscreen = new JCheckBox(Messages.getString("ParameterView.290"));
+    jcbSplashscreen.setToolTipText(Messages.getString("ParameterView.291"));
 
     jcbShowSystray = new JCheckBox(Messages.getString("ParameterView.271"));
     // Disable this option if the tray is not supported by the platform
     jcbShowSystray.setEnabled(SystemTray.isSupported());
-    // Disable minimize to systray optino if unchecked
+    // Disable minimize to systray option if unchecked
     jcbShowSystray.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -1564,17 +1194,27 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jbCatalogRefresh = new JajukButton(Messages.getString("CatalogView.19"),
         IconLoader.getIcon(JajukIcons.REFRESH));
     jbCatalogRefresh.setToolTipText(Messages.getString("CatalogView.3"));
-    jbCatalogRefresh.addActionListener(this);
+    jbCatalogRefresh.addActionListener(updateHelper);
     final JXCollapsiblePane catalogView = new JXCollapsiblePane();
     catalogView.setLayout(new VerticalLayout(10));
     catalogView.setCollapsed(true);
-    final ToggleLink toggle = new ToggleLink(Messages.getString("ParameterView.229"), catalogView);
+    final ToggleLink toggleCatalog = new ToggleLink(Messages.getString("ParameterView.229"),
+        catalogView);
     final JPanel jpCatalogSize = new JPanel();
     jpCatalogSize.setLayout(new HorizontalLayout());
     jpCatalogSize.add(jlCatalogPages);
     jpCatalogSize.add(jsCatalogPages);
     catalogView.add(jpCatalogSize);
     catalogView.add(jbCatalogRefresh);
+
+    //Title view
+    jcbTitleAnimation = new JCheckBox(Messages.getString("ParameterView.288"));
+    jcbTitleAnimation.setToolTipText(Messages.getString("ParameterView.288"));
+    final JXCollapsiblePane titleView = new JXCollapsiblePane();
+    titleView.add(jcbTitleAnimation);
+    titleView.setCollapsed(true);
+    final ToggleLink toggleTitle = new ToggleLink(Messages.getString("ParameterView.289"),
+        titleView);
 
     // Font selector
     jlFonts = new JLabel(Messages.getString("ParameterView.223"));
@@ -1609,11 +1249,12 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     }
     scbLAF.setToolTipText(Messages.getString("ParameterView.44"));
     // Refresh full GUI at each LAF change as a preview
-    scbLAF.addActionListener(this);
+    scbLAF.addActionListener(updateHelper);
 
     // Add items
-    jpUI = new JPanel(new MigLayout("insets 10,gapx 10,gapy 15"));
+    JPanel jpUI = new JPanel(new MigLayout("insets 10,gapx 10,gapy 15"));
     jpUI.add(jcbShowPopups, "wrap");
+    jpUI.add(jcbSplashscreen, "wrap");
     jpUI.add(jcbShowSystray, "split 2");
     jpUI.add(jcbMinimizeToTray, "wrap");
     jpUI.add(jlFonts);
@@ -1624,21 +1265,44 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     jpUI.add(scbLAF, "wrap,grow");
     jpUI.add(jlPerspectiveSize);
     jpUI.add(jsPerspectiveSize, "wrap,grow");
-    jpUI.add(toggle, "wrap,grow");
+    jpUI.add(toggleCatalog, "wrap,grow");
     jpUI.add(catalogView, "wrap,grow,span");
+    jpUI.add(toggleTitle, "wrap,grow");
+    jpUI.add(titleView, "wrap,grow,span");
+    return jpUI;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.IView#display()
+   */
+  public void initUI() {
+    JPanel jpHistory = initUIHistory();
+    JPanel jpStartup = initUIStartup();
+    JPanel jpConfirmations = initUIConfirmations();
+    JPanel jpModes = initUIModes();
+    JPanel jpSound = initUISound();
+    JPanel jpOptions = initUIOptions();
+    JPanel jpPatterns = initUIPatterns();
+    JPanel jpAdvanced = initUIAdvanced();
+    JPanel jpNetwork = initUINetwork();
+    JPanel jpLastFM = initUILastFM();
+    JPanel jpCovers = initUICovers();
+    JPanel jpUI = initUIGUI();
 
     // --OK/cancel panel
     jbOK = new JButton(Messages.getString("ParameterView.85"), IconLoader.getIcon(JajukIcons.OK));
-    jbOK.addActionListener(this);
+    jbOK.addActionListener(updateHelper);
     jbDefault = new JButton(Messages.getString("ParameterView.86"),
         IconLoader.getIcon(JajukIcons.DEFAULTS_BIG));
-    jbDefault.addActionListener(this);
+    jbDefault.addActionListener(updateHelper);
 
     // --Global layout
     // add main panels
     jtpMain = new JTabbedPane(SwingConstants.TOP);
     // ScrollPane without border
-    class JajukJScrollPane extends JScrollPane {
+    final class JajukJScrollPane extends JScrollPane {
       private static final long serialVersionUID = 4564343623724771988L;
 
       private JajukJScrollPane(final Component view) {
@@ -1648,9 +1312,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
     }
     jtpMain.addTab(Messages.getString("ParameterView.33"), new JajukJScrollPane(jpOptions));
     jtpMain.addTab(Messages.getString("ParameterView.226"), new JajukJScrollPane(jpModes));
+    jtpMain.addTab(Messages.getString("ParameterView.287"), new JajukJScrollPane(jpSound));
     jtpMain.addTab(Messages.getString("ParameterView.225"), new JajukJScrollPane(jpUI));
-    jtpMain.addTab(Messages.getString("ParameterView.19"), new JajukJScrollPane(jpStart));
-    jtpMain.addTab(Messages.getString("ParameterView.98"), new JajukJScrollPane(jpTags));
+    jtpMain.addTab(Messages.getString("ParameterView.19"), new JajukJScrollPane(jpStartup));
+    jtpMain.addTab(Messages.getString("ParameterView.98"), new JajukJScrollPane(jpPatterns));
     jtpMain.addTab(Messages.getString("ParameterView.8"), new JajukJScrollPane(jpHistory));
     jtpMain.addTab(Messages.getString("ParameterView.235"), new JajukJScrollPane(jpLastFM));
     jtpMain.addTab(Messages.getString("ParameterView.159"), new JajukJScrollPane(jpCovers));
@@ -1665,37 +1330,17 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       Log.error(e);
       jtpMain.setSelectedIndex(0);
     }
-    jtpMain.addChangeListener(this);
+    jtpMain.addChangeListener(updateHelper);
     setLayout(new MigLayout("insets 10,gapx 10", "[grow]", "[grow][]"));
     add(jtpMain, "wrap,span,grow");
     add(jbOK, "split 2,right,sg group1");
     add(jbDefault, "sg group1");
     // update widgets state
-    updateSelection();
+    updateHelper.updateGUIFromConf();
     ObservationManager.register(this);
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
-   */
-  public void itemStateChanged(final ItemEvent e) {
-    if (e.getSource() == jrbFile) { // jrbFile has been selected or
-      // deselected
-      sbSearch.setEnabled(jrbFile.isSelected());
-    }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent )
-   */
-  public void stateChanged(final ChangeEvent e) {
-    // when changing tab, store it for future jajuk sessions
-    Conf.setProperty(Const.CONF_OPTIONS_TAB, Integer.toString(jtpMain.getSelectedIndex()));
-  }
+ 
 
   /*
    * (non-Javadoc)
@@ -1714,171 +1359,10 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       SwingUtilities.invokeLater(new Runnable() {
         @Override
         public void run() {
-          updateSelection();
+          updateHelper.updateGUIFromConf();
         }
       });
     }
-  }
-
-  /**
-   * Set widgets to specified value in options.
-   */
-  private void updateSelection() {
-    jtfHistory.setText(Conf.getString(Const.CONF_HISTORY));
-    if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_ITEM)) {
-      jrbFile.setSelected(true);
-      sbSearch.setEnabled(true);
-    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST)) {
-      jrbLast.setSelected(true);
-    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)) {
-      jrbLastKeepPos.setSelected(true);
-    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOTHING)) {
-      jrbNothing.setSelected(true);
-    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_SHUFFLE)) {
-      jrbShuffle.setSelected(true);
-    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_BESTOF)) {
-      jrbBestof.setSelected(true);
-    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOVELTIES)) {
-      jrbNovelties.setSelected(true);
-    }
-    // set chosen track in file selection
-    String conf = Conf.getString(Const.CONF_STARTUP_ITEM);
-    String item = conf.substring(conf.indexOf('/') + 1, conf.length());
-    if (!StringUtils.isBlank(item)) {
-      if (conf.matches(SearchResultType.FILE.name() + ".*")) {
-        File file = FileManager.getInstance().getFileByID(item);
-        if (file != null) {
-          sbSearch.setText(file.getTrack().getName());
-        } else {
-          // the file exists no more, remove its id as startup file
-          Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
-        }
-      } else if (conf.matches(SearchResultType.WEBRADIO.name() + ".*")) {
-        WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(item);
-        if (radio != null) {
-          sbSearch.setText(radio.getName());
-        } else {
-          // the file exists no more, remove its id as startup file
-          Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
-        }
-      }
-    } else {
-      sbSearch.setText("");
-    }
-    // Confirmations
-    jcbBeforeDelete.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_FILE));
-    jcbBeforeExit.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_EXIT));
-    jcbBeforeRemoveDevice.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE));
-    jcbBeforeDeleteCover.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_COVER));
-    jcbBeforeClearingHistory.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY));
-    jcbBeforeResetingRatings.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS));
-    jcbBeforeRefactorFiles.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_REFACTOR_FILES));
-    // options
-    jcbDisplayUnmounted.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
-    jcbDefaultActionClick.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
-    jcbDefaultActionDrop.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_DROP));
-    jcbHotkeys.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HOTKEYS));
-
-    String rightLanguageDesc = LocaleManager.getDescForLocale(Conf
-        .getString(Const.CONF_OPTIONS_LANGUAGE));
-    // Select the right language
-    int index = 0;
-    for (String desc : LocaleManager.getLocalesDescs()) {
-      if (desc.equals(rightLanguageDesc)) {
-        scbLanguage.setSelectedIndex(index);
-        break;
-      }
-      index++;
-    }
-    scbLanguage.addActionListener(this);
-    scbLogLevel.setSelectedIndex(Integer.parseInt(Conf.getString(Const.CONF_OPTIONS_LOG_LEVEL)));
-    introLength.setValue(Conf.getInt(Const.CONF_OPTIONS_INTRO_LENGTH));
-    introPosition.setValue(Conf.getInt(Const.CONF_OPTIONS_INTRO_BEGIN));
-    jtfBestofSize.setText(Conf.getString(Const.CONF_BESTOF_TRACKS_SIZE));
-    jtfNoveltiesAge.setText(Conf.getString(Const.CONF_OPTIONS_NOVELTIES_AGE));
-    jtfVisiblePlanned.setText(Conf.getString(Const.CONF_OPTIONS_VISIBLE_PLANNED));
-    crossFadeDuration.setValue(Conf.getInt(Const.CONF_FADE_DURATION));
-    jcbUseParentDir.setSelected(Conf.getBoolean(Const.CONF_TAGS_USE_PARENT_DIR));
-    jcbDropPlayedTracksFromQueue.setSelected(Conf
-        .getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE));
-    jcbUseVolnorm.setSelected(Conf.getBoolean(Const.CONF_USE_VOLNORM));
-    // advanced
-    final int iBackupSize = Conf.getInt(Const.CONF_BACKUP_SIZE);
-    if (iBackupSize <= 0) { // backup size =0 means no backup
-      jcbBackup.setSelected(false);
-      backupSize.setEnabled(false);
-    } else {
-      jcbBackup.setSelected(true);
-      backupSize.setEnabled(true);
-    }
-    backupSize.setValue(iBackupSize);
-    jcbCollectionEncoding.setSelectedItem(Conf.getString(Const.CONF_COLLECTION_CHARSET));
-    jtfRefactorPattern.setText(Conf.getString(Const.CONF_PATTERN_REFACTOR));
-    jtfAnimationPattern.setText(Conf.getString(Const.CONF_PATTERN_ANIMATION));
-    jtfFrameTitle.setText(Conf.getString(Const.CONF_PATTERN_FRAME_TITLE));
-    jtfBalloonNotifierPattern.setText(Conf.getString(Const.CONF_PATTERN_BALLOON_NOTIFIER));
-    jtfInformationPattern.setText(Conf.getString(Const.CONF_PATTERN_INFORMATION));
-
-    jtfMPlayerPath.setText(Conf.getString(Const.CONF_MPLAYER_PATH_FORCED));
-    jtfMPlayerArgs.setText(Conf.getString(Const.CONF_MPLAYER_ARGS));
-    jtfEnvVariables.setText(Conf.getString(Const.CONF_ENV_VARIABLES));
-    jtfExplorerPath.setText(Conf.getString(Const.CONF_EXPLORER_PATH));
-
-    // Network
-    jcbNoneInternetAccess.setSelected(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
-    final boolean bUseProxy = Conf.getBoolean(Const.CONF_NETWORK_USE_PROXY);
-    jcbProxyNone.setSelected(bUseProxy);
-    jtfProxyHostname.setText(Conf.getString(Const.CONF_NETWORK_PROXY_HOSTNAME));
-    jtfProxyHostname.setEnabled(bUseProxy);
-    jlProxyHostname.setEnabled(bUseProxy);
-    jtfProxyPort.setText(Conf.getString(Const.CONF_NETWORK_PROXY_PORT));
-    jtfProxyPort.setEnabled(bUseProxy);
-    jlProxyPort.setEnabled(bUseProxy);
-    jtfProxyLogin.setText(Conf.getString(Const.CONF_NETWORK_PROXY_LOGIN));
-    jtfProxyLogin.setEnabled(bUseProxy);
-    jlProxyLogin.setEnabled(bUseProxy);
-    jtfProxyPwd.setText(UtilString.rot13(Conf.getString(Const.CONF_NETWORK_PROXY_PWD)));
-    jtfProxyPwd.setEnabled(bUseProxy);
-    jlProxyPwd.setEnabled(bUseProxy);
-    connectionTO.setValue(Conf.getInt(Const.CONF_NETWORK_CONNECTION_TO));
-    if (!Conf.getBoolean(Const.CONF_NETWORK_USE_PROXY)) {
-      jcbProxyNone.setSelected(true);
-    } else if (Const.PROXY_TYPE_HTTP.equals(Conf.getString(Const.CONF_NETWORK_PROXY_TYPE))) {
-      jcbProxyHttp.setSelected(true);
-    } else if (Const.PROXY_TYPE_SOCKS.equals(Conf.getString(Const.CONF_NETWORK_PROXY_TYPE))) {
-      jcbProxySocks.setSelected(true);
-    }
-    // Covers
-    jcbAutoCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
-    jlCoverSize.setEnabled(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
-    jcb3dCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER));
-    jcbCoverSize.setEnabled(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
-    jcbCoverSize.setSelectedIndex(Conf.getInt(Const.CONF_COVERS_SIZE));
-    jcbShuffleCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_SHUFFLE));
-    jcbSaveExplorerFriendly.setSelected(Conf.getBoolean(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY));
-    jtfDefaultCoverSearchPattern.setText(Conf.getString(Const.FILE_DEFAULT_COVER));
-    jcbAudioScrobbler.setSelected(Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE));
-    jcbEnableLastFMInformation.setSelected(Conf.getBoolean(Const.CONF_LASTFM_INFO));
-    jtfASUser.setText(Conf.getString(Const.CONF_LASTFM_USER));
-    jpfASPassword.setText(UtilString.rot13(Conf.getString(Const.CONF_LASTFM_PASSWORD)));
-    if (!Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE)) {
-      jlASUser.setEnabled(false);
-      jtfASUser.setEnabled(false);
-      jlASPassword.setEnabled(false);
-      jpfASPassword.setEnabled(false);
-    }
-    // UI
-    String notificatorType = Messages.getString(NOTIFICATOR_PREFIX
-        + Conf.getString(Const.CONF_UI_NOTIFICATOR_TYPE));
-    jcbNotificationType.setSelectedItem(notificatorType);
-
-    jcbShowSystray.setSelected(Conf.getBoolean(Const.CONF_SHOW_SYSTRAY));
-    jcbMinimizeToTray.setSelected(Conf.getBoolean(Const.CONF_MINIMIZE_TO_TRAY));
-
-    scbLAF.removeActionListener(this);
-    scbLAF.setSelectedItem(Conf.getString(Const.CONF_OPTIONS_LNF));
-    scbLAF.addActionListener(this);
-    jsPerspectiveSize.setValue(Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE));
   }
 
   /*
@@ -1905,7 +1389,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
   public void cleanup() {
     // make sure that the search box stops to free up the reference to the Timer
     sbSearch.close();
-
     super.cleanup();
   }
 
