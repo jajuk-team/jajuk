@@ -578,10 +578,9 @@ public class CoverView extends ViewAdapter implements ActionListener {
   }
 
   /**
-   * Converts a cover path according to options and jajuk conventions
-   * 
+   * Converts a cover path according to options and jajuk conventions.
+   *
    * @param sFilePath current cover path
-   * 
    * @return the converted cover file path
    */
   private String convertCoverPath(String sFilePath) {
@@ -830,12 +829,13 @@ public class CoverView extends ViewAdapter implements ActionListener {
     final Cover cover = alCovers.get(index); // take image at the given index
     final URL url = cover.getURL();
     // enable delete button only for local covers
-    jbDelete.setEnabled(cover.getType() == CoverType.LOCAL_COVER || cover.getType() == CoverType.SELECTED_COVER
+    jbDelete.setEnabled(cover.getType() == CoverType.LOCAL_COVER
+        || cover.getType() == CoverType.SELECTED_COVER
         || cover.getType() == CoverType.STANDARD_COVER);
-    
+
     //Disable default command for "none" cover
     jbDefault.setEnabled(cover.getType() != CoverType.NO_COVER);
-    
+
     if (url != null) {
       jbSave.setEnabled(false);
       String sType = " (L)"; // local cover
@@ -1336,7 +1336,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
     // save cpu
     boolean dirChanged = last == null ? true : !last.getDirectory().equals(
         QueueModel.getPlayingFile().getDirectory());
-    if (bForceCoverReload){
+    if (bForceCoverReload) {
       dirChanged = true;
     }
 

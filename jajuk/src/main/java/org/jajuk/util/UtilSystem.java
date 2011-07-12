@@ -137,8 +137,8 @@ public final class UtilSystem {
   static {
     final String sOS = (String) System.getProperties().get("os.name");
     // os.name can be null with JWS under MacOS
-    UNDER_WINDOWS = ((sOS != null) && (sOS.trim().toLowerCase(Locale.getDefault()).lastIndexOf(
-        "windows") != -1));
+    UNDER_WINDOWS = ((sOS != null) && (sOS.trim().toLowerCase(Locale.getDefault())
+        .lastIndexOf("windows") != -1));
   }
 
   static {
@@ -154,8 +154,8 @@ public final class UtilSystem {
   static {
     final String sOS = (String) System.getProperties().get("os.name");
     // os.name can be null with JWS under MacOS
-    UNDER_LINUX = ((sOS != null) && (sOS.trim().toLowerCase(Locale.getDefault()).lastIndexOf(
-        "linux") != -1));
+    UNDER_LINUX = ((sOS != null) && (sOS.trim().toLowerCase(Locale.getDefault())
+        .lastIndexOf("linux") != -1));
   }
 
   static {
@@ -334,8 +334,8 @@ public final class UtilSystem {
   public static void copy(final File file, final String sNewName) throws JajukException,
       IOException {
     Log.debug("Renaming: {{" + file.getAbsolutePath() + "}}  to : " + sNewName);
-    final File fileNew = new File(new StringBuilder(file.getParentFile().getAbsolutePath()).append(
-        '/').append(sNewName).toString());
+    final File fileNew = new File(new StringBuilder(file.getParentFile().getAbsolutePath())
+        .append('/').append(sNewName).toString());
     if (!file.exists() || !file.canRead()) {
       throw new JajukException(9, file.getAbsolutePath(), null);
     }
@@ -377,12 +377,11 @@ public final class UtilSystem {
 
   /**
    * Copy recursively files and directories.
-   * 
-   * @param dst DOCUMENT_ME
+   *
    * @param src DOCUMENT_ME
-   * 
-   * @throws IOException Signals that an I/O exception has occurred.
+   * @param dst DOCUMENT_ME
    * @throws JajukException the jajuk exception
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void copyRecursively(final File src, final File dst) throws JajukException,
       IOException {
@@ -1232,8 +1231,8 @@ public final class UtilSystem {
       File fileConverter = SessionService.getConfFileByPath(Const.FILE_FILENAME_CONVERTER);
       if (!fileConverter.exists()
       // Test that the converter version has not been updated
-          // IMPORTANT ! Don't forget to update the CONVERTER_FILE_SIZE constant if you change the
-          // script !
+      // IMPORTANT ! Don't forget to update the CONVERTER_FILE_SIZE constant if you change the
+      // script !
           || (fileConverter.exists() && fileConverter.length() != CONVERTER_FILE_SIZE)) {
         FileWriter fw = new FileWriter(fileConverter);
         fw.write("@echo off\n");

@@ -71,8 +71,8 @@ public class BestOfAction extends JajukAction {
           if (alToPlay.size() > 0 && alToPlay.size() > Const.NB_TRACKS_ON_ACTION) {
             alToPlay = alToPlay.subList(0, Const.NB_TRACKS_ON_ACTION);
           }
-          QueueModel.push(UtilFeatures.createStackItems(alToPlay, Conf
-              .getBoolean(Const.CONF_STATE_REPEAT_ALL), false), false);
+          QueueModel.push(UtilFeatures.createStackItems(alToPlay,
+              Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), false), false);
         } catch (Exception e) {
           Log.error(e);
         }

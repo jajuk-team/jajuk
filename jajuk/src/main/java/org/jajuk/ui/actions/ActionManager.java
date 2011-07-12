@@ -171,7 +171,6 @@ public final class ActionManager {
     installAction(JajukActions.SAVE_AS, new SaveAsAction(), false);
     installAction(JajukActions.SYNC_TREE_TABLE, new SyncTreeTableAction(), false);
     installAction(JajukActions.SHOW_CURRENTLY_PLAYING, new ShowCurrentlyPlayingAction(), false);
-    
 
     // Preferences
     installAction(JajukActions.BAN, new BanCurrentAction(), false);
@@ -250,9 +249,9 @@ public final class ActionManager {
 
   /**
    * Enable or disable the action.
-   * 
-   * @param enable DOCUMENT_ME
+   *
    * @param action DOCUMENT_ME
+   * @param enable DOCUMENT_ME
    */
   public void enable(JajukAction action, boolean enable) {
     action.enable(enable);

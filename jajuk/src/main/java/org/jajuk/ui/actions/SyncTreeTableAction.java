@@ -62,8 +62,8 @@ public class SyncTreeTableAction extends JajukAction {
     JajukToggleButton source = (JajukToggleButton) evt.getSource();
     String currentViewID = (String) (source.getClientProperty(Const.DETAIL_VIEW));
     // Store the new sync state into the view-level property
-    Conf.setProperty(Const.CONF_SYNC_TABLE_TREE + "." + currentViewID, Boolean.toString(source
-        .isSelected()));
+    Conf.setProperty(Const.CONF_SYNC_TABLE_TREE + "." + currentViewID,
+        Boolean.toString(source.isSelected()));
     // If the sync button is deselected, we force the tables to refresh to un-filtered state
     // We use the RATE_CHANGED event because this event force table views
     // refreshing but not the tree view's one.

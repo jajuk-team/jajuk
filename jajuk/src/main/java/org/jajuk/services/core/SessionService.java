@@ -151,8 +151,8 @@ public class SessionService {
               files = sessions.listFiles();
               for (int i = 0; i < files.length; i++) {
                 if (!files[i].delete()) { //NOSONAR
-                  Messages.showDetailedErrorMessage(131, "Cannot delete : "
-                      + files[i].getAbsolutePath(), "");
+                  Messages.showDetailedErrorMessage(131,
+                      "Cannot delete : " + files[i].getAbsolutePath(), "");
                   Log.error(131);
                   break;
                 }
@@ -459,8 +459,6 @@ public class SessionService {
    * Write down the bootstrap file.
    *
    * @param prop : the properties to write to the file
-   *
-   * @throws an IOException if the bootstrap file cannot be written down
    */
   public static void commitBootstrapFile(Properties prop) {
     File bootstrap = null;

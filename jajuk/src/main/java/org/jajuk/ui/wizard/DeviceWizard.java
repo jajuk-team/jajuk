@@ -370,8 +370,8 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
    * @throws HeadlessException the headless exception
    */
   private void handleUrl() throws HeadlessException {
-    final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
-        .getInstance()));
+    final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
+        DirectoryFilter.getInstance()));
     jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));
     jfc.setMultiSelectionEnabled(false);

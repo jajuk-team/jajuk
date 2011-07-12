@@ -129,7 +129,7 @@ public class AlarmManager implements Observer {
         // If chosen date is already past, consider that user meant
         // tomorrow
         Date alarmDate = cal.getTime();
-        if (alarmDate.before(new Date())) {  //NOSONAR
+        if (alarmDate.before(new Date())) { //NOSONAR
           alarmDate = DateUtils.addDays(alarmDate, 1);
         }
         // Compute playlist if required

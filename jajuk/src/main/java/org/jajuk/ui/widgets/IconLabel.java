@@ -173,9 +173,11 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
   public static IconLabel getIconLabel(JajukIcons icon) {
     if (icon == JajukIcons.TRACK_FIFO_PLANNED) {
       if (!cachedIcons.containsKey(icon)) {
-        cachedIcons.put(icon, new IconLabel(IconLoader.getIcon(JajukIcons.TRACK_FIFO_PLANNED), "",
-            null, null, FontManager.getInstance().getFont(JajukFont.PLANNED), Messages
-                .getString("AbstractPlaylistEditorView.20")));
+        cachedIcons.put(
+            icon,
+            new IconLabel(IconLoader.getIcon(JajukIcons.TRACK_FIFO_PLANNED), "", null, null,
+                FontManager.getInstance().getFont(JajukFont.PLANNED), Messages
+                    .getString("AbstractPlaylistEditorView.20")));
       }
     } else if (icon == JajukIcons.TRACK_FIFO_REPEAT) {
       if (!cachedIcons.containsKey(icon)) {

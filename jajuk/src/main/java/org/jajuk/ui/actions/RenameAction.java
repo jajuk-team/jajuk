@@ -113,13 +113,12 @@ public class RenameAction extends JajukAction {
         try {
           UtilGUI.waiting();
           java.io.File newFile = new java.io.File(((Directory) currentItem).getParentDirectory()
-              .getAbsolutePath()
-              + "/" + newName);
+              .getAbsolutePath() + "/" + newName);
           java.io.File dir = ((Directory) currentItem).getFio();
           // For directories, we don't copy / delete, we just rename for performance reasons
           // and because the Utilsystem.move() code only works for files.
           // We check that the directory has actually been renamed.
-          if (!dir.renameTo(newFile)) {   //NONAR
+          if (!dir.renameTo(newFile)) { //NONAR
             throw new IOException("Cannot rename directory : " + dir.getAbsolutePath());
           }
           DirectoryManager.getInstance().removeDirectory(((Directory) currentItem).getID());

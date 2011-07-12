@@ -102,10 +102,10 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
 
     /** DOCUMENT_ME. */
     ARTIST,
-    
+
     /** DOCUMENT_ME. */
     ALBUM,
-    
+
     /** DOCUMENT_ME. */
     TRACK
   }
@@ -146,8 +146,8 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
     JajukAction aCopy = ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD);
     jbCopy = new JButton(aCopy);
     if (UtilSystem.isBrowserSupported()) {
-      jbLaunchInExternalBrowser = new JButton(ActionManager
-          .getAction(JajukActions.LAUNCH_IN_BROWSER));
+      jbLaunchInExternalBrowser = new JButton(
+          ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER));
       // Remove text inside the buttons
       jbLaunchInExternalBrowser.setText(null);
     }

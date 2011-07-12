@@ -215,9 +215,9 @@ public final class UtilFeatures {
 
   /**
    * Gets the shuffle item.
-   * 
+   *
+   * @param <T> DOCUMENT_ME
    * @param col DOCUMENT_ME
-   * 
    * @return a single shuffle element from a list, null if none element in
    * provided collection
    */

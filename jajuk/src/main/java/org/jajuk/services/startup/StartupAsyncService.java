@@ -70,8 +70,8 @@ public final class StartupAsyncService {
 
           // backup the collection if no parsing error occurred
           if (!bCollectionLoadRecover) {
-            UtilSystem.backupFile(SessionService.getConfFileByPath(Const.FILE_COLLECTION), Conf
-                .getInt(Const.CONF_BACKUP_SIZE));
+            UtilSystem.backupFile(SessionService.getConfFileByPath(Const.FILE_COLLECTION),
+                Conf.getInt(Const.CONF_BACKUP_SIZE));
           }
 
           // Register FIFO manager
@@ -108,7 +108,7 @@ public final class StartupAsyncService {
           // Switch to sorted mode, must be done before starting auto-refresh
           // thread !
           ItemManager.switchAllManagersToOrderState();
-          
+
           // Refresh any new device from first Time Wizard
           Device newDevice = FirstTimeWizard.getNewDevice();
           try {

@@ -45,16 +45,16 @@ import org.jajuk.base.Album;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackComparator;
-import org.jajuk.base.TrackManager;
 import org.jajuk.base.TrackComparator.TrackComparatorType;
+import org.jajuk.base.TrackManager;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.CatalogViewTransferHandler;
 import org.jajuk.ui.helpers.FontManager;
+import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.ui.helpers.StarsHelper;
-import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
@@ -236,8 +236,9 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       sOut += "<br>"
           + Messages.getHumanPropertyName(Const.XML_TRACK_RATE)
           + ": <img src='"
-          + SessionService.getConfFileByPath(
-              "cache/internal/star" + StarsHelper.getStarsNumber(album) + "_16x16.png").toURI()
+          + SessionService
+              .getConfFileByPath(
+                  "cache/internal/star" + StarsHelper.getStarsNumber(album) + "_16x16.png").toURI()
               .toURL().toExternalForm() + "'> (" + album.getRate() + ")";
     } catch (MalformedURLException e) {
       Log.error(e);

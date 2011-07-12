@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk;
 
@@ -60,7 +60,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
- * Small helper class with functionality that is used in multiple unit tests
+ * Small helper class with functionality that is used in multiple unit tests.
  */
 public class JUnitHelpers {
 
@@ -112,20 +112,22 @@ public class JUnitHelpers {
    * see
    * http://sourceforge.net/tracker/index.php?func=detail&aid=1173251&group_id
    * =108932&atid=651900
-   *
+   * 
    * add this to the test case for any class that has only static methods where
    * EMMA reports the default constructor as not covered
-   *
+   * 
    * Template: <code>
-
-   // helper method to emma-coverage of the unused constructor
-   public void testPrivateConstructor() throws Exception {
-     JUnitHelpers.executePrivateConstructor(<yourclass>.class);
-   }
-
+   * 
+   * // helper method to emma-coverage of the unused constructor
+   * public void testPrivateConstructor() throws Exception {
+   * JUnitHelpers.executePrivateConstructor(<yourclass>.class);
+   * }
    * </code>
    *
-   * @param targetClass
+   * @param <T> DOCUMENT_ME
+   * @param targetClass DOCUMENT_ME
+   * @return the t
+   * @throws Exception the exception
    */
   public static <T> T executePrivateConstructor(final Class<T> targetClass) throws Exception {
     final Constructor<T> c = targetClass.getDeclaredConstructor(new Class[] {});
@@ -133,6 +135,14 @@ public class JUnitHelpers {
     return c.newInstance((Object[]) null);
   }
 
+  /**
+   * Equals test.
+   * DOCUMENT_ME
+   *
+   * @param obj DOCUMENT_ME
+   * @param equal DOCUMENT_ME
+   * @param notequal DOCUMENT_ME
+   */
   public static void EqualsTest(final Object obj, final Object equal, final Object notequal) {
     // none of the three should be null
     Assert.assertNotNull("Object in EqualsTest should not be null!", obj);
@@ -204,6 +214,15 @@ public class JUnitHelpers {
         notequal.hashCode() == notequal.hashCode());
   }
 
+  /**
+   * Compare to test.
+   * DOCUMENT_ME
+   *
+   * @param <T> DOCUMENT_ME
+   * @param obj DOCUMENT_ME
+   * @param equal DOCUMENT_ME
+   * @param notequal DOCUMENT_ME
+   */
   @SuppressWarnings("unchecked")
   public static <T> void CompareToTest(final Comparable<T> obj, final Comparable<T> equal,
       final Comparable<T> notequal) {
@@ -295,12 +314,12 @@ public class JUnitHelpers {
 
   /**
    * Run some generic tests on the derived clone-method.
-   *
+   * 
    * We need to do this via reflection as the clone()-method in Object is
    * protected and the Cloneable interface does not include a public "clone()".
    *
-   * @param obj
-   *          The object to test clone for.
+   * @param obj The object to test clone for.
+   * @throws Exception the exception
    */
   public static void CloneTest(final Cloneable obj) throws Exception {
     final Method m = obj.getClass().getMethod("clone", new Class[] {});
@@ -327,12 +346,10 @@ public class JUnitHelpers {
   }
 
   /**
-   * Checks certain assumption that are made for the hashCode() method
+   * Checks certain assumption that are made for the hashCode() method.
    *
-   * @param obj
-   *          An Object that override the hasCode() method.
-   *
-   * @throws Exception
+   * @param obj An Object that override the hasCode() method.
+   * @param equ DOCUMENT_ME
    */
   public static void HashCodeTest(final Object obj, final Object equ) {
     Assert
@@ -364,6 +381,17 @@ public class JUnitHelpers {
         obj.hashCode(), equ.hashCode());
   }
 
+  /**
+   * Enum test.
+   * DOCUMENT_ME
+   *
+   * @param enumtype DOCUMENT_ME
+   * @param enumclass DOCUMENT_ME
+   * @param element DOCUMENT_ME
+   * @throws NoSuchMethodException the no such method exception
+   * @throws InvocationTargetException the invocation target exception
+   * @throws IllegalAccessException the illegal access exception
+   */
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public static void EnumTest(Enum enumtype, Class enumclass, String element)
       throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
@@ -391,6 +419,13 @@ public class JUnitHelpers {
     }
   }
 
+  /**
+   * Clear swing utilities queue.
+   * DOCUMENT_ME
+   *
+   * @throws InterruptedException the interrupted exception
+   * @throws InvocationTargetException the invocation target exception
+   */
   public static void clearSwingUtilitiesQueue() throws InterruptedException,
       InvocationTargetException {
     // we try to wait for all items that were sent via
@@ -409,6 +444,13 @@ public class JUnitHelpers {
     // Thread.currentThread().
   }
 
+  /**
+   * Wait for thread to finish.
+   * DOCUMENT_ME
+   *
+   * @param name DOCUMENT_ME
+   * @throws InterruptedException the interrupted exception
+   */
   public static void waitForThreadToFinish(final String name) throws InterruptedException {
     int count = Thread.currentThread().getThreadGroup().activeCount();
 
@@ -428,6 +470,13 @@ public class JUnitHelpers {
     }
   }
 
+  /**
+   * Wait for all work to finish and cleanup.
+   * DOCUMENT_ME
+   *
+   * @throws InterruptedException the interrupted exception
+   * @throws InvocationTargetException the invocation target exception
+   */
   public static void waitForAllWorkToFinishAndCleanup() throws InterruptedException,
       InvocationTargetException {
     ObservationManager.clear();
@@ -523,6 +572,13 @@ public class JUnitHelpers {
     return getFile("test.tst", true);
   }
 
+  /**
+   * Gets the file.
+   *
+   * @param name DOCUMENT_ME
+   * @param mount DOCUMENT_ME
+   * @return the file
+   */
   public static org.jajuk.base.File getFile(String name, boolean mount) {
     Genre genre = getGenre();
     Album album = getAlbum("name", 0);
@@ -550,42 +606,100 @@ public class JUnitHelpers {
     return FileManager.getInstance().registerFile(name, dir, track, 120, 70);
   }
 
+  /**
+   * Gets the album.
+   *
+   * @param name DOCUMENT_ME
+   * @param discID DOCUMENT_ME
+   * @return the album
+   */
   public static Album getAlbum(String name, int discID) {
     return AlbumManager.getInstance().registerAlbum(name, discID);
   }
 
+  /**
+   * Gets the album.
+   *
+   * @return the album
+   */
   public static Album getAlbum() {
     return getAlbum("name", 0);
   }
 
+  /**
+   * Gets the artist.
+   *
+   * @param name DOCUMENT_ME
+   * @return the artist
+   */
   public static Artist getArtist(String name) {
     return ArtistManager.getInstance().registerArtist(name);
   }
 
+  /**
+   * Gets the artist.
+   *
+   * @return the artist
+   */
   public static Artist getArtist() {
     return getArtist("name");
   }
 
+  /**
+   * Gets the genre.
+   *
+   * @param name DOCUMENT_ME
+   * @return the genre
+   */
   public static Genre getGenre(String name) {
     return GenreManager.getInstance().registerGenre(name);
   }
 
+  /**
+   * Gets the genre.
+   *
+   * @return the genre
+   */
   public static Genre getGenre() {
     return getGenre("name");
   }
 
+  /**
+   * Gets the year.
+   *
+   * @param year DOCUMENT_ME
+   * @return the year
+   */
   public static Year getYear(int year) {
     return YearManager.getInstance().registerYear("" + year);
   }
 
+  /**
+   * Gets the year.
+   *
+   * @return the year
+   */
   public static Year getYear() {
     return getYear(2000);
   }
 
+  /**
+   * Gets the device.
+   *
+   * @param name DOCUMENT_ME
+   * @param type DOCUMENT_ME
+   * @param url DOCUMENT_ME
+   * @return the device
+   */
   public static Device getDevice(String name, Device.Type type, String url) {
     return DeviceManager.getInstance().registerDevice(name, type, url);
   }
 
+  /**
+   * Gets the device.
+   *
+   * @return the device
+   */
   public static Device getDevice() {
     Device device = getDevice("name", Device.Type.DIRECTORY, ConstTest.PATH_DEVICE);
     // Create the jajuk test device if required
@@ -599,22 +713,43 @@ public class JUnitHelpers {
     return device;
   }
 
+  /**
+   * Gets the directory.
+   *
+   * @param name DOCUMENT_ME
+   * @param parent DOCUMENT_ME
+   * @param device DOCUMENT_ME
+   * @return the directory
+   */
   public static Directory getDirectory(String name, Directory parent, Device device) {
     return DirectoryManager.getInstance().registerDirectory(name, parent, device);
   }
 
-  /** The "any" directory is the top dir of the device pointing toward $java.io.tmpdir*/
+  /**
+   * The "any" directory is the top dir of the device pointing toward $java.io.tmpdir
+   *
+   * @return the directory
+   */
   public static Directory getDirectory() {
     Device device = getDevice();
     Directory topdir = getTopDirectory();
     return DirectoryManager.getInstance().registerDirectory("dir", topdir, device);
   }
 
-  /** A topdir directory */
+  /**
+   * A topdir directory.
+   *
+   * @return the top directory
+   */
   public static Directory getTopDirectory() {
     return DirectoryManager.getInstance().registerDirectory(getDevice());
   }
 
+  /**
+   * Gets the type.
+   *
+   * @return the type
+   */
   @SuppressWarnings("unchecked")
   public static Type getType() {
     IPlayerImpl imp = new MockPlayer();
@@ -623,67 +758,107 @@ public class JUnitHelpers {
   }
 
   // needs to be public to be callable from the outside...
+  /**
+   * DOCUMENT_ME.
+   */
   public static class MockPlayer implements IPlayerImpl {
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#stop()
+     */
     @Override
     public void stop() throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#setVolume(float)
+     */
     @Override
     public void setVolume(float fVolume) throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#seek(float)
+     */
     @Override
     public void seek(float fPosition) {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#resume()
+     */
     @Override
     public void resume() throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#play(org.jajuk.services.webradio.WebRadio, float)
+     */
     @Override
     public void play(WebRadio radio, float fVolume) throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#play(org.jajuk.base.File, float, long, float)
+     */
     @Override
     public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume)
         throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#pause()
+     */
     @Override
     public void pause() throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#getState()
+     */
     @Override
     public int getState() {
 
       return 0;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#getElapsedTime()
+     */
     @Override
     public long getElapsedTime() {
 
       return 0;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#getCurrentVolume()
+     */
     @Override
     public float getCurrentVolume() {
 
       return 0;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#getCurrentPosition()
+     */
     @Override
     public float getCurrentPosition() {
 
       return 0;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#getCurrentLength()
+     */
     @Override
     public long getCurrentLength() {
 
@@ -691,6 +866,12 @@ public class JUnitHelpers {
     }
   }
 
+  /**
+   * Gets the track.
+   *
+   * @param i DOCUMENT_ME
+   * @return the track
+   */
   public static Track getTrack(int i) {
     Genre genre = getGenre();
     Album album = getAlbum("myalbum", 0);
@@ -706,14 +887,15 @@ public class JUnitHelpers {
   }
 
   /**
-   * Helper to set a private field
+   * Helper to set a private field.
+   *
    * @param obj the object to work on
    * @param fieldName the field name
    * @param value the field value to set
-   * @throws SecurityException
-   * @throws NoSuchFieldException
-   * @throws IllegalArgumentException
-   * @throws IllegalAccessException
+   * @throws SecurityException the security exception
+   * @throws NoSuchFieldException the no such field exception
+   * @throws IllegalArgumentException the illegal argument exception
+   * @throws IllegalAccessException the illegal access exception
    */
   public static void setAttribute(Object obj, String fieldName, Object value)
       throws SecurityException, NoSuchFieldException, IllegalArgumentException,

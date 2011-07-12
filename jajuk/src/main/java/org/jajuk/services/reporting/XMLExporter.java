@@ -340,8 +340,8 @@ public class XMLExporter extends Exporter {
         exportDirectoryHelper(1, directory);
       }
       // Tag children files of device.
-      for (org.jajuk.base.File file : DirectoryManager.getInstance().getDirectoryForIO(
-          device.getFIO(), device).getFiles()) {
+      for (org.jajuk.base.File file : DirectoryManager.getInstance()
+          .getDirectoryForIO(device.getFIO(), device).getFiles()) {
         tagFile(file, 1);
       }
     }
@@ -534,34 +534,34 @@ public class XMLExporter extends Exporter {
       writer.write(Tag.openTag("i18n"));
       int i = 1;
       while (Messages.contains("ReportAction." + i)) {
-        writer.write('\t' + Tag.tagData("ReportAction." + i, Messages
-            .getString("ReportAction." + i)));
+        writer.write('\t' + Tag.tagData("ReportAction." + i,
+            Messages.getString("ReportAction." + i)));
         i++;
       }
-      writer.write('\t' + Tag.tagData("ReportAction.name", Messages
-          .getHumanPropertyName(Const.XML_NAME)));
-      writer.write('\t' + Tag.tagData("ReportAction.artist", Messages
-          .getHumanPropertyName(Const.XML_ARTIST)));
-      writer.write('\t' + Tag.tagData("ReportAction.genre", Messages
-          .getHumanPropertyName(Const.XML_GENRE)));
-      writer.write('\t' + Tag.tagData("ReportAction.order", Messages
-          .getHumanPropertyName(Const.XML_TRACK_ORDER)));
-      writer.write('\t' + Tag.tagData("ReportAction.track", Messages
-          .getHumanPropertyName(Const.XML_TRACK)));
-      writer.write('\t' + Tag.tagData("ReportAction.album", Messages
-          .getHumanPropertyName(Const.XML_ALBUM)));
-      writer.write('\t' + Tag.tagData("ReportAction.length", Messages
-          .getHumanPropertyName(Const.XML_TRACK_LENGTH)));
-      writer.write('\t' + Tag.tagData("ReportAction.year", Messages
-          .getHumanPropertyName(Const.XML_YEAR)));
-      writer.write('\t' + Tag.tagData("ReportAction.rate", Messages
-          .getHumanPropertyName(Const.XML_TRACK_RATE)));
-      writer.write('\t' + Tag.tagData("ReportAction.url", Messages
-          .getHumanPropertyName(Const.XML_URL)));
-      writer.write('\t' + Tag.tagData("ReportAction.type", Messages
-          .getHumanPropertyName(Const.XML_TYPE)));
-      writer.write('\t' + Tag.tagData("ReportAction.comment", Messages
-          .getHumanPropertyName(Const.XML_TRACK_COMMENT)));
+      writer.write('\t' + Tag.tagData("ReportAction.name",
+          Messages.getHumanPropertyName(Const.XML_NAME)));
+      writer.write('\t' + Tag.tagData("ReportAction.artist",
+          Messages.getHumanPropertyName(Const.XML_ARTIST)));
+      writer.write('\t' + Tag.tagData("ReportAction.genre",
+          Messages.getHumanPropertyName(Const.XML_GENRE)));
+      writer.write('\t' + Tag.tagData("ReportAction.order",
+          Messages.getHumanPropertyName(Const.XML_TRACK_ORDER)));
+      writer.write('\t' + Tag.tagData("ReportAction.track",
+          Messages.getHumanPropertyName(Const.XML_TRACK)));
+      writer.write('\t' + Tag.tagData("ReportAction.album",
+          Messages.getHumanPropertyName(Const.XML_ALBUM)));
+      writer.write('\t' + Tag.tagData("ReportAction.length",
+          Messages.getHumanPropertyName(Const.XML_TRACK_LENGTH)));
+      writer.write('\t' + Tag.tagData("ReportAction.year",
+          Messages.getHumanPropertyName(Const.XML_YEAR)));
+      writer.write('\t' + Tag.tagData("ReportAction.rate",
+          Messages.getHumanPropertyName(Const.XML_TRACK_RATE)));
+      writer.write('\t' + Tag.tagData("ReportAction.url",
+          Messages.getHumanPropertyName(Const.XML_URL)));
+      writer.write('\t' + Tag.tagData("ReportAction.type",
+          Messages.getHumanPropertyName(Const.XML_TYPE)));
+      writer.write('\t' + Tag.tagData("ReportAction.comment",
+          Messages.getHumanPropertyName(Const.XML_TRACK_COMMENT)));
       writer.write(Tag.closeTag("i18n"));
       writer.write(Tag.closeTag(Const.XML_COLLECTION));
     } finally {

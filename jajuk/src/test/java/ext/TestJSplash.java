@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package ext;
 
@@ -26,16 +26,16 @@ import java.net.URL;
 import org.jajuk.JajukTestCase;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestJSplash extends JajukTestCase {
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link ext.JSplash#JSplash(java.net.URL, boolean, boolean, boolean, java.lang.String, java.lang.String, java.awt.Font)}
    * .
-   * 
-   * @throws Exception
    */
   public void testJSplash() throws Exception {
     try {
@@ -45,6 +45,12 @@ public class TestJSplash extends JajukTestCase {
     }
   }
 
+  /**
+   * Test j splash2.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testJSplash2() throws Exception {
     try {
       new JSplash(new URL("http://www.example.com"), true, false, false, "copyright", "version",
@@ -54,6 +60,12 @@ public class TestJSplash extends JajukTestCase {
     }
   }
 
+  /**
+   * Test j splash null url.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testJSplashNullURL() throws Exception {
     try {
       new JSplash(null, true, false, false, "copyright", "version", null);
@@ -67,8 +79,8 @@ public class TestJSplash extends JajukTestCase {
 
   /**
    * Test method for {@link ext.JSplash#splashOn()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testSplashOn() throws Exception {
     try {
@@ -84,8 +96,8 @@ public class TestJSplash extends JajukTestCase {
 
   /**
    * Test method for {@link ext.JSplash#splashOff()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testSplashOff() throws Exception {
     try {
@@ -99,8 +111,8 @@ public class TestJSplash extends JajukTestCase {
 
   /**
    * Test method for {@link ext.JSplash#setProgress(int)}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testSetProgressInt() throws Exception {
     try {
@@ -115,8 +127,8 @@ public class TestJSplash extends JajukTestCase {
 
   /**
    * Test method for {@link ext.JSplash#setProgress(int, java.lang.String)}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testSetProgressIntString() throws Exception {
     try {
@@ -129,6 +141,12 @@ public class TestJSplash extends JajukTestCase {
     }
   }
 
+  /**
+   * Test set progress int string2.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testSetProgressIntString2() throws Exception {
     try {
       JSplash splash = new JSplash(new URL("http://www.example.com"), true, true, false,

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.actions;
 
@@ -26,12 +26,13 @@ import org.jajuk.JajukTestCase;
 import org.jajuk.util.log.Log;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestDebugLogAction extends JajukTestCase {
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.actions.DebugLogAction#perform(java.awt.event.ActionEvent)}
    * .
    */
@@ -49,7 +50,8 @@ public class TestDebugLogAction extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.actions.DebugLogAction#DebugLogAction()}.
    */
   public void testDebugLogAction() {

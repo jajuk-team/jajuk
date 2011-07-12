@@ -69,13 +69,13 @@ public final class InformationJPanel extends JXPanel implements Observer {
    * DOCUMENT_ME.
    */
   public static enum MessageType {
-    
+
     /** DOCUMENT_ME. */
-    INFORMATIVE, 
- /** DOCUMENT_ME. */
- ERROR, 
- /** DOCUMENT_ME. */
- WARNING
+    INFORMATIVE,
+    /** DOCUMENT_ME. */
+    ERROR,
+    /** DOCUMENT_ME. */
+    WARNING
   }
 
   /** Self instance. */
@@ -151,14 +151,14 @@ public final class InformationJPanel extends JXPanel implements Observer {
 
     jlTotal = new JLabel();
     // Make sure to get always 5 px at the left and right of the label
-    jlTotal.setBorder(new EmptyBorder(0,5,0,5));
+    jlTotal.setBorder(new EmptyBorder(0, 5, 0, 5));
     jlTotal.setToolTipText(Messages.getString("InformationJPanel.5"));
- 
+
     // selection bar
     jlSelection = new JLabel(Messages.getString("InformationJPanel.9"));
     // Make sure to get always 5 px at the left and right of the label
-    jlSelection.setBorder(new EmptyBorder(0,5,0,3));
-  
+    jlSelection.setBorder(new EmptyBorder(0, 5, 0, 3));
+
     // add widgets
     setLayout(new MigLayout("insets 2", "[40%,grow][40%,grow][10%,grow][10%,grow]"));
     add(jtbMessage, "grow,left");
@@ -168,8 +168,8 @@ public final class InformationJPanel extends JXPanel implements Observer {
 
     // check if some errors occurred before the view has been displayed
     if (ObservationManager.containsEvent(JajukEvents.PLAY_ERROR)) {
-      update(new JajukEvent(JajukEvents.PLAY_ERROR, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.PLAY_ERROR)));
+      update(new JajukEvent(JajukEvents.PLAY_ERROR,
+          ObservationManager.getDetailsLastOccurence(JajukEvents.PLAY_ERROR)));
     }
 
     // check if some track has been launched before the view has been
@@ -396,9 +396,9 @@ public final class InformationJPanel extends JXPanel implements Observer {
               String filename = properties.getProperty(Const.DETAIL_CONTENT);
               String target = properties.getProperty(Const.DETAIL_NEW);
               if (filename != null) {
-                setMessage(Messages.getString("Device.46") + filename
-                    + Messages.getString("Device.47") + target + "]",
-                    InformationJPanel.MessageType.INFORMATIVE);
+                setMessage(
+                    Messages.getString("Device.46") + filename + Messages.getString("Device.47")
+                        + target + "]", InformationJPanel.MessageType.INFORMATIVE);
               }
             }
           }

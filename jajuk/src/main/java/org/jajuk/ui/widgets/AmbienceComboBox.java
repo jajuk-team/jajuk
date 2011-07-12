@@ -115,8 +115,8 @@ public class AmbienceComboBox extends SteppedComboBox {
       removeItemListener(element);
     }
     removeAllItems();
-    addItem(new JLabel(Messages.getString("CommandJPanel.19"), IconLoader
-        .getIcon(JajukIcons.CONFIGURATION), SwingConstants.LEFT));
+    addItem(new JLabel(Messages.getString("CommandJPanel.19"),
+        IconLoader.getIcon(JajukIcons.CONFIGURATION), SwingConstants.LEFT));
     addItem(new JLabel("<html><i>" + Messages.getString("DigitalDJWizard.64") + "</i></html>",
         IconLoader.getIcon(JajukIcons.GENRE), SwingConstants.LEFT));
     // Add available ambiences

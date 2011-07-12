@@ -68,8 +68,9 @@ public class PlayRepeatSelectionAction extends SelectionAction {
         try {
           PlayRepeatSelectionAction.super.perform(e);
           List<File> files = UtilFeatures.getPlayableFiles(selection);
-          QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), true,
-              true), false);
+          QueueModel
+              .push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), true, true),
+                  false);
           if (files.size() == 1) {
             UtilGUI.setRepeatSingleGui(true);
           } else {

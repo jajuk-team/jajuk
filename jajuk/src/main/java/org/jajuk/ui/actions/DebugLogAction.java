@@ -71,10 +71,10 @@ public class DebugLogAction extends JajukAction {
     text.setBackground(Color.WHITE);
     text.setForeground(Color.DARK_GRAY);
     text.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-    final JDialog dialog = new JDialog(JajukMainWindow.getInstance(), Messages
-        .getString("DebugLogAction.0"), false);
-    JButton jbRefresh = new JButton(Messages.getString("DebugLogAction.1"), IconLoader
-        .getIcon(JajukIcons.REFRESH));
+    final JDialog dialog = new JDialog(JajukMainWindow.getInstance(),
+        Messages.getString("DebugLogAction.0"), false);
+    JButton jbRefresh = new JButton(Messages.getString("DebugLogAction.1"),
+        IconLoader.getIcon(JajukIcons.REFRESH));
     jbRefresh.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -108,9 +108,10 @@ public class DebugLogAction extends JajukAction {
    */
   private String getTraces() {
     // Store system properties
-    StringBuilder traces = new StringBuilder("<HTML><font color='green'><b>").append(
-        cleanHTML(UtilString.getAnonymizedSystemProperties().toString())).append("<br>").append(
-        cleanHTML(UtilString.getAnonymizedJajukProperties().toString())).append("</b></font><br>");
+    StringBuilder traces = new StringBuilder("<HTML><font color='green'><b>")
+        .append(cleanHTML(UtilString.getAnonymizedSystemProperties().toString())).append("<br>")
+        .append(cleanHTML(UtilString.getAnonymizedJajukProperties().toString()))
+        .append("</b></font><br>");
     // Store last traces
     for (String line : Log.getSpool()) {
       traces.append(line).append("<br>");

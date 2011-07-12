@@ -69,8 +69,9 @@ public class PlaySelectionAction extends SelectionAction {
         try {
           PlaySelectionAction.super.perform(e);
           List<File> files = UtilFeatures.getPlayableFiles(selection);
-          QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
-              .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
+          QueueModel.push(
+              UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files),
+                  Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
         } catch (Exception e) {
           Log.error(e);
         }

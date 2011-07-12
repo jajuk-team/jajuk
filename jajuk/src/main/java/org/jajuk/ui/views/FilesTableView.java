@@ -83,8 +83,8 @@ public class FilesTableView extends AbstractTableView {
     jtable = new JajukTable(model, true, columnsConf);
     super.shortCall(null);
     // File menu
-    jmiFilePlayDirectory = new JMenuItem(ActionManager
-        .getAction(JajukActions.PLAY_DIRECTORY_SELECTION));
+    jmiFilePlayDirectory = new JMenuItem(
+        ActionManager.getAction(JajukActions.PLAY_DIRECTORY_SELECTION));
     jmiFilePlayDirectory.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiFilePlayDirectory, 4);
     // Add this generic menu item manually to ensure it's the last one in

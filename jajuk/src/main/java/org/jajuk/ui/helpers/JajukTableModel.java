@@ -330,15 +330,14 @@ public abstract class JajukTableModel extends DefaultTableModel {
   protected IconLabel getIcon(boolean unmount) {
     if (!unmount) {
       if (play_icon == null) {
-        play_icon = new IconLabel(PLAY_ICON, "", null, null, null, Messages
-            .getString("TracksTableView.7"));
+        play_icon = new IconLabel(PLAY_ICON, "", null, null, null,
+            Messages.getString("TracksTableView.7"));
       }
       return play_icon;
     } else {
       if (unmount_play_icon == null) {
-        unmount_play_icon = new IconLabel(UNMOUNT_PLAY_ICON, "", null, null, null, Messages
-            .getString("TracksTableView.7")
-            + Messages.getString("AbstractTableView.10"));
+        unmount_play_icon = new IconLabel(UNMOUNT_PLAY_ICON, "", null, null, null,
+            Messages.getString("TracksTableView.7") + Messages.getString("AbstractTableView.10"));
       }
       return unmount_play_icon;
     }

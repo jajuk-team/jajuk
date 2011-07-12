@@ -124,14 +124,14 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
         if (plf.getType() == Playlist.Type.QUEUE) {
           // If user selected "push on drop" option just push the selection
           if (Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_DROP)) {
-            QueueModel.push(UtilFeatures.createStackItems(UtilFeatures
-                .applyPlayOption(alSelectedFiles), Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL),
-                true), true);
+            QueueModel.push(
+                UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alSelectedFiles),
+                    Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), true);
           } else {
             // Insert the selection at drop target
-            QueueModel.insert(UtilFeatures.createStackItems(UtilFeatures
-                .applyPlayOption(alSelectedFiles), Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL),
-                true), row);
+            QueueModel.insert(
+                UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alSelectedFiles),
+                    Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), row);
           }
         }
         // normal or new playlist case

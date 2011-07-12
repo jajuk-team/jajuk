@@ -72,8 +72,8 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
           // state
           rdialog = new RefreshDialog((dirTotal < 0));
           rdialog.setTitle(Messages.getString("RefreshDialog.2") + " " + device.getName());
-          rdialog.setAction(Messages.getString("RefreshDialog.3"), IconLoader
-              .getIcon(JajukIcons.INFO));
+          rdialog.setAction(Messages.getString("RefreshDialog.3"),
+              IconLoader.getIcon(JajukIcons.INFO));
         }
       });
     } catch (InterruptedException e) {
@@ -121,8 +121,8 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
   @Override
   public void updateState(Directory dir) {
     if (rdialog != null) {
-      rdialog.setRefreshing(new StringBuilder(Messages.getString("Device.44")).append(' ').append(
-          dir.getRelativePath()).toString());
+      rdialog.setRefreshing(new StringBuilder(Messages.getString("Device.44")).append(' ')
+          .append(dir.getRelativePath()).toString());
       progress = 30 + (int) (70 * (float) dirCount / dirTotal);
       if (progress > 100) {
         progress = 100;

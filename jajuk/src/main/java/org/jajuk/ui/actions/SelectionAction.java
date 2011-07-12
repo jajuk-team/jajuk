@@ -60,12 +60,14 @@ public abstract class SelectionAction extends JajukAction {
   /**
    * Instantiates a new selection action.
    *
-   * @param msg DOCUMENT_ME
-   * @param stroke DOCUMENT_ME
+   * @param name DOCUMENT_ME
    * @param icon DOCUMENT_ME
+   * @param stroke DOCUMENT_ME
    * @param enabled DOCUMENT_ME
+   * @param bHotkey DOCUMENT_ME
    */
-  public SelectionAction(String name, ImageIcon icon, String stroke, boolean enabled, boolean bHotkey) {
+  public SelectionAction(String name, ImageIcon icon, String stroke, boolean enabled,
+      boolean bHotkey) {
     super(name, icon, stroke, enabled, bHotkey);
   }
 

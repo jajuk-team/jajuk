@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.bookmark;
 
@@ -37,12 +37,13 @@ import org.jajuk.base.Year;
 import org.jajuk.util.Const;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestHistoryItem extends JajukTestCase {
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.bookmark.HistoryItem#HistoryItem(java.lang.String, long)}
    * .
    */
@@ -92,6 +93,10 @@ public class TestHistoryItem extends JajukTestCase {
     JUnitHelpers.ToStringTest(item);
   }
 
+  /**
+   * Test to string file.
+   * DOCUMENT_ME
+   */
   public final void testToStringFile() {
     File file;
     {
@@ -107,8 +112,8 @@ public class TestHistoryItem extends JajukTestCase {
       Track track = TrackManager.getInstance().registerTrack("trackname", album, genre, artist,
           120, year, 1, type, 1);
 
-      Device device = JUnitHelpers.getDevice("devicename", Device.Type.DIRECTORY, System
-          .getProperty("java.io.tmpdir"));
+      Device device = JUnitHelpers.getDevice("devicename", Device.Type.DIRECTORY,
+          System.getProperty("java.io.tmpdir"));
 
       Directory dir = DirectoryManager.getInstance().registerDirectory(device);
       file = FileManager.getInstance().registerFile("test.tst", dir, track, 120, 70);

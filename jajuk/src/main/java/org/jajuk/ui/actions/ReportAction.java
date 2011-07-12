@@ -69,8 +69,8 @@ public class ReportAction extends JajukAction {
     // Get required data from the tree (selected node and node type)
     final List<Item> alSelected = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
     // Display a save as dialog
-    final JajukFileFilter filter = new JajukFileFilter(XMLFilter.getInstance(), HTMLFilter
-        .getInstance());
+    final JajukFileFilter filter = new JajukFileFilter(XMLFilter.getInstance(),
+        HTMLFilter.getInstance());
     final JajukFileChooser chooser = new JajukFileChooser(filter);
     // Allow to navigate between directories
     chooser.setAcceptDirectories(true);

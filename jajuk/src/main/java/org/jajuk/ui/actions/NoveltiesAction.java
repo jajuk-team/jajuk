@@ -66,8 +66,9 @@ public class NoveltiesAction extends JajukAction {
           List<File> alToPlay = UtilFeatures.filterByAmbience(FileManager.getInstance()
               .getShuffleNoveltiesPlaylist(), ambience);
           if (alToPlay != null && alToPlay.size() > 0) {
-            QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay),
-                Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), false), false);
+            QueueModel.push(
+                UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay),
+                    Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), false), false);
           } else { // none novelty found
             Messages.showWarningMessage(Messages.getString("Error.127"));
           }

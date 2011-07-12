@@ -213,16 +213,16 @@ public class SuggestionView extends ViewAdapter {
     tabs.setUI(new MyTabbedPaneUI());
 
     // Fill tabs with empty tabs
-    tabs.addTab(Messages.getString("SuggestionView.1"), UtilGUI.getCentredPanel(new JLabel(Messages
-        .getString("WikipediaView.3"))));
-    tabs.addTab(Messages.getString("SuggestionView.2"), UtilGUI.getCentredPanel(new JLabel(Messages
-        .getString("WikipediaView.3"))));
-    tabs.addTab(Messages.getString("SuggestionView.5"), UtilGUI.getCentredPanel(new JLabel(Messages
-        .getString("WikipediaView.3"))));
-    tabs.addTab(Messages.getString("SuggestionView.3"), new JLabel(Messages
-        .getString("SuggestionView.7")));
-    tabs.addTab(Messages.getString("SuggestionView.4"), new JLabel(Messages
-        .getString("SuggestionView.7")));
+    tabs.addTab(Messages.getString("SuggestionView.1"),
+        UtilGUI.getCentredPanel(new JLabel(Messages.getString("WikipediaView.3"))));
+    tabs.addTab(Messages.getString("SuggestionView.2"),
+        UtilGUI.getCentredPanel(new JLabel(Messages.getString("WikipediaView.3"))));
+    tabs.addTab(Messages.getString("SuggestionView.5"),
+        UtilGUI.getCentredPanel(new JLabel(Messages.getString("WikipediaView.3"))));
+    tabs.addTab(Messages.getString("SuggestionView.3"),
+        new JLabel(Messages.getString("SuggestionView.7")));
+    tabs.addTab(Messages.getString("SuggestionView.4"),
+        new JLabel(Messages.getString("SuggestionView.7")));
 
     // Refresh tabs on demand only, add changelisterner after tab creation to
     // avoid that the stored tab is overwrited at startup
@@ -232,8 +232,8 @@ public class SuggestionView extends ViewAdapter {
         refreshLastFMCollectionTabs();
         // store the selected tab
         Conf.setProperty(getClass().getName() + "_"
-            + ((getPerspective() == null) ? "solo" : getPerspective().getID()), Integer.toString(
-            tabs.getSelectedIndex()).toString());
+            + ((getPerspective() == null) ? "solo" : getPerspective().getID()),
+            Integer.toString(tabs.getSelectedIndex()).toString());
       }
     });
 

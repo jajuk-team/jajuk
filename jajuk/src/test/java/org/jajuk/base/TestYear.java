@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.base;
 
@@ -26,7 +26,7 @@ import org.jajuk.JUnitHelpers;
 import org.jajuk.util.Const;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestYear extends TestCase {
 
@@ -56,7 +56,8 @@ public class TestYear extends TestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.Year#Year(java.lang.String, java.lang.String)}.
    */
   public void testYear() {

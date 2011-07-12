@@ -330,7 +330,6 @@ public abstract class Item implements Const {
     return sb.toString();
   }
 
- 
   /**
    * Return an XML representation of this item.
    * 

@@ -41,7 +41,7 @@ import java.awt.event.MouseEvent;
  * </p>
  */
 public class JajukMouseAdapter extends MouseAdapter {
-  
+
   /** Whether a popup request gesture has been recognized. */
   private boolean popupTrigger = false;
 

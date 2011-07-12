@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.base;
 
@@ -27,7 +27,7 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestArtist extends JajukTestCase {
 
@@ -48,7 +48,8 @@ public class TestArtist extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.Artist#getHumanValue(java.lang.String)}.
    */
   public final void testGetHumanValue() {
@@ -68,7 +69,8 @@ public class TestArtist extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.Artist#Artist(java.lang.String, java.lang.String)}.
    */
   public final void testArtist() {
@@ -102,7 +104,8 @@ public class TestArtist extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.Artist#compareTo(org.jajuk.base.Artist)}.
    */
   public final void testCompareTo() {

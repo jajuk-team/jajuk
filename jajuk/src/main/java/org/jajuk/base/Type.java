@@ -46,14 +46,13 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 
   /**
    * Constructor.
-   * 
+   *
    * @param sId type id if given
    * @param sName type name
    * @param sExtension type file extension (.mp3...)
    * @param cPlayerImpl DOCUMENT_ME
    * @param cTagImpl DOCUMENT_ME
-   * 
-   * @throws Exception    */
+   */
   Type(final String sId, final String sName, final String sExtension,
       final Class<IPlayerImpl> cPlayerImpl, final Class<ITagImpl> cTagImpl) {
     super(sId, sName);

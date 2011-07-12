@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.util.filters;
 
@@ -25,12 +25,13 @@ import java.io.File;
 import org.jajuk.JajukTestCase;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestAnyFileFilter extends JajukTestCase {
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.filters.AnyFileFilter#getDescription()}.
    */
   public void testGetDescription() {
@@ -39,7 +40,8 @@ public class TestAnyFileFilter extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.filters.AnyFileFilter#isKnownExtension(java.io.File)}
    * .
    */

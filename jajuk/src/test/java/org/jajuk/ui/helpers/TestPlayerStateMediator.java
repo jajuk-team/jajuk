@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.helpers;
 
@@ -50,10 +50,13 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestPlayerStateMediator extends JajukTestCase {
 
+  /* (non-Javadoc)
+   * @see org.jajuk.JajukTestCase#setUp()
+   */
   @Override
   protected void setUp() throws Exception {
     // to install actions...
@@ -63,7 +66,8 @@ public class TestPlayerStateMediator extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.helpers.PlayerStateMediator#getInstance()}.
    */
   public final void testGetInstance() {
@@ -76,7 +80,8 @@ public class TestPlayerStateMediator extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.helpers.PlayerStateMediator#getRegistrationKeys()}.
    */
   public final void testGetRegistrationKeys() {
@@ -88,22 +93,32 @@ public class TestPlayerStateMediator extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.ui.helpers.PlayerStateMediator#update(org.jajuk.events.JajukEvent)}
    * .
-   * 
-   * @throws Exception
    */
   public final void testUpdatePlay() throws Exception {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.PLAYER_PLAY, null));
   }
 
+  /**
+   * Test update stop.
+   * DOCUMENT_ME
+   */
   public final void testUpdateStop() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.PLAYER_STOP, null));
   }
 
+  /**
+   * Test update stop queue model.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testUpdateStopQueueModel() throws Exception {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
 
@@ -124,6 +139,13 @@ public class TestPlayerStateMediator extends JajukTestCase {
     med.update(new JajukEvent(JajukEvents.PLAYER_STOP, null));
   }
 
+  /**
+   * Gets the file.
+   *
+   * @param i DOCUMENT_ME
+   * @param dir DOCUMENT_ME
+   * @return the file
+   */
   private File getFile(int i, Directory dir) {
     Genre genre = JUnitHelpers.getGenre();
     Album album = JUnitHelpers.getAlbum("name", 0);
@@ -141,31 +163,55 @@ public class TestPlayerStateMediator extends JajukTestCase {
         track, 120, 70);
   }
 
+  /**
+   * Test update paused.
+   * DOCUMENT_ME
+   */
   public final void testUpdatePaused() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.PLAYER_PAUSE, null));
   }
 
+  /**
+   * Test update resume.
+   * DOCUMENT_ME
+   */
   public final void testUpdateResume() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.PLAYER_RESUME, null));
   }
 
+  /**
+   * Test update opening error.
+   * DOCUMENT_ME
+   */
   public final void testUpdateOpeningError() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.PLAY_OPENING, null));
   }
 
+  /**
+   * Test update zero.
+   * DOCUMENT_ME
+   */
   public final void testUpdateZero() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.ZERO, null));
   }
 
+  /**
+   * Test update webradio.
+   * DOCUMENT_ME
+   */
   public final void testUpdateWebradio() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, null));
   }
 
+  /**
+   * Test update webradio notifcator.
+   * DOCUMENT_ME
+   */
   public final void testUpdateWebradioNotifcator() {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
@@ -177,6 +223,12 @@ public class TestPlayerStateMediator extends JajukTestCase {
     med.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, prop));
   }
 
+  /**
+   * Test update file launched.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testUpdateFileLaunched() throws Exception {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
@@ -195,6 +247,10 @@ public class TestPlayerStateMediator extends JajukTestCase {
     JUnitHelpers.clearSwingUtilitiesQueue();
   }
 
+  /**
+   * Test update file launched null.
+   * DOCUMENT_ME
+   */
   public final void testUpdateFileLaunchedNull() {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
@@ -206,11 +262,21 @@ public class TestPlayerStateMediator extends JajukTestCase {
     med.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, prop));
   }
 
+  /**
+   * Test update volume.
+   * DOCUMENT_ME
+   */
   public final void testUpdateVolume() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.VOLUME_CHANGED, null));
   }
 
+  /**
+   * Test update mute.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testUpdateMute() throws Exception {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.MUTE_STATE, null));

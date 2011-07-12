@@ -64,8 +64,9 @@ public class PushFrontSelectionAction extends SelectionAction {
   public void perform(ActionEvent e) throws Exception {
     super.perform(e);
     List<File> files = UtilFeatures.getPlayableFiles(selection);
-    QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
-        .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), true, true);
+    QueueModel.push(
+        UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files),
+            Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), true, true);
   }
 
 }

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.cddb;
 
@@ -33,12 +33,13 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestCDDBTrack extends JajukTestCase {
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.cddb.CDDBTrack#CDDBTrack(org.jajuk.base.Track)}.
    */
   public final void testCDDBTrack() {
@@ -54,7 +55,8 @@ public class TestCDDBTrack extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.cddb.CDDBTrack#getPreciseLength()}.
    */
   public final void testGetPreciseLength() {
@@ -82,6 +84,12 @@ public class TestCDDBTrack extends JajukTestCase {
     JUnitHelpers.ToStringTest(track);
   }
 
+  /**
+   * Gets the track.
+   *
+   * @param i DOCUMENT_ME
+   * @return the track
+   */
   private Track getTrack(int i) {
     Genre genre = JUnitHelpers.getGenre();
     Album album = JUnitHelpers.getAlbum("myalbum", 0);

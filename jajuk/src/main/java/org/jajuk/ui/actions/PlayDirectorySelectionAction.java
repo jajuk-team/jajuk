@@ -77,8 +77,9 @@ public class PlayDirectorySelectionAction extends SelectionAction {
           // Select all files from the first found directory
           Directory dir = ((File) selection.get(0)).getDirectory();
           List<File> files = UtilFeatures.getPlayableFiles(dir);
-          QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
-              .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
+          QueueModel.push(
+              UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files),
+                  Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
         } catch (Exception e) {
           Log.error(e);
         }

@@ -27,14 +27,12 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
 
-import org.jajuk.base.Device;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.ui.windows.JajukSystray;
-import org.jajuk.ui.wizard.FirstTimeWizard;
 import org.jajuk.ui.wizard.TipOfTheDayWizard;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;

@@ -1,25 +1,22 @@
 /*
- * Adapted by Jajuk team
- * Copyright (C) 2003-2011 the Jajuk Team
- * http://jajuk.info
- * 
- * aTunes 1.14.0
- * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
+ *  Jajuk
+ *  Copyright (C) 2003-2011 The Jajuk Team
+ *  http://jajuk.info
  *
- * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
  *
- * http://www.atunes.org
- * http://sourceforge.net/projects/atunes
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
  */
 
 package ext.services.lastfm;
@@ -141,8 +138,8 @@ public class LastFmService {
     Caller.getInstance().setProxy(proxy);
     Caller.getInstance().setUserAgent(CLIENT_ID);
     // Use encoded version name to avoid errors from server
-    scrobbler = Scrobbler.newScrobbler(CLIENT_ID, ext.services.network.NetworkUtils
-        .encodeString(CLIENT_VERSION), user);
+    scrobbler = Scrobbler.newScrobbler(CLIENT_ID,
+        ext.services.network.NetworkUtils.encodeString(CLIENT_VERSION), user);
     this.handshakePerformed = false;
     this.locale = locale;
     this.lastFmCache = lastFmCache;
@@ -497,10 +494,9 @@ public class LastFmService {
 
   /**
    * Submits song to Last.fm
-   * 
-   * @param secondsPlayed seconds the audio file has already played
+   *
    * @param track DOCUMENT_ME
-   * 
+   * @param secondsPlayed seconds the audio file has already played
    * @throws ScrobblerException the scrobbler exception
    */
   public void submit(Track track, long secondsPlayed) throws ScrobblerException {
@@ -516,9 +512,9 @@ public class LastFmService {
     Log.info("Trying to submit song to Last.fm");
     try {
       performHandshakeIfNeeded();
-      SubmissionData submissionData = new SubmissionData(track.getArtist().getName2(), track
-          .getName(), track.getAlbum().getName2(), (int) track.getDuration(), (int) track
-          .getOrder(), Source.USER, null, startedToPlay);
+      SubmissionData submissionData = new SubmissionData(track.getArtist().getName2(),
+          track.getName(), track.getAlbum().getName2(), (int) track.getDuration(),
+          (int) track.getOrder(), Source.USER, null, startedToPlay);
       ResponseStatus status = scrobbler.submit(submissionData);
       if (status.ok()) {
         Log.info("Song submitted to Last.fm");
@@ -567,10 +563,10 @@ public class LastFmService {
 
         List<SubmissionData> submissionDataList = new ArrayList<SubmissionData>();
         for (ext.services.lastfm.FullSubmissionData submissionData : collectionWithSubmissionData) {
-          SubmissionData sd = new SubmissionData(submissionData.getArtist(), submissionData
-              .getTitle(), submissionData.getAlbum(), submissionData.getDuration(), submissionData
-              .getTrackNumber(), Source.valueOf(submissionData.getSource()), null, submissionData
-              .getStartTime());
+          SubmissionData sd = new SubmissionData(submissionData.getArtist(),
+              submissionData.getTitle(), submissionData.getAlbum(), submissionData.getDuration(),
+              submissionData.getTrackNumber(), Source.valueOf(submissionData.getSource()), null,
+              submissionData.getStartTime());
           submissionDataList.add(sd);
         }
 

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.notification;
 
@@ -29,12 +29,13 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.services.webradio.WebRadio;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestToastNotificator extends JajukTestCase {
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.notification.ToastNotificator#ToastNotificator()}
    * .
    */
@@ -50,7 +51,8 @@ public class TestToastNotificator extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.notification.JavaBalloonNotificator#isAvailable()}
    * .
    */
@@ -59,7 +61,8 @@ public class TestToastNotificator extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.notification.JavaBalloonNotificator#notify(org.jajuk.base.File)}
    * .
    */
@@ -77,7 +80,8 @@ public class TestToastNotificator extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.notification.JavaBalloonNotificator#notify(org.jajuk.services.webradio.WebRadio)}
    * .
    */

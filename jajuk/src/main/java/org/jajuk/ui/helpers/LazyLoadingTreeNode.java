@@ -31,7 +31,7 @@ import javax.swing.tree.MutableTreeNode;
  * created a lot.
  */
 public abstract class LazyLoadingTreeNode extends DefaultMutableTreeNode {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

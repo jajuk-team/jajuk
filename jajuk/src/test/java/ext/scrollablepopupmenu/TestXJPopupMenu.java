@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package ext.scrollablepopupmenu;
 
@@ -27,7 +27,7 @@ import javax.swing.AbstractButton;
 import org.jajuk.JajukTestCase;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestXJPopupMenu extends JajukTestCase {
 
@@ -56,7 +56,8 @@ public class TestXJPopupMenu extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.scrollablepopupmenu.XJPopupMenu#XJPopupMenu(javax.swing.JFrame)}
    * .
    */
@@ -70,7 +71,8 @@ public class TestXJPopupMenu extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.scrollablepopupmenu.XJPopupMenu#show(java.awt.Component, int, int)}
    * .
    */
@@ -96,7 +98,8 @@ public class TestXJPopupMenu extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.scrollablepopupmenu.XJPopupMenu#add(javax.swing.AbstractButton)}
    * .
    */
@@ -111,7 +114,8 @@ public class TestXJPopupMenu extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.scrollablepopupmenu.XJPopupMenu#actionPerformed(java.awt.event.ActionEvent)}
    * .
    */

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.startup;
 
@@ -42,11 +42,19 @@ import org.jajuk.util.Const;
  */
 public class TestStartupEngineService extends JajukTestCase {
 
+  /** DOCUMENT_ME. */
   private File file1;
+  
+  /** DOCUMENT_ME. */
   private File file2;
+  
+  /** DOCUMENT_ME. */
   private File file3;
+  
+  /** DOCUMENT_ME. */
   private WebRadio radio1;
 
+  /** The Constant POSITION.  DOCUMENT_ME */
   private static final float POSITION = 0.5f;
 
   /*
@@ -110,6 +118,12 @@ public class TestStartupEngineService extends JajukTestCase {
 
   }
 
+  /**
+   * Test nothing.
+   * DOCUMENT_ME
+   *
+   * @throws InterruptedException the interrupted exception
+   */
   public final void testNothing() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOTHING);
 
@@ -123,6 +137,12 @@ public class TestStartupEngineService extends JajukTestCase {
     assertTrue(QueueModel.getQueue().size() == 3);
   }
 
+  /**
+   * Test last item.
+   * DOCUMENT_ME
+   *
+   * @throws InterruptedException the interrupted exception
+   */
   public final void testLastItem() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST);
 
@@ -133,6 +153,12 @@ public class TestStartupEngineService extends JajukTestCase {
     assertEquals(QueueModel.getPlayingFile(), file3);
   }
 
+  /**
+   * Test last item last pos.
+   * DOCUMENT_ME
+   *
+   * @throws InterruptedException the interrupted exception
+   */
   public final void testLastItemLastPos() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
 
@@ -146,6 +172,12 @@ public class TestStartupEngineService extends JajukTestCase {
 
   }
 
+  /**
+   * Test novelties.
+   * DOCUMENT_ME
+   *
+   * @throws InterruptedException the interrupted exception
+   */
   public final void testNovelties() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOVELTIES);
 
@@ -157,6 +189,12 @@ public class TestStartupEngineService extends JajukTestCase {
 
   }
 
+  /**
+   * Test bestof.
+   * DOCUMENT_ME
+   *
+   * @throws InterruptedException the interrupted exception
+   */
   public final void testBestof() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_BESTOF);
 
@@ -167,6 +205,12 @@ public class TestStartupEngineService extends JajukTestCase {
     assertTrue(QueueModel.isPlayingTrack());
   }
 
+  /**
+   * Test first session.
+   * DOCUMENT_ME
+   *
+   * @throws InterruptedException the interrupted exception
+   */
   public final void testFirstSession() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
@@ -179,6 +223,12 @@ public class TestStartupEngineService extends JajukTestCase {
     assertEquals(QueueModel.getPlayingFile(), null);
   }
 
+  /**
+   * Test shuffle.
+   * DOCUMENT_ME
+   *
+   * @throws InterruptedException the interrupted exception
+   */
   public final void testShuffle() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_SHUFFLE);
 
@@ -189,6 +239,12 @@ public class TestStartupEngineService extends JajukTestCase {
     assertTrue(QueueModel.isPlayingTrack());
   }
 
+  /**
+   * Test stopped file.
+   * DOCUMENT_ME
+   *
+   * @throws InterruptedException the interrupted exception
+   */
   public final void testStoppedFile() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     Conf.setProperty(Const.CONF_STARTUP_STOPPED, "true");
@@ -204,6 +260,12 @@ public class TestStartupEngineService extends JajukTestCase {
     assertTrue(QueueModel.getQueue().size() == 3);
   }
 
+  /**
+   * Test stopped radio.
+   * DOCUMENT_ME
+   *
+   * @throws InterruptedException the interrupted exception
+   */
   public final void testStoppedRadio() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     Conf.setProperty(Const.CONF_STARTUP_STOPPED, "true");
@@ -216,6 +278,12 @@ public class TestStartupEngineService extends JajukTestCase {
     assertFalse(QueueModel.isPlayingTrack());
   }
 
+  /**
+   * Test start web radio.
+   * DOCUMENT_ME
+   *
+   * @throws InterruptedException the interrupted exception
+   */
   public final void testStartWebRadio() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "true");
@@ -228,8 +296,9 @@ public class TestStartupEngineService extends JajukTestCase {
   }
 
   /**
-   * User selected a file to launch at startup 
-   * @throws InterruptedException
+   * User selected a file to launch at startup.
+   *
+   * @throws InterruptedException the interrupted exception
    */
   public final void testStartGivenFile() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_ITEM);
@@ -254,13 +323,14 @@ public class TestStartupEngineService extends JajukTestCase {
   }
 
   /**
-  * User selected a radio to launch at startup 
-  * @throws InterruptedException
-  */
+   * User selected a radio to launch at startup.
+   *
+   * @throws InterruptedException the interrupted exception
+   */
   public final void testStartGivenRadio() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_ITEM);
-    Conf.setProperty(Const.CONF_STARTUP_ITEM, SearchResultType.WEBRADIO.name() + "/"
-        + radio1.getName());
+    Conf.setProperty(Const.CONF_STARTUP_ITEM,
+        SearchResultType.WEBRADIO.name() + "/" + radio1.getName());
 
     // Radio was playing but we don't care, we should launch the file
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "true");
@@ -282,13 +352,14 @@ public class TestStartupEngineService extends JajukTestCase {
   }
 
   /**
-  * User selected a radio to launch at startup but it leaved jajuk stopped 
-  * @throws InterruptedException
-  */
+   * User selected a radio to launch at startup but it leaved jajuk stopped.
+   *
+   * @throws InterruptedException the interrupted exception
+   */
   public final void testStartGivenRadioStopped() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_ITEM);
-    Conf.setProperty(Const.CONF_STARTUP_ITEM, SearchResultType.WEBRADIO.name() + "/"
-        + radio1.getName());
+    Conf.setProperty(Const.CONF_STARTUP_ITEM,
+        SearchResultType.WEBRADIO.name() + "/" + radio1.getName());
     Conf.setProperty(Const.CONF_STARTUP_STOPPED, "true");
 
     StartupEngineService.launchInitialTrack();
@@ -302,7 +373,9 @@ public class TestStartupEngineService extends JajukTestCase {
   /**
    * - Play last file / last position mode
    * - User left jajuk playing the radio
-   * Check that the radio is playing and that the queue is still there
+   * Check that the radio is playing and that the queue is still there.
+   *
+   * @throws InterruptedException the interrupted exception
    */
   public final void test1() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
@@ -317,8 +390,9 @@ public class TestStartupEngineService extends JajukTestCase {
 
   /**
    * Regression test for a 2010/11/01 bug :
-   * If startup item is unset, last track doesn't work
-   * @throws InterruptedException
+   * If startup item is unset, last track doesn't work.
+   *
+   * @throws InterruptedException the interrupted exception
    */
   public final void test2() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);

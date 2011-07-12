@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.util.filters;
 
@@ -28,12 +28,13 @@ import org.jajuk.base.TypeManager;
 import org.jajuk.services.startup.StartupCollectionService;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestAudioFilter extends JajukTestCase {
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.filters.AudioFilter#accept(java.io.File)}.
    */
   public void testAcceptFile() {
@@ -76,10 +77,10 @@ public class TestAudioFilter extends JajukTestCase {
   public void testGetDescription() {
     StartupCollectionService.registerTypes();
 
-    assertTrue(AudioFilter.getInstance().getDescription(), StringUtils.containsIgnoreCase(
-        AudioFilter.getInstance().getDescription(), "mp3"));
-    assertTrue(AudioFilter.getInstance().getDescription(), StringUtils.containsIgnoreCase(
-        AudioFilter.getInstance().getDescription(), "ogg"));
+    assertTrue(AudioFilter.getInstance().getDescription(),
+        StringUtils.containsIgnoreCase(AudioFilter.getInstance().getDescription(), "mp3"));
+    assertTrue(AudioFilter.getInstance().getDescription(),
+        StringUtils.containsIgnoreCase(AudioFilter.getInstance().getDescription(), "ogg"));
 
     // try removing all types
     TypeManager.getInstance().clear();

@@ -45,6 +45,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
+import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -162,28 +163,28 @@ public class PreparePartyWizard extends Wizard {
 
     /** Use one of the available DJs. */
     DJ,
-    
+
     /** Use one of hte available Ambiences. */
     Ambience,
-    
+
     /** Use random tracks from all available track. */
     Shuffle,
-    
+
     /** Use a playlist. */
     Playlist,
-    
+
     /** Use songs from the BestOf list. */
     BestOf,
-    
+
     /** Use songs from the Novelties list. */
     Novelties,
-    
+
     /** Use songs from the current play queue. */
     Queue,
-    
+
     /** Use the available bookmarks. */
     Bookmarks,
-    
+
     /** Special mode for when the dialog is invoked with a newly created playlist. */
     ProvidedPlaylist
   }
@@ -391,7 +392,7 @@ public class PreparePartyWizard extends Wizard {
       return;
     }
 
-    Conf.setProperty(Conf.CONF_PREPARE_PARTY + key, data.get(key).toString());
+    Conf.setProperty(Const.CONF_PREPARE_PARTY + key, data.get(key).toString());
   }
 
   /**
@@ -433,7 +434,7 @@ public class PreparePartyWizard extends Wizard {
    * @param key The key to restore.
    */
   private static void restoreStringValue(final String key) {
-    String sValue = Conf.getString(Conf.CONF_PREPARE_PARTY + key);
+    String sValue = Conf.getString(Const.CONF_PREPARE_PARTY + key);
 
     // nothing to do if not set
     if (sValue == null) {
@@ -450,11 +451,11 @@ public class PreparePartyWizard extends Wizard {
    */
   private static void restoreIntValue(final String key) {
     // do nothing if not available yet
-    if (Conf.getString(Conf.CONF_PREPARE_PARTY + key) == null) {
+    if (Conf.getString(Const.CONF_PREPARE_PARTY + key) == null) {
       return;
     }
 
-    data.put(key, Conf.getInt(Conf.CONF_PREPARE_PARTY + key));
+    data.put(key, Conf.getInt(Const.CONF_PREPARE_PARTY + key));
   }
 
   /**
@@ -464,18 +465,18 @@ public class PreparePartyWizard extends Wizard {
    */
   private static void restoreBooleanValue(final String key) {
     // do nothing if not available yet
-    if (Conf.getString(Conf.CONF_PREPARE_PARTY + key) == null) {
+    if (Conf.getString(Const.CONF_PREPARE_PARTY + key) == null) {
       return;
     }
 
-    data.put(key, Conf.getBoolean(Conf.CONF_PREPARE_PARTY + key));
+    data.put(key, Conf.getBoolean(Const.CONF_PREPARE_PARTY + key));
   }
 
   /**
    * Restore mode and item values, they may require some special handling.
    */
   private static void restoreModeAndItemValue() {
-    String sMode = Conf.getString(Conf.CONF_PREPARE_PARTY + KEY_MODE);
+    String sMode = Conf.getString(Const.CONF_PREPARE_PARTY + KEY_MODE);
 
     // nothing to do if not set
     if (sMode == null) {
@@ -488,7 +489,7 @@ public class PreparePartyWizard extends Wizard {
     case Ambience:
     case DJ:
     case Playlist:
-      data.put(KEY_ITEM, Conf.getString(Conf.CONF_PREPARE_PARTY + KEY_ITEM));
+      data.put(KEY_ITEM, Conf.getString(Const.CONF_PREPARE_PARTY + KEY_ITEM));
       break;
 
     // nothing to do
@@ -951,7 +952,7 @@ public class PreparePartyWizard extends Wizard {
         jsMaxTracks = new JSlider(0, 5000, 100);
         jnMaxTracks = new JLabel(NO_VALUE);
         jnMaxTracks.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        jnMaxTracks.setHorizontalAlignment(JLabel.RIGHT);
+        jnMaxTracks.setHorizontalAlignment(SwingConstants.RIGHT);
         jsMaxTracks.setMajorTickSpacing(100);
         jsMaxTracks.setMinorTickSpacing(10);
         jsMaxTracks.setPaintTicks(false);
@@ -966,7 +967,7 @@ public class PreparePartyWizard extends Wizard {
         jsMaxSize = new JSlider(0, 5000, 100);
         jnMaxSize = new JLabel(NO_VALUE);
         jnMaxSize.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        jnMaxSize.setHorizontalAlignment(JLabel.RIGHT);
+        jnMaxSize.setHorizontalAlignment(SwingConstants.RIGHT);
         jsMaxSize.setMajorTickSpacing(100);
         jsMaxSize.setMinorTickSpacing(10);
         jsMaxSize.setPaintTicks(false);
@@ -1448,8 +1449,8 @@ public class PreparePartyWizard extends Wizard {
         // TODO: for some reason the passing of the existing directory does not
         // work here, seems the implementation in JajukFileChooser does not do
         // this correctly
-        final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
-            .getInstance()), fDir);
+        final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
+            DirectoryFilter.getInstance()), fDir);
         jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         jfc.setDialogTitle(Messages.getString("PreparePartyWizard.22"));
         jfc.setMultiSelectionEnabled(false);

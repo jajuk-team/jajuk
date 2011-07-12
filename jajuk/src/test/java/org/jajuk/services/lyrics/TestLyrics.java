@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.lyrics;
 
@@ -35,27 +36,43 @@ import org.jajuk.util.DownloadManager;
 import org.jajuk.util.log.Log;
 
 /**
- * Lyrics unit tests
+ * Lyrics unit tests.
  */
 public class TestLyrics extends JajukTestCase {
 
+  /** DOCUMENT_ME. */
   private final File tmp = new File("test.tmp");
+  
+  /** The Constant ARTIST.  DOCUMENT_ME */
   private static final String ARTIST = "Massive Attack";
+  
+  /** The Constant TITLE.  DOCUMENT_ME */
   private static final String TITLE = "Dissolved Girl";
+  
+  /** The Constant TESTED_WORD.  DOCUMENT_ME */
   private static final String TESTED_WORD = "Day, yesterday";
 
   // LyricsFly put a delay of 1500 ms before we are allowed to query again, we
   // need to take that into account for some of the tests
+  /** The Constant FLY_DELAY.  DOCUMENT_ME */
   private static final long FLY_DELAY = 1500 + 200;
 
   // helper method to emma-coverage of the unused constructor
+  /**
+   * Test private constructor.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPrivateConstructor() throws Exception {
     // For EMMA code-coverage tests
     JUnitHelpers.executePrivateConstructor(LyricsService.class);
   }
 
   /**
-   * Test setup
+   * Test setup.
+   *
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   @Override
   public void setUp() throws IOException {
@@ -70,7 +87,7 @@ public class TestLyrics extends JajukTestCase {
   }
 
   /**
-   * Test provider loading
+   * Test provider loading.
    */
   public void testProvidersLoading() {
     LyricsService.loadProviders();
@@ -80,7 +97,9 @@ public class TestLyrics extends JajukTestCase {
   }
 
   /**
-   * Test provider response to get lyrics (shared code)
+   * Test provider response to get lyrics (shared code).
+   *
+   * @param provider DOCUMENT_ME
    */
   private void testWebService(GenericWebLyricsProvider provider) {
     String lyrics = provider.getLyrics(ARTIST, TITLE);
@@ -91,14 +110,17 @@ public class TestLyrics extends JajukTestCase {
       return;
     }
 
-    assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics, StringUtils
-        .isNotBlank(lyrics));
-    assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics, lyrics
-        .indexOf(TESTED_WORD) != -1);
+    assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics,
+        StringUtils.isNotBlank(lyrics));
+    assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics,
+        lyrics.indexOf(TESTED_WORD) != -1);
   }
 
   /**
-   * Test provider web site url (shared code)
+   * Test provider web site url (shared code).
+   *
+   * @param provider DOCUMENT_ME
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   private void testWeb(GenericWebLyricsProvider provider) throws IOException {
     URL url = provider.getWebURL(ARTIST, TITLE);
@@ -115,7 +137,7 @@ public class TestLyrics extends JajukTestCase {
   }
 
   /**
-   * Test LyricWiki provider response to get lyrics
+   * Test LyricWiki provider response to get lyrics.
    */
   public void testLyricWikiService() {
     GenericWebLyricsProvider provider = new LyricWikiWebLyricsProvider();
@@ -123,7 +145,9 @@ public class TestLyrics extends JajukTestCase {
   }
 
   /**
-   * Test LyricWiki web url availability
+   * Test LyricWiki web url availability.
+   *
+   * @throws Exception the exception
    */
   public void testLyricWikiWeb() throws Exception {
     GenericWebLyricsProvider provider = new LyricWikiWebLyricsProvider();

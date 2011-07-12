@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.bookmark;
 
@@ -30,7 +30,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestBookmarks extends JajukTestCase {
 
@@ -56,6 +56,8 @@ public class TestBookmarks extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.bookmark.Bookmarks#toString()}.
+   *
+   * @throws Exception the exception
    */
   public void testToString() throws Exception {
     // TODO: this fails currently because it returns an empty string:
@@ -70,8 +72,8 @@ public class TestBookmarks extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.bookmark.Bookmarks#getFiles()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testGetFiles() throws Exception {
     assertEquals(0, Bookmarks.getInstance().getFiles().size());
@@ -85,6 +87,8 @@ public class TestBookmarks extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.bookmark.Bookmarks#clear()}.
+   *
+   * @throws Exception the exception
    */
   public void testClear() throws Exception {
     Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file1", true));
@@ -96,6 +100,8 @@ public class TestBookmarks extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.bookmark.Bookmarks#down(int)}.
+   *
+   * @throws Exception the exception
    */
   public void testDownAndUp() throws Exception {
     // nothing happens without files
@@ -139,8 +145,8 @@ public class TestBookmarks extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.bookmark.Bookmarks#remove(int)}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testRemove() throws Exception {
     // add some files
@@ -154,11 +160,11 @@ public class TestBookmarks extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.bookmark.Bookmarks#addFile(int, org.jajuk.base.File)}
    * .
-   * 
-   * @throws Exception
    */
   public void testAddFileIntFile() throws Exception {
     // add some files
@@ -179,10 +185,10 @@ public class TestBookmarks extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.bookmark.Bookmarks#addFile(org.jajuk.base.File)}.
-   * 
-   * @throws Exception
    */
   public void testAddFileFile() throws Exception {
     // add some files
@@ -197,10 +203,10 @@ public class TestBookmarks extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.bookmark.Bookmarks#addFiles(java.util.List)}.
-   * 
-   * @throws Exception
    */
   public void testAddFiles() throws Exception {
     List<File> list = new ArrayList<File>();
@@ -219,6 +225,12 @@ public class TestBookmarks extends JajukTestCase {
   }
 
   // helper method to emma-coverage of the unused constructor
+  /**
+   * Test private constructor.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPrivateConstructor() throws Exception {
     // test with some files
     Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file1", true));
@@ -228,6 +240,12 @@ public class TestBookmarks extends JajukTestCase {
     JUnitHelpers.executePrivateConstructor(Bookmarks.class);
   }
 
+  /**
+   * Test coverage.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testCoverage() throws Exception {
     Conf.setProperty(Const.CONF_BOOKMARKS, "");
     // For EMMA code-coverage tests

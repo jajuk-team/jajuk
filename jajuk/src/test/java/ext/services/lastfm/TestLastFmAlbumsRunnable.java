@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package ext.services.lastfm;
 
@@ -32,12 +32,13 @@ import org.jajuk.base.Track;
 import org.jajuk.util.Const;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestLastFmAlbumsRunnable extends JajukTestCase {
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmAlbumsRunnable#LastFmAlbumsRunnable(ext.services.lastfm.ContextListener, ext.services.lastfm.LastFmService, ext.services.lastfm.AudioObject, long)}
    * .
    */
@@ -46,7 +47,8 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmAlbumsRunnable#interrupt()}.
    */
   public void testInterrupt() {
@@ -57,8 +59,8 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
 
   /**
    * Test method for {@link ext.services.lastfm.LastFmAlbumsRunnable#run()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testRun() throws Exception {
     // first run it normally
@@ -66,8 +68,8 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
         new MyAudioObject(), 1).run();
 
     // then run it in the background
-    LastFmAlbumsRunnable runnable = new LastFmAlbumsRunnable(new MyContextListener(), LastFmService
-        .getInstance(), new MyAudioObject(), 1);
+    LastFmAlbumsRunnable runnable = new LastFmAlbumsRunnable(new MyContextListener(),
+        LastFmService.getInstance(), new MyAudioObject(), 1);
     SwingUtilities.invokeLater(runnable);
 
     // and tell it to interrupt at some point
@@ -78,7 +80,8 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.LastFmAlbumsRunnable#setRetrieveArtistInfo(boolean)}
    * .
    */
@@ -89,16 +92,20 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link ext.services.lastfm.LastFmAlbumsRunnable#getImageForAudioFile(org.jajuk.base.Track, int, int)}
    * .
-   * 
-   * @throws Exception
    */
   public void testGetImageForAudioFileNone() throws Exception {
     LastFmAlbumsRunnable.getImageForAudioFile(JUnitHelpers.getTrack(2), 100, 100);
   }
 
+  /**
+   * Test get image for audio file not exists.
+   * DOCUMENT_ME
+   */
   public void testGetImageForAudioFileNotExists() {
     Track track = JUnitHelpers.getTrack(3);
     track.getAlbum().setProperty(Const.XML_ALBUM_DISCOVERED_COVER,
@@ -107,10 +114,16 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
     LastFmAlbumsRunnable.getImageForAudioFile(track, 100, 100);
   }
 
+  /**
+   * Test get image for audio file exists.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testGetImageForAudioFileExists() throws Exception {
     Track track = JUnitHelpers.getTrack(3);
     File file = File.createTempFile("test", ".img");
-    track.getAlbum().setProperty(Const.XML_ALBUM_DISCOVERED_COVER, file.getAbsolutePath()); 
+    track.getAlbum().setProperty(Const.XML_ALBUM_DISCOVERED_COVER, file.getAbsolutePath());
     assertNotNull(LastFmAlbumsRunnable.getImageForAudioFile(track, 200, 100));
 
     // TODO: cleanup does not work on Windows because the file seems to still be
@@ -118,6 +131,12 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
     file.delete();
   }
 
+  /**
+   * Test get image for audio file exists max size.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testGetImageForAudioFileExistsMaxSize() throws Exception {
     Track track = JUnitHelpers.getTrack(3);
     File file = File.createTempFile("test", ".img");
@@ -133,6 +152,12 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
     file.delete();
   }
 
+  /**
+   * Test get image for audio file exists no resize.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testGetImageForAudioFileExistsNoResize() throws Exception {
     Track track = JUnitHelpers.getTrack(3);
     File file = File.createTempFile("test", ".img");
@@ -149,69 +174,109 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
   }
 
   /**
-   * 
+   * DOCUMENT_ME.
    */
   private final class MyContextListener implements ContextListener {
+    
+    /* (non-Javadoc)
+     * @see ext.services.lastfm.ContextListener#setLastArtistRetrieved(java.lang.String, long)
+     */
     @Override
     public void setLastArtistRetrieved(String artist, long id) {
 
     }
 
+    /* (non-Javadoc)
+     * @see ext.services.lastfm.ContextListener#setLastAlbumRetrieved(java.lang.String, long)
+     */
     @Override
     public void setLastAlbumRetrieved(String album, long id) {
 
     }
 
+    /* (non-Javadoc)
+     * @see ext.services.lastfm.ContextListener#setImage(java.awt.Image, ext.services.lastfm.AudioObject, long)
+     */
     @Override
     public void setImage(Image img, AudioObject ao, long id) {
 
     }
 
+    /* (non-Javadoc)
+     * @see ext.services.lastfm.ContextListener#setAlbums(java.util.List, long)
+     */
     @Override
     public void setAlbums(List<? extends AlbumInfo> album, long id) {
 
     }
 
+    /* (non-Javadoc)
+     * @see ext.services.lastfm.ContextListener#setAlbum(ext.services.lastfm.AlbumInfo, long)
+     */
     @Override
     public void setAlbum(AlbumInfo album, long id) {
 
     }
 
+    /* (non-Javadoc)
+     * @see ext.services.lastfm.ContextListener#notifyWikiInfoRetrieved(java.lang.String, java.lang.String, long)
+     */
     @Override
     public void notifyWikiInfoRetrieved(String wikiText, String wikiURL, long id) {
 
     }
 
+    /* (non-Javadoc)
+     * @see ext.services.lastfm.ContextListener#notifyStartRetrievingCovers(long)
+     */
     @Override
     public void notifyStartRetrievingCovers(long id) {
 
     }
 
+    /* (non-Javadoc)
+     * @see ext.services.lastfm.ContextListener#notifyStartRetrievingArtistImages(long)
+     */
     @Override
     public void notifyStartRetrievingArtistImages(long id) {
 
     }
 
+    /* (non-Javadoc)
+     * @see ext.services.lastfm.ContextListener#notifyFinishGetSimilarArtist(ext.services.lastfm.ArtistInfo, java.awt.Image, long)
+     */
     @Override
     public void notifyFinishGetSimilarArtist(ArtistInfo a, Image img, long id) {
 
     }
 
+    /* (non-Javadoc)
+     * @see ext.services.lastfm.ContextListener#notifyCoverRetrieved(ext.services.lastfm.AlbumInfo, java.awt.Image, long)
+     */
     @Override
     public void notifyCoverRetrieved(AlbumInfo album, Image cover, long id) {
 
     }
 
+    /* (non-Javadoc)
+     * @see ext.services.lastfm.ContextListener#notifyArtistImage(java.awt.Image, long)
+     */
     @Override
     public void notifyArtistImage(Image img, long id) {
 
     }
 
+    /* (non-Javadoc)
+     * @see ext.services.lastfm.ContextListener#notifyAlbumRetrieved(ext.services.lastfm.AudioObject, long)
+     */
     @Override
     public void notifyAlbumRetrieved(AudioObject file, long id) {
 
     }
 
+    /* (non-Javadoc)
+     * @see ext.services.lastfm.ContextListener#getAlbums()
+     */
     @Override
     public List<AlbumInfo> getAlbums() {
 
@@ -219,6 +284,9 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
     }
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   private class MyAudioObject implements AudioObject {
 
     /*

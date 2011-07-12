@@ -128,9 +128,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
     player.open(new File(file.getAbsolutePath()));
     if ((fPosition > 0.0f) &&
     // (position*fPosition(%))*1000(ms) /24 because 1 frame =24ms
-        // test if this is a audio format supporting seeking
-        // Note: fio.getName() is better here as it will do less and not create
-        // java.io.File in File
+    // test if this is a audio format supporting seeking
+    // Note: fio.getName() is better here as it will do less and not create
+    // java.io.File in File
         (TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(file.getName()))
             .getBooleanValue(Const.XML_TYPE_SEEK_SUPPORTED))) {
       seek(fPosition);

@@ -224,7 +224,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     } catch (UnknownHostException e) {
       Log.warn("Could not contact host for loading album information: {{" + e.getMessage() + "}}");
     } catch (IOException e) {
-      if(e.getMessage().contains(" 403 ")) {
+      if (e.getMessage().contains(" 403 ")) {
         // server responded with code "forbidden"
         Log.warn("Server returned an error while fetching images: " + e.getMessage());
       } else {
@@ -249,7 +249,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     // Artist unknown from last.fm, leave
     if (artistInfo == null
     // If image url is void, last.fm doesn't provide enough data about this
-        // artist, we reset the view
+    // artist, we reset the view
         || StringUtils.isBlank(artistInfo.getImageUrl())) {
       reset();
       return;

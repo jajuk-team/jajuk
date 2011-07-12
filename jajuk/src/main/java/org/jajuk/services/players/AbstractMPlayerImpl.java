@@ -189,7 +189,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
       // -softvol : use soft mixer, allows to set volume only to this mplayer
       // instance, not others programs
       cmd.add("-softvol");
-    } 
+    }
     // Define a cache. It is useful to avoid sound gliches but also to
     // overide a local mplayer large cache configuration in
     // ~/.mplayer/config file. User can set a large cache for video for ie.

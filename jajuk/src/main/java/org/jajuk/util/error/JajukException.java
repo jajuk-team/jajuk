@@ -44,9 +44,9 @@ public class JajukException extends Exception {
 
   /**
    * JajukException constructor.
-   * 
-   * @param pCause Original exception of the error.
+   *
    * @param code DOCUMENT_ME
+   * @param pCause Original exception of the error.
    */
   public JajukException(int code, Throwable pCause) {
     this(code, null, pCause);

@@ -40,8 +40,12 @@ public class ShowCurrentlyPlayingAction extends SelectionAction {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+  /**
+   * Instantiates a new show currently playing action.
+   */
   ShowCurrentlyPlayingAction() {
-    super(Messages.getString("ShowCurrentlyPlayingAction.0"), IconLoader.getIcon(JajukIcons.PLAY_16X16), "ctrl alt N", true, true);
+    super(Messages.getString("ShowCurrentlyPlayingAction.0"), IconLoader
+        .getIcon(JajukIcons.PLAY_16X16), "ctrl alt N", true, true);
     setShortDescription(Messages.getString("ShowCurrentlyPlayingAction.1"));
   }
 

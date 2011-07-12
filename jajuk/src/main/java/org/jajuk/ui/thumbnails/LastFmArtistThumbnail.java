@@ -185,8 +185,8 @@ public class LastFmArtistThumbnail extends AbstractThumbnail {
     } catch (IIOException e) {
       // report IIOException only as warning here as we can expect this to
       // happen frequently with images on the net
-      Log.warn("Could not read image: {{" + artist.getImageUrl() + "}} Cache: {{"
-          + fCover + "}}", e.getMessage());
+      Log.warn("Could not read image: {{" + artist.getImageUrl() + "}} Cache: {{" + fCover + "}}",
+          e.getMessage());
     } catch (UnknownHostException e) {
       Log.warn("Could not contact host for loading images: {{" + e.getMessage() + "}}");
     } catch (Exception e) {

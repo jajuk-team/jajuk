@@ -108,6 +108,7 @@ public class AnimationView extends ViewAdapter {
     btl1 = new BasicTextLabel(" ");
     // Allow to stop animation by left clicking on it
     btl1.addMouseListener(new JajukMouseAdapter() {
+      @Override
       public void handleAction(final MouseEvent e) {
         if (animator != null) {
           animator.stop();
@@ -174,7 +175,7 @@ public class AnimationView extends ViewAdapter {
         if (!Conf.getBoolean(Const.CONF_TITLE_ANIMATION)) {
           anim = BasicTextAnimation.defaultFade(btl1, DEFAULT_DURATION, sText, Color.darkGray);
         } else {
-          int iShuffle = (int) (Math.random() * 3);  //NOSONAR
+          int iShuffle = (int) (Math.random() * 3); //NOSONAR
           switch (iShuffle) {
           case 0:
             anim = BasicTextAnimation.defaultScale(btl1, DEFAULT_DURATION, sText, Color.darkGray);
@@ -194,6 +195,7 @@ public class AnimationView extends ViewAdapter {
         if (!Conf.getBoolean(Const.CONF_TITLE_ANIMATION)) {
           // Stop animation after few seconds if still the same label
           new Thread() {
+            @Override
             public void run() {
               String title = sText;
               try {

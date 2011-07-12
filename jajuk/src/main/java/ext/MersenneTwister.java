@@ -1,5 +1,4 @@
 /*
- *  
  *  Jajuk
  *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
@@ -17,15 +16,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- 
- *  
- *  This file has been adapted (and deeply reduced) to Jajuk by the Jajuk Team.
- *  See original MersenneRwister copyright notice bellow
- *  
  *  $Revision$
  */
 package ext;
-
 
 /**
  * <h3>MersenneTwister and MersenneTwisterFast</h3>
@@ -168,55 +161,53 @@ package ext;
  * @version 13
  */
 
-public final class MersenneTwister extends java.util.Random  {
+public final class MersenneTwister extends java.util.Random {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
   // Period parameters
   /** The Constant N.  DOCUMENT_ME */
   private static final int N = 624;
-  
+
   /** The Constant M.  DOCUMENT_ME */
   private static final int M = 397;
-  
+
   /** The Constant MATRIX_A.  DOCUMENT_ME */
   private static final int MATRIX_A = 0x9908b0df; // private static final * constant vector a
-  
+
   /** The Constant UPPER_MASK.  DOCUMENT_ME */
   private static final int UPPER_MASK = 0x80000000; // most significant w-r bits
-  
+
   /** The Constant LOWER_MASK.  DOCUMENT_ME */
   private static final int LOWER_MASK = 0x7fffffff; // least significant r bits
 
   // Tempering parameters
   /** The Constant TEMPERING_MASK_B.  DOCUMENT_ME */
   private static final int TEMPERING_MASK_B = 0x9d2c5680;
-  
+
   /** The Constant TEMPERING_MASK_C.  DOCUMENT_ME */
   private static final int TEMPERING_MASK_C = 0xefc60000;
 
   /** DOCUMENT_ME. */
   private int mt[]; // the array for the state vector
-  
+
   /** DOCUMENT_ME. */
   private int mti; // mti==N+1 means mt[N] is not initialized
-  
+
   /** DOCUMENT_ME. */
   private int mag01[];
- 
-  /** Singleton */
+
+  /** Singleton. */
   private static MersenneTwister self = new MersenneTwister();
 
-  
   /**
-   * Return the singleton
+   * Return the singleton.
+   *
    * @return the singleton
    */
-  public static MersenneTwister getInstance(){
+  public static MersenneTwister getInstance() {
     return self;
   }
-  
-  
 
   /**
    * Constructor using the default seed.
@@ -231,11 +222,10 @@ public final class MersenneTwister extends java.util.Random  {
    * 
    * @param seed DOCUMENT_ME
    */
-  private  MersenneTwister(final long seed) {
+  private MersenneTwister(final long seed) {
     super(seed); /* just in case */
     setSeed(seed);
   }
-
 
   /**
    * Initialize the pseudo random number generator.  Don't
@@ -265,13 +255,13 @@ public final class MersenneTwister extends java.util.Random  {
     }
   }
 
-   /**
-   * Returns an integer with <i>bits</i> bits filled with a random number.
-   * 
-   * @param bits DOCUMENT_ME
-   * 
-   * @return the int
-   */
+  /**
+  * Returns an integer with <i>bits</i> bits filled with a random number.
+  * 
+  * @param bits DOCUMENT_ME
+  * 
+  * @return the int
+  */
   @Override
   synchronized protected int next(final int bits) {
     int y;
@@ -309,7 +299,6 @@ public final class MersenneTwister extends java.util.Random  {
    * If you've got a truly old version of Java, you can omit these two next methods.
    */
 
- 
   /**
    * This method is missing from jdk 1.0.x and below.  JDK 1.1
    * includes this for us, but what the heck.
@@ -443,7 +432,7 @@ public final class MersenneTwister extends java.util.Random  {
 
   @Override
   public void nextBytes(final byte[] bytes) {
-    for (int x = 0; x < bytes.length; x++){
+    for (int x = 0; x < bytes.length; x++) {
       bytes[x] = (byte) next(8);
     }
   }
@@ -459,7 +448,6 @@ public final class MersenneTwister extends java.util.Random  {
     return (char) (next(16));
   }
 
- 
   /**
    * For completeness' sake, though it's not in java.util.Random.
    * 
@@ -469,5 +457,5 @@ public final class MersenneTwister extends java.util.Random  {
   public byte nextByte() {
     return (byte) (next(8));
   }
-   
+
 }

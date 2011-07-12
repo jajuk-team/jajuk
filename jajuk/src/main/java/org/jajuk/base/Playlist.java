@@ -160,7 +160,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     final int index = al.size();
     addFile(index, file);
   }
-  
+
   /**
    * Add a file to this playlist. at a given index.
    * 
@@ -312,6 +312,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * 
    * @return comparison result
    */
+  @Override
   public int compareTo(final Playlist o) {
     // not equal if other is null
     if (o == null) {
@@ -403,8 +404,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
         return sAbs;
       }
       final Directory dCurrent = getDirectory();
-      final StringBuilder sbOut = new StringBuilder(dCurrent.getDevice().getUrl()).append(
-          dCurrent.getRelativePath()).append(java.io.File.separatorChar).append(getName());
+      final StringBuilder sbOut = new StringBuilder(dCurrent.getDevice().getUrl())
+          .append(dCurrent.getRelativePath()).append(java.io.File.separatorChar).append(getName());
       sAbs = sbOut.toString();
     } else {
       // smart playlist path depends on the user selected from the save as
@@ -641,8 +642,9 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     if ((alFiles == null) || (alFiles.size() == 0)) {
       Messages.showErrorMessage(18);
     } else {
-      QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alFiles), Conf
-          .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
+      QueueModel.push(
+          UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alFiles),
+              Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
     }
   }
 
@@ -720,10 +722,10 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
 
   /**
    * Save as... the playlist
-   * 
+   *
    * @throws JajukException the jajuk exception
-   * @throws InvocationTargetException the invocation target exception
    * @throws InterruptedException the interrupted exception
+   * @throws InvocationTargetException the invocation target exception
    */
   public void saveAs() throws JajukException, InterruptedException, InvocationTargetException {
     FileChooserRunnable runnable = new FileChooserRunnable();
@@ -905,8 +907,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
     @Override
     public void run() {
       try {
-        final JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(PlaylistFilter
-            .getInstance()));
+        final JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(
+            PlaylistFilter.getInstance()));
         jfchooser.setDialogType(JFileChooser.SAVE_DIALOG);
         jfchooser.setAcceptDirectories(true);
         String sPlaylist = Const.DEFAULT_PLAYLIST_FILE;

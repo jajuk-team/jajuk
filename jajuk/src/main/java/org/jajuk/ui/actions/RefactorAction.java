@@ -180,8 +180,8 @@ public class RefactorAction {
 
       // Register and scans new directories
       String sFirstDir = null;
-      final String sTest[] = sPathname.split(fCurrent.getDevice().getFIO().getPath().replace("\\",
-          "\\\\"));
+      final String sTest[] = sPathname.split(fCurrent.getDevice().getFIO().getPath()
+          .replace("\\", "\\\\"));
       sFirstDir = sTest[1].split("\\" + RefactorAction.sFS)[1];
 
       final Directory dir = DirectoryManager.getInstance().registerDirectory(

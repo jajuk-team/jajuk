@@ -71,9 +71,8 @@ public class NewFolderAction extends JajukAction {
         .getClientProperty(Const.DETAIL_SELECTION);
     final Item currentItem = alSelected.get(0);
 
-    final String folderName = JOptionPane.showInputDialog(null, Messages
-        .getString("NewFolderAction.1")
-        + "\n\n");
+    final String folderName = JOptionPane.showInputDialog(null,
+        Messages.getString("NewFolderAction.1") + "\n\n");
     if ((folderName != null) && (folderName.length() > 0)) {
       // If selected item is a directory, extract the associated root
       // directory

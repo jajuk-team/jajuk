@@ -92,10 +92,9 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Register a genre with a known id.
-   * 
-   * @param sName DOCUMENT_ME
+   *
    * @param sId DOCUMENT_ME
-   * 
+   * @param sName DOCUMENT_ME
    * @return the genre
    */
   Genre registerGenre(String sId, String sName) {

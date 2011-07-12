@@ -77,8 +77,9 @@ public class PlayAlbumSelectionAction extends SelectionAction {
           // Select all files from the first found album
           Album album = ((Track) selection.get(0)).getAlbum();
           List<File> files = UtilFeatures.getPlayableFiles(album);
-          QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
-              .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
+          QueueModel.push(
+              UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files),
+                  Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
         } catch (Exception e) {
           Log.error(e);
         }

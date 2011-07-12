@@ -123,12 +123,12 @@ public class WebRadioWizard extends Wizard {
       jbNew = new JButton(Messages.getString("RadioWizard.2"), IconLoader.getIcon(JajukIcons.NEW));
       jbNew.addActionListener(this);
       jbNew.setToolTipText(Messages.getString("RadioWizard.2"));
-      jbDelete = new JButton(Messages.getString("RadioWizard.3"), IconLoader
-          .getIcon(JajukIcons.DELETE));
+      jbDelete = new JButton(Messages.getString("RadioWizard.3"),
+          IconLoader.getIcon(JajukIcons.DELETE));
       jbDelete.addActionListener(this);
       jbDelete.setToolTipText(Messages.getString("RadioWizard.3"));
-      jbDefaults = new JButton(Messages.getString("RadioWizard.4"), IconLoader
-          .getIcon(JajukIcons.DEFAULTS));
+      jbDefaults = new JButton(Messages.getString("RadioWizard.4"),
+          IconLoader.getIcon(JajukIcons.DEFAULTS));
       jbDefaults.addActionListener(this);
       jbDefaults.setToolTipText(Messages.getString("RadioWizard.4"));
       jpButtons.add(jbNew);
@@ -321,10 +321,9 @@ public class WebRadioWizard extends Wizard {
 
   /**
    * Gets the widget index.
-   * 
-   * @param widget DOCUMENT_ME
+   *
    * @param widgets DOCUMENT_ME
-   * 
+   * @param widget DOCUMENT_ME
    * @return index of a given widget row in the widget table
    */
   private static int getWidgetIndex(JComponent[][] widgets, JComponent widget) {

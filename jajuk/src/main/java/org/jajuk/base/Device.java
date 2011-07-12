@@ -76,8 +76,21 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   private static final int OPTION_REFRESH_CANCEL = 2;
 
   // Device type constants
+  /**
+   * DOCUMENT_ME.
+   */
   public enum Type {
-    DIRECTORY, FILES_CD, NETWORK_DRIVE, EXTDD, PLAYER
+    
+    /** DOCUMENT_ME. */
+    DIRECTORY, 
+ /** DOCUMENT_ME. */
+ FILES_CD, 
+ /** DOCUMENT_ME. */
+ NETWORK_DRIVE, 
+ /** DOCUMENT_ME. */
+ EXTDD, 
+ /** DOCUMENT_ME. */
+ PLAYER
   }
 
   /** Device URL (performances). */
@@ -110,7 +123,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   /** Refresh deepness choice *. */
   private int choice = Device.OPTION_REFRESH_DEEP;
 
-  /** [PERF] cache rootDir directory */
+  /** [PERF] cache rootDir directory. */
   private Directory rootDir;
 
   /**
@@ -365,8 +378,9 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Return label for a type
-   * @param type
+   * Return label for a type.
+   *
+   * @param type DOCUMENT_ME
    * @return label for a type
    */
   public static String getTypeLabel(Type type) {
@@ -417,6 +431,11 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * Return large icon representation of the device
    * @Return large icon representation of the device
    */
+  /**
+   * Gets the icon representation large.
+   *
+   * @return the icon representation large
+   */
   public ImageIcon getIconRepresentationLarge() {
     if (getType() == Type.DIRECTORY) {
       return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED),
@@ -440,11 +459,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Return the right icon between mounted or unmounted
-   * 
+   * Return the right icon between mounted or unmounted.
+   *
    * @param mountedIcon The icon to return for a mounted device
    * @param unmountedIcon The icon to return for an unmounted device
-   * 
    * @return Returns either of the two provided icons depending on the state of
    * the device
    */
@@ -659,7 +677,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Return whether a device maps a void directory
+   * Return whether a device maps a void directory.
+   *
    * @return whether a device maps a void directory
    */
   private boolean isVoid() {
@@ -668,7 +687,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   }
 
   /**
-   * Return whether the device path exists at this time
+   * Return whether the device path exists at this time.
+   *
    * @return whether the device path exists at this time
    */
   private boolean pathExists() {

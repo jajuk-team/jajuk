@@ -110,7 +110,7 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
   /** User chosen workspace location. */
   private String userWorkspacePath;
 
-  /** Any new device we created using this wizard */
+  /** Any new device we created using this wizard. */
   private static Device newDevice;
 
   /**
@@ -123,7 +123,8 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
   }
 
   /**
-   * Gets any new device created through this wizard
+   * Gets any new device created through this wizard.
+   *
    * @return any new device created through this wizard
    */
   public static Device getNewDevice() {

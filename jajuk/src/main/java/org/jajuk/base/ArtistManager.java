@@ -90,10 +90,9 @@ public final class ArtistManager extends ItemManager {
 
   /**
    * Register an artist with a known id.
-   * 
-   * @param sName The name of the new artist.
+   *
    * @param sId the ID of the new artist.
-   * 
+   * @param sName The name of the new artist.
    * @return the artist
    */
   Artist registerArtist(String sId, String sName) {

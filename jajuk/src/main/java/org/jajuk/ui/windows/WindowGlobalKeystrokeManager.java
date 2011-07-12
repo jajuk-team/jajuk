@@ -37,6 +37,7 @@ import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import org.jajuk.ui.actions.ActionManager;
@@ -85,7 +86,7 @@ public class WindowGlobalKeystrokeManager {
         //--- Drop disabled keystrokes ---
 
         // Disable CTRL-Backspace : it closes the views due to VLDocking keystroke 
-        if (ke.getKeyCode() == KeyEvent.VK_BACK_SPACE && ke.getModifiers() == KeyEvent.CTRL_MASK) {
+        if (ke.getKeyCode() == KeyEvent.VK_BACK_SPACE && ke.getModifiers() == InputEvent.CTRL_MASK) {
           return true;
         }
 

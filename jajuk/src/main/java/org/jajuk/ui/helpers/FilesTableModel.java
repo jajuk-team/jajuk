@@ -165,7 +165,7 @@ public class FilesTableModel extends JajukTableModel {
         // show it if no sync option or if item is in the selection
         boolean bShowWithTree = !syncTreeTable
         // tree selection = null means none selection have been
-            // done in tree so far
+        // done in tree so far
             || treeSelection == null
             // check if the tree selection contains the current file
             || (treeSelection.size() > 0 && treeSelection.contains(file));

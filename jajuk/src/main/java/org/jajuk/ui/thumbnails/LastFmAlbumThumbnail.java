@@ -177,13 +177,13 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
       // popup thumb for ie)
       fCover = DownloadManager.downloadToCache(remote);
 
-      if(!fCover.exists()) {
-        Log.warn("Cache file not found: {{" + fCover.getAbsolutePath()+"}}");
+      if (!fCover.exists()) {
+        Log.warn("Cache file not found: {{" + fCover.getAbsolutePath() + "}}");
         return;
       }
 
-      if(fCover.length() == 0) {
-        Log.warn("Cache file has zero bytes: {{" + fCover.getAbsolutePath()+"}}");
+      if (fCover.length() == 0) {
+        Log.warn("Cache file has zero bytes: {{" + fCover.getAbsolutePath() + "}}");
         return;
       }
 
@@ -206,18 +206,18 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
       // stacktrace in the logfile as it is happening frequently
       Log.warn("Could not load image, timed out while reading address: {{" + e.getMessage() + "}}");
     } catch (IOException e) {
-      if(e.getMessage().contains(" 403 ")) {
+      if (e.getMessage().contains(" 403 ")) {
         Log.warn("Could not access webpage, returned error 403: " + e.getMessage());
       } else {
         Log.error(e);
       }
     } catch (Exception e) {
       Log.error(e);
-      
+
       // check for empty file to remove invalid cache entries
-      if(fCover.exists() && fCover.length() == 0) {
+      if (fCover.exists() && fCover.length() == 0) {
         Log.warn("Removing empty file from cache: " + fCover.getAbsolutePath());
-        if(!fCover.delete()) {
+        if (!fCover.delete()) {
           Log.warn("Error removing file: " + fCover.getAbsolutePath());
         }
       }
@@ -251,8 +251,8 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
     }
     if (bKnown) {
       // Album known in collection, display its name in bold
-      jlTitle = new JLabel(UtilString.getLimitedString(fullTitle, textLength), IconLoader
-          .getIcon(JajukIcons.ALBUM), SwingConstants.CENTER);
+      jlTitle = new JLabel(UtilString.getLimitedString(fullTitle, textLength),
+          IconLoader.getIcon(JajukIcons.ALBUM), SwingConstants.CENTER);
       jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
     } else {
       jlTitle = new JLabel(UtilString.getLimitedString(fullTitle, textLength));

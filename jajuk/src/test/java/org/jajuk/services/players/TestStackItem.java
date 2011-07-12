@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.players;
 
@@ -26,12 +26,14 @@ import org.jajuk.base.File;
 import org.jajuk.util.error.JajukException;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestStackItem extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.StackItem#hashCode()}.
+   *
+   * @throws Exception the exception
    */
   public void testHashCode() throws Exception {
     File file = JUnitHelpers.getFile("file1", true);
@@ -42,7 +44,9 @@ public class TestStackItem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.StackItem#StackItem(org.jajuk.base.File)}
    * .
    */
@@ -59,7 +63,9 @@ public class TestStackItem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.StackItem#StackItem(org.jajuk.base.File, boolean)}
    * .
    */
@@ -76,7 +82,9 @@ public class TestStackItem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.StackItem#StackItem(org.jajuk.base.File, boolean, boolean)}
    * .
    */
@@ -94,6 +102,8 @@ public class TestStackItem extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.StackItem#isRepeat()}.
+   *
+   * @throws Exception the exception
    */
   public void testIsAndSetRepeat() throws Exception {
     StackItem item = new StackItem(JUnitHelpers.getFile("file1", true));
@@ -104,6 +114,8 @@ public class TestStackItem extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.StackItem#JUnitHelpers.getFile()}.
+   *
+   * @throws Exception the exception
    */
   public void testgetFile() throws Exception {
     StackItem item = new StackItem(JUnitHelpers.getFile("file1", true));
@@ -113,6 +125,8 @@ public class TestStackItem extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.players.StackItem#isUserLaunch()}
    * .
+   *
+   * @throws Exception the exception
    */
   public void testIsAndSetUserLaunch() throws Exception {
     StackItem item = new StackItem(JUnitHelpers.getFile("file1", true));
@@ -123,6 +137,8 @@ public class TestStackItem extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.StackItem#isPlanned()}.
+   *
+   * @throws Exception the exception
    */
   public void testIsAndSetPlanned() throws Exception {
     StackItem item = new StackItem(JUnitHelpers.getFile("file1", true));
@@ -133,6 +149,8 @@ public class TestStackItem extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.StackItem#clone()}.
+   *
+   * @throws Exception the exception
    */
   public void testClone() throws Exception {
     StackItem item = new StackItem(JUnitHelpers.getFile("file1", true));
@@ -140,7 +158,9 @@ public class TestStackItem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.StackItem#equals(java.lang.Object)}.
    */
   public void testEqualsObject() throws Exception {
@@ -153,6 +173,8 @@ public class TestStackItem extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.StackItem#toString()}.
+   *
+   * @throws Exception the exception
    */
   public void testToString() throws Exception {
     StackItem item = new StackItem(JUnitHelpers.getFile("file1", true));

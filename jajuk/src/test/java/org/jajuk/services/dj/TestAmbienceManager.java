@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.dj;
 
@@ -35,10 +35,13 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestAmbienceManager extends JajukTestCase {
 
+  /* (non-Javadoc)
+   * @see org.jajuk.JajukTestCase#setUp()
+   */
   @Override
   protected void setUp() throws Exception {
     // clean out all leftover ambiences from other testing
@@ -50,7 +53,8 @@ public class TestAmbienceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.AmbienceManager#getRegistrationKeys()}.
    */
   public final void testGetRegistrationKeys() {
@@ -68,8 +72,8 @@ public class TestAmbienceManager extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.dj.AmbienceManager#load()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public final void testLoad() throws Exception {
     // make sure "UpgradeManager.bFirstSession" is not set
@@ -108,8 +112,7 @@ public class TestAmbienceManager extends JajukTestCase {
     // then add set some Ambience-items
     Genre genre1 = GenreManager.getInstance().registerGenre("genre1");
     Genre genre2 = GenreManager.getInstance().registerGenre("genre2");
-    Conf
-        .setProperty(Const.AMBIENCE_PREFIX + "12/myambience", genre1.getID() + "," + genre2.getID());
+    Conf.setProperty(Const.AMBIENCE_PREFIX + "12/myambience", genre1.getID() + "," + genre2.getID());
     assertEquals(0, AmbienceManager.getInstance().getAmbiences().size());
 
     { // check all the conditions to find out why it fails in Hudson
@@ -151,7 +154,8 @@ public class TestAmbienceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.AmbienceManager#getAmbiences()}.
    */
   public final void testGetAmbiences() {
@@ -159,7 +163,8 @@ public class TestAmbienceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.AmbienceManager#getAmbience(java.lang.String)}
    * .
    */
@@ -171,7 +176,8 @@ public class TestAmbienceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.AmbienceManager#getAmbienceByName(java.lang.String)}
    * .
    */
@@ -182,6 +188,10 @@ public class TestAmbienceManager extends JajukTestCase {
     assertNotNull(AmbienceManager.getInstance().getAmbienceByName(Messages.getString("Ambience.9")));
   }
 
+  /**
+   * Test get ambience by name invalid.
+   * DOCUMENT_ME
+   */
   public final void testGetAmbienceByNameInvalid() {
     // this creates the 14 default ambiences
     AmbienceManager.getInstance().createDefaultAmbiences();
@@ -190,7 +200,8 @@ public class TestAmbienceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.AmbienceManager#registerAmbience(org.jajuk.services.dj.Ambience)}
    * .
    */
@@ -201,7 +212,8 @@ public class TestAmbienceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.AmbienceManager#getSelectedAmbience()}.
    */
   public final void testGetSelectedAmbience() {
@@ -218,7 +230,8 @@ public class TestAmbienceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.AmbienceManager#update(org.jajuk.events.JajukEvent)}
    * .
    */
@@ -258,7 +271,8 @@ public class TestAmbienceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.AmbienceManager#removeAmbience(java.lang.String)}
    * .
    */
@@ -274,7 +288,8 @@ public class TestAmbienceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.AmbienceManager#createDefaultAmbiences()}.
    */
   public final void testCreateDefaultAmbiences() {

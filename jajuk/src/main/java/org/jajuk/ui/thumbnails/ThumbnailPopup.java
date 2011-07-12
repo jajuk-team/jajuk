@@ -39,8 +39,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import javax.swing.event.HyperlinkEvent.EventType;
+import javax.swing.event.HyperlinkListener;
 
 import org.jajuk.base.Artist;
 import org.jajuk.base.ArtistManager;
@@ -95,9 +95,10 @@ public class ThumbnailPopup extends JWindow {
       }
     }
     text.setCursor(UtilGUI.WAIT_CURSOR);
-    QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(toPlay), Conf
-        .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
-        .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+    QueueModel.push(
+        UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(toPlay),
+            Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true),
+        Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
     // Change icon cursor and wait a while so user can see it in case
     // the PUSH_ON_CLICK option is set, otherwise, user may think
     // nothing appened.

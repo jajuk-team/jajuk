@@ -265,12 +265,9 @@ public interface ITagImpl {
 
   /**
    * Set value of tagFieldKey.
-   * 
+   *
    * @param tagFieldKey DOCUMENT_ME
    * @param tagFieldValue DOCUMENT_ME
-   * 
-   * @throws FieldDataInvalidException the field data invalid exception
-   * @throws KeyNotFoundException the key not found exception
    * @throws Exception the exception
    */
   public void setTagField(String tagFieldKey, String tagFieldValue) throws Exception;
@@ -281,11 +278,12 @@ public interface ITagImpl {
    * @return the supported tag fields
    */
   public List<String> getSupportedTagFields();
-  
+
   /**
-   * Gets the embedded covers. 
-   * 
+   * Gets the embedded covers.
+   *
    * @return the covers or a void list if none.
+   * @throws Exception the exception
    */
   public List<Cover> getCovers() throws Exception;
 

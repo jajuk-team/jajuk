@@ -38,6 +38,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.WindowConstants;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -65,10 +66,10 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-  
+
   /** DOCUMENT_ME. */
   private JList availableTagsJList;
-  
+
   /** DOCUMENT_ME. */
   private JList activatedTagsJList;
 
@@ -77,7 +78,7 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
 
   /** DOCUMENT_ME. */
   private List<String> availableList = new ArrayList<String>();
-  
+
   /** DOCUMENT_ME. */
   private List<String> activatedList = new ArrayList<String>();
 
@@ -87,7 +88,7 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
   public ExtraTagsConfigurationWizard() {
     super(JajukMainWindow.getInstance(), true);
     setTitle(Messages.getString("JajukWindow.40"));
-    setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     initUI();
     refreshList();
     populate();

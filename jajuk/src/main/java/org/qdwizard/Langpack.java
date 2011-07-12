@@ -50,8 +50,8 @@ public class Langpack {
     strings.put(new Locale("el"), Arrays.asList("Τέλος", "Ακύρωση", "Προηγούμενο", "Επόμενο"));
     strings.put(new Locale("fr"), Arrays.asList("Terminé", "Annuler", "Précédent", "Suivant"));
     strings.put(new Locale("gl"), Arrays.asList("Rematar", "Cancelar", "Anterior", "Seguinte"));
-    strings.put(new Locale("nl"), Arrays.asList("Afgerond", "Annuleren", "Vooropgaand",
-        "Aanstaande"));
+    strings.put(new Locale("nl"),
+        Arrays.asList("Afgerond", "Annuleren", "Vooropgaand", "Aanstaande"));
     strings.put(new Locale("ru"), Arrays.asList("Готово", "Отмена", "Назад", "Дальше"));
     strings.put(new Locale("pt"), Arrays.asList("Terminar", "Cancelar", "Anterior", "Seguinte"));
   }

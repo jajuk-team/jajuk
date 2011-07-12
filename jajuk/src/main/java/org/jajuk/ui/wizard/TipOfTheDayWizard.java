@@ -195,8 +195,8 @@ public class TipOfTheDayWizard extends JFrame {
    */
   private final void updateTip() {
     tipArea.setText(TIPS[currentIndex]);
-    lCounter.setText(new StringBuilder().append("").append(currentIndex + 1).append("/").append(
-        TIPS.length).toString());
+    lCounter.setText(new StringBuilder().append("").append(currentIndex + 1).append("/")
+        .append(TIPS.length).toString());
     tipArea.setCaretPosition(0);
   }
 

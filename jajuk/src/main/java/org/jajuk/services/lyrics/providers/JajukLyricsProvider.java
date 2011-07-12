@@ -54,6 +54,7 @@ public class JajukLyricsProvider implements ILyricsProvider {
    * 
    * @return the lyrics
    */
+  @Override
   public String getLyrics() {
     return sLyrics;
   }
@@ -66,6 +67,7 @@ public class JajukLyricsProvider implements ILyricsProvider {
    * 
    * @return the response encoding
    */
+  @Override
   public String getResponseEncoding() {
     return "UTF-8";
   }

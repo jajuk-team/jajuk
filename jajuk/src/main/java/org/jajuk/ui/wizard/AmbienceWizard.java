@@ -306,16 +306,16 @@ public class AmbienceWizard extends Wizard {
           .getAmbiences());
       Collections.sort(AmbienceWizard.ambiences);
       setCanFinish(true);
-      jbNew = new JButton(Messages.getString("DigitalDJWizard.32"), IconLoader
-          .getIcon(JajukIcons.NEW));
+      jbNew = new JButton(Messages.getString("DigitalDJWizard.32"),
+          IconLoader.getIcon(JajukIcons.NEW));
       jbNew.addActionListener(this);
       jbNew.setToolTipText(Messages.getString("DigitalDJWizard.33"));
-      jbDelete = new JButton(Messages.getString("DigitalDJWizard.34"), IconLoader
-          .getIcon(JajukIcons.DELETE));
+      jbDelete = new JButton(Messages.getString("DigitalDJWizard.34"),
+          IconLoader.getIcon(JajukIcons.DELETE));
       jbDelete.addActionListener(this);
       jbDelete.setToolTipText(Messages.getString("DigitalDJWizard.35"));
-      jbDefaults = new JButton(Messages.getString("DigitalDJWizard.62"), IconLoader
-          .getIcon(JajukIcons.DEFAULTS));
+      jbDefaults = new JButton(Messages.getString("DigitalDJWizard.62"),
+          IconLoader.getIcon(JajukIcons.DEFAULTS));
       jbDefaults.addActionListener(this);
       jbDefaults.setToolTipText(Messages.getString("DigitalDJWizard.63"));
 
@@ -344,10 +344,9 @@ public class AmbienceWizard extends Wizard {
 
   /**
    * Gets the widget index.
-   * 
-   * @param widget DOCUMENT_ME
+   *
    * @param widgets DOCUMENT_ME
-   * 
+   * @param widget DOCUMENT_ME
    * @return index of a given widget row in the widget table
    */
   private static int getWidgetIndex(final JComponent[][] widgets, final JComponent widget) {

@@ -512,9 +512,8 @@ public class UtilPrepareParty {
       ret = launcher.exec(list.toArray(new String[list.size()]));
     } catch (IOException e) {
       ret = -1;
-      Log
-          .debug("Exception while checking for 'pacpl', cannot use functionality to convert media files while copying: "
-              + e.getMessage());
+      Log.debug("Exception while checking for 'pacpl', cannot use functionality to convert media files while copying: "
+          + e.getMessage());
     }
 
     // if we do not find the application or if we got an error, log some details
@@ -524,8 +523,7 @@ public class UtilPrepareParty {
       Log.debug("pacpl command returned to out(" + ret + "): " + out.toString());
       Log.debug("pacpl command returned to err: " + err.toString());
 
-      Log
-          .info("Cannot use functionality to convert media files, application 'pacpl' seems to be not available correctly.");
+      Log.info("Cannot use functionality to convert media files, application 'pacpl' seems to be not available correctly.");
       return false;
     }
 
@@ -591,8 +589,8 @@ public class UtilPrepareParty {
     Log.debug("Using this pacpl command: {{" + commandLog.toString() + "}}");
     final ProcessLauncher launcher = new ProcessLauncher(out, err);
     try {
-      ret = launcher.exec(list.toArray(new String[list.size()]), null, new java.io.File(System
-          .getProperty("java.io.tmpdir")));
+      ret = launcher.exec(list.toArray(new String[list.size()]), null,
+          new java.io.File(System.getProperty("java.io.tmpdir")));
     } catch (IOException e) {
       ret = -1;
       Log.error(e);
@@ -720,15 +718,15 @@ public class UtilPrepareParty {
 
           // inform the user about the number of resulting tracks
           StringBuilder sbOut = new StringBuilder();
-          sbOut.append(Messages.getString("PreparePartyWizard.31")).append(" ").append(
-              destDir.getAbsolutePath()).append(".\n").append(files.size()).append(" ").append(
-              Messages.getString("PreparePartyWizard.23")).append(" ").append(
-              ((refreshTime < 1000) ? refreshTime + " ms." : refreshTime / 1000 + " s."));
+          sbOut.append(Messages.getString("PreparePartyWizard.31")).append(" ")
+              .append(destDir.getAbsolutePath()).append(".\n").append(files.size()).append(" ")
+              .append(Messages.getString("PreparePartyWizard.23")).append(" ")
+              .append(((refreshTime < 1000) ? refreshTime + " ms." : refreshTime / 1000 + " s."));
 
           // inform user if converting did not work
           if (convert_errors > 0) {
-            sbOut.append("\n").append(Integer.toString(convert_errors)).append(
-                Messages.getString("PreparePartyWizard.36"));
+            sbOut.append("\n").append(Integer.toString(convert_errors))
+                .append(Messages.getString("PreparePartyWizard.36"));
           }
 
           String message = sbOut.toString();

@@ -1,7 +1,22 @@
-/**
- * @author balajihe from
- *         http://www.beginner-java-tutorial.com/scrollable-jpopupmenu.html
- * 
+/*
+ *  Jajuk
+ *  Copyright (C) 2003-2011 The Jajuk Team
+ *  http://jajuk.info
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
  */
 package ext.scrollablepopupmenu;
 
@@ -229,8 +244,8 @@ public class XCheckedButton extends JButton {
       fireStateChanged();
 
       // Send ItemEvent
-      fireItemStateChanged(new ItemEvent(this, ItemEvent.ITEM_STATE_CHANGED, this, this
-          .isSelected() ? ItemEvent.SELECTED : ItemEvent.DESELECTED));
+      fireItemStateChanged(new ItemEvent(this, ItemEvent.ITEM_STATE_CHANGED, this,
+          this.isSelected() ? ItemEvent.SELECTED : ItemEvent.DESELECTED));
 
       XCheckedButton.this.displayIcon(set | iconAlwaysVisible);
 

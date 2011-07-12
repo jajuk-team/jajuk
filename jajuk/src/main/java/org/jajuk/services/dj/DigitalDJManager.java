@@ -459,8 +459,8 @@ class DigitalDJFactoryProportionImpl extends DigitalDJFactory {
       protected void othersTags(String sQname, Attributes attributes) {
         if (Const.XML_DJ_PROPORTION.equals(sQname)) {
           genres = attributes.getValue(attributes.getIndex(Const.XML_DJ_GENRES));
-          proportion = Float.parseFloat(attributes
-              .getValue(attributes.getIndex(Const.XML_DJ_VALUE)));
+          proportion = Float
+              .parseFloat(attributes.getValue(attributes.getIndex(Const.XML_DJ_VALUE)));
           StringTokenizer st = new StringTokenizer(genres, ",");
           Ambience ambience = new Ambience(Long.toString(System.currentTimeMillis()), "");
           while (st.hasMoreTokens()) {

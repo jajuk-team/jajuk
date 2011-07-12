@@ -99,8 +99,8 @@ public final class History extends DefaultHandler implements HighPriorityObserve
         Const.DETAIL_CURRENT_FILE_ID) != null
         && ObservationManager.getDetailLastOccurence(JajukEvents.FILE_LAUNCHED,
             Const.DETAIL_CURRENT_DATE) != null) {
-      update(new JajukEvent(JajukEvents.FILE_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
+      update(new JajukEvent(JajukEvents.FILE_LAUNCHED,
+          ObservationManager.getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
     }
     // Fill date formatter
     formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"), Locale.getDefault());
@@ -247,10 +247,8 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * Write history on disk.
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
-   * 
-   * @exception IOException
    */
   public static void commit() throws IOException {
     if (lDateStart == 0) {
@@ -276,8 +274,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * Read history from disk.
-   * 
-   * @exception JajukException
+   *
    */
   public static void load() {
     try {
@@ -327,12 +324,9 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * parsing warning.
-   * 
+   *
    * @param spe DOCUMENT_ME
-   * 
    * @throws SAXException the SAX exception
-   * 
-   * @exception SAXException
    */
   @Override
   public void warning(SAXParseException spe) throws SAXException {
@@ -342,12 +336,9 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * parsing error.
-   * 
+   *
    * @param spe DOCUMENT_ME
-   * 
    * @throws SAXException the SAX exception
-   * 
-   * @exception SAXException
    */
   @Override
   public void error(SAXParseException spe) throws SAXException {
@@ -357,12 +348,9 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * parsing fatal error.
-   * 
+   *
    * @param spe DOCUMENT_ME
-   * 
    * @throws SAXException the SAX exception
-   * 
-   * @exception SAXException
    */
   @Override
   public void fatalError(SAXParseException spe) throws SAXException {

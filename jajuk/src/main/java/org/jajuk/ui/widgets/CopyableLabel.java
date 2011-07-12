@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.widgets;
 
@@ -25,17 +25,16 @@ import javax.swing.JTextField;
 import org.jajuk.util.log.Log;
 
 /**
- * A label that user whom users can copy content
+ * A label that user whom users can copy content.
  */
 public class CopyableLabel extends JTextField {
 
-  /**
-   * Default serial UID
-   */
+  /** Default serial UID. */
   private static final long serialVersionUID = 1L;
 
   /**
-   * Build a Copyable label
+   * Build a Copyable label.
+   *
    * @param text : text to display
    */
   public CopyableLabel(String text) {
@@ -46,7 +45,7 @@ public class CopyableLabel extends JTextField {
   }
 
   /**
-   * Override setText() method to make sure users can't change it
+   * Override setText() method to make sure users can't change it.
    */
   public void setText() {
     Log.debug("Label edition is not allowed");

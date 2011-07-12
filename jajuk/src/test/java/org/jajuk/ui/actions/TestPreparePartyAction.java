@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.actions;
 
@@ -48,12 +48,13 @@ import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestPreparePartyAction extends JajukTestCase {
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.actions.PreparePartyAction#perform(java.awt.event.ActionEvent)}
    * .
    */
@@ -62,10 +63,10 @@ public class TestPreparePartyAction extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.ui.actions.PreparePartyAction#PreparePartyAction()}.
-   * 
-   * @throws Exception
    */
   public void testPreparePartyAction() throws Exception {
     PreparePartyAction action = new PreparePartyAction();
@@ -99,6 +100,14 @@ public class TestPreparePartyAction extends JajukTestCase {
     }
   }
 
+  /**
+   * Gets the playlist.
+   *
+   * @param i DOCUMENT_ME
+   * @param register DOCUMENT_ME
+   * @return the playlist
+   * @throws Exception the exception
+   */
   private static Playlist getPlaylist(int i, boolean register) throws Exception {
     Genre genre = JUnitHelpers.getGenre();
     Album album = JUnitHelpers.getAlbum("name", 23);

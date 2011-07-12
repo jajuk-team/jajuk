@@ -75,11 +75,10 @@ public final class Player {
 
   /**
    * Asynchronous play for specified file with specified time interval.
-   * 
+   *
    * @param file to play
-   * @param length in ms
    * @param fPosition DOCUMENT_ME
-   * 
+   * @param length in ms
    * @return true if play is OK
    */
   public static boolean play(final File file, final float fPosition, final long length) {
@@ -238,8 +237,8 @@ public final class Player {
 
   /**
    * Alternative Mute/unmute the player.
-   * 
-   * @throws Exception    */
+   *
+   */
   public static void mute() {
     // Ignore mute changes if Bit-perfect mode is enabled
     // See code should not normally be called because we
@@ -254,10 +253,9 @@ public final class Player {
 
   /**
    * Mute/unmute the player.
-   * 
+   *
    * @param pMute DOCUMENT_ME
-   * 
-   * @throws Exception    */
+   */
   public static void mute(boolean pMute) {
     // Ignore mute changes if Bit-perfect mode is enabled
     // See code should not normally be called because we
@@ -288,20 +286,18 @@ public final class Player {
 
   /**
    * Checks if is muted.
-   * 
+   *
    * @return whether the player is muted or not
-   * 
-   * @throws Exception    */
+   */
   public static boolean isMuted() {
     return bMute;
   }
 
   /**
    * Set the gain.
-   * 
+   *
    * @param pVolume DOCUMENT_ME
-   * 
-   * @throws Exception    */
+   */
   public static void setVolume(float pVolume) {
     // Ignore volume changes if Bit-perfect mode is enabled
     // See code should not normally be called because we

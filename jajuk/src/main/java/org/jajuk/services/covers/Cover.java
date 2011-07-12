@@ -81,11 +81,12 @@ public class Cover implements Comparable<Cover>, Const {
     LOCAL_COVER,
 
     // cover stored in the tag of a file
+    /** DOCUMENT_ME. */
     TAG_COVER,
-    
+
     /** DOCUMENT_ME. */
     STANDARD_COVER,
-    
+
     /** DOCUMENT_ME. */
     SELECTED_COVER
   }
@@ -104,9 +105,9 @@ public class Cover implements Comparable<Cover>, Const {
 
   /**
    * Constructor for remote covers.
-   * 
-   * @param type DOCUMENT_ME
+   *
    * @param url DOCUMENT_ME
+   * @param type DOCUMENT_ME
    */
   public Cover(final URL url, final CoverType type) {
     this.url = url;
@@ -120,10 +121,9 @@ public class Cover implements Comparable<Cover>, Const {
 
   /**
    * Constructor for local covers.
-   * 
-   * @param type DOCUMENT_ME
+   *
    * @param localFile DOCUMENT_ME
-   * 
+   * @param type DOCUMENT_ME
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public Cover(final File localFile, final CoverType type) throws IOException {
@@ -209,11 +209,10 @@ public class Cover implements Comparable<Cover>, Const {
 
   /**
    * Gets the image.
-   * 
+   *
    * @return Returns the image.
-   * 
-   * @throws InterruptedException the interrupted exception
    * @throws IOException Signals that an I/O exception has occurred.
+   * @throws InterruptedException the interrupted exception
    * @throws JajukException the jajuk exception
    */
   public Image getImage() throws IOException, InterruptedException, JajukException {

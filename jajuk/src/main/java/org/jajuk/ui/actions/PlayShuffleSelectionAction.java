@@ -72,8 +72,9 @@ public class PlayShuffleSelectionAction extends SelectionAction {
           PlayShuffleSelectionAction.super.perform(e);
           List<File> files = UtilFeatures.getPlayableFiles(selection);
           Collections.shuffle(files, UtilSystem.getRandom());
-          QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
-              .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
+          QueueModel.push(
+              UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files),
+                  Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
         } catch (Exception e) {
           Log.error(e);
         }

@@ -211,15 +211,13 @@ public class Messages extends DefaultHandler {
   /**
    * ***************************************************************************
    * Parse a fake properties file inside an XML file as CDATA.
-   * 
+   *
    * @param locale DOCUMENT_ME
-   * 
    * @return a properties with all entries
-   * 
-   * @throws IOException Signals that an I/O exception has occurred.
    * @throws SAXException the SAX exception
+   * @throws IOException Signals that an I/O exception has occurred.
    * @throws ParserConfigurationException the parser configuration exception
-   * @throws Exception    */
+   */
   private static Properties parseLangpack(final Locale locale) throws SAXException, IOException,
       ParserConfigurationException {
     final Properties lProperties = new Properties();
@@ -306,11 +304,10 @@ public class Messages extends DefaultHandler {
    * CAUTION! the thread which calls this method musn't have locks on resources
    * : otherwise it can conduct to GUI freeze
    * </p>.
-   * 
+   *
    * @param sText : dialog text
-   * @param iType message type like JOptionPane.WARNING
    * @param optionsType DOCUMENT_ME
-   * 
+   * @param iType message type like JOptionPane.WARNING
    * @return the choice
    */
   public static int getChoice(final String sText, final int optionsType, final int iType) {
@@ -440,9 +437,9 @@ public class Messages extends DefaultHandler {
 
   /**
    * Show a dialog with specified error message and infosup and details.
-   * 
-   * @param sInfoSup DOCUMENT_ME
+   *
    * @param code DOCUMENT_ME
+   * @param sInfoSup DOCUMENT_ME
    * @param sDetails DOCUMENT_ME
    */
   public static void showDetailedErrorMessage(final int code, final String sInfoSup,
@@ -516,12 +513,11 @@ public class Messages extends DefaultHandler {
 
   /**
    * Gets the properties.
-   * 
+   *
    * @return Returns the properties.
-   * 
-   * @throws ParserConfigurationException the parser configuration exception
-   * @throws IOException Signals that an I/O exception has occurred.
    * @throws SAXException the SAX exception
+   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws ParserConfigurationException the parser configuration exception
    */
   public static Properties getProperties() throws SAXException, IOException,
       ParserConfigurationException {

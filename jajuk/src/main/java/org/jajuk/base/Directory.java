@@ -66,9 +66,9 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Directory constructor.
-   * 
-   * @param sName DOCUMENT_ME
+   *
    * @param sId DOCUMENT_ME
+   * @param sName DOCUMENT_ME
    * @param dParent DOCUMENT_ME
    * @param device DOCUMENT_ME
    */
@@ -368,9 +368,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Return list of albums for current directory.
-   * 
-   * @param 
-   * 
+   *
    * @return list of albums for current directory
    */
   public Set<Album> getAlbums() {
@@ -384,11 +382,10 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Scan music.
-   * 
+   *
+   * @param music DOCUMENT_ME
    * @param bDeepScan DOCUMENT_ME
    * @param reporter DOCUMENT_ME
-   * @param music DOCUMENT_ME
-   * 
    * @throws JajukException the jajuk exception
    */
   private void scanMusic(java.io.File music, boolean bDeepScan, RefreshReporter reporter)
@@ -467,8 +464,9 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Register file.
-   * 
+   *
    * @param music DOCUMENT_ME
+   * @param sFileId DOCUMENT_ME
    * @param sTrackName DOCUMENT_ME
    * @param sAlbumName DOCUMENT_ME
    * @param sArtistName DOCUMENT_ME
@@ -479,11 +477,9 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @param sComment DOCUMENT_ME
    * @param lOrder DOCUMENT_ME
    * @param sAlbumArtist DOCUMENT_ME
+   * @param oldDiskID DOCUMENT_ME
    * @param discID DOCUMENT_ME
    * @param discNumber DOCUMENT_ME
-   * @param sFileId DOCUMENT_ME
-   * @param oldDiskID DOCUMENT_ME
-   * 
    * @return the track
    */
   private Track registerFile(java.io.File music, String sFileId, String sTrackName,
@@ -742,7 +738,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     return icon;
   }
 
- 
   /**
    * Refresh the directory synchronously, no dialog. <br>
    * This method is only a wrapper to Device.refreshCommand() method

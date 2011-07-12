@@ -94,7 +94,7 @@ public class ParameterView extends ViewAdapter {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** GUI updater */
+  /** GUI updater. */
   private ParameterViewGUIHelper updateHelper = new ParameterViewGUIHelper(this);
 
   /** The Constant NOTIFICATOR_PREFIX. DOCUMENT_ME */
@@ -411,8 +411,6 @@ public class ParameterView extends ViewAdapter {
     super();
   }
 
- 
-
   /*
    * (non-Javadoc)
    * 
@@ -604,11 +602,10 @@ public class ParameterView extends ViewAdapter {
   }
 
   /**
-  * Inits the sound tab
-  * 
-  *
-  * @return the jpanel
-  */
+   * Inits the sound tab.
+   *
+   * @return the jpanel
+   */
   private JPanel initUISound() {
     JPanel jpSound = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[][grow,200:300:300]"));//NOSONAR
     JLabel jlCrossFadeDuration = new JLabel(Messages.getString("ParameterView.190"));
@@ -673,7 +670,7 @@ public class ParameterView extends ViewAdapter {
 
       @Override
       public boolean verify(final JComponent input) {
-        final JTextField tf = (JTextField) input;  //NOSONAR
+        final JTextField tf = (JTextField) input; //NOSONAR
         final String sText = tf.getText();
         try {
           final int iValue = Integer.parseInt(sText);
@@ -1339,8 +1336,6 @@ public class ParameterView extends ViewAdapter {
     updateHelper.updateGUIFromConf();
     ObservationManager.register(this);
   }
-
- 
 
   /*
    * (non-Javadoc)

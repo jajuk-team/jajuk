@@ -42,7 +42,7 @@ public interface Const {
   /** Time we wait after an error in ms. */
   int WAIT_AFTER_ERROR = 2000;
 
-  /** We need a fix size to have the same angle effect for every cover*/
+  /** We need a fix size to have the same angle effect for every cover. */
   int MIRROW_COVER_SIZE = 600;
 
   /** Default playlist name. */
@@ -104,8 +104,8 @@ public interface Const {
 
   /** Number of pixels around window at initial startup. */
   int FRAME_INITIAL_BORDER = 60;
-  
-  /** Maximum images cache size in MB */
+
+  /** Maximum images cache size in MB. */
   int MAX_IMAGES_CACHE_SIZE = 100;
 
   /** Default webradio. */
@@ -229,7 +229,7 @@ public interface Const {
 
   /** Cache directory name. */
   String FILE_CACHE = "cache";
- 
+
   /** Bat Converter to DOS 8.3 format */
   String FILE_FILENAME_CONVERTER = "converter.bat";
 
@@ -954,7 +954,7 @@ public interface Const {
 
   /** Show systray. */
   String CONF_SHOW_SYSTRAY = "jajuk.show_systray";
-  
+
   /** Enable Title view Animation. */
   String CONF_TITLE_ANIMATION = "jajuk.title_animation";
 
@@ -994,9 +994,9 @@ public interface Const {
   /** Remembered directory for parties. */
   String CONF_PREPARE_PARTY = "jajuk.prepare_party.";
 
-  /** Slashscreen flag */
+  /** Slashscreen flag. */
   String CONF_SPLASH_SCREEN = "jajuk.splashscreen";
-  
+
   /** Shuffle/novelties mode. */
   String MODE_ALBUM = "album";
 
@@ -1195,10 +1195,10 @@ public interface Const {
 
   /** Cached cover. */
   String XML_ALBUM_DISCOVERED_COVER = "cover_cache";
-  
+
   /** Selected cover. */
   String XML_ALBUM_SELECTED_COVER = "cover";
-  
+
   /** DOCUMENT_ME. */
   String XML_DIRECTORY_PARENT = "parent";
 
@@ -1341,17 +1341,17 @@ public interface Const {
       XML_DEVICE_SYNCHRO_SOURCE, XML_FILE_DATE, XML_TRACK_TOTAL_PLAYTIME, XML_TRACK_PREFERENCE,
       XML_TRACK_BANNED, XML_TRACK_DISC_NUMBER, XML_ALBUM_ARTIST, XML_ALBUM_DISC_ID };
 
-   /** Option name. */
+  /** Option name. */
   String PROPERTY_SEPARATOR = "Property_";
 
   // Formats
-   /** Option name. */
+  /** Option name. */
   String FORMAT_STRING = "Property_Format_String";
 
-   /** Option name. */
+  /** Option name. */
   String FORMAT_NUMBER = "Property_Format_Number";
 
-   /** Option name. */
+  /** Option name. */
   String FORMAT_BOOLEAN = "Property_Format_Boolean";
 
   /** Option name.. */
@@ -1445,8 +1445,8 @@ public interface Const {
 
   /** Option name. */
   String CONF_EXPLORER_PATH = "jajuk.explorer_path";
-  
-   /** Option name. */
+
+  /** Option name. */
   String CONF_BIT_PERFECT = "jajuk.bit_perfect";
 
   // Alarm actions

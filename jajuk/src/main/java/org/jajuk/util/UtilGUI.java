@@ -205,8 +205,8 @@ public final class UtilGUI {
         .getLocalGraphicsEnvironment();
     for (int i = 0; i < GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length; i++) {
       GraphicsDevice graphicsDevice = localGraphicsEnvironment.getScreenDevices()[i];
-      if (graphicsDevice.getDefaultConfiguration().getBounds().contains(
-          JajukMainWindow.getInstance().getLocation())) {
+      if (graphicsDevice.getDefaultConfiguration().getBounds()
+          .contains(JajukMainWindow.getInstance().getLocation())) {
         return graphicsDevice;
       }
     }
@@ -432,8 +432,8 @@ public final class UtilGUI {
     UIManager.put("InternalFrame.inactiveTitleForeground", foregroundInactive);
     UIManager.put("InternalFrame.activeTitleBackground", backgroundActive);
     UIManager.put("InternalFrame.inactiveTitleBackground", backgroundInactive);
-    UIManager.put("DockViewTitleBar.titleFont", FontManager.getInstance().getFont(
-        JajukFont.VIEW_FONT));
+    UIManager.put("DockViewTitleBar.titleFont",
+        FontManager.getInstance().getFont(JajukFont.VIEW_FONT));
 
     // Set windows decoration to look and feel
     JFrame.setDefaultLookAndFeelDecorated(true);
@@ -444,9 +444,9 @@ public final class UtilGUI {
   /**
    * Display given container at given position.
    *
+   * @param window DOCUMENT_ME
    * @param iFromTop max number of pixels from top
    * @param iFromLeft max number of pixels from left
-   * @param window DOCUMENT_ME
    */
   public static void setShuffleLocation(final Window window, final int iFromTop, final int iFromLeft) {
     window.setLocation((int) (Math.random() * iFromTop), (int) (Math.random() * iFromLeft)); //NOSONAR
@@ -589,9 +589,9 @@ public final class UtilGUI {
     BufferedImage coverImage = UtilGUI.toBufferedImage(img, Const.MIRROW_COVER_SIZE,
         Const.MIRROW_COVER_SIZE, true);
 
-    PerspectiveFilter filter1 = new PerspectiveFilter(0, angle, Const.MIRROW_COVER_SIZE - angle / 2,
-        (int) (angle * (5.0 / 3.0)), Const.MIRROW_COVER_SIZE - angle / 2, Const.MIRROW_COVER_SIZE, 0,
-        Const.MIRROW_COVER_SIZE + angle);
+    PerspectiveFilter filter1 = new PerspectiveFilter(0, angle,
+        Const.MIRROW_COVER_SIZE - angle / 2, (int) (angle * (5.0 / 3.0)), Const.MIRROW_COVER_SIZE
+            - angle / 2, Const.MIRROW_COVER_SIZE, 0, Const.MIRROW_COVER_SIZE + angle);
     coverImage = filter1.filter(coverImage, null);
 
     // reflection
@@ -928,8 +928,8 @@ public final class UtilGUI {
     Dimension screenSize = tk.getScreenSize();
     int screenHeight = screenSize.height;
     int screenWidth = screenSize.width;
-    window.setLocation((screenWidth / 2) - (window.getWidth() / 2), (screenHeight / 2)
-        - (window.getHeight() / 2));
+    window.setLocation((screenWidth / 2) - (window.getWidth() / 2),
+        (screenHeight / 2) - (window.getHeight() / 2));
   }
 
   /**
@@ -983,13 +983,12 @@ public final class UtilGUI {
     Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_MAIN_WINDOW));
 
     if (sdSlimbar.getWindowState() == WindowState.BUILT_DISPLAYED) {
-      Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer
-          .toString(Const.DISPLAY_MODE_SLIMBAR_TRAY));
+      Conf.setProperty(Const.CONF_STARTUP_DISPLAY,
+          Integer.toString(Const.DISPLAY_MODE_SLIMBAR_TRAY));
     }
 
     if (sdMainWindow.isDisplayed()) {
-      Conf
-          .setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_MAIN_WINDOW));
+      Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_MAIN_WINDOW));
     }
 
     // None window displayed ? set the tray only (if the show tray option is

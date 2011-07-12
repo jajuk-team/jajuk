@@ -96,10 +96,10 @@ public class QueueView extends PlaylistView {
   /** Last scrolled-item *. */
   private StackItem lastScrolledItem;
 
-  /** Stop after button */
+  /** Stop after button. */
   private JajukToggleButton jtbStopAfter;
 
-  /** Action when user clicks on stop after */
+  /** Action when user clicks on stop after. */
   ActionListener alStopAfter = new ActionListener() {
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -107,7 +107,7 @@ public class QueueView extends PlaylistView {
     }
   };
 
-  /** Action for auto scrolling */
+  /** Action for auto scrolling. */
   ActionListener alAutoScroll = new ActionListener() {
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -167,7 +167,7 @@ public class QueueView extends PlaylistView {
     jtb.add(jbUp);
     jtb.add(jbDown);
     jtb.add(jbClear);
-  
+
     // Add items
     jpEditorControl.setLayout(new MigLayout("insets 5", "[][grow][]"));
     jpEditorControl.add(jtb, "left,gapright 15::");

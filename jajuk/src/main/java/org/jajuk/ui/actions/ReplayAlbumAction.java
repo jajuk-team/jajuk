@@ -68,8 +68,8 @@ public class ReplayAlbumAction extends JajukAction {
                 files.add(track.getBestFile(true));
               }
               QueueModel.resetAround(QueueModel.getIndex(), current.getTrack().getAlbum());
-              QueueModel.push(UtilFeatures.createStackItems(files, Conf
-                  .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
+              QueueModel.push(UtilFeatures.createStackItems(files,
+                  Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
             }
           } catch (Exception e) {
             Log.error(e);

@@ -160,10 +160,10 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
     String artist = pArtist.replaceAll(" ", "_");
     String title = pTitle.replaceAll(" ", "_");
 
-    queryString = queryString.replace(Const.PATTERN_ARTIST, (artist != null) ? NetworkUtils
-        .encodeString(artist) : "");
-    queryString = queryString.replace(Const.PATTERN_TRACKNAME, (title != null) ? NetworkUtils
-        .encodeString(title) : "");
+    queryString = queryString.replace(Const.PATTERN_ARTIST,
+        (artist != null) ? NetworkUtils.encodeString(artist) : "");
+    queryString = queryString.replace(Const.PATTERN_TRACKNAME,
+        (title != null) ? NetworkUtils.encodeString(title) : "");
 
     java.net.URL out = null;
     try {

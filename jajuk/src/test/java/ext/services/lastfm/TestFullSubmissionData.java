@@ -16,19 +16,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package ext.services.lastfm;
 
 import org.jajuk.JajukTestCase;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestFullSubmissionData extends JajukTestCase {
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.FullSubmissionData#FullSubmissionData(java.lang.String, java.lang.String, java.lang.String, int, int, java.lang.String, int)}
    * .
    */
@@ -47,7 +48,8 @@ public class TestFullSubmissionData extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.FullSubmissionData#setArtist(java.lang.String)}.
    */
   public void testSetArtist() {
@@ -65,7 +67,8 @@ public class TestFullSubmissionData extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.FullSubmissionData#setTitle(java.lang.String)}.
    */
   public void testSetTitle() {
@@ -83,7 +86,8 @@ public class TestFullSubmissionData extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.FullSubmissionData#setAlbum(java.lang.String)}.
    */
   public void testSetAlbum() {
@@ -91,7 +95,8 @@ public class TestFullSubmissionData extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.FullSubmissionData#getDuration()}.
    */
   public void testGetDuration() {
@@ -102,7 +107,8 @@ public class TestFullSubmissionData extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.FullSubmissionData#setDuration(int)}.
    */
   public void testSetDuration() {
@@ -110,7 +116,8 @@ public class TestFullSubmissionData extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.FullSubmissionData#getTrackNumber()}.
    */
   public void testGetTrackNumber() {
@@ -121,7 +128,8 @@ public class TestFullSubmissionData extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.FullSubmissionData#setTrackNumber(int)}.
    */
   public void testSetTrackNumber() {
@@ -139,7 +147,8 @@ public class TestFullSubmissionData extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.FullSubmissionData#setSource(java.lang.String)}.
    */
   public void testSetSource() {
@@ -147,7 +156,8 @@ public class TestFullSubmissionData extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.FullSubmissionData#getStartTime()}.
    */
   public void testGetStartTime() {
@@ -158,7 +168,8 @@ public class TestFullSubmissionData extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.lastfm.FullSubmissionData#setStartTime(int)}.
    */
   public void testSetStartTime() {

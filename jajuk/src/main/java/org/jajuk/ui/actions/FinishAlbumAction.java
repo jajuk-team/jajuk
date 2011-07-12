@@ -69,8 +69,8 @@ public class FinishAlbumAction extends JajukAction {
           StackItem item = QueueModel.getCurrentItem();// stores
           // current item
           Directory dir = item.getFile().getDirectory();
-          List<StackItem> stack = UtilFeatures.createStackItems(dir
-              .getFilesFromFile(item.getFile()), item.isRepeat(), item.isUserLaunch());
+          List<StackItem> stack = UtilFeatures.createStackItems(
+              dir.getFilesFromFile(item.getFile()), item.isRepeat(), item.isUserLaunch());
           // Then re-add current item only if some more tracks are to be ran. Otherwise, just ignore
           // this command, better than displaying a bozing error message.
           if (stack != null && stack.size() > 0) {

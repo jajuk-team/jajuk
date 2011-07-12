@@ -59,49 +59,49 @@ public final class FontManager implements Observer {
 
     /** DOCUMENT_ME. */
     DEFAULT,
-    
+
     /** DOCUMENT_ME. */
     PLAIN,
-    
+
     /** DOCUMENT_ME. */
     PLAIN_S,
-    
+
     /** DOCUMENT_ME. */
     PLAIN_L,
-    
+
     /** DOCUMENT_ME. */
     PLAIN_XL,
-    
+
     /** DOCUMENT_ME. */
     BOLD,
-    
+
     /** DOCUMENT_ME. */
     BOLD_L,
-    
+
     /** DOCUMENT_ME. */
     BOLD_XL,
-    
+
     /** DOCUMENT_ME. */
     BOLD_XXL,
-    
+
     /** DOCUMENT_ME. */
     BOLD_TITLE,
-    
+
     /** DOCUMENT_ME. */
     PERSPECTIVES,
-    
+
     /** DOCUMENT_ME. */
     PLANNED,
-    
+
     /** DOCUMENT_ME. */
     SEARCHBOX,
-    
+
     /** DOCUMENT_ME. */
     SPLASH,
-    
+
     /** DOCUMENT_ME. */
     SPLASH_PROGRESS,
-    
+
     /** DOCUMENT_ME. */
     VIEW_FONT
   }
@@ -143,28 +143,28 @@ public final class FontManager implements Observer {
     fontCache.put(JajukFont.SPLASH, new Font(SANS_SERIF, Font.PLAIN, 12));
     fontCache.put(JajukFont.SPLASH_PROGRESS, new Font(SANS_SERIF, Font.BOLD, 12));
     // Bold
-    fontCache.put(JajukFont.BOLD, new Font(SANS_SERIF, Font.BOLD, Conf
-        .getInt(Const.CONF_FONTS_SIZE)));
-    fontCache.put(JajukFont.BOLD_L, new Font(SANS_SERIF, Font.BOLD, Conf
-        .getInt(Const.CONF_FONTS_SIZE) + 2));
-    fontCache.put(JajukFont.BOLD_XL, new Font(SANS_SERIF, Font.BOLD, Conf
-        .getInt(Const.CONF_FONTS_SIZE) + 4));
-    fontCache.put(JajukFont.BOLD_XXL, new Font(SANS_SERIF, Font.BOLD, Conf
-        .getInt(Const.CONF_FONTS_SIZE) + 6));
+    fontCache.put(JajukFont.BOLD,
+        new Font(SANS_SERIF, Font.BOLD, Conf.getInt(Const.CONF_FONTS_SIZE)));
+    fontCache.put(JajukFont.BOLD_L,
+        new Font(SANS_SERIF, Font.BOLD, Conf.getInt(Const.CONF_FONTS_SIZE) + 2));
+    fontCache.put(JajukFont.BOLD_XL,
+        new Font(SANS_SERIF, Font.BOLD, Conf.getInt(Const.CONF_FONTS_SIZE) + 4));
+    fontCache.put(JajukFont.BOLD_XXL,
+        new Font(SANS_SERIF, Font.BOLD, Conf.getInt(Const.CONF_FONTS_SIZE) + 6));
     // Plain
-    fontCache.put(JajukFont.DEFAULT, new Font(SANS_SERIF, Font.PLAIN, Conf
-        .getInt(Const.CONF_FONTS_SIZE)));
-    fontCache.put(JajukFont.PLAIN, new Font(SANS_SERIF, Font.PLAIN, Conf
-        .getInt(Const.CONF_FONTS_SIZE)));
-    fontCache.put(JajukFont.PLAIN_S, new Font(SANS_SERIF, Font.PLAIN, Conf
-        .getInt(Const.CONF_FONTS_SIZE) - 2));
-    fontCache.put(JajukFont.PLAIN_L, new Font(SANS_SERIF, Font.PLAIN, Conf
-        .getInt(Const.CONF_FONTS_SIZE) + 2));
-    fontCache.put(JajukFont.PLAIN_XL, new Font(SANS_SERIF, Font.PLAIN, Conf
-        .getInt(Const.CONF_FONTS_SIZE) + 4));
+    fontCache.put(JajukFont.DEFAULT,
+        new Font(SANS_SERIF, Font.PLAIN, Conf.getInt(Const.CONF_FONTS_SIZE)));
+    fontCache.put(JajukFont.PLAIN,
+        new Font(SANS_SERIF, Font.PLAIN, Conf.getInt(Const.CONF_FONTS_SIZE)));
+    fontCache.put(JajukFont.PLAIN_S,
+        new Font(SANS_SERIF, Font.PLAIN, Conf.getInt(Const.CONF_FONTS_SIZE) - 2));
+    fontCache.put(JajukFont.PLAIN_L,
+        new Font(SANS_SERIF, Font.PLAIN, Conf.getInt(Const.CONF_FONTS_SIZE) + 2));
+    fontCache.put(JajukFont.PLAIN_XL,
+        new Font(SANS_SERIF, Font.PLAIN, Conf.getInt(Const.CONF_FONTS_SIZE) + 4));
     // Italic
-    fontCache.put(JajukFont.PLANNED, new Font("serif", Font.ITALIC, Conf
-        .getInt(Const.CONF_FONTS_SIZE)));
+    fontCache.put(JajukFont.PLANNED,
+        new Font("serif", Font.ITALIC, Conf.getInt(Const.CONF_FONTS_SIZE)));
     Font font = new Font(SANS_SERIF, Font.PLAIN, Conf.getInt(Const.CONF_FONTS_SIZE));
     fontCache.put(JajukFont.VIEW_FONT, font);
   }

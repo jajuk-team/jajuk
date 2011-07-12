@@ -145,12 +145,11 @@ public final class DeviceManager extends ItemManager {
 
   /**
    * Register a device with a known id.
-   * 
-   * @param sName DOCUMENT_ME
+   *
    * @param sId DOCUMENT_ME
-   * @param lDeviceType DOCUMENT_ME
+   * @param sName DOCUMENT_ME
+   * @param deviceType DOCUMENT_ME
    * @param sUrl DOCUMENT_ME
-   * 
    * @return device
    */
   Device registerDevice(String sId, String sName, Device.Type deviceType, String sUrl) {
@@ -167,12 +166,11 @@ public final class DeviceManager extends ItemManager {
 
   /**
    * Check none device already has this name or is a parent directory.
-   * 
+   *
    * @param sName DOCUMENT_ME
-   * @param iDeviceType DOCUMENT_ME
+   * @param deviceType DOCUMENT_ME
    * @param sUrl DOCUMENT_ME
    * @param bNew DOCUMENT_ME
-   * 
    * @return 0:ok or error code
    */
   public int checkDeviceAvailablity(String sName, Device.Type deviceType, String sUrl, boolean bNew) {

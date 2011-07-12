@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.players;
 
@@ -35,28 +35,39 @@ import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
- *
+ * DOCUMENT_ME.
  */
 public class TestMPlayerPlayerImpl extends JajukTestCase {
+  
+  /** The Constant JAVA_PROCESS.  DOCUMENT_ME */
   private static final String JAVA_PROCESS = "java";
 
+  /** The Constant MAIN_CLASS.  DOCUMENT_ME */
   private static final String MAIN_CLASS = DummyMPlayerImpl.class.getName();
 
+  /** DOCUMENT_ME. */
   java.io.File scriptFile;
 
-  /**
-   * Property which is used to find the current installation location of java
-   */
+  /** Property which is used to find the current installation location of java. */
   protected static final String PROPERTY_JAVA_HOME = "java.home";
 
+  /**
+   * Find java executable.
+   * DOCUMENT_ME
+   *
+   * @return the string
+   */
   private String findJavaExecutable() {
-    assertNotNull("Need to have a property 'java.home' to run this test!", System
-        .getProperty(PROPERTY_JAVA_HOME));
+    assertNotNull("Need to have a property 'java.home' to run this test!",
+        System.getProperty(PROPERTY_JAVA_HOME));
 
     return "\"" + System.getProperty(PROPERTY_JAVA_HOME) + java.io.File.separator + "bin"
         + java.io.File.separator + JAVA_PROCESS + "\"";
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.JajukTestCase#setUp()
+   */
   @Override
   public void setUp() throws IOException, URISyntaxException {
     Log.info("Setting up testcase");
@@ -68,13 +79,16 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
 
     String thisClassAbsPath = new java.io.File(thisClassAbsUrl.toURI()).getAbsolutePath();
     FileUtils.writeStringToFile(scriptFile, "#!/bin/sh\n\n" + findJavaExecutable() + " -cp \""
-        + thisClassAbsPath +"\" "+ MAIN_CLASS);
+        + thisClassAbsPath + "\" " + MAIN_CLASS);
 
     Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, scriptFile.getAbsolutePath());
 
     StartupCollectionService.registerItemManagers();
   }
 
+  /* (non-Javadoc)
+   * @see junit.framework.TestCase#tearDown()
+   */
   @Override
   protected void tearDown() throws Exception {
     JUnitHelpers.waitForThreadToFinish("MPlayer reader thread");
@@ -89,7 +103,8 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.MPlayerPlayerImpl#stop()}.
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testStop() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
@@ -107,7 +122,8 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.MPlayerPlayerImpl#setVolume(float)}.
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testSetVolume() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
@@ -126,7 +142,8 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.MPlayerPlayerImpl#getCurrentLength()}.
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testGetCurrentLength() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
@@ -144,7 +161,8 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.MPlayerPlayerImpl#getCurrentPosition()}.
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testGetCurrentPosition() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
@@ -167,6 +185,8 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.MPlayerPlayerImpl#getElapsedTime()}.
+   *
+   * @throws Exception the exception
    */
   public void testGetElapsedTime() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
@@ -186,6 +206,8 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.MPlayerPlayerImpl#play(org.jajuk.services.webradio.WebRadio, float)}.
+   *
+   * @throws Exception the exception
    */
   public void testPlayWebRadioFloat() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
@@ -197,6 +219,8 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.MPlayerPlayerImpl#seek(float)}.
+   *
+   * @throws Exception the exception
    */
   public void testSeek() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
@@ -216,6 +240,8 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.MPlayerPlayerImpl#getState()}.
+   *
+   * @throws Exception the exception
    */
   public void testGetState() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
@@ -232,6 +258,8 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.MPlayerPlayerImpl#resume()}.
+   *
+   * @throws Exception the exception
    */
   public void testResume() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
@@ -256,6 +284,8 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.MPlayerPlayerImpl#play(org.jajuk.base.File, float, long, float)}.
+   *
+   * @throws Exception the exception
    */
   public void testPlayFileFloatLongFloat() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
@@ -268,6 +298,12 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
     }
   }
 
+  /**
+   * Test play environment variables.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPlayEnvironmentVariables() throws Exception {
     Conf.setProperty(Const.CONF_ENV_VARIABLES, "ENV1=23423 ENV2=23423");
     try {
@@ -277,6 +313,12 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
     }
   }
 
+  /**
+   * Test play environment variables null.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPlayEnvironmentVariablesNull() throws Exception {
     Conf.setProperty(Const.CONF_ENV_VARIABLES, "ENV3= ENV4=123");
     try {
@@ -287,6 +329,12 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
     }
   }
 
+  /**
+   * Test play position.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPlayPosition() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
 

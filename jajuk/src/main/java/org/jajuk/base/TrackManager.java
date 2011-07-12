@@ -188,9 +188,9 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Register an Track with a known id.
-   * 
-   * @param sName DOCUMENT_ME
+   *
    * @param sId DOCUMENT_ME
+   * @param sName DOCUMENT_ME
    * @param album DOCUMENT_ME
    * @param genre DOCUMENT_ME
    * @param artist DOCUMENT_ME
@@ -199,7 +199,6 @@ public final class TrackManager extends ItemManager {
    * @param lOrder DOCUMENT_ME
    * @param type DOCUMENT_ME
    * @param lDiscNumber DOCUMENT_ME
-   * 
    * @return the track
    */
   public Track registerTrack(String sId, String sName, Album album, Genre genre, Artist artist,
@@ -278,13 +277,11 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Change a track album.
-   * 
-   * @param filter files we want to deal with
+   *
    * @param track DOCUMENT_ME
    * @param sNewAlbum DOCUMENT_ME
-   * 
+   * @param filter files we want to deal with
    * @return new track
-   * 
    * @throws JajukException the jajuk exception
    */
   public Track changeTrackAlbum(Track track, String sNewAlbum, Set<File> filter)
@@ -338,13 +335,11 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Change a track artist.
-   * 
-   * @param filter files we want to deal with
+   *
    * @param track DOCUMENT_ME
    * @param sNewArtist DOCUMENT_ME
-   * 
+   * @param filter files we want to deal with
    * @return new track
-   * 
    * @throws JajukException the jajuk exception
    */
   public Track changeTrackArtist(Track track, String sNewArtist, Set<File> filter)
@@ -399,13 +394,11 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Change a track genre.
-   * 
-   * @param filter files we want to deal with
+   *
    * @param track DOCUMENT_ME
    * @param sNewGenre DOCUMENT_ME
-   * 
+   * @param filter files we want to deal with
    * @return new track
-   * 
    * @throws JajukException the jajuk exception
    */
   public Track changeTrackGenre(Track track, String sNewGenre, Set<File> filter)
@@ -456,13 +449,11 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Change a track year.
-   * 
-   * @param filter files we want to deal with
+   *
    * @param track DOCUMENT_ME
    * @param newItem DOCUMENT_ME
-   * 
+   * @param filter files we want to deal with
    * @return new track or null if wrong format
-   * 
    * @throws JajukException the jajuk exception
    */
   public Track changeTrackYear(Track track, String newItem, Set<File> filter) throws JajukException {
@@ -513,13 +504,11 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Change a track comment.
-   * 
-   * @param filter files we want to deal with
+   *
    * @param track DOCUMENT_ME
    * @param sNewItem DOCUMENT_ME
-   * 
+   * @param filter files we want to deal with
    * @return new track or null if wrong format
-   * 
    * @throws JajukException the jajuk exception
    */
   Track changeTrackComment(Track track, String sNewItem, Set<File> filter) throws JajukException {
@@ -588,13 +577,11 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Change a track order.
-   * 
-   * @param filter files we want to deal with
+   *
    * @param track DOCUMENT_ME
    * @param lNewOrder DOCUMENT_ME
-   * 
+   * @param filter files we want to deal with
    * @return new track or null if wrong format
-   * 
    * @throws JajukException the jajuk exception
    */
   public Track changeTrackOrder(Track track, long lNewOrder, Set<File> filter)
@@ -644,13 +631,11 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Change a track name.
-   * 
-   * @param filter files we want to deal with
+   *
    * @param track DOCUMENT_ME
    * @param sNewItem DOCUMENT_ME
-   * 
+   * @param filter files we want to deal with
    * @return new track
-   * 
    * @throws JajukException the jajuk exception
    */
   public Track changeTrackName(Track track, String sNewItem, Set<File> filter)
@@ -701,13 +686,11 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Change track album artist.
-   * 
+   *
    * @param track DOCUMENT_ME
-   * @param filter DOCUMENT_ME
    * @param sNewItem DOCUMENT_ME
-   * 
+   * @param filter DOCUMENT_ME
    * @return the item
-   * 
    * @throws JajukException the jajuk exception
    */
   Item changeTrackAlbumArtist(Track track, String sNewItem, Set<File> filter) throws JajukException {
@@ -749,16 +732,14 @@ public final class TrackManager extends ItemManager {
   }
 
   /**
-  <<<<<<< HEAD
-  =======
+   * <<<<<<< HEAD
+   * =======
    * Change track disc number.
-   * 
+   *
    * @param track DOCUMENT_ME
-   * @param filter DOCUMENT_ME
    * @param lNewDiscNumber DOCUMENT_ME
-   * 
+   * @param filter DOCUMENT_ME
    * @return the item
-   * 
    * @throws JajukException the jajuk exception
    */
   public Item changeTrackDiscNumber(Track track, long lNewDiscNumber, Set<File> filter)
@@ -942,11 +923,10 @@ public final class TrackManager extends ItemManager {
    * This is a shallow copy only
    * </p>
    * .
-   * 
+   *
+   * @param items DOCUMENT_ME
    * @param sorted Whether the output should be sorted on it (actually applied on
    * artists,years and genres because others items are already sorted)
-   * @param items DOCUMENT_ME
-   * 
    * @return the associated tracks
    */
   @SuppressWarnings("unchecked")

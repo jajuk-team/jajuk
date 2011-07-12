@@ -147,7 +147,8 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
   }
 
   /**
-   * Return whether we should try to switch to fullscreen mode (and lose keystrokes controls) 
+   * Return whether we should try to switch to fullscreen mode (and lose keystrokes controls).
+   *
    * @return whether we should try to switch to fullscreen mode
    */
   private static boolean shouldTryNativeFullScreenmode() {

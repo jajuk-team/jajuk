@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.players;
 
@@ -46,7 +46,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.error.JajukException;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestQueueModel extends JajukTestCase {
 
@@ -78,6 +78,12 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   // helper method to emma-coverage of the unused constructor
+  /**
+   * Test private constructor.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPrivateConstructor() throws Exception {
     // For EMMA code-coverage tests
     JUnitHelpers.executePrivateConstructor(QueueModel.class);
@@ -98,6 +104,8 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#reset()}.
+   *
+   * @throws Exception the exception
    */
 
   public void testReset() throws Exception {
@@ -114,7 +122,8 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.players.QueueModel#setRepeatModeToAll(boolean)}.
    */
 
@@ -123,7 +132,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#push(java.util.List, boolean)}
    * .
    */
@@ -140,6 +151,12 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(1, QueueModel.getQueue().size());
   }
 
+  /**
+   * Test push list of stack item boolean no push.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPushListOfStackItemBooleanNoPush() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
     list.add(new StackItem(JUnitHelpers.getFile("file1", true)));
@@ -155,7 +172,8 @@ public class TestQueueModel extends JajukTestCase {
   /**
    * Check right behavior when pushing void list of items.
    * If run with GUI, you should get a warning popup
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testPushListOfStackItemVoid() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
@@ -167,6 +185,12 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(0, QueueModel.getQueue().size());
   }
 
+  /**
+   * Test push list of stack item boolean null items.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPushListOfStackItemBooleanNullItems() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
     list.add(new StackItem(JUnitHelpers.getFile("file1", true)));
@@ -182,7 +206,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#push(java.util.List, boolean, boolean)}
    * .
    */
@@ -199,6 +225,12 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(1, QueueModel.getQueue().size());
   }
 
+  /**
+   * Test push list of stack item boolean boolean no push next.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPushListOfStackItemBooleanBooleanNoPushNext() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
     list.add(new StackItem(JUnitHelpers.getFile("file1", true)));
@@ -212,7 +244,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#push(org.jajuk.services.players.StackItem, boolean)}
    * .
    */
@@ -227,7 +261,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#push(org.jajuk.services.players.StackItem, boolean, boolean)}
    * .
    */
@@ -242,9 +278,11 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * @param count
-   *          number of items to create
-   * @throws JajukException
+   * Adds the items.
+   * DOCUMENT_ME
+   *
+   * @param count number of items to create
+   * @throws Exception the exception
    */
   private void addItems(int count) throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
@@ -255,7 +293,8 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.players.QueueModel#launchRadio(org.jajuk.services.webradio.WebRadio)}
    * .
    */
@@ -265,7 +304,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#containsRepeat()}.
    */
 
@@ -281,6 +322,8 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#finished()}.
+   *
+   * @throws Exception the exception
    */
 
   public void testFinished() throws Exception {
@@ -296,11 +339,13 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-  * Test method for
-  * {@link org.jajuk.services.players.QueueModel#finished()}.
-  * Test for feature #1441 (Repeat all shuffle mode) : in repeat 
-  * all mode + shuffle mode, queue should be shuffled when reaching its end
-  */
+   * Test method for.
+   *
+   * @throws Exception the exception
+   * {@link org.jajuk.services.players.QueueModel#finished()}.
+   * Test for feature #1441 (Repeat all shuffle mode) : in repeat
+   * all mode + shuffle mode, queue should be shuffled when reaching its end
+   */
   public void testFinishedRepeatAndShuffle() throws Exception {
     QueueModel.clear();
     addItems(5);
@@ -322,7 +367,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#finished(boolean)}.
    */
   public void testFinishedBoolean() throws Exception {
@@ -340,6 +387,12 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(10, QueueModel.getQueueSize());
   }
 
+  /**
+   * Test finished boolean remove played.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testFinishedBooleanRemovePlayed() throws Exception {
     // set config option that we want to test
     Conf.setProperty(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE, "true");
@@ -358,6 +411,12 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(9, QueueModel.getQueueSize());
   }
 
+  /**
+   * Test finished end of queue no planned.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testFinishedEndOfQueueNoPlanned() throws Exception {
     // without item it just returns
     QueueModel.finished(true);
@@ -377,6 +436,12 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(-1, QueueModel.getIndex());
   }
 
+  /**
+   * Test finished end of queue with planned.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testFinishedEndOfQueueWithPlanned() throws Exception {
     Conf.setProperty(Const.CONF_STATE_CONTINUE, "true");
     // without item it just returns
@@ -413,7 +478,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#finished(boolean)}.
    */
   public void testFinishedRepeatSingleItem() throws Exception {
@@ -432,7 +499,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#finished(boolean)}.
    */
   public void testFinishedRepeatLastItem() throws Exception {
@@ -460,6 +529,12 @@ public class TestQueueModel extends JajukTestCase {
     assertTrue(si.isRepeat());
   }
 
+  /**
+   * Test finished repeat last item not last.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testFinishedRepeatLastItemNotLast() throws Exception {
     // We want to make sure that everything's ok when current item is in repeat
     // mode and the last in the queue
@@ -486,7 +561,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#finished(boolean)}.
    */
   public void testFinishedRepeatNotLastItem() throws Exception {
@@ -517,6 +594,8 @@ public class TestQueueModel extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#goTo(int)}
    * .
+   *
+   * @throws Exception the exception
    */
 
   public void testSetAndGetIndex() throws Exception {
@@ -529,7 +608,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#computesPlanned(boolean)}.
    */
 
@@ -543,6 +624,12 @@ public class TestQueueModel extends JajukTestCase {
 
   }
 
+  /**
+   * Test computes planned clear.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testComputesPlannedClear() throws Exception {
     Conf.setProperty(Const.CONF_STATE_CONTINUE, "true");
 
@@ -550,6 +637,12 @@ public class TestQueueModel extends JajukTestCase {
     QueueModel.computesPlanned(true);
   }
 
+  /**
+   * Test computes planned shuffle.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testComputesPlannedShuffle() throws Exception {
     // set Property to hit the "Shuffle" branch
     Conf.setProperty(Const.CONF_STATE_SHUFFLE, "true");
@@ -562,6 +655,8 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#clear()}.
+   *
+   * @throws Exception the exception
    */
 
   public void testClear() throws Exception {
@@ -578,7 +673,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#containsOnlyRepeat()}.
    */
 
@@ -591,7 +688,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#playPrevious()}.
    */
 
@@ -606,6 +705,12 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(1, QueueModel.getIndex());
   }
 
+  /**
+   * Test play previous at zero.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPlayPreviousAtZero() throws Exception {
     // do nothing without items
     QueueModel.playPrevious();
@@ -617,6 +722,12 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(0, QueueModel.getIndex());
   }
 
+  /**
+   * Test play previous at zero with repeat.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPlayPreviousAtZeroWithRepeat() throws Exception {
     // do nothing without items
     QueueModel.playPrevious();
@@ -630,7 +741,8 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.players.QueueModel#playPreviousAlbum()}.
    */
 
@@ -640,6 +752,8 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#playNext()}.
+   *
+   * @throws Exception the exception
    */
 
   public void testPlayNext() throws Exception {
@@ -654,7 +768,8 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.players.QueueModel#playNextAlbum()}.
    */
 
@@ -663,7 +778,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#getPlayingFile()}.
    */
 
@@ -679,6 +796,12 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals("file0", QueueModel.getPlayingFile().getName());
   }
 
+  /**
+   * Test get playing file title.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testGetPlayingFileTitle() throws Exception {
     assertNull(QueueModel.getPlayingFileTitle());
 
@@ -692,7 +815,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#getCurrentItem()}.
    */
 
@@ -706,6 +831,8 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#getItem(int)}.
+   *
+   * @throws Exception the exception
    */
 
   public void testGetItem() throws Exception {
@@ -714,7 +841,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#canUnmount(org.jajuk.base.Device)}
    * .
    */
@@ -745,6 +874,8 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#isStopped()}.
+   *
+   * @throws Exception the exception
    */
 
   public void testIsStopped() throws Exception {
@@ -763,6 +894,8 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#getQueue()}.
+   *
+   * @throws Exception the exception
    */
 
   public void testGetQueue() throws Exception {
@@ -774,7 +907,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#getQueueSize()}.
    */
 
@@ -788,6 +923,8 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#shuffle()}.
+   *
+   * @throws Exception the exception
    */
 
   public void testShuffle() throws Exception {
@@ -810,7 +947,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#insert(org.jajuk.services.players.StackItem, int)}
    * .
    */
@@ -848,7 +987,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#insert(java.util.List, int)}.
    */
 
@@ -863,6 +1004,8 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#up(int)}.
+   *
+   * @throws Exception the exception
    */
 
   public void testUp() throws Exception {
@@ -898,6 +1041,8 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#down(int)}.
+   *
+   * @throws Exception the exception
    */
 
   public void testDown() throws Exception {
@@ -936,6 +1081,8 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#goTo(int)}.
+   *
+   * @throws Exception the exception
    */
 
   public void testGoTo() throws Exception {
@@ -946,6 +1093,12 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals("file4", QueueModel.getCurrentItem().getFile().getName());
   }
 
+  /**
+   * Test go to repeat.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testGoToRepeat() throws Exception {
     addItems(5);
     QueueModel.goTo(2);
@@ -974,7 +1127,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#remove(int, int)}.
    */
 
@@ -990,6 +1145,8 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#getLast()}.
+   *
+   * @throws Exception the exception
    */
 
   public void testGetLast() throws Exception {
@@ -1001,7 +1158,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#getLastPlayed()}.
    */
 
@@ -1025,7 +1184,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#getCountTracksLeft()}.
    */
 
@@ -1041,6 +1202,8 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#getPlanned()}.
+   *
+   * @throws Exception the exception
    */
 
   public void testGetPlanned() throws Exception {
@@ -1070,6 +1233,8 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#commit()}.
+   *
+   * @throws Exception the exception
    */
 
   public void testCommit() throws Exception {
@@ -1089,7 +1254,8 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.players.QueueModel#isPlayingRadio()}.
    */
 
@@ -1098,7 +1264,8 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.players.QueueModel#getCurrentRadio()}.
    */
 
@@ -1112,7 +1279,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#isPlayingTrack()}.
    */
 
@@ -1128,7 +1297,9 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#getCurrentFileTitle()}.
    */
 
@@ -1148,6 +1319,8 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#clean()}.
+   *
+   * @throws Exception the exception
    */
 
   public void testClean() throws Exception {
@@ -1196,9 +1369,11 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-  * Test method for
-  * {@link org.jajuk.services.players.QueueModel#setStopAfter()}.
-  */
+   * Test method for.
+   *
+   * @throws Exception the exception
+   * {@link org.jajuk.services.players.QueueModel#setStopAfter()}.
+   */
 
   public void testStopAfter() throws Exception {
     assertTrue(QueueModel.isStopped());
@@ -1206,7 +1381,7 @@ public class TestQueueModel extends JajukTestCase {
     addItems(3);
     QueueModel.playNext();
     assertTrue(QueueModel.isPlayingTrack());
-    
+
     // Test next track will be stopped 
     QueueModel.setStopAfter(true);
     // Simulate end of file 
@@ -1214,7 +1389,7 @@ public class TestQueueModel extends JajukTestCase {
     assertTrue(QueueModel.isStopped());
     QueueModel.playNext();
     assertTrue(QueueModel.isPlayingTrack());
-    
+
     // Now test without the stop after option
     QueueModel.setStopAfter(false);
     // Simulate end of file 

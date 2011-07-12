@@ -62,10 +62,9 @@ public final class StartupControlsService {
 
   /**
    * Performs some basic startup tests.
-   * 
-   * @throws InterruptedException the interrupted exception
-   * @throws Exception    * @throws IOException Signals that an I/O exception has occurred.
+   *
    * @throws IOException Signals that an I/O exception has occurred.
+   * @throws InterruptedException the interrupted exception
    */
   public static void initialCheckups() throws IOException, InterruptedException {
     // Populate workspace path

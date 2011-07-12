@@ -126,8 +126,8 @@ public class AlbumsTableView extends AbstractTableView {
   public void shortCall(Object in) {
     jtable = new JajukTable(model, true, columnsConf);
     super.shortCall(null);
-    JMenuItem jmiShowAlbumDetails = new JMenuItem(ActionManager
-        .getAction(JajukActions.SHOW_ALBUM_DETAILS));
+    JMenuItem jmiShowAlbumDetails = new JMenuItem(
+        ActionManager.getAction(JajukActions.SHOW_ALBUM_DETAILS));
     jmiShowAlbumDetails.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     JMenuItem jmiReport = new JMenuItem(ActionManager.getAction(JajukActions.CREATE_REPORT));
     jmiReport.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
@@ -189,8 +189,8 @@ public class AlbumsTableView extends AbstractTableView {
         // Do not hide popup if still in the table to allow user to mouse
         // mouse over the popup (in this case, a table exit event is thrown)
         if (popup != null
-            && !UtilGUI.isOver(jtable.getLocationOnScreen(), jtable
-                .getPreferredScrollableViewportSize())) {
+            && !UtilGUI.isOver(jtable.getLocationOnScreen(),
+                jtable.getPreferredScrollableViewportSize())) {
           popup.dispose();
         }
       }

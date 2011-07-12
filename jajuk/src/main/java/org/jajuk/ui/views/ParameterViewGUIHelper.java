@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.views;
 
@@ -62,23 +62,22 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * Helper class containing GUI update code from and to configuration
+ * Helper class containing GUI update code from and to configuration.
  */
 public class ParameterViewGUIHelper implements ActionListener, ItemListener, ChangeListener {
 
-  /**
-   * Serial UID
-   */
+  /** Serial UID. */
   private static final long serialVersionUID = 1L;
 
-  /** Associated Parameter view */
+  /** Associated Parameter view. */
   ParameterView pv;
 
-  /** Do some updates require a restart ? */
+  /** Do some updates require a restart ?. */
   boolean someOptionsAppliedAtNextStartup = false;
 
   /**
-   * Default constructor
+   * Default constructor.
+   *
    * @param pv the associated parameter view
    */
   ParameterViewGUIHelper(ParameterView pv) {
@@ -202,8 +201,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
   }
 
   /**
-   * Update "Options", "LastFM" and "Modes" tabs
-   * 
+   * Update "Options", "LastFM" and "Modes" tabs.
    */
   private void updateGUIFromConfOptions() {
     pv.jcbDisplayUnmounted.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
@@ -241,8 +239,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
   }
 
   /**
-   * Update Start-up tab
-   * 
+   * Update Start-up tab.
    */
   private void updateGUIFromConfStartup() {
     // set chosen track in file selection
@@ -359,8 +356,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
   }
 
   /**
-   * Update GUI tab
-   * 
+   * Update GUI tab.
    */
   private void updateGUIFromConfGUI() {
     String notificatorType = Messages.getString(ParameterView.NOTIFICATOR_PREFIX
@@ -702,6 +698,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
   * 
   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
   */
+  @Override
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == pv.jbClearHistory) {
       // show confirmation message if required
@@ -857,6 +854,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
   * 
   * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
   */
+  @Override
   public void itemStateChanged(final ItemEvent e) {
     if (e.getSource() == pv.jrbFile) { // jrbFile has been selected or
       // deselected
@@ -869,6 +867,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
    * 
    * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent )
    */
+  @Override
   public void stateChanged(final ChangeEvent e) {
     // when changing tab, store it for future jajuk sessions
     Conf.setProperty(Const.CONF_OPTIONS_TAB, Integer.toString(pv.jtpMain.getSelectedIndex()));

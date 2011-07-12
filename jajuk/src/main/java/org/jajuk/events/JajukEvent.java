@@ -36,9 +36,9 @@ public class JajukEvent {
 
   /**
    * Event constructor.
-   * 
-   * @param pDetails DOCUMENT_ME
+   *
    * @param subject DOCUMENT_ME
+   * @param pDetails DOCUMENT_ME
    */
   public JajukEvent(JajukEvents subject, Properties pDetails) {
     this.subject = subject;

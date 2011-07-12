@@ -48,7 +48,7 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
   /** DOCUMENT_ME. */
   private String queryUrlTemplate = null;
 
-  /** audio file we search lyrics for */
+  /** audio file we search lyrics for. */
   File audioFile = null;
 
   /**
@@ -122,10 +122,10 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
     try {
       String queryString = getQueryURLTemplate();
 
-      queryString = queryString.replace(Const.PATTERN_ARTIST, (artist != null) ? NetworkUtils
-          .encodeString(artist) : "");
-      queryString = queryString.replace(Const.PATTERN_TRACKNAME, (title != null) ? NetworkUtils
-          .encodeString(title) : "");
+      queryString = queryString.replace(Const.PATTERN_ARTIST,
+          (artist != null) ? NetworkUtils.encodeString(artist) : "");
+      queryString = queryString.replace(Const.PATTERN_TRACKNAME,
+          (title != null) ? NetworkUtils.encodeString(title) : "");
 
       return new URL(queryString);
     } catch (MalformedURLException e) {

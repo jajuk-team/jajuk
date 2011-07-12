@@ -165,8 +165,8 @@ public final class StartupEngineService {
       Log.debug("No fifo file");
     } else {
       try {
-        final BufferedReader br = new BufferedReader(new FileReader(SessionService
-            .getConfFileByPath(Const.FILE_FIFO)));
+        final BufferedReader br = new BufferedReader(new FileReader(
+            SessionService.getConfFileByPath(Const.FILE_FIFO)));
         try {
           String s = null;
           for (;;) {

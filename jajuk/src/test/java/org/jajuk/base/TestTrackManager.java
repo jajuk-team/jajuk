@@ -16,22 +16,23 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.base;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.junit.Test;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestTrackManager extends JajukTestCase {
 
+  /* (non-Javadoc)
+   * @see org.jajuk.JajukTestCase#setUp()
+   */
+  @Override
   protected void setUp() throws Exception {
     super.setUp();
   }

@@ -152,8 +152,8 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
         + "]", bMerged);
 
     // OK/Cancel buttons
-    okc = new OKCancelPanel(PropertiesDialog.this, Messages.getString("Apply"), Messages
-        .getString("Close"));
+    okc = new OKCancelPanel(PropertiesDialog.this, Messages.getString("Apply"),
+        Messages.getString("Close"));
 
     // Add items
     jpMain = new JPanel(new MigLayout("insets 5,gapx 5,gapy 5", "[grow]"));
@@ -186,8 +186,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
             .getDesc(), 50), false);
       } else {
         panel1 = new PropertiesPanel(alItems1, UtilString.formatPropertyDesc(Messages
-            .getString(PROPERTIES_WIZARD_6)
-            + " [" + alItems.size() + "]"), true);
+            .getString(PROPERTIES_WIZARD_6) + " [" + alItems.size() + "]"), true);
       }
       panel1.setBorder(BorderFactory.createEtchedBorder());
     }
@@ -331,24 +330,17 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
    * A properties panel.
    */
   class PropertiesPanel extends JPanel implements ActionListener {
-    /**
-     *
-     */
+    
+    /** The Constant IDX_NAME.  DOCUMENT_ME */
     private static final int IDX_NAME = 0;
 
-    /**
-     *
-     */
+    /** The Constant IDX_VALUE.  DOCUMENT_ME */
     private static final int IDX_VALUE = 1;
 
-    /**
-     *
-     */
+    /** The Constant IDX_COPY.  DOCUMENT_ME */
     private static final int IDX_COPY = 2;
 
-    /**
-     *
-     */
+    /** The Constant IDX_LINK.  DOCUMENT_ME */
     private static final int IDX_LINK = 3;
 
     /** Generated serialVersionUID. */
@@ -584,7 +576,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
               valueToCheck = pa.getHumanValue(Const.XML_ALBUM_ARTIST);
             }
 
-            if(artists == null) {
+            if (artists == null) {
               throw new IllegalStateException("Could not get a list of Artists!");
             }
 
@@ -602,7 +594,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
               comp++;
             }
             jcb.setSelectedIndex(i);
-
 
             // if different artist, don't show anything
             if (!bAllEquals) {
@@ -723,7 +714,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
           if (widgets[i][IDX_COPY] == null) {
             jpProperties.add(widgets[i][IDX_VALUE], "grow,width 200:200");
             jpProperties.add(widgets[i][IDX_LINK], "wrap");
-          }  else {
+          } else {
             jpProperties.add(widgets[i][IDX_VALUE], "grow,width 200:200");
             jpProperties.add(widgets[i][IDX_COPY], "");
             jpProperties.add(widgets[i][IDX_LINK], "wrap");
@@ -740,16 +731,16 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
     }
 
     /**
-     * @param jComponent
-     * @return
+     * Checks if is copyable.
+     *
+     * @param jComponent DOCUMENT_ME
+     * @return true, if is copyable
      */
     private boolean isCopyable(JComponent jComponent) {
-      if(jComponent instanceof JXDatePicker ||
-          jComponent instanceof JTextComponent ||
-          jComponent instanceof JComboBox ||
-          jComponent instanceof JLabel) {
+      if (jComponent instanceof JXDatePicker || jComponent instanceof JTextComponent
+          || jComponent instanceof JComboBox || jComponent instanceof JLabel) {
         // ignore some useless values...
-        if("0".equals(extractValue(jComponent))) {
+        if ("0".equals(extractValue(jComponent))) {
           return false;
         }
 
@@ -811,18 +802,26 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
       }
     }
 
+    /**
+     * Extract value.
+     * DOCUMENT_ME
+     *
+     * @param jComponent DOCUMENT_ME
+     * @return the string
+     */
     private String extractValue(JComponent jComponent) {
       String sValue = null;
-      if(jComponent instanceof JXDatePicker) {
-        sValue = ((JXDatePicker)jComponent).getDate().toString();
-      } else if(jComponent instanceof JTextComponent) {
-        sValue = ((JTextComponent)jComponent).getText();
-      } else if(jComponent instanceof JComboBox) {
-        sValue = ((JComboBox)jComponent).getSelectedItem().toString();
-      } else if(jComponent instanceof JLabel) {
-        sValue = ((JLabel)jComponent).getText();
+      if (jComponent instanceof JXDatePicker) {
+        sValue = ((JXDatePicker) jComponent).getDate().toString();
+      } else if (jComponent instanceof JTextComponent) {
+        sValue = ((JTextComponent) jComponent).getText();
+      } else if (jComponent instanceof JComboBox) {
+        sValue = ((JComboBox) jComponent).getSelectedItem().toString();
+      } else if (jComponent instanceof JLabel) {
+        sValue = ((JLabel) jComponent).getText();
       } else {
-        throw new IllegalArgumentException("Unexpected type of component: " + jComponent.getClass().getName());
+        throw new IllegalArgumentException("Unexpected type of component: "
+            + jComponent.getClass().getName());
       }
       return sValue;
     }

@@ -64,18 +64,18 @@ public class PropertyMetaInformation {
   /** Human Type. */
   private String sHumanType;
 
-   /**
-   * constructor.
-   * 
-   * @param sName Property name
-   * @param bCustom Is custom property
-   * @param bConstructor Is constructor property
-   * @param bShouldBeDisplayed Does this standard property must be displayed (exp for ie is not)
-   * @param bEditable Is this property editable
-   * @param bMergeable Is this property mergeable if we display several items together
-   * @param cType Property type
-   * @param oDefaultValue Default value
-   */
+  /**
+  * constructor.
+  * 
+  * @param sName Property name
+  * @param bCustom Is custom property
+  * @param bConstructor Is constructor property
+  * @param bShouldBeDisplayed Does this standard property must be displayed (exp for ie is not)
+  * @param bEditable Is this property editable
+  * @param bMergeable Is this property mergeable if we display several items together
+  * @param cType Property type
+  * @param oDefaultValue Default value
+  */
   public PropertyMetaInformation(String sName, boolean bCustom, boolean bConstructor,
       boolean bShouldBeDisplayed, boolean bEditable, boolean bMergeable, Class<?> cType,
       Object oDefaultValue) {

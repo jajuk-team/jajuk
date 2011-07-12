@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.base;
 
@@ -34,7 +34,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestItemManager extends JajukTestCase {
 
@@ -47,7 +47,8 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.ItemManager#switchAllManagersToOrderState()}.
    */
 
@@ -71,7 +72,8 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.ItemManager#registerItemManager(java.lang.Class, org.jajuk.base.ItemManager)}
    * .
    */
@@ -93,7 +95,8 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.ItemManager#getMetaInformation(java.lang.String)}.
    */
 
@@ -105,18 +108,20 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.ItemManager#getHumanType(java.lang.String)}.
    */
 
   public final void testGetHumanType() {
     assertEquals("anykey", Messages.getHumanPropertyName("anykey"));
-    assertFalse(Messages.getHumanPropertyName("disc_number"), "disc_number".equals(Messages
-        .getHumanPropertyName("disc_number")));
+    assertFalse(Messages.getHumanPropertyName("disc_number"),
+        "disc_number".equals(Messages.getHumanPropertyName("disc_number")));
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.ItemManager#removeProperty(java.lang.String)}.
    */
 
@@ -131,7 +136,8 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.ItemManager#applyRemoveProperty(org.jajuk.base.PropertyMetaInformation)}
    * .
    */
@@ -150,7 +156,8 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.ItemManager#applyNewProperty(org.jajuk.base.PropertyMetaInformation)}
    * .
    */
@@ -227,7 +234,8 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.ItemManager#getItemManager(java.lang.String)}.
    */
 
@@ -245,7 +253,8 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.ItemManager#getItemManager(java.lang.Class)}.
    */
 
@@ -272,7 +281,8 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.ItemManager#cleanOrphanTracks(org.jajuk.base.Item)}.
    */
 
@@ -284,7 +294,8 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.ItemManager#removeItem(org.jajuk.base.Item)}.
    */
 
@@ -304,7 +315,8 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.ItemManager#registerItem(org.jajuk.base.Item)}.
    */
 
@@ -313,7 +325,8 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.ItemManager#registerProperty(org.jajuk.base.PropertyMetaInformation)}
    * .
    */
@@ -323,11 +336,11 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.base.ItemManager#changeItem(org.jajuk.base.Item, java.lang.String, java.lang.Object, java.util.Set)}
    * .
-   * 
-   * @throws Exception
    */
 
   public final void testChangeItem() throws Exception {
@@ -357,7 +370,8 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.ItemManager#getItemByID(java.lang.String)}.
    */
 
@@ -386,7 +400,6 @@ public class TestItemManager extends JajukTestCase {
 
     assertEquals(man.getItems().toString(), 2, man.getItems().size());
   }
-
 
   /**
    * Test method for {@link org.jajuk.base.ItemManager#getItemsIterator()}.
@@ -453,6 +466,10 @@ public class TestItemManager extends JajukTestCase {
     assertEquals("10", it.next().getID());
   }
 
+  /**
+   * Test sorting.
+   * DOCUMENT_ME
+   */
   public final void testSorting() {
     // first run without "ordered state"
     ItemManager man = new LocalIM();
@@ -465,7 +482,11 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * 
+   * Run sorting test.
+   * DOCUMENT_ME
+   *
+   * @param man DOCUMENT_ME
+   * @param notYetOrderedState DOCUMENT_ME
    */
   private void runSortingTest(ItemManager man, boolean notYetOrderedState) {
     Item item = new TestItem("9", "name9");
@@ -526,12 +547,22 @@ public class TestItemManager extends JajukTestCase {
     }
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   private static class LocalIM extends ItemManager {
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#getLabel()
+     */
     @Override
     public String getLabel() {
       return "TestLabel";
     }
 
+    /**
+     * Instantiates a new local im.
+     */
     public LocalIM() {
       super();
 
@@ -541,26 +572,50 @@ public class TestItemManager extends JajukTestCase {
     }
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   private static class TestItem extends Item implements Comparable<Item> {
+    
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
     @Override
     public int compareTo(Item o) {
       return getID().compareTo(o.getID());
     }
 
+    /**
+     * Instantiates a new test item.
+     *
+     * @param id DOCUMENT_ME
+     * @param name DOCUMENT_ME
+     */
     public TestItem(String id, String name) {
       super(id, name);
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.base.Item#getDesc()
+     */
     @Override
     public String getDesc() {
       return "desc";
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.base.Item#getIconRepresentation()
+     */
     @Override
     public ImageIcon getIconRepresentation() {
       return null;
     }
 
+    /**
+     * Gets the label.
+     *
+     * @return the label
+     */
     @Override
     String getLabel() {
       return "Test";

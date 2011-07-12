@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package ext.services.xml;
 
@@ -32,18 +32,25 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestXMLUtils extends JajukTestCase {
 
   // helper method to emma-coverage of the unused constructor
+  /**
+   * Test serializable utilities private constructor.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testSerializableUtilitiesPrivateConstructor() throws Exception {
     // For EMMA code-coverage tests
     JUnitHelpers.executePrivateConstructor(XMLUtils.class);
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.XMLUtils#getChildElement(org.w3c.dom.Element, java.lang.String)}
    * .
    */
@@ -54,10 +61,18 @@ public class TestXMLUtils extends JajukTestCase {
     assertNotNull(XMLUtils.getChildElement(doc.getDocumentElement(), "test"));
   }
 
+  /**
+   * Test get child element null.
+   * DOCUMENT_ME
+   */
   public void testGetChildElementNull() {
     assertNull(XMLUtils.getChildElement(null, "test"));
   }
 
+  /**
+   * Test get child element not existing.
+   * DOCUMENT_ME
+   */
   public void testGetChildElementNotExisting() {
     Document doc = XMLUtils.getDocument("<xml><test/></xml>");
     assertNotNull(doc);
@@ -66,7 +81,8 @@ public class TestXMLUtils extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.XMLUtils#getAttributeValue(org.w3c.dom.Element, java.lang.String)}
    * .
    */
@@ -82,12 +98,17 @@ public class TestXMLUtils extends JajukTestCase {
     assertEquals("", XMLUtils.getAttributeValue(doc.getDocumentElement(), "value"));
   }
 
+  /**
+   * Test get attribute value null.
+   * DOCUMENT_ME
+   */
   public void testGetAttributeValueNull() {
     assertNull(XMLUtils.getAttributeValue(null, "value"));
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.XMLUtils#getChildElementContent(org.w3c.dom.Element, java.lang.String)}
    * .
    */
@@ -98,6 +119,10 @@ public class TestXMLUtils extends JajukTestCase {
     assertEquals("testcontent", XMLUtils.getChildElementContent(doc.getDocumentElement(), "test"));
   }
 
+  /**
+   * Test get child element content null.
+   * DOCUMENT_ME
+   */
   public void testGetChildElementContentNull() {
     assertEquals("", XMLUtils.getChildElementContent(null, "test"));
   }
@@ -113,6 +138,10 @@ public class TestXMLUtils extends JajukTestCase {
     assertEquals("xml", doc.getDocumentElement().getTagName());
   }
 
+  /**
+   * Test get document parse error.
+   * DOCUMENT_ME
+   */
   public void testGetDocumentParseError() {
     Document doc = XMLUtils.getDocument("<xmlinvalid>adsasd<asdksdtest value=\"1\"/></xml>");
     assertNull(doc);
@@ -123,11 +152,11 @@ public class TestXMLUtils extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link ext.services.xml.XMLUtils#writeBeanToFile(java.lang.Object, java.lang.String)}
    * .
-   * 
-   * @throws Exception
    */
   public final void testWriteBeanToFile() throws Exception {
 
@@ -157,6 +186,10 @@ public class TestXMLUtils extends JajukTestCase {
      */
   }
 
+  /**
+   * Test write bean to file invalid file.
+   * DOCUMENT_ME
+   */
   public final void testWriteBeanToFileInvalidFile() {
 
     PersonBean bean = new PersonBean();
@@ -175,10 +208,14 @@ public class TestXMLUtils extends JajukTestCase {
    * Class <code>PersonBean</code>.
    */
   public class PersonBean implements java.io.Serializable {
+    
+    /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1124123276327532379L;
 
+    /** DOCUMENT_ME. */
     private String name;
 
+    /** DOCUMENT_ME. */
     private boolean deceased;
 
     /** No-arg constructor (takes no arguments). */
@@ -187,6 +224,8 @@ public class TestXMLUtils extends JajukTestCase {
 
     /**
      * Property <code>name</code> (note capitalization) readable/writable.
+     *
+     * @return the name
      */
     public String getName() {
       return this.name;
@@ -194,8 +233,8 @@ public class TestXMLUtils extends JajukTestCase {
 
     /**
      * Setter for property <code>name</code>.
-     * 
-     * @param name
+     *
+     * @param name the new name
      */
     public void setName(final String name) {
       this.name = name;
@@ -204,6 +243,8 @@ public class TestXMLUtils extends JajukTestCase {
     /**
      * Getter for property "deceased" Different syntax for a boolean field (is
      * vs. get)
+     *
+     * @return true, if is deceased
      */
     public boolean isDeceased() {
       return this.deceased;
@@ -211,8 +252,8 @@ public class TestXMLUtils extends JajukTestCase {
 
     /**
      * Setter for property <code>deceased</code>.
-     * 
-     * @param deceased
+     *
+     * @param deceased the new deceased
      */
     public void setDeceased(final boolean deceased) {
       this.deceased = deceased;
@@ -220,7 +261,8 @@ public class TestXMLUtils extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.xml.XMLUtils#readBeanFromFile(java.lang.String)}.
    */
   public final void testReadBeanFromFile() {
@@ -228,7 +270,8 @@ public class TestXMLUtils extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.services.xml.XMLUtils#readObjectFromFile(java.lang.String)}.
    */
   public final void testReadObjectFromFile() {
@@ -236,10 +279,10 @@ public class TestXMLUtils extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link ext.services.xml.XMLUtils#readObjectFromString(java.lang.String)}.
-   * 
-   * @throws Exception
    */
   public final void testReadObjectFromString() throws Exception {
     String str = new String("teststring");
@@ -268,11 +311,11 @@ public class TestXMLUtils extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link ext.services.xml.XMLUtils#writeObjectToFile(java.lang.Object, java.lang.String)}
    * .
-   * 
-   * @throws Exception
    */
   public final void testWriteObjectToFile() throws Exception {
     String str = new String("teststring");
@@ -295,6 +338,10 @@ public class TestXMLUtils extends JajukTestCase {
      */
   }
 
+  /**
+   * Test write object to file invalid file.
+   * DOCUMENT_ME
+   */
   public final void testWriteObjectToFileInvalidFile() {
     String str = new String("teststring");
 

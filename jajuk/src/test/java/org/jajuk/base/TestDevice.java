@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.base;
 
@@ -40,7 +40,7 @@ import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
 
 /**
- *
+ * DOCUMENT_ME.
  */
 public class TestDevice extends JajukTestCase {
 
@@ -74,7 +74,8 @@ public class TestDevice extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.Device#populateProperties(org.xml.sax.Attributes)}.
    */
 
@@ -117,7 +118,8 @@ public class TestDevice extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.Device#getHumanValue(java.lang.String)}.
    */
 
@@ -150,7 +152,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#getIconRepresentation()}.
    *
-   * @throws Exception
+   * @throws Exception the exception
    */
 
   public void testGetIconRepresentation() throws Exception {
@@ -160,31 +162,32 @@ public class TestDevice extends JajukTestCase {
     Device device = JUnitHelpers.getDevice();
     assertNotNull(device.getIconRepresentation());
 
-    device.setProperty(Const.XML_TYPE, (long)Device.Type.DIRECTORY.ordinal());
+    device.setProperty(Const.XML_TYPE, (long) Device.Type.DIRECTORY.ordinal());
     assertNotNull(device.getIconRepresentation());
 
-    device.setProperty(Const.XML_TYPE, (long)Device.Type.FILES_CD.ordinal());
+    device.setProperty(Const.XML_TYPE, (long) Device.Type.FILES_CD.ordinal());
     assertNotNull(device.getIconRepresentation());
 
-    device.setProperty(Const.XML_TYPE, (long)Device.Type.NETWORK_DRIVE.ordinal());
+    device.setProperty(Const.XML_TYPE, (long) Device.Type.NETWORK_DRIVE.ordinal());
     assertNotNull(device.getIconRepresentation());
 
-    device.setProperty(Const.XML_TYPE, (long)Device.Type.EXTDD.ordinal());
+    device.setProperty(Const.XML_TYPE, (long) Device.Type.EXTDD.ordinal());
     assertNotNull(device.getIconRepresentation());
 
-    device.setProperty(Const.XML_TYPE, (long)Device.Type.PLAYER.ordinal());
+    device.setProperty(Const.XML_TYPE, (long) Device.Type.PLAYER.ordinal());
     assertNotNull(device.getIconRepresentation());
 
     // test with mounted device
     device.setUrl(System.getProperty("java.io.tmpdir"));
     device.mount(true);
 
-    device.setProperty(Const.XML_TYPE, (long)Device.Type.PLAYER.ordinal());
+    device.setProperty(Const.XML_TYPE, (long) Device.Type.PLAYER.ordinal());
     assertNotNull(device.getIconRepresentation());
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.Device#addDirectory(org.jajuk.base.Directory)}.
    */
 
@@ -204,6 +207,8 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#cleanRemovedFiles()}.
+   *
+   * @throws Exception the exception
    */
 
   public void testCleanRemovedFiles() throws Exception {
@@ -240,7 +245,8 @@ public class TestDevice extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.Device#compareTo(org.jajuk.base.Device)}.
    */
   public void testCompareTo() {
@@ -253,6 +259,8 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#getDateLastRefresh()}.
+   *
+   * @throws Exception the exception
    */
   public void testGetDateLastRefresh() throws Exception {
     Device device = JUnitHelpers.getDevice();
@@ -307,6 +315,13 @@ public class TestDevice extends JajukTestCase {
     assertEquals(1, files.size());
   }
 
+  /**
+   * Gets the file.
+   *
+   * @param i DOCUMENT_ME
+   * @param dir DOCUMENT_ME
+   * @return the file
+   */
   @SuppressWarnings("unchecked")
   private File getFile(int i, Directory dir) {
     Genre genre = JUnitHelpers.getGenre("name");
@@ -344,7 +359,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#getRootDirectory()}.
    *
-   * @throws Exception
+   * @throws Exception the exception
    */
   public void testGetRootDirectory() throws Exception {
     // create a unique id here...
@@ -389,7 +404,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#isMounted()}.
    *
-   * @throws Exception
+   * @throws Exception the exception
    */
   public void testIsMounted() throws Exception {
     Device device = new Device("1", "name");
@@ -403,7 +418,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#isReady()}.
    *
-   * @throws Exception
+   * @throws Exception the exception
    */
   public void testIsReady() throws Exception {
     Device device = new Device("1", "name");
@@ -434,7 +449,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#prepareRefresh(boolean)}.
    *
-   * @throws Exception
+   * @throws Exception the exception
    */
   public void testPrepareRefresh() throws Exception {
     Device device = new Device("1", "name");
@@ -442,6 +457,12 @@ public class TestDevice extends JajukTestCase {
     device.prepareRefresh(false);
   }
 
+  /**
+   * Test prepare refresh ask.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPrepareRefreshAsk() throws Exception {
     Device device = new Device("1", "name");
     device.setUrl(System.getProperty("java.io.tmpdir"));
@@ -452,6 +473,12 @@ public class TestDevice extends JajukTestCase {
     }
   }
 
+  /**
+   * Test prepare refresh ask cd.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPrepareRefreshAskCD() throws Exception {
     Device device = DeviceManager.getInstance().registerDevice("name", Device.Type.FILES_CD,
         System.getProperty("java.io.tmpdir"));
@@ -462,6 +489,12 @@ public class TestDevice extends JajukTestCase {
     }
   }
 
+  /**
+   * Test prepare refresh ask network drive.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPrepareRefreshAskNetworkDrive() throws Exception {
     Device device = DeviceManager.getInstance().registerDevice("name", Device.Type.NETWORK_DRIVE,
         System.getProperty("java.io.tmpdir"));
@@ -472,6 +505,12 @@ public class TestDevice extends JajukTestCase {
     }
   }
 
+  /**
+   * Test prepare refresh ask ext dd.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPrepareRefreshAskExtDD() throws Exception {
     Device device = DeviceManager.getInstance().registerDevice("name", Device.Type.EXTDD,
         System.getProperty("java.io.tmpdir"));
@@ -482,6 +521,12 @@ public class TestDevice extends JajukTestCase {
     }
   }
 
+  /**
+   * Test prepare refresh ask player.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPrepareRefreshAskPlayer() throws Exception {
     Device device = DeviceManager.getInstance().registerDevice("name", Device.Type.PLAYER,
         System.getProperty("java.io.tmpdir"));
@@ -495,7 +540,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#mount(boolean)}.
    *
-   * @throws Exception
+   * @throws Exception the exception
    */
   public void testMount() throws Exception {
     Device device = new Device("1", "name");
@@ -523,7 +568,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#refresh(boolean)}.
    *
-   * @throws Exception
+   * @throws Exception the exception
    */
   public void testRefreshBoolean() throws Exception {
     Device device = new Device("1", "name");
@@ -547,7 +592,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#refresh(boolean, boolean)}.
    *
-   * @throws Exception
+   * @throws Exception the exception
    */
   public void testRefreshBooleanBoolean() throws Exception {
     Device device = new Device("1", "name");
@@ -581,7 +626,8 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Device#refreshCommand(boolean)}.
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testRefreshCommandNoMoreAvailable() throws Exception {
     // We check that a device mounted but no more available cannot be refreshed
@@ -603,6 +649,12 @@ public class TestDevice extends JajukTestCase {
   }
 
   // test for a regression that was added
+  /**
+   * Test refresh command dont readd top directory.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testRefreshCommandDontReaddTopDirectory() throws Exception {
     Device device = JUnitHelpers.getDevice();
     device.mount(true);
@@ -637,7 +689,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#setUrl(java.lang.String)}.
    *
-   * @throws Exception
+   * @throws Exception the exception
    */
   public void testSetUrl() throws Exception {
     Device device = JUnitHelpers.getDevice();
@@ -665,6 +717,10 @@ public class TestDevice extends JajukTestCase {
 
   }
 
+  /**
+   * Test synchronize conf set.
+   * DOCUMENT_ME
+   */
   public void testSynchronizeConfSet() {
     Device device = JUnitHelpers.getDevice();
     Device dSrc = JUnitHelpers.getDevice("src", Device.Type.DIRECTORY, "/tmp");
@@ -694,6 +750,10 @@ public class TestDevice extends JajukTestCase {
     // TODO do some real testing here
   }
 
+  /**
+   * Test synchronize command sync device.
+   * DOCUMENT_ME
+   */
   public void testSynchronizeCommandSyncDevice() {
     Device device = JUnitHelpers.getDevice();
     try {
@@ -710,6 +770,10 @@ public class TestDevice extends JajukTestCase {
     device.synchronizeCommand();
   }
 
+  /**
+   * Test synchronize command sync device bidi.
+   * DOCUMENT_ME
+   */
   public void testSynchronizeCommandSyncDeviceBidi() {
     Device device = JUnitHelpers.getDevice();
     try {
@@ -752,6 +816,10 @@ public class TestDevice extends JajukTestCase {
     assertFalse(device.test());
   }
 
+  /**
+   * Test test mounted.
+   * DOCUMENT_ME
+   */
   public void testTestMounted() {
     Device device = JUnitHelpers.getDevice();
     device.setUrl(System.getProperty("java.io.tmpdir"));
@@ -776,7 +844,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#unmount()}.
    *
-   * @throws Exception
+   * @throws Exception the exception
    */
   public void testUnmount() throws Exception {
     Device device = JUnitHelpers.getDevice();
@@ -793,7 +861,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#unmount(boolean, boolean)}.
    *
-   * @throws Exception
+   * @throws Exception the exception
    */
   public void testUnmountBooleanBoolean() throws Exception {
     Device device = JUnitHelpers.getDevice();
@@ -807,6 +875,12 @@ public class TestDevice extends JajukTestCase {
     assertFalse(device.isMounted());
   }
 
+  /**
+   * Test unmount boolean boolean queue.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testUnmountBooleanBooleanQueue() throws Exception {
     Device device = JUnitHelpers.getDevice();
 
@@ -826,20 +900,32 @@ public class TestDevice extends JajukTestCase {
     // used on this device....
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   private class MockAttributes implements Attributes {
 
+    /* (non-Javadoc)
+     * @see org.xml.sax.Attributes#getValue(java.lang.String, java.lang.String)
+     */
     @Override
     public String getValue(String uri, String localName) {
 
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see org.xml.sax.Attributes#getValue(java.lang.String)
+     */
     @Override
     public String getValue(String qName) {
 
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see org.xml.sax.Attributes#getValue(int)
+     */
     @Override
     public String getValue(int index) {
       switch (index) {
@@ -859,30 +945,45 @@ public class TestDevice extends JajukTestCase {
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see org.xml.sax.Attributes#getURI(int)
+     */
     @Override
     public String getURI(int index) {
 
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see org.xml.sax.Attributes#getType(java.lang.String, java.lang.String)
+     */
     @Override
     public String getType(String uri, String localName) {
 
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see org.xml.sax.Attributes#getType(java.lang.String)
+     */
     @Override
     public String getType(String qName) {
 
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see org.xml.sax.Attributes#getType(int)
+     */
     @Override
     public String getType(int index) {
 
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see org.xml.sax.Attributes#getQName(int)
+     */
     @Override
     public String getQName(int index) {
       switch (index) {
@@ -904,24 +1005,36 @@ public class TestDevice extends JajukTestCase {
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see org.xml.sax.Attributes#getLocalName(int)
+     */
     @Override
     public String getLocalName(int index) {
 
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see org.xml.sax.Attributes#getLength()
+     */
     @Override
     public int getLength() {
 
       return 4;
     }
 
+    /* (non-Javadoc)
+     * @see org.xml.sax.Attributes#getIndex(java.lang.String, java.lang.String)
+     */
     @Override
     public int getIndex(String uri, String localName) {
 
       return 0;
     }
 
+    /* (non-Javadoc)
+     * @see org.xml.sax.Attributes#getIndex(java.lang.String)
+     */
     @Override
     public int getIndex(String qName) {
 

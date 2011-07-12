@@ -48,7 +48,7 @@ import org.jfree.ui.about.SystemPropertiesPanel;
  * Help perspective *
  */
 public class AboutWindow extends JajukJDialog {
-  
+
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

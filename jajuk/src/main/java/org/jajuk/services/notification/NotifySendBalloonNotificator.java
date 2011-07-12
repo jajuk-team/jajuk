@@ -108,9 +108,8 @@ public class NotifySendBalloonNotificator implements INotificator {
       ret = launcher.exec(list.toArray(new String[list.size()]));
     } catch (IOException e) {
       ret = -1;
-      Log
-          .debug("Exception while checking for 'notify-send', cannot use notification functionality: "
-              + e.getMessage());
+      Log.debug("Exception while checking for 'notify-send', cannot use notification functionality: "
+          + e.getMessage());
     }
 
     // if we do not find the application or if we got an error, log some details
@@ -120,8 +119,7 @@ public class NotifySendBalloonNotificator implements INotificator {
       Log.debug("notify-send command returned to out(" + ret + "): " + out.toString());
       Log.debug("notify-send command returned to err: " + err.toString());
 
-      Log
-          .info("Cannot use notify-send functionality, application 'notify-send' seems to be not available correctly.");
+      Log.info("Cannot use notify-send functionality, application 'notify-send' seems to be not available correctly.");
       availability = false;
       return;
     }

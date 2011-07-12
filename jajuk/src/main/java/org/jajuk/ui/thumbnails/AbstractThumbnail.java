@@ -46,6 +46,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 import javax.swing.TransferHandler;
+import javax.swing.WindowConstants;
 
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
@@ -260,11 +261,11 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     jmiPlayShuffle.putClientProperty(Const.DETAIL_SELECTION, item);
     jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_REPEAT_SELECTION));
     jmiPlayRepeat.putClientProperty(Const.DETAIL_SELECTION, item);
-    jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"), IconLoader
-        .getIcon(JajukIcons.COVER_16X16));
+    jmiGetCovers = new JMenuItem(Messages.getString("CatalogView.7"),
+        IconLoader.getIcon(JajukIcons.COVER_16X16));
     jmiGetCovers.addActionListener(this);
-    jmiShowPopup = new JMenuItem(Messages.getString("CatalogView.20"), IconLoader
-        .getIcon(JajukIcons.POPUP));
+    jmiShowPopup = new JMenuItem(Messages.getString("CatalogView.20"),
+        IconLoader.getIcon(JajukIcons.POPUP));
     jmiShowPopup.addActionListener(this);
     jmiCDDBWizard = new JMenuItem(ActionManager.getAction(JajukActions.CDDB_SELECTION));
     jmiCDDBWizard.putClientProperty(Const.DETAIL_SELECTION, item);
@@ -431,7 +432,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
         jd.add(cv);
         jd.setSize(600, 450);
         jd.setLocationByPlatform(true);
-        jd.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        jd.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         jd.setVisible(true);
       } else {
         Messages.showErrorMessage(166);

@@ -70,11 +70,10 @@ public class StackItem implements Cloneable {
 
   /**
    * Constructor.
-   * 
+   *
    * @param file DOCUMENT_ME
-   * @param bUserLauched DOCUMENT_ME
    * @param bRepeat DOCUMENT_ME
-   * 
+   * @param bUserLauched DOCUMENT_ME
    * @throws JajukException the jajuk exception
    */
   public StackItem(File file, boolean bRepeat, boolean bUserLauched) throws JajukException {

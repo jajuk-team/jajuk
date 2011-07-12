@@ -36,9 +36,9 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
 
   /**
    * Genre constructor.
-   * 
-   * @param sName DOCUMENT_ME
+   *
    * @param sId DOCUMENT_ME
+   * @param sName DOCUMENT_ME
    */
   Genre(String sId, String sName) {
     super(sId, sName);
@@ -85,19 +85,19 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
   }
 
   /**
-  * Return whether this item is strictly unknown : contains no tag
-  * 
-  * @return whether this item is Unknown or not
-  */
+   * Return whether this item is strictly unknown : contains no tag.
+   *
+   * @return whether this item is Unknown or not
+   */
   public boolean isUnknown() {
     return this.getName().equals(UNKNOWN_GENRE);
   }
 
   /**
-  * Return whether this item seems unknown (fuzzy search)
-  * 
-  * @return whether this item seems unknown
-  */
+   * Return whether this item seems unknown (fuzzy search).
+   *
+   * @return whether this item seems unknown
+   */
   public boolean seemsUnknown() {
     return isUnknown() || "unknown".equalsIgnoreCase(getName())
         || Messages.getString(UNKNOWN_GENRE).equalsIgnoreCase(getName());

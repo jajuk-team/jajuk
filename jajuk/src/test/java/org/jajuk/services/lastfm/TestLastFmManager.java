@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.lastfm;
 
@@ -30,12 +30,13 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestLastFmManager extends JajukTestCase {
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.lastfm.LastFmManager#getInstance()}.
    */
   public void testGetInstance() {
@@ -43,7 +44,8 @@ public class TestLastFmManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.lastfm.LastFmManager#getRegistrationKeys()}.
    */
   public void testGetRegistrationKeys() {
@@ -60,11 +62,11 @@ public class TestLastFmManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.lastfm.LastFmManager#update(org.jajuk.events.JajukEvent)}
    * .
-   * 
-   * @throws Exception
    */
   public void testUpdate() throws Exception {
     // nothing happens if

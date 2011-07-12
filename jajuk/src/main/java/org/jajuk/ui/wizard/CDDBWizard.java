@@ -195,8 +195,8 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
    * Inits the ui. DOCUMENT_ME
    */
   public void initUI() {
-    okc = new OKCancelPanel(CDDBWizard.this, Messages.getString("Apply"), Messages
-        .getString("Close"));
+    okc = new OKCancelPanel(CDDBWizard.this, Messages.getString("Apply"),
+        Messages.getString("Close"));
     // Albums List
     jcbAlbum = new SteppedComboBox();
 

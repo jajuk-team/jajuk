@@ -118,13 +118,12 @@ public final class ThumbnailManager {
    * created if necessary. the thumbnail must be maxDim pixels or less. Thanks
    * Marco Schmidt
    * http://schmidt.devlib.org/java/save-jpeg-thumbnail.html#source
-   * 
+   *
    * @param orig source image
    * @param thumb destination file
    * @param maxDim required size
-   * 
-   * @throws IOException Signals that an I/O exception has occurred.
    * @throws InterruptedException the interrupted exception
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void createThumbnail(final File orig, final File thumb, final int maxDim)
       throws InterruptedException, IOException {
@@ -142,14 +141,13 @@ public final class ThumbnailManager {
    * encoding makes impossible to create the image from a file. Will be created
    * if necessary. the thumbnail must be maxDim pixels or less. Thanks Marco
    * Schmidt http://schmidt.devlib.org/java/save-jpeg-thumbnail.html#source
-   * 
+   *
+   * @param ii DOCUMENT_ME
    * @param thumb destination file (jpg)
    * @param maxDim required size
-   * @param ii DOCUMENT_ME
-   * 
    * @throws InterruptedException the interrupted exception
    * @throws IOException Signals that an I/O exception has occurred.
-   * @throws Exception    */
+   */
   public static void createThumbnail(final ImageIcon ii, final File thumb, final int maxDim)
       throws InterruptedException, IOException {
     // Synchronize the file to avoid any concurrency between several threads refreshing the thumb

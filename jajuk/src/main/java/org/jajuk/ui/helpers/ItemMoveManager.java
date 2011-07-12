@@ -45,7 +45,7 @@ public class ItemMoveManager {
 
     /** DOCUMENT_ME. */
     CUT,
-    
+
     /** DOCUMENT_ME. */
     COPY
   }

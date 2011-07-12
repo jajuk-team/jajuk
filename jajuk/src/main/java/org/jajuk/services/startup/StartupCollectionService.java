@@ -73,7 +73,6 @@ public final class StartupCollectionService {
   /** Does a collection parsing error occurred ? *. */
   private static boolean bCollectionLoadRecover = true;
 
-
   /**
    * Instantiates a new startup collection service.
    */

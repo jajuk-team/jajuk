@@ -398,15 +398,13 @@ public final class Collection extends DefaultHandler {
 
   /**
    * parsing warning.
-   * 
+   *
    * @param spe DOCUMENT_ME
-   * 
    * @throws SAXException the SAX exception
-   * 
-   * @exception SAXException
    */
   @Override
-  @SuppressWarnings("ucd") //NOSONAR
+  @SuppressWarnings("ucd")
+  //NOSONAR
   public void warning(SAXParseException spe) throws SAXException {
     throw new SAXException(Messages.getErrorMessage(5) + " / " + spe.getSystemId() + "/"
         + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
@@ -414,12 +412,9 @@ public final class Collection extends DefaultHandler {
 
   /**
    * parsing error.
-   * 
+   *
    * @param spe DOCUMENT_ME
-   * 
    * @throws SAXException the SAX exception
-   * 
-   * @exception SAXException
    */
   @Override
   @SuppressWarnings("ucd")
@@ -430,12 +425,9 @@ public final class Collection extends DefaultHandler {
 
   /**
    * parsing fatal error.
-   * 
+   *
    * @param spe DOCUMENT_ME
-   * 
    * @throws SAXException the SAX exception
-   * 
-   * @exception SAXException
    */
   @Override
   @SuppressWarnings("ucd")
@@ -457,8 +449,8 @@ public final class Collection extends DefaultHandler {
    * Called at parsing end.
    */
   @Override
-@SuppressWarnings("ucd")
-    public void endDocument() {
+  @SuppressWarnings("ucd")
+  public void endDocument() {
     long l = (System.currentTimeMillis() - lTime);
     Log.debug("Collection file parsing done : " + l + " ms");
   }
@@ -631,8 +623,8 @@ public final class Collection extends DefaultHandler {
       // jajuk
       StringBuilder sAttributes = new StringBuilder();
       for (int i = 0; i < attributes.getLength(); i++) {
-        sAttributes.append('\n').append(attributes.getQName(i)).append('=').append(
-            attributes.getValue(i));
+        sAttributes.append('\n').append(attributes.getQName(i)).append('=')
+            .append(attributes.getValue(i));
       }
       Log.error(5, sAttributes.toString(), e);
     }
@@ -702,7 +694,7 @@ public final class Collection extends DefaultHandler {
     String sRightID = sID;
     if (needCheckID) {
       sRightID = FileManager.createID(sItemName, dParent).intern();
-      if (sRightID == sID) {  //NOSONAR
+      if (sRightID == sID) { //NOSONAR
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
         Log.debug("** Wrong file Id, upgraded: " + sItemName);
@@ -730,7 +722,7 @@ public final class Collection extends DefaultHandler {
       sParentID = hmWrongRightDirectoryID.get(sParentID);
     }
     // We use intern() here for performances
-    if (sParentID != "-1") {  //NOSONAR
+    if (sParentID != "-1") { //NOSONAR
       // Parent directory should be already referenced
       // because of order conservation
       dParent = DirectoryManager.getInstance().getDirectoryByID(sParentID);
@@ -950,7 +942,7 @@ public final class Collection extends DefaultHandler {
     // UPGRADE test
     String sRightID = sID;
     if (needCheckID) {
-      sRightID = ArtistManager.createID(sItemName).intern();
+      sRightID = ItemManager.createID(sItemName).intern();
       if (sRightID == sID) {//NOSONAR
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
@@ -976,7 +968,7 @@ public final class Collection extends DefaultHandler {
     // UPGRADE test
     String sRightID = sID;
     if (needCheckID) {
-      sRightID = GenreManager.createID(sItemName).intern();
+      sRightID = ItemManager.createID(sItemName).intern();
       if (sRightID == sID) {//NOSONAR
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
@@ -1041,7 +1033,7 @@ public final class Collection extends DefaultHandler {
     // UPGRADE test
     String sRightID = sID;
     if (needCheckID) {
-      sRightID = DeviceManager.createID(sItemName).intern();
+      sRightID = ItemManager.createID(sItemName).intern();
       if (sRightID == sID) {//NOSONAR
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {

@@ -16,21 +16,21 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk;
 
 import java.io.File;
 
 /**
- * Contains common constants shared by jajuk unit tests 
+ * Contains common constants shared by jajuk unit tests.
  */
 public interface ConstTest {
 
   // sometimes temporary path has trailing separator, we try to handle this here
+  /** DOCUMENT_ME. */
   String PATH_DEVICE = (System.getProperty("java.io.tmpdir").endsWith(File.separator) ? System
-      .getProperty("java.io.tmpdir")
-      + "jajuk_tests" + File.separator + "device_1" : System.getProperty("java.io.tmpdir")
-      + File.separator + "jajuk_tests" + File.separator + "device_1");
+      .getProperty("java.io.tmpdir") + "jajuk_tests" + File.separator + "device_1" : System
+      .getProperty("java.io.tmpdir") + File.separator + "jajuk_tests" + File.separator + "device_1");
 
 }

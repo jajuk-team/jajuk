@@ -65,11 +65,11 @@ public abstract class JajukAction extends AbstractAction {
 
   /**
    * Construct an action with the given name, icon and accelerator keystroke.
-   * 
+   *
+   * @param pName DOCUMENT_ME
    * @param icon The icon to use for visualization of the action.
    * @param stroke The keystroke to use.
    * @param enabled By default enable or disable the action.
-   * @param pName DOCUMENT_ME
    * @param bHotkey DOCUMENT_ME
    */
   protected JajukAction(String pName, Icon icon, KeyStroke stroke, boolean enabled, boolean bHotkey) {
@@ -91,9 +91,9 @@ public abstract class JajukAction extends AbstractAction {
     if (stroke != null) {
       if (this.bHotkey) {
         try {
-          Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager").getMethod("registerHotKey",
-              new Class[] { KeyStroke.class, JajukAction.class }).invoke(null,
-              new Object[] { stroke, this });
+          Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager")
+              .getMethod("registerHotKey", new Class[] { KeyStroke.class, JajukAction.class })
+              .invoke(null, new Object[] { stroke, this });
         } catch (ClassNotFoundException e) {
           Log.error(e);
         } catch (IllegalArgumentException e) {
@@ -116,7 +116,7 @@ public abstract class JajukAction extends AbstractAction {
 
   /**
    * Construct an action with the given name, icon and accelerator keystroke.
-   * 
+   *
    * @param name The unique name for the action. This name is used in the labels
    * for visualization. If the name contains a '_' (underscore)
    * character. The character following this underscore is used as
@@ -124,10 +124,10 @@ public abstract class JajukAction extends AbstractAction {
    * @param icon The icon to use for visualization of the action.
    * @param stroke The keystroke to use. If the keystroke given is not a valid
    * keystroke using the rules describe in
-   * {@link javax.swing.KeyStroke#getKeyStroke(String)}, null is used
-   * instead.
    * @param enabled By default enable or disable the action.
    * @param bHotkey is it a hotkey (available even when window has not the focus) ?
+   * {@link javax.swing.KeyStroke#getKeyStroke(String)}, null is used
+   * instead.
    */
   protected JajukAction(String name, Icon icon, String stroke, boolean enabled, boolean bHotkey) {
     this(name, icon, KeyStroke.getKeyStroke(stroke), enabled, bHotkey);
@@ -150,17 +150,17 @@ public abstract class JajukAction extends AbstractAction {
 
   /**
    * Construct an action with the given name and accelerator keystroke, no icon.
-   * 
+   *
    * @param name The unique name for the action. This name is used in the labels
    * for visualization. If the name contains a '_' (underscore)
    * character. The character following this underscore is used as
    * mnemonic key for the action.
    * @param stroke The keystroke to use. If the keystroke given is not a valid
    * keystroke using the rules describe in
-   * {@link javax.swing.KeyStroke#getKeyStroke(String)}, null is used
-   * instead.
    * @param enabled By default enable or disable the action.
    * @param bHotkey is it a hotkey (available even when window has not the focus) ?
+   * {@link javax.swing.KeyStroke#getKeyStroke(String)}, null is used
+   * instead.
    */
   protected JajukAction(String name, String stroke, boolean enabled, boolean bHotkey) {
     this(name, null, stroke, enabled, bHotkey);
@@ -182,15 +182,14 @@ public abstract class JajukAction extends AbstractAction {
 
   /**
    * Construct an action with the given icon and accelerator keystroke, no name.
-   * 
+   *
    * @param icon The icon to use for visualization of the action.
    * @param stroke The keystroke to use. If the keystroke given is not a valid
    * keystroke using the rules describe in
-   * {@link javax.swing.KeyStroke#getKeyStroke(String)}, null is used
-   * instead.
    * @param enabled By default enable or disable the action.
    * @param bHotkey is it a hotkey (available even when window has not the focus) ?
-   * 
+   * {@link javax.swing.KeyStroke#getKeyStroke(String)}, null is used
+   * instead.
    * @see javax.swing.KeyStroke#getKeyStroke(String)
    */
   protected JajukAction(Icon icon, String stroke, boolean enabled, boolean bHotkey) {
@@ -329,10 +328,10 @@ public abstract class JajukAction extends AbstractAction {
 
   /**
    * Invoked when an action occurs. This implementation calls
+   *
+   * @param evt The event.
    * {@link #perform(java.awt.event.ActionEvent)} to add error handling and
    * logging to the action system.
-   * 
-   * @param evt The event.
    */
   @Override
   public final void actionPerformed(ActionEvent evt) {
@@ -361,8 +360,8 @@ public abstract class JajukAction extends AbstractAction {
    */
   public static void cleanup() throws Exception {
     if (UtilSystem.isUnderWindows()) {
-      Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager").getMethod("cleanup").invoke(null,
-          (Object[]) null);
+      Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager").getMethod("cleanup")
+          .invoke(null, (Object[]) null);
     }
   }
 

@@ -34,9 +34,9 @@ import org.jajuk.base.Item;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackComparator;
+import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
-import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -143,7 +143,7 @@ public class TracksTableModel extends JajukTableModel {
         // show it if no sync option or if item is in the selection
         boolean bShowWithTree = !syncTreeTable
         // tree selection = null means none election have been
-            // selected in tree so far
+        // selected in tree so far
             || treeSelection == null
             // check if the tree selection contains the current file
             || (treeSelection.size() > 0 && treeSelection.contains(track));

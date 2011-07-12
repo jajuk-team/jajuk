@@ -50,6 +50,8 @@ import org.jaudiotagger.tag.id3.ID3v1Tag;
 import org.jaudiotagger.tag.id3.ID3v24Tag;
 
 /**
+ * DOCUMENT_ME.
+ *
  * {@link ITagImpl} Implementation based on <a
  * href="https://jaudiotagger.dev.java.net">JAudiotagger</a>
  */

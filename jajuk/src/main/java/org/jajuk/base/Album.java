@@ -46,7 +46,6 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilString;
-import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.ImageFilter;
 import org.jajuk.util.log.Log;
@@ -66,9 +65,9 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Album constructor.
-   * 
-   * @param sName DOCUMENT_ME
+   *
    * @param sId DOCUMENT_ME
+   * @param sName DOCUMENT_ME
    * @param discID DOCUMENT_ME
    */
   Album(String sId, String sName, long discID) {
@@ -133,8 +132,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Return whether this item is strictly unknown : contains no tag
-   * 
+   * Return whether this item is strictly unknown : contains no tag.
+   *
    * @return whether this item is Unknown or not
    */
   public boolean isUnknown() {
@@ -142,10 +141,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-  * Return whether this item seems unknown (fuzzy search)
-  * 
-  * @return whether this item seems unknown
-  */
+   * Return whether this item seems unknown (fuzzy search).
+   *
+   * @return whether this item seems unknown
+   */
   public boolean seemsUnknown() {
     return isUnknown() || "unknown".equalsIgnoreCase(getName())
         || Messages.getString(UNKNOWN_ALBUM).equalsIgnoreCase(getName());
@@ -307,7 +306,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (StringUtils.isNotBlank(selectedCoverPath) && new File(selectedCoverPath).exists()) {
       // If user-selected cover is available, just return its path
       return new File(selectedCoverPath);
-    } else if (StringUtils.isNotBlank(discoveredCoverPath) && COVER_NONE.equals(discoveredCoverPath)) {
+    } else if (StringUtils.isNotBlank(discoveredCoverPath)
+        && COVER_NONE.equals(discoveredCoverPath)) {
       return null;
     } else if (StringUtils.isNotBlank(discoveredCoverPath)) {
       // Check if discovered cover still exist. There is an overhead

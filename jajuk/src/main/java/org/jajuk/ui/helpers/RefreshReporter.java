@@ -124,10 +124,10 @@ public class RefreshReporter {
    * @return the string
    */
   protected String buildFinalMessage(long time) {
-    StringBuilder sbOut = new StringBuilder("[").append(device.getName()).append(
-        Messages.getString("Device.25"))
-        .append(((time < 1000) ? time + " ms" : time / 1000 + " s")).append(" - ").append(
-            iNbNewFiles).append(Messages.getString("Device.27"));
+    StringBuilder sbOut = new StringBuilder("[").append(device.getName())
+        .append(Messages.getString("Device.25"))
+        .append(((time < 1000) ? time + " ms" : time / 1000 + " s")).append(" - ")
+        .append(iNbNewFiles).append(Messages.getString("Device.27"));
     if (iNbCorruptedFiles > 0) {
       sbOut.append(" - ").append(iNbCorruptedFiles).append(Messages.getString("Device.43"));
     }

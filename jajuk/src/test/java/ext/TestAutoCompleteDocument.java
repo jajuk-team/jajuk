@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package ext;
 
@@ -34,14 +34,14 @@ import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
 import org.jdesktop.swingx.autocomplete.TextComponentAdaptor;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestAutoCompleteDocument extends JajukTestCase {
 
   /**
    * Test method for {@link ext.AutoCompleteDocument#remove(int, int)}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
 
   public void testRemove() throws Exception {
@@ -57,7 +57,8 @@ public class TestAutoCompleteDocument extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.AutoCompleteDocument#AutoCompleteDocument(org.jdesktop.swingx.autocomplete.AbstractAutoCompleteAdaptor, boolean, org.jdesktop.swingx.autocomplete.ObjectToStringConverter)}
    * .
    */
@@ -66,6 +67,10 @@ public class TestAutoCompleteDocument extends JajukTestCase {
     new AutoCompleteDocument(new ComboBoxAdaptor(new JComboBox()), false, null);
   }
 
+  /**
+   * Test auto complete document abstract auto complete adaptor boolean object to string converter selected.
+   * DOCUMENT_ME
+   */
   public void testAutoCompleteDocumentAbstractAutoCompleteAdaptorBooleanObjectToStringConverterSelected() {
     AbstractAutoCompleteAdaptor adaptor = new ComboBoxAdaptor(new JComboBox(new Object[] {
         "string1", "string2", "string3" }));
@@ -83,7 +88,8 @@ public class TestAutoCompleteDocument extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link ext.AutoCompleteDocument#AutoCompleteDocument(org.jdesktop.swingx.autocomplete.AbstractAutoCompleteAdaptor, boolean)}
    * .
    */
@@ -106,7 +112,9 @@ public class TestAutoCompleteDocument extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link ext.AutoCompleteDocument#insertString(int, java.lang.String, javax.swing.text.AttributeSet)}
    * .
    */
@@ -120,6 +128,12 @@ public class TestAutoCompleteDocument extends JajukTestCase {
     document.insertString(0, "test", null);
   }
 
+  /**
+   * Test insert string int string attribute set.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testInsertStringIntStringAttributeSet() throws Exception {
     String[] items = new String[] { "exact", "exacter", "exactest" };
 
@@ -129,6 +143,12 @@ public class TestAutoCompleteDocument extends JajukTestCase {
     document.insertString(0, "test", null);
   }
 
+  /**
+   * Test prefer exact match over currently selected.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPreferExactMatchOverCurrentlySelected() throws Exception {
     String[] items = new String[] { "exact", "exacter", "exactest" };
 

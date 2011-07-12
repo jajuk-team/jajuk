@@ -118,8 +118,8 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
     if (e.getSource() == okp.getCancelButton()) {
       dispose(); // close window
     } else if (e.getSource() == jbFileSelection) {
-      final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
-          .getInstance()));
+      final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
+          DirectoryFilter.getInstance()));
       jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
       jfc.setDialogTitle(Messages.getString("FirstTimeWizard.5"));
       jfc.setMultiSelectionEnabled(false);
@@ -158,7 +158,7 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
       }
     } else if (e.getSource() == okp.getOKButton()) {
       try {
-        if(fDir == null) {
+        if (fDir == null) {
           Messages.showErrorMessage(143);
           return;
         }

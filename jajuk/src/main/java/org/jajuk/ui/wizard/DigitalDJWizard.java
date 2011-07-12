@@ -603,8 +603,8 @@ public class DigitalDJWizard extends Wizard {
       // enable/disable slider depending on checkbox
       jcbMaxTracks.addActionListener(this);
 
-      jcbUnicity = new JCheckBox(Messages.getString("DigitalDJWizard.10"), (Boolean) data
-          .get(KEY_UNICITY));
+      jcbUnicity = new JCheckBox(Messages.getString("DigitalDJWizard.10"),
+          (Boolean) data.get(KEY_UNICITY));
       jcbUnicity.setToolTipText(Messages.getString("DigitalDJWizard.55"));
       jcbUnicity.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent arg0) {
@@ -1380,10 +1380,9 @@ public class DigitalDJWizard extends Wizard {
 
   /**
    * Gets the widget index.
-   * 
-   * @param widget DOCUMENT_ME
+   *
    * @param widgets DOCUMENT_ME
-   * 
+   * @param widget DOCUMENT_ME
    * @return index of a given widget row in the widget table
    */
   private static int getWidgetIndex(JComponent[][] widgets, JComponent widget) {
