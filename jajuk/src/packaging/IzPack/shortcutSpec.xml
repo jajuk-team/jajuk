@@ -1,81 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <shortcuts>
-   <programGroup defaultName='Jajuk' location='applications'/>
-   <skipIfNotSupported/>
-  <!-- Unix -->
-  <shortcut
-     name='Jajuk'
-     programGroup='yes'
-     desktop='yes'
-     applications='yes'
-     startMenu='yes'
-     startup='no'
-     target='sh'
-     type='Application'
-     encoding='UTF-8'
-     commandLine='&quot;$INSTALL_PATH/jajuk&quot;'
-     workingDirectory='$INSTALL_PATH'
-     description='Jajuk advanced JukeBox'
-     iconIndex='0'
-     iconFile='$INSTALL_PATH/jajuk-icon-shortcut_64x64.png'
-     initialState='noShow'
-     os='unix'>
-     <createForPack name='main pack'/>
-   </shortcut>
-   
-    <shortcut
-     name='Uninstall'
-     programGroup='yes'
-     desktop='no'
-     applications='no'
-     startMenu='no'
-     startup='no'
-     type='Application'
-     encoding='UTF-8'
-     target='java'
-     commandLine='-jar &quot;$INSTALL_PATH/Uninstaller/uninstaller.jar&quot;'
-     workingDirectory=''
-     description='Uninstall Jajuk'
-     iconIndex='0'
-     iconFile='$INSTALL_PATH/jajuk-uninstall.png'
-     initialState='noShow'
-     os='unix'>
-     <createForPack name='main pack'/>
-   </shortcut>
-   
-   <!-- Windows -->
-   <shortcut
-     name='Jajuk'
-     programGroup='yes'
-     desktop='yes'
-     applications='no'
-     startMenu='no'
-     startup='no'
-     target='$INSTALL_PATH/jajuk.exe'
-     commandLine=''
-     workingDirectory=''
-     description='Jajuk advanced JukeBox'
-     iconIndex='0'
-     iconFile='$INSTALL_PATH/jajuk-icon.ico'
-     initialState='noShow'
-     os='windows'>
-     <createForPack name='main pack'/>
-   </shortcut>
-    <shortcut
-     name='Uninstall'
-     programGroup='yes'
-     desktop='no'
-     applications='no'
-     startMenu='no'
-     startup='no'
-     target='javaw'
-     commandLine='-jar "$INSTALL_PATH/Uninstaller/uninstaller.jar"'
-     workingDirectory='$INSTALL_PATH/Uninstaller'
-     description='Uninstall Jajuk'
-     iconIndex='0'
-     iconFile='$INSTALL_PATH/jajuk-uninstall.ico'
-     initialState='noShow'
-     os='windows'>
-     <createForPack name='main pack'/>
-   </shortcut>
-  </shortcuts>
+	<programGroup defaultName='Jajuk' location='applications' />
+	<skipIfNotSupported />
+	<!-- Unix -->
+	<shortcut name='Jajuk' programGroup='yes' desktop='yes'
+		applications='yes' startMenu='yes' startup='no' target='sh' type='Application'
+		encoding='UTF-8' commandLine='&quot;$INSTALL_PATH/jajuk&quot;'
+		workingDirectory='$INSTALL_PATH' description='Jajuk advanced JukeBox'
+		iconIndex='0' iconFile='$INSTALL_PATH/jajuk-icon-shortcut_64x64.png'
+		initialState='noShow' os='unix'>
+		<createForPack name='main pack' />
+	</shortcut>
+
+	<shortcut name='Uninstall' programGroup='yes' desktop='no'
+		applications='no' startMenu='no' startup='no' type='Application'
+		encoding='UTF-8' target='java'
+		commandLine='-jar &quot;$INSTALL_PATH/Uninstaller/uninstaller.jar&quot;'
+		workingDirectory='' description='Uninstall Jajuk' iconIndex='0'
+		iconFile='$INSTALL_PATH/jajuk-uninstall.png' initialState='noShow' os='unix'>
+		<createForPack name='main pack' />
+	</shortcut>
+
+	<!-- Windows -->
+	<shortcut name='Jajuk' programGroup='yes' desktop='yes'
+		applications='no' startMenu='no' startup='no' target='$INSTALL_PATH/jajuk.exe'
+		commandLine='' workingDirectory='' description='Jajuk advanced JukeBox'
+		iconIndex='0' iconFile='$INSTALL_PATH/jajuk-icon.ico' initialState='noShow'
+		os='windows'>
+		<createForPack name='main pack' />
+	</shortcut>
+	<shortcut name='Uninstall' programGroup='yes' desktop='no'
+		applications='no' startMenu='no' startup='no' target='javaw'
+		commandLine='-jar "$INSTALL_PATH/Uninstaller/uninstaller.jar"'
+		workingDirectory='$INSTALL_PATH/Uninstaller' description='Uninstall Jajuk'
+		iconIndex='0' iconFile='$INSTALL_PATH/jajuk-uninstall.ico'
+		initialState='noShow' os='windows'>
+		<createForPack name='main pack' />
+	</shortcut>
+</shortcuts>

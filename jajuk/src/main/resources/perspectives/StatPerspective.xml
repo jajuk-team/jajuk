@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <VLDocking version="2.1">
-<DockingDesktop name="">
-<DockingPanel>
-<Dockable>
-<Key dockName="org.jajuk.ui.views.StatView/0"/>
-</Dockable>
-</DockingPanel>
-<TabGroups>
-</TabGroups>
-</DockingDesktop>
+	<DockingDesktop name="">
+		<DockingPanel>
+			<Dockable>
+				<Key dockName="org.jajuk.ui.views.StatView/0" />
+			</Dockable>
+		</DockingPanel>
+		<TabGroups>
+		</TabGroups>
+	</DockingDesktop>
 </VLDocking>
