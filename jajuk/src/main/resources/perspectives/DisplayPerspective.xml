@@ -1,27 +1,27 @@
 <?xml version="1.0"?>
 <VLDocking version="2.1">
-<DockingDesktop name="">
-<DockingPanel>
-<Split orientation="0" location="0.20">
-<Dockable>
-<Key dockName="org.jajuk.ui.views.AnimationView/0"/>
-</Dockable>
-<Split orientation="1" location="0.50">
-<Dockable>
-<Key dockName="org.jajuk.ui.views.CoverView/2"/>
-</Dockable>
-<Split orientation="0" location="0.50">
-<Dockable>
-<Key dockName="org.jajuk.ui.views.QueueView/2"/>
-</Dockable>
-<Dockable>
-<Key dockName="org.jajuk.ui.views.LyricsView/0"/>
-</Dockable>
-</Split>
-</Split>
-</Split>
-</DockingPanel>
-<TabGroups>
-</TabGroups>
-</DockingDesktop>
+	<DockingDesktop name="">
+		<DockingPanel>
+			<Split orientation="0" location="0.20">
+				<Dockable>
+					<Key dockName="org.jajuk.ui.views.AnimationView/0" />
+				</Dockable>
+				<Split orientation="1" location="0.50">
+					<Dockable>
+						<Key dockName="org.jajuk.ui.views.CoverView/2" />
+					</Dockable>
+					<Split orientation="0" location="0.50">
+						<Dockable>
+							<Key dockName="org.jajuk.ui.views.QueueView/2" />
+						</Dockable>
+						<Dockable>
+							<Key dockName="org.jajuk.ui.views.LyricsView/0" />
+						</Dockable>
+					</Split>
+				</Split>
+			</Split>
+		</DockingPanel>
+		<TabGroups>
+		</TabGroups>
+	</DockingDesktop>
 </VLDocking>

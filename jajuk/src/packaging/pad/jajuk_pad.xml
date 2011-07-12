@@ -2,8 +2,12 @@
 <XML_DIZ_INFO>
 	<MASTER_PAD_VERSION_INFO>
 		<MASTER_PAD_VERSION>3.10</MASTER_PAD_VERSION>
-		<MASTER_PAD_EDITOR>Online PAD Generator 1.33 - http://www.padbuilder.com</MASTER_PAD_EDITOR>
-		<MASTER_PAD_INFO>Portable Application Description, or PAD for short, is a data set that is used by shareware authors to disseminate information to anyone interested in their software products. To find out more go to http://www.asp-shareware.org/pad</MASTER_PAD_INFO>
+		<MASTER_PAD_EDITOR>Online PAD Generator 1.33 -
+			http://www.padbuilder.com</MASTER_PAD_EDITOR>
+		<MASTER_PAD_INFO>Portable Application Description, or PAD for short,
+			is a data set that is used by shareware authors to disseminate
+			information to anyone interested in their software products. To find
+			out more go to http://www.asp-shareware.org/pad</MASTER_PAD_INFO>
 	</MASTER_PAD_VERSION_INFO>
 	<Company_Info>
 		<Company_Name>Jajuk team</Company_Name>
@@ -44,7 +48,9 @@
 		<Program_Type>Freeware</Program_Type>
 		<Program_Release_Status>New Release</Program_Release_Status>
 		<Program_Install_Support>No Install Support</Program_Install_Support>
-		<Program_OS_Support>Java,Linux,Linux Gnome,Linux GPL,Linux Open Source,Mac OS X,Unix,Win2000,Win7 x32,Win7 x64,Win98,WinOther,WinVista,WinVista x64,WinXP</Program_OS_Support>
+		<Program_OS_Support>Java,Linux,Linux Gnome,Linux GPL,Linux Open
+			Source,Mac OS X,Unix,Win2000,Win7 x32,Win7
+			x64,Win98,WinOther,WinVista,WinVista x64,WinXP</Program_OS_Support>
 		<Program_Language>English,French,German,Greek,Korean,Russian,Spanish</Program_Language>
 		<Program_Change_Info />
 		<Program_Specific_Category>Audio</Program_Specific_Category>
@@ -71,9 +77,21 @@
 			<Keywords>java,jukebox,mp3,ogg,music,collection,player</Keywords>
 			<Char_Desc_45>Jajuk is a powerful music organizer</Char_Desc_45>
 			<Char_Desc_80>Jajuk is a powerful music organizer for all platforms</Char_Desc_80>
-			<Char_Desc_250>Jajuk is a powerful music organizer for all platforms. The main goal of this project is to provide a fully-featured application to advanced users with large or scattered music collections.</Char_Desc_250>
-			<Char_Desc_450>Jajuk is a powerful music organizer for all platforms. The main goal of this project is to provide a fully-featured application to advanced users with large or scattered music collections. Jajuk main principles are maximum features, maximum portability and maximum usability</Char_Desc_450>
-			<Char_Desc_2000>Jajuk is a powerful music organizer for all platforms. The main goal of this project is to provide a fully-featured application to advanced users with large or scattered music collections. Jajuk is a Free Software published under GPL license. Jajuk main principles are maximum features, maximum portability and maximum usability.</Char_Desc_2000>
+			<Char_Desc_250>Jajuk is a powerful music organizer for all platforms.
+				The main goal of this project is to provide a fully-featured
+				application to advanced users with large or scattered music
+				collections.</Char_Desc_250>
+			<Char_Desc_450>Jajuk is a powerful music organizer for all platforms.
+				The main goal of this project is to provide a fully-featured
+				application to advanced users with large or scattered music
+				collections. Jajuk main principles are maximum features, maximum
+				portability and maximum usability</Char_Desc_450>
+			<Char_Desc_2000>Jajuk is a powerful music organizer for all
+				platforms. The main goal of this project is to provide a
+				fully-featured application to advanced users with large or scattered
+				music collections. Jajuk is a Free Software published under GPL
+				license. Jajuk main principles are maximum features, maximum
+				portability and maximum usability.</Char_Desc_2000>
 		</English>
 	</Program_Descriptions>
 	<Web_Info>
@@ -92,31 +110,49 @@
 		</Download_URLs>
 	</Web_Info>
 	<Permissions>
-		<Distribution_Permissions>This program is free software; you can redistribute 
-it and/or modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2 of the
-License, or any later version.
- 
- This program is distributed in the hope that it will be useful, but 
- WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
- or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- General Public License for more details.
- 
- You should have received a copy of the GNU General Public License along 
- with this program; if not, write to the Free Software Foundation, 
- Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,USA</Distribution_Permissions>
-		<EULA>This program is free software; you can redistribute 
-it and/or modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2 of the
-License, or any later version.
- 
- This program is distributed in the hope that it will be useful, but 
- WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
- or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- General Public License for more details.
- 
- You should have received a copy of the GNU General Public License along 
- with this program; if not, write to the Free Software Foundation, 
- Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,USA</EULA>
+		<Distribution_Permissions>This program is free software; you can
+			redistribute
+			it and/or modify it under the terms of the GNU General
+			Public License
+			as published by the Free Software Foundation; either
+			version 2 of the
+			License, or any later version.
+
+			This program is
+			distributed in the hope that it will be useful, but
+			WITHOUT ANY
+			WARRANTY; without even the implied warranty of
+			MERCHANTABILITY
+			or
+			FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+			General Public License
+			for more details.
+
+			You should have received a copy of the GNU General
+			Public License along
+			with this program; if not, write to the Free
+			Software Foundation,
+			Inc., 59 Temple Place - Suite 330, Boston, MA
+			02111-1307,USA</Distribution_Permissions>
+		<EULA>This program is free software; you can redistribute
+			it and/or
+			modify it under the terms of the GNU General Public License
+			as
+			published by the Free Software Foundation; either version 2 of the
+			License, or any later version.
+
+			This program is distributed in the hope
+			that it will be useful, but
+			WITHOUT ANY WARRANTY; without even the
+			implied warranty of
+			MERCHANTABILITY
+			or FITNESS FOR A PARTICULAR
+			PURPOSE. See the GNU
+			General Public License for more details.
+
+			You
+			should have received a copy of the GNU General Public License along
+			with this program; if not, write to the Free Software Foundation,
+			Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,USA</EULA>
 	</Permissions>
 </XML_DIZ_INFO>

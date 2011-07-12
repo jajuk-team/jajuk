@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <DockingDesktop version="2.0">
-<DockingPanel>
-<Split orientation="1" location="0.30">
-<Dockable>
-<Key dockName="org.jajuk.ui.views.TracksTreeView/0" dockLabel="key0"/>
-</Dockable>
-<Split orientation="0" location="0.5">
-<Dockable>
-<Key dockName="org.jajuk.ui.views.TracksTableView/1" dockLabel="key1"/>
-</Dockable>
-<Split orientation="1" location="0.55">
-<Dockable>
-<Key dockName="org.jajuk.ui.views.QueueView/1" dockLabel="key2"/>
-</Dockable>
-<Dockable>
-<Key dockName="org.jajuk.ui.views.CoverView/1" dockLabel="key4"/>
-</Dockable>
-</Split>
-</Split>
-</Split>
-</DockingPanel>
+	<DockingPanel>
+		<Split orientation="1" location="0.30">
+			<Dockable>
+				<Key dockName="org.jajuk.ui.views.TracksTreeView/0" dockLabel="key0" />
+			</Dockable>
+			<Split orientation="0" location="0.5">
+				<Dockable>
+					<Key dockName="org.jajuk.ui.views.TracksTableView/1" dockLabel="key1" />
+				</Dockable>
+				<Split orientation="1" location="0.55">
+					<Dockable>
+						<Key dockName="org.jajuk.ui.views.QueueView/1" dockLabel="key2" />
+					</Dockable>
+					<Dockable>
+						<Key dockName="org.jajuk.ui.views.CoverView/1" dockLabel="key4" />
+					</Dockable>
+				</Split>
+			</Split>
+		</Split>
+	</DockingPanel>
 </DockingDesktop>

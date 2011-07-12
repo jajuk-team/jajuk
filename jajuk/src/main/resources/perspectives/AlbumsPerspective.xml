@@ -1,25 +1,25 @@
 <?xml version="1.0"?>
 <VLDocking version="2.1">
-<DockingDesktop name="">
-<DockingPanel>
-<TabbedDockable>
-<Dockable>
-<Key dockName="org.jajuk.ui.views.CatalogView/0"/>
-</Dockable>
-<Dockable>
-<Key dockName="org.jajuk.ui.views.AlbumsTableView/0"/>
-</Dockable>
-</TabbedDockable>
-</DockingPanel>
-<TabGroups>
-<TabGroup>
-<Dockable>
-<Key dockName="org.jajuk.ui.views.CatalogView/0"/>
-</Dockable>
-<Dockable>
-<Key dockName="org.jajuk.ui.views.AlbumsTableView/0"/>
-</Dockable>
-</TabGroup>
-</TabGroups>
-</DockingDesktop>
+	<DockingDesktop name="">
+		<DockingPanel>
+			<TabbedDockable>
+				<Dockable>
+					<Key dockName="org.jajuk.ui.views.CatalogView/0" />
+				</Dockable>
+				<Dockable>
+					<Key dockName="org.jajuk.ui.views.AlbumsTableView/0" />
+				</Dockable>
+			</TabbedDockable>
+		</DockingPanel>
+		<TabGroups>
+			<TabGroup>
+				<Dockable>
+					<Key dockName="org.jajuk.ui.views.CatalogView/0" />
+				</Dockable>
+				<Dockable>
+					<Key dockName="org.jajuk.ui.views.AlbumsTableView/0" />
+				</Dockable>
+			</TabGroup>
+		</TabGroups>
+	</DockingDesktop>
 </VLDocking>
