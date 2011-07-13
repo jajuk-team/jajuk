@@ -184,6 +184,28 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /** DOCUMENT_ME. */
   private boolean includeControls;
 
+  /** Thread launch at view init to reset its state */
+  private class CoverResetThread extends Thread {
+    @Override
+    public void run() {
+      if (fileReference == null) {
+        if (QueueModel.isStopped()) {
+          update(new JajukEvent(JajukEvents.ZERO));
+        } else {
+          // check if a track has already been launched
+          if (QueueModel.isPlayingRadio()) {
+            update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED,
+                ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
+          } else {
+            update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
+          }
+        }
+      } else {
+        update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
+      }
+    }
+  }
+
   /**
    * Constructor.
    */
@@ -340,32 +362,10 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     setLayout(globalLayout);
     add(jpControl, "grow,wrap");
 
-    // Force initial cover refresh
-    new Thread() {
-      @Override
-      public void run() {
-        if (fileReference == null) {
-          if (QueueModel.isStopped()) {
-            update(new JajukEvent(JajukEvents.ZERO));
-          } else {
-            // check if a track has already been launched
-            if (QueueModel.isPlayingRadio()) {
-              update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED,
-                  ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
-            } else {
-              update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
-            }
-          }
-        } else {
-          update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
-        }
+    // listen for resize. We do it here to avoid a useless resize event at
+    // init and an associated blinking effect
+    addComponentListener(CoverView.this);
 
-        // listen for resize. We do it here to avoid a useless resize event at
-        // init and an associated blinking effect
-        addComponentListener(CoverView.this);
-
-      }
-    }.start();
   }
 
   /*
@@ -755,7 +755,11 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       return;
     }
     lDateLastResize = lCurrentDate;
-    displayCurrentCover();
+    // Force initial cover refresh. We do this inside this method and not initUI() 
+    // because we make sure that the window is fully displayed then (otherwise, we get 
+    // a black cover when switching from slimbar to main window for ie)
+    CoverResetThread refresh = new CoverResetThread();
+    refresh.start();
   }
 
   /**
@@ -839,12 +843,13 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     final Cover cover = alCovers.get(index); // take image at the given index
     final URL url = cover.getURL();
     // enable delete button only for local covers
-    jbDelete.setEnabled(cover.getType() == CoverType.LOCAL_COVER || cover.getType() == CoverType.SELECTED_COVER
+    jbDelete.setEnabled(cover.getType() == CoverType.LOCAL_COVER
+        || cover.getType() == CoverType.SELECTED_COVER
         || cover.getType() == CoverType.STANDARD_COVER);
-    
+
     //Disable default command for "none" cover
     jbDefault.setEnabled(cover.getType() != CoverType.NO_COVER);
-    
+
     if (url != null) {
       jbSave.setEnabled(false);
       String sType = " (L)"; // local cover
