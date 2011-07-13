@@ -229,9 +229,16 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    */
   public void setDisplayQueue(boolean display) {
     if (display) {
-      // Set position of queue dialog
-      getQueueWindow().setLocation(this.getLocation().x,
-          this.getLocation().y + this.getSize().height);
+      // Set position of queue dialog. We display the queue window either above or bellow the slimbar 
+      // according to remaining vertical space.
+      int yLocation = this.getLocation().y;
+      if (this.getLocation().y + queueViewWindow.getSize().height + this.getSize().height > Toolkit
+          .getDefaultToolkit().getScreenSize().getHeight()) {
+        yLocation -= queueViewWindow.getSize().height;
+      } else {
+        yLocation += this.getSize().height;
+      }
+      getQueueWindow().setLocation(this.getLocation().x, yLocation);
       getQueueWindow().setSize(this.getSize().width, queueViewWindow.getSize().height);
     }
     getQueueWindow().setVisible(display);
