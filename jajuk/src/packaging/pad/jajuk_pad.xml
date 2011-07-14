@@ -38,9 +38,9 @@
 	</Company_Info>
 	<Program_Info>
 		<Program_Name>Jajuk</Program_Name>
-		<Program_Version>1.9.2</Program_Version>
-		<Program_Release_Month>03</Program_Release_Month>
-		<Program_Release_Day>21</Program_Release_Day>
+		<Program_Version>1.9.3</Program_Version>
+		<Program_Release_Month>07</Program_Release_Month>
+		<Program_Release_Day>14</Program_Release_Day>
 		<Program_Release_Year>2011</Program_Release_Year>
 		<Program_Cost_Dollars />
 		<Program_Cost_Other_Code />
@@ -103,7 +103,7 @@
 			<Application_XML_File_URL>http://gitorious.org/jajuk/jajuk/blobs/raw/master/jajuk/src/packaging/pad/jajuk_pad.xml</Application_XML_File_URL>
 		</Application_URLs>
 		<Download_URLs>
-			<Primary_Download_URL>http://sourceforge.net/projects/jajuk/files/jajuk/1.9.1/jajuk-1.9.2-setup.exe/download?target=jajuk.exe</Primary_Download_URL>
+			<Primary_Download_URL>http://sourceforge.net/projects/jajuk/files/jajuk/1.9.3/jajuk-1.9.3-setup.exe</Primary_Download_URL>
 			<Secondary_Download_URL />
 			<Additional_Download_URL_1 />
 			<Additional_Download_URL_2 />
