@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.base;
 
@@ -27,13 +27,14 @@ import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.services.webradio.WebRadio;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestSearchResult extends TestCase {
 
   /**
    * Test method for {@link org.jajuk.base.SearchResult#hashCode()}.
-   * @throws Exception 
+   *
+   * @throws Exception the exception
    */
   public void testHashCode() throws Exception {
     // TODO: this fails currently because there is no equals in SearchResult, should we add one? For now we just cover hashCode()
@@ -53,7 +54,8 @@ public class TestSearchResult extends TestCase {
 
   /**
    * Test method for {@link org.jajuk.base.SearchResult#SearchResult(org.jajuk.base.File)}.
-   * @throws Exception 
+   *
+   * @throws Exception the exception
    */
   public void testSearchResultFile() throws Exception {
     SearchResult res = new SearchResult(JUnitHelpers.getFile("file2", true));
@@ -62,7 +64,8 @@ public class TestSearchResult extends TestCase {
 
   /**
    * Test method for {@link org.jajuk.base.SearchResult#SearchResult(org.jajuk.base.File, java.lang.String)}.
-   * @throws Exception 
+   *
+   * @throws Exception the exception
    */
   public void testSearchResultFileString() throws Exception {
     SearchResult res = new SearchResult(JUnitHelpers.getFile("file2", true), "testresult");
@@ -80,7 +83,8 @@ public class TestSearchResult extends TestCase {
 
   /**
    * Test method for {@link org.jajuk.base.SearchResult#compareTo(org.jajuk.base.SearchResult)}.
-   * @throws Exception 
+   *
+   * @throws Exception the exception
    */
   public void testCompareTo() throws Exception {
     // compareTo only looks at sResu-parameter
@@ -92,7 +96,8 @@ public class TestSearchResult extends TestCase {
 
   /**
    * Test method for {@link org.jajuk.base.SearchResult#getFile()}.
-   * @throws Exception 
+   *
+   * @throws Exception the exception
    */
   public void testGetFile() throws Exception {
     SearchResult res = new SearchResult(JUnitHelpers.getFile("file2", true), "testresu");
@@ -101,7 +106,8 @@ public class TestSearchResult extends TestCase {
 
   /**
    * Test method for {@link org.jajuk.base.SearchResult#getType()}.
-   * @throws Exception 
+   *
+   * @throws Exception the exception
    */
   public void testGetType() throws Exception {
     SearchResult res = new SearchResult(JUnitHelpers.getFile("file2", true), "testresu");

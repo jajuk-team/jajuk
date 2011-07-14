@@ -40,8 +40,8 @@ import javax.swing.SwingWorker;
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackComparator;
-import org.jajuk.base.TrackManager;
 import org.jajuk.base.TrackComparator.TrackComparatorType;
+import org.jajuk.base.TrackManager;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.ui.wizard.DuplicateTracksDialog;
 import org.jajuk.util.Conf;
@@ -79,9 +79,9 @@ public class FindDuplicateTracksAction extends JajukAction {
 
   /**
    * Add a dup for a given track.
-   * 
-   * @param files list of files
+   *
    * @param track DOCUMENT_ME
+   * @param files list of files
    */
   private void addDup(Track track, List<File> files) {
     // Ignore case where thy are none ready files

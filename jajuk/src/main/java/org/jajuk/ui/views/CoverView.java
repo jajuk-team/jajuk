@@ -29,8 +29,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -45,7 +43,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -71,11 +68,11 @@ import org.jajuk.base.Track;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.core.SessionService;
 import org.jajuk.services.covers.Cover;
 import org.jajuk.services.covers.Cover.CoverType;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
+import org.jajuk.services.tags.Tag;
 import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.widgets.InformationJPanel;
@@ -99,10 +96,6 @@ import org.jajuk.util.filters.ImageFilter;
 import org.jajuk.util.filters.JPGFilter;
 import org.jajuk.util.filters.PNGFilter;
 import org.jajuk.util.log.Log;
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.tag.Tag;
-import org.jaudiotagger.tag.datatype.Artwork;
 
 /**
  * Cover view. Displays an image for the current album
@@ -190,6 +183,28 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
   /** DOCUMENT_ME. */
   private boolean includeControls;
+
+  /** Thread launch at view init to reset its state */
+  private class CoverResetThread extends Thread {
+    @Override
+    public void run() {
+      if (fileReference == null) {
+        if (QueueModel.isStopped()) {
+          update(new JajukEvent(JajukEvents.ZERO));
+        } else {
+          // check if a track has already been launched
+          if (QueueModel.isPlayingRadio()) {
+            update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED,
+                ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
+          } else {
+            update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
+          }
+        }
+      } else {
+        update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
+      }
+    }
+  }
 
   /**
    * Constructor.
@@ -347,38 +362,10 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     setLayout(globalLayout);
     add(jpControl, "grow,wrap");
 
-    // Force initial cover refresh
-    new Thread() {
-      @Override
-      public void run() {
-        // Wait a while to make sure that the view has been fully displayed
-        try {
-          Thread.sleep(2000);
-        } catch (InterruptedException e) {
-          Log.error(e);
-        }
-        if (fileReference == null) {
-          if (QueueModel.isStopped()) {
-            update(new JajukEvent(JajukEvents.ZERO));
-          } else {
-            // check if a track has already been launched
-            if (QueueModel.isPlayingRadio()) {
-              update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED,
-                  ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
-            } else {
-              update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
-            }
-          }
-        } else {
-          update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
-        }
+    // listen for resize. We do it here to avoid a useless resize event at
+    // init and an associated blinking effect
+    addComponentListener(CoverView.this);
 
-        // listen for resize. We do it here to avoid a useless resize event at
-        // init and an associated blinking effect
-        addComponentListener(CoverView.this);
-
-      }
-    }.start();
   }
 
   /*
@@ -481,10 +468,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
     // show confirmation message if required
     if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_COVER)) {
-      final int iResu = Messages
-          .getChoice(Messages.getString("Confirmation_delete_cover") + " : "
-              + cover.getURL().getFile(), JOptionPane.YES_NO_CANCEL_OPTION,
-              JOptionPane.WARNING_MESSAGE);
+      final int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_cover") + " : "
+          + cover.getFile(), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
       if (iResu != JOptionPane.YES_OPTION) {
         return;
       }
@@ -492,7 +477,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
 
     // yet there? ok, delete the cover
     try {
-      final File file = new File(cover.getURL().getFile());
+      final File file = cover.getFile();
       if (file.isFile() && file.exists()) {
         UtilSystem.deleteFile(file);
       } else { // not a file, must have a problem
@@ -565,11 +550,11 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
             alCovers.add(cover2);
             setFoundText();
           }
-          // Reset cached cover
-          org.jajuk.base.File fCurrent = fileReference;
-          if (fCurrent == null) {
-            fCurrent = QueueModel.getPlayingFile();
-          }
+
+          // Reset cached cover in associated albums to make sure that new covers
+          // will be discovered in various views like Catalog View.
+          resetCachedCover();
+
           // Notify cover change
           ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
           // add new cover in others cover views
@@ -579,6 +564,26 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         }
       }
     }.start();
+  }
+
+  /**
+   * Reset cached cover in associated albums to make sure that new covers
+   *  will be discovered in various views like Catalog View.
+   */
+  private void resetCachedCover() {
+    org.jajuk.base.File fCurrent = fileReference;
+    if (fCurrent == null) {
+      fCurrent = QueueModel.getPlayingFile();
+    }
+    Set<Album> albums = fCurrent.getDirectory().getAlbums();
+    // If we cached NO_COVER for this album, make sure to reset this value
+    for (Album album : albums) {
+      String cachedCoverPath = album.getStringValue(XML_ALBUM_DISCOVERED_COVER);
+      if (COVER_NONE.equals(cachedCoverPath)) {
+        album.setProperty(XML_ALBUM_DISCOVERED_COVER, "");
+      }
+      ObservationManager.notify(new JajukEvent(JajukEvents.COVER_DEFAULT_CHANGED));
+    }
   }
 
   /**
@@ -640,11 +645,11 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
             UtilSystem.copy(cover.getFile(), fNew);
             InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
                 InformationJPanel.MessageType.INFORMATIVE);
-            // Reset cached cover
-            org.jajuk.base.File fCurrent = fileReference;
-            if (fCurrent == null) {
-              fCurrent = QueueModel.getPlayingFile();
-            }
+
+            // Reset cached cover in associated albums to make sure that new covers
+            // will be discovered in various views like Catalog View.
+            resetCachedCover();
+
             // Notify cover change
             ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
           } catch (final Exception ex) {
@@ -728,7 +733,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         if (fCurrent != null && fCurrent.getTrack() != null
             && fCurrent.getTrack().getAlbum() != null && cover.getFile() != null) {
           Album album = fCurrent.getTrack().getAlbum();
-          album.setProperty(XML_ALBUM_COVER, destPath);
+          album.setProperty(XML_ALBUM_SELECTED_COVER, destPath);
+          album.setProperty(XML_ALBUM_DISCOVERED_COVER, destPath);
         }
       }
     }.start();
@@ -749,7 +755,11 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       return;
     }
     lDateLastResize = lCurrentDate;
-    displayCurrentCover();
+    // Force initial cover refresh. We do this inside this method and not initUI() 
+    // because we make sure that the window is fully displayed then (otherwise, we get 
+    // a black cover when switching from slimbar to main window for ie)
+    CoverResetThread refresh = new CoverResetThread();
+    refresh.start();
   }
 
   /**
@@ -833,12 +843,13 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     final Cover cover = alCovers.get(index); // take image at the given index
     final URL url = cover.getURL();
     // enable delete button only for local covers
-    if (cover.getType() == CoverType.LOCAL_COVER || cover.getType() == CoverType.SELECTED_COVER
-        || cover.getType() == CoverType.STANDARD_COVER) {
-      jbDelete.setEnabled(true);
-    } else {
-      jbDelete.setEnabled(false);
-    }
+    jbDelete.setEnabled(cover.getType() == CoverType.LOCAL_COVER
+        || cover.getType() == CoverType.SELECTED_COVER
+        || cover.getType() == CoverType.STANDARD_COVER);
+
+    //Disable default command for "none" cover
+    jbDefault.setEnabled(cover.getType() != CoverType.NO_COVER);
+
     if (url != null) {
       jbSave.setEnabled(false);
       String sType = " (L)"; // local cover
@@ -1402,24 +1413,36 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
           + "variable fCurrent should not be empty. dirReference: " + dirReference);
     }
 
-    // We only need to refresh the other covers if the directory changed, save CPU
+    // We only need to refresh the other covers if the directory changed 
+    // but we still clear tag-based covers even if directory didn't change
+    // so the song-specific tag is token into account. 
+    Iterator<Cover> it = alCovers.iterator();
+    while (it.hasNext()) {
+      Cover cover = it.next();
+      if (cover.getType() == CoverType.TAG_COVER) {
+        it.remove();
+      }
+    }
     if (dirChanged) {
       // remove all existing covers
       alCovers.clear();
 
-      // search for local covers in all directories mapping
+      // Search for local covers in all directories mapping
       // the current track to reach other devices covers and
       // display them together
       final Track trackCurrent = fCurrent.getTrack();
       final List<org.jajuk.base.File> alFiles = trackCurrent.getFiles();
 
-      // Add any absolute default cover
-      String defaultCoverPath = trackCurrent.getAlbum().getStringValue(XML_ALBUM_COVER);
+      // Add any selected default cover
+      String defaultCoverPath = trackCurrent.getAlbum().getStringValue(XML_ALBUM_SELECTED_COVER);
       if (StringUtils.isNotBlank(defaultCoverPath)) {
         File coverFile = new File(defaultCoverPath);
         if (coverFile.exists()) {
           final Cover cover = new Cover(coverFile, CoverType.SELECTED_COVER);
-          alCovers.add(cover);
+          // Avoid dups
+          if (!alCovers.contains(cover)) {
+            alCovers.add(cover);
+          }
         }
       }
 
@@ -1430,7 +1453,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
           // if the device is not ready, just ignore it
           continue;
         }
-        // Now search for regular local covers
+        // Now search for regular or standard local covers
         // null if none file found
         final java.io.File[] files = dirScanned.getFio().listFiles();
         for (int i = 0; (files != null) && (i < files.length); i++) {
@@ -1451,30 +1474,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
             }
           }
         }
-      }
-
-      // Check for tag covers 
-      try {
-        AudioFile f = AudioFileIO.read(fCurrent.getFIO());
-        Tag tag = f.getTag();
-        if (tag != null) {
-          Artwork artwork = tag.getFirstArtwork();
-          byte[] imageRawData = artwork != null ? artwork.getBinaryData() : null;
-
-          if (imageRawData != null) {
-            BufferedImage bi = ImageIO.read(new ByteArrayInputStream(imageRawData));
-            if (bi != null) {
-              File coverFile = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
-                  + Const.TAG_COVER_FILE);
-              ImageIO.write(bi, "png", coverFile);
-              Cover cover = new Cover(coverFile, CoverType.TAG_COVER);
-              alCovers.add(cover);
-            }
-          }
-        }
-      } catch (Exception e1) {
-        // current file is not supported by jaudiotagger
-        Log.error(e1);
       }
 
       // Then we search for web covers online if max
@@ -1538,6 +1537,23 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
           Log.error(e);
         }
       }
+    }
+
+    // Check for tag covers 
+    try {
+      Tag tag = new Tag(fCurrent.getFIO(), false);
+      List<Cover> tagCovers = tag.getCovers();
+      // Reverse order of the found tag covers because we want best last
+      // in alCovers and we want to keep tag order.
+      Collections.reverse(tagCovers);
+      for (Cover cover : tagCovers) {
+        // Avoid dups
+        if (!alCovers.contains(cover)) {
+          alCovers.add(cover);
+        }
+      }
+    } catch (JajukException e1) {
+      Log.error(e1);
     }
 
     if (alCovers.size() == 0) {// add the default cover if none

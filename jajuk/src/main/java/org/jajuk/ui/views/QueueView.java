@@ -43,7 +43,6 @@ import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.EtchedBorder;
 import javax.swing.event.ListSelectionEvent;
 
 import net.miginfocom.swing.MigLayout;
@@ -76,7 +75,6 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
-import org.jfree.chart.block.LineBorder;
 import org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.api.SubstanceColorScheme;
 import org.jvnet.substance.api.SubstanceSkin;
@@ -135,6 +133,7 @@ public class QueueView extends PlaylistView {
     jtbAutoScroll.setToolTipText(Messages.getString("QueueView.2"));
     jtbAutoScroll.setSelected(Conf.getBoolean(Const.CONF_AUTO_SCROLL));
     jtbAutoScroll.addActionListener(new ActionListener() {
+      @Override
       public void actionPerformed(ActionEvent e) {
         Conf.setProperty(Const.CONF_AUTO_SCROLL, Boolean.toString(jtbAutoScroll.isSelected()));
         if (jtbAutoScroll.isSelected()) {
@@ -182,6 +181,7 @@ public class QueueView extends PlaylistView {
     // behavior here in the queue view : it must go to selection without keeping
     // previous FIFO
     jmiFilePlay.addActionListener(new ActionListener() {
+      @Override
       public void actionPerformed(ActionEvent e) {
         goToSelection();
       }
@@ -216,6 +216,7 @@ public class QueueView extends PlaylistView {
     });
     // Add specific behavior on left click
     editorTable.setCommand(new ILaunchCommand() {
+      @Override
       public void launch(int nbClicks) {
         int iSelectedCol = editorTable.getSelectedColumn();
         // Convert column selection as columns may have been moved
@@ -307,6 +308,7 @@ public class QueueView extends PlaylistView {
   @Override
   public void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         try {
           JajukEvents subject = event.getSubject();
@@ -390,6 +392,7 @@ public class QueueView extends PlaylistView {
   private void autoScroll() {
 
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
 
         if (QueueModel.getQueueSize() > 0) {

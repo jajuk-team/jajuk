@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.util.log;
 
@@ -27,7 +27,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.error.JajukException;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestLog extends JajukTestCase {
 
@@ -69,7 +69,8 @@ public class TestLog extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.log.Log#debug(java.lang.String, java.lang.Throwable)}
    * .
    */
@@ -80,6 +81,10 @@ public class TestLog extends JajukTestCase {
     verifySpool("***");
   }
 
+  /**
+   * Test debug string throwable null.
+   * DOCUMENT_ME
+   */
   public void testDebugStringThrowableNull() {
     Log.debug(null, new Throwable("testthrowable2"));
     // verifySpool("testlog2");
@@ -104,7 +109,8 @@ public class TestLog extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.log.Log#warn(java.lang.String, java.lang.String)}.
    */
   public void testWarnStringString() {
@@ -114,7 +120,8 @@ public class TestLog extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.log.Log#warn(int, java.lang.String, java.lang.Throwable)}
    * .
    */
@@ -125,6 +132,10 @@ public class TestLog extends JajukTestCase {
     verifySpool("***");
   }
 
+  /**
+   * Test warn int string throwable null.
+   * DOCUMENT_ME
+   */
   public void testWarnIntStringThrowableNull() {
     Log.warn(10, null, new Throwable("testthrowable"));
     // this is anonymonized: verifySpool("testthrowable2");
@@ -132,7 +143,8 @@ public class TestLog extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.log.Log#error(int, java.lang.String, java.lang.Throwable)}
    * .
    */
@@ -161,7 +173,8 @@ public class TestLog extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.log.Log#error(int, java.lang.Throwable)}.
    */
   public void testErrorIntThrowable() {
@@ -172,7 +185,8 @@ public class TestLog extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.log.Log#error(java.lang.String, org.jajuk.util.error.JajukException)}
    * .
    */
@@ -181,7 +195,8 @@ public class TestLog extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.log.Log#error(org.jajuk.util.error.JajukException)}.
    */
   public void testErrorJajukException() {
@@ -265,10 +280,23 @@ public class TestLog extends JajukTestCase {
     // more details tested in other methods
   }
 
+  /**
+   * Verify spool.
+   * DOCUMENT_ME
+   *
+   * @param substring DOCUMENT_ME
+   */
   private void verifySpool(String substring) {
     verifySpool(substring, true);
   }
 
+  /**
+   * Verify spool.
+   * DOCUMENT_ME
+   *
+   * @param substring DOCUMENT_ME
+   * @param expected DOCUMENT_ME
+   */
   private void verifySpool(String substring, boolean expected) {
     List<String> list = Log.getSpool();
 
@@ -289,6 +317,10 @@ public class TestLog extends JajukTestCase {
     }
   }
 
+  /**
+   * Test anonymization.
+   * DOCUMENT_ME
+   */
   public void testAnonymization() {
     // things in {{...}} are replaced in the spool. Verify that this happens
     Log.info("this is {{sensitive}} data...");
@@ -300,6 +332,10 @@ public class TestLog extends JajukTestCase {
     verifySpool("***");
   }
 
+  /**
+   * Test anonymization player state.
+   * DOCUMENT_ME
+   */
   public void testAnonymizationPlayerState() {
     // special replacement that is done to not show personal data in the spool
     Log.info("Player state changed: OPENING this is secret personal information");

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.dj;
 
@@ -42,7 +42,7 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestAmbienceDigitalDJ extends JajukTestCase {
 
@@ -65,10 +65,10 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.dj.AmbienceDigitalDJ#generatePlaylist()}.
-   * 
-   * @throws Exception
    */
   public final void testGeneratePlaylist() throws Exception {
     StartupCollectionService.registerItemManagers();
@@ -99,9 +99,17 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
 
   }
 
+  /**
+   * Gets the file.
+   *
+   * @param i DOCUMENT_ME
+   * @param genre DOCUMENT_ME
+   * @return the file
+   * @throws Exception the exception
+   */
   private File getFile(int i, Genre genre) throws Exception {
     Album album = JUnitHelpers.getAlbum("myalbum", 0);
-    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
+    album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
     Artist artist = JUnitHelpers.getArtist("name");
@@ -124,7 +132,8 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.AmbienceDigitalDJ#AmbienceDigitalDJ(java.lang.String)}
    * .
    */
@@ -133,7 +142,8 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.AmbienceDigitalDJ#getAmbience()}.
    */
   public final void testGetAndSetAmbience() {
@@ -150,7 +160,8 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.AmbienceDigitalDJ#setAmbience(org.jajuk.services.dj.Ambience)}
    * .
    */

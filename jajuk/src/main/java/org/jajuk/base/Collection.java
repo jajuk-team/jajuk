@@ -944,7 +944,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     // UPGRADE test
     String sRightID = sID;
     if (needCheckID) {
-      sRightID = ArtistManager.createID(sItemName).intern();
+      sRightID = ItemManager.createID(sItemName).intern();
       if (sRightID == sID) {
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
@@ -970,7 +970,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     // UPGRADE test
     String sRightID = sID;
     if (needCheckID) {
-      sRightID = GenreManager.createID(sItemName).intern();
+      sRightID = ItemManager.createID(sItemName).intern();
       if (sRightID == sID) {
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
@@ -1034,7 +1034,7 @@ public final class Collection extends DefaultHandler implements ErrorHandler {
     // UPGRADE test
     String sRightID = sID;
     if (needCheckID) {
-      sRightID = DeviceManager.createID(sItemName).intern();
+      sRightID = ItemManager.createID(sItemName).intern();
       if (sRightID == sID) {
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {

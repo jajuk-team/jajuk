@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.notification;
 
@@ -25,12 +25,13 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestNotificatorFactory extends JajukTestCase {
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.notification.NotificatorFactory#getNotificator()}
    * .
    */
@@ -45,7 +46,8 @@ public class TestNotificatorFactory extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.notification.NotificatorFactory#getNotificator()}
    * .
    */
@@ -60,7 +62,8 @@ public class TestNotificatorFactory extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.notification.NotificatorFactory#getNotificator()}
    * .
    */
@@ -71,6 +74,10 @@ public class TestNotificatorFactory extends JajukTestCase {
     assertNotNull(NotificatorFactory.getNotificator());
   }
 
+  /**
+   * Test get system notificator false.
+   * DOCUMENT_ME
+   */
   public void testGetSystemNotificatorFalse() {
     // disable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.NONE.name());

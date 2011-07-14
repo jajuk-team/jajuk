@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <DockingDesktop version="2.0">
-<DockingPanel>
-<Split orientation="1" location="0.25">
-<Dockable>
-<Key dockName="org.jajuk.ui.views.ArtistView/0"/>
-</Dockable>
-<Dockable>
-<Key dockName="org.jajuk.ui.views.WikipediaView/0" />
-</Dockable>
-</Split> 
-</DockingPanel>
-<TabGroups>
-</TabGroups>
+	<DockingPanel>
+		<Split orientation="1" location="0.25">
+			<Dockable>
+				<Key dockName="org.jajuk.ui.views.ArtistView/0" />
+			</Dockable>
+			<Dockable>
+				<Key dockName="org.jajuk.ui.views.WikipediaView/0" />
+			</Dockable>
+		</Split>
+	</DockingPanel>
+	<TabGroups>
+	</TabGroups>
 </DockingDesktop>

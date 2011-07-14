@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.base;
 
@@ -28,6 +28,7 @@ import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
+import org.jajuk.services.covers.Cover;
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
@@ -39,7 +40,7 @@ import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.KeyNotFoundException;
 
 /**
- *
+ * DOCUMENT_ME.
  */
 public class TestAlbumManager extends JajukTestCase {
 
@@ -76,7 +77,8 @@ public class TestAlbumManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.AlbumManager#createID(java.lang.String, java.lang.String, long)}
    * .
    */
@@ -87,7 +89,8 @@ public class TestAlbumManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.AlbumManager#registerAlbum(java.lang.String, java.lang.String, long)}
    * .
    */
@@ -97,6 +100,10 @@ public class TestAlbumManager extends JajukTestCase {
     assertNotNull(AlbumManager.getInstance().getAlbumByID("1"));
   }
 
+  /**
+   * Test register album empty artist.
+   * DOCUMENT_ME
+   */
   public void testRegisterAlbumEmptyArtist() {
     AlbumManager.getInstance().clear();
 
@@ -104,7 +111,8 @@ public class TestAlbumManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.AlbumManager#registerAlbum(java.lang.String, java.lang.String, long)}
    * .
    */
@@ -115,11 +123,11 @@ public class TestAlbumManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.base.AlbumManager#changeAlbumName(org.jajuk.base.Album, java.lang.String)}
    * .
-   *
-   * @throws Exception
    */
   public void testChangeAlbumName() throws Exception {
     StartupCollectionService.registerItemManagers();
@@ -133,6 +141,12 @@ public class TestAlbumManager extends JajukTestCase {
     assertNotNull(AlbumManager.getInstance().getAlbumByName("name4"));
   }
 
+  /**
+   * Test change album name with track.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testChangeAlbumNameWithTrack() throws Exception {
     Album album = AlbumManager.getInstance().registerAlbum("name3", 1);
     assertNotNull(album);
@@ -146,6 +160,12 @@ public class TestAlbumManager extends JajukTestCase {
     assertNotNull(AlbumManager.getInstance().getAlbumByName("name4"));
   }
 
+  /**
+   * Test change album name with queue.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testChangeAlbumNameWithQueue() throws Exception {
     StartupCollectionService.registerItemManagers();
 
@@ -164,6 +184,12 @@ public class TestAlbumManager extends JajukTestCase {
     assertNotNull(AlbumManager.getInstance().getAlbumByName("name4"));
   }
 
+  /**
+   * Test change album name same name.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testChangeAlbumNameSameName() throws Exception {
     StartupCollectionService.registerItemManagers();
 
@@ -178,7 +204,8 @@ public class TestAlbumManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.AlbumManager#format(java.lang.String)}.
    */
   public void testFormat() {
@@ -195,7 +222,8 @@ public class TestAlbumManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.AlbumManager#getAlbumByID(java.lang.String)}.
    */
   public void testGetAlbumByID() {
@@ -227,11 +255,11 @@ public class TestAlbumManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.base.AlbumManager#getAssociatedAlbums(org.jajuk.base.Item)}
    * .
-   *
-   * @throws Exception
    */
   public void testGetAssociatedAlbums() throws Exception {
     Album album = AlbumManager.getInstance().registerAlbum("1", "name1", 1);
@@ -260,10 +288,10 @@ public class TestAlbumManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
-   * {@link org.jajuk.base.AlbumManager#getBestOfAlbums(boolean, int)}.
+   * Test method for.
    *
-   * @throws Exception
+   * @throws Exception the exception
+   * {@link org.jajuk.base.AlbumManager#getBestOfAlbums(boolean, int)}.
    */
   public void testGetBestOfAlbums() throws Exception {
     AlbumManager.getInstance().clear();
@@ -294,6 +322,12 @@ public class TestAlbumManager extends JajukTestCase {
     // TODO verify with many albums and actual data
   }
 
+  /**
+   * Test get best of albums less.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testGetBestOfAlbumsLess() throws Exception {
     AlbumManager.getInstance().clear();
 
@@ -323,6 +357,10 @@ public class TestAlbumManager extends JajukTestCase {
     assertEquals(albums.toString(), 4, albums.size());
   }
 
+  /**
+   * Test get best of album zero.
+   * DOCUMENT_ME
+   */
   public void testGetBestOfAlbumZero() {
     AlbumManager.getInstance().clear();
 
@@ -331,10 +369,10 @@ public class TestAlbumManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
-   * {@link org.jajuk.base.AlbumManager#getNewestAlbums(boolean, int)}.
+   * Test method for.
    *
-   * @throws Exception
+   * @throws Exception the exception
+   * {@link org.jajuk.base.AlbumManager#getNewestAlbums(boolean, int)}.
    */
   public void testGetNewestAlbums() throws Exception {
     Album album = AlbumManager.getInstance().registerAlbum("name1", 1);
@@ -364,10 +402,10 @@ public class TestAlbumManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
-   * {@link org.jajuk.base.AlbumManager#getRarelyListenAlbums(boolean, int)}.
+   * Test method for.
    *
-   * @throws Exception
+   * @throws Exception the exception
+   * {@link org.jajuk.base.AlbumManager#getRarelyListenAlbums(boolean, int)}.
    */
   public void testGetRarelyListenAlbums() throws Exception {
     AlbumManager.getInstance().clear();
@@ -401,7 +439,7 @@ public class TestAlbumManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.AlbumManager#getMaxRate()}.
    *
-   * @throws Exception
+   * @throws Exception the exception
    */
   public void testGetMaxRate() throws Exception {
     AlbumManager.getInstance().clear();
@@ -454,7 +492,8 @@ public class TestAlbumManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.AlbumManager#update(org.jajuk.events.JajukEvent)}.
    */
   public void testUpdate() {
@@ -478,7 +517,8 @@ public class TestAlbumManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.base.AlbumManager#getAlbumByName(java.lang.String)}.
    */
   public void testGetAlbumByName() {
@@ -488,7 +528,7 @@ public class TestAlbumManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.AlbumManager#orderCache()}.
    *
-   * @throws Exception
+   * @throws Exception the exception
    */
   public void testOrderCache() throws Exception {
     AlbumManager.getInstance().clear();
@@ -504,10 +544,18 @@ public class TestAlbumManager extends JajukTestCase {
     AlbumManager.getInstance().orderCache();
   }
 
+  /**
+   * Gets the track.
+   *
+   * @param i DOCUMENT_ME
+   * @param album DOCUMENT_ME
+   * @return the track
+   * @throws Exception the exception
+   */
   @SuppressWarnings("unchecked")
   private Track getTrack(int i, Album album) throws Exception {
     Genre genre = JUnitHelpers.getGenre("name");
-    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE);
+    album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE);
     // don't read covers for this test
 
     Artist artist = JUnitHelpers.getArtist("atist_" + i);
@@ -536,6 +584,9 @@ public class TestAlbumManager extends JajukTestCase {
     return track;
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   public static class MyTagImpl implements ITagImpl {
 
     /*
@@ -833,69 +884,118 @@ public class TestAlbumManager extends JajukTestCase {
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.tags.ITagImpl#getCovers()
+     */
+    @Override
+    public List<Cover> getCovers() throws Exception {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
   }
 
   // needs to be public to be callable from the outside...
+  /**
+   * DOCUMENT_ME.
+   */
   public static class MockPlayer implements IPlayerImpl {
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#stop()
+     */
     @Override
     public void stop() throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#setVolume(float)
+     */
     @Override
     public void setVolume(float fVolume) throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#seek(float)
+     */
     @Override
     public void seek(float fPosition) {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#resume()
+     */
     @Override
     public void resume() throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#play(org.jajuk.services.webradio.WebRadio, float)
+     */
     @Override
     public void play(WebRadio radio, float fVolume) throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#play(org.jajuk.base.File, float, long, float)
+     */
     @Override
     public void play(File file, float fPosition, long length, float fVolume) throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#pause()
+     */
     @Override
     public void pause() throws Exception {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#getState()
+     */
     @Override
     public int getState() {
 
       return 0;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#getElapsedTime()
+     */
     @Override
     public long getElapsedTime() {
 
       return 0;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#getCurrentVolume()
+     */
     @Override
     public float getCurrentVolume() {
 
       return 0;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#getCurrentPosition()
+     */
     @Override
     public float getCurrentPosition() {
 
       return 0;
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#getCurrentLength()
+     */
     @Override
     public long getCurrentLength() {
 

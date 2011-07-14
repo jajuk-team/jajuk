@@ -623,6 +623,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.EXITING);
@@ -634,6 +635,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    * 
    * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
    */
+  @Override
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.EXITING.equals(subject)) {
@@ -683,6 +685,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    * 
    * @see org.jdesktop.swingx.JXTable#updateUI()
    */
+  @Override
   public void updateUI() {
     for (Highlighter highlighter : getHighlighters()) {
       if (highlighter instanceof CompoundHighlighter) {

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.dj;
 
@@ -30,7 +30,7 @@ import org.jajuk.base.Genre;
 import org.jajuk.base.GenreManager;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestAmbience extends JajukTestCase {
 
@@ -45,7 +45,8 @@ public class TestAmbience extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.Ambience#Ambience(java.lang.String, java.lang.String, java.util.Set)}
    * .
    */
@@ -56,7 +57,8 @@ public class TestAmbience extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.Ambience#Ambience(java.lang.String, java.lang.String, java.lang.String[])}
    * .
    */
@@ -69,7 +71,8 @@ public class TestAmbience extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.Ambience#Ambience(java.lang.String, java.lang.String)}
    * .
    */
@@ -85,7 +88,8 @@ public class TestAmbience extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.Ambience#addGenre(org.jajuk.base.Genre)}.
    */
   public final void testAddGenre() {
@@ -95,7 +99,8 @@ public class TestAmbience extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.Ambience#removeGenre(org.jajuk.base.Genre)}.
    */
   public final void testRemoveGenre() {
@@ -139,7 +144,8 @@ public class TestAmbience extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.Ambience#setName(java.lang.String)}.
    */
   public final void testSetName() {
@@ -154,7 +160,8 @@ public class TestAmbience extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.Ambience#setGenres(java.util.Set)}.
    */
   public final void testSetGenres() {
@@ -212,7 +219,8 @@ public class TestAmbience extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.Ambience#equals(java.lang.Object)}.
    */
   public final void testEqualsObject() {
@@ -230,6 +238,10 @@ public class TestAmbience extends JajukTestCase {
     JUnitHelpers.EqualsTest(amb, equal, notequal2);
   }
 
+  /**
+   * Test equals object2.
+   * DOCUMENT_ME
+   */
   public final void testEqualsObject2() {
     Ambience amb = new Ambience("1", "name");
     amb.addGenre(JUnitHelpers.getGenre("mygenre4"));
@@ -248,7 +260,8 @@ public class TestAmbience extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.Ambience#compareTo(org.jajuk.services.dj.Ambience)}
    * .
    */

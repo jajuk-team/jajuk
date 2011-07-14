@@ -74,8 +74,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.views.IView;
@@ -146,6 +146,7 @@ public final class UtilGUI {
 
   /** Set cursor thread, stored to avoid construction. */
   private static Runnable setCursorThread = new Runnable() {
+    @Override
     public void run() {
       Container container = null;
       IPerspective perspective = PerspectiveManager.getCurrentPerspective();
@@ -871,6 +872,7 @@ public final class UtilGUI {
     // Add keystroke to close window when pressing escape
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
         new KeyEventDispatcher() {
+          @Override
           public boolean dispatchKeyEvent(KeyEvent e) {
             // For some reasons (under Linux at least), pressing escape only trigger PRESSED 
             // and RELEASED key events 

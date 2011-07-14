@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.events;
 
@@ -26,7 +26,7 @@ import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestJajukEvent extends JajukTestCase {
 
@@ -39,6 +39,10 @@ public class TestJajukEvent extends JajukTestCase {
     JUnitHelpers.HashCodeTest(event1, event2);
   }
 
+  /**
+   * Test hash code2.
+   * DOCUMENT_ME
+   */
   public void testHashCode2() {
     Properties prop1 = new Properties();
     prop1.setProperty("test", "value");
@@ -51,7 +55,8 @@ public class TestJajukEvent extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.events.JajukEvent#JajukEvent(org.jajuk.events.JajukEvents, java.util.Properties)}
    * .
    */
@@ -63,7 +68,8 @@ public class TestJajukEvent extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.events.JajukEvent#JajukEvent(org.jajuk.events.JajukEvents)}
    * .
    */
@@ -113,7 +119,8 @@ public class TestJajukEvent extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.events.JajukEvent#equals(java.lang.Object)}.
    */
   public void testEqualsObject() {
@@ -123,6 +130,10 @@ public class TestJajukEvent extends JajukTestCase {
     JUnitHelpers.EqualsTest(event1, event2, event3);
   }
 
+  /**
+   * Test equals object2.
+   * DOCUMENT_ME
+   */
   public void testEqualsObject2() {
     Properties prop1 = new Properties();
     prop1.setProperty("test", "value");

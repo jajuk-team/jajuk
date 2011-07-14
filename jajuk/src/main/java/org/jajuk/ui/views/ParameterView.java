@@ -567,6 +567,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
       new Thread("Parameter Catalog refresh Thread") {
         @Override
         public void run() {
+          UtilGUI.waiting();
           // Force albums to search for new covers
           AlbumManager.getInstance().resetCoverCache();
           // Clean thumbs
@@ -576,6 +577,7 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_200X200);
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_250X250);
           ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_300X300);
+          UtilGUI.stopWaiting();
           // For catalog view's update
           ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
           // Display a message

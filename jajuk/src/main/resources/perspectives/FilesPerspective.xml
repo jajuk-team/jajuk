@@ -1,25 +1,25 @@
 <?xml version="1.0"?>
 <VLDocking version="2.1">
-<DockingDesktop name="">
-<DockingPanel>
-<Split orientation="1" location="0.30">
-<Dockable>
-<Key dockName="org.jajuk.ui.views.FilesTreeView/0"/>
-</Dockable>
-<Split orientation="0" location="0.5">
-<Dockable>
-<Key dockName="org.jajuk.ui.views.FilesTableView/0"/>
-</Dockable>
-<Split orientation="1" location="0.55">
-<Dockable>
-<Key dockName="org.jajuk.ui.views.QueueView/0"/>
-</Dockable>
-<Dockable>
-<Key dockName="org.jajuk.ui.views.CoverView/0"/>
-</Dockable>
-</Split>
-</Split>
-</Split>
-</DockingPanel>
-</DockingDesktop>
+	<DockingDesktop name="">
+		<DockingPanel>
+			<Split orientation="1" location="0.30">
+				<Dockable>
+					<Key dockName="org.jajuk.ui.views.FilesTreeView/0" />
+				</Dockable>
+				<Split orientation="0" location="0.5">
+					<Dockable>
+						<Key dockName="org.jajuk.ui.views.FilesTableView/0" />
+					</Dockable>
+					<Split orientation="1" location="0.55">
+						<Dockable>
+							<Key dockName="org.jajuk.ui.views.QueueView/0" />
+						</Dockable>
+						<Dockable>
+							<Key dockName="org.jajuk.ui.views.CoverView/0" />
+						</Dockable>
+					</Split>
+				</Split>
+			</Split>
+		</DockingPanel>
+	</DockingDesktop>
 </VLDocking>

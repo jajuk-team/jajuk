@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.dj;
 
@@ -44,7 +44,7 @@ import org.jajuk.util.Const;
 import org.w3c.dom.Document;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestDigitalDJ extends JajukTestCase {
 
@@ -62,7 +62,8 @@ public class TestDigitalDJ extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.DigitalDJ#DigitalDJ(java.lang.String)}.
    */
   public final void testDigitalDJ() {
@@ -87,7 +88,8 @@ public class TestDigitalDJ extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.DigitalDJ#compareTo(org.jajuk.services.dj.DigitalDJ)}
    * .
    */
@@ -115,7 +117,8 @@ public class TestDigitalDJ extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.DigitalDJ#toXMLGeneralParameters()}.
    */
   public final void testToXMLGeneralParameters() {
@@ -131,10 +134,10 @@ public class TestDigitalDJ extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.dj.DigitalDJ#filterFilesByRate(java.util.List)}.
-   * 
-   * @throws Exception
    */
   public final void testFilterFilesByRate() throws Exception {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
@@ -163,6 +166,12 @@ public class TestDigitalDJ extends JajukTestCase {
     assertEquals(1, files.size());
   }
 
+  /**
+   * Test filter files by max track.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public final void testFilterFilesByMaxTrack() throws Exception {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
@@ -196,10 +205,17 @@ public class TestDigitalDJ extends JajukTestCase {
     assertEquals(2, files.size());
   }
 
+  /**
+   * Gets the file.
+   *
+   * @param i DOCUMENT_ME
+   * @return the file
+   * @throws Exception the exception
+   */
   private File getFile(int i) throws Exception {
     Genre genre = JUnitHelpers.getGenre();
     Album album = JUnitHelpers.getAlbum("name" + i, 0);
-    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
+    album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
     Artist artist = JUnitHelpers.getArtist("name");
@@ -232,7 +248,8 @@ public class TestDigitalDJ extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.DigitalDJ#equals(java.lang.Object)}.
    */
   public final void testEqualsObject() {
@@ -248,7 +265,8 @@ public class TestDigitalDJ extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.DigitalDJ#setName(java.lang.String)}.
    */
   public final void testSetName() {
@@ -269,7 +287,8 @@ public class TestDigitalDJ extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.DigitalDJ#setFadingDuration(int)}.
    */
   public final void testSetFadingDuration() {
@@ -330,7 +349,8 @@ public class TestDigitalDJ extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.dj.DigitalDJ#setTrackUnicity(boolean)}.
    */
   public final void testSetTrackUnicity() {

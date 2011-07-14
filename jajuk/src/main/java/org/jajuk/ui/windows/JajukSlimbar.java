@@ -209,9 +209,16 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    */
   public void setDisplayQueue(boolean display) {
     if (display) {
-      // Set position of queue dialog
-      getQueueWindow().setLocation(this.getLocation().x,
-          this.getLocation().y + this.getSize().height);
+      // Set position of queue dialog. We display the queue window either above or bellow the slimbar 
+      // according to remaining vertical space.
+      int yLocation = this.getLocation().y;
+      if (this.getLocation().y + queueViewWindow.getSize().height + this.getSize().height > Toolkit
+          .getDefaultToolkit().getScreenSize().getHeight()) {
+        yLocation -= queueViewWindow.getSize().height;
+      } else {
+        yLocation += this.getSize().height;
+      }
+      getQueueWindow().setLocation(this.getLocation().x, yLocation);
       getQueueWindow().setSize(this.getSize().width, queueViewWindow.getSize().height);
     }
     getQueueWindow().setVisible(display);
@@ -313,6 +320,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     jbPrevious.addMouseMotionListener(motionAdapter);
     // Manage right click : replay the track (this not triggers an action so we use a MouseAdapter here)
     jbPrevious.addMouseListener(new JajukMouseAdapter() {
+      @Override
       public void handlePopup(final MouseEvent me) {
         // Create an ActionEvent from this MouseEvent with a custom modifier : the right click
         ActionEvent ae = new ActionEvent(jbPrevious, 0, PREVIOUS_TRACK.name(), 4332424);
@@ -606,8 +614,8 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     if (action == null) { // no tooltip
       return;
     }
-    ActionEvent ae = new ActionEvent(comp, ActionEvent.ACTION_PERFORMED, "postTip", EventQueue
-        .getMostRecentEventTime(), 0);
+    ActionEvent ae = new ActionEvent(comp, ActionEvent.ACTION_PERFORMED, "postTip",
+        EventQueue.getMostRecentEventTime(), 0);
     action.actionPerformed(ae);
   }
 
@@ -622,8 +630,8 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     if (action == null) { // no tooltip
       return;
     }
-    ActionEvent ae = new ActionEvent(comp, ActionEvent.ACTION_PERFORMED, "hideTip", EventQueue
-        .getMostRecentEventTime(), 0);
+    ActionEvent ae = new ActionEvent(comp, ActionEvent.ACTION_PERFORMED, "hideTip",
+        EventQueue.getMostRecentEventTime(), 0);
     action.actionPerformed(ae);
   }
 
@@ -685,7 +693,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    * when clicking on it.
    */
   private void showBalloon() {
-    // Leave if baloon already visible
+    // Leave if balloon already visible
     if (balloon != null && balloon.isVisible()) {
       return;
     }

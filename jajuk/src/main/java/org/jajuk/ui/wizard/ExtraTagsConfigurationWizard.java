@@ -38,6 +38,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.WindowConstants;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -87,7 +88,7 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
   public ExtraTagsConfigurationWizard() {
     super(JajukMainWindow.getInstance(), true);
     setTitle(Messages.getString("JajukWindow.40"));
-    setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     initUI();
     refreshList();
     populate();

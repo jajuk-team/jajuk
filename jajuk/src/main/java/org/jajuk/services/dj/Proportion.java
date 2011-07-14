@@ -38,9 +38,9 @@ public class Proportion {
 
   /**
    * Constructor.
-   * 
-   * @param proportion genre proportion in %. Ex: 0.1
+   *
    * @param ambience DOCUMENT_ME
+   * @param proportion genre proportion in %. Ex: 0.1
    */
   public Proportion(Ambience ambience, float proportion) {
     this.ambience = ambience;

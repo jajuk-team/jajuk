@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.actions;
 
@@ -38,18 +38,38 @@ import org.jajuk.base.Type;
 import org.jajuk.util.Const;
 
 /**
- * Test find dups action
+ * Test find dups action.
  */
 public class TestFindDuplicateTracksAction extends JajukTestCase {
+  
+  /** DOCUMENT_ME. */
   Type type;
+  
+  /** DOCUMENT_ME. */
   Artist artist;
+  
+  /** DOCUMENT_ME. */
   Album album;
+  
+  /** DOCUMENT_ME. */
   Genre genre;
+  
+  /** DOCUMENT_ME. */
   org.jajuk.base.Year year;
+  
+  /** DOCUMENT_ME. */
   FindDuplicateTracksAction action;
+  
+  /** DOCUMENT_ME. */
   Directory dir;
+  
+  /** DOCUMENT_ME. */
   AlbumArtist albumArtist;
 
+  /* (non-Javadoc)
+   * @see org.jajuk.JajukTestCase#setUp()
+   */
+  @Override
   public void setUp() throws Exception {
     super.setUp();
     // Populate tracks and files
@@ -66,7 +86,8 @@ public class TestFindDuplicateTracksAction extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.actions.FindDuplicateTracksAction#perform(java.awt.event.ActionEvent)}
    * .
    * Test 1 : none dups
@@ -100,11 +121,12 @@ public class TestFindDuplicateTracksAction extends JajukTestCase {
   }
 
   /**
-  * Test method for
-  * {@link org.jajuk.ui.actions.FindDuplicateTracksAction#perform(java.awt.event.ActionEvent)}
-  * .
-  * Test 2 : multi-files track : filex1 and filex2 are in the same track 
-  */
+   * Test method for.
+   *
+   * {@link org.jajuk.ui.actions.FindDuplicateTracksAction#perform(java.awt.event.ActionEvent)}
+   * .
+   * Test 2 : multi-files track : filex1 and filex2 are in the same track
+   */
   public void testPopulateDups2() {
 
     Track track11 = TrackManager.getInstance().registerTrack("track11", album, genre, artist, 10l,
@@ -132,11 +154,12 @@ public class TestFindDuplicateTracksAction extends JajukTestCase {
   }
 
   /**
-  * Test method for
-  * {@link org.jajuk.ui.actions.FindDuplicateTracksAction#perform(java.awt.event.ActionEvent)}
-  * .
-  * Test 3 : single dup : track11 and track12 have fuzzy match 
-  */
+   * Test method for.
+   *
+   * {@link org.jajuk.ui.actions.FindDuplicateTracksAction#perform(java.awt.event.ActionEvent)}
+   * .
+   * Test 3 : single dup : track11 and track12 have fuzzy match
+   */
   public void testPopulateDups3() {
 
     Track track11 = TrackManager.getInstance().registerTrack("track", album, genre, artist, 10l,
@@ -157,13 +180,14 @@ public class TestFindDuplicateTracksAction extends JajukTestCase {
   }
 
   /**
-  * Test method for
-  * {@link org.jajuk.ui.actions.FindDuplicateTracksAction#perform(java.awt.event.ActionEvent)}
-  * .
-  * Test 4 : mix : file11/file12 have the same track : track1, 
-  * file21/file22 have the same track : track2,  
-  * track1 =~ track2 
-  */
+   * Test method for.
+   *
+   * {@link org.jajuk.ui.actions.FindDuplicateTracksAction#perform(java.awt.event.ActionEvent)}
+   * .
+   * Test 4 : mix : file11/file12 have the same track : track1,
+   * file21/file22 have the same track : track2,
+   * track1 =~ track2
+   */
   public void testPopulateDups4() {
 
     Track track1 = TrackManager.getInstance().registerTrack("track", album, genre, artist, 10l,
@@ -186,13 +210,14 @@ public class TestFindDuplicateTracksAction extends JajukTestCase {
   }
 
   /**
-  * Test method for
-  * {@link org.jajuk.ui.actions.FindDuplicateTracksAction#perform(java.awt.event.ActionEvent)}
-  * .
-  * Test 5 : file11/file12 have the same track : track1, 
-  * file21/file22 have different tracks ; track21 and track 21,  
-  * track1 =~ track21 != track22 
-  */
+   * Test method for.
+   *
+   * {@link org.jajuk.ui.actions.FindDuplicateTracksAction#perform(java.awt.event.ActionEvent)}
+   * .
+   * Test 5 : file11/file12 have the same track : track1,
+   * file21/file22 have different tracks ; track21 and track 21,
+   * track1 =~ track21 != track22
+   */
   public void testPopulateDups5() {
 
     Track track1 = TrackManager.getInstance().registerTrack("track", album, genre, artist, 10l,

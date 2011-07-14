@@ -135,6 +135,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
   @Override
   public void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         // If internet access or lastfm is disable, just reset
         if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)

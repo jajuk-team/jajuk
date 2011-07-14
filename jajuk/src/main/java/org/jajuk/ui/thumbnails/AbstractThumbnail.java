@@ -46,6 +46,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 import javax.swing.TransferHandler;
+import javax.swing.WindowConstants;
 
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
@@ -415,7 +416,9 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
       // This item is enabled only for albums
       JDialog jd = new JDialog(JajukMainWindow.getInstance(), Messages.getString("CatalogView.18"));
       org.jajuk.base.File file = null;
-      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem(), false);
+      // We sort associated tracks because we want to analyze the first file of the set
+      // as it is more likely to contain global cover tag.
+      List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem(), true);
       if (tracks.size() > 0) {
         // Take first track found
         Track track = tracks.iterator().next();
@@ -429,7 +432,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
         jd.add(cv);
         jd.setSize(600, 450);
         jd.setLocationByPlatform(true);
-        jd.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        jd.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         jd.setVisible(true);
       } else {
         Messages.showErrorMessage(166);

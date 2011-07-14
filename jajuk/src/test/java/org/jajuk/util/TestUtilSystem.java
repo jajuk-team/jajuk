@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.util;
 
@@ -35,9 +35,11 @@ import org.jajuk.JajukTestCase;
 import org.jajuk.util.error.JajukException;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestUtilSystem extends JajukTestCase {
+  
+  /** DOCUMENT_ME. */
   private File file1, file2;
 
   /*
@@ -69,7 +71,8 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.UtilSystem#backupFile(java.io.File, int)}.
    */
   public void testBackupFile() {
@@ -85,7 +88,9 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.util.UtilSystem#copy(java.io.File, java.io.File)}.
    */
   public void testCopyFileFile() throws Exception {
@@ -96,6 +101,12 @@ public class TestUtilSystem extends JajukTestCase {
     assertEquals("this is some test data", FileUtils.readFileToString(file2));
   }
 
+  /**
+   * Test copy file exception.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testCopyFileException() throws Exception {
     FileUtils.writeStringToFile(file1, "this is some test data");
     assertTrue(file2.delete());
@@ -110,6 +121,12 @@ public class TestUtilSystem extends JajukTestCase {
     }
   }
 
+  /**
+   * Test copy file file empty.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testCopyFileFileEmpty() throws Exception {
     FileUtils.writeStringToFile(file1, "");
 
@@ -118,6 +135,12 @@ public class TestUtilSystem extends JajukTestCase {
     assertEquals("", FileUtils.readFileToString(file2));
   }
 
+  /**
+   * Test copy file file not exists.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testCopyFileFileNotExists() throws Exception {
     assertTrue(file1.delete());
     assertFalse(file1.exists());
@@ -130,7 +153,9 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.util.UtilSystem#copy(java.io.File, java.lang.String)}.
    */
   public void testCopyFileString() throws Exception {
@@ -143,6 +168,12 @@ public class TestUtilSystem extends JajukTestCase {
         file1.getParentFile().getAbsolutePath()).append('/').append("testfile").toString())));
   }
 
+  /**
+   * Test copy file string empty.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testCopyFileStringEmpty() throws Exception {
     FileUtils.writeStringToFile(file1, "");
 
@@ -151,6 +182,12 @@ public class TestUtilSystem extends JajukTestCase {
     assertEquals("", FileUtils.readFileToString(file2));
   }
 
+  /**
+   * Test copy file string not exists.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testCopyFileStringNotExists() throws Exception {
     assertTrue(file1.delete());
     assertFalse(file1.exists());
@@ -163,7 +200,9 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.util.UtilSystem#copy(java.net.URL, java.lang.String)}.
    */
   public void testCopyURLString() throws Exception {
@@ -178,6 +217,12 @@ public class TestUtilSystem extends JajukTestCase {
         FileUtils.readFileToString(file2));
   }
 
+  /**
+   * Test copy url string empty.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testCopyURLStringEmpty() throws Exception {
     FileUtils.writeStringToFile(file1, "");
 
@@ -186,6 +231,10 @@ public class TestUtilSystem extends JajukTestCase {
     assertEquals("", FileUtils.readFileToString(file2));
   }
 
+  /**
+   * Test copy url string not exists.
+   * DOCUMENT_ME
+   */
   public void testCopyURLStringNotExists() {
     assertTrue(file1.delete());
     assertFalse(file1.exists());
@@ -198,7 +247,9 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.util.UtilSystem#copyRecursively(java.io.File, java.io.File)}
    * .
    */
@@ -210,6 +261,12 @@ public class TestUtilSystem extends JajukTestCase {
     assertEquals("this is some test data", FileUtils.readFileToString(file2));
   }
 
+  /**
+   * Test copy recursively.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testCopyRecursively() throws Exception {
     assertTrue(file1.delete());
     assertTrue(file1.mkdir());
@@ -225,6 +282,12 @@ public class TestUtilSystem extends JajukTestCase {
         + File.separator + "testfile")));
   }
 
+  /**
+   * Test copy recursively cannot make dir.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testCopyRecursivelyCannotMakeDir() throws Exception {
     assertTrue(file1.delete());
     assertTrue(file1.mkdir());
@@ -245,7 +308,9 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.util.UtilSystem#copyToDir(java.io.File, java.io.File)}.
    */
   public void testCopyToDir() throws Exception {
@@ -260,6 +325,12 @@ public class TestUtilSystem extends JajukTestCase {
         + File.separator + file1.getName())));
   }
 
+  /**
+   * Test copy to dir exception.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testCopyToDirException() throws Exception {
     FileUtils.writeStringToFile(file1, "this is some test data");
     assertTrue(file1.delete());
@@ -273,7 +344,9 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.util.UtilSystem#createEmptyFile(java.io.File)}.
    */
   public void testCreateEmptyFile() throws Exception {
@@ -285,6 +358,10 @@ public class TestUtilSystem extends JajukTestCase {
     assertEquals("", FileUtils.readFileToString(file1));
   }
 
+  /**
+   * Test create empty file exception.
+   * DOCUMENT_ME
+   */
   public void testCreateEmptyFileException() {
     assertTrue(file1.delete());
     assertFalse(file1.exists());
@@ -305,6 +382,8 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.util.UtilSystem#deleteDir(java.io.File)}.
+   *
+   * @throws Exception the exception
    */
   public void testDeleteDir() throws Exception {
     assertTrue(file1.delete());
@@ -318,12 +397,24 @@ public class TestUtilSystem extends JajukTestCase {
     assertFalse(file1.exists());
   }
 
+  /**
+   * Test delete dir file.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testDeleteDirFile() throws Exception {
     UtilSystem.deleteDir(file1);
 
     assertFalse(file1.exists());
   }
 
+  /**
+   * Test delete dir dir.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testDeleteDirDir() throws Exception {
     assertTrue(file1.delete());
 
@@ -340,6 +431,8 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.util.UtilSystem#deleteFile(java.io.File)}.
+   *
+   * @throws Exception the exception
    */
   public void testDeleteFile() throws Exception {
     FileUtils.writeStringToFile(file1, "this is some test data");
@@ -350,17 +443,26 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.UtilSystem#getExtension(java.io.File)}.
    */
   public void testGetExtensionFile() {
     assertEquals("jajuk", UtilSystem.getExtension(file1));
   }
 
+  /**
+   * Test get extension file none.
+   * DOCUMENT_ME
+   */
   public void testGetExtensionFileNone() {
     assertEquals("", UtilSystem.getExtension("/tmp/testfile"));
   }
 
+  /**
+   * Test get extension file dot.
+   * DOCUMENT_ME
+   */
   public void testGetExtensionFileDot() {
     // TODO: why do we return the full filename in this case? I.e. if there is a
     // "." as first character?
@@ -368,7 +470,8 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.UtilSystem#getExtension(java.lang.String)}.
    */
   public void testGetExtensionString() {
@@ -376,7 +479,9 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.util.UtilSystem#getFileChecksum(java.io.File)}.
    */
   public void testGetFileChecksum() throws Exception {
@@ -389,6 +494,10 @@ public class TestUtilSystem extends JajukTestCase {
     assertFalse(UtilSystem.getFileChecksum(file1).equals(""));
   }
 
+  /**
+   * Test get file checksum error.
+   * DOCUMENT_ME
+   */
   public void testGetFileChecksumError() {
     try {
       UtilSystem.getFileChecksum(new File("notexistingfile.txt"));
@@ -407,7 +516,8 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.UtilSystem#getJarLocation(java.lang.Class)}.
    */
   public void testGetJarLocation() {
@@ -435,7 +545,8 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.UtilSystem#getNormalizedFilename(java.lang.String)}.
    */
   public void testGetNormalizedFilename() {
@@ -446,7 +557,8 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.UtilSystem#getOnlyFile(java.lang.String)}.
    */
   public void testGetOnlyFile() {
@@ -454,7 +566,8 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.UtilSystem#getResource(java.lang.String)}.
    */
   public void testGetResource() {
@@ -464,7 +577,8 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.UtilSystem#isAncestor(java.io.File, java.io.File)}.
    */
   public void testIsAncestor() {
@@ -473,7 +587,8 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.UtilSystem#isDescendant(java.io.File, java.io.File)}.
    */
   public void testIsDescendant() {
@@ -517,7 +632,8 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.UtilSystem#isValidFileName(java.io.File, java.lang.String)}
    * .
    */
@@ -548,7 +664,9 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.util.UtilSystem#readFile(java.lang.String)}.
    */
   public void testReadFile() throws Exception {
@@ -558,6 +676,10 @@ public class TestUtilSystem extends JajukTestCase {
     assertEquals("this is some test data", builder.toString());
   }
 
+  /**
+   * Test read file error.
+   * DOCUMENT_ME
+   */
   public void testReadFileError() {
     try {
       UtilSystem.readFile("notexistingfile");
@@ -578,7 +700,9 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.util.UtilSystem#readJarFile(java.lang.String)}.
    */
   public void testReadJarFile() throws Exception {
@@ -595,7 +719,8 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.UtilSystem#removeExtension(java.lang.String)}.
    */
   public void testRemoveExtension() {
@@ -626,7 +751,9 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.util.UtilSystem#replaceInFile(java.io.File, java.lang.String, java.lang.String, java.lang.String)}
    * .
    */
@@ -638,6 +765,12 @@ public class TestUtilSystem extends JajukTestCase {
     assertEquals("this is some test data", FileUtils.readFileToString(file1));
   }
 
+  /**
+   * Test replace in file replaced.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testReplaceInFileReplaced() throws Exception {
     FileUtils.writeStringToFile(file1, "this is some test data");
 
@@ -655,7 +788,8 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.UtilSystem#openInExplorer(java.io.File)}.
    */
   public void testOpenInExplorer() {
@@ -667,7 +801,8 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.UtilSystem#isRunning(java.lang.Process)}.
    */
   public void testIsRunning() {
@@ -677,7 +812,8 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.util.UtilSystem#getExitValue(java.lang.Process)}.
    */
   public void testGetExitValue() {
@@ -687,42 +823,61 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * 
+   * DOCUMENT_ME.
    */
   private static final class MockProcess extends Process {
+    
+    /** DOCUMENT_ME. */
     boolean throwInExitValue;
 
     /**
-     * @param throwInWait
+     * Instantiates a new mock process.
+     *
+     * @param throwInWait DOCUMENT_ME
      */
     public MockProcess(boolean throwInWait) {
       super();
       this.throwInExitValue = throwInWait;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Process#waitFor()
+     */
     @Override
     public int waitFor() throws InterruptedException {
       return 0;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Process#getOutputStream()
+     */
     @Override
     public OutputStream getOutputStream() {
 
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Process#getInputStream()
+     */
     @Override
     public InputStream getInputStream() {
 
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Process#getErrorStream()
+     */
     @Override
     public InputStream getErrorStream() {
 
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Process#exitValue()
+     */
     @Override
     public int exitValue() {
       if (throwInExitValue) {
@@ -732,6 +887,9 @@ public class TestUtilSystem extends JajukTestCase {
       return 0;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Process#destroy()
+     */
     @Override
     public void destroy() {
 
@@ -739,6 +897,12 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   // helper method to emma-coverage of the unused constructor
+  /**
+   * Test private constructor.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPrivateConstructor() throws Exception {
     // For EMMA code-coverage tests
     JUnitHelpers.executePrivateConstructor(UtilSystem.class);

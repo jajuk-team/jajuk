@@ -55,7 +55,7 @@
 	<packs>
 		<pack name='main pack' required='yes'>
 			<description>Main pack</description>
-			
+
 			<!-- Files to include in every platform -->
 			<file override='true' targetdir='$INSTALL_PATH/bin'
 				src='/tmp/jajuk-dist/jajuk/bin/jajuk.jar'>

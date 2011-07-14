@@ -156,10 +156,9 @@ public final class DirectoryManager extends ItemManager {
 
   /**
    * Gets the directory for io.
-   * 
-   * @param device Associated device
+   *
    * @param fio DOCUMENT_ME
-   * 
+   * @param device Associated device
    * @return Directory matching the io file
    */
   public Directory getDirectoryForIO(final java.io.File fio, Device device) {
@@ -210,12 +209,11 @@ public final class DirectoryManager extends ItemManager {
 
   /**
    * Register a directory with a known id.
-   * 
-   * @param sName DOCUMENT_ME
+   *
    * @param sId DOCUMENT_ME
+   * @param sName DOCUMENT_ME
    * @param dParent DOCUMENT_ME
    * @param device DOCUMENT_ME
-   * 
    * @return the directory
    */
   public Directory registerDirectory(final String sId, final String sName, final Directory dParent,

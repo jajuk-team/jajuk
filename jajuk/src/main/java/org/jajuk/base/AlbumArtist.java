@@ -40,9 +40,9 @@ public class AlbumArtist extends Artist {
 
   /**
    * Builds an album-artist.
-   * 
-   * @param sName album-artist string
+   *
    * @param sId album-artist guid
+   * @param sName album-artist string
    */
   AlbumArtist(String sId, String sName) {
     super(sId, sName);

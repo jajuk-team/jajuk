@@ -21,21 +21,25 @@
 package org.jajuk.util;
 
 import java.text.DateFormat;
+import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.AlbumArtistManager;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.ArtistManager;
 import org.jajuk.base.File;
 import org.jajuk.base.GenreManager;
+import org.jajuk.base.ItemManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Track;
 import org.jajuk.util.error.JajukException;
@@ -55,6 +59,9 @@ public final class UtilString {
       return new SimpleDateFormat(Const.ADDITION_DATE_FORMAT, Locale.getDefault());
     }
   };
+
+  /** Character that is used to replace if filename normalization is used. */
+  private static final String FILLER_CHAR = "_";
 
   /**
    * private constructor to avoid instantiating utility class.
@@ -284,7 +291,7 @@ public final class UtilString {
         sValue = UtilSystem.getNormalizedFilename(sValue);
       }
       if (!sValue.equals(Const.UNKNOWN_ARTIST)) {
-        ret = ret.replaceAll(Const.PATTERN_ARTIST, ArtistManager.format(sValue));
+        ret = ret.replaceAll(Const.PATTERN_ARTIST, ItemManager.format(sValue));
       } else {
         if (bMandatory) {
           throw new JajukException(150, file.getAbsolutePath());
@@ -345,12 +352,11 @@ public final class UtilString {
 
   /**
    * Apply album artist pattern.
-   * 
+   *
+   * @param sPattern DOCUMENT_ME
    * @param normalize DOCUMENT_ME
    * @param out DOCUMENT_ME
    * @param track DOCUMENT_ME
-   * @param sPattern DOCUMENT_ME
-   * 
    * @return the string
    */
   private static String applyAlbumArtistPattern(String sPattern, boolean normalize, String out,
@@ -362,22 +368,20 @@ public final class UtilString {
       if (normalize) {
         sValue = UtilSystem.getNormalizedFilename(sValue);
       }
-      ret = ret.replaceAll(Const.PATTERN_ALBUM_ARTIST, AlbumArtistManager.format(sValue));
+      ret = ret.replaceAll(Const.PATTERN_ALBUM_ARTIST, ItemManager.format(sValue));
     }
     return ret;
   }
 
   /**
    * Apply disc pattern.
-   * 
+   *
    * @param file DOCUMENT_ME
-   * @param out DOCUMENT_ME
-   * @param track DOCUMENT_ME
    * @param sPattern DOCUMENT_ME
    * @param bMandatory DOCUMENT_ME
-   * 
+   * @param out DOCUMENT_ME
+   * @param track DOCUMENT_ME
    * @return the string
-   * 
    * @throws JajukException the jajuk exception
    */
   private static String applyDiscPattern(File file, String sPattern, boolean bMandatory,
@@ -494,11 +498,10 @@ public final class UtilString {
 
   /**
    * Format an object to a string.
-   * 
-   * @param bHuman is this string intended to be human-readable ?
+   *
    * @param oValue DOCUMENT_ME
    * @param meta DOCUMENT_ME
-   * 
+   * @param bHuman is this string intended to be human-readable ?
    * @return the string
    */
   public static String format(final Object oValue, final PropertyMetaInformation meta,
@@ -601,8 +604,8 @@ public final class UtilString {
     if (hours > 0) {
       sbResult.append(UtilString.padNumber(hours, 2)).append(":");
     }
-    return sbResult.append(UtilString.padNumber(mins, 2)).append(":").append(
-        UtilString.padNumber(secs, 2)).toString();
+    return sbResult.append(UtilString.padNumber(mins, 2)).append(":")
+        .append(UtilString.padNumber(secs, 2)).toString();
   }
 
   /**
@@ -998,8 +1001,45 @@ public final class UtilString {
       beginIndex = auxStr.indexOf(beginChar);
       endIndex = auxStr.indexOf(endChar);
     }
-
     return result;
   }
 
+  /**
+   * Normalize filenames so they should be correct under any OS.
+   *
+   * @param name Name that should be normalized
+   * @return the filename where special characters are replaced/removed
+   */
+  public static synchronized String normalizeFilename(String name) {
+
+    // some more special characters that can be replaced with more useful
+    // values than FILLER_CHAR
+    String temp = name.replaceAll("€", "EUR");
+    temp = temp.replaceAll("&", "and");
+
+    // Transform non-ASCII characters to ASCII form or drop them if no mapping available.
+    temp = Normalizer.normalize(temp, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+
+    // Replace path-separators and colon that could cause trouble on other
+    // OSes, also question mark and star can produce errors
+    temp = FilenameUtils.normalize(temp);
+    int[] illegalChars = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+        20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 58, 42, 63, 92, 34, 60, 62, 124 };
+    StringBuilder cleanName = new StringBuilder();
+    for (int i = 0; i < temp.length(); i++) {
+      int c = temp.charAt(i);
+      if (Arrays.binarySearch(illegalChars, c) < 0) {
+        cleanName.append((char) c);
+      } else {
+        cleanName.append(FILLER_CHAR);
+      }
+    }
+    temp = cleanName.toString();
+
+    // Make sure filename is not void
+    if (temp.length() == 0) {
+      temp = "normalized";
+    }
+    return temp;
+  }
 }

@@ -183,6 +183,7 @@ public class SuggestionView extends ViewAdapter {
    * 
    * @see org.jajuk.ui.views.IView#getDesc()
    */
+  @Override
   public String getDesc() {
     return Messages.getString("SuggestionView.0");
   }
@@ -192,6 +193,7 @@ public class SuggestionView extends ViewAdapter {
    * 
    * @see org.jajuk.ui.views.IView#populate()
    */
+  @Override
   public void initUI() {
     tabs = new JTabbedPane();
     // Remove tab border, see
@@ -225,6 +227,7 @@ public class SuggestionView extends ViewAdapter {
     // Refresh tabs on demand only, add changelisterner after tab creation to
     // avoid that the stored tab is overwrited at startup
     tabs.addChangeListener(new ChangeListener() {
+      @Override
       public void stateChanged(ChangeEvent arg0) {
         refreshLastFMCollectionTabs();
         // store the selected tab
@@ -257,6 +260,7 @@ public class SuggestionView extends ViewAdapter {
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
@@ -272,6 +276,7 @@ public class SuggestionView extends ViewAdapter {
   private void refreshLocalCollectionTabs() {
     // Display a busy panel in the mean-time
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         JXBusyLabel busy1 = new JXBusyLabel();
         busy1.setBusy(true);
@@ -350,6 +355,7 @@ public class SuggestionView extends ViewAdapter {
         || (newArtist == null || newArtist.equals(Messages.getString(UNKNOWN_ARTIST)))) {
       // Set empty panels
       SwingUtilities.invokeLater(new Runnable() {
+        @Override
         public void run() {
           stopAllBusyLabels();
           tabs.setComponentAt(3, new JLabel(Messages.getString("SuggestionView.7")));
@@ -366,6 +372,7 @@ public class SuggestionView extends ViewAdapter {
     artist = newArtist;
     // Display a busy panel in the mean-time
     SwingUtilities.invokeLater(new Runnable() {
+      @Override
       public void run() {
         JXBusyLabel busy1 = new JXBusyLabel();
         busy1.setBusy(true);
@@ -549,6 +556,7 @@ public class SuggestionView extends ViewAdapter {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
+  @Override
   public void update(JajukEvent event) {
     synchronized (SuggestionView.class) {
       JajukEvents subject = event.getSubject();

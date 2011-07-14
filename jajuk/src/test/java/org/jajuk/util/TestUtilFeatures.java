@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.util;
 
@@ -28,7 +28,7 @@ import org.jajuk.JajukTestCase;
 import org.jajuk.services.players.StackItem;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestUtilFeatures extends JajukTestCase {
 
@@ -43,7 +43,9 @@ public class TestUtilFeatures extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.util.UtilFeatures#forcedShuffle(List<StackItem>)}.
    */
   public void testCopyFileFile() throws Exception {
@@ -57,6 +59,12 @@ public class TestUtilFeatures extends JajukTestCase {
   }
 
   // helper method to emma-coverage of the unused constructor
+  /**
+   * Test private constructor.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testPrivateConstructor() throws Exception {
     // For EMMA code-coverage tests
     JUnitHelpers.executePrivateConstructor(UtilFeatures.class);

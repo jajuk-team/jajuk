@@ -1,6 +1,7 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2008 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
+ *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk;
 
@@ -35,11 +36,16 @@ import org.jajuk.util.log.Log;
  */
 public class LogChecker extends TestCase {
 
+  /** The Constant FILE_PATH.  DOCUMENT_ME */
   private static final String FILE_PATH = System.getProperty("java.io.tmpdir") + File.separator
       + "jajuk_out.log";
 
+  /** DOCUMENT_ME. */
   private String logs;
 
+  /* (non-Javadoc)
+   * @see junit.framework.TestCase#setUp()
+   */
   @Override
   public void setUp() throws Exception {
     try {
@@ -59,21 +65,21 @@ public class LogChecker extends TestCase {
   }
 
   /**
-   * Check for "Overflow" string
+   * Check for "Overflow" string.
    */
   public void testOverflow() {
     assertFalse(logs.matches(".*Event overflow for.*"));
   }
 
   /**
-   * Check for playtime rate issue
+   * Check for playtime rate issue.
    */
   public void testPreferences() {
     assertFalse(logs.matches(".*Playtime rate > 1 for.*"));
   }
 
   /**
-   * Check for play time outs
+   * Check for play time outs.
    */
   public void testPlayOOT() {
     assertFalse(logs.matches("OOT Mplayer process.*"));
@@ -81,7 +87,7 @@ public class LogChecker extends TestCase {
 
   /**
    * Check for EDT violations (this test is required but far not enough as most
-   * of the time, we don't log this kind of errors)
+   * of the time, we don't log this kind of errors).
    */
   public void testOutEDT() {
     assertFalse(logs.matches("creation must be done on Event Dispatch Thread "));

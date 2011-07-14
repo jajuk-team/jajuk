@@ -16,7 +16,7 @@
 
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.9.2' />
+	<property name='version' value='1.9.3' />
 
 	<!--JNLP version-->
 	<!-- In final releases (including RC), jnlp_version=${version} 
@@ -277,6 +277,7 @@
 		<echo message=' MAC OS X in:           ${distdir}/jajuk-macos-${version}.zip' />
 		<echo message=' Source archive in:     ${sourcesdist}' />
 		<echo message=' JNLP war file in:      ${rootdir}/jajuk-${test}.war' />
+		<echo message=' Jajuk binary file in:  ${distdir}/bin/${jarname}' />
 	</target>
 
 

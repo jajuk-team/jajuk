@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.core;
 
@@ -32,13 +32,13 @@ import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Genre;
+import org.jajuk.base.TestAlbumManager.MockPlayer;
+import org.jajuk.base.TestAlbumManager.MyTagImpl;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.base.Year;
-import org.jajuk.base.TestAlbumManager.MockPlayer;
-import org.jajuk.base.TestAlbumManager.MyTagImpl;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.services.players.IPlayerImpl;
@@ -47,7 +47,7 @@ import org.jajuk.services.tags.ITagImpl;
 import org.jajuk.util.Const;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestRatingManager extends JajukTestCase {
 
@@ -68,7 +68,8 @@ public class TestRatingManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.core.RatingManager#getMaxPlaycount()}.
    */
   public void testGetAndSetMaxPlaycount() {
@@ -83,7 +84,8 @@ public class TestRatingManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.core.RatingManager#setMaxPlaycount(long)}.
    */
   public void testSetMaxPlaycount() {
@@ -91,7 +93,8 @@ public class TestRatingManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.core.RatingManager#hasRateChanged()}.
    */
   public void testHasAndSetRateChanged() {
@@ -107,7 +110,8 @@ public class TestRatingManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.core.RatingManager#setRateHasChanged(boolean)}.
    */
   public void testSetRateHasChanged() {
@@ -115,7 +119,8 @@ public class TestRatingManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.services.core.RatingManager#getRegistrationKeys()}.
    */
   public void testGetRegistrationKeys() {
@@ -125,11 +130,11 @@ public class TestRatingManager extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.services.core.RatingManager#update(org.jajuk.events.JajukEvent)}
    * .
-   * 
-   * @throws Exception
    */
   public void testUpdate() throws Exception {
     StartupCollectionService.registerItemManagers();
@@ -142,11 +147,18 @@ public class TestRatingManager extends JajukTestCase {
     RatingManager.getInstance().update(new JajukEvent(JajukEvents.PREFERENCES_RESET, null));
   }
 
+  /**
+   * Gets the track.
+   *
+   * @param i DOCUMENT_ME
+   * @return the track
+   * @throws Exception the exception
+   */
   @SuppressWarnings("unchecked")
   private Track getTrack(int i) throws Exception {
     Genre genre = JUnitHelpers.getGenre();
     Album album = JUnitHelpers.getAlbum("name", 23);
-    album.setProperty(Const.XML_ALBUM_COVER, Const.COVER_NONE); // don't read covers for
+    album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
 
     Artist artist = JUnitHelpers.getArtist("name");

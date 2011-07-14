@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.services.players;
 
@@ -31,13 +31,14 @@ import org.jajuk.base.File;
 import org.jajuk.util.error.JajukException;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#add(org.jajuk.services.players.StackItem)}.
-   * @throws Exception 
+   *
+   * @throws Exception the exception
    */
   public void testAddStackItem() throws Exception {
     QueueList impl = new QueueList();
@@ -47,7 +48,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#add(int, org.jajuk.services.players.StackItem)}.
-   * @throws Exception 
+   *
+   * @throws Exception the exception
    */
   public void testAddIntStackItem() throws Exception {
     QueueList impl = new QueueList();
@@ -65,7 +67,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#addAll(java.util.Collection)}.
-   * @throws Exception 
+   *
+   * @throws Exception the exception
    */
   public void testAddAllCollectionOfQextendsStackItem() throws Exception {
     QueueList impl = new QueueList();
@@ -76,7 +79,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#addAll(int, java.util.Collection)}.
-   * @throws Exception 
+   *
+   * @throws Exception the exception
    */
   public void testAddAllIntCollectionOfQextendsStackItem() throws Exception {
     QueueList impl = new QueueList();
@@ -100,7 +104,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#clear()}.
-   * @throws Exception 
+   *
+   * @throws Exception the exception
    */
   public void testClear() throws Exception {
     QueueList impl = new QueueList();
@@ -114,7 +119,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#contains(java.lang.Object)}.
-   * @throws Exception 
+   *
+   * @throws Exception the exception
    */
   public void testContains() throws Exception {
     QueueList impl = new QueueList();
@@ -128,7 +134,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#containsAll(java.util.Collection)}.
-   * @throws Exception 
+   *
+   * @throws Exception the exception
    */
   public void testContainsAll() throws Exception {
     QueueList impl = new QueueList();
@@ -145,6 +152,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#get(int)}.
+   *
+   * @throws Exception the exception
    */
   public void testGet() throws Exception {
     // tested above
@@ -152,6 +161,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#indexOf(java.lang.Object)}.
+   *
+   * @throws Exception the exception
    */
   public void testIndexOf() throws Exception {
     QueueList impl = new QueueList();
@@ -165,6 +176,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#isEmpty()}.
+   *
+   * @throws Exception the exception
    */
   public void testIsEmpty() throws Exception {
     QueueList impl = new QueueList();
@@ -178,6 +191,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#iterator()}.
+   *
+   * @throws Exception the exception
    */
   public void testIterator() throws Exception {
     QueueList impl = new QueueList();
@@ -197,6 +212,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#lastIndexOf(java.lang.Object)}.
+   *
+   * @throws Exception the exception
    */
   public void testLastIndexOf() throws Exception {
     QueueList impl = new QueueList();
@@ -209,6 +226,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#listIterator()}.
+   *
+   * @throws Exception the exception
    */
   public void testListIterator() throws Exception {
     QueueList impl = new QueueList();
@@ -221,6 +240,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#listIterator(int)}.
+   *
+   * @throws Exception the exception
    */
   public void testListIteratorInt() throws Exception {
     QueueList impl = new QueueList();
@@ -233,6 +254,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#remove(java.lang.Object)}.
+   *
+   * @throws Exception the exception
    */
   public void testRemoveObject() throws Exception {
     QueueList impl = new QueueList();
@@ -249,6 +272,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#remove(int)}.
+   *
+   * @throws Exception the exception
    */
   public void testRemoveInt() throws Exception {
     QueueList impl = new QueueList();
@@ -269,6 +294,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#removeAll(java.util.Collection)}.
+   *
+   * @throws Exception the exception
    */
   public void testRemoveAll() throws Exception {
     QueueList impl = new QueueList();
@@ -284,6 +311,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#retainAll(java.util.Collection)}.
+   *
+   * @throws Exception the exception
    */
   public void testRetainAll() throws Exception {
     QueueList impl = new QueueList();
@@ -299,6 +328,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#set(int, org.jajuk.services.players.StackItem)}.
+   *
+   * @throws Exception the exception
    */
   public void testSet() throws Exception {
     QueueList impl = new QueueList();
@@ -311,6 +342,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#size()}.
+   *
+   * @throws Exception the exception
    */
   public void testSize() throws Exception {
     // tested above
@@ -318,6 +351,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#subList(int, int)}.
+   *
+   * @throws Exception the exception
    */
   public void testSubList() throws Exception {
     QueueList impl = new QueueList();
@@ -329,6 +364,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#toArray()}.
+   *
+   * @throws Exception the exception
    */
   public void testToArray() throws Exception {
     QueueList impl = new QueueList();
@@ -340,6 +377,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#toArray(T[])}.
+   *
+   * @throws Exception the exception
    */
   public void testToArrayTArray() throws Exception {
     QueueList impl = new QueueList();
@@ -351,6 +390,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#getQueue()}.
+   *
+   * @throws Exception the exception
    */
   public void testGetQueue() throws Exception {
     QueueList impl = new QueueList();
@@ -362,6 +403,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#sizePlanned()}.
+   *
+   * @throws Exception the exception
    */
   public void testSizePlanned() throws Exception {
     QueueList impl = new QueueList();
@@ -375,6 +418,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#addPlanned(org.jajuk.services.players.StackItem)}.
+   *
+   * @throws Exception the exception
    */
   public void testAddPlannedStackItem() throws Exception {
     // tested above
@@ -382,6 +427,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#addPlanned(java.util.List)}.
+   *
+   * @throws Exception the exception
    */
   public void testAddPlannedListOfStackItem() throws Exception {
     QueueList impl = new QueueList();
@@ -394,6 +441,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#getPlanned(int)}.
+   *
+   * @throws Exception the exception
    */
   public void testGetPlannedInt() throws Exception {
     QueueList impl = new QueueList();
@@ -407,6 +456,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#getPlanned()}.
+   *
+   * @throws Exception the exception
    */
   public void testGetPlanned() throws Exception {
     QueueList impl = new QueueList();
@@ -419,6 +470,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#removePlannedFromList(java.util.List)}.
+   *
+   * @throws Exception the exception
    */
   public void testRemovePlannedFromList() throws Exception {
     QueueList impl = new QueueList();
@@ -448,6 +501,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#clearPlanned()}.
+   *
+   * @throws Exception the exception
    */
   public void testClearPlanned() throws Exception {
     QueueList impl = new QueueList();
@@ -463,6 +518,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#containsRepeat()}.
+   *
+   * @throws Exception the exception
    */
   public void testContainsRepeat() throws Exception {
     QueueList impl = new QueueList();
@@ -482,6 +539,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#popNextPlanned()}.
+   *
+   * @throws Exception the exception
    */
   public void testPopNextPlanned() throws Exception {
     QueueList impl = new QueueList();
@@ -496,6 +555,8 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#containsOnlyRepeat()}.
+   *
+   * @throws Exception the exception
    */
   public void testContainsOnlyRepeat() throws Exception {
     QueueList impl = new QueueList();
@@ -518,6 +579,15 @@ public class TestQueueList extends JajukTestCase {
     assertFalse(impl.containsOnlyRepeat());
   }
 
+  /**
+   * Prepare queue impl.
+   * DOCUMENT_ME
+   *
+   * @param impl DOCUMENT_ME
+   * @return the list
+   * @throws JajukException the jajuk exception
+   * @throws Exception the exception
+   */
   private List<StackItem> prepareQueueImpl(QueueList impl) throws JajukException, Exception {
     List<StackItem> set = new ArrayList<StackItem>();
     set.add(new StackItem(JUnitHelpers.getFile("file1", false)));
@@ -528,6 +598,15 @@ public class TestQueueList extends JajukTestCase {
     return set;
   }
 
+  /**
+   * Prepare queue impl planned.
+   * DOCUMENT_ME
+   *
+   * @param impl DOCUMENT_ME
+   * @return the list
+   * @throws JajukException the jajuk exception
+   * @throws Exception the exception
+   */
   private List<StackItem> prepareQueueImplPlanned(QueueList impl) throws JajukException, Exception {
     List<StackItem> set = new ArrayList<StackItem>();
     set.add(new StackItem(JUnitHelpers.getFile("file9", false)));

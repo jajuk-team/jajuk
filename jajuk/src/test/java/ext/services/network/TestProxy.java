@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,27 +16,32 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package ext.services.network;
 
 import java.io.IOException;
+import java.net.Proxy.Type;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.net.Proxy.Type;
 
 import org.jajuk.JajukTestCase;
 import org.jajuk.util.log.Log;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestProxy extends JajukTestCase {
+  
+  /** The Constant PROXY_PORT.  DOCUMENT_ME */
   private static final int PROXY_PORT = 0; // auto-choose
+  
+  /** DOCUMENT_ME. */
   ServerSocket socket;
 
+  /** DOCUMENT_ME. */
   boolean bStop = false;
 
   /*
@@ -85,22 +90,22 @@ public class TestProxy extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws UnknownHostException the unknown host exception
+   * @throws Exception the exception
    * {@link ext.services.network.Proxy#Proxy(java.net.Proxy.Type, java.lang.String, int, java.lang.String, java.lang.String)}
    * .
-   * 
-   * @throws Exception
-   * @throws UnknownHostException
    */
   public void testProxyTypeStringIntStringString() throws UnknownHostException, Exception {
     new Proxy(Type.SOCKS, "localhost", socket.getLocalPort(), "user", "pwd");
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link ext.services.network.Proxy#getConnection(java.net.URL)}.
-   * 
-   * @throws Exception
    */
   public void testGetConnection() throws Exception {
     Proxy proxy = new Proxy(Type.SOCKS, "localhost", socket.getLocalPort(), "user", "pwd");
@@ -109,8 +114,8 @@ public class TestProxy extends JajukTestCase {
 
   /**
    * Test method for {@link ext.services.network.Proxy#getPassword()}.
-   * 
-   * @throws Exception
+   *
+   * @throws Exception the exception
    */
   public void testGetPassword() throws Exception {
     Proxy proxy = new Proxy(Type.SOCKS, "localhost", socket.getLocalPort(), "user", "pwd");
@@ -119,6 +124,8 @@ public class TestProxy extends JajukTestCase {
 
   /**
    * Test method for {@link ext.services.network.Proxy#getUrl()}.
+   *
+   * @throws Exception the exception
    */
   public void testGetUrl() throws Exception {
     Proxy proxy = new Proxy(Type.SOCKS, "localhost", socket.getLocalPort(), "user", "pwd");
@@ -127,6 +134,8 @@ public class TestProxy extends JajukTestCase {
 
   /**
    * Test method for {@link ext.services.network.Proxy#getPort()}.
+   *
+   * @throws Exception the exception
    */
   public void testGetPort() throws Exception {
     Proxy proxy = new Proxy(Type.SOCKS, "localhost", socket.getLocalPort(), "user", "pwd");
@@ -135,6 +144,8 @@ public class TestProxy extends JajukTestCase {
 
   /**
    * Test method for {@link ext.services.network.Proxy#getUser()}.
+   *
+   * @throws Exception the exception
    */
   public void testGetUser() throws Exception {
     Proxy proxy = new Proxy(Type.SOCKS, "localhost", socket.getLocalPort(), "user", "pwd");

@@ -90,6 +90,7 @@ public class TxtPersister implements ILyricsPersister {
    * 
    * @return the lyrics file
    */
+  @Override
   public java.io.File getDestinationFile() {
     if (lyricsFile == null) {
       lyricsFile = new java.io.File(UtilSystem.removeExtension(file.getAbsolutePath()) + ".txt");

@@ -22,6 +22,8 @@ package org.jajuk.ui.widgets;
 
 import java.awt.Color;
 import java.awt.Window;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -43,6 +45,9 @@ public class JajukInformationDialog extends JDialog {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
+
+  /** Has this dialog already been hidden ? */
+  private boolean hasAlreadyBeenHidden = false;
 
   /**
    * The Constructor.
@@ -74,6 +79,22 @@ public class JajukInformationDialog extends JDialog {
         dispose();
       }
     });
+    // Fix for #1778 : the Window.dispose() method doesn't seem to work (under Linux at least) if the component is not visible.
+    // We add a component listener to detect hide/show. If the dialog has already been hidden once, it is disposed.
+    addComponentListener(new ComponentAdapter() {
+
+      @Override
+      public void componentShown(ComponentEvent e) {
+        if (hasAlreadyBeenHidden) {
+          dispose();
+        }
+      }
+
+      @Override
+      public void componentHidden(ComponentEvent e) {
+        hasAlreadyBeenHidden = true;
+      }
+    });
     add(jl);
     pack();
   }
@@ -92,19 +113,27 @@ public class JajukInformationDialog extends JDialog {
       public void run() {
         try {
           Thread.sleep(3000);
-          // Call dispose from the EDT, otherwise, it seems to block in some rare cases under
-          // Windows, see #1514
-          SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-              dispose();
-            }
-          });
+          close();
         } catch (InterruptedException e) {
           Log.error(e);
         }
       }
     }.start();
+  }
+
+  /**
+   * Close the dialog
+   */
+  public void close() {
+    // Call dispose from the EDT, otherwise, it seems to block in some rare cases under
+    // Windows, see #1514
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        dispose();
+      }
+    });
+
   }
 
 }

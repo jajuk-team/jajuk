@@ -68,9 +68,9 @@ public interface INotificator {
 
   /**
    * Ask the notificator to provide some arbitrary status information.
-   * 
-   * @param status The string to print.
+   *
    * @param title DOCUMENT_ME
+   * @param status The string to print.
    */
   void notify(String title, String status);
 }

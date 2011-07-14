@@ -1380,10 +1380,9 @@ public class DigitalDJWizard extends Wizard {
 
   /**
    * Gets the widget index.
-   * 
-   * @param widget DOCUMENT_ME
+   *
    * @param widgets DOCUMENT_ME
-   * 
+   * @param widget DOCUMENT_ME
    * @return index of a given widget row in the widget table
    */
   private static int getWidgetIndex(JComponent[][] widgets, JComponent widget) {

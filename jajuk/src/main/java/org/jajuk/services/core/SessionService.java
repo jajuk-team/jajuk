@@ -103,6 +103,7 @@ public class SessionService {
 
     try {
       SwingUtilities.invokeAndWait(new Runnable() {
+        @Override
         public void run() {
           // Check for remote concurrent users using the same
           // configuration
@@ -147,8 +148,8 @@ public class SessionService {
               files = sessions.listFiles();
               for (int i = 0; i < files.length; i++) {
                 if (!files[i].delete()) {
-                  Messages.showDetailedErrorMessage(131, "Cannot delete : "
-                      + files[i].getAbsolutePath(), "");
+                  Messages.showDetailedErrorMessage(131,
+                      "Cannot delete : " + files[i].getAbsolutePath(), "");
                   Log.error(131);
                   break;
                 }
@@ -427,6 +428,7 @@ public class SessionService {
       UpgradeManager.setFirstSession();
       // display the first time wizard
       SwingUtilities.invokeLater(new Runnable() {
+        @Override
         public void run() {
           // default workspace displayed in the first time wizard is either the user home 
           // or the forced path if provided (can't be changed by the user from the wizard anyway)
@@ -452,10 +454,8 @@ public class SessionService {
 
   /**
    * Write down the bootstrap file.
-   * 
+   *
    * @param prop : the properties to write to the file
-   * 
-   * @throws an IOException if the bootstrap file cannot be written down
    */
   public static void commitBootstrapFile(Properties prop) {
     File bootstrap = null;
@@ -544,15 +544,22 @@ public class SessionService {
   }
 
   /**
-   * Clear locale images cache.
+   * Clear locale images cache once a given size is reached.
    */
   public static void clearCache() {
     final File fCache = getConfFileByPath(Const.FILE_CACHE);
     final File[] files = fCache.listFiles();
+    long totalSize = 0l;
     for (final File element : files) {
-      // note that this will note delete non-empty directories like lastfm cache in purpose
-      element.delete();
+      totalSize += element.length();
     }
+    if ((totalSize / 1048576) > Const.MAX_IMAGES_CACHE_SIZE) {
+      for (final File element : files) {
+        // note that this will not delete non-empty directories like last.fm cache in purpose
+        element.delete();
+      }
+    }
+
   }
 
   /**

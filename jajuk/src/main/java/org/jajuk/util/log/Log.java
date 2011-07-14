@@ -287,9 +287,9 @@ public final class Log {
 
   /**
    * Log an error-level message.
-   * 
-   * @param t DOCUMENT_ME
+   *
    * @param code DOCUMENT_ME
+   * @param t DOCUMENT_ME
    */
   public static void error(int code, Throwable t) {
     error(code, null, t);

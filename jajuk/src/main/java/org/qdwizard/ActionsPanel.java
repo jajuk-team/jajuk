@@ -137,10 +137,10 @@ class ActionsPanel extends JPanel {
 
   /**
    * Set buttons states.
-   * 
+   *
+   * @param bPrevious DOCUMENT_ME
    * @param bNext DOCUMENT_ME
    * @param bFinish DOCUMENT_ME
-   * @param bPrevious DOCUMENT_ME
    * @param bCancel DOCUMENT_ME
    */
   void setState(boolean bPrevious, boolean bNext, boolean bFinish, boolean bCancel) {

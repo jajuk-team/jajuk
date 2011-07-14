@@ -28,13 +28,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.CharUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Playlist;
@@ -56,9 +53,6 @@ import org.jajuk.util.log.Log;
  * easier testing.
  */
 public class UtilPrepareParty {
-
-  /** character that is used to replace if filename normalization is used. */
-  private static final String FILLER_CHAR = "_";
 
   /**
    * Instantiates a new util prepare party.
@@ -191,134 +185,6 @@ public class UtilPrepareParty {
     }
 
     return newFiles;
-  }
-
-  /** Map containing all the replacements that we do to "normalize" a filename. */
-  private static Map<Character, String> replaceMap = null;
-
-  /**
-   * Normalize filenames so that they do not.
-   * 
-   * TODO: is there some utility method that can do this?
-   * 
-   * @param name Name that should be normalized
-   * 
-   * @return the filename where special characters are replaced/removed
-   */
-  public static synchronized String normalizeFilename(String name) {
-    // initialize map if necessary
-    if (replaceMap == null) {
-      replaceMap = new HashMap<Character, String>();
-
-      // German umlauts can be handled better than just using the filler_char,
-      // we
-      // can keep the filename readable
-      replaceMap.put('à', "a");
-      replaceMap.put('á', "a");
-      replaceMap.put('â', "a");
-      replaceMap.put('ã', "a");
-      replaceMap.put('ä', "ae");
-      replaceMap.put('å', "a");
-      replaceMap.put('æ', "ae");
-      replaceMap.put('À', "A");
-      replaceMap.put('Á', "A");
-      replaceMap.put('Â', "A");
-      replaceMap.put('Ã', "A");
-      replaceMap.put('Ä', "AE");
-      replaceMap.put('Å', "A");
-      replaceMap.put('Æ', "AE");
-
-      replaceMap.put('Ç', "C");
-      replaceMap.put('ç', "c");
-
-      replaceMap.put('Ð', "D");
-
-      replaceMap.put('È', "E");
-      replaceMap.put('É', "E");
-      replaceMap.put('Ê', "E");
-      replaceMap.put('Ë', "E");
-      replaceMap.put('é', "e");
-      replaceMap.put('è', "e");
-      replaceMap.put('é', "e");
-      replaceMap.put('ê', "e");
-      replaceMap.put('ë', "e");
-
-      replaceMap.put('Ì', "I");
-      replaceMap.put('Í', "I");
-      replaceMap.put('Î', "I");
-      replaceMap.put('Ï', "I");
-      replaceMap.put('ì', "i");
-      replaceMap.put('í', "i");
-      replaceMap.put('î', "i");
-      replaceMap.put('ï', "i");
-
-      replaceMap.put('Ñ', "N");
-      replaceMap.put('ñ', "n");
-
-      replaceMap.put('Ò', "O");
-      replaceMap.put('Ó', "O");
-      replaceMap.put('Ô', "O");
-      replaceMap.put('Õ', "O");
-      replaceMap.put('Ö', "OE");
-      replaceMap.put('Ő', "O");
-      replaceMap.put('Œ', "O");
-      replaceMap.put('ò', "o");
-      replaceMap.put('ó', "o");
-      replaceMap.put('ô', "o");
-      replaceMap.put('õ', "o");
-      replaceMap.put('ö', "oe");
-      replaceMap.put('ő', "o");
-      replaceMap.put('œ', "oe");
-
-      replaceMap.put('ß', "ss");
-
-      replaceMap.put('Ù', "U");
-      replaceMap.put('Ú', "U");
-      replaceMap.put('Û', "U");
-      replaceMap.put('Ü', "UE");
-      replaceMap.put('ù', "u");
-      replaceMap.put('ú', "u");
-      replaceMap.put('û', "u");
-      replaceMap.put('ü', "ue");
-
-      replaceMap.put('Ý', "Y");
-      replaceMap.put('ý', "y");
-      replaceMap.put('ÿ', "y");
-
-      // some more special characters that can be replaced with more useful
-      // values
-      // than FILLER_CHAR
-      replaceMap.put('€', "EUR");
-      replaceMap.put('&', "and");
-
-      // replace path-separators and colon that could cause trouble on other
-      // OSes, also question mark and star can produce errors
-      replaceMap.put('/', FILLER_CHAR);
-      replaceMap.put('\\', FILLER_CHAR);
-      replaceMap.put(':', FILLER_CHAR);
-      replaceMap.put('?', FILLER_CHAR);
-      replaceMap.put('*', FILLER_CHAR);
-      replaceMap.put('!', FILLER_CHAR);
-    }
-
-    StringBuilder newName = new StringBuilder(name.length());
-    for (int i = 0; i < name.length(); i++) {
-      char c = name.charAt(i);
-
-      // replace some things that we can replace with other useful values
-      if (replaceMap.containsKey(c)) {
-        newName.append(replaceMap.get(c));
-      } else if (CharUtils.isAsciiPrintable(c)) {
-        // any other ASCII character is added
-        newName.append(c);
-      } else {
-        // everything else outside the ASCII range is simple removed to not
-        // cause any trouble
-        newName.append(FILLER_CHAR);
-      }
-    }
-
-    return newName.toString();
   }
 
   /**
@@ -512,9 +378,8 @@ public class UtilPrepareParty {
       ret = launcher.exec(list.toArray(new String[list.size()]));
     } catch (IOException e) {
       ret = -1;
-      Log
-          .debug("Exception while checking for 'pacpl', cannot use functionality to convert media files while copying: "
-              + e.getMessage());
+      Log.debug("Exception while checking for 'pacpl', cannot use functionality to convert media files while copying: "
+          + e.getMessage());
     }
 
     // if we do not find the application or if we got an error, log some details
@@ -524,8 +389,7 @@ public class UtilPrepareParty {
       Log.debug("pacpl command returned to out(" + ret + "): " + out.toString());
       Log.debug("pacpl command returned to err: " + err.toString());
 
-      Log
-          .info("Cannot use functionality to convert media files, application 'pacpl' seems to be not available correctly.");
+      Log.info("Cannot use functionality to convert media files, application 'pacpl' seems to be not available correctly.");
       return false;
     }
 
@@ -591,8 +455,8 @@ public class UtilPrepareParty {
     Log.debug("Using this pacpl command: {{" + commandLog.toString() + "}}");
     final ProcessLauncher launcher = new ProcessLauncher(out, err);
     try {
-      ret = launcher.exec(list.toArray(new String[list.size()]), null, new java.io.File(System
-          .getProperty("java.io.tmpdir")));
+      ret = launcher.exec(list.toArray(new String[list.size()]), null,
+          new java.io.File(System.getProperty("java.io.tmpdir")));
     } catch (IOException e) {
       ret = -1;
       Log.error(e);
@@ -660,7 +524,7 @@ public class UtilPrepareParty {
 
               // normalize filenames if necessary
               if (isNormalize) {
-                name = UtilPrepareParty.normalizeFilename(name);
+                name = UtilString.normalizeFilename(name);
               }
 
               // check if we need to convert the file format
@@ -720,15 +584,15 @@ public class UtilPrepareParty {
 
           // inform the user about the number of resulting tracks
           StringBuilder sbOut = new StringBuilder();
-          sbOut.append(Messages.getString("PreparePartyWizard.31")).append(" ").append(
-              destDir.getAbsolutePath()).append(".\n").append(files.size()).append(" ").append(
-              Messages.getString("PreparePartyWizard.23")).append(" ").append(
-              ((refreshTime < 1000) ? refreshTime + " ms." : refreshTime / 1000 + " s."));
+          sbOut.append(Messages.getString("PreparePartyWizard.31")).append(" ")
+              .append(destDir.getAbsolutePath()).append(".\n").append(files.size()).append(" ")
+              .append(Messages.getString("PreparePartyWizard.23")).append(" ")
+              .append(((refreshTime < 1000) ? refreshTime + " ms." : refreshTime / 1000 + " s."));
 
           // inform user if converting did not work
           if (convert_errors > 0) {
-            sbOut.append("\n").append(Integer.toString(convert_errors)).append(
-                Messages.getString("PreparePartyWizard.36"));
+            sbOut.append("\n").append(Integer.toString(convert_errors))
+                .append(Messages.getString("PreparePartyWizard.36"));
           }
 
           String message = sbOut.toString();

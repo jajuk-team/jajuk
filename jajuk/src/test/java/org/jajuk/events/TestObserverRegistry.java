@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.events;
 
@@ -27,16 +27,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.jajuk.JajukTestCase;
 import org.jajuk.ThreadTestHelper;
 
+/**
+ * DOCUMENT_ME.
+ */
 public class TestObserverRegistry extends JajukTestCase {
 
+  /** The Constant NUMBER_OF_THREADS.  DOCUMENT_ME */
   private static final int NUMBER_OF_THREADS = 15; // 15 is the limit on
   // concurrent events
+  /** The Constant NUMBER_OF_TESTS.  DOCUMENT_ME */
   private static final int NUMBER_OF_TESTS = 1000;
 
+  /** DOCUMENT_ME. */
   private AtomicInteger called = new AtomicInteger(0);
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.events.ObserverRegistry#notifySync(org.jajuk.events.JajukEvent)}
    * .
    */
@@ -46,7 +53,8 @@ public class TestObserverRegistry extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.events.ObserverRegistry#register(org.jajuk.events.JajukEvents, org.jajuk.events.Observer)}
    * .
    */
@@ -56,7 +64,8 @@ public class TestObserverRegistry extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.events.ObserverRegistry#unregister(org.jajuk.events.JajukEvents, org.jajuk.events.Observer)}
    * .
    */
@@ -65,6 +74,10 @@ public class TestObserverRegistry extends JajukTestCase {
     registry.unregister(JajukEvents.PLAYER_PLAY, new LocalObserver(called));
   }
 
+  /**
+   * Test below zero.
+   * DOCUMENT_ME
+   */
   public void testBelowZero() {
     ObserverRegistry registry = new ObserverRegistry();
     Observer observer = new LocalObserver(called);
@@ -83,6 +96,10 @@ public class TestObserverRegistry extends JajukTestCase {
     registry.unregister(JajukEvents.FILE_FINISHED, observer);
   }
 
+  /**
+   * Test exception.
+   * DOCUMENT_ME
+   */
   public void testException() {
     ObserverRegistry registry = new ObserverRegistry();
     Observer observer = new LocalObserver(true, called);
@@ -102,6 +119,12 @@ public class TestObserverRegistry extends JajukTestCase {
     registry.unregister(JajukEvents.FILE_FINISHED, observer);
   }
 
+  /**
+   * Test multiple threads.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testMultipleThreads() throws Exception {
     final ObserverRegistry registry = new ObserverRegistry();
     Observer observer = new LocalObserver(called);
@@ -132,6 +155,12 @@ public class TestObserverRegistry extends JajukTestCase {
     registry.unregister(JajukEvents.FILE_FINISHED, observer);
   }
 
+  /**
+   * Test multiple threads wait.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testMultipleThreadsWait() throws Exception {
     final ObserverRegistry registry = new ObserverRegistry();
 
@@ -167,6 +196,12 @@ public class TestObserverRegistry extends JajukTestCase {
     registry.unregister(JajukEvents.FILE_FINISHED, observer);
   }
 
+  /**
+   * Test multiple threads multiple observers.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testMultipleThreadsMultipleObservers() throws Exception {
     final ObserverRegistry registry = new ObserverRegistry();
     Observer observer1 = new LocalObserver(called);
@@ -201,6 +236,12 @@ public class TestObserverRegistry extends JajukTestCase {
     registry.unregister(JajukEvents.FILE_FINISHED, observer1);
   }
 
+  /**
+   * Test high priority observer.
+   * DOCUMENT_ME
+   *
+   * @throws Exception the exception
+   */
   public void testHighPriorityObserver() throws Exception {
     final ObserverRegistry registry = new ObserverRegistry();
     LocalObserver observer1 = new LocalObserver(called);
@@ -235,14 +276,27 @@ public class TestObserverRegistry extends JajukTestCase {
     registry.unregister(JajukEvents.FILE_FINISHED, observer1);
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   static class LocalObserver implements Observer {
+    
+    /** DOCUMENT_ME. */
     boolean invoked = false;
+    
+    /** DOCUMENT_ME. */
     int wait = 0;
+    
+    /** DOCUMENT_ME. */
     boolean exception = false;
+    
+    /** DOCUMENT_ME. */
     AtomicInteger called;
 
     /**
-     * 
+     * Instantiates a new local observer.
+     *
+     * @param called DOCUMENT_ME
      */
     public LocalObserver(AtomicInteger called) {
       super();
@@ -250,7 +304,10 @@ public class TestObserverRegistry extends JajukTestCase {
     }
 
     /**
-     * @param wait
+     * Instantiates a new local observer.
+     *
+     * @param wait DOCUMENT_ME
+     * @param called DOCUMENT_ME
      */
     public LocalObserver(int wait, AtomicInteger called) {
       super();
@@ -259,7 +316,10 @@ public class TestObserverRegistry extends JajukTestCase {
     }
 
     /**
-     * @param exception
+     * Instantiates a new local observer.
+     *
+     * @param exception DOCUMENT_ME
+     * @param called DOCUMENT_ME
      */
     public LocalObserver(boolean exception, AtomicInteger called) {
       super();
@@ -304,11 +364,19 @@ public class TestObserverRegistry extends JajukTestCase {
     }
   }
 
+  /**
+   * DOCUMENT_ME.
+   */
   private class LocalHighPriorityObserver extends LocalObserver implements HighPriorityObserver {
+    
+    /** DOCUMENT_ME. */
     LocalObserver lowprioobserver; // to check if other was not yet called
 
     /**
-     * @param lowprioobserver
+     * Instantiates a new local high priority observer.
+     *
+     * @param lowprioobserver DOCUMENT_ME
+     * @param called DOCUMENT_ME
      */
     public LocalHighPriorityObserver(LocalObserver lowprioobserver, AtomicInteger called) {
       super(called);

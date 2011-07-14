@@ -27,6 +27,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentListener;
@@ -73,8 +74,8 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.widgets.InformationJPanel;
@@ -488,11 +489,10 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       while (itAlbums.hasNext()) {
         Album album = itAlbums.next();
         if (jcbShowCover.getSelectedIndex() == Const.CATALOG_VIEW_COVER_MODE_WITH
-            && album.findCoverFile() == null) {
+            && !album.containsCover()) {
           itAlbums.remove();
-        }
-        if (jcbShowCover.getSelectedIndex() == Const.CATALOG_VIEW_COVER_MODE_WITHOUT
-            && album.findCoverFile() != null) {
+        } else if (jcbShowCover.getSelectedIndex() == Const.CATALOG_VIEW_COVER_MODE_WITHOUT
+            && album.containsCover()) {
           itAlbums.remove();
         }
       }
@@ -706,8 +706,8 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       lDateTyped = System.currentTimeMillis();
       Conf.setProperty(Const.CONF_THUMBS_SORTER, Integer.toString(jcbSorter.getSelectedIndex()));
     } else if (e.getSource() == jcbShowCover) {
-      Conf.setProperty(Const.CONF_THUMBS_SHOW_COVER, Integer.toString(jcbShowCover
-          .getSelectedIndex()));
+      Conf.setProperty(Const.CONF_THUMBS_SHOW_COVER,
+          Integer.toString(jcbShowCover.getSelectedIndex()));
       // Reset page to zero to avoid out of bounds exceptions, when restricting
       // the filter, less pages are available
       page = 0;
@@ -828,7 +828,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
 
     // we specifically request the focus for jtfValue, therefore we should make sure that we release
     // that focus to let this be destroyed
-    FocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
+    KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
 
     // call the parent class to do more cleanup if necessary
     super.cleanup();

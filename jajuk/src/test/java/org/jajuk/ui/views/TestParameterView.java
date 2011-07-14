@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2009 The Jajuk Team
+ *  Copyright (C) 2003-2011 The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  $Revision$
  */
 package org.jajuk.ui.views;
 
@@ -37,7 +37,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
- * 
+ * DOCUMENT_ME.
  */
 public class TestParameterView extends JajukTestCase {
 
@@ -49,11 +49,11 @@ public class TestParameterView extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.ui.views.ParameterView#actionPerformed(java.awt.event.ActionEvent)}
    * .
-   * 
-   * @throws Exception
    */
   public void testActionPerformed() throws Exception {
     ParameterView view = new ParameterView();
@@ -81,7 +81,8 @@ public class TestParameterView extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.views.ParameterView#getRegistrationKeys()}.
    */
   public void testGetRegistrationKeys() {
@@ -99,7 +100,8 @@ public class TestParameterView extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.views.ParameterView#itemStateChanged(java.awt.event.ItemEvent)}
    * .
    */
@@ -116,7 +118,8 @@ public class TestParameterView extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
    * {@link org.jajuk.ui.views.ParameterView#stateChanged(javax.swing.event.ChangeEvent)}
    * .
    */
@@ -127,11 +130,11 @@ public class TestParameterView extends JajukTestCase {
   }
 
   /**
-   * Test method for
+   * Test method for.
+   *
+   * @throws Exception the exception
    * {@link org.jajuk.ui.views.ParameterView#update(org.jajuk.events.JajukEvent)}
    * .
-   * 
-   * @throws Exception
    */
   public void testUpdateJajukEvent() throws Exception {
     ParameterView view = new ParameterView();
@@ -153,20 +156,30 @@ public class TestParameterView extends JajukTestCase {
   }
 
   /**
-   * 
+   * DOCUMENT_ME.
    */
   private final class MyItemSelectable implements ItemSelectable {
+    
+    /* (non-Javadoc)
+     * @see java.awt.ItemSelectable#removeItemListener(java.awt.event.ItemListener)
+     */
     @Override
     public void removeItemListener(ItemListener l) {
 
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.ItemSelectable#getSelectedObjects()
+     */
     @Override
     public Object[] getSelectedObjects() {
 
       return null;
     }
 
+    /* (non-Javadoc)
+     * @see java.awt.ItemSelectable#addItemListener(java.awt.event.ItemListener)
+     */
     @Override
     public void addItemListener(ItemListener l) {
 
