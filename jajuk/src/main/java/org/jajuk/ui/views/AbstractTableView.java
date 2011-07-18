@@ -187,7 +187,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   JajukToggleButton jtbSync;
 
   /** DOCUMENT_ME. */
-  private boolean bStopThread = false;
+  private volatile boolean bStopThread = false;
 
   /** Launches a thread used to perform dynamic filtering when user is typing. */
   private Thread filteringThread = new Thread("Dynamic user input filtering thread") {
@@ -211,7 +211,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   /**
    * Gets the apply criteria.
-   * 
+   *
    * @return Applied criteria
    */
   private String getApplyCriteria() {
@@ -227,7 +227,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /**
    * Code used in child class SwingWorker for long delay computations (used in
    * initUI()).
-   * 
+   *
    * @return the object
    */
   @Override
@@ -239,7 +239,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /**
    * Code used in child class SwingWorker for display computations (used in
    * initUI()).
-   * 
+   *
    * @param in DOCUMENT_ME
    */
   @Override
@@ -349,6 +349,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       public void keyReleased(KeyEvent e) {
         bNeedSearch = true;
         lDateTyped = System.currentTimeMillis();
+        // Start filtering thread
+        if(!filteringThread.isAlive()) {
+          filteringThread.start();
+        }
       }
     });
     // Add a focus listener to select all the text and ease previous text cleanup
@@ -393,15 +397,13 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     JajukEvent event = new JajukEvent(JajukEvents.CUSTOM_PROPERTIES_ADD, properties);
     update(event);
     initTable(); // perform type-specific init
-    // Start filtering thread
-    filteringThread.start();
     // Register keystrokes
     setKeystrokes();
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   @Override
@@ -423,7 +425,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /**
    * Apply a filter, to be implemented by files and tracks tables, alter the
    * model.
-   * 
+   *
    * @param sPropertyName DOCUMENT_ME
    * @param sPropertyValue DOCUMENT_ME
    */
@@ -450,7 +452,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   @Override
@@ -581,7 +583,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   /**
    * Fill the table.
-   * 
+   *
    * @return the jajuk table model
    */
   abstract JajukTableModel populateTable();
@@ -630,7 +632,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   /**
    * Detect property change.
-   * 
+   *
    * @param ie DOCUMENT_ME
    */
   @Override
@@ -644,7 +646,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @seejavax.swing.event.TableModelListener#tableChanged(javax.swing.event. TableModelEvent)
    */
   @Override
@@ -697,7 +699,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   @Override
@@ -732,7 +734,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   /**
    * Called when table selection changed.
-   * 
+   *
    * @param e the List selection event
    */
   @Override
@@ -793,5 +795,4 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     // Do nothing by default
     Log.debug("Table selection changed for : " + this);
   }
-
 }
