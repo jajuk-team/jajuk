@@ -889,9 +889,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         return true;
       }
       return false;
-    } catch (final RuntimeException e) {
-      // runtime errors are thrown
-      throw e;
     } catch (final Exception e) {
       // and regular ones logged
       Log.error(e);

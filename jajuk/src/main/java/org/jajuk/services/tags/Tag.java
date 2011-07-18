@@ -396,6 +396,9 @@ public class Tag {
     }
     try {
       covers = tagImpl.getCovers();
+      if (covers == null) {
+        covers = new ArrayList<Cover>(1);
+      }
     } catch (Exception e) {
       Log.info("Wrong covers:{{" + fio.getName() + "}}");
     }
