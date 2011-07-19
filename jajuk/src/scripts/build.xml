@@ -16,7 +16,7 @@
 
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.9.3' />
+	<property name='version' value='1.9.4' />
 
 	<!--JNLP version-->
 	<!-- In final releases (including RC), jnlp_version=${version} 
