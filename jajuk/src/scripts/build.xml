@@ -14,36 +14,28 @@
 		<format property='JNLP_DATE' pattern='yyyyMMdd_hhmm' locale='en,UK' />
 	</tstamp>
 
+	<!--Build type : 'unstable', 'final' or 'maintenance' -->
+	<property name='type' value='unstable' />
+	
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.10~dev' />
+	<property name='version' value='1.10dev' />
 
 	<!--JNLP version-->
 	<!-- In final releases (including RC), jnlp_version=${version} 
-	In maintenance or trunk daily builds, jnlp_version=${JNLP_DATE} : we don't use regular version 
+	In maintenance or unstable daily builds, jnlp_version=${JNLP_DATE} : we don't use regular version 
 	so the version changes each day -->
 	<property name='jnlp_version' value='${JNLP_DATE}' />
-	<!--<property name='jnlp_version' value='${version}' />-->
-
-	<!--Previous release used for JNLP incremental upgrade-->
-	<property name='previous_version' value='null' />
-
-	<!--Test flag: values: 'test' or 'notest' -->
+	
+	<!--Test flag: values: 'test' or 'notest' 
+	'test' for 'unstable and maintenance branches, 'notest' for master branch (including RC releases)
+	-->
 	<property name='test' value='test' />
+				
 
 	<!-- ======================= -->
 	<!-- | Configuration paths | -->
 	<!-- ======================= -->
-
-	<!-- Conf for local build 
-	<property name='conf_izpackdir' value='/prog/IzPack' />
-	<property name='conf_jnlp-dist' value='/data/java/jnlp-dist' />
-	<property name='conf_homeuser' value='/home/bflorat' />
-	<property name='conf_uploaddir' value='${rootdir}/upload' />
-	<property name='conf_jarbundler' value='/prog/jarbundler-1.9' /> -->
-
-
-	<!-- Conf for Jajuk Continuous Integration  server -->
 	<property name='conf_izpackdir' value='/data/build_tools/IzPack' />
 	<property name='conf_jnlp-dist' value='/tmp/jajuk-dist/jnlp-dist' />
 	<property name='conf_homeuser' value='/home/tomcat55' />
@@ -84,7 +76,6 @@
  	incremental upgrade). We don't use incremental udated anymore as it does require too much 
  	disk space -->
 	<property name='jnlpdir' value='${conf_jnlp-dist}/${version}' />
-	<property name='previousjnlpdir' value='${conf_jnlp-dist}/${previous_version}' />
 	<property name='srcdir' value='${basedir}/src' />
 
 	<target name='get-jvm'>
@@ -276,7 +267,7 @@
 		<echo message=' Java installer in:     ${izpackdir}/jajuk-java-installer-${version}.jar' />
 		<echo message=' MAC OS X in:           ${distdir}/jajuk-macos-${version}.zip' />
 		<echo message=' Source archive in:     ${sourcesdist}' />
-		<echo message=' JNLP war file in:      ${rootdir}/jajuk-trunk-${test}.war' />
+		<echo message=' JNLP war file in:      ${rootdir}/jajuk-${type}.war' />
 		<echo message=' Jajuk binary file in:  ${distdir}/bin/${jarname}' />
 	</target>
 
@@ -396,14 +387,7 @@
 			<include name='*.jnlp' />
 			<replacetoken>JNLP_VERSION_REPLACED_BY_ANT</replacetoken>
 		</replace>
-
-		<!--Copy previous release jars, comment this if you have no previous release
-		<copy todir='${jnlpdir}/app'>
-			<fileset dir='${previousjnlpdir}/app'>
-				<include name='**/*.jar' />
-			</fileset>
-		</copy>
-		-->
+		
 		<!-- Sign all jars -->
 		<signjar alias='jajukteam' storepass='passpass'>
 			<fileset dir='${jnlpdir}'>
@@ -413,7 +397,7 @@
 
 
 		<!-- Create the war file -->
-		<war destfile='${rootdir}/jajuk-trunk-${test}.war' webxml='${srcdir}/packaging/jnlp/web.xml'>
+		<war destfile='${rootdir}/jajuk-${type}.war' webxml='${srcdir}/packaging/jnlp/web.xml'>
 			<fileset dir='${jnlpdir}' />
 			<lib file='${srcdir}/packaging/jnlp/jnlp-servlet.jar' />
 		</war>
