@@ -268,7 +268,7 @@
 		<echo message=' Java installer in:     ${izpackdir}/jajuk-java-installer-${version}.jar' />
 		<echo message=' MAC OS X in:           ${distdir}/jajuk-macos-${version}.zip' />
 		<echo message=' Source archive in:     ${sourcesdist}' />
-		<echo message=' JNLP war file in:      ${rootdir}/jajuk.war' />
+		<echo message=' JNLP war file in:      ${rootdir}/jajuk-${type}.war' />
 		<echo message=' Jajuk binary file in:  ${distdir}/bin/${jarname}' />
 	</target>
 
