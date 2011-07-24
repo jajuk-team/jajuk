@@ -30,6 +30,10 @@
 
 	<!--Test flag: values: 'test' or 'notest' -->
 	<property name='test' value='notest' />
+	
+	<!--Build type : 'unstable', 'final' or 'maintenance' -->
+	<property name='type' value='final' />
+		
 
 	<!-- ======================= -->
 	<!-- | Configuration paths | -->
@@ -276,7 +280,7 @@
 		<echo message=' Java installer in:     ${izpackdir}/jajuk-java-installer-${version}.jar' />
 		<echo message=' MAC OS X in:           ${distdir}/jajuk-macos-${version}.zip' />
 		<echo message=' Source archive in:     ${sourcesdist}' />
-		<echo message=' JNLP war file in:      ${rootdir}/jajuk-${test}.war' />
+		<echo message=' JNLP war file in:      ${rootdir}/jajuk.war' />
 		<echo message=' Jajuk binary file in:  ${distdir}/bin/${jarname}' />
 	</target>
 
@@ -413,7 +417,7 @@
 
 
 		<!-- Create the war file -->
-		<war destfile='${rootdir}/jajuk-${test}.war' webxml='${srcdir}/packaging/jnlp/web.xml'>
+		<war destfile='${rootdir}/jajuk-${type}.war' webxml='${srcdir}/packaging/jnlp/web.xml'>
 			<fileset dir='${jnlpdir}' />
 			<lib file='${srcdir}/packaging/jnlp/jnlp-servlet.jar' />
 		</war>
