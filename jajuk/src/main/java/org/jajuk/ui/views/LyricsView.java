@@ -429,6 +429,7 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
           jlTitle.setText(radio.getName());
           updateButtonsState();
           jspLyrics.setEnabled(false);
+          jtaLyrics.setText(radio.getName());
           updateButtonsState();
           revalidate();
           repaint();
