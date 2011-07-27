@@ -813,7 +813,7 @@ public final class TrackManager extends ItemManager {
   }
 
   /**
-   * Update files references. DOCUMENT_ME
+   * Update files references. 
    * 
    * @param oldTrack DOCUMENT_ME
    * @param newTrack DOCUMENT_ME
