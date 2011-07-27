@@ -367,8 +367,7 @@ public class NoTagsTagImpl implements ITagImpl {
    */
   @Override
   public List<Cover> getCovers() throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+    return new ArrayList<Cover>(1);
   }
 
 }
