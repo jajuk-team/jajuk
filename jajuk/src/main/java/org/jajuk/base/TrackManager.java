@@ -794,8 +794,7 @@ public final class TrackManager extends ItemManager {
   }
 
   /**
-  >>>>>>> a2744d0... Fix for #1780 (Twice file reference after a cut) + unit tests
-   * Update files references. DOCUMENT_ME
+   * Update files references. 
    * 
    * @param oldTrack DOCUMENT_ME
    * @param newTrack DOCUMENT_ME
