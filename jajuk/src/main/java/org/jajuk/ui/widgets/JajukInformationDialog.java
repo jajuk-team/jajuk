@@ -46,7 +46,11 @@ public class JajukInformationDialog extends JDialog {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
+<<<<<<< HEAD
   /** Has this dialog already been hidden ?. */
+=======
+  /** Has this dialog already been hidden ? */
+>>>>>>> hotfix/1.9.5
   private boolean hasAlreadyBeenHidden = false;
 
   /**
@@ -122,7 +126,11 @@ public class JajukInformationDialog extends JDialog {
   }
 
   /**
+<<<<<<< HEAD
    * Close the dialog.
+=======
+   * Close the dialog
+>>>>>>> hotfix/1.9.5
    */
   public void close() {
     // Call dispose from the EDT, otherwise, it seems to block in some rare cases under

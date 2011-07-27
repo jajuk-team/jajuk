@@ -38,10 +38,17 @@
 	</Company_Info>
 	<Program_Info>
 		<Program_Name>Jajuk</Program_Name>
+<<<<<<< HEAD:jajuk/src/packaging/pad/jajuk_pad.xml
 		<Program_Version>1.9.1</Program_Version>
 		<Program_Release_Month>12</Program_Release_Month>
 		<Program_Release_Day>20</Program_Release_Day>
 		<Program_Release_Year>2010</Program_Release_Year>
+=======
+		<Program_Version>1.9.4</Program_Version>
+		<Program_Release_Month>07</Program_Release_Month>
+		<Program_Release_Day>19</Program_Release_Day>
+		<Program_Release_Year>2011</Program_Release_Year>
+>>>>>>> hotfix/1.9.5:jajuk/src/packaging/pad/jajuk_pad.xml
 		<Program_Cost_Dollars />
 		<Program_Cost_Other_Code />
 		<Program_Cost_Other />
@@ -103,7 +110,11 @@
 			<Application_XML_File_URL>http://gitorious.org/jajuk/jajuk/blobs/raw/master/jajuk/src/packaging/pad/jajuk_pad.xml</Application_XML_File_URL>
 		</Application_URLs>
 		<Download_URLs>
+<<<<<<< HEAD:jajuk/src/packaging/pad/jajuk_pad.xml
 			<Primary_Download_URL>http://sourceforge.net/projects/jajuk/files/jajuk/1.9.1/jajuk-1.9.1-win32-setup.exe/download?target=jajuk.exe</Primary_Download_URL>
+=======
+			<Primary_Download_URL>http://sourceforge.net/projects/jajuk/files/jajuk/1.9.4/jajuk-1.9.4-setup.exe</Primary_Download_URL>
+>>>>>>> hotfix/1.9.5:jajuk/src/packaging/pad/jajuk_pad.xml
 			<Secondary_Download_URL />
 			<Additional_Download_URL_1 />
 			<Additional_Download_URL_2 />

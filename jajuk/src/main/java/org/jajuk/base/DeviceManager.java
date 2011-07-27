@@ -148,7 +148,11 @@ public final class DeviceManager extends ItemManager {
    *
    * @param sId DOCUMENT_ME
    * @param sName DOCUMENT_ME
+<<<<<<< HEAD
    * @param deviceType DOCUMENT_ME
+=======
+   * @param lDeviceType DOCUMENT_ME
+>>>>>>> hotfix/1.9.5
    * @param sUrl DOCUMENT_ME
    * @return device
    */

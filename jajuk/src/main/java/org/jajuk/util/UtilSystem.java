@@ -598,7 +598,7 @@ public final class UtilSystem {
   }
 
   /**
-   * Gets the m player windows path.
+   * Gets the mplayer windows path.
    * 
    * @return MPlayer exe file
    */

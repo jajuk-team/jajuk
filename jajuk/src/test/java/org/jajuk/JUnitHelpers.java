@@ -548,6 +548,7 @@ public class JUnitHelpers {
   }
 
   /**
+<<<<<<< HEAD
   * Clean all devices.
   */
   public static void cleanAllDevices() {
@@ -568,6 +569,11 @@ public class JUnitHelpers {
      * Return a file named "test.tst" on a mounted device.
      * @return a file named "test.tst" on a mounted device.
      */
+=======
+   * Return a file named "test.tst" on a mounted device.
+   * @return a file named "test.tst" on a mounted device.
+   */
+>>>>>>> hotfix/1.9.5
   public static org.jajuk.base.File getFile() {
     return getFile("test.tst", true);
   }

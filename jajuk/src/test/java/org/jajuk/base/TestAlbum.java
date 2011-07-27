@@ -492,6 +492,40 @@ public class TestAlbum extends JajukTestCase {
   }
 
   /**
+<<<<<<< HEAD
+=======
+   * Test method for.
+   *
+   * {@link org.jajuk.base.Album#matches(java.lang.String, java.lang.String)}.
+   */
+  public final void testMatches() {
+    Album album = new Album("1", "myname", 123);
+
+    // true if either of both is null !?
+    assertTrue(album.matches(null, null));
+    assertTrue(album.matches(Const.XML_ALBUM, null));
+    assertTrue(album.matches(null, ".*art.*"));
+
+    // false when not "ALBUM" or "GENRE"
+    assertFalse(album.matches(Const.XML_ALBUM_ARTIST, ".*art.*"));
+
+    // useful match?
+    assertTrue(album.matches(Const.XML_ALBUM, "my"));
+    assertTrue(album.matches(Const.XML_ALBUM, "name"));
+    assertFalse(album.matches(Const.XML_ALBUM, "notexist"));
+
+    // false without Genre
+    assertFalse(album.matches(Const.XML_GENRE, "."));
+
+    Track track = getTrack(album);
+    album.getTracksCache().add(track);
+
+    // now the genre should be found as well
+    assertTrue(album.matches(Const.XML_GENRE, "genrename"));
+  }
+
+  /**
+>>>>>>> hotfix/1.9.5
    * Test method for {@link org.jajuk.base.Album#resetTracks()}.
    *
    * @throws IllegalAccessException the illegal access exception

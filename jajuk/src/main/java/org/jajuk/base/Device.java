@@ -406,6 +406,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    */
   @Override
   public ImageIcon getIconRepresentation() {
+<<<<<<< HEAD
     if (getType() == Type.DIRECTORY) {
       return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED_SMALL),
           IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_UNMOUNTED_SMALL));
@@ -423,6 +424,26 @@ public class Device extends PhysicalItem implements Comparable<Device> {
           IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_UNMOUNTED_SMALL));
     } else {
       Log.warn("Unknown type of device detected: " + getType().name());
+=======
+    switch ((int) getType()) {
+    case 0:
+      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED_SMALL),
+          IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_UNMOUNTED_SMALL));
+    case 1:
+      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED_SMALL),
+          IconLoader.getIcon(JajukIcons.DEVICE_CD_UNMOUNTED_SMALL));
+    case 2:
+      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_MOUNTED_SMALL),
+          IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL));
+    case 3:
+      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED_SMALL),
+          IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_UNMOUNTED_SMALL));
+    case 4:
+      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED_SMALL),
+          IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_UNMOUNTED_SMALL));
+    default:
+      Log.warn("Unknown type of device detected: " + getType());
+>>>>>>> hotfix/1.9.5
       return null;
     }
   }
@@ -669,6 +690,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * <p>We Cannot mount void devices because of the jajuk reference cleanup thread 
    * ( a refresh would clear the entire device collection)</p>
    * 
+<<<<<<< HEAD
    * @return true if the device is ready for mounting, false if the device is void
    * 
    */
@@ -694,6 +716,38 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   private boolean pathExists() {
     final File file = new File(getUrl());
     return file.exists();
+=======
+   * @param bManual manual or automatic refresh ?
+   * 
+   * @return true if the device is ready for mounting, false if the device is void
+   * 
+   * @throws JajukException if the device is not accessible
+   */
+  private boolean checkDevice(boolean bManual) throws JajukException {
+    final File file = new File(getUrl());
+    if (!file.exists()) {
+      throw new JajukException(11, "\"" + getName() + "\" at URL : " + getUrl());
+    }
+    /*
+     * Cannot mount void devices because of the jajuk reference cleanup thread 
+     * ( a refresh would clear the entire device collection)
+     */
+    if (file.listFiles() == null || file.listFiles().length == 0) {
+      if (bManual) {
+        final int answer = Messages.getChoice(
+            "[" + getName() + "] " + Messages.getString("Confirmation_void_refresh"),
+            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+        // leave if user doesn't confirm to mount the void device
+        return (answer == JOptionPane.YES_OPTION);
+      } else {
+        // In auto mode, never mount a void device
+        return false;
+      }
+    } else {
+      // Device is not void
+      return true;
+    }
+>>>>>>> hotfix/1.9.5
   }
 
   /**
@@ -703,7 +757,11 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * 
    * @return whether the device has been mounted. If user is asked for mounting but cancel, this method returns false.
    * 
+<<<<<<< HEAD
    * @throws JajukException if device cannot be mounted due to technical reason.
+=======
+   * @throws JajukException if device cannot be mounted
+>>>>>>> hotfix/1.9.5
    */
   public boolean mount(final boolean bManual) throws JajukException {
     if (bMounted) {
@@ -881,6 +939,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       for (Directory dir : dirs) {
         scanRecursively(dir, bDeepScan);
       }
+<<<<<<< HEAD
+=======
+
+>>>>>>> hotfix/1.9.5
       // Force a GUI refresh if new files or directories discovered or have been
       // removed
       if (((FileManager.getInstance().getElementCount() - iNbFilesBeforeRefresh) != 0)

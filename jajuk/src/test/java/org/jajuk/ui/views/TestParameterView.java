@@ -99,6 +99,28 @@ public class TestParameterView extends JajukTestCase {
   public void testItemStateChanged() {
     ParameterView view = new ParameterView();
     view.initUI();
+<<<<<<< HEAD
+=======
+
+    // iterate over all components of the view
+    for (Component comp : view.getComponents()) {
+      ItemEvent event = new ItemEvent(new MyItemSelectable(), 1, comp, 2);
+      view.itemStateChanged(event);
+    }
+
+  }
+
+  /**
+   * Test method for.
+   *
+   * {@link org.jajuk.ui.views.ParameterView#stateChanged(javax.swing.event.ChangeEvent)}
+   * .
+   */
+  public void testStateChanged() {
+    ParameterView view = new ParameterView();
+    view.initUI();
+    view.stateChanged(null);
+>>>>>>> hotfix/1.9.5
   }
 
   /**

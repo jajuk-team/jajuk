@@ -218,7 +218,11 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     // force icon to be display in 16x16
     jmiMute = new SizedJMenuItem(ActionManager.getAction(JajukActions.MUTE_STATE));
     jmiMute.addMouseWheelListener(this);
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> hotfix/1.9.5
     jmiShuffle = new SizedJMenuItem(ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL));
 
     jmiBestof = new SizedJMenuItem(ActionManager.getAction(JajukActions.BEST_OF));
@@ -526,6 +530,29 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
    */
   public TrayIcon getTrayIcon() {
     return this.trayIcon;
+  }
+  
+   /*
+   * (non-Javadoc)
+   * 
+   * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event. MouseWheelEvent)
+   */
+  @Override
+  public void mouseWheelMoved(MouseWheelEvent e) {
+    if (e.getSource().equals(jmiMute)) {
+      int oldVolume = (int) (100 * Player.getCurrentVolume());
+      int newVolume = oldVolume - (e.getUnitsToScroll() * 3);
+      if (Player.isMuted()) {
+        Player.mute(false);
+      }
+      if (newVolume > 100) {
+        newVolume = 100;
+      } else if (newVolume < 0) {
+        newVolume = 0;
+      }
+      Player.setVolume((float) newVolume / 100);
+      MuteAction.setVolumeIcon(newVolume);
+    }
   }
 
   /*

@@ -154,6 +154,9 @@ public abstract class AbstractTreeView extends ViewAdapter {
 
   /** Used to differentiate tree/table sync due to internal events from users's ones. */
   boolean bInternalAction = false;
+  
+  /** Flag used to set tree is refreshing */
+  boolean refreshing = false;
 
   /** Flag used to set tree is refreshing. */
   boolean refreshing = false;

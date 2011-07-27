@@ -16,7 +16,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+<<<<<<< HEAD
  *  $Revision$
+=======
+ *  $Revision: 3132 $
+>>>>>>> hotfix/1.9.5
  */
 package org.jajuk.base;
 
@@ -25,6 +29,7 @@ import org.jajuk.JajukTestCase;
 import org.junit.Test;
 
 /**
+<<<<<<< HEAD
  * DOCUMENT_ME.
  */
 public class TestTrack extends JajukTestCase {
@@ -32,6 +37,12 @@ public class TestTrack extends JajukTestCase {
   /* (non-Javadoc)
    * @see org.jajuk.JajukTestCase#setUp()
    */
+=======
+ * 
+ */
+public class TestTrack extends JajukTestCase {
+
+>>>>>>> hotfix/1.9.5
   @Override
   protected void setUp() throws Exception {
     super.setUp();

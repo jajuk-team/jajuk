@@ -132,8 +132,13 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
+<<<<<<< HEAD
    * Return whether this item is strictly unknown : contains no tag.
    *
+=======
+   * Return whether this item is strictly unknown : contains no tag
+   * 
+>>>>>>> hotfix/1.9.5
    * @return whether this item is Unknown or not
    */
   public boolean isUnknown() {
@@ -141,10 +146,17 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
+<<<<<<< HEAD
    * Return whether this item seems unknown (fuzzy search).
    *
    * @return whether this item seems unknown
    */
+=======
+  * Return whether this item seems unknown (fuzzy search)
+  * 
+  * @return whether this item seems unknown
+  */
+>>>>>>> hotfix/1.9.5
   public boolean seemsUnknown() {
     return isUnknown() || "unknown".equalsIgnoreCase(getName())
         || Messages.getString(UNKNOWN_ALBUM).equalsIgnoreCase(getName());
@@ -306,8 +318,12 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (StringUtils.isNotBlank(selectedCoverPath) && new File(selectedCoverPath).exists()) {
       // If user-selected cover is available, just return its path
       return new File(selectedCoverPath);
+<<<<<<< HEAD
     } else if (StringUtils.isNotBlank(discoveredCoverPath)
         && COVER_NONE.equals(discoveredCoverPath)) {
+=======
+    } else if (StringUtils.isNotBlank(discoveredCoverPath) && COVER_NONE.equals(discoveredCoverPath)) {
+>>>>>>> hotfix/1.9.5
       return null;
     } else if (StringUtils.isNotBlank(discoveredCoverPath)) {
       // Check if discovered cover still exist. There is an overhead

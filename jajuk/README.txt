@@ -9,6 +9,15 @@ $ mvn jar:jar
 
 --- USING ANT ---
 
+--- USING MAVEN ---
+
+To build Jajuk (Maven2 is required, download it from http://maven.apache.org/)
+, from the source folder containing the pom.xml file:           
+
+$ mvn jar:jar
+
+--- USING ANT ---
+
 To compile Jajuk :
 (Ant is required, download it on http://ant.apache.org/ )  
          

@@ -228,7 +228,10 @@ public final class Conf implements Const {
     defaults.put(CONF_NETWORK_PROXY_TYPE, PROXY_TYPE_HTTP);
     defaults.put(CONF_COVERS_AUTO_COVER, TRUE);
     defaults.put(CONF_COVERS_MIRROW_COVER, FALSE);
+<<<<<<< HEAD
     defaults.put(CONF_COVERS_MIRROW_COVER_FS_MODE, TRUE);
+=======
+>>>>>>> hotfix/1.9.5
     defaults.put(CONF_COVERS_SHUFFLE, FALSE);
     defaults.put(CONF_COVERS_SAVE_EXPLORER_FRIENDLY, FALSE);
     defaults.put(FILE_DEFAULT_COVER, "front;cover;folder;back");

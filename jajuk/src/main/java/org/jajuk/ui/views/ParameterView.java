@@ -414,6 +414,424 @@ public class ParameterView extends ViewAdapter {
   /*
    * (non-Javadoc)
    * 
+<<<<<<< HEAD
+=======
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   */
+  public void actionPerformed(final ActionEvent e) {
+
+    if (e.getSource() == jbClearHistory) {
+      // show confirmation message if required
+      if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY)) {
+        final int iResu = Messages.getChoice(Messages.getString("Confirmation_clear_history"),
+            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (iResu != JOptionPane.YES_OPTION) {
+          return;
+        }
+      }
+      ObservationManager.notify(new JajukEvent(JajukEvents.CLEAR_HISTORY));
+    } else if (e.getSource() == scbLAF) {
+      // Refresh full GUI at each LAF change as a preview
+      UtilGUI.setupSubstanceLookAndFeel((String) scbLAF.getSelectedItem());
+      UtilGUI.updateAllUIs();
+    } else if (e.getSource() == jbResetRatings) {
+      // show confirmation message if required
+      if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS)) {
+        final int iResu = Messages.getChoice(Messages.getString("Confirmation_reset_ratings"),
+            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (iResu != JOptionPane.YES_OPTION) {
+          return;
+        }
+      }
+      ObservationManager.notify(new JajukEvent(JajukEvents.RATE_RESET));
+    } else if (e.getSource() == jbResetPreferences) {
+      // show confirmation message if required
+      if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS)) {
+        final int iResu = Messages.getChoice(Messages.getString("Confirmation_reset_preferences"),
+            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (iResu != JOptionPane.YES_OPTION) {
+          return;
+        }
+      }
+      if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
+        ObservationManager.notify(new JajukEvent(JajukEvents.PREFERENCES_RESET));
+      } else {
+        Messages.showErrorMessage(120);
+      }
+    } else if (e.getSource() == jbOK) {
+      applyParameters();
+      // Notify any client than wait for parameters updates
+      final Properties details = new Properties();
+      details.put(Const.DETAIL_ORIGIN, this);
+      if (someOptionsAppliedAtNextStartup) {
+        // Inform user that some parameters will apply only at
+        // next startup
+        Messages.showInfoMessage(Messages.getString("ParameterView.198"));
+        someOptionsAppliedAtNextStartup = false;
+      }
+    } else if (e.getSource() == jbDefault) {
+      int resu = Messages.getChoice(Messages.getString("Confirmation_defaults"),
+          JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+      if (resu == JOptionPane.OK_OPTION) {
+        Conf.setDefaultProperties();
+        updateSelection();// update UI
+        InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.110"),
+            InformationJPanel.MessageType.INFORMATIVE);
+        applyParameters();
+        Messages.showInfoMessage(Messages.getString("ParameterView.198"));
+      }
+    } else if (e.getSource() == jcbBackup) {
+      // if backup option is unchecked, reset backup size
+      if (jcbBackup.isSelected()) {
+        backupSize.setEnabled(true);
+        backupSize.setValue(Conf.getInt(Const.CONF_BACKUP_SIZE));
+      } else {
+        backupSize.setEnabled(false);
+        backupSize.setValue(0);
+      }
+    } else if ((e.getSource() == jcbProxyNone) || (e.getSource() == jcbProxyHttp)
+        || (e.getSource() == jcbProxySocks)) {
+      final boolean bUseProxy = !jcbProxyNone.isSelected();
+      jtfProxyHostname.setEnabled(bUseProxy);
+      jtfProxyPort.setEnabled(bUseProxy);
+      jtfProxyLogin.setEnabled(bUseProxy);
+      jtfProxyPwd.setEnabled(bUseProxy);
+      jlProxyHostname.setEnabled(bUseProxy);
+      jlProxyPort.setEnabled(bUseProxy);
+      jlProxyLogin.setEnabled(bUseProxy);
+      jlProxyPwd.setEnabled(bUseProxy);
+    } else if (e.getSource() == jcbAutoCover) {
+      if (jcbAutoCover.isSelected()) {
+        jcbCoverSize.setEnabled(true);
+        jlCoverSize.setEnabled(true);
+      } else {
+        jlCoverSize.setEnabled(false);
+        jcbCoverSize.setEnabled(false);
+      }
+    } else if (e.getSource() == jcbAudioScrobbler) {
+      if (jcbAudioScrobbler.isSelected()) {
+        jlASUser.setEnabled(true);
+        jtfASUser.setEnabled(true);
+        jlASPassword.setEnabled(true);
+        jpfASPassword.setEnabled(true);
+      } else {
+        jlASUser.setEnabled(false);
+        jtfASUser.setEnabled(false);
+        jlASPassword.setEnabled(false);
+        jpfASPassword.setEnabled(false);
+      }
+    } else if (e.getSource() == scbLanguage) {
+      Locale locale = LocaleManager.getLocaleForDesc(((JLabel) scbLanguage.getSelectedItem())
+          .getText());
+      final String sLocal = locale.getLanguage();
+      final String sPreviousLocal = LocaleManager.getLocale().getLanguage();
+      if (!sPreviousLocal.equals(sLocal)) {
+        // local has changed
+        someOptionsAppliedAtNextStartup = true;
+      }
+    } else if (e.getSource() == jcbHotkeys) {
+      someOptionsAppliedAtNextStartup = true;
+    } else if (e.getSource() == jbCatalogRefresh) {
+      new Thread("Parameter Catalog refresh Thread") {
+        @Override
+        public void run() {
+          UtilGUI.waiting();
+          // Force albums to search for new covers
+          AlbumManager.getInstance().resetCoverCache();
+          // Clean thumbs
+          ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_50X50);
+          ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_100X100);
+          ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_150X150);
+          ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_200X200);
+          ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_250X250);
+          ThumbnailManager.cleanThumbs(THUMBNAIL_SIZE_300X300);
+          UtilGUI.stopWaiting();
+          // For catalog view's update
+          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+          // Display a message
+          Messages.showInfoMessage(Messages.getString("Success"));
+
+        }
+      }.start();
+    }
+  }
+
+  /**
+   * Apply parameters.
+   */
+  private void applyParameters() {
+    // **Read all parameters**
+    // Options
+    Conf.setProperty(Const.CONF_OPTIONS_HIDE_UNMOUNTED,
+        Boolean.toString(jcbDisplayUnmounted.isSelected()));
+    Conf.setProperty(Const.CONF_OPTIONS_PUSH_ON_CLICK,
+        Boolean.toString(jcbDefaultActionClick.isSelected()));
+    Conf.setProperty(Const.CONF_OPTIONS_PUSH_ON_DROP,
+        Boolean.toString(jcbDefaultActionDrop.isSelected()));
+    Conf.setProperty(Const.CONF_OPTIONS_HOTKEYS, Boolean.toString(jcbHotkeys.isSelected()));
+    Conf.setProperty(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE,
+        Boolean.toString(jcbAudioScrobbler.isSelected()));
+    Conf.setProperty(Const.CONF_LASTFM_INFO,
+        Boolean.toString(jcbEnableLastFMInformation.isSelected()));
+    Conf.setProperty(Const.CONF_LASTFM_USER, jtfASUser.getText());
+    Conf.setProperty(Const.CONF_LASTFM_PASSWORD,
+        UtilString.rot13(new String(jpfASPassword.getPassword())));
+    final int iLogLevel = scbLogLevel.getSelectedIndex();
+    Log.setVerbosity(iLogLevel);
+    Conf.setProperty(Const.CONF_OPTIONS_LOG_LEVEL, Integer.toString(iLogLevel));
+    Conf.setProperty(Const.CONF_OPTIONS_INTRO_BEGIN, Integer.toString(introPosition.getValue()));
+    Conf.setProperty(Const.CONF_OPTIONS_INTRO_LENGTH, Integer.toString(introLength.getValue()));
+    Conf.setProperty(Const.CONF_TAGS_USE_PARENT_DIR, Boolean.toString(jcbUseParentDir.isSelected()));
+    Conf.setProperty(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE,
+        Boolean.toString(jcbDropPlayedTracksFromQueue.isSelected()));
+    final String sBestofSize = jtfBestofSize.getText();
+    if (!sBestofSize.isEmpty()) {
+      Conf.setProperty(Const.CONF_BESTOF_TRACKS_SIZE, sBestofSize);
+    }
+    Locale locale = LocaleManager.getLocaleForDesc(((JLabel) scbLanguage.getSelectedItem())
+        .getText());
+    final String sLocal = locale.getLanguage();
+    Conf.setProperty(Const.CONF_OPTIONS_LANGUAGE, sLocal);
+    // force refresh of bestof files
+    RatingManager.setRateHasChanged(true);
+    final String sNoveltiesAge = jtfNoveltiesAge.getText();
+    if (!sNoveltiesAge.isEmpty()) {
+      Conf.setProperty(Const.CONF_OPTIONS_NOVELTIES_AGE, sNoveltiesAge);
+    }
+    final String sVisiblePlanned = jtfVisiblePlanned.getText();
+    if (!sVisiblePlanned.isEmpty()) {
+      Conf.setProperty(Const.CONF_OPTIONS_VISIBLE_PLANNED, sVisiblePlanned);
+    }
+    final int oldDuration = Conf.getInt(Const.CONF_FADE_DURATION);
+    // Show an hideable message if user set cross fade under linux for sound
+    // server information
+    if (UtilSystem.isUnderLinux() && (oldDuration == 0)
+        && (oldDuration != crossFadeDuration.getValue())) {
+      Messages.showHideableWarningMessage(Messages.getString("ParameterView.210"),
+          Const.CONF_NOT_SHOW_AGAIN_CROSS_FADE);
+    }
+    Conf.setProperty(Const.CONF_FADE_DURATION, Integer.toString(crossFadeDuration.getValue()));
+    // Startup
+    if (jrbNothing.isSelected()) {
+      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOTHING);
+    } else if (jrbLast.isSelected()) {
+      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST);
+    } else if (jrbLastKeepPos.isSelected()) {
+      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
+    } else if (jrbShuffle.isSelected()) {
+      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_SHUFFLE);
+    } else if (jrbFile.isSelected()) {
+      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_ITEM);
+    } else if (jrbBestof.isSelected()) {
+      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_BESTOF);
+    } else if (jrbNovelties.isSelected()) {
+      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOVELTIES);
+    }
+    // Confirmations
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_DELETE_FILE,
+        Boolean.toString(jcbBeforeDelete.isSelected()));
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_EXIT, Boolean.toString(jcbBeforeExit.isSelected()));
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE,
+        Boolean.toString(jcbBeforeRemoveDevice.isSelected()));
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_DELETE_COVER,
+        Boolean.toString(jcbBeforeDeleteCover.isSelected()));
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY,
+        Boolean.toString(jcbBeforeClearingHistory.isSelected()));
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_RESET_RATINGS,
+        Boolean.toString(jcbBeforeResetingRatings.isSelected()));
+    // History
+    final String sHistoryDuration = jtfHistory.getText();
+    if (!sHistoryDuration.isEmpty()) {
+      Conf.setProperty(Const.CONF_HISTORY, sHistoryDuration);
+    }
+    // Patterns
+    Conf.setProperty(Const.CONF_PATTERN_REFACTOR, jtfRefactorPattern.getText());
+    Conf.setProperty(Const.CONF_PATTERN_ANIMATION, jtfAnimationPattern.getText());
+    Conf.setProperty(Const.CONF_PATTERN_FRAME_TITLE, jtfFrameTitle.getText());
+    Conf.setProperty(Const.CONF_PATTERN_BALLOON_NOTIFIER, jtfBalloonNotifierPattern.getText());
+    Conf.setProperty(Const.CONF_PATTERN_INFORMATION, jtfInformationPattern.getText());
+
+    // Advanced
+    Conf.setProperty(Const.CONF_BACKUP_SIZE, Integer.toString(backupSize.getValue()));
+    Conf.setProperty(Const.CONF_COLLECTION_CHARSET, jcbCollectionEncoding.getSelectedItem()
+        .toString());
+    Conf.setProperty(Const.CONF_REGEXP, Boolean.toString(jcbRegexp.isSelected()));
+    Conf.setProperty(Const.CONF_USE_VOLNORM, Boolean.toString(jcbUseVolnorm.isSelected()));
+    Conf.setProperty(Const.CONF_CHECK_FOR_UPDATE, Boolean.toString(jcbCheckUpdates.isSelected()));
+    Conf.setProperty(Const.CONF_FORCE_FILE_DATE, Boolean.toString(jcbForceFileDate.isSelected()));
+    // Apply new mplayer path and display a warning message if changed
+    final String oldMplayerPath = Conf.getString(Const.CONF_MPLAYER_PATH_FORCED);
+    if (!(oldMplayerPath.equals(jtfMPlayerPath.getText()))) {
+      this.someOptionsAppliedAtNextStartup = true;
+    }
+    Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, jtfMPlayerPath.getText());
+    Conf.setProperty(Const.CONF_MPLAYER_ARGS, jtfMPlayerArgs.getText());
+    Conf.setProperty(Const.CONF_ENV_VARIABLES, jtfEnvVariables.getText());
+    Conf.setProperty(Const.CONF_EXPLORER_PATH, jtfExplorerPath.getText());
+
+    // GUI
+    Conf.setProperty(Const.CONF_CATALOG_PAGE_SIZE, Integer.toString(jsCatalogPages.getValue()));
+    Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
+    final int oldFont = Conf.getInt(Const.CONF_FONTS_SIZE);
+    // Display a message if font size changed
+    if (oldFont != jsFonts.getValue()) {
+      someOptionsAppliedAtNextStartup = true;
+    }
+    Conf.setProperty(Const.CONF_FONTS_SIZE, Integer.toString(jsFonts.getValue()));
+    // Notificator type
+    String notificatorTypeDisplayed = (String) jcbNotificationType.getSelectedItem();
+    for (NotificatorTypes notificatorType : NotificatorTypes.values()) {
+      if (Messages.getString(NOTIFICATOR_PREFIX + notificatorType).equals(notificatorTypeDisplayed)) {
+        Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, notificatorType.name());
+      }
+    }
+
+    // Message if show systray is changed
+    final boolean bOldShowSystray = Conf.getBoolean(Const.CONF_SHOW_SYSTRAY);
+    if (bOldShowSystray != jcbShowSystray.isSelected()) {
+      someOptionsAppliedAtNextStartup = true;
+    }
+    Conf.setProperty(Const.CONF_SHOW_SYSTRAY, Boolean.toString(jcbShowSystray.isSelected()));
+
+    // Minimize to tray
+    Conf.setProperty(Const.CONF_MINIMIZE_TO_TRAY, Boolean.toString(jcbMinimizeToTray.isSelected()));
+
+    final int oldPerspectiveSize = Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE);
+    // If we perspective size changed and no font message have been already
+    // displayed, display a message
+    if (oldPerspectiveSize != jsPerspectiveSize.getValue()) {
+      someOptionsAppliedAtNextStartup = true;
+    }
+    Conf.setProperty(Const.CONF_PERSPECTIVE_ICONS_SIZE,
+        Integer.toString(jsPerspectiveSize.getValue()));
+    // LAF change
+    final String oldTheme = Conf.getString(Const.CONF_OPTIONS_LNF);
+    Conf.setProperty(Const.CONF_OPTIONS_LNF, (String) scbLAF.getSelectedItem());
+    if (!oldTheme.equals(scbLAF.getSelectedItem())) {
+      // theme will be applied at next startup
+      Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
+          Const.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
+      bLAFMessage = true;
+    }
+    // If jajuk home changes, write new path in bootstrap file
+    if ((SessionService.getWorkspace() != null)
+        && !SessionService.getWorkspace().equals(psJajukWorkspace.getUrl())) {
+      // Check workspace directory
+      if (!psJajukWorkspace.getUrl().trim().isEmpty()) {
+        // Check workspace presence and create it if required
+        final java.io.File fWorkspace = new java.io.File(psJajukWorkspace.getUrl());
+        if (!fWorkspace.exists() && !fWorkspace.mkdirs()) {
+          Log.warn("Could not create directory " + fWorkspace.toString());
+        }
+        if (!fWorkspace.canRead()) {
+          Messages.showErrorMessage(165);
+          return;
+        }
+      }
+      try {
+        final String newWorkspace = psJajukWorkspace.getUrl();
+        // If target workspace doesn't exist, copy current repository to
+        // the new workspace
+        // (keep old repository for security and for use
+        // by others users in multi-session mode)
+        boolean bPreviousPathExist = true;
+        // bPreviousPathExist is true if destination workspace already
+        // exists,
+        // it is then only a workspace switch
+        if (!new java.io.File(psJajukWorkspace.getUrl() + '/'
+            + (SessionService.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk"))
+            .exists()) {
+          UtilGUI.waiting();
+          final java.io.File from = SessionService.getConfFileByPath("");
+          final java.io.File dest = new java.io.File(newWorkspace + '/'
+              + (SessionService.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk"));
+          // Remove the session file to avoid getting a message when
+          // switching to new workspace
+          java.io.File session = SessionService.getSessionIdFile();
+          session.delete();
+
+          UtilSystem.copyRecursively(from, dest);
+          bPreviousPathExist = false;
+        }
+        // Change the workspace so the very last conf (like current
+        // track)
+        // will be saved directly to target workspace. We don't do
+        // this if the workspace already exist to avoid overwriting other
+        // configuration.
+        SessionService.setWorkspace(psJajukWorkspace.getUrl());
+        //Commit the bootstrap file
+        SessionService.commitBootstrapFile();
+
+        UtilGUI.stopWaiting();
+        // Display a warning message and restart Jajuk
+        if (bPreviousPathExist) {
+          Messages.getChoice(Messages.getString("ParameterView.247"), JOptionPane.DEFAULT_OPTION,
+              JOptionPane.INFORMATION_MESSAGE);
+        } else {
+          Messages.getChoice(Messages.getString("ParameterView.209"), JOptionPane.DEFAULT_OPTION,
+              JOptionPane.INFORMATION_MESSAGE);
+        }
+        // Exit Jajuk
+        try {
+          ActionManager.getAction(JajukActions.EXIT).perform(null);
+        } catch (Exception e1) {
+          Log.error(e1);
+        }
+
+      } catch (final Exception e) {
+        Messages.showErrorMessage(24);
+        Log.error(e);
+      }
+    }
+
+    // Network
+    Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS,
+        Boolean.toString(jcbNoneInternetAccess.isSelected()));
+    Conf.setProperty(Const.CONF_NETWORK_USE_PROXY, Boolean.toString(!jcbProxyNone.isSelected()));
+    if (jcbProxyHttp.isSelected()) {
+      Conf.setProperty(Const.CONF_NETWORK_PROXY_TYPE, Const.PROXY_TYPE_HTTP);
+    } else if (jcbProxySocks.isSelected()) {
+      Conf.setProperty(Const.CONF_NETWORK_PROXY_TYPE, Const.PROXY_TYPE_SOCKS);
+    }
+    Conf.setProperty(Const.CONF_NETWORK_PROXY_HOSTNAME, jtfProxyHostname.getText());
+    Conf.setProperty(Const.CONF_NETWORK_PROXY_PORT, jtfProxyPort.getText());
+    Conf.setProperty(Const.CONF_NETWORK_PROXY_LOGIN, jtfProxyLogin.getText());
+    Conf.setProperty(Const.CONF_NETWORK_PROXY_PWD,
+        UtilString.rot13(new String(jtfProxyPwd.getPassword())));
+    Conf.setProperty(Const.CONF_NETWORK_CONNECTION_TO, Integer.toString(connectionTO.getValue()));
+    // Force global reload of proxy variables
+    DownloadManager.setDefaultProxySettings();
+    // Covers
+    Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER, Boolean.toString(jcb3dCover.isSelected()));
+    ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
+    Conf.setProperty(Const.CONF_COVERS_AUTO_COVER, Boolean.toString(jcbAutoCover.isSelected()));
+    Conf.setProperty(Const.CONF_COVERS_SHUFFLE, Boolean.toString(jcbShuffleCover.isSelected()));
+    Conf.setProperty(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY,
+        Boolean.toString(jcbSaveExplorerFriendly.isSelected()));
+    Conf.setProperty(Const.CONF_COVERS_SIZE, Integer.toString(jcbCoverSize.getSelectedIndex()));
+    Conf.setProperty(Const.FILE_DEFAULT_COVER, jtfDefaultCoverSearchPattern.getText());
+
+    // Force LastFM manager configuration reload
+    LastFmManager.getInstance().configure();
+
+    // configuration
+    try {
+      Conf.commit();
+    } catch (final Exception e) {
+      Log.error(113, e);
+      Messages.showErrorMessage(113);
+    }
+    // Force a full refresh (useful for catalog view for instance)
+    ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+    // display a message
+    InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.109"),
+        InformationJPanel.MessageType.INFORMATIVE);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+>>>>>>> hotfix/1.9.5
    * @see org.jajuk.ui.IView#getDesc()
    */
   public String getDesc() {
@@ -437,7 +855,30 @@ public class ParameterView extends ViewAdapter {
    *
    * @return the j panel
    */
+<<<<<<< HEAD
   private JPanel initUIHistory() {
+=======
+  public void initUI() {
+    // Use this common action listener for UI options that need to launch
+    // event
+    final ActionListener alUI = new ActionListener() {
+
+      public void actionPerformed(ActionEvent e) {
+        // Store configuration
+        Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(jcbShowPopups.isSelected()));
+        Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS,
+            Boolean.toString(jcbNoneInternetAccess.isSelected()));
+        // Launch an event that can be trapped by the tray to
+        // synchronize the state
+        Properties details = new Properties();
+        details.put(Const.DETAIL_ORIGIN, ParameterView.this);
+        ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE, details));
+      }
+
+    };
+
+    // --History
+>>>>>>> hotfix/1.9.5
     JPanel jpHistory = new JPanel(new MigLayout("insets 10, gapy 15"));
     jtfHistory = new JTextField();
     jtfHistory.setInputVerifier(new InputVerifier() {
@@ -742,6 +1183,20 @@ public class ParameterView extends ViewAdapter {
         return true;
       }
     });
+<<<<<<< HEAD
+=======
+    JLabel jlCrossFadeDuration = new JLabel(Messages.getString("ParameterView.190"));
+    jlCrossFadeDuration.setToolTipText(Messages.getString("ParameterView.191"));
+    crossFadeDuration = new JSlider(0, 30, 0);
+    crossFadeDuration.setMajorTickSpacing(10);
+    crossFadeDuration.setMinorTickSpacing(1);
+    crossFadeDuration.setPaintTicks(true);
+    crossFadeDuration.setPaintLabels(true);
+    crossFadeDuration.setToolTipText(Messages.getString("ParameterView.191"));
+    crossFadeDuration.addMouseWheelListener(new DefaultMouseWheelListener(crossFadeDuration));
+    jcbUseVolnorm = new JCheckBox(Messages.getString("ParameterView.262"));
+    jcbUseVolnorm.setToolTipText(Messages.getString("ParameterView.263"));
+>>>>>>> hotfix/1.9.5
 
     // add panels
     JPanel jpModes = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[][grow,200:300:300]"));
@@ -1123,7 +1578,11 @@ public class ParameterView extends ViewAdapter {
     jcbSaveExplorerFriendly.addActionListener(updateHelper);
 
     // Add items
+<<<<<<< HEAD
     JPanel jpCovers = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[40%][40%]"));
+=======
+    jpCovers = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[40%][40%]"));
+>>>>>>> hotfix/1.9.5
     jpCovers.add(jcbShuffleCover, "wrap");
     jpCovers.add(jcbAutoCover, "wrap");
     jpCovers.add(jcb3dCover, "split 2");
@@ -1290,10 +1749,17 @@ public class ParameterView extends ViewAdapter {
 
     // --OK/cancel panel
     jbOK = new JButton(Messages.getString("ParameterView.85"), IconLoader.getIcon(JajukIcons.OK));
+<<<<<<< HEAD
     jbOK.addActionListener(updateHelper);
     jbDefault = new JButton(Messages.getString("ParameterView.86"),
         IconLoader.getIcon(JajukIcons.DEFAULTS_BIG));
     jbDefault.addActionListener(updateHelper);
+=======
+    jbOK.addActionListener(this);
+    jbDefault = new JButton(Messages.getString("ParameterView.86"),
+        IconLoader.getIcon(JajukIcons.DEFAULTS_BIG));
+    jbDefault.addActionListener(this);
+>>>>>>> hotfix/1.9.5
 
     // --Global layout
     // add main panels
@@ -1360,6 +1826,170 @@ public class ParameterView extends ViewAdapter {
     }
   }
 
+<<<<<<< HEAD
+=======
+  /**
+   * Set widgets to specified value in options.
+   */
+  private void updateSelection() {
+    jtfHistory.setText(Conf.getString(Const.CONF_HISTORY));
+    if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_ITEM)) {
+      jrbFile.setSelected(true);
+      sbSearch.setEnabled(true);
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST)) {
+      jrbLast.setSelected(true);
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)) {
+      jrbLastKeepPos.setSelected(true);
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOTHING)) {
+      jrbNothing.setSelected(true);
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_SHUFFLE)) {
+      jrbShuffle.setSelected(true);
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_BESTOF)) {
+      jrbBestof.setSelected(true);
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOVELTIES)) {
+      jrbNovelties.setSelected(true);
+    }
+    // set chosen track in file selection
+    String conf = Conf.getString(Const.CONF_STARTUP_ITEM);
+    String item = conf.substring(conf.indexOf('/') + 1, conf.length());
+    if (!StringUtils.isBlank(item)) {
+      if (conf.matches(SearchResultType.FILE.name() + ".*")) {
+        File file = FileManager.getInstance().getFileByID(item);
+        if (file != null) {
+          sbSearch.setText(file.getTrack().getName());
+        } else {
+          // the file exists no more, remove its id as startup file
+          Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
+        }
+      } else if (conf.matches(SearchResultType.WEBRADIO.name() + ".*")) {
+        WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(item);
+        if (radio != null) {
+          sbSearch.setText(radio.getName());
+        } else {
+          // the file exists no more, remove its id as startup file
+          Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
+        }
+      }
+    } else {
+      sbSearch.setText("");
+    }
+    // Confirmations
+    jcbBeforeDelete.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_FILE));
+    jcbBeforeExit.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_EXIT));
+    jcbBeforeRemoveDevice.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE));
+    jcbBeforeDeleteCover.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_COVER));
+    jcbBeforeClearingHistory.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY));
+    jcbBeforeResetingRatings.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS));
+    jcbBeforeRefactorFiles.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_REFACTOR_FILES));
+    // options
+    jcbDisplayUnmounted.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
+    jcbDefaultActionClick.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+    jcbDefaultActionDrop.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_DROP));
+    jcbHotkeys.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HOTKEYS));
+
+    String rightLanguageDesc = LocaleManager.getDescForLocale(Conf
+        .getString(Const.CONF_OPTIONS_LANGUAGE));
+    // Select the right language
+    int index = 0;
+    for (String desc : LocaleManager.getLocalesDescs()) {
+      if (desc.equals(rightLanguageDesc)) {
+        scbLanguage.setSelectedIndex(index);
+        break;
+      }
+      index++;
+    }
+    scbLanguage.addActionListener(this);
+    scbLogLevel.setSelectedIndex(Integer.parseInt(Conf.getString(Const.CONF_OPTIONS_LOG_LEVEL)));
+    introLength.setValue(Conf.getInt(Const.CONF_OPTIONS_INTRO_LENGTH));
+    introPosition.setValue(Conf.getInt(Const.CONF_OPTIONS_INTRO_BEGIN));
+    jtfBestofSize.setText(Conf.getString(Const.CONF_BESTOF_TRACKS_SIZE));
+    jtfNoveltiesAge.setText(Conf.getString(Const.CONF_OPTIONS_NOVELTIES_AGE));
+    jtfVisiblePlanned.setText(Conf.getString(Const.CONF_OPTIONS_VISIBLE_PLANNED));
+    crossFadeDuration.setValue(Conf.getInt(Const.CONF_FADE_DURATION));
+    jcbUseParentDir.setSelected(Conf.getBoolean(Const.CONF_TAGS_USE_PARENT_DIR));
+    jcbDropPlayedTracksFromQueue.setSelected(Conf
+        .getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE));
+    jcbUseVolnorm.setSelected(Conf.getBoolean(Const.CONF_USE_VOLNORM));
+    // advanced
+    final int iBackupSize = Conf.getInt(Const.CONF_BACKUP_SIZE);
+    if (iBackupSize <= 0) { // backup size =0 means no backup
+      jcbBackup.setSelected(false);
+      backupSize.setEnabled(false);
+    } else {
+      jcbBackup.setSelected(true);
+      backupSize.setEnabled(true);
+    }
+    backupSize.setValue(iBackupSize);
+    jcbCollectionEncoding.setSelectedItem(Conf.getString(Const.CONF_COLLECTION_CHARSET));
+    jtfRefactorPattern.setText(Conf.getString(Const.CONF_PATTERN_REFACTOR));
+    jtfAnimationPattern.setText(Conf.getString(Const.CONF_PATTERN_ANIMATION));
+    jtfFrameTitle.setText(Conf.getString(Const.CONF_PATTERN_FRAME_TITLE));
+    jtfBalloonNotifierPattern.setText(Conf.getString(Const.CONF_PATTERN_BALLOON_NOTIFIER));
+    jtfInformationPattern.setText(Conf.getString(Const.CONF_PATTERN_INFORMATION));
+
+    jtfMPlayerPath.setText(Conf.getString(Const.CONF_MPLAYER_PATH_FORCED));
+    jtfMPlayerArgs.setText(Conf.getString(Const.CONF_MPLAYER_ARGS));
+    jtfEnvVariables.setText(Conf.getString(Const.CONF_ENV_VARIABLES));
+    jtfExplorerPath.setText(Conf.getString(Const.CONF_EXPLORER_PATH));
+
+    // Network
+    jcbNoneInternetAccess.setSelected(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
+    final boolean bUseProxy = Conf.getBoolean(Const.CONF_NETWORK_USE_PROXY);
+    jcbProxyNone.setSelected(bUseProxy);
+    jtfProxyHostname.setText(Conf.getString(Const.CONF_NETWORK_PROXY_HOSTNAME));
+    jtfProxyHostname.setEnabled(bUseProxy);
+    jlProxyHostname.setEnabled(bUseProxy);
+    jtfProxyPort.setText(Conf.getString(Const.CONF_NETWORK_PROXY_PORT));
+    jtfProxyPort.setEnabled(bUseProxy);
+    jlProxyPort.setEnabled(bUseProxy);
+    jtfProxyLogin.setText(Conf.getString(Const.CONF_NETWORK_PROXY_LOGIN));
+    jtfProxyLogin.setEnabled(bUseProxy);
+    jlProxyLogin.setEnabled(bUseProxy);
+    jtfProxyPwd.setText(UtilString.rot13(Conf.getString(Const.CONF_NETWORK_PROXY_PWD)));
+    jtfProxyPwd.setEnabled(bUseProxy);
+    jlProxyPwd.setEnabled(bUseProxy);
+    connectionTO.setValue(Conf.getInt(Const.CONF_NETWORK_CONNECTION_TO));
+    if (!Conf.getBoolean(Const.CONF_NETWORK_USE_PROXY)) {
+      jcbProxyNone.setSelected(true);
+    } else if (Const.PROXY_TYPE_HTTP.equals(Conf.getString(Const.CONF_NETWORK_PROXY_TYPE))) {
+      jcbProxyHttp.setSelected(true);
+    } else if (Const.PROXY_TYPE_SOCKS.equals(Conf.getString(Const.CONF_NETWORK_PROXY_TYPE))) {
+      jcbProxySocks.setSelected(true);
+    }
+    // Covers
+    jcbAutoCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
+    jlCoverSize.setEnabled(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
+    jcb3dCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER));
+    jcbCoverSize.setEnabled(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
+    jcbCoverSize.setSelectedIndex(Conf.getInt(Const.CONF_COVERS_SIZE));
+    jcbShuffleCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_SHUFFLE));
+    jcbSaveExplorerFriendly.setSelected(Conf.getBoolean(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY));
+    jtfDefaultCoverSearchPattern.setText(Conf.getString(Const.FILE_DEFAULT_COVER));
+    jcbAudioScrobbler.setSelected(Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE));
+    jcbEnableLastFMInformation.setSelected(Conf.getBoolean(Const.CONF_LASTFM_INFO));
+    jtfASUser.setText(Conf.getString(Const.CONF_LASTFM_USER));
+    jpfASPassword.setText(UtilString.rot13(Conf.getString(Const.CONF_LASTFM_PASSWORD)));
+    if (!Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE)) {
+      jlASUser.setEnabled(false);
+      jtfASUser.setEnabled(false);
+      jlASPassword.setEnabled(false);
+      jpfASPassword.setEnabled(false);
+    }
+    // UI
+    String notificatorType = Messages.getString(NOTIFICATOR_PREFIX
+        + Conf.getString(Const.CONF_UI_NOTIFICATOR_TYPE));
+    jcbNotificationType.setSelectedItem(notificatorType);
+
+    jcbShowSystray.setSelected(Conf.getBoolean(Const.CONF_SHOW_SYSTRAY));
+    jcbMinimizeToTray.setSelected(Conf.getBoolean(Const.CONF_MINIMIZE_TO_TRAY));
+
+    scbLAF.removeActionListener(this);
+    scbLAF.setSelectedItem(Conf.getString(Const.CONF_OPTIONS_LNF));
+    scbLAF.addActionListener(this);
+    jsPerspectiveSize.setValue(Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE));
+  }
+
+>>>>>>> hotfix/1.9.5
   /*
    * (non-Javadoc)
    * 

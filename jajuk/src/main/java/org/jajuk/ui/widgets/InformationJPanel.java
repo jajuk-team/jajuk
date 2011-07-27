@@ -151,6 +151,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
 
     jlTotal = new JLabel();
     // Make sure to get always 5 px at the left and right of the label
+<<<<<<< HEAD
     jlTotal.setBorder(new EmptyBorder(0, 5, 0, 5));
     jlTotal.setToolTipText(Messages.getString("InformationJPanel.5"));
 
@@ -159,6 +160,16 @@ public final class InformationJPanel extends JXPanel implements Observer {
     // Make sure to get always 5 px at the left and right of the label
     jlSelection.setBorder(new EmptyBorder(0, 5, 0, 3));
 
+=======
+    jlTotal.setBorder(new EmptyBorder(0,5,0,5));
+    jlTotal.setToolTipText(Messages.getString("InformationJPanel.5"));
+ 
+    // selection bar
+    jlSelection = new JLabel(Messages.getString("InformationJPanel.9"));
+    // Make sure to get always 5 px at the left and right of the label
+    jlSelection.setBorder(new EmptyBorder(0,5,0,3));
+  
+>>>>>>> hotfix/1.9.5
     // add widgets
     setLayout(new MigLayout("insets 2", "[40%,grow][40%,grow][10%,grow][10%,grow]"));
     add(jtbMessage, "grow,left");

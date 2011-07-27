@@ -402,6 +402,45 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
+<<<<<<< HEAD
+=======
+   * Test method for.
+   *
+   * {@link org.jajuk.base.ItemManager#getFilteredItems(org.apache.commons.collections.Predicate)}
+   * .
+   */
+
+  public final void testGetFilteredItems() {
+    ItemManager man = new LocalIM();
+
+    Item item = new TestItem("7", "name7");
+    man.registerItem(item);
+    item = new TestItem("8", "name8");
+    man.registerItem(item);
+
+    // first find all
+    List<? extends Item> list = man.getFilteredItems(new Predicate() {
+      @Override
+      public boolean evaluate(Object obj) {
+        return true;
+      }
+    });
+
+    assertEquals(list.toString(), 2, list.size());
+
+    // then none
+    list = man.getFilteredItems(new Predicate() {
+      @Override
+      public boolean evaluate(Object obj) {
+        return false;
+      }
+    });
+
+    assertEquals(list.toString(), 0, list.size());
+  }
+
+  /**
+>>>>>>> hotfix/1.9.5
    * Test method for {@link org.jajuk.base.ItemManager#getItemsIterator()}.
    */
 

@@ -278,6 +278,13 @@ public interface ITagImpl {
    * @return the supported tag fields
    */
   public List<String> getSupportedTagFields();
+  
+  /**
+   * Gets the embedded covers. 
+   * 
+   * @return the covers or a void list if none.
+   */
+  public List<Cover> getCovers() throws Exception;
 
   /**
    * Gets the embedded covers.

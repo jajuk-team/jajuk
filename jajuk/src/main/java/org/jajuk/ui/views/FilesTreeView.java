@@ -336,6 +336,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
     try {
       refreshing = true;
       top.removeAllChildren();
+<<<<<<< HEAD
 
       // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a
       // small memory leak that is caused here...
@@ -343,6 +344,15 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
         ((DefaultTreeModel) (jtree.getModel())).reload();
       }
 
+=======
+
+      // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a
+      // small memory leak that is caused here...
+      if (jtree != null && jtree.getModel() != null) {
+        ((DefaultTreeModel) (jtree.getModel())).reload();
+      }
+
+>>>>>>> hotfix/1.9.5
       // add all devices as "LazyLoading" nodes so all subsequent elements are
       // only populated if necessary
       List<Device> devices = DeviceManager.getInstance().getDevices();

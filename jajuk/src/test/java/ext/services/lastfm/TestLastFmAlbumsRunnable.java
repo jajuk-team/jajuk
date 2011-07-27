@@ -123,7 +123,11 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
   public void testGetImageForAudioFileExists() throws Exception {
     Track track = JUnitHelpers.getTrack(3);
     File file = File.createTempFile("test", ".img");
+<<<<<<< HEAD
     track.getAlbum().setProperty(Const.XML_ALBUM_DISCOVERED_COVER, file.getAbsolutePath());
+=======
+    track.getAlbum().setProperty(Const.XML_ALBUM_DISCOVERED_COVER, file.getAbsolutePath()); 
+>>>>>>> hotfix/1.9.5
     assertNotNull(LastFmAlbumsRunnable.getImageForAudioFile(track, 200, 100));
 
     // TODO: cleanup does not work on Windows because the file seems to still be
