@@ -126,13 +126,8 @@ public class TrackPositionSliderToolbar extends JPanel implements ChangeListener
     jlCurrent = new JLabel();
     jlCurrent.setToolTipText(Messages.getString("CommandJPanel.15"));
     jlCurrent.addMouseListener(new TimeDisplaySwitchMouseAdapter());
-<<<<<<< HEAD
     add(jsPosition, "grow");
     add(jlCurrent, "grow,left");
-=======
-    add(jsPosition,"grow");
-    add(jlCurrent,"grow,left");
->>>>>>> hotfix/1.9.5
   }
 
   /*

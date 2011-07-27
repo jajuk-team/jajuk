@@ -368,13 +368,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Return list of albums for current directory.
-<<<<<<< HEAD
    *
-=======
-   * 
-   * @param 
-   * 
->>>>>>> hotfix/1.9.5
    * @return list of albums for current directory
    */
   public Set<Album> getAlbums() {

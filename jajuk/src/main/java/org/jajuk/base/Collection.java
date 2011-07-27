@@ -943,11 +943,7 @@ public final class Collection extends DefaultHandler {
     String sRightID = sID;
     if (needCheckID) {
       sRightID = ItemManager.createID(sItemName).intern();
-<<<<<<< HEAD
       if (sRightID == sID) {//NOSONAR
-=======
-      if (sRightID == sID) {
->>>>>>> hotfix/1.9.5
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
         Log.debug("** Wrong artist Id, upgraded: " + sItemName);
@@ -973,11 +969,7 @@ public final class Collection extends DefaultHandler {
     String sRightID = sID;
     if (needCheckID) {
       sRightID = ItemManager.createID(sItemName).intern();
-<<<<<<< HEAD
       if (sRightID == sID) {//NOSONAR
-=======
-      if (sRightID == sID) {
->>>>>>> hotfix/1.9.5
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
         Log.debug("** Wrong genre Id, upgraded: " + sItemName);
@@ -1042,11 +1034,7 @@ public final class Collection extends DefaultHandler {
     String sRightID = sID;
     if (needCheckID) {
       sRightID = ItemManager.createID(sItemName).intern();
-<<<<<<< HEAD
       if (sRightID == sID) {//NOSONAR
-=======
-      if (sRightID == sID) {
->>>>>>> hotfix/1.9.5
         needCheckID = UpgradeManager.isUpgradeDetected() || SessionService.isTestMode();
       } else {
         Log.debug("** Wrong device Id, upgraded: " + sItemName);

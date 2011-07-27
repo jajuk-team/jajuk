@@ -81,21 +81,13 @@ public class Cover implements Comparable<Cover>, Const {
     LOCAL_COVER,
 
     // cover stored in the tag of a file
-<<<<<<< HEAD
-=======
-    TAG_COVER,
-    
->>>>>>> hotfix/1.9.5
     /** DOCUMENT_ME. */
     TAG_COVER,
 
     /** DOCUMENT_ME. */
-<<<<<<< HEAD
     STANDARD_COVER,
 
     /** DOCUMENT_ME. */
-=======
->>>>>>> hotfix/1.9.5
     SELECTED_COVER
   }
 

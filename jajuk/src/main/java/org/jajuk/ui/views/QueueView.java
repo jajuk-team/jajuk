@@ -158,19 +158,7 @@ public class QueueView extends PlaylistView {
     jtbAutoScroll = new JajukToggleButton(IconLoader.getIcon(JajukIcons.AUTOSCROLL));
     jtbAutoScroll.setToolTipText(Messages.getString("QueueView.2"));
     jtbAutoScroll.setSelected(Conf.getBoolean(Const.CONF_AUTO_SCROLL));
-<<<<<<< HEAD
     jtbAutoScroll.addActionListener(alAutoScroll);
-=======
-    jtbAutoScroll.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Conf.setProperty(Const.CONF_AUTO_SCROLL, Boolean.toString(jtbAutoScroll.isSelected()));
-        if (jtbAutoScroll.isSelected()) {
-          autoScroll();
-        }
-      }
-    });
->>>>>>> hotfix/1.9.5
 
     JToolBar jtb = new JajukJToolbar();
     jtb.add(jbSave);
@@ -184,10 +172,7 @@ public class QueueView extends PlaylistView {
     jpEditorControl.setLayout(new MigLayout("insets 5", "[][grow][]"));
     jpEditorControl.add(jtb, "left,gapright 15::");
     jpEditorControl.add(jlTitle, "center,gapright 5,grow");
-<<<<<<< HEAD
     jpEditorControl.add(jtbStopAfter, "right");
-=======
->>>>>>> hotfix/1.9.5
     jpEditorControl.add(jtbAutoScroll, "right");
     editorModel = new PlaylistTableModel(true);
     editorTable = new JajukTable(editorModel, CONF_QUEUE_COLUMNS);

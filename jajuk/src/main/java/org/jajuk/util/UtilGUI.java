@@ -589,15 +589,9 @@ public final class UtilGUI {
     BufferedImage coverImage = UtilGUI.toBufferedImage(img, Const.MIRROW_COVER_SIZE,
         Const.MIRROW_COVER_SIZE, true);
 
-<<<<<<< HEAD
     PerspectiveFilter filter1 = new PerspectiveFilter(0, angle,
         Const.MIRROW_COVER_SIZE - angle / 2, (int) (angle * (5.0 / 3.0)), Const.MIRROW_COVER_SIZE
             - angle / 2, Const.MIRROW_COVER_SIZE, 0, Const.MIRROW_COVER_SIZE + angle);
-=======
-    PerspectiveFilter filter1 = new PerspectiveFilter(0, angle, Const.MIRROW_COVER_SIZE - angle / 2,
-        (int) (angle * (5.0 / 3.0)), Const.MIRROW_COVER_SIZE - angle / 2, Const.MIRROW_COVER_SIZE, 0,
-        Const.MIRROW_COVER_SIZE + angle);
->>>>>>> hotfix/1.9.5
     coverImage = filter1.filter(coverImage, null);
 
     // reflection

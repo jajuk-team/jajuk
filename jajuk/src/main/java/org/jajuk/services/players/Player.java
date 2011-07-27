@@ -240,7 +240,6 @@ public final class Player {
    *
    */
   public static void mute() {
-<<<<<<< HEAD
     // Ignore mute changes if Bit-perfect mode is enabled
     // See code should not normally be called because we
     // disable associated GUI
@@ -250,9 +249,6 @@ public final class Player {
     }
     Player.bMute = !Player.bMute;
     mute(Player.bMute);
-=======
-    mute(!Player.bMute);
->>>>>>> hotfix/1.9.5
   }
 
   /**
@@ -269,8 +265,7 @@ public final class Player {
       return;
     }
     try {
-      if (playerImpl == null) { // none current player, set mute state and leave
-        Player.bMute = pMute;
+      if (playerImpl == null) { // none current player, leave
         return;
       }
       if (pMute) {

@@ -1016,30 +1016,6 @@ public class TestPlaylist extends JajukTestCase {
   }
 
   /**
-<<<<<<< HEAD
-=======
-   * Test method for.
-   *
-   * {@link org.jajuk.base.Playlist#setParentDirectory(org.jajuk.base.Directory)}
-   * .
-   */
-  public final void testSetParentDirectory() {
-    Playlist play = new Playlist("1", "name", null);
-    assertNull(play.getDirectory());
-
-    Directory dir = JUnitHelpers.getDirectory();
-
-    play.setParentDirectory(dir);
-
-    assertNotNull(play.getDirectory());
-
-    // also try setting it to null
-    play.setParentDirectory(null);
-    assertNull(play.getDirectory());
-  }
-
-  /**
->>>>>>> hotfix/1.9.5
    * Test method for {@link org.jajuk.base.Playlist#shouldBeHidden()}.
    *
    * @throws Exception the exception

@@ -4,11 +4,7 @@
 	<groupId>org.jajuk</groupId>
 	<artifactId>jajuk</artifactId>
 	<name>Jajuk</name>
-<<<<<<< HEAD
 	<version>1.10-SNAPSHOT</version>
-=======
-	<version>1.9.5</version>
->>>>>>> hotfix/1.9.5
 	<description>Jajuk is a Java music organizer for all platforms. The
 		main goal
 		of this project is to provide a fully-featured application to
@@ -40,13 +36,8 @@
 		</license>
 	</licenses>
 	<scm>
-<<<<<<< HEAD
 		<connection>scm:git:git://gitorious.org/jajuk/jajuk.git</connection>
 		<url>http://gitorious.org/jajuk/jajuk/</url>
-=======
-		<connection>scm:svn:http://jajuk.svn.sourceforge.net/viewvc/jajuk/</connection>
-		<url>http://jajuk.svn.sourceforge.net/viewvc/jajuk/trunk/jajuk/</url>
->>>>>>> hotfix/1.9.5
 	</scm>
 	<organization>
 		<name>Jajuk team</name>

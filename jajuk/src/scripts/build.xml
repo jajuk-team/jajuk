@@ -15,36 +15,22 @@
 	</tstamp>
 
 	<!--Build type : 'unstable', 'final' or 'maintenance' -->
-<<<<<<< HEAD
 	<property name='type' value='unstable' />
-=======
-	<property name='type' value='final' />
->>>>>>> hotfix/1.9.5
 	
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.9.5' />
+	<property name='version' value='1.10dev' />
 
 	<!--JNLP version-->
 	<!-- In final releases (including RC), jnlp_version=${version} 
 	In maintenance or unstable daily builds, jnlp_version=${JNLP_DATE} : we don't use regular version 
 	so the version changes each day -->
-<<<<<<< HEAD
 	<property name='jnlp_version' value='${JNLP_DATE}' />
 	
 	<!--Test flag: values: 'test' or 'notest' 
 	'test' for 'unstable and maintenance branches, 'notest' for master branch (including RC releases)
 	-->
 	<property name='test' value='test' />
-=======
-	<!--<property name='jnlp_version' value='${JNLP_DATE}' />-->
-	<property name='jnlp_version' value='${version}' />
-
-	<!--Test flag: values: 'test' or 'notest' 
-	'test' for 'unstable and maintenance branches, 'notest' for master branch (including RC releases)
-	-->
-	<property name='test' value='notest' />
->>>>>>> hotfix/1.9.5
 				
 
 	<!-- ======================= -->

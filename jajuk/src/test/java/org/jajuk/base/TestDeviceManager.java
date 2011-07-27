@@ -178,47 +178,16 @@ public class TestDeviceManager extends JajukTestCase {
         DeviceManager.getInstance().checkDeviceAvailablity("device3", Device.Type.DIRECTORY,
             System.getProperty("java.io.tmpdir") + java.io.File.separator + "test", true));
     // error, parent url
-<<<<<<< HEAD
     assertEquals(
         29,
         DeviceManager.getInstance().checkDeviceAvailablity("device3", Device.Type.DIRECTORY,
             new java.io.File(System.getProperty("java.io.tmpdir")).getParent(), true));
-=======
-    assertEquals(29, DeviceManager.getInstance().checkDeviceAvailablity("device3", 0,
-        new java.io.File(System.getProperty("java.io.tmpdir")).getParent(), true));
 
   }
 
   /**
    * Test check device availablity not exists.
    * DOCUMENT_ME
-   */
-  public final void testCheckDeviceAvailablityNotExists() {
-    assertEquals(143, DeviceManager.getInstance().checkDeviceAvailablity("device3", 0,
-        "notexistingpath", true));
-
-  }
-
-  /**
-   * Test check device availablity exists.
-   * DOCUMENT_ME
-   */
-  public final void testCheckDeviceAvailablityExists() {
-    assertEquals(0, DeviceManager.getInstance().checkDeviceAvailablity("device3", 0,
-        System.getProperty("java.io.tmpdir"), true));
->>>>>>> hotfix/1.9.5
-
-  }
-
-  /**
-<<<<<<< HEAD
-   * Test check device availablity not exists.
-   * DOCUMENT_ME
-=======
-   * Test method for.
-   *
-   * {@link org.jajuk.base.DeviceManager#registerDeviceType(java.lang.String)}.
->>>>>>> hotfix/1.9.5
    */
   public final void testCheckDeviceAvailablityNotExists() {
     assertEquals(

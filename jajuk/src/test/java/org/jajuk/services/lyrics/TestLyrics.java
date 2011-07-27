@@ -135,7 +135,6 @@ public class TestLyrics extends JajukTestCase {
     assertTrue(tmp.exists());
     assertTrue(tmp.length() > 0);
   }
-  
 
   /**
    * Test LyricWiki provider response to get lyrics.

@@ -42,11 +42,7 @@ public interface Const {
   /** Time we wait after an error in ms. */
   int WAIT_AFTER_ERROR = 2000;
 
-<<<<<<< HEAD
   /** We need a fix size to have the same angle effect for every cover. */
-=======
-  /** We need a fix size to have the same angle effect for every cover*/
->>>>>>> hotfix/1.9.5
   int MIRROW_COVER_SIZE = 600;
 
   /** Default playlist name. */
@@ -108,9 +104,6 @@ public interface Const {
 
   /** Number of pixels around window at initial startup. */
   int FRAME_INITIAL_BORDER = 60;
-  
-  /** Maximum images cache size in MB */
-  int MAX_IMAGES_CACHE_SIZE = 100;
 
   /** Maximum images cache size in MB. */
   int MAX_IMAGES_CACHE_SIZE = 100;
@@ -236,7 +229,7 @@ public interface Const {
 
   /** Cache directory name. */
   String FILE_CACHE = "cache";
- 
+
   /** Bat Converter to DOS 8.3 format */
   String FILE_FILENAME_CONVERTER = "converter.bat";
 
@@ -1202,17 +1195,10 @@ public interface Const {
 
   /** Cached cover. */
   String XML_ALBUM_DISCOVERED_COVER = "cover_cache";
-<<<<<<< HEAD
 
   /** Selected cover. */
   String XML_ALBUM_SELECTED_COVER = "cover";
 
-=======
-  
-  /** Selected cover. */
-  String XML_ALBUM_SELECTED_COVER = "cover";
-  
->>>>>>> hotfix/1.9.5
   /** DOCUMENT_ME. */
   String XML_DIRECTORY_PARENT = "parent";
 

@@ -282,11 +282,7 @@ public final class Log {
       return;
     }
     spool(t);
-    if (t.getCause() != null) {
-      logger.log(FULL_QUALIFIED_CLASS_NAME, Level.ERROR, t.getMessage() + " / " + t.getCause(), t);
-    } else {
-      logger.log(FULL_QUALIFIED_CLASS_NAME, Level.ERROR, t.getMessage(), t);
-    }
+    logger.log(FULL_QUALIFIED_CLASS_NAME, Level.ERROR, t.getMessage() + " / " + t.getCause(), t);
   }
 
   /**
@@ -429,17 +425,8 @@ public final class Log {
    * @param e DOCUMENT_ME
    */
   private static void spool(Throwable e) {
-<<<<<<< HEAD
     spool("<font color='red'>" + "[ERROR] " + e.getClass() + " / {{" + e.getMessage() + "}} / "
         + e.getCause());
-=======
-    if (e.getCause() != null) {
-      spool("<font color='red'>" + "[ERROR] " + e.getClass() + " / {{" + e.getMessage() + "}} / "
-          + e.getCause());
-    } else {
-      spool("<font color='red'>" + "[ERROR] " + e.getClass() + " / {{" + e.getMessage() + "}}");
-    }
->>>>>>> hotfix/1.9.5
     StackTraceElement[] ste = e.getStackTrace();
     for (StackTraceElement element : ste) {
       spool(element.toString());
