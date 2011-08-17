@@ -89,7 +89,15 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /** [Windows only] Force use of shortnames. */
   private boolean bForcedShortnames = false;
-
+  
+  /** English-specific end of file pattern */
+  private Pattern patternEndOfFileEnglish = Pattern.compile("Exiting\\x2e\\x2e\\x2e.*\\(End of file\\)");
+  
+  /** Language-agnostic end of file pattern */
+  private Pattern patternEndOfFileGeneric = Pattern.compile(".*\\x2e\\x2e\\x2e.*\\(.*\\)");
+ 
+  
+  
   /**
    * Position and elapsed time getter.
    */
@@ -172,8 +180,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     @Override
     public void run() {
       try {
-        Pattern patternEndOfFile = Pattern.compile(".*\\x2e\\x2e\\x2e.*\\(.*\\).*");
         BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+        // While we don't know the mplayer language, patternEndOfFile matches any language end of file pattern : .*... (.*)
+        Pattern patternEndOfFile = patternEndOfFileGeneric;
         try {
           String line = null;
           while (!bStop) {
@@ -189,8 +198,12 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               break;
             }
             // Very verbose :
-            // Log.debug("Output from MPlayer: " + line);
-            if (line.indexOf("ANS_TIME_POSITION") != -1) {
+            Log.debug("Output from MPlayer: " + line);
+            // Detect mplayer language
+            if (line.indexOf("Starting playback") != -1){
+              patternEndOfFile = patternEndOfFileEnglish;
+            }
+            else if (line.indexOf("ANS_TIME_POSITION") != -1) {
               // Stream is actually opened now
               bOpening = false;
 
@@ -199,8 +212,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               // We need to compute the elapsed time. The issue here is the fact
               // that mplayer sometimes returns false getPos() values (for vbr).
               // The other problem is that the user can seek forward or rewind
-              // in
-              // the track so we can't just count the system time.
+              // in the track so we can't just count the system time.
               // The solution we got is :
               // - If user never seeked into the current track, compute the
               // elapsed time upon real system date.
