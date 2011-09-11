@@ -199,11 +199,15 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         } catch (InterruptedException ie) {
           Log.error(ie);
         }
-        if (bNeedSearch && (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
-          sAppliedFilter = jtfValue.getText();
-          sAppliedCriteria = getApplyCriteria();
-          applyFilter(sAppliedCriteria, sAppliedFilter);
-          bNeedSearch = false;
+        try {
+          if (bNeedSearch && (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
+            sAppliedFilter = jtfValue.getText();
+            sAppliedCriteria = getApplyCriteria();
+            applyFilter(sAppliedCriteria, sAppliedFilter);
+            bNeedSearch = false;
+          }
+        } catch (Exception ie) {
+          Log.error(ie);
         }
       }
     }
