@@ -53,7 +53,7 @@ public class FilesTableModel extends JajukTableModel {
 
   /**
    * Model constructor.
-   * 
+   *
    * @param viewID Associated view ID
    */
   public FilesTableModel(String viewID) {
@@ -143,7 +143,7 @@ public class FilesTableModel extends JajukTableModel {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.helpers.JajukTableModel#populateModel(java.lang.String, java.lang.String,
    * java.util.List)
    */
@@ -174,7 +174,7 @@ public class FilesTableModel extends JajukTableModel {
     });
     // Filter files
     Filter filter = new Filter(sPropertyName, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
-    Filter.filterItems(alToShow, filter);
+    alToShow = Filter.filterItems(alToShow, filter, File.class);
 
     Iterator<File> it = alToShow.iterator();
     int iColNum = iNumberStandardCols + FileManager.getInstance().getCustomProperties().size()

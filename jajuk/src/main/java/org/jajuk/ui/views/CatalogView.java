@@ -43,7 +43,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
-import javax.swing.FocusManager;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -198,7 +197,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
 
   /**
    * Gets the selected item.
-   * 
+   *
    * @return the selected item
    */
   public LocalAlbumThumbnail getSelectedItem() {
@@ -207,7 +206,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.IView#display()
    */
   @Override
@@ -413,7 +412,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   @Override
@@ -456,7 +455,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
    * Compute the catalog page to be displayed.
    * <p>
    * Do *not* call this from the EDT, can take a while to run
-   * 
+   *
    * @return the object
    */
   @Override
@@ -474,7 +473,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
       }
       // filter albums matching tracks
       List<Track> alAllTracks = TrackManager.getInstance().getTracks();
-      Filter.filterItems(alAllTracks, filter);
+      alAllTracks = Filter.filterItems(alAllTracks, filter, Track.class);
       // keep matching albums
       HashSet<Album> hsAlbums = new HashSet<Album>(alAllTracks.size() / 10);
       for (Item item : alAllTracks) {
@@ -580,7 +579,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
 
   /**
    * Catalog page display (must be called from the EDT).
-   * 
+   *
    * @param in DOCUMENT_ME
    */
   @Override
@@ -604,7 +603,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
           CatalogView.this.item.setSelected(true);
         }
       }
-      // Thumb selection mouse listener 
+      // Thumb selection mouse listener
       thumb.getIcon().addMouseListener(new MouseAdapter() {
         @Override
         public void mousePressed(MouseEvent e) {
@@ -653,7 +652,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   @Override
@@ -677,7 +676,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.IView#getDesc()
    */
   @Override
@@ -687,7 +686,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   @Override
@@ -736,7 +735,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
 
   /**
    * Gets the selected size.
-   * 
+   *
    * @return current thumbs size as selected with the combo
    */
   private int getSelectedSize() {
@@ -750,7 +749,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.awt.event.KeyAdapter#keyReleased(java.awt.event.KeyEvent)
      */
     @Override
@@ -770,7 +769,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
 
     /**
      * Instantiates a new catalog view mouse wheel listener.
-     * 
+     *
      * @param js DOCUMENT_ME
      */
     public CatalogViewMouseWheelListener(JSlider js) {
@@ -779,7 +778,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.jajuk.ui.helpers.DefaultMouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent
      * )
@@ -817,7 +816,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.views.ViewAdapter#cleanup()
    */
   @Override

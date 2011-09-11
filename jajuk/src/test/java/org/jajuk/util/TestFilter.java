@@ -71,24 +71,24 @@ public class TestFilter extends JajukTestCase {
    */
   public final void testFilterItems() {
     // works with empty filter
-    Filter.filterItems(null, null);
+    assertNull(Filter.filterItems(null, null, Item.class));
 
     // returns with empty expression
     Filter filter = new Filter("any", null, true, false);
-    Filter.filterItems(null, filter);
+    assertNull(Filter.filterItems(null, filter, Item.class));
 
     List<Item> list = new ArrayList<Item>();
 
     // try to trigger a regex error
     filter = new Filter("any", "asdfas(sasdfsa", true, false);
-    Filter.filterItems(list, filter);
+    list = Filter.filterItems(list, filter, Item.class);
 
     // works with useful filter
     filter = new Filter("any", "test", true, false);
-    Filter.filterItems(list, filter);
+    list = Filter.filterItems(list, filter, Item.class);
 
     filter = new Filter("something", "test", true, false);
-    Filter.filterItems(list, filter);
+    list = Filter.filterItems(list, filter, Item.class);
 
     // TODO: more sophisticated testing is missing here
   }
