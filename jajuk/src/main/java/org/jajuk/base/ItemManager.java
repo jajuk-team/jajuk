@@ -105,7 +105,7 @@ public abstract class ItemManager {
 
   /**
    * Registers a new item manager.
-   * 
+   *
    * @param c Managed item class
    * @param itemManager DOCUMENT_ME
    */
@@ -115,16 +115,16 @@ public abstract class ItemManager {
 
   /**
    * Gets the label.
-   * 
+   *
    * @return identifier used for XML generation
    */
   public abstract String getLabel();
 
   /**
    * Gets the meta information.
-   * 
+   *
    * @param sPropertyName DOCUMENT_ME
-   * 
+   *
    * @return meta data for given property
    */
   public PropertyMetaInformation getMetaInformation(String sPropertyName) {
@@ -133,7 +133,7 @@ public abstract class ItemManager {
 
   /**
    * Remove a property *.
-   * 
+   *
    * @param sProperty DOCUMENT_ME
    */
   public void removeProperty(String sProperty) {
@@ -144,7 +144,7 @@ public abstract class ItemManager {
 
   /**
    * Remove a custom property from all items for the given manager.
-   * 
+   *
    * @param meta DOCUMENT_ME
    */
   void applyRemoveProperty(PropertyMetaInformation meta) {
@@ -160,11 +160,11 @@ public abstract class ItemManager {
 
   /**
    * Generic method to access to a parameterized list of items.
-   * 
+   *
    * @param meta DOCUMENT_ME
-   * 
+   *
    * @return the item-parameterized list
-   * 
+   *
    * protected abstract HashMap<String, Item> getItemsMap();
    */
 
@@ -183,7 +183,7 @@ public abstract class ItemManager {
   /**
    * Attention, this method does not return a full XML, but rather an excerpt
    * that is then completed in Collection.commit()!
-   * 
+   *
    * @return (partial) XML representation of this manager
    */
   String toXML() {
@@ -199,7 +199,7 @@ public abstract class ItemManager {
 
   /**
    * Return the associated read write lock.
-   * 
+   *
    * @return the associated read write lock
    */
   public ReadWriteLock getLock() {
@@ -216,11 +216,11 @@ public abstract class ItemManager {
    * -All in lower case expect first letter of first word
    * <p>
    * example: "My artist".
-   * 
+   *
    * @param sName The name to format.
-   * 
+   *
    * @return the string
-   * 
+   *
    * TODO: the "all lowercase" part is not done currently, should this be changed??
    */
   public static String format(String sName) {
@@ -236,7 +236,7 @@ public abstract class ItemManager {
 
   /**
    * Gets the properties.
-   * 
+   *
    * @return properties Meta informations
    */
   public Collection<PropertyMetaInformation> getProperties() {
@@ -245,7 +245,7 @@ public abstract class ItemManager {
 
   /**
    * Gets the custom properties including activated extra tags.
-   * 
+   *
    * @return custom properties Meta informations
    */
   public Collection<PropertyMetaInformation> getCustomProperties() {
@@ -262,7 +262,7 @@ public abstract class ItemManager {
 
   /**
    * Gets the custom properties without the activated extra tags.
-   * 
+   *
    * @return custom properties Meta informations
    */
   public Collection<PropertyMetaInformation> getUserCustomProperties() {
@@ -279,7 +279,7 @@ public abstract class ItemManager {
 
   /**
    * Gets the visible properties.
-   * 
+   *
    * @return visible properties Meta informations
    */
   public Collection<PropertyMetaInformation> getVisibleProperties() {
@@ -296,9 +296,9 @@ public abstract class ItemManager {
 
   /**
    * Get the manager from a given attribute name.
-   * 
+   *
    * @param sProperty The property to compare.
-   * 
+   *
    * @return an ItemManager if one is found for the property or null if none
    * found.
    */
@@ -330,9 +330,9 @@ public abstract class ItemManager {
 
   /**
    * Get ItemManager manager for given item class.
-   * 
+   *
    * @param c DOCUMENT_ME
-   * 
+   *
    * @return associated item manager or null if none was found
    */
   public static ItemManager getItemManager(Class<?> c) {
@@ -397,7 +397,7 @@ public abstract class ItemManager {
 
   /**
    * Perform a cleanup of all orphan tracks associated with given item.
-   * 
+   *
    * @param item item whose associated tracks should be checked for cleanup
    */
   protected void cleanOrphanTracks(Item item) {
@@ -408,7 +408,7 @@ public abstract class ItemManager {
 
   /**
    * Remove a given item.
-   * 
+   *
    * @param item DOCUMENT_ME
    */
   protected void removeItem(Item item) {
@@ -425,7 +425,7 @@ public abstract class ItemManager {
 
   /**
    * Register a given item.
-   * 
+   *
    * @param item : the item to add
    */
   protected void registerItem(Item item) {
@@ -440,7 +440,7 @@ public abstract class ItemManager {
 
   /**
    * Register a new property.
-   * 
+   *
    * @param meta DOCUMENT_ME
    */
   public void registerProperty(PropertyMetaInformation meta) {
@@ -449,14 +449,14 @@ public abstract class ItemManager {
 
   /**
    * Change any item.
-   * 
+   *
    * @param itemToChange DOCUMENT_ME
    * @param sKey DOCUMENT_ME
    * @param oValue DOCUMENT_ME
    * @param filter : files we want to deal with
-   * 
+   *
    * @return the changed item
-   * 
+   *
    * @throws JajukException the jajuk exception
    */
   public static Item changeItem(Item itemToChange, String sKey, Object oValue, Set<File> filter)
@@ -581,7 +581,7 @@ public abstract class ItemManager {
 
   /**
    * Gets the element count.
-   * 
+   *
    * @return number of item
    */
   public int getElementCount() {
@@ -590,9 +590,9 @@ public abstract class ItemManager {
 
   /**
    * Gets the item by id.
-   * 
+   *
    * @param sID Item ID
-   * 
+   *
    * @return Item
    */
   public Item getItemByID(String sID) {
@@ -600,12 +600,21 @@ public abstract class ItemManager {
   }
 
   /**
-   * Return a copy of all registered items.
-   * 
+   * Return a copy of all registered items. The resulting list can be used without
+   * need of locking.
+   *
    * @return a copy of all registered items
    */
   public List<? extends Item> getItems() {
-    return new ArrayList<Item>(items);
+    // getItems() creates a copy of the list of items and thus iterates over the current list of items
+    // therefore a ConcurrentModifcationException could be triggered if we do not lock while actually
+    // doing the copying. Usage of the list afterwards is save without locking
+    lock.readLock().lock();
+    try {
+      return new ArrayList<Item>(items);
+    } finally {
+      lock.readLock().unlock();
+    }
   }
 
   /**
@@ -614,7 +623,7 @@ public abstract class ItemManager {
   * iterator, you would effectively remove items instead of using regular
   * removeItem() primitive
   * **************************************************************************.
-  * 
+  *
   * @return the items iterator
   */
   protected Iterator<? extends Item> getItemsIterator() {
@@ -659,9 +668,9 @@ public abstract class ItemManager {
 
   /**
    * Basic implementation for item hashcode computation.
-   * 
+   *
    * @param sName item name
-   * 
+   *
    * @return ItemManager ID
    */
   protected static String createID(String sName) {
