@@ -29,29 +29,40 @@ import org.jajuk.util.log.Log;
 
 /**
  * Helper class to test with many threads.
- * 
+ *
  * Sample usage is as follows:
- * 
- * public void testMultipleThreads() throws Exception { ThreadTestHelper helper
- * = new ThreadTestHelper(NUMBER_OF_THREADS, NUMBER_OF_TESTS);
- * 
- * helper.executeTest(new ThreadTestHelper.TestRunnable() { public void
- * doEnd(int threadnum) throws Exception { // do stuff at the end ... }
- * 
- * public void run(int threadnum, int iter) { // do the actual threaded work ...
- * } }); }
+ *
+ * <code>
+
+  public void testMultipleThreads() throws Exception {
+    ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS, NUMBER_OF_TESTS);
+
+    helper.executeTest(new ThreadTestHelper.TestRunnable() {
+      @Override
+      public void doEnd(int threadnum) throws Exception {
+        // do stuff at the end ...
+      }
+
+      @Override
+      public void run(int threadnum, int iter) {
+        // do the actual threaded work ...
+      }
+    });
+  }
+
+  </code>
  */
 public class ThreadTestHelper {
-  
+
   /** DOCUMENT_ME. */
   private final int threadCount;
-  
+
   /** DOCUMENT_ME. */
   private final int testsPerThread;
 
   /** DOCUMENT_ME. */
   private boolean failed = false;
-  
+
   /** DOCUMENT_ME. */
   private int executions[] = null;
 
@@ -106,15 +117,15 @@ public class ThreadTestHelper {
   /**
    * This method is executed to start one thread. The thread will execute the
    * provided runnable a number of times.
-   * 
+   *
    * @param threadnum
    *          The number of this thread
    * @param run
    *          The Runnable object that is used to perform the actual test
    *          operation
-   * 
+   *
    * @return The thread that was started.
-   * 
+   *
    */
   private Thread startThread(final int threadnum, final TestRunnable run) {
     Log.debug("Starting thread number: " + threadnum);
@@ -155,7 +166,7 @@ public class ThreadTestHelper {
    * DOCUMENT_ME.
    */
   public interface TestRunnable {
-    
+
     /**
      * When an object implementing interface <code>Runnable</code> is used to
      * create a thread, starting the thread causes the object's <code>run</code>
@@ -173,7 +184,7 @@ public class ThreadTestHelper {
 
     /**
      * Perform any action that should be done at the end.
-     * 
+     *
      * This method should throw an Exception if any check fails at this point.
      *
      * @param threadnum DOCUMENT_ME
