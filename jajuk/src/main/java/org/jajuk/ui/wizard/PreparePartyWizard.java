@@ -483,7 +483,13 @@ public class PreparePartyWizard extends Wizard {
       return;
     }
 
-    data.put(KEY_MODE, Mode.valueOf(sMode));
+    try {
+      data.put(KEY_MODE, Mode.valueOf(sMode));
+    } catch (IllegalArgumentException e) {
+      Log.warn("Could not convert mode: " + sMode + ", using default mode: " + Mode.DJ);
+      data.put(KEY_MODE, Mode.DJ);
+    }
+
     switch ((Mode) data.get(KEY_MODE)) {
     // restore the value for the ones where we have a selection
     case Ambience:
