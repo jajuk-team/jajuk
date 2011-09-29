@@ -40,11 +40,11 @@ public class TestArtist extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Artist#getLabel()}.
+   * Test method for {@link org.jajuk.base.Artist#getXMLTag()}.
    */
   public final void testGetLabel() {
     Artist artist = JUnitHelpers.getArtist();
-    assertEquals(Const.XML_ARTIST, artist.getLabel());
+    assertEquals(Const.XML_ARTIST, artist.getXMLTag());
   }
 
   /**

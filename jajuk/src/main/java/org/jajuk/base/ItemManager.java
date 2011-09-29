@@ -114,11 +114,11 @@ public abstract class ItemManager {
   }
 
   /**
-   * Gets the label.
+   * Gets the XML label.
    * 
    * @return identifier used for XML generation
    */
-  public abstract String getLabel();
+  public abstract String getXMLTag();
 
   /**
    * Gets the meta information.
@@ -187,7 +187,7 @@ public abstract class ItemManager {
    * @return (partial) XML representation of this manager
    */
   String toXML() {
-    StringBuilder sb = new StringBuilder("<").append(getLabel() + ">");
+    StringBuilder sb = new StringBuilder("<").append(getXMLTag() + ">");
     Iterator<String> it = hmPropertiesMetaInformation.keySet().iterator();
     while (it.hasNext()) {
       String sProperty = it.next();

@@ -226,7 +226,7 @@ public final class AlbumManager extends ItemManager implements Observer {
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
-  public String getLabel() {
+  public String getXMLTag() {
     return Const.XML_ALBUMS;
   }
 

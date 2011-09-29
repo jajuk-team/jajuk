@@ -65,12 +65,12 @@ public class TestDevice extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Device#getLabel()}.
+   * Test method for {@link org.jajuk.base.Device#getXMLTag()}.
    */
 
   public void testGetLabel() {
     Device device = JUnitHelpers.getDevice();
-    assertEquals(Const.XML_DEVICE, device.getLabel());
+    assertEquals(Const.XML_DEVICE, device.getXMLTag());
   }
 
   /**

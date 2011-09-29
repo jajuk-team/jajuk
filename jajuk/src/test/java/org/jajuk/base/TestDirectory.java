@@ -88,12 +88,12 @@ public class TestDirectory extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Directory#getLabel()}.
+   * Test method for {@link org.jajuk.base.Directory#getXMLTag()}.
    */
 
   public void testGetLabel() {
     Directory dir = dir1;
-    assertEquals(dir.toString(), Const.XML_DIRECTORY, dir.getLabel());
+    assertEquals(dir.toString(), Const.XML_DIRECTORY, dir.getXMLTag());
   }
 
   /**

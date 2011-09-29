@@ -77,7 +77,7 @@ public class File extends PhysicalItem implements Comparable<File> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  public final String getLabel() {
+  public final String getXMLTag() {
     return XML_FILE;
   }
 

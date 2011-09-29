@@ -42,10 +42,10 @@ public class TestDeviceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.DeviceManager#getLabel()}.
+   * Test method for {@link org.jajuk.base.DeviceManager#getXMLTag()}.
    */
   public final void testGetLabel() {
-    assertEquals(Const.XML_DEVICES, DeviceManager.getInstance().getLabel());
+    assertEquals(Const.XML_DEVICES, DeviceManager.getInstance().getXMLTag());
   }
 
   /**

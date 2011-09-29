@@ -91,7 +91,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  public final String getLabel() {
+  public final String getXMLTag() {
     return XML_DIRECTORY;
   }
 

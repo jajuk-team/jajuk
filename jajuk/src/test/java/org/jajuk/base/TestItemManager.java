@@ -85,13 +85,13 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.ItemManager#getLabel()}.
+   * Test method for {@link org.jajuk.base.ItemManager#getXMLTag()}.
    */
 
   public final void testGetLabel() {
     ItemManager man = new LocalIM();
 
-    assertEquals("TestLabel", man.getLabel());
+    assertEquals("TestLabel", man.getXMLTag());
   }
 
   /**
@@ -177,7 +177,7 @@ public class TestItemManager extends JajukTestCase {
 
     StringBuilder sb = new StringBuilder(xml);
     sb.append("</");
-    sb.append(man.getLabel());
+    sb.append(man.getXMLTag());
     sb.append('>');
 
     // valid xml?
@@ -556,7 +556,7 @@ public class TestItemManager extends JajukTestCase {
      * @see org.jajuk.base.ItemManager#getLabel()
      */
     @Override
-    public String getLabel() {
+    public String getXMLTag() {
       return "TestLabel";
     }
 
@@ -617,7 +617,7 @@ public class TestItemManager extends JajukTestCase {
      * @return the label
      */
     @Override
-    String getLabel() {
+    String getXMLTag() {
       return "Test";
     }
 

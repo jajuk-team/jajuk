@@ -54,7 +54,7 @@ public class TestTrack extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Track#getLabel()}.
+   * Test method for {@link org.jajuk.base.Track#getXMLTag()}.
    */
   @Test
   public void testGetLabel() {

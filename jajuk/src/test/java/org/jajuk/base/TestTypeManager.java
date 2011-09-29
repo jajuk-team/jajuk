@@ -44,10 +44,10 @@ public class TestTypeManager extends TestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.TypeManager#getLabel()}.
+   * Test method for {@link org.jajuk.base.TypeManager#getXMLTag()}.
    */
   public void testGetLabel() {
-    assertEquals(Const.XML_TYPES, TypeManager.getInstance().getLabel());
+    assertEquals(Const.XML_TYPES, TypeManager.getInstance().getXMLTag());
   }
 
   /**

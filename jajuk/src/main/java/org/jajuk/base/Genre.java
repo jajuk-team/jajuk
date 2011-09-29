@@ -50,7 +50,7 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  public String getLabel() {
+  public String getXMLTag() {
     return XML_GENRE;
   }
 

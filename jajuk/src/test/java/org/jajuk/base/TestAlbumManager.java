@@ -55,10 +55,10 @@ public class TestAlbumManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.AlbumManager#getLabel()}.
+   * Test method for {@link org.jajuk.base.AlbumManager#getXMLTag()}.
    */
   public void testGetLabel() {
-    assertEquals(Const.XML_ALBUMS, AlbumManager.getInstance().getLabel());
+    assertEquals(Const.XML_ALBUMS, AlbumManager.getInstance().getXMLTag());
   }
 
   /**

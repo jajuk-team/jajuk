@@ -135,11 +135,11 @@ public class TestAlbum extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Album#getLabel()}.
+   * Test method for {@link org.jajuk.base.Album#getXMLTag()}.
    */
   public final void testGetLabel() {
     Album album = new Album("1", "name", 123);
-    assertFalse(album.getLabel().isEmpty());
+    assertFalse(album.getXMLTag().isEmpty());
   }
 
   /**

@@ -591,7 +591,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  public final String getLabel() {
+  public final String getXMLTag() {
     return XML_TRACK;
   }
 

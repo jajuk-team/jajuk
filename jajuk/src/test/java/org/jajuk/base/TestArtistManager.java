@@ -51,10 +51,10 @@ public class TestArtistManager extends JajukTestCase {
   private static final int NUMBER_OF_THREADS = 10;
 
   /**
-   * Test method for {@link org.jajuk.base.ArtistManager#getLabel()}.
+   * Test method for {@link org.jajuk.base.ArtistManager#getXMLTag()}.
    */
   public final void testGetLabel() {
-    assertEquals(Const.XML_ARTISTS, ArtistManager.getInstance().getLabel());
+    assertEquals(Const.XML_ARTISTS, ArtistManager.getInstance().getXMLTag());
   }
 
   /**

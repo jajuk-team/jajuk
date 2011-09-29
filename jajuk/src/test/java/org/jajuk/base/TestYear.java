@@ -40,11 +40,11 @@ public class TestYear extends TestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Year#getLabel()}.
+   * Test method for {@link org.jajuk.base.Year#getXMLTag()}.
    */
   public void testGetLabel() {
     Year year = new Year("1", "1998");
-    assertEquals(Const.XML_YEAR, year.getLabel());
+    assertEquals(Const.XML_YEAR, year.getXMLTag());
   }
 
   /**

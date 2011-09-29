@@ -38,7 +38,7 @@ public class TestTrackManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.TrackManager#getLabel()}.
+   * Test method for {@link org.jajuk.base.TrackManager#getXMLTag()}.
    */
   @Test
   public void testGetLabel() {

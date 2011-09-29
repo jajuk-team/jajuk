@@ -80,11 +80,11 @@ public class TestPlaylist extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Playlist#getLabel()}.
+   * Test method for {@link org.jajuk.base.Playlist#getXMLTag()}.
    */
   public final void testGetLabel() {
     Playlist play = new Playlist("1", "name", null);
-    assertTrue(StringUtils.isNotBlank(play.getLabel()));
+    assertTrue(StringUtils.isNotBlank(play.getXMLTag()));
   }
 
   /**

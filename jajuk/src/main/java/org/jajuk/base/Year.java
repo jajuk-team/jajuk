@@ -58,7 +58,7 @@ public class Year extends LogicalItem implements Comparable<Year> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  public final String getLabel() {
+  public final String getXMLTag() {
     return XML_YEAR;
   }
 
