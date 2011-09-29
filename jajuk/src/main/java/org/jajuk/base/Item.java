@@ -354,7 +354,7 @@ public abstract class Item implements Const {
    * 
    * @return an identifier used to generate XML representation of this item
    */
-  abstract String getXMLTag();
+  public abstract String getXMLTag();
 
   /**
    * Gets the properties xml.

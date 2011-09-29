@@ -67,7 +67,7 @@ public abstract class ItemManager {
   /**
    * Item manager default constructor.
    */
-  ItemManager() {
+  public ItemManager() {
   }
 
   /**
