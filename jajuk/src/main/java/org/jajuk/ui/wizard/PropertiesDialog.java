@@ -330,7 +330,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
    * A properties panel.
    */
   class PropertiesPanel extends JPanel implements ActionListener {
-    
+
     /** The Constant IDX_NAME.  DOCUMENT_ME */
     private static final int IDX_NAME = 0;
 
@@ -843,147 +843,150 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
         if (hmPropertyToChange.size() == 0) {
           return;
         }
-        // Computes all items to change
-        // contains items to be changed
-        List<Item> itemsToChange = new ArrayList<Item>(propItems);
-        // Items in error
-        List<Item> alInError = new ArrayList<Item>(itemsToChange.size());
-        // details for errors
-        String sDetails = "";
+        try {
+          // Computes all items to change
+          // contains items to be changed
+          List<Item> itemsToChange = new ArrayList<Item>(propItems);
+          // Items in error
+          List<Item> alInError = new ArrayList<Item>(itemsToChange.size());
+          // details for errors
+          String sDetails = "";
 
-        // Check typed value format, display error message only once per
-        // property
-        for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
-          // New value
-          oValue = hmPropertyToChange.get(meta);
-          // Check it is not null for non custom properties. Note that
-          // we also allow void values for comments
-          if (oValue == null || (oValue.toString().trim().length() == 0)
-              && !(meta.isCustom() || meta.getName().equals(Const.XML_TRACK_COMMENT))) {
-            Log.error(137, '{' + meta.getName() + '}', null);
-            Messages.showErrorMessage(137, '{' + meta.getName() + '}');
-            return;
-          }
-        }
-
-        // Now we have all items to consider, write tags for each
-        // property to change
-        for (int i = 0; i < itemsToChange.size(); i++) {
-          // Note that item object can be changed during the next for loop, so
-          // do not declare it there
-          Item item = null;
+          // Check typed value format, display error message only once per
+          // property
           for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
-            item = itemsToChange.get(i);
-
             // New value
             oValue = hmPropertyToChange.get(meta);
-            // Old value
-            String sOldValue = item.getHumanValue(meta.getName());
-            if (!UtilString.format(oValue, meta, true).equals(sOldValue)) {
-              try {
-                newItem = ItemManager.changeItem(item, meta.getName(), oValue, filter);
-                changes = true;
-              }
-              // none accessible file for this track, for this error,
-              // we display an error and leave completely
-              catch (NoneAccessibleFileException none) {
-                Log.error(none);
-                Messages.showErrorMessage(none.getCode(), item.getHumanValue(Const.XML_NAME));
-                // close window to avoid reseting all properties to
-                // old values
-                dispose();
-                return;
-              }
-              // cannot rename file, for this error, we display an
-              // error and leave completely
-              catch (CannotRenameException cre) {
-                Log.error(cre);
-                Messages.showErrorMessage(cre.getCode());
-                dispose();
-                return;
-              }
-              // probably error writing a tag, store track reference
-              // and continue
-              catch (JajukException je) {
-                Log.error(je);
-                if (!alInError.contains(item)) {
-                  alInError.add(item);
-                  // create details label with 3 levels deep
-                  sDetails += buidlDetailsString(je);
+            // Check it is not null for non custom properties. Note that
+            // we also allow void values for comments
+            if (oValue == null || (oValue.toString().trim().length() == 0)
+                && !(meta.isCustom() || meta.getName().equals(Const.XML_TRACK_COMMENT))) {
+              Log.error(137, '{' + meta.getName() + '}', null);
+              Messages.showErrorMessage(137, '{' + meta.getName() + '}');
+              return;
+            }
+          }
+
+          // Now we have all items to consider, write tags for each
+          // property to change
+          for (int i = 0; i < itemsToChange.size(); i++) {
+            // Note that item object can be changed during the next for loop, so
+            // do not declare it there
+            Item item = null;
+            for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
+              item = itemsToChange.get(i);
+
+              // New value
+              oValue = hmPropertyToChange.get(meta);
+              // Old value
+              String sOldValue = item.getHumanValue(meta.getName());
+              if (!UtilString.format(oValue, meta, true).equals(sOldValue)) {
+                try {
+                  newItem = ItemManager.changeItem(item, meta.getName(), oValue, filter);
+                  changes = true;
                 }
-                continue;
+                // none accessible file for this track, for this error,
+                // we display an error and leave completely
+                catch (NoneAccessibleFileException none) {
+                  Log.error(none);
+                  Messages.showErrorMessage(none.getCode(), item.getHumanValue(Const.XML_NAME));
+                  // close window to avoid reseting all properties to
+                  // old values
+                  dispose();
+                  return;
+                }
+                // cannot rename file, for this error, we display an
+                // error and leave completely
+                catch (CannotRenameException cre) {
+                  Log.error(cre);
+                  Messages.showErrorMessage(cre.getCode());
+                  dispose();
+                  return;
+                }
+                // probably error writing a tag, store track reference
+                // and continue
+                catch (JajukException je) {
+                  Log.error(je);
+                  if (!alInError.contains(item)) {
+                    alInError.add(item);
+                    // create details label with 3 levels deep
+                    sDetails += buidlDetailsString(je);
+                  }
+                  continue;
+                }
+                // if this item was element of property panel elements,
+                // update it
+                if (propItems.contains(item)) {
+                  propItems.remove(item);
+                  propItems.add(newItem);
+                }
+                // Update itemsToChange to replace the item. Indeed, if we change
+                // several properties to the same item, the item itself must
+                // change
+                itemsToChange.set(i, newItem);
+                // if individual item, change title in case of
+                // constructor element change
+                if (!bMerged) {
+                  jlDesc.setText(UtilString.formatPropertyDesc(newItem.getDesc()));
+                }
+                // note this property have been changed
+                if (!alChanged.contains(meta)) {
+                  alChanged.add(meta);
+                }
               }
-              // if this item was element of property panel elements,
-              // update it
-              if (propItems.contains(item)) {
-                propItems.remove(item);
-                propItems.add(newItem);
-              }
-              // Update itemsToChange to replace the item. Indeed, if we change
-              // several properties to the same item, the item itself must
-              // change
-              itemsToChange.set(i, newItem);
-              // if individual item, change title in case of
-              // constructor element change
-              if (!bMerged) {
-                jlDesc.setText(UtilString.formatPropertyDesc(newItem.getDesc()));
-              }
-              // note this property have been changed
-              if (!alChanged.contains(meta)) {
-                alChanged.add(meta);
+            }
+            // Require full commit for all changed tags on the current file
+            try {
+              TrackManager.getInstance().commit();
+            } catch (Exception e) {
+              Log.error(e);
+              if (!alInError.contains(item)) {
+                alInError.add(item);
+                // create details label with 3 levels deep
+                sDetails += buidlDetailsString(e);
               }
             }
           }
-          // Require full commit for all changed tags on the current file
-          try {
-            TrackManager.getInstance().commit();
-          } catch (Exception e) {
-            Log.error(e);
-            if (!alInError.contains(item)) {
-              alInError.add(item);
-              // create details label with 3 levels deep
-              sDetails += buidlDetailsString(e);
-            }
-          }
-        }
 
-        // display a message for file write issues
-        if (alInError.size() > 0) {
-          String sInfo = "";
-          int index = 0;
-          for (Item item : alInError) {
-            // limit number of errors
-            if (index == 15) {
-              sInfo += "\n...";
-              break;
+          // display a message for file write issues
+          if (alInError.size() > 0) {
+            String sInfo = "";
+            int index = 0;
+            for (Item item : alInError) {
+              // limit number of errors
+              if (index == 15) {
+                sInfo += "\n...";
+                break;
+              }
+              sInfo += "\n" + item.getHumanValue(Const.XML_NAME);
+              index++;
             }
-            sInfo += "\n" + item.getHumanValue(Const.XML_NAME);
-            index++;
+            Messages.showDetailedErrorMessage(104, sInfo, sDetails);
           }
-          Messages.showDetailedErrorMessage(104, sInfo, sDetails);
-        }
 
-        // display a message if user changed at least one property
-        if (alChanged.size() > 0) {
-          StringBuilder sbChanged = new StringBuilder();
-          sbChanged.append("{ ");
-          for (PropertyMetaInformation meta : alChanged) {
-            sbChanged.append(meta.getHumanName()).append(' ');
+          // display a message if user changed at least one property
+          if (alChanged.size() > 0) {
+            StringBuilder sbChanged = new StringBuilder();
+            sbChanged.append("{ ");
+            for (PropertyMetaInformation meta : alChanged) {
+              sbChanged.append(meta.getHumanName()).append(' ');
+            }
+            sbChanged.append('}');
+            InformationJPanel.getInstance().setMessage(
+                alChanged.size() + " " + Messages.getString("PropertiesWizard.10") + ": "
+                    + sbChanged.toString(), InformationJPanel.MessageType.INFORMATIVE);
           }
-          sbChanged.append('}');
-          InformationJPanel.getInstance().setMessage(
-              alChanged.size() + " " + Messages.getString("PropertiesWizard.10") + ": "
-                  + sbChanged.toString(), InformationJPanel.MessageType.INFORMATIVE);
+        } finally {
+          // Force files resorting to ensure the sorting consistency, indeed,
+          // files are sorted by name *and* track order and we need to force a
+          // files resort after an order change (this is already done in case of
+          // file name change)
+          FileManager.getInstance().forceSorting();
         }
       } finally {
         UtilGUI.stopWaiting();
         // Reset auto-commit state
         TrackManager.getInstance().setAutocommit(true);
-        // Force files resorting to ensure the sorting consistency, indeed,
-        // files are sorted by name *and* track order and we need to force a
-        // files resort after an order change (this is already done in case of
-        // file name change)
-        FileManager.getInstance().forceSorting();
       }
     }
 

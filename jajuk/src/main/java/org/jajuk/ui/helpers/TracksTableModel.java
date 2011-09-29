@@ -57,7 +57,7 @@ public class TracksTableModel extends JajukTableModel {
 
   /**
    * Model constructor.
-   * 
+   *
    * @param viewID Associated view ID
    */
   public TracksTableModel(String viewID) {
@@ -121,7 +121,7 @@ public class TracksTableModel extends JajukTableModel {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.helpers.JajukTableModel#populateModel(java.lang.String, java.lang.String,
    * java.util.List)
    */
@@ -153,7 +153,7 @@ public class TracksTableModel extends JajukTableModel {
 
     // Filter values using given pattern
     Filter filter = new Filter(property, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
-    Filter.filterItems(alToShow, filter);
+    alToShow = Filter.filterItems(alToShow, filter, Track.class);
 
     // sort by album
     long before = System.currentTimeMillis();

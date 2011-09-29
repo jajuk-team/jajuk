@@ -85,18 +85,17 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
    * For now, this table will not be editable (except for custom properties) for
    * complexity reasons. This may be implemented in the future if required
    * </p>
-   * 
+   *
    * @param sPropertyName DOCUMENT_ME
    * @param sPattern DOCUMENT_ME
    * @param columnsToShow DOCUMENT_ME
    */
   @Override
-  @SuppressWarnings("unchecked")
   public void populateModel(String sPropertyName, String sPattern, List<String> columnsToShow) {
     List<Playlist> alToShow = PlaylistManager.getInstance().getPlaylists();
     // OK, begin by filtering using any provided pattern
     Filter filter = new Filter(sPropertyName, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
-    Filter.filterItems(alToShow, filter);
+    alToShow = Filter.filterItems(alToShow, filter, Playlist.class);
 
     // filter unavailable playlists
     if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
@@ -174,9 +173,9 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
       bCellEditable[iRow][4] = false;
 
       // Custom properties now
-      Iterator it2 = PlaylistManager.getInstance().getCustomProperties().iterator();
+      Iterator<PropertyMetaInformation> it2 = PlaylistManager.getInstance().getCustomProperties().iterator();
       for (int i = 0; it2.hasNext(); i++) {
-        PropertyMetaInformation meta = (PropertyMetaInformation) it2.next();
+        PropertyMetaInformation meta = it2.next();
         Object o = properties.get(meta.getName());
         if (o != null) {
           oValues[iRow][iNumberStandardCols + i] = o;

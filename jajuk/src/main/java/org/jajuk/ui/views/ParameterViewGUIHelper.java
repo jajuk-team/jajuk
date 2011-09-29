@@ -27,6 +27,7 @@ import java.awt.event.ItemListener;
 import java.util.Locale;
 import java.util.Properties;
 
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
@@ -51,23 +52,23 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
+import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
+import org.jajuk.util.filters.XMLFilter;
 import org.jajuk.util.log.Log;
 
 /**
  * Helper class containing GUI update code from and to configuration.
  */
 public class ParameterViewGUIHelper implements ActionListener, ItemListener, ChangeListener {
-
-  /** Serial UID. */
-  private static final long serialVersionUID = 1L;
 
   /** Associated Parameter view. */
   ParameterView pv;
@@ -162,7 +163,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
 
   /**
    * Update history tab.
-   * 
+   *
    */
   private void updateGUIFromConfHistory() {
     pv.jtfHistory.setText(Conf.getString(Const.CONF_HISTORY));
@@ -186,7 +187,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
 
   /**
    * Update Confirmations tab.
-   * 
+   *
    */
   private void updateGUIFromConfConfirmations() {
     pv.jcbBeforeDelete.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_FILE));
@@ -270,7 +271,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
 
   /**
    * Update advanced tab.
-   * 
+   *
    */
   private void updateGUIFromConfAdvanced() {
     final int backupSize = Conf.getInt(Const.CONF_BACKUP_SIZE);
@@ -300,7 +301,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
 
   /**
    * Update selection network.
-   * 
+   *
    */
   private void updateGUIFromConfNetwork() {
     pv.jcbNoneInternetAccess.setSelected(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
@@ -330,7 +331,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
 
   /**
    * Update selection covers.
-   * 
+   *
    */
   private void updateGUIFromConfCovers() {
     pv.jcbAutoCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER));
@@ -375,7 +376,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
   /**
   * Apply parameters options.
   * Options for "Options", "LastFM", "Sound" and "Modes" tabs
-  * 
+  *
   */
   private void updateConfFromGUIOptions() {
     Conf.setProperty(Const.CONF_OPTIONS_HIDE_UNMOUNTED,
@@ -434,7 +435,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
 
   /**
    * Apply parameters startup.
-   * 
+   *
    */
   private void updateConfFromGUIStartup() {
     if (pv.jrbNothing.isSelected()) {
@@ -456,7 +457,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
 
   /**
    * Apply parameters confirmation.
-   * 
+   *
    */
   private void updateConfFromGUIConfirmation() {
     Conf.setProperty(Const.CONF_CONFIRMATIONS_DELETE_FILE,
@@ -474,7 +475,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
 
   /**
    * Apply parameters history.
-   * 
+   *
    */
   private void updateConfFromGUIHistory() {
     final String sHistoryDuration = pv.jtfHistory.getText();
@@ -485,7 +486,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
 
   /**
    * Apply parameters patterns.
-   * 
+   *
    */
   private void updateConfFromGUIPatterns() {
     Conf.setProperty(Const.CONF_PATTERN_REFACTOR, pv.jtfRefactorPattern.getText());
@@ -497,7 +498,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
 
   /**
    * Apply parameters advanced.
-   * 
+   *
    */
   private void updateConfFromGUIAdvanced() {
     Conf.setProperty(Const.CONF_BACKUP_SIZE, Integer.toString(pv.backupSize.getValue()));
@@ -519,7 +520,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
 
   /**
    * Apply parameters gui.
-   * 
+   *
    */
   private void updateConfFromGUIGUI() {
     Conf.setProperty(Const.CONF_CATALOG_PAGE_SIZE, Integer.toString(pv.jsCatalogPages.getValue()));
@@ -575,7 +576,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
 
   /**
   * Apply parameters network.
-  * 
+  *
   */
   private void updateConfFromGUINetwork() {
     Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS,
@@ -598,7 +599,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
 
   /**
    * Apply parameters cover.
-   * 
+   *
    */
   private void updateConfFromGUICover() {
     Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER, Boolean.toString(pv.jcb3dCover.isSelected()));
@@ -618,7 +619,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
 
   /**
   * Handle workspace change.
-  * 
+  *
   */
   private void handleWorkspaceChange() {
     if ((SessionService.getWorkspace() != null)
@@ -695,7 +696,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
 
   /*
   * (non-Javadoc)
-  * 
+  *
   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
   */
   @Override
@@ -724,6 +725,75 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         }
       }
       ObservationManager.notify(new JajukEvent(JajukEvents.RATE_RESET));
+    } else if (e.getSource() == pv.jbExportRatings) {
+      // TODO: for some reason the passing of the existing directory does not
+      // work here, seems the implementation in JajukFileChooser does not do
+      // this correctly
+      final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
+          XMLFilter.getInstance())/*, fDir*/);
+      jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+      jfc.setDialogTitle(Messages.getString("ParameterView.297"));
+      jfc.setMultiSelectionEnabled(false);
+      final int returnVal = jfc.showOpenDialog(pv.jbExportRatings);
+
+      if (returnVal == JFileChooser.APPROVE_OPTION) {
+        // retrieve selected directory and update it in all necessary places
+        java.io.File file = jfc.getSelectedFile();
+
+        if (file.exists()) {
+          int iResu = Messages.getChoice(Messages.getString("Confirmation_file_overwrite")
+              + " : \n\n" + file.getName(), JOptionPane.YES_NO_OPTION,
+              JOptionPane.WARNING_MESSAGE);
+          if (iResu == JOptionPane.NO_OPTION || iResu == JOptionPane.CANCEL_OPTION) {
+            return;
+          }
+        }
+
+        // start Export
+        try {
+          org.jajuk.base.Collection.exportRatings(file);
+          Messages.showInfoMessage(Messages.getString("ParameterView.299"));
+        } catch (Exception ex1) {
+          Messages.showWarningMessage(Messages.getString("Error.000") + "-" + ex1.getMessage());
+          Log.warn(0, "IOException while exporting current ratings", ex1);
+        }
+      }
+    } else if (e.getSource() == pv.jbImportRatings) {
+      // TODO: for some reason the passing of the existing directory does not
+      // work here, seems the implementation in JajukFileChooser does not do
+      // this correctly
+      final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
+          XMLFilter.getInstance())/*, fDir*/);
+      jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+      jfc.setDialogTitle(Messages.getString("ParameterView.298"));
+      jfc.setMultiSelectionEnabled(false);
+      final int returnVal = jfc.showOpenDialog(pv.jbImportRatings);
+
+      if (returnVal == JFileChooser.APPROVE_OPTION) {
+        // retrieve selected directory and update it in all necessary places
+        java.io.File file = jfc.getSelectedFile();
+
+        if(!file.exists()) {
+          Messages.showWarningMessage(Messages.getString("Error.181"));
+          return;
+        }
+
+        int iResu = Messages.getChoice(Messages.getString("Confirmation_reset_ratings_overwrite")
+            + " : \n\n" + file.getName(), JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+        if (iResu == JOptionPane.NO_OPTION || iResu == JOptionPane.CANCEL_OPTION) {
+          return;
+        }
+
+        try {
+          org.jajuk.base.Collection.importRatings(file);
+          Messages.showInfoMessage(Messages.getString("ParameterView.300"));
+
+        } catch (Exception ex1) {
+          Messages.showWarningMessage(Messages.getString("Error.000") + "-" + ex1.getMessage());
+          Log.warn(0, "IOException while exporting current ratings", ex1);
+        }
+      }
     } else if (e.getSource() == pv.jbResetPreferences) {
       // show confirmation message if required
       if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS)) {
@@ -839,7 +909,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
       }.start();
     }
     // Bit-perfect and audio normalization/cross fade options are mutually exclusive
-    if (e.getSource().equals(pv.jcbEnableBitPerfect)) {
+    else if (e.getSource().equals(pv.jcbEnableBitPerfect)) {
       pv.jcbUseVolnorm.setEnabled(!pv.jcbEnableBitPerfect.isSelected());
       if (pv.jcbUseVolnorm.isSelected() && pv.jcbEnableBitPerfect.isSelected()) {
         pv.jcbUseVolnorm.setSelected(false);
@@ -851,7 +921,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
 
   /*
   * (non-Javadoc)
-  * 
+  *
   * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
   */
   @Override
@@ -864,7 +934,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent )
    */
   @Override

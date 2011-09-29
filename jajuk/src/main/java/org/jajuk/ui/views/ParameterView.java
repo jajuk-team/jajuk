@@ -112,6 +112,12 @@ public class ParameterView extends ViewAdapter {
   /** DOCUMENT_ME. */
   JButton jbResetRatings;
 
+  /** Allows to export ratings to a file */
+  JButton jbExportRatings;
+
+  /** Allws to import ratings from a file */
+  JButton jbImportRatings;
+
   /** DOCUMENT_ME. */
   JButton jbResetPreferences;
 
@@ -413,7 +419,7 @@ public class ParameterView extends ViewAdapter {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.IView#getDesc()
    */
   public String getDesc() {
@@ -422,7 +428,7 @@ public class ParameterView extends ViewAdapter {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   public Set<JajukEvents> getRegistrationKeys() {
@@ -433,7 +439,7 @@ public class ParameterView extends ViewAdapter {
 
   /**
    * Inits the ui history.
-   * 
+   *
    *
    * @return the j panel
    */
@@ -480,19 +486,31 @@ public class ParameterView extends ViewAdapter {
     jbResetPreferences.setToolTipText(Messages.getString("ParameterView.250"));
     jbResetPreferences.addActionListener(updateHelper);
 
+    jbExportRatings = new JButton(Messages.getString("ParameterView.293"),
+        IconLoader.getIcon(JajukIcons.SAVE_AS));
+    jbExportRatings.setToolTipText(Messages.getString("ParameterView.294"));
+    jbExportRatings.addActionListener(updateHelper);
+
+    jbImportRatings = new JButton(Messages.getString("ParameterView.295"),
+        IconLoader.getIcon(JajukIcons.LAUNCH));
+    jbImportRatings.setToolTipText(Messages.getString("ParameterView.296"));
+    jbImportRatings.addActionListener(updateHelper);
+
     JLabel jlHistory = new JLabel(Messages.getString("ParameterView.0"));
     jlHistory.setToolTipText(Messages.getString("ParameterView.2"));
     jpHistory.add(jlHistory);
     jpHistory.add(jtfHistory, "wrap,grow");
     jpHistory.add(jbClearHistory, "wrap");
     jpHistory.add(jbResetRatings);
-    jpHistory.add(jbResetPreferences);
+    jpHistory.add(jbResetPreferences, "wrap");
+    jpHistory.add(jbExportRatings);
+    jpHistory.add(jbImportRatings);
     return jpHistory;
   }
 
   /**
    * Inits the ui startup.
-   * 
+   *
    *
    * @return the jpanel
    */
@@ -563,7 +581,7 @@ public class ParameterView extends ViewAdapter {
 
   /**
    * Inits the ui confirmations.
-   * 
+   *
    *
    * @return the jpanel
    */
@@ -632,7 +650,7 @@ public class ParameterView extends ViewAdapter {
 
   /**
    * Inits the ui modes.
-   * 
+   *
    * @return the jpanel
    */
   private JPanel initUIModes() {
@@ -761,7 +779,7 @@ public class ParameterView extends ViewAdapter {
 
   /**
    * Inits the ui options.
-   * 
+   *
    *
    * @return the jpanel
    */
@@ -822,7 +840,7 @@ public class ParameterView extends ViewAdapter {
 
   /**
    * Inits the ui patterns.
-   * 
+   *
    *
    * @return the jpanel
    */
@@ -871,7 +889,7 @@ public class ParameterView extends ViewAdapter {
 
   /**
    * Inits the ui advanced.
-   * 
+   *
    *
    * @return the jpanel
    */
@@ -960,7 +978,7 @@ public class ParameterView extends ViewAdapter {
 
   /**
    * Inits the ui network.
-   * 
+   *
    *
    * @return the jpanel
    */
@@ -1057,7 +1075,7 @@ public class ParameterView extends ViewAdapter {
 
   /**
    * Inits the ui last fm.
-   * 
+   *
    *
    * @return the jpanel
    */
@@ -1086,7 +1104,7 @@ public class ParameterView extends ViewAdapter {
 
   /**
    * Inits the ui covers.
-   * 
+   *
    *
    * @return the jpanel
    */
@@ -1138,7 +1156,7 @@ public class ParameterView extends ViewAdapter {
 
   /**
    * Inits the GUI tab.
-   *  
+   *
    * @return the jpanel
    */
   private JPanel initUIGUI() {
@@ -1271,7 +1289,7 @@ public class ParameterView extends ViewAdapter {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.IView#display()
    */
   public void initUI() {
@@ -1339,7 +1357,7 @@ public class ParameterView extends ViewAdapter {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
   public void update(final JajukEvent event) {
@@ -1362,7 +1380,7 @@ public class ParameterView extends ViewAdapter {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.Container#removeAll()
    */
   @Override
@@ -1377,7 +1395,7 @@ public class ParameterView extends ViewAdapter {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.views.ViewAdapter#cleanup()
    */
   @Override

@@ -75,6 +75,9 @@ public class Tag {
       this.fio = fio;
       Type type = TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(fio));
       tagImpl = type.getTagImpl();
+      if(tagImpl == null && !bIgnoreErrors) {
+        throw new JajukException(103, (fio == null ? "<null>" : fio.getName()));
+      }
       tagImpl.setFile(fio);
       bCorrupted = false;
     } catch (Exception e) {

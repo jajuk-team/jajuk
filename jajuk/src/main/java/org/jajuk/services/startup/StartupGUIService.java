@@ -60,7 +60,7 @@ public final class StartupGUIService {
 
   /**
    * Gets the default perspective.
-   * 
+   *
    * @return Returns the sPerspective.
    */
   public static String getDefaultPerspective() {
@@ -69,7 +69,7 @@ public final class StartupGUIService {
 
   /**
    * Sets the default perspective.
-   * 
+   *
    * @param perspective The sPerspective to set.
    */
   public static void setDefaultPerspective(final String perspective) {
@@ -79,7 +79,7 @@ public final class StartupGUIService {
   /**
    * Launch splash screen.
    * DOCUMENT_ME
-   * 
+   *
    * @throws InterruptedException the interrupted exception
    * @throws InvocationTargetException the invocation target exception
    */
@@ -149,15 +149,18 @@ public final class StartupGUIService {
 
   /**
    * Startup over.
-   * 
+   *
    */
   public static void startupOver() {
     if (sc != null) {
       SwingUtilities.invokeLater(new Runnable() {
         @Override
         public void run() {
+          // Display progress
           sc.setProgress(100);
           sc.splashOff();
+
+          // free resources
           sc = null;
         }
       });
@@ -220,15 +223,6 @@ public final class StartupGUIService {
           // last chance to catch any error for
           // logging purpose
           Log.error(106, e);
-        } finally {
-          if (sc != null) {
-            // Display progress
-            sc.setProgress(100);
-            sc.splashOff();
-
-            // free resources
-            sc = null;
-          }
         }
       }
     });

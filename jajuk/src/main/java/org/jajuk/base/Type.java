@@ -137,12 +137,13 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 
   /**
    * Gets the tag impl.
-   * 
+   *
    * @return Returns the tagImpl.
    */
   public ITagImpl getTagImpl() {
     try {
       if (cTagImpl == null) {
+        Log.warn("Did not have a tagging implementation for Type: '" + getID() + "/" + getName() + "'");
         return null;
       }
       return cTagImpl.newInstance();

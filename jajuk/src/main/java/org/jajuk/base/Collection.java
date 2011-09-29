@@ -180,7 +180,7 @@ public final class Collection extends DefaultHandler {
 
   /**
    * Instance getter.
-   * 
+   *
    * @return the instance
    */
   public static Collection getInstance() {
@@ -197,9 +197,9 @@ public final class Collection extends DefaultHandler {
   /**
    * Write current collection to collection file for persistence between
    * sessions.
-   * 
+   *
    * @param collectionFile DOCUMENT_ME
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static synchronized void commit(File collectionFile) throws IOException {
@@ -291,15 +291,100 @@ public final class Collection extends DefaultHandler {
     Log.debug("Collection commited in " + (System.currentTimeMillis() - time) + " ms");
   }
 
+  public static void exportRatings(final File file) throws IOException {
+    Log.info("Exporting current track ratings to file {{" + file + "}}");
+
+    long time = System.currentTimeMillis();
+    String sCharset = Conf.getString(Const.CONF_COLLECTION_CHARSET);
+    final BufferedWriter bw;
+    if (file.getAbsolutePath().endsWith(".zip")) {
+      bw = new BufferedWriter(new OutputStreamWriter(new ZipOutputStream(new FileOutputStream(
+          file)), sCharset), 1000000);
+    } else {
+      bw = new BufferedWriter(
+          new OutputStreamWriter(new FileOutputStream(file), sCharset), 1000000);
+    }
+
+    try {
+      bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");
+      bw.write("<" + Const.XML_TRACKS + " " + Const.XML_VERSION + "='" + Const.JAJUK_VERSION
+          + "'>\n");
+
+      for(Track track : TrackManager.getInstance().getTracks()) {
+          bw.write(track.toRatingsXml());
+      }
+
+      // end of collection
+      bw.write("</" + Const.XML_TRACKS + TAG_CLOSE_NEWLINE);
+      bw.flush();
+    } finally {
+      bw.close();
+    }
+
+    Log.debug("Ratings exported in " + (System.currentTimeMillis() - time) + " ms");
+  }
+
+  public static void importRatings(final File file) throws IOException, SAXException, JajukException, ParserConfigurationException {
+    Log.info("Importing current track ratings from file {{" + file + "}}");
+
+    lTime = System.currentTimeMillis();
+    SAXParserFactory spf = SAXParserFactory.newInstance();
+    spf.setValidating(false);
+    spf.setNamespaceAware(false);
+    // See http://xerces.apache.org/xerces-j/features.html for details
+    spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+    spf.setFeature("http://xml.org/sax/features/string-interning", true);
+    SAXParser saxParser = spf.newSAXParser();
+    if (!file.exists()) {
+      throw new JajukException(5, file.toString());
+    }
+
+    final InputSource input;
+    if (file.getAbsolutePath().endsWith(".zip")) {
+      input = new InputSource(new ZipInputStream(new FileInputStream(file)));
+    } else {
+      input = new InputSource(new FileInputStream(file));
+    }
+    saxParser.parse(input, new DefaultHandler() {
+
+      /* (non-Javadoc)
+       * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+       */
+      @Override
+      public void startElement(String uri, String localName, String qName, Attributes attributes)
+          throws SAXException {
+
+        // <track id='11f89yuelwwdmzg1357yaw87j' rate='0' ban='true'/>
+        if (qName.equals(Const.XML_TRACK)) {
+          String id = attributes.getValue(Const.XML_ID);
+          String rate = attributes.getValue(Const.XML_TRACK_RATE);
+          String banned = attributes.getValue(Const.XML_TRACK_BANNED);
+
+          Track track = TrackManager.getInstance().getTrackByID(id);
+          if (track != null) {
+            Log.debug("Found track {{" + track.getName() + "}} for id {{" + id
+                + "}}, setting rate {{" + rate + "}} and banned {{" + banned + "}}");
+            if (!"0".equals(rate)) {
+              track.setRate(UtilString.fastLongParser(rate));
+            }
+
+            track.populateProperties(attributes);
+          }
+        }
+
+      }
+    });
+  }
+
   /**
    * Write item list. DOCUMENT_ME
-   * 
+   *
    * @param bw DOCUMENT_ME
    * @param header DOCUMENT_ME
    * @param items DOCUMENT_ME
    * @param footer DOCUMENT_ME
    * @param buffer DOCUMENT_ME
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   private static void writeItemList(BufferedWriter bw, String header, List<? extends Item> items,
@@ -314,11 +399,11 @@ public final class Collection extends DefaultHandler {
 
   /**
    * Write string. DOCUMENT_ME
-   * 
+   *
    * @param bw DOCUMENT_ME
    * @param toWrite DOCUMENT_ME
    * @param buffer DOCUMENT_ME
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   private static void writeString(BufferedWriter bw, String toWrite, int buffer) throws IOException {
@@ -331,9 +416,9 @@ public final class Collection extends DefaultHandler {
 
   /**
    * Parse collection.xml file and put all collection information into memory
-   * 
+   *
    * @param file DOCUMENT_ME
-   * 
+   *
    * @throws SAXException the SAX exception
    * @throws ParserConfigurationException the parser configuration exception
    * @throws JajukException the jajuk exception
@@ -464,16 +549,16 @@ public final class Collection extends DefaultHandler {
    * times (like raw names) as it uses a lot of CPU (equals() is called) and we
    * want startup to be as fast as possible. Note that the use of intern() save
    * around 1/4 of overall heap memory
-   * 
+   *
    * We use sax-interning for the main items sections (<styles> for ie). For all
    * raw items, we don't perform equals on item name but we compare the string
    * hashcode
-   * 
+   *
    * @param sUri DOCUMENT_ME
    * @param s DOCUMENT_ME
    * @param sQName DOCUMENT_ME
    * @param attributes DOCUMENT_ME
-   * 
+   *
    * @throws SAXException the SAX exception
    */
   @Override
@@ -632,7 +717,7 @@ public final class Collection extends DefaultHandler {
 
   /**
    * Handle files. DOCUMENT_ME
-   * 
+   *
    * @param attributes DOCUMENT_ME
    * @param idIndex DOCUMENT_ME
    */
@@ -708,7 +793,7 @@ public final class Collection extends DefaultHandler {
 
   /**
    * Handle directories. DOCUMENT_ME
-   * 
+   *
    * @param attributes DOCUMENT_ME
    * @param idIndex DOCUMENT_ME
    */
@@ -765,10 +850,10 @@ public final class Collection extends DefaultHandler {
 
   /**
    * Handle tracks. DOCUMENT_ME
-   * 
+   *
    * @param attributes DOCUMENT_ME
    * @param idIndex DOCUMENT_ME
-   * 
+   *
    * @throws ParseException the parse exception
    */
   private void handleTracks(Attributes attributes, int idIndex) throws ParseException {
@@ -896,7 +981,7 @@ public final class Collection extends DefaultHandler {
 
   /**
    * Handle albums. DOCUMENT_ME
-   * 
+   *
    * @param attributes DOCUMENT_ME
    * @param idIndex DOCUMENT_ME
    */
@@ -932,7 +1017,7 @@ public final class Collection extends DefaultHandler {
 
   /**
    * Handle artists. DOCUMENT_ME
-   * 
+   *
    * @param attributes DOCUMENT_ME
    * @param idIndex DOCUMENT_ME
    */
@@ -958,7 +1043,7 @@ public final class Collection extends DefaultHandler {
 
   /**
    * Handle genres. DOCUMENT_ME
-   * 
+   *
    * @param attributes DOCUMENT_ME
    * @param idIndex DOCUMENT_ME
    */
@@ -984,7 +1069,7 @@ public final class Collection extends DefaultHandler {
 
   /**
    * Handle playlist files. DOCUMENT_ME
-   * 
+   *
    * @param attributes DOCUMENT_ME
    * @param idIndex DOCUMENT_ME
    */
@@ -1021,7 +1106,7 @@ public final class Collection extends DefaultHandler {
 
   /**
    * Handle devices. DOCUMENT_ME
-   * 
+   *
    * @param attributes DOCUMENT_ME
    * @param idIndex DOCUMENT_ME
    */
@@ -1050,7 +1135,7 @@ public final class Collection extends DefaultHandler {
 
   /**
    * Handle years. DOCUMENT_ME
-   * 
+   *
    * @param attributes DOCUMENT_ME
    * @param idIndex DOCUMENT_ME
    */
@@ -1065,7 +1150,7 @@ public final class Collection extends DefaultHandler {
 
   /**
    * Handle album artists.
-   * 
+   *
    * @param attributes DOCUMENT_ME
    * @param idIndex DOCUMENT_ME
    */
@@ -1080,7 +1165,7 @@ public final class Collection extends DefaultHandler {
 
   /**
    * Gets the hm wrong right file id.
-   * 
+   *
    * @return list of wrong file id (used by history)
    */
   public Map<String, String> getHmWrongRightFileID() {
@@ -1089,7 +1174,7 @@ public final class Collection extends DefaultHandler {
 
   /**
    * Gets the wrong right album i ds.
-   * 
+   *
    * @return the wrong right album i ds
    */
   public Map<String, String> getWrongRightAlbumIDs() {
