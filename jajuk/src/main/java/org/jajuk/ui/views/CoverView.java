@@ -587,10 +587,19 @@ public class CoverView extends ViewAdapter implements ActionListener {
     int pos = sFilePath.lastIndexOf('.');
     if (Conf.getBoolean(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY)) {
       // Covers should be stored as folder.xxx for windows explorer
-      String ext = sFilePath.substring(pos, sFilePath.length());
+      final String ext;
+      if (pos == -1) {
+        ext = "";
+      } else {
+        ext = sFilePath.substring(pos, sFilePath.length());
+      }
       String parent = new File(sFilePath).getParent();
       return parent + System.getProperty("file.separator") + "Folder" + ext;
     } else {
+      if (pos == -1) {
+        return sFilePath + Const.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX;
+      }
+
       // Add a jajuk suffix to know this cover has been downloaded by jajuk
       return new StringBuilder(sFilePath).insert(pos, Const.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX)
           .toString();
@@ -665,6 +674,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
       return;
     }
     new Thread("Default cover thread") {
+      @Override
       public void run() {
         Cover cover = alCovers.get(index);
         org.jajuk.base.File fCurrent = fileReference;
