@@ -20,6 +20,8 @@
  */
 package org.jajuk.services.dbus;
 
+import cx.ath.matthew.unix.UnixSocket;
+
 import java.util.Properties;
 import java.util.Set;
 
@@ -52,6 +54,13 @@ public class TestDBusSupportImpl extends JajukTestCase {
   public final void testConnect() {
     DBusSupportImpl impl = new DBusSupportImpl();
 
+    // ensure that we do find the JNI-Library
+    try {
+      new UnixSocket();
+    } catch (UnsatisfiedLinkError e) {
+      fail("Could not load class UnixSocket, maybe the java.library.path is not set correctly: " + System.getProperty("java.library.path") + ": " + e.getMessage());
+    }
+    
     // will fail where dbus is not available and report an error to the log...
     impl.connect();
   }
