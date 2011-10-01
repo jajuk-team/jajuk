@@ -214,13 +214,15 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
    */
   @Override
   public Object longCall() {
+    final int iLocalEventID = iEventID;
+
     // Call last.fm wiki
     bio = LastFmService.getInstance().getWikiText(artist);
     artistInfo = LastFmService.getInstance().getArtist(artist);
     // Prefetch artist thumbs
     try {
-      preFetchOthersAlbum();
-      preFetchSimilarArtists();
+      preFetchOthersAlbum(iLocalEventID);
+      preFetchSimilarArtists(iLocalEventID);
     } catch (UnknownHostException e) {
       Log.warn("Could not contact host for loading album information: {{" + e.getMessage() + "}}");
     } catch (IOException e) {
