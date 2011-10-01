@@ -169,7 +169,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   private int index = 0;
 
   /** Event ID., it should be volatile because this mutable field can be set by different threads */
-  private volatile int iEventID;//NOSONAR
+  private volatile int iEventID = 0;//NOSONAR
 
   /** Flag telling that user wants to display a better cover. */
   private boolean bGotoBetter = false;
@@ -1277,7 +1277,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   @Override
   public void update(final JajukEvent event) {
     final JajukEvents subject = event.getSubject();
-    this.iEventID = UtilSystem.getRandom().nextInt();
+    this.iEventID++;
     final int iLocalEventID = iEventID;
     try {
       searching(true);
@@ -1433,7 +1433,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
 
     // We only need to refresh the other covers if the directory changed 
     // but we still clear tag-based covers even if directory didn't change
-    // so the song-specific tag is token into account. 
+    // so the song-specific tag is taken into account. 
     Iterator<Cover> it = alCovers.iterator();
     while (it.hasNext()) {
       Cover cover = it.next();
