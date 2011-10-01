@@ -49,6 +49,9 @@ public final class ArtistManager extends ItemManager {
   /** List of all known artists. */
   private Vector<String> artistsList = new Vector<String>(100); // NOPMD
 
+  /** note if we have already fully loaded the Collection to speed up initial startup */
+  private volatile boolean orderedState = false;
+  
   /**
    * No constructor available, only static access.
    * Not private to allow AlbumArtistManager extends
@@ -106,15 +109,35 @@ public final class ArtistManager extends ItemManager {
     // add it in genres list if new
     if (!artistsList.contains(sName)) {
       artistsList.add(artist.getName2());
-      // Sort items ignoring case
-      Collections.sort(artistsList, new Comparator<String>() {
-        @Override
-        public int compare(String o1, String o2) {
-          return o1.compareToIgnoreCase(o2);
-        }
-      });
+      
+      // only sort as soon as we have the Collection fully loaded
+      if(orderedState) {
+        sortArtistList();
+      }
     }
     return artist;
+  }
+
+  private void sortArtistList() {
+    // Sort items ignoring case
+    Collections.sort(artistsList, new Comparator<String>() {
+      @Override
+      public int compare(String o1, String o2) {
+        return o1.compareToIgnoreCase(o2);
+      }
+    });
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.base.ItemManager#switchToOrderState()
+   */
+  @Override
+  void switchToOrderState() {
+    // bring this Manager to ordered state when Collection is fully loaded
+    orderedState = true;
+    sortArtistList();
+    
+    super.switchToOrderState();
   }
 
   /**

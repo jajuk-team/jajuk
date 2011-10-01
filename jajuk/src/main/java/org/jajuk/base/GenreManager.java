@@ -50,6 +50,9 @@ public final class GenreManager extends ItemManager {
   /** DOCUMENT_ME. */
   private Vector<String> genresList; // NOPMD
 
+  /** note if we have already fully loaded the Collection to speed up initial startup */
+  private volatile boolean orderedState = false;
+
   /**
    * No constructor available, only static access.
    */
@@ -107,15 +110,38 @@ public final class GenreManager extends ItemManager {
     // add it in genres list if new
     if (!genresList.contains(sName)) {
       genresList.add(genre.getName2());
-      // Sort items ignoring case
-      Collections.sort(genresList, new Comparator<String>() {
-        @Override
-        public int compare(String o1, String o2) {
-          return o1.compareToIgnoreCase(o2);
-        }
-      });
+      
+      // only sort as soon as we have the Collection fully loaded
+      if(orderedState) {
+        sortGenreList();
+      }
     }
     return genre;
+  }
+
+  /**
+   * 
+   */
+  private void sortGenreList() {
+    // Sort items ignoring case
+    Collections.sort(genresList, new Comparator<String>() {
+      @Override
+      public int compare(String o1, String o2) {
+        return o1.compareToIgnoreCase(o2);
+      }
+    });
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.base.ItemManager#switchToOrderState()
+   */
+  @Override
+  void switchToOrderState() {
+    // bring this Manager to ordered state when Collection is fully loaded
+    orderedState = true;
+    sortGenreList();
+    
+    super.switchToOrderState();
   }
 
   /**
