@@ -328,6 +328,12 @@ public final class TypeManager extends ItemManager {
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, true);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICONS_16X16_TYPE_OGG)
         .toExternalForm());
+    type = TypeManager.getInstance().registerType(Messages.getString("Type.ogg"), Const.EXT_OGA,
+        Class.forName(Const.PLAYER_IMPL_MPLAYER), Class.forName(Const.TAG_IMPL_JAUDIOTAGGER));
+    type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
+    type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, true);
+    type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICONS_16X16_TYPE_OGG)
+        .toExternalForm());
     // Wav
     type = TypeManager.getInstance().registerType(Messages.getString("Type.wav"), Const.EXT_WAV,
         Class.forName(Const.PLAYER_IMPL_MPLAYER), Class.forName(Const.TAG_IMPL_NO_TAGS));
