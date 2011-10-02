@@ -30,6 +30,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.util.Const;
+import org.jajuk.util.log.Log;
 
 /**
  * DOCUMENT_ME.
@@ -58,7 +59,7 @@ public class TestDBusSupportImpl extends JajukTestCase {
     try {
       new UnixSocket();
     } catch (UnsatisfiedLinkError e) {
-      fail("Could not load class UnixSocket, maybe the java.library.path is not set correctly: " + System.getProperty("java.library.path") + ": " + e.getMessage());
+      Log.fatal("Could not load class UnixSocket, maybe the java.library.path is not set correctly: " + System.getProperty("java.library.path") + ": " + e.getMessage());
     }
     
     // will fail where dbus is not available and report an error to the log...
