@@ -23,6 +23,7 @@ package org.jajuk;
 import junit.framework.TestCase;
 
 import org.jajuk.base.Collection;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.services.startup.StartupCollectionService;
 
 /**
@@ -42,6 +43,8 @@ public abstract class JajukTestCase extends TestCase {
     // Clean the collection
     StartupCollectionService.registerItemManagers();
     Collection.clearCollection();
+    // Make sure to use a test workspace
+    SessionService.setTestMode(true);
     super.setUp();
   }
 }
