@@ -98,10 +98,10 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    * @return the string
    */
   public String toStringSearch() {
-    StringBuilder sb = new StringBuilder(track.getGenre().getName2()).append('/').append(
-        track.getArtist().getName2()).append('/').append(track.getAlbum().getName2()).append('/')
-        .append(track.getName()).append(" [").append(directory.getName()).append('/').append(
-            getName()).append(']');
+    StringBuilder sb = new StringBuilder(track.getGenre().getName2()).append('/')
+        .append(track.getArtist().getName2()).append('/').append(track.getAlbum().getName2())
+        .append('/').append(track.getName()).append(" [").append(directory.getName()).append('/')
+        .append(getName()).append(']');
     return sb.toString();
   }
 
@@ -190,8 +190,9 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    * @return String
    */
   public String getAbsolutePath() {
-    StringBuilder sbOut = new StringBuilder(getDevice().getUrl()).append(
-        getDirectory().getRelativePath()).append(java.io.File.separatorChar).append(this.getName());
+    StringBuilder sbOut = new StringBuilder(getDevice().getUrl())
+        .append(getDirectory().getRelativePath()).append(java.io.File.separatorChar)
+        .append(this.getName());
     return sbOut.toString();
   }
 
@@ -372,6 +373,10 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     sb.append(lTrack.getRate());
     sb.append(lTrack.getValue(Const.XML_TRACK_COMMENT));
     sb.append(lTrack.getAlbumArtist().getName2());
+    AlbumArtist albumArtist = lTrack.getAlbumArtist();
+    if (albumArtist != null) {
+      sb.append(albumArtist.getName2());
+    }
     return sb.toString();
   }
 
