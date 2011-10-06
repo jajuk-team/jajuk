@@ -281,6 +281,13 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    */
   public void scan(boolean bDeepScan, RefreshReporter reporter) {
 
+    // Wait a given delay (Bug #1793 : some NAS crash due to overload)
+    try {
+      Thread.sleep(Conf.getInt(CONF_REFRESHING_DELAY_MS));
+    } catch (Exception e) {
+      Log.error(e);
+    }
+
     // Make sure to reset the disc ID
     this.discID = -1;
     java.io.File[] filelist = getFio().listFiles(UtilSystem.getFileFilter());
