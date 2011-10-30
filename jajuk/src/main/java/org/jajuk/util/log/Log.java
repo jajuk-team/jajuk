@@ -97,7 +97,7 @@ public final class Log {
    * 
    * @param s DOCUMENT_ME
    */
-  public static void debug(String s) {
+  public static synchronized void debug(String s) {
     // Just display the message if Log is not yet enabled
     if (logger == null) {
       System.out.println("[DEBUG] " + s);
@@ -124,7 +124,7 @@ public final class Log {
    * @param sInfosup DOCUMENT_ME
    * @param t DOCUMENT_ME
    */
-  public static void debug(String sInfosup, Throwable t) {
+  public static synchronized void debug(String sInfosup, Throwable t) {
     // Just make a print stake trace if Log is not yet enabled (example:
     // collection commit problem in initialCheckups)
     if (logger == null) {
@@ -150,7 +150,7 @@ public final class Log {
    * 
    * @param s DOCUMENT_ME
    */
-  public static void info(String s) {
+  public static synchronized void info(String s) {
     // Just display the message if Log is not yet enabled
     if (logger == null) {
       System.out.println("[INFO] " + s);
@@ -165,7 +165,7 @@ public final class Log {
    * 
    * @param s DOCUMENT_ME
    */
-  public static void warn(String s) {
+  public static synchronized void warn(String s) {
     // Just display the message if Log is not yet enabled
     if (logger == null) {
       System.out.println("[WARN] " + s);
@@ -181,7 +181,7 @@ public final class Log {
    * @param s DOCUMENT_ME
    * @param sInfoSup DOCUMENT_ME
    */
-  public static void warn(String s, String sInfoSup) {
+  public static synchronized void warn(String s, String sInfoSup) {
     String sOut = s + ": " + sInfoSup;
     // Just display the message if Log is not yet enabled
     if (logger == null) {
@@ -199,7 +199,7 @@ public final class Log {
    * @param sInfosup : error context information
    * @param t the exception itself
    */
-  public static void warn(int code, String sInfosup, Throwable t) {
+  public static synchronized void warn(int code, String sInfosup, Throwable t) {
     String sOut;
     if (Messages.isInitialized()) {
       sOut = "(" + code + ") " + Messages.getErrorMessage(code)
@@ -225,7 +225,7 @@ public final class Log {
    * @param sInfosup : error context information
    * @param t the exception itself
    */
-  public static void error(int code, String sInfosup, Throwable t) {
+  public static synchronized void error(int code, String sInfosup, Throwable t) {
     // Just make a print stake trace if Log is not yet enabled (example:
     // collection commit problem in initialCheckups)
     if (logger == null) {
@@ -252,7 +252,7 @@ public final class Log {
    * 
    * @param code error code
    */
-  public static void error(int code) {
+  public static synchronized void error(int code) {
     String sOut;
     if (Messages.isInitialized()) {
       sOut = "(" + code + ") " + Messages.getErrorMessage(code);
@@ -274,7 +274,7 @@ public final class Log {
    * 
    * @param t the exception itself
    */
-  public static void error(Throwable t) {
+  public static synchronized void error(Throwable t) {
     // Just make a print stake trace if Log is not yet enabled (example:
     // collection commit problem in initialCheckups)
     if (logger == null) {
@@ -323,7 +323,7 @@ public final class Log {
    * 
    * @param s DOCUMENT_ME
    */
-  public static void fatal(String s) {
+  public static synchronized void fatal(String s) {
     // Just make a print stake trace if Log is not yet enabled (example:
     // collection commit problem in initialCheckups)
     if (logger == null) {
