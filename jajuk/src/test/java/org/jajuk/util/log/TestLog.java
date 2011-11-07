@@ -23,7 +23,6 @@ package org.jajuk.util.log;
 import java.util.List;
 
 import org.jajuk.JajukTestCase;
-import org.jajuk.util.Const;
 import org.jajuk.util.error.JajukException;
 
 /**
@@ -254,30 +253,6 @@ public class TestLog extends JajukTestCase {
     assertTrue(Log.isDebugEnabled());
     Log.setVerbosity(Log.INFO);
     assertFalse(Log.isDebugEnabled());
-  }
-
-  /**
-   * Test method for {@link org.jajuk.util.log.Log#getSpool()}.
-   */
-  public void testGetSpool() {
-    // should return a list and not null
-    assertNotNull(Log.getSpool());
-
-    // create enough spool to overflow
-    for (int i = 0; i < Const.FEEDBACK_LINES + 10; i++) {
-      Log.debug("Spooltest-" + i + '|');
-    }
-
-    // should return the expected number of lines now
-    assertEquals(Log.getSpool().toString(), Const.FEEDBACK_LINES, Log.getSpool().size());
-
-    // now the first ten should be moved out
-    verifySpool("Spooltest-0|", false);
-    verifySpool("Spooltest-9|", false);
-    verifySpool("Spooltest-11|");
-    verifySpool("Spooltest-" + Integer.toString(Const.FEEDBACK_LINES + 9) + '|');
-
-    // more details tested in other methods
   }
 
   /**
