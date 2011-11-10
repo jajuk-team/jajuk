@@ -23,8 +23,6 @@ package org.jajuk.services.tags;
 import java.util.List;
 
 import org.jajuk.services.covers.Cover;
-import org.jaudiotagger.tag.FieldDataInvalidException;
-import org.jaudiotagger.tag.KeyNotFoundException;
 
 /**
  * Mandatory methods required for all tag implementations.

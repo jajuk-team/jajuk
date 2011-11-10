@@ -284,7 +284,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    */
   @Override
   @SuppressWarnings("unchecked")
-  public void opened(Object arg0, Map arg1) {
+  public void opened(Object arg0, @SuppressWarnings("rawtypes") Map arg1) {
     this.mPlayingData = arg1;
     this.lDuration = UtilFeatures.getTimeLengthEstimation(mPlayingData);
   }
@@ -298,8 +298,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    * @param mProperties DOCUMENT_ME
    */
   @Override
-  @SuppressWarnings("unchecked")
-  public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata, Map mProperties) {
+  public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata, @SuppressWarnings("rawtypes") Map mProperties) {
     if ((System.currentTimeMillis() - lDateLastUpdate) > PROGRESS_STEP) {
       lDateLastUpdate = System.currentTimeMillis();
       this.iFadeDuration = 1000 * Conf.getInt(Const.CONF_FADE_DURATION);

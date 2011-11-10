@@ -149,8 +149,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * @param iLayoutHPadding Horizontal layout padding
    * @param iLayoutVPadding Vertical layout padding
    */
-  @SuppressWarnings("unchecked")
-  public Wizard(String sName, Class initial, ImageIcon icon, Image backgroundImage,
+  public Wizard(String sName, Class<? extends Screen> initial, ImageIcon icon, Image backgroundImage,
       Frame parentWindow, Locale locale, int iHSize, int iVSize, int iLayoutHPadding,
       int iLayoutVPadding) {
     bCancelled = false;
@@ -182,8 +181,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * @param iHSize Horizontal size
    * @param iVSize Vertical size
    */
-  @SuppressWarnings("unchecked")
-  public Wizard(String sName, Class initial, ImageIcon icon, Frame parentWindow, Locale locale,
+  public Wizard(String sName, Class<? extends Screen> initial, ImageIcon icon, Frame parentWindow, Locale locale,
       int iHSize, int iVSize) {
     bCancelled = false;
     this.sName = sName;

@@ -42,7 +42,7 @@ import org.jajuk.util.JajukIcons;
 public class StarsHelper {
 
   /** Cache iconLabel for each different rate to save memory and CPU. Map at index 0 stores banned tracks. */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("rawtypes")
   private static Map map[] = { new HashMap<Long, StarIconLabel>(),
       new HashMap<Long, StarIconLabel>(), new HashMap<Long, StarIconLabel>(),
       new HashMap<Long, StarIconLabel>(), new HashMap<Long, StarIconLabel>(),

@@ -43,7 +43,6 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
-import org.jajuk.util.error.JajukException;
 
 /**
  * DOCUMENT_ME.

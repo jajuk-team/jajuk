@@ -261,11 +261,11 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         Album album = track.getAlbum();
 
         // create genre
-        Enumeration e = top.children();
+        Enumeration<GenreNode> e = top.children();
         boolean b = false;
         while (e.hasMoreElements()) { // check the genre doesn't
           // already exist
-          GenreNode sn = (GenreNode) e.nextElement();
+          GenreNode sn = e.nextElement();
           if (sn.getGenre().equals(genre)) {
             b = true;
             genreNode = sn;
@@ -276,16 +276,17 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
           genreNode = new GenreNode(genre);
           top.add(genreNode);
         }
-        // create artist
-        if (genreNode != null) {
-          e = genreNode.children();
-        } else {
+
+        if (genreNode == null) {
           continue;
-        }
+        } 
+
+        // create artist
+        Enumeration<ArtistNode> e2 = genreNode.children();
         b = false;
         while (e.hasMoreElements()) { // check if the artist doesn't
           // already exist
-          ArtistNode an = (ArtistNode) e.nextElement();
+          ArtistNode an = e2.nextElement();
           if (an.getArtist().equals(artist)) {
             b = true;
             artistNode = an;
@@ -297,14 +298,14 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
           genreNode.add(artistNode);
         }
         // create album
-        if (artistNode != null) {
-          e = artistNode.children();
-        } else {
+        if (artistNode == null) {
           continue;
-        }
+        } 
+        
+        Enumeration<AlbumNode> e3 = artistNode.children();
         b = false;
         while (e.hasMoreElements()) {
-          AlbumNode an = (AlbumNode) e.nextElement();
+          AlbumNode an = e3.nextElement();
           if (an.getAlbum().equals(album)) {
             b = true;
             albumNode = an;
@@ -337,11 +338,11 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         Album album = track.getAlbum();
 
         // create artist
-        Enumeration e = top.children();
+        Enumeration<ArtistNode> e = top.children();
         boolean b = false;
         while (e.hasMoreElements()) { // check if the artist doesn't
           // already exist
-          ArtistNode an = (ArtistNode) e.nextElement();
+          ArtistNode an = e.nextElement();
           if (an.getArtist().equals(artist)) {
             b = true;
             artistNode = an;
@@ -352,16 +353,17 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
           artistNode = new ArtistNode(artist);
           top.add(artistNode);
         }
-        // create album
-        if (artistNode != null) {
-          e = artistNode.children();
-        } else {
+
+        if (artistNode == null) {
           continue;
-        }
+        } 
+        
+        // create album
+        Enumeration<AlbumNode> e2 = artistNode.children();
         b = false;
         while (e.hasMoreElements()) { // check if the album doesn't
           // already exist
-          AlbumNode an = (AlbumNode) e.nextElement();
+          AlbumNode an = e2.nextElement();
           if (an.getAlbum().equals(album)) {
             b = true;
             albumNode = an;
@@ -395,11 +397,11 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         Album album = track.getAlbum();
         Year year = track.getYear();
         // create Year
-        Enumeration e = top.children();
+        Enumeration<YearNode> e = top.children();
         boolean b = false;
         // check if the artist doesn't already exist
         while (e.hasMoreElements()) {
-          YearNode yn = (YearNode) e.nextElement();
+          YearNode yn = e.nextElement();
           if (yn.getYear().equals(year)) {
             b = true;
             yearNode = yn;
@@ -410,16 +412,17 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
           yearNode = new YearNode(year);
           top.add(yearNode);
         }
-        // create album
-        if (yearNode != null) {
-          e = yearNode.children();
-        } else {
+        
+        if (yearNode == null) {
           continue;
-        }
+        } 
+        
+        // create album
+        Enumeration<AlbumNode> e1 = yearNode.children();
         b = false;
         while (e.hasMoreElements()) { // check if the album doesn't
           // already exist
-          AlbumNode an = (AlbumNode) e.nextElement();
+          AlbumNode an = e1.nextElement();
           if (an.getAlbum().equals(album)) {
             b = true;
             albumNode = an;

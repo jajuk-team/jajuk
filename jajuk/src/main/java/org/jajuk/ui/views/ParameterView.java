@@ -422,6 +422,7 @@ public class ParameterView extends ViewAdapter {
    *
    * @see org.jajuk.ui.IView#getDesc()
    */
+  @Override
   public String getDesc() {
     return Messages.getString("ParameterView.87");
   }
@@ -431,6 +432,7 @@ public class ParameterView extends ViewAdapter {
    *
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     final Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
@@ -1170,6 +1172,7 @@ public class ParameterView extends ViewAdapter {
     jsCatalogPages.setPaintLabels(true);
     jsCatalogPages.setToolTipText(Integer.toString(jsCatalogPages.getValue()));
     jsCatalogPages.addChangeListener(new ChangeListener() {
+      @Override
       public void stateChanged(ChangeEvent e) {
         jsCatalogPages.setToolTipText(Integer.toString(jsCatalogPages.getValue()));
       }
@@ -1292,6 +1295,7 @@ public class ParameterView extends ViewAdapter {
    *
    * @see org.jajuk.ui.IView#display()
    */
+  @Override
   public void initUI() {
     JPanel jpHistory = initUIHistory();
     JPanel jpStartup = initUIStartup();
@@ -1360,6 +1364,7 @@ public class ParameterView extends ViewAdapter {
    *
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
+  @Override
   public void update(final JajukEvent event) {
     final JajukEvents subject = event.getSubject();
     if (JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
