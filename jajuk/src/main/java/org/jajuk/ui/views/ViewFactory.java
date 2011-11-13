@@ -92,6 +92,7 @@ public final class ViewFactory {
     out.add(AlbumsTableView.class);
     out.add(QueueView.class);
     out.add(ArtistView.class);
+    out.add(WebRadioView.class);
     Collections.sort(out, new Comparator() {
       @Override
       public int compare(Object view1, Object view2) {

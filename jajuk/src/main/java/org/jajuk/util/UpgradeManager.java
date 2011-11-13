@@ -43,6 +43,7 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.dj.AmbienceManager;
+import org.jajuk.services.webradio.WebRadioHelper;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.log.Log;
 
@@ -194,6 +195,9 @@ public final class UpgradeManager implements Const {
         // for Jajuk < 1.9
         upgradeAlarmConfFile();
         upgradeStartupConf();
+
+        // for Jajuk < 1.10
+        upgradeWebRadioFile();
       }
     } catch (Exception e) {
       Log.error(e);
@@ -525,7 +529,29 @@ public final class UpgradeManager implements Const {
     if (AlbumManager.getInstance().getMetaInformation(Const.XML_ALBUM_ARTIST) != null) {
       AlbumManager.getInstance().removeProperty(Const.XML_ALBUM_ARTIST);
     }
+  }
 
+  /**
+   * For jajuk < 1.10, upgrade webradio files
+   */
+  private static void upgradeWebRadioFile() {
+    try {
+      File oldFile = SessionService.getConfFileByPath("webradios.xml");
+      if (oldFile.exists()) {
+        Log.info("Migrating old webradio file : "+oldFile.getAbsolutePath());
+        File newCustomFile = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_CUSTOM);
+        UtilSystem.move(oldFile, newCustomFile);
+        //Load the old file (contains presets + real customs files)  
+        WebRadioHelper.loadCustomRadios();
+        // Download and load the real preset files to override customs and set them 'PRESET' origin
+        // Download repository
+        File fPresets = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET);
+        DownloadManager.download(new URL(Const.URL_WEBRADIO_PRESETS), fPresets);
+        WebRadioHelper.loadPresetsRadios(fPresets); 
+      }
+    } catch (Exception e) {
+      Log.debug("Can't upgrade Webradio file", e);
+    }
   }
 
   /**
@@ -722,4 +748,5 @@ public final class UpgradeManager implements Const {
     }
     return true;
   }
+
 }

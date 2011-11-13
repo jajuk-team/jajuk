@@ -290,8 +290,11 @@ public interface Const {
   /** DOCUMENT_ME. */
   String FILE_DJ_DIR = "djs";
 
-  /** DOCUMENT_ME. */
-  String FILE_WEB_RADIOS_REPOS = "webradios.xml";
+  /** jajuk web radios repository. */
+  String FILE_WEB_RADIOS_CUSTOM = "custom_radios.xml";
+
+  /** Preset web radios file. */
+  String FILE_WEB_RADIOS_PRESET = "preset_radios.xml";
 
   /** DOCUMENT_ME. */
   String FILE_FIFO = "fifo.lst";
@@ -335,7 +338,7 @@ public interface Const {
   String URL_MPLAYER_OSX = "http://repository.jajuk.info/mplayer/osx/1.0rc2/mplayer";
 
   /** DOCUMENT_ME. */
-  String URL_DEFAULT_WEBRADIOS = "http://svn2.assembla.com/svn/common-jukebox/common-jukebox/src/main/resources/preset_radios.xml";
+  String URL_WEBRADIO_PRESETS = "http://svn2.assembla.com/svn/common-jukebox/common-jukebox/src/main/resources/preset_radios.xml";
 
   // sequence
   /** DOCUMENT_ME. */
@@ -863,6 +866,9 @@ public interface Const {
   /** Albums table edition state. */
   String CONF_ALBUMS_TABLE_EDITION = "jajuk.ui.albums_table_edition";
 
+  /** Webradio table edition state. */
+  String CONF_WEBRADIO_TABLE_EDITION = "jajuk.ui.webradio_table_edition";
+
   /** Playlist editor columns to display. */
   String CONF_PLAYLIST_EDITOR_COLUMNS = "jajuk.ui.playlist_editor_columns";
 
@@ -871,6 +877,9 @@ public interface Const {
 
   /** Queue columns to display. */
   String CONF_QUEUE_COLUMNS = "jajuk.ui.queue_columns";
+  
+   /** Web radios view columns to display. */
+  String CONF_WEBRADIO_COLUMNS = "jajuk.ui.webradio_columns";
 
   /** Catalog items size. */
   String CONF_THUMBS_SIZE = "jajuk.ui.cover_catalog.thumbs_size";
@@ -1027,6 +1036,9 @@ public interface Const {
   // XML tags
   /** DOCUMENT_ME. */
   String XML_COLLECTION = "collection";
+  
+  /** Webradio file XML tags static strings*/
+  String XML_RADIO = "Radio";
 
   /** DOCUMENT_ME. */
   String XML_VERSION = "jajuk_version";
@@ -1168,6 +1180,21 @@ public interface Const {
 
   /** DOCUMENT_ME. */
   String XML_URL = "url";
+
+  /** DOCUMENT_ME. */
+  String XML_ORIGIN = "origin";
+
+  /** Keywords, separated by a ';'*/
+  String XML_KEYWORDS = "keywords";
+
+  /** Label*/
+  String XML_LABEL = "label";
+
+  /** Bitrate */
+  String XML_BITRATE = "bitrate";
+
+  /** Frequency */
+  String XML_FREQUENCY = "frequency";
 
   /** DOCUMENT_ME. */
   String XML_QUALITY = "quality";

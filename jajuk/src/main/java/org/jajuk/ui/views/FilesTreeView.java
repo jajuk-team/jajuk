@@ -523,6 +523,10 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
    */
   @Override
   void scrollTo(Item item) {
+    // Make sure item is a file (may be webradio)
+    if (FileManager.getInstance().getFileByID(item.getID()) == null) {
+      return;
+    }
     // Set manual change because we force here tree selection and
     // we don't want to force table views to synchronize
     bInternalAction = true;

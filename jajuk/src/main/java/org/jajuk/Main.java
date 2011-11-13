@@ -40,6 +40,7 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.services.startup.StartupControlsService;
 import org.jajuk.services.startup.StartupEngineService;
 import org.jajuk.services.startup.StartupGUIService;
+import org.jajuk.services.webradio.WebRadioHelper;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -178,6 +179,9 @@ public final class Main {
 
       // Load collection
       StartupCollectionService.loadCollection();
+
+      // Load webradios (should be done synchronously now because of the new WebRadioView)
+      WebRadioHelper.loadWebRadios();
 
       // Upgrade step2 (after collection load)
       UpgradeManager.upgradeStep2();

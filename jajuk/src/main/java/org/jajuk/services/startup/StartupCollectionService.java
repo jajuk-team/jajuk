@@ -31,7 +31,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JOptionPane;
-import javax.xml.parsers.ParserConfigurationException;
 
 import net.miginfocom.layout.LinkHandler;
 
@@ -52,6 +51,7 @@ import org.jajuk.base.YearManager;
 import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.tags.Tag;
+import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
@@ -60,7 +60,6 @@ import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-import org.xml.sax.SAXException;
 
 /**
  * Startup facilities of the collection.
@@ -97,6 +96,8 @@ public final class StartupCollectionService {
     ItemManager.registerItemManager(org.jajuk.base.Track.class, TrackManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Type.class, TypeManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Year.class, YearManager.getInstance());
+    ItemManager.registerItemManager(org.jajuk.services.webradio.WebRadio.class,
+        WebRadioManager.getInstance());
   }
 
   /**
@@ -279,16 +280,7 @@ public final class StartupCollectionService {
       try {
         Collection.load(fCollection);
         bParsingOK = true;
-      } catch (final SAXException e1) {
-        Log.error(5, fCollection.getAbsolutePath(), e1);
-        bParsingOK = false;
-      } catch (final ParserConfigurationException e1) {
-        Log.error(5, fCollection.getAbsolutePath(), e1);
-        bParsingOK = false;
-      } catch (final JajukException e1) {
-        Log.error(5, fCollection.getAbsolutePath(), e1);
-        bParsingOK = false;
-      } catch (final IOException e1) {
+      } catch (final Exception e1) {
         Log.error(5, fCollection.getAbsolutePath(), e1);
         bParsingOK = false;
       }

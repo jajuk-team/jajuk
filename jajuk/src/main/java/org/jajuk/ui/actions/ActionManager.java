@@ -110,7 +110,6 @@ public final class ActionManager {
 
     // JajukJMenuBar: configuration
     installAction(JajukActions.CONFIGURE_DJS, new DJConfigurationAction(), false);
-    installAction(JajukActions.CONFIGURE_WEBRADIOS, new WebRadioConfigurationAction(), false);
     installAction(JajukActions.CONFIGURE_AMBIENCES, new AmbienceConfigurationAction(), false);
     installAction(JajukActions.SIMPLE_DEVICE_WIZARD, new SimpleDeviceWizardAction(), false);
     installAction(JajukActions.OPTIONS, new ConfigurationRequiredAction(), false);
@@ -171,7 +170,7 @@ public final class ActionManager {
     installAction(JajukActions.SAVE_AS, new SaveAsAction(), false);
     installAction(JajukActions.SYNC_TREE_TABLE, new SyncTreeTableAction(), false);
     installAction(JajukActions.SHOW_CURRENTLY_PLAYING, new ShowCurrentlyPlayingAction(), false);
-
+    
     // Preferences
     installAction(JajukActions.BAN, new BanCurrentAction(), false);
     installAction(JajukActions.BAN_SELECTION, new BanSelectionAction(), false);

@@ -372,7 +372,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     initMenuItems();
 
     ColorHighlighter colorHighlighter = new ColorHighlighter(new PlayHighlighterPredicate(
-        editorModel), Color.ORANGE, null);
+        editorTable), Color.ORANGE, null);
     editorTable.addHighlighter(colorHighlighter);
     // register events
     ObservationManager.register(this);

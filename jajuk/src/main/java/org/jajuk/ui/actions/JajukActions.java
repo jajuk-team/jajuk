@@ -236,9 +236,6 @@ public enum JajukActions {
   /** Used to configure ambiences. */
   CONFIGURE_AMBIENCES,
 
-  /** Used to configure webradios. */
-  CONFIGURE_WEBRADIOS,
-
   /** Used to configure the application. */
   OPTIONS,
 
@@ -371,10 +368,10 @@ public enum JajukActions {
   /** Prepare party. */
   PREPARE_PARTY,
 
-  /** fullscreen. */
+  /** Fullscreen. */
   FULLSCREEN_JAJUK,
 
-  /** display donate dialog. */
-  SHOW_DONATE
+  /** Display donate dialog. */
+  SHOW_DONATE,
 
 }

@@ -112,7 +112,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   JajukTable jtable;
 
   /** DOCUMENT_ME. */
-  private JPanel jpControl;
+  JPanel jpControl;
 
   /** DOCUMENT_ME. */
   JajukToggleButton jtbEditable;
@@ -178,7 +178,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   JMenuItem jmiProperties;
 
   /** DOCUMENT_ME. */
-  private JMenuItem jmiFileCopyURL;
+  JMenuItem jmiFileCopyURL;
 
   /** DOCUMENT_ME. */
   PreferencesJMenu pjmTracks;
@@ -323,14 +323,32 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     // Control panel
     jpControl = new JPanel();
     jpControl.setBorder(BorderFactory.createEtchedBorder());
-    jtbEditable = new JajukToggleButton(IconLoader.getIcon(JajukIcons.EDIT));
-    jtbEditable.setToolTipText(Messages.getString("AbstractTableView.11"));
-    jtbEditable.addActionListener(this);
 
     // Create the sync toggle button and restore its state
     jtbSync = new JajukToggleButton(ActionManager.getAction(JajukActions.SYNC_TREE_TABLE));
     jtbSync.putClientProperty(Const.DETAIL_VIEW, getID());
     jtbSync.setSelected(Conf.getBoolean(Const.CONF_SYNC_TABLE_TREE + "." + getID()));
+
+    createGenericGUI(jtbSync);
+    // refresh columns conf in case of some attributes been removed
+    // or added before view instantiation
+    Properties properties = ObservationManager
+        .getDetailsLastOccurence(JajukEvents.CUSTOM_PROPERTIES_ADD);
+    JajukEvent event = new JajukEvent(JajukEvents.CUSTOM_PROPERTIES_ADD, properties);
+    update(event);
+    initTable(); // perform type-specific init
+    // Register keystrokes
+    setKeystrokes();
+  }
+
+  /**
+   * Generic part of the panel 
+   * @param component the component to display before filter
+   */
+  void createGenericGUI(JComponent component) {
+    jtbEditable = new JajukToggleButton(IconLoader.getIcon(JajukIcons.EDIT));
+    jtbEditable.setToolTipText(Messages.getString("AbstractTableView.11"));
+    jtbEditable.addActionListener(this);
 
     jlFilter = new JLabel(Messages.getString("AbstractTableView.0"));
     // properties combo box, fill with columns names expect ID
@@ -354,7 +372,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         bNeedSearch = true;
         lDateTyped = System.currentTimeMillis();
         // Start filtering thread
-        if(!filteringThread.isAlive()) {
+        if (!filteringThread.isAlive()) {
           filteringThread.start();
         }
       }
@@ -373,10 +391,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       }
     });
     jtfValue.setToolTipText(Messages.getString("AbstractTableView.3"));
-    // jtfValue.setToolTipText(Messages.getString("AbstractTableView.3"));
-    jpControl.setLayout(new MigLayout("insets 5", "[][20][grow,gp 70][grow]"));
-    jpControl.add(jtbSync, "gapleft 5");
-    jpControl.add(jtbEditable, "gapright 15");
+    jpControl.setLayout(new MigLayout("insets 5", "[][][grow,gp 70][grow]"));
+    jpControl.add(jtbEditable, "gapleft 5");
+    jpControl.add(component, "gapright 15");
     jpControl.add(jlFilter, "split 2");
     jpControl.add(jcbProperty, "grow,gapright 15");
     jpControl.add(jlEquals, "split 2");
@@ -394,13 +411,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
     // Register on the list for subject we are interested in
     ObservationManager.register(this);
-    // refresh columns conf in case of some attributes been removed
-    // or added before view instantiation
-    Properties properties = ObservationManager
-        .getDetailsLastOccurence(JajukEvents.CUSTOM_PROPERTIES_ADD);
-    JajukEvent event = new JajukEvent(JajukEvents.CUSTOM_PROPERTIES_ADD, properties);
-    update(event);
-    initTable(); // perform type-specific init
+
     // Register keystrokes
     setKeystrokes();
   }
@@ -699,7 +710,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /**
    * Table initialization after table display.
    */
-  abstract void initTable();
+  void initTable() {
+    //Do nothing by default
+  }
 
   /*
    * (non-Javadoc)
@@ -714,7 +727,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       model.setEditable(jtbEditable.isSelected());
       return;
     }
-
   }
 
   /* (non-Javadoc)
@@ -789,7 +801,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     }
 
     // Refresh the preference menu according to the selection
-    pjmTracks.resetUI(jtable.getSelection());
+    // (Useless for WebRadioView)
+    if (!(AbstractTableView.this instanceof WebRadioView)) {
+      pjmTracks.resetUI(jtable.getSelection());
+    }
   }
 
   /**

@@ -64,11 +64,10 @@ public class Tag {
    * Tag constructor.
    * 
    * @param fio DOCUMENT_ME
-   * @param bIgnoreErrors DOCUMENT_ME
+   * @param bIgnoreErrors ignore error and keep instance anyway
    * 
    * @throws JajukException the jajuk exception
    * 
-   * @bIgnoreError : ignore error and keep instance
    */
   public Tag(java.io.File fio, boolean bIgnoreErrors) throws JajukException {
     try {

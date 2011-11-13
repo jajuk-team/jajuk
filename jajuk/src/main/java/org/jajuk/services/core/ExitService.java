@@ -32,7 +32,7 @@ import org.jajuk.services.dbus.DBusManager;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
-import org.jajuk.services.webradio.WebRadioManager;
+import org.jajuk.services.webradio.CustomRadiosPersistenceHelper;
 import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -76,7 +76,7 @@ public class ExitService extends Thread {
     AmbienceManager.getInstance().commit();
 
     // Commit webradios
-    WebRadioManager.getInstance().commit();
+    CustomRadiosPersistenceHelper.commit();
 
     // Store webradio state
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(QueueModel.isPlayingRadio()));

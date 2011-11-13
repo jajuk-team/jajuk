@@ -180,9 +180,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   JMenuItem jmiAmbience;
 
   /** DOCUMENT_ME. */
-  JMenuItem jmiWebradios;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiWizard;
 
   /** DOCUMENT_ME. */
@@ -350,8 +347,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     // Overwrite default icon
     jmiDJ.setIcon(IconLoader.getIcon(JajukIcons.DIGITAL_DJ_16X16));
     jmiAmbience = new JMenuItem(ActionManager.getAction(CONFIGURE_AMBIENCES));
-    jmiWebradios = new JMenuItem(ActionManager.getAction(JajukActions.CONFIGURE_WEBRADIOS));
-    jmiWebradios.setIcon(IconLoader.getIcon(JajukIcons.WEBRADIO_16X16));
     jmiWizard = new JMenuItem(ActionManager.getAction(SIMPLE_DEVICE_WIZARD));
     jmiOptions = new JMenuItem(ActionManager.getAction(OPTIONS));
 
@@ -389,7 +384,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     configuration.addSeparator();
     configuration.add(jmiDJ);
     configuration.add(jmiAmbience);
-    configuration.add(jmiWebradios);
     configuration.add(jmiWizard);
     configuration.add(jmiOptions);
 
