@@ -88,7 +88,7 @@ public abstract class ItemManager {
    * before user could make changes to the collection, we populate a TreeSet
    * from the ArrayList and begin to use it.
    */
-  void switchToOrderState() {
+  public void switchToOrderState() {
     lock.writeLock().lock();
     try {
       // populate a new TreeSet with the startup-items
@@ -114,7 +114,7 @@ public abstract class ItemManager {
   }
 
   /**
-   * Gets the XML label.
+   * Gets the XML tag.
    * 
    * @return identifier used for XML generation
    */
@@ -411,7 +411,7 @@ public abstract class ItemManager {
    *
    * @param item DOCUMENT_ME
    */
-  protected void removeItem(Item item) {
+  public void removeItem(Item item) {
     lock.writeLock().lock();
     try {
       if (item != null) {

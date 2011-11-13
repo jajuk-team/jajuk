@@ -693,7 +693,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
     }
 
     try {
-      StringBuilder sb = new StringBuilder("<").append(getLabel());
+      StringBuilder sb = new StringBuilder("<").append(getXMLTag());
 
       appendXML(sb, Const.XML_ID);
       appendXML(sb, XML_TRACK_RATE);
