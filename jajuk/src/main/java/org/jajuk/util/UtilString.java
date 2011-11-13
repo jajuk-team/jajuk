@@ -367,7 +367,7 @@ public final class UtilString {
     Map<String, Object> properties = track.getProperties();
     Iterator<PropertyMetaInformation> it2 = TrackManager.getInstance().getCustomProperties()
         .iterator();
-    while(it2.hasNext()) {
+    while (it2.hasNext()) {
       PropertyMetaInformation meta = it2.next();
       if (sPattern.contains("%" + meta.getName())) {
         Object o = properties.get(meta.getName());
@@ -563,7 +563,7 @@ public final class UtilString {
    */
   public static DateFormat getLocaleDateFormatter() {
     // store the dateFormat as ThreadLocal to avoid performance impact via the costly construction
-    if(dateFormat.get() == null) {
+    if (dateFormat.get() == null) {
       dateFormat.set(DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault()));
     }
 
@@ -808,8 +808,25 @@ public final class UtilString {
         return false;
       }
     }
-
     return true;
+  }
+
+  /**
+   * Return whether a string is null or void
+   * @param str the string to test
+   * @return whether a string is null or void
+   */
+  public static boolean isEmpty(String str) {
+    return StringUtils.isEmpty(str);
+  }
+
+  /**
+   * Return whether a string is neither null nor void
+   * @param str the string to test
+   * @return whether a string is neither null nor void
+   */
+  public static boolean isNotEmpty(String str) {
+    return !StringUtils.isEmpty(str);
   }
 
   /**
