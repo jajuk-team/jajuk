@@ -20,12 +20,16 @@
  */
 package org.jajuk;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.SwingUtilities;
 
@@ -42,6 +46,7 @@ import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Genre;
 import org.jajuk.base.GenreManager;
+import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
@@ -52,58 +57,19 @@ import org.jajuk.base.YearManager;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
-import org.jajuk.services.core.SessionService;
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
+import org.jajuk.services.webradio.WebRadioManager;
+import org.jajuk.services.webradio.WebRadioOrigin;
 import org.jajuk.util.Const;
+import org.jajuk.util.MD5Processor;
 import org.jajuk.util.log.Log;
 
 /**
  * Small helper class with functionality that is used in multiple unit tests.
  */
 public class JUnitHelpers {
-
-  /**
-   * Set a temporary session directory and make sure it exists and is writeable.
-   *
-   * @throws IOException
-   *           If the temporary directory can not be created or is not writeable
-   */
-  public static void createSessionDirectory() throws IOException {
-    // get a temporary file name
-    File tempdir = File.createTempFile("test", "");
-    if (!tempdir.delete()) {
-      throw new IOException("Could not create the temporary session DIRECTORY at "
-          + tempdir.getAbsolutePath() + ", could not remove the temporary file.");
-    }
-
-    // set the directory as base directory for the workspace
-    SessionService.setWorkspace(tempdir.getAbsolutePath());
-
-    // read the session directory that we are using now for caching
-    File sessiondir = SessionService.getConfFileByPath(Const.FILE_CACHE);
-
-    // create the directory structure
-    sessiondir.mkdirs();
-
-    // do some checks
-    if (!sessiondir.exists()) {
-      throw new IOException("Could not create the temporary session DIRECTORY at "
-          + sessiondir.getAbsolutePath());
-    }
-    if (!sessiondir.isDirectory()) {
-      throw new IOException("Could not create the temporary session DIRECTORY at "
-          + sessiondir.getAbsolutePath() + ", not a DIRECTORY!");
-    }
-    if (!sessiondir.canWrite()) {
-      throw new IOException("Could not create the temporary session DIRECTORY at "
-          + sessiondir.getAbsolutePath() + ", not writeable!");
-    }
-
-    // make sure the directory is removed at the end of the tests again
-    sessiondir.getParentFile().deleteOnExit();
-  }
 
   /**
    * Helper method for removing emma-reports for classes with only static
@@ -567,6 +533,7 @@ public class JUnitHelpers {
   /**
      * Return a file named "test.tst" on a mounted device.
      * @return a file named "test.tst" on a mounted device.
+   * @throws IOException 
      */
   public static org.jajuk.base.File getFile() {
     return getFile("test.tst", true);
@@ -578,6 +545,7 @@ public class JUnitHelpers {
    * @param name DOCUMENT_ME
    * @param mount DOCUMENT_ME
    * @return the file
+   * @throws IOException 
    */
   public static org.jajuk.base.File getFile(String name, boolean mount) {
     Genre genre = getGenre();
@@ -602,8 +570,40 @@ public class JUnitHelpers {
     }
 
     Directory dir = JUnitHelpers.getDirectory();
+    org.jajuk.base.File file = FileManager.getInstance().registerFile(name, dir, track, 120, 70);
+    try {
+      file.getFIO().createNewFile();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    return file;
+  }
 
-    return FileManager.getInstance().registerFile(name, dir, track, 120, 70);
+  /**
+   * Gets a playlist listing the default file and located in the default directory
+   *
+   * @return the playlist
+   * @throws IOException 
+   */
+  public static Playlist getPlaylist() throws IOException {
+    Device device = getDevice();
+    try {
+      device.mount(true);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+    Directory dir = JUnitHelpers.getDirectory();
+    File playlistFile = new File(dir.getAbsolutePath() + "/sample_playlist.m3u");
+    org.jajuk.base.File file = getFile();
+    BufferedWriter bw = new BufferedWriter(new FileWriter(playlistFile));
+    bw.write(file.getAbsolutePath());
+    bw.flush();
+    bw.close();
+    String id = MD5Processor.hash(new StringBuilder(device.getName()).append(dir.getRelativePath())
+        .append(playlistFile.getName()).toString());
+    org.jajuk.base.Playlist playlist = PlaylistManager.getInstance().registerPlaylistFile(id,
+        playlistFile.getAbsolutePath(), dir);
+    return playlist;
   }
 
   /**
@@ -692,29 +692,32 @@ public class JUnitHelpers {
    * @return the device
    */
   public static Device getDevice(String name, Device.Type type, String url) {
-    return DeviceManager.getInstance().registerDevice(name, type, url);
-  }
-
-  /**
-   * Gets the device.
-   *
-   * @return the device
-   */
-  public static Device getDevice() {
-    Device device = getDevice("name", Device.Type.DIRECTORY, ConstTest.PATH_DEVICE);
     // Create the jajuk test device if required
-    new File(device.getUrl()).mkdirs();
+    new File(url).mkdirs();
     // Create at least a void file in the device
     try {
-      new File(device.getUrl() + "/audio1.mp3").createNewFile();
+      new File(url + "/audio1.mp3").createNewFile();
     } catch (IOException e) {
       Log.error(e);
     }
+    Device device = DeviceManager.getInstance().registerDevice(name, type, url);
+    //Register the associated root directory
+    DirectoryManager.getInstance().registerDirectory(device);
     return device;
   }
 
   /**
-   * Gets the directory.
+   * Gets the device., create it on disk if required
+   *
+   * @return the device
+   */
+  public static Device getDevice() {
+    return getDevice("sample_device", Device.Type.DIRECTORY, ConstTest.DEVICES_BASE_PATH
+        + "/sample_device");
+  }
+
+  /**
+   * Gets the directory, create it on disk if required
    *
    * @param name DOCUMENT_ME
    * @param parent DOCUMENT_ME
@@ -722,18 +725,75 @@ public class JUnitHelpers {
    * @return the directory
    */
   public static Directory getDirectory(String name, Directory parent, Device device) {
-    return DirectoryManager.getInstance().registerDirectory(name, parent, device);
+    // create the directory if it doesn't exist yet
+    Directory dir = DirectoryManager.getInstance().registerDirectory(name, parent, device);
+    dir.getFio().mkdirs();
+    return dir;
+  }
+
+  public static Directory getDirectory(String name) {
+    Device device = getDevice();
+    Directory topdir = getTopDirectory();
+    Directory dir = DirectoryManager.getInstance().registerDirectory(name, topdir, device);
+    dir.getFio().mkdirs();
+    return dir;
   }
 
   /**
-   * The "any" directory is the top dir of the device pointing toward $java.io.tmpdir
-   *
+   * The "any" directory is the top dir of the device 
+   *, create it on disk if required
    * @return the directory
    */
   public static Directory getDirectory() {
-    Device device = getDevice();
-    Directory topdir = getTopDirectory();
-    return DirectoryManager.getInstance().registerDirectory("dir", topdir, device);
+    return getDirectory("dir");
+  }
+
+  /**
+  * Returns a web radio
+  *
+  * @return the webradio
+  */
+  public static WebRadio getWebRadio(String name, String url, WebRadioOrigin origin) {
+    WebRadio radio = WebRadioManager.getInstance().registerWebRadio(name);
+    radio.setProperty(Const.XML_URL, url);
+    radio.setProperty(Const.XML_ORIGIN, origin);
+    return radio;
+  }
+
+  /**
+  * Returns a web radio (invalid URL)
+  *
+  * @return the webradio
+  */
+  public static WebRadio getWebRadio() {
+    return getWebRadio("preset1", "http://preset1", WebRadioOrigin.CUSTOM);
+  }
+
+  /**
+  * Returns a list of web radio
+  *
+  * @return the list of web radio
+  */
+  public static List<WebRadio> getWebRadios() {
+
+    //Reset radios
+    WebRadioManager.getInstance().cleanup();
+
+    WebRadio custom1 = getWebRadio("Custom 1", "http://custom1", WebRadioOrigin.CUSTOM);
+    custom1.setProperty(Const.XML_BITRATE, new Long(127));
+    custom1.setProperty(Const.XML_FREQUENCY, new Long(45000));
+    custom1.setProperty(Const.XML_KEYWORDS, "foo,bar");
+    custom1.setProperty(Const.XML_LABEL, "a cool radio");
+
+    WebRadio custom2 = getWebRadio("Custom 2", "http://custom2", WebRadioOrigin.CUSTOM);
+    WebRadio preset1 = getWebRadio("Preset 1", "http://preset1", WebRadioOrigin.PRESET);
+    WebRadio preset2 = getWebRadio("Preset 2", "http://preset2", WebRadioOrigin.PRESET);
+    List<WebRadio> radios = new ArrayList<WebRadio>();
+    radios.add(custom1);
+    radios.add(custom2);
+    radios.add(preset1);
+    radios.add(preset2);
+    return radios;
   }
 
   /**
@@ -762,7 +822,7 @@ public class JUnitHelpers {
    * DOCUMENT_ME.
    */
   public static class MockPlayer implements IPlayerImpl {
-    
+
     /* (non-Javadoc)
      * @see org.jajuk.services.players.IPlayerImpl#stop()
      */

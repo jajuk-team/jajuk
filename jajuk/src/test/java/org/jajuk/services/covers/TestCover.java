@@ -26,6 +26,7 @@ import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.ConstTest;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.services.covers.Cover.CoverType;
@@ -146,7 +147,7 @@ public class TestCover extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testGetSize() throws Exception {
-    File file = File.createTempFile("test", ".txt");
+    File file = File.createTempFile("test", ".txt", new java.io.File(ConstTest.TECH_TESTS_PATH));
 
     // remove it and re-create it with some content
     assertTrue(file.delete());
@@ -162,7 +163,7 @@ public class TestCover extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testGetImage() throws Exception {
-    File file = File.createTempFile("test", ".txt");
+    File file = File.createTempFile("test", ".txt", new java.io.File(ConstTest.DEVICES_BASE_PATH));
     Cover cover = new Cover(file, CoverType.NO_COVER);
 
     // for no-cover, we get back a default image
@@ -227,7 +228,7 @@ public class TestCover extends JajukTestCase {
    */
   public final void testGetFile() throws Exception {
     Cover cover = new Cover(new URL("http://www.example.com/"), CoverType.REMOTE_COVER);
-    Cover cover2 = new Cover(new File("testfile"), CoverType.STANDARD_COVER);
+    Cover cover2 = new Cover(JUnitHelpers.getFile().getFIO(), CoverType.STANDARD_COVER);
 
     assertNotNull(cover.getFile());
     assertNotNull(cover2.getFile());

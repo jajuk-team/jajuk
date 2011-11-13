@@ -181,7 +181,7 @@ public class TestXCheckedButton extends JajukTestCase {
    * DOCUMENT_ME.
    */
   public class DummyIcon implements Icon {
-    
+
     /* (non-Javadoc)
      * @see javax.swing.Icon#getIconHeight()
      */

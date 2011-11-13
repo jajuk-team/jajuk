@@ -80,13 +80,6 @@ public class ThreadTestHelper {
     executions = new int[threadCount];
   }
 
-  /**
-   * Execute test.
-   * DOCUMENT_ME
-   *
-   * @param run DOCUMENT_ME
-   * @throws Exception the exception
-   */
   public void executeTest(TestRunnable run) throws Exception {
     Log.debug("Starting thread test");
 

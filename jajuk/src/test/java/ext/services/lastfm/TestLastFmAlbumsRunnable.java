@@ -26,6 +26,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import org.jajuk.ConstTest;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Track;
@@ -104,13 +105,11 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
 
   /**
    * Test get image for audio file not exists.
-   * DOCUMENT_ME
    */
   public void testGetImageForAudioFileNotExists() {
     Track track = JUnitHelpers.getTrack(3);
     track.getAlbum().setProperty(Const.XML_ALBUM_DISCOVERED_COVER,
-        System.getProperty("java.io.tmpdir") + "nonexist"); // don't read covers
-    // for
+        ConstTest.DEVICES_BASE_PATH + "/device1/nonexist");
     LastFmAlbumsRunnable.getImageForAudioFile(track, 100, 100);
   }
 
@@ -122,7 +121,7 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
    */
   public void testGetImageForAudioFileExists() throws Exception {
     Track track = JUnitHelpers.getTrack(3);
-    File file = File.createTempFile("test", ".img");
+    File file = File.createTempFile("test", ".img", new java.io.File(ConstTest.DEVICES_BASE_PATH));
     track.getAlbum().setProperty(Const.XML_ALBUM_DISCOVERED_COVER, file.getAbsolutePath());
     assertNotNull(LastFmAlbumsRunnable.getImageForAudioFile(track, 200, 100));
 
@@ -139,7 +138,7 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
    */
   public void testGetImageForAudioFileExistsMaxSize() throws Exception {
     Track track = JUnitHelpers.getTrack(3);
-    File file = File.createTempFile("test", ".img");
+    File file = File.createTempFile("test", ".img", new java.io.File(ConstTest.DEVICES_BASE_PATH));
     track.getAlbum().setProperty(Const.XML_ALBUM_DISCOVERED_COVER, file.getAbsolutePath()); // don't
     // read
     // covers
@@ -160,14 +159,9 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
    */
   public void testGetImageForAudioFileExistsNoResize() throws Exception {
     Track track = JUnitHelpers.getTrack(3);
-    File file = File.createTempFile("test", ".img");
-    track.getAlbum().setProperty(Const.XML_ALBUM_DISCOVERED_COVER, file.getAbsolutePath()); // don't
-    // read
-    // covers
-    // for
-
+    File file = File.createTempFile("test", ".img", new java.io.File(ConstTest.DEVICES_BASE_PATH));
+    track.getAlbum().setProperty(Const.XML_ALBUM_DISCOVERED_COVER, file.getAbsolutePath());
     assertNotNull(LastFmAlbumsRunnable.getImageForAudioFile(track, -1, -1));
-
     // TODO: cleanup does not work on Windows because the file seems to still be
     // used somewhere
     file.delete();
@@ -177,7 +171,7 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
    * DOCUMENT_ME.
    */
   private final class MyContextListener implements ContextListener {
-    
+
     /* (non-Javadoc)
      * @see ext.services.lastfm.ContextListener#setLastArtistRetrieved(java.lang.String, long)
      */

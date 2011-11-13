@@ -20,6 +20,8 @@
  */
 package org.jajuk.base;
 
+import java.io.IOException;
+
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.junit.Test;
@@ -127,9 +129,10 @@ public class TestTrack extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Track#removeFile(org.jajuk.base.File)}.
+   * @throws IOException 
    */
   @Test
-  public void testRemoveFile() {
+  public void testRemoveFile() throws IOException {
     // Set-up...
     File file = JUnitHelpers.getFile();
     Track track = file.getTrack();

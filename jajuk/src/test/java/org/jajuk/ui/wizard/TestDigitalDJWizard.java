@@ -33,7 +33,7 @@ import org.qdwizard.Screen;
  * DOCUMENT_ME.
  */
 public class TestDigitalDJWizard extends JajukTestCase {
-  
+
   /**
    * Test method for.
    *

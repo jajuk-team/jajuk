@@ -258,12 +258,12 @@ public class TestUtilString extends JajukTestCase {
 
   public void testMatchesIgnoreCaseAndOrderBenchmark() {
     long overall = 0;
-    for(int i = 0;i < NUMBER_OF_MATCH_TESTS;i++) {
+    for (int i = 0; i < NUMBER_OF_MATCH_TESTS; i++) {
       long dur = runMicroBenchmark();
       System.out.println("Test run took " + dur + "ms");
       overall += dur;
     }
-    System.out.println("Average test duration: " + (overall/NUMBER_OF_MATCH_TESTS));
+    System.out.println("Average test duration: " + (overall / NUMBER_OF_MATCH_TESTS));
   }
 
   /**
@@ -275,15 +275,14 @@ public class TestUtilString extends JajukTestCase {
 
     RandomString str = new RandomString(30);
     RandomString search = new RandomString(6);
-    for(int i = 0; i < MATCHES_PER_TEST;i++) {
+    for (int i = 0; i < MATCHES_PER_TEST; i++) {
       UtilString.matchesIgnoreCaseAndOrder(str.nextString(), search.nextString());
     }
 
     return System.currentTimeMillis() - start;
   }
 
-  public static class RandomString
-  {
+  public static class RandomString {
 
     private static final char[] symbols = new char[63];
 
@@ -301,15 +300,13 @@ public class TestUtilString extends JajukTestCase {
 
     private final char[] buf;
 
-    public RandomString(int length)
-    {
+    public RandomString(int length) {
       if (length < 1)
         throw new IllegalArgumentException("length < 1: " + length);
       buf = new char[length];
     }
 
-    public String nextString()
-    {
+    public String nextString() {
       for (int idx = 0; idx < buf.length; ++idx)
         buf[idx] = symbols[random.nextInt(symbols.length)];
       return new String(buf);

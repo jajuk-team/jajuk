@@ -23,6 +23,7 @@ package org.jajuk.util.filters;
 import java.io.File;
 
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.TypeManager;
 import org.jajuk.services.startup.StartupCollectionService;
@@ -44,30 +45,18 @@ public class TestAudioFilter extends JajukTestCase {
     assertFalse(AudioFilter.getInstance().accept(new File("test.tst")));
     assertTrue(AudioFilter.getInstance().accept(new File("test.mp3")));
     assertTrue(AudioFilter.getInstance().accept(new File("test.ogg")));
-    assertTrue(AudioFilter.getInstance().accept(new File("test.MP3"))); // files
-    // copied
-    // from
-    // windows
-    // to
-    // linux
-    // might
-    // be
-    // uppercase
+    assertTrue(AudioFilter.getInstance().accept(new File("test.MP3")));
+    // files copied from windows to linux might be uppercase
     assertTrue(AudioFilter.getInstance().accept(new File("test.OGG")));
-    assertTrue(AudioFilter.getInstance().accept(new File("test.mP3"))); // manually
-    // entered
-    // filenames
-    // might
-    // be
-    // lowercase/uppercase
-    // mixed
+    assertTrue(AudioFilter.getInstance().accept(new File("test.mP3")));
+    // manually entered filenames might be lowercase/uppercase  mixed
     assertTrue(AudioFilter.getInstance().accept(new File("test.ogG")));
 
     // directories, depends on the setting
     AudioFilter.getInstance().setAcceptDirectories(false);
-    assertFalse(AudioFilter.getInstance().accept(new File(System.getProperty("java.io.tmpdir"))));
+    assertFalse(AudioFilter.getInstance().accept(JUnitHelpers.getDirectory().getFio()));
     AudioFilter.getInstance().setAcceptDirectories(true);
-    assertTrue(AudioFilter.getInstance().accept(new File(System.getProperty("java.io.tmpdir"))));
+    assertTrue(AudioFilter.getInstance().accept(JUnitHelpers.getDirectory().getFio()));
   }
 
   /**

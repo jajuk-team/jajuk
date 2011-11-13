@@ -46,7 +46,7 @@ public class TestArtistManager extends JajukTestCase {
 
   /** The Constant NUMBER_OF_TESTS.  DOCUMENT_ME */
   private static final int NUMBER_OF_TESTS = 10;
-  
+
   /** The Constant NUMBER_OF_THREADS.  DOCUMENT_ME */
   private static final int NUMBER_OF_THREADS = 10;
 

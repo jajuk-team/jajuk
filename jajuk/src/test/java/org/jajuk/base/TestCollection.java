@@ -26,6 +26,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.ConstTest;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.services.startup.StartupCollectionService;
@@ -81,7 +82,8 @@ public class TestCollection extends JajukTestCase {
     Collection coll = Collection.getInstance();
     assertNotNull(coll);
 
-    java.io.File file = java.io.File.createTempFile("testcoll", ".xml");
+    java.io.File file = java.io.File.createTempFile("testcoll", ".xml", new java.io.File(
+        ConstTest.SAMPLE_WORKSPACE_PATH));
 
     // delete the file before writing the collection
     assertTrue(file.delete());
@@ -95,7 +97,9 @@ public class TestCollection extends JajukTestCase {
     assertTrue(str, StringUtils.isNotBlank(str));
     assertTrue(str, str.contains("<" + Const.XML_COLLECTION));
 
-    addSampleTrack();
+    //Add a sample track and files
+    JUnitHelpers.getFile();
+    JUnitHelpers.getTrack(5);
 
     // delete the file before writing the collection
     assertTrue(file.delete());
@@ -109,8 +113,7 @@ public class TestCollection extends JajukTestCase {
     assertTrue(str, StringUtils.isNotBlank(str));
     assertTrue(str, str.contains("<" + Const.XML_COLLECTION));
     // it should also contain the content that we added
-    assertTrue(str, str.contains("testdevice"));
-    assertTrue(str, str.contains("cooldown"));
+    assertTrue(str, str.contains("sample_device"));
 
     // add test for strange error in this testcase on hudson
     assertNotNull(UtilString.getAdditionDateFormatter());
@@ -232,13 +235,15 @@ public class TestCollection extends JajukTestCase {
     assertNotNull(coll.getWrongRightAlbumIDs());
   }
 
-  public void testExportImport() throws IOException, SAXException, JajukException, ParserConfigurationException {
+  public void testExportImport() throws IOException, SAXException, JajukException,
+      ParserConfigurationException {
     StartupCollectionService.registerItemManagers();
 
     Collection coll = Collection.getInstance();
     assertNotNull(coll);
 
-    java.io.File file = java.io.File.createTempFile("testcoll", ".xml");
+    java.io.File file = java.io.File.createTempFile("testcoll", ".xml", new java.io.File(
+        ConstTest.TECH_TESTS_PATH));
 
     // delete the file before writing the collection
     assertTrue(file.delete());
@@ -254,10 +259,11 @@ public class TestCollection extends JajukTestCase {
     assertFalse(str, str.contains(" " + Const.XML_TRACK_RATE));
 
     // now with some content
-    String id = addSampleTrack();
+    String id = JUnitHelpers.getTrack(5).getID();
 
     // set it banned to have this exported as well
     Track track = TrackManager.getInstance().getTrackByID(id);
+    track.setRate(29);
     track.getProperties().put(Const.XML_TRACK_BANNED, true);
 
     // delete the file before writing the collection
@@ -300,48 +306,4 @@ public class TestCollection extends JajukTestCase {
     assertEquals(true, track.getProperties().get(Const.XML_TRACK_BANNED));
   }
 
-  /**
-   *
-   */
-  private String addSampleTrack() {
-    final String id;
-
-    DeviceManager.getInstance().registerDevice("testdevice", Device.Type.FILES_CD,
-        System.getProperty("java.io.tmpdir"));
-    GenreManager.getInstance().registerGenre("cooldown");
-    {
-      Genre genre = GenreManager.getInstance().registerGenre("name");
-      Album album = AlbumManager.getInstance().registerAlbum("name", 23);
-      album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
-      // this test
-
-      Artist artist = ArtistManager.getInstance().registerArtist("name");
-      Year year = YearManager.getInstance().registerYear("2000");
-      YearManager.getInstance().registerYear("2000");
-
-      Type type = TypeManager.getInstance().registerType("MP3", "mp3", null, null);
-
-      Track track = TrackManager.getInstance()
-          .registerTrack("name5", album, genre, artist, 120, year, 1, type, 1);
-      track.setRate(29);
-      id = track.getID();
-    }
-    YearManager.getInstance().registerYear("1900");
-    Device device = new Device("6", System.getProperty("java.io.tmpdir"));
-    device.setUrl(System.getProperty("java.io.tmpdir"));
-    Directory dir = JUnitHelpers.getDirectory();
-    PlaylistManager.getInstance().registerPlaylistFile("4", "plf", dir);
-    ArtistManager.getInstance().registerArtist("testartist");
-    AlbumManager.getInstance().registerAlbum("album2", "artist1", 0);
-
-    device = DeviceManager.getInstance().registerDevice("7", Device.Type.DIRECTORY,
-        System.getProperty("java.io.tmpdir"));
-    DirectoryManager.getInstance().registerDirectory(device);
-    device = new Device("6", System.getProperty("java.io.tmpdir"));
-    device.setUrl(System.getProperty("java.io.tmpdir"));
-    FileManager.getInstance().registerFile("thisfile.mp3", dir,
-        TrackManager.getInstance().getTracks().get(0), 120, 100);
-
-    return id;
-  }
 }

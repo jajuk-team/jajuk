@@ -31,7 +31,7 @@ import org.jajuk.JajukTestCase;
  * DOCUMENT_ME.
  */
 public class TestObservationManager extends JajukTestCase {
-  
+
   /** DOCUMENT_ME. */
   AtomicInteger called = new AtomicInteger(0);
 

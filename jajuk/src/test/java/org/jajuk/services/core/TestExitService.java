@@ -35,8 +35,6 @@ public class TestExitService extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testRun() throws Exception {
-    JUnitHelpers.createSessionDirectory();
-
     StartupCollectionService.registerItemManagers();
 
     ExitService service = new ExitService();

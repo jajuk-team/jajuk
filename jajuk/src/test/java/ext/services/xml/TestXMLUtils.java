@@ -25,6 +25,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.ConstTest;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.util.log.Log;
@@ -163,8 +164,8 @@ public class TestXMLUtils extends JajukTestCase {
     PersonBean bean = new PersonBean();
     bean.setName("testvalue");
 
-    File file = File.createTempFile("test", ".bean");
-    assertTrue(file.delete()); // delte file to create it from scratch
+    File file = File.createTempFile("test", ".bean", new java.io.File(ConstTest.TECH_TESTS_PATH));
+    assertTrue(file.delete()); // delete file to create it from scratch
     assertFalse(file.exists());
     XMLUtils.writeBeanToFile(bean, file.getAbsolutePath());
 
@@ -208,7 +209,7 @@ public class TestXMLUtils extends JajukTestCase {
    * Class <code>PersonBean</code>.
    */
   public class PersonBean implements java.io.Serializable {
-    
+
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1124123276327532379L;
 
@@ -287,7 +288,7 @@ public class TestXMLUtils extends JajukTestCase {
   public final void testReadObjectFromString() throws Exception {
     String str = new String("teststring");
 
-    File file = File.createTempFile("test", ".bean");
+    File file = File.createTempFile("test", ".bean",new java.io.File(ConstTest.TECH_TESTS_PATH));
     assertTrue(file.delete()); // delte file to create it from scratch
     assertFalse(file.exists());
     XMLUtils.writeObjectToFile(str, file.getAbsolutePath());
@@ -320,7 +321,7 @@ public class TestXMLUtils extends JajukTestCase {
   public final void testWriteObjectToFile() throws Exception {
     String str = new String("teststring");
 
-    File file = File.createTempFile("test", ".bean");
+    File file = File.createTempFile("test", ".bean",new java.io.File(ConstTest.TECH_TESTS_PATH));
     assertTrue(file.delete()); // delte file to create it from scratch
     assertFalse(file.exists());
     XMLUtils.writeObjectToFile(str, file.getAbsolutePath());

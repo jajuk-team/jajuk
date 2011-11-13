@@ -131,7 +131,7 @@ public class TestParameterView extends JajukTestCase {
    * DOCUMENT_ME.
    */
   private final class MyItemSelectable implements ItemSelectable {
-    
+
     /* (non-Javadoc)
      * @see java.awt.ItemSelectable#removeItemListener(java.awt.event.ItemListener)
      */

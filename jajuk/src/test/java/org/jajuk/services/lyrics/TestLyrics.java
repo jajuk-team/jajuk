@@ -41,14 +41,14 @@ import org.jajuk.util.log.Log;
 public class TestLyrics extends JajukTestCase {
 
   /** DOCUMENT_ME. */
-  private final File tmp = new File("test.tmp");
-  
+  private File tmp = null;
+
   /** The Constant ARTIST.  DOCUMENT_ME */
   private static final String ARTIST = "Massive Attack";
-  
+
   /** The Constant TITLE.  DOCUMENT_ME */
   private static final String TITLE = "Dissolved Girl";
-  
+
   /** The Constant TESTED_WORD.  DOCUMENT_ME */
   private static final String TESTED_WORD = "Day, yesterday";
 
@@ -76,14 +76,9 @@ public class TestLyrics extends JajukTestCase {
    */
   @Override
   public void setUp() throws IOException {
-    if (tmp.exists()) {
-      tmp.delete();
-    }
-
-    JUnitHelpers.createSessionDirectory();
-
     // to first cover this method while no providers are loaded yet
     LyricsService.getProviders();
+    tmp = JUnitHelpers.getFile("test.tmp", true).getFIO();
   }
 
   /**

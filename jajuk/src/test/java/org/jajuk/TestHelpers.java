@@ -52,7 +52,7 @@ public class TestHelpers extends JajukTestCase {
 
   /** DOCUMENT_ME. */
   Exception exc = null;
-  
+
   /** DOCUMENT_ME. */
   boolean finished = false;
 
@@ -89,7 +89,7 @@ public class TestHelpers extends JajukTestCase {
 
   /** DOCUMENT_ME. */
   private final int COUNT = 10;
-  
+
   /** DOCUMENT_ME. */
   private AtomicInteger count = new AtomicInteger(0);
 

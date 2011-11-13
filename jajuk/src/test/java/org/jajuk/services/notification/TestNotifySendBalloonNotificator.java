@@ -20,6 +20,7 @@
  */
 package org.jajuk.services.notification;
 
+import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.base.File;
@@ -83,7 +84,7 @@ public class TestNotifySendBalloonNotificator extends JajukTestCase {
 
     // only test this if it is available
     if (notificator.isAvailable()) {
-      WebRadio webradio = new WebRadio("a web radio", "http://www.test.org/webradio");
+      WebRadio webradio = JUnitHelpers.getWebRadio();
       notificator.notify(webradio);
     }
   }

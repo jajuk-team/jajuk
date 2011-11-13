@@ -49,7 +49,7 @@ import org.jajuk.util.Const;
  * DOCUMENT_ME.
  */
 public class TestCoverView extends JajukTestCase {
-  
+
   /**
    * Test method for.
    *

@@ -23,6 +23,7 @@ package org.jajuk.services.notification;
 import java.awt.HeadlessException;
 import java.awt.TrayIcon;
 
+import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.base.File;
@@ -100,7 +101,7 @@ public class TestJavaBalloonNotificator extends JajukTestCase {
     try {
       JavaBalloonNotificator notificator = JavaBalloonNotificator.getInstance();
       if (notificator.isAvailable()) {
-        WebRadio webradio = new WebRadio("a web radio", "http://www.test.org/webradio");
+        WebRadio webradio = JUnitHelpers.getWebRadio();
         notificator.notify(webradio);
       }
     } catch (NoClassDefFoundError e) {

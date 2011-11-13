@@ -101,7 +101,7 @@ public class TestJSplashLabel extends JajukTestCase {
    * DOCUMENT_ME.
    */
   private final class MyGraphics2D extends Graphics2D {
-    
+
     /* (non-Javadoc)
      * @see java.awt.Graphics#setXORMode(java.awt.Color)
      */

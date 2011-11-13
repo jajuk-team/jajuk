@@ -900,7 +900,7 @@ public class TestAlbumManager extends JajukTestCase {
    * DOCUMENT_ME.
    */
   public static class MockPlayer implements IPlayerImpl {
-    
+
     /* (non-Javadoc)
      * @see org.jajuk.services.players.IPlayerImpl#stop()
      */

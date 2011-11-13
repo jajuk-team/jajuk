@@ -551,7 +551,7 @@ public class TestItemManager extends JajukTestCase {
    * DOCUMENT_ME.
    */
   private static class LocalIM extends ItemManager {
-    
+
     /* (non-Javadoc)
      * @see org.jajuk.base.ItemManager#getLabel()
      */
@@ -576,7 +576,7 @@ public class TestItemManager extends JajukTestCase {
    * DOCUMENT_ME.
    */
   private static class TestItem extends Item implements Comparable<Item> {
-    
+
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
@@ -617,7 +617,7 @@ public class TestItemManager extends JajukTestCase {
      * @return the label
      */
     @Override
-    String getXMLTag() {
+    public String getXMLTag() {
       return "Test";
     }
 

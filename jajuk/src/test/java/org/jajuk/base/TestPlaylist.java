@@ -21,6 +21,7 @@
 package org.jajuk.base;
 
 import java.awt.HeadlessException;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +102,7 @@ public class TestPlaylist extends JajukTestCase {
     // this is what we read here...
     play.setProperty(Const.XML_DIRECTORY, play.getDirectory().getDevice().getID());
 
-    String str1 = ConstTest.PATH_DEVICE;
+    String str1 = ConstTest.DEVICES_BASE_PATH;
     String str2 = play.getHumanValue(Const.XML_DIRECTORY);
     str1 = StringUtils.stripEnd(str1, java.io.File.separator);
     str2 = StringUtils.stripEnd(str2, java.io.File.separator);
@@ -570,23 +571,26 @@ public class TestPlaylist extends JajukTestCase {
    */
   public final void testGetAbsolutePath() throws Exception {
     Playlist play = createPlaylist();
-    assertEquals(ConstTest.PATH_DEVICE + java.io.File.separator + "dir" + java.io.File.separator
-        + "testdir" + java.io.File.separator + "playlist.m3u", play.getAbsolutePath());
+    assertEquals(ConstTest.DEVICES_BASE_PATH + java.io.File.separator + "dir"
+        + java.io.File.separator + "testdir" + java.io.File.separator + "playlist.m3u",
+        play.getAbsolutePath());
 
     // call it a second time to use the cached version
-    assertEquals(ConstTest.PATH_DEVICE + java.io.File.separator + "dir" + java.io.File.separator
-        + "testdir" + java.io.File.separator + "playlist.m3u", play.getAbsolutePath());
+    assertEquals(ConstTest.DEVICES_BASE_PATH + java.io.File.separator + "dir"
+        + java.io.File.separator + "testdir" + java.io.File.separator + "playlist.m3u",
+        play.getAbsolutePath());
   }
 
   /**
    * Test get absolute path not normal.
    * DOCUMENT_ME
+   * @throws IOException 
    */
-  public final void testGetAbsolutePathNotNormal() {
+  public final void testGetAbsolutePathNotNormal() throws IOException {
     Playlist play = new Playlist(Playlist.Type.BESTOF, "1", "name", null);
     assertTrue(StringUtils.isBlank(play.getAbsolutePath()));
 
-    play.setFIO(new java.io.File("testfile"));
+    play.setFIO(JUnitHelpers.getFile().getFIO());
     assertTrue(StringUtils.isNotBlank(play.getAbsolutePath()));
   }
 
@@ -682,8 +686,7 @@ public class TestPlaylist extends JajukTestCase {
     play.setFIO(null);
     assertNotNull(play.getFIO()); // recreated...
 
-    play.setFIO(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
-        + "testfio"));
+    play.setFIO(new java.io.File(ConstTest.TEMP_PATH + java.io.File.separator + "testfio"));
     assertNotNull(play.getFIO());
   }
 
@@ -714,10 +717,10 @@ public class TestPlaylist extends JajukTestCase {
       Playlist play = createPlaylist();
 
       play.addFile(JUnitHelpers.getFile("file1", false));
-      new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator + "testdir")
-          .mkdir();
+      new java.io.File(JUnitHelpers.getDevice().getUrl() + java.io.File.separator + "testdir")
+          .mkdirs();
 
-      play.setFIO(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
+      play.setFIO(new java.io.File(JUnitHelpers.getDevice().getUrl() + java.io.File.separator
           + "testdir" + java.io.File.separator + "playlist.m3u"));
 
       play.commit();
@@ -820,7 +823,7 @@ public class TestPlaylist extends JajukTestCase {
 
     File file = JUnitHelpers.getFile("file1", false);
 
-    play.setFIO(new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
+    play.setFIO(new java.io.File(JUnitHelpers.getDevice().getUrl() + java.io.File.separator
         + "testdir" + java.io.File.separator + "playlist.m3u"));
 
     play.replaceFile(play.getFiles().get(0), file);

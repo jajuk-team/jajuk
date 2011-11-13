@@ -24,7 +24,6 @@ import junit.framework.TestCase;
 
 import org.jajuk.JUnitHelpers;
 import org.jajuk.base.SearchResult.SearchResultType;
-import org.jajuk.services.webradio.WebRadio;
 
 /**
  * DOCUMENT_ME.
@@ -77,7 +76,7 @@ public class TestSearchResult extends TestCase {
    * Test method for {@link org.jajuk.base.SearchResult#SearchResult(org.jajuk.services.webradio.WebRadio, java.lang.String)}.
    */
   public void testSearchResultWebRadioString() {
-    SearchResult res = new SearchResult(new WebRadio("web", "testurl"), "testresult");
+    SearchResult res = new SearchResult(JUnitHelpers.getWebRadio(), "testresult");
     assertNotNull(res);
   }
 
@@ -112,25 +111,8 @@ public class TestSearchResult extends TestCase {
   public void testGetType() throws Exception {
     SearchResult res = new SearchResult(JUnitHelpers.getFile("file2", true), "testresu");
     assertEquals(SearchResultType.FILE, res.getType());
-
-    res = new SearchResult(new WebRadio("web", "testurl"), "testresu");
+    res = new SearchResult(JUnitHelpers.getWebRadio(), JUnitHelpers.getWebRadio().getName());
     assertEquals(SearchResultType.WEBRADIO, res.getType());
   }
 
-  /**
-   * Test method for {@link org.jajuk.base.SearchResult#getWebradio()}.
-   */
-  public void testGetWebradio() {
-    SearchResult res = new SearchResult(new WebRadio("web1", "testurl"), "testresu");
-    assertEquals(SearchResultType.WEBRADIO, res.getType());
-    assertEquals("web1", res.getWebradio().getName());
-  }
-
-  /**
-   * Test method for {@link org.jajuk.base.SearchResult#getResu()}.
-   */
-  public void testGetResu() {
-    SearchResult res = new SearchResult(new WebRadio("web", "testurl"), "testresu1");
-    assertEquals("testresu1", res.getResu());
-  }
 }

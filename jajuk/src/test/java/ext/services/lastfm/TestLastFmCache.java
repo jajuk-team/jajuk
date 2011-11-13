@@ -40,8 +40,6 @@ public class TestLastFmCache extends JajukTestCase {
    */
   @Override
   protected void setUp() throws Exception {
-    JUnitHelpers.createSessionDirectory();
-
     // make sure the cache is cleaned up front to not find items from previous
     // runs
     LastFmCache cache = new LastFmCache();

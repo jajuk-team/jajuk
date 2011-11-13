@@ -22,7 +22,6 @@ package org.jajuk.util;
 
 import java.awt.HeadlessException;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -30,15 +29,17 @@ import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.SystemUtils;
+import org.jajuk.ConstTest;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.base.Directory;
 import org.jajuk.util.error.JajukException;
 
 /**
  * DOCUMENT_ME.
  */
 public class TestUtilSystem extends JajukTestCase {
-  
+
   /** DOCUMENT_ME. */
   private File file1, file2;
 
@@ -49,10 +50,9 @@ public class TestUtilSystem extends JajukTestCase {
    */
   @Override
   protected void setUp() throws Exception {
-    file1 = File.createTempFile("test", ".jajuk");
-    file2 = File.createTempFile("test", ".jajuk");
-
     super.setUp();
+    file1 = File.createTempFile("test", ".jajuk", new java.io.File(ConstTest.DEVICES_BASE_PATH));
+    file2 = File.createTempFile("test", ".jajuk", new java.io.File(ConstTest.DEVICES_BASE_PATH));
   }
 
   /*
@@ -101,32 +101,6 @@ public class TestUtilSystem extends JajukTestCase {
     assertEquals("this is some test data", FileUtils.readFileToString(file2));
   }
 
-  /**
-   * Test copy file exception.
-   * DOCUMENT_ME
-   *
-   * @throws Exception the exception
-   */
-  public void testCopyFileException() throws Exception {
-    FileUtils.writeStringToFile(file1, "this is some test data");
-    assertTrue(file2.delete());
-    assertTrue(file2.mkdirs()); // should not be able to write if a directory
-    // already exists
-
-    try {
-      UtilSystem.copy(file1, file2);
-      fail("Should report exception");
-    } catch (IOException e) {
-      //
-    }
-  }
-
-  /**
-   * Test copy file file empty.
-   * DOCUMENT_ME
-   *
-   * @throws Exception the exception
-   */
   public void testCopyFileFileEmpty() throws Exception {
     FileUtils.writeStringToFile(file1, "");
 
@@ -142,10 +116,10 @@ public class TestUtilSystem extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testCopyFileFileNotExists() throws Exception {
-    assertTrue(file1.delete());
-    assertFalse(file1.exists());
+    File file = new File("noexistance");
+    assertFalse(file.exists());
     try {
-      UtilSystem.copy(file1, file2);
+      UtilSystem.copy(file, file2);
       fail("Should throw exception");
     } catch (JajukException e) {
       assertEquals(9, e.getCode());
@@ -159,44 +133,25 @@ public class TestUtilSystem extends JajukTestCase {
    * {@link org.jajuk.util.UtilSystem#copy(java.io.File, java.lang.String)}.
    */
   public void testCopyFileString() throws Exception {
+    File file1 = JUnitHelpers.getFile("testfile1", true).getFIO();
+    File file2 = JUnitHelpers.getFile("testfile2", true).getFIO();
     FileUtils.writeStringToFile(file1, "this is some test data");
 
-    UtilSystem.copy(file1, "testfile");
+    UtilSystem.copy(file1, file2);
 
     // file is written into same directory as file1 here
-    assertEquals("this is some test data", FileUtils.readFileToString(new File(new StringBuilder(
-        file1.getParentFile().getAbsolutePath()).append('/').append("testfile").toString())));
+    assertEquals("this is some test data", FileUtils.readFileToString(file2));
   }
 
   /**
    * Test copy file string empty.
-   * DOCUMENT_ME
-   *
+   *    *
    * @throws Exception the exception
    */
   public void testCopyFileStringEmpty() throws Exception {
     FileUtils.writeStringToFile(file1, "");
-
-    UtilSystem.copy(file1, "testfile");
-
+    UtilSystem.copy(file1, file2);
     assertEquals("", FileUtils.readFileToString(file2));
-  }
-
-  /**
-   * Test copy file string not exists.
-   * DOCUMENT_ME
-   *
-   * @throws Exception the exception
-   */
-  public void testCopyFileStringNotExists() throws Exception {
-    assertTrue(file1.delete());
-    assertFalse(file1.exists());
-    try {
-      UtilSystem.copy(file1, "testfile");
-      fail("Should throw exception");
-    } catch (JajukException e) {
-      assertEquals(9, e.getCode());
-    }
   }
 
   /**
@@ -219,15 +174,13 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test copy url string empty.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
   public void testCopyURLStringEmpty() throws Exception {
     FileUtils.writeStringToFile(file1, "");
-
-    UtilSystem.copy(file1.toURI().toURL(), "testfile");
-
+    UtilSystem.copy(file1.toURI().toURL(), file2.getAbsolutePath());
     assertEquals("", FileUtils.readFileToString(file2));
   }
 
@@ -236,10 +189,8 @@ public class TestUtilSystem extends JajukTestCase {
    * DOCUMENT_ME
    */
   public void testCopyURLStringNotExists() {
-    assertTrue(file1.delete());
-    assertFalse(file1.exists());
     try {
-      UtilSystem.copy(file1.toURI().toURL(), "testfile");
+      UtilSystem.copy(file1.toURI().toURL(), "testfile/foo");
       fail("Should throw exception");
     } catch (IOException e) {
       // assertEquals(9, e.getCode());
@@ -268,42 +219,13 @@ public class TestUtilSystem extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testCopyRecursively() throws Exception {
-    assertTrue(file1.delete());
-    assertTrue(file1.mkdir());
-    assertTrue(file2.delete());
-
-    FileUtils.writeStringToFile(new File(file1.getAbsolutePath() + File.separator + "testfile"),
-        "this is some test data");
-
-    UtilSystem.copyRecursively(file1, file2);
-
+    Directory dir1 = JUnitHelpers.getDirectory("dir1");
+    Directory dir2 = JUnitHelpers.getDirectory("dir2");
+    File file = new File(dir1.getAbsolutePath() + "/testfile");
+    FileUtils.writeStringToFile(file, "this is some test data");
+    UtilSystem.copyRecursively(dir1.getFio(), dir2.getFio());
     assertEquals("this is some test data",
-        FileUtils.readFileToString(new File(file2.getAbsolutePath() + File.separator + "testfile")));
-  }
-
-  /**
-   * Test copy recursively cannot make dir.
-   * DOCUMENT_ME
-   *
-   * @throws Exception the exception
-   */
-  public void testCopyRecursivelyCannotMakeDir() throws Exception {
-    assertTrue(file1.delete());
-    assertTrue(file1.mkdir());
-
-    FileUtils.writeStringToFile(new File(file1.getAbsolutePath() + File.separator + "testfile"),
-        "this is some test data");
-
-    try {
-      UtilSystem.copyRecursively(file1, file2);
-      fail("should throw exception because there is a file where we want to create a directory!");
-    } catch (FileNotFoundException e) {
-
-    }
-
-    // assertEquals("", FileUtils.readFileToString(new
-    // File(file2.getAbsolutePath() + File.separator
-    // + "testfile")));
+        FileUtils.readFileToString(new File(dir2.getAbsolutePath() + File.separator + "testfile")));
   }
 
   /**
@@ -314,14 +236,12 @@ public class TestUtilSystem extends JajukTestCase {
    */
   public void testCopyToDir() throws Exception {
     FileUtils.writeStringToFile(file1, "this is some test data");
-    assertTrue(file2.delete());
-    assertTrue(file2.mkdir());
-
-    UtilSystem.copyToDir(file1, file2);
+    Directory dir = JUnitHelpers.getDirectory();
+    UtilSystem.copyToDir(file1, dir.getFio());
 
     assertEquals(
         "this is some test data",
-        FileUtils.readFileToString(new File(file2.getAbsolutePath() + File.separator
+        FileUtils.readFileToString(new File(dir.getAbsolutePath() + File.separator
             + file1.getName())));
   }
 
@@ -350,34 +270,20 @@ public class TestUtilSystem extends JajukTestCase {
    * {@link org.jajuk.util.UtilSystem#createEmptyFile(java.io.File)}.
    */
   public void testCreateEmptyFile() throws Exception {
-    assertTrue(file1.delete());
-    assertFalse(file1.exists());
-
     UtilSystem.createEmptyFile(file1);
-
     assertEquals("", FileUtils.readFileToString(file1));
   }
 
-  /**
-   * Test create empty file exception.
-   * DOCUMENT_ME
-   */
   public void testCreateEmptyFileException() {
-    assertTrue(file1.delete());
-    assertFalse(file1.exists());
-    assertTrue(file1.mkdir()); // test should fail if we try to create a file
-    // when a directory already exists
-
     try {
       UtilSystem.createEmptyFile(file1);
-      fail("Should report exception");
     } catch (IOException e) {
       //
     }
 
     // still a directory now
     assertTrue(file1.exists());
-    assertTrue(file1.isDirectory());
+    assertFalse(file1.isDirectory());
   }
 
   /**
@@ -385,48 +291,36 @@ public class TestUtilSystem extends JajukTestCase {
    *
    * @throws Exception the exception
    */
-  public void testDeleteDir() throws Exception {
-    assertTrue(file1.delete());
-    assertTrue(file1.mkdir());
-
-    FileUtils.writeStringToFile(new File(file1.getAbsolutePath() + File.separator + "testfile"),
-        "this is some test data");
-
-    UtilSystem.deleteDir(file1);
-
-    assertFalse(file1.exists());
+  public void testDeleteDirWithContent() throws Exception {
+    File file = JUnitHelpers.getFile().getFIO();
+    UtilSystem.deleteDir(file);
+    assertFalse(file.exists());
   }
 
   /**
-   * Test delete dir file.
-   * DOCUMENT_ME
-   *
-   * @throws Exception the exception
-   */
+  * Test method for {@link org.jajuk.util.UtilSystem#deleteDir(java.io.File)}.
+  *
+  * @throws Exception the exception
+  */
   public void testDeleteDirFile() throws Exception {
     UtilSystem.deleteDir(file1);
-
     assertFalse(file1.exists());
   }
 
   /**
-   * Test delete dir dir.
-   * DOCUMENT_ME
+   * Test method for {@link org.jajuk.util.UtilSystem#deleteDir(java.io.File)}.
    *
    * @throws Exception the exception
    */
   public void testDeleteDirDir() throws Exception {
-    assertTrue(file1.delete());
+    Directory top = JUnitHelpers.getDirectory();
+    File fileChild = new File(top.getAbsolutePath() + "/child");
+    fileChild.mkdirs();
 
-    // create a directory inside a directory
-    assertTrue(new File(file1.getAbsolutePath() + File.separator + "testdir").mkdirs());
+    UtilSystem.deleteDir(fileChild);
 
-    FileUtils.writeStringToFile(new File(file1.getAbsolutePath() + File.separator + "testdir"
-        + File.separator + "testfile"), "this is some test data");
-
-    UtilSystem.deleteDir(file1);
-
-    assertFalse(file1.exists());
+    assertFalse(fileChild.exists());
+    assertTrue(top.getFio().exists());
   }
 
   /**
@@ -650,10 +544,7 @@ public class TestUtilSystem extends JajukTestCase {
     assertTrue(UtilSystem.isValidFileName(file1.getParentFile(), file1.getName()));
 
     // can be created
-    assertTrue(file1.delete());
     assertTrue(UtilSystem.isValidFileName(file1.getParentFile(), file1.getName()));
-    // should not exist after doing the test
-    assertFalse(file1.exists());
   }
 
   /**
@@ -826,7 +717,7 @@ public class TestUtilSystem extends JajukTestCase {
    * DOCUMENT_ME.
    */
   private static final class MockProcess extends Process {
-    
+
     /** DOCUMENT_ME. */
     boolean throwInExitValue;
 

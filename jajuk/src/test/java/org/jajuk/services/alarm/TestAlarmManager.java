@@ -41,8 +41,6 @@ public class TestAlarmManager extends JajukTestCase {
    */
   @Override
   protected void setUp() throws Exception {
-    JUnitHelpers.createSessionDirectory();
-
     // make sure the FileManager is registered correctly for each invocation
     // this is done during the first access to the singleton
     FileManager.getInstance();

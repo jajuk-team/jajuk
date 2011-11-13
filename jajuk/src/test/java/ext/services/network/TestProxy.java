@@ -34,10 +34,10 @@ import org.jajuk.util.log.Log;
  * DOCUMENT_ME.
  */
 public class TestProxy extends JajukTestCase {
-  
+
   /** The Constant PROXY_PORT.  DOCUMENT_ME */
   private static final int PROXY_PORT = 0; // auto-choose
-  
+
   /** DOCUMENT_ME. */
   ServerSocket socket;
 

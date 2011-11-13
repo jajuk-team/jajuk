@@ -21,8 +21,11 @@
 package org.jajuk.util.filters;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.ConstTest;
+import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 
 /**
@@ -34,10 +37,11 @@ public class TestDirectoryFilter extends JajukTestCase {
    * Test method for.
    *
    * {@link org.jajuk.util.filters.DirectoryFilter#accept(java.io.File)}.
+   * @throws IOException 
    */
-  public void testAcceptFile() {
-    assertTrue(DirectoryFilter.getInstance().accept(new File(System.getProperty("java.io.tmpdir"))));
-    assertFalse(DirectoryFilter.getInstance().accept(new File("notexisting")));
+  public void testAcceptFile() throws IOException {
+    assertTrue(DirectoryFilter.getInstance().accept(new File(ConstTest.TEMP_PATH)));
+    assertFalse(DirectoryFilter.getInstance().accept(JUnitHelpers.getFile().getFIO()));
   }
 
   /**
