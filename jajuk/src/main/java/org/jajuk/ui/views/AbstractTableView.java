@@ -142,7 +142,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   private boolean bNeedSearch = false;
 
   /** Default time in ms before launching a search automatically. */
-  private static final int WAIT_TIME = 300;
+  private static final int WAIT_TIME = 200;
 
   /** Date last key pressed. */
   private long lDateTyped;

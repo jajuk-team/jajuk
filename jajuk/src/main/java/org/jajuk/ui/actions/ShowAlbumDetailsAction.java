@@ -69,7 +69,7 @@ public class ShowAlbumDetailsAction extends JajukAction {
     if (o instanceof Album) {
       album = (Album) o;
     } else if (o instanceof List) {
-      album = (Album) (((List) o).get(0));
+      album = ((List<Album>) o).get(0);
     } else {
       return;
     }

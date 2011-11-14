@@ -69,7 +69,6 @@ public final class ViewFactory {
    * @TODO Refactor this, the known views should be get by reflection (from the
    * default perspectives XML file ?)
    */
-  @SuppressWarnings("unchecked")
   public static List<Class<? extends IView>> getKnownViews() {
     List<Class<? extends IView>> out = new ArrayList<Class<? extends IView>>();
     // Take one instance of each set of view instances mapped to each view
@@ -93,14 +92,14 @@ public final class ViewFactory {
     out.add(QueueView.class);
     out.add(ArtistView.class);
     out.add(WebRadioView.class);
-    Collections.sort(out, new Comparator() {
+    Collections.sort(out, new Comparator<Object>() {
       @Override
       public int compare(Object view1, Object view2) {
         String s1;
         String s2;
         try {
-          s1 = ((IView) ((Class) view1).newInstance()).getDesc();
-          s2 = ((IView) ((Class) view2).newInstance()).getDesc();
+          s1 = ((IView) ((Class<?>) view1).newInstance()).getDesc();
+          s2 = ((IView) ((Class<?>) view2).newInstance()).getDesc();
         } catch (Exception e) {
           throw new RuntimeException(e);
         }

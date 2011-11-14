@@ -456,6 +456,7 @@ public class JUnitHelpers {
     History.getInstance().clear();
 
     // wait a bit to let deferred actions take place before we shut down
+    JUnitHelpers.waitForThreadToFinish("PlayPause Thread");
     JUnitHelpers.waitForThreadToFinish("Cover Refresh Thread");
     JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
     JUnitHelpers.waitForThreadToFinish("Device Refresh Thread");

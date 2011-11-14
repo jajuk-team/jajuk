@@ -379,25 +379,26 @@ public class PlaylistTableModel extends JajukTableModel {
 
       // Custom properties now
       // for tracks
+      Map<String, Object> trackProperties = bf.getTrack().getProperties();
       Iterator<PropertyMetaInformation> it2 = TrackManager.getInstance().getCustomProperties()
           .iterator();
       for (int i = 0; it2.hasNext(); i++) {
         PropertyMetaInformation meta = it2.next();
-        Map<String, Object> properties = bf.getTrack().getProperties();
-        Object o = properties.get(meta.getName());
+        Object o = trackProperties.get(meta.getName());
         if (o != null) {
           oValues[iRow][iNumberStandardCols + i] = o;
         } else {
           oValues[iRow][iNumberStandardCols + i] = meta.getDefaultValue();
         }
       }
+
       // for files
+      Map<String, Object> bfProperties = bf.getProperties();
       it2 = FileManager.getInstance().getCustomProperties().iterator();
       // note that index lust start at custom track properties size
       for (int i = TrackManager.getInstance().getCustomProperties().size(); it2.hasNext(); i++) {
         PropertyMetaInformation meta = it2.next();
-        Map<String, Object> properties = bf.getProperties();
-        Object o = properties.get(meta.getName());
+        Object o = bfProperties.get(meta.getName());
         if (o != null) {
           oValues[iRow][iNumberStandardCols + i] = o;
         } else {

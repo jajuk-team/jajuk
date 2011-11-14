@@ -192,7 +192,6 @@ public class TracksTableModel extends JajukTableModel {
     for (int iRow = 0; it.hasNext(); iRow++) {
       Track track = it.next();
       setItemAt(iRow, track);
-      Map<String, Object> properties = track.getProperties();
       // Id
       oItems[iRow] = track;
       // Play
@@ -344,6 +343,7 @@ public class TracksTableModel extends JajukTableModel {
       bCellEditable[iRow][14] = false;
 
       // Custom properties now
+      Map<String, Object> properties = track.getProperties();
       Iterator<PropertyMetaInformation> it2 = TrackManager.getInstance().getCustomProperties()
           .iterator();
       for (int i = 0; it2.hasNext(); i++) {

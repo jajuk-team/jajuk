@@ -27,6 +27,7 @@ import junit.framework.TestCase;
 import org.jajuk.base.Collection;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.SessionService;
+import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilSystem;
@@ -45,6 +46,14 @@ public abstract class JajukTestCase extends TestCase {
   protected void setUp() throws Exception {
     // let's clean up before we begin any test
     JUnitHelpers.waitForAllWorkToFinishAndCleanup();
+
+    // do the cleanup twice as we have to ensure to clean up things once again when the threads are finally stopped
+    JUnitHelpers.waitForAllWorkToFinishAndCleanup();
+    
+    // assert to find cases where we do not clean up correctly
+    assertEquals(-1, QueueModel.getIndex());
+    assertEquals(0, QueueModel.getQueueSize());
+
     // Clean the collection
     StartupCollectionService.registerItemManagers();
     Collection.clearCollection();

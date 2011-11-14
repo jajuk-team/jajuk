@@ -68,6 +68,7 @@ public final class AmbienceManager implements Observer {
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.GENRE_NAME_CHANGED);
@@ -187,6 +188,7 @@ public final class AmbienceManager implements Observer {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
+  @Override
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.GENRE_NAME_CHANGED.equals(subject)) {

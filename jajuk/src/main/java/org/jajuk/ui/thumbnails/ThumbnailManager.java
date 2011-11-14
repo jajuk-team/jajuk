@@ -130,7 +130,7 @@ public final class ThumbnailManager {
     // do not use URL object has it can corrupt special paths
     ImageIcon ii = new ImageIcon(orig.getAbsolutePath());
     if (ii.getImageLoadStatus() != MediaTracker.COMPLETE) {
-      throw new JajukRuntimeException("Cannot load image : " + orig.getAbsolutePath());
+      throw new JajukRuntimeException("Cannot load image: " + orig.getAbsolutePath() + ", load status is: " + ii.getImageLoadStatus());
     }
     createThumbnail(ii, thumb, maxDim);
   }

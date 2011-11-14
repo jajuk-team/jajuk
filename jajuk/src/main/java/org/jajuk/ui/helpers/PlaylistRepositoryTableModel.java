@@ -122,7 +122,6 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
     for (int iRow = 0; it.hasNext(); iRow++) {
       Playlist plf = it.next();
       setItemAt(iRow, plf);
-      Map<String, Object> properties = plf.getProperties();
       // Id
       oItems[iRow] = plf;
       // Play
@@ -173,6 +172,7 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
       bCellEditable[iRow][4] = false;
 
       // Custom properties now
+      Map<String, Object> properties = plf.getProperties();
       Iterator<PropertyMetaInformation> it2 = PlaylistManager.getInstance().getCustomProperties().iterator();
       for (int i = 0; it2.hasNext(); i++) {
         PropertyMetaInformation meta = it2.next();

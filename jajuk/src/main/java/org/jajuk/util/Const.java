@@ -456,6 +456,9 @@ public interface Const {
   /** DOCUMENT_ME. */
   String EXT_OGG = "ogg";
 
+  /** Ogg Vorbis Audio (see http://en.wikipedia.org/wiki/Ogg, some applications start using this now, e.g. Soundkonverter */
+  String EXT_OGA = "oga";
+
   /** DOCUMENT_ME. */
   String EXT_WAV = "wav";
 

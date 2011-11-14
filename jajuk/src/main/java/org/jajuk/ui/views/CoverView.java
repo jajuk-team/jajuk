@@ -169,7 +169,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   private int index = 0;
 
   /** Event ID., it should be volatile because this mutable field can be set by different threads */
-  private volatile int iEventID;//NOSONAR
+  private volatile int iEventID = 0;//NOSONAR
 
   /** Flag telling that user wants to display a better cover. */
   private boolean bGotoBetter = false;
@@ -587,10 +587,19 @@ public class CoverView extends ViewAdapter implements ActionListener {
     int pos = sFilePath.lastIndexOf('.');
     if (Conf.getBoolean(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY)) {
       // Covers should be stored as folder.xxx for windows explorer
-      String ext = sFilePath.substring(pos, sFilePath.length());
+      final String ext;
+      if (pos == -1) {
+        ext = "";
+      } else {
+        ext = sFilePath.substring(pos, sFilePath.length());
+      }
       String parent = new File(sFilePath).getParent();
       return parent + System.getProperty("file.separator") + "Folder" + ext;
     } else {
+      if (pos == -1) {
+        return sFilePath + Const.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX;
+      }
+
       // Add a jajuk suffix to know this cover has been downloaded by jajuk
       return new StringBuilder(sFilePath).insert(pos, Const.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX)
           .toString();
@@ -665,6 +674,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
       return;
     }
     new Thread("Default cover thread") {
+      @Override
       public void run() {
         Cover cover = alCovers.get(index);
         org.jajuk.base.File fCurrent = fileReference;
@@ -1267,7 +1277,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   @Override
   public void update(final JajukEvent event) {
     final JajukEvents subject = event.getSubject();
-    this.iEventID = UtilSystem.getRandom().nextInt();
+    this.iEventID++;
     final int iLocalEventID = iEventID;
     try {
       searching(true);
@@ -1423,7 +1433,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
 
     // We only need to refresh the other covers if the directory changed 
     // but we still clear tag-based covers even if directory didn't change
-    // so the song-specific tag is token into account. 
+    // so the song-specific tag is taken into account. 
     Iterator<Cover> it = alCovers.iterator();
     while (it.hasNext()) {
       Cover cover = it.next();

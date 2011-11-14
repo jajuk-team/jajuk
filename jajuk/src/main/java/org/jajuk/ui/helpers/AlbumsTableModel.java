@@ -163,7 +163,6 @@ public class AlbumsTableModel extends JajukTableModel {
     for (int iRow = 0; it.hasNext(); iRow++) {
       Album album = it.next();
       setItemAt(iRow, album);
-      Map<String, Object> properties = album.getProperties();
       // Id
       oItems[iRow] = album;
       // Play
@@ -274,6 +273,7 @@ public class AlbumsTableModel extends JajukTableModel {
       bCellEditable[iRow][10] = false;
 
       // Custom properties now
+      Map<String, Object> properties = album.getProperties();
       Iterator<PropertyMetaInformation> it2 = AlbumManager.getInstance().getCustomProperties().iterator();
       for (int i = 0; it2.hasNext(); i++) {
         PropertyMetaInformation meta = it2.next();

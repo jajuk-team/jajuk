@@ -73,18 +73,38 @@ public class Tag {
     try {
       this.fio = fio;
       Type type = TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(fio));
-      tagImpl = type.getTagImpl();
-      if(tagImpl == null && !bIgnoreErrors) {
-        throw new JajukException(103, (fio == null ? "<null>" : fio.getName()));
+      
+      if(type == null) {
+        constructionError(fio, bIgnoreErrors, "No type for file: ");
+        return;
       }
+
+      tagImpl = type.getTagImpl();
+      if(tagImpl == null) {
+        constructionError(fio, bIgnoreErrors, "No TagImpl for file: ");
+        return;
+      }
+      
       tagImpl.setFile(fio);
-      bCorrupted = false;
     } catch (Exception e) {
       bCorrupted = true;
       if (!bIgnoreErrors) {
         throw new JajukException(103, (fio == null ? "<null>" : fio.getName()), e);
       }
     }
+  }
+
+  /**
+   * @param fio
+   * @param bIgnoreErrors
+   * @throws JajukException
+   */
+  private final void constructionError(java.io.File fio, boolean bIgnoreErrors, String error) throws JajukException {
+    if(!bIgnoreErrors) {
+      throw new JajukException(103, error + (fio == null ? "<null>" : fio.getName()));
+    }
+    
+    bCorrupted = true;
   }
 
   /**
@@ -637,7 +657,14 @@ public class Tag {
     if (!(other instanceof Tag)) {
       return false;
     }
-    return this.fio.equals(((Tag) other).getFio());
+    Tag otherTag = (Tag) other;
+    if(fio == null && otherTag.fio == null) {
+      return true;
+    }
+    if(fio == null || otherTag.fio == null) {
+      return false;
+    }
+    return this.fio.equals(otherTag.getFio());
   }
 
   /*
@@ -647,7 +674,8 @@ public class Tag {
    */
   @Override
   public int hashCode() {
-    return fio.getAbsolutePath().hashCode();
+    // use an arbitrary primary number for hashCode if fio is null...
+    return fio == null ? 13 : fio.getAbsolutePath().hashCode();
   }
 
   /*
@@ -657,7 +685,7 @@ public class Tag {
    */
   @Override
   public String toString() {
-    return "Tag of : " + fio.getAbsolutePath();
+    return "Tag of : " + (fio == null ? "<null>" : fio.getAbsolutePath());
   }
 
   /**

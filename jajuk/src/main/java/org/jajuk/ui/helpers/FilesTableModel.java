@@ -211,7 +211,6 @@ public class FilesTableModel extends JajukTableModel {
     for (int iRow = 0; it.hasNext(); iRow++) {
       File file = it.next();
       setItemAt(iRow, file);
-      Map<String, Object> properties = file.getProperties();
       // Id
       oItems[iRow] = file;
       // Play
@@ -384,6 +383,8 @@ public class FilesTableModel extends JajukTableModel {
       bCellEditable[iRow][19] = false;
 
       // -- Custom properties now --
+      Map<String, Object> properties = file.getProperties();
+
       // files custom tags
       Iterator<PropertyMetaInformation> it2 = FileManager.getInstance().getCustomProperties()
           .iterator();
@@ -403,11 +404,12 @@ public class FilesTableModel extends JajukTableModel {
           bCellEditable[iRow][iNumberStandardCols + i] = true;
         }
       }
+
       // tracks custom properties
+      properties = file.getTrack().getProperties();
       it2 = TrackManager.getInstance().getCustomProperties().iterator();
       for (int i = FileManager.getInstance().getCustomProperties().size(); it2.hasNext(); i++) {
         PropertyMetaInformation meta = it2.next();
-        properties = file.getTrack().getProperties();
         Object o = properties.get(meta.getName());
         if (o != null) {
           oValues[iRow][iNumberStandardCols + i] = properties.get(meta.getName());

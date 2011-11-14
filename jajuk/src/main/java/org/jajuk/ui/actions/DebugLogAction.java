@@ -23,6 +23,9 @@ package org.jajuk.ui.actions;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -73,6 +76,16 @@ public class DebugLogAction extends JajukAction {
     text.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
     final JDialog dialog = new JDialog(JajukMainWindow.getInstance(),
         Messages.getString("DebugLogAction.0"), false);
+    JButton jbCopy = new JButton(Messages.getString("DebugLogAction.2"),
+        IconLoader.getIcon(JajukIcons.COPY_TO_CLIPBOARD));
+    jbCopy.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        StringSelection data = new StringSelection(text.getText());
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(data, data);
+      }
+    });
     JButton jbRefresh = new JButton(Messages.getString("DebugLogAction.1"),
         IconLoader.getIcon(JajukIcons.REFRESH));
     jbRefresh.addActionListener(new ActionListener() {
@@ -93,7 +106,8 @@ public class DebugLogAction extends JajukAction {
     JScrollPane panel = new JScrollPane(text);
     UtilGUI.setEscapeKeyboardAction(dialog, panel);
     dialog.add(panel, "grow,wrap");
-    dialog.add(jbRefresh, "split 2,right,sg button");
+    dialog.add(jbCopy, "split 3,right,sg button");
+    dialog.add(jbRefresh, "split 3,right,sg button");
     dialog.add(jbClose, "right,sg button");
     dialog.setPreferredSize(new Dimension(800, 600));
     dialog.pack();

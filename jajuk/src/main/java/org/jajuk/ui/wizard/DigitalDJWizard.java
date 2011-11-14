@@ -179,6 +179,7 @@ public class DigitalDJWizard extends Wizard {
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
 
+    @Override
     public void actionPerformed(ActionEvent e) {
       if (e.getSource() == jrbTransitions) {
         data.put(KEY_DJ_TYPE, DJ_TYPE_TRANSITION);
@@ -263,6 +264,7 @@ public class DigitalDJWizard extends Wizard {
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
 
+    @Override
     public void actionPerformed(ActionEvent e) {
       int row = getWidgetIndex(widgets, (JComponent) e.getSource());
       data.put(KEY_REMOVE, djs.get(row));
@@ -345,6 +347,7 @@ public class DigitalDJWizard extends Wizard {
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
 
+    @Override
     public void actionPerformed(ActionEvent e) {
       int row = getWidgetIndex(widgets, (JComponent) e.getSource());
       // set DJ type useful for screen choice
@@ -442,6 +445,7 @@ public class DigitalDJWizard extends Wizard {
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
 
+    @Override
     public void actionPerformed(ActionEvent e) {
       if (e.getSource() == jrbNew) {
         data.put(KEY_ACTION, ACTION_CREATION);
@@ -607,6 +611,7 @@ public class DigitalDJWizard extends Wizard {
           (Boolean) data.get(KEY_UNICITY));
       jcbUnicity.setToolTipText(Messages.getString("DigitalDJWizard.55"));
       jcbUnicity.addActionListener(new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent arg0) {
           data.put(KEY_UNICITY, jcbUnicity.isSelected());
         }
@@ -653,6 +658,7 @@ public class DigitalDJWizard extends Wizard {
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
 
+    @Override
     public void actionPerformed(ActionEvent ae) {
       if (ae.getSource() == jcbUnicity) {
         data.put(KEY_UNICITY, jcbUnicity.isSelected());
@@ -669,6 +675,7 @@ public class DigitalDJWizard extends Wizard {
      * javax.swing.event.CaretListener#caretUpdate(javax.swing.event.CaretEvent)
      */
 
+    @Override
     public void caretUpdate(CaretEvent ce) {
       if (ce.getSource() == jtfName) {
         data.put(KEY_DJ_NAME, jtfName.getText());
@@ -702,6 +709,7 @@ public class DigitalDJWizard extends Wizard {
      * )
      */
 
+    @Override
     public void stateChanged(ChangeEvent ie) {
       if (ie.getSource() == jsFadeDuration && !jsFadeDuration.getValueIsAdjusting()) {
         data.put(KEY_FADE_DURATION, jsFadeDuration.getValue());
@@ -819,6 +827,7 @@ public class DigitalDJWizard extends Wizard {
         JButton jbDelete = new JButton(IconLoader.getIcon(JajukIcons.DELETE));
         jbDelete.addActionListener(new ActionListener() {
 
+          @Override
           public void actionPerformed(ActionEvent ae) {
             alTransitions.remove(getWidgetIndex(widgets, (JComponent) ae.getSource()));
             refreshScreen();
@@ -839,6 +848,7 @@ public class DigitalDJWizard extends Wizard {
           jbFrom.setToolTipText(transition.getFromString());
         }
         jbFrom.addActionListener(new ActionListener() {
+          @Override
           public void actionPerformed(ActionEvent ae) {
             int row = getWidgetIndex(widgets, (JComponent) ae.getSource());
             addGenre(row, true);
@@ -853,6 +863,7 @@ public class DigitalDJWizard extends Wizard {
           jbTo.setToolTipText(transition.getToString());
         }
         jbTo.addActionListener(new ActionListener() {
+          @Override
           public void actionPerformed(ActionEvent ae) {
             int row = getWidgetIndex(widgets, (JComponent) ae.getSource());
             addGenre(row, false);
@@ -863,6 +874,7 @@ public class DigitalDJWizard extends Wizard {
         // Nb of tracks
         JSpinner jsNb = new JSpinner(new SpinnerNumberModel(transition.getNbTracks(), 1, 10, 1));
         jsNb.addChangeListener(new ChangeListener() {
+          @Override
           public void stateChanged(ChangeEvent ce) {
             int row = getWidgetIndex(widgets, (JComponent) ce.getSource());
             int nb = Integer.parseInt(((JSpinner) ce.getSource()).getValue().toString());
@@ -1084,6 +1096,7 @@ public class DigitalDJWizard extends Wizard {
         JButton jbDelete = new JButton(IconLoader.getIcon(JajukIcons.DELETE));
         jbDelete.addActionListener(new ActionListener() {
 
+          @Override
           public void actionPerformed(ActionEvent ae) {
             proportions.remove(getWidgetIndex(widgets, (JComponent) ae.getSource()));
             data.put(KEY_PROPORTIONS, getCleanedProportions());
@@ -1104,6 +1117,7 @@ public class DigitalDJWizard extends Wizard {
           jbGenre.setToolTipText(proportion.getGenresDesc());
         }
         jbGenre.addActionListener(new ActionListener() {
+          @Override
           public void actionPerformed(ActionEvent ae) {
             int row = getWidgetIndex(widgets, (JComponent) ae.getSource());
             addGenre(row);
@@ -1115,6 +1129,7 @@ public class DigitalDJWizard extends Wizard {
         JSpinner jsNb = new JSpinner(new SpinnerNumberModel(
             (int) (proportion.getProportion() * 100), 1, 100, 1));
         jsNb.addChangeListener(new ChangeListener() {
+          @Override
           public void stateChanged(ChangeEvent ce) {
             if (getTotalValue() > 100) {
               setProblem(Messages.getString("DigitalDJWizard.59"));
@@ -1370,6 +1385,7 @@ public class DigitalDJWizard extends Wizard {
      * @see
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
       int row = getWidgetIndex(widgets, (JComponent) e.getSource());
       data.put(KEY_AMBIENCE, ambiences.get(row));
@@ -1522,10 +1538,10 @@ public class DigitalDJWizard extends Wizard {
         Ambience ambience = (Ambience) data.get(KEY_AMBIENCE);
         ((AmbienceDigitalDJ) dj).setAmbience(ambience);
       } else if (TypeSelectionPanel.DJ_TYPE_PROPORTION.equals(sType)) {
-        List<Proportion> proportions = (List) data.get(KEY_PROPORTIONS);
+        List<Proportion> proportions = (List<Proportion>) data.get(KEY_PROPORTIONS);
         ((ProportionDigitalDJ) dj).setProportions(proportions);
       } else if (TypeSelectionPanel.DJ_TYPE_TRANSITION.equals(sType)) {
-        List<Transition> transitions = (List) data.get(KEY_TRANSITIONS);
+        List<Transition> transitions = (List<Transition>) data.get(KEY_TRANSITIONS);
         ((TransitionDigitalDJ) dj).setTransitions(transitions);
       }
       setProperties(dj);

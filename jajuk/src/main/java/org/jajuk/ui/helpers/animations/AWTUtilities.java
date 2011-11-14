@@ -37,11 +37,10 @@ public class AWTUtilities {
    * 
    * @return true, if is available
    */
-  @SuppressWarnings("unchecked")
   public static boolean isAvailable() {
     try {
       @SuppressWarnings("unused")
-      Class awtutil = Class.forName("com.sun.awt.AWTUtilities");
+      Class<?> awtutil = Class.forName("com.sun.awt.AWTUtilities");
       return true;
     } catch (Exception ex) {
       // Void on purpose, means that this JRE doesn't support the com.sun.awt.AWTUtilities class, do
@@ -57,10 +56,9 @@ public class AWTUtilities {
    * @param window DOCUMENT_ME
    * @param shape DOCUMENT_ME
    */
-  @SuppressWarnings("unchecked")
   public static void setWindowShape(Window window, Shape shape) {
     try {
-      Class awtutil = Class.forName("com.sun.awt.AWTUtilities");
+      Class<?> awtutil = Class.forName("com.sun.awt.AWTUtilities");
       Method setWindowShape = awtutil.getMethod("setWindowShape", Window.class, Shape.class);
       setWindowShape.invoke(null, window, shape);
     } catch (Exception ex) {
@@ -76,10 +74,9 @@ public class AWTUtilities {
    * @param window DOCUMENT_ME
    * @param alpha DOCUMENT_ME
    */
-  @SuppressWarnings("unchecked")
   public static void setWindowOpacity(Window window, float alpha) {
     try {
-      Class awtutil = Class.forName("com.sun.awt.AWTUtilities");
+      Class<?> awtutil = Class.forName("com.sun.awt.AWTUtilities");
       Method setWindowOpaque = awtutil.getMethod("setWindowOpacity", Window.class, float.class);
       setWindowOpaque.invoke(null, window, alpha);
     } catch (Exception ex) {

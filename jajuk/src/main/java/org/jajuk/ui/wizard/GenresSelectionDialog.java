@@ -79,8 +79,7 @@ public class GenresSelectionDialog extends JajukJDialog implements ActionListene
    * 
    * @param disabledGenres DOCUMENT_ME
    */
-  @SuppressWarnings("unchecked")
-  public GenresSelectionDialog(Set disabledGenres) {
+  public GenresSelectionDialog(Set<Genre> disabledGenres) {
     super();
     this.selectedGenres = new HashSet<Genre>();
     this.disabledGenres = disabledGenres;
@@ -135,12 +134,12 @@ public class GenresSelectionDialog extends JajukJDialog implements ActionListene
    */
   @SuppressWarnings("unchecked")
   private void initUI() {
-    list = (List) (GenreManager.getInstance().getGenresList()).clone();
+    list = (List<String>) (GenreManager.getInstance().getGenresList()).clone();
     // remove disabled items
     if (disabledGenres != null) {
-      Iterator it = list.iterator();
+      Iterator<String> it = list.iterator();
       while (it.hasNext()) {
-        String testedGenre = (String) it.next();
+        String testedGenre = it.next();
         for (Genre disabledGenre : disabledGenres) {
           if (disabledGenre.getName2().equals(testedGenre)) {
             it.remove();

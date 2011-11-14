@@ -267,7 +267,7 @@ public class TestAlbum extends JajukTestCase {
    *
    * @throws Exception the exception
    */
-  public final void testGetCoverFile() throws Exception {
+  public final void testFindCover1() throws Exception {
     Album album = new Album("1", "name", 123);
 
     // no file at first
@@ -301,11 +301,46 @@ public class TestAlbum extends JajukTestCase {
 
     // Unregister the tmp device
     DeviceManager.getInstance().removeDevice(tmpDevice);
-
-    // TODO: some code is still not covered here, need to find out how to do
-    // that...
   }
 
+  public final void testFindCover2() throws Exception {
+    // need item managers to do this step
+    StartupCollectionService.registerItemManagers();
+
+    Album album = new Album("1", "name", 123);
+
+    assertNull("null for new empty album", album.findCover());
+    assertFalse(album.containsCover());
+    
+    album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE);
+
+    assertNull("still null if we have 'none' set as cover", album.findCover());
+    assertFalse(album.containsCover());
+    
+    album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, "notexist");
+    
+    assertNull("still null if we have an invalid file set as cover", album.findCover());
+    assertFalse(album.containsCover());
+    
+    album.removeProperty(Const.XML_ALBUM_DISCOVERED_COVER);
+    album.getTracksCache().add(getTrack(album));
+    assertFalse(album.getAny().isEmpty());
+        
+    assertNull("still null with a track which has no cover in the directory", album.findCover());
+    assertFalse(album.containsCover());
+
+    java.io.File file = java.io.File.createTempFile("jajuk_test", ".png");
+
+    album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, file.getAbsolutePath());
+    assertNotNull("now we should find the cover", album.findCover());
+    assertTrue(album.containsCover());
+    
+    album.removeProperty(Const.XML_ALBUM_DISCOVERED_COVER);
+    album.setProperty(Const.XML_ALBUM_SELECTED_COVER, file.getAbsolutePath());
+    assertNotNull("now we should find the selected cover", album.findCover());
+    assertFalse("Still not a discovered cover now", album.containsCover());
+  }
+  
   /**
    * Test method for {@link org.jajuk.base.Album#getThumbnail(int)}.
    *
@@ -648,5 +683,20 @@ public class TestAlbum extends JajukTestCase {
 
     // here we should get the artist from the first Track as the album artist is "unknown"
     assertEquals("artistname", album.getArtistOrALbumArtist());
+  }
+
+  public final void testSeemsUnknown() {
+    // need item managers to do this step
+    StartupCollectionService.registerItemManagers();
+
+    Album album = new Album("1", "name", 123);
+
+    assertFalse(album.seemsUnknown());
+    
+    album = new Album("2", "unknown", 124);
+    assertTrue(album.seemsUnknown());
+
+    album = new Album("3", Const.UNKNOWN_ALBUM, 125);
+    assertTrue(album.seemsUnknown());
   }
 }

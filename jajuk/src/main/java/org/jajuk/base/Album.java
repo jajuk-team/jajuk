@@ -301,15 +301,22 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * file is not guarantee to exist, so use a try/catch around a future access to this method.
    */
   public File findCover() {
-    String discoveredCoverPath = getStringValue(XML_ALBUM_DISCOVERED_COVER);
+    // first check if we have a selected cover that still exists
     String selectedCoverPath = getStringValue(XML_ALBUM_SELECTED_COVER);
     if (StringUtils.isNotBlank(selectedCoverPath) && new File(selectedCoverPath).exists()) {
       // If user-selected cover is available, just return its path
       return new File(selectedCoverPath);
-    } else if (StringUtils.isNotBlank(discoveredCoverPath)
+    } 
+
+    // otherwise check if the "discovered cover" is set to "none"
+    String discoveredCoverPath = getStringValue(XML_ALBUM_DISCOVERED_COVER);
+    if (StringUtils.isNotBlank(discoveredCoverPath)
         && COVER_NONE.equals(discoveredCoverPath)) {
       return null;
-    } else if (StringUtils.isNotBlank(discoveredCoverPath)) {
+    } 
+
+    // now check if the "discovdered cover" is available
+    if (StringUtils.isNotBlank(discoveredCoverPath)) {
       // Check if discovered cover still exist. There is an overhead
       // drawback but otherwise, the album's cover
       // property may be stuck to an old device's cover url.
@@ -317,14 +324,19 @@ public class Album extends LogicalItem implements Comparable<Album> {
       // Regularly dropped.
       Device device = DeviceManager.getInstance().getDeviceByPath(new File(discoveredCoverPath));
       // If the device is not mounted, do not perform this existence check up
-      if (device != null && device.isMounted()) {
-        if (new File(discoveredCoverPath).exists()) {
+      if (device != null) {
+        if(device.isMounted()) {
+          if (new File(discoveredCoverPath).exists()) {
+            return new File(discoveredCoverPath);
+          }
+        } else {
           return new File(discoveredCoverPath);
         }
-      } else {
+      } else if (new File(discoveredCoverPath).exists()) {
         return new File(discoveredCoverPath);
       }
     }
+
     // None cover yet set or it is no more accessible.
     // Search for local covers in all directories mapping the current track
     // to reach other devices covers and display them together
