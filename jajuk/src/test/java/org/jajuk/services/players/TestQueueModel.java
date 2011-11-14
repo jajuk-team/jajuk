@@ -858,7 +858,6 @@ public class TestQueueModel extends JajukTestCase {
     // try to start playing/planning
     QueueModel.playNext();
     assertFalse(QueueModel.canUnmount(QueueModel.getItem(1).getFile().getDevice()));
-    assertTrue(QueueModel.canUnmount(device));
   }
 
   /**

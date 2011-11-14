@@ -650,8 +650,9 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
 
   /**
    * Remove a track from the playlist.
+   * We expect at this point that the playlist has already been loaded once at least.
    * 
-   * @param index DOCUMENT_ME
+   * @param index 
    */
   public void remove(final int index) {
     if (type == Type.BOOKMARK) {

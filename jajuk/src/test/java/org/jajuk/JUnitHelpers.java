@@ -64,6 +64,7 @@ import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.services.webradio.WebRadioOrigin;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -588,22 +589,25 @@ public class JUnitHelpers {
    */
   public static Playlist getPlaylist() throws IOException {
     Device device = getDevice();
-    try {
-      device.mount(true);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
     Directory dir = JUnitHelpers.getDirectory();
     File playlistFile = new File(dir.getAbsolutePath() + "/sample_playlist.m3u");
-    org.jajuk.base.File file = getFile();
+    org.jajuk.base.File file1 = getFile("1",true);
+    org.jajuk.base.File file2 = getFile("2",true);
     BufferedWriter bw = new BufferedWriter(new FileWriter(playlistFile));
-    bw.write(file.getAbsolutePath());
+    bw.write(file1.getAbsolutePath()+"\n");
+    bw.write(file2.getAbsolutePath());
     bw.flush();
     bw.close();
     String id = MD5Processor.hash(new StringBuilder(device.getName()).append(dir.getRelativePath())
         .append(playlistFile.getName()).toString());
     org.jajuk.base.Playlist playlist = PlaylistManager.getInstance().registerPlaylistFile(id,
-        playlistFile.getAbsolutePath(), dir);
+        playlistFile.getName(), dir);
+    // Force playlist loading
+    try {
+      playlist.getFiles();
+    } catch (JajukException e) {
+      Log.error(e);
+    }
     return playlist;
   }
 

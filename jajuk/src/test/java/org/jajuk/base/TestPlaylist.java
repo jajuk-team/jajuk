@@ -37,7 +37,6 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
 
 /**
  * DOCUMENT_ME.
@@ -95,19 +94,7 @@ public class TestPlaylist extends JajukTestCase {
    * {@link org.jajuk.base.Playlist#getHumanValue(java.lang.String)}.
    */
   public final void testGetHumanValue() throws Exception {
-    Playlist play = createPlaylist();
-
-    DirectoryManager.getInstance().registerDirectory(play.getDirectory().getDevice());
-
-    // this is what we read here...
-    play.setProperty(Const.XML_DIRECTORY, play.getDirectory().getDevice().getID());
-
-    String str1 = ConstTest.DEVICES_BASE_PATH;
-    String str2 = play.getHumanValue(Const.XML_DIRECTORY);
-    str1 = StringUtils.stripEnd(str1, java.io.File.separator);
-    str2 = StringUtils.stripEnd(str2, java.io.File.separator);
-    assertEquals(str1, str2);
-
+    Playlist play = JUnitHelpers.getPlaylist();
     assertEquals("", play.getHumanValue("notexist"));
 
     // define property
@@ -126,42 +113,6 @@ public class TestPlaylist extends JajukTestCase {
   }
 
   /**
-   * Creates the playlist.
-   * DOCUMENT_ME
-   *
-   * @return the playlist
-   * @throws Exception the exception
-   */
-  private Playlist createPlaylist() throws Exception {
-    Device device = JUnitHelpers.getDevice();
-    Directory topdir = JUnitHelpers.getDirectory();
-    try {
-      topdir.getDevice().mount(true);
-    } catch (Exception e) {
-      Log.error(e);
-    }
-    Directory dir = JUnitHelpers.getDirectory("testdir", topdir, device);
-    // cleanup
-    dir.getFio().delete();
-    dir.getFio().mkdirs();
-
-    java.io.File fioPlaylist = new java.io.File(dir.getAbsolutePath() + "/playlist.m3u");
-    Playlist play = PlaylistManager.getInstance().registerPlaylistFile(fioPlaylist, dir);
-
-    List<org.jajuk.base.File> list = new ArrayList<org.jajuk.base.File>();
-    list.add(JUnitHelpers.getFile("file1", false));
-    list.add(JUnitHelpers.getFile("file1", false));
-
-    play.setFiles(list);
-    try {
-      play.commit();
-    } catch (JajukException e) {
-      Log.error(e);
-    }
-    return play;
-  }
-
-  /**
    * Test method for {@link org.jajuk.base.Playlist#getIconRepresentation()}.
    */
   public final void testGetIconRepresentation() {
@@ -175,7 +126,7 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testGetRate() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
     play.remove(0);
     play.remove(0);
 
@@ -207,7 +158,7 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testGetRateNull() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
     play.setFiles(null);
 
     assertEquals(0, play.getRate());
@@ -240,7 +191,7 @@ public class TestPlaylist extends JajukTestCase {
    * {@link org.jajuk.base.Playlist#addFile(org.jajuk.base.File)}.
    */
   public final void testAddFileFile() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
     play.remove(0);
     play.remove(0);
 
@@ -304,7 +255,7 @@ public class TestPlaylist extends JajukTestCase {
    * {@link org.jajuk.base.Playlist#addFile(int, org.jajuk.base.File)}.
    */
   public final void testAddFileIntFile() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
     play.remove(0);
     play.remove(0);
 
@@ -334,7 +285,7 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testAddFiles() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
     play.remove(0);
     play.remove(0);
 
@@ -362,7 +313,7 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testClear() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
 
     // nothing happens without content
     play.clear();
@@ -416,7 +367,7 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testCommit() throws Exception {
-    Playlist playlist = createPlaylist();
+    Playlist playlist = JUnitHelpers.getPlaylist();
     playlist.commit();
   }
 
@@ -465,7 +416,7 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testDown() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
     play.remove(0);
     play.remove(0);
 
@@ -560,7 +511,7 @@ public class TestPlaylist extends JajukTestCase {
    */
   public final void testForceRefresh() throws Exception {
     // make sure we have a playlist stored before
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
     play.forceRefresh();
   }
 
@@ -570,14 +521,12 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testGetAbsolutePath() throws Exception {
-    Playlist play = createPlaylist();
-    assertEquals(ConstTest.DEVICES_BASE_PATH + java.io.File.separator + "dir"
-        + java.io.File.separator + "testdir" + java.io.File.separator + "playlist.m3u",
+    Playlist play = JUnitHelpers.getPlaylist();
+    assertEquals(ConstTest.DEVICES_BASE_PATH + "/sample_device/dir/sample_playlist.m3u",
         play.getAbsolutePath());
 
     // call it a second time to use the cached version
-    assertEquals(ConstTest.DEVICES_BASE_PATH + java.io.File.separator + "dir"
-        + java.io.File.separator + "testdir" + java.io.File.separator + "playlist.m3u",
+    assertEquals(ConstTest.DEVICES_BASE_PATH + "/sample_device/dir/sample_playlist.m3u",
         play.getAbsolutePath());
   }
 
@@ -611,7 +560,7 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testGetFiles() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
     play.remove(0);
     play.remove(0);
 
@@ -628,7 +577,7 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testGetFilesNull() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
     play.setFiles(null); // null as list!
     assertEquals(2, play.getFiles().size());
   }
@@ -696,7 +645,7 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testIsReady() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
 
     // mounted initially
     assertTrue(play.isReady());
@@ -714,7 +663,7 @@ public class TestPlaylist extends JajukTestCase {
   public final void testLoad() throws Exception {
     // first commit a playlist
     {
-      Playlist play = createPlaylist();
+      Playlist play = JUnitHelpers.getPlaylist();
 
       play.addFile(JUnitHelpers.getFile("file1", false));
       new java.io.File(JUnitHelpers.getDevice().getUrl() + java.io.File.separator + "testdir")
@@ -726,13 +675,13 @@ public class TestPlaylist extends JajukTestCase {
       play.commit();
     }
 
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
     List<File> list = play.load();
     assertNotNull(list);
 
-    assertEquals(2, list.size());
+    assertEquals(3, list.size());
 
-    assertEquals("file1", list.get(0).getName());
+    assertEquals("1", list.get(0).getName());
   }
 
   /**
@@ -741,7 +690,7 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testPlay() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
 
     // some error without files
     play.play();
@@ -759,7 +708,7 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testPlayNull() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
 
     // some error without files
     play.setFiles(null);
@@ -782,7 +731,7 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testRemove() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
     play.addFile(JUnitHelpers.getFile("file1", false));
     play.remove(0);
   }
@@ -803,8 +752,9 @@ public class TestPlaylist extends JajukTestCase {
   /**
    * Test remove queue.
    * DOCUMENT_ME
+   * @throws JajukException 
    */
-  public final void testRemoveQueue() {
+  public final void testRemoveQueue() throws JajukException {
     Playlist play = getPlaylistQueue();
     play.remove(0);
   }
@@ -817,7 +767,7 @@ public class TestPlaylist extends JajukTestCase {
    * .
    */
   public final void testReplaceFile() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
 
     play.addFile(JUnitHelpers.getFile("file1", false));
 
@@ -896,7 +846,7 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testSaveAs() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
 
     try {
       play.saveAs();
@@ -1001,7 +951,7 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testSetFiles() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
 
     List<File> list = new ArrayList<File>();
     list.add(JUnitHelpers.getFile("file1", false));
@@ -1079,7 +1029,7 @@ public class TestPlaylist extends JajukTestCase {
   public final void testGetHits() throws Exception {
     FileManager.getInstance().clear();
 
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
 
     // first without files
     assertEquals(0, play.getHits());
@@ -1114,7 +1064,7 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testGetHitsNull() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
     play.setFiles(null);
 
     // first without files
@@ -1127,7 +1077,7 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testGetDuration() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
     play.remove(0);
     play.remove(0);
 
@@ -1154,7 +1104,7 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testGetDurationNull() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
     play.setFiles(null);
 
     // at first no duration at all
@@ -1167,7 +1117,7 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testGetNbOfTracks() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
     play.remove(0);
     play.remove(0);
 
@@ -1189,7 +1139,7 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testGetNbOfTracksNull() throws Exception {
-    Playlist play = createPlaylist();
+    Playlist play = JUnitHelpers.getPlaylist();
     play.setFiles(null);
 
     assertEquals(0, play.getNbOfTracks());
