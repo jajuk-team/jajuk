@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.jajuk.ConstTest;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.services.startup.StartupCollectionService;
@@ -311,36 +312,37 @@ public class TestAlbum extends JajukTestCase {
 
     assertNull("null for new empty album", album.findCover());
     assertFalse(album.containsCover());
-    
+
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE);
 
     assertNull("still null if we have 'none' set as cover", album.findCover());
     assertFalse(album.containsCover());
-    
+
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, "notexist");
-    
+
     assertNull("still null if we have an invalid file set as cover", album.findCover());
     assertFalse(album.containsCover());
-    
+
     album.removeProperty(Const.XML_ALBUM_DISCOVERED_COVER);
     album.getTracksCache().add(getTrack(album));
     assertFalse(album.getAny().isEmpty());
-        
+
     assertNull("still null with a track which has no cover in the directory", album.findCover());
     assertFalse(album.containsCover());
 
-    java.io.File file = java.io.File.createTempFile("jajuk_test", ".png");
+    java.io.File file = java.io.File.createTempFile("jajuk_test", ".png", new java.io.File(
+        ConstTest.TECH_TESTS_PATH));
 
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, file.getAbsolutePath());
     assertNotNull("now we should find the cover", album.findCover());
     assertTrue(album.containsCover());
-    
+
     album.removeProperty(Const.XML_ALBUM_DISCOVERED_COVER);
     album.setProperty(Const.XML_ALBUM_SELECTED_COVER, file.getAbsolutePath());
     assertNotNull("now we should find the selected cover", album.findCover());
     assertFalse("Still not a discovered cover now", album.containsCover());
   }
-  
+
   /**
    * Test method for {@link org.jajuk.base.Album#getThumbnail(int)}.
    *
@@ -692,7 +694,7 @@ public class TestAlbum extends JajukTestCase {
     Album album = new Album("1", "name", 123);
 
     assertFalse(album.seemsUnknown());
-    
+
     album = new Album("2", "unknown", 124);
     assertTrue(album.seemsUnknown());
 
