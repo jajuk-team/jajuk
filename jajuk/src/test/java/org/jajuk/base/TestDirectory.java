@@ -25,6 +25,7 @@ import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.ConstTest;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JUnitHelpers.MockPlayer;
 import org.jajuk.JajukTestCase;
@@ -38,18 +39,6 @@ import org.jajuk.util.Const;
  */
 public class TestDirectory extends JajukTestCase {
 
-  /** Sample device named "device1" and located at /tmp/device1 *. */
-  Device device1;
-  
-  /** Sample top dir named "topdir1" and located at /tmp/device1/topdir1 *. */
-  Directory topdir1;
-  
-  /** Sample dir named "dir1" and located at /tmp/device1/topdir1/dir1 *. */
-  Directory dir1;
-  
-  /** Sample dir named "dir2" and located at /tmp/device1/topdir1/dir2 *. */
-  Directory dir2;
-
   /*
    * (non-Javadoc)
    * 
@@ -61,21 +50,6 @@ public class TestDirectory extends JajukTestCase {
     Conf.setProperty(Const.CONF_OPTIONS_HIDE_UNMOUNTED, "false");
 
     super.setUp();
-
-    // Create generic items
-    String pathDevice1 = System.getProperty("java.io.tmpdir") + "/device1";
-    // Cleanup any existing directory and create again the directory
-    new java.io.File(pathDevice1).delete();
-    new java.io.File(pathDevice1).mkdirs();
-    // create 2 directories to avoid getting a wanring dialog that device is void
-    new java.io.File(pathDevice1 + "/dir1").mkdirs();
-    new java.io.File(pathDevice1 + "/dir2").mkdirs();
-
-    device1 = DeviceManager.getInstance().registerDevice("device1", Device.Type.DIRECTORY,
-        pathDevice1);
-    topdir1 = DirectoryManager.getInstance().registerDirectory(device1);
-    dir1 = DirectoryManager.getInstance().registerDirectory("dir1", topdir1, device1);
-    dir2 = DirectoryManager.getInstance().registerDirectory("dir2", topdir1, device1);
   }
 
   /**
@@ -83,17 +57,17 @@ public class TestDirectory extends JajukTestCase {
    */
 
   public void testGetDesc() {
-    Directory dir = dir1;
+    Directory dir = JUnitHelpers.getDirectory("dir1");
     assertTrue(dir.toString(), StringUtils.isNotBlank(dir.getDesc()));
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Directory#getLabel()}.
+   * Test method for {@link org.jajuk.base.Directory#getXMLTag()}.
    */
 
   public void testGetLabel() {
-    Directory dir = dir1;
-    assertEquals(dir.toString(), Const.XML_DIRECTORY, dir.getLabel());
+    Directory dir = JUnitHelpers.getDirectory("dir1");
+    assertEquals(dir.toString(), Const.XML_DIRECTORY, dir.getXMLTag());
   }
 
   /**
@@ -101,13 +75,10 @@ public class TestDirectory extends JajukTestCase {
    */
 
   public void testGetHumanValue() {
-    Device dev = device1;
-    assertNotNull(dev);
-
-    Directory dir = dir1;
+    Directory dir = JUnitHelpers.getDirectory("dir1");
     assertEquals(dir.toString(), dir.getParentDirectory().getFio(),
         new java.io.File(dir.getHumanValue(Const.XML_DIRECTORY_PARENT)));
-    assertEquals(dir.toString(), "device1", dir.getHumanValue(Const.XML_DEVICE));
+    assertEquals(dir.toString(), "sample_device", dir.getHumanValue(Const.XML_DEVICE));
     assertTrue(dir.toString(), StringUtils.isNotBlank(dir.getHumanValue(Const.XML_NAME)));
     assertEquals(dir.toString(), "", dir.getHumanValue("notexisting"));
   }
@@ -119,7 +90,7 @@ public class TestDirectory extends JajukTestCase {
   public void testGetIconRepresentation() {
     StartupCollectionService.registerItemManagers();
 
-    Directory dir = dir1;
+    Directory dir = JUnitHelpers.getDirectory("dir1");
     assertNotNull(dir.getIconRepresentation());
   }
 
@@ -128,7 +99,7 @@ public class TestDirectory extends JajukTestCase {
    */
 
   public void testDirectory() {
-    Directory dir = dir1;
+    Directory dir = JUnitHelpers.getDirectory("dir1");
     assertNotNull(dir);
   }
 
@@ -137,7 +108,7 @@ public class TestDirectory extends JajukTestCase {
    */
 
   public void testToString() {
-    Directory dir = dir1;
+    Directory dir = JUnitHelpers.getDirectory("dir1");
     JUnitHelpers.ToStringTest(dir);
   }
 
@@ -146,7 +117,7 @@ public class TestDirectory extends JajukTestCase {
    * DOCUMENT_ME
    */
   public void testToStringParent() {
-    Directory dir = dir1;
+    Directory dir = JUnitHelpers.getDirectory("dir1");
     JUnitHelpers.ToStringTest(dir);
   }
 
@@ -155,7 +126,7 @@ public class TestDirectory extends JajukTestCase {
    */
 
   public void testGetAbsolutePath() {
-    Directory dir = dir1;
+    Directory dir = JUnitHelpers.getDirectory("dir1");
     assertTrue(dir.toString(), StringUtils.isNotBlank(dir.getAbsolutePath()));
   }
 
@@ -164,7 +135,7 @@ public class TestDirectory extends JajukTestCase {
    */
 
   public void testGetDevice() {
-    Directory dir = dir1;
+    Directory dir = JUnitHelpers.getDirectory("dir1");
     assertNotNull(dir.getDevice());
   }
 
@@ -173,7 +144,7 @@ public class TestDirectory extends JajukTestCase {
    */
 
   public void testGetParentDirectory() {
-    Directory dir = topdir1;
+    Directory dir = JUnitHelpers.getDevice().getRootDirectory();
     assertNull(dir.getParentDirectory());
   }
 
@@ -182,7 +153,7 @@ public class TestDirectory extends JajukTestCase {
    */
 
   public void testGetDirectories() {
-    Directory dir = dir1;
+    Directory dir = JUnitHelpers.getDirectory("dir1");
     Set<Directory> dirs = dir.getDirectories();
 
     // no dirs without registered directories
@@ -203,7 +174,7 @@ public class TestDirectory extends JajukTestCase {
    */
 
   public void testGetFiles() throws Exception {
-    Directory dir = dir1;
+    Directory dir = JUnitHelpers.getDirectory("dir1");
 
     Set<File> files = dir.getFiles();
 
@@ -250,7 +221,7 @@ public class TestDirectory extends JajukTestCase {
    */
 
   public void testGetPlaylistFiles() {
-    Directory dir = dir1;
+    Directory dir = JUnitHelpers.getDirectory("dir1");
 
     Set<Playlist> files = dir.getPlaylistFiles();
 
@@ -258,17 +229,17 @@ public class TestDirectory extends JajukTestCase {
     assertEquals(0, files.size());
 
     PlaylistManager.getInstance().registerPlaylistFile(
-        new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
-            + "testfile1"), dir);
+        new java.io.File(JUnitHelpers.getDevice().getUrl() + java.io.File.separator + "testfile1"),
+        dir);
     PlaylistManager.getInstance().registerPlaylistFile(
-        new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
-            + "testfile2"), dir);
+        new java.io.File(JUnitHelpers.getDevice().getUrl() + java.io.File.separator + "testfile2"),
+        dir);
     PlaylistManager.getInstance().registerPlaylistFile(
-        new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
-            + "testfile3"), dir);
+        new java.io.File(JUnitHelpers.getDevice().getUrl() + java.io.File.separator + "testfile3"),
+        dir);
     PlaylistManager.getInstance().registerPlaylistFile(
-        new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
-            + "testfile4"), dir);
+        new java.io.File(JUnitHelpers.getDevice().getUrl() + java.io.File.separator + "testfile4"),
+        dir);
 
     files = dir.getPlaylistFiles();
     assertEquals(4, files.size());
@@ -281,7 +252,7 @@ public class TestDirectory extends JajukTestCase {
   public void testGetPlaylistRecursively() {
     PlaylistManager.getInstance().clear();
 
-    Directory dir = dir1;
+    Directory dir = JUnitHelpers.getDirectory();
 
     List<Playlist> files = dir.getPlaylistsRecursively();
 
@@ -293,17 +264,17 @@ public class TestDirectory extends JajukTestCase {
     Directory dir3 = DirectoryManager.getInstance().registerDirectory("sub3", dir, dir.getDevice());
 
     PlaylistManager.getInstance().registerPlaylistFile(
-        new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
-            + "testfile1"), dir1);
+        new java.io.File(JUnitHelpers.getDevice().getUrl() + java.io.File.separator + "testfile1"),
+        dir1);
     PlaylistManager.getInstance().registerPlaylistFile(
-        new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
-            + "testfile2"), dir2);
+        new java.io.File(JUnitHelpers.getDevice().getUrl() + java.io.File.separator + "testfile2"),
+        dir2);
     PlaylistManager.getInstance().registerPlaylistFile(
-        new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
-            + "testfile3"), dir2);
+        new java.io.File(JUnitHelpers.getDevice().getUrl() + java.io.File.separator + "testfile3"),
+        dir2);
     PlaylistManager.getInstance().registerPlaylistFile(
-        new java.io.File(System.getProperty("java.io.tmpdir") + java.io.File.separator
-            + "testfile4"), dir3);
+        new java.io.File(JUnitHelpers.getDevice().getUrl() + java.io.File.separator + "testfile4"),
+        dir3);
 
     files = dir.getPlaylistsRecursively();
   }
@@ -315,7 +286,7 @@ public class TestDirectory extends JajukTestCase {
    */
 
   public void testGetFilesFromFile() throws Exception {
-    Directory dir = dir1;
+    Directory dir = JUnitHelpers.getDirectory("dir1");
     assertNull(dir.getFilesFromFile(null));
 
     getFileInDir(3, dir);
@@ -361,6 +332,9 @@ public class TestDirectory extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testHasAncestor() throws Exception {
+    Directory dir1 = JUnitHelpers.getDirectory("dir1");
+    Directory dir2 = JUnitHelpers.getDirectory("dir2");
+    Directory topdir1 = JUnitHelpers.getDevice().getRootDirectory();
     assertTrue(dir1.hasAncestor(topdir1));
     assertFalse(dir1.hasAncestor(dir2));
     assertFalse(dir1.hasAncestor(dir1));
@@ -372,6 +346,9 @@ public class TestDirectory extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testGetDirectoriesRecursively() throws Exception {
+    Directory topdir1 = JUnitHelpers.getDevice().getRootDirectory();
+    Directory dir1 = JUnitHelpers.getDirectory("dir1");
+    Directory dir2 = JUnitHelpers.getDirectory("dir2");
     List<Directory> dirs = topdir1.getDirectoriesRecursively();
     assertTrue(dirs.size() == 2);
     assertFalse(dirs.contains(topdir1));
@@ -384,7 +361,7 @@ public class TestDirectory extends JajukTestCase {
    */
 
   public void testScan() {
-    Directory dir = dir1;
+    Directory dir = JUnitHelpers.getDirectory("dir1");
 
     // this scan will not do much because there are no files in this dir
     dir.scan(true, null);
@@ -401,13 +378,10 @@ public class TestDirectory extends JajukTestCase {
     StartupCollectionService.registerTypes();
 
     // create temp file
-    Device dev = DeviceManager.getInstance().registerDevice("test1", Device.Type.DIRECTORY,
-        System.getProperty("java.io.tmpdir"));
-    Directory dir = dir1;
+    Directory dir = JUnitHelpers.getDirectory("dir1");
+    File file = JUnitHelpers.getFile("test1.mp3", true);
 
-    new java.io.File(dev.getUrl()).mkdirs();
-    FileUtils.writeStringToFile(new java.io.File(dev.getUrl() + java.io.File.separator + "testScan"
-        + java.io.File.separator + "test1.mp3"), "teststring");
+    FileUtils.writeStringToFile(file.getFIO(), "teststring");
 
     dir.scan(true, null);
   }
@@ -417,7 +391,7 @@ public class TestDirectory extends JajukTestCase {
    */
 
   public void testReset() {
-    Directory dir = dir1;
+    Directory dir = JUnitHelpers.getDirectory("dir1");
     dir.reset();
   }
 
@@ -426,7 +400,7 @@ public class TestDirectory extends JajukTestCase {
    */
 
   public void testGetRelativePath() {
-    Directory dir = dir1;
+    Directory dir = JUnitHelpers.getDirectory("dir1");
     assertNotNull(dir.getRelativePath());
   }
 
@@ -435,7 +409,7 @@ public class TestDirectory extends JajukTestCase {
    */
 
   public void testGetFio() {
-    Directory dir = dir1;
+    Directory dir = JUnitHelpers.getDirectory("dir1");
     assertNotNull(dir.getFio());
   }
 
@@ -443,16 +417,19 @@ public class TestDirectory extends JajukTestCase {
    * Test method for {@link org.jajuk.base.Directory#compareTo(org.jajuk.base.Directory)}.
    */
   public void testCompareTo() {
-    Directory dir1 = new Directory("1", "", null, new Device("2", "test"));
-    dir1.getDevice().setUrl(System.getProperty("java.io.tmpdir"));
-    Directory dir2 = new Directory("1", "", null, new Device("2", "test"));
-    dir2.getDevice().setUrl(System.getProperty("java.io.tmpdir"));
-    Directory dir3a = new Directory("3", "", null, new Device("2", "test3"));
-    dir3a.getDevice().setUrl(System.getProperty("java.io.tmpdir"));
-    Directory dir3b = new Directory("2", "", null, new Device("2", "test"));
-    dir3b.getDevice().setUrl(System.getProperty("java.io.tmpdir") + java.io.File.separator + "1");
-    JUnitHelpers.CompareToTest(dir1, dir2, dir3a);
-    JUnitHelpers.CompareToTest(dir1, dir2, dir3b);
+    Device device1 = JUnitHelpers.getDevice("1", Device.Type.DIRECTORY, ConstTest.DEVICES_BASE_PATH
+        + "/1");
+    Device device2 = JUnitHelpers.getDevice("2", Device.Type.DIRECTORY, ConstTest.DEVICES_BASE_PATH
+        + "/2");
+    Directory dir11 = DirectoryManager.getInstance().registerDirectory("dir11",
+        device1.getRootDirectory(), device1);
+    Directory dir12 = DirectoryManager.getInstance().registerDirectory("dir12",
+        device1.getRootDirectory(), device1);
+    Directory dir2 = DirectoryManager.getInstance().registerDirectory("dir2",
+        device1.getRootDirectory(), device2);
+    assertTrue(dir11.compareTo(dir12) < 0);
+    assertTrue(dir2.compareTo(dir11) > 0);
+    assertTrue(dir2.compareTo(dir12) > 0);
   }
 
   /**
@@ -462,7 +439,7 @@ public class TestDirectory extends JajukTestCase {
    */
 
   public void testShouldBeHidden() throws Exception {
-    Directory dir = dir1;
+    Directory dir = JUnitHelpers.getDirectory("dir1");
     // not mounted by default
     assertFalse(dir.getDevice().isMounted());
 
@@ -474,7 +451,7 @@ public class TestDirectory extends JajukTestCase {
     // now true because option to hide unmounted is set
     assertTrue(dir.shouldBeHidden());
 
-    dir.getDevice().setUrl(System.getProperty("java.io.tmpdir"));
+    dir.getDevice().setUrl(ConstTest.DEVICES_BASE_PATH);
     dir.getDevice().mount(true);
 
     // now false because device is mounted now
@@ -486,7 +463,7 @@ public class TestDirectory extends JajukTestCase {
    */
 
   public void testCleanRemovedFiles() {
-    Directory dir = dir1;
+    Directory dir = JUnitHelpers.getDirectory("dir1");
     dir.cleanRemovedFiles();
   }
 
@@ -495,6 +472,8 @@ public class TestDirectory extends JajukTestCase {
    */
 
   public void testIsChildOf() {
+    Directory topdir1 = JUnitHelpers.getDevice().getRootDirectory();
+    Directory dir2 = JUnitHelpers.getDirectory("dir2");
     assertFalse(topdir1.isChildOf(dir2));
     assertTrue(dir2.isChildOf(topdir1));
   }

@@ -41,28 +41,28 @@ import org.jajuk.util.Const;
  * Test find dups action.
  */
 public class TestFindDuplicateTracksAction extends JajukTestCase {
-  
+
   /** DOCUMENT_ME. */
   Type type;
-  
+
   /** DOCUMENT_ME. */
   Artist artist;
-  
+
   /** DOCUMENT_ME. */
   Album album;
-  
+
   /** DOCUMENT_ME. */
   Genre genre;
-  
+
   /** DOCUMENT_ME. */
   org.jajuk.base.Year year;
-  
+
   /** DOCUMENT_ME. */
   FindDuplicateTracksAction action;
-  
+
   /** DOCUMENT_ME. */
   Directory dir;
-  
+
   /** DOCUMENT_ME. */
   AlbumArtist albumArtist;
 

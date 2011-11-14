@@ -44,7 +44,7 @@ import org.jajuk.services.notification.NotificatorTypes;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
-import org.jajuk.services.webradio.WebRadio;
+import org.jajuk.services.webradio.WebRadioOrigin;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -217,7 +217,8 @@ public class TestPlayerStateMediator extends JajukTestCase {
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
 
     Properties prop = new Properties();
-    prop.put(Const.DETAIL_CONTENT, new WebRadio("test", "testurl"));
+    prop.put(Const.DETAIL_CONTENT,
+        JUnitHelpers.getWebRadio("myradio", "http://foo", WebRadioOrigin.CUSTOM));
 
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, prop));
@@ -233,9 +234,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
 
-    Device device = JUnitHelpers.getDevice();
-    device.setUrl(System.getProperty("java.io.tmpdir"));
-    Directory dir = DirectoryManager.getInstance().registerDirectory(device);
+    Directory dir = JUnitHelpers.getDirectory();
     File file = getFile(3, dir);
 
     Properties prop = new Properties();

@@ -280,16 +280,16 @@ public class TestObserverRegistry extends JajukTestCase {
    * DOCUMENT_ME.
    */
   static class LocalObserver implements Observer {
-    
+
     /** DOCUMENT_ME. */
     boolean invoked = false;
-    
+
     /** DOCUMENT_ME. */
     int wait = 0;
-    
+
     /** DOCUMENT_ME. */
     boolean exception = false;
-    
+
     /** DOCUMENT_ME. */
     AtomicInteger called;
 
@@ -368,7 +368,7 @@ public class TestObserverRegistry extends JajukTestCase {
    * DOCUMENT_ME.
    */
   private class LocalHighPriorityObserver extends LocalObserver implements HighPriorityObserver {
-    
+
     /** DOCUMENT_ME. */
     LocalObserver lowprioobserver; // to check if other was not yet called
 

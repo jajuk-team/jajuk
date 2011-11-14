@@ -20,11 +20,11 @@
  */
 package org.jajuk.base;
 
-import java.awt.HeadlessException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.ConstTest;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.TestAlbumManager.MockPlayer;
@@ -65,12 +65,12 @@ public class TestDevice extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Device#getLabel()}.
+   * Test method for {@link org.jajuk.base.Device#getXMLTag()}.
    */
 
   public void testGetLabel() {
     Device device = JUnitHelpers.getDevice();
-    assertEquals(Const.XML_DEVICE, device.getLabel());
+    assertEquals(Const.XML_DEVICE, device.getXMLTag());
   }
 
   /**
@@ -97,22 +97,22 @@ public class TestDevice extends JajukTestCase {
     device.populateProperties(new MockAttributes());
 
     device = DeviceManager.getInstance().registerDevice("name", Device.Type.FILES_CD,
-        System.getProperty("java.io.tmpdir"));
+        ConstTest.DEVICES_BASE_PATH + "/cd");
 
     device.populateProperties(new MockAttributes());
 
     device = DeviceManager.getInstance().registerDevice("name", Device.Type.NETWORK_DRIVE,
-        System.getProperty("java.io.tmpdir"));
+        ConstTest.DEVICES_BASE_PATH + "/net");
 
     device.populateProperties(new MockAttributes());
 
     device = DeviceManager.getInstance().registerDevice("name", Device.Type.EXTDD,
-        System.getProperty("java.io.tmpdir"));
+        ConstTest.DEVICES_BASE_PATH + "/extdd");
 
     device.populateProperties(new MockAttributes());
 
     device = DeviceManager.getInstance().registerDevice("name", Device.Type.PLAYER,
-        System.getProperty("java.io.tmpdir"));
+        ConstTest.DEVICES_BASE_PATH + "/player");
 
     device.populateProperties(new MockAttributes());
   }
@@ -178,7 +178,6 @@ public class TestDevice extends JajukTestCase {
     assertNotNull(device.getIconRepresentation());
 
     // test with mounted device
-    device.setUrl(System.getProperty("java.io.tmpdir"));
     device.mount(true);
 
     device.setProperty(Const.XML_TYPE, (long) Device.Type.PLAYER.ordinal());
@@ -212,24 +211,9 @@ public class TestDevice extends JajukTestCase {
    */
 
   public void testCleanRemovedFiles() throws Exception {
-    JUnitHelpers.createSessionDirectory();
-
     Device device = JUnitHelpers.getDevice();
-    device.mount(true);
-    device.setUrl("notexisting/testparent\\anotherclientparentthing");
 
-    // clean without any stuff
-    assertFalse(device.cleanRemovedFiles(null));
-
-    // add some directory, then the remove should kick in!
-    Directory topdir = DirectoryManager.getInstance().registerDirectory(device);
-    Directory dir = DirectoryManager.getInstance().registerDirectory("notexistingdir", topdir,
-        device);
-    device.addDirectory(dir);
-    DirectoryManager.getInstance().registerDirectory(device);
-
-    File file = getFile(8, dir);
-    PlaylistManager.getInstance().registerPlaylistFile(file.getFIO(), dir);
+    JUnitHelpers.getPlaylist();
 
     // ensure we are not exiting, this would invalidate the test
     assertFalse(ExitService.isExiting());
@@ -296,7 +280,7 @@ public class TestDevice extends JajukTestCase {
    */
   public void testGetFilesRecursively() {
     Device device = JUnitHelpers.getDevice();
-    device.setUrl(System.getProperty("java.io.tmpdir") + System.currentTimeMillis());
+    device.setUrl(ConstTest.DEVICES_BASE_PATH + "/" + System.currentTimeMillis());
 
     // no files without a directory
     List<File> files = device.getFilesRecursively();
@@ -347,12 +331,8 @@ public class TestDevice extends JajukTestCase {
    * Test method for {@link org.jajuk.base.Device#getFIO()}.
    */
   public void testGetFio() {
-    Device device = new Device("1", "name");
-
-    assertNull(device.getFIO());
-
-    device.setUrl(System.getProperty("java.io.tmpdir"));
-
+    Device device = JUnitHelpers.getDevice();
+    device.setUrl(ConstTest.TEMP_PATH);
     assertNotNull(device.getFIO());
   }
 
@@ -364,11 +344,12 @@ public class TestDevice extends JajukTestCase {
   public void testGetRootDirectory() throws Exception {
     // create a unique id here...
     Device device = DeviceManager.getInstance().registerDevice("getRootDirectory",
-        Device.Type.FILES_CD, "/foo");
+        Device.Type.FILES_CD, ConstTest.DEVICES_BASE_PATH + "/device");
 
     assertNull(device.getRootDirectory());
 
-    java.io.File file = java.io.File.createTempFile("test", "tst");
+    java.io.File file = java.io.File.createTempFile("test", "tst", new java.io.File(
+        ConstTest.DEVICES_BASE_PATH));
 
     device.setUrl(file.getAbsolutePath());
     DirectoryManager.getInstance().registerDirectory(device);
@@ -395,7 +376,7 @@ public class TestDevice extends JajukTestCase {
 
     assertNull(device.getUrl());
 
-    device.setUrl(System.getProperty("java.io.tmpdir"));
+    device.setUrl(ConstTest.DEVICES_BASE_PATH + "/dev");
 
     assertNotNull(device.getUrl());
 
@@ -407,10 +388,10 @@ public class TestDevice extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testIsMounted() throws Exception {
-    Device device = new Device("1", "name");
-    device.setUrl(System.getProperty("java.io.tmpdir"));
+    Device device = JUnitHelpers.getDevice();
+    device.unmount();
     assertFalse(device.isMounted());
-
+    new java.io.File(device.getUrl()).mkdirs();
     device.mount(true);
     assertTrue(device.isMounted());
   }
@@ -422,9 +403,11 @@ public class TestDevice extends JajukTestCase {
    */
   public void testIsReady() throws Exception {
     Device device = new Device("1", "name");
-    device.setUrl(System.getProperty("java.io.tmpdir"));
+    device.setUrl(ConstTest.DEVICES_BASE_PATH + "/dev");
     assertFalse(device.isReady());
-
+    new java.io.File(device.getUrl()).mkdirs();
+    // create a file (we need at least a single file in collection)
+    new java.io.File(device.getUrl() + "/audio.mp3").createNewFile();
     device.mount(true);
     assertTrue(device.isReady());
   }
@@ -435,7 +418,6 @@ public class TestDevice extends JajukTestCase {
   public void testIsRefreshing() {
     Device device = JUnitHelpers.getDevice();
     assertFalse(device.isRefreshing());
-
   }
 
   /**
@@ -452,89 +434,8 @@ public class TestDevice extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testPrepareRefresh() throws Exception {
-    Device device = new Device("1", "name");
-    device.setUrl(System.getProperty("java.io.tmpdir"));
+    Device device = JUnitHelpers.getDevice();
     device.prepareRefresh(false);
-  }
-
-  /**
-   * Test prepare refresh ask.
-   * DOCUMENT_ME
-   *
-   * @throws Exception the exception
-   */
-  public void testPrepareRefreshAsk() throws Exception {
-    Device device = new Device("1", "name");
-    device.setUrl(System.getProperty("java.io.tmpdir"));
-    try {
-      device.prepareRefresh(true);
-    } catch (HeadlessException e) {
-      // ignore this on non-ui machines
-    }
-  }
-
-  /**
-   * Test prepare refresh ask cd.
-   * DOCUMENT_ME
-   *
-   * @throws Exception the exception
-   */
-  public void testPrepareRefreshAskCD() throws Exception {
-    Device device = DeviceManager.getInstance().registerDevice("name", Device.Type.FILES_CD,
-        System.getProperty("java.io.tmpdir"));
-    try {
-      device.prepareRefresh(true);
-    } catch (HeadlessException e) {
-      // ignore this on non-ui machines
-    }
-  }
-
-  /**
-   * Test prepare refresh ask network drive.
-   * DOCUMENT_ME
-   *
-   * @throws Exception the exception
-   */
-  public void testPrepareRefreshAskNetworkDrive() throws Exception {
-    Device device = DeviceManager.getInstance().registerDevice("name", Device.Type.NETWORK_DRIVE,
-        System.getProperty("java.io.tmpdir"));
-    try {
-      device.prepareRefresh(true);
-    } catch (HeadlessException e) {
-      // ignore this on non-ui machines
-    }
-  }
-
-  /**
-   * Test prepare refresh ask ext dd.
-   * DOCUMENT_ME
-   *
-   * @throws Exception the exception
-   */
-  public void testPrepareRefreshAskExtDD() throws Exception {
-    Device device = DeviceManager.getInstance().registerDevice("name", Device.Type.EXTDD,
-        System.getProperty("java.io.tmpdir"));
-    try {
-      device.prepareRefresh(true);
-    } catch (HeadlessException e) {
-      // ignore this on non-ui machines
-    }
-  }
-
-  /**
-   * Test prepare refresh ask player.
-   * DOCUMENT_ME
-   *
-   * @throws Exception the exception
-   */
-  public void testPrepareRefreshAskPlayer() throws Exception {
-    Device device = DeviceManager.getInstance().registerDevice("name", Device.Type.PLAYER,
-        System.getProperty("java.io.tmpdir"));
-    try {
-      device.prepareRefresh(true);
-    } catch (HeadlessException e) {
-      // ignore this on non-ui machines
-    }
   }
 
   /**
@@ -543,8 +444,7 @@ public class TestDevice extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testMount() throws Exception {
-    Device device = new Device("1", "name");
-    device.setUrl(System.getProperty("java.io.tmpdir"));
+    Device device = JUnitHelpers.getDevice();
     device.mount(true);
 
     // try a second time, should fail
@@ -571,21 +471,13 @@ public class TestDevice extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testRefreshBoolean() throws Exception {
-    Device device = new Device("1", "name");
-    device.setUrl(System.getProperty("java.io.tmpdir"));
-
+    Device device = JUnitHelpers.getDevice();
     try {
       device.refresh(false, false, false, null);
     } catch (RuntimeException e) {
       // there can be a hidden HeadlessException here
       assertTrue(e.getCause().getMessage(), e.getCause() instanceof InvocationTargetException);
-      // assertTrue(e.getCause().getCause().getMessage(),
-      // e.getCause().getCause()instanceof InvocationTargetException);
-      // assertTrue(e.getCause().getCause().getCause().getMessage(),
-      // e.getCause().getCause().getCause()instanceof HeadlessException);
-
     }
-
     device.refresh(true, false, false, null);
   }
 
@@ -595,8 +487,7 @@ public class TestDevice extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testRefreshBooleanBoolean() throws Exception {
-    Device device = new Device("1", "name");
-    device.setUrl(System.getProperty("java.io.tmpdir"));
+    Device device = JUnitHelpers.getDevice();
 
     try {
       device.refresh(false, false, false, null);
@@ -633,8 +524,8 @@ public class TestDevice extends JajukTestCase {
     // We check that a device mounted but no more available cannot be refreshed
     Device device = new Device("1", "name");
     // Prepare a sample directory with at least a single file
-    java.io.File fileOKDir = new java.io.File(System.getProperty("java.io.tmpdir") + "/foo643");
-    fileOKDir.mkdir();
+    java.io.File fileOKDir = new java.io.File(ConstTest.DEVICES_BASE_PATH + "/foo643");
+    fileOKDir.mkdirs();
     java.io.File sampleFile = new java.io.File(fileOKDir.getAbsoluteFile() + "/foo.mp3");
     sampleFile.createNewFile();
     device.setUrl(fileOKDir.getAbsolutePath());
@@ -651,8 +542,7 @@ public class TestDevice extends JajukTestCase {
   // test for a regression that was added
   /**
    * Test refresh command dont readd top directory.
-   * DOCUMENT_ME
-   *
+   * 
    * @throws Exception the exception
    */
   public void testRefreshCommandDontReaddTopDirectory() throws Exception {
@@ -702,7 +592,7 @@ public class TestDevice extends JajukTestCase {
     PlaylistManager.getInstance().registerPlaylistFile(file.getFIO(), dir);
 
     // now also the playlist should be reset
-    device.setUrl(System.getProperty("java.io.tmpdir"));
+    device.setUrl(ConstTest.TEMP_PATH);
   }
 
   /**
@@ -719,11 +609,12 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test synchronize conf set.
-   * DOCUMENT_ME
+   * 
    */
   public void testSynchronizeConfSet() {
     Device device = JUnitHelpers.getDevice();
-    Device dSrc = JUnitHelpers.getDevice("src", Device.Type.DIRECTORY, "/tmp");
+    Device dSrc = JUnitHelpers.getDevice("src", Device.Type.DIRECTORY, ConstTest.DEVICES_BASE_PATH
+        + "/src_device");
     assertNotNull(dSrc);
     assertNotNull(dSrc.getID());
     assertNotNull(DeviceManager.getInstance().getDeviceByID(dSrc.getID()));
@@ -764,7 +655,7 @@ public class TestDevice extends JajukTestCase {
     }
     // set the synchro-device
     Device sync = DeviceManager.getInstance().registerDevice("name2", Device.Type.DIRECTORY,
-        System.getProperty("java.io.tmpdir") + "/device2");
+        ConstTest.DEVICES_BASE_PATH + "/device2");
     device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, sync.getID());
 
     device.synchronizeCommand();
@@ -787,7 +678,7 @@ public class TestDevice extends JajukTestCase {
 
     // set the synchro-device
     Device sync = DeviceManager.getInstance().registerDevice("name2", Device.Type.DIRECTORY,
-        System.getProperty("java.io.tmpdir") + "/jajuk_tests/device_2");
+        ConstTest.DEVICES_BASE_PATH + "/device2");
     try {
       new java.io.File(sync.getUrl()).mkdirs();
       new java.io.File(sync.getUrl() + "/audio1.mp3").createNewFile();
@@ -812,7 +703,8 @@ public class TestDevice extends JajukTestCase {
    * Test method for {@link org.jajuk.base.Device#test()}.
    */
   public void testTest() {
-    Device device = JUnitHelpers.getDevice("notexist", Device.Type.DIRECTORY, "notexisting");
+    Device device = DeviceManager.getInstance().registerDevice("name", Device.Type.DIRECTORY,
+        ConstTest.DEVICES_BASE_PATH + "/device");
     assertFalse(device.test());
   }
 
@@ -822,8 +714,6 @@ public class TestDevice extends JajukTestCase {
    */
   public void testTestMounted() {
     Device device = JUnitHelpers.getDevice();
-    device.setUrl(System.getProperty("java.io.tmpdir"));
-
     assertTrue(device.test());
   }
 

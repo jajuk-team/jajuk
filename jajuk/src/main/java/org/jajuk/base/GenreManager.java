@@ -110,9 +110,9 @@ public final class GenreManager extends ItemManager {
     // add it in genres list if new
     if (!genresList.contains(sName)) {
       genresList.add(genre.getName2());
-      
+
       // only sort as soon as we have the Collection fully loaded
-      if(orderedState) {
+      if (orderedState) {
         sortGenreList();
       }
     }
@@ -136,11 +136,11 @@ public final class GenreManager extends ItemManager {
    * @see org.jajuk.base.ItemManager#switchToOrderState()
    */
   @Override
-  void switchToOrderState() {
+  public void switchToOrderState() {
     // bring this Manager to ordered state when Collection is fully loaded
     orderedState = true;
     sortGenreList();
-    
+
     super.switchToOrderState();
   }
 
@@ -242,7 +242,7 @@ public final class GenreManager extends ItemManager {
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
-  public String getLabel() {
+  public String getXMLTag() {
     return Const.XML_GENRES;
   }
 

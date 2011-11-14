@@ -66,7 +66,7 @@ import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.base.TrackManager;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
-import org.jajuk.services.webradio.WebRadioManager;
+import org.jajuk.services.webradio.WebRadioHelper;
 import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
@@ -264,7 +264,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
             UtilGUI.waiting();
             resu = TrackManager.getInstance().search(sTyped);
             // Add web radio names
-            resu.addAll(WebRadioManager.getInstance().search(sTyped));
+            resu.addAll(WebRadioHelper.search(sTyped));
             // Sort the whole list
             Collections.sort(resu);
           } catch (Exception e) {

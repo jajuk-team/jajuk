@@ -20,11 +20,17 @@
  */
 package org.jajuk;
 
+import java.io.File;
+
 import junit.framework.TestCase;
 
 import org.jajuk.base.Collection;
+import org.jajuk.services.bookmark.History;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.startup.StartupCollectionService;
+import org.jajuk.util.Const;
+import org.jajuk.util.UtilSystem;
 
 /**
  * DOCUMENT_ME.
@@ -51,6 +57,27 @@ public abstract class JajukTestCase extends TestCase {
     // Clean the collection
     StartupCollectionService.registerItemManagers();
     Collection.clearCollection();
+    // Make sure to use a test workspace
+    SessionService.setTestMode(true);
+    // And use a specific workspace
+    File basedir = new File(ConstTest.BASE_DIRECTORY_PATH);
+    File workspace = new File(ConstTest.SAMPLE_WORKSPACE_PATH);
+    File sample_devices = new File(ConstTest.DEVICES_BASE_PATH);
+    File tech_tests = new File(ConstTest.TECH_TESTS_PATH);
+    // Make sure to clear totally the workspace and sample devices and recreate it
+    if (basedir.exists()) {
+      UtilSystem.deleteDir(basedir);
+    }
+    SessionService.setWorkspace(workspace.getAbsolutePath());
+    workspace.mkdirs();
+    sample_devices.mkdirs();
+    tech_tests.mkdirs();
+    //create cache directory and expected conf files
+    SessionService.getConfFileByPath(Const.FILE_CACHE).mkdirs();
+    org.jajuk.util.Conf.commit();
+    History.commit();
+    // Create a tmp directory as a music folder or tmp trash
+    SessionService.getConfFileByPath("tests").mkdirs();
     super.setUp();
   }
 }

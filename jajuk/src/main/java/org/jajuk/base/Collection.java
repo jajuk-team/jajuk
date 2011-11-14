@@ -220,32 +220,32 @@ public final class Collection extends DefaultHandler {
 
       // Devices
       writeItemList(bw, DeviceManager.getInstance().toXML(), DeviceManager.getInstance()
-          .getDevices(), DeviceManager.getInstance().getLabel(), 40);
+          .getDevices(), DeviceManager.getInstance().getXMLTag(), 40);
       Log.debug("Devices committed.");
 
       // Genres
       writeItemList(bw, GenreManager.getInstance().toXML(), GenreManager.getInstance().getGenres(),
-          GenreManager.getInstance().getLabel(), 40);
+          GenreManager.getInstance().getXMLTag(), 40);
       Log.debug("Genres committed.");
 
       // Artists
       writeItemList(bw, ArtistManager.getInstance().toXML(), ArtistManager.getInstance()
-          .getArtists(), ArtistManager.getInstance().getLabel(), 40);
+          .getArtists(), ArtistManager.getInstance().getXMLTag(), 40);
       Log.debug("Artists committed.");
 
       // Album artists
       writeItemList(bw, AlbumArtistManager.getInstance().toXML(), AlbumArtistManager.getInstance()
-          .getAlbumArtists(), AlbumArtistManager.getInstance().getLabel(), 40);
+          .getAlbumArtists(), AlbumArtistManager.getInstance().getXMLTag(), 40);
       Log.debug("Album-artists committed.");
 
       // Albums
       writeItemList(bw, AlbumManager.getInstance().toXML(), AlbumManager.getInstance().getAlbums(),
-          AlbumManager.getInstance().getLabel(), 40);
+          AlbumManager.getInstance().getXMLTag(), 40);
       Log.debug("Albums committed.");
 
       // Years
       writeItemList(bw, YearManager.getInstance().toXML(), YearManager.getInstance().getYears(),
-          YearManager.getInstance().getLabel(), 40);
+          YearManager.getInstance().getXMLTag(), 40);
       Log.debug("Years committed.");
 
       // Tracks
@@ -264,22 +264,22 @@ public final class Collection extends DefaultHandler {
       } finally {
         TrackManager.getInstance().getLock().readLock().unlock();
       }
-      writeString(bw, TrackManager.getInstance().getLabel(), 200);
+      writeString(bw, TrackManager.getInstance().getXMLTag(), 200);
       Log.debug("Tracks committed.");
 
       // Directories
       writeItemList(bw, DirectoryManager.getInstance().toXML(), DirectoryManager.getInstance()
-          .getDirectories(), DirectoryManager.getInstance().getLabel(), 100);
+          .getDirectories(), DirectoryManager.getInstance().getXMLTag(), 100);
       Log.debug("Directories committed.");
 
       // Files
       writeItemList(bw, FileManager.getInstance().toXML(), FileManager.getInstance().getFiles(),
-          FileManager.getInstance().getLabel(), 200);
+          FileManager.getInstance().getXMLTag(), 200);
       Log.debug("Files committed.");
 
       // Playlists
       writeItemList(bw, PlaylistManager.getInstance().toXML(), PlaylistManager.getInstance()
-          .getPlaylists(), PlaylistManager.getInstance().getLabel(), 200);
+          .getPlaylists(), PlaylistManager.getInstance().getXMLTag(), 200);
       Log.debug("Playlists committed.");
 
       // end of collection
@@ -661,7 +661,7 @@ public final class Collection extends DefaultHandler {
           Log.debug("Found property: " + attributes.getValue(Const.XML_NAME));
         } else {
           Log.debug("Starting stage: '" + stage + "' with property: '" + sQName + "' manager: "
-              + (manager != null ? manager.getLabel() : "<null>"));
+              + (manager != null ? manager.getXMLTag() : "<null>"));
         }
       } else {
         // Manage elements themselves using a switch for performances

@@ -40,7 +40,6 @@ import org.jajuk.base.Type;
 import org.jajuk.base.Year;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.startup.StartupCollectionService;
-import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
@@ -299,7 +298,7 @@ public class TestQueueModel extends JajukTestCase {
    */
 
   public void testLaunchRadio() {
-    QueueModel.launchRadio(new WebRadio("name", "invalidurl"));
+    QueueModel.launchRadio(JUnitHelpers.getWebRadio());
   }
 
   /**
@@ -848,7 +847,7 @@ public class TestQueueModel extends JajukTestCase {
    */
 
   public void testCanUnmount() throws Exception {
-    Device device = JUnitHelpers.getDevice("anydevice", Device.Type.DIRECTORY, "/foo");
+    Device device = JUnitHelpers.getDevice();
     assertTrue(QueueModel.canUnmount(device));
 
     addItems(10);
@@ -1237,8 +1236,6 @@ public class TestQueueModel extends JajukTestCase {
    */
 
   public void testCommit() throws Exception {
-    JUnitHelpers.createSessionDirectory();
-
     final java.io.File fifo = SessionService.getConfFileByPath(Const.FILE_FIFO);
     fifo.delete();
     assertFalse(fifo.exists()); // we should not have the file now...
@@ -1273,7 +1270,7 @@ public class TestQueueModel extends JajukTestCase {
     QueueModel.launchRadio(null);
 
     assertNull(QueueModel.getCurrentRadio());
-    QueueModel.launchRadio(new WebRadio("name", "invalidurl"));
+    QueueModel.launchRadio(JUnitHelpers.getWebRadio());
     assertNotNull(QueueModel.getCurrentRadio());
   }
 

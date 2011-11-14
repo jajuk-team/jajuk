@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 
 import junit.framework.TestCase;
 
+import org.jajuk.services.core.SessionService;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -36,9 +37,8 @@ import org.jajuk.util.log.Log;
  */
 public class LogChecker extends TestCase {
 
-  /** The Constant FILE_PATH.  DOCUMENT_ME */
-  private static final String FILE_PATH = System.getProperty("java.io.tmpdir") + File.separator
-      + "jajuk_out.log";
+  /** The Constant FILE_PATH.   */
+  private static final File FILE_PATH = SessionService.getConfFileByPath("jajuk.log");
 
   /** DOCUMENT_ME. */
   private String logs;
@@ -49,7 +49,7 @@ public class LogChecker extends TestCase {
   @Override
   public void setUp() throws Exception {
     try {
-      logs = UtilSystem.readFile(FILE_PATH).toString();
+      logs = UtilSystem.readFile(FILE_PATH.getAbsolutePath()).toString();
     } catch (JajukException e) {
       // if an exception occurs, ensure it is a "FileNotFound"
       assertNotNull("Should have an underlying cause when catching JajukException", e.getCause());

@@ -32,7 +32,7 @@ import org.jajuk.util.UtilString;
  * DOCUMENT_ME.
  */
 public class TestLastFmAlbumList extends JajukTestCase {
-  
+
   /** The Constant API_KEY.  DOCUMENT_ME */
   private static final String API_KEY = "711591ss6q695ps349o6681pr1oq1467";
 

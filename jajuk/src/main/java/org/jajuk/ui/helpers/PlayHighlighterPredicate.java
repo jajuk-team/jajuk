@@ -27,6 +27,8 @@ import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.services.players.QueueModel;
+import org.jajuk.services.webradio.WebRadio;
+import org.jajuk.ui.widgets.JajukTable;
 import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 
@@ -39,13 +41,16 @@ public class PlayHighlighterPredicate implements HighlightPredicate {
   /** DOCUMENT_ME. */
   private final JajukTableModel model;
 
+  private final JajukTable jtable;
+
   /**
    * Instantiates a new play highlighter predicate.
    * 
    * @param model DOCUMENT_ME
    */
-  public PlayHighlighterPredicate(JajukTableModel model) {
-    this.model = model;
+  public PlayHighlighterPredicate(JajukTable jtable) {
+    this.jtable = jtable;
+    this.model = (JajukTableModel) jtable.getModel();
   }
 
   /* (non-Javadoc)
@@ -53,6 +58,10 @@ public class PlayHighlighterPredicate implements HighlightPredicate {
    */
   @Override
   public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
+    if (model instanceof WebRadioTableModel) {
+      WebRadio radio = (WebRadio) model.getItemAt(jtable.convertRowIndexToModel(adapter.row));
+      return QueueModel.isPlayingRadio() && QueueModel.getCurrentRadio().equals(radio);
+    }
     if (QueueModel.isStopped()) {
       return false;
     }

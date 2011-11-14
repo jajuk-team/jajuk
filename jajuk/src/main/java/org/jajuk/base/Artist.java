@@ -50,7 +50,7 @@ public class Artist extends LogicalItem implements Comparable<Artist> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  public String getLabel() {
+  public String getXMLTag() {
     return XML_ARTIST;
   }
 

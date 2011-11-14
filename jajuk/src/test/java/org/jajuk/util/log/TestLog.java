@@ -255,12 +255,7 @@ public class TestLog extends JajukTestCase {
     assertFalse(Log.isDebugEnabled());
   }
 
-  /**
-   * Verify spool.
-   * DOCUMENT_ME
-   *
-   * @param substring DOCUMENT_ME
-   */
+ 
   private void verifySpool(String substring) {
     verifySpool(substring, true);
   }

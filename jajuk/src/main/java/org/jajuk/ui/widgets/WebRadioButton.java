@@ -27,11 +27,11 @@ import ext.scrollablepopupmenu.XJPopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
 
 import org.jajuk.services.webradio.WebRadio;
+import org.jajuk.services.webradio.WebRadioHelper;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukAction;
@@ -81,17 +81,9 @@ public class WebRadioButton extends DropDownButton {
   public void populateWebRadios() {
     try {
       // Update button tooltip
-      setToolTipText(WebRadioManager.getCurrentWebRadioTooltip());
+      setToolTipText(WebRadioHelper.getCurrentWebRadioTooltip());
       // Clear previous elements
       popupWebRadio.removeAll();
-      // Add configure radios item
-      JajukAction actionConf = ActionManager.getAction(JajukActions.CONFIGURE_WEBRADIOS);
-      XCheckedButton jmiConf = new XCheckedButton(actionConf);
-      // Set icon so it is correctly displayed after a selection
-      jmiConf.setCheckedIcon((ImageIcon) actionConf.getValue(Action.SMALL_ICON));
-      // The icon should be always displayed
-      jmiConf.setIconAlwaysVisible(true);
-      popupWebRadio.add(jmiConf);
       for (final WebRadio radio : WebRadioManager.getInstance().getWebRadios()) {
         XCheckedButton jmi = new XCheckedButton(radio.getName());
         jmi.addActionListener(new ActionListener() {

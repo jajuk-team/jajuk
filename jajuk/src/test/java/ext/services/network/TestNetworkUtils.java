@@ -40,10 +40,10 @@ public class TestNetworkUtils extends JajukTestCase {
 
   /** The Constant PROXY_PORT.  DOCUMENT_ME */
   private static final int PROXY_PORT = 0; // auto-choose
-  
+
   /** The Constant URL.  DOCUMENT_ME */
   private static final String URL = "http://www.google.com/";
-  
+
   /** The Constant FTP_URL.  DOCUMENT_ME */
   private static final String FTP_URL = "ftp://www.google.com/";
 

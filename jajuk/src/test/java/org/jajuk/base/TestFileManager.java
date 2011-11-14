@@ -43,10 +43,11 @@ public class TestFileManager extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.FileManager#removeFile(File)}.
+   * @throws IOException 
    *
    */
   @Test
-  public void testRemoveFile() {
+  public void testRemoveFile() throws IOException {
     // Set-up...
     File file = JUnitHelpers.getFile();
 

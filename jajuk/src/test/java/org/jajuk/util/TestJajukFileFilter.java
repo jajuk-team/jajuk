@@ -26,6 +26,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
+import org.jajuk.ConstTest;
 import org.jajuk.util.filters.AnyFileFilter;
 import org.junit.Test;
 
@@ -166,18 +167,18 @@ public class TestJajukFileFilter {
       JajukFileFilter filter = new JajukFileFilter(new String[] { "mp3", "ogg" });
 
       filter.setAcceptDirectories(true);
-      assertTrue(filter.accept(new File(System.getProperty("java.io.tmpdir"))));
+      assertTrue(filter.accept(new File(ConstTest.TEMP_PATH)));
       filter.setAcceptDirectories(false);
-      assertFalse(filter.accept(new File(System.getProperty("java.io.tmpdir"))));
+      assertFalse(filter.accept(new File(ConstTest.TEMP_PATH)));
     }
 
     { // ignored for Filter based matching
       JajukFileFilter filter2 = new JajukFileFilter(true,
           new JajukFileFilter[] { AnyFileFilter.getInstance() });
       filter2.setAcceptDirectories(true);
-      assertFalse(filter2.accept(new File(System.getProperty("java.io.tmpdir"))));
+      assertFalse(filter2.accept(new File(ConstTest.TEMP_PATH)));
       filter2.setAcceptDirectories(false);
-      assertFalse(filter2.accept(new File(System.getProperty("java.io.tmpdir"))));
+      assertFalse(filter2.accept(new File(ConstTest.TEMP_PATH)));
     }
   }
 
@@ -190,9 +191,9 @@ public class TestJajukFileFilter {
       JajukFileFilter filter = new JajukFileFilter(new String[] { "mp3", "ogg" });
 
       filter.setAcceptDirectories(true);
-      assertTrue(filter.show(new File(System.getProperty("java.io.tmpdir"))));
+      assertTrue(filter.show(new File(ConstTest.TEMP_PATH)));
       filter.setAcceptDirectories(false);
-      assertFalse(filter.show(new File(System.getProperty("java.io.tmpdir"))));
+      assertFalse(filter.show(new File(ConstTest.TEMP_PATH)));
 
       assertTrue(filter.show(new File("test.mp3")));
       assertTrue(filter.show(new File("test.ogg")));

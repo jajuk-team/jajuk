@@ -44,13 +44,13 @@ public class TestStartupEngineService extends JajukTestCase {
 
   /** DOCUMENT_ME. */
   private File file1;
-  
+
   /** DOCUMENT_ME. */
   private File file2;
-  
+
   /** DOCUMENT_ME. */
   private File file3;
-  
+
   /** DOCUMENT_ME. */
   private WebRadio radio1;
 
@@ -66,7 +66,6 @@ public class TestStartupEngineService extends JajukTestCase {
   protected void setUp() throws Exception {
     super.setUp();
     // Populate collection with a few files and associated items 
-    // (automatically created with it)
     file1 = JUnitHelpers.getFile("file1", true);
     file2 = JUnitHelpers.getFile("file2", true);
     file3 = JUnitHelpers.getFile("file3", true);
@@ -77,8 +76,9 @@ public class TestStartupEngineService extends JajukTestCase {
     History.getInstance().addItem(file3.getID(), System.currentTimeMillis() - 100000);
 
     // Add last played radio
-    radio1 = new WebRadio("myRadio", "http://foo.bar");
-    WebRadioManager.getInstance().addWebRadio(radio1);
+    radio1 = WebRadioManager.getInstance().registerWebRadio("myRadio");
+    radio1.setProperty(Const.XML_URL, "http://di.fm/mp3/classictechno.pls");
+
     Conf.setProperty(Const.CONF_DEFAULT_WEB_RADIO, "myRadio");
 
     // Populate FIFO

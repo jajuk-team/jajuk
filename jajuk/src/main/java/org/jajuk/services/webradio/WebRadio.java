@@ -21,35 +21,27 @@
 
 package org.jajuk.services.webradio;
 
+import javax.swing.ImageIcon;
+
+import org.jajuk.base.PhysicalItem;
+import org.jajuk.util.Const;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
+import org.jajuk.util.Messages;
+
 /**
  * A web Radio.
  */
-public class WebRadio implements Comparable<WebRadio> {
-
-  /** DOCUMENT_ME. */
-  private String name;
-
-  /** DOCUMENT_ME. */
-  private String url;
+public class WebRadio extends PhysicalItem implements Comparable<WebRadio> {
 
   /**
-   * Instantiates a new web radio.
-   * 
-   * @param name DOCUMENT_ME
-   * @param url DOCUMENT_ME
-   */
-  public WebRadio(String name, String url) {
-    this.name = name;
-    this.url = url;
-  }
-
-  /**
-   * Gets the name.
-   * 
-   * @return the name
-   */
-  public String getName() {
-    return this.name;
+  * Instantiates a new web radio.
+  * 
+  * @param name DOCUMENT_ME
+  * @param url DOCUMENT_ME
+  */
+  WebRadio(String sId, String sName) {
+    super(sId, sName);
   }
 
   /**
@@ -58,27 +50,16 @@ public class WebRadio implements Comparable<WebRadio> {
    * @return the url
    */
   public String getUrl() {
-    return this.url;
+    return getStringValue(XML_URL);
   }
-
-  /* (non-Javadoc)
-   * @see java.lang.Object#equals(java.lang.Object)
+  
+  /**
+   * Gets the label.
+   * 
+   * @return the label
    */
-  @Override
-  public boolean equals(Object other) {
-    if (!(other instanceof WebRadio)) {
-      return false;
-    }
-    return name.equals(((WebRadio) other).getName());
-  }
-
-  /* (non-Javadoc)
-   * @see java.lang.Object#hashCode()
-   */
-  @Override
-  public int hashCode() {
-    // equals only compares on Name, therefore use the same for the hashcode
-    return name.hashCode();
+  public String getLabel() {
+    return getStringValue(Const.XML_LABEL);
   }
 
   /* (non-Javadoc)
@@ -90,7 +71,7 @@ public class WebRadio implements Comparable<WebRadio> {
     if (getUrl() == null) {
       return -1;
     }
-    return name.compareToIgnoreCase(other.getName());
+    return getName().compareToIgnoreCase(other.getName());
   }
 
   /* (non-Javadoc)
@@ -98,25 +79,45 @@ public class WebRadio implements Comparable<WebRadio> {
    */
   @Override
   public String toString() {
-    return name + " (" + url + ")";
+    return getProperties().toString();
   }
 
   /**
-   * Sets the name.
-   * 
-   * @param name the new name
+   * @return the origin
    */
-  public void setName(String name) {
-    this.name = name;
+  public WebRadioOrigin getOrigin() {
+    return (WebRadioOrigin) getValue(XML_ORIGIN);
   }
 
   /**
-   * Sets the url.
-   * 
-   * @param url the new url
+   * @return the keywords
    */
-  public void setUrl(String url) {
-    this.url = url;
+  public String getKeywords() {
+    return getStringValue(XML_KEYWORDS);
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.base.Item#getDesc()
+   */
+  @Override
+  public String getDesc() {
+    return Messages.getString("WebRadioView.1");
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.base.Item#getLabel()
+   */
+  public String getXMLTag() {
+    // Label not used as we don't persist webradio using collection code.   
+    return null;
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.base.Item#getIconRepresentation()
+   */
+  @Override
+  public ImageIcon getIconRepresentation() {
+    return IconLoader.getIcon(JajukIcons.WEBRADIO);
   }
 
 }

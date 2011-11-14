@@ -20,17 +20,24 @@
  */
 package org.jajuk;
 
-import java.io.File;
-
 /**
  * Contains common constants shared by jajuk unit tests.
  */
 public interface ConstTest {
 
-  // sometimes temporary path has trailing separator, we try to handle this here
-  /** DOCUMENT_ME. */
-  String PATH_DEVICE = (System.getProperty("java.io.tmpdir").endsWith(File.separator) ? System
-      .getProperty("java.io.tmpdir") + "jajuk_tests" + File.separator + "device_1" : System
-      .getProperty("java.io.tmpdir") + File.separator + "jajuk_tests" + File.separator + "device_1");
+  /** Temporary directory */
+  String TEMP_PATH = System.getProperty("java.io.tmpdir");
+
+  /** Path of all unit tests created files, dropped before each test **/
+  String BASE_DIRECTORY_PATH = TEMP_PATH + "/jajuk_tests";
+
+  /** Parent folder for sample devices (with music) */
+  String DEVICES_BASE_PATH = BASE_DIRECTORY_PATH + "/sample_devices";
+
+  /** Tech tests folder */
+  String TECH_TESTS_PATH = BASE_DIRECTORY_PATH + "/tech_tests";
+
+  /** Sample workspace path  */
+  String SAMPLE_WORKSPACE_PATH = BASE_DIRECTORY_PATH + "/sample_workspace";
 
 }

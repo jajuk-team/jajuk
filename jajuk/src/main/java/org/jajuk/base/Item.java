@@ -351,7 +351,7 @@ public abstract class Item implements Const {
    */
   String toXml() {
     try {
-      StringBuilder sb = new StringBuilder("<").append(getLabel());
+      StringBuilder sb = new StringBuilder("<").append(getXMLTag());
       sb.append(getPropertiesXml());
       sb.append("/>\n");
       return sb.toString();
@@ -364,11 +364,11 @@ public abstract class Item implements Const {
   }
 
   /**
-   * Gets the label.
+   * Gets the XML tag.
    * 
    * @return an identifier used to generate XML representation of this item
    */
-  abstract String getLabel();
+  public abstract String getXMLTag();
 
   /**
    * Gets the properties xml.

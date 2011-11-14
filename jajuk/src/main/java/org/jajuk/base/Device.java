@@ -480,7 +480,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  public final String getLabel() {
+  public final String getXMLTag() {
     return Const.XML_DEVICE;
   }
 

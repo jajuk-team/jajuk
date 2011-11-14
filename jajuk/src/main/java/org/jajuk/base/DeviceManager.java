@@ -305,7 +305,7 @@ public final class DeviceManager extends ItemManager {
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
-  public String getLabel() {
+  public String getXMLTag() {
     return Const.XML_DEVICES;
   }
 

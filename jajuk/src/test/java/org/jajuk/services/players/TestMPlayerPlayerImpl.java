@@ -25,6 +25,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
+import org.jajuk.ConstTest;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.File;
@@ -38,7 +39,7 @@ import org.jajuk.util.log.Log;
  * DOCUMENT_ME.
  */
 public class TestMPlayerPlayerImpl extends JajukTestCase {
-  
+
   /** The Constant JAVA_PROCESS.  DOCUMENT_ME */
   private static final String JAVA_PROCESS = "java";
 
@@ -72,7 +73,8 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void setUp() throws IOException, URISyntaxException {
     Log.info("Setting up testcase");
 
-    scriptFile = java.io.File.createTempFile("dummy", "mplayer.sh");
+    scriptFile = java.io.File.createTempFile("dummy", "mplayer.sh", new java.io.File(
+        ConstTest.TECH_TESTS_PATH));
     scriptFile.setExecutable(true);
 
     URL thisClassAbsUrl = getClass().getProtectionDomain().getCodeSource().getLocation();
@@ -212,7 +214,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testPlayWebRadioFloat() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
 
-    WebRadio radio = new WebRadio("test", "http://www.example.com/");
+    WebRadio radio = JUnitHelpers.getWebRadio();
     impl.play(radio, 1);
     // does not really start anything here: impl.stop();
   }

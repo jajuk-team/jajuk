@@ -24,7 +24,7 @@ package org.jajuk.base;
 /**
  * A physical Item (file, directory, device...)
  */
-abstract class PhysicalItem extends Item {
+public abstract class PhysicalItem extends Item {
 
   /**
    * The Constructor.
@@ -32,7 +32,7 @@ abstract class PhysicalItem extends Item {
    * @param sId DOCUMENT_ME
    * @param sName DOCUMENT_ME
    */
-  PhysicalItem(String sId, String sName) {
+  public PhysicalItem(String sId, String sName) {
     super(sId, sName);
   }
 

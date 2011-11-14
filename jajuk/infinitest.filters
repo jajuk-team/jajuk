@@ -1,0 +1,18 @@
+# Tests too long :
+.*TestQueueModel.*
+.*TestPlaylist.*
+.*TestMPlayerPlayerImpl.*
+.*ObserverRegistry.*
+.*AlarmManager.*
+.*TestMPlayerPlayerImpl.*
+.*TestStartupEngineService.*
+
+# Tests with special requirements
+.*TestDBusSupportImpl.*
+
+# Integration Tests with limited number of hits
+.*LastFm.*
+
+# Tests with GUI (even in headless mode)
+org.jajuk.services.notification.*
+.*ParameterView.*

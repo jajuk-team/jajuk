@@ -24,6 +24,7 @@ import java.io.File;
 import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
+import org.jajuk.ConstTest;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.util.Const;
@@ -41,9 +42,6 @@ public class TestSessionService extends JajukTestCase {
    */
   @Override
   protected void setUp() throws Exception {
-    // reset some of the values...
-    JUnitHelpers.createSessionDirectory();
-
     super.setUp();
   }
 
@@ -123,7 +121,7 @@ public class TestSessionService extends JajukTestCase {
     SessionService.handleCommandline(new String[] { "-test", "-ide", "-something" });
     assertFalse(parseWorkspaceLocation(""));
     assertFalse(parseWorkspaceLocation("/foo"));
-    String tmpDir = System.getProperty("java.io.tmpdir");
+    String tmpDir = ConstTest.TEMP_PATH;
     String rightWorkspaceLocation = tmpDir;
     assertTrue(parseWorkspaceLocation(rightWorkspaceLocation));
     SessionService.handleCommandline(new String[] { "-test", "-ide", "-workspace=" + tmpDir,

@@ -67,7 +67,7 @@ public abstract class ItemManager {
   /**
    * Item manager default constructor.
    */
-  ItemManager() {
+  public ItemManager() {
   }
 
   /**
@@ -88,7 +88,7 @@ public abstract class ItemManager {
    * before user could make changes to the collection, we populate a TreeSet
    * from the ArrayList and begin to use it.
    */
-  void switchToOrderState() {
+  public void switchToOrderState() {
     lock.writeLock().lock();
     try {
       // populate a new TreeSet with the startup-items
@@ -114,11 +114,11 @@ public abstract class ItemManager {
   }
 
   /**
-   * Gets the label.
-   *
+   * Gets the XML tag.
+   * 
    * @return identifier used for XML generation
    */
-  public abstract String getLabel();
+  public abstract String getXMLTag();
 
   /**
    * Gets the meta information.
@@ -187,7 +187,7 @@ public abstract class ItemManager {
    * @return (partial) XML representation of this manager
    */
   String toXML() {
-    StringBuilder sb = new StringBuilder("<").append(getLabel() + ">");
+    StringBuilder sb = new StringBuilder("<").append(getXMLTag() + ">");
     Iterator<String> it = hmPropertiesMetaInformation.keySet().iterator();
     while (it.hasNext()) {
       String sProperty = it.next();
@@ -411,7 +411,7 @@ public abstract class ItemManager {
    *
    * @param item DOCUMENT_ME
    */
-  protected void removeItem(Item item) {
+  public void removeItem(Item item) {
     lock.writeLock().lock();
     try {
       if (item != null) {

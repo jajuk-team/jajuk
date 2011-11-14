@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
+import org.jajuk.services.webradio.WebRadioHelper;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -46,7 +47,7 @@ public class WebRadioAction extends JajukAction {
    */
   WebRadioAction() {
     super(Messages.getString("CommandJPanel.25"), IconLoader.getIcon(JajukIcons.WEBRADIO), true);
-    setShortDescription(WebRadioManager.getCurrentWebRadioTooltip());
+    setShortDescription(WebRadioHelper.getCurrentWebRadioTooltip());
   }
 
   /* (non-Javadoc)

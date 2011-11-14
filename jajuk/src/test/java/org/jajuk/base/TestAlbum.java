@@ -135,11 +135,11 @@ public class TestAlbum extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Album#getLabel()}.
+   * Test method for {@link org.jajuk.base.Album#getXMLTag()}.
    */
   public final void testGetLabel() {
     Album album = new Album("1", "name", 123);
-    assertFalse(album.getLabel().isEmpty());
+    assertFalse(album.getXMLTag().isEmpty());
   }
 
   /**
@@ -279,19 +279,16 @@ public class TestAlbum extends JajukTestCase {
 
     // set a cover file which does not exist
     // We need to make the cover inside a known device
-    Device tmpDevice = DeviceManager.getInstance().registerDevice("tmp", "tmpDevice",
-        Device.Type.DIRECTORY, System.getProperty("java.io.tmpdir"));
+    Device tmpDevice = JUnitHelpers.getDevice();
     tmpDevice.mount(false);
-    new java.io.File(System.getProperty("java.io.tmpdir"), "cover.tst").delete();
-    album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, System.getProperty("java.io.tmpdir")
-        + java.io.File.separator + "cover.tst");
+    album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, tmpDevice.getUrl() + java.io.File.separator
+        + "cover.tst");
     assertNull(album.findCover());
 
     // then create the file and try again
-    FileUtils.writeStringToFile(
-        new java.io.File(System.getProperty("java.io.tmpdir"), "cover.tst"), "");
-    album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, System.getProperty("java.io.tmpdir")
-        + java.io.File.separator + "cover.tst");
+    FileUtils.writeStringToFile(new java.io.File(tmpDevice.getUrl(), "cover.tst"), "");
+    album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, tmpDevice.getUrl() + java.io.File.separator
+        + "cover.tst");
     assertNotNull(album.findCover());
 
     // try with a track and no cover file set
@@ -350,8 +347,6 @@ public class TestAlbum extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testGetThumbnail() throws Exception {
-    JUnitHelpers.createSessionDirectory();
-
     Album album = new Album("1", "name", 123);
     assertNotNull(album.getThumbnail(100));
 

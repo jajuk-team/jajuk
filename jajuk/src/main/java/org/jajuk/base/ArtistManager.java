@@ -132,6 +132,7 @@ public final class ArtistManager extends ItemManager {
    * @see org.jajuk.base.ItemManager#switchToOrderState()
    */
   @Override
+  public
   void switchToOrderState() {
     // bring this Manager to ordered state when Collection is fully loaded
     orderedState = true;
@@ -189,7 +190,7 @@ public final class ArtistManager extends ItemManager {
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
-  public String getLabel() {
+  public String getXMLTag() {
     return Const.XML_ARTISTS;
   }
 

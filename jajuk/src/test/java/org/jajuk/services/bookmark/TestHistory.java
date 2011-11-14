@@ -372,8 +372,6 @@ public class TestHistory extends JajukTestCase {
     // now it is there
     assertEquals(1, History.getInstance().getHistory().size());
 
-    JUnitHelpers.createSessionDirectory();
-
     // write the list to disc
     History.commit();
 
@@ -429,8 +427,6 @@ public class TestHistory extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testLoadCorruptFile() throws Exception {
-    JUnitHelpers.createSessionDirectory();
-
     // first try when no file is available
     java.io.File frt = SessionService.getConfFileByPath(Const.FILE_HISTORY);
     frt.delete();

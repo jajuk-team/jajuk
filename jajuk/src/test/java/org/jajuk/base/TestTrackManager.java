@@ -20,6 +20,8 @@
  */
 package org.jajuk.base;
 
+import java.io.IOException;
+
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.junit.Test;
@@ -38,7 +40,7 @@ public class TestTrackManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.TrackManager#getLabel()}.
+   * Test method for {@link org.jajuk.base.TrackManager#getXMLTag()}.
    */
   @Test
   public void testGetLabel() {
@@ -175,9 +177,10 @@ public class TestTrackManager extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.TrackManager#removeFile(org.jajuk.base.Track, org.jajuk.base.File)}.
+   * @throws IOException 
    */
   @Test
-  public void testRemoveFile() {
+  public void testRemoveFile() throws IOException {
     // Set-up...
     File file = JUnitHelpers.getFile();
 

@@ -544,7 +544,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  public final String getLabel() {
+  public final String getXMLTag() {
     return Const.XML_PLAYLIST_FILE;
   }
 

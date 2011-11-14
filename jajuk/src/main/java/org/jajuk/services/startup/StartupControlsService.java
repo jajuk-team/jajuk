@@ -82,7 +82,7 @@ public final class StartupControlsService {
     final File fCache = SessionService.getConfFileByPath(Const.FILE_CACHE);
     if (!fCache.exists()) {
       if (!fCache.mkdirs()) {
-        Log.warn("Could not cretae directory structure " + fCache.toString());
+        Log.warn("Could not create directory structure " + fCache.toString());
       }
     } else {
       // Empty cache if age > CACHE_MAX_AGE

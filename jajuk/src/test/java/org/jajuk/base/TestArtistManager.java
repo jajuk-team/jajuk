@@ -46,15 +46,15 @@ public class TestArtistManager extends JajukTestCase {
 
   /** The Constant NUMBER_OF_TESTS.  DOCUMENT_ME */
   private static final int NUMBER_OF_TESTS = 10;
-  
+
   /** The Constant NUMBER_OF_THREADS.  DOCUMENT_ME */
   private static final int NUMBER_OF_THREADS = 10;
 
   /**
-   * Test method for {@link org.jajuk.base.ArtistManager#getLabel()}.
+   * Test method for {@link org.jajuk.base.ArtistManager#getXMLTag()}.
    */
   public final void testGetLabel() {
-    assertEquals(Const.XML_ARTISTS, ArtistManager.getInstance().getLabel());
+    assertEquals(Const.XML_ARTISTS, ArtistManager.getInstance().getXMLTag());
   }
 
   /**

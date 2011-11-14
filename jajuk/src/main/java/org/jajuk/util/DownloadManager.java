@@ -164,8 +164,7 @@ public final class DownloadManager {
   /**
    * Download the resource at the given url and cache it <br>
    * If the file is already in cache, it is returned immediately <br>
-   * The cache is currently cleared at each Jajuk session startup.
-   * 
+   *  
    * @param url url to download
    * 
    * @return cached file or null if a problem occurred
