@@ -21,6 +21,7 @@
 package org.jajuk.base;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -33,7 +34,6 @@ import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.services.startup.StartupCollectionService;
-import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -213,19 +213,18 @@ public class TestDevice extends JajukTestCase {
   public void testCleanRemovedFiles() throws Exception {
     Device device = JUnitHelpers.getDevice();
 
-    JUnitHelpers.getPlaylist();
+    Playlist playlist = JUnitHelpers.getPlaylist();
 
     // ensure we are not exiting, this would invalidate the test
     assertFalse(ExitService.isExiting());
+    
+    // Delete a file
+    playlist.getFIO().delete();
 
     // now we have removals
-    assertTrue(device.cleanRemovedFiles(null));
-
-    // enable history to also clean that
-    Conf.setProperty(Const.CONF_HISTORY, "10");
-
-    // no removals any more now
-    assertFalse(device.cleanRemovedFiles(null));
+    List<Directory> dirs = new ArrayList<Directory>();
+    dirs.add(playlist.getDirectory());
+    assertTrue(device.cleanRemovedFiles(dirs));
   }
 
   /**
