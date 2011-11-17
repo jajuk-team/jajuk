@@ -518,12 +518,13 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   /**
    * Update the selection.
    */
-  private void updateSelection() {
+  public void updateSelection() {
     JajukTableModel model = (JajukTableModel) getModel();
     selection.clear();
     int[] rows = getSelectedRows();
     for (int element : rows) {
       Item o = model.getItemAt(convertRowIndexToModel(element));
+      System.out.println(o);
       selection.add(o);
     }
   }

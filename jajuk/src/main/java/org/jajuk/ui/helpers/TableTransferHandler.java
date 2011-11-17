@@ -78,6 +78,9 @@ public class TableTransferHandler extends TransferHandler {
    */
   @Override
   protected Transferable createTransferable(JComponent c) {
+    // Force selection to update before beginning actual drag, otherwise, drag is done
+    // against previously selected row.
+    jtable.updateSelection();
     return new TransferableTableRows(jtable.getSelection());
   }
 
