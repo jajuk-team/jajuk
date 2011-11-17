@@ -135,12 +135,6 @@ public final class DownloadManager {
    * @throws IOException If a network problem occurs.
    */
   public static void download(URL url, File fDestination) throws IOException {
-    // Drop the query if user required "none Internet access from jajuk".
-    // This method shouldn't be called anyway because we views have to deal with
-    // this option at their level, this is a additional control.
-    if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
-      return;
-    }
     HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
     BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fDestination));
     try {
