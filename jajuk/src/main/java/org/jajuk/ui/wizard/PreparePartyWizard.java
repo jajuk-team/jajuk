@@ -955,7 +955,7 @@ public class PreparePartyWizard extends Wizard {
         jcbMaxTracks = new JCheckBox(Messages.getString("PreparePartyWizard.10"));
         jcbMaxTracks.setToolTipText(Messages.getString("PreparePartyWizard.11"));
 
-        jsMaxTracks = new JSlider(0, 5000, 100);
+        jsMaxTracks = new JSlider(0, 10000, 100);
         jnMaxTracks = new JLabel(NO_VALUE);
         jnMaxTracks.setBorder(new BevelBorder(BevelBorder.LOWERED));
         jnMaxTracks.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -970,7 +970,7 @@ public class PreparePartyWizard extends Wizard {
         jcbMaxSize = new JCheckBox(Messages.getString("PreparePartyWizard.12"));
         jcbMaxSize.setToolTipText(Messages.getString("PreparePartyWizard.13"));
 
-        jsMaxSize = new JSlider(0, 5000, 100);
+        jsMaxSize = new JSlider(0, 10000, 100);
         jnMaxSize = new JLabel(NO_VALUE);
         jnMaxSize.setBorder(new BevelBorder(BevelBorder.LOWERED));
         jnMaxSize.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -985,7 +985,7 @@ public class PreparePartyWizard extends Wizard {
         jcbMaxLength = new JCheckBox(Messages.getString("PreparePartyWizard.14"));
         jcbMaxLength.setToolTipText(Messages.getString("PreparePartyWizard.15"));
 
-        jsMaxLength = new JSlider(0, 5000, 100);
+        jsMaxLength = new JSlider(0, 10000, 100);
         jnMaxLength = new JLabel(NO_VALUE);
         jnMaxLength.setBorder(new BevelBorder(BevelBorder.LOWERED));
         jnMaxLength.setHorizontalAlignment(JLabel.RIGHT);
@@ -1253,6 +1253,7 @@ public class PreparePartyWizard extends Wizard {
      * @see
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
       // if a checkbox is selected/deselected, enable/disable the
       // sliders/comboboxes accordingly
@@ -1308,6 +1309,7 @@ public class PreparePartyWizard extends Wizard {
      * javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent
      * )
      */
+    @Override
     public void stateChanged(ChangeEvent ie) {
       // just update the stored static data whenever we receive an interesting
       // event
