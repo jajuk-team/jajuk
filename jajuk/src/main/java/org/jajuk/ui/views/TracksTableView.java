@@ -28,7 +28,6 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.TracksTableModel;
 import org.jajuk.ui.widgets.JajukTable;
-import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
@@ -121,17 +120,6 @@ public class TracksTableView extends AbstractTableView {
   public synchronized JajukTableModel populateTable() {
     // model creation
     return new TracksTableModel(getID());
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.views.AbstractTableView#initTable()
-   */
-  @Override
-  void initTable() {
-    boolean bEditable = Conf.getBoolean(Const.CONF_TRACKS_TABLE_EDITION);
-    jtbEditable.setSelected(bEditable);
   }
 
 }

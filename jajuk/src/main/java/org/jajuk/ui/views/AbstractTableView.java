@@ -692,8 +692,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       // Require refresh of all tables
       Properties properties = new Properties();
       properties.put(Const.DETAIL_ORIGIN, AbstractTableView.this);
-      ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH, properties));
-
+      // No real device change if Webradio view
+      if (!(this instanceof WebRadioView)) {
+        ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH, properties));
+      }
     } catch (NoneAccessibleFileException none) {
       Messages.showErrorMessage(none.getCode());
       ((JajukTableModel) jtable.getModel()).undo(e.getFirstRow(), e.getColumn());
@@ -707,14 +709,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     }
   }
 
-  /**
-   * Table initialization after table display.
-   */
-  void initTable() {
-    //Do nothing by default
-  }
-
-  /*
+   /*
    * (non-Javadoc)
    *
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -813,5 +808,15 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   void onSelectionChange() {
     // Do nothing by default
     Log.debug("Table selection changed for : " + this);
+  }
+  
+   /**
+   * Table initialization after table display.
+   * Default implementation for table initialization :
+   * update editable button state.
+   * 
+   */
+  void initTable() {
+    jtbEditable.setSelected(Conf.getBoolean(editableConf));
   }
 }
