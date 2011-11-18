@@ -261,50 +261,55 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         Album album = track.getAlbum();
 
         // create genre
-        Enumeration<GenreNode> e = top.children();
-        boolean b = false;
-        while (e.hasMoreElements()) { // check the genre doesn't
-          // already exist
-          GenreNode sn = e.nextElement();
-          if (sn.getGenre().equals(genre)) {
-            b = true;
-            genreNode = sn;
-            break;
+        {
+          Enumeration<GenreNode> e = top.children();
+          boolean b = false;
+          while (e.hasMoreElements()) { // check the genre doesn't
+            // already exist
+            GenreNode sn = e.nextElement();
+            if (sn.getGenre().equals(genre)) {
+              b = true;
+              genreNode = sn;
+              break;
+            }
           }
-        }
-        if (!b) {
-          genreNode = new GenreNode(genre);
-          top.add(genreNode);
+          if (!b) {
+            genreNode = new GenreNode(genre);
+            top.add(genreNode);
+          }
         }
 
         if (genreNode == null) {
           continue;
-        } 
+        }
 
         // create artist
-        Enumeration<ArtistNode> e2 = genreNode.children();
-        b = false;
-        while (e.hasMoreElements()) { // check if the artist doesn't
-          // already exist
-          ArtistNode an = e2.nextElement();
-          if (an.getArtist().equals(artist)) {
-            b = true;
-            artistNode = an;
-            break;
+        {
+          Enumeration<ArtistNode> e2 = genreNode.children();
+          boolean b = false;
+          while (e2.hasMoreElements()) { // check if the artist doesn't
+            // already exist
+            ArtistNode an = e2.nextElement();
+            if (an.getArtist().equals(artist)) {
+              b = true;
+              artistNode = an;
+              break;
+            }
+          }
+          if (!b) {
+            artistNode = new ArtistNode(artist);
+            genreNode.add(artistNode);
           }
         }
-        if (!b) {
-          artistNode = new ArtistNode(artist);
-          genreNode.add(artistNode);
-        }
+
         // create album
         if (artistNode == null) {
           continue;
-        } 
-        
+        }
+
         Enumeration<AlbumNode> e3 = artistNode.children();
-        b = false;
-        while (e.hasMoreElements()) {
+        boolean b = false;
+        while (e3.hasMoreElements()) {
           AlbumNode an = e3.nextElement();
           if (an.getAlbum().equals(album)) {
             b = true;
@@ -338,30 +343,32 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         Album album = track.getAlbum();
 
         // create artist
-        Enumeration<ArtistNode> e = top.children();
-        boolean b = false;
-        while (e.hasMoreElements()) { // check if the artist doesn't
-          // already exist
-          ArtistNode an = e.nextElement();
-          if (an.getArtist().equals(artist)) {
-            b = true;
-            artistNode = an;
-            break;
+        {
+          Enumeration<ArtistNode> e = top.children();
+          boolean b = false;
+          while (e.hasMoreElements()) { // check if the artist doesn't
+            // already exist
+            ArtistNode an = e.nextElement();
+            if (an.getArtist().equals(artist)) {
+              b = true;
+              artistNode = an;
+              break;
+            }
           }
-        }
-        if (!b) {
-          artistNode = new ArtistNode(artist);
-          top.add(artistNode);
+          if (!b) {
+            artistNode = new ArtistNode(artist);
+            top.add(artistNode);
+          }
         }
 
         if (artistNode == null) {
           continue;
-        } 
-        
+        }
+
         // create album
         Enumeration<AlbumNode> e2 = artistNode.children();
-        b = false;
-        while (e.hasMoreElements()) { // check if the album doesn't
+        boolean b = false;
+        while (e2.hasMoreElements()) { // check if the album doesn't
           // already exist
           AlbumNode an = e2.nextElement();
           if (an.getAlbum().equals(album)) {
@@ -396,31 +403,34 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         AlbumNode albumNode = null;
         Album album = track.getAlbum();
         Year year = track.getYear();
+
         // create Year
-        Enumeration<YearNode> e = top.children();
-        boolean b = false;
-        // check if the artist doesn't already exist
-        while (e.hasMoreElements()) {
-          YearNode yn = e.nextElement();
-          if (yn.getYear().equals(year)) {
-            b = true;
-            yearNode = yn;
-            break;
+        {
+          Enumeration<YearNode> e = top.children();
+          boolean b = false;
+          // check if the artist doesn't already exist
+          while (e.hasMoreElements()) {
+            YearNode yn = e.nextElement();
+            if (yn.getYear().equals(year)) {
+              b = true;
+              yearNode = yn;
+              break;
+            }
+          }
+          if (!b) {
+            yearNode = new YearNode(year);
+            top.add(yearNode);
           }
         }
-        if (!b) {
-          yearNode = new YearNode(year);
-          top.add(yearNode);
-        }
-        
+
         if (yearNode == null) {
           continue;
-        } 
-        
+        }
+
         // create album
         Enumeration<AlbumNode> e1 = yearNode.children();
-        b = false;
-        while (e.hasMoreElements()) { // check if the album doesn't
+        boolean b = false;
+        while (e1.hasMoreElements()) { // check if the album doesn't
           // already exist
           AlbumNode an = e1.nextElement();
           if (an.getAlbum().equals(album)) {
@@ -433,6 +443,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
           albumNode = new AlbumNode(album);
           yearNode.add(albumNode);
         }
+
         // create track
         if (albumNode != null) {
           albumNode.add(new TrackNode(track));
