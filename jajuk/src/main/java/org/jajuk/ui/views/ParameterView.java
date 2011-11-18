@@ -25,6 +25,8 @@ import java.awt.Component;
 import java.awt.SystemTray;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -63,6 +65,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.notification.NotificatorTypes;
+import org.jajuk.services.webradio.WebRadioHelper;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.helpers.PatternInputVerifier;
 import org.jajuk.ui.widgets.JajukButton;
@@ -72,6 +75,7 @@ import org.jajuk.ui.widgets.SteppedComboBox;
 import org.jajuk.ui.widgets.ToggleLink;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
+import org.jajuk.util.DownloadManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.LocaleManager;
@@ -409,6 +413,8 @@ public class ParameterView extends ViewAdapter {
   /** Splashscreen flag. */
   JCheckBox jcbSplashscreen;
 
+  JButton jbReloadRadiosPreset;
+
   /**
    * View providing main jajuk configuration GUI. Known in the doc as
    * "Preferences view"
@@ -579,6 +585,36 @@ public class ParameterView extends ViewAdapter {
     jpStart.add(jrbFile);
     jpStart.add(sbSearch, "grow,wrap"); //NOSONAR
     return jpStart;
+  }
+
+  /**
+  * Inits the webradios panel.
+  *
+  *
+  * @return the j panel
+  */
+  private JPanel initWebradios() {
+    JPanel jpWebradios = new JPanel(new MigLayout("insets 10, gapy 15"));
+    jbReloadRadiosPreset = new JButton(Messages.getString("WebRadioView.10"),
+        IconLoader.getIcon(JajukIcons.CLEAR));
+    jbReloadRadiosPreset.setToolTipText(Messages.getString("WebRadioView.11"));
+    jbReloadRadiosPreset.addActionListener(new ActionListener() {
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        try {
+          File fPresets = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET);
+          DownloadManager.download(new URL(Const.URL_WEBRADIO_PRESETS), fPresets);
+          WebRadioHelper.loadPresetsRadios(fPresets);
+          Messages.showInfoMessage(Messages.getString("Success"));
+        } catch (Exception ex) {
+          Log.error(ex);
+          Messages.showErrorMessage(9);
+        }
+      }
+    });
+    jpWebradios.add(jbReloadRadiosPreset);
+    return jpWebradios;
   }
 
   /**
@@ -1309,6 +1345,7 @@ public class ParameterView extends ViewAdapter {
     JPanel jpLastFM = initUILastFM();
     JPanel jpCovers = initUICovers();
     JPanel jpUI = initUIGUI();
+    JPanel jpWebradios = initWebradios();
 
     // --OK/cancel panel
     jbOK = new JButton(Messages.getString("ParameterView.85"), IconLoader.getIcon(JajukIcons.OK));
@@ -1337,6 +1374,7 @@ public class ParameterView extends ViewAdapter {
     jtpMain.addTab(Messages.getString("ParameterView.98"), new JajukJScrollPane(jpPatterns));
     jtpMain.addTab(Messages.getString("ParameterView.8"), new JajukJScrollPane(jpHistory));
     jtpMain.addTab(Messages.getString("ParameterView.235"), new JajukJScrollPane(jpLastFM));
+    jtpMain.addTab(Messages.getString("WebRadioView.0"), new JajukJScrollPane(jpWebradios));
     jtpMain.addTab(Messages.getString("ParameterView.159"), new JajukJScrollPane(jpCovers));
     jtpMain.addTab(Messages.getString("ParameterView.26"), new JajukJScrollPane(jpConfirmations));
     jtpMain.addTab(Messages.getString("ParameterView.139"), new JajukJScrollPane(jpNetwork));

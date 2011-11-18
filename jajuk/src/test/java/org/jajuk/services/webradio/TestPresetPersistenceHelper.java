@@ -43,6 +43,7 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
 
   private WebRadioManager man = WebRadioManager.getInstance();
 
+  @Override
   public void setUp() throws Exception {
     super.setUp();
     man.cleanup();
@@ -112,6 +113,7 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
                 <name>LuNe Radio</name>
                 <url>http://broadcaster.infomaniak.ch/lune-high.mp3.m3u</url>
                 <label>Switzerland</label>
+                <keywords>foo;bar</keywords>
                 <isRemoved>false</isRemoved>  //not used by Jajuk
                 <bitrate>128</bitrate>
                 <frequency>44100</frequency>
@@ -140,7 +142,7 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
     JUnitHelpers.getWebRadio("Preset1", "http://preset1", WebRadioOrigin.PRESET);
     JUnitHelpers.getWebRadio("Preset2", "http://preset2", WebRadioOrigin.PRESET);
     PresetRadiosPersistenceHelper.commit();
-    // Load the sample file (written in setUp())
+    // Load the sample file
     WebRadioHelper
         .loadPresetsRadios(SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET));
     //Make sure keywords will not be lost
@@ -154,6 +156,7 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
     WebRadioHelper
         .loadPresetsRadios(SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET));
     // Check that the preset keywords are not lost
+    radio1 = WebRadioManager.getInstance().getWebRadioByName("Preset1");
     assertEquals(radio1.getKeywords(), "foo;bar");
   }
 }

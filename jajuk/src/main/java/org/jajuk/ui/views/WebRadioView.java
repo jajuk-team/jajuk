@@ -69,7 +69,7 @@ public class WebRadioView extends AbstractTableView {
   public WebRadioView() {
     super();
     columnsConf = CONF_WEBRADIO_COLUMNS;
-    editableConf = CONF_ALBUMS_TABLE_EDITION;
+    editableConf = CONF_WEBRADIO_TABLE_EDITION;
   }
 
   /*
@@ -212,5 +212,7 @@ public class WebRadioView extends AbstractTableView {
 
     // Call common code of AbstractTableView
     createGenericGUI(jbNewRadio);
+    initTable();
   }
+ 
 }

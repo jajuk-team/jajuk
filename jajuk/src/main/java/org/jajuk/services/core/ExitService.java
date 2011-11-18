@@ -33,6 +33,7 @@ import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.CustomRadiosPersistenceHelper;
+import org.jajuk.services.webradio.PresetRadiosPersistenceHelper;
 import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -77,6 +78,7 @@ public class ExitService extends Thread {
 
     // Commit webradios
     CustomRadiosPersistenceHelper.commit();
+    PresetRadiosPersistenceHelper.commit();
 
     // Store webradio state
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(QueueModel.isPlayingRadio()));

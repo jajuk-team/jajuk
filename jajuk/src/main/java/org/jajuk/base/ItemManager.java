@@ -34,6 +34,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.jajuk.services.tags.Tag;
+import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
@@ -574,6 +575,8 @@ public abstract class ItemManager {
         itemToChange.setProperty(sKey, oValue);
       }
     } else if (itemToChange instanceof Year) {
+      itemToChange.setProperty(sKey, oValue);
+    } else if (itemToChange instanceof WebRadio) {
       itemToChange.setProperty(sKey, oValue);
     }
     return newItem;

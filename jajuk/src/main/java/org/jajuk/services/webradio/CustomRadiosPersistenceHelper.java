@@ -86,14 +86,13 @@ public class CustomRadiosPersistenceHelper extends DefaultHandler {
       Log.error(e);
     }
   }
-  
+
   /**
   * Write down custom webradios for persistence between sessions.
   * 
   * @throws IOException Signals that an I/O exception has occurred.
   */
   public static void commit() throws IOException {
-    
     WebRadioManager manager = WebRadioManager.getInstance();
     File out = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_CUSTOM);
     String sCharset = Conf.getString(Const.CONF_COLLECTION_CHARSET);
@@ -125,6 +124,7 @@ public class CustomRadiosPersistenceHelper extends DefaultHandler {
       // close
       bw.write("</" + Const.XML_STREAMS + ">\n");
       bw.flush();
+      Log.debug("Custom webradios list commited to : " + out.getAbsolutePath());
     } finally {
       bw.close();
     }

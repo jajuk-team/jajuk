@@ -30,6 +30,7 @@ import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilString;
+import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -50,6 +51,9 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
 
   /** Radio label. */
   private String radioLabel;
+
+  /** Radio keywords */
+  private String keywords;
 
   /** Radio bitrate */
   private String radioBitrate;
@@ -80,6 +84,9 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
   public void startElement(String sUri, String s, String sQName, Attributes attributes)
       throws SAXException {
     buffer = new StringBuilder();
+    if (TAG_RADIO.equals(sQName)) {
+      keywords = attributes.getValue(attributes.getIndex(Const.XML_KEYWORDS));
+    }
   }
 
   /*
@@ -119,6 +126,9 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
       if (!UtilString.isEmpty(radioFrequency)) {
         radio.setProperty(Const.XML_FREQUENCY, Long.parseLong(radioFrequency));
       }
+      if (!UtilString.isEmpty(keywords)) {
+        radio.setProperty(Const.XML_KEYWORDS, keywords);
+      }
       // It is a preset webradio as we are in this class
       radio.setProperty(Const.XML_ORIGIN, WebRadioOrigin.PRESET);
     } else if (TAG_NAME.equals(qName)) {
@@ -127,6 +137,8 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
       radioUrl = buffer.toString();
     } else if (TAG_LABEL.equals(qName)) {
       radioLabel = buffer.toString();
+    } else if (Const.XML_KEYWORDS.equals(qName)) {
+      keywords = buffer.toString();
     } else if (TAG_BITRATE.equals(qName)) {
       radioBitrate = buffer.toString();
     } else if (TAG_FREQUENCY.equals(qName)) {
@@ -162,13 +174,13 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
           <name>Buureradio</name>
           <url>http://live-three.dmd2.ch/listen.pls</url>
           <label>Switzerland</label>
+          <keywords>cool;fine</keywords>
           <isRemoved>false</isRemoved>
           <bitrate>128</bitrate>
           <frequency>44100</frequency>
         </Radio>
        */
       for (WebRadio radio : manager.getWebRadiosByOrigin(WebRadioOrigin.PRESET)) {
-
         // Note that we don't write down the isRemoved tag, not used by jajuk
         bw.write("\t<" + TAG_RADIO);
         if (UtilString.isNotEmpty(radio.getKeywords())) {
@@ -178,15 +190,18 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
         bw.write("\t\t<" + TAG_NAME + ">" + radio.getName() + "</" + TAG_NAME + ">\n");
         bw.write("\t\t<" + TAG_URL + ">" + radio.getUrl() + "</" + TAG_URL + ">\n");
         bw.write("\t\t<" + TAG_LABEL + ">" + radio.getLabel() + "</" + TAG_LABEL + ">\n");
+        bw.write("\t\t<" + Const.XML_KEYWORDS + ">" + radio.getKeywords() + "</"
+            + Const.XML_KEYWORDS + ">\n");
         bw.write("\t\t<" + TAG_BITRATE + ">" + radio.getLongValue(Const.XML_BITRATE) + "</"
             + TAG_BITRATE + ">\n");
         bw.write("\t\t<" + TAG_FREQUENCY + ">" + radio.getLongValue(Const.XML_FREQUENCY) + "</"
             + TAG_FREQUENCY + ">\n");
-         bw.write("\t</" + TAG_RADIO+">\n");
+        bw.write("\t</" + TAG_RADIO + ">\n");
       }
       // close
       bw.write("</" + TAG_LIST + ">\n");
       bw.flush();
+      Log.debug("Preset webradios list commited to : " + out.getAbsolutePath());
     } finally {
       bw.close();
     }
