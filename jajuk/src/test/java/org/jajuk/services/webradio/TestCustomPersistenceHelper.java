@@ -39,6 +39,7 @@ public class TestCustomPersistenceHelper extends JajukTestCase {
 
   private WebRadioManager man = WebRadioManager.getInstance();
 
+  @Override
   public void setUp() throws Exception {
     super.setUp();
     man.cleanup();

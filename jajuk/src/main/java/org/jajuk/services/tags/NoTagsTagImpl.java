@@ -110,7 +110,7 @@ public class NoTagsTagImpl implements ITagImpl {
       }
 
       @Override
-      @SuppressWarnings({ "rawtypes", "unchecked" })
+      @SuppressWarnings({ "rawtypes" })
       public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata, Map mProperties) {
         // required by interface, but nothing to do here...
       }

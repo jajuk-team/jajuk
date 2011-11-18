@@ -435,7 +435,7 @@ public class DeviceView extends ViewAdapter implements ActionListener {
    *
    * @param arg0 DOCUMENT_ME
    */
-  public void mouseExited(@SuppressWarnings("unused") MouseEvent arg0) {
+  public void mouseExited(MouseEvent arg0) {
     // required by interface, but nothing to do here...
   }
 
@@ -450,7 +450,7 @@ public class DeviceView extends ViewAdapter implements ActionListener {
    *
    * @param e DOCUMENT_ME
    */
-  public void mouseEntered(@SuppressWarnings("unused") MouseEvent e) {
+  public void mouseEntered(MouseEvent e) {
     // required by interface, but nothing to do here...
   }
 
@@ -465,7 +465,7 @@ public class DeviceView extends ViewAdapter implements ActionListener {
    *
    * @param e DOCUMENT_ME
    */
-  public void mouseClicked(@SuppressWarnings("unused") MouseEvent e) {
+  public void mouseClicked(MouseEvent e) {
     // required by interface, but nothing to do here...
   }
 }

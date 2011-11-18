@@ -33,6 +33,7 @@ public class TestWebRadioManager extends JajukTestCase {
   WebRadio radio3;
   WebRadio radio4;
 
+  @Override
   public void setUp() throws Exception {
     super.setUp();
     man.cleanup();

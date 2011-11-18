@@ -107,6 +107,7 @@ public class WebRadio extends PhysicalItem implements Comparable<WebRadio> {
   /* (non-Javadoc)
    * @see org.jajuk.base.Item#getLabel()
    */
+  @Override
   public String getXMLTag() {
     // Label not used as we don't persist webradio using collection code.   
     return null;

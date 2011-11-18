@@ -77,6 +77,7 @@ public class WebRadioView extends AbstractTableView {
    * 
    * @see org.jajuk.ui.views.IView#getDesc()
    */
+  @Override
   public String getDesc() {
     return Messages.getString("WebRadioView.0");
   }
@@ -86,6 +87,7 @@ public class WebRadioView extends AbstractTableView {
    * 
    * @see org.jajuk.ui.views.IView#populate()
    */
+  @Override
   public void initUI() {
     UtilGUI.populate(this);
   }
