@@ -54,20 +54,10 @@ public class TestAlbum extends JajukTestCase {
     StartupCollectionService.registerItemManagers();
 
     Album album = new Album("1", "name", 123);
-    /*
-     * album.getTracksCache().add(getTrack(album));
-     * 
-     * album.setProperty(Const.XML_TRACK_DISCOVERY_DATE, System.) String str = album.getAny();
-     * assertFalse(str.isEmpty());
-     */
-
+   
     // add a genre and year and check again
     album.getTracksCache().add(getTrack(album));
     assertFalse(album.getAny().isEmpty());
-    /*
-     * assertFalse("getAny() should return differently as soon as we have genre and year" ,
-     * str.equals(album.getAny()));
-     */
   }
 
   /**

@@ -420,16 +420,8 @@ public class JUnitHelpers {
    */
   public static void waitForThreadToFinish(final String name) throws InterruptedException {
     int count = Thread.currentThread().getThreadGroup().activeCount();
-
     Thread[] threads = new Thread[count];
-    /* int received = */Thread.currentThread().getThreadGroup().enumerate(threads);
-
-    /*
-     * we ignore this check as we can not do anything anyway if we receive not all threads if(count
-     * != received) { throw new IllegalStateException("Could not read all threads: Expected: " +
-     * count + " Found: " + received); }
-     */
-
+    Thread.currentThread().getThreadGroup().enumerate(threads);
     for (Thread t : threads) {
       if (t != null && name.equals(t.getName())) {
         t.join();
@@ -447,7 +439,7 @@ public class JUnitHelpers {
   public static void waitForAllWorkToFinishAndCleanup() throws InterruptedException,
       InvocationTargetException {
     ObservationManager.clear();
-
+    // Reset everything
     QueueModel.stopRequest();
     QueueModel.clear();
 
@@ -513,6 +505,19 @@ public class JUnitHelpers {
     JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.ZERO.toString());
 
     JUnitHelpers.clearSwingUtilitiesQueue();
+    
+    //Reset everything again as it could have been changed during threads finishing
+    ObservationManager.clear();
+    // Reset everything
+    QueueModel.stopRequest();
+    QueueModel.clear();
+
+    FileManager.getInstance().clear();
+    DirectoryManager.getInstance().clear();
+    cleanAllDevices();
+    History.getInstance().clear();
+    
+    
   }
 
   /**
