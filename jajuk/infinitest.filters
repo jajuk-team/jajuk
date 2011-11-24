@@ -10,6 +10,14 @@
 # Tests with special requirements
 .*TestDBusSupportImpl.*
 
+# Tests online
+.*TestLyrics.*
+.*TestCover.*
+.*TestNetwork.*
+.*Preset.*
+.*TestWebRadioHelper.*
+
+
 # Integration Tests with limited number of hits
 .*LastFm.*
 
