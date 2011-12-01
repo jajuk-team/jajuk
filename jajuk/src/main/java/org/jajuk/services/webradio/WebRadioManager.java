@@ -29,6 +29,7 @@ import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.ReadOnlyIterator;
+import org.jajuk.util.UtilSystem;
 
 /**
  * Stores webradios configurated by user
@@ -58,14 +59,14 @@ public final class WebRadioManager extends ItemManager {
     registerProperty(new PropertyMetaInformation(Const.XML_URL, false, false, true, true, false,
         String.class, null));
     // Origin
-    registerProperty(new PropertyMetaInformation(Const.XML_ORIGIN, false, false, true, true,
-        true, String.class, null));
+    registerProperty(new PropertyMetaInformation(Const.XML_ORIGIN, false, false, true, false, true,
+        String.class, null));
     // Keywords
     registerProperty(new PropertyMetaInformation(Const.XML_KEYWORDS, false, false, true, true,
         false, String.class, null));
     // Bitrate
-    registerProperty(new PropertyMetaInformation(Const.XML_BITRATE, false, false, true, true,
-        true, Long.class, null));
+    registerProperty(new PropertyMetaInformation(Const.XML_BITRATE, false, false, true, true, true,
+        Long.class, null));
     //Frequency
     registerProperty(new PropertyMetaInformation(Const.XML_FREQUENCY, false, false, true, true,
         true, Long.class, null));
@@ -82,7 +83,11 @@ public final class WebRadioManager extends ItemManager {
   * @return radio ID
   */
   protected static String createID(String sName) {
-    return MD5Processor.hash(sName.toLowerCase());
+    // The webradio id is simply a shuffle number because we want to allow
+    // name change. We accept several webradios with the same name;
+    // We don't use date or time for this id because time can go backward (winter time)
+    // and we could get twice the same number.
+    return MD5Processor.hash(Long.toString(UtilSystem.getRandom().nextLong()));
   }
 
   /**
@@ -136,7 +141,7 @@ public final class WebRadioManager extends ItemManager {
   }
 
   /**
-  * Gets the web radio by name.
+  * Gets the first webradio found with the provided name.
   * 
   * @param name web radio name
   * 

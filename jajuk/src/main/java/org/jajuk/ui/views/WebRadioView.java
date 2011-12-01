@@ -23,7 +23,9 @@ package org.jajuk.ui.views;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -31,10 +33,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import org.jajuk.base.Item;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
+import org.jajuk.services.webradio.WebRadioManager;
+import org.jajuk.services.webradio.WebRadioOrigin;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.ILaunchCommand;
@@ -43,6 +48,7 @@ import org.jajuk.ui.helpers.PlayHighlighterPredicate;
 import org.jajuk.ui.helpers.WebRadioTableModel;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukTable;
+import org.jajuk.ui.wizard.PropertiesDialog;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -100,9 +106,10 @@ public class WebRadioView extends AbstractTableView {
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
-        if (JajukEvents.PLAYER_STOP.equals(event.getSubject())) {
-          model.fireTableDataChanged();
-        } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(event.getSubject())) {
+        if (JajukEvents.PLAYER_STOP.equals(event.getSubject())
+            || JajukEvents.WEBRADIO_LAUNCHED.equals(event.getSubject())
+            || JajukEvents.DEVICE_REFRESH.equals(event.getSubject())) {
+          model.populateModel(jtable.getColumnsConf());
           model.fireTableDataChanged();
         }
       }
@@ -120,6 +127,7 @@ public class WebRadioView extends AbstractTableView {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
+    eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
     return eventSubjectSet;
   }
 
@@ -134,17 +142,6 @@ public class WebRadioView extends AbstractTableView {
     return new WebRadioTableModel();
   }
 
-  /*
-  * (non-Javadoc)
-  * 
-  * @see org.jajuk.ui.helpers.TwoStepsDisplayable#longCall()
-  */
-  @Override
-  public Object longCall() {
-    super.longCall();
-    return null;
-  }
-
   /**
    * Code used in child class SwingWorker for display computations (used in
    * initUI()).
@@ -154,11 +151,7 @@ public class WebRadioView extends AbstractTableView {
   @Override
   public void shortCall(Object in) {
     jtable = new JajukTable(model, true, columnsConf);
-
-    jmiDelete = new JMenuItem(ActionManager.getAction(JajukActions.DELETE));
-    jmiDelete.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
-    jtable.getMenu().add(jmiDelete);
-
+    
     jbNewRadio = new JajukButton(IconLoader.getIcon(JajukIcons.ADD));
     jbNewRadio.setToolTipText(Messages.getString("WebRadioView.8"));
     // Open a Webradio Properties Dialog 
@@ -166,8 +159,12 @@ public class WebRadioView extends AbstractTableView {
 
       @Override
       public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-
+        // Create a new and void webradio
+        WebRadio radio = WebRadioManager.getInstance().registerWebRadio("");
+        radio.setProperty(XML_ORIGIN, WebRadioOrigin.CUSTOM);
+        List<Item> webradios = new ArrayList<Item>();
+        webradios.add(radio);
+        new PropertiesDialog(webradios);
       }
     });
 
@@ -175,12 +172,20 @@ public class WebRadioView extends AbstractTableView {
         Color.ORANGE, null);
     jtable.addHighlighter(colorHighlighter);
 
+    jmiDelete = new JMenuItem(ActionManager.getAction(JajukActions.DELETE));
+    jmiDelete.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
+
     jmiFileCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     jmiFileCopyURL.putClientProperty(Const.DETAIL_CONTENT, jtable.getSelection());
-    jtable.getMenu().add(jmiFileCopyURL);
-
+    
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
     jmiProperties.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
+    
+    //Add menu items
+    jtable.getMenu().add(jmiFileCopyURL);
+    jtable.getMenu().add(jmiDelete);
+    jtable.getMenu().addSeparator();
+    jtable.getMenu().add(jmiProperties);
 
     // Set a default behavior for double click or click on the play column
     jtable.setCommand(new ILaunchCommand() {
@@ -216,5 +221,5 @@ public class WebRadioView extends AbstractTableView {
     createGenericGUI(jbNewRadio);
     initTable();
   }
- 
+
 }

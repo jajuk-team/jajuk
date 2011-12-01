@@ -43,6 +43,8 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.QueueModel;
+import org.jajuk.services.webradio.WebRadio;
+import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -211,7 +213,11 @@ public class DeleteSelectionAction extends SelectionAction {
       }
     } else {
       for (Item item : selection) {
-        if (item instanceof File) {
+        if (item instanceof WebRadio){
+          WebRadioManager.getInstance().removeItem(item);
+          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+        }
+        else if (item instanceof File) {
           alFiles.add((File) item);
         } else if (item instanceof Track) {
           alFiles.addAll(((Track) item).getFiles());

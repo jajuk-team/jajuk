@@ -55,7 +55,7 @@ public abstract class Item implements Const {
   /** Cache-string which holds the filter-string for the default "any"-Searches, this is filled during the first search and 
    * cleaned on all points where the properties are adjusted. */
   private String any = null;
-  
+
   /**
    * Constructor.
    * 
@@ -85,6 +85,15 @@ public abstract class Item implements Const {
    */
   public String getName() {
     return name;
+  }
+
+  /**
+   * Set a new name
+   * @param newName
+   */
+  void setName(String newName) {
+    this.name = newName;
+    setProperty(XML_NAME, newName);
   }
 
   /**
@@ -304,7 +313,7 @@ public abstract class Item implements Const {
   public final void setProperty(String sKey, Object oValue) {
     // reset cached value
     any = null;
-    
+
     getProperties().put(sKey, oValue);
   }
 
@@ -319,7 +328,7 @@ public abstract class Item implements Const {
    * @return the any
    */
   public String getAny() {
-    if(any != null) {
+    if (any != null) {
       return any;
     }
 
@@ -338,9 +347,9 @@ public abstract class Item implements Const {
       }
 
     }
-    
+
     any = sb.toString();
-    
+
     return any;
   }
 
@@ -436,7 +445,7 @@ public abstract class Item implements Const {
         }
       }
     }
-    
+
     // remove cached value
     any = null;
   }
@@ -448,7 +457,7 @@ public abstract class Item implements Const {
    */
   public void setProperties(Map<String, Object> properties) {
     this.properties = properties;
-    
+
     // remove cached value
     any = null;
   }
@@ -466,7 +475,7 @@ public abstract class Item implements Const {
    */
   public void removeProperty(String sKey) {
     properties.remove(sKey);
-    
+
     // remove cached value
     any = null;
   }
@@ -512,7 +521,7 @@ public abstract class Item implements Const {
         this.properties.put(sProperty, propertiesSource.getValue(sProperty));
       }
     }
-    
+
     // reset cached value
     any = null;
   }

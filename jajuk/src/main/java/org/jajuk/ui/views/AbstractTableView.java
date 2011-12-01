@@ -51,6 +51,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
@@ -709,11 +710,11 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     }
   }
 
-   /*
-   * (non-Javadoc)
-   *
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-   */
+  /*
+  * (non-Javadoc)
+  *
+  * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+  */
   @Override
   public void actionPerformed(final ActionEvent e) {
     // Editable state
@@ -809,14 +810,16 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     // Do nothing by default
     Log.debug("Table selection changed for : " + this);
   }
-  
-   /**
-   * Table initialization after table display.
-   * Default implementation for table initialization :
-   * update editable button state.
-   * 
-   */
+
+  /**
+  * Table initialization after table display.
+  * Default implementation for table initialization :
+  * update editable button state.
+  * 
+  */
   void initTable() {
     jtbEditable.setSelected(Conf.getBoolean(editableConf));
+    // Sort by name by default
+    jtable.setSortOrder(1, SortOrder.ASCENDING);
   }
 }

@@ -134,11 +134,11 @@ public class WebRadioTableModel extends JajukTableModel {
 
       // Bitrate
       oValues[iRow][6] = radio.getLongValue(Const.XML_BITRATE);
-      bCellEditable[iRow][6] = false;
+      bCellEditable[iRow][6] = true;
 
       // Frequency
       oValues[iRow][7] = radio.getLongValue(Const.XML_FREQUENCY);
-      bCellEditable[iRow][7] = false;
+      bCellEditable[iRow][7] = true;
     }
   }
 

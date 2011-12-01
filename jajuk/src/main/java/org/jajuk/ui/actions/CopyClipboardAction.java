@@ -33,6 +33,7 @@ import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.Playlist;
 import org.jajuk.base.Track;
+import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -82,6 +83,8 @@ public class CopyClipboardAction extends JajukAction {
         sData = ((Playlist) item).getAbsolutePath();
       } else if (item instanceof Track) {
         sData = ((Track) item).getFiles().get(0).getAbsolutePath();
+      } else if (item instanceof WebRadio) {
+        sData = ((WebRadio) item).getUrl();
       }
     } else if (o instanceof String) {
       sData = (String) o;

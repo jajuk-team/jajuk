@@ -30,7 +30,6 @@ import java.util.List;
 import org.jajuk.JajukTestCase;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Const;
-import org.jajuk.util.MD5Processor;
 
 /**
    * Custom radios parser
@@ -43,7 +42,7 @@ public class TestCustomPersistenceHelper extends JajukTestCase {
   public void setUp() throws Exception {
     super.setUp();
     man.cleanup();
-    writeSampleFile();
+    writeSampleFile(); 
   }
 
   private void writeSampleFile() throws Exception {
@@ -95,7 +94,6 @@ public class TestCustomPersistenceHelper extends JajukTestCase {
     assertTrue(radio.getLongValue(Const.XML_BITRATE) == 128);
     assertTrue(radio.getLongValue(Const.XML_FREQUENCY) == 44100);
     assertTrue("talk;good".equals(radio.getKeywords()));
-    assertTrue(radio.getID().equals(MD5Processor.hash(name.toLowerCase())));
     return radio;
   }
 
@@ -106,6 +104,17 @@ public class TestCustomPersistenceHelper extends JajukTestCase {
     CustomRadiosPersistenceHelper.commit();
     // load it again
     WebRadioHelper.loadCustomRadios();
+    // Check radios presence
+    assertTrue(man.getWebRadioByName("Bayern 1") != null);
+  }
+  
+  public void testVoidCustomRadiosCommit() throws Exception {
+    // Write void collection 
+    CustomRadiosPersistenceHelper.commit();
+    // load it again
+    WebRadioHelper.loadCustomRadios();
+    // Check no radios presence
+    assertTrue(man.getWebRadios().size() == 0);
   }
 
   /** Sample file content */

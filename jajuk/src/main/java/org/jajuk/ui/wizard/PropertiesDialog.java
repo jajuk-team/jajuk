@@ -72,6 +72,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.widgets.CopyableLabel;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJDialog;
@@ -314,6 +315,10 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
    * @return true, if checks if is linkable
    */
   public boolean isLinkable(PropertyMetaInformation meta) {
+    // No links for webradios
+    if (alItems.get(0) instanceof WebRadio){
+      return false;
+    }
     String sKey = meta.getName();
     return sKey.equals(Const.XML_DEVICE) || sKey.equals(Const.XML_TRACK)
         || sKey.equals(Const.XML_DEVICE) || sKey.equals(Const.XML_TRACK)

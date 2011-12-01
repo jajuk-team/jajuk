@@ -578,6 +578,9 @@ public abstract class ItemManager {
       itemToChange.setProperty(sKey, oValue);
     } else if (itemToChange instanceof WebRadio) {
       itemToChange.setProperty(sKey, oValue);
+      if (Const.XML_NAME.equals(sKey)) {
+        itemToChange.setName((String) oValue);
+      }
     }
     return newItem;
   }
