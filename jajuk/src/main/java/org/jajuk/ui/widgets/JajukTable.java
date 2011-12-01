@@ -522,7 +522,6 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
     int[] rows = getSelectedRows();
     for (int element : rows) {
       Item o = model.getItemAt(convertRowIndexToModel(element));
-      System.out.println(o);
       selection.add(o);
     }
   }
@@ -550,13 +549,8 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
    *
    * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
    */
-  /**
-   * Mouse clicked.
-   * DOCUMENT_ME
-   *
-   * @param e DOCUMENT_ME
-   */
-  public void mouseClicked(MouseEvent e) {
+  @SuppressWarnings("unused")
+   public void mouseClicked(MouseEvent e) {
     // nothing to do here for now
   }
 
@@ -565,13 +559,8 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
    *
    * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
    */
-  /**
-   * Mouse entered.
-   * DOCUMENT_ME
-   *
-   * @param e DOCUMENT_ME
-   */
-  public void mouseEntered(MouseEvent e) {
+   @SuppressWarnings("unused")
+   public void mouseEntered(MouseEvent e) {
     // nothing to do here for now
   }
 
@@ -580,12 +569,7 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
    *
    * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
    */
-  /**
-   * Mouse exited.
-   * DOCUMENT_ME
-   *
-   * @param e DOCUMENT_ME
-   */
+  @SuppressWarnings("unused")
   public void mouseExited(MouseEvent e) {
     // nothing to do here for now
   }
