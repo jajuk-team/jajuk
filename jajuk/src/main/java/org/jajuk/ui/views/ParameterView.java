@@ -119,7 +119,7 @@ public class ParameterView extends ViewAdapter {
   /** Allows to export ratings to a file */
   JButton jbExportRatings;
 
-  /** Allws to import ratings from a file */
+  /** Allows to import ratings from a file */
   JButton jbImportRatings;
 
   /** DOCUMENT_ME. */
@@ -607,6 +607,7 @@ public class ParameterView extends ViewAdapter {
           DownloadManager.download(new URL(Const.URL_WEBRADIO_PRESETS), fPresets);
           WebRadioHelper.loadPresetsRadios(fPresets);
           Messages.showInfoMessage(Messages.getString("Success"));
+          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
         } catch (Exception ex) {
           Log.error(ex);
           Messages.showErrorMessage(9);
