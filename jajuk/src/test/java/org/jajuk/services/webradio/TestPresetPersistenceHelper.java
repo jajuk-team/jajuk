@@ -33,7 +33,6 @@ import org.jajuk.JajukTestCase;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.MD5Processor;
 import org.xml.sax.SAXException;
 
 /**
@@ -91,7 +90,7 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
       cachedPreset.delete();
     }
     downloadPresets();
-
+    
     // Load the presets
     WebRadioHelper.loadPresetsRadios(cachedPreset);
 
@@ -103,8 +102,8 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
     List<WebRadio> radios = man.getWebRadios();
     for (WebRadio radio : radios) {
       if (previous != null) {
-        // >0, not >= because dups are forbidden
-        assertTrue(radio.getName().compareTo(previous) > 0);
+        // >=0, because name dups are allowed
+        assertTrue(radio.getName().compareTo(previous) >= 0);
         previous = radio.getName();
       }
     }
@@ -124,8 +123,7 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
     assertTrue(radio.getDescription().equals("Switzerland"));
     assertTrue(radio.getLongValue(Const.XML_BITRATE) == 128);
     assertTrue(radio.getLongValue(Const.XML_FREQUENCY) == 44100);
-    assertTrue(radio.getID().equals(MD5Processor.hash(name.toLowerCase())));
-
+    
     // Check origin
     assertTrue(WebRadioOrigin.PRESET.equals(radio.getValue(Const.XML_ORIGIN)));
   }

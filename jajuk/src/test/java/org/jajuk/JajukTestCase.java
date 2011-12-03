@@ -29,6 +29,7 @@ import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.startup.StartupCollectionService;
+import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilSystem;
 
@@ -57,6 +58,7 @@ public abstract class JajukTestCase extends TestCase {
     // Clean the collection
     StartupCollectionService.registerItemManagers();
     Collection.clearCollection();
+    WebRadioManager.getInstance().clear();
     // Make sure to use a test workspace
     SessionService.setTestMode(true);
     // And use a specific workspace
