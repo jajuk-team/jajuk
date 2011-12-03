@@ -160,13 +160,11 @@ public class Album extends LogicalItem implements Comparable<Album> {
     return XML_ALBUM;
   }
 
-  /**
-   * Get item description.
-   * 
-   * @return the desc
+ /* (non-Javadoc)
+   * @see org.jajuk.base.Item#getTitle()
    */
   @Override
-  public String getDesc() {
+  public String getTitle() {
     return Messages.getString("Item_Album") + " : " + getName2();
   }
 

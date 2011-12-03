@@ -55,13 +55,13 @@ public class TestDevice extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Device#getDesc()}.
+   * Test method for {@link org.jajuk.base.Device#getTitle()}.
    */
 
   public void testGetDesc() {
     Device device = new Device("1", "testname");
-    assertNotNull(device.getDesc());
-    assertFalse(device.getDesc().length() == 0);
+    assertNotNull(device.getTitle());
+    assertFalse(device.getTitle().length() == 0);
   }
 
   /**

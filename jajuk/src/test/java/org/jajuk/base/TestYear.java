@@ -31,12 +31,12 @@ import org.jajuk.util.Const;
 public class TestYear extends TestCase {
 
   /**
-   * Test method for {@link org.jajuk.base.Year#getDesc()}.
+   * Test method for {@link org.jajuk.base.Year#getTitle()}.
    */
   public void testGetDesc() {
     Year year = new Year("1", "1998");
-    assertNotNull(year.getDesc());
-    assertTrue(year.getDesc().contains("1998"));
+    assertNotNull(year.getTitle());
+    assertTrue(year.getTitle().contains("1998"));
   }
 
   /**

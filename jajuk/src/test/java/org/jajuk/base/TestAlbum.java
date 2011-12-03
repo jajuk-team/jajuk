@@ -38,12 +38,12 @@ import org.jajuk.util.Messages;
 public class TestAlbum extends JajukTestCase {
 
   /**
-   * Test method for {@link org.jajuk.base.Album#getDesc()}.
+   * Test method for {@link org.jajuk.base.Album#getTitle()}.
    */
   public final void testGetDesc() {
     Album album = new Album("1", "name", 123);
-    assertNotNull(album.getDesc());
-    assertFalse(album.getDesc().isEmpty());
+    assertNotNull(album.getTitle());
+    assertFalse(album.getTitle().isEmpty());
   }
 
   /**

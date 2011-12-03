@@ -53,12 +53,12 @@ public class TestDirectory extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Directory#getDesc()}.
+   * Test method for {@link org.jajuk.base.Directory#getTitle()}.
    */
 
   public void testGetDesc() {
     Directory dir = JUnitHelpers.getDirectory("dir1");
-    assertTrue(dir.toString(), StringUtils.isNotBlank(dir.getDesc()));
+    assertTrue(dir.toString(), StringUtils.isNotBlank(dir.getTitle()));
   }
 
   /**

@@ -297,13 +297,11 @@ public class File extends PhysicalItem implements Comparable<File> {
     }
   }
 
-  /**
-   * Get item description.
-   *
-   * @return the desc
+  /* (non-Javadoc)
+   * @see org.jajuk.base.Item#getTitle()
    */
   @Override
-  public String getDesc() {
+  public String getTitle() {
     return Messages.getString("Item_File") + " : " + getName();
   }
 
@@ -373,7 +371,7 @@ public class File extends PhysicalItem implements Comparable<File> {
     sb.append(lTrack.getRate());
     sb.append(lTrack.getValue(Const.XML_TRACK_COMMENT));
     AlbumArtist albumArtist = lTrack.getAlbumArtist();
-    if(albumArtist != null) {
+    if (albumArtist != null) {
       sb.append(albumArtist.getName2());
     }
     return sb.toString();
@@ -424,6 +422,7 @@ public class File extends PhysicalItem implements Comparable<File> {
    *
    * @param name Item name
    */
+  @Override
   protected void setName(String name) {
     setProperty(Const.XML_NAME, name);
     this.name = name;

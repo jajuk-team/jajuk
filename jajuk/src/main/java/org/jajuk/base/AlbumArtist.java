@@ -58,13 +58,11 @@ public class AlbumArtist extends Artist {
     return XML_ALBUM_ARTIST;
   }
 
-  /**
-   * Get item description.
-   * 
-   * @return the desc
+  /* (non-Javadoc)
+   * @see org.jajuk.base.Item#getTitle()
    */
   @Override
-  public String getDesc() {
+  public String getTitle() {
     return Messages.getString("Item_AlbumArtist") + " : " + getName2();
   }
 

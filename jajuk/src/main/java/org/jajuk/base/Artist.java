@@ -107,13 +107,11 @@ public class Artist extends LogicalItem implements Comparable<Artist> {
         || Messages.getString(UNKNOWN_ARTIST).equalsIgnoreCase(getName());
   }
 
-  /**
-   * Get item description.
-   * 
-   * @return the desc
+  /* (non-Javadoc)
+   * @see org.jajuk.base.Item#getTitle()
    */
   @Override
-  public String getDesc() {
+  public String getTitle() {
     return Messages.getString("Item_Artist") + " : " + getName2();
   }
 

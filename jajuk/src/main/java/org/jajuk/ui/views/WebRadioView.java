@@ -36,6 +36,7 @@ import javax.swing.SwingUtilities;
 import org.jajuk.base.Item;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
@@ -54,6 +55,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilString;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
 
 /**
@@ -165,6 +167,11 @@ public class WebRadioView extends AbstractTableView {
         List<Item> webradios = new ArrayList<Item>();
         webradios.add(radio);
         new PropertiesDialog(webradios);
+        // Drop the void webradio if user didn't set its name and URL in the dialog
+        if (UtilString.isEmpty(radio.getName())|| UtilString.isEmpty(radio.getUrl())){
+          WebRadioManager.getInstance().removeItem(radio);
+          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+        }
       }
     });
 

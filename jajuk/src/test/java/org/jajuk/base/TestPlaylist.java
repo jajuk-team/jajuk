@@ -54,11 +54,11 @@ public class TestPlaylist extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Playlist#getDesc()}.
+   * Test method for {@link org.jajuk.base.Playlist#getTitle()}.
    */
   public final void testGetDesc() {
     Playlist play = new Playlist("1", "name", null);
-    assertFalse(StringUtils.isBlank(play.getDesc()));
+    assertFalse(StringUtils.isBlank(play.getTitle()));
 
   }
 

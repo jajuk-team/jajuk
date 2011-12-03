@@ -599,7 +599,7 @@ public class TestItemManager extends JajukTestCase {
      * @see org.jajuk.base.Item#getDesc()
      */
     @Override
-    public String getDesc() {
+    public String getTitle() {
       return "desc";
     }
 

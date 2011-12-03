@@ -671,13 +671,11 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     return true;
   }
 
-  /**
-   * Get item description.
-   * 
-   * @return the desc
+  /* (non-Javadoc)
+   * @see org.jajuk.base.Item#getTitle()
    */
   @Override
-  public String getDesc() {
+  public String getTitle() {
     String sName = null;
     if (getParentDirectory() == null) {
       sName = getDevice().getUrl();

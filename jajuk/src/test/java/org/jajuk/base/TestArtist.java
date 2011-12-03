@@ -32,11 +32,11 @@ import org.jajuk.util.Const;
 public class TestArtist extends JajukTestCase {
 
   /**
-   * Test method for {@link org.jajuk.base.Artist#getDesc()}.
+   * Test method for {@link org.jajuk.base.Artist#getTitle()}.
    */
   public final void testGetDesc() {
     Artist artist = JUnitHelpers.getArtist();
-    assertTrue(StringUtils.isNotBlank(artist.getDesc()));
+    assertTrue(StringUtils.isNotBlank(artist.getTitle()));
   }
 
   /**

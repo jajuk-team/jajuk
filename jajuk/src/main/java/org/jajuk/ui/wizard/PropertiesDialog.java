@@ -139,7 +139,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
     // windows title: name of the element if there is
     // only one item, or "selection" word otherwise
     if (alItems.size() == 1) {
-      setTitle(alItems.get(0).getDesc());
+      setTitle(alItems.get(0).getTitle());
     } else {
       setTitle(Messages.getString(PROPERTIES_WIZARD_6));
     }
@@ -149,7 +149,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
       bMerged = true;
     }
     panel1 = new PropertiesPanel(alItems, alItems.size() == 1 ? UtilString.getLimitedString(alItems
-        .get(0).getDesc(), 50) : Messages.getString(PROPERTIES_WIZARD_6) + " [" + alItems.size()
+        .get(0).getTitle(), 50) : Messages.getString(PROPERTIES_WIZARD_6) + " [" + alItems.size()
         + "]", bMerged);
 
     // OK/Cancel buttons
@@ -176,7 +176,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
 
     // windows title: name of the element of only one item, or "selection"
     // word otherwise
-    setTitle(alItems1.size() == 1 ? alItems1.get(0).getDesc() : Messages
+    setTitle(alItems1.size() == 1 ? alItems1.get(0).getTitle() : Messages
         .getString(PROPERTIES_WIZARD_6));
     this.alItems = alItems1;
     if (alItems1.size() > 0) {
@@ -184,7 +184,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
       refreshFileFilter();
       if (alItems1.size() == 1) {
         panel1 = new PropertiesPanel(alItems1, UtilString.getLimitedString(alItems1.get(0)
-            .getDesc(), 50), false);
+            .getTitle(), 50), false);
       } else {
         panel1 = new PropertiesPanel(alItems1, UtilString.formatPropertyDesc(Messages
             .getString(PROPERTIES_WIZARD_6) + " [" + alItems.size() + "]"), true);
@@ -194,7 +194,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
     if (alItems2.size() > 0) {
       if (alItems2.size() == 1) {
         panel2 = new PropertiesPanel(alItems2, UtilString.getLimitedString(alItems2.get(0)
-            .getDesc(), 50), false);
+            .getTitle(), 50), false);
       } else {
         panel2 = new PropertiesPanel(alItems2, UtilString.formatPropertyDesc(alItems2.size() + " "
             + Messages.getHumanPropertyName(Const.XML_TRACKS)), true);
@@ -932,7 +932,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
                 // if individual item, change title in case of
                 // constructor element change
                 if (!bMerged) {
-                  jlDesc.setText(UtilString.formatPropertyDesc(newItem.getDesc()));
+                  jlDesc.setText(UtilString.formatPropertyDesc(newItem.getTitle()));
                 }
                 // note this property have been changed
                 if (!alChanged.contains(meta)) {

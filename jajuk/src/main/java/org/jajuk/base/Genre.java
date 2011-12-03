@@ -103,13 +103,11 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
         || Messages.getString(UNKNOWN_GENRE).equalsIgnoreCase(getName());
   }
 
-  /**
-   * Get item description.
-   * 
-   * @return the desc
+  /* (non-Javadoc)
+   * @see org.jajuk.base.Item#getTitle()
    */
   @Override
-  public String getDesc() {
+  public String getTitle() {
     return Messages.getString("Item_Genre") + " : " + getName2();
   }
 

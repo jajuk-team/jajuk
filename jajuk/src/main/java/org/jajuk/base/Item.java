@@ -108,11 +108,11 @@ public abstract class Item implements Const {
   }
 
   /**
-   * Get item description (HTML).
+   * Get item title (HTML) used in some dialogs.
    * 
    * @return item description
    */
-  public abstract String getDesc();
+  public abstract String getTitle();
 
   /**
    * Equal method to check two items are identical.

@@ -40,7 +40,7 @@ public class TestTrack extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Track#getDesc()}.
+   * Test method for {@link org.jajuk.base.Track#getTitle()}.
    */
   @Test
   public void testGetDesc() {

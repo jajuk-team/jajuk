@@ -87,13 +87,11 @@ public class Year extends LogicalItem implements Comparable<Year> {
     return (int) (getValue() - other.getValue());
   }
 
-  /**
-   * Get item description.
-   * 
-   * @return the desc
+  /* (non-Javadoc)
+   * @see org.jajuk.base.Item#getTitle()
    */
   @Override
-  public String getDesc() {
+  public String getTitle() {
     return Messages.getHumanPropertyName(Const.XML_YEAR) + " : " + getName();
   }
 
