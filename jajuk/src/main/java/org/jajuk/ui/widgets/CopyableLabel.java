@@ -42,6 +42,8 @@ public class CopyableLabel extends JTextField {
     setBorder(null);
     setOpaque(false);
     setEditable(false);
+    // Not focusable to avoid tabbing between field focus this button instead next field
+    setFocusable(false);
   }
 
   /**

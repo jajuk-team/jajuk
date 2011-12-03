@@ -671,6 +671,8 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
           JButton jbLink = new JButton(IconLoader.getIcon(JajukIcons.PROPERTIES));
           jbLink.addActionListener(this);
           jbLink.setActionCommand("link");
+          // Not focusable to avoid tabbing between field focus this button instead next field
+          jbLink.setFocusable(false);
           jbLink.setToolTipText(Messages.getString("PropertiesWizard.12"));
           widgets[index][IDX_LINK] = jbLink;
         }
@@ -680,10 +682,11 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
           JButton jbCopy = new JButton(IconLoader.getIcon(JajukIcons.COPY_TO_CLIPBOARD));
           jbCopy.addActionListener(this);
           jbCopy.setActionCommand("copy");
+          // Not focusable to avoid tabbing between field focus this button instead next field
+          jbCopy.setFocusable(false);
           jbCopy.setToolTipText(Messages.getString("PropertiesWizard.14"));
           widgets[index][IDX_COPY] = jbCopy;
         }
-
         index++;
       }
 
