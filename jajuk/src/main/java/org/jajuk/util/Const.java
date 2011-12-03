@@ -1191,7 +1191,7 @@ public interface Const {
   String XML_KEYWORDS = "keywords";
 
   /** Label*/
-  String XML_LABEL = "label";
+  String XML_DESC = "label";
 
   /** Bitrate */
   String XML_BITRATE = "bitrate";

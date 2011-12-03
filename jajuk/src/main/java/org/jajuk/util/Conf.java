@@ -252,7 +252,7 @@ public final class Conf implements Const {
         + Const.XML_ARTIST + ',' + Const.XML_GENRE + ',' + Const.XML_YEAR + ','
         + Const.XML_TRACK_RATE + ',' + Const.XML_TRACK_LENGTH + ',' + Const.XML_TRACKS + ','
         + Const.XML_TRACK_DISCOVERY_DATE);
-    defaults.put(CONF_WEBRADIO_COLUMNS, XML_PLAY + ',' + Const.XML_NAME + ',' + Const.XML_LABEL
+    defaults.put(CONF_WEBRADIO_COLUMNS, XML_PLAY + ',' + Const.XML_NAME + ',' + Const.XML_DESC
         + ',' + Const.XML_KEYWORDS + ',' + Const.XML_ORIGIN);
 
     int width = 800;

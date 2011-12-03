@@ -793,7 +793,7 @@ public class JUnitHelpers {
     custom1.setProperty(Const.XML_BITRATE, new Long(127));
     custom1.setProperty(Const.XML_FREQUENCY, new Long(45000));
     custom1.setProperty(Const.XML_KEYWORDS, "foo,bar");
-    custom1.setProperty(Const.XML_LABEL, "a cool radio");
+    custom1.setProperty(Const.XML_DESC, "a cool radio");
 
     WebRadio custom2 = getWebRadio("Custom 2", "http://custom2", WebRadioOrigin.CUSTOM);
     WebRadio preset1 = getWebRadio("Preset 1", "http://preset1", WebRadioOrigin.PRESET);

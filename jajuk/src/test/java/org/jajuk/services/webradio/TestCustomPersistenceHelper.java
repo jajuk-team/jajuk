@@ -90,7 +90,7 @@ public class TestCustomPersistenceHelper extends JajukTestCase {
     String name = "LuNe Radio";
     WebRadio radio = man.getWebRadioByName(name);
     assertTrue(radio.getUrl().equals("http://broadcaster.infomaniak.ch/lune-high.mp3.m3u"));
-    assertTrue(radio.getLabel().equals("Switzerland"));
+    assertTrue(radio.getDescription().equals("Switzerland"));
     assertTrue(radio.getLongValue(Const.XML_BITRATE) == 128);
     assertTrue(radio.getLongValue(Const.XML_FREQUENCY) == 44100);
     assertTrue("talk;good".equals(radio.getKeywords()));

@@ -55,24 +55,25 @@ public final class WebRadioManager extends ItemManager {
     // Name
     registerProperty(new PropertyMetaInformation(Const.XML_NAME, false, true, true, true, false,
         String.class, null));
+    //Description
+    registerProperty(new PropertyMetaInformation(Const.XML_DESC, false, false, true, true, false,
+        String.class, null));
     // URL
     registerProperty(new PropertyMetaInformation(Const.XML_URL, false, false, true, true, false,
         String.class, null));
     // Origin
     registerProperty(new PropertyMetaInformation(Const.XML_ORIGIN, false, false, true, false, true,
         String.class, null));
-    // Keywords
-    registerProperty(new PropertyMetaInformation(Const.XML_KEYWORDS, false, false, true, true,
-        false, String.class, null));
     // Bitrate
     registerProperty(new PropertyMetaInformation(Const.XML_BITRATE, false, false, true, true, true,
         Long.class, null));
     //Frequency
     registerProperty(new PropertyMetaInformation(Const.XML_FREQUENCY, false, false, true, true,
         true, Long.class, null));
-    //Description
-    registerProperty(new PropertyMetaInformation(Const.XML_LABEL, false, false, true, true, false,
-        String.class, null));
+    // Keywords
+    registerProperty(new PropertyMetaInformation(Const.XML_KEYWORDS, false, false, true, true,
+        false, String.class, null));
+   
   }
 
   /**

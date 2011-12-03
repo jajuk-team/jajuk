@@ -63,12 +63,12 @@ public class CustomRadiosPersistenceHelper extends DefaultHandler {
         String keywords = attributes.getValue(attributes.getIndex(Const.XML_KEYWORDS));
         String bitrate = attributes.getValue(attributes.getIndex(Const.XML_BITRATE));
         String frequency = attributes.getValue(attributes.getIndex(Const.XML_FREQUENCY));
-        String label = attributes.getValue(attributes.getIndex(Const.XML_LABEL));
+        String label = attributes.getValue(attributes.getIndex(Const.XML_DESC));
 
         WebRadio radio = WebRadioManager.getInstance().registerWebRadio(name);
         radio.setProperty(Const.XML_URL, url);
         if (!UtilString.isEmpty(label)) {
-          radio.setProperty(Const.XML_LABEL, label);
+          radio.setProperty(Const.XML_DESC, label);
         }
         if (!UtilString.isEmpty(bitrate)) {
           radio.setProperty(Const.XML_BITRATE, Long.parseLong(bitrate));
@@ -111,7 +111,7 @@ public class CustomRadiosPersistenceHelper extends DefaultHandler {
             //URL
             + Const.XML_URL + "='" + UtilString.formatXML(radio.getUrl()) + "' "
             //Label
-            + Const.XML_LABEL + "='" + UtilString.formatXML(radio.getLabel()) + "' "
+            + Const.XML_DESC + "='" + UtilString.formatXML(radio.getDescription()) + "' "
             //keywords
             + Const.XML_KEYWORDS + "='" + UtilString.formatXML(radio.getKeywords()) + "' "
             //Bitrate

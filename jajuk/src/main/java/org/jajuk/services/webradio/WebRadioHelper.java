@@ -90,7 +90,7 @@ public class WebRadioHelper {
         if (radio.getName().toLowerCase(Locale.getDefault())
             .indexOf(sCriteria.toLowerCase(Locale.getDefault())) != -1) {
           String desc = radio.getName();
-          if (UtilString.isNotEmpty(radio.getLabel())) {
+          if (UtilString.isNotEmpty(radio.getDescription())) {
             desc += " (" + radio.getUrl() + ")";
           }
           tsResu.add(new SearchResult(radio, desc));

@@ -54,12 +54,12 @@ public class WebRadio extends PhysicalItem implements Comparable<WebRadio> {
   }
   
   /**
-   * Gets the label.
+   * Gets the webradio description.
    * 
-   * @return the label
+   * @return the descrption
    */
-  public String getLabel() {
-    return getStringValue(Const.XML_LABEL);
+  public String getDescription() {
+    return getStringValue(Const.XML_DESC);
   }
 
   /* (non-Javadoc)

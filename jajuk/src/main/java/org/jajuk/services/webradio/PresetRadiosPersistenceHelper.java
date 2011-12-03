@@ -118,7 +118,7 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
       WebRadio radio = WebRadioManager.getInstance().registerWebRadio(radioName);
       radio.setProperty(Const.XML_URL, radioUrl);
       if (!UtilString.isEmpty(radioLabel)) {
-        radio.setProperty(Const.XML_LABEL, radioLabel);
+        radio.setProperty(Const.XML_DESC, radioLabel);
       }
       if (!UtilString.isEmpty(radioBitrate)) {
         radio.setProperty(Const.XML_BITRATE, Long.parseLong(radioBitrate));
@@ -189,7 +189,7 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
         bw.write(">\n");
         bw.write("\t\t<" + TAG_NAME + ">" + radio.getName() + "</" + TAG_NAME + ">\n");
         bw.write("\t\t<" + TAG_URL + ">" + radio.getUrl() + "</" + TAG_URL + ">\n");
-        bw.write("\t\t<" + TAG_LABEL + ">" + radio.getLabel() + "</" + TAG_LABEL + ">\n");
+        bw.write("\t\t<" + TAG_LABEL + ">" + radio.getDescription() + "</" + TAG_LABEL + ">\n");
         bw.write("\t\t<" + Const.XML_KEYWORDS + ">" + radio.getKeywords() + "</"
             + Const.XML_KEYWORDS + ">\n");
         bw.write("\t\t<" + TAG_BITRATE + ">" + radio.getLongValue(Const.XML_BITRATE) + "</"

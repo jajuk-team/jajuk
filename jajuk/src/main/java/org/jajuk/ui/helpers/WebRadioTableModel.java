@@ -58,22 +58,22 @@ public class WebRadioTableModel extends JajukTableModel {
     vColNames.add(Messages.getHumanPropertyName(Const.XML_NAME));
     idList.add(Const.XML_NAME);
 
-    vColNames.add(Messages.getString("WebRadioView.9"));
-    idList.add(Const.XML_LABEL);
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_DESC));
+    idList.add(Const.XML_DESC);
 
     vColNames.add(Messages.getHumanPropertyName(Const.XML_URL));
     idList.add(Const.XML_URL);
 
-    vColNames.add(Messages.getString("WebRadioView.3"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_KEYWORDS));
     idList.add(Const.XML_KEYWORDS);
 
     vColNames.add(Messages.getString("WebRadioView.2"));
     idList.add(Const.XML_ORIGIN);
 
-    vColNames.add(Messages.getString("WebRadioView.6"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_BITRATE));
     idList.add(Const.XML_BITRATE);
 
-    vColNames.add(Messages.getString("WebRadioView.7"));
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_FREQUENCY));
     idList.add(Const.XML_FREQUENCY);
   }
 
@@ -117,7 +117,7 @@ public class WebRadioTableModel extends JajukTableModel {
       bCellEditable[iRow][1] = true;
 
       // Radio description
-      oValues[iRow][2] = radio.getLabel();
+      oValues[iRow][2] = radio.getDescription();
       bCellEditable[iRow][2] = true;
 
       // Url
