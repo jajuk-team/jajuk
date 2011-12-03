@@ -100,7 +100,7 @@ public class WebRadio extends PhysicalItem implements Comparable<WebRadio> {
    * @see org.jajuk.base.Item#getDesc()
    */
   @Override
-  public String getDesc() {
+  public String getTitle() {
     return Messages.getString("WebRadioView.1");
   }
 
