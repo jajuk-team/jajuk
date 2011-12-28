@@ -505,7 +505,7 @@ public class JUnitHelpers {
     JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.ZERO.toString());
 
     JUnitHelpers.clearSwingUtilitiesQueue();
-    
+
     //Reset everything again as it could have been changed during threads finishing
     ObservationManager.clear();
     // Reset everything
@@ -516,8 +516,7 @@ public class JUnitHelpers {
     DirectoryManager.getInstance().clear();
     cleanAllDevices();
     History.getInstance().clear();
-    
-    
+
   }
 
   /**
@@ -554,7 +553,7 @@ public class JUnitHelpers {
    * @return the file
    * @throws IOException 
    */
-  public static org.jajuk.base.File getFile(String name, boolean mount) {
+  public static org.jajuk.base.File getFile(String name, Directory dir, boolean mount) {
     Genre genre = getGenre();
     Album album = getAlbum("name", 0);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
@@ -576,7 +575,6 @@ public class JUnitHelpers {
       }
     }
 
-    Directory dir = JUnitHelpers.getDirectory();
     org.jajuk.base.File file = FileManager.getInstance().registerFile(name, dir, track, 120, 70);
     try {
       file.getFIO().createNewFile();
@@ -584,6 +582,19 @@ public class JUnitHelpers {
       throw new RuntimeException(e);
     }
     return file;
+  }
+
+  /**
+   * Gets the file.
+   *
+   * @param name DOCUMENT_ME
+   * @param mount DOCUMENT_ME
+   * @return the file
+   * @throws IOException 
+   */
+  public static org.jajuk.base.File getFile(String name, boolean mount) {
+    Directory dir = JUnitHelpers.getDirectory();
+    return getFile(name, dir, mount);
   }
 
   /**
@@ -596,10 +607,10 @@ public class JUnitHelpers {
     Device device = getDevice();
     Directory dir = JUnitHelpers.getDirectory();
     File playlistFile = new File(dir.getAbsolutePath() + "/sample_playlist.m3u");
-    org.jajuk.base.File file1 = getFile("1",true);
-    org.jajuk.base.File file2 = getFile("2",true);
+    org.jajuk.base.File file1 = getFile("1", true);
+    org.jajuk.base.File file2 = getFile("2", true);
     BufferedWriter bw = new BufferedWriter(new FileWriter(playlistFile));
-    bw.write(file1.getAbsolutePath()+"\n");
+    bw.write(file1.getAbsolutePath() + "\n");
     bw.write(file2.getAbsolutePath());
     bw.flush();
     bw.close();

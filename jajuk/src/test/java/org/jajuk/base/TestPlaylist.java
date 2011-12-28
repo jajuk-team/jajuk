@@ -20,9 +20,12 @@
  */
 package org.jajuk.base;
 
+import com.google.common.io.Files;
+
 import java.awt.HeadlessException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1141,7 +1144,31 @@ public class TestPlaylist extends JajukTestCase {
   public final void testGetNbOfTracksNull() throws Exception {
     Playlist play = JUnitHelpers.getPlaylist();
     play.setFiles(null);
-
     assertEquals(0, play.getNbOfTracks());
+  }
+
+  /**
+  * Test relative path files
+  *
+  * @throws Exception the exception
+  */
+  public final void testRelativePath() throws Exception {
+    Playlist play = JUnitHelpers.getPlaylist();
+    Directory dirPlaylist = play.getDirectory();
+    Directory subDir = JUnitHelpers.getDirectory("dir1", play.getDirectory(), play.getDirectory()
+        .getDevice());
+    Directory upDir = dirPlaylist.getParentDirectory();
+    //create a first file in the same directory than the playlist
+    JUnitHelpers.getFile("file1", dirPlaylist, true);
+    // then another in the sub directory
+    JUnitHelpers.getFile("file2", subDir, true);
+    // and a third in the playlist parent directory
+    JUnitHelpers.getFile("file3", upDir, true);
+    // Now, don't add the files using setFiles but create the playlist content instead 
+    // and  load it. This way, we can write relative paths like ../dir
+    String content = "file1\n" + "dir1/file2\n" + "../file3";
+    Files.write(content, play.getFIO(), Charset.defaultCharset());
+    play.load();
+    assertEquals(3, play.getNbOfTracks());
   }
 }
