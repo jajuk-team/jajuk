@@ -24,3 +24,4 @@
 # Tests with GUI (even in headless mode)
 org.jajuk.services.notification.*
 .*ParameterView.*
+.*Splash.*

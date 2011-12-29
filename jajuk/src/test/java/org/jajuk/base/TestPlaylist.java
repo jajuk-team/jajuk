@@ -679,7 +679,8 @@ public class TestPlaylist extends JajukTestCase {
     }
 
     Playlist play = JUnitHelpers.getPlaylist();
-    List<File> list = play.load();
+    play.forceRefresh();
+    List<File> list = play.getFiles();
     assertNotNull(list);
 
     assertEquals(3, list.size());
@@ -1158,17 +1159,18 @@ public class TestPlaylist extends JajukTestCase {
     Directory subDir = JUnitHelpers.getDirectory("dir1", play.getDirectory(), play.getDirectory()
         .getDevice());
     Directory upDir = dirPlaylist.getParentDirectory();
-    //create a first file in the same directory than the playlist
+    //create a two files in the same directory than the playlist
     JUnitHelpers.getFile("file1", dirPlaylist, true);
+    JUnitHelpers.getFile("file11", dirPlaylist, true);
     // then another in the sub directory
     JUnitHelpers.getFile("file2", subDir, true);
     // and a third in the playlist parent directory
     JUnitHelpers.getFile("file3", upDir, true);
     // Now, don't add the files using setFiles but create the playlist content instead 
     // and  load it. This way, we can write relative paths like ../dir
-    String content = "file1\n" + "dir1/file2\n" + "../file3";
+    String content = "file1\n" + "./file11\n" + "dir1/file2\n" + "../file3";
     Files.write(content, play.getFIO(), Charset.defaultCharset());
-    play.load();
-    assertEquals(3, play.getNbOfTracks());
+    play.forceRefresh();
+    assertEquals(4, play.getNbOfTracks());
   }
 }

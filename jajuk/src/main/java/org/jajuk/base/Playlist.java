@@ -474,7 +474,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       // reading the m3u file twice)
       if (getFIO().exists() && getFIO().canRead()) {
         // check device is mounted
-        alFiles = load(); // populate playlist
+        forceRefresh(); // populate playlist
       } else { // error accessing playlist
         throw new JajukException(9, getFIO().getAbsolutePath());
       }
@@ -566,9 +566,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * 
    * @throws JajukException the jajuk exception
    */
-  List<File> load() throws JajukException {
+  private List<File> load() throws JajukException {
     final List<File> files = new ArrayList<File>(10);
-
     try {
       BufferedReader br = new BufferedReader(new FileReader(getFIO()));
       try {
@@ -580,37 +579,33 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           }
           // replace '\' by '/'
           sLine = sLine.replace('\\', '/');
-          // deal with url begining by "./something"
-          if (sLine.charAt(0) == '.') {
+          // deal with url beginning by "./something"
+          if (sLine.startsWith("./")) {
             sLine = sLine.substring(1, sLine.length());
           }
           // comment
           if (sLine.charAt(0) == '#') {
             continue;
           } else {
-            java.io.File fileTrack = null;
-            final StringBuilder sbFileDir = new StringBuilder(getDirectory().getDevice().getUrl());
-            sbFileDir.append(getDirectory().getRelativePath());
+            java.io.File fio = null;
+            final StringBuilder sbFileDir = new StringBuilder(getDirectory().getAbsolutePath());
             // Add a trailing / at the end of the url if required
             if (sLine.charAt(0) != '/') {
               sbFileDir.append("/");
             }
-            // take a look relatively to playlist directory to check
-            // files exists
-            fileTrack = new java.io.File(sbFileDir.append(sLine).toString());
-            File file = FileManager.getInstance().getFileByPath(fileTrack.getAbsolutePath());
-            if (file == null) { // check if this file is known in
+            // take a look relatively to playlist directory to check if the file exists
+            fio = new java.io.File(sbFileDir.append(sLine).toString());
+            File jajukFile = FileManager.getInstance().getFileByPath(fio.getCanonicalPath());
+            if (jajukFile == null) { // check if this file is known in
               // collection
-              fileTrack = new java.io.File(sLine); // check if
-              // given url is
-              // not absolute
-              file = FileManager.getInstance().getFileByPath(fileTrack.getAbsolutePath());
-              if (file == null) { // no more ? leave
+              fio = new java.io.File(sLine); // check if given url is not absolute
+              jajukFile = FileManager.getInstance().getFileByPath(fio.getAbsolutePath());
+              if (jajukFile == null) { // no more ? leave
                 bUnknownDevicesMessage = true;
                 continue;
               }
             }
-            files.add(file);
+            files.add(jajukFile);
           }
         }
         // display a warning message if the playlist contains unknown
@@ -626,7 +621,6 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       throw new JajukException(17, (getDirectory() != null && getFIO() != null ? getFIO()
           .getAbsolutePath() : "<unknown>"), e);
     }
-
     return files;
   }
 
