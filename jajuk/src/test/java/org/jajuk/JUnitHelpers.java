@@ -626,6 +626,23 @@ public class JUnitHelpers {
     }
     return playlist;
   }
+  
+  /**
+   * Gets a void playlist
+   *
+   * @return the playlist
+   * @throws IOException 
+   */
+  public static Playlist getVoidPlaylist() throws IOException {
+    Device device = getDevice();
+    Directory dir = JUnitHelpers.getDirectory();
+    File playlistFile = new File(dir.getAbsolutePath() + "/sample_playlist.m3u");
+    String id = MD5Processor.hash(new StringBuilder(device.getName()).append(dir.getRelativePath())
+        .append(playlistFile.getName()).toString());
+    org.jajuk.base.Playlist playlist = PlaylistManager.getInstance().registerPlaylistFile(id,
+        playlistFile.getName(), dir);
+    return playlist;
+  }
 
   /**
    * Gets the album.

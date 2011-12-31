@@ -1154,7 +1154,7 @@ public class TestPlaylist extends JajukTestCase {
   * @throws Exception the exception
   */
   public final void testRelativePath() throws Exception {
-    Playlist play = JUnitHelpers.getPlaylist();
+    Playlist play = JUnitHelpers.getVoidPlaylist();
     Directory dirPlaylist = play.getDirectory();
     Directory subDir = JUnitHelpers.getDirectory("dir1", play.getDirectory(), play.getDirectory()
         .getDevice());
@@ -1172,7 +1172,7 @@ public class TestPlaylist extends JajukTestCase {
     Files.write(content, play.getFIO(), Charset.defaultCharset());
     System.out.println("==== " + Charset.defaultCharset());
     play.forceRefresh();
-    System.out.println("==== " + play.getNbOfTracks());
+    System.out.println("====nb= " + play.getNbOfTracks());
     assertEquals(4, play.getNbOfTracks());
   }
 }
