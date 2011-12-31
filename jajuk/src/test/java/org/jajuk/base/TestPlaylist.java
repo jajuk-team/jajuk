@@ -1170,7 +1170,9 @@ public class TestPlaylist extends JajukTestCase {
     // and  load it. This way, we can write relative paths like ../dir
     String content = "file1\n" + "./file11\n" + "dir1/file2\n" + "../file3";
     Files.write(content, play.getFIO(), Charset.defaultCharset());
+    System.out.println("==== " + Charset.defaultCharset());
     play.forceRefresh();
+    System.out.println("==== " + play.getNbOfTracks());
     assertEquals(4, play.getNbOfTracks());
   }
 }

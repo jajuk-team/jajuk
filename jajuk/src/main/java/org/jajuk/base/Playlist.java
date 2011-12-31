@@ -574,6 +574,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
         String sLine = null;
         boolean bUnknownDevicesMessage = false;
         while ((sLine = br.readLine()) != null) {
+          System.out.println("==== "+sLine);
           if (sLine.length() == 0) { // void line
             continue;
           }
@@ -595,11 +596,14 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
             }
             // take a look relatively to playlist directory to check if the file exists
             fio = new java.io.File(sbFileDir.append(sLine).toString());
+            System.out.println("====1"+fio.getAbsolutePath());
             File jajukFile = FileManager.getInstance().getFileByPath(fio.getCanonicalPath());
+            System.out.println("====2"+fio.getAbsolutePath());
             if (jajukFile == null) { // check if this file is known in
               // collection
               fio = new java.io.File(sLine); // check if given url is not absolute
               jajukFile = FileManager.getInstance().getFileByPath(fio.getAbsolutePath());
+              System.out.println("====3"+jajukFile.getAbsolutePath());
               if (jajukFile == null) { // no more ? leave
                 bUnknownDevicesMessage = true;
                 continue;
