@@ -571,7 +571,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       return;
     }
     Playlist plFile = PlaylistManager.getInstance().registerPlaylistFile(file, this);
-    plFile.forceRefresh(); // force refresh
+    plFile.load(); // force refresh
     if (plfRef == null && reporter != null) {
       // stats, do it here and not
       // before because we ignore the

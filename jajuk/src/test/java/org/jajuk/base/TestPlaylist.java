@@ -515,7 +515,7 @@ public class TestPlaylist extends JajukTestCase {
   public final void testForceRefresh() throws Exception {
     // make sure we have a playlist stored before
     Playlist play = JUnitHelpers.getPlaylist();
-    play.forceRefresh();
+    play.load();
   }
 
   /**
@@ -679,7 +679,7 @@ public class TestPlaylist extends JajukTestCase {
     }
 
     Playlist play = JUnitHelpers.getPlaylist();
-    play.forceRefresh();
+    play.load();
     List<File> list = play.getFiles();
     assertNotNull(list);
 
@@ -1171,7 +1171,7 @@ public class TestPlaylist extends JajukTestCase {
     String content = "file1\n" + "./file11\n" + "dir1/file2\n" + "../file3";
     Files.write(content, play.getFIO(), Charset.defaultCharset());
     System.out.println("==== " + Charset.defaultCharset());
-    play.forceRefresh();
+    play.load();
     System.out.println("====nb= " + play.getNbOfTracks());
     assertEquals(4, play.getNbOfTracks());
   }
