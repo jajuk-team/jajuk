@@ -603,11 +603,11 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
               // collection
               fio = new java.io.File(sLine); // check if given url is not absolute
               jajukFile = FileManager.getInstance().getFileByPath(fio.getAbsolutePath());
-              System.out.println("====3"+jajukFile.getAbsolutePath());
               if (jajukFile == null) { // no more ? leave
                 bUnknownDevicesMessage = true;
                 continue;
               }
+              System.out.println("====3"+jajukFile.getAbsolutePath());
             }
             files.add(jajukFile);
           }
