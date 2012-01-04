@@ -587,8 +587,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
             System.out.println("====1" + fio.getAbsolutePath());
             File jajukFile = FileManager.getInstance().getFileByPath(fio.getCanonicalPath());
             System.out.println("====2" + fio.getAbsolutePath());
-            if (jajukFile == null) { // check if this file is known in
-              // collection
+            if (jajukFile == null) { // check if this file is known in collection
               fio = new java.io.File(sLine); // check if given url is not absolute
               jajukFile = FileManager.getInstance().getFileByPath(fio.getAbsolutePath());
               if (jajukFile == null) { // no more ? leave
@@ -613,7 +612,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       throw new JajukException(17, (getDirectory() != null && getFIO() != null ? getFIO()
           .getAbsolutePath() : "<unknown>"), e);
     }
-    alFiles = files;
+    this.alFiles = files;
   }
 
   /**
@@ -847,10 +846,10 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @return playlist nb of tracks
    */
   public int getNbOfTracks() {
+    System.out.println(alFiles);
     if (alFiles == null) {
       return 0;
     }
-
     return alFiles.size();
   }
 
