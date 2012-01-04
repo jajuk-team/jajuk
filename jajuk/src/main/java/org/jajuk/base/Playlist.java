@@ -586,7 +586,6 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
             fio = new java.io.File(sbFileDir.append(sLine).toString());
             System.out.println("====1" + fio.getAbsolutePath());
             File jajukFile = FileManager.getInstance().getFileByPath(fio.getCanonicalPath());
-            System.out.println("====2" + fio.getAbsolutePath());
             if (jajukFile == null) { // check if this file is known in collection
               fio = new java.io.File(sLine); // check if given url is not absolute
               jajukFile = FileManager.getInstance().getFileByPath(fio.getAbsolutePath());

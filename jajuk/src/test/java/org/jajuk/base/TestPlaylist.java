@@ -1160,7 +1160,10 @@ public class TestPlaylist extends JajukTestCase {
         .getDevice());
     Directory upDir = dirPlaylist.getParentDirectory();
     //create a two files in the same directory than the playlist
-    JUnitHelpers.getFile("file1", dirPlaylist, true);
+    File file1 = JUnitHelpers.getFile("file1", dirPlaylist, true);
+    System.out.println(file1.getAbsolutePath());
+    
+    System.out.println(file1.getFIO().getCanonicalPath());
     JUnitHelpers.getFile("file11", dirPlaylist, true);
     // then another in the sub directory
     JUnitHelpers.getFile("file2", subDir, true);
