@@ -20,6 +20,8 @@
  */
 package org.jajuk.base;
 
+import com.google.common.io.Files;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -562,8 +564,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
         String sLine = null;
         boolean bUnknownDevicesMessage = false;
         while ((sLine = br.readLine()) != null) {
-          System.out.println("==== " + sLine);
-          if (sLine.length() == 0) { // void line
+           if (sLine.length() == 0) { // void line
             continue;
           }
           // replace '\' by '/'
@@ -584,8 +585,11 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
             }
             // take a look relatively to playlist directory to check if the file exists
             fio = new java.io.File(sbFileDir.append(sLine).toString());
-            System.out.println("====1" + fio.getAbsolutePath());
-            File jajukFile = FileManager.getInstance().getFileByPath(fio.getCanonicalPath());
+            String fioAbsPath = fio.getAbsolutePath();
+            // Check for file existence in jajuk collection using Guava Files.simplyPath
+            // Don't use File.getAbsolutePath() because its result can contain ./ or ../
+            // Don't use File.getCanonicalPath() because it resolves symlinks under unix.
+            File jajukFile = FileManager.getInstance().getFileByPath(Files.simplifyPath(fioAbsPath));
             if (jajukFile == null) { // check if this file is known in collection
               fio = new java.io.File(sLine); // check if given url is not absolute
               jajukFile = FileManager.getInstance().getFileByPath(fio.getAbsolutePath());
@@ -593,7 +597,6 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
                 bUnknownDevicesMessage = true;
                 continue;
               }
-              System.out.println("====3" + jajukFile.getAbsolutePath());
             }
             files.add(jajukFile);
           }
@@ -845,7 +848,6 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @return playlist nb of tracks
    */
   public int getNbOfTracks() {
-    System.out.println(alFiles);
     if (alFiles == null) {
       return 0;
     }

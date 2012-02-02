@@ -1160,10 +1160,7 @@ public class TestPlaylist extends JajukTestCase {
         .getDevice());
     Directory upDir = dirPlaylist.getParentDirectory();
     //create a two files in the same directory than the playlist
-    File file1 = JUnitHelpers.getFile("file1", dirPlaylist, true);
-    System.out.println(file1.getAbsolutePath());
-    
-    System.out.println(file1.getFIO().getCanonicalPath());
+    JUnitHelpers.getFile("file1", dirPlaylist, true);
     JUnitHelpers.getFile("file11", dirPlaylist, true);
     // then another in the sub directory
     JUnitHelpers.getFile("file2", subDir, true);
@@ -1174,7 +1171,6 @@ public class TestPlaylist extends JajukTestCase {
     String content = "file1\n" + "./file11\n" + "dir1/file2\n" + "../file3";
     Files.write(content, play.getFIO(), Charset.defaultCharset());
     play.load();
-    System.out.println("====nb= " + play.getNbOfTracks());
     assertEquals(4, play.getNbOfTracks());
   }
 }
