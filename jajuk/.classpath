@@ -55,6 +55,6 @@
 	<classpathentry kind="lib" path="lib/animation-1.2.0.jar"/>
 	<classpathentry kind="lib" path="lib/substance-5.3.jar"/>
 	<classpathentry kind="lib" path="lib/jaudiotagger-2.0.2.jar"/>
-	<classpathentry kind="lib" path="lib/guava-10.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/guava-11.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
