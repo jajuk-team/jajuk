@@ -39,6 +39,7 @@
         	<extension name='dbus' href='dbus.jnlp'/>
         	<extension name='xml' href='xml.jnlp'/>
         	<extension name='bindings' href='bindings.jnlp'/>
+        	<extension name='guava' href='guava.jnlp'/>
        </resources>
        <resources os='Windows'>
       	<nativelib href='windows/jintellitype-native.jar' version='JNLP_VERSION_REPLACED_BY_ANT'/>
