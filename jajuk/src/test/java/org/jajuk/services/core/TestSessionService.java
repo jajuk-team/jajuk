@@ -184,8 +184,10 @@ public class TestSessionService extends JajukTestCase {
 
       // try to create it if it is missing
       if (!bootstrap.exists()) {
-        FileUtils.writeStringToFile(bootstrap, "#Sat May 16 20:31:29 CEST 2009\n" + "final="
-            + UtilSystem.getUserHome() + "\n" + "test=" + UtilSystem.getUserHome() + "\n");
+        String content = "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n"+
+                          "<properties><entry key='final'>"+UtilSystem.getUserHome()+"</entry>\n"+
+                          "<entry key='test'>"+UtilSystem.getUserHome()+"</entry>\n</properties>";
+        FileUtils.writeStringToFile(bootstrap, content);
       }
 
       // needs to be a directory, needs to be readable, ...
