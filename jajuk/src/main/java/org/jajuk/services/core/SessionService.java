@@ -385,12 +385,14 @@ public class SessionService {
                   .println("[BOOT] Workspace given in bootstrap file is not accessible, using home directory as a workspace");
               setWorkspace(UtilSystem.getUserHome());
             }
-
+            // Bootstrap file corrupted
           } catch (final Exception e) {
             Log.error(e);
             System.out
                 .println("[BOOT] Bootstrap file corrupted, using home directory as a workspace");
             setWorkspace(UtilSystem.getUserHome());
+            // Commit the bootstrap file
+            commitBootstrapFile();
           }
         }
         // No bootstrap file ? Try default directory
