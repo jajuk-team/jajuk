@@ -51,7 +51,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /** Starting position. */
   private float fPosition;
 
-  /** Current track estimated duration in ms. */
+  /** Current track estimated total duration in ms. */
   private long lDuration;
 
   /** Volume when starting fade. */
@@ -199,6 +199,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             }
             // Very verbose :
             //Log.debug("Output from MPlayer: " + line);
+            
             // Detect mplayer language
             if (line.indexOf("Starting playback") != -1){
               patternEndOfFile = patternEndOfFileEnglish;
@@ -233,6 +234,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               // Store current position for use at next startup
               Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, Float
                   .toString(getCurrentPosition()));
+              
+              System.out.println(lTime);
               // Cross-Fade test
               if (!bFading && iFadeDuration > 0
               // Length = 0 for some buggy audio headers
@@ -472,10 +475,10 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     }
   }
 
-  /**
-   * Gets the current position.
+  /*
+   * (non-Javadoc)
    * 
-   * @return current position as a float ex: 0.2f
+   * @see org.jajuk.players.IPlayerImpl#getCurrentPosition()
    */
   @Override
   public float getCurrentPosition() {
@@ -485,13 +488,13 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     return ((float) lTime) / lDuration;
   }
 
-  /**
-   * Gets the elapsed time.
+  /*
+   * (non-Javadoc)
    * 
-   * @return Returns the lTime in ms
+   * @see org.jajuk.players.IPlayerImpl#getElapsedTimeMillis()
    */
   @Override
-  public long getElapsedTime() {
+  public long getElapsedTimeMillis() {
     return lTime;
   }
 
@@ -540,10 +543,10 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /*
    * (non-Javadoc)
    * 
-   * @see org.jajuk.players.IPlayerImpl#getCurrentLength()
+   * @see org.jajuk.players.IPlayerImpl#getDurationSec()
    */
   @Override
-  public long getCurrentLength() {
+  public long getDurationSec() {
     return lDuration;
   }
 

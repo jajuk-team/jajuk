@@ -166,33 +166,33 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
     // limit gain to avoid saturation
   }
 
-  /**
-   * Gets the current position.
+ /*
+   * (non-Javadoc)
    * 
-   * @return current position as a float ex: 0.2f
+   * @see org.jajuk.players.IPlayerImpl#getCurrentPosition()
    */
   @Override
   public float getCurrentPosition() {
     return fPos;
   }
 
-  /**
-   * Gets the current volume.
+  /*
+   * (non-Javadoc)
    * 
-   * @return current volume as a float ex: 0.2f
+   * @see org.jajuk.players.IPlayerImpl#getCurrentVolume()
    */
   @Override
   public float getCurrentVolume() {
     return fVolume;
   }
 
-  /**
-   * Gets the elapsed time.
+  /*
+   * (non-Javadoc)
    * 
-   * @return Returns the lTime in ms
+   * @see org.jajuk.players.IPlayerImpl#getElapsedTimeMillis()
    */
   @Override
-  public long getElapsedTime() {
+  public long getElapsedTimeMillis() {
     return lTime;
   }
 
@@ -426,7 +426,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    * @see org.jajuk.players.IPlayerImpl#getCurrentLength()
    */
   @Override
-  public long getCurrentLength() {
+  public long getDurationSec() {
     return lDuration;
   }
 

@@ -74,7 +74,7 @@ public interface IPlayerImpl {
    * 
    * @return elapsed time (ms) for this player
    */
-  long getElapsedTime();
+  long getElapsedTimeMillis();
 
   /**
    * Pause the player.
@@ -98,18 +98,18 @@ public interface IPlayerImpl {
   void seek(float fPosition);
 
   /**
-   * Return track LENGTH in.
+   * Gets the current position.
    * 
-   * @return the current position
+   *@return current position as a float ex: 0.2f
    */
   float getCurrentPosition();
 
   /**
-   * Return track position in ms.
+   * Return track total duration secs.
    * 
-   * @return the current length
+   * @return track total duration secs.
    */
-  long getCurrentLength();
+  long getDurationSec();
 
   /**
    * Return volume in %.

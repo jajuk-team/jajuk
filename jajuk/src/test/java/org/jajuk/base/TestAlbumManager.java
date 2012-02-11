@@ -970,7 +970,7 @@ public class TestAlbumManager extends JajukTestCase {
      * @see org.jajuk.services.players.IPlayerImpl#getElapsedTime()
      */
     @Override
-    public long getElapsedTime() {
+    public long getElapsedTimeMillis() {
 
       return 0;
     }
@@ -997,7 +997,7 @@ public class TestAlbumManager extends JajukTestCase {
      * @see org.jajuk.services.players.IPlayerImpl#getCurrentLength()
      */
     @Override
-    public long getCurrentLength() {
+    public long getDurationSec() {
 
       return 0;
     }

@@ -648,7 +648,7 @@ public class JUnitHelpers {
     }
 
     @Override
-    public long getElapsedTime() {
+    public long getElapsedTimeMillis() {
 
       return 0;
     }
@@ -666,7 +666,7 @@ public class JUnitHelpers {
     }
 
     @Override
-    public long getCurrentLength() {
+    public long getDurationSec() {
 
       return 0;
     }
