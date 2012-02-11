@@ -51,7 +51,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /** Starting position. */
   private float fPosition;
 
-  /** Current track estimated duration in ms. */
+  /** Current track estimated total duration in ms. */
   private long lDuration;
 
   /** Volume when starting fade. */
@@ -89,15 +89,14 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /** [Windows only] Force use of shortnames. */
   private boolean bForcedShortnames = false;
-  
+
   /** English-specific end of file pattern */
-  private Pattern patternEndOfFileEnglish = Pattern.compile("Exiting\\x2e\\x2e\\x2e.*\\(End of file\\)");
-  
+  private Pattern patternEndOfFileEnglish = Pattern
+      .compile("Exiting\\x2e\\x2e\\x2e.*\\(End of file\\)");
+
   /** Language-agnostic end of file pattern */
   private Pattern patternEndOfFileGeneric = Pattern.compile(".*\\x2e\\x2e\\x2e.*\\(.*\\)");
- 
-  
-  
+
   /**
    * Position and elapsed time getter.
    */
@@ -201,11 +200,11 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             }
             // Very verbose :
             //Log.debug("Output from MPlayer: " + line);
+
             // Detect mplayer language
-            if (line.indexOf("Starting playback") != -1){
+            if (line.indexOf("Starting playback") != -1) {
               patternEndOfFile = patternEndOfFileEnglish;
-            }
-            else if (line.indexOf("ANS_TIME_POSITION") != -1) {
+            } else if (line.indexOf("ANS_TIME_POSITION") != -1) {
               // Stream is actually opened now
               bOpening = false;
 
@@ -476,10 +475,10 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     }
   }
 
-  /**
-   * Gets the current position.
-   *
-   * @return current position as a float ex: 0.2f
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.players.IPlayerImpl#getCurrentPosition()
    */
   @Override
   public float getCurrentPosition() {
@@ -489,13 +488,13 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     return ((float) lTime) / lDuration;
   }
 
-  /**
-   * Gets the elapsed time.
-   *
-   * @return Returns the lTime in ms
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.players.IPlayerImpl#getElapsedTimeMillis()
    */
   @Override
-  public long getElapsedTime() {
+  public long getElapsedTimeMillis() {
     return lTime;
   }
 
@@ -545,11 +544,11 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /*
    * (non-Javadoc)
-   *
-   * @see org.jajuk.players.IPlayerImpl#getCurrentLength()
+   * 
+   * @see org.jajuk.players.IPlayerImpl#getDurationSec()
    */
   @Override
-  public long getCurrentLength() {
+  public long getDurationSec() {
     return lDuration;
   }
 

@@ -141,10 +141,10 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     }
   }
 
-  /**
-   * Gets the current volume.
+   /*
+   * (non-Javadoc)
    * 
-   * @return current volume as a float ex: 0.2f
+   * @see org.jajuk.players.IPlayerImpl#getCurrentVolume()
    */
   @Override
   public float getCurrentVolume() {
@@ -247,10 +247,10 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   /*
    * (non-Javadoc)
    *
-   * @see org.jajuk.players.IPlayerImpl#getCurrentLength()
+   * @see org.jajuk.players.IPlayerImpl#getDurationSec()
    */
   @Override
-  public long getCurrentLength() {
+  public long getDurationSec() {
 
     return 0;
   }
@@ -269,10 +269,10 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   /*
    * (non-Javadoc)
    *
-   * @see org.jajuk.players.IPlayerImpl#getElapsedTime()
+   * @see org.jajuk.players.IPlayerImpl#getElapsedTimeMillis()
    */
   @Override
-  public long getElapsedTime() {
+  public long getElapsedTimeMillis() {
 
     return 0;
   }

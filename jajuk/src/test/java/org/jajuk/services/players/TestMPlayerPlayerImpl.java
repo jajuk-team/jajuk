@@ -155,7 +155,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
       impl.play(file, 0, 2, 10);
 
       // returns duration from tag if there is one
-      assertEquals(120000l, impl.getCurrentLength());
+      assertEquals(120000l, impl.getDurationSec());
     } finally {
       impl.stop();
     }
@@ -200,7 +200,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
       // returns duration from tag if there is one
       // assertEquals(DummyMPlayerImpl.POSITION, impl.getElapsedTime(), 0.0001f);
       // elapsed time is: System.currentTimeMillis() - dateStart - pauseCount;
-      assertNotNull(impl.getElapsedTime());
+      assertNotNull(impl.getElapsedTimeMillis());
     } finally {
       impl.stop();
     }
