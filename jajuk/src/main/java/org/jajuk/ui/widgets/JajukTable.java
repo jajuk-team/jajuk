@@ -524,7 +524,6 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     int[] rows = getSelectedRows();
     for (int element : rows) {
       Item o = model.getItemAt(convertRowIndexToModel(element));
-      System.out.println(o);
       selection.add(o);
     }
   }
