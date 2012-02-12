@@ -136,6 +136,15 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             // Do not call a get_percent_pos if paused, it resumes the player
             // (mplayer issue)
             sendCommand("get_time_pos");
+            
+            // Get track length if required. Do not launch "get_time_length" only 
+            // once because some fast computer makes mplayer start too fast and
+            // the slave mode is not yet opened so this command is not token into account.
+            // See bug #1816 (Track length is zero after a restart)
+            if (lDuration == 0) {
+              sendCommand("get_time_length");
+            }
+            
             // Every 2 time units, increase actual play time. We wait this
             // delay for perfs and for precision
             if (comp > 0 && comp % TOTAL_PLAYTIME_UPDATE_INTERVAL == 0) {
@@ -397,8 +406,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
       if (fPosition > 0.0f) {
         seek(fPosition);
       }
-      // Get track length
-      sendCommand("get_time_length");
     } else {
       // try to kill the mplayer process if still alive
       if (proc != null) {
@@ -544,8 +551,13 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /*
    * (non-Javadoc)
+  <<<<<<< OURS
+   *
+   * @see org.jajuk.players.IPlayerImpl#getCurrentLength()
+  =======
    * 
    * @see org.jajuk.players.IPlayerImpl#getDurationSec()
+  >>>>>>> THEIRS
    */
   @Override
   public long getDurationSec() {
