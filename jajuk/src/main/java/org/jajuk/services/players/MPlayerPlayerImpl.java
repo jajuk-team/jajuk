@@ -89,15 +89,14 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /** [Windows only] Force use of shortnames. */
   private boolean bForcedShortnames = false;
-  
+
   /** English-specific end of file pattern */
-  private Pattern patternEndOfFileEnglish = Pattern.compile("Exiting\\x2e\\x2e\\x2e.*\\(End of file\\)");
-  
+  private Pattern patternEndOfFileEnglish = Pattern
+      .compile("Exiting\\x2e\\x2e\\x2e.*\\(End of file\\)");
+
   /** Language-agnostic end of file pattern */
   private Pattern patternEndOfFileGeneric = Pattern.compile(".*\\x2e\\x2e\\x2e.*\\(.*\\)");
- 
-  
-  
+
   /**
    * Position and elapsed time getter.
    */
@@ -136,6 +135,14 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             // Do not call a get_percent_pos if paused, it resumes the player
             // (mplayer issue)
             sendCommand("get_time_pos");
+
+            // Get track length if required. Do not launch "get_time_length" only 
+            // once because some fast computer makes mplayer start too fast and
+            // the slave mode is not yet opened so this command is not token into account.
+            // See bug #1816 (Track length is zero after a restart)
+            if (lDuration == 0) {
+              sendCommand("get_time_length");
+            }
             // Every 2 time units, increase actual play time. We wait this
             // delay for perfs and for precision
             if (comp > 0 && comp % TOTAL_PLAYTIME_UPDATE_INTERVAL == 0) {
@@ -199,12 +206,11 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             }
             // Very verbose :
             //Log.debug("Output from MPlayer: " + line);
-            
+
             // Detect mplayer language
-            if (line.indexOf("Starting playback") != -1){
+            if (line.indexOf("Starting playback") != -1) {
               patternEndOfFile = patternEndOfFileEnglish;
-            }
-            else if (line.indexOf("ANS_TIME_POSITION") != -1) {
+            } else if (line.indexOf("ANS_TIME_POSITION") != -1) {
               // Stream is actually opened now
               bOpening = false;
 
@@ -232,10 +238,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                 lTime = System.currentTimeMillis() - dateStart - pauseCount;
               }
               // Store current position for use at next startup
-              Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, Float
-                  .toString(getCurrentPosition()));
-              
-              System.out.println(lTime);
+              Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION,
+                  Float.toString(getCurrentPosition()));
+
               // Cross-Fade test
               if (!bFading && iFadeDuration > 0
               // Length = 0 for some buggy audio headers
@@ -255,9 +260,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                 // at last progress()
                 float fVolumeStep = fadingVolume
                 // we double the refresh period to make sure to
-                    // reach 0 at the end of iterations because
-                    // we don't as many mplayer response as queries,
-                    // tested on 10 & 20 sec of fading
+                // reach 0 at the end of iterations because
+                // we don't as many mplayer response as queries,
+                // tested on 10 & 20 sec of fading
                     * ((float) PROGRESS_STEP / iFadeDuration);
                 float fNewVolume = fVolume - fVolumeStep;
                 // decrease volume by n% of initial volume
@@ -397,8 +402,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
       if (fPosition > 0.0f) {
         seek(fPosition);
       }
-      // Get track length
-      sendCommand("get_time_length");
     } else {
       // try to kill the mplayer process if still alive
       if (proc != null) {
