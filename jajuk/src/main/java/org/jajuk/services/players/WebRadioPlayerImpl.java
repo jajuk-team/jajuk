@@ -62,10 +62,10 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
         String line = null;
         for (;;) {
           line = in.readLine();
+          Log.debug(line);
           if (line == null) {
             break;
           }
-
           bOpening = false;
           // Search for Exiting (...) pattern
           if (line.matches(".*\\x2e\\x2e\\x2e.*\\(.*\\).*")) {
@@ -150,8 +150,6 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
     if (bEOF) {
       throw new JajukException(7);
     }
-    // Get track length
-    sendCommand("get_time_length");
   }
 
   /*
