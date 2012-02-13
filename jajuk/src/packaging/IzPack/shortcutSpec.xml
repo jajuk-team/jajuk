@@ -15,9 +15,8 @@
 	<shortcut name='Uninstall' programGroup='yes' desktop='no'
 		applications='no' startMenu='no' startup='no' type='Application'
 		encoding='UTF-8' 
-		target="$INSTALL_PATH/Uninstaller/uninstaller.jar"
-          commandLine=""
-		workingDirectory='$INSTALL_PATH\Uninstaller' description='Uninstall Jajuk' iconIndex='0'
+		target="javaw" commandLine="-jar &amp;quot;$INSTALL_PATH/Uninstaller/uninstaller.jar&amp;quot;"
+		workingDirectory='' description='Uninstall Jajuk' iconIndex='0'
 		iconFile='$INSTALL_PATH/jajuk-uninstall.png' initialState='noShow' os='unix'>
 		<createForPack name='main pack' />
 	</shortcut>
