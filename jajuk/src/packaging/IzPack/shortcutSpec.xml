@@ -5,7 +5,7 @@
 	<!-- Unix -->
 	<shortcut name='Jajuk' programGroup='yes' desktop='yes'
 		applications='yes' startMenu='yes' startup='no' target='sh' type='Application'
-		encoding='UTF-8' commandLine='&quot;$INSTALL_PATH/jajuk&quot;'
+		encoding='UTF-8' commandLine="$INSTALL_PATH/jajuk"
 		workingDirectory='$INSTALL_PATH' description='Jajuk advanced JukeBox'
 		iconIndex='0' iconFile='$INSTALL_PATH/jajuk-icon-shortcut_64x64.png'
 		initialState='noShow' os='unix'>
@@ -15,7 +15,7 @@
 	<shortcut name='Uninstall' programGroup='yes' desktop='no'
 		applications='no' startMenu='no' startup='no' type='Application'
 		encoding='UTF-8' 
-		target="java" commandLine="-jar &amp;quot;$INSTALL_PATH/Uninstaller/uninstaller.jar&amp;quot;"
+		target="java" commandLine="-jar $INSTALL_PATH/Uninstaller/uninstaller.jar"
 		workingDirectory='' description='Uninstall Jajuk' iconIndex='0'
 		iconFile='$INSTALL_PATH/jajuk-uninstall.png' initialState='noShow' os='unix'>
 		<createForPack name='main pack' />
