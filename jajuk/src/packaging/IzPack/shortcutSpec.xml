@@ -14,9 +14,10 @@
 
 	<shortcut name='Uninstall' programGroup='yes' desktop='no'
 		applications='no' startMenu='no' startup='no' type='Application'
-		encoding='UTF-8' target='java'
-		commandLine='-jar &quot;$INSTALL_PATH/Uninstaller/uninstaller.jar&quot;'
-		workingDirectory='' description='Uninstall Jajuk' iconIndex='0'
+		encoding='UTF-8' 
+		target="$INSTALL_PATH/Uninstaller/uninstaller.jar"
+          commandLine=""
+		workingDirectory='$INSTALL_PATH\Uninstaller' description='Uninstall Jajuk' iconIndex='0'
 		iconFile='$INSTALL_PATH/jajuk-uninstall.png' initialState='noShow' os='unix'>
 		<createForPack name='main pack' />
 	</shortcut>
@@ -30,9 +31,11 @@
 		<createForPack name='main pack' />
 	</shortcut>
 	<shortcut name='Uninstall' programGroup='yes' desktop='no'
-		applications='no' startMenu='no' startup='no' target='javaw'
-		commandLine='-jar "$INSTALL_PATH/Uninstaller/uninstaller.jar"'
-		workingDirectory='$INSTALL_PATH/Uninstaller' description='Uninstall Jajuk'
+		applications='no' startMenu='no' startup='no' 
+		target="$INSTALL_PATH\Uninstaller\uninstaller.jar"
+          commandLine=""
+          workingDirectory="$INSTALL_PATH\Uninstaller"
+        	description='Uninstall Jajuk'
 		iconIndex='0' iconFile='$INSTALL_PATH/jajuk-uninstall.ico'
 		initialState='noShow' os='windows'>
 		<createForPack name='main pack' />
