@@ -186,25 +186,35 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /** DOCUMENT_ME. */
   private boolean includeControls;
 
+  /** Whether the view has not yet been displayed for its first time */
+  private boolean initEvent = true;
+
   /** Thread launch at view init to reset its state */
   private class CoverResetThread extends Thread {
     @Override
     public void run() {
-      if (fileReference == null) {
+      if (fileReference == null) { // regular cover view
         if (QueueModel.isStopped()) {
           update(new JajukEvent(JajukEvents.ZERO));
-        } else {
-          // check if a track has already been launched
-          if (QueueModel.isPlayingRadio()) {
-            update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED,
-                ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
-          } else {
-            update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
-          }
         }
-      } else {
+        // check if a track has already been launched
+        else if (QueueModel.isPlayingRadio()) {
+          update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED,
+              ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
+          // If the view is displayed for the first time, a ComponentResized event is launched at its first display but
+          // we want to perform the full process : update past launches files (FILE_LAUNCHED). 
+          // But if it is no more the initial resize event, we only want to refresh the cover, not the full story.
+        } else if (!initEvent) {
+          displayCurrentCover();
+        } else {
+          update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
+        }
+      }
+      else { // cover view used as dialog
         update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
       }
+      // It will never more be the first time ...
+      CoverView.this.initEvent = false;
     }
   }
 
@@ -218,11 +228,11 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /**
    * Constructor.
    * 
-   * @param file Reference file
+   * @param file Reference file. Used to display cover for a particular file, null if the cover view is used in the "reular" way as a view, not 
+   * as a dialog from catalog view for ie.
    */
   public CoverView(final org.jajuk.base.File file) {
     super();
-
     fileReference = file;
   }
 
@@ -753,14 +763,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
    */
   @Override
   public void componentResized(final ComponentEvent e) {
+    // manualResize = true;
     Log.debug("Cover resized");
-    final long lCurrentDate = System.currentTimeMillis(); // adjusting code
-    if (lCurrentDate - lDateLastResize < 500) { // display image every
-      // 500 ms to save CPU
-      lDateLastResize = lCurrentDate;
-      return;
-    }
-    lDateLastResize = lCurrentDate;
     // Force initial cover refresh. We do this inside this method and not initUI() 
     // because we make sure that the window is fully displayed then (otherwise, we get 
     // a black cover when switching from slimbar to main window for ie)
@@ -840,6 +844,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
    * @param index index of the cover to display
    */
   private synchronized void displayCover(final int index) {
+    // manualResize = false;
     if ((alCovers.size() == 0) || (index >= alCovers.size()) || (index < 0)) {
       // just a check
       alCovers.add(CoverView.nocover); // display nocover by default
@@ -1329,7 +1334,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         last = item.getFile();
       }
     }
-
     // Ignore this event if a reference file has been set and if
     // this event has already been handled
     if ((fileReference != null) && (dirReference != null)) {
@@ -1339,9 +1343,9 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     // save cpu
     boolean dirChanged = last == null ? true : !last.getDirectory().equals(
         QueueModel.getPlayingFile().getDirectory());
-    if (bForceCoverReload)
+    if (bForceCoverReload) {
       dirChanged = true;
-
+    }
     refreshCovers(iLocalEventID, dirChanged);
 
     if (Conf.getBoolean(Const.CONF_COVERS_SHUFFLE)) {
