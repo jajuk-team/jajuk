@@ -62,7 +62,6 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
         String line = null;
         for (;;) {
           line = in.readLine();
-          Log.debug(line);
           if (line == null) {
             break;
           }
@@ -74,6 +73,7 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
         }
         // can reach this point at the end of file
         in.close();
+        bEOF = true;
         return;
       } catch (Exception e) {
         Log.error(e);
