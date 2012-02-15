@@ -129,12 +129,14 @@
 			<fileset file='${basedir}/src/legals/LICENSE-GPL.txt' />
 			<fileset file='${basedir}/src/legals/DERIVATED.txt' />
 			<fileset file='${basedir}/src/doc/README.html' />
+			<fileset file='${basedir}/src/legals/AUTHORS.txt' />
 		</copy>
 		<!--copy both README and LICENCE files as must also be in src/ for source distribution-->
 		<copy todir='${distdir}/src'>
 			<fileset file='${basedir}/src/legals/LICENSE-GPL.txt' />
 			<fileset file='${basedir}/src/legals/DERIVATED.txt' />
 			<fileset file='${basedir}/src/doc/README.html' />
+			<fileset file='${basedir}/src/legals/AUTHORS.txt' />
 		</copy>
 
 		<!--copy native dll to bin directory-->
@@ -318,6 +320,7 @@
 			</zipfileset>
 			<fileset file='${basedir}/src/doc/README.html' />
 			<fileset file='${basedir}/src/legals/LICENSE.txt' />
+			<fileset file='${basedir}/src/legals/AUTHORS.txt' />
 		</zip>
 	</target>
 
