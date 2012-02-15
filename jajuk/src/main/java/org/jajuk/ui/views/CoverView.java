@@ -757,7 +757,13 @@ public class CoverView extends ViewAdapter implements ActionListener {
    */
   @Override
   public void componentResized(final ComponentEvent e) {
-    // manualResize = true;
+    final long lCurrentDate = System.currentTimeMillis(); // adjusting code
+    if (lCurrentDate - lDateLastResize < 500) { // Do consider only one event every 
+      // 500 ms to avoid race conditions and lead to unexpected states (verified)
+      lDateLastResize = lCurrentDate;
+      return;
+    }
+    lDateLastResize = lCurrentDate;
     Log.debug("Cover resized");
     // Force initial cover refresh. We do this inside this method and not initUI() 
     // because we make sure that the window is fully displayed then (otherwise, we get 
@@ -837,7 +843,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
    * 
    * @param index index of the cover to display
    */
-
   private void displayCover(final int index) {
     if ((alCovers.size() == 0) || (index >= alCovers.size()) || (index < 0)) {
       // just a check
