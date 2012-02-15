@@ -1,4 +1,4 @@
-/** Jajuk Specific version of this swingx class to fix 
+/* Jajuk Specific version of this swingx class to fix 
  * this: https://swingx.dev.java.net/issues/show_bug.cgi?id=464
  *
  * This file has been adapted to Jajuk by the Jajuk Team.

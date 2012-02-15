@@ -2,7 +2,6 @@
  * JSplash.java
  *
  * This file has been adapted to Jajuk by the Jajuk Team.
- * Jajuk Copyright (C) 2007 The Jajuk Team
  *
  * The original copyrights and license follow:
  *
