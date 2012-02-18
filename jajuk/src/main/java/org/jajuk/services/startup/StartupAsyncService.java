@@ -103,8 +103,8 @@ public final class StartupAsyncService {
           }
 
           // Wait few secs to avoid GUI startup perturbations
-          Thread.sleep(10000);
-
+          Thread.sleep(5000);
+         
           // Switch to sorted mode, must be done before starting auto-refresh
           // thread !
           ItemManager.switchAllManagersToOrderState();
