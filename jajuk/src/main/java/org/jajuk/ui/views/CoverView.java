@@ -209,8 +209,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         } else {
           update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
         }
-      }
-      else { // cover view used as dialog
+      } else { // cover view used as dialog
         update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
       }
       // It will never more be the first time ...
@@ -374,9 +373,21 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     setLayout(globalLayout);
     add(jpControl, "grow,wrap");
 
-    // listen for resize. We do it here to avoid a useless resize event at
-    // init and an associated blinking effect
-    addComponentListener(CoverView.this);
+    // We have to start using the componentListener AFTER the view is fully displayed
+    // to avoid blank covers due to wrong (negative) cover dimensions.
+    new Thread() {
+      public void run() {
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {
+          Log.error(e);
+        }
+        // Force a init event as the ComponentListener was not yet attached to the view.
+        componentResized(null);
+        // Attach the listener for further manual actions against the view.
+        addComponentListener(CoverView.this);
+      }
+    }.start();
 
   }
 
