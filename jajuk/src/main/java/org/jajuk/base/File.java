@@ -294,6 +294,7 @@ public class File extends PhysicalItem implements Comparable<File> {
       TrackManager.getInstance().removeFile(this);
       this.track = track;
       setProperty(Const.XML_TRACK, track.getID());
+      track.addFile(this);
     }
   }
 
