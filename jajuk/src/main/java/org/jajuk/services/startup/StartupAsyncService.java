@@ -33,6 +33,7 @@ import org.jajuk.services.players.QueueController;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
+import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
@@ -100,8 +101,8 @@ public class StartupAsyncService {
           }
 
           // Wait few secs to avoid GUI startup perturbations
-          Thread.sleep(10000);
-
+          Thread.sleep(5000);
+         
           // Switch to sorted mode, must be done before starting auto-refresh
           // thread !
           ItemManager.switchAllManagersToOrderState();
