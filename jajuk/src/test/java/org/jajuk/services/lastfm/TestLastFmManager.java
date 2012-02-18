@@ -54,14 +54,6 @@ public class TestLastFmManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.lastfm.LastFmManager#configure()}
-   * .
-   */
-  public void testConfigure() {
-    LastFmManager.getInstance().configure();
-  }
-
-  /**
    * Test method for.
    *
    * @throws Exception the exception
