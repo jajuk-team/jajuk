@@ -140,8 +140,8 @@ public class LastFmService {
     Caller.getInstance().setProxy(proxy);
     Caller.getInstance().setUserAgent(CLIENT_ID);
     // Use encoded version name to avoid errors from server
-    scrobbler = Scrobbler.newScrobbler(CLIENT_ID, ext.services.network.NetworkUtils
-        .encodeString(CLIENT_VERSION), user);
+    scrobbler = Scrobbler.newScrobbler(CLIENT_ID,
+        ext.services.network.NetworkUtils.encodeString(CLIENT_VERSION), user);
     this.handshakePerformed = false;
     this.locale = locale;
     this.lastFmCache = lastFmCache;
@@ -498,10 +498,10 @@ public class LastFmService {
    * Submits song to Last.fm
    *
    * @param track DOCUMENT_ME
-   * @param secondsPlayed seconds the audio file has already played
+   * @param millisPlayed ms the audio file has already played
    * @throws ScrobblerException the scrobbler exception
    */
-  public void submit(Track track, long secondsPlayed) throws ScrobblerException {
+  public void submit(Track track, long millisPlayed) throws ScrobblerException {
     // Do all necessary checks
     if (!checkUser() || !checkPassword() || !checkArtist(track) || !checkTitle(track)
         || !checkDuration(track)) {
@@ -509,14 +509,14 @@ public class LastFmService {
     }
 
     // Get started to play in secs UTC and not in MS (lastfm-bindings API was unclear about it)
-    long startedToPlay = (System.currentTimeMillis() - secondsPlayed) / 1000;
+    long startedToPlay = (System.currentTimeMillis() - millisPlayed) / 1000;
 
-    Log.info("Trying to submit song to Last.fm");
+    Log.info("Trying to submit song to Last.fm, play time=" + millisPlayed / 1000 + " secs");
     try {
       performHandshakeIfNeeded();
-      SubmissionData submissionData = new SubmissionData(track.getArtist().getName2(), track
-          .getName(), track.getAlbum().getName2(), (int) track.getDuration(), (int) track
-          .getOrder(), Source.USER, null, startedToPlay);
+      SubmissionData submissionData = new SubmissionData(track.getArtist().getName2(),
+          track.getName(), track.getAlbum().getName2(), (int) track.getDuration(),
+          (int) track.getOrder(), Source.USER, null, startedToPlay);
       ResponseStatus status = scrobbler.submit(submissionData);
       if (status.ok()) {
         Log.info("Song submitted to Last.fm");
@@ -565,10 +565,10 @@ public class LastFmService {
 
         List<SubmissionData> submissionDataList = new ArrayList<SubmissionData>();
         for (ext.services.lastfm.FullSubmissionData submissionData : collectionWithSubmissionData) {
-          SubmissionData sd = new SubmissionData(submissionData.getArtist(), submissionData
-              .getTitle(), submissionData.getAlbum(), submissionData.getDuration(), submissionData
-              .getTrackNumber(), Source.valueOf(submissionData.getSource()), null, submissionData
-              .getStartTime());
+          SubmissionData sd = new SubmissionData(submissionData.getArtist(),
+              submissionData.getTitle(), submissionData.getAlbum(), submissionData.getDuration(),
+              submissionData.getTrackNumber(), Source.valueOf(submissionData.getSource()), null,
+              submissionData.getStartTime());
           submissionDataList.add(sd);
         }
 

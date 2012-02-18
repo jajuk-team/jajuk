@@ -45,6 +45,11 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /** Time elapsed in ms. */
   private long lTime = 0;
 
+  /** Actually played time */
+  private long actuallyPlayedTimeMillis = 0l;
+
+  private long lastPlayTimeUpdate = System.currentTimeMillis();
+
   /** Length to be played in secs. */
   private long length;
 
@@ -103,10 +108,10 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   private class PositionThread extends Thread {
 
     /**
-     * Instantiates a new position thread.
-     * 
-     * @param name DOCUMENT_ME
-     */
+    * Instantiates a new position thread.
+    * 
+    * @param name DOCUMENT_ME
+    */
     public PositionThread(String name) {
       super(name);
     }
@@ -119,6 +124,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     @Override
     public void run() {
       int comp = 0;
+      lastPlayTimeUpdate = System.currentTimeMillis();
       Track current = fCurrent.getTrack();
       while (!bStop && !bEOF) { // stop this thread
         try {
@@ -237,6 +243,12 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               } else {
                 lTime = System.currentTimeMillis() - dateStart - pauseCount;
               }
+              // update actually played duration
+              if (lastPlayTimeUpdate > 0 && !bPaused) {
+                actuallyPlayedTimeMillis += (System.currentTimeMillis() - lastPlayTimeUpdate);
+              }
+              lastPlayTimeUpdate = System.currentTimeMillis();
+
               // Store current position for use at next startup
               Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION,
                   Float.toString(getCurrentPosition()));
@@ -501,6 +513,14 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     return lTime;
   }
 
+  /* (non-Javadoc)
+  * @see org.jajuk.services.players.IPlayerImpl#getActuallyPlayedTimeMillis()
+  */
+  @Override
+  public long getActuallyPlayedTimeMillis() {
+    return actuallyPlayedTimeMillis;
+  }
+
   /*
    * (non-Javadoc)
    * 
@@ -584,6 +604,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    */
   @Override
   public void resume() throws Exception {
+    lastPlayTimeUpdate = System.currentTimeMillis();
     super.resume();
     setVolume(fVolume);
   }

@@ -58,7 +58,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /** pause flag *. */
   protected volatile boolean bPaused = false;
-
+ 
   /*
    *
    * Kill abruptly the mplayer process (this way, killing is synchronous, and
@@ -336,5 +336,5 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
       sendCommand("pause");
     }
   }
-
+  
 }

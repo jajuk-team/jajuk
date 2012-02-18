@@ -163,4 +163,13 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
     // nothing to do here...
   }
 
+  /* (non-Javadoc)
+  * @see org.jajuk.services.players.IPlayerImpl#getActuallyPlayedTimeMillis()
+  */
+  @Override
+  public long getActuallyPlayedTimeMillis() {
+    // makes no sense for webradios
+    return 0;
+  }
+
 }
