@@ -825,9 +825,6 @@ public final class TrackManager extends ItemManager {
       // Reset files property before adding new files
       for (File file : oldTrack.getReadyFiles(filter)) {
         file.setTrack(newTrack);// set new track for the changed file
-        newTrack.addFile(file); // add changed file
-        // remove file from old track
-        removeFile(file);
       }
     } finally {
       lock.writeLock().unlock();
