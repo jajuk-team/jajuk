@@ -498,10 +498,10 @@ public class LastFmService {
    * Submits song to Last.fm
    *
    * @param track DOCUMENT_ME
-   * @param secondsPlayed seconds the audio file has already played
+   * @param millisPlayed ms the audio file has already played
    * @throws ScrobblerException the scrobbler exception
    */
-  public void submit(Track track, long secondsPlayed) throws ScrobblerException {
+  public void submit(Track track, long millisPlayed) throws ScrobblerException {
     // Do all necessary checks
     if (!checkUser() || !checkPassword() || !checkArtist(track) || !checkTitle(track)
         || !checkDuration(track)) {
@@ -509,9 +509,9 @@ public class LastFmService {
     }
 
     // Get started to play in secs UTC and not in MS (lastfm-bindings API was unclear about it)
-    long startedToPlay = (System.currentTimeMillis() - secondsPlayed) / 1000;
+    long startedToPlay = (System.currentTimeMillis() - millisPlayed) / 1000;
 
-    Log.info("Trying to submit song to Last.fm");
+    Log.info("Trying to submit song to Last.fm, play time=" + millisPlayed / 1000 + " secs");
     try {
       performHandshakeIfNeeded();
       SubmissionData submissionData = new SubmissionData(track.getArtist().getName2(),

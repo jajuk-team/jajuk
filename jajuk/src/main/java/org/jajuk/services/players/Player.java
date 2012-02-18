@@ -337,9 +337,22 @@ public final class Player {
    * 
    * @return Returns the lTime in ms
    */
-  public static long getElapsedTime() {
+  public static long getElapsedTimeMillis() {
     if (playerImpl != null) {
       return playerImpl.getElapsedTimeMillis();
+    } else {
+      return 0;
+    }
+  }
+  
+  /**
+   * Gets the elapsed time.
+   * 
+   * @return Returns the lTime in ms
+   */
+  public static long getActuallyPlayedTimeMillis() {
+    if (playerImpl != null) {
+      return playerImpl.getActuallyPlayedTimeMillis();
     } else {
       return 0;
     }

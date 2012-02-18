@@ -70,11 +70,18 @@ public interface IPlayerImpl {
   void setVolume(float fVolume) throws Exception;
 
   /**
-   * Gets the elapsed time.
+   * Gets the elapsed time. (position*total length)
    * 
    * @return elapsed time (ms) for this player
    */
   long getElapsedTimeMillis();
+  
+   /**
+   * Gets the actually played time (including rewinds and forward, pause not included)
+   * 
+   * @return actually played time (ms) for this player
+   */
+  long getActuallyPlayedTimeMillis();
 
   /**
    * Pause the player.

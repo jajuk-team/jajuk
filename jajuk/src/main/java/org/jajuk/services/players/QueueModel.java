@@ -484,7 +484,7 @@ public final class QueueModel {
       if (getPlayingFile() != null) {
         Properties details = new Properties();
         details.put(Const.DETAIL_CURRENT_FILE, getPlayingFile());
-        details.put(Const.DETAIL_CONTENT, Player.getElapsedTime());
+        details.put(Const.DETAIL_CONTENT, Player.getActuallyPlayedTimeMillis());
         ObservationManager.notify(new JajukEvent(JajukEvents.FILE_FINISHED, details));
       }
       if (current.isRepeat()) {

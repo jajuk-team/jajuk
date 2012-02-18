@@ -962,6 +962,15 @@ public class JUnitHelpers {
 
       return 0;
     }
+
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#getActuallyPlayedTimeMillis()
+     */
+    @Override
+    public long getActuallyPlayedTimeMillis() {
+      // TODO Auto-generated method stub
+      return 0;
+    }
   }
 
   /**
