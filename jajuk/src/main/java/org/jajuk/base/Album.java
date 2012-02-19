@@ -160,9 +160,9 @@ public class Album extends LogicalItem implements Comparable<Album> {
     return XML_ALBUM;
   }
 
- /* (non-Javadoc)
-   * @see org.jajuk.base.Item#getTitle()
-   */
+  /* (non-Javadoc)
+    * @see org.jajuk.base.Item#getTitle()
+    */
   @Override
   public String getTitle() {
     return Messages.getString("Item_Album") + " : " + getName2();
@@ -304,14 +304,13 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (StringUtils.isNotBlank(selectedCoverPath) && new File(selectedCoverPath).exists()) {
       // If user-selected cover is available, just return its path
       return new File(selectedCoverPath);
-    } 
+    }
 
     // otherwise check if the "discovered cover" is set to "none"
     String discoveredCoverPath = getStringValue(XML_ALBUM_DISCOVERED_COVER);
-    if (StringUtils.isNotBlank(discoveredCoverPath)
-        && COVER_NONE.equals(discoveredCoverPath)) {
+    if (StringUtils.isNotBlank(discoveredCoverPath) && COVER_NONE.equals(discoveredCoverPath)) {
       return null;
-    } 
+    }
 
     // now check if the "discovdered cover" is available
     if (StringUtils.isNotBlank(discoveredCoverPath)) {
@@ -323,7 +322,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
       Device device = DeviceManager.getInstance().getDeviceByPath(new File(discoveredCoverPath));
       // If the device is not mounted, do not perform this existence check up
       if (device != null) {
-        if(device.isMounted()) {
+        if (device.isMounted()) {
           if (new File(discoveredCoverPath).exists()) {
             return new File(discoveredCoverPath);
           }
@@ -357,7 +356,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
       return null;
     }
 
-    // look for tag cover
+    // look for tag cover if tag supported for this type
     File cover = findTagCover();
 
     // none ? look for standard cover in collection
@@ -404,10 +403,12 @@ public class Album extends LogicalItem implements Comparable<Album> {
     for (Track track : sortedTracks) {
       for (org.jajuk.base.File file : track.getReadyFiles()) {
         try {
-          Tag tag = new Tag(file.getFIO(), false);
-          List<Cover> covers = tag.getCovers();
-          if (covers.size() > 0) {
-            return covers.get(0).getFile();
+          if (file.getType().getTagImpl() != null) {
+            Tag tag = new Tag(file.getFIO(), false);
+            List<Cover> covers = tag.getCovers();
+            if (covers.size() > 0) {
+              return covers.get(0).getFile();
+            }
           }
         } catch (JajukException e1) {
           Log.error(e1);
