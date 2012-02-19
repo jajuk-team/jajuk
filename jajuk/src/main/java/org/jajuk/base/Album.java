@@ -161,11 +161,9 @@ public class Album extends LogicalItem implements Comparable<Album> {
     return XML_ALBUM;
   }
 
-  /**
-   * Get item description.
-   * 
-   * @return the desc
-   */
+  /* (non-Javadoc)
+    * @see org.jajuk.base.Item#getTitle()
+    */
   @Override
   public String getDesc() {
     return Messages.getString("Item_Album") + " : " + getName2();
@@ -347,7 +345,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
       return null;
     }
 
-    // look for tag cover
+    // look for tag cover if tag supported for this type
     File cover = findTagCover();
 
     // none ? look for standard cover in collection
@@ -394,10 +392,12 @@ public class Album extends LogicalItem implements Comparable<Album> {
     for (Track track : sortedTracks) {
       for (org.jajuk.base.File file : track.getReadyFiles()) {
         try {
-          Tag tag = new Tag(file.getFIO(), false);
-          List<Cover> covers = tag.getCovers();
-          if (covers.size() > 0) {
-            return covers.get(0).getFile();
+          if (file.getType().getTagImpl() != null) {
+            Tag tag = new Tag(file.getFIO(), false);
+            List<Cover> covers = tag.getCovers();
+            if (covers.size() > 0) {
+              return covers.get(0).getFile();
+            }
           }
         } catch (JajukException e1) {
           Log.error(e1);
