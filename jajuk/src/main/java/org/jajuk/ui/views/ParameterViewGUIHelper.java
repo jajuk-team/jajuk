@@ -236,6 +236,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     // Disable features incompatible with Bit-perfect mode
     pv.jcbUseVolnorm.setEnabled(!pv.jcbEnableBitPerfect.isSelected());
     pv.crossFadeDuration.setEnabled(!pv.jcbEnableBitPerfect.isSelected());
+    pv.jcbShowVideos.setSelected(Conf.getBoolean(Const.CONF_SHOW_VIDEOS));
   }
 
   /**
@@ -430,6 +431,11 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     Conf.setProperty(Const.CONF_FADE_DURATION, Integer.toString(pv.crossFadeDuration.getValue()));
     Conf.setProperty(Const.CONF_USE_VOLNORM, Boolean.toString(pv.jcbUseVolnorm.isSelected()));
     Conf.setProperty(Const.CONF_BIT_PERFECT, Boolean.toString(pv.jcbEnableBitPerfect.isSelected()));
+    boolean oldShowVideo = Conf.getBoolean(Const.CONF_SHOW_VIDEOS);
+    if (oldShowVideo != pv.jcbShowVideos.isSelected()) {
+      this.someOptionsAppliedAtNextStartup = true;
+    }
+    Conf.setProperty(Const.CONF_SHOW_VIDEOS, Boolean.toString(pv.jcbShowVideos.isSelected()));
   }
 
   /**

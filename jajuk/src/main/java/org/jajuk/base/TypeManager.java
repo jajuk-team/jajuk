@@ -29,6 +29,7 @@ import java.util.Map;
 
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.tags.ITagImpl;
+import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.ReadOnlyIterator;
@@ -460,6 +461,13 @@ public final class TypeManager extends ItemManager {
         .toExternalForm());
 
     // -- VIDEO --
+    if (Conf.getBoolean(Const.CONF_SHOW_VIDEOS)) {
+      registerVideoTypes();
+    }
+  }
+
+  private static void registerVideoTypes() throws ClassNotFoundException {
+    Type type;
     // AVI
     type = TypeManager.getInstance().registerType(Messages.getString(Const.TYPE_VIDEO),
         Const.EXT_AVI, Class.forName(Const.PLAYER_IMPL_MPLAYER), null);

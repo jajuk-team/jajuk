@@ -1478,6 +1478,8 @@ public interface Const {
 
   /** Option name. */
   String CONF_BIT_PERFECT = "jajuk.bit_perfect";
+  
+  String CONF_SHOW_VIDEOS = "jajuk.show_videos";
 
   // Alarm actions
   /** DOCUMENT_ME. */

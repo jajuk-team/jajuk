@@ -104,16 +104,12 @@ public class ParameterView extends ViewAdapter {
   /** The Constant NOTIFICATOR_PREFIX. DOCUMENT_ME */
   static final String NOTIFICATOR_PREFIX = "Notificator.";
 
-  /** DOCUMENT_ME. */
   JTabbedPane jtpMain;
 
-  /** DOCUMENT_ME. */
   JTextField jtfHistory;
 
-  /** DOCUMENT_ME. */
   JButton jbClearHistory;
 
-  /** DOCUMENT_ME. */
   JButton jbResetRatings;
 
   /** Allows to export ratings to a file */
@@ -122,79 +118,54 @@ public class ParameterView extends ViewAdapter {
   /** Allows to import ratings from a file */
   JButton jbImportRatings;
 
-  /** DOCUMENT_ME. */
   JButton jbResetPreferences;
 
-  /** DOCUMENT_ME. */
   ButtonGroup bgStart;
 
-  /** DOCUMENT_ME. */
   JRadioButton jrbNothing;
 
-  /** DOCUMENT_ME. */
   JRadioButton jrbLast;
 
-  /** DOCUMENT_ME. */
   JRadioButton jrbLastKeepPos;
 
-  /** DOCUMENT_ME. */
   JRadioButton jrbShuffle;
 
-  /** DOCUMENT_ME. */
   JRadioButton jrbBestof;
 
-  /** DOCUMENT_ME. */
   JRadioButton jrbNovelties;
 
-  /** DOCUMENT_ME. */
   JRadioButton jrbFile;
 
-  /** DOCUMENT_ME. */
   SearchBox sbSearch;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbBeforeDelete;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbBeforeExit;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbBeforeRemoveDevice;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbBeforeDeleteCover;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbBeforeClearingHistory;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbBeforeResetingRatings;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbBeforeRefactorFiles;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbDisplayUnmounted;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbAudioScrobbler;
 
-  /** DOCUMENT_ME. */
   JLabel jlASUser;
 
-  /** DOCUMENT_ME. */
   JTextField jtfASUser;
 
-  /** DOCUMENT_ME. */
   JLabel jlASPassword;
 
-  /** DOCUMENT_ME. */
   JPasswordField jpfASPassword;
 
-  /** DOCUMENT_ME. */
   SteppedComboBox scbLanguage;
 
-  /** DOCUMENT_ME. */
   JTextField jtfFrameTitle;
 
   /** Balloon notifier pattern text field. */
@@ -203,178 +174,122 @@ public class ParameterView extends ViewAdapter {
   /** Information pattern textfield. */
   JTextField jtfInformationPattern;
 
-  /** DOCUMENT_ME. */
   JLabel jlLAF;
 
-  /** DOCUMENT_ME. */
   SteppedComboBox scbLAF;
 
-  /** DOCUMENT_ME. */
   SteppedComboBox scbLogLevel;
 
-  /** DOCUMENT_ME. */
   JSlider introPosition;
 
-  /** DOCUMENT_ME. */
   JSlider introLength;
 
-  /** DOCUMENT_ME. */
   JTextField jtfBestofSize;
 
-  /** DOCUMENT_ME. */
   JTextField jtfNoveltiesAge;
 
-  /** DOCUMENT_ME. */
   JTextField jtfVisiblePlanned;
 
-  /** DOCUMENT_ME. */
   JSlider crossFadeDuration;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbDefaultActionClick;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbDefaultActionDrop;
 
-  /** DOCUMENT_ME. */
   JLabel jlNotificationType;
 
-  /** DOCUMENT_ME. */
   JComboBox jcbNotificationType;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbHotkeys;
 
-  /** DOCUMENT_ME. */
+  JCheckBox jcbShowVideos;
+
   JCheckBox jcbUseParentDir;
 
-  /** DOCUMENT_ME. */
   JFormattedTextField jtfRefactorPattern;
 
-  /** DOCUMENT_ME. */
   JTextField jtfAnimationPattern;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbBackup;
 
-  /** DOCUMENT_ME. */
   JSlider backupSize;
 
-  /** DOCUMENT_ME. */
   JComboBox jcbCollectionEncoding;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbRegexp;
 
-  /** DOCUMENT_ME. */
   ButtonGroup bgProxy;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbNoneInternetAccess;
 
-  /** DOCUMENT_ME. */
   JRadioButton jcbProxyNone;
 
-  /** DOCUMENT_ME. */
   JRadioButton jcbProxyHttp;
 
-  /** DOCUMENT_ME. */
   JRadioButton jcbProxySocks;
 
-  /** DOCUMENT_ME. */
   JLabel jlProxyHostname;
 
-  /** DOCUMENT_ME. */
   JTextField jtfProxyHostname;
 
-  /** DOCUMENT_ME. */
   JLabel jlProxyPort;
 
-  /** DOCUMENT_ME. */
   JTextField jtfProxyPort;
 
-  /** DOCUMENT_ME. */
   JLabel jlProxyLogin;
 
-  /** DOCUMENT_ME. */
   JTextField jtfProxyLogin;
 
-  /** DOCUMENT_ME. */
   JLabel jlProxyPwd;
 
-  /** DOCUMENT_ME. */
   JPasswordField jtfProxyPwd;
 
-  /** DOCUMENT_ME. */
   JLabel jlConnectionTO;
 
-  /** DOCUMENT_ME. */
   JSlider connectionTO;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbAutoCover;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbShuffleCover;
 
-  /** DOCUMENT_ME. */
   JLabel jlCoverSize;
 
-  /** DOCUMENT_ME. */
   JComboBox jcbCoverSize;
 
-  /** DOCUMENT_ME. */
   JTextField jtfMPlayerArgs;
 
-  /** DOCUMENT_ME. */
   JTextField jtfEnvVariables;
 
-  /** DOCUMENT_ME. */
   JTextField jtfMPlayerPath;
 
-  /** DOCUMENT_ME. */
   PathSelector psJajukWorkspace;
 
-  /** DOCUMENT_ME. */
   JLabel jlCatalogPages;
 
-  /** DOCUMENT_ME. */
   JSlider jsCatalogPages;
 
-  /** DOCUMENT_ME. */
   JButton jbCatalogRefresh;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbShowPopups;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbShowSystray;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbMinimizeToTray;
 
-  /** DOCUMENT_ME. */
   JLabel jlFonts;
 
-  /** DOCUMENT_ME. */
   JSlider jsFonts;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbEnableLastFMInformation;
 
-  /** DOCUMENT_ME. */
   JButton jbOK;
 
-  /** DOCUMENT_ME. */
   JButton jbDefault;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbCheckUpdates;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbForceFileDate;
 
-  /** DOCUMENT_ME. */
   JSlider jsPerspectiveSize;
 
   /** VolNorm checkbox. */
@@ -383,28 +298,21 @@ public class ParameterView extends ViewAdapter {
   /** Bit-perfect checkbox. */
   JCheckBox jcbEnableBitPerfect;
 
-  /** DOCUMENT_ME. */
   JTextField jtfExplorerPath;
 
   /** Whether the "theme will be token into account" message has been already displayed. */
   boolean bLAFMessage = false;
 
-  /** DOCUMENT_ME. */
   JLabel jlDefaultCoverSearchPattern;
 
-  /** DOCUMENT_ME. */
   JTextField jtfDefaultCoverSearchPattern;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbSaveExplorerFriendly;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcbDropPlayedTracksFromQueue;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcb3dCover;
 
-  /** DOCUMENT_ME. */
   JCheckBox jcb3dCoverFS;
 
   /** Enable Title view animation effect. */
@@ -812,7 +720,6 @@ public class ParameterView extends ViewAdapter {
     jpModes.add(jtfNoveltiesAge, "grow,wrap");
     jpModes.add(jlVisiblePlanned);
     jpModes.add(jtfVisiblePlanned, "grow,wrap");
-
     return jpModes;
   }
 
@@ -865,6 +772,9 @@ public class ParameterView extends ViewAdapter {
     jcbDropPlayedTracksFromQueue = new JCheckBox(Messages.getString("ParameterView.266"));
     jcbDropPlayedTracksFromQueue.setToolTipText(Messages.getString("ParameterView.267"));
 
+    jcbShowVideos = new JCheckBox(Messages.getString("ParameterView.301"));
+    jcbShowVideos.setToolTipText(Messages.getString("ParameterView.302"));
+  
     JPanel jpOptions = new JPanel(new MigLayout("insets 10, gapy 15, wrap 1"));
     jpOptions.add(new JLabel(Messages.getString("ParameterView.38")), "split 2,gapleft 5");
     jpOptions.add(scbLanguage);
@@ -874,6 +784,7 @@ public class ParameterView extends ViewAdapter {
     jpOptions.add(jcbHotkeys);
     jpOptions.add(jcbUseParentDir);
     jpOptions.add(jcbDropPlayedTracksFromQueue);
+    jpOptions.add(jcbShowVideos);
     return jpOptions;
   }
 
