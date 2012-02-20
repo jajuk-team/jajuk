@@ -15,7 +15,7 @@
 	</tstamp>
 
 	<!--Build type : 'unstable', 'final' or 'maintenance' -->
-	<property name='type' value='maintenance' />
+	<property name='type' value='final' />
 	
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
