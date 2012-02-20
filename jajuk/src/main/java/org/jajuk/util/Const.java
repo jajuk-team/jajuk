@@ -1005,9 +1005,6 @@ public interface Const {
 
   /** Remembered directory for parties. */
   String CONF_PREPARE_PARTY = "jajuk.prepare_party.";
-  
-  /** Refreshing delay. */
-  String CONF_REFRESHING_DELAY_MS = "jajuk.refreshing_delay_ms";
 
   /** Slashscreen flag. */
   String CONF_SPLASH_SCREEN = "jajuk.splashscreen";

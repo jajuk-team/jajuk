@@ -57,7 +57,6 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.PlaylistFilter;
 import org.jajuk.util.log.Log;
 
-
 /**
  * A playlist
  * <p>
@@ -615,11 +614,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       throw new JajukException(17, (getDirectory() != null && getFIO() != null ? getFIO()
           .getAbsolutePath() : "<unknown>"), e);
     }
-<<<<<<< HEAD
     this.alFiles = files;
-=======
-    return files;
->>>>>>> hotfix/release-1_9_6
   }
 
   /**

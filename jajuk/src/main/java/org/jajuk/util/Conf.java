@@ -352,10 +352,7 @@ public final class Conf implements Const {
     defaults.put(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_CROSS_FADE, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_LAF_CHANGE, FALSE);
-    
-    //Refresh delay to slow down refresh (some NAS are crashing due to intensive load)
-    defaults.put(CONF_REFRESHING_DELAY_MS, "0");
-    
+
     // Make a copy of default values
     properties = (Properties) defaults.clone();
   }

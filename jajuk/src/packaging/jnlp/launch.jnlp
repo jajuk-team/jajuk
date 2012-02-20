@@ -19,11 +19,7 @@
            <all-permissions/>
        </security> 
        <resources>
-<<<<<<< HEAD
            <j2se version='1.6+' java-vm-args='-client -Xms20M -Xmx2G -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -Xverify:none'/>
-=======
-           <j2se version='1.6+' java-vm-args='-client -Xms20M -Xmx2G -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10'/>
->>>>>>> hotfix/release-1_9_6
            <property name='test' value='TEST_FLAG_REPLACED_BY_ANT'/>
            <jar href='jajuk.jar' version='JNLP_VERSION_REPLACED_BY_ANT'/> 
    		<extension name='Animation' href='animation.jnlp' />

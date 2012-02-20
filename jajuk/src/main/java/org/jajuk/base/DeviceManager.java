@@ -366,6 +366,8 @@ public final class DeviceManager extends ItemManager {
 
           // UI refresh if required
           if (bNeedUIRefresh) {
+            // Cleanup logical items
+            Collection.cleanupLogical();
             /*
              * Notify views to refresh once the device is refreshed, do not wait all devices
              * refreshing as it may be tool long

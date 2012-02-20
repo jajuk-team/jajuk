@@ -65,6 +65,7 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
           if (line == null) {
             break;
           }
+
           bOpening = false;
           // Search for Exiting (...) pattern
           if (line.matches(".*\\x2e\\x2e\\x2e.*\\(.*\\).*")) {
@@ -150,6 +151,8 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
     if (bEOF) {
       throw new JajukException(7);
     }
+    // Get track length
+    sendCommand("get_time_length");
   }
 
   /*
@@ -163,10 +166,7 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
     // nothing to do here...
   }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> hotfix/release-1_9_6
   /* (non-Javadoc)
   * @see org.jajuk.services.players.IPlayerImpl#getActuallyPlayedTimeMillis()
   */
@@ -176,9 +176,5 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
     return 0;
   }
 
-<<<<<<< HEAD
 }
 
-=======
-}
->>>>>>> hotfix/release-1_9_6

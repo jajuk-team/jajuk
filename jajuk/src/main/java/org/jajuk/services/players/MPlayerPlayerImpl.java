@@ -108,17 +108,10 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   private class PositionThread extends Thread {
 
     /**
-<<<<<<< HEAD
      * Instantiates a new position thread.
      *
      * @param name DOCUMENT_ME
      */
-=======
-    * Instantiates a new position thread.
-    * 
-    * @param name DOCUMENT_ME
-    */
->>>>>>> hotfix/release-1_9_6
     public PositionThread(String name) {
       super(name);
       setDaemon(true);
@@ -149,11 +142,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             // Do not call a get_percent_pos if paused, it resumes the player
             // (mplayer issue)
             sendCommand("get_time_pos");
-<<<<<<< HEAD
             
-=======
-
->>>>>>> hotfix/release-1_9_6
             // Get track length if required. Do not launch "get_time_length" only 
             // once because some fast computer makes mplayer start too fast and
             // the slave mode is not yet opened so this command is not token into account.
@@ -161,10 +150,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             if (lDuration == 0) {
               sendCommand("get_time_length");
             }
-<<<<<<< HEAD
             
-=======
->>>>>>> hotfix/release-1_9_6
             // Every 2 time units, increase actual play time. We wait this
             // delay for perfs and for precision
             if (comp > 0 && comp % TOTAL_PLAYTIME_UPDATE_INTERVAL == 0) {
@@ -269,10 +255,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               // Store current position for use at next startup
               Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION,
                   Float.toString(getCurrentPosition()));
-<<<<<<< HEAD
-=======
-
->>>>>>> hotfix/release-1_9_6
               // Cross-Fade test
               if (!bFading && iFadeDuration > 0
               // Length = 0 for some buggy audio headers
