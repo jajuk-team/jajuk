@@ -403,7 +403,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     for (Track track : sortedTracks) {
       for (org.jajuk.base.File file : track.getReadyFiles()) {
         try {
-          if (file.getType().getTagImpl() != null) {
+          if (file != null && file.getType() != null && file.getType().getTagImpl() != null) {
             Tag tag = new Tag(file.getFIO(), false);
             List<Cover> covers = tag.getCovers();
             if (covers.size() > 0) {
