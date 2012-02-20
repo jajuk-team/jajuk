@@ -536,9 +536,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
 
       // Actual refresh
       refreshCommand(((i == Device.OPTION_REFRESH_DEEP) || forcedDeep), true, dirsToRefresh);
-      // cleanup logical items
-      org.jajuk.base.Collection.cleanupLogical();
-
+     
       // if it is a move, clean old files *after* the refresh
       if (bAfterMove) {
         cleanRemovedFiles(dirsToRefresh);
@@ -838,6 +836,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     } finally {
       // make sure to unlock refreshing even if an error occurred
       bAlreadyRefreshing = false;
+      // cleanup logical items
+      org.jajuk.base.Collection.cleanupLogical();
       // reporter is null if mount is not mounted due to early return
       if (reporter != null) {
         // Notify the reporter of the actual refresh startup

@@ -523,6 +523,9 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
    * Add keystroke support.
    */
   protected void setKeystrokes() {
+    // Bind keystrokes and selection
+    editorTable.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
+    
     InputMap inputMap = editorTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     ActionMap actionMap = editorTable.getActionMap();
 

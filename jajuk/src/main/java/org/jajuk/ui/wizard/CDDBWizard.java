@@ -179,7 +179,12 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
         index = jcbAlbum.getSelectedIndex();
       }
       fdbReader = fdb.read(foundAlbums[index]);
+      // Can sometimes be null for some reasons
+      if (fdbReader == null) {
+        throw new FreedbException("Void Freereader, please retry");
+      }
     } catch (FreedbException e) {
+      Messages.showDetailedErrorMessage(174, e.getLocalizedMessage(), null);
       Log.debug("CDDB error ! " + e.getLocalizedMessage());
       dispose();
     }
@@ -195,8 +200,8 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
    * Inits the ui. DOCUMENT_ME
    */
   public void initUI() {
-    okc = new OKCancelPanel(CDDBWizard.this, Messages.getString("Apply"), Messages
-        .getString("Close"));
+    okc = new OKCancelPanel(CDDBWizard.this, Messages.getString("Apply"),
+        Messages.getString("Close"));
     // Albums List
     jcbAlbum = new SteppedComboBox();
 
@@ -257,17 +262,17 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
       }
       return foundAlbums.length;
     } catch (FreedbException e) {
+      Log.debug(e.getLocalizedMessage());
       // freedb throws a Freedb exception for network problem or no match found
       // we want to display an error message only in the first case
       if (e.getMessage().toLowerCase(Locale.getDefault()).indexOf("no match") == -1) {
-        Messages.showErrorMessage(174);
+        Messages.showErrorMessage(174, e.getLocalizedMessage());
         return -1;
       }
-      Log.debug(e.getLocalizedMessage());
       return 0;
     } catch (Exception e) {
       Log.debug(e.getLocalizedMessage());
-      Messages.showErrorMessage(174);
+      Messages.showErrorMessage(174, e.getLocalizedMessage());
       return -1;
     }
   }

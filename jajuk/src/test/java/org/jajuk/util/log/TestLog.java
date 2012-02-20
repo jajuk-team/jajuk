@@ -265,7 +265,7 @@ public class TestLog extends JajukTestCase {
 
     // create enough spool to overflow
     for (int i = 0; i < Const.FEEDBACK_LINES + 10; i++) {
-      Log.debug("Spooltest-" + Integer.toString(i) + '|');
+      Log.debug("Spooltest-" + i + '|');
     }
 
     // should return the expected number of lines now

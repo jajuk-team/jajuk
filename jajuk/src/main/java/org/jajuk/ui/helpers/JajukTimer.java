@@ -126,7 +126,7 @@ public final class JajukTimer {
    * @return Current track elapsed time in secs
    */
   public long getCurrentTrackEllapsedTime() {
-    return Player.getElapsedTime() / 1000;
+    return Player.getElapsedTimeMillis() / 1000;
   }
 
   /**
@@ -135,7 +135,7 @@ public final class JajukTimer {
    * @return Current track total time in secs
    */
   public long getCurrentTrackTotalTime() {
-    return Player.getCurrentLength() / 1000;
+    return Player.getDurationSec() / 1000;
   }
 
   /**

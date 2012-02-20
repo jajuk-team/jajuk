@@ -320,9 +320,22 @@ public final class Player {
    * 
    * @return Returns the lTime in ms
    */
-  public static long getElapsedTime() {
+  public static long getElapsedTimeMillis() {
     if (playerImpl != null) {
-      return playerImpl.getElapsedTime();
+      return playerImpl.getElapsedTimeMillis();
+    } else {
+      return 0;
+    }
+  }
+  
+  /**
+   * Gets the elapsed time.
+   * 
+   * @return Returns the lTime in ms
+   */
+  public static long getActuallyPlayedTimeMillis() {
+    if (playerImpl != null) {
+      return playerImpl.getActuallyPlayedTimeMillis();
     } else {
       return 0;
     }
@@ -411,13 +424,13 @@ public final class Player {
   }
 
   /**
-   * Gets the current length.
+   * Gets the current track total duration (secs).
    * 
-   * @return current track length in secs
+   * @return current track total duration in secs
    */
-  public static long getCurrentLength() {
+  public static long getDurationSec() {
     if (playerImpl != null) {
-      return playerImpl.getCurrentLength();
+      return playerImpl.getDurationSec();
     } else {
       return 0l;
     }

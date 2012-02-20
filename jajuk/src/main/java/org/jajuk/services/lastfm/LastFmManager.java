@@ -86,16 +86,6 @@ public final class LastFmManager implements Observer, Const {
     return eventSubjectSet;
   }
 
-  /**
-   * Configure.
-   * DOCUMENT_ME
-   */
-  public void configure() {
-    service.setPassword(UtilString.rot13(Conf.getString(Const.CONF_LASTFM_PASSWORD)));
-    service.setUser(Conf.getString(Const.CONF_LASTFM_USER));
-    service.setProxy(DownloadManager.getProxy());
-  }
-
   /*
    * (non-Javadoc)
    * 

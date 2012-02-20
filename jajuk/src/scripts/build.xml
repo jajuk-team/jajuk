@@ -15,11 +15,11 @@
 	</tstamp>
 
 	<!--Build type : 'unstable', 'final' or 'maintenance' -->
-	<property name='type' value='final' />
+	<property name='type' value='maintenance' />
 	
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.9.5' />
+	<property name='version' value='1.9.6' />
 
 	<!--JNLP version-->
 	<!-- In final releases (including RC), jnlp_version=${version} 
@@ -29,7 +29,7 @@
 	<property name='jnlp_version' value='${version}' />
 
 	<!--Test flag: values: 'test' or 'notest' 
-	'test' for 'unstable and maintenance branches, 'notest' for master branch (including RC releases)
+	'test' for 'unstable branch, 'notest' for master and maintenance branch (including RC releases)
 	-->
 	<property name='test' value='notest' />
 				
@@ -130,12 +130,14 @@
 			<fileset file='${basedir}/src/legals/LICENSE-GPL.txt' />
 			<fileset file='${basedir}/src/legals/DERIVATED.txt' />
 			<fileset file='${basedir}/src/doc/README.html' />
+			<fileset file='${basedir}/src/legals/AUTHORS.txt' />
 		</copy>
 		<!--copy both README and LICENCE files as must also be in src/ for source distribution-->
 		<copy todir='${distdir}/src'>
 			<fileset file='${basedir}/src/legals/LICENSE-GPL.txt' />
 			<fileset file='${basedir}/src/legals/DERIVATED.txt' />
 			<fileset file='${basedir}/src/doc/README.html' />
+			<fileset file='${basedir}/src/legals/AUTHORS.txt' />
 		</copy>
 
 		<!--copy native dll to bin directory-->
@@ -319,6 +321,7 @@
 			</zipfileset>
 			<fileset file='${basedir}/src/doc/README.html' />
 			<fileset file='${basedir}/src/legals/LICENSE.txt' />
+			<fileset file='${basedir}/src/legals/AUTHORS.txt' />
 		</zip>
 	</target>
 
@@ -554,7 +557,7 @@
 		<taskdef name='jarbundler' classpath='${conf_jarbundler}/${conf_jarbundler-jar}' classname='net.sourceforge.jarbundler.JarBundler' />
 		<echo message='jarbundler' />
 		<mkdir dir='${distdir}/jarbundler/' />
-		<jarbundler dir='${distdir}/jarbundler/' name='Jajuk' mainclass='org.jajuk.Main' icon='${distdir}/dist-files/images/jajuk-icon_source.icns' jvmversion='1.6+' version='${version}' infostring='Jajuk' stubfile='${basedir}/src/packaging/OSX/JavaApplicationStub' build='${version}' vmoptions='-client -Xms20M -Xmx512M -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10' arguments='-${test}' verbose='true'>
+		<jarbundler dir='${distdir}/jarbundler/' name='Jajuk' mainclass='org.jajuk.Main' icon='${distdir}/dist-files/images/jajuk-icon_source.icns' jvmversion='1.6+' version='${version}' infostring='Jajuk' stubfile='${basedir}/src/packaging/OSX/JavaApplicationStub' build='${version}' vmoptions='-client -Xms20M -Xmx2G -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10' arguments='-${test}' verbose='true'>
 			<jarfileset dir='${distdir}/lib'>
 				<include name='**/*.jar' />
 			</jarfileset>

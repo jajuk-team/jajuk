@@ -55,6 +55,11 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   /** Time elapsed in ms. */
   private long lTime = 0;
 
+  /** Actually played time */
+  private long actuallyPlayedTimeMillis = 0l;
+
+  private long lastPlayTimeUpdate = System.currentTimeMillis();
+
   /** Date of last elapsed time update. */
   private long lDateLastUpdate = System.currentTimeMillis();
 
@@ -128,9 +133,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
     player.open(new File(file.getAbsolutePath()));
     if ((fPosition > 0.0f) &&
     // (position*fPosition(%))*1000(ms) /24 because 1 frame =24ms
-        // test if this is a audio format supporting seeking
-        // Note: fio.getName() is better here as it will do less and not create
-        // java.io.File in File
+    // test if this is a audio format supporting seeking
+    // Note: fio.getName() is better here as it will do less and not create
+    // java.io.File in File
         (TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(file.getName()))
             .getBooleanValue(Const.XML_TYPE_SEEK_SUPPORTED))) {
       seek(fPosition);
@@ -166,33 +171,33 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
     // limit gain to avoid saturation
   }
 
-  /**
-   * Gets the current position.
-   * 
-   * @return current position as a float ex: 0.2f
-   */
+  /*
+    * (non-Javadoc)
+    * 
+    * @see org.jajuk.players.IPlayerImpl#getCurrentPosition()
+    */
   @Override
   public float getCurrentPosition() {
     return fPos;
   }
 
-  /**
-   * Gets the current volume.
+  /*
+   * (non-Javadoc)
    * 
-   * @return current volume as a float ex: 0.2f
+   * @see org.jajuk.players.IPlayerImpl#getCurrentVolume()
    */
   @Override
   public float getCurrentVolume() {
     return fVolume;
   }
 
-  /**
-   * Gets the elapsed time.
+  /*
+   * (non-Javadoc)
    * 
-   * @return Returns the lTime in ms
+   * @see org.jajuk.players.IPlayerImpl#getElapsedTimeMillis()
    */
   @Override
-  public long getElapsedTime() {
+  public long getElapsedTimeMillis() {
     return lTime;
   }
 
@@ -212,6 +217,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   @Override
   public void resume() throws Exception {
     player.resume();
+    lastPlayTimeUpdate = System.currentTimeMillis();
   }
 
   /*
@@ -287,6 +293,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   public void opened(Object arg0, Map arg1) {
     this.mPlayingData = arg1;
     this.lDuration = UtilFeatures.getTimeLengthEstimation(mPlayingData);
+    lastPlayTimeUpdate = System.currentTimeMillis();
   }
 
   /**
@@ -336,6 +343,12 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
         fPos = (byteslength != 0) ? (float) iBytesread / (float) byteslength : 0;
         Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, Float.toString(fPos));
         lTime = (long) (lDuration * fPos);
+        // update actually played duration
+        if (lastPlayTimeUpdate > 0 && player.getStatus() != BasicPlayer.PAUSED) {
+          actuallyPlayedTimeMillis += (System.currentTimeMillis() - lastPlayTimeUpdate);
+        }
+        lastPlayTimeUpdate = System.currentTimeMillis();
+
       }
       // check if the track get rate increasing level (INC_RATE_TIME
       // secs or intro length)
@@ -426,7 +439,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
    * @see org.jajuk.players.IPlayerImpl#getCurrentLength()
    */
   @Override
-  public long getCurrentLength() {
+  public long getDurationSec() {
     return lDuration;
   }
 
@@ -448,5 +461,13 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   @Override
   public void play(WebRadio radio, float fVolume) throws Exception {
     // not needed right now
+  }
+
+  /* (non-Javadoc)
+  * @see org.jajuk.services.players.IPlayerImpl#getActuallyPlayedTimeMillis()
+  */
+  @Override
+  public long getActuallyPlayedTimeMillis() {
+    return actuallyPlayedTimeMillis;
   }
 }

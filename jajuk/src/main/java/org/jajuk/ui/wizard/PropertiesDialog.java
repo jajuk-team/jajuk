@@ -596,6 +596,10 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
             jtfValue.addKeyListener(new KeyAdapter() {
               @Override
               public void keyReleased(KeyEvent arg0) {
+                if (jtfValue.getText().length() == 0) {
+                  hmPropertyToChange.remove(meta);
+                  return;
+                }
                 String value = jtfValue.getText();
                 hmPropertyToChange.put(meta, value);
               }

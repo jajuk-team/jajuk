@@ -5,8 +5,6 @@
 		<appversion>VERSION_REPLACED_BY_ANT</appversion>
 		<javaversion>1.6</javaversion>
 		<url>http://jajuk.info</url>
-		<run-privileged
-			condition="izpack.windowsinstall.vista|izpack.windowsinstall.7|izpack.macinstall" />
 	</info>
 	<guiprefs height='600' resizable='yes' width='800'>
 		<laf name='substance'>

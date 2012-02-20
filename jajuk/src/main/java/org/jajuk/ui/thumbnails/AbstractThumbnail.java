@@ -431,9 +431,13 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
         cv.initUI();
         jd.add(cv);
         jd.setSize(600, 450);
-        jd.setLocationByPlatform(true);
+        // Keep it unresizable to keep things simple with cover view
+        // resizing issues, see @CoverView.CoverResetThread comments.
+        jd.setResizable(false);
+        UtilGUI.centerWindow(jd);
         jd.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         jd.setVisible(true);
+       
       } else {
         Messages.showErrorMessage(166);
       }

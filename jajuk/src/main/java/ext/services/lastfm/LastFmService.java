@@ -1,22 +1,24 @@
 /*
- *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
- *  http://jajuk.info
+ * aTunes 1.14.0 code adapted by Jajuk team
+ * 
+ * Original copyright notice bellow : 
+ * 
+ * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
  *
- *  This program is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU General Public License
- *  as published by the Free Software Foundation; either version 2
- *  of the License, or any later version.
+ * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * http://www.atunes.org
+ * http://sourceforge.net/projects/atunes
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  */
 
 package ext.services.lastfm;
@@ -97,16 +99,7 @@ public class LastFmService {
   private static final int MAX_SUBMISSIONS = 50;
 
   /** DOCUMENT_ME. */
-  private ext.services.network.Proxy proxy;
-
-  /** DOCUMENT_ME. */
   private Scrobbler scrobbler;
-
-  /** DOCUMENT_ME. */
-  private String user;
-
-  /** DOCUMENT_ME. */
-  private String password;
 
   /** DOCUMENT_ME. */
   private boolean handshakePerformed;
@@ -129,17 +122,15 @@ public class LastFmService {
    * @param locale DOCUMENT_ME
    * @param lastFmCache DOCUMENT_ME
    */
-  private LastFmService(ext.services.network.Proxy proxy, String user, String password,
-      Locale locale, LastFmCache lastFmCache) {
-    this.proxy = proxy;
-    this.user = user;
-    this.password = password;
+  private LastFmService(Locale locale, LastFmCache lastFmCache) {
+    Proxy proxy = DownloadManager.getProxy();
     Caller.getInstance().setCache(null);
     Caller.getInstance().setProxy(proxy);
     Caller.getInstance().setUserAgent(CLIENT_ID);
+    String user = Conf.getString(Const.CONF_LASTFM_USER);
     // Use encoded version name to avoid errors from server
-    scrobbler = Scrobbler.newScrobbler(CLIENT_ID, ext.services.network.NetworkUtils
-        .encodeString(CLIENT_VERSION), user);
+    scrobbler = Scrobbler.newScrobbler(CLIENT_ID,
+        ext.services.network.NetworkUtils.encodeString(CLIENT_VERSION), user);
     this.handshakePerformed = false;
     this.locale = locale;
     this.lastFmCache = lastFmCache;
@@ -153,11 +144,8 @@ public class LastFmService {
   static public LastFmService getInstance() {
     if (self == null) {
       LastFmCache cache = new LastFmCache();
-      Proxy proxy = DownloadManager.getProxy();
-      String user = Conf.getString(Const.CONF_LASTFM_USER);
-      String pwd = Conf.getString(Const.CONF_LASTFM_PASSWORD);
       Locale locale = LocaleManager.getLocale();
-      self = new LastFmService(proxy, user, UtilString.rot13(pwd), locale, cache);
+      self = new LastFmService(locale, cache);
     }
     return self;
   }
@@ -312,6 +300,7 @@ public class LastFmService {
   public Image getImage(AlbumInfo album) {
     try {
       Image img = null;
+      Proxy proxy = DownloadManager.getProxy();
       // Try to retrieve from cache
       img = lastFmCache.retrieveAlbumCover(album);
       if (img == null && album.getBigCoverURL() != null && !album.getBigCoverURL().isEmpty()) {
@@ -338,6 +327,7 @@ public class LastFmService {
     try {
       // Try to retrieve from cache
       Image img = lastFmCache.retrieveArtistThumbImage(artist);
+      Proxy proxy = DownloadManager.getProxy();
       if (img == null && artist.getImageUrl() != null && !artist.getImageUrl().isEmpty()) {
         // Try to get from Artist.getImages() method
         img = getArtistImageFromLastFM(artist.getName());
@@ -368,6 +358,7 @@ public class LastFmService {
     try {
       // Try to retrieve from cache
       Image img = lastFmCache.retrieveArtistImage(similar);
+      Proxy proxy = DownloadManager.getProxy();
 
       if (img != null) {
         return img;
@@ -405,6 +396,7 @@ public class LastFmService {
    */
   private Image getArtistImageFromLastFM(String artistName) {
     try {
+      Proxy proxy = DownloadManager.getProxy();
       // Try to get from Artist.getImages() method
       PaginatedResult<net.roarsoftware.lastfm.Image> images = Artist.getImages(artistName, 1, 1,
           UtilString.rot13(API_KEY));
@@ -496,10 +488,10 @@ public class LastFmService {
    * Submits song to Last.fm
    *
    * @param track DOCUMENT_ME
-   * @param secondsPlayed seconds the audio file has already played
+   * @param millisPlayed ms the audio file has already played
    * @throws ScrobblerException the scrobbler exception
    */
-  public void submit(Track track, long secondsPlayed) throws ScrobblerException {
+  public void submit(Track track, long millisPlayed) throws ScrobblerException {
     // Do all necessary checks
     if (!checkUser() || !checkPassword() || !checkArtist(track) || !checkTitle(track)
         || !checkDuration(track)) {
@@ -507,14 +499,14 @@ public class LastFmService {
     }
 
     // Get started to play in secs UTC and not in MS (lastfm-bindings API was unclear about it)
-    long startedToPlay = (System.currentTimeMillis() - secondsPlayed) / 1000;
+    long startedToPlay = (System.currentTimeMillis() - millisPlayed) / 1000;
 
-    Log.info("Trying to submit song to Last.fm");
+    Log.info("Trying to submit song to Last.fm, play time=" + millisPlayed / 1000 + " secs");
     try {
       performHandshakeIfNeeded();
-      SubmissionData submissionData = new SubmissionData(track.getArtist().getName2(), track
-          .getName(), track.getAlbum().getName2(), (int) track.getDuration(), (int) track
-          .getOrder(), Source.USER, null, startedToPlay);
+      SubmissionData submissionData = new SubmissionData(track.getArtist().getName2(),
+          track.getName(), track.getAlbum().getName2(), (int) track.getDuration(),
+          (int) track.getOrder(), Source.USER, null, startedToPlay);
       ResponseStatus status = scrobbler.submit(submissionData);
       if (status.ok()) {
         Log.info("Song submitted to Last.fm");
@@ -563,10 +555,10 @@ public class LastFmService {
 
         List<SubmissionData> submissionDataList = new ArrayList<SubmissionData>();
         for (ext.services.lastfm.FullSubmissionData submissionData : collectionWithSubmissionData) {
-          SubmissionData sd = new SubmissionData(submissionData.getArtist(), submissionData
-              .getTitle(), submissionData.getAlbum(), submissionData.getDuration(), submissionData
-              .getTrackNumber(), Source.valueOf(submissionData.getSource()), null, submissionData
-              .getStartTime());
+          SubmissionData sd = new SubmissionData(submissionData.getArtist(),
+              submissionData.getTitle(), submissionData.getAlbum(), submissionData.getDuration(),
+              submissionData.getTrackNumber(), Source.valueOf(submissionData.getSource()), null,
+              submissionData.getStartTime());
           submissionDataList.add(sd);
         }
 
@@ -627,6 +619,7 @@ public class LastFmService {
    */
   private void performHandshakeIfNeeded() throws IOException, ScrobblerException {
     if (!handshakePerformed) {
+      String password = UtilString.rot13(Conf.getString(Const.CONF_LASTFM_PASSWORD));
       ResponseStatus status = scrobbler.handshake(password);
       if (!status.ok()) {
         throw new ScrobblerException(status.getStatus());
@@ -641,6 +634,7 @@ public class LastFmService {
    * @return true, if check user
    */
   private boolean checkUser() {
+    String user = Conf.getString(Const.CONF_LASTFM_USER);
     if (user == null || user.equals("")) {
       Log.debug("Don't submit to Last.fm: Empty user");
       return false;
@@ -654,6 +648,7 @@ public class LastFmService {
    * @return true, if check password
    */
   private boolean checkPassword() {
+    String password = UtilString.rot13(Conf.getString(Const.CONF_LASTFM_PASSWORD));
     if (StringUtils.isBlank(password)) {
       Log.debug("Don't submit to Last.fm: Empty password");
       return false;
@@ -707,58 +702,5 @@ public class LastFmService {
     }
     return true;
   }
-
-  /**
-   * Gets the proxy.
-   * 
-   * @return the proxy
-   */
-  public ext.services.network.Proxy getProxy() {
-    return this.proxy;
-  }
-
-  /**
-   * Sets the proxy.
-   * 
-   * @param proxy the new proxy
-   */
-  public void setProxy(ext.services.network.Proxy proxy) {
-    this.proxy = proxy;
-  }
-
-  /**
-   * Gets the user.
-   * 
-   * @return the user
-   */
-  public String getUser() {
-    return this.user;
-  }
-
-  /**
-   * Sets the user.
-   * 
-   * @param user the new user
-   */
-  public void setUser(String user) {
-    this.user = user;
-  }
-
-  /**
-   * Gets the password.
-   * 
-   * @return the password
-   */
-  public String getPassword() {
-    return this.password;
-  }
-
-  /**
-   * Sets the password.
-   * 
-   * @param password the new password
-   */
-  public void setPassword(String password) {
-    this.password = password;
-  }
+  
 }

@@ -73,7 +73,6 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.core.RatingManager;
 import org.jajuk.services.core.SessionService;
-import org.jajuk.services.lastfm.LastFmManager;
 import org.jajuk.services.notification.NotificatorTypes;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
@@ -842,9 +841,6 @@ public class ParameterView extends ViewAdapter implements ActionListener, ItemLi
         Boolean.toString(jcbSaveExplorerFriendly.isSelected()));
     Conf.setProperty(Const.CONF_COVERS_SIZE, Integer.toString(jcbCoverSize.getSelectedIndex()));
     Conf.setProperty(Const.FILE_DEFAULT_COVER, jtfDefaultCoverSearchPattern.getText());
-
-    // Force LastFM manager configuration reload
-    LastFmManager.getInstance().configure();
 
     // configuration
     try {
