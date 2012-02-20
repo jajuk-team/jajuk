@@ -998,7 +998,19 @@ public class TestAlbumManager extends JajukTestCase {
      */
     @Override
     public long getDurationSec() {
+<<<<<<< HEAD
 
+      return 0;
+    }
+=======
+>>>>>>> hotfix/release-1_9_6
+
+    /* (non-Javadoc)
+     * @see org.jajuk.services.players.IPlayerImpl#getActuallyPlayedTimeMillis()
+     */
+    @Override
+    public long getActuallyPlayedTimeMillis() {
+      // TODO Auto-generated method stub
       return 0;
     }
 

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Tests too long :
 .*TestQueueModel.*
 .*TestPlaylist.*
@@ -25,3 +26,7 @@
 org.jajuk.services.notification.*
 .*ParameterView.*
 .*Splash.*
+=======
+# Disable Infinitest globally in 1.9.x 
+.*
+>>>>>>> hotfix/release-1_9_6

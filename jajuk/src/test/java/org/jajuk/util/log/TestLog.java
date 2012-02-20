@@ -255,7 +255,40 @@ public class TestLog extends JajukTestCase {
     assertFalse(Log.isDebugEnabled());
   }
 
+<<<<<<< HEAD
  
+=======
+  /**
+   * Test method for {@link org.jajuk.util.log.Log#getSpool()}.
+   */
+  public void testGetSpool() {
+    // should return a list and not null
+    assertNotNull(Log.getSpool());
+
+    // create enough spool to overflow
+    for (int i = 0; i < Const.FEEDBACK_LINES + 10; i++) {
+      Log.debug("Spooltest-" + i + '|');
+    }
+
+    // should return the expected number of lines now
+    assertEquals(Log.getSpool().toString(), Const.FEEDBACK_LINES, Log.getSpool().size());
+
+    // now the first ten should be moved out
+    verifySpool("Spooltest-0|", false);
+    verifySpool("Spooltest-9|", false);
+    verifySpool("Spooltest-11|");
+    verifySpool("Spooltest-" + Integer.toString(Const.FEEDBACK_LINES + 9) + '|');
+
+    // more details tested in other methods
+  }
+
+  /**
+   * Verify spool.
+   * DOCUMENT_ME
+   *
+   * @param substring DOCUMENT_ME
+   */
+>>>>>>> hotfix/release-1_9_6
   private void verifySpool(String substring) {
     verifySpool(substring, true);
   }

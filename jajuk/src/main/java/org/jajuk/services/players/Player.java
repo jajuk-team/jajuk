@@ -338,6 +338,7 @@ public final class Player {
    * @return Returns the lTime in ms
    */
   public static long getElapsedTimeMillis() {
+<<<<<<< HEAD
     if (playerImpl != null) {
       return playerImpl.getElapsedTimeMillis();
     } else {
@@ -352,6 +353,22 @@ public final class Player {
    */
   public static long getActuallyPlayedTimeMillis() {
     if (playerImpl != null) {
+=======
+    if (playerImpl != null) {
+      return playerImpl.getElapsedTimeMillis();
+    } else {
+      return 0;
+    }
+  }
+  
+  /**
+   * Gets the elapsed time.
+   * 
+   * @return Returns the lTime in ms
+   */
+  public static long getActuallyPlayedTimeMillis() {
+    if (playerImpl != null) {
+>>>>>>> hotfix/release-1_9_6
       return playerImpl.getActuallyPlayedTimeMillis();
     } else {
       return 0;

@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 -Djava.awt.headless=true
+=======
+-Djava.awt.headless=true
+>>>>>>> hotfix/release-1_9_6

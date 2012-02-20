@@ -97,7 +97,11 @@ public class File extends PhysicalItem implements Comparable<File> {
    *
    * @return the string
    */
+<<<<<<< HEAD
   String toStringSearch() {
+=======
+  public String toStringSearch() {
+>>>>>>> hotfix/release-1_9_6
     StringBuilder sb = new StringBuilder(track.getGenre().getName2()).append('/')
         .append(track.getArtist().getName2()).append('/').append(track.getAlbum().getName2())
         .append('/').append(track.getName()).append(" [").append(directory.getName()).append('/')
@@ -371,6 +375,10 @@ public class File extends PhysicalItem implements Comparable<File> {
     sb.append(lTrack.getDuration());
     sb.append(lTrack.getRate());
     sb.append(lTrack.getValue(Const.XML_TRACK_COMMENT));
+<<<<<<< HEAD
+=======
+    sb.append(lTrack.getAlbumArtist().getName2());
+>>>>>>> hotfix/release-1_9_6
     AlbumArtist albumArtist = lTrack.getAlbumArtist();
     if (albumArtist != null) {
       sb.append(albumArtist.getName2());
