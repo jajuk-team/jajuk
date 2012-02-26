@@ -705,9 +705,6 @@ public interface Const {
   String CONF_P2P_HIDE_LOCAL_PROPERTIES = "jajuk.options.p2p.hide_local_properties";
 
   /** DOCUMENT_ME. */
-  String CONF_P2P_PASSWORD = "jajuk.options.p2p.password";
-
-  /** DOCUMENT_ME. */
   String CONF_HISTORY = "jajuk.options.history";
 
   /** DOCUMENT_ME. */
