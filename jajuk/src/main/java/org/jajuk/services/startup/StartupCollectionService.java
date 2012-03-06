@@ -345,7 +345,7 @@ public final class StartupCollectionService {
         + AlbumArtistManager.getInstance().getElementCount() + " album-artists, "
         + PlaylistManager.getInstance().getElementCount() + " playlists in "
         + DirectoryManager.getInstance().getElementCount() + " directories on "
-        + DeviceManager.getInstance().getElementCount() + "devices.");
+        + DeviceManager.getInstance().getElementCount() + " devices.");
 
     // start auto commit thread
     tAutoCommit.start();
