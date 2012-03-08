@@ -42,6 +42,9 @@ public class FilesTableView extends AbstractTableView {
 
   /** DOCUMENT_ME. */
   private JMenuItem jmiFilePlayDirectory;
+  
+  /** DOCUMENT_ME. */
+  private JMenuItem jmiOpenExplorer;
 
   /**
    * Instantiates a new files table view.
@@ -86,6 +89,10 @@ public class FilesTableView extends AbstractTableView {
         ActionManager.getAction(JajukActions.PLAY_DIRECTORY_SELECTION));
     jmiFilePlayDirectory.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiFilePlayDirectory, 4);
+    //Add menu to open directory of the selected file
+    jmiOpenExplorer = new JMenuItem(ActionManager.getAction(JajukActions.OPEN_EXPLORER));
+    jmiOpenExplorer.putClientProperty(Const.DETAIL_CONTENT, jtable.getSelection());
+    jtable.getMenu().add(jmiOpenExplorer);
     // Add this generic menu item manually to ensure it's the last one in
     // the list for GUI reasons
     jtable.getMenu().addSeparator();

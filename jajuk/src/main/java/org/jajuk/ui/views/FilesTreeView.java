@@ -126,7 +126,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
   JMenuItem jmiDirCopyURL;
 
   /** DOCUMENT_ME. */
-  JMenuItem jmiDirOpenExplorer;
+  JMenuItem jmiOpenExplorer;
 
   /** DOCUMENT_ME. */
   JMenuItem jmiDevMount;
@@ -211,8 +211,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
     jmiDirRefactor.addActionListener(this);
     jmiDirCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     jmiDirCopyURL.putClientProperty(Const.DETAIL_CONTENT, alSelected);
-    jmiDirOpenExplorer = new JMenuItem(ActionManager.getAction(JajukActions.OPEN_EXPLORER));
-    jmiDirOpenExplorer.putClientProperty(Const.DETAIL_CONTENT, alSelected);
+    jmiOpenExplorer = new JMenuItem(ActionManager.getAction(JajukActions.OPEN_EXPLORER));
+    jmiOpenExplorer.putClientProperty(Const.DETAIL_CONTENT, alSelected);
 
     // Device menu
     jmiDevMount = new JMenuItem(Messages.getString("FilesTreeView.28"),
@@ -759,6 +759,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
         jmenu.add(jmiRename);
         jmenu.add(jmiDelete);
         jmenu.add(jmiCopyURL);
+        jmenu.add(jmiOpenExplorer);
         jmenu.addSeparator();
         jmenu.add(pjmTracks);
         jmenu.add(jmiAddFavorite);
@@ -779,7 +780,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
         jmenu.add(jmiNewFolder);
         jmenu.add(jmiDelete);
         jmenu.add(jmiDirCopyURL);
-        jmenu.add(jmiDirOpenExplorer);
+        jmenu.add(jmiOpenExplorer);
         jmenu.addSeparator();
         jmenu.add(jmiDirRefresh);
         jmenu.add(jmiRename);
@@ -804,6 +805,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
         jmenu.addSeparator();
         jmenu.add(jmiPlaylistCopyURL);
         jmenu.add(jmiPlaylistPrepareParty);
+        jmenu.add(jmiOpenExplorer);
         jmenu.add(jmiDelete);
         jmenu.addSeparator();
         jmenu.add(jmiProperties);
@@ -964,8 +966,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
       // Enable Copy url for a single item only
       jmiCopyURL.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof File);
       jmiDirCopyURL.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
-      jmiDirOpenExplorer.setEnabled(alSelected.size() == 1
-          && alSelected.get(0) instanceof Directory);
+      jmiOpenExplorer.setEnabled(alSelected.size() == 1
+          && (alSelected.get(0) instanceof Directory || alSelected.get(0) instanceof File 
+              || alSelected.get(0) instanceof Playlist ));
       jmiPlaylistCopyURL
           .setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Playlist);
       jmiPlaylistPrepareParty.setEnabled(alSelected.size() == 1
