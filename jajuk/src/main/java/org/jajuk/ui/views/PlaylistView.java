@@ -160,6 +160,9 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
 
   /** Menu item : down. */
   JMenuItem jmiFileDown;
+  
+  /** Menu item : Open with Explorer. */
+  JMenuItem jmiOpenExplorer;
 
   /** Current playlist. */
   Playlist plf;
@@ -446,6 +449,10 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     JMenuItem jmiFileCopyURL = new JMenuItem(
         ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     jmiFileCopyURL.putClientProperty(Const.DETAIL_CONTENT, editorTable.getSelection());
+    jmiFileCopyURL = new JMenuItem(
+        ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
+    jmiOpenExplorer = new JMenuItem(ActionManager.getAction(JajukActions.OPEN_EXPLORER));
+    jmiOpenExplorer.putClientProperty(Const.DETAIL_CONTENT, editorTable.getSelection());
 
     editorTable.getMenu().add(jmiFilePlay);
     editorTable.getMenu().add(jmiFileFrontPush);
@@ -456,6 +463,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     editorTable.getMenu().add(jmiFileDown);
     editorTable.getMenu().addSeparator();
     editorTable.getMenu().add(jmiFileCopyURL);
+    editorTable.getMenu().add(jmiOpenExplorer);
     editorTable.getMenu().addSeparator();
     editorTable.getMenu().add(pjmFilesEditor);
     editorTable.getMenu().add(jmiFileAddFavorites);
@@ -1124,7 +1132,10 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       jmiPrepareParty = new JMenuItem(ActionManager.getAction(JajukActions.PREPARE_PARTY));
       jmiPrepareParty.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
       pjmTracks = new PreferencesJMenu(jtable.getSelection());
+      jmiOpenExplorer = new JMenuItem(ActionManager.getAction(JajukActions.OPEN_EXPLORER));
+      jmiOpenExplorer.putClientProperty(Const.DETAIL_CONTENT, jtable.getSelection()); 
 
+      jtable.getMenu().add(jmiOpenExplorer);
       jtable.getMenu().add(jmiPrepareParty);
       jtable.getMenu().add(jmiRepositorySaveAs);
 
