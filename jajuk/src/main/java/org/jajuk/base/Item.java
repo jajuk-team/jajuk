@@ -100,6 +100,8 @@ public abstract class Item implements Const {
    * Item hashcode (used by the equals method) See
    * http://www.geocities.com/technofundo/tech/java/equalhash.html
    * 
+   * Note that the hashCode is already cached in String class, no need to do it again.
+   * 
    * @return the int
    */
   @Override

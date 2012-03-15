@@ -107,7 +107,7 @@ public final class ObservationManager {
     // exception throw in the register current thread
     try {
       /*
-       * do not launch it in a regular thread because EDT waits thread end to
+       * We don't launch it in a regular thread because EDT waits thread end to
        * display
        */
       queue.add(event);
