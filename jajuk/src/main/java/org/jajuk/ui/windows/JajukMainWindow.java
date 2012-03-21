@@ -199,9 +199,11 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
 
       @Override
       public void windowIconified(WindowEvent we) {
-        // If user set the minimize to tray option and if the tray is supported, we 
-        // minimize to tray only
-        if (Conf.getBoolean(Const.CONF_MINIMIZE_TO_TRAY) && SystemTray.isSupported()) {
+        if (UtilSystem.isUnderOSX() // Fix for #1825 (OSX 10.7 - UI doesn't work after minimize/maximize)
+            // we need to hide the window when iconified  otherwise (under OSX 10.7, but not 10.5), 
+            // the window is frozen after deiconification. 
+            || (Conf.getBoolean(Const.CONF_MINIMIZE_TO_TRAY) && SystemTray.isSupported())) { // If user
+          // set the minimize to tray option and if the tray is supported, we minimize to tray only.
           getWindowStateDecorator().display(false);
         }
       }
