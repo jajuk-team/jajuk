@@ -365,30 +365,30 @@ public final class UtilFeatures {
   }
 
   /**
-   * Perform updates on this view to reflect current playing item status.
+   * Helper method factorizing updates used to reflect current playing item status.
    * 
-   * @param oberver the observer to update
+   * @param observer the observer to update
    */
-  public static void updateStatus(Observer oberver) {
+  public static void updateStatus(Observer observer) {
     // check if a track or a webradio has already been launched
     if (QueueModel.isPlayingRadio()) {
-      oberver.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
+      observer.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
           .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
     } else if (!QueueModel.isStopped()) {
-      oberver.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, ObservationManager
+      observer.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, ObservationManager
           .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
-      oberver.update(new JajukEvent(JajukEvents.PLAYER_PLAY, ObservationManager
+      observer.update(new JajukEvent(JajukEvents.PLAYER_PLAY, ObservationManager
           .getDetailsLastOccurence(JajukEvents.PLAYER_PLAY)));
     } else {
       // if queue is not empty we can activate the control buttons
       if (QueueModel.getQueueSize() > 0) {
-        oberver.update(new JajukEvent(JajukEvents.PLAYER_STOP));
+        observer.update(new JajukEvent(JajukEvents.PLAYER_STOP));
       } else {
-        oberver.update(new JajukEvent(JajukEvents.ZERO));
+        observer.update(new JajukEvent(JajukEvents.ZERO));
       }
     }
     // Force update due to parameter changes
-    oberver.update(new JajukEvent(JajukEvents.PARAMETERS_CHANGE));
+    observer.update(new JajukEvent(JajukEvents.PARAMETERS_CHANGE));
   }
 
   /**
