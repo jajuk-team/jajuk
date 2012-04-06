@@ -69,7 +69,7 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
       html = cleanLyrics(html);
       // From oct 2009, lyrics wiki returns lyrics encoded as HTML chars
       // like &#83;&#104;&#97; ...
-      StringBuffer sbFinalHtml = new StringBuffer(1000);
+      StringBuilder sbFinalHtml = new StringBuilder(1000);
       StringTokenizer st = new StringTokenizer(html, "&#");
       while (st.hasMoreTokens()) {
         String token = st.nextToken();
