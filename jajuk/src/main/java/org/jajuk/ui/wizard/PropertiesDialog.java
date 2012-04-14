@@ -103,7 +103,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
   private static final long serialVersionUID = 1L;
 
   /* Main panel */
-  /** DOCUMENT_ME. */
+ 
   private JPanel jpMain;
 
   /** OK/Cancel panel. */
@@ -124,7 +124,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
   /** Second property panel. */
   private PropertiesPanel panel2;
 
-  /** Did user chnaged something ?. */
+  /** Did user changed something ?. */
   private boolean changes = false;
 
   /**
