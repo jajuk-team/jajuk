@@ -23,6 +23,8 @@ package org.jajuk.ui.views;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -153,7 +155,7 @@ public class WebRadioView extends AbstractTableView {
   @Override
   public void shortCall(Object in) {
     jtable = new JajukTable(model, true, columnsConf);
-    
+
     jbNewRadio = new JajukButton(IconLoader.getIcon(JajukIcons.ADD));
     jbNewRadio.setToolTipText(Messages.getString("WebRadioView.8"));
     // Open a Webradio Properties Dialog 
@@ -162,16 +164,21 @@ public class WebRadioView extends AbstractTableView {
       @Override
       public void actionPerformed(ActionEvent e) {
         // Create a new and void webradio
-        WebRadio radio = WebRadioManager.getInstance().registerWebRadio("");
+        final WebRadio radio = WebRadioManager.getInstance().registerWebRadio("");
         radio.setProperty(XML_ORIGIN, WebRadioOrigin.CUSTOM);
         List<Item> webradios = new ArrayList<Item>();
         webradios.add(radio);
-        new PropertiesDialog(webradios);
-        // Drop the void webradio if user didn't set its name and URL in the dialog
-        if (UtilString.isEmpty(radio.getName())|| UtilString.isEmpty(radio.getUrl())){
-          WebRadioManager.getInstance().removeItem(radio);
-          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-        }
+        PropertiesDialog dialog = new PropertiesDialog(webradios);
+        dialog.addWindowListener(new WindowAdapter() {
+          @Override
+          public void windowClosed(WindowEvent e) {
+            // Drop the void webradio if user didn't set its name and URL in the dialog
+            if (UtilString.isEmpty(radio.getName()) || UtilString.isEmpty(radio.getUrl())) {
+              WebRadioManager.getInstance().removeItem(radio);
+              ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+            }
+          }
+        });
       }
     });
 
@@ -184,10 +191,10 @@ public class WebRadioView extends AbstractTableView {
 
     jmiFileCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     jmiFileCopyURL.putClientProperty(Const.DETAIL_CONTENT, jtable.getSelection());
-    
+
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
     jmiProperties.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
-    
+
     //Add menu items
     jtable.getMenu().add(jmiFileCopyURL);
     jtable.getMenu().add(jmiDelete);
