@@ -1518,5 +1518,8 @@ public interface Const {
 
   /** File name where the tag cover is stored in. */
   String TAG_COVER_FILE = "tag_cover.png";
+  
+  /** Current radio track */
+  String CURRENT_RADIO_TRACK = "current_radio_track";
 
 }

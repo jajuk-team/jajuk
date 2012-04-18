@@ -298,10 +298,16 @@ public final class QueueModel {
         playingRadio = true;
         // Store current radio for next startup
         Conf.setProperty(Const.CONF_DEFAULT_WEB_RADIO, radio.getName());
-        // Send an event that a track has been launched
+        // Send an event that a webradio has been launched        
         Properties pDetails = new Properties();
         pDetails.put(Const.DETAIL_CONTENT, radio);
-        ObservationManager.notify(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, pDetails));
+        ObservationManager.notify(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, pDetails));       
+        //If Webradio info had been updated for current station by WebRadioPlayerImpl then notify again with the updated info
+        Properties webradioInfoUpdatedEvent = ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED);
+        WebRadio updatedWebRadio = (WebRadio) webradioInfoUpdatedEvent.get(Const.DETAIL_CONTENT);
+        if(radio.getName().equals(updatedWebRadio.getName())){
+          ObservationManager.notify(new JajukEvent(JajukEvents.WEBRADIO_INFO_UPDATED, webradioInfoUpdatedEvent));
+        }
         bStop = false;
       }
     } catch (Throwable t) {// catch even Errors (OutOfMemory for example)
@@ -1349,7 +1355,15 @@ public final class QueueModel {
     String title = null;
     File file = getPlayingFile();
     if (isPlayingRadio()) {
-      title = getCurrentRadio().getName();
+      Properties webradioInfoUpdatedEvent = ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED);
+      WebRadio updatedWebRadio = (WebRadio) webradioInfoUpdatedEvent.get(Const.DETAIL_CONTENT);
+      if(getCurrentRadio().getName().equals(updatedWebRadio.getName())){
+        title = (String) webradioInfoUpdatedEvent.get(Const.CURRENT_RADIO_TRACK);
+      }
+      else{
+        title = getCurrentRadio().getName();
+      }      
+      
     } else if (file != null && !isStopped()) {
       title = file.getHTMLFormatText();
     } else {

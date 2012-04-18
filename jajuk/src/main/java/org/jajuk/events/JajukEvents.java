@@ -83,6 +83,9 @@ public enum JajukEvents {
 
   /** a web radio has been launched. */
   WEBRADIO_LAUNCHED,
+  
+  /** The web radio information has been updated. */
+  WEBRADIO_INFO_UPDATED,
 
   /** a reinit has been required. */
   ZERO,

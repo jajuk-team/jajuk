@@ -32,6 +32,7 @@ import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -280,6 +281,7 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.WEBRADIO_INFO_UPDATED);
     eventSubjectSet.add(JajukEvents.ZERO);
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
     return eventSubjectSet;
@@ -455,6 +457,14 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
             // We use vertical bar to allow scripting like MSN plugins to
             // detect jajuk frames and extract current track
             setTitle("\\ " + radio.getName() + " /");
+          }
+        }else if (subject.equals(JajukEvents.WEBRADIO_INFO_UPDATED)) {
+          Properties webradioInfoUpdatedEvent = ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED);
+          String currentRadioTrack = (String) webradioInfoUpdatedEvent.get(Const.CURRENT_RADIO_TRACK);
+          if (currentRadioTrack != null) {
+            // We use vertical bar to allow scripting like MSN plugins to
+            // detect jajuk frames and extract current track
+            setTitle("\\ " + currentRadioTrack + " /");
           }
         }
       }

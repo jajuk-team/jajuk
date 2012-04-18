@@ -24,10 +24,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Map;
+import java.util.Properties;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.File;
+import org.jajuk.events.JajukEvent;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -59,11 +63,20 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
     public void run() {
       try {
         BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-        String line = null;
+        String line = null;        
         for (;;) {
           line = in.readLine();
           if (line == null) {
             break;
+          }
+          if(line.startsWith(("ICY Info:"))){
+            //Send an event that web radio info has been updated
+            Properties pDetails = new Properties();
+            String currentRadioTrack = QueueModel.getCurrentRadio().getName() + ":: "
+                + line.substring(line.indexOf("StreamTitle='") + 13, line.indexOf("';StreamUrl"));
+            pDetails.put(Const.DETAIL_CONTENT, QueueModel.getCurrentRadio());
+            pDetails.put(Const.CURRENT_RADIO_TRACK, currentRadioTrack);
+            ObservationManager.notify(new JajukEvent(JajukEvents.WEBRADIO_INFO_UPDATED, pDetails));
           }
 
           bOpening = false;

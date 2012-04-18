@@ -132,6 +132,7 @@ public class AnimationView extends ViewAdapter {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.WEBRADIO_INFO_UPDATED);
     eventSubjectSet.add(JajukEvents.ZERO);
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
     return eventSubjectSet;
@@ -239,6 +240,11 @@ public class AnimationView extends ViewAdapter {
       WebRadio radio = (WebRadio) event.getDetails().get(Const.DETAIL_CONTENT);
       if (radio != null) {
         setText(radio.getName());
+      }
+    }else if (subject.equals(JajukEvents.WEBRADIO_INFO_UPDATED)) {
+      String webradioInfo = (String) event.getDetails().get(Const.CURRENT_RADIO_TRACK);
+      if (webradioInfo != null) {
+        setText(webradioInfo);
       }
     }
   }

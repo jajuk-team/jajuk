@@ -194,6 +194,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.PLAY_ERROR);
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.WEBRADIO_INFO_UPDATED);
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
     eventSubjectSet.add(JajukEvents.THUMB_CREATED);
     eventSubjectSet.add(JajukEvents.FILE_COPIED);
@@ -373,6 +374,15 @@ public final class InformationJPanel extends JXPanel implements Observer {
             WebRadio radio = (WebRadio) event.getDetails().get(Const.DETAIL_CONTENT);
             if (radio != null) {
               String message = Messages.getString("FIFO.14") + " " + radio.getName();
+              setMessage(message, InformationJPanel.MessageType.INFORMATIVE);
+            }
+          }else if (JajukEvents.WEBRADIO_INFO_UPDATED.equals(subject)) {
+            if (event.getDetails() == null) {
+              return;
+            }
+            String webradioInfo = (String) event.getDetails().get(Const.CURRENT_RADIO_TRACK);
+            if (webradioInfo != null) {
+              String message = Messages.getString("FIFO.14") + " " + webradioInfo;
               setMessage(message, InformationJPanel.MessageType.INFORMATIVE);
             }
           } else if (JajukEvents.FILE_COPIED.equals(subject)) {

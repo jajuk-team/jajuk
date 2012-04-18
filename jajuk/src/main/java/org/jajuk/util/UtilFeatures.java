@@ -27,6 +27,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -45,6 +46,7 @@ import org.jajuk.events.Observer;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
+import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -372,8 +374,20 @@ public final class UtilFeatures {
   public static void updateStatus(Observer oberver) {
     // check if a track or a webradio has already been launched
     if (QueueModel.isPlayingRadio()) {
-      oberver.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
+      Properties webradioInfoUpdatedEvent = ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED);
+      Properties webradioLaunchedEvent = ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED);
+      WebRadio updatedWebRadio = (WebRadio) webradioInfoUpdatedEvent.get(Const.DETAIL_CONTENT);
+      WebRadio radio = (WebRadio) webradioLaunchedEvent.get(Const.DETAIL_CONTENT);
+      //If web radio has an updated event then use that event else use the default event from the web radio launch      
+      if(radio.getName().equals(updatedWebRadio.getName())){
+        oberver.update(new JajukEvent(JajukEvents.WEBRADIO_INFO_UPDATED, ObservationManager
+            .getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED)));
+      }
+      else{
+        oberver.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
+            .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
+      }
+
     } else if (!QueueModel.isStopped()) {
       oberver.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, ObservationManager
           .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
