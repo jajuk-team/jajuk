@@ -115,6 +115,8 @@ public class WebRadioView extends AbstractTableView {
             || JajukEvents.DEVICE_REFRESH.equals(event.getSubject())) {
           model.populateModel(jtable.getColumnsConf());
           model.fireTableDataChanged();
+          // force filter to refresh
+          applyFilter(sAppliedCriteria, sAppliedFilter);
         }
       }
     });

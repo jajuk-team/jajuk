@@ -134,10 +134,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   JajukTableModel model;
 
   /** Currently applied filter. */
-  private String sAppliedFilter = "";
+  String sAppliedFilter = "";
 
   /** Currently applied criteria. */
-  private String sAppliedCriteria;
+  String sAppliedCriteria;
 
   /** Do search panel need a search. */
   private boolean bNeedSearch = false;
