@@ -582,7 +582,7 @@ public class UtilPrepareParty {
     ByteArrayOutputStream err = new ByteArrayOutputStream();
 
     int ret = 0;
-    StringBuffer commandLog = new StringBuffer();
+    StringBuilder commandLog = new StringBuilder();
     for (String arg : list) {
       commandLog.append(arg + " ");
     }

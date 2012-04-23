@@ -515,7 +515,7 @@ public final class UtilString {
    */
   public static String escapeString(String s) {
     int length = s.length();
-    StringBuffer buffer = new StringBuffer(2 * length);
+    StringBuilder buffer = new StringBuilder(2 * length);
     for (int i = 0; i != length; i++) {
       char c = s.charAt(i);
 

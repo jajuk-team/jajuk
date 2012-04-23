@@ -184,13 +184,13 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
         // Note that we don't write down the isRemoved tag, not used by jajuk
         bw.write("\t<" + TAG_RADIO);
         if (UtilString.isNotEmpty(radio.getKeywords())) {
-          bw.write(" " + Const.XML_KEYWORDS + "='" + radio.getKeywords() + "'");
+          bw.write(" " + Const.XML_KEYWORDS + "='" + UtilString.formatXML(radio.getKeywords()) + "'");
         }
         bw.write(">\n");
-        bw.write("\t\t<" + TAG_NAME + ">" + radio.getName() + "</" + TAG_NAME + ">\n");
-        bw.write("\t\t<" + TAG_URL + ">" + radio.getUrl() + "</" + TAG_URL + ">\n");
-        bw.write("\t\t<" + TAG_LABEL + ">" + radio.getDescription() + "</" + TAG_LABEL + ">\n");
-        bw.write("\t\t<" + Const.XML_KEYWORDS + ">" + radio.getKeywords() + "</"
+        bw.write("\t\t<" + TAG_NAME + ">" + UtilString.formatXML(radio.getName()) + "</" + TAG_NAME + ">\n");
+        bw.write("\t\t<" + TAG_URL + ">" + UtilString.formatXML(radio.getUrl()) + "</" + TAG_URL + ">\n");
+        bw.write("\t\t<" + TAG_LABEL + ">" + UtilString.formatXML(radio.getDescription()) + "</" + TAG_LABEL + ">\n");
+        bw.write("\t\t<" + Const.XML_KEYWORDS + ">" + UtilString.formatXML(radio.getKeywords()) + "</"
             + Const.XML_KEYWORDS + ">\n");
         bw.write("\t\t<" + TAG_BITRATE + ">" + radio.getLongValue(Const.XML_BITRATE) + "</"
             + TAG_BITRATE + ">\n");
