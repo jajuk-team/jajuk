@@ -63,17 +63,32 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
     public void run() {
       try {
         BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-        String line = null;        
+        String line = null;
         for (;;) {
           line = in.readLine();
           if (line == null) {
             break;
           }
-          if(line.startsWith(("ICY Info:"))){
+          if (line.startsWith(("ICY Info:"))) {
             //Send an event that web radio info has been updated
             Properties pDetails = new Properties();
+            String radioTrackDetail = "";
+            // Some stations doesn't include the StreamUrl in the ICY line. Sample :
+            //ICY Info: StreamTitle='-- Now On Air: URB Non-Stop :: Playing: xxx Cilmi - Sweet About Me :: Email the station xxx@yyy.uk --';
+            if (line.contains("';StreamUrl")) {
+              radioTrackDetail = line.substring(line.indexOf("StreamTitle='") + 13,
+                  line.indexOf("';StreamUrl"));
+              // Otherwise, the line should ends with ','
+            } else if (line.endsWith("';")) {
+              radioTrackDetail = line.substring(line.indexOf("StreamTitle='") + 13,
+                  line.length() - 2);
+            } else {
+              // Just in case, we also handle the case where the line doesn't ends with ';
+              radioTrackDetail = line.substring(line.indexOf("StreamTitle='") + 13,
+                  line.length() - 2);
+            }
             String currentRadioTrack = QueueModel.getCurrentRadio().getName() + ":: "
-                + line.substring(line.indexOf("StreamTitle='") + 13, line.indexOf("';StreamUrl"));
+                + radioTrackDetail;
             pDetails.put(Const.DETAIL_CONTENT, QueueModel.getCurrentRadio());
             pDetails.put(Const.CURRENT_RADIO_TRACK, currentRadioTrack);
             ObservationManager.notify(new JajukEvent(JajukEvents.WEBRADIO_INFO_UPDATED, pDetails));
@@ -179,7 +194,6 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
     // nothing to do here...
   }
 
-
   /* (non-Javadoc)
   * @see org.jajuk.services.players.IPlayerImpl#getActuallyPlayedTimeMillis()
   */
@@ -190,4 +204,3 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
   }
 
 }
-

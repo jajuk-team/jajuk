@@ -301,12 +301,16 @@ public final class QueueModel {
         // Send an event that a webradio has been launched        
         Properties pDetails = new Properties();
         pDetails.put(Const.DETAIL_CONTENT, radio);
-        ObservationManager.notify(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, pDetails));       
+        ObservationManager.notify(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, pDetails));
         //If Webradio info had been updated for current station by WebRadioPlayerImpl then notify again with the updated info
-        Properties webradioInfoUpdatedEvent = ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED);
-        WebRadio updatedWebRadio = (WebRadio) webradioInfoUpdatedEvent.get(Const.DETAIL_CONTENT);
-        if(radio.getName().equals(updatedWebRadio.getName())){
-          ObservationManager.notify(new JajukEvent(JajukEvents.WEBRADIO_INFO_UPDATED, webradioInfoUpdatedEvent));
+        Properties webradioInfoUpdatedEvent = ObservationManager
+            .getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED);
+        if (webradioInfoUpdatedEvent != null) {
+          WebRadio updatedWebRadio = (WebRadio) webradioInfoUpdatedEvent.get(Const.DETAIL_CONTENT);
+          if (radio.getName().equals(updatedWebRadio.getName())) {
+            ObservationManager.notify(new JajukEvent(JajukEvents.WEBRADIO_INFO_UPDATED,
+                webradioInfoUpdatedEvent));
+          }
         }
         bStop = false;
       }
@@ -1355,15 +1359,15 @@ public final class QueueModel {
     String title = null;
     File file = getPlayingFile();
     if (isPlayingRadio()) {
-      Properties webradioInfoUpdatedEvent = ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED);
+      Properties webradioInfoUpdatedEvent = ObservationManager
+          .getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED);
       WebRadio updatedWebRadio = (WebRadio) webradioInfoUpdatedEvent.get(Const.DETAIL_CONTENT);
-      if(getCurrentRadio().getName().equals(updatedWebRadio.getName())){
+      if (getCurrentRadio().getName().equals(updatedWebRadio.getName())) {
         title = (String) webradioInfoUpdatedEvent.get(Const.CURRENT_RADIO_TRACK);
-      }
-      else{
+      } else {
         title = getCurrentRadio().getName();
-      }      
-      
+      }
+
     } else if (file != null && !isStopped()) {
       title = file.getHTMLFormatText();
     } else {
