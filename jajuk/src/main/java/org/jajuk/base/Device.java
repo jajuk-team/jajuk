@@ -80,17 +80,17 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * DOCUMENT_ME.
    */
   public enum Type {
-    
+
     /** DOCUMENT_ME. */
-    DIRECTORY, 
- /** DOCUMENT_ME. */
- FILES_CD, 
- /** DOCUMENT_ME. */
- NETWORK_DRIVE, 
- /** DOCUMENT_ME. */
- EXTDD, 
- /** DOCUMENT_ME. */
- PLAYER
+    DIRECTORY,
+    /** DOCUMENT_ME. */
+    FILES_CD,
+    /** DOCUMENT_ME. */
+    NETWORK_DRIVE,
+    /** DOCUMENT_ME. */
+    EXTDD,
+    /** DOCUMENT_ME. */
+    PLAYER
   }
 
   /** Device URL (performances). */
@@ -256,13 +256,15 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    */
   private boolean cleanDirectories(List<Directory> dirsToRefresh) {
     boolean bChanges = false;
-    // need to use a shallow copy to avoid concurrent exceptions
-
     List<Directory> dirs = null;
     if (dirsToRefresh == null) {
       dirs = DirectoryManager.getInstance().getDirectories();
     } else {
-      dirs = dirsToRefresh;
+      // If one or more named directories are provided, not only clean them up but also their sub directories
+      dirs = new ArrayList<Directory>(dirsToRefresh);
+      for (Directory dir : dirsToRefresh) {
+        dirs.addAll(dir.getDirectoriesRecursively());
+      }
     }
 
     for (final Directory dir : dirs) {
