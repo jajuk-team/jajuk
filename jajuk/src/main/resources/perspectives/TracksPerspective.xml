@@ -10,12 +10,22 @@
 					<Key dockName="org.jajuk.ui.views.TracksTableView/1" dockLabel="key1" />
 				</Dockable>
 				<Split orientation="1" location="0.55">
-					<Dockable>
-						<Key dockName="org.jajuk.ui.views.QueueView/1" dockLabel="key2" />
-					</Dockable>
-					<Dockable>
-						<Key dockName="org.jajuk.ui.views.CoverView/1" dockLabel="key4" />
-					</Dockable>
+					<TabbedDockable>
+							<Dockable>
+								<Key dockName="org.jajuk.ui.views.QueueView/0" />
+							</Dockable>
+							<Dockable>
+								<Key dockName="org.jajuk.ui.views.WebRadioView/1222744456" />
+							</Dockable>
+						</TabbedDockable>
+						<TabbedDockable>
+							<Dockable>
+								<Key dockName="org.jajuk.ui.views.CoverView/0" />
+							</Dockable>
+							<Dockable>
+								<Key dockName="org.jajuk.ui.views.LyricsView/867116" />
+							</Dockable>
+						</TabbedDockable>
 				</Split>
 			</Split>
 		</Split>
