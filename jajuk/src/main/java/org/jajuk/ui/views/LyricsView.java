@@ -462,7 +462,6 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
       public void run() {
         removeAll();
         add(jpMain);
-        jtaLyrics.setToolTipText(sURL);
         if ((lyrics != null) && (lyrics.length() > 0)) {
           jtaLyrics.setText(lyrics);
         } else {
@@ -478,6 +477,7 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
           }
         });
         jlTitle.setText(file.getTrack().getName());
+        jlTitle.setToolTipText(sURL);
         jspLyrics.setEnabled(true);
         updateButtonsState();
         revalidate();
@@ -499,7 +499,6 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
         jtaLyrics.getDocument().removeDocumentListener(LyricsView.this);
         jtaLyrics.setText("");
         jtaLyrics.getDocument().addDocumentListener(LyricsView.this);
-        jtaLyrics.setToolTipText(Messages.getString("JajukWindow.18"));
       }
     });
   }
