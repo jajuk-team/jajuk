@@ -77,7 +77,8 @@ public final class UtilFeatures {
       "Euro-House", "Dance Hall", "Goa", "Drum & Bass", "Club-House", "Hardcore", "Terror",
       "Indie", "BritPop", "Negerpunk", "Polsk Punk", "Beat", "Christian Gangsta", "Heavy Metal",
       "Black Metal", "Crossover", "Contemporary C", "Christian Rock", "Merengue", "Salsa",
-      "Thrash Metal", "Anime", "JPop", "SynthPop" };
+      "Thrash Metal", "Anime", "JPop", "SynthPop","Variety","News","Talk","Student Station", 
+      "Sport","Generalist","Urban","Education","Humor","8-bits","Eclectic" };
 
   /**
    * Apply play option.
