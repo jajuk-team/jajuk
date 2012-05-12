@@ -28,6 +28,7 @@ import java.util.List;
 import org.jajuk.base.Item;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
+import org.jajuk.services.webradio.WebRadioOrigin;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -47,7 +48,7 @@ public class WebRadioTableModel extends JajukTableModel {
   * 
   */
   public WebRadioTableModel() {
-    super(8);
+    super(9);
     setEditable(Conf.getBoolean(Const.CONF_WEBRADIO_TABLE_EDITION));
     // Columns names
     // First column is play icon, need to set a space character
@@ -66,6 +67,9 @@ public class WebRadioTableModel extends JajukTableModel {
 
     vColNames.add(Messages.getHumanPropertyName(Const.XML_KEYWORDS));
     idList.add(Const.XML_KEYWORDS);
+
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_GENRE));
+    idList.add(Const.XML_GENRE);
 
     vColNames.add(Messages.getString("WebRadioView.2"));
     idList.add(Const.XML_ORIGIN);
@@ -128,17 +132,22 @@ public class WebRadioTableModel extends JajukTableModel {
       oValues[iRow][4] = radio.getKeywords();
       bCellEditable[iRow][4] = true;
 
+      // Genre
+      oValues[iRow][5] = radio.getGenre();
+      // Genre can be edited only on custom radios
+      bCellEditable[iRow][5] = (radio.getOrigin() == WebRadioOrigin.CUSTOM);
+
       // Origin
-      oValues[iRow][5] = radio.getOrigin().name();
-      bCellEditable[iRow][5] = false;
+      oValues[iRow][6] = radio.getOrigin().name();
+      bCellEditable[iRow][6] = false;
 
       // Bitrate
-      oValues[iRow][6] = radio.getLongValue(Const.XML_BITRATE);
-      bCellEditable[iRow][6] = true;
+      oValues[iRow][7] = radio.getLongValue(Const.XML_BITRATE);
+      bCellEditable[iRow][7] = true;
 
       // Frequency
-      oValues[iRow][7] = radio.getLongValue(Const.XML_FREQUENCY);
-      bCellEditable[iRow][7] = true;
+      oValues[iRow][8] = radio.getLongValue(Const.XML_FREQUENCY);
+      bCellEditable[iRow][8] = true;
     }
   }
 

@@ -52,6 +52,9 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
   /** Radio label. */
   private String radioLabel;
 
+  /** Radio genre  */
+  private String genre;
+
   /** Radio keywords */
   private String keywords;
 
@@ -61,7 +64,10 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
   /** Radio frequency. */
   private String radioFrequency;
 
-  // Preset file format XML tags (different from jajuk webradio format)
+  /** Is the radio removed and should be ignored ? */
+  private String isRemoved;
+
+  // Preset file format XML tags (different tag set from jajuk webradio format)
   private static final String TAG_NAME = "name";
   private static final String TAG_URL = "url";
   private static final String TAG_LABEL = "label";
@@ -69,6 +75,8 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
   private static final String TAG_FREQUENCY = "frequency";
   private static final String TAG_RADIO = "Radio";
   private static final String TAG_LIST = "list";
+  private static final String TAG_REMOVED = "isRemoved";
+  private static final String TAG_GENRE = "genre";
 
   /**
    * Called when we start an element.
@@ -114,6 +122,10 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
   @Override
   public void endElement(String uri, String localName, String qName) throws SAXException {
     if (Const.XML_RADIO.equals(qName)) {
+      // Ignore preset radio whose isRemoved tag is set
+      if (!UtilString.isEmpty(isRemoved) && "true".equals(isRemoved.toLowerCase())) {
+        return;
+      }
       // End of radio element, add to list
       WebRadio radio = WebRadioManager.getInstance().registerWebRadio(radioName);
       radio.setProperty(Const.XML_URL, radioUrl);
@@ -129,6 +141,9 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
       if (!UtilString.isEmpty(keywords)) {
         radio.setProperty(Const.XML_KEYWORDS, keywords);
       }
+      if (!UtilString.isEmpty(genre)) {
+        radio.setProperty(Const.XML_GENRE, genre);
+      }
       // It is a preset webradio as we are in this class
       radio.setProperty(Const.XML_ORIGIN, WebRadioOrigin.PRESET);
     } else if (TAG_NAME.equals(qName)) {
@@ -143,6 +158,10 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
       radioBitrate = buffer.toString();
     } else if (TAG_FREQUENCY.equals(qName)) {
       radioFrequency = buffer.toString();
+    } else if (TAG_REMOVED.equals(qName)) {
+      isRemoved = buffer.toString();
+    } else if (TAG_GENRE.equals(qName)) {
+      genre = buffer.toString();
     }
   }
 
@@ -178,20 +197,27 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
           <isRemoved>false</isRemoved>
           <bitrate>128</bitrate>
           <frequency>44100</frequency>
+          <genre>Pop</genre>
         </Radio>
        */
       for (WebRadio radio : manager.getWebRadiosByOrigin(WebRadioOrigin.PRESET)) {
         // Note that we don't write down the isRemoved tag, not used by jajuk
         bw.write("\t<" + TAG_RADIO);
         if (UtilString.isNotEmpty(radio.getKeywords())) {
-          bw.write(" " + Const.XML_KEYWORDS + "='" + UtilString.formatXML(radio.getKeywords()) + "'");
+          bw.write(" " + Const.XML_KEYWORDS + "='" + UtilString.formatXML(radio.getKeywords())
+              + "'");
         }
         bw.write(">\n");
-        bw.write("\t\t<" + TAG_NAME + ">" + UtilString.formatXML(radio.getName()) + "</" + TAG_NAME + ">\n");
-        bw.write("\t\t<" + TAG_URL + ">" + UtilString.formatXML(radio.getUrl()) + "</" + TAG_URL + ">\n");
-        bw.write("\t\t<" + TAG_LABEL + ">" + UtilString.formatXML(radio.getDescription()) + "</" + TAG_LABEL + ">\n");
-        bw.write("\t\t<" + Const.XML_KEYWORDS + ">" + UtilString.formatXML(radio.getKeywords()) + "</"
-            + Const.XML_KEYWORDS + ">\n");
+        bw.write("\t\t<" + TAG_NAME + ">" + UtilString.formatXML(radio.getName()) + "</" + TAG_NAME
+            + ">\n");
+        bw.write("\t\t<" + TAG_URL + ">" + UtilString.formatXML(radio.getUrl()) + "</" + TAG_URL
+            + ">\n");
+        bw.write("\t\t<" + TAG_LABEL + ">" + UtilString.formatXML(radio.getDescription()) + "</"
+            + TAG_LABEL + ">\n");
+        bw.write("\t\t<" + Const.XML_KEYWORDS + ">" + UtilString.formatXML(radio.getKeywords())
+            + "</" + Const.XML_KEYWORDS + ">\n");
+        bw.write("\t\t<" + TAG_GENRE + ">" + UtilString.formatXML(radio.getGenre()) + "</"
+            + TAG_GENRE + ">\n");
         bw.write("\t\t<" + TAG_BITRATE + ">" + radio.getLongValue(Const.XML_BITRATE) + "</"
             + TAG_BITRATE + ">\n");
         bw.write("\t\t<" + TAG_FREQUENCY + ">" + radio.getLongValue(Const.XML_FREQUENCY) + "</"

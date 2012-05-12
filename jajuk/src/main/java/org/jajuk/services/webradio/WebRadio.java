@@ -54,6 +54,15 @@ public class WebRadio extends PhysicalItem implements Comparable<WebRadio> {
   }
   
   /**
+   * Gets the genre.
+   * 
+   * @return the url
+   */
+  public String getGenre() {
+    return getStringValue(XML_GENRE);
+  }
+  
+  /**
    * Gets the webradio description.
    * 
    * @return the descrption

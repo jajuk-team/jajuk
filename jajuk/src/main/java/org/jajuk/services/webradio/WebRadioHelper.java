@@ -140,7 +140,7 @@ public class WebRadioHelper {
     // Clear existing preset radios and store user keywords if any
     HashMap<WebRadio, String> radioKeywords = new HashMap<WebRadio, String>();
     for (WebRadio radio : manager.getWebRadiosByOrigin(WebRadioOrigin.PRESET)) {
-      // Note that we iterate over a shallow copy of the webradios, no problem to remove items here.
+      // Note that we iterate over a defensive copy of the webradios list, no problem to remove items here.
       manager.removeItem(radio);
       if (UtilString.isNotEmpty(radio.getKeywords())) {
         radioKeywords.put(radio, radio.getKeywords());

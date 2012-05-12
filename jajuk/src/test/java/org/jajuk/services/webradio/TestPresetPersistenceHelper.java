@@ -24,15 +24,18 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.base.Item;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
+import org.jajuk.util.UtilFeatures;
 import org.xml.sax.SAXException;
 
 /**
@@ -90,7 +93,7 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
       cachedPreset.delete();
     }
     downloadPresets();
-    
+
     // Load the presets
     WebRadioHelper.loadPresetsRadios(cachedPreset);
 
@@ -123,7 +126,7 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
     assertTrue(radio.getDescription().equals("Switzerland"));
     assertTrue(radio.getLongValue(Const.XML_BITRATE) == 128);
     assertTrue(radio.getLongValue(Const.XML_FREQUENCY) == 44100);
-    
+
     // Check origin
     assertTrue(WebRadioOrigin.PRESET.equals(radio.getValue(Const.XML_ORIGIN)));
   }
@@ -156,5 +159,25 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
     // Check that the preset keywords are not lost
     radio1 = WebRadioManager.getInstance().getWebRadioByName("Preset1");
     assertEquals(radio1.getKeywords(), "foo;bar");
+  }
+
+  public void testCheckGenres() throws Exception {
+    // Check for preset file, delete it if it exist
+    File cachedPreset = DownloadManager.downloadToCache(new URL(Const.URL_WEBRADIO_PRESETS));
+    if (cachedPreset.exists()) {
+      cachedPreset.delete();
+    }
+    downloadPresets();
+
+    // Load the presets
+    WebRadioHelper.loadPresetsRadios(cachedPreset);
+
+    // Check all genres are in UtilFeatures list
+    List<String> knownGenres = Arrays.asList(UtilFeatures.GENRES);
+    for (Item radio : WebRadioManager.getInstance().getWebRadios()) {
+      if (!knownGenres.contains(radio.getStringValue(Const.XML_GENRE))) {
+        fail();
+      }
+    }
   }
 }

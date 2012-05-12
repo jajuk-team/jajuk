@@ -94,6 +94,7 @@ public class TestCustomPersistenceHelper extends JajukTestCase {
     assertTrue(radio.getLongValue(Const.XML_BITRATE) == 128);
     assertTrue(radio.getLongValue(Const.XML_FREQUENCY) == 44100);
     assertTrue("talk;good".equals(radio.getKeywords()));
+    assertTrue("Pop".equals(radio.getGenre()));
     return radio;
   }
 
@@ -123,7 +124,7 @@ public class TestCustomPersistenceHelper extends JajukTestCase {
       + Const.TEST_VERSION
       + "'>"
       + "<stream name='1449 AM URB' url='http://people.bath.ac.uk/su9urb/audio/urb-hi.m3u'/>"
-      + "<stream name='LuNe Radio' url='http://broadcaster.infomaniak.ch/lune-high.mp3.m3u' label='Switzerland' bitrate='128' frequency='44100' keywords='talk;good'/>"
+      + "<stream name='LuNe Radio' url='http://broadcaster.infomaniak.ch/lune-high.mp3.m3u' label='Switzerland' bitrate='128' frequency='44100' keywords='talk;good' style='Pop'/>"
       + "<stream name='Bayern 1' url='http://streams.br-online.de/bayern1_1.asx'/>"
       + "<stream name='Bayern Aktuell' url='http://streams.br-online.de/b5aktuell_1.asx'/>"
       + "</streams>";

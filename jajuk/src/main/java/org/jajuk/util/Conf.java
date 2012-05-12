@@ -252,7 +252,7 @@ public final class Conf implements Const {
         + Const.XML_TRACK_RATE + ',' + Const.XML_TRACK_LENGTH + ',' + Const.XML_TRACKS + ','
         + Const.XML_TRACK_DISCOVERY_DATE);
     defaults.put(CONF_WEBRADIO_COLUMNS, XML_PLAY + ',' + Const.XML_NAME + ',' + Const.XML_DESC
-        + ',' + Const.XML_KEYWORDS + ',' + Const.XML_ORIGIN);
+        + ',' + Const.XML_KEYWORDS + ',' + Const.XML_GENRE + ',' + Const.XML_ORIGIN);
 
     int width = 800;
     int height = 600;
@@ -345,7 +345,7 @@ public final class Conf implements Const {
     defaults.put(CONF_TITLE_ANIMATION, FALSE);
     defaults.put(CONF_SPLASH_SCREEN, TRUE);
     defaults.put(CONF_SHOW_VIDEOS, FALSE);
-    
+
     // NOT SHOW AGAIN
     defaults.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);

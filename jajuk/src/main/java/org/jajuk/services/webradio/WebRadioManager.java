@@ -73,7 +73,10 @@ public final class WebRadioManager extends ItemManager {
     // Keywords
     registerProperty(new PropertyMetaInformation(Const.XML_KEYWORDS, false, false, true, true,
         false, String.class, null));
-   
+    // Genre
+    registerProperty(new PropertyMetaInformation(Const.XML_GENRE, false, false, true, true, true,
+        String.class, null));
+
   }
 
   /**

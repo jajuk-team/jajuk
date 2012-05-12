@@ -51,25 +51,26 @@ public class TestWebRadioTableModel extends JajukTestCase {
     //Create and populate the model
     WebRadioTableModel model = new WebRadioTableModel();
     model.populateModel(getColumnsConf(Const.XML_PLAY + ',' + Const.XML_NAME + ','
-        + Const.XML_KEYWORDS + ',' + Const.XML_ORIGIN + ',' + Const.XML_BITRATE + ','
-        + Const.XML_URL));
+        + Const.XML_KEYWORDS + Const.XML_GENRE + ',' + Const.XML_ORIGIN + ',' + Const.XML_BITRATE
+        + ',' + Const.XML_URL));
 
     // Check the model (Note that we check that the rows are sorted at the same time)
     assertEquals(model.getRowCount(), 4);
-    assertEquals(model.getColumnCount(), 8);
+    assertEquals(model.getColumnCount(), 9);
     assertEquals(model.getValueAt(0, 1), "Custom 1");
     assertEquals(model.getValueAt(0, 2), "a cool radio");
     assertEquals(model.getValueAt(0, 3), "http://custom1");
     assertEquals(model.getValueAt(0, 4), "foo,bar");
-    assertEquals(model.getValueAt(0, 5), WebRadioOrigin.CUSTOM.name());
-    assertEquals(model.getValueAt(0, 6), new Long(127));
-    // Frequency is hidden
-    assertEquals(model.getValueAt(0, 7), new Long(45000));
+    assertEquals(model.getValueAt(0, 5), "Pop");
+    assertEquals(model.getValueAt(0, 6), WebRadioOrigin.CUSTOM.name());
+    assertEquals(model.getValueAt(0, 7), new Long(127));
+    // Frequency is not shown
+    assertEquals(model.getValueAt(0, 8), new Long(45000));
 
     assertEquals(model.getValueAt(3, 1), "Preset 2");
     assertEquals(model.getValueAt(3, 3), "http://preset2");
-    assertEquals(model.getValueAt(3, 5), WebRadioOrigin.PRESET.name());
-    assertEquals(model.getValueAt(3, 7), 0l);
+    assertEquals(model.getValueAt(3, 6), WebRadioOrigin.PRESET.name());
+    assertEquals(model.getValueAt(3, 8), 0l);
 
   }
 
