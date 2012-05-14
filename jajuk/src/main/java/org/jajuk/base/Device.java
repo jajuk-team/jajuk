@@ -154,6 +154,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    */
   public boolean cleanRemovedFiles(List<Directory> dirsToRefresh) {
     long l = System.currentTimeMillis();
+
     // directories cleanup
     boolean bChanges = cleanDirectories(dirsToRefresh);
 
@@ -204,6 +205,9 @@ public class Device extends PhysicalItem implements Comparable<Device> {
           && !plf.getFIO().exists()) {
         PlaylistManager.getInstance().removeItem(plf);
         Log.debug("Removed: " + plf);
+        if (reporter != null) {
+          reporter.notifyFileOrPlaylistDropped();
+        }
         bChanges = true;
       }
     }
@@ -242,6 +246,9 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         FileManager.getInstance().removeFile(file);
         Log.debug("Removed: " + file);
         bChanges = true;
+        if (reporter != null) {
+          reporter.notifyFileOrPlaylistDropped();
+        }
       }
     }
     return bChanges;

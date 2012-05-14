@@ -53,6 +53,9 @@ public class RefreshReporter {
   /** Number of corrupted files found during refresh for stats. */
   protected int iNbCorruptedFiles;
 
+  /** Number of files or playlists removed during refresh */
+  protected int droppedFileOrPlaylist;
+
   /**
    * Instantiates a new refresh reporter.
    * 
@@ -100,6 +103,14 @@ public class RefreshReporter {
   }
 
   /**
+  * Notify dropped file or playlist.
+  * 
+  */
+  public void notifyFileOrPlaylistDropped() {
+    droppedFileOrPlaylist++;
+  }
+
+  /**
    * Notify new file.
    * 
    */
@@ -130,6 +141,9 @@ public class RefreshReporter {
         .append(iNbNewFiles).append(Messages.getString("Device.27"));
     if (iNbCorruptedFiles > 0) {
       sbOut.append(" - ").append(iNbCorruptedFiles).append(Messages.getString("Device.43"));
+    }
+    if (droppedFileOrPlaylist > 0) {
+      sbOut.append(" - ").append(droppedFileOrPlaylist).append(Messages.getString("Device.48"));
     }
     return sbOut.toString();
   }
