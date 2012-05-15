@@ -55,6 +55,7 @@ import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.ui.helpers.StarsHelper;
+import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
@@ -279,7 +280,11 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
   @Override
   public void launch() {
     // play the album
-    jmiPlay.doClick();
+    if (Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK)) {
+      jmiPush.doClick();
+    } else {
+      jmiPlay.doClick();
+    }
   }
 
   /**

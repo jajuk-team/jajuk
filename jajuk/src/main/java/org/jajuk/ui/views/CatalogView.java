@@ -334,8 +334,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
 
   /**
    * Inits the meta information.
-   * DOCUMENT_ME
-   */
+   **/
   private void initMetaInformation() {
     alFilters = new ArrayList<PropertyMetaInformation>(10);
     alFilters.add(null); // All
