@@ -44,40 +44,33 @@ import org.jajuk.base.FileManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * Tracks Duplicate dialog.
  */
 public class DuplicateTracksDialog extends JPanel implements ListSelectionListener {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   private final JList list;
 
-  /** DOCUMENT_ME. */
   private final JScrollPane listScrollPane;
 
-  /** DOCUMENT_ME. */
   private final DefaultListModel listModel = new DefaultListModel();
 
-  /** DOCUMENT_ME. */
   private final List<List<File>> allFiles;
 
-  /** DOCUMENT_ME. */
   private List<File> flatFilesList;
 
-  /** DOCUMENT_ME. */
   private final JButton deleteButton;
 
-  /** DOCUMENT_ME. */
   private final JButton selectAllButton;
 
-  /** DOCUMENT_ME. */
   private final JButton closeButton;
 
   /**
@@ -129,22 +122,30 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
         flatFilesList.add(f);
       }
     }
-
     listModel.removeAllElements();
     for (List<File> dups : allFiles) {
       // dups's size can be 0 if dups are found among unmounted devices
-      listModel.addElement(dups.get(0).getName() + " ( "
-          + dups.get(0).getDirectory().getAbsolutePath() + " ) ");
+      File ref = dups.get(0);
+      String label = ref.getName() + getQualityLabel(ref) + "("
+          + ref.getDirectory().getAbsolutePath() + ")";
+      listModel.addElement(label);
       for (int i = 1; i < dups.size(); i++) {
-        listModel.addElement("  + " + dups.get(i).getName() + " ( "
-            + dups.get(i).getDirectory().getAbsolutePath() + " ) ");
+        File dup = dups.get(i);
+        listModel.addElement("  + " + dup.getName() + getQualityLabel(dup) + "( "
+            + dup.getDirectory().getAbsolutePath() + " )");
       }
     }
   }
 
-  /**
-   * DOCUMENT_ME.
-   */
+  private String getQualityLabel(File file) {
+    long quality = file.getLongValue(Const.XML_QUALITY);
+    if (quality != 0) {
+      return " [" + quality + Messages.getString("FIFO.13") + "] ";
+    } else {
+      return " [? " + Messages.getString("FIFO.13") + "] ";
+    }
+  }
+
   class DeleteListener implements ActionListener {
 
     /* (non-Javadoc)
@@ -185,12 +186,6 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
       ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
     }
 
-    /**
-     * Delete filefrom list.
-     * DOCUMENT_ME
-     * 
-     * @param index DOCUMENT_ME
-     */
     private void deleteFilefromList(int index) {
       // first iterate over all Lists of files, counting the overall index
       int count = 0;
@@ -218,13 +213,6 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
       }
     }
 
-    /**
-     * Gets the selected files.
-     * 
-     * @param indices DOCUMENT_ME
-     * 
-     * @return the selected files
-     */
     private String getSelectedFiles(int indices[]) {
       String sFiles = "";
       for (int k : indices) {
@@ -234,9 +222,6 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
     }
   }
 
-  /**
-   * DOCUMENT_ME.
-   */
   class SelectAllListener implements ActionListener {
 
     /* (non-Javadoc)
