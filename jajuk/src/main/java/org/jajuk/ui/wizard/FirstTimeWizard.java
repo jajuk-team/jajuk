@@ -62,7 +62,7 @@ import org.jdesktop.swingx.VerticalLayout;
  * First time Wizard.
  */
 public class FirstTimeWizard extends JDialog implements ActionListener, PropertyChangeListener {
-  // Do not extend JajukJDialog because it requires main window to be instanciated and it comes with
+  // Do not extend JajukJDialog because it requires main window to be instantiated and it comes with
   // many trouble (like Global keystrokes issues in file path selection) in this low-level dialog
 
   /** Generated serialVersionUID. */

@@ -27,12 +27,14 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
 
+import org.jajuk.base.DeviceManager;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.ui.windows.JajukSystray;
+import org.jajuk.ui.wizard.SimpleDeviceWizard;
 import org.jajuk.ui.wizard.TipOfTheDayWizard;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -211,6 +213,14 @@ public final class StartupGUIService {
           if (Conf.getBoolean(Const.CONF_SHOW_SYSTRAY) && SystemTray.isSupported()) {
             JajukSystray tray = JajukSystray.getInstance();
             tray.getWindowStateDecorator().display(true);
+          }
+          // Display simple device wizard if user didn't yet created any device
+          if (DeviceManager.getInstance().getDevices().size() == 0
+              && !UpgradeManager.isFirstSession()) {
+            SimpleDeviceWizard wizard = new SimpleDeviceWizard();
+            wizard.pack();
+            wizard.setLocationRelativeTo(JajukMainWindow.getInstance());
+            wizard.setVisible(true);
           }
           // Display tip of the day if required (not at the first
           // session to avoid displaying too many windows once)
