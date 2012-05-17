@@ -83,7 +83,7 @@ public final class StartupEngineService {
    */
   public static void launchInitialTrack() {
     String startupMode = Conf.getString(Const.CONF_STARTUP_MODE);
-
+    final File fifo = SessionService.getConfFileByPath(Const.FILE_FIFO);
     // User explicitely required nothing to start or he left jajuk stopped
     boolean doNotStartAnything = Const.STARTUP_MODE_NOTHING.equals(startupMode)
         || Conf.getBoolean(Const.CONF_STARTUP_STOPPED)
@@ -91,7 +91,9 @@ public final class StartupEngineService {
         || (Const.STARTUP_MODE_ITEM.equals(startupMode) && StringUtils.isBlank(Conf
             .getString(Const.CONF_STARTUP_ITEM)))
         // Void collection
-        || FileManager.getInstance().getElementCount() == 0;
+        || FileManager.getInstance().getElementCount() == 0
+        // FIFO void or not exists
+        || (!fifo.exists() || fifo.length() == 0);
 
     // Populate item to be started and load the stored queue
     populateStartupItems();

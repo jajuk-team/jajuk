@@ -22,6 +22,7 @@ package org.jajuk.services.startup;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -116,6 +117,27 @@ public class TestStartupEngineService extends JajukTestCase {
     index.setAccessible(true);
     index.set(null, 0);
 
+  }
+
+  public final void testVoidFIFO() throws IOException, InterruptedException {
+    java.io.File fifo = SessionService.getConfFileByPath(Const.FILE_FIFO);
+    fifo.delete();
+    fifo.createNewFile();
+    StartupEngineService.launchInitialTrack();
+    // Wait for track to be actually launched
+    Thread.sleep(100);
+
+    assertEquals(QueueModel.getPlayingFile(), null);
+  }
+
+  public final void testNoFIFO() throws InterruptedException {
+    java.io.File fifo = SessionService.getConfFileByPath(Const.FILE_FIFO);
+    fifo.delete();
+    StartupEngineService.launchInitialTrack();
+    // Wait for track to be actually launched
+    Thread.sleep(100);
+
+    assertEquals(QueueModel.getPlayingFile(), null);
   }
 
   /**
