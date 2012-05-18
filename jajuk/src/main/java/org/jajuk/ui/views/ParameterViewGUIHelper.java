@@ -364,7 +364,8 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         + Conf.getString(Const.CONF_UI_NOTIFICATOR_TYPE));
     pv.jcbNotificationType.setSelectedItem(notificatorType);
     pv.jcbShowSystray.setSelected(Conf.getBoolean(Const.CONF_SHOW_SYSTRAY));
-    pv.jcbShowSystray.setSelected(Conf.getBoolean(Const.CONF_SHOW_SYSTRAY));
+    pv.jcbMinimizeToTray.setSelected(Conf.getBoolean(Const.CONF_MINIMIZE_TO_TRAY));
+    pv.jcbClickTrayAlwaysDisplayWindow.setSelected(Conf.getBoolean(Const.CONF_TRAY_CLICK_DISPLAY_WINDOW));
     pv.jcbSplashscreen.setSelected(Conf.getBoolean(Const.CONF_SPLASH_SCREEN));
     pv.scbLAF.removeActionListener(this);
     pv.scbLAF.setSelectedItem(Conf.getString(Const.CONF_OPTIONS_LNF));
@@ -559,6 +560,9 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     Conf.setProperty(Const.CONF_MINIMIZE_TO_TRAY,
         Boolean.toString(pv.jcbMinimizeToTray.isSelected()));
 
+    Conf.setProperty(Const.CONF_TRAY_CLICK_DISPLAY_WINDOW,
+        Boolean.toString(pv.jcbClickTrayAlwaysDisplayWindow.isSelected()));
+
     final int oldPerspectiveSize = Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE);
     // If we perspective size changed and no font message have been already
     // displayed, display a message
@@ -731,8 +735,8 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
       // TODO: for some reason the passing of the existing directory does not
       // work here, seems the implementation in JajukFileChooser does not do
       // this correctly
-      final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
-          XMLFilter.getInstance())/*, fDir*/);
+      final JajukFileChooser jfc = new JajukFileChooser(
+          new JajukFileFilter(XMLFilter.getInstance())/*, fDir*/);
       jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
       jfc.setDialogTitle(Messages.getString("ParameterView.297"));
       jfc.setMultiSelectionEnabled(false);
@@ -744,8 +748,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
 
         if (file.exists()) {
           int iResu = Messages.getChoice(Messages.getString("Confirmation_file_overwrite")
-              + " : \n\n" + file.getName(), JOptionPane.YES_NO_OPTION,
-              JOptionPane.WARNING_MESSAGE);
+              + " : \n\n" + file.getName(), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
           if (iResu == JOptionPane.NO_OPTION || iResu == JOptionPane.CANCEL_OPTION) {
             return;
           }
@@ -764,8 +767,8 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
       // TODO: for some reason the passing of the existing directory does not
       // work here, seems the implementation in JajukFileChooser does not do
       // this correctly
-      final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
-          XMLFilter.getInstance())/*, fDir*/);
+      final JajukFileChooser jfc = new JajukFileChooser(
+          new JajukFileFilter(XMLFilter.getInstance())/*, fDir*/);
       jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
       jfc.setDialogTitle(Messages.getString("ParameterView.298"));
       jfc.setMultiSelectionEnabled(false);
@@ -775,14 +778,13 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         // retrieve selected directory and update it in all necessary places
         java.io.File file = jfc.getSelectedFile();
 
-        if(!file.exists()) {
+        if (!file.exists()) {
           Messages.showWarningMessage(Messages.getString("Error.181"));
           return;
         }
 
         int iResu = Messages.getChoice(Messages.getString("Confirmation_reset_ratings_overwrite")
-            + " : \n\n" + file.getName(), JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE);
+            + " : \n\n" + file.getName(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (iResu == JOptionPane.NO_OPTION || iResu == JOptionPane.CANCEL_OPTION) {
           return;
         }

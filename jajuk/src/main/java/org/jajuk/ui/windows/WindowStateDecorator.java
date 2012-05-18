@@ -21,6 +21,7 @@
 package org.jajuk.ui.windows;
 
 import java.awt.Component;
+import java.awt.Window;
 
 import org.jajuk.util.log.Log;
 
@@ -111,7 +112,19 @@ public abstract class WindowStateDecorator {
     } catch (Exception e) {
       Log.error(e);
     }
+  }
 
+  /**
+   * Bring window to front if it is a java.awt.Window component or does nothing otherwise.
+   * @throws IllegalStateException if the component has not yet been displayed
+   */
+  public void toFront() {
+    if (state != WindowState.BUILT_DISPLAYED) {
+      throw new IllegalStateException("Can't call toFront() on non-displayed windows");
+    }
+    if (window instanceof Window) {
+      ((Window) window).toFront();
+    }
   }
 
   /**

@@ -381,9 +381,19 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
       windowDecorator = JajukMainWindow.getInstance().getWindowStateDecorator();
     }
 
-    // Invert visibility for the current window
-    boolean bShouldDisplay = !(windowDecorator.getWindowState() == WindowState.BUILT_DISPLAYED);
+    boolean bShouldDisplay = false;
+    // Check the CONF_TRAY_CLICK_DISPLAY_WINDOW option
+    if (Conf.getBoolean(Const.CONF_TRAY_CLICK_DISPLAY_WINDOW)) {
+      bShouldDisplay = true;
+    } else {
+      // Invert visibility for the current window
+      bShouldDisplay = !(windowDecorator.getWindowState() == WindowState.BUILT_DISPLAYED);
+    }
     windowDecorator.display(bShouldDisplay);
+    //Make sure to bring the window to front
+    if (bShouldDisplay) {
+      windowDecorator.toFront();
+    }
   }
 
   /*

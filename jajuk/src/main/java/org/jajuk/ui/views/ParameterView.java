@@ -276,6 +276,8 @@ public class ParameterView extends ViewAdapter {
 
   JCheckBox jcbMinimizeToTray;
 
+  JCheckBox jcbClickTrayAlwaysDisplayWindow;
+
   JLabel jlFonts;
 
   JSlider jsFonts;
@@ -774,7 +776,7 @@ public class ParameterView extends ViewAdapter {
 
     jcbShowVideos = new JCheckBox(Messages.getString("ParameterView.301"));
     jcbShowVideos.setToolTipText(Messages.getString("ParameterView.302"));
-  
+
     JPanel jpOptions = new JPanel(new MigLayout("insets 10, gapy 15, wrap 1"));
     jpOptions.add(new JLabel(Messages.getString("ParameterView.38")), "split 2,gapleft 5");
     jpOptions.add(scbLanguage);
@@ -1138,8 +1140,8 @@ public class ParameterView extends ViewAdapter {
     jcbShowSystray.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        jcbMinimizeToTray.setSelected(jcbShowSystray.isSelected());
         jcbMinimizeToTray.setEnabled(jcbShowSystray.isSelected());
+        jcbClickTrayAlwaysDisplayWindow.setEnabled(jcbShowSystray.isSelected());
       }
     });
     jcbShowSystray.setToolTipText(Messages.getString("ParameterView.272"));
@@ -1148,6 +1150,11 @@ public class ParameterView extends ViewAdapter {
     // Disable this option if the tray is not supported by the platform
     jcbMinimizeToTray.setEnabled(SystemTray.isSupported());
     jcbMinimizeToTray.setToolTipText(Messages.getString("ParameterView.282"));
+
+    jcbClickTrayAlwaysDisplayWindow = new JCheckBox(Messages.getString("ParameterView.303"));
+    // Disable this option if the tray is not supported by the platform
+    jcbClickTrayAlwaysDisplayWindow.setEnabled(SystemTray.isSupported());
+    jcbClickTrayAlwaysDisplayWindow.setToolTipText(Messages.getString("ParameterView.304"));
 
     JLabel jlPerspectiveSize = new JLabel(Messages.getString("ParameterView.246"));
     jsPerspectiveSize = new JSlider(16, 45, Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE));
@@ -1221,8 +1228,9 @@ public class ParameterView extends ViewAdapter {
     JPanel jpUI = new JPanel(new MigLayout("insets 10,gapx 10,gapy 15"));
     jpUI.add(jcbShowPopups, "wrap");
     jpUI.add(jcbSplashscreen, "wrap");
-    jpUI.add(jcbShowSystray, "split 2");
-    jpUI.add(jcbMinimizeToTray, "wrap");
+    jpUI.add(jcbShowSystray, "split 3");
+    jpUI.add(jcbMinimizeToTray);
+    jpUI.add(jcbClickTrayAlwaysDisplayWindow, "wrap");
     jpUI.add(jlFonts);
     jpUI.add(jsFonts, "wrap,grow");
     jpUI.add(jlNotificationType);

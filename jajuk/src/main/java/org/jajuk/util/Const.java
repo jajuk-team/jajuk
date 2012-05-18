@@ -969,6 +969,9 @@ public interface Const {
 
   /** Minimize to tray. */
   String CONF_MINIMIZE_TO_TRAY = "jajuk.minimize_to_tray";
+  
+  /** Display on tray click. */
+  String CONF_TRAY_CLICK_DISPLAY_WINDOW = "jajuk.tray_click_display_window";
 
   /** Enable Last.FM information queries */
   String CONF_LASTFM_INFO = "jajuk.lastfm_information";
