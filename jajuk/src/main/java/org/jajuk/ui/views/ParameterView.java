@@ -362,7 +362,7 @@ public class ParameterView extends ViewAdapter {
    * @return the j panel
    */
   private JPanel initUIHistory() {
-    JPanel jpHistory = new JPanel(new MigLayout("insets 10, gapy 15"));
+    JPanel jpHistory = new JPanel(new MigLayout("insets 10, gapy 15","[fill][fill]"));
     jtfHistory = new JTextField();
     jtfHistory.setInputVerifier(new InputVerifier() {
       @Override
@@ -417,7 +417,7 @@ public class ParameterView extends ViewAdapter {
     JLabel jlHistory = new JLabel(Messages.getString("ParameterView.0"));
     jlHistory.setToolTipText(Messages.getString("ParameterView.2"));
     jpHistory.add(jlHistory);
-    jpHistory.add(jtfHistory, "wrap,grow");
+    jpHistory.add(jtfHistory, "wrap");
     jpHistory.add(jbClearHistory, "wrap");
     jpHistory.add(jbResetRatings);
     jpHistory.add(jbResetPreferences, "wrap");
