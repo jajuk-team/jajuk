@@ -237,6 +237,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     pv.jcbUseVolnorm.setEnabled(!pv.jcbEnableBitPerfect.isSelected());
     pv.crossFadeDuration.setEnabled(!pv.jcbEnableBitPerfect.isSelected());
     pv.jcbShowVideos.setSelected(Conf.getBoolean(Const.CONF_SHOW_VIDEOS));
+    pv.jcbPreserveFileDates.setSelected(Conf.getBoolean(Const.CONF_PRESERVE_FILE_DATES));
   }
 
   /**
@@ -437,6 +438,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
       this.someOptionsAppliedAtNextStartup = true;
     }
     Conf.setProperty(Const.CONF_SHOW_VIDEOS, Boolean.toString(pv.jcbShowVideos.isSelected()));
+    Conf.setProperty(Const.CONF_PRESERVE_FILE_DATES, Boolean.toString(pv.jcbPreserveFileDates.isSelected()));
   }
 
   /**

@@ -73,18 +73,18 @@ public class Tag {
     try {
       this.fio = fio;
       Type type = TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(fio));
-      
-      if(type == null) {
+
+      if (type == null) {
         constructionError(fio, bIgnoreErrors, "No type for file: ");
         return;
       }
 
       tagImpl = type.getTagImpl();
-      if(tagImpl == null) {
+      if (tagImpl == null) {
         constructionError(fio, bIgnoreErrors, "No TagImpl for file: ");
         return;
       }
-      
+
       tagImpl.setFile(fio);
     } catch (Exception e) {
       bCorrupted = true;
@@ -99,11 +99,12 @@ public class Tag {
    * @param bIgnoreErrors
    * @throws JajukException
    */
-  private final void constructionError(java.io.File fio, boolean bIgnoreErrors, String error) throws JajukException {
-    if(!bIgnoreErrors) {
+  private final void constructionError(java.io.File fio, boolean bIgnoreErrors, String error)
+      throws JajukException {
+    if (!bIgnoreErrors) {
       throw new JajukException(103, error + (fio == null ? "<null>" : fio.getName()));
     }
-    
+
     bCorrupted = true;
   }
 
@@ -604,6 +605,9 @@ public class Tag {
       if (Log.isDebugEnabled() && !(tagImpl.getClass().equals(NoTagsTagImpl.class))) {
         Log.debug(Messages.getString("PropertiesWizard.11") + " {{" + fio.getAbsolutePath() + "}}");
       }
+      // Store file date, can be 0 if a problem occurs
+      long dateLastChange = fio.lastModified();
+      // Actual commit
       tagImpl.commit();
       // Display written file full path. Note that we use a limited string for
       // parent to make sure the file name itself is visible in information
@@ -612,6 +616,10 @@ public class Tag {
           Messages.getString("PropertiesWizard.11") + " "
               + UtilString.getLimitedString(fio.getParentFile().getAbsolutePath(), 60)
               + File.separatorChar + fio.getName(), InformationJPanel.MessageType.INFORMATIVE);
+      //Keep last change date if required
+      if (Conf.getBoolean(Const.CONF_PRESERVE_FILE_DATES) && dateLastChange != 0) {
+        fio.setLastModified(dateLastChange);
+      }
 
     } catch (Exception e) {
       // reset information panel to avoid leaving with a "writting xxx message"
@@ -658,10 +666,10 @@ public class Tag {
       return false;
     }
     Tag otherTag = (Tag) other;
-    if(fio == null && otherTag.fio == null) {
+    if (fio == null && otherTag.fio == null) {
       return true;
     }
-    if(fio == null || otherTag.fio == null) {
+    if (fio == null || otherTag.fio == null) {
       return false;
     }
     return this.fio.equals(otherTag.getFio());

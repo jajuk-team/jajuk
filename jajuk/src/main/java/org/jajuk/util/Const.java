@@ -121,7 +121,7 @@ public interface Const {
   int NB_BESTOF_ALBUMS = 25;
 
   /* Number of tracks for global actions (global shuffle, bestof...) */
-  /** DOCUMENT_ME. */
+
   int NB_TRACKS_ON_ACTION = 200;
 
   /** Cache max age (in ms). */
@@ -162,37 +162,32 @@ public interface Const {
   String CHECK_FOR_UPDATE_URL = "http://repository.jajuk.info/jajuk_pad.xml";
 
   // Jajuk version
-  /** DOCUMENT_ME. */
+
   String JAJUK_VERSION = "VERSION_REPLACED_BY_ANT";
 
-  /** DOCUMENT_ME. */
   String JAJUK_CODENAME = "Gute Laune";
 
   /** Extention to the .jajuk_test directory in test mode only */
   String TEST_VERSION = "1.10";
 
-  /** DOCUMENT_ME. */
   String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
 
-  /** DOCUMENT_ME. */
   String JAJUK_COPYRIGHT = "Copyright 2003-2011 The Jajuk Team";
 
-  /** DOCUMENT_ME. */
   String TYPE_VIDEO = "Type.video";
 
   // -- Files and paths --
-  /** DOCUMENT_ME. */
+
   String FILE_COLLECTION = "collection.xml";
 
   // File written by the exit hook
-  /** DOCUMENT_ME. */
+
   String FILE_COLLECTION_EXIT = "collection_exit.xml";
 
   // Void file created after exit collection file
-  /** DOCUMENT_ME. */
+
   String FILE_COLLECTION_EXIT_PROOF = "exit_proof";
 
-  /** DOCUMENT_ME. */
   String FILE_REPORTING_CACHE_FILE = "cache/report";
 
   /** Name of the preferences property file. */
@@ -201,30 +196,25 @@ public interface Const {
   /** Name of the temporary preferences property file. */
   String FILE_CONFIGURATION_TEMP = "temp_conf.properties";
 
-  /** DOCUMENT_ME. */
   String FILE_HISTORY = "history.xml";
 
   /** Directory containing all sessions using this workspace. */
   String FILE_SESSIONS = "sessions";
 
-  /** DOCUMENT_ME. */
   String FILE_DEFAULT_COVER = "jajuk.file.default.cover";
 
-  /** DOCUMENT_ME. */
   String FILE_ABSOLUTE_DEFAULT_COVER = "jajuk-default-cover.";
 
   // langpack name : jajuk_<locale>.properties
-  /** DOCUMENT_ME. */
+
   String FILE_LANGPACK_PART1 = "jajuk";
 
-  /** DOCUMENT_ME. */
   String FILE_LANGPACK_PART2 = ".properties";
 
   // logs
-  /** DOCUMENT_ME. */
+
   String FILE_LOGS = "jajuk.log";
 
-  /** DOCUMENT_ME. */
   URL FILE_LOG4J_CONF = UtilSystem.getResource("org/jajuk/util/log/jajuk-log4j-conf.xml");
 
   /** Cache directory name. */
@@ -233,7 +223,6 @@ public interface Const {
   /** Bat Converter to DOS 8.3 format */
   String FILE_FILENAME_CONVERTER = "converter.bat";
 
-  /** DOCUMENT_ME. */
   String LASTFM_CACHE = "lastfm";
 
   /** Last.fm album cover cache dir. */
@@ -263,31 +252,22 @@ public interface Const {
   /** Last.fm artist submission cache dir. */
   String LAST_FM_SUBMISSION_CACHE_DIR = "submission";
 
-  /** DOCUMENT_ME. */
   String FILE_INTERNAL_CACHE = "internal";
 
-  /** DOCUMENT_ME. */
   String FILE_THUMBS = "thumbs";
 
-  /** DOCUMENT_ME. */
   String FILE_THUMB_NO_COVER = "nocover.png";
 
-  /** DOCUMENT_ME. */
   String FILE_THUMB_NONE = "none.png";
 
-  /** DOCUMENT_ME. */
   String FILE_DEFAULT_BESTOF_PLAYLIST = "bestof";
 
-  /** DOCUMENT_ME. */
   String FILE_DEFAULT_NOVELTIES_PLAYLIST = "novelties";
 
-  /** DOCUMENT_ME. */
   String FILE_DEFAULT_BOOKMARKS_PLAYLIST = "bookmarks";
 
-  /** DOCUMENT_ME. */
   String FILE_DEFAULT_QUEUE_PLAYLIST = "jajuk-playlist_";
 
-  /** DOCUMENT_ME. */
   String FILE_DJ_DIR = "djs";
 
   /** jajuk web radios repository. */
@@ -296,7 +276,6 @@ public interface Const {
   /** Preset web radios file. */
   String FILE_WEB_RADIOS_PRESET = "preset_radios.xml";
 
-  /** DOCUMENT_ME. */
   String FILE_FIFO = "fifo.lst";
 
   /** Bootstrap file name. */
@@ -305,29 +284,21 @@ public interface Const {
   /** Old (pre-1.9) bootstrap file name */
   String FILE_BOOTSTRAP_OLD = ".jajuk_bootstrap";
 
-  /** DOCUMENT_ME. */
   String FILE_MPLAYER_WINDOWS_EXE = "mplayer.exe";
 
-  /** DOCUMENT_ME. */
   String FILE_MPLAYER_OSX_EXE = "mplayer";
 
-  /** DOCUMENT_ME. */
   String FILE_DEFAULT_PERSPECTIVES_PATH = "perspectives";
 
-  /** DOCUMENT_ME. */
   String FILE_JAJUK_DOWNLOADED_FILES_SUFFIX = "_jajuk";
 
-  /** DOCUMENT_ME. */
   String FILE_REPORTING_CSS_ALL_FILENAME = "report-all.css";
 
-  /** DOCUMENT_ME. */
   URL FILE_REPORTING_CSS_ALL_PATH = UtilSystem.getResource("xslt/"
       + FILE_REPORTING_CSS_ALL_FILENAME);
 
-  /** DOCUMENT_ME. */
   String FILE_REPORTING_CSS_PRINT_FILENAME = "report-print.css";
 
-  /** DOCUMENT_ME. */
   URL FILE_REPORTING_CSS_PRINT_PATH = UtilSystem.getResource("xslt/"
       + FILE_REPORTING_CSS_PRINT_FILENAME);
 
@@ -337,73 +308,58 @@ public interface Const {
   /** Mplayer OSX exe provided by jajuk URL . */
   String URL_MPLAYER_OSX = "http://repository.jajuk.info/mplayer/osx/1.0rc2/mplayer";
 
-  /** DOCUMENT_ME. */
   String URL_WEBRADIO_PRESETS = "http://svn2.assembla.com/svn/common-jukebox/common-jukebox/src/main/resources/preset_radios.xml";
 
   // sequence
-  /** DOCUMENT_ME. */
+
   String AMBIENCE_PREFIX = "jajuk.ambience.";
 
   // Proxy type: http
-  /** DOCUMENT_ME. */
+
   String PROXY_TYPE_HTTP = "http";
 
   // Proxy type: socks
-  /** DOCUMENT_ME. */
+
   String PROXY_TYPE_SOCKS = "socks";
 
   // Unknown
-  /** DOCUMENT_ME. */
+
   String UNKNOWN_ARTIST = "unknown_artist";
 
-  /** DOCUMENT_ME. */
   String UNKNOWN_ALBUM = "unknown_album";
 
-  /** DOCUMENT_ME. */
   String UNKNOWN_GENRE = "unknown_genre";
 
-  /** DOCUMENT_ME. */
   String UNKNOWN_YEAR = "unknown_year";
 
-  /** DOCUMENT_ME. */
   String VARIOUS_ARTIST = "various_artist";
 
-  /** DOCUMENT_ME. */
   String COVER_NONE = "none";
 
   // images
-  /** DOCUMENT_ME. */
+
   URL IMAGES_SPLASHSCREEN = UtilSystem.getResource("images/included/jajuk-splashscreen.jpg");
 
-  /** DOCUMENT_ME. */
   URL IMAGE_SEARCH = UtilSystem.getResource("images/included/search.png");
 
   // XSLT Files
-  /** DOCUMENT_ME. */
+
   URL XSLT_ARTIST = UtilSystem.getResource("xslt/artist.xsl");
 
-  /** DOCUMENT_ME. */
   URL XSLT_ALBUM = UtilSystem.getResource("xslt/album.xsl");
 
-  /** DOCUMENT_ME. */
   URL XSLT_GENRE = UtilSystem.getResource("xslt/genre.xsl");
 
-  /** DOCUMENT_ME. */
   URL XSLT_YEAR = UtilSystem.getResource("xslt/genre.xsl");
 
-  /** DOCUMENT_ME. */
   URL XSLT_DIRECTORY = UtilSystem.getResource("xslt/directory.xsl");
 
-  /** DOCUMENT_ME. */
   URL XSLT_DEVICE = UtilSystem.getResource("xslt/device.xsl");
 
-  /** DOCUMENT_ME. */
   URL XSLT_COLLECTION_LOGICAL = UtilSystem.getResource("xslt/logical_collection.xsl");
 
-  /** DOCUMENT_ME. */
   String COLLECTION_LOGICAL = "logical";
 
-  /** DOCUMENT_ME. */
   String COLLECTION_PHYSICAL = "physical";
 
   // -- Command line options --
@@ -418,145 +374,107 @@ public interface Const {
   String CLI_WORKSPACE_LOCATION = "workspace";
 
   // players impls
-  /** DOCUMENT_ME. */
+
   String PLAYER_IMPL_JAVALAYER = "org.jajuk.services.players.JavaLayerPlayerImpl";
 
-  /** DOCUMENT_ME. */
   String PLAYER_IMPL_MPLAYER = "org.jajuk.services.players.MPlayerPlayerImpl";
 
-  /** DOCUMENT_ME. */
   String PLAYER_IMPL_WEBRADIOS = "org.jajuk.services.players.WebRadioPlayerImpl";
 
   // tag impls
-  /** DOCUMENT_ME. */
+
   String TAG_IMPL_NO_TAGS = "org.jajuk.services.tags.NoTagsTagImpl";
 
-  /** DOCUMENT_ME. */
   String TAG_IMPL_JAUDIOTAGGER = "org.jajuk.services.tags.JAudioTaggerTagImpl";
 
   // device types
 
   // Devices sync mode
-  /** DOCUMENT_ME. */
+
   String DEVICE_SYNCHRO_MODE_BI = "bi";
 
-  /** DOCUMENT_ME. */
   String DEVICE_SYNCHRO_MODE_UNI = "uni";
 
   // extensions
-  /** DOCUMENT_ME. */
+
   String EXT_MP3 = "mp3";
 
-  /** DOCUMENT_ME. */
   String EXT_MP2 = "mp2";
 
-  /** DOCUMENT_ME. */
   String EXT_PLAYLIST = "m3u";
 
-  /** DOCUMENT_ME. */
   String EXT_OGG = "ogg";
 
   /** Ogg Vorbis Audio (see http://en.wikipedia.org/wiki/Ogg, some applications start using this now, e.g. Soundkonverter */
   String EXT_OGA = "oga";
 
-  /** DOCUMENT_ME. */
   String EXT_WAV = "wav";
 
-  /** DOCUMENT_ME. */
   String EXT_AU = "au";
 
-  /** DOCUMENT_ME. */
   String EXT_AIF = "aif";
 
-  /** DOCUMENT_ME. */
   String EXT_AIFF = "aiff";
 
-  /** DOCUMENT_ME. */
   String EXT_FLAC = "flac";
 
   /** Extension of the thumbnails. */
   String EXT_THUMB = "png";
 
-  /** DOCUMENT_ME. */
   String EXT_MPC = "mpc";
 
-  /** DOCUMENT_ME. */
   String EXT_MPPLUS = "mp+";
 
-  /** DOCUMENT_ME. */
   String EXT_MPP = "mpp";
 
-  /** DOCUMENT_ME. */
   String EXT_WMA = "wma";
 
-  /** DOCUMENT_ME. */
   String EXT_APE = "ape";
 
-  /** DOCUMENT_ME. */
   String EXT_MAC = "mac";
 
-  /** DOCUMENT_ME. */
   String EXT_M4A = "m4a";
 
-  /** DOCUMENT_ME. */
   String EXT_REAL_RM = "rm";
 
-  /** DOCUMENT_ME. */
   String EXT_REAL_RA = "ra";
 
-  /** DOCUMENT_ME. */
   String EXT_RADIO = "radio";
 
-  /** DOCUMENT_ME. */
   String EXT_AVI = "avi";
 
-  /** DOCUMENT_ME. */
   String EXT_MPG = "mpg";
 
-  /** DOCUMENT_ME. */
   String EXT_MPEG = "mpeg";
 
-  /** DOCUMENT_ME. */
   String EXT_MKV = "mkv";
 
-  /** DOCUMENT_ME. */
   String EXT_ASF = "asf";
 
-  /** DOCUMENT_ME. */
   String EXT_WMV = "wmv";
 
-  /** DOCUMENT_ME. */
   String EXT_MOV = "mov";
 
-  /** DOCUMENT_ME. */
   String EXT_OGM = "ogm";
 
-  /** DOCUMENT_ME. */
   String EXT_MP4 = "mp4";
 
-  /** DOCUMENT_ME. */
   String EXT_WV = "wv";
 
-  /** DOCUMENT_ME. */
   String EXT_FLV = "flv";
 
   // details keys
-  /** DOCUMENT_ME. */
+
   String DETAIL_CURRENT_FILE_ID = "current file id";
 
-  /** DOCUMENT_ME. */
   String DETAIL_CURRENT_FILE = "current file";
 
-  /** DOCUMENT_ME. */
   String DETAIL_CURRENT_DATE = "current date";
 
-  /** DOCUMENT_ME. */
   String DETAIL_SPECIAL_MODE_NORMAL = "norm";
 
-  /** DOCUMENT_ME. */
   String DETAIL_SELECTION = "selection";
 
-  /** DOCUMENT_ME. */
   String DETAIL_ORIGIN = "origin";
 
   /** Provides details on the perspective that thrown the event. */
@@ -565,115 +483,81 @@ public interface Const {
   /** Provides details on the view that thrown the event. */
   String DETAIL_VIEW = "view";
 
-  /** DOCUMENT_ME. */
   String DETAIL_REASON = "reason";
 
-  /** DOCUMENT_ME. */
   String DETAIL_CONTENT = "content";
 
-  /** DOCUMENT_ME. */
   String DETAIL_OLD = "old";
 
-  /** DOCUMENT_ME. */
   String DETAIL_NEW = "new";
 
   // startup mode
-  /** DOCUMENT_ME. */
+
   String STARTUP_MODE_NOTHING = "nothing";
 
-  /** DOCUMENT_ME. */
   String STARTUP_MODE_SHUFFLE = "shuffle";
 
-  /** DOCUMENT_ME. */
   String STARTUP_MODE_ITEM = "file";
 
-  /** DOCUMENT_ME. */
   String STARTUP_MODE_LAST = "last";
 
-  /** DOCUMENT_ME. */
   String STARTUP_MODE_LAST_KEEP_POS = "last_keep_pos";
 
-  /** DOCUMENT_ME. */
   String STARTUP_MODE_BESTOF = "bestof";
 
-  /** DOCUMENT_ME. */
   String STARTUP_MODE_NOVELTIES = "novelties";
 
   // --- Configuration keys ---
 
-  /** DOCUMENT_ME. */
   String CONF_RELEASE = "jajuk.release";
 
-  /** DOCUMENT_ME. */
   String CONF_PERSPECTIVE_DEFAULT = "jajuk.preference.perspective.default";
 
-  /** DOCUMENT_ME. */
   String CONF_STATE_REPEAT = "jajuk.state.mode.repeat";
 
-  /** DOCUMENT_ME. */
   String CONF_STATE_REPEAT_ALL = "jajuk.state.mode.repeat.all";
 
-  /** DOCUMENT_ME. */
   String CONF_STATE_SHUFFLE = "jajuk.state.mode.shuffle";
 
-  /** DOCUMENT_ME. */
   String CONF_STATE_KARAOKE = "jajuk.state.karaoke";
 
-  /** DOCUMENT_ME. */
   String CONF_STATE_CONTINUE = "jajuk.state.mode.continue";
 
-  /** DOCUMENT_ME. */
   String CONF_STATE_INTRO = "jajuk.state.mode.intro";
 
-  /** DOCUMENT_ME. */
   String CONF_STARTUP_ITEM = "jajuk.startup.file";
 
-  /** DOCUMENT_ME. */
   String CONF_STARTUP_MODE = "jajuk.startup.mode";
 
   /** Tell if last jajuk session was closed in stopped mode. */
   String CONF_STARTUP_STOPPED = "jajuk.startup.stopped";
 
-  /** DOCUMENT_ME. */
   String CONF_CONFIRMATIONS_DELETE_FILE = "jajuk.confirmations.delete_file";
 
-  /** DOCUMENT_ME. */
   String CONF_CONFIRMATIONS_EXIT = "jajuk.confirmations.exit";
 
-  /** DOCUMENT_ME. */
   String CONF_CONFIRMATIONS_REMOVE_DEVICE = "jajuk.confirmations.remove_device";
 
-  /** DOCUMENT_ME. */
   String CONF_CONFIRMATIONS_DELETE_COVER = "jajuk.confirmations.delete_cover";
 
-  /** DOCUMENT_ME. */
   String CONF_CONFIRMATIONS_CLEAR_HISTORY = "jajuk.confirmations.clear_history";
 
-  /** DOCUMENT_ME. */
   String CONF_CONFIRMATIONS_RESET_RATINGS = "jajuk.confirmations.reset_ratings";
 
-  /** DOCUMENT_ME. */
   String CONF_CONFIRMATIONS_REFACTOR_FILES = "jajuk.confirmations.refactor_files";
 
-  /** DOCUMENT_ME. */
   String CONF_OPTIONS_HIDE_UNMOUNTED = "jajuk.options.hide_unmounted";
 
-  /** DOCUMENT_ME. */
   String CONF_OPTIONS_LOG_LEVEL = "jajuk.options.log_level";
 
-  /** DOCUMENT_ME. */
   String CONF_OPTIONS_LANGUAGE = "jajuk.options.language";
 
-  /** DOCUMENT_ME. */
   String CONF_OPTIONS_INTRO_BEGIN = "jajuk.options.intro.begin";
 
-  /** DOCUMENT_ME. */
   String CONF_OPTIONS_INTRO_LENGTH = "jajuk.options.intro.length";
 
-  /** DOCUMENT_ME. */
   String CONF_OPTIONS_LNF = "jajuk.options.lnf";
 
-  /** DOCUMENT_ME. */
   String CONF_OPTIONS_NOVELTIES_AGE = "jajuk.options.novelties";
 
   // Look and Feel
@@ -695,22 +579,16 @@ public interface Const {
   /** Notificator type. */
   String CONF_UI_NOTIFICATOR_TYPE = "jajuk.options.notificator_type";
 
-  /** DOCUMENT_ME. */
   String CONF_P2P_SHARE = "jajuk.options.p2p.share";
 
-  /** DOCUMENT_ME. */
   String CONF_P2P_ADD_REMOTE_PROPERTIES = "jajuk.options.p2p.add_remote_properties";
 
-  /** DOCUMENT_ME. */
   String CONF_P2P_HIDE_LOCAL_PROPERTIES = "jajuk.options.p2p.hide_local_properties";
 
-  /** DOCUMENT_ME. */
   String CONF_HISTORY = "jajuk.options.history";
 
-  /** DOCUMENT_ME. */
   String CONF_TAGS_USE_PARENT_DIR = "jajuk.tags.use_parent_dir";
 
-  /** DOCUMENT_ME. */
   String CONF_DROP_PLAYED_TRACKS_FROM_QUEUE = "jajuk.drop.played.tracks.from.queue";
 
   /** Contains files id separated by a colon. */
@@ -719,25 +597,19 @@ public interface Const {
   /** Startup display mode: 0= main window + tray, 1: tray only, 2: slimbar + tray 3 : full screen. */
   String CONF_STARTUP_DISPLAY = "jajuk.startup_display_mode";
 
-  /** DOCUMENT_ME. */
   int DISPLAY_MODE_MAIN_WINDOW = 0;
 
-  /** DOCUMENT_ME. */
   int DISPLAY_MODE_TRAY = 1;
 
-  /** DOCUMENT_ME. */
   int DISPLAY_MODE_SLIMBAR_TRAY = 2;
 
-  /** DOCUMENT_ME. */
   int DISPLAY_MODE_FULLSCREEN = 3;
 
   /** Catalog view cover mode. */
   int CATALOG_VIEW_COVER_MODE_ALL = 0;
 
-  /** DOCUMENT_ME. */
   int CATALOG_VIEW_COVER_MODE_WITH = 1;
 
-  /** DOCUMENT_ME. */
   int CATALOG_VIEW_COVER_MODE_WITHOUT = 2;
 
   /** Best of size. */
@@ -746,7 +618,6 @@ public interface Const {
   /** Slimbar position. */
   String CONF_SLIMBAR_POSITION = "jajuk.slimbar_pos";
 
-  /** DOCUMENT_ME. */
   String CONF_SLIMBAR_DISPLAY_QUEUE = "jajuk.slimbar_display_queue";
 
   /** Gain (float). */
@@ -764,58 +635,40 @@ public interface Const {
   /** Collection file charset (utf-8 or utf-16). */
   String CONF_COLLECTION_CHARSET = "jajuk.collection_charset";
 
-  /** DOCUMENT_ME. */
   String CONF_STARTUP_LAST_POSITION = "jajuk.startup.last_position";
 
-  /** DOCUMENT_ME. */
   String CONF_NETWORK_USE_PROXY = "jajuk.network.use_proxy";
 
-  /** DOCUMENT_ME. */
   String CONF_NETWORK_PROXY_TYPE = "jajuk.network.proxy_type";
 
-  /** DOCUMENT_ME. */
   String CONF_NETWORK_PROXY_HOSTNAME = "jajuk.network.proxy_hostname";
 
-  /** DOCUMENT_ME. */
   String CONF_NETWORK_PROXY_PORT = "jajuk.network.proxy_port";
 
-  /** DOCUMENT_ME. */
   String CONF_NETWORK_PROXY_LOGIN = "jajuk.network.proxy_login";
 
-  /** DOCUMENT_ME. */
   String CONF_NETWORK_PROXY_PWD = "jajuk.network.proxy_pwd";
 
-  /** DOCUMENT_ME. */
   String CONF_LASTFM_AUDIOSCROBBLER_ENABLE = "jajuk.network.audioscrobbler";
 
-  /** DOCUMENT_ME. */
   String CONF_LASTFM_USER = "jajuk.network.ASUser";
 
-  /** DOCUMENT_ME. */
   String CONF_LASTFM_PASSWORD = "jajuk.network.ASPassword";
 
-  /** DOCUMENT_ME. */
   String CONF_COVERS_AUTO_COVER = "jajuk.covers.auto_cover";
 
-  /** DOCUMENT_ME. */
   String CONF_COVERS_MIRROW_COVER = "jajuk.covers.mirrow_cover";
 
-  /** DOCUMENT_ME. */
   String CONF_COVERS_MIRROW_COVER_FS_MODE = "jajuk.covers.mirrow_cover_fs_mode";
 
-  /** DOCUMENT_ME. */
   String CONF_COVERS_SHUFFLE = "jajuk.covers.shuffle";
 
-  /** DOCUMENT_ME. */
   String CONF_COVERS_SAVE_EXPLORER_FRIENDLY = "jajuk.covers.save.explorer.friendly";
 
-  /** DOCUMENT_ME. */
   String CONF_COVERS_SIZE = "jajuk.covers.size";
 
-  /** DOCUMENT_ME. */
   String CONF_COVERS_ACCURACY = "jajuk.covers.accuracy";
 
-  /** DOCUMENT_ME. */
   String CONF_NETWORK_CONNECTION_TO = "jajuk.network.connection_timeout";
 
   /** Last Option selected tab. */
@@ -877,8 +730,8 @@ public interface Const {
 
   /** Queue columns to display. */
   String CONF_QUEUE_COLUMNS = "jajuk.ui.queue_columns";
-  
-   /** Web radios view columns to display. */
+
+  /** Web radios view columns to display. */
   String CONF_WEBRADIO_COLUMNS = "jajuk.ui.webradio_columns";
 
   /** Catalog items size. */
@@ -921,7 +774,7 @@ public interface Const {
   String CONF_DEFAULT_AMBIENCE = "jajuk.default_ambience";
 
   /* Wrong player not show again flag */
-  /** DOCUMENT_ME. */
+
   String CONF_NOT_SHOW_AGAIN_PLAYER = "jajuk.not_show_again.player";
 
   /** Concurrent session not show again flag. */
@@ -943,7 +796,7 @@ public interface Const {
   String CONF_FRAME_POS_FORCED = "jajuk.frame.forced_position";
 
   // Forced mplayer path
-  /** DOCUMENT_ME. */
+
   String CONF_MPLAYER_PATH_FORCED = "jajuk.mplayer.forced_path";
 
   /** Hotkeys flag *. */
@@ -969,7 +822,7 @@ public interface Const {
 
   /** Minimize to tray. */
   String CONF_MINIMIZE_TO_TRAY = "jajuk.minimize_to_tray";
-  
+
   /** Display on tray click. */
   String CONF_TRAY_CLICK_DISPLAY_WINDOW = "jajuk.tray_click_display_window";
 
@@ -1012,179 +865,127 @@ public interface Const {
   /** Shuffle/novelties mode. */
   String MODE_ALBUM = "album";
 
-  /** DOCUMENT_ME. */
   String MODE_TRACK = "track";
 
-  /** DOCUMENT_ME. */
   String MODE_ALBUM2 = "album2";
 
   // miscelanous
-  /** DOCUMENT_ME. */
+
   String TRUE = "true";
 
-  /** DOCUMENT_ME. */
   String FALSE = "false";
 
   // Date format
-  /** DOCUMENT_ME. */
+
   String DATE_FILE = "yyyyMMdd";
 
-  /** DOCUMENT_ME. */
   String ADDITION_DATE_FORMAT = "yyyyMMdd";
 
   // Playlists
-  /** DOCUMENT_ME. */
+
   String PLAYLIST_NOTE = "#Playlist generated by Jajuk " + Const.JAJUK_VERSION;
 
   // XML tags
-  /** DOCUMENT_ME. */
+
   String XML_COLLECTION = "collection";
-  
+
   /** Webradio file XML tags static strings*/
   String XML_RADIO = "Radio";
 
-  /** DOCUMENT_ME. */
   String XML_VERSION = "jajuk_version";
 
-  /** DOCUMENT_ME. */
   String XML_TYPES = "types";
 
-  /** DOCUMENT_ME. */
   String XML_TYPE = "type";
 
-  /** DOCUMENT_ME. */
   String XML_DEVICES = "devices";
 
-  /** DOCUMENT_ME. */
   String XML_DEVICE = "device";
 
-  /** DOCUMENT_ME. */
   String XML_GENRES = "styles";
 
-  /** DOCUMENT_ME. */
   String XML_GENRE = "style";
 
-  /** DOCUMENT_ME. */
   String XML_ARTISTS = "authors";
 
-  /** DOCUMENT_ME. */
   String XML_ALBUM_ARTISTS = "album-artists";
 
-  /** DOCUMENT_ME. */
   String XML_ARTIST = "author";
 
-  /** DOCUMENT_ME. */
   String XML_ALBUMS = "albums";
 
-  /** DOCUMENT_ME. */
   String XML_ALBUM = "album";
 
-  /** DOCUMENT_ME. */
   String XML_ALBUM_ARTIST = "album_artist";
 
-  /** DOCUMENT_ME. */
   String XML_ALBUM_DISC_ID = "disc_id";
 
-  /** DOCUMENT_ME. */
   String XML_TRACKS = "tracks";
 
-  /** DOCUMENT_ME. */
   String XML_TRACK = "track";
 
-  /** DOCUMENT_ME. */
   String XML_DIRECTORIES = "directories";
 
-  /** DOCUMENT_ME. */
   String XML_DIRECTORY = "directory";
 
-  /** DOCUMENT_ME. */
   String XML_FILES = "files";
 
-  /** DOCUMENT_ME. */
   String XML_FILE = "file";
 
-  /** DOCUMENT_ME. */
   String XML_PLAYLIST_FILES = "playlist_files";
 
-  /** DOCUMENT_ME. */
   String XML_PLAYLIST_FILE = "playlist_file";
 
-  /** DOCUMENT_ME. */
   String XML_PLAYLISTS = "playlists";
 
-  /** DOCUMENT_ME. */
   String XML_ID = "id";
 
-  /** DOCUMENT_ME. */
   String XML_YEAR = "year";
 
-  /** DOCUMENT_ME. */
   String XML_YEARS = "years";
 
-  /** DOCUMENT_ME. */
   String XML_PLAY = "play";
 
-  /** DOCUMENT_ME. */
   String XML_FILE_DATE = "date";
 
-  /** DOCUMENT_ME. */
   String XML_TRACK_NAME = "name";
 
-  /** DOCUMENT_ME. */
   String XML_TRACK_ALBUM = "album";
 
-  /** DOCUMENT_ME. */
   String XML_TRACK_GENRE = "style";
 
-  /** DOCUMENT_ME. */
   String XML_TRACK_ARTIST = "author";
 
-  /** DOCUMENT_ME. */
   String XML_TRACK_YEAR = "year";
 
-  /** DOCUMENT_ME. */
   String XML_TRACK_LENGTH = "length";
 
-  /** DOCUMENT_ME. */
   String XML_TRACK_TYPE = "type";
 
-  /** DOCUMENT_ME. */
   String XML_TRACK_RATE = "rate";
 
-  /** DOCUMENT_ME. */
   String XML_TRACK_HITS = "hits";
 
-  /** DOCUMENT_ME. */
   String XML_TRACK_DISCOVERY_DATE = "added";
 
-  /** DOCUMENT_ME. */
   String XML_TRACK_ORDER = "order";
 
-  /** DOCUMENT_ME. */
   String XML_TRACK_DISC_NUMBER = "disc_number";
 
-  /** DOCUMENT_ME. */
   String XML_TRACK_PREFERENCE = "pf";
 
-  /** DOCUMENT_ME. */
   String XML_TRACK_TOTAL_PLAYTIME = "tpt";
 
-  /** DOCUMENT_ME. */
   String XML_TRACK_BANNED = "ban";
 
-  /** DOCUMENT_ME. */
   String XML_PLAYLIST = "playlist";
 
-  /** DOCUMENT_ME. */
   String XML_NAME = "name";
 
-  /** DOCUMENT_ME. */
   String XML_PATH = "path";
 
-  /** DOCUMENT_ME. */
   String XML_URL = "url";
 
-  /** DOCUMENT_ME. */
   String XML_ORIGIN = "origin";
 
   /** Keywords, separated by a ';'*/
@@ -1199,28 +1000,20 @@ public interface Const {
   /** Frequency */
   String XML_FREQUENCY = "frequency";
 
-  /** DOCUMENT_ME. */
   String XML_QUALITY = "quality";
 
-  /** DOCUMENT_ME. */
   String XML_SIZE = "size";
 
-  /** DOCUMENT_ME. */
   String XML_DEVICE_MOUNT_POINT = "mount_point";
 
-  /** DOCUMENT_ME. */
   String XML_DEVICE_AUTO_REFRESH = "auto_refresh";
 
-  /** DOCUMENT_ME. */
   String XML_DEVICE_AUTO_MOUNT = "auto_mount";
 
-  /** DOCUMENT_ME. */
   String XML_DEVICE_SYNCHRO_SOURCE = "synchro_source";
 
-  /** DOCUMENT_ME. */
   String XML_DEVICE_SYNCHRO_MODE = "synchro_mode";
 
-  /** DOCUMENT_ME. */
   String XML_EXPANDED = "exp"; // can be 'y' or 'n'
 
   /** Cached cover. */
@@ -1229,29 +1022,22 @@ public interface Const {
   /** Selected cover. */
   String XML_ALBUM_SELECTED_COVER = "cover";
 
-  /** DOCUMENT_ME. */
   String XML_DIRECTORY_PARENT = "parent";
 
-  /** DOCUMENT_ME. */
   String XML_DIRECTORY_SYNCHRONIZED = "sync";
 
-  /** DOCUMENT_ME. */
   String XML_TYPE_EXTENSION = "extension";
 
-  /** DOCUMENT_ME. */
   String XML_TYPE_PLAYER_IMPL = "player_impl";
 
-  /** DOCUMENT_ME. */
   String XML_TYPE_TAG_IMPL = "tag_impl";
 
-  /** DOCUMENT_ME. */
   String XML_TYPE_IS_MUSIC = "music";
 
-  /** DOCUMENT_ME. */
   String XML_TYPE_SEEK_SUPPORTED = "seek";
 
   // icon used in the physical tree
-  /** DOCUMENT_ME. */
+
   String XML_TYPE_ICON = "icon";
 
   /** comment tag. */
@@ -1261,106 +1047,86 @@ public interface Const {
   String XML_ANY = "any";
 
   // constructor property flag
-  /** DOCUMENT_ME. */
+
   String XML_CONSTRUCTOR = "constructor";
 
   // property should be displayed ?
-  /** DOCUMENT_ME. */
+
   String XML_VISIBLE = "visible";
 
   // property editable ?
-  /** DOCUMENT_ME. */
+
   String XML_EDITABLE = "editable";
 
   // Property unique ?
-  /** DOCUMENT_ME. */
+
   String XML_UNIQUE = "unique";
 
   // custom property flag
-  /** DOCUMENT_ME. */
+
   String XML_CUSTOM = "custom";
 
   // Property
-  /** DOCUMENT_ME. */
+
   String XML_PROPERTY = "property";
 
   // default value
-  /** DOCUMENT_ME. */
+
   String XML_DEFAULT_VALUE = "default_value";
 
   // general dj tag
-  /** DOCUMENT_ME. */
+
   String XML_DJ_DJ = "dj";
 
   // general parameters
-  /** DOCUMENT_ME. */
+
   String XML_DJ_GENERAL = "general_parameters";
 
-  /** DOCUMENT_ME. */
   String XML_DJ_RATING_LEVEL = "rating_level";
 
-  /** DOCUMENT_ME. */
   String XML_DJ_UNICITY = "unicity";
 
-  /** DOCUMENT_ME. */
   String XML_DJ_FADE_DURATION = "fade_duration";
 
-  /** DOCUMENT_ME. */
   String XML_DJ_MAX_TRACKS = "max_tracks";
 
-  /** DOCUMENT_ME. */
   String XML_DJ_PROPORTIONS = "proportions";
 
-  /** DOCUMENT_ME. */
   String XML_DJ_PROPORTION = "proportion";
 
-  /** DOCUMENT_ME. */
   String XML_DJ_AMBIENCE = "ambience";
 
-  /** DOCUMENT_ME. */
   String XML_DJ_GENRES = "styles";
 
-  /** DOCUMENT_ME. */
   String XML_DJ_VALUE = "values";
 
-  /** DOCUMENT_ME. */
   String XML_DJ_PROPORTION_CLASS = "org.jajuk.services.dj.ProportionDigitalDJ";
 
-  /** DOCUMENT_ME. */
   String XML_DJ_TRANSITION_CLASS = "org.jajuk.services.dj.TransitionDigitalDJ";
 
-  /** DOCUMENT_ME. */
   String XML_DJ_AMBIENCE_CLASS = "org.jajuk.services.dj.AmbienceDigitalDJ";
 
-  /** DOCUMENT_ME. */
   String XML_DJ_EXTENSION = "dj";
 
-  /** DOCUMENT_ME. */
   String XML_DJ_TRANSITION = "transition";
 
-  /** DOCUMENT_ME. */
   String XML_DJ_TRANSITIONS = "transitions";
 
-  /** DOCUMENT_ME. */
   String XML_DJ_FROM = "from";
 
-  /** DOCUMENT_ME. */
   String XML_DJ_TO = "to";
 
-  /** DOCUMENT_ME. */
   String XML_DJ_NUMBER = "number";
 
-  /** DOCUMENT_ME. */
   String XML_STREAMS = "streams";
 
-  /** DOCUMENT_ME. */
   String XML_STREAM = "stream";
 
   /*
    * Reserved XML tags for property names (note that a user can choose a property name equals to
    * meta information attributes names without pbm)
    */
-  /** DOCUMENT_ME. */
+
   String[] XML_RESERVED_ATTRIBUTE_NAMES = { XML_NAME, XML_ID, XML_TYPE_EXTENSION,
       XML_TYPE_PLAYER_IMPL, XML_TYPE_TAG_IMPL, XML_TYPE_SEEK_SUPPORTED, XML_TYPE_ICON,
       XML_TYPE_IS_MUSIC, XML_TYPE, XML_URL, XML_DEVICE_AUTO_MOUNT, XML_DEVICE_AUTO_REFRESH,
@@ -1391,83 +1157,62 @@ public interface Const {
   String FORMAT_DATE = "Property_Format_Date";
 
   // Thumbs
-  /** DOCUMENT_ME. */
+
   String THUMBNAIL_SIZE_50X50 = "50x50";
 
-  /** DOCUMENT_ME. */
   String THUMBNAIL_SIZE_100X100 = "100x100";
 
-  /** DOCUMENT_ME. */
   String THUMBNAIL_SIZE_150X150 = "150x150";
 
-  /** DOCUMENT_ME. */
   String THUMBNAIL_SIZE_200X200 = "200x200";
 
-  /** DOCUMENT_ME. */
   String THUMBNAIL_SIZE_250X250 = "250x250";
 
-  /** DOCUMENT_ME. */
   String THUMBNAIL_SIZE_300X300 = "300x300";
 
   // Patterns
-  /** DOCUMENT_ME. */
+
   String PATTERN_ARTIST = "%artist";
 
-  /** DOCUMENT_ME. */
   String PATTERN_ALBUM_ARTIST = "%album_artist";
 
-  /** DOCUMENT_ME. */
   String PATTERN_DISC = "%disc";
 
-  /** DOCUMENT_ME. */
   String PATTERN_ALBUM = "%album";
 
-  /** DOCUMENT_ME. */
   String PATTERN_GENRE = "%genre";
 
-  /** DOCUMENT_ME. */
   String PATTERN_YEAR = "%year";
 
-  /** DOCUMENT_ME. */
   String PATTERN_TRACKNAME = "%title";
 
-  /** DOCUMENT_ME. */
   String PATTERN_TRACKORDER = "%n";
 
-  /** DOCUMENT_ME. */
   String PATTERN_DEFAULT_REORG = PATTERN_ALBUM_ARTIST + "/" + PATTERN_YEAR + " - " + PATTERN_ALBUM
       + "/" + PATTERN_TRACKORDER + " - " + PATTERN_ARTIST + " - " + PATTERN_TRACKNAME;
 
-  /** DOCUMENT_ME. */
   String PATTERN_DEFAULT_ANIMATION = PATTERN_TRACKNAME + " (" + PATTERN_ARTIST + ")";
 
   // Strings
-  /** DOCUMENT_ME. */
+
   String FRAME_MAXIMIZED = "max";
 
   // Alarm Clock
-  /** DOCUMENT_ME. */
+
   String CONF_ALARM_TIME_HOUR = "jajuk.alarm.hour";
 
-  /** DOCUMENT_ME. */
   String CONF_ALARM_TIME_MINUTES = "jajuk.alarm.minutes";
 
-  /** DOCUMENT_ME. */
   String CONF_ALARM_TIME_SECONDS = "jajuk.alarm.seconds";
 
-  /** DOCUMENT_ME. */
   String CONF_ALARM_FILE = "jajuk.alarm.file";
 
-  /** DOCUMENT_ME. */
   String CONF_ALARM_MODE = "jajuk.alarm.mode";
 
-  /** DOCUMENT_ME. */
   String CONF_FORMAT_TIME_ELAPSED = "jajuk.format_elapsed_time";
 
-  /** DOCUMENT_ME. */
   String CONF_ALARM_ACTION = "jajuk.alarm.action";
 
-  /** DOCUMENT_ME. */
   String CONF_ALARM_ENABLED = "jajuk.alarm.enabled";
 
   /** Option name. */
@@ -1478,50 +1223,42 @@ public interface Const {
 
   /** Option name. */
   String CONF_BIT_PERFECT = "jajuk.bit_perfect";
-  
+
   String CONF_SHOW_VIDEOS = "jajuk.show_videos";
 
+  String CONF_PRESERVE_FILE_DATES = "jajuk.preserve_date";
+
   // Alarm actions
-  /** DOCUMENT_ME. */
+
   String ALARM_START_ACTION = "Start Playing";
 
-  /** DOCUMENT_ME. */
   String ALARM_STOP_ACTION = "Stop Playing";
 
   // Preferences
-  /** DOCUMENT_ME. */
+
   long PREFERENCE_ADORE = 3;
 
-  /** DOCUMENT_ME. */
   long PREFERENCE_LOVE = 2;
 
-  /** DOCUMENT_ME. */
   long PREFERENCE_LIKE = 1;
 
-  /** DOCUMENT_ME. */
   long PREFERENCE_UNSET = 0;
 
-  /** DOCUMENT_ME. */
   long PREFERENCE_AVERAGE = -1;
 
-  /** DOCUMENT_ME. */
   long PREFERENCE_POOR = -2;
 
-  /** DOCUMENT_ME. */
   long PREFERENCE_HATE = -3;
 
-  /** DOCUMENT_ME. */
   String B_P_HTML = "</b></p></html>";
 
-  /** DOCUMENT_ME. */
   String P_B = "<p><b>";
 
-  /** DOCUMENT_ME. */
   String HTML = "<html>";
 
   /** File name where the tag cover is stored in. */
   String TAG_COVER_FILE = "tag_cover.png";
-  
+
   /** Current radio track */
   String CURRENT_RADIO_TRACK = "current_radio_track";
 

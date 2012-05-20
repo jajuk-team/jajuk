@@ -203,6 +203,8 @@ public class ParameterView extends ViewAdapter {
   JCheckBox jcbHotkeys;
 
   JCheckBox jcbShowVideos;
+  
+  JCheckBox jcbPreserveFileDates;
 
   JCheckBox jcbUseParentDir;
 
@@ -776,6 +778,9 @@ public class ParameterView extends ViewAdapter {
 
     jcbShowVideos = new JCheckBox(Messages.getString("ParameterView.301"));
     jcbShowVideos.setToolTipText(Messages.getString("ParameterView.302"));
+    
+    jcbPreserveFileDates = new JCheckBox(Messages.getString("ParameterView.305"));
+    jcbPreserveFileDates.setToolTipText(Messages.getString("ParameterView.306"));
 
     JPanel jpOptions = new JPanel(new MigLayout("insets 10, gapy 15, wrap 1"));
     jpOptions.add(new JLabel(Messages.getString("ParameterView.38")), "split 2,gapleft 5");
@@ -787,6 +792,7 @@ public class ParameterView extends ViewAdapter {
     jpOptions.add(jcbUseParentDir);
     jpOptions.add(jcbDropPlayedTracksFromQueue);
     jpOptions.add(jcbShowVideos);
+    jpOptions.add(jcbPreserveFileDates);
     return jpOptions;
   }
 
