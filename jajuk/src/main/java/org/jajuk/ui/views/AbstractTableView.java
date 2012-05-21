@@ -456,8 +456,11 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
       @Override
       public void done() {
+        int[] selection = jtable.getSelectedRows();
         // Force table repaint (for instance for rating stars update)
         model.fireTableDataChanged();
+        // Restore selection (even if rows content may have change)
+        jtable.setSelectedRows(selection);
         UtilGUI.stopWaiting();
       }
     };
