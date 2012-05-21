@@ -31,6 +31,8 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Const;
+import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 
@@ -89,6 +91,7 @@ public class PreferencesJMenu extends JMenu {
   public PreferencesJMenu(List<? extends Item> selection) {
     super(Messages.getString("Preference.7"));
     initUI(selection);
+
   }
 
   /**
@@ -111,42 +114,49 @@ public class PreferencesJMenu extends JMenu {
     jmiAdore.putClientProperty(Const.DETAIL_SELECTION, selection);
     if (selectionPreference == Const.PREFERENCE_ADORE) {
       jmiAdore.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+      setIcon(IconLoader.getIcon(JajukIcons.PREFERENCE_ADORE));
     }
 
     jmiLove = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_LOVE));
     jmiLove.putClientProperty(Const.DETAIL_SELECTION, selection);
     if (selectionPreference == Const.PREFERENCE_LOVE) {
       jmiLove.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+      setIcon(IconLoader.getIcon(JajukIcons.PREFERENCE_LOVE));
     }
 
     jmiLike = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_LIKE));
     jmiLike.putClientProperty(Const.DETAIL_SELECTION, selection);
     if (selectionPreference == Const.PREFERENCE_LIKE) {
       jmiLike.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+      setIcon(IconLoader.getIcon(JajukIcons.PREFERENCE_LIKE));
     }
 
     jmiUnset = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_UNSET));
     jmiUnset.putClientProperty(Const.DETAIL_SELECTION, selection);
     if (selectionPreference == Const.PREFERENCE_UNSET) {
       jmiUnset.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+      setIcon(IconLoader.getIcon(JajukIcons.PREFERENCE_UNSET));
     }
 
     jmiAverage = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_AVERAGE));
     jmiAverage.putClientProperty(Const.DETAIL_SELECTION, selection);
     if (selectionPreference == Const.PREFERENCE_AVERAGE) {
       jmiAverage.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+      setIcon(IconLoader.getIcon(JajukIcons.PREFERENCE_AVERAGE));
     }
 
     jmiPoor = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_POOR));
     jmiPoor.putClientProperty(Const.DETAIL_SELECTION, selection);
     if (selectionPreference == Const.PREFERENCE_POOR) {
       jmiPoor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+      setIcon(IconLoader.getIcon(JajukIcons.PREFERENCE_POOR));
     }
 
     jmiHate = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_HATE));
     jmiHate.putClientProperty(Const.DETAIL_SELECTION, selection);
     if (selectionPreference == Const.PREFERENCE_HATE) {
       jmiHate.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+      setIcon(IconLoader.getIcon(JajukIcons.PREFERENCE_HATE));
     }
 
     add(jmiBan);
