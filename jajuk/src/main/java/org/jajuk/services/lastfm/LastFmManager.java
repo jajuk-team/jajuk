@@ -34,8 +34,6 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
-import org.jajuk.util.DownloadManager;
-import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
 /**
@@ -93,13 +91,17 @@ public final class LastFmManager implements Observer, Const {
    */
   @Override
   public void update(final JajukEvent event) {
+    final File file = (File) event.getDetails().get(Const.DETAIL_CURRENT_FILE);
+    if (!file.getTrack().getBooleanValue(XML_TRACK_SCROBBLE)) {
+      Log.debug("Track scrobble property unset, not submitted to last.fm : " + file.getTrack().getID());
+      return;
+    }
     if (Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE)
         && JajukEvents.FILE_FINISHED == event.getSubject()
         && !Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
       new Thread("LastFM Update Thread") {
         @Override
         public void run() {
-          File file = (File) event.getDetails().get(Const.DETAIL_CURRENT_FILE);
           long playedTime = (Long) event.getDetails().get(Const.DETAIL_CONTENT);
           // Last.FM rule : only submit >= 30secs playbacks
           if (playedTime >= 30000) {

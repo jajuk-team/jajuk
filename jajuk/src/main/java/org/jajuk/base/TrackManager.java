@@ -127,7 +127,9 @@ public final class TrackManager extends ItemManager {
     // Track ban status
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_BANNED, false, false, true, true,
         false, Boolean.class, false));
-
+    // Scrobble flag
+    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_SCROBBLE, false, false, true, true,
+        true, Boolean.class, true));
   }
 
   /**
