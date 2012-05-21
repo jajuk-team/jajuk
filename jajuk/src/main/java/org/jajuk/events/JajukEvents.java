@@ -135,9 +135,6 @@ public enum JajukEvents {
   /** cover default changed. */
   COVER_DEFAULT_CHANGED,
 
-  /** clear table selection. */
-  TABLE_CLEAR_SELECTION,
-
   /** DJ creation or removal. */
   DJS_CHANGE,
 

@@ -431,7 +431,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     eventSubjectSet.add(JajukEvents.CUSTOM_PROPERTIES_ADD);
     eventSubjectSet.add(JajukEvents.CUSTOM_PROPERTIES_REMOVE);
     eventSubjectSet.add(JajukEvents.RATE_CHANGED);
-    eventSubjectSet.add(JajukEvents.TABLE_CLEAR_SELECTION);
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     eventSubjectSet.add(JajukEvents.VIEW_REFRESH_REQUEST);
     eventSubjectSet.add(JajukEvents.TREE_SELECTION_CHANGED);
@@ -482,9 +481,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
           // column
           // events
           JajukEvents subject = event.getSubject();
-          if (JajukEvents.TABLE_CLEAR_SELECTION.equals(subject)) {
-            jtable.clearSelection();
-          }
           if (JajukEvents.DEVICE_MOUNT.equals(subject)
               || JajukEvents.DEVICE_UNMOUNT.equals(subject)) {
             jtable.clearSelection();

@@ -977,6 +977,8 @@ public interface Const {
   String XML_TRACK_TOTAL_PLAYTIME = "tpt";
 
   String XML_TRACK_BANNED = "ban";
+  
+  String XML_TRACK_SCROBBLE = "scrobble";
 
   String XML_PLAYLIST = "playlist";
 
