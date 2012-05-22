@@ -91,14 +91,15 @@ public final class LastFmManager implements Observer, Const {
    */
   @Override
   public void update(final JajukEvent event) {
-    final File file = (File) event.getDetails().get(Const.DETAIL_CURRENT_FILE);
-    if (!file.getTrack().getBooleanValue(XML_TRACK_SCROBBLE)) {
-      Log.debug("Track scrobble property unset, not submitted to last.fm : " + file.getTrack().getID());
-      return;
-    }
     if (Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE)
         && JajukEvents.FILE_FINISHED == event.getSubject()
         && !Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
+      final File file = (File) event.getDetails().get(Const.DETAIL_CURRENT_FILE);
+      if (!file.getTrack().getBooleanValue(XML_TRACK_SCROBBLE)) {
+        Log.debug("Track scrobble property unset, not submitted to last.fm : "
+            + file.getTrack().getID());
+        return;
+      }
       new Thread("LastFM Update Thread") {
         @Override
         public void run() {
