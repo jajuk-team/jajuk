@@ -1230,6 +1230,8 @@ public interface Const {
   String CONF_SHOW_VIDEOS = "jajuk.show_videos";
 
   String CONF_PRESERVE_FILE_DATES = "jajuk.preserve_date";
+  
+  String CONF_FADE_OUT = "jajuk.options.fade_out";
 
   // Alarm actions
 

@@ -219,6 +219,9 @@ public final class Player {
    */
   public static void stop(boolean bAll) {
     try {
+      if (Conf.getBoolean(Const.CONF_FADE_OUT)) {
+        fadeOut();
+      }
       if (playerImpl1 != null && (playerImpl1.getState() != Const.FADING_STATUS || bAll)) {
         playerImpl1.stop();
         playerImpl1 = null;
@@ -229,7 +232,6 @@ public final class Player {
       }
       bPaused = false; // cancel any current pause
       bPlaying = false;
-
     } catch (Exception e) {
       Log.debug(Messages.getString("Error.008") + e);
     }
@@ -344,7 +346,7 @@ public final class Player {
       return 0;
     }
   }
-  
+
   /**
    * Gets the elapsed time.
    * 
@@ -368,6 +370,9 @@ public final class Player {
         return;
       }
       if (playerImpl != null) {
+        if (Conf.getBoolean(Const.CONF_FADE_OUT)) {
+          fadeOut();
+        }
         playerImpl.pause();
       }
       bPaused = true;
@@ -376,6 +381,23 @@ public final class Player {
       Log.error(e);
     }
   }
+
+  private static void fadeOut() throws Exception {
+    float initialVolume = playerImpl.getCurrentVolume();
+    if (initialVolume > 0) {
+      //Fade out
+      float steps = 10;
+      int totalTimeMillis = 500;
+      for (int i = 1; i <= 10; i++) {
+        float newVolume = initialVolume * (steps - i) / steps;
+        playerImpl.setVolume(newVolume);
+        Thread.sleep((int)(totalTimeMillis / (steps - 1)));
+      }
+    }
+    playerImpl.setVolume(initialVolume);
+  }
+  
+  
 
   /**
    * resume the player.
