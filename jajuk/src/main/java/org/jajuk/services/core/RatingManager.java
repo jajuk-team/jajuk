@@ -113,6 +113,15 @@ public final class RatingManager extends Thread implements Observer {
   }
 
   /**
+   * Return a valid [0;100] rating for given preference
+   * @param preference
+   * @return
+   */
+  public static long getRateForPreference(long preference) {
+    return Math.round((16.6 * preference + 50));
+  }
+
+  /**
    * Set max playcount.
    * 
    * @param value the playcount value

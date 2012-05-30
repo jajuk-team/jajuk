@@ -166,22 +166,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
    */
   private void updateGUIFromConfHistory() {
     pv.jtfHistory.setText(Conf.getString(Const.CONF_HISTORY));
-    if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_ITEM)) {
-      pv.jrbFile.setSelected(true);
-      pv.sbSearch.setEnabled(true);
-    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST)) {
-      pv.jrbLast.setSelected(true);
-    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)) {
-      pv.jrbLastKeepPos.setSelected(true);
-    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOTHING)) {
-      pv.jrbNothing.setSelected(true);
-    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_SHUFFLE)) {
-      pv.jrbShuffle.setSelected(true);
-    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_BESTOF)) {
-      pv.jrbBestof.setSelected(true);
-    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOVELTIES)) {
-      pv.jrbNovelties.setSelected(true);
-    }
+    pv.jcbManualRatings.setSelected(Conf.getBoolean(Const.CONF_MANUAL_RATINGS));
   }
 
   /**
@@ -244,6 +229,22 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
    * Update Start-up tab.
    */
   private void updateGUIFromConfStartup() {
+    if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_ITEM)) {
+      pv.jrbFile.setSelected(true);
+      pv.sbSearch.setEnabled(true);
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST)) {
+      pv.jrbLast.setSelected(true);
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)) {
+      pv.jrbLastKeepPos.setSelected(true);
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOTHING)) {
+      pv.jrbNothing.setSelected(true);
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_SHUFFLE)) {
+      pv.jrbShuffle.setSelected(true);
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_BESTOF)) {
+      pv.jrbBestof.setSelected(true);
+    } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOVELTIES)) {
+      pv.jrbNovelties.setSelected(true);
+    }
     // set chosen track in file selection
     String conf = Conf.getString(Const.CONF_STARTUP_ITEM);
     String item = conf.substring(conf.indexOf('/') + 1, conf.length());
@@ -366,7 +367,8 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     pv.jcbNotificationType.setSelectedItem(notificatorType);
     pv.jcbShowSystray.setSelected(Conf.getBoolean(Const.CONF_SHOW_SYSTRAY));
     pv.jcbMinimizeToTray.setSelected(Conf.getBoolean(Const.CONF_MINIMIZE_TO_TRAY));
-    pv.jcbClickTrayAlwaysDisplayWindow.setSelected(Conf.getBoolean(Const.CONF_TRAY_CLICK_DISPLAY_WINDOW));
+    pv.jcbClickTrayAlwaysDisplayWindow.setSelected(Conf
+        .getBoolean(Const.CONF_TRAY_CLICK_DISPLAY_WINDOW));
     pv.jcbSplashscreen.setSelected(Conf.getBoolean(Const.CONF_SPLASH_SCREEN));
     pv.scbLAF.removeActionListener(this);
     pv.scbLAF.setSelectedItem(Conf.getString(Const.CONF_OPTIONS_LNF));
@@ -438,7 +440,8 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
       this.someOptionsAppliedAtNextStartup = true;
     }
     Conf.setProperty(Const.CONF_SHOW_VIDEOS, Boolean.toString(pv.jcbShowVideos.isSelected()));
-    Conf.setProperty(Const.CONF_PRESERVE_FILE_DATES, Boolean.toString(pv.jcbPreserveFileDates.isSelected()));
+    Conf.setProperty(Const.CONF_PRESERVE_FILE_DATES,
+        Boolean.toString(pv.jcbPreserveFileDates.isSelected()));
   }
 
   /**
@@ -490,6 +493,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     if (!sHistoryDuration.isEmpty()) {
       Conf.setProperty(Const.CONF_HISTORY, sHistoryDuration);
     }
+    Conf.setProperty(Const.CONF_MANUAL_RATINGS, Boolean.toString(pv.jcbManualRatings.isSelected()));
   }
 
   /**

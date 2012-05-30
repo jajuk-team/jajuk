@@ -181,4 +181,14 @@ public class TestRatingManager extends JajukTestCase {
     return track;
   }
 
+  public void testGetRateForPreference() {
+    assertEquals(RatingManager.getRateForPreference(-3l), 0);
+    assertEquals(RatingManager.getRateForPreference(-2l), 17);
+    assertEquals(RatingManager.getRateForPreference(-1l), 33);
+    assertEquals(RatingManager.getRateForPreference(0l), 50);
+    assertEquals(RatingManager.getRateForPreference(1l), 67);
+    assertEquals(RatingManager.getRateForPreference(2l), 83);
+    assertEquals(RatingManager.getRateForPreference(3l), 100);
+  }
+
 }

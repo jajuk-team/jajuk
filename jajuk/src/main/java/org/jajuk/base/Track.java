@@ -478,6 +478,14 @@ public class Track extends LogicalItem implements Comparable<Track> {
    */
   public void updateRate() {
     try {
+      // Manual rating : just use preference
+      if (Conf.getBoolean(Const.CONF_MANUAL_RATINGS)){
+        long preference = getLongValue(Const.XML_TRACK_PREFERENCE);
+        long rate = RatingManager.getRateForPreference(preference);
+        setRate(rate);
+        return;
+      }
+      
       // rate contains final rate [0,100]
       long rate = 0;
       // Normalize values to avoid division by zero

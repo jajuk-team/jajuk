@@ -108,6 +108,8 @@ public class ParameterView extends ViewAdapter {
 
   JTextField jtfHistory;
 
+  JCheckBox jcbManualRatings;
+
   JButton jbClearHistory;
 
   JButton jbResetRatings;
@@ -203,7 +205,7 @@ public class ParameterView extends ViewAdapter {
   JCheckBox jcbHotkeys;
 
   JCheckBox jcbShowVideos;
-  
+
   JCheckBox jcbPreserveFileDates;
 
   JCheckBox jcbUseParentDir;
@@ -364,7 +366,7 @@ public class ParameterView extends ViewAdapter {
    * @return the j panel
    */
   private JPanel initUIHistory() {
-    JPanel jpHistory = new JPanel(new MigLayout("insets 10, gapy 15","[fill][fill]"));
+    JPanel jpHistory = new JPanel(new MigLayout("insets 10, gapy 15", "[fill][fill]"));
     jtfHistory = new JTextField();
     jtfHistory.setInputVerifier(new InputVerifier() {
       @Override
@@ -391,6 +393,8 @@ public class ParameterView extends ViewAdapter {
       }
     });
     jtfHistory.setToolTipText(Messages.getString("ParameterView.2"));
+    jcbManualRatings = new JCheckBox(Messages.getString("ParameterView.307"));
+    jcbManualRatings.setToolTipText(Messages.getString("ParameterView.308"));
     jbClearHistory = new JButton(Messages.getString("ParameterView.3"),
         IconLoader.getIcon(JajukIcons.CLEAR));
     jbClearHistory.setToolTipText(Messages.getString("ParameterView.4"));
@@ -419,8 +423,9 @@ public class ParameterView extends ViewAdapter {
     JLabel jlHistory = new JLabel(Messages.getString("ParameterView.0"));
     jlHistory.setToolTipText(Messages.getString("ParameterView.2"));
     jpHistory.add(jlHistory);
-    jpHistory.add(jtfHistory, "wrap");
-    jpHistory.add(jbClearHistory, "wrap");
+    jpHistory.add(jtfHistory);
+    jpHistory.add(jbClearHistory,"wrap");
+    jpHistory.add(jcbManualRatings, "wrap");
     jpHistory.add(jbResetRatings);
     jpHistory.add(jbResetPreferences, "wrap");
     jpHistory.add(jbExportRatings);
@@ -778,7 +783,7 @@ public class ParameterView extends ViewAdapter {
 
     jcbShowVideos = new JCheckBox(Messages.getString("ParameterView.301"));
     jcbShowVideos.setToolTipText(Messages.getString("ParameterView.302"));
-    
+
     jcbPreserveFileDates = new JCheckBox(Messages.getString("ParameterView.305"));
     jcbPreserveFileDates.setToolTipText(Messages.getString("ParameterView.306"));
 
