@@ -219,7 +219,7 @@ public final class Player {
    */
   public static void stop(boolean bAll) {
     try {
-      if (Conf.getBoolean(Const.CONF_FADE_OUT)) {
+      if (Conf.getBoolean(Const.CONF_FADE_OUT) && isPlaying()) {
         fadeOut();
       }
       if (playerImpl1 != null && (playerImpl1.getState() != Const.FADING_STATUS || bAll)) {
