@@ -349,7 +349,7 @@ public final class Conf implements Const {
     defaults.put(CONF_PRESERVE_FILE_DATES, FALSE);
     defaults.put(CONF_FADE_OUT, TRUE);
     defaults.put(CONF_MANUAL_RATINGS, FALSE);
-        
+
     // NOT SHOW AGAIN
     defaults.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
@@ -358,6 +358,16 @@ public final class Conf implements Const {
 
     // Make a copy of default values
     properties = (Properties) defaults.clone();
+  }
+
+  /**
+   * Allow again to get hidden messages
+   */
+  public static void resetDontShowAgain() {
+    setProperty(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
+    setProperty(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
+    setProperty(CONF_NOT_SHOW_AGAIN_CROSS_FADE, FALSE);
+    setProperty(CONF_NOT_SHOW_AGAIN_LAF_CHANGE, FALSE);
   }
 
   /**

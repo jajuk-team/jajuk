@@ -68,6 +68,8 @@ import org.jajuk.services.notification.NotificatorTypes;
 import org.jajuk.services.webradio.WebRadioHelper;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.helpers.PatternInputVerifier;
+import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.ui.widgets.InformationJPanel.MessageType;
 import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.PathSelector;
 import org.jajuk.ui.widgets.SearchBox;
@@ -154,9 +156,13 @@ public class ParameterView extends ViewAdapter {
 
   JCheckBox jcbBeforeRefactorFiles;
 
+  JCheckBox jcbBeforeWritingTag;
+
   JCheckBox jcbDisplayUnmounted;
 
   JCheckBox jcbAudioScrobbler;
+
+  JButton jbResetDontShowAgain;
 
   JLabel jlASUser;
 
@@ -424,7 +430,7 @@ public class ParameterView extends ViewAdapter {
     jlHistory.setToolTipText(Messages.getString("ParameterView.2"));
     jpHistory.add(jlHistory);
     jpHistory.add(jtfHistory);
-    jpHistory.add(jbClearHistory,"wrap");
+    jpHistory.add(jbClearHistory, "wrap");
     jpHistory.add(jcbManualRatings, "wrap");
     jpHistory.add(jbResetRatings);
     jpHistory.add(jbResetPreferences, "wrap");
@@ -565,6 +571,19 @@ public class ParameterView extends ViewAdapter {
     jcbBeforeRefactorFiles = new JCheckBox(Messages.getString("ParameterView.194"));
     jcbBeforeRefactorFiles.setToolTipText(Messages.getString("ParameterView.194"));
 
+    jcbBeforeWritingTag = new JCheckBox(Messages.getString("ParameterView.309"));
+    jcbBeforeWritingTag.setToolTipText(Messages.getString("ParameterView.309"));
+
+    jbResetDontShowAgain = new JButton(Messages.getString("ParameterView.310"));
+    jbResetDontShowAgain.setToolTipText(Messages.getString("ParameterView.311"));
+    jbResetDontShowAgain.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        Conf.resetDontShowAgain();
+        InformationJPanel.getInstance().setMessage(Messages.getString("Success"), MessageType.INFORMATIVE);
+      }
+    });
+
     jpConfirmations.add(jcbBeforeDelete, "wrap");
     jpConfirmations.add(jcbBeforeExit, "wrap");
     jpConfirmations.add(jcbBeforeRemoveDevice, "wrap");
@@ -572,6 +591,9 @@ public class ParameterView extends ViewAdapter {
     jpConfirmations.add(jcbBeforeClearingHistory, "wrap");
     jpConfirmations.add(jcbBeforeResetingRatings, "wrap");
     jpConfirmations.add(jcbBeforeRefactorFiles, "wrap");
+    jpConfirmations.add(jcbBeforeWritingTag, "wrap");
+    jpConfirmations.add(jbResetDontShowAgain);
+
     return jpConfirmations;
   }
 
