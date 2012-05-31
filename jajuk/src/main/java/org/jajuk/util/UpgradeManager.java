@@ -491,8 +491,7 @@ public final class UpgradeManager implements Const {
    */
   private static void upgradeCollectionRating() {
     String sRelease = Conf.getString(Const.CONF_RELEASE);
-    if (sRelease == null || sRelease.matches("0..*")
-        || (sRelease.matches("1..*") && Integer.parseInt(sRelease.substring(2, 3)) < 7)) {
+    if (sRelease == null || isOlder(sRelease, "1.7")) {
       Log.info("Migrating collection rating");
       // We keep current ratings and we recompute them on a 0 to 100 scale,
       // then we suggest user to reset the rates
@@ -538,7 +537,7 @@ public final class UpgradeManager implements Const {
     try {
       File oldFile = SessionService.getConfFileByPath("webradios.xml");
       if (oldFile.exists()) {
-        Log.info("Migrating old webradio file : "+oldFile.getAbsolutePath());
+        Log.info("Migrating old webradio file : " + oldFile.getAbsolutePath());
         File newCustomFile = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_CUSTOM);
         UtilSystem.move(oldFile, newCustomFile);
         //Load the old file (contains presets + real customs files)  
@@ -547,7 +546,7 @@ public final class UpgradeManager implements Const {
         // Download repository
         File fPresets = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET);
         DownloadManager.download(new URL(Const.URL_WEBRADIO_PRESETS), fPresets);
-        WebRadioHelper.loadPresetsRadios(fPresets); 
+        WebRadioHelper.loadPresetsRadios(fPresets);
       }
     } catch (Exception e) {
       Log.debug("Can't upgrade Webradio file", e);
@@ -647,7 +646,7 @@ public final class UpgradeManager implements Const {
       // Don't use this in test
           && !("VERSION_REPLACED_BY_ANT".equals(Const.JAJUK_VERSION))
           // We display the upgrade icon only if PAD release is newer than current release
-          && isNewer(Const.JAJUK_VERSION, sPadRelease)) {
+          && isNewer(sPadRelease, Const.JAJUK_VERSION)) {
         newVersionName = sPadRelease;
         return;
       }
@@ -692,17 +691,31 @@ public final class UpgradeManager implements Const {
   }
 
   /**
-   * Return whether second release is newer than first.
+   * Return whether first release is newer than second.
    * 
    * @param currentRelease DOCUMENT_ME
    * @param comparedRelease DOCUMENT_ME
    * 
-   * @return whether second release is newer than first
+   * @return whether first release is newer than second
    */
-  protected static boolean isNewer(String currentRelease, String comparedRelease) {
+  protected static boolean isNewer(String comparedRelease, String currentRelease) {
     int iCurrentRelease = getNumberRelease(currentRelease);
     int iComparedRelease = getNumberRelease(comparedRelease);
     return iComparedRelease > iCurrentRelease;
+  }
+
+  /**
+  * Return whether first release is older than second.
+  * 
+  * @param currentRelease DOCUMENT_ME
+  * @param comparedRelease DOCUMENT_ME
+  * 
+  * @return whether first release is newer than second
+  */
+  protected static boolean isOlder(String comparedRelease, String currentRelease) {
+    int iCurrentRelease = getNumberRelease(currentRelease);
+    int iComparedRelease = getNumberRelease(comparedRelease);
+    return iComparedRelease < iCurrentRelease;
   }
 
   /**

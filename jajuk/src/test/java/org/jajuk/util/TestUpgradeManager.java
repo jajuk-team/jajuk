@@ -94,11 +94,13 @@ public class TestUpgradeManager extends JajukTestCase {
    * {@link org.jajuk.util.UpgradeManager#isNewer(String,String)}.
    */
   public void testIsNewer() throws Exception {
-    assertEquals(true, UpgradeManager.isNewer(v1, v2));
-    assertEquals(true, UpgradeManager.isNewer(v1, v4));
-    assertEquals(true, UpgradeManager.isNewer(v2, v3));
-    assertEquals(false, UpgradeManager.isNewer(v2, v1));
-    assertEquals(true, UpgradeManager.isNewer(v5, v6));
+    assertTrue(UpgradeManager.isNewer(v2, v1));
+    assertTrue(UpgradeManager.isNewer(v4, v1));
+    assertFalse(UpgradeManager.isNewer(v3, v3));
+    assertFalse(UpgradeManager.isNewer(v1, v2));
+    assertTrue(UpgradeManager.isNewer(v6, v5));
+    assertTrue(UpgradeManager.isNewer("1.10dev", "1.7"));
+    assertFalse(UpgradeManager.isNewer("1.7", "1.7"));
   }
 
 }
