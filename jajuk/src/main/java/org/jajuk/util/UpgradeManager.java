@@ -89,11 +89,14 @@ public final class UpgradeManager implements Const {
       // no string provided: use 1.0.0
       return 10000;
     }
-
     String stringRelease = pStringRelease;
     // We drop any RCx part of the release
     if (pStringRelease.contains("RC")) {
       stringRelease = pStringRelease.split("RC.*")[0];
+    }
+    // We drop any "dev" part of the release
+    if (pStringRelease.contains("dev")) {
+      stringRelease = pStringRelease.split("dev.*")[0];
     }
     // Add a trailing .0 if it is a main release like 1.X -> 1.X.0
     int countDot = stringRelease.replaceAll("[^.]", "").length();
@@ -105,7 +108,6 @@ public final class UpgradeManager implements Const {
     StringTokenizer st = new StringTokenizer(stringRelease, ".");
     String main = UtilString.padNumber(Integer.parseInt(st.nextToken()), 2);
     String minor = UtilString.padNumber(Integer.parseInt(st.nextToken()), 2);
-
     String fix = UtilString.padNumber(Integer.parseInt(st.nextToken()), 2);
     return Integer.parseInt(main + minor + fix);
   }
@@ -122,9 +124,7 @@ public final class UpgradeManager implements Const {
       if (!bFirstSession
       // if first session, not taken as an upgrade
           && (sStoredRelease == null || // null for jajuk releases < 1.2
-          !sStoredRelease.substring(0, 3).equals(Const.JAJUK_VERSION.substring(0, 3)))
-          // Each RC is seen as an upgrade to force RC users to re-run upgrade code at each new RC
-          || Const.JAJUK_VERSION.matches(".*RC.*")) {
+          !sStoredRelease.equals(Const.JAJUK_VERSION))) {
         bUpgraded = true;
         // Now check if this is an old migration.
         if (!SessionService.isTestMode()) {

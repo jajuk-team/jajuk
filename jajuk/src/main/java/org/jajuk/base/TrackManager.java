@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.events.JajukEvent;
@@ -128,8 +129,8 @@ public final class TrackManager extends ItemManager {
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_BANNED, false, false, true, true,
         false, Boolean.class, false));
     // Scrobble flag
-    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_SCROBBLE, false, false, true, true,
-        true, Boolean.class, true));
+    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_SCROBBLE, false, false, true,
+        true, true, Boolean.class, true));
   }
 
   /**
@@ -225,6 +226,28 @@ public final class TrackManager extends ItemManager {
     } finally {
       lock.writeLock().unlock();
     }
+  }
+
+  /**
+   * Return a detailed message providing an alphabetically sorted set of unique file names to be changed by a tag commit.
+   * @return a detailed message providing a sorted set of unique file names to be changed by a tag commit
+   */
+  public String getTagsMessage() {
+    StringBuilder sb = new StringBuilder();
+    Set<String> fileList = new TreeSet<String>();
+    ArrayList<Tag> toCommit;
+    // Make a defensive copy of the buffer of tags to be commited
+    synchronized (tagsToCommit) {
+      toCommit = new ArrayList<Tag>(tagsToCommit);
+    }
+    //Build a set of files absolute paths to be changed (a same file can be changed several times)
+    for (Tag tag : toCommit) {
+      fileList.add(tag.getFio().getAbsolutePath());
+    }
+    for (String path : fileList) {
+      sb.append(path + "\n");
+    }
+    return sb.toString();
   }
 
   /**
