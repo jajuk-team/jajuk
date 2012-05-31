@@ -73,7 +73,7 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
    * Inits the.
    * DOCUMENT_ME
    */
-  private void init() {
+  public void init() {
     super.removeAll();
     scroll = new JScrollPane();
     scroll.setViewportView(panelMenus);

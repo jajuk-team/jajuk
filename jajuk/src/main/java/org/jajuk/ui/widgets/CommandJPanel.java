@@ -426,6 +426,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     eventSubjectSet.add(JajukEvents.WEBRADIOS_CHANGE);
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
+    eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
     return eventSubjectSet;
   }
 
@@ -567,6 +568,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
         } else if (JajukEvents.PARAMETERS_CHANGE.equals(event.getSubject())) {
           // Disable volume GUI in bit perfect mode
           jsVolume.setEnabled(!Conf.getBoolean(Const.CONF_BIT_PERFECT));
+        } else if (JajukEvents.DEVICE_REFRESH.equals(event.getSubject())) {
+          webRadioButton.populateWebRadios();
         }
       }
     });

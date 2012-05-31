@@ -102,6 +102,8 @@ public class WebRadioButton extends DropDownButton {
         // Show the check icon
         jmi.setDisplayCheck(true);
         popupWebRadio.add(jmi);
+        // Force popup resizing
+        popupWebRadio.init();
       }
     } catch (Exception e) {
       Log.error(e);
