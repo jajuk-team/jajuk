@@ -174,11 +174,6 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
   */
   public static void commit() throws IOException {
     WebRadioManager manager = WebRadioManager.getInstance();
-    // If none radio recorded, do not commit to allow next session
-    // to download the default covers again
-    if (manager.getElementCount() == 0) {
-      return;
-    }
     File out = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET);
     String sCharset = Conf.getString(Const.CONF_COLLECTION_CHARSET);
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out),
