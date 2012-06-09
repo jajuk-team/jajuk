@@ -40,6 +40,7 @@ import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
 /**
@@ -85,7 +86,11 @@ public class WebRadioButton extends DropDownButton {
       // Clear previous elements
       popupWebRadio.removeAll();
       for (final WebRadio radio : WebRadioManager.getInstance().getWebRadios()) {
-        XCheckedButton jmi = new XCheckedButton(radio.getName());
+        String label = radio.getName();
+        if (UtilString.isNotEmpty(radio.getGenre())) {
+          label += " [" + radio.getGenre() + "]";
+        }
+        XCheckedButton jmi = new XCheckedButton(label);
         jmi.addActionListener(new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent e) {
