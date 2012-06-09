@@ -206,11 +206,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
       // delete previous tree
       top.removeAllChildren();
 
-      // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a
-      // small memory leak that is caused here...
-      if (jtree != null && jtree.getModel() != null) {
-        ((DefaultTreeModel) (jtree.getModel())).reload();
-      }
       TrackComparatorType comparatorType = TrackComparatorType.values()[Conf
           .getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER)];
       if (comparatorType == TrackComparatorType.GENRE_ARTIST_ALBUM) {
@@ -238,6 +233,11 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
       // Hits / album
       else if (comparatorType == TrackComparatorType.HITS_ALBUM) {
         populateTreeByHits();
+      }
+      // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a
+      // small memory leak that is caused here...
+      if (jtree != null && jtree.getModel() != null) {
+        ((DefaultTreeModel) (jtree.getModel())).reload();
       }
     } finally {
       refreshing = false;
