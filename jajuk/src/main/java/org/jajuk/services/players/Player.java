@@ -164,7 +164,6 @@ public final class Player {
         Messages.showWarningMessage(Messages.getString("Warning.4"));
         return false;
       }
-      playerImpl = null;
       // Choose the player
       Class<IPlayerImpl> cPlayer = TypeManager.getInstance().getTypeByExtension(Const.EXT_RADIO)
           .getPlayerClass();
@@ -233,7 +232,7 @@ public final class Player {
       bPaused = false; // cancel any current pause
       bPlaying = false;
     } catch (Exception e) {
-      Log.debug(Messages.getString("Error.008") + e);
+      Log.debug(Messages.getString("Error.008"), e);
     }
   }
 
