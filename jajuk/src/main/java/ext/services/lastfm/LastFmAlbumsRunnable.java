@@ -24,18 +24,14 @@
 package ext.services.lastfm;
 
 import java.awt.Image;
-import java.io.File;
 import java.util.List;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
-import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang.StringUtils;
-import org.jajuk.base.Track;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 
 /**
@@ -245,34 +241,5 @@ public class LastFmAlbumsRunnable implements Runnable {
   private boolean forbiddenToken(String t) {
     return t.contains("/");
   }
-
-  /**
-   * Returns an image associated to an audio file, with following order: - If a
-   * image saved by aTunes exists, then return it. - If not, find an internal
-   * image - If not, find an external image - If not, return null
-   *
-   * @param track DOCUMENT_ME
-   * @param width Width in pixels or -1 to keep original width
-   * @param height Height in pixels or -1 to keep original height
-   * @return the image for audio file
-   */
-  public static ImageIcon getImageForAudioFile(Track track, int width, int height) {
-    ImageIcon result = null;
-
-    File fileCover = track.getAlbum().findCover();
-    if (fileCover != null) {
-      if (fileCover.exists()) {
-        ImageIcon image = new ImageIcon(fileCover.getAbsolutePath());
-        if (width == -1 || height == -1) {
-          return image;
-        }
-        int maxSize = (image.getIconWidth() > image.getIconHeight()) ? image.getIconWidth() : image
-            .getIconHeight();
-        int newWidth = (int) ((float) image.getIconWidth() / (float) maxSize * width);
-        int newHeight = (int) ((float) image.getIconHeight() / (float) maxSize * height);
-        return UtilGUI.getResizedImage(image, newWidth, newHeight);
-      }
-    }
-    return result;
-  }
+ 
 }

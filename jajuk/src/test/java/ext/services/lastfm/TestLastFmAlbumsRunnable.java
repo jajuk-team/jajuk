@@ -21,16 +21,12 @@
 package ext.services.lastfm;
 
 import java.awt.Image;
-import java.io.File;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import org.jajuk.ConstTest;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
-import org.jajuk.base.Track;
-import org.jajuk.util.Const;
 
 /**
  * DOCUMENT_ME.
@@ -90,81 +86,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
     LastFmAlbumsRunnable runnable = new LastFmAlbumsRunnable(null, LastFmService.getInstance(),
         null, 1);
     runnable.setRetrieveArtistInfo(true);
-  }
-
-  /**
-   * Test method for.
-   *
-   * @throws Exception the exception
-   * {@link ext.services.lastfm.LastFmAlbumsRunnable#getImageForAudioFile(org.jajuk.base.Track, int, int)}
-   * .
-   */
-  public void testGetImageForAudioFileNone() throws Exception {
-    LastFmAlbumsRunnable.getImageForAudioFile(JUnitHelpers.getTrack(2), 100, 100);
-  }
-
-  /**
-   * Test get image for audio file not exists.
-   */
-  public void testGetImageForAudioFileNotExists() {
-    Track track = JUnitHelpers.getTrack(3);
-    track.getAlbum().setProperty(Const.XML_ALBUM_DISCOVERED_COVER,
-        ConstTest.DEVICES_BASE_PATH + "/device1/nonexist");
-    LastFmAlbumsRunnable.getImageForAudioFile(track, 100, 100);
-  }
-
-  /**
-   * Test get image for audio file exists.
-   * DOCUMENT_ME
-   *
-   * @throws Exception the exception
-   */
-  public void testGetImageForAudioFileExists() throws Exception {
-    Track track = JUnitHelpers.getTrack(3);
-    File file = File.createTempFile("test", ".img", new java.io.File(ConstTest.DEVICES_BASE_PATH));
-    track.getAlbum().setProperty(Const.XML_ALBUM_DISCOVERED_COVER, file.getAbsolutePath());
-    assertNotNull(LastFmAlbumsRunnable.getImageForAudioFile(track, 200, 100));
-
-    // TODO: cleanup does not work on Windows because the file seems to still be
-    // used somewhere
-    file.delete();
-  }
-
-  /**
-   * Test get image for audio file exists max size.
-   * DOCUMENT_ME
-   *
-   * @throws Exception the exception
-   */
-  public void testGetImageForAudioFileExistsMaxSize() throws Exception {
-    Track track = JUnitHelpers.getTrack(3);
-    File file = File.createTempFile("test", ".img", new java.io.File(ConstTest.DEVICES_BASE_PATH));
-    track.getAlbum().setProperty(Const.XML_ALBUM_DISCOVERED_COVER, file.getAbsolutePath()); // don't
-    // read
-    // covers
-    // for
-
-    assertNotNull(LastFmAlbumsRunnable.getImageForAudioFile(track, 100, 200));
-
-    // TODO: cleanup does not work on Windows because the file seems to still be
-    // used somewhere
-    file.delete();
-  }
-
-  /**
-   * Test get image for audio file exists no resize.
-   * DOCUMENT_ME
-   *
-   * @throws Exception the exception
-   */
-  public void testGetImageForAudioFileExistsNoResize() throws Exception {
-    Track track = JUnitHelpers.getTrack(3);
-    File file = File.createTempFile("test", ".img", new java.io.File(ConstTest.DEVICES_BASE_PATH));
-    track.getAlbum().setProperty(Const.XML_ALBUM_DISCOVERED_COVER, file.getAbsolutePath());
-    assertNotNull(LastFmAlbumsRunnable.getImageForAudioFile(track, -1, -1));
-    // TODO: cleanup does not work on Windows because the file seems to still be
-    // used somewhere
-    file.delete();
   }
 
   /**
