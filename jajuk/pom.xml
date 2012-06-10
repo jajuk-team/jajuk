@@ -59,7 +59,7 @@
 				<configuration>
 					<source>1.6</source>
 					<encoding>UTF-8</encoding>
-					<docencoding/>UTF-8</docencoding>
+					<docencoding>UTF-8</docencoding>
 				</configuration>
 			</plugin>
 			<plugin>
