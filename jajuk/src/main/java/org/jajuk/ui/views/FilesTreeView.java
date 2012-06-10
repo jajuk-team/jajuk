@@ -337,18 +337,18 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
       refreshing = true;
       top.removeAllChildren();
 
-      // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a
-      // small memory leak that is caused here...
-      if (jtree != null && jtree.getModel() != null) {
-        ((DefaultTreeModel) (jtree.getModel())).reload();
-      }
-
       // add all devices as "LazyLoading" nodes so all subsequent elements are
       // only populated if necessary
       List<Device> devices = DeviceManager.getInstance().getDevices();
       for (Device device : devices) {
         DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
         top.add(nodeDevice);
+      }
+      
+      // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a
+      // small memory leak that is caused here...
+      if (jtree != null && jtree.getModel() != null) {
+        ((DefaultTreeModel) (jtree.getModel())).reload();
       }
     } finally {
       refreshing = false;
