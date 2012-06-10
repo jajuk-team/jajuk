@@ -90,6 +90,8 @@ import org.jajuk.ui.windows.JajukSystray;
 import org.jajuk.ui.windows.WindowState;
 import org.jajuk.ui.windows.WindowStateDecorator;
 import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.JXBusyLabel;
+import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jvnet.substance.SubstanceLookAndFeel;
@@ -355,6 +357,31 @@ public final class UtilGUI {
     // but free the new image
     scaleImg.flush();
     return new ImageIcon(scaleImg);
+  }
+
+  /**
+  * Show busy label when searching lyrics over provided panel.
+  * @param panel panel to override.
+  */
+  public static void showBusyLabel(final JXPanel panel) {
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        panel.removeAll();
+        Dimension dim = new Dimension(panel.getWidth() / 3, panel.getWidth() / 3);
+        final JXBusyLabel busy = new JXBusyLabel(dim);
+        JPanel inner = new JPanel();
+        inner.setMinimumSize(new Dimension(panel.getWidth(), panel.getHeight()));
+        inner.setLayout(new BoxLayout(inner, BoxLayout.X_AXIS));
+        inner.add(Box.createHorizontalGlue());
+        inner.add(UtilGUI.getCentredPanel(busy, BoxLayout.Y_AXIS));
+        inner.add(Box.createHorizontalGlue());
+        panel.add(inner);
+        panel.revalidate();
+        panel.repaint();
+        busy.setBusy(true);
+      }
+    });
   }
 
   /**

@@ -51,7 +51,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
@@ -145,8 +144,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
   private JLabel jlSize;
 
   private JLabel jlFound;
-
-  private JLabel jlSearching;
 
   /** Cover search accuracy combo. */
   private JComboBox jcbAccuracy;
@@ -247,7 +244,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
     this.includeControls = includeControls;
 
     // Control panel
-    jlSearching = new JLabel("", IconLoader.getIcon(JajukIcons.NET_SEARCH), SwingConstants.CENTER);
     jpControl = new JPanel();
     if (includeControls) {
       jpControl.setBorder(BorderFactory.createEtchedBorder());
@@ -331,12 +327,11 @@ public class CoverView extends ViewAdapter implements ActionListener {
     jtb.add(jbDefault);
 
     if (includeControls) {
-      jpControl.setLayout(new MigLayout("insets 5 2 5 2", "[][grow][grow][][25]"));
+      jpControl.setLayout(new MigLayout("insets 5 2 5 2", "[][grow][grow][]"));
       jpControl.add(jtb);
       jpControl.add(jlSize, "center,gapright 5::");
       jpControl.add(jlFound, "center,gapright 5::");
       jpControl.add(jcbAccuracy, "grow,width 47!,gapright 5");
-      jpControl.add(jlSearching);
     }
 
     // Cover view used in catalog view should not listen events
@@ -911,6 +906,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
       @Override
       public void done() {
         displayCover(index);
+
       }
     };
     sw.execute();
@@ -961,7 +957,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   private void prepareDisplay(final int index) throws JajukException {
     final int iLocalEventID = this.iEventID;
     Log.debug("display index: " + index);
-    searching(true); // lookup icon
+    searching(); // lookup icon
     // find next correct cover
     Cover cover = null;
     ImageIcon icon = null;
@@ -992,8 +988,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
       }
     } catch (final FileNotFoundException e) {
       setCursor(UtilGUI.DEFAULT_CURSOR);
-      searching(false);
-
       // do not display a stacktrace for FileNotfound as we expect this in cases
       // where the picture is gone on the net
       Log.warn("Cover image not found at URL: "
@@ -1001,7 +995,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
       return;
     } catch (final UnknownHostException e) {
       setCursor(UtilGUI.DEFAULT_CURSOR);
-      searching(false);
 
       // do not display a stacktrace for HostNotFound as we expect this in cases
       // where the whole server is gone on the net
@@ -1010,12 +1003,10 @@ public class CoverView extends ViewAdapter implements ActionListener {
       return;
     } catch (final IOException e) { // this cover cannot be loaded
       setCursor(UtilGUI.DEFAULT_CURSOR);
-      searching(false);
       Log.error(e);
       throw new JajukException(0, e);
     } catch (final InterruptedException e) { // this cover cannot be loaded
       setCursor(UtilGUI.DEFAULT_CURSOR);
-      searching(false);
       Log.error(e);
       throw new JajukException(0, e);
     }
@@ -1163,7 +1154,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
     // make sure the image is repainted to avoid overlapping covers
     CoverView.this.revalidate();
     CoverView.this.repaint();
-    searching(false);
+
   }
 
   /**
@@ -1192,20 +1183,11 @@ public class CoverView extends ViewAdapter implements ActionListener {
     }
   }
 
-  /**
-   * Display or hide search icon.
-   * 
-   * @param bSearching 
-   */
-  public void searching(final boolean bSearching) {
+  private void searching() {
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
-        if (bSearching) {
-          jlSearching.setIcon(IconLoader.getIcon(JajukIcons.NET_SEARCH));
-        } else {
-          jlSearching.setIcon(null);
-        }
+        UtilGUI.showBusyLabel(CoverView.this);
       }
     });
   }
@@ -1287,7 +1269,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
     this.iEventID++;
     final int iLocalEventID = iEventID;
     try {
-      searching(true);
       // When receiving this event, check if we should change the cover or
       // not
       // (we don't change cover if playing another track of the same album
@@ -1303,7 +1284,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
     } catch (final IOException e) {
       Log.error(e);
     } finally {
-      searching(false); // hide searching icon
     }
   }
 

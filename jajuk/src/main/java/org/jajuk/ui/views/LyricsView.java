@@ -73,7 +73,6 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.LyricsPersistenceException;
 import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.JXBusyLabel;
 
 /**
  * Lyrics view
@@ -351,7 +350,7 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
       if (Conf.getBoolean(CONF_NETWORK_NONE_INTERNET_ACCESS)) {
         resetNoInternet();
       } else {
-        showBuzyLabel();
+        UtilGUI.showBusyLabel(this);
         // Launch lyrics search asynchronously
         new LyricsUpdateThread().start();
       }
@@ -381,23 +380,6 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
         jtaLyrics.setText(Messages.getString("LyricsView.1"));
         jspLyrics.setEnabled(true);
         sURL = "<none>";
-        revalidate();
-        repaint();
-      }
-    });
-  }
-
-  /**
-   * Show buzy label when searching lyrics.
-   */
-  private void showBuzyLabel() {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        removeAll();
-        final JXBusyLabel busy = new JXBusyLabel();
-        busy.setBusy(true);
-        add(UtilGUI.getCentredPanel(busy, BoxLayout.X_AXIS));
         revalidate();
         repaint();
       }
