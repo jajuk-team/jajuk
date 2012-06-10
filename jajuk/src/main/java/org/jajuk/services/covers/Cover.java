@@ -230,6 +230,7 @@ public class Cover implements Comparable<Cover>, Const {
       MediaTracker tracker = new MediaTracker(JajukMainWindow.getInstance());
       tracker.addImage(image, 1);
       tracker.waitForAll();
+      tracker.removeImage(image);
       // If image cannot be correctly loaded, throw an exception
       if (tracker.getErrorsAny() != null && tracker.getErrorsAny().length > 0) {
         throw new JajukException(9, getFile().getAbsolutePath());

@@ -365,6 +365,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
     // We have to start using the componentListener AFTER the view is fully displayed
     // to avoid blank covers due to wrong (negative) cover dimensions.
     new Thread() {
+      @Override
       public void run() {
         try {
           Thread.sleep(1000);
@@ -850,106 +851,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
   }
 
   /**
-   * Display given cover.
-   * 
-   * @param index index of the cover to display
-   */
-  private void displayCover(final int index) {
-    if ((alCovers.size() == 0) || (index >= alCovers.size()) || (index < 0)) {
-      // just a check
-      alCovers.add(CoverView.nocover); // display nocover by default
-      displayCover(0);
-      return;
-    }
-    final Cover cover = alCovers.get(index); // take image at the given index
-    final URL url = cover.getURL();
-    // enable delete button only for local covers
-    jbDelete.setEnabled(cover.getType() == CoverType.LOCAL_COVER
-        || cover.getType() == CoverType.SELECTED_COVER
-        || cover.getType() == CoverType.STANDARD_COVER);
-
-    //Disable default command for "none" cover
-    jbDefault.setEnabled(cover.getType() != CoverType.NO_COVER);
-
-    if (url != null) {
-      jbSave.setEnabled(false);
-      String sType = " (L)"; // local cover
-      if (cover.getType() == CoverType.REMOTE_COVER) {
-        sType = "(@)"; // Web cover
-        jbSave.setEnabled(true);
-      } else if (cover.getType() == CoverType.TAG_COVER) {
-        sType = "(T)"; // Tag cover
-      }
-      final String size = cover.getSize();
-      jl = new JLabel(ii);
-      jl.setMinimumSize(new Dimension(0, 0)); // required for info
-      // node resizing
-      if (cover.getType() == CoverType.TAG_COVER) {
-        jl.setToolTipText("<html>Tag<br>" + size + "K");
-      } else {
-        jl.setToolTipText("<html>" + url.toString() + "<br>" + size + "K");
-      }
-      setSizeText(size + "K" + sType);
-      setFoundText();
-    }
-    // set tooltip for previous and next track
-    try {
-      int indexPrevious = index + 1;
-      if (indexPrevious > alCovers.size() - 1) {
-        indexPrevious = 0;
-      }
-      final URL urlPrevious = alCovers.get(indexPrevious).getURL();
-      if (urlPrevious != null) {
-        jbPrevious.setToolTipText("<html>" + Messages.getString("CoverView.4") + "<br>"
-            + urlPrevious.toString() + "</html>");
-      }
-      int indexNext = index - 1;
-      if (indexNext < 0) {
-        indexNext = alCovers.size() - 1;
-      }
-      final URL urlNext = alCovers.get(indexNext).getURL();
-      if (urlNext != null) {
-        jbNext.setToolTipText("<html>" + Messages.getString("CoverView.5") + "<br>"
-            + urlNext.toString() + "</html>");
-      }
-    } catch (final Exception e) { // the url code can throw out of bounds
-      // exception for unknown reasons so check it
-      Log.debug("jl=" + jl + " url={{" + url + "}}");
-      Log.error(e);
-    }
-    if (getComponentCount() > 0) {
-      removeAll();
-    }
-    if (includeControls) {
-      add(jpControl, "grow,wrap");
-    }
-    // Invert the mirrow option when clicking on the cover
-    jl.addMouseListener(new JajukMouseAdapter() {
-      @Override
-      public void mousePressed(MouseEvent e) {
-        if (!(cover.getType().equals(CoverType.NO_COVER))) {
-          boolean isMirrowed = includeControls ? Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER)
-              : Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER_FS_MODE);
-          // Normal cover view
-          if (includeControls) {
-            Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER, !isMirrowed + "");
-          } else {
-            // Full screen mode
-            Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER_FS_MODE, !isMirrowed + "");
-          }
-          ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
-          ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE));
-        }
-      }
-    });
-    add(jl, "center,wrap");
-    // make sure the image is repainted to avoid overlapping covers
-    CoverView.this.revalidate();
-    CoverView.this.repaint();
-    searching(false);
-  }
-
-  /**
    * Display current cover (at this.index), try all covers in case of error
    */
   private void displayCurrentCover() {
@@ -1064,17 +965,15 @@ public class CoverView extends ViewAdapter implements ActionListener {
    * 
    * @param index DOCUMENT_ME
    * 
-   * @return null (just used by the SwingWorker)
-   * 
    * @throws JajukException the jajuk exception
    */
-  private Object prepareDisplay(final int index) throws JajukException {
+  private void prepareDisplay(final int index) throws JajukException {
     final int iLocalEventID = this.iEventID;
     Log.debug("display index: " + index);
     searching(true); // lookup icon
     // find next correct cover
-    ImageIcon icon = null;
     Cover cover = null;
+    ImageIcon icon = null;
     try {
       if (this.iEventID == iLocalEventID) {
         cover = alCovers.get(index); // take image at the given index
@@ -1093,13 +992,12 @@ public class CoverView extends ViewAdapter implements ActionListener {
             icon = new ImageIcon(img);
           }
         }
-
         if (icon.getIconHeight() == 0 || icon.getIconWidth() == 0) {
           throw new JajukException(0, "Wrong picture, size is null");
         }
       } else {
         Log.debug("Download stopped - 2");
-        return null;
+        return;
       }
     } catch (final FileNotFoundException e) {
       setCursor(UtilGUI.DEFAULT_CURSOR);
@@ -1109,7 +1007,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
       // where the picture is gone on the net
       Log.warn("Cover image not found at URL: "
           + (cover == null ? "<null>" : cover.getURL().toString()));
-      return null;
+      return;
     } catch (final UnknownHostException e) {
       setCursor(UtilGUI.DEFAULT_CURSOR);
       searching(false);
@@ -1118,7 +1016,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
       // where the whole server is gone on the net
       Log.warn("Cover image not found at URL: "
           + (cover == null ? "<null>" : cover.getURL().toString()));
-      return null;
+      return;
     } catch (final IOException e) { // this cover cannot be loaded
       setCursor(UtilGUI.DEFAULT_CURSOR);
       searching(false);
@@ -1135,7 +1033,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
     final int iDisplayAreaWidth = (int) (0.9f * CoverView.this.getWidth() - 10);
     // check minimum sizes
     if ((iDisplayAreaHeight < 1) || (iDisplayAreaWidth < 1)) {
-      return null;
+      return;
     }
     int iNewWidth;
     int iNewHeight;
@@ -1169,15 +1067,112 @@ public class CoverView extends ViewAdapter implements ActionListener {
     if (this.iEventID == iLocalEventID) {
       // Note that at this point, the image is fully loaded (done in the ImageIcon constructor)
       ii = UtilGUI.getResizedImage(icon, iNewWidth, iNewHeight);
-      // Free source and destination image buffer, see
-      // http://forums.sun.com/thread.jspa?threadID=5424304&tstart=60
+      // Free memory of source image, removing this causes severe memory leaks ! (tested)
       icon.getImage().flush();
-      ii.getImage().flush();
     } else {
       Log.debug("Download stopped - 2");
-      return null;
+      return;
     }
-    return null;
+  }
+
+  /**
+  * Display given cover.
+  * 
+  * @param index index of the cover to display
+  */
+  private void displayCover(final int index) {
+    if ((alCovers.size() == 0) || (index >= alCovers.size()) || (index < 0)) {
+      // just a check
+      alCovers.add(CoverView.nocover); // display nocover by default
+      displayCover(0);
+      return;
+    }
+    final Cover cover = alCovers.get(index); // take image at the given index
+    final URL url = cover.getURL();
+    // enable delete button only for local covers
+    jbDelete.setEnabled(cover.getType() == CoverType.LOCAL_COVER
+        || cover.getType() == CoverType.SELECTED_COVER
+        || cover.getType() == CoverType.STANDARD_COVER);
+
+    //Disable default command for "none" cover
+    jbDefault.setEnabled(cover.getType() != CoverType.NO_COVER);
+
+    if (url != null) {
+      jbSave.setEnabled(false);
+      String sType = " (L)"; // local cover
+      if (cover.getType() == CoverType.REMOTE_COVER) {
+        sType = "(@)"; // Web cover
+        jbSave.setEnabled(true);
+      } else if (cover.getType() == CoverType.TAG_COVER) {
+        sType = "(T)"; // Tag cover
+      }
+      final String size = cover.getSize();
+      jl = new JLabel(ii);
+      jl.setMinimumSize(new Dimension(0, 0)); // required for info
+      // node resizing
+      if (cover.getType() == CoverType.TAG_COVER) {
+        jl.setToolTipText("<html>Tag<br>" + size + "K");
+      } else {
+        jl.setToolTipText("<html>" + url.toString() + "<br>" + size + "K");
+      }
+      setSizeText(size + "K" + sType);
+      setFoundText();
+    }
+    // set tooltip for previous and next track
+    try {
+      int indexPrevious = index + 1;
+      if (indexPrevious > alCovers.size() - 1) {
+        indexPrevious = 0;
+      }
+      final URL urlPrevious = alCovers.get(indexPrevious).getURL();
+      if (urlPrevious != null) {
+        jbPrevious.setToolTipText("<html>" + Messages.getString("CoverView.4") + "<br>"
+            + urlPrevious.toString() + "</html>");
+      }
+      int indexNext = index - 1;
+      if (indexNext < 0) {
+        indexNext = alCovers.size() - 1;
+      }
+      final URL urlNext = alCovers.get(indexNext).getURL();
+      if (urlNext != null) {
+        jbNext.setToolTipText("<html>" + Messages.getString("CoverView.5") + "<br>"
+            + urlNext.toString() + "</html>");
+      }
+    } catch (final Exception e) { // the url code can throw out of bounds
+      // exception for unknown reasons so check it
+      Log.debug("jl=" + jl + " url={{" + url + "}}");
+      Log.error(e);
+    }
+    if (getComponentCount() > 0) {
+      removeAll();
+    }
+    if (includeControls) {
+      add(jpControl, "grow,wrap");
+    }
+    // Invert the mirrow option when clicking on the cover
+    jl.addMouseListener(new JajukMouseAdapter() {
+      @Override
+      public void mousePressed(MouseEvent e) {
+        if (!(cover.getType().equals(CoverType.NO_COVER))) {
+          boolean isMirrowed = includeControls ? Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER)
+              : Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER_FS_MODE);
+          // Normal cover view
+          if (includeControls) {
+            Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER, !isMirrowed + "");
+          } else {
+            // Full screen mode
+            Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER_FS_MODE, !isMirrowed + "");
+          }
+          ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
+          ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE));
+        }
+      }
+    });
+    add(jl, "center,wrap");
+    // make sure the image is repainted to avoid overlapping covers
+    CoverView.this.revalidate();
+    CoverView.this.repaint();
+    searching(false);
   }
 
   /**
@@ -1538,7 +1533,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
             // set best results to be displayed first
             final Iterator<URL> it2 = alUrls.iterator();
             // add found covers
-            while (it2.hasNext() && (iEventID == iLocalEventID)) {
+            while (it2.hasNext() && iEventID == iLocalEventID) {
               // load each cover (pre-load or post-load)
               // and stop if a signal has been emitted
               final URL url = it2.next();

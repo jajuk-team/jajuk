@@ -351,7 +351,9 @@ public final class UtilGUI {
       final int iNewHeight) {
     Image scaleImg = img.getImage().getScaledInstance(iNewWidth, iNewHeight,
         Image.SCALE_AREA_AVERAGING);
-    // Leave image cache here as we may want to keep original image
+    // Leave source image cache here as we may want to keep original image
+    // but free the new image
+    scaleImg.flush();
     return new ImageIcon(scaleImg);
   }
 
