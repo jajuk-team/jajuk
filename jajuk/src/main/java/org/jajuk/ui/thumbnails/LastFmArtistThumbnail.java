@@ -74,7 +74,7 @@ public class LastFmArtistThumbnail extends AbstractThumbnail {
   /**
    * The Constructor.
    * 
-   * @param artist DOCUMENT_ME
+   * @param artist 
    */
   public LastFmArtistThumbnail(ArtistInfo artist) {
     super(100);

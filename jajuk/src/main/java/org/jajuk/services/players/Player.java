@@ -43,7 +43,7 @@ import org.jajuk.util.log.Log;
  */
 public final class Player {
 
-  /** The Constant PLAYER_0.  DOCUMENT_ME */
+  /** The Constant PLAYER_0.   */
   private static final String PLAYER_0 = "Player.0";
 
   /** Current file read. */
@@ -77,7 +77,7 @@ public final class Player {
    * Asynchronous play for specified file with specified time interval.
    *
    * @param file to play
-   * @param fPosition DOCUMENT_ME
+   * @param fPosition 
    * @param length in ms
    * @return true if play is OK
    */
@@ -153,7 +153,7 @@ public final class Player {
   /**
    * Play a web radio stream.
    * 
-   * @param radio DOCUMENT_ME
+   * @param radio 
    * 
    * @return true, if play
    */
@@ -255,7 +255,7 @@ public final class Player {
   /**
    * Mute/unmute the player.
    *
-   * @param pMute DOCUMENT_ME
+   * @param pMute 
    */
   public static void mute(boolean pMute) {
     // Ignore mute changes if Bit-perfect mode is enabled
@@ -297,7 +297,7 @@ public final class Player {
   /**
    * Set the gain.
    *
-   * @param pVolume DOCUMENT_ME
+   * @param pVolume 
    */
   public static void setVolume(float pVolume) {
     // Ignore volume changes if Bit-perfect mode is enabled
@@ -390,13 +390,11 @@ public final class Player {
       for (int i = 1; i <= 10; i++) {
         float newVolume = initialVolume * (steps - i) / steps;
         playerImpl.setVolume(newVolume);
-        Thread.sleep((int)(totalTimeMillis / (steps - 1)));
+        Thread.sleep((int) (totalTimeMillis / (steps - 1)));
       }
     }
     playerImpl.setVolume(initialVolume);
   }
-  
-  
 
   /**
    * resume the player.
@@ -426,7 +424,7 @@ public final class Player {
   /**
    * Seek to a given position in %. ex : 0.2 for 20%
    * 
-   * @param pfPosition DOCUMENT_ME
+   * @param pfPosition 
    */
   public static void seek(float pfPosition) {
     float fPosition = pfPosition;

@@ -37,8 +37,8 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
   /**
    * Genre constructor.
    *
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
+   * @param sId 
+   * @param sName 
    */
   Genre(String sId, String sName) {
     super(sId, sName);
@@ -70,7 +70,7 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
   /**
    * Alphabetical comparator used to display ordered lists.
    * 
-   * @param otherItem DOCUMENT_ME
+   * @param otherItem 
    * 
    * @return comparison result
    */

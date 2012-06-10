@@ -38,7 +38,7 @@ public class TransferableTableRows implements Transferable {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** The Constant ROW_FLAVOR.  DOCUMENT_ME */
+  /** The Constant ROW_FLAVOR.   */
   public static final DataFlavor ROW_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType,
       "Row");
 
@@ -48,13 +48,12 @@ public class TransferableTableRows implements Transferable {
   /**
    * Instantiates a new transferable table row.
    * 
-   * @param items DOCUMENT_ME
+   * @param items 
    */
   public TransferableTableRows(List<Item> items) {
     this.items = items;
   }
 
-  /** DOCUMENT_ME. */
   private final DataFlavor[] flavors = { ROW_FLAVOR };
 
   /*

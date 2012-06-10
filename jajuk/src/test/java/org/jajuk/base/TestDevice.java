@@ -40,7 +40,7 @@ import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestDevice extends JajukTestCase {
 
@@ -217,7 +217,7 @@ public class TestDevice extends JajukTestCase {
 
     // ensure we are not exiting, this would invalidate the test
     assertFalse(ExitService.isExiting());
-    
+
     // Delete a file
     playlist.getFIO().delete();
 
@@ -301,8 +301,8 @@ public class TestDevice extends JajukTestCase {
   /**
    * Gets the file.
    *
-   * @param i DOCUMENT_ME
-   * @param dir DOCUMENT_ME
+   * @param i 
+   * @param dir 
    * @return the file
    */
   @SuppressWarnings("unchecked")
@@ -642,7 +642,7 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test synchronize command sync device.
-   * DOCUMENT_ME
+   * 
    */
   public void testSynchronizeCommandSyncDevice() {
     Device device = JUnitHelpers.getDevice();
@@ -662,7 +662,7 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test synchronize command sync device bidi.
-   * DOCUMENT_ME
+   * 
    */
   public void testSynchronizeCommandSyncDeviceBidi() {
     Device device = JUnitHelpers.getDevice();
@@ -709,7 +709,7 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test test mounted.
-   * DOCUMENT_ME
+   * 
    */
   public void testTestMounted() {
     Device device = JUnitHelpers.getDevice();
@@ -766,7 +766,7 @@ public class TestDevice extends JajukTestCase {
 
   /**
    * Test unmount boolean boolean queue.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -790,7 +790,7 @@ public class TestDevice extends JajukTestCase {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private class MockAttributes implements Attributes {
 

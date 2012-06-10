@@ -26,7 +26,7 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestTypeManager extends TestCase {
 

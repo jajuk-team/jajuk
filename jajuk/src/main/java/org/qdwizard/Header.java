@@ -45,19 +45,14 @@ class Header extends JPanel {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   JPanel jta;
 
-  /** DOCUMENT_ME. */
   Image backgroundImage;
 
-  /** DOCUMENT_ME. */
   ImageIcon icon;
 
-  /** DOCUMENT_ME. */
   String sTitleText;
 
-  /** DOCUMENT_ME. */
   String sSubtitleText;
 
   /**
@@ -74,7 +69,7 @@ class Header extends JPanel {
   /**
    * Set the header title text.
    * 
-   * @param sText DOCUMENT_ME
+   * @param sText 
    */
   public void setTitleText(String sText) {
     sTitleText = sText;
@@ -83,7 +78,7 @@ class Header extends JPanel {
   /**
    * Set the header subtitle text.
    * 
-   * @param sText DOCUMENT_ME
+   * @param sText 
    */
   public void setSubtitleText(String sText) {
     sSubtitleText = sText;
@@ -92,7 +87,7 @@ class Header extends JPanel {
   /**
    * Set the header Image.
    * 
-   * @param img DOCUMENT_ME
+   * @param img 
    */
   public void setImage(Image img) {
     backgroundImage = img;
@@ -101,7 +96,7 @@ class Header extends JPanel {
   /**
    * Set the header right-side icon.
    * 
-   * @param icon DOCUMENT_ME
+   * @param icon 
    */
   public void setIcon(ImageIcon icon) {
     this.icon = icon;

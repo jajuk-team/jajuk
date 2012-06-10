@@ -38,13 +38,12 @@ import javax.swing.AbstractButton;
  */
 public class RightConcaveButtonShaper extends ButtonShaper {
 
-  /** DOCUMENT_ME. */
   private int concaveDiameter;
 
   /**
    * Instantiates a new right concave button shaper.
    * 
-   * @param concaveDiameter DOCUMENT_ME
+   * @param concaveDiameter 
    */
   public RightConcaveButtonShaper(int concaveDiameter) {
     super();

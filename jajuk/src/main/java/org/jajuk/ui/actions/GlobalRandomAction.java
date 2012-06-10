@@ -37,7 +37,7 @@ import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class GlobalRandomAction extends JajukAction {
 

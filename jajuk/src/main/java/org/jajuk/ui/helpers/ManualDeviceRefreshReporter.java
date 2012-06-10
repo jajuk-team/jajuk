@@ -41,16 +41,15 @@ import org.jajuk.util.log.Log;
 public class ManualDeviceRefreshReporter extends RefreshReporter {
 
   // Refresh dialog
-  /** DOCUMENT_ME. */
+
   private RefreshDialog rdialog;
 
-  /** DOCUMENT_ME. */
   private int progress;
 
   /**
    * Instantiates a new manual device refresh reporter.
    * 
-   * @param device DOCUMENT_ME
+   * @param device 
    */
   public ManualDeviceRefreshReporter(Device device) {
     super(device);

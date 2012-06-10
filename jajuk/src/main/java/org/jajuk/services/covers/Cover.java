@@ -71,23 +71,18 @@ public class Cover implements Comparable<Cover>, Const {
    */
   public enum CoverType {
 
-    /** DOCUMENT_ME. */
     NO_COVER,
 
-    /** DOCUMENT_ME. */
     REMOTE_COVER,
 
-    /** DOCUMENT_ME. */
     LOCAL_COVER,
 
     // cover stored in the tag of a file
-    /** DOCUMENT_ME. */
+
     TAG_COVER,
 
-    /** DOCUMENT_ME. */
     STANDARD_COVER,
 
-    /** DOCUMENT_ME. */
     SELECTED_COVER
   }
 
@@ -106,8 +101,8 @@ public class Cover implements Comparable<Cover>, Const {
   /**
    * Constructor for remote covers.
    *
-   * @param url DOCUMENT_ME
-   * @param type DOCUMENT_ME
+   * @param url 
+   * @param type 
    */
   public Cover(final URL url, final CoverType type) {
     this.url = url;
@@ -122,8 +117,8 @@ public class Cover implements Comparable<Cover>, Const {
   /**
    * Constructor for local covers.
    *
-   * @param localFile DOCUMENT_ME
-   * @param type DOCUMENT_ME
+   * @param localFile 
+   * @param type 
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public Cover(final File localFile, final CoverType type) throws IOException {
@@ -253,7 +248,7 @@ public class Cover implements Comparable<Cover>, Const {
   /**
    * Equals needed for consistency for sorting.
    * 
-   * @param o DOCUMENT_ME
+   * @param o 
    * 
    * @return true, if equals
    */

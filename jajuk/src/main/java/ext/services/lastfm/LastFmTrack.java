@@ -39,7 +39,7 @@ public class LastFmTrack implements TrackInfo {
   /**
    * Gets the track.
    * 
-   * @param t DOCUMENT_ME
+   * @param t 
    * 
    * @return the track
    */

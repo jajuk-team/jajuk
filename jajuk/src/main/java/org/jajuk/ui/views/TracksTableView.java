@@ -40,10 +40,8 @@ public class TracksTableView extends AbstractTableView {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiTrackPlayAlbum;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiTrackPlayArtist;
 
   /**

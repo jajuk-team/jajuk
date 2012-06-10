@@ -57,7 +57,7 @@ public class PlaylistTableModel extends JajukTableModel {
   /**
    * Instantiates a new playlist table model.
    * 
-   * @param bQueue DOCUMENT_ME
+   * @param bQueue 
    */
   public PlaylistTableModel(boolean bQueue) {
     super(17);
@@ -69,7 +69,7 @@ public class PlaylistTableModel extends JajukTableModel {
   /**
    * Need to overwrite this method for drag and drop.
    * 
-   * @param iRow DOCUMENT_ME
+   * @param iRow 
    * 
    * @return the item at
    */
@@ -85,7 +85,7 @@ public class PlaylistTableModel extends JajukTableModel {
   /**
    * Return all stack items from this value to the end of selection.
    * 
-   * @param index DOCUMENT_ME
+   * @param index 
    * 
    * @return an arraylist of stack items or null if index is out of bounds
    */
@@ -100,7 +100,7 @@ public class PlaylistTableModel extends JajukTableModel {
   /**
    * Return right stack item in normal or planned stacks.
    * 
-   * @param index DOCUMENT_ME
+   * @param index 
    * 
    * @return the stack item
    */
@@ -211,9 +211,9 @@ public class PlaylistTableModel extends JajukTableModel {
   /**
    * Fill model with data using an optional filter property.
    * 
-   * @param sPropertyName DOCUMENT_ME
-   * @param sPattern DOCUMENT_ME
-   * @param columnsToShow DOCUMENT_ME
+   * @param sPropertyName 
+   * @param sPattern 
+   * @param columnsToShow 
    */
   @Override
   public void populateModel(String sPropertyName, String sPattern, List<String> columnsToShow) {

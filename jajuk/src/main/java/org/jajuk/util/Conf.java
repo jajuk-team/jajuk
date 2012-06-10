@@ -95,7 +95,7 @@ public final class Conf implements Const {
   /**
    * Invert a boolean value.
    * 
-   * @param pName DOCUMENT_ME
+   * @param pName 
    */
   public static void invert(String pName) {
     boolean b = Boolean.parseBoolean(properties.getProperty(pName));
@@ -145,7 +145,7 @@ public final class Conf implements Const {
   /**
    * Reset a given property to its defaults.
    * 
-   * @param property DOCUMENT_ME
+   * @param property 
    */
   public static void setDefaultProperty(String property) {
     String defaultValue = (String) defaults.get(property);
@@ -373,7 +373,7 @@ public final class Conf implements Const {
   /**
    * Return default property for given key.
    * 
-   * @param key DOCUMENT_ME
+   * @param key 
    * 
    * @return default property for given key
    */
@@ -393,8 +393,8 @@ public final class Conf implements Const {
   /**
    * Set a property.
    * 
-   * @param sName DOCUMENT_ME
-   * @param sValue DOCUMENT_ME
+   * @param sName 
+   * @param sValue 
    */
   public static void setProperty(String sName, String sValue) {
     properties.setProperty(sName, sValue);
@@ -464,7 +464,7 @@ public final class Conf implements Const {
   /**
    * Contains property.
    * 
-   * @param property DOCUMENT_ME
+   * @param property 
    * 
    * @return whether the given property is known
    */

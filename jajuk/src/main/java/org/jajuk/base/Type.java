@@ -50,8 +50,8 @@ public class Type extends PhysicalItem implements Comparable<Type> {
    * @param sId type id if given
    * @param sName type name
    * @param sExtension type file extension (.mp3...)
-   * @param cPlayerImpl DOCUMENT_ME
-   * @param cTagImpl DOCUMENT_ME
+   * @param cPlayerImpl 
+   * @param cTagImpl 
    */
   Type(final String sId, final String sName, final String sExtension,
       final Class<IPlayerImpl> cPlayerImpl, final Class<ITagImpl> cTagImpl) {
@@ -141,7 +141,8 @@ public class Type extends PhysicalItem implements Comparable<Type> {
   public ITagImpl getTagImpl() {
     try {
       if (cTagImpl == null) {
-        Log.warn("Did not have a tagging implementation for Type: '" + getID() + "/" + getName() + "'");
+        Log.warn("Did not have a tagging implementation for Type: '" + getID() + "/" + getName()
+            + "'");
         return null;
       }
       return cTagImpl.newInstance();

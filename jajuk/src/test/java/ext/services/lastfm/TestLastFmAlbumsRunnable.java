@@ -29,7 +29,7 @@ import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestLastFmAlbumsRunnable extends JajukTestCase {
 
@@ -89,7 +89,7 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private final class MyContextListener implements ContextListener {
 
@@ -200,7 +200,7 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private class MyAudioObject implements AudioObject {
 

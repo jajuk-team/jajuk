@@ -47,7 +47,7 @@ public final class GenreManager extends ItemManager {
   private static GenreManager singleton = new GenreManager();
 
   /* List of all known genres */
-  /** DOCUMENT_ME. */
+
   private Vector<String> genresList; // NOPMD
 
   /** note if we have already fully loaded the Collection to speed up initial startup */
@@ -84,7 +84,7 @@ public final class GenreManager extends ItemManager {
   /**
    * Register a genre.
    * 
-   * @param sName DOCUMENT_ME
+   * @param sName 
    * 
    * @return the genre
    */
@@ -96,8 +96,8 @@ public final class GenreManager extends ItemManager {
   /**
    * Register a genre with a known id.
    *
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
+   * @param sId 
+   * @param sName 
    * @return the genre
    */
   Genre registerGenre(String sId, String sName) {
@@ -146,7 +146,7 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Register preset genres.
-   * DOCUMENT_ME
+   * 
    */
   private void registerPresetGenres() {
     // create default genre list
@@ -160,7 +160,7 @@ public final class GenreManager extends ItemManager {
   /**
    * Return genre by name.
    * 
-   * @param name DOCUMENT_ME
+   * @param name 
    * 
    * @return the genre by name
    */
@@ -178,8 +178,8 @@ public final class GenreManager extends ItemManager {
   /**
    * Change the item name.
    * 
-   * @param old DOCUMENT_ME
-   * @param sNewName DOCUMENT_ME
+   * @param old 
+   * @param sNewName 
    * 
    * @return new item
    * 
@@ -223,7 +223,7 @@ public final class GenreManager extends ItemManager {
    * <p>
    * example: "ROCK".
    * 
-   * @param sName DOCUMENT_ME
+   * @param sName 
    * 
    * @return the string
    */

@@ -26,7 +26,7 @@ import org.jajuk.JUnitHelpers;
 import org.junit.Test;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestDuration {
 

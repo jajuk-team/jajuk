@@ -64,18 +64,16 @@ public class OpenExplorerAction extends JajukAction {
     JComponent source = (JComponent) e.getSource();
     try {
       List<Item> selection = (List<Item>) source.getClientProperty(Const.DETAIL_CONTENT);
-      if(selection.get(0) instanceof Directory){
+      if (selection.get(0) instanceof Directory) {
         Directory dir = (Directory) selection.get(0);
         UtilSystem.openInExplorer(dir.getFio());
-      }
-      else if(selection.get(0) instanceof File){
+      } else if (selection.get(0) instanceof File) {
         File f = (File) selection.get(0);
         UtilSystem.openInExplorer(f.getDirectory().getFio());
-      }
-      else if(selection.get(0) instanceof Playlist){
+      } else if (selection.get(0) instanceof Playlist) {
         Playlist pl = (Playlist) selection.get(0);
         UtilSystem.openInExplorer(pl.getDirectory().getFio());
-      }  
+      }
     } catch (Exception ex) {
       Log.error(ex);
     }

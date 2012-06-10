@@ -100,50 +100,37 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
   private static final long serialVersionUID = 1L;
 
   // Top control panel
-  /** DOCUMENT_ME. */
+
   JPanel jpControlTop;
 
-  /** DOCUMENT_ME. */
   JLabel jlSorter;
 
-  /** DOCUMENT_ME. */
   SteppedComboBox jcbSorter;
 
-  /** DOCUMENT_ME. */
   JLabel jlFilter;
 
-  /** DOCUMENT_ME. */
   SteppedComboBox jcbFilter;
 
-  /** DOCUMENT_ME. */
   JLabel jlContains;
 
-  /** DOCUMENT_ME. */
   JTextField jtfValue;
 
-  /** DOCUMENT_ME. */
   JButton jbPrev;
 
-  /** DOCUMENT_ME. */
   JButton jbNext;
 
-  /** DOCUMENT_ME. */
   SteppedComboBox jcbPage;
 
   // Bottom control panel
-  /** DOCUMENT_ME. */
+
   JPanel jpControlBottom;
 
-  /** DOCUMENT_ME. */
   JComboBox jcbShowCover;
 
-  /** DOCUMENT_ME. */
   JSlider jsSize;
 
-  /** DOCUMENT_ME. */
   FlowScrollPanel jpItems;
 
-  /** DOCUMENT_ME. */
   JScrollPane jsp;
 
   /** Filter properties. */
@@ -579,7 +566,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
   /**
    * Catalog page display (must be called from the EDT).
    *
-   * @param in DOCUMENT_ME
+   * @param in 
    */
   @Override
   public void shortCall(Object in) {
@@ -742,7 +729,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private class CatalogViewKeyAdaptor extends KeyAdapter {
 
@@ -762,14 +749,14 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private class CatalogViewMouseWheelListener extends DefaultMouseWheelListener {
 
     /**
      * Instantiates a new catalog view mouse wheel listener.
      *
-     * @param js DOCUMENT_ME
+     * @param js 
      */
     public CatalogViewMouseWheelListener(JSlider js) {
       super(js);

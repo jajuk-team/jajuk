@@ -38,7 +38,6 @@ import org.jdesktop.swingx.decorator.HighlightPredicate;
  */
 public class PlayHighlighterPredicate implements HighlightPredicate {
 
-  /** DOCUMENT_ME. */
   private final JajukTableModel model;
 
   private final JajukTable jtable;
@@ -46,7 +45,7 @@ public class PlayHighlighterPredicate implements HighlightPredicate {
   /**
    * Instantiates a new play highlighter predicate.
    * 
-   * @param model DOCUMENT_ME
+   * @param model 
    */
   public PlayHighlighterPredicate(JajukTable jtable) {
     this.jtable = jtable;

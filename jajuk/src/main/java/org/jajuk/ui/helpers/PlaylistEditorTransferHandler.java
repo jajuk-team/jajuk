@@ -52,7 +52,7 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
   /**
    * Constructor.
    * 
-   * @param jtable DOCUMENT_ME
+   * @param jtable 
    */
   public PlaylistEditorTransferHandler(final JajukTable jtable) {
     super(jtable);
@@ -61,8 +61,8 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
   /**
    * Called when dropping.
    * 
-   * @param c DOCUMENT_ME
-   * @param t DOCUMENT_ME
+   * @param c 
+   * @param t 
    * 
    * @return true, if import data
    */

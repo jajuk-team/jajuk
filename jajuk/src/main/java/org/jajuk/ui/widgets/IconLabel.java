@@ -58,18 +58,17 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
   /** Tooltip. */
   private String sTooltip;
 
-  /** DOCUMENT_ME. */
   private static Map<JajukIcons, IconLabel> cachedIcons = new HashMap<JajukIcons, IconLabel>();
 
   /**
    * Constructor.
    * 
-   * @param icon DOCUMENT_ME
-   * @param sText DOCUMENT_ME
-   * @param cBackground DOCUMENT_ME
-   * @param cForeground DOCUMENT_ME
-   * @param font DOCUMENT_ME
-   * @param sTooltip DOCUMENT_ME
+   * @param icon 
+   * @param sText 
+   * @param cBackground 
+   * @param cForeground 
+   * @param font 
+   * @param sTooltip 
    */
   public IconLabel(ImageIcon icon, String sText, Color cBackground, Color cForeground, Font font,
       String sTooltip) {
@@ -84,8 +83,8 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
   /**
    * Instantiates a new icon label.
    * 
-   * @param icon DOCUMENT_ME
-   * @param sText DOCUMENT_ME
+   * @param icon 
+   * @param sText 
    */
   private IconLabel(ImageIcon icon, String sText) {
     super(icon.getImage());
@@ -166,7 +165,7 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
    * Gets an IconLabel from a cache for memory saving reasons.
    * Note that this doesn't handle StarIconLabel that owns its own cache.
    * 
-   * @param icon DOCUMENT_ME
+   * @param icon 
    * 
    * @return the icon
    */

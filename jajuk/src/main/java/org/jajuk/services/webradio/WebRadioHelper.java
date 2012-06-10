@@ -60,7 +60,6 @@ public class WebRadioHelper {
   /** utility class, no instantiation */
   private WebRadioHelper() {
   }
-  
 
   /**
    * Gets the current web radio tooltip.
@@ -79,7 +78,7 @@ public class WebRadioHelper {
   /**
    * Perform a search in all files names with given criteria.
    * 
-   * @param sCriteria DOCUMENT_ME
+   * @param sCriteria 
    * 
    * @return the set< search result>
    */

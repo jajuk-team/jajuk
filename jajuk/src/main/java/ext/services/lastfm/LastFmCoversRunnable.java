@@ -58,7 +58,7 @@ public class LastFmCoversRunnable implements Runnable {
    * @param service the service
    * @param albums the albums
    * @param id the id
-   * @param audioObject DOCUMENT_ME
+   * @param audioObject 
    */
   public LastFmCoversRunnable(ContextListener listener, LastFmService service,
       List<? extends AlbumInfo> albums, long id, AudioObject audioObject) {

@@ -29,7 +29,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public interface AlbumInfo {
 
@@ -187,7 +187,7 @@ public interface AlbumInfo {
    */
   /**
    * To string.
-   * DOCUMENT_ME
+   * 
    * 
    * @return the string
    */

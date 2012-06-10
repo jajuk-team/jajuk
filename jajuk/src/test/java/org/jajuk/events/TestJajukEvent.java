@@ -26,7 +26,7 @@ import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestJajukEvent extends JajukTestCase {
 
@@ -41,7 +41,7 @@ public class TestJajukEvent extends JajukTestCase {
 
   /**
    * Test hash code2.
-   * DOCUMENT_ME
+   * 
    */
   public void testHashCode2() {
     Properties prop1 = new Properties();
@@ -132,7 +132,7 @@ public class TestJajukEvent extends JajukTestCase {
 
   /**
    * Test equals object2.
-   * DOCUMENT_ME
+   * 
    */
   public void testEqualsObject2() {
     Properties prop1 = new Properties();

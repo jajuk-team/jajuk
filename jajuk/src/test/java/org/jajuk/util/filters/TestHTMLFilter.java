@@ -25,7 +25,7 @@ import java.io.File;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestHTMLFilter extends JajukTestCase {
 
@@ -38,7 +38,7 @@ public class TestHTMLFilter extends JajukTestCase {
 
   /**
    * Test accept.
-   * DOCUMENT_ME
+   * 
    */
   public void testAccept() {
     assertTrue(HTMLFilter.getInstance().accept(new File("test.html")));

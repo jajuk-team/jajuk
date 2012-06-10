@@ -41,7 +41,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class NewFolderAction extends JajukAction {
 

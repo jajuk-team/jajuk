@@ -40,10 +40,10 @@ public class TestUtilString extends JajukTestCase {
   @Override
   public final void setUp() throws Exception {
     random.setSeed(System.currentTimeMillis());
-    
+
     super.setUp();
   }
-  
+
   /**
    * Test method for {@link org.jajuk.util.UtilString#applyPattern(org.jajuk.base.File, java.lang.String, boolean, boolean)}.
    * @throws Exception
@@ -193,7 +193,7 @@ public class TestUtilString extends JajukTestCase {
     assertEquals("100000", UtilString.padNumber(100000, 5));
     assertEquals("000-9", UtilString.padNumber(-9, 5));
     assertEquals("00-19", UtilString.padNumber(-19, 5));
-    
+
     assertEquals("1", UtilString.padNumber(1, 1));
     assertEquals("11", UtilString.padNumber(11, 2));
     assertEquals("113", UtilString.padNumber(113, 3));
@@ -201,14 +201,14 @@ public class TestUtilString extends JajukTestCase {
 
   public void testPadNumberBenchmark() {
     testPadNumber();
-    
+
     long overall = 0;
-    for(int i = 0;i < NUMBER_OF_MATCH_TESTS;i++) {
+    for (int i = 0; i < NUMBER_OF_MATCH_TESTS; i++) {
       long dur = runPadMicroBenchmark();
       System.out.println("Test run took " + dur + "ms");
       overall += dur;
     }
-    System.out.println("Average test duration: " + (overall/NUMBER_OF_MATCH_TESTS));
+    System.out.println("Average test duration: " + (overall / NUMBER_OF_MATCH_TESTS));
   }
 
   /**
@@ -218,14 +218,14 @@ public class TestUtilString extends JajukTestCase {
   private long runPadMicroBenchmark() {
     long start = System.currentTimeMillis();
 
-    for(int i = 0; i < MATCHES_PER_TEST*10;i++) {
+    for (int i = 0; i < MATCHES_PER_TEST * 10; i++) {
       UtilString.padNumber(random.nextInt(10000), 5);
       //StringUtils.leftPad(Long.toString(random.nextInt(10000)), 5, '0');
     }
 
     return System.currentTimeMillis() - start;
   }
-  
+
   /**
    * Test method for {@link org.jajuk.util.UtilString#parse(java.lang.String, java.lang.Class)}.
    */

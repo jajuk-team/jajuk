@@ -46,7 +46,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestCoverView extends JajukTestCase {
 
@@ -159,10 +159,10 @@ public class TestCoverView extends JajukTestCase {
 
   /**
    * Recursive action performed.
-   * DOCUMENT_ME
+   * 
    *
-   * @param cmp DOCUMENT_ME
-   * @param view DOCUMENT_ME
+   * @param cmp 
+   * @param view 
    */
   private void recursiveActionPerformed(Container cmp, CoverView view) {
     for (int i = 0; i < cmp.getComponentCount(); i++) {

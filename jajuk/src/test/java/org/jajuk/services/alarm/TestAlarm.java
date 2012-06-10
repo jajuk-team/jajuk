@@ -30,7 +30,7 @@ import org.jajuk.base.File;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestAlarm extends JajukTestCase {
 

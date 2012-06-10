@@ -23,7 +23,7 @@ package org.jajuk.util.error;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestJajukException extends JajukTestCase {
 
@@ -67,7 +67,7 @@ public class TestJajukException extends JajukTestCase {
 
   /**
    * Test jajuk exception int string throwable null.
-   * DOCUMENT_ME
+   * 
    */
   public void testJajukExceptionIntStringThrowableNull() {
     new JajukException(28, null, new Throwable("Testthrowable"));
@@ -86,7 +86,7 @@ public class TestJajukException extends JajukTestCase {
 
   /**
    * Test jajuk exception int string null.
-   * DOCUMENT_ME
+   * 
    */
   public void testJajukExceptionIntStringNull() {
     new JajukException(29, (String) null);

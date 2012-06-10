@@ -39,7 +39,6 @@ public class JajukFileChooser extends JFileChooser {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   private final JajukFileFilter filter;
 
   /**
@@ -62,7 +61,7 @@ public class JajukFileChooser extends JFileChooser {
    * Constructor with specified file filter and starting directory/file.
    * 
    * @param jfilter filter to use
-   * @param file DOCUMENT_ME
+   * @param file 
    */
   public JajukFileChooser(JajukFileFilter jfilter, File file) {
     super(file);
@@ -92,7 +91,7 @@ public class JajukFileChooser extends JFileChooser {
   /**
    * Force the filter to accept directories.
    * 
-   * @param b DOCUMENT_ME
+   * @param b 
    */
   public void setAcceptDirectories(boolean b) {
     for (int i = 0; i < filter.getFilters().length; i++) {
@@ -103,7 +102,7 @@ public class JajukFileChooser extends JFileChooser {
   /**
    * Make sure to keep the dialog always on top.
    * 
-   * @param parent DOCUMENT_ME
+   * @param parent 
    * 
    * @return the j dialog
    * 

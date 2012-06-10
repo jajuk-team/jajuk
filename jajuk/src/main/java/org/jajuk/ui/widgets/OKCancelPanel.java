@@ -39,10 +39,8 @@ public class OKCancelPanel extends JPanel {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   private final JajukButton jbOk;
 
-  /** DOCUMENT_ME. */
   private final JajukButton jbCancel;
 
   /** Associated action listener. */
@@ -51,7 +49,7 @@ public class OKCancelPanel extends JPanel {
   /**
    * Instantiates a new oK cancel panel.
    * 
-   * @param al DOCUMENT_ME
+   * @param al 
    */
   public OKCancelPanel(ActionListener al) {
     this.al = al;
@@ -68,9 +66,9 @@ public class OKCancelPanel extends JPanel {
   /**
    * OK Cancel panel with given button names.
    * 
-   * @param al DOCUMENT_ME
-   * @param sOKTitle DOCUMENT_ME
-   * @param sCancelTitle DOCUMENT_ME
+   * @param al 
+   * @param sOKTitle 
+   * @param sCancelTitle 
    */
   public OKCancelPanel(ActionListener al, String sOKTitle, String sCancelTitle) {
     this(al);

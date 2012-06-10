@@ -24,41 +24,34 @@
 package ext.services.lastfm;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class FullSubmissionData {
 
-  /** DOCUMENT_ME. */
   private String artist;
 
-  /** DOCUMENT_ME. */
   private String title;
 
-  /** DOCUMENT_ME. */
   private String album;
 
-  /** DOCUMENT_ME. */
   private int duration;
 
-  /** DOCUMENT_ME. */
   private int trackNumber;
 
-  /** DOCUMENT_ME. */
   private String source;
 
-  /** DOCUMENT_ME. */
   private int startTime;
 
   /**
    * Instantiates a new full submission data.
    * 
-   * @param artist DOCUMENT_ME
-   * @param title DOCUMENT_ME
-   * @param album DOCUMENT_ME
-   * @param duration DOCUMENT_ME
-   * @param trackNumber DOCUMENT_ME
-   * @param source DOCUMENT_ME
-   * @param startTime DOCUMENT_ME
+   * @param artist 
+   * @param title 
+   * @param album 
+   * @param duration 
+   * @param trackNumber 
+   * @param source 
+   * @param startTime 
    */
   public FullSubmissionData(String artist, String title, String album, int duration,
       int trackNumber, String source, int startTime) {

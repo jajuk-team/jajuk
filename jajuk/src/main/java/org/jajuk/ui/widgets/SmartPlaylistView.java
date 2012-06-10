@@ -43,7 +43,6 @@ public class SmartPlaylistView extends JPanel {
   /** Icon. */
   private JLabel jlIcon;
 
-  /** DOCUMENT_ME. */
   private final Type type;
 
   /** Associated playlist. */
@@ -52,7 +51,7 @@ public class SmartPlaylistView extends JPanel {
   /**
    * Constructor.
    * 
-   * @param type DOCUMENT_ME
+   * @param type 
    */
   public SmartPlaylistView(Playlist.Type type) {
     this.type = type;

@@ -21,7 +21,7 @@
 package org.jajuk.util.error;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class CannotRenameException extends JajukException {
 
@@ -31,7 +31,7 @@ public class CannotRenameException extends JajukException {
   /**
    * constructor.
    * 
-   * @param code DOCUMENT_ME
+   * @param code 
    */
   public CannotRenameException(int code) {
     super(code);

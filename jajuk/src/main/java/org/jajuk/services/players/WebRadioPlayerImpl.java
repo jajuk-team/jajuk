@@ -113,8 +113,8 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
   /**
    * (non-Javadoc).
    * 
-   * @param radio DOCUMENT_ME
-   * @param fVolume DOCUMENT_ME
+   * @param radio 
+   * @param fVolume 
    * 
    * @throws IOException Signals that an I/O exception has occurred.
    * @throws JajukException the jajuk exception

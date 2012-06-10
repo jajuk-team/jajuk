@@ -559,8 +559,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   /**
    * Utility method used by populateByDiscovery method.
    * 
-   * @param node DOCUMENT_ME
-   * @param track DOCUMENT_ME
+   * @param node 
+   * @param track 
    */
   @SuppressWarnings("unchecked")
   private void addTrackAndAlbum(DefaultMutableTreeNode node, Track track) {
@@ -648,7 +648,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
   // needs to be inner class as it accesses various members
   /**
-   * DOCUMENT_ME.
+   * .
    */
   class TracksTreeSelectionListener implements TreeSelectionListener {
 
@@ -691,7 +691,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     /**
      * Handle selected.
      * 
-     * @param tpSelected DOCUMENT_ME
+     * @param tpSelected 
      * 
      * @return the int
      */
@@ -737,13 +737,12 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
    */
   class TracksMouseAdapter extends JajukMouseAdapter {
 
-    /** DOCUMENT_ME. */
     private final JMenuItem jmiShowAlbumDetails;
 
     /**
      * Instantiates a new tracks mouse adapter.
      * 
-     * @param jmiShowAlbumDetails DOCUMENT_ME
+     * @param jmiShowAlbumDetails 
      */
     public TracksMouseAdapter(JMenuItem jmiShowAlbumDetails) {
       super();
@@ -809,7 +808,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     /**
      * Builds the menu.
      * 
-     * @param e DOCUMENT_ME
+     * @param e 
      */
     private void buildMenu(final MouseEvent e) {
       if (paths[0].getLastPathComponent() instanceof TrackNode) {

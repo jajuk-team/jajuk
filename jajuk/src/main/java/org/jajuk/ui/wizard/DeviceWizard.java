@@ -326,7 +326,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   }
 
   /**
-   * Handle type. DOCUMENT_ME
+   * Handle type. 
    */
   private void handleType() {
     switch (jcbType.getSelectedIndex()) {
@@ -388,7 +388,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   }
 
   /**
-   * Handle ok. DOCUMENT_ME
+   * Handle ok. 
    */
   private void handleOk() {
     new Thread("Device Wizard Action Thread") {
@@ -465,7 +465,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   }
 
   /**
-   * Handle synchronized. DOCUMENT_ME
+   * Handle synchronized. 
    */
   private void handleSynchronized() {
     if (jcboxSynchronized.isSelected()) {
@@ -482,7 +482,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   /**
    * Update widgets for device property state.
    *
-   * @param device1 DOCUMENT_ME
+   * @param device1 
    */
   public void updateWidgets(final Device device1) {
     bNew = false;

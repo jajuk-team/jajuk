@@ -69,7 +69,7 @@ public final class JSplash extends JFrame {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** The Constant JAJUK_ICON.  DOCUMENT_ME */
+  /** The Constant JAJUK_ICON.   */
   private static final String JAJUK_ICON = "icons/64x64/jajuk-icon_64x64.png";
 
   /** Progress bar to use in the splash screen. */

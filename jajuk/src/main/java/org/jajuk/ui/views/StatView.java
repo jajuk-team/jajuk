@@ -296,17 +296,17 @@ public class StatView extends ViewAdapter {
   // otherwise hardcoded in ChartFactory
   /**
    * Creates the bar chart3 d.
-   * DOCUMENT_ME
    * 
-   * @param title DOCUMENT_ME
-   * @param categoryAxisLabel DOCUMENT_ME
-   * @param valueAxisLabel DOCUMENT_ME
-   * @param dataset DOCUMENT_ME
-   * @param orientation DOCUMENT_ME
-   * @param legend DOCUMENT_ME
-   * @param tooltips DOCUMENT_ME
-   * @param urls DOCUMENT_ME
-   * @param format DOCUMENT_ME
+   * 
+   * @param title 
+   * @param categoryAxisLabel 
+   * @param valueAxisLabel 
+   * @param dataset 
+   * @param orientation 
+   * @param legend 
+   * @param tooltips 
+   * @param urls 
+   * @param format 
    * 
    * @return the j free chart
    */
@@ -502,7 +502,7 @@ public class StatView extends ViewAdapter {
   /**
    * Get months as integers.
    * 
-   * @param iMonthsNumber DOCUMENT_ME
+   * @param iMonthsNumber 
    * 
    * @return the months
    */

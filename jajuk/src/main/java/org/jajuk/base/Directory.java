@@ -61,16 +61,15 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /** IO file for optimizations*. */
   private java.io.File fio;
 
-  /** DOCUMENT_ME. */
   private long discID = -1l;
 
   /**
    * Directory constructor.
    *
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param dParent DOCUMENT_ME
-   * @param device DOCUMENT_ME
+   * @param sId 
+   * @param sName 
+   * @param dParent 
+   * @param device 
    */
   Directory(String sId, String sName, Directory dParent, Device device) {
     super(sId, sName);
@@ -189,7 +188,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /**
    * return ordered sibling files from the given file index.
    * 
-   * @param fileStart DOCUMENT_ME
+   * @param fileStart 
    * 
    * @return files or null if the given file is unknown
    */
@@ -383,9 +382,9 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /**
    * Scan music.
    *
-   * @param music DOCUMENT_ME
-   * @param bDeepScan DOCUMENT_ME
-   * @param reporter DOCUMENT_ME
+   * @param music 
+   * @param bDeepScan 
+   * @param reporter 
    * @throws JajukException the jajuk exception
    */
   private void scanMusic(java.io.File music, boolean bDeepScan, RefreshReporter reporter)
@@ -465,21 +464,21 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /**
    * Register file.
    *
-   * @param music DOCUMENT_ME
-   * @param sFileId DOCUMENT_ME
-   * @param sTrackName DOCUMENT_ME
-   * @param sAlbumName DOCUMENT_ME
-   * @param sArtistName DOCUMENT_ME
-   * @param sGenre DOCUMENT_ME
-   * @param length DOCUMENT_ME
-   * @param sYear DOCUMENT_ME
-   * @param lQuality DOCUMENT_ME
-   * @param sComment DOCUMENT_ME
-   * @param lOrder DOCUMENT_ME
-   * @param sAlbumArtist DOCUMENT_ME
-   * @param oldDiskID DOCUMENT_ME
-   * @param discID DOCUMENT_ME
-   * @param discNumber DOCUMENT_ME
+   * @param music 
+   * @param sFileId 
+   * @param sTrackName 
+   * @param sAlbumName 
+   * @param sArtistName 
+   * @param sGenre 
+   * @param length 
+   * @param sYear 
+   * @param lQuality 
+   * @param sComment 
+   * @param lOrder 
+   * @param sAlbumArtist 
+   * @param oldDiskID 
+   * @param discID 
+   * @param discNumber 
    * @return the track
    */
   private Track registerFile(java.io.File music, String sFileId, String sTrackName,
@@ -554,11 +553,11 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Scan playlist.
-   * DOCUMENT_ME
    * 
-   * @param file DOCUMENT_ME
-   * @param bDeepScan DOCUMENT_ME
-   * @param reporter DOCUMENT_ME
+   * 
+   * @param file 
+   * @param bDeepScan 
+   * @param reporter 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -631,7 +630,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * Sort ignoring cases
    * </p>.
    * 
-   * @param otherDirectory DOCUMENT_ME
+   * @param otherDirectory 
    * 
    * @return comparison result
    */

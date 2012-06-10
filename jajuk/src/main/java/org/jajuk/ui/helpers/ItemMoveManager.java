@@ -32,25 +32,20 @@ import org.jajuk.base.Item;
 
 public class ItemMoveManager {
 
-  /** DOCUMENT_ME. */
   private static ItemMoveManager singleton = new ItemMoveManager();
 
-  /** DOCUMENT_ME. */
   private final List<Item> itemsToMove = new ArrayList<Item>(20);
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public enum MoveActions {
 
-    /** DOCUMENT_ME. */
     CUT,
 
-    /** DOCUMENT_ME. */
     COPY
   }
 
-  /** DOCUMENT_ME. */
   private MoveActions moveAction;
 
   /**
@@ -64,9 +59,9 @@ public class ItemMoveManager {
 
   /**
    * Adds the items.
-   * DOCUMENT_ME
    * 
-   * @param items DOCUMENT_ME
+   * 
+   * @param items 
    */
   public void addItems(List<Item> items) {
     itemsToMove.addAll(items);
@@ -83,7 +78,7 @@ public class ItemMoveManager {
 
   /**
    * Removes the all.
-   * DOCUMENT_ME
+   * 
    */
   public void removeAll() {
     itemsToMove.clear();

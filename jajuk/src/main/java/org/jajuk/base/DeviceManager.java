@@ -71,7 +71,6 @@ public final class DeviceManager extends ItemManager {
     }
   };
 
-  /** DOCUMENT_ME. */
   private volatile boolean bGlobalRefreshing = false;
 
   /**
@@ -111,7 +110,7 @@ public final class DeviceManager extends ItemManager {
 
   /**
    * Start auto refresh thread.
-   * DOCUMENT_ME
+   * 
    */
   public void startAutoRefreshThread() {
     if (!tAutoRefresh.isAlive()) {
@@ -132,9 +131,9 @@ public final class DeviceManager extends ItemManager {
   /**
    * Register a device.
    * 
-   * @param sName DOCUMENT_ME
-   * @param deviceType DOCUMENT_ME
-   * @param sUrl DOCUMENT_ME
+   * @param sName 
+   * @param deviceType 
+   * @param sUrl 
    * 
    * @return device
    */
@@ -146,10 +145,10 @@ public final class DeviceManager extends ItemManager {
   /**
    * Register a device with a known id.
    *
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param deviceType DOCUMENT_ME
-   * @param sUrl DOCUMENT_ME
+   * @param sId 
+   * @param sName 
+   * @param deviceType 
+   * @param sUrl 
    * @return device
    */
   Device registerDevice(String sId, String sName, Device.Type deviceType, String sUrl) {
@@ -167,10 +166,10 @@ public final class DeviceManager extends ItemManager {
   /**
    * Check none device already has this name or is a parent directory.
    *
-   * @param sName DOCUMENT_ME
-   * @param deviceType DOCUMENT_ME
-   * @param sUrl DOCUMENT_ME
-   * @param bNew DOCUMENT_ME
+   * @param sName 
+   * @param deviceType 
+   * @param sUrl 
+   * @param bNew 
    * @return 0:ok or error code
    */
   public int checkDeviceAvailablity(String sName, Device.Type deviceType, String sUrl, boolean bNew) {
@@ -212,7 +211,7 @@ public final class DeviceManager extends ItemManager {
   /**
    * Return first device found being parent of the provided path.
    * 
-   * @param path DOCUMENT_ME
+   * @param path 
    * 
    * @return  first device found being parent of the provided path
    */
@@ -228,7 +227,7 @@ public final class DeviceManager extends ItemManager {
   /**
   * Remove a device.
   * 
-  * @param device DOCUMENT_ME
+  * @param device 
   */
   public void removeDevice(Device device) {
     lock.writeLock().lock();

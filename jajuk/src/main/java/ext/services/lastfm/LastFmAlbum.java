@@ -84,8 +84,8 @@ public class LastFmAlbum implements AlbumInfo {
   /**
    * Gets the album.
    * 
-   * @param a DOCUMENT_ME
-   * @param pl DOCUMENT_ME
+   * @param a 
+   * @param pl 
    * 
    * @return the album
    */
@@ -121,9 +121,9 @@ public class LastFmAlbum implements AlbumInfo {
 
   /**
    * Handle tracks.
-   * DOCUMENT_ME
    * 
-   * @param ts DOCUMENT_ME
+   * 
+   * @param ts 
    */
   private static void handleTracks(List<TrackInfo> ts) {
     String firstTrackTitle = ts.get(0).getTitle();

@@ -65,7 +65,7 @@ public class LazyLoadingTreeExpander implements TreeWillExpandListener {
    * 
    * If the Node is a LazyLoadingTreeNode load it's children.
    * 
-   * @param event DOCUMENT_ME
+   * @param event 
    * 
    * @throws ExpandVetoException the expand veto exception
    */
@@ -87,7 +87,7 @@ public class LazyLoadingTreeExpander implements TreeWillExpandListener {
   /**
    * Define nodes children.
    *
-   * @param lazyNode DOCUMENT_ME
+   * @param lazyNode 
    * @param nodes new nodes
    */
   private void setChildren(LazyLoadingTreeNode lazyNode, MutableTreeNode... nodes) {

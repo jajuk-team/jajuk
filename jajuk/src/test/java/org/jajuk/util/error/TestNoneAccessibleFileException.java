@@ -23,7 +23,7 @@ package org.jajuk.util.error;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestNoneAccessibleFileException extends JajukTestCase {
 

@@ -68,37 +68,26 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   private JLabel jlLeftIcon;
 
-  /** DOCUMENT_ME. */
   private JPanel jpRightPanel;
 
-  /** DOCUMENT_ME. */
   private JButton jbFileSelection;
 
-  /** DOCUMENT_ME. */
   private JLabel jlSelectedFile;
 
-  /** DOCUMENT_ME. */
   private PathSelector workspacePath;
 
-  /** DOCUMENT_ME. */
   private JLabel jlRefreshTime;
 
-  /** DOCUMENT_ME. */
   private JTextField jtfRefreshTime;
 
-  /** DOCUMENT_ME. */
   private JXCollapsiblePane advanced;
 
-  /** DOCUMENT_ME. */
   private JButton jbOk;
 
-  /** DOCUMENT_ME. */
   private JButton jbCancel;
 
-  /** DOCUMENT_ME. */
   private JPanel jpMain;
 
   /** Selected directory. */

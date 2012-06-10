@@ -40,27 +40,26 @@ import org.jajuk.util.log.Log;
  */
 public class TestLyrics extends JajukTestCase {
 
-  /** DOCUMENT_ME. */
   private File tmp = null;
 
-  /** The Constant ARTIST.  DOCUMENT_ME */
+  /** The Constant ARTIST.   */
   private static final String ARTIST = "Massive Attack";
 
-  /** The Constant TITLE.  DOCUMENT_ME */
+  /** The Constant TITLE.   */
   private static final String TITLE = "Dissolved Girl";
 
-  /** The Constant TESTED_WORD.  DOCUMENT_ME */
+  /** The Constant TESTED_WORD.   */
   private static final String TESTED_WORD = "Day, yesterday";
 
   // LyricsFly put a delay of 1500 ms before we are allowed to query again, we
   // need to take that into account for some of the tests
-  /** The Constant FLY_DELAY.  DOCUMENT_ME */
+  /** The Constant FLY_DELAY.   */
   private static final long FLY_DELAY = 1500 + 200;
 
   // helper method to emma-coverage of the unused constructor
   /**
    * Test private constructor.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -94,7 +93,7 @@ public class TestLyrics extends JajukTestCase {
   /**
    * Test provider response to get lyrics (shared code).
    *
-   * @param provider DOCUMENT_ME
+   * @param provider 
    */
   private void testWebService(GenericWebLyricsProvider provider) {
     String lyrics = provider.getLyrics(ARTIST, TITLE);
@@ -114,7 +113,7 @@ public class TestLyrics extends JajukTestCase {
   /**
    * Test provider web site url (shared code).
    *
-   * @param provider DOCUMENT_ME
+   * @param provider 
    * @throws IOException Signals that an I/O exception has occurred.
    */
   private void testWeb(GenericWebLyricsProvider provider) throws IOException {

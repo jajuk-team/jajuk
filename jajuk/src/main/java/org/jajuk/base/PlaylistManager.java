@@ -76,8 +76,8 @@ public final class PlaylistManager extends ItemManager implements Observer {
   /**
    * Register an Playlist with a known id.
    * 
-   * @param fio DOCUMENT_ME
-   * @param dParentDirectory DOCUMENT_ME
+   * @param fio 
+   * @param dParentDirectory 
    * 
    * @return the playlist
    */
@@ -89,8 +89,8 @@ public final class PlaylistManager extends ItemManager implements Observer {
   /**
    * Creates the id.
    * 
-   * @param sName DOCUMENT_ME
-   * @param dParentDirectory DOCUMENT_ME
+   * @param sName 
+   * @param dParentDirectory 
    * 
    * @return ItemManager ID
    */
@@ -149,9 +149,9 @@ public final class PlaylistManager extends ItemManager implements Observer {
   /**
    * Register an Playlist with a known id.
    *
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param dParentDirectory DOCUMENT_ME
+   * @param sId 
+   * @param sName 
+   * @param dParentDirectory 
    * @return the playlist
    */
   public Playlist registerPlaylistFile(String sId, String sName, Directory dParentDirectory) {
@@ -191,8 +191,8 @@ public final class PlaylistManager extends ItemManager implements Observer {
   /**
    * Change a playlist name.
    * 
-   * @param plfOld DOCUMENT_ME
-   * @param sNewName DOCUMENT_ME
+   * @param plfOld 
+   * @param sNewName 
    * 
    * @return new playlist
    * 

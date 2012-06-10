@@ -51,8 +51,8 @@ public class JajukJDialog extends JDialog {
   /**
    * The Constructor.
    * 
-   * @param owner DOCUMENT_ME
-   * @param modal DOCUMENT_ME
+   * @param owner 
+   * @param modal 
    */
   public JajukJDialog(Frame owner, boolean modal) {
     super(owner, modal);

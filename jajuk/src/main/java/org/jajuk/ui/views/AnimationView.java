@@ -63,22 +63,20 @@ public class AnimationView extends ViewAdapter {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** The Constant DEFAULT_FRAME_RATE.  DOCUMENT_ME */
+  /** The Constant DEFAULT_FRAME_RATE.   */
   private static final int DEFAULT_FRAME_RATE = 25;
 
-  /** The Constant DEFAULT_DURATION.  DOCUMENT_ME */
+  /** The Constant DEFAULT_DURATION.   */
   private static final int DEFAULT_DURATION = 5000;
 
-  /** The Constant DEFAULT_PAUSE.  DOCUMENT_ME */
+  /** The Constant DEFAULT_PAUSE.   */
   private static final int DEFAULT_PAUSE = 500;
 
   /** Current panel width*. */
   private int iSize;
 
-  /** DOCUMENT_ME. */
   private BasicTextLabel btl1;
 
-  /** DOCUMENT_ME. */
   private Animator animator;
 
   /**
@@ -141,7 +139,7 @@ public class AnimationView extends ViewAdapter {
   /**
    * Set the text to be displayed*.
    * 
-   * @param sText DOCUMENT_ME
+   * @param sText 
    */
   public void setText(final String sText) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -241,7 +239,7 @@ public class AnimationView extends ViewAdapter {
       if (radio != null) {
         setText(radio.getName());
       }
-    }else if (subject.equals(JajukEvents.WEBRADIO_INFO_UPDATED)) {
+    } else if (subject.equals(JajukEvents.WEBRADIO_INFO_UPDATED)) {
       String webradioInfo = (String) event.getDetails().get(Const.CURRENT_RADIO_TRACK);
       if (webradioInfo != null) {
         setText(webradioInfo);

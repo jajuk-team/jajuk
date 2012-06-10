@@ -70,43 +70,30 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   private final JLabel jlChoice;
 
-  /** DOCUMENT_ME. */
   private final JCheckBox jcbTime;
 
-  /** DOCUMENT_ME. */
   private final JRadioButton jrbShuffle;
 
-  /** DOCUMENT_ME. */
   private final JRadioButton jrbBestof;
 
-  /** DOCUMENT_ME. */
   private final JRadioButton jrbNovelties;
 
-  /** DOCUMENT_ME. */
   private final JRadioButton jrbFile;
 
-  /** DOCUMENT_ME. */
   private final JTextField jtfHour;
 
-  /** DOCUMENT_ME. */
   private final JTextField jtfMinutes;
 
-  /** DOCUMENT_ME. */
   private final JTextField jtfSeconds;
 
-  /** DOCUMENT_ME. */
   private final JComboBox jcbAlarmAction;
 
-  /** DOCUMENT_ME. */
   private final SearchBox sbSearch;
 
-  /** DOCUMENT_ME. */
   private SearchResult sr;
 
-  /** DOCUMENT_ME. */
   private OKCancelPanel okCancelPanel;
 
   /**
@@ -222,7 +209,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
   /**
    * Handle action.
    * 
-   * @param playAction DOCUMENT_ME
+   * @param playAction 
    */
   private void handleAction(boolean playAction) {
     jlChoice.setEnabled(playAction);
@@ -236,7 +223,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
   /**
    * Handle time checkbox.
    * 
-   * @param playAction DOCUMENT_ME
+   * @param playAction 
    */
   private void handleTimeCheckbox(boolean playAction) {
     // Enable/ disable all widgets if user enables or disables the entire

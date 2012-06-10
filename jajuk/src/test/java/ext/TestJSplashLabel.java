@@ -50,7 +50,7 @@ import org.jajuk.JajukTestCase;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestJSplashLabel extends JajukTestCase {
 
@@ -67,7 +67,7 @@ public class TestJSplashLabel extends JajukTestCase {
 
   /**
    * Test j splash label url.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -77,7 +77,7 @@ public class TestJSplashLabel extends JajukTestCase {
 
   /**
    * Test j splash label font.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -98,7 +98,7 @@ public class TestJSplashLabel extends JajukTestCase {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private final class MyGraphics2D extends Graphics2D {
 

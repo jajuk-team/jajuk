@@ -165,35 +165,32 @@ public final class MersenneTwister extends java.util.Random {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
   // Period parameters
-  /** The Constant N.  DOCUMENT_ME */
+  /** The Constant N.   */
   private static final int N = 624;
 
-  /** The Constant M.  DOCUMENT_ME */
+  /** The Constant M.   */
   private static final int M = 397;
 
-  /** The Constant MATRIX_A.  DOCUMENT_ME */
+  /** The Constant MATRIX_A.   */
   private static final int MATRIX_A = 0x9908b0df; // private static final * constant vector a
 
-  /** The Constant UPPER_MASK.  DOCUMENT_ME */
+  /** The Constant UPPER_MASK.   */
   private static final int UPPER_MASK = 0x80000000; // most significant w-r bits
 
-  /** The Constant LOWER_MASK.  DOCUMENT_ME */
+  /** The Constant LOWER_MASK.   */
   private static final int LOWER_MASK = 0x7fffffff; // least significant r bits
 
   // Tempering parameters
-  /** The Constant TEMPERING_MASK_B.  DOCUMENT_ME */
+  /** The Constant TEMPERING_MASK_B.   */
   private static final int TEMPERING_MASK_B = 0x9d2c5680;
 
-  /** The Constant TEMPERING_MASK_C.  DOCUMENT_ME */
+  /** The Constant TEMPERING_MASK_C.   */
   private static final int TEMPERING_MASK_C = 0xefc60000;
 
-  /** DOCUMENT_ME. */
   private int mt[]; // the array for the state vector
 
-  /** DOCUMENT_ME. */
   private int mti; // mti==N+1 means mt[N] is not initialized
 
-  /** DOCUMENT_ME. */
   private int mag01[];
 
   /** Singleton. */
@@ -219,7 +216,7 @@ public final class MersenneTwister extends java.util.Random {
    * Constructor using a given seed.  Though you pass this seed in
    * as a long, it's best to make sure it's actually an integer.
    * 
-   * @param seed DOCUMENT_ME
+   * @param seed 
    */
   private MersenneTwister(final long seed) {
     super(seed); /* just in case */
@@ -231,7 +228,7 @@ public final class MersenneTwister extends java.util.Random {
    * pass in a long that's bigger than an int (Mersenne Twister
    * only uses the first 32 bits for its seed).
    * 
-   * @param seed DOCUMENT_ME
+   * @param seed 
    */
 
   @Override
@@ -257,7 +254,7 @@ public final class MersenneTwister extends java.util.Random {
   /**
   * Returns an integer with <i>bits</i> bits filled with a random number.
   * 
-  * @param bits DOCUMENT_ME
+  * @param bits 
   * 
   * @return the int
   */
@@ -316,7 +313,7 @@ public final class MersenneTwister extends java.util.Random {
    * event as nextBoolean(double), but twice as fast. To explicitly
    * use this, remember you may need to cast to float first.
    * 
-   * @param probability DOCUMENT_ME
+   * @param probability 
    * 
    * @return true, if next boolean
    */
@@ -336,7 +333,7 @@ public final class MersenneTwister extends java.util.Random {
    * of returning true, else returning false. <tt>probability</tt> must
    * be between 0.0 and 1.0, inclusive.
    * 
-   * @param probability DOCUMENT_ME
+   * @param probability 
    * 
    * @return true, if next boolean
    */
@@ -355,7 +352,7 @@ public final class MersenneTwister extends java.util.Random {
    * This method is missing from JDK 1.1 and below.  JDK 1.2
    * includes this for us, but what the heck.
    * 
-   * @param n DOCUMENT_ME
+   * @param n 
    * 
    * @return the int
    */
@@ -381,7 +378,7 @@ public final class MersenneTwister extends java.util.Random {
    * Returns a long drawn uniformly from 0 to n-1.  Suffice it to say,
    * n must be > 0, or an IllegalArgumentException is raised.
    * 
-   * @param n DOCUMENT_ME
+   * @param n 
    * 
    * @return the long
    */
@@ -426,7 +423,7 @@ public final class MersenneTwister extends java.util.Random {
    * use all four bytes in an integer as independent byte values!
    * Totally wrong. I've submitted a bug report.
    * 
-   * @param bytes DOCUMENT_ME
+   * @param bytes 
    */
 
   @Override

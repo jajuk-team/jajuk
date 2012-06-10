@@ -48,7 +48,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestPreparePartyAction extends JajukTestCase {
 
@@ -103,8 +103,8 @@ public class TestPreparePartyAction extends JajukTestCase {
   /**
    * Gets the playlist.
    *
-   * @param i DOCUMENT_ME
-   * @param register DOCUMENT_ME
+   * @param i 
+   * @param register 
    * @return the playlist
    * @throws Exception the exception
    */

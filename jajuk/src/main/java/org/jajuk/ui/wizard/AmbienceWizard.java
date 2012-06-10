@@ -66,7 +66,7 @@ import org.qdwizard.Wizard;
 public class AmbienceWizard extends Wizard {
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public static class AmbiencePanel extends Screen implements ActionListener {
 
@@ -76,13 +76,10 @@ public class AmbienceWizard extends Wizard {
     /** All dynamic widgets. */
     private JComponent[][] widgets;
 
-    /** DOCUMENT_ME. */
     private JButton jbNew;
 
-    /** DOCUMENT_ME. */
     private JButton jbDelete;
 
-    /** DOCUMENT_ME. */
     private JButton jbDefaults;
 
     /** DJ*. */
@@ -345,8 +342,8 @@ public class AmbienceWizard extends Wizard {
   /**
    * Gets the widget index.
    *
-   * @param widgets DOCUMENT_ME
-   * @param widget DOCUMENT_ME
+   * @param widgets 
+   * @param widget 
    * @return index of a given widget row in the widget table
    */
   private static int getWidgetIndex(final JComponent[][] widgets, final JComponent widget) {

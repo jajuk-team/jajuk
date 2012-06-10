@@ -25,7 +25,7 @@ import java.io.File;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestAnyFileFilter extends JajukTestCase {
 

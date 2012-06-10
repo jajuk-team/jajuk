@@ -42,10 +42,8 @@ import org.jajuk.util.log.Log;
  */
 public abstract class GenericWebLyricsProvider implements ILyricsProvider {
 
-  /** DOCUMENT_ME. */
   private String source = null;
 
-  /** DOCUMENT_ME. */
   private String queryUrlTemplate = null;
 
   /** audio file we search lyrics for. */
@@ -54,7 +52,7 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
   /**
    * Instantiates a new generic web lyrics provider.
    * 
-   * @param queryUrlTemplate DOCUMENT_ME
+   * @param queryUrlTemplate 
    */
   public GenericWebLyricsProvider(final String queryUrlTemplate) {
     this.queryUrlTemplate = queryUrlTemplate;
@@ -66,10 +64,10 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
    */
   /**
    * Call provider.
-   * DOCUMENT_ME
    * 
-   * @param artist DOCUMENT_ME
-   * @param title DOCUMENT_ME
+   * 
+   * @param artist 
+   * @param title 
    * 
    * @return the string
    */
@@ -142,8 +140,8 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
    * corresponding URL) and a Web page (this is this URL that is returned from
    * this method).
    * 
-   * @param artist DOCUMENT_ME
-   * @param title DOCUMENT_ME
+   * @param artist 
+   * @param title 
    * 
    * @return the Web URL or null if a problem occurred
    */
@@ -152,8 +150,8 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
   /**
    * Gets the lyrics.
    * 
-   * @param artist DOCUMENT_ME
-   * @param title DOCUMENT_ME
+   * @param artist 
+   * @param title 
    * 
    * @return the lyrics
    */

@@ -37,8 +37,8 @@ public class Artist extends LogicalItem implements Comparable<Artist> {
   /**
    * Artist constructor.
    *
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
+   * @param sId 
+   * @param sName 
    */
   Artist(String sId, String sName) {
     super(sId, sName);
@@ -69,7 +69,7 @@ public class Artist extends LogicalItem implements Comparable<Artist> {
   /**
    * Alphabetical comparator used to display ordered lists.
    * 
-   * @param otherItem DOCUMENT_ME
+   * @param otherItem 
    * 
    * @return comparison result
    */

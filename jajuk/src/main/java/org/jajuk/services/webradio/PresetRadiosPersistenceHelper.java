@@ -81,10 +81,10 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
   /**
    * Called when we start an element.
    * 
-   * @param sUri DOCUMENT_ME
-   * @param s DOCUMENT_ME
-   * @param sQName DOCUMENT_ME
-   * @param attributes DOCUMENT_ME
+   * @param sUri 
+   * @param s 
+   * @param sQName 
+   * @param attributes 
    * 
    * @throws SAXException the SAX exception
    */
@@ -113,9 +113,9 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
   /**
    * End element in order to read from aTunes radio list.
    * 
-   * @param uri DOCUMENT_ME
-   * @param localName DOCUMENT_ME
-   * @param qName DOCUMENT_ME
+   * @param uri 
+   * @param localName 
+   * @param qName 
    * 
    * @throws SAXException the SAX exception
    */

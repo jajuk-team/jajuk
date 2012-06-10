@@ -50,7 +50,6 @@ public class JajukCellRenderer extends SubstanceDefaultTableCellRenderer impleme
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 154545454L;
 
-  /** DOCUMENT_ME. */
   private final Color color;
 
   /**
@@ -70,7 +69,6 @@ public class JajukCellRenderer extends SubstanceDefaultTableCellRenderer impleme
     this(null);
   }
 
-  /** DOCUMENT_ME. */
   private final SubstanceDefaultTableCellRenderer.BooleanRenderer booleanRenderer = new SubstanceDefaultTableCellRenderer.BooleanRenderer();
 
   /* (non-Javadoc)

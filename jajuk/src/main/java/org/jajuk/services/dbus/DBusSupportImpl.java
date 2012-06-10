@@ -62,7 +62,7 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class DBusSupportImpl implements DBusSupport, Observer {
 
@@ -72,7 +72,6 @@ public class DBusSupportImpl implements DBusSupport, Observer {
   /** The D-Bus name of the Bus that we request. */
   private static final String BUS = "org.jajuk.dbus.DBusSupport";
 
-  /** DOCUMENT_ME. */
   DBusConnection conn;
 
   /**

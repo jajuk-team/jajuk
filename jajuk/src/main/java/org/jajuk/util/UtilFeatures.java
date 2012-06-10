@@ -77,13 +77,13 @@ public final class UtilFeatures {
       "Euro-House", "Dance Hall", "Goa", "Drum & Bass", "Club-House", "Hardcore", "Terror",
       "Indie", "BritPop", "Negerpunk", "Polsk Punk", "Beat", "Christian Gangsta", "Heavy Metal",
       "Black Metal", "Crossover", "Contemporary C", "Christian Rock", "Merengue", "Salsa",
-      "Thrash Metal", "Anime", "JPop", "SynthPop","Variety","News","Talk","Student Station", 
-      "Sport","Generalist","Urban","Education","Humor","8-bits","Eclectic" };
+      "Thrash Metal", "Anime", "JPop", "SynthPop", "Variety", "News", "Talk", "Student Station",
+      "Sport", "Generalist", "Urban", "Education", "Humor", "8-bits", "Eclectic" };
 
   /**
    * Apply play option.
    * 
-   * @param alFiles DOCUMENT_ME
+   * @param alFiles 
    * 
    * @return Given list to play with shuffle or others rules applied
    */
@@ -105,9 +105,9 @@ public final class UtilFeatures {
    * null files are ignored
    * </p>.
    * 
-   * @param alFiles DOCUMENT_ME
-   * @param bRepeat DOCUMENT_ME
-   * @param bUserLauched DOCUMENT_ME
+   * @param alFiles 
+   * @param bRepeat 
+   * @param bUserLauched 
    * 
    * @return the list< stack item>
    */
@@ -160,7 +160,7 @@ public final class UtilFeatures {
   /**
    * Convenient method for getPlayableFiles(collection<item>).
    * 
-   * @param item DOCUMENT_ME
+   * @param item 
    * 
    * @return files
    */
@@ -219,8 +219,8 @@ public final class UtilFeatures {
   /**
    * Gets the shuffle item.
    *
-   * @param <T> DOCUMENT_ME
-   * @param col DOCUMENT_ME
+   * @param <T> 
+   * @param col 
    * @return a single shuffle element from a list, null if none element in
    * provided collection
    */
@@ -240,7 +240,7 @@ public final class UtilFeatures {
   /**
    * Return a genre string for a given genre id *.
    * 
-   * @param i DOCUMENT_ME
+   * @param i 
    * 
    * @return the string genre
    */
@@ -255,7 +255,7 @@ public final class UtilFeatures {
   /**
    * Checks if is standard cover.
    * 
-   * @param file DOCUMENT_ME
+   * @param file 
    * 
    * @return whether the given filename is a standard cover or not
    */
@@ -293,7 +293,7 @@ public final class UtilFeatures {
    * Try to compute time length in milliseconds using BasicPlayer API. (code
    * from jlGui 2.3)
    * 
-   * @param properties DOCUMENT_ME
+   * @param properties 
    * 
    * @return the time length estimation
    */
@@ -337,7 +337,7 @@ public final class UtilFeatures {
   /**
    * Gets the preference for selection.
    * 
-   * @param selection DOCUMENT_ME
+   * @param selection 
    * 
    * @return first item in selection preference
    */
@@ -375,16 +375,17 @@ public final class UtilFeatures {
   public static void updateStatus(Observer observer) {
     // check if a track or a webradio has already been launched
     if (QueueModel.isPlayingRadio()) {
-      Properties webradioInfoUpdatedEvent = ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED);
-      Properties webradioLaunchedEvent = ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED);
+      Properties webradioInfoUpdatedEvent = ObservationManager
+          .getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED);
+      Properties webradioLaunchedEvent = ObservationManager
+          .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED);
       WebRadio updatedWebRadio = (WebRadio) webradioInfoUpdatedEvent.get(Const.DETAIL_CONTENT);
       WebRadio radio = (WebRadio) webradioLaunchedEvent.get(Const.DETAIL_CONTENT);
       //If web radio has an updated event then use that event else use the default event from the web radio launch      
-      if(radio.getName().equals(updatedWebRadio.getName())){
+      if (radio.getName().equals(updatedWebRadio.getName())) {
         observer.update(new JajukEvent(JajukEvents.WEBRADIO_INFO_UPDATED, ObservationManager
             .getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED)));
-      }
-      else{
+      } else {
         observer.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
             .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
       }
@@ -409,7 +410,7 @@ public final class UtilFeatures {
    * Return sum of decimal digits in n. Code from
    * http://www.cs.princeton.edu/introcs/51data/CDDB.java.html
    * 
-   * @param n DOCUMENT_ME
+   * @param n 
    * 
    * @return the long
    */
@@ -453,7 +454,7 @@ public final class UtilFeatures {
    * is different from the initial list's one
    * <p>The list should not be void</p>.
    * 
-   * @param list DOCUMENT_ME
+   * @param list 
    * 
    * @return shuffled list
    */
@@ -469,7 +470,7 @@ public final class UtilFeatures {
   /**
    * Return a flat list of files for given input list without duplicates nor sorting.
    * 
-   * @param in DOCUMENT_ME
+   * @param in 
    * 
    * @return a flat list of files for given input list
    * 

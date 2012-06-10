@@ -24,7 +24,7 @@
 package ext.services.lastfm;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public interface TrackInfo {
 

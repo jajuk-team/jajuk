@@ -23,29 +23,22 @@ package org.jajuk.util;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestUpgradeManager extends JajukTestCase {
 
-  /** DOCUMENT_ME. */
   String v1 = "1.8.4";
 
-  /** DOCUMENT_ME. */
   String v2 = "1.9.1";
 
-  /** DOCUMENT_ME. */
   String v3 = "1.9.2RC3";
 
-  /** DOCUMENT_ME. */
   String v4 = "1.8.5";
 
-  /** DOCUMENT_ME. */
   String v5 = "1.8";
 
-  /** DOCUMENT_ME. */
   String v6 = "1.9";
 
-  /** DOCUMENT_ME. */
   String v7 = "1.9.2RC4";
 
   /*

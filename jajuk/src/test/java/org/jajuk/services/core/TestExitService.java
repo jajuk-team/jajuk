@@ -25,7 +25,7 @@ import org.jajuk.JajukTestCase;
 import org.jajuk.services.startup.StartupCollectionService;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestExitService extends JajukTestCase {
 

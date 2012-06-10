@@ -47,7 +47,7 @@ import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class DebugLogAction extends JajukAction {
 
@@ -138,7 +138,7 @@ public class DebugLogAction extends JajukAction {
   /**
    * Replace some HTML in the properties to make them suitable for printing.
    * 
-   * @param str DOCUMENT_ME
+   * @param str 
    * 
    * @return the string
    */

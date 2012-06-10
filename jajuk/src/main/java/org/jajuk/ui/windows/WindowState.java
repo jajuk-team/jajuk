@@ -26,15 +26,15 @@ package org.jajuk.ui.windows;
 public enum WindowState {
 
   // Not yet build
-  /** DOCUMENT_ME. */
+
   NOT_BUILT,
 
   // Build but not yet displayed
-  /** DOCUMENT_ME. */
+
   BUILT_NOT_DISPLAYED,
 
   // Build and displayed
-  /** DOCUMENT_ME. */
+
   BUILT_DISPLAYED,
 
 }

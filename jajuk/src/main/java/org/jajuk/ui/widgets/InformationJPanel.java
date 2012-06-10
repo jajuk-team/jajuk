@@ -66,15 +66,14 @@ public final class InformationJPanel extends JXPanel implements Observer {
   private static final long serialVersionUID = 1L;
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public static enum MessageType {
 
-    /** DOCUMENT_ME. */
     INFORMATIVE,
-    /** DOCUMENT_ME. */
+
     ERROR,
-    /** DOCUMENT_ME. */
+
     WARNING
   }
 
@@ -105,30 +104,23 @@ public final class InformationJPanel extends JXPanel implements Observer {
 
   // widgets declaration
 
-  /** DOCUMENT_ME. */
   public JLabel jlMessage;
 
-  /** DOCUMENT_ME. */
   JLabel jlSelection;
 
-  /** DOCUMENT_ME. */
   JLabel jlTotal;
 
   // attributes
 
-  /** DOCUMENT_ME. */
   String sMessage;
 
   /** Current message type. */
   MessageType type = MessageType.INFORMATIVE;
 
-  /** DOCUMENT_ME. */
   String sSelection;
 
-  /** DOCUMENT_ME. */
   String sTotalStatus;
 
-  /** DOCUMENT_ME. */
   private final TrackPositionSliderToolbar trackPositionSliderToolbar;
 
   /**
@@ -223,8 +215,8 @@ public final class InformationJPanel extends JXPanel implements Observer {
   /**
    * Sets the message.
    * 
-   * @param sMessage DOCUMENT_ME
-   * @param messageType DOCUMENT_ME
+   * @param sMessage 
+   * @param messageType 
    */
   public void setMessage(final String sMessage, final MessageType messageType) {
     this.sMessage = sMessage;
@@ -250,7 +242,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
   /**
    * Sets the selection.
    * 
-   * @param sSelection DOCUMENT_ME
+   * @param sSelection 
    */
   public void setSelection(String sSelection) {
     this.sSelection = sSelection;
@@ -270,7 +262,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
   /**
    * Sets the total time message.
    * 
-   * @param string DOCUMENT_ME
+   * @param string 
    */
   public void setTotalTimeMessage(String string) {
     sTotalStatus = string;
@@ -376,7 +368,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
               String message = Messages.getString("FIFO.14") + " " + radio.getName();
               setMessage(message, InformationJPanel.MessageType.INFORMATIVE);
             }
-          }else if (JajukEvents.WEBRADIO_INFO_UPDATED.equals(subject)) {
+          } else if (JajukEvents.WEBRADIO_INFO_UPDATED.equals(subject)) {
             if (event.getDetails() == null) {
               return;
             }

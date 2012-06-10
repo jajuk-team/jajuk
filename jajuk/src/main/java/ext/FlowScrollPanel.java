@@ -23,17 +23,15 @@ import javax.swing.JScrollPane;
 import org.jdesktop.swingx.JXPanel;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class FlowScrollPanel extends JXPanel {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   private FlowLayout layout = new FlowLayout();
 
-  /** DOCUMENT_ME. */
   private JScrollPane scroller;
 
   /**
@@ -46,7 +44,7 @@ public class FlowScrollPanel extends JXPanel {
   /**
    * Instantiates a new flow scroll panel.
    * 
-   * @param scrollPane DOCUMENT_ME
+   * @param scrollPane 
    */
   public FlowScrollPanel(JScrollPane scrollPane) {
     super();
@@ -159,9 +157,9 @@ public class FlowScrollPanel extends JXPanel {
   /**
    * Returns height of a row.
    * 
-   * @param visibleRect DOCUMENT_ME
-   * @param orientation DOCUMENT_ME
-   * @param direction DOCUMENT_ME
+   * @param visibleRect 
+   * @param orientation 
+   * @param direction 
    * 
    * @return the scrollable unit increment
    */
@@ -174,9 +172,9 @@ public class FlowScrollPanel extends JXPanel {
   /**
    * returns the height of the visible rect (so it scrolls by one screenfull).
    * 
-   * @param visibleRect DOCUMENT_ME
-   * @param orientation DOCUMENT_ME
-   * @param direction DOCUMENT_ME
+   * @param visibleRect 
+   * @param orientation 
+   * @param direction 
    * 
    * @return the scrollable block increment
    */

@@ -73,16 +73,16 @@ public class Track extends LogicalItem implements Comparable<Track> {
   /**
    * Track constructor.
    *
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param album DOCUMENT_ME
-   * @param genre DOCUMENT_ME
-   * @param artist DOCUMENT_ME
-   * @param length DOCUMENT_ME
-   * @param year DOCUMENT_ME
-   * @param lOrder DOCUMENT_ME
-   * @param type DOCUMENT_ME
-   * @param lDiscNumber DOCUMENT_ME
+   * @param sId 
+   * @param sName 
+   * @param album 
+   * @param genre 
+   * @param artist 
+   * @param length 
+   * @param year 
+   * @param lOrder 
+   * @param type 
+   * @param lDiscNumber 
    */
   Track(String sId, String sName, Album album, Genre genre, Artist artist, long length, Year year,
       long lOrder, Type type, long lDiscNumber) {
@@ -158,7 +158,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * Default comparator for tracks, not used for sorting (use TrackComparator
    * for that) But only for storage.
    *
-   * @param otherTrack DOCUMENT_ME
+   * @param otherTrack 
    *
    * @return comparison result
    */
@@ -423,7 +423,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   /**
    * Add an associated file.
    *
-   * @param file DOCUMENT_ME
+   * @param file 
    */
   public void addFile(File file) {
     // make sure a file will be referenced by only one track (first found)
@@ -479,13 +479,13 @@ public class Track extends LogicalItem implements Comparable<Track> {
   public void updateRate() {
     try {
       // Manual rating : just use preference
-      if (Conf.getBoolean(Const.CONF_MANUAL_RATINGS)){
+      if (Conf.getBoolean(Const.CONF_MANUAL_RATINGS)) {
         long preference = getLongValue(Const.XML_TRACK_PREFERENCE);
         long rate = RatingManager.getRateForPreference(preference);
         setRate(rate);
         return;
       }
-      
+
       // rate contains final rate [0,100]
       long rate = 0;
       // Normalize values to avoid division by zero
@@ -555,7 +555,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   /**
    * Sets the comment.
    *
-   * @param sComment DOCUMENT_ME
+   * @param sComment 
    */
   public void setComment(String sComment) {
     setProperty(Const.XML_TRACK_COMMENT, sComment);
@@ -694,7 +694,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   String toRatingsXml() {
     // no export if zero rating and not banned either
-    if(getRate() == 0 && getProperties().get(Const.XML_TRACK_BANNED) == null) {
+    if (getRate() == 0 && getProperties().get(Const.XML_TRACK_BANNED) == null) {
       return "";
     }
 
@@ -717,7 +717,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   private void appendXML(StringBuilder sb, String sKey) {
     Object oValue = getProperties().get(sKey);
-    if(oValue == null) {
+    if (oValue == null) {
       return;
     }
 

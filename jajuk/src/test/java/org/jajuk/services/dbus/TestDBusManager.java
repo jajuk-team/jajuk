@@ -23,7 +23,7 @@ package org.jajuk.services.dbus;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestDBusManager extends JajukTestCase {
 

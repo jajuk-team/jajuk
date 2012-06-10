@@ -53,22 +53,16 @@ class ActionsPanel extends JPanel {
   /** Problem text area. */
   JLabel jlProblem;
 
-  /** DOCUMENT_ME. */
   JButton jbPrevious;
 
-  /** DOCUMENT_ME. */
   JButton jbNext;
 
-  /** DOCUMENT_ME. */
   JButton jbFinish;
 
-  /** DOCUMENT_ME. */
   JButton jbCancel;
 
-  /** DOCUMENT_ME. */
   private Color backgroundColor;
 
-  /** DOCUMENT_ME. */
   private Color backgroundColorProblem;
 
   /** Associated action listener. */
@@ -138,10 +132,10 @@ class ActionsPanel extends JPanel {
   /**
    * Set buttons states.
    *
-   * @param bPrevious DOCUMENT_ME
-   * @param bNext DOCUMENT_ME
-   * @param bFinish DOCUMENT_ME
-   * @param bCancel DOCUMENT_ME
+   * @param bPrevious 
+   * @param bNext 
+   * @param bFinish 
+   * @param bCancel 
    */
   void setState(boolean bPrevious, boolean bNext, boolean bFinish, boolean bCancel) {
     jbPrevious.setEnabled(bPrevious);
@@ -163,7 +157,7 @@ class ActionsPanel extends JPanel {
   /**
    * Set the background color of the ActionPanel.
    * 
-   * @param color DOCUMENT_ME
+   * @param color 
    */
   public void setBackgroundColor(Color color) {
     this.backgroundColor = color;
@@ -172,7 +166,7 @@ class ActionsPanel extends JPanel {
   /**
    * Set the background color of the ActionPanel's Problem notification area.
    * 
-   * @param color DOCUMENT_ME
+   * @param color 
    */
   public void setProblemBackgroundColor(Color color) {
     this.backgroundColorProblem = color;
@@ -181,7 +175,7 @@ class ActionsPanel extends JPanel {
   /**
    * Set the background color of the ActionPanel's Problem notification area.
    * 
-   * @param color DOCUMENT_ME
+   * @param color 
    */
   public void setProblemTextColor(Color color) {
     jlProblem.setForeground(color);

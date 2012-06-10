@@ -28,7 +28,7 @@ import org.jajuk.JajukTestCase;
 import org.jajuk.services.players.StackItem;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestUtilFeatures extends JajukTestCase {
 
@@ -61,7 +61,7 @@ public class TestUtilFeatures extends JajukTestCase {
   // helper method to emma-coverage of the unused constructor
   /**
    * Test private constructor.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */

@@ -84,74 +84,56 @@ public class SuggestionView extends ViewAdapter {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   private JTabbedPane tabs;
 
-  /** DOCUMENT_ME. */
   protected String artist;
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   enum SuggestionType {
 
-    /** DOCUMENT_ME. */
     BEST_OF,
 
-    /** DOCUMENT_ME. */
     NEWEST,
 
-    /** DOCUMENT_ME. */
     RARE,
 
-    /** DOCUMENT_ME. */
     OTHERS_ALBUMS,
 
-    /** DOCUMENT_ME. */
     SIMILAR_ARTISTS
   }
 
-  /** DOCUMENT_ME. */
   JScrollPane jpBestof;
 
-  /** DOCUMENT_ME. */
   JScrollPane jpNewest;
 
-  /** DOCUMENT_ME. */
   JScrollPane jpRare;
 
-  /** DOCUMENT_ME. */
   JScrollPane jpOthersAlbums;
 
-  /** DOCUMENT_ME. */
   JScrollPane jpSimilarArtists;
 
-  /** DOCUMENT_ME. */
   private int comp = 0;
 
-  /** DOCUMENT_ME. */
   List<Album> albumsNewest;
 
-  /** DOCUMENT_ME. */
   List<Album> albumsPrefered;
 
-  /** DOCUMENT_ME. */
   List<Album> albumsRare;
 
   /** Currently selected thumb. */
   AbstractThumbnail selectedThumb;
 
-  /** DOCUMENT_ME. */
   private AlbumListInfo albums;
 
-  /** DOCUMENT_ME. */
   private SimilarArtistsInfo similar;
 
   /** Event ID., it should be volatile because this mutable field can be set by different threads */
   protected volatile int iEventID = 0;//NOSONAR
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   class ThumbMouseListener extends MouseAdapter {
 
@@ -340,11 +322,11 @@ public class SuggestionView extends ViewAdapter {
 
   /**
    * Refresh last fm collection tabs.
-   * DOCUMENT_ME
+   * 
    */
   private void refreshLastFMCollectionTabs() {
     final int iLocalEventID = SuggestionView.this.iEventID;
-    
+
     String newArtist = null;
     File current = QueueModel.getPlayingFile();
     if (current != null) {
@@ -403,11 +385,12 @@ public class SuggestionView extends ViewAdapter {
           preFetchOthersAlbum(iLocalEventID);
 
           // stop this list of albums if there was another file launched in the meantime 
-          if(iLocalEventID != SuggestionView.this.iEventID) {
-            Log.debug("Stopping downloading of LastFM data because there was another update-event in the meantime. Now: " + SuggestionView.this.iEventID + ", previous: " + iLocalEventID);
+          if (iLocalEventID != SuggestionView.this.iEventID) {
+            Log.debug("Stopping downloading of LastFM data because there was another update-event in the meantime. Now: "
+                + SuggestionView.this.iEventID + ", previous: " + iLocalEventID);
             return null;
           }
-          
+
           preFetchSimilarArtists(iLocalEventID);
         } catch (Exception e) {
           Log.error(e);
@@ -418,12 +401,13 @@ public class SuggestionView extends ViewAdapter {
       @Override
       public void done() {
         // stop this list of albums if there was another file launched in the meantime 
-        if(iLocalEventID != SuggestionView.this.iEventID) {
-          Log.debug("Stopping populating of LastFM data because there was another update-event in the meantime. Now: " + SuggestionView.this.iEventID + ", previous: " + iLocalEventID);
+        if (iLocalEventID != SuggestionView.this.iEventID) {
+          Log.debug("Stopping populating of LastFM data because there was another update-event in the meantime. Now: "
+              + SuggestionView.this.iEventID + ", previous: " + iLocalEventID);
           stopAllBusyLabels();
           return;
         }
-        
+
         jsp1 = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, false);
         jsp2 = getLastFMSuggestionsPanel(SuggestionType.SIMILAR_ARTISTS, false);
         stopAllBusyLabels();
@@ -447,11 +431,12 @@ public class SuggestionView extends ViewAdapter {
     if (albums != null && albums.getAlbums().size() > 0) {
       for (AlbumInfo album : albums.getAlbums()) {
         // stop this list of albums if there was another file launched in the meantime 
-        if(iLocalEventID != this.iEventID) {
-          Log.debug("Stopping downloading of similar albums because there was another update-event in the meantime. Now: " + this.iEventID + ", previous: " + iLocalEventID);
+        if (iLocalEventID != this.iEventID) {
+          Log.debug("Stopping downloading of similar albums because there was another update-event in the meantime. Now: "
+              + this.iEventID + ", previous: " + iLocalEventID);
           break;
         }
-        
+
         String albumUrl = album.getBigCoverURL();
         if (StringUtils.isBlank(albumUrl)) {
           continue;
@@ -479,11 +464,12 @@ public class SuggestionView extends ViewAdapter {
       List<ArtistInfo> artists = similar.getArtists();
       for (ArtistInfo similarArtist : artists) {
         // stop this list of albums if there was another file launched in the meantime, another refresh will take place anyway 
-        if(iLocalEventID != this.iEventID) {
-          Log.debug("Stopping downloading of similar artists because there was another update-event in the meantime. Now: " + this.iEventID + ", previous: " + iLocalEventID);
+        if (iLocalEventID != this.iEventID) {
+          Log.debug("Stopping downloading of similar artists because there was another update-event in the meantime. Now: "
+              + this.iEventID + ", previous: " + iLocalEventID);
           break;
         }
-        
+
         String artistUrl = similarArtist.getImageUrl();
         if (StringUtils.isBlank(artistUrl)) {
           continue;
@@ -500,7 +486,7 @@ public class SuggestionView extends ViewAdapter {
   /**
    * Return the result panel for local albums.
    *
-   * @param type DOCUMENT_ME
+   * @param type 
    *
    * @return the local suggestions panel
    */
@@ -535,8 +521,8 @@ public class SuggestionView extends ViewAdapter {
   /**
    * Return the result panel for lastFM information.
    *
-   * @param type DOCUMENT_ME
-   * @param artistView DOCUMENT_ME
+   * @param type 
+   * @param artistView 
    *
    * @return the last fm suggestions panel
    */

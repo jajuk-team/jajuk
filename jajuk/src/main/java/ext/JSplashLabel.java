@@ -63,7 +63,7 @@ public final class JSplashLabel extends JLabel {
    * <p>
    *
    * @param url The location of the image (<b>it cannot be null</b>).
-   * @param copyright DOCUMENT_ME
+   * @param copyright 
    * @param text The string to draw (can be null).
    * @param font The font to use (can be null).
    */

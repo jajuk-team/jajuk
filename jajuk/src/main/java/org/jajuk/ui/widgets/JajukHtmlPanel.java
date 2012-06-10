@@ -59,19 +59,17 @@ import org.xml.sax.SAXException;
  */
 public class JajukHtmlPanel extends HtmlPanel {
 
-  /** The Constant COLON.  DOCUMENT_ME */
+  /** The Constant COLON.   */
   private static final String COLON = " : ";
 
-  /** The Constant URL_COLON.  DOCUMENT_ME */
+  /** The Constant URL_COLON.   */
   private static final String URL_COLON = "URL: ";
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -4033441908072591661L;
 
-  /** DOCUMENT_ME. */
   private final SimpleHtmlRendererContext rcontext;
 
-  /** DOCUMENT_ME. */
   private final DocumentBuilderImpl dbi;
 
   /**
@@ -89,8 +87,8 @@ public class JajukHtmlPanel extends HtmlPanel {
   /**
    * Display a wikipedia url.
    *
-   * @param url DOCUMENT_ME
-   * @param lang DOCUMENT_ME
+   * @param url 
+   * @param lang 
    */
   public void setURL(final URL url, final String lang) {
 
@@ -225,8 +223,8 @@ public class JajukHtmlPanel extends HtmlPanel {
   /**
    * Make the internal operations.
    * 
-   * @param sPage DOCUMENT_ME
-   * @param page DOCUMENT_ME
+   * @param sPage 
+   * @param page 
    * 
    * @throws IOException Signals that an I/O exception has occurred.
    * @throws SAXException the SAX exception
@@ -262,7 +260,7 @@ public class JajukHtmlPanel extends HtmlPanel {
 
   /**
    * Back.
-   * DOCUMENT_ME
+   * 
    */
   public void back() {
     rcontext.back();

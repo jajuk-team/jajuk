@@ -141,7 +141,7 @@ public final class DigitalDJManager implements Observer {
   /**
    * Gets the dj by name.
    * 
-   * @param sName DOCUMENT_ME
+   * @param sName 
    * 
    * @return DJ by name
    */
@@ -157,7 +157,7 @@ public final class DigitalDJManager implements Observer {
   /**
    * Gets the dj by id.
    * 
-   * @param sID DOCUMENT_ME
+   * @param sID 
    * 
    * @return DJ by ID
    */
@@ -168,7 +168,7 @@ public final class DigitalDJManager implements Observer {
   /**
    * Commit given dj on disk.
    * 
-   * @param dj DOCUMENT_ME
+   * @param dj 
    */
   public static void commit(DigitalDJ dj) {
     try {
@@ -186,7 +186,7 @@ public final class DigitalDJManager implements Observer {
   /**
    * Remove a DJ.
    * 
-   * @param dj DOCUMENT_ME
+   * @param dj 
    * 
    * @throws IOException Signals that an I/O exception has occurred.
    */
@@ -206,7 +206,7 @@ public final class DigitalDJManager implements Observer {
   /**
    * Register a DJ.
    * 
-   * @param dj DOCUMENT_ME
+   * @param dj 
    */
   public void register(DigitalDJ dj) {
     djs.put(dj.getID(), dj);

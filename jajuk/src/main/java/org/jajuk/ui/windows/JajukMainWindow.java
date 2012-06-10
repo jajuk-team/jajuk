@@ -458,9 +458,11 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
             // detect jajuk frames and extract current track
             setTitle("\\ " + radio.getName() + " /");
           }
-        }else if (subject.equals(JajukEvents.WEBRADIO_INFO_UPDATED)) {
-          Properties webradioInfoUpdatedEvent = ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED);
-          String currentRadioTrack = (String) webradioInfoUpdatedEvent.get(Const.CURRENT_RADIO_TRACK);
+        } else if (subject.equals(JajukEvents.WEBRADIO_INFO_UPDATED)) {
+          Properties webradioInfoUpdatedEvent = ObservationManager
+              .getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED);
+          String currentRadioTrack = (String) webradioInfoUpdatedEvent
+              .get(Const.CURRENT_RADIO_TRACK);
           if (currentRadioTrack != null) {
             // We use vertical bar to allow scripting like MSN plugins to
             // detect jajuk frames and extract current track

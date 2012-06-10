@@ -25,24 +25,23 @@ import org.freedesktop.dbus.DBusSignal;
 import org.freedesktop.dbus.exceptions.DBusException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class DBusSignalImpl implements DBusInterface {
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public static class FileChangedSignal extends DBusSignal {
 
-    /** DOCUMENT_ME. */
     String filename;
 
     /**
      * The Constructor.
      *
-     * @param filename DOCUMENT_ME
-     * @param path DOCUMENT_ME
-     * @param args DOCUMENT_ME
+     * @param filename 
+     * @param path 
+     * @param args 
      * @throws DBusException the d bus exception
      */
     public FileChangedSignal(String filename, String path, Object... args) throws DBusException {

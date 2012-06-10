@@ -21,7 +21,7 @@
 package org.jajuk.util.error;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class NoneAccessibleFileException extends JajukException {
 

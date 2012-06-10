@@ -106,70 +106,49 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
   /** A queue view to be used by the show queue view slimbar switch button. Don't use it directly, use the getQueueWindow() method instead that lazy-load it. */
   private JWindow queueViewWindow;
 
-  /** DOCUMENT_ME. */
   private JButton jbInfo;
 
-  /** DOCUMENT_ME. */
   private SizedButton jbPrevious;
 
-  /** DOCUMENT_ME. */
   private SizedButton jbNext;
 
-  /** DOCUMENT_ME. */
   private SizedButton jbPlayPause;
 
-  /** DOCUMENT_ME. */
   private SizedButton jbStop;
 
-  /** DOCUMENT_ME. */
   private PreferenceToolbar preferences;
 
-  /** DOCUMENT_ME. */
   private DropDownButton jddbSmart;
 
-  /** DOCUMENT_ME. */
   private JPopupMenu jpmSmart;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jbBestof;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jbNovelties;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jbRandom;
 
-  /** DOCUMENT_ME. */
   private SizedButton jbFinishAlbum;
 
-  /** DOCUMENT_ME. */
   private JButton jbMaximize;
 
-  /** DOCUMENT_ME. */
   private SizedButton jbVolume;
 
-  /** DOCUMENT_ME. */
   private SearchBox sbSearch;
 
-  /** DOCUMENT_ME. */
   private JToolBar slimJajuk;
 
-  /** DOCUMENT_ME. */
   private JToolBar jtbPlay;
 
-  /** DOCUMENT_ME. */
   private DropDownButton webRadioButton;
 
-  /** DOCUMENT_ME. */
   private String title = "";
 
   /** State decorator. */
   private WindowStateDecorator decorator;
 
-  /** DOCUMENT_ME. */
   JajukInformationDialog balloon;
 
-  /** DOCUMENT_ME. */
   private static JajukSlimbar self;
 
   /**
@@ -283,7 +262,6 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     }
   };
 
-  /** DOCUMENT_ME. */
   private SizedButton jbQueue;
 
   /**
@@ -554,7 +532,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
   }
 
   /**
-   * Update current title. DOCUMENT_ME
+   * Update current title. 
    */
   private void updateCurrentTitle() {
     File file = QueueModel.getPlayingFile();
@@ -626,7 +604,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    * Force tooltip refresh Thanks Santhosh Kumar
    * http://www.jroller.com/santhosh/entry/tooltips_can_say_more
    * 
-   * @param comp DOCUMENT_ME
+   * @param comp 
    */
   public static void postToolTip(JComponent comp) {
     Action action = comp.getActionMap().get("postTip");
@@ -642,7 +620,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    * Remove tooltip Thanks Santhosh Kumar
    * http://www.jroller.com/santhosh/entry/tooltips_can_say_more
    * 
-   * @param comp DOCUMENT_ME
+   * @param comp 
    */
   public static void hideToolTip(JComponent comp) {
     Action action = comp.getActionMap().get("hideTip");

@@ -74,7 +74,7 @@ public class TestAlbumComparator extends JajukTestCase {
 
   /**
    * Test compare genre2.
-   * DOCUMENT_ME
+   * 
    */
   public final void testCompareGenre2() {
     AlbumComparator compare = new AlbumComparator(0);
@@ -96,7 +96,7 @@ public class TestAlbumComparator extends JajukTestCase {
 
   /**
    * Test compare genre4 album artist different.
-   * DOCUMENT_ME
+   * 
    */
   public final void testCompareGenre4AlbumArtistDifferent() {
     AlbumComparator compare = new AlbumComparator(0);
@@ -118,7 +118,7 @@ public class TestAlbumComparator extends JajukTestCase {
 
   /**
    * Test compare genre3 same year.
-   * DOCUMENT_ME
+   * 
    */
   public final void testCompareGenre3SameYear() {
     AlbumComparator compare = new AlbumComparator(0);
@@ -141,7 +141,7 @@ public class TestAlbumComparator extends JajukTestCase {
 
   /**
    * Test compare artist.
-   * DOCUMENT_ME
+   * 
    */
   public final void testCompareArtist() {
     AlbumComparator compare = new AlbumComparator(1);
@@ -165,7 +165,7 @@ public class TestAlbumComparator extends JajukTestCase {
 
   /**
    * Test compare artist same year.
-   * DOCUMENT_ME
+   * 
    */
   public final void testCompareArtistSameYear() {
     AlbumComparator compare = new AlbumComparator(1);
@@ -191,7 +191,7 @@ public class TestAlbumComparator extends JajukTestCase {
 
   /**
    * Test compare album.
-   * DOCUMENT_ME
+   * 
    */
   public final void testCompareAlbum() {
     AlbumComparator compare = new AlbumComparator(2);
@@ -205,7 +205,7 @@ public class TestAlbumComparator extends JajukTestCase {
 
   /**
    * Test compare year.
-   * DOCUMENT_ME
+   * 
    */
   public final void testCompareYear() {
     AlbumComparator compare = new AlbumComparator(3);
@@ -226,7 +226,7 @@ public class TestAlbumComparator extends JajukTestCase {
 
   /**
    * Test compare year same year.
-   * DOCUMENT_ME
+   * 
    */
   public final void testCompareYearSameYear() {
     AlbumComparator compare = new AlbumComparator(3);
@@ -249,7 +249,7 @@ public class TestAlbumComparator extends JajukTestCase {
 
   /**
    * Test compare year same year diff artist.
-   * DOCUMENT_ME
+   * 
    */
   public final void testCompareYearSameYearDiffArtist() {
     AlbumComparator compare = new AlbumComparator(3);
@@ -272,7 +272,7 @@ public class TestAlbumComparator extends JajukTestCase {
 
   /**
    * Test compare discovery date.
-   * DOCUMENT_ME
+   * 
    */
   public final void testCompareDiscoveryDate() {
     AlbumComparator compare = new AlbumComparator(4);
@@ -297,7 +297,7 @@ public class TestAlbumComparator extends JajukTestCase {
 
   /**
    * Test compare rate.
-   * DOCUMENT_ME
+   * 
    */
   public final void testCompareRate() {
     AlbumComparator compare = new AlbumComparator(5);
@@ -319,7 +319,7 @@ public class TestAlbumComparator extends JajukTestCase {
 
   /**
    * Test compare rate gt.
-   * DOCUMENT_ME
+   * 
    */
   public final void testCompareRateGT() {
     AlbumComparator compare = new AlbumComparator(5);
@@ -341,7 +341,7 @@ public class TestAlbumComparator extends JajukTestCase {
 
   /**
    * Test compare hits.
-   * DOCUMENT_ME
+   * 
    */
   public final void testCompareHits() {
     AlbumComparator compare = new AlbumComparator(6);
@@ -363,7 +363,7 @@ public class TestAlbumComparator extends JajukTestCase {
 
   /**
    * Test compare hits gt.
-   * DOCUMENT_ME
+   * 
    */
   public final void testCompareHitsGT() {
     AlbumComparator compare = new AlbumComparator(6);
@@ -386,7 +386,7 @@ public class TestAlbumComparator extends JajukTestCase {
   /**
    * Gets the track.
    *
-   * @param album DOCUMENT_ME
+   * @param album 
    * @return the track
    */
   private Track getTrack(Album album) {
@@ -397,8 +397,8 @@ public class TestAlbumComparator extends JajukTestCase {
   /**
    * Gets the track.
    *
-   * @param album DOCUMENT_ME
-   * @param artist DOCUMENT_ME
+   * @param album 
+   * @param artist 
    * @return the track
    */
   private Track getTrack(Album album, Artist artist) {
@@ -409,9 +409,9 @@ public class TestAlbumComparator extends JajukTestCase {
   /**
    * Gets the track.
    *
-   * @param album DOCUMENT_ME
-   * @param genre DOCUMENT_ME
-   * @param year DOCUMENT_ME
+   * @param album 
+   * @param genre 
+   * @param year 
    * @return the track
    */
   private Track getTrack(Album album, Genre genre, Year year) {
@@ -421,7 +421,7 @@ public class TestAlbumComparator extends JajukTestCase {
 
   /**
    * Test compare no track.
-   * DOCUMENT_ME
+   * 
    */
   public final void testCompareNoTrack() {
     AlbumComparator compare = new AlbumComparator(0);
@@ -436,7 +436,7 @@ public class TestAlbumComparator extends JajukTestCase {
 
   /**
    * Test compare criteria outside.
-   * DOCUMENT_ME
+   * 
    */
   public final void testCompareCriteriaOutside() {
     AlbumComparator compare = new AlbumComparator(99);

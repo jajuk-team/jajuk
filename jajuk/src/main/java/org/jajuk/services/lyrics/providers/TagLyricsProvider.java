@@ -27,7 +27,7 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TagLyricsProvider implements ILyricsProvider {
 

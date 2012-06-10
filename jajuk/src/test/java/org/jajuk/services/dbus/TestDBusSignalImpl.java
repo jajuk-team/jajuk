@@ -23,7 +23,7 @@ package org.jajuk.services.dbus;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestDBusSignalImpl extends JajukTestCase {
 
@@ -37,7 +37,7 @@ public class TestDBusSignalImpl extends JajukTestCase {
 
   /**
    * Test file changed signal.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */

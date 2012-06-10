@@ -55,7 +55,6 @@ import org.jajuk.util.log.Log;
 
 public class AlarmManager implements Observer {
 
-  /** DOCUMENT_ME. */
   private static AlarmManager singleton = new AlarmManager();
 
   static {
@@ -69,7 +68,6 @@ public class AlarmManager implements Observer {
     singleton.update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
   }
 
-  /** DOCUMENT_ME. */
   private Alarm alarm;
 
   /** This thread looks alarms up and call weak up when it's time. */

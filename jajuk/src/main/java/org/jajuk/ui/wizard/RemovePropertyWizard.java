@@ -46,7 +46,6 @@ public class RemovePropertyWizard extends CustomPropertyWizard {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   JComboBox jcbName;
 
   /**
@@ -109,7 +108,7 @@ public class RemovePropertyWizard extends CustomPropertyWizard {
 
   /**
    * Populate properties.
-   * DOCUMENT_ME
+   * 
    */
   public final void populateProperties() {
     // clear combo

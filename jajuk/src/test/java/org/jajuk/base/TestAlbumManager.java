@@ -40,7 +40,7 @@ import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.KeyNotFoundException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestAlbumManager extends JajukTestCase {
 
@@ -102,7 +102,7 @@ public class TestAlbumManager extends JajukTestCase {
 
   /**
    * Test register album empty artist.
-   * DOCUMENT_ME
+   * 
    */
   public void testRegisterAlbumEmptyArtist() {
     AlbumManager.getInstance().clear();
@@ -143,7 +143,7 @@ public class TestAlbumManager extends JajukTestCase {
 
   /**
    * Test change album name with track.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -162,7 +162,7 @@ public class TestAlbumManager extends JajukTestCase {
 
   /**
    * Test change album name with queue.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -186,7 +186,7 @@ public class TestAlbumManager extends JajukTestCase {
 
   /**
    * Test change album name same name.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -324,7 +324,7 @@ public class TestAlbumManager extends JajukTestCase {
 
   /**
    * Test get best of albums less.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -359,7 +359,7 @@ public class TestAlbumManager extends JajukTestCase {
 
   /**
    * Test get best of album zero.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetBestOfAlbumZero() {
     AlbumManager.getInstance().clear();
@@ -547,8 +547,8 @@ public class TestAlbumManager extends JajukTestCase {
   /**
    * Gets the track.
    *
-   * @param i DOCUMENT_ME
-   * @param album DOCUMENT_ME
+   * @param i 
+   * @param album 
    * @return the track
    * @throws Exception the exception
    */
@@ -585,7 +585,7 @@ public class TestAlbumManager extends JajukTestCase {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public static class MyTagImpl implements ITagImpl {
 
@@ -897,7 +897,7 @@ public class TestAlbumManager extends JajukTestCase {
 
   // needs to be public to be callable from the outside...
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public static class MockPlayer implements IPlayerImpl {
 

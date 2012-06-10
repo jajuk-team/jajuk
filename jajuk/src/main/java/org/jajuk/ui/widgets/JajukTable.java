@@ -79,13 +79,11 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   private final String sConf;
 
   /** User Selection*. */
   private final List<Item> selection = new ArrayList<Item>();
 
-  /** DOCUMENT_ME. */
   private final JPopupMenu jmenu;
 
   /** Specific action on double click. */
@@ -94,7 +92,7 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
   /** Model refreshing flag. */
   private volatile boolean acceptColumnsEvents = false;
 
-  /** The Constant FORMATTER. DOCUMENT_ME */
+  /** The Constant FORMATTER.  */
   private static final DateFormat FORMATTER = UtilString.getLocaleDateFormatter();
 
   /** Stores the last index of column move to*. */
@@ -146,7 +144,7 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
    *
    * @param model : model to use
    * @param bSortable : is this table sortable
-   * @param sConf DOCUMENT_ME
+   * @param sConf 
    *
    * @sConf: configuration variable used to store columns conf
    */
@@ -187,7 +185,7 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
    * Constructor.
    *
    * @param model : model to use
-   * @param sConf DOCUMENT_ME
+   * @param sConf 
    *
    * @sConf: configuration variable used to store columns conf
    */
@@ -196,9 +194,9 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
   }
 
   /**
-   * Inits the. DOCUMENT_ME
+   * Inits the. 
    *
-   * @param bSortable DOCUMENT_ME
+   * @param bSortable 
    */
   private void init(boolean bSortable) {
     super.setSortable(bSortable);
@@ -208,7 +206,7 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
   /**
    * Select columns to show colsToShow list of columns id to keep.
    *
-   * @param colsToShow DOCUMENT_ME
+   * @param colsToShow 
    */
   public void showColumns(List<String> colsToShow) {
     boolean acceptColumnsEventsSave = acceptColumnsEvents;
@@ -235,7 +233,7 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
    */
   /**
    * Reorder columns.
-   * DOCUMENT_ME
+   * 
    */
   private void reorderColumns() {
     // Build the index array
@@ -309,7 +307,7 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
   /**
    * Add a new property into columns conf.
    *
-   * @param property DOCUMENT_ME
+   * @param property 
    */
   public void addColumnIntoConf(String property) {
     if (sConf == null) {
@@ -325,7 +323,7 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
   /**
    * Remove a property from columns conf.
    *
-   * @param property DOCUMENT_ME
+   * @param property 
    */
   public void removeColumnFromConf(String property) {
     if (sConf == null) {
@@ -337,7 +335,7 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
   }
 
   /**
-   * Column change. DOCUMENT_ME
+   * Column change. 
    */
   private void columnChange() {
     // ignore this column change when reloading
@@ -421,7 +419,7 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
   /**
    * Gets the columns conf.
    *
-   * @param alCol DOCUMENT_ME
+   * @param alCol 
    *
    * @return columns configuration from given list of columns identifiers
    */
@@ -442,7 +440,7 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
   /**
    * add tooltips to each cell.
    *
-   * @param e DOCUMENT_ME
+   * @param e 
    *
    * @return the tool tip text
    */
@@ -550,7 +548,7 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
    * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
    */
   @SuppressWarnings("unused")
-   public void mouseClicked(MouseEvent e) {
+  public void mouseClicked(MouseEvent e) {
     // nothing to do here for now
   }
 
@@ -559,8 +557,8 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
    *
    * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
    */
-   @SuppressWarnings("unused")
-   public void mouseEntered(MouseEvent e) {
+  @SuppressWarnings("unused")
+  public void mouseEntered(MouseEvent e) {
     // nothing to do here for now
   }
 

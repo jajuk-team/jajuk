@@ -26,7 +26,7 @@ package ext.services.lastfm;
 import java.util.List;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public interface SimilarArtistsInfo {
 

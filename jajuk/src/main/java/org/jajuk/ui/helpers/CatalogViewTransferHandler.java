@@ -39,13 +39,12 @@ public class CatalogViewTransferHandler extends TransferHandler {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   private final LocalAlbumThumbnail item;
 
   /**
    * Constructor.
    * 
-   * @param item DOCUMENT_ME
+   * @param item 
    */
   public CatalogViewTransferHandler(LocalAlbumThumbnail item) {
     this.item = item;
@@ -54,7 +53,7 @@ public class CatalogViewTransferHandler extends TransferHandler {
   /**
    * Called when dragging.
    * 
-   * @param c DOCUMENT_ME
+   * @param c 
    * 
    * @return the transferable
    */
@@ -70,7 +69,7 @@ public class CatalogViewTransferHandler extends TransferHandler {
   /**
    * return action type.
    * 
-   * @param c DOCUMENT_ME
+   * @param c 
    * 
    * @return the source actions
    */
@@ -82,8 +81,8 @@ public class CatalogViewTransferHandler extends TransferHandler {
   /**
    * Called when dropping, no drop in catalog view for now.
    * 
-   * @param c DOCUMENT_ME
-   * @param t DOCUMENT_ME
+   * @param c 
+   * @param t 
    * 
    * @return true, if import data
    */

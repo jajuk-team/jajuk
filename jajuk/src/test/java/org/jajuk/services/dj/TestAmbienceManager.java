@@ -35,7 +35,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestAmbienceManager extends JajukTestCase {
 
@@ -190,7 +190,7 @@ public class TestAmbienceManager extends JajukTestCase {
 
   /**
    * Test get ambience by name invalid.
-   * DOCUMENT_ME
+   * 
    */
   public final void testGetAmbienceByNameInvalid() {
     // this creates the 14 default ambiences

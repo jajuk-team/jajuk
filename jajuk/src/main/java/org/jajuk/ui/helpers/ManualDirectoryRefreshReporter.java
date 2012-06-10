@@ -33,7 +33,7 @@ public class ManualDirectoryRefreshReporter extends RefreshReporter {
   /**
    * Instantiates a new manual directory refresh reporter.
    * 
-   * @param device DOCUMENT_ME
+   * @param device 
    */
   public ManualDirectoryRefreshReporter(Device device) {
     super(device);

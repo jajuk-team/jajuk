@@ -56,19 +56,14 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   JButton jbFileSelection;
 
-  /** DOCUMENT_ME. */
   JLabel jlSelectedFile;
 
-  /** DOCUMENT_ME. */
   JTextField jtfRefreshTime;
 
-  /** DOCUMENT_ME. */
   OKCancelPanel okp;
 
-  /** DOCUMENT_ME. */
   String deviceName;
 
   /** Selected directory. */

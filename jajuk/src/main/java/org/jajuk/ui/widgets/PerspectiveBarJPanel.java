@@ -132,7 +132,7 @@ public final class PerspectiveBarJPanel extends JXPanel {
   /**
    * Show selected perspective.
    * 
-   * @param perspective DOCUMENT_ME
+   * @param perspective 
    */
   public void setActivated(IPerspective perspective) {
     Collection<IPerspective> perspectives = PerspectiveManager.getPerspectives();

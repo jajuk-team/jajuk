@@ -53,10 +53,10 @@ public class DonateWindow extends JajukJDialog {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** The Constant BUDGET_LINK.  DOCUMENT_ME */
+  /** The Constant BUDGET_LINK.   */
   private static final String BUDGET_LINK = "http://jajuk.info/index.php/Project_budget";
 
-  /** The Constant DONATE_LINK.  DOCUMENT_ME */
+  /** The Constant DONATE_LINK.   */
   private static final String DONATE_LINK = "http://jajuk.info/index.php/Donate";
 
   /**
@@ -87,7 +87,7 @@ public class DonateWindow extends JajukJDialog {
    */
   /**
    * Inits the ui.
-   * DOCUMENT_ME
+   * 
    */
   public void initUI() {
     Container cp = this.getContentPane();

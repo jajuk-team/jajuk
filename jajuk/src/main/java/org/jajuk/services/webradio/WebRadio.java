@@ -37,8 +37,8 @@ public class WebRadio extends PhysicalItem implements Comparable<WebRadio> {
   /**
   * Instantiates a new web radio.
   * 
-  * @param name DOCUMENT_ME
-  * @param url DOCUMENT_ME
+  * @param name 
+  * @param url 
   */
   WebRadio(String sId, String sName) {
     super(sId, sName);
@@ -52,7 +52,7 @@ public class WebRadio extends PhysicalItem implements Comparable<WebRadio> {
   public String getUrl() {
     return getStringValue(XML_URL);
   }
-  
+
   /**
    * Gets the genre.
    * 
@@ -61,7 +61,7 @@ public class WebRadio extends PhysicalItem implements Comparable<WebRadio> {
   public String getGenre() {
     return getStringValue(XML_GENRE);
   }
-  
+
   /**
    * Gets the webradio description.
    * 

@@ -38,7 +38,7 @@ import org.jajuk.base.Year;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestHistoryItem extends JajukTestCase {
 
@@ -96,7 +96,7 @@ public class TestHistoryItem extends JajukTestCase {
 
   /**
    * Test to string file.
-   * DOCUMENT_ME
+   * 
    */
   public final void testToStringFile() {
     File file;

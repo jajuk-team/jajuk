@@ -37,7 +37,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class ContinueModeAction extends JajukAction {
 

@@ -28,9 +28,9 @@ public interface AnimationCompletedListener {
 
   /**
    * Animation completed.
-   * DOCUMENT_ME
    * 
-   * @param e DOCUMENT_ME
+   * 
+   * @param e 
    */
   void animationCompleted(AnimationCompletedEvent e);
 }

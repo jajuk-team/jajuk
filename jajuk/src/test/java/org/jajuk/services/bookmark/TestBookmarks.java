@@ -30,7 +30,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestBookmarks extends JajukTestCase {
 
@@ -227,7 +227,7 @@ public class TestBookmarks extends JajukTestCase {
   // helper method to emma-coverage of the unused constructor
   /**
    * Test private constructor.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -242,7 +242,7 @@ public class TestBookmarks extends JajukTestCase {
 
   /**
    * Test coverage.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */

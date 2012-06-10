@@ -49,7 +49,6 @@ import org.jajuk.util.log.Log;
  */
 public final class RatingManager extends Thread implements Observer {
 
-  /** DOCUMENT_ME. */
   private static RatingManager self = new RatingManager();
 
   /** Flag the fact a rate has change for a track, used by bestof view refresh for perfs. */

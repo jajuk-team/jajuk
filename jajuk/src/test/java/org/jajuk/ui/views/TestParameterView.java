@@ -34,7 +34,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestParameterView extends JajukTestCase {
 
@@ -128,7 +128,7 @@ public class TestParameterView extends JajukTestCase {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private final class MyItemSelectable implements ItemSelectable {
 

@@ -23,7 +23,7 @@ package org.jajuk.services.reporting;
 import java.io.IOException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public final class ExporterFactory {
 
@@ -36,7 +36,7 @@ public final class ExporterFactory {
   /**
    * This methods returns an instance of Exporter.
    * 
-   * @param extension DOCUMENT_ME
+   * @param extension 
    * 
    * @return Returns an instance of XMLExporter.
    * 

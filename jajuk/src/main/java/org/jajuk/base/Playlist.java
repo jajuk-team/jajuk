@@ -75,22 +75,16 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   public enum Type {
 
-    /** DOCUMENT_ME. */
     NORMAL,
 
-    /** DOCUMENT_ME. */
     QUEUE,
 
-    /** DOCUMENT_ME. */
     NEW,
 
-    /** DOCUMENT_ME. */
     BOOKMARK,
 
-    /** DOCUMENT_ME. */
     BESTOF,
 
-    /** DOCUMENT_ME. */
     NOVELTIES
   }
 
@@ -119,9 +113,9 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * playlist constructor.
    * 
    * @param type playlist type
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param dParentDirectory DOCUMENT_ME
+   * @param sId 
+   * @param sName 
+   * @param dParentDirectory 
    */
   Playlist(final Type type, final String sId, final String sName, final Directory dParentDirectory) {
     super(sId, sName);
@@ -133,9 +127,9 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * playlist constructor.
    * 
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param dParentDirectory DOCUMENT_ME
+   * @param sId 
+   * @param sName 
+   * @param dParentDirectory 
    */
   public Playlist(final String sId, final String sName, final Directory dParentDirectory) {
     this(Playlist.Type.NORMAL, sId, sName, dParentDirectory);
@@ -153,7 +147,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * Add a file at the end of this playlist.
    * 
-   * @param file DOCUMENT_ME
+   * @param file 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -166,8 +160,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * Add a file to this playlist. at a given index.
    * 
-   * @param index DOCUMENT_ME
-   * @param file DOCUMENT_ME
+   * @param index 
+   * @param file 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -204,7 +198,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * Add some files to this playlist.
    * 
    * @param alFilesToAdd :   List of Files
-   * @param position DOCUMENT_ME
+   * @param position 
    */
   public void addFiles(final List<File> alFilesToAdd, int position) {
     try {
@@ -280,7 +274,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * Move temp playlist file.
    * 
-   * @param temp DOCUMENT_ME
+   * @param temp 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -310,7 +304,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * Sort ignoring cases
    * </p>.
    * 
-   * @param o DOCUMENT_ME
+   * @param o 
    * 
    * @return comparison result
    */
@@ -352,7 +346,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * Down a track in the playlist.
    * 
-   * @param index DOCUMENT_ME
+   * @param index 
    */
   public void down(final int index) {
     if (type == Type.BOOKMARK) {
@@ -370,7 +364,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * Equal method to check two playlists are identical.
    * 
-   * @param otherPlaylistFile DOCUMENT_ME
+   * @param otherPlaylistFile 
    * 
    * @return true, if equals
    */
@@ -564,7 +558,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
         String sLine = null;
         boolean bUnknownDevicesMessage = false;
         while ((sLine = br.readLine()) != null) {
-           if (sLine.length() == 0) { // void line
+          if (sLine.length() == 0) { // void line
             continue;
           }
           // replace '\' by '/'
@@ -589,7 +583,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
             // Check for file existence in jajuk collection using Guava Files.simplyPath
             // Don't use File.getAbsolutePath() because its result can contain ./ or ../
             // Don't use File.getCanonicalPath() because it resolves symlinks under unix.
-            File jajukFile = FileManager.getInstance().getFileByPath(Files.simplifyPath(fioAbsPath));
+            File jajukFile = FileManager.getInstance()
+                .getFileByPath(Files.simplifyPath(fioAbsPath));
             if (jajukFile == null) { // check if this file is known in collection
               fio = new java.io.File(sLine); // check if given url is not absolute
               jajukFile = FileManager.getInstance().getFileByPath(fio.getAbsolutePath());
@@ -652,8 +647,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * Replace a file inside a playlist.
    * 
-   * @param fOld DOCUMENT_ME
-   * @param fNew DOCUMENT_ME
+   * @param fOld 
+   * @param fNew 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -773,7 +768,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * Up a track in the playlist.
    * 
-   * @param index DOCUMENT_ME
+   * @param index 
    */
   public void up(final int index) {
     if (type == Type.BOOKMARK) {
@@ -857,7 +852,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * Return true is the specified directory is an ancestor for this playlist.
    * 
-   * @param directory DOCUMENT_ME
+   * @param directory 
    * 
    * @return true, if checks for ancestor
    */
@@ -881,7 +876,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   private final class FileChooserRunnable implements Runnable {
     // records if there are exceptions during doing the call
-    /** DOCUMENT_ME. */
+
     JajukException ex = null;
 
     /*

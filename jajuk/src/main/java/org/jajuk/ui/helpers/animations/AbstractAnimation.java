@@ -29,16 +29,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public abstract class AbstractAnimation implements IAnimation {
 
-  /** DOCUMENT_ME. */
   protected Window window;
 
-  /** DOCUMENT_ME. */
   private CopyOnWriteArrayList<AnimationCompletedListener> listeners = new CopyOnWriteArrayList<AnimationCompletedListener>();
 
   /**
    * Instantiates a new abstract animation.
    * 
-   * @param window DOCUMENT_ME
+   * @param window 
    */
   protected AbstractAnimation(Window window) {
     this.window = window;
@@ -54,9 +52,9 @@ public abstract class AbstractAnimation implements IAnimation {
 
   /**
    * Adds the animation completed listener.
-   * DOCUMENT_ME
    * 
-   * @param listener DOCUMENT_ME
+   * 
+   * @param listener 
    */
   public void addAnimationCompletedListener(AnimationCompletedListener listener) {
     listeners.add(listener);
@@ -64,9 +62,9 @@ public abstract class AbstractAnimation implements IAnimation {
 
   /**
    * Removes the animation completed listener.
-   * DOCUMENT_ME
    * 
-   * @param listener DOCUMENT_ME
+   * 
+   * @param listener 
    */
   public void removeAnimationCompletedListener(AnimationCompletedListener listener) {
     listeners.remove(listener);
@@ -74,7 +72,7 @@ public abstract class AbstractAnimation implements IAnimation {
 
   /**
    * Animation completed.
-   * DOCUMENT_ME
+   * 
    */
   protected void animationCompleted() {
     AnimationCompletedEvent event = new AnimationCompletedEvent(this, window);

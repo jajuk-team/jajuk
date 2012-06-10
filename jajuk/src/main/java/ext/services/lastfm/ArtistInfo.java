@@ -26,7 +26,7 @@ package ext.services.lastfm;
 import javax.swing.ImageIcon;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public interface ArtistInfo {
 
@@ -103,7 +103,7 @@ public interface ArtistInfo {
   /**
    * Sets the available property.
    * 
-   * @param available DOCUMENT_ME
+   * @param available 
    */
   public void setAvailable(boolean available);
 

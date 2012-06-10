@@ -59,13 +59,10 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 3869208492725759632L;
 
-  /** DOCUMENT_ME. */
   JajukButton jbBan;
 
-  /** DOCUMENT_ME. */
   JComboBox jcbPreference;
 
-  /** DOCUMENT_ME. */
   ActionListener listener;
 
   /**
@@ -146,7 +143,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
   /**
    * Set right combo selection for given selection.
    * 
-   * @param preference DOCUMENT_ME
+   * @param preference 
    */
   public final void setPreference(long preference) {
     jcbPreference.removeActionListener(listener);
@@ -215,7 +212,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private class ComboBoxRenderer extends BasicComboBoxRenderer {
 

@@ -25,7 +25,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestNotificatorFactory extends JajukTestCase {
 
@@ -76,7 +76,7 @@ public class TestNotificatorFactory extends JajukTestCase {
 
   /**
    * Test get system notificator false.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetSystemNotificatorFalse() {
     // disable Tooltip/Notification

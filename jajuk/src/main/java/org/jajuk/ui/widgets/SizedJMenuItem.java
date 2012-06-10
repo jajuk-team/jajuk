@@ -48,7 +48,7 @@ public class SizedJMenuItem extends JMenuItem {
   /**
    * Sets the icon.
    * 
-   * @param icon DOCUMENT_ME
+   * @param icon 
    */
   @Override
   public void setIcon(Icon icon) {

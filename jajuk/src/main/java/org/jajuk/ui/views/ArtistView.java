@@ -68,13 +68,10 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
   /** The artist bio (from last.fm wiki) */
   private JTextArea jtaArtistDesc;
 
-  /** DOCUMENT_ME. */
   private JScrollPane jspAlbums;
 
-  /** DOCUMENT_ME. */
   private String bio;
 
-  /** DOCUMENT_ME. */
   private ArtistInfo artistInfo;
 
   /*

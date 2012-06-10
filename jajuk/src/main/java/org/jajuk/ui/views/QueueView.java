@@ -87,10 +87,8 @@ public class QueueView extends PlaylistView {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -2851288035506442507L;
 
-  /** DOCUMENT_ME. */
   private JScrollPane jsp;
 
-  /** DOCUMENT_ME. */
   private JajukToggleButton jtbAutoScroll;
 
   /** Last scrolled-item *. */
@@ -444,7 +442,7 @@ public class QueueView extends PlaylistView {
   }
 
   /**
-   * Refresh queue. DOCUMENT_ME
+   * Refresh queue. 
    */
   private void refreshQueue() {
     // when nothing is selected, set default button state
@@ -562,7 +560,7 @@ public class QueueView extends PlaylistView {
   }
 
   /**
-   * Removes the selection. DOCUMENT_ME
+   * Removes the selection. 
    */
   private void removeSelection() {
     int[] iRows = editorTable.getSelectedRows();
@@ -585,7 +583,7 @@ public class QueueView extends PlaylistView {
    * Called when table selection changed.
    * 
    * @param e
-   *            DOCUMENT_ME
+   *            
    */
   @Override
   public void valueChanged(ListSelectionEvent e) {

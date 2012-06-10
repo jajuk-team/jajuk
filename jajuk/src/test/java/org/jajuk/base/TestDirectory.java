@@ -114,7 +114,7 @@ public class TestDirectory extends JajukTestCase {
 
   /**
    * Test to string parent.
-   * DOCUMENT_ME
+   * 
    */
   public void testToStringParent() {
     Directory dir = JUnitHelpers.getDirectory("dir1");
@@ -191,8 +191,8 @@ public class TestDirectory extends JajukTestCase {
   /**
    * Gets the file in dir.
    *
-   * @param i DOCUMENT_ME
-   * @param dir DOCUMENT_ME
+   * @param i 
+   * @param dir 
    * @return the file in dir
    * @throws Exception the exception
    */
@@ -247,7 +247,7 @@ public class TestDirectory extends JajukTestCase {
 
   /**
    * Test get playlist recursively.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetPlaylistRecursively() {
     PlaylistManager.getInstance().clear();
@@ -369,7 +369,7 @@ public class TestDirectory extends JajukTestCase {
 
   /**
    * Test scan actual.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */

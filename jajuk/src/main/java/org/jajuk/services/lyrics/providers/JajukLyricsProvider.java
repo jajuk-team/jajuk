@@ -27,16 +27,12 @@ import org.jajuk.base.File;
  */
 public class JajukLyricsProvider implements ILyricsProvider {
 
-  /** DOCUMENT_ME. */
   private String sLyrics = null;
 
-  /** DOCUMENT_ME. */
   private String sArtist = null;
 
-  /** DOCUMENT_ME. */
   private String sTitle = null;
 
-  /** DOCUMENT_ME. */
   private File audioFile = null;
 
   /**

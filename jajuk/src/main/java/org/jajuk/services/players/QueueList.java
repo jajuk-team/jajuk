@@ -304,9 +304,9 @@ public class QueueList implements List<StackItem> {
 
   /**
    * Adds the planned.
-   * DOCUMENT_ME
    * 
-   * @param c DOCUMENT_ME
+   * 
+   * @param c 
    */
   public void addPlanned(Collection<? extends StackItem> c) {
     for (StackItem item : c) {
@@ -339,7 +339,7 @@ public class QueueList implements List<StackItem> {
   /**
    * Removes the planned from list.
    * 
-   * @param alFiles DOCUMENT_ME
+   * @param alFiles 
    */
   public void removePlannedFromList(List<File> alFiles) {
     for (StackItem item : alPlanned) {
@@ -350,7 +350,7 @@ public class QueueList implements List<StackItem> {
 
   /**
    * Clear planned.
-   * DOCUMENT_ME
+   * 
    */
   public void clearPlanned() {
     alPlanned.clear();
@@ -361,7 +361,7 @@ public class QueueList implements List<StackItem> {
 
   /**
    * Contains repeat.
-   * DOCUMENT_ME
+   * 
    * 
    * @return true if...
    */
@@ -376,7 +376,7 @@ public class QueueList implements List<StackItem> {
 
   /**
    * Pop next planned.
-   * DOCUMENT_ME
+   * 
    * 
    * @return the stack item
    */
@@ -391,7 +391,7 @@ public class QueueList implements List<StackItem> {
 
   /**
    * Contains only repeat.
-   * DOCUMENT_ME
+   * 
    * 
    * @return true if...
    */

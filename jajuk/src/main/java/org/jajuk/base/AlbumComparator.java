@@ -40,13 +40,13 @@ public class AlbumComparator implements Comparator<Album>, Serializable {
    * 0 .. genre 1 .. artist 2 .. album 3 .. year 4 .. discovery date 5 .. rate 6 ..
    * hits
    */
-  /** DOCUMENT_ME. */
+
   private int criteria = 0;
 
   /**
    * Instantiates a new album comparator.
    * 
-   * @param criteria DOCUMENT_ME
+   * @param criteria 
    */
   public AlbumComparator(int criteria) {
     this.criteria = criteria;

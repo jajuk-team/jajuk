@@ -96,7 +96,7 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
    * Extracts lyrics from the HTML page. The correct subsection is to be
    * extracted first, before being cleaned and stripped from useless HTML tags.
    * 
-   * @param html DOCUMENT_ME
+   * @param html 
    * 
    * @return the lyrics
    */

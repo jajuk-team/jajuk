@@ -35,11 +35,11 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.UtilString;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestLastFmAlbum extends JajukTestCase {
 
-  /** The Constant API_KEY.  DOCUMENT_ME */
+  /** The Constant API_KEY.   */
   private static final String API_KEY = "711591ss6q695ps349o6681pr1oq1467";
 
   /**
@@ -56,7 +56,7 @@ public class TestLastFmAlbum extends JajukTestCase {
 
   /**
    * Test get album playlist.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetAlbumPlaylist() {
     Album a = Album.getInfo("Red Hot Chilli Peppers", "By The Way", UtilString.rot13(API_KEY));
@@ -157,7 +157,7 @@ public class TestLastFmAlbum extends JajukTestCase {
 
   /**
    * Test get release date invalid.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetReleaseDateInvalid() {
     LastFmAlbum album = new LastFmAlbum();

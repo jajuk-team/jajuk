@@ -75,16 +75,14 @@ public class ThumbnailPopup extends JWindow {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -8131528719972829954L;
 
-  /** DOCUMENT_ME. */
   private final JEditorPane text;
 
-  /** DOCUMENT_ME. */
   private KeyEventDispatcher dispatcher = null;
 
   /**
    * Launch selection and set right cursor.
    * 
-   * @param tracks DOCUMENT_ME
+   * @param tracks 
    */
   private void launchLink(List<Track> tracks) {
     List<org.jajuk.base.File> toPlay = new ArrayList<org.jajuk.base.File>(1);
@@ -259,7 +257,7 @@ public class ThumbnailPopup extends JWindow {
 
   /**
    * Removes the keystrokes.
-   * DOCUMENT_ME
+   * 
    */
   private void removeKeystrokes() {
     if (dispatcher != null) {

@@ -27,7 +27,7 @@ import org.jajuk.JajukTestCase;
 import org.jajuk.base.Item;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestFilter extends JajukTestCase {
 

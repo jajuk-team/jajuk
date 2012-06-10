@@ -76,8 +76,8 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
   /**
    * Instantiates a new duplicate tracks list.
    * 
-   * @param files DOCUMENT_ME
-   * @param jbClose DOCUMENT_ME
+   * @param files 
+   * @param jbClose 
    */
   public DuplicateTracksDialog(List<List<File>> files, JButton jbClose) {
     super(new BorderLayout());
@@ -111,9 +111,9 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
 
   /**
    * Populate list.
-   * DOCUMENT_ME
    * 
-   * @param allFiles DOCUMENT_ME
+   * 
+   * @param allFiles 
    */
   public final void populateList(List<List<File>> allFiles) {
     flatFilesList = new ArrayList<File>();

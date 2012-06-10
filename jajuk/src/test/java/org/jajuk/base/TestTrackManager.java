@@ -27,7 +27,7 @@ import org.jajuk.JajukTestCase;
 import org.junit.Test;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestTrackManager extends JajukTestCase {
 

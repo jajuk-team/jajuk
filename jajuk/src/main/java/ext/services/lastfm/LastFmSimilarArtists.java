@@ -52,8 +52,8 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
   /**
    * Gets the similar artists.
    * 
-   * @param as DOCUMENT_ME
-   * @param a DOCUMENT_ME
+   * @param as 
+   * @param a 
    * 
    * @return the similar artists
    */

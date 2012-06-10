@@ -14,29 +14,25 @@ import java.util.TimerTask;
 import javax.swing.JLabel;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class JScrollingText extends JLabel {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 3068213731703270035L;
 
-  /** DOCUMENT_ME. */
   private final int speed;
 
-  /** DOCUMENT_ME. */
   private final int period;
 
-  /** DOCUMENT_ME. */
   private final int offset;
 
-  /** DOCUMENT_ME. */
   private int x = 300;
 
   /**
    * Instantiates a new j scrolling text.
    * 
-   * @param text DOCUMENT_ME
+   * @param text 
    */
   public JScrollingText(String text) {
     this(text, 1);
@@ -45,8 +41,8 @@ public class JScrollingText extends JLabel {
   /**
    * Instantiates a new j scrolling text.
    * 
-   * @param text DOCUMENT_ME
-   * @param speed DOCUMENT_ME
+   * @param text 
+   * @param speed 
    */
   public JScrollingText(String text, int speed) {
     this(text, speed, 100);
@@ -55,9 +51,9 @@ public class JScrollingText extends JLabel {
   /**
    * Instantiates a new j scrolling text.
    * 
-   * @param text DOCUMENT_ME
-   * @param speed DOCUMENT_ME
-   * @param period DOCUMENT_ME
+   * @param text 
+   * @param speed 
+   * @param period 
    */
   public JScrollingText(String text, int speed, int period) {
     this(text, speed, period, 0);
@@ -66,10 +62,10 @@ public class JScrollingText extends JLabel {
   /**
    * Instantiates a new j scrolling text.
    * 
-   * @param text DOCUMENT_ME
-   * @param speed DOCUMENT_ME
-   * @param period DOCUMENT_ME
-   * @param offset DOCUMENT_ME
+   * @param text 
+   * @param speed 
+   * @param period 
+   * @param offset 
    */
   public JScrollingText(String text, int speed, int period, int offset) {
     super(text);
@@ -108,12 +104,11 @@ public class JScrollingText extends JLabel {
     g.drawString(getText(), textX + (speed > 0 ? -width : width), textY);
   }
 
-  /** DOCUMENT_ME. */
   Timer timer;
 
   /**
    * Start.
-   * DOCUMENT_ME
+   * 
    */
   public void start() {
     timer = new Timer("Scrolling Text Timer");

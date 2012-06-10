@@ -40,22 +40,16 @@ import org.jajuk.util.log.Log;
  */
 public class ProcessLauncher {
 
-  /** DOCUMENT_ME. */
   private OutputStream out = null;
 
-  /** DOCUMENT_ME. */
   private OutputStream err = null;
 
-  /** DOCUMENT_ME. */
   private InputStream in = null;
 
-  /** DOCUMENT_ME. */
   private Process process;
 
-  /** DOCUMENT_ME. */
   private long timeout = 0L;
 
-  /** DOCUMENT_ME. */
   private boolean finished = false;
 
   /**
@@ -220,7 +214,7 @@ public class ProcessLauncher {
 
   /**
    * Execute.
-   * DOCUMENT_ME
+   * 
    * 
    * @return the int
    */
@@ -280,10 +274,10 @@ public class ProcessLauncher {
 
   /**
    * Creates the stream thread.
-   * DOCUMENT_ME
    * 
-   * @param is DOCUMENT_ME
-   * @param os DOCUMENT_ME
+   * 
+   * @param is 
+   * @param os 
    */
   private void createStreamThread(final InputStream is, final OutputStream os) {
     new Thread(new Runnable() {
@@ -315,9 +309,9 @@ public class ProcessLauncher {
 
   /**
    * Creates the process thread.
-   * DOCUMENT_ME
    * 
-   * @param process DOCUMENT_ME
+   * 
+   * @param process 
    * 
    * @return the thread
    */

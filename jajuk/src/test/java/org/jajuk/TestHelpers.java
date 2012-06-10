@@ -46,19 +46,17 @@ import org.jajuk.services.players.MPlayerPlayerImpl;
 import org.jajuk.services.tags.JAudioTaggerTagImpl;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestHelpers extends JajukTestCase {
 
-  /** DOCUMENT_ME. */
   Exception exc = null;
 
-  /** DOCUMENT_ME. */
   boolean finished = false;
 
   /**
    * Test clear swing utilities queue.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -87,15 +85,13 @@ public class TestHelpers extends JajukTestCase {
     assertTrue("Elapsed time(ms): " + (System.currentTimeMillis() - now), finished);
   }
 
-  /** DOCUMENT_ME. */
   private final int COUNT = 10;
 
-  /** DOCUMENT_ME. */
   private AtomicInteger count = new AtomicInteger(0);
 
   /**
    * Test clear swing utilities queue multiple.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */

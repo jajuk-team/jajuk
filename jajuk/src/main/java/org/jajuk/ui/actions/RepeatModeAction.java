@@ -35,7 +35,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class RepeatModeAction extends JajukAction {
 
@@ -54,7 +54,7 @@ public class RepeatModeAction extends JajukAction {
   /**
    * Invoked when an action occurs.
    * 
-   * @param evt DOCUMENT_ME
+   * @param evt 
    */
   @Override
   public void perform(ActionEvent evt) {

@@ -29,14 +29,13 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class PlayPauseAction extends JajukAction {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   private static boolean bAlreadyLaunching = false;
 
   /**

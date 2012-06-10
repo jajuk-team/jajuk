@@ -91,8 +91,8 @@ public class JUnitHelpers {
    * }
    * </code>
    *
-   * @param <T> DOCUMENT_ME
-   * @param targetClass DOCUMENT_ME
+   * @param <T> 
+   * @param targetClass 
    * @return the t
    * @throws Exception the exception
    */
@@ -104,11 +104,11 @@ public class JUnitHelpers {
 
   /**
    * Equals test.
-   * DOCUMENT_ME
+   * 
    *
-   * @param obj DOCUMENT_ME
-   * @param equal DOCUMENT_ME
-   * @param notequal DOCUMENT_ME
+   * @param obj 
+   * @param equal 
+   * @param notequal 
    */
   public static void EqualsTest(final Object obj, final Object equal, final Object notequal) {
     // none of the three should be null
@@ -183,12 +183,12 @@ public class JUnitHelpers {
 
   /**
    * Compare to test.
-   * DOCUMENT_ME
+   * 
    *
-   * @param <T> DOCUMENT_ME
-   * @param obj DOCUMENT_ME
-   * @param equal DOCUMENT_ME
-   * @param notequal DOCUMENT_ME
+   * @param <T> 
+   * @param obj 
+   * @param equal 
+   * @param notequal 
    */
   @SuppressWarnings("unchecked")
   public static <T> void CompareToTest(final Comparable<T> obj, final Comparable<T> equal,
@@ -316,7 +316,7 @@ public class JUnitHelpers {
    * Checks certain assumption that are made for the hashCode() method.
    *
    * @param obj An Object that override the hasCode() method.
-   * @param equ DOCUMENT_ME
+   * @param equ 
    */
   public static void HashCodeTest(final Object obj, final Object equ) {
     Assert
@@ -350,11 +350,11 @@ public class JUnitHelpers {
 
   /**
    * Enum test.
-   * DOCUMENT_ME
+   * 
    *
-   * @param enumtype DOCUMENT_ME
-   * @param enumclass DOCUMENT_ME
-   * @param element DOCUMENT_ME
+   * @param enumtype 
+   * @param enumclass 
+   * @param element 
    * @throws NoSuchMethodException the no such method exception
    * @throws InvocationTargetException the invocation target exception
    * @throws IllegalAccessException the illegal access exception
@@ -388,7 +388,7 @@ public class JUnitHelpers {
 
   /**
    * Clear swing utilities queue.
-   * DOCUMENT_ME
+   * 
    *
    * @throws InterruptedException the interrupted exception
    * @throws InvocationTargetException the invocation target exception
@@ -413,9 +413,9 @@ public class JUnitHelpers {
 
   /**
    * Wait for thread to finish.
-   * DOCUMENT_ME
+   * 
    *
-   * @param name DOCUMENT_ME
+   * @param name 
    * @throws InterruptedException the interrupted exception
    */
   public static void waitForThreadToFinish(final String name) throws InterruptedException {
@@ -431,7 +431,7 @@ public class JUnitHelpers {
 
   /**
    * Wait for all work to finish and cleanup.
-   * DOCUMENT_ME
+   * 
    *
    * @throws InterruptedException the interrupted exception
    * @throws InvocationTargetException the invocation target exception
@@ -548,8 +548,8 @@ public class JUnitHelpers {
   /**
    * Gets the file.
    *
-   * @param name DOCUMENT_ME
-   * @param mount DOCUMENT_ME
+   * @param name 
+   * @param mount 
    * @return the file
    * @throws IOException 
    */
@@ -587,8 +587,8 @@ public class JUnitHelpers {
   /**
    * Gets the file.
    *
-   * @param name DOCUMENT_ME
-   * @param mount DOCUMENT_ME
+   * @param name 
+   * @param mount 
    * @return the file
    * @throws IOException 
    */
@@ -626,7 +626,7 @@ public class JUnitHelpers {
     }
     return playlist;
   }
-  
+
   /**
    * Gets a void playlist
    *
@@ -647,8 +647,8 @@ public class JUnitHelpers {
   /**
    * Gets the album.
    *
-   * @param name DOCUMENT_ME
-   * @param discID DOCUMENT_ME
+   * @param name 
+   * @param discID 
    * @return the album
    */
   public static Album getAlbum(String name, int discID) {
@@ -667,7 +667,7 @@ public class JUnitHelpers {
   /**
    * Gets the artist.
    *
-   * @param name DOCUMENT_ME
+   * @param name 
    * @return the artist
    */
   public static Artist getArtist(String name) {
@@ -686,7 +686,7 @@ public class JUnitHelpers {
   /**
    * Gets the genre.
    *
-   * @param name DOCUMENT_ME
+   * @param name 
    * @return the genre
    */
   public static Genre getGenre(String name) {
@@ -705,7 +705,7 @@ public class JUnitHelpers {
   /**
    * Gets the year.
    *
-   * @param year DOCUMENT_ME
+   * @param year 
    * @return the year
    */
   public static Year getYear(int year) {
@@ -724,9 +724,9 @@ public class JUnitHelpers {
   /**
    * Gets the device.
    *
-   * @param name DOCUMENT_ME
-   * @param type DOCUMENT_ME
-   * @param url DOCUMENT_ME
+   * @param name 
+   * @param type 
+   * @param url 
    * @return the device
    */
   public static Device getDevice(String name, Device.Type type, String url) {
@@ -757,9 +757,9 @@ public class JUnitHelpers {
   /**
    * Gets the directory, create it on disk if required
    *
-   * @param name DOCUMENT_ME
-   * @param parent DOCUMENT_ME
-   * @param device DOCUMENT_ME
+   * @param name 
+   * @param parent 
+   * @param device 
    * @return the directory
    */
   public static Directory getDirectory(String name, Directory parent, Device device) {
@@ -858,7 +858,7 @@ public class JUnitHelpers {
 
   // needs to be public to be callable from the outside...
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public static class MockPlayer implements IPlayerImpl {
 
@@ -977,7 +977,7 @@ public class JUnitHelpers {
   /**
    * Gets the track.
    *
-   * @param i DOCUMENT_ME
+   * @param i 
    * @return the track
    */
   public static Track getTrack(int i) {

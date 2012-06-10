@@ -26,7 +26,7 @@ import org.jajuk.base.File;
 import org.jajuk.util.error.JajukException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestStackItem extends JajukTestCase {
 

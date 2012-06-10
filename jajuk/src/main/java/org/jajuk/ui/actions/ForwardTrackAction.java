@@ -37,7 +37,7 @@ public class ForwardTrackAction extends JajukAction {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** The Constant JUMP_SIZE.  DOCUMENT_ME */
+  /** The Constant JUMP_SIZE.   */
   private static final float JUMP_SIZE = 0.1f;
 
   /**

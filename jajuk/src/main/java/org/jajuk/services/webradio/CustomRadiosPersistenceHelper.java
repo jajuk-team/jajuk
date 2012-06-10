@@ -46,10 +46,10 @@ public class CustomRadiosPersistenceHelper extends DefaultHandler {
   /**
    * Called when we start an element.
    * 
-   * @param sUri DOCUMENT_ME
-   * @param s DOCUMENT_ME
-   * @param sQName DOCUMENT_ME
-   * @param attributes DOCUMENT_ME
+   * @param sUri 
+   * @param s 
+   * @param sQName 
+   * @param attributes 
    * 
    * @throws SAXException the SAX exception
    */

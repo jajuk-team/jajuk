@@ -52,7 +52,7 @@ public class HTMLExporter extends Exporter {
   /**
    * Process collection.
    * 
-   * @param type DOCUMENT_ME
+   * @param type 
    * 
    * @throws Exception the exception
    * 

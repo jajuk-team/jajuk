@@ -34,7 +34,7 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class BanCurrentAction extends SelectionAction {
 

@@ -33,10 +33,8 @@ public class SearchResult implements Comparable<SearchResult> {
    */
   public enum SearchResultType {
 
-    /** DOCUMENT_ME. */
     FILE,
 
-    /** DOCUMENT_ME. */
     WEBRADIO
   }
 
@@ -52,8 +50,8 @@ public class SearchResult implements Comparable<SearchResult> {
   /**
   * Instantiates a new search result.
   * 
-  * @param file DOCUMENT_ME
-  * @param sResu DOCUMENT_ME
+  * @param file 
+  * @param sResu 
   */
   SearchResult(File file, String sResu) {
     this.file = file;
@@ -63,8 +61,8 @@ public class SearchResult implements Comparable<SearchResult> {
   /**
    * Instantiates a new search result.
    * 
-   * @param radio DOCUMENT_ME
-   * @param sResu DOCUMENT_ME
+   * @param radio 
+   * @param sResu 
    */
   public SearchResult(WebRadio radio, String sResu) {
     this.radio = radio;

@@ -92,145 +92,99 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   /** The singleton. */
   static JajukJMenuBar jjmb = new JajukJMenuBar();
 
-  /** DOCUMENT_ME. */
   JMenu file;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiFileExit;
 
-  /** DOCUMENT_ME. */
   JMenu views;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiRestoreDefaultViews;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiRestoreDefaultViewsAllPerpsectives;
 
-  /** DOCUMENT_ME. */
   JMenu properties;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiNewProperty;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiRemoveProperty;
 
-  /** DOCUMENT_ME. */
   JMenu mode;
 
-  /** DOCUMENT_ME. */
   JCheckBoxMenuItem jcbShowPopups;
 
-  /** DOCUMENT_ME. */
   JCheckBoxMenuItem jcbNoneInternetAccess;
 
-  /** DOCUMENT_ME. */
   private final JCheckBoxMenuItem jcbmiRepeat;
 
-  /** DOCUMENT_ME. */
   private final JCheckBoxMenuItem jcbmiShuffle;
 
-  /** DOCUMENT_ME. */
   private final JCheckBoxMenuItem jcbmiContinue;
 
-  /** DOCUMENT_ME. */
   private final JCheckBoxMenuItem jcbmiIntro;
 
-  /** DOCUMENT_ME. */
   private final JCheckBoxMenuItem jcbmiKaraoke;
 
-  /** DOCUMENT_ME. */
   JMenuBar mainmenu;
 
-  /** DOCUMENT_ME. */
   JMenu smart;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiShuffle;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiBestof;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiNovelties;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiFinishAlbum;
 
-  /** DOCUMENT_ME. */
   JMenu tools;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiduplicateFinder;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmialarmClock;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiprepareParty;
 
-  /** DOCUMENT_ME. */
   JMenu configuration;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiDJ;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiAmbience;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiWizard;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiOptions;
 
-  /** DOCUMENT_ME. */
   JCheckBoxMenuItem jmiUnmounted;
 
-  /** DOCUMENT_ME. */
   JMenu help;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiHelp;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiTipOfTheDay;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiQualityAgent;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiTraces;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiCheckforUpdates;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiAbout;
 
-  /** DOCUMENT_ME. */
   JLabel jlUpdate;
 
-  /** DOCUMENT_ME. */
   JButton jbGC;
 
-  /** DOCUMENT_ME. */
   JButton jbCommit;
 
-  /** DOCUMENT_ME. */
   JButton jbSlim;
 
-  /** DOCUMENT_ME. */
   private JajukButton jbFull = null;
 
-  /** DOCUMENT_ME. */
   private final JCheckBoxMenuItem jcbmiRepeatAll;
 
   /** The jmi activate tags. */
   private JMenuItem jmiActivateTags;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiDonate;
 
   /**

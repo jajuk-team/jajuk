@@ -86,49 +86,35 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
   private WindowStateDecorator decorator;
 
   // Systray variables
-  /** DOCUMENT_ME. */
+
   SystemTray stray;
 
-  /** DOCUMENT_ME. */
   JXTrayIcon trayIcon;
 
-  /** DOCUMENT_ME. */
   JPopupMenu jmenu;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiExit;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiMute;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiShuffle;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiBestof;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiDJ;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiNovelties;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiFinishAlbum;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiPlayPause;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiStop;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiPrevious;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiNext;
 
-  /** DOCUMENT_ME. */
   JMenu jmAmbience;
 
   /** Self instance singleton. */
@@ -364,7 +350,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
   /**
    * Invert current window visibility with a left click on the tray icon.
    * 
-   * @param e DOCUMENT_ME
+   * @param e 
    */
   private void showHideWindow(MouseEvent e) {
     WindowStateDecorator windowDecorator = null;

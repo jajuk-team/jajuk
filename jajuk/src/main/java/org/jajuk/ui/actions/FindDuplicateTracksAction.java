@@ -52,7 +52,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class FindDuplicateTracksAction extends JajukAction {
 
@@ -80,7 +80,7 @@ public class FindDuplicateTracksAction extends JajukAction {
   /**
    * Add a dup for a given track.
    *
-   * @param track DOCUMENT_ME
+   * @param track 
    * @param files list of files
    */
   private void addDup(Track track, List<File> files) {
@@ -104,8 +104,8 @@ public class FindDuplicateTracksAction extends JajukAction {
   /**
    * Gets the next track.
    * 
-   * @param tracks DOCUMENT_ME
-   * @param index DOCUMENT_ME
+   * @param tracks 
+   * @param index 
    * 
    * @return the next track
    */
@@ -121,7 +121,7 @@ public class FindDuplicateTracksAction extends JajukAction {
    * Return either all or only mounted files for given track
    * according to OPTIONS_HIDE_UNMOUNTED option.
    * 
-   * @param track DOCUMENT_ME
+   * @param track 
    * 
    * @return either all or only mounted files for given track
    */

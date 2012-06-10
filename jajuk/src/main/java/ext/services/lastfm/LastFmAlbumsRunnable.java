@@ -241,5 +241,5 @@ public class LastFmAlbumsRunnable implements Runnable {
   private boolean forbiddenToken(String t) {
     return t.contains("/");
   }
- 
+
 }

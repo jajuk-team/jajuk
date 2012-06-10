@@ -29,6 +29,5 @@ public enum WebRadioOrigin {
   CUSTOM,
   /** Webradio fetched from the jajuk online repository */
   PRESET,
-   
-  
+
 }

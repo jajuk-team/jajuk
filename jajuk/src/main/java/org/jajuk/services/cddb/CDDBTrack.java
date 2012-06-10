@@ -29,13 +29,12 @@ import org.jajuk.base.Track;
  */
 public class CDDBTrack implements FreedbTrack {
 
-  /** DOCUMENT_ME. */
   Track track;
 
   /**
    * Instantiates a new cDDB track.
    * 
-   * @param track DOCUMENT_ME
+   * @param track 
    */
   public CDDBTrack(Track track) {
     this.track = track;

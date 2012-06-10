@@ -99,7 +99,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   private static final long serialVersionUID = 1L;
 
   // singleton
-  /** DOCUMENT_ME. */
+
   private static CommandJPanel command = new CommandJPanel();
 
   // widgets declaration
@@ -107,83 +107,58 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   /** Continue mode button. */
   private JajukToggleButton jbContinue;
 
-  /** DOCUMENT_ME. */
   private JajukToggleButton jbRepeat;
 
-  /** DOCUMENT_ME. */
   private JajukToggleButton jbRandom;
 
-  /** DOCUMENT_ME. */
   private JToolBar jtbSpecial;
 
-  /** DOCUMENT_ME. */
   private DropDownButton ddbGlobalRandom;
 
-  /** DOCUMENT_ME. */
   private JRadioButtonMenuItem jmiShuffleModeSong;
 
-  /** DOCUMENT_ME. */
   private JRadioButtonMenuItem jmiShuffleModeAlbum;
 
-  /** DOCUMENT_ME. */
   private JRadioButtonMenuItem jmiShuffleModeAlbum2;
 
-  /** DOCUMENT_ME. */
   private JPopupMenu popupGlobalRandom;
 
-  /** DOCUMENT_ME. */
   private JajukButton jbBestof;
 
-  /** DOCUMENT_ME. */
   private DropDownButton ddbNovelties;
 
-  /** DOCUMENT_ME. */
   private JPopupMenu popupNovelties;
 
-  /** DOCUMENT_ME. */
   private WebRadioButton webRadioButton;
 
-  /** DOCUMENT_ME. */
   private JRadioButtonMenuItem jmiNoveltiesModeSong;
 
-  /** DOCUMENT_ME. */
   private JRadioButtonMenuItem jmiNoveltiesModeAlbum;
 
-  /** DOCUMENT_ME. */
   private JajukButton jbNorm;
 
-  /** DOCUMENT_ME. */
   private DropDownButton ddbDDJ;
 
-  /** DOCUMENT_ME. */
   private JPopupMenu popupDDJ;
 
-  /** DOCUMENT_ME. */
   private JButton jbPrevious;
 
-  /** DOCUMENT_ME. */
   private JButton jbNext;
 
-  /** DOCUMENT_ME. */
   private JButton jbPlayPause;
 
-  /** DOCUMENT_ME. */
   private JButton jbStop;
 
-  /** DOCUMENT_ME. */
   private JSlider jsVolume;
 
-  /** DOCUMENT_ME. */
   private JLabel jlVolume;
 
-  /** DOCUMENT_ME. */
   private PreferenceToolbar evaltoobar;
 
-  /** DOCUMENT_ME. */
   private JajukButton jbMute;
 
   // variables declaration
-  /** DOCUMENT_ME. */
+
   private JajukToggleButton jbRepeatAll;
 
   /**

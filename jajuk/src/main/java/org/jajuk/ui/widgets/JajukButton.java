@@ -42,7 +42,7 @@ public class JajukButton extends JButton {
   /**
    * Instantiates a new jajuk button.
    * 
-   * @param icon DOCUMENT_ME
+   * @param icon 
    */
   public JajukButton(Icon icon) {
     this(null, icon);
@@ -51,7 +51,7 @@ public class JajukButton extends JButton {
   /**
    * Instantiates a new jajuk button.
    * 
-   * @param a DOCUMENT_ME
+   * @param a 
    */
   public JajukButton(Action a) {
     super(a);
@@ -62,8 +62,8 @@ public class JajukButton extends JButton {
   /**
    * Instantiates a new jajuk button.
    * 
-   * @param text DOCUMENT_ME
-   * @param icon DOCUMENT_ME
+   * @param text 
+   * @param icon 
    */
   public JajukButton(String text, Icon icon) {
     super(text, icon);

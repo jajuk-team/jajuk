@@ -621,10 +621,10 @@ public class UtilPrepareParty {
    * 
    * @param files The list of flies to copy.
    * @param destDir The target location.
-   * @param isNormalize DOCUMENT_ME
-   * @param isConvertMedia DOCUMENT_ME
-   * @param media DOCUMENT_ME
-   * @param convertCommand DOCUMENT_ME
+   * @param isNormalize 
+   * @param isConvertMedia 
+   * @param media 
+   * @param convertCommand 
    */
   public static void copyFiles(final List<org.jajuk.base.File> files, final java.io.File destDir,
       final boolean isNormalize, final boolean isConvertMedia, final String media,

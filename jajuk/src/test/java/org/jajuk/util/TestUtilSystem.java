@@ -36,11 +36,10 @@ import org.jajuk.base.Directory;
 import org.jajuk.util.error.JajukException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestUtilSystem extends JajukTestCase {
 
-  /** DOCUMENT_ME. */
   private File file1, file2;
 
   /*
@@ -111,7 +110,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test copy file file not exists.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -186,7 +185,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test copy url string not exists.
-   * DOCUMENT_ME
+   * 
    */
   public void testCopyURLStringNotExists() {
     try {
@@ -214,7 +213,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test copy recursively.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -247,7 +246,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test copy to dir exception.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -347,7 +346,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test get extension file none.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetExtensionFileNone() {
     assertEquals("", UtilSystem.getExtension("/tmp/testfile"));
@@ -355,7 +354,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test get extension file dot.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetExtensionFileDot() {
     // TODO: why do we return the full filename in this case? I.e. if there is a
@@ -390,7 +389,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test get file checksum error.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetFileChecksumError() {
     try {
@@ -569,7 +568,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test read file error.
-   * DOCUMENT_ME
+   * 
    */
   public void testReadFileError() {
     try {
@@ -658,7 +657,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test replace in file replaced.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -714,17 +713,16 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private static final class MockProcess extends Process {
 
-    /** DOCUMENT_ME. */
     boolean throwInExitValue;
 
     /**
      * Instantiates a new mock process.
      *
-     * @param throwInWait DOCUMENT_ME
+     * @param throwInWait 
      */
     public MockProcess(boolean throwInWait) {
       super();
@@ -790,7 +788,7 @@ public class TestUtilSystem extends JajukTestCase {
   // helper method to emma-coverage of the unused constructor
   /**
    * Test private constructor.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */

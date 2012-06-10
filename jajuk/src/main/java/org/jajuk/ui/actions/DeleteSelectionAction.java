@@ -56,26 +56,21 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class DeleteSelectionAction extends SelectionAction {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   private List<File> alFiles;
 
-  /** DOCUMENT_ME. */
   private List<File> rejFiles;
 
-  /** DOCUMENT_ME. */
   private List<Directory> alDirs;
 
-  /** DOCUMENT_ME. */
   private List<Directory> rejDirs;
 
-  /** DOCUMENT_ME. */
   private List<Directory> emptyDirs;
 
   /**
@@ -213,11 +208,10 @@ public class DeleteSelectionAction extends SelectionAction {
       }
     } else {
       for (Item item : selection) {
-        if (item instanceof WebRadio){
+        if (item instanceof WebRadio) {
           WebRadioManager.getInstance().removeItem(item);
           ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-        }
-        else if (item instanceof File) {
+        } else if (item instanceof File) {
           alFiles.add((File) item);
         } else if (item instanceof Track) {
           alFiles.addAll(((Track) item).getFiles());

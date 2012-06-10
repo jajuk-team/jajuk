@@ -29,7 +29,7 @@ import org.jajuk.util.error.JajukException;
 import org.junit.Test;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestFileManager extends JajukTestCase {
 

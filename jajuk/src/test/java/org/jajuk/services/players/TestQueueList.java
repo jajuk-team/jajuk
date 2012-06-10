@@ -31,7 +31,7 @@ import org.jajuk.base.File;
 import org.jajuk.util.error.JajukException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestQueueList extends JajukTestCase {
 
@@ -581,9 +581,9 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Prepare queue impl.
-   * DOCUMENT_ME
+   * 
    *
-   * @param impl DOCUMENT_ME
+   * @param impl 
    * @return the list
    * @throws JajukException the jajuk exception
    * @throws Exception the exception
@@ -600,9 +600,9 @@ public class TestQueueList extends JajukTestCase {
 
   /**
    * Prepare queue impl planned.
-   * DOCUMENT_ME
+   * 
    *
-   * @param impl DOCUMENT_ME
+   * @param impl 
    * @return the list
    * @throws JajukException the jajuk exception
    * @throws Exception the exception

@@ -42,7 +42,7 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestAmbienceDigitalDJ extends JajukTestCase {
 
@@ -104,8 +104,8 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
   /**
    * Gets the file.
    *
-   * @param i DOCUMENT_ME
-   * @param genre DOCUMENT_ME
+   * @param i 
+   * @param genre 
    * @return the file
    * @throws Exception the exception
    */

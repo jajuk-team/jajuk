@@ -33,7 +33,7 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestCDDBTrack extends JajukTestCase {
 
@@ -87,7 +87,7 @@ public class TestCDDBTrack extends JajukTestCase {
   /**
    * Gets the track.
    *
-   * @param i DOCUMENT_ME
+   * @param i 
    * @return the track
    */
   private Track getTrack(int i) {

@@ -92,55 +92,38 @@ public abstract class AbstractTreeView extends ViewAdapter {
   /** Top tree node. */
   DefaultMutableTreeNode top;
 
-  /** DOCUMENT_ME. */
   javax.swing.JPopupMenu jmenu;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiPlay;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiPush;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiFrontPush;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiPlayShuffle;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiPlayRepeat;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiCut;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiCopy;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiPaste;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiRename;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiDelete;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiNewFolder;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiAddFavorite;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiReport;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiProperties;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiCDDBWizard;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiCopyURL;
 
   /** Jtree scroller position*. */
@@ -177,9 +160,9 @@ public abstract class AbstractTreeView extends ViewAdapter {
   }
 
   /**
-   * Creates the tree. DOCUMENT_ME
+   * Creates the tree. 
    * 
-   * @param bLazy DOCUMENT_ME
+   * @param bLazy 
    * 
    * @return the j tree
    */
@@ -265,19 +248,19 @@ public abstract class AbstractTreeView extends ViewAdapter {
   }
 
   /**
-   * Populate tree. DOCUMENT_ME
+   * Populate tree. 
    */
   abstract void populateTree();
 
   /**
-   * Expand. DOCUMENT_ME
+   * Expand. 
    */
   abstract void expand();
 
   /**
    * Expand a given item.
    * 
-   * @param item DOCUMENT_ME
+   * @param item 
    */
   abstract void scrollTo(Item item);
 

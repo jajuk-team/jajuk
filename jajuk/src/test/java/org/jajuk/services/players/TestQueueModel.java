@@ -44,7 +44,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestQueueModel extends JajukTestCase {
 
@@ -78,7 +78,7 @@ public class TestQueueModel extends JajukTestCase {
   // helper method to emma-coverage of the unused constructor
   /**
    * Test private constructor.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -151,7 +151,7 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test push list of stack item boolean no push.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -185,7 +185,7 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test push list of stack item boolean null items.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -225,7 +225,7 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test push list of stack item boolean boolean no push next.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -277,7 +277,7 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Adds the items.
-   * DOCUMENT_ME
+   * 
    *
    * @param count number of items to create
    * @throws Exception the exception
@@ -387,7 +387,7 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test finished boolean remove played.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -411,7 +411,7 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test finished end of queue no planned.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -436,7 +436,7 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test finished end of queue with planned.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -529,7 +529,7 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test finished repeat last item not last.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -624,7 +624,7 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test computes planned clear.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -637,7 +637,7 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test computes planned shuffle.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -705,7 +705,7 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test play previous at zero.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -722,7 +722,7 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test play previous at zero with repeat.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -796,7 +796,7 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test get playing file title.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -1092,7 +1092,7 @@ public class TestQueueModel extends JajukTestCase {
 
   /**
    * Test go to repeat.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */

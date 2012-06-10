@@ -32,7 +32,7 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukRuntimeException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestSessionService extends JajukTestCase {
   /*
@@ -122,7 +122,7 @@ public class TestSessionService extends JajukTestCase {
   /**
    * Return true if the workspace location is valid.
    *
-   * @param workspaceLocation DOCUMENT_ME
+   * @param workspaceLocation 
    * @return true if the workspace location is valid
    */
   private boolean parseWorkspaceLocation(String workspaceLocation) {
@@ -175,9 +175,9 @@ public class TestSessionService extends JajukTestCase {
 
       // try to create it if it is missing
       if (!bootstrap.exists()) {
-        String content = "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n"+
-                          "<properties><entry key='final'>"+UtilSystem.getUserHome()+"</entry>\n"+
-                          "<entry key='test'>"+UtilSystem.getUserHome()+"</entry>\n</properties>";
+        String content = "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n"
+            + "<properties><entry key='final'>" + UtilSystem.getUserHome() + "</entry>\n"
+            + "<entry key='test'>" + UtilSystem.getUserHome() + "</entry>\n</properties>";
         FileUtils.writeStringToFile(bootstrap, content);
       }
 
@@ -253,7 +253,7 @@ public class TestSessionService extends JajukTestCase {
   // For EMMA code-coverage tests
   /**
    * Test private constructor.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */

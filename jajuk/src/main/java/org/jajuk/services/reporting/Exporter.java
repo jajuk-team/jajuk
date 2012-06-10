@@ -35,7 +35,7 @@ public abstract class Exporter {
   /** Public Constants. */
   public static final int PHYSICAL_COLLECTION = 0;
 
-  /** The Constant LOGICAL_COLLECTION.  DOCUMENT_ME */
+  /** The Constant LOGICAL_COLLECTION.   */
   public static final int LOGICAL_COLLECTION = 1;
 
   /** Cache file (used to handle concurrency issues), set by child classes. */

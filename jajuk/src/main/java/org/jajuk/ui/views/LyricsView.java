@@ -87,50 +87,38 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 2229941034734574056L;
 
-  /** DOCUMENT_ME. */
   private JTextArea jtaLyrics;
 
-  /** DOCUMENT_ME. */
   private JScrollPane jspLyrics;
 
-  /** DOCUMENT_ME. */
   private JLabel jlTitle;
 
-  /** DOCUMENT_ME. */
   private String sURL;
 
   /** Currently analyzed file. */
   private File file;
 
-  /** DOCUMENT_ME. */
   private String lyrics;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiCopyToClipboard;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiLaunchInBrowser;
 
-  /** DOCUMENT_ME. */
   private JPanel jpMain;
 
-  /** DOCUMENT_ME. */
   private JajukButton jbSave;
 
-  /** DOCUMENT_ME. */
   private JajukButton jbDelete;
 
-  /** DOCUMENT_ME. */
   private JajukToggleButton jtbEdit;
 
   /** Edition toolbar. */
   private JToolBar toolbarEdit;
 
-  /** DOCUMENT_ME. */
   private boolean changeDetected = false;
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   class LyricsUpdateThread extends Thread {
 
@@ -419,7 +407,7 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
   /**
    * Reset webradio.
    *
-   * @param radio DOCUMENT_ME
+   * @param radio 
    */
   private void resetWebradio(final WebRadio radio) {
     SwingUtilities.invokeLater(new Runnable() {

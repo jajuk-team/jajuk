@@ -39,10 +39,8 @@ import javax.swing.event.PopupMenuListener;
  */
 public class JXTrayIcon extends TrayIcon {
 
-  /** DOCUMENT_ME. */
   private JPopupMenu menu;
 
-  /** DOCUMENT_ME. */
   private static JDialog dialog;
   static {
     dialog = new JDialog((Frame) null, "TrayDialog");
@@ -50,7 +48,6 @@ public class JXTrayIcon extends TrayIcon {
     dialog.setAlwaysOnTop(true);
   }
 
-  /** DOCUMENT_ME. */
   private static PopupMenuListener popupListener = new PopupMenuListener() {
     @Override
     public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
@@ -71,7 +68,7 @@ public class JXTrayIcon extends TrayIcon {
   /**
    * Instantiates a new jX tray icon.
    * 
-   * @param image DOCUMENT_ME
+   * @param image 
    */
   public JXTrayIcon(Image image) {
     super(image);
@@ -79,9 +76,9 @@ public class JXTrayIcon extends TrayIcon {
 
   /**
    * Show j popup menu.
-   * DOCUMENT_ME
    * 
-   * @param e DOCUMENT_ME
+   * 
+   * @param e 
    */
   public void showJPopupMenu(MouseEvent e) {
     if (menu != null) {

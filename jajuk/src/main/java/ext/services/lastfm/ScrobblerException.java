@@ -33,7 +33,6 @@ public class ScrobblerException extends Exception {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -7383228060002549115L;
 
-  /** DOCUMENT_ME. */
   private int status = -1;
 
   /**
@@ -48,7 +47,7 @@ public class ScrobblerException extends Exception {
   /**
    * Instantiates a new scrobbler exception.
    * 
-   * @param status DOCUMENT_ME
+   * @param status 
    */
   public ScrobblerException(int status) {
     super(UtilString.concat("Error submitting to Last.fm. Status: ", Integer.valueOf(status)));

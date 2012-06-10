@@ -40,7 +40,6 @@ public abstract class SelectionAction extends JajukAction {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -6072746800882488360L;
 
-  /** DOCUMENT_ME. */
   List<Item> selection = null;
 
   /** Whether the selection should contain the playlist itself (false) or mapped files (true). */
@@ -49,9 +48,9 @@ public abstract class SelectionAction extends JajukAction {
   /**
    * Instantiates a new selection action.
    *
-   * @param msg DOCUMENT_ME
-   * @param icon DOCUMENT_ME
-   * @param enabled DOCUMENT_ME
+   * @param msg 
+   * @param icon 
+   * @param enabled 
    */
   protected SelectionAction(String msg, ImageIcon icon, boolean enabled) {
     super(msg, icon, enabled);
@@ -60,11 +59,11 @@ public abstract class SelectionAction extends JajukAction {
   /**
    * Instantiates a new selection action.
    *
-   * @param name DOCUMENT_ME
-   * @param icon DOCUMENT_ME
-   * @param stroke DOCUMENT_ME
-   * @param enabled DOCUMENT_ME
-   * @param bHotkey DOCUMENT_ME
+   * @param name 
+   * @param icon 
+   * @param stroke 
+   * @param enabled 
+   * @param bHotkey 
    */
   public SelectionAction(String name, ImageIcon icon, String stroke, boolean enabled,
       boolean bHotkey) {

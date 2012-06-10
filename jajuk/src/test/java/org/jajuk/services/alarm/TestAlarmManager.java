@@ -32,7 +32,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestAlarmManager extends JajukTestCase {
 
@@ -78,7 +78,7 @@ public class TestAlarmManager extends JajukTestCase {
 
   /**
    * Test update2.
-   * DOCUMENT_ME
+   * 
    */
   public void testUpdate2() {
     Conf.setProperty(Const.CONF_ALARM_ENABLED, "true");
@@ -88,7 +88,7 @@ public class TestAlarmManager extends JajukTestCase {
 
   /**
    * Test update3.
-   * DOCUMENT_ME
+   * 
    */
   public void testUpdate3() {
     Conf.setProperty(Const.CONF_ALARM_ENABLED, "true");
@@ -99,7 +99,7 @@ public class TestAlarmManager extends JajukTestCase {
 
   /**
    * Test update4.
-   * DOCUMENT_ME
+   * 
    */
   public void testUpdate4() {
     Conf.setProperty(Const.CONF_ALARM_ENABLED, "true");
@@ -110,7 +110,7 @@ public class TestAlarmManager extends JajukTestCase {
 
   /**
    * Test update5.
-   * DOCUMENT_ME
+   * 
    */
   public void testUpdate5() {
     Conf.setProperty(Const.CONF_ALARM_ENABLED, "true");
@@ -131,7 +131,7 @@ public class TestAlarmManager extends JajukTestCase {
 
   /**
    * Test trigger alarm.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */

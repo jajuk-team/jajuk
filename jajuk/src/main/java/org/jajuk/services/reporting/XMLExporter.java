@@ -56,10 +56,9 @@ public class XMLExporter extends Exporter {
   /** Private Constants. */
   private static final String NEWLINE = "\n";
 
-  /** The Constant XML_HEADER.  DOCUMENT_ME */
+  /** The Constant XML_HEADER.   */
   private static final String XML_HEADER = "<?xml version='1.0' encoding='UTF-8'?>";
 
-  /** DOCUMENT_ME. */
   private final BufferedWriter writer;
 
   /** Do we want to export tracks ?*. */
@@ -208,7 +207,7 @@ public class XMLExporter extends Exporter {
   /**
    * Process collection.
    * 
-   * @param type DOCUMENT_ME
+   * @param type 
    * 
    * @throws Exception the exception
    * 
@@ -230,8 +229,8 @@ public class XMLExporter extends Exporter {
   /**
    * PRIVATE HELPER METHODS.
    * 
-   * @param level DOCUMENT_ME
-   * @param directory DOCUMENT_ME
+   * @param level 
+   * @param directory 
    * 
    * @throws Exception the exception
    */
@@ -260,10 +259,10 @@ public class XMLExporter extends Exporter {
 
   /**
    * Tag file.
-   * DOCUMENT_ME
    * 
-   * @param file DOCUMENT_ME
-   * @param level DOCUMENT_ME
+   * 
+   * @param file 
+   * @param level 
    * 
    * @throws Exception the exception
    */
@@ -283,9 +282,9 @@ public class XMLExporter extends Exporter {
 
   /**
    * Tag directory.
-   * DOCUMENT_ME
    * 
-   * @param directory DOCUMENT_ME
+   * 
+   * @param directory 
    * 
    * @throws Exception the exception
    */
@@ -316,9 +315,9 @@ public class XMLExporter extends Exporter {
 
   /**
    * Tag device.
-   * DOCUMENT_ME
    * 
-   * @param device DOCUMENT_ME
+   * 
+   * @param device 
    * 
    * @throws Exception the exception
    */
@@ -350,10 +349,10 @@ public class XMLExporter extends Exporter {
 
   /**
    * Tag track.
-   * DOCUMENT_ME
    * 
-   * @param track DOCUMENT_ME
-   * @param level DOCUMENT_ME
+   * 
+   * @param track 
+   * @param level 
    * 
    * @throws Exception the exception
    */
@@ -389,10 +388,10 @@ public class XMLExporter extends Exporter {
 
   /**
    * Tag album.
-   * DOCUMENT_ME
    * 
-   * @param album DOCUMENT_ME
-   * @param level DOCUMENT_ME
+   * 
+   * @param album 
+   * @param level 
    * 
    * @throws Exception the exception
    */
@@ -426,10 +425,10 @@ public class XMLExporter extends Exporter {
 
   /**
    * Tag artist.
-   * DOCUMENT_ME
    * 
-   * @param artist DOCUMENT_ME
-   * @param level DOCUMENT_ME
+   * 
+   * @param artist 
+   * @param level 
    * 
    * @throws Exception the exception
    */
@@ -448,10 +447,10 @@ public class XMLExporter extends Exporter {
 
   /**
    * Tag year.
-   * DOCUMENT_ME
    * 
-   * @param year DOCUMENT_ME
-   * @param level DOCUMENT_ME
+   * 
+   * @param year 
+   * @param level 
    * 
    * @throws Exception the exception
    */
@@ -470,10 +469,10 @@ public class XMLExporter extends Exporter {
 
   /**
    * Tag genre.
-   * DOCUMENT_ME
    * 
-   * @param genre DOCUMENT_ME
-   * @param level DOCUMENT_ME
+   * 
+   * @param genre 
+   * @param level 
    * 
    * @throws Exception the exception
    */
@@ -496,9 +495,9 @@ public class XMLExporter extends Exporter {
 
   /**
    * Adds the tabs.
-   * DOCUMENT_ME
    * 
-   * @param num DOCUMENT_ME
+   * 
+   * @param num 
    * 
    * @return the string
    */

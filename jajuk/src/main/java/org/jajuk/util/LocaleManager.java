@@ -103,7 +103,7 @@ public class LocaleManager {
   /**
    * Return Description for a given local id.
    * 
-   * @param sLocal DOCUMENT_ME
+   * @param sLocal 
    * 
    * @return localized description
    */
@@ -114,7 +114,7 @@ public class LocaleManager {
   /**
    * Return local for a given description.
    * 
-   * @param sDesc DOCUMENT_ME
+   * @param sDesc 
    * 
    * @return local
    */

@@ -31,7 +31,7 @@ public class LyricsPersistenceException extends Exception {
   /**
    * The Constructor.
    * 
-   * @param pMessage DOCUMENT_ME
+   * @param pMessage 
    */
   public LyricsPersistenceException(String pMessage) {
     super(pMessage);

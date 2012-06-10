@@ -54,12 +54,12 @@ public class File extends PhysicalItem implements Comparable<File> {
   /**
    * File instantiation.
    *
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param directory DOCUMENT_ME
-   * @param track DOCUMENT_ME
-   * @param lSize DOCUMENT_ME
-   * @param lQuality DOCUMENT_ME
+   * @param sId 
+   * @param sName 
+   * @param directory 
+   * @param track 
+   * @param lSize 
+   * @param lQuality 
    */
   File(String sId, String sName, Directory directory, Track track, long lSize, long lQuality) {
     super(sId, sName);
@@ -108,7 +108,7 @@ public class File extends PhysicalItem implements Comparable<File> {
   /**
    * Return true is the specified directory is an ancestor for this file.
    *
-   * @param directory DOCUMENT_ME
+   * @param directory 
    *
    * @return true, if checks for ancestor
    */
@@ -203,7 +203,7 @@ public class File extends PhysicalItem implements Comparable<File> {
    * </p>
    * .
    *
-   * @param otherFile DOCUMENT_ME
+   * @param otherFile 
    *
    * @return comparison result
    */

@@ -27,7 +27,7 @@ import javax.swing.AbstractButton;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestXJPopupMenu extends JajukTestCase {
 

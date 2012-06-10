@@ -109,7 +109,7 @@ public final class Bookmarks {
   /**
    * Down a track in the playlist.
    * 
-   * @param index DOCUMENT_ME
+   * @param index 
    */
   public synchronized void down(int index) {
     if (index < alFiles.size() - 1) { // the last track cannot go
@@ -122,7 +122,7 @@ public final class Bookmarks {
   /**
    * Up a track in the playlist.
    * 
-   * @param index DOCUMENT_ME
+   * @param index 
    */
   public synchronized void up(int index) {
     if (index > 0) { // the first track cannot go further
@@ -134,7 +134,7 @@ public final class Bookmarks {
   /**
    * Remove a track from the playlist.
    * 
-   * @param index DOCUMENT_ME
+   * @param index 
    */
   public synchronized void remove(int index) {
     alFiles.remove(index);
@@ -144,8 +144,8 @@ public final class Bookmarks {
   /**
    * Add a track from the playlist.
    * 
-   * @param index DOCUMENT_ME
-   * @param file DOCUMENT_ME
+   * @param index 
+   * @param file 
    */
   public synchronized void addFile(int index, File file) {
     alFiles.add(index, file);
@@ -155,7 +155,7 @@ public final class Bookmarks {
   /**
    * Add a file to this playlist.
    * 
-   * @param file DOCUMENT_ME
+   * @param file 
    */
   public void addFile(File file) {
     int index = alFiles.size();
@@ -165,7 +165,7 @@ public final class Bookmarks {
   /**
    * Add files to this playlist.
    * 
-   * @param alFilesToAdd DOCUMENT_ME
+   * @param alFilesToAdd 
    */
   public void addFiles(List<File> alFilesToAdd) {
     for (File file : alFilesToAdd) {

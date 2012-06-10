@@ -132,10 +132,10 @@ public class NotifySendBalloonNotificator implements INotificator {
    * Notification from two strings (code shared between webradio and track notifications)
    */
   /**
-   * Notify. DOCUMENT_ME
+   * Notify. 
    * 
-   * @param title DOCUMENT_ME
-   * @param pText DOCUMENT_ME
+   * @param title 
+   * @param pText 
    */
   @Override
   public void notify(String title, String pText) {

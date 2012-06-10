@@ -90,7 +90,7 @@ public class AboutWindow extends JajukJDialog {
    */
   /**
    * Inits the ui.
-   * DOCUMENT_ME
+   * 
    */
   public void initUI() {
     // license panel

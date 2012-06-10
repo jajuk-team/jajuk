@@ -44,37 +44,28 @@ public class PreferencesJMenu extends JMenu {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -4041513018474249903L;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiBan;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiUnBan;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiAdore;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiLove;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiLike;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiUnset;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiAverage;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiPoor;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiHate;
 
   /**
    * Constructs a Preference menu.
    * 
-   * @param item DOCUMENT_ME
+   * @param item 
    */
   public PreferencesJMenu(Item item) {
     super(Messages.getString("Preference.7"));
@@ -97,7 +88,7 @@ public class PreferencesJMenu extends JMenu {
   /**
    * initUI.
    * 
-   * @param selection DOCUMENT_ME
+   * @param selection 
    */
   private void initUI(List<? extends Item> selection) {
     // We compute preference of first item in selection to set right
@@ -178,7 +169,7 @@ public class PreferencesJMenu extends JMenu {
    * in valueChanged() method as we can't build a popup menu in mouse adapter
    * methods because the selection is not always yet set
    * 
-   * @param selection DOCUMENT_ME
+   * @param selection 
    */
   public synchronized void resetUI(List<? extends Item> selection) {
     removeAll();

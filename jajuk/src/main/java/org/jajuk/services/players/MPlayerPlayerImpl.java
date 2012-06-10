@@ -71,7 +71,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /** Pause time correction *. */
   private long pauseCount = 0;
 
-  /** DOCUMENT_ME. */
   private long pauseCountStamp = -1;
 
   /** Does the user made a seek in current track ?*. */
@@ -110,7 +109,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     /**
      * Instantiates a new position thread.
      *
-     * @param name DOCUMENT_ME
+     * @param name 
      */
     public PositionThread(String name) {
       super(name);
@@ -142,7 +141,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             // Do not call a get_percent_pos if paused, it resumes the player
             // (mplayer issue)
             sendCommand("get_time_pos");
-            
+
             // Get track length if required. Do not launch "get_time_length" only 
             // once because some fast computer makes mplayer start too fast and
             // the slave mode is not yet opened so this command is not token into account.
@@ -150,7 +149,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             if (lDuration == 0) {
               sendCommand("get_time_length");
             }
-            
+
             // Every 2 time units, increase actual play time. We wait this
             // delay for perfs and for precision
             if (comp > 0 && comp % TOTAL_PLAYTIME_UPDATE_INTERVAL == 0) {
@@ -181,7 +180,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     /**
      * Instantiates a new reader thread.
      *
-     * @param name DOCUMENT_ME
+     * @param name 
      */
     public ReaderThread(String name) {
       super(name);
@@ -450,7 +449,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /**
    * Launch mplayer.
-   * DOCUMENT_ME
+   * 
    *
    * @throws IOException Signals that an I/O exception has occurred.
    */

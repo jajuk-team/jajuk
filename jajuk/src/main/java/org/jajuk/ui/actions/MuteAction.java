@@ -70,7 +70,7 @@ public class MuteAction extends JajukAction {
   /**
    * Set Volume Icon.
    * 
-   * @param fVolume DOCUMENT_ME
+   * @param fVolume 
    */
   public static void setVolumeIcon(final float fVolume) {
     if (fVolume <= 0 || Player.isMuted()) {

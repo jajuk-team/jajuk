@@ -52,11 +52,11 @@ public abstract class JajukTableModel extends DefaultTableModel {
   protected Object[][] oValues;
 
   // Play icon in cache
-  /** The Constant PLAY_ICON.  DOCUMENT_ME */
+  /** The Constant PLAY_ICON.   */
   protected static final ImageIcon PLAY_ICON = IconLoader.getIcon(JajukIcons.PLAY_TABLE);
 
   // Unmount Play icon in cache
-  /** The Constant UNMOUNT_PLAY_ICON.  DOCUMENT_ME */
+  /** The Constant UNMOUNT_PLAY_ICON.   */
   protected static final ImageIcon UNMOUNT_PLAY_ICON = IconLoader.getIcon(JajukIcons.UNKNOWN);
 
   /** Objects. */
@@ -80,10 +80,8 @@ public abstract class JajukTableModel extends DefaultTableModel {
   /** Tree selection. */
   protected Set<Item> treeSelection;
 
-  /** DOCUMENT_ME. */
   protected IconLabel play_icon = null;
 
-  /** DOCUMENT_ME. */
   protected IconLabel unmount_play_icon = null;
 
   /** Whether the model is refreshing so we must ignore selection changes events. */
@@ -130,7 +128,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
   /**
    * Gets the identifier.
    * 
-   * @param sColName DOCUMENT_ME
+   * @param sColName 
    * 
    * @return Column identifier for a given column title
    */
@@ -141,7 +139,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
   /**
    * Return item at given position.
    * 
-   * @param iRow DOCUMENT_ME
+   * @param iRow 
    * 
    * @return the item at
    */
@@ -152,8 +150,8 @@ public abstract class JajukTableModel extends DefaultTableModel {
   /**
    * Set item at given position.
    * 
-   * @param iRow DOCUMENT_ME
-   * @param item DOCUMENT_ME
+   * @param iRow 
+   * @param item 
    */
   public void setItemAt(int iRow, Item item) {
     oItems[iRow] = item;
@@ -198,8 +196,8 @@ public abstract class JajukTableModel extends DefaultTableModel {
   /**
    * Undo last change.
    * 
-   * @param rowIndex DOCUMENT_ME
-   * @param columnIndex DOCUMENT_ME
+   * @param rowIndex 
+   * @param columnIndex 
    */
   public void undo(int rowIndex, int columnIndex) {
     if (oLast != null) {
@@ -220,7 +218,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
   /**
    * Gets the identifier.
    * 
-   * @param column DOCUMENT_ME
+   * @param column 
    * 
    * @return the identifier
    */
@@ -278,7 +276,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
   /**
    * Fill model with data.
    * 
-   * @param columnsToShow DOCUMENT_ME
+   * @param columnsToShow 
    */
   public synchronized void populateModel(List<String> columnsToShow) {
     populateModel(null, null, columnsToShow);
@@ -323,7 +321,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
   /**
    * Gets the icon.
    * 
-   * @param unmount DOCUMENT_ME
+   * @param unmount 
    * 
    * @return the icon
    */

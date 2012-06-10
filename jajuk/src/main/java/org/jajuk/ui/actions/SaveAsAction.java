@@ -56,7 +56,7 @@ public class SaveAsAction extends JajukAction {
   /**
    * Invoked when an action occurs.
    * 
-   * @param e DOCUMENT_ME
+   * @param e 
    */
   @Override
   @SuppressWarnings("unchecked")

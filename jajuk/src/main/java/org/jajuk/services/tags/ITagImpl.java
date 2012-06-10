@@ -140,7 +140,7 @@ public interface ITagImpl {
   /**
    * Sets the track name.
    * 
-   * @param sTrackName DOCUMENT_ME
+   * @param sTrackName 
    * 
    * @throws Exception the exception
    */
@@ -149,7 +149,7 @@ public interface ITagImpl {
   /**
    * Sets the album name.
    * 
-   * @param sAlbumName DOCUMENT_ME
+   * @param sAlbumName 
    * 
    * @throws Exception the exception
    */
@@ -158,7 +158,7 @@ public interface ITagImpl {
   /**
    * Sets the artist name.
    * 
-   * @param sArtistName DOCUMENT_ME
+   * @param sArtistName 
    * 
    * @throws Exception the exception
    */
@@ -167,7 +167,7 @@ public interface ITagImpl {
   /**
    * Sets the album artist.
    * 
-   * @param sAlbumArtist DOCUMENT_ME
+   * @param sAlbumArtist 
    * 
    * @throws Exception the exception
    */
@@ -176,7 +176,7 @@ public interface ITagImpl {
   /**
    * Sets the disc number.
    * 
-   * @param discnumber DOCUMENT_ME
+   * @param discnumber 
    * 
    * @throws Exception the exception
    */
@@ -185,7 +185,7 @@ public interface ITagImpl {
   /**
    * Sets the genre name.
    * 
-   * @param genre DOCUMENT_ME
+   * @param genre 
    * 
    * @throws Exception the exception
    */
@@ -194,7 +194,7 @@ public interface ITagImpl {
   /**
    * Sets the year.
    * 
-   * @param sYear DOCUMENT_ME
+   * @param sYear 
    * 
    * @throws Exception the exception
    */
@@ -203,7 +203,7 @@ public interface ITagImpl {
   /**
    * Sets the comment.
    * 
-   * @param sComment DOCUMENT_ME
+   * @param sComment 
    * 
    * @throws Exception the exception
    */
@@ -212,7 +212,7 @@ public interface ITagImpl {
   /**
    * Sets the lyrics.
    * 
-   * @param sLyrics DOCUMENT_ME
+   * @param sLyrics 
    * 
    * @throws Exception the exception
    */
@@ -228,7 +228,7 @@ public interface ITagImpl {
   /**
    * Set current file to work with.
    * 
-   * @param fio DOCUMENT_ME
+   * @param fio 
    * 
    * @throws Exception the exception
    */
@@ -237,7 +237,7 @@ public interface ITagImpl {
   /**
    * Set track order.
    * 
-   * @param lOrder DOCUMENT_ME
+   * @param lOrder 
    * 
    * @throws Exception the exception
    */
@@ -253,7 +253,7 @@ public interface ITagImpl {
   /**
    * Get value of tagFieldKey.
    * 
-   * @param tagFieldKey DOCUMENT_ME
+   * @param tagFieldKey 
    * 
    * @return the tag field
    * 
@@ -264,8 +264,8 @@ public interface ITagImpl {
   /**
    * Set value of tagFieldKey.
    *
-   * @param tagFieldKey DOCUMENT_ME
-   * @param tagFieldValue DOCUMENT_ME
+   * @param tagFieldKey 
+   * @param tagFieldValue 
    * @throws Exception the exception
    */
   public void setTagField(String tagFieldKey, String tagFieldValue) throws Exception;

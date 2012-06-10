@@ -71,7 +71,7 @@ public class LastFmRunnable implements Runnable {
    * @param service the service
    * @param audioObject the audio object
    * @param id the id
-   * @param executorService DOCUMENT_ME
+   * @param executorService 
    */
   public LastFmRunnable(ContextListener listener, LastFmService service, AudioObject audioObject,
       long id, ExecutorService executorService) {

@@ -26,7 +26,7 @@ import java.net.URL;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestJSplash extends JajukTestCase {
 
@@ -47,7 +47,7 @@ public class TestJSplash extends JajukTestCase {
 
   /**
    * Test j splash2.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -62,7 +62,7 @@ public class TestJSplash extends JajukTestCase {
 
   /**
    * Test j splash null url.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -143,7 +143,7 @@ public class TestJSplash extends JajukTestCase {
 
   /**
    * Test set progress int string2.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */

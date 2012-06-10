@@ -43,19 +43,15 @@ import org.jajuk.util.Const;
  */
 public class TestStartupEngineService extends JajukTestCase {
 
-  /** DOCUMENT_ME. */
   private File file1;
 
-  /** DOCUMENT_ME. */
   private File file2;
 
-  /** DOCUMENT_ME. */
   private File file3;
 
-  /** DOCUMENT_ME. */
   private WebRadio radio1;
 
-  /** The Constant POSITION.  DOCUMENT_ME */
+  /** The Constant POSITION.   */
   private static final float POSITION = 0.5f;
 
   /*
@@ -142,7 +138,7 @@ public class TestStartupEngineService extends JajukTestCase {
 
   /**
    * Test nothing.
-   * DOCUMENT_ME
+   * 
    *
    * @throws InterruptedException the interrupted exception
    */
@@ -161,7 +157,7 @@ public class TestStartupEngineService extends JajukTestCase {
 
   /**
    * Test last item.
-   * DOCUMENT_ME
+   * 
    *
    * @throws InterruptedException the interrupted exception
    */
@@ -177,7 +173,7 @@ public class TestStartupEngineService extends JajukTestCase {
 
   /**
    * Test last item last pos.
-   * DOCUMENT_ME
+   * 
    *
    * @throws InterruptedException the interrupted exception
    */
@@ -196,7 +192,7 @@ public class TestStartupEngineService extends JajukTestCase {
 
   /**
    * Test novelties.
-   * DOCUMENT_ME
+   * 
    *
    * @throws InterruptedException the interrupted exception
    */
@@ -213,7 +209,7 @@ public class TestStartupEngineService extends JajukTestCase {
 
   /**
    * Test bestof.
-   * DOCUMENT_ME
+   * 
    *
    * @throws InterruptedException the interrupted exception
    */
@@ -229,7 +225,7 @@ public class TestStartupEngineService extends JajukTestCase {
 
   /**
    * Test first session.
-   * DOCUMENT_ME
+   * 
    *
    * @throws InterruptedException the interrupted exception
    */
@@ -247,7 +243,7 @@ public class TestStartupEngineService extends JajukTestCase {
 
   /**
    * Test shuffle.
-   * DOCUMENT_ME
+   * 
    *
    * @throws InterruptedException the interrupted exception
    */
@@ -263,7 +259,7 @@ public class TestStartupEngineService extends JajukTestCase {
 
   /**
    * Test stopped file.
-   * DOCUMENT_ME
+   * 
    *
    * @throws InterruptedException the interrupted exception
    */
@@ -284,7 +280,7 @@ public class TestStartupEngineService extends JajukTestCase {
 
   /**
    * Test stopped radio.
-   * DOCUMENT_ME
+   * 
    *
    * @throws InterruptedException the interrupted exception
    */
@@ -302,7 +298,7 @@ public class TestStartupEngineService extends JajukTestCase {
 
   /**
    * Test start web radio.
-   * DOCUMENT_ME
+   * 
    *
    * @throws InterruptedException the interrupted exception
    */

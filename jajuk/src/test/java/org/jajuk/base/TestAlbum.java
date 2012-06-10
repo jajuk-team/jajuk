@@ -33,7 +33,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestAlbum extends JajukTestCase {
 
@@ -54,7 +54,7 @@ public class TestAlbum extends JajukTestCase {
     StartupCollectionService.registerItemManagers();
 
     Album album = new Album("1", "name", 123);
-   
+
     // add a genre and year and check again
     album.getTracksCache().add(getTrack(album));
     assertFalse(album.getAny().isEmpty());
@@ -62,7 +62,7 @@ public class TestAlbum extends JajukTestCase {
 
   /**
    * Test get any album artist.
-   * DOCUMENT_ME
+   * 
    */
   public final void testGetAnyAlbumArtist() {
     // need item managers to do this step
@@ -90,7 +90,7 @@ public class TestAlbum extends JajukTestCase {
   /**
    * Gets the track.
    *
-   * @param album DOCUMENT_ME
+   * @param album 
    * @return the track
    */
   private Track getTrack(Album album) {
@@ -467,8 +467,8 @@ public class TestAlbum extends JajukTestCase {
   /**
    * Gets the file.
    *
-   * @param i DOCUMENT_ME
-   * @param track DOCUMENT_ME
+   * @param i 
+   * @param track 
    * @return the file
    * @throws Exception the exception
    */
@@ -582,7 +582,7 @@ public class TestAlbum extends JajukTestCase {
 
   /**
    * Test get artist or album artist_ unknown.
-   * DOCUMENT_ME
+   * 
    */
   public final void testGetArtistOrAlbumArtist_Unknown() {
     StartupCollectionService.registerItemManagers();
@@ -595,7 +595,7 @@ public class TestAlbum extends JajukTestCase {
 
   /**
    * Test get artist or album artist_ album artist.
-   * DOCUMENT_ME
+   * 
    */
   public final void testGetArtistOrAlbumArtist_AlbumArtist() {
     // need item managers to do this step
@@ -619,7 +619,7 @@ public class TestAlbum extends JajukTestCase {
 
   /**
    * Test get artist or album artist_ track artist.
-   * DOCUMENT_ME
+   * 
    */
   public final void testGetArtistOrAlbumArtist_TrackArtist() {
     // need item managers to do this step
@@ -637,7 +637,7 @@ public class TestAlbum extends JajukTestCase {
 
   /**
    * Test get artist or album artist_ track artist2.
-   * DOCUMENT_ME
+   * 
    */
   public final void testGetArtistOrAlbumArtist_TrackArtist2() {
     // need item managers to do this step
@@ -656,7 +656,7 @@ public class TestAlbum extends JajukTestCase {
 
   /**
    * Test get artist or album artist_ album artist unknown.
-   * DOCUMENT_ME
+   * 
    */
   public final void testGetArtistOrAlbumArtist_AlbumArtistUnknown() {
     // need item managers to do this step

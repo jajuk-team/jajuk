@@ -58,7 +58,6 @@ public class LastFmCache {
   private static File albumInfoCacheDir = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
       + Const.LASTFM_CACHE + '/' + Const.LAST_FM_ALBUM_INFO_CACHE_DIR);
 
-  /** DOCUMENT_ME. */
   private static File artistInfoCacheDir = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
       + Const.LASTFM_CACHE + '/' + Const.LAST_FM_ARTIST_INFO_CACHE_DIR);
 
@@ -82,7 +81,6 @@ public class LastFmCache {
   private static File artistWikiCacheDir = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
       + Const.LASTFM_CACHE + '/' + Const.LAST_FM_ARTIST_WIKI_CACHE_DIR);
 
-  /** DOCUMENT_ME. */
   private static File submissionCacheDir = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
       + Const.LASTFM_CACHE + '/' + Const.LAST_FM_SUBMISSION_CACHE_DIR);
 
@@ -740,7 +738,7 @@ public class LastFmCache {
    * Stores an artist info at cache.
    * 
    * @param artist the artist
-   * @param artistObject DOCUMENT_ME
+   * @param artistObject 
    */
   public synchronized void storeArtistInfo(String artist, ArtistInfo artistObject) {
     if (artist == null) {
@@ -870,9 +868,9 @@ public class LastFmCache {
 
   /**
    * Adds the submission data.
-   * DOCUMENT_ME
    * 
-   * @param submissionData DOCUMENT_ME
+   * 
+   * @param submissionData 
    */
   public synchronized void addSubmissionData(FullSubmissionData submissionData) {
     List<FullSubmissionData> submissionDataList = getSubmissionData();
@@ -915,7 +913,7 @@ public class LastFmCache {
 
   /**
    * Removes the submission data.
-   * DOCUMENT_ME
+   * 
    */
   public synchronized void removeSubmissionData() {
     try {

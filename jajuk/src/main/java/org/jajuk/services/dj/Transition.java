@@ -65,7 +65,7 @@ public class Transition {
   /**
    * equals method.
    * 
-   * @param other DOCUMENT_ME
+   * @param other 
    * 
    * @return whether two object are equals
    */
@@ -150,9 +150,9 @@ public class Transition {
 
   /**
    * Adds the from genre.
-   * DOCUMENT_ME
    * 
-   * @param genre DOCUMENT_ME
+   * 
+   * @param genre 
    */
   public void addFromGenre(Genre genre) {
     from.addGenre(genre);
@@ -161,7 +161,7 @@ public class Transition {
   /**
    * Removes the from genre.
    * 
-   * @param genre DOCUMENT_ME
+   * @param genre 
    */
   public void removeFromGenre(Genre genre) {
     from.removeGenre(genre);
@@ -169,9 +169,9 @@ public class Transition {
 
   /**
    * Adds the to genre.
-   * DOCUMENT_ME
    * 
-   * @param genre DOCUMENT_ME
+   * 
+   * @param genre 
    */
   public void addToGenre(Genre genre) {
     to.addGenre(genre);
@@ -180,7 +180,7 @@ public class Transition {
   /**
    * Removes the to genre.
    * 
-   * @param genre DOCUMENT_ME
+   * @param genre 
    */
   public void removeToGenre(Genre genre) {
     to.removeGenre(genre);

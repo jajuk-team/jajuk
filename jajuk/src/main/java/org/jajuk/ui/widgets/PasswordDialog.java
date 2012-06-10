@@ -42,16 +42,14 @@ public class PasswordDialog extends JajukJDialog implements ActionListener {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   JPasswordField pf;
 
-  /** DOCUMENT_ME. */
   JOptionPane optionPane;
 
   /**
    * Instantiates a new password dialog.
    * 
-   * @param sMessage DOCUMENT_ME
+   * @param sMessage 
    */
   public PasswordDialog(String sMessage) {
     setTitle(sMessage);
@@ -101,7 +99,7 @@ public class PasswordDialog extends JajukJDialog implements ActionListener {
   /**
    * This method handles events for the text field.
    * 
-   * @param e DOCUMENT_ME
+   * @param e 
    */
   @Override
   public void actionPerformed(ActionEvent e) {

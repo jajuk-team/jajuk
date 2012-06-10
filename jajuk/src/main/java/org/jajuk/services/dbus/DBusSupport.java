@@ -36,7 +36,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Previous.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -45,7 +45,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Next.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -54,7 +54,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Rewind.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -63,7 +63,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Play pause.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -72,7 +72,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Stop.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -81,7 +81,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Forward.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -90,7 +90,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Exit.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -99,7 +99,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Shuffle global.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -108,7 +108,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Previous album.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -117,7 +117,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Next album.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -126,7 +126,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Increase volume.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -135,7 +135,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Decrease volume.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -144,7 +144,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Mute.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -153,7 +153,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Current html.
-   * DOCUMENT_ME
+   * 
    * 
    * @return the string
    * 
@@ -164,7 +164,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Current.
-   * DOCUMENT_ME
+   * 
    * 
    * @return the string
    * 
@@ -175,7 +175,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Ban current.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -184,7 +184,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Show currently playing.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */

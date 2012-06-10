@@ -70,11 +70,11 @@ public final class UtilString {
    * Apply the Album pattern.
    *
    * @param file file to apply pattern to
-   * @param sPattern DOCUMENT_ME
+   * @param sPattern 
    * @param bMandatory are all needed tags mandatory ?
-   * @param normalize DOCUMENT_ME
-   * @param out DOCUMENT_ME
-   * @param track DOCUMENT_ME
+   * @param normalize 
+   * @param out 
+   * @param track 
    *
    * @return the string
    *
@@ -107,10 +107,10 @@ public final class UtilString {
    * Apply the Year pattern.
    *
    * @param file file to apply pattern to
-   * @param sPattern DOCUMENT_ME
+   * @param sPattern 
    * @param bMandatory are all needed tags mandatory ?
-   * @param out DOCUMENT_ME
-   * @param track DOCUMENT_ME
+   * @param out 
+   * @param track 
    *
    * @return the string
    *
@@ -136,10 +136,10 @@ public final class UtilString {
   /**
    * Apply the Track pattern.
    *
-   * @param sPattern DOCUMENT_ME
-   * @param normalize DOCUMENT_ME
-   * @param out DOCUMENT_ME
-   * @param track DOCUMENT_ME
+   * @param sPattern 
+   * @param normalize 
+   * @param out 
+   * @param track 
    *
    * @return the string
    */
@@ -161,10 +161,10 @@ public final class UtilString {
    * Apply the Track Order pattern.
    *
    * @param file file to apply pattern to
-   * @param sPattern DOCUMENT_ME
+   * @param sPattern 
    * @param bMandatory are all needed tags mandatory ?
-   * @param out DOCUMENT_ME
-   * @param track DOCUMENT_ME
+   * @param out 
+   * @param track 
    *
    * @return the string
    *
@@ -190,11 +190,11 @@ public final class UtilString {
 
   /**
    * Handle order.
-   * DOCUMENT_ME
+   * 
    *
-   * @param file DOCUMENT_ME
-   * @param bMandatory DOCUMENT_ME
-   * @param track DOCUMENT_ME
+   * @param file 
+   * @param bMandatory 
+   * @param track 
    *
    * @return the long
    *
@@ -228,11 +228,11 @@ public final class UtilString {
    * Apply the Genre pattern.
    *
    * @param file file to apply pattern to
-   * @param sPattern DOCUMENT_ME
+   * @param sPattern 
    * @param bMandatory are all needed tags mandatory ?
-   * @param normalize DOCUMENT_ME
-   * @param out DOCUMENT_ME
-   * @param track DOCUMENT_ME
+   * @param normalize 
+   * @param out 
+   * @param track 
    *
    * @return the string
    *
@@ -265,11 +265,11 @@ public final class UtilString {
    * Apply the Artist pattern.
    *
    * @param file file to apply pattern to
-   * @param sPattern DOCUMENT_ME
+   * @param sPattern 
    * @param bMandatory are all needed tags mandatory ?
-   * @param normalize DOCUMENT_ME
-   * @param out DOCUMENT_ME
-   * @param track DOCUMENT_ME
+   * @param normalize 
+   * @param out 
+   * @param track 
    *
    * @return the string
    *
@@ -305,9 +305,9 @@ public final class UtilString {
    * with information from the file and returns the result.
    *
    * @param file file to apply pattern to
-   * @param sPattern DOCUMENT_ME
+   * @param sPattern 
    * @param bMandatory are all needed tags mandatory ?
-   * @param normalize DOCUMENT_ME
+   * @param normalize 
    *
    * @return computed string
    * make sure the created string can be used as file name on target
@@ -353,10 +353,10 @@ public final class UtilString {
   /**
    * Apply Custom property pattern.
    *
-   * @param sPattern DOCUMENT_ME
-   * @param normalize DOCUMENT_ME
-   * @param out DOCUMENT_ME
-   * @param track DOCUMENT_ME
+   * @param sPattern 
+   * @param normalize 
+   * @param out 
+   * @param track 
    * @return the string
    */
   private static String applyCustomPattern(String sPattern, boolean normalize, String out,
@@ -388,10 +388,10 @@ public final class UtilString {
   /**
    * Apply album artist pattern.
    *
-   * @param sPattern DOCUMENT_ME
-   * @param normalize DOCUMENT_ME
-   * @param out DOCUMENT_ME
-   * @param track DOCUMENT_ME
+   * @param sPattern 
+   * @param normalize 
+   * @param out 
+   * @param track 
    * @return the string
    */
   private static String applyAlbumArtistPattern(String sPattern, boolean normalize, String out,
@@ -411,11 +411,11 @@ public final class UtilString {
   /**
    * Apply disc pattern.
    *
-   * @param file DOCUMENT_ME
-   * @param sPattern DOCUMENT_ME
-   * @param bMandatory DOCUMENT_ME
-   * @param out DOCUMENT_ME
-   * @param track DOCUMENT_ME
+   * @param file 
+   * @param sPattern 
+   * @param bMandatory 
+   * @param out 
+   * @param track 
    * @return the string
    * @throws JajukException the jajuk exception
    */
@@ -438,11 +438,11 @@ public final class UtilString {
 
   /**
    * Handle disc number.
-   * DOCUMENT_ME
+   * 
    *
-   * @param file DOCUMENT_ME
-   * @param bMandatory DOCUMENT_ME
-   * @param track DOCUMENT_ME
+   * @param file 
+   * @param bMandatory 
+   * @param track 
    *
    * @return the long
    *
@@ -493,7 +493,7 @@ public final class UtilString {
   /**
    * Encode URLS.
    *
-   * @param s DOCUMENT_ME
+   * @param s 
    *
    * @return the string
    */
@@ -507,9 +507,9 @@ public final class UtilString {
    */
   /**
    * Escape string.
-   * DOCUMENT_ME
+   * 
    *
-   * @param s DOCUMENT_ME
+   * @param s 
    *
    * @return the string
    */
@@ -534,8 +534,8 @@ public final class UtilString {
   /**
    * Format an object to a string.
    *
-   * @param oValue DOCUMENT_ME
-   * @param meta DOCUMENT_ME
+   * @param oValue 
+   * @param meta 
    * @param bHuman is this string intended to be human-readable ?
    * @return the string
    */
@@ -573,7 +573,7 @@ public final class UtilString {
   /**
    * Formatter for properties dialog window.
    *
-   * @param sDesc DOCUMENT_ME
+   * @param sDesc 
    *
    * @return the string
    */
@@ -584,7 +584,7 @@ public final class UtilString {
   /**
    * format genre: first letter uppercase and others lowercase.
    *
-   * @param genre DOCUMENT_ME
+   * @param genre 
    *
    * @return the string
    */
@@ -604,7 +604,7 @@ public final class UtilString {
   /**
    * Performs some cleanups for strings comming from tag libs.
    *
-   * @param s DOCUMENT_ME
+   * @param s 
    *
    * @return the string
    */
@@ -624,7 +624,7 @@ public final class UtilString {
   /**
    * Format a time from secs to a human readable format.
    *
-   * @param lTime DOCUMENT_ME
+   * @param lTime 
    *
    * @return the string
    */
@@ -660,7 +660,7 @@ public final class UtilString {
    * <p>> to &gt;
    * <p> & to &amp;
    *
-   * @param s DOCUMENT_ME
+   * @param s 
    *
    * @return the string
    */
@@ -685,7 +685,7 @@ public final class UtilString {
   /**
    * Replace reserved xml chars.
    *
-   * @param s DOCUMENT_ME
+   * @param s 
    *
    * @return the string
    */
@@ -790,7 +790,7 @@ public final class UtilString {
   /**
    * Checks if is xml valid.
    *
-   * @param s DOCUMENT_ME
+   * @param s 
    *
    * @return whether given string is XML-valid
    */
@@ -848,8 +848,8 @@ public final class UtilString {
   /**
    * Parse a string to an object.
    *
-   * @param sValue DOCUMENT_ME
-   * @param cType DOCUMENT_ME
+   * @param sValue 
+   * @param cType 
    *
    * @return parsed item
    *
@@ -875,9 +875,9 @@ public final class UtilString {
 
   /**
    * Handle boolean.
-   * DOCUMENT_ME
+   * 
    *
-   * @param sValue DOCUMENT_ME
+   * @param sValue 
    *
    * @return the boolean
    */
@@ -1000,7 +1000,7 @@ public final class UtilString {
   /**
    * Convert byte to hexadecimal representation.
    *
-   * @param b DOCUMENT_ME
+   * @param b 
    *
    * @return the string
    */
@@ -1034,9 +1034,9 @@ public final class UtilString {
    * string "ab cd (ef) gh (ij)" and chars '(' and ')' will return a list with
    * two strings: "(ef)" and "(ij)"
    *
-   * @param string DOCUMENT_ME
-   * @param beginChar DOCUMENT_ME
-   * @param endChar DOCUMENT_ME
+   * @param string 
+   * @param beginChar 
+   * @param endChar 
    *
    * @return the text between chars
    */

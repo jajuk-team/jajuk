@@ -39,7 +39,7 @@ public class Proportion {
   /**
    * Constructor.
    *
-   * @param ambience DOCUMENT_ME
+   * @param ambience 
    * @param proportion genre proportion in %. Ex: 0.1
    */
   public Proportion(Ambience ambience, float proportion) {
@@ -58,7 +58,7 @@ public class Proportion {
   /**
    * equals method.
    * 
-   * @param other DOCUMENT_ME
+   * @param other 
    * 
    * @return whether two object are equals
    */
@@ -94,7 +94,7 @@ public class Proportion {
   /**
    * Add a genre.
    * 
-   * @param genre DOCUMENT_ME
+   * @param genre 
    */
   public void addGenre(Genre genre) {
     ambience.addGenre(genre);

@@ -47,7 +47,7 @@ import org.jajuk.services.tags.ITagImpl;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestRatingManager extends JajukTestCase {
 
@@ -150,7 +150,7 @@ public class TestRatingManager extends JajukTestCase {
   /**
    * Gets the track.
    *
-   * @param i DOCUMENT_ME
+   * @param i 
    * @return the track
    * @throws Exception the exception
    */

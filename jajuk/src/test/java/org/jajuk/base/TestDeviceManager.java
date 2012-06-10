@@ -28,7 +28,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestDeviceManager extends JajukTestCase {
 
@@ -81,7 +81,7 @@ public class TestDeviceManager extends JajukTestCase {
 
   /**
    * Test register device twice.
-   * DOCUMENT_ME
+   * 
    */
   public final void testRegisterDeviceTwice() {
     assertNotNull(DeviceManager.getInstance().registerDevice("device", Device.Type.DIRECTORY,
@@ -117,7 +117,7 @@ public class TestDeviceManager extends JajukTestCase {
 
   /**
    * Test check device availablity existing name.
-   * DOCUMENT_ME
+   * 
    */
   public final void testCheckDeviceAvailablityExistingName() {
     assertNotNull(DeviceManager.getInstance().registerDevice("device4", Device.Type.DIRECTORY,
@@ -171,7 +171,7 @@ public class TestDeviceManager extends JajukTestCase {
 
   /**
    * Test check device availability not exists.
-   * DOCUMENT_ME
+   * 
    */
   public final void testCheckDeviceAvailablityNotExists() {
     assertEquals(
@@ -225,7 +225,7 @@ public class TestDeviceManager extends JajukTestCase {
 
   /**
    * Test remove device mounted.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */

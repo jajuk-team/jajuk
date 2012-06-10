@@ -45,7 +45,7 @@ public class TipOfTheDayAction extends JajukAction {
   /**
    * Invoked when an action occurs.
    * 
-   * @param evt DOCUMENT_ME
+   * @param evt 
    */
   @Override
   public void perform(ActionEvent evt) {

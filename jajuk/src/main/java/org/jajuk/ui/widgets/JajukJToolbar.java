@@ -41,7 +41,7 @@ public class JajukJToolbar extends JToolBar {
   /**
    * Instantiates a new jajuk j toolbar.
    * 
-   * @param i DOCUMENT_ME
+   * @param i 
    */
   public JajukJToolbar(int i) {
     super(i);

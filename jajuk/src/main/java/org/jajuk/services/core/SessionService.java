@@ -314,7 +314,7 @@ public class SessionService {
 
   /**
    * Creates the session file.
-   * DOCUMENT_ME
+   * 
    */
   public static void createSessionFile() {
     if (!getSessionIdFile().mkdir()) {
@@ -572,7 +572,7 @@ public class SessionService {
    *
    * This bootstrap file location can be overridden by providing -bootstrap=<URL> CLI option.
    *
-   * @param filename DOCUMENT_ME
+   * @param filename 
    *
    * @return bootstrap file absolute path
    *

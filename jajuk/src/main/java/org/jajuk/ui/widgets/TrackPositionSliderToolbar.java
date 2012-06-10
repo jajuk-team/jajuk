@@ -55,7 +55,7 @@ import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TrackPositionSliderToolbar extends JPanel implements ChangeListener,
     MouseWheelListener, Observer {
@@ -66,13 +66,10 @@ public class TrackPositionSliderToolbar extends JPanel implements ChangeListener
   /** Last slider manual move date. */
   private long lDateLastAdjust;
 
-  /** DOCUMENT_ME. */
   private JSlider jsPosition;
 
-  /** DOCUMENT_ME. */
   private JLabel jlCurrent;
 
-  /** DOCUMENT_ME. */
   String sCurrentStatus;
 
   /** Swing Timer to refresh the component. */
@@ -113,7 +110,7 @@ public class TrackPositionSliderToolbar extends JPanel implements ChangeListener
   }
 
   /**
-   * Inits the gui. DOCUMENT_ME
+   * Inits the gui. 
    */
   private void initGui() {
     setLayout(new MigLayout("ins 0 5 0 5", "[70%,fill][30%,grow]"));
@@ -148,7 +145,7 @@ public class TrackPositionSliderToolbar extends JPanel implements ChangeListener
   /**
    * Call a seek.
    * 
-   * @param fPosition DOCUMENT_ME
+   * @param fPosition 
    */
   private void setPosition(final float fPosition) {
     new Thread("TrackSlider Position Thread") {
@@ -187,8 +184,8 @@ public class TrackPositionSliderToolbar extends JPanel implements ChangeListener
   /**
    * Set the current status for current track ex : 01:01:01/02:02:02.
    * 
-   * @param lTime DOCUMENT_ME
-   * @param length DOCUMENT_ME
+   * @param lTime 
+   * @param length 
    */
   public final void setCurrentTimeMessage(long lTime, long length) {
     String string;

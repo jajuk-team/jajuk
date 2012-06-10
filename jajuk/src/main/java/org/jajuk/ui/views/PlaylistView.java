@@ -160,7 +160,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
 
   /** Menu item : down. */
   JMenuItem jmiFileDown;
-  
+
   /** Menu item : Open with Explorer. */
   JMenuItem jmiOpenExplorer;
 
@@ -449,8 +449,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     JMenuItem jmiFileCopyURL = new JMenuItem(
         ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     jmiFileCopyURL.putClientProperty(Const.DETAIL_CONTENT, editorTable.getSelection());
-    jmiFileCopyURL = new JMenuItem(
-        ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
+    jmiFileCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     jmiOpenExplorer = new JMenuItem(ActionManager.getAction(JajukActions.OPEN_EXPLORER));
     jmiOpenExplorer.putClientProperty(Const.DETAIL_CONTENT, editorTable.getSelection());
 
@@ -516,7 +515,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   protected void setKeystrokes() {
     // Bind keystrokes and selection
     editorTable.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
-    
+
     InputMap inputMap = editorTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     ActionMap actionMap = editorTable.getActionMap();
 
@@ -557,7 +556,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   }
 
   /**
-   * Sets the renderers. DOCUMENT_ME
+   * Sets the renderers. 
    */
   void setRenderers() {
     // set right cell renderer for play and rate icons
@@ -639,7 +638,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   }
 
   /**
-   * Refresh current playlist. DOCUMENT_ME
+   * Refresh current playlist. 
    */
   private void refreshCurrentPlaylist() {
     if (plf == null) { // nothing ? leave
@@ -887,7 +886,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
    * Import files, used when drag / dropping for ie.
    * 
    * @param files files to be imported
-   * @param position DOCUMENT_ME
+   * @param position 
    */
   public void importFiles(List<File> files, int position) {
     plf.addFiles(UtilFeatures.applyPlayOption(files), position);
@@ -895,7 +894,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   }
 
   /**
-   * Removes the selection. DOCUMENT_ME
+   * Removes the selection. 
    */
   private void removeSelection() {
     int[] iRows = editorTable.getSelectedRows();
@@ -926,7 +925,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   /**
    * Called when table selection changed.
    * 
-   * @param e DOCUMENT_ME
+   * @param e 
    */
   @Override
   public void valueChanged(ListSelectionEvent e) {
@@ -1050,10 +1049,8 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 3842568503545896845L;
 
-    /** DOCUMENT_ME. */
     private JMenuItem jmiRepositorySaveAs;
 
-    /** DOCUMENT_ME. */
     private JMenuItem jmiPrepareParty;
 
     /** List of playlists for which we already displayed a warning message if it contains old or external entries. */
@@ -1133,7 +1130,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       jmiPrepareParty.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
       pjmTracks = new PreferencesJMenu(jtable.getSelection());
       jmiOpenExplorer = new JMenuItem(ActionManager.getAction(JajukActions.OPEN_EXPLORER));
-      jmiOpenExplorer.putClientProperty(Const.DETAIL_CONTENT, jtable.getSelection()); 
+      jmiOpenExplorer.putClientProperty(Const.DETAIL_CONTENT, jtable.getSelection());
 
       jtable.getMenu().add(jmiOpenExplorer);
       jtable.getMenu().add(jmiPrepareParty);

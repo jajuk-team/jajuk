@@ -29,8 +29,8 @@ public abstract class LogicalItem extends Item {
   /**
    * The Constructor.
    * 
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
+   * @param sId 
+   * @param sName 
    */
   LogicalItem(String sId, String sName) {
     super(sId, sName);

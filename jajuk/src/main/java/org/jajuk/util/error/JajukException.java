@@ -36,7 +36,7 @@ public class JajukException extends Exception {
   /**
    * JajukException constructor.
    * 
-   * @param code DOCUMENT_ME
+   * @param code 
    */
   public JajukException(int code) {
     this(code, null, null);
@@ -45,7 +45,7 @@ public class JajukException extends Exception {
   /**
    * JajukException constructor.
    *
-   * @param code DOCUMENT_ME
+   * @param code 
    * @param pCause Original exception of the error.
    */
   public JajukException(int code, Throwable pCause) {

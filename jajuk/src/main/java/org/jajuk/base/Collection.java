@@ -61,16 +61,15 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public final class Collection extends DefaultHandler {
 
-  /** The Constant TAG_CLOSE_NEWLINE. DOCUMENT_ME */
+  /** The Constant TAG_CLOSE_NEWLINE.  */
   private static final String TAG_CLOSE_NEWLINE = ">\n";
 
-  /** The Constant TAB_CLOSE_TAG_START. DOCUMENT_ME */
+  /** The Constant TAB_CLOSE_TAG_START.  */
   private static final String TAB_CLOSE_TAG_START = "</";
 
   /** Self instance. */
   private static Collection coll = new Collection();
 
-  /** DOCUMENT_ME. */
   private static long lTime;
 
   /** Current ItemManager manager. */
@@ -128,44 +127,43 @@ public final class Collection extends DefaultHandler {
 
   // Constants value, use lower value for mist numerous items to parse
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private enum Stage {
 
-    /** DOCUMENT_ME. */
     STAGE_NONE,
 
-    /** The Constant STAGE_FILES. DOCUMENT_ME */
+    /** The Constant STAGE_FILES.  */
     STAGE_FILES,
 
-    /** The Constant STAGE_DIRECTORIES. DOCUMENT_ME */
+    /** The Constant STAGE_DIRECTORIES.  */
     STAGE_DIRECTORIES,
 
-    /** The Constant STAGE_TRACKS. DOCUMENT_ME */
+    /** The Constant STAGE_TRACKS.  */
     STAGE_TRACKS,
 
-    /** The Constant STAGE_ALBUMS. DOCUMENT_ME */
+    /** The Constant STAGE_ALBUMS.  */
     STAGE_ALBUMS,
 
-    /** The Constant STAGE_ARTISTS. DOCUMENT_ME */
+    /** The Constant STAGE_ARTISTS.  */
     STAGE_ARTISTS,
 
-    /** The Constant STAGE_GENRES. DOCUMENT_ME */
+    /** The Constant STAGE_GENRES.  */
     STAGE_GENRES,
 
-    /** The Constant STAGE_PLAYLIST_FILES. DOCUMENT_ME */
+    /** The Constant STAGE_PLAYLIST_FILES.  */
     STAGE_PLAYLIST_FILES,
 
-    /** The Constant STAGE_PLAYLISTS. DOCUMENT_ME */
+    /** The Constant STAGE_PLAYLISTS.  */
     STAGE_PLAYLISTS,
 
-    /** The Constant STAGE_TYPES. DOCUMENT_ME */
+    /** The Constant STAGE_TYPES.  */
     STAGE_TYPES,
 
-    /** The Constant STAGE_DEVICES. DOCUMENT_ME */
+    /** The Constant STAGE_DEVICES.  */
     STAGE_DEVICES,
 
-    /** The Constant STAGE_YEARS. DOCUMENT_ME */
+    /** The Constant STAGE_YEARS.  */
     STAGE_YEARS,
 
     /** STAGE_ALBUM_ARTIST. */
@@ -175,7 +173,7 @@ public final class Collection extends DefaultHandler {
   /** *************************************************************************** [PERF] provide current stage (files, tracks...) used to optimize switch when parsing the collection ************************************************************************** */
   private Stage stage = Stage.STAGE_NONE;
 
-  /** The Constant additionFormatter. DOCUMENT_ME */
+  /** The Constant additionFormatter.  */
   private final DateFormat additionFormatter = UtilString.getAdditionDateFormatter();
 
   /**
@@ -198,7 +196,7 @@ public final class Collection extends DefaultHandler {
    * Write current collection to collection file for persistence between
    * sessions.
    *
-   * @param collectionFile DOCUMENT_ME
+   * @param collectionFile 
    *
    * @throws IOException Signals that an I/O exception has occurred.
    */
@@ -298,11 +296,10 @@ public final class Collection extends DefaultHandler {
     String sCharset = Conf.getString(Const.CONF_COLLECTION_CHARSET);
     final BufferedWriter bw;
     if (file.getAbsolutePath().endsWith(".zip")) {
-      bw = new BufferedWriter(new OutputStreamWriter(new ZipOutputStream(new FileOutputStream(
-          file)), sCharset), 1000000);
+      bw = new BufferedWriter(new OutputStreamWriter(
+          new ZipOutputStream(new FileOutputStream(file)), sCharset), 1000000);
     } else {
-      bw = new BufferedWriter(
-          new OutputStreamWriter(new FileOutputStream(file), sCharset), 1000000);
+      bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), sCharset), 1000000);
     }
 
     try {
@@ -310,8 +307,8 @@ public final class Collection extends DefaultHandler {
       bw.write("<" + Const.XML_TRACKS + " " + Const.XML_VERSION + "='" + Const.JAJUK_VERSION
           + "'>\n");
 
-      for(Track track : TrackManager.getInstance().getTracks()) {
-          bw.write(track.toRatingsXml());
+      for (Track track : TrackManager.getInstance().getTracks()) {
+        bw.write(track.toRatingsXml());
       }
 
       // end of collection
@@ -324,7 +321,8 @@ public final class Collection extends DefaultHandler {
     Log.debug("Ratings exported in " + (System.currentTimeMillis() - time) + " ms");
   }
 
-  public static void importRatings(final File file) throws IOException, SAXException, JajukException, ParserConfigurationException {
+  public static void importRatings(final File file) throws IOException, SAXException,
+      JajukException, ParserConfigurationException {
     Log.info("Importing current track ratings from file {{" + file + "}}");
 
     lTime = System.currentTimeMillis();
@@ -377,13 +375,13 @@ public final class Collection extends DefaultHandler {
   }
 
   /**
-   * Write item list. DOCUMENT_ME
+   * Write item list. 
    *
-   * @param bw DOCUMENT_ME
-   * @param header DOCUMENT_ME
-   * @param items DOCUMENT_ME
-   * @param footer DOCUMENT_ME
-   * @param buffer DOCUMENT_ME
+   * @param bw 
+   * @param header 
+   * @param items 
+   * @param footer 
+   * @param buffer 
    *
    * @throws IOException Signals that an I/O exception has occurred.
    */
@@ -398,11 +396,11 @@ public final class Collection extends DefaultHandler {
   }
 
   /**
-   * Write string. DOCUMENT_ME
+   * Write string. 
    *
-   * @param bw DOCUMENT_ME
-   * @param toWrite DOCUMENT_ME
-   * @param buffer DOCUMENT_ME
+   * @param bw 
+   * @param toWrite 
+   * @param buffer 
    *
    * @throws IOException Signals that an I/O exception has occurred.
    */
@@ -417,7 +415,7 @@ public final class Collection extends DefaultHandler {
   /**
    * Parse collection.xml file and put all collection information into memory
    *
-   * @param file DOCUMENT_ME
+   * @param file 
    *
    * @throws SAXException the SAX exception
    * @throws ParserConfigurationException the parser configuration exception
@@ -484,7 +482,7 @@ public final class Collection extends DefaultHandler {
   /**
    * parsing warning.
    *
-   * @param spe DOCUMENT_ME
+   * @param spe 
    * @throws SAXException the SAX exception
    */
   @Override
@@ -498,7 +496,7 @@ public final class Collection extends DefaultHandler {
   /**
    * parsing error.
    *
-   * @param spe DOCUMENT_ME
+   * @param spe 
    * @throws SAXException the SAX exception
    */
   @Override
@@ -511,7 +509,7 @@ public final class Collection extends DefaultHandler {
   /**
    * parsing fatal error.
    *
-   * @param spe DOCUMENT_ME
+   * @param spe 
    * @throws SAXException the SAX exception
    */
   @Override
@@ -554,10 +552,10 @@ public final class Collection extends DefaultHandler {
    * raw items, we don't perform equals on item name but we compare the string
    * hashcode
    *
-   * @param sUri DOCUMENT_ME
-   * @param s DOCUMENT_ME
-   * @param sQName DOCUMENT_ME
-   * @param attributes DOCUMENT_ME
+   * @param sUri 
+   * @param s 
+   * @param sQName 
+   * @param attributes 
    *
    * @throws SAXException the SAX exception
    */
@@ -716,10 +714,10 @@ public final class Collection extends DefaultHandler {
   }
 
   /**
-   * Handle files. DOCUMENT_ME
+   * Handle files. 
    *
-   * @param attributes DOCUMENT_ME
-   * @param idIndex DOCUMENT_ME
+   * @param attributes 
+   * @param idIndex 
    */
   private void handleFiles(Attributes attributes, int idIndex) {
     String sItemName = attributes.getValue(Const.XML_NAME);
@@ -792,10 +790,10 @@ public final class Collection extends DefaultHandler {
   }
 
   /**
-   * Handle directories. DOCUMENT_ME
+   * Handle directories. 
    *
-   * @param attributes DOCUMENT_ME
-   * @param idIndex DOCUMENT_ME
+   * @param attributes 
+   * @param idIndex 
    */
   private void handleDirectories(Attributes attributes, int idIndex) {
     Directory dParent = null;
@@ -849,10 +847,10 @@ public final class Collection extends DefaultHandler {
   }
 
   /**
-   * Handle tracks. DOCUMENT_ME
+   * Handle tracks. 
    *
-   * @param attributes DOCUMENT_ME
-   * @param idIndex DOCUMENT_ME
+   * @param attributes 
+   * @param idIndex 
    *
    * @throws ParseException the parse exception
    */
@@ -980,10 +978,10 @@ public final class Collection extends DefaultHandler {
   }
 
   /**
-   * Handle albums. DOCUMENT_ME
+   * Handle albums. 
    *
-   * @param attributes DOCUMENT_ME
-   * @param idIndex DOCUMENT_ME
+   * @param attributes 
+   * @param idIndex 
    */
   private void handleAlbums(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
@@ -1016,10 +1014,10 @@ public final class Collection extends DefaultHandler {
   }
 
   /**
-   * Handle artists. DOCUMENT_ME
+   * Handle artists. 
    *
-   * @param attributes DOCUMENT_ME
-   * @param idIndex DOCUMENT_ME
+   * @param attributes 
+   * @param idIndex 
    */
   private void handleArtists(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
@@ -1042,10 +1040,10 @@ public final class Collection extends DefaultHandler {
   }
 
   /**
-   * Handle genres. DOCUMENT_ME
+   * Handle genres. 
    *
-   * @param attributes DOCUMENT_ME
-   * @param idIndex DOCUMENT_ME
+   * @param attributes 
+   * @param idIndex 
    */
   private void handleGenres(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
@@ -1068,10 +1066,10 @@ public final class Collection extends DefaultHandler {
   }
 
   /**
-   * Handle playlist files. DOCUMENT_ME
+   * Handle playlist files. 
    *
-   * @param attributes DOCUMENT_ME
-   * @param idIndex DOCUMENT_ME
+   * @param attributes 
+   * @param idIndex 
    */
   private void handlePlaylistFiles(Attributes attributes, int idIndex) {
     String sParentID = attributes.getValue(Const.XML_DIRECTORY).intern();
@@ -1105,10 +1103,10 @@ public final class Collection extends DefaultHandler {
   }
 
   /**
-   * Handle devices. DOCUMENT_ME
+   * Handle devices. 
    *
-   * @param attributes DOCUMENT_ME
-   * @param idIndex DOCUMENT_ME
+   * @param attributes 
+   * @param idIndex 
    */
   private void handleDevices(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
@@ -1134,10 +1132,10 @@ public final class Collection extends DefaultHandler {
   }
 
   /**
-   * Handle years. DOCUMENT_ME
+   * Handle years. 
    *
-   * @param attributes DOCUMENT_ME
-   * @param idIndex DOCUMENT_ME
+   * @param attributes 
+   * @param idIndex 
    */
   private void handleYears(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();
@@ -1151,8 +1149,8 @@ public final class Collection extends DefaultHandler {
   /**
    * Handle album artists.
    *
-   * @param attributes DOCUMENT_ME
-   * @param idIndex DOCUMENT_ME
+   * @param attributes 
+   * @param idIndex 
    */
   private void handleAlbumArtists(Attributes attributes, int idIndex) {
     String sID = attributes.getValue(idIndex).intern();

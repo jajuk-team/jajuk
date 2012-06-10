@@ -29,37 +29,36 @@ package ext;
  */
 public class JVM {
 
-  /** The Constant JDK1_0.  DOCUMENT_ME */
+  /** The Constant JDK1_0.   */
   public static final int JDK1_0 = 10;
 
-  /** The Constant JDK1_1.  DOCUMENT_ME */
+  /** The Constant JDK1_1.   */
   public static final int JDK1_1 = 11;
 
-  /** The Constant JDK1_2.  DOCUMENT_ME */
+  /** The Constant JDK1_2.   */
   public static final int JDK1_2 = 12;
 
-  /** The Constant JDK1_3.  DOCUMENT_ME */
+  /** The Constant JDK1_3.   */
   public static final int JDK1_3 = 13;
 
-  /** The Constant JDK1_4.  DOCUMENT_ME */
+  /** The Constant JDK1_4.   */
   public static final int JDK1_4 = 14;
 
-  /** The Constant JDK1_5.  DOCUMENT_ME */
+  /** The Constant JDK1_5.   */
   public static final int JDK1_5 = 15;
 
-  /** The Constant JDK1_6.  DOCUMENT_ME */
+  /** The Constant JDK1_6.   */
   public static final int JDK1_6 = 16;
 
-  /** The Constant JDK1_7.  DOCUMENT_ME */
+  /** The Constant JDK1_7.   */
   public static final int JDK1_7 = 17;
 
-  /** The Constant JDK1_8.  DOCUMENT_ME */
+  /** The Constant JDK1_8.   */
   public static final int JDK1_8 = 18;
 
-  /** The Constant JDK1_9.  DOCUMENT_ME */
+  /** The Constant JDK1_9.   */
   public static final int JDK1_9 = 19;
 
-  /** DOCUMENT_ME. */
   private static JVM current;
   static {
     current = new JVM();
@@ -74,7 +73,6 @@ public class JVM {
     return current;
   }
 
-  /** DOCUMENT_ME. */
   private int jdkVersion;
 
   /**
@@ -87,7 +85,7 @@ public class JVM {
   /**
    * Constructor for the OS object.
    * 
-   * @param pJavaVersion DOCUMENT_ME
+   * @param pJavaVersion 
    */
   public JVM(String pJavaVersion) {
     if (pJavaVersion.startsWith("1.9.")) {
@@ -119,7 +117,7 @@ public class JVM {
   /**
    * Checks if is or later.
    * 
-   * @param pVersion DOCUMENT_ME
+   * @param pVersion 
    * 
    * @return true, if is or later
    */

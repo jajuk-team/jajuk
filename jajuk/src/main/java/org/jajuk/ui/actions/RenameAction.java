@@ -44,7 +44,7 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class RenameAction extends JajukAction {
 

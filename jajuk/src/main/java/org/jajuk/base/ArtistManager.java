@@ -51,7 +51,7 @@ public final class ArtistManager extends ItemManager {
 
   /** note if we have already fully loaded the Collection to speed up initial startup */
   private volatile boolean orderedState = false;
-  
+
   /**
    * No constructor available, only static access.
    * Not private to allow AlbumArtistManager extends
@@ -109,9 +109,9 @@ public final class ArtistManager extends ItemManager {
     // add it in genres list if new
     if (!artistsList.contains(sName)) {
       artistsList.add(artist.getName2());
-      
+
       // only sort as soon as we have the Collection fully loaded
-      if(orderedState) {
+      if (orderedState) {
         sortArtistList();
       }
     }
@@ -132,12 +132,11 @@ public final class ArtistManager extends ItemManager {
    * @see org.jajuk.base.ItemManager#switchToOrderState()
    */
   @Override
-  public
-  void switchToOrderState() {
+  public void switchToOrderState() {
     // bring this Manager to ordered state when Collection is fully loaded
     orderedState = true;
     sortArtistList();
-    
+
     super.switchToOrderState();
   }
 

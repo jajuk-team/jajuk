@@ -35,7 +35,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestXCheckedButton extends JajukTestCase {
 
@@ -178,7 +178,7 @@ public class TestXCheckedButton extends JajukTestCase {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public class DummyIcon implements Icon {
 
@@ -210,7 +210,7 @@ public class TestXCheckedButton extends JajukTestCase {
 
   /**
    * Test mouse adapter.
-   * DOCUMENT_ME
+   * 
    */
   public void testMouseAdapter() {
     XCheckedButton button = new XCheckedButton("testtext", new DummyIcon());
@@ -226,7 +226,7 @@ public class TestXCheckedButton extends JajukTestCase {
 
   /**
    * Test model.
-   * DOCUMENT_ME
+   * 
    */
   public void testModel() {
     XCheckedButton button = new XCheckedButton("testtext", new DummyIcon());

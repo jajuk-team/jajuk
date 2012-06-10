@@ -25,7 +25,7 @@ import java.io.File;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestGIFFilter extends JajukTestCase {
 
@@ -38,7 +38,7 @@ public class TestGIFFilter extends JajukTestCase {
 
   /**
    * Test accept.
-   * DOCUMENT_ME
+   * 
    */
   public void testAccept() {
     assertTrue(GIFFilter.getInstance().accept(new File("test.gif")));

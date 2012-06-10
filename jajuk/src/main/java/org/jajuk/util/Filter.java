@@ -173,7 +173,7 @@ public class Filter {
         // Do not use Regexp matches() method, too costly
         bMatch = UtilString.matchesIgnoreCaseAndOrder(checked, comparator);
       }
-      if(bMatch) {
+      if (bMatch) {
         newList.add(item);
       }
     }

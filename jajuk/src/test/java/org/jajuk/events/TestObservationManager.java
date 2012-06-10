@@ -28,11 +28,10 @@ import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestObservationManager extends JajukTestCase {
 
-  /** DOCUMENT_ME. */
   AtomicInteger called = new AtomicInteger(0);
 
   /*
@@ -67,7 +66,7 @@ public class TestObservationManager extends JajukTestCase {
 
   /**
    * Test unregister null.
-   * DOCUMENT_ME
+   * 
    */
   public void testUnregisterNull() {
     ObservationManager.unregister(new Observer() {
@@ -159,7 +158,7 @@ public class TestObservationManager extends JajukTestCase {
 
   /**
    * Test get detail null.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetDetailNull() {
     Properties prop = new Properties();
@@ -190,7 +189,7 @@ public class TestObservationManager extends JajukTestCase {
   // helper method to emma-coverage of the unused constructor
   /**
    * Test private constructor.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -201,7 +200,7 @@ public class TestObservationManager extends JajukTestCase {
 
   /**
    * Test exception.
-   * DOCUMENT_ME
+   * 
    */
   public void testException() {
     Observer observer = new TestObserverRegistry.LocalObserver(true, called);

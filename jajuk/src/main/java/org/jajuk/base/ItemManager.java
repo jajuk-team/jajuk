@@ -108,7 +108,7 @@ public abstract class ItemManager {
    * Registers a new item manager.
    *
    * @param c Managed item class
-   * @param itemManager DOCUMENT_ME
+   * @param itemManager 
    */
   public static void registerItemManager(Class<?> c, ItemManager itemManager) {
     hmItemManagers.put(c, itemManager);
@@ -124,7 +124,7 @@ public abstract class ItemManager {
   /**
    * Gets the meta information.
    *
-   * @param sPropertyName DOCUMENT_ME
+   * @param sPropertyName 
    *
    * @return meta data for given property
    */
@@ -135,7 +135,7 @@ public abstract class ItemManager {
   /**
    * Remove a property *.
    *
-   * @param sProperty DOCUMENT_ME
+   * @param sProperty 
    */
   public void removeProperty(String sProperty) {
     PropertyMetaInformation meta = getMetaInformation(sProperty);
@@ -146,7 +146,7 @@ public abstract class ItemManager {
   /**
    * Remove a custom property from all items for the given manager.
    *
-   * @param meta DOCUMENT_ME
+   * @param meta 
    */
   void applyRemoveProperty(PropertyMetaInformation meta) {
     lock.readLock().lock();
@@ -162,7 +162,7 @@ public abstract class ItemManager {
   /**
    * Generic method to access to a parameterized list of items.
    *
-   * @param meta DOCUMENT_ME
+   * @param meta 
    *
    * @return the item-parameterized list
    *
@@ -332,7 +332,7 @@ public abstract class ItemManager {
   /**
    * Get ItemManager manager for given item class.
    *
-   * @param c DOCUMENT_ME
+   * @param c 
    *
    * @return associated item manager or null if none was found
    */
@@ -410,7 +410,7 @@ public abstract class ItemManager {
   /**
    * Remove a given item.
    *
-   * @param item DOCUMENT_ME
+   * @param item 
    */
   public void removeItem(Item item) {
     lock.writeLock().lock();
@@ -442,7 +442,7 @@ public abstract class ItemManager {
   /**
    * Register a new property.
    *
-   * @param meta DOCUMENT_ME
+   * @param meta 
    */
   public void registerProperty(PropertyMetaInformation meta) {
     hmPropertiesMetaInformation.put(meta.getName(), meta);
@@ -451,9 +451,9 @@ public abstract class ItemManager {
   /**
    * Change any item.
    *
-   * @param itemToChange DOCUMENT_ME
-   * @param sKey DOCUMENT_ME
-   * @param oValue DOCUMENT_ME
+   * @param itemToChange 
+   * @param sKey 
+   * @param oValue 
    * @param filter : files we want to deal with
    *
    * @return the changed item

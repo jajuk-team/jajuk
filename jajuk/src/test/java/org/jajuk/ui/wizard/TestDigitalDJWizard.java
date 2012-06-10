@@ -30,7 +30,7 @@ import org.jajuk.services.dj.TransitionDigitalDJ;
 import org.qdwizard.Screen;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestDigitalDJWizard extends JajukTestCase {
 
@@ -98,7 +98,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
 
   /**
    * Test panels action selection.
-   * DOCUMENT_ME
+   * 
    */
   public void testPanelsActionSelection() {
     try {
@@ -115,7 +115,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
 
   /**
    * Test panels ambience.
-   * DOCUMENT_ME
+   * 
    */
   public void testPanelsAmbience() {
     try {
@@ -135,7 +135,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
 
   /**
    * Test panels change.
-   * DOCUMENT_ME
+   * 
    */
   public void testPanelsChange() {
     try {
@@ -158,7 +158,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
 
   /**
    * Test panels general option.
-   * DOCUMENT_ME
+   * 
    */
   public void testPanelsGeneralOption() {
     try {
@@ -175,7 +175,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
 
   /**
    * Test panels proportions.
-   * DOCUMENT_ME
+   * 
    */
   public void testPanelsProportions() {
     try {
@@ -192,7 +192,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
 
   /**
    * Test panels remove.
-   * DOCUMENT_ME
+   * 
    */
   public void testPanelsRemove() {
     try {
@@ -212,7 +212,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
 
   /**
    * Test panels transition.
-   * DOCUMENT_ME
+   * 
    */
   public void testPanelsTransition() {
     try {
@@ -229,7 +229,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
 
   /**
    * Test panels type selection.
-   * DOCUMENT_ME
+   * 
    */
   public void testPanelsTypeSelection() {
     try {
@@ -246,9 +246,9 @@ public class TestDigitalDJWizard extends JajukTestCase {
 
   /**
    * Cover screen.
-   * DOCUMENT_ME
+   * 
    *
-   * @param screen DOCUMENT_ME
+   * @param screen 
    */
   private void coverScreen(Screen screen) {
     screen.initUI();

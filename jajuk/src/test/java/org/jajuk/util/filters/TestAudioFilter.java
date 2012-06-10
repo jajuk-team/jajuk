@@ -29,7 +29,7 @@ import org.jajuk.base.TypeManager;
 import org.jajuk.services.startup.StartupCollectionService;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestAudioFilter extends JajukTestCase {
 

@@ -41,22 +41,19 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1;
 
-  /** DOCUMENT_ME. */
   private final JPanel panelMenus = new JPanel();
 
-  /** DOCUMENT_ME. */
   private JScrollPane scroll = null;
 
-  /** DOCUMENT_ME. */
   private JFrame jframe = null;
 
-  /** The Constant EMPTY_IMAGE_ICON.  DOCUMENT_ME */
+  /** The Constant EMPTY_IMAGE_ICON.   */
   public static final Icon EMPTY_IMAGE_ICON = new ImageIcon("menu_spacer.gif");
 
   /**
    * Instantiates a new xJ popup menu.
    * 
-   * @param jframe DOCUMENT_ME
+   * @param jframe 
    */
   public XJPopupMenu(JFrame jframe) {
     super();
@@ -71,7 +68,7 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
 
   /**
    * Inits the.
-   * DOCUMENT_ME
+   * 
    */
   public void init() {
     super.removeAll();
@@ -124,7 +121,7 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
 
   /**
    * Hidemenu.
-   * DOCUMENT_ME
+   * 
    */
   public void hidemenu() {
     if (this.isVisible()) {
@@ -134,9 +131,9 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
 
   /**
    * Adds the.
-   * DOCUMENT_ME
    * 
-   * @param menuItem DOCUMENT_ME
+   * 
+   * @param menuItem 
    */
   public void add(AbstractButton menuItem) {
     // menuItem.setMargin(new Insets(0, 20, 0 , 0));
@@ -184,7 +181,7 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private static class XSeperator extends JSeparator {
 
@@ -200,15 +197,15 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
     }
 
     /**
-     * DOCUMENT_ME.
+     * .
      */
     private static class XBasicSeparatorUI extends BasicSeparatorUI {
 
       /**
        * Creates the ui.
-       * DOCUMENT_ME
        * 
-       * @param c DOCUMENT_ME
+       * 
+       * @param c 
        * 
        * @return the component ui
        */

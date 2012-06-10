@@ -33,14 +33,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestXMLUtils extends JajukTestCase {
 
   // helper method to emma-coverage of the unused constructor
   /**
    * Test serializable utilities private constructor.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -64,7 +64,7 @@ public class TestXMLUtils extends JajukTestCase {
 
   /**
    * Test get child element null.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetChildElementNull() {
     assertNull(XMLUtils.getChildElement(null, "test"));
@@ -72,7 +72,7 @@ public class TestXMLUtils extends JajukTestCase {
 
   /**
    * Test get child element not existing.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetChildElementNotExisting() {
     Document doc = XMLUtils.getDocument("<xml><test/></xml>");
@@ -101,7 +101,7 @@ public class TestXMLUtils extends JajukTestCase {
 
   /**
    * Test get attribute value null.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetAttributeValueNull() {
     assertNull(XMLUtils.getAttributeValue(null, "value"));
@@ -122,7 +122,7 @@ public class TestXMLUtils extends JajukTestCase {
 
   /**
    * Test get child element content null.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetChildElementContentNull() {
     assertEquals("", XMLUtils.getChildElementContent(null, "test"));
@@ -141,7 +141,7 @@ public class TestXMLUtils extends JajukTestCase {
 
   /**
    * Test get document parse error.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetDocumentParseError() {
     Document doc = XMLUtils.getDocument("<xmlinvalid>adsasd<asdksdtest value=\"1\"/></xml>");
@@ -189,7 +189,7 @@ public class TestXMLUtils extends JajukTestCase {
 
   /**
    * Test write bean to file invalid file.
-   * DOCUMENT_ME
+   * 
    */
   public final void testWriteBeanToFileInvalidFile() {
 
@@ -213,10 +213,8 @@ public class TestXMLUtils extends JajukTestCase {
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1124123276327532379L;
 
-    /** DOCUMENT_ME. */
     private String name;
 
-    /** DOCUMENT_ME. */
     private boolean deceased;
 
     /** No-arg constructor (takes no arguments). */
@@ -288,7 +286,7 @@ public class TestXMLUtils extends JajukTestCase {
   public final void testReadObjectFromString() throws Exception {
     String str = new String("teststring");
 
-    File file = File.createTempFile("test", ".bean",new java.io.File(ConstTest.TECH_TESTS_PATH));
+    File file = File.createTempFile("test", ".bean", new java.io.File(ConstTest.TECH_TESTS_PATH));
     assertTrue(file.delete()); // delte file to create it from scratch
     assertFalse(file.exists());
     XMLUtils.writeObjectToFile(str, file.getAbsolutePath());
@@ -321,7 +319,7 @@ public class TestXMLUtils extends JajukTestCase {
   public final void testWriteObjectToFile() throws Exception {
     String str = new String("teststring");
 
-    File file = File.createTempFile("test", ".bean",new java.io.File(ConstTest.TECH_TESTS_PATH));
+    File file = File.createTempFile("test", ".bean", new java.io.File(ConstTest.TECH_TESTS_PATH));
     assertTrue(file.delete()); // delte file to create it from scratch
     assertFalse(file.exists());
     XMLUtils.writeObjectToFile(str, file.getAbsolutePath());
@@ -341,7 +339,7 @@ public class TestXMLUtils extends JajukTestCase {
 
   /**
    * Test write object to file invalid file.
-   * DOCUMENT_ME
+   * 
    */
   public final void testWriteObjectToFileInvalidFile() {
     String str = new String("teststring");

@@ -27,7 +27,7 @@ import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestNotifySendBalloonNotificator extends JajukTestCase {
 

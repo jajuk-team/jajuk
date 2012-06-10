@@ -28,17 +28,15 @@ import java.awt.Window;
  */
 public class AnimationCompletedEvent {
 
-  /** DOCUMENT_ME. */
   private IAnimation source;
 
-  /** DOCUMENT_ME. */
   private Window window;
 
   /**
    * Instantiates a new animation completed event.
    * 
-   * @param source DOCUMENT_ME
-   * @param window DOCUMENT_ME
+   * @param source 
+   * @param window 
    */
   public AnimationCompletedEvent(IAnimation source, Window window) {
     this.source = source;

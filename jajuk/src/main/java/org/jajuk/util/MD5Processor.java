@@ -34,7 +34,6 @@ import org.jajuk.util.log.Log;
 
 public final class MD5Processor {
 
-  /** DOCUMENT_ME. */
   private static MessageDigest msgDigest;
 
   static {

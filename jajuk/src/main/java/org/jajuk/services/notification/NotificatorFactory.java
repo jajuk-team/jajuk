@@ -30,7 +30,6 @@ import org.jajuk.util.log.Log;
  */
 public class NotificatorFactory {
 
-  /** DOCUMENT_ME. */
   private static INotificator notificator;
 
   /**

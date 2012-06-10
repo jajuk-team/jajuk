@@ -45,13 +45,10 @@ import org.jajuk.util.log.Log;
  */
 public final class LyricsService {
 
-  /** DOCUMENT_ME. */
   private static List<ILyricsProvider> providers = null;
 
-  /** DOCUMENT_ME. */
   private static ILyricsProvider current = null;
 
-  /** DOCUMENT_ME. */
   private static List<ILyricsPersister> persisters = null;
 
   /** Providers list. */
@@ -99,7 +96,7 @@ public final class LyricsService {
 
   /**
    * Load persisters.
-   * DOCUMENT_ME
+   * 
    */
   @SuppressWarnings("unchecked")
   public static void loadPersisters() {
@@ -121,7 +118,7 @@ public final class LyricsService {
   /**
    * Cycles through lyrics providers to return the best matching lyrics.
    * 
-   * @param audioFile DOCUMENT_ME
+   * @param audioFile 
    * 
    * @return the song's lyrics
    */
@@ -178,7 +175,7 @@ public final class LyricsService {
   /**
    * Delete lyrics from any persister support.
    * 
-   * @param provider DOCUMENT_ME
+   * @param provider 
    * 
    * @throws LyricsPersistenceException if the lyrics cannot be removed
    */

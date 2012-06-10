@@ -109,25 +109,18 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -4418626517605128694L;
 
-  /** DOCUMENT_ME. */
   JajukTable jtable;
 
-  /** DOCUMENT_ME. */
   JPanel jpControl;
 
-  /** DOCUMENT_ME. */
   JajukToggleButton jtbEditable;
 
-  /** DOCUMENT_ME. */
   private JLabel jlFilter;
 
-  /** DOCUMENT_ME. */
   private JComboBox jcbProperty;
 
-  /** DOCUMENT_ME. */
   private JLabel jlEquals;
 
-  /** DOCUMENT_ME. */
   private JTextField jtfValue;
 
   /** Table model. */
@@ -154,40 +147,29 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /** Columns to show table configuration name, must be overwritten by child classes. */
   String columnsConf;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiPlay;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiPush;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiFrontPush;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiDelete;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiPlayRepeat;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiPlayShuffle;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiBookmark;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiProperties;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiFileCopyURL;
 
-  /** DOCUMENT_ME. */
   PreferencesJMenu pjmTracks;
 
   /** The table/tree sync toggle button. */
   JajukToggleButton jtbSync;
 
-  /** DOCUMENT_ME. */
   private volatile boolean bStopThread = false;
 
   /** Launches a thread used to perform dynamic filtering when user is typing. */
@@ -245,7 +227,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
    * Code used in child class SwingWorker for display computations (used in
    * initUI()).
    *
-   * @param in DOCUMENT_ME
+   * @param in 
    */
   @Override
   public void shortCall(Object in) {
@@ -441,8 +423,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
    * Apply a filter, to be implemented by files and tracks tables, alter the
    * model.
    *
-   * @param sPropertyName DOCUMENT_ME
-   * @param sPropertyValue DOCUMENT_ME
+   * @param sPropertyName 
+   * @param sPropertyValue 
    */
   public void applyFilter(final String sPropertyName, final String sPropertyValue) {
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
@@ -604,7 +586,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   abstract JajukTableModel populateTable();
 
   /**
-   * Sets the cell editors. DOCUMENT_ME
+   * Sets the cell editors. 
    */
   private void setCellEditors() {
     for (TableColumn tc : ((DefaultTableColumnModelExt) jtable.getColumnModel()).getColumns(true)) {
@@ -648,7 +630,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /**
    * Detect property change.
    *
-   * @param ie DOCUMENT_ME
+   * @param ie 
    */
   @Override
   public void itemStateChanged(ItemEvent ie) {

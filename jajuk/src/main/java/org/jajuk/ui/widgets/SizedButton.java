@@ -37,7 +37,6 @@ public class SizedButton extends JajukButton {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -3859493434696496345L;
 
-  /** DOCUMENT_ME. */
   private boolean showText = false;
 
   /**
@@ -52,8 +51,8 @@ public class SizedButton extends JajukButton {
   /**
    * Instantiates a new sized button.
    * 
-   * @param text DOCUMENT_ME
-   * @param icon DOCUMENT_ME
+   * @param text 
+   * @param icon 
    */
   public SizedButton(String text, Icon icon) {
     super(text, icon);
@@ -63,7 +62,7 @@ public class SizedButton extends JajukButton {
    * The Constructor.
    * 
    * @param action Action
-   * @param bText DOCUMENT_ME
+   * @param bText 
    */
   public SizedButton(Action action, boolean bText) {
     super(action);

@@ -66,48 +66,44 @@ public class LastFmService {
   /*
    * DO NOT USE THESE KEYS FOR OTHER APPLICATIONS THAN Jajuk!
    */
-  /** The Constant API_KEY.  DOCUMENT_ME */
+  /** The Constant API_KEY.   */
   private static final String API_KEY = "711591ss6q695ps349o6681pr1oq1467";
 
-  /** The Constant CLIENT_ID.  DOCUMENT_ME */
+  /** The Constant CLIENT_ID.   */
   private static final String CLIENT_ID = "jaj";
 
-  /** The Constant CLIENT_VERSION.  DOCUMENT_ME */
+  /** The Constant CLIENT_VERSION.   */
   private static final String CLIENT_VERSION = "0.2"; // Assigned by Last.FM
   // team
 
-  /** The Constant ARTIST_WILDCARD.  DOCUMENT_ME */
+  /** The Constant ARTIST_WILDCARD.   */
   private static final String ARTIST_WILDCARD = "(%ARTIST%)";
 
-  /** The Constant LANGUAGE_PARAM.  DOCUMENT_ME */
+  /** The Constant LANGUAGE_PARAM.   */
   private static final String LANGUAGE_PARAM = "?setlang=";
 
-  /** The Constant LANGUAGE_WILDCARD.  DOCUMENT_ME */
+  /** The Constant LANGUAGE_WILDCARD.   */
   private static final String LANGUAGE_WILDCARD = "(%LANGUAGE%)";
 
-  /** The Constant ARTIST_WIKI_URL.  DOCUMENT_ME */
+  /** The Constant ARTIST_WIKI_URL.   */
   private static final String ARTIST_WIKI_URL = UtilString.concat("http://www.lastfm.com/music/",
       ARTIST_WILDCARD, "/+wiki", LANGUAGE_PARAM, LANGUAGE_WILDCARD);
 
-  /** The Constant VARIOUS_ARTISTS.  DOCUMENT_ME */
+  /** The Constant VARIOUS_ARTISTS.   */
   private static final String VARIOUS_ARTISTS = "Various Artists";
 
-  /** The Constant MIN_DURATION_TO_SUBMIT.  DOCUMENT_ME */
+  /** The Constant MIN_DURATION_TO_SUBMIT.   */
   private static final int MIN_DURATION_TO_SUBMIT = 30;
 
-  /** The Constant MAX_SUBMISSIONS.  DOCUMENT_ME */
+  /** The Constant MAX_SUBMISSIONS.   */
   private static final int MAX_SUBMISSIONS = 50;
 
-  /** DOCUMENT_ME. */
   private Scrobbler scrobbler;
 
-  /** DOCUMENT_ME. */
   private boolean handshakePerformed;
 
-  /** DOCUMENT_ME. */
   private Locale locale;
 
-  /** DOCUMENT_ME. */
   private LastFmCache lastFmCache;
 
   /** The singleton. */
@@ -119,8 +115,8 @@ public class LastFmService {
    * @param proxy the proxy
    * @param user the Last.fm username
    * @param password the Last.fm password
-   * @param locale DOCUMENT_ME
-   * @param lastFmCache DOCUMENT_ME
+   * @param locale 
+   * @param lastFmCache 
    */
   private LastFmService(Locale locale, LastFmCache lastFmCache) {
     Proxy proxy = DownloadManager.getProxy();
@@ -153,7 +149,7 @@ public class LastFmService {
   /**
    * Gets the artist.
    * 
-   * @param artist DOCUMENT_ME
+   * @param artist 
    * 
    * @return the artist
    */
@@ -390,7 +386,7 @@ public class LastFmService {
   /**
    * Returns current artist image at LastFM.
    * 
-   * @param artistName DOCUMENT_ME
+   * @param artistName 
    * 
    * @return the artist image from last fm
    */
@@ -487,7 +483,7 @@ public class LastFmService {
   /**
    * Submits song to Last.fm
    *
-   * @param track DOCUMENT_ME
+   * @param track 
    * @param millisPlayed ms the audio file has already played
    * @throws ScrobblerException the scrobbler exception
    */
@@ -583,7 +579,7 @@ public class LastFmService {
   /**
    * Submits now playing info to Last.fm
    * 
-   * @param track DOCUMENT_ME
+   * @param track 
    * 
    * @throws ScrobblerException the scrobbler exception
    */
@@ -659,7 +655,7 @@ public class LastFmService {
   /**
    * Check artist.
    * 
-   * @param track DOCUMENT_ME
+   * @param track 
    * 
    * @return true, if check artist
    */
@@ -676,7 +672,7 @@ public class LastFmService {
   /**
    * Check title.
    * 
-   * @param track DOCUMENT_ME
+   * @param track 
    * 
    * @return true, if check title
    */
@@ -691,7 +687,7 @@ public class LastFmService {
   /**
    * Check duration.
    * 
-   * @param track DOCUMENT_ME
+   * @param track 
    * 
    * @return true, if check duration
    */
@@ -702,5 +698,5 @@ public class LastFmService {
     }
     return true;
   }
-  
+
 }

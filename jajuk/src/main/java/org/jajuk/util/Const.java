@@ -586,7 +586,7 @@ public interface Const {
   String CONF_P2P_HIDE_LOCAL_PROPERTIES = "jajuk.options.p2p.hide_local_properties";
 
   String CONF_HISTORY = "jajuk.options.history";
-  
+
   String CONF_MANUAL_RATINGS = "jajuk.options.manual_ratings";
 
   String CONF_TAGS_USE_PARENT_DIR = "jajuk.tags.use_parent_dir";
@@ -1232,7 +1232,7 @@ public interface Const {
   String CONF_SHOW_VIDEOS = "jajuk.show_videos";
 
   String CONF_PRESERVE_FILE_DATES = "jajuk.preserve_date";
-  
+
   String CONF_FADE_OUT = "jajuk.options.fade_out";
 
   // Alarm actions

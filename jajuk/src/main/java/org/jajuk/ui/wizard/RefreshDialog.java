@@ -40,22 +40,16 @@ public class RefreshDialog extends JFrame {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -7883506101436294760L;
 
-  /** DOCUMENT_ME. */
   private JXBusyLabel jlAction;
 
-  /** DOCUMENT_ME. */
   private JProgressBar progress;
 
-  /** DOCUMENT_ME. */
   private JLabel jlRefreshing;
 
-  /** DOCUMENT_ME. */
   private boolean indeterminate = false;
 
-  /** DOCUMENT_ME. */
   private long dateLastUpdateRefresh;
 
-  /** DOCUMENT_ME. */
   private long dateLastUpdateProgress;
 
   /** Minimum dialog refresh interval in ms, avoid to saturate the EDT*. */
@@ -90,10 +84,10 @@ public class RefreshDialog extends JFrame {
 
   /**
    * Sets the action.
-   * DOCUMENT_ME
    * 
-   * @param action DOCUMENT_ME
-   * @param icon DOCUMENT_ME
+   * 
+   * @param action 
+   * @param icon 
    */
   public void setAction(final String action, final Icon icon) {
     SwingUtilities.invokeLater(new Runnable() {

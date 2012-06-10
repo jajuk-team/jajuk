@@ -43,18 +43,16 @@ public class Alarm {
   /** The webradio to play. */
   private WebRadio radio;
 
-  /** DOCUMENT_ME. */
   private String alarmAction;
 
-  /** DOCUMENT_ME. */
   private Date aTime;
 
   /**
    * Instantiates a new alarm.
    * 
-   * @param aTime DOCUMENT_ME
-   * @param alFiles DOCUMENT_ME
-   * @param mode DOCUMENT_ME
+   * @param aTime 
+   * @param alFiles 
+   * @param mode 
    */
   public Alarm(java.util.Date aTime, List<File> alFiles, String mode) {
     this.aTime = aTime;
@@ -65,9 +63,9 @@ public class Alarm {
   /**
    * Instantiates a new alarm.
    * 
-   * @param aTime DOCUMENT_ME
-   * @param radio DOCUMENT_ME
-   * @param mode DOCUMENT_ME
+   * @param aTime 
+   * @param radio 
+   * @param mode 
    */
   public Alarm(java.util.Date aTime, WebRadio radio, String mode) {
     this.aTime = aTime;

@@ -58,7 +58,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /** pause flag *. */
   protected volatile boolean bPaused = false;
- 
+
   /*
    *
    * Kill abruptly the mplayer process (this way, killing is synchronous, and
@@ -125,7 +125,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   /**
    * Send a command to mplayer slave.
    * 
-   * @param command DOCUMENT_ME
+   * @param command 
    */
   protected void sendCommand(String command) {
     if (proc != null) {
@@ -141,11 +141,11 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     }
   }
 
-   /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.players.IPlayerImpl#getCurrentVolume()
-   */
+  /*
+  * (non-Javadoc)
+  * 
+  * @see org.jajuk.players.IPlayerImpl#getCurrentVolume()
+  */
   @Override
   public float getCurrentVolume() {
     return fVolume;
@@ -340,5 +340,5 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
       sendCommand("pause");
     }
   }
-  
+
 }

@@ -26,14 +26,14 @@ package org.jajuk.services.notification;
 public enum NotificatorTypes {
 
   // None
-  /** DOCUMENT_ME. */
+
   NONE,
   // System (can map either javaSystrayNotificator or JajukBallooNotificator
   // according to system capabilities)
-  /** DOCUMENT_ME. */
+
   BALLOON,
   // Full album view with animation
-  /** DOCUMENT_ME. */
+
   TOAST
 
 }

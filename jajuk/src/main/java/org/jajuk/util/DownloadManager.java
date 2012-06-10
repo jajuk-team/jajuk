@@ -51,7 +51,6 @@ import org.jajuk.util.log.Log;
  */
 public final class DownloadManager {
 
-  /** DOCUMENT_ME. */
   private static Proxy proxy;
 
   /**
@@ -63,7 +62,7 @@ public final class DownloadManager {
   /**
    * Gets the remote covers list.
    * 
-   * @param search DOCUMENT_ME
+   * @param search 
    * 
    * @return a list of urls
    * 
@@ -206,7 +205,7 @@ public final class DownloadManager {
    * Download the cover list.
    * 
    * @param url to download
-   * @param charset DOCUMENT_ME
+   * @param charset 
    * 
    * @return result as an array of bytes, null if a problem occurred
    * 
@@ -230,7 +229,7 @@ public final class DownloadManager {
   /**
    * Download text with the default charset UTF-8.
    * 
-   * @param url DOCUMENT_ME
+   * @param url 
    * 
    * @return the string
    * 

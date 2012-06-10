@@ -41,7 +41,6 @@ public class SteppedComboBox extends JComboBox {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   protected int popupWidth;
 
   /**
@@ -55,7 +54,7 @@ public class SteppedComboBox extends JComboBox {
   /**
    * Instantiates a new stepped combo box.
    * 
-   * @param aModel DOCUMENT_ME
+   * @param aModel 
    */
   public SteppedComboBox(ComboBoxModel aModel) {
     super(aModel);
@@ -65,7 +64,7 @@ public class SteppedComboBox extends JComboBox {
   /**
    * Instantiates a new stepped combo box.
    * 
-   * @param items DOCUMENT_ME
+   * @param items 
    */
   public SteppedComboBox(final Object[] items) {
     super(items);
@@ -75,7 +74,7 @@ public class SteppedComboBox extends JComboBox {
   /**
    * Instantiates a new stepped combo box.
    * 
-   * @param items DOCUMENT_ME
+   * @param items 
    */
   @SuppressWarnings("unchecked")
   public SteppedComboBox(List<?> items) {
@@ -107,7 +106,7 @@ public class SteppedComboBox extends JComboBox {
 
   /**
    * Inits the.
-   * DOCUMENT_ME
+   * 
    */
   protected final void init() {
     try {

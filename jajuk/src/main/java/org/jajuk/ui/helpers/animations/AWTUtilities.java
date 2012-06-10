@@ -51,10 +51,10 @@ public class AWTUtilities {
 
   /**
    * Sets the window shape.
-   * DOCUMENT_ME
    * 
-   * @param window DOCUMENT_ME
-   * @param shape DOCUMENT_ME
+   * 
+   * @param window 
+   * @param shape 
    */
   public static void setWindowShape(Window window, Shape shape) {
     try {
@@ -69,10 +69,10 @@ public class AWTUtilities {
 
   /**
    * Sets the window opacity.
-   * DOCUMENT_ME
    * 
-   * @param window DOCUMENT_ME
-   * @param alpha DOCUMENT_ME
+   * 
+   * @param window 
+   * @param alpha 
    */
   public static void setWindowOpacity(Window window, float alpha) {
     try {

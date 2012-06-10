@@ -40,7 +40,7 @@ public class AmbienceDigitalDJ extends DigitalDJ {
   /**
    * The Constructor.
    * 
-   * @param sID DOCUMENT_ME
+   * @param sID 
    */
   public AmbienceDigitalDJ(String sID) {
     super(sID);

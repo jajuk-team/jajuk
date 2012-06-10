@@ -97,7 +97,7 @@ public final class ThumbnailManager {
   /**
    * Delete all thumbs for a given album.
    * 
-   * @param album DOCUMENT_ME
+   * @param album 
    */
   public static void cleanThumbs(Album album) {
     // Now delete thumb files
@@ -130,7 +130,8 @@ public final class ThumbnailManager {
     // do not use URL object has it can corrupt special paths
     ImageIcon ii = new ImageIcon(orig.getAbsolutePath());
     if (ii.getImageLoadStatus() != MediaTracker.COMPLETE) {
-      throw new JajukRuntimeException("Cannot load image: " + orig.getAbsolutePath() + ", load status is: " + ii.getImageLoadStatus());
+      throw new JajukRuntimeException("Cannot load image: " + orig.getAbsolutePath()
+          + ", load status is: " + ii.getImageLoadStatus());
     }
     createThumbnail(ii, thumb, maxDim);
   }
@@ -142,7 +143,7 @@ public final class ThumbnailManager {
    * if necessary. the thumbnail must be maxDim pixels or less. Thanks Marco
    * Schmidt http://schmidt.devlib.org/java/save-jpeg-thumbnail.html#source
    *
-   * @param ii DOCUMENT_ME
+   * @param ii 
    * @param thumb destination file (jpg)
    * @param maxDim required size
    * @throws InterruptedException the interrupted exception
@@ -200,8 +201,8 @@ public final class ThumbnailManager {
    * Make thumbnail file exists (album id.jpg or.gif or .png) in thumbs
    * directory if it doesn't exist yet
    * 
-   * @param album DOCUMENT_ME
-   * @param size DOCUMENT_ME
+   * @param album 
+   * @param size 
    * 
    * @return whether a new cover has been created
    */

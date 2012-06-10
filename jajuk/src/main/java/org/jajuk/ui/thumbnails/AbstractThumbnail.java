@@ -79,49 +79,34 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   /** Size. */
   int size;
 
-  /** DOCUMENT_ME. */
   protected JLabel jlIcon;
 
-  /** DOCUMENT_ME. */
   private static long lDateLastMove;
 
-  /** DOCUMENT_ME. */
   private static Point lastPosition;
 
-  /** DOCUMENT_ME. */
   JPopupMenu jmenu;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiPlay;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiPush;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiFrontPush;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiDelete;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiPlayShuffle;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiPlayRepeat;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiGetCovers;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiShowPopup;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiCDDBWizard;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiProperties;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiOpenLastFMSite;
 
   /** Dragging flag used to disable simple click behavior. */
@@ -130,10 +115,8 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   /** Current details dialog. */
   private static ThumbnailPopup details;
 
-  /** DOCUMENT_ME. */
   private static AbstractThumbnail last;
 
-  /** DOCUMENT_ME. */
   private static AbstractThumbnail mouseOverItem = null;
 
   /** Whether this thumb is used in artist view *. */
@@ -229,7 +212,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   }
 
   /**
-   * Populate. DOCUMENT_ME
+   * Populate. 
    */
   public abstract void populate();
 
@@ -377,7 +360,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   /**
    * Sets the selected.
    * 
-   * @param b DOCUMENT_ME
+   * @param b 
    */
   public final void setSelected(boolean b) {
     requestFocusInWindow();
@@ -392,7 +375,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   }
 
   /**
-   * Launch. DOCUMENT_ME
+   * Launch. 
    */
   public abstract void launch();
 
@@ -437,7 +420,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
         UtilGUI.centerWindow(jd);
         jd.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         jd.setVisible(true);
-       
+
       } else {
         Messages.showErrorMessage(166);
       }

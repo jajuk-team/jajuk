@@ -21,14 +21,14 @@
 package org.jajuk.services.players;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class DummyMPlayerImpl {
 
-  /** The Constant POSITION.  DOCUMENT_ME */
+  /** The Constant POSITION.   */
   public final static float POSITION = 17.7f;
 
-  /** The Constant LENGTH.  DOCUMENT_ME */
+  /** The Constant LENGTH.   */
   public final static float LENGTH = 235.28f;
 
   /**

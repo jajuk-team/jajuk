@@ -46,17 +46,14 @@ import org.jajuk.util.filters.NotAudioFilter;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class RefactorAction {
 
-  /** DOCUMENT_ME. */
   private static boolean bStopAll = false;
 
-  /** DOCUMENT_ME. */
   private static String sFS = java.io.File.separator;
 
-  /** DOCUMENT_ME. */
   private final List<File> alFiles;
 
   /** [PERF] Stores directory to be refreshed to avoid rescanning them twice. */
@@ -255,7 +252,7 @@ public class RefactorAction {
 
   /**
    * Reset stop all.
-   * DOCUMENT_ME
+   * 
    */
   public static void resetStopAll() {
     bStopAll = false;

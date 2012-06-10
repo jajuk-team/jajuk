@@ -77,19 +77,18 @@ public class Device extends PhysicalItem implements Comparable<Device> {
 
   // Device type constants
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public enum Type {
 
-    /** DOCUMENT_ME. */
     DIRECTORY,
-    /** DOCUMENT_ME. */
+
     FILES_CD,
-    /** DOCUMENT_ME. */
+
     NETWORK_DRIVE,
-    /** DOCUMENT_ME. */
+
     EXTDD,
-    /** DOCUMENT_ME. */
+
     PLAYER
   }
 
@@ -129,8 +128,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   /**
    * Device constructor.
    * 
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
+   * @param sId 
+   * @param sName 
    */
   Device(final String sId, final String sName) {
     super(sId, sName);
@@ -139,7 +138,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   /**
    * Adds the directory.
    * 
-   * @param directory DOCUMENT_ME
+   * @param directory 
    */
   void addDirectory(final Directory directory) {
     alDirectories.add(directory);
@@ -289,7 +288,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   /**
    * Alphabetical comparator used to display ordered lists of devices.
    * 
-   * @param otherDevice DOCUMENT_ME
+   * @param otherDevice 
    * 
    * @return comparison result
    */
@@ -387,7 +386,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   /**
    * Return label for a type.
    *
-   * @param type DOCUMENT_ME
+   * @param type 
    * @return label for a type
    */
   public static String getTypeLabel(Type type) {
@@ -1068,8 +1067,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   /**
    * Synchronize a device with another one (unidirectional).
    * 
-   * @param dSrc DOCUMENT_ME
-   * @param dest DOCUMENT_ME
+   * @param dSrc 
+   * @param dest 
    * 
    * @return nb of created files
    */

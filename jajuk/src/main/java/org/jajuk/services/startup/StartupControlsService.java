@@ -39,7 +39,7 @@ import org.jajuk.util.log.Log;
  */
 public final class StartupControlsService {
 
-  /** The Constant DIR_CHECKS.  DOCUMENT_ME */
+  /** The Constant DIR_CHECKS.   */
   private static final String[] DIR_CHECKS = {
       // internal pictures cache directory
       Const.FILE_CACHE + '/' + Const.FILE_INTERNAL_CACHE,

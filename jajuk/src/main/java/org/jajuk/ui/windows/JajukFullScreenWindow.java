@@ -75,43 +75,31 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -2859302706462954993L;
 
-  /** DOCUMENT_ME. */
   private static JajukFullScreenWindow instance = null;
 
-  /** DOCUMENT_ME. */
   private GraphicsDevice graphicsDevice;
 
-  /** DOCUMENT_ME. */
   private JButton jbPrevious;
 
-  /** DOCUMENT_ME. */
   private JButton jbNext;
 
-  /** DOCUMENT_ME. */
   private JButton jbPlayPause;
 
-  /** DOCUMENT_ME. */
   private JButton jbStop;
 
-  /** DOCUMENT_ME. */
   private JajukButton jbFull;
 
-  /** DOCUMENT_ME. */
   private JajukButton jbExit;
 
-  /** DOCUMENT_ME. */
   private CoverView coverView;
 
   /** State decorator. */
   private WindowStateDecorator decorator;
 
-  /** DOCUMENT_ME. */
   private AnimationView animationView;
 
-  /** DOCUMENT_ME. */
   private JPanel jtbPlay;
 
-  /** DOCUMENT_ME. */
   private Timer hideMouseTimer;
 
   /** Owning frame, see bellow for explanations *. */

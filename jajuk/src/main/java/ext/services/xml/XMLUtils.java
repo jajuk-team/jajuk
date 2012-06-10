@@ -49,7 +49,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public final class XMLUtils {
 
@@ -65,8 +65,8 @@ public final class XMLUtils {
   /**
    * Gets the child element.
    * 
-   * @param el DOCUMENT_ME
-   * @param tagName DOCUMENT_ME
+   * @param el 
+   * @param tagName 
    * 
    * @return the child element
    */
@@ -84,8 +84,8 @@ public final class XMLUtils {
   /**
    * Gets the attribute value.
    * 
-   * @param el DOCUMENT_ME
-   * @param attributeName DOCUMENT_ME
+   * @param el 
+   * @param attributeName 
    * 
    * @return the attribute value
    */
@@ -96,8 +96,8 @@ public final class XMLUtils {
   /**
    * Gets the child element content.
    * 
-   * @param el DOCUMENT_ME
-   * @param tagName DOCUMENT_ME
+   * @param el 
+   * @param tagName 
    * 
    * @return the child element content
    */

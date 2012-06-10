@@ -21,7 +21,7 @@
 package org.jajuk.util.error;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TimeOutException extends JajukException {
 
@@ -31,7 +31,7 @@ public class TimeOutException extends JajukException {
   /**
    * Instantiates a new time out exception.
    * 
-   * @param code DOCUMENT_ME
+   * @param code 
    */
   public TimeOutException(int code) {
     super(code);

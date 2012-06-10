@@ -47,7 +47,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public abstract class CustomPropertyWizard extends JajukJDialog implements ActionListener,
     ItemListener {
@@ -55,22 +55,18 @@ public abstract class CustomPropertyWizard extends JajukJDialog implements Actio
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -5148687837661745898L;
 
-  /** DOCUMENT_ME. */
   JLabel jlItemChoice;
 
-  /** DOCUMENT_ME. */
   JComboBox jcbItemChoice;
 
-  /** DOCUMENT_ME. */
   OKCancelPanel okp;
 
-  /** DOCUMENT_ME. */
   JLabel jlName;
 
   /**
    * Constuctor.
    * 
-   * @param sTitle DOCUMENT_ME
+   * @param sTitle 
    */
   CustomPropertyWizard(String sTitle) {
     setTitle(sTitle);

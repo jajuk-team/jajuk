@@ -57,13 +57,12 @@ public class Tag {
   /** File -> tag cache This is required by the autocommit=false operations. */
   static private Map<File, Tag> tagsCache = new HashMap<File, Tag>(10);
 
-  /** DOCUMENT_ME. */
   private static List<String> supportedTagFields = null;
 
   /**
    * Tag constructor.
    * 
-   * @param fio DOCUMENT_ME
+   * @param fio 
    * @param bIgnoreErrors ignore error and keep instance anyway
    * 
    * @throws JajukException the jajuk exception
@@ -431,7 +430,7 @@ public class Tag {
   /**
    * Sets the track name.
    * 
-   * @param sTrackName DOCUMENT_ME
+   * @param sTrackName 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -446,7 +445,7 @@ public class Tag {
   /**
    * Sets the album name.
    * 
-   * @param sAlbumName DOCUMENT_ME
+   * @param sAlbumName 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -461,7 +460,7 @@ public class Tag {
   /**
    * Sets the artist name.
    * 
-   * @param sArtistName DOCUMENT_ME
+   * @param sArtistName 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -476,7 +475,7 @@ public class Tag {
   /**
    * Sets the album artist.
    * 
-   * @param sAlbumArtist DOCUMENT_ME
+   * @param sAlbumArtist 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -491,7 +490,7 @@ public class Tag {
   /**
    * Sets the genre name.
    * 
-   * @param genre DOCUMENT_ME
+   * @param genre 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -506,7 +505,7 @@ public class Tag {
   /**
    * Sets the order.
    * 
-   * @param lOrder DOCUMENT_ME
+   * @param lOrder 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -521,7 +520,7 @@ public class Tag {
   /**
    * Sets the year.
    * 
-   * @param sYear DOCUMENT_ME
+   * @param sYear 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -536,7 +535,7 @@ public class Tag {
   /**
    * Sets the disc number.
    * 
-   * @param discnumber DOCUMENT_ME
+   * @param discnumber 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -551,7 +550,7 @@ public class Tag {
   /**
    * Sets the comment.
    * 
-   * @param sComment DOCUMENT_ME
+   * @param sComment 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -582,7 +581,7 @@ public class Tag {
   }
 
   /**
-   * Delete lyrics. DOCUMENT_ME
+   * Delete lyrics. 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -700,7 +699,7 @@ public class Tag {
    * Return cached tag or new tag if non already in cache.
    * 
    * @param fio the audio file containing the tag
-   * @param bIgnoreErrors DOCUMENT_ME
+   * @param bIgnoreErrors 
    * 
    * @return cached tag or new tag if non already in cache
    * 
@@ -728,7 +727,7 @@ public class Tag {
   /**
    * Gets the tag field.
    * 
-   * @param tagFieldKey DOCUMENT_ME
+   * @param tagFieldKey 
    * 
    * @return the tag field
    */

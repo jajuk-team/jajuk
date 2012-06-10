@@ -26,7 +26,7 @@ import org.jajuk.JUnitHelpers;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestYear extends TestCase {
 

@@ -34,7 +34,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestItemManager extends JajukTestCase {
 
@@ -468,7 +468,7 @@ public class TestItemManager extends JajukTestCase {
 
   /**
    * Test sorting.
-   * DOCUMENT_ME
+   * 
    */
   public final void testSorting() {
     // first run without "ordered state"
@@ -483,10 +483,10 @@ public class TestItemManager extends JajukTestCase {
 
   /**
    * Run sorting test.
-   * DOCUMENT_ME
+   * 
    *
-   * @param man DOCUMENT_ME
-   * @param notYetOrderedState DOCUMENT_ME
+   * @param man 
+   * @param notYetOrderedState 
    */
   private void runSortingTest(ItemManager man, boolean notYetOrderedState) {
     Item item = new TestItem("9", "name9");
@@ -548,7 +548,7 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private static class LocalIM extends ItemManager {
 
@@ -573,7 +573,7 @@ public class TestItemManager extends JajukTestCase {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private static class TestItem extends Item implements Comparable<Item> {
 
@@ -588,8 +588,8 @@ public class TestItemManager extends JajukTestCase {
     /**
      * Instantiates a new test item.
      *
-     * @param id DOCUMENT_ME
-     * @param name DOCUMENT_ME
+     * @param id 
+     * @param name 
      */
     public TestItem(String id, String name) {
       super(id, name);

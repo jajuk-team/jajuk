@@ -40,14 +40,14 @@ import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.KeyNotFoundException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestArtistManager extends JajukTestCase {
 
-  /** The Constant NUMBER_OF_TESTS.  DOCUMENT_ME */
+  /** The Constant NUMBER_OF_TESTS.   */
   private static final int NUMBER_OF_TESTS = 10;
 
-  /** The Constant NUMBER_OF_THREADS.  DOCUMENT_ME */
+  /** The Constant NUMBER_OF_THREADS.   */
   private static final int NUMBER_OF_THREADS = 10;
 
   /**
@@ -152,7 +152,7 @@ public class TestArtistManager extends JajukTestCase {
   // test this in a thread as well to cover the synchronized block...
   /**
    * Test change artist name threads.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -182,7 +182,7 @@ public class TestArtistManager extends JajukTestCase {
 
   /**
    * Test multiple threads.
-   * DOCUMENT_ME
+   * 
    */
   public void testMultipleThreads() {
   }
@@ -190,8 +190,8 @@ public class TestArtistManager extends JajukTestCase {
   /**
    * Gets the file.
    *
-   * @param i DOCUMENT_ME
-   * @param artist DOCUMENT_ME
+   * @param i 
+   * @param artist 
    * @return the file
    * @throws Exception the exception
    */
@@ -349,7 +349,7 @@ public class TestArtistManager extends JajukTestCase {
 
   /**
    * Test sorting.
-   * DOCUMENT_ME
+   * 
    */
   public final void testSorting() {
     // make sure we have "ordered state"
@@ -382,7 +382,7 @@ public class TestArtistManager extends JajukTestCase {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public static class MyTagImpl implements ITagImpl {
 

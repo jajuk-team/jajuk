@@ -35,13 +35,10 @@ import org.jajuk.util.log.Log;
  */
 public class RefreshReporter {
 
-  /** DOCUMENT_ME. */
   protected Device device;
 
-  /** DOCUMENT_ME. */
   protected int dirTotal;
 
-  /** DOCUMENT_ME. */
   protected int dirCount;
 
   /** Actual refresh date start*. */
@@ -59,7 +56,7 @@ public class RefreshReporter {
   /**
    * Instantiates a new refresh reporter.
    * 
-   * @param device DOCUMENT_ME
+   * @param device 
    */
   public RefreshReporter(Device device) {
     this.device = device;
@@ -67,7 +64,7 @@ public class RefreshReporter {
 
   /**
    * Startup.
-   * DOCUMENT_ME
+   * 
    */
   public void startup() {
     // reset all values as this object is reused
@@ -130,7 +127,7 @@ public class RefreshReporter {
    * Builds the final message.
    * 
    * 
-   * @param time DOCUMENT_ME
+   * @param time 
    * 
    * @return the string
    */
@@ -170,7 +167,7 @@ public class RefreshReporter {
    * Callback method when an update state is required. Can be overwritten for
    * specific behaviors
    * 
-   * @param dir DOCUMENT_ME
+   * @param dir 
    */
   public void updateState(Directory dir) {
     // Intentionnal NOP

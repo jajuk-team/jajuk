@@ -50,10 +50,8 @@ public class PathSelector extends JPanel {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -8370527665529267952L;
 
-  /** DOCUMENT_ME. */
   JTextField jtfUrl;
 
-  /** DOCUMENT_ME. */
   JButton button;
 
   /**
@@ -141,9 +139,9 @@ public class PathSelector extends JPanel {
 
   /**
    * Inits the ui.
-   * DOCUMENT_ME
    * 
-   * @param sDefault DOCUMENT_ME
+   * 
+   * @param sDefault 
    */
   private void initUI(final String sDefault) {
     // Set layout
@@ -182,7 +180,7 @@ public class PathSelector extends JPanel {
   /**
    * Set tooltip.
    * 
-   * @param s DOCUMENT_ME
+   * @param s 
    */
   @Override
   public void setToolTipText(final String s) {

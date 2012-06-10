@@ -42,7 +42,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.error.JajukException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestPlaylist extends JajukTestCase {
 
@@ -156,7 +156,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test get rate null.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -204,7 +204,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test add file queue.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -334,7 +334,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test clear empty list.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -348,7 +348,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test clear queue.
-   * DOCUMENT_ME
+   * 
    */
   public final void testClearQueue() {
     Playlist play = getPlaylistQueue();
@@ -357,7 +357,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test clear bookmark.
-   * DOCUMENT_ME
+   * 
    */
   public final void testClearBookmark() {
     Playlist play = getPlaylistBookmark();
@@ -468,7 +468,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test down bookmark.
-   * DOCUMENT_ME
+   * 
    */
   public final void testDownBookmark() {
     Playlist play = getPlaylistBookmark();
@@ -487,7 +487,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test down queue.
-   * DOCUMENT_ME
+   * 
    */
   public final void testDownQueue() {
     Playlist play = getPlaylistQueue();
@@ -535,7 +535,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test get absolute path not normal.
-   * DOCUMENT_ME
+   * 
    * @throws IOException 
    */
   public final void testGetAbsolutePathNotNormal() throws IOException {
@@ -575,7 +575,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test get files null.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -587,7 +587,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test get files novelities.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -603,7 +603,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test get files best of.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -616,7 +616,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test get files new.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -707,7 +707,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test play null.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -742,7 +742,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test remove bookmark.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -755,7 +755,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test remove queue.
-   * DOCUMENT_ME
+   * 
    * @throws JajukException 
    */
   public final void testRemoveQueue() throws JajukException {
@@ -785,7 +785,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test replace file bookmark.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -802,7 +802,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test replace file queue.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -863,7 +863,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test save as best of.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -889,7 +889,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test save as bookmark.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -907,7 +907,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test save as novelities.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -933,7 +933,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test save as queue.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -1063,7 +1063,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test get hits null.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -1103,7 +1103,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test get duration null.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -1138,7 +1138,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test get nb of tracks null.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */

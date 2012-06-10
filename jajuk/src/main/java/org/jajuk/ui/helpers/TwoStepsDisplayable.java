@@ -40,7 +40,7 @@ public interface TwoStepsDisplayable {
   /**
    * Fast call done in the EDT, must be fast !.
    * 
-   * @param in DOCUMENT_ME
+   * @param in 
    */
   void shortCall(Object in);
 

@@ -26,7 +26,7 @@ import org.jajuk.JajukTestCase;
 import org.jajuk.util.error.JajukException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestLog extends JajukTestCase {
 
@@ -82,7 +82,7 @@ public class TestLog extends JajukTestCase {
 
   /**
    * Test debug string throwable null.
-   * DOCUMENT_ME
+   * 
    */
   public void testDebugStringThrowableNull() {
     Log.debug(null, new Throwable("testthrowable2"));
@@ -133,7 +133,7 @@ public class TestLog extends JajukTestCase {
 
   /**
    * Test warn int string throwable null.
-   * DOCUMENT_ME
+   * 
    */
   public void testWarnIntStringThrowableNull() {
     Log.warn(10, null, new Throwable("testthrowable"));
@@ -255,17 +255,16 @@ public class TestLog extends JajukTestCase {
     assertFalse(Log.isDebugEnabled());
   }
 
- 
   private void verifySpool(String substring) {
     verifySpool(substring, true);
   }
 
   /**
    * Verify spool.
-   * DOCUMENT_ME
+   * 
    *
-   * @param substring DOCUMENT_ME
-   * @param expected DOCUMENT_ME
+   * @param substring 
+   * @param expected 
    */
   private void verifySpool(String substring, boolean expected) {
     List<String> list = Log.getSpool();
@@ -289,7 +288,7 @@ public class TestLog extends JajukTestCase {
 
   /**
    * Test anonymization.
-   * DOCUMENT_ME
+   * 
    */
   public void testAnonymization() {
     // things in {{...}} are replaced in the spool. Verify that this happens
@@ -304,7 +303,7 @@ public class TestLog extends JajukTestCase {
 
   /**
    * Test anonymization player state.
-   * DOCUMENT_ME
+   * 
    */
   public void testAnonymizationPlayerState() {
     // special replacement that is done to not show personal data in the spool

@@ -63,7 +63,7 @@ public class ExitService extends Thread {
    * stored. This is usually only called during exit, but
    * should be called in-between sometimes.
    * 
-   * @param bExit DOCUMENT_ME
+   * @param bExit 
    * 
    * @throws Exception the exception
    */

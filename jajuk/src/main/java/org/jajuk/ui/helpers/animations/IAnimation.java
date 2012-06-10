@@ -31,7 +31,7 @@ public interface IAnimation {
   /**
    * What the animation is supposed to do.
    * 
-   * @param animationTime DOCUMENT_ME
+   * @param animationTime 
    */
   void animate(int animationTime);
 

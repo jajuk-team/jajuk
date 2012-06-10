@@ -119,7 +119,7 @@ public abstract class Item implements Const {
   /**
    * Equal method to check two items are identical.
    * 
-   * @param otherItem DOCUMENT_ME
+   * @param otherItem 
    * 
    * @return true, if equals
    */
@@ -170,7 +170,7 @@ public abstract class Item implements Const {
   /**
    * Gets the value.
    * 
-   * @param sKey DOCUMENT_ME
+   * @param sKey 
    * 
    * @return the value
    */
@@ -187,7 +187,7 @@ public abstract class Item implements Const {
   /**
    * Gets the long value.
    * 
-   * @param sKey DOCUMENT_ME
+   * @param sKey 
    * 
    * @return the long value
    */
@@ -204,7 +204,7 @@ public abstract class Item implements Const {
   /**
    * Gets the double value.
    * 
-   * @param sKey DOCUMENT_ME
+   * @param sKey 
    * 
    * @return the double value
    */
@@ -222,7 +222,7 @@ public abstract class Item implements Const {
    * Return String value for String type values. We assume that given property
    * is a String.
    * 
-   * @param sKey DOCUMENT_ME
+   * @param sKey 
    * 
    * @return the string value
    */
@@ -239,7 +239,7 @@ public abstract class Item implements Const {
   /**
    * Gets the boolean value.
    * 
-   * @param sKey DOCUMENT_ME
+   * @param sKey 
    * 
    * @return the boolean value
    */
@@ -256,7 +256,7 @@ public abstract class Item implements Const {
   /**
    * Gets the date value.
    * 
-   * @param sKey DOCUMENT_ME
+   * @param sKey 
    * 
    * @return the date value
    */
@@ -273,7 +273,7 @@ public abstract class Item implements Const {
   /**
    * Gets the default value.
    * 
-   * @param sKey DOCUMENT_ME
+   * @param sKey 
    * 
    * @return the default value
    */
@@ -289,9 +289,9 @@ public abstract class Item implements Const {
    */
   /**
    * Contains property.
-   * DOCUMENT_ME
    * 
-   * @param sKey DOCUMENT_ME
+   * 
+   * @param sKey 
    * 
    * @return true if...
    */
@@ -307,10 +307,10 @@ public abstract class Item implements Const {
    */
   /**
    * Sets the property.
-   * DOCUMENT_ME
    * 
-   * @param sKey DOCUMENT_ME
-   * @param oValue DOCUMENT_ME
+   * 
+   * @param sKey 
+   * @param oValue 
    */
   public final void setProperty(String sKey, Object oValue) {
     // reset cached value
@@ -471,9 +471,9 @@ public abstract class Item implements Const {
    */
   /**
    * Removes the property.
-   * DOCUMENT_ME
    * 
-   * @param sKey DOCUMENT_ME
+   * 
+   * @param sKey 
    */
   public void removeProperty(String sKey) {
     properties.remove(sKey);
@@ -485,7 +485,7 @@ public abstract class Item implements Const {
   /**
    * Default implementation for this method, simply return standard value.
    * 
-   * @param sKey DOCUMENT_ME
+   * @param sKey 
    * 
    * @return the human value
    */
@@ -513,7 +513,7 @@ public abstract class Item implements Const {
    * Clone all properties from a given properties list but not overwrite
    * constructor properties.
    * 
-   * @param propertiesSource DOCUMENT_ME
+   * @param propertiesSource 
    */
   void cloneProperties(Item propertiesSource) {
     Iterator<String> it = propertiesSource.getProperties().keySet().iterator();

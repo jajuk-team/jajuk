@@ -29,7 +29,7 @@ import javax.swing.text.JTextComponent;
 import junit.framework.TestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestAutoCompleteDecorator extends TestCase {
 
@@ -111,7 +111,6 @@ public class TestAutoCompleteDecorator extends TestCase {
   ///////////////////////7
   // Tests from singx itself
 
-  /** DOCUMENT_ME. */
   private JComboBox combo;
 
   /* (non-Javadoc)

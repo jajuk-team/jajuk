@@ -31,14 +31,12 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TxtLyricsProvider implements ILyricsProvider {
 
-  /** DOCUMENT_ME. */
   private BufferedReader lyricsReader = null;
 
-  /** DOCUMENT_ME. */
   private String readerPath = null;
 
   /** audio file we search lyrics for. */

@@ -53,7 +53,6 @@ public class AutoCompleteDocument extends PlainDocument {
   /** The adaptor that is used to find and select items. */
   AbstractAutoCompleteAdaptor adaptor;
 
-  /** DOCUMENT_ME. */
   ObjectToStringConverter stringConverter;
 
   /**
@@ -225,8 +224,8 @@ public class AutoCompleteDocument extends PlainDocument {
   /**
    * Find match.
    * 
-   * @param pattern DOCUMENT_ME
-   * @param exactMatch DOCUMENT_ME
+   * @param pattern 
+   * @param exactMatch 
    * 
    * @return the lookup result
    */
@@ -251,21 +250,19 @@ public class AutoCompleteDocument extends PlainDocument {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private static class LookupResult {
 
-    /** DOCUMENT_ME. */
     Object matchingItem;
 
-    /** DOCUMENT_ME. */
     String matchingString;
 
     /**
      * Instantiates a new lookup result.
      * 
-     * @param matchingItem DOCUMENT_ME
-     * @param matchingString DOCUMENT_ME
+     * @param matchingItem 
+     * @param matchingString 
      */
     public LookupResult(Object matchingItem, String matchingString) {
       this.matchingItem = matchingItem;

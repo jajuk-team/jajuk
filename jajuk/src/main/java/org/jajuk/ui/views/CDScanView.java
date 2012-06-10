@@ -59,19 +59,14 @@ public class CDScanView extends ViewAdapter implements ActionListener {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   JTextField jtfName;
 
-  /** DOCUMENT_ME. */
   JLabel jlMountPoint;
 
-  /** DOCUMENT_ME. */
   JTextField jtfMountPoint;
 
-  /** DOCUMENT_ME. */
   JButton jbScan;
 
-  /** DOCUMENT_ME. */
   JButton jbUrl;
 
   /**

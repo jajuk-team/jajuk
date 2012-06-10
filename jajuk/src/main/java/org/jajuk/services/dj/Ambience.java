@@ -80,7 +80,7 @@ public class Ambience implements Comparable<Ambience> {
   /**
    * Constructor.
    *
-   * @param sID DOCUMENT_ME
+   * @param sID 
    * @param sName Ambience name
    */
   public Ambience(String sID, String sName) {
@@ -98,9 +98,9 @@ public class Ambience implements Comparable<Ambience> {
 
   /**
    * Adds the genre.
-   * DOCUMENT_ME
    * 
-   * @param genre DOCUMENT_ME
+   * 
+   * @param genre 
    */
   public void addGenre(Genre genre) {
     if (genre != null) {
@@ -110,9 +110,9 @@ public class Ambience implements Comparable<Ambience> {
 
   /**
    * Removes the genre.
-   * DOCUMENT_ME
    * 
-   * @param genre DOCUMENT_ME
+   * 
+   * @param genre 
    */
   public void removeGenre(Genre genre) {
     genres.remove(genre);
@@ -195,7 +195,7 @@ public class Ambience implements Comparable<Ambience> {
   /**
    * Equals method.
    * 
-   * @param o DOCUMENT_ME
+   * @param o 
    * 
    * @return true if ambience have the same same and contains the same genres
    */
@@ -227,7 +227,7 @@ public class Ambience implements Comparable<Ambience> {
   /**
    * Compare to method : alphabetical.
    * 
-   * @param ambience DOCUMENT_ME
+   * @param ambience 
    * 
    * @return the int
    */

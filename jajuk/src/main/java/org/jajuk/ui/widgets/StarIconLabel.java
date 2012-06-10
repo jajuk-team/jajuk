@@ -60,13 +60,13 @@ public class StarIconLabel extends IconLabel {
   /**
    * The Constructor.
    * 
-   * @param icon DOCUMENT_ME
-   * @param sText DOCUMENT_ME
-   * @param cBackground DOCUMENT_ME
-   * @param cForeground DOCUMENT_ME
-   * @param font DOCUMENT_ME
-   * @param rate DOCUMENT_ME
-   * @param starNumber DOCUMENT_ME
+   * @param icon 
+   * @param sText 
+   * @param cBackground 
+   * @param cForeground 
+   * @param font 
+   * @param rate 
+   * @param starNumber 
    */
   public StarIconLabel(ImageIcon icon, String sText, Color cBackground, Color cForeground,
       Font font, int rate, int starNumber) {

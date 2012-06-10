@@ -64,7 +64,7 @@ public final class YearManager extends ItemManager {
   /**
    * Register a year.
    * 
-   * @param pYear DOCUMENT_ME
+   * @param pYear 
    * 
    * @return the year
    */
@@ -76,8 +76,8 @@ public final class YearManager extends ItemManager {
   /**
    * Register a year with a known id.
    * 
-   * @param sId DOCUMENT_ME
-   * @param pYear DOCUMENT_ME
+   * @param sId 
+   * @param pYear 
    * 
    * @return the year
    */

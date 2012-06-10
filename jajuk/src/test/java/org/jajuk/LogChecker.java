@@ -40,7 +40,6 @@ public class LogChecker extends TestCase {
   /** The Constant FILE_PATH.   */
   private static final File FILE_PATH = SessionService.getConfFileByPath("jajuk.log");
 
-  /** DOCUMENT_ME. */
   private String logs;
 
   /* (non-Javadoc)

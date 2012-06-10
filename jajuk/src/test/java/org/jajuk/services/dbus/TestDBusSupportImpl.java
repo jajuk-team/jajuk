@@ -33,7 +33,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestDBusSupportImpl extends JajukTestCase {
 
@@ -59,9 +59,10 @@ public class TestDBusSupportImpl extends JajukTestCase {
     try {
       new UnixSocket();
     } catch (UnsatisfiedLinkError e) {
-      Log.fatal("Could not load class UnixSocket, maybe the java.library.path is not set correctly: " + System.getProperty("java.library.path") + ": " + e.getMessage());
+      Log.fatal("Could not load class UnixSocket, maybe the java.library.path is not set correctly: "
+          + System.getProperty("java.library.path") + ": " + e.getMessage());
     }
-    
+
     // will fail where dbus is not available and report an error to the log...
     impl.connect();
   }
@@ -305,7 +306,7 @@ public class TestDBusSupportImpl extends JajukTestCase {
 
   /**
    * Test update connect.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdateConnect() {
     Properties prop = new Properties();
@@ -321,7 +322,7 @@ public class TestDBusSupportImpl extends JajukTestCase {
 
   /**
    * Test show currently playing.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -332,7 +333,7 @@ public class TestDBusSupportImpl extends JajukTestCase {
 
   /**
    * Test bookmark currently playing.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */

@@ -39,12 +39,13 @@ public class TestTag extends TestCase {
    */
   public void testTag() throws Exception {
     // can read tag-type
-    assertNotNull(TypeManager.getInstance().registerType("testtag", "tst", null, NoTagsTagImpl.class));
+    assertNotNull(TypeManager.getInstance().registerType("testtag", "tst", null,
+        NoTagsTagImpl.class));
     Tag tag = new Tag(new File("somefile.tst"), false);
     assertFalse(tag.isCorrupted());
     tag = new Tag(new File("somefile.tst"), true);
     assertFalse(tag.isCorrupted());
-    
+
     assertNotNull(TypeManager.getInstance().registerType("testtagnul", "nul", null, null));
     // null, do not ignore errors
     try {
@@ -67,11 +68,11 @@ public class TestTag extends TestCase {
     } catch (JajukException e) {
       // expected here
     }
-    
+
     // null, but ignore errors, but is set to "corrupted"
     Tag tag = new Tag(null, true);
     assertTrue(tag.isCorrupted());
-    
+
     // cannot read tag-type, do not ignore errors
     try {
       new Tag(new File("somefile"), false);
@@ -79,7 +80,7 @@ public class TestTag extends TestCase {
     } catch (JajukException e) {
       // expected here
     }
-    
+
     // cannot read tag-type, but ignore errors and set to corrupted
     tag = new Tag(new File("somefile"), true);
     assertTrue(tag.isCorrupted());
@@ -91,32 +92,34 @@ public class TestTag extends TestCase {
    */
   public void testHashCode() throws Exception {
     // can read tag-type
-    assertNotNull(TypeManager.getInstance().registerType("testtag", "tst", null, NoTagsTagImpl.class));
-    
+    assertNotNull(TypeManager.getInstance().registerType("testtag", "tst", null,
+        NoTagsTagImpl.class));
+
     Tag tag = new Tag(new File("somefile.tst"), false);
     Tag equ = new Tag(new File("somefile.tst"), false);
-    
+
     JUnitHelpers.HashCodeTest(tag, equ);
 
     tag = new Tag(null, true);
     equ = new Tag(null, true);
-    
+
     JUnitHelpers.HashCodeTest(tag, equ);
   }
-  
+
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#getTrackName()}.
    * @throws Exception 
    */
   public void testGetTrackName() throws Exception {
-    assertNotNull(TypeManager.getInstance().registerType("testtag", "tst", null, NoTagsTagImpl.class));
+    assertNotNull(TypeManager.getInstance().registerType("testtag", "tst", null,
+        NoTagsTagImpl.class));
     Tag tag = new Tag(new File("somefile.tst"), false);
 
     assertEquals("somefile", tag.getTrackName());
 
     assertNotNull(TypeManager.getInstance().registerType("testtagnul", "nul", null, null));
     tag = new Tag(new File("somefile.nul"), true);
-    
+
     assertEquals("somefile", tag.getTrackName());
   }
 
@@ -314,14 +317,15 @@ public class TestTag extends TestCase {
    * @throws Exception 
    */
   public void testEqualsObject() throws Exception {
-    assertNotNull(TypeManager.getInstance().registerType("testtag", "tst", null, NoTagsTagImpl.class));
-    
+    assertNotNull(TypeManager.getInstance().registerType("testtag", "tst", null,
+        NoTagsTagImpl.class));
+
     Tag tag = new Tag(new File("somefile.tst"), false);
     Tag equ = new Tag(new File("somefile.tst"), false);
     Tag notequ = new Tag(new File("somefile1.tst"), false);
-    
+
     JUnitHelpers.EqualsTest(tag, equ, notequ);
-    
+
     notequ = new Tag(null, true);
     JUnitHelpers.EqualsTest(tag, equ, notequ);
 
@@ -336,10 +340,11 @@ public class TestTag extends TestCase {
    * @throws Exception 
    */
   public void testToString() throws Exception {
-    assertNotNull(TypeManager.getInstance().registerType("testtag", "tst", null, NoTagsTagImpl.class));
+    assertNotNull(TypeManager.getInstance().registerType("testtag", "tst", null,
+        NoTagsTagImpl.class));
     Tag tag = new Tag(new File("somefile.tst"), false);
     Tag tag2 = new Tag(null, true);
-    
+
     JUnitHelpers.ToStringTest(tag);
     JUnitHelpers.ToStringTest(tag2);
   }

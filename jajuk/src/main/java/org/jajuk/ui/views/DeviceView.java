@@ -75,34 +75,24 @@ public class DeviceView extends ViewAdapter implements ActionListener {
   /** self instance. */
   private static DeviceView dv = new DeviceView();
 
-  /** DOCUMENT_ME. */
   FlowScrollPanel jpDevices;
 
-  /** DOCUMENT_ME. */
   JPopupMenu jpmenu;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiDelete;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiProperties;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiMount;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiUnmount;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiTest;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiRefresh;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiSynchronize;
 
-  /** DOCUMENT_ME. */
   DeviceItem diSelected;
 
   /** Mouse adapter used over device items to manage action or popup clicks. */
@@ -223,7 +213,7 @@ public class DeviceView extends ViewAdapter implements ActionListener {
   }
 
   /**
-   * Refresh devices. DOCUMENT_ME
+   * Refresh devices. 
    */
   private void refreshDevices() {
     // remove all devices
@@ -400,9 +390,9 @@ public class DeviceView extends ViewAdapter implements ActionListener {
   }
 
   /**
-   * Select item. DOCUMENT_ME
+   * Select item. 
    * 
-   * @param e DOCUMENT_ME
+   * @param e 
    */
   private void selectItem(final MouseEvent e) {
     boolean bSameDevice = ((diSelected != null) && e.getSource().equals(diSelected));
@@ -431,9 +421,9 @@ public class DeviceView extends ViewAdapter implements ActionListener {
    */
   /**
    * Mouse exited.
-   * DOCUMENT_ME
+   * 
    *
-   * @param arg0 DOCUMENT_ME
+   * @param arg0 
    */
   public void mouseExited(MouseEvent arg0) {
     // required by interface, but nothing to do here...
@@ -446,9 +436,9 @@ public class DeviceView extends ViewAdapter implements ActionListener {
    */
   /**
    * Mouse entered.
-   * DOCUMENT_ME
+   * 
    *
-   * @param e DOCUMENT_ME
+   * @param e 
    */
   public void mouseEntered(MouseEvent e) {
     // required by interface, but nothing to do here...
@@ -461,9 +451,9 @@ public class DeviceView extends ViewAdapter implements ActionListener {
    */
   /**
    * Mouse clicked.
-   * DOCUMENT_ME
+   * 
    *
-   * @param e DOCUMENT_ME
+   * @param e 
    */
   public void mouseClicked(MouseEvent e) {
     // required by interface, but nothing to do here...

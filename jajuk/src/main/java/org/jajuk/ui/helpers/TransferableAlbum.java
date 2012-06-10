@@ -38,23 +38,21 @@ public class TransferableAlbum implements Transferable {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** The Constant ALBUM_FLAVOR.  DOCUMENT_ME */
+  /** The Constant ALBUM_FLAVOR.   */
   public static final DataFlavor ALBUM_FLAVOR = new DataFlavor(
       DataFlavor.javaJVMLocalObjectMimeType, "Album");
 
-  /** DOCUMENT_ME. */
   private Album album;
 
   /**
    * Instantiates a new transferable album.
    * 
-   * @param album DOCUMENT_ME
+   * @param album 
    */
   public TransferableAlbum(Album album) {
     this.album = album;
   }
 
-  /** DOCUMENT_ME. */
   private final DataFlavor[] flavors = { ALBUM_FLAVOR };
 
   /*

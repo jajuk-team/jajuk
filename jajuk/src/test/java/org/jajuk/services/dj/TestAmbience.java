@@ -30,7 +30,7 @@ import org.jajuk.base.Genre;
 import org.jajuk.base.GenreManager;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestAmbience extends JajukTestCase {
 
@@ -240,7 +240,7 @@ public class TestAmbience extends JajukTestCase {
 
   /**
    * Test equals object2.
-   * DOCUMENT_ME
+   * 
    */
   public final void testEqualsObject2() {
     Ambience amb = new Ambience("1", "name");

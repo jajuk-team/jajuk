@@ -41,7 +41,7 @@ import org.jajuk.util.log.Log;
  */
 public class JavaBalloonNotificator implements INotificator {
   // the Systray is used to display the notification
-  /** DOCUMENT_ME. */
+
   TrayIcon trayIcon;
 
   /** Self instance *. */

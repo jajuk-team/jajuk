@@ -42,7 +42,7 @@ public class JajukBasicComboPopup extends BasicComboPopup {
   /**
    * Instantiates a new jajuk basic combo popup.
    * 
-   * @param jcb DOCUMENT_ME
+   * @param jcb 
    */
   public JajukBasicComboPopup(JComboBox jcb) {
     super(jcb);

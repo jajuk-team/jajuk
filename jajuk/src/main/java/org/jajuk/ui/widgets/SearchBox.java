@@ -103,13 +103,10 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
   /** Typed string. */
   private String sTyped;
 
-  /** DOCUMENT_ME. */
   private Popup popup;
 
-  /** DOCUMENT_ME. */
   private JList jlist;
 
-  /** DOCUMENT_ME. */
   private long lDateTyped;
 
   /** Search when typing timer. */
@@ -225,7 +222,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
         lDateTyped = System.currentTimeMillis();
 
         // make sure the timer is started before it is first used
-        if(!timer.isRunning()) {
+        if (!timer.isRunning()) {
           timer.start();
         }
       }
@@ -379,7 +376,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
    * Default list selection implementation (may be overwritten for different
    * behavior).
    *
-   * @param e DOCUMENT_ME
+   * @param e 
    */
   @Override
   public void valueChanged(final ListSelectionEvent e) {

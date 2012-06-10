@@ -80,7 +80,7 @@ public final class StartupGUIService {
 
   /**
    * Launch splash screen.
-   * DOCUMENT_ME
+   * 
    *
    * @throws InterruptedException the interrupted exception
    * @throws InvocationTargetException the invocation target exception
@@ -106,7 +106,7 @@ public final class StartupGUIService {
 
   /**
    * Fire step one over.
-   * DOCUMENT_ME
+   * 
    */
   public static void fireStepOneOver() {
     if (sc != null) {
@@ -121,7 +121,7 @@ public final class StartupGUIService {
 
   /**
    * Fire step two over.
-   * DOCUMENT_ME
+   * 
    */
   public static void fireStepTwoOver() {
     if (sc != null) {
@@ -136,7 +136,7 @@ public final class StartupGUIService {
 
   /**
    * Fire step three over.
-   * DOCUMENT_ME
+   * 
    */
   public static void fireStepThreeOver() {
     if (sc != null) {

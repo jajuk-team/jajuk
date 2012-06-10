@@ -115,7 +115,7 @@ public final class PerspectiveManager {
 
   /**
    * Reset perspectives.
-   * DOCUMENT_ME
+   * 
    */
   private static void resetPerspectives() {
     List<String> perspectivesToReset = Arrays.asList(PerspectiveManager.perspectivesToReset);
@@ -218,7 +218,7 @@ public final class PerspectiveManager {
   /**
    * Set current perspective.
    * 
-   * @param sPerspectiveID DOCUMENT_ME
+   * @param sPerspectiveID 
    */
   public static void setCurrentPerspective(String sPerspectiveID) {
     IPerspective perspective = hmNameInstance.get(sPerspectiveID);
@@ -291,7 +291,7 @@ public final class PerspectiveManager {
   /**
    * Register a new perspective.
    * 
-   * @param perspective DOCUMENT_ME
+   * @param perspective 
    * 
    * @return registered perspective
    */

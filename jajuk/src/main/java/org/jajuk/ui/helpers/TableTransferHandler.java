@@ -41,13 +41,12 @@ public class TableTransferHandler extends TransferHandler {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   final JajukTable jtable;
 
   /**
    * Constructor.
    * 
-   * @param jtable DOCUMENT_ME
+   * @param jtable 
    */
   public TableTransferHandler(final JajukTable jtable) {
     this.jtable = jtable;
@@ -72,7 +71,7 @@ public class TableTransferHandler extends TransferHandler {
   /**
    * Called when dragging.
    * 
-   * @param c DOCUMENT_ME
+   * @param c 
    * 
    * @return the transferable
    */
@@ -87,7 +86,7 @@ public class TableTransferHandler extends TransferHandler {
   /**
    * return action type.
    * 
-   * @param c DOCUMENT_ME
+   * @param c 
    * 
    * @return the source actions
    */

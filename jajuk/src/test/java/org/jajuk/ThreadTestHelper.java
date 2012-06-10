@@ -54,16 +54,12 @@ import org.jajuk.util.log.Log;
  */
 public class ThreadTestHelper {
 
-  /** DOCUMENT_ME. */
   private final int threadCount;
 
-  /** DOCUMENT_ME. */
   private final int testsPerThread;
 
-  /** DOCUMENT_ME. */
   private boolean failed = false;
 
-  /** DOCUMENT_ME. */
   private int executions[] = null;
 
   /**
@@ -156,7 +152,7 @@ public class ThreadTestHelper {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public interface TestRunnable {
 
@@ -180,7 +176,7 @@ public class ThreadTestHelper {
      *
      * This method should throw an Exception if any check fails at this point.
      *
-     * @param threadnum DOCUMENT_ME
+     * @param threadnum 
      * @throws Exception the exception
      */
     void doEnd(int threadnum) throws Exception;
@@ -188,7 +184,7 @@ public class ThreadTestHelper {
 
   /**
    * Test dummy.
-   * DOCUMENT_ME
+   * 
    */
   public void testDummy() {
     // small empty test to not fail if this class is executed as test case by

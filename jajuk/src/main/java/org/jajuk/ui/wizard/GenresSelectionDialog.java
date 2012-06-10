@@ -56,28 +56,22 @@ public class GenresSelectionDialog extends JajukJDialog implements ActionListene
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   JComboBox jcbAmbiences;
 
-  /** DOCUMENT_ME. */
   JList jlist;
 
-  /** DOCUMENT_ME. */
   OKCancelPanel okc;
 
-  /** DOCUMENT_ME. */
   Set<Genre> selectedGenres;
 
-  /** DOCUMENT_ME. */
   Set<Genre> disabledGenres;
 
-  /** DOCUMENT_ME. */
   List<String> list;
 
   /**
    * The Constructor.
    * 
-   * @param disabledGenres DOCUMENT_ME
+   * @param disabledGenres 
    */
   public GenresSelectionDialog(Set<Genre> disabledGenres) {
     super();
@@ -130,7 +124,7 @@ public class GenresSelectionDialog extends JajukJDialog implements ActionListene
 
   /**
    * Inits the ui.
-   * DOCUMENT_ME
+   * 
    */
   @SuppressWarnings("unchecked")
   private void initUI() {

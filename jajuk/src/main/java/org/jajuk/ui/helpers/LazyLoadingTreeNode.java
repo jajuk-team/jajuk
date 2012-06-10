@@ -73,7 +73,7 @@ public abstract class LazyLoadingTreeNode extends DefaultMutableTreeNode {
    * This method will be executed in a background thread. If you have to do some
    * GUI stuff use {@link SwingUtilities#invokeLater(Runnable)}
    * 
-   * @param model DOCUMENT_ME
+   * @param model 
    * 
    * @return The created nodes.
    */

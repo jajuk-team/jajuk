@@ -66,19 +66,15 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   private JList availableTagsJList;
 
-  /** DOCUMENT_ME. */
   private JList activatedTagsJList;
 
   /** OK/Cancel buttons. */
   private OKCancelPanel okp;
 
-  /** DOCUMENT_ME. */
   private List<String> availableList = new ArrayList<String>();
 
-  /** DOCUMENT_ME. */
   private List<String> activatedList = new ArrayList<String>();
 
   /**
@@ -99,7 +95,7 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
 
   /**
    * Refresh list.
-   * DOCUMENT_ME
+   * 
    */
   private void refreshList() {
     availableList.clear();
@@ -117,7 +113,7 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
 
   /**
    * Populate.
-   * DOCUMENT_ME
+   * 
    */
   private void populate() {
     availableTagsJList.clearSelection();
@@ -139,7 +135,7 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
 
   /**
    * Inits the ui.
-   * DOCUMENT_ME
+   * 
    */
   private void initUI() {
     JTextArea jta = new JTextArea() {
@@ -149,7 +145,7 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
        * Display an info label in the text area
        *
        * @param g
-       *          DOCUMENT_ME
+       *          
        */
       @Override
       public void paint(Graphics g) {
@@ -229,7 +225,7 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
 
   /**
    * Ok action.
-   * DOCUMENT_ME
+   * 
    */
   private void okAction() {
     TrackManager tm = TrackManager.getInstance();

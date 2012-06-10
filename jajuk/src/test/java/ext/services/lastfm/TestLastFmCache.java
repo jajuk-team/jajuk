@@ -29,7 +29,7 @@ import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestLastFmCache extends JajukTestCase {
 

@@ -31,7 +31,6 @@ import javax.swing.JSlider;
  */
 public class DefaultMouseWheelListener implements MouseWheelListener {
 
-  /** DOCUMENT_ME. */
   private JSlider js;
 
   /**

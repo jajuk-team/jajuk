@@ -65,7 +65,7 @@ import org.xml.sax.SAXException;
  */
 public abstract class PerspectiveAdapter extends DockingDesktop implements IPerspective, Const {
 
-  /** The Constant XML_EXT.  DOCUMENT_ME */
+  /** The Constant XML_EXT.   */
   private static final String XML_EXT = ".xml";
 
   /** Generated serialVersionUID. */

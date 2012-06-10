@@ -48,7 +48,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestTracksTreeView extends JajukTestCase {
 
@@ -78,9 +78,9 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Try init ui.
-   * DOCUMENT_ME
+   * 
    *
-   * @param view DOCUMENT_ME
+   * @param view 
    */
   private void tryInitUI(TracksTreeView view) {
     try {
@@ -325,7 +325,7 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test tracks tree selection listener.
-   * DOCUMENT_ME
+   * 
    */
   public final void testTracksTreeSelectionListener() {
     TracksTreeView view = new TracksTreeView();
@@ -340,7 +340,7 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test tracks mouse adapter.
-   * DOCUMENT_ME
+   * 
    */
   public final void testTracksMouseAdapter() {
     TracksTreeView view = new TracksTreeView();
@@ -387,7 +387,7 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test genre node.
-   * DOCUMENT_ME
+   * 
    */
   public final void testGenreNode() {
     GenreNode ad = new GenreNode(getGenre());
@@ -409,7 +409,7 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test artist node.
-   * DOCUMENT_ME
+   * 
    */
   public final void testArtistNode() {
     ArtistNode ad = new ArtistNode(getArtist());
@@ -431,7 +431,7 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test year node.
-   * DOCUMENT_ME
+   * 
    */
   public final void testYearNode() {
     YearNode ad = new YearNode(getYear());
@@ -453,7 +453,7 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test album node.
-   * DOCUMENT_ME
+   * 
    */
   public final void testAlbumNode() {
     AlbumNode ad = new AlbumNode(getAlbum());
@@ -475,7 +475,7 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test track node.
-   * DOCUMENT_ME
+   * 
    */
   public final void testTrackNode() {
     TrackNode ad = new TrackNode(getTrack());
@@ -498,7 +498,7 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test discovery date node.
-   * DOCUMENT_ME
+   * 
    */
   public final void testDiscoveryDateNode() {
     DiscoveryDateNode ad = new DiscoveryDateNode(null);
@@ -507,7 +507,7 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test tracks tree cell renderer.
-   * DOCUMENT_ME
+   * 
    */
   public final void testTracksTreeCellRenderer() {
     TracksTreeCellRenderer ad = new TracksTreeCellRenderer();
@@ -547,7 +547,7 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test tracks tree expansion listener.
-   * DOCUMENT_ME
+   * 
    */
   public final void testTracksTreeExpansionListener() {
     TracksTreeExpansionListener ad = new TracksTreeExpansionListener();

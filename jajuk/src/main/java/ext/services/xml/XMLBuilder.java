@@ -35,7 +35,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public final class XMLBuilder {
 
@@ -48,7 +48,7 @@ public final class XMLBuilder {
   /**
    * Gets the xML document.
    * 
-   * @param xml DOCUMENT_ME
+   * @param xml 
    * 
    * @return the xML document
    */

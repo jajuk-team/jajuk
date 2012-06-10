@@ -55,7 +55,7 @@ public class LastFmArtist implements ArtistInfo {
   /**
    * Gets the artist.
    * 
-   * @param a DOCUMENT_ME
+   * @param a 
    * 
    * @return the artist
    */

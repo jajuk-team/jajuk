@@ -90,7 +90,7 @@ public interface IPerspective {
   /**
    * As been selected flag.
    * 
-   * @param b DOCUMENT_ME
+   * @param b 
    */
   void setAsBeenSelected(boolean b);
 }

@@ -1399,7 +1399,7 @@ public final class QueueModel {
    * Force FIFO index.
    * 
    * @param index
-   *            DOCUMENT_ME
+   *            
    * 
    * @pram index index to set
    */

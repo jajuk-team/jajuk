@@ -101,10 +101,10 @@ import org.jajuk.util.log.Log;
  */
 public class CoverView extends ViewAdapter implements ActionListener {
 
-  /** The Constant PLUS_QUOTE.  DOCUMENT_ME */
+  /** The Constant PLUS_QUOTE.   */
   private static final String PLUS_QUOTE = "+\"";
 
-  /** The Constant QUOTE_BLANK.  DOCUMENT_ME */
+  /** The Constant QUOTE_BLANK.   */
   private static final String QUOTE_BLANK = "\" ";
 
   /** Generated serialVersionUID. */
@@ -129,31 +129,23 @@ public class CoverView extends ViewAdapter implements ActionListener {
   private final LinkedList<Cover> alCovers = new LinkedList<Cover>(); // NOPMD
 
   // control panel
-  /** DOCUMENT_ME. */
+
   private JPanel jpControl;
 
-  /** DOCUMENT_ME. */
   private JajukButton jbPrevious;
 
-  /** DOCUMENT_ME. */
   private JajukButton jbNext;
 
-  /** DOCUMENT_ME. */
   private JajukButton jbDelete;
 
-  /** DOCUMENT_ME. */
   private JajukButton jbSave;
 
-  /** DOCUMENT_ME. */
   private JajukButton jbDefault;
 
-  /** DOCUMENT_ME. */
   private JLabel jlSize;
 
-  /** DOCUMENT_ME. */
   private JLabel jlFound;
 
-  /** DOCUMENT_ME. */
   private JLabel jlSearching;
 
   /** Cover search accuracy combo. */
@@ -180,7 +172,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
   /** Force next track cover reload flag*. */
   private boolean bForceCoverReload = true;
 
-  /** DOCUMENT_ME. */
   private boolean includeControls;
 
   /** Whether the view has not yet been displayed for its first time */
@@ -250,7 +241,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   /**
    * Inits the ui.
    *  
-   * @param includeControls DOCUMENT_ME
+   * @param includeControls 
    */
   public void initUI(boolean includeControls) {
     this.includeControls = includeControls;
@@ -787,7 +778,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   /**
    * Creates the query.
    * 
-   * @param file DOCUMENT_ME
+   * @param file 
    * 
    * @return an accurate google search query for a file
    */
@@ -963,7 +954,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   /**
    * Long action to compute image to display (download, resizing...)
    * 
-   * @param index DOCUMENT_ME
+   * @param index 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -1178,7 +1169,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   /**
    * Refresh default cover thumb (used in catalog view).
    * 
-   * @param cover DOCUMENT_ME
+   * @param cover 
    */
   private void refreshThumbs(final Cover cover) {
     if (dirReference == null) {
@@ -1204,7 +1195,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   /**
    * Display or hide search icon.
    * 
-   * @param bSearching DOCUMENT_ME
+   * @param bSearching 
    */
   public void searching(final boolean bSearching) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -1256,7 +1247,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   /**
    * Set the cover size text.
    * 
-   * @param sSize DOCUMENT_ME
+   * @param sSize 
    */
   private void setSizeText(final String sSize) {
     if (sSize != null) {
@@ -1318,7 +1309,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
 
   /**
    * Update stop or web radio launched.
-   * DOCUMENT_ME
+   * 
    */
   private void updateStopOrWebRadioLaunched() {
     // Ignore this event if a reference file has been set
@@ -1341,8 +1332,8 @@ public class CoverView extends ViewAdapter implements ActionListener {
   /**
    * Update file launched.
    * 
-   * @param event DOCUMENT_ME
-   * @param iLocalEventID DOCUMENT_ME
+   * @param event 
+   * @param iLocalEventID 
    * 
    * @throws IOException Signals that an I/O exception has occurred.
    */
@@ -1385,7 +1376,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   /**
    * Convenient method to massively enable/disable this view buttons.
    * 
-   * @param enable DOCUMENT_ME
+   * @param enable 
    */
   private void enableCommands(final boolean enable) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -1411,8 +1402,8 @@ public class CoverView extends ViewAdapter implements ActionListener {
    * Must be called outside the EDT, contains network access
    * </p>.
    * 
-   * @param iLocalEventID DOCUMENT_ME
-   * @param dirChanged DOCUMENT_ME
+   * @param iLocalEventID 
+   * @param dirChanged 
    * 
    * @throws IOException Signals that an I/O exception has occurred.
    */

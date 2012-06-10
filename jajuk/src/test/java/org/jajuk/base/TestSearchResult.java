@@ -26,7 +26,7 @@ import org.jajuk.JUnitHelpers;
 import org.jajuk.base.SearchResult.SearchResultType;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestSearchResult extends TestCase {
 

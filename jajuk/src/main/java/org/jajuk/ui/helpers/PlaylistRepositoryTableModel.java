@@ -86,9 +86,9 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
    * complexity reasons. This may be implemented in the future if required
    * </p>
    *
-   * @param sPropertyName DOCUMENT_ME
-   * @param sPattern DOCUMENT_ME
-   * @param columnsToShow DOCUMENT_ME
+   * @param sPropertyName 
+   * @param sPattern 
+   * @param columnsToShow 
    */
   @Override
   public void populateModel(String sPropertyName, String sPattern, List<String> columnsToShow) {
@@ -173,7 +173,8 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
 
       // Custom properties now
       Map<String, Object> properties = plf.getProperties();
-      Iterator<PropertyMetaInformation> it2 = PlaylistManager.getInstance().getCustomProperties().iterator();
+      Iterator<PropertyMetaInformation> it2 = PlaylistManager.getInstance().getCustomProperties()
+          .iterator();
       for (int i = 0; it2.hasNext(); i++) {
         PropertyMetaInformation meta = it2.next();
         Object o = properties.get(meta.getName());

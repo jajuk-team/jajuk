@@ -47,7 +47,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
   /**
    * The Constructor.
    * 
-   * @param sID DOCUMENT_ME
+   * @param sID 
    */
   public TransitionDigitalDJ(String sID) {
     super(sID);
@@ -66,7 +66,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
   /**
    * Delete a transition at given offset.
    * 
-   * @param offset DOCUMENT_ME
+   * @param offset 
    */
   public void deleteTransition(int offset) {
     this.transitions.remove(offset);
@@ -75,8 +75,8 @@ public class TransitionDigitalDJ extends DigitalDJ {
   /**
    * Add a transition.
    * 
-   * @param transition DOCUMENT_ME
-   * @param offset DOCUMENT_ME
+   * @param transition 
+   * @param offset 
    */
   public void addTransition(Transition transition, int offset) {
     this.transitions.add(offset, transition);
@@ -85,7 +85,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
   /**
    * Gets the transition.
    * 
-   * @param ambience DOCUMENT_ME
+   * @param ambience 
    * 
    * @return transition mapping this FROM ambience or null if none maps it
    */
@@ -220,7 +220,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
   /**
    * Gets the ambience.
    * 
-   * @param genre DOCUMENT_ME
+   * @param genre 
    * 
    * @return ambience associated with a genre known in transitions or null if
    * none

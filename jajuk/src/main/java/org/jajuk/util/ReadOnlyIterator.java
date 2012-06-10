@@ -26,7 +26,7 @@ import java.util.Iterator;
  * A convenient class that prevents remove() method from an iterator <br>
  * Generic class.
  *
- * @param <V> DOCUMENT_ME
+ * @param <V> 
  */
 public class ReadOnlyIterator<V> {
 

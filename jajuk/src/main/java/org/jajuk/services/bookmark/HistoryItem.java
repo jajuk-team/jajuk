@@ -40,8 +40,8 @@ public class HistoryItem {
   /**
    * Instantiates a new history item.
    * 
-   * @param sFileId DOCUMENT_ME
-   * @param lDate DOCUMENT_ME
+   * @param sFileId 
+   * @param lDate 
    */
   public HistoryItem(String sFileId, long lDate) {
     this.sFileId = sFileId;
@@ -60,7 +60,7 @@ public class HistoryItem {
   /**
    * Sets the date.
    * 
-   * @param lDate DOCUMENT_ME
+   * @param lDate 
    */
   public void setDate(long lDate) {
     this.lDate = lDate;

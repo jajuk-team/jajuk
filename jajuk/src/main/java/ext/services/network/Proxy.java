@@ -32,33 +32,29 @@ import java.net.UnknownHostException;
 import org.apache.commons.codec.binary.Base64;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class Proxy extends java.net.Proxy {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 7495084217081194366L;
 
-  /** DOCUMENT_ME. */
   private final String url;
 
-  /** DOCUMENT_ME. */
   private final int port;
 
-  /** DOCUMENT_ME. */
   private final String user;
 
-  /** DOCUMENT_ME. */
   private final String password;
 
   /**
    * Instantiates a new proxy.
    * 
-   * @param type DOCUMENT_ME
-   * @param url DOCUMENT_ME
-   * @param port DOCUMENT_ME
-   * @param user DOCUMENT_ME
-   * @param password DOCUMENT_ME
+   * @param type 
+   * @param url 
+   * @param port 
+   * @param user 
+   * @param password 
    * 
    * @throws UnknownHostException the unknown host exception
    * @throws IOException Signals that an I/O exception has occurred.
@@ -75,7 +71,7 @@ public class Proxy extends java.net.Proxy {
   /**
    * Gets the connection.
    * 
-   * @param u DOCUMENT_ME
+   * @param u 
    * 
    * @return the connection
    * 

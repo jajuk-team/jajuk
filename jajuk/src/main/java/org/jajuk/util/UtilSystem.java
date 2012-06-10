@@ -69,7 +69,7 @@ import org.jajuk.util.log.Log;
  */
 public final class UtilSystem {
 
-  /** The Constant LOCAL_IP.  DOCUMENT_ME */
+  /** The Constant LOCAL_IP.   */
   private static final String LOCAL_IP = "127.0.0.1";
 
   /** Is browser supported ?. */
@@ -83,16 +83,12 @@ public final class UtilSystem {
    */
   public static enum MPlayerStatus {
 
-    /** DOCUMENT_ME. */
     MPLAYER_STATUS_OK,
 
-    /** DOCUMENT_ME. */
     MPLAYER_STATUS_NOT_FOUND,
 
-    /** DOCUMENT_ME. */
     MPLAYER_STATUS_WRONG_VERSION,
 
-    /** DOCUMENT_ME. */
     MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
   }
 
@@ -224,7 +220,7 @@ public final class UtilSystem {
    * with a given maximum Mb size for the file and its backup files
    * 
    * @param file The file to back up
-   * @param iMB DOCUMENT_ME
+   * @param iMB 
    */
   public static void backupFile(final File file, final int iMB) {
     try {
@@ -378,8 +374,8 @@ public final class UtilSystem {
   /**
    * Copy recursively files and directories.
    *
-   * @param src DOCUMENT_ME
-   * @param dst DOCUMENT_ME
+   * @param src 
+   * @param dst 
    * @throws JajukException the jajuk exception
    * @throws IOException Signals that an I/O exception has occurred.
    */
@@ -424,7 +420,7 @@ public final class UtilSystem {
   /**
    * Create empty file.
    * 
-   * @param file DOCUMENT_ME
+   * @param file 
    * 
    * @throws IOException Signals that an I/O exception has occurred.
    */
@@ -490,7 +486,7 @@ public final class UtilSystem {
   /**
    * Get a file extension.
    * 
-   * @param file DOCUMENT_ME
+   * @param file 
    * 
    * @return the extension
    */
@@ -528,7 +524,7 @@ public final class UtilSystem {
    * <p>
    * uses nio api for performances
    * 
-   * @param fio DOCUMENT_ME
+   * @param fio 
    * 
    * @return the file checksum
    * 
@@ -585,7 +581,7 @@ public final class UtilSystem {
    * 
    * This code no more work with last JRE 6  under JNLP (it returns only partial URL)
    * 
-   * @param cClass DOCUMENT_ME
+   * @param cClass 
    * 
    * @return URL of jar we are executing
    */
@@ -700,7 +696,7 @@ public final class UtilSystem {
   /**
    * Gets the mplayer status.
    * 
-   * @param mplayerPATH DOCUMENT_ME
+   * @param mplayerPATH 
    * 
    * @return the mplayer status
    */
@@ -762,7 +758,7 @@ public final class UtilSystem {
   /**
    * Return only the name of a file from a complete URL.
    * 
-   * @param sPath DOCUMENT_ME
+   * @param sPath 
    * 
    * @return the only file
    */
@@ -775,7 +771,7 @@ public final class UtilSystem {
    * http
    * ://java.sun.com/j2se/1.5.0/docs/guide/javaws/developersguide/faq.html#211
    * 
-   * @param name DOCUMENT_ME
+   * @param name 
    * 
    * @return the resource
    */
@@ -807,8 +803,8 @@ public final class UtilSystem {
   /**
    * Checks if is descendant.
    * 
-   * @param file1 DOCUMENT_ME
-   * @param file2 DOCUMENT_ME
+   * @param file1 
+   * @param file2 
    * 
    * @return whether file1 is a file2 descendant
    */
@@ -972,7 +968,7 @@ public final class UtilSystem {
    * Open a file from current jar and return a string buffer with the file
    * content.
    * 
-   * @param sURL DOCUMENT_ME
+   * @param sURL 
    * 
    * @return StringBuilder - File content.
    * 
@@ -1008,7 +1004,7 @@ public final class UtilSystem {
   /**
    * Remove an extension from a file name.
    * 
-   * @param sFilename DOCUMENT_ME
+   * @param sFilename 
    * 
    * @return filename without extension
    */
@@ -1102,7 +1098,7 @@ public final class UtilSystem {
    * 
    * Inspired from an aTunes method
    * 
-   * @param directory DOCUMENT_ME
+   * @param directory 
    */
   public static void openInExplorer(File directory) {
     final File directoryToOpen;

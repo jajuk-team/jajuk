@@ -48,7 +48,7 @@ import java.util.Map;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestJScrollingText extends JajukTestCase {
 
@@ -95,7 +95,7 @@ public class TestJScrollingText extends JajukTestCase {
 
   /**
    * Test paint component opaque.
-   * DOCUMENT_ME
+   * 
    */
   public void testPaintComponentOpaque() {
     JScrollingText t = new JScrollingText("teststring");
@@ -106,7 +106,7 @@ public class TestJScrollingText extends JajukTestCase {
 
   /**
    * Test paint component speed.
-   * DOCUMENT_ME
+   * 
    */
   public void testPaintComponentSpeed() {
     JScrollingText t = new JScrollingText("teststring", 1000);
@@ -116,7 +116,7 @@ public class TestJScrollingText extends JajukTestCase {
 
   /**
    * Test paint component speed zero.
-   * DOCUMENT_ME
+   * 
    */
   public void testPaintComponentSpeedZero() {
     JScrollingText t = new JScrollingText("teststring", 0);
@@ -139,7 +139,7 @@ public class TestJScrollingText extends JajukTestCase {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private final class MyGraphics2D extends Graphics2D {
 

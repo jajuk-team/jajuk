@@ -44,13 +44,10 @@ public abstract class Screen extends JPanel {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   private final ScreenState state;
 
-  /** DOCUMENT_ME. */
   public Map<String, Object> data;
 
-  /** DOCUMENT_ME. */
   private Wizard wizard;
 
   /**
@@ -79,7 +76,7 @@ public abstract class Screen extends JPanel {
 
   /**
    * Can finish.
-   * DOCUMENT_ME
+   * 
    * 
    * @return true if...
    */
@@ -91,7 +88,7 @@ public abstract class Screen extends JPanel {
   /**
    * Set whether the finish button should be enabled.
    * 
-   * @param b DOCUMENT_ME
+   * @param b 
    */
   public void setCanFinish(boolean b) {
     state.setCanFinish(b);
@@ -100,7 +97,7 @@ public abstract class Screen extends JPanel {
 
   /**
    * Can go next.
-   * DOCUMENT_ME
+   * 
    * 
    * @return true if...
    */
@@ -111,7 +108,7 @@ public abstract class Screen extends JPanel {
 
   /**
    * Can cancel.
-   * DOCUMENT_ME
+   * 
    * 
    * @return true if...
    */
@@ -121,7 +118,7 @@ public abstract class Screen extends JPanel {
 
   /**
    * Can go previous.
-   * DOCUMENT_ME
+   * 
    * 
    * @return true if...
    */
@@ -132,7 +129,7 @@ public abstract class Screen extends JPanel {
   /**
    * Set whether the next button should be enabled.
    * 
-   * @param b DOCUMENT_ME
+   * @param b 
    */
   void setCanGoNext(boolean b) {
     state.setCanGoNext(b);
@@ -142,7 +139,7 @@ public abstract class Screen extends JPanel {
   /**
    * Set whether the previous button should be enabled.
    * 
-   * @param b DOCUMENT_ME
+   * @param b 
    */
   void setCanGoPrevious(boolean b) {
     state.setCanGoPrevious(b);
@@ -152,7 +149,7 @@ public abstract class Screen extends JPanel {
   /**
    * Set whether the cancel (or System menu close) button should be enabled.
    * 
-   * @param b DOCUMENT_ME
+   * @param b 
    */
   public void setCanCancel(boolean b) {
     state.setCanCancel(b);
@@ -242,7 +239,7 @@ public abstract class Screen extends JPanel {
 
   /**
    * Notify gui.
-   * DOCUMENT_ME
+   * 
    */
   private void notifyGUI() {
     SwingUtilities.invokeLater(new Runnable() {

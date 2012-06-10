@@ -31,7 +31,7 @@ import org.jajuk.util.filters.AnyFileFilter;
 import org.junit.Test;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestJajukFileFilter {
 

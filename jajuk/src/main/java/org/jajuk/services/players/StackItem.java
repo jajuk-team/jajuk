@@ -59,8 +59,8 @@ public class StackItem implements Cloneable {
   /**
    * Constructor.
    * 
-   * @param file DOCUMENT_ME
-   * @param bUserLauched DOCUMENT_ME
+   * @param file 
+   * @param bUserLauched 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -71,9 +71,9 @@ public class StackItem implements Cloneable {
   /**
    * Constructor.
    *
-   * @param file DOCUMENT_ME
-   * @param bRepeat DOCUMENT_ME
-   * @param bUserLauched DOCUMENT_ME
+   * @param file 
+   * @param bRepeat 
+   * @param bUserLauched 
    * @throws JajukException the jajuk exception
    */
   public StackItem(File file, boolean bRepeat, boolean bUserLauched) throws JajukException {
@@ -173,7 +173,7 @@ public class StackItem implements Cloneable {
   /**
    * Equals method.
    * 
-   * @param o DOCUMENT_ME
+   * @param o 
    * 
    * @return whether both items are equals. Condition : file is the same and
    * planned flag is the same

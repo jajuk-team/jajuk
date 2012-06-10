@@ -55,7 +55,6 @@ public final class AlbumManager extends ItemManager implements Observer {
   /** Album max rating. */
   private long maxRate = 0l;
 
-  /** DOCUMENT_ME. */
   private int comp = 0;
 
   /**
@@ -111,7 +110,7 @@ public final class AlbumManager extends ItemManager implements Observer {
    * Return hashcode for this item.
    * 
    * @param sName item name
-   * @param discId DOCUMENT_ME
+   * @param discId 
    * 
    * @return ItemManager ID
    */
@@ -122,9 +121,9 @@ public final class AlbumManager extends ItemManager implements Observer {
   /**
    * Register an Album with a known id.
    *
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param discID DOCUMENT_ME
+   * @param sId 
+   * @param sName 
+   * @param discID 
    * @return the album
    */
   public Album registerAlbum(String sId, String sName, long discID) {
@@ -140,8 +139,8 @@ public final class AlbumManager extends ItemManager implements Observer {
   /**
    * Register an Album.
    * 
-   * @param sName DOCUMENT_ME
-   * @param discID DOCUMENT_ME
+   * @param sName 
+   * @param discID 
    * 
    * @return the album
    */
@@ -153,8 +152,8 @@ public final class AlbumManager extends ItemManager implements Observer {
   /**
    * Change the item.
    * 
-   * @param old DOCUMENT_ME
-   * @param sNewName DOCUMENT_ME
+   * @param old 
+   * @param sNewName 
    * 
    * @return new album
    * 
@@ -516,7 +515,7 @@ public final class AlbumManager extends ItemManager implements Observer {
   /**
    * Gets the album by name.
    * 
-   * @param name DOCUMENT_ME
+   * @param name 
    * 
    * @return associated album (case insensitive) or null if no match
    */

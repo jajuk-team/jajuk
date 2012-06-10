@@ -37,7 +37,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestCollection extends JajukTestCase {
 
@@ -134,7 +134,7 @@ public class TestCollection extends JajukTestCase {
 
   /**
    * Test load not exists.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */

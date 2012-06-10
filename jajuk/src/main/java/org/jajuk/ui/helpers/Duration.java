@@ -28,7 +28,6 @@ import org.jajuk.util.UtilString;
  */
 public class Duration implements Comparable<Duration> {
 
-  /** DOCUMENT_ME. */
   private final long duration;
 
   /**

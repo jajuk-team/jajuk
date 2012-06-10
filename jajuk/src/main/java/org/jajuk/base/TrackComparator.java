@@ -156,7 +156,7 @@ public class TrackComparator implements Comparator<Track>, Serializable {
   /**
    * Return a footprint used to find almost-identical track.
    * 
-   * @param track DOCUMENT_ME
+   * @param track 
    * 
    * @return a footprint used to find almost-identical track
    */

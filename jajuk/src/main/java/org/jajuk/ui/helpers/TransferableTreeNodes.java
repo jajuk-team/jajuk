@@ -38,7 +38,7 @@ public class TransferableTreeNodes implements Transferable {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** The Constant NODE_FLAVOR.  DOCUMENT_ME */
+  /** The Constant NODE_FLAVOR.   */
   public static final DataFlavor NODE_FLAVOR = new DataFlavor(
       DataFlavor.javaJVMLocalObjectMimeType, "Node");
 
@@ -48,13 +48,12 @@ public class TransferableTreeNodes implements Transferable {
   /**
    * Instantiates a new transferable tree node.
    * 
-   * @param items DOCUMENT_ME
+   * @param items 
    */
   public TransferableTreeNodes(List<Item> items) {
     this.items = items;
   }
 
-  /** DOCUMENT_ME. */
   private final DataFlavor[] flavors = { NODE_FLAVOR };
 
   /*

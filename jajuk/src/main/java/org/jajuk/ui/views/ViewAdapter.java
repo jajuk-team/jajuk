@@ -258,7 +258,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   /**
    * walk through the list of components and stop any BusyLabel.
    * 
-   * @param c DOCUMENT_ME
+   * @param c 
    */
   private static void stopAllBusyLabels(Container c) {
     for (int i = 0; i < c.getComponentCount(); i++) {
@@ -281,7 +281,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
 
   /**
    * Cleanup.
-   * DOCUMENT_ME
+   * 
    */
   public void cleanup() {
     // unregister any component that is still registered as observer
@@ -291,7 +291,7 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   /**
    * walk through the list of components and unregister any Observer to free all references.
    * 
-   * @param c DOCUMENT_ME
+   * @param c 
    */
   private static void cleanupRecursive(Container c) {
     for (int i = 0; i < c.getComponentCount(); i++) {

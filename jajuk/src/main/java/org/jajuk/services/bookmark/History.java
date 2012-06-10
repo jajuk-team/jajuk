@@ -135,8 +135,8 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   /**
    * Add an history item.
    * 
-   * @param sFileId DOCUMENT_ME
-   * @param lDate DOCUMENT_ME
+   * @param sFileId 
+   * @param lDate 
    */
   public void addItem(String sFileId, long lDate) {
     // no history
@@ -194,8 +194,8 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   /**
    * Change ID for a file.
    * 
-   * @param sIDOld DOCUMENT_ME
-   * @param sIDNew DOCUMENT_ME
+   * @param sIDOld 
+   * @param sIDNew 
    */
   public void changeID(final String sIDOld, final String sIDNew) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -215,7 +215,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   /**
    * Clear history for all history items before iDays days.
    * 
-   * @param iDays DOCUMENT_ME
+   * @param iDays 
    */
   public void clear(final int iDays) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -314,7 +314,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   /**
    * Return the history item by index.
    * 
-   * @param index DOCUMENT_ME
+   * @param index 
    * 
    * @return the history item
    */
@@ -325,7 +325,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   /**
    * parsing warning.
    *
-   * @param spe DOCUMENT_ME
+   * @param spe 
    * @throws SAXException the SAX exception
    */
   @Override
@@ -337,7 +337,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   /**
    * parsing error.
    *
-   * @param spe DOCUMENT_ME
+   * @param spe 
    * @throws SAXException the SAX exception
    */
   @Override
@@ -349,7 +349,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   /**
    * parsing fatal error.
    *
-   * @param spe DOCUMENT_ME
+   * @param spe 
    * @throws SAXException the SAX exception
    */
   @Override
@@ -377,10 +377,10 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   /**
    * Called when we start an element.
    * 
-   * @param sUri DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param sQName DOCUMENT_ME
-   * @param attributes DOCUMENT_ME
+   * @param sUri 
+   * @param sName 
+   * @param sQName 
+   * @param attributes 
    * 
    * @throws SAXException the SAX exception
    */
@@ -410,9 +410,9 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   /**
    * Called when we reach the end of an element.
    * 
-   * @param sUri DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param sQName DOCUMENT_ME
+   * @param sUri 
+   * @param sName 
+   * @param sQName 
    * 
    * @throws SAXException the SAX exception
    */

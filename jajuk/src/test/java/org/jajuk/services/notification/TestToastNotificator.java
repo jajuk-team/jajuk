@@ -30,7 +30,7 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.services.webradio.WebRadio;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestToastNotificator extends JajukTestCase {
 

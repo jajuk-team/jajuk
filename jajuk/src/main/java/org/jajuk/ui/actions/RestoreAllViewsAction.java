@@ -35,14 +35,13 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class RestoreAllViewsAction extends JajukAction {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   private static boolean fullRestore = false;
 
   /**

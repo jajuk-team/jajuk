@@ -40,11 +40,11 @@ import org.jajuk.util.UtilSystem;
  */
 public final class ActionManager {
 
-  /** The Constant MAP.  DOCUMENT_ME */
+  /** The Constant MAP.   */
   private static final EnumMap<JajukActions, JajukAction> MAP = new EnumMap<JajukActions, JajukAction>(
       JajukActions.class);
 
-  /** The Constant STROKE_LIST.  DOCUMENT_ME */
+  /** The Constant STROKE_LIST.   */
   private static final List<KeyStroke> STROKE_LIST = new ArrayList<KeyStroke>();
 
   /** Self instance. */
@@ -170,7 +170,7 @@ public final class ActionManager {
     installAction(JajukActions.SAVE_AS, new SaveAsAction(), false);
     installAction(JajukActions.SYNC_TREE_TABLE, new SyncTreeTableAction(), false);
     installAction(JajukActions.SHOW_CURRENTLY_PLAYING, new ShowCurrentlyPlayingAction(), false);
-    
+
     // Preferences
     installAction(JajukActions.BAN, new BanCurrentAction(), false);
     installAction(JajukActions.BAN_SELECTION, new BanSelectionAction(), false);
@@ -249,8 +249,8 @@ public final class ActionManager {
   /**
    * Enable or disable the action.
    *
-   * @param action DOCUMENT_ME
-   * @param enable DOCUMENT_ME
+   * @param action 
+   * @param enable 
    */
   public void enable(JajukAction action, boolean enable) {
     action.enable(enable);

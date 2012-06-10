@@ -51,7 +51,7 @@ public class StarsHelper {
   /**
    * Gets the icon.
    * 
-   * @param starsNumber DOCUMENT_ME
+   * @param starsNumber 
    * 
    * @return the icon
    */
@@ -77,7 +77,7 @@ public class StarsHelper {
   /**
    * Gets the stars number.
    * 
-   * @param item DOCUMENT_ME
+   * @param item 
    * 
    * @return Number of stars based on the rate of this item
    */
@@ -106,7 +106,7 @@ public class StarsHelper {
   /**
    * Gets the stars.
    * 
-   * @param item DOCUMENT_ME
+   * @param item 
    * 
    * @return the stars icon or ban icon if banned
    */

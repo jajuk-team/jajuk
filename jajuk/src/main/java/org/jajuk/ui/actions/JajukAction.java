@@ -66,11 +66,11 @@ public abstract class JajukAction extends AbstractAction {
   /**
    * Construct an action with the given name, icon and accelerator keystroke.
    *
-   * @param pName DOCUMENT_ME
+   * @param pName 
    * @param icon The icon to use for visualization of the action.
    * @param stroke The keystroke to use.
    * @param enabled By default enable or disable the action.
-   * @param bHotkey DOCUMENT_ME
+   * @param bHotkey 
    */
   protected JajukAction(String pName, Icon icon, KeyStroke stroke, boolean enabled, boolean bHotkey) {
     // check hotkeys are enabled (false by default)
@@ -347,7 +347,7 @@ public abstract class JajukAction extends AbstractAction {
   /**
    * Perform the action.
    * 
-   * @param evt DOCUMENT_ME
+   * @param evt 
    * 
    * @throws Exception When anything goes wrong when performing the action.
    */
@@ -377,7 +377,7 @@ public abstract class JajukAction extends AbstractAction {
   /**
    * Enable or disable the action.
    * 
-   * @param enable DOCUMENT_ME
+   * @param enable 
    */
   protected void enable(boolean enable) {
     this.bEnable = enable;

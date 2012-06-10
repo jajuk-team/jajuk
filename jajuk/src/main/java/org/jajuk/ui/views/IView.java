@@ -41,7 +41,7 @@ public interface IView extends ComponentListener, Dockable {
   /**
    * Set view ID.
    * 
-   * @param sID DOCUMENT_ME
+   * @param sID 
    */
   void setID(String sID);
 
@@ -67,7 +67,7 @@ public interface IView extends ComponentListener, Dockable {
   /**
    * Sets the is populated.
    * 
-   * @param isDisplayed DOCUMENT_ME
+   * @param isDisplayed 
    */
   void setIsPopulated(boolean isDisplayed);
 
@@ -81,7 +81,7 @@ public interface IView extends ComponentListener, Dockable {
   /**
    * Sets the perspective.
    * 
-   * @param perspective DOCUMENT_ME
+   * @param perspective 
    */
   void setPerspective(IPerspective perspective);
 

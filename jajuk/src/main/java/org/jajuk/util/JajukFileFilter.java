@@ -59,7 +59,6 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
   /** List of Extensions for the current filter. */
   protected String[] extensions = {};
 
-  /** DOCUMENT_ME. */
   protected String extensionsString = "";
 
   /** And or OR applied to multi filters ?. */
@@ -68,7 +67,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
   /**
    * Filter constructor.
    *
-   * @param bAND DOCUMENT_ME
+   * @param bAND 
    * @param filters undefined list of jajuk filter to be applied (logical AND applied
    * between filters)
    */

@@ -58,7 +58,7 @@ public abstract class WindowsHotKeyManager extends AbstractAction {
 
   /**
    * Register j intellitype.
-   * DOCUMENT_ME
+   * 
    */
   public static void registerJIntellitype() {
     jintellitype = JIntellitype.getInstance();
@@ -112,10 +112,10 @@ public abstract class WindowsHotKeyManager extends AbstractAction {
 
   /**
    * Register hot key.
-   * DOCUMENT_ME
    * 
-   * @param stroke DOCUMENT_ME
-   * @param ab DOCUMENT_ME
+   * 
+   * @param stroke 
+   * @param ab 
    */
   public static void registerHotKey(KeyStroke stroke, final JajukAction ab) {
     // under windows, use hotkey that can be used even when window

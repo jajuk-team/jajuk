@@ -50,7 +50,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestPlayerStateMediator extends JajukTestCase {
 
@@ -106,7 +106,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test update stop.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdateStop() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
@@ -115,7 +115,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test update stop queue model.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -142,8 +142,8 @@ public class TestPlayerStateMediator extends JajukTestCase {
   /**
    * Gets the file.
    *
-   * @param i DOCUMENT_ME
-   * @param dir DOCUMENT_ME
+   * @param i 
+   * @param dir 
    * @return the file
    */
   private File getFile(int i, Directory dir) {
@@ -165,7 +165,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test update paused.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdatePaused() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
@@ -174,7 +174,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test update resume.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdateResume() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
@@ -183,7 +183,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test update opening error.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdateOpeningError() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
@@ -192,7 +192,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test update zero.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdateZero() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
@@ -201,7 +201,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test update webradio.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdateWebradio() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
@@ -210,7 +210,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test update webradio notifcator.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdateWebradioNotifcator() {
     // enable Tooltip/Notification
@@ -226,7 +226,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test update file launched.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -248,7 +248,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test update file launched null.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdateFileLaunchedNull() {
     // enable Tooltip/Notification
@@ -263,7 +263,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test update volume.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdateVolume() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
@@ -272,7 +272,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test update mute.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */

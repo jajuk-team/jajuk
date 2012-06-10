@@ -23,7 +23,7 @@ package ext.services.lastfm;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestFullSubmissionData extends JajukTestCase {
 

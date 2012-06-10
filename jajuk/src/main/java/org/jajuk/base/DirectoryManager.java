@@ -157,7 +157,7 @@ public final class DirectoryManager extends ItemManager {
   /**
    * Gets the directory for io.
    *
-   * @param fio DOCUMENT_ME
+   * @param fio 
    * @param device Associated device
    * @return Directory matching the io file
    */
@@ -184,7 +184,7 @@ public final class DirectoryManager extends ItemManager {
   /**
    * Register a root device directory.
    * 
-   * @param device DOCUMENT_ME
+   * @param device 
    * 
    * @return the directory
    */
@@ -195,9 +195,9 @@ public final class DirectoryManager extends ItemManager {
   /**
    * Register a directory.
    * 
-   * @param sName DOCUMENT_ME
-   * @param dParent DOCUMENT_ME
-   * @param device DOCUMENT_ME
+   * @param sName 
+   * @param dParent 
+   * @param device 
    * 
    * @return the directory
    */
@@ -210,10 +210,10 @@ public final class DirectoryManager extends ItemManager {
   /**
    * Register a directory with a known id.
    *
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param dParent DOCUMENT_ME
-   * @param device DOCUMENT_ME
+   * @param sId 
+   * @param sName 
+   * @param dParent 
+   * @param device 
    * @return the directory
    */
   Directory registerDirectory(final String sId, final String sName, final Directory dParent,
@@ -231,7 +231,7 @@ public final class DirectoryManager extends ItemManager {
    * Remove a directory and all subdirectories from main directory repository.
    * Remove reference from parent directories as well.
    * 
-   * @param sId DOCUMENT_ME
+   * @param sId 
    */
   public void removeDirectory(final String sId) {
     lock.writeLock().lock();

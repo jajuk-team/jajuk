@@ -51,7 +51,6 @@ public class AlbumsTableView extends AbstractTableView {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 7576455252866971945L;
 
-  /** DOCUMENT_ME. */
   private static ThumbnailPopup popup = null;
 
   /**

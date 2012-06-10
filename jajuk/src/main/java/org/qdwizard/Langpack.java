@@ -33,11 +33,10 @@ import java.util.Map;
  */
 public class Langpack {
 
-  /** DOCUMENT_ME. */
   private static List<String> defaults = Arrays.asList("Finish", "Cancel", "Previous", "Next");
 
   // Strings content : "Finish", "Cancel", "Previous", "Next"
-  /** DOCUMENT_ME. */
+
   static private Map<Locale, List<String>> strings = new HashMap<Locale, List<String>>(4);
 
   /** static set of strings, can contain non-ISO8859 chars * */
@@ -69,7 +68,7 @@ public class Langpack {
   /**
    * Set the QDwizard locale.
    * 
-   * @param locale DOCUMENT_ME
+   * @param locale 
    */
   public static void setLocale(Locale locale) {
     Langpack.locale = locale;

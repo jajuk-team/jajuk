@@ -45,7 +45,7 @@ public class ProportionDigitalDJ extends DigitalDJ {
   /**
    * The Constructor.
    * 
-   * @param sID DOCUMENT_ME
+   * @param sID 
    */
   public ProportionDigitalDJ(String sID) {
     super(sID);

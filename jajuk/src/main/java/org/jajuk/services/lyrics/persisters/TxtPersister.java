@@ -32,10 +32,8 @@ import org.jajuk.util.log.Log;
  */
 public class TxtPersister implements ILyricsPersister {
 
-  /** DOCUMENT_ME. */
   private java.io.File lyricsFile = null;
 
-  /** DOCUMENT_ME. */
   private Writer lyricsWriter = null;
 
   /** Audio file to set lyrics to. */

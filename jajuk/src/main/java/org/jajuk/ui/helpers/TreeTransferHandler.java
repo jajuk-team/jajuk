@@ -40,13 +40,12 @@ public class TreeTransferHandler extends TransferHandler {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   final JTree jtree;
 
   /**
    * Constructor.
    * 
-   * @param jtree DOCUMENT_ME
+   * @param jtree 
    */
   public TreeTransferHandler(final JTree jtree) {
     this.jtree = jtree;
@@ -55,7 +54,7 @@ public class TreeTransferHandler extends TransferHandler {
   /**
    * Called when dragging.
    * 
-   * @param c DOCUMENT_ME
+   * @param c 
    * 
    * @return the transferable
    */
@@ -81,7 +80,7 @@ public class TreeTransferHandler extends TransferHandler {
   /**
    * return action type.
    * 
-   * @param c DOCUMENT_ME
+   * @param c 
    * 
    * @return the source actions
    */

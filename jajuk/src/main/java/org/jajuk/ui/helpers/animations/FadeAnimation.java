@@ -32,7 +32,6 @@ import org.jajuk.util.log.Log;
  */
 public class FadeAnimation extends AbstractAnimation {
 
-  /** DOCUMENT_ME. */
   private Direction opacity;
 
   /** Number of frames. */
@@ -41,8 +40,8 @@ public class FadeAnimation extends AbstractAnimation {
   /**
    * Instantiates a new fade animation.
    * 
-   * @param window DOCUMENT_ME
-   * @param opacity DOCUMENT_ME
+   * @param window 
+   * @param opacity 
    */
   public FadeAnimation(Window window, Direction opacity) {
     super(window);
@@ -80,14 +79,14 @@ public class FadeAnimation extends AbstractAnimation {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public interface Direction {
 
     /**
      * Gets the opacity.
      * 
-     * @param progress DOCUMENT_ME
+     * @param progress 
      * 
      * @return the opacity
      */
@@ -95,11 +94,10 @@ public class FadeAnimation extends AbstractAnimation {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public enum Directions implements Direction {
 
-    /** DOCUMENT_ME. */
     IN {
       @Override
       public float getOpacity(float progress) {
@@ -107,7 +105,6 @@ public class FadeAnimation extends AbstractAnimation {
       }
     },
 
-    /** DOCUMENT_ME. */
     OUT {
       @Override
       public float getOpacity(float progress) {

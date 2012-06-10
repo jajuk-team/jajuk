@@ -68,49 +68,38 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   JLabel jlLanguage;
 
-  /** DOCUMENT_ME. */
   JComboBox jcbLanguage;
 
   /** Cobra web browser. */
   JajukHtmlPanel browser;
 
-  /** DOCUMENT_ME. */
   JButton jbCopy;
 
-  /** DOCUMENT_ME. */
   JButton jbLaunchInExternalBrowser;
 
-  /** DOCUMENT_ME. */
   JToggleButton jbArtistSearch;
 
-  /** DOCUMENT_ME. */
   JToggleButton jbAlbumSearch;
 
-  /** DOCUMENT_ME. */
   JToggleButton jbTrackSearch;
 
   /** Language index. */
   int indexLang = 0;
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   enum Type {
 
-    /** DOCUMENT_ME. */
     ARTIST,
 
-    /** DOCUMENT_ME. */
     ALBUM,
 
-    /** DOCUMENT_ME. */
     TRACK
   }
 
-  /** DOCUMENT_ME. */
   Type type = Type.ARTIST;
 
   /** Current search. */
@@ -339,7 +328,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
    */
   /**
    * Reset.
-   * DOCUMENT_ME
+   * 
    */
   private void reset() {
     // Reset current search

@@ -44,7 +44,7 @@ import org.jajuk.util.Const;
 import org.w3c.dom.Document;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestDigitalDJ extends JajukTestCase {
 
@@ -168,7 +168,7 @@ public class TestDigitalDJ extends JajukTestCase {
 
   /**
    * Test filter files by max track.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -208,7 +208,7 @@ public class TestDigitalDJ extends JajukTestCase {
   /**
    * Gets the file.
    *
-   * @param i DOCUMENT_ME
+   * @param i 
    * @return the file
    * @throws Exception the exception
    */

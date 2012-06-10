@@ -54,19 +54,15 @@ public class TipOfTheDayWizard extends JFrame {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** The Constant TIPS. DOCUMENT_ME */
+  /** The Constant TIPS.  */
   private static final String[] TIPS = Messages.getAll("TipOfTheDay");
 
-  /** DOCUMENT_ME. */
   private final JCheckBox cbShow;
 
-  /** DOCUMENT_ME. */
   private final JTextArea tipArea;
 
-  /** DOCUMENT_ME. */
   private final JLabel lCounter;
 
-  /** DOCUMENT_ME. */
   private int currentIndex = 0;
 
   /**

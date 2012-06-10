@@ -36,17 +36,16 @@ import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestMPlayerPlayerImpl extends JajukTestCase {
 
-  /** The Constant JAVA_PROCESS.  DOCUMENT_ME */
+  /** The Constant JAVA_PROCESS.   */
   private static final String JAVA_PROCESS = "java";
 
-  /** The Constant MAIN_CLASS.  DOCUMENT_ME */
+  /** The Constant MAIN_CLASS.   */
   private static final String MAIN_CLASS = DummyMPlayerImpl.class.getName();
 
-  /** DOCUMENT_ME. */
   java.io.File scriptFile;
 
   /** Property which is used to find the current installation location of java. */
@@ -54,7 +53,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
 
   /**
    * Find java executable.
-   * DOCUMENT_ME
+   * 
    *
    * @return the string
    */
@@ -302,7 +301,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
 
   /**
    * Test play environment variables.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -317,7 +316,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
 
   /**
    * Test play environment variables null.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -333,7 +332,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
 
   /**
    * Test play position.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */

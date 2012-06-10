@@ -60,20 +60,17 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class CDDBWizard extends JajukJDialog implements ActionListener {
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   private SteppedComboBox jcbAlbum;
 
-  /** DOCUMENT_ME. */
   private JajukTable jtable;
 
-  /** DOCUMENT_ME. */
   private CDDBTableModel model;
 
   /** OK/Cancel panel. */
@@ -85,19 +82,16 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   /** Freedb Items. */
   private Freedb fdb;
 
-  /** DOCUMENT_ME. */
   private FreedbQueryResult[] foundAlbums;
 
-  /** DOCUMENT_ME. */
   private FreedbReadResult fdbReader;
 
-  /** DOCUMENT_ME. */
   private List<String> jcbFoundAlbums;
 
   /**
    * CDDB wizard.
    * 
-   * @param tracks DOCUMENT_ME
+   * @param tracks 
    */
   public CDDBWizard(final List<Track> tracks) {
     super();
@@ -166,7 +160,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   }
 
   /**
-   * Populate model. DOCUMENT_ME
+   * Populate model. 
    * 
    * @return the cDDB table model
    */
@@ -197,7 +191,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   }
 
   /**
-   * Inits the ui. DOCUMENT_ME
+   * Inits the ui. 
    */
   public void initUI() {
     okc = new OKCancelPanel(CDDBWizard.this, Messages.getString("Apply"),
@@ -238,7 +232,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   /**
    * Perform the actual freedb query.
    * 
-   * @param cddbtracks DOCUMENT_ME
+   * @param cddbtracks 
    * 
    * @return number of results (0 if no result). -1 if a technical problem
    * occurred.
@@ -278,7 +272,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   }
 
   /**
-   * Retag files. DOCUMENT_ME
+   * Retag files. 
    */
   public void retagFiles() {
     int[] aIdxToTag = jtable.getSelectedRows();
@@ -322,8 +316,8 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   /**
    * Retag internal.
    * 
-   * @param iRow DOCUMENT_ME
-   * @param trackin DOCUMENT_ME
+   * @param iRow 
+   * @param trackin 
    * 
    * @return the track
    * 

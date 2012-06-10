@@ -44,13 +44,12 @@ public class JajukPredicates {
    */
   public static class AgePredicate implements Predicate {
 
-    /** DOCUMENT_ME. */
     private int iAge = 0;
 
     /**
      * Instantiates a new age predicate.
      * 
-     * @param iAge DOCUMENT_ME
+     * @param iAge 
      */
     public AgePredicate(int iAge) {
       this.iAge = iAge;
@@ -170,13 +169,12 @@ public class JajukPredicates {
    */
   public static class AmbiencePredicate implements Predicate {
 
-    /** DOCUMENT_ME. */
     private final Ambience ambience;
 
     /**
      * Instantiates a new ambience predicate.
      * 
-     * @param ambience DOCUMENT_ME
+     * @param ambience 
      */
     public AmbiencePredicate(Ambience ambience) {
       this.ambience = ambience;

@@ -34,17 +34,17 @@ import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestNetworkUtils extends JajukTestCase {
 
-  /** The Constant PROXY_PORT.  DOCUMENT_ME */
+  /** The Constant PROXY_PORT.   */
   private static final int PROXY_PORT = 0; // auto-choose
 
-  /** The Constant URL.  DOCUMENT_ME */
+  /** The Constant URL.   */
   private static final String URL = "http://www.google.com/";
 
-  /** The Constant FTP_URL.  DOCUMENT_ME */
+  /** The Constant FTP_URL.   */
   private static final String FTP_URL = "ftp://www.google.com/";
 
   /*
@@ -80,7 +80,7 @@ public class TestNetworkUtils extends JajukTestCase {
 
   /**
    * Test get connection string proxy invalid url.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -116,12 +116,11 @@ public class TestNetworkUtils extends JajukTestCase {
     connection.disconnect();
   }
 
-  /** DOCUMENT_ME. */
   boolean bStop = false;
 
   /**
    * Test get connection url proxy with proxy.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -181,7 +180,7 @@ public class TestNetworkUtils extends JajukTestCase {
 
   /**
    * Test read urlurl connection string disabled.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -233,7 +232,7 @@ public class TestNetworkUtils extends JajukTestCase {
 
   /**
    * Test read post url disabled.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -263,7 +262,7 @@ public class TestNetworkUtils extends JajukTestCase {
 
   /**
    * Test get image disabled.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -291,7 +290,7 @@ public class TestNetworkUtils extends JajukTestCase {
   // helper method to emma-coverage of the unused constructor
   /**
    * Test private constructor.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */

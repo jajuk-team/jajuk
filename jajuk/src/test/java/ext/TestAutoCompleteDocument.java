@@ -34,7 +34,7 @@ import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
 import org.jdesktop.swingx.autocomplete.TextComponentAdaptor;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestAutoCompleteDocument extends JajukTestCase {
 
@@ -69,7 +69,7 @@ public class TestAutoCompleteDocument extends JajukTestCase {
 
   /**
    * Test auto complete document abstract auto complete adaptor boolean object to string converter selected.
-   * DOCUMENT_ME
+   * 
    */
   public void testAutoCompleteDocumentAbstractAutoCompleteAdaptorBooleanObjectToStringConverterSelected() {
     AbstractAutoCompleteAdaptor adaptor = new ComboBoxAdaptor(new JComboBox(new Object[] {
@@ -130,7 +130,7 @@ public class TestAutoCompleteDocument extends JajukTestCase {
 
   /**
    * Test insert string int string attribute set.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -145,7 +145,7 @@ public class TestAutoCompleteDocument extends JajukTestCase {
 
   /**
    * Test prefer exact match over currently selected.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */

@@ -33,13 +33,10 @@ public class JajukJSplitPane extends JSplitPane {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -7358047597849102849L;
 
-  /** DOCUMENT_ME. */
   protected boolean isPainted = false;
 
-  /** DOCUMENT_ME. */
   protected boolean hasProportionalLocation = false;
 
-  /** DOCUMENT_ME. */
   protected double proportionalLocation = -1;
 
   /* (non-Javadoc)
@@ -72,7 +69,7 @@ public class JajukJSplitPane extends JSplitPane {
   /**
    * Instantiates a new jajuk j split pane.
    * 
-   * @param orientation DOCUMENT_ME
+   * @param orientation 
    */
   public JajukJSplitPane(int orientation) {
     super(orientation);

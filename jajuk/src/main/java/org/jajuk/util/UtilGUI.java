@@ -104,17 +104,17 @@ import org.jvnet.substance.skin.SubstanceBusinessLookAndFeel;
 public final class UtilGUI {
 
   /* different types of Cursors that are available */
-  /** The Constant WAIT_CURSOR. DOCUMENT_ME */
+  /** The Constant WAIT_CURSOR.  */
   public static final Cursor WAIT_CURSOR = new Cursor(Cursor.WAIT_CURSOR);
 
-  /** The Constant LINK_CURSOR. DOCUMENT_ME */
+  /** The Constant LINK_CURSOR.  */
   public static final Cursor LINK_CURSOR = new Cursor(Cursor.HAND_CURSOR);
 
-  /** The Constant DEFAULT_CURSOR. DOCUMENT_ME */
+  /** The Constant DEFAULT_CURSOR.  */
   public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
 
   // Current cursor that is displayed
-  /** DOCUMENT_ME. */
+
   private static Cursor currentCursor = DEFAULT_CURSOR;
 
   /** Substance theme *. */
@@ -126,7 +126,7 @@ public final class UtilGUI {
   /**
    * Return whether the given highlighter is the alternateColorHighlighter.
    *
-   * @param other DOCUMENT_ME
+   * @param other 
    *
    * @return whether the given highlighter is the alternateColorHighlighter
    */
@@ -170,7 +170,7 @@ public final class UtilGUI {
   /**
    * Display a given image in a frame (for debuging purpose).
    *
-   * @param ii DOCUMENT_ME
+   * @param ii 
    */
   public static void displayImage(final ImageIcon ii) {
     final JFrame jf = new JFrame();
@@ -182,8 +182,8 @@ public final class UtilGUI {
   /**
    * Write down a memory image to a file.
    *
-   * @param src DOCUMENT_ME
-   * @param dest DOCUMENT_ME
+   * @param src 
+   * @param dest 
    */
   public static void extractImage(final Image src, final File dest) {
     final BufferedImage bi = UtilGUI.toBufferedImage(src);
@@ -216,7 +216,7 @@ public final class UtilGUI {
   /**
    * Gets the centred panel.
    *
-   * @param jc DOCUMENT_ME
+   * @param jc 
    *
    * @return an horizontaly centred panel
    */
@@ -227,7 +227,7 @@ public final class UtilGUI {
   /**
    * Gets the centred panel.
    *
-   * @param jc DOCUMENT_ME
+   * @param jc 
    * @param iOrientation : vertical or horizontal orientation, use BoxLayout.X_AXIS or
    * BoxLayout.Y_AXIS
    *
@@ -264,7 +264,7 @@ public final class UtilGUI {
   /**
    * Get required image with specified url.
    *
-   * @param url DOCUMENT_ME
+   * @param url 
    *
    * @return the image
    */
@@ -313,7 +313,7 @@ public final class UtilGUI {
    * http://java.sun.com/developer/onlineTraining/new2java/supplements/
    * 2005/July05.html#1 Used to correctly display long messages
    *
-   * @param maxCharactersPerLineCount DOCUMENT_ME
+   * @param maxCharactersPerLineCount 
    *
    * @return the narrow option pane
    */
@@ -342,8 +342,8 @@ public final class UtilGUI {
    * Resize an image.
    *
    * @param img image to resize
-   * @param iNewWidth DOCUMENT_ME
-   * @param iNewHeight DOCUMENT_ME
+   * @param iNewWidth 
+   * @param iNewHeight 
    *
    * @return resized image
    */
@@ -360,8 +360,8 @@ public final class UtilGUI {
   /**
    * Gets the scaled image.
    *
-   * @param img DOCUMENT_ME
-   * @param iScale DOCUMENT_ME
+   * @param img 
+   * @param iScale 
    *
    * @return a scaled image
    */
@@ -385,7 +385,7 @@ public final class UtilGUI {
   /**
    * Setup Substance look and feel.
    *
-   * @param pTheme DOCUMENT_ME
+   * @param pTheme 
    */
   public static void setupSubstanceLookAndFeel(final String pTheme) {
     // Check the theme is known, if not take the default theme
@@ -446,7 +446,7 @@ public final class UtilGUI {
   /**
    * Display given container at given position.
    *
-   * @param window DOCUMENT_ME
+   * @param window 
    * @param iFromTop max number of pixels from top
    * @param iFromLeft max number of pixels from left
    */
@@ -475,7 +475,7 @@ public final class UtilGUI {
   }
 
   /**
-   * To buffered image. DOCUMENT_ME
+   * To buffered image. 
    *
    * @param image the input image
    *
@@ -489,8 +489,8 @@ public final class UtilGUI {
    * Create a buffered image without forced alpha channel.
    *
    * @param image the input image
-   * @param targetWidth DOCUMENT_ME
-   * @param targetHeight DOCUMENT_ME
+   * @param targetWidth 
+   * @param targetHeight 
    *
    * @return the buffered image
    */
@@ -506,8 +506,8 @@ public final class UtilGUI {
    * </p>
    *
    * @param image the input image
-   * @param targetWidth DOCUMENT_ME
-   * @param targetHeight DOCUMENT_ME
+   * @param targetWidth 
+   * @param targetHeight 
    * @param forcedAlpha Force using an alpha channel for target image
    *
    * @return buffered image from an image
@@ -577,7 +577,7 @@ public final class UtilGUI {
   /**
    * Get3d image.
    *
-   * @param img DOCUMENT_ME
+   * @param img 
    *
    * @return the 3d image
    */
@@ -637,7 +637,7 @@ public final class UtilGUI {
    * This method returns true if the specified image has transparent pixels
    * Found at http://www.exampledepot.com/egs/java.awt.image/HasAlpha.html
    *
-   * @param image DOCUMENT_ME
+   * @param image 
    *
    * @return true if the specified image has transparent pixels
    */
@@ -687,7 +687,7 @@ public final class UtilGUI {
    * SwingUtilities.updateComponentTreeUI, but ensures that the update happens
    * on the components of a JToolbar before the JToolbar itself.
    *
-   * @param c DOCUMENT_ME
+   * @param c 
    */
   public static void updateComponentTreeUI(final Component c) {
     UtilGUI.updateComponentTreeUI0(c);
@@ -697,9 +697,9 @@ public final class UtilGUI {
   }
 
   /**
-   * Update component tree u i0. DOCUMENT_ME
+   * Update component tree u i0. 
    *
-   * @param c DOCUMENT_ME
+   * @param c 
    */
   private static void updateComponentTreeUI0(final Component c) {
 
@@ -776,8 +776,8 @@ public final class UtilGUI {
   /**
    * Checks if is over.
    *
-   * @param location DOCUMENT_ME
-   * @param dimension DOCUMENT_ME
+   * @param location 
+   * @param dimension 
    *
    * @return whether the current mouse cursor if above a given component
    */
@@ -813,7 +813,7 @@ public final class UtilGUI {
   /**
    * Display a dialog with given url picture.
    *
-   * @param url DOCUMENT_ME
+   * @param url 
    *
    * @throws MalformedURLException the malformed url exception
    */
@@ -833,7 +833,7 @@ public final class UtilGUI {
   /**
    * configures gui for repeat single enable/disable.
    *
-   * @param enable DOCUMENT_ME
+   * @param enable 
    */
   public static void setRepeatSingleGui(boolean enable) {
     // always disable repeat all
@@ -849,7 +849,7 @@ public final class UtilGUI {
   /**
    * configures gui for repeat all enable/disable.
    *
-   * @param enable DOCUMENT_ME
+   * @param enable 
    */
   public static void setRepeatAllGui(boolean enable) {
     // always disable repeat single
@@ -867,8 +867,8 @@ public final class UtilGUI {
   /**
    * Registers the ESCAPE key on the Panel so that it closes the Dialog.
    *
-   * @param window DOCUMENT_ME
-   * @param pane DOCUMENT_ME
+   * @param window 
+   * @param pane 
    */
   public static void setEscapeKeyboardAction(final Window window, JComponent pane) {
     // Add keystroke to close window when pressing escape
@@ -895,7 +895,7 @@ public final class UtilGUI {
    * it to the fastCall() one.
    * </p>
    *
-   * @param displayable DOCUMENT_ME
+   * @param displayable 
    */
   public static void populate(final TwoStepsDisplayable displayable) {
     SwingWorker<Object, Void> sw = new SwingWorker<Object, Void>() {
@@ -923,7 +923,7 @@ public final class UtilGUI {
   /**
    * Center a given window to the center of the screen.
    *
-   * @param window DOCUMENT_ME
+   * @param window 
    */
   public static void centerWindow(Window window) {
     Toolkit tk = Toolkit.getDefaultToolkit();

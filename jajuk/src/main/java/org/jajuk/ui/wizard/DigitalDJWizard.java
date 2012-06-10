@@ -136,16 +136,12 @@ public class DigitalDJWizard extends Wizard {
     /** Ambience DJ code. */
     private static final String DJ_TYPE_AMBIENCE = "2";
 
-    /** DOCUMENT_ME. */
     ButtonGroup bgTypes;
 
-    /** DOCUMENT_ME. */
     JRadioButton jrbTransitions;
 
-    /** DOCUMENT_ME. */
     JRadioButton jrbProp;
 
-    /** DOCUMENT_ME. */
     JRadioButton jrbAmbiance;
 
     /**
@@ -215,13 +211,10 @@ public class DigitalDJWizard extends Wizard {
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
-    /** DOCUMENT_ME. */
     JComponent[][] widgets;
 
-    /** DOCUMENT_ME. */
     ButtonGroup bgDJS;
 
-    /** DOCUMENT_ME. */
     List<DigitalDJ> djs;
 
     /**
@@ -296,13 +289,10 @@ public class DigitalDJWizard extends Wizard {
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
-    /** DOCUMENT_ME. */
     JComponent[][] widgets;
 
-    /** DOCUMENT_ME. */
     ButtonGroup bgDJS;
 
-    /** DOCUMENT_ME. */
     List<DigitalDJ> djs;
 
     /**
@@ -399,16 +389,12 @@ public class DigitalDJWizard extends Wizard {
     /** DELETE code. */
     public static final String ACTION_DELETE = "2";
 
-    /** DOCUMENT_ME. */
     ButtonGroup bgActions;
 
-    /** DOCUMENT_ME. */
     JRadioButton jrbNew;
 
-    /** DOCUMENT_ME. */
     JRadioButton jrbChange;
 
-    /** DOCUMENT_ME. */
     JRadioButton jrbDelete;
 
     /**
@@ -479,40 +465,30 @@ public class DigitalDJWizard extends Wizard {
   public static class GeneralOptionsPanel extends Screen implements ActionListener, CaretListener,
       ChangeListener {
 
-    /** The Constant NO_MAX_TRACKS.  DOCUMENT_ME */
+    /** The Constant NO_MAX_TRACKS.   */
     private static final String NO_MAX_TRACKS = "  ";
 
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
-    /** DOCUMENT_ME. */
     JLabel jlName;
 
-    /** DOCUMENT_ME. */
     JTextField jtfName;
 
-    /** DOCUMENT_ME. */
     JLabel jlRatingLevel;
 
-    /** DOCUMENT_ME. */
     JSlider jsRatingLevel;
 
-    /** DOCUMENT_ME. */
     JLabel jlFadeDuration;
 
-    /** DOCUMENT_ME. */
     JSlider jsFadeDuration;
 
-    /** DOCUMENT_ME. */
     JCheckBox jcbMaxTracks;
 
-    /** DOCUMENT_ME. */
     JSlider jsMaxTracks;
 
-    /** DOCUMENT_ME. */
     JLabel jnMaxTracks;
 
-    /** DOCUMENT_ME. */
     JCheckBox jcbUnicity;
 
     /* (non-Javadoc)
@@ -1397,8 +1373,8 @@ public class DigitalDJWizard extends Wizard {
   /**
    * Gets the widget index.
    *
-   * @param widgets DOCUMENT_ME
-   * @param widget DOCUMENT_ME
+   * @param widgets 
+   * @param widget 
    * @return index of a given widget row in the widget table
    */
   private static int getWidgetIndex(JComponent[][] widgets, JComponent widget) {

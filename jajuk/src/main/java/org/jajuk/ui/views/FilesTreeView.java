@@ -107,64 +107,44 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
   /** Directories selection. */
   List<Directory> alDirs = new ArrayList<Directory>(10);
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiDirRefresh;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiDirDesynchro;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiDirResynchro;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiDirCreatePlaylist;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiDirRefactor;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiDirCopyURL;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiOpenExplorer;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiDevMount;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiDevUnmount;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiDevRefresh;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiDevSynchronize;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiDevTest;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiDevOrganize;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiDevConfiguration;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiDevDelete;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiPlaylistFileCopy;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiPlaylistFileCut;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiPlaylistFilePaste;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiPlaylistCopyURL;
 
-  /** DOCUMENT_ME. */
   JMenuItem jmiPlaylistPrepareParty;
 
   /*
@@ -344,7 +324,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
         DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
         top.add(nodeDevice);
       }
-      
+
       // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a
       // small memory leak that is caused here...
       if (jtree != null && jtree.getModel() != null) {
@@ -609,7 +589,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private class FilesMouseAdapter extends JajukMouseAdapter {
 
@@ -879,7 +859,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private class FilesTreeSelectionListener implements TreeSelectionListener {
 
@@ -966,9 +946,10 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
       // Enable Copy url for a single item only
       jmiCopyURL.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof File);
       jmiDirCopyURL.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
-      jmiOpenExplorer.setEnabled(alSelected.size() == 1
-          && (alSelected.get(0) instanceof Directory || alSelected.get(0) instanceof File 
-              || alSelected.get(0) instanceof Playlist ));
+      jmiOpenExplorer
+          .setEnabled(alSelected.size() == 1
+              && (alSelected.get(0) instanceof Directory || alSelected.get(0) instanceof File || alSelected
+                  .get(0) instanceof Playlist));
       jmiPlaylistCopyURL
           .setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Playlist);
       jmiPlaylistPrepareParty.setEnabled(alSelected.size() == 1
@@ -979,7 +960,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private class FilesTreeExpansionListener implements TreeExpansionListener {
 

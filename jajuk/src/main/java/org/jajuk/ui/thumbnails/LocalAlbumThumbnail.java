@@ -76,16 +76,12 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
   /** Associated album. */
   private Album album;
 
-  /** DOCUMENT_ME. */
   private JLabel jlArtist;
 
-  /** DOCUMENT_ME. */
   private JLabel jlAlbum;
 
-  /** DOCUMENT_ME. */
   private final boolean bShowFullText;
 
-  /** DOCUMENT_ME. */
   private PreferencesJMenu pjmFiles;
 
   /**

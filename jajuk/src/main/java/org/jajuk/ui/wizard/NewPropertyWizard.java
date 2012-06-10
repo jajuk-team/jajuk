@@ -55,35 +55,30 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   private final JTextField jtfName;
 
-  /** DOCUMENT_ME. */
   private final JComboBox jcbClass;
 
-  /** DOCUMENT_ME. */
   private final JTextField jtfDefault;
 
-  /** DOCUMENT_ME. */
   private final JCheckBox jcbDefault;
 
-  /** DOCUMENT_ME. */
   private final JXDatePicker jdpDefault;
 
   // Types
-  /** The Constant STRING.  DOCUMENT_ME */
+  /** The Constant STRING.   */
   private static final int STRING = 0;
 
-  /** The Constant LONG.  DOCUMENT_ME */
+  /** The Constant LONG.   */
   private static final int LONG = 1;
 
-  /** The Constant DOUBLE.  DOCUMENT_ME */
+  /** The Constant DOUBLE.   */
   private static final int DOUBLE = 2;
 
-  /** The Constant BOOLEAN.  DOCUMENT_ME */
+  /** The Constant BOOLEAN.   */
   private static final int BOOLEAN = 3;
 
-  /** The Constant DATE.  DOCUMENT_ME */
+  /** The Constant DATE.   */
   private static final int DATE = 4;
 
   /**

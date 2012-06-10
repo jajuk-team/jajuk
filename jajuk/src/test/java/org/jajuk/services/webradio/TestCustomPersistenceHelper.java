@@ -42,7 +42,7 @@ public class TestCustomPersistenceHelper extends JajukTestCase {
   public void setUp() throws Exception {
     super.setUp();
     man.cleanup();
-    writeSampleFile(); 
+    writeSampleFile();
   }
 
   private void writeSampleFile() throws Exception {
@@ -108,7 +108,7 @@ public class TestCustomPersistenceHelper extends JajukTestCase {
     // Check radios presence
     assertTrue(man.getWebRadioByName("Bayern 1") != null);
   }
-  
+
   public void testVoidCustomRadiosCommit() throws Exception {
     // Write void collection 
     CustomRadiosPersistenceHelper.commit();

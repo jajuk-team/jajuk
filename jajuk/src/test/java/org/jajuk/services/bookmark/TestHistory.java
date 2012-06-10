@@ -37,7 +37,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestHistory extends JajukTestCase {
 
@@ -135,7 +135,7 @@ public class TestHistory extends JajukTestCase {
 
   /**
    * Test get history max size.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -321,7 +321,7 @@ public class TestHistory extends JajukTestCase {
 
   /**
    * Test clear int keep.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -341,7 +341,7 @@ public class TestHistory extends JajukTestCase {
 
   /**
    * Test clear int removed.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -395,9 +395,9 @@ public class TestHistory extends JajukTestCase {
 
   /**
    * Adds the history item.
-   * DOCUMENT_ME
+   * 
    *
-   * @param nID DOCUMENT_ME
+   * @param nID 
    * @param timestamp The timestamp to use for the HistoryItem
    * @throws NumberFormatException the number format exception
    * @throws Exception the exception
@@ -422,7 +422,7 @@ public class TestHistory extends JajukTestCase {
 
   /**
    * Test load corrupt file.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -596,7 +596,7 @@ public class TestHistory extends JajukTestCase {
 
   /**
    * Test update device refresh.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -625,7 +625,7 @@ public class TestHistory extends JajukTestCase {
 
   /**
    * Test update clear history.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -655,7 +655,7 @@ public class TestHistory extends JajukTestCase {
 
   /**
    * Test update language changed.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdateLanguageChanged() {
     History.getInstance().update(new JajukEvent(JajukEvents.LANGUAGE_CHANGED, null));
@@ -663,7 +663,7 @@ public class TestHistory extends JajukTestCase {
 
   /**
    * Test update file name changed.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -726,7 +726,7 @@ public class TestHistory extends JajukTestCase {
 
   /**
    * Test update unhandled event.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdateUnhandledEvent() {
     History.getInstance().update(new JajukEvent(JajukEvents.BANNED, null));
@@ -743,7 +743,7 @@ public class TestHistory extends JajukTestCase {
 
   /**
    * Test constructor already launched.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */

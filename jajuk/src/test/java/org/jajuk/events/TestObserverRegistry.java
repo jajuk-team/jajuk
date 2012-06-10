@@ -28,17 +28,16 @@ import org.jajuk.JajukTestCase;
 import org.jajuk.ThreadTestHelper;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestObserverRegistry extends JajukTestCase {
 
-  /** The Constant NUMBER_OF_THREADS.  DOCUMENT_ME */
+  /** The Constant NUMBER_OF_THREADS.   */
   private static final int NUMBER_OF_THREADS = 15; // 15 is the limit on
   // concurrent events
-  /** The Constant NUMBER_OF_TESTS.  DOCUMENT_ME */
+  /** The Constant NUMBER_OF_TESTS.   */
   private static final int NUMBER_OF_TESTS = 1000;
 
-  /** DOCUMENT_ME. */
   private AtomicInteger called = new AtomicInteger(0);
 
   /**
@@ -76,7 +75,7 @@ public class TestObserverRegistry extends JajukTestCase {
 
   /**
    * Test below zero.
-   * DOCUMENT_ME
+   * 
    */
   public void testBelowZero() {
     ObserverRegistry registry = new ObserverRegistry();
@@ -98,7 +97,7 @@ public class TestObserverRegistry extends JajukTestCase {
 
   /**
    * Test exception.
-   * DOCUMENT_ME
+   * 
    */
   public void testException() {
     ObserverRegistry registry = new ObserverRegistry();
@@ -121,7 +120,7 @@ public class TestObserverRegistry extends JajukTestCase {
 
   /**
    * Test multiple threads.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -157,7 +156,7 @@ public class TestObserverRegistry extends JajukTestCase {
 
   /**
    * Test multiple threads wait.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -198,7 +197,7 @@ public class TestObserverRegistry extends JajukTestCase {
 
   /**
    * Test multiple threads multiple observers.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -238,7 +237,7 @@ public class TestObserverRegistry extends JajukTestCase {
 
   /**
    * Test high priority observer.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -277,26 +276,22 @@ public class TestObserverRegistry extends JajukTestCase {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   static class LocalObserver implements Observer {
 
-    /** DOCUMENT_ME. */
     boolean invoked = false;
 
-    /** DOCUMENT_ME. */
     int wait = 0;
 
-    /** DOCUMENT_ME. */
     boolean exception = false;
 
-    /** DOCUMENT_ME. */
     AtomicInteger called;
 
     /**
      * Instantiates a new local observer.
      *
-     * @param called DOCUMENT_ME
+     * @param called 
      */
     public LocalObserver(AtomicInteger called) {
       super();
@@ -306,8 +301,8 @@ public class TestObserverRegistry extends JajukTestCase {
     /**
      * Instantiates a new local observer.
      *
-     * @param wait DOCUMENT_ME
-     * @param called DOCUMENT_ME
+     * @param wait 
+     * @param called 
      */
     public LocalObserver(int wait, AtomicInteger called) {
       super();
@@ -318,8 +313,8 @@ public class TestObserverRegistry extends JajukTestCase {
     /**
      * Instantiates a new local observer.
      *
-     * @param exception DOCUMENT_ME
-     * @param called DOCUMENT_ME
+     * @param exception 
+     * @param called 
      */
     public LocalObserver(boolean exception, AtomicInteger called) {
       super();
@@ -365,18 +360,17 @@ public class TestObserverRegistry extends JajukTestCase {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private class LocalHighPriorityObserver extends LocalObserver implements HighPriorityObserver {
 
-    /** DOCUMENT_ME. */
     LocalObserver lowprioobserver; // to check if other was not yet called
 
     /**
      * Instantiates a new local high priority observer.
      *
-     * @param lowprioobserver DOCUMENT_ME
-     * @param called DOCUMENT_ME
+     * @param lowprioobserver 
+     * @param called 
      */
     public LocalHighPriorityObserver(LocalObserver lowprioobserver, AtomicInteger called) {
       super(called);

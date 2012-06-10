@@ -42,7 +42,7 @@ public class JajukToast extends JajukInformationDialog {
   /**
    * Instantiates a new jajuk toast.
    * 
-   * @param text DOCUMENT_ME
+   * @param text 
    * @param owner parent owner, see  #1582 ([Linux] Void entry in task bar for information dialog)
    */
   public JajukToast(String text, Window owner) {

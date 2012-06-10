@@ -38,8 +38,8 @@ public class JajukRuntimeException extends RuntimeException {
   /**
    * The Constructor.
    * 
-   * @param message DOCUMENT_ME
-   * @param cause DOCUMENT_ME
+   * @param message 
+   * @param cause 
    */
   public JajukRuntimeException(String message, Throwable cause) {
     super(message, cause);
@@ -48,7 +48,7 @@ public class JajukRuntimeException extends RuntimeException {
   /**
    * The Constructor.
    * 
-   * @param message DOCUMENT_ME
+   * @param message 
    */
   public JajukRuntimeException(String message) {
     super(message);
@@ -57,7 +57,7 @@ public class JajukRuntimeException extends RuntimeException {
   /**
    * The Constructor.
    * 
-   * @param cause DOCUMENT_ME
+   * @param cause 
    */
   public JajukRuntimeException(Throwable cause) {
     super(cause);

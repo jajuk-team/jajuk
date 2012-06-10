@@ -45,8 +45,8 @@ public interface IPlayerImpl {
   /**
    * Play a web radio stream.
    * 
-   * @param radio DOCUMENT_ME
-   * @param fVolume DOCUMENT_ME
+   * @param radio 
+   * @param fVolume 
    * 
    * @throws Exception the exception
    */
@@ -75,12 +75,12 @@ public interface IPlayerImpl {
    * @return elapsed time (ms) for this player
    */
   long getElapsedTimeMillis();
-  
-   /**
-   * Gets the actually played time (including rewinds and forward, pause not included)
-   * 
-   * @return actually played time (ms) for this player
-   */
+
+  /**
+  * Gets the actually played time (including rewinds and forward, pause not included)
+  * 
+  * @return actually played time (ms) for this player
+  */
   long getActuallyPlayedTimeMillis();
 
   /**
@@ -100,7 +100,7 @@ public interface IPlayerImpl {
   /**
    * Seek to a given position in %. ex : 0.2 for 20%
    * 
-   * @param fPosition DOCUMENT_ME
+   * @param fPosition 
    */
   void seek(float fPosition);
 

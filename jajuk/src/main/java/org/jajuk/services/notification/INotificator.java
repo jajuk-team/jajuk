@@ -51,7 +51,7 @@ public interface INotificator {
    * 
    * This method should only be called if @link isAvailable() returns true!
    * 
-   * @param webradio DOCUMENT_ME
+   * @param webradio 
    */
   void notify(WebRadio webradio);
 
@@ -62,14 +62,14 @@ public interface INotificator {
    * 
    * This method should only be called if @link isAvailable() returns true!
    * 
-   * @param file DOCUMENT_ME
+   * @param file 
    */
   void notify(File file);
 
   /**
    * Ask the notificator to provide some arbitrary status information.
    *
-   * @param title DOCUMENT_ME
+   * @param title 
    * @param status The string to print.
    */
   void notify(String title, String status);

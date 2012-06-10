@@ -55,7 +55,7 @@ public final class StartupAsyncService {
   /**
    * Asynchronous tasks executed at startup at the same time (for perf).
    * 
-   * @param bCollectionLoadRecover DOCUMENT_ME
+   * @param bCollectionLoadRecover 
    */
   public static void startupAsyncAfterCollectionLoad(final boolean bCollectionLoadRecover) {
     Thread startup = new Thread("Startup Async After Collection Load Thread") {
@@ -104,7 +104,7 @@ public final class StartupAsyncService {
 
           // Wait few secs to avoid GUI startup perturbations
           Thread.sleep(5000);
-         
+
           // Switch to sorted mode, must be done before starting auto-refresh
           // thread !
           ItemManager.switchAllManagersToOrderState();

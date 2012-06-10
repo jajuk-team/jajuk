@@ -287,28 +287,25 @@ public final class AutoCompleteDecorator {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   static class NonStrictBackspaceAction extends TextAction {
 
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = -5508607690462561673L;
 
-    /** DOCUMENT_ME. */
     private Action backspace;
 
-    /** DOCUMENT_ME. */
     private Action selectionBackward;
 
-    /** DOCUMENT_ME. */
     private AbstractAutoCompleteAdaptor adaptor;
 
     /**
      * Instantiates a new non strict backspace action.
      * 
-     * @param backspace DOCUMENT_ME
-     * @param selectionBackward DOCUMENT_ME
-     * @param adaptor DOCUMENT_ME
+     * @param backspace 
+     * @param selectionBackward 
+     * @param adaptor 
      */
     public NonStrictBackspaceAction(Action backspace, Action selectionBackward,
         AbstractAutoCompleteAdaptor adaptor) {

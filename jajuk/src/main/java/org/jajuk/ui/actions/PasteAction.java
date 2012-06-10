@@ -53,7 +53,7 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class PasteAction extends JajukAction {
 
@@ -357,7 +357,7 @@ public class PasteAction extends JajukAction {
   /**
    * Display currently copied file to information panel.
    * 
-   * @param file DOCUMENT_ME
+   * @param file 
    */
   private void showMessage(java.io.File file) {
     String message = Messages.getString("Device.45");

@@ -96,14 +96,14 @@ import org.jdesktop.swingx.VerticalLayout;
  */
 public class PropertiesDialog extends JajukJDialog implements ActionListener {
 
-  /** The Constant PROPERTIES_WIZARD_6. DOCUMENT_ME */
+  /** The Constant PROPERTIES_WIZARD_6.  */
   private static final String PROPERTIES_WIZARD_6 = "PropertiesWizard.6";
 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
   /* Main panel */
- 
+
   private JPanel jpMain;
 
   /** OK/Cancel panel. */
@@ -242,7 +242,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
   }
 
   /**
-   * Display. DOCUMENT_ME
+   * Display. 
    */
   private void display() {
     SwingUtilities.invokeLater(new Runnable() {
@@ -310,13 +310,13 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
   /**
    * Tells whether a link button should be shown for a given property.
    *
-   * @param meta DOCUMENT_ME
+   * @param meta 
    *
    * @return true, if checks if is linkable
    */
   public boolean isLinkable(PropertyMetaInformation meta) {
     // No links for webradios
-    if (alItems.get(0) instanceof WebRadio){
+    if (alItems.get(0) instanceof WebRadio) {
       return false;
     }
     String sKey = meta.getName();
@@ -336,16 +336,16 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
    */
   class PropertiesPanel extends JPanel implements ActionListener {
 
-    /** The Constant IDX_NAME.  DOCUMENT_ME */
+    /** The Constant IDX_NAME.   */
     private static final int IDX_NAME = 0;
 
-    /** The Constant IDX_VALUE.  DOCUMENT_ME */
+    /** The Constant IDX_VALUE.   */
     private static final int IDX_VALUE = 1;
 
-    /** The Constant IDX_COPY.  DOCUMENT_ME */
+    /** The Constant IDX_COPY.   */
     private static final int IDX_COPY = 2;
 
-    /** The Constant IDX_LINK.  DOCUMENT_ME */
+    /** The Constant IDX_LINK.   */
     private static final int IDX_LINK = 3;
 
     /** Generated serialVersionUID. */
@@ -745,7 +745,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
     /**
      * Checks if is copyable.
      *
-     * @param jComponent DOCUMENT_ME
+     * @param jComponent 
      * @return true, if is copyable
      */
     private boolean isCopyable(JComponent jComponent) {
@@ -816,9 +816,9 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
 
     /**
      * Extract value.
-     * DOCUMENT_ME
+     * 
      *
-     * @param jComponent DOCUMENT_ME
+     * @param jComponent 
      * @return the string
      */
     private String extractValue(JComponent jComponent) {
@@ -1027,7 +1027,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
     /**
      * Gets the widget index.
      *
-     * @param widget DOCUMENT_ME
+     * @param widget 
      *
      * @return index of a given widget in the widget table
      */

@@ -46,7 +46,7 @@ import org.jajuk.util.log.Log;
  */
 public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListener {
 
-  /** The Constant AUDIO_LENGTH_BYTES.  DOCUMENT_ME */
+  /** The Constant AUDIO_LENGTH_BYTES.   */
   private static final String AUDIO_LENGTH_BYTES = "audio.length.bytes";
 
   /** Current player. */
@@ -285,12 +285,13 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   /**
    * Opened listener implementation.
    * 
-   * @param arg0 DOCUMENT_ME
-   * @param arg1 DOCUMENT_ME
+   * @param arg0 
+   * @param arg1 
    */
   @Override
   @SuppressWarnings("unchecked")
-  public void opened(Object arg0, @SuppressWarnings("rawtypes") Map arg1) {
+  public void opened(Object arg0, @SuppressWarnings("rawtypes")
+  Map arg1) {
     this.mPlayingData = arg1;
     this.lDuration = UtilFeatures.getTimeLengthEstimation(mPlayingData);
     lastPlayTimeUpdate = System.currentTimeMillis();
@@ -299,13 +300,15 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   /**
    * Progress listener implementation. Called several times by sec
    * 
-   * @param iBytesread DOCUMENT_ME
-   * @param lMicroseconds DOCUMENT_ME
-   * @param bPcmdata DOCUMENT_ME
-   * @param mProperties DOCUMENT_ME
+   * @param iBytesread 
+   * @param lMicroseconds 
+   * @param bPcmdata 
+   * @param mProperties 
    */
   @Override
-  public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata, @SuppressWarnings("rawtypes") Map mProperties) {
+  public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata,
+      @SuppressWarnings("rawtypes")
+      Map mProperties) {
     if ((System.currentTimeMillis() - lDateLastUpdate) > PROGRESS_STEP) {
       lDateLastUpdate = System.currentTimeMillis();
       this.iFadeDuration = 1000 * Conf.getInt(Const.CONF_FADE_DURATION);
@@ -397,7 +400,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   /**
    * State updated implementation.
    * 
-   * @param bpe DOCUMENT_ME
+   * @param bpe 
    */
   @Override
   public void stateUpdated(BasicPlayerEvent bpe) {
@@ -425,7 +428,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   /**
    * Set controler implementation.
    * 
-   * @param arg0 DOCUMENT_ME
+   * @param arg0 
    */
   @Override
   public void setController(BasicController arg0) {
@@ -444,7 +447,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
 
   /**
    * Scrobble.
-   * DOCUMENT_ME
+   * 
    * 
    * @return the int
    */

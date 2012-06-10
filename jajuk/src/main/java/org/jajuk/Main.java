@@ -251,7 +251,7 @@ public final class Main {
    */
   /**
    * Sets the system properties.
-   * DOCUMENT_ME
+   * 
    */
   public static void setSystemProperties() {
     if (UtilSystem.isUnderOSX()) {

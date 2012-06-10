@@ -26,7 +26,7 @@ import org.jajuk.JajukTestCase;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestDebugLogAction extends JajukTestCase {
 

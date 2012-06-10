@@ -35,7 +35,7 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class ShuffleModeAction extends JajukAction {
 
@@ -54,7 +54,7 @@ public class ShuffleModeAction extends JajukAction {
   /**
    * Invoked when an action occurs.
    * 
-   * @param evt DOCUMENT_ME
+   * @param evt 
    */
   @Override
   public void perform(ActionEvent evt) {

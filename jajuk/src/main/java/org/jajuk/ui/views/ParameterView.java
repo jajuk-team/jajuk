@@ -103,7 +103,7 @@ public class ParameterView extends ViewAdapter {
   /** GUI updater. */
   private ParameterViewGUIHelper updateHelper = new ParameterViewGUIHelper(this);
 
-  /** The Constant NOTIFICATOR_PREFIX. DOCUMENT_ME */
+  /** The Constant NOTIFICATOR_PREFIX.  */
   static final String NOTIFICATOR_PREFIX = "Notificator.";
 
   JTabbedPane jtpMain;
@@ -580,7 +580,8 @@ public class ParameterView extends ViewAdapter {
       @Override
       public void actionPerformed(ActionEvent e) {
         Conf.resetDontShowAgain();
-        InformationJPanel.getInstance().setMessage(Messages.getString("Success"), MessageType.INFORMATIVE);
+        InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
+            MessageType.INFORMATIVE);
       }
     });
 

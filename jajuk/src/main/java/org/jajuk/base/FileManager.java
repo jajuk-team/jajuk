@@ -116,12 +116,12 @@ public final class FileManager extends ItemManager {
   /**
    * Register an File with a known id.
    *
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param directory DOCUMENT_ME
-   * @param track DOCUMENT_ME
-   * @param lSize DOCUMENT_ME
-   * @param lQuality DOCUMENT_ME
+   * @param sId 
+   * @param sName 
+   * @param directory 
+   * @param track 
+   * @param lSize 
+   * @param lQuality 
    *
    * @return the file
    */
@@ -155,11 +155,11 @@ public final class FileManager extends ItemManager {
   /**
    * Register an File without known id.
    *
-   * @param sName DOCUMENT_ME
-   * @param directory DOCUMENT_ME
-   * @param track DOCUMENT_ME
-   * @param lSize DOCUMENT_ME
-   * @param lQuality DOCUMENT_ME
+   * @param sName 
+   * @param directory 
+   * @param track 
+   * @param lSize 
+   * @param lQuality 
    *
    * @return the file
    */
@@ -171,8 +171,8 @@ public final class FileManager extends ItemManager {
   /**
    * Get file hashcode (ID).
    *
-   * @param sName DOCUMENT_ME
-   * @param dir DOCUMENT_ME
+   * @param sName 
+   * @param dir 
    *
    * @return file ID
    */
@@ -194,8 +194,8 @@ public final class FileManager extends ItemManager {
   /**
    * Change a file name.
    *
-   * @param fileOld DOCUMENT_ME
-   * @param sNewName DOCUMENT_ME
+   * @param fileOld 
+   * @param sNewName 
    *
    * @return new file
    *
@@ -337,7 +337,7 @@ public final class FileManager extends ItemManager {
   /**
    * Remove a file reference.
    *
-   * @param file DOCUMENT_ME
+   * @param file 
    */
   public void removeFile(File file) {
     lock.writeLock().lock();
@@ -495,7 +495,7 @@ public final class FileManager extends ItemManager {
    * number of returned items is limited to NB_TRACKS_ON_ACTION for performance
    * reasons.
    *
-   * @param bHideUnmounted DOCUMENT_ME
+   * @param bHideUnmounted 
    *
    * @return The entire accessible novelties collection
    */
@@ -552,7 +552,7 @@ public final class FileManager extends ItemManager {
   /**
    * Convenient method used to return shuffled files by album.
    *
-   * @param alEligibleFiles DOCUMENT_ME
+   * @param alEligibleFiles 
    *
    * @return Shuffled tracks by album
    */
@@ -769,7 +769,7 @@ public final class FileManager extends ItemManager {
   /**
    * Return whether the given file is the very first file from collection.
    *
-   * @param file DOCUMENT_ME
+   * @param file 
    *
    * @return true, if checks if is very first file
    */

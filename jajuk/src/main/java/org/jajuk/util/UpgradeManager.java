@@ -80,7 +80,7 @@ public final class UpgradeManager implements Const {
    * 
    * Jajuk version scheme is XX.YY.ZZ[RCn] (two digits possible for each part of the release)
    * 
-   * @param pStringRelease DOCUMENT_ME
+   * @param pStringRelease 
    * 
    * @return Jajuk number version = integer format of the padded release
    */
@@ -155,7 +155,7 @@ public final class UpgradeManager implements Const {
 
   /**
    * Sets the first session.
-   * DOCUMENT_ME
+   * 
    */
   public static void setFirstSession() {
     bFirstSession = true;
@@ -348,7 +348,7 @@ public final class UpgradeManager implements Const {
   /**
    * For Jajuk < 1.3: delete thumb for given size
    * 
-   * @param size DOCUMENT_ME
+   * @param size 
    */
   private static void upgradeNoCoverDelete(String size) {
     File fThumbs = SessionService.getConfFileByPath(Const.FILE_THUMBS + "/" + size + "/"
@@ -679,8 +679,8 @@ public final class UpgradeManager implements Const {
   /**
    * Return whether two releases switch is a major upgrade or not.
    * 
-   * @param currentRelease DOCUMENT_ME
-   * @param comparedRelease DOCUMENT_ME
+   * @param currentRelease 
+   * @param comparedRelease 
    * 
    * @return whether two releases switch is a major upgrade or not
    */
@@ -693,8 +693,8 @@ public final class UpgradeManager implements Const {
   /**
    * Return whether first release is newer than second.
    * 
-   * @param currentRelease DOCUMENT_ME
-   * @param comparedRelease DOCUMENT_ME
+   * @param currentRelease 
+   * @param comparedRelease 
    * 
    * @return whether first release is newer than second
    */
@@ -707,8 +707,8 @@ public final class UpgradeManager implements Const {
   /**
   * Return whether first release is older than second.
   * 
-  * @param currentRelease DOCUMENT_ME
-  * @param comparedRelease DOCUMENT_ME
+  * @param currentRelease 
+  * @param comparedRelease 
   * 
   * @return whether first release is newer than second
   */

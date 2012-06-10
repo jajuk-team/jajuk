@@ -37,8 +37,8 @@ public class JajukEvent {
   /**
    * Event constructor.
    *
-   * @param subject DOCUMENT_ME
-   * @param pDetails DOCUMENT_ME
+   * @param subject 
+   * @param pDetails 
    */
   public JajukEvent(JajukEvents subject, Properties pDetails) {
     this.subject = subject;
@@ -50,7 +50,7 @@ public class JajukEvent {
   /**
    * Event constructor.
    * 
-   * @param subject DOCUMENT_ME
+   * @param subject 
    */
   public JajukEvent(JajukEvents subject) {
     this(subject, null);
@@ -92,7 +92,7 @@ public class JajukEvent {
   /**
    * event equals method.
    * 
-   * @param obj DOCUMENT_ME
+   * @param obj 
    * 
    * @return true, if equals
    */

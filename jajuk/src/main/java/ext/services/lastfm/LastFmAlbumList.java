@@ -43,8 +43,8 @@ public class LastFmAlbumList implements AlbumListInfo {
   /**
    * Gets the album list.
    * 
-   * @param as DOCUMENT_ME
-   * @param artist DOCUMENT_ME
+   * @param as 
+   * @param artist 
    * 
    * @return the album list
    */

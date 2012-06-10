@@ -31,7 +31,6 @@ package org.qdwizard;
  */
 public class ScreenState {
 
-  /** DOCUMENT_ME. */
   private boolean bCanFinish;
 
   /** Can Go Next. */
@@ -83,7 +82,7 @@ public class ScreenState {
   /**
    * Set whether the finish button should be enabled.
    * 
-   * @param bCanFinish DOCUMENT_ME
+   * @param bCanFinish 
    */
   public void setCanFinish(boolean bCanFinish) {
     this.bCanFinish = bCanFinish;
@@ -101,7 +100,7 @@ public class ScreenState {
   /**
    * Set whether the next button should be enabled.
    * 
-   * @param bCanGoNext DOCUMENT_ME
+   * @param bCanGoNext 
    */
   public void setCanGoNext(boolean bCanGoNext) {
     this.bCanGoNext = bCanGoNext;
@@ -119,7 +118,7 @@ public class ScreenState {
   /**
    * Set whether the previous button should be enabled.
    * 
-   * @param bCanGoPrevious DOCUMENT_ME
+   * @param bCanGoPrevious 
    */
   public void setCanGoPrevious(boolean bCanGoPrevious) {
     this.bCanGoPrevious = bCanGoPrevious;
@@ -137,7 +136,7 @@ public class ScreenState {
   /**
    * Set whether the cancel (or System menu close) button should be enabled.
    * 
-   * @param bCanCancel DOCUMENT_ME
+   * @param bCanCancel 
    */
   public void setCanCancel(boolean bCanCancel) {
     this.bCanCancel = bCanCancel;

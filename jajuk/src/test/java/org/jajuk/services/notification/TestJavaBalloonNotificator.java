@@ -31,7 +31,7 @@ import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.windows.JajukSystray;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestJavaBalloonNotificator extends JajukTestCase {
 

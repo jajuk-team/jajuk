@@ -33,7 +33,6 @@ import org.jajuk.events.Observer;
  */
 public final class QueueController implements Observer {
 
-  /** DOCUMENT_ME. */
   private static QueueController self = new QueueController();
 
   // Register this item, do not do this in the constructor as the instance is not yet available

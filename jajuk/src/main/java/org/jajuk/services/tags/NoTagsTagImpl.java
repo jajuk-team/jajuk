@@ -46,7 +46,6 @@ public class NoTagsTagImpl implements ITagImpl {
   /** Current file data. */
   private Map<String, Object> mapInfo;
 
-  /** DOCUMENT_ME. */
   private static List<String> tagFieldKeyArrayList = new ArrayList<String>();
 
   /*

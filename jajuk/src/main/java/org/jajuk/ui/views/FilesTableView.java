@@ -40,10 +40,8 @@ public class FilesTableView extends AbstractTableView {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
-  /** DOCUMENT_ME. */
   private JMenuItem jmiFilePlayDirectory;
-  
-  /** DOCUMENT_ME. */
+
   private JMenuItem jmiOpenExplorer;
 
   /**

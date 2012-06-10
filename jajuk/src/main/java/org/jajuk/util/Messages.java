@@ -81,7 +81,7 @@ public class Messages extends DefaultHandler {
   /**
    * Contains.
    * 
-   * @param sKey DOCUMENT_ME
+   * @param sKey 
    * 
    * @return whether given key exists
    */
@@ -92,7 +92,7 @@ public class Messages extends DefaultHandler {
   /**
    * Gets the string.
    * 
-   * @param key DOCUMENT_ME
+   * @param key 
    * 
    * @return the string
    */
@@ -198,7 +198,7 @@ public class Messages extends DefaultHandler {
   /**
    * Return Flag icon for given description.
    * 
-   * @param sDesc DOCUMENT_ME
+   * @param sDesc 
    * 
    * @return the icon
    */
@@ -212,7 +212,7 @@ public class Messages extends DefaultHandler {
    * ***************************************************************************
    * Parse a fake properties file inside an XML file as CDATA.
    *
-   * @param locale DOCUMENT_ME
+   * @param locale 
    * @return a properties with all entries
    * @throws SAXException the SAX exception
    * @throws IOException Signals that an I/O exception has occurred.
@@ -306,7 +306,7 @@ public class Messages extends DefaultHandler {
    * </p>.
    *
    * @param sText : dialog text
-   * @param optionsType DOCUMENT_ME
+   * @param optionsType 
    * @param iType message type like JOptionPane.WARNING
    * @return the choice
    */
@@ -341,7 +341,7 @@ public class Messages extends DefaultHandler {
   /**
    * Gets the title for type.
    * 
-   * @param iType DOCUMENT_ME
+   * @param iType 
    * 
    * @return String for given JOptionPane message type
    */
@@ -360,7 +360,7 @@ public class Messages extends DefaultHandler {
   /**
    * Show a dialog with specified warning message.
    * 
-   * @param sMessage DOCUMENT_ME
+   * @param sMessage 
    */
   public static void showWarningMessage(final String sMessage) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -375,7 +375,7 @@ public class Messages extends DefaultHandler {
   /**
    * Show a dialog with specified warning message + a "not show again" button.
    * 
-   * @param sMessage DOCUMENT_ME
+   * @param sMessage 
    * @param sProperty : property name
    */
   public static void showHideableWarningMessage(final String sMessage, final String sProperty) {
@@ -398,8 +398,8 @@ public class Messages extends DefaultHandler {
   /**
    * Show a dialog with specified error message and an icon.
    * 
-   * @param sMessage DOCUMENT_ME
-   * @param icon DOCUMENT_ME
+   * @param sMessage 
+   * @param icon 
    */
   public static void showInfoMessage(final String sMessage, final Icon icon) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -414,8 +414,8 @@ public class Messages extends DefaultHandler {
   /**
    * Show a dialog with specified error message and infosup.
    * 
-   * @param code DOCUMENT_ME
-   * @param sInfoSup DOCUMENT_ME
+   * @param code 
+   * @param sInfoSup 
    */
   public static void showErrorMessage(final int code, final String sInfoSup) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -429,7 +429,7 @@ public class Messages extends DefaultHandler {
   /**
    * Show a dialog with specified error message.
    * 
-   * @param code DOCUMENT_ME
+   * @param code 
    */
   public static void showErrorMessage(final int code) {
     showErrorMessage(code, null);
@@ -438,9 +438,9 @@ public class Messages extends DefaultHandler {
   /**
    * Show a dialog with specified error message and infosup and details.
    *
-   * @param code DOCUMENT_ME
-   * @param sInfoSup DOCUMENT_ME
-   * @param sDetails DOCUMENT_ME
+   * @param code 
+   * @param sInfoSup 
+   * @param sDetails 
    */
   public static void showDetailedErrorMessage(final int code, final String sInfoSup,
       final String sDetails) {
@@ -456,8 +456,8 @@ public class Messages extends DefaultHandler {
   /**
    * Show a dialog with specified error message with infos up.
    * 
-   * @param sMessage DOCUMENT_ME
-   * @param sInfoSup DOCUMENT_ME
+   * @param sMessage 
+   * @param sInfoSup 
    */
   public static void showInfoMessage(final String sMessage, final String sInfoSup) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -473,7 +473,7 @@ public class Messages extends DefaultHandler {
   /**
    * Show a dialog with specified error message.
    * 
-   * @param sMessage DOCUMENT_ME
+   * @param sMessage 
    */
   public static void showInfoMessage(final String sMessage) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -499,7 +499,7 @@ public class Messages extends DefaultHandler {
   /**
    * Gets localized and human property name for given key.
    * 
-   * @param sKey DOCUMENT_ME
+   * @param sKey 
    * 
    * @return the human property name or the property itself if not translated
    */

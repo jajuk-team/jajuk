@@ -39,8 +39,8 @@ public interface ILyricsPersister {
    * Commit lyrics for a given filename <br>
    * Returns true if commited correctly, false otherwise.
    *
-   * @param artist DOCUMENT_ME
-   * @param title DOCUMENT_ME
+   * @param artist 
+   * @param title 
    * @param lyrics lyrics as a string
    * @return true if OK, false otherwise
    */

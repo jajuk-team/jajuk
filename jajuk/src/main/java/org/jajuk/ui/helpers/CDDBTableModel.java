@@ -33,7 +33,7 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class CDDBTableModel extends JajukTableModel {
 
@@ -82,8 +82,8 @@ public class CDDBTableModel extends JajukTableModel {
   /**
    * Fill model with tracks.
    * 
-   * @param currentTracks DOCUMENT_ME
-   * @param fdbReader DOCUMENT_ME
+   * @param currentTracks 
+   * @param fdbReader 
    */
   public void populateModel(List<CDDBTrack> currentTracks, FreedbReadResult fdbReader) {
     iRowNum = currentTracks.size();
