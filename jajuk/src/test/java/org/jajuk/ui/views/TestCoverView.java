@@ -217,19 +217,7 @@ public class TestCoverView extends JajukTestCase {
     assertNotNull(eventSubjectSet);
     assertTrue(eventSubjectSet.size() > 0);
   }
-
-  /**
-   * Test method for {@link org.jajuk.ui.views.CoverView#searching(boolean)}.
-   */
-
-  public final void testSearching() {
-    CoverView view = new CoverView();
-    view.initUI();
-
-    view.searching(true);
-    view.searching(false);
-  }
-
+ 
   /**
    * Test method for {@link org.jajuk.ui.views.CoverView#getCurrentImage()}.
    *
