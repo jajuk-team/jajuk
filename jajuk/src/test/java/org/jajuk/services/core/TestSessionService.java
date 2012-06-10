@@ -85,15 +85,6 @@ public class TestSessionService extends JajukTestCase {
   /**
    * Test method for.
    *
-   * {@link org.jajuk.services.core.SessionService#setTestMode(boolean)}.
-   */
-  public void testSetTestMode() {
-    SessionService.setTestMode(true);
-  }
-
-  /**
-   * Test method for.
-   *
    * {@link org.jajuk.services.core.SessionService#setWorkspace(java.lang.String)}
    * .
    */
@@ -199,9 +190,6 @@ public class TestSessionService extends JajukTestCase {
     SessionService.handleCommandline(new String[] { "-test", "-ide", "-something" });
     SessionService.discoverWorkspace();
 
-    // without test mode...
-    SessionService.setTestMode(false);
-    SessionService.discoverWorkspace();
   }
 
   /**
@@ -233,12 +221,7 @@ public class TestSessionService extends JajukTestCase {
    */
   public void testGetConfFileByPath() {
     SessionService.getConfFileByPath("/tmp");
-
-    SessionService.setTestMode(false);
     SessionService.getConfFileByPath("/tmp");
-    SessionService.setTestMode(true);
-    SessionService.getConfFileByPath("/tmp");
-
   }
 
   /**

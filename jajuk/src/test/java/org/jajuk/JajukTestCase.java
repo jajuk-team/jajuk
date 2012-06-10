@@ -45,6 +45,9 @@ public abstract class JajukTestCase extends TestCase {
    */
   @Override
   protected void setUp() throws Exception {
+    // Make sure to use a test workspace
+    SessionService.setTestMode(true);
+    
     // let's clean up before we begin any test
     JUnitHelpers.waitForAllWorkToFinishAndCleanup();
 
@@ -59,8 +62,6 @@ public abstract class JajukTestCase extends TestCase {
     StartupCollectionService.registerItemManagers();
     Collection.clearCollection();
     WebRadioManager.getInstance().clear();
-    // Make sure to use a test workspace
-    SessionService.setTestMode(true);
     // And use a specific workspace
     File basedir = new File(ConstTest.BASE_DIRECTORY_PATH);
     File workspace = new File(ConstTest.SAMPLE_WORKSPACE_PATH);
