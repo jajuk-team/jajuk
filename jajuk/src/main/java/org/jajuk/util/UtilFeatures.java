@@ -379,15 +379,19 @@ public final class UtilFeatures {
           .getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED);
       Properties webradioLaunchedEvent = ObservationManager
           .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED);
-      WebRadio updatedWebRadio = (WebRadio) webradioInfoUpdatedEvent.get(Const.DETAIL_CONTENT);
-      WebRadio radio = (WebRadio) webradioLaunchedEvent.get(Const.DETAIL_CONTENT);
-      //If web radio has an updated event then use that event else use the default event from the web radio launch      
-      if (radio.getName().equals(updatedWebRadio.getName())) {
-        observer.update(new JajukEvent(JajukEvents.WEBRADIO_INFO_UPDATED, ObservationManager
-            .getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED)));
-      } else {
-        observer.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, ObservationManager
-            .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
+      if (webradioInfoUpdatedEvent != null) {
+        // We consider that if WEBRADIO_INFO_UPDATED event is not null, WEBRADIO_LAUNCHED can't be null.
+        WebRadio updatedWebRadio = (WebRadio) webradioInfoUpdatedEvent.get(Const.DETAIL_CONTENT);
+        WebRadio radio = (WebRadio) webradioLaunchedEvent.get(Const.DETAIL_CONTENT);
+        //If web radio has an updated event then use that event else use the default event from the web radio launch      
+        if (radio.getName().equals(updatedWebRadio.getName())) {
+          observer.update(new JajukEvent(JajukEvents.WEBRADIO_INFO_UPDATED,
+              webradioInfoUpdatedEvent));
+        } else {
+          observer.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, webradioLaunchedEvent));
+        }
+      } else if (webradioLaunchedEvent != null) {
+        observer.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, webradioLaunchedEvent));
       }
     } else if (!QueueModel.isStopped()) {
       observer.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, ObservationManager
