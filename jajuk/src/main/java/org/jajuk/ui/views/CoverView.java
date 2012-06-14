@@ -62,6 +62,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Directory;
+import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -71,6 +72,7 @@ import org.jajuk.services.covers.Cover.CoverType;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.services.tags.Tag;
+import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.widgets.InformationJPanel;
@@ -777,7 +779,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
    * 
    * @return an accurate google search query for a file
    */
-  public String createQuery(final org.jajuk.base.File file) {
+  public String createQuery(final Item item) {
     String sQuery = "";
     int iAccuracy = 0;
     try {
@@ -787,53 +789,62 @@ public class CoverView extends ViewAdapter implements ActionListener {
       // can append if accuracy never set
       Log.debug("Unknown accuracy");
     }
-    final Track track = file.getTrack();
-    final Artist artist = track.getArtist();
-    final Album album = track.getAlbum();
-    switch (iAccuracy) {
-    case 0: // low, default
-      if (!artist.seemsUnknown()) {
-        sQuery += artist.getName() + " ";
+
+    if (item instanceof org.jajuk.base.File) {
+      org.jajuk.base.File file = (org.jajuk.base.File) item;
+      Track track = file.getTrack();
+      Artist artist = track.getArtist();
+      Album album = track.getAlbum();
+      switch (iAccuracy) {
+      case 0: // low, default
+        if (!artist.seemsUnknown()) {
+          sQuery += artist.getName() + " ";
+        }
+        if (!album.seemsUnknown()) {
+          sQuery += album.getName() + " ";
+        }
+        break;
+      case 1: // medium
+        if (!artist.seemsUnknown()) {
+          sQuery += '\"' + artist.getName() + QUOTE_BLANK;
+          // put quotes around it
+        }
+        if (!album.seemsUnknown()) {
+          sQuery += '\"' + album.getName() + QUOTE_BLANK;
+        }
+        break;
+      case 2: // high
+        if (!artist.seemsUnknown()) {
+          sQuery += PLUS_QUOTE + artist.getName() + QUOTE_BLANK;
+          // put "" around it
+        }
+        if (!album.seemsUnknown()) {
+          sQuery += PLUS_QUOTE + album.getName() + QUOTE_BLANK;
+        }
+        break;
+      case 3: // by artist
+        if (!artist.seemsUnknown()) {
+          sQuery += artist.getName() + " ";
+        }
+        break;
+      case 4: // by album
+        if (!album.seemsUnknown()) {
+          sQuery += album.getName() + " ";
+        }
+        break;
+      case 5: // by track name
+        sQuery += track.getName();
+        break;
+      default:
+        break;
       }
-      if (!album.seemsUnknown()) {
-        sQuery += album.getName() + " ";
-      }
-      break;
-    case 1: // medium
-      if (!artist.seemsUnknown()) {
-        sQuery += '\"' + artist.getName() + QUOTE_BLANK;
-        // put quotes around it
-      }
-      if (!album.seemsUnknown()) {
-        sQuery += '\"' + album.getName() + QUOTE_BLANK;
-      }
-      break;
-    case 2: // high
-      if (!artist.seemsUnknown()) {
-        sQuery += PLUS_QUOTE + artist.getName() + QUOTE_BLANK;
-        // put "" around it
-      }
-      if (!album.seemsUnknown()) {
-        sQuery += PLUS_QUOTE + album.getName() + QUOTE_BLANK;
-      }
-      break;
-    case 3: // by artist
-      if (!artist.seemsUnknown()) {
-        sQuery += artist.getName() + " ";
-      }
-      break;
-    case 4: // by album
-      if (!album.seemsUnknown()) {
-        sQuery += album.getName() + " ";
-      }
-      break;
-    case 5: // by track name
-      sQuery += track.getName();
-      break;
-    default:
-      break;
+    } else if (item instanceof WebRadio) {
+      WebRadio radio = (WebRadio) item;
+      sQuery = "+\\" + radio.getName() + "\" " + radio.getDescription() + " " + radio.getKeywords()
+          + " " + radio.getGenre();
     }
     return sQuery;
+
   }
 
   /**
@@ -906,7 +917,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
       @Override
       public void done() {
         displayCover(index);
-
       }
     };
     sw.execute();
@@ -1273,11 +1283,11 @@ public class CoverView extends ViewAdapter implements ActionListener {
       // not
       // (we don't change cover if playing another track of the same album
       // except if option shuffle cover is set)
-      if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
+      if (JajukEvents.FILE_LAUNCHED.equals(subject)
+          || JajukEvents.WEBRADIO_LAUNCHED.equals(subject)) {
         updateFileLaunched(event, iLocalEventID);
-      } else if (JajukEvents.ZERO.equals(subject) || JajukEvents.WEBRADIO_LAUNCHED.equals(subject)
-          || JajukEvents.PLAYER_STOP.equals(subject)) {
-        updateStopOrWebRadioLaunched();
+      } else if (JajukEvents.ZERO.equals(subject) || JajukEvents.PLAYER_STOP.equals(subject)) {
+        updateStop();
       } else if (JajukEvents.COVER_NEED_REFRESH.equals(subject)) {
         refreshCovers(iLocalEventID, true);
       }
@@ -1288,10 +1298,10 @@ public class CoverView extends ViewAdapter implements ActionListener {
   }
 
   /**
-   * Update stop or web radio launched.
+   * Update stop.
    * 
    */
-  private void updateStopOrWebRadioLaunched() {
+  private void updateStop() {
     // Ignore this event if a reference file has been set
     if (fileReference != null) {
       return;
