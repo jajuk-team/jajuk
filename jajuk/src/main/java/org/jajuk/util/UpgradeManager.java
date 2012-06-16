@@ -126,9 +126,8 @@ public final class UpgradeManager implements Const {
           && (sStoredRelease == null || // null for jajuk releases < 1.2
           !sStoredRelease.equals(Const.JAJUK_VERSION))) {
         bUpgraded = true;
-        // Now check if this is an old migration.
         if (!SessionService.isTestMode()) {
-          if (isMajorMigration(Const.JAJUK_VERSION, sStoredRelease)) { //NOSONAR
+          if (isMajorMigration(Const.JAJUK_VERSION, sStoredRelease)) {
             majorMigration = true;
           }
         }
@@ -713,6 +712,11 @@ public final class UpgradeManager implements Const {
   * @return whether first release is newer than second
   */
   protected static boolean isOlder(String comparedRelease, String currentRelease) {
+    // Manage dev case
+    if ("VERSION_REPLACED_BY_ANT".equals(comparedRelease)
+        || "VERSION_REPLACED_BY_ANT".equals(currentRelease)) {
+      return false;
+    }
     int iCurrentRelease = getNumberRelease(currentRelease);
     int iComparedRelease = getNumberRelease(comparedRelease);
     return iComparedRelease < iCurrentRelease;
