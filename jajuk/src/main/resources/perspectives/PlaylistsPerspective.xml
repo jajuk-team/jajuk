@@ -8,7 +8,7 @@
 						<Key dockName="org.jajuk.ui.views.FilesTreeView/1" />
 					</Dockable>
 					<Dockable>
-						<Key dockName="org.jajuk.ui.views.WebRadioView/0" />
+						<Key dockName="org.jajuk.ui.views.QueueView/0" />
 					</Dockable>
 				</Split>
 				<Dockable>
