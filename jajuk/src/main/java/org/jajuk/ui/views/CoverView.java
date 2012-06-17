@@ -41,6 +41,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -840,8 +841,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
       }
     } else if (item instanceof WebRadio) {
       WebRadio radio = (WebRadio) item;
-      sQuery = "+\\" + radio.getName() + "\" " + radio.getDescription() + " " + radio.getKeywords()
-          + " " + radio.getGenre();
+      sQuery = "+\"" + radio.getName() + "\" radio logo";
     }
     return sQuery;
 
@@ -967,7 +967,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
   private void prepareDisplay(final int index) throws JajukException {
     final int iLocalEventID = this.iEventID;
     Log.debug("display index: " + index);
-    searching(); // lookup icon
     // find next correct cover
     Cover cover = null;
     ImageIcon icon = null;
@@ -997,26 +996,21 @@ public class CoverView extends ViewAdapter implements ActionListener {
         return;
       }
     } catch (final FileNotFoundException e) {
-      setCursor(UtilGUI.DEFAULT_CURSOR);
       // do not display a stacktrace for FileNotfound as we expect this in cases
       // where the picture is gone on the net
       Log.warn("Cover image not found at URL: "
           + (cover == null ? "<null>" : cover.getURL().toString()));
       return;
     } catch (final UnknownHostException e) {
-      setCursor(UtilGUI.DEFAULT_CURSOR);
-
       // do not display a stacktrace for HostNotFound as we expect this in cases
       // where the whole server is gone on the net
       Log.warn("Cover image not found at URL: "
           + (cover == null ? "<null>" : cover.getURL().toString()));
       return;
     } catch (final IOException e) { // this cover cannot be loaded
-      setCursor(UtilGUI.DEFAULT_CURSOR);
       Log.error(e);
       throw new JajukException(0, e);
     } catch (final InterruptedException e) { // this cover cannot be loaded
-      setCursor(UtilGUI.DEFAULT_CURSOR);
       Log.error(e);
       throw new JajukException(0, e);
     }
@@ -1278,18 +1272,25 @@ public class CoverView extends ViewAdapter implements ActionListener {
     final JajukEvents subject = event.getSubject();
     this.iEventID++;
     final int iLocalEventID = iEventID;
+    searching(); // lookup icon
     try {
       // When receiving this event, check if we should change the cover or
       // not
       // (we don't change cover if playing another track of the same album
       // except if option shuffle cover is set)
-      if (JajukEvents.FILE_LAUNCHED.equals(subject)
-          || JajukEvents.WEBRADIO_LAUNCHED.equals(subject)) {
+      if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
         updateFileLaunched(event, iLocalEventID);
+      } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(subject)) {
+        updateWebradioLaunched(event, iLocalEventID);
       } else if (JajukEvents.ZERO.equals(subject) || JajukEvents.PLAYER_STOP.equals(subject)) {
         updateStop();
       } else if (JajukEvents.COVER_NEED_REFRESH.equals(subject)) {
-        refreshCovers(iLocalEventID, true);
+        if (QueueModel.isPlayingTrack()) {
+          refreshCovers(iLocalEventID, true);
+        } else {
+          refreshCoversWebradio();
+        }
+        displayCurrentCover();
       }
     } catch (final IOException e) {
       Log.error(e);
@@ -1358,9 +1359,32 @@ public class CoverView extends ViewAdapter implements ActionListener {
       }
       // choose a random cover
       index = (int) (Math.random() * alCovers.size() - 1);
-      displayCurrentCover();
     }
+    displayCurrentCover();
     enableCommands(true);
+  }
+
+  /**
+  * Update webradio launched.
+  * 
+  * @param event 
+  * @param iLocalEventID 
+  * 
+  * @throws IOException Signals that an I/O exception has occurred.
+  */
+  private void updateWebradioLaunched(final JajukEvent event, final int iLocalEventID)
+      throws IOException {
+    // Ignore this event if a reference file has been set and if
+    // this event has already been handled
+    if ((fileReference != null) && (dirReference != null)) {
+      return;
+    }
+    refreshCoversWebradio();
+    index = 0;
+    displayCurrentCover();
+
+    // We dealing with webradio, none button available
+    enableCommands(false);
   }
 
   /**
@@ -1503,7 +1527,8 @@ public class CoverView extends ViewAdapter implements ActionListener {
             // there is not enough information in tags
             // for a web search
             List<URL> alUrls;
-            alUrls = DownloadManager.getRemoteCoversList(sQuery);
+            int size = Conf.getInt(CONF_COVERS_SIZE);
+            alUrls = DownloadManager.getRemoteCoversList(sQuery, size);
             CoverView.bOnceConnected = true;
             // user managed once to connect to the web
             if (alUrls.size() > Const.MAX_REMOTE_COVERS) {
@@ -1584,6 +1609,71 @@ public class CoverView extends ViewAdapter implements ActionListener {
       index = alCovers.size() - 1;
       // current index points to the best available cover
     }
-    displayCurrentCover();
+  }
+
+  /**
+     * Covers refreshing effective code for webradio cover event
+     * <p>
+     * Must be called outside the EDT, contains network access
+     * </p>.
+     * 
+     * @param iLocalEventID 
+     * 
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
+  private void refreshCoversWebradio() throws IOException {
+    // Reset this flag
+    bForceCoverReload = false;
+    alCovers.clear();
+    // Then we search for web covers online if max
+    // connection errors number is not reached or if user
+    // already managed to connect.
+    // We also drop the query if user required none internet access
+    if (Conf.getBoolean(Const.CONF_COVERS_AUTO_COVER)
+        && !Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)
+        && (CoverView.bOnceConnected || (CoverView.iErrorCounter < Const.STOP_TO_SEARCH))) {
+      try {
+        Properties webradioLaunchedEvent = ObservationManager
+            .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED);
+        WebRadio radio = (WebRadio) webradioLaunchedEvent.get(Const.DETAIL_CONTENT);
+        final String sQuery = createQuery(radio);
+        Log.debug("Query={{" + sQuery + "}}");
+        if (!sQuery.isEmpty()) {
+          List<URL> alUrls = DownloadManager.getRemoteCoversList(sQuery, 5);
+          //Only keep url containing at least a single word of the radio name
+          List<URL> urlList = new ArrayList<URL>(alUrls);
+          for (URL url : urlList) {
+            String firstWord = new StringTokenizer(radio.getName()).nextToken().toLowerCase();
+            if (url.toString().toLowerCase().indexOf(firstWord) == -1
+                && url.toString().toLowerCase().indexOf("logo") == -1) {
+              alUrls.remove(url);
+            }
+          }
+          // user managed once to connect to the web
+          CoverView.bOnceConnected = true;
+          if (alUrls.size() > 0) {
+            //Only keep the first result
+            final URL url = alUrls.get(0);
+            final Cover cover = new Cover(url, CoverType.REMOTE_COVER);
+            Log.debug("Found Cover: {{" + url.toString() + "}}");
+            alCovers.add(cover);
+          }
+        }
+      } catch (final IOException e) {
+        Log.warn(e.getMessage());
+        // can occur in case of timeout or error during
+        // covers list download
+        CoverView.iErrorCounter++;
+        if (CoverView.iErrorCounter == Const.STOP_TO_SEARCH) {
+          Log.warn("Too many connection fails," + " stop to search for covers online");
+          InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),
+              InformationJPanel.MessageType.WARNING);
+        }
+      } catch (final Exception e) {
+        Log.error(e);
+      }
+    }
+    Log.debug("Cover list: {{" + alCovers + "}}");
+    // We don't consider the SHUFFLE_COVER option for webradios because we need the best precision to make sense.
   }
 }

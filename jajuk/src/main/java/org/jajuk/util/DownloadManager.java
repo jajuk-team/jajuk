@@ -93,6 +93,9 @@ public final class DownloadManager {
     case 4: // large only
       size = "large";
       break;
+    case 5: // large only
+      size = "small|medium|large";
+      break;
     }
     String sSearchUrl = "http://images.google.com/images?q="
         + URLEncoder.encode(search, "ISO-8859-1")
@@ -103,7 +106,7 @@ public final class DownloadManager {
       return alOut;
     }
     // Extract urls
-    Pattern pattern = Pattern.compile("http://[^,<>]*(.jpg|.gif|.png)");
+    Pattern pattern = Pattern.compile("http://[^,<>]*?(.jpg|.jpeg|.gif|.png|.JPG|.JPEG|.GIF|.PNG)");
     // "http://[^,]*(.jpg|.gif|.png).*[0-9]* [xX] [0-9]*.*- [0-9]*");
     Matcher matcher = pattern.matcher(sRes);
     while (matcher.find()) {
