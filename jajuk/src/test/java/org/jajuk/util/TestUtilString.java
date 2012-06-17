@@ -24,9 +24,16 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Random;
 
+import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.ThreadTestHelper;
+import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
+import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
+import org.jajuk.util.error.JajukException;
 
 public class TestUtilString extends JajukTestCase {
   // settings for the micro-benchmarks done for some methods
@@ -40,7 +47,6 @@ public class TestUtilString extends JajukTestCase {
   @Override
   public final void setUp() throws Exception {
     random.setSeed(System.currentTimeMillis());
-
     super.setUp();
   }
 
@@ -57,6 +63,53 @@ public class TestUtilString extends JajukTestCase {
    */
   public void testContainsNonDigitOrLetters() {
     // TODO: implement test
+  }
+
+  public void testCustomTrackCustomPropertyPattern() throws JajukException {
+    try {
+      TrackManager.getInstance().registerProperty(
+          new PropertyMetaInformation("foo", true, false, false, false, false, String.class, ""));
+      File file = JUnitHelpers.getFile();
+      Track track = file.getTrack();
+      track.setProperty("foo", "bar");
+      assertEquals("foo : bar", UtilString.applyPattern(file, "foo : %foo", true, false));
+      track.setProperty("foo", "");
+      assertEquals("foo : ", UtilString.applyPattern(file, "foo : %foo", true, false));
+    } finally {
+      TrackManager.getInstance().removeProperty("foo");
+    }
+  }
+
+  public void testCustomFileCustomPropertyPattern() throws JajukException {
+    try {
+      FileManager.getInstance().registerProperty(
+          new PropertyMetaInformation("foo", true, false, false, false, false, String.class, ""));
+      File file = JUnitHelpers.getFile();
+      file.setProperty("foo", "bar");
+      assertEquals("foo : bar", UtilString.applyPattern(file, "foo : %foo", true, false));
+      file.setProperty("foo", "");
+      assertEquals("foo : ", UtilString.applyPattern(file, "foo : %foo", true, false));
+    } finally {
+      FileManager.getInstance().removeProperty("foo");
+    }
+  }
+
+  // Files and track have the same custom property
+  public void testCustomFileAndTrackCustomPropertyPattern() throws JajukException {
+    try {
+      FileManager.getInstance().registerProperty(
+          new PropertyMetaInformation("foo", true, false, false, false, false, String.class, ""));
+      TrackManager.getInstance().registerProperty(
+          new PropertyMetaInformation("foo", true, false, false, false, false, String.class, ""));
+      File file = JUnitHelpers.getFile();
+      file.setProperty("foo", "bar");
+      Track track = file.getTrack();
+      track.setProperty("foo", "baz");
+      assertEquals("foo : bar", UtilString.applyPattern(file, "foo : %foo", true, false));
+    } finally {
+      FileManager.getInstance().removeProperty("foo");
+      TrackManager.getInstance().removeProperty("foo");
+    }
   }
 
   /**

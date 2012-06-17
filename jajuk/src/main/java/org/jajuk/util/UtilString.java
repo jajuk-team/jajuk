@@ -24,6 +24,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -35,6 +36,7 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
 import org.jajuk.base.GenreManager;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.PropertyMetaInformation;
@@ -307,7 +309,7 @@ public final class UtilString {
    * @param file file to apply pattern to
    * @param sPattern 
    * @param bMandatory are all needed tags mandatory ?
-   * @param normalize 
+   * @param normalize Remove characters non compatible with filenames in fil systems
    *
    * @return computed string
    * make sure the created string can be used as file name on target
@@ -345,7 +347,7 @@ public final class UtilString {
     out = UtilString.applyDiscPattern(file, sPattern, bMandatory, out, track);
 
     // Check Custom Properties
-    out = UtilString.applyCustomPattern(sPattern, normalize, out, track);
+    out = UtilString.applyCustomPattern(file,sPattern, normalize, out, track);
 
     return out;
   }
@@ -359,14 +361,17 @@ public final class UtilString {
    * @param track 
    * @return the string
    */
-  private static String applyCustomPattern(String sPattern, boolean normalize, String out,
-      Track track) {
+  private static String applyCustomPattern(final org.jajuk.base.File file, String sPattern,
+      boolean normalize, String out, Track track) {
     String ret = out;
     String sValue;
-
+    //Merge files and tracks properties. file wins in they both contain a custom property with the same name.
     Map<String, Object> properties = track.getProperties();
-    Iterator<PropertyMetaInformation> it2 = TrackManager.getInstance().getCustomProperties()
-        .iterator();
+    properties.putAll(file.getProperties());
+    Collection<PropertyMetaInformation> customProperties = FileManager.getInstance()
+        .getCustomProperties();
+    customProperties.addAll(TrackManager.getInstance().getCustomProperties());
+    Iterator<PropertyMetaInformation> it2 = customProperties.iterator();
     while (it2.hasNext()) {
       PropertyMetaInformation meta = it2.next();
       if (sPattern.contains("%" + meta.getName())) {
