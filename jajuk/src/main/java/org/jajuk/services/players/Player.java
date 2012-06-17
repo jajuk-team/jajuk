@@ -218,7 +218,8 @@ public final class Player {
    */
   public static void stop(boolean bAll) {
     try {
-      if (Conf.getBoolean(Const.CONF_FADE_OUT) && isPlaying()) {
+      if (Conf.getBoolean(Const.CONF_FADE_OUT) && isPlaying()
+          && !Conf.getBoolean(Const.CONF_BIT_PERFECT)) {
         fadeOut();
       }
       if (playerImpl1 != null && (playerImpl1.getState() != Const.FADING_STATUS || bAll)) {
@@ -369,7 +370,7 @@ public final class Player {
         return;
       }
       if (playerImpl != null) {
-        if (Conf.getBoolean(Const.CONF_FADE_OUT)) {
+        if (Conf.getBoolean(Const.CONF_FADE_OUT) && !Conf.getBoolean(Const.CONF_BIT_PERFECT)) {
           fadeOut();
         }
         playerImpl.pause();
