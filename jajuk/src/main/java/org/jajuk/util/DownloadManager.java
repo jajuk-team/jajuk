@@ -62,22 +62,22 @@ public final class DownloadManager {
   /**
    * Gets the remote covers list.
    * 
-   * @param search the search
-   * @param sizeType image size
+   * @param search 
    * 
    * @return a list of urls
    * 
    * @throws IOException Signals that an I/O exception has occurred.
    */
-  public static List<URL> getRemoteCoversList(String search, int sizeType) throws IOException {
+  public static List<URL> getRemoteCoversList(String search) throws IOException {
     List<URL> alOut = new ArrayList<URL>(20); // URL list
     // check void searches
     if (search == null || search.trim().equals("")) {
       return alOut;
     }
     // Select cover size
+    int i = Conf.getInt(Const.CONF_COVERS_SIZE);
     String size = null;
-    switch (sizeType) {
+    switch (i) {
     case 0: // small only
       size = "small";
       break;
@@ -93,20 +93,17 @@ public final class DownloadManager {
     case 4: // large only
       size = "large";
       break;
-    case 5: // large only
-      size = "small|medium|large";
-      break;
     }
     String sSearchUrl = "http://images.google.com/images?q="
-        + URLEncoder.encode(search, "ISO-8859-1")
-        + "&ie=ISO-8859-1&hl=en&btnG=Google+Search&imgsz=" + size;
+        + URLEncoder.encode(search, "ISO-8859-1") + "&ie=ISO-8859-1&hl=en&btnG=Google+Search"
+        + "&imgsz=" + size;
     Log.debug("Search URL: {{" + sSearchUrl + "}}");
     String sRes = downloadText(new URL(sSearchUrl));
     if (sRes == null || sRes.length() == 0) {
       return alOut;
     }
     // Extract urls
-    Pattern pattern = Pattern.compile("http://[^,<>]*?(.jpg|.jpeg|.gif|.png|.JPG|.JPEG|.GIF|.PNG)");
+    Pattern pattern = Pattern.compile("http://[^,<>]*(.jpg|.gif|.png)");
     // "http://[^,]*(.jpg|.gif|.png).*[0-9]* [xX] [0-9]*.*- [0-9]*");
     Matcher matcher = pattern.matcher(sRes);
     while (matcher.find()) {
