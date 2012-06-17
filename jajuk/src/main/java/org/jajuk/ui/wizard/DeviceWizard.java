@@ -216,8 +216,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
 
     // buttons
     okp = new OKCancelPanel(this);
-    okp.getOKButton().setEnabled(false);
-
+   
     // Add items
     setLayout(new MigLayout("insets 10,gapx 10, gapy 15", "[][grow]"));
     add(jlType);
@@ -269,16 +268,11 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
                 Problem problem = new Problem(Messages.getString("DeviceWizard.55"), Severity.FATAL);
                 problems.add(problem);
               }
-              // Disable the wizard OK button if user selection is not in the
-              // right interval or if previous validators thrown an error
-              // already
-              okp.getOKButton().setEnabled(resu && problems.isEmpty());
               return resu;
             } catch (Exception e) {
               // This happen when the text field is not yet populated (model is
               // void). Note that wrong number format issues are already handled
               // by the previous Validators
-              okp.getOKButton().setEnabled(false);
               return true;
             }
           }
@@ -289,9 +283,6 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
     vg.add(jtfName, new Validator<String>() {
       @Override
       public boolean validate(Problems problems, String compName, String model) {
-        // By default, we disable the OK button, we re-enable it only if the
-        // name is OK
-        okp.getOKButton().setEnabled(false);
         for (Device deviceToCheck : DeviceManager.getInstance().getDevices()) {
           // check for a new device with an existing name
           if (bNew && (jtfName.getText().equalsIgnoreCase(deviceToCheck.getName()))) {
@@ -299,7 +290,6 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
             return false;
           }
         }
-        okp.getOKButton().setEnabled(problems.isEmpty());
         return true;
       }
     });
@@ -391,6 +381,10 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
    * Handle ok. 
    */
   private void handleOk() {
+    // Ignore the ok if there are still problems 
+    if (vg.validateAll() != null) {
+      return;
+    }
     new Thread("Device Wizard Action Thread") {
       @Override
       public void run() {
