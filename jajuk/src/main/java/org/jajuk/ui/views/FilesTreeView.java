@@ -1217,7 +1217,7 @@ class FilesTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
       URL icon = null;
       String sIcon;
       if (type != null) {
-        sIcon = (String) type.getProperties().get(Const.XML_TYPE_ICON);
+        sIcon = (String) type.getValue(Const.XML_TYPE_ICON);
         try {
           icon = new URL(sIcon);
         } catch (MalformedURLException e) {

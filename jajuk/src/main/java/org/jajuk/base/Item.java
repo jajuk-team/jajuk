@@ -135,31 +135,14 @@ public abstract class Item implements Const {
     return getID() == ((Item) otherItem).getID();
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.base.Item#getProperties()
-   */
+ 
   /**
-   * Gets the properties.
+   * Get a defensive copy of all the item properties.
    * 
-   * @return the properties
+   * @return a defensive copy of all the item properties
    */
   public Map<String, Object> getProperties() {
-    return properties;
-  }
-
-  /**
-   * Return a shallow copy of the item properties.
-   * 
-   * @return a shallow copy of the item properties
-   */
-  public Map<String, Object> getShallowProperties() {
-    HashMap<String, Object> out = new HashMap<String, Object>(properties.size());
-    for (String key : properties.keySet()) {
-      out.put(key, properties.get(key));
-    }
-    return out;
+    return new HashMap<String, Object>(properties);
   }
 
   /*
@@ -175,7 +158,7 @@ public abstract class Item implements Const {
    * @return the value
    */
   public Object getValue(String sKey) {
-    Object out = getProperties().get(sKey);
+    Object out = properties.get(sKey);
     // look at properties to check the given property is known
     if (out == null) {
       // no? take property default
@@ -192,7 +175,7 @@ public abstract class Item implements Const {
    * @return the long value
    */
   public long getLongValue(String sKey) {
-    Long out = (Long) getProperties().get(sKey);
+    Long out = (Long) properties.get(sKey);
     // look at properties to check the given property is known
     if (out == null) {
       // no? take property default
@@ -209,7 +192,7 @@ public abstract class Item implements Const {
    * @return the double value
    */
   public double getDoubleValue(String sKey) {
-    Double out = (Double) getProperties().get(sKey);
+    Double out = (Double) properties.get(sKey);
     // look at properties to check the given property is known
     if (out == null) {
       // no? take property default
@@ -227,7 +210,7 @@ public abstract class Item implements Const {
    * @return the string value
    */
   public String getStringValue(String sKey) {
-    String out = (String) getProperties().get(sKey);
+    String out = (String) properties.get(sKey);
     // look at properties to check the given property is known
     if (out == null) {
       // no? take property default
@@ -244,7 +227,7 @@ public abstract class Item implements Const {
    * @return the boolean value
    */
   public boolean getBooleanValue(String sKey) {
-    Boolean out = (Boolean) getProperties().get(sKey);
+    Boolean out = (Boolean) properties.get(sKey);
     // look at properties to check the given property is known
     if (out == null) {
       // no? take property default
@@ -261,7 +244,7 @@ public abstract class Item implements Const {
    * @return the date value
    */
   public Date getDateValue(String sKey) {
-    Date out = (Date) getProperties().get(sKey);
+    Date out = (Date) properties.get(sKey);
     // look at properties to check the given property is known
     if (out == null) {
       // no? take property default
@@ -315,8 +298,7 @@ public abstract class Item implements Const {
   public final void setProperty(String sKey, Object oValue) {
     // reset cached value
     any = null;
-
-    getProperties().put(sKey, oValue);
+    properties.put(sKey, oValue);
   }
 
   /*

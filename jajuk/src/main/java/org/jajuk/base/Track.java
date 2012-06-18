@@ -694,7 +694,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   String toRatingsXml() {
     // no export if zero rating and not banned either
-    if (getRate() == 0 && getProperties().get(Const.XML_TRACK_BANNED) == null) {
+    if (getRate() == 0 && getValue(Const.XML_TRACK_BANNED) == null) {
       return "";
     }
 
@@ -716,7 +716,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   private void appendXML(StringBuilder sb, String sKey) {
-    Object oValue = getProperties().get(sKey);
+    Object oValue = getValue(sKey);
     if (oValue == null) {
       return;
     }

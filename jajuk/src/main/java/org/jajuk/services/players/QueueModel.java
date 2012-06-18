@@ -73,7 +73,7 @@ import org.jajuk.util.log.Log;
 public final class QueueModel {
 
   /** Currently played track index or -1 if none playing item. */
-  private static volatile int index;
+  private static volatile int index = -1;
 
   /** Last played track. */
   static volatile StackItem itemLast;

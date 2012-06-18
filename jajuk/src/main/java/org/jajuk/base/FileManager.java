@@ -251,9 +251,7 @@ public final class FileManager extends ItemManager {
       org.jajuk.base.File fNew = new File(sNewId, sNewName, fileOld.getDirectory(), track,
           fileOld.getSize(), fileOld.getQuality());
       // transfer all properties and reset id and name
-      // We use a shallow copy of properties to avoid any properties share between
-      // two items
-      fNew.setProperties(fileOld.getShallowProperties());
+      fNew.setProperties(fileOld.getProperties());
       fNew.setProperty(Const.XML_ID, sNewId); // reset new id and name
       fNew.setProperty(Const.XML_NAME, sNewName); // reset new id and name
 
@@ -290,9 +288,7 @@ public final class FileManager extends ItemManager {
       // create a new file (with own fio and sAbs)
       File fNew = new File(sNewId, old.getName(), newDir, track, old.getSize(), old.getQuality());
       // Transfer all properties (including id), then set right id and directory
-      // We use a shallow copy of properties to avoid any properties share between
-      // two items
-      fNew.setProperties(old.getShallowProperties());
+      fNew.setProperties(old.getProperties());
       fNew.setProperty(Const.XML_ID, sNewId);
       fNew.setProperty(Const.XML_DIRECTORY, newDir.getID());
 

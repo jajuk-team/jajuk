@@ -217,9 +217,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
       // create a new playlist (with own fio and sAbs)
       Playlist plfNew = new Playlist(sNewId, sNewName, plfOld.getDirectory());
       // Transfer all properties (id and name)
-      // We use a shallow copy of properties to avoid any properties share between
-      // two items
-      plfNew.setProperties(plfOld.getShallowProperties());
+      plfNew.setProperties(plfOld.getProperties());
       plfNew.setProperty(Const.XML_ID, sNewId); // reset new id and name
       plfNew.setProperty(Const.XML_NAME, sNewName); // reset new id and name
       // check file name and extension

@@ -403,7 +403,7 @@ public class File extends PhysicalItem implements Comparable<File> {
     URL iconUrl = null;
     String sIcon;
     if (type != null) {
-      sIcon = (String) type.getProperties().get(Const.XML_TYPE_ICON);
+      sIcon = (String) type.getValue(Const.XML_TYPE_ICON);
       try {
         iconUrl = new URL(sIcon);
       } catch (MalformedURLException e) {

@@ -264,7 +264,7 @@ public class TestCollection extends JajukTestCase {
     // set it banned to have this exported as well
     Track track = TrackManager.getInstance().getTrackByID(id);
     track.setRate(29);
-    track.getProperties().put(Const.XML_TRACK_BANNED, true);
+    track.setProperty(Const.XML_TRACK_BANNED, true);
 
     // delete the file before writing the collection
     assertTrue(file.delete());
@@ -288,16 +288,15 @@ public class TestCollection extends JajukTestCase {
 
     // change the rate that we use internally and set it banned
     assertEquals(29, track.getRate());
-    assertEquals(true, track.getProperties().get(Const.XML_TRACK_BANNED));
+    assertEquals(true, track.getValue(Const.XML_TRACK_BANNED));
 
     track.setRate(87);
-    track.getProperties().put(Const.XML_TRACK_BANNED, true);
+    track.setProperty(Const.XML_TRACK_BANNED, true);
 
     // change rate and banned
     assertEquals(87, track.getRate());
     assertEquals(true, track.getProperties().remove(Const.XML_TRACK_BANNED));
-    assertNull(track.getProperties().remove(Const.XML_TRACK_BANNED));
-
+    
     // also test loading here
     Collection.importRatings(file);
 
