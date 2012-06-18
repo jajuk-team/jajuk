@@ -35,7 +35,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
 
-import javax.swing.SwingUtilities;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -177,18 +176,13 @@ public final class History extends DefaultHandler implements HighPriorityObserve
    * Cleanup history of dead items (removed files after a refresh).
    */
   public void cleanup() {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        Iterator<HistoryItem> it = vHistory.iterator();
-        while (it.hasNext()) {
-          HistoryItem hi = it.next();
-          if (FileManager.getInstance().getFileByID(hi.getFileId()) == null) {
-            it.remove();
-          }
-        }
+    Iterator<HistoryItem> it = vHistory.iterator();
+    while (it.hasNext()) {
+      HistoryItem hi = it.next();
+      if (FileManager.getInstance().getFileByID(hi.getFileId()) == null) {
+        it.remove();
       }
-    });
+    }
   }
 
   /**
@@ -198,18 +192,13 @@ public final class History extends DefaultHandler implements HighPriorityObserve
    * @param sIDNew 
    */
   public void changeID(final String sIDOld, final String sIDNew) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        for (int i = 0; i < vHistory.size(); i++) {
-          HistoryItem hi = vHistory.get(i);
-          if (hi.getFileId().equals(sIDOld)) {
-            vHistory.remove(i);
-            vHistory.add(i, new HistoryItem(sIDNew, hi.getDate()));
-          }
-        }
+    for (int i = 0; i < vHistory.size(); i++) {
+      HistoryItem hi = vHistory.get(i);
+      if (hi.getFileId().equals(sIDOld)) {
+        vHistory.remove(i);
+        vHistory.add(i, new HistoryItem(sIDNew, hi.getDate()));
       }
-    });
+    }
   }
 
   /**
@@ -218,31 +207,25 @@ public final class History extends DefaultHandler implements HighPriorityObserve
    * @param iDays 
    */
   public void clear(final int iDays) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-
-        // Begins by clearing deleted files
-        Iterator<HistoryItem> it = vHistory.iterator();
-        while (it.hasNext()) {
-          HistoryItem hi = it.next();
-          if (FileManager.getInstance().getFileByID(hi.getFileId()) == null) {
-            it.remove();
-          }
-        }
-        // Follow day limits
-        if (iDays == -1) { // infinite history
-          return;
-        }
-        it = vHistory.iterator();
-        while (it.hasNext()) {
-          HistoryItem hi = it.next();
-          if (hi.getDate() < (System.currentTimeMillis() - (((long) iDays) * Const.MILLISECONDS_IN_A_DAY))) {
-            it.remove();
-          }
-        }
+    // Begins by clearing deleted files
+    Iterator<HistoryItem> it = vHistory.iterator();
+    while (it.hasNext()) {
+      HistoryItem hi = it.next();
+      if (FileManager.getInstance().getFileByID(hi.getFileId()) == null) {
+        it.remove();
       }
-    });
+    }
+    // Follow day limits
+    if (iDays == -1) { // infinite history
+      return;
+    }
+    it = vHistory.iterator();
+    while (it.hasNext()) {
+      HistoryItem hi = it.next();
+      if (hi.getDate() < (System.currentTimeMillis() - (((long) iDays) * Const.MILLISECONDS_IN_A_DAY))) {
+        it.remove();
+      }
+    }
   }
 
   /**
@@ -407,20 +390,6 @@ public final class History extends DefaultHandler implements HighPriorityObserve
     }
   }
 
-  /**
-   * Called when we reach the end of an element.
-   * 
-   * @param sUri 
-   * @param sName 
-   * @param sQName 
-   * 
-   * @throws SAXException the SAX exception
-   */
-  @Override
-  public void endElement(String sUri, String sName, String sQName) throws SAXException {
-    // nothing to do here...
-  }
-
   /*
    * (non-Javadoc)
    *
@@ -428,41 +397,33 @@ public final class History extends DefaultHandler implements HighPriorityObserve
    */
   @Override
   public void update(final JajukEvent event) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        JajukEvents subject = event.getSubject();
-        try {
-          if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
-            String sFileID = (String) ObservationManager.getDetail(event,
-                Const.DETAIL_CURRENT_FILE_ID);
-            long lDate = ((Long) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_DATE))
-                .longValue();
-            addItem(sFileID, lDate);
-          } else if (JajukEvents.DEVICE_REFRESH.equals(subject)) {
-            cleanup();
-          } else if (JajukEvents.CLEAR_HISTORY.equals(subject)) {
-            clear();
-            InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.251"),
-                InformationJPanel.MessageType.INFORMATIVE);
-          } else if (JajukEvents.LANGUAGE_CHANGED.equals(subject)) {
-            // reset formatter
-            formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"), Locale
-                .getDefault());
-          } else if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) {
-            Properties properties = event.getDetails();
-            org.jajuk.base.File fileOld = (org.jajuk.base.File) properties.get(Const.DETAIL_OLD);
-            org.jajuk.base.File fNew = (org.jajuk.base.File) properties.get(Const.DETAIL_NEW);
-            // change id in history
-            changeID(fileOld.getID(), fNew.getID());
-          }
-        } catch (Exception e) {
-          Log.error(e);
-          return;
-        }
+    JajukEvents subject = event.getSubject();
+    try {
+      if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
+        String sFileID = (String) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_FILE_ID);
+        long lDate = ((Long) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_DATE))
+            .longValue();
+        addItem(sFileID, lDate);
+      } else if (JajukEvents.DEVICE_REFRESH.equals(subject)) {
+        cleanup();
+      } else if (JajukEvents.CLEAR_HISTORY.equals(subject)) {
+        clear();
+        InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.251"),
+            InformationJPanel.MessageType.INFORMATIVE);
+      } else if (JajukEvents.LANGUAGE_CHANGED.equals(subject)) {
+        // reset formatter
+        formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"), Locale.getDefault());
+      } else if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) {
+        Properties properties = event.getDetails();
+        org.jajuk.base.File fileOld = (org.jajuk.base.File) properties.get(Const.DETAIL_OLD);
+        org.jajuk.base.File fNew = (org.jajuk.base.File) properties.get(Const.DETAIL_NEW);
+        // change id in history
+        changeID(fileOld.getID(), fNew.getID());
       }
-    });
-
+    } catch (Exception e) {
+      Log.error(e);
+      return;
+    }
   }
 
   /**
