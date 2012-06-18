@@ -30,7 +30,6 @@ import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.File;
 import org.jajuk.base.SearchResult.SearchResultType;
-import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
@@ -67,11 +66,6 @@ public class TestStartupEngineService extends JajukTestCase {
     file2 = JUnitHelpers.getFile("file2", true);
     file3 = JUnitHelpers.getFile("file3", true);
 
-    // Populate the history with these three files
-    History.getInstance().addItem(file1.getID(), System.currentTimeMillis() - 120000);
-    History.getInstance().addItem(file2.getID(), System.currentTimeMillis() - 110000);
-    History.getInstance().addItem(file3.getID(), System.currentTimeMillis() - 100000);
-
     // Add last played radio
     radio1 = WebRadioManager.getInstance().registerWebRadio("myRadio");
     radio1.setProperty(Const.XML_URL, "http://di.fm/mp3/classictechno.pls");
@@ -92,7 +86,8 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_STARTUP_STOPPED, "false");
     Conf.setProperty(Const.CONF_STARTUP_ITEM, file3.getID());
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "false");
-
+    Conf.setProperty(Const.CONF_STARTUP_QUEUE_INDEX, "2");
+    
     // Reset the queue
     QueueModel.reset();
 
@@ -232,8 +227,8 @@ public class TestStartupEngineService extends JajukTestCase {
   public final void testFirstSession() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
-    History.getInstance().clear();
-
+    Conf.removeProperty(Const.CONF_STARTUP_QUEUE_INDEX);
+    
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
