@@ -97,7 +97,7 @@ public final class TrackManager extends ItemManager {
     // not editable
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_RATE, false, false, true, false,
         true, Long.class, 0));
-    // Files
+    // Files. This is now a derivated property, build on demand. Never commited because always null.
     registerProperty(new PropertyMetaInformation(Const.XML_FILES, false, false, true, false, false,
         String.class, null));
     // Hits
