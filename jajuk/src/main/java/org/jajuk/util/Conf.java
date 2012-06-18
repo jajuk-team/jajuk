@@ -349,6 +349,7 @@ public final class Conf implements Const {
     defaults.put(CONF_PRESERVE_FILE_DATES, FALSE);
     defaults.put(CONF_FADE_OUT, TRUE);
     defaults.put(CONF_MANUAL_RATINGS, FALSE);
+    defaults.put(CONF_STARTUP_QUEUE_INDEX, "0");
 
     // NOT SHOW AGAIN
     defaults.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);

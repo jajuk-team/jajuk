@@ -864,6 +864,9 @@ public interface Const {
   /** Slashscreen flag. */
   String CONF_SPLASH_SCREEN = "jajuk.splashscreen";
 
+  /** Current item index in fifo. */
+  String CONF_STARTUP_QUEUE_INDEX = "jajuk.current_file_index";
+
   /** Shuffle/novelties mode. */
   String MODE_ALBUM = "album";
 

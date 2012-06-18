@@ -279,22 +279,6 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   }
 
   /**
-   * Gets the last file.
-   * 
-   * @return id of last played registered track or null if history is empty
-   */
-  public String getLastFile() {
-    HistoryItem hiLast = null;
-    if (vHistory.size() == 0) {
-      return null;
-    }
-    hiLast = vHistory.get(0);
-
-    // we only add valid entries to hiLast, so hiLast cannot be null at this point...
-    return hiLast.getFileId();
-  }
-
-  /**
    * Return the history item by index.
    * 
    * @param index 

@@ -315,7 +315,7 @@ public class TestHistory extends JajukTestCase {
     History.getInstance().clear(2);
     // we have to sleep a bit as it is executed in the background
     JUnitHelpers.clearSwingUtilitiesQueue();
-
+    // history size = 1 because we keep at least last track
     assertEquals(0, History.getInstance().getHistory().size());
   }
 
@@ -439,36 +439,7 @@ public class TestHistory extends JajukTestCase {
     FileUtils.writeStringToFile(frt, "<this is an invalid xML>");
   }
 
-  /**
-   * Test method for {@link org.jajuk.services.bookmark.History#getLastFile()}.
-   *
-   * @throws NumberFormatException the number format exception
-   * @throws Exception the exception
-   */
-  public final void testGetLastFile() throws NumberFormatException, Exception {
-    // null without history
-    assertNull(History.getInstance().getLastFile());
-
-    addHistoryItem(2, 123);
-
-    // now it is there
-    assertEquals(1, History.getInstance().getHistory().size());
-
-    // now returns the correct item
-    File file2 = JUnitHelpers.getFile("file_2", false);
-    assertEquals(file2.getID(), History.getInstance().getLastFile());
-
-    addHistoryItem(3, 123);
-    File file3 = JUnitHelpers.getFile("file_3", false);
-    assertEquals(file3.getID(), History.getInstance().getLastFile());
-
-    // now it is there
-    assertEquals(2, History.getInstance().getHistory().size());
-
-    addHistoryItem(2, 123);
-    assertEquals(file2.getID(), History.getInstance().getLastFile());
-  }
-
+ 
   /**
    * Test method for.
    *

@@ -1321,6 +1321,8 @@ public final class QueueModel {
     }
     writer.flush();
     writer.close();
+    //Store index
+    Conf.setProperty(Const.CONF_STARTUP_QUEUE_INDEX, Integer.toString(index));
   }
 
   /**
