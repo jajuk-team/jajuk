@@ -14,8 +14,8 @@
 		<format property='JNLP_DATE' pattern='yyyyMMdd_hhmm' locale='en,UK' />
 	</tstamp>
 
-	<!--Build type : 'unstable', 'final' or 'maintenance' -->
-	<property name='type' value='unstable' />
+	<!--Build type : 'unstable', 'final', 'pre-release' or 'maintenance' -->
+	<property name='type' value='pre-release' />
 	
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
@@ -28,9 +28,9 @@
 	<property name='jnlp_version' value='${JNLP_DATE}' />
 	
 	<!--Test flag: values: 'test' or 'notest' 
-	'test' for 'unstable and maintenance branches, 'notest' for master branch (including RC releases)
+	'test' for 'unstable' branches, 'notest' for master, pre-release and maintenance branches
 	-->
-	<property name='test' value='test' />
+	<property name='test' value='notest' />
 				
 
 	<!-- ======================= -->
