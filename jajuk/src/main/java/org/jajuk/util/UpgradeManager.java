@@ -117,6 +117,12 @@ public final class UpgradeManager implements Const {
    */
   public static void detectRelease() {
     try {
+      // In dev, don't try to upgrade
+      if ("VERSION_REPLACED_BY_ANT".equals(Const.JAJUK_VERSION)) {
+        bUpgraded = false;
+        majorMigration = false;
+        return;
+      }
       // Upgrade detection. Depends on: Configuration manager load
       final String sStoredRelease = Conf.getString(Const.CONF_RELEASE);
 
