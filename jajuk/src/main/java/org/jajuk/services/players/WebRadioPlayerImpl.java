@@ -87,8 +87,10 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
               radioTrackDetail = line.substring(line.indexOf("StreamTitle='") + 13,
                   line.length() - 2);
             }
-            String currentRadioTrack = QueueModel.getCurrentRadio().getName() + ":: "
-                + radioTrackDetail;
+            String currentRadioTrack = QueueModel.getCurrentRadio().getName();
+            if (StringUtils.isNotEmpty(radioTrackDetail)) {
+              currentRadioTrack += ":: " + radioTrackDetail;
+            }
             pDetails.put(Const.DETAIL_CONTENT, QueueModel.getCurrentRadio());
             pDetails.put(Const.CURRENT_RADIO_TRACK, currentRadioTrack);
             ObservationManager.notify(new JajukEvent(JajukEvents.WEBRADIO_INFO_UPDATED, pDetails));
