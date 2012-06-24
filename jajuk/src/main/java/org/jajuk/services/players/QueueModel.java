@@ -102,6 +102,9 @@ public final class QueueModel {
 
   /** Should be stop after current track playback ?. */
   private static boolean bStopAfter;
+  
+  /** Whether a required stop comes from jajuk */
+  private static boolean bInternalStop;
 
   /**
    * Gets the last duration.
@@ -470,7 +473,7 @@ public final class QueueModel {
 
   /**
    * Finished method, called by the PlayerImpl when the track is finished or
-   * should be finished (in case of intro mode or crass fade).
+   * should be finished (in case of intro mode or cross fade).
    */
   public static void finished() {
     finished(false);
@@ -486,6 +489,8 @@ public final class QueueModel {
    */
   public static void finished(boolean forceNext) {
     try {
+      // Tell jajuk not to enable fade-out for this kind o stop request
+      bInternalStop = true;
       // If no playing item, just leave
       StackItem current = getCurrentItem();
       if (current == null) {
@@ -577,9 +582,17 @@ public final class QueueModel {
     } catch (Exception e) {
       Log.error(e);
     } finally {
+      bInternalStop = false;
       // refresh playlist editor
       ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
     }
+  }
+
+  /**
+   * @return the bInternalStop
+   */
+  public static boolean isInternalStop() {
+    return bInternalStop;
   }
 
   /**

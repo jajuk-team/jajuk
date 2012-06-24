@@ -200,7 +200,6 @@ public final class Player {
       }
       // Save playing state    
       Conf.setProperty(Const.CONF_STARTUP_STOPPED, "false");
-
       return true;
     } catch (final Throwable t) {
       Properties pDetails = new Properties();
@@ -219,7 +218,7 @@ public final class Player {
   public static void stop(boolean bAll) {
     try {
       if (Conf.getBoolean(Const.CONF_FADE_OUT) && isPlaying()
-          && !Conf.getBoolean(Const.CONF_BIT_PERFECT)) {
+          && !Conf.getBoolean(Const.CONF_BIT_PERFECT) && !QueueModel.isInternalStop()) {
         fadeOut();
       }
       if (playerImpl1 != null && (playerImpl1.getState() != Const.FADING_STATUS || bAll)) {
@@ -370,7 +369,8 @@ public final class Player {
         return;
       }
       if (playerImpl != null) {
-        if (Conf.getBoolean(Const.CONF_FADE_OUT) && !Conf.getBoolean(Const.CONF_BIT_PERFECT)) {
+        if (Conf.getBoolean(Const.CONF_FADE_OUT) && !Conf.getBoolean(Const.CONF_BIT_PERFECT)
+            && !QueueModel.isInternalStop()) {
           fadeOut();
         }
         playerImpl.pause();
