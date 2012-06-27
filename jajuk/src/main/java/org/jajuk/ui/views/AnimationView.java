@@ -78,6 +78,8 @@ public class AnimationView extends ViewAdapter {
   private BasicTextLabel btl1;
 
   private Animator animator;
+  
+  private boolean paused = false;
 
   /**
    * Instantiates a new animation view.
@@ -109,7 +111,14 @@ public class AnimationView extends ViewAdapter {
       @Override
       public void handleAction(final MouseEvent e) {
         if (animator != null) {
-          animator.stop();
+          if (paused){
+            animator.start();
+            paused = false;
+          }
+          else{
+            animator.stop();
+            paused = true;
+          }
         }
       }
     });
