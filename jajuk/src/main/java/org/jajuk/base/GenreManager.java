@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.base;
 
 import java.util.Arrays;
@@ -42,14 +41,10 @@ import org.jajuk.util.error.JajukException;
  * Convenient class to manage genres.
  */
 public final class GenreManager extends ItemManager {
-
   /** Self instance. */
   private static GenreManager singleton = new GenreManager();
-
   /* List of all known genres */
-
   private Vector<String> genresList; // NOPMD
-
   /** note if we have already fully loaded the Collection to speed up initial startup */
   private volatile boolean orderedState = false;
 
@@ -110,7 +105,6 @@ public final class GenreManager extends ItemManager {
     // add it in genres list if new
     if (!genresList.contains(sName)) {
       genresList.add(genre.getName2());
-
       // only sort as soon as we have the Collection fully loaded
       if (orderedState) {
         sortGenreList();
@@ -140,7 +134,6 @@ public final class GenreManager extends ItemManager {
     // bring this Manager to ordered state when Collection is fully loaded
     orderedState = true;
     sortGenreList();
-
     super.switchToOrderState();
   }
 
@@ -286,5 +279,4 @@ public final class GenreManager extends ItemManager {
   public ReadOnlyIterator<Genre> getGenresIterator() {
     return new ReadOnlyIterator<Genre>((Iterator<Genre>) getItemsIterator());
   }
-
 }

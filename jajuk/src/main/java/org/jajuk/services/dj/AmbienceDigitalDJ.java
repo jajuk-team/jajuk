@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.dj;
 
 import java.util.ArrayList;
@@ -33,7 +32,6 @@ import org.jajuk.util.Messages;
  * Ambience DJ.
  */
 public class AmbienceDigitalDJ extends DigitalDJ {
-
   /** Used ambience. */
   private Ambience ambience;
 
@@ -83,10 +81,8 @@ public class AmbienceDigitalDJ extends DigitalDJ {
     }
     // Select by rate if needed
     filterFilesByRate(out);
-
     // finally ensure that we don't select more than the max number of tracks
     filterFilesByMaxTrack(out);
-
     return out;
   }
 
@@ -124,5 +120,4 @@ public class AmbienceDigitalDJ extends DigitalDJ {
   public void setAmbience(Ambience ambience) {
     this.ambience = ambience;
   }
-
 }

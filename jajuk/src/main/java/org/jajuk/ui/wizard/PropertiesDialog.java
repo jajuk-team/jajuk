@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.wizard;
 
 import ext.AutoCompleteDecorator;
@@ -95,35 +94,24 @@ import org.jdesktop.swingx.VerticalLayout;
  * ItemManager properties dialog for any jajuk item.
  */
 public class PropertiesDialog extends JajukJDialog implements ActionListener {
-
   /** The Constant PROPERTIES_WIZARD_6.  */
   private static final String PROPERTIES_WIZARD_6 = "PropertiesWizard.6";
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /* Main panel */
-
   private JPanel jpMain;
-
   /** OK/Cancel panel. */
   private OKCancelPanel okc;
-
   /** Items. */
   private List<Item> alItems;
-
   /** Files filter. */
   private Set<File> filter = null;
-
   /** number of editable items (all panels). */
   private int iEditable = 0;
-
   /** First property panel. */
   private PropertiesPanel panel1;
-
   /** Second property panel. */
   private PropertiesPanel panel2;
-
   /** Did user changed something ?. */
   private boolean changes = false;
 
@@ -135,7 +123,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
    */
   public PropertiesDialog(List<Item> alItems) {
     super();
-
     // windows title: name of the element if there is
     // only one item, or "selection" word otherwise
     if (alItems.size() == 1) {
@@ -151,16 +138,13 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
     panel1 = new PropertiesPanel(alItems, alItems.size() == 1 ? UtilString.getLimitedString(alItems
         .get(0).getTitle(), 50) : Messages.getString(PROPERTIES_WIZARD_6) + " [" + alItems.size()
         + "]", bMerged);
-
     // OK/Cancel buttons
     okc = new OKCancelPanel(PropertiesDialog.this, Messages.getString("Apply"),
         Messages.getString("Close"));
-
     // Add items
     jpMain = new JPanel(new MigLayout("insets 5,gapx 5,gapy 5", "[grow]"));
     jpMain.add(panel1, "grow,wrap");
     jpMain.add(okc, "span,right");
-
     display();
   }
 
@@ -173,7 +157,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
    */
   public PropertiesDialog(List<Item> alItems1, List<Item> alItems2) {
     super();
-
     // windows title: name of the element of only one item, or "selection"
     // word otherwise
     setTitle(alItems1.size() == 1 ? alItems1.get(0).getTitle() : Messages
@@ -203,7 +186,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
     }
     // OK/Cancel buttons
     okc = new OKCancelPanel(this, Messages.getString("Apply"), Messages.getString("Close"));
-
     // Add items
     jpMain = new JPanel(new MigLayout("insets 5,gapx 5,gapy 5", "[grow][grow]"));
     jpMain.add(panel1, "grow");
@@ -213,7 +195,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
     }
     // Use cell tag because the wrap is not done if panel2 is void
     jpMain.add(okc, "cell 0 1 1 1,span,right");
-
     display();
   }
 
@@ -249,7 +230,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
       @Override
       public void run() {
         UtilGUI.setEscapeKeyboardAction(PropertiesDialog.this, jpMain);
-
         // If none editable item, save button is disabled
         if (iEditable == 0) {
           okc.getOKButton().setEnabled(false);
@@ -257,10 +237,8 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
         getRootPane().setDefaultButton(okc.getOKButton());
         getContentPane().add(new JScrollPane(jpMain));
         pack();
-
         // set default focus to make escape work
         okc.getOKButton().requestFocusInWindow();
-
         setLocationRelativeTo(JajukMainWindow.getInstance());
         setVisible(true);
       }
@@ -335,40 +313,28 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
    * A properties panel.
    */
   class PropertiesPanel extends JPanel implements ActionListener {
-
     /** The Constant IDX_NAME.   */
     private static final int IDX_NAME = 0;
-
     /** The Constant IDX_VALUE.   */
     private static final int IDX_VALUE = 1;
-
     /** The Constant IDX_COPY.   */
     private static final int IDX_COPY = 2;
-
     /** The Constant IDX_LINK.   */
     private static final int IDX_LINK = 3;
-
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
-
     /** Properties panel. */
     JPanel jpProperties;
-
     /** ItemManager description. */
     JLabel jlDesc;
-
     /** All dynamic widgets. */
     JComponent[][] widgets;
-
     /** Properties to display. */
     List<PropertyMetaInformation> alToDisplay;
-
     /** Items. */
     List<Item> propItems;
-
     /** Changed properties. */
     Map<PropertyMetaInformation, Object> hmPropertyToChange = new HashMap<PropertyMetaInformation, Object>();
-
     /** Merge flag. */
     boolean bMerged = false;
 
@@ -381,7 +347,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
      */
     PropertiesPanel(List<Item> alItems, String sDesc, boolean bMerged) {
       super();
-
       this.propItems = alItems;
       this.bMerged = bMerged;
       Item pa = alItems.get(0);
@@ -580,11 +545,9 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
               artists = AlbumArtistManager.getAlbumArtistsList();
               valueToCheck = pa.getHumanValue(Const.XML_ALBUM_ARTIST);
             }
-
             if (artists == null) {
               throw new IllegalStateException("Could not get a list of Artists!");
             }
-
             final JComboBox jcb = new JComboBox(artists);
             jcb.setEditable(true);
             AutoCompleteDecorator.decorate(jcb);
@@ -599,7 +562,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
               comp++;
             }
             jcb.setSelectedIndex(i);
-
             // if different artist, don't show anything
             if (!bAllEquals) {
               jcb.setSelectedIndex(-1);
@@ -668,7 +630,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
             }
           }
           widgets[index][IDX_VALUE] = jl;
-
         }
         // Link
         if (isLinkable(meta)) {
@@ -680,7 +641,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
           jbLink.setToolTipText(Messages.getString("PropertiesWizard.12"));
           widgets[index][IDX_LINK] = jbLink;
         }
-
         // Copy
         if (isCopyable(widgets[index][IDX_VALUE])) {
           JButton jbCopy = new JButton(IconLoader.getIcon(JajukIcons.COPY_TO_CLIPBOARD));
@@ -693,7 +653,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
         }
         index++;
       }
-
       // Add title
       JLabel jlName = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.1")
           + "</b></html>");
@@ -703,7 +662,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
           + "</b></html>");
       JLabel jlCopy = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.13")
           + "</b></html>");
-
       jpProperties = new JPanel(new MigLayout("insets 10,gapx 5,gapy 10", "[][grow][]"));
       jpProperties.add(jlName);
       jpProperties.add(jlValue, "grow");
@@ -755,10 +713,8 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
         if ("0".equals(extractValue(jComponent))) {
           return false;
         }
-
         return true;
       }
-
       return false;
     }
 
@@ -806,7 +762,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
         }
       } else if (ae.getActionCommand().equals("copy")) {
         int i = getWidgetIndex((JComponent) ae.getSource());
-
         JComponent jComponent = widgets[i][IDX_VALUE];
         StringSelection data = new StringSelection(extractValue(jComponent));
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -863,7 +818,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
           List<Item> alInError = new ArrayList<Item>(itemsToChange.size());
           // details for errors
           String sDetails = "";
-
           // Check typed value format, display error message only once per
           // property
           for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
@@ -878,7 +832,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
               return;
             }
           }
-
           // Now we have all items to consider, write tags for each
           // property to change
           for (int i = 0; i < itemsToChange.size(); i++) {
@@ -887,7 +840,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
             Item item = null;
             for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
               item = itemsToChange.get(i);
-
               // New value
               oValue = hmPropertyToChange.get(meta);
               // Old value
@@ -959,7 +911,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
               }
             }
           }
-
           // display a message for file write issues
           if (alInError.size() > 0) {
             String sInfo = "";
@@ -975,7 +926,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
             }
             Messages.showDetailedErrorMessage(104, sInfo, sDetails);
           }
-
           // display a message if user changed at least one property
           if (alChanged.size() > 0) {
             StringBuilder sbChanged = new StringBuilder();
@@ -1040,10 +990,8 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
             break;
           }
         }
-
       }
       return resu;
     }
   }
-
 }

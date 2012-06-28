@@ -20,7 +20,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.xml;
 
 import java.io.IOException;
@@ -38,7 +37,6 @@ import org.xml.sax.SAXException;
  * .
  */
 public final class XMLBuilder {
-
   /**
    * private constructor to avoid instantiating utility class.
    */

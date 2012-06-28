@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.widgets;
 
 import java.awt.event.MouseEvent;
@@ -75,38 +74,26 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * Bring a menu displayed on right click.
  */
 public class JajukTable extends JXTable implements Observer, ListSelectionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   private final String sConf;
-
   /** User Selection*. */
   private final List<Item> selection = new ArrayList<Item>();
-
   private final JPopupMenu jmenu;
-
   /** Specific action on double click. */
   private ILaunchCommand command;
-
   /** Model refreshing flag. */
   private volatile boolean acceptColumnsEvents = false;
-
   /** The Constant FORMATTER.  */
   private static final DateFormat FORMATTER = UtilString.getLocaleDateFormatter();
-
   /** Stores the last index of column move to*. */
   private int lastToIndex = 0;
-
   /** Mouse draging flag. */
   private boolean isMouseDragging;
-
   /** List of list selection listeners whose valueChanged() method is called by this class valueChanged() method to avoid concurrency between them. Otherwise, the preference menu item could be set with the previous selection value. */
   List<ListSelectionListener> listeners = new ArrayList<ListSelectionListener>(1);
-
   /** The Jajuk table mouse adapter used to handle click events. */
   JajukMouseAdapter ma = new JajukMouseAdapter() {
-
     @Override
     public void handlePopup(MouseEvent e) {
       int iSelectedRow = rowAtPoint(e.getPoint());
@@ -158,14 +145,11 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
     jmenu = new JPopupMenu();
     setShowGrid(false);
     init(bSortable);
-
     // Listen for clicks
     addMouseListener(ma);
-
     //Let Laf handle drag gesture recognition (don't remove it or
     // a mouse clik disable multiple selection)
     setDragEnabled(true);
-
     // Add the Alternate Highlighter
     addHighlighter(UtilGUI.getAlternateHighlighter());
     // Register itself to incoming events
@@ -265,24 +249,19 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
         getColumnModel().addColumn(column);
       }
     }
-
     // set stored column width
-
     // disable auto-resize temporary to set stored sizes
     setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     String tableID = getTableId();
-
     for (int currentColumnIndex = 0; currentColumnIndex < getColumnModel().getColumnCount(); currentColumnIndex++) {
       String identifier = ((JajukTableModel) getModel())
           .getIdentifier(convertColumnIndexToModel(currentColumnIndex));
       String confId = tableID + "." + identifier + ".width";
-
       if (Conf.containsProperty(confId)) {
         getColumnModel().getColumn(currentColumnIndex).setPreferredWidth(Conf.getInt(confId));
       }
     }
     setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
-
     // must be done here and not before we add columns
     if (Conf.containsProperty(getConfKeyForIsHorizontalScrollable())) {
       setHorizontalScrollEnabled(Conf.getBoolean(getConfKeyForIsHorizontalScrollable()));
@@ -504,7 +483,6 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
       properties.put(Const.DETAIL_VIEW, parentView);
     }
     ObservationManager.notify(new JajukEvent(JajukEvents.TABLE_SELECTION_CHANGED, properties));
-
     // Call specific behaviors
     for (ListSelectionListener listener : listeners) {
       listener.valueChanged(e);
@@ -622,16 +600,12 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
     if (JajukEvents.EXITING.equals(subject)) {
       Conf.setProperty(getConfKeyForIsHorizontalScrollable(),
           Boolean.toString(isHorizontalScrollEnabled()));
-
       // store column margin
       String tableID = getTableId();
-
       for (int currentColumnIndex = 0; currentColumnIndex < getColumnModel().getColumnCount(); currentColumnIndex++) {
-
         String width = Integer.toString(getColumnModel().getColumn(currentColumnIndex).getWidth());
         String identifier = ((JajukTableModel) getModel())
             .getIdentifier(convertColumnIndexToModel(currentColumnIndex));
-
         Conf.setProperty(tableID + "." + identifier + ".width", width);
       }
     }
@@ -687,7 +661,6 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
   // then select row 2 without releasing the mouse and begin to drag from the top to the bottom :
   // in some cases, when dragging quickly, rows 2 AND 3 (and even row 4 sometimes) are selected.
   // Fix thanks jeffsabin  in http://forums.sun.com/thread.jspa?threadID=5436355
-
   /* (non-Javadoc)
    * @see javax.swing.JComponent#processMouseEvent(java.awt.event.MouseEvent)
    */
@@ -735,5 +708,4 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
       super.changeSelection(rowIndex, columnIndex, toggle, extend);
     }
   }
-
 }

@@ -38,7 +38,6 @@ import org.jajuk.util.Messages;
  * .
  */
 public class ShuffleModeAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -60,7 +59,6 @@ public class ShuffleModeAction extends JajukAction {
   public void perform(ActionEvent evt) {
     boolean b = Conf.getBoolean(Const.CONF_STATE_SHUFFLE);
     Conf.setProperty(Const.CONF_STATE_SHUFFLE, Boolean.toString(!b));
-
     JajukJMenuBar.getInstance().setShuffleSelected(!b);
     CommandJPanel.getInstance().setRandomSelected(!b);
     if (!b) { // enabled button
@@ -70,6 +68,5 @@ public class ShuffleModeAction extends JajukAction {
     QueueModel.computesPlanned(true);
     // Refresh Queue View
     ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
-
   }
 }

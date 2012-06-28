@@ -57,16 +57,12 @@ import org.jajuk.util.log.Log;
  * Startup facilities for sound engine.
  */
 public final class StartupEngineService {
-
   /** List of items to play at startup. */
   private static List<org.jajuk.base.File> alToPlay = new ArrayList<org.jajuk.base.File>();
-
   /** File to play. */
   private static org.jajuk.base.File fileToPlay;
-
   /** Web radio to play. */
   private static WebRadio radio;
-
   /** Index in the queue of the startup file. */
   private static int index = -1;
 
@@ -94,10 +90,8 @@ public final class StartupEngineService {
           || FileManager.getInstance().getElementCount() == 0
           // FIFO void or not exists
           || (!fifo.exists() || fifo.length() == 0);
-
       // Populate item to be started and load the stored queue
       populateStartupItems();
-
       // Check that the file to play is not null and try to mount its device if required 
       if (!doNotStartAnything && !isWebradioStartup()) {
         checkFileToPlay();
@@ -107,14 +101,12 @@ public final class StartupEngineService {
       // because user may do a "play" and the next file index must be ready.
       // However, we don't need to test file availability with checkFileToPlay() method.
       updateIndex();
-
       // Push the new queue
       boolean bRepeat = Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL)
           || Conf.getBoolean(Const.CONF_STATE_REPEAT);
       QueueModel.insert(UtilFeatures.createStackItems(alToPlay, bRepeat, false), 0);
       // Force queue index because insert increase it so it would be set to queue size after the insert
       QueueModel.setIndex(index);
-
       // Start the file or the radio
       // If user leaved jajuk in stopped mode, do nothing
       if (!doNotStartAnything && isWebradioStartup() && radio != null) {
@@ -153,7 +145,6 @@ public final class StartupEngineService {
             .equals(startupMode))) {
       return true;
     }
-
     if (Const.STARTUP_MODE_ITEM.equals(startupMode)) {
       String conf = Conf.getString(Const.CONF_STARTUP_ITEM);
       if (conf.matches(SearchResultType.WEBRADIO.name() + ".*")) {
@@ -201,7 +192,6 @@ public final class StartupEngineService {
   private static void populateStartupItems() {
     String startupMode = Conf.getString(Const.CONF_STARTUP_MODE);
     Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
-
     // an item (track or radio) has been forced by user
     if (Const.STARTUP_MODE_ITEM.equals(startupMode)) {
       String conf = Conf.getString(Const.CONF_STARTUP_ITEM);
@@ -218,14 +208,11 @@ public final class StartupEngineService {
         }
       }
     }
-
     // We play last item
     else if (Const.STARTUP_MODE_LAST.equals(startupMode)
         || Const.STARTUP_MODE_LAST_KEEP_POS.equals(startupMode)) {
-
       //Restore the queue in these cases
       restoreQueue();
-
       // If we were playing a webradio when leaving, launch it
       if (Conf.getBoolean(Const.CONF_WEBRADIO_WAS_PLAYING)) {
         radio = WebRadioManager.getInstance().getWebRadioByName(
@@ -254,7 +241,6 @@ public final class StartupEngineService {
       if (alToPlay != null && alToPlay.size() > 0) {
         fileToPlay = alToPlay.get(0);
       }
-
       // Best of mode
     } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_BESTOF)) {
       // Filter files by ambience or if none ambience matches, perform a global best-of selection 
@@ -267,7 +253,6 @@ public final class StartupEngineService {
       if (alToPlay != null && alToPlay.size() > 0) {
         fileToPlay = alToPlay.get(0);
       }
-
       // Novelties mode
     } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOVELTIES)) {
       // Filter files by ambience or if none ambience matches, perform a global novelties selection 
@@ -287,7 +272,6 @@ public final class StartupEngineService {
             InformationJPanel.MessageType.ERROR);
       }
     }
-
     // If the queue was empty and a file to play is provided, build a new queue
     // with this track alone
     if (alToPlay.size() == 0 && fileToPlay != null) {
@@ -385,5 +369,4 @@ public final class StartupEngineService {
       }
     }
   }
-
 }

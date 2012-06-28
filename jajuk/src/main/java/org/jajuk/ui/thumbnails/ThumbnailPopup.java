@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.thumbnails;
 
 import java.awt.KeyEventDispatcher;
@@ -71,12 +70,9 @@ import org.jajuk.util.log.Log;
  * </p>.
  */
 public class ThumbnailPopup extends JWindow {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -8131528719972829954L;
-
   private final JEditorPane text;
-
   private KeyEventDispatcher dispatcher = null;
 
   /**
@@ -175,7 +171,6 @@ public class ThumbnailPopup extends JWindow {
             }
           });
         }
-
       }
     });
     final JScrollPane jspText = new JScrollPane(text);
@@ -243,7 +238,6 @@ public class ThumbnailPopup extends JWindow {
    */
   private void setKeystrokes() {
     removeKeystrokes();
-
     dispatcher = new KeyEventDispatcher() {
       @Override
       public boolean dispatchKeyEvent(KeyEvent e) {
@@ -251,7 +245,6 @@ public class ThumbnailPopup extends JWindow {
         return false;
       }
     };
-
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(dispatcher);
   }
 

@@ -31,12 +31,10 @@ import org.jdesktop.swingx.decorator.HighlightPredicate;
  * if the index is at the given row.
  */
 public class IndexHighlighterPredicate implements HighlightPredicate {
-
   /**
    * Instantiates a new index highlighter predicate.
    */
   public IndexHighlighterPredicate() {
-
   }
 
   /* (non-Javadoc)

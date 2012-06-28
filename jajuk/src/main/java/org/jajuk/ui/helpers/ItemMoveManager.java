@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.util.ArrayList;
@@ -29,21 +28,15 @@ import org.jajuk.base.Item;
 /**
  * Convenient class to manage Items to be moved using Cut/Copy/Paste Actions.
  */
-
 public class ItemMoveManager {
-
   private static ItemMoveManager singleton = new ItemMoveManager();
-
   private final List<Item> itemsToMove = new ArrayList<Item>(20);
 
   /**
    * .
    */
   public enum MoveActions {
-
-    CUT,
-
-    COPY
+    CUT, COPY
   }
 
   private MoveActions moveAction;

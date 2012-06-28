@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.base;
 
 import java.util.ArrayList;
@@ -48,13 +47,10 @@ import org.jajuk.util.error.JajukRuntimeException;
  * Convenient class to manage Albums.
  */
 public final class AlbumManager extends ItemManager implements Observer {
-
   /** Self instance. */
   private static AlbumManager singleton = new AlbumManager();
-
   /** Album max rating. */
   private long maxRate = 0l;
-
   private int comp = 0;
 
   /**
@@ -164,33 +160,27 @@ public final class AlbumManager extends ItemManager implements Observer {
     if (old.getName2().equals(sNewName)) {
       return old;
     }
-
     // check up front as later the state of the track is already changed
     boolean bQueueUpdateRequired = false;
     if (QueueModel.getPlayingFile() != null
         && QueueModel.getPlayingFile().getTrack().getAlbum().equals(old)) {
       bQueueUpdateRequired = true;
     }
-
     Album newItem = registerAlbum(sNewName, old.getDiscID());
     // re apply old properties from old item
     newItem.cloneProperties(old);
-
     // update tracks
     for (Track track : TrackManager.getInstance().getTracks()) {
       if (track.getAlbum().equals(old)) {
         TrackManager.getInstance().changeTrackAlbum(track, sNewName, null);
       }
     }
-
     // if current track album name is changed, notify it
     if (bQueueUpdateRequired) {
       ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
     }
-
     // remove old item
     removeItem(old);
-
     return newItem;
   }
 
@@ -303,7 +293,6 @@ public final class AlbumManager extends ItemManager implements Observer {
       }
     }
     return out;
-
   }
 
   /**
@@ -534,7 +523,6 @@ public final class AlbumManager extends ItemManager implements Observer {
     } finally {
       lock.readLock().unlock();
     }
-
   }
 
   /**
@@ -560,5 +548,4 @@ public final class AlbumManager extends ItemManager implements Observer {
       album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, "");
     }
   }
-
 }

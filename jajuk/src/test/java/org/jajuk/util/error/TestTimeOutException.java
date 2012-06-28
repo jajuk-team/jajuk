@@ -26,7 +26,6 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestTimeOutException extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -45,5 +44,4 @@ public class TestTimeOutException extends JajukTestCase {
   public void testTimeOutExceptionIntThrowable() {
     new TimeOutException(24, new Throwable("TestException"));
   }
-
 }

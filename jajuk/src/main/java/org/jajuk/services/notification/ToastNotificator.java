@@ -36,7 +36,6 @@ import org.jajuk.util.UtilGUI;
  * </p>
  */
 public class ToastNotificator implements INotificator {
-
   /** Self instance *. */
   private static ToastNotificator self = new ToastNotificator();
 

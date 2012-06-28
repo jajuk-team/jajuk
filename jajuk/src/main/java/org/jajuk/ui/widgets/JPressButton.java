@@ -36,16 +36,12 @@ import javax.swing.plaf.ButtonUI;
  * as the button remains pressed.
  */
 public class JPressButton extends JajukButton {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** The Constant DEFAULT_INTERVAL.   */
   private static final long DEFAULT_INTERVAL = 250;
-
   /** The interval between successive fireActionPerformed() calls. */
   private long actionInterval;
-
   /** Re-use the L&F component of a normal <code>JButton</code>. */
   private static final String UI_CLASS_ID = "ButtonUI";
 
@@ -147,13 +143,10 @@ public class JPressButton extends JajukButton {
    */
   public JPressButton(String text, Icon icon, long actionInterval) {
     this.actionInterval = actionInterval;
-
     // Create the model
     setModel(new PressButtonModel(this));
-
     // initialize
     init(text, icon);
-
     // Set border
     setRolloverEnabled(true);
   }
@@ -208,12 +201,9 @@ public class JPressButton extends JajukButton {
    * @see ActionThread
    */
   public static class PressButtonModel extends DefaultButtonModel {
-
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
-
     private ActionThread thread;
-
     private final JPressButton button;
 
     /**
@@ -233,13 +223,11 @@ public class JPressButton extends JajukButton {
       if ((isPressed() == b) || !isEnabled()) {
         return;
       }
-
       if (b) {
         stateMask |= PRESSED;
       } else {
         stateMask &= ~PRESSED;
       }
-
       if (isArmed()) {
         int modifiers = 0;
         AWTEvent currentEvent = EventQueue.getCurrentEvent();
@@ -248,7 +236,6 @@ public class JPressButton extends JajukButton {
         } else if (currentEvent instanceof ActionEvent) {
           modifiers = ((ActionEvent) currentEvent).getModifiers();
         }
-
         if (isPressed() && thread == null) {
           thread = button.new ActionThread(new ActionEvent(button, ActionEvent.ACTION_PERFORMED,
               getActionCommand(), EventQueue.getMostRecentEventTime(), modifiers));
@@ -268,11 +255,8 @@ public class JPressButton extends JajukButton {
    * event at a certain interval.
    */
   private class ActionThread extends Thread {
-
     private final ActionEvent evt;
-
     private boolean active = true;
-
     private final long interval;
 
     /**
@@ -292,7 +276,6 @@ public class JPressButton extends JajukButton {
      */
     public ActionThread(ActionEvent evt, long interval) {
       super("JPressButton Action Thread");
-
       this.interval = interval;
       this.evt = evt;
     }

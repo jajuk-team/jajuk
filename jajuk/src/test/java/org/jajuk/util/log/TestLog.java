@@ -29,7 +29,6 @@ import org.jajuk.util.error.JajukException;
  * .
  */
 public class TestLog extends JajukTestCase {
-
   /*
    * (non-Javadoc)
    * 
@@ -39,7 +38,6 @@ public class TestLog extends JajukTestCase {
   protected void setUp() throws Exception {
     // make sure we have logging initialized for these tests
     Log.init();
-
     super.setUp();
   }
 
@@ -216,7 +214,6 @@ public class TestLog extends JajukTestCase {
     // set verbosity first as we can not rely on INFO being set because other
     // tests might have adjusted it somehow
     Log.setVerbosity(Log.INFO);
-
     assertEquals(Log.INFO, Log.getVerbosity());
     Log.setVerbosity(Log.DEBUG);
     assertEquals(Log.DEBUG, Log.getVerbosity());
@@ -268,7 +265,6 @@ public class TestLog extends JajukTestCase {
    */
   private void verifySpool(String substring, boolean expected) {
     List<String> list = Log.getSpool();
-
     for (String str : list) {
       if (str.contains(substring)) {
         // expected => return, not expected => fail
@@ -279,7 +275,6 @@ public class TestLog extends JajukTestCase {
         }
       }
     }
-
     // if we expected the string, but did not find it we need to fail here
     if (expected) {
       fail("List does not contain expected string '" + substring + "' in spool: " + list.toString());
@@ -296,7 +291,6 @@ public class TestLog extends JajukTestCase {
     verifySpool("this is");
     verifySpool("sensitive", false);
     verifySpool("data...");
-
     // replaced by "***"
     verifySpool("***");
   }
@@ -312,5 +306,4 @@ public class TestLog extends JajukTestCase {
     verifySpool("OPENING");
     verifySpool("secret", false);
   }
-
 }

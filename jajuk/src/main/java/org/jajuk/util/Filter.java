@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.util;
 
 import java.util.ArrayList;
@@ -37,16 +36,12 @@ import org.jajuk.util.log.Log;
  * Filter on meta information.
  */
 public class Filter {
-
   /** Key. */
   String key;
-
   /** Value*. */
   String sValue;
-
   /** Human*. */
   boolean bHuman = false;
-
   /** Exact*. */
   boolean bExact = false;
 
@@ -121,7 +116,6 @@ public class Filter {
     }
     // Check if property is not the "fake" any property
     boolean bAny = (filter.getProperty() == null || "any".equals(filter.getProperty()));
-
     String comparator = null;
     String checked = filter.getValue();
     // If checked is void, return the list as it
@@ -135,7 +129,6 @@ public class Filter {
       Log.debug("Wrong regexp pattern: " + checked);
       return Collections.emptyList();
     }
-
     List<T> newList = new ArrayList<T>();
     Iterator<T> it = list.iterator();
     while (it.hasNext()) {
@@ -179,5 +172,4 @@ public class Filter {
     }
     return newList;
   }
-
 }

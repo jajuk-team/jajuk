@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.thumbnails;
 
 import ext.services.lastfm.AlbumInfo;
@@ -61,16 +60,12 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * information display...
  */
 public class LastFmAlbumThumbnail extends AbstractThumbnail {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -804471264407148566L;
-
   /** Associated album. */
   private AlbumInfo album;
-
   /** Is this artist known in collection ?. */
   private final boolean bKnown;
-
   /** Thumb associated image *. */
   private ImageIcon ii;
 
@@ -176,17 +171,14 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
       // Download image and store file reference (to generate the
       // popup thumb for ie)
       fCover = DownloadManager.downloadToCache(remote);
-
       if (!fCover.exists()) {
         Log.warn("Cache file not found: {{" + fCover.getAbsolutePath() + "}}");
         return;
       }
-
       if (fCover.length() == 0) {
         Log.warn("Cache file has zero bytes: {{" + fCover.getAbsolutePath() + "}}");
         return;
       }
-
       BufferedImage image = ImageIO.read(fCover);
       if (image == null) {
         Log.warn("Could not read cover from: {{" + fCover.getAbsolutePath() + "}}");
@@ -213,7 +205,6 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
       }
     } catch (Exception e) {
       Log.error(e);
-
       // check for empty file to remove invalid cache entries
       if (fCover.exists() && fCover.length() == 0) {
         Log.warn("Removing empty file from cache: " + fCover.getAbsolutePath());
@@ -278,7 +269,5 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
     if (UtilSystem.isBrowserSupported()) {
       jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, album.getUrl());
     }
-
   }
-
 }

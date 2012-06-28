@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.util.ArrayList;
@@ -39,7 +38,6 @@ import org.jajuk.util.Messages;
  * Table model used for web radios.
  */
 public class WebRadioTableModel extends JajukTableModel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -55,28 +53,20 @@ public class WebRadioTableModel extends JajukTableModel {
     // for proper display in some look and feel
     vColNames.add(" ");
     idList.add(Const.XML_PLAY);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_NAME));
     idList.add(Const.XML_NAME);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_DESC));
     idList.add(Const.XML_DESC);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_URL));
     idList.add(Const.XML_URL);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_KEYWORDS));
     idList.add(Const.XML_KEYWORDS);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_GENRE));
     idList.add(Const.XML_GENRE);
-
     vColNames.add(Messages.getString("WebRadioView.2"));
     idList.add(Const.XML_ORIGIN);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_BITRATE));
     idList.add(Const.XML_BITRATE);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_FREQUENCY));
     idList.add(Const.XML_FREQUENCY);
   }
@@ -92,11 +82,9 @@ public class WebRadioTableModel extends JajukTableModel {
     // This should be monitor file manager to avoid NPE when changing items
     List<WebRadio> alToShow = new ArrayList<WebRadio>(WebRadioManager.getInstance().getWebRadios());
     oItems = new Item[iRowNum];
-
     // Filter radios if required
     Filter filter = new Filter(sPropertyName, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
     alToShow = Filter.filterItems(alToShow, filter, WebRadio.class);
-
     Iterator<WebRadio> it = alToShow.iterator();
     int iColNum = iNumberStandardCols;
     iRowNum = alToShow.size();
@@ -104,51 +92,40 @@ public class WebRadioTableModel extends JajukTableModel {
     oValues = new Object[iRowNum][iColNum];
     oItems = new Item[iRowNum];
     bCellEditable = new boolean[iRowNum][iColNum];
-
     for (int iRow = 0; it.hasNext(); iRow++) {
       WebRadio radio = it.next();
       setItemAt(iRow, radio);
       // Id
       oItems[iRow] = radio;
-
       // Play
       IconLabel il = getIcon(false);
       oValues[iRow][0] = il;
       bCellEditable[iRow][0] = false;
-
       // Radio name
       oValues[iRow][1] = radio.getName();
       bCellEditable[iRow][1] = true;
-
       // Radio description
       oValues[iRow][2] = radio.getDescription();
       bCellEditable[iRow][2] = true;
-
       // Url
       oValues[iRow][3] = radio.getUrl();
       bCellEditable[iRow][3] = true;
-
       // Keywords
       oValues[iRow][4] = radio.getKeywords();
       bCellEditable[iRow][4] = true;
-
       // Genre
       oValues[iRow][5] = radio.getGenre();
       // Genre can be edited only on custom radios
       bCellEditable[iRow][5] = (radio.getOrigin() == WebRadioOrigin.CUSTOM);
-
       // Origin
       oValues[iRow][6] = radio.getOrigin().name();
       bCellEditable[iRow][6] = false;
-
       // Bitrate
       oValues[iRow][7] = radio.getLongValue(Const.XML_BITRATE);
       bCellEditable[iRow][7] = true;
-
       // Frequency
       oValues[iRow][8] = radio.getLongValue(Const.XML_FREQUENCY);
       bCellEditable[iRow][8] = true;
     }
   }
-
 }

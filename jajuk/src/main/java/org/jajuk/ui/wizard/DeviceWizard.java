@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.wizard;
 
 import java.awt.HeadlessException;
@@ -73,64 +72,44 @@ import org.netbeans.validation.api.ui.ValidationPanel;
  * Device creation wizard.
  */
 public class DeviceWizard extends JajukJDialog implements ActionListener, Const {
-
   /** The Constant WRAP. */
   private static final String WRAP = "wrap";
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** Device type combo. */
   private final JComboBox jcbType;
-
   /** Device name text field. */
   private final JTextField jtfName;
-
   /** Device url text field. */
   private final JTextField jtfUrl;
-
   /** Device url path selector button. */
   private final JButton jbUrl;
-
   /** Auto-refresh device checkbox. */
   private final JCheckBox jcbRefresh;
-
   /** Auto-mount checkbox. */
   private final JCheckBox jcbAutoMount;
-
   /** Auto-refresh interval. */
   private final JTextField jtfAutoRefresh;
-
   /** Device sync checkbox. */
   private final JCheckBox jcboxSynchronized;
-
   /** Other device combo. */
   private final JComboBox jcbSynchronized;
-
   /** Bidi sync choice. */
   private final JRadioButton jrbBidirSynchro;
-
   /** Unidir sync choice. */
   private final JRadioButton jrbUnidirSynchro;
-
   /** Ok Cancel panel. */
   private final OKCancelPanel okp;
-
   /** New device flag. */
   private boolean bNew = true;
-
   /** Current device. */
   private Device device;
-
   /** All devices expect itself. */
   private final List<Device> devices;
-
   /** Initial URL*. */
   private String sInitialURL;
-
   /** A convenient NumberFormat instance. */
   private NumberFormat nformat = NumberFormat.getInstance();
-
   /** Validation group. */
   private ValidationGroup vg;
 
@@ -139,7 +118,6 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
    */
   public DeviceWizard() {
     super();
-
     devices = DeviceManager.getInstance().getDevices();
     addWindowListener(new WindowAdapter() {
       @Override
@@ -207,16 +185,12 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
     jrbBidirSynchro.addActionListener(this);
     bgSynchro.add(jrbBidirSynchro);
     bgSynchro.add(jrbUnidirSynchro);
-
     // Validation
     ValidationPanel vp = new ValidationPanel();
     vg = vp.getValidationGroup();
-
     installValidators();
-
     // buttons
     okp = new OKCancelPanel(this);
-   
     // Add items
     setLayout(new MigLayout("insets 10,gapx 10, gapy 15", "[][grow]"));
     add(jlType);
@@ -237,7 +211,6 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
     add(jrbBidirSynchro, "left,gap left 20,span,wrap");
     add(vp, "height 50!,span,wrap");
     add(okp, "span,right");
-
     // Set default behaviors
     if (jcbSynchronized.getItemCount() == 0) {
       jcboxSynchronized.setEnabled(false);
@@ -277,7 +250,6 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
             }
           }
         });
-
     // Validate device name
     vg.add(jtfName, Validators.REQUIRE_NON_EMPTY_STRING);
     vg.add(jtfName, new Validator<String>() {

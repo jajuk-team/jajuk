@@ -26,7 +26,6 @@ import org.jajuk.util.JajukFileFilter;
  * Jar filter.
  */
 public class JarFilter extends JajukFileFilter {
-
   /** Self instance. */
   private static JarFilter self = new JarFilter();
 
@@ -45,5 +44,4 @@ public class JarFilter extends JajukFileFilter {
   protected JarFilter() {
     super(new String[] { "jar" });
   }
-
 }

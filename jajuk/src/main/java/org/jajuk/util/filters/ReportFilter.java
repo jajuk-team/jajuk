@@ -26,7 +26,6 @@ import org.jajuk.util.JajukFileFilter;
  * Report filter (.html or XML file)
  */
 public class ReportFilter extends JajukFileFilter {
-
   /** Self instance. */
   private static ReportFilter self = new ReportFilter();
 
@@ -45,5 +44,4 @@ public class ReportFilter extends JajukFileFilter {
   protected ReportFilter() {
     super(new String[] { "html", "xml" });
   }
-
 }

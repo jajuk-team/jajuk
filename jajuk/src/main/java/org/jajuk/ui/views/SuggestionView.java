@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.views;
 
 import ext.FlowScrollPanel;
@@ -80,55 +79,31 @@ import org.jdesktop.swingx.JXBusyLabel;
  * LAstFM.
  */
 public class SuggestionView extends ViewAdapter {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   private JTabbedPane tabs;
-
   protected String artist;
 
   /**
    * .
    */
   enum SuggestionType {
-
-    BEST_OF,
-
-    NEWEST,
-
-    RARE,
-
-    OTHERS_ALBUMS,
-
-    SIMILAR_ARTISTS
+    BEST_OF, NEWEST, RARE, OTHERS_ALBUMS, SIMILAR_ARTISTS
   }
 
   JScrollPane jpBestof;
-
   JScrollPane jpNewest;
-
   JScrollPane jpRare;
-
   JScrollPane jpOthersAlbums;
-
   JScrollPane jpSimilarArtists;
-
   private int comp = 0;
-
   List<Album> albumsNewest;
-
   List<Album> albumsPrefered;
-
   List<Album> albumsRare;
-
   /** Currently selected thumb. */
   AbstractThumbnail selectedThumb;
-
   private AlbumListInfo albums;
-
   private SimilarArtistsInfo similar;
-
   /** Event ID., it should be volatile because this mutable field can be set by different threads */
   protected volatile int iEventID = 0;//NOSONAR
 
@@ -136,7 +111,6 @@ public class SuggestionView extends ViewAdapter {
    * .
    */
   class ThumbMouseListener extends MouseAdapter {
-
     /*
      * (non-Javadoc)
      *
@@ -196,7 +170,6 @@ public class SuggestionView extends ViewAdapter {
     }
     // Now use the new TabbedPaneUI
     tabs.setUI(new MyTabbedPaneUI());
-
     // Fill tabs with empty tabs
     tabs.addTab(Messages.getString("SuggestionView.1"),
         UtilGUI.getCentredPanel(new JLabel(Messages.getString("WikipediaView.3"))));
@@ -208,7 +181,6 @@ public class SuggestionView extends ViewAdapter {
         new JLabel(Messages.getString("SuggestionView.7")));
     tabs.addTab(Messages.getString("SuggestionView.4"),
         new JLabel(Messages.getString("SuggestionView.7")));
-
     // Refresh tabs on demand only, add changelisterner after tab creation to
     // avoid that the stored tab is overwrited at startup
     tabs.addChangeListener(new ChangeListener() {
@@ -221,7 +193,6 @@ public class SuggestionView extends ViewAdapter {
             Integer.toString(tabs.getSelectedIndex()).toString());
       }
     });
-
     if (Conf.containsProperty(getClass().getName() + "_"
         + ((getPerspective() == null) ? "solo" : getPerspective().getID()))) {
       int index = Conf.getInt(getClass().getName() + "_"
@@ -230,7 +201,6 @@ public class SuggestionView extends ViewAdapter {
         tabs.setSelectedIndex(index);
       }
     }
-
     // Add panels
     refreshLocalCollectionTabs();
     // Add tabs
@@ -276,7 +246,6 @@ public class SuggestionView extends ViewAdapter {
         tabs.setComponentAt(2, UtilGUI.getCentredPanel(busy3));
       }
     });
-
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
       JScrollPane jsp1;
       JScrollPane jsp2;
@@ -326,7 +295,6 @@ public class SuggestionView extends ViewAdapter {
    */
   private void refreshLastFMCollectionTabs() {
     final int iLocalEventID = SuggestionView.this.iEventID;
-
     String newArtist = null;
     File current = QueueModel.getPlayingFile();
     if (current != null) {
@@ -371,11 +339,9 @@ public class SuggestionView extends ViewAdapter {
         tabs.setComponentAt(4, UtilGUI.getCentredPanel(busy2));
       }
     });
-
     // Use a swing worker as construct takes a lot of time
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
       JScrollPane jsp1;
-
       JScrollPane jsp2;
 
       @Override
@@ -383,14 +349,12 @@ public class SuggestionView extends ViewAdapter {
         try {
           // Fetch last.fm calls and downloads covers
           preFetchOthersAlbum(iLocalEventID);
-
           // stop this list of albums if there was another file launched in the meantime 
           if (iLocalEventID != SuggestionView.this.iEventID) {
             Log.debug("Stopping downloading of LastFM data because there was another update-event in the meantime. Now: "
                 + SuggestionView.this.iEventID + ", previous: " + iLocalEventID);
             return null;
           }
-
           preFetchSimilarArtists(iLocalEventID);
         } catch (Exception e) {
           Log.error(e);
@@ -407,14 +371,12 @@ public class SuggestionView extends ViewAdapter {
           stopAllBusyLabels();
           return;
         }
-
         jsp1 = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, false);
         jsp2 = getLastFMSuggestionsPanel(SuggestionType.SIMILAR_ARTISTS, false);
         stopAllBusyLabels();
         tabs.setComponentAt(3, (jsp1 == null) ? new JPanel() : jsp1);
         tabs.setComponentAt(4, (jsp2 == null) ? new JPanel() : jsp2);
       }
-
     };
     sw.execute();
   }
@@ -436,7 +398,6 @@ public class SuggestionView extends ViewAdapter {
               + this.iEventID + ", previous: " + iLocalEventID);
           break;
         }
-
         String albumUrl = album.getBigCoverURL();
         if (StringUtils.isBlank(albumUrl)) {
           continue;
@@ -469,7 +430,6 @@ public class SuggestionView extends ViewAdapter {
               + this.iEventID + ", previous: " + iLocalEventID);
           break;
         }
-
         String artistUrl = similarArtist.getImageUrl();
         if (StringUtils.isBlank(artistUrl)) {
           continue;
@@ -544,7 +504,6 @@ public class SuggestionView extends ViewAdapter {
             flowPanel.add(thumb);
           }
         }
-
       }
       // No result found
       else {

@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.dj;
 
 import java.util.ArrayList;
@@ -49,10 +48,8 @@ import org.jajuk.util.log.Log;
  * Ambience manager.
  */
 public final class AmbienceManager implements Observer {
-
   /** Ambience id-> ambience. */
   private final Map<String, Ambience> ambiences = new HashMap<String, Ambience>(10);
-
   /** Self instance. */
   private static AmbienceManager self = new AmbienceManager();
 
@@ -308,5 +305,4 @@ public final class AmbienceManager implements Observer {
     AmbienceManager.getInstance().registerAmbience(
         new Ambience("13", Messages.getString("Ambience.13"), genresLatin));
   }
-
 }

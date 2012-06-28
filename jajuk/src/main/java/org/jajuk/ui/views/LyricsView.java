@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.views;
 
 import java.awt.Insets;
@@ -82,45 +81,29 @@ import org.jajuk.util.log.Log;
  * </p>
  */
 public class LyricsView extends ViewAdapter implements DocumentListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 2229941034734574056L;
-
   private JTextArea jtaLyrics;
-
   private JScrollPane jspLyrics;
-
   private JLabel jlTitle;
-
   private String sURL;
-
   /** Currently analyzed file. */
   private File file;
-
   private String lyrics;
-
   private JMenuItem jmiCopyToClipboard;
-
   private JMenuItem jmiLaunchInBrowser;
-
   private JPanel jpMain;
-
   private JajukButton jbSave;
-
   private JajukButton jbDelete;
-
   private JajukToggleButton jtbEdit;
-
   /** Edition toolbar. */
   private JToolBar toolbarEdit;
-
   private boolean changeDetected = false;
 
   /**
    * .
    */
   class LyricsUpdateThread extends Thread {
-
     /**
      * Instantiates a new lyrics update thread.
      */
@@ -146,7 +129,6 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
       // Notify to make UI changes
       ObservationManager.notify(new JajukEvent(JajukEvents.LYRICS_DOWNLOADED));
     }
-
   }
 
   /**
@@ -169,14 +151,12 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
     jlTitle = new JLabel();
     jlTitle.setFont(fmgr.getFont(JajukFont.PLAIN_L));
     jspLyrics = new JScrollPane(jtaLyrics);
-
     jtaLyrics.setLineWrap(true);
     jtaLyrics.setWrapStyleWord(true);
     jtaLyrics.setEditable(false);
     jtaLyrics.setMargin(new Insets(10, 10, 10, 10));
     jtaLyrics.setFont(fmgr.getFont(JajukFont.BOLD));
     jtaLyrics.addMouseListener(new JajukMouseAdapter() {
-
       @Override
       public void handlePopup(final MouseEvent e) {
         final JPopupMenu menu = new JPopupMenu();
@@ -192,19 +172,16 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
     // Detect text area content change to enable save button on changes
     jtaLyrics.getDocument().addDocumentListener(this);
     initEditUI();
-
     //Create a toolbar to group edition commands
     toolbarEdit = new JajukJToolbar();
     toolbarEdit.add(jtbEdit);
     toolbarEdit.add(jbSave);
     toolbarEdit.add(jbDelete);
-
     // Menu items
     jmiCopyToClipboard = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     if (UtilSystem.isBrowserSupported()) {
       jmiLaunchInBrowser = new JMenuItem(ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER));
     }
-
     // Add items
     jpMain = new JPanel(new MigLayout("insets 5,gapx 3, gapy 5,filly", "[95][grow]", "[][grow]"));
     jpMain.add(jtbEdit, "left,split 3");
@@ -212,14 +189,11 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
     jpMain.add(jbDelete, "left");
     jpMain.add(jlTitle, "left,wrap");
     jpMain.add(jspLyrics, "span,grow");
-
     setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
     add(jpMain);
     ObservationManager.register(this);
-
     // force initial buttons states
     updateButtonsState();
-
     // Force initial message refresh
     UtilFeatures.updateStatus(this);
   }
@@ -249,7 +223,6 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
         }
       }
     });
-
     jbSave = new JajukButton(IconLoader.getIcon(JajukIcons.SAVE));
     jbSave.setToolTipText(Messages.getString("LyricsView.4"));
     jbSave.addActionListener(new ActionListener() {
@@ -266,7 +239,6 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
         exitEditLyrics(false);
       }
     });
-
     jbDelete = new JajukButton(IconLoader.getIcon(JajukIcons.DELETE));
     jbDelete.setToolTipText(Messages.getString("LyricsView.5"));
     jbDelete.addActionListener(new ActionListener() {
@@ -415,7 +387,6 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
     // Delete button
     jbDelete.setEnabled(file != null && provider != null
         && !(provider instanceof GenericWebLyricsProvider));
-
     // Save button : enabled only for changes in the text area or
     // if we just got lyrics from the web or form a txt file
     // (so user can try to commit it to the tag)
@@ -509,5 +480,4 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
     changeDetected = true;
     updateButtonsState();
   }
-
 }

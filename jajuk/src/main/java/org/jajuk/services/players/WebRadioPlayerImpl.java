@@ -43,12 +43,10 @@ import org.jajuk.util.log.Log;
  * Jajuk web radio player implementation based on Mplayer.
  */
 public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
-
   /**
    * Reader : read information from mplayer like position.
    */
   private class ReaderThread extends Thread {
-
     /**
      * Implemented to set a useful thread name.
      */
@@ -95,7 +93,6 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
             pDetails.put(Const.CURRENT_RADIO_TRACK, currentRadioTrack);
             ObservationManager.notify(new JajukEvent(JajukEvents.WEBRADIO_INFO_UPDATED, pDetails));
           }
-
           bOpening = false;
           // Search for Exiting (...) pattern
           if (line.matches(".*\\x2e\\x2e\\x2e.*\\(.*\\).*")) {
@@ -204,5 +201,4 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
     // makes no sense for webradios
     return 0;
   }
-
 }

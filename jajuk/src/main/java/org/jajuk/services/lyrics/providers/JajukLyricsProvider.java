@@ -26,20 +26,15 @@ import org.jajuk.base.File;
  * Class container of lyrics written by user from Jajuk GUI itself.
  */
 public class JajukLyricsProvider implements ILyricsProvider {
-
   private String sLyrics = null;
-
   private String sArtist = null;
-
   private String sTitle = null;
-
   private File audioFile = null;
 
   /**
    * Instantiates a new jajuk lyrics provider.
    */
   public JajukLyricsProvider() {
-
   }
 
   /* (non-Javadoc)
@@ -93,7 +88,6 @@ public class JajukLyricsProvider implements ILyricsProvider {
    */
   public File getFile() {
     return audioFile;
-
   }
 
   /**
@@ -122,5 +116,4 @@ public class JajukLyricsProvider implements ILyricsProvider {
   public String getSourceAddress() {
     return "<Jajuk>";
   }
-
 }

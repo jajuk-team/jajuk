@@ -17,7 +17,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  $$Revision: 2510 $$
  */
-
 package org.jajuk.ui.views;
 
 import java.awt.Color;
@@ -66,9 +65,7 @@ import org.jdesktop.swingx.decorator.ColorHighlighter;
  * 
  */
 public class WebRadioView extends AbstractTableView {
-
   private static final long serialVersionUID = 1L;
-
   /** Add a new web radio button */
   private JajukButton jbNewRadio;
 
@@ -120,7 +117,6 @@ public class WebRadioView extends AbstractTableView {
         }
       }
     });
-
   }
 
   /*
@@ -157,12 +153,10 @@ public class WebRadioView extends AbstractTableView {
   @Override
   public void shortCall(Object in) {
     jtable = new JajukTable(model, true, columnsConf);
-
     jbNewRadio = new JajukButton(IconLoader.getIcon(JajukIcons.ADD));
     jbNewRadio.setToolTipText(Messages.getString("WebRadioView.8"));
     // Open a Webradio Properties Dialog 
     jbNewRadio.addActionListener(new ActionListener() {
-
       @Override
       public void actionPerformed(ActionEvent e) {
         // Create a new and void webradio
@@ -183,26 +177,20 @@ public class WebRadioView extends AbstractTableView {
         });
       }
     });
-
     ColorHighlighter colorHighlighter = new ColorHighlighter(new PlayHighlighterPredicate(jtable),
         Color.ORANGE, null);
     jtable.addHighlighter(colorHighlighter);
-
     jmiDelete = new JMenuItem(ActionManager.getAction(JajukActions.DELETE));
     jmiDelete.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
-
     jmiFileCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     jmiFileCopyURL.putClientProperty(Const.DETAIL_CONTENT, jtable.getSelection());
-
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
     jmiProperties.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
-
     //Add menu items
     jtable.getMenu().add(jmiFileCopyURL);
     jtable.getMenu().add(jmiDelete);
     jtable.getMenu().addSeparator();
     jtable.getMenu().add(jmiProperties);
-
     // Set a default behavior for double click or click on the play column
     jtable.setCommand(new ILaunchCommand() {
       @Override
@@ -211,11 +199,9 @@ public class WebRadioView extends AbstractTableView {
         if (jtable.getSelectedColumnCount() != 1) {
           return;
         }
-
         int iSelectedCol = jtable.getSelectedColumn();
         // Convert column selection as columns may have been moved
         iSelectedCol = jtable.convertColumnIndexToModel(iSelectedCol);
-
         // We launch the selection :
         // - In any case if user clicked on the play column (column 0)
         // - Or in case of double click on any column 
@@ -232,10 +218,8 @@ public class WebRadioView extends AbstractTableView {
     // Control panel
     jpControl = new JPanel();
     jpControl.setBorder(BorderFactory.createEtchedBorder());
-
     // Call common code of AbstractTableView
     createGenericGUI(jbNewRadio);
     initTable();
   }
-
 }

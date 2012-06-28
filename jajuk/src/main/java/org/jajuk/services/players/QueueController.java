@@ -32,9 +32,7 @@ import org.jajuk.events.Observer;
  * FIFO convenient facilities <singleton>.
  */
 public final class QueueController implements Observer {
-
   private static QueueController self = new QueueController();
-
   // Register this item, do not do this in the constructor as the instance is not yet available
   static {
     ObservationManager.register(self);
@@ -75,5 +73,4 @@ public final class QueueController implements Observer {
       QueueModel.clean();
     }
   }
-
 }

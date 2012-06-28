@@ -30,7 +30,6 @@ import org.junit.Test;
  * .
  */
 public class TestTrackManager extends JajukTestCase {
-
   /* (non-Javadoc)
    * @see org.jajuk.JajukTestCase#setUp()
    */
@@ -183,13 +182,10 @@ public class TestTrackManager extends JajukTestCase {
   public void testRemoveFile() throws IOException {
     // Set-up...
     File file = JUnitHelpers.getFile();
-
     // Remove the reference
     TrackManager.getInstance().removeFile(file);
-
     // Check if the collection no more contains the track (as it mapped a single file now removed)
     assertTrue(TrackManager.getInstance().getTrackByID(file.getTrack().getID()) == null);
-
     // Check if the associated track no more contains this file
     assertFalse(file.getTrack().getFiles().contains(file));
   }
@@ -265,5 +261,4 @@ public class TestTrackManager extends JajukTestCase {
   public void testSetAutocommit() {
     //TODO To be implemented
   }
-
 }

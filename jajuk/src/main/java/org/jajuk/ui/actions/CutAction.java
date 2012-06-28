@@ -35,9 +35,7 @@ import org.jajuk.util.Messages;
 /**
  * Action class for Cut.
  */
-
 public class CutAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -58,10 +56,8 @@ public class CutAction extends JajukAction {
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
     ArrayList<Item> alSelected = (ArrayList<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
-
     ItemMoveManager.getInstance().removeAll();
     ItemMoveManager.getInstance().addItems(alSelected);
     ItemMoveManager.getInstance().setAction(ItemMoveManager.MoveActions.CUT);
-
   }
 }

@@ -20,7 +20,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.lastfm;
 
 import net.roarsoftware.lastfm.Track;
@@ -29,10 +28,8 @@ import net.roarsoftware.lastfm.Track;
  * The Class LastFmTrack.
  */
 public class LastFmTrack implements TrackInfo {
-
   /** The title. */
   private String title;
-
   /** The url. */
   private String url;
 
@@ -45,10 +42,8 @@ public class LastFmTrack implements TrackInfo {
    */
   protected static LastFmTrack getTrack(Track t) {
     LastFmTrack track = new LastFmTrack();
-
     track.title = t.getName();
     track.url = t.getUrl();
-
     return track;
   }
 
@@ -91,5 +86,4 @@ public class LastFmTrack implements TrackInfo {
   public void setUrl(String url) {
     this.url = url;
   }
-
 }

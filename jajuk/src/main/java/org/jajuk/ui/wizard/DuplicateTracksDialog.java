@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.wizard;
 
 import java.awt.BorderLayout;
@@ -53,24 +52,15 @@ import org.jajuk.util.log.Log;
  * Tracks Duplicate dialog.
  */
 public class DuplicateTracksDialog extends JPanel implements ListSelectionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   private final JList list;
-
   private final JScrollPane listScrollPane;
-
   private final DefaultListModel listModel = new DefaultListModel();
-
   private final List<List<File>> allFiles;
-
   private List<File> flatFilesList;
-
   private final JButton deleteButton;
-
   private final JButton selectAllButton;
-
   private final JButton closeButton;
 
   /**
@@ -84,27 +74,20 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
     allFiles = files;
     closeButton = jbClose;
     populateList(files);
-
     list = new JList(listModel);
     list.setVisibleRowCount(20);
     listScrollPane = new JScrollPane(list);
-
     deleteButton = new JButton(Messages.getString("Delete"));
     deleteButton.setActionCommand(Messages.getString("Delete"));
     deleteButton.addActionListener(new DeleteListener());
-
     selectAllButton = new JButton(Messages.getString("FindDuplicateTracksAction.4"));
     selectAllButton.setActionCommand(Messages.getString("FindDuplicateTracksAction.4"));
     selectAllButton.addActionListener(new SelectAllListener());
-
     JPanel buttonPane = new JPanel(new MigLayout("ins 5,right"));
-
     buttonPane.add(deleteButton, "sg buttons,center");
     buttonPane.add(selectAllButton, "sg buttons,center");
     buttonPane.add(closeButton, "sg buttons,center");
-
     buttonPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
     add(listScrollPane, BorderLayout.CENTER);
     add(buttonPane, BorderLayout.PAGE_END);
   }
@@ -147,7 +130,6 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
   }
 
   class DeleteListener implements ActionListener {
-
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -155,14 +137,12 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
     public void actionPerformed(ActionEvent e) {
       int indices[] = list.getSelectedIndices();
       String sFiles = getSelectedFiles(indices);
-
       int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_files") + " : \n\n"
           + sFiles + "\n" + indices.length + " " + Messages.getString("Confirmation_file_number"),
           JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
       if (iResu != JOptionPane.YES_OPTION) {
         return;
       }
-
       // Delete physically files from disk and from collection
       for (int i : indices) {
         try {
@@ -172,7 +152,6 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
           Log.error(131, ioe);
         }
       }
-
       // Remove table rows
       int deletedRows = 0;
       for (int i : indices) {
@@ -181,7 +160,6 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
         deleteFilefromList(i - deletedRows);
         deletedRows++;
       }
-
       populateList(allFiles);
       ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
     }
@@ -197,13 +175,11 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
             if (allFiles.get(r).size() <= 2) {
               // if only one file is left now, remove the whole element
               allFiles.remove(r);
-
               // done, the required index was removed 
               return;
             } else {
               // remove the file that is removed
               allFiles.get(r).remove(c);
-
               // done, the required index was removed
               return;
             }
@@ -223,7 +199,6 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
   }
 
   class SelectAllListener implements ActionListener {
-
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -251,11 +226,9 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
   @Override
   public void valueChanged(ListSelectionEvent e) {
     if (!e.getValueIsAdjusting()) {
-
       if (list.getSelectedIndex() == -1) {
         // No selection, disable delete button.
         deleteButton.setEnabled(false);
-
       } else {
         // Selection, enable the delete button.
         deleteButton.setEnabled(true);

@@ -39,14 +39,11 @@ import org.jajuk.util.UtilSystem;
  * </p>
  */
 public final class ActionManager {
-
   /** The Constant MAP.   */
   private static final EnumMap<JajukActions, JajukAction> MAP = new EnumMap<JajukActions, JajukAction>(
       JajukActions.class);
-
   /** The Constant STROKE_LIST.   */
   private static final List<KeyStroke> STROKE_LIST = new ArrayList<KeyStroke>();
-
   /** Self instance. */
   private static ActionManager self = new ActionManager();
 
@@ -71,7 +68,6 @@ public final class ActionManager {
     installAction(JajukActions.CONTINUE_MODE, new ContinueModeAction(), false);
     installAction(JajukActions.INTRO_MODE, new IntroModeAction(), false);
     installAction(JajukActions.KARAOKE_MODE, new KaraokeModeAction(), false);
-
     // CommandJPanel: Special Functions Panel
     installAction(JajukActions.SHUFFLE_GLOBAL, new GlobalRandomAction(), false);
     installAction(JajukActions.BEST_OF, new BestOfAction(), false);
@@ -79,7 +75,6 @@ public final class ActionManager {
     installAction(JajukActions.NOVELTIES, new NoveltiesAction(), false);
     installAction(JajukActions.FINISH_ALBUM, new FinishAlbumAction(), false);
     installAction(JajukActions.WEB_RADIO, new WebRadioAction(), false);
-
     // CommandJPanel: Play Panel
     installAction(JajukActions.PREVIOUS_TRACK, new PreviousTrackAction(), true);
     installAction(JajukActions.REPLAY_ALBUM, new ReplayAlbumAction(), true);
@@ -91,30 +86,24 @@ public final class ActionManager {
     installAction(JajukActions.STOP_TRACK, new StopTrackAction(), true);
     installAction(JajukActions.FORWARD_TRACK, new ForwardTrackAction(), true);
     installAction(JajukActions.INC_RATE, new ChangeTrackPreferenceAction(), true);
-
     // CommandJPanel: Volume control
     installAction(JajukActions.DECREASE_VOLUME, new DecreaseVolumeAction(), true);
     installAction(JajukActions.INCREASE_VOLUME, new IncreaseVolumeAction(), true);
     installAction(JajukActions.MUTE_STATE, new MuteAction(), true);
-
     // JajukJMenuBar: File Menu
     installAction(JajukActions.EXIT, new ExitAction(), false);
-
     // JajukJMenuBar: views
     installAction(JajukActions.VIEW_RESTORE_DEFAULTS, new RestoreViewsAction(), false);
     installAction(JajukActions.ALL_VIEW_RESTORE_DEFAULTS, new RestoreAllViewsAction(), false);
-
     // JajukJMenuBar: attributes
     installAction(JajukActions.CUSTOM_PROPERTIES_ADD, new NewPropertyAction(), false);
     installAction(JajukActions.CUSTOM_PROPERTIES_REMOVE, new RemovePropertyAction(), false);
-
     // JajukJMenuBar: configuration
     installAction(JajukActions.CONFIGURE_DJS, new DJConfigurationAction(), false);
     installAction(JajukActions.CONFIGURE_AMBIENCES, new AmbienceConfigurationAction(), false);
     installAction(JajukActions.SIMPLE_DEVICE_WIZARD, new SimpleDeviceWizardAction(), false);
     installAction(JajukActions.OPTIONS, new ConfigurationRequiredAction(), false);
     installAction(JajukActions.UNMOUNTED, new HideShowMountedDevicesAction(), false);
-
     // JajukJMenuBar: Help Menu
     installAction(JajukActions.HELP_REQUIRED, new HelpRequiredAction(), false);
     installAction(JajukActions.SHOW_DONATE, new ShowDonateAction(), false);
@@ -128,10 +117,8 @@ public final class ActionManager {
     installAction(JajukActions.SHOW_TRACES, new DebugLogAction(), false);
     installAction(JajukActions.TIP_OF_THE_DAY, new TipOfTheDayAction(), false);
     installAction(JajukActions.CHECK_FOR_UPDATES, new CheckForUpdateAction(), false);
-
     // Export
     installAction(JajukActions.CREATE_REPORT, new ReportAction(), false);
-
     // File Actions
     installAction(JajukActions.CUT, new CutAction(), false);
     installAction(JajukActions.COPY, new CopyAction(), false);
@@ -139,7 +126,6 @@ public final class ActionManager {
     installAction(JajukActions.PASTE, new PasteAction(), false);
     installAction(JajukActions.RENAME, new RenameAction(), false);
     installAction(JajukActions.NEW_FOLDER, new NewFolderAction(), false);
-
     // MISC
     installAction(JajukActions.FIND_DUPLICATE_FILES, new FindDuplicateTracksAction(), false);
     installAction(JajukActions.COPY_TO_CLIPBOARD, new CopyClipboardAction(), false);
@@ -156,7 +142,6 @@ public final class ActionManager {
     installAction(JajukActions.PREPARE_PARTY, new PreparePartyAction(), false);
     installAction(JajukActions.EXPORT_RATINGS, new ExportRatingsAction(), false);
     installAction(JajukActions.IMPORT_RATINGS, new ImportRatingsAction(), false);
-
     // Selection actions
     installAction(JajukActions.SHOW_PROPERTIES, new ShowPropertiesAction(), true);
     installAction(JajukActions.PLAY_SELECTION, new PlaySelectionAction(), false);
@@ -172,7 +157,6 @@ public final class ActionManager {
     installAction(JajukActions.SAVE_AS, new SaveAsAction(), false);
     installAction(JajukActions.SYNC_TREE_TABLE, new SyncTreeTableAction(), false);
     installAction(JajukActions.SHOW_CURRENTLY_PLAYING, new ShowCurrentlyPlayingAction(), false);
-
     // Preferences
     installAction(JajukActions.BAN, new BanCurrentAction(), false);
     installAction(JajukActions.BAN_SELECTION, new BanSelectionAction(), false);
@@ -189,10 +173,8 @@ public final class ActionManager {
     if (UtilSystem.isBrowserSupported()) {
       installAction(JajukActions.LAUNCH_IN_BROWSER, new LaunchInBrowserAction(), false);
     }
-
     // Uninstall Look and feel keystrokes if required
     uninstallStrokes();
-
   }
 
   /**
@@ -223,7 +205,6 @@ public final class ActionManager {
    */
   private static void installAction(JajukActions name, JajukAction action, boolean removeFromLAF) {
     MAP.put(name, action);
-
     if (removeFromLAF) {
       KeyStroke stroke = (KeyStroke) action.getValue(Action.ACCELERATOR_KEY);
       if (stroke != null) {

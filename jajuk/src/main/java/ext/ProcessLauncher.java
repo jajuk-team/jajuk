@@ -18,7 +18,6 @@
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package ext;
 
 import java.io.BufferedInputStream;
@@ -39,17 +38,11 @@ import org.jajuk.util.log.Log;
  * @author Yann D'ISANTO
  */
 public class ProcessLauncher {
-
   private OutputStream out = null;
-
   private OutputStream err = null;
-
   private InputStream in = null;
-
   private Process process;
-
   private long timeout = 0L;
-
   private boolean finished = false;
 
   /**
@@ -220,7 +213,6 @@ public class ProcessLauncher {
    */
   private int execute() {
     int status = -1;
-
     // Consommation des fluxs de sortie standard et d'erreur dans des
     // threads separes.
     if (err == null) {
@@ -241,12 +233,10 @@ public class ProcessLauncher {
     } else {
       createStreamThread(process.getInputStream(), out);
     }
-
     // Mapping de l'entree standard de l'application si besoin est.
     if (in != null) {
       createStreamThread(in, process.getOutputStream());
     }
-
     if (timeout > 0L) {
       Thread processThread = createProcessThread(process);
       processThread.start();

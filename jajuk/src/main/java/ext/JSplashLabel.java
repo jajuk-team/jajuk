@@ -45,16 +45,12 @@ import javax.swing.JLabel;
  * @since 1.06
  */
 public final class JSplashLabel extends JLabel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** Used to draw the text string. */
   private String mText = null;
-
   /** Used to draw the copyright notice. */
   private String mCopyright = null;
-
   /** Font to use when drawing the text. */
   private Font mFont = null;
 
@@ -69,7 +65,6 @@ public final class JSplashLabel extends JLabel {
    */
   public JSplashLabel(URL url, String copyright, String text, Font font) {
     super();
-
     ImageIcon icon = new ImageIcon(url);
     if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
       System.err.println("Cannot load splash screen: " + url);
@@ -94,7 +89,6 @@ public final class JSplashLabel extends JLabel {
   @Override
   public void paint(Graphics g) {
     super.paint(g);
-
     if (mText != null) {
       g.setColor(Color.BLACK);
       // Draw copyright notice
@@ -102,10 +96,8 @@ public final class JSplashLabel extends JLabel {
       int width = fm.stringWidth(mCopyright) + 50;
       int height = fm.getHeight();
       g.drawString(mCopyright, getWidth() - width, (getHeight() - height) - 20);
-
       // Draw release
       g.drawString(mText, getWidth() - width, (getHeight() - height));
     }
   }
-
 }

@@ -40,7 +40,6 @@ import org.jajuk.util.log.Log;
  * information into the ticket.
  */
 public class QualityAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -78,6 +77,5 @@ public class QualityAction extends JajukAction {
       Messages.showErrorMessage(136);
       Log.error(e);
     }
-
   }
 }

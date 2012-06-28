@@ -28,7 +28,6 @@ import org.jajuk.services.covers.Cover;
  * Mandatory methods required for all tag implementations.
  */
 public interface ITagImpl {
-
   /**
    * Gets the track name.
    * 
@@ -284,5 +283,4 @@ public interface ITagImpl {
    * @throws Exception the exception
    */
   public List<Cover> getCovers() throws Exception;
-
 }

@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.widgets;
 
 import java.awt.Dimension;
@@ -35,7 +34,6 @@ import javax.swing.plaf.basic.BasicComboPopup;
  * @created 28 nov. 2003
  */
 public class JajukBasicComboPopup extends BasicComboPopup {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -80,5 +78,4 @@ public class JajukBasicComboPopup extends BasicComboPopup {
     return new JScrollPane(list, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
         ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
   }
-
 }

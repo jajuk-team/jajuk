@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.helpers.animations;
 
 import java.awt.Window;
@@ -27,7 +26,6 @@ import java.awt.Window;
  * Interface for any kind of animation.
  */
 public interface IAnimation {
-
   /**
    * What the animation is supposed to do.
    * 

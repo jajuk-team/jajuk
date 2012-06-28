@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.tags;
 
 import java.io.File;
@@ -39,13 +38,10 @@ import org.jajuk.util.UtilFeatures;
  * Tagger implementation for formats without tags and read by BasicPlayer API.
  */
 public class NoTagsTagImpl implements ITagImpl {
-
   /** Analyzed file. */
   private File fio;
-
   /** Current file data. */
   private Map<String, Object> mapInfo;
-
   private static List<String> tagFieldKeyArrayList = new ArrayList<String>();
 
   /*
@@ -369,5 +365,4 @@ public class NoTagsTagImpl implements ITagImpl {
     // TODO Auto-generated method stub
     return null;
   }
-
 }

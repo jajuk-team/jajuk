@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.views;
 
 import java.awt.Component;
@@ -100,51 +99,29 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
  * Physical tree view.
  */
 public class FilesTreeView extends AbstractTreeView implements ActionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** Directories selection. */
   List<Directory> alDirs = new ArrayList<Directory>(10);
-
   JMenuItem jmiDirRefresh;
-
   JMenuItem jmiDirDesynchro;
-
   JMenuItem jmiDirResynchro;
-
   JMenuItem jmiDirCreatePlaylist;
-
   JMenuItem jmiDirRefactor;
-
   JMenuItem jmiDirCopyURL;
-
   JMenuItem jmiOpenExplorer;
-
   JMenuItem jmiDevMount;
-
   JMenuItem jmiDevUnmount;
-
   JMenuItem jmiDevRefresh;
-
   JMenuItem jmiDevSynchronize;
-
   JMenuItem jmiDevTest;
-
   JMenuItem jmiDevOrganize;
-
   JMenuItem jmiDevConfiguration;
-
   JMenuItem jmiDevDelete;
-
   JMenuItem jmiPlaylistFileCopy;
-
   JMenuItem jmiPlaylistFileCut;
-
   JMenuItem jmiPlaylistFilePaste;
-
   JMenuItem jmiPlaylistCopyURL;
-
   JMenuItem jmiPlaylistPrepareParty;
 
   /*
@@ -171,7 +148,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
   @Override
   public void initUI() {
     super.initUI();
-
     // Directory menu
     Action actionRefreshDir = ActionManager.getAction(JajukActions.REFRESH);
     jmiDirRefresh = new JMenuItem(actionRefreshDir);
@@ -193,7 +169,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
     jmiDirCopyURL.putClientProperty(Const.DETAIL_CONTENT, alSelected);
     jmiOpenExplorer = new JMenuItem(ActionManager.getAction(JajukActions.OPEN_EXPLORER));
     jmiOpenExplorer.putClientProperty(Const.DETAIL_CONTENT, alSelected);
-
     // Device menu
     jmiDevMount = new JMenuItem(Messages.getString("FilesTreeView.28"),
         IconLoader.getIcon(JajukIcons.UNMOUNT));
@@ -219,7 +194,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
     jmiDevOrganize = new JMenuItem(Messages.getString(("FilesTreeView.62")),
         IconLoader.getIcon(JajukIcons.REORGANIZE));
     jmiDevOrganize.addActionListener(this);
-
     // playlist menu
     jmiPlaylistFileCopy = new JMenuItem(Messages.getString("FilesTreeView.40"));
     jmiPlaylistFileCopy.setEnabled(false);
@@ -234,26 +208,19 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
     jmiPlaylistCopyURL.putClientProperty(Const.DETAIL_CONTENT, alSelected);
     jmiPlaylistPrepareParty = new JMenuItem(ActionManager.getAction(JajukActions.PREPARE_PARTY));
     jmiPlaylistPrepareParty.putClientProperty(Const.DETAIL_SELECTION, alSelected);
-
     // Add Action Listener
     jmiCopy.addActionListener(this);
     jmiCut.addActionListener(this);
     jmiPaste.addActionListener(this);
-
     // By default disable paste
     jmiPaste.setEnabled(false);
-
     top = new TreeRootElement(Messages.getString("FilesTreeView.47"));
-
     // Register on the list for subject we are interested in
     ObservationManager.register(this);
-
     // fill the tree model
     populateTree();
-
     // create tree
     createTree(true);
-
     /**
      * CAUTION ! we register several listeners against this tree Swing can't
      * ensure the order where listeners will treat them so don't count in the
@@ -270,11 +237,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
     jtree.setAutoscrolls(true);
     jspTree = new JScrollPane(jtree);
     jspTree.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
-
     // DND support
     jtree.setDragEnabled(true);
     jtree.setTransferHandler(new TreeTransferHandler(jtree));
-
     // layout : the tree takes all the available height and we display the
     // command buttons on a different layer (because we don't want to use a
     // dedicated row like in the Tracks tree table : it's too ugly and
@@ -298,7 +263,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
       }
     });
     add(lp, "grow");
-
     // expand all
     expand();
   }
@@ -316,7 +280,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
     try {
       refreshing = true;
       top.removeAllChildren();
-
       // add all devices as "LazyLoading" nodes so all subsequent elements are
       // only populated if necessary
       List<Device> devices = DeviceManager.getInstance().getDevices();
@@ -324,7 +287,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
         DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
         top.add(nodeDevice);
       }
-
       // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a
       // small memory leak that is caused here...
       if (jtree != null && jtree.getModel() != null) {
@@ -473,7 +435,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
   void expand() {
     // make sure the main element is expanded
     jtree.expandRow(0);
-
     // begin by expanding all needed devices and directory, only after,
     // collapse unmounted devices if required
     for (int i = 0; i < jtree.getRowCount(); i++) {
@@ -533,7 +494,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
     } finally {
       bInternalAction = false;
     }
-
   }
 
   /**
@@ -585,14 +545,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
     if (!stopLoop) {
       expandRecursively(item);
     }
-
   }
 
   /**
    * .
    */
   private class FilesMouseAdapter extends JajukMouseAdapter {
-
     /*
      * (non-Javadoc)
      * 
@@ -712,7 +670,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
           }
         }
       }
-
       // get all components recursively
       for (TreePath element : paths) {
         Object o = element.getLastPathComponent();
@@ -846,15 +803,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
         // to be able to get it
         jmiCollectionReport.putClientProperty(Const.DETAIL_ORIGIN, COLLECTION_PHYSICAL);
         jmenuCollection.add(jmiCollectionReport);
-
         Action actionDuplicateFiles = ActionManager.getAction(JajukActions.FIND_DUPLICATE_FILES);
         JMenuItem jmiCollectionDuplicateFiles = new JMenuItem(actionDuplicateFiles);
         jmenuCollection.add(jmiCollectionDuplicateFiles);
-
         // collection
         jmenuCollection.show(jtree, e.getX(), e.getY());
       }
-
     }
   }
 
@@ -862,7 +816,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
    * .
    */
   private class FilesTreeSelectionListener implements TreeSelectionListener {
-
     /*
      * (non-Javadoc)
      * 
@@ -926,7 +879,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
         sbOut.append(lSize).append(Messages.getString("FilesTreeView.54"));
       }
       InformationJPanel.getInstance().setSelection(sbOut.toString());
-
       // Notify the tree selection change (used by tree/table sync)
       if (!bInternalAction) {
         Properties properties = new Properties();
@@ -936,13 +888,10 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
         properties.put(Const.DETAIL_VIEW, getID());
         ObservationManager.notify(new JajukEvent(JajukEvents.TREE_SELECTION_CHANGED, properties));
       }
-
       // Enable CDDB retagging only for a single directory selection
       jmiCDDBWizard.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
-
       // Enable device refresh for a single item
       jmiDevRefresh.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Device);
-
       // Enable Copy url for a single item only
       jmiCopyURL.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof File);
       jmiDirCopyURL.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
@@ -963,7 +912,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
    * .
    */
   private class FilesTreeExpansionListener implements TreeExpansionListener {
-
     /*
      * (non-Javadoc)
      * 
@@ -998,7 +946,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
         Device device = ((DeviceNode) o).getDevice();
         device.setProperty(Const.XML_EXPANDED, true);
       }
-
     }
   }
 
@@ -1033,14 +980,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
       list.add(new PlaylistFileNode(pl));
     }
   }
-
 }
 
 /**
  * File node
  */
 class FileNode extends DefaultMutableTreeNode {
-
   private static final long serialVersionUID = 1L;
 
   /**
@@ -1072,7 +1017,6 @@ class FileNode extends DefaultMutableTreeNode {
  * Device node
  */
 class DeviceNode extends LazyLoadingTreeNode {
-
   private static final long serialVersionUID = 1L;
 
   /**
@@ -1107,7 +1051,6 @@ class DeviceNode extends LazyLoadingTreeNode {
   @Override
   public MutableTreeNode[] loadChildren(DefaultTreeModel model) {
     List<MutableTreeNode> list = new ArrayList<MutableTreeNode>();
-
     // first level is the directory of the device itself, usually only one
     for (Directory parent : getDevice().getDirectories()) {
       // so for each directory that is listed for that Device we build up the
@@ -1116,7 +1059,6 @@ class DeviceNode extends LazyLoadingTreeNode {
     }
     return list.toArray(new MutableTreeNode[list.size()]);
   }
-
 }
 
 /**
@@ -1157,13 +1099,10 @@ class DirectoryNode extends LazyLoadingTreeNode {
   @Override
   public MutableTreeNode[] loadChildren(DefaultTreeModel model) {
     List<MutableTreeNode> list = new ArrayList<MutableTreeNode>();
-
     // simply collect all items one level below that directory
     FilesTreeView.populateFromDirectory(getDirectory(), list);
-
     return list.toArray(new MutableTreeNode[list.size()]);
   }
-
 }
 
 /**
@@ -1208,7 +1147,6 @@ class FilesTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
     if (value instanceof FileNode) {
       setBorder(null);
       File file = ((FileNode) value).getFile();
-
       // Note: file.getName() is better here as it will do less and not
       // create java.io.File in File
       String ext = UtilSystem.getExtension(file.getName());

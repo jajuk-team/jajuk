@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.windows;
 
 import com.vlsolutions.swing.docking.ui.DockingUISettings;
@@ -77,22 +76,16 @@ import org.jdesktop.swingx.JXPanel;
  * Singleton.
  */
 public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** Self instance. */
   private static JajukMainWindow jw;
-
   /** Left side perspective selection panel. */
   private PerspectiveBarJPanel perspectiveBar;
-
   /** Main frame panel. */
   private JPanel jpFrame;
-
   /** specific perspective panel. */
   private JPanel perspectivePanel;
-
   /** State decorator. */
   private WindowStateDecorator decorator;
 
@@ -104,10 +97,8 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
   public static JajukMainWindow getInstance() {
     if (jw == null) {
       jw = new JajukMainWindow();
-
       // Install global keystrokes
       WindowGlobalKeystrokeManager.getInstance();
-
       jw.decorator = new WindowStateDecorator(jw) {
         @Override
         public void specificBeforeShown() {
@@ -179,14 +170,12 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
       System.setProperty("apple.laf.useScreenMenuBar", "true");
       System.setProperty("apple.awt.showGrowBox", "false");
     }
-
     setTitle(Messages.getString("JajukWindow.17"));
     setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
     setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
     // register for given events
     ObservationManager.register(this);
     addWindowListener(new WindowAdapter() {
-
       @Override
       public void windowClosing(WindowEvent we) {
         // Save windows position
@@ -213,35 +202,26 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
       public void windowDeiconified(WindowEvent we) {
         getWindowStateDecorator().display(true);
       }
-
     });
-
     // Light drag and drop for VLDocking
     UIManager.put("DragControler.paintBackgroundUnderDragRect", Boolean.FALSE);
     DockingUISettings.getInstance().installUI();
-
     // Creates the panel
     jpFrame = (JPanel) getContentPane();
     jpFrame.setOpaque(true);
     jpFrame.setLayout(new BorderLayout());
-
     // create the command bar
     CommandJPanel command = CommandJPanel.getInstance();
     command.initUI();
-
     // Create the search bar
     SearchJPanel searchPanel = SearchJPanel.getInstance();
     searchPanel.initUI();
-
     // Add the search bar
     jpFrame.add(searchPanel, BorderLayout.NORTH);
-
     // Create and add the information bar panel
     InformationJPanel information = InformationJPanel.getInstance();
-
     // Add the information panel
     jpFrame.add(information, BorderLayout.SOUTH);
-
     // Create the perspective manager
     try {
       PerspectiveManager.load();
@@ -253,17 +233,13 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
     perspectivePanel = new JXPanel();
     // Make this panel extensible
     perspectivePanel.setLayout(new BoxLayout(perspectivePanel, BoxLayout.X_AXIS));
-
     // Set menu bar to the frame
     JajukMainWindow.getInstance().setJMenuBar(JajukJMenuBar.getInstance());
-
     // Create the perspective tool bar panel
     perspectiveBar = PerspectiveBarJPanel.getInstance();
     jpFrame.add(perspectiveBar, BorderLayout.WEST);
-
     // Initialize and add the desktop
     PerspectiveManager.init();
-
     // Add main container (contains toolbars + desktop)
     JPanel commandDesktop = new JPanel(new MigLayout("insets 0,gapy 0", "[grow]", "[grow][]"));
     commandDesktop.add(perspectivePanel, "grow,wrap");
@@ -291,20 +267,16 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
    * Save current window size and position.
    */
   public void saveSize() {
-
     boolean maxmimized = false;
-
     if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)
         && (getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
       Log.debug("Frame maximized");
       maxmimized = true;
     }
     Conf.setProperty(Const.CONF_WINDOW_MAXIMIZED, Boolean.toString(maxmimized));
-
     String sValue = (int) getLocationOnScreen().getX() + "," + (int) getLocationOnScreen().getY()
         + "," + getBounds().width + "," + getBounds().height;
     Log.debug("Frame moved or resized, new bounds=" + sValue);
-
     // Store the new position
     Conf.setProperty(Const.CONF_WINDOW_POSITION, sValue);
   }
@@ -347,10 +319,8 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
           * Const.FRAME_INITIAL_BORDER, iScreenHeight - 2 * Const.FRAME_INITIAL_BORDER);
       return;
     }
-
     // first get the stored position to get the correct display
     String sPosition = Conf.getString(Const.CONF_WINDOW_POSITION);
-
     // workaround: needed for old configuration files to avoid an exception in
     // the
     // StringTokenizer, since Jajuk 1.9 Jajuk stores in an extra property if it
@@ -366,7 +336,6 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
     }
     // workaround: end
     // could be removed in future releases, also Const.FRAME_MAXIMIZED
-
     StringTokenizer st = new StringTokenizer(sPosition, ",");
     iX = Integer.parseInt(st.nextToken());
     iY = Integer.parseInt(st.nextToken());
@@ -375,7 +344,6 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
     // second set the stored position/size
     setLocation(iX, iY);
     setSize(iHorizSize, iVertSize);
-
     // get the display conf where the main frame is displayed, if the position
     // is outside, the default screen is returned
     GraphicsConfiguration gConf = UtilGUI.getGraphicsDeviceOfMainFrame().getDefaultConfiguration();
@@ -383,19 +351,15 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
     int iScreenYzero = (int) gConf.getBounds().getY();
     iScreenWidth = (int) gConf.getBounds().getWidth();
     iScreenHeight = (int) gConf.getBounds().getHeight();
-
     // check if position/size is correct
-
     // if X position is higher than screen width, set default
     if (iX < iScreenXzero || iX > iScreenXzero + iScreenWidth) {
       iX = Const.FRAME_INITIAL_BORDER;
     }
-
     // if Y position is higher than screen height, set default
     if (iY < iScreenYzero || iY > iScreenYzero + iScreenHeight) {
       iY = Const.FRAME_INITIAL_BORDER;
     }
-
     // if zero horiz size or
     // if height > to screen height (switching from a dual to a single head
     // for ie),
@@ -407,10 +371,8 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
     if (iVertSize <= 0 || iVertSize > iScreenHeight) {
       iVertSize = iScreenHeight - 2 * Const.FRAME_INITIAL_BORDER;
     }
-
     setLocation(iX, iY);
     setSize(iHorizSize, iVertSize);
-
     // was the frame maximized
     if (Conf.getBoolean(Const.CONF_WINDOW_MAXIMIZED)) {
       if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
@@ -481,5 +443,4 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
   public JPanel getPerspectivePanel() {
     return perspectivePanel;
   }
-
 }

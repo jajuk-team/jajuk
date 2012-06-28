@@ -31,11 +31,8 @@ import org.jajuk.util.log.Log;
  * Class to read/write lyrics to TXT file.
  */
 public class TxtPersister implements ILyricsPersister {
-
   private java.io.File lyricsFile = null;
-
   private Writer lyricsWriter = null;
-
   /** Audio file to set lyrics to. */
   private org.jajuk.base.File file = null;
 
@@ -65,7 +62,6 @@ public class TxtPersister implements ILyricsPersister {
       lyricsFile = null;
       return false;
     }
-
   }
 
   /* (non-Javadoc)
@@ -118,5 +114,4 @@ public class TxtPersister implements ILyricsPersister {
   public void setAudioFile(org.jajuk.base.File file) {
     this.file = file;
   }
-
 }

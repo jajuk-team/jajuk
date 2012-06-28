@@ -32,7 +32,6 @@ import org.jajuk.util.Messages;
  * Action for configurate the application.
  */
 public class ConfigurationRequiredAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

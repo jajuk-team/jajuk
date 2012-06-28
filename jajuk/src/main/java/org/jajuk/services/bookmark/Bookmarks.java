@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.bookmark;
 
 import java.util.ArrayList;
@@ -35,10 +34,8 @@ import org.jajuk.util.Const;
  * Manages bookmarks.
  */
 public final class Bookmarks {
-
   /** Singleton self-instance. */
   private static Bookmarks bookmarks = new Bookmarks();
-
   /** Bookmarked files. */
   private List<File> alFiles = new ArrayList<File>(100);
 
@@ -81,7 +78,6 @@ public final class Bookmarks {
     for (File file : alFiles) {
       sbOut.append(file.getID()).append(',');
     }
-
     if (sbOut.length() > 0) {
       return sbOut.substring(0, sbOut.length() - 1);// remove last ','
     } else {

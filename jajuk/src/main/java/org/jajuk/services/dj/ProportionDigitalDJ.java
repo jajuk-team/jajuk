@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.dj;
 
 import java.util.ArrayList;
@@ -38,7 +37,6 @@ import org.jajuk.util.UtilSystem;
  * A proportion (10% JAZZ, 20% ROCK...) digital DJ
  */
 public class ProportionDigitalDJ extends DigitalDJ {
-
   /** Set of proportions. */
   private List<Proportion> proportions;
 
@@ -124,10 +122,8 @@ public class ProportionDigitalDJ extends DigitalDJ {
     }
     // shuffle selection
     Collections.shuffle(out, UtilSystem.getRandom());
-
     // finally ensure that we don't select more than the max number of tracks
     filterFilesByMaxTrack(out);
-
     return out;
   }
 

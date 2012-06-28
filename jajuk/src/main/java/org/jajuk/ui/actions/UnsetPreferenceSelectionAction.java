@@ -37,7 +37,6 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class UnsetPreferenceSelectionAction extends SelectionAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

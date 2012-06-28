@@ -20,7 +20,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.lastfm;
 
 import java.awt.Image;
@@ -38,22 +37,16 @@ import org.jajuk.util.log.Log;
  * The Class LastFmAlbumsRunnable.
  */
 public class LastFmAlbumsRunnable implements Runnable {
-
   /** The listener. */
   ContextListener listener;
-
   /** The service. */
   private LastFmService service;
-
   /** The audio object. */
   AudioObject audioObject;
-
   /** The interrupted. */
   private volatile boolean interrupted;
-
   /** The retrieve artist info. */
   private boolean retrieveArtistInfo = true;
-
   /** The id. */
   long id;
 
@@ -89,12 +82,10 @@ public class LastFmAlbumsRunnable implements Runnable {
   public void run() {
     if (!interrupted) {
       listener.setLastAlbumRetrieved(null, id);
-
       if (retrieveArtistInfo) {
         listener.setLastArtistRetrieved(null, id);
       }
     }
-
     // Get wiki start for artist
     final String wikiText = service.getWikiText(audioObject.getArtist());
     final String wikiURL = service.getWikiURL(audioObject.getArtist());
@@ -104,7 +95,6 @@ public class LastFmAlbumsRunnable implements Runnable {
         listener.notifyWikiInfoRetrieved(wikiText, wikiURL, id);
       }
     });
-
     Image image = null;
     AlbumInfo album = null;
     List<AlbumInfo> albums = null;
@@ -114,7 +104,6 @@ public class LastFmAlbumsRunnable implements Runnable {
           : audioObject.getAlbumArtist();
       album = service.getAlbum(artist, audioObject.getAlbum());
       final AlbumInfo albumHelp = album;
-
       listener.setAlbum(albumHelp, id);
       if (album != null) {
         image = service.getImage(album);
@@ -129,13 +118,11 @@ public class LastFmAlbumsRunnable implements Runnable {
         }
       });
     }
-
     try {
       Thread.sleep(1000); // Wait a second to prevent IP banning
     } catch (InterruptedException e) {
       Log.debug("albums runnable interrupted");
     }
-
     // If we have to retrieve artist info do it. If not, get previous retrieved
     // albums list
     if (retrieveArtistInfo) {
@@ -156,7 +143,6 @@ public class LastFmAlbumsRunnable implements Runnable {
     } else {
       albums = listener.getAlbums();
     }
-
     if (album == null && albums != null && !interrupted) {
       // Try to find an album which fits
       AlbumInfo auxAlbum = null;
@@ -207,7 +193,6 @@ public class LastFmAlbumsRunnable implements Runnable {
         });
       }
     }
-
   }
 
   /**
@@ -241,5 +226,4 @@ public class LastFmAlbumsRunnable implements Runnable {
   private boolean forbiddenToken(String t) {
     return t.contains("/");
   }
-
 }

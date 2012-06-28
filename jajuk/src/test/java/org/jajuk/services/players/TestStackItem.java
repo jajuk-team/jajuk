@@ -29,7 +29,6 @@ import org.jajuk.util.error.JajukException;
  * .
  */
 public class TestStackItem extends JajukTestCase {
-
   /**
    * Test method for {@link org.jajuk.services.players.StackItem#hashCode()}.
    *
@@ -39,7 +38,6 @@ public class TestStackItem extends JajukTestCase {
     File file = JUnitHelpers.getFile("file1", true);
     StackItem item1 = new StackItem(file);
     StackItem item2 = new StackItem(file);
-
     JUnitHelpers.HashCodeTest(item1, item2);
   }
 
@@ -52,7 +50,6 @@ public class TestStackItem extends JajukTestCase {
    */
   public void testStackItemFile() throws Exception {
     new StackItem(JUnitHelpers.getFile("file1", true));
-
     // test null input
     try {
       new StackItem(null);
@@ -71,7 +68,6 @@ public class TestStackItem extends JajukTestCase {
    */
   public void testStackItemFileBoolean() throws Exception {
     new StackItem(JUnitHelpers.getFile("file2", true), true);
-
     // test null input
     try {
       new StackItem(null, true);
@@ -90,7 +86,6 @@ public class TestStackItem extends JajukTestCase {
    */
   public void testStackItemFileBooleanBoolean() throws Exception {
     new StackItem(JUnitHelpers.getFile("file2", true), true, true);
-
     // test null input
     try {
       new StackItem(null, true, true);
@@ -180,5 +175,4 @@ public class TestStackItem extends JajukTestCase {
     StackItem item = new StackItem(JUnitHelpers.getFile("file1", true));
     JUnitHelpers.ToStringTest(item);
   }
-
 }

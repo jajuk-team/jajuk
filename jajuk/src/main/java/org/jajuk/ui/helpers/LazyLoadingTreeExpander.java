@@ -39,7 +39,6 @@ import javax.swing.tree.TreePath;
  * requests involved.
  */
 public class LazyLoadingTreeExpander implements TreeWillExpandListener {
-
   /** Tree Model. */
   private DefaultTreeModel model;
 
@@ -75,7 +74,6 @@ public class LazyLoadingTreeExpander implements TreeWillExpandListener {
     Object lastPathComponent = path.getLastPathComponent();
     if (lastPathComponent instanceof LazyLoadingTreeNode) {
       LazyLoadingTreeNode lazyNode = (LazyLoadingTreeNode) lastPathComponent;
-
       if (!lazyNode.areChildrenLoaded()) {
         MutableTreeNode[] nodes = lazyNode.loadChildren(model);
         ((DefaultMutableTreeNode) lazyNode).setAllowsChildren(nodes != null && nodes.length > 0);

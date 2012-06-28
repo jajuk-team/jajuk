@@ -29,7 +29,6 @@ package org.jajuk.base;
  * we call the constructor directly without performing any item registration.
  */
 public class SmartPlaylist extends Playlist {
-
   /**
    * The Constructor.
    * 
@@ -41,5 +40,4 @@ public class SmartPlaylist extends Playlist {
   public SmartPlaylist(Type type, String sId, String sName, Directory dParentDirectory) {
     super(type, sId, sName, dParentDirectory);
   }
-
 }

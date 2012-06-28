@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.widgets;
 
 import javax.swing.BorderFactory;
@@ -36,15 +35,11 @@ import org.jajuk.util.Messages;
  * A physical playlist icon + text.
  */
 public class SmartPlaylistView extends JPanel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** Icon. */
   private JLabel jlIcon;
-
   private final Type type;
-
   /** Associated playlist. */
   private Playlist plf;
 

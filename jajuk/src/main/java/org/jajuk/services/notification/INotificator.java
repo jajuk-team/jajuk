@@ -35,7 +35,6 @@ import org.jajuk.services.webradio.WebRadio;
  * Base interface for multiple different notification services that we can use.
  */
 public interface INotificator {
-
   /**
    * Indicates if this notificator is available on the current platform.
    * 

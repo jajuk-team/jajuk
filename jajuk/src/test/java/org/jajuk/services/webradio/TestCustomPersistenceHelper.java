@@ -35,7 +35,6 @@ import org.jajuk.util.Const;
    * Custom radios parser
    */
 public class TestCustomPersistenceHelper extends JajukTestCase {
-
   private WebRadioManager man = WebRadioManager.getInstance();
 
   @Override
@@ -62,13 +61,10 @@ public class TestCustomPersistenceHelper extends JajukTestCase {
   public void testLoadRepository() throws Exception {
     // Make sure the repository has been cleared during the setUp()
     assertTrue(man.getElementCount() == 0);
-
     // Load the presets
     WebRadioHelper.loadCustomRadios();
-
     //Check the repo is not void
     assertTrue(man.getElementCount() > 0);
-
     // Check item are sorted
     String previous = null;
     List<WebRadio> radios = man.getWebRadios();
@@ -79,9 +75,7 @@ public class TestCustomPersistenceHelper extends JajukTestCase {
         previous = radio.getName();
       }
     }
-
     WebRadio radio = radioTest();
-
     // Check origin
     assertTrue(WebRadioOrigin.CUSTOM.equals(radio.getValue(Const.XML_ORIGIN)));
   }

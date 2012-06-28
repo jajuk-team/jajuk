@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.base;
 
 import org.jajuk.services.webradio.WebRadio;
@@ -27,23 +26,17 @@ import org.jajuk.services.webradio.WebRadio;
  * A search result, contains a file and a search description.
  */
 public class SearchResult implements Comparable<SearchResult> {
-
   /**
    * Result type *.
    */
   public enum SearchResultType {
-
-    FILE,
-
-    WEBRADIO
+    FILE, WEBRADIO
   }
 
   /** The associated file. */
   private File file;
-
   /** The associated web radio. */
   private WebRadio radio;
-
   /** Pre-calculated search string. */
   private String sResu;
 
@@ -89,7 +82,6 @@ public class SearchResult implements Comparable<SearchResult> {
     if (sr == null) {
       return -1;
     }
-
     return sResu.compareToIgnoreCase(sr.getResu());
   }
 
@@ -132,5 +124,4 @@ public class SearchResult implements Comparable<SearchResult> {
   public String getResu() {
     return sResu;
   }
-
 }

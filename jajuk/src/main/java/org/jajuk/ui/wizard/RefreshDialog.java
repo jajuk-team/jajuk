@@ -36,22 +36,14 @@ import org.jdesktop.swingx.JXBusyLabel;
  * Refresh dialog.
  */
 public class RefreshDialog extends JFrame {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -7883506101436294760L;
-
   private JXBusyLabel jlAction;
-
   private JProgressBar progress;
-
   private JLabel jlRefreshing;
-
   private boolean indeterminate = false;
-
   private long dateLastUpdateRefresh;
-
   private long dateLastUpdateProgress;
-
   /** Minimum dialog refresh interval in ms, avoid to saturate the EDT*. */
   private static int MIN_REFRESH_INTERVAL = 100;
 
@@ -159,7 +151,6 @@ public class RefreshDialog extends JFrame {
       jlAction.setBusy(false);
       jlAction = null;
     }
-
     super.dispose();
   }
 }

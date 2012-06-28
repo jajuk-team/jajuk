@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.wizard;
 
 import java.awt.Dimension;
@@ -64,41 +63,25 @@ import org.jdesktop.swingx.VerticalLayout;
 public class FirstTimeWizard extends JDialog implements ActionListener, PropertyChangeListener {
   // Do not extend JajukJDialog because it requires main window to be instantiated and it comes with
   // many trouble (like Global keystrokes issues in file path selection) in this low-level dialog
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   private JLabel jlLeftIcon;
-
   private JPanel jpRightPanel;
-
   private JButton jbFileSelection;
-
   private JLabel jlSelectedFile;
-
   private PathSelector workspacePath;
-
   private JLabel jlRefreshTime;
-
   private JTextField jtfRefreshTime;
-
   private JXCollapsiblePane advanced;
-
   private JButton jbOk;
-
   private JButton jbCancel;
-
   private JPanel jpMain;
-
   /** Selected directory. */
   private File fDir;
-
   /** Default workspace location. */
   private String defaultWorkspacePath;
-
   /** User chosen workspace location. */
   private String userWorkspacePath;
-
   /** Any new device we created using this wizard. */
   private static Device newDevice;
 
@@ -160,7 +143,6 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
         }
         jbOk.setEnabled(true);
         jbOk.grabFocus();
-
         jlSelectedFile.setText(fDir.getAbsolutePath());
         pack(); // repack as size of dialog can be exceeded now
       }
@@ -173,13 +155,10 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
       }
       // Close window
       dispose();
-
       // update the user chosen workspace path (read afterward by the SessionService)
       userWorkspacePath = workspacePath.getUrl().trim();
-
       // Notify Main to continue startup
       SessionService.notifyFirstTimeWizardClosed();
-
       // Create the new device
       newDevice = DeviceManager.getInstance().registerDevice(fDir.getName(), Device.Type.DIRECTORY,
           fDir.getAbsolutePath());
@@ -211,11 +190,9 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
     JLabel jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2"));
     jbFileSelection = new JButton(IconLoader.getIcon(JajukIcons.OPEN_DIR));
     jbFileSelection.addActionListener(this);
-
     JLabel jlSelectedFileText = new JLabel(Messages.getString("FirstTimeWizard.8"));
     jlSelectedFile = new JLabel(Messages.getString("FirstTimeWizard.9"));
     jlSelectedFile.setBorder(new BevelBorder(BevelBorder.LOWERED));
-
     final JLabel jlWorkspace = new JLabel(Messages.getString("FirstTimeWizard.7"));
     jlWorkspace.setToolTipText(Messages.getString("FirstTimeWizard.7"));
     workspacePath = new PathSelector(defaultWorkspacePath);
@@ -225,12 +202,10 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
       jlWorkspace.setEnabled(false);
       workspacePath.setEnabled(false);
     }
-
     // Refresh time
     jlRefreshTime = new JLabel(Messages.getString("DeviceWizard.53"));
     jtfRefreshTime = new JTextField("5");// 5 mins by default
     JLabel jlMins = new JLabel(Messages.getString("DeviceWizard.54"));
-
     // buttons
     OKCancelPanel okp = new OKCancelPanel(this);
     jbOk = okp.getOKButton();
@@ -238,23 +213,19 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
     jbCancel.setText(Messages.getString("Later"));
     jbOk.setEnabled(false);
     advanced = new JXCollapsiblePane();
-
     // we need to listen for the animation state property in order to allow to
     // resize the dialog after the advanced-panel is expanded/collapsed
     // see http://forums.java.net/jive/thread.jspa?threadID=67800&tstart=0 for some related
     // discussion
     // why we need to listen on "animationState" to know when the expanding/collapsing is finished
     advanced.addPropertyChangeListener("animationState", this);
-
     // Build the toggle link used to expand / collapse the panel
     final ToggleLink toggle = new ToggleLink(Messages.getString("FirstTimeWizard.6"), advanced);
-
     // Advanced collapsible panel
     advanced.setLayout(new VerticalLayout(10));
     advanced.setCollapsed(true);
     advanced.add(jlWorkspace);
     advanced.add(workspacePath);
-
     // Add items
     setLayout(new MigLayout("insets 10,gapx 10,gapy 15", "[][grow]", "[][][][][][]"));
     add(jlLeftIcon, "cell 0 0 1 6,top");
@@ -269,9 +240,7 @@ public class FirstTimeWizard extends JDialog implements ActionListener, Property
     add(toggle, "cell 1 4,grow");
     add(advanced, "cell 1 5,grow");
     add(okp, "right,span,cell 1 6");
-
     getRootPane().setDefaultButton(jbOk);
-
     pack();
     final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     setLocation(((int) dim.getWidth() / 3), ((int) dim.getHeight() / 3));

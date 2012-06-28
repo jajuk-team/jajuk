@@ -32,7 +32,6 @@ import org.jajuk.services.startup.StartupCollectionService;
  * .
  */
 public class TestAudioFilter extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -40,7 +39,6 @@ public class TestAudioFilter extends JajukTestCase {
    */
   public void testAcceptFile() {
     StartupCollectionService.registerTypes();
-
     // normal files
     assertFalse(AudioFilter.getInstance().accept(new File("test.tst")));
     assertTrue(AudioFilter.getInstance().accept(new File("test.mp3")));
@@ -51,7 +49,6 @@ public class TestAudioFilter extends JajukTestCase {
     assertTrue(AudioFilter.getInstance().accept(new File("test.mP3")));
     // manually entered filenames might be lowercase/uppercase  mixed
     assertTrue(AudioFilter.getInstance().accept(new File("test.ogG")));
-
     // directories, depends on the setting
     AudioFilter.getInstance().setAcceptDirectories(false);
     assertFalse(AudioFilter.getInstance().accept(JUnitHelpers.getDirectory().getFio()));
@@ -65,12 +62,10 @@ public class TestAudioFilter extends JajukTestCase {
    */
   public void testGetDescription() {
     StartupCollectionService.registerTypes();
-
     assertTrue(AudioFilter.getInstance().getDescription(),
         StringUtils.containsIgnoreCase(AudioFilter.getInstance().getDescription(), "mp3"));
     assertTrue(AudioFilter.getInstance().getDescription(),
         StringUtils.containsIgnoreCase(AudioFilter.getInstance().getDescription(), "ogg"));
-
     // try removing all types
     TypeManager.getInstance().clear();
     assertEquals("", AudioFilter.getInstance().getDescription());

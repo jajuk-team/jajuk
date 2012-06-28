@@ -26,7 +26,6 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestJajukException extends JajukTestCase {
-
   /**
    * Test method for.
    *

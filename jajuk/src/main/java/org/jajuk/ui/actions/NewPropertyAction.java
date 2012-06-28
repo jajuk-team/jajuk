@@ -32,7 +32,6 @@ import org.jajuk.util.error.JajukException;
  * .
  */
 public class NewPropertyAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

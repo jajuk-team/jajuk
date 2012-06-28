@@ -39,11 +39,8 @@ import org.jajuk.util.log.Log;
  * Refresh reporter with GUI special operations.
  */
 public class ManualDeviceRefreshReporter extends RefreshReporter {
-
   // Refresh dialog
-
   private RefreshDialog rdialog;
-
   private int progress;
 
   /**
@@ -91,7 +88,6 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
   public void reset() {
     super.reset();
     this.progress = 0;
-
   }
 
   /*
@@ -163,7 +159,6 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
 
   /** This timer limit dialog title changes (this can have side effect on performances or other in some window managers. Too many window title change causes others menu bar items freezes under KDE for ie) */
   Timer updateDialogTitle = new Timer(1000, new ActionListener() {
-
     @Override
     public void actionPerformed(ActionEvent e) {
       String sTitle = Messages.getString("RefreshDialog.2") + " " + device.getName() + " ("
@@ -172,7 +167,5 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
         rdialog.setTitle(sTitle);
       }
     }
-
   });
-
 }

@@ -33,7 +33,6 @@ import org.jajuk.util.Const;
  * .
  */
 public class TestLastFmManager extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -65,10 +64,8 @@ public class TestLastFmManager extends JajukTestCase {
     {
       Conf.setProperty(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE, "false");
       LastFmManager.getInstance().update(new JajukEvent(JajukEvents.FILE_FINISHED, null));
-
       // wait for thread to finish
       JUnitHelpers.waitForThreadToFinish("LastFM Update Thread");
     }
   }
-
 }

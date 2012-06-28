@@ -41,7 +41,6 @@ public class TestUtilString extends JajukTestCase {
   private static final int NUMBER_OF_MATCH_TESTS = 5;
   private static final int NUMBER_OF_THREADS = 10;
   private static final int NUMBER_OF_TESTS = 1000;
-
   private static final Random random = new Random();
 
   @Override
@@ -142,7 +141,6 @@ public class TestUtilString extends JajukTestCase {
 
   public void testMultipleThreads() throws Exception {
     ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS, NUMBER_OF_TESTS);
-
     helper.executeTest(new ThreadTestHelper.TestRunnable() {
       @Override
       public void doEnd(int threadnum) throws Exception {
@@ -152,7 +150,6 @@ public class TestUtilString extends JajukTestCase {
       @Override
       public void run(int threadnum, int iter) {
         DateFormat format = UtilString.getLocaleDateFormatter();
-
         assertNotNull(format.format(new Date()));
       }
     });
@@ -246,7 +243,6 @@ public class TestUtilString extends JajukTestCase {
     assertEquals("100000", UtilString.padNumber(100000, 5));
     assertEquals("000-9", UtilString.padNumber(-9, 5));
     assertEquals("00-19", UtilString.padNumber(-19, 5));
-
     assertEquals("1", UtilString.padNumber(1, 1));
     assertEquals("11", UtilString.padNumber(11, 2));
     assertEquals("113", UtilString.padNumber(113, 3));
@@ -254,7 +250,6 @@ public class TestUtilString extends JajukTestCase {
 
   public void testPadNumberBenchmark() {
     testPadNumber();
-
     long overall = 0;
     for (int i = 0; i < NUMBER_OF_MATCH_TESTS; i++) {
       long dur = runPadMicroBenchmark();
@@ -270,12 +265,10 @@ public class TestUtilString extends JajukTestCase {
    */
   private long runPadMicroBenchmark() {
     long start = System.currentTimeMillis();
-
     for (int i = 0; i < MATCHES_PER_TEST * 10; i++) {
       UtilString.padNumber(random.nextInt(10000), 5);
       //StringUtils.leftPad(Long.toString(random.nextInt(10000)), 5, '0');
     }
-
     return System.currentTimeMillis() - start;
   }
 
@@ -320,7 +313,6 @@ public class TestUtilString extends JajukTestCase {
     assertTrue(UtilString.matchesIgnoreCaseAndOrder("te", "123te123"));
     assertTrue(UtilString.matchesIgnoreCaseAndOrder("te1", "123te123"));
     assertTrue(UtilString.matchesIgnoreCaseAndOrder("3te", "123te123"));
-
     assertTrue(UtilString.matchesIgnoreCaseAndOrder("3te 12", "123te123"));
     assertTrue(UtilString.matchesIgnoreCaseAndOrder("3te 3te1", "123te123"));
     assertTrue(UtilString.matchesIgnoreCaseAndOrder("3Te 12", "123te123"));
@@ -329,7 +321,6 @@ public class TestUtilString extends JajukTestCase {
     assertTrue(UtilString.matchesIgnoreCaseAndOrder("3te 3te1", "123TE123"));
     assertTrue(UtilString.matchesIgnoreCaseAndOrder("3te 12", "1 2 3te 12 3"));
     assertTrue(UtilString.matchesIgnoreCaseAndOrder("3te 3te1", "12 3te1 23"));
-
     assertFalse(UtilString.matchesIgnoreCaseAndOrder("1", ""));
     assertFalse(UtilString.matchesIgnoreCaseAndOrder("t", ""));
     assertFalse(UtilString.matchesIgnoreCaseAndOrder("test", ""));
@@ -351,7 +342,6 @@ public class TestUtilString extends JajukTestCase {
     assertFalse(UtilString.matchesIgnoreCaseAndOrder("3te 3te1", "123TEa123"));
     assertFalse(UtilString.matchesIgnoreCaseAndOrder("3te 12", "1 2 3te 1 2 3"));
     assertFalse(UtilString.matchesIgnoreCaseAndOrder("3te 3te1", "12 3toe1 23"));
-
   }
 
   public void testMatchesIgnoreCaseAndOrderBenchmark() {
@@ -370,20 +360,16 @@ public class TestUtilString extends JajukTestCase {
    */
   private long runMicroBenchmark() {
     long start = System.currentTimeMillis();
-
     RandomString str = new RandomString(30);
     RandomString search = new RandomString(6);
     for (int i = 0; i < MATCHES_PER_TEST; i++) {
       UtilString.matchesIgnoreCaseAndOrder(str.nextString(), search.nextString());
     }
-
     return System.currentTimeMillis() - start;
   }
 
   public static class RandomString {
-
     private static final char[] symbols = new char[63];
-
     static {
       for (int idx = 0; idx < 10; ++idx)
         symbols[idx] = (char) ('0' + idx);
@@ -393,7 +379,6 @@ public class TestUtilString extends JajukTestCase {
         symbols[idx] = (char) ('A' + idx - 36);
       symbols[62] = ' ';
     }
-
     private final char[] buf;
 
     public RandomString(int length) {
@@ -407,7 +392,6 @@ public class TestUtilString extends JajukTestCase {
         buf[idx] = symbols[random.nextInt(symbols.length)];
       return new String(buf);
     }
-
   }
 
   /**
@@ -437,5 +421,4 @@ public class TestUtilString extends JajukTestCase {
   public void testGetTextBetweenChars() {
     // TODO: implement test
   }
-
 }

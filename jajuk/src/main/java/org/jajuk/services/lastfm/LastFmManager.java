@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.lastfm;
 
 import ext.services.lastfm.LastFmService;
@@ -44,10 +43,8 @@ import org.jajuk.util.log.Log;
  * </p>
  */
 public final class LastFmManager implements Observer, Const {
-
   /** Self instance. */
   private static LastFmManager self = new LastFmManager();
-
   /** Lastfm service. */
   private LastFmService service;
 
@@ -57,10 +54,8 @@ public final class LastFmManager implements Observer, Const {
   private LastFmManager() {
     // Register on the list for subject we are interested in
     ObservationManager.register(this);
-
     // Create the service
     service = LastFmService.getInstance();
-
   }
 
   /**
@@ -132,5 +127,4 @@ public final class LastFmManager implements Observer, Const {
       Log.error(e);
     }
   }
-
 }

@@ -40,7 +40,6 @@ import org.jajuk.util.log.Log;
  * Open directory in default explorer program.
  */
 public class OpenExplorerAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

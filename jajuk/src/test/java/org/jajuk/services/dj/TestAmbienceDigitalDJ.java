@@ -45,21 +45,17 @@ import org.jajuk.util.Const;
  * .
  */
 public class TestAmbienceDigitalDJ extends JajukTestCase {
-
   /**
    * Test method for {@link org.jajuk.services.dj.AmbienceDigitalDJ#toXML()}.
    */
   public final void testToXML() {
     AmbienceDigitalDJ dj = new AmbienceDigitalDJ("3");
     assertTrue(StringUtils.isNotBlank(dj.toXML()));
-
     // try to parse the resulting XML
     XMLUtils.getDocument(dj.toXML());
-
     // set an Ambience
     GenreManager.getInstance().registerGenre("mystyle");
     dj.setAmbience(new Ambience("5", "ambience", new String[] { "mystyle" }));
-
     // try to parse the resulting XML
     XMLUtils.getDocument(dj.toXML());
   }
@@ -72,18 +68,13 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
    */
   public final void testGeneratePlaylist() throws Exception {
     StartupCollectionService.registerItemManagers();
-
     AmbienceDigitalDJ dj = new AmbienceDigitalDJ("4");
-
     // empty without Ambience set
     assertEquals(0, dj.generatePlaylist().size());
-
     // set an Ambience
     Genre genre = GenreManager.getInstance().registerGenre("mystyle");
     dj.setAmbience(new Ambience("5", "ambience", new String[] { "mystyle" }));
-
     getFile(6, genre);
-
     // assert a few conditions to find out why this test fails sometimes when
     // run in combination with others
     assertFalse(dj.isTrackUnicity());
@@ -92,13 +83,10 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
         .getAmbience()
         .getGenres()
         .contains(FileManager.getInstance().getGlobalShufflePlaylist().get(0).getTrack().getGenre()));
-
     assertEquals(Const.MIN_TRACKS_NUMBER_WITHOUT_UNICITY, dj.generatePlaylist().size());
-
     // once again with "unicity"
     dj.setTrackUnicity(true);
     assertEquals(1, dj.generatePlaylist().size());
-
   }
 
   /**
@@ -113,22 +101,16 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
     Album album = JUnitHelpers.getAlbum("myalbum", 0);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-
     Artist artist = JUnitHelpers.getArtist("name");
     Year year = JUnitHelpers.getYear(2000);
-
     // IPlayerImpl imp = new MockPlayer();
     // Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
-
     Type type = JUnitHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
-
     Device device = JUnitHelpers.getDevice();
     device.mount(true);
-
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
-
     return FileManager.getInstance().registerFile(Integer.valueOf(i).toString(), "test.tst", dir,
         track, 120, 70);
   }
@@ -150,14 +132,11 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
    */
   public final void testGetAndSetAmbience() {
     AmbienceDigitalDJ dj = new AmbienceDigitalDJ("4");
-
     // empty without Ambience set
     assertNull(dj.getAmbience());
-
     // set an Ambience
     GenreManager.getInstance().registerGenre("mystyle");
     dj.setAmbience(new Ambience("5", "ambience", new String[] { "mystyle" }));
-
     assertNotNull(dj.getAmbience());
   }
 
@@ -170,5 +149,4 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
   public final void testSetAmbience() {
     // tested above
   }
-
 }

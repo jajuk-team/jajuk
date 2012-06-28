@@ -49,9 +49,7 @@ import org.jajuk.services.tags.JAudioTaggerTagImpl;
  * .
  */
 public class TestHelpers extends JajukTestCase {
-
   Exception exc = null;
-
   boolean finished = false;
 
   /**
@@ -62,31 +60,25 @@ public class TestHelpers extends JajukTestCase {
    */
   public void testClearSwingUtilitiesQueue() throws Exception {
     // verify test-helper to clear the Swing Utilities Queue
-
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
         try {
           Thread.sleep(1000);
-
           finished = true;
         } catch (InterruptedException e) {
           exc = e;
         }
       }
     });
-
     long now = System.currentTimeMillis();
-
     // after this method returns we expect the above invokeLater to be finished
     JUnitHelpers.clearSwingUtilitiesQueue();
-
     // now the finished needs to be true
     assertTrue("Elapsed time(ms): " + (System.currentTimeMillis() - now), finished);
   }
 
   private final int COUNT = 10;
-
   private AtomicInteger count = new AtomicInteger(0);
 
   /**
@@ -97,14 +89,12 @@ public class TestHelpers extends JajukTestCase {
    */
   public void testClearSwingUtilitiesQueueMultiple() throws Exception {
     // verify test-helper to clear the Swing Utilities Queue
-
     for (int i = 0; i < COUNT; i++) {
       SwingUtilities.invokeLater(new Runnable() {
         @Override
         public void run() {
           try {
             Thread.sleep(1000 / COUNT);
-
             count.incrementAndGet();
           } catch (InterruptedException e) {
             exc = e;
@@ -112,12 +102,9 @@ public class TestHelpers extends JajukTestCase {
         }
       });
     }
-
     long now = System.currentTimeMillis();
-
     // after this method returns we expect the above invokeLater to be finished
     JUnitHelpers.clearSwingUtilitiesQueue();
-
     // now the finished needs to be true
     assertTrue(
         "Elapsed time(ms): " + (System.currentTimeMillis() - now) + " Count: " + count.get(),

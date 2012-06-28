@@ -32,10 +32,8 @@ import org.jajuk.base.File;
  * Provides a container that encapsulates the normal queued items as well as the automatically planned items.
  */
 public class QueueList implements List<StackItem> {
-
   /** Fifo itself, contains jajuk File objects. */
   private static volatile List<StackItem> alQueue = new ArrayList<StackItem>(50);
-
   /** Planned tracks, played if the normal queue is exhausted. */
   private static volatile List<StackItem> alPlanned = new ArrayList<StackItem>(10);
 
@@ -281,7 +279,6 @@ public class QueueList implements List<StackItem> {
 
   // ////////////////////////////////////////////////////////////
   // Methods for Planned tracks
-
   /**
    * Number of planned items.
    * 
@@ -358,7 +355,6 @@ public class QueueList implements List<StackItem> {
 
   // ///////////////////////////////////////////////////////
   // Additional Methods for Queue handling
-
   /**
    * Contains repeat.
    * 

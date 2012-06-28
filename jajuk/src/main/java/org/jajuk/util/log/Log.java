@@ -37,38 +37,27 @@ import org.jajuk.util.error.JajukException;
  * Singleton.
  */
 public final class Log {
-
   /** The Constant FONT_END.   */
   private static final String FONT_END = "</font>";
-
   /** The Constant LOGGER_APACHE_HTTPCLIENT.   */
   private static final String LOGGER_APACHE_HTTPCLIENT = "org.apache.commons.httpclient";
-
   // verbosity consts
   /** The Constant FATAL.   */
   public static final int FATAL = 0;
-
   /** The Constant ERROR.   */
   public static final int ERROR = 1;
-
   /** The Constant WARNING.   */
   public static final int WARNING = 2;
-
   /** The Constant INFO.   */
   public static final int INFO = 3;
-
   /** The Constant DEBUG.   */
   public static final int DEBUG = 4;
-
   /** Verbosity level of the logger( between 1 and 5 ) <p> Default used at statup is INFO. */
   private static int verbosity = INFO;
-
   /** Jajuk logger. */
   private static Logger logger;
-
   /** Debug traces spool. */
   private static List<String> alSpool;
-
   /** The Constant FULL_QUALIFIED_CLASS_NAME.   */
   private static final String FULL_QUALIFIED_CLASS_NAME = Log.class.getName();
 
@@ -84,7 +73,6 @@ public final class Log {
     } catch (Exception e) {
       Log.stack(e);
     }
-
     logger = Logger.getLogger(Log.class.getName());
     alSpool = new ArrayList<String>(Const.FEEDBACK_LINES);
     // message for logging system start
@@ -406,10 +394,8 @@ public final class Log {
     if (alSpool.size() >= Const.FEEDBACK_LINES) {
       alSpool.remove(0);
     }
-
     // anonymize standard labels (with {{xxx}})
     String sAnonymizedMessage = sMessage.replaceAll("\\{\\{.*\\}\\}", "***");
-
     // additionally anonymize Basic Player logs
     int pos = sAnonymizedMessage.indexOf("Player state changed: OPENING");
     if (pos != -1) {
@@ -443,5 +429,4 @@ public final class Log {
   public static List<String> getSpool() {
     return (List<String>) ((ArrayList<String>) alSpool).clone();
   }
-
 }

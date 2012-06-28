@@ -28,7 +28,6 @@ import org.jajuk.services.startup.StartupCollectionService;
  * .
  */
 public class TestExitService extends JajukTestCase {
-
   /**
    * Test method for {@link org.jajuk.services.core.ExitService#run()}.
    *
@@ -36,15 +35,12 @@ public class TestExitService extends JajukTestCase {
    */
   public void testRun() throws Exception {
     StartupCollectionService.registerItemManagers();
-
     ExitService service = new ExitService();
     service.run();
-
     // once again with sessionidfile
     SessionService.getSessionIdFile().getParentFile().mkdirs();
     SessionService.getSessionIdFile().createNewFile();
     service.run();
-
   }
 
   /**
@@ -60,7 +56,6 @@ public class TestExitService extends JajukTestCase {
   public void testExit() {
     ExitService service = new ExitService();
     assertNotNull(service);
-
     // don't run this as it stops the JVM! service.exit(1);
   }
 
@@ -70,5 +65,4 @@ public class TestExitService extends JajukTestCase {
   public void testIsExiting() {
     assertFalse(ExitService.isExiting());
   }
-
 }

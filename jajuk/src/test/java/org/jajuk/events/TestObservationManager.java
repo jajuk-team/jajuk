@@ -31,7 +31,6 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestObservationManager extends JajukTestCase {
-
   AtomicInteger called = new AtomicInteger(0);
 
   /*
@@ -70,7 +69,6 @@ public class TestObservationManager extends JajukTestCase {
    */
   public void testUnregisterNull() {
     ObservationManager.unregister(new Observer() {
-
       @Override
       public void update(JajukEvent event) {
         // nothing to do
@@ -165,7 +163,6 @@ public class TestObservationManager extends JajukTestCase {
     prop.setProperty("test", "value");
     assertNull(ObservationManager.getDetail(new JajukEvent(JajukEvents.VOLUME_CHANGED, prop),
         "notexisting"));
-
     assertNull(ObservationManager.getDetail(new JajukEvent(JajukEvents.VOLUME_CHANGED),
         "notexisting"));
   }

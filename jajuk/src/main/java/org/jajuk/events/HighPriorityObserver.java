@@ -24,5 +24,4 @@ package org.jajuk.events;
  * Special Observer whish must be updated before any other.
  */
 public interface HighPriorityObserver extends Observer {
-
 }

@@ -33,7 +33,6 @@ import org.jajuk.util.UtilString;
  * <br>Logical item
  */
 public class Year extends LogicalItem implements Comparable<Year> {
-
   /** The year that is stored in this object. */
   private final long value;
 
@@ -83,7 +82,6 @@ public class Year extends LogicalItem implements Comparable<Year> {
     if (other == null) {
       return -1;
     }
-
     return (int) (getValue() - other.getValue());
   }
 

@@ -59,22 +59,15 @@ import org.jajuk.util.log.Log;
  */
 public class TrackPositionSliderToolbar extends JPanel implements ChangeListener,
     MouseWheelListener, Observer {
-
   /** Generic playing position toolbar, used in information panel a full screen. */
   private static final long serialVersionUID = 1L;
-
   /** Last slider manual move date. */
   private long lDateLastAdjust;
-
   private JSlider jsPosition;
-
   private JLabel jlCurrent;
-
   String sCurrentStatus;
-
   /** Swing Timer to refresh the component. */
   private final Timer timer = new Timer(JajukTimer.D_MS_HEARTBEAT, new ActionListener() {
-
     @Override
     public void actionPerformed(ActionEvent e) {
       try {
@@ -90,22 +83,17 @@ public class TrackPositionSliderToolbar extends JPanel implements ChangeListener
    */
   public TrackPositionSliderToolbar() {
     super();
-
     initGui();
-
     // check if some errors occurred before the view has been displayed
     if (ObservationManager.containsEvent(JajukEvents.PLAY_ERROR)) {
       update(new JajukEvent(JajukEvents.PLAY_ERROR,
           ObservationManager.getDetailsLastOccurence(JajukEvents.PLAY_ERROR)));
     }
-
     // check if some track has been launched before the view has been
     // displayed
     UtilFeatures.updateStatus(this);
-
     // register for given events
     ObservationManager.register(this);
-
     timer.start();
   }
 
@@ -149,7 +137,6 @@ public class TrackPositionSliderToolbar extends JPanel implements ChangeListener
    */
   private void setPosition(final float fPosition) {
     new Thread("TrackSlider Position Thread") {
-
       @Override
       public void run() {
         Player.seek(fPosition);
@@ -337,7 +324,6 @@ public class TrackPositionSliderToolbar extends JPanel implements ChangeListener
    * elapsed time.
    */
   private final class TimeDisplaySwitchMouseAdapter extends MouseAdapter {
-
     /* (non-Javadoc)
      * @see java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
      */

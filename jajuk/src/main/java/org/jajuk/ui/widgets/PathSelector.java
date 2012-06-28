@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.widgets;
 
 import java.awt.Color;
@@ -46,12 +45,9 @@ import org.jajuk.util.filters.DirectoryFilter;
  * PATH selection button opening up a file selector.
  */
 public class PathSelector extends JPanel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -8370527665529267952L;
-
   JTextField jtfUrl;
-
   JButton button;
 
   /**
@@ -62,7 +58,6 @@ public class PathSelector extends JPanel {
    */
   public PathSelector(final JajukFileFilter filter, final String sDefault) {
     super();
-
     initUI(sDefault);
     button.addActionListener(new ActionListener() {
       @Override
@@ -98,7 +93,6 @@ public class PathSelector extends JPanel {
    */
   public PathSelector(final String sDefault) {
     super();
-
     initUI(sDefault);
     button.addActionListener(new ActionListener() {
       @Override
@@ -196,5 +190,4 @@ public class PathSelector extends JPanel {
   public void setURL(final String sURL) {
     jtfUrl.setText(sURL);
   }
-
 }

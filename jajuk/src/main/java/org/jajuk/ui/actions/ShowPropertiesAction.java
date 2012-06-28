@@ -47,7 +47,6 @@ import org.jajuk.util.Messages;
  * </p>
  */
 public class ShowPropertiesAction extends SelectionAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -8078402652430413821L;
 
@@ -96,5 +95,4 @@ public class ShowPropertiesAction extends SelectionAction {
       new PropertiesDialog(selection);
     }
   }
-
 }

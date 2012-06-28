@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.awt.Font;
@@ -48,7 +47,6 @@ import org.jvnet.substance.fonts.FontSet;
  * Manages Jajuk fonts, stores or update them.
  */
 public final class FontManager implements Observer {
-
   /** The Constant SANS_SERIF.   */
   private static final String SANS_SERIF = "sans-serif";
 
@@ -56,42 +54,10 @@ public final class FontManager implements Observer {
    * .
    */
   public enum JajukFont {
-
-    DEFAULT,
-
-    PLAIN,
-
-    PLAIN_S,
-
-    PLAIN_L,
-
-    PLAIN_XL,
-
-    BOLD,
-
-    BOLD_L,
-
-    BOLD_XL,
-
-    BOLD_XXL,
-
-    BOLD_TITLE,
-
-    PERSPECTIVES,
-
-    PLANNED,
-
-    SEARCHBOX,
-
-    SPLASH,
-
-    SPLASH_PROGRESS,
-
-    VIEW_FONT
+    DEFAULT, PLAIN, PLAIN_S, PLAIN_L, PLAIN_XL, BOLD, BOLD_L, BOLD_XL, BOLD_XXL, BOLD_TITLE, PERSPECTIVES, PLANNED, SEARCHBOX, SPLASH, SPLASH_PROGRESS, VIEW_FONT
   }
 
   private static Map<JajukFont, Font> fontCache = new HashMap<JajukFont, Font>(10);
-
   private static FontManager self = new FontManager();
 
   // No instantiation
@@ -99,7 +65,6 @@ public final class FontManager implements Observer {
    * Instantiates a new font manager.
    */
   private FontManager() {
-
     registerFonts();
     ObservationManager.register(this);
   }
@@ -168,7 +133,6 @@ public final class FontManager implements Observer {
    */
   public void setDefaultFont() {
     SwingUtilities.invokeLater(new Runnable() {
-
       @Override
       public void run() {
         // Create the wrapper font set
@@ -186,7 +150,6 @@ public final class FontManager implements Observer {
         }
       }
     });
-
   }
 
   /*
@@ -244,7 +207,6 @@ public final class FontManager implements Observer {
    * .
    */
   private static class CustomFontSet implements FontSet {
-
     protected FontUIResource font;
 
     /**

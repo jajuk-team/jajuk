@@ -26,12 +26,9 @@ import org.jdesktop.swingx.JXPanel;
  * .
  */
 public class FlowScrollPanel extends JXPanel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   private FlowLayout layout = new FlowLayout();
-
   private JScrollPane scroller;
 
   /**
@@ -101,7 +98,6 @@ public class FlowScrollPanel extends JXPanel {
     int x = 0, y = insets.top + vgap;
     int rowh = 0;
     int maxRowWidth = scrollerWidth;
-
     for (int i = 0; i < nmembers; i++) {
       Component m = getComponent(i);
       if (m.isVisible()) {
@@ -145,7 +141,6 @@ public class FlowScrollPanel extends JXPanel {
   //
   // Scrollable methods
   //
-
   /* (non-Javadoc)
    * @see org.jdesktop.swingx.JXPanel#getPreferredScrollableViewportSize()
    */
@@ -198,5 +193,4 @@ public class FlowScrollPanel extends JXPanel {
   public boolean getScrollableTracksViewportHeight() {
     return false;
   }
-
 }

@@ -47,7 +47,6 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class RenameAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -100,7 +99,6 @@ public class RenameAction extends JajukAction {
        * files (hopefully not the tracks ones) because we simply remove the directory and force its
        * scan again. A better implementation would clone all files recursively
        */
-
       // check that the directory is not an ancestor of the currently played file
       if (QueueModel.getPlayingFile() != null
           && QueueModel.getPlayingFile().hasAncestor((Directory) currentItem)) {

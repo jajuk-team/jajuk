@@ -26,19 +26,12 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestUpgradeManager extends JajukTestCase {
-
   String v1 = "1.8.4";
-
   String v2 = "1.9.1";
-
   String v3 = "1.9.2RC3";
-
   String v4 = "1.8.5";
-
   String v5 = "1.8";
-
   String v6 = "1.9";
-
   String v7 = "1.9.2RC4";
 
   /*
@@ -95,5 +88,4 @@ public class TestUpgradeManager extends JajukTestCase {
     assertTrue(UpgradeManager.isNewer("1.10dev", "1.7"));
     assertFalse(UpgradeManager.isNewer("1.7", "1.7"));
   }
-
 }

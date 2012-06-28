@@ -36,7 +36,6 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class TestDBusSupportImpl extends JajukTestCase {
-
   /* (non-Javadoc)
    * @see org.jajuk.JajukTestCase#setUp()
    */
@@ -44,17 +43,14 @@ public class TestDBusSupportImpl extends JajukTestCase {
   protected void setUp() throws Exception {
     // make sure this is initialized with Actions
     ActionManager.getInstance();
-
     super.setUp();
   }
 
   /**
    * Test method for {@link org.jajuk.services.dbus.DBusSupportImpl#connect()}.
    */
-
   public final void testConnect() {
     DBusSupportImpl impl = new DBusSupportImpl();
-
     // ensure that we do find the JNI-Library
     try {
       new UnixSocket();
@@ -62,7 +58,6 @@ public class TestDBusSupportImpl extends JajukTestCase {
       Log.fatal("Could not load class UnixSocket, maybe the java.library.path is not set correctly: "
           + System.getProperty("java.library.path") + ": " + e.getMessage());
     }
-
     // will fail where dbus is not available and report an error to the log...
     impl.connect();
   }
@@ -72,13 +67,10 @@ public class TestDBusSupportImpl extends JajukTestCase {
    *
    * {@link org.jajuk.services.dbus.DBusSupportImpl#disconnect()}.
    */
-
   public final void testDisconnect() {
     DBusSupportImpl impl = new DBusSupportImpl();
-
     // should not fail when not connected
     impl.disconnect();
-
     // try to connect first
     impl.connect();
     // then disconnect
@@ -90,7 +82,6 @@ public class TestDBusSupportImpl extends JajukTestCase {
    *
    * @throws Exception the exception
    */
-
   public final void testForward() throws Exception {
     DBusSupportImpl impl = new DBusSupportImpl();
     impl.forward();
@@ -101,7 +92,6 @@ public class TestDBusSupportImpl extends JajukTestCase {
    *
    * @throws Exception the exception
    */
-
   public final void testNext() throws Exception {
     DBusSupportImpl impl = new DBusSupportImpl();
     impl.next();
@@ -113,7 +103,6 @@ public class TestDBusSupportImpl extends JajukTestCase {
    *
    * @throws Exception the exception
    */
-
   public final void testPlayPause() throws Exception {
     DBusSupportImpl impl = new DBusSupportImpl();
     impl.playPause();
@@ -124,7 +113,6 @@ public class TestDBusSupportImpl extends JajukTestCase {
    *
    * @throws Exception the exception
    */
-
   public final void testPrevious() throws Exception {
     DBusSupportImpl impl = new DBusSupportImpl();
     impl.previous();
@@ -135,7 +123,6 @@ public class TestDBusSupportImpl extends JajukTestCase {
    *
    * @throws Exception the exception
    */
-
   public final void testRewind() throws Exception {
     DBusSupportImpl impl = new DBusSupportImpl();
     impl.rewind();
@@ -146,7 +133,6 @@ public class TestDBusSupportImpl extends JajukTestCase {
    *
    * @throws Exception the exception
    */
-
   public final void testStop() throws Exception {
     DBusSupportImpl impl = new DBusSupportImpl();
     impl.stop();
@@ -158,7 +144,6 @@ public class TestDBusSupportImpl extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.services.dbus.DBusSupportImpl#decreaseVolume()}.
    */
-
   public final void testDecreaseVolume() throws Exception {
     DBusSupportImpl impl = new DBusSupportImpl();
     impl.decreaseVolume();
@@ -167,7 +152,6 @@ public class TestDBusSupportImpl extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dbus.DBusSupportImpl#exit()}.
    */
-
   public final void testExit() {
     // cannot test this as it stops the process:
     // DBusSupportImpl impl = new DBusSupportImpl();
@@ -180,7 +164,6 @@ public class TestDBusSupportImpl extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.services.dbus.DBusSupportImpl#increaseVolume()}.
    */
-
   public final void testIncreaseVolume() throws Exception {
     DBusSupportImpl impl = new DBusSupportImpl();
     impl.increaseVolume();
@@ -192,7 +175,6 @@ public class TestDBusSupportImpl extends JajukTestCase {
    *
    * @throws Exception the exception
    */
-
   public final void testNextAlbum() throws Exception {
     DBusSupportImpl impl = new DBusSupportImpl();
     impl.nextAlbum();
@@ -204,7 +186,6 @@ public class TestDBusSupportImpl extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.services.dbus.DBusSupportImpl#previousAlbum()}.
    */
-
   public final void testPreviousAlbum() throws Exception {
     DBusSupportImpl impl = new DBusSupportImpl();
     impl.previousAlbum();
@@ -216,7 +197,6 @@ public class TestDBusSupportImpl extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.services.dbus.DBusSupportImpl#shuffleGlobal()}.
    */
-
   public final void testShuffleGlobal() throws Exception {
     DBusSupportImpl impl = new DBusSupportImpl();
     impl.shuffleGlobal();
@@ -227,7 +207,6 @@ public class TestDBusSupportImpl extends JajukTestCase {
    *
    * @throws Exception the exception
    */
-
   public final void testMute() throws Exception {
     DBusSupportImpl impl = new DBusSupportImpl();
     impl.mute();
@@ -239,7 +218,6 @@ public class TestDBusSupportImpl extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.services.dbus.DBusSupportImpl#currentHTML()}.
    */
-
   public final void testCurrentHTML() throws Exception {
     DBusSupportImpl impl = new DBusSupportImpl();
     assertNotNull(impl.currentHTML());
@@ -250,7 +228,6 @@ public class TestDBusSupportImpl extends JajukTestCase {
    *
    * @throws Exception the exception
    */
-
   public final void testCurrent() throws Exception {
     DBusSupportImpl impl = new DBusSupportImpl();
     assertNotNull(impl.current());
@@ -262,7 +239,6 @@ public class TestDBusSupportImpl extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.services.dbus.DBusSupportImpl#banCurrent()}.
    */
-
   public final void testBanCurrent() throws Exception {
     DBusSupportImpl impl = new DBusSupportImpl();
     impl.banCurrent();
@@ -271,7 +247,6 @@ public class TestDBusSupportImpl extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dbus.DBusSupportImpl#isRemote()}.
    */
-
   public final void testIsRemote() {
     DBusSupportImpl impl = new DBusSupportImpl();
     assertFalse(impl.isRemote());
@@ -282,7 +257,6 @@ public class TestDBusSupportImpl extends JajukTestCase {
    *
    * {@link org.jajuk.services.dbus.DBusSupportImpl#getRegistrationKeys()}.
    */
-
   public final void testGetRegistrationKeys() {
     DBusSupportImpl impl = new DBusSupportImpl();
     Set<JajukEvents> events = impl.getRegistrationKeys();
@@ -295,11 +269,9 @@ public class TestDBusSupportImpl extends JajukTestCase {
    * {@link org.jajuk.services.dbus.DBusSupportImpl#update(org.jajuk.events.JajukEvent)}
    * .
    */
-
   public final void testUpdate() {
     Properties prop = new Properties();
     prop.setProperty(Const.DETAIL_CURRENT_FILE_ID, "testfile");
-
     DBusSupportImpl impl = new DBusSupportImpl();
     impl.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, null));
   }
@@ -311,12 +283,9 @@ public class TestDBusSupportImpl extends JajukTestCase {
   public final void testUpdateConnect() {
     Properties prop = new Properties();
     prop.setProperty(Const.DETAIL_CURRENT_FILE_ID, "testfile");
-
     DBusSupportImpl impl = new DBusSupportImpl();
-
     // will fail where dbus is not available and report an error to the log...
     impl.connect();
-
     impl.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, null));
   }
 

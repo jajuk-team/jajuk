@@ -40,19 +40,14 @@ import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
  * the AbstractAutoCompleteAdaptor.
  */
 public class AutoCompleteDocument extends PlainDocument {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -4353609211147483101L;
-
   /** Flag to indicate if adaptor.setSelectedItem has been called. Subsequent calls to remove/insertString should be ignored as they are likely have been caused by the adapted Component that is trying to set the text for the selected component. */
   boolean selecting = false;
-
   /** true, if only items from the adaptors's list can be entered false, otherwise (selected item might not be in the adaptors's list). */
   boolean strictMatching;
-
   /** The adaptor that is used to find and select items. */
   AbstractAutoCompleteAdaptor adaptor;
-
   ObjectToStringConverter stringConverter;
 
   /**
@@ -109,7 +104,6 @@ public class AutoCompleteDocument extends PlainDocument {
     if (selecting) {
       return;
     }
-
     super.remove(offs, len);
     if (!strictMatching) {
       setSelectedItem(getText(0, getLength()), getText(0, getLength()));
@@ -127,7 +121,6 @@ public class AutoCompleteDocument extends PlainDocument {
     if (selecting) {
       return;
     }
-
     // insert the string into the document
     super.insertString(offs, str, a);
     // lookup and select a matching item
@@ -200,7 +193,6 @@ public class AutoCompleteDocument extends PlainDocument {
     if (ret != null) {
       return ret;
     }
-
     // check if the currently selected item matches
     Object selectedItem = adaptor.getSelectedItem();
     String[] possibleStrings = stringConverter.getPossibleStringsForItem(selectedItem);
@@ -216,7 +208,6 @@ public class AutoCompleteDocument extends PlainDocument {
     if (ret != null) {
       return ret;
     }
-
     // no item starts with the pattern => return null
     return new LookupResult(null, "");
   }
@@ -245,7 +236,6 @@ public class AutoCompleteDocument extends PlainDocument {
         }
       }
     }
-
     return null;
   }
 
@@ -253,9 +243,7 @@ public class AutoCompleteDocument extends PlainDocument {
    * .
    */
   private static class LookupResult {
-
     Object matchingItem;
-
     String matchingString;
 
     /**
@@ -284,8 +272,6 @@ public class AutoCompleteDocument extends PlainDocument {
     if (base.length() < prefix.length()) {
       return false;
     }
-
     return base.regionMatches(false, 0, prefix, 0, prefix.length());
   }
-
 }

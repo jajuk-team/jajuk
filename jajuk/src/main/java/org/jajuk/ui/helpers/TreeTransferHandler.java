@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.awt.datatransfer.Transferable;
@@ -36,10 +35,8 @@ import org.jajuk.base.Item;
  * DND handler for jtree.
  */
 public class TreeTransferHandler extends TransferHandler {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   final JTree jtree;
 
   /**
@@ -88,5 +85,4 @@ public class TreeTransferHandler extends TransferHandler {
   public int getSourceActions(JComponent c) {
     return COPY_OR_MOVE;
   }
-
 }

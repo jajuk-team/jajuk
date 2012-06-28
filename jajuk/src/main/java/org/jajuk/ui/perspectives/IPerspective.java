@@ -30,9 +30,7 @@ import org.jajuk.ui.views.IView;
 /**
  * Representation of a perspective.
  */
-
 public interface IPerspective {
-
   /**
    * Gets the id.
    * 

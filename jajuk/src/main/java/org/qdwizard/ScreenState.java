@@ -30,18 +30,13 @@ package org.qdwizard;
  * </ul>.
  */
 public class ScreenState {
-
   private boolean bCanFinish;
-
   /** Can Go Next. */
   private boolean bCanGoNext;
-
   /** Can Go Previous. */
   private boolean bCanGoPrevious;
-
   /** Can Cancel. */
   private boolean bCanCancel;
-
   /** Problem. */
   private String sProblem;
 
@@ -160,5 +155,4 @@ public class ScreenState {
     this.sProblem = sProblem;
     setCanGoNext(sProblem == null);
   }
-
 }

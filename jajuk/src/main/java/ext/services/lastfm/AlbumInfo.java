@@ -20,7 +20,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.lastfm;
 
 import java.util.Date;
@@ -32,7 +31,6 @@ import javax.swing.ImageIcon;
  * .
  */
 public interface AlbumInfo {
-
   /**
    * Gets the artist.
    * 
@@ -193,5 +191,4 @@ public interface AlbumInfo {
    */
   @Override
   public String toString();
-
 }

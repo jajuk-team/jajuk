@@ -24,7 +24,6 @@ package org.jajuk.util.error;
  * JajukException runtime exception : to be thown in case of internal bug only.
  */
 public class JajukRuntimeException extends RuntimeException {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

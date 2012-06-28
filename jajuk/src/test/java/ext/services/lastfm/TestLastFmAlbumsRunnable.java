@@ -32,7 +32,6 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestLastFmAlbumsRunnable extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -63,15 +62,12 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
     // first run it normally
     new LastFmAlbumsRunnable(new MyContextListener(), LastFmService.getInstance(),
         new MyAudioObject(), 1).run();
-
     // then run it in the background
     LastFmAlbumsRunnable runnable = new LastFmAlbumsRunnable(new MyContextListener(),
         LastFmService.getInstance(), new MyAudioObject(), 1);
     SwingUtilities.invokeLater(runnable);
-
     // and tell it to interrupt at some point
     runnable.interrupt();
-
     // now wait for it to finish
     JUnitHelpers.clearSwingUtilitiesQueue();
   }
@@ -92,13 +88,11 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
    * .
    */
   private final class MyContextListener implements ContextListener {
-
     /* (non-Javadoc)
      * @see ext.services.lastfm.ContextListener#setLastArtistRetrieved(java.lang.String, long)
      */
     @Override
     public void setLastArtistRetrieved(String artist, long id) {
-
     }
 
     /* (non-Javadoc)
@@ -106,7 +100,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public void setLastAlbumRetrieved(String album, long id) {
-
     }
 
     /* (non-Javadoc)
@@ -114,7 +107,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public void setImage(Image img, AudioObject ao, long id) {
-
     }
 
     /* (non-Javadoc)
@@ -122,7 +114,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public void setAlbums(List<? extends AlbumInfo> album, long id) {
-
     }
 
     /* (non-Javadoc)
@@ -130,7 +121,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public void setAlbum(AlbumInfo album, long id) {
-
     }
 
     /* (non-Javadoc)
@@ -138,7 +128,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public void notifyWikiInfoRetrieved(String wikiText, String wikiURL, long id) {
-
     }
 
     /* (non-Javadoc)
@@ -146,7 +135,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public void notifyStartRetrievingCovers(long id) {
-
     }
 
     /* (non-Javadoc)
@@ -154,7 +142,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public void notifyStartRetrievingArtistImages(long id) {
-
     }
 
     /* (non-Javadoc)
@@ -162,7 +149,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public void notifyFinishGetSimilarArtist(ArtistInfo a, Image img, long id) {
-
     }
 
     /* (non-Javadoc)
@@ -170,7 +156,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public void notifyCoverRetrieved(AlbumInfo album, Image cover, long id) {
-
     }
 
     /* (non-Javadoc)
@@ -178,7 +163,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public void notifyArtistImage(Image img, long id) {
-
     }
 
     /* (non-Javadoc)
@@ -186,7 +170,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public void notifyAlbumRetrieved(AudioObject file, long id) {
-
     }
 
     /* (non-Javadoc)
@@ -194,7 +177,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public List<AlbumInfo> getAlbums() {
-
       return null;
     }
   }
@@ -203,7 +185,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
    * .
    */
   private class MyAudioObject implements AudioObject {
-
     /*
      * (non-Javadoc)
      * 
@@ -211,7 +192,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public String getAlbum() {
-
       return "By The Way";
     }
 
@@ -222,7 +202,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public String getAlbumArtist() {
-
       return "Red Hot Chilli Peppers";
     }
 
@@ -233,7 +212,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public String getArtist() {
-
       return "Red Hot Chilli Peppers";
     }
 
@@ -244,7 +222,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public long getBitrate() {
-
       return 0;
     }
 
@@ -255,7 +232,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public String getComposer() {
-
       return null;
     }
 
@@ -266,7 +242,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public Integer getDiscNumber() {
-
       return null;
     }
 
@@ -277,7 +252,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public long getDuration() {
-
       return 0;
     }
 
@@ -288,7 +262,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public int getFrequency() {
-
       return 0;
     }
 
@@ -299,7 +272,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public String getGenre() {
-
       return null;
     }
 
@@ -310,7 +282,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public String getLyrics() {
-
       return null;
     }
 
@@ -321,7 +292,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public int getStars() {
-
       return 0;
     }
 
@@ -332,7 +302,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public String getTitle() {
-
       return null;
     }
 
@@ -343,7 +312,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public String getTitleOrFileName() {
-
       return null;
     }
 
@@ -354,7 +322,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public Integer getTrackNumber() {
-
       return null;
     }
 
@@ -365,7 +332,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public String getUrl() {
-
       return null;
     }
 
@@ -376,7 +342,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public String getYear() {
-
       return null;
     }
 
@@ -387,7 +352,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public boolean isSeekable() {
-
       return false;
     }
 
@@ -398,8 +362,6 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
      */
     @Override
     public void setStars(int stars) {
-
     }
-
   }
 }

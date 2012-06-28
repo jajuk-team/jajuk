@@ -33,7 +33,6 @@ import org.jajuk.services.webradio.WebRadio;
  * .
  */
 public class TestToastNotificator extends JajukTestCase {
-
   /**
    * Test method for.
    *

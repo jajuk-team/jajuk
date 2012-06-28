@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.util;
 
 import ext.services.network.NetworkUtils;
@@ -50,7 +49,6 @@ import org.jajuk.util.log.Log;
  * Manages network downloads.
  */
 public final class DownloadManager {
-
   private static Proxy proxy;
 
   /**
@@ -110,7 +108,6 @@ public final class DownloadManager {
       // Clean up URLS
       String sUrl = matcher.group().replaceAll("%2520", "%20");
       URL url = new URL(sUrl);
-
       // Remove duplicates
       if (alOut.contains(url)) {
         continue;
@@ -146,7 +143,6 @@ public final class DownloadManager {
       } finally {
         bis.close();
       }
-
       bos.flush();
     } finally {
       bos.close();
@@ -326,5 +322,4 @@ public final class DownloadManager {
   public static Proxy getProxy() {
     return proxy;
   }
-
 }

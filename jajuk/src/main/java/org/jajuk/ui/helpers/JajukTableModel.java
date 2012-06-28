@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.util.ArrayList;
@@ -38,52 +37,36 @@ import org.jajuk.util.Messages;
  * Jajuk table model, adds identifier to model.
  */
 public abstract class JajukTableModel extends DefaultTableModel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -7296786603161189590L;
-
   /** Column identifiers. */
   volatile protected List<String> idList = new ArrayList<String>(10);
-
   /** Rows number. */
   protected int iRowNum;
-
   /** Values table*. */
   protected Object[][] oValues;
-
   // Play icon in cache
   /** The Constant PLAY_ICON.   */
   protected static final ImageIcon PLAY_ICON = IconLoader.getIcon(JajukIcons.PLAY_TABLE);
-
   // Unmount Play icon in cache
   /** The Constant UNMOUNT_PLAY_ICON.   */
   protected static final ImageIcon UNMOUNT_PLAY_ICON = IconLoader.getIcon(JajukIcons.UNKNOWN);
-
   /** Objects. */
   protected Item[] oItems;
-
   /** Number of standard columns. */
   protected int iNumberStandardCols;
-
   /** Cell editable flag. */
   protected boolean[][] bCellEditable;
-
   /** Column names. */
   protected List<String> vColNames = new ArrayList<String>(10);
-
   /** Last value used for undo. */
   private Object oLast = null;
-
   /** Editable flag. */
   boolean bEditable = false;
-
   /** Tree selection. */
   protected Set<Item> treeSelection;
-
   protected IconLabel play_icon = null;
-
   protected IconLabel unmount_play_icon = null;
-
   /** Whether the model is refreshing so we must ignore selection changes events. */
   private boolean refreshing = false;
 
@@ -112,7 +95,6 @@ public abstract class JajukTableModel extends DefaultTableModel {
    */
   public JajukTableModel(int iNumberStandardCols) {
     super();
-
     this.iNumberStandardCols = iNumberStandardCols;
   }
 
@@ -121,7 +103,6 @@ public abstract class JajukTableModel extends DefaultTableModel {
    */
   public JajukTableModel() {
     super();
-
     this.iNumberStandardCols = 0;
   }
 

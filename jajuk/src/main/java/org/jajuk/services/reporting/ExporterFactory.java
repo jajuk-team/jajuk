@@ -26,7 +26,6 @@ import java.io.IOException;
  * .
  */
 public final class ExporterFactory {
-
   /**
    * private constructor to avoid instantiating utility class.
    */
@@ -48,6 +47,5 @@ public final class ExporterFactory {
     } else {
       return new XMLExporter();
     }
-
   }
 }

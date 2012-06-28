@@ -40,26 +40,16 @@ import org.jajuk.util.UtilFeatures;
  * Preference menu item including ban/unban and preference choice.
  */
 public class PreferencesJMenu extends JMenu {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -4041513018474249903L;
-
   private JMenuItem jmiBan;
-
   private JMenuItem jmiUnBan;
-
   private JMenuItem jmiAdore;
-
   private JMenuItem jmiLove;
-
   private JMenuItem jmiLike;
-
   private JMenuItem jmiUnset;
-
   private JMenuItem jmiAverage;
-
   private JMenuItem jmiPoor;
-
   private JMenuItem jmiHate;
 
   /**
@@ -82,7 +72,6 @@ public class PreferencesJMenu extends JMenu {
   public PreferencesJMenu(List<? extends Item> selection) {
     super(Messages.getString("Preference.7"));
     initUI(selection);
-
   }
 
   /**
@@ -94,62 +83,52 @@ public class PreferencesJMenu extends JMenu {
     // We compute preference of first item in selection to set right
     // item bold font
     long selectionPreference = UtilFeatures.getPreferenceForSelection(selection);
-
     jmiBan = new JMenuItem(ActionManager.getAction(JajukActions.BAN_SELECTION));
     jmiBan.putClientProperty(Const.DETAIL_SELECTION, selection);
-
     jmiUnBan = new JMenuItem(ActionManager.getAction(JajukActions.UN_BAN_SELECTION));
     jmiUnBan.putClientProperty(Const.DETAIL_SELECTION, selection);
-
     jmiAdore = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_ADORE));
     jmiAdore.putClientProperty(Const.DETAIL_SELECTION, selection);
     if (selectionPreference == Const.PREFERENCE_ADORE) {
       jmiAdore.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       setIcon(IconLoader.getIcon(JajukIcons.PREFERENCE_ADORE));
     }
-
     jmiLove = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_LOVE));
     jmiLove.putClientProperty(Const.DETAIL_SELECTION, selection);
     if (selectionPreference == Const.PREFERENCE_LOVE) {
       jmiLove.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       setIcon(IconLoader.getIcon(JajukIcons.PREFERENCE_LOVE));
     }
-
     jmiLike = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_LIKE));
     jmiLike.putClientProperty(Const.DETAIL_SELECTION, selection);
     if (selectionPreference == Const.PREFERENCE_LIKE) {
       jmiLike.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       setIcon(IconLoader.getIcon(JajukIcons.PREFERENCE_LIKE));
     }
-
     jmiUnset = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_UNSET));
     jmiUnset.putClientProperty(Const.DETAIL_SELECTION, selection);
     if (selectionPreference == Const.PREFERENCE_UNSET) {
       jmiUnset.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       setIcon(IconLoader.getIcon(JajukIcons.PREFERENCE_UNSET));
     }
-
     jmiAverage = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_AVERAGE));
     jmiAverage.putClientProperty(Const.DETAIL_SELECTION, selection);
     if (selectionPreference == Const.PREFERENCE_AVERAGE) {
       jmiAverage.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       setIcon(IconLoader.getIcon(JajukIcons.PREFERENCE_AVERAGE));
     }
-
     jmiPoor = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_POOR));
     jmiPoor.putClientProperty(Const.DETAIL_SELECTION, selection);
     if (selectionPreference == Const.PREFERENCE_POOR) {
       jmiPoor.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       setIcon(IconLoader.getIcon(JajukIcons.PREFERENCE_POOR));
     }
-
     jmiHate = new JMenuItem(ActionManager.getAction(JajukActions.PREFERENCE_HATE));
     jmiHate.putClientProperty(Const.DETAIL_SELECTION, selection);
     if (selectionPreference == Const.PREFERENCE_HATE) {
       jmiHate.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       setIcon(IconLoader.getIcon(JajukIcons.PREFERENCE_HATE));
     }
-
     add(jmiBan);
     add(jmiUnBan);
     addSeparator();
@@ -175,5 +154,4 @@ public class PreferencesJMenu extends JMenu {
     removeAll();
     initUI(selection);
   }
-
 }

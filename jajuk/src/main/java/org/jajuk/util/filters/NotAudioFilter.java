@@ -31,7 +31,6 @@ import org.jajuk.util.UtilSystem;
  * Not Audio file filter (must be a file).
  */
 public final class NotAudioFilter extends JajukFileFilter {
-
   /** Self instance. */
   private static NotAudioFilter self = new NotAudioFilter();
 

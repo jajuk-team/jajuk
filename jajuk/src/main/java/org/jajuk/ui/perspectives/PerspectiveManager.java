@@ -53,16 +53,12 @@ import org.jajuk.util.log.Log;
  * Perspectives Manager.
  */
 public final class PerspectiveManager {
-
   /** Current perspective. */
   private static IPerspective currentPerspective = null;
-
   /** Perspective name -> perspective. */
   private static Map<String, IPerspective> hmNameInstance = new HashMap<String, IPerspective>(10);
-
   /** perspective, required despite the Map above in order to keep the order of the perspectives as the order in the Map is undefined. */
   private static Set<IPerspective> perspectives = new LinkedHashSet<IPerspective>(10);
-
   /** List of perspectives that need reset from version n-1. */
   // None perspective to reset from 1.6 to 1.7
   private static String[] perspectivesToReset = new String[] {};
@@ -259,31 +255,22 @@ public final class PerspectiveManager {
    */
   private static void registerDefaultPerspectives() {
     reset();
-
     // Simple perspective
     registerPerspective(new SimplePerspective());
-
     // Files perspective
     registerPerspective(new FilesPerspective());
-
     // Tracks perspective
     registerPerspective(new TracksPerspective());
-
     // Catalog perspective
     registerPerspective(new AlbumsPerspective());
-
     // Playlists perspective
     registerPerspective(new PlaylistsPerspective());
-
     // Display perspective
     registerPerspective(new DisplayPerspective());
-
     // Information perspective
     registerPerspective(new InfoPerspective());
-
     // Configuration perspective
     registerPerspective(new ConfigurationPerspective());
-
     // Stats perspective
     registerPerspective(new StatPerspective());
   }

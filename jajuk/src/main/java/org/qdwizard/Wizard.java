@@ -85,53 +85,37 @@ import org.jajuk.util.log.Log;
  * @created 1 may 2006
  */
 public abstract class Wizard implements ActionListener, WindowListener {
-
   /** Wizard name. */
   private String sName;
-
   /** Current screen. */
   private Screen current;
-
   /** Wizard left side icon. */
   private ImageIcon icon;
-
   /** Wizard data. */
   protected final static Map<String, Object> data = new HashMap<String, Object>(10);
-
   /** Wizard header. */
   private Header header;
-
   /** Wizard action Panel. */
   private ActionsPanel actions;
-
   /** Wizard dialog. */
   private JDialog dialog;
-
   /** Parent window. */
   private Frame parentWindow;
-
   /** Screens instance repository. */
   private Map<Class<? extends Screen>, Screen> hmClassScreens = new HashMap<Class<? extends Screen>, Screen>(
       10);
-
   /** Default Wizard size. */
   protected static final int DEFAULT_H_SIZE = 700;
-
   /** The Constant DEFAULT_V_SIZE.   */
   protected static final int DEFAULT_V_SIZE = 500;
-
   /** The Constant DEFAULT_H_LAYOUT_PADDING.   */
   protected static final int DEFAULT_H_LAYOUT_PADDING = 5;
-
   /** The Constant DEFAULT_V_LAYOUT_PADDING.   */
   protected static final int DEFAULT_V_LAYOUT_PADDING = 5;
-
   /** Was the Wizard Canceled?. */
   private boolean bCancelled;
-
   /** Layout Padding. */
   private int layoutHPadding = DEFAULT_H_LAYOUT_PADDING;
-
   private int layoutVPadding = DEFAULT_V_LAYOUT_PADDING;
 
   /**
@@ -349,7 +333,6 @@ public abstract class Wizard implements ActionListener, WindowListener {
       Log.error(e);
       throw new RuntimeException("setScreen " + screenClass + " caused " + e.toString(), e);
     }
-
     current = screen;
     current.setWizard(this);
     current.setCanGoPrevious((getPreviousScreen(screenClass) != null));
@@ -377,7 +360,6 @@ public abstract class Wizard implements ActionListener, WindowListener {
       // Add a listener to resize left side image if wizard window is
       // resized
       jlIcon.addComponentListener(new ComponentListener() {
-
         @Override
         public void componentShown(ComponentEvent e) {
           // nothing to do here
@@ -406,7 +388,6 @@ public abstract class Wizard implements ActionListener, WindowListener {
         public void componentHidden(ComponentEvent e) {
           // nothing to do here
         }
-
       });
     }
     dialog.add(actions, BorderLayout.SOUTH);
@@ -414,14 +395,11 @@ public abstract class Wizard implements ActionListener, WindowListener {
     jsp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     jsp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     jsp.setBorder(BorderFactory.createEmptyBorder());
-
     dialog.add(jsp, BorderLayout.NORTH);
     if (current != null) {
       dialog.add(current, BorderLayout.CENTER);
     }
-
     dialog.getRootPane().setDefaultButton(actions.jbNext);
-
     ((JPanel) dialog.getContentPane()).revalidate();
     dialog.getContentPane().repaint();
   }
@@ -667,5 +645,4 @@ public abstract class Wizard implements ActionListener, WindowListener {
   public boolean wasCancelled() {
     return bCancelled;
   }
-
 }

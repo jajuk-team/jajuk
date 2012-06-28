@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.views;
 
 import java.awt.event.ActionEvent;
@@ -55,18 +54,12 @@ import org.jajuk.util.log.Log;
  * Configuration perspective *.
  */
 public class CDScanView extends ViewAdapter implements ActionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   JTextField jtfName;
-
   JLabel jlMountPoint;
-
   JTextField jtfMountPoint;
-
   JButton jbScan;
-
   JButton jbUrl;
 
   /**
@@ -92,7 +85,6 @@ public class CDScanView extends ViewAdapter implements ActionListener {
         }
         return;
       }
-
       SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
         @Override
         public Void doInBackground() {

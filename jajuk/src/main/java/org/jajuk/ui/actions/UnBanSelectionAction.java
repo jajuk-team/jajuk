@@ -38,7 +38,6 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class UnBanSelectionAction extends SelectionAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

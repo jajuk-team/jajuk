@@ -104,24 +104,17 @@ import org.jvnet.substance.skin.SubstanceBusinessLookAndFeel;
  * Set of GUI convenient methods.
  */
 public final class UtilGUI {
-
   /* different types of Cursors that are available */
   /** The Constant WAIT_CURSOR.  */
   public static final Cursor WAIT_CURSOR = new Cursor(Cursor.WAIT_CURSOR);
-
   /** The Constant LINK_CURSOR.  */
   public static final Cursor LINK_CURSOR = new Cursor(Cursor.HAND_CURSOR);
-
   /** The Constant DEFAULT_CURSOR.  */
   public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
-
   // Current cursor that is displayed
-
   private static Cursor currentCursor = DEFAULT_CURSOR;
-
   /** Substance theme *. */
   private static String theme;
-
   /** Alternate color rows highlighter used in every table. */
   private static Highlighter alternateColorHighlighter;
 
@@ -145,7 +138,6 @@ public final class UtilGUI {
 
   /** Current active color scheme *. */
   private static SubstanceColorScheme colorScheme;
-
   /** Set cursor thread, stored to avoid construction. */
   private static Runnable setCursorThread = new Runnable() {
     @Override
@@ -260,7 +252,6 @@ public final class UtilGUI {
   public static String getHTMLColor(final Color color) {
     return Long.toString(color.getRed(), 16) + Long.toString(color.getGreen(), 16)
         + Long.toString(color.getBlue(), 16);
-
   }
 
   /**
@@ -280,7 +271,6 @@ public final class UtilGUI {
         ii = new ImageIcon(url);
         UtilSystem.iconCache.put(sURL, ii);
       }
-
     } catch (final Exception e) {
       Log.error(e);
     }
@@ -323,12 +313,10 @@ public final class UtilGUI {
     // Our inner class definition
     class NarrowOptionPane extends JOptionPane {
       private static final long serialVersionUID = 1L;
-
       int lmaxCharactersPerLineCount;
 
       NarrowOptionPane(final int maxCharactersPerLineCount) {
         super();
-
         this.lmaxCharactersPerLineCount = maxCharactersPerLineCount;
       }
 
@@ -422,23 +410,18 @@ public final class UtilGUI {
       theme = Const.LNF_DEFAULT_THEME;
       Conf.setProperty(Const.CONF_OPTIONS_LNF, Const.LNF_DEFAULT_THEME);
     }
-
     // Set substance LAF
     try {
       UIManager.setLookAndFeel(new SubstanceBusinessLookAndFeel());
     } catch (UnsupportedLookAndFeelException e) {
       Log.error(e);
     }
-
     // Set substance LAF
     SubstanceLookAndFeel.setSkin(themes.get(theme).getClassName());
-
     // hide some useless elements such locker for not editable labels
     UIManager.put(SubstanceLookAndFeel.SHOW_EXTRA_WIDGETS, Boolean.FALSE);
-
     // Store current color scheme (cannot change for the wall session)
     colorScheme = SubstanceLookAndFeel.getCurrentSkin().getMainActiveColorScheme();
-
     // Set view foreground colors
     SubstanceSkin theme = SubstanceLookAndFeel.getCurrentSkin();
     SubstanceColorScheme scheme = theme.getMainActiveColorScheme();
@@ -463,11 +446,9 @@ public final class UtilGUI {
     UIManager.put("InternalFrame.inactiveTitleBackground", backgroundInactive);
     UIManager.put("DockViewTitleBar.titleFont",
         FontManager.getInstance().getFont(JajukFont.VIEW_FONT));
-
     // Set windows decoration to look and feel
     JFrame.setDefaultLookAndFeelDecorated(true);
     JDialog.setDefaultLookAndFeelDecorated(true);
-
   }
 
   /**
@@ -594,7 +575,6 @@ public final class UtilGUI {
         g2.dispose();
         ret = tmp;
       } while (w != targetWidth || h != targetHeight);
-
       image.flush();
       loadedImage.flush();
       return ret;
@@ -613,16 +593,13 @@ public final class UtilGUI {
     int gap = 10;
     float opacity = 0.3f;
     float fadeHeight = 0.6f;
-
     // cover
     BufferedImage coverImage = UtilGUI.toBufferedImage(img, Const.MIRROW_COVER_SIZE,
         Const.MIRROW_COVER_SIZE, true);
-
     PerspectiveFilter filter1 = new PerspectiveFilter(0, angle,
         Const.MIRROW_COVER_SIZE - angle / 2, (int) (angle * (5.0 / 3.0)), Const.MIRROW_COVER_SIZE
             - angle / 2, Const.MIRROW_COVER_SIZE, 0, Const.MIRROW_COVER_SIZE + angle);
     coverImage = filter1.filter(coverImage, null);
-
     // reflection
     int imageWidth = coverImage.getWidth();
     int imageHeight = coverImage.getHeight();
@@ -635,28 +612,22 @@ public final class UtilGUI {
         0, imageHeight, new Color(0.0f, 0.0f, 0.0f, opacity)));
     rg.fillRect(0, 0, imageWidth, imageHeight);
     rg.dispose();
-
     PerspectiveFilter filter2 = new PerspectiveFilter(0, 0, coverImage.getHeight() - angle / 2,
         angle * 2, coverImage.getHeight() - angle / 2, coverImage.getHeight() + angle * 2, 0,
         coverImage.getHeight());
     BufferedImage reflectedImage = filter2.filter(reflection, null);
-
     // now draw everything on one bufferedImage
     BufferedImage finalImage = new BufferedImage(imageWidth, (int) (1.4 * imageHeight),
         BufferedImage.TYPE_INT_ARGB);
-
     Graphics g = finalImage.getGraphics();
     Graphics2D g2d = (Graphics2D) g;
-
     g2d.drawRenderedImage(coverImage, null);
-
     g2d.translate(0, 2 * imageHeight + gap);
     g2d.scale(1, -1);
     g2d.drawRenderedImage(reflectedImage, null);
     g2d.dispose();
     reflection.flush();
     coverImage.flush();
-
     return finalImage;
   }
 
@@ -697,7 +668,6 @@ public final class UtilGUI {
   public static void updateAllUIs() {
     Frame frames[];
     frames = Frame.getFrames();
-
     for (final Frame element : frames) {
       UtilGUI.updateWindowUI(element);
     }
@@ -729,30 +699,24 @@ public final class UtilGUI {
    * @param c 
    */
   private static void updateComponentTreeUI0(final Component c) {
-
     Component[] children = null;
-
     if (c instanceof JToolBar) {
       children = ((JToolBar) c).getComponents();
-
       if (children != null) {
         for (final Component element : children) {
           UtilGUI.updateComponentTreeUI0(element);
         }
       }
-
       ((JComponent) c).updateUI();
     } else {
       if (c instanceof JComponent) {
         ((JComponent) c).updateUI();
       }
-
       if (c instanceof JMenu) {
         children = ((JMenu) c).getMenuComponents();
       } else if (c instanceof Container) {
         children = ((Container) c).getComponents();
       }
-
       if (children != null) {
         for (final Component element : children) {
           UtilGUI.updateComponentTreeUI0(element);
@@ -774,9 +738,7 @@ public final class UtilGUI {
     } catch (final Exception exception) {
       Log.error(exception);
     }
-
     final Window windows[] = window.getOwnedWindows();
-
     for (final Window element : windows) {
       UtilGUI.updateWindowUI(element);
     }
@@ -810,11 +772,9 @@ public final class UtilGUI {
    */
   public static boolean isOver(Point location, Dimension dimension) {
     java.awt.Point p = MouseInfo.getPointerInfo().getLocation();
-
     if (p.getX() <= location.getX() || p.getY() <= location.getY()) {
       return false;
     }
-
     return (p.getX() < (dimension.getWidth() + location.getX()) && p.getY() < (dimension
         .getHeight() + location.getY()));
   }
@@ -870,7 +830,6 @@ public final class UtilGUI {
     Conf.setProperty(Const.CONF_STATE_REPEAT, Boolean.toString(enable));
     JajukJMenuBar.getInstance().setRepeatSelected(enable);
     CommandJPanel.getInstance().setRepeatSelected(enable);
-
   }
 
   /**
@@ -883,12 +842,9 @@ public final class UtilGUI {
     Conf.setProperty(Const.CONF_STATE_REPEAT, Boolean.toString(false));
     JajukJMenuBar.getInstance().setRepeatSelected(false);
     CommandJPanel.getInstance().setRepeatSelected(false);
-
     Conf.setProperty(Const.CONF_STATE_REPEAT_ALL, Boolean.toString(enable));
-
     JajukJMenuBar.getInstance().setRepeatAllSelected(enable);
     CommandJPanel.getInstance().setRepeatAllSelected(enable);
-
   }
 
   /**
@@ -926,7 +882,6 @@ public final class UtilGUI {
    */
   public static void populate(final TwoStepsDisplayable displayable) {
     SwingWorker<Object, Void> sw = new SwingWorker<Object, Void>() {
-
       @Override
       protected Object doInBackground() {
         return displayable.longCall();
@@ -1007,29 +962,23 @@ public final class UtilGUI {
     WindowStateDecorator sdMainWindow = JajukMainWindow.getInstance().getWindowStateDecorator();
     WindowStateDecorator sdfullscreen = JajukFullScreenWindow.getInstance()
         .getWindowStateDecorator();
-
     // Set main window display at next startup as a default
     Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_MAIN_WINDOW));
-
     if (sdSlimbar.getWindowState() == WindowState.BUILT_DISPLAYED) {
       Conf.setProperty(Const.CONF_STARTUP_DISPLAY,
           Integer.toString(Const.DISPLAY_MODE_SLIMBAR_TRAY));
     }
-
     if (sdMainWindow.isDisplayed()) {
       Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_MAIN_WINDOW));
     }
-
     // None window displayed ? set the tray only (if the show tray option is
     // set)
     if (!sdSlimbar.isDisplayed() && !sdMainWindow.isDisplayed() && !sdfullscreen.isDisplayed()
         && Conf.getBoolean(Const.CONF_SHOW_SYSTRAY)) {
       Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_TRAY));
     }
-
     if (sdfullscreen.getWindowState() == WindowState.BUILT_DISPLAYED) {
       Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_FULLSCREEN));
     }
   }
-
 }

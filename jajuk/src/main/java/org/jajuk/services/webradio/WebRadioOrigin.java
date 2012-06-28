@@ -24,10 +24,8 @@ package org.jajuk.services.webradio;
  * Webradio origin
  */
 public enum WebRadioOrigin {
-
   /** Webradio created by the user himself*/
   CUSTOM,
   /** Webradio fetched from the jajuk online repository */
   PRESET,
-
 }

@@ -143,7 +143,6 @@ public class TestSessionService extends JajukTestCase {
    */
   public void testHandleSystemProperties() {
     SessionService.handleSystemProperties();
-
     System.setProperty("ide", "true");
     System.setProperty("test", "true");
     SessionService.handleSystemProperties();
@@ -156,7 +155,6 @@ public class TestSessionService extends JajukTestCase {
    */
   public void testCreateSessionFile() {
     SessionService.createSessionFile();
-
     SessionService.setWorkspace("/invalidpath");
     SessionService.createSessionFile();
   }
@@ -172,7 +170,6 @@ public class TestSessionService extends JajukTestCase {
     { // ensure that the base jajuk-directory exists, otherwise the
       // "first time wizard" is run, which blocks the test
       File bootstrap = new File(SessionService.getBootstrapPath());
-
       // try to create it if it is missing
       if (!bootstrap.exists()) {
         String content = "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n"
@@ -180,16 +177,13 @@ public class TestSessionService extends JajukTestCase {
             + "<entry key='test'>" + UtilSystem.getUserHome() + "</entry>\n</properties>";
         FileUtils.writeStringToFile(bootstrap, content);
       }
-
       // needs to be a directory, needs to be readable, ...
       assertTrue(bootstrap.isFile());
       assertTrue(bootstrap.canRead());
     }
-
     // Reset CLI parameters
     SessionService.handleCommandline(new String[] { "-test", "-ide", "-something" });
     SessionService.discoverWorkspace();
-
   }
 
   /**
@@ -241,7 +235,6 @@ public class TestSessionService extends JajukTestCase {
    */
   public void testClearCache() throws Exception {
     SessionService.clearCache();
-
     // create some dummy file
     File file = SessionService.getConfFileByPath(Const.FILE_CACHE);
     assertNotNull(file);
@@ -260,5 +253,4 @@ public class TestSessionService extends JajukTestCase {
   public void testPrivateConstructor() throws Exception {
     JUnitHelpers.executePrivateConstructor(SessionService.class);
   }
-
 }

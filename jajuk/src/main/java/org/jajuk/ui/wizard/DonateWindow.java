@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.wizard;
 
 import java.awt.Container;
@@ -49,13 +48,10 @@ import org.jajuk.util.log.Log;
  * Help perspective *
  */
 public class DonateWindow extends JajukJDialog {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** The Constant BUDGET_LINK.   */
   private static final String BUDGET_LINK = "http://jajuk.info/index.php/Project_budget";
-
   /** The Constant DONATE_LINK.   */
   private static final String DONATE_LINK = "http://jajuk.info/index.php/Donate";
 
@@ -64,7 +60,6 @@ public class DonateWindow extends JajukJDialog {
    */
   public DonateWindow() {
     super();
-
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
@@ -76,7 +71,6 @@ public class DonateWindow extends JajukJDialog {
         setResizable(false);
         setVisible(true);
       }
-
     });
   }
 
@@ -96,7 +90,6 @@ public class DonateWindow extends JajukJDialog {
     cp.add(new JLabel(Messages.getString("JajukDonate.2")), "wrap");
     JButton jbBudget = new JButton(Messages.getString("JajukDonate.3"));
     jbBudget.addActionListener(new ActionListener() {
-
       @Override
       public void actionPerformed(ActionEvent e) {
         try {
@@ -107,14 +100,12 @@ public class DonateWindow extends JajukJDialog {
         } catch (URISyntaxException e1) {
           Log.error(e1);
         }
-
       }
     });
     cp.add(jbBudget, "wrap");
     cp.add(new JLabel(Messages.getString("JajukDonate.4")), "wrap");
     JButton jbDonation = new JButton(Messages.getString("JajukDonate.1"));
     jbDonation.addActionListener(new ActionListener() {
-
       @Override
       public void actionPerformed(ActionEvent e) {
         try {
@@ -125,7 +116,6 @@ public class DonateWindow extends JajukJDialog {
         } catch (URISyntaxException e1) {
           Log.error(e1);
         }
-
       }
     });
     cp.add(jbDonation, "wrap");

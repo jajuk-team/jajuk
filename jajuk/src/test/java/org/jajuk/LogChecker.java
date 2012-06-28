@@ -36,10 +36,8 @@ import org.jajuk.util.log.Log;
  * when redirecting stdin et stderr to a file named /tmp/jajuk_out.log
  */
 public class LogChecker extends TestCase {
-
   /** The Constant FILE_PATH.   */
   private static final File FILE_PATH = SessionService.getConfFileByPath("jajuk.log");
-
   private String logs;
 
   /* (non-Javadoc)
@@ -54,10 +52,8 @@ public class LogChecker extends TestCase {
       assertNotNull("Should have an underlying cause when catching JajukException", e.getCause());
       assertTrue("We only accept FileNotFoundException as valid exception in this test",
           e.getCause() instanceof FileNotFoundException);
-
       // set string to empty to not fail any of the tests in this case
       logs = "";
-
       // also log a warning to indicate that this test did not do anything
       Log.warn("File " + FILE_PATH + " not found, cannot run checks on log file.");
     }
@@ -91,5 +87,4 @@ public class LogChecker extends TestCase {
   public void testOutEDT() {
     assertFalse(logs.matches("creation must be done on Event Dispatch Thread "));
   }
-
 }

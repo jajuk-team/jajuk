@@ -35,10 +35,8 @@ import org.jajuk.util.Messages;
  * Music-oriented file chooser.
  */
 public class JajukFileChooser extends JFileChooser {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   private final JajukFileFilter filter;
 
   /**
@@ -48,12 +46,10 @@ public class JajukFileChooser extends JFileChooser {
    */
   public JajukFileChooser(JajukFileFilter jfilter) {
     super();
-
     this.filter = jfilter;
     for (int i = 0; i < jfilter.getFilters().length; i++) {
       addChoosableFileFilter(jfilter.getFilters()[i]);
     }
-
     init();
   }
 
@@ -65,12 +61,10 @@ public class JajukFileChooser extends JFileChooser {
    */
   public JajukFileChooser(JajukFileFilter jfilter, File file) {
     super(file);
-
     this.filter = jfilter;
     for (int i = 0; i < jfilter.getFilters().length; i++) {
       addChoosableFileFilter(jfilter.getFilters()[i]);
     }
-
     init();
   }
 
@@ -113,7 +107,5 @@ public class JajukFileChooser extends JFileChooser {
     JDialog dialog = super.createDialog(parent);
     dialog.setAlwaysOnTop(true);
     return dialog;
-
   }
-
 }

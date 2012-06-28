@@ -28,12 +28,10 @@ import org.freedesktop.dbus.exceptions.DBusException;
  * .
  */
 public class DBusSignalImpl implements DBusInterface {
-
   /**
    * .
    */
   public static class FileChangedSignal extends DBusSignal {
-
     String filename;
 
     /**
@@ -57,7 +55,6 @@ public class DBusSignalImpl implements DBusInterface {
     public String getFilename() {
       return this.filename;
     }
-
   }
 
   /*
@@ -69,5 +66,4 @@ public class DBusSignalImpl implements DBusInterface {
   public boolean isRemote() {
     return false;
   }
-
 }

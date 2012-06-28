@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.dj;
 
 import org.jajuk.base.Genre;
@@ -28,13 +27,10 @@ import org.jajuk.util.UtilFeatures;
  * Represents a transition from one genre to another (used by digital DJs).
  */
 public class Transition {
-
   /** From genres. */
   private Ambience from;
-
   /** To genres. */
   private Ambience to;
-
   /** Nb of tracks. */
   private int nb;
 

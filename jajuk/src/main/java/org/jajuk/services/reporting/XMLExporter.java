@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.reporting;
 
 import java.io.BufferedWriter;
@@ -52,15 +51,11 @@ import org.jajuk.util.UtilString;
  * This class exports music contents to XML.
  */
 public class XMLExporter extends Exporter {
-
   /** Private Constants. */
   private static final String NEWLINE = "\n";
-
   /** The Constant XML_HEADER.   */
   private static final String XML_HEADER = "<?xml version='1.0' encoding='UTF-8'?>";
-
   private final BufferedWriter writer;
-
   /** Do we want to export tracks ?*. */
   private boolean showTracks = true;
 
@@ -69,7 +64,6 @@ public class XMLExporter extends Exporter {
    * 
    * @throws IOException Signals that an I/O exception has occurred.
    */
-
   public XMLExporter() throws IOException {
     cache = SessionService.getConfFileByPath(Const.FILE_REPORTING_CACHE_FILE + "_XML_"
         + System.currentTimeMillis());
@@ -234,7 +228,6 @@ public class XMLExporter extends Exporter {
    * 
    * @throws Exception the exception
    */
-
   private void exportDirectoryHelper(int level, Directory directory) throws Exception {
     // Get the children
     List<Directory> children = new ArrayList<Directory>(directory.getDirectories());
@@ -295,12 +288,10 @@ public class XMLExporter extends Exporter {
       String sName = UtilString.formatXML(directory.getName());
       String sPath = UtilString.formatXML(directory.getAbsolutePath());
       String sID = directory.getID();
-
       // Tag directory data.
       writer.write(addTabs(1) + Tag.tagData(Const.XML_ID, sID) + NEWLINE);
       writer.write(addTabs(1) + Tag.tagData(Const.XML_NAME, sName) + NEWLINE);
       writer.write(addTabs(1) + Tag.tagData(Const.XML_PATH, sPath) + NEWLINE);
-
       // Tag directory children data.
       for (Directory d : new ArrayList<Directory>(directory.getDirectories())) {
         exportDirectoryHelper(1, d);
@@ -567,7 +558,6 @@ public class XMLExporter extends Exporter {
       writer.flush();
       writer.close();
     }
-
   }
 
   /**
@@ -578,7 +568,6 @@ public class XMLExporter extends Exporter {
   protected void setShowTracks(boolean showTracks) {
     this.showTracks = showTracks;
   }
-
 }
 
 /**

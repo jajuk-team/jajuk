@@ -41,14 +41,12 @@ import org.jajuk.util.Const;
  * .
  */
 public class TestHistoryItem extends JajukTestCase {
-
   /**
    * Test method for.
    *
    * {@link org.jajuk.services.bookmark.HistoryItem#HistoryItem(java.lang.String, long)}
    * .
    */
-
   public final void testHistoryItem() {
     new HistoryItem("1", 123);
   }
@@ -56,13 +54,10 @@ public class TestHistoryItem extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.bookmark.HistoryItem#getDate()}.
    */
-
   public final void testGetAndSetDate() {
     long date = System.currentTimeMillis();
     HistoryItem item = new HistoryItem("1", date);
-
     assertEquals(date, item.getDate());
-
     item.setDate(123);
     assertEquals(123, item.getDate());
   }
@@ -71,26 +66,20 @@ public class TestHistoryItem extends JajukTestCase {
    * Test method for {@link org.jajuk.services.bookmark.HistoryItem#getFileId()}
    * .
    */
-
   public final void testGetAndSetFileId() {
     long date = System.currentTimeMillis();
     HistoryItem item = new HistoryItem("1", date);
-
     assertEquals("1", item.getFileId());
-
     item.setFileId("2");
     assertEquals("2", item.getFileId());
-
   }
 
   /**
    * Test method for {@link org.jajuk.services.bookmark.HistoryItem#toString()}.
    */
-
   public final void testToStringNull() {
     long date = System.currentTimeMillis();
     HistoryItem item = new HistoryItem("1", date);
-
     JUnitHelpers.ToStringTest(item);
   }
 
@@ -104,26 +93,19 @@ public class TestHistoryItem extends JajukTestCase {
     Album album = JUnitHelpers.getAlbum("myalbum", 0);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-
     Artist artist = JUnitHelpers.getArtist("artistname");
     Year year = JUnitHelpers.getYear(2000);
-
     Type type = JUnitHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack("trackname", album, genre, artist, 120,
         year, 1, type, 1);
-
     Device device = JUnitHelpers.getDevice("devicename", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/device1");
-
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     file = FileManager.getInstance().registerFile("test.tst", dir, track, 120, 70);
-
     long date = System.currentTimeMillis();
     HistoryItem item = new HistoryItem(file.getID(), date);
-
     // verify toString in general
     JUnitHelpers.ToStringTest(item);
-
     // verify that the necessary information is contained
     assertTrue(item.toString(), item.toString().contains("trackname"));
     assertTrue(item.toString(), item.toString().contains("artistname"));

@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.widgets;
 
 import java.awt.event.ActionListener;
@@ -35,14 +34,10 @@ import org.jajuk.util.Messages;
  * Ok Cancel generic panel.
  */
 public class OKCancelPanel extends JPanel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   private final JajukButton jbOk;
-
   private final JajukButton jbCancel;
-
   /** Associated action listener. */
   ActionListener al;
 
@@ -93,5 +88,4 @@ public class OKCancelPanel extends JPanel {
   public JajukButton getCancelButton() {
     return jbCancel;
   }
-
 }

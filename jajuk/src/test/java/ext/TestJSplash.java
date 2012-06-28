@@ -29,7 +29,6 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestJSplash extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -87,7 +86,6 @@ public class TestJSplash extends JajukTestCase {
       JSplash splash = new JSplash(new URL("http://www.example.com"), true, true, true,
           "copyright", "version", null);
       splash.splashOn();
-
       splash.splashOff();
     } catch (HeadlessException e) {
       // expected when tests are executed without UI support
@@ -157,5 +155,4 @@ public class TestJSplash extends JajukTestCase {
       // expected when tests are executed without UI support
     }
   }
-
 }

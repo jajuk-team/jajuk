@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.thumbnails;
 
 import ext.services.lastfm.AlbumInfo;
@@ -58,16 +57,12 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * information display...
  */
 public class LastFmArtistThumbnail extends AbstractThumbnail {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -804471264407148566L;
-
   /** Associated artist. */
   private final ArtistInfo artist;
-
   /** Is this artist known in collection ?. */
   private final boolean bKnown;
-
   /** Thumb associated image *. */
   private ImageIcon ii;
 
@@ -165,7 +160,6 @@ public class LastFmArtistThumbnail extends AbstractThumbnail {
         Log.warn("Could not read remote file: {{" + remote.toString() + "}}");
         return;
       }
-
       BufferedImage image = ImageIO.read(fCover);
       if (image == null) {
         Log.warn("Could not read image data in file: {{" + fCover + "}}");
@@ -178,7 +172,6 @@ public class LastFmArtistThumbnail extends AbstractThumbnail {
       } else {
         ii = UtilGUI.getScaledImage(downloadedImage, 100);
       }
-
       // Free images memory
       downloadedImage.getImage().flush();
       image.flush();
@@ -247,5 +240,4 @@ public class LastFmArtistThumbnail extends AbstractThumbnail {
       jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, artist.getUrl());
     }
   }
-
 }

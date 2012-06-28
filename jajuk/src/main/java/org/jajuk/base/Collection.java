@@ -60,48 +60,33 @@ import org.xml.sax.helpers.DefaultHandler;
  * Items root container.
  */
 public final class Collection extends DefaultHandler {
-
   /** The Constant TAG_CLOSE_NEWLINE.  */
   private static final String TAG_CLOSE_NEWLINE = ">\n";
-
   /** The Constant TAB_CLOSE_TAG_START.  */
   private static final String TAB_CLOSE_TAG_START = "</";
-
   /** Self instance. */
   private static Collection coll = new Collection();
-
   private static long lTime;
-
   /** Current ItemManager manager. */
   private ItemManager manager;
-
   /** upgrade for track IDs. */
   private final Map<String, String> hmWrongRightTrackID = new HashMap<String, String>();
-
   /** upgrade for album IDs. */
   private final Map<String, String> hmWrongRightAlbumID = new HashMap<String, String>();
-
   /** upgrade for artist IDs. */
   private final Map<String, String> hmWrongRightArtistID = new HashMap<String, String>();
-
   /** upgrade for album-artists IDs. */
   private final Map<String, String> hmWrongRightAlbumArtistID = new HashMap<String, String>();
-
   /** upgrade for genre IDs. */
   private final Map<String, String> hmWrongRightGenreID = new HashMap<String, String>();
-
   /** upgrade for device IDs. */
   private final Map<String, String> hmWrongRightDeviceID = new HashMap<String, String>();
-
   /** upgrade for directory IDs. */
   private final Map<String, String> hmWrongRightDirectoryID = new HashMap<String, String>();
-
   /** upgrade for file IDs. */
   private final Map<String, String> hmWrongRightFileID = new HashMap<String, String>();
-
   /** upgrade for playlist IDs. */
   private final Map<String, String> hmWrongRightPlaylistFileID = new HashMap<String, String>();
-
   /** Conversion of types from Jajuk < 1.4 */
   private final static Map<String, String> CONVERSION;
   static {
@@ -118,10 +103,8 @@ public final class Collection extends DefaultHandler {
     CONVERSION.put("9", "ram");
     CONVERSION.put("10", "mp2");
   }
-
   /** [Perf] flag used to accelerate conversion. */
   private boolean needCheckConversions = true;
-
   /** [PERF] Does the type has been checked once for ID computation change ? Indeed, we check only one element of each type to check if this computation changed for perfs. */
   private boolean needCheckID = false;
 
@@ -130,49 +113,35 @@ public final class Collection extends DefaultHandler {
    * .
    */
   private enum Stage {
-
     STAGE_NONE,
-
     /** The Constant STAGE_FILES.  */
     STAGE_FILES,
-
     /** The Constant STAGE_DIRECTORIES.  */
     STAGE_DIRECTORIES,
-
     /** The Constant STAGE_TRACKS.  */
     STAGE_TRACKS,
-
     /** The Constant STAGE_ALBUMS.  */
     STAGE_ALBUMS,
-
     /** The Constant STAGE_ARTISTS.  */
     STAGE_ARTISTS,
-
     /** The Constant STAGE_GENRES.  */
     STAGE_GENRES,
-
     /** The Constant STAGE_PLAYLIST_FILES.  */
     STAGE_PLAYLIST_FILES,
-
     /** The Constant STAGE_PLAYLISTS.  */
     STAGE_PLAYLISTS,
-
     /** The Constant STAGE_TYPES.  */
     STAGE_TYPES,
-
     /** The Constant STAGE_DEVICES.  */
     STAGE_DEVICES,
-
     /** The Constant STAGE_YEARS.  */
     STAGE_YEARS,
-
     /** STAGE_ALBUM_ARTIST. */
     STAGE_ALBUM_ARTIST
   }
 
   /** *************************************************************************** [PERF] provide current stage (files, tracks...) used to optimize switch when parsing the collection ************************************************************************** */
   private Stage stage = Stage.STAGE_NONE;
-
   /** The Constant additionFormatter.  */
   private final DateFormat additionFormatter = UtilString.getAdditionDateFormatter();
 
@@ -215,37 +184,30 @@ public final class Collection extends DefaultHandler {
       bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");
       bw.write("<" + Const.XML_COLLECTION + " " + Const.XML_VERSION + "='" + Const.JAJUK_VERSION
           + "'>\n");
-
       // Devices
       writeItemList(bw, DeviceManager.getInstance().toXML(), DeviceManager.getInstance()
           .getDevices(), DeviceManager.getInstance().getXMLTag(), 40);
       Log.debug("Devices committed.");
-
       // Genres
       writeItemList(bw, GenreManager.getInstance().toXML(), GenreManager.getInstance().getGenres(),
           GenreManager.getInstance().getXMLTag(), 40);
       Log.debug("Genres committed.");
-
       // Artists
       writeItemList(bw, ArtistManager.getInstance().toXML(), ArtistManager.getInstance()
           .getArtists(), ArtistManager.getInstance().getXMLTag(), 40);
       Log.debug("Artists committed.");
-
       // Album artists
       writeItemList(bw, AlbumArtistManager.getInstance().toXML(), AlbumArtistManager.getInstance()
           .getAlbumArtists(), AlbumArtistManager.getInstance().getXMLTag(), 40);
       Log.debug("Album-artists committed.");
-
       // Albums
       writeItemList(bw, AlbumManager.getInstance().toXML(), AlbumManager.getInstance().getAlbums(),
           AlbumManager.getInstance().getXMLTag(), 40);
       Log.debug("Albums committed.");
-
       // Years
       writeItemList(bw, YearManager.getInstance().toXML(), YearManager.getInstance().getYears(),
           YearManager.getInstance().getXMLTag(), 40);
       Log.debug("Years committed.");
-
       // Tracks
       // Cannot use writeItemList() method as we have a bit of special handling inside the loop here
       TrackManager.getInstance().getLock().readLock().lock();
@@ -264,22 +226,18 @@ public final class Collection extends DefaultHandler {
       }
       writeString(bw, TrackManager.getInstance().getXMLTag(), 200);
       Log.debug("Tracks committed.");
-
       // Directories
       writeItemList(bw, DirectoryManager.getInstance().toXML(), DirectoryManager.getInstance()
           .getDirectories(), DirectoryManager.getInstance().getXMLTag(), 100);
       Log.debug("Directories committed.");
-
       // Files
       writeItemList(bw, FileManager.getInstance().toXML(), FileManager.getInstance().getFiles(),
           FileManager.getInstance().getXMLTag(), 200);
       Log.debug("Files committed.");
-
       // Playlists
       writeItemList(bw, PlaylistManager.getInstance().toXML(), PlaylistManager.getInstance()
           .getPlaylists(), PlaylistManager.getInstance().getXMLTag(), 200);
       Log.debug("Playlists committed.");
-
       // end of collection
       bw.write("</" + Const.XML_COLLECTION + TAG_CLOSE_NEWLINE);
       bw.flush();
@@ -306,7 +264,6 @@ public final class Collection extends DefaultHandler {
     for (Item item : items) {
       bw.write(item.toXml());
     }
-
     writeString(bw, footer, buffer);
   }
 
@@ -569,7 +526,6 @@ public final class Collection extends DefaultHandler {
             manager.registerProperty(meta);
           }
         }
-
         if (Const.XML_PROPERTY == sQName) {//NOSONAR
           Log.debug("Found property: " + attributes.getValue(Const.XML_NAME));
         } else {
@@ -662,13 +618,11 @@ public final class Collection extends DefaultHandler {
     if (dParent == null || track == null) { // more checkups
       return;
     }
-
     String size = attributes.getValue(Const.XML_SIZE);
     long lSize = 0;
     if (size != null) {
       lSize = Long.parseLong(size);
     }
-
     // Quality analyze, handle format problems (mainly for
     // upgrades)
     long lQuality = 0;
@@ -712,7 +666,6 @@ public final class Collection extends DefaultHandler {
    */
   private void handleDirectories(Attributes attributes, int idIndex) {
     Directory dParent = null;
-
     // dParent = null;
     String sParentID = attributes.getValue(Const.XML_DIRECTORY_PARENT).intern();
     // UPGRADE
@@ -754,7 +707,6 @@ public final class Collection extends DefaultHandler {
     Directory directory = DirectoryManager.getInstance().registerDirectory(sRightID, sItemName,
         dParent, device);
     directory.populateProperties(attributes);
-
     // also remember top-level directories at the device
     if (dParent == null) {
       device.addDirectory(directory);
@@ -797,7 +749,6 @@ public final class Collection extends DefaultHandler {
       sArtistID = hmWrongRightArtistID.get(sArtistID);
     }
     Artist artist = ArtistManager.getInstance().getArtistByID(sArtistID);
-
     // Album-artist (not a constructor level property)
     String sAlbumArtist = attributes.getValue(Const.XML_ALBUM_ARTIST);
     if (StringUtils.isNotBlank(sAlbumArtist)) {
@@ -814,7 +765,6 @@ public final class Collection extends DefaultHandler {
       // we force album artist to this default, a deep scan will be required to get actual values
       albumArtist = AlbumArtistManager.getInstance().registerAlbumArtist(Const.UNKNOWN_ARTIST);
     }
-
     // Length
     long length = UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_LENGTH));
     // Type
@@ -844,7 +794,6 @@ public final class Collection extends DefaultHandler {
         Log.debug(Messages.getString("Error.137") + ":" + sTrackName); // wrong
       }
     }
-
     // Idem for disc number
     long lDiscNumber = 0l;
     if (attributes.getValue(Const.XML_TRACK_DISC_NUMBER) != null) {
@@ -857,7 +806,6 @@ public final class Collection extends DefaultHandler {
         }
       }
     }
-
     // UPGRADE test
     String sRightID = sID;
     if (needCheckID) {
@@ -882,7 +830,6 @@ public final class Collection extends DefaultHandler {
           .getValue(Const.XML_TRACK_DISCOVERY_DATE));
       track.setDiscoveryDate(dAdditionDate);
     }
-
     String sComment = attributes.getValue(Const.XML_TRACK_COMMENT);
     if (sComment == null) {
       sComment = "";

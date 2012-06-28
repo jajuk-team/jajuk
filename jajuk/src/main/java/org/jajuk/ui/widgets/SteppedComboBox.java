@@ -35,12 +35,9 @@ import org.jajuk.util.log.Log;
 /**
  * Stepped combo box allowing to display a long text in the history bar.
  */
-
 public class SteppedComboBox extends JComboBox {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   protected int popupWidth;
 
   /**
@@ -121,7 +118,6 @@ public class SteppedComboBox extends JComboBox {
           return popup1;
         }
       };
-
       setUI(cbui);
       popupWidth = 0;
     } catch (Exception e) {

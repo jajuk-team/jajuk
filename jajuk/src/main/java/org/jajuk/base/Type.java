@@ -34,13 +34,10 @@ import org.jajuk.util.log.Log;
  * Music type.
  */
 public class Type extends PhysicalItem implements Comparable<Type> {
-
   /** Type extension ex:mp3,ogg. */
   private final String sExtension;
-
   /** Player impl. */
   private final Class<ITagImpl> cTagImpl;
-
   /** Player class. */
   private final Class<IPlayerImpl> cPlayerImpl;
 
@@ -171,11 +168,9 @@ public class Type extends PhysicalItem implements Comparable<Type> {
    */
   public static String[] getExtensionsFromTypes(final List<Type> types) {
     String[] extensions = {};
-
     if (types != null) {
       final int typesSize = types.size();
       final Type[] typesArray = types.toArray(new Type[typesSize]);
-
       extensions = new String[typesSize];
       for (int i = 0; i < typesSize; i++) {
         extensions[i] = typesArray[i].getExtension();
@@ -192,5 +187,4 @@ public class Type extends PhysicalItem implements Comparable<Type> {
   public boolean isVideo() {
     return Messages.getString(Const.TYPE_VIDEO).equals(getName());
   }
-
 }

@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.widgets;
 
 import java.awt.Color;
@@ -39,25 +38,18 @@ import org.jajuk.util.log.Log;
  * Encapsulates a label with a text and an icon, used for tables.
  */
 public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 3794262035337113611L;
-
   /** Text. */
   private final String sText;
-
   /** Background color. */
   private Color cBackground;
-
   /** Foreground color. */
   private Color cForeground;
-
   /** Font. */
   private Font font;
-
   /** Tooltip. */
   private String sTooltip;
-
   private static Map<JajukIcons, IconLabel> cachedIcons = new HashMap<JajukIcons, IconLabel>();
 
   /**

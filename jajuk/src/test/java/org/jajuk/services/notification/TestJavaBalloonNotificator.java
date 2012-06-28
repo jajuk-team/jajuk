@@ -34,7 +34,6 @@ import org.jajuk.ui.windows.JajukSystray;
  * .
  */
 public class TestJavaBalloonNotificator extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -46,7 +45,6 @@ public class TestJavaBalloonNotificator extends JajukTestCase {
     // "isAvailable"
     JavaBalloonNotificator notificator = JavaBalloonNotificator.getInstance();
     assertFalse(notificator.isAvailable());
-
     try {
       // should initialize correctly and return true for valid TrayIcon
       TrayIcon tray = JajukSystray.getInstance().getTrayIcon();

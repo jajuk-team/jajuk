@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.dj;
 
 import java.io.BufferedWriter;
@@ -66,13 +65,10 @@ import org.xml.sax.helpers.DefaultHandler;
  * </p>.
  */
 public final class DigitalDJManager implements Observer {
-
   /** List of registrated DJs ID->DJ. */
   private final Map<String, DigitalDJ> djs;
-
   /** self instance. */
   private static DigitalDJManager dj = new DigitalDJManager();
-
   /** Currently selected DJ. */
   private static DigitalDJ current;
 
@@ -260,7 +256,6 @@ public final class DigitalDJManager implements Observer {
               return false;
             }
           });
-
       // read each of the files
       for (File element : files) {
         try { // try each DJ to continue others if one fails
@@ -296,43 +291,32 @@ public final class DigitalDJManager implements Observer {
   public static void setCurrentDJ(DigitalDJ dj) {
     current = dj;
   }
-
 }
 
 /**
  * This class is responsible for creating different factories
  */
 abstract class DigitalDJFactory extends DefaultHandler {
-
   /** Factory type (class name) */
   private static String factoryType;
-
   /** DJ type (class name) */
   protected String type;
-
   /** DJ name */
   protected String name;
-
   /** DJ ID */
   protected String id;
-
   /** DJ Fade duration */
   protected int fadeDuration;
-
   /** Rating level */
   protected int iRatingLevel;
-
   /** Startup genre */
   protected Genre startupGenre;
-
   /** Track unicity */
   protected boolean bTrackUnicity = false;
-
   protected int maxTracks;
 
   /** General parameters handlers */
   abstract class GeneralDefaultHandler extends DefaultHandler {
-
     /**
      * Called when we start an element
      * 
@@ -351,7 +335,6 @@ abstract class DigitalDJFactory extends DefaultHandler {
             .getIndex(Const.XML_DJ_RATING_LEVEL)));
         fadeDuration = Integer.parseInt(attributes.getValue(attributes
             .getIndex(Const.XML_DJ_FADE_DURATION)));
-
         // keep older DJs without this attribute usable
         if (attributes.getValue(attributes.getIndex(Const.XML_DJ_MAX_TRACKS)) != null) {
           maxTracks = Integer.parseInt(attributes.getValue(attributes
@@ -433,7 +416,6 @@ abstract class DigitalDJFactory extends DefaultHandler {
    *          DJ file
    */
   abstract DigitalDJ getDJ(File file) throws Exception;
-
 }
 
 /**
@@ -441,20 +423,16 @@ abstract class DigitalDJFactory extends DefaultHandler {
  * 
  */
 class DigitalDJFactoryProportionImpl extends DigitalDJFactory {
-
   /** Intermediate genres variable used during parsing */
   private String genres;
-
   /** Intermediate proportion variable used during parsing */
   private float proportion;
-
   private final List<Proportion> proportions = new ArrayList<Proportion>(5);
 
   @Override
   DigitalDJ getDJ(File file) throws Exception {
     // Parse XML file to populate the DJ
     DefaultHandler handler = new GeneralDefaultHandler() {
-
       @Override
       protected void othersTags(String sQname, Attributes attributes) {
         if (Const.XML_DJ_PROPORTION.equals(sQname)) {
@@ -468,7 +446,6 @@ class DigitalDJFactoryProportionImpl extends DigitalDJFactory {
           }
           proportions.add(new Proportion(ambience, proportion));
         }
-
       }
     };
     SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -490,7 +467,6 @@ class DigitalDJFactoryProportionImpl extends DigitalDJFactory {
  * Ambience dj factory
  */
 class DigitalDJFactoryAmbienceImpl extends DigitalDJFactory {
-
   private Ambience ambience;
 
   @Override
@@ -525,7 +501,6 @@ class DigitalDJFactoryAmbienceImpl extends DigitalDJFactory {
  * 
  */
 class DigitalDJFactoryTransitionImpl extends DigitalDJFactory {
-
   /** Intermediate transition list */
   private final List<Transition> transitions = new ArrayList<Transition>(10);
 
@@ -557,7 +532,6 @@ class DigitalDJFactoryTransitionImpl extends DigitalDJFactory {
     SAXParserFactory spf = SAXParserFactory.newInstance();
     SAXParser saxParser = spf.newSAXParser();
     saxParser.parse(file, handler);
-
     TransitionDigitalDJ dj = new TransitionDigitalDJ(id);
     setGeneralProperties(dj);
     dj.setTransitions(transitions);

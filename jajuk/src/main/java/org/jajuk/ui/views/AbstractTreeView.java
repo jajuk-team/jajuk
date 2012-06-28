@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.views;
 
 import java.awt.event.ActionEvent;
@@ -64,80 +63,49 @@ import org.jdesktop.swingx.JXTree;
  * An abstract files or tracks tree view. Contains common methods
  */
 public abstract class AbstractTreeView extends ViewAdapter {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 8330315957562739918L;
-
   /** The tree scrollpane. */
   JScrollPane jspTree;
-
   /** The phyical tree. */
   JXTree jtree;
-
   /** The table/tree sync toggle button. */
   JajukToggleButton jtbSync;
-
   /** the collapse all button. */
   JButton jbCollapseAll;
-
   /** Current selection. */
   TreePath[] paths;
-
   /** Resursive items selection. */
   Set<Item> selectedRecursively = new HashSet<Item>(100);
-
   /** Items selection. */
   List<Item> alSelected = new ArrayList<Item>(100);
-
   /** Top tree node. */
   DefaultMutableTreeNode top;
-
   javax.swing.JPopupMenu jmenu;
-
   JMenuItem jmiPlay;
-
   JMenuItem jmiPush;
-
   JMenuItem jmiFrontPush;
-
   JMenuItem jmiPlayShuffle;
-
   JMenuItem jmiPlayRepeat;
-
   JMenuItem jmiCut;
-
   JMenuItem jmiCopy;
-
   JMenuItem jmiPaste;
-
   JMenuItem jmiRename;
-
   JMenuItem jmiDelete;
-
   JMenuItem jmiNewFolder;
-
   JMenuItem jmiAddFavorite;
-
   JMenuItem jmiReport;
-
   JMenuItem jmiProperties;
-
   JMenuItem jmiCDDBWizard;
-
   JMenuItem jmiCopyURL;
-
   /** Jtree scroller position*. */
   private int pos;
-
   /** Preference menu. */
   PreferencesJMenu pjmTracks;
-
   /** Used to differentiate user action tree collapse from code tree collapse. */
   boolean bManualAction = true;
-
   /** Used to differentiate tree/table sync due to internal events from users's ones. */
   boolean bInternalAction = false;
-
   /** Flag used to set tree is refreshing. */
   boolean refreshing = false;
 
@@ -171,14 +139,12 @@ public abstract class AbstractTreeView extends ViewAdapter {
     jtree.putClientProperty("JTree.lineStyle", "Angled");
     jtree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
     setKeystrokes();
-
     // set the special controller for doing lazy loading if used for this View
     if (bLazy) {
       final LazyLoadingTreeExpander controller = new LazyLoadingTreeExpander(
           (DefaultTreeModel) jtree.getModel());
       jtree.addTreeWillExpandListener(controller);
     }
-
     return jtree;
   }
 
@@ -225,12 +191,10 @@ public abstract class AbstractTreeView extends ViewAdapter {
     jmiCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     jmiCopyURL.putClientProperty(Const.DETAIL_CONTENT, alSelected);
     pjmTracks = new PreferencesJMenu(alSelected);
-
     // Create the sync toggle button and restore its state
     jtbSync = new JajukToggleButton(ActionManager.getAction(JajukActions.SYNC_TREE_TABLE));
     jtbSync.putClientProperty(Const.DETAIL_VIEW, getID());
     jtbSync.setSelected(Conf.getBoolean(Const.CONF_SYNC_TABLE_TREE + "." + getID()));
-
     // Create the collapse all button, no need to a dedicated Action here as it
     // is used only in this class
     jbCollapseAll = new JButton(IconLoader.getIcon(JajukIcons.REMOVE));
@@ -244,7 +208,6 @@ public abstract class AbstractTreeView extends ViewAdapter {
         jtree.setSelectionInterval(0, 0);
       }
     });
-
   }
 
   /**
@@ -271,7 +234,6 @@ public abstract class AbstractTreeView extends ViewAdapter {
     jtree.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     InputMap inputMap = jtree.getInputMap(JComponent.WHEN_FOCUSED);
     ActionMap actionMap = jtree.getActionMap();
-
     // Delete
     Action action = ActionManager.getAction(JajukActions.DELETE);
     inputMap.put(KeyStroke.getKeyStroke("DELETE"), "delete");
@@ -336,7 +298,6 @@ public abstract class AbstractTreeView extends ViewAdapter {
               }
             }
           });
-
         }
       };
       sw.execute();
@@ -356,7 +317,6 @@ public abstract class AbstractTreeView extends ViewAdapter {
               || sourceView.getID().equals(getID())) {
             return;
           }
-
           @SuppressWarnings("unchecked")
           List<Item> selection = (List<Item>) details.get(Const.DETAIL_SELECTION);
           if (selection.size() == 0) {

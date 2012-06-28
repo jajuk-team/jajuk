@@ -30,7 +30,6 @@ import org.jajuk.services.webradio.WebRadio;
  * .
  */
 public class TestNotifySendBalloonNotificator extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -43,10 +42,8 @@ public class TestNotifySendBalloonNotificator extends JajukTestCase {
     // on the "notify-send" to be available, which we cannot guarantee on all
     // machines running the tests
     NotifySendBalloonNotificator not = NotifySendBalloonNotificator.getInstance();
-
     // just call it to cover it, we cannot test if it is true or false
     not.isAvailable();
-
   }
 
   /**
@@ -61,7 +58,6 @@ public class TestNotifySendBalloonNotificator extends JajukTestCase {
     // on the "notify-send" to be available, which we cannot guarantee on all
     // machines running the tests
     NotifySendBalloonNotificator notificator = NotifySendBalloonNotificator.getInstance();
-
     // only test this if it is available
     if (notificator.isAvailable()) {
       File file = TestHelpers.getMockFile();
@@ -81,12 +77,10 @@ public class TestNotifySendBalloonNotificator extends JajukTestCase {
     // on the "notify-send" to be available, which we cannot guarantee on all
     // machines running the tests
     NotifySendBalloonNotificator notificator = NotifySendBalloonNotificator.getInstance();
-
     // only test this if it is available
     if (notificator.isAvailable()) {
       WebRadio webradio = JUnitHelpers.getWebRadio();
       notificator.notify(webradio);
     }
   }
-
 }

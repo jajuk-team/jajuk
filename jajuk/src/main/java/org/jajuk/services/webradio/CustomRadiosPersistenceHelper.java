@@ -39,7 +39,6 @@ import org.xml.sax.helpers.DefaultHandler;
    * Preset radios parser
    */
 public class CustomRadiosPersistenceHelper extends DefaultHandler {
-
   /** In radio tag. */
   private boolean inRadio;
 
@@ -65,7 +64,6 @@ public class CustomRadiosPersistenceHelper extends DefaultHandler {
         String bitrate = attributes.getValue(attributes.getIndex(Const.XML_BITRATE));
         String frequency = attributes.getValue(attributes.getIndex(Const.XML_FREQUENCY));
         String label = attributes.getValue(attributes.getIndex(Const.XML_DESC));
-
         WebRadio radio = WebRadioManager.getInstance().registerWebRadio(name);
         radio.setProperty(Const.XML_URL, url);
         if (!UtilString.isEmpty(label)) {
@@ -135,5 +133,4 @@ public class CustomRadiosPersistenceHelper extends DefaultHandler {
       bw.close();
     }
   }
-
 }

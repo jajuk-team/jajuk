@@ -38,7 +38,6 @@ import org.jajuk.util.UtilGUI;
  * .
  */
 public class RepeatModeAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -63,7 +62,6 @@ public class RepeatModeAction extends JajukAction {
     // disabling repeat for an item forced unset for all items and enabling single repeat unset
     // repeat for all items and then set it only for current track
     QueueModel.setRepeatModeToAll(false);
-
     if (!b) { // enabled button
       // if FIFO is not void, repeat over current item
       StackItem item = QueueModel.getCurrentItem();

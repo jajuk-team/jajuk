@@ -55,14 +55,10 @@ import org.jajuk.util.Messages;
  * </p>.
  */
 public class PreferenceToolbar extends JajukJToolbar implements Observer {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 3869208492725759632L;
-
   JajukButton jbBan;
-
   JComboBox jcbPreference;
-
   ActionListener listener;
 
   /**
@@ -70,7 +66,6 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
    */
   public PreferenceToolbar() {
     super();
-
     jbBan = new JajukButton(ActionManager.getAction(JajukActions.BAN));
     // Preference combo:
     /*
@@ -84,7 +79,6 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
     jcbPreference.setMinimumSize(new Dimension(45, 0));
     jcbPreference.setPreferredSize(new Dimension(45, 0));
     jcbPreference.setToolTipText(Messages.getString("Preference.0"));
-
     jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_ADORE));
     jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_LOVE));
     jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_LIKE));
@@ -92,7 +86,6 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
     jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_AVERAGE));
     jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_POOR));
     jcbPreference.addItem(IconLoader.getIcon(JajukIcons.PREFERENCE_HATE));
-
     // Set default to unset preference if not playing and to current track value
     // if playing
     if (!QueueModel.isStopped() && QueueModel.getPlayingFile() != null) {
@@ -100,9 +93,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
     } else {
       jcbPreference.setSelectedIndex(3);
     }
-
     listener = new ActionListener() {
-
       @Override
       public void actionPerformed(ActionEvent e) {
         File file = QueueModel.getPlayingFile();
@@ -114,7 +105,6 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
         ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
       }
     };
-
     jcbPreference.addActionListener(listener);
     add(jbBan);
     add(jcbPreference);
@@ -215,7 +205,6 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
    * .
    */
   private class ComboBoxRenderer extends BasicComboBoxRenderer {
-
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = -6943363556191659895L;
 

@@ -37,21 +37,17 @@ import org.jdesktop.swingx.autocomplete.TextComponentAdaptor;
  * .
  */
 public class TestAutoCompleteDocument extends JajukTestCase {
-
   /**
    * Test method for {@link ext.AutoCompleteDocument#remove(int, int)}.
    *
    * @throws Exception the exception
    */
-
   public void testRemove() throws Exception {
     String[] items = new String[] { "exact", "exacter", "exactest" };
-
     JTextComponent textComponent = new JTextField();
     TextComponentAdaptor adaptor = new TextComponentAdaptor(textComponent, Arrays.asList(items));
     Document document = new AutoCompleteDocument(adaptor, true);
     document.insertString(0, "test", null);
-
     // TODO: this does not work for some reason....
     // document.remove(0, 2);
   }
@@ -62,7 +58,6 @@ public class TestAutoCompleteDocument extends JajukTestCase {
    * {@link ext.AutoCompleteDocument#AutoCompleteDocument(org.jdesktop.swingx.autocomplete.AbstractAutoCompleteAdaptor, boolean, org.jdesktop.swingx.autocomplete.ObjectToStringConverter)}
    * .
    */
-
   public void testAutoCompleteDocumentAbstractAutoCompleteAdaptorBooleanObjectToStringConverter() {
     new AutoCompleteDocument(new ComboBoxAdaptor(new JComboBox()), false, null);
   }
@@ -79,7 +74,6 @@ public class TestAutoCompleteDocument extends JajukTestCase {
     assertNotNull(adaptor.getSelectedItem());
     assertNotNull(adaptor.getSelectedItemAsString());
     new AutoCompleteDocument(adaptor, false, new ObjectToStringConverter() {
-
       @Override
       public String getPreferredStringForItem(Object obj) {
         return null;
@@ -93,7 +87,6 @@ public class TestAutoCompleteDocument extends JajukTestCase {
    * {@link ext.AutoCompleteDocument#AutoCompleteDocument(org.jdesktop.swingx.autocomplete.AbstractAutoCompleteAdaptor, boolean)}
    * .
    */
-
   public void testAutoCompleteDocumentAbstractAutoCompleteAdaptorBoolean() {
     new AutoCompleteDocument(new ComboBoxAdaptor(new JComboBox()), false);
   }
@@ -101,12 +94,10 @@ public class TestAutoCompleteDocument extends JajukTestCase {
   /**
    * Test method for {@link ext.AutoCompleteDocument#isStrictMatching()}.
    */
-
   public void testIsStrictMatching() {
     AutoCompleteDocument document = new AutoCompleteDocument(new ComboBoxAdaptor(new JComboBox()),
         false);
     assertFalse(document.isStrictMatching());
-
     document = new AutoCompleteDocument(new ComboBoxAdaptor(new JComboBox()), true);
     assertTrue(document.isStrictMatching());
   }
@@ -118,10 +109,8 @@ public class TestAutoCompleteDocument extends JajukTestCase {
    * {@link ext.AutoCompleteDocument#insertString(int, java.lang.String, javax.swing.text.AttributeSet)}
    * .
    */
-
   public void testInsertStringIntStringAttributeSetStrictMatching() throws Exception {
     String[] items = new String[] { "exact", "exacter", "exactest" };
-
     JTextComponent textComponent = new JTextField();
     TextComponentAdaptor adaptor = new TextComponentAdaptor(textComponent, Arrays.asList(items));
     Document document = new AutoCompleteDocument(adaptor, true);
@@ -136,7 +125,6 @@ public class TestAutoCompleteDocument extends JajukTestCase {
    */
   public void testInsertStringIntStringAttributeSet() throws Exception {
     String[] items = new String[] { "exact", "exacter", "exactest" };
-
     JTextComponent textComponent = new JTextField("012345");
     TextComponentAdaptor adaptor = new TextComponentAdaptor(textComponent, Arrays.asList(items));
     Document document = new AutoCompleteDocument(adaptor, false);
@@ -151,20 +139,15 @@ public class TestAutoCompleteDocument extends JajukTestCase {
    */
   public void testPreferExactMatchOverCurrentlySelected() throws Exception {
     String[] items = new String[] { "exact", "exacter", "exactest" };
-
     JTextComponent textComponent = new JTextField();
     TextComponentAdaptor adaptor = new TextComponentAdaptor(textComponent, Arrays.asList(items));
     Document document = new AutoCompleteDocument(adaptor, true);
     textComponent.setDocument(document);
-
     textComponent.setText("exacter");
     assertTrue(adaptor.getSelectedItem().equals("exacter"));
-
     document.remove(4, 3);
     assertTrue(adaptor.getSelectedItem().equals("exacter"));
-
     document.insertString(4, "t", null);
     assertTrue(adaptor.getSelectedItem().equals("exact"));
   }
-
 }

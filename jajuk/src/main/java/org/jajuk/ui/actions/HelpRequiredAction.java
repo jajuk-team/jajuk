@@ -33,7 +33,6 @@ import org.jajuk.util.log.Log;
  * Action for displaying the online help.
  */
 public class HelpRequiredAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

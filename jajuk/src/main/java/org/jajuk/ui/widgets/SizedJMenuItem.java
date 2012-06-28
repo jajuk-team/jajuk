@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.widgets;
 
 import javax.swing.Action;
@@ -32,7 +31,6 @@ import org.jajuk.util.UtilGUI;
  * Menu item whose icon has a fixed size.
  */
 public class SizedJMenuItem extends JMenuItem {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -3859493402696496345L;
 
@@ -54,5 +52,4 @@ public class SizedJMenuItem extends JMenuItem {
   public void setIcon(Icon icon) {
     super.setIcon(UtilGUI.getResizedImage((ImageIcon) icon, 16, 16));
   }
-
 }

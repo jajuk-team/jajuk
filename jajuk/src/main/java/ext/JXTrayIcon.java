@@ -19,7 +19,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package ext;
 
 import java.awt.Frame;
@@ -38,16 +37,13 @@ import javax.swing.event.PopupMenuListener;
  * See http://weblogs.java.net/blog/alexfromsun/archive/2008/02/jtrayicon_updat.html
  */
 public class JXTrayIcon extends TrayIcon {
-
   private JPopupMenu menu;
-
   private static JDialog dialog;
   static {
     dialog = new JDialog((Frame) null, "TrayDialog");
     dialog.setUndecorated(true);
     dialog.setAlwaysOnTop(true);
   }
-
   private static PopupMenuListener popupListener = new PopupMenuListener() {
     @Override
     public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
@@ -111,5 +107,4 @@ public class JXTrayIcon extends TrayIcon {
     this.menu = menu;
     menu.addPopupMenuListener(popupListener);
   }
-
 }

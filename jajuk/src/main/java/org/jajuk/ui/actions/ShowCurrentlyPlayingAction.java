@@ -36,7 +36,6 @@ import org.jajuk.util.Messages;
  *
  */
 public class ShowCurrentlyPlayingAction extends SelectionAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

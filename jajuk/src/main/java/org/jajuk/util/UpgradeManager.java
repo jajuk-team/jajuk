@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.util;
 
 import java.io.File;
@@ -53,19 +52,14 @@ import org.jajuk.util.log.Log;
  * Jajuk version sheme is XX.YY.ZZ (two digits possible for each part of the release)
  */
 public final class UpgradeManager implements Const {
-
   /** Last jajuk release known from Internet (parsed from a pad file). */
   private static String newVersionName;
-
   /** Is it a minor or major X.Y upgrade */
   private static boolean bUpgraded = false;
-
   /** Is it the first session ever ?. */
   private static boolean bFirstSession = false;
-
   /** Is it an old migration (more than 1 major release) ?. */
   private static boolean majorMigration = false;
-
   /** List of versions that doesn't require perspective reset at upgrade. */
   private static String[] versionsNoNeedPerspectiveReset = new String[] { "1.9" };
 
@@ -125,7 +119,6 @@ public final class UpgradeManager implements Const {
       }
       // Upgrade detection. Depends on: Configuration manager load
       final String sStoredRelease = Conf.getString(Const.CONF_RELEASE);
-
       // check if it is a new major 'x.y' release: 1.2 != 1.3 for instance
       if (!bFirstSession
       // if first session, not taken as an upgrade
@@ -177,30 +170,23 @@ public final class UpgradeManager implements Const {
       if (isUpgradeDetected()) {
         // For jajuk < 0.2
         upgradeOldCollectionBackupFile();
-
         // For Jajuk < 1.2
         upgradeDefaultAmbience();
-
         // For Jajuk < 1.3
         upgradeTrackPattern();
         upgradeSerFiles();
         upgradeNocover();
         upgradeWrongHotketOption();
-
         // For Jajuk < 1.4
         upgradePerspectivesRename();
-
         // For Jajuk < 1.6
         upgradePerspectiveButtonsSize();
         upgradeDJClassChanges();
-
         // For Jajuk < 1.7
         upgradeElapsedTimeFormat();
-
         // for Jajuk < 1.9
         upgradeAlarmConfFile();
         upgradeStartupConf();
-
         // for Jajuk < 1.10
         upgradeWebRadioFile();
       }
@@ -269,7 +255,6 @@ public final class UpgradeManager implements Const {
         album.setProperty(XML_ALBUM_SELECTED_COVER, "");
       }
     }
-
   }
 
   /**
@@ -289,7 +274,6 @@ public final class UpgradeManager implements Const {
       File bootstrapOldOldHome = new File(System.getProperty("user.home") + "/"
           + Const.FILE_BOOTSTRAP_OLD);
       File bootstrapNew = new File(SessionService.getBootstrapPath());
-
       // Fix for #1473 : move the bootstrap file if required (See https://trac.jajuk.info/ticket/1473)
       if (UtilSystem.isUnderWindows() && !bootstrapOld.equals(bootstrapOldOldHome)
           && !bootstrapOld.exists() && bootstrapOldOldHome.exists()) {
@@ -300,7 +284,6 @@ public final class UpgradeManager implements Const {
           ex.printStackTrace();
         }
       }
-
       if (bootstrapOld.exists() && !bootstrapNew.exists()) {
         Properties prop = null;
         // Try to load a bootstrap file using plain text old format
@@ -309,7 +292,6 @@ public final class UpgradeManager implements Const {
             SessionService.getBootstrapPath(Const.FILE_BOOTSTRAP_OLD));
         prop.load(fis);
         fis.close();
-
         // If it exists and contains pre-1.7 bootstrap format (a single line with a raw path),
         // convert it to 1.7 format first
         if (prop.size() == 1) {
@@ -329,7 +311,6 @@ public final class UpgradeManager implements Const {
         }
         // Write down the new bootstrap file
         SessionService.commitBootstrapFile(prop);
-
         // Delete old bootstrap file
         bootstrapOld.delete();
       }
@@ -500,7 +481,6 @@ public final class UpgradeManager implements Const {
       Log.info("Migrating collection rating");
       // We keep current ratings and we recompute them on a 0 to 100 scale,
       // then we suggest user to reset the rates
-
       // Start by finding max (old) rating
       long maxRating = 0;
       ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
@@ -566,7 +546,6 @@ public final class UpgradeManager implements Const {
     new Thread() {
       @Override
       public void run() {
-
         // Clean thumbs
         ThumbnailManager.cleanThumbs(Const.THUMBNAIL_SIZE_50X50);
         ThumbnailManager.cleanThumbs(Const.THUMBNAIL_SIZE_100X100);
@@ -600,7 +579,6 @@ public final class UpgradeManager implements Const {
     } catch (Throwable e) {
       Log.error(e);
     }
-
   }
 
   /**
@@ -617,7 +595,6 @@ public final class UpgradeManager implements Const {
     } catch (Throwable e) {
       Log.error(e);
     }
-
   }
 
   /**
@@ -771,5 +748,4 @@ public final class UpgradeManager implements Const {
     }
     return true;
   }
-
 }

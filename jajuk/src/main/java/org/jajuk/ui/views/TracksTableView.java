@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.views;
 
 import javax.swing.JMenuItem;
@@ -36,12 +35,9 @@ import org.jajuk.util.UtilGUI;
  * Logical table view.
  */
 public class TracksTableView extends AbstractTableView {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   private JMenuItem jmiTrackPlayAlbum;
-
   private JMenuItem jmiTrackPlayArtist;
 
   /**
@@ -119,5 +115,4 @@ public class TracksTableView extends AbstractTableView {
     // model creation
     return new TracksTableModel(getID());
   }
-
 }

@@ -26,7 +26,6 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestCannotRenameException extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -35,7 +34,6 @@ public class TestCannotRenameException extends JajukTestCase {
    */
   public void testCannotRenameExceptionInt() {
     new CannotRenameException(10);
-
   }
 
   /**
@@ -47,5 +45,4 @@ public class TestCannotRenameException extends JajukTestCase {
   public void testCannotRenameExceptionIntThrowable() {
     new CannotRenameException(22, new Throwable());
   }
-
 }

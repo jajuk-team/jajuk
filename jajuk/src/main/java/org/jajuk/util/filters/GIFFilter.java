@@ -26,7 +26,6 @@ import org.jajuk.util.JajukFileFilter;
  * Gif filter.
  */
 public class GIFFilter extends JajukFileFilter {
-
   /** Self instance. */
   private static GIFFilter self = new GIFFilter();
 

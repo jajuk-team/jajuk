@@ -36,14 +36,12 @@ import org.xml.sax.SAXParseException;
  * .
  */
 public class TestCollection extends JajukTestCase {
-
   /**
    * Test method for {@link org.jajuk.base.Collection#startDocument()}.
    */
   public final void testStartDocument() {
     Collection coll = Collection.getInstance();
     assertNotNull(coll);
-
     // just call it, this is part of the SAX interfaces
     coll.startDocument();
   }
@@ -54,7 +52,6 @@ public class TestCollection extends JajukTestCase {
   public final void testEndDocument() {
     Collection coll = Collection.getInstance();
     assertNotNull(coll);
-
     // just call it, this is part of the SAX interfaces
     coll.endDocument();
   }
@@ -74,35 +71,26 @@ public class TestCollection extends JajukTestCase {
    */
   public final void testCommit() throws Exception {
     StartupCollectionService.registerItemManagers();
-
     Collection coll = Collection.getInstance();
     assertNotNull(coll);
-
     java.io.File file = java.io.File.createTempFile("testcoll", ".xml", new java.io.File(
         ConstTest.SAMPLE_WORKSPACE_PATH));
-
     // delete the file before writing the collection
     assertTrue(file.delete());
-
     // commit without any item
     Collection.commit(file);
-
     // now it should exist and have some content
     assertTrue(file.exists());
     String str = FileUtils.readFileToString(file);
     assertTrue(str, StringUtils.isNotBlank(str));
     assertTrue(str, str.contains("<" + Const.XML_COLLECTION));
-
     //Add a sample track and files
     JUnitHelpers.getFile();
     JUnitHelpers.getTrack(5);
-
     // delete the file before writing the collection
     assertTrue(file.delete());
-
     // commit without any item
     Collection.commit(file);
-
     // now it should exist and have some content
     assertTrue(file.exists());
     str = FileUtils.readFileToString(file);
@@ -110,13 +98,10 @@ public class TestCollection extends JajukTestCase {
     assertTrue(str, str.contains("<" + Const.XML_COLLECTION));
     // it should also contain the content that we added
     assertTrue(str, str.contains("sample_device"));
-
     // add test for strange error in this testcase on hudson
     assertNotNull(UtilString.getAdditionDateFormatter());
-
     // also test loading here
     Collection.load(file);
-
     // TODO: loading needs more testing and verification of results after
     // loading...
   }
@@ -230,5 +215,4 @@ public class TestCollection extends JajukTestCase {
     Collection coll = Collection.getInstance();
     assertNotNull(coll.getWrongRightAlbumIDs());
   }
-
 }

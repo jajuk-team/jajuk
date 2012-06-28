@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.base;
 
 import java.util.ArrayList;
@@ -35,7 +34,6 @@ import org.jajuk.util.UtilSystem;
  * Convenient class to manage directories.
  */
 public final class DirectoryManager extends ItemManager {
-
   /** Self instance. */
   private static DirectoryManager singleton = new DirectoryManager();
 

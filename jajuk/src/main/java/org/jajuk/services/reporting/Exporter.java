@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.reporting;
 
 import java.io.File;
@@ -31,13 +30,10 @@ import org.jajuk.util.UtilSystem;
  * The base abstract class for exporting music contents to different formats.
  */
 public abstract class Exporter {
-
   /** Public Constants. */
   public static final int PHYSICAL_COLLECTION = 0;
-
   /** The Constant LOGICAL_COLLECTION.   */
   public static final int LOGICAL_COLLECTION = 1;
-
   /** Cache file (used to handle concurrency issues), set by child classes. */
   protected File cache;
 
@@ -83,5 +79,4 @@ public abstract class Exporter {
   public File getCacheFile() {
     return this.cache;
   }
-
 }

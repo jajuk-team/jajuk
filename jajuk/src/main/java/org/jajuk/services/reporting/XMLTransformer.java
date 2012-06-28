@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.reporting;
 
 import java.io.BufferedInputStream;
@@ -45,7 +44,6 @@ import org.xml.sax.SAXException;
  * This class will take a XML file and either convert it to HTML or PDF.
  */
 public final class XMLTransformer {
-
   /**
    * Private constructor to prevent instantiation of utility class.
    */
@@ -68,18 +66,14 @@ public final class XMLTransformer {
       SAXException, IOException, TransformerException {
     Source source = new SAXSource(
         new InputSource(new BufferedInputStream(new FileInputStream(xml))));
-
     // Create output file
     Result result = new StreamResult(html);
-
     // Transformer configuration
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     StreamSource genresource = new StreamSource(xsl.openStream());
     Transformer transformer = transformerFactory.newTransformer(genresource);
     transformer.setOutputProperty(OutputKeys.METHOD, "html");
-
     // Transformation
     transformer.transform(source, result);
   }
-
 }

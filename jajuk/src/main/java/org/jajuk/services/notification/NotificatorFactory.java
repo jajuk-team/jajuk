@@ -29,7 +29,6 @@ import org.jajuk.util.log.Log;
  * Factory returning a INotifictor according to user choice.
  */
 public class NotificatorFactory {
-
   private static INotificator notificator;
 
   /**
@@ -41,13 +40,11 @@ public class NotificatorFactory {
    * @return the notificator
    */
   public synchronized static INotificator getNotificator() {
-
     // first check show balloon option and return null
     String optionValue = Conf.getString(Const.CONF_UI_NOTIFICATOR_TYPE);
     if (StringUtils.isBlank(optionValue) || NotificatorTypes.NONE.name().equals(optionValue)) {
       return null;
     }
-
     // Balloon
     if (NotificatorTypes.BALLOON.name().equals(optionValue)) {
       // Try the NotifySend implementation first
@@ -68,7 +65,6 @@ public class NotificatorFactory {
         }
       }
     }
-
     // Animated popup
     else if (NotificatorTypes.TOAST.name().equals(optionValue)) {
       notificator = ToastNotificator.getInstance();
@@ -83,5 +79,4 @@ public class NotificatorFactory {
     }
     return notificator;
   }
-
 }

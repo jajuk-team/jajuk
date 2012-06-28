@@ -31,7 +31,6 @@ import org.jajuk.services.players.StackItem;
  * .
  */
 public class TestUtilFeatures extends JajukTestCase {
-
   /*
    * (non-Javadoc)
    * 

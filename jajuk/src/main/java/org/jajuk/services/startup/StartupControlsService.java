@@ -38,7 +38,6 @@ import org.jajuk.util.log.Log;
  * Startup facilities for configuration controls.
  */
 public final class StartupControlsService {
-
   /** The Constant DIR_CHECKS.   */
   private static final String[] DIR_CHECKS = {
       // internal pictures cache directory
@@ -69,7 +68,6 @@ public final class StartupControlsService {
   public static void initialCheckups() throws IOException, InterruptedException {
     // Populate workspace path
     SessionService.discoverWorkspace();
-
     // check for jajuk directory
     final File fWorkspace = new File(SessionService.getWorkspace());
     if (!fWorkspace.exists() && !fWorkspace.mkdirs()) { // create the
@@ -94,7 +92,6 @@ public final class StartupControlsService {
         }
       }
     }
-
     // checking preference file
     File file = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION);
     if (!file.exists()) {
@@ -103,7 +100,6 @@ public final class StartupControlsService {
       Log.warn("Create missing preference file");
       org.jajuk.util.Conf.commit();
     }
-
     // checking required history file
     file = SessionService.getConfFileByPath(Const.FILE_HISTORY);
     if (!file.exists()) {
@@ -112,7 +108,6 @@ public final class StartupControlsService {
       Log.warn("Create missing history file");
       History.commit();
     }
-
     // checking required internal directories
     for (final String check : DIR_CHECKS) {
       final File dir = SessionService.getConfFileByPath(check);
@@ -120,7 +115,6 @@ public final class StartupControlsService {
         Log.warn("Could not create missing required directory [" + check + "]");
       }
     }
-
     // Extract star icons (used by some HTML panels)
     for (int i = 0; i <= 4; i++) {
       final File star = SessionService.getConfFileByPath("cache/internal/star" + i + "_16x16.png");
@@ -150,5 +144,4 @@ public final class StartupControlsService {
       }
     }
   }
-
 }

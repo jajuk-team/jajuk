@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.awt.datatransfer.DataFlavor;
@@ -34,14 +33,11 @@ import org.jajuk.base.TrackManager;
  * Transferable album ( for DND ).
  */
 public class TransferableAlbum implements Transferable {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** The Constant ALBUM_FLAVOR.   */
   public static final DataFlavor ALBUM_FLAVOR = new DataFlavor(
       DataFlavor.javaJVMLocalObjectMimeType, "Album");
-
   private Album album;
 
   /**

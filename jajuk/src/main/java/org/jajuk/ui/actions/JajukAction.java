@@ -38,16 +38,12 @@ import org.jajuk.util.log.Log;
  * the {@link #actionPerformed(java.awt.event.ActionEvent)} method.
  */
 public abstract class JajukAction extends AbstractAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -2535230785022978297L;
-
   /** Is this action an hotkey ?. */
   private boolean bHotkey = false;
-
   /** enable state. */
   private boolean bEnable = true;
-
   // Instantiate a static JIntellitype object if under Windows
   // BEWARE ! don't use direct call to JIntellitype like
   // JIntellitype.isJIntellitypeSupported()) because we don't want to create a linkage
@@ -277,7 +273,6 @@ public abstract class JajukAction extends AbstractAction {
    * @param actionCommand The action command for this action. This is used for creating the
    * <code>ActionEvent</code>.
    */
-
   public void setActionCommand(String actionCommand) {
     putValue(ACCELERATOR_KEY, actionCommand);
   }
@@ -391,5 +386,4 @@ public abstract class JajukAction extends AbstractAction {
   protected boolean isEnable() {
     return this.bEnable;
   }
-
 }

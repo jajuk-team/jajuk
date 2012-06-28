@@ -37,7 +37,6 @@ import org.jajuk.util.UtilGUI;
  * .
  */
 public class RepeatAllModeAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -56,17 +55,12 @@ public class RepeatAllModeAction extends JajukAction {
    */
   @Override
   public void perform(ActionEvent evt) {
-
     boolean b = Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL);
-
     UtilGUI.setRepeatAllGui(!b);
-
     QueueModel.setRepeatModeToAll(!b);
-
     // computes planned tracks
     QueueModel.computesPlanned(false);
     // Refresh Queue View
     ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
-
   }
 }

@@ -29,7 +29,6 @@ import org.jajuk.util.log.Log;
  * Class to read/write lyrics to Tag of Track.
  */
 public class TagPersister implements ILyricsPersister {
-
   /** Audio file to set lyrics to. */
   private File file = null;
 
@@ -80,5 +79,4 @@ public class TagPersister implements ILyricsPersister {
   public void setAudioFile(File file) {
     this.file = file;
   }
-
 }

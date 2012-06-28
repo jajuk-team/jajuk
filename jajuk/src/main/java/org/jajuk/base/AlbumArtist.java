@@ -37,7 +37,6 @@ import org.jajuk.util.Messages;
  * </p>
  */
 public class AlbumArtist extends Artist {
-
   /**
    * Builds an album-artist.
    *

@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.base;
 
 import java.util.ArrayList;
@@ -44,24 +43,18 @@ import org.jajuk.util.log.Log;
  * Managers parent class.
  */
 public abstract class ItemManager {
-
   /** Maps item classes -> instance, must be a linked map for ordering (mandatory in commited collection). */
   private static Map<Class<?>, ItemManager> hmItemManagers = new LinkedHashMap<Class<?>, ItemManager>(
       10);
-
   /** Maps properties meta information name and object. */
   private final Map<String, PropertyMetaInformation> hmPropertiesMetaInformation = new LinkedHashMap<String, PropertyMetaInformation>(
       10);
-
   /** The Lock. */
   ReadWriteLock lock = new ReentrantReadWriteLock();
-
   /** Use an array list during startup which is faster during loading the collection. */
   private List<Item> startupItems = new ArrayList<Item>(100);
-
   /** Stores the items by ID to have quick access if necessary. */
   private final Map<String, Item> internalMap = new HashMap<String, Item>(100);
-
   /** Collection pointer : at the beginning point to the ArrayList, later this is replaced by a TreeSet to have correct ordering. */
   private Collection<Item> items = startupItems;
 
@@ -95,7 +88,6 @@ public abstract class ItemManager {
       // populate a new TreeSet with the startup-items
       if (startupItems != null) {
         items = new TreeSet<Item>(startupItems);
-
         // Free startup memory
         startupItems = null;
       }
@@ -168,7 +160,6 @@ public abstract class ItemManager {
    *
    * protected abstract HashMap<String, Item> getItemsMap();
    */
-
   /** Add a custom property to all items for the given manager */
   public void applyNewProperty(PropertyMetaInformation meta) {
     lock.readLock().lock();
@@ -347,7 +338,6 @@ public abstract class ItemManager {
   public void cleanup() {
     lock.writeLock().lock();
     try {
-
       // Prefetch item manager type for performances
       short managerType = 0; // Album
       if (this instanceof ArtistManager) {
@@ -393,7 +383,6 @@ public abstract class ItemManager {
     } finally {
       lock.writeLock().unlock();
     }
-
   }
 
   /**
@@ -659,10 +648,8 @@ public abstract class ItemManager {
     try {
       // first create a copy
       ArrayList<Item> itemsCopy = new ArrayList<Item>(items);
-
       // then remove all elements
       clear();
-
       // and then re-add all items again to make them correctly sorted again
       for (Item item : itemsCopy) {
         registerItem(item);

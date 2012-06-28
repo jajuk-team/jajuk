@@ -27,7 +27,6 @@ import org.jajuk.services.webradio.WebRadio;
  * Minimum methods required for all Player implementations.
  */
 public interface IPlayerImpl {
-
   /**
    * Launches player.
    * 
@@ -131,5 +130,4 @@ public interface IPlayerImpl {
    * @return the state
    */
   int getState();
-
 }

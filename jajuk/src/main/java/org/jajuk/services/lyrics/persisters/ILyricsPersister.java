@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.lyrics.persisters;
 
 import org.jajuk.base.File;
@@ -27,7 +26,6 @@ import org.jajuk.base.File;
  * Interface for lyrics persisters to be used by the modified LyricsService.
  */
 public interface ILyricsPersister {
-
   /**
    * Sets the audio file to set lyrics to.
    * 
@@ -61,5 +59,4 @@ public interface ILyricsPersister {
    * @return the destination file
    */
   java.io.File getDestinationFile();
-
 }

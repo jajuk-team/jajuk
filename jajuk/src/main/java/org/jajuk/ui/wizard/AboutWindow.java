@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.wizard;
 
 import java.awt.BorderLayout;
@@ -48,19 +47,14 @@ import org.jfree.ui.about.SystemPropertiesPanel;
  * Help perspective *
  */
 public class AboutWindow extends JajukJDialog {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** License panel. */
   private JPanel jpLicence;
-
   /** JVM properties panel. */
   private SystemPropertiesPanel spp;
-
   /** Tabbed pane with previous panels. */
   private JTabbedPane jtp;
-
   /** Additional informations. */
   private static final String INFOS = "http://jajuk.info";
 
@@ -69,7 +63,6 @@ public class AboutWindow extends JajukJDialog {
    */
   public AboutWindow() {
     super();
-
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
@@ -79,7 +72,6 @@ public class AboutWindow extends JajukJDialog {
         UtilGUI.centerWindow(AboutWindow.this);
         setVisible(true);
       }
-
     });
   }
 

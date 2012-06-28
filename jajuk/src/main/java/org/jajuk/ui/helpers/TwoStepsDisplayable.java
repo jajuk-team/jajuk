@@ -29,7 +29,6 @@ package org.jajuk.ui.helpers;
  * </p>
  */
 public interface TwoStepsDisplayable {
-
   /**
    * Long call done in background in a dedicated thread.
    * 
@@ -43,5 +42,4 @@ public interface TwoStepsDisplayable {
    * @param in 
    */
   void shortCall(Object in);
-
 }

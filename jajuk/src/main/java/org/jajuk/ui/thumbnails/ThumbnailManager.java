@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.thumbnails;
 
 import java.awt.Image;
@@ -50,7 +49,6 @@ import org.jajuk.util.log.Log;
  * Manage thumbnails.
  */
 public final class ThumbnailManager {
-
   /**
    * No instances.
    */
@@ -153,12 +151,10 @@ public final class ThumbnailManager {
       throws InterruptedException, IOException {
     // Synchronize the file to avoid any concurrency between several threads refreshing the thumb
     // like the catalog view and the artist view.
-
     // Don't lock the thumb file itself because we have to write in in this method and
     // Windows doesn't support share mode for locks but only exclusive
     File thumbLock = new File(thumb.getAbsolutePath() + ".lock");
     thumbLock.createNewFile();
-
     synchronized (thumbLock.getAbsolutePath().intern()) {
       // Note that at this point, the image is fully loaded (done in the ImageIcon constructor)
       final Image image = ii.getImage();
@@ -182,7 +178,6 @@ public final class ThumbnailManager {
       // Free thumb memory
       thumbImage.flush();
     }
-
   }
 
   /**
@@ -243,5 +238,4 @@ public final class ThumbnailManager {
         .append(size).append('/').append(album.getID()).append('.').append(Const.EXT_THUMB);
     return SessionService.getConfFileByPath(thumb.toString());
   }
-
 }

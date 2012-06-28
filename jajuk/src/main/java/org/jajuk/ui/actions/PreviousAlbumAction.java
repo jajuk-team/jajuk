@@ -30,7 +30,6 @@ import org.jajuk.util.log.Log;
  * <code>CTRL + SHIFT + LEFT ARROW</code>.
  */
 public class PreviousAlbumAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

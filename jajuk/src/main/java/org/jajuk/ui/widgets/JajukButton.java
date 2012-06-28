@@ -28,7 +28,6 @@ import javax.swing.JButton;
  * jajuk default button, comes with few GUI default properties.
  */
 public class JajukButton extends JButton {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -92,5 +91,4 @@ public class JajukButton extends JButton {
     }
     super.configurePropertiesFromAction(action);
   }
-
 }

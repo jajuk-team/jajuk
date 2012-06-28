@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.lyrics.providers;
 
 import ext.services.network.NetworkUtils;
@@ -34,10 +33,8 @@ import org.jajuk.util.log.Log;
  * Lyrics Provider extracting lyrics from lyricwiki.org
  */
 public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
-
   /** URL pattern used by jajuk to retrieve lyrics. */
   private static final String URL = "http://lyrics.wikia.com/%artist:%title";
-
   /** URL pattern to web page (see ILyricsProvider interface for details). */
   private static final String WEB_URL = "http://lyrics.wikia.com/%artist:%title";
 
@@ -109,7 +106,6 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
       if (startIndex == -1) {
         startIndex = html.indexOf("<div class='lyricbox'>");
         ret = html.substring(startIndex + 22);
-
         // LyricWiki added some additional div class now...
         if (ret.startsWith("<div class='rtMatcher'>")) {
           startIndex = ret.indexOf("</div>");
@@ -131,7 +127,6 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
       ret = ret.replaceAll("<b>", "");
       ret = ret.replaceAll("</b>", "");
       return ret;
-
     } else {
       return null;
     }
@@ -159,12 +154,10 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
     // Replace spaces by _
     String artist = pArtist.replaceAll(" ", "_");
     String title = pTitle.replaceAll(" ", "_");
-
     queryString = queryString.replace(Const.PATTERN_ARTIST,
         (artist != null) ? NetworkUtils.encodeString(artist) : "");
     queryString = queryString.replace(Const.PATTERN_TRACKNAME,
         (title != null) ? NetworkUtils.encodeString(title) : "");
-
     java.net.URL out = null;
     try {
       out = new java.net.URL(queryString);
@@ -183,5 +176,4 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
   public String getLyrics() {
     return getLyrics(audioFile.getTrack().getArtist().getName2(), audioFile.getTrack().getName());
   }
-
 }

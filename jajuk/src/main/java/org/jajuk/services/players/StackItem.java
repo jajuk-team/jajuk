@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.players;
 
 import org.jajuk.base.File;
@@ -29,16 +28,12 @@ import org.jajuk.util.log.Log;
  * A FIFO item.
  */
 public class StackItem implements Cloneable {
-
   /** Associated file. */
   private final File file;
-
   /** Repeat flag. */
   private boolean bRepeat = false;
-
   /** User launch flag. */
   private boolean bUserLaunch = false;
-
   /** Planned track ?. */
   private boolean bPlanned = false;
 
@@ -161,7 +156,6 @@ public class StackItem implements Cloneable {
     try {
       StackItem item = new StackItem(file, bRepeat, bUserLaunch);
       item.setPlanned(bPlanned);
-
       return item;
     } catch (JajukException je) { // can be thrown if FileManager return a
       // null file
@@ -184,13 +178,11 @@ public class StackItem implements Cloneable {
     if (!(o instanceof StackItem)) {
       return false;
     }
-
     StackItem itemOther = (StackItem) o;
     File fOther = itemOther.getFile();
     if (fOther == null || file == null) {
       return false;
     }
-
     return (fOther.equals(file) && itemOther.isPlanned() == isPlanned());
   }
 
@@ -215,5 +207,4 @@ public class StackItem implements Cloneable {
   public String toString() {
     return file.toString();
   }
-
 }

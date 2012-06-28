@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.widgets;
 
 import java.awt.Font;
@@ -33,7 +32,6 @@ import org.jdesktop.swingx.JXHyperlink;
  * Generic toggle hyperlink to open/collapse a collapsable panel.
  */
 public class ToggleLink extends JXHyperlink {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 8652043694603450888L;
 
@@ -54,5 +52,4 @@ public class ToggleLink extends JXHyperlink {
     toggleAction.putValue(JXCollapsiblePane.EXPAND_ICON, UIManager.getIcon("Tree.collapsedIcon"));
     setFocusPainted(false);
   }
-
 }

@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.bookmark;
 
 import java.util.Date;
@@ -30,10 +29,8 @@ import org.jajuk.base.FileManager;
  * An history item.
  */
 public class HistoryItem {
-
   /** File Id. */
   private String sFileId;
-
   /** Play date. */
   private long lDate;
 
@@ -96,7 +93,6 @@ public class HistoryItem {
     if (file == null) {
       return "no file (" + getFileId() + ')';
     }
-
     String sDate = History.getInstance().getDateFormatter().format(new Date(getDate()));
     StringBuilder sb = new StringBuilder();
     sb.append('[').append(sDate).append("] ");

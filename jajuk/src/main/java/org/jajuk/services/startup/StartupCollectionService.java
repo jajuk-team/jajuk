@@ -65,10 +65,8 @@ import org.jajuk.util.log.Log;
  * Startup facilities of the collection.
  */
 public final class StartupCollectionService {
-
   /** MPlayer state. */
   private static UtilSystem.MPlayerStatus mplayerStatus;
-
   /** Does a collection parsing error occurred ? *. */
   private static boolean bCollectionLoadRecover = true;
 
@@ -202,15 +200,12 @@ public final class StartupCollectionService {
         try {
           Thread.sleep(Const.AUTO_COMMIT_DELAY);
           Log.debug("Auto commit");
-
           // call the overall "commit" to store things like Queue and
           // configuration periodically as well
           ExitService.commit(false);
-
           // workaround to free space in MigLayout
           // see http://migcalendar.com/forum/viewtopic.php?f=8&t=3236&p=7012
           LinkHandler.getValue("", "", 1); // simulated read
-
           // Clear the tag cache to avoid growing memory usage over time
           Tag.clearCache();
         } catch (Exception e) {
@@ -233,7 +228,6 @@ public final class StartupCollectionService {
     final File fCollectionExitProof = SessionService
         .getConfFileByPath(Const.FILE_COLLECTION_EXIT_PROOF);
     boolean bParsingOK = false;
-
     // Keep this complex proof / multiple collection file code, it is required
     // (see #1362)
     // The problem is that a bad shutdown can write down corrupted collection
@@ -271,7 +265,6 @@ public final class StartupCollectionService {
           Log.error(e1);
         }
       }
-
     }
     // If regular collection_exit.xml file parsing failed, try to parse
     // collection.xml. should be OK but not
@@ -285,7 +278,6 @@ public final class StartupCollectionService {
         bParsingOK = false;
       }
     }
-
     // If even final collection file parsing failed
     // (very unlikely), try to restore a backup file
     if (!bParsingOK) {
@@ -326,7 +318,6 @@ public final class StartupCollectionService {
         }
       }
     }
-
     // Still not better? ok, commit a void
     // collection (and a void collection is loaded)
     if (!bParsingOK) {
@@ -337,7 +328,6 @@ public final class StartupCollectionService {
         Log.error(e2);
       }
     }
-
     Log.debug("Loaded " + FileManager.getInstance().getElementCount() + " files with "
         + TrackManager.getInstance().getElementCount() + " tracks, "
         + AlbumManager.getInstance().getElementCount() + " albums, "
@@ -346,7 +336,6 @@ public final class StartupCollectionService {
         + PlaylistManager.getInstance().getElementCount() + " playlists in "
         + DirectoryManager.getInstance().getElementCount() + " directories on "
         + DeviceManager.getInstance().getElementCount() + " devices.");
-
     // start auto commit thread
     tAutoCommit.start();
   }
@@ -359,5 +348,4 @@ public final class StartupCollectionService {
   public static boolean isCollectionLoadRecover() {
     return bCollectionLoadRecover;
   }
-
 }

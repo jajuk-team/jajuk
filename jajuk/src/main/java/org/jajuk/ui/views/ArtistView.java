@@ -58,20 +58,14 @@ import org.jdesktop.swingx.JXBusyLabel;
  * Display Artist bio and albums.
  */
 public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** The artist picture + labels. */
   private LastFmArtistThumbnail artistThumb;
-
   /** The artist bio (from last.fm wiki) */
   private JTextArea jtaArtistDesc;
-
   private JScrollPane jspAlbums;
-
   private String bio;
-
   private ArtistInfo artistInfo;
 
   /*
@@ -93,10 +87,8 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
   public void initUI() {
     // register to player events
     ObservationManager.register(this);
-
     // by default, show reseted view
     reset();
-
     // Update initial status
     UtilFeatures.updateStatus(this);
   }
@@ -165,7 +157,6 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
             add(busy1, "center");
             revalidate();
             repaint();
-
             ArtistView.this.artist = artist.getName();
             // Display the panel only if the artist is not unknown
             if (!artist.seemsUnknown()) {
@@ -178,7 +169,6 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
         }
       }
     });
-
   }
 
   /* (non-Javadoc)
@@ -212,7 +202,6 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
   @Override
   public Object longCall() {
     final int iLocalEventID = iEventID;
-
     // Call last.fm wiki
     bio = LastFmService.getInstance().getWikiText(artist);
     artistInfo = LastFmService.getInstance().getArtist(artist);
@@ -257,7 +246,6 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     // No known icon next to artist thumb
     artistThumb.setArtistView(true);
     artistThumb.populate();
-
     jtaArtistDesc = new JTextArea(bio) {
       private static final long serialVersionUID = 9217998016482118852L;
 
@@ -273,13 +261,10 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     jtaArtistDesc.setLineWrap(true);
     jtaArtistDesc.setWrapStyleWord(true);
     jtaArtistDesc.setOpaque(false);
-
     JScrollPane jspWiki = new JScrollPane(jtaArtistDesc);
     jspWiki.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     jspWiki.setBorder(null);
-
     jspWiki.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-
     // Add items, layout is different according wiki text availability
     if (StringUtils.isNotBlank(jtaArtistDesc.getText())) {
       setLayout(new MigLayout("ins 5,gapy 5", "[grow]", "[grow][20%!][grow]"));
@@ -296,5 +281,4 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     revalidate();
     repaint();
   }
-
 }

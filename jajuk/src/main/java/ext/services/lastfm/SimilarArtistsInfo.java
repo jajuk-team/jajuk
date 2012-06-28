@@ -20,7 +20,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.lastfm;
 
 import java.util.List;
@@ -29,7 +28,6 @@ import java.util.List;
  * .
  */
 public interface SimilarArtistsInfo {
-
   /**
    * Gets the artist name.
    * 
@@ -71,5 +69,4 @@ public interface SimilarArtistsInfo {
    * @param picture the picture to set
    */
   public void setPicture(String picture);
-
 }

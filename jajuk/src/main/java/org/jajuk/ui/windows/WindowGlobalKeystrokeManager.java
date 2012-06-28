@@ -53,10 +53,8 @@ import org.jajuk.util.log.Log;
  * </p>.
  */
 public class WindowGlobalKeystrokeManager {
-
   /** Self instance. */
   private static WindowGlobalKeystrokeManager self;
-
   /** List of actions to enable globaly *. */
   private JajukActions[] globalActions = new JajukActions[] { NEXT_ALBUM, PREVIOUS_ALBUM,
       PREVIOUS_TRACK, NEXT_TRACK, MUTE_STATE, PAUSE_RESUME_TRACK, STOP_TRACK, DECREASE_VOLUME,
@@ -79,17 +77,13 @@ public class WindowGlobalKeystrokeManager {
    */
   public WindowGlobalKeystrokeManager() {
     KeyEventDispatcher ked = new KeyEventDispatcher() {
-
       @Override
       public boolean dispatchKeyEvent(KeyEvent ke) {
-
         //--- Drop disabled keystrokes ---
-
         // Disable CTRL-Backspace : it closes the views due to VLDocking keystroke 
         if (ke.getKeyCode() == KeyEvent.VK_BACK_SPACE && ke.getModifiers() == InputEvent.CTRL_MASK) {
           return true;
         }
-
         // Add all global keys to this dispatcher
         for (JajukActions actionName : globalActions) {
           JajukAction action = ActionManager.getAction(actionName);
@@ -107,7 +101,6 @@ public class WindowGlobalKeystrokeManager {
         return false;
       }
     };
-
     // Attach the event dispatcher
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(ked);
   }

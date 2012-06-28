@@ -38,10 +38,8 @@ import org.jajuk.util.error.JajukException;
  * .
  */
 public class RestoreAllViewsAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   private static boolean fullRestore = false;
 
   /**
@@ -87,7 +85,6 @@ public class RestoreAllViewsAction extends JajukAction {
         }.start();
       }
     }.start();
-
   }
 
   /**

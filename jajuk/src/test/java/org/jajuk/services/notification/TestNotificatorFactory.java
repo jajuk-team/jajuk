@@ -28,7 +28,6 @@ import org.jajuk.util.Const;
  * .
  */
 public class TestNotificatorFactory extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -38,7 +37,6 @@ public class TestNotificatorFactory extends JajukTestCase {
   public void testNoneNotificator() {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.NONE.name());
-
     // now try to get a balloon notificator, but we cannot be sure if this works
     // on all
     // machines so we on't assume not null.
@@ -54,7 +52,6 @@ public class TestNotificatorFactory extends JajukTestCase {
   public void testBalloonNotificator() {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.BALLOON.name());
-
     // now try to get a balloon notificator, but we cannot be sure if this works
     // on all
     // machines so we on't assume not null.
@@ -81,7 +78,6 @@ public class TestNotificatorFactory extends JajukTestCase {
   public void testGetSystemNotificatorFalse() {
     // disable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.NONE.name());
-
     // here we need to get null back as it is disabled
     assertNull(NotificatorFactory.getNotificator());
   }

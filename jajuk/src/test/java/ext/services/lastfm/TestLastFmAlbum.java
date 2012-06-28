@@ -38,7 +38,6 @@ import org.jajuk.util.UtilString;
  * .
  */
 public class TestLastFmAlbum extends JajukTestCase {
-
   /** The Constant API_KEY.   */
   private static final String API_KEY = "711591ss6q695ps349o6681pr1oq1467";
 
@@ -61,7 +60,6 @@ public class TestLastFmAlbum extends JajukTestCase {
   public void testGetAlbumPlaylist() {
     Album a = Album.getInfo("Red Hot Chilli Peppers", "By The Way", UtilString.rot13(API_KEY));
     assertNotNull(a);
-
     try { // may fail if internet is not available
       Playlist p = Playlist.fetchAlbumPlaylist(a.getId(), UtilString.rot13(API_KEY));
       assertNotNull(p);
@@ -69,7 +67,6 @@ public class TestLastFmAlbum extends JajukTestCase {
       // ignore for now if it contains an UnknownHostException inside
       assertTrue(e.getMessage(), e.getCause() instanceof UnknownHostException);
     }
-
     /**
      * TODO: find out how to get a Session here...
      * 
@@ -97,14 +94,11 @@ public class TestLastFmAlbum extends JajukTestCase {
   public void testGetArtistUrl() {
     LastFmAlbum album = new LastFmAlbum();
     assertNull(album.getArtistUrl());
-
     album.setUrl("testurl");
     assertEquals("testurl", album.getArtistUrl());
-
     // cuts off after last path...
     album.setUrl("http://test.url/url1/url2/url3/test123.html");
     assertEquals("http://test.url/url1/url2/url3", album.getArtistUrl());
-
   }
 
   /**
@@ -115,7 +109,6 @@ public class TestLastFmAlbum extends JajukTestCase {
     assertNull(album.getBigCoverURL());
     album.setBigCoverURL("bigurl");
     assertEquals("bigurl", album.getBigCoverURL());
-
   }
 
   /**
@@ -124,7 +117,6 @@ public class TestLastFmAlbum extends JajukTestCase {
   public void testGetCover() {
     LastFmAlbum album = new LastFmAlbum();
     assertNull(album.getCover());
-
     assertNotNull(IconLoader.getNoCoverIcon(50));
     album.setCover(IconLoader.getNoCoverIcon(50));
     assertNotNull(album.getCover());
@@ -152,7 +144,6 @@ public class TestLastFmAlbum extends JajukTestCase {
     assertEquals(
         new SimpleDateFormat("d MMM yyyy, HH:mm", Locale.ENGLISH).parse("1 January 2009, 00:00"),
         album.getReleaseDate());
-
   }
 
   /**
@@ -207,7 +198,6 @@ public class TestLastFmAlbum extends JajukTestCase {
     ArrayList<TrackInfo> tracks = new ArrayList<TrackInfo>();
     album.setTracks(tracks);
     assertNotNull(album.getTracks());
-
     album.setTracks(null);
     assertNull(album.getTracks());
   }
@@ -320,11 +310,9 @@ public class TestLastFmAlbum extends JajukTestCase {
   public void testToString() {
     LastFmAlbum album = new LastFmAlbum();
     JUnitHelpers.ToStringTest(album);
-
     album.setArtist("artist");
     album.setBigCoverURL("url");
     JUnitHelpers.ToStringTest(album);
-
     album.setTitle("title");
     JUnitHelpers.ToStringTest(album);
   }

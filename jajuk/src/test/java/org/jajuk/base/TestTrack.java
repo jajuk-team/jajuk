@@ -30,7 +30,6 @@ import org.junit.Test;
  * .
  */
 public class TestTrack extends JajukTestCase {
-
   /* (non-Javadoc)
    * @see org.jajuk.JajukTestCase#setUp()
    */
@@ -136,10 +135,8 @@ public class TestTrack extends JajukTestCase {
     // Set-up...
     File file = JUnitHelpers.getFile();
     Track track = file.getTrack();
-
     // Remove the reference
     track.removeFile(file);
-
     // Check that associated track no more contains this file
     assertFalse(file.getTrack().getFiles().contains(file));
   }
@@ -367,5 +364,4 @@ public class TestTrack extends JajukTestCase {
   public void testGetFilesString() {
     //TODO To be implemented
   }
-
 }

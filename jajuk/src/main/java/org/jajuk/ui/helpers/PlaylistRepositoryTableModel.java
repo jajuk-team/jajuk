@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.util.Date;
@@ -44,7 +43,6 @@ import org.jajuk.util.filters.JajukPredicates;
  * Table model used holding playlist repository data.
  */
 public class PlaylistRepositoryTableModel extends JajukTableModel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -59,19 +57,14 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
     // for proper display in some look and feel
     vColNames.add(" ");
     idList.add(Const.XML_PLAY);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_NAME));
     idList.add(Const.XML_NAME);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_DEVICE));
     idList.add(Const.XML_DEVICE);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_DIRECTORY));
     idList.add(Const.XML_DIRECTORY);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_PATH));
     idList.add(Const.XML_PATH);
-
     // custom properties now
     for (PropertyMetaInformation meta : PlaylistManager.getInstance().getCustomProperties()) {
       vColNames.add(meta.getName());
@@ -96,14 +89,11 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
     // OK, begin by filtering using any provided pattern
     Filter filter = new Filter(sPropertyName, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
     alToShow = Filter.filterItems(alToShow, filter, Playlist.class);
-
     // filter unavailable playlists
     if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
       CollectionUtils.filter(alToShow, new JajukPredicates.ReadyPlaylistPredicate());
     }
-
     Iterator<Playlist> it = null;
-
     int iColNum = iNumberStandardCols + PlaylistManager.getInstance().getCustomProperties().size();
     iRowNum = alToShow.size();
     oValues = new Object[iRowNum][iColNum];
@@ -111,13 +101,11 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
     bCellEditable = new boolean[iRowNum][iColNum];
     // Allow only custom properties edition
     bEditable = true;
-
     // For perfs, prepare columns visibility
     boolean bName = (columnsToShow != null && columnsToShow.contains(Const.XML_NAME));
     boolean bDevice = (columnsToShow != null && columnsToShow.contains(Const.XML_DEVICE));
     boolean bDirectory = (columnsToShow != null && columnsToShow.contains(Const.XML_DIRECTORY));
     boolean bPath = (columnsToShow != null && columnsToShow.contains(Const.XML_PATH));
-
     it = alToShow.iterator();
     for (int iRow = 0; it.hasNext(); iRow++) {
       Playlist plf = it.next();
@@ -135,7 +123,6 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
       // change
       oValues[iRow][0] = il;
       bCellEditable[iRow][0] = false;
-
       // Playlist Name
       if (bName) {
         oValues[iRow][1] = plf.getName();
@@ -143,7 +130,6 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
         oValues[iRow][1] = "";
       }
       bCellEditable[iRow][1] = false;
-
       // Device
       if (bDevice) {
         Device device = plf.getDirectory().getDevice();
@@ -152,7 +138,6 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
         oValues[iRow][2] = "";
       }
       bCellEditable[iRow][2] = false;
-
       // Directory
       if (bDirectory) {
         Directory directory = plf.getDirectory();
@@ -161,7 +146,6 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
         oValues[iRow][3] = "";
       }
       bCellEditable[iRow][3] = false;
-
       // PATH
       if (bPath) {
         String path = plf.getAbsolutePath();
@@ -170,7 +154,6 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
         oValues[iRow][4] = "";
       }
       bCellEditable[iRow][4] = false;
-
       // Custom properties now
       Map<String, Object> properties = plf.getProperties();
       Iterator<PropertyMetaInformation> it2 = PlaylistManager.getInstance().getCustomProperties()

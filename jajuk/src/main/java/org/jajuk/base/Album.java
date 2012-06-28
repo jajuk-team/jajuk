@@ -56,10 +56,8 @@ import org.jajuk.util.log.Log;
  * Logical item.
  */
 public class Album extends LogicalItem implements Comparable<Album> {
-
   /** For perfs, we cache the associated tracks. This cache is filled by the TrackManager using the getTracksCache() method */
   private final List<Track> cache = new ArrayList<Track>(15);
-
   /** This array stores thumbnail presence for all the available size (performance) By default all booleans are false. */
   private boolean[] availableTumbs;
 
@@ -122,7 +120,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (otherAlbum == null) {
       return -1;
     }
-
     // compare using name and id to differentiate unknown items
     StringBuilder current = new StringBuilder(getName2());
     current.append(getID());
@@ -274,7 +271,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (first.getAlbumArtist() != null) {
       sb.append(first.getAlbumArtist().getName2());
     }
-
     Genre genre = getGenre();
     if (genre != null) {
       sb.append(genre.getName2());
@@ -305,13 +301,11 @@ public class Album extends LogicalItem implements Comparable<Album> {
       // If user-selected cover is available, just return its path
       return new File(selectedCoverPath);
     }
-
     // otherwise check if the "discovered cover" is set to "none"
     String discoveredCoverPath = getStringValue(XML_ALBUM_DISCOVERED_COVER);
     if (StringUtils.isNotBlank(discoveredCoverPath) && COVER_NONE.equals(discoveredCoverPath)) {
       return null;
     }
-
     // now check if the "discovdered cover" is available
     if (StringUtils.isNotBlank(discoveredCoverPath)) {
       // Check if discovered cover still exist. There is an overhead
@@ -333,7 +327,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
         return new File(discoveredCoverPath);
       }
     }
-
     // None cover yet set or it is no more accessible.
     // Search for local covers in all directories mapping the current track
     // to reach other devices covers and display them together
@@ -355,20 +348,16 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (dirs.size() == 0) {
       return null;
     }
-
     // look for tag cover if tag supported for this type
     File cover = findTagCover();
-
     // none ? look for standard cover in collection
     if (cover == null) {
       cover = findCoverFile(dirs, true);
     }
-
     // none ? OK, return first cover file we find
     if (cover == null) {
       cover = findCoverFile(dirs, false);
     }
-
     // [PERF] Still nothing ? ok, set no cover to avoid further searches 
     if (cover == null) {
       setProperty(XML_ALBUM_DISCOVERED_COVER, COVER_NONE);
@@ -399,7 +388,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
     //Make sure to sort the cache
     List<Track> sortedTracks = new ArrayList<Track>(cache);
     Collections.sort(sortedTracks, new TrackComparator(TrackComparatorType.ALBUM));
-
     for (Track track : sortedTracks) {
       for (org.jajuk.base.File file : track.getReadyFiles()) {
         try {
@@ -442,7 +430,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
           if (onlyStandardCovers && !UtilFeatures.isStandardCover(files[i])) {
             continue;
           }
-
           // Test the image is not corrupted
           try {
             ImageIcon ii = new ImageIcon(files[i].getAbsolutePath());
@@ -510,11 +497,9 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (img == null) {
       return null;
     }
-
     ImageIcon icon = new ImageIcon(img);
     // Free thumb memory (DO IT AFTER FULL ImageIcon loading)
     img.flush();
-
     return icon;
   }
 
@@ -573,7 +558,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (cache.size() == 0) {
       return Const.UNKNOWN_ARTIST;
     }
-
     Artist artist = getArtist();
     if (artist != null && !artist.isUnknown()) {
       return artist.getName();
@@ -722,5 +706,4 @@ public class Album extends LogicalItem implements Comparable<Album> {
     }
     return availableTumbs[size / 50 - 1];
   }
-
 }

@@ -35,9 +35,7 @@ import org.jajuk.util.Messages;
 /**
  * Action class for Copy.
  */
-
 public class CopyAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -58,7 +56,6 @@ public class CopyAction extends JajukAction {
   public void perform(ActionEvent e) {
     JComponent source = (JComponent) e.getSource();
     List<Item> alSelected = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
-
     ItemMoveManager.getInstance().removeAll();
     ItemMoveManager.getInstance().addItems(alSelected);
     ItemMoveManager.getInstance().setAction(ItemMoveManager.MoveActions.COPY);

@@ -32,7 +32,6 @@ import org.jajuk.util.UtilString;
  * .
  */
 public class TestLastFmAlbumList extends JajukTestCase {
-
   /** The Constant API_KEY.   */
   private static final String API_KEY = "711591ss6q695ps349o6681pr1oq1467";
 
@@ -44,7 +43,6 @@ public class TestLastFmAlbumList extends JajukTestCase {
    */
   public void testGetAlbumList() {
     List<Album> list = getAlbumList();
-
     AlbumListInfo info = LastFmAlbumList.getAlbumList(list, "Red Hot Chilli Peppers");
     assertNotNull(info);
     assertEquals(2, info.getAlbums().size());
@@ -70,16 +68,12 @@ public class TestLastFmAlbumList extends JajukTestCase {
    */
   public void testGetAlbums() {
     LastFmAlbumList list = new LastFmAlbumList();
-
     List<AlbumInfo> info = new ArrayList<AlbumInfo>();
     LastFmAlbum album = new LastFmAlbum();
     album.setTitle("testtitle");
     info.add(album);
-
     list.setAlbums(info);
-
     assertNotNull(list.getAlbums());
-
     list.setAlbums(null);
     assertNull(list.getAlbums());
   }
@@ -90,7 +84,6 @@ public class TestLastFmAlbumList extends JajukTestCase {
   public void testGetArtist() {
     LastFmAlbumList list = new LastFmAlbumList();
     assertNull(list.getArtist());
-
     list.setArtist("testartist");
     assertEquals("testartist", list.getArtist());
   }

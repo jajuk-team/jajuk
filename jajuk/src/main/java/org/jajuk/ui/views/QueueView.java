@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.views;
 
 import java.awt.BorderLayout;
@@ -83,20 +82,14 @@ import org.jvnet.substance.api.SubstanceSkin;
  * Adapter for playlists editors *.
  */
 public class QueueView extends PlaylistView {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -2851288035506442507L;
-
   private JScrollPane jsp;
-
   private JajukToggleButton jtbAutoScroll;
-
   /** Last scrolled-item *. */
   private StackItem lastScrolledItem;
-
   /** Stop after button. */
   private JajukToggleButton jtbStopAfter;
-
   /** Action when user clicks on stop after. */
   ActionListener alStopAfter = new ActionListener() {
     @Override
@@ -104,7 +97,6 @@ public class QueueView extends PlaylistView {
       QueueModel.setStopAfter(jtbStopAfter.isSelected());
     }
   };
-
   /** Action for auto scrolling. */
   ActionListener alAutoScroll = new ActionListener() {
     @Override
@@ -144,20 +136,16 @@ public class QueueView extends PlaylistView {
     jbAddShuffle.setToolTipText(Messages.getString("AbstractPlaylistEditorView.10"));
     jbAddShuffle.addActionListener(this);
     jlTitle = new JLabel(" [" + QueueModel.getQueue().size() + "]");
-
     jbClear = new JajukButton(IconLoader.getIcon(JajukIcons.CLEAR));
     jbClear.setToolTipText(Messages.getString("QueueView.1"));
     jbClear.addActionListener(this);
-
     jtbStopAfter = new JajukToggleButton(IconLoader.getIcon(JajukIcons.STOP_AFTER));
     jtbStopAfter.setToolTipText(Messages.getString("QueueView.3"));
     jtbStopAfter.addActionListener(alStopAfter);
-
     jtbAutoScroll = new JajukToggleButton(IconLoader.getIcon(JajukIcons.AUTOSCROLL));
     jtbAutoScroll.setToolTipText(Messages.getString("QueueView.2"));
     jtbAutoScroll.setSelected(Conf.getBoolean(Const.CONF_AUTO_SCROLL));
     jtbAutoScroll.addActionListener(alAutoScroll);
-
     JToolBar jtb = new JajukJToolbar();
     jtb.add(jbSave);
     jtb.add(jbRemove);
@@ -165,7 +153,6 @@ public class QueueView extends PlaylistView {
     jtb.add(jbUp);
     jtb.add(jbDown);
     jtb.add(jbClear);
-
     // Add items
     jpEditorControl.setLayout(new MigLayout("insets 5", "[][grow][]"));
     jpEditorControl.add(jtb, "left,gapright 15::");
@@ -203,7 +190,6 @@ public class QueueView extends PlaylistView {
       }
     });
     initMenuItems();
-
     SubstanceSkin theme = SubstanceLookAndFeel.getCurrentSkin();
     SubstanceColorScheme scheme = theme.getMainActiveColorScheme();
     Color queueHighlighterColor = null;
@@ -362,7 +348,6 @@ public class QueueView extends PlaylistView {
             setRenderers();
             editorTable.addColumnIntoConf((String) properties.get(Const.DETAIL_CONTENT));
             editorTable.showColumns(editorTable.getColumnsConf());
-
             editorModel.getItems().clear();
             editorModel.getPlanned().clear();
             refreshQueue();
@@ -379,7 +364,6 @@ public class QueueView extends PlaylistView {
             // remove item from configuration cols
             editorTable.removeColumnFromConf((String) properties.get(Const.DETAIL_CONTENT));
             editorTable.showColumns(editorTable.getColumnsConf());
-
             editorModel.getItems().clear();
             editorModel.getPlanned().clear();
             refreshQueue();
@@ -406,39 +390,32 @@ public class QueueView extends PlaylistView {
         }
       }
     });
-
   }
 
   /**
    * Auto scroll to played track if option is enabled.
    */
   private void autoScroll() {
-
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
-
         if (QueueModel.getQueueSize() > 0) {
           double index = QueueModel.getIndex();
           double size = QueueModel.getQueueSize() + QueueModel.getPlanned().size();
           double factor = (index / size);
           int value = (int) (factor * jsp.getVerticalScrollBar().getMaximum());
-
           // 'center' played track
           value -= (jsp.getVerticalScrollBar().getHeight() / 2) - (editorTable.getRowHeight() / 2);
-
           if (value < 0) {
             value = 0;
           }
           if (value >= jsp.getVerticalScrollBar().getMinimum()
               && value <= jsp.getVerticalScrollBar().getMaximum()) {
             jsp.getVerticalScrollBar().setValue(value);
-
           }
         }
       }
     });
-
   }
 
   /**
@@ -454,12 +431,10 @@ public class QueueView extends PlaylistView {
     ((JajukTableModel) editorTable.getModel()).populateModel(editorTable.getColumnsConf());
     // save selection to avoid reseting selection the user is doing
     int[] rows = editorTable.getSelectedRows();
-
     try {
       editorModel.setRefreshing(true);
       // force table refresh
       editorModel.fireTableDataChanged();
-
       for (int element : rows) {
         // set saved selection after a refresh
         editorTable.getSelectionModel().addSelectionInterval(element, element);
@@ -611,11 +586,9 @@ public class QueueView extends PlaylistView {
         jbRemove.setEnabled(!selectionContainsCurrentTrack(selection));
         jmiFileRemove.setEnabled(!selectionContainsCurrentTrack(selection));
       }
-
       // Add shuffle button
       // No adding for planned track
       jbAddShuffle.setEnabled(!bPlanned);
-
       // Up button
       if (selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()) {
         // check if several rows have been selected :
@@ -680,5 +653,4 @@ public class QueueView extends PlaylistView {
     }
     return false;
   }
-
 }

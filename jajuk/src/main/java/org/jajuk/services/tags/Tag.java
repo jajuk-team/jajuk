@@ -44,19 +44,14 @@ import org.jajuk.util.log.Log;
  * abstract tag, independent from real implementation.
  */
 public class Tag {
-
   /** Current tag impl*. */
   private ITagImpl tagImpl;
-
   /** Current file*. */
   private File fio;
-
   /** Is this tag corrupted ?. */
   private boolean bCorrupted = false;
-
   /** File -> tag cache This is required by the autocommit=false operations. */
   static private Map<File, Tag> tagsCache = new HashMap<File, Tag>(10);
-
   private static List<String> supportedTagFields = null;
 
   /**
@@ -72,18 +67,15 @@ public class Tag {
     try {
       this.fio = fio;
       Type type = TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(fio));
-
       if (type == null) {
         constructionError(fio, bIgnoreErrors, "No type for file: ");
         return;
       }
-
       tagImpl = type.getTagImpl();
       if (tagImpl == null) {
         constructionError(fio, bIgnoreErrors, "No TagImpl for file: ");
         return;
       }
-
       tagImpl.setFile(fio);
     } catch (Exception e) {
       bCorrupted = true;
@@ -103,7 +95,6 @@ public class Tag {
     if (!bIgnoreErrors) {
       throw new JajukException(103, error + (fio == null ? "<null>" : fio.getName()));
     }
-
     bCorrupted = true;
   }
 
@@ -118,7 +109,6 @@ public class Tag {
     if (tagImpl == null) { // if the type doesn't support tags ( like wav )
       return sTrackName;
     }
-
     try {
       String sTemp = tagImpl.getTrackName().trim();
       if (!"".equals(sTemp)) {
@@ -159,7 +149,6 @@ public class Tag {
     } catch (Exception e) {
       Log.info("Wrong album name:{{" + fio.getName() + "}}");
     }
-
     if (sAlbumlName == null) { // album tag cannot be found
       if (Conf.getBoolean(Const.CONF_TAGS_USE_PARENT_DIR)) {
         sAlbumlName = fio.getParentFile().getName();
@@ -212,7 +201,6 @@ public class Tag {
     if (tagImpl == null) {
       return sAlbumArtist;
     }
-
     try {
       String sTemp = tagImpl.getAlbumArtist().trim();
       if (Messages.getString(Const.UNKNOWN_ARTIST).equals(sTemp)) {
@@ -225,7 +213,6 @@ public class Tag {
     }
     // We internalize the artist name for memory saving reasons
     return sAlbumArtist.intern();
-
   }
 
   /**
@@ -239,7 +226,6 @@ public class Tag {
     if (tagImpl == null) {
       return genre;
     }
-
     try {
       String sTemp = tagImpl.getGenreName().trim();
       if (Messages.getString(Const.UNKNOWN_GENRE).equals(sTemp)) {
@@ -258,7 +244,6 @@ public class Tag {
     }
     // We internalize the genre name for memory saving reasons
     return genre.intern();
-
   }
 
   /**
@@ -289,7 +274,6 @@ public class Tag {
     long l = 0l;
     try {
       l = tagImpl.getDiscNumber();
-
     } catch (Exception e) {
       // just debug, no warn because wrong order are too often and
       // generate too much traces
@@ -317,7 +301,6 @@ public class Tag {
     }
     // We internalize the year name for memory saving reasons
     return year.intern();
-
   }
 
   /**
@@ -350,7 +333,6 @@ public class Tag {
     if (tagImpl == null) {
       return sComment;
     }
-
     try {
       String sTemp = tagImpl.getComment();
       if (sTemp != null && !sTemp.equals("")) {
@@ -395,13 +377,11 @@ public class Tag {
     if (tagImpl == null) {
       return sLyrics;
     }
-
     try {
       sLyrics = tagImpl.getLyrics();
     } catch (Exception e) {
       Log.info("Wrong lyrics:{{" + fio.getName() + "}}");
     }
-
     return sLyrics;
   }
 
@@ -619,7 +599,6 @@ public class Tag {
       if (Conf.getBoolean(Const.CONF_PRESERVE_FILE_DATES) && dateLastChange != 0) {
         fio.setLastModified(dateLastChange);
       }
-
     } catch (Exception e) {
       // reset information panel to avoid leaving with a "writting xxx message"
       InformationJPanel.getInstance().setMessage("", InformationJPanel.MessageType.INFORMATIVE);
@@ -748,7 +727,6 @@ public class Tag {
   public static List<String> getSupportedTagFields() {
     if (supportedTagFields == null) {
       supportedTagFields = new ArrayList<String>();
-
       // get all available tag impls
       List<ITagImpl> tagImplList = new ArrayList<ITagImpl>(2);
       for (Type t : TypeManager.getInstance().getAllMusicTypes()) {
@@ -762,7 +740,6 @@ public class Tag {
           }
         }
       }
-
       for (ITagImpl t : tagImplList) {
         for (String s : t.getSupportedTagFields()) {
           if (!supportedTagFields.contains(s)) {
@@ -771,7 +748,6 @@ public class Tag {
         }
       }
     }
-
     return supportedTagFields;
   }
 
@@ -781,9 +757,7 @@ public class Tag {
    * @return the activatedExtraTags
    */
   public static List<String> getActivatedExtraTags() {
-
     List<String> activeExtraTagsArrayList = new ArrayList<String>();
-
     // check all custom properties
     for (PropertyMetaInformation m : TrackManager.getInstance().getCustomProperties()) {
       if (getSupportedTagFields().contains(m.getName())) {

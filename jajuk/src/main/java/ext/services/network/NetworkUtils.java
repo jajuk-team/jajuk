@@ -20,7 +20,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.network;
 
 import java.awt.Image;
@@ -44,7 +43,6 @@ import org.jajuk.util.log.Log;
  * .
  */
 public final class NetworkUtils {
-
   /**
    * Instantiates a new network utils.
    */
@@ -196,11 +194,9 @@ public final class NetworkUtils {
     } finally {
       writer.close();
     }
-
     if (connection.getResponseCode() != 200) {
       throw new IllegalArgumentException("Invalid HTTP return code");
     }
-
     StringBuilder builder = new StringBuilder();
     InputStream input = connection.getInputStream();
     try {
@@ -212,7 +208,6 @@ public final class NetworkUtils {
     } finally {
       input.close();
     }
-
     return builder.toString();
   }
 
@@ -250,5 +245,4 @@ public final class NetworkUtils {
       return s;
     }
   }
-
 }

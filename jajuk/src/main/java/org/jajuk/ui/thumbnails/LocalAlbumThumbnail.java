@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.thumbnails;
 
 import com.vlsolutions.swing.docking.ShadowBorder;
@@ -69,19 +68,13 @@ import org.jajuk.util.log.Log;
  * display...
  */
 public class LocalAlbumThumbnail extends AbstractThumbnail {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -282669695411453802L;
-
   /** Associated album. */
   private Album album;
-
   private JLabel jlArtist;
-
   private JLabel jlAlbum;
-
   private final boolean bShowFullText;
-
   private PreferencesJMenu pjmFiles;
 
   /**
@@ -123,19 +116,15 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     if (bShowFullText) {
       int iRows = 7 + 7 * ((size / 50) - 1);
       String artistName = album.getArtistOrALbumArtist();
-
       jlArtist = new JLabel(UtilString.getLimitedString(artistName, iRows));
       jlArtist.setToolTipText(artistName);
       jlArtist.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-
       // we have to use a empty border to avoid getting default border
       jlArtist.setBorder(new EmptyBorder(0, 0, 0, 0));
       jlAlbum = new JLabel(UtilString.getLimitedString(album.getName2(), iRows));
       jlAlbum.setToolTipText(album.getName2());
       jlAlbum.setBorder(new EmptyBorder(0, 0, 0, 0));
-
       jlIcon.setToolTipText(artistName + "/" + album.getName2());
-
       // Add items
       setLayout(new MigLayout("ins 0", "[grow]", "[" + (size + 10) + "!][grow][grow]"));
       add(jlIcon, "wrap,center");
@@ -208,7 +197,6 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
       sOut += "<img src='file:" + cover.getAbsolutePath() + "'><br>";
     }
     // TODO : add AlbumArtist value and hyperlink here
-
     // Display artist as global value only if it is a single artist album
     // We use file://<item type>?<item id> as HTML hyperlink format
     if (album.getArtist() != null) {
@@ -244,7 +232,6 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     long length = album.getDuration();
     sOut += "<br>" + Messages.getHumanPropertyName(Const.XML_TRACK_LENGTH) + ": "
         + UtilString.formatTimeBySec(length) + "</TD><TD VALIGN='TOP'><br>";
-
     // Show each track detail
     for (Track track : tracks) {
       sOut += "<br>";
@@ -299,5 +286,4 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     inputMap.put(KeyStroke.getKeyStroke("alt ENTER"), "properties");
     actionMap.put("properties", action);
   }
-
 }

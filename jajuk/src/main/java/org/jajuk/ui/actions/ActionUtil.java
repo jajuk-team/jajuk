@@ -32,7 +32,6 @@ import javax.swing.KeyStroke;
  * Utility class for swing actions.
  */
 public final class ActionUtil {
-
   /** The character to use as mnemonic indicator. */
   public static final char INDICATOR = '_';
 
@@ -90,7 +89,6 @@ public final class ActionUtil {
       if (stroke != null) {
         InputMap keyMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         keyMap.put(stroke, action);
-
         ActionMap actionMap = component.getActionMap();
         actionMap.put(action, action);
       }

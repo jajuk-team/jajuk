@@ -31,7 +31,6 @@ import org.jajuk.util.Const;
  * .
  */
 public class TestDeviceManager extends JajukTestCase {
-
   /* (non-Javadoc)
    * @see org.jajuk.JajukTestCase#setUp()
    */
@@ -56,7 +55,6 @@ public class TestDeviceManager extends JajukTestCase {
    */
   public final void testStartAutoRefreshThread() {
     DeviceManager.getInstance().startAutoRefreshThread();
-
     // what happens if done twice?
     DeviceManager.getInstance().startAutoRefreshThread();
   }
@@ -88,7 +86,6 @@ public class TestDeviceManager extends JajukTestCase {
         ConstTest.DEVICES_BASE_PATH + "/dev"));
     assertNotNull(DeviceManager.getInstance().registerDevice("device", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/dev"));
-
     assertNotNull(DeviceManager.getInstance().getDeviceByName("device"));
   }
 
@@ -112,7 +109,6 @@ public class TestDeviceManager extends JajukTestCase {
         0,
         DeviceManager.getInstance().checkDeviceAvailablity("device3", Device.Type.FILES_CD,
             ConstTest.DEVICES_BASE_PATH + "/dev", true));
-
   }
 
   /**
@@ -122,7 +118,6 @@ public class TestDeviceManager extends JajukTestCase {
   public final void testCheckDeviceAvailablityExistingName() {
     assertNotNull(DeviceManager.getInstance().registerDevice("device4", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/dev"));
-
     // error, name already exists
     assertEquals(
         19,
@@ -150,7 +145,6 @@ public class TestDeviceManager extends JajukTestCase {
   public final void testCheckDeviceAvailablityParentOrDescendant() {
     assertNotNull(JUnitHelpers.getDevice("device5", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/dev"));
-
     // error, same url
     assertEquals(
         29,
@@ -166,7 +160,6 @@ public class TestDeviceManager extends JajukTestCase {
         29,
         DeviceManager.getInstance().checkDeviceAvailablity("device3", Device.Type.DIRECTORY,
             ConstTest.DEVICES_BASE_PATH, true));
-
   }
 
   /**
@@ -178,7 +171,6 @@ public class TestDeviceManager extends JajukTestCase {
         143,
         DeviceManager.getInstance().checkDeviceAvailablity("device3", Device.Type.DIRECTORY,
             "notexistingpath", true));
-
   }
 
   /**
@@ -190,7 +182,6 @@ public class TestDeviceManager extends JajukTestCase {
         0,
         DeviceManager.getInstance().checkDeviceAvailablity("device3", Device.Type.DIRECTORY,
             ConstTest.TEMP_PATH, true));
-
   }
 
   /**
@@ -215,11 +206,8 @@ public class TestDeviceManager extends JajukTestCase {
   public final void testRemoveDevice() {
     assertNotNull(DeviceManager.getInstance().registerDevice("5", "device5", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/dev"));
-
     assertNotNull(DeviceManager.getInstance().getDeviceByID("5"));
-
     DeviceManager.getInstance().removeDevice(DeviceManager.getInstance().getDeviceByID("5"));
-
     assertNull(DeviceManager.getInstance().getDeviceByID("5"));
   }
 
@@ -247,7 +235,6 @@ public class TestDeviceManager extends JajukTestCase {
         ConstTest.DEVICES_BASE_PATH + "/dev8"));
     assertNotNull(DeviceManager.getInstance().registerDevice("device9", Device.Type.FILES_CD,
         ConstTest.DEVICES_BASE_PATH + "/dev9"));
-
     assertFalse(DeviceManager.getInstance().isAnyDeviceRefreshing());
   }
 
@@ -269,18 +256,14 @@ public class TestDeviceManager extends JajukTestCase {
    */
   public final void testGetDateLastGlobalRefresh() {
     StartupCollectionService.registerItemManagers();
-
     DeviceManager.getInstance().registerDevice("device6", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/dev6");
     DeviceManager.getInstance().registerDevice("device7", Device.Type.FILES_CD,
         ConstTest.DEVICES_BASE_PATH + "/dev7");
-
     // first do a refresh
     DeviceManager.getInstance().refreshAllDevices();
-
     // then the timestamp should be non-zero
     assertTrue(0 != DeviceManager.getInstance().getDateLastGlobalRefresh());
-
   }
 
   /**
@@ -288,12 +271,10 @@ public class TestDeviceManager extends JajukTestCase {
    */
   public final void testRefreshAllDevices() {
     StartupCollectionService.registerItemManagers();
-
     DeviceManager.getInstance().registerDevice("device6", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/dev6");
     DeviceManager.getInstance().registerDevice("device7", Device.Type.FILES_CD,
         ConstTest.DEVICES_BASE_PATH + "/dev7");
-
     DeviceManager.getInstance().refreshAllDevices();
   }
 
@@ -316,7 +297,6 @@ public class TestDeviceManager extends JajukTestCase {
         ConstTest.DEVICES_BASE_PATH + "/dev10");
     DeviceManager.getInstance().registerDevice("device11", Device.Type.FILES_CD,
         ConstTest.DEVICES_BASE_PATH + "/dev11");
-
     assertNotNull(DeviceManager.getInstance().getDeviceByName("device10"));
     assertNull(DeviceManager.getInstance().getDeviceByName("notexistingdevice"));
   }
@@ -344,5 +324,4 @@ public class TestDeviceManager extends JajukTestCase {
         ConstTest.DEVICES_BASE_PATH + "/dev13");
     assertTrue(DeviceManager.getInstance().getDevicesIterator().hasNext());
   }
-
 }

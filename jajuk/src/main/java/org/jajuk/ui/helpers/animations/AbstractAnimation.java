@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.helpers.animations;
 
 import java.awt.Window;
@@ -28,9 +27,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Base implementation of IAnimation.
  */
 public abstract class AbstractAnimation implements IAnimation {
-
   protected Window window;
-
   private CopyOnWriteArrayList<AnimationCompletedListener> listeners = new CopyOnWriteArrayList<AnimationCompletedListener>();
 
   /**

@@ -20,7 +20,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.lastfm;
 
 import java.util.concurrent.ExecutionException;
@@ -33,34 +32,24 @@ import org.jajuk.util.log.Log;
  * The Class LastFmRunnable.
  */
 public class LastFmRunnable implements Runnable {
-
   /** The interrupted. */
   private volatile boolean interrupted;
-
   /** The albums runnable. */
   private LastFmAlbumsRunnable albumsRunnable;
-
   /** The covers runnable. */
   private LastFmCoversRunnable coversRunnable;
-
   /** The artists runnable. */
   private LastFmSimilarArtistsRunnable artistsRunnable;
-
   /** The listener. */
   private ContextListener listener;
-
   /** The service. */
   private LastFmService service;
-
   /** The audio object. */
   private AudioObject audioObject;
-
   /** The retrieve artist info. */
   private boolean retrieveArtistInfo = true;
-
   /** The id. */
   private long id;
-
   /** The executor service. */
   private ExecutorService executorService;
 
@@ -116,13 +105,11 @@ public class LastFmRunnable implements Runnable {
     } catch (InterruptedException e) {
       Log.debug("albums runnable interrupted");
     }
-
     if (retrieveArtistInfo && !interrupted) {
       coversRunnable = new LastFmCoversRunnable(listener, service, listener.getAlbums(), id,
           audioObject);
       executorService.submit(coversRunnable);
       Log.debug("LastFmCoversRunnable started with id " + id);
-
       artistsRunnable = new LastFmSimilarArtistsRunnable(listener, service,
           audioObject.getArtist(), id);
       executorService.submit(artistsRunnable);

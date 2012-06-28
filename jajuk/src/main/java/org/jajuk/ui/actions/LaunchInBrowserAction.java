@@ -39,7 +39,6 @@ import org.jajuk.util.log.Log;
  * Launch the URL from UtilFeatures.url in the default browser
  */
 public class LaunchInBrowserAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

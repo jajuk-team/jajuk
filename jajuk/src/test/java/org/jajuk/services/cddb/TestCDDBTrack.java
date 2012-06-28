@@ -36,7 +36,6 @@ import org.jajuk.util.Const;
  * .
  */
 public class TestCDDBTrack extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -67,7 +66,6 @@ public class TestCDDBTrack extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.cddb.CDDBTrack#getTrack()}.
    */
-
   public final void testGetTrack() {
     CDDBTrack track = new CDDBTrack(getTrack(1));
     assertNotNull(track.getTrack());
@@ -76,10 +74,8 @@ public class TestCDDBTrack extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.cddb.CDDBTrack#toString()}.
    */
-
   public final void testToString() {
     StartupCollectionService.registerItemManagers();
-
     CDDBTrack track = new CDDBTrack(getTrack(1));
     JUnitHelpers.ToStringTest(track);
   }
@@ -95,13 +91,10 @@ public class TestCDDBTrack extends JajukTestCase {
     Album album = JUnitHelpers.getAlbum("myalbum", 0);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-
     Artist artist = JUnitHelpers.getArtist("name");
     Year year = JUnitHelpers.getYear(2000);
-
     Type type = JUnitHelpers.getType();
     return TrackManager.getInstance().registerTrack("name" + i, album, genre, artist, 120, year, 1,
         type, 1);
   }
-
 }

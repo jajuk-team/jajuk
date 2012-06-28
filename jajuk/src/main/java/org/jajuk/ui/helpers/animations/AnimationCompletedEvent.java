@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.helpers.animations;
 
 import java.awt.Window;
@@ -27,9 +26,7 @@ import java.awt.Window;
  * Event thrown when the naimation is done.
  */
 public class AnimationCompletedEvent {
-
   private IAnimation source;
-
   private Window window;
 
   /**

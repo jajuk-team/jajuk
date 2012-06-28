@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.awt.datatransfer.Transferable;
@@ -35,12 +34,9 @@ import org.jajuk.ui.widgets.JajukTable;
 /**
  * DND handler for table.
  */
-
 public class TableTransferHandler extends TransferHandler {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   final JajukTable jtable;
 
   /**
@@ -56,14 +52,11 @@ public class TableTransferHandler extends TransferHandler {
     // 2 start dragging row 2 : the drag gesture is not recognized because the row 2 is not yet selected
     source.createDefaultDragGestureRecognizer(jtable, DnDConstants.ACTION_COPY,
         new DragGestureListener() {
-
           @Override
           public void dragGestureRecognized(DragGestureEvent dge) {
             Transferable transferable = createTransferable(jtable);
-
             //and this is the magic right here
             dge.startDrag(null, transferable);
-
           }
         });
   }
@@ -94,5 +87,4 @@ public class TableTransferHandler extends TransferHandler {
   public int getSourceActions(JComponent c) {
     return COPY_OR_MOVE;
   }
-
 }

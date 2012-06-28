@@ -24,7 +24,6 @@ package org.jajuk.ui.helpers;
  * Command to be executed on a jajuk table after a left click.
  */
 public interface ILaunchCommand {
-
   /**
    * Action on launch.
    * 
@@ -32,5 +31,4 @@ public interface ILaunchCommand {
    * number of mouse clicks
    */
   void launch(int nbClicks);
-
 }

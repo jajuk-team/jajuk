@@ -24,7 +24,6 @@ package org.jajuk.util.error;
  * Error in lyrics persistence.
  */
 public class LyricsPersistenceException extends Exception {
-
   /** Default serial UID. */
   private static final long serialVersionUID = 1L;
 
@@ -36,5 +35,4 @@ public class LyricsPersistenceException extends Exception {
   public LyricsPersistenceException(String pMessage) {
     super(pMessage);
   }
-
 }

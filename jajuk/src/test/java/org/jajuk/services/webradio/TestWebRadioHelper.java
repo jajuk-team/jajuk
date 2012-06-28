@@ -27,7 +27,6 @@ import org.jajuk.JajukTestCase;
 import org.jajuk.util.Const;
 
 public class TestWebRadioHelper extends JajukTestCase {
-
   private WebRadioManager man = WebRadioManager.getInstance();
   WebRadio radio1;
   WebRadio radio2;
@@ -58,5 +57,4 @@ public class TestWebRadioHelper extends JajukTestCase {
     // Same thing for custom radios
     assertEquals(custom1.getKeywords(), "foo2;bar2");
   }
-
 }

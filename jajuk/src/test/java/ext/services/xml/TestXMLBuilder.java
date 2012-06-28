@@ -27,7 +27,6 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestXMLBuilder extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -36,11 +35,9 @@ public class TestXMLBuilder extends JajukTestCase {
   public void testGetXMLDocument() {
     // simple xml...
     assertNotNull(XMLBuilder.getXMLDocument("<xml></xml>"));
-
     // empty values should be silently ignored
     assertNull(XMLBuilder.getXMLDocument(null));
     assertNull(XMLBuilder.getXMLDocument(""));
-
     // some invalid XML should cause an exception internally but report null
     assertNull(XMLBuilder.getXMLDocument("<xml>invliad document without end tag..."));
   }
@@ -55,5 +52,4 @@ public class TestXMLBuilder extends JajukTestCase {
   public void testPrivateConstructor() throws Exception {
     JUnitHelpers.executePrivateConstructor(XMLBuilder.class);
   }
-
 }

@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.covers;
 
 import java.awt.Image;
@@ -45,7 +44,6 @@ import org.jajuk.util.log.Log;
  * A cover, encapsulates URL, files and manages cover priority to display.
  */
 public class Cover implements Comparable<Cover>, Const {
-
   /**
    * Covers type enumeration.
    * <p>
@@ -70,31 +68,17 @@ public class Cover implements Comparable<Cover>, Const {
    * </p>
    */
   public enum CoverType {
-
-    NO_COVER,
-
-    REMOTE_COVER,
-
-    LOCAL_COVER,
-
+    NO_COVER, REMOTE_COVER, LOCAL_COVER,
     // cover stored in the tag of a file
-
-    TAG_COVER,
-
-    STANDARD_COVER,
-
-    SELECTED_COVER
+    TAG_COVER, STANDARD_COVER, SELECTED_COVER
   }
 
   /** Cover URL*. */
   private final URL url;
-
   /** Cover Type. */
   private final CoverType type;
-
   /** Associated file. */
   private File file;
-
   /** Default cover image. */
   private static final ImageIcon DEFAULT_COVER_ICON = UtilGUI.getImage(IMAGES_SPLASHSCREEN);
 
@@ -258,12 +242,9 @@ public class Cover implements Comparable<Cover>, Const {
     if (!(o instanceof Cover)) {
       return false;
     }
-
     // we have an item of type Cover, so we can cast it safely
     Cover cOther = (Cover) o;
-
     return url.toString().equals(cOther.getURL().toString());
-
   }
 
   /**
@@ -289,5 +270,4 @@ public class Cover implements Comparable<Cover>, Const {
   public File getFile() {
     return this.file;
   }
-
 }

@@ -55,37 +55,26 @@ import org.jajuk.util.log.Log;
  * Multi-session and test/final mode facilities.
  */
 public class SessionService {
-
   /** Debug mode. */
   private static boolean bIdeMode = false;
-
   /** Test mode. */
   private static boolean bTestMode = false;
-
   /** Workspace PATH*. */
   private static String workspace;
-
   /** Forced workspace location (required for some special packaging like portableapps) *. */
   private static String forcedWorkspacePath = null;
-
   /** Directory used to flag the current jajuk session. */
   private static File sessionIdFile;
-
   /** Lock used to trigger first time wizard window close*. */
   private static short[] isFirstTimeWizardClosed = new short[0];
-
   /** Bootstrap file content as key/value format. */
   private static Properties bootstrapContent = new Properties();
-
   /** For performances, store conf root path. */
   private static String confRoot;
-
   /** Boostrap file test workspace path key. */
   private static final String KEY_TEST = "test";
-
   /** Boostrap file final workspace path key. */
   private static final String KEY_FINAL = "final";
-
   /** First time wizard instance if required. */
   private static FirstTimeWizard ftw;
 
@@ -100,7 +89,6 @@ public class SessionService {
    * check if another session is already started.
    */
   public static void checkOtherSession() {
-
     try {
       SwingUtilities.invokeAndWait(new Runnable() {
         @Override
@@ -299,7 +287,6 @@ public class SessionService {
     for (final Object element : System.getProperties().keySet()) {
       String key = (String) element;
       String value = System.getProperty(key);
-
       // Tells jajuk it is inside the IDE (useful to find right
       // location for images and jar resources)
       if (Const.CLI_IDE.equals(key) && Const.TRUE.equalsIgnoreCase(value)) {
@@ -339,7 +326,6 @@ public class SessionService {
       // Upgrade the bootstrap file if it exists (must be done here, not in upgrade step 1
       // because of the boot sequence dependencies)
       UpgradeManager.upgradeBootstrapFile();
-
       // Use any forced workspace location given in CLI. Note that this path has
       // already been validated in the handleCommand() method
       if (forcedWorkspacePath != null) {
@@ -364,16 +350,13 @@ public class SessionService {
             // Parse bootstrap file (XML format)
             FileInputStream fis = new FileInputStream(bootstrap);
             bootstrapContent.loadFromXML(fis);
-
             String workspacePath = null;
-
             // Compute the final workspace path
             if (isTestMode()) {
               workspacePath = (String) bootstrapContent.get(KEY_TEST);
             } else {
               workspacePath = (String) bootstrapContent.get(KEY_FINAL);
             }
-
             // Check if the repository can be found
             if (new File(workspacePath + '/'
                 + (isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk")).canRead()) {
@@ -564,7 +547,6 @@ public class SessionService {
         element.delete();
       }
     }
-
   }
 
   /**
@@ -596,5 +578,4 @@ public class SessionService {
   public static String getBootstrapPath() {
     return getBootstrapPath(Const.FILE_BOOTSTRAP);
   }
-
 }

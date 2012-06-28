@@ -24,10 +24,8 @@ package org.jajuk.services.players;
  * .
  */
 public class DummyMPlayerImpl {
-
   /** The Constant POSITION.   */
   public final static float POSITION = 17.7f;
-
   /** The Constant LENGTH.   */
   public final static float LENGTH = 235.28f;
 
@@ -39,13 +37,10 @@ public class DummyMPlayerImpl {
    */
   public static void main(final String[] args) throws InterruptedException {
     System.out.println("TestMPlayerPlayerImpl was called!");
-
     // simulate normal reply by MPlayer to commands that are sent in
     System.out.println("ANS_LENGTH=" + new Float(LENGTH).toString());
     System.out.println("ANS_TIME_POSITION=" + new Float(POSITION).toString());
-
     Thread.sleep(5000);
-
     System.out.println("Exiting... (Quit)");
   }
 }

@@ -32,7 +32,6 @@ import org.jajuk.util.UtilSystem;
  * Audio filter.
  */
 public final class AudioFilter extends JajukFileFilter {
-
   /** Self instance. */
   private static AudioFilter self = new AudioFilter();
 
@@ -49,7 +48,6 @@ public final class AudioFilter extends JajukFileFilter {
    * Singleton constructor (protected for testing purposes).
    */
   private AudioFilter() {
-
   }
 
   /*
@@ -68,10 +66,8 @@ public final class AudioFilter extends JajukFileFilter {
         return false;
       }
     }
-
     final TypeManager mgr = TypeManager.getInstance();
     final String extension = UtilSystem.getExtension(f);
-
     // check extension is known
     if (TypeManager.getInstance().isExtensionSupported(extension)) {
       // check it is an audio file
@@ -88,7 +84,6 @@ public final class AudioFilter extends JajukFileFilter {
   @Override
   public String getDescription() {
     final StringBuilder s = new StringBuilder();
-
     for (final Type type : TypeManager.getInstance().getAllMusicTypes()) {
       s.append(type.getExtension());
       s.append(',');

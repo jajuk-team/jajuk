@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.base;
 
 import java.util.ArrayList;
@@ -52,13 +51,10 @@ import org.jajuk.util.log.Log;
  * Convenient class to manage files.
  */
 public final class FileManager extends ItemManager {
-
   /** Best of files. */
   private final List<File> alBestofFiles = new ArrayList<File>(20);
-
   /** Self instance. */
   private static FileManager singleton = new FileManager();
-
   /** File comparator based on rate. */
   private final Comparator<File> rateComparator = new Comparator<File>() {
     @Override
@@ -217,10 +213,8 @@ public final class FileManager extends ItemManager {
           && QueueModel.getCurrentItem().getFile().equals(fileOld) && QueueModel.isPlayingTrack()) {
         throw new CannotRenameException(172);
       }
-
       java.io.File fileNew = new java.io.File(fileOld.getFIO().getParentFile().getAbsolutePath()
           + java.io.File.separator + sNewName);
-
       // check file name and extension
       if (!(UtilSystem.getExtension(fileNew).equals(UtilSystem.getExtension(fileOld.getFIO())))) {
         // no extension change
@@ -239,7 +233,6 @@ public final class FileManager extends ItemManager {
       } catch (Exception e) {
         throw new CannotRenameException(134, e);
       }
-
       // OK, remove old file and register this new file
       // Compute file ID
       Directory dir = fileOld.getDirectory();
@@ -254,7 +247,6 @@ public final class FileManager extends ItemManager {
       fNew.setProperties(fileOld.getProperties());
       fNew.setProperty(Const.XML_ID, sNewId); // reset new id and name
       fNew.setProperty(Const.XML_NAME, sNewName); // reset new id and name
-
       removeFile(fileOld);
       registerItem(fNew);
       track.addFile(fNew);
@@ -291,7 +283,6 @@ public final class FileManager extends ItemManager {
       fNew.setProperties(old.getProperties());
       fNew.setProperty(Const.XML_ID, sNewId);
       fNew.setProperty(Const.XML_DIRECTORY, newDir.getID());
-
       // Real IO move
       try {
         if (!old.getFIO().renameTo(fNew.getFIO())) {
@@ -300,7 +291,6 @@ public final class FileManager extends ItemManager {
       } catch (Exception e) {
         throw new CannotRenameException(134, e);
       }
-
       // OK, remove old file and register this new file
       removeFile(old);
       registerItem(fNew);
@@ -354,7 +344,6 @@ public final class FileManager extends ItemManager {
    *
    * @return file or null if given path is not known
    */
-
   File getFileByPath(String sPath) {
     lock.readLock().lock();
     try {
@@ -443,7 +432,6 @@ public final class FileManager extends ItemManager {
         index.put(album, albums.indexOf(album));
       }
       Collections.sort(alEligibleFiles, new Comparator<File>() {
-
         @Override
         public int compare(File f1, File f2) {
           if (f1.getTrack().getAlbum().equals(f2.getTrack().getAlbum())) {
@@ -457,7 +445,6 @@ public final class FileManager extends ItemManager {
           }
           return index.get(f1.getTrack().getAlbum()) - index.get(f2.getTrack().getAlbum());
         }
-
       });
       return alEligibleFiles;
       // else return shuffle albums
@@ -635,15 +622,12 @@ public final class FileManager extends ItemManager {
    */
   public void refreshBestOfFiles() {
     Log.debug("Invoking Refresh of BestOf-Files");
-
     // clear data
     alBestofFiles.clear();
-
     // create a temporary table to remove unmounted files
     int iNbBestofFiles = Integer.parseInt(Conf.getString(Const.CONF_BESTOF_TRACKS_SIZE));
     List<File> alEligibleFiles = new ArrayList<File>(iNbBestofFiles);
     List<Track> tracks = TrackManager.getInstance().getTracks();
-
     // filter banned tracks
     CollectionUtils.filter(tracks, new JajukPredicates.BannedTrackPredicate());
     for (Track track : tracks) {
@@ -653,7 +637,6 @@ public final class FileManager extends ItemManager {
       }
     }
     Collections.sort(alEligibleFiles, rateComparator);
-
     // Keep as much items as we can
     int i = 0;
     while (i < alEligibleFiles.size() && i < iNbBestofFiles) {
@@ -817,5 +800,4 @@ public final class FileManager extends ItemManager {
   public ReadOnlyIterator<File> getFilesIterator() {
     return new ReadOnlyIterator<File>((Iterator<File>) getItemsIterator());
   }
-
 }

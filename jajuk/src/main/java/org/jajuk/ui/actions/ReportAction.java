@@ -45,7 +45,6 @@ import org.jajuk.util.log.Log;
  * Report collection as a file.
  */
 public class ReportAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -139,6 +138,5 @@ public class ReportAction extends JajukAction {
         }
       }.start();
     }
-
   }
 }

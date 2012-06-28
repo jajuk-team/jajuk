@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.windows;
 
 import ext.JXTrayIcon;
@@ -78,48 +77,28 @@ import org.jajuk.util.log.Log;
  * Extends CommandJPanel for volume slider heritage only.
  */
 public class JajukSystray extends CommandJPanel implements IJajukWindow {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** State decorator. */
   private WindowStateDecorator decorator;
-
   // Systray variables
-
   SystemTray stray;
-
   JXTrayIcon trayIcon;
-
   JPopupMenu jmenu;
-
   JMenuItem jmiExit;
-
   JMenuItem jmiMute;
-
   JMenuItem jmiShuffle;
-
   JMenuItem jmiBestof;
-
   JMenuItem jmiDJ;
-
   JMenuItem jmiNovelties;
-
   JMenuItem jmiFinishAlbum;
-
   JMenuItem jmiPlayPause;
-
   JMenuItem jmiStop;
-
   JMenuItem jmiPrevious;
-
   JMenuItem jmiNext;
-
   JMenu jmAmbience;
-
   /** Self instance singleton. */
   private static JajukSystray jsystray;
-
   /** HTML Tooltip. */
   JajukInformationDialog balloon;
 
@@ -200,23 +179,18 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     PlayerStateMediator.getInstance();
     jmenu = new JPopupMenu(Messages.getString("JajukWindow.3"));
     jmiExit = new JMenuItem(ActionManager.getAction(JajukActions.EXIT));
-
     // force icon to be display in 16x16
     jmiMute = new SizedJMenuItem(ActionManager.getAction(JajukActions.MUTE_STATE));
     jmiMute.addMouseWheelListener(this);
-
     jmiShuffle = new SizedJMenuItem(ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL));
-
     jmiBestof = new SizedJMenuItem(ActionManager.getAction(JajukActions.BEST_OF));
     jmiDJ = new SizedJMenuItem(ActionManager.getAction(JajukActions.DJ));
     jmiFinishAlbum = new SizedJMenuItem(ActionManager.getAction(JajukActions.FINISH_ALBUM));
     jmiNovelties = new SizedJMenuItem(ActionManager.getAction(JajukActions.NOVELTIES));
-
     jmiPlayPause = new SizedJMenuItem(ActionManager.getAction(JajukActions.PAUSE_RESUME_TRACK));
     jmiStop = new SizedJMenuItem(ActionManager.getAction(JajukActions.STOP_TRACK));
     jmiPrevious = new SizedJMenuItem(ActionManager.getAction(JajukActions.PREVIOUS_TRACK));
     jmiNext = new SizedJMenuItem(ActionManager.getAction(JajukActions.NEXT_TRACK));
-
     JLabel jlTitle = new JLabel("Jajuk");
     jlTitle.addMouseListener(new MouseAdapter() {
       @Override
@@ -229,14 +203,12 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
           JajukMainWindow.getInstance().getWindowStateDecorator().display(bShouldDisplayMainWindow);
         }
       }
-
     });
     jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD_TITLE));
     SearchBox searchBox = new SearchBox();
     JPanel jpTitle = new JPanel(new MigLayout("ins 5", "[][grow]"));
     jpTitle.add(jlTitle, "left,gapx 20px");
     jpTitle.add(searchBox, "right,grow");
-
     // Ambiences menu
     Ambience defaultAmbience = AmbienceManager.getInstance().getSelectedAmbience();
     jmAmbience = new JMenu(Messages.getString("JajukWindow.36")
@@ -244,7 +216,6 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
         + ((defaultAmbience == null) ? Messages.getString("DigitalDJWizard.64")
             : defaultAmbience.getName()));
     populateAmbiences();
-
     jmenu.add(jpTitle);
     jmenu.addSeparator();
     jmenu.add(jmAmbience);
@@ -268,14 +239,12 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     if (UtilSystem.isUnderLinux()) {
       jmenu.add("");
     }
-
     trayIcon = new JXTrayIcon(IconLoader.getIcon(JajukIcons.TRAY).getImage());
     if (!UtilSystem.isUnderLinux()) {
       // auto-resize looks OK under Windows but is ugly under Linux/KDE
       trayIcon.setImageAutoSize(true);
     }
     trayIcon.addMouseMotionListener(new MouseMotionAdapter() {
-
       long dateLastMove = 0;
 
       @Override
@@ -305,10 +274,8 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     trayIcon.setJPopuMenu(jmenu);
     // Note that under OSX, popup gesture recognition is inverted : a left click return true
     if (UtilSystem.isUnderOSX()) {
-
       // Don't use a JajukMouseAdapter here because tray has specific behavior under OSX
       trayIcon.addMouseListener(new MouseAdapter() {
-
         // Under OSX, the event to consider is PRESSED, not RELEASED, 
         // see http://developer.apple.com/mac/library/documentation/Java/Conceptual/Java14Development/07-NativePlatformIntegration/NativePlatformIntegration.html
         @Override
@@ -321,10 +288,8 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
           }
         }
       });
-
     } else {
       trayIcon.addMouseListener(new JajukMouseAdapter() {
-
         @Override
         public void handleActionSingleClick(MouseEvent e) {
           showHideWindow(e);
@@ -344,7 +309,6 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     }
     // Register needed events
     ObservationManager.register(this);
-
   }
 
   /**
@@ -361,12 +325,10 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     } else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_FULLSCREEN) {
       windowDecorator = JajukFullScreenWindow.getInstance().getWindowStateDecorator();
     }
-
     // show Main if no other found, i.e. only Systray is displayed
     if (windowDecorator == null) {
       windowDecorator = JajukMainWindow.getInstance().getWindowStateDecorator();
     }
-
     boolean bShouldDisplay = false;
     // Check the CONF_TRAY_CLICK_DISPLAY_WINDOW option
     if (Conf.getBoolean(Const.CONF_TRAY_CLICK_DISPLAY_WINDOW)) {
@@ -493,7 +455,6 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     jmiAll.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
     jmiAll.addActionListener(al);
     jmAmbience.add(jmiAll);
-
     // Add available ambiences
     for (Ambience ambience : AmbienceManager.getInstance().getAmbiences()) {
       JMenuItem jmi = new JMenuItem(ambience.getName());
@@ -546,5 +507,4 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
       MuteAction.setVolumeIcon(newVolume);
     }
   }
-
 }

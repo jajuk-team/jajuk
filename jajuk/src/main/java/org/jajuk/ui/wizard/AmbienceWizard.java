@@ -64,27 +64,19 @@ import org.qdwizard.Wizard;
  * Ambiences management wizard.
  */
 public class AmbienceWizard extends Wizard {
-
   /**
    * .
    */
   public static class AmbiencePanel extends Screen implements ActionListener {
-
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
-
     /** All dynamic widgets. */
     private JComponent[][] widgets;
-
     private JButton jbNew;
-
     private JButton jbDelete;
-
     private JButton jbDefaults;
-
     /** DJ*. */
     private AmbienceDigitalDJ dj = null;
-
     /** Selected ambience index. */
     private int ambienceIndex = 0;
 
@@ -315,7 +307,6 @@ public class AmbienceWizard extends Wizard {
           IconLoader.getIcon(JajukIcons.DEFAULTS));
       jbDefaults.addActionListener(this);
       jbDefaults.setToolTipText(Messages.getString("DigitalDJWizard.63"));
-
       // Add items
       refreshScreen();
     }
@@ -386,7 +377,6 @@ public class AmbienceWizard extends Wizard {
     }
     // Refresh UI
     ObservationManager.notify(new JajukEvent(JajukEvents.AMBIENCES_CHANGE));
-
   }
 
   /*
@@ -410,5 +400,4 @@ public class AmbienceWizard extends Wizard {
       final Class<? extends org.qdwizard.Screen> screen) {
     return null;
   }
-
 }

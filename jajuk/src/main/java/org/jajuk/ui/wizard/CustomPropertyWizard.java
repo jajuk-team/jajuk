@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.wizard;
 
 import java.awt.event.ActionListener;
@@ -51,16 +50,11 @@ import org.jajuk.util.UtilGUI;
  */
 public abstract class CustomPropertyWizard extends JajukJDialog implements ActionListener,
     ItemListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -5148687837661745898L;
-
   JLabel jlItemChoice;
-
   JComboBox jcbItemChoice;
-
   OKCancelPanel okp;
-
   JLabel jlName;
 
   /**
@@ -143,5 +137,4 @@ public abstract class CustomPropertyWizard extends JajukJDialog implements Actio
     }
     return im;
   }
-
 }

@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.bookmark;
 
 import java.io.BufferedWriter;
@@ -64,16 +63,12 @@ import org.xml.sax.helpers.DefaultHandler;
  * .sun.com/javase/6/docs/api/javax/swing/package-summary.html#threading
  */
 public final class History extends DefaultHandler implements HighPriorityObserver {
-
   /** Self instance. */
   private static History history = new History();
-
   /** History repository, last play first. */
   private static Vector<HistoryItem> vHistory = new Vector<HistoryItem>(100); // NOPMD
-
   /** History begin date. */
   private static long lDateStart;
-
   /** Cached date formatter. */
   private SimpleDateFormat formatter;
 
@@ -91,7 +86,6 @@ public final class History extends DefaultHandler implements HighPriorityObserve
    */
   private History() {
     super();
-
     ObservationManager.register(this);
     // check if something has already started
     if (ObservationManager.getDetailLastOccurence(JajukEvents.FILE_LAUNCHED,
@@ -118,7 +112,6 @@ public final class History extends DefaultHandler implements HighPriorityObserve
     eventSubjectSet.add(JajukEvents.CLEAR_HISTORY);
     eventSubjectSet.add(JajukEvents.FILE_NAME_CHANGED);
     eventSubjectSet.add(JajukEvents.LANGUAGE_CHANGED);
-
     return eventSubjectSet;
   }
 

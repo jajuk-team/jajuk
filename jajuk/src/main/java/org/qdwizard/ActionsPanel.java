@@ -46,25 +46,16 @@ import javax.swing.SwingConstants;
  * @created 1 may 2006
  */
 class ActionsPanel extends JPanel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** Problem text area. */
   JLabel jlProblem;
-
   JButton jbPrevious;
-
   JButton jbNext;
-
   JButton jbFinish;
-
   JButton jbCancel;
-
   private Color backgroundColor;
-
   private Color backgroundColorProblem;
-
   /** Associated action listener. */
   ActionListener al;
 
@@ -76,13 +67,11 @@ class ActionsPanel extends JPanel {
   public ActionsPanel(ActionListener al) {
     backgroundColor = Color.WHITE;
     backgroundColorProblem = Color.WHITE;
-
     // Problem panel
     jlProblem = new JLabel();
     jlProblem.setForeground(Color.RED);
     jlProblem.setFont(new Font("Dialog", Font.BOLD, 12)); //$NON-NLS-1$
     jlProblem.setHorizontalAlignment(SwingConstants.CENTER);
-
     // Action buttons
     JPanel jpButtons = new JPanel();
     jpButtons.setLayout(new BoxLayout(jpButtons, BoxLayout.X_AXIS));
@@ -91,22 +80,18 @@ class ActionsPanel extends JPanel {
     jbPrevious.setPreferredSize(dimButtons);
     jbPrevious.addActionListener(al);
     jbPrevious.setActionCommand("Prev"); //$NON-NLS-1$
-
     jbNext = new JButton(Langpack.getMessage("Next") + " >");
     jbNext.addActionListener(al);
     jbNext.setActionCommand("Next"); //$NON-NLS-1$
     jbNext.setPreferredSize(dimButtons);
-
     jbFinish = new JButton(Langpack.getMessage("Finish"));
     jbFinish.addActionListener(al);
     jbFinish.setActionCommand("Finish"); //$NON-NLS-1$
     jbFinish.setPreferredSize(dimButtons);
-
     jbCancel = new JButton(Langpack.getMessage("Cancel"));
     jbCancel.addActionListener(al);
     jbCancel.setActionCommand("Cancel"); //$NON-NLS-1$
     jbCancel.setPreferredSize(dimButtons);
-
     jpButtons.add(Box.createHorizontalStrut(10));
     jpButtons.add(Box.createHorizontalGlue());
     jpButtons.add(jbPrevious);
@@ -118,11 +103,9 @@ class ActionsPanel extends JPanel {
     jpButtons.add(jbCancel);
     jpButtons.add(Box.createHorizontalStrut(10));
     jpButtons.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-
     jpButtons.setOpaque(false);
     jlProblem.setOpaque(false);
     setOpaque(false);
-
     // Main panel
     setLayout(new GridLayout(2, 1));
     add(jlProblem);
@@ -191,15 +174,12 @@ class ActionsPanel extends JPanel {
     java.awt.Rectangle rect = getBounds();
     g2D.setColor(backgroundColor);
     g2D.fillRect(0, 0, rect.width, rect.height);
-
     if ((jlProblem != null) && (jlProblem.getText() != null) && jlProblem.getText().length() > 0) {
       rect = jlProblem.getBounds();
       g2D.setColor(backgroundColorProblem);
       g2D.fillRect(rect.x, rect.y, rect.width, rect.height);
     }
-
     super.paint(g);
-
     g2D.setColor(java.awt.Color.LIGHT_GRAY);
     g2D.drawLine(rect.x, 0, rect.width, 0);
   }

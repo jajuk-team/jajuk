@@ -53,7 +53,6 @@ import org.jajuk.util.Const;
  * .
  */
 public class TestPlayerStateMediator extends JajukTestCase {
-
   /* (non-Javadoc)
    * @see org.jajuk.JajukTestCase#setUp()
    */
@@ -61,7 +60,6 @@ public class TestPlayerStateMediator extends JajukTestCase {
   protected void setUp() throws Exception {
     // to install actions...
     ActionManager.getInstance();
-
     super.setUp();
   }
 
@@ -73,7 +71,6 @@ public class TestPlayerStateMediator extends JajukTestCase {
   public final void testGetInstance() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     assertNotNull(med);
-
     // once again to cover other if-branch
     med = PlayerStateMediator.getInstance();
     assertNotNull(med);
@@ -121,20 +118,15 @@ public class TestPlayerStateMediator extends JajukTestCase {
    */
   public final void testUpdateStopQueueModel() throws Exception {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
-
     // test with queue size > 0
     Device device = JUnitHelpers.getDevice();
-
     // no files without a directory
     List<File> files = device.getFilesRecursively();
     assertEquals(0, files.size()); // no file available
-
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     File file = getFile(9, dir);
-
     QueueModel.insert(new StackItem(file), 0);
     assertTrue(QueueModel.getQueue().toString(), QueueModel.getQueue().size() > 0);
-
     // run the method
     med.update(new JajukEvent(JajukEvents.PLAYER_STOP, null));
   }
@@ -151,14 +143,11 @@ public class TestPlayerStateMediator extends JajukTestCase {
     Album album = JUnitHelpers.getAlbum("name", 0);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-
     Artist artist = JUnitHelpers.getArtist("name");
     Year year = JUnitHelpers.getYear(2000);
-
     Type type = JUnitHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
-
     return FileManager.getInstance().registerFile(Integer.valueOf(i).toString(), "test.tst", dir,
         track, 120, 70);
   }
@@ -215,11 +204,9 @@ public class TestPlayerStateMediator extends JajukTestCase {
   public final void testUpdateWebradioNotifcator() {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
-
     Properties prop = new Properties();
     prop.put(Const.DETAIL_CONTENT,
         JUnitHelpers.getWebRadio("myradio", "http://foo", WebRadioOrigin.CUSTOM));
-
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, prop));
   }
@@ -233,16 +220,12 @@ public class TestPlayerStateMediator extends JajukTestCase {
   public final void testUpdateFileLaunched() throws Exception {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
-
     Directory dir = JUnitHelpers.getDirectory();
     File file = getFile(3, dir);
-
     Properties prop = new Properties();
     prop.put(Const.DETAIL_CURRENT_FILE_ID, file.getID());
-
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, prop));
-
     JUnitHelpers.clearSwingUtilitiesQueue();
   }
 
@@ -253,10 +236,8 @@ public class TestPlayerStateMediator extends JajukTestCase {
   public final void testUpdateFileLaunchedNull() {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
-
     // just provide empty properties
     Properties prop = new Properties();
-
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, prop));
   }
@@ -280,15 +261,11 @@ public class TestPlayerStateMediator extends JajukTestCase {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.MUTE_STATE, null));
     JUnitHelpers.clearSwingUtilitiesQueue();
-
     // test with muted player
     Player.mute();
-
     med.update(new JajukEvent(JajukEvents.MUTE_STATE, null));
     JUnitHelpers.clearSwingUtilitiesQueue();
-
     Player.mute(false);
-
     med.update(new JajukEvent(JajukEvents.MUTE_STATE, null));
   }
 }

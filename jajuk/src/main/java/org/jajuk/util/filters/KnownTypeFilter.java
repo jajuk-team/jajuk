@@ -31,7 +31,6 @@ import org.jajuk.util.UtilSystem;
  * Known type filter.
  */
 public final class KnownTypeFilter extends JajukFileFilter {
-
   /** Self instance. */
   private static KnownTypeFilter self = new KnownTypeFilter();
 
@@ -65,5 +64,4 @@ public final class KnownTypeFilter extends JajukFileFilter {
     }
     return TypeManager.getInstance().isExtensionSupported(UtilSystem.getExtension(f));
   }
-
 }

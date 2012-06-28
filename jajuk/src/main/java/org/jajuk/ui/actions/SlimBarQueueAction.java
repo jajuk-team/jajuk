@@ -31,7 +31,6 @@ import org.jajuk.util.Messages;
  * .
  */
 public class SlimBarQueueAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1223773056757729079L;
 

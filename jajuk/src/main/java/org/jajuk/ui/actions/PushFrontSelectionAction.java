@@ -43,7 +43,6 @@ import org.jajuk.util.UtilFeatures;
  * </p>.
  */
 public class PushFrontSelectionAction extends SelectionAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -8078402652430413821L;
 
@@ -68,5 +67,4 @@ public class PushFrontSelectionAction extends SelectionAction {
         UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files),
             Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), true, true);
   }
-
 }

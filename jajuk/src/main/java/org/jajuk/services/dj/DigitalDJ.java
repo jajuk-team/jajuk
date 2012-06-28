@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.dj;
 
 import java.util.HashSet;
@@ -35,22 +34,16 @@ import org.jajuk.util.Const;
  * Digital DJ.
  */
 public abstract class DigitalDJ implements Comparable<DigitalDJ> {
-
   /** DJ unique ID. */
   private final String sID;
-
   /** DJ name. */
   protected String sName;
-
   /** Rating floor. */
   protected int iRatingLevel = 0;
-
   /** Fading duration in sec. */
   protected int iFadingDuration = 0;
-
   /** Track unicity. */
   protected boolean bUnicity = false;
-
   private int iMaxTracks = -1;
 
   /**
@@ -85,7 +78,6 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
     if (other == null) {
       return -1;
     }
-
     return this.sName.compareTo(other.getName());
   }
 
@@ -151,7 +143,6 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
       if (iMaxTracks > files.size()) {
         return;
       }
-
       // remove until we have less than max tracks
       while (files.size() > iMaxTracks) {
         files.remove(files.size() - 1);

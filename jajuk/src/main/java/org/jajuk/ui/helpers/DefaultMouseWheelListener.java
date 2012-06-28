@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.awt.event.MouseWheelEvent;
@@ -30,7 +29,6 @@ import javax.swing.JSlider;
  * A basic Mouse wheel listener for jsliders.
  */
 public class DefaultMouseWheelListener implements MouseWheelListener {
-
   private JSlider js;
 
   /**
@@ -56,5 +54,4 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
       js.setValue(iNew);
     }
   }
-
 }

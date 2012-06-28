@@ -56,7 +56,6 @@ import org.jajuk.util.log.Log;
  * easier testing.
  */
 public class UtilPrepareParty {
-
   /** character that is used to replace if filename normalization is used. */
   private static final String FILLER_CHAR = "_";
 
@@ -84,7 +83,6 @@ public class UtilPrepareParty {
         newFiles.add(file);
       }
     }
-
     return newFiles;
   }
 
@@ -107,11 +105,9 @@ public class UtilPrepareParty {
       if ((accumulated + file.getTrack().getDuration()) / 60 > time) {
         return newFiles;
       }
-
       accumulated += file.getTrack().getDuration();
       newFiles.add(file);
     }
-
     // there were not enough files to reach the limit, return the full list
     return files;
   }
@@ -135,11 +131,9 @@ public class UtilPrepareParty {
       if ((accumulated + file.getSize()) / (1024 * 1024) > size) {
         return newFiles;
       }
-
       accumulated += file.getSize();
       newFiles.add(file);
     }
-
     // there were not enough files to reach the limit, return the full list
     return files;
   }
@@ -162,11 +156,9 @@ public class UtilPrepareParty {
       if (count > tracks) {
         return newFiles;
       }
-
       count++;
       newFiles.add(file);
     }
-
     // there were not enough files to reach the limit, return the full list
     return files;
   }
@@ -189,7 +181,6 @@ public class UtilPrepareParty {
         newFiles.add(file);
       }
     }
-
     return newFiles;
   }
 
@@ -209,7 +200,6 @@ public class UtilPrepareParty {
     // initialize map if necessary
     if (replaceMap == null) {
       replaceMap = new HashMap<Character, String>();
-
       // German umlauts can be handled better than just using the filler_char,
       // we
       // can keep the filename readable
@@ -227,12 +217,9 @@ public class UtilPrepareParty {
       replaceMap.put('Ä', "AE");
       replaceMap.put('Å', "A");
       replaceMap.put('Æ', "AE");
-
       replaceMap.put('Ç', "C");
       replaceMap.put('ç', "c");
-
       replaceMap.put('Ð', "D");
-
       replaceMap.put('È', "E");
       replaceMap.put('É', "E");
       replaceMap.put('Ê', "E");
@@ -242,7 +229,6 @@ public class UtilPrepareParty {
       replaceMap.put('é', "e");
       replaceMap.put('ê', "e");
       replaceMap.put('ë', "e");
-
       replaceMap.put('Ì', "I");
       replaceMap.put('Í', "I");
       replaceMap.put('Î', "I");
@@ -251,10 +237,8 @@ public class UtilPrepareParty {
       replaceMap.put('í', "i");
       replaceMap.put('î', "i");
       replaceMap.put('ï', "i");
-
       replaceMap.put('Ñ', "N");
       replaceMap.put('ñ', "n");
-
       replaceMap.put('Ò', "O");
       replaceMap.put('Ó', "O");
       replaceMap.put('Ô', "O");
@@ -269,9 +253,7 @@ public class UtilPrepareParty {
       replaceMap.put('ö', "oe");
       replaceMap.put('ő', "o");
       replaceMap.put('œ', "oe");
-
       replaceMap.put('ß', "ss");
-
       replaceMap.put('Ù', "U");
       replaceMap.put('Ú', "U");
       replaceMap.put('Û', "U");
@@ -280,17 +262,14 @@ public class UtilPrepareParty {
       replaceMap.put('ú', "u");
       replaceMap.put('û', "u");
       replaceMap.put('ü', "ue");
-
       replaceMap.put('Ý', "Y");
       replaceMap.put('ý', "y");
       replaceMap.put('ÿ', "y");
-
       // some more special characters that can be replaced with more useful
       // values
       // than FILLER_CHAR
       replaceMap.put('€', "EUR");
       replaceMap.put('&', "and");
-
       // replace path-separators and colon that could cause trouble on other
       // OSes, also question mark and star can produce errors
       replaceMap.put('/', FILLER_CHAR);
@@ -300,11 +279,9 @@ public class UtilPrepareParty {
       replaceMap.put('*', FILLER_CHAR);
       replaceMap.put('!', FILLER_CHAR);
     }
-
     StringBuilder newName = new StringBuilder(name.length());
     for (int i = 0; i < name.length(); i++) {
       char c = name.charAt(i);
-
       // replace some things that we can replace with other useful values
       if (replaceMap.containsKey(c)) {
         newName.append(replaceMap.get(c));
@@ -317,7 +294,6 @@ public class UtilPrepareParty {
         newName.append(FILLER_CHAR);
       }
     }
-
     return newName.toString();
   }
 
@@ -343,7 +319,6 @@ public class UtilPrepareParty {
   public static List<org.jajuk.base.File> getAmbienceFiles(String name) {
     final List<org.jajuk.base.File> files;
     Ambience ambience = AmbienceManager.getInstance().getAmbienceByName(name);
-
     files = new ArrayList<org.jajuk.base.File>();
     // Get a shuffle selection
     List<org.jajuk.base.File> allFiles = FileManager.getInstance().getGlobalShufflePlaylist();
@@ -375,7 +350,6 @@ public class UtilPrepareParty {
     if (tempPlaylist != null && name.equals(tempPlaylist.getName())) {
       return tempPlaylist.getFiles();
     }
-
     // get the Playlist from the Manager by name
     Playlist playlist = PlaylistManager.getInstance().getPlaylistByName(name);
     return playlist.getFiles();
@@ -448,7 +422,6 @@ public class UtilPrepareParty {
    */
   private static List<String> splitCommand(String command) {
     List<String> list = new ArrayList<String>();
-
     StringBuilder word = new StringBuilder();
     boolean quote = false;
     int i = 0;
@@ -457,11 +430,9 @@ public class UtilPrepareParty {
       // word boundary
       if (Character.isWhitespace(c) && !quote) {
         i++;
-
         // finish current word
         list.add(word.toString());
         word = new StringBuilder();
-
         // skip more whitespaces
         while (Character.isWhitespace(command.charAt(i)) && i < command.length()) {
           i++;
@@ -471,18 +442,14 @@ public class UtilPrepareParty {
         if (c == '"') {
           quote = !quote;
         }
-
         word.append(c);
-
         i++;
       }
     }
-
     // finish last word
     if (word.length() > 0) {
       list.add(word.toString());
     }
-
     return list;
   }
 
@@ -497,15 +464,12 @@ public class UtilPrepareParty {
   public static boolean checkPACPL(String pacpl) {
     // here we just want to verify that we find pacpl
     // first build the commandline for "pacpl --help"
-
     // see the manual page of "pacpl"
     List<String> list = splitCommand(pacpl);
     list.add("--help");
-
     // create streams for catching stdout and stderr
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     ByteArrayOutputStream err = new ByteArrayOutputStream();
-
     int ret = 0;
     final ProcessLauncher launcher = new ProcessLauncher(out, err, 10000);
     try {
@@ -515,18 +479,15 @@ public class UtilPrepareParty {
       Log.debug("Exception while checking for 'pacpl', cannot use functionality to convert media files while copying: "
           + e.getMessage());
     }
-
     // if we do not find the application or if we got an error, log some details
     // and disable notification support
     if (ret != 0) {
       // log out the results
       Log.debug("pacpl command returned to out(" + ret + "): " + out.toString());
       Log.debug("pacpl command returned to err: " + err.toString());
-
       Log.info("Cannot use functionality to convert media files, application 'pacpl' seems to be not available correctly.");
       return false;
     }
-
     // pacpl is enabled and seems to be supported by the OS
     return true;
   }
@@ -555,32 +516,24 @@ public class UtilPrepareParty {
   public static int convertPACPL(String pacpl, File file, String toFormat, java.io.File toDir,
       String newName) {
     // first build the commandline for "pacpl"
-
     // see the manual page of "pacpl"
-
     // first split the command itself with observing quotes, splitting is
     // necessary because it can be something like "perl <locatoin>/pacpl"
     List<String> list = splitCommand(pacpl);
-
     // where to store the file
     list.add("--outdir");
     list.add(toDir.getAbsolutePath());
-
     // specify new filename
     list.add("--outfile");
     list.add(newName);
-
     // specify output format
     list.add("--to");
     list.add(toFormat);
-
     // now add the actual file to convert
     list.add(file.getAbsolutePath());
-
     // create streams for catching stdout and stderr
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     ByteArrayOutputStream err = new ByteArrayOutputStream();
-
     int ret = 0;
     StringBuilder commandLog = new StringBuilder();
     for (String arg : list) {
@@ -595,7 +548,6 @@ public class UtilPrepareParty {
       ret = -1;
       Log.error(e);
     }
-
     // log out the results
     if (!out.toString().isEmpty()) {
       Log.debug("pacpl command returned to out(" + ret + "): " + out.toString());
@@ -605,14 +557,12 @@ public class UtilPrepareParty {
     } else {
       Log.debug("pacpl command returned: " + ret);
     }
-
     if (!err.toString().isEmpty()) {
       Log.debug("pacpl command returned to err: " + err.toString());
       if (err.toString().indexOf("encode failed") != -1) {
         ret = -1;
       }
     }
-
     return ret;
   }
 
@@ -629,15 +579,12 @@ public class UtilPrepareParty {
   public static void copyFiles(final List<org.jajuk.base.File> files, final java.io.File destDir,
       final boolean isNormalize, final boolean isConvertMedia, final String media,
       final String convertCommand) {
-
     Thread thread = new Thread("PrepareParty - File Copy") {
-
       @Override
       public void run() {
         UtilGUI.waiting();
         // start time to display elapsed time at the end
         long lRefreshDateStart = System.currentTimeMillis();
-
         // start copying and create a playlist on the fly
         int convert_errors = 0;
         final java.io.File file = new java.io.File(destDir.getAbsolutePath() + "/playlist.m3u");
@@ -647,29 +594,23 @@ public class UtilPrepareParty {
             bw.write(Const.PLAYLIST_NOTE);
             int count = 0;
             for (final org.jajuk.base.File entry : files) {
-
               // update progress
               count++;
-
               // We can use the actual file name as we do numbering of the files,
               // this is important for existing playlists to keep the order
               String name = StringUtils.leftPad(Integer.valueOf(count).toString(), 5, '0') + '_'
                   + entry.getFIO().getName();
-
               // normalize filenames if necessary
               if (isNormalize) {
                 name = UtilPrepareParty.normalizeFilename(name);
               }
-
               // check if we need to convert the file format
               if (isConvertMedia && !entry.getType().getExtension().equals(media)) {
                 // Notify that we are converting a file
                 Properties properties = new Properties();
                 properties.put(Const.DETAIL_CONTENT, entry.getName());
                 properties.put(Const.DETAIL_NEW, name + "." + media);
-
                 ObservationManager.notify(new JajukEvent(JajukEvents.FILE_CONVERSION, properties));
-
                 int ret = UtilPrepareParty.convertPACPL(convertCommand, entry.getFIO(), media,
                     destDir, name);
                 if (ret != 0) {
@@ -680,68 +621,52 @@ public class UtilPrepareParty {
                   // Conversion is done, new filename is <oldname.old_extension.target_extension>
                   name = name + "." + media;
                 }
-
               } else {
                 // do a normal copy otherwise
                 FileUtils.copyFile(entry.getFIO(), new File(destDir, name));
               }
-
               // increase hits for this track/file as it is likely played outside of Jajuk
               entry.getTrack().incHits();
-
               // write playlist as well
               bw.newLine();
               bw.write(name);
-
               // Notify that a file has been copied
               Properties properties = new Properties();
               properties.put(Const.DETAIL_CONTENT, entry.getName());
               ObservationManager.notify(new JajukEvent(JajukEvents.FILE_COPIED, properties));
             }
-
             bw.flush();
           } finally {
             bw.close();
           }
-
           // Send a last event with null properties to inform the
           // client that the party is done
           ObservationManager.notify(new JajukEvent(JajukEvents.FILE_COPIED));
-
         } catch (final IOException e) {
           Log.error(e);
           Messages.showErrorMessage(180, e.getMessage());
           return;
         } finally {
-
           long refreshTime = System.currentTimeMillis() - lRefreshDateStart;
-
           // inform the user about the number of resulting tracks
           StringBuilder sbOut = new StringBuilder();
           sbOut.append(Messages.getString("PreparePartyWizard.31")).append(" ")
               .append(destDir.getAbsolutePath()).append(".\n").append(files.size()).append(" ")
               .append(Messages.getString("PreparePartyWizard.23")).append(" ")
               .append(((refreshTime < 1000) ? refreshTime + " ms." : refreshTime / 1000 + " s."));
-
           // inform user if converting did not work
           if (convert_errors > 0) {
             sbOut.append("\n").append(Integer.toString(convert_errors))
                 .append(Messages.getString("PreparePartyWizard.36"));
           }
-
           String message = sbOut.toString();
-
           Log.debug(message);
-
           UtilGUI.stopWaiting();
-
           // Display end of copy message with stats
           Messages.showInfoMessage(message);
         }
       }
-
     };
-
     thread.start();
   }
 }

@@ -17,16 +17,11 @@ import javax.swing.JLabel;
  * .
  */
 public class JScrollingText extends JLabel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 3068213731703270035L;
-
   private final int speed;
-
   private final int period;
-
   private final int offset;
-
   private int x = 300;
 
   /**
@@ -84,22 +79,17 @@ public class JScrollingText extends JLabel {
       g.fillRect(0, 0, getWidth(), getHeight());
     }
     g.setColor(getForeground());
-
     FontMetrics fm = g.getFontMetrics();
     Insets insets = getInsets();
-
     int width = getWidth() - (insets.left + insets.right);
     int height = getHeight() - (insets.top + insets.bottom);
-
     int textWidth = fm.stringWidth(getText());
     if (width < textWidth) {
       width = textWidth + offset;
     }
     x %= width;
-
     int textX = insets.left + x;
     int textY = insets.top + (height - fm.getHeight()) / 2 + fm.getAscent();
-
     g.drawString(getText(), textX, textY);
     g.drawString(getText(), textX + (speed > 0 ? -width : width), textY);
   }
@@ -132,7 +122,6 @@ public class JScrollingText extends JLabel {
       timer.cancel();
       timer = null;
     }
-
     super.removeNotify();
   }
 }

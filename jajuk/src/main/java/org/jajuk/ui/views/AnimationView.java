@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.views;
 
 import com.jgoodies.animation.Animation;
@@ -59,26 +58,18 @@ import org.jajuk.util.log.Log;
  * Animation-based view.
  */
 public class AnimationView extends ViewAdapter {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** The Constant DEFAULT_FRAME_RATE.   */
   private static final int DEFAULT_FRAME_RATE = 25;
-
   /** The Constant DEFAULT_DURATION.   */
   private static final int DEFAULT_DURATION = 5000;
-
   /** The Constant DEFAULT_PAUSE.   */
   private static final int DEFAULT_PAUSE = 500;
-
   /** Current panel width*. */
   private int iSize;
-
   private BasicTextLabel btl1;
-
   private Animator animator;
-  
   private boolean paused = false;
 
   /**
@@ -111,11 +102,10 @@ public class AnimationView extends ViewAdapter {
       @Override
       public void handleAction(final MouseEvent e) {
         if (animator != null) {
-          if (paused){
+          if (paused) {
             animator.start();
             paused = false;
-          }
-          else{
+          } else {
             animator.stop();
             paused = true;
           }
@@ -126,9 +116,7 @@ public class AnimationView extends ViewAdapter {
     // Force initial message refresh
     UtilFeatures.updateStatus(this);
     addComponentListener(this);
-
     ObservationManager.register(this);
-
   }
 
   /* (non-Javadoc)
@@ -282,7 +270,6 @@ public class AnimationView extends ViewAdapter {
       animator.stop();
       animator = null;
     }
-
     super.cleanup();
   }
 }

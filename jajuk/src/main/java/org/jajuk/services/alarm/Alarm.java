@@ -36,15 +36,11 @@ import org.jajuk.util.log.Log;
  * An Alarm.
  */
 public class Alarm {
-
   /** The files to play. */
   private List<File> alToPlay;
-
   /** The webradio to play. */
   private WebRadio radio;
-
   private String alarmAction;
-
   private Date aTime;
 
   /**
@@ -84,7 +80,6 @@ public class Alarm {
             Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), false), false);
       } else if (radio != null) {
         QueueModel.launchRadio(radio);
-
       }
     } else {
       QueueModel.stopRequest();
@@ -106,5 +101,4 @@ public class Alarm {
   public void nextDay() {
     aTime = DateUtils.addDays(aTime, 1);
   }
-
 }

@@ -24,7 +24,6 @@ package org.jajuk.util.error;
  * .
  */
 public class CannotRenameException extends JajukException {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -46,5 +45,4 @@ public class CannotRenameException extends JajukException {
   public CannotRenameException(int code, Throwable pCause) {
     super(code, pCause);
   }
-
 }

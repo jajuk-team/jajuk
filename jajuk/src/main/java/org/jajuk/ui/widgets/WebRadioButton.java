@@ -47,10 +47,8 @@ import org.jajuk.util.log.Log;
  * Factorizes code dealing with Web Radio button shared by command panel and slimbar.
  */
 public class WebRadioButton extends DropDownButton {
-
   /** Associated popup. */
   private XJPopupMenu popupWebRadio;
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -114,5 +112,4 @@ public class WebRadioButton extends DropDownButton {
       Log.error(e);
     }
   }
-
 }

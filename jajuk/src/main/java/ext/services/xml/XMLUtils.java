@@ -20,7 +20,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.xml;
 
 import com.thoughtworks.xstream.XStream;
@@ -52,7 +51,6 @@ import org.xml.sax.InputSource;
  * .
  */
 public final class XMLUtils {
-
   /** The x stream. */
   private static XStream xStream = new XStream(new DomDriver());
 

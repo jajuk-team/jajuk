@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.dj;
 
 import java.util.ArrayList;
@@ -40,7 +39,6 @@ import org.jajuk.util.filters.JajukPredicates;
  * Type description.
  */
 public class TransitionDigitalDJ extends DigitalDJ {
-
   /** List of transitions, need to be a list, not a set for offset. */
   private List<Transition> transitions;
 
@@ -107,7 +105,6 @@ public class TransitionDigitalDJ extends DigitalDJ {
   @Override
   public List<File> generatePlaylist() {
     List<File> out = new ArrayList<File>(500);
-
     // get a global shuffle selection
     List<File> global = FileManager.getInstance().getGlobalShufflePlaylist();
     // Select by rate if needed
@@ -125,7 +122,6 @@ public class TransitionDigitalDJ extends DigitalDJ {
       // several times the same files
       items = Const.MIN_TRACKS_NUMBER_WITHOUT_UNICITY;
     }
-
     // Get first track
     for (File file : global) {
       if (transitions.get(0).getFrom().getGenres().contains(file.getTrack().getGenre())) {
@@ -143,7 +139,6 @@ public class TransitionDigitalDJ extends DigitalDJ {
     if (out.size() == 0) {
       return out;
     }
-
     // initialize current ambience with first track ambience (can be null for
     // unsorted tracks)
     Ambience currentAmbience = getAmbience(out.get(0).getTrack().getGenre());
@@ -173,7 +168,6 @@ public class TransitionDigitalDJ extends DigitalDJ {
       } else { // no more tracks for this ambience ? leave
         // finally ensure that we don't select more than the max number of tracks
         filterFilesByMaxTrack(out);
-
         return out;
       }
       if (currentTransition != null) {
@@ -182,10 +176,8 @@ public class TransitionDigitalDJ extends DigitalDJ {
         break;
       }
     }
-
     // finally ensure that we don't select more than the max number of tracks
     filterFilesByMaxTrack(out);
-
     return out;
   }
 
@@ -265,5 +257,4 @@ public class TransitionDigitalDJ extends DigitalDJ {
   public void setTransitions(List<Transition> transitions) {
     this.transitions = transitions;
   }
-
 }

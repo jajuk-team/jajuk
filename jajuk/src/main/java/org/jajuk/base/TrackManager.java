@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.base;
 
 import java.util.ArrayList;
@@ -49,13 +48,10 @@ import org.jajuk.util.log.Log;
  * Convenient class to manage Tracks.
  */
 public final class TrackManager extends ItemManager {
-
   /** Self instance. */
   private static TrackManager singleton = new TrackManager();
-
   /** Autocommit flag for tags *. */
   private volatile boolean bAutocommit = true;
-
   /** Set of tags to commit. */
   private final Set<Tag> tagsToCommit = new HashSet<Tag>(10);
 
@@ -64,7 +60,6 @@ public final class TrackManager extends ItemManager {
    */
   private TrackManager() {
     super();
-
     // ---register properties---
     // ID
     registerProperty(new PropertyMetaInformation(Const.XML_ID, false, true, false, false, false,
@@ -220,7 +215,6 @@ public final class TrackManager extends ItemManager {
       synchronized (cache) {
         cache.add(track);
       }
-
       return track;
     } finally {
       lock.writeLock().unlock();
@@ -361,7 +355,6 @@ public final class TrackManager extends ItemManager {
       // change tag in files
       for (final File file : alReady) {
         final Tag tag = Tag.getTagForFio(file.getFIO(), false);
-
         tag.setArtistName(sNewArtist);
         if (bAutocommit) {
           tag.commit();
@@ -374,7 +367,6 @@ public final class TrackManager extends ItemManager {
       synchronized (cache) {
         cache.remove(track);
       }
-
       // if current track artist name is changed, notify it
       if (QueueModel.getPlayingFile() != null
           && QueueModel.getPlayingFile().getTrack().getArtist().equals(track.getArtist())) {
@@ -408,7 +400,6 @@ public final class TrackManager extends ItemManager {
     lock.writeLock().lock();
     try {
       // check there is actually a change
-
       if (track.getGenre().getName2().equals(sNewGenre)) {
         return track;
       }
@@ -421,7 +412,6 @@ public final class TrackManager extends ItemManager {
       // change tag in files
       for (final File file : alReady) {
         Tag tag = Tag.getTagForFio(file.getFIO(), false);
-
         tag.setGenreName(sNewGenre);
         if (bAutocommit) {
           tag.commit();
@@ -434,7 +424,6 @@ public final class TrackManager extends ItemManager {
       synchronized (cache) {
         cache.remove(track);
       }
-
       // register the new item
       Genre newGenre = GenreManager.getInstance().registerGenre(sNewGenre);
       Track newTrack = registerTrack(track.getName(), track.getAlbum(), newGenre,
@@ -478,7 +467,6 @@ public final class TrackManager extends ItemManager {
       // change tag in files
       for (final File file : alReady) {
         Tag tag = Tag.getTagForFio(file.getFIO(), false);
-
         tag.setYear(newItem);
         if (bAutocommit) {
           tag.commit();
@@ -491,7 +479,6 @@ public final class TrackManager extends ItemManager {
       synchronized (cache) {
         cache.remove(track);
       }
-
       // Register new item
       Year newYear = YearManager.getInstance().registerYear(newItem);
       Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(),
@@ -614,13 +601,11 @@ public final class TrackManager extends ItemManager {
           tagsToCommit.add(tag);
         }
       }
-
       // Remove the track from the old album
       List<Track> cache = track.getAlbum().getTracksCache();
       synchronized (cache) {
         cache.remove(track);
       }
-
       Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(),
           track.getArtist(), track.getDuration(), track.getYear(), lNewOrder, track.getType(),
           track.getDiscNumber());
@@ -664,13 +649,11 @@ public final class TrackManager extends ItemManager {
           tagsToCommit.add(tag);
         }
       }
-
       // Remove old track from the album
       List<Track> cache = track.getAlbum().getTracksCache();
       synchronized (cache) {
         cache.remove(track);
       }
-
       Track newTrack = registerTrack(sNewItem, track.getAlbum(), track.getGenre(),
           track.getArtist(), track.getDuration(), track.getYear(), track.getOrder(),
           track.getType(), track.getDiscNumber());
@@ -772,19 +755,16 @@ public final class TrackManager extends ItemManager {
           tagsToCommit.add(tag);
         }
       }
-
       // Remove the track from the old album
       List<Track> cache = track.getAlbum().getTracksCache();
       synchronized (cache) {
         cache.remove(track);
       }
-
       // if current track album name is changed, notify it
       if (QueueModel.getPlayingFile() != null
           && QueueModel.getPlayingFile().getTrack().getAlbum().equals(track.getAlbum())) {
         ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
       }
-
       Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(),
           track.getArtist(), track.getDuration(), track.getYear(), track.getDiscNumber(),
           track.getType(), lNewDiscNumber);
@@ -873,7 +853,6 @@ public final class TrackManager extends ItemManager {
     try {
       // Remove file reference
       track.removeFile(file);
-
       // If the track contained a single file, drop it
       if (track.getFiles().size() == 0) {
         // the track don't map
@@ -883,7 +862,6 @@ public final class TrackManager extends ItemManager {
     } finally {
       lock.writeLock().unlock();
     }
-
   }
 
   /*
@@ -1109,7 +1087,6 @@ public final class TrackManager extends ItemManager {
     } finally {
       lock.readLock().unlock();
     }
-
   }
 
   /**
@@ -1129,5 +1106,4 @@ public final class TrackManager extends ItemManager {
   public void setAutocommit(boolean autocommit) {
     this.bAutocommit = autocommit;
   }
-
 }

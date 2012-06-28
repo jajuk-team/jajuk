@@ -42,13 +42,10 @@ import org.jajuk.util.log.Log;
  * Singleton
  */
 public final class Conf implements Const {
-
   /** Properties in memory. */
   private static volatile Properties properties = new Properties();
-
   /** Default properties cache. */
   private static volatile Properties defaults = new Properties();
-
   static {
     setDefaultProperties();
     properties = (Properties) properties.clone();
@@ -163,7 +160,6 @@ public final class Conf implements Const {
     // We fill with current values to keep some parameters
     // like passwords and that we don't want to reset
     defaults = (Properties) properties.clone();
-
     defaults.put(CONF_OPTIONS_LANGUAGE, LocaleManager.getNativeLocale().getLanguage());
     // User preferences
     defaults.put(CONF_PERSPECTIVE_DEFAULT, SimplePerspective.class.getName());
@@ -253,7 +249,6 @@ public final class Conf implements Const {
         + Const.XML_TRACK_DISCOVERY_DATE);
     defaults.put(CONF_WEBRADIO_COLUMNS, XML_PLAY + ',' + Const.XML_NAME + ',' + Const.XML_DESC
         + ',' + Const.XML_KEYWORDS + ',' + Const.XML_GENRE + ',' + Const.XML_ORIGIN);
-
     int width = 800;
     int height = 600;
     // When ran as unit tests, no X11 server is available, catch HeadLess
@@ -327,11 +322,9 @@ public final class Conf implements Const {
     defaults.put(CONF_SHOW_DUPLICATE_PLAYLISTS, FALSE);
     defaults.put(CONF_FORMAT_TIME_ELAPSED, "0");
     defaults.put(CONF_AUTO_SCROLL, TRUE);
-
     // By defaults, display slimbar at the center of the screen to fix #768 : under MAC,
     // it is overlaid the menu bar (the menu bar can't be overlaid, even by always on top frames)
     defaults.put(CONF_SLIMBAR_POSITION, (width / 2) + "," + (height / 2));
-
     defaults.put(CONF_SLIMBAR_DISPLAY_QUEUE, FALSE);
     defaults.put(CONF_SLIMBAR_SMART_MODE, JajukActions.SHUFFLE_GLOBAL.toString());
     defaults.put(CONF_ALARM_ACTION, ALARM_START_ACTION);
@@ -350,13 +343,11 @@ public final class Conf implements Const {
     defaults.put(CONF_FADE_OUT, TRUE);
     defaults.put(CONF_MANUAL_RATINGS, FALSE);
     defaults.put(CONF_STARTUP_QUEUE_INDEX, "-1");
-
     // NOT SHOW AGAIN
     defaults.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_CROSS_FADE, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_LAF_CHANGE, FALSE);
-
     // Make a copy of default values
     properties = (Properties) defaults.clone();
   }

@@ -43,7 +43,6 @@ import org.xml.sax.Attributes;
  * .
  */
 public class TestDevice extends JajukTestCase {
-
   /*
    * (non-Javadoc)
    *
@@ -57,7 +56,6 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#getTitle()}.
    */
-
   public void testGetDesc() {
     Device device = new Device("1", "testname");
     assertNotNull(device.getTitle());
@@ -67,7 +65,6 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#getXMLTag()}.
    */
-
   public void testGetLabel() {
     Device device = JUnitHelpers.getDevice();
     assertEquals(Const.XML_DEVICE, device.getXMLTag());
@@ -78,12 +75,9 @@ public class TestDevice extends JajukTestCase {
    *
    * {@link org.jajuk.base.Device#populateProperties(org.xml.sax.Attributes)}.
    */
-
   public void testPopulateProperties() {
     StartupCollectionService.registerItemManagers();
-
     Device device = new Device("1", "name");
-
     DeviceManager.getInstance().registerProperty(
         new PropertyMetaInformation("att1", true, false, true, false, false, String.class, null));
     DeviceManager.getInstance().registerProperty(
@@ -93,27 +87,18 @@ public class TestDevice extends JajukTestCase {
     DeviceManager.getInstance().registerProperty(
         new PropertyMetaInformation(Const.XML_DEVICE_AUTO_REFRESH, true, false, true, false, false,
             Double.class, null));
-
     device.populateProperties(new MockAttributes());
-
     device = DeviceManager.getInstance().registerDevice("name", Device.Type.FILES_CD,
         ConstTest.DEVICES_BASE_PATH + "/cd");
-
     device.populateProperties(new MockAttributes());
-
     device = DeviceManager.getInstance().registerDevice("name", Device.Type.NETWORK_DRIVE,
         ConstTest.DEVICES_BASE_PATH + "/net");
-
     device.populateProperties(new MockAttributes());
-
     device = DeviceManager.getInstance().registerDevice("name", Device.Type.EXTDD,
         ConstTest.DEVICES_BASE_PATH + "/extdd");
-
     device.populateProperties(new MockAttributes());
-
     device = DeviceManager.getInstance().registerDevice("name", Device.Type.PLAYER,
         ConstTest.DEVICES_BASE_PATH + "/player");
-
     device.populateProperties(new MockAttributes());
   }
 
@@ -122,16 +107,12 @@ public class TestDevice extends JajukTestCase {
    *
    * {@link org.jajuk.base.Device#getHumanValue(java.lang.String)}.
    */
-
   public void testGetHumanValue() {
     // we need the managers registered here
     StartupCollectionService.registerItemManagers();
-
     Device device = new Device("1", "testname");
     assertEquals("", device.getHumanValue("notexists"));
-
     // TODO: capture correct use of this method as well
-
     DeviceManager.getInstance().registerProperty(
         new PropertyMetaInformation("att1", true, false, true, false, false, String.class, null));
     DeviceManager.getInstance().registerProperty(
@@ -141,10 +122,8 @@ public class TestDevice extends JajukTestCase {
     DeviceManager.getInstance().registerProperty(
         new PropertyMetaInformation(Const.XML_DEVICE_AUTO_REFRESH, true, false, true, false, false,
             Double.class, null));
-
     device.populateProperties(new MockAttributes());
     assertNotNull(device.getHumanValue("att1"));
-
     device.setProperty(Const.XML_TYPE, 2l);
     assertTrue(StringUtils.isNotBlank(device.getHumanValue(Const.XML_TYPE)));
   }
@@ -154,32 +133,23 @@ public class TestDevice extends JajukTestCase {
    *
    * @throws Exception the exception
    */
-
   public void testGetIconRepresentation() throws Exception {
     // we need the managers registered here
     StartupCollectionService.registerItemManagers();
-
     Device device = JUnitHelpers.getDevice();
     assertNotNull(device.getIconRepresentation());
-
     device.setProperty(Const.XML_TYPE, (long) Device.Type.DIRECTORY.ordinal());
     assertNotNull(device.getIconRepresentation());
-
     device.setProperty(Const.XML_TYPE, (long) Device.Type.FILES_CD.ordinal());
     assertNotNull(device.getIconRepresentation());
-
     device.setProperty(Const.XML_TYPE, (long) Device.Type.NETWORK_DRIVE.ordinal());
     assertNotNull(device.getIconRepresentation());
-
     device.setProperty(Const.XML_TYPE, (long) Device.Type.EXTDD.ordinal());
     assertNotNull(device.getIconRepresentation());
-
     device.setProperty(Const.XML_TYPE, (long) Device.Type.PLAYER.ordinal());
     assertNotNull(device.getIconRepresentation());
-
     // test with mounted device
     device.mount(true);
-
     device.setProperty(Const.XML_TYPE, (long) Device.Type.PLAYER.ordinal());
     assertNotNull(device.getIconRepresentation());
   }
@@ -189,14 +159,12 @@ public class TestDevice extends JajukTestCase {
    *
    * {@link org.jajuk.base.Device#addDirectory(org.jajuk.base.Directory)}.
    */
-
   public void testAddDirectory() {
     Device device = JUnitHelpers.getDevice();
     Directory dir1 = DirectoryManager.getInstance().registerDirectory("dir1",
         JUnitHelpers.getDirectory(), device);
     Directory dir2 = DirectoryManager.getInstance().registerDirectory("dir2",
         JUnitHelpers.getDirectory(), device);
-
     assertEquals(0, device.getDirectories().size());
     device.addDirectory(dir1);
     assertEquals(1, device.getDirectories().size());
@@ -209,18 +177,13 @@ public class TestDevice extends JajukTestCase {
    *
    * @throws Exception the exception
    */
-
   public void testCleanRemovedFiles() throws Exception {
     Device device = JUnitHelpers.getDevice();
-
     Playlist playlist = JUnitHelpers.getPlaylist();
-
     // ensure we are not exiting, this would invalidate the test
     assertFalse(ExitService.isExiting());
-
     // Delete a file
     playlist.getFIO().delete();
-
     // now we have removals
     List<Directory> dirs = new ArrayList<Directory>();
     dirs.add(playlist.getDirectory());
@@ -236,7 +199,6 @@ public class TestDevice extends JajukTestCase {
     Device device = new Device("1", "name");
     Device equal = new Device("1", "name");
     Device notequal = new Device("1", "name1"); // compares only on name
-
     JUnitHelpers.CompareToTest(device, equal, notequal);
   }
 
@@ -250,7 +212,6 @@ public class TestDevice extends JajukTestCase {
     assertEquals(0, device.getDateLastRefresh());
     device.mount(false);
     device.refreshCommand(false, false, null);
-
     // now it should be set
     assertNotNull(device.getDateLastRefresh());
   }
@@ -280,19 +241,14 @@ public class TestDevice extends JajukTestCase {
   public void testGetFilesRecursively() {
     Device device = JUnitHelpers.getDevice();
     device.setUrl(ConstTest.DEVICES_BASE_PATH + "/" + System.currentTimeMillis());
-
     // no files without a directory
     List<File> files = device.getFilesRecursively();
     assertEquals(0, files.size()); // no file available
-
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
-
     // still no files without files being registered
     files = device.getFilesRecursively();
     assertEquals(0, files.size()); // no file available
-
     getFile(100, dir);
-
     // now it should find some
     files = device.getFilesRecursively();
     assertEquals(1, files.size());
@@ -311,17 +267,13 @@ public class TestDevice extends JajukTestCase {
     Album album = JUnitHelpers.getAlbum("myalbum", 0);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-
     Artist artist = JUnitHelpers.getArtist("name");
     Year year = new Year(Integer.valueOf(i).toString(), "2000");
-
     IPlayerImpl imp = new MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
-
     Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, null);
     Track track = new Track(Integer.valueOf(i).toString(), "name", album, genre, artist, 120, year,
         1, type, 1);
-
     return FileManager.getInstance().registerFile(
         "test" + Long.valueOf(System.currentTimeMillis()).toString() + ".tst", dir, track, 120, 70);
   }
@@ -344,15 +296,11 @@ public class TestDevice extends JajukTestCase {
     // create a unique id here...
     Device device = DeviceManager.getInstance().registerDevice("getRootDirectory",
         Device.Type.FILES_CD, ConstTest.DEVICES_BASE_PATH + "/device");
-
     assertNull(device.getRootDirectory());
-
     java.io.File file = java.io.File.createTempFile("test", "tst", new java.io.File(
         ConstTest.DEVICES_BASE_PATH));
-
     device.setUrl(file.getAbsolutePath());
     DirectoryManager.getInstance().registerDirectory(device);
-
     assertNotNull(device.getRootDirectory());
   }
 
@@ -362,7 +310,6 @@ public class TestDevice extends JajukTestCase {
   public void testGetType() {
     Device device = JUnitHelpers.getDevice();
     assertEquals(Device.Type.DIRECTORY, device.getType());
-
     device.setProperty(Const.XML_TYPE, 2l);
     assertEquals(Device.Type.NETWORK_DRIVE, device.getType());
   }
@@ -372,13 +319,9 @@ public class TestDevice extends JajukTestCase {
    */
   public void testGetUrl() {
     Device device = new Device("1", "name");
-
     assertNull(device.getUrl());
-
     device.setUrl(ConstTest.DEVICES_BASE_PATH + "/dev");
-
     assertNotNull(device.getUrl());
-
   }
 
   /**
@@ -445,7 +388,6 @@ public class TestDevice extends JajukTestCase {
   public void testMount() throws Exception {
     Device device = JUnitHelpers.getDevice();
     device.mount(true);
-
     // try a second time, should fail
     try {
       device.mount(true);
@@ -453,7 +395,6 @@ public class TestDevice extends JajukTestCase {
     } catch (Exception e) {
       Log.error(e);
     }
-
     // try a device that has an invalid URL
     device = new Device("1", "name");
     device.setUrl("notexisting/not/adsf\\dtest");
@@ -487,14 +428,12 @@ public class TestDevice extends JajukTestCase {
    */
   public void testRefreshBooleanBoolean() throws Exception {
     Device device = JUnitHelpers.getDevice();
-
     try {
       device.refresh(false, false, false, null);
     } catch (RuntimeException e) {
       // there can be a hidden HeadlessException here
       assertTrue(e.getCause().getMessage(), e.getCause() instanceof InvocationTargetException);
     }
-
     device.refresh(true, false, false, null);
   }
 
@@ -502,7 +441,6 @@ public class TestDevice extends JajukTestCase {
    * Test method for {@link org.jajuk.base.Device#refreshCommand(boolean)}.
    */
   public void testRefreshCommand() {
-
     Device device = JUnitHelpers.getDevice();
     try {
       device.mount(false);
@@ -510,7 +448,6 @@ public class TestDevice extends JajukTestCase {
       Log.error(e);
       fail();
     }
-
     device.refreshCommand(false, false, null);
   }
 
@@ -533,7 +470,6 @@ public class TestDevice extends JajukTestCase {
     // fine, now rename the directory
     sampleFile.delete();
     fileOKDir.delete();
-
     // An error should happen here
     device.refreshCommand(false, false, null);
   }
@@ -548,31 +484,21 @@ public class TestDevice extends JajukTestCase {
     Device device = JUnitHelpers.getDevice();
     device.mount(true);
     device.refreshCommand(false, false, null);
-
     // we should not have more than one top-directory!
     assertEquals(1, device.getDirectories().size());
-
     // even if we refresh some more, we should only have one, not multiple
     device.refreshCommand(false, false, null);
-
     // we should not have more than one top-directory!
     assertEquals(1, device.getDirectories().size());
-
     device.refreshCommand(false, false, null);
-
     // we should not have more than one top-directory!
     assertEquals(1, device.getDirectories().size());
-
     device.refreshCommand(false, false, null);
-
     // we should not have more than one top-directory!
     assertEquals(1, device.getDirectories().size());
-
     device.refreshCommand(false, false, null);
-
     // we should not have more than one top-directory!
     assertEquals(1, device.getDirectories().size());
-
   }
 
   /**
@@ -582,14 +508,11 @@ public class TestDevice extends JajukTestCase {
    */
   public void testSetUrl() throws Exception {
     Device device = JUnitHelpers.getDevice();
-
     // add some directory, then the remove should kick in!
     Directory dir = JUnitHelpers.getDirectory();
     device.addDirectory(dir);
-
     File file = getFile(8, dir);
     PlaylistManager.getInstance().registerPlaylistFile(file.getFIO(), dir);
-
     // now also the playlist should be reset
     device.setUrl(ConstTest.TEMP_PATH);
   }
@@ -600,10 +523,8 @@ public class TestDevice extends JajukTestCase {
   public void testSynchronize() {
     Device device = JUnitHelpers.getDevice();
     device.synchronize(true);
-
     // nothing much happens here as there is no synchro-device set
     device.synchronize(false);
-
   }
 
   /**
@@ -617,7 +538,6 @@ public class TestDevice extends JajukTestCase {
     assertNotNull(dSrc);
     assertNotNull(dSrc.getID());
     assertNotNull(DeviceManager.getInstance().getDeviceByID(dSrc.getID()));
-
     // set the synchro-device
     device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, dSrc.getID());
     assertNotNull(DeviceManager.getInstance().getDeviceByID(dSrc.getID()));
@@ -636,7 +556,6 @@ public class TestDevice extends JajukTestCase {
   public void testSynchronizeCommand() {
     Device device = JUnitHelpers.getDevice();
     device.synchronizeCommand();
-
     // TODO do some real testing here
   }
 
@@ -656,7 +575,6 @@ public class TestDevice extends JajukTestCase {
     Device sync = DeviceManager.getInstance().registerDevice("name2", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/device2");
     device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, sync.getID());
-
     device.synchronizeCommand();
   }
 
@@ -674,7 +592,6 @@ public class TestDevice extends JajukTestCase {
       Log.error(e);
       fail();
     }
-
     // set the synchro-device
     Device sync = DeviceManager.getInstance().registerDevice("name2", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/device2");
@@ -690,10 +607,8 @@ public class TestDevice extends JajukTestCase {
     }
     device.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, sync.getID());
     device.setProperty(Const.XML_DEVICE_SYNCHRO_MODE, Const.DEVICE_SYNCHRO_MODE_BI);
-
     sync.setProperty(Const.XML_DEVICE_SYNCHRO_SOURCE, device.getID());
     sync.setProperty(Const.XML_DEVICE_SYNCHRO_MODE, Const.DEVICE_SYNCHRO_MODE_BI);
-
     device.synchronizeCommand();
     new java.io.File(sync.getUrl()).delete();
   }
@@ -722,10 +637,8 @@ public class TestDevice extends JajukTestCase {
   public void testToString() {
     Device device = JUnitHelpers.getDevice();
     JUnitHelpers.ToStringTest(device);
-
     device = JUnitHelpers.getDevice();
     JUnitHelpers.ToStringTest(device);
-
     device = new Device(null, null);
     JUnitHelpers.ToStringTest(device);
   }
@@ -739,10 +652,8 @@ public class TestDevice extends JajukTestCase {
     Device device = JUnitHelpers.getDevice();
     assertFalse(device.isMounted());
     device.unmount();
-
     device.mount(true);
     assertTrue(device.isMounted());
-
     device.unmount();
     assertFalse(device.isMounted());
   }
@@ -756,10 +667,8 @@ public class TestDevice extends JajukTestCase {
     Device device = JUnitHelpers.getDevice();
     assertFalse(device.isMounted());
     device.unmount(false, false);
-
     device.mount(true);
     assertTrue(device.isMounted());
-
     device.unmount(false, false);
     assertFalse(device.isMounted());
   }
@@ -772,18 +681,13 @@ public class TestDevice extends JajukTestCase {
    */
   public void testUnmountBooleanBooleanQueue() throws Exception {
     Device device = JUnitHelpers.getDevice();
-
     device.mount(true);
     assertTrue(device.isMounted());
-
     Directory dir = JUnitHelpers.getDirectory();
     device.addDirectory(dir);
-
     File file = getFile(9, dir);
-
     QueueModel.insert(new StackItem(file), 0);
     QueueModel.goTo(0);
-
     device.unmount(false, false);
     assertTrue(device.isMounted()); // still mounted because there is a file
     // used on this device....
@@ -793,13 +697,11 @@ public class TestDevice extends JajukTestCase {
    * .
    */
   private class MockAttributes implements Attributes {
-
     /* (non-Javadoc)
      * @see org.xml.sax.Attributes#getValue(java.lang.String, java.lang.String)
      */
     @Override
     public String getValue(String uri, String localName) {
-
       return null;
     }
 
@@ -808,7 +710,6 @@ public class TestDevice extends JajukTestCase {
      */
     @Override
     public String getValue(String qName) {
-
       return null;
     }
 
@@ -830,7 +731,6 @@ public class TestDevice extends JajukTestCase {
         fail("invalid index: " + index);
         break;
       }
-
       return null;
     }
 
@@ -839,7 +739,6 @@ public class TestDevice extends JajukTestCase {
      */
     @Override
     public String getURI(int index) {
-
       return null;
     }
 
@@ -848,7 +747,6 @@ public class TestDevice extends JajukTestCase {
      */
     @Override
     public String getType(String uri, String localName) {
-
       return null;
     }
 
@@ -857,7 +755,6 @@ public class TestDevice extends JajukTestCase {
      */
     @Override
     public String getType(String qName) {
-
       return null;
     }
 
@@ -866,7 +763,6 @@ public class TestDevice extends JajukTestCase {
      */
     @Override
     public String getType(int index) {
-
       return null;
     }
 
@@ -878,16 +774,12 @@ public class TestDevice extends JajukTestCase {
       switch (index) {
       case 0:
         return "att1";
-
       case 1:
         return "att2";
-
       case 2:
         return "att3";
-
       case 3:
         return Const.XML_DEVICE_AUTO_REFRESH;
-
       default:
         fail("invalid index: " + index);
       }
@@ -899,7 +791,6 @@ public class TestDevice extends JajukTestCase {
      */
     @Override
     public String getLocalName(int index) {
-
       return null;
     }
 
@@ -908,7 +799,6 @@ public class TestDevice extends JajukTestCase {
      */
     @Override
     public int getLength() {
-
       return 4;
     }
 
@@ -917,7 +807,6 @@ public class TestDevice extends JajukTestCase {
      */
     @Override
     public int getIndex(String uri, String localName) {
-
       return 0;
     }
 
@@ -926,7 +815,6 @@ public class TestDevice extends JajukTestCase {
      */
     @Override
     public int getIndex(String qName) {
-
       return 0;
     }
   }

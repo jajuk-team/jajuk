@@ -57,14 +57,11 @@ import org.xml.sax.helpers.DefaultHandler;
  * Import ratings
  */
 public class ImportRatingsAction extends SelectionAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   private java.io.File file;
 
   private class Parser extends DefaultHandler {
-
     /* (non-Javadoc)
      * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */

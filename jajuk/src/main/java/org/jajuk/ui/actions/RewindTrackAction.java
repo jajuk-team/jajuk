@@ -33,10 +33,8 @@ import org.jajuk.util.log.Log;
  * <code>CTRL + ALT + LEFT ARROW</code>.
  */
 public class RewindTrackAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** The Constant JUMP_SIZE.   */
   private static final float JUMP_SIZE = 0.1f;
 
@@ -46,7 +44,6 @@ public class RewindTrackAction extends JajukAction {
   RewindTrackAction() {
     super(IconLoader.getIcon(JajukIcons.REW), "altGraph F9", false, true);
     setShortDescription(Messages.getString("CommandJPanel.10"));
-
   }
 
   /* (non-Javadoc)

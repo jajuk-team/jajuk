@@ -26,7 +26,6 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestDBusSignalImpl extends JajukTestCase {
-
   /**
    * Test method for {@link org.jajuk.services.dbus.DBusSignalImpl#isRemote()}.
    */
@@ -44,7 +43,6 @@ public class TestDBusSignalImpl extends JajukTestCase {
   public final void testFileChangedSignal() throws Exception {
     DBusSignalImpl.FileChangedSignal signal = new DBusSignalImpl.FileChangedSignal("testfile",
         "/path/test");
-
     assertEquals("testfile", signal.getFilename());
   }
 }

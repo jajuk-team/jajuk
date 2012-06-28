@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.views;
 
 import com.vlsolutions.swing.docking.DockKey;
@@ -43,19 +42,14 @@ import org.jdesktop.swingx.JXPanel;
  */
 public abstract class ViewAdapter extends JXPanel implements IView, Const, Comparable<IView>,
     Observer {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1526958318911770642L;
-
   /** Populated state. */
   private boolean bIsPopulated = false;
-
   /** View ID; note that a same view can be used several times in the same or in others perspectives. */
   private String sID;
-
   /** Associated perspective*. */
   private IPerspective perspective;
-
   /** Associated DockKey. */
   private final DockKey key;
 
@@ -64,7 +58,6 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    */
   public ViewAdapter() {
     super();
-
     // create a new DockKey (note that ID is set in setID() method)
     key = new DockKey();
     // View title
@@ -241,10 +234,8 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   public void removeAll() {
     // We have to override removeAll() to work around a memory leak related to
     // JXBusyLabel..
-
     // first look for any JXBusyLabel and stop it
     stopAllBusyLabels(this);
-
     super.removeAll();
   }
 
@@ -296,17 +287,14 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
   private static void cleanupRecursive(Container c) {
     for (int i = 0; i < c.getComponentCount(); i++) {
       Component comp = c.getComponent(i);
-
       // unregister any Observer that is contained as Component here, e.g. JajukTable instances
       if (comp instanceof Observer) {
         ObservationManager.unregister((Observer) comp);
       }
-
       // iterate over all KeyListeners and remove them
       for (KeyListener key : comp.getKeyListeners()) {
         comp.removeKeyListener(key);
       }
-
       if (comp instanceof JajukTable) {
         // JajukTable sends TABLE_SELECTION_CHANGED with views as part of the properties. Therefore try to clean up these references 
         // here for every JajukTable that we find by sending an empty TABLE_SELECTION_CHANGED event which clears the last one that is still stored
@@ -319,7 +307,6 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
         // we also need to cleanup the RepositoryPanel
         ((ViewAdapter) comp).cleanup();
       }
-
       // recursively call any Container to also look at it's components
       if (comp instanceof Container) {
         cleanupRecursive((Container) comp);

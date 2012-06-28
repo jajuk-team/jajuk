@@ -42,7 +42,6 @@ import org.xml.sax.SAXException;
    * Preset radios parser
    */
 public class TestPresetPersistenceHelper extends JajukTestCase {
-
   private WebRadioManager man = WebRadioManager.getInstance();
 
   @Override
@@ -66,10 +65,8 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
       fwebradios.delete();
     }
     downloadPresets();
-
     File cachedPreset = DownloadManager.downloadToCache(new URL(Const.URL_WEBRADIO_PRESETS));
     WebRadioHelper.loadPresetsRadios(cachedPreset);
-
     //Check the repo is not void
     WebRadioManager man = WebRadioManager.getInstance();
     assertTrue(man.getElementCount() > 0);
@@ -86,20 +83,16 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
       ParserConfigurationException {
     // Make sure the repository has been cleared during the setUp()
     assertTrue(man.getElementCount() == 0);
-
     // Check for preset file, delete it if it exist
     File cachedPreset = DownloadManager.downloadToCache(new URL(Const.URL_WEBRADIO_PRESETS));
     if (cachedPreset.exists()) {
       cachedPreset.delete();
     }
     downloadPresets();
-
     // Load the presets
     WebRadioHelper.loadPresetsRadios(cachedPreset);
-
     //Check the repo is not void
     assertTrue(man.getElementCount() > 0);
-
     // Check item are sorted
     String previous = null;
     List<WebRadio> radios = man.getWebRadios();
@@ -110,7 +103,6 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
         previous = radio.getName();
       }
     }
-
     /* Check a sample radio :  
                 <name>LuNe Radio</name>
                 <url>http://broadcaster.infomaniak.ch/lune-high.mp3.m3u</url>
@@ -126,7 +118,6 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
     assertTrue(radio.getDescription().equals("Switzerland"));
     assertTrue(radio.getLongValue(Const.XML_BITRATE) == 128);
     assertTrue(radio.getLongValue(Const.XML_FREQUENCY) == 44100);
-
     // Check origin
     assertTrue(WebRadioOrigin.PRESET.equals(radio.getValue(Const.XML_ORIGIN)));
   }
@@ -168,10 +159,8 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
       cachedPreset.delete();
     }
     downloadPresets();
-
     // Load the presets
     WebRadioHelper.loadPresetsRadios(cachedPreset);
-
     // Check all genres are in UtilFeatures list
     List<String> knownGenres = Arrays.asList(UtilFeatures.GENRES);
     for (Item radio : WebRadioManager.getInstance().getWebRadios()) {

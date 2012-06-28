@@ -30,7 +30,6 @@ import java.util.Locale;
  * Manages locales used in jajuk.
  */
 public class LocaleManager {
-
   /**
    * private constructor for utility class with only static methods.
    */
@@ -43,7 +42,6 @@ public class LocaleManager {
       Locale.FRENCH, Locale.GERMAN, new Locale("nl"), new Locale("es"), new Locale("ca"),
       new Locale("ko"), new Locale("el"), new Locale("ru"), new Locale("gl"), new Locale("cs"),
       new Locale("pt") });
-
   /** Local ( language) to be used, default is English. */
   private static Locale locale = getNativeLocale();
 
@@ -126,5 +124,4 @@ public class LocaleManager {
     }
     return null;
   }
-
 }

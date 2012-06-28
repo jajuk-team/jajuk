@@ -36,12 +36,9 @@ import org.jajuk.util.Const;
  * Convenient abstract class to factorize operations on selection.
  */
 public abstract class SelectionAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -6072746800882488360L;
-
   List<Item> selection = null;
-
   /** Whether the selection should contain the playlist itself (false) or mapped files (true). */
   boolean expandPlaylists = true;
 

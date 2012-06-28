@@ -50,7 +50,6 @@ import org.jajuk.util.Const;
  * .
  */
 public class TestRatingManager extends JajukTestCase {
-
   /**
    * Test method for {@link org.jajuk.services.core.RatingManager#run()}.
    */
@@ -78,7 +77,6 @@ public class TestRatingManager extends JajukTestCase {
     assertEquals(0, RatingManager.getMaxPlaycount());
     RatingManager.setMaxPlaycount(10);
     assertEquals(10, RatingManager.getMaxPlaycount());
-
     // set back to 0 as there is special handling
     RatingManager.setMaxPlaycount(0);
   }
@@ -99,13 +97,9 @@ public class TestRatingManager extends JajukTestCase {
    */
   public void testHasAndSetRateChanged() {
     assertTrue(RatingManager.hasRateChanged());
-
     RatingManager.setRateHasChanged(false);
-
     assertFalse(RatingManager.hasRateChanged());
-
     RatingManager.setRateHasChanged(true);
-
     assertTrue(RatingManager.hasRateChanged());
   }
 
@@ -125,7 +119,6 @@ public class TestRatingManager extends JajukTestCase {
    */
   public void testGetRegistrationKeys() {
     Set<JajukEvents> set = RatingManager.getInstance().getRegistrationKeys();
-
     assertTrue(set.toString(), set.contains(JajukEvents.RATE_RESET));
   }
 
@@ -138,11 +131,9 @@ public class TestRatingManager extends JajukTestCase {
    */
   public void testUpdate() throws Exception {
     StartupCollectionService.registerItemManagers();
-
     // update uses some Tracks
     getTrack(1);
     getTrack(2);
-
     RatingManager.getInstance().update(new JajukEvent(JajukEvents.RATE_RESET, null));
     RatingManager.getInstance().update(new JajukEvent(JajukEvents.PREFERENCES_RESET, null));
   }
@@ -160,15 +151,12 @@ public class TestRatingManager extends JajukTestCase {
     Album album = JUnitHelpers.getAlbum("name", 23);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-
     Artist artist = JUnitHelpers.getArtist("name");
     Year year = JUnitHelpers.getYear(2000);
-
     IPlayerImpl imp = new MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
     ITagImpl tagimp = new MyTagImpl();
     Class<ITagImpl> tl = (Class<ITagImpl>) tagimp.getClass();
-
     Type type = JUnitHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack(Integer.valueOf(i).toString(), "name",
         album, genre, artist, 120, year, 1, type, 1);
@@ -190,5 +178,4 @@ public class TestRatingManager extends JajukTestCase {
     assertEquals(RatingManager.getRateForPreference(2l), 83);
     assertEquals(RatingManager.getRateForPreference(3l), 100);
   }
-
 }

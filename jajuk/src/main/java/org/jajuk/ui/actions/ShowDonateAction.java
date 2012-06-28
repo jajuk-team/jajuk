@@ -31,7 +31,6 @@ import org.jajuk.util.Messages;
  * Action for displaying the tip of the day.
  */
 public class ShowDonateAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

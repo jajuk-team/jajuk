@@ -30,7 +30,6 @@ import org.jajuk.ui.perspectives.IPerspective;
  * A view.
  */
 public interface IView extends ComponentListener, Dockable {
-
   /**
    * Returns the view identifier.
    * 
@@ -89,5 +88,4 @@ public interface IView extends ComponentListener, Dockable {
    * Called when the view perspective is selected.
    */
   void onPerspectiveSelection();
-
 }

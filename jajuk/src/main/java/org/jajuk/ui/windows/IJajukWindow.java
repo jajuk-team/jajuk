@@ -35,7 +35,6 @@ package org.jajuk.ui.windows;
  * These states are managed by the WindowStateDecorator
  */
 public interface IJajukWindow {
-
   /**
    * Build the GUI (widgets)
    * <p>
@@ -50,5 +49,4 @@ public interface IJajukWindow {
    * @return the window state decorator
    */
   public WindowStateDecorator getWindowStateDecorator();
-
 }

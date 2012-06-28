@@ -45,60 +45,41 @@ import org.jajuk.util.log.Log;
  * Jajuk player implementation based on javazoom BasicPlayer.
  */
 public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListener {
-
   /** The Constant AUDIO_LENGTH_BYTES.   */
   private static final String AUDIO_LENGTH_BYTES = "audio.length.bytes";
-
   /** Current player. */
   private BasicPlayer player;
-
   /** Time elapsed in ms. */
   private long lTime = 0;
-
   /** Actually played time */
   private long actuallyPlayedTimeMillis = 0l;
-
   private long lastPlayTimeUpdate = System.currentTimeMillis();
-
   /** Date of last elapsed time update. */
   private long lDateLastUpdate = System.currentTimeMillis();
-
   /** current track info. */
   private Map<String, Object> mPlayingData;
-
   /** Current position in %. */
   private float fPos;
-
   /** Length to be played in secs. */
   private long length;
-
   /** Stored Volume. */
   private float fVolume;
-
   /** Current track estimated duration in ms. */
   private long lDuration;
-
   /** Cross fade duration in ms. */
   int iFadeDuration = 0;
-
   /** Fading state. */
   boolean bFading = false;
-
   /** Progress step in ms, do not set less than 300 or 400 to avoid using too much CPU. */
   private static final int PROGRESS_STEP = 500;
-
   /** Total play time is refreshed every TOTAL_PLAYTIME_UPDATE_INTERVAL times. */
   private static final int TOTAL_PLAYTIME_UPDATE_INTERVAL = 2;
-
   /** Volume when starting fade. */
   private float fadingVolume;
-
   /** current file. */
   private org.jajuk.base.File fCurrent;
-
   /** Inc rating flag. */
   private boolean bHasBeenRated = false;
-
   /** Used to compute total played time. */
   private int comp = 0;
 
@@ -350,7 +331,6 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
           actuallyPlayedTimeMillis += (System.currentTimeMillis() - lastPlayTimeUpdate);
         }
         lastPlayTimeUpdate = System.currentTimeMillis();
-
       }
       // check if the track get rate increasing level (INC_RATE_TIME
       // secs or intro length)

@@ -53,13 +53,9 @@ import org.jajuk.util.log.Log;
   </code>
  */
 public class ThreadTestHelper {
-
   private final int threadCount;
-
   private final int testsPerThread;
-
   private boolean failed = false;
-
   private int executions[] = null;
 
   /**
@@ -71,34 +67,28 @@ public class ThreadTestHelper {
   public ThreadTestHelper(int threadCount, int testsPerThread) {
     this.threadCount = threadCount;
     this.testsPerThread = testsPerThread;
-
     // Initialize array to allow to summarize afterwards
     executions = new int[threadCount];
   }
 
   public void executeTest(TestRunnable run) throws Exception {
     Log.debug("Starting thread test");
-
     List<Thread> threads = new LinkedList<Thread>();
-
     // start all threads
     for (int i = 0; i < threadCount; i++) {
       Thread t = startThread(i, run);
       threads.add(t);
     }
-
     // wait for all threads
     for (int i = 0; i < threadCount; i++) {
       threads.get(i).join();
     }
-
     // make sure the resulting number of executions is correct
     for (int i = 0; i < threadCount; i++) {
       // check if enough items were performed
       Assert.assertEquals("Thread " + i + " did not execute all iterations", testsPerThread,
           executions[i]);
     }
-
     // check that we did not fail in any thread, i.e. no exception occurred...
     Assert.assertFalse(failed);
   }
@@ -118,23 +108,18 @@ public class ThreadTestHelper {
    */
   private Thread startThread(final int threadnum, final TestRunnable run) {
     Log.debug("Starting thread number: " + threadnum);
-
     Thread t1 = null;
     t1 = new Thread(new Runnable() {
-
       @Override
       public void run() {
         try {
           for (int iter = 0; iter < testsPerThread; iter++) {
             // Log.debug("Executing iteration " + iter + " in thread" +
             // Thread.currentThread().getName());
-
             // call the actual testcode
             run.run(threadnum, iter);
-
             executions[threadnum]++;
           }
-
           // do end-work here, we don't do this in a finally as we log Exception
           // then anyway
           run.doEnd(threadnum);
@@ -142,12 +127,9 @@ public class ThreadTestHelper {
           Log.error(e);
           failed = true;
         }
-
       }
     }, "Thread " + threadnum);
-
     t1.start();
-
     return t1;
   }
 
@@ -155,7 +137,6 @@ public class ThreadTestHelper {
    * .
    */
   public interface TestRunnable {
-
     /**
      * When an object implementing interface <code>Runnable</code> is used to
      * create a thread, starting the thread causes the object's <code>run</code>

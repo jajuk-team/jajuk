@@ -51,7 +51,6 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class TestPreparePartyAction extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -70,14 +69,12 @@ public class TestPreparePartyAction extends JajukTestCase {
    */
   public void testPreparePartyAction() throws Exception {
     PreparePartyAction action = new PreparePartyAction();
-
     // once with empty properties, this is called from the menu
     try {
       action.perform(new ActionEvent(new JButton(), 1, null));
     } catch (HeadlessException e) {
       // happens when tests are run on servers without ui
     }
-
     // then with a single and with a list of playlists, this is called from the
     // PlaylistView
     JButton button = new JButton();
@@ -88,7 +85,6 @@ public class TestPreparePartyAction extends JajukTestCase {
     } catch (HeadlessException e) {
       // happens when tests are run on servers without ui
     }
-
     List<Playlist> list = new ArrayList<Playlist>();
     list.add(getPlaylist(11, false));
     button.putClientProperty(Const.DETAIL_SELECTION, list);
@@ -113,14 +109,11 @@ public class TestPreparePartyAction extends JajukTestCase {
     Album album = JUnitHelpers.getAlbum("name", 23);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-
     Artist artist = JUnitHelpers.getArtist("name");
     Year year = JUnitHelpers.getYear(2000);
-
     Type type = JUnitHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
-
     Device device = JUnitHelpers.getDevice();
     if (!device.isMounted()) {
       device.mount(true);
@@ -128,12 +121,9 @@ public class TestPreparePartyAction extends JajukTestCase {
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     Log.debug("Dir: " + dir.getFio());
     dir.getFio().mkdirs();
-
     java.io.File f = java.io.File.createTempFile("jajukFile", ".mp3", dir.getFio());
-
     File file = FileManager.getInstance().registerFile(Integer.valueOf(i).toString(), f.getName(),
         dir, track, 120, 70);
-
     final Playlist list;
     if (register) {
       list = PlaylistManager.getInstance().registerPlaylistFile(
@@ -142,16 +132,13 @@ public class TestPreparePartyAction extends JajukTestCase {
     } else {
       list = new Playlist(Integer.valueOf(i).toString(), "New list", dir);
     }
-
     // write the playlist so we can add files to it
     if (!list.getFIO().exists()) {
       // just create an empty file, # is a comment here
       FileUtils.writeStringToFile(list.getFIO(), "#");
     }
-
     // add a file to the playlist
     list.addFile(file);
-
     return list;
   }
 }

@@ -26,7 +26,6 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestNoneAccessibleFileException extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -46,5 +45,4 @@ public class TestNoneAccessibleFileException extends JajukTestCase {
   public void testNoneAccessibleFileExceptionIntThrowable() {
     new NoneAccessibleFileException(23, new Throwable("testexception"));
   }
-
 }

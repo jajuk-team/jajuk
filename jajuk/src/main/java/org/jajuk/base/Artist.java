@@ -33,7 +33,6 @@ import org.jajuk.util.Messages;
  * Logical item.
  */
 public class Artist extends LogicalItem implements Comparable<Artist> {
-
   /**
    * Artist constructor.
    *
@@ -79,7 +78,6 @@ public class Artist extends LogicalItem implements Comparable<Artist> {
     if (otherItem == null) {
       return 1;
     }
-
     // compare using name and id to differentiate unknown items
     StringBuilder current = new StringBuilder(getName2());
     current.append(getID());

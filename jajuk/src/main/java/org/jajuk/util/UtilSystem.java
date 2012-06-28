@@ -68,13 +68,10 @@ import org.jajuk.util.log.Log;
  * Set of convenient methods for system and IO.
  */
 public final class UtilSystem {
-
   /** The Constant LOCAL_IP.   */
   private static final String LOCAL_IP = "127.0.0.1";
-
   /** Is browser supported ?. */
   private static Boolean browserSupported;
-
   /** Size of the short names converter in bytes. */
   private static final int CONVERTER_FILE_SIZE = 23;
 
@@ -82,52 +79,33 @@ public final class UtilSystem {
    * MPlayer status possible values *.
    */
   public static enum MPlayerStatus {
-
-    MPLAYER_STATUS_OK,
-
-    MPLAYER_STATUS_NOT_FOUND,
-
-    MPLAYER_STATUS_WRONG_VERSION,
-
-    MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
+    MPLAYER_STATUS_OK, MPLAYER_STATUS_NOT_FOUND, MPLAYER_STATUS_WRONG_VERSION, MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
   }
 
   /** Current date cached (for performances) *. */
   public static final Date TODAY = new Date();
-
   /** Central random object for all Jajuk *. */
   private static final Random RANDOM = MersenneTwister.getInstance();
-
   /** Cached user home directory *. */
   private static String cachedUserHomeDir;
-
   /** Are we under Linux ? *. */
   private static final boolean UNDER_LINUX;
-
   /** Are we under MAC OS Intel ? *. */
   private static final boolean UNDER_OSX;
-
   /** Are we under Windows ? *. */
   private static final boolean UNDER_WINDOWS;
-
   /** Are we under Windows 32 bits ? *. */
   private static final boolean UNDER_WINDOWS_32BIT;
-
   /** Are we under Windows 64 bits ? *. */
   private static final boolean UNDER_WINDOWS_64BIT;
-
   /** Are we in JNLP mode ? *. */
   private static final boolean UNDER_JNLP;
-
   /** Are we under KDE ? *. */
   private static final boolean UNDER_KDE;
-
   /** Directory filter used in refresh. */
   private static JajukFileFilter dirFilter;
-
   /** File filter used in refresh. */
   private static JajukFileFilter fileFilter;
-
   // Computes OS detection operations for perf reasons (can be called in loop
   // in refresh method for ie)
   static {
@@ -136,35 +114,29 @@ public final class UtilSystem {
     UNDER_WINDOWS = ((sOS != null) && (sOS.trim().toLowerCase(Locale.getDefault())
         .lastIndexOf("windows") != -1));
   }
-
   static {
     UNDER_WINDOWS_32BIT = UtilSystem.isUnderWindows()
         && System.getProperties().get("sun.arch.data.model").equals("32");
   }
-
   static {
     UNDER_WINDOWS_64BIT = UtilSystem.isUnderWindows()
         && !System.getProperties().get("sun.arch.data.model").equals("32");
   }
-
   static {
     final String sOS = (String) System.getProperties().get("os.name");
     // os.name can be null with JWS under MacOS
     UNDER_LINUX = ((sOS != null) && (sOS.trim().toLowerCase(Locale.getDefault())
         .lastIndexOf("linux") != -1));
   }
-
   static {
     final String sArch = System.getProperty("os.arch");
     UNDER_OSX = org.jdesktop.swingx.util.OS.isMacOSX()
     // We only support Intel OSX
         && ((sArch != null) && sArch.matches(".*86.*"));
   }
-
   static {
     UNDER_JNLP = (System.getProperty("jnlpx.jvm") != null);
   }
-
   /**
   * Are we running in a KDE environment ?
   * 
@@ -199,13 +171,10 @@ public final class UtilSystem {
     }
     UNDER_KDE = underKDE;
   }
-
   /** Icons cache. */
   static Map<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>(200);
-
   /** Mplayer exe path. */
   private static File mplayerPath = null;
-
   /** current class loader. */
   private static ClassLoader classLoader = null;
 
@@ -288,9 +257,7 @@ public final class UtilSystem {
     if (!file.exists() || !file.canRead()) {
       throw new JajukException(9, file.getAbsolutePath(), null);
     }
-
     FileUtils.copyFile(file, fNew);
-
     // Display a warning if copied file is void as it can happen with full
     // disks
     if (fNew.length() == 0) {
@@ -335,7 +302,6 @@ public final class UtilSystem {
     if (!file.exists() || !file.canRead()) {
       throw new JajukException(9, file.getAbsolutePath(), null);
     }
-
     FileUtils.copyFile(file, fileNew);
   }
 
@@ -413,7 +379,6 @@ public final class UtilSystem {
     if (!file.exists() || !file.canRead()) {
       throw new JajukException(9, file.getAbsolutePath(), null);
     }
-
     FileUtils.copyFileToDirectory(file, directory);
   }
 
@@ -504,12 +469,10 @@ public final class UtilSystem {
    */
   public static String getExtension(final String filename) {
     int dotIndex = filename.lastIndexOf('.');
-
     // File without point
     if (dotIndex == -1) {
       return "";
     }
-
     if (dotIndex > 0) {
       return filename.substring(dotIndex + 1, filename.length());
     } else {
@@ -943,7 +906,6 @@ public final class UtilSystem {
     } catch (final FileNotFoundException e) {
       throw new JajukException(9, path, e);
     }
-
     try {
       final BufferedReader input = new BufferedReader(fileReader);
       try {
@@ -953,7 +915,6 @@ public final class UtilSystem {
         while ((line = input.readLine()) != null) {
           strColl.append(line);
         }
-
         return strColl;
       } finally {
         // Close the bufferedReader
@@ -998,7 +959,6 @@ public final class UtilSystem {
       throw new JajukException(9, e);
     }
     return sb;
-
   }
 
   /**
@@ -1116,7 +1076,6 @@ public final class UtilSystem {
     } else {
       directoryToOpen = directory;
     }
-
     // Try to open the location using the forced explorer path of provided
     if (StringUtils.isNotBlank(Conf.getString(Const.CONF_EXPLORER_PATH))) {
       new Thread("Explorer Open Thread 1") {
@@ -1195,7 +1154,6 @@ public final class UtilSystem {
     if (cachedUserHomeDir != null) {
       return cachedUserHomeDir;
     }
-
     /**
      * We search first in USERPROFILE env directory before than user.home.
      * 
@@ -1326,5 +1284,4 @@ public final class UtilSystem {
   public static boolean isUnderKDE() {
     return UtilSystem.UNDER_KDE;
   }
-
 }

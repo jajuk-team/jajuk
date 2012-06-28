@@ -33,10 +33,8 @@ import org.jajuk.util.log.Log;
  * <code>CTRL + ALT + RIGHT ARROW</code>.
  */
 public class ForwardTrackAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** The Constant JUMP_SIZE.   */
   private static final float JUMP_SIZE = 0.1f;
 

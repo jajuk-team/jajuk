@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.alarm;
 
 import java.util.ArrayList;
@@ -52,27 +51,19 @@ import org.jajuk.util.log.Log;
  * TODO: We could use Timer instead of implementing the Timer loop ourselves here!.
  * TODO : multi-alarms management
  */
-
 public class AlarmManager implements Observer {
-
   private static AlarmManager singleton = new AlarmManager();
-
   static {
     // Start the clock
     singleton.clock.start();
-
     // register the instance so that it receives updates of changes to the configured Alarm
     ObservationManager.register(singleton);
-
     // force last event update
     singleton.update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
   }
-
   private Alarm alarm;
-
   /** This thread looks alarms up and call weak up when it's time. */
   private final Thread clock = new Thread("Alarm manager Thread") {
-
     @Override
     public void run() {
       Log.debug("Starting Alarm thread");
@@ -113,7 +104,6 @@ public class AlarmManager implements Observer {
     // Reset rate and total play time (automatic part of rating system)
     if (subject.equals(JajukEvents.ALARMS_CHANGE)) {
       if (Conf.getBoolean(Const.CONF_ALARM_ENABLED)) {
-
         // construct a Date with the configured alarm-time
         int hours = Conf.getInt(Const.CONF_ALARM_TIME_HOUR);
         int minutes = Conf.getInt(Const.CONF_ALARM_TIME_MINUTES);
@@ -123,7 +113,6 @@ public class AlarmManager implements Observer {
         cal.set(Calendar.HOUR_OF_DAY, hours);
         cal.set(Calendar.MINUTE, minutes);
         cal.set(Calendar.SECOND, seconds);
-
         // If chosen date is already past, consider that user meant
         // tomorrow
         Date alarmDate = cal.getTime();
@@ -148,7 +137,6 @@ public class AlarmManager implements Observer {
             } else if (conf.matches(SearchResultType.WEBRADIO.name() + ".*")) {
               radio = WebRadioManager.getInstance().getWebRadioByName(item);
             }
-
           } else if (mode.equals(Const.STARTUP_MODE_SHUFFLE)) {
             // Filter files by ambience or if none ambience matches, perform a global shuffle 
             // ignoring current ambience
@@ -163,7 +151,6 @@ public class AlarmManager implements Observer {
             if (alToPlay.size() == 0) { //NOSONAR
               alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
             }
-
           } else if (mode.equals(Const.STARTUP_MODE_NOVELTIES)) {
             alToPlay = UtilFeatures.filterByAmbience(FileManager.getInstance()
                 .getGlobalNoveltiesPlaylist(), ambience);
@@ -195,5 +182,4 @@ public class AlarmManager implements Observer {
     keys.add(JajukEvents.ALARMS_CHANGE);
     return keys;
   }
-
 }

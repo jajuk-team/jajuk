@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.events;
 
 import java.util.HashMap;
@@ -38,16 +37,12 @@ import org.jajuk.util.log.Log;
  * All notification methods are synchronized to assure event order.
  */
 public final class ObservationManager {
-
   /** one event -> list of components. */
   static ObserverRegistry observerRegistry = new ObserverRegistry();
-
   /** Last event for a given subject (used for new objects that just registrated to this subject). */
   static Map<JajukEvents, Properties> hLastEventBySubject = new HashMap<JajukEvents, Properties>(10);
-
   /** The queue itself. Must be synchronized, so we use a ConcurrentLinkedQueue which is thread-safe */
   static BlockingQueue<JajukEvent> queue = new LinkedBlockingQueue<JajukEvent>();
-
   /** The observation fifo. */
   private static ObservationManagerThread observationThread;
 
@@ -82,12 +77,10 @@ public final class ObservationManager {
    */
   public static synchronized void unregister(Observer observer) {
     Set<JajukEvents> eventSubjectSet = observer.getRegistrationKeys();
-
     // can return null if no keys are registered
     if (eventSubjectSet == null) {
       return;
     }
-
     for (JajukEvents subject : eventSubjectSet) {
       boolean bRemoved = observerRegistry.unregister(subject, observer);
       if (bRemoved) {
@@ -215,7 +208,6 @@ public final class ObservationManager {
  * Observation manager thread that consumes events asynchronously
  */
 class ObservationManagerThread extends Thread {
-
   ObservationManagerThread() {
     super("Observation Manager Thread");
   }

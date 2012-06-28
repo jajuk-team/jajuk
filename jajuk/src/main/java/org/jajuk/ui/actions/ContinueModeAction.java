@@ -40,7 +40,6 @@ import org.jajuk.util.error.JajukException;
  * .
  */
 public class ContinueModeAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -59,9 +58,7 @@ public class ContinueModeAction extends JajukAction {
   public void perform(ActionEvent evt) throws JajukException {
     boolean b = Conf.getBoolean(Const.CONF_STATE_CONTINUE);
     Conf.setProperty(Const.CONF_STATE_CONTINUE, Boolean.toString(!b));
-
     JajukJMenuBar.getInstance().setContinueSelected(!b);
-
     if (!b) { // enabled button
       if (QueueModel.isStopped()) {
         // if nothing playing, play next track if possible

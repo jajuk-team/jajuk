@@ -46,13 +46,10 @@ import org.jajuk.util.log.Log;
  * </p>.
  */
 public abstract class WindowsHotKeyManager extends AbstractAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -6948447651091264530L;
-
   /** Maps hotkeylisteners with the event ID. */
   private static Map<Integer, JajukAction> hmIndexAction = new HashMap<Integer, JajukAction>(20);
-
   /** Jintellitype object used for hotkeys and intellitype events management under windows only. */
   private static JIntellitype jintellitype;
 
@@ -64,7 +61,6 @@ public abstract class WindowsHotKeyManager extends AbstractAction {
     jintellitype = JIntellitype.getInstance();
     // assign this class to be a IntellitypeListener
     jintellitype.addIntellitypeListener(new IntellitypeListener() {
-
       /*
        * (non-Javadoc)
        * 
@@ -107,7 +103,6 @@ public abstract class WindowsHotKeyManager extends AbstractAction {
         }
       }
     });
-
   }
 
   /**
@@ -127,7 +122,6 @@ public abstract class WindowsHotKeyManager extends AbstractAction {
     hmIndexAction.put(index + 1, ab);
     // add the listener
     jintellitype.addHotKeyListener(new HotkeyListener() {
-
       @Override
       public void onHotKey(int key) {
         // Leave if user disabled hotkeys
@@ -146,7 +140,6 @@ public abstract class WindowsHotKeyManager extends AbstractAction {
           }
         }
       }
-
     });
   }
 

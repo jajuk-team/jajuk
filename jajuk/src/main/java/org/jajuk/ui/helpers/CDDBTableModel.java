@@ -36,7 +36,6 @@ import org.jajuk.util.UtilString;
  * .
  */
 public class CDDBTableModel extends JajukTableModel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -45,35 +44,27 @@ public class CDDBTableModel extends JajukTableModel {
    */
   public CDDBTableModel() {
     super(8);
-
     // Current Album title
     vColNames.add(Messages.getString("CDDBWizard.3"));
     idList.add("CDDBWizard.1");
-
     // Filename
     vColNames.add(Messages.getString("CDDBWizard.1"));
     idList.add("CDDBWizard.2");
-
     // Current Track title
     vColNames.add(Messages.getString("CDDBWizard.2"));
     idList.add("CDDBWizard.3");
-
     // Proposed Track Name
     vColNames.add(Messages.getString("CDDBWizard.4"));
     idList.add("CDDBWizard.4");
-
     // Proposed Track Artist
     vColNames.add(Messages.getHumanPropertyName(Const.XML_ARTIST));
     idList.add(Const.XML_ARTIST);
-
     // Proposed Track genre
     vColNames.add(Messages.getHumanPropertyName(Const.XML_GENRE));
     idList.add(Const.XML_GENRE);
-
     // Proposed Track year
     vColNames.add(Messages.getHumanPropertyName(Const.XML_YEAR));
     idList.add(Const.XML_YEAR);
-
     // Proposed Track number
     vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_ORDER));
     idList.add(Const.XML_TRACK_ORDER);
@@ -134,5 +125,4 @@ public class CDDBTableModel extends JajukTableModel {
   public void populateModel(String property, String pattern, List<String> columnsToShow) {
     // Doesn't apply here
   }
-
 }

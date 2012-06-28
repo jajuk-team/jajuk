@@ -59,22 +59,16 @@ import org.xml.sax.helpers.DefaultHandler;
  * </p>.
  */
 public class Messages extends DefaultHandler {
-
   /** Messages initialized flag. */
   protected static boolean bInitialized = false;
-
   /** All choice option, completes JDialog options. */
   public static final int ALL_OPTION = 10;
-
   /** Specific Yes NO All Cancel option. */
   public static final int YES_NO_ALL_CANCEL_OPTION = 11;
-
   /** User choice. */
   private static int choice;
-
   /** Messages themselves extracted from an XML file to this properties class*. */
   protected static Properties properties;
-
   /** English messages used as default*. */
   private static Properties propertiesEn;
 
@@ -143,14 +137,11 @@ public class Messages extends DefaultHandler {
   public static String[] getAll(final String base) {
     final List<String> msgs = new ArrayList<String>();
     final String prefix = base + ".";
-
     try {
       final Properties lProperties = getProperties();
       final Properties defaultProperties = getPropertiesEn();
-
       for (int i = 0;; i++) {
         String sOut = lProperties.getProperty(prefix + i);
-
         if (sOut == null) {
           // this property is unknown for this local, try in English
           sOut = defaultProperties.getProperty(prefix + i);
@@ -221,7 +212,6 @@ public class Messages extends DefaultHandler {
   private static Properties parseLangpack(final Locale locale) throws SAXException, IOException,
       ParserConfigurationException {
     final Properties lProperties = new Properties();
-
     // Choose right jajuk_<lang>.properties file to load
     final StringBuilder sbFilename = new StringBuilder(Const.FILE_LANGPACK_PART1);
     if (!Locale.ENGLISH.equals(locale)) { // for English, properties file is
@@ -229,7 +219,6 @@ public class Messages extends DefaultHandler {
       sbFilename.append('_').append(locale);
     }
     sbFilename.append(Const.FILE_LANGPACK_PART2);
-
     // property file URL, either in the jajuk.jar jar
     // (normal execution) or found as regular file if in
     // development debug mode
@@ -238,7 +227,6 @@ public class Messages extends DefaultHandler {
     if (url == null) {
       throw new IOException("Could not read resource: " + resource);
     }
-
     // parse it, actually it is a big properties file as CDATA in an XML
     // file
     final SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -391,7 +379,6 @@ public class Messages extends DefaultHandler {
             null);
         message.getResu();
       }
-
     });
   }
 
@@ -553,7 +540,6 @@ public class Messages extends DefaultHandler {
  * Confirmation Dialog
  */
 class ConfirmDialog extends JajukDialog {
-
   /**
    * Confirm dialog constructor
    * 
@@ -569,7 +555,6 @@ class ConfirmDialog extends JajukDialog {
   ConfirmDialog(final String sText, final String sTitle, final int optionsType, final int iType,
       Component parent) {
     super();
-
     final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
     if (optionsType == Messages.YES_NO_ALL_CANCEL_OPTION) {
       optionPane.setOptions(new Object[] { Messages.getString("Yes"), Messages.getString("No"),
@@ -610,18 +595,15 @@ class ConfirmDialog extends JajukDialog {
       // result is an integer when using JOptionPane standard types
       iResu = (Integer) resu;
     }
-
     // manually dispose to free up memory, somehow this is not done automatically!
     dialog.dispose();
   }
-
 }
 
 /**
  * Message Dialog
  */
 class DetailsMessageDialog extends JajukDialog {
-
   /**
    * Message dialog constructor
    * 
@@ -632,7 +614,6 @@ class DetailsMessageDialog extends JajukDialog {
   DetailsMessageDialog(final String sText, final String sTitle, final int iType,
       final String sDetails, final Icon icon) {
     super();
-
     final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
     optionPane.setMessage(sText);
     if (sDetails != null) {
@@ -668,22 +649,18 @@ class DetailsMessageDialog extends JajukDialog {
       dialogDetail.pack();
       dialogDetail.setLocationRelativeTo(JajukMainWindow.getInstance());
       dialogDetail.setVisible(true);
-
       // manually dispose to free up memory, somehow this is not done automatically!
       dialog.dispose();
     }
-
     // manually dispose to free up memory, somehow this is not done automatically!
     dialog.dispose();
   }
-
 }
 
 /**
  * Hideable message dialog (has a "not show again" button)
  */
 class HideableMessageDialog extends JajukDialog {
-
   /**
    * Message dialog constructor
    * 
@@ -696,7 +673,6 @@ class HideableMessageDialog extends JajukDialog {
   HideableMessageDialog(final String sText, final String sTitle, final String sProperty,
       final int iType, final Icon icon) {
     super();
-
     final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
     optionPane.setMessage(UtilGUI.getLimitedMessage(sText, 20));
     final Object[] options = { Messages.getString("Ok"), Messages.getString("Hide") };
@@ -716,18 +692,15 @@ class HideableMessageDialog extends JajukDialog {
       // Not show again
       Conf.setProperty(sProperty, Const.TRUE);
     }
-
     // manually dispose to free up memory, somehow this is not done automatically!
     dialog.dispose();
   }
-
 }
 
 /**
  * Error message dialog
  */
 class ErrorMessageDialog extends JajukDialog {
-
   /**
    * Message dialog constructor
    * 
@@ -739,7 +712,6 @@ class ErrorMessageDialog extends JajukDialog {
    */
   ErrorMessageDialog(final int code, final String sInfoSup) {
     super();
-
     final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
     optionPane.setMessage(UtilGUI.getLimitedMessage(Messages.getErrorMessage(code)
         + (sInfoSup != null ? (" : " + sInfoSup) : ""), 20));
@@ -753,7 +725,6 @@ class ErrorMessageDialog extends JajukDialog {
     dialog.pack();
     dialog.setLocationRelativeTo(JajukMainWindow.getInstance());
     dialog.setVisible(true);
-
     // manually dispose to free up memory, somehow this is not done automatically!
     dialog.dispose();
   }
@@ -770,5 +741,4 @@ abstract class JajukDialog {
   public int getResu() {
     return iResu;
   }
-
 }

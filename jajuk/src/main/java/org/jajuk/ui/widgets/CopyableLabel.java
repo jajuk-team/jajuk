@@ -28,7 +28,6 @@ import org.jajuk.util.log.Log;
  * A label that user whom users can copy content.
  */
 public class CopyableLabel extends JTextField {
-
   /** Default serial UID. */
   private static final long serialVersionUID = 1L;
 
@@ -52,5 +51,4 @@ public class CopyableLabel extends JTextField {
   public void setText() {
     Log.debug("Label edition is not allowed");
   }
-
 }

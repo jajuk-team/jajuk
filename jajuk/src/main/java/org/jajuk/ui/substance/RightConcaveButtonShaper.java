@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.substance;
 
 import java.awt.Insets;
@@ -37,7 +36,6 @@ import javax.swing.AbstractButton;
  * The Class RightConcaveButtonShaper.
  */
 public class RightConcaveButtonShaper extends ButtonShaper {
-
   private int concaveDiameter;
 
   /**
@@ -65,13 +63,10 @@ public class RightConcaveButtonShaper extends ButtonShaper {
   public Shape getButtonOutline(AbstractButton button, Insets insets, int w, int h, boolean isInner) {
     int width = w - 1;
     int height = h - 1;
-
     int z = concaveDiameter / 3;
-
     Shape shape = new Ellipse2D.Double(width - z, 0, z, height);
     Area area = new Area(new RoundRectangle2D.Double(z / 2d, 0, width - z, height, z, z));
     area.subtract(new Area(shape));
-
     return new GeneralPath(area);
   }
 }

@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.views;
 
 import ext.FlowScrollPanel;
@@ -68,36 +67,22 @@ import org.jajuk.util.error.JajukException;
  * Configuration perspective.
  */
 public class DeviceView extends ViewAdapter implements ActionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** self instance. */
   private static DeviceView dv = new DeviceView();
-
   FlowScrollPanel jpDevices;
-
   JPopupMenu jpmenu;
-
   JMenuItem jmiDelete;
-
   JMenuItem jmiProperties;
-
   JMenuItem jmiMount;
-
   JMenuItem jmiUnmount;
-
   JMenuItem jmiTest;
-
   JMenuItem jmiRefresh;
-
   JMenuItem jmiSynchronize;
-
   DeviceItem diSelected;
-
   /** Mouse adapter used over device items to manage action or popup clicks. */
   MouseAdapter ma = new JajukMouseAdapter() {
-
     @Override
     public void handleActionSingleClick(final MouseEvent e) {
       selectItem(e);
@@ -137,59 +122,47 @@ public class DeviceView extends ViewAdapter implements ActionListener {
     JScrollPane jsp = new JScrollPane(jpDevices, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
         ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
-
     jpDevices.setScroller(jsp);
-
     jpDevices.setLayout(new FlowLayout(FlowLayout.LEFT));
-
     // Popup menus
     jpmenu = new JPopupMenu();
-
     jmiMount = new JMenuItem(Messages.getString("DeviceView.8"),
         IconLoader.getIcon(JajukIcons.MOUNT));
     jmiMount.addActionListener(this);
     jmiMount.setActionCommand(JajukEvents.DEVICE_MOUNT.toString());
     jpmenu.add(jmiMount);
-
     jmiUnmount = new JMenuItem(Messages.getString("DeviceView.9"),
         IconLoader.getIcon(JajukIcons.UNMOUNT));
     jmiUnmount.addActionListener(this);
     jmiUnmount.setActionCommand(JajukEvents.DEVICE_UNMOUNT.toString());
     jpmenu.add(jmiUnmount);
-
     jmiRefresh = new JMenuItem(Messages.getString("DeviceView.11"),
         IconLoader.getIcon(JajukIcons.REFRESH));
     jmiRefresh.addActionListener(this);
     jmiRefresh.setActionCommand(JajukEvents.DEVICE_REFRESH.toString());
     jpmenu.add(jmiRefresh);
-
     jmiTest = new JMenuItem(Messages.getString("DeviceView.10"),
         IconLoader.getIcon(JajukIcons.TEST));
     jmiTest.addActionListener(this);
     jmiTest.setActionCommand(JajukEvents.DEVICE_TEST.toString());
     jpmenu.add(jmiTest);
-
     jmiSynchronize = new JMenuItem(Messages.getString("DeviceView.12"),
         IconLoader.getIcon(JajukIcons.SYNCHRO));
     jmiSynchronize.addActionListener(this);
     jmiSynchronize.setActionCommand(JajukEvents.DEVICE_SYNCHRO.toString());
     jpmenu.add(jmiSynchronize);
-
     jmiDelete = new JMenuItem(Messages.getString("DeviceView.13"),
         IconLoader.getIcon(JajukIcons.DELETE));
     jmiDelete.addActionListener(this);
     jmiDelete.setActionCommand(JajukEvents.DEVICE_DELETE.toString());
     jpmenu.add(jmiDelete);
-
     jmiProperties = new JMenuItem(Messages.getString("DeviceView.14"),
         IconLoader.getIcon(JajukIcons.CONFIGURATION));
     jmiProperties.addActionListener(this);
     jmiProperties.setActionCommand(JajukEvents.DEVICE_PROPERTIES.toString());
     jpmenu.add(jmiProperties);
-
     // add devices
     refreshDevices();
-
     // add components
     setLayout(new MigLayout("ins 0", "[grow]", "[grow]"));
     add(jsp, "grow");
@@ -298,11 +271,9 @@ public class DeviceView extends ViewAdapter implements ActionListener {
       dw.setVisible(true);
       return;
     }
-
     if (diSelected == null) { // test a device is selected
       return;
     }
-
     if (ae.getActionCommand().equals(JajukEvents.DEVICE_DELETE.toString())) {
       handleDelete();
     } else if (ae.getActionCommand().equals(JajukEvents.DEVICE_MOUNT.toString())) {
@@ -465,7 +436,6 @@ public class DeviceView extends ViewAdapter implements ActionListener {
  */
 class DeviceItem extends JPanel {
   private static final long serialVersionUID = 1L;
-
   /** Associated device */
   private Device device;
 
@@ -499,5 +469,4 @@ class DeviceItem extends JPanel {
   public void setDevice(Device device) {
     this.device = device;
   }
-
 }

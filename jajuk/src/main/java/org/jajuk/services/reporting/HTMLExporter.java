@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.reporting;
 
 import java.io.File;
@@ -39,11 +38,9 @@ import org.jajuk.util.UtilSystem;
  * This class exports music contents to HTML.
  */
 public class HTMLExporter extends Exporter {
-
   /**
    * PUBLIC METHODS.
    */
-
   public HTMLExporter() {
     cache = SessionService.getConfFileByPath(Const.FILE_REPORTING_CACHE_FILE + "_html_"
         + System.currentTimeMillis());

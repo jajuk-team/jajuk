@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.widgets;
 
 import java.awt.BorderLayout;
@@ -84,31 +83,21 @@ import org.jajuk.util.log.Log;
  * selection implementation (see valueChanged() method) that could be changed
  */
 public class SearchBox extends JTextField implements KeyListener, ListSelectionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** Do search panel need a search. */
   private boolean bNeedSearch = false;
-
   /** Default time in ms before launching a search automatically. */
   private static final int WAIT_TIME = 1000;
-
   /** Minimum number of characters to start a search. */
   private static final int MIN_CRITERIA_LENGTH = 2;
-
   /** Search result. */
   private List<SearchResult> alResults;
-
   /** Typed string. */
   private String sTyped;
-
   private Popup popup;
-
   private JList jlist;
-
   private long lDateTyped;
-
   /** Search when typing timer. */
   Timer timer = new Timer(100, new ActionListener() {
     @Override
@@ -123,7 +112,6 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
    * Display results as a jlabel with an icon.
    */
   private static class SearchListRenderer extends JPanel implements ListCellRenderer {
-
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 8975989658927794678L;
 
@@ -176,7 +164,6 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
     });
     // Add a focus listener to select all the text and ease previous text cleanup
     addFocusListener(new FocusListener() {
-
       @Override
       public void focusLost(FocusEvent e) {
         setCaretPosition(getText().length());
@@ -220,7 +207,6 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
       } else {
         bNeedSearch = true;
         lDateTyped = System.currentTimeMillis();
-
         // make sure the timer is started before it is first used
         if (!timer.isRunning()) {
           timer.start();
@@ -252,7 +238,6 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
     // typed before entering this method
     if (sTyped.length() >= MIN_CRITERIA_LENGTH) {
       SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
-
         List<SearchResult> resu = null;
 
         @Override

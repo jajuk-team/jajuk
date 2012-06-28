@@ -64,19 +64,14 @@ import org.jdesktop.swingx.JXPanel;
  * Ambience + History + search panel used in main jajuk window.
  */
 public final class SearchJPanel extends JXPanel implements Observer, ActionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** Self instance. */
   private static SearchJPanel ijp = new SearchJPanel();
-
   /** The search box (text field). */
   private SearchBox sbSearch;
-
   /** the combo-genre history. */
   private SteppedComboBox jcbHistory;
-
   /** the Ambience selection combo. */
   private AmbienceComboBox ambiencesCombo;
 
@@ -90,13 +85,11 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
   }
 
   // widgets declaration
-
   /**
    * Instantiates a new search j panel.
    */
   private SearchJPanel() {
     super();
-
   }
 
   /**
@@ -105,14 +98,12 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
   public void initUI() {
     // Instanciate the PlayerStateMediator to listen for player basic controls
     PlayerStateMediator.getInstance();
-
     // Search
     sbSearch = new SearchBox();
     // History
     jcbHistory = new SteppedComboBox();
     final JLabel jlHistory = new JLabel(IconLoader.getIcon(JajukIcons.HISTORY));
     jlHistory.setToolTipText(Messages.getString("CommandJPanel.0"));
-
     // We use a combo box model to make sure we get good performances after
     // rebuilding the entire model like after a refresh
     jcbHistory.setModel(new DefaultComboBoxModel(History.getInstance().getHistory()));
@@ -140,16 +131,13 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
     });
     // Ambience combo
     ambiencesCombo = new AmbienceComboBox();
-
     // Add items
     setLayout(new MigLayout("insets 5 0 4 3,gapx 30", "[grow 20][grow 70][grow 10]"));
     add(ambiencesCombo, "left,gap left 16,growx,width 100::");
     add(jcbHistory, "grow,center");
     add(sbSearch, "right,grow,width 100::");
-
     // register to player events
     ObservationManager.register(this);
-
     // Update initial status
     UtilFeatures.updateStatus(this);
   }
@@ -272,5 +260,4 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
           + ambience.getName() + Const.B_P_HTML);
     }
   }
-
 }

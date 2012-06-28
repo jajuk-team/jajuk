@@ -41,7 +41,6 @@ import org.jajuk.util.log.Log;
  * Action for saving as... an item
  */
 public class SaveAsAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

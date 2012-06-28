@@ -51,16 +51,12 @@ import org.jajuk.util.log.Log;
  * Export ratings
  */
 public class ExportRatingsAction extends SelectionAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** The Constant TAG_CLOSE_NEWLINE.  */
   private static final String TAG_CLOSE_NEWLINE = ">\n";
-
   /** The Constant TAB_CLOSE_TAG_START.  */
   private static final String TAB_CLOSE_TAG_START = "</";
-
   private java.io.File file;
 
   ExportRatingsAction() {
@@ -147,5 +143,4 @@ public class ExportRatingsAction extends SelectionAction {
     sb.append("'/>\n");
     return sb.toString();
   }
-
 }

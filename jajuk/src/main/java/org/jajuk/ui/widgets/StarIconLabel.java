@@ -29,13 +29,10 @@ import javax.swing.ImageIcon;
  * Icon Label supporting rating stars.
  */
 public class StarIconLabel extends IconLabel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** Number of stars. */
   private int starsNumber = -1;
-
   /** Rate *. */
   private int rate = 0;
 
@@ -101,5 +98,4 @@ public class StarIconLabel extends IconLabel {
       }
     }
   }
-
 }

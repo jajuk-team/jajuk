@@ -39,34 +39,24 @@ import org.xml.sax.helpers.DefaultHandler;
    * Preset radios parser
    */
 public class PresetRadiosPersistenceHelper extends DefaultHandler {
-
   /** Temporary buffer. */
   private StringBuilder buffer;
-
   /** Radio name */
   private String radioName;
-
   /** Radio url */
   private String radioUrl;
-
   /** Radio label. */
   private String radioLabel;
-
   /** Radio genre  */
   private String genre;
-
   /** Radio keywords */
   private String keywords;
-
   /** Radio bitrate */
   private String radioBitrate;
-
   /** Radio frequency. */
   private String radioFrequency;
-
   /** Is the radio removed and should be ignored ? */
   private String isRemoved;
-
   // Preset file format XML tags (different tag set from jajuk webradio format)
   private static final String TAG_NAME = "name";
   private static final String TAG_URL = "url";

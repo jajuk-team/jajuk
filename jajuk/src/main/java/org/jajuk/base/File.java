@@ -41,13 +41,10 @@ import org.jajuk.util.log.Log;
  * Physical item.
  */
 public class File extends PhysicalItem implements Comparable<File> {
-
   /** Parent directory. */
   private final Directory directory;
-
   /** Associated track. */
   private Track track;
-
   /** IO file associated with this file. */
   private java.io.File fio;
 
@@ -212,7 +209,6 @@ public class File extends PhysicalItem implements Comparable<File> {
     // Begin by comparing file parent directory for performances
     if (directory.equals(otherFile.getDirectory())) {
       // If both files are in the same directory, sort by track order
-
       int iOrder = (int) getTrack().getOrder();
       int iOrderOther = (int) otherFile.getTrack().getOrder();
       if (iOrder != iOrderOther) {
@@ -457,5 +453,4 @@ public class File extends PhysicalItem implements Comparable<File> {
     sOut += "</HTML>";
     return sOut;
   }
-
 }

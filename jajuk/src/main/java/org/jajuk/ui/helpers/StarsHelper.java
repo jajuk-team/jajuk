@@ -40,7 +40,6 @@ import org.jajuk.util.JajukIcons;
  * Stars are only visible from the GUI, they are never stored into collection itself
  */
 public class StarsHelper {
-
   /** Cache iconLabel for each different rate to save memory and CPU. Map at index 0 stores banned tracks. */
   @SuppressWarnings("rawtypes")
   private static Map map[] = { new HashMap<Long, StarIconLabel>(),
@@ -127,5 +126,4 @@ public class StarsHelper {
     }
     return sil;
   }
-
 }

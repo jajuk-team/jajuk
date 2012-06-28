@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.dj;
 
 import java.util.Set;
@@ -29,10 +28,8 @@ import org.jajuk.base.Genre;
  * Represent a genre proportion (used by digital DJs).
  */
 public class Proportion {
-
   /** genres. */
   private Ambience ambience;
-
   /** Proportion*. */
   private float proportion;
 

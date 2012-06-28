@@ -43,7 +43,6 @@ import org.jajuk.util.Messages;
  * Copy to clipboard the item absolute address.
  */
 public class CopyClipboardAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

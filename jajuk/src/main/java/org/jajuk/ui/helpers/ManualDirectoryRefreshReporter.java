@@ -29,7 +29,6 @@ import org.jajuk.util.log.Log;
  * Refresh reporter on directories with GUI special operations.
  */
 public class ManualDirectoryRefreshReporter extends RefreshReporter {
-
   /**
    * Instantiates a new manual directory refresh reporter.
    * 

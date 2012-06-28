@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.util.Collections;
@@ -48,10 +47,8 @@ import org.jajuk.util.log.Log;
  * Table model used for logical table view.
  */
 public class TracksTableModel extends JajukTableModel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** Associated view ID. */
   private String viewID;
 
@@ -69,49 +66,34 @@ public class TracksTableModel extends JajukTableModel {
     // for proper display in some look and feel
     vColNames.add(" ");
     idList.add(Const.XML_PLAY);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_NAME));
     idList.add(Const.XML_NAME);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_ALBUM));
     idList.add(Const.XML_ALBUM);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_ARTIST));
     idList.add(Const.XML_ARTIST);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_ALBUM_ARTIST));
     idList.add(Const.XML_ALBUM_ARTIST);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_GENRE));
     idList.add(Const.XML_GENRE);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_RATE));
     idList.add(Const.XML_TRACK_RATE);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_LENGTH));
     idList.add(Const.XML_TRACK_LENGTH);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_COMMENT));
     idList.add(Const.XML_TRACK_COMMENT);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_DISCOVERY_DATE));
     idList.add(Const.XML_TRACK_DISCOVERY_DATE);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_ORDER));
     idList.add(Const.XML_TRACK_ORDER);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_DISC_NUMBER));
     idList.add(Const.XML_TRACK_DISC_NUMBER);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_YEAR));
     idList.add(Const.XML_YEAR);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_HITS));
     idList.add(Const.XML_TRACK_HITS);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_FILES));
     idList.add(Const.XML_FILES);
-
     // custom properties now
     for (PropertyMetaInformation meta : TrackManager.getInstance().getCustomProperties()) {
       vColNames.add(meta.getName());
@@ -127,16 +109,12 @@ public class TracksTableModel extends JajukTableModel {
    */
   @Override
   public void populateModel(String property, String sPattern, List<String> columnsToShow) {
-
     // This should be monitor file manager to avoid NPE when changing items
     List<Track> alToShow = TrackManager.getInstance().getTracks();
-
     // / Filter mounted files if needed and apply sync table with tree
     // option if needed
     final boolean syncTreeTable = Conf.getBoolean(Const.CONF_SYNC_TABLE_TREE + "." + viewID);
-
     CollectionUtils.filter(alToShow, new Predicate() {
-
       @Override
       public boolean evaluate(Object o) {
         Track track = (Track) o;
@@ -150,19 +128,15 @@ public class TracksTableModel extends JajukTableModel {
         return (!track.shouldBeHidden() && bShowWithTree);
       }
     });
-
     // Filter values using given pattern
     Filter filter = new Filter(property, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
     alToShow = Filter.filterItems(alToShow, filter, Track.class);
-
     // sort by album
     long before = System.currentTimeMillis();
     Collections.sort(alToShow, new TrackComparator(TrackComparatorType.ALBUM));
-
     // Collections.sort(alToShow, new TrackComparator(TrackComparatorType.ALBUM));
     Log.debug("Sorting of " + alToShow.size() + " elements took: "
         + (System.currentTimeMillis() - before) + " mseconds");
-
     Iterator<Track> it = alToShow.iterator();
     int iColNum = iNumberStandardCols + TrackManager.getInstance().getCustomProperties().size();
     iRowNum = alToShow.size();
@@ -170,7 +144,6 @@ public class TracksTableModel extends JajukTableModel {
     oValues = new Object[iRowNum][iColNum];
     oItems = new Item[iRowNum];
     bCellEditable = new boolean[iRowNum][iColNum];
-
     // For perfs, prepare columns visibility
     boolean bName = (columnsToShow != null && columnsToShow.contains(Const.XML_NAME));
     boolean bAlbum = (columnsToShow != null && columnsToShow.contains(Const.XML_ALBUM));
@@ -188,7 +161,6 @@ public class TracksTableModel extends JajukTableModel {
     boolean bYear = (columnsToShow != null && columnsToShow.contains(Const.XML_YEAR));
     boolean bHits = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_HITS));
     boolean bFiles = (columnsToShow != null && columnsToShow.contains(Const.XML_FILES));
-
     for (int iRow = 0; it.hasNext(); iRow++) {
       Track track = it.next();
       setItemAt(iRow, track);
@@ -213,7 +185,6 @@ public class TracksTableModel extends JajukTableModel {
       if (type != null) {
         bHasATagEditor = (type.getTaggerClass() != null);
       }
-
       // Track name
       if (bName) {
         oValues[iRow][1] = track.getName();
@@ -221,7 +192,6 @@ public class TracksTableModel extends JajukTableModel {
         oValues[iRow][1] = "";
       }
       bCellEditable[iRow][1] = bHasATagEditor;
-
       // Album
       if (bAlbum) {
         oValues[iRow][2] = track.getAlbum().getName2();
@@ -229,7 +199,6 @@ public class TracksTableModel extends JajukTableModel {
         oValues[iRow][2] = "";
       }
       bCellEditable[iRow][2] = bHasATagEditor;
-
       // Artist
       if (bArtist) {
         oValues[iRow][3] = track.getArtist().getName2();
@@ -237,7 +206,6 @@ public class TracksTableModel extends JajukTableModel {
         oValues[iRow][3] = "";
       }
       bCellEditable[iRow][3] = bHasATagEditor;
-
       // Album Artist
       if (bAlbumArtist) {
         oValues[iRow][4] = track.getAlbumArtist().getName2();
@@ -245,7 +213,6 @@ public class TracksTableModel extends JajukTableModel {
         oValues[iRow][4] = "";
       }
       bCellEditable[iRow][4] = bHasATagEditor;
-
       // Genre
       if (bGenre) {
         oValues[iRow][5] = track.getGenre().getName2();
@@ -253,7 +220,6 @@ public class TracksTableModel extends JajukTableModel {
         oValues[iRow][5] = "";
       }
       bCellEditable[iRow][5] = bHasATagEditor;
-
       // Rate
       if (bRate) {
         oValues[iRow][6] = StarsHelper.getStarIconLabel(track);
@@ -261,7 +227,6 @@ public class TracksTableModel extends JajukTableModel {
         oValues[iRow][6] = "";
       }
       bCellEditable[iRow][6] = false;
-
       // Length
       if (bLength) {
         oValues[iRow][7] = new Duration(track.getDuration());
@@ -269,7 +234,6 @@ public class TracksTableModel extends JajukTableModel {
         oValues[iRow][7] = "";
       }
       bCellEditable[iRow][7] = false;
-
       // Comment
       if (bComment) {
         oValues[iRow][8] = track.getValue(Const.XML_TRACK_COMMENT);
@@ -277,7 +241,6 @@ public class TracksTableModel extends JajukTableModel {
         oValues[iRow][8] = "";
       }
       bCellEditable[iRow][8] = bHasATagEditor;
-
       // Date discovery
       if (bDiscovery) {
         oValues[iRow][9] = track.getDiscoveryDate(); // show date using
@@ -288,7 +251,6 @@ public class TracksTableModel extends JajukTableModel {
       } else {
         oValues[iRow][9] = "";
       }
-
       // Order
       if (bOrder) {
         oValues[iRow][10] = track.getOrder();
@@ -296,7 +258,6 @@ public class TracksTableModel extends JajukTableModel {
         oValues[iRow][10] = "";
       }
       bCellEditable[iRow][10] = bHasATagEditor;
-
       // Disc number
       if (bDiscNumber) {
         oValues[iRow][11] = track.getDiscNumber();
@@ -304,7 +265,6 @@ public class TracksTableModel extends JajukTableModel {
         oValues[iRow][11] = "";
       }
       bCellEditable[iRow][11] = bHasATagEditor;
-
       // Year
       if (bYear) {
         oValues[iRow][12] = track.getYear().getValue();
@@ -312,7 +272,6 @@ public class TracksTableModel extends JajukTableModel {
         oValues[iRow][12] = "";
       }
       bCellEditable[iRow][12] = bHasATagEditor;
-
       // Hits
       if (bHits) {
         oValues[iRow][13] = track.getHits();
@@ -320,7 +279,6 @@ public class TracksTableModel extends JajukTableModel {
         oValues[iRow][13] = "";
       }
       bCellEditable[iRow][13] = false;
-
       // Files
       if (bFiles) {
         List<File> alFiles = track.getFiles();
@@ -336,12 +294,10 @@ public class TracksTableModel extends JajukTableModel {
           files.deleteCharAt(files.length() - 1);
         }
         oValues[iRow][14] = files.toString();
-
       } else {
         oValues[iRow][14] = "";
       }
       bCellEditable[iRow][14] = false;
-
       // Custom properties now
       Map<String, Object> properties = track.getProperties();
       Iterator<PropertyMetaInformation> it2 = TrackManager.getInstance().getCustomProperties()

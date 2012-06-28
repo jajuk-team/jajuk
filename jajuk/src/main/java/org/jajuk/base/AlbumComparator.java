@@ -29,10 +29,8 @@ import java.util.Comparator;
  * @TODO Convert criteria from int to an enum
  */
 public class AlbumComparator implements Comparator<Album>, Serializable {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -5927167916548652076L;
-
   /*
    * This needs to be kept in-sync with what we use in
    * CatalogView.initMetaInformation()!
@@ -40,7 +38,6 @@ public class AlbumComparator implements Comparator<Album>, Serializable {
    * 0 .. genre 1 .. artist 2 .. album 3 .. year 4 .. discovery date 5 .. rate 6 ..
    * hits
    */
-
   private int criteria = 0;
 
   /**
@@ -65,12 +62,10 @@ public class AlbumComparator implements Comparator<Album>, Serializable {
     // get a track for each album
     Track track1 = album1.getAnyTrack();
     Track track2 = album2.getAnyTrack();
-
     // check tracks (normally useless)
     if (track1 == null || track2 == null) {
       return 0;
     }
-
     // @TODO
     // beware, this code is not consistent with equals. This should be ok as
     // result is used by a List but it could be a drama if we used a Set

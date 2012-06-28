@@ -36,7 +36,6 @@ import org.jajuk.util.Messages;
  * Fast access to hide/show unmounted devices option.
  */
 public class HideShowMountedDevicesAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

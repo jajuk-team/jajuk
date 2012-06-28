@@ -34,11 +34,8 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class TxtLyricsProvider implements ILyricsProvider {
-
   private BufferedReader lyricsReader = null;
-
   private String readerPath = null;
-
   /** audio file we search lyrics for. */
   private File audioFile = null;
 
@@ -63,7 +60,6 @@ public class TxtLyricsProvider implements ILyricsProvider {
       }
       lyricsReader.close();
       lyricsReader = null; // So it will be instanced new
-
       if (StringUtils.isBlank(lyrics)) {
         return null;
       }
@@ -114,5 +110,4 @@ public class TxtLyricsProvider implements ILyricsProvider {
   public String getSourceAddress() {
     return UtilSystem.removeExtension(audioFile.getAbsolutePath()) + ".txt";
   }
-
 }

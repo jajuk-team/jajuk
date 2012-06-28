@@ -28,7 +28,6 @@ import org.jajuk.base.Track;
  * A CDDB track.
  */
 public class CDDBTrack implements FreedbTrack {
-
   Track track;
 
   /**
@@ -46,7 +45,6 @@ public class CDDBTrack implements FreedbTrack {
   @Override
   public int getLength() {
     return (int) track.getDuration();
-
   }
 
   /* (non-Javadoc)
@@ -73,5 +71,4 @@ public class CDDBTrack implements FreedbTrack {
   public String toString() {
     return "CDDB: " + track.toString();
   }
-
 }

@@ -27,5 +27,4 @@ package org.qdwizard;
  * @author Bertrand Florat
  */
 public interface ClearPoint {
-
 }

@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.substance;
 
 import java.awt.Insets;
@@ -35,7 +34,6 @@ import javax.swing.AbstractButton;
  * The Class RoundRectButtonShaper.
  */
 public class RoundRectButtonShaper extends ButtonShaper {
-
   /* (non-Javadoc)
    * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getDisplayName()
    */
@@ -51,11 +49,8 @@ public class RoundRectButtonShaper extends ButtonShaper {
   public Shape getButtonOutline(AbstractButton button, Insets insets, int w, int h, boolean isInner) {
     int width = w - 1;
     int height = h - 1;
-
     Shape shape = new RoundRectangle2D.Double(0, 0, width, height, width / 3d, height / 3d);
     GeneralPath generalPath = new GeneralPath(shape);
-
     return generalPath;
   }
-
 }

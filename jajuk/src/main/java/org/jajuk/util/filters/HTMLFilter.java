@@ -26,7 +26,6 @@ import org.jajuk.util.JajukFileFilter;
  * HTMLfilter.
  */
 public class HTMLFilter extends JajukFileFilter {
-
   /** Self instance. */
   private static HTMLFilter self = new HTMLFilter();
 
@@ -45,5 +44,4 @@ public class HTMLFilter extends JajukFileFilter {
   private HTMLFilter() {
     super(new String[] { "html" });
   }
-
 }

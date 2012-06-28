@@ -33,7 +33,6 @@ import org.jajuk.util.Messages;
  * Logical item
  */
 public class Genre extends LogicalItem implements Comparable<Genre> {
-
   /**
    * Genre constructor.
    *
@@ -134,5 +133,4 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
   public ImageIcon getIconRepresentation() {
     return IconLoader.getIcon(JajukIcons.GENRE);
   }
-
 }

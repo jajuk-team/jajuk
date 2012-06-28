@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
@@ -55,16 +54,12 @@ import org.jajuk.util.UtilGUI;
  * .
  */
 public class FindDuplicateTracksAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** Result : a list of dups files for a given track. */
   List<List<File>> duplicateTracksList;
-
   /** Temporary storage during dups detection. */
   private Map<String, Set<File>> mapTrackDups;
-
   /** Track comparator. */
   TrackComparator comparator = new TrackComparator(TrackComparatorType.ALMOST_IDENTICAL);
 
@@ -140,18 +135,14 @@ public class FindDuplicateTracksAction extends JajukAction {
     duplicateTracksList = new ArrayList<List<File>>();
     // Use a tree map so footprints are sorted
     mapTrackDups = new TreeMap<String, Set<File>>();
-
     List<Track> tracks = TrackManager.getInstance().getTracks();
-
     // For finding duplicate files, we don't just rely on the number of files associated with
     // a track (>1), we also find almost-identical tracks, ie based on album name, not its ID
     // because then, we can't detect identical files located in several directories with a
     // different set of files (because track uses album id in its hashcode and album id uses CDDB discid
     // computed by jajuk based on the duration of all files in a given directory)
-
     // Sort using the ALMOST-IDENTICAL
     Collections.sort(tracks, comparator);
-
     int index = 0;
     while (index <= tracks.size() - 1) {
       Track track = tracks.get(index);
@@ -167,7 +158,6 @@ public class FindDuplicateTracksAction extends JajukAction {
       }
       index++;
     }
-
     // Build final list (note that it is already sorted by track, mapTrackDups is a TreeMap)
     for (String footprint : mapTrackDups.keySet()) {
       Set<File> dups = mapTrackDups.get(footprint);
@@ -187,7 +177,6 @@ public class FindDuplicateTracksAction extends JajukAction {
   public void perform(final ActionEvent evt) throws Exception {
     UtilGUI.waiting();
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
-
       @Override
       protected Void doInBackground() throws Exception {
         populateDups();
@@ -204,7 +193,6 @@ public class FindDuplicateTracksAction extends JajukAction {
             final JDialog duplicateFiles = optionPane.createDialog(null,
                 Messages.getString("FindDuplicateTracksAction.3"));
             duplicateFiles.setResizable(true);
-
             JButton jbClose = new JButton(Messages.getString("Close"));
             jbClose.addActionListener(new ActionListener() {
               @Override
@@ -212,13 +200,11 @@ public class FindDuplicateTracksAction extends JajukAction {
                 duplicateFiles.dispose();
               }
             });
-
             // Create and set up the content pane.
             JComponent newContentPane = new DuplicateTracksDialog(duplicateTracksList, jbClose);
             newContentPane.setOpaque(true);
             UtilGUI.setEscapeKeyboardAction(duplicateFiles, newContentPane);
             duplicateFiles.setContentPane(newContentPane);
-
             // Display the window.
             duplicateFiles.setSize(800, 600);
             duplicateFiles.setLocationRelativeTo(JajukMainWindow.getInstance());

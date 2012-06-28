@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.base;
 
 import java.util.Date;
@@ -42,16 +41,12 @@ import org.xml.sax.Attributes;
  * </p>.
  */
 public abstract class Item implements Const {
-
   /** We cache the ID to avoid getting it from properties for CPU performance reasons. */
   private String sID;
-
   /** We cache the name to avoid getting it from properties for CPU performance reasons. */
   String name;
-
   /** Item properties, singleton use very high load factor as this size will not change often. */
   private Map<String, Object> properties = new HashMap<String, Object>(2, 1f);
-
   /** Cache-string which holds the filter-string for the default "any"-Searches, this is filled during the first search and 
    * cleaned on all points where the properties are adjusted. */
   private String any = null;
@@ -129,13 +124,11 @@ public abstract class Item implements Const {
     if (!(otherItem instanceof Item)) {
       return false;
     }
-
     // [Perf] We can compare with an == operator here because
     // all ID are stored into String intern() buffer
     return getID() == ((Item) otherItem).getID();
   }
 
- 
   /**
    * Get a defensive copy of all the item properties.
    * 
@@ -315,7 +308,6 @@ public abstract class Item implements Const {
     if (any != null) {
       return any;
     }
-
     StringBuilder sb = new StringBuilder(100);
     Iterator<String> it = properties.keySet().iterator();
     while (it.hasNext()) {
@@ -329,11 +321,8 @@ public abstract class Item implements Const {
         }
         sb.append(sValue);
       }
-
     }
-
     any = sb.toString();
-
     return any;
   }
 
@@ -429,7 +418,6 @@ public abstract class Item implements Const {
         }
       }
     }
-
     // remove cached value
     any = null;
   }
@@ -441,7 +429,6 @@ public abstract class Item implements Const {
    */
   public void setProperties(Map<String, Object> properties) {
     this.properties = properties;
-
     // remove cached value
     any = null;
   }
@@ -459,7 +446,6 @@ public abstract class Item implements Const {
    */
   public void removeProperty(String sKey) {
     properties.remove(sKey);
-
     // remove cached value
     any = null;
   }
@@ -505,7 +491,6 @@ public abstract class Item implements Const {
         this.properties.put(sProperty, propertiesSource.getValue(sProperty));
       }
     }
-
     // reset cached value
     any = null;
   }
@@ -525,5 +510,4 @@ public abstract class Item implements Const {
   public long getRate() {
     return -1;
   }
-
 }

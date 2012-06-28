@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.events;
 
 import java.util.ArrayList;
@@ -36,11 +35,9 @@ import org.jajuk.util.log.Log;
  * to handle informing observers about events happening in other objects.
  */
 class ObserverRegistry {
-
   /** The list of Observers per JajukEvents. */
   private final Map<JajukEvents, List<Observer>> hEventComponents = new Hashtable<JajukEvents, List<Observer>>(
       10);
-
   /** Number of current executions for a given event. */
   private static Map<JajukEvent, Integer> canals = new HashMap<JajukEvent, Integer>(10);
 
@@ -67,7 +64,6 @@ class ObserverRegistry {
       }
       canals.put(event, numberOfExecutions + 1);
     }
-
     try {
       JajukEvents subject = event.getSubject();
       List<Observer> observers = hEventComponents.get(subject);
@@ -92,7 +88,6 @@ class ObserverRegistry {
         int numberOfExecutions = canals.get(event);
         assert (numberOfExecutions > 0);
         canals.put(event, numberOfExecutions - 1);
-
         // to avoid adding more and more memory via the canals-map, we should remove items when they
         // reach zero again
         // the effect on memory is rather small, but it shows up after some time in memory profiles

@@ -45,28 +45,20 @@ import org.jajuk.util.log.Log;
  * Logical item.
  */
 public class Track extends LogicalItem implements Comparable<Track> {
-
   /** Track album*. */
   private final Album album;
-
   /** Track genre. */
   private final Genre genre;
-
   /** Track artist. */
   private final Artist artist;
-
   /** Track length. */
   private final long length;
-
   /** Track year. */
   private final Year year;
-
   /** Track type. */
   private final Type type;
-
   /** Album Artist. */
   private AlbumArtist albumArtist;
-
   /** Track associated files. */
   private final List<File> alFiles = new ArrayList<File>(1);
 
@@ -123,7 +115,6 @@ public class Track extends LogicalItem implements Comparable<Track> {
   @Override
   public String toString() {
     StringBuilder sOut = new StringBuilder();
-
     sOut.append("Track[ID=").append(getID()).append(" Name={{").append(getName()).append("}} ")
         .append(album).append(" ").append(genre).append(" ").append(artist).append(" Length=")
         .append(length).append(" Year=").append(year.getValue()).append(" Rate=").append(getRate())
@@ -233,7 +224,6 @@ public class Track extends LogicalItem implements Comparable<Track> {
    */
   public long getTotalSize() {
     long l = 0;
-
     for (final File file : alFiles) {
       l += file.getSize();
     }
@@ -250,7 +240,6 @@ public class Track extends LogicalItem implements Comparable<Track> {
   public File getBestFile(boolean bIgnoreUnmounted) {
     File fileOut = null;
     final List<File> alMountedFiles = new ArrayList<File>(2);
-
     // firstly, filter mounted files if needed
     for (final File file : alFiles) {
       if (!bIgnoreUnmounted || file.isReady()) {
@@ -485,7 +474,6 @@ public class Track extends LogicalItem implements Comparable<Track> {
         setRate(rate);
         return;
       }
-
       // rate contains final rate [0,100]
       long rate = 0;
       // Normalize values to avoid division by zero
@@ -514,7 +502,6 @@ public class Track extends LogicalItem implements Comparable<Track> {
         setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, duration * playcount);
         playtimeRate = 1f;
       }
-
       // compute the playcount rate (logarithmic scale to take number of plays
       // into account)
       // playcountRate = ln(track playcount)/ln(max playcount)
@@ -651,7 +638,6 @@ public class Track extends LogicalItem implements Comparable<Track> {
       return getStringValue(sKey);
     } else if (Const.XML_FILES.equals(sKey)) {
       final StringBuilder sbOut = new StringBuilder();
-
       for (final File file : alFiles) {
         sbOut.append(file.getAbsolutePath());
         sbOut.append(',');
@@ -691,5 +677,4 @@ public class Track extends LogicalItem implements Comparable<Track> {
     sb.deleteCharAt(sb.length() - 1);
     return sb.toString();
   }
- 
 }

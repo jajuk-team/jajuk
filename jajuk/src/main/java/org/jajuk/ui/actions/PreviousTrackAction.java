@@ -38,7 +38,6 @@ import org.jajuk.util.log.Log;
  * <code>CTRL + LEFT ARROW</code>.
  */
 public class PreviousTrackAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -107,7 +106,6 @@ public class PreviousTrackAction extends JajukAction {
             }
           }
         }.start();
-
       }
     }
   }

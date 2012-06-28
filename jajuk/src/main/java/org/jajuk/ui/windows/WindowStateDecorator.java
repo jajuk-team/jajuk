@@ -30,10 +30,8 @@ import org.jajuk.util.log.Log;
  * fullscreen, tray, slimbar...)
  */
 public abstract class WindowStateDecorator {
-
   /** Current state. */
   private WindowState state = WindowState.NOT_BUILT;
-
   /** Decorated window *. */
   private IJajukWindow window;
 
@@ -83,7 +81,6 @@ public abstract class WindowStateDecorator {
       if (show && state == WindowState.NOT_BUILT) {
         window.initUI();
       }
-
       // Show or hide specific code before the window is made visible
       if (show) {
         window.getWindowStateDecorator().specificBeforeShown();
@@ -91,10 +88,8 @@ public abstract class WindowStateDecorator {
       } else {
         window.getWindowStateDecorator().specificBeforeHidden();
       }
-
       // Display or hide the window
       ((Component) window).setVisible(show);
-
       // Show or hide specific code after the window is made visible
       if (show) {
         window.getWindowStateDecorator().specificAfterShown();
@@ -102,7 +97,6 @@ public abstract class WindowStateDecorator {
       } else {
         window.getWindowStateDecorator().specificAfterHidden();
       }
-
       // store the new state
       if (show) {
         state = WindowState.BUILT_DISPLAYED;
@@ -169,5 +163,4 @@ public abstract class WindowStateDecorator {
    * class WindowDecorator.
    */
   abstract public void specificAfterHidden();
-
 }

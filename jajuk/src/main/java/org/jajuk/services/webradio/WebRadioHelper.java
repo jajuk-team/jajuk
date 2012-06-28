@@ -47,13 +47,10 @@ import org.xml.sax.SAXException;
  * Persistence and various helper methods for webradios.
  */
 public class WebRadioHelper {
-
   /** Custom webradios  file */
   private static File fCustom = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_CUSTOM);
-
   /** Presets webradios file */
   private static File fPresets = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET);
-
   /** Reference to the WebRadiomanager */
   private static WebRadioManager manager = WebRadioManager.getInstance();
 
@@ -168,7 +165,6 @@ public class WebRadioHelper {
     if (!fCustom.delete()) {
       Log.warn("Could not delete file " + file.getAbsolutePath());
     }
-
   }
 
   /**
@@ -178,7 +174,6 @@ public class WebRadioHelper {
     // Try to load custom radios first, then presets
     fCustom = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_CUSTOM);
     fPresets = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET);
-
     if (fCustom.exists()) {
       try {
         loadCustomRadios();
@@ -188,7 +183,6 @@ public class WebRadioHelper {
     } else {
       Log.info("No custom webradio file found.");
     }
-
     if (!fPresets.exists()) {
       // download the stream list and load it asynchronously to avoid
       // freezing offline sessions.

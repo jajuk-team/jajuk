@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.wizard;
 
 import java.awt.event.ActionEvent;
@@ -52,20 +51,13 @@ import org.jajuk.util.log.Log;
  * directory.
  */
 public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   JButton jbFileSelection;
-
   JLabel jlSelectedFile;
-
   JTextField jtfRefreshTime;
-
   OKCancelPanel okp;
-
   String deviceName;
-
   /** Selected directory. */
   private File fDir;
 
@@ -75,16 +67,12 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
   public SimpleDeviceWizard() {
     setTitle(Messages.getString("SimpleDeviceWizard.0"));
     setAlwaysOnTop(true);
-
     okp = new OKCancelPanel(this);
     jbFileSelection = new JButton(IconLoader.getIcon(JajukIcons.OPEN_DIR));
     jbFileSelection.addActionListener(this);
-
     jlSelectedFile = new JLabel(Messages.getString("FirstTimeWizard.9"));
     jlSelectedFile.setBorder(new BevelBorder(BevelBorder.LOWERED));
-
     jtfRefreshTime = new JTextField(Const.DEFAULT_REFRESH_INTERVAL);
-
     // Add items
     setLayout(new MigLayout("insets 10,gapx 10,gapy 15", "[][grow]"));
     add(new JLabel(UtilGUI.getImage(Const.IMAGE_SEARCH)), "cell 0 0 0 3");
@@ -101,7 +89,6 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
     add(jtfRefreshTime, "grow");
     add(new JLabel(Messages.getString("DeviceWizard.54")), "wrap"); // mins
     add(okp, "right,cell 1 3");
-
     getRootPane().setDefaultButton(okp.getOKButton());
   }
 
@@ -121,9 +108,7 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
       final int returnVal = jfc.showOpenDialog(this);
       if (returnVal == JFileChooser.APPROVE_OPTION) {
         fDir = jfc.getSelectedFile();
-
         deviceName = fDir.getName();
-
         // First, check device *name* availability, otherwise, use a <name>~<nb>
         // name
         int code = DeviceManager.getInstance().checkDeviceAvailablity(deviceName,
@@ -144,10 +129,8 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
           okp.getOKButton().setEnabled(false);
           return;
         }
-
         okp.getOKButton().setEnabled(true);
         okp.getOKButton().grabFocus();
-
         jlSelectedFile.setText(fDir.getAbsolutePath());
         pack(); // repack as size of dialog can be exceeded now
       }
@@ -157,7 +140,6 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
           Messages.showErrorMessage(143);
           return;
         }
-
         // Create a directory device
         final Device device = DeviceManager.getInstance().registerDevice(deviceName,
             Device.Type.DIRECTORY, fDir.getAbsolutePath());

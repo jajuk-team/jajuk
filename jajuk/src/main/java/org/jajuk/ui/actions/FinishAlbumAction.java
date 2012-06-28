@@ -42,7 +42,6 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class FinishAlbumAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

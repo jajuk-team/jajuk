@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.views;
 
 import java.awt.FlowLayout;
@@ -64,27 +63,17 @@ import org.jajuk.util.log.Log;
  * Wikipedia view.
  */
 public class WikipediaView extends ViewAdapter implements ActionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   JLabel jlLanguage;
-
   JComboBox jcbLanguage;
-
   /** Cobra web browser. */
   JajukHtmlPanel browser;
-
   JButton jbCopy;
-
   JButton jbLaunchInExternalBrowser;
-
   JToggleButton jbArtistSearch;
-
   JToggleButton jbAlbumSearch;
-
   JToggleButton jbTrackSearch;
-
   /** Language index. */
   int indexLang = 0;
 
@@ -92,16 +81,10 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
    * .
    */
   enum Type {
-
-    ARTIST,
-
-    ALBUM,
-
-    TRACK
+    ARTIST, ALBUM, TRACK
   }
 
   Type type = Type.ARTIST;
-
   /** Current search. */
   String search = null;
 
@@ -157,7 +140,6 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
     bg.add(jbArtistSearch);
     bg.add(jbAlbumSearch);
     bg.add(jbTrackSearch);
-
     JToolBar jtb = new JajukJToolbar();
     jtb.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
     // Add items
@@ -171,28 +153,23 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
       jtb.addSeparator();
     }
     jtb.add(jcbLanguage);
-
     JPanel jpCommand = new JPanel();
     jpCommand.setBorder(BorderFactory.createEtchedBorder());
     jpCommand.setLayout(new FlowLayout(FlowLayout.LEFT));
     jpCommand.add(jtb);
-
     // global layout
     setLayout(new MigLayout("ins 0", "[grow]", "[][grow]"));
     browser = new JajukHtmlPanel();
     add(jpCommand, "growx,wrap");
     add(browser, "grow");
-
     // Display default page at startup is none track launch
     // avoid to launch this if a track is playing
     // to avoid thread concurrency
     if (QueueModel.getPlayingFile() == null) {
       reset();
     }
-
     // subscriptions to events
     ObservationManager.register(WikipediaView.this);
-
     // Force initial message refresh
     UtilFeatures.updateStatus(this);
   }
@@ -259,10 +236,8 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
       } catch (Exception e) {
         Log.error(e);
       }
-
       return;
     }
-
     Thread t = new Thread("Wikipedia Search Thread") {
       @Override
       public void run() {
@@ -296,7 +271,6 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
           }
           // Store the search to avoid future identical searches
           WikipediaView.this.search = lSearch;
-
           URL url = new URL(("http://"
               + LocaleManager.getLocaleForDesc((String) jcbLanguage.getSelectedItem())
               + ".wikipedia.org/wiki/" + lSearch).replaceAll(" ", "_"));
@@ -316,7 +290,6 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
         } catch (Exception e) {
           Log.error(e);
         }
-
       }
     };
     t.setPriority(Thread.MIN_PRIORITY);

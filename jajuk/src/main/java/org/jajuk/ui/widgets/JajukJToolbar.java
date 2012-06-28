@@ -27,7 +27,6 @@ import javax.swing.SwingConstants;
  * Jajuk specific toolbar : non opaque and non floatable.
  */
 public class JajukJToolbar extends JToolBar {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 3947108459544670564L;
 
@@ -50,5 +49,4 @@ public class JajukJToolbar extends JToolBar {
     setRollover(true);
     setBorder(null);
   }
-
 }

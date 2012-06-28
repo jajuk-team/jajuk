@@ -26,7 +26,6 @@ import org.jajuk.util.JajukFileFilter;
  * Image filter.
  */
 public final class ImageFilter extends JajukFileFilter {
-
   /** Self instance. */
   private static ImageFilter self = new ImageFilter();
 

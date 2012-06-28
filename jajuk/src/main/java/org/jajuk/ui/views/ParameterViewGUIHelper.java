@@ -64,10 +64,8 @@ import org.jajuk.util.log.Log;
  * Helper class containing GUI update code from and to configuration.
  */
 public class ParameterViewGUIHelper implements ActionListener, ItemListener, ChangeListener {
-
   /** Associated Parameter view. */
   ParameterView pv;
-
   /** Do some updates require a restart ?. */
   boolean someOptionsAppliedAtNextStartup = false;
 
@@ -86,31 +84,22 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
   void updateConfFromGUI() {
     // Options
     updateConfFromGUIOptions();
-
     // Startup
     updateConfFromGUIStartup();
-
     // Confirmations
     updateConfFromGUIConfirmation();
-
     // History
     updateConfFromGUIHistory();
-
     // Patterns
     updateConfFromGUIPatterns();
-
     // Advanced
     updateConfFromGUIAdvanced();
-
     // GUI
     updateConfFromGUIGUI();
-
     // If jajuk home changes, write new path in bootstrap file
     handleWorkspaceChange();
-
     // Network
     updateConfFromGUINetwork();
-
     // Covers
     updateConfFromGUICover();
     // configuration
@@ -133,25 +122,18 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
   void updateGUIFromConf() {
     // History
     updateGUIFromConfHistory();
-
     // Confirmations
     updateGUIFromConfConfirmations();
-
     // Options
     updateGUIFromConfOptions();
-
     // Advanced
     updateGUIFromConfAdvanced();
-
     //Startup
     updateGUIFromConfStartup();
-
     // Network
     updateGUIFromConfNetwork();
-
     // Covers
     updateGUIFromConfCovers();
-
     // UI
     updateGUIFromConfGUI();
   }
@@ -189,7 +171,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     pv.jcbDefaultActionClick.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
     pv.jcbDefaultActionDrop.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_DROP));
     pv.jcbHotkeys.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HOTKEYS));
-
     String rightLanguageDesc = LocaleManager.getDescForLocale(Conf
         .getString(Const.CONF_OPTIONS_LANGUAGE));
     // Select the right language
@@ -287,7 +268,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     pv.jtfFrameTitle.setText(Conf.getString(Const.CONF_PATTERN_FRAME_TITLE));
     pv.jtfBalloonNotifierPattern.setText(Conf.getString(Const.CONF_PATTERN_BALLOON_NOTIFIER));
     pv.jtfInformationPattern.setText(Conf.getString(Const.CONF_PATTERN_INFORMATION));
-
     pv.jtfMPlayerPath.setText(Conf.getString(Const.CONF_MPLAYER_PATH_FORCED));
     pv.jtfMPlayerArgs.setText(Conf.getString(Const.CONF_MPLAYER_ARGS));
     pv.jtfEnvVariables.setText(Conf.getString(Const.CONF_ENV_VARIABLES));
@@ -548,7 +528,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, notificatorType.name());
       }
     }
-
     // Message if show systray is changed
     final boolean bOldShowSystray = Conf.getBoolean(Const.CONF_SHOW_SYSTRAY);
     if (bOldShowSystray != pv.jcbShowSystray.isSelected()) {
@@ -557,14 +536,11 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     Conf.setProperty(Const.CONF_SHOW_SYSTRAY, Boolean.toString(pv.jcbShowSystray.isSelected()));
     Conf.setProperty(Const.CONF_TITLE_ANIMATION,
         Boolean.toString(pv.jcbTitleAnimation.isSelected()));
-
     // Minimize to tray
     Conf.setProperty(Const.CONF_MINIMIZE_TO_TRAY,
         Boolean.toString(pv.jcbMinimizeToTray.isSelected()));
-
     Conf.setProperty(Const.CONF_TRAY_CLICK_DISPLAY_WINDOW,
         Boolean.toString(pv.jcbClickTrayAlwaysDisplayWindow.isSelected()));
-
     final int oldPerspectiveSize = Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE);
     // If we perspective size changed and no font message have been already
     // displayed, display a message
@@ -581,7 +557,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
       Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
           Const.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
       pv.bLAFMessage = true;
-
     }
   }
 
@@ -665,7 +640,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
           // switching to new workspace
           java.io.File session = SessionService.getSessionIdFile();
           session.delete();
-
           UtilSystem.copyRecursively(from, dest);
           bPreviousPathExist = false;
         }
@@ -677,7 +651,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         SessionService.setWorkspace(pv.psJajukWorkspace.getUrl());
         //Commit the bootstrap file
         SessionService.commitBootstrapFile();
-
         UtilGUI.stopWaiting();
         // Display a warning message and restart Jajuk
         if (bPreviousPathExist) {
@@ -693,13 +666,11 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         } catch (Exception e1) {
           Log.error(e1);
         }
-
       } catch (final Exception e) {
         Messages.showErrorMessage(24);
         Log.error(e);
       }
     }
-
   }
 
   /*
@@ -843,7 +814,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
           ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
           // Display a message
           Messages.showInfoMessage(Messages.getString("Success"));
-
         }
       }.start();
     }
@@ -855,7 +825,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
       }
       pv.crossFadeDuration.setEnabled(!pv.jcbEnableBitPerfect.isSelected());
     }
-
   }
 
   /*
@@ -881,5 +850,4 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     // when changing tab, store it for future jajuk sessions
     Conf.setProperty(Const.CONF_OPTIONS_TAB, Integer.toString(pv.jtpMain.getSelectedIndex()));
   }
-
 }

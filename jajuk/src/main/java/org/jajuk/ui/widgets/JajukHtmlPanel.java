@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.widgets;
 
 import java.io.BufferedWriter;
@@ -58,18 +57,13 @@ import org.xml.sax.SAXException;
  * Cobra browser HTML panel.
  */
 public class JajukHtmlPanel extends HtmlPanel {
-
   /** The Constant COLON.   */
   private static final String COLON = " : ";
-
   /** The Constant URL_COLON.   */
   private static final String URL_COLON = "URL: ";
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -4033441908072591661L;
-
   private final SimpleHtmlRendererContext rcontext;
-
   private final DocumentBuilderImpl dbi;
 
   /**
@@ -91,7 +85,6 @@ public class JajukHtmlPanel extends HtmlPanel {
    * @param lang 
    */
   public void setURL(final URL url, final String lang) {
-
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
       @Override
       public Void doInBackground() {
@@ -99,10 +92,8 @@ public class JajukHtmlPanel extends HtmlPanel {
             + '/' + UtilSystem.getOnlyFile(url.toString() + ".html"));
         try {
           setCursor(UtilGUI.WAIT_CURSOR);
-
           // first indicate that we are loading a new page
           setLoading(url);
-
           String sPage = DownloadManager.downloadText(url);
           // Leave if no result
           if (sPage == null) {
@@ -131,7 +122,6 @@ public class JajukHtmlPanel extends HtmlPanel {
         } catch (FileNotFoundException e) {
           // This happens whenever the Artist is not listed on Wikipedia, so we should report this more user-friendly
           Log.debug("Could not read page: {{" + url.toString() + " Cache: " + page + "}}");
-
           try {
             setFailedToLoad(Messages.getString("WikipediaView.9") + ": " + url.toString());
           } catch (IOException e1) {
@@ -144,7 +134,6 @@ public class JajukHtmlPanel extends HtmlPanel {
           // happen frequently with images on the net
           Log.warn("Could not read page: {{" + url.toString() + " Cache: " + page + "}}",
               e.getMessage());
-
           try {
             setFailedToLoad(URL_COLON + url + COLON + e.getClass().getSimpleName() + COLON
                 + e.getMessage());
@@ -155,7 +144,6 @@ public class JajukHtmlPanel extends HtmlPanel {
           }
         } catch (Exception e) {
           Log.error(e);
-
           try {
             setFailedToLoad(URL_COLON + url + COLON + e.getClass().getSimpleName() + COLON
                 + e.getMessage());
@@ -249,7 +237,6 @@ public class JajukHtmlPanel extends HtmlPanel {
       // A documentURI should be provided to resolve relative
       // URIs.
       Document document = dbi.parse(is);
-
       // Now set document in panel. This is what causes the
       // document to render.
       setDocument(document, rcontext);

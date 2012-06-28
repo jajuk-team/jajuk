@@ -30,7 +30,6 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestXJPopupMenu extends JajukTestCase {
-
   /**
    * Test method for {@link ext.scrollablepopupmenu.XJPopupMenu#removeAll()}.
    */
@@ -140,5 +139,4 @@ public class TestXJPopupMenu extends JajukTestCase {
       // happens if run without GUI support
     }
   }
-
 }

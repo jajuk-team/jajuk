@@ -35,7 +35,6 @@ import org.jajuk.util.log.Log;
  * Animated information dialog that appears and disappears by itself.
  */
 public class JajukToast extends JajukInformationDialog {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

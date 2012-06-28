@@ -40,7 +40,6 @@ import org.jajuk.util.log.Log;
  * Manual preference change of current played track.
  */
 public class ChangeTrackPreferenceAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

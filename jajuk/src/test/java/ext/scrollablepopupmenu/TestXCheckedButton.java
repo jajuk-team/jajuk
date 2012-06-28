@@ -38,7 +38,6 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestXCheckedButton extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -56,20 +55,17 @@ public class TestXCheckedButton extends JajukTestCase {
    */
   public final void testXCheckedButtonAction() {
     new XCheckedButton(new Action() {
-
       @Override
       public void addPropertyChangeListener(PropertyChangeListener listener) {
       }
 
       @Override
       public Object getValue(String key) {
-
         return null;
       }
 
       @Override
       public boolean isEnabled() {
-
         return false;
       }
 
@@ -129,7 +125,6 @@ public class TestXCheckedButton extends JajukTestCase {
   public final void testDisplayIcon() {
     XCheckedButton button = new XCheckedButton("testtext", new DummyIcon());
     button.displayIcon(false);
-
     button.displayIcon(true);
   }
 
@@ -181,13 +176,11 @@ public class TestXCheckedButton extends JajukTestCase {
    * .
    */
   public class DummyIcon implements Icon {
-
     /* (non-Javadoc)
      * @see javax.swing.Icon#getIconHeight()
      */
     @Override
     public int getIconHeight() {
-
       return 0;
     }
 
@@ -196,7 +189,6 @@ public class TestXCheckedButton extends JajukTestCase {
      */
     @Override
     public int getIconWidth() {
-
       return 0;
     }
 
@@ -217,7 +209,6 @@ public class TestXCheckedButton extends JajukTestCase {
     // we should have at least one a mouse listener on the button
     assertTrue(ArrayUtils.toString(button.getMouseListeners()),
         button.getMouseListeners().length > 0);
-
     // none of them looks at the actual event right now...
     button.getMouseListeners()[1].mousePressed(null);
     button.getMouseListeners()[1].mouseEntered(null);
@@ -231,12 +222,9 @@ public class TestXCheckedButton extends JajukTestCase {
   public void testModel() {
     XCheckedButton button = new XCheckedButton("testtext", new DummyIcon());
     assertNotNull(button.getModel());
-
     button.setSelected(true);
     button.setSelected(false);
-
     ((DefaultButtonModel) button.getModel()).setGroup(new ButtonGroup());
-
     button.setSelected(true);
     button.setSelected(false);
   }

@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.events;
 
 import java.util.Properties;
@@ -27,10 +26,8 @@ import java.util.Properties;
  * Jajuk event (Observer pattern).
  */
 public class JajukEvent {
-
   /** Event subject. */
   private final JajukEvents subject;
-
   /** Event properties. */
   private Properties pDetails;
 
@@ -133,5 +130,4 @@ public class JajukEvent {
     }
     return hash;
   }
-
 }

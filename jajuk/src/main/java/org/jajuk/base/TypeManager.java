@@ -40,40 +40,28 @@ import org.jajuk.util.UtilSystem;
  * <p>
  */
 public final class TypeManager extends ItemManager {
-
   /** The Constant ICON_16X16_VIDEO for the supported media types. */
   private static final String ICON_16X16_VIDEO = "icons/16x16/type_video_16x16.png";
-
   /** The Constant ICONS_16X16_TYPE_APE for the supported media types. */
   private static final String ICONS_16X16_TYPE_APE = "icons/16x16/type_ape_16x16.png";
-
   /** The Constant ICONS_16X16_TYPE_MP2 for the supported media types. */
   private static final String ICONS_16X16_TYPE_MP2 = "icons/16x16/type_mp2_16x16.png";
-
   /** The Constant ICONS_16X16_TYPE_AAC for the supported media types. */
   private static final String ICONS_16X16_TYPE_AAC = "icons/16x16/type_aac_16x16.png";
-
   /** The Constant ICONS_16X16_TYPE_WMA for the supported media types. */
   private static final String ICONS_16X16_TYPE_WMA = "icons/16x16/type_wma_16x16.png";
-
   /** The Constant ICONS_16X16_TYPE_FLAC for the supported media types. */
   private static final String ICONS_16X16_TYPE_FLAC = "icons/16x16/type_flac_16x16.png";
-
   /** The Constant ICONS_16X16_TYPE_RAM for the supported media types. */
   private static final String ICONS_16X16_TYPE_RAM = "icons/16x16/type_ram_16x16.png";
-
   /** The Constant ICONS_16X16_TYPE_OGG for the supported media types. */
   private static final String ICONS_16X16_TYPE_OGG = "icons/16x16/type_ogg_16x16.png";
-
   /** The Constant ICONS_16X16_TYPE_WAV for the supported media types. */
   private static final String ICONS_16X16_TYPE_WAV = "icons/16x16/type_wav_16x16.png";
-
   /** The Constant ICONS_16X16_TYPE_MP3 for the supported media types. */
   private static final String ICONS_16X16_TYPE_MP3 = "icons/16x16/type_mp3_16x16.png";
-
   /** extensions->types. */
   private final Map<String, Type> hmSupportedTypes = new HashMap<String, Type>(10);
-
   /** Self instance. */
   private static TypeManager singleton = new TypeManager();
 
@@ -143,7 +131,6 @@ public final class TypeManager extends ItemManager {
       // if the type is already in memory, use it
       return hmSupportedTypes.get(sExtension);
     }
-
     type = new Type(sId, sName, sExtension, (Class<IPlayerImpl>) cPlayerImpl,
         (Class<ITagImpl>) cTagImpl);
     registerItem(type);
@@ -199,7 +186,6 @@ public final class TypeManager extends ItemManager {
     if (hmSupportedTypes.isEmpty()) {
       return "";
     }
-
     StringBuilder sb = new StringBuilder();
     Iterator<String> it = hmSupportedTypes.keySet().iterator();
     while (it.hasNext()) {
@@ -459,7 +445,6 @@ public final class TypeManager extends ItemManager {
     // logo
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICONS_16X16_TYPE_WAV)
         .toExternalForm());
-
     // -- VIDEO --
     if (Conf.getBoolean(Const.CONF_SHOW_VIDEOS)) {
       registerVideoTypes();

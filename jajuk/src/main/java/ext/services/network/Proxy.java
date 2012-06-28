@@ -20,7 +20,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.network;
 
 import java.io.IOException;
@@ -35,16 +34,11 @@ import org.apache.commons.codec.binary.Base64;
  * .
  */
 public class Proxy extends java.net.Proxy {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 7495084217081194366L;
-
   private final String url;
-
   private final int port;
-
   private final String user;
-
   private final String password;
 
   /**
@@ -119,5 +113,4 @@ public class Proxy extends java.net.Proxy {
   public String getUser() {
     return user;
   }
-
 }

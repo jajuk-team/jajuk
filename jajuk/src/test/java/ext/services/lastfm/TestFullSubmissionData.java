@@ -26,7 +26,6 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestFullSubmissionData extends JajukTestCase {
-
   /**
    * Test method for.
    *

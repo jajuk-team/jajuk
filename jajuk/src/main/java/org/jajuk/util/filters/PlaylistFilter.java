@@ -32,7 +32,6 @@ import org.jajuk.util.UtilSystem;
  * Playlist filter.
  */
 public final class PlaylistFilter extends JajukFileFilter {
-
   /** Self instance. */
   private static PlaylistFilter self = new PlaylistFilter();
 
@@ -65,7 +64,6 @@ public final class PlaylistFilter extends JajukFileFilter {
     } else {
       final String extension = UtilSystem.getExtension(f);
       final TypeManager mgr = TypeManager.getInstance();
-
       // check extension is known
       if (mgr.isExtensionSupported(extension)) {
         // check it is a playlist

@@ -99,56 +99,32 @@ import org.jajuk.util.log.Log;
  */
 public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer,
     MouseWheelListener, ActionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** A queue view to be used by the show queue view slimbar switch button. Don't use it directly, use the getQueueWindow() method instead that lazy-load it. */
   private JWindow queueViewWindow;
-
   private JButton jbInfo;
-
   private SizedButton jbPrevious;
-
   private SizedButton jbNext;
-
   private SizedButton jbPlayPause;
-
   private SizedButton jbStop;
-
   private PreferenceToolbar preferences;
-
   private DropDownButton jddbSmart;
-
   private JPopupMenu jpmSmart;
-
   private JMenuItem jbBestof;
-
   private JMenuItem jbNovelties;
-
   private JMenuItem jbRandom;
-
   private SizedButton jbFinishAlbum;
-
   private JButton jbMaximize;
-
   private SizedButton jbVolume;
-
   private SearchBox sbSearch;
-
   private JToolBar slimJajuk;
-
   private JToolBar jtbPlay;
-
   private DropDownButton webRadioButton;
-
   private String title = "";
-
   /** State decorator. */
   private WindowStateDecorator decorator;
-
   JajukInformationDialog balloon;
-
   private static JajukSlimbar self;
 
   /**
@@ -244,7 +220,6 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
   }
 
   /** This mouse motion listener allows the whole slim bar dragging. */
-
   private final MouseMotionAdapter motionAdapter = new MouseMotionAdapter() {
     @Override
     public void mouseDragged(MouseEvent e) {
@@ -261,7 +236,6 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
       Conf.setProperty(Const.CONF_SLIMBAR_POSITION, (int) point.getX() + "," + (int) point.getY());
     }
   };
-
   private SizedButton jbQueue;
 
   /**
@@ -284,11 +258,8 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
   public void initUI() {
     // Instanciate the PlayerStateMediator to listen for player basic controls
     PlayerStateMediator.getInstance();
-
     setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
-
     addWindowListener(new WindowAdapter() {
-
       @Override
       public void windowClosing(WindowEvent e) {
         try {
@@ -298,7 +269,6 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
         }
       }
     });
-
     jbInfo = new JButton(IconLoader.getIcon(JajukIcons.INFO));
     jbInfo.addActionListener(this);
     // Listen for dragging
@@ -311,9 +281,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
         showBalloon();
       }
     });
-
     jtbPlay = new JajukJToolbar();
-
     jbPrevious = new SizedButton(ActionManager.getAction(PREVIOUS_TRACK), false);
     jbPrevious.addMouseMotionListener(motionAdapter);
     // Manage right click : replay the track (this not triggers an action so we use a MouseAdapter here)
@@ -329,27 +297,20 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
         }
       }
     });
-
     jbNext = new SizedButton(ActionManager.getAction(NEXT_TRACK), false);
     jbNext.addMouseMotionListener(motionAdapter);
-
     jbPlayPause = new SizedButton(ActionManager.getAction(PAUSE_RESUME_TRACK), false);
     jbPlayPause.addMouseMotionListener(motionAdapter);
-
     jbStop = new SizedButton(ActionManager.getAction(STOP_TRACK), false);
     jbStop.addMouseMotionListener(motionAdapter);
-
     jbQueue = new SizedButton(ActionManager.getAction(QUEUE_TO_SLIM), false);
     jbQueue.addMouseMotionListener(motionAdapter);
-
     jtbPlay.add(jbPrevious);
     jtbPlay.add(jbPlayPause);
     jtbPlay.add(jbStop);
     jtbPlay.add(jbNext);
     jtbPlay.add(jbQueue);
-
     JToolBar jtbSmart = new JajukJToolbar();
-
     jddbSmart = new DropDownButton(IconLoader.getIcon(JajukIcons.INC_RATING)) {
       private static final long serialVersionUID = 1L;
 
@@ -358,26 +319,21 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
         return jpmSmart;
       }
     };
-
     jbBestof = new JMenuItem(ActionManager.getAction(JajukActions.BEST_OF));
     jbBestof.setIcon(IconLoader.getIcon(JajukIcons.BESTOF_16X16));
     jbBestof.addActionListener(this);
-
     jbNovelties = new JMenuItem(ActionManager.getAction(JajukActions.NOVELTIES));
     jbNovelties.setIcon(IconLoader.getIcon(JajukIcons.NOVELTIES_16X16));
     jbNovelties.addActionListener(this);
-
     jbRandom = new JMenuItem(ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL));
     jbRandom.setIcon(IconLoader.getIcon(JajukIcons.SHUFFLE_GLOBAL_16X16));
     jbRandom.addActionListener(this);
-
     jpmSmart = new JPopupMenu();
     jpmSmart.add(jbRandom);
     jpmSmart.add(jbBestof);
     jpmSmart.add(jbNovelties);
     jddbSmart.addToToolBar(jtbSmart);
     jddbSmart.addMouseMotionListener(motionAdapter);
-
     if (JajukActions.SHUFFLE_GLOBAL.toString()
         .equals(Conf.getString(Const.CONF_SLIMBAR_SMART_MODE))) {
       jddbSmart.setAction(ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL));
@@ -391,18 +347,14 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
       jddbSmart.setAction(ActionManager.getAction(JajukActions.NOVELTIES));
       jddbSmart.setIcon(IconLoader.getIcon(JajukIcons.NOVELTIES_16X16));
     }
-
     preferences = new PreferenceToolbar();
     jtbSmart.add(preferences);
-
     JToolBar jtbTools = new JajukJToolbar();
-
     int iVolume = (int) (100 * Conf.getFloat(Const.CONF_VOLUME));
     if (iVolume > 100) { // can occur in some undefined cases
       iVolume = 100;
     }
     jbVolume = new SizedButton(ActionManager.getAction(MUTE_STATE), false);
-
     jbVolume.addMouseMotionListener(motionAdapter);
     jbVolume.addMouseWheelListener(this);
     jbVolume.setText(null);
@@ -416,36 +368,27 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
       }
     });
     MuteAction.setVolumeIcon(iVolume);
-
     jbMaximize = new JajukButton(ActionManager.getAction(JajukActions.SLIM_JAJUK));
     jbMaximize.addMouseMotionListener(motionAdapter);
-
     jtbTools.add(jbVolume);
     jtbTools.addSeparator();
     jtbTools.add(jbMaximize);
     jtbTools.add(new SizedButton(ActionManager.getAction(JajukActions.EXIT), false));
-
     // Continue
     jbFinishAlbum = new SizedButton(ActionManager.getAction(JajukActions.FINISH_ALBUM));
-
     // Search
     sbSearch = new SearchBox();
-
     sbSearch.setPreferredSize(new Dimension(75, 20));
     sbSearch.setMaximumSize(new Dimension(75, 20));
     sbSearch.addMouseMotionListener(motionAdapter);
-
     slimJajuk = new JajukJToolbar();
-
     AmbienceComboBox ambienceCombo = new AmbienceComboBox();
     ambienceCombo.setPreferredSize(new Dimension(42, 20));
     ambienceCombo.addMouseMotionListener(motionAdapter);
-
     // Webradio button
     webRadioButton = new WebRadioButton(IconLoader.getIcon(JajukIcons.WEBRADIO_16X16));
     JToolBar jtbWebRadio = new JajukJToolbar();
     webRadioButton.addToToolBar(jtbWebRadio);
-
     slimJajuk.add(Box.createHorizontalStrut(4));
     slimJajuk.add(jbInfo);
     slimJajuk.addSeparator();
@@ -461,28 +404,20 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     slimJajuk.addSeparator();
     slimJajuk.add(jtbTools);
     slimJajuk.add(Box.createHorizontalStrut(2));
-
     slimJajuk.setBorder(BorderFactory.createRaisedBevelBorder());
-
     getRootPane().setToolTipText(getPlayerInfo());
-
     add(slimJajuk);
-
     ObservationManager.register(this);
-
     getRootPane().setWindowDecorationStyle(JRootPane.NONE);
     updateCurrentTitle();
     setVisible(true);
     setAlwaysOnTop(true);
-
     // Set location
     String lastPosition = Conf.getString(Const.CONF_SLIMBAR_POSITION);
-
     int iScreenWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
     int iScreenHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
     int x = iScreenWidth / 2;
     int y = iScreenHeight / 2;
-
     try {
       StringTokenizer st = new StringTokenizer(lastPosition, ",");
       x = Integer.parseInt(st.nextToken());
@@ -501,10 +436,8 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
       Log.debug("Cannot restore slimbar position");
       Log.error(e);
     }
-
     // Force initial message refresh
     UtilFeatures.updateStatus(this);
-
     // Install global keystrokes
     WindowGlobalKeystrokeManager.getInstance();
   }
@@ -712,7 +645,6 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     // there are some resources to close in the Search-Box that I could not get
     // rid of with any of the default dispose-methods in Swing...
     sbSearch.close();
-
     super.dispose();
   }
 }

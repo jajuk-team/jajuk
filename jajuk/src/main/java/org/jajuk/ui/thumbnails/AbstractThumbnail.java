@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.thumbnails;
 
 import com.vlsolutions.swing.docking.ShadowBorder;
@@ -72,59 +71,35 @@ import org.jajuk.util.log.Log;
  * display...
  */
 public abstract class AbstractThumbnail extends JPanel implements ActionListener, Transferable {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -6396225563540281695L;
-
   /** Size. */
   int size;
-
   protected JLabel jlIcon;
-
   private static long lDateLastMove;
-
   private static Point lastPosition;
-
   JPopupMenu jmenu;
-
   JMenuItem jmiPlay;
-
   JMenuItem jmiPush;
-
   JMenuItem jmiFrontPush;
-
   JMenuItem jmiDelete;
-
   JMenuItem jmiPlayShuffle;
-
   JMenuItem jmiPlayRepeat;
-
   JMenuItem jmiGetCovers;
-
   private JMenuItem jmiShowPopup;
-
   JMenuItem jmiCDDBWizard;
-
   JMenuItem jmiProperties;
-
   JMenuItem jmiOpenLastFMSite;
-
   /** Dragging flag used to disable simple click behavior. */
   private static boolean bDragging = false;
-
   /** Current details dialog. */
   private static ThumbnailPopup details;
-
   private static AbstractThumbnail last;
-
   private static AbstractThumbnail mouseOverItem = null;
-
   /** Whether this thumb is used in artist view *. */
   private boolean artistView;
-
   /** Associated file. */
   File fCover;
-
   /** Timer used to launch popup */
   static {
     Timer timerPopup = new Timer(200, new ActionListener() {
@@ -229,7 +204,6 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   void postPopulate() {
     // do this only once as it might be a costly operation...
     Item item = getItem();
-
     // Album menu
     jmenu = new JPopupMenu();
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
@@ -280,7 +254,6 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     }
     jmenu.addSeparator();
     jmenu.add(jmiProperties);
-
     jlIcon.addMouseMotionListener(new MouseMotionAdapter() {
       @Override
       public void mouseDragged(MouseEvent e) {
@@ -297,11 +270,8 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
         lDateLastMove = System.currentTimeMillis();
         lastPosition = e.getPoint();
       }
-
     });
-
     jlIcon.addMouseListener(new JajukMouseAdapter() {
-
       @Override
       public void handlePopup(MouseEvent e) {
         if (e.getSource() == jlIcon) {
@@ -353,7 +323,6 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
         }
         super.mouseReleased(e);
       }
-
     });
   }
 
@@ -420,7 +389,6 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
         UtilGUI.centerWindow(jd);
         jd.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         jd.setVisible(true);
-
       } else {
         Messages.showErrorMessage(166);
       }
@@ -467,5 +435,4 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   public JLabel getIcon() {
     return jlIcon;
   }
-
 }

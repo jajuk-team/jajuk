@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.wizard;
 
 import java.awt.Frame;
@@ -41,16 +40,12 @@ import org.jajuk.util.Messages;
  * directory.
  */
 public class PreparePartyConvertSettings extends JajukJDialog implements ActionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** Listener which is informed about changes to the settings. */
   ChangeListener listener;
-
   /** Text field for the input of the command. */
   JTextField jtfPACPLCommand;
-
   /** OK/Cancel buttons. */
   OKCancelPanel okp;
 
@@ -63,27 +58,20 @@ public class PreparePartyConvertSettings extends JajukJDialog implements ActionL
    */
   public PreparePartyConvertSettings(ChangeListener listener, String command, Frame parent) {
     super(parent, true);
-
     setLocationRelativeTo(parent);
-
     this.listener = listener;
-
     setTitle(Messages.getString("PreparePartyWizard.38"));
     setAlwaysOnTop(true);
-
     okp = new OKCancelPanel(this);
     jtfPACPLCommand = new JTextField(command);
     // select all
     jtfPACPLCommand.setSelectionStart(0);
     jtfPACPLCommand.setSelectionEnd(command.length());
-
     // Add items
     setLayout(new MigLayout("insets 10,gapx 10,gapy 15", "[]"));
-
     add(new JLabel(Messages.getString("PreparePartyWizard.39")), "wrap");
     add(jtfPACPLCommand, "grow,wrap");
     add(okp, "wrap");
-
     getRootPane().setDefaultButton(okp.getOKButton());
     pack();
     setVisible(true);
@@ -100,7 +88,6 @@ public class PreparePartyConvertSettings extends JajukJDialog implements ActionL
     if (e.getSource() == okp.getOKButton()) {
       // inform the caller about the new value
       listener.stateChanged(new ChangeEvent(jtfPACPLCommand.getText()));
-
       // exit
       dispose();
     }

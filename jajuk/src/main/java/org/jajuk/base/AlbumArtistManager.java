@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.base;
 
 import java.util.Collections;
@@ -32,10 +31,8 @@ import org.jajuk.util.Const;
  * Convenient class to manage album-artists.
  */
 public final class AlbumArtistManager extends ItemManager {
-
   /** Self instance. */
   private static AlbumArtistManager singleton = new AlbumArtistManager();
-
   /** List of all known album-artists. */
   private static Vector<String> albumArtistsList = new Vector<String>(100); // NOPMD
 
@@ -145,5 +142,4 @@ public final class AlbumArtistManager extends ItemManager {
   public List<AlbumArtist> getAlbumArtists() {
     return (List<AlbumArtist>) getItems();
   }
-
 }

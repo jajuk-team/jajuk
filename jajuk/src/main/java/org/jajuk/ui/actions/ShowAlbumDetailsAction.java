@@ -43,7 +43,6 @@ import org.jajuk.util.Messages;
  * </p>
  */
 public class ShowAlbumDetailsAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -8078402652430413821L;
 

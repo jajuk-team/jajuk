@@ -29,7 +29,6 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class TestDebugLogAction extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -39,7 +38,6 @@ public class TestDebugLogAction extends JajukTestCase {
   public void testPerform() {
     // initialize Log
     Log.init();
-
     DebugLogAction action = new DebugLogAction();
     try {
       action.perform(null); // it doesn't look at the actionevent at all right
@@ -57,5 +55,4 @@ public class TestDebugLogAction extends JajukTestCase {
   public void testDebugLogAction() {
     new DebugLogAction();
   }
-
 }

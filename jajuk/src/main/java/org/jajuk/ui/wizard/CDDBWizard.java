@@ -63,29 +63,19 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class CDDBWizard extends JajukJDialog implements ActionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   private SteppedComboBox jcbAlbum;
-
   private JajukTable jtable;
-
   private CDDBTableModel model;
-
   /** OK/Cancel panel. */
   private OKCancelPanel okc;
-
   /** Items to be retagged. */
   private List<CDDBTrack> alCddbTracks;
-
   /** Freedb Items. */
   private Freedb fdb;
-
   private FreedbQueryResult[] foundAlbums;
-
   private FreedbReadResult fdbReader;
-
   private List<String> jcbFoundAlbums;
 
   /**
@@ -95,14 +85,11 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
    */
   public CDDBWizard(final List<Track> tracks) {
     super();
-
     UtilGUI.waiting();
-
     // windows title: absolute path name of the given directory
     setTitle(Messages.getString("CDDBWizard.19"));
     setModal(true);
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
-
       @Override
       public Void doInBackground() {
         try {
@@ -198,7 +185,6 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
         Messages.getString("Close"));
     // Albums List
     jcbAlbum = new SteppedComboBox();
-
     // add all matches
     jcbAlbum.setModel(new DefaultComboBoxModel(jcbFoundAlbums.toArray()));
     jcbAlbum.setSelectedIndex(jcbAlbum.getSelectedIndex());
@@ -211,10 +197,8 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
         jtable.selectAll();
       }
     });
-
     // Show the number of matches found
     JLabel jlCurrent = new JLabel(foundAlbums.length + " " + Messages.getString("CDDBWizard.18"));
-
     // Add items
     setLayout(new MigLayout("insets 10,gapx 15,gapy 15", "[grow,800:800:]"));
     add(new JLabel(Messages.getString("CDDBWizard.5")), "split 3");
@@ -222,7 +206,6 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     add(jlCurrent, "wrap");
     add(new JScrollPane(jtable), "grow,wrap");
     add(okc, "span,right");
-
     getRootPane().setDefaultButton(okc.getOKButton());
     pack();
     setLocationRelativeTo(JajukMainWindow.getInstance());
@@ -383,5 +366,4 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
       }.start();
     }
   }
-
 }

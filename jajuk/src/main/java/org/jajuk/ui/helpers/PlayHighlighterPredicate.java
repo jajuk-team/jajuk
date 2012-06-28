@@ -37,9 +37,7 @@ import org.jdesktop.swingx.decorator.HighlightPredicate;
  * if the item at given row is playing.
  */
 public class PlayHighlighterPredicate implements HighlightPredicate {
-
   private final JajukTableModel model;
-
   private final JajukTable jtable;
 
   /**

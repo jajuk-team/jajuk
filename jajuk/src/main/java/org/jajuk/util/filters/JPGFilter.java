@@ -26,7 +26,6 @@ import org.jajuk.util.JajukFileFilter;
  * jpg filter.
  */
 public class JPGFilter extends JajukFileFilter {
-
   /** Self instance. */
   private static JPGFilter self = new JPGFilter();
 
@@ -45,5 +44,4 @@ public class JPGFilter extends JajukFileFilter {
   protected JPGFilter() {
     super(new String[] { "jpeg", "jpg" });
   }
-
 }

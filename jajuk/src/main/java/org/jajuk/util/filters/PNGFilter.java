@@ -26,7 +26,6 @@ import org.jajuk.util.JajukFileFilter;
  * Png filter.
  */
 public class PNGFilter extends JajukFileFilter {
-
   /** Self instance. */
   private static PNGFilter self = new PNGFilter();
 
@@ -45,5 +44,4 @@ public class PNGFilter extends JajukFileFilter {
   protected PNGFilter() {
     super(new String[] { "png" });
   }
-
 }

@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.base;
 
 import java.io.Serializable;
@@ -31,10 +30,8 @@ import org.jajuk.util.UtilString;
  * Multi-method track comparator.
  */
 public class TrackComparator implements Comparator<Track>, Serializable {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -4735723947400147134L;
-
   /** Sorting method. */
   private final TrackComparatorType comparatorType;
 
@@ -42,31 +39,22 @@ public class TrackComparator implements Comparator<Track>, Serializable {
    * Sorting methods constants.
    */
   public enum TrackComparatorType {
-
     /** Compare first based on the genre, then on artist and then on album. */
     GENRE_ARTIST_ALBUM,
-
     /** Compare based on artist and then album. */
     ARTIST_ALBUM,
-
     /** Compare only on album. */
     ALBUM,
-
     /** Compare only on year. */
     YEAR_ALBUM,
-
     /** Compare only on the discovery date of the album. */
     DISCOVERY_ALBUM,
-
     /** Compare on the rate and then the album. */
     RATE_ALBUM,
-
     /** Compare on the number of hits and then on the album. */
     HITS_ALBUM,
-
     /** Compare on disc number and order of the track in the album. */
     ORDER,
-
     /** Compare to find identifical tracks. */
     ALMOST_IDENTICAL
   }
@@ -149,7 +137,6 @@ public class TrackComparator implements Comparator<Track>, Serializable {
     else if (comparatorType == TrackComparatorType.ALMOST_IDENTICAL) {
       sHashCompare = buildIdenticalTestFootprint(track);
     }
-
     return sHashCompare;
   }
 

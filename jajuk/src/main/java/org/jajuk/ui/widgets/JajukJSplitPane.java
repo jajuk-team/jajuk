@@ -29,14 +29,10 @@ import javax.swing.JSplitPane;
  * http://www.jguru.com/faq/view.jsp?EID=27191
  */
 public class JajukJSplitPane extends JSplitPane {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -7358047597849102849L;
-
   protected boolean isPainted = false;
-
   protected boolean hasProportionalLocation = false;
-
   protected double proportionalLocation = -1;
 
   /* (non-Javadoc)

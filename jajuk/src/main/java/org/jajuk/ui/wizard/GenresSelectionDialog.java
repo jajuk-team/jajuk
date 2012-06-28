@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.wizard;
 
 import java.awt.Dimension;
@@ -52,20 +51,13 @@ import org.jajuk.util.log.Log;
  * Allow a user to select a list of genres.
  */
 public class GenresSelectionDialog extends JajukJDialog implements ActionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   JComboBox jcbAmbiences;
-
   JList jlist;
-
   OKCancelPanel okc;
-
   Set<Genre> selectedGenres;
-
   Set<Genre> disabledGenres;
-
   List<String> list;
 
   /**

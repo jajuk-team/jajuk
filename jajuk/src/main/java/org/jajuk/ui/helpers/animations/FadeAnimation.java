@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.helpers.animations;
 
 import java.awt.Window;
@@ -31,9 +30,7 @@ import org.jajuk.util.log.Log;
  * Fade animation implementation.
  */
 public class FadeAnimation extends AbstractAnimation {
-
   private Direction opacity;
-
   /** Number of frames. */
   private static final int FRAME_NUMBER = 50;
 
@@ -82,7 +79,6 @@ public class FadeAnimation extends AbstractAnimation {
    * .
    */
   public interface Direction {
-
     /**
      * Gets the opacity.
      * 
@@ -97,14 +93,12 @@ public class FadeAnimation extends AbstractAnimation {
    * .
    */
   public enum Directions implements Direction {
-
     IN {
       @Override
       public float getOpacity(float progress) {
         return progress;
       }
     },
-
     OUT {
       @Override
       public float getOpacity(float progress) {

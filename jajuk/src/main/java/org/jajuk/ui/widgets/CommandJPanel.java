@@ -94,71 +94,39 @@ import org.jvnet.substance.SubstanceLookAndFeel;
  */
 public class CommandJPanel extends JXPanel implements ActionListener, ChangeListener, Observer,
     MouseWheelListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   // singleton
-
   private static CommandJPanel command = new CommandJPanel();
-
   // widgets declaration
-
   /** Continue mode button. */
   private JajukToggleButton jbContinue;
-
   private JajukToggleButton jbRepeat;
-
   private JajukToggleButton jbRandom;
-
   private JToolBar jtbSpecial;
-
   private DropDownButton ddbGlobalRandom;
-
   private JRadioButtonMenuItem jmiShuffleModeSong;
-
   private JRadioButtonMenuItem jmiShuffleModeAlbum;
-
   private JRadioButtonMenuItem jmiShuffleModeAlbum2;
-
   private JPopupMenu popupGlobalRandom;
-
   private JajukButton jbBestof;
-
   private DropDownButton ddbNovelties;
-
   private JPopupMenu popupNovelties;
-
   private WebRadioButton webRadioButton;
-
   private JRadioButtonMenuItem jmiNoveltiesModeSong;
-
   private JRadioButtonMenuItem jmiNoveltiesModeAlbum;
-
   private JajukButton jbNorm;
-
   private DropDownButton ddbDDJ;
-
   private JPopupMenu popupDDJ;
-
   private JButton jbPrevious;
-
   private JButton jbNext;
-
   private JButton jbPlayPause;
-
   private JButton jbStop;
-
   private JSlider jsVolume;
-
   private JLabel jlVolume;
-
   private PreferenceToolbar evaltoobar;
-
   private JajukButton jbMute;
-
   // variables declaration
-
   private JajukToggleButton jbRepeatAll;
 
   /**
@@ -185,11 +153,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   public void initUI() {
     // Instanciate the PlayerStateMediator to listen for player basic controls
     PlayerStateMediator.getInstance();
-
     // Install keystrokes on invisible components
     ActionUtil.installKeystrokes(CommandJPanel.this, ActionManager.getAction(NEXT_ALBUM),
         ActionManager.getAction(PREVIOUS_ALBUM));
-
     // Mode toolbar
     // we need an inner toolbar to apply size properly
     JPanel jpModes = new JPanel();
@@ -207,10 +173,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     jpModes.add(jbRepeat);
     jpModes.add(jbRepeatAll);
     jpModes.add(jbRandom);
-
     // Eval toolbar
     evaltoobar = new PreferenceToolbar();
-
     // Volume
     int iVolume = (int) (100 * Conf.getFloat(Const.CONF_VOLUME));
     // Perform bounds test, -1 or >100 can occur in some undefined cases (see
@@ -234,7 +198,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
         ActionManager.getAction(JajukActions.INCREASE_VOLUME));
     ActionUtil.installKeystrokes(jsVolume, ActionManager.getAction(JajukActions.DECREASE_VOLUME),
         ActionManager.getAction(JajukActions.INCREASE_VOLUME));
-
     // Special functions toolbar
     jtbSpecial = new JajukJToolbar();
     ddbGlobalRandom = new DropDownButton(IconLoader.getIcon(JajukIcons.SHUFFLE_GLOBAL)) {
@@ -271,9 +234,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     popupGlobalRandom.add(jmiShuffleModeAlbum);
     popupGlobalRandom.add(jmiShuffleModeAlbum2);
     ddbGlobalRandom.setText("");// no text visible
-
     jbBestof = new JajukButton(ActionManager.getAction(JajukActions.BEST_OF));
-
     ddbNovelties = new DropDownButton(IconLoader.getIcon(JajukIcons.NOVELTIES)) {
       private static final long serialVersionUID = 1L;
 
@@ -300,7 +261,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     popupNovelties.add(jmiNoveltiesModeAlbum);
     ddbNovelties.setText("");// no text visible
     jbNorm = new JajukButton(ActionManager.getAction(FINISH_ALBUM));
-
     // Radio tool bar
     popupDDJ = new JPopupMenu();
     ddbDDJ = new DropDownButton(IconLoader.getIcon(JajukIcons.DIGITAL_DJ)) {
@@ -315,17 +275,14 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     populateDJs();
     // no text visible
     ddbDDJ.setText("");
-
     webRadioButton = new WebRadioButton(IconLoader.getIcon(JajukIcons.WEBRADIO));
     JToolBar jtbWebRadio = new JajukJToolbar();
     webRadioButton.addToToolBar(jtbWebRadio);
-
     ddbDDJ.addToToolBar(jtbSpecial);
     ddbNovelties.addToToolBar(jtbSpecial);
     ddbGlobalRandom.addToToolBar(jtbSpecial);
     jtbSpecial.add(jbBestof);
     jtbSpecial.add(jbNorm);
-
     // Play buttons
     jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
     // Manage right click : replay the track (this not triggers an action so we use a MouseAdapter here)
@@ -354,13 +311,10 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     jbStop = new JajukButton(ActionManager.getAction(STOP_TRACK));
     jbStop.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
         new RoundRectButtonShaper());
-
     // Add items
     setLayout(new MigLayout("insets 5 0 0 5", "[grow][grow][grow]"));
-
     add(jtbWebRadio, "left,split 2,gapright 10");
     add(jtbSpecial, "left,gapright 10");
-
     add(jbStop, "center,split 7,width 40!,height 30,gapright 5!");
     add(jbPrevious, "center,width 58!,height 30!,gapright 0");
     add(jbPlayPause, "center,width 45!,height 45!,gapright 0");
@@ -368,16 +322,12 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     add(jbMute, "center,width 42!,height 30!,gapright 5");
     add(jsVolume, "center,growx,width 25::100,gapright 3");
     add(jlVolume, "width 40!,gapright 10");
-
     add(jpModes, "right,split 2,gapright 5");
     add(evaltoobar, "right");
-
     // register to player events
     ObservationManager.register(CommandJPanel.this);
-
     // Update initial status
     UtilFeatures.updateStatus(this);
-
   }
 
   /*

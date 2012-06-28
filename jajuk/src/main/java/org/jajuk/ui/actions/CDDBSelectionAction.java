@@ -44,7 +44,6 @@ import org.jajuk.util.log.Log;
  * </p>.
  */
 public class CDDBSelectionAction extends SelectionAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -8078402652430413821L;
 
@@ -72,13 +71,10 @@ public class CDDBSelectionAction extends SelectionAction {
       // - We perform here fast computation, no need to use a SwingWorker here.
       // Actual network call to freedb is done in the CDDBWizard class that uses
       // a SwingWorker.
-
       // Build a list of tracks from various items
       List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(selection, true);
-
       // Remove video tracks found (clips)
       CollectionUtils.filter(tracks, new JajukPredicates.NotVideoPredicate());
-
       // Display the wizard
       new CDDBWizard(tracks);
     } catch (Exception ex) {

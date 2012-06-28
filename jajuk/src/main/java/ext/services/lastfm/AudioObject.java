@@ -20,14 +20,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.lastfm;
 
 /**
  * Interface for all audio objects (e.g. AudioFile, Radio, PodcastFeedEntry)
  */
 public interface AudioObject {
-
   /**
    * Gets the album.
    * 

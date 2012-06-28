@@ -85,106 +85,57 @@ import org.jajuk.util.log.Log;
  * Singleton.
  */
 public final class JajukJMenuBar extends JMenuBar implements Observer {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** The singleton. */
   static JajukJMenuBar jjmb = new JajukJMenuBar();
-
   JMenu file;
-
   JMenuItem jmiFileExit;
-
   JMenu views;
-
   JMenuItem jmiRestoreDefaultViews;
-
   JMenuItem jmiRestoreDefaultViewsAllPerpsectives;
-
   JMenu properties;
-
   JMenuItem jmiNewProperty;
-
   JMenuItem jmiRemoveProperty;
-
   JMenu mode;
-
   JCheckBoxMenuItem jcbShowPopups;
-
   JCheckBoxMenuItem jcbNoneInternetAccess;
-
   private final JCheckBoxMenuItem jcbmiRepeat;
-
   private final JCheckBoxMenuItem jcbmiShuffle;
-
   private final JCheckBoxMenuItem jcbmiContinue;
-
   private final JCheckBoxMenuItem jcbmiIntro;
-
   private final JCheckBoxMenuItem jcbmiKaraoke;
-
   JMenuBar mainmenu;
-
   JMenu smart;
-
   JMenuItem jmiShuffle;
-
   JMenuItem jmiBestof;
-
   JMenuItem jmiNovelties;
-
   JMenuItem jmiFinishAlbum;
-
   JMenu tools;
-
   JMenuItem jmiduplicateFinder;
-
   JMenuItem jmialarmClock;
-
   JMenuItem jmiprepareParty;
-
   JMenu configuration;
-
   JMenuItem jmiDJ;
-
   JMenuItem jmiAmbience;
-
   JMenuItem jmiWizard;
-
   JMenuItem jmiOptions;
-
   JCheckBoxMenuItem jmiUnmounted;
-
   JMenu help;
-
   JMenuItem jmiHelp;
-
   JMenuItem jmiTipOfTheDay;
-
   JMenuItem jmiQualityAgent;
-
   JMenuItem jmiTraces;
-
   JMenuItem jmiCheckforUpdates;
-
   JMenuItem jmiAbout;
-
   JLabel jlUpdate;
-
   JButton jbGC;
-
   JButton jbCommit;
-
   JButton jbSlim;
-
   private JajukButton jbFull = null;
-
   private final JCheckBoxMenuItem jcbmiRepeatAll;
-
   /** The jmi activate tags. */
   private JMenuItem jmiActivateTags;
-
   private JMenuItem jmiDonate;
 
   /**
@@ -194,26 +145,21 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     setAlignmentX(0.0f);
     // File menu
     file = new JMenu(Messages.getString("JajukJMenuBar.0"));
-
     jmiFileExit = new JMenuItem(ActionManager.getAction(JajukActions.EXIT));
     file.add(jmiFileExit);
-
     // Properties menu
     properties = new JMenu(Messages.getString("JajukJMenuBar.5"));
-
     jmiNewProperty = new JMenuItem(ActionManager.getAction(CUSTOM_PROPERTIES_ADD));
     jmiRemoveProperty = new JMenuItem(ActionManager.getAction(CUSTOM_PROPERTIES_REMOVE));
     jmiActivateTags = new JMenuItem(ActionManager.getAction(EXTRA_TAGS_WIZARD));
     properties.add(jmiNewProperty);
     properties.add(jmiRemoveProperty);
     properties.add(jmiActivateTags);
-
     // View menu
     views = new JMenu(Messages.getString("JajukJMenuBar.8"));
     jmiRestoreDefaultViews = new JMenuItem(ActionManager.getAction(VIEW_RESTORE_DEFAULTS));
     jmiRestoreDefaultViewsAllPerpsectives = new JMenuItem(
         ActionManager.getAction(JajukActions.ALL_VIEW_RESTORE_DEFAULTS));
-
     views.add(jmiRestoreDefaultViews);
     views.add(jmiRestoreDefaultViewsAllPerpsectives);
     views.addSeparator();
@@ -243,11 +189,9 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
       jmViews.add(jmi);
     }
     views.add(jmViews);
-
     // Mode menu
     String modeText = Messages.getString("JajukJMenuBar.9");
     mode = new JMenu(ActionUtil.strip(modeText));
-
     jcbmiRepeat = new JCheckBoxMenuItem(ActionManager.getAction(REPEAT_MODE));
     jcbmiRepeat.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT));
     jcbmiRepeatAll = new JCheckBoxMenuItem(ActionManager.getAction(REPEAT_ALL_MODE));
@@ -272,19 +216,16 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     mode.add(jcbmiContinue);
     mode.add(jcbmiIntro);
     mode.add(jcbmiKaraoke);
-
     // Smart Menu
     smart = new JMenu(Messages.getString("JajukJMenuBar.29"));
     jmiShuffle = new SizedJMenuItem(ActionManager.getAction(JajukActions.SHUFFLE_GLOBAL));
     jmiBestof = new SizedJMenuItem(ActionManager.getAction(JajukActions.BEST_OF));
     jmiNovelties = new SizedJMenuItem(ActionManager.getAction(JajukActions.NOVELTIES));
     jmiFinishAlbum = new SizedJMenuItem(ActionManager.getAction(JajukActions.FINISH_ALBUM));
-
     smart.add(jmiShuffle);
     smart.add(jmiBestof);
     smart.add(jmiNovelties);
     smart.add(jmiFinishAlbum);
-
     // Tools Menu
     tools = new JMenu(Messages.getString("JajukJMenuBar.28"));
     jmiduplicateFinder = new JMenuItem(ActionManager.getAction(JajukActions.FIND_DUPLICATE_FILES));
@@ -294,7 +235,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     tools.add(jmialarmClock);
     tools.add(jmiprepareParty);
     // tools.addSeparator();
-
     // Configuration menu
     configuration = new JMenu(Messages.getString("JajukJMenuBar.21"));
     jmiDJ = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
@@ -303,11 +243,9 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     jmiAmbience = new JMenuItem(ActionManager.getAction(CONFIGURE_AMBIENCES));
     jmiWizard = new JMenuItem(ActionManager.getAction(SIMPLE_DEVICE_WIZARD));
     jmiOptions = new JMenuItem(ActionManager.getAction(OPTIONS));
-
     jmiUnmounted = new JCheckBoxMenuItem(ActionManager.getAction(JajukActions.UNMOUNTED));
     jmiUnmounted.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
     jmiUnmounted.putClientProperty(Const.DETAIL_ORIGIN, jmiUnmounted);
-
     jcbShowPopups = new JCheckBoxMenuItem(Messages.getString("ParameterView.228"));
     jcbShowPopups.setSelected(Conf.getBoolean(Const.CONF_SHOW_POPUPS));
     jcbShowPopups.addActionListener(new ActionListener() {
@@ -318,7 +256,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
         ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE));
       }
     });
-
     jcbNoneInternetAccess = new JCheckBoxMenuItem(Messages.getString("ParameterView.264"));
     jcbNoneInternetAccess.setToolTipText(Messages.getString("ParameterView.265"));
     jcbNoneInternetAccess.setSelected(Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS));
@@ -331,7 +268,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
         ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE));
       }
     });
-
     configuration.add(jmiUnmounted);
     configuration.add(jcbShowPopups);
     configuration.add(jcbNoneInternetAccess);
@@ -340,7 +276,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     configuration.add(jmiAmbience);
     configuration.add(jmiWizard);
     configuration.add(jmiOptions);
-
     // Help menu
     String helpText = Messages.getString("JajukJMenuBar.14");
     help = new JMenu(ActionUtil.strip(helpText));
@@ -351,7 +286,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     jmiTraces = new JMenuItem(ActionManager.getAction(SHOW_TRACES));
     jmiCheckforUpdates = new JMenuItem(ActionManager.getAction(JajukActions.CHECK_FOR_UPDATES));
     jmiTipOfTheDay = new JMenuItem(ActionManager.getAction(TIP_OF_THE_DAY));
-
     help.add(jmiHelp);
     help.add(jmiTipOfTheDay);
     // Install this action only if Desktop class is supported, it is used to
@@ -364,7 +298,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     help.add(jmiCheckforUpdates);
     help.add(jmiDonate);
     help.add(jmiAbout);
-
     mainmenu = new JMenuBar();
     mainmenu.add(file);
     mainmenu.add(views);
@@ -374,17 +307,14 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     mainmenu.add(tools);
     mainmenu.add(configuration);
     mainmenu.add(help);
-
     // Apply mnemonics (Alt + first char of the menu keystroke)
     applyMnemonics();
-
     if (SessionService.isTestMode()) {
       jbCommit = new JajukButton(ActionManager.getAction(JajukActions.COMMIT));
       jbGC = new JajukButton(ActionManager.getAction(JajukActions.GC));
     }
     jbSlim = new JajukButton(ActionManager.getAction(JajukActions.SLIM_JAJUK));
     jbFull = new JajukButton(ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK));
-
     JMenuBar eastmenu = new JMenuBar();
     // only show GC-button in test-mode
     if (SessionService.isTestMode()) {
@@ -393,14 +323,11 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     }
     eastmenu.add(jbSlim);
     eastmenu.add(jbFull);
-
     setLayout(new BorderLayout());
     add(mainmenu, BorderLayout.WEST);
     add(eastmenu, BorderLayout.EAST);
-
     // Check for new release and display the icon if a new release is available
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
-
       @Override
       public Void doInBackground() {
         UpgradeManager.checkForUpdate();
@@ -422,7 +349,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
           add(jlUpdate);
         }
       }
-
     };
     // Search online for upgrade if the option is set and if the none Internet
     // access option is not set
@@ -477,7 +403,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   @Override
   public void update(final JajukEvent event) {
     SwingUtilities.invokeLater(new Runnable() {
-
       @Override
       public void run() {
         if (JajukEvents.PARAMETERS_CHANGE.equals(event.getSubject())
@@ -496,7 +421,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
           }
         }
       }
-
     });
   }
 
@@ -553,5 +477,4 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   public void setKaraokeSelected(final boolean b) {
     jcbmiKaraoke.setSelected(b);
   }
-
 }

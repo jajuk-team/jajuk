@@ -28,37 +28,26 @@ package ext;
  * Deals with the different version of the Java Virtual Machine. <br>
  */
 public class JVM {
-
   /** The Constant JDK1_0.   */
   public static final int JDK1_0 = 10;
-
   /** The Constant JDK1_1.   */
   public static final int JDK1_1 = 11;
-
   /** The Constant JDK1_2.   */
   public static final int JDK1_2 = 12;
-
   /** The Constant JDK1_3.   */
   public static final int JDK1_3 = 13;
-
   /** The Constant JDK1_4.   */
   public static final int JDK1_4 = 14;
-
   /** The Constant JDK1_5.   */
   public static final int JDK1_5 = 15;
-
   /** The Constant JDK1_6.   */
   public static final int JDK1_6 = 16;
-
   /** The Constant JDK1_7.   */
   public static final int JDK1_7 = 17;
-
   /** The Constant JDK1_8.   */
   public static final int JDK1_8 = 18;
-
   /** The Constant JDK1_9.   */
   public static final int JDK1_9 = 19;
-
   private static JVM current;
   static {
     current = new JVM();
@@ -205,5 +194,4 @@ public class JVM {
   public boolean isOneDotNine() {
     return jdkVersion == JDK1_9;
   }
-
 }

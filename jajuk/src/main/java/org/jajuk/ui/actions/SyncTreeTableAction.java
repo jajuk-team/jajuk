@@ -39,7 +39,6 @@ import org.jajuk.util.Messages;
  * <br>When called against a table view, selecting an item in a tree view will filter the table accordingly.
  */
 public class SyncTreeTableAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -84,5 +83,4 @@ public class SyncTreeTableAction extends JajukAction {
           .notify(new JajukEvent(JajukEvents.TREE_SELECTION_CHANGED, detailsTreeEvent));
     }
   }
-
 }

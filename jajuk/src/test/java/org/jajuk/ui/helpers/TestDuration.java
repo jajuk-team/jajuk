@@ -29,7 +29,6 @@ import org.junit.Test;
  * .
  */
 public class TestDuration {
-
   /**
    * Test method for {@link org.jajuk.ui.helpers.Duration#hashCode()}.
    */
@@ -37,7 +36,6 @@ public class TestDuration {
   public void testHashCode() {
     Duration dur = new Duration(123);
     Duration equ = new Duration(123);
-
     JUnitHelpers.HashCodeTest(dur, equ);
   }
 
@@ -67,7 +65,6 @@ public class TestDuration {
     Duration dur = new Duration(234);
     Duration equal = new Duration(234);
     Duration notequal = new Duration(233);
-
     JUnitHelpers.EqualsTest(dur, equal, notequal);
   }
 
@@ -82,7 +79,6 @@ public class TestDuration {
     Duration dur = new Duration(234);
     Duration equal = new Duration(234);
     Duration notequal = new Duration(233);
-
     JUnitHelpers.CompareToTest(dur, equal, notequal);
   }
 
@@ -93,9 +89,7 @@ public class TestDuration {
   public void testGetDuration() {
     Duration dur = new Duration(234);
     Duration dur2 = new Duration(233);
-
     assertEquals(234, dur.getDuration());
     assertEquals(233, dur2.getDuration());
   }
-
 }

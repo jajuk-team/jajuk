@@ -26,10 +26,8 @@ import org.jajuk.util.Messages;
  * JajukException.
  */
 public class JajukException extends Exception {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** Error code. */
   private final int code;
 
@@ -85,5 +83,4 @@ public class JajukException extends Exception {
         + pMessage : Messages.getErrorMessage(code));
     this.code = code;
   }
-
 }

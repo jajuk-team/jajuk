@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.base;
 
 import java.util.Iterator;
@@ -31,7 +30,6 @@ import org.jajuk.util.ReadOnlyIterator;
  * Convenient class to manage years.
  */
 public final class YearManager extends ItemManager {
-
   /** Self instance. */
   private static YearManager singleton = new YearManager();
 
@@ -131,5 +129,4 @@ public final class YearManager extends ItemManager {
   public ReadOnlyIterator<Year> getYearsIterator() {
     return new ReadOnlyIterator<Year>((Iterator<Year>) getItemsIterator());
   }
-
 }

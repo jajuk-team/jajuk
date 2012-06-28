@@ -32,7 +32,6 @@ import org.jajuk.util.Messages;
  * Action for displaying the simple device creation wizard.
  */
 public class SimpleDeviceWizardAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

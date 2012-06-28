@@ -49,10 +49,8 @@ import org.jajuk.util.log.Log;
  * Ambience selection combo box.
  */
 public class AmbienceComboBox extends SteppedComboBox {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** An instance of the ambience combo listener. */
   private AmbienceListener ambienceListener;
 
@@ -60,7 +58,6 @@ public class AmbienceComboBox extends SteppedComboBox {
    * Ambience combo listener.
    */
   private class AmbienceListener implements ActionListener {
-
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -167,5 +164,4 @@ public class AmbienceComboBox extends SteppedComboBox {
     ambienceListener = new AmbienceListener();
     addActionListener(ambienceListener);
   }
-
 }

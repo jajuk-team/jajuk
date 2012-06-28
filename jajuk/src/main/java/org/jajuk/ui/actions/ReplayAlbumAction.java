@@ -36,7 +36,6 @@ import org.jajuk.util.log.Log;
  * Action class for jumping to the begining of current album.
  */
 public class ReplayAlbumAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

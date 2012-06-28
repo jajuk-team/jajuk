@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.widgets;
 
 import java.awt.Frame;
@@ -35,7 +34,6 @@ import org.jajuk.util.UtilGUI;
  * Custom JDialog.
  */
 public class JajukJDialog extends JDialog {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 3280008357821054703L;
 
@@ -44,7 +42,6 @@ public class JajukJDialog extends JDialog {
    */
   public JajukJDialog() {
     super(JajukMainWindow.getInstance());
-
     setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
   }
 
@@ -56,7 +53,6 @@ public class JajukJDialog extends JDialog {
    */
   public JajukJDialog(Frame owner, boolean modal) {
     super(owner, modal);
-
     setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
   }
 

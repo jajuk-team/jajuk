@@ -32,7 +32,6 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestDirectoryFilter extends JajukTestCase {
-
   /**
    * Test method for.
    *

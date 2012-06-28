@@ -28,7 +28,6 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestAnyFileFilter extends JajukTestCase {
-
   /**
    * Test method for.
    *

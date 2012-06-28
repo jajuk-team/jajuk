@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.util.List;
@@ -34,22 +33,15 @@ import org.jajuk.util.log.Log;
  * Is responsible to manage various UI items changed during refreshing.
  */
 public class RefreshReporter {
-
   protected Device device;
-
   protected int dirTotal;
-
   protected int dirCount;
-
   /** Actual refresh date start*. */
   protected long lRefreshDateStart;
-
   /** Number of new files found during refresh for stats. */
   protected int iNbNewFiles;
-
   /** Number of corrupted files found during refresh for stats. */
   protected int iNbCorruptedFiles;
-
   /** Number of files or playlists removed during refresh */
   protected int droppedFileOrPlaylist;
 
@@ -172,5 +164,4 @@ public class RefreshReporter {
   public void updateState(Directory dir) {
     // Intentionnal NOP
   }
-
 }

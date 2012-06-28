@@ -68,10 +68,8 @@ import org.xml.sax.Attributes;
  * Physical item.
  */
 public class Device extends PhysicalItem implements Comparable<Device> {
-
   /** The Constant OPTION_REFRESH_DEEP.*/
   private static final int OPTION_REFRESH_DEEP = 1;
-
   /** The Constant OPTION_REFRESH_CANCEL. */
   private static final int OPTION_REFRESH_CANCEL = 2;
 
@@ -80,48 +78,29 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * .
    */
   public enum Type {
-
-    DIRECTORY,
-
-    FILES_CD,
-
-    NETWORK_DRIVE,
-
-    EXTDD,
-
-    PLAYER
+    DIRECTORY, FILES_CD, NETWORK_DRIVE, EXTDD, PLAYER
   }
 
   /** Device URL (performances). */
   private String sUrl;
-
   /** IO file for optimizations*. */
   private java.io.File fio;
-
   /** Mounted device flag. */
   private boolean bMounted = false;
-
   /** directories. */
   private final List<Directory> alDirectories = new ArrayList<Directory>(20);
-
   /** Already refreshing flag. */
   private volatile boolean bAlreadyRefreshing = false; //NOSONAR
-
   /** Already synchronizing flag. */
   private volatile boolean bAlreadySynchronizing = false; //NOSONAR
-
   /** Volume of created files during synchronization. */
   private long lVolume = 0;
-
   /** date last refresh. */
   private long lDateLastRefresh;
-
   /** Progress reporter *. */
   private RefreshReporter reporter;
-
   /** Refresh deepness choice *. */
   private int choice = Device.OPTION_REFRESH_DEEP;
-
   /** [PERF] cache rootDir directory. */
   private Directory rootDir;
 
@@ -153,26 +132,20 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    */
   public boolean cleanRemovedFiles(List<Directory> dirsToRefresh) {
     long l = System.currentTimeMillis();
-
     // directories cleanup
     boolean bChanges = cleanDirectories(dirsToRefresh);
-
     // files cleanup
     bChanges = bChanges | cleanFiles(dirsToRefresh);
-
     // Playlist cleanup
     bChanges = bChanges | cleanPlaylist(dirsToRefresh);
-
     // clear history to remove old files referenced in it
     if (Conf.getString(Const.CONF_HISTORY) != null) {
       History.getInstance().clear(Integer.parseInt(Conf.getString(Const.CONF_HISTORY)));
     }
-
     // delete old history items
     l = System.currentTimeMillis() - l;
     Log.debug("{{" + getName() + "}} Old file references cleaned in: "
         + ((l < 1000) ? l + " ms" : l / 1000 + " s, changes: " + bChanges));
-
     return bChanges;
   }
 
@@ -272,7 +245,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         dirs.addAll(dir.getDirectoriesRecursively());
       }
     }
-
     for (final Directory dir : dirs) {
       if (!ExitService.isExiting() && dir.getDevice().equals(this) && dir.getDevice().isMounted()
           && !dir.getFio().exists()) {
@@ -298,7 +270,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     if (otherDevice == null) {
       return -1;
     }
-
     // We must be consistent with equals, see
     // http://java.sun.com/javase/6/docs/api/java/lang/Comparable.html
     int comp = getName().compareToIgnoreCase(otherDevice.getName());
@@ -355,7 +326,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     if (dirRoot != null) {
       return dirRoot.getFilesRecursively();
     }
-
     // nothing found, return empty list
     return new ArrayList<org.jajuk.base.File>();
   }
@@ -589,17 +559,14 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         cleanRemovedFiles(dirsToRefresh);
       }
       reporter.cleanupDone();
-
       // Actual refresh
       refreshCommand(((i == Device.OPTION_REFRESH_DEEP) || forcedDeep), true, dirsToRefresh);
       // cleanup logical items
       org.jajuk.base.Collection.cleanupLogical();
-
       // if it is a move, clean old files *after* the refresh
       if (bAfterMove) {
         cleanRemovedFiles(dirsToRefresh);
       }
-
       // notify views to refresh
       ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
       // Commit collection at each refresh (can be useful if
@@ -655,7 +622,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         return choice;
       }
     }
-
     // JajukException are not trapped, will be thrown to the caller
     final Device device = this;
     if (!device.isMounted()) {
@@ -841,13 +807,11 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       if (!isMounted()) {
         return false;
       }
-
       // Check that device is still available
       boolean readyToMount = checkDevice();
       if (!readyToMount) {
         return false;
       }
-
       bAlreadyRefreshing = true;
       // reporter is already set in case of manual refresh
       if (reporter == null) {
@@ -864,7 +828,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       int iNbFilesBeforeRefresh = FileManager.getInstance().getElementCount();
       int iNbDirsBeforeRefresh = DirectoryManager.getInstance().getElementCount();
       int iNbPlaylistsBeforeRefresh = PlaylistManager.getInstance().getElementCount();
-
       if (bDeepScan && Log.isDebugEnabled()) {
         Log.debug("Starting refresh of device : " + this);
       }
@@ -874,7 +837,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       if (!getDirectories().contains(top)) {
         addDirectory(top);
       }
-
       // Start actual scan
       List<Directory> dirs = null;
       if (dirsToRefresh == null) {
@@ -1270,5 +1232,4 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_UNMOUNT));
     }
   }
-
 }

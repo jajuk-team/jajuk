@@ -32,7 +32,6 @@ import org.junit.Test;
  * .
  */
 public class TestFileManager extends JajukTestCase {
-
   /* (non-Javadoc)
    * @see org.jajuk.JajukTestCase#setUp()
    */
@@ -50,16 +49,12 @@ public class TestFileManager extends JajukTestCase {
   public void testRemoveFile() throws IOException {
     // Set-up...
     File file = JUnitHelpers.getFile();
-
     // Remove the reference
     FileManager.getInstance().removeFile(file);
-
     // 1- Check that the collection no more contains the file
     assertTrue(FileManager.getInstance().getFileByID(file.getID()) == null);
-
     // 2- check that associated track no more contains this file
     assertFalse(file.getTrack().getFiles().contains(file));
-
   }
 
   /**
@@ -83,13 +78,10 @@ public class TestFileManager extends JajukTestCase {
     // Perform the move
     File newFile = FileManager.getInstance().changeFileDirectory(oldFile, newDir);
     // Now test ...
-
     //1- Does the new file exist ?
     assertTrue(new java.io.File(newDir.getAbsolutePath() + '/' + oldFile.getName()).exists());
-
     //2- Does the old file is removed ?
     assertFalse(oldFile.getFIO().exists());
-
     //3- Does the associated track contains the right file (and only it)
     List<File> files = newFile.getTrack().getFiles();
     assertTrue(files.size() == 1 && files.get(0).equals(newFile));

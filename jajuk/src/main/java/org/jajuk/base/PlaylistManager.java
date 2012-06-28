@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.base;
 
 import java.io.IOException;
@@ -43,7 +42,6 @@ import org.jajuk.util.log.Log;
  * Convenient class to manage playlists.
  */
 public final class PlaylistManager extends ItemManager implements Observer {
-
   /** Self instance. */
   private static PlaylistManager singleton = new PlaylistManager();
 
@@ -115,7 +113,6 @@ public final class PlaylistManager extends ItemManager implements Observer {
       if (fileToDelete.exists()) {
         UtilSystem.deleteFile(fileToDelete);
       }
-
       // remove playlist
       removeItem(plf);
     } finally {
@@ -346,7 +343,6 @@ public final class PlaylistManager extends ItemManager implements Observer {
         return pl;
       }
     }
-
     // none found
     return null;
   }

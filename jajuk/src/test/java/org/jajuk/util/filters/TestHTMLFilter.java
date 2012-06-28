@@ -28,7 +28,6 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestHTMLFilter extends JajukTestCase {
-
   /**
    * Test method for {@link org.jajuk.util.filters.HTMLFilter#getInstance()}.
    */
@@ -58,5 +57,4 @@ public class TestHTMLFilter extends JajukTestCase {
     // typed
     // manually
   }
-
 }

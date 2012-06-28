@@ -37,7 +37,6 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class TestParameterView extends JajukTestCase {
-
   /**
    * Test method for {@link org.jajuk.ui.views.ParameterView#ParameterView()}.
    */
@@ -55,12 +54,9 @@ public class TestParameterView extends JajukTestCase {
   public void testActionPerformed() throws Exception {
     ParameterView view = new ParameterView();
     view.initUI();
-
     JUnitHelpers.waitForAllWorkToFinishAndCleanup();
-
     // make sure the logger is initialized
     Log.init();
-
   }
 
   /**
@@ -111,18 +107,14 @@ public class TestParameterView extends JajukTestCase {
   public void testUpdateJajukEvent() throws Exception {
     ParameterView view = new ParameterView();
     view.initUI();
-
     // once without details
     view.update(new JajukEvent(JajukEvents.PARAMETERS_CHANGE, null));
-
     // wait for invokeLater to finish();
     JUnitHelpers.clearSwingUtilitiesQueue();
-
     // then with details
     Properties prop = new Properties();
     prop.put(Const.DETAIL_ORIGIN, view);
     view.update(new JajukEvent(JajukEvents.PARAMETERS_CHANGE, prop));
-
     // wait for invokeLater to finish();
     JUnitHelpers.clearSwingUtilitiesQueue();
   }
@@ -131,13 +123,11 @@ public class TestParameterView extends JajukTestCase {
    * .
    */
   private final class MyItemSelectable implements ItemSelectable {
-
     /* (non-Javadoc)
      * @see java.awt.ItemSelectable#removeItemListener(java.awt.event.ItemListener)
      */
     @Override
     public void removeItemListener(ItemListener l) {
-
     }
 
     /* (non-Javadoc)
@@ -145,7 +135,6 @@ public class TestParameterView extends JajukTestCase {
      */
     @Override
     public Object[] getSelectedObjects() {
-
       return null;
     }
 
@@ -154,8 +143,6 @@ public class TestParameterView extends JajukTestCase {
      */
     @Override
     public void addItemListener(ItemListener l) {
-
     }
   }
-
 }

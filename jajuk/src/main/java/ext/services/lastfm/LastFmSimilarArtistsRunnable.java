@@ -20,7 +20,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.lastfm;
 
 import java.awt.Image;
@@ -34,19 +33,14 @@ import org.jajuk.util.Messages;
  * The Class LastFmSimilarArtistsRunnable.
  */
 public class LastFmSimilarArtistsRunnable implements Runnable {
-
   /** The listener. */
   ContextListener listener;
-
   /** The service. */
   private LastFmService service;
-
   /** The artist. */
   private String artist;
-
   /** The interrupted. */
   private volatile boolean interrupted;
-
   /** The id. */
   long id;
 
@@ -83,7 +77,6 @@ public class LastFmSimilarArtistsRunnable implements Runnable {
     if (!interrupted && StringUtils.isNotBlank(artist)
         && !artist.equalsIgnoreCase(Messages.getString("unknown_artist"))) {
       SimilarArtistsInfo artists = service.getSimilarArtists(artist);
-
       if (!interrupted && artists != null) {
         SwingUtilities.invokeLater(new Runnable() {
           @Override
@@ -100,7 +93,6 @@ public class LastFmSimilarArtistsRunnable implements Runnable {
             }
           });
         }
-
         for (int i = 0; i < artists.getArtists().size(); i++) {
           final Image img;
           final ArtistInfo a = artists.getArtists().get(i);
@@ -109,7 +101,6 @@ public class LastFmSimilarArtistsRunnable implements Runnable {
           } else {
             img = null;
           }
-
           if (!interrupted) {
             SwingUtilities.invokeLater(new Runnable() {
               @Override
@@ -122,5 +113,4 @@ public class LastFmSimilarArtistsRunnable implements Runnable {
       }
     }
   }
-
 }

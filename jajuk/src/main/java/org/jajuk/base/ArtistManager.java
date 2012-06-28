@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.base;
 
 import java.util.ArrayList;
@@ -42,13 +41,10 @@ import org.jajuk.util.error.JajukException;
  * Convenient class to manage artists.
  */
 public final class ArtistManager extends ItemManager {
-
   /** Self instance. */
   private static ArtistManager singleton = new ArtistManager();
-
   /** List of all known artists. */
   private Vector<String> artistsList = new Vector<String>(100); // NOPMD
-
   /** note if we have already fully loaded the Collection to speed up initial startup */
   private volatile boolean orderedState = false;
 
@@ -109,7 +105,6 @@ public final class ArtistManager extends ItemManager {
     // add it in genres list if new
     if (!artistsList.contains(sName)) {
       artistsList.add(artist.getName2());
-
       // only sort as soon as we have the Collection fully loaded
       if (orderedState) {
         sortArtistList();
@@ -136,7 +131,6 @@ public final class ArtistManager extends ItemManager {
     // bring this Manager to ordered state when Collection is fully loaded
     orderedState = true;
     sortArtistList();
-
     super.switchToOrderState();
   }
 
@@ -151,35 +145,29 @@ public final class ArtistManager extends ItemManager {
    * @throws JajukException Thrown if adjusting the name fails for some reason.
    */
   Artist changeArtistName(Artist old, String sNewName) throws JajukException {
-
     // check if there is actually a change
     if (old.getName2().equals(sNewName)) {
       return old;
     }
-
     // find out if the QueueModel is playing this track before we change the track!
     boolean queueNeedsUpdate = false;
     if (QueueModel.getPlayingFile() != null
         && QueueModel.getPlayingFile().getTrack().getArtist().equals(old)) {
       queueNeedsUpdate = true;
     }
-
     Artist newItem = registerArtist(sNewName);
     // re apply old properties from old item
     newItem.cloneProperties(old);
-
     // update tracks
     for (Track track : TrackManager.getInstance().getTracks()) {
       if (track.getArtist().equals(old)) {
         TrackManager.getInstance().changeTrackArtist(track, sNewName, null);
       }
     }
-
     // if current track artist name is changed, notify it
     if (queueNeedsUpdate) {
       ObservationManager.notify(new JajukEvent(JajukEvents.ARTIST_CHANGED));
     }
-
     return newItem;
   }
 
@@ -251,7 +239,6 @@ public final class ArtistManager extends ItemManager {
         // [Perf] If item is a track, just return its artist
         // Use a set to avoid dups
         Set<Artist> artistSet = new HashSet<Artist>();
-
         List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item, true);
         for (Track track : tracks) {
           artistSet.add(track.getArtist());

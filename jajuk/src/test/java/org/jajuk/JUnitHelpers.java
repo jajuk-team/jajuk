@@ -71,7 +71,6 @@ import org.jajuk.util.log.Log;
  * Small helper class with functionality that is used in multiple unit tests.
  */
 public class JUnitHelpers {
-
   /**
    * Helper method for removing emma-reports for classes with only static
    * methods
@@ -115,27 +114,22 @@ public class JUnitHelpers {
     Assert.assertNotNull("Object in EqualsTest should not be null!", obj);
     Assert.assertNotNull("Equals-object in EqualsTest should not be null!", equal);
     Assert.assertNotNull("Non-equal-object in EqualsTest should not be null!", notequal);
-
     // make sure different objects are passed in
     Assert.assertFalse("Object and equals-object in EqualsTest should not be identical",
         obj == equal);
     Assert.assertFalse("Object and non-equals-object in EqualsTest should not be identical",
         obj == notequal);
-
     // make sure correct objects are passed
     Assert.assertTrue("Classes of objects in EqualsTest should be equal!",
         obj.getClass().equals(equal.getClass()));
     Assert.assertTrue("Classes of objects in EqualsTest should be equal!",
         obj.getClass().equals(notequal.getClass()));
-
     // make sure correct parameters are passed
     // equal should be equal to obj, not-equal should not be equal to obj!
     Assert.assertTrue("Object and equal-object should be equal in EqualsTest!", obj.equals(equal));
     Assert.assertFalse("Object and non-equal-object should not be equal in EqualsTest!",
         obj.equals(notequal));
-
     // first test some general things that should be true with equals
-
     // reflexive: equals to itself
     Assert
         .assertTrue("Reflexive: object should be equal to itself in EqualsTest!", obj.equals(obj));
@@ -143,20 +137,16 @@ public class JUnitHelpers {
         equal.equals(equal));
     Assert.assertTrue("Reflexive: non-equal-object should be equal to itself in EqualsTest!",
         notequal.equals(notequal));
-
     // not equals to null
     Assert.assertFalse("Object should not be equal to null in EqualsTest!", obj.equals(null));
     Assert.assertFalse("Equal-object should not be equal to null in EqualsTest!",
         equal.equals(null));
     Assert.assertFalse("Non-equal-object should not be equal to null in EqualsTest!",
         notequal.equals(null));
-
     // not equals to a different type of object
     Assert.assertFalse("Object should not be equal to an arbitrary string in EqualsTest!",
         obj.equals("TestString"));
-
     // then test some things with another object that should be equal
-
     // symmetric, if one is (not) equal to another then the reverse must be true
     Assert.assertTrue("Symmetric: Object should be equal to equal-object in EqualsTest",
         obj.equals(equal));
@@ -166,10 +156,8 @@ public class JUnitHelpers {
         obj.equals(notequal));
     Assert.assertFalse("Symmetric: Non-equals-object should NOT be equal to object in EqualsTest!",
         notequal.equals(obj));
-
     // transitive: if a.equals(b) and b.equals(c) then a.equals(c)
     // not tested right now
-
     // hashCode: equal objects should have equal hash code
     Assert.assertTrue("Transitive: Equal objects should have equal hash-code in EqualsTest!",
         obj.hashCode() == equal.hashCode());
@@ -197,22 +185,18 @@ public class JUnitHelpers {
     Assert.assertNotNull("Object in CompareToTest should not be null!", obj);
     Assert.assertNotNull("Equals-object in CompareToTest should not be null!", equal);
     Assert.assertNotNull("Non-equal-object in CompareToTest should not be null!", notequal);
-
     // make sure different objects are passed in
     Assert.assertFalse("Object and equals-object in CompareToTest should not be identical",
         obj == equal);
     Assert.assertFalse("Object and non-equals-object in CompareToTest should not be identical",
         obj == notequal);
-
     // make sure correct parameters are passed
     // equal should be equal to obj, not-equal should not be equal to obj!
     Assert.assertEquals("Object and equal-object should compare in CompareToTest!", 0,
         obj.compareTo((T) equal));
     Assert.assertFalse("Object and non-equal-object should not compare in CompareToTest!",
         0 == obj.compareTo((T) notequal));
-
     // first test some general things that should be true with equals
-
     // reflexive: equals to itself
     Assert.assertEquals("Reflexive: object should be equal to itself in CompareToTest!", 0,
         obj.compareTo((T) obj));
@@ -220,7 +204,6 @@ public class JUnitHelpers {
         equal.compareTo((T) equal));
     Assert.assertEquals("Reflexive: non-equal-object should be equal to itself in CompareToTest!",
         0, notequal.compareTo((T) notequal));
-
     // not equals to null
     Assert.assertFalse("Object should not be equal to null in CompareToTest!",
         0 == obj.compareTo(null));
@@ -228,15 +211,12 @@ public class JUnitHelpers {
         0 == equal.compareTo(null));
     Assert.assertFalse("Non-equal-object should not be equal to null in CompareToTest!",
         0 == notequal.compareTo(null));
-
     // not equals to a different type of object
     /*
      * Assert.assertFalse("Object should not be equal to an arbitrary string in CompareToTest!" , 0
      * == obj.compareTo("TestString"));
      */
-
     // then test some things with another object that should be equal
-
     // symmetric, if one is (not) equal to another then the reverse must be true
     Assert.assertEquals("Symmetric: Object should be equal to equal-object in CompareToTest", 0,
         obj.compareTo((T) equal));
@@ -248,7 +228,6 @@ public class JUnitHelpers {
     Assert.assertFalse(
         "Symmetric: Non-equals-object should NOT be equal to object in CompareToTest!",
         0 == notequal.compareTo((T) obj));
-
     // transitive: if a.equals(b) and b.equals(c) then a.equals(c)
     // not tested right now
   }
@@ -265,11 +244,9 @@ public class JUnitHelpers {
   public static void ToStringTest(final Object obj) {
     // toString should not return null
     Assert.assertNotNull("A derived toString() should not return null!", obj.toString());
-
     // toString should not return an empty string
     Assert.assertFalse("A derived toString() should not return an empty string!", obj.toString()
         .equals(""));
-
     // check that calling it multiple times leads to the same value
     String value = obj.toString();
     for (int i = 0; i < 10; i++) {
@@ -296,16 +273,13 @@ public class JUnitHelpers {
     // obj.getClass().getName() + "' needs to be accessible in
     // CloneTest!",
     // m.isAccessible());
-
     // clone should return a different object, not the same again
     Assert.assertTrue("clone() should not return the object itself in CloneTest!",
         obj != m.invoke(obj, new Object[] {}));
-
     // should return the same type of object
     Assert.assertTrue(
         "clone() should return the same type of object (i.e. the same class) in CloneTest!", m
             .invoke(obj, new Object[] {}).getClass() == obj.getClass());
-
     // cloned objects should be equal to the original object
     Assert.assertTrue(
         "clone() should return an object that is equal() to the original object in CloneTest!", m
@@ -323,7 +297,6 @@ public class JUnitHelpers {
         .assertFalse(
             "HashCodeTest expects two distinct objects with equal hashCode, but the same object is provided twice!",
             obj == equ);
-
     // The same object returns the same hashCode always
     final int hash = obj.hashCode();
     Assert.assertEquals("hashCode() on object returned different hash after some iterations!",
@@ -336,7 +309,6 @@ public class JUnitHelpers {
         hash, obj.hashCode());
     Assert.assertEquals("hashCode() on object returned different hash after some iterations!",
         hash, obj.hashCode());
-
     // equal objects must have the same hashCode
     // the other way around is not required,
     // different objects can have the same hashCode!!
@@ -364,18 +336,15 @@ public class JUnitHelpers {
       throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
     // check valueOf()
     Assert.assertEquals(enumtype, Enum.valueOf(enumclass, element));
-
     // check values()
     Method m = enumclass.getMethod("values", (Class[]) null);
     Object obj = m.invoke(enumtype, (Object[]) null);
     Assert.assertNotNull(obj);
     Assert.assertTrue(obj instanceof Object[]);
-
     // check existing valeOf()
     obj = Enum.valueOf(enumclass, element);
     Assert.assertNotNull(obj);
     Assert.assertTrue(obj instanceof Enum);
-
     // check non-existing valueOf
     try {
       Enum.valueOf(enumclass, "nonexistingenumelement");
@@ -400,14 +369,12 @@ public class JUnitHelpers {
     // to have a deterministic state in the tests where we know that the
     // asynchronous action
     // done in any "invokeLater()" was actually finished
-
     SwingUtilities.invokeAndWait(new Runnable() {
       @Override
       public void run() {
         // nothing to do here, we just want the runnable to run...
       }
     });
-
     // Thread.currentThread().
   }
 
@@ -442,12 +409,10 @@ public class JUnitHelpers {
     // Reset everything
     QueueModel.stopRequest();
     QueueModel.clear();
-
     FileManager.getInstance().clear();
     DirectoryManager.getInstance().clear();
     cleanAllDevices();
     History.getInstance().clear();
-
     // wait a bit to let deferred actions take place before we shut down
     JUnitHelpers.waitForThreadToFinish("PlayPause Thread");
     JUnitHelpers.waitForThreadToFinish("Cover Refresh Thread");
@@ -457,7 +422,6 @@ public class JUnitHelpers {
     JUnitHelpers.waitForThreadToFinish("LastFM Update Thread");
     JUnitHelpers.waitForThreadToFinish("Parameter Catalog refresh Thread");
     JUnitHelpers.waitForThreadToFinish("Manual Refresh Thread");
-
     // clear this for all available events
     // for(JajukEvents event : JajukEvents.values()) {
     // JUnitHelpers.waitForThreadToFinish("Event Executor for: " +
@@ -503,20 +467,16 @@ public class JUnitHelpers {
     JUnitHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.WEBRADIO_LAUNCHED.toString());
     JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.ZERO.toString());
-
     JUnitHelpers.clearSwingUtilitiesQueue();
-
     //Reset everything again as it could have been changed during threads finishing
     ObservationManager.clear();
     // Reset everything
     QueueModel.stopRequest();
     QueueModel.clear();
-
     FileManager.getInstance().clear();
     DirectoryManager.getInstance().clear();
     cleanAllDevices();
     History.getInstance().clear();
-
   }
 
   /**
@@ -558,14 +518,11 @@ public class JUnitHelpers {
     Album album = getAlbum("name", 0);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-
     Artist artist = getArtist("myartist");
     Year year = getYear(2000);
-
     Type type = getType();
     Track track = TrackManager.getInstance().registerTrack(name, album, genre, artist, 120, year,
         1, type, 1);
-
     Device device = getDevice();
     if (mount & !device.isMounted()) {
       try {
@@ -574,7 +531,6 @@ public class JUnitHelpers {
         throw new RuntimeException(e);
       }
     }
-
     org.jajuk.base.File file = FileManager.getInstance().registerFile(name, dir, track, 120, 70);
     try {
       file.getFIO().createNewFile();
@@ -813,17 +769,14 @@ public class JUnitHelpers {
   * @return the list of web radio
   */
   public static List<WebRadio> getWebRadios() {
-
     //Reset radios
     WebRadioManager.getInstance().cleanup();
-
     WebRadio custom1 = getWebRadio("Custom 1", "http://custom1", WebRadioOrigin.CUSTOM);
     custom1.setProperty(Const.XML_BITRATE, new Long(127));
     custom1.setProperty(Const.XML_FREQUENCY, new Long(45000));
     custom1.setProperty(Const.XML_KEYWORDS, "foo,bar");
     custom1.setProperty(Const.XML_GENRE, "Pop");
     custom1.setProperty(Const.XML_DESC, "a cool radio");
-
     WebRadio custom2 = getWebRadio("Custom 2", "http://custom2", WebRadioOrigin.CUSTOM);
     WebRadio preset1 = getWebRadio("Preset 1", "http://preset1", WebRadioOrigin.PRESET);
     WebRadio preset2 = getWebRadio("Preset 2", "http://preset2", WebRadioOrigin.PRESET);
@@ -861,13 +814,11 @@ public class JUnitHelpers {
    * .
    */
   public static class MockPlayer implements IPlayerImpl {
-
     /* (non-Javadoc)
      * @see org.jajuk.services.players.IPlayerImpl#stop()
      */
     @Override
     public void stop() throws Exception {
-
     }
 
     /* (non-Javadoc)
@@ -875,7 +826,6 @@ public class JUnitHelpers {
      */
     @Override
     public void setVolume(float fVolume) throws Exception {
-
     }
 
     /* (non-Javadoc)
@@ -883,7 +833,6 @@ public class JUnitHelpers {
      */
     @Override
     public void seek(float fPosition) {
-
     }
 
     /* (non-Javadoc)
@@ -891,7 +840,6 @@ public class JUnitHelpers {
      */
     @Override
     public void resume() throws Exception {
-
     }
 
     /* (non-Javadoc)
@@ -899,7 +847,6 @@ public class JUnitHelpers {
      */
     @Override
     public void play(WebRadio radio, float fVolume) throws Exception {
-
     }
 
     /* (non-Javadoc)
@@ -908,7 +855,6 @@ public class JUnitHelpers {
     @Override
     public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume)
         throws Exception {
-
     }
 
     /* (non-Javadoc)
@@ -916,7 +862,6 @@ public class JUnitHelpers {
      */
     @Override
     public void pause() throws Exception {
-
     }
 
     /* (non-Javadoc)
@@ -924,7 +869,6 @@ public class JUnitHelpers {
      */
     @Override
     public int getState() {
-
       return 0;
     }
 
@@ -933,7 +877,6 @@ public class JUnitHelpers {
      */
     @Override
     public long getElapsedTimeMillis() {
-
       return 0;
     }
 
@@ -942,7 +885,6 @@ public class JUnitHelpers {
      */
     @Override
     public float getCurrentVolume() {
-
       return 0;
     }
 
@@ -951,7 +893,6 @@ public class JUnitHelpers {
      */
     @Override
     public float getCurrentPosition() {
-
       return 0;
     }
 
@@ -960,7 +901,6 @@ public class JUnitHelpers {
      */
     @Override
     public long getDurationSec() {
-
       return 0;
     }
 
@@ -985,10 +925,8 @@ public class JUnitHelpers {
     Album album = getAlbum("myalbum", 0);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-
     Artist artist = getArtist("myartist_" + i);
     Year year = getYear(2000);
-
     Type type = getType();
     return TrackManager.getInstance().registerTrack("track_" + i, album, genre, artist, 120, year,
         1, type, 1);
@@ -1012,5 +950,4 @@ public class JUnitHelpers {
     field.setAccessible(true);
     field.set(obj, value);
   }
-
 }

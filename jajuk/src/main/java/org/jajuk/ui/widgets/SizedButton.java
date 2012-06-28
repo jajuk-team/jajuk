@@ -33,10 +33,8 @@ import org.jajuk.util.UtilGUI;
  * is called in constructor before we can do anything).
  */
 public class SizedButton extends JajukButton {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -3859493434696496345L;
-
   private boolean showText = false;
 
   /**
@@ -110,5 +108,4 @@ public class SizedButton extends JajukButton {
   public int getH() {
     return 16;
   }
-
 }

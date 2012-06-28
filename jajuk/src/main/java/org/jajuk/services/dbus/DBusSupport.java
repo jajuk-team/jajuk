@@ -33,7 +33,6 @@ import org.freedesktop.dbus.DBusInterface;
  */
 @org.freedesktop.DBus.Description("Methods to remotely control Jajuk including play/pause/next/prev track and some other useful actions.")
 public interface DBusSupport extends DBusInterface {
-
   /**
    * Previous.
    * 
@@ -198,7 +197,6 @@ public interface DBusSupport extends DBusInterface {
    */
   @org.freedesktop.DBus.Description("Adds the currently playing track to the list of bookmarks/favourites. Does nothing, if there is no file currently playing.")
   void bookmarkCurrentlyPlaying() throws Exception;
-
   /*
   * Actions that are not supported (yet): REPEAT_MODE, SHUFFLE_MODE,
   * CONTINUE_MODE, INTRO_MODE, DEVICE_NEW, DEVICE_DELETE, DEVICE_PROPERTIES,

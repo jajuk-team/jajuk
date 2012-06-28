@@ -43,7 +43,6 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class ExitAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -75,7 +74,6 @@ public class ExitAction extends JajukAction {
     // locks.
     // Not not use SwingUtilities.invokeLater method in the ExitHook Thread,
     // this code may never be run
-
     if (SwingUtilities.isEventDispatchThread()) {
       // commit perspectives if no full restore
       // engaged. Perspective should be commited before the window
@@ -88,25 +86,18 @@ public class ExitAction extends JajukAction {
           Log.error(e);
         }
       }
-
       // Store window/tray/slimbar configuration
       UtilGUI.storeWindowSate();
-
       // hide windows ASAP
       JajukMainWindow.getInstance().getWindowStateDecorator().display(false);
-
       // hide systray
       JajukSystray.getInstance().getWindowStateDecorator().display(false);
-
       // Hide slimbar
       JajukSlimbar.getInstance().getWindowStateDecorator().display(false);
-
       // Hide full screen
       JajukFullScreenWindow.getInstance().getWindowStateDecorator().display(false);
-
     }
     // Exit Jajuk
     ExitService.exit(0);
   }
-
 }

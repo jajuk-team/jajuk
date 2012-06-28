@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.events;
 
 import java.util.Set;
@@ -27,7 +26,6 @@ import java.util.Set;
  * GoF Observer pattern Observer.
  */
 public interface Observer {
-
   /**
    * Action to be done when receiving an event with this ID.
    * 

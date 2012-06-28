@@ -40,14 +40,10 @@ import javax.swing.SwingUtilities;
  * @created 1 may 2006
  */
 public abstract class Screen extends JPanel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   private final ScreenState state;
-
   public Map<String, Object> data;
-
   private Wizard wizard;
 
   /**
@@ -243,13 +239,10 @@ public abstract class Screen extends JPanel {
    */
   private void notifyGUI() {
     SwingUtilities.invokeLater(new Runnable() {
-
       @Override
       public void run() {
         Screen.this.wizard.updateGUI();
       }
-
     });
   }
-
 }

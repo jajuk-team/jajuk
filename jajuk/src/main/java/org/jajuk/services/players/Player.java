@@ -42,28 +42,20 @@ import org.jajuk.util.log.Log;
  * abstract class for music player, independent from real implementation.
  */
 public final class Player {
-
   /** The Constant PLAYER_0.   */
   private static final String PLAYER_0 = "Player.0";
-
   /** Current file read. */
   private static File fCurrent;
-
   /** Current player used. */
   private static IPlayerImpl playerImpl;
-
   /** Current player used nb 1. */
   private static IPlayerImpl playerImpl1;
-
   /** Current player used nb 2. */
   private static IPlayerImpl playerImpl2;
-
   /** Mute flag. */
   private static boolean bMute = false;
-
   /** Paused flag. */
   private static boolean bPaused = false;
-
   /** Playing ?. */
   private static boolean bPlaying = false;
 
@@ -139,7 +131,6 @@ public final class Player {
       }
       // Save playing state    
       Conf.setProperty(Const.CONF_STARTUP_STOPPED, "false");
-
       return true;
     } catch (final Throwable t) {
       Properties pDetails = new Properties();
@@ -322,10 +313,8 @@ public final class Player {
       if (playerImpl != null) {
         playerImpl.setVolume(fVolume);
       }
-
       // Store the volume
       Conf.setProperty(Const.CONF_VOLUME, Float.toString(fVolume));
-
       // Require all GUI (like volume sliders) to update
       ObservationManager.notify(new JajukEvent(JajukEvents.VOLUME_CHANGED));
     } catch (Exception e) {
@@ -444,7 +433,6 @@ public final class Player {
     } catch (Exception e) { // we can get some errors in unexpected cases
       Log.debug(e.toString());
     }
-
   }
 
   /**

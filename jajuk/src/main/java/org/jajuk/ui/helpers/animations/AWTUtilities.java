@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.helpers.animations;
 
 import java.awt.Shape;
@@ -31,7 +30,6 @@ import java.lang.reflect.Method;
  * See https://trac.jajuk.info/ticket/1464 for more details
  */
 public class AWTUtilities {
-
   /**
    * Checks if is available.
    * 
@@ -89,6 +87,5 @@ public class AWTUtilities {
    * Instantiates a new aWT utilities.
    */
   private AWTUtilities() {
-
   }
 }

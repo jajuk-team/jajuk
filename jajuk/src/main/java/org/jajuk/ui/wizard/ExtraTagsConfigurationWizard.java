@@ -62,19 +62,13 @@ import org.jdesktop.swingx.VerticalLayout;
  * Wizard allowing user to select the extra tags to be displayed by jajuk.
  */
 public class ExtraTagsConfigurationWizard extends JajukJDialog {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   private JList availableTagsJList;
-
   private JList activatedTagsJList;
-
   /** OK/Cancel buttons. */
   private OKCancelPanel okp;
-
   private List<String> availableList = new ArrayList<String>();
-
   private List<String> activatedList = new ArrayList<String>();
 
   /**
@@ -104,7 +98,6 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
         availableList.add(s);
       }
     }
-
     activatedList.clear();
     for (String s : Tag.getActivatedExtraTags()) {
       activatedList.add(s);
@@ -123,7 +116,6 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
       model.addElement(s);
     }
     availableTagsJList.setModel(model);
-
     activatedTagsJList.clearSelection();
     model = (DefaultListModel) activatedTagsJList.getModel();
     model.clear();
@@ -159,10 +151,8 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
     jta.setEditable(false);
     jta.setWrapStyleWord(true);
     jta.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-
     // available tags
     availableTagsJList = new JList(new DefaultListModel());
-
     // control buttons
     JButton addButton = new JButton(IconLoader.getIcon(JajukIcons.PLAYER_NEXT));
     addButton.addActionListener(new ActionListener() {
@@ -176,7 +166,6 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
     });
     JButton removeButton = new JButton(IconLoader.getIcon(JajukIcons.PLAYER_PREVIOUS));
     removeButton.addActionListener(new ActionListener() {
-
       @Override
       public void actionPerformed(ActionEvent e) {
         for (Object o : activatedTagsJList.getSelectedValues()) {
@@ -185,11 +174,9 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
         populate();
       }
     });
-
     // activated tags
     activatedTagsJList = new JList();
     activatedTagsJList.setModel(new DefaultListModel());
-
     // confirm buttons
     okp = new OKCancelPanel(new ActionListener() {
       @Override
@@ -205,10 +192,8 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
     JPanel jpButtons = new JPanel(new VerticalLayout(5));
     jpButtons.add(addButton);
     jpButtons.add(removeButton);
-
     // Add items
     setLayout(new MigLayout("ins 5,gapx 5,gapy 5", "[grow][20][grow]", "[grow 5][][grow 95][]"));
-
     // Keep the pad : it fixes a known "issue/feature" with some text component. MigLayout manual
     // (see http://migcalendar.com/miglayout/whitepaper.html) says "Note! Padding multi-line
     // components derived from JTextComponent (such as JTextArea) without setting a explicit minimum
@@ -239,7 +224,6 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
         ObservationManager.notify(event);
       }
     }
-
     boolean deepScanNeeded = false;
     for (String s : activatedList) {
       // check if it is already active
@@ -252,7 +236,6 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
       }
       if (skip)
         continue;
-
       deepScanNeeded = true;
       // activate new tag
       tm.registerProperty(new PropertyMetaInformation(s, true, false, true, false, false,
@@ -262,11 +245,9 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
       JajukEvent event = new JajukEvent(JajukEvents.CUSTOM_PROPERTIES_ADD, properties);
       ObservationManager.notify(event);
     }
-
     if (deepScanNeeded) {
       // we are inside the EDT
       new Thread(new Runnable() {
-
         @Override
         public void run() {
           for (Device d : DeviceManager.getInstance().getDevices()) {
@@ -277,7 +258,6 @@ public class ExtraTagsConfigurationWizard extends JajukJDialog {
         }
       }).start();
     }
-
     setVisible(false);
     dispose();
   }

@@ -92,67 +92,46 @@ import org.qdwizard.Wizard;
  * cancel if he finds out that too many were selected
  */
 public class PreparePartyWizard extends Wizard {
-
   /** For MigLayout. */
   private static final String GROW_WRAP = "grow,wrap";
-
   /** For MigLayout. */
   private static final String LEFT_WRAP = "left,wrap";
-
   /** For MigLayout. */
   private static final String LEFT = "left";
-
   /** Which source to use for the tracks. */
   private static final String KEY_MODE = "MODE";
-
   /** Which item was selected in the first page of the wizard. */
   private static final String KEY_ITEM = "ITEM";
-
   /** Where to put the files. */
   private static final String KEY_DEST_PATH = "DEST_PATH";
-
   /** Max number of tracks to use. */
   private static final String KEY_MAX_TRACKS_ON = "MAXTRACKS_ENABLED";
-
   /** Key for max. number of track */
   private static final String KEY_MAX_TRACKS = "MAXTRACKS";
-
   /** Max size to use. */
   private static final String KEY_MAX_SIZE_ON = "MAXSIZE_ENABLED";
-
   /** Key for max. size of party */
   private static final String KEY_MAX_SIZE = "MAXSIZE";
-
   /** Max playing length of tracks to use. */
   private static final String KEY_MAX_LENGTH_ON = "MAXLENGTH_ENABLED";
-
   /** Key for max length of party. */
   private static final String KEY_MAX_LENGTH = "MAXLENGTH";
-
   /** Max number of tracks to queue. */
   private static final String KEY_ONE_MEDIA_ON = "ONE_MEDIA_ENABLED";
-
   /** Key for limit to one audio type. */
   private static final String KEY_MEDIA = "ONE_MEDIA";
-
   /** Key for audio type conversion. */
   private static final String KEY_CONVERT_MEDIA = "CONVERT_MEDIA";
-
   /** Key for the command to use for audio conversion. */
   private static final String KEY_CONVERT_COMMAND = "CONVERT_COMMAND";
-
   /** Used to enable replacing characters outside the normal range. */
   private static final String KEY_NORMALIZE_FILENAME_ON = "NORMALIZE_FILENAME";
-
   /** Ratings level. */
   private static final String KEY_RATINGS_LEVEL = "RATING_LEVEL";
-
   /** store a temporary playlist that is provided by the PlaylistView without storing it in the PlaylistManager we keep it here to be able to re-display it in the Pages later on  We need to keep it outside the ActionSelectionPanel because the panel is re-created during back-forward operations. */
   private static Playlist tempPlaylist;
-
   /** Indicator to only restore properties once and not overwrite them again later. */
   private static boolean bPropertiesRestored = false;
-
   /** Indicates if the PACPL tool for audio conversion is available. */
   private static boolean bPACPLAvailable = false;
 
@@ -160,31 +139,22 @@ public class PreparePartyWizard extends Wizard {
    * The source of the Party.
    */
   private enum Mode {
-
     /** Use one of the available DJs. */
     DJ,
-
     /** Use one of hte available Ambiences. */
     Ambience,
-
     /** Use random tracks from all available track. */
     Shuffle,
-
     /** Use a playlist. */
     Playlist,
-
     /** Use songs from the BestOf list. */
     BestOf,
-
     /** Use songs from the Novelties list. */
     Novelties,
-
     /** Use songs from the current play queue. */
     Queue,
-
     /** Use the available bookmarks. */
     Bookmarks,
-
     /** Special mode for when the dialog is invoked with a newly created playlist. */
     ProvidedPlaylist
   }
@@ -201,7 +171,6 @@ public class PreparePartyWizard extends Wizard {
         : ActionSelectionPanel.class, null, JajukMainWindow.getInstance(), LocaleManager
         .getLocale(), 800, 550);
     super.setHeaderIcon(IconLoader.getIcon(JajukIcons.PREPARE_PARTY_32X32));
-
     // check if pacpl can be used, do it every time the dialog starts as the
     // user might have installed it by now
     bPACPLAvailable = UtilPrepareParty.checkPACPL((String) data.get(KEY_CONVERT_COMMAND));
@@ -218,7 +187,6 @@ public class PreparePartyWizard extends Wizard {
   public static void setPlaylist(Playlist playlist) {
     // store playlist and the mode that we are now having
     tempPlaylist = playlist;
-
     // store the mode and the playlist in the data as well
     data.put(KEY_MODE, Mode.ProvidedPlaylist);
     data.put(KEY_ITEM, playlist.getName());
@@ -242,7 +210,6 @@ public class PreparePartyWizard extends Wizard {
    */
   @Override
   public void finish() {
-
     // write properties to keep the selected directory
     try {
       storeProperties();
@@ -250,13 +217,11 @@ public class PreparePartyWizard extends Wizard {
     } catch (IOException e1) {
       Log.error(e1);
     }
-
     // retrieve the full list of files according to the selected mode
     List<org.jajuk.base.File> files = getFiles();
     if (files == null) {
       return;
     }
-
     // define the target directory
     final Date curDate = new Date();
     // Do not use ':' character in destination directory, it's
@@ -267,15 +232,12 @@ public class PreparePartyWizard extends Wizard {
     if (!destDir.mkdir()) {
       Log.warn("Could not create destination directory " + destDir);
     }
-
     Log.debug("Going to copy " + files.size() + " files to directory {{"
         + destDir.getAbsolutePath() + "}}");
-
     // perform the actual copying
     UtilPrepareParty.copyFiles(files, destDir, isTrue(KEY_NORMALIZE_FILENAME_ON),
         isTrue(KEY_ONE_MEDIA_ON) && isTrue(KEY_CONVERT_MEDIA), (String) data.get(KEY_MEDIA),
         (String) data.get(KEY_CONVERT_COMMAND));
-
   }
 
   /**
@@ -331,32 +293,26 @@ public class PreparePartyWizard extends Wizard {
       throw new IllegalArgumentException("Unknown mode in PreparePartyWizard: "
           + data.get(KEY_MODE));
     }
-
     // filter by media first
     if (isTrue(KEY_ONE_MEDIA_ON) && !isTrue(KEY_CONVERT_MEDIA)) {
       files = UtilPrepareParty.filterMedia(files, (String) data.get(KEY_MEDIA));
     }
-
     // then filter out by rating
     if (data.containsKey(KEY_RATINGS_LEVEL)) {
       files = UtilPrepareParty.filterRating(files, (Integer) data.get(KEY_RATINGS_LEVEL));
     }
-
     // filter max length
     if (isTrue(KEY_MAX_LENGTH_ON)) {
       files = UtilPrepareParty.filterMaxLength(files, (Integer) data.get(KEY_MAX_LENGTH));
     }
-
     // filter max size
     if (isTrue(KEY_MAX_SIZE_ON)) {
       files = UtilPrepareParty.filterMaxSize(files, (Integer) data.get(KEY_MAX_SIZE));
     }
-
     // filter max tracks
     if (isTrue(KEY_MAX_TRACKS_ON)) {
       files = UtilPrepareParty.filterMaxTracks(files, (Integer) data.get(KEY_MAX_TRACKS));
     }
-
     return files;
   }
 
@@ -391,7 +347,6 @@ public class PreparePartyWizard extends Wizard {
     if (data.get(key) == null) {
       return;
     }
-
     Conf.setProperty(Const.CONF_PREPARE_PARTY + key, data.get(key).toString());
   }
 
@@ -405,9 +360,7 @@ public class PreparePartyWizard extends Wizard {
     if (bPropertiesRestored) {
       return;
     }
-
     bPropertiesRestored = true;
-
     restoreModeAndItemValue();
     restoreStringValue(KEY_DEST_PATH);
     restoreBooleanValue(KEY_MAX_TRACKS_ON);
@@ -435,12 +388,10 @@ public class PreparePartyWizard extends Wizard {
    */
   private static void restoreStringValue(final String key) {
     String sValue = Conf.getString(Const.CONF_PREPARE_PARTY + key);
-
     // nothing to do if not set
     if (sValue == null) {
       return;
     }
-
     data.put(key, sValue);
   }
 
@@ -454,7 +405,6 @@ public class PreparePartyWizard extends Wizard {
     if (Conf.getString(Const.CONF_PREPARE_PARTY + key) == null) {
       return;
     }
-
     data.put(key, Conf.getInt(Const.CONF_PREPARE_PARTY + key));
   }
 
@@ -468,7 +418,6 @@ public class PreparePartyWizard extends Wizard {
     if (Conf.getString(Const.CONF_PREPARE_PARTY + key) == null) {
       return;
     }
-
     data.put(key, Conf.getBoolean(Const.CONF_PREPARE_PARTY + key));
   }
 
@@ -477,19 +426,16 @@ public class PreparePartyWizard extends Wizard {
    */
   private static void restoreModeAndItemValue() {
     String sMode = Conf.getString(Const.CONF_PREPARE_PARTY + KEY_MODE);
-
     // nothing to do if not set
     if (sMode == null) {
       return;
     }
-
     try {
       data.put(KEY_MODE, Mode.valueOf(sMode));
     } catch (IllegalArgumentException e) {
       Log.warn("Could not convert mode: " + sMode + ", using default mode: " + Mode.DJ);
       data.put(KEY_MODE, Mode.DJ);
     }
-
     switch ((Mode) data.get(KEY_MODE)) {
     // restore the value for the ones where we have a selection
     case Ambience:
@@ -497,21 +443,17 @@ public class PreparePartyWizard extends Wizard {
     case Playlist:
       data.put(KEY_ITEM, Conf.getString(Const.CONF_PREPARE_PARTY + KEY_ITEM));
       break;
-
     // nothing to do
     case BestOf:
     case Bookmarks:
     case Shuffle:
     case Novelties:
     case Queue:
-
       // we usually are not able to restore this, therefore don't do anything
     case ProvidedPlaylist:
-
     default:
       break;
     }
-
   }
 
   /*
@@ -526,7 +468,6 @@ public class PreparePartyWizard extends Wizard {
     } else if (GeneralOptionsPanel.class.equals(getCurrentScreen())) {
       return PathSelectionPanel.class;
     }
-
     return null;
   }
 
@@ -544,7 +485,6 @@ public class PreparePartyWizard extends Wizard {
     } else if (PathSelectionPanel.class.equals(getCurrentScreen())) {
       return GeneralOptionsPanel.class;
     }
-
     return null;
   }
 
@@ -555,7 +495,6 @@ public class PreparePartyWizard extends Wizard {
   public boolean onCancel() {
     // this also clears "data", so we need to reset the restore-state
     bPropertiesRestored = false;
-
     return super.onCancel();
   }
 
@@ -563,43 +502,30 @@ public class PreparePartyWizard extends Wizard {
    * First Panel of the Wizard, it shows a selection of sources where the user can choose one, e.g. DJs, Ambiences, ...
    */
   public static class ActionSelectionPanel extends Screen implements ActionListener, ClearPoint {
-
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = -6981770030816500259L;
-
     /** The group for the various sources. */
     private ButtonGroup bgActions;
-
     /** DJ. */
     private JRadioButton jrbDJ;
-
     /** DJ. */
     private JComboBox jcbDJ;
-
     /** Ambience. */
     private JRadioButton jrbAmbience;
-
     /** Ambience. */
     private JComboBox jcbAmbience;
-
     /** Playlist. */
     private JRadioButton jrbPlaylist;
-
     /** Playlist. */
     private JComboBox jcbPlaylist;
-
     /** Shuffle. */
     private JRadioButton jrbShuffle;
-
     /** Shuffle. */
     private JRadioButton jrbBestOf;
-
     /** Novelties. */
     private JRadioButton jrbNovelties;
-
     /** Queue. */
     private JRadioButton jrbQueue;
-
     /** Bookmarks. */
     private JRadioButton jrbBookmark;
 
@@ -611,12 +537,9 @@ public class PreparePartyWizard extends Wizard {
       // workaround as the dialog is initialized before the constructor of
       // PreparePartyWizard fully executes
       restoreProperties();
-
       bgActions = new ButtonGroup();
-
       jrbDJ = new JRadioButton(Messages.getString("PreparePartyWizard.6"));
       jrbDJ.addActionListener(this);
-
       // populate DJs
       List<DigitalDJ> djs = DigitalDJManager.getInstance().getDJsSorted();
       jcbDJ = new JComboBox();
@@ -624,49 +547,37 @@ public class PreparePartyWizard extends Wizard {
         jcbDJ.addItem(dj.getName());
       }
       jcbDJ.addActionListener(this);
-
       jrbAmbience = new JRadioButton(Messages.getString("PreparePartyWizard.7"));
       jrbAmbience.addActionListener(this);
-
       List<Ambience> ambiences = AmbienceManager.getInstance().getAmbiences();
       jcbAmbience = new JComboBox();
       for (Ambience amb : ambiences) {
         jcbAmbience.addItem(amb.getName());
       }
       jcbAmbience.addActionListener(this);
-
       jrbPlaylist = new JRadioButton(Messages.getString("PreparePartyWizard.8"));
       jrbPlaylist.addActionListener(this);
-
       jcbPlaylist = new JComboBox();
-
       if (tempPlaylist != null) {
         // check if this is a "temporary" playlist that is provided by the
         // PlaylistView (i.e. not yet stored in PlaylistManager)
         jcbPlaylist.addItem(tempPlaylist.getName());
       }
-
       List<Playlist> playlists = PlaylistManager.getInstance().getPlaylists();
       for (Playlist pl : playlists) {
         jcbPlaylist.addItem(pl.getName());
       }
       jcbPlaylist.addActionListener(this);
-
       jrbShuffle = new JRadioButton(Messages.getString("PreparePartyWizard.9"));
       jrbShuffle.addActionListener(this);
-
       jrbBestOf = new JRadioButton(Messages.getString("PreparePartyWizard.24"));
       jrbBestOf.addActionListener(this);
-
       jrbNovelties = new JRadioButton(Messages.getString("PreparePartyWizard.25"));
       jrbNovelties.addActionListener(this);
-
       jrbQueue = new JRadioButton(Messages.getString("PreparePartyWizard.32"));
       jrbQueue.addActionListener(this);
-
       jrbBookmark = new JRadioButton(Messages.getString("PreparePartyWizard.33"));
       jrbBookmark.addActionListener(this);
-
       bgActions.add(jrbDJ);
       bgActions.add(jrbAmbience);
       bgActions.add(jrbPlaylist);
@@ -675,10 +586,8 @@ public class PreparePartyWizard extends Wizard {
       bgActions.add(jrbQueue);
       bgActions.add(jrbBookmark);
       bgActions.add(jrbShuffle);
-
       // populate items from the stored static data
       readData();
-
       // populate the screen
       setLayout(new MigLayout("insets 10,gapx 10,gapy 15", "[][grow]"));
       add(jrbDJ, LEFT);
@@ -692,7 +601,6 @@ public class PreparePartyWizard extends Wizard {
       add(jrbQueue, LEFT_WRAP);
       add(jrbBookmark, LEFT_WRAP);
       add(jrbShuffle, LEFT_WRAP);
-
       // store initial values, done here as well to have them stored if "next"
       // is pressed immediately
       // and there was no data stored before (an hence nothing was read in
@@ -712,12 +620,10 @@ public class PreparePartyWizard extends Wizard {
           bgActions.setSelected(jrbDJ.getModel(), true);
           jcbDJ.setSelectedItem(data.get(KEY_ITEM));
           break;
-
         case Ambience:
           bgActions.setSelected(jrbAmbience.getModel(), true);
           jcbAmbience.setSelectedItem(data.get(KEY_ITEM));
           break;
-
         case Playlist:
         case ProvidedPlaylist: // we did a "PrepareParty" from a Playlist
           // before, in this case show the Playlist again
@@ -725,38 +631,31 @@ public class PreparePartyWizard extends Wizard {
           bgActions.setSelected(jrbPlaylist.getModel(), true);
           jcbPlaylist.setSelectedItem(data.get(KEY_ITEM));
           break;
-
         case Shuffle:
           bgActions.setSelected(jrbShuffle.getModel(), true);
           // no combo box for shuffle...
           break;
-
         case BestOf:
           bgActions.setSelected(jrbBestOf.getModel(), true);
           // no combo box for bestof...
           break;
-
         case Novelties:
           bgActions.setSelected(jrbNovelties.getModel(), true);
           // no combo box for novelties...
           break;
-
         case Queue:
           bgActions.setSelected(jrbQueue.getModel(), true);
           // no combo box for queue...
           break;
-
         case Bookmarks:
           bgActions.setSelected(jrbBookmark.getModel(), true);
           // no combo box for bookmarks...
           break;
-
         default:
           throw new IllegalArgumentException("Unexpected value in switch!");
         }
       } else {
         // no values set yet, select a useful radio button at least
-
         // select Ambience as default selection if there is no DJ available
         if (jcbDJ.getItemCount() == 0) {
           bgActions.setSelected(jrbAmbience.getModel(), true);
@@ -765,13 +664,11 @@ public class PreparePartyWizard extends Wizard {
           bgActions.setSelected(jrbDJ.getModel(), true);
         }
       }
-
       // finally disable some items if there is nothing in there
       if (jcbDJ.getItemCount() == 0) {
         jrbDJ.setEnabled(false);
         jcbDJ.setEnabled(false);
       }
-
       // disable Playlist UI if there is no Playlist-Mode already selected by
       // the incoming data...
       if (jcbPlaylist.getItemCount() == 0
@@ -780,7 +677,6 @@ public class PreparePartyWizard extends Wizard {
         jrbPlaylist.setEnabled(false);
         jcbPlaylist.setEnabled(false);
       }
-
       // check if we have queue-entries or bookmarks
       if (QueueModel.getQueue().isEmpty()) {
         jrbQueue.setEnabled(false);
@@ -788,7 +684,6 @@ public class PreparePartyWizard extends Wizard {
       if (Bookmarks.getInstance().getFiles().isEmpty()) {
         jrbBookmark.setEnabled(false);
       }
-
     }
 
     /*
@@ -851,7 +746,6 @@ public class PreparePartyWizard extends Wizard {
     public String getName() {
       return Messages.getString("PreparePartyWizard.2");
     }
-
   }
 
   /**
@@ -859,70 +753,48 @@ public class PreparePartyWizard extends Wizard {
    */
   public static class GeneralOptionsPanel extends Screen implements ActionListener, ChangeListener,
       ClearPoint, MouseListener {
-
     /** Constant for MigLayout. */
     private static final String GROW = "grow";
-
     /** Constant for MigLayout. */
     private static final String GROW_TWO_COL = "[grow][]";
-
     /** Constant for MigLayout. */
     private static final String LABEL_WIDTH = "width 40:40:";
-
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
-
     /** Empty value. */
     private static final String NO_VALUE = " ";
-
     /** Enable limit on number of tracks. */
     private JCheckBox jcbMaxTracks;
-
     /** The max. number of tracks */
     private JSlider jsMaxTracks;
-
     /** The max. number of tracks */
     private JLabel jnMaxTracks;
-
     /** Enable limit on max size. */
     private JCheckBox jcbMaxSize;
-
     /** Max size (in MB) of party. */
     private JSlider jsMaxSize;
-
     /** Max size (in MB) of party. */
     private JLabel jnMaxSize;
-
     /** Enable limit on max playing length. */
     private JCheckBox jcbMaxLength;
-
     /** Max playing length of party (in minutes). */
     private JSlider jsMaxLength;
-
     /** Max playing length of party (in minutes). */
     private JLabel jnMaxLength;
-
     /** Enable limit on specific audio type. */
     private JCheckBox jcbOneMedia;
-
     /** Limit to one type of audo file. */
     private JComboBox jcbMedia;
-
     /** Enable conversion to the selected audio type. */
     private JCheckBox jcbConvertMedia;
-
     /** Audio conversion. */
     private JLabel jlConvertMedia;
-
     /** Button to configure audio conversion. */
     private JButton jbConvertConfig;
-
     /** Limit on rate of tracks. */
     private JLabel jlRatingLevel;
-
     /** The min. number of stars a track needs to have */
     private JSlider jsRatingLevel;
-
     /** Enable normalizing filenames so they can be stored on windows fileshares. */
     private JCheckBox jcbNormalizeFilename;
 
@@ -950,11 +822,9 @@ public class PreparePartyWizard extends Wizard {
       // workaround as the dialog is initialized before the constructor of
       // PreparePartyWizard fully executes
       restoreProperties();
-
       { // Max Tracks
         jcbMaxTracks = new JCheckBox(Messages.getString("PreparePartyWizard.10"));
         jcbMaxTracks.setToolTipText(Messages.getString("PreparePartyWizard.11"));
-
         jsMaxTracks = new JSlider(0, 10000, 100);
         jnMaxTracks = new JLabel(NO_VALUE);
         jnMaxTracks.setBorder(new BevelBorder(BevelBorder.LOWERED));
@@ -965,11 +835,9 @@ public class PreparePartyWizard extends Wizard {
         jsMaxTracks.setPaintLabels(false);
         jsMaxTracks.setToolTipText(Messages.getString("PreparePartyWizard.11"));
       }
-
       { // Max Size
         jcbMaxSize = new JCheckBox(Messages.getString("PreparePartyWizard.12"));
         jcbMaxSize.setToolTipText(Messages.getString("PreparePartyWizard.13"));
-
         jsMaxSize = new JSlider(0, 10000, 100);
         jnMaxSize = new JLabel(NO_VALUE);
         jnMaxSize.setBorder(new BevelBorder(BevelBorder.LOWERED));
@@ -980,11 +848,9 @@ public class PreparePartyWizard extends Wizard {
         jsMaxSize.setPaintLabels(false);
         jsMaxSize.setToolTipText(Messages.getString("PreparePartyWizard.13"));
       }
-
       { // Max Length
         jcbMaxLength = new JCheckBox(Messages.getString("PreparePartyWizard.14"));
         jcbMaxLength.setToolTipText(Messages.getString("PreparePartyWizard.15"));
-
         jsMaxLength = new JSlider(0, 10000, 100);
         jnMaxLength = new JLabel(NO_VALUE);
         jnMaxLength.setBorder(new BevelBorder(BevelBorder.LOWERED));
@@ -995,11 +861,9 @@ public class PreparePartyWizard extends Wizard {
         jsMaxLength.setPaintLabels(false);
         jsMaxLength.setToolTipText(Messages.getString("PreparePartyWizard.15"));
       }
-
       { // Choose Media
         jcbOneMedia = new JCheckBox(Messages.getString("PreparePartyWizard.16"));
         jcbOneMedia.setToolTipText(Messages.getString("PreparePartyWizard.17"));
-
         jcbMedia = new JComboBox();
         List<Type> types = TypeManager.getInstance().getTypes();
         // sort the list on extension here
@@ -1013,15 +877,12 @@ public class PreparePartyWizard extends Wizard {
           }
         }
         jcbMedia.setToolTipText(Messages.getString("PreparePartyWizard.17"));
-
         jcbConvertMedia = new JCheckBox(Messages.getString("PreparePartyWizard.34"));
         jcbConvertMedia.setToolTipText(Messages.getString("PreparePartyWizard.35"));
-
         // to show help and allow clicking for viewing the related web-page
         jlConvertMedia = new JLabel(Messages.getString("PreparePartyWizard.37"));
         jbConvertConfig = new JButton(Messages.getString("PreparePartyWizard.40"));
       }
-
       { // Rating Level
         jlRatingLevel = new JLabel(Messages.getString("DigitalDJWizard.8"));
         jlRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.53"));
@@ -1033,44 +894,34 @@ public class PreparePartyWizard extends Wizard {
         jsRatingLevel.setPaintLabels(true);
         jsRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.53"));
       }
-
       jcbNormalizeFilename = new JCheckBox(Messages.getString("PreparePartyWizard.26"));
       jcbNormalizeFilename.setToolTipText(Messages.getString("PreparePartyWizard.27"));
-
       // populate the UI items with values from the static data object
       readData();
-
       // add listeners after reading initial data to not overwrite them with
       // init-state-change actions
-
       // enable/disable slider depending on checkbox
       jcbMaxTracks.addActionListener(this);
       jsMaxTracks.addMouseWheelListener(new DefaultMouseWheelListener(jsMaxTracks));
       jsMaxTracks.addChangeListener(this);
-
       // enable/disable slider depending on checkbox
       jcbMaxSize.addActionListener(this);
       jsMaxSize.addMouseWheelListener(new DefaultMouseWheelListener(jsMaxSize));
       jsMaxSize.addChangeListener(this);
-
       // enable/disable slider depending on checkbox
       jcbMaxLength.addActionListener(this);
       jsMaxLength.addMouseWheelListener(new DefaultMouseWheelListener(jsMaxLength));
       jsMaxLength.addChangeListener(this);
-
       // enable/disable combobox depending on checkbox
       jcbOneMedia.addActionListener(this);
       jcbMedia.addActionListener(this);
       jcbConvertMedia.addActionListener(this);
       jlConvertMedia.addMouseListener(this);
       jbConvertConfig.addActionListener(this);
-
       // get informed about rating level slider changes
       jsRatingLevel.addMouseWheelListener(new DefaultMouseWheelListener(jsRatingLevel));
       jsRatingLevel.addChangeListener(this);
-
       jcbNormalizeFilename.addActionListener(this);
-
       setLayout(new MigLayout("insets 10,gapx 10,gapy 15", "[][grow]"));
       add(jcbMaxTracks);
       {
@@ -1109,11 +960,9 @@ public class PreparePartyWizard extends Wizard {
         panel.add(jbConvertConfig);
         add(panel, GROW_WRAP);
       }
-
       add(jcbNormalizeFilename, GROW_WRAP);
       add(jlRatingLevel);
       add(jsRatingLevel, GROW_WRAP);
-
       // store initial values and adjust values
       updateData();
     }
@@ -1124,7 +973,6 @@ public class PreparePartyWizard extends Wizard {
     private void readData() {
       // set the values from the stored data
       // initially these are not set, so we need to query for "containsKey"...
-
       if (isTrue(KEY_MAX_TRACKS_ON)) {
         jsMaxTracks.setEnabled(true);
         jcbMaxTracks.setSelected(true);
@@ -1135,7 +983,6 @@ public class PreparePartyWizard extends Wizard {
       if (data.containsKey(KEY_MAX_TRACKS)) {
         jsMaxTracks.setValue((Integer) data.get(KEY_MAX_TRACKS));
       }
-
       if (isTrue(KEY_MAX_SIZE_ON)) {
         jsMaxSize.setEnabled(true);
         jcbMaxSize.setSelected(true);
@@ -1146,7 +993,6 @@ public class PreparePartyWizard extends Wizard {
       if (data.containsKey(KEY_MAX_SIZE)) {
         jsMaxSize.setValue((Integer) data.get(KEY_MAX_SIZE));
       }
-
       if (isTrue(KEY_MAX_LENGTH_ON)) {
         jsMaxLength.setEnabled(true);
         jcbMaxLength.setSelected(true);
@@ -1157,7 +1003,6 @@ public class PreparePartyWizard extends Wizard {
       if (data.containsKey(KEY_MAX_LENGTH)) {
         jsMaxLength.setValue((Integer) data.get(KEY_MAX_LENGTH));
       }
-
       if (isTrue(KEY_ONE_MEDIA_ON)) {
         jcbMedia.setEnabled(true);
         jcbOneMedia.setSelected(true);
@@ -1171,25 +1016,21 @@ public class PreparePartyWizard extends Wizard {
       if (!bPACPLAvailable) {
         jcbConvertMedia.setEnabled(false);
       }
-
       // don't set Convert to on from data if PACPL became unavailable
       if (isTrue(KEY_CONVERT_MEDIA) && bPACPLAvailable) {
         jcbConvertMedia.setSelected(true);
       } else {
         jcbConvertMedia.setSelected(false);
       }
-
       if (data.containsKey(KEY_MEDIA)) {
         jcbMedia.setSelectedItem(data.get(KEY_MEDIA));
       } else {
         // default to MP3 initially
         jcbMedia.setSelectedItem("mp3");
       }
-
       if (data.containsKey(KEY_RATINGS_LEVEL)) {
         jsRatingLevel.setValue((Integer) data.get(KEY_RATINGS_LEVEL));
       }
-
       if (isTrue(KEY_NORMALIZE_FILENAME_ON)) {
         jcbNormalizeFilename.setSelected(true);
       } else {
@@ -1205,7 +1046,6 @@ public class PreparePartyWizard extends Wizard {
       updateOneItem(jcbMaxTracks, jsMaxTracks, jnMaxTracks, KEY_MAX_TRACKS, KEY_MAX_TRACKS_ON);
       updateOneItem(jcbMaxSize, jsMaxSize, jnMaxSize, KEY_MAX_SIZE, KEY_MAX_SIZE_ON);
       updateOneItem(jcbMaxLength, jsMaxLength, jnMaxLength, KEY_MAX_LENGTH, KEY_MAX_LENGTH_ON);
-
       if (jcbOneMedia.isSelected()) {
         data.put(KEY_MEDIA, jcbMedia.getSelectedItem());
         data.put(KEY_ONE_MEDIA_ON, Boolean.TRUE);
@@ -1214,7 +1054,6 @@ public class PreparePartyWizard extends Wizard {
         data.put(KEY_ONE_MEDIA_ON, Boolean.FALSE);
       }
       data.put(KEY_CONVERT_MEDIA, jcbConvertMedia.isSelected());
-
       data.put(KEY_RATINGS_LEVEL, jsRatingLevel.getValue());
       data.put(KEY_NORMALIZE_FILENAME_ON, jcbNormalizeFilename.isSelected());
     }
@@ -1244,7 +1083,6 @@ public class PreparePartyWizard extends Wizard {
         }
         label.setText(NO_VALUE);
       }
-
     }
 
     /*
@@ -1257,7 +1095,6 @@ public class PreparePartyWizard extends Wizard {
     public void actionPerformed(ActionEvent ae) {
       // if a checkbox is selected/deselected, enable/disable the
       // sliders/comboboxes accordingly
-
       if (ae.getSource() == jcbMaxTracks) {
         jsMaxTracks.setEnabled(jcbMaxTracks.isSelected());
       } else if (ae.getSource() == jcbMaxSize) {
@@ -1271,7 +1108,6 @@ public class PreparePartyWizard extends Wizard {
         // create the settings dialog, it will display itself and inform us when
         // the value is changed with "Ok"
         new PreparePartyConvertSettings(new ChangeListener() {
-
           @Override
           public void stateChanged(ChangeEvent e) {
             // no need for re-checking if the same command is chosen as before
@@ -1279,13 +1115,10 @@ public class PreparePartyWizard extends Wizard {
               Log.debug("Same pacpl-command as before: " + e.getSource().toString());
               return;
             }
-
             Log.debug("New pacpl-command: " + e.getSource().toString());
             data.put(KEY_CONVERT_COMMAND, e.getSource().toString());
-
             // re-check if pacpl can be called now
             bPACPLAvailable = UtilPrepareParty.checkPACPL((String) data.get(KEY_CONVERT_COMMAND));
-
             // disable media conversion if pacpl is not found
             if (bPACPLAvailable) {
               Log.debug("Updated settings for media conversion allow pacpl to be used.");
@@ -1298,7 +1131,6 @@ public class PreparePartyWizard extends Wizard {
           }
         }, (String) data.get(KEY_CONVERT_COMMAND), JajukMainWindow.getInstance());
       }
-
       updateData();
     }
 
@@ -1353,7 +1185,6 @@ public class PreparePartyWizard extends Wizard {
     @Override
     public void mouseEntered(MouseEvent e) {
       // nothing to do here...
-
     }
 
     /*
@@ -1364,7 +1195,6 @@ public class PreparePartyWizard extends Wizard {
     @Override
     public void mouseExited(MouseEvent e) {
       // nothing to do here...
-
     }
 
     /*
@@ -1375,7 +1205,6 @@ public class PreparePartyWizard extends Wizard {
     @Override
     public void mousePressed(MouseEvent e) {
       // nothing to do here...
-
     }
 
     /*
@@ -1387,7 +1216,6 @@ public class PreparePartyWizard extends Wizard {
     @Override
     public void mouseReleased(MouseEvent e) {
       // nothing to do here...
-
     }
   }
 
@@ -1395,16 +1223,12 @@ public class PreparePartyWizard extends Wizard {
    * Panel for selecting the location in the filesystem.
    */
   public static class PathSelectionPanel extends Screen implements ActionListener {
-
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = -236180699495019177L;
-
     /** Button for file chooser dialog. */
     JButton jbFileSelection;
-
     /** The selected file. */
     JLabel jlSelectedFile;
-
     /** Selected directory. */
     private File fDir;
 
@@ -1418,24 +1242,19 @@ public class PreparePartyWizard extends Wizard {
       JLabel jlFileSelection = new JLabel(Messages.getString("PreparePartyWizard.20"));
       jbFileSelection = new JButton(IconLoader.getIcon(JajukIcons.OPEN_DIR));
       jbFileSelection.addActionListener(this);
-
       JLabel jlSelectedFileText = new JLabel(Messages.getString("PreparePartyWizard.21"));
       jlSelectedFile = new JLabel(Messages.getString("FirstTimeWizard.9"));
       jlSelectedFile.setBorder(new BevelBorder(BevelBorder.LOWERED));
-
       // previous value if available
       if (data.containsKey(KEY_DEST_PATH)) {
         jlSelectedFile.setText((String) data.get(KEY_DEST_PATH));
-
         // we also can finish the dialog
         setCanFinish(true);
       } else {
         setProblem(Messages.getString("PreparePartyWizard.22"));
-
         // now we can not finish the dialog
         setCanFinish(false);
       }
-
       // Add items
       setLayout(new MigLayout("insets 10,gapx 10,gapy 15", "[][grow]"));
       add(jlFileSelection);
@@ -1463,16 +1282,13 @@ public class PreparePartyWizard extends Wizard {
         jfc.setDialogTitle(Messages.getString("PreparePartyWizard.22"));
         jfc.setMultiSelectionEnabled(false);
         final int returnVal = jfc.showOpenDialog(this);
-
         if (returnVal == JFileChooser.APPROVE_OPTION) {
           // retrieve selected directory and update it in all necessary places
           fDir = jfc.getSelectedFile();
           jlSelectedFile.setText(fDir.getAbsolutePath());
           data.put(KEY_DEST_PATH, fDir.getAbsolutePath());
-
           // we can finish the wizard now
           setProblem(null);
-
           // now we can finish the dialog
           setCanFinish(true);
         }
@@ -1500,7 +1316,6 @@ public class PreparePartyWizard extends Wizard {
    * Compare two types.
    */
   private static final class TypeComparator implements Comparator<Type> {
-
     /* (non-Javadoc)
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
@@ -1510,7 +1325,6 @@ public class PreparePartyWizard extends Wizard {
       if (o1 == null || o2 == null) {
         return 0;
       }
-
       // otherwise sort on extension here
       return o1.getExtension().compareTo(o2.getExtension());
     }

@@ -29,7 +29,6 @@ import org.jajuk.util.Const;
  * .
  */
 public class TestYear extends TestCase {
-
   /**
    * Test method for {@link org.jajuk.base.Year#getTitle()}.
    */
@@ -99,7 +98,6 @@ public class TestYear extends TestCase {
   public void testGetName2() {
     Year year = new Year("1", "1998");
     assertNotNull(year.getName2());
-
     // test with zero-year
     year = new Year("1", "0");
     assertNotNull(year.getName2());
@@ -113,10 +111,8 @@ public class TestYear extends TestCase {
     assertTrue(new Year("1", "1998").looksValid());
     assertTrue(new Year("1", "1001").looksValid());
     assertTrue(new Year("1", "2999").looksValid());
-
     assertFalse(new Year("1", "1000").looksValid());
     assertFalse(new Year("1", "-340").looksValid());
     assertFalse(new Year("1", "10000").looksValid());
   }
-
 }

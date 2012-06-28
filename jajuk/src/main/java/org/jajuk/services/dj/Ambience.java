@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.dj;
 
 import java.util.HashSet;
@@ -34,13 +33,10 @@ import org.jajuk.base.GenreManager;
  * translated and can change with current locale
  */
 public class Ambience implements Comparable<Ambience> {
-
   /** List of genres. */
   private Set<Genre> genres;
-
   /** Ambience name. */
   private String sName;
-
   /** Ambience ID. */
   private final String sID;
 
@@ -173,12 +169,10 @@ public class Ambience implements Comparable<Ambience> {
     if (getGenres().size() == 0) {
       return "";
     }
-
     StringBuilder out = new StringBuilder();
     for (Genre s : getGenres()) {
       out.append(s.getName2()).append(',');
     }
-
     return out.substring(0, out.length() - 1); // remove trailling ,
   }
 
@@ -237,7 +231,6 @@ public class Ambience implements Comparable<Ambience> {
     if (ambience == null) {
       return -1;
     }
-
     // otherwise just compare on the name
     return this.getName().compareToIgnoreCase(ambience.getName());
   }
@@ -252,12 +245,10 @@ public class Ambience implements Comparable<Ambience> {
     if (getGenres().size() == 0) {
       return "";
     }
-
     StringBuilder s = new StringBuilder();
     for (Genre genre : getGenres()) {
       s.append(genre.getID()).append(',');
     }
-
     return s.substring(0, s.length() - 1); // remove last coma
   }
 }

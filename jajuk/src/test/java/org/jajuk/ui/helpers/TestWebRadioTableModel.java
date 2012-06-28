@@ -34,7 +34,6 @@ import org.junit.Test;
  * Test methods for {@link org.jajuk.ui.helpers.WebRadioTableModel}.
  */
 public class TestWebRadioTableModel extends JajukTestCase {
-
   /**
    * Test method for {@link org.jajuk.ui.helpers.Duration#Duration(long)}.
    * @throws Exception 
@@ -47,13 +46,11 @@ public class TestWebRadioTableModel extends JajukTestCase {
   public void testModel() {
     // Load radios
     JUnitHelpers.getWebRadios();
-
     //Create and populate the model
     WebRadioTableModel model = new WebRadioTableModel();
     model.populateModel(getColumnsConf(Const.XML_PLAY + ',' + Const.XML_NAME + ','
         + Const.XML_KEYWORDS + Const.XML_GENRE + ',' + Const.XML_ORIGIN + ',' + Const.XML_BITRATE
         + ',' + Const.XML_URL));
-
     // Check the model (Note that we check that the rows are sorted at the same time)
     assertEquals(model.getRowCount(), 4);
     assertEquals(model.getColumnCount(), 9);
@@ -66,12 +63,10 @@ public class TestWebRadioTableModel extends JajukTestCase {
     assertEquals(model.getValueAt(0, 7), new Long(127));
     // Frequency is not shown
     assertEquals(model.getValueAt(0, 8), new Long(45000));
-
     assertEquals(model.getValueAt(3, 1), "Preset 2");
     assertEquals(model.getValueAt(3, 3), "http://preset2");
     assertEquals(model.getValueAt(3, 6), WebRadioOrigin.PRESET.name());
     assertEquals(model.getValueAt(3, 8), 0l);
-
   }
 
   private List<String> getColumnsConf(String sConf) {

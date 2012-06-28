@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.awt.datatransfer.DataFlavor;
@@ -34,14 +33,11 @@ import org.jajuk.base.Item;
  * Transferable table row ( for DND ).
  */
 public class TransferableTableRows implements Transferable {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** The Constant ROW_FLAVOR.   */
   public static final DataFlavor ROW_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType,
       "Row");
-
   /** Transferable model. */
   private List<Item> items;
 

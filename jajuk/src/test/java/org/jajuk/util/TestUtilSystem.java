@@ -39,7 +39,6 @@ import org.jajuk.util.error.JajukException;
  * .
  */
 public class TestUtilSystem extends JajukTestCase {
-
   private File file1, file2;
 
   /*
@@ -65,7 +64,6 @@ public class TestUtilSystem extends JajukTestCase {
     // been created
     file1.delete();
     file2.delete();
-
     super.tearDown();
   }
 
@@ -78,11 +76,9 @@ public class TestUtilSystem extends JajukTestCase {
     // first test with no backup size set
     Conf.setProperty(Const.CONF_BACKUP_SIZE, "0");
     UtilSystem.backupFile(file1, 1);
-
     // then set some backup size
     Conf.setProperty(Const.CONF_BACKUP_SIZE, "100");
     UtilSystem.backupFile(file1, 1);
-
     // TODO: create a huge file and make sure it is truncated during backup
   }
 
@@ -94,17 +90,13 @@ public class TestUtilSystem extends JajukTestCase {
    */
   public void testCopyFileFile() throws Exception {
     FileUtils.writeStringToFile(file1, "this is some test data");
-
     UtilSystem.copy(file1, file2);
-
     assertEquals("this is some test data", FileUtils.readFileToString(file2));
   }
 
   public void testCopyFileFileEmpty() throws Exception {
     FileUtils.writeStringToFile(file1, "");
-
     UtilSystem.copy(file1, file2);
-
     assertEquals("", FileUtils.readFileToString(file2));
   }
 
@@ -135,9 +127,7 @@ public class TestUtilSystem extends JajukTestCase {
     File file1 = JUnitHelpers.getFile("testfile1", true).getFIO();
     File file2 = JUnitHelpers.getFile("testfile2", true).getFIO();
     FileUtils.writeStringToFile(file1, "this is some test data");
-
     UtilSystem.copy(file1, file2);
-
     // file is written into same directory as file1 here
     assertEquals("this is some test data", FileUtils.readFileToString(file2));
   }
@@ -161,9 +151,7 @@ public class TestUtilSystem extends JajukTestCase {
    */
   public void testCopyURLString() throws Exception {
     FileUtils.writeStringToFile(file1, "this is some test data");
-
     UtilSystem.copy(file1.toURI().toURL(), file2.getAbsolutePath());
-
     // file is written into same directory as file1 here
     // TODO: currently the copy(URL) methods adds a newline at the end, should
     // we change that??
@@ -205,9 +193,7 @@ public class TestUtilSystem extends JajukTestCase {
    */
   public void testCopyRecursivelySimple() throws Exception {
     FileUtils.writeStringToFile(file1, "this is some test data");
-
     UtilSystem.copyRecursively(file1, file2);
-
     assertEquals("this is some test data", FileUtils.readFileToString(file2));
   }
 
@@ -237,7 +223,6 @@ public class TestUtilSystem extends JajukTestCase {
     FileUtils.writeStringToFile(file1, "this is some test data");
     Directory dir = JUnitHelpers.getDirectory();
     UtilSystem.copyToDir(file1, dir.getFio());
-
     assertEquals(
         "this is some test data",
         FileUtils.readFileToString(new File(dir.getAbsolutePath() + File.separator
@@ -253,7 +238,6 @@ public class TestUtilSystem extends JajukTestCase {
   public void testCopyToDirException() throws Exception {
     FileUtils.writeStringToFile(file1, "this is some test data");
     assertTrue(file1.delete());
-
     try {
       UtilSystem.copyToDir(file1, file2);
       fail("Should throw exception");
@@ -279,7 +263,6 @@ public class TestUtilSystem extends JajukTestCase {
     } catch (IOException e) {
       //
     }
-
     // still a directory now
     assertTrue(file1.exists());
     assertFalse(file1.isDirectory());
@@ -315,9 +298,7 @@ public class TestUtilSystem extends JajukTestCase {
     Directory top = JUnitHelpers.getDirectory();
     File fileChild = new File(top.getAbsolutePath() + "/child");
     fileChild.mkdirs();
-
     UtilSystem.deleteDir(fileChild);
-
     assertFalse(fileChild.exists());
     assertTrue(top.getFio().exists());
   }
@@ -329,9 +310,7 @@ public class TestUtilSystem extends JajukTestCase {
    */
   public void testDeleteFile() throws Exception {
     FileUtils.writeStringToFile(file1, "this is some test data");
-
     UtilSystem.deleteFile(file1);
-
     assertFalse(file1.exists());
   }
 
@@ -380,9 +359,7 @@ public class TestUtilSystem extends JajukTestCase {
   public void testGetFileChecksum() throws Exception {
     assertNotNull(UtilSystem.getFileChecksum(file1));
     assertFalse(UtilSystem.getFileChecksum(file1).equals(""));
-
     FileUtils.writeStringToFile(file1, "this is some test data");
-
     assertNotNull(UtilSystem.getFileChecksum(file1));
     assertFalse(UtilSystem.getFileChecksum(file1).equals(""));
   }
@@ -398,7 +375,6 @@ public class TestUtilSystem extends JajukTestCase {
     } catch (JajukException e) {
       assertEquals(103, e.getCode());
     }
-
   }
 
   /**
@@ -419,7 +395,6 @@ public class TestUtilSystem extends JajukTestCase {
     assertNotNull(JajukException.class.getProtectionDomain());
     assertNotNull(JajukException.class.getProtectionDomain().getCodeSource());
     assertNotNull(JajukException.class.getProtectionDomain().getCodeSource().getLocation());
-
     assertNotNull(UtilSystem.getJarLocation(JajukException.class));
   }
 
@@ -445,7 +420,6 @@ public class TestUtilSystem extends JajukTestCase {
   public void testGetNormalizedFilename() {
     // assertEquals(file1.getAbsolutePath(),
     // UtilSystem.getNormalizedFilename(file1.getAbsolutePath()));
-
     assertEquals("-tmp  -test1----", UtilSystem.getNormalizedFilename("/tmp*|/te\"?st1<>\\:"));
   }
 
@@ -465,7 +439,6 @@ public class TestUtilSystem extends JajukTestCase {
    */
   public void testGetResource() {
     assertNull(UtilSystem.getResource("unfoundresource"));
-
     assertNotNull(UtilSystem.getResource("icons/16x16/add_16x16.png"));
   }
 
@@ -535,13 +508,10 @@ public class TestUtilSystem extends JajukTestCase {
     assertFalse(UtilSystem.isValidFileName(null, null));
     assertFalse(UtilSystem.isValidFileName(file1, null));
     assertFalse(UtilSystem.isValidFileName(null, "test.txt"));
-
     // true with valid filenames
     assertTrue(UtilSystem.isValidFileName(new File("/tmp"), "testfile"));
-
     // already exists
     assertTrue(UtilSystem.isValidFileName(file1.getParentFile(), file1.getName()));
-
     // can be created
     assertTrue(UtilSystem.isValidFileName(file1.getParentFile(), file1.getName()));
   }
@@ -561,7 +531,6 @@ public class TestUtilSystem extends JajukTestCase {
    */
   public void testReadFile() throws Exception {
     FileUtils.writeStringToFile(file1, "this is some test data");
-
     StringBuilder builder = UtilSystem.readFile(file1.getAbsolutePath());
     assertEquals("this is some test data", builder.toString());
   }
@@ -605,7 +574,6 @@ public class TestUtilSystem extends JajukTestCase {
       // TODO: we cannot run this test in eclipse as we do not have a Jajuk.jar
       // file available...
     }
-
   }
 
   /**
@@ -649,9 +617,7 @@ public class TestUtilSystem extends JajukTestCase {
    */
   public void testReplaceInFileNotReplaced() throws Exception {
     FileUtils.writeStringToFile(file1, "this is some test data");
-
     assertFalse(UtilSystem.replaceInFile(file1, "notfound", "replaced", "UTF-8"));
-
     assertEquals("this is some test data", FileUtils.readFileToString(file1));
   }
 
@@ -663,9 +629,7 @@ public class TestUtilSystem extends JajukTestCase {
    */
   public void testReplaceInFileReplaced() throws Exception {
     FileUtils.writeStringToFile(file1, "this is some test data");
-
     assertTrue(UtilSystem.replaceInFile(file1, "test", "replaced", "UTF-8"));
-
     assertEquals("this is some replaced data", FileUtils.readFileToString(file1));
   }
 
@@ -697,7 +661,6 @@ public class TestUtilSystem extends JajukTestCase {
    */
   public void testIsRunning() {
     assertTrue(UtilSystem.isRunning(new MockProcess(true)));
-
     assertFalse(UtilSystem.isRunning(new MockProcess(false)));
   }
 
@@ -708,7 +671,6 @@ public class TestUtilSystem extends JajukTestCase {
    */
   public void testGetExitValue() {
     assertEquals(0, UtilSystem.getExitValue(new MockProcess(false)));
-
     assertEquals(-100, UtilSystem.getExitValue(new MockProcess(true)));
   }
 
@@ -716,7 +678,6 @@ public class TestUtilSystem extends JajukTestCase {
    * .
    */
   private static final class MockProcess extends Process {
-
     boolean throwInExitValue;
 
     /**
@@ -742,7 +703,6 @@ public class TestUtilSystem extends JajukTestCase {
      */
     @Override
     public OutputStream getOutputStream() {
-
       return null;
     }
 
@@ -751,7 +711,6 @@ public class TestUtilSystem extends JajukTestCase {
      */
     @Override
     public InputStream getInputStream() {
-
       return null;
     }
 
@@ -760,7 +719,6 @@ public class TestUtilSystem extends JajukTestCase {
      */
     @Override
     public InputStream getErrorStream() {
-
       return null;
     }
 
@@ -772,7 +730,6 @@ public class TestUtilSystem extends JajukTestCase {
       if (throwInExitValue) {
         throw new IllegalThreadStateException("testexception");
       }
-
       return 0;
     }
 
@@ -781,7 +738,6 @@ public class TestUtilSystem extends JajukTestCase {
      */
     @Override
     public void destroy() {
-
     }
   }
 

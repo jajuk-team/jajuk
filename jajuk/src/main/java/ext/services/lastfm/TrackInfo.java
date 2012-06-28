@@ -20,14 +20,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.lastfm;
 
 /**
  * .
  */
 public interface TrackInfo {
-
   /**
    * Gets the title.
    * 
@@ -55,5 +53,4 @@ public interface TrackInfo {
    * @param url the url to set
    */
   public void setUrl(String url);
-
 }

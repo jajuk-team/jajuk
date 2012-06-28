@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.awt.datatransfer.DataFlavor;
@@ -43,9 +42,7 @@ import org.jajuk.util.log.Log;
 /**
  * DND handler for table.
  */
-
 public class PlaylistEditorTransferHandler extends TableTransferHandler {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -100,7 +97,6 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
               .getTransferData(TransferableAlbum.ALBUM_FLAVOR);
           oData = ttn.getUserObject();
         }
-
         List<File> alSelectedFiles = null;
         try {
           alSelectedFiles = UtilFeatures.getFilesForItems((List<Item>) oData);
@@ -109,7 +105,6 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
           Messages.showErrorMessage(je.getCode());
           return false;
         }
-
         // If we get zero playing files, just leave, do not display a dummy message in Queue code:
         if (alSelectedFiles.size() == 0) {
           return false;
@@ -119,7 +114,6 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
         if (row < 0) {
           row = plf.getFiles().size();
         }
-
         // queue case
         if (plf.getType() == Playlist.Type.QUEUE) {
           // If user selected "push on drop" option just push the selection
@@ -155,7 +149,6 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
       jtable.getSelectionModel().setValueIsAdjusting(false);
     }
     return false;
-
   }
 
   /* (non-Javadoc)
@@ -176,5 +169,4 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
     }
     return false;
   }
-
 }

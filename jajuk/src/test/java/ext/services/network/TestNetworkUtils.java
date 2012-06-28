@@ -37,13 +37,10 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class TestNetworkUtils extends JajukTestCase {
-
   /** The Constant PROXY_PORT.   */
   private static final int PROXY_PORT = 0; // auto-choose
-
   /** The Constant URL.   */
   private static final String URL = "http://www.google.com/";
-
   /** The Constant FTP_URL.   */
   private static final String FTP_URL = "ftp://www.google.com/";
 
@@ -55,7 +52,6 @@ public class TestNetworkUtils extends JajukTestCase {
   @Override
   protected void setUp() throws Exception {
     Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, "false");
-
     super.setUp();
   }
 
@@ -70,7 +66,6 @@ public class TestNetworkUtils extends JajukTestCase {
     // null when no connection is allowed
     Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, "true");
     assertNull(NetworkUtils.getConnection(URL, null));
-
     // useful content when inet access is allowed
     Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, "false");
     HttpURLConnection connection = NetworkUtils.getConnection(URL, null);
@@ -87,7 +82,6 @@ public class TestNetworkUtils extends JajukTestCase {
   public void testGetConnectionStringProxyInvalidURL() throws Exception {
     // useful content when inet access is allowed
     Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, "false");
-
     try {
       NetworkUtils.getConnection(FTP_URL, null);
       fail("Should fail here");
@@ -108,7 +102,6 @@ public class TestNetworkUtils extends JajukTestCase {
     // null when no connection is allowed
     Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, "true");
     assertNull(NetworkUtils.getConnection(new java.net.URL(URL), null));
-
     // useful content when inet access is allowed
     Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, "false");
     HttpURLConnection connection = NetworkUtils.getConnection(new java.net.URL(URL), null);
@@ -126,13 +119,11 @@ public class TestNetworkUtils extends JajukTestCase {
    */
   public void testGetConnectionURLProxyWithProxy() throws Exception {
     final ServerSocket socket = new ServerSocket(PROXY_PORT);
-
     Thread thread = new Thread("ProxySocketAcceptThread") {
       @Override
       public void run() {
         try {
           while (!bStop) {
-
             Socket sock = socket.accept();
             Log.debug("Accepted connection, sending back garbage and close socket...");
             sock.getOutputStream().write(1);
@@ -141,12 +132,10 @@ public class TestNetworkUtils extends JajukTestCase {
         } catch (IOException e) {
           Log.error(e);
         }
-
       }
     };
     thread.setDaemon(true); // to finish tests even if this is still running
     thread.start();
-
     Log.debug("Using local port: " + socket.getLocalPort());
     try {
       // useful content when inet access is allowed
@@ -218,7 +207,6 @@ public class TestNetworkUtils extends JajukTestCase {
     HttpURLConnection connection = NetworkUtils.getConnection(URL, null);
     assertNotNull(connection);
     connection.setDoOutput(true);
-
     // TODO: currently I do not have an URL that works via POST, therefore we
     // get an invalid return code
     try {
@@ -240,7 +228,6 @@ public class TestNetworkUtils extends JajukTestCase {
     HttpURLConnection connection = NetworkUtils.getConnection(URL, null);
     assertNotNull(connection);
     connection.setDoOutput(true);
-
     Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, "true");
     assertNull(NetworkUtils.readPostURL(connection, "post"));
     connection.disconnect();
@@ -256,7 +243,6 @@ public class TestNetworkUtils extends JajukTestCase {
     HttpURLConnection connection = NetworkUtils.getConnection(URL, null);
     assertNotNull(connection);
     connection.setDoOutput(true);
-
     assertNull(NetworkUtils.getImage(connection));
   }
 
@@ -270,7 +256,6 @@ public class TestNetworkUtils extends JajukTestCase {
     HttpURLConnection connection = NetworkUtils.getConnection(URL, null);
     assertNotNull(connection);
     connection.setDoOutput(true);
-
     Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, "true");
     assertNull(NetworkUtils.getImage(connection));
   }
@@ -298,5 +283,4 @@ public class TestNetworkUtils extends JajukTestCase {
     // code-coverage tests
     JUnitHelpers.executePrivateConstructor(NetworkUtils.class);
   }
-
 }

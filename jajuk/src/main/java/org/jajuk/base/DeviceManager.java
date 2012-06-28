@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.base;
 
 import java.io.File;
@@ -46,16 +45,12 @@ import org.jajuk.util.log.Log;
  * Convenient class to manage devices.
  */
 public final class DeviceManager extends ItemManager {
-
   /** Self instance. */
   private static DeviceManager singleton = new DeviceManager();
-
   /** Date last global refresh. */
   private long lDateLastGlobalRefresh = 0;
-
   /** List of deep-refresh devices after an upgrade. */
   private final Set<Device> devicesDeepRefreshed = new HashSet<Device>();
-
   /** Auto-refresh thread. */
   private final Thread tAutoRefresh = new Thread("Device Auto Refresh Thread") {
     @Override
@@ -70,7 +65,6 @@ public final class DeviceManager extends ItemManager {
       }
     }
   };
-
   private volatile boolean bGlobalRefreshing = false;
 
   /**
@@ -362,7 +356,6 @@ public final class DeviceManager extends ItemManager {
           // refresh the device (deep refresh forced after an upgrade)
           bNeedUIRefresh = bNeedUIRefresh
               | device.refreshCommand(bNeedDeepAfterUpgrade, false, null);
-
           // UI refresh if required
           if (bNeedUIRefresh) {
             // Cleanup logical items

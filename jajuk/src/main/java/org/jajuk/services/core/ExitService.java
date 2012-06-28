@@ -44,10 +44,8 @@ import org.jajuk.util.log.Log;
  * All code related to jajuk exit.
  */
 public class ExitService extends Thread {
-
   /** Exit code. */
   private static int iExitCode = 0;
-
   /** Exiting flag. */
   private volatile static boolean bExiting = false;
 
@@ -69,26 +67,19 @@ public class ExitService extends Thread {
    */
   public static void commit(boolean bExit) throws Exception {
     Log.debug("Commiting Queue, Ambiences, WebRadio, Configuration and collection.");
-
     // Store current FIFO for next session
     QueueModel.commit();
-
     // commit ambiences
     AmbienceManager.getInstance().commit();
-
     // Commit webradios
     CustomRadiosPersistenceHelper.commit();
     PresetRadiosPersistenceHelper.commit();
-
     // Store webradio state
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(QueueModel.isPlayingRadio()));
-
     // commit configuration
     org.jajuk.util.Conf.commit();
-
     // commit history
     History.commit();
-
     // Wait few secs if some devices are still refreshing, a kill signal has
     // been sent to them
     if (DeviceManager.getInstance().isAnyDeviceRefreshing()) {
@@ -101,7 +92,6 @@ public class ExitService extends Thread {
         }
       }
     }
-
     // Commit collection if not still refreshing
     if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
       Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION_EXIT));
@@ -119,24 +109,18 @@ public class ExitService extends Thread {
   @Override
   public void run() {
     Log.debug("Exit Hook begin");
-
     // stop sound ASAP
     Player.stop(true);
-
     ObservationManager.notifySync(new JajukEvent(JajukEvents.EXITING));
-
     try {
       // commit only if exit is safe (to avoid commiting empty collection) 
       if (iExitCode == 0) {
         // commit all managers/items
         commit(true);
-
         // Disconnect Dbus if required
         DBusManager.disconnect();
-
         /* release keystrokes resources */
         JajukAction.cleanup();
-
         // Remove localhost_<user> session files
         // (can occur when network is not available)
         File[] files = SessionService.getConfFileByPath(Const.FILE_SESSIONS).listFiles();
@@ -153,7 +137,6 @@ public class ExitService extends Thread {
             }
           }
         }
-
         // Remove session flag.
         File file = SessionService.getSessionIdFile();
         if (!file.exists()) {
@@ -197,5 +180,4 @@ public class ExitService extends Thread {
   public static boolean isExiting() {
     return bExiting;
   }
-
 }

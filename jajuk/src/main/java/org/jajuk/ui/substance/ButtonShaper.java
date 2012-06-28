@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.substance;
 
 import java.awt.Component;
@@ -42,7 +41,6 @@ import org.jvnet.substance.utils.border.SubstanceButtonBorder;
  * The Class ButtonShaper.
  */
 public abstract class ButtonShaper implements SubstanceButtonShaper {
-
   /* (non-Javadoc)
    * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getButtonOutline(javax.swing.AbstractButton)
    */
@@ -82,7 +80,6 @@ public abstract class ButtonShaper implements SubstanceButtonShaper {
         button.setBorder(null);
       }
       uiPreferredSize.setSize(uiw - bi.left - bi.right, uih - bi.top - bi.bottom);
-
       if (!isBorderComputing) {
         button.setBorder(this.getButtonBorder(button));
         button.putClientProperty(SubstanceButtonUI.BORDER_COMPUTED, "");

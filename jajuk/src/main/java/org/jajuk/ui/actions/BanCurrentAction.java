@@ -37,7 +37,6 @@ import org.jajuk.util.Messages;
  * .
  */
 public class BanCurrentAction extends SelectionAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -71,5 +70,4 @@ public class BanCurrentAction extends SelectionAction {
       }
     }
   }
-
 }

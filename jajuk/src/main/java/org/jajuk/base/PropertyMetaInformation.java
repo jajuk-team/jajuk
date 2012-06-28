@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.base;
 
 import java.net.MalformedURLException;
@@ -36,31 +35,22 @@ import org.jajuk.util.log.Log;
  * A Jajuk property meta information.
  */
 public class PropertyMetaInformation {
-
   /** Property name. */
   private final String sName;
-
   /** Is property a custom property?. */
   private boolean bCustom = false;
-
   /** Is property element of associated item constructor? (and so used in the checksum ID hash). */
   private boolean bConstructor = false;
-
   /** Property Type (java.lang.String for ie) */
   private final Class<?> cType;
-
   /** Default value (null: no default). */
   private Object oDefaultValue;
-
   /** This property should be displayed to UI?. */
   private boolean bShouldBeDisplayed = true;
-
   /** Editable?. */
   private boolean bEditable = true;
-
   /** Unique?. */
   private boolean bMergeable = false;
-
   /** Human Type. */
   private String sHumanType;
 
@@ -208,7 +198,6 @@ public class PropertyMetaInformation {
    * public void setDefaultValue(String defaultValue) { oDefaultValue =
    * defaultValue; }
    */
-
   /* (non-Javadoc)
    * @see java.lang.Object#toString()
    */
@@ -263,5 +252,4 @@ public class PropertyMetaInformation {
   public String getHumanName() {
     return Messages.getHumanPropertyName(getName());
   }
-
 }

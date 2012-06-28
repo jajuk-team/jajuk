@@ -48,12 +48,9 @@ import org.jajuk.util.error.JajukException;
  * Set of convenient classes for string manipulation.
  */
 public final class UtilString {
-
   /** The list of characters that we need to escape in strings. */
   private final static String ESCAPE_CHARACTERS = "\\[](){}.*+?$^|-";
-
   private static final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>();
-
   /** Constant date FORMATTER, one by thread for perfs, we need an instance by thread because this class is not thread safe. */
   private static final ThreadLocal<SimpleDateFormat> FORMATTER = new ThreadLocal<SimpleDateFormat>() {
     @Override
@@ -178,7 +175,6 @@ public final class UtilString {
     if (sPattern.contains(Const.PATTERN_TRACKORDER)) {
       // override Order from filename if not set explicitly
       long lOrder = handleOrder(file, bMandatory, track);
-
       // prepend one digit numbers with "0"
       if (lOrder < 10) {
         return out.replace(Const.PATTERN_TRACKORDER, "0" + lOrder);
@@ -186,7 +182,6 @@ public final class UtilString {
         return out.replace(Const.PATTERN_TRACKORDER, lOrder + "");
       }
     }
-
     return out;
   }
 
@@ -283,9 +278,7 @@ public final class UtilString {
     String ret = out;
     String sValue;
     if (sPattern.contains(Const.PATTERN_ARTIST)) {
-
       sValue = track.getArtist().getName();
-
       if (normalize) {
         sValue = UtilSystem.getNormalizedFilename(sValue);
       }
@@ -321,34 +314,24 @@ public final class UtilString {
       final boolean bMandatory, final boolean normalize) throws JajukException {
     String out = sPattern;
     final Track track = file.getTrack();
-
     // Check Artist name
     out = UtilString.applyArtistPattern(file, sPattern, bMandatory, normalize, out, track);
-
     // Check Album artist, use artist name if no album artist
     out = UtilString.applyAlbumArtistPattern(sPattern, normalize, out, track);
-
     // Check Genre name
     out = UtilString.applyGenrePattern(file, sPattern, bMandatory, normalize, out, track);
-
     // Check Album Name
     out = UtilString.applyAlbumPattern(file, sPattern, bMandatory, normalize, out, track);
-
     // Check Track Order
     out = UtilString.applyTrackOrderPattern(file, sPattern, bMandatory, out, track);
-
     // Check Track name
     out = UtilString.applyTrackPattern(sPattern, normalize, out, track);
-
     // Check Year Value
     out = UtilString.applyYearPattern(file, sPattern, bMandatory, out, track);
-
     // Check Disc Value
     out = UtilString.applyDiscPattern(file, sPattern, bMandatory, out, track);
-
     // Check Custom Properties
-    out = UtilString.applyCustomPattern(file,sPattern, normalize, out, track);
-
+    out = UtilString.applyCustomPattern(file, sPattern, normalize, out, track);
     return out;
   }
 
@@ -429,7 +412,6 @@ public final class UtilString {
     if (sPattern.contains(Const.PATTERN_DISC)) {
       // override Order from filename if not set explicitly
       long lDiscNumber = handleDiscNumber(file, bMandatory, track);
-
       // prepend one digit numbers with "0"
       if (lDiscNumber < 10) {
         return out.replace(Const.PATTERN_DISC, "0" + lDiscNumber);
@@ -437,7 +419,6 @@ public final class UtilString {
         return out.replace(Const.PATTERN_DISC, lDiscNumber + "");
       }
     }
-
     return out;
   }
 
@@ -523,13 +504,11 @@ public final class UtilString {
     StringBuilder buffer = new StringBuilder(2 * length);
     for (int i = 0; i != length; i++) {
       char c = s.charAt(i);
-
       // if we have a character that needs to be escaped, we prepend backslash
       // before it
       if (ESCAPE_CHARACTERS.indexOf(c) != -1) {
         buffer.append('\\');
       }
-
       // now append the actual character
       buffer.append(c);
     }
@@ -571,7 +550,6 @@ public final class UtilString {
     if (dateFormat.get() == null) {
       dateFormat.set(DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault()));
     }
-
     return dateFormat.get();
   }
 
@@ -600,7 +578,6 @@ public final class UtilString {
     if (genre.length() == 1) {
       return genre.substring(0, 1).toUpperCase(Locale.getDefault());
     }
-
     // construct string with first letter uppercase and rest lowercase
     return genre.substring(0, 1).toUpperCase(Locale.getDefault())
         + genre.toLowerCase(Locale.getDefault()).substring(1);
@@ -758,7 +735,6 @@ public final class UtilString {
     properties.remove("deployment.user.security.trusted.certs");
     properties.remove("deployment.user.security.trusted.clientauthcerts");
     properties.remove("jajuk.log");
-
     return properties;
   }
 
@@ -803,12 +779,10 @@ public final class UtilString {
     // check invalid chars
     for (int i = 0; i < s.length(); i++) {
       final char c = s.charAt(i);
-
       // check reserved chars
       if (-1 != "&\'\"<>".indexOf(c)) {
         return false;
       }
-
       if (!UtilString.isChar(c)) {
         return false;
       }
@@ -1047,11 +1021,9 @@ public final class UtilString {
    */
   public static final List<String> getTextBetweenChars(String string, char beginChar, char endChar) {
     List<String> result = new ArrayList<String>();
-
     if (string == null || string.indexOf(beginChar) == -1 || string.indexOf(endChar) == -1) {
       return result;
     }
-
     String auxStr = string;
     int beginIndex = auxStr.indexOf(beginChar);
     int endIndex = auxStr.indexOf(endChar);
@@ -1063,8 +1035,6 @@ public final class UtilString {
       beginIndex = auxStr.indexOf(beginChar);
       endIndex = auxStr.indexOf(endChar);
     }
-
     return result;
   }
-
 }

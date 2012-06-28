@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.awt.datatransfer.DataFlavor;
@@ -33,12 +32,9 @@ import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 /**
  * DND handler for table.
  */
-
 public class CatalogViewTransferHandler extends TransferHandler {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   private final LocalAlbumThumbnail item;
 
   /**
@@ -98,5 +94,4 @@ public class CatalogViewTransferHandler extends TransferHandler {
   public boolean canImport(JComponent c, DataFlavor[] flavors) {
     return false;
   }
-
 }

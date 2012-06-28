@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.webradio;
 
 import java.util.Iterator;
@@ -38,7 +37,6 @@ import org.jajuk.util.UtilSystem;
  * </p>.
  */
 public final class WebRadioManager extends ItemManager {
-
   /** Self instance. */
   private static WebRadioManager self = new WebRadioManager();
 
@@ -47,7 +45,6 @@ public final class WebRadioManager extends ItemManager {
    */
   private WebRadioManager() {
     super();
-
     // ---register properties---
     // ID
     registerProperty(new PropertyMetaInformation(Const.XML_ID, false, true, false, false, false,
@@ -76,7 +73,6 @@ public final class WebRadioManager extends ItemManager {
     // Genre
     registerProperty(new PropertyMetaInformation(Const.XML_GENRE, false, false, true, true, true,
         String.class, null));
-
   }
 
   /**
@@ -206,5 +202,4 @@ public final class WebRadioManager extends ItemManager {
   public ReadOnlyIterator<WebRadio> getWebRadioIterator() {
     return new ReadOnlyIterator<WebRadio>((Iterator<WebRadio>) getItemsIterator());
   }
-
 }

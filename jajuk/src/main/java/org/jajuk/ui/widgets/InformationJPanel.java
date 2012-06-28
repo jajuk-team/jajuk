@@ -61,7 +61,6 @@ import org.jdesktop.swingx.JXPanel;
  * Status / information panel ( static view ).
  */
 public final class InformationJPanel extends JXPanel implements Observer {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -69,20 +68,13 @@ public final class InformationJPanel extends JXPanel implements Observer {
    * .
    */
   public static enum MessageType {
-
-    INFORMATIVE,
-
-    ERROR,
-
-    WARNING
+    INFORMATIVE, ERROR, WARNING
   }
 
   /** Self instance. */
   private static InformationJPanel ijp = new InformationJPanel();
-
   /** Swing Timer to refresh the component. */
   private final Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
-
     @Override
     public void actionPerformed(ActionEvent e) {
       try {
@@ -103,24 +95,15 @@ public final class InformationJPanel extends JXPanel implements Observer {
   }
 
   // widgets declaration
-
   public JLabel jlMessage;
-
   JLabel jlSelection;
-
   JLabel jlTotal;
-
   // attributes
-
   String sMessage;
-
   /** Current message type. */
   MessageType type = MessageType.INFORMATIVE;
-
   String sSelection;
-
   String sTotalStatus;
-
   private final TrackPositionSliderToolbar trackPositionSliderToolbar;
 
   /**
@@ -138,36 +121,29 @@ public final class InformationJPanel extends JXPanel implements Observer {
     jtbMessage.add(jlMessage);
     jtbMessage.add(Box.createHorizontalGlue());
     jtbMessage.addSeparator();
-
     trackPositionSliderToolbar = new TrackPositionSliderToolbar();
-
     jlTotal = new JLabel();
     // Make sure to get always 5 px at the left and right of the label
     jlTotal.setBorder(new EmptyBorder(0, 5, 0, 5));
     jlTotal.setToolTipText(Messages.getString("InformationJPanel.5"));
-
     // selection bar
     jlSelection = new JLabel(Messages.getString("InformationJPanel.9"));
     // Make sure to get always 5 px at the left and right of the label
     jlSelection.setBorder(new EmptyBorder(0, 5, 0, 3));
-
     // add widgets
     setLayout(new MigLayout("insets 2", "[40%,grow][40%,grow][10%,grow][10%,grow]"));
     add(jtbMessage, "grow,left");
     add(trackPositionSliderToolbar, "grow");
     add(jlTotal, "grow");
     add(jlSelection, "grow,right");
-
     // check if some errors occurred before the view has been displayed
     if (ObservationManager.containsEvent(JajukEvents.PLAY_ERROR)) {
       update(new JajukEvent(JajukEvents.PLAY_ERROR,
           ObservationManager.getDetailsLastOccurence(JajukEvents.PLAY_ERROR)));
     }
-
     // check if some track has been launched before the view has been
     // displayed
     UtilFeatures.updateStatus(this);
-
     // register for given events
     ObservationManager.register(this);
     // start timer
@@ -306,7 +282,6 @@ public final class InformationJPanel extends JXPanel implements Observer {
             }
           } else if (o instanceof WebRadio) {
             WebRadio radio = (WebRadio) o;
-
             // display associated error code is given
             if (detail != null) {
               setMessage(Messages.getErrorMessage(errorCode) + ": " + radio.toString(),
@@ -427,5 +402,4 @@ public final class InformationJPanel extends JXPanel implements Observer {
   public MessageType getMessageType() {
     return type;
   }
-
 }

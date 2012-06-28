@@ -39,18 +39,13 @@ import org.jajuk.util.log.Log;
  * Lyrics unit tests.
  */
 public class TestLyrics extends JajukTestCase {
-
   private File tmp = null;
-
   /** The Constant ARTIST.   */
   private static final String ARTIST = "Massive Attack";
-
   /** The Constant TITLE.   */
   private static final String TITLE = "Dissolved Girl";
-
   /** The Constant TESTED_WORD.   */
   private static final String TESTED_WORD = "Day, yesterday";
-
   // LyricsFly put a delay of 1500 ms before we are allowed to query again, we
   // need to take that into account for some of the tests
   /** The Constant FLY_DELAY.   */
@@ -98,12 +93,10 @@ public class TestLyrics extends JajukTestCase {
   private void testWebService(GenericWebLyricsProvider provider) {
     String lyrics = provider.getLyrics(ARTIST, TITLE);
     Log.debug("Resulting Lyrics(" + provider.getProviderHostname() + "): " + lyrics);
-
     if (provider.getProviderHostname().equals("api.lyricsfly.com") && lyrics == null) {
       Log.fatal("In Sonar this can happen, seems we do not have internet access there...");
       return;
     }
-
     assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics,
         StringUtils.isNotBlank(lyrics));
     assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics,
@@ -125,7 +118,6 @@ public class TestLyrics extends JajukTestCase {
       Log.fatal("In Sonar this exception occurs, seems we do not have internet access there...");
       return;
     }
-
     assertTrue(tmp.exists());
     assertTrue(tmp.length() > 0);
   }
@@ -147,5 +139,4 @@ public class TestLyrics extends JajukTestCase {
     GenericWebLyricsProvider provider = new LyricWikiWebLyricsProvider();
     testWeb(provider);
   }
-
 }

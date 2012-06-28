@@ -26,14 +26,12 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestDBusManager extends JajukTestCase {
-
   /**
    * Test method for {@link org.jajuk.services.dbus.DBusManager#connect()}.
    */
   public final void testGetInstance() {
     // DBus requires the environment variable DBUS_SESSION_BUS_ADDRESS
     // but this is typically only set on machines that support D-Bus
-
     // cannot check this for null as it won't work in some installations
     try {
       DBusManager.connect();
@@ -48,16 +46,13 @@ public class TestDBusManager extends JajukTestCase {
   public final void testDisconnect() {
     // first run it without connecting in getInstance()
     DBusManager.disconnect();
-
     // then run getInstance() which tries to connect
     try {
       DBusManager.connect();
     } catch (Exception e) {
       e.printStackTrace();
     }
-
     // now again, although getInstance() might not have worked...
     DBusManager.disconnect();
   }
-
 }

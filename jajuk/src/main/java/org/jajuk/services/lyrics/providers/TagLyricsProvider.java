@@ -30,7 +30,6 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class TagLyricsProvider implements ILyricsProvider {
-
   /** audio file we search lyrics for. */
   private File audioFile = null;
 
@@ -77,5 +76,4 @@ public class TagLyricsProvider implements ILyricsProvider {
   public String getSourceAddress() {
     return audioFile.getAbsolutePath();
   }
-
 }

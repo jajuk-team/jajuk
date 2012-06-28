@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.webradio;
 
 import javax.swing.ImageIcon;
@@ -33,7 +32,6 @@ import org.jajuk.util.Messages;
  * A web Radio.
  */
 public class WebRadio extends PhysicalItem implements Comparable<WebRadio> {
-
   /**
   * Instantiates a new web radio.
   * 
@@ -129,5 +127,4 @@ public class WebRadio extends PhysicalItem implements Comparable<WebRadio> {
   public ImageIcon getIconRepresentation() {
     return IconLoader.getIcon(JajukIcons.WEBRADIO);
   }
-
 }

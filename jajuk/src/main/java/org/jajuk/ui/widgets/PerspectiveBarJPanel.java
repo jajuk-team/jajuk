@@ -51,16 +51,12 @@ import org.jdesktop.swingx.JXPanel;
  * Menu bar used to choose the current perspective.
  */
 public final class PerspectiveBarJPanel extends JXPanel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** Perspectives tool bar*. */
   private JToolBar jtbPerspective;
-
   /** Self instance. */
   private static PerspectiveBarJPanel pb = new PerspectiveBarJPanel();
-
   /** Perspective button. */
   private final List<JButton> alButtons = new ArrayList<JButton>(10);
 
@@ -91,13 +87,11 @@ public final class PerspectiveBarJPanel extends JXPanel {
       final IPerspective perspective = it.next();
       Font font = FontManager.getInstance().getFont(JajukFont.PERSPECTIVES);
       int iconSize = Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE);
-
       // resize if necessary
       ImageIcon icon = perspective.getIcon();
       if (Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE) != 40) {
         icon = UtilGUI.getResizedImage(icon, iconSize, iconSize);
       }
-
       JButton jb = new JButton(icon);
       jb.setToolTipText(perspective.getDesc());
       jb.setBorder(new EmptyBorder(5, 5, 0, 5));

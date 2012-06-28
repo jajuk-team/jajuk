@@ -35,7 +35,6 @@ import org.jajuk.util.error.JajukException;
  * .
  */
 public class RestoreViewsAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -53,15 +52,12 @@ public class RestoreViewsAction extends JajukAction {
   @Override
   public void perform(final ActionEvent e) throws JajukException {
     SwingUtilities.invokeLater(new Runnable() {
-
       @Override
       public void run() {
         IPerspective perspective = PerspectiveManager.getCurrentPerspective();
         // Restore local or global views
         perspective.restoreDefaults();
       }
-
     });
-
   }
 }

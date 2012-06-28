@@ -29,7 +29,6 @@ import java.util.Iterator;
  * @param <V> 
  */
 public class ReadOnlyIterator<V> {
-
   /** Managed iterator *. */
   Iterator<V> iterator;
 
@@ -59,5 +58,4 @@ public class ReadOnlyIterator<V> {
   public boolean hasNext() {
     return iterator.hasNext();
   }
-
 }

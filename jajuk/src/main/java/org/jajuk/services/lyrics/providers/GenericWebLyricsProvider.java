@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.lyrics.providers;
 
 import ext.services.network.NetworkUtils;
@@ -41,11 +40,8 @@ import org.jajuk.util.log.Log;
  * specific providers.
  */
 public abstract class GenericWebLyricsProvider implements ILyricsProvider {
-
   private String source = null;
-
   private String queryUrlTemplate = null;
-
   /** audio file we search lyrics for. */
   File audioFile = null;
 
@@ -119,12 +115,10 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
   URL getActualURL(final String artist, final String title) {
     try {
       String queryString = getQueryURLTemplate();
-
       queryString = queryString.replace(Const.PATTERN_ARTIST,
           (artist != null) ? NetworkUtils.encodeString(artist) : "");
       queryString = queryString.replace(Const.PATTERN_TRACKNAME,
           (title != null) ? NetworkUtils.encodeString(title) : "");
-
       return new URL(queryString);
     } catch (MalformedURLException e) {
       Log.error(e);
@@ -182,5 +176,4 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
     Track track = audioFile.getTrack();
     return getWebURL(track.getArtist().getName2(), track.getName()).toString();
   }
-
 }

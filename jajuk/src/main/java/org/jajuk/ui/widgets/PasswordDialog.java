@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.widgets;
 
 import java.awt.event.ActionEvent;
@@ -38,12 +37,9 @@ import org.jajuk.util.Messages;
  * A password dialog.
  */
 public class PasswordDialog extends JajukJDialog implements ActionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   JPasswordField pf;
-
   JOptionPane optionPane;
 
   /**
@@ -72,16 +68,12 @@ public class PasswordDialog extends JajukJDialog implements ActionListener {
         }
       }
     });
-
     // Make this dialog display it.
     setContentPane(optionPane);
-
     // Handle window closing correctly.
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-
     // Register an event handler that puts the text into the option pane.
     pf.addActionListener(this);
-
     // Ensure the text field always gets the first focus.
     addComponentListener(new ComponentAdapter() {
       @Override
@@ -115,5 +107,4 @@ public class PasswordDialog extends JajukJDialog implements ActionListener {
   public JOptionPane getOptionPane() {
     return optionPane;
   }
-
 }

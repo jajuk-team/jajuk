@@ -24,16 +24,11 @@ package org.jajuk.services.notification;
  * List of all known notificators types.
  */
 public enum NotificatorTypes {
-
   // None
-
   NONE,
   // System (can map either javaSystrayNotificator or JajukBallooNotificator
   // according to system capabilities)
-
   BALLOON,
   // Full album view with animation
-
   TOAST
-
 }

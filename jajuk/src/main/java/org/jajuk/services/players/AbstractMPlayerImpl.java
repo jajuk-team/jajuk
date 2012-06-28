@@ -37,25 +37,18 @@ import org.jajuk.util.log.Log;
  * Mplayer player implementation.
  */
 public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
-
   /** Stored Volume. */
   float fVolume;
-
   /** Mplayer process. */
   volatile Process proc;
-
   /** End of file flag *. */
   volatile boolean bEOF = false;
-
   /** File is opened flag *. */
   volatile boolean bOpening = false;
-
   /** Stop position thread flag. */
   volatile boolean bStop = false;
-
   /** Fading state. */
   volatile boolean bFading = false;
-
   /** pause flag *. */
   protected volatile boolean bPaused = false;
 
@@ -91,7 +84,6 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
          * mplayer processes die gracefully. I guess the destroy() method
          * internally also tries to use -9 and so both pids are never killed.
          */
-
         Field field = proc.getClass().getDeclaredField("pid");
         field.setAccessible(true);
         int pid = field.getInt(proc);
@@ -130,11 +122,9 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   protected void sendCommand(String command) {
     if (proc != null) {
       PrintStream out = new PrintStream(proc.getOutputStream());
-
       // Do not use println() : it doesn't work under windows
       out.print(command + '\n');
       out.flush();
-
       // don't close out here otherwise the output stream of the Process
       // will be closed as well and subsequent sendCommant() calls will silently
       // fail!!
@@ -179,7 +169,6 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     cmd.add("-quiet");
     // slave: slave mode (control with stdin)
     cmd.add("-slave");
-
     // No af options if bit perfect is enabled
     if (!Conf.getBoolean(CONF_BIT_PERFECT)) {
       // -af volume: Use volnorm to limit gain to max
@@ -236,7 +225,6 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
       volume = (int) (10 * Math.log(fVolume));
     }
     audiofilters.append("volume=" + volume);
-
     // Add karaoke state if required
     if (Conf.getBoolean(CONF_STATE_KARAOKE)) {
       audiofilters.append(",karaoke");
@@ -251,7 +239,6 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    */
   @Override
   public long getDurationSec() {
-
     return 0;
   }
 
@@ -262,7 +249,6 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    */
   @Override
   public float getCurrentPosition() {
-
     return 0;
   }
 
@@ -273,7 +259,6 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    */
   @Override
   public long getElapsedTimeMillis() {
-
     return 0;
   }
 
@@ -340,5 +325,4 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
       sendCommand("pause");
     }
   }
-
 }

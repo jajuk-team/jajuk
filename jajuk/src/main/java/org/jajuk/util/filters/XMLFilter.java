@@ -26,7 +26,6 @@ import org.jajuk.util.JajukFileFilter;
  * XMLfilter.
  */
 public class XMLFilter extends JajukFileFilter {
-
   /** Self instance. */
   private static XMLFilter self = new XMLFilter();
 
@@ -45,5 +44,4 @@ public class XMLFilter extends JajukFileFilter {
   protected XMLFilter() {
     super(new String[] { "xml" });
   }
-
 }

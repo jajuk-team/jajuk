@@ -18,14 +18,12 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.base;
 
 /**
  * A physical Item (file, directory, device...)
  */
 public abstract class PhysicalItem extends Item {
-
   /**
    * The Constructor.
    * 
@@ -35,5 +33,4 @@ public abstract class PhysicalItem extends Item {
   public PhysicalItem(String sId, String sName) {
     super(sId, sName);
   }
-
 }

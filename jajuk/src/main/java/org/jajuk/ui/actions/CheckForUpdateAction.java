@@ -33,7 +33,6 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class CheckForUpdateAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

@@ -159,40 +159,28 @@ package ext;
  * 
  * @version 13
  */
-
 public final class MersenneTwister extends java.util.Random {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
   // Period parameters
   /** The Constant N.   */
   private static final int N = 624;
-
   /** The Constant M.   */
   private static final int M = 397;
-
   /** The Constant MATRIX_A.   */
   private static final int MATRIX_A = 0x9908b0df; // private static final * constant vector a
-
   /** The Constant UPPER_MASK.   */
   private static final int UPPER_MASK = 0x80000000; // most significant w-r bits
-
   /** The Constant LOWER_MASK.   */
   private static final int LOWER_MASK = 0x7fffffff; // least significant r bits
-
   // Tempering parameters
   /** The Constant TEMPERING_MASK_B.   */
   private static final int TEMPERING_MASK_B = 0x9d2c5680;
-
   /** The Constant TEMPERING_MASK_C.   */
   private static final int TEMPERING_MASK_C = 0xefc60000;
-
   private int mt[]; // the array for the state vector
-
   private int mti; // mti==N+1 means mt[N] is not initialized
-
   private int mag01[];
-
   /** Singleton. */
   private static MersenneTwister self = new MersenneTwister();
 
@@ -230,7 +218,6 @@ public final class MersenneTwister extends java.util.Random {
    * 
    * @param seed 
    */
-
   @Override
   public final void setSeed(final long seed) {
     // it's always good style to call super
@@ -261,13 +248,11 @@ public final class MersenneTwister extends java.util.Random {
   @Override
   synchronized protected int next(final int bits) {
     int y;
-
     if (mti >= N) // generate N words at one time
     {
       int kk;
       final int[] mt = this.mt; // locals are slightly faster
       final int[] mag01 = this.mag01; // locals are slightly faster
-
       for (kk = 0; kk < N - M; kk++) {
         y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
         mt[kk] = mt[kk + M] ^ (y >>> 1) ^ mag01[y & 0x1];
@@ -278,23 +263,19 @@ public final class MersenneTwister extends java.util.Random {
       }
       y = (mt[N - 1] & UPPER_MASK) | (mt[0] & LOWER_MASK);
       mt[N - 1] = mt[M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
-
       mti = 0;
     }
-
     y = mt[mti++];
     y ^= y >>> 11; // TEMPERING_SHIFT_U(y)
     y ^= (y << 7) & TEMPERING_MASK_B; // TEMPERING_SHIFT_S(y)
     y ^= (y << 15) & TEMPERING_MASK_C; // TEMPERING_SHIFT_T(y)
     y ^= (y >>> 18); // TEMPERING_SHIFT_L(y)
-
     return y >>> (32 - bits); // hope that's right!
   }
 
   /*
    * If you've got a truly old version of Java, you can omit these two next methods.
    */
-
   /**
    * This method is missing from jdk 1.0.x and below.  JDK 1.1
    * includes this for us, but what the heck.
@@ -317,7 +298,6 @@ public final class MersenneTwister extends java.util.Random {
    * 
    * @return true, if next boolean
    */
-
   public boolean nextBoolean(final float probability) {
     if (probability < 0.0f || probability > 1.0f)
       throw new IllegalArgumentException("probability must be between 0.0 and 1.0 inclusive.");
@@ -337,7 +317,6 @@ public final class MersenneTwister extends java.util.Random {
    * 
    * @return true, if next boolean
    */
-
   public boolean nextBoolean(final double probability) {
     if (probability < 0.0 || probability > 1.0)
       throw new IllegalArgumentException("probability must be between 0.0 and 1.0 inclusive.");
@@ -356,15 +335,12 @@ public final class MersenneTwister extends java.util.Random {
    * 
    * @return the int
    */
-
   @Override
   public int nextInt(final int n) {
     if (n <= 0)
       throw new IllegalArgumentException("n must be > 0");
-
     if ((n & -n) == n)
       return (int) ((n * (long) next(31)) >> 31);
-
     int bits, val;
     do {
       bits = next(31);
@@ -382,11 +358,9 @@ public final class MersenneTwister extends java.util.Random {
    * 
    * @return the long
    */
-
   public long nextLong(final long n) {
     if (n <= 0)
       throw new IllegalArgumentException("n must be > 0");
-
     long bits, val;
     do {
       bits = (nextLong() >>> 1);
@@ -412,7 +386,6 @@ public final class MersenneTwister extends java.util.Random {
    * 
    * @return the float
    */
-
   @Override
   public float nextFloat() {
     return next(24) / ((float) (1 << 24));
@@ -425,7 +398,6 @@ public final class MersenneTwister extends java.util.Random {
    * 
    * @param bytes 
    */
-
   @Override
   public void nextBytes(final byte[] bytes) {
     for (int x = 0; x < bytes.length; x++) {
@@ -438,7 +410,6 @@ public final class MersenneTwister extends java.util.Random {
    * 
    * @return the char
    */
-
   public char nextChar() {
     // chars are 16-bit UniCode values
     return (char) (next(16));
@@ -449,9 +420,7 @@ public final class MersenneTwister extends java.util.Random {
    * 
    * @return the byte
    */
-
   public byte nextByte() {
     return (byte) (next(8));
   }
-
 }

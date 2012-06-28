@@ -18,14 +18,12 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.base;
 
 /**
  * A logical Item (genre, artist, year, album...)
  */
 public abstract class LogicalItem extends Item {
-
   /**
    * The Constructor.
    * 
@@ -46,5 +44,4 @@ public abstract class LogicalItem extends Item {
     // Use class metadata because this method is used by several logical items
     return getClass().getCanonicalName() + "[ID=" + getID() + " Name={{" + getName() + "}}]";
   }
-
 }

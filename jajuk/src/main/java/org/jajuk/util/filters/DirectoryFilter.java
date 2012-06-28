@@ -32,7 +32,6 @@ import org.jajuk.util.Messages;
  * </p>.
  */
 public final class DirectoryFilter extends JajukFileFilter {
-
   /** Self instance. */
   private static DirectoryFilter self = new DirectoryFilter();
 
@@ -70,5 +69,4 @@ public final class DirectoryFilter extends JajukFileFilter {
   public String getDescription() {
     return Messages.getString("Item_Directory");
   }
-
 }

@@ -38,7 +38,6 @@ import org.jajuk.util.error.JajukException;
  * .
  */
 public class PreparePartyAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -58,7 +57,6 @@ public class PreparePartyAction extends JajukAction {
   @Override
   public void perform(ActionEvent e) throws JajukException {
     JComponent source = (JComponent) e.getSource();
-
     // if we get a playlist, pass it on so that the Wizard does not provide a
     // choice of where to take the tracks anymore
     Object o = source.getClientProperty(Const.DETAIL_SELECTION);
@@ -70,7 +68,6 @@ public class PreparePartyAction extends JajukAction {
       } else {
         playlist = ((Playlist) o);
       }
-
       // indicate to the Wizard that it should use the pre-built Playlist and
       // not provide the first selection screen. We need to do this in a static
       // method before creation because the Wizard needs to use this during

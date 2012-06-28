@@ -41,15 +41,10 @@ import org.jajuk.util.Const;
  * Tests for org.jajuk.services.StartupEngineService
  */
 public class TestStartupEngineService extends JajukTestCase {
-
   private File file1;
-
   private File file2;
-
   private File file3;
-
   private WebRadio radio1;
-
   /** The Constant POSITION.   */
   private static final float POSITION = 0.5f;
 
@@ -65,13 +60,10 @@ public class TestStartupEngineService extends JajukTestCase {
     file1 = JUnitHelpers.getFile("file1", true);
     file2 = JUnitHelpers.getFile("file2", true);
     file3 = JUnitHelpers.getFile("file3", true);
-
     // Add last played radio
     radio1 = WebRadioManager.getInstance().registerWebRadio("myRadio");
     radio1.setProperty(Const.XML_URL, "http://di.fm/mp3/classictechno.pls");
-
     Conf.setProperty(Const.CONF_DEFAULT_WEB_RADIO, "myRadio");
-
     // Populate FIFO
     java.io.File fifo = SessionService.getConfFileByPath(Const.FILE_FIFO);
     fifo.delete();
@@ -80,34 +72,27 @@ public class TestStartupEngineService extends JajukTestCase {
     bw.write(file2.getID() + "\n");
     bw.write(file3.getID() + "\n");
     bw.close();
-
     // Set others properties
     Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, POSITION + "");
     Conf.setProperty(Const.CONF_STARTUP_STOPPED, "false");
     Conf.setProperty(Const.CONF_STARTUP_ITEM, file3.getID());
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "false");
     Conf.setProperty(Const.CONF_STARTUP_QUEUE_INDEX, "2");
-    
     // Reset the queue
     QueueModel.reset();
-
     // Reset the Startup service
     Field alToPlay = StartupEngineService.class.getDeclaredField("alToPlay");
     alToPlay.setAccessible(true);
     alToPlay.set(null, new ArrayList<org.jajuk.base.File>());
-
     Field fileToPlay = StartupEngineService.class.getDeclaredField("fileToPlay");
     fileToPlay.setAccessible(true);
     fileToPlay.set(null, null);
-
     Field radio = StartupEngineService.class.getDeclaredField("radio");
     radio.setAccessible(true);
     radio.set(null, null);
-
     Field index = StartupEngineService.class.getDeclaredField("index");
     index.setAccessible(true);
     index.set(null, 0);
-
   }
 
   public final void testVoidFIFO() throws IOException, InterruptedException {
@@ -117,7 +102,6 @@ public class TestStartupEngineService extends JajukTestCase {
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
-
     assertEquals(QueueModel.getPlayingFile(), null);
   }
 
@@ -127,7 +111,6 @@ public class TestStartupEngineService extends JajukTestCase {
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
-
     assertEquals(QueueModel.getPlayingFile(), null);
   }
 
@@ -139,13 +122,10 @@ public class TestStartupEngineService extends JajukTestCase {
    */
   public final void testNothing() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOTHING);
-
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
-
     assertEquals(QueueModel.getPlayingFile(), null);
-
     // Check that queue is filled up
     assertTrue(QueueModel.getQueue().size() == 3);
   }
@@ -158,11 +138,9 @@ public class TestStartupEngineService extends JajukTestCase {
    */
   public final void testLastItem() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST);
-
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
-
     assertEquals(QueueModel.getPlayingFile(), file3);
   }
 
@@ -174,15 +152,12 @@ public class TestStartupEngineService extends JajukTestCase {
    */
   public final void testLastItemLastPos() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
-
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
-
     assertEquals(QueueModel.getPlayingFile(), file3);
     // Cannot test actual position, the mock player always return zero
     //assertTrue(Player.getCurrentPosition() >= POSITION);
-
   }
 
   /**
@@ -193,13 +168,10 @@ public class TestStartupEngineService extends JajukTestCase {
    */
   public final void testNovelties() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOVELTIES);
-
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
-
     assertTrue(QueueModel.isPlayingTrack());
-
   }
 
   /**
@@ -210,11 +182,9 @@ public class TestStartupEngineService extends JajukTestCase {
    */
   public final void testBestof() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_BESTOF);
-
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
-
     assertTrue(QueueModel.isPlayingTrack());
   }
 
@@ -228,11 +198,9 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     Conf.removeProperty(Const.CONF_STARTUP_QUEUE_INDEX);
-    
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
-
     assertEquals(QueueModel.getPlayingFile(), null);
   }
 
@@ -244,11 +212,9 @@ public class TestStartupEngineService extends JajukTestCase {
    */
   public final void testShuffle() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_SHUFFLE);
-
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
-
     assertTrue(QueueModel.isPlayingTrack());
   }
 
@@ -261,14 +227,11 @@ public class TestStartupEngineService extends JajukTestCase {
   public final void testStoppedFile() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     Conf.setProperty(Const.CONF_STARTUP_STOPPED, "true");
-
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
-
     assertFalse(QueueModel.isPlayingRadio());
     assertFalse(QueueModel.isPlayingTrack());
-
     // Check that queue is filled up
     assertTrue(QueueModel.getQueue().size() == 3);
   }
@@ -282,11 +245,9 @@ public class TestStartupEngineService extends JajukTestCase {
   public final void testStoppedRadio() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     Conf.setProperty(Const.CONF_STARTUP_STOPPED, "true");
-
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
-
     assertFalse(QueueModel.isPlayingRadio());
     assertFalse(QueueModel.isPlayingTrack());
   }
@@ -300,11 +261,9 @@ public class TestStartupEngineService extends JajukTestCase {
   public final void testStartWebRadio() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "true");
-
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
-
     assertEquals(QueueModel.getCurrentRadio(), radio1);
   }
 
@@ -316,22 +275,17 @@ public class TestStartupEngineService extends JajukTestCase {
   public final void testStartGivenFile() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_ITEM);
     Conf.setProperty(Const.CONF_STARTUP_ITEM, SearchResultType.FILE.name() + "/" + file1.getID());
-
     // Radio was playing but we don't care, we should launch the file
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "true");
-
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
-
     assertEquals(QueueModel.getPlayingFile(), file1);
-
     // Same without playing radio
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "false");
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
-
     assertEquals(QueueModel.getPlayingFile(), file1);
   }
 
@@ -344,23 +298,17 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_ITEM);
     Conf.setProperty(Const.CONF_STARTUP_ITEM,
         SearchResultType.WEBRADIO.name() + "/" + radio1.getName());
-
     // Radio was playing but we don't care, we should launch the file
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "true");
-
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
-
     assertEquals(QueueModel.getCurrentRadio(), radio1);
-
     // Same without playing radio
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "false");
-
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
-
     assertEquals(QueueModel.getCurrentRadio(), radio1);
   }
 
@@ -374,13 +322,10 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_STARTUP_ITEM,
         SearchResultType.WEBRADIO.name() + "/" + radio1.getName());
     Conf.setProperty(Const.CONF_STARTUP_STOPPED, "true");
-
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
-
     assertEquals(QueueModel.getCurrentRadio(), null);
-
   }
 
   /**
@@ -393,11 +338,9 @@ public class TestStartupEngineService extends JajukTestCase {
   public final void test1() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "true");
-
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
-
     assertEquals(QueueModel.getPlayingFile(), null);
   }
 
@@ -410,12 +353,9 @@ public class TestStartupEngineService extends JajukTestCase {
   public final void test2() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
-
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
     Thread.sleep(100);
-
     assertEquals(QueueModel.getPlayingFile(), file3);
   }
-
 }

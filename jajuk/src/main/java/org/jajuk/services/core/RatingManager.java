@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.core;
 
 import java.util.HashSet;
@@ -48,12 +47,9 @@ import org.jajuk.util.log.Log;
  * <p>
  */
 public final class RatingManager extends Thread implements Observer {
-
   private static RatingManager self = new RatingManager();
-
   /** Flag the fact a rate has change for a track, used by bestof view refresh for perfs. */
   private static boolean bRateHasChanged = true;
-
   /** Max rate. */
   private static long lMaxPlaycount = 0l;
 
@@ -98,7 +94,6 @@ public final class RatingManager extends Thread implements Observer {
         ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
         bRateHasChanged = false;
       }
-
     }
   }
 
@@ -216,5 +211,4 @@ public final class RatingManager extends Thread implements Observer {
           InformationJPanel.MessageType.INFORMATIVE);
     }
   }
-
 }

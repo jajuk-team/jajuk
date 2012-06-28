@@ -20,7 +20,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.lastfm;
 
 import org.jajuk.util.UtilString;
@@ -29,10 +28,8 @@ import org.jajuk.util.UtilString;
  * The Class ScrobblerException.
  */
 public class ScrobblerException extends Exception {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -7383228060002549115L;
-
   private int status = -1;
 
   /**
@@ -62,5 +59,4 @@ public class ScrobblerException extends Exception {
   public int getStatus() {
     return status;
   }
-
 }

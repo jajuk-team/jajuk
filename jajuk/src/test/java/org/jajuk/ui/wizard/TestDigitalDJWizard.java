@@ -33,7 +33,6 @@ import org.qdwizard.Screen;
  * .
  */
 public class TestDigitalDJWizard extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -41,19 +40,16 @@ public class TestDigitalDJWizard extends JajukTestCase {
    * {@link org.jajuk.ui.wizard.DigitalDJWizard#getPreviousScreen(java.lang.Class)}
    * .
    */
-
   public void testGetPreviousScreenClassOfQextendsScreen() throws Exception {
     try {
       DigitalDJWizard wizard = new DigitalDJWizard();
       assertNull(wizard.getPreviousScreen(null));
       assertNotNull(wizard.getNextScreen(null));
-
       // do some dummy things with this panel...
       Screen screen = wizard.getNextScreen(null).newInstance();
       screen.initUI();
       assertNotNull(screen.getDescription());
       assertNotNull(screen.getName());
-
       assertNull(wizard.getPreviousScreen(null)); // always null until
       // "actionPerformed"
     } catch (HeadlessException e) {
@@ -67,19 +63,16 @@ public class TestDigitalDJWizard extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.ui.wizard.DigitalDJWizard#getNextScreen(java.lang.Class)}.
    */
-
   public void testGetNextScreenClassOfQextendsScreen() throws Exception {
     try {
       DigitalDJWizard wizard = new DigitalDJWizard();
       assertNotNull(wizard.getNextScreen(null));
-
       // do some dummy things with this panel...
       Screen screen = wizard.getNextScreen(null).newInstance();
       screen.initUI();
     } catch (HeadlessException e) {
       // on some servers we cannot initalize any ui and thus cannot test this
     }
-
   }
 
   /**
@@ -87,7 +80,6 @@ public class TestDigitalDJWizard extends JajukTestCase {
    *
    * {@link org.jajuk.ui.wizard.DigitalDJWizard#DigitalDJWizard()}.
    */
-
   public void testDigitalDJWizard() {
     try {
       new DigitalDJWizard();
@@ -106,7 +98,6 @@ public class TestDigitalDJWizard extends JajukTestCase {
       // TODO: this looks a bit weird in the code of Wizard and Screen, why is
       // it needed?
       new DigitalDJWizard();
-
       coverScreen(new DigitalDJWizard.ActionSelectionPanel());
     } catch (HeadlessException e) {
       // on some servers we cannot initalize any ui and thus cannot test this
@@ -123,10 +114,8 @@ public class TestDigitalDJWizard extends JajukTestCase {
       // TODO: this looks a bit weird in the code of Wizard and Screen, why is
       // it needed?
       new DigitalDJWizard();
-
       // we need to load ambiences before this will work
       AmbienceManager.getInstance().load();
-
       coverScreen(new DigitalDJWizard.AmbiencePanel());
     } catch (HeadlessException e) {
       // on some servers we cannot initalize any ui and thus cannot test this
@@ -143,13 +132,10 @@ public class TestDigitalDJWizard extends JajukTestCase {
       // TODO: this looks a bit weird in the code of Wizard and Screen, why is
       // it needed?
       new DigitalDJWizard();
-
       coverScreen(new DigitalDJWizard.ChangePanel());
-
       // also cover the case when a digital dj is registered
       DigitalDJ dj = new TransitionDigitalDJ("1");
       DigitalDJManager.getInstance().register(dj);
-
       coverScreen(new DigitalDJWizard.ChangePanel());
     } catch (HeadlessException e) {
       // on some servers we cannot initalize any ui and thus cannot test this
@@ -166,7 +152,6 @@ public class TestDigitalDJWizard extends JajukTestCase {
       // TODO: this looks a bit weird in the code of Wizard and Screen, why is
       // it needed?
       new DigitalDJWizard();
-
       coverScreen(new DigitalDJWizard.GeneralOptionsPanel());
     } catch (HeadlessException e) {
       // on some servers we cannot initalize any ui and thus cannot test this
@@ -183,7 +168,6 @@ public class TestDigitalDJWizard extends JajukTestCase {
       // TODO: this looks a bit weird in the code of Wizard and Screen, why is
       // it needed?
       new DigitalDJWizard();
-
       coverScreen(new DigitalDJWizard.ProportionsPanel());
     } catch (HeadlessException e) {
       // on some servers we cannot initalize any ui and thus cannot test this
@@ -200,10 +184,8 @@ public class TestDigitalDJWizard extends JajukTestCase {
       // TODO: this looks a bit weird in the code of Wizard and Screen, why is
       // it needed?
       new DigitalDJWizard();
-
       DigitalDJ dj = new TransitionDigitalDJ("1");
       DigitalDJManager.getInstance().register(dj);
-
       coverScreen(new DigitalDJWizard.RemovePanel());
     } catch (HeadlessException e) {
       // on some servers we cannot initalize any ui and thus cannot test this
@@ -220,7 +202,6 @@ public class TestDigitalDJWizard extends JajukTestCase {
       // TODO: this looks a bit weird in the code of Wizard and Screen, why is
       // it needed?
       new DigitalDJWizard();
-
       coverScreen(new DigitalDJWizard.TransitionsPanel());
     } catch (HeadlessException e) {
       // on some servers we cannot initalize any ui and thus cannot test this
@@ -237,7 +218,6 @@ public class TestDigitalDJWizard extends JajukTestCase {
       // TODO: this looks a bit weird in the code of Wizard and Screen, why is
       // it needed?
       new DigitalDJWizard();
-
       coverScreen(new DigitalDJWizard.TypeSelectionPanel());
     } catch (HeadlessException e) {
       // on some servers we cannot initalize any ui and thus cannot test this
@@ -260,7 +240,6 @@ public class TestDigitalDJWizard extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.ui.wizard.DigitalDJWizard#finish()}.
    */
-
   public void testFinish() {
     // TODO: find out how to test this...
     /*
@@ -269,5 +248,4 @@ public class TestDigitalDJWizard extends JajukTestCase {
      * DigitalDJWizard wizard = new DigitalDJWizard(); wizard.finish();
      */
   }
-
 }

@@ -56,7 +56,6 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class PasteAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -80,24 +79,20 @@ public class PasteAction extends JajukAction {
     final List<Item> alSelected = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
     final List<Item> itemsToMove = ItemMoveManager.getInstance().getAll();
     final ItemMoveManager.MoveActions moveAction = ItemMoveManager.getInstance().getAction();
-
     final List<File> alFiles = new ArrayList<File>(alSelected.size());
     final List<Playlist> alPlaylists = new ArrayList<Playlist>(alSelected.size());
     final List<Directory> alDirs = new ArrayList<Directory>(alSelected.size());
-
     new Thread("Paste Thread") {
       @SuppressWarnings("cast")
       @Override
       public void run() {
         UtilGUI.waiting();
-
         // Compute all files to move from various items list
         if (itemsToMove.size() == 0) {
           Log.debug("None item to move");
           return;
         }
         Item first = itemsToMove.get(0);
-
         if (first instanceof Album || first instanceof Artist || first instanceof Genre) {
           List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(itemsToMove, true);
           for (Track track : tracks) {
@@ -116,7 +111,6 @@ public class PasteAction extends JajukAction {
             }
           }
         }
-
         // Compute destination directory
         // alSelected can contain either a single Directory or a single Device
         Item item = alSelected.get(0);
@@ -132,12 +126,10 @@ public class PasteAction extends JajukAction {
           dir = ((File) item).getDirectory().getFio();
           destDir = ((File) item).getDirectory();
         }
-
         // Compute source directories
         // We need to find the highest directory in order to refresh it along
         // with the destination file to avoid phantom references
         List<Directory> srcDirs = new ArrayList<Directory>(1);
-
         for (File file : alFiles) {
           boolean parentAlreadyPresent = false;
           // We have to iterate using items index because the collection can
@@ -168,10 +160,8 @@ public class PasteAction extends JajukAction {
             srcDirs.add(pl.getDirectory());
           }
         }
-
         boolean overwriteAll = false;
         boolean bErrorOccured = false;
-
         if (moveAction == ItemMoveManager.MoveActions.CUT) {
           for (File f : alFiles) {
             if (!overwriteAll) {
@@ -223,7 +213,6 @@ public class PasteAction extends JajukAction {
                 throw new Exception("Cannot move item: " + pl.getFIO().getAbsolutePath() + " to "
                     + fileNew.getAbsolutePath());
               }
-
               // Refresh source and destination
               destDir.refresh(false);
               // Refresh source directories as well
@@ -236,7 +225,6 @@ public class PasteAction extends JajukAction {
               Messages.showErrorMessage(131);
               bErrorOccured = true;
             }
-
           }
           for (Directory d : alDirs) {
             try {
@@ -349,7 +337,6 @@ public class PasteAction extends JajukAction {
           InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
               InformationJPanel.MessageType.INFORMATIVE);
         }
-
       }
     }.start();
   }
@@ -363,6 +350,5 @@ public class PasteAction extends JajukAction {
     String message = Messages.getString("Device.45");
     message += file.getAbsolutePath() + "]";
     InformationJPanel.getInstance().setMessage(message, InformationJPanel.MessageType.INFORMATIVE);
-
   }
 }

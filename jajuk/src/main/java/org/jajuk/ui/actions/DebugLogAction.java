@@ -50,7 +50,6 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class DebugLogAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -131,7 +130,6 @@ public class DebugLogAction extends JajukAction {
       traces.append(line).append("<br>");
     }
     traces.append("</HTML>");
-
     return traces.toString();
   }
 

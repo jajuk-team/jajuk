@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.services.lyrics;
 
 import java.util.ArrayList;
@@ -44,19 +43,14 @@ import org.jajuk.util.log.Log;
  * user. For now the lyrics providers list is static and stored directly in this class.
  */
 public final class LyricsService {
-
   private static List<ILyricsProvider> providers = null;
-
   private static ILyricsProvider current = null;
-
   private static List<ILyricsPersister> persisters = null;
-
   /** Providers list. */
   private static String[] providersClasses = new String[] {
       "org.jajuk.services.lyrics.providers.TagLyricsProvider",
       "org.jajuk.services.lyrics.providers.TxtLyricsProvider",
       "org.jajuk.services.lyrics.providers.LyricWikiWebLyricsProvider", };
-
   /** Persisters list. */
   private static String[] persisterClasses = new String[] {
       "org.jajuk.services.lyrics.persisters.TagPersister",
@@ -66,7 +60,6 @@ public final class LyricsService {
    * Empty private constructor to avoid instantiating utility class.
    */
   private LyricsService() {
-
   }
 
   /**
@@ -199,7 +192,6 @@ public final class LyricsService {
       throw new LyricsPersistenceException("Lyrics could not be deleted from "
           + provider.getFile().getName());
     }
-
   }
 
   /**
@@ -234,5 +226,4 @@ public final class LyricsService {
     }
     return persisters;
   }
-
 }

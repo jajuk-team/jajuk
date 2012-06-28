@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.awt.Color;
@@ -46,10 +45,8 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTableCellRenderer;
  * </p>
  */
 public class JajukCellRenderer extends SubstanceDefaultTableCellRenderer implements Const {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 154545454L;
-
   private final Color color;
 
   /**
@@ -103,5 +100,4 @@ public class JajukCellRenderer extends SubstanceDefaultTableCellRenderer impleme
     }
     return c;
   }
-
 }

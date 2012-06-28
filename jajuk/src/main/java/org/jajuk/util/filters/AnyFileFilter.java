@@ -31,7 +31,6 @@ import org.jajuk.util.JajukFileFilter;
  * </p>.
  */
 public final class AnyFileFilter extends JajukFileFilter {
-
   /** Self instance. */
   private static AnyFileFilter self = new AnyFileFilter();
 

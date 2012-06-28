@@ -20,7 +20,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.lastfm;
 
 import ext.services.xml.XMLUtils;
@@ -49,38 +48,29 @@ import org.jajuk.util.log.Log;
  * The Class LastFmCache.
  */
 public class LastFmCache {
-
   /** Album Cover Cache dir. */
   private static File albumCoverCacheDir = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
       + Const.LASTFM_CACHE + '/' + Const.LAST_FM_ALBUM_COVER_CACHE_DIR);
-
   /** Album Cover Cache dir. */
   private static File albumInfoCacheDir = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
       + Const.LASTFM_CACHE + '/' + Const.LAST_FM_ALBUM_INFO_CACHE_DIR);
-
   private static File artistInfoCacheDir = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
       + Const.LASTFM_CACHE + '/' + Const.LAST_FM_ARTIST_INFO_CACHE_DIR);
-
   /** Artist thumbs cache dir. */
   private static File artistThumbCacheDir = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
       + Const.LASTFM_CACHE + '/' + Const.LAST_FM_ARTIST_THUMB_CACHE_DIR);
-
   /** Artist image cache dir. */
   private static File artistImageCacheDir = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
       + Const.LASTFM_CACHE + '/' + Const.LAST_FM_ARTIST_IMAGE_CACHE_DIR);
-
   /** Artist image cache dir. */
   private static File artistSimilarCacheDir = SessionService.getConfFileByPath(Const.FILE_CACHE
       + '/' + Const.LASTFM_CACHE + '/' + Const.LAST_FM_ARTIST_SIMILAR_CACHE_DIR);
-
   /** Album list cache dir. */
   private static File albumListCacheDir = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
       + Const.LASTFM_CACHE + '/' + Const.LAST_FM_ALBUM_LIST_CACHE_DIR);
-
   /** Artist info cache dir. */
   private static File artistWikiCacheDir = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
       + Const.LASTFM_CACHE + '/' + Const.LAST_FM_ARTIST_WIKI_CACHE_DIR);
-
   private static File submissionCacheDir = SessionService.getConfFileByPath(Const.FILE_CACHE + '/'
       + Const.LASTFM_CACHE + '/' + Const.LAST_FM_SUBMISSION_CACHE_DIR);
 
@@ -145,7 +135,6 @@ public class LastFmCache {
       Log.info("Could not delete all files from submission data cache");
       exception = true;
     }
-
     return exception;
   }
 
@@ -283,7 +272,6 @@ public class LastFmCache {
    * 
    * @return the file name for album cover
    */
-
   private String getFileNameForAlbumCover(AlbumInfo album) {
     return UtilString.concat(MD5Processor.hash(album.getBigCoverURL()), ".png");
   }
@@ -299,11 +287,9 @@ public class LastFmCache {
    */
   private String getFileNameForAlbumCoverAtCache(AlbumInfo album) throws IOException {
     File albumCoverCacheDirFile = getAlbumCoverCacheDir();
-
     if (albumCoverCacheDirFile == null) {
       return null;
     }
-
     return UtilString.concat(albumCoverCacheDirFile.getAbsolutePath(), File.separator,
         getFileNameForAlbumCover(album));
   }
@@ -315,7 +301,6 @@ public class LastFmCache {
    * @param album the album
    * @return the file name for album info
    */
-
   private String getFileNameForAlbumInfo(String artist, String album) {
     return UtilString.concat(MD5Processor.hash(artist), MD5Processor.hash(album), ".xml");
   }
@@ -330,11 +315,9 @@ public class LastFmCache {
    */
   private String getFileNameForAlbumInfoAtCache(String artist, String album) throws IOException {
     File albumInfoCacheDirFile = getAlbumInfoCacheDir();
-
     if (albumInfoCacheDirFile == null) {
       return null;
     }
-
     return UtilString.concat(albumInfoCacheDirFile.getAbsolutePath(), File.separator,
         getFileNameForAlbumInfo(artist, album));
   }
@@ -350,11 +333,9 @@ public class LastFmCache {
    */
   private String getFileNameForArtistInfoAtCache(String artist) throws IOException {
     File artistInfoCacheDirFile = getArtistInfoCacheDir();
-
     if (artistInfoCacheDirFile == null) {
       return null;
     }
-
     return UtilString.concat(artistInfoCacheDirFile.getAbsolutePath(), File.separator,
         getFileNameForArtistInfo(artist));
   }
@@ -366,7 +347,6 @@ public class LastFmCache {
    * 
    * @return the file name for artist image
    */
-
   private String getFileNameForArtistImage(SimilarArtistsInfo artist) {
     return UtilString.concat(MD5Processor.hash(artist.getArtistName()), ".png");
   }
@@ -382,11 +362,9 @@ public class LastFmCache {
    */
   private String getFileNameForArtistImageAtCache(SimilarArtistsInfo artist) throws IOException {
     File artistImageCacheDirFile = getArtistImageCacheDir();
-
     if (artistImageCacheDirFile == null) {
       return null;
     }
-
     return UtilString.concat(artistImageCacheDirFile.getAbsolutePath(), File.separator,
         getFileNameForArtistImage(artist));
   }
@@ -398,7 +376,6 @@ public class LastFmCache {
    * 
    * @return the file name for artist info
    */
-
   private String getFileNameForArtistInfo(String artist) {
     return UtilString.concat(MD5Processor.hash(artist), ".xml");
   }
@@ -414,11 +391,9 @@ public class LastFmCache {
    */
   private String getFileNameForAlbumListAtCache(String artist) throws IOException {
     File albumListCacheDirFile = getAlbumListCacheDir();
-
     if (albumListCacheDirFile == null) {
       return null;
     }
-
     return UtilString.concat(albumListCacheDirFile.getAbsolutePath(), File.separator,
         getFileNameForArtistInfo(artist));
   }
@@ -430,7 +405,6 @@ public class LastFmCache {
    * 
    * @return the file name for artist similar
    */
-
   private String getFileNameForArtistSimilar(String artist) {
     return UtilString.concat(MD5Processor.hash(artist), ".xml");
   }
@@ -446,11 +420,9 @@ public class LastFmCache {
    */
   private String getFileNameForArtistSimilarAtCache(String artist) throws IOException {
     File artistSimilarCacheDirFile = getArtistSimilarCacheDir();
-
     if (artistSimilarCacheDirFile == null) {
       return null;
     }
-
     return UtilString.concat(artistSimilarCacheDirFile.getAbsolutePath(), File.separator,
         getFileNameForArtistSimilar(artist));
   }
@@ -462,7 +434,6 @@ public class LastFmCache {
    * 
    * @return the file name for artist thumb
    */
-
   private String getFileNameForArtistThumb(ArtistInfo artist) {
     return UtilString.concat(MD5Processor.hash(artist.getName()), ".png");
   }
@@ -478,11 +449,9 @@ public class LastFmCache {
    */
   private String getFileNameForArtistThumbAtCache(ArtistInfo artist) throws IOException {
     File artistThumbCacheDirFile = getArtistThumbsCacheDir();
-
     if (artistThumbCacheDirFile == null) {
       return null;
     }
-
     return UtilString.concat(artistThumbCacheDirFile.getAbsolutePath(), File.separator,
         getFileNameForArtistThumb(artist));
   }
@@ -494,7 +463,6 @@ public class LastFmCache {
    * 
    * @return the file name for artist wiki
    */
-
   private String getFileNameForArtistWiki(String artist) {
     return UtilString.concat(MD5Processor.hash(artist), ".xml");
   }
@@ -510,11 +478,9 @@ public class LastFmCache {
    */
   private String getFileNameForArtistWikiAtCache(String artist) throws IOException {
     File artistWikiCacheDirFile = getArtistWikiCacheDir();
-
     if (artistWikiCacheDirFile == null) {
       return null;
     }
-
     return UtilString.concat(artistWikiCacheDirFile.getAbsolutePath(), File.separator,
         getFileNameForArtistWiki(artist));
   }
@@ -528,11 +494,9 @@ public class LastFmCache {
    */
   private String getFileNameForSubmissionCache() throws IOException {
     File submissionDataDirFile = getSubmissionDataDir();
-
     if (submissionDataDirFile == null) {
       return null;
     }
-
     return UtilString.concat(submissionDataDirFile.getAbsolutePath(), File.separator,
         "submissionDataCache.xml");
   }
@@ -699,7 +663,6 @@ public class LastFmCache {
     if (cover == null || album == null) {
       return;
     }
-
     try {
       String fileAbsPath = getFileNameForAlbumCoverAtCache(album);
       if (fileAbsPath != null) {
@@ -722,7 +685,6 @@ public class LastFmCache {
     if (artist == null || album == null || albumObject == null) {
       return;
     }
-
     try {
       String fileAbsPath = getFileNameForAlbumInfoAtCache(artist, album);
       if (fileAbsPath != null) {
@@ -744,7 +706,6 @@ public class LastFmCache {
     if (artist == null) {
       return;
     }
-
     try {
       String fileAbsPath = getFileNameForArtistInfoAtCache(artist);
       if (fileAbsPath != null) {
@@ -766,7 +727,6 @@ public class LastFmCache {
     if (image == null || artist == null) {
       return;
     }
-
     try {
       String fileAbsPath = getFileNameForArtistImageAtCache(artist);
       if (fileAbsPath != null) {
@@ -788,7 +748,6 @@ public class LastFmCache {
     if (artist == null || list == null) {
       return;
     }
-
     try {
       String fileAbsPath = getFileNameForAlbumListAtCache(artist);
       if (fileAbsPath != null) {
@@ -810,7 +769,6 @@ public class LastFmCache {
     if (artist == null || similar == null) {
       return;
     }
-
     try {
       String fileAbsPath = getFileNameForArtistSimilarAtCache(artist);
       if (fileAbsPath != null) {
@@ -832,7 +790,6 @@ public class LastFmCache {
     if (image == null || artist == null) {
       return;
     }
-
     try {
       String fileAbsPath = getFileNameForArtistThumbAtCache(artist);
       if (fileAbsPath != null) {
@@ -854,7 +811,6 @@ public class LastFmCache {
     if (artist == null || wikiText == null) {
       return;
     }
-
     try {
       String fileAbsPath = getFileNameForArtistWikiAtCache(artist);
       if (fileAbsPath != null) {
@@ -890,7 +846,6 @@ public class LastFmCache {
     } catch (IOException e) {
       Log.error(e);
     }
-
   }
 
   /**

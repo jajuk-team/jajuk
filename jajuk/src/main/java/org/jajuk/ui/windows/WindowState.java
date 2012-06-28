@@ -24,17 +24,10 @@ package org.jajuk.ui.windows;
  * Possible states for a Jajuk window.
  */
 public enum WindowState {
-
   // Not yet build
-
   NOT_BUILT,
-
   // Build but not yet displayed
-
   BUILT_NOT_DISPLAYED,
-
   // Build and displayed
-
   BUILT_DISPLAYED,
-
 }

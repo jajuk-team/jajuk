@@ -65,13 +65,10 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class DBusSupportImpl implements DBusSupport, Observer {
-
   /** The D-Bus Path that is used. */
   private static final String PATH = "/JajukDBus";
-
   /** The D-Bus name of the Bus that we request. */
   private static final String BUS = "org.jajuk.dbus.DBusSupport";
-
   DBusConnection conn;
 
   /**
@@ -84,18 +81,14 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    */
   void connect() {
     Log.info("Trying to start support for D-Bus on Linux with Bus: " + BUS + " and Path: " + PATH);
-
     try {
       conn = DBusConnection.getConnection(DBusConnection.SESSION);
       conn.requestBusName(BUS);
-
       conn.exportObject(PATH, this);
-
       Log.info("D-Bus support started successfully");
     } catch (DBusException e) {
       Log.error(e);
     }
-
     // register to player events
     ObservationManager.register(this);
   }
@@ -107,9 +100,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    */
   void disconnect() {
     Log.info("Disconnecting from D-Bus");
-
     ObservationManager.unregister(this);
-
     if (conn != null) {
       conn.disconnect();
     }
@@ -121,7 +112,6 @@ public class DBusSupportImpl implements DBusSupport, Observer {
    * These methods are invoked via D-Bus and trigger the corresponding action in
    * Jajuk
    */
-
   /*
    * (non-Javadoc)
    * 
@@ -284,7 +274,6 @@ public class DBusSupportImpl implements DBusSupport, Observer {
   @Override
   public String current() throws Exception {
     Log.info("Invoking D-Bus action for 'current'");
-
     String title = null;
     File file = QueueModel.getPlayingFile();
     if (QueueModel.isPlayingRadio()) {
@@ -337,15 +326,12 @@ public class DBusSupportImpl implements DBusSupport, Observer {
       // the action expects a JComponent, which we do not have here, therefore we do it directly here
       // ActionManager.getAction(JajukActions.BOOKMARK_SELECTION).perform()
       Bookmarks.getInstance().addFile(file);
-
       INotificator notifier = NotificatorFactory.getNotificator();
       if (notifier != null) {
         String pattern = Conf.getString(Const.CONF_PATTERN_BALLOON_NOTIFIER);
         String text = UtilString.applyPattern(file, pattern, false, false);
-
         notifier.notify("Bookmarked", text);
       }
-
     }
   }
 
@@ -386,9 +372,7 @@ public class DBusSupportImpl implements DBusSupport, Observer {
     if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
       String id = (String) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_FILE_ID);
       Item item = FileManager.getInstance().getItemByID(id);
-
       Log.debug("Got update for new file launched, item: " + item);
-
       try {
         if (conn == null) {
           Log.warn("Cannot send DBus-Signal when not connected to D-Bus!");
@@ -398,10 +382,8 @@ public class DBusSupportImpl implements DBusSupport, Observer {
       } catch (DBusException e) {
         Log.error(e);
       }
-
     } else {
       Log.warn("Unexpected subject received in Observer: " + event);
     }
-
   }
 }

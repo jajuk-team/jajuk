@@ -37,7 +37,6 @@ import org.jajuk.util.log.Log;
  * <code>CTRL + RIGHT ARROW</code>.
  */
 public class NextTrackAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -79,7 +78,6 @@ public class NextTrackAction extends JajukAction {
             QueueModel.launchRadio(radios.get(i));
           }
         }.start();
-
       } else {
         // Playing a track
         new Thread("Next Track Thread") {

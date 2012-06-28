@@ -47,7 +47,6 @@ import org.w3c.dom.Document;
  * .
  */
 public class TestDigitalDJ extends JajukTestCase {
-
   /**
    * Test method for {@link org.jajuk.services.dj.DigitalDJ#hashCode()}.
    */
@@ -56,9 +55,7 @@ public class TestDigitalDJ extends JajukTestCase {
     dj.setName("ambience1");
     DigitalDJ equ = new AmbienceDigitalDJ("3");
     equ.setName("ambience1");
-
     JUnitHelpers.HashCodeTest(dj, equ);
-
   }
 
   /**
@@ -77,13 +74,10 @@ public class TestDigitalDJ extends JajukTestCase {
   public final void testToString() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
-
     JUnitHelpers.ToStringTest(dj);
-
     // also test null values
     dj = new AmbienceDigitalDJ(null);
     dj.setName(null);
-
     JUnitHelpers.ToStringTest(dj);
   }
 
@@ -100,7 +94,6 @@ public class TestDigitalDJ extends JajukTestCase {
     equ.setName("ambience1");
     DigitalDJ notequ = new AmbienceDigitalDJ("3");
     notequ.setName("other");
-
     // only compares on name
     JUnitHelpers.CompareToTest(dj, equ, notequ);
   }
@@ -111,7 +104,6 @@ public class TestDigitalDJ extends JajukTestCase {
   public final void testToXML() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
-
     // abstract in DigitalDJ anyway, so no need to test this in detail here...
     assertTrue(dj.toXML(), StringUtils.isNotBlank(dj.toXML()));
   }
@@ -124,9 +116,7 @@ public class TestDigitalDJ extends JajukTestCase {
   public final void testToXMLGeneralParameters() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
-
     assertTrue(dj.toXMLGeneralParameters(), StringUtils.isNotBlank(dj.toXMLGeneralParameters()));
-
     // test xml-validity, need to add closing tag to build complete xml
     String xml = dj.toXMLGeneralParameters() + "</" + Const.XML_DJ_DJ + ">";
     Document document = XMLUtils.getDocument(xml);
@@ -142,24 +132,19 @@ public class TestDigitalDJ extends JajukTestCase {
   public final void testFilterFilesByRate() throws Exception {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
-
     List<File> files = new ArrayList<File>();
     File file = getFile(1);
     file.getTrack().setProperty(Const.XML_TRACK_RATE, 1l);
     files.add(file);
-
     file = getFile(2);
     file.getTrack().setProperty(Const.XML_TRACK_RATE, 26l);
     files.add(file);
-
     file = getFile(3);
     file.getTrack().setProperty(Const.XML_TRACK_RATE, 51l);
     files.add(file);
-
     // without rating level set nothing happens to the list
     dj.filterFilesByRate(files);
     assertEquals(3, files.size());
-
     // set rating level and see if tracks are removed
     dj.setRatingLevel(2);
     dj.filterFilesByRate(files);
@@ -175,30 +160,24 @@ public class TestDigitalDJ extends JajukTestCase {
   public final void testFilterFilesByMaxTrack() throws Exception {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
-
     List<File> files = new ArrayList<File>();
     File file = getFile(1);
     file.getTrack().setProperty(Const.XML_TRACK_RATE, 1l);
     files.add(file);
-
     file = getFile(2);
     file.getTrack().setProperty(Const.XML_TRACK_RATE, 26l);
     files.add(file);
-
     file = getFile(3);
     file.getTrack().setProperty(Const.XML_TRACK_RATE, 51l);
     files.add(file);
-
     // with max-tracks -1 nothing is cut off
     dj.setMaxTracks(-1);
     dj.filterFilesByMaxTrack(files);
     assertEquals(3, files.size());
-
     // nothing happens if max is higher
     dj.setMaxTracks(4);
     dj.filterFilesByMaxTrack(files);
     assertEquals(3, files.size());
-
     // set max level and see if tracks are removed
     dj.setMaxTracks(2);
     dj.filterFilesByMaxTrack(files);
@@ -217,19 +196,15 @@ public class TestDigitalDJ extends JajukTestCase {
     Album album = JUnitHelpers.getAlbum("name" + i, 0);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-
     Artist artist = JUnitHelpers.getArtist("name");
     Year year = JUnitHelpers.getYear(2000);
-
     Type type = JUnitHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
-
     Device device = JUnitHelpers.getDevice();
     if (!device.isMounted()) {
       device.mount(true);
     }
-
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     return FileManager.getInstance().registerFile("test.tst", dir, track, 120, 70);
   }
@@ -256,7 +231,6 @@ public class TestDigitalDJ extends JajukTestCase {
     equ.setName("ambience1");
     DigitalDJ notequ = new AmbienceDigitalDJ("3");
     notequ.setName("other");
-
     // only compares on name
     JUnitHelpers.EqualsTest(dj, equ, notequ);
   }
@@ -277,7 +251,6 @@ public class TestDigitalDJ extends JajukTestCase {
   public final void testGetAndSetFadingDuration() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
-
     assertEquals(0, dj.getFadingDuration());
     dj.setFadingDuration(3);
     assertEquals(3, dj.getFadingDuration());
@@ -298,7 +271,6 @@ public class TestDigitalDJ extends JajukTestCase {
   public final void testGetAndSetRatingLevel() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
-
     assertEquals(0, dj.getRatingLevel());
     dj.setRatingLevel(3);
     assertEquals(3, dj.getRatingLevel());
@@ -318,7 +290,6 @@ public class TestDigitalDJ extends JajukTestCase {
   public final void testGeneratePlaylist() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
-
     // abstract method, do not check result here
     dj.generatePlaylist();
   }
@@ -329,7 +300,6 @@ public class TestDigitalDJ extends JajukTestCase {
   public final void testGetID() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
-
     assertEquals("3", dj.getID());
   }
 
@@ -339,7 +309,6 @@ public class TestDigitalDJ extends JajukTestCase {
   public final void testIsAndSetTrackUnicity() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
-
     assertFalse(dj.isTrackUnicity());
     dj.setTrackUnicity(true);
     assertTrue(dj.isTrackUnicity());
@@ -360,7 +329,6 @@ public class TestDigitalDJ extends JajukTestCase {
   public final void testGetAndSetMaxTracks() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
-
     assertEquals(-1, dj.getMaxTracks());
     dj.setMaxTracks(3);
     assertEquals(3, dj.getMaxTracks());

@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.views;
 
 import java.awt.Component;
@@ -98,243 +97,130 @@ import org.jvnet.substance.skin.SkinInfo;
  * Configuration perspective *
  */
 public class ParameterView extends ViewAdapter {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** GUI updater. */
   private ParameterViewGUIHelper updateHelper = new ParameterViewGUIHelper(this);
-
   /** The Constant NOTIFICATOR_PREFIX.  */
   static final String NOTIFICATOR_PREFIX = "Notificator.";
-
   JTabbedPane jtpMain;
-
   JTextField jtfHistory;
-
   JCheckBox jcbManualRatings;
-
   JButton jbClearHistory;
-
   JButton jbResetRatings;
-
   /** Allows to export ratings to a file */
   JButton jbExportRatings;
-
   /** Allows to import ratings from a file */
   JButton jbImportRatings;
-
   JButton jbResetPreferences;
-
   ButtonGroup bgStart;
-
   JRadioButton jrbNothing;
-
   JRadioButton jrbLast;
-
   JRadioButton jrbLastKeepPos;
-
   JRadioButton jrbShuffle;
-
   JRadioButton jrbBestof;
-
   JRadioButton jrbNovelties;
-
   JRadioButton jrbFile;
-
   SearchBox sbSearch;
-
   JCheckBox jcbBeforeDelete;
-
   JCheckBox jcbBeforeExit;
-
   JCheckBox jcbBeforeRemoveDevice;
-
   JCheckBox jcbBeforeDeleteCover;
-
   JCheckBox jcbBeforeClearingHistory;
-
   JCheckBox jcbBeforeResetingRatings;
-
   JCheckBox jcbBeforeRefactorFiles;
-
   JCheckBox jcbBeforeWritingTag;
-
   JCheckBox jcbDisplayUnmounted;
-
   JCheckBox jcbAudioScrobbler;
-
   JButton jbResetDontShowAgain;
-
   JLabel jlASUser;
-
   JTextField jtfASUser;
-
   JLabel jlASPassword;
-
   JPasswordField jpfASPassword;
-
   SteppedComboBox scbLanguage;
-
   JTextField jtfFrameTitle;
-
   /** Balloon notifier pattern text field. */
   JTextField jtfBalloonNotifierPattern;
-
   /** Information pattern textfield. */
   JTextField jtfInformationPattern;
-
   JLabel jlLAF;
-
   SteppedComboBox scbLAF;
-
   SteppedComboBox scbLogLevel;
-
   JSlider introPosition;
-
   JSlider introLength;
-
   JTextField jtfBestofSize;
-
   JTextField jtfNoveltiesAge;
-
   JTextField jtfVisiblePlanned;
-
   JSlider crossFadeDuration;
-
   JCheckBox jcbDefaultActionClick;
-
   JCheckBox jcbDefaultActionDrop;
-
   JLabel jlNotificationType;
-
   JComboBox jcbNotificationType;
-
   JCheckBox jcbHotkeys;
-
   JCheckBox jcbShowVideos;
-
   JCheckBox jcbPreserveFileDates;
-
   JCheckBox jcbUseParentDir;
-
   JFormattedTextField jtfRefactorPattern;
-
   JTextField jtfAnimationPattern;
-
   JCheckBox jcbBackup;
-
   JSlider backupSize;
-
   JComboBox jcbCollectionEncoding;
-
   JCheckBox jcbRegexp;
-
   ButtonGroup bgProxy;
-
   JCheckBox jcbNoneInternetAccess;
-
   JRadioButton jcbProxyNone;
-
   JRadioButton jcbProxyHttp;
-
   JRadioButton jcbProxySocks;
-
   JLabel jlProxyHostname;
-
   JTextField jtfProxyHostname;
-
   JLabel jlProxyPort;
-
   JTextField jtfProxyPort;
-
   JLabel jlProxyLogin;
-
   JTextField jtfProxyLogin;
-
   JLabel jlProxyPwd;
-
   JPasswordField jtfProxyPwd;
-
   JLabel jlConnectionTO;
-
   JSlider connectionTO;
-
   JCheckBox jcbAutoCover;
-
   JCheckBox jcbShuffleCover;
-
   JLabel jlCoverSize;
-
   JComboBox jcbCoverSize;
-
   JTextField jtfMPlayerArgs;
-
   JTextField jtfEnvVariables;
-
   JTextField jtfMPlayerPath;
-
   PathSelector psJajukWorkspace;
-
   JLabel jlCatalogPages;
-
   JSlider jsCatalogPages;
-
   JButton jbCatalogRefresh;
-
   JCheckBox jcbShowPopups;
-
   JCheckBox jcbShowSystray;
-
   JCheckBox jcbMinimizeToTray;
-
   JCheckBox jcbClickTrayAlwaysDisplayWindow;
-
   JLabel jlFonts;
-
   JSlider jsFonts;
-
   JCheckBox jcbEnableLastFMInformation;
-
   JButton jbOK;
-
   JButton jbDefault;
-
   JCheckBox jcbCheckUpdates;
-
   JCheckBox jcbForceFileDate;
-
   JSlider jsPerspectiveSize;
-
   /** VolNorm checkbox. */
   JCheckBox jcbUseVolnorm;
-
   /** Bit-perfect checkbox. */
   JCheckBox jcbEnableBitPerfect;
-
   JTextField jtfExplorerPath;
-
   /** Whether the "theme will be token into account" message has been already displayed. */
   boolean bLAFMessage = false;
-
   JLabel jlDefaultCoverSearchPattern;
-
   JTextField jtfDefaultCoverSearchPattern;
-
   JCheckBox jcbSaveExplorerFriendly;
-
   JCheckBox jcbDropPlayedTracksFromQueue;
-
   JCheckBox jcb3dCover;
-
   JCheckBox jcb3dCoverFS;
-
   /** Enable Title view animation effect. */
   JCheckBox jcbTitleAnimation;
-
   /** Splashscreen flag. */
   JCheckBox jcbSplashscreen;
-
   JButton jbReloadRadiosPreset;
 
   /**
@@ -407,20 +293,16 @@ public class ParameterView extends ViewAdapter {
         IconLoader.getIcon(JajukIcons.CLEAR));
     jbClearHistory.setToolTipText(Messages.getString("ParameterView.4"));
     jbClearHistory.addActionListener(updateHelper);
-
     jbResetRatings = new JButton(Messages.getString("ParameterView.186"),
         IconLoader.getIcon(JajukIcons.CLEAR));
     jbResetRatings.setToolTipText(Messages.getString("ParameterView.187"));
     jbResetRatings.addActionListener(updateHelper);
-
     jbResetPreferences = new JButton(Messages.getString("ParameterView.249"),
         IconLoader.getIcon(JajukIcons.CLEAR));
     jbResetPreferences.setToolTipText(Messages.getString("ParameterView.250"));
     jbResetPreferences.addActionListener(updateHelper);
-
     jbExportRatings = new JButton(ActionManager.getAction(JajukActions.EXPORT_RATINGS));
     jbImportRatings = new JButton(ActionManager.getAction(JajukActions.IMPORT_RATINGS));
-
     JLabel jlHistory = new JLabel(Messages.getString("ParameterView.0"));
     jlHistory.setToolTipText(Messages.getString("ParameterView.2"));
     jpHistory.add(jlHistory);
@@ -517,7 +399,6 @@ public class ParameterView extends ViewAdapter {
         IconLoader.getIcon(JajukIcons.CLEAR));
     jbReloadRadiosPreset.setToolTipText(Messages.getString("WebRadioView.11"));
     jbReloadRadiosPreset.addActionListener(new ActionListener() {
-
       @Override
       public void actionPerformed(ActionEvent e) {
         try {
@@ -544,31 +425,22 @@ public class ParameterView extends ViewAdapter {
    */
   private JPanel initUIConfirmations() {
     JPanel jpConfirmations = new JPanel(new MigLayout("insets 10,gapy 15"));
-
     jcbBeforeDelete = new JCheckBox(Messages.getString("ParameterView.27"));
     jcbBeforeDelete.setToolTipText(Messages.getString("ParameterView.28"));
-
     jcbBeforeExit = new JCheckBox(Messages.getString("ParameterView.29"));
     jcbBeforeExit.setToolTipText(Messages.getString("ParameterView.30"));
-
     jcbBeforeRemoveDevice = new JCheckBox(Messages.getString("ParameterView.164"));
     jcbBeforeRemoveDevice.setToolTipText(Messages.getString("ParameterView.165"));
-
     jcbBeforeDeleteCover = new JCheckBox(Messages.getString("ParameterView.171"));
     jcbBeforeDeleteCover.setToolTipText(Messages.getString("ParameterView.172"));
-
     jcbBeforeClearingHistory = new JCheckBox(Messages.getString("ParameterView.188"));
     jcbBeforeClearingHistory.setToolTipText(Messages.getString("ParameterView.188"));
-
     jcbBeforeResetingRatings = new JCheckBox(Messages.getString("ParameterView.189"));
     jcbBeforeResetingRatings.setToolTipText(Messages.getString("ParameterView.189"));
-
     jcbBeforeRefactorFiles = new JCheckBox(Messages.getString("ParameterView.194"));
     jcbBeforeRefactorFiles.setToolTipText(Messages.getString("ParameterView.194"));
-
     jcbBeforeWritingTag = new JCheckBox(Messages.getString("ParameterView.309"));
     jcbBeforeWritingTag.setToolTipText(Messages.getString("ParameterView.309"));
-
     jbResetDontShowAgain = new JButton(Messages.getString("ParameterView.310"));
     jbResetDontShowAgain.setToolTipText(Messages.getString("ParameterView.311"));
     jbResetDontShowAgain.addActionListener(new ActionListener() {
@@ -579,7 +451,6 @@ public class ParameterView extends ViewAdapter {
             MessageType.INFORMATIVE);
       }
     });
-
     jpConfirmations.add(jcbBeforeDelete, "wrap");
     jpConfirmations.add(jcbBeforeExit, "wrap");
     jpConfirmations.add(jcbBeforeRemoveDevice, "wrap");
@@ -589,7 +460,6 @@ public class ParameterView extends ViewAdapter {
     jpConfirmations.add(jcbBeforeRefactorFiles, "wrap");
     jpConfirmations.add(jcbBeforeWritingTag, "wrap");
     jpConfirmations.add(jbResetDontShowAgain);
-
     return jpConfirmations;
   }
 
@@ -637,7 +507,6 @@ public class ParameterView extends ViewAdapter {
     introPosition.setPaintLabels(true);
     introPosition.setToolTipText(Messages.getString("ParameterView.60"));
     introPosition.addMouseWheelListener(new DefaultMouseWheelListener(introPosition));
-
     // intro length
     JLabel jlIntroLength = new JLabel(Messages.getString("ParameterView.61"));
     jlIntroLength.setToolTipText(Messages.getString("ParameterView.62"));
@@ -648,7 +517,6 @@ public class ParameterView extends ViewAdapter {
     introLength.setPaintLabels(true);
     introLength.setToolTipText(Messages.getString("ParameterView.62"));
     introLength.addMouseWheelListener(new DefaultMouseWheelListener(introLength));
-
     // Best of size
     JLabel jlBestofSize = new JLabel(Messages.getString("ParameterView.111"));
     jlBestofSize.setToolTipText(Messages.getString("ParameterView.112"));
@@ -734,7 +602,6 @@ public class ParameterView extends ViewAdapter {
         return true;
       }
     });
-
     // add panels
     JPanel jpModes = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[][grow,200:300:300]"));
     jpModes.add(new JLabel(Messages.getString("ParameterView.59")));
@@ -759,21 +626,16 @@ public class ParameterView extends ViewAdapter {
   private JPanel initUIOptions() {
     jcbDisplayUnmounted = new JCheckBox(Messages.getString("JajukJMenuBar.24"));
     jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35"));
-
     jcbDefaultActionClick = new JCheckBox(Messages.getString("ParameterView.179"));
     jcbDefaultActionClick.setToolTipText(Messages.getString("ParameterView.180"));
-
     jcbDefaultActionDrop = new JCheckBox(Messages.getString("ParameterView.181"));
     jcbDefaultActionDrop.setToolTipText(Messages.getString("ParameterView.182"));
-
     jcbHotkeys = new JCheckBox(Messages.getString("ParameterView.196"));
     jcbHotkeys.addActionListener(updateHelper);
     jcbHotkeys.setToolTipText(Messages.getString("ParameterView.197"));
     // Disable this option if not under windows
     jcbHotkeys.setEnabled(UtilSystem.isUnderWindows());
-
     scbLanguage = new SteppedComboBox();
-
     scbLanguage.setRenderer(new BasicComboBoxRenderer() {
       private static final long serialVersionUID = -6943363556191659895L;
 
@@ -787,7 +649,6 @@ public class ParameterView extends ViewAdapter {
         return this;
       }
     });
-
     scbLanguage.removeAllItems();
     for (String sDesc : LocaleManager.getLocalesDescs()) {
       scbLanguage.addItem(new JLabel(sDesc, Messages.getIcon(sDesc), SwingConstants.LEFT));
@@ -798,13 +659,10 @@ public class ParameterView extends ViewAdapter {
     jcbUseParentDir.setToolTipText(Messages.getString("ParameterView.102"));
     jcbDropPlayedTracksFromQueue = new JCheckBox(Messages.getString("ParameterView.266"));
     jcbDropPlayedTracksFromQueue.setToolTipText(Messages.getString("ParameterView.267"));
-
     jcbShowVideos = new JCheckBox(Messages.getString("ParameterView.301"));
     jcbShowVideos.setToolTipText(Messages.getString("ParameterView.302"));
-
     jcbPreserveFileDates = new JCheckBox(Messages.getString("ParameterView.305"));
     jcbPreserveFileDates.setToolTipText(Messages.getString("ParameterView.306"));
-
     JPanel jpOptions = new JPanel(new MigLayout("insets 10, gapy 15, wrap 1"));
     jpOptions.add(new JLabel(Messages.getString("ParameterView.38")), "split 2,gapleft 5");
     jpOptions.add(scbLanguage);
@@ -836,25 +694,21 @@ public class ParameterView extends ViewAdapter {
     jlAnimationPattern.setToolTipText(Messages.getString("ParameterView.193"));
     jtfAnimationPattern = new JTextField();
     jtfAnimationPattern.setToolTipText(Messages.getString("ParameterView.193"));
-
     // Frame Title Options
     JLabel jlFrameTitle = new JLabel(Messages.getString("ParameterView.248"));
     jlFrameTitle.setToolTipText(Messages.getString("ParameterView.193"));
     jtfFrameTitle = new JTextField();
     jtfFrameTitle.setToolTipText(Messages.getString("ParameterView.193"));
-
     // Balloon Notifier pattern
     JLabel jlBalloonNotifierPattern = new JLabel(Messages.getString("ParameterView.277"));
     jlBalloonNotifierPattern.setToolTipText(Messages.getString("ParameterView.278"));
     jtfBalloonNotifierPattern = new JTextField();
     jtfBalloonNotifierPattern.setToolTipText(Messages.getString("ParameterView.278"));
-
     // Information view pattern
     JLabel jlInformationPattern = new JLabel(Messages.getString("ParameterView.279"));
     jlInformationPattern.setToolTipText(Messages.getString("ParameterView.280"));
     jtfInformationPattern = new JTextField();
     jtfInformationPattern.setToolTipText(Messages.getString("ParameterView.280"));
-
     patterns.add(jlRefactorPattern);
     patterns.add(jtfRefactorPattern, "grow"); //NOSONAR
     patterns.add(jlAnimationPattern);
@@ -891,7 +745,6 @@ public class ParameterView extends ViewAdapter {
     jcbCollectionEncoding.setToolTipText(Messages.getString("ParameterView.121"));
     jcbRegexp = new JCheckBox(Messages.getString("ParameterView.113"));
     jcbRegexp.setToolTipText(Messages.getString("ParameterView.114"));
-
     jcbCollectionEncoding.addItem("UTF-8");
     jcbCollectionEncoding.addItem("UTF-16");
     JLabel jlLogLevel = new JLabel(Messages.getString("ParameterView.46"));
@@ -928,12 +781,10 @@ public class ParameterView extends ViewAdapter {
     jcbCheckUpdates.setToolTipText(Messages.getString("ParameterView.234"));
     jcbForceFileDate = new JCheckBox(Messages.getString("ParameterView.244"));
     jcbForceFileDate.setToolTipText(Messages.getString("ParameterView.245"));
-
     JLabel jlExplorer = new JLabel(Messages.getString("ParameterView.269"));
     jlExplorer.setToolTipText(Messages.getString("ParameterView.270"));
     jtfExplorerPath = new JTextField();
     jtfExplorerPath.setToolTipText(Messages.getString("ParameterView.270"));
-
     JPanel jpAdvanced = new JPanel(new MigLayout("insets 10,gapy 15, gapx 10", "[][grow][fill]"));
     jpAdvanced.add(jcbBackup);
     jpAdvanced.add(backupSize, "wrap,grow");
@@ -968,10 +819,8 @@ public class ParameterView extends ViewAdapter {
     jcbProxyNone = new JRadioButton(Messages.getString("ParameterView.236"));
     jcbProxyNone.setToolTipText(Messages.getString("ParameterView.236"));
     jcbProxyNone.addActionListener(updateHelper);
-
     jcbNoneInternetAccess = new JCheckBox(Messages.getString("ParameterView.264"));
     jcbNoneInternetAccess.setToolTipText(Messages.getString("ParameterView.265"));
-
     jcbProxyHttp = new JRadioButton(Messages.getString("ParameterView.237"));
     jcbProxyHttp.setToolTipText(Messages.getString("ParameterView.237"));
     jcbProxyHttp.addActionListener(updateHelper);
@@ -1021,7 +870,6 @@ public class ParameterView extends ViewAdapter {
     jlProxyPwd.setToolTipText(Messages.getString("ParameterView.239"));
     jtfProxyPwd = new JPasswordField();
     jtfProxyPwd.setToolTipText(Messages.getString("ParameterView.239"));
-
     jlConnectionTO = new JLabel(Messages.getString("ParameterView.160"));
     jlConnectionTO.setToolTipText(Messages.getString("ParameterView.160"));
     connectionTO = new JSlider(0, 60);
@@ -1045,7 +893,6 @@ public class ParameterView extends ViewAdapter {
     jpProxy.add(jtfProxyLogin, "wrap,grow");
     jpProxy.add(jlProxyPwd);
     jpProxy.add(jtfProxyPwd, "wrap,grow");
-
     JPanel jpNetwork = new JPanel(new MigLayout("insets 10,gapy 15, gapx 10", "[grow]"));
     jpNetwork.add(jcbNoneInternetAccess, "wrap");
     jpNetwork.add(jlConnectionTO, "split 2");
@@ -1105,22 +952,17 @@ public class ParameterView extends ViewAdapter {
     jcbCoverSize.addItem(Messages.getString("ParameterView.213"));
     jcbCoverSize.addItem(Messages.getString("ParameterView.214"));
     jcbCoverSize.addItem(Messages.getString("ParameterView.215"));
-
     jcb3dCover = new JCheckBox(Messages.getString("ParameterView.273"));
     jcb3dCover.setToolTipText(Messages.getString("ParameterView.274"));
-
     jcb3dCoverFS = new JCheckBox(Messages.getString("ParameterView.283"));
     jcb3dCoverFS.setToolTipText(Messages.getString("ParameterView.284"));
-
     jlDefaultCoverSearchPattern = new JLabel(Messages.getString("ParameterView.256"));
     jlDefaultCoverSearchPattern.setToolTipText(Messages.getString("ParameterView.257"));
     jtfDefaultCoverSearchPattern = new JTextField();
     jtfDefaultCoverSearchPattern.setToolTipText(Messages.getString("ParameterView.257"));
-
     jcbSaveExplorerFriendly = new JCheckBox(Messages.getString("ParameterView.260"));
     jcbSaveExplorerFriendly.setToolTipText(Messages.getString("ParameterView.261"));
     jcbSaveExplorerFriendly.addActionListener(updateHelper);
-
     // Add items
     JPanel jpCovers = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[40%][40%]"));
     jpCovers.add(jcbShuffleCover, "wrap");
@@ -1161,7 +1003,6 @@ public class ParameterView extends ViewAdapter {
     // Splashscreen
     jcbSplashscreen = new JCheckBox(Messages.getString("ParameterView.290"));
     jcbSplashscreen.setToolTipText(Messages.getString("ParameterView.291"));
-
     jcbShowSystray = new JCheckBox(Messages.getString("ParameterView.271"));
     // Disable this option if the tray is not supported by the platform
     jcbShowSystray.setEnabled(SystemTray.isSupported());
@@ -1174,17 +1015,14 @@ public class ParameterView extends ViewAdapter {
       }
     });
     jcbShowSystray.setToolTipText(Messages.getString("ParameterView.272"));
-
     jcbMinimizeToTray = new JCheckBox(Messages.getString("ParameterView.281"));
     // Disable this option if the tray is not supported by the platform
     jcbMinimizeToTray.setEnabled(SystemTray.isSupported());
     jcbMinimizeToTray.setToolTipText(Messages.getString("ParameterView.282"));
-
     jcbClickTrayAlwaysDisplayWindow = new JCheckBox(Messages.getString("ParameterView.303"));
     // Disable this option if the tray is not supported by the platform
     jcbClickTrayAlwaysDisplayWindow.setEnabled(SystemTray.isSupported());
     jcbClickTrayAlwaysDisplayWindow.setToolTipText(Messages.getString("ParameterView.304"));
-
     JLabel jlPerspectiveSize = new JLabel(Messages.getString("ParameterView.246"));
     jsPerspectiveSize = new JSlider(16, 45, Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE));
     jsPerspectiveSize.setSnapToTicks(true);
@@ -1208,7 +1046,6 @@ public class ParameterView extends ViewAdapter {
     jpCatalogSize.add(jsCatalogPages);
     catalogView.add(jpCatalogSize);
     catalogView.add(jbCatalogRefresh);
-
     //Title view
     jcbTitleAnimation = new JCheckBox(Messages.getString("ParameterView.288"));
     jcbTitleAnimation.setToolTipText(Messages.getString("ParameterView.288"));
@@ -1217,7 +1054,6 @@ public class ParameterView extends ViewAdapter {
     titleView.setCollapsed(true);
     final ToggleLink toggleTitle = new ToggleLink(Messages.getString("ParameterView.289"),
         titleView);
-
     // Font selector
     jlFonts = new JLabel(Messages.getString("ParameterView.223"));
     jsFonts = new JSlider(8, 16, Conf.getInt(Const.CONF_FONTS_SIZE));
@@ -1227,7 +1063,6 @@ public class ParameterView extends ViewAdapter {
     jsFonts.setPaintTicks(true);
     jsFonts.setPaintLabels(true);
     jsFonts.setToolTipText(Messages.getString("ParameterView.224"));
-
     // Notification type
     jlNotificationType = new JLabel(Messages.getString("ParameterView.275"));
     jlNotificationType.setToolTipText(Messages.getString("ParameterView.276"));
@@ -1237,7 +1072,6 @@ public class ParameterView extends ViewAdapter {
       String notificatorType = Messages.getString(NOTIFICATOR_PREFIX + type);
       jcbNotificationType.addItem(notificatorType);
     }
-
     // LaF
     jlLAF = new JLabel(Messages.getString("ParameterView.43"));
     jlLAF.setToolTipText(Messages.getString("ParameterView.44"));
@@ -1252,7 +1086,6 @@ public class ParameterView extends ViewAdapter {
     scbLAF.setToolTipText(Messages.getString("ParameterView.44"));
     // Refresh full GUI at each LAF change as a preview
     scbLAF.addActionListener(updateHelper);
-
     // Add items
     JPanel jpUI = new JPanel(new MigLayout("insets 10,gapx 10,gapy 15"));
     jpUI.add(jcbShowPopups, "wrap");
@@ -1295,14 +1128,12 @@ public class ParameterView extends ViewAdapter {
     JPanel jpCovers = initUICovers();
     JPanel jpUI = initUIGUI();
     JPanel jpWebradios = initWebradios();
-
     // --OK/cancel panel
     jbOK = new JButton(Messages.getString("ParameterView.85"), IconLoader.getIcon(JajukIcons.OK));
     jbOK.addActionListener(updateHelper);
     jbDefault = new JButton(Messages.getString("ParameterView.86"),
         IconLoader.getIcon(JajukIcons.DEFAULTS_BIG));
     jbDefault.addActionListener(updateHelper);
-
     // --Global layout
     // add main panels
     jtpMain = new JTabbedPane(SwingConstants.TOP);
@@ -1378,10 +1209,8 @@ public class ParameterView extends ViewAdapter {
   @Override
   public void removeAll() {
     // We have to override removeAll() to work around a memory leak related to SearchBox..
-
     // make sure that the search box stops waking to free up the reference to the Timer
     sbSearch.close();
-
     super.removeAll();
   }
 
@@ -1396,5 +1225,4 @@ public class ParameterView extends ViewAdapter {
     sbSearch.close();
     super.cleanup();
   }
-
 }

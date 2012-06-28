@@ -28,7 +28,6 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestGIFFilter extends JajukTestCase {
-
   /**
    * Test method for {@link org.jajuk.util.filters.GIFFilter#getInstance()}.
    */

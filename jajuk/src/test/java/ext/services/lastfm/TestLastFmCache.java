@@ -32,7 +32,6 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestLastFmCache extends JajukTestCase {
-
   /*
    * (non-Javadoc)
    * 
@@ -44,7 +43,6 @@ public class TestLastFmCache extends JajukTestCase {
     // runs
     LastFmCache cache = new LastFmCache();
     cache.clearCache();
-
     super.setUp();
   }
 
@@ -64,7 +62,6 @@ public class TestLastFmCache extends JajukTestCase {
    */
   public void testRetrieveAlbumCover() {
     LastFmCache cache = new LastFmCache();
-
     LastFmAlbum album = new LastFmAlbum();
     album.setBigCoverURL("testurl");
     assertNull(cache.retrieveAlbumCover(album));
@@ -78,7 +75,6 @@ public class TestLastFmCache extends JajukTestCase {
    */
   public void testRetrieveAlbumInfo() {
     LastFmCache cache = new LastFmCache();
-
     assertNull(cache.retrieveAlbumInfo("Red Hot Chili Peppers", "By the way"));
   }
 
@@ -90,7 +86,6 @@ public class TestLastFmCache extends JajukTestCase {
    */
   public void testRetrieveArtistInfo() {
     LastFmCache cache = new LastFmCache();
-
     assertNull(cache.retrieveArtistInfo("Red Hot Chili Peppers"));
   }
 
@@ -102,10 +97,8 @@ public class TestLastFmCache extends JajukTestCase {
    */
   public void testRetrieveArtistImage() {
     LastFmCache cache = new LastFmCache();
-
     LastFmSimilarArtists artists = new LastFmSimilarArtists();
     artists.setArtistName("Red Hot Chili Peppers");
-
     assertNull(cache.retrieveArtistImage(artists));
   }
 
@@ -117,7 +110,6 @@ public class TestLastFmCache extends JajukTestCase {
    */
   public void testRetrieveAlbumList() {
     LastFmCache cache = new LastFmCache();
-
     assertNull(cache.retrieveAlbumList("Red Hot Chili Peppers"));
   }
 
@@ -129,7 +121,6 @@ public class TestLastFmCache extends JajukTestCase {
    */
   public void testRetrieveArtistSimilar() {
     LastFmCache cache = new LastFmCache();
-
     assertNull(cache.retrieveArtistSimilar("Red Hot Chili Peppers"));
   }
 
@@ -141,7 +132,6 @@ public class TestLastFmCache extends JajukTestCase {
    */
   public void testRetrieveArtistThumbImage() {
     LastFmCache cache = new LastFmCache();
-
     LastFmArtist artist = new LastFmArtist();
     artist.setName("Red Hot Chili Peppers");
     assertNull(cache.retrieveArtistThumbImage(artist));
@@ -155,7 +145,6 @@ public class TestLastFmCache extends JajukTestCase {
    */
   public void testRetrieveArtistWiki() {
     LastFmCache cache = new LastFmCache();
-
     assertNull(cache.retrieveArtistWiki("Red Hot Chili Peppers"));
   }
 
@@ -167,14 +156,10 @@ public class TestLastFmCache extends JajukTestCase {
    */
   public void testStoreAlbumCover() {
     LastFmCache cache = new LastFmCache();
-
     LastFmAlbum album = new LastFmAlbum();
     album.setBigCoverURL("testurl");
-
     Image cover = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
-
     cache.storeAlbumCover(album, cover);
-
     assertNotNull(cache.retrieveAlbumCover(album));
     assertEquals(10, cache.retrieveAlbumCover(album).getHeight(null));
   }
@@ -187,12 +172,9 @@ public class TestLastFmCache extends JajukTestCase {
    */
   public void testStoreAlbumInfo() {
     LastFmCache cache = new LastFmCache();
-
     LastFmAlbum album = new LastFmAlbum();
     album.setBigCoverURL("testurl");
-
     cache.storeAlbumInfo("Red Hot Chili Peppers", "By the way", album);
-
     assertNotNull(cache.retrieveAlbumInfo("Red Hot Chili Peppers", "By the way"));
   }
 
@@ -204,12 +186,9 @@ public class TestLastFmCache extends JajukTestCase {
    */
   public void testStoreArtistInfo() {
     LastFmCache cache = new LastFmCache();
-
     LastFmArtist artist = new LastFmArtist();
     artist.setName("Red Hot Chili Peppers");
-
     cache.storeArtistInfo("Red Hot Chili Peppers", artist);
-
     assertNotNull(cache.retrieveArtistInfo("Red Hot Chili Peppers"));
     assertEquals("Red Hot Chili Peppers", cache.retrieveArtistInfo("Red Hot Chili Peppers")
         .getName());
@@ -223,13 +202,10 @@ public class TestLastFmCache extends JajukTestCase {
    */
   public void testStoreArtistImage() {
     LastFmCache cache = new LastFmCache();
-
     LastFmSimilarArtists artists = new LastFmSimilarArtists();
     artists.setArtistName("Red Hot Chili Peppers");
-
     Image cover = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
     cache.storeArtistImage(artists, cover);
-
     assertNotNull(cache.retrieveArtistImage(artists));
     assertEquals(10, cache.retrieveArtistImage(artists).getHeight(null));
   }
@@ -242,9 +218,7 @@ public class TestLastFmCache extends JajukTestCase {
    */
   public void testStoreAlbumList() {
     LastFmCache cache = new LastFmCache();
-
     LastFmAlbumList list = new LastFmAlbumList();
-
     LastFmAlbum album1 = new LastFmAlbum();
     album1.setTitle("Test1");
     LastFmAlbum album2 = new LastFmAlbum();
@@ -252,16 +226,12 @@ public class TestLastFmCache extends JajukTestCase {
     List<AlbumInfo> alist = new ArrayList<AlbumInfo>();
     alist.add(album1);
     alist.add(album2);
-
     list.setAlbums(alist);
-
     cache.storeAlbumList("Red Hot Chili Peppers", list);
-
     assertNotNull(cache.retrieveAlbumList("Red Hot Chili Peppers"));
     assertNotNull(cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums());
     assertEquals(cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().toString(), 2, cache
         .retrieveAlbumList("Red Hot Chili Peppers").getAlbums().size());
-
     /*
      * assertTrue(cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().toString
      * (),
@@ -282,12 +252,9 @@ public class TestLastFmCache extends JajukTestCase {
    */
   public void testStoreArtistSimilar() {
     LastFmCache cache = new LastFmCache();
-
     LastFmSimilarArtists artists = new LastFmSimilarArtists();
     artists.setArtistName("Hed Rot Phili Ceppers");
-
     cache.storeArtistSimilar("Red Hot Chili Peppers", artists);
-
     assertNotNull(cache.retrieveArtistSimilar("Red Hot Chili Peppers"));
     assertEquals("Hed Rot Phili Ceppers", cache.retrieveArtistSimilar("Red Hot Chili Peppers")
         .getArtistName());
@@ -301,13 +268,10 @@ public class TestLastFmCache extends JajukTestCase {
    */
   public void testStoreArtistThumbImage() {
     LastFmCache cache = new LastFmCache();
-
     LastFmArtist artist = new LastFmArtist();
     artist.setName("Red Hot Chili Peppers");
     Image cover = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
-
     cache.storeArtistThumbImage(artist, cover);
-
     assertNotNull(cache.retrieveArtistThumbImage(artist));
     assertEquals(10, cache.retrieveArtistThumbImage(artist).getHeight(null));
   }
@@ -320,9 +284,7 @@ public class TestLastFmCache extends JajukTestCase {
    */
   public void testStoreArtistWiki() {
     LastFmCache cache = new LastFmCache();
-
     cache.storeArtistWiki("Red Hot Chili Peppers", "TestWikiText");
-
     assertNotNull(cache.retrieveArtistWiki("Red Hot Chili Peppers"));
     assertEquals("TestWikiText", cache.retrieveArtistWiki("Red Hot Chili Peppers"));
   }
@@ -335,10 +297,8 @@ public class TestLastFmCache extends JajukTestCase {
    */
   public void testAddSubmissionData() {
     LastFmCache cache = new LastFmCache();
-
     FullSubmissionData data = new FullSubmissionData("Red Hot Chili Peppers", "title",
         "By The Way", 10, 1, "Source", 10);
-
     cache.addSubmissionData(data);
   }
 
@@ -390,5 +350,4 @@ public class TestLastFmCache extends JajukTestCase {
      * assertEquals(0, cache.getSubmissionData().size());
      */
   }
-
 }

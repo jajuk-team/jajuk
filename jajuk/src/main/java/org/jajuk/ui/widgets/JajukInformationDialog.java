@@ -42,10 +42,8 @@ import org.jajuk.util.log.Log;
  * Dialog displayed by slimbar and tray or notificators.
  */
 public class JajukInformationDialog extends JDialog {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** Has this dialog already been hidden ?. */
   private boolean hasAlreadyBeenHidden = false;
 
@@ -82,7 +80,6 @@ public class JajukInformationDialog extends JDialog {
     // Fix for #1778 : the Window.dispose() method doesn't seem to work (under Linux at least) if the component is not visible.
     // We add a component listener to detect hide/show. If the dialog has already been hidden once, it is disposed.
     addComponentListener(new ComponentAdapter() {
-
       @Override
       public void componentShown(ComponentEvent e) {
         if (hasAlreadyBeenHidden) {
@@ -133,7 +130,5 @@ public class JajukInformationDialog extends JDialog {
         dispose();
       }
     });
-
   }
-
 }

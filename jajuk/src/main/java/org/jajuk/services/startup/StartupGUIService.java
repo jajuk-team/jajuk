@@ -46,10 +46,8 @@ import org.jajuk.util.log.Log;
  * Startup facilities for GUI part.
  */
 public final class StartupGUIService {
-
   /** default perspective to choose, if null, we take the configuration one. */
   private static String sPerspective;
-
   /** splash screen. */
   private static JSplash sc;
 
@@ -161,13 +159,11 @@ public final class StartupGUIService {
           // Display progress
           sc.setProgress(100);
           sc.splashOff();
-
           // free resources
           sc = null;
         }
       });
     }
-
   }
 
   /**
@@ -181,12 +177,10 @@ public final class StartupGUIService {
         try {
           // Start up action manager
           ActionManager.getInstance();
-
           // Display progress
           if (sc != null) {
             sc.setProgress(80, Messages.getString("SplashScreen.3"));
           }
-
           // show window according to startup mode
           if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_MAIN_WINDOW) {
             JajukMainWindow mainWindow = JajukMainWindow.getInstance();
@@ -236,7 +230,5 @@ public final class StartupGUIService {
         }
       }
     });
-
   }
-
 }

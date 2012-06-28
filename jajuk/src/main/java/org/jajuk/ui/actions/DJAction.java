@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
@@ -43,7 +42,6 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class DJAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 

@@ -33,7 +33,6 @@ import org.jajuk.util.Messages;
  * Action for configure ambiences.
  */
 public class AmbienceConfigurationAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -49,20 +48,16 @@ public class AmbienceConfigurationAction extends JajukAction {
    */
   @Override
   public void perform(ActionEvent evt) {
-
     /*
      * Display the ambience wizard in an invokeLater to allow a combo that show
      * it to close its popup
      */
     SwingUtilities.invokeLater(new Runnable() {
-
       @Override
       public void run() {
         AmbienceWizard ambience = new AmbienceWizard();
         ambience.show();
       }
-
     });
-
   }
 }

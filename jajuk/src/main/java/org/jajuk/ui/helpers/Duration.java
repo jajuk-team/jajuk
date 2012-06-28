@@ -27,7 +27,6 @@ import org.jajuk.util.UtilString;
  * tables to ease the cell renderers recognition.
  */
 public class Duration implements Comparable<Duration> {
-
   private final long duration;
 
   /**
@@ -58,7 +57,6 @@ public class Duration implements Comparable<Duration> {
     if (obj instanceof Duration) {
       return duration == ((Duration) obj).duration;
     }
-
     return false;
   }
 
@@ -71,7 +69,6 @@ public class Duration implements Comparable<Duration> {
       // not equal if the other element is null
       return -1;
     }
-
     return (int) (duration - other.getDuration());
   }
 

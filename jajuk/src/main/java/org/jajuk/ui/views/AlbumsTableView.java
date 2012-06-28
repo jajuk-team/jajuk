@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.views;
 
 import java.awt.Dimension;
@@ -47,10 +46,8 @@ import org.jajuk.util.UtilGUI;
  * List collection albums as a table.
  */
 public class AlbumsTableView extends AbstractTableView {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 7576455252866971945L;
-
   private static ThumbnailPopup popup = null;
 
   /**
@@ -142,7 +139,6 @@ public class AlbumsTableView extends AbstractTableView {
     jtable.getMenu().add(jmiBookmark);
     jtable.getMenu().addSeparator();
     jtable.getMenu().add(jmiProperties);
-
     // Add popup feature when mouse rolls over cells
     jtable.addMouseMotionListener(new MouseMotionListener() {
       Album current = null;
@@ -176,16 +172,13 @@ public class AlbumsTableView extends AbstractTableView {
       public void mouseDragged(MouseEvent e) {
         // nothing to do here
       }
-
     });
-
     // Add another listener on view borders (outside the table itself) to
     // close popups when leaving the table
     jtable.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseExited(MouseEvent e) {
         super.mouseExited(e);
-
         // Do not hide popup if still in the table to allow user to mouse
         // mouse over the popup (in this case, a table exit event is thrown)
         if (popup != null
@@ -195,7 +188,5 @@ public class AlbumsTableView extends AbstractTableView {
         }
       }
     });
-
   }
-
 }

@@ -71,38 +71,28 @@ import org.jajuk.util.log.Log;
  * correctly handled sometimes, should be refactored into separate class
  */
 public final class QueueModel {
-
   /** Currently played track index or -1 if none playing item. */
   private static volatile int index = -1;
-
   /** Last played track. */
   static volatile StackItem itemLast;
-
   /**
    * The Fifo itself, contains jajuk File objects. This also includes an
    * optional bunch of planned tracks which are accessible with separate
    * methods.
    */
   private static volatile QueueList queue = new QueueList();
-
   /** Stop flag*. */
   private static volatile boolean bStop = true;
-
   /** First played file flag. */
   private static boolean bFirstFile = true;
-
   /** Whether we are currently playing radio. */
   private static volatile boolean playingRadio = false;
-
   /** Current played radio. */
   private static volatile WebRadio currentRadio;
-
   /** Last played track actually played duration in ms before a stop. */
   private static long lastDuration;
-
   /** Should be stop after current track playback ?. */
   private static boolean bStopAfter;
-  
   /** Whether a required stop comes from jajuk */
   private static boolean bInternalStop;
 
@@ -401,10 +391,8 @@ public final class QueueModel {
           Messages.showWarningMessage(Messages.getString("Warning.6"));
           return;
         }
-
         // Position of insert into the queue
         int pos = (queue.size() == 0) ? 0 : queue.size();
-
         // OK, stop current track if no append
         if (!bKeepPrevious && !bPushNext) {
           index = pos;
@@ -418,7 +406,6 @@ public final class QueueModel {
         else if (bKeepPrevious && queue.size() > 0) {
           pos = queue.size();
         }
-
         // add required tracks in the FIFO
         for (StackItem item : alItems) {
           if (pos >= queue.size()) {
@@ -530,14 +517,12 @@ public final class QueueModel {
         JajukTimer.getInstance().removeTrackTime(item.getFile());
         index++;
       }
-
       // Leave if stop after current track option is set
       if (bStopAfter) {
         bStopAfter = false;
         stopRequest();
         return;
       }
-
       // Nothing more to play ? check if we in continue mode
       if (queue.size() == 0 || index >= queue.size()) {
         if (Conf.getBoolean(Const.CONF_STATE_CONTINUE) && itemLast != null) {
@@ -565,7 +550,6 @@ public final class QueueModel {
         // something more in FIFO
         launch();
       }
-
       // Clean up trailing tracks in CONF_DROP_PLAYED_TRACKS_FROM_QUEUE
       // mode
       if (index > 0 && Conf.getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
@@ -625,7 +609,6 @@ public final class QueueModel {
        * between these two events will be correct*
        */
       ObservationManager.notifySync(new JajukEvent(JajukEvents.PLAY_OPENING));
-
       // Check if we are in single repeat mode, transfer it to new
       // launched
       // track
@@ -634,9 +617,7 @@ public final class QueueModel {
         getCurrentItem().setRepeat(true);
         ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
       }
-
       boolean bPlayOK = false;
-
       // bfirstFile flag is used to set a offset (in %) if required (if we
       // are playing the last item at given position)
       // Known limitation : if the last session's last played item is no
@@ -661,7 +642,6 @@ public final class QueueModel {
           bPlayOK = Player.play(toPlay, 0.0f, Const.TO_THE_END);
         }
       }
-
       if (bPlayOK) {
         // notify to devices like commandJPanel to update UI when the
         // play
@@ -686,13 +666,11 @@ public final class QueueModel {
         bFirstFile = false;
         // add hits number
         toPlay.getTrack().incHits(); // inc hits number
-
         // recalculate the total time left
         JajukTimer.getInstance().reset();
         for (int i = index; i < queue.size(); i++) {
           JajukTimer.getInstance().addTrackTime(queue.get(i).getFile());
         }
-
       } else {
         // Problem launching the track, try next one
         UtilGUI.stopWaiting();
@@ -711,7 +689,6 @@ public final class QueueModel {
         } else {
           itemLast = null;
         }
-
         // We test if user required stop. Must be done here to make a
         // chance to
         // stop before starting a new track
@@ -742,9 +719,7 @@ public final class QueueModel {
     if (bClear) {
       queue.clearPlanned();
     }
-
     int missingPlannedSize = Conf.getInt(Const.CONF_OPTIONS_VISIBLE_PLANNED) - queue.sizePlanned();
-
     /*
      * To compute missing planned tracks in shuffle state, we get a global
      * shuffle list and we sub list it. This avoid calling a getShuffle() on
@@ -753,15 +728,12 @@ public final class QueueModel {
     if (Conf.getBoolean(Const.CONF_STATE_SHUFFLE)) {
       // first get a list of "candidates"
       List<File> alFiles = FileManager.getInstance().getGlobalShufflePlaylist();
-
       // then remove already planned tracks from the list
       queue.removePlannedFromList(alFiles);
-
       // cut down list to the number of files that are missing
       if (alFiles.size() >= missingPlannedSize) {
         alFiles = alFiles.subList(0, missingPlannedSize - 1);
       }
-
       // wrap the Files in StackItems and add them as planned items.
       List<StackItem> missingPlanned = UtilFeatures.createStackItems(alFiles,
           Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), false);
@@ -911,18 +883,15 @@ public final class QueueModel {
   public static void playNextAlbum() {
     try {
       bStop = false;
-
       // if playing, stop all playing players
       if (Player.isPlaying()) {
         Player.stop(true);
       }
-
       // we don't support album navigation inside repeated tracks
       if (getQueueSize() > 0 && getItem(0).isRepeat()) {
         playNext();
         return;
       }
-
       int indexFirstItem = -1;
       if (getPlayingFile() != null) {
         // ref directory
@@ -1001,7 +970,6 @@ public final class QueueModel {
       }
       return title;
     }
-
     return null;
   }
 
@@ -1382,7 +1350,6 @@ public final class QueueModel {
       } else {
         title = getCurrentRadio().getName();
       }
-
     } else if (file != null && !isStopped()) {
       title = file.getHTMLFormatText();
     } else {

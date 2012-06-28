@@ -26,7 +26,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * Flag class telling a tree node is a root element.
  */
 public class TreeRootElement extends DefaultMutableTreeNode {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -3183130517695923747L;
 

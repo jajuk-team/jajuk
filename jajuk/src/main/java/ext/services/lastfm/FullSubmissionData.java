@@ -20,26 +20,18 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.lastfm;
 
 /**
  * .
  */
 public class FullSubmissionData {
-
   private String artist;
-
   private String title;
-
   private String album;
-
   private int duration;
-
   private int trackNumber;
-
   private String source;
-
   private int startTime;
 
   /**
@@ -189,5 +181,4 @@ public class FullSubmissionData {
   public void setStartTime(int startTime) {
     this.startTime = startTime;
   }
-
 }

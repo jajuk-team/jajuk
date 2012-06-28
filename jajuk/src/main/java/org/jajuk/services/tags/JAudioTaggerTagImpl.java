@@ -56,17 +56,13 @@ import org.jaudiotagger.tag.id3.ID3v24Tag;
  * href="https://jaudiotagger.dev.java.net">JAudiotagger</a>
  */
 public class JAudioTaggerTagImpl implements ITagImpl, Const {
-
   private static List<String> tagFieldKeyArrayList = new ArrayList<String>();
-
   static {
     try {
       // Disable Jaudiotagger logs
       LogManager.getLogManager().readConfiguration(
           new ByteArrayInputStream("org.jaudiotagger.level = OFF".getBytes()));
-
       // get supported tags
-
       FieldKey[] tagFieldKeys = FieldKey.values();
       for (FieldKey tfk : tagFieldKeys) {
         if (!tfk.equals(FieldKey.DISC_NO) && !tfk.equals(FieldKey.ALBUM)
@@ -81,10 +77,8 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
       Log.error(e);
     }
   }
-
   /** the current audio file instance (set by {@link #setFile(File)}).<br> */
   private AudioFile audioFile;
-
   /** the current {@linkplain Tag tag} ( {@link AudioFile#getTag()} ) set by {@link #setFile(File)}.<br> */
   private Tag tag;
 
@@ -344,20 +338,17 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
       newTag.setField(FieldKey.GENRE, tag.getFirst(FieldKey.GENRE));
       newTag.setField(FieldKey.YEAR, tag.getFirst(FieldKey.YEAR));
       newTag.setField(FieldKey.ALBUM_ARTIST, tag.getFirst(FieldKey.ALBUM_ARTIST));
-
       // only set the discnumber if we have a useful one
       String discno = tag.getFirst(FieldKey.DISC_NO);
       if (StringUtils.isNotEmpty(discno) && StringUtils.isNumeric(discno)) {
         newTag.setField(FieldKey.DISC_NO, discno);
       }
-
       // Delete the id3 V1 tag
       AudioFileIO.delete(audioFile);
       // Add the new one
       audioFile.setTag(newTag);
       this.tag = newTag;
     }
-
   }
 
   /*
@@ -457,7 +448,6 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    */
   @Override
   public long getDiscNumber() throws Exception {
-
     String sDiscNumber = this.tag.getFirst(FieldKey.DISC_NO);
     if (StringUtils.isBlank(sDiscNumber)) {
       return 01;
@@ -535,5 +525,4 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
         + "_" + Const.TAG_COVER_FILE);
     return coverFile;
   }
-
 }

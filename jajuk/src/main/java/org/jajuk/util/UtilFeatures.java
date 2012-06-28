@@ -55,7 +55,6 @@ import org.jajuk.util.log.Log;
  * General use utilities methods.
  */
 public final class UtilFeatures {
-
   /** Genres. */
   public static final String[] GENRES = { "Blues", "Classic Rock", "Country", "Dance", "Disco",
       "Funk", "Grunge", "Hip-Hop", "Jazz", "Metal", "New Age", "Oldies", "Other", "Pop", "R&B",
@@ -262,7 +261,6 @@ public final class UtilFeatures {
   public static boolean isStandardCover(final java.io.File file) {
     boolean defaultCover = false;
     String sFileName = file.getName();
-
     Scanner s = new Scanner(Conf.getString(Const.FILE_DEFAULT_COVER)).useDelimiter(";");
     while (s.hasNext()) {
       String next = s.next();
@@ -272,14 +270,12 @@ public final class UtilFeatures {
       }
     }
     s.close();
-
     if (!defaultCover) {
       // just for previous compatibility, now it is a directory
       // property
       defaultCover = sFileName.toLowerCase(Locale.getDefault()).matches(
           ".*" + Const.FILE_ABSOLUTE_DEFAULT_COVER + ".*");
     }
-
     return defaultCover;
   }
 
@@ -511,7 +507,6 @@ public final class UtilFeatures {
           } else {
             out.add(track.getBestFile(true));
           }
-
         }
       }
     }

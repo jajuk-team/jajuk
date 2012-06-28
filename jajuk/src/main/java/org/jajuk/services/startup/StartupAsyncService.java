@@ -44,7 +44,6 @@ import org.jajuk.util.log.Log;
  * <p>Called after collection loading<p>.
  */
 public final class StartupAsyncService {
-
   /**
    * Instantiates a new startup async service.
    */
@@ -62,34 +61,27 @@ public final class StartupAsyncService {
       @Override
       public void run() {
         try {
-
           // start exit hook
           final ExitService exit = new ExitService();
           exit.setPriority(Thread.MAX_PRIORITY);
           Runtime.getRuntime().addShutdownHook(exit);
-
           // backup the collection if no parsing error occurred
           if (!bCollectionLoadRecover) {
             UtilSystem.backupFile(SessionService.getConfFileByPath(Const.FILE_COLLECTION),
                 Conf.getInt(Const.CONF_BACKUP_SIZE));
           }
-
           // Register FIFO manager
           QueueController.getInstance();
-
           // Refresh max album rating
           AlbumManager.getInstance().refreshMaxRating();
-
           // Sort albums cache. We do it before the sleep because there's a
           // chance that user launch an album as soon as the GUI is painted
           AlbumManager.getInstance().orderCache();
-
           // Force Thumbnail manager to check for thumbs presence. Must be done
           // before catalog view refresh to avoid useless thumbs creation
           for (int size = 50; size <= 300; size += 50) {
             ThumbnailManager.populateCache(size);
           }
-
           // try to start up D-Bus support if available. Currently this is only
           // implemented on Linux
           if (UtilSystem.isUnderLinux()) {
@@ -101,14 +93,11 @@ public final class StartupAsyncService {
               Log.error(e);
             }
           }
-
           // Wait few secs to avoid GUI startup perturbations
           Thread.sleep(5000);
-
           // Switch to sorted mode, must be done before starting auto-refresh
           // thread !
           ItemManager.switchAllManagersToOrderState();
-
           // Refresh any new device from first Time Wizard
           Device newDevice = FirstTimeWizard.getNewDevice();
           try {
@@ -120,26 +109,20 @@ public final class StartupAsyncService {
             Log.error(112, newDevice.getName(), e2);
             Messages.showErrorMessage(112, newDevice.getName());
           }
-
           // Clear covers images cache
           SessionService.clearCache();
-
           // Launch auto-refresh thread
           DeviceManager.getInstance().startAutoRefreshThread();
-
           // Start rating manager thread
           RatingManager.getInstance().start();
-
           // Start alarm clock
           if (Conf.getBoolean(Const.CONF_ALARM_ENABLED)) {
             AlarmManager.getInstance();
           }
-
           // Submit any LastFM submission cache
           if (Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE)) {
             LastFmManager.getInstance().submitCache();
           }
-
         } catch (final Exception e) {
           Log.error(e);
         }
@@ -148,5 +131,4 @@ public final class StartupAsyncService {
     startup.setPriority(Thread.MIN_PRIORITY);
     startup.start();
   }
-
 }

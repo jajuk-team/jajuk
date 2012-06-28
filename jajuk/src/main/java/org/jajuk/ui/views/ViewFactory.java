@@ -18,7 +18,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-
 package org.jajuk.ui.views;
 
 import java.util.ArrayList;
@@ -32,7 +31,6 @@ import org.jajuk.ui.perspectives.IPerspective;
  * View Factory, creates view item and manages their ID.
  */
 public final class ViewFactory {
-
   /**
    * No instantiation *.
    */
@@ -57,7 +55,6 @@ public final class ViewFactory {
     }
     view.setID(className.getName() + '/' + id);
     view.setPerspective(perspective);
-
     return view;
   }
 

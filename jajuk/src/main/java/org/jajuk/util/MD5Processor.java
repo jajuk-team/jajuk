@@ -31,11 +31,8 @@ import org.jajuk.util.log.Log;
  * Convenient class to compute MD5 hashcodes and return them using predefined
  * base.
  */
-
 public final class MD5Processor {
-
   private static MessageDigest msgDigest;
-
   static {
     try {
       msgDigest = MessageDigest.getInstance("MD5");
