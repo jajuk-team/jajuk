@@ -66,6 +66,8 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.notification.NotificatorTypes;
 import org.jajuk.services.webradio.WebRadioHelper;
+import org.jajuk.ui.actions.ActionManager;
+import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.helpers.PatternInputVerifier;
 import org.jajuk.ui.widgets.InformationJPanel;
@@ -416,15 +418,8 @@ public class ParameterView extends ViewAdapter {
     jbResetPreferences.setToolTipText(Messages.getString("ParameterView.250"));
     jbResetPreferences.addActionListener(updateHelper);
 
-    jbExportRatings = new JButton(Messages.getString("ParameterView.293"),
-        IconLoader.getIcon(JajukIcons.SAVE_AS));
-    jbExportRatings.setToolTipText(Messages.getString("ParameterView.294"));
-    jbExportRatings.addActionListener(updateHelper);
-
-    jbImportRatings = new JButton(Messages.getString("ParameterView.295"),
-        IconLoader.getIcon(JajukIcons.LAUNCH));
-    jbImportRatings.setToolTipText(Messages.getString("ParameterView.296"));
-    jbImportRatings.addActionListener(updateHelper);
+    jbExportRatings = new JButton(ActionManager.getAction(JajukActions.EXPORT_RATINGS));
+    jbImportRatings = new JButton(ActionManager.getAction(JajukActions.IMPORT_RATINGS));
 
     JLabel jlHistory = new JLabel(Messages.getString("ParameterView.0"));
     jlHistory.setToolTipText(Messages.getString("ParameterView.2"));

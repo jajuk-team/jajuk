@@ -691,56 +691,5 @@ public class Track extends LogicalItem implements Comparable<Track> {
     sb.deleteCharAt(sb.length() - 1);
     return sb.toString();
   }
-
-  String toRatingsXml() {
-    // no export if zero rating and not banned either
-    if (getRate() == 0 && getValue(Const.XML_TRACK_BANNED) == null) {
-      return "";
-    }
-
-    try {
-      StringBuilder sb = new StringBuilder("<").append(getXMLTag());
-
-      appendXML(sb, Const.XML_ID);
-      appendXML(sb, XML_TRACK_RATE);
-      appendXML(sb, Const.XML_TRACK_BANNED);
-
-      sb.append("/>\n");
-      return sb.toString();
-    } catch (Exception e) {
-      // catch any error here because it can prevent
-      // collection to commit
-      Log.error(e);
-      return "";
-    }
-  }
-
-  private void appendXML(StringBuilder sb, String sKey) {
-    Object oValue = getValue(sKey);
-    if (oValue == null) {
-      return;
-    }
-
-    String sValue = null;
-    PropertyMetaInformation meta = getMeta(sKey);
-    // The meta can be null for unknown reason, see #1226
-    if (meta == null) {
-      Log.warn("Null meta for: " + sKey);
-      return;
-    }
-    try {
-      sValue = UtilString.format(oValue, meta, false);
-      // make sure to remove
-      // non-XML characters
-      sValue = UtilString.formatXML(sValue);
-      sb.append(' ');
-      sb.append(UtilString.formatXML(sKey));
-      sb.append("='");
-      sb.append(sValue);
-      sb.append("'");
-    } catch (Exception e) { // should not occur
-      Log.debug("Key=" + sKey + " Meta=" + meta);
-      Log.error(e);
-    }
-  }
+ 
 }

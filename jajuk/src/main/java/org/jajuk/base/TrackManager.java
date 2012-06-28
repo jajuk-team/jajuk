@@ -1057,7 +1057,7 @@ public final class TrackManager extends ItemManager {
    * 
    * @return item
    */
-  Track getTrackByID(String sID) {
+  public Track getTrackByID(String sID) {
     return (Track) getItemByID(sID);
   }
 

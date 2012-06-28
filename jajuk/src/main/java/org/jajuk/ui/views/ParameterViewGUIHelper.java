@@ -27,7 +27,6 @@ import java.awt.event.ItemListener;
 import java.util.Locale;
 import java.util.Properties;
 
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
@@ -51,17 +50,14 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
-import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
-import org.jajuk.util.filters.XMLFilter;
 import org.jajuk.util.log.Log;
 
 /**
@@ -737,73 +733,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         }
       }
       ObservationManager.notify(new JajukEvent(JajukEvents.RATE_RESET));
-    } else if (e.getSource() == pv.jbExportRatings) {
-      // TODO: for some reason the passing of the existing directory does not
-      // work here, seems the implementation in JajukFileChooser does not do
-      // this correctly
-      final JajukFileChooser jfc = new JajukFileChooser(
-          new JajukFileFilter(XMLFilter.getInstance())/*, fDir*/);
-      jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-      jfc.setDialogTitle(Messages.getString("ParameterView.297"));
-      jfc.setMultiSelectionEnabled(false);
-      final int returnVal = jfc.showOpenDialog(pv.jbExportRatings);
-
-      if (returnVal == JFileChooser.APPROVE_OPTION) {
-        // retrieve selected directory and update it in all necessary places
-        java.io.File file = jfc.getSelectedFile();
-
-        if (file.exists()) {
-          int iResu = Messages.getChoice(Messages.getString("Confirmation_file_overwrite")
-              + " : \n\n" + file.getName(), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-          if (iResu == JOptionPane.NO_OPTION || iResu == JOptionPane.CANCEL_OPTION) {
-            return;
-          }
-        }
-
-        // start Export
-        try {
-          org.jajuk.base.Collection.exportRatings(file);
-          Messages.showInfoMessage(Messages.getString("ParameterView.299"));
-        } catch (Exception ex1) {
-          Messages.showWarningMessage(Messages.getString("Error.000") + "-" + ex1.getMessage());
-          Log.warn(0, "IOException while exporting current ratings", ex1);
-        }
-      }
-    } else if (e.getSource() == pv.jbImportRatings) {
-      // TODO: for some reason the passing of the existing directory does not
-      // work here, seems the implementation in JajukFileChooser does not do
-      // this correctly
-      final JajukFileChooser jfc = new JajukFileChooser(
-          new JajukFileFilter(XMLFilter.getInstance())/*, fDir*/);
-      jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-      jfc.setDialogTitle(Messages.getString("ParameterView.298"));
-      jfc.setMultiSelectionEnabled(false);
-      final int returnVal = jfc.showOpenDialog(pv.jbImportRatings);
-
-      if (returnVal == JFileChooser.APPROVE_OPTION) {
-        // retrieve selected directory and update it in all necessary places
-        java.io.File file = jfc.getSelectedFile();
-
-        if (!file.exists()) {
-          Messages.showWarningMessage(Messages.getString("Error.181"));
-          return;
-        }
-
-        int iResu = Messages.getChoice(Messages.getString("Confirmation_reset_ratings_overwrite")
-            + " : \n\n" + file.getName(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if (iResu == JOptionPane.NO_OPTION || iResu == JOptionPane.CANCEL_OPTION) {
-          return;
-        }
-
-        try {
-          org.jajuk.base.Collection.importRatings(file);
-          Messages.showInfoMessage(Messages.getString("ParameterView.300"));
-
-        } catch (Exception ex1) {
-          Messages.showWarningMessage(Messages.getString("Error.000") + "-" + ex1.getMessage());
-          Log.warn(0, "IOException while exporting current ratings", ex1);
-        }
-      }
     } else if (e.getSource() == pv.jbResetPreferences) {
       // show confirmation message if required
       if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS)) {

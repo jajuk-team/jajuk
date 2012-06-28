@@ -20,10 +20,6 @@
  */
 package org.jajuk.base;
 
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.ConstTest;
@@ -233,76 +229,6 @@ public class TestCollection extends JajukTestCase {
   public final void testGetWrongRightAlbumIDs() {
     Collection coll = Collection.getInstance();
     assertNotNull(coll.getWrongRightAlbumIDs());
-  }
-
-  public void testExportImport() throws IOException, SAXException, JajukException,
-      ParserConfigurationException {
-    StartupCollectionService.registerItemManagers();
-
-    Collection coll = Collection.getInstance();
-    assertNotNull(coll);
-
-    java.io.File file = java.io.File.createTempFile("testcoll", ".xml", new java.io.File(
-        ConstTest.TECH_TESTS_PATH));
-
-    // delete the file before writing the collection
-    assertTrue(file.delete());
-
-    // write ratings without any item
-    Collection.exportRatings(file);
-
-    // now it should exist and have some content
-    assertTrue(file.exists());
-    String str = FileUtils.readFileToString(file);
-    assertTrue(str, StringUtils.isNotBlank(str));
-    assertTrue(str, str.contains("<" + Const.XML_TRACKS));
-    assertFalse(str, str.contains(" " + Const.XML_TRACK_RATE));
-
-    // now with some content
-    String id = JUnitHelpers.getTrack(5).getID();
-
-    // set it banned to have this exported as well
-    Track track = TrackManager.getInstance().getTrackByID(id);
-    track.setRate(29);
-    track.setProperty(Const.XML_TRACK_BANNED, true);
-
-    // delete the file before writing the collection
-    assertTrue(file.delete());
-
-    // commit without any item
-    Collection.exportRatings(file);
-
-    // now it should exist and have some content
-    assertTrue(file.exists());
-    str = FileUtils.readFileToString(file);
-    assertTrue(str, StringUtils.isNotBlank(str));
-    assertTrue(str, str.contains("<" + Const.XML_TRACKS));
-
-    // it should not contain the tracks themselves
-    assertFalse(str, str.contains("testdevice"));
-    assertFalse(str, str.contains("cooldown"));
-
-    // it should contain the track id and the rate that we set
-    assertFalse(str, str.contains("id=\"" + id + "\""));
-    assertFalse(str, str.contains(" " + Const.XML_TRACK_RATE + "=\"29\""));
-
-    // change the rate that we use internally and set it banned
-    assertEquals(29, track.getRate());
-    assertEquals(true, track.getValue(Const.XML_TRACK_BANNED));
-
-    track.setRate(87);
-    track.setProperty(Const.XML_TRACK_BANNED, true);
-
-    // change rate and banned
-    assertEquals(87, track.getRate());
-    assertEquals(true, track.getProperties().remove(Const.XML_TRACK_BANNED));
-    
-    // also test loading here
-    Collection.importRatings(file);
-
-    // now we need to have the restored settings again
-    assertEquals(29, track.getRate());
-    assertEquals(true, track.getProperties().get(Const.XML_TRACK_BANNED));
   }
 
 }

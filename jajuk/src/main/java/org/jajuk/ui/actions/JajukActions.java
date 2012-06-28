@@ -373,5 +373,11 @@ public enum JajukActions {
 
   /** Display donate dialog. */
   SHOW_DONATE,
+  
+  /** Export ratings */
+  EXPORT_RATINGS,
+  
+   /** Import ratings */
+  IMPORT_RATINGS
 
 }

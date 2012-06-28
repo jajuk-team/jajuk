@@ -289,102 +289,17 @@ public final class Collection extends DefaultHandler {
     Log.debug("Collection commited in " + (System.currentTimeMillis() - time) + " ms");
   }
 
-  public static void exportRatings(final File file) throws IOException {
-    Log.info("Exporting current track ratings to file {{" + file + "}}");
-
-    long time = System.currentTimeMillis();
-    String sCharset = Conf.getString(Const.CONF_COLLECTION_CHARSET);
-    final BufferedWriter bw;
-    if (file.getAbsolutePath().endsWith(".zip")) {
-      bw = new BufferedWriter(new OutputStreamWriter(
-          new ZipOutputStream(new FileOutputStream(file)), sCharset), 1000000);
-    } else {
-      bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), sCharset), 1000000);
-    }
-
-    try {
-      bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");
-      bw.write("<" + Const.XML_TRACKS + " " + Const.XML_VERSION + "='" + Const.JAJUK_VERSION
-          + "'>\n");
-
-      for (Track track : TrackManager.getInstance().getTracks()) {
-        bw.write(track.toRatingsXml());
-      }
-
-      // end of collection
-      bw.write("</" + Const.XML_TRACKS + TAG_CLOSE_NEWLINE);
-      bw.flush();
-    } finally {
-      bw.close();
-    }
-
-    Log.debug("Ratings exported in " + (System.currentTimeMillis() - time) + " ms");
-  }
-
-  public static void importRatings(final File file) throws IOException, SAXException,
-      JajukException, ParserConfigurationException {
-    Log.info("Importing current track ratings from file {{" + file + "}}");
-
-    lTime = System.currentTimeMillis();
-    SAXParserFactory spf = SAXParserFactory.newInstance();
-    spf.setValidating(false);
-    spf.setNamespaceAware(false);
-    // See http://xerces.apache.org/xerces-j/features.html for details
-    spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
-    spf.setFeature("http://xml.org/sax/features/string-interning", true);
-    SAXParser saxParser = spf.newSAXParser();
-    if (!file.exists()) {
-      throw new JajukException(5, file.toString());
-    }
-
-    final InputSource input;
-    if (file.getAbsolutePath().endsWith(".zip")) {
-      input = new InputSource(new ZipInputStream(new FileInputStream(file)));
-    } else {
-      input = new InputSource(new FileInputStream(file));
-    }
-    saxParser.parse(input, new DefaultHandler() {
-
-      /* (non-Javadoc)
-       * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
-       */
-      @Override
-      public void startElement(String uri, String localName, String qName, Attributes attributes)
-          throws SAXException {
-
-        // <track id='11f89yuelwwdmzg1357yaw87j' rate='0' ban='true'/>
-        if (qName.equals(Const.XML_TRACK)) {
-          String id = attributes.getValue(Const.XML_ID);
-          String rate = attributes.getValue(Const.XML_TRACK_RATE);
-          String banned = attributes.getValue(Const.XML_TRACK_BANNED);
-
-          Track track = TrackManager.getInstance().getTrackByID(id);
-          if (track != null) {
-            Log.debug("Found track {{" + track.getName() + "}} for id {{" + id
-                + "}}, setting rate {{" + rate + "}} and banned {{" + banned + "}}");
-            if (!"0".equals(rate)) {
-              track.setRate(UtilString.fastLongParser(rate));
-            }
-
-            track.populateProperties(attributes);
-          }
-        }
-
-      }
-    });
-  }
-
   /**
-   * Write item list. 
-   *
-   * @param bw 
-   * @param header 
-   * @param items 
-   * @param footer 
-   * @param buffer 
-   *
-   * @throws IOException Signals that an I/O exception has occurred.
-   */
+  * Write item list. 
+  *
+  * @param bw 
+  * @param header 
+  * @param items 
+  * @param footer 
+  * @param buffer 
+  *
+  * @throws IOException Signals that an I/O exception has occurred.
+  */
   private static void writeItemList(BufferedWriter bw, String header, List<? extends Item> items,
       String footer, int buffer) throws IOException {
     bw.write(header);

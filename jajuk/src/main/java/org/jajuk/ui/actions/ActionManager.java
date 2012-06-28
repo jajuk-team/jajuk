@@ -154,6 +154,8 @@ public final class ActionManager {
     // Install full screen actions only if supported
     installAction(JajukActions.FULLSCREEN_JAJUK, new FullscreenAction(), false);
     installAction(JajukActions.PREPARE_PARTY, new PreparePartyAction(), false);
+    installAction(JajukActions.EXPORT_RATINGS, new ExportRatingsAction(), false);
+    installAction(JajukActions.IMPORT_RATINGS, new ImportRatingsAction(), false);
 
     // Selection actions
     installAction(JajukActions.SHOW_PROPERTIES, new ShowPropertiesAction(), true);
