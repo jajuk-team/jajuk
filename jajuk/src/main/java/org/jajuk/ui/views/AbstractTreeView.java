@@ -124,6 +124,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
     eventSubjectSet.add(JajukEvents.CDDB_WIZARD);
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     eventSubjectSet.add(JajukEvents.TABLE_SELECTION_CHANGED);
+    eventSubjectSet.add(JajukEvents.RATE_CHANGED);
     return eventSubjectSet;
   }
 
@@ -270,7 +271,8 @@ public abstract class AbstractTreeView extends ViewAdapter {
     final JajukEvents subject = event.getSubject();
     if (subject.equals(JajukEvents.DEVICE_MOUNT) || subject.equals(JajukEvents.DEVICE_UNMOUNT)
         || subject.equals(JajukEvents.DEVICE_REFRESH)
-        || subject.equals(JajukEvents.PARAMETERS_CHANGE)) {
+        || subject.equals(JajukEvents.PARAMETERS_CHANGE)
+        || JajukEvents.RATE_CHANGED.equals(subject)) {
       SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
         @Override
         public Void doInBackground() {
@@ -287,6 +289,8 @@ public abstract class AbstractTreeView extends ViewAdapter {
           bManualAction = false;
           expand();
           bManualAction = true;
+          // Make sure that preference menu icon is refreshed
+          pjmTracks.resetUI(alSelected);
           // Reset last position in tree
           // The scrollbar must be set after current EDT work to be effective,
           // so queue it
