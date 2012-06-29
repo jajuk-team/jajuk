@@ -157,6 +157,7 @@ public final class RatingManager extends Thread implements Observer {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.RATE_RESET);
     eventSubjectSet.add(JajukEvents.PREFERENCES_RESET);
+    eventSubjectSet.add(JajukEvents.RATING_MODE_CHANGED);
     return eventSubjectSet;
   }
 
@@ -209,6 +210,12 @@ public final class RatingManager extends Thread implements Observer {
       FileManager.getInstance().refreshBestOfFiles();
       InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.253"),
           InformationJPanel.MessageType.INFORMATIVE);
+    } else if (subject == JajukEvents.RATING_MODE_CHANGED) {
+      // Update rate in case of manual/auto ratings switch
+      for (Track track : TrackManager.getInstance().getTracks()) {
+        track.updateRate();
+      }
+      ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
     }
   }
 }

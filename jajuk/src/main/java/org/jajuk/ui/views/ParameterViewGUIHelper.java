@@ -469,7 +469,12 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     if (!sHistoryDuration.isEmpty()) {
       Conf.setProperty(Const.CONF_HISTORY, sHistoryDuration);
     }
-    Conf.setProperty(Const.CONF_MANUAL_RATINGS, Boolean.toString(pv.jcbManualRatings.isSelected()));
+    boolean oldManualValue = Conf.getBoolean(Const.CONF_MANUAL_RATINGS);
+    if (pv.jcbManualRatings.isSelected() != oldManualValue) {
+      Conf.setProperty(Const.CONF_MANUAL_RATINGS,
+          Boolean.toString(pv.jcbManualRatings.isSelected()));
+      ObservationManager.notify(new JajukEvent(JajukEvents.RATING_MODE_CHANGED));
+    }
   }
 
   /**

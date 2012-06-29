@@ -153,5 +153,8 @@ public enum JajukEvents {
   /** D-Bus command that shows the notification with the currently played file. */
   SHOW_CURRENTLY_PLAYING,
   /** Inform the interested objects about a change in the visibility of the slimbar. */
-  SLIMBAR_VISIBILTY_CHANGED
+  SLIMBAR_VISIBILTY_CHANGED,
+  /** RATING_MODE_CHANGED */
+  RATING_MODE_CHANGED
+  
 }
