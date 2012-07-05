@@ -241,7 +241,9 @@ public final class StartupCollectionService {
         Collection.load(fCollectionExit);
         // Remove the collection (required by renameTo next line under
         // Windows)
-        UtilSystem.deleteFile(fCollection);
+        if (fCollection.exists()) { // fCollection can be missing if corrupted durbg previous session
+          UtilSystem.deleteFile(fCollection);
+        }
         // parsing of collection exit ok, use this collection file as
         // final collection
         if (!fCollectionExit.renameTo(fCollection)) {
