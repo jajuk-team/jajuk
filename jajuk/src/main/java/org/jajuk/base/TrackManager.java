@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -38,6 +40,7 @@ import org.jajuk.services.tags.Tag;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.Messages;
 import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
@@ -137,6 +140,21 @@ public final class TrackManager extends ItemManager {
   }
 
   /**
+   * Confirm before actually changing a tag
+   * @param track the track to be changed
+   * @return whether user accept to actually change a tag
+   */
+  private boolean confirm(Track track) {
+    if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_BEFORE_TAG_WRITE)) {
+      final int iResu = Messages.getChoice(Messages.getString("Confirmation_tag_write") + " : \n"
+          + track.getFilesString(), JOptionPane.YES_NO_CANCEL_OPTION,
+          JOptionPane.INFORMATION_MESSAGE);
+      return iResu == JOptionPane.YES_OPTION;
+    }
+    return true;
+  }
+
+  /**
    * Register an Track.
    * 
    * @param sName 
@@ -229,8 +247,8 @@ public final class TrackManager extends ItemManager {
    * @throw an exception if a tag cannot be commited
    */
   public void commit() throws JajukException {
-    lock.writeLock().lock();
     try {
+      lock.writeLock().lock();
       // Iterate over a shallow copy to avoid concurrent issues (note also that
       // several threads can commit at the same time). We synchronize the copy and
       // we drop tags to commit.
@@ -282,8 +300,11 @@ public final class TrackManager extends ItemManager {
    */
   public Track changeTrackAlbum(Track track, String sNewAlbum, Set<File> filter)
       throws JajukException {
-    lock.writeLock().lock();
     try {
+      lock.writeLock().lock();
+      if (!confirm(track)) {
+        return track;
+      }
       // check there is actually a change
       if (track.getAlbum().getName2().equals(sNewAlbum)) {
         return track;
@@ -340,8 +361,11 @@ public final class TrackManager extends ItemManager {
    */
   public Track changeTrackArtist(Track track, String sNewArtist, Set<File> filter)
       throws JajukException {
-    lock.writeLock().lock();
     try {
+      lock.writeLock().lock();
+      if (!confirm(track)) {
+        return track;
+      }
       // check there is actually a change
       if (track.getArtist().getName2().equals(sNewArtist)) {
         return track;
@@ -397,8 +421,11 @@ public final class TrackManager extends ItemManager {
    */
   public Track changeTrackGenre(Track track, String sNewGenre, Set<File> filter)
       throws JajukException {
-    lock.writeLock().lock();
     try {
+      lock.writeLock().lock();
+      if (!confirm(track)) {
+        return track;
+      }
       // check there is actually a change
       if (track.getGenre().getName2().equals(sNewGenre)) {
         return track;
@@ -448,8 +475,11 @@ public final class TrackManager extends ItemManager {
    * @throws JajukException the jajuk exception
    */
   public Track changeTrackYear(Track track, String newItem, Set<File> filter) throws JajukException {
-    lock.writeLock().lock();
     try {
+      lock.writeLock().lock();
+      if (!confirm(track)) {
+        return track;
+      }
       // check there is actually a change
       if (track.getYear().getName().equals(newItem)) {
         return track;
@@ -501,8 +531,11 @@ public final class TrackManager extends ItemManager {
    * @throws JajukException the jajuk exception
    */
   Track changeTrackComment(Track track, String sNewItem, Set<File> filter) throws JajukException {
-    lock.writeLock().lock();
     try {
+      lock.writeLock().lock();
+      if (!confirm(track)) {
+        return track;
+      }
       // check there is actually a change
       if (track.getComment().equals(sNewItem)) {
         return track;
@@ -545,8 +578,9 @@ public final class TrackManager extends ItemManager {
    * @return new track or null if wrong format
    */
   public Track changeTrackRate(Track track, long lNew) {
-    lock.writeLock().lock();
     try {
+      lock.writeLock().lock();
+      // No confirmation here as this code is called during startup and is not available from GUI anyway
       // check there is actually a change
       if (track.getRate() == lNew) {
         return track;
@@ -575,8 +609,11 @@ public final class TrackManager extends ItemManager {
    */
   public Track changeTrackOrder(Track track, long lNewOrder, Set<File> filter)
       throws JajukException {
-    lock.writeLock().lock();
     try {
+      lock.writeLock().lock();
+      if (!confirm(track)) {
+        return track;
+      }
       // check there is actually a change
       if (track.getOrder() == lNewOrder) {
         return track;
@@ -627,8 +664,11 @@ public final class TrackManager extends ItemManager {
    */
   public Track changeTrackName(Track track, String sNewItem, Set<File> filter)
       throws JajukException {
-    lock.writeLock().lock();
     try {
+      lock.writeLock().lock();
+      if (!confirm(track)) {
+        return track;
+      }
       // check there is actually a change
       if (track.getName().equals(sNewItem)) {
         return track;
@@ -679,8 +719,11 @@ public final class TrackManager extends ItemManager {
    * @throws JajukException the jajuk exception
    */
   Item changeTrackAlbumArtist(Track track, String sNewItem, Set<File> filter) throws JajukException {
-    lock.writeLock().lock();
     try {
+      lock.writeLock().lock();
+      if (!confirm(track)) {
+        return track;
+      }
       // check there is actually a change
       if (track.getAlbumArtist() != null && track.getAlbumArtist().getName2().equals(sNewItem)) {
         return track;
@@ -717,8 +760,6 @@ public final class TrackManager extends ItemManager {
   }
 
   /**
-   * <<<<<<< HEAD
-   * =======
    * Change track disc number.
    *
    * @param track 
@@ -729,8 +770,11 @@ public final class TrackManager extends ItemManager {
    */
   public Item changeTrackDiscNumber(Track track, long lNewDiscNumber, Set<File> filter)
       throws JajukException {
-    lock.writeLock().lock();
     try {
+      lock.writeLock().lock();
+      if (!confirm(track)) {
+        return track;
+      }
       // check there is actually a change
       if (track.getDiscNumber() == lNewDiscNumber) {
         return track;

@@ -323,6 +323,7 @@ public interface Const {
   String CONF_CONFIRMATIONS_CLEAR_HISTORY = "jajuk.confirmations.clear_history";
   String CONF_CONFIRMATIONS_RESET_RATINGS = "jajuk.confirmations.reset_ratings";
   String CONF_CONFIRMATIONS_REFACTOR_FILES = "jajuk.confirmations.refactor_files";
+  String CONF_CONFIRMATIONS_BEFORE_TAG_WRITE = "jajuk.confirmations.write_tag";
   String CONF_OPTIONS_HIDE_UNMOUNTED = "jajuk.options.hide_unmounted";
   String CONF_OPTIONS_LOG_LEVEL = "jajuk.options.log_level";
   String CONF_OPTIONS_LANGUAGE = "jajuk.options.language";

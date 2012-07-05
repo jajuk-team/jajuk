@@ -161,6 +161,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     pv.jcbBeforeResetingRatings
         .setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS));
     pv.jcbBeforeRefactorFiles.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_REFACTOR_FILES));
+    pv.jcbBeforeWritingTag.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_BEFORE_TAG_WRITE));
   }
 
   /**
@@ -458,6 +459,10 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         Boolean.toString(pv.jcbBeforeClearingHistory.isSelected()));
     Conf.setProperty(Const.CONF_CONFIRMATIONS_RESET_RATINGS,
         Boolean.toString(pv.jcbBeforeResetingRatings.isSelected()));
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_REFACTOR_FILES,
+        Boolean.toString(pv.jcbBeforeRefactorFiles.isSelected()));
+    Conf.setProperty(Const.CONF_CONFIRMATIONS_BEFORE_TAG_WRITE,
+        Boolean.toString(pv.jcbBeforeWritingTag.isSelected()));
   }
 
   /**

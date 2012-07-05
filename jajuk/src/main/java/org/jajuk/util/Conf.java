@@ -181,6 +181,7 @@ public final class Conf implements Const {
     defaults.put(CONF_CONFIRMATIONS_CLEAR_HISTORY, TRUE);
     defaults.put(CONF_CONFIRMATIONS_RESET_RATINGS, TRUE);
     defaults.put(CONF_CONFIRMATIONS_REFACTOR_FILES, TRUE);
+    defaults.put(CONF_CONFIRMATIONS_BEFORE_TAG_WRITE, FALSE);
     defaults.put(CONF_OPTIONS_HIDE_UNMOUNTED, FALSE);
     defaults.put(CONF_OPTIONS_PUSH_ON_CLICK, FALSE);
     defaults.put(CONF_OPTIONS_PUSH_ON_DROP, FALSE);
