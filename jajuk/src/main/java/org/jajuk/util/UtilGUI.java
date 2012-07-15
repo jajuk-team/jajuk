@@ -43,6 +43,8 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.PixelGrabber;
@@ -854,21 +856,35 @@ public final class UtilGUI {
    * @param pane 
    */
   public static void setEscapeKeyboardAction(final Window window, JComponent pane) {
+    final KeyEventDispatcher dispatcher = new KeyEventDispatcher() {
+      @Override
+      public boolean dispatchKeyEvent(KeyEvent e) {
+        // For some reasons (under Linux at least), pressing escape only trigger PRESSED
+        // and RELEASED key events
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE && e.getID() == KeyEvent.KEY_PRESSED
+            && window.isFocused()) {
+          window.dispose();
+          return true;
+        }
+        return false;
+      }
+    };
+    
     // Add keystroke to close window when pressing escape
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
-        new KeyEventDispatcher() {
-          @Override
-          public boolean dispatchKeyEvent(KeyEvent e) {
-            // For some reasons (under Linux at least), pressing escape only trigger PRESSED
-            // and RELEASED key events
-            if (e.getKeyCode() == KeyEvent.VK_ESCAPE && e.getID() == KeyEvent.KEY_PRESSED
-                && window.isFocused()) {
-              window.dispose();
-              return true;
-            }
-            return false;
-          }
-        });
+        dispatcher);
+    
+    // make sure the key event dispatcher is removed as soon as the Window is closing
+    window.addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosing(WindowEvent e) {
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(dispatcher);
+      }
+      @Override
+      public void windowClosed(WindowEvent e) {
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(dispatcher);
+      }      
+    });
   }
 
   /**
