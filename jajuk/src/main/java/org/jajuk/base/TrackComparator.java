@@ -55,7 +55,7 @@ public class TrackComparator implements Comparator<Track>, Serializable {
     HITS_ALBUM,
     /** Compare on disc number and order of the track in the album. */
     ORDER,
-    /** Compare to find identifical tracks. */
+    /** Compare to find identical tracks. */
     ALMOST_IDENTICAL
   }
 
