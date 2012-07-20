@@ -788,6 +788,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
    * Display current cover (at this.index), try all covers in case of error
    */
   private void displayCurrentCover() {
+    //searching(); // lookup icon
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
       @Override
       public Void doInBackground() {
@@ -1333,7 +1334,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
     if (fCurrent == null) {
       fCurrent = QueueModel.getPlayingFile();
     }
-    // no current cover
+    // no current cover and nothing playing
     if (fCurrent == null) {
       dirReference = null;
     } else {
@@ -1344,7 +1345,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
       alCovers.clear();
       alCovers.add(CoverView.nocover);
       index = 0;
-      displayCurrentCover();
       return;
     }
     if (fCurrent == null) {
