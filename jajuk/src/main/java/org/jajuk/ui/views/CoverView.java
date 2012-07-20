@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -788,11 +788,11 @@ public class CoverView extends ViewAdapter implements ActionListener {
    * Display current cover (at this.index), try all covers in case of error
    */
   private void displayCurrentCover() {
-    //searching(); // lookup icon
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
       @Override
       public Void doInBackground() {
         synchronized (this) {
+          UtilGUI.showBusyLabel(CoverView.this); // lookup icon
           // Avoid looping
           if (alCovers.size() == 0) {
             // should not append
@@ -1122,18 +1122,9 @@ public class CoverView extends ViewAdapter implements ActionListener {
     }
   }
 
-  private void searching() {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        UtilGUI.showBusyLabel(CoverView.this);
-      }
-    });
-  }
-
   /**
-   * Set the cover Found text.
-   */
+  * Set the cover Found text.
+  */
   private void setFoundText() {
     SwingUtilities.invokeLater(new Runnable() {
       @Override
@@ -1327,7 +1318,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   private void refreshCovers(int iLocalEventID, boolean dirChanged) throws IOException {
     // Reset this flag
     bForceCoverReload = false;
-    searching(); // lookup icon
+    UtilGUI.showBusyLabel(CoverView.this); // lookup icon
     org.jajuk.base.File fCurrent = fileReference;
     // check if a file has been given for this cover view
     // if not, take current cover
