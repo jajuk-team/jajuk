@@ -23,7 +23,6 @@ package org.jajuk.services.alarm;
 import java.util.Calendar;
 import java.util.Set;
 
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.FileManager;
 import org.jajuk.events.JajukEvent;

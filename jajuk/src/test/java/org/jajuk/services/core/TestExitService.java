@@ -20,7 +20,6 @@
  */
 package org.jajuk.services.core;
 
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.services.startup.StartupCollectionService;
 
