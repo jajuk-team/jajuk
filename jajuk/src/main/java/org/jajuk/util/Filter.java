@@ -110,7 +110,9 @@ public class Filter {
    * @param list The input list to filter. Filtering is done in-place on this list.
    * @param filter The filter to apply on the list.
    */
-  public static <T extends Item> List<T> filterItems(List<T> list, Filter filter, Class<T> clazz) {
+  public static <T extends Item> List<T> filterItems(List<T> list, Filter filter,
+      @SuppressWarnings("unused")
+      Class<T> clazz) {
     if (filter == null || filter.getValue() == null) {
       return list;
     }
