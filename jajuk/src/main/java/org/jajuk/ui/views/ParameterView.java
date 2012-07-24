@@ -1012,12 +1012,16 @@ public class ParameterView extends ViewAdapter {
       public void actionPerformed(ActionEvent e) {
         jcbMinimizeToTray.setEnabled(jcbShowSystray.isSelected());
         jcbClickTrayAlwaysDisplayWindow.setEnabled(jcbShowSystray.isSelected());
+        if (!jcbShowSystray.isSelected()) {
+          jcbMinimizeToTray.setSelected(false);
+          jcbClickTrayAlwaysDisplayWindow.setSelected(false);
+        }
       }
     });
     jcbShowSystray.setToolTipText(Messages.getString("ParameterView.272"));
     jcbMinimizeToTray = new JCheckBox(Messages.getString("ParameterView.281"));
-    // Disable this option if the tray is not supported by the platform
-    jcbMinimizeToTray.setEnabled(SystemTray.isSupported());
+    // Disable this option if the tray is not supported by the platform and if the tray is actually shown
+    jcbMinimizeToTray.setEnabled(SystemTray.isSupported() && jcbShowSystray.isSelected());
     jcbMinimizeToTray.setToolTipText(Messages.getString("ParameterView.282"));
     jcbClickTrayAlwaysDisplayWindow = new JCheckBox(Messages.getString("ParameterView.303"));
     // Disable this option if the tray is not supported by the platform
