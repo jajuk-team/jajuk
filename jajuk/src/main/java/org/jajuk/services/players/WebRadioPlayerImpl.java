@@ -126,6 +126,7 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
     this.fVolume = fVolume;
     this.bOpening = true;
     this.bEOF = false;
+    this.bitPerfect = Conf.getBoolean(Const.CONF_BIT_PERFECT);
     // Start
     ProcessBuilder pb = new ProcessBuilder(buildCommand(radio.getUrl()));
     Log.debug("Using this Mplayer command: {{" + pb.command() + "}}");

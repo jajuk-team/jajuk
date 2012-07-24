@@ -505,22 +505,15 @@ public class JUnitHelpers {
     return getFile("test.tst", true);
   }
 
-  /**
-   * Gets the file.
-   *
-   * @param name 
-   * @param mount 
-   * @return the file
-   * @throws IOException 
-   */
-  public static org.jajuk.base.File getFile(String name, Directory dir, boolean mount) {
+  public static org.jajuk.base.File getFile(String name, Directory dir, boolean mount,
+      Class<? extends IPlayerImpl> clazz) {
     Genre genre = getGenre();
     Album album = getAlbum("name", 0);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
     Artist artist = getArtist("myartist");
     Year year = getYear(2000);
-    Type type = getType();
+    Type type = getType(clazz);
     Track track = TrackManager.getInstance().registerTrack(name, album, genre, artist, 120, year,
         1, type, 1);
     Device device = getDevice();
@@ -550,7 +543,7 @@ public class JUnitHelpers {
    */
   public static org.jajuk.base.File getFile(String name, boolean mount) {
     Directory dir = JUnitHelpers.getDirectory();
-    return getFile(name, dir, mount);
+    return getFile(name, dir, mount, MockPlayer.class);
   }
 
   /**
@@ -802,11 +795,18 @@ public class JUnitHelpers {
    *
    * @return the type
    */
-  @SuppressWarnings("unchecked")
   public static Type getType() {
-    IPlayerImpl imp = new MockPlayer();
-    Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
-    return TypeManager.getInstance().registerType("type", "mp3", cl, null);
+    return getType(MockPlayer.class);
+  }
+
+  /**
+  * Gets the type with provided mplayer implementation class
+  * @param playerImpl
+  *
+  * @return the type
+  */
+  public static Type getType(Class<? extends IPlayerImpl> clazz) {
+    return TypeManager.getInstance().registerType("type", "mp3", clazz, null);
   }
 
   // needs to be public to be callable from the outside...

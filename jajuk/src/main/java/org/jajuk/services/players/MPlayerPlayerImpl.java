@@ -80,7 +80,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
       .compile("Exiting\\x2e\\x2e\\x2e.*\\(End of file\\)");
   /** Language-agnostic end of file pattern */
   private Pattern patternEndOfFileGeneric = Pattern.compile(".*\\x2e\\x2e\\x2e.*\\(.*\\)");
-
+ 
   /**
    * Position and elapsed time getter.
    */
@@ -362,6 +362,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     this.length = length;
     this.fPosition = fPosition;
     this.fCurrent = file;
+    this.bitPerfect = Conf.getBoolean(Const.CONF_BIT_PERFECT);
     // Reset all states
     reset();
     // Try to launch mplayer

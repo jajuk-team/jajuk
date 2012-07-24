@@ -51,6 +51,8 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   volatile boolean bFading = false;
   /** pause flag *. */
   protected volatile boolean bPaused = false;
+  /** Whether the track has been started in bitperfect mode **/
+  boolean bitPerfect = false;
 
   /*
    *
@@ -107,6 +109,13 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   @Override
   public void setVolume(float fVolume) {
     this.fVolume = fVolume;
+    // Fix for a issue under Linux (at least with pulseaudio) : if a track is started in bitperfect mode (no volume specified), then 
+    // the mode is unset when the same track is playing. When the fade out occurs, the volume commands sent to mplayer are propagated for some reasons
+    // directly to the pulsaudio mixer and the next track sound volume is affected (muted most of times).
+    if (bitPerfect) {
+      Log.warn("This track was started in bit-perfect mode, even if the mode has been disabled, it can apply only to next track");
+      return;
+    }
     sendCommand("volume " + (int) (100 * fVolume) + " 2");
     // Not not log this when fading, generates too much logs
     if (!bFading) {

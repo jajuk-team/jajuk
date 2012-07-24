@@ -32,6 +32,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.ConstTest;
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JUnitHelpers.MockPlayer;
 import org.jajuk.JajukTestCase;
 import org.jajuk.services.bookmark.Bookmarks;
 import org.jajuk.services.players.QueueModel;
@@ -1021,12 +1022,12 @@ public class TestPlaylist extends JajukTestCase {
         .getDevice());
     Directory upDir = dirPlaylist.getParentDirectory();
     //create a two files in the same directory than the playlist
-    JUnitHelpers.getFile("file1", dirPlaylist, true);
-    JUnitHelpers.getFile("file11", dirPlaylist, true);
+    JUnitHelpers.getFile("file1", dirPlaylist, true, MockPlayer.class);
+    JUnitHelpers.getFile("file11", dirPlaylist, true, MockPlayer.class);
     // then another in the sub directory
-    JUnitHelpers.getFile("file2", subDir, true);
+    JUnitHelpers.getFile("file2", subDir, true, MockPlayer.class);
     // and a third in the playlist parent directory
-    JUnitHelpers.getFile("file3", upDir, true);
+    JUnitHelpers.getFile("file3", upDir, true, MockPlayer.class);
     // Now, don't add the files using setFiles but create the playlist content instead 
     // and  load it. This way, we can write relative paths like ../dir
     String content = "file1\n" + "./file11\n" + "dir1/file2\n" + "../file3";
