@@ -88,8 +88,8 @@ public class ImportRatingsAction extends SelectionAction {
   }
 
   ImportRatingsAction() {
-    super(Messages.getString("ParameterView.295"), IconLoader.getIcon(JajukIcons.LAUNCH), true);
-    setShortDescription(Messages.getString("ParameterView.296"));
+    super(Messages.getString("ImportRatingsAction.1"), IconLoader.getIcon(JajukIcons.LAUNCH), true);
+    setShortDescription(Messages.getString("ImportRatingsAction.2"));
   }
 
   /* (non-Javadoc)
@@ -99,7 +99,7 @@ public class ImportRatingsAction extends SelectionAction {
   public void perform(final ActionEvent e) throws Exception {
     final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(XMLFilter.getInstance())/*, fDir*/);
     jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-    jfc.setDialogTitle(Messages.getString("ParameterView.298"));
+    jfc.setDialogTitle(Messages.getString("ImportRatingsAction.3"));
     jfc.setMultiSelectionEnabled(false);
     final int returnVal = jfc.showOpenDialog(JajukMainWindow.getInstance());
     if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -121,7 +121,7 @@ public class ImportRatingsAction extends SelectionAction {
       public void run() {
         try {
           importRatings(file);
-          Messages.showInfoMessage(Messages.getString("ParameterView.300"));
+          Messages.showInfoMessage(Messages.getString("Success"));
         } catch (Exception ex1) {
           Messages.showWarningMessage(Messages.getString("Error.000") + "-" + ex1.getMessage());
           Log.warn(0, "IOException while exporting current ratings", ex1);

@@ -60,8 +60,8 @@ public class ExportRatingsAction extends SelectionAction {
   private java.io.File file;
 
   ExportRatingsAction() {
-    super(Messages.getString("ParameterView.293"), IconLoader.getIcon(JajukIcons.SAVE_AS), true);
-    setShortDescription(Messages.getString("ParameterView.294"));
+    super(Messages.getString("ExportRatingsAction.1"), IconLoader.getIcon(JajukIcons.SAVE_AS), true);
+    setShortDescription(Messages.getString("ExportRatingsAction.2"));
   }
 
   /* (non-Javadoc)
@@ -71,7 +71,7 @@ public class ExportRatingsAction extends SelectionAction {
   public void perform(final ActionEvent e) throws Exception {
     final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(XMLFilter.getInstance()));
     jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-    jfc.setDialogTitle(Messages.getString("ParameterView.297"));
+    jfc.setDialogTitle(Messages.getString("ExportRatingsAction.3"));
     jfc.setMultiSelectionEnabled(false);
     jfc.setDialogType(JFileChooser.SAVE_DIALOG);
     String date = UtilString.getAdditionDateFormatter().format(new Date());
@@ -95,7 +95,7 @@ public class ExportRatingsAction extends SelectionAction {
         // start Export
         try {
           exportRatings(file);
-          Messages.showInfoMessage(Messages.getString("ParameterView.299"));
+          Messages.showInfoMessage(Messages.getString("Success"));
         } catch (Exception ex1) {
           Messages.showWarningMessage(Messages.getString("Error.000") + "-" + ex1.getMessage());
           Log.warn(0, "IOException while exporting current ratings", ex1);
