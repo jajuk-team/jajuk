@@ -32,6 +32,7 @@ import static org.jajuk.ui.actions.JajukActions.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.REPEAT_MODE;
 import static org.jajuk.ui.actions.JajukActions.REWIND_TRACK;
+import static org.jajuk.ui.actions.JajukActions.SHOW_CURRENTLY_PLAYING;
 import static org.jajuk.ui.actions.JajukActions.SHUFFLE_MODE;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 
@@ -58,7 +59,8 @@ public class WindowGlobalKeystrokeManager {
   /** List of actions to enable globaly *. */
   private JajukActions[] globalActions = new JajukActions[] { NEXT_ALBUM, PREVIOUS_ALBUM,
       PREVIOUS_TRACK, NEXT_TRACK, MUTE_STATE, PAUSE_RESUME_TRACK, STOP_TRACK, DECREASE_VOLUME,
-      INCREASE_VOLUME, SHUFFLE_MODE, REPEAT_MODE, REWIND_TRACK, FORWARD_TRACK, HELP_REQUIRED };
+      INCREASE_VOLUME, SHUFFLE_MODE, REPEAT_MODE, REWIND_TRACK, FORWARD_TRACK, HELP_REQUIRED,
+      SHOW_CURRENTLY_PLAYING };
 
   /**
    * Gets the single instance of WindowGlobalKeystrokeManager.

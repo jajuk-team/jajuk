@@ -58,6 +58,7 @@ public final class ActionManager {
 
   /**
    * Instantiates a new action manager.
+   * To enable a shortcut globally, add it in WindowGlobalKeystrokeManager.globalActions
    */
   private ActionManager() {
     // Private constructor to disallow instantiation.
@@ -132,6 +133,7 @@ public final class ActionManager {
     installAction(JajukActions.OPEN_EXPLORER, new OpenExplorerAction(), false);
     installAction(JajukActions.REFRESH, new RefreshAction(), false);
     installAction(JajukActions.ALARM_CLOCK, new AlarmClockAction(), false);
+    // To enable a shortcut globally, add it in WindowGlobalKeystrokeManager.globalActions !!
     installAction(JajukActions.SHOW_ALBUM_DETAILS, new ShowAlbumDetailsAction(), false);
     installAction(JajukActions.SLIM_JAJUK, new SlimbarAction(), false);
     installAction(JajukActions.COMMIT, new CommitAction(), false);

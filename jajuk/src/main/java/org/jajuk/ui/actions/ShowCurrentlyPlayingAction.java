@@ -25,6 +25,12 @@ import java.awt.event.ActionEvent;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.notification.INotificator;
+import org.jajuk.services.notification.NotificatorTypes;
+import org.jajuk.services.notification.ToastNotificator;
+import org.jajuk.services.players.QueueModel;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -53,7 +59,19 @@ public class ShowCurrentlyPlayingAction extends SelectionAction {
    */
   @Override
   public void perform(ActionEvent e) throws Exception {
-    // simply invoke the necessary event via the observer mechanism
-    ObservationManager.notify(new JajukEvent(JajukEvents.SHOW_CURRENTLY_PLAYING));
+    // simply invoke the necessary event via the observer mechanism.
+    // Use toast notification if user selected "No notification" in preferences view.
+    NotificatorTypes type = NotificatorTypes.valueOf(Conf
+        .getString(Const.CONF_UI_NOTIFICATOR_TYPE));
+    if (type == NotificatorTypes.NONE) {
+      INotificator notifier = ToastNotificator.getInstance();
+      if (QueueModel.getCurrentRadio() != null) {
+        notifier.notify(QueueModel.getCurrentRadio());
+      } else {
+        notifier.notify(QueueModel.getCurrentItem().getFile());
+      }
+    } else {
+      ObservationManager.notifySync(new JajukEvent(JajukEvents.SHOW_CURRENTLY_PLAYING));
+    }
   }
 }
