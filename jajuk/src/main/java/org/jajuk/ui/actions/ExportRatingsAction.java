@@ -71,6 +71,7 @@ public class ExportRatingsAction extends SelectionAction {
   public void perform(final ActionEvent e) throws Exception {
     final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(XMLFilter.getInstance()));
     jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+    jfc.setAcceptDirectories(true);
     jfc.setDialogTitle(Messages.getString("ExportRatingsAction.3"));
     jfc.setMultiSelectionEnabled(false);
     jfc.setDialogType(JFileChooser.SAVE_DIALOG);

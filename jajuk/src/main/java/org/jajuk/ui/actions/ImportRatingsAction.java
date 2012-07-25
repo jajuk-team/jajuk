@@ -101,6 +101,7 @@ public class ImportRatingsAction extends SelectionAction {
     jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
     jfc.setDialogTitle(Messages.getString("ImportRatingsAction.3"));
     jfc.setMultiSelectionEnabled(false);
+    jfc.setAcceptDirectories(true);
     final int returnVal = jfc.showOpenDialog(JajukMainWindow.getInstance());
     if (returnVal == JFileChooser.APPROVE_OPTION) {
       // retrieve selected directory and update it in all necessary places
