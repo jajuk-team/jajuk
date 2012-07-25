@@ -84,25 +84,25 @@ public class ExportRatingsAction extends SelectionAction {
       if (file.exists()) {
         int iResu = Messages.getChoice(Messages.getString("Confirmation_file_overwrite")
             + " : \n\n" + file.getName(), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-        if (iResu == JOptionPane.NO_OPTION || iResu == JOptionPane.CANCEL_OPTION) {
+        if (iResu != JOptionPane.YES_OPTION) {
           return;
         }
       }
-    }
-    // Perform this asynchronously as it may be long
-    new Thread("ExportRatings") {
-      @Override
-      public void run() {
-        // start Export
-        try {
-          exportRatings(file);
-          Messages.showInfoMessage(Messages.getString("Success"));
-        } catch (Exception ex1) {
-          Messages.showWarningMessage(Messages.getString("Error.000") + "-" + ex1.getMessage());
-          Log.warn(0, "IOException while exporting current ratings", ex1);
+      // Perform this asynchronously as it may be long
+      new Thread("ExportRatings") {
+        @Override
+        public void run() {
+          // start Export
+          try {
+            exportRatings(file);
+            Messages.showInfoMessage(Messages.getString("Success"));
+          } catch (Exception ex1) {
+            Messages.showWarningMessage(Messages.getString("Error.000") + "-" + ex1.getMessage());
+            Log.warn(0, "IOException while exporting current ratings", ex1);
+          }
         }
-      }
-    }.start();
+      }.start();
+    }
   }
 
   public void exportRatings(final File file) throws IOException {
