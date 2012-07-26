@@ -376,6 +376,11 @@ public final class QueueModel {
               }
             } else if (i == JOptionPane.NO_OPTION) {
               bNoMount = true; // do not ask again
+              // If only a single track was pushed and user decided not to 
+              // mount its device, do not display another error message about void selection
+              if (alItems.size() == 1) {
+                return;
+              }
               it.remove();
             } else if (i == JOptionPane.CANCEL_OPTION) {
               return;
