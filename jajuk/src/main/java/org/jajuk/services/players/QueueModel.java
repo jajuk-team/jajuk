@@ -1034,13 +1034,15 @@ public final class QueueModel {
       // is current track on this device?
       return false;
     }
-    Iterator<StackItem> it = queue.iterator();
+    // work on a queue copy to avoid the concurrent access issues
+    List<StackItem> copy = new ArrayList<StackItem>(queue);
+    Iterator<StackItem> it = copy.iterator();
     // are next tracks in fifo on this device?
     while (it.hasNext()) {
       StackItem item = it.next();
       File file = item.getFile();
       if (file.getDirectory().getDevice().equals(device)) {
-        return false;
+        queue.remove(item);
       }
     }
     return true;
