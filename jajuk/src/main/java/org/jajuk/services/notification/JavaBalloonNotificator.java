@@ -22,6 +22,7 @@ package org.jajuk.services.notification;
 
 import java.awt.TrayIcon;
 
+import org.jajuk.base.Album;
 import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.windows.JajukSystray;
@@ -92,6 +93,9 @@ public class JavaBalloonNotificator implements INotificator {
    */
   @Override
   public void notify(File file) {
+    // Force any new cover search before displaying it if the album is set "none" cover
+    Album album = file.getTrack().getAlbum();
+    album.resetCoverCache();
     String title = Messages.getString("Notificator.track_change.track_title");
     String pattern = Conf.getString(Const.CONF_PATTERN_BALLOON_NOTIFIER);
     String text;

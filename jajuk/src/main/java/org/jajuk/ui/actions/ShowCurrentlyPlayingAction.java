@@ -71,7 +71,7 @@ public class ShowCurrentlyPlayingAction extends SelectionAction {
         notifier.notify(QueueModel.getCurrentItem().getFile());
       }
     } else {
-      ObservationManager.notifySync(new JajukEvent(JajukEvents.SHOW_CURRENTLY_PLAYING));
+      ObservationManager.notify(new JajukEvent(JajukEvents.SHOW_CURRENTLY_PLAYING));
     }
   }
 }

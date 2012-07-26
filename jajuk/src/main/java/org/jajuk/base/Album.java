@@ -306,7 +306,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (StringUtils.isNotBlank(discoveredCoverPath) && COVER_NONE.equals(discoveredCoverPath)) {
       return null;
     }
-    // now check if the "discovdered cover" is available
+    // now check if the "discovered cover" is available
     if (StringUtils.isNotBlank(discoveredCoverPath)) {
       // Check if discovered cover still exist. There is an overhead
       // drawback but otherwise, the album's cover
@@ -332,7 +332,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
     // to reach other devices covers and display them together
     List<Track> lTracks = cache;
     if (lTracks.size() == 0) {
-      setProperty(XML_ALBUM_DISCOVERED_COVER, COVER_NONE);
       return null;
     }
     // List at directories we have to look in
@@ -705,5 +704,17 @@ public class Album extends LogicalItem implements Comparable<Album> {
       }
     }
     return availableTumbs[size / 50 - 1];
+  }
+
+  /**
+   *  Force any new cover search before displaying it if the album is set "none" cover (for example, if the album contains no cover at all, 
+   *  the album is stuck as NONE_COVER while a thumb refresh is not done manually by the user). 
+   *  If a new cover is added from outside jajuk and no save or save as action is done, the new thumb is not built from the new cover so we force it.
+   */
+  public void resetCoverCache() {
+    String cachedCoverPath = getStringValue(Const.XML_ALBUM_DISCOVERED_COVER);
+    if (Const.COVER_NONE.equals(cachedCoverPath)) {
+      setProperty(Const.XML_ALBUM_DISCOVERED_COVER, "");
+    }
   }
 }

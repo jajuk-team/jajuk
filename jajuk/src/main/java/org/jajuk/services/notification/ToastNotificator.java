@@ -20,6 +20,7 @@
  */
 package org.jajuk.services.notification;
 
+import org.jajuk.base.Album;
 import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.widgets.JajukToast;
@@ -98,6 +99,9 @@ public class ToastNotificator implements INotificator {
    */
   @Override
   public void notify(File file) {
+    // Force any new cover search before displaying it if the album is set "none" cover
+    Album album = file.getTrack().getAlbum();
+    album.resetCoverCache();
     String text = file.getHTMLFormatText();
     displayToast(text);
   }
