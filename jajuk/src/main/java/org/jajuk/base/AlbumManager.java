@@ -41,7 +41,6 @@ import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.error.JajukException;
-import org.jajuk.util.error.JajukRuntimeException;
 
 /**
  * Convenient class to manage Albums.
@@ -280,8 +279,6 @@ public final class AlbumManager extends ItemManager implements Observer {
                 albumSet.add(album);
               } else if (item instanceof Year && track.getYear().equals(item)) {
                 albumSet.add(album);
-              } else {
-                throw new JajukRuntimeException("Association not implemented " + item);
               }
             }
           }
