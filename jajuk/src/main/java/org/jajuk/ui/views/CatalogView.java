@@ -480,8 +480,8 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
       // After user changed the number of thumbs on a page, we can be
       // out of bounds exception so make sure to reinit the page index in
       // this case
-      if (page >= jcbPage.getItemCount()) {
-        page = 0;
+      if (page > iNbPages - 1) {
+        page = iNbPages - 1;
       }
       // Add all items
       int max = albums.size(); // upper limit
