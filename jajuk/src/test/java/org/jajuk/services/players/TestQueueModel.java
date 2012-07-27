@@ -420,6 +420,25 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
+   * Test finished end of queue without continue mode.
+   * 
+   *
+   * @throws Exception the exception
+   */
+  public void testFinishedNoContinueMode() throws Exception {
+    Conf.setProperty(Const.CONF_STATE_CONTINUE, "false");
+    // without item it just returns
+    QueueModel.finished(true);
+    // with items, it will go to the next line
+    addItems(1);
+    QueueModel.goTo(0);
+    assertEquals(0, QueueModel.getIndex());
+    QueueModel.finished(false);
+    // Index should be incremented for next play
+    assertEquals(0, QueueModel.getQueueSize());
+  }
+
+  /**
    * Test method for.
    *
    * @throws Exception the exception

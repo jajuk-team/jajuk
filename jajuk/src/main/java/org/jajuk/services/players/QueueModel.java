@@ -528,7 +528,7 @@ public final class QueueModel {
         stopRequest();
         return;
       }
-      // Nothing more to play ? check if we in continue mode
+      // Nothing more to play ? check if we are in continue mode
       if (queue.size() == 0 || index >= queue.size()) {
         if (Conf.getBoolean(Const.CONF_STATE_CONTINUE) && itemLast != null) {
           final StackItem item = queue.popNextPlanned();
