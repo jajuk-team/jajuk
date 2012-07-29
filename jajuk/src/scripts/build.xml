@@ -15,11 +15,11 @@
 	</tstamp>
 
 	<!--Build type : 'unstable', 'final', 'pre-release' or 'maintenance' -->
-	<property name='type' value='pre-release' />
+	<property name='type' value='unstable' />
 	
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.10RC4' />
+	<property name='version' value='1.11dev' />
 
 	<!--JNLP version-->
 	<!-- In final releases (including RC), jnlp_version=${version} 
@@ -30,7 +30,7 @@
 	<!--Test flag: values: 'test' or 'notest' 
 	'test' for 'unstable' branches, 'notest' for master, pre-release and maintenance branches
 	-->
-	<property name='test' value='notest' />
+	<property name='test' value='test' />
 				
 
 	<!-- ======================= -->
