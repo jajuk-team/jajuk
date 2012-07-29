@@ -286,7 +286,6 @@ public class TestAlbum extends JajukTestCase {
     assertFalse(album.containsCover());
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, "notexist");
     assertNull("still null if we have an invalid file set as cover", album.findCover());
-    assertFalse(album.containsCover());
     album.removeProperty(Const.XML_ALBUM_DISCOVERED_COVER);
     album.getTracksCache().add(getTrack(album));
     assertFalse(album.getAny().isEmpty());
