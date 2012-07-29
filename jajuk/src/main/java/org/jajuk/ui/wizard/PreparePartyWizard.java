@@ -854,7 +854,7 @@ public class PreparePartyWizard extends Wizard {
         jsMaxLength = new JSlider(0, 10000, 100);
         jnMaxLength = new JLabel(NO_VALUE);
         jnMaxLength.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        jnMaxLength.setHorizontalAlignment(JLabel.RIGHT);
+        jnMaxLength.setHorizontalAlignment(SwingConstants.RIGHT);
         jsMaxLength.setMajorTickSpacing(100);
         jsMaxLength.setMinorTickSpacing(10);
         jsMaxLength.setPaintTicks(false);
