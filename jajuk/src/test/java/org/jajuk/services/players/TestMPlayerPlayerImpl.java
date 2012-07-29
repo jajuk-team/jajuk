@@ -20,9 +20,6 @@
  */
 package org.jajuk.services.players;
 
-import static org.jajuk.util.Const.CONF_BIT_PERFECT;
-import static org.jajuk.util.Const.CONF_VOLUME;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -31,7 +28,6 @@ import org.apache.commons.io.FileUtils;
 import org.jajuk.ConstTest;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
-import org.jajuk.base.Directory;
 import org.jajuk.base.File;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.services.webradio.WebRadio;
@@ -311,36 +307,5 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
     } finally {
       impl.stop();
     }
-  }
-
-  /**
-   * Non regression test for this issue : when switching from bit perfect to normal mode under fade out mode, sound is set to zero
-   */
-  public void testIssueBitPerfect() throws Exception {
-    Conf.setProperty(CONF_VOLUME, "" + 0.91f);
-    Conf.setProperty(Const.CONF_FADE_OUT, "true");
-    assertEquals(0.91f, Conf.getFloat(CONF_VOLUME));
-    Directory dir = JUnitHelpers.getDirectory();
-    //Get the file with forced IPLayerImpl class to get actual MplayerImpl and not a mock implementation
-    File file = JUnitHelpers.getFile("file10", dir, true, MPlayerPlayerImpl.class);
-    //Set bit perfect
-    Conf.setProperty(CONF_BIT_PERFECT, "true");
-    try {
-      Player.play(file, 0, 20);
-      assertEquals(0.91f, Player.getCurrentVolume());
-    } finally {
-      Player.stop(true);
-    }
-    assertEquals(0.91f, Conf.getFloat(CONF_VOLUME));
-    //Now switch to Non-bit-perfect mode
-    Conf.setProperty(CONF_BIT_PERFECT, "false");
-    try {
-      Player.play(file, 0, 20);
-      assertEquals(0.91f, Player.getCurrentVolume());
-    } finally {
-      Player.stop(true);
-    }
-    // If targeted bug is still there, volume should be zero now
-    assertEquals(0.91f, Player.getCurrentVolume());
   }
 }
