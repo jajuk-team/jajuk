@@ -904,13 +904,13 @@ public class CoverView extends ViewAdapter implements ActionListener {
    */
   private void prepareDisplay(final int index) throws JajukException {
     final int iLocalEventID = this.iEventID;
-    Log.debug("display index: " + index);
     // find next correct cover
     Cover cover = null;
     ImageIcon icon = null;
     try {
       if (this.iEventID == iLocalEventID) {
         cover = alCovers.get(index); // take image at the given index
+        Log.debug("Display cover: " + cover + "at index :" + index);
         Image img = cover.getImage();
         // Never mirror our no cover image
         if (cover.getType().equals(CoverType.NO_COVER)) {
