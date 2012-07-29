@@ -25,7 +25,7 @@
 	<!-- In final releases (including RC), jnlp_version=${version} 
 	In maintenance or unstable daily builds, jnlp_version=${JNLP_DATE} : we don't use regular version 
 	so the version changes each day -->
-	<property name='jnlp_version' value='${JNLP_DATE}' />
+	<property name='jnlp_version' value='${version}' />
 	
 	<!--Test flag: values: 'test' or 'notest' 
 	'test' for 'unstable' branches, 'notest' for master, pre-release and maintenance branches
