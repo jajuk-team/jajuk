@@ -379,12 +379,6 @@ public final class UtilFeatures {
           .getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED);
       Properties webradioLaunchedEvent = ObservationManager
           .getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED);
-      
-      // handle old configs where these are not set yet 
-      if(webradioInfoUpdatedEvent == null || webradioLaunchedEvent == null) {
-        return;
-      }
-      
       WebRadio updatedWebRadio = (WebRadio) webradioInfoUpdatedEvent.get(Const.DETAIL_CONTENT);
       WebRadio radio = (WebRadio) webradioLaunchedEvent.get(Const.DETAIL_CONTENT);
       //If web radio has an updated event then use that event else use the default event from the web radio launch      
