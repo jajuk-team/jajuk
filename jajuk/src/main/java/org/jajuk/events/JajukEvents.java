@@ -156,5 +156,4 @@ public enum JajukEvents {
   SLIMBAR_VISIBILTY_CHANGED,
   /** RATING_MODE_CHANGED */
   RATING_MODE_CHANGED
-  
 }

@@ -869,21 +869,19 @@ public final class UtilGUI {
         return false;
       }
     };
-    
     // Add keystroke to close window when pressing escape
-    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
-        dispatcher);
-    
+    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(dispatcher);
     // make sure the key event dispatcher is removed as soon as the Window is closing
     window.addWindowListener(new WindowAdapter() {
       @Override
       public void windowClosing(WindowEvent e) {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(dispatcher);
       }
+
       @Override
       public void windowClosed(WindowEvent e) {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(dispatcher);
-      }      
+      }
     });
   }
 

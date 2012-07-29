@@ -61,8 +61,8 @@ public class ShowCurrentlyPlayingAction extends SelectionAction {
   public void perform(ActionEvent e) throws Exception {
     // simply invoke the necessary event via the observer mechanism.
     // Use toast notification if user selected "No notification" in preferences view.
-    NotificatorTypes type = NotificatorTypes.valueOf(Conf
-        .getString(Const.CONF_UI_NOTIFICATOR_TYPE));
+    NotificatorTypes type = NotificatorTypes
+        .valueOf(Conf.getString(Const.CONF_UI_NOTIFICATOR_TYPE));
     if (type == NotificatorTypes.NONE) {
       INotificator notifier = ToastNotificator.getInstance();
       if (QueueModel.getCurrentRadio() != null) {
