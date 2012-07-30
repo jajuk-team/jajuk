@@ -28,6 +28,9 @@ import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
 import org.jajuk.base.Track;
+import org.jajuk.events.JajukEvent;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
@@ -300,6 +303,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               // Update track rate if it has been opened
               if (!bOpening) {
                 fCurrent.getTrack().updateRate();
+                // Force immediate rating refresh (without using the rating manager)
+                ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
               }
               // Launch next track
               try {
@@ -348,6 +353,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     super.stop();
     // Update track rate
     fCurrent.getTrack().updateRate();
+    // Force immediate rating refresh (without using the rating manager)
+    ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
   }
 
   /*
