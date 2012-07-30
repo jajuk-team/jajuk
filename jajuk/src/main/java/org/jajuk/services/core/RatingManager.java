@@ -130,15 +130,6 @@ public final class RatingManager extends Thread implements Observer {
   }
 
   /**
-   * Checks for rate changed.
-   * 
-   * @return Returns the bRateHasChanged.
-   */
-  public static boolean hasRateChanged() {
-    return bRateHasChanged;
-  }
-
-  /**
    * Sets the rate has changed.
    * 
    * @param rateHasChanged The bRateHasChanged to set.
