@@ -269,7 +269,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
             jlist.setCellRenderer(new SearchListRenderer());
             PopupFactory factory = PopupFactory.getSharedInstance();
             JScrollPane jsp = new JScrollPane(jlist);
-            int width = (int) ((float) Toolkit.getDefaultToolkit().getScreenSize().getWidth() * 0.7f);
+            int width = (int) ((float) Toolkit.getDefaultToolkit().getScreenSize().getWidth() * 0.9f);
             jsp.setMinimumSize(new Dimension(width, 250));
             jsp.setPreferredSize(new Dimension(width, 250));
             jsp.setMaximumSize(new Dimension(width, 250));
@@ -288,15 +288,15 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
             // only on absolute coordinates in opposition to swing
             // widgets)
             SwingUtilities.convertPointToScreen(point, SearchBox.this);
-            if (((int) point.getY() > 300) && (((int) point.getX() + 500 - (width)) > 0)) {
-              popup = factory.getPopup(null, jsp, (int) point.getX() + 500 - (width),
-                  (int) point.getY() - 250);
-            } else if (((int) point.getX() + 500 - (width)) > 0) {
-              popup = factory.getPopup(null, jsp, (int) point.getX() + 500 - (width),
-                  (int) point.getY() + 30);
-            } else {
-              popup = factory.getPopup(null, jsp, 10, (int) point.getY() + 30);
+            int x = 10;
+            int y = (int) point.getY() + 25;
+            if ((int) point.getY() > 300) {
+              y = (int) point.getY() - 250;
             }
+            if (((int) point.getX() + 500 - width) > 0) {
+              x = (int) point.getX() + 500 - width;
+            }
+            popup = factory.getPopup(null, jsp, x, y);
             popup.show();
             jlist.addMouseListener(new MouseAdapter() {
               @Override
