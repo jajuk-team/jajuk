@@ -20,6 +20,10 @@
  */
 package org.jajuk.ui.helpers;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -84,12 +88,39 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
    * @param columnsToShow 
    */
   @Override
-  public void populateModel(String sPropertyName, String sPattern, List<String> columnsToShow) {
+  public void populateModel(final String sPropertyName, final String sPattern,
+      final List<String> columnsToShow) {
     List<Playlist> alToShow = PlaylistManager.getInstance().getPlaylists();
     // OK, begin by filtering using any provided pattern
-    Filter filter = new Filter(sPropertyName, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
-    alToShow = Filter.filterItems(alToShow, filter, Playlist.class);
-    // filter unavailable playlists
+    // Regular filtering for natural properties registrated as a playlist intern property
+    if (PlaylistManager.getInstance().getMetaInformation(sPropertyName) != null) {
+      Filter filter = new Filter(sPropertyName, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
+      alToShow = Filter.filterItems(alToShow, filter, Playlist.class);
+      // Filter against the device attribute
+    } else if (Const.XML_DEVICE.equals(sPropertyName)) {
+      alToShow = new ArrayList<Playlist>(Collections2.filter(alToShow, new Predicate<Playlist>() {
+        @Override
+        public boolean apply(Playlist playlist) {
+          return playlist.getDirectory().getDevice().getName().contains(sPattern);
+        }
+      }));
+      // Filter against the PATH attribute
+    } else if (Const.XML_PATH.equals(sPropertyName)) {
+      alToShow = new ArrayList<Playlist>(Collections2.filter(alToShow, new Predicate<Playlist>() {
+        @Override
+        public boolean apply(Playlist playlist) {
+          return playlist.getAbsolutePath().contains(sPattern);
+        }
+      }));
+      // Filter against "any"
+    } else if (Const.XML_ANY.equals(sPropertyName)) {
+      alToShow = new ArrayList<Playlist>(Collections2.filter(alToShow, new Predicate<Playlist>() {
+        @Override
+        public boolean apply(Playlist playlist) {
+          return playlist.getAny().contains(sPattern);
+        }
+      }));
+    } // filter unavailable playlists
     if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
       CollectionUtils.filter(alToShow, new JajukPredicates.ReadyPlaylistPredicate());
     }
