@@ -159,7 +159,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
           return;
         }
         File current = QueueModel.getPlayingFile();
-        if (JajukEvents.RATE_CHANGED.equals(event.getSubject())) {
+        if (current != null && JajukEvents.RATE_CHANGED.equals(event.getSubject())) {
           setPreference(current.getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
         } else if (JajukEvents.FILE_LAUNCHED.equals(event.getSubject())) {
           // Update evaluation toolbar
