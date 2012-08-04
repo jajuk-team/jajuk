@@ -101,7 +101,8 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
       alToShow = new ArrayList<Playlist>(Collections2.filter(alToShow, new Predicate<Playlist>() {
         @Override
         public boolean apply(Playlist playlist) {
-          return playlist.getDirectory().getDevice().getName().contains(sPattern);
+          return playlist.getDirectory().getDevice().getName().toLowerCase()
+              .contains(sPattern.toLowerCase());
         }
       }));
       // Filter against the PATH attribute
@@ -109,7 +110,7 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
       alToShow = new ArrayList<Playlist>(Collections2.filter(alToShow, new Predicate<Playlist>() {
         @Override
         public boolean apply(Playlist playlist) {
-          return playlist.getAbsolutePath().contains(sPattern);
+          return playlist.getAbsolutePath().toLowerCase().contains(sPattern.toLowerCase());
         }
       }));
       // Filter against "any"
@@ -117,7 +118,7 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
       alToShow = new ArrayList<Playlist>(Collections2.filter(alToShow, new Predicate<Playlist>() {
         @Override
         public boolean apply(Playlist playlist) {
-          return playlist.getAny().contains(sPattern);
+          return playlist.getAny().toLowerCase().contains(sPattern.toLowerCase());
         }
       }));
     } // filter unavailable playlists
