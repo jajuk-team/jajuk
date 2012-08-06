@@ -486,6 +486,11 @@ public abstract class ItemManager {
       } else if (Const.XML_TRACK_RATE.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackRate(file.getTrack(), (Long) oValue);
       } else { // others properties
+        // check extra tags
+        if (Tag.getActivatedExtraTags().contains(sKey)) {
+          TrackManager.getInstance().changeTrackField(file.getTrack(), sKey, (String) oValue,
+              filter);
+        }
         // check if this key is known for files
         if (file.getMeta(sKey) != null) {
           itemToChange.setProperty(sKey, oValue);
