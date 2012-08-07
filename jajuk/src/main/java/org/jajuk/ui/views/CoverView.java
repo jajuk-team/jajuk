@@ -910,7 +910,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
     try {
       if (this.iEventID == iLocalEventID) {
         cover = alCovers.get(index); // take image at the given index
-        Log.debug("Display cover: " + cover + "at index :" + index);
+        Log.debug("Display cover: " + cover + " at index :" + index);
         Image img = cover.getImage();
         // Never mirror our no cover image
         if (cover.getType().equals(CoverType.NO_COVER)) {
