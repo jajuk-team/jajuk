@@ -43,6 +43,7 @@ import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.widgets.OKCancelPanel;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
@@ -66,7 +67,7 @@ public class GenresSelectionDialog extends JajukJDialog implements ActionListene
    * @param disabledGenres 
    */
   public GenresSelectionDialog(Set<Genre> disabledGenres) {
-    super();
+    super(JajukMainWindow.getInstance(),true);
     this.selectedGenres = new HashSet<Genre>();
     this.disabledGenres = disabledGenres;
     setLocationByPlatform(true);

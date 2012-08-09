@@ -37,6 +37,7 @@ import org.jajuk.base.DeviceManager;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.widgets.OKCancelPanel;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
@@ -65,6 +66,7 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
    * Instantiates a new simple device wizard.
    */
   public SimpleDeviceWizard() {
+    super(JajukMainWindow.getInstance(), true);
     setTitle(Messages.getString("SimpleDeviceWizard.0"));
     setAlwaysOnTop(true);
     okp = new OKCancelPanel(this);
@@ -80,12 +82,8 @@ public class SimpleDeviceWizard extends JajukJDialog implements ActionListener {
     add(jbFileSelection, ""); // please
     add(new JLabel(Messages.getString("FirstTimeWizard.8")), "split 2,cell 1 1");
     add(jlSelectedFile, "cell 1 1, grow");
-    // select
-    // music
-    // location
-    add(new JLabel(Messages.getString("DeviceWizard.53")), "cell 1 2,split 3"); // Refresh
-    // device
-    // every
+    // select music location
+    add(new JLabel(Messages.getString("DeviceWizard.53")), "cell 1 2,split 3");
     add(jtfRefreshTime, "grow");
     add(new JLabel(Messages.getString("DeviceWizard.54")), "wrap"); // mins
     add(okp, "right,cell 1 3");
