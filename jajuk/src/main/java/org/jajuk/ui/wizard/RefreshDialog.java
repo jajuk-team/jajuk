@@ -21,13 +21,14 @@
 package org.jajuk.ui.wizard;
 
 import javax.swing.Icon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.jajuk.ui.widgets.JajukJDialog;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jdesktop.swingx.JXBusyLabel;
@@ -35,7 +36,7 @@ import org.jdesktop.swingx.JXBusyLabel;
 /**
  * Refresh dialog.
  */
-public class RefreshDialog extends JFrame {
+public class RefreshDialog extends JajukJDialog {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -7883506101436294760L;
   private JXBusyLabel jlAction;
@@ -54,7 +55,8 @@ public class RefreshDialog extends JFrame {
    * @param frame title
    */
   public RefreshDialog(final boolean indeterminate, String title) {
-    super(title);
+    super(JajukMainWindow.getInstance(),false);
+    setTitle(title);
     this.indeterminate = indeterminate;
     setUndecorated(true);
     setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
