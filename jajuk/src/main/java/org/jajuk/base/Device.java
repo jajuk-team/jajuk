@@ -45,6 +45,7 @@ import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.helpers.ManualDeviceRefreshReporter;
 import org.jajuk.ui.helpers.RefreshReporter;
 import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -609,9 +610,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         SwingUtilities.invokeAndWait(new Runnable() {
           @Override
           public void run() {
-            choice = JOptionPane.showOptionDialog(null, Messages.getString("FilesTreeView.59"),
-                Messages.getString("Option"), JOptionPane.DEFAULT_OPTION,
-                JOptionPane.QUESTION_MESSAGE, null, possibleValues, possibleValues[0]);
+            choice = JOptionPane.showOptionDialog(JajukMainWindow.getInstance(),
+                Messages.getString("FilesTreeView.59"), Messages.getString("Option"),
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, possibleValues,
+                possibleValues[0]);
           }
         });
       } catch (Exception e) {

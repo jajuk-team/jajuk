@@ -66,8 +66,8 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
         public void run() {
           // if <0 directories count -> the progress bar is in indeterminate
           // state
-          rdialog = new RefreshDialog((dirTotal < 0));
-          rdialog.setTitle(Messages.getString("RefreshDialog.2") + " " + device.getName());
+          rdialog = new RefreshDialog((dirTotal < 0), Messages.getString("RefreshDialog.2") + " "
+              + device.getName());
           rdialog.setAction(Messages.getString("RefreshDialog.3"),
               IconLoader.getIcon(JajukIcons.INFO));
         }
