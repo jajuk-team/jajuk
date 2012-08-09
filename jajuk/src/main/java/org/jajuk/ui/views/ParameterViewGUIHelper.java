@@ -20,6 +20,7 @@
  */
 package org.jajuk.ui.views;
 
+import java.awt.SystemTray;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -343,9 +344,11 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         + Conf.getString(Const.CONF_UI_NOTIFICATOR_TYPE));
     pv.jcbNotificationType.setSelectedItem(notificatorType);
     pv.jcbShowSystray.setSelected(Conf.getBoolean(Const.CONF_SHOW_SYSTRAY));
+    pv.jcbMinimizeToTray.setEnabled(SystemTray.isSupported() && pv.jcbShowSystray.isSelected());
     pv.jcbMinimizeToTray.setSelected(Conf.getBoolean(Const.CONF_MINIMIZE_TO_TRAY));
     pv.jcbClickTrayAlwaysDisplayWindow.setSelected(Conf
         .getBoolean(Const.CONF_TRAY_CLICK_DISPLAY_WINDOW));
+    pv.jcbClickTrayAlwaysDisplayWindow.setEnabled(SystemTray.isSupported());
     pv.jcbSplashscreen.setSelected(Conf.getBoolean(Const.CONF_SPLASH_SCREEN));
     pv.scbLAF.removeActionListener(this);
     pv.scbLAF.setSelectedItem(Conf.getString(Const.CONF_OPTIONS_LNF));
