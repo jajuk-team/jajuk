@@ -373,9 +373,8 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
           try {
             // If user selected a file
             if (sr.getType() == SearchResultType.FILE) {
-              QueueModel.push(
-                  new StackItem(sr.getFile(), Conf.getBoolean(Const.CONF_STATE_REPEAT), true),
-                  Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+              QueueModel.push(new StackItem(sr.getFile(), Conf.getBoolean(Const.CONF_STATE_REPEAT),
+                  true), Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
             }
             // User selected a web radio
             else if (sr.getType() == SearchResultType.WEBRADIO) {

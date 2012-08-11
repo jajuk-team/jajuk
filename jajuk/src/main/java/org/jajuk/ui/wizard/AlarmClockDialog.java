@@ -84,7 +84,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
    * Instantiates a new alarm clock dialog.
    */
   public AlarmClockDialog() {
-    super(JajukMainWindow.getInstance(),true);
+    super(JajukMainWindow.getInstance(), true);
     jcbTime = new JCheckBox(Messages.getString("AlarmDialog.0"));
     jcbTime.addActionListener(this);
     jtfHour = new JTextField(2);

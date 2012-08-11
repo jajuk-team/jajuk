@@ -55,7 +55,7 @@ public class RefreshDialog extends JajukJDialog {
    * @param frame title
    */
   public RefreshDialog(final boolean indeterminate, String title) {
-    super(JajukMainWindow.getInstance(),false);
+    super(JajukMainWindow.getInstance(), false);
     setTitle(title);
     this.indeterminate = indeterminate;
     setUndecorated(true);

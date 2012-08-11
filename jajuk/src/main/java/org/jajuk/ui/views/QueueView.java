@@ -516,8 +516,9 @@ public class QueueView extends PlaylistView {
         File file = FileManager.getInstance().getShuffleFile();
         List<File> files = new ArrayList<File>();
         files.add(file);
-        QueueModel.insert(UtilFeatures.createStackItems(files,
-            Conf.getBoolean(Const.CONF_STATE_REPEAT), true), iRow);
+        QueueModel.insert(
+            UtilFeatures.createStackItems(files, Conf.getBoolean(Const.CONF_STATE_REPEAT), true),
+            iRow);
         refreshQueue();
       } else if (ae.getSource() == jbClear) {
         // Reset the FIFO

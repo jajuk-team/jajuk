@@ -67,7 +67,7 @@ public class GenresSelectionDialog extends JajukJDialog implements ActionListene
    * @param disabledGenres 
    */
   public GenresSelectionDialog(Set<Genre> disabledGenres) {
-    super(JajukMainWindow.getInstance(),true);
+    super(JajukMainWindow.getInstance(), true);
     this.selectedGenres = new HashSet<Genre>();
     this.disabledGenres = disabledGenres;
     setLocationByPlatform(true);

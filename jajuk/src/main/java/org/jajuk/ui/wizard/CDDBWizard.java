@@ -84,7 +84,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
    * @param tracks 
    */
   public CDDBWizard(final List<Track> tracks) {
-    super(JajukMainWindow.getInstance(),false);
+    super(JajukMainWindow.getInstance(), false);
     UtilGUI.waiting();
     // windows title: absolute path name of the given directory
     setTitle(Messages.getString("CDDBWizard.19"));
