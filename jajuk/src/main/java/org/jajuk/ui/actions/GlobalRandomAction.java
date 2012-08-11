@@ -77,7 +77,7 @@ public class GlobalRandomAction extends JajukAction {
         }
         // Push them
         QueueModel.push(UtilFeatures.createStackItems(alToPlay,
-            Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), false), false);
+            Conf.getBoolean(Const.CONF_STATE_REPEAT), false), false);
       }
     }.start();
   }

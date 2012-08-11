@@ -724,7 +724,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
           File file = track.getBestFile(false);
           if (file != null) {
             try {
-              QueueModel.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL),
+              QueueModel.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT),
                   true), Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
             } catch (JajukException je) {
               Log.error(je);

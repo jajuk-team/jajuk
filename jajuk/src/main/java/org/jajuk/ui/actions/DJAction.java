@@ -77,7 +77,7 @@ public class DJAction extends JajukAction {
               }
               QueueModel.push(
                   UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(al),
-                      Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), false), false);
+                      Conf.getBoolean(Const.CONF_STATE_REPEAT), false), false);
             } else {
               Messages.showErrorMessage(157);
             }

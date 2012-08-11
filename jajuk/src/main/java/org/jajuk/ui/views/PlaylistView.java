@@ -179,7 +179,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
         } else {
           QueueModel.push(
               UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files),
-                  Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
+                  Conf.getBoolean(Const.CONF_STATE_REPEAT), true), false);
         }
       } else { // user changed of smart playlist selection
         selectSmartPlaylist(sp);
@@ -609,7 +609,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
         setButtonState();
       }
       editorModel.setItems(UtilFeatures.createStackItems(files,
-          Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true));
+          Conf.getBoolean(Const.CONF_STATE_REPEAT), true));
       editorModel.populateModel(editorTable.getColumnsConf());
       int[] rows = editorTable.getSelectedRows();
       try {

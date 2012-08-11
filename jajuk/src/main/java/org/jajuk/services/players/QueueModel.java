@@ -396,6 +396,17 @@ public final class QueueModel {
           Messages.showWarningMessage(Messages.getString("Warning.6"));
           return;
         }
+        // clear queue if selection contains some repeat items and we are not in repeat all mode
+        if (!Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL)) {
+          for (StackItem item : alItems) {
+            if (item.isRepeat()) {
+              clear();
+              break;
+            }
+          }
+        }
+        // Reset repeat state for all previous items
+        setRepeatModeToAll(false);
         // Position of insert into the queue
         int pos = (queue.size() == 0) ? 0 : queue.size();
         // OK, stop current track if no append
@@ -618,7 +629,6 @@ public final class QueueModel {
       // launched
       // track
       if (Conf.getBoolean(Const.CONF_STATE_REPEAT)) {
-        setRepeatModeToAll(false);
         getCurrentItem().setRepeat(true);
         ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
       }

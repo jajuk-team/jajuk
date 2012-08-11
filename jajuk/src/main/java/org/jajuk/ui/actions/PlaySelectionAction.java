@@ -70,7 +70,7 @@ public class PlaySelectionAction extends SelectionAction {
           List<File> files = UtilFeatures.getPlayableFiles(selection);
           QueueModel.push(
               UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files),
-                  Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
+                  Conf.getBoolean(Const.CONF_STATE_REPEAT), true), false);
         } catch (Exception e) {
           Log.error(e);
         }

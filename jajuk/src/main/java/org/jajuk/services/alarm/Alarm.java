@@ -77,7 +77,7 @@ public class Alarm {
     if (alarmAction.equals(Const.ALARM_START_ACTION)) {
       if (alToPlay != null) {
         QueueModel.push(UtilFeatures.createStackItems(alToPlay,
-            Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), false), false);
+            Conf.getBoolean(Const.CONF_STATE_REPEAT), false), false);
       } else if (radio != null) {
         QueueModel.launchRadio(radio);
       }

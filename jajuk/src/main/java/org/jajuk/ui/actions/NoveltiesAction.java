@@ -67,7 +67,7 @@ public class NoveltiesAction extends JajukAction {
           if (alToPlay != null && alToPlay.size() > 0) {
             QueueModel.push(
                 UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay),
-                    Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), false), false);
+                    Conf.getBoolean(Const.CONF_STATE_REPEAT), false), false);
           } else { // none novelty found
             Messages.showWarningMessage(Messages.getString("Error.127"));
           }
