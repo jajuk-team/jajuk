@@ -103,7 +103,7 @@
 			<Application_XML_File_URL>http://repository.jajuk.info/jajuk_pad.xml</Application_XML_File_URL>
 		</Application_URLs>
 		<Download_URLs>
-			<Primary_Download_URL>http://sourceforge.net/projects/jajuk/files/jajuk/1.10/jajuk-10-setup.exe</Primary_Download_URL>
+			<Primary_Download_URL>http://sourceforge.net/projects/jajuk/files/jajuk/1.10/jajuk-1.10-setup.exe</Primary_Download_URL>
 			<Secondary_Download_URL />
 			<Additional_Download_URL_1 />
 			<Additional_Download_URL_2 />
