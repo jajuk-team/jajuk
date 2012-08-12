@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.util;
 
 import ext.services.network.NetworkUtils;
@@ -50,8 +49,6 @@ import org.jajuk.util.log.Log;
  * Manages network downloads.
  */
 public final class DownloadManager {
-
-  /** DOCUMENT_ME. */
   private static Proxy proxy;
 
   /**
@@ -63,7 +60,7 @@ public final class DownloadManager {
   /**
    * Gets the remote covers list.
    * 
-   * @param search DOCUMENT_ME
+   * @param search 
    * 
    * @return a list of urls
    * 
@@ -80,24 +77,24 @@ public final class DownloadManager {
     String size = null;
     switch (i) {
     case 0: // small only
-      size = "small";
+      size = "i";
       break;
     case 1: // small or medium
-      size = "small|medium";
+      size = "m";
       break;
     case 2: // medium only
-      size = "medium";
+      size = "m";
       break;
     case 3: // medium or large
-      size = "medium|large";
+      size = "m";
       break;
     case 4: // large only
-      size = "large";
+      size = "l";
       break;
     }
     String sSearchUrl = "http://images.google.com/images?q="
         + URLEncoder.encode(search, "ISO-8859-1") + "&ie=ISO-8859-1&hl=en&btnG=Google+Search"
-        + "&imgsz=" + size;
+        + "&tbs=isz:" + size;
     Log.debug("Search URL: {{" + sSearchUrl + "}}");
     String sRes = downloadText(new URL(sSearchUrl));
     if (sRes == null || sRes.length() == 0) {
@@ -111,7 +108,6 @@ public final class DownloadManager {
       // Clean up URLS
       String sUrl = matcher.group().replaceAll("%2520", "%20");
       URL url = new URL(sUrl);
-
       // Remove duplicates
       if (alOut.contains(url)) {
         continue;
@@ -135,12 +131,6 @@ public final class DownloadManager {
    * @throws IOException If a network problem occurs.
    */
   public static void download(URL url, File fDestination) throws IOException {
-    // Drop the query if user required "none Internet access from jajuk".
-    // This method shouldn't be called anyway because we views have to deal with
-    // this option at their level, this is a additional control.
-    if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
-      return;
-    }
     HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
     BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fDestination));
     try {
@@ -153,7 +143,6 @@ public final class DownloadManager {
       } finally {
         bis.close();
       }
-
       bos.flush();
     } finally {
       bos.close();
@@ -164,8 +153,7 @@ public final class DownloadManager {
   /**
    * Download the resource at the given url and cache it <br>
    * If the file is already in cache, it is returned immediately <br>
-   * The cache is currently cleared at each Jajuk session startup.
-   * 
+   *  
    * @param url url to download
    * 
    * @return cached file or null if a problem occurred
@@ -185,7 +173,7 @@ public final class DownloadManager {
     // probable collisions between views
     synchronized (file.getName().intern()) {
       // check if file is not already downloaded or being downloaded
-      if (file.exists()) {
+      if (file.exists() && file.length() > 0) {
         return file;
       }
       HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
@@ -213,7 +201,7 @@ public final class DownloadManager {
    * Download the cover list.
    * 
    * @param url to download
-   * @param charset DOCUMENT_ME
+   * @param charset 
    * 
    * @return result as an array of bytes, null if a problem occurred
    * 
@@ -237,7 +225,7 @@ public final class DownloadManager {
   /**
    * Download text with the default charset UTF-8.
    * 
-   * @param url DOCUMENT_ME
+   * @param url 
    * 
    * @return the string
    * 
@@ -334,5 +322,4 @@ public final class DownloadManager {
   public static Proxy getProxy() {
     return proxy;
   }
-
 }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.dj;
 
 import java.util.HashSet;
@@ -34,13 +33,10 @@ import org.jajuk.base.GenreManager;
  * translated and can change with current locale
  */
 public class Ambience implements Comparable<Ambience> {
-
   /** List of genres. */
   private Set<Genre> genres;
-
   /** Ambience name. */
   private String sName;
-
   /** Ambience ID. */
   private final String sID;
 
@@ -80,7 +76,7 @@ public class Ambience implements Comparable<Ambience> {
   /**
    * Constructor.
    *
-   * @param sID DOCUMENT_ME
+   * @param sID 
    * @param sName Ambience name
    */
   public Ambience(String sID, String sName) {
@@ -98,9 +94,9 @@ public class Ambience implements Comparable<Ambience> {
 
   /**
    * Adds the genre.
-   * DOCUMENT_ME
    * 
-   * @param genre DOCUMENT_ME
+   * 
+   * @param genre 
    */
   public void addGenre(Genre genre) {
     if (genre != null) {
@@ -110,9 +106,9 @@ public class Ambience implements Comparable<Ambience> {
 
   /**
    * Removes the genre.
-   * DOCUMENT_ME
    * 
-   * @param genre DOCUMENT_ME
+   * 
+   * @param genre 
    */
   public void removeGenre(Genre genre) {
     genres.remove(genre);
@@ -173,12 +169,10 @@ public class Ambience implements Comparable<Ambience> {
     if (getGenres().size() == 0) {
       return "";
     }
-
     StringBuilder out = new StringBuilder();
     for (Genre s : getGenres()) {
       out.append(s.getName2()).append(',');
     }
-
     return out.substring(0, out.length() - 1); // remove trailling ,
   }
 
@@ -195,7 +189,7 @@ public class Ambience implements Comparable<Ambience> {
   /**
    * Equals method.
    * 
-   * @param o DOCUMENT_ME
+   * @param o 
    * 
    * @return true if ambience have the same same and contains the same genres
    */
@@ -227,7 +221,7 @@ public class Ambience implements Comparable<Ambience> {
   /**
    * Compare to method : alphabetical.
    * 
-   * @param ambience DOCUMENT_ME
+   * @param ambience 
    * 
    * @return the int
    */
@@ -237,7 +231,6 @@ public class Ambience implements Comparable<Ambience> {
     if (ambience == null) {
       return -1;
     }
-
     // otherwise just compare on the name
     return this.getName().compareToIgnoreCase(ambience.getName());
   }
@@ -252,12 +245,10 @@ public class Ambience implements Comparable<Ambience> {
     if (getGenres().size() == 0) {
       return "";
     }
-
     StringBuilder s = new StringBuilder();
     for (Genre genre : getGenres()) {
       s.append(genre.getID()).append(',');
     }
-
     return s.substring(0, s.length() - 1); // remove last coma
   }
 }

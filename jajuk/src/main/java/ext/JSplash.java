@@ -22,6 +22,8 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ * 
+ * 
  */
 package ext;
 
@@ -63,22 +65,16 @@ import org.jajuk.util.UtilSystem;
  * Adapted to Jajuk by The Jajuk Team
  */
 public final class JSplash extends JFrame {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** The Constant JAJUK_ICON.  DOCUMENT_ME */
+  /** The Constant JAJUK_ICON.   */
   private static final String JAJUK_ICON = "icons/64x64/jajuk-icon_64x64.png";
-
   /** Progress bar to use in the splash screen. */
   private JProgressBar mProgress = null;
-
   /** Check for whether to use the progress bar or not. */
   private boolean mProgressBar = false;
-
   /** Check for whether to use progress bar messages or not. */
   private boolean mProgressBarMessages = false;
-
   /** Check for whether to use percentage values or not. */
   private boolean mProgressBarPercent = false;
 
@@ -103,36 +99,30 @@ public final class JSplash extends JFrame {
       String copyrightString, String versionString, Font versionStringFont) {
     super();
     setTitle(Messages.getString("JajukWindow.17"));
-
     // check if we can load the icon
     URL icon = UtilSystem.getResource(JAJUK_ICON);
     if (null == icon) {
       throw new IllegalArgumentException(
           "Resource not found in Classpath. Can not load icon from location: " + JAJUK_ICON);
     }
-
     // Do not use IconLoader class here to avoid loading all icons now
     setIconImage(new ImageIcon(icon).getImage());
     setUndecorated(true);
     getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-
     mProgressBar = progress;
     mProgressBarMessages = messages;
     mProgressBarPercent = percent;
-
     // build a panel with a black line for border,
     // and set it as the content pane
     JPanel panel = new JPanel();
     panel.setLayout(new BorderLayout());
     panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     setContentPane(panel);
-
     if (url == null) {
       throw new IllegalArgumentException("Invalid URL specified for Splashscreen");
     }
     // build a label and set it's icon
     JSplashLabel label = new JSplashLabel(url, copyrightString, versionString, versionStringFont);
-
     // build a progress bar and a tips of the day scrolling text
     String totd = Messages.getShuffleTipOfTheDay();
     // Remove pictures urls
@@ -149,39 +139,30 @@ public final class JSplash extends JFrame {
     scrollingText.start();
     if (mProgressBar) {
       mProgress = new JProgressBar();
-
       if (mProgressBarMessages || mProgressBarPercent) {
         mProgress.setStringPainted(true);
       } else {
         mProgress.setStringPainted(false);
       }
-
       if (mProgressBarMessages && !mProgressBarPercent) {
         mProgress.setString("");
       }
-
       mProgress.setMaximum(100);
       mProgress.setMinimum(0);
       mProgress.setValue(0);
       mProgress.setFont(FontManager.getInstance().getFont(JajukFont.SPLASH_PROGRESS));
       jpTotdAndProgress.add(mProgress);
       jpTotdAndProgress.add(scrollingText);
-
     }
-
     // add the components to the panel
     getContentPane().add(label, BorderLayout.CENTER);
-
     if (mProgressBar) {
       getContentPane().add(jpTotdAndProgress, BorderLayout.SOUTH);
     }
-
     // validate, and display the components
     pack();
-
     // center on screen
     setLocationRelativeTo(this);
-
   }
 
   /**
@@ -189,7 +170,6 @@ public final class JSplash extends JFrame {
    */
   public void splashOn() {
     setVisible(true);
-
   }
 
   /**
@@ -223,10 +203,8 @@ public final class JSplash extends JFrame {
   public void setProgress(int value, String msg) {
     setProgress(value);
     repaint();
-
     if (mProgressBarMessages && !mProgressBarPercent && msg != null) {
       mProgress.setString(msg);
     }
   }
-
 }

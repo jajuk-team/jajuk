@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.base;
 
 import java.util.Iterator;
@@ -31,7 +30,6 @@ import org.jajuk.util.ReadOnlyIterator;
  * Convenient class to manage years.
  */
 public final class YearManager extends ItemManager {
-
   /** Self instance. */
   private static YearManager singleton = new YearManager();
 
@@ -64,7 +62,7 @@ public final class YearManager extends ItemManager {
   /**
    * Register a year.
    * 
-   * @param pYear DOCUMENT_ME
+   * @param pYear 
    * 
    * @return the year
    */
@@ -76,12 +74,12 @@ public final class YearManager extends ItemManager {
   /**
    * Register a year with a known id.
    * 
-   * @param sId DOCUMENT_ME
-   * @param pYear DOCUMENT_ME
+   * @param sId 
+   * @param pYear 
    * 
    * @return the year
    */
-  public Year registerYear(String sId, String pYear) {
+  Year registerYear(String sId, String pYear) {
     Year year = getYearByID(sId);
     if (year != null) {
       return year;
@@ -97,7 +95,7 @@ public final class YearManager extends ItemManager {
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
-  public String getLabel() {
+  public String getXMLTag() {
     return Const.XML_YEARS;
   }
 
@@ -108,7 +106,7 @@ public final class YearManager extends ItemManager {
    * 
    * @return Element
    */
-  public Year getYearByID(String sID) {
+  Year getYearByID(String sID) {
     return (Year) getItemByID(sID);
   }
 
@@ -131,5 +129,4 @@ public final class YearManager extends ItemManager {
   public ReadOnlyIterator<Year> getYearsIterator() {
     return new ReadOnlyIterator<Year>((Iterator<Year>) getItemsIterator());
   }
-
 }

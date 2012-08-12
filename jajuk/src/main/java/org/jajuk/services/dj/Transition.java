@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.dj;
 
 import org.jajuk.base.Genre;
@@ -28,13 +27,10 @@ import org.jajuk.util.UtilFeatures;
  * Represents a transition from one genre to another (used by digital DJs).
  */
 public class Transition {
-
   /** From genres. */
   private Ambience from;
-
   /** To genres. */
   private Ambience to;
-
   /** Nb of tracks. */
   private int nb;
 
@@ -65,7 +61,7 @@ public class Transition {
   /**
    * equals method.
    * 
-   * @param other DOCUMENT_ME
+   * @param other 
    * 
    * @return whether two object are equals
    */
@@ -150,9 +146,9 @@ public class Transition {
 
   /**
    * Adds the from genre.
-   * DOCUMENT_ME
    * 
-   * @param genre DOCUMENT_ME
+   * 
+   * @param genre 
    */
   public void addFromGenre(Genre genre) {
     from.addGenre(genre);
@@ -161,7 +157,7 @@ public class Transition {
   /**
    * Removes the from genre.
    * 
-   * @param genre DOCUMENT_ME
+   * @param genre 
    */
   public void removeFromGenre(Genre genre) {
     from.removeGenre(genre);
@@ -169,9 +165,9 @@ public class Transition {
 
   /**
    * Adds the to genre.
-   * DOCUMENT_ME
    * 
-   * @param genre DOCUMENT_ME
+   * 
+   * @param genre 
    */
   public void addToGenre(Genre genre) {
     to.addGenre(genre);
@@ -180,7 +176,7 @@ public class Transition {
   /**
    * Removes the to genre.
    * 
-   * @param genre DOCUMENT_ME
+   * @param genre 
    */
   public void removeToGenre(Genre genre) {
     to.removeGenre(genre);

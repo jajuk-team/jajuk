@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.util.Iterator;
@@ -35,16 +34,12 @@ import org.jajuk.services.players.StackItem;
  * </p>.
  */
 public final class JajukTimer {
-
   /** Self instance. */
   private static JajukTimer timer = new JajukTimer();
-
   /** Total time to play in secs. */
   private long lTimeToPlay = 0;
-
   /** A default heartbeat time in ms. */
   public static final int DEFAULT_HEARTBEAT = 800;
-
   /** The heartbeat for the Track Position Slider Toolbar. */
   public static final int D_MS_HEARTBEAT = 500;
 
@@ -83,7 +78,6 @@ public final class JajukTimer {
     Iterator<StackItem> it = alFiles.iterator();
     while (it.hasNext()) {
       Object o = it.next();
-
       // instanceof also checks for null by definition
       if (o instanceof File) {
         addTrackTime((File) o);

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.tags;
 
@@ -44,45 +44,58 @@ import org.jajuk.util.log.Log;
  * abstract tag, independent from real implementation.
  */
 public class Tag {
-
   /** Current tag impl*. */
   private ITagImpl tagImpl;
-
   /** Current file*. */
   private File fio;
-
   /** Is this tag corrupted ?. */
   private boolean bCorrupted = false;
-
   /** File -> tag cache This is required by the autocommit=false operations. */
   static private Map<File, Tag> tagsCache = new HashMap<File, Tag>(10);
-
-  /** DOCUMENT_ME. */
   private static List<String> supportedTagFields = null;
 
   /**
    * Tag constructor.
    * 
-   * @param fio DOCUMENT_ME
-   * @param bIgnoreErrors DOCUMENT_ME
+   * @param fio 
+   * @param bIgnoreErrors ignore error and keep instance anyway
    * 
    * @throws JajukException the jajuk exception
    * 
-   * @bIgnoreError : ignore error and keep instance
    */
   public Tag(java.io.File fio, boolean bIgnoreErrors) throws JajukException {
     try {
       this.fio = fio;
       Type type = TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(fio));
+      if (type == null) {
+        constructionError(fio, bIgnoreErrors, "No type for file: ");
+        return;
+      }
       tagImpl = type.getTagImpl();
+      if (tagImpl == null) {
+        constructionError(fio, bIgnoreErrors, "No TagImpl for file: ");
+        return;
+      }
       tagImpl.setFile(fio);
-      bCorrupted = false;
     } catch (Exception e) {
       bCorrupted = true;
       if (!bIgnoreErrors) {
         throw new JajukException(103, (fio == null ? "<null>" : fio.getName()), e);
       }
     }
+  }
+
+  /**
+   * @param fio
+   * @param bIgnoreErrors
+   * @throws JajukException
+   */
+  private final void constructionError(java.io.File fio, boolean bIgnoreErrors, String error)
+      throws JajukException {
+    if (!bIgnoreErrors) {
+      throw new JajukException(103, error + (fio == null ? "<null>" : fio.getName()));
+    }
+    bCorrupted = true;
   }
 
   /**
@@ -96,7 +109,6 @@ public class Tag {
     if (tagImpl == null) { // if the type doesn't support tags ( like wav )
       return sTrackName;
     }
-
     try {
       String sTemp = tagImpl.getTrackName().trim();
       if (!"".equals(sTemp)) {
@@ -137,7 +149,6 @@ public class Tag {
     } catch (Exception e) {
       Log.info("Wrong album name:{{" + fio.getName() + "}}");
     }
-
     if (sAlbumlName == null) { // album tag cannot be found
       if (Conf.getBoolean(Const.CONF_TAGS_USE_PARENT_DIR)) {
         sAlbumlName = fio.getParentFile().getName();
@@ -190,7 +201,6 @@ public class Tag {
     if (tagImpl == null) {
       return sAlbumArtist;
     }
-
     try {
       String sTemp = tagImpl.getAlbumArtist().trim();
       if (Messages.getString(Const.UNKNOWN_ARTIST).equals(sTemp)) {
@@ -203,7 +213,6 @@ public class Tag {
     }
     // We internalize the artist name for memory saving reasons
     return sAlbumArtist.intern();
-
   }
 
   /**
@@ -217,7 +226,6 @@ public class Tag {
     if (tagImpl == null) {
       return genre;
     }
-
     try {
       String sTemp = tagImpl.getGenreName().trim();
       if (Messages.getString(Const.UNKNOWN_GENRE).equals(sTemp)) {
@@ -236,7 +244,6 @@ public class Tag {
     }
     // We internalize the genre name for memory saving reasons
     return genre.intern();
-
   }
 
   /**
@@ -267,7 +274,6 @@ public class Tag {
     long l = 0l;
     try {
       l = tagImpl.getDiscNumber();
-
     } catch (Exception e) {
       // just debug, no warn because wrong order are too often and
       // generate too much traces
@@ -295,7 +301,6 @@ public class Tag {
     }
     // We internalize the year name for memory saving reasons
     return year.intern();
-
   }
 
   /**
@@ -328,7 +333,6 @@ public class Tag {
     if (tagImpl == null) {
       return sComment;
     }
-
     try {
       String sTemp = tagImpl.getComment();
       if (sTemp != null && !sTemp.equals("")) {
@@ -373,13 +377,11 @@ public class Tag {
     if (tagImpl == null) {
       return sLyrics;
     }
-
     try {
       sLyrics = tagImpl.getLyrics();
     } catch (Exception e) {
       Log.info("Wrong lyrics:{{" + fio.getName() + "}}");
     }
-
     return sLyrics;
   }
 
@@ -408,7 +410,7 @@ public class Tag {
   /**
    * Sets the track name.
    * 
-   * @param sTrackName DOCUMENT_ME
+   * @param sTrackName 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -423,7 +425,7 @@ public class Tag {
   /**
    * Sets the album name.
    * 
-   * @param sAlbumName DOCUMENT_ME
+   * @param sAlbumName 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -438,7 +440,7 @@ public class Tag {
   /**
    * Sets the artist name.
    * 
-   * @param sArtistName DOCUMENT_ME
+   * @param sArtistName 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -453,7 +455,7 @@ public class Tag {
   /**
    * Sets the album artist.
    * 
-   * @param sAlbumArtist DOCUMENT_ME
+   * @param sAlbumArtist 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -468,7 +470,7 @@ public class Tag {
   /**
    * Sets the genre name.
    * 
-   * @param genre DOCUMENT_ME
+   * @param genre 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -483,7 +485,7 @@ public class Tag {
   /**
    * Sets the order.
    * 
-   * @param lOrder DOCUMENT_ME
+   * @param lOrder 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -498,7 +500,7 @@ public class Tag {
   /**
    * Sets the year.
    * 
-   * @param sYear DOCUMENT_ME
+   * @param sYear 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -513,7 +515,7 @@ public class Tag {
   /**
    * Sets the disc number.
    * 
-   * @param discnumber DOCUMENT_ME
+   * @param discnumber 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -528,7 +530,7 @@ public class Tag {
   /**
    * Sets the comment.
    * 
-   * @param sComment DOCUMENT_ME
+   * @param sComment 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -559,7 +561,7 @@ public class Tag {
   }
 
   /**
-   * Delete lyrics. DOCUMENT_ME
+   * Delete lyrics. 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -582,6 +584,9 @@ public class Tag {
       if (Log.isDebugEnabled() && !(tagImpl.getClass().equals(NoTagsTagImpl.class))) {
         Log.debug(Messages.getString("PropertiesWizard.11") + " {{" + fio.getAbsolutePath() + "}}");
       }
+      // Store file date, can be 0 if a problem occurs
+      long dateLastChange = fio.lastModified();
+      // Actual commit
       tagImpl.commit();
       // Display written file full path. Note that we use a limited string for
       // parent to make sure the file name itself is visible in information
@@ -590,7 +595,10 @@ public class Tag {
           Messages.getString("PropertiesWizard.11") + " "
               + UtilString.getLimitedString(fio.getParentFile().getAbsolutePath(), 60)
               + File.separatorChar + fio.getName(), InformationJPanel.MessageType.INFORMATIVE);
-
+      //Keep last change date if required
+      if (Conf.getBoolean(Const.CONF_PRESERVE_FILE_DATES) && dateLastChange != 0) {
+        fio.setLastModified(dateLastChange);
+      }
     } catch (Exception e) {
       // reset information panel to avoid leaving with a "writting xxx message"
       InformationJPanel.getInstance().setMessage("", InformationJPanel.MessageType.INFORMATIVE);
@@ -635,7 +643,14 @@ public class Tag {
     if (!(other instanceof Tag)) {
       return false;
     }
-    return this.fio.equals(((Tag) other).getFio());
+    Tag otherTag = (Tag) other;
+    if (fio == null && otherTag.fio == null) {
+      return true;
+    }
+    if (fio == null || otherTag.fio == null) {
+      return false;
+    }
+    return this.fio.equals(otherTag.getFio());
   }
 
   /*
@@ -645,7 +660,8 @@ public class Tag {
    */
   @Override
   public int hashCode() {
-    return fio.getAbsolutePath().hashCode();
+    // use an arbitrary primary number for hashCode if fio is null...
+    return fio == null ? 13 : fio.getAbsolutePath().hashCode();
   }
 
   /*
@@ -655,14 +671,14 @@ public class Tag {
    */
   @Override
   public String toString() {
-    return "Tag of : " + fio.getAbsolutePath();
+    return "Tag of : " + (fio == null ? "<null>" : fio.getAbsolutePath());
   }
 
   /**
    * Return cached tag or new tag if non already in cache.
    * 
    * @param fio the audio file containing the tag
-   * @param bIgnoreErrors DOCUMENT_ME
+   * @param bIgnoreErrors 
    * 
    * @return cached tag or new tag if non already in cache
    * 
@@ -690,7 +706,7 @@ public class Tag {
   /**
    * Gets the tag field.
    * 
-   * @param tagFieldKey DOCUMENT_ME
+   * @param tagFieldKey 
    * 
    * @return the tag field
    */
@@ -698,9 +714,24 @@ public class Tag {
     try {
       return tagImpl.getTagField(tagFieldKey).trim();
     } catch (Exception e) {
-      // this file does not support this tag, so we do nothing
+      Log.error(e);
     }
     return "";
+  }
+
+  /**
+  * Set the tag field.
+  * 
+  * @param tagFieldKey 
+  * @param tagFieldValue
+  * 
+  */
+  public void setTagField(String tagFieldKey, String tagFieldValue) {
+    try {
+      tagImpl.setTagField(tagFieldKey, tagFieldValue);
+    } catch (Exception e) {
+      Log.error(e);
+    }
   }
 
   /**
@@ -711,7 +742,6 @@ public class Tag {
   public static List<String> getSupportedTagFields() {
     if (supportedTagFields == null) {
       supportedTagFields = new ArrayList<String>();
-
       // get all available tag impls
       List<ITagImpl> tagImplList = new ArrayList<ITagImpl>(2);
       for (Type t : TypeManager.getInstance().getAllMusicTypes()) {
@@ -725,7 +755,6 @@ public class Tag {
           }
         }
       }
-
       for (ITagImpl t : tagImplList) {
         for (String s : t.getSupportedTagFields()) {
           if (!supportedTagFields.contains(s)) {
@@ -734,7 +763,6 @@ public class Tag {
         }
       }
     }
-
     return supportedTagFields;
   }
 
@@ -744,9 +772,7 @@ public class Tag {
    * @return the activatedExtraTags
    */
   public static List<String> getActivatedExtraTags() {
-
     List<String> activeExtraTagsArrayList = new ArrayList<String>();
-
     // check all custom properties
     for (PropertyMetaInformation m : TrackManager.getInstance().getCustomProperties()) {
       if (getSupportedTagFields().contains(m.getName())) {

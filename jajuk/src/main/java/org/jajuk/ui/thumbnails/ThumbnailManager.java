@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.thumbnails;
 
 import java.awt.Image;
@@ -50,7 +49,6 @@ import org.jajuk.util.log.Log;
  * Manage thumbnails.
  */
 public final class ThumbnailManager {
-
   /**
    * No instances.
    */
@@ -78,10 +76,8 @@ public final class ThumbnailManager {
       // Refresh default cover
       File fDefault = SessionService.getConfFileByPath(Const.FILE_THUMBS + "/" + size + "/"
           + Const.FILE_THUMB_NO_COVER);
-      if (fDefault.exists()) {
-        if (!fDefault.delete()) {
-          Log.warn("Could not delete " + fDefault.toString());
-        }
+      if (fDefault.exists() && !fDefault.delete()) {
+        Log.warn("Could not delete " + fDefault.toString());
       }
       try {
         int iSize = Integer.parseInt(new StringTokenizer(size, "x").nextToken());
@@ -99,7 +95,7 @@ public final class ThumbnailManager {
   /**
    * Delete all thumbs for a given album.
    * 
-   * @param album DOCUMENT_ME
+   * @param album 
    */
   public static void cleanThumbs(Album album) {
     // Now delete thumb files
@@ -120,20 +116,20 @@ public final class ThumbnailManager {
    * created if necessary. the thumbnail must be maxDim pixels or less. Thanks
    * Marco Schmidt
    * http://schmidt.devlib.org/java/save-jpeg-thumbnail.html#source
-   * 
+   *
    * @param orig source image
    * @param thumb destination file
    * @param maxDim required size
-   * 
-   * @throws IOException Signals that an I/O exception has occurred.
    * @throws InterruptedException the interrupted exception
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void createThumbnail(final File orig, final File thumb, final int maxDim)
       throws InterruptedException, IOException {
     // do not use URL object has it can corrupt special paths
     ImageIcon ii = new ImageIcon(orig.getAbsolutePath());
     if (ii.getImageLoadStatus() != MediaTracker.COMPLETE) {
-      throw new JajukRuntimeException("Cannot load image : " + orig.getAbsolutePath());
+      throw new JajukRuntimeException("Cannot load image: " + orig.getAbsolutePath()
+          + ", load status is: " + ii.getImageLoadStatus());
     }
     createThumbnail(ii, thumb, maxDim);
   }
@@ -144,24 +140,21 @@ public final class ThumbnailManager {
    * encoding makes impossible to create the image from a file. Will be created
    * if necessary. the thumbnail must be maxDim pixels or less. Thanks Marco
    * Schmidt http://schmidt.devlib.org/java/save-jpeg-thumbnail.html#source
-   * 
+   *
+   * @param ii 
    * @param thumb destination file (jpg)
    * @param maxDim required size
-   * @param ii DOCUMENT_ME
-   * 
    * @throws InterruptedException the interrupted exception
    * @throws IOException Signals that an I/O exception has occurred.
-   * @throws Exception    */
+   */
   public static void createThumbnail(final ImageIcon ii, final File thumb, final int maxDim)
       throws InterruptedException, IOException {
     // Synchronize the file to avoid any concurrency between several threads refreshing the thumb
     // like the catalog view and the artist view.
-
     // Don't lock the thumb file itself because we have to write in in this method and
     // Windows doesn't support share mode for locks but only exclusive
     File thumbLock = new File(thumb.getAbsolutePath() + ".lock");
     thumbLock.createNewFile();
-
     synchronized (thumbLock.getAbsolutePath().intern()) {
       // Note that at this point, the image is fully loaded (done in the ImageIcon constructor)
       final Image image = ii.getImage();
@@ -185,7 +178,6 @@ public final class ThumbnailManager {
       // Free thumb memory
       thumbImage.flush();
     }
-
   }
 
   /**
@@ -204,8 +196,8 @@ public final class ThumbnailManager {
    * Make thumbnail file exists (album id.jpg or.gif or .png) in thumbs
    * directory if it doesn't exist yet
    * 
-   * @param album DOCUMENT_ME
-   * @param size DOCUMENT_ME
+   * @param album 
+   * @param size 
    * 
    * @return whether a new cover has been created
    */
@@ -246,5 +238,4 @@ public final class ThumbnailManager {
         .append(size).append('/').append(album.getID()).append('.').append(Const.EXT_THUMB);
     return SessionService.getConfFileByPath(thumb.toString());
   }
-
 }

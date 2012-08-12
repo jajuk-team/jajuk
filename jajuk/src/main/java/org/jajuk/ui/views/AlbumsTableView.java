@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.views;
 
 import java.awt.Dimension;
@@ -47,11 +46,8 @@ import org.jajuk.util.UtilGUI;
  * List collection albums as a table.
  */
 public class AlbumsTableView extends AbstractTableView {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 7576455252866971945L;
-
-  /** DOCUMENT_ME. */
   private static ThumbnailPopup popup = null;
 
   /**
@@ -90,9 +86,10 @@ public class AlbumsTableView extends AbstractTableView {
    */
   @Override
   void initTable() {
-    jtbEditable.setSelected(Conf.getBoolean(Const.CONF_ALBUMS_TABLE_EDITION));
     // Disable edit button, edition not yet implemented
     jtbEditable.setVisible(false);
+    // Set this value even if the button is not displayed
+    jtbEditable.setSelected(Conf.getBoolean(Const.CONF_ALBUMS_TABLE_EDITION));
   }
 
   /*
@@ -126,8 +123,8 @@ public class AlbumsTableView extends AbstractTableView {
   public void shortCall(Object in) {
     jtable = new JajukTable(model, true, columnsConf);
     super.shortCall(null);
-    JMenuItem jmiShowAlbumDetails = new JMenuItem(ActionManager
-        .getAction(JajukActions.SHOW_ALBUM_DETAILS));
+    JMenuItem jmiShowAlbumDetails = new JMenuItem(
+        ActionManager.getAction(JajukActions.SHOW_ALBUM_DETAILS));
     jmiShowAlbumDetails.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     JMenuItem jmiReport = new JMenuItem(ActionManager.getAction(JajukActions.CREATE_REPORT));
     jmiReport.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
@@ -142,7 +139,6 @@ public class AlbumsTableView extends AbstractTableView {
     jtable.getMenu().add(jmiBookmark);
     jtable.getMenu().addSeparator();
     jtable.getMenu().add(jmiProperties);
-
     // Add popup feature when mouse rolls over cells
     jtable.addMouseMotionListener(new MouseMotionListener() {
       Album current = null;
@@ -176,26 +172,21 @@ public class AlbumsTableView extends AbstractTableView {
       public void mouseDragged(MouseEvent e) {
         // nothing to do here
       }
-
     });
-
     // Add another listener on view borders (outside the table itself) to
     // close popups when leaving the table
     jtable.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseExited(MouseEvent e) {
         super.mouseExited(e);
-
         // Do not hide popup if still in the table to allow user to mouse
         // mouse over the popup (in this case, a table exit event is thrown)
         if (popup != null
-            && !UtilGUI.isOver(jtable.getLocationOnScreen(), jtable
-                .getPreferredScrollableViewportSize())) {
+            && !UtilGUI.isOver(jtable.getLocationOnScreen(),
+                jtable.getPreferredScrollableViewportSize())) {
           popup.dispose();
         }
       }
     });
-
   }
-
 }

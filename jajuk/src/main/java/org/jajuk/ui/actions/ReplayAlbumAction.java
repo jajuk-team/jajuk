@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
@@ -36,7 +36,6 @@ import org.jajuk.util.log.Log;
  * Action class for jumping to the begining of current album.
  */
 public class ReplayAlbumAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -68,8 +67,8 @@ public class ReplayAlbumAction extends JajukAction {
                 files.add(track.getBestFile(true));
               }
               QueueModel.resetAround(QueueModel.getIndex(), current.getTrack().getAlbum());
-              QueueModel.push(UtilFeatures.createStackItems(files, Conf
-                  .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
+              QueueModel.push(UtilFeatures.createStackItems(files,
+                  Conf.getBoolean(Const.CONF_STATE_REPEAT), true), false);
             }
           } catch (Exception e) {
             Log.error(e);

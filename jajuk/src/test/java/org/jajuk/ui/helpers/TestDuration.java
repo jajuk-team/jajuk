@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.helpers;
 
@@ -26,10 +26,9 @@ import org.jajuk.JUnitHelpers;
 import org.junit.Test;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestDuration {
-
   /**
    * Test method for {@link org.jajuk.ui.helpers.Duration#hashCode()}.
    */
@@ -37,7 +36,6 @@ public class TestDuration {
   public void testHashCode() {
     Duration dur = new Duration(123);
     Duration equ = new Duration(123);
-
     JUnitHelpers.HashCodeTest(dur, equ);
   }
 
@@ -67,7 +65,6 @@ public class TestDuration {
     Duration dur = new Duration(234);
     Duration equal = new Duration(234);
     Duration notequal = new Duration(233);
-
     JUnitHelpers.EqualsTest(dur, equal, notequal);
   }
 
@@ -82,7 +79,6 @@ public class TestDuration {
     Duration dur = new Duration(234);
     Duration equal = new Duration(234);
     Duration notequal = new Duration(233);
-
     JUnitHelpers.CompareToTest(dur, equal, notequal);
   }
 
@@ -93,9 +89,7 @@ public class TestDuration {
   public void testGetDuration() {
     Duration dur = new Duration(234);
     Duration dur2 = new Duration(233);
-
     assertEquals(234, dur.getDuration());
     assertEquals(233, dur2.getDuration());
   }
-
 }

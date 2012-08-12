@@ -2,10 +2,15 @@
 <VLDocking version="2.1">
 	<DockingDesktop name="">
 		<DockingPanel>
-			<Split orientation="1" location="0.30">
-				<Dockable>
-					<Key dockName="org.jajuk.ui.views.FilesTreeView/1" />
-				</Dockable>
+			<Split orientation="1" location="0.40">
+				<Split orientation="0" location="0.60">
+					<Dockable>
+						<Key dockName="org.jajuk.ui.views.FilesTreeView/1" />
+					</Dockable>
+					<Dockable>
+						<Key dockName="org.jajuk.ui.views.QueueView/0" />
+					</Dockable>
+				</Split>
 				<Dockable>
 					<Key dockName="org.jajuk.ui.views.PlaylistView/0" />
 				</Dockable>

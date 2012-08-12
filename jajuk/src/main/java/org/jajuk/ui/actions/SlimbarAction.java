@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
@@ -38,7 +37,6 @@ import org.jajuk.util.UtilGUI;
  * Action to hide slim bar.
  */
 public class SlimbarAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -64,7 +62,6 @@ public class SlimbarAction extends JajukAction {
      */
     WindowStateDecorator sdSlimbar = JajukSlimbar.getInstance().getWindowStateDecorator();
     WindowStateDecorator sdMainWindow = JajukMainWindow.getInstance().getWindowStateDecorator();
-
     if (sdSlimbar.isDisplayed()) {
       // close the previous window before displaying the other
       sdSlimbar.display(false);
@@ -77,10 +74,8 @@ public class SlimbarAction extends JajukAction {
       // Update the icon according to status
       setIcon(IconLoader.getIcon(JajukIcons.FULL_SCREEN));
     }
-
     // Store window-type displayed (useful for tray display/hide feature for ie.)
     UtilGUI.storeWindowSate();
-
     // Notify that slimbar visibility change (menu bar is interested in it)
     ObservationManager.notify(new JajukEvent(JajukEvents.SLIMBAR_VISIBILTY_CHANGED));
   }

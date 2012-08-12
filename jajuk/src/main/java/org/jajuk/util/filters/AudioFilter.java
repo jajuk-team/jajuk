@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.util.filters;
 
@@ -32,7 +32,6 @@ import org.jajuk.util.UtilSystem;
  * Audio filter.
  */
 public final class AudioFilter extends JajukFileFilter {
-
   /** Self instance. */
   private static AudioFilter self = new AudioFilter();
 
@@ -49,7 +48,6 @@ public final class AudioFilter extends JajukFileFilter {
    * Singleton constructor (protected for testing purposes).
    */
   private AudioFilter() {
-
   }
 
   /*
@@ -68,10 +66,8 @@ public final class AudioFilter extends JajukFileFilter {
         return false;
       }
     }
-
     final TypeManager mgr = TypeManager.getInstance();
     final String extension = UtilSystem.getExtension(f);
-
     // check extension is known
     if (TypeManager.getInstance().isExtensionSupported(extension)) {
       // check it is an audio file
@@ -88,7 +84,6 @@ public final class AudioFilter extends JajukFileFilter {
   @Override
   public String getDescription() {
     final StringBuilder s = new StringBuilder();
-
     for (final Type type : TypeManager.getInstance().getAllMusicTypes()) {
       s.append(type.getExtension());
       s.append(',');

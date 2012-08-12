@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
@@ -41,29 +41,13 @@ import org.jajuk.util.Const;
  * Test find dups action.
  */
 public class TestFindDuplicateTracksAction extends JajukTestCase {
-  
-  /** DOCUMENT_ME. */
   Type type;
-  
-  /** DOCUMENT_ME. */
   Artist artist;
-  
-  /** DOCUMENT_ME. */
   Album album;
-  
-  /** DOCUMENT_ME. */
   Genre genre;
-  
-  /** DOCUMENT_ME. */
   org.jajuk.base.Year year;
-  
-  /** DOCUMENT_ME. */
   FindDuplicateTracksAction action;
-  
-  /** DOCUMENT_ME. */
   Directory dir;
-  
-  /** DOCUMENT_ME. */
   AlbumArtist albumArtist;
 
   /* (non-Javadoc)
@@ -82,7 +66,6 @@ public class TestFindDuplicateTracksAction extends JajukTestCase {
     year = JUnitHelpers.getYear();
     action = new FindDuplicateTracksAction();
     albumArtist = AlbumArtistManager.getInstance().registerAlbumArtist(Const.UNKNOWN_ARTIST);
-
   }
 
   /**
@@ -93,31 +76,25 @@ public class TestFindDuplicateTracksAction extends JajukTestCase {
    * Test 1 : none dups
    */
   public void testPopulateDups1() {
-
     Track track11 = TrackManager.getInstance().registerTrack("track11", album, genre, artist, 10l,
         year, 1l, type, 1l);
     track11.setAlbumArtist(albumArtist);
     FileManager.getInstance().registerFile("file11", dir, track11, 10, 128);
-
     Track track12 = TrackManager.getInstance().registerTrack("track12", album, genre, artist, 10l,
         year, 1l, type, 1l);
     track12.setAlbumArtist(albumArtist);
     FileManager.getInstance().registerFile("file12", dir, track12, 10, 128);
-
     Track track21 = TrackManager.getInstance().registerTrack("track21", album, genre, artist, 10l,
         year, 1l, type, 1l);
     track21.setAlbumArtist(albumArtist);
     FileManager.getInstance().registerFile("file21", dir, track21, 10, 218);
-
     Track track22 = TrackManager.getInstance().registerTrack("track22", album, genre, artist, 10l,
         year, 1l, type, 1l);
     track22.setAlbumArtist(albumArtist);
     FileManager.getInstance().registerFile("file22", dir, track22, 10, 128);
-
     action.populateDups();
     List<List<File>> dups = action.duplicateTracksList;
     assertTrue(dups.size() == 0);
-
   }
 
   /**
@@ -128,21 +105,16 @@ public class TestFindDuplicateTracksAction extends JajukTestCase {
    * Test 2 : multi-files track : filex1 and filex2 are in the same track
    */
   public void testPopulateDups2() {
-
     Track track11 = TrackManager.getInstance().registerTrack("track11", album, genre, artist, 10l,
         year, 1l, type, 1l);
     track11.setAlbumArtist(albumArtist);
     FileManager.getInstance().registerFile("file11", dir, track11, 10, 128);
-
     FileManager.getInstance().registerFile("file12", dir, track11, 10, 128);
-
     Track track21 = TrackManager.getInstance().registerTrack("track21", album, genre, artist, 10l,
         year, 1l, type, 1l);
     track21.setAlbumArtist(albumArtist);
     FileManager.getInstance().registerFile("file21", dir, track21, 10, 218);
-
     FileManager.getInstance().registerFile("file22", dir, track21, 10, 128);
-
     action.populateDups();
     List<List<File>> dups = action.duplicateTracksList;
     assertTrue(dups.size() == 2);
@@ -150,7 +122,6 @@ public class TestFindDuplicateTracksAction extends JajukTestCase {
     assertTrue(dup0.size() == 2);
     List<File> dup1 = dups.get(1);
     assertTrue(dup1.size() == 2);
-
   }
 
   /**
@@ -161,17 +132,14 @@ public class TestFindDuplicateTracksAction extends JajukTestCase {
    * Test 3 : single dup : track11 and track12 have fuzzy match
    */
   public void testPopulateDups3() {
-
     Track track11 = TrackManager.getInstance().registerTrack("track", album, genre, artist, 10l,
         year, 1l, type, 1l);
     track11.setAlbumArtist(albumArtist);
     FileManager.getInstance().registerFile("file11", dir, track11, 10, 128);
-
     Track track12 = TrackManager.getInstance().registerTrack("trAck", album, genre, artist, 10l,
         year, 1l, type, 1l);
     track12.setAlbumArtist(albumArtist);
     FileManager.getInstance().registerFile("file12", dir, track12, 10, 128);
-
     action.populateDups();
     List<List<File>> dups = action.duplicateTracksList;
     assertTrue(dups.size() == 1);
@@ -189,19 +157,16 @@ public class TestFindDuplicateTracksAction extends JajukTestCase {
    * track1 =~ track2
    */
   public void testPopulateDups4() {
-
     Track track1 = TrackManager.getInstance().registerTrack("track", album, genre, artist, 10l,
         year, 1l, type, 1l);
     track1.setAlbumArtist(albumArtist);
     FileManager.getInstance().registerFile("file11", dir, track1, 10, 128);
     FileManager.getInstance().registerFile("file12", dir, track1, 10, 128);
-
     Track track2 = TrackManager.getInstance().registerTrack("trAck", album, genre, artist, 10l,
         year, 1l, type, 1l);
     track2.setAlbumArtist(albumArtist);
     FileManager.getInstance().registerFile("file21", dir, track2, 10, 128);
     FileManager.getInstance().registerFile("file22", dir, track2, 10, 128);
-
     action.populateDups();
     List<List<File>> dups = action.duplicateTracksList;
     assertTrue(dups.size() == 1);
@@ -219,28 +184,23 @@ public class TestFindDuplicateTracksAction extends JajukTestCase {
    * track1 =~ track21 != track22
    */
   public void testPopulateDups5() {
-
     Track track1 = TrackManager.getInstance().registerTrack("track", album, genre, artist, 10l,
         year, 1l, type, 1l);
     track1.setAlbumArtist(albumArtist);
     FileManager.getInstance().registerFile("file11", dir, track1, 10, 128);
     FileManager.getInstance().registerFile("file12", dir, track1, 10, 128);
-
     Track track21 = TrackManager.getInstance().registerTrack("trAck", album, genre, artist, 10l,
         year, 1l, type, 1l);
     track21.setAlbumArtist(albumArtist);
     FileManager.getInstance().registerFile("file21", dir, track21, 10, 128);
-
     Track track22 = TrackManager.getInstance().registerTrack("trAck2", album, genre, artist, 10l,
         year, 1l, type, 1l);
     track22.setAlbumArtist(albumArtist);
     FileManager.getInstance().registerFile("file22", dir, track22, 10, 128);
-
     action.populateDups();
     List<List<File>> dups = action.duplicateTracksList;
     assertTrue(dups.size() == 1);
     List<File> dup0 = dups.get(0);
     assertTrue(dup0.size() == 3);
-
   }
 }

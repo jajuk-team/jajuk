@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.util.log;
 
@@ -37,39 +37,28 @@ import org.jajuk.util.error.JajukException;
  * Singleton.
  */
 public final class Log {
-
-  /** The Constant FONT_END.  DOCUMENT_ME */
+  /** The Constant FONT_END.   */
   private static final String FONT_END = "</font>";
-
-  /** The Constant LOGGER_APACHE_HTTPCLIENT.  DOCUMENT_ME */
+  /** The Constant LOGGER_APACHE_HTTPCLIENT.   */
   private static final String LOGGER_APACHE_HTTPCLIENT = "org.apache.commons.httpclient";
-
   // verbosity consts
-  /** The Constant FATAL.  DOCUMENT_ME */
+  /** The Constant FATAL.   */
   public static final int FATAL = 0;
-
-  /** The Constant ERROR.  DOCUMENT_ME */
+  /** The Constant ERROR.   */
   public static final int ERROR = 1;
-
-  /** The Constant WARNING.  DOCUMENT_ME */
+  /** The Constant WARNING.   */
   public static final int WARNING = 2;
-
-  /** The Constant INFO.  DOCUMENT_ME */
+  /** The Constant INFO.   */
   public static final int INFO = 3;
-
-  /** The Constant DEBUG.  DOCUMENT_ME */
+  /** The Constant DEBUG.   */
   public static final int DEBUG = 4;
-
   /** Verbosity level of the logger( between 1 and 5 ) <p> Default used at statup is INFO. */
   private static int verbosity = INFO;
-
   /** Jajuk logger. */
   private static Logger logger;
-
   /** Debug traces spool. */
   private static List<String> alSpool;
-
-  /** The Constant FULL_QUALIFIED_CLASS_NAME.  DOCUMENT_ME */
+  /** The Constant FULL_QUALIFIED_CLASS_NAME.   */
   private static final String FULL_QUALIFIED_CLASS_NAME = Log.class.getName();
 
   /**
@@ -84,7 +73,6 @@ public final class Log {
     } catch (Exception e) {
       Log.stack(e);
     }
-
     logger = Logger.getLogger(Log.class.getName());
     alSpool = new ArrayList<String>(Const.FEEDBACK_LINES);
     // message for logging system start
@@ -95,7 +83,7 @@ public final class Log {
   /**
    * Log a debug-level message.
    * 
-   * @param s DOCUMENT_ME
+   * @param s 
    */
   public static synchronized void debug(String s) {
     // Just display the message if Log is not yet enabled
@@ -109,9 +97,9 @@ public final class Log {
 
   /**
    * Debug.
-   * DOCUMENT_ME
    * 
-   * @param t DOCUMENT_ME
+   * 
+   * @param t 
    */
   public static void debug(Throwable t) {
     debug("", t);
@@ -119,10 +107,10 @@ public final class Log {
 
   /**
    * Debug.
-   * DOCUMENT_ME
    * 
-   * @param sInfosup DOCUMENT_ME
-   * @param t DOCUMENT_ME
+   * 
+   * @param sInfosup 
+   * @param t 
    */
   public static synchronized void debug(String sInfosup, Throwable t) {
     // Just make a print stake trace if Log is not yet enabled (example:
@@ -148,7 +136,7 @@ public final class Log {
   /**
    * Log a info-level message.
    * 
-   * @param s DOCUMENT_ME
+   * @param s 
    */
   public static synchronized void info(String s) {
     // Just display the message if Log is not yet enabled
@@ -163,7 +151,7 @@ public final class Log {
   /**
    * Log a warning-level message.
    * 
-   * @param s DOCUMENT_ME
+   * @param s 
    */
   public static synchronized void warn(String s) {
     // Just display the message if Log is not yet enabled
@@ -178,8 +166,8 @@ public final class Log {
   /**
    * Log a warning-level message with info sup.
    * 
-   * @param s DOCUMENT_ME
-   * @param sInfoSup DOCUMENT_ME
+   * @param s 
+   * @param sInfoSup 
    */
   public static synchronized void warn(String s, String sInfoSup) {
     String sOut = s + ": " + sInfoSup;
@@ -282,18 +270,14 @@ public final class Log {
       return;
     }
     spool(t);
-    if (t.getCause() != null) {
-      logger.log(FULL_QUALIFIED_CLASS_NAME, Level.ERROR, t.getMessage() + " / " + t.getCause(), t);
-    } else {
-      logger.log(FULL_QUALIFIED_CLASS_NAME, Level.ERROR, t.getMessage(), t);
-    }
+    logger.log(FULL_QUALIFIED_CLASS_NAME, Level.ERROR, t.getMessage() + " / " + t.getCause(), t);
   }
 
   /**
    * Log an error-level message.
    *
-   * @param code DOCUMENT_ME
-   * @param t DOCUMENT_ME
+   * @param code 
+   * @param t 
    */
   public static void error(int code, Throwable t) {
     error(code, null, t);
@@ -302,8 +286,8 @@ public final class Log {
   /**
    * Log an error-level message.
    * 
-   * @param sInfosup DOCUMENT_ME
-   * @param je DOCUMENT_ME
+   * @param sInfosup 
+   * @param je 
    */
   public static void error(String sInfosup, JajukException je) {
     error(je.getCode(), sInfosup, je);
@@ -312,7 +296,7 @@ public final class Log {
   /**
    * Log an error-level message.
    * 
-   * @param je DOCUMENT_ME
+   * @param je 
    */
   public static void error(JajukException je) {
     error(je.getCode(), null, je);
@@ -321,7 +305,7 @@ public final class Log {
   /**
    * Log a fatal error message.
    * 
-   * @param s DOCUMENT_ME
+   * @param s 
    */
   public static synchronized void fatal(String s) {
     // Just make a print stake trace if Log is not yet enabled (example:
@@ -346,7 +330,7 @@ public final class Log {
   /**
    * Sets the verbosity.
    * 
-   * @param newVerbosity DOCUMENT_ME
+   * @param newVerbosity 
    */
   public static void setVerbosity(int newVerbosity) {
     verbosity = newVerbosity;
@@ -382,7 +366,7 @@ public final class Log {
   /**
    * Convenient method to display stacks properly.
    * 
-   * @param e DOCUMENT_ME
+   * @param e 
    */
   public static void stack(Throwable e) {
     e.printStackTrace();
@@ -403,17 +387,15 @@ public final class Log {
   /**
    * Add this message in the memory spool.
    * 
-   * @param sMessage DOCUMENT_ME
+   * @param sMessage 
    */
   private synchronized static void spool(String sMessage) {
     // we maz have to make some room
     if (alSpool.size() >= Const.FEEDBACK_LINES) {
       alSpool.remove(0);
     }
-
     // anonymize standard labels (with {{xxx}})
     String sAnonymizedMessage = sMessage.replaceAll("\\{\\{.*\\}\\}", "***");
-
     // additionally anonymize Basic Player logs
     int pos = sAnonymizedMessage.indexOf("Player state changed: OPENING");
     if (pos != -1) {
@@ -426,15 +408,11 @@ public final class Log {
   /**
    * Spool an exception with stack traces.
    * 
-   * @param e DOCUMENT_ME
+   * @param e 
    */
   private static void spool(Throwable e) {
-    if (e.getCause() != null) {
-      spool("<font color='red'>" + "[ERROR] " + e.getClass() + " / {{" + e.getMessage() + "}} / "
-          + e.getCause());
-    } else {
-      spool("<font color='red'>" + "[ERROR] " + e.getClass() + " / {{" + e.getMessage() + "}}");
-    }
+    spool("<font color='red'>" + "[ERROR] " + e.getClass() + " / {{" + e.getMessage() + "}} / "
+        + e.getCause());
     StackTraceElement[] ste = e.getStackTrace();
     for (StackTraceElement element : ste) {
       spool(element.toString());
@@ -451,5 +429,4 @@ public final class Log {
   public static List<String> getSpool() {
     return (List<String>) ((ArrayList<String>) alSpool).clone();
   }
-
 }

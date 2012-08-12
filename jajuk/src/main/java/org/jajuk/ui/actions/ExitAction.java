@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
@@ -40,10 +40,9 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class ExitAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -75,7 +74,6 @@ public class ExitAction extends JajukAction {
     // locks.
     // Not not use SwingUtilities.invokeLater method in the ExitHook Thread,
     // this code may never be run
-
     if (SwingUtilities.isEventDispatchThread()) {
       // commit perspectives if no full restore
       // engaged. Perspective should be commited before the window
@@ -88,25 +86,18 @@ public class ExitAction extends JajukAction {
           Log.error(e);
         }
       }
-
       // Store window/tray/slimbar configuration
       UtilGUI.storeWindowSate();
-
       // hide windows ASAP
       JajukMainWindow.getInstance().getWindowStateDecorator().display(false);
-
       // hide systray
       JajukSystray.getInstance().getWindowStateDecorator().display(false);
-
       // Hide slimbar
       JajukSlimbar.getInstance().getWindowStateDecorator().display(false);
-
       // Hide full screen
       JajukFullScreenWindow.getInstance().getWindowStateDecorator().display(false);
-
     }
     // Exit Jajuk
     ExitService.exit(0);
   }
-
 }

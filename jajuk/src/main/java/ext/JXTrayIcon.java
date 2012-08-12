@@ -17,9 +17,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package ext;
 
 import java.awt.Frame;
@@ -38,19 +37,13 @@ import javax.swing.event.PopupMenuListener;
  * See http://weblogs.java.net/blog/alexfromsun/archive/2008/02/jtrayicon_updat.html
  */
 public class JXTrayIcon extends TrayIcon {
-
-  /** DOCUMENT_ME. */
   private JPopupMenu menu;
-
-  /** DOCUMENT_ME. */
   private static JDialog dialog;
   static {
     dialog = new JDialog((Frame) null, "TrayDialog");
     dialog.setUndecorated(true);
     dialog.setAlwaysOnTop(true);
   }
-
-  /** DOCUMENT_ME. */
   private static PopupMenuListener popupListener = new PopupMenuListener() {
     @Override
     public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
@@ -71,7 +64,7 @@ public class JXTrayIcon extends TrayIcon {
   /**
    * Instantiates a new jX tray icon.
    * 
-   * @param image DOCUMENT_ME
+   * @param image 
    */
   public JXTrayIcon(Image image) {
     super(image);
@@ -79,9 +72,9 @@ public class JXTrayIcon extends TrayIcon {
 
   /**
    * Show j popup menu.
-   * DOCUMENT_ME
    * 
-   * @param e DOCUMENT_ME
+   * 
+   * @param e 
    */
   public void showJPopupMenu(MouseEvent e) {
     if (menu != null) {
@@ -114,5 +107,4 @@ public class JXTrayIcon extends TrayIcon {
     this.menu = menu;
     menu.addPopupMenuListener(popupListener);
   }
-
 }

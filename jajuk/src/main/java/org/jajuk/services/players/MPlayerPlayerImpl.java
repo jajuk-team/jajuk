@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.players;
 
@@ -28,6 +28,9 @@ import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
 import org.jajuk.base.Track;
+import org.jajuk.events.JajukEvent;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
@@ -41,64 +44,43 @@ import org.jajuk.util.log.Log;
  * Jajuk player implementation based on Mplayer.
  */
 public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
-
   /** Time elapsed in ms. */
   private long lTime = 0;
-
   /** Actually played time */
   private long actuallyPlayedTimeMillis = 0l;
-
   private long lastPlayTimeUpdate = System.currentTimeMillis();
-
   /** Length to be played in secs. */
   private long length;
-
   /** Starting position. */
   private float fPosition;
-
   /** Current track estimated total duration in ms. */
   private long lDuration;
-
   /** Volume when starting fade. */
   private float fadingVolume;
-
   /** Cross fade duration in ms. */
   int iFadeDuration = 0;
-
   /** Time track started *. */
   private long dateStart;
-
   /** Pause time correction *. */
   private long pauseCount = 0;
-
-  /** DOCUMENT_ME. */
   private long pauseCountStamp = -1;
-
   /** Does the user made a seek in current track ?*. */
   private boolean seeked;
-
   /** Is the play is in error. */
   private boolean bInError = false;
-
   /** VBR correction. VBR MP3 files are confusing for mplayer that shows wrong length and seek position. This value is the correction computed with id3 tag when available */
   float vbrCorrection = 1.0f;
-
   /** Progress step in ms, do not set less than 300 or 400 to avoid using too much CPU. */
   private static final int PROGRESS_STEP = 500;
-
   /** Total play time is refreshed every TOTAL_PLAYTIME_UPDATE_INTERVAL times. */
   private static final int TOTAL_PLAYTIME_UPDATE_INTERVAL = 2;
-
   /** Current file. */
   private org.jajuk.base.File fCurrent;
-
   /** [Windows only] Force use of shortnames. */
   private boolean bForcedShortnames = false;
-
   /** English-specific end of file pattern */
   private Pattern patternEndOfFileEnglish = Pattern
       .compile("Exiting\\x2e\\x2e\\x2e.*\\(End of file\\)");
-
   /** Language-agnostic end of file pattern */
   private Pattern patternEndOfFileGeneric = Pattern.compile(".*\\x2e\\x2e\\x2e.*\\(.*\\)");
 
@@ -106,19 +88,19 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * Position and elapsed time getter.
    */
   private class PositionThread extends Thread {
-
     /**
-    * Instantiates a new position thread.
-    * 
-    * @param name DOCUMENT_ME
-    */
+     * Instantiates a new position thread.
+     *
+     * @param name 
+     */
     public PositionThread(String name) {
       super(name);
+      setDaemon(true);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Thread#run()
      */
     @Override
@@ -136,12 +118,10 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
           if (bPaused) {
             pauseCountStamp = System.currentTimeMillis();
           }
-
           if (!bPaused) {
             // Do not call a get_percent_pos if paused, it resumes the player
             // (mplayer issue)
             sendCommand("get_time_pos");
-
             // Get track length if required. Do not launch "get_time_length" only 
             // once because some fast computer makes mplayer start too fast and
             // the slave mode is not yet opened so this command is not token into account.
@@ -166,7 +146,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
         } catch (Exception e) {
           Log.error(e);
         }
-
       }
     }
   }
@@ -175,19 +154,19 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    * Reader : read information from mplayer like position.
    */
   private class ReaderThread extends Thread {
-
     /**
      * Instantiates a new reader thread.
-     * 
-     * @param name DOCUMENT_ME
+     *
+     * @param name 
      */
     public ReaderThread(String name) {
       super(name);
+      setDaemon(true);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Thread#run()
      */
     @Override
@@ -212,14 +191,12 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             }
             // Very verbose :
             //Log.debug("Output from MPlayer: " + line);
-
             // Detect mplayer language
             if (line.indexOf("Starting playback") != -1) {
               patternEndOfFile = patternEndOfFileEnglish;
             } else if (line.indexOf("ANS_TIME_POSITION") != -1) {
               // Stream is actually opened now
               bOpening = false;
-
               StringTokenizer st = new StringTokenizer(line, "=");
               st.nextToken();
               // We need to compute the elapsed time. The issue here is the fact
@@ -248,11 +225,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                 actuallyPlayedTimeMillis += (System.currentTimeMillis() - lastPlayTimeUpdate);
               }
               lastPlayTimeUpdate = System.currentTimeMillis();
-
               // Store current position for use at next startup
               Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION,
                   Float.toString(getCurrentPosition()));
-
               // Cross-Fade test
               if (!bFading && iFadeDuration > 0
               // Length = 0 for some buggy audio headers
@@ -260,7 +235,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                   // Does fading time happened ?
                   && lTime > (lDuration - iFadeDuration)
                   // Do not fade if the track is very short
-                  && (lDuration > 3 * iFadeDuration)) {
+                  && (lDuration > 3 * iFadeDuration)
+                  //Do not fade if bit perfect mode
+                  && !Conf.getBoolean(CONF_BIT_PERFECT)) {
                 bFading = true;
                 fadingVolume = fVolume;
                 // Call finish (do not leave thread to allow cross fading)
@@ -326,8 +303,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               // Update track rate if it has been opened
               if (!bOpening) {
                 fCurrent.getTrack().updateRate();
+                // Force immediate rating refresh (without using the rating manager)
+                ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
               }
-
               // Launch next track
               try {
                 // Do not launch next track if not opening: it means
@@ -339,7 +317,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                   bInError = true;
                   break;
                 }
-
                 // If fading, ignore end of file
                 if (!bFading) {
                   // Call finish and terminate current thread
@@ -367,36 +344,36 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.players.AbstractMPlayerImpl#stop()
    */
   @Override
   public void stop() throws Exception {
     // Call generic stop
     super.stop();
-
     // Update track rate
     fCurrent.getTrack().updateRate();
+    // Force immediate rating refresh (without using the rating manager)
+    ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long, float)
    */
   @Override
   public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume)
       throws IOException, JajukException {
-
     this.fVolume = fVolume;
     this.length = length;
     this.fPosition = fPosition;
     this.fCurrent = file;
+    this.bitPerfect = Conf.getBoolean(Const.CONF_BIT_PERFECT);
     // Reset all states
     reset();
     // Try to launch mplayer
     launchMplayer();
-
     // If under windows and the launch failed, try once again
     // with other short names configuration (see #1267)
     if (bInError && UtilSystem.isUnderWindows()) {
@@ -408,7 +385,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
       // Disable forced shortnames because the shortnames converter takes a while (2 secs)
       bForcedShortnames = false;
     }
-
     // Check the file has been property opened
     if (!bOpening && !bEOF) {
       if (fPosition > 0.0f) {
@@ -446,8 +422,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /**
    * Launch mplayer.
-   * DOCUMENT_ME
    * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   private void launchMplayer() throws IOException {
@@ -523,7 +499,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#seek(float) Ogg vorbis seek not yet supported
    */
   @Override
@@ -545,13 +521,15 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     // save current position
     String command = "seek " + (int) (100 * posValue) + " 1";
     sendCommand(command);
-    setVolume(fVolume); // need this because a seek reset volume
+    if (!Conf.getBoolean(CONF_BIT_PERFECT)) {
+      setVolume(fVolume); // need this because a seek reset volume
+    }
     this.seeked = true;
   }
 
   /**
    * Gets the state.
-   * 
+   *
    * @return player state, -1 if player is null.
    */
   @Override
@@ -575,7 +553,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.AbstractMPlayerImpl#play(org.jajuk.base.WebRadio, float)
    */
   @Override
@@ -585,7 +563,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.IPlayerImpl#setVolume(float)
    */
   @Override
@@ -599,14 +577,16 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.services.players.AbstractMPlayerImpl#resume()
    */
   @Override
   public void resume() throws Exception {
     lastPlayTimeUpdate = System.currentTimeMillis();
     super.resume();
-    setVolume(fVolume);
+    if (!Conf.getBoolean(CONF_BIT_PERFECT)) {
+      setVolume(fVolume);
+    }
   }
 
   /**
@@ -624,6 +604,5 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
         QueueModel.finished();
       }
     }.start();
-
   }
 }

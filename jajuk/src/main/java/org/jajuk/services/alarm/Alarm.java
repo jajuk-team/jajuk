@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.alarm;
 
@@ -36,25 +36,19 @@ import org.jajuk.util.log.Log;
  * An Alarm.
  */
 public class Alarm {
-
   /** The files to play. */
   private List<File> alToPlay;
-
   /** The webradio to play. */
   private WebRadio radio;
-
-  /** DOCUMENT_ME. */
   private String alarmAction;
-
-  /** DOCUMENT_ME. */
   private Date aTime;
 
   /**
    * Instantiates a new alarm.
    * 
-   * @param aTime DOCUMENT_ME
-   * @param alFiles DOCUMENT_ME
-   * @param mode DOCUMENT_ME
+   * @param aTime 
+   * @param alFiles 
+   * @param mode 
    */
   public Alarm(java.util.Date aTime, List<File> alFiles, String mode) {
     this.aTime = aTime;
@@ -65,9 +59,9 @@ public class Alarm {
   /**
    * Instantiates a new alarm.
    * 
-   * @param aTime DOCUMENT_ME
-   * @param radio DOCUMENT_ME
-   * @param mode DOCUMENT_ME
+   * @param aTime 
+   * @param radio 
+   * @param mode 
    */
   public Alarm(java.util.Date aTime, WebRadio radio, String mode) {
     this.aTime = aTime;
@@ -82,11 +76,10 @@ public class Alarm {
     Log.debug("Wake up at " + new Date());
     if (alarmAction.equals(Const.ALARM_START_ACTION)) {
       if (alToPlay != null) {
-        QueueModel.push(UtilFeatures.createStackItems(alToPlay, Conf
-            .getBoolean(Const.CONF_STATE_REPEAT_ALL), false), false);
+        QueueModel.push(UtilFeatures.createStackItems(alToPlay,
+            Conf.getBoolean(Const.CONF_STATE_REPEAT), false), false);
       } else if (radio != null) {
         QueueModel.launchRadio(radio);
-
       }
     } else {
       QueueModel.stopRequest();
@@ -108,5 +101,4 @@ public class Alarm {
   public void nextDay() {
     aTime = DateUtils.addDays(aTime, 1);
   }
-
 }

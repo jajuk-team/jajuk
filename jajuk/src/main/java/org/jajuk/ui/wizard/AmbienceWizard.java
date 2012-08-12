@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.wizard;
 
@@ -64,30 +64,19 @@ import org.qdwizard.Wizard;
  * Ambiences management wizard.
  */
 public class AmbienceWizard extends Wizard {
-
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public static class AmbiencePanel extends Screen implements ActionListener {
-
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
-
     /** All dynamic widgets. */
     private JComponent[][] widgets;
-
-    /** DOCUMENT_ME. */
     private JButton jbNew;
-
-    /** DOCUMENT_ME. */
     private JButton jbDelete;
-
-    /** DOCUMENT_ME. */
     private JButton jbDefaults;
-
     /** DJ*. */
     private AmbienceDigitalDJ dj = null;
-
     /** Selected ambience index. */
     private int ambienceIndex = 0;
 
@@ -306,19 +295,18 @@ public class AmbienceWizard extends Wizard {
           .getAmbiences());
       Collections.sort(AmbienceWizard.ambiences);
       setCanFinish(true);
-      jbNew = new JButton(Messages.getString("DigitalDJWizard.32"), IconLoader
-          .getIcon(JajukIcons.NEW));
+      jbNew = new JButton(Messages.getString("DigitalDJWizard.32"),
+          IconLoader.getIcon(JajukIcons.NEW));
       jbNew.addActionListener(this);
       jbNew.setToolTipText(Messages.getString("DigitalDJWizard.33"));
-      jbDelete = new JButton(Messages.getString("DigitalDJWizard.34"), IconLoader
-          .getIcon(JajukIcons.DELETE));
+      jbDelete = new JButton(Messages.getString("DigitalDJWizard.34"),
+          IconLoader.getIcon(JajukIcons.DELETE));
       jbDelete.addActionListener(this);
       jbDelete.setToolTipText(Messages.getString("DigitalDJWizard.35"));
-      jbDefaults = new JButton(Messages.getString("DigitalDJWizard.62"), IconLoader
-          .getIcon(JajukIcons.DEFAULTS));
+      jbDefaults = new JButton(Messages.getString("DigitalDJWizard.62"),
+          IconLoader.getIcon(JajukIcons.DEFAULTS));
       jbDefaults.addActionListener(this);
       jbDefaults.setToolTipText(Messages.getString("DigitalDJWizard.63"));
-
       // Add items
       refreshScreen();
     }
@@ -345,8 +333,8 @@ public class AmbienceWizard extends Wizard {
   /**
    * Gets the widget index.
    *
-   * @param widgets DOCUMENT_ME
-   * @param widget DOCUMENT_ME
+   * @param widgets 
+   * @param widget 
    * @return index of a given widget row in the widget table
    */
   private static int getWidgetIndex(final JComponent[][] widgets, final JComponent widget) {
@@ -389,7 +377,6 @@ public class AmbienceWizard extends Wizard {
     }
     // Refresh UI
     ObservationManager.notify(new JajukEvent(JajukEvents.AMBIENCES_CHANGE));
-
   }
 
   /*
@@ -413,5 +400,4 @@ public class AmbienceWizard extends Wizard {
       final Class<? extends org.qdwizard.Screen> screen) {
     return null;
   }
-
 }

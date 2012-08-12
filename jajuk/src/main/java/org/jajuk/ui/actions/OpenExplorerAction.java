@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
@@ -26,7 +26,9 @@ import java.util.List;
 import javax.swing.JComponent;
 
 import org.jajuk.base.Directory;
+import org.jajuk.base.File;
 import org.jajuk.base.Item;
+import org.jajuk.base.Playlist;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -38,7 +40,6 @@ import org.jajuk.util.log.Log;
  * Open directory in default explorer program.
  */
 public class OpenExplorerAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -62,8 +63,16 @@ public class OpenExplorerAction extends JajukAction {
     JComponent source = (JComponent) e.getSource();
     try {
       List<Item> selection = (List<Item>) source.getClientProperty(Const.DETAIL_CONTENT);
-      Directory dir = (Directory) selection.get(0);
-      UtilSystem.openInExplorer(dir.getFio());
+      if (selection.get(0) instanceof Directory) {
+        Directory dir = (Directory) selection.get(0);
+        UtilSystem.openInExplorer(dir.getFio());
+      } else if (selection.get(0) instanceof File) {
+        File f = (File) selection.get(0);
+        UtilSystem.openInExplorer(f.getDirectory().getFio());
+      } else if (selection.get(0) instanceof Playlist) {
+        Playlist pl = (Playlist) selection.get(0);
+        UtilSystem.openInExplorer(pl.getDirectory().getFio());
+      }
     } catch (Exception ex) {
       Log.error(ex);
     }

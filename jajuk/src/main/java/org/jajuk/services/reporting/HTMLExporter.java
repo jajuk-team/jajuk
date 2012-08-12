@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.reporting;
 
 import java.io.File;
@@ -39,11 +38,9 @@ import org.jajuk.util.UtilSystem;
  * This class exports music contents to HTML.
  */
 public class HTMLExporter extends Exporter {
-
   /**
    * PUBLIC METHODS.
    */
-
   public HTMLExporter() {
     cache = SessionService.getConfFileByPath(Const.FILE_REPORTING_CACHE_FILE + "_html_"
         + System.currentTimeMillis());
@@ -52,7 +49,7 @@ public class HTMLExporter extends Exporter {
   /**
    * Process collection.
    * 
-   * @param type DOCUMENT_ME
+   * @param type 
    * 
    * @throws Exception the exception
    * 

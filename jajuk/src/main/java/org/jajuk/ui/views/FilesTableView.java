@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.views;
 
 import javax.swing.JMenuItem;
@@ -27,9 +26,7 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FilesTableModel;
 import org.jajuk.ui.helpers.JajukTableModel;
-import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.widgets.JajukTable;
-import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
@@ -37,13 +34,11 @@ import org.jajuk.util.UtilGUI;
 /**
  * Logical table view.
  */
-public class FilesTableView extends AbstractTableView implements TwoStepsDisplayable {
-
+public class FilesTableView extends AbstractTableView {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** DOCUMENT_ME. */
   private JMenuItem jmiFilePlayDirectory;
+  private JMenuItem jmiOpenExplorer;
 
   /**
    * Instantiates a new files table view.
@@ -84,10 +79,14 @@ public class FilesTableView extends AbstractTableView implements TwoStepsDisplay
     jtable = new JajukTable(model, true, columnsConf);
     super.shortCall(null);
     // File menu
-    jmiFilePlayDirectory = new JMenuItem(ActionManager
-        .getAction(JajukActions.PLAY_DIRECTORY_SELECTION));
+    jmiFilePlayDirectory = new JMenuItem(
+        ActionManager.getAction(JajukActions.PLAY_DIRECTORY_SELECTION));
     jmiFilePlayDirectory.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiFilePlayDirectory, 4);
+    //Add menu to open directory of the selected file
+    jmiOpenExplorer = new JMenuItem(ActionManager.getAction(JajukActions.OPEN_EXPLORER));
+    jmiOpenExplorer.putClientProperty(Const.DETAIL_CONTENT, jtable.getSelection());
+    jtable.getMenu().add(jmiOpenExplorer);
     // Add this generic menu item manually to ensure it's the last one in
     // the list for GUI reasons
     jtable.getMenu().addSeparator();
@@ -118,16 +117,4 @@ public class FilesTableView extends AbstractTableView implements TwoStepsDisplay
     // model creation
     return new FilesTableModel(getID());
   }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.views.AbstractTableView#initTable()
-   */
-  @Override
-  void initTable() {
-    boolean bEditable = Conf.getBoolean(Const.CONF_FILES_TABLE_EDITION);
-    jtbEditable.setSelected(bEditable);
-  }
-
 }

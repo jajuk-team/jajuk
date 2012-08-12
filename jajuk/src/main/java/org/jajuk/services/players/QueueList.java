@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.players;
 
@@ -32,10 +32,8 @@ import org.jajuk.base.File;
  * Provides a container that encapsulates the normal queued items as well as the automatically planned items.
  */
 public class QueueList implements List<StackItem> {
-
   /** Fifo itself, contains jajuk File objects. */
   private static volatile List<StackItem> alQueue = new ArrayList<StackItem>(50);
-
   /** Planned tracks, played if the normal queue is exhausted. */
   private static volatile List<StackItem> alPlanned = new ArrayList<StackItem>(10);
 
@@ -281,7 +279,6 @@ public class QueueList implements List<StackItem> {
 
   // ////////////////////////////////////////////////////////////
   // Methods for Planned tracks
-
   /**
    * Number of planned items.
    * 
@@ -304,9 +301,9 @@ public class QueueList implements List<StackItem> {
 
   /**
    * Adds the planned.
-   * DOCUMENT_ME
    * 
-   * @param c DOCUMENT_ME
+   * 
+   * @param c 
    */
   public void addPlanned(Collection<? extends StackItem> c) {
     for (StackItem item : c) {
@@ -339,7 +336,7 @@ public class QueueList implements List<StackItem> {
   /**
    * Removes the planned from list.
    * 
-   * @param alFiles DOCUMENT_ME
+   * @param alFiles 
    */
   public void removePlannedFromList(List<File> alFiles) {
     for (StackItem item : alPlanned) {
@@ -350,7 +347,7 @@ public class QueueList implements List<StackItem> {
 
   /**
    * Clear planned.
-   * DOCUMENT_ME
+   * 
    */
   public void clearPlanned() {
     alPlanned.clear();
@@ -358,10 +355,9 @@ public class QueueList implements List<StackItem> {
 
   // ///////////////////////////////////////////////////////
   // Additional Methods for Queue handling
-
   /**
    * Contains repeat.
-   * DOCUMENT_ME
+   * 
    * 
    * @return true if...
    */
@@ -376,7 +372,7 @@ public class QueueList implements List<StackItem> {
 
   /**
    * Pop next planned.
-   * DOCUMENT_ME
+   * 
    * 
    * @return the stack item
    */
@@ -391,7 +387,7 @@ public class QueueList implements List<StackItem> {
 
   /**
    * Contains only repeat.
-   * DOCUMENT_ME
+   * 
    * 
    * @return true if...
    */

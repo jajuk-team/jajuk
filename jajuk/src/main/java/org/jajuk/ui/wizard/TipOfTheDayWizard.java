@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.wizard;
 
@@ -50,23 +50,13 @@ import org.jajuk.util.UtilSystem;
  * Small dialog which displays the "Tip of the Day" from a list of useful hints.
  */
 public class TipOfTheDayWizard extends JFrame {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** The Constant TIPS. DOCUMENT_ME */
+  /** The Constant TIPS.  */
   private static final String[] TIPS = Messages.getAll("TipOfTheDay");
-
-  /** DOCUMENT_ME. */
   private final JCheckBox cbShow;
-
-  /** DOCUMENT_ME. */
   private final JTextArea tipArea;
-
-  /** DOCUMENT_ME. */
   private final JLabel lCounter;
-
-  /** DOCUMENT_ME. */
   private int currentIndex = 0;
 
   /**
@@ -76,15 +66,12 @@ public class TipOfTheDayWizard extends JFrame {
     super(Messages.getString("TipOfTheDayView.0"));
     setAlwaysOnTop(true);
     setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
-
     cbShow = new JCheckBox(Messages.getString("TipOfTheDayView.2"));
     cbShow.setSelected(Conf.getBoolean(Const.CONF_SHOW_TIP_ON_STARTUP));
-
     tipArea = new JTextArea();
     tipArea.setWrapStyleWord(true);
     tipArea.setLineWrap(true);
     tipArea.setEditable(false);
-
     lCounter = new JLabel("999/999");
     JButton bNext = new JButton(IconLoader.getIcon(JajukIcons.PLAYER_NEXT_SMALL));
     bNext.setMargin(new Insets(1, 1, 1, 1));
@@ -95,7 +82,6 @@ public class TipOfTheDayWizard extends JFrame {
         updateTip();
       }
     });
-
     JButton bPrevious = new JButton(IconLoader.getIcon(JajukIcons.PLAYER_PREVIOUS_SMALL));
     bPrevious.setMargin(new Insets(1, 1, 1, 1));
     bPrevious.addActionListener(new ActionListener() {
@@ -105,7 +91,6 @@ public class TipOfTheDayWizard extends JFrame {
         updateTip();
       }
     });
-
     JButton bClose = new JButton(IconLoader.getIcon(JajukIcons.OK));
     bClose.setMaximumSize(bClose.getPreferredSize());
     bClose.addActionListener(new ActionListener() {
@@ -114,51 +99,40 @@ public class TipOfTheDayWizard extends JFrame {
         setVisible(false);
       }
     });
-
     JScrollPane scroll = new JScrollPane(tipArea);
     scroll.setPreferredSize(new Dimension(200, 100));
-
     JLabel lTitle = new JLabel(Messages.getString("TipOfTheDayView.1"), SwingConstants.LEFT);
     Font fTitle = lTitle.getFont();
     lTitle.setFont(new Font(fTitle.getName(), fTitle.getStyle(), (int) (fTitle.getSize() * 1.3)));
     JLabel lIcon = new JLabel(IconLoader.getIcon(JajukIcons.TIP), SwingConstants.LEFT);
-
     JPanel pTop = new JPanel(new BorderLayout());
     pTop.add(lIcon, BorderLayout.WEST);
     pTop.add(lTitle, BorderLayout.CENTER);
     UtilGUI.setEscapeKeyboardAction(this, pTop);
-
     JPanel pCenter = new JPanel(new BorderLayout());
     pCenter.setBorder(BorderFactory.createEmptyBorder(10, 10, 3, 10));
     pCenter.add(scroll, BorderLayout.CENTER);
     UtilGUI.setEscapeKeyboardAction(this, pCenter);
-
     JPanel pPrevNext = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
     pPrevNext.add(bPrevious);
     pPrevNext.add(lCounter);
     pPrevNext.add(bNext);
-
     JPanel pControls = new JPanel(new BorderLayout());
     pControls.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
     pControls.add(cbShow, BorderLayout.WEST);
     pControls.add(pPrevNext);
-
     JPanel pButton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     pButton.add(bClose);
-
     JPanel pBottom = new JPanel(new BorderLayout());
     pBottom.add(pControls, BorderLayout.NORTH);
     pBottom.add(pButton);
     UtilGUI.setEscapeKeyboardAction(this, pBottom);
-
     add(pTop, BorderLayout.NORTH);
     add(pCenter, BorderLayout.CENTER);
     add(pBottom, BorderLayout.SOUTH);
-
     // Display a shuffled tip of the day
     shuffleIndex();
     updateTip();
-
     pack();
     if (getWidth() < 400) {
       setSize(400, getHeight());
@@ -195,8 +169,8 @@ public class TipOfTheDayWizard extends JFrame {
    */
   private final void updateTip() {
     tipArea.setText(TIPS[currentIndex]);
-    lCounter.setText(new StringBuilder().append("").append(currentIndex + 1).append("/").append(
-        TIPS.length).toString());
+    lCounter.setText(new StringBuilder().append("").append(currentIndex + 1).append("/")
+        .append(TIPS.length).toString());
     tipArea.setCaretPosition(0);
   }
 

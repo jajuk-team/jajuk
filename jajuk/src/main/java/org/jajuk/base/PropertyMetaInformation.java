@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.base;
 
 import java.net.MalformedURLException;
@@ -36,49 +35,37 @@ import org.jajuk.util.log.Log;
  * A Jajuk property meta information.
  */
 public class PropertyMetaInformation {
-
   /** Property name. */
   private final String sName;
-
   /** Is property a custom property?. */
   private boolean bCustom = false;
-
   /** Is property element of associated item constructor? (and so used in the checksum ID hash). */
   private boolean bConstructor = false;
-
   /** Property Type (java.lang.String for ie) */
   private final Class<?> cType;
-
   /** Default value (null: no default). */
-  Object oDefaultValue;
-
+  private Object oDefaultValue;
   /** This property should be displayed to UI?. */
-  boolean bShouldBeDisplayed = true;
-
+  private boolean bShouldBeDisplayed = true;
   /** Editable?. */
-  boolean bEditable = true;
-
+  private boolean bEditable = true;
   /** Unique?. */
-  boolean bMergeable = false;
-
+  private boolean bMergeable = false;
   /** Human Type. */
   private String sHumanType;
 
-  /** Today. */
-  public static final Date TODAY = new Date();
-
   /**
-   * constructor.
-   * 
-   * @param sName Property name
-   * @param bCustom Is custom property
-   * @param bConstructor Is constructor property
-   * @param bShouldBeDisplayed Does this standard property must be displayed (exp for ie is not)
-   * @param bEditable Is this property editable
-   * @param bMergeable Is this property mergeable if we display several items together
-   * @param cType Property type
-   * @param oDefaultValue Default value
-   */
+  * constructor.
+  * 
+  * @param sName Property name
+  * @param bCustom Is custom property
+  * @param bConstructor Is constructor property
+  * @param bShouldBeDisplayed Does this standard property must be displayed (exp for ie is not)
+  * @param bEditable Is this property editable
+  * @param bMergeable Is this property mergeable if we display several items together
+  * @param cType Property type
+  * @param oDefaultValue Default value
+  */
   public PropertyMetaInformation(String sName, boolean bCustom, boolean bConstructor,
       boolean bShouldBeDisplayed, boolean bEditable, boolean bMergeable, Class<?> cType,
       Object oDefaultValue) {
@@ -181,7 +168,7 @@ public class PropertyMetaInformation {
    * 
    * @return property meta information XML description
    */
-  public String toXML() {
+  String toXML() {
     String sDefault = "";
     try {
       if (oDefaultValue != null) {
@@ -211,7 +198,6 @@ public class PropertyMetaInformation {
    * public void setDefaultValue(String defaultValue) { oDefaultValue =
    * defaultValue; }
    */
-
   /* (non-Javadoc)
    * @see java.lang.Object#toString()
    */
@@ -266,5 +252,4 @@ public class PropertyMetaInformation {
   public String getHumanName() {
     return Messages.getHumanPropertyName(getName());
   }
-
 }

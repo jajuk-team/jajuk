@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.util;
 
 import java.io.File;
@@ -43,6 +42,7 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.dj.AmbienceManager;
+import org.jajuk.services.webradio.WebRadioHelper;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.util.log.Log;
 
@@ -52,19 +52,14 @@ import org.jajuk.util.log.Log;
  * Jajuk version sheme is XX.YY.ZZ (two digits possible for each part of the release)
  */
 public final class UpgradeManager implements Const {
-
   /** Last jajuk release known from Internet (parsed from a pad file). */
   private static String newVersionName;
-
   /** Is it a minor or major X.Y upgrade */
   private static boolean bUpgraded = false;
-
   /** Is it the first session ever ?. */
   private static boolean bFirstSession = false;
-
   /** Is it an old migration (more than 1 major release) ?. */
   private static boolean majorMigration = false;
-
   /** List of versions that doesn't require perspective reset at upgrade. */
   private static String[] versionsNoNeedPerspectiveReset = new String[] { "1.9" };
 
@@ -79,7 +74,7 @@ public final class UpgradeManager implements Const {
    * 
    * Jajuk version scheme is XX.YY.ZZ[RCn] (two digits possible for each part of the release)
    * 
-   * @param pStringRelease DOCUMENT_ME
+   * @param pStringRelease 
    * 
    * @return Jajuk number version = integer format of the padded release
    */
@@ -88,11 +83,14 @@ public final class UpgradeManager implements Const {
       // no string provided: use 1.0.0
       return 10000;
     }
-
     String stringRelease = pStringRelease;
     // We drop any RCx part of the release
     if (pStringRelease.contains("RC")) {
       stringRelease = pStringRelease.split("RC.*")[0];
+    }
+    // We drop any "dev" part of the release
+    if (pStringRelease.contains("dev")) {
+      stringRelease = pStringRelease.split("dev.*")[0];
     }
     // Add a trailing .0 if it is a main release like 1.X -> 1.X.0
     int countDot = stringRelease.replaceAll("[^.]", "").length();
@@ -104,7 +102,6 @@ public final class UpgradeManager implements Const {
     StringTokenizer st = new StringTokenizer(stringRelease, ".");
     String main = UtilString.padNumber(Integer.parseInt(st.nextToken()), 2);
     String minor = UtilString.padNumber(Integer.parseInt(st.nextToken()), 2);
-
     String fix = UtilString.padNumber(Integer.parseInt(st.nextToken()), 2);
     return Integer.parseInt(main + minor + fix);
   }
@@ -114,18 +111,20 @@ public final class UpgradeManager implements Const {
    */
   public static void detectRelease() {
     try {
+      // In dev, don't try to upgrade
+      if ("VERSION_REPLACED_BY_ANT".equals(Const.JAJUK_VERSION)) {
+        bUpgraded = false;
+        majorMigration = false;
+        return;
+      }
       // Upgrade detection. Depends on: Configuration manager load
       final String sStoredRelease = Conf.getString(Const.CONF_RELEASE);
-
       // check if it is a new major 'x.y' release: 1.2 != 1.3 for instance
       if (!bFirstSession
       // if first session, not taken as an upgrade
           && (sStoredRelease == null || // null for jajuk releases < 1.2
-          !sStoredRelease.substring(0, 3).equals(Const.JAJUK_VERSION.substring(0, 3)))
-          // Each RC is seen as an upgrade to force RC users to re-run upgrade code at each new RC
-          || Const.JAJUK_VERSION.matches(".*RC.*")) {
+          !sStoredRelease.equals(Const.JAJUK_VERSION))) {
         bUpgraded = true;
-        // Now check if this is an old migration.
         if (!SessionService.isTestMode()) {
           if (isMajorMigration(Const.JAJUK_VERSION, sStoredRelease)) {
             majorMigration = true;
@@ -154,7 +153,7 @@ public final class UpgradeManager implements Const {
 
   /**
    * Sets the first session.
-   * DOCUMENT_ME
+   * 
    */
   public static void setFirstSession() {
     bFirstSession = true;
@@ -171,29 +170,25 @@ public final class UpgradeManager implements Const {
       if (isUpgradeDetected()) {
         // For jajuk < 0.2
         upgradeOldCollectionBackupFile();
-
         // For Jajuk < 1.2
         upgradeDefaultAmbience();
-
         // For Jajuk < 1.3
         upgradeTrackPattern();
         upgradeSerFiles();
         upgradeNocover();
         upgradeWrongHotketOption();
-
         // For Jajuk < 1.4
         upgradePerspectivesRename();
-
         // For Jajuk < 1.6
         upgradePerspectiveButtonsSize();
         upgradeDJClassChanges();
-
         // For Jajuk < 1.7
         upgradeElapsedTimeFormat();
-
         // for Jajuk < 1.9
         upgradeAlarmConfFile();
         upgradeStartupConf();
+        // for Jajuk < 1.10
+        upgradeWebRadioFile();
       }
     } catch (Exception e) {
       Log.error(e);
@@ -260,7 +255,6 @@ public final class UpgradeManager implements Const {
         album.setProperty(XML_ALBUM_SELECTED_COVER, "");
       }
     }
-
   }
 
   /**
@@ -280,7 +274,6 @@ public final class UpgradeManager implements Const {
       File bootstrapOldOldHome = new File(System.getProperty("user.home") + "/"
           + Const.FILE_BOOTSTRAP_OLD);
       File bootstrapNew = new File(SessionService.getBootstrapPath());
-
       // Fix for #1473 : move the bootstrap file if required (See https://trac.jajuk.info/ticket/1473)
       if (UtilSystem.isUnderWindows() && !bootstrapOld.equals(bootstrapOldOldHome)
           && !bootstrapOld.exists() && bootstrapOldOldHome.exists()) {
@@ -291,7 +284,6 @@ public final class UpgradeManager implements Const {
           ex.printStackTrace();
         }
       }
-
       if (bootstrapOld.exists() && !bootstrapNew.exists()) {
         Properties prop = null;
         // Try to load a bootstrap file using plain text old format
@@ -300,7 +292,6 @@ public final class UpgradeManager implements Const {
             SessionService.getBootstrapPath(Const.FILE_BOOTSTRAP_OLD));
         prop.load(fis);
         fis.close();
-
         // If it exists and contains pre-1.7 bootstrap format (a single line with a raw path),
         // convert it to 1.7 format first
         if (prop.size() == 1) {
@@ -320,7 +311,6 @@ public final class UpgradeManager implements Const {
         }
         // Write down the new bootstrap file
         SessionService.commitBootstrapFile(prop);
-
         // Delete old bootstrap file
         bootstrapOld.delete();
       }
@@ -344,7 +334,7 @@ public final class UpgradeManager implements Const {
   /**
    * For Jajuk < 1.3: delete thumb for given size
    * 
-   * @param size DOCUMENT_ME
+   * @param size 
    */
   private static void upgradeNoCoverDelete(String size) {
     File fThumbs = SessionService.getConfFileByPath(Const.FILE_THUMBS + "/" + size + "/"
@@ -487,12 +477,10 @@ public final class UpgradeManager implements Const {
    */
   private static void upgradeCollectionRating() {
     String sRelease = Conf.getString(Const.CONF_RELEASE);
-    if (sRelease == null || sRelease.matches("0..*")
-        || (sRelease.matches("1..*") && Integer.parseInt(sRelease.substring(2, 3)) < 7)) {
+    if (sRelease == null || isOlder(sRelease, "1.7")) {
       Log.info("Migrating collection rating");
       // We keep current ratings and we recompute them on a 0 to 100 scale,
       // then we suggest user to reset the rates
-
       // Start by finding max (old) rating
       long maxRating = 0;
       ReadOnlyIterator<Track> tracks = TrackManager.getInstance().getTracksIterator();
@@ -525,7 +513,29 @@ public final class UpgradeManager implements Const {
     if (AlbumManager.getInstance().getMetaInformation(Const.XML_ALBUM_ARTIST) != null) {
       AlbumManager.getInstance().removeProperty(Const.XML_ALBUM_ARTIST);
     }
+  }
 
+  /**
+   * For jajuk < 1.10, upgrade webradio files
+   */
+  private static void upgradeWebRadioFile() {
+    try {
+      File oldFile = SessionService.getConfFileByPath("webradios.xml");
+      if (oldFile.exists()) {
+        Log.info("Migrating old webradio file : " + oldFile.getAbsolutePath());
+        File newCustomFile = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_CUSTOM);
+        UtilSystem.move(oldFile, newCustomFile);
+        //Load the old file (contains presets + real customs files)  
+        WebRadioHelper.loadCustomRadios();
+        // Download and load the real preset files to override customs and set them 'PRESET' origin
+        // Download repository
+        File fPresets = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET);
+        DownloadManager.download(new URL(Const.URL_WEBRADIO_PRESETS), fPresets);
+        WebRadioHelper.loadPresetsRadios(fPresets);
+      }
+    } catch (Exception e) {
+      Log.debug("Can't upgrade Webradio file", e);
+    }
   }
 
   /**
@@ -536,7 +546,6 @@ public final class UpgradeManager implements Const {
     new Thread() {
       @Override
       public void run() {
-
         // Clean thumbs
         ThumbnailManager.cleanThumbs(Const.THUMBNAIL_SIZE_50X50);
         ThumbnailManager.cleanThumbs(Const.THUMBNAIL_SIZE_100X100);
@@ -570,7 +579,6 @@ public final class UpgradeManager implements Const {
     } catch (Throwable e) {
       Log.error(e);
     }
-
   }
 
   /**
@@ -587,7 +595,6 @@ public final class UpgradeManager implements Const {
     } catch (Throwable e) {
       Log.error(e);
     }
-
   }
 
   /**
@@ -621,7 +628,7 @@ public final class UpgradeManager implements Const {
       // Don't use this in test
           && !("VERSION_REPLACED_BY_ANT".equals(Const.JAJUK_VERSION))
           // We display the upgrade icon only if PAD release is newer than current release
-          && isNewer(Const.JAJUK_VERSION, sPadRelease)) {
+          && isNewer(sPadRelease, Const.JAJUK_VERSION)) {
         newVersionName = sPadRelease;
         return;
       }
@@ -654,8 +661,8 @@ public final class UpgradeManager implements Const {
   /**
    * Return whether two releases switch is a major upgrade or not.
    * 
-   * @param currentRelease DOCUMENT_ME
-   * @param comparedRelease DOCUMENT_ME
+   * @param currentRelease 
+   * @param comparedRelease 
    * 
    * @return whether two releases switch is a major upgrade or not
    */
@@ -666,17 +673,36 @@ public final class UpgradeManager implements Const {
   }
 
   /**
-   * Return whether second release is newer than first.
+   * Return whether first release is newer than second.
    * 
-   * @param currentRelease DOCUMENT_ME
-   * @param comparedRelease DOCUMENT_ME
+   * @param currentRelease 
+   * @param comparedRelease 
    * 
-   * @return whether second release is newer than first
+   * @return whether first release is newer than second
    */
-  protected static boolean isNewer(String currentRelease, String comparedRelease) {
+  protected static boolean isNewer(String comparedRelease, String currentRelease) {
     int iCurrentRelease = getNumberRelease(currentRelease);
     int iComparedRelease = getNumberRelease(comparedRelease);
     return iComparedRelease > iCurrentRelease;
+  }
+
+  /**
+  * Return whether first release is older than second.
+  * 
+  * @param currentRelease 
+  * @param comparedRelease 
+  * 
+  * @return whether first release is newer than second
+  */
+  protected static boolean isOlder(String comparedRelease, String currentRelease) {
+    // Manage dev case
+    if ("VERSION_REPLACED_BY_ANT".equals(comparedRelease)
+        || "VERSION_REPLACED_BY_ANT".equals(currentRelease)) {
+      return false;
+    }
+    int iCurrentRelease = getNumberRelease(currentRelease);
+    int iComparedRelease = getNumberRelease(comparedRelease);
+    return iComparedRelease < iCurrentRelease;
   }
 
   /**

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.base;
 
 import java.util.ArrayList;
@@ -33,9 +32,8 @@ import java.util.TreeSet;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 import org.jajuk.services.tags.Tag;
+import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
@@ -45,31 +43,25 @@ import org.jajuk.util.log.Log;
  * Managers parent class.
  */
 public abstract class ItemManager {
-
   /** Maps item classes -> instance, must be a linked map for ordering (mandatory in commited collection). */
   private static Map<Class<?>, ItemManager> hmItemManagers = new LinkedHashMap<Class<?>, ItemManager>(
       10);
-
   /** Maps properties meta information name and object. */
   private final Map<String, PropertyMetaInformation> hmPropertiesMetaInformation = new LinkedHashMap<String, PropertyMetaInformation>(
       10);
-
   /** The Lock. */
   ReadWriteLock lock = new ReentrantReadWriteLock();
-
   /** Use an array list during startup which is faster during loading the collection. */
   private List<Item> startupItems = new ArrayList<Item>(100);
-
   /** Stores the items by ID to have quick access if necessary. */
   private final Map<String, Item> internalMap = new HashMap<String, Item>(100);
-
   /** Collection pointer : at the beginning point to the ArrayList, later this is replaced by a TreeSet to have correct ordering. */
   private Collection<Item> items = startupItems;
 
   /**
    * Item manager default constructor.
    */
-  ItemManager() {
+  public ItemManager() {
   }
 
   /**
@@ -96,7 +88,6 @@ public abstract class ItemManager {
       // populate a new TreeSet with the startup-items
       if (startupItems != null) {
         items = new TreeSet<Item>(startupItems);
-
         // Free startup memory
         startupItems = null;
       }
@@ -107,26 +98,26 @@ public abstract class ItemManager {
 
   /**
    * Registers a new item manager.
-   * 
+   *
    * @param c Managed item class
-   * @param itemManager DOCUMENT_ME
+   * @param itemManager 
    */
   public static void registerItemManager(Class<?> c, ItemManager itemManager) {
     hmItemManagers.put(c, itemManager);
   }
 
   /**
-   * Gets the label.
+   * Gets the XML tag.
    * 
    * @return identifier used for XML generation
    */
-  public abstract String getLabel();
+  public abstract String getXMLTag();
 
   /**
    * Gets the meta information.
-   * 
-   * @param sPropertyName DOCUMENT_ME
-   * 
+   *
+   * @param sPropertyName 
+   *
    * @return meta data for given property
    */
   public PropertyMetaInformation getMetaInformation(String sPropertyName) {
@@ -135,8 +126,8 @@ public abstract class ItemManager {
 
   /**
    * Remove a property *.
-   * 
-   * @param sProperty DOCUMENT_ME
+   *
+   * @param sProperty 
    */
   public void removeProperty(String sProperty) {
     PropertyMetaInformation meta = getMetaInformation(sProperty);
@@ -146,10 +137,10 @@ public abstract class ItemManager {
 
   /**
    * Remove a custom property from all items for the given manager.
-   * 
-   * @param meta DOCUMENT_ME
+   *
+   * @param meta 
    */
-  public void applyRemoveProperty(PropertyMetaInformation meta) {
+  void applyRemoveProperty(PropertyMetaInformation meta) {
     lock.readLock().lock();
     try {
       for (Item item : items) {
@@ -162,14 +153,13 @@ public abstract class ItemManager {
 
   /**
    * Generic method to access to a parameterized list of items.
-   * 
-   * @param meta DOCUMENT_ME
-   * 
+   *
+   * @param meta 
+   *
    * @return the item-parameterized list
-   * 
+   *
    * protected abstract HashMap<String, Item> getItemsMap();
    */
-
   /** Add a custom property to all items for the given manager */
   public void applyNewProperty(PropertyMetaInformation meta) {
     lock.readLock().lock();
@@ -185,11 +175,11 @@ public abstract class ItemManager {
   /**
    * Attention, this method does not return a full XML, but rather an excerpt
    * that is then completed in Collection.commit()!
-   * 
+   *
    * @return (partial) XML representation of this manager
    */
-  public String toXML() {
-    StringBuilder sb = new StringBuilder("<").append(getLabel() + ">");
+  String toXML() {
+    StringBuilder sb = new StringBuilder("<").append(getXMLTag() + ">");
     Iterator<String> it = hmPropertiesMetaInformation.keySet().iterator();
     while (it.hasNext()) {
       String sProperty = it.next();
@@ -201,7 +191,7 @@ public abstract class ItemManager {
 
   /**
    * Return the associated read write lock.
-   * 
+   *
    * @return the associated read write lock
    */
   public ReadWriteLock getLock() {
@@ -218,11 +208,11 @@ public abstract class ItemManager {
    * -All in lower case expect first letter of first word
    * <p>
    * example: "My artist".
-   * 
+   *
    * @param sName The name to format.
-   * 
+   *
    * @return the string
-   * 
+   *
    * TODO: the "all lowercase" part is not done currently, should this be changed??
    */
   public static String format(String sName) {
@@ -238,7 +228,7 @@ public abstract class ItemManager {
 
   /**
    * Gets the properties.
-   * 
+   *
    * @return properties Meta informations
    */
   public Collection<PropertyMetaInformation> getProperties() {
@@ -247,7 +237,7 @@ public abstract class ItemManager {
 
   /**
    * Gets the custom properties including activated extra tags.
-   * 
+   *
    * @return custom properties Meta informations
    */
   public Collection<PropertyMetaInformation> getCustomProperties() {
@@ -264,7 +254,7 @@ public abstract class ItemManager {
 
   /**
    * Gets the custom properties without the activated extra tags.
-   * 
+   *
    * @return custom properties Meta informations
    */
   public Collection<PropertyMetaInformation> getUserCustomProperties() {
@@ -281,7 +271,7 @@ public abstract class ItemManager {
 
   /**
    * Gets the visible properties.
-   * 
+   *
    * @return visible properties Meta informations
    */
   public Collection<PropertyMetaInformation> getVisibleProperties() {
@@ -298,9 +288,9 @@ public abstract class ItemManager {
 
   /**
    * Get the manager from a given attribute name.
-   * 
+   *
    * @param sProperty The property to compare.
-   * 
+   *
    * @return an ItemManager if one is found for the property or null if none
    * found.
    */
@@ -332,22 +322,13 @@ public abstract class ItemManager {
 
   /**
    * Get ItemManager manager for given item class.
-   * 
-   * @param c DOCUMENT_ME
-   * 
+   *
+   * @param c 
+   *
    * @return associated item manager or null if none was found
    */
   public static ItemManager getItemManager(Class<?> c) {
     return hmItemManagers.get(c);
-  }
-
-  /**
-   * Return an iteration over item managers.
-   * 
-   * @return the item managers
-   */
-  public static Iterator<ItemManager> getItemManagers() {
-    return hmItemManagers.values().iterator();
   }
 
   /**
@@ -357,7 +338,6 @@ public abstract class ItemManager {
   public void cleanup() {
     lock.writeLock().lock();
     try {
-
       // Prefetch item manager type for performances
       short managerType = 0; // Album
       if (this instanceof ArtistManager) {
@@ -403,12 +383,11 @@ public abstract class ItemManager {
     } finally {
       lock.writeLock().unlock();
     }
-
   }
 
   /**
    * Perform a cleanup of all orphan tracks associated with given item.
-   * 
+   *
    * @param item item whose associated tracks should be checked for cleanup
    */
   protected void cleanOrphanTracks(Item item) {
@@ -419,10 +398,10 @@ public abstract class ItemManager {
 
   /**
    * Remove a given item.
-   * 
-   * @param item DOCUMENT_ME
+   *
+   * @param item 
    */
-  protected void removeItem(Item item) {
+  public void removeItem(Item item) {
     lock.writeLock().lock();
     try {
       if (item != null) {
@@ -436,7 +415,7 @@ public abstract class ItemManager {
 
   /**
    * Register a given item.
-   * 
+   *
    * @param item : the item to add
    */
   protected void registerItem(Item item) {
@@ -451,8 +430,8 @@ public abstract class ItemManager {
 
   /**
    * Register a new property.
-   * 
-   * @param meta DOCUMENT_ME
+   *
+   * @param meta 
    */
   public void registerProperty(PropertyMetaInformation meta) {
     hmPropertiesMetaInformation.put(meta.getName(), meta);
@@ -460,14 +439,14 @@ public abstract class ItemManager {
 
   /**
    * Change any item.
-   * 
-   * @param itemToChange DOCUMENT_ME
-   * @param sKey DOCUMENT_ME
-   * @param oValue DOCUMENT_ME
+   *
+   * @param itemToChange 
+   * @param sKey 
+   * @param oValue 
    * @param filter : files we want to deal with
-   * 
+   *
    * @return the changed item
-   * 
+   *
    * @throws JajukException the jajuk exception
    */
   public static Item changeItem(Item itemToChange, String sKey, Object oValue, Set<File> filter)
@@ -507,6 +486,11 @@ public abstract class ItemManager {
       } else if (Const.XML_TRACK_RATE.equals(sKey)) {
         newItem = TrackManager.getInstance().changeTrackRate(file.getTrack(), (Long) oValue);
       } else { // others properties
+        // check extra tags
+        if (Tag.getActivatedExtraTags().contains(sKey)) {
+          TrackManager.getInstance().changeTrackField(file.getTrack(), sKey, (String) oValue,
+              filter);
+        }
         // check if this key is known for files
         if (file.getMeta(sKey) != null) {
           itemToChange.setProperty(sKey, oValue);
@@ -586,13 +570,18 @@ public abstract class ItemManager {
       }
     } else if (itemToChange instanceof Year) {
       itemToChange.setProperty(sKey, oValue);
+    } else if (itemToChange instanceof WebRadio) {
+      itemToChange.setProperty(sKey, oValue);
+      if (Const.XML_NAME.equals(sKey)) {
+        itemToChange.setName((String) oValue);
+      }
     }
     return newItem;
   }
 
   /**
    * Gets the element count.
-   * 
+   *
    * @return number of item
    */
   public int getElementCount() {
@@ -601,9 +590,9 @@ public abstract class ItemManager {
 
   /**
    * Gets the item by id.
-   * 
+   *
    * @param sID Item ID
-   * 
+   *
    * @return Item
    */
   public Item getItemByID(String sID) {
@@ -611,39 +600,32 @@ public abstract class ItemManager {
   }
 
   /**
-   * Return a copy of all registered items.
-   * 
+   * Return a copy of all registered items. The resulting list can be used without
+   * need of locking.
+   *
    * @return a copy of all registered items
    */
   public List<? extends Item> getItems() {
-    return new ArrayList<Item>(items);
+    // getItems() creates a copy of the list of items and thus iterates over the current list of items
+    // therefore a ConcurrentModifcationException could be triggered if we do not lock while actually
+    // doing the copying. Usage of the list afterwards is save without locking
+    lock.readLock().lock();
+    try {
+      return new ArrayList<Item>(items);
+    } finally {
+      lock.readLock().unlock();
+    }
   }
 
   /**
-   * Return a shallow copy of all registered items filtered using the provided
-   * predicate*.
-   * 
-   * @param predicate DOCUMENT_ME
-   * 
-   * @return a shallow copy of all registered items filtered using the provided
-   * 
-   * @arg predicate : the predicate
-   */
-  public List<? extends Item> getFilteredItems(Predicate predicate) {
-    ArrayList<Item> itemsCopy = new ArrayList<Item>(items);
-    CollectionUtils.filter(itemsCopy, predicate);
-    return itemsCopy;
-  }
-
-  /**
-   * ***************************************************************************
-   * Return all registered enumeration CAUTION : do not call remove() on this
-   * iterator, you would effectively remove items instead of using regular
-   * removeItem() primitive
-   * **************************************************************************.
-   * 
-   * @return the items iterator
-   */
+  * ***************************************************************************
+  * Return all registered enumeration CAUTION : do not call remove() on this
+  * iterator, you would effectively remove items instead of using regular
+  * removeItem() primitive
+  * **************************************************************************.
+  *
+  * @return the items iterator
+  */
   protected Iterator<? extends Item> getItemsIterator() {
     return items.iterator();
   }
@@ -671,10 +653,8 @@ public abstract class ItemManager {
     try {
       // first create a copy
       ArrayList<Item> itemsCopy = new ArrayList<Item>(items);
-
       // then remove all elements
       clear();
-
       // and then re-add all items again to make them correctly sorted again
       for (Item item : itemsCopy) {
         registerItem(item);
@@ -686,9 +666,9 @@ public abstract class ItemManager {
 
   /**
    * Basic implementation for item hashcode computation.
-   * 
+   *
    * @param sName item name
-   * 
+   *
    * @return ItemManager ID
    */
   protected static String createID(String sName) {

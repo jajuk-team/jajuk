@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.wizard;
 
 import java.awt.event.ActionEvent;
@@ -51,39 +50,23 @@ import org.jdesktop.swingx.JXDatePicker;
  * New property wizard.
  */
 public class NewPropertyWizard extends CustomPropertyWizard implements KeyListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** DOCUMENT_ME. */
   private final JTextField jtfName;
-
-  /** DOCUMENT_ME. */
   private final JComboBox jcbClass;
-
-  /** DOCUMENT_ME. */
   private final JTextField jtfDefault;
-
-  /** DOCUMENT_ME. */
   private final JCheckBox jcbDefault;
-
-  /** DOCUMENT_ME. */
   private final JXDatePicker jdpDefault;
-
   // Types
-  /** The Constant STRING.  DOCUMENT_ME */
+  /** The Constant STRING.   */
   private static final int STRING = 0;
-
-  /** The Constant LONG.  DOCUMENT_ME */
+  /** The Constant LONG.   */
   private static final int LONG = 1;
-
-  /** The Constant DOUBLE.  DOCUMENT_ME */
+  /** The Constant DOUBLE.   */
   private static final int DOUBLE = 2;
-
-  /** The Constant BOOLEAN.  DOCUMENT_ME */
+  /** The Constant BOOLEAN.   */
   private static final int BOOLEAN = 3;
-
-  /** The Constant DATE.  DOCUMENT_ME */
+  /** The Constant DATE.   */
   private static final int DATE = 4;
 
   /**
@@ -111,7 +94,6 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
     jcbDefault.setEnabled(false);
     jdpDefault = new JXDatePicker();
     jdpDefault.setEnabled(false);
-
     // Add items
     setLayout(new MigLayout("insets 15,gapx 10,gapy 15", "[][grow]"));
     add(jlItemChoice);

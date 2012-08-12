@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.util;
 
@@ -42,13 +42,10 @@ import org.jajuk.util.log.Log;
  * Singleton
  */
 public final class Conf implements Const {
-
   /** Properties in memory. */
   private static volatile Properties properties = new Properties();
-
   /** Default properties cache. */
   private static volatile Properties defaults = new Properties();
-
   static {
     setDefaultProperties();
     properties = (Properties) properties.clone();
@@ -95,7 +92,7 @@ public final class Conf implements Const {
   /**
    * Invert a boolean value.
    * 
-   * @param pName DOCUMENT_ME
+   * @param pName 
    */
   public static void invert(String pName) {
     boolean b = Boolean.parseBoolean(properties.getProperty(pName));
@@ -145,7 +142,7 @@ public final class Conf implements Const {
   /**
    * Reset a given property to its defaults.
    * 
-   * @param property DOCUMENT_ME
+   * @param property 
    */
   public static void setDefaultProperty(String property) {
     String defaultValue = (String) defaults.get(property);
@@ -163,7 +160,6 @@ public final class Conf implements Const {
     // We fill with current values to keep some parameters
     // like passwords and that we don't want to reset
     defaults = (Properties) properties.clone();
-
     defaults.put(CONF_OPTIONS_LANGUAGE, LocaleManager.getNativeLocale().getLanguage());
     // User preferences
     defaults.put(CONF_PERSPECTIVE_DEFAULT, SimplePerspective.class.getName());
@@ -171,7 +167,7 @@ public final class Conf implements Const {
     defaults.put(CONF_STATE_REPEAT_ALL, FALSE);
     defaults.put(CONF_STATE_KARAOKE, FALSE);
     defaults.put(CONF_STATE_SHUFFLE, FALSE);
-    defaults.put(CONF_STATE_CONTINUE, FALSE);
+    defaults.put(CONF_STATE_CONTINUE, TRUE);
     defaults.put(CONF_STATE_INTRO, FALSE);
     // no startup file by default
     defaults.put(CONF_STARTUP_ITEM, "");
@@ -185,6 +181,7 @@ public final class Conf implements Const {
     defaults.put(CONF_CONFIRMATIONS_CLEAR_HISTORY, TRUE);
     defaults.put(CONF_CONFIRMATIONS_RESET_RATINGS, TRUE);
     defaults.put(CONF_CONFIRMATIONS_REFACTOR_FILES, TRUE);
+    defaults.put(CONF_CONFIRMATIONS_BEFORE_TAG_WRITE, FALSE);
     defaults.put(CONF_OPTIONS_HIDE_UNMOUNTED, FALSE);
     defaults.put(CONF_OPTIONS_PUSH_ON_CLICK, FALSE);
     defaults.put(CONF_OPTIONS_PUSH_ON_DROP, FALSE);
@@ -206,7 +203,6 @@ public final class Conf implements Const {
     defaults.put(CONF_P2P_SHARE, FALSE);
     defaults.put(CONF_P2P_ADD_REMOTE_PROPERTIES, FALSE);
     defaults.put(CONF_P2P_HIDE_LOCAL_PROPERTIES, TRUE);
-    defaults.put(CONF_P2P_PASSWORD, "");
     defaults.put(CONF_HISTORY, "-1");
     defaults.put(CONF_TAGS_USE_PARENT_DIR, TRUE);
     defaults.put(CONF_DROP_PLAYED_TRACKS_FROM_QUEUE, FALSE);
@@ -228,6 +224,7 @@ public final class Conf implements Const {
     defaults.put(CONF_NETWORK_PROXY_TYPE, PROXY_TYPE_HTTP);
     defaults.put(CONF_COVERS_AUTO_COVER, TRUE);
     defaults.put(CONF_COVERS_MIRROW_COVER, FALSE);
+    defaults.put(CONF_COVERS_MIRROW_COVER_FS_MODE, TRUE);
     defaults.put(CONF_COVERS_SHUFFLE, FALSE);
     defaults.put(CONF_COVERS_SAVE_EXPLORER_FRIENDLY, FALSE);
     defaults.put(FILE_DEFAULT_COVER, "front;cover;folder;back");
@@ -251,6 +248,8 @@ public final class Conf implements Const {
         + Const.XML_ARTIST + ',' + Const.XML_GENRE + ',' + Const.XML_YEAR + ','
         + Const.XML_TRACK_RATE + ',' + Const.XML_TRACK_LENGTH + ',' + Const.XML_TRACKS + ','
         + Const.XML_TRACK_DISCOVERY_DATE);
+    defaults.put(CONF_WEBRADIO_COLUMNS, XML_PLAY + ',' + Const.XML_NAME + ',' + Const.XML_DESC
+        + ',' + Const.XML_KEYWORDS + ',' + Const.XML_GENRE + ',' + Const.XML_ORIGIN);
     int width = 800;
     int height = 600;
     // When ran as unit tests, no X11 server is available, catch HeadLess
@@ -259,8 +258,7 @@ public final class Conf implements Const {
       // Default Window position: X,Y,X_size,Y_size
       width = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
       // Limit initial screen size (reported as problematic by some users on
-      // dual
-      // heads)
+      // dual heads)
       if (width > 1400) {
         width = 1200;
       } else {
@@ -303,6 +301,7 @@ public final class Conf implements Const {
     defaults.put(CONF_SHOW_POPUPS, FALSE);
     defaults.put(CONF_SHOW_SYSTRAY, TRUE);
     defaults.put(CONF_MINIMIZE_TO_TRAY, FALSE);
+    defaults.put(CONF_TRAY_CLICK_DISPLAY_WINDOW, FALSE);
     defaults.put(CONF_FONTS_SIZE, "12");
     defaults.put(CONF_MPLAYER_PATH_FORCED, "");
     defaults.put(CONF_INC_RATING, "5");
@@ -317,18 +316,16 @@ public final class Conf implements Const {
     // We use trailing pattern to allow scripting like MSN plugins to
     // detect jajuk frames and extract current track
     defaults.put(CONF_PATTERN_FRAME_TITLE, '~' + PATTERN_TRACKNAME + " (" + PATTERN_ARTIST + ")~");
-    defaults.put(CONF_PATTERN_BALLOON_NOTIFIER, Messages.getString("FIFO.10") + " "
-        + Messages.getString("InformationJPanel.8"));
-    defaults.put(CONF_PATTERN_INFORMATION, Messages.getString("FIFO.10") + " "
-        + Messages.getString("InformationJPanel.8"));
+    defaults.put(CONF_PATTERN_BALLOON_NOTIFIER,
+        Messages.getString("FIFO.10") + " " + Messages.getString("InformationJPanel.8"));
+    defaults.put(CONF_PATTERN_INFORMATION,
+        Messages.getString("FIFO.10") + " " + Messages.getString("InformationJPanel.8"));
     defaults.put(CONF_SHOW_DUPLICATE_PLAYLISTS, FALSE);
     defaults.put(CONF_FORMAT_TIME_ELAPSED, "0");
     defaults.put(CONF_AUTO_SCROLL, TRUE);
-
     // By defaults, display slimbar at the center of the screen to fix #768 : under MAC,
     // it is overlaid the menu bar (the menu bar can't be overlaid, even by always on top frames)
     defaults.put(CONF_SLIMBAR_POSITION, (width / 2) + "," + (height / 2));
-
     defaults.put(CONF_SLIMBAR_DISPLAY_QUEUE, FALSE);
     defaults.put(CONF_SLIMBAR_SMART_MODE, JajukActions.SHUFFLE_GLOBAL.toString());
     defaults.put(CONF_ALARM_ACTION, ALARM_START_ACTION);
@@ -339,24 +336,37 @@ public final class Conf implements Const {
     defaults.put(CONF_ALARM_TIME_MINUTES, "00");
     defaults.put(CONF_ALARM_TIME_SECONDS, "00");
     defaults.put(CONF_EXPLORER_PATH, "");
-
+    defaults.put(CONF_BIT_PERFECT, FALSE);
+    defaults.put(CONF_TITLE_ANIMATION, FALSE);
+    defaults.put(CONF_SPLASH_SCREEN, TRUE);
+    defaults.put(CONF_SHOW_VIDEOS, FALSE);
+    defaults.put(CONF_PRESERVE_FILE_DATES, FALSE);
+    defaults.put(CONF_FADE_OUT, TRUE);
+    defaults.put(CONF_MANUAL_RATINGS, FALSE);
+    defaults.put(CONF_STARTUP_QUEUE_INDEX, "-1");
     // NOT SHOW AGAIN
     defaults.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_CROSS_FADE, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_LAF_CHANGE, FALSE);
-    
-    //Refresh delay to slow down refresh (some NAS are crashing due to intensive load)
-    defaults.put(CONF_REFRESHING_DELAY_MS, "0");
-    
     // Make a copy of default values
     properties = (Properties) defaults.clone();
   }
 
   /**
+   * Allow again to get hidden messages
+   */
+  public static void resetDontShowAgain() {
+    setProperty(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
+    setProperty(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
+    setProperty(CONF_NOT_SHOW_AGAIN_CROSS_FADE, FALSE);
+    setProperty(CONF_NOT_SHOW_AGAIN_LAF_CHANGE, FALSE);
+  }
+
+  /**
    * Return default property for given key.
    * 
-   * @param key DOCUMENT_ME
+   * @param key 
    * 
    * @return default property for given key
    */
@@ -376,8 +386,8 @@ public final class Conf implements Const {
   /**
    * Set a property.
    * 
-   * @param sName DOCUMENT_ME
-   * @param sValue DOCUMENT_ME
+   * @param sName 
+   * @param sValue 
    */
   public static void setProperty(String sName, String sValue) {
     properties.setProperty(sName, sValue);
@@ -447,7 +457,7 @@ public final class Conf implements Const {
   /**
    * Contains property.
    * 
-   * @param property DOCUMENT_ME
+   * @param property 
    * 
    * @return whether the given property is known
    */
@@ -460,8 +470,8 @@ public final class Conf implements Const {
    */
   public static void load() {
     try {
-      InputStream str = new FileInputStream(SessionService
-          .getConfFileByPath(Const.FILE_CONFIGURATION));
+      InputStream str = new FileInputStream(
+          SessionService.getConfFileByPath(Const.FILE_CONFIGURATION));
       try {
         properties.load(str);
       } finally {

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.awt.datatransfer.DataFlavor;
@@ -43,16 +42,14 @@ import org.jajuk.util.log.Log;
 /**
  * DND handler for table.
  */
-
 public class PlaylistEditorTransferHandler extends TableTransferHandler {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
   /**
    * Constructor.
    * 
-   * @param jtable DOCUMENT_ME
+   * @param jtable 
    */
   public PlaylistEditorTransferHandler(final JajukTable jtable) {
     super(jtable);
@@ -61,8 +58,8 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
   /**
    * Called when dropping.
    * 
-   * @param c DOCUMENT_ME
-   * @param t DOCUMENT_ME
+   * @param c 
+   * @param t 
    * 
    * @return true, if import data
    */
@@ -100,7 +97,6 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
               .getTransferData(TransferableAlbum.ALBUM_FLAVOR);
           oData = ttn.getUserObject();
         }
-
         List<File> alSelectedFiles = null;
         try {
           alSelectedFiles = UtilFeatures.getFilesForItems((List<Item>) oData);
@@ -109,7 +105,6 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
           Messages.showErrorMessage(je.getCode());
           return false;
         }
-
         // If we get zero playing files, just leave, do not display a dummy message in Queue code:
         if (alSelectedFiles.size() == 0) {
           return false;
@@ -119,19 +114,18 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
         if (row < 0) {
           row = plf.getFiles().size();
         }
-
         // queue case
         if (plf.getType() == Playlist.Type.QUEUE) {
           // If user selected "push on drop" option just push the selection
           if (Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_DROP)) {
-            QueueModel.push(UtilFeatures.createStackItems(UtilFeatures
-                .applyPlayOption(alSelectedFiles), Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL),
-                true), true);
+            QueueModel.push(
+                UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alSelectedFiles),
+                    Conf.getBoolean(Const.CONF_STATE_REPEAT), true), true);
           } else {
             // Insert the selection at drop target
-            QueueModel.insert(UtilFeatures.createStackItems(UtilFeatures
-                .applyPlayOption(alSelectedFiles), Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL),
-                true), row);
+            QueueModel.insert(
+                UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alSelectedFiles),
+                    Conf.getBoolean(Const.CONF_STATE_REPEAT), true), row);
           }
         }
         // normal or new playlist case
@@ -155,7 +149,6 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
       jtable.getSelectionModel().setValueIsAdjusting(false);
     }
     return false;
-
   }
 
   /* (non-Javadoc)
@@ -176,5 +169,4 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
     }
     return false;
   }
-
 }

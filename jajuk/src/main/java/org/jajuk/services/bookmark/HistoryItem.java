@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.bookmark;
 
 import java.util.Date;
@@ -30,18 +29,16 @@ import org.jajuk.base.FileManager;
  * An history item.
  */
 public class HistoryItem {
-
   /** File Id. */
   private String sFileId;
-
   /** Play date. */
   private long lDate;
 
   /**
    * Instantiates a new history item.
    * 
-   * @param sFileId DOCUMENT_ME
-   * @param lDate DOCUMENT_ME
+   * @param sFileId 
+   * @param lDate 
    */
   public HistoryItem(String sFileId, long lDate) {
     this.sFileId = sFileId;
@@ -60,7 +57,7 @@ public class HistoryItem {
   /**
    * Sets the date.
    * 
-   * @param lDate DOCUMENT_ME
+   * @param lDate 
    */
   public void setDate(long lDate) {
     this.lDate = lDate;
@@ -96,7 +93,6 @@ public class HistoryItem {
     if (file == null) {
       return "no file (" + getFileId() + ')';
     }
-
     String sDate = History.getInstance().getDateFormatter().format(new Date(getDate()));
     StringBuilder sb = new StringBuilder();
     sb.append('[').append(sDate).append("] ");

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.helpers;
 
@@ -33,10 +33,9 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class CDDBTableModel extends JajukTableModel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -45,35 +44,27 @@ public class CDDBTableModel extends JajukTableModel {
    */
   public CDDBTableModel() {
     super(8);
-
     // Current Album title
     vColNames.add(Messages.getString("CDDBWizard.3"));
     idList.add("CDDBWizard.1");
-
     // Filename
     vColNames.add(Messages.getString("CDDBWizard.1"));
     idList.add("CDDBWizard.2");
-
     // Current Track title
     vColNames.add(Messages.getString("CDDBWizard.2"));
     idList.add("CDDBWizard.3");
-
     // Proposed Track Name
     vColNames.add(Messages.getString("CDDBWizard.4"));
     idList.add("CDDBWizard.4");
-
     // Proposed Track Artist
     vColNames.add(Messages.getHumanPropertyName(Const.XML_ARTIST));
     idList.add(Const.XML_ARTIST);
-
     // Proposed Track genre
     vColNames.add(Messages.getHumanPropertyName(Const.XML_GENRE));
     idList.add(Const.XML_GENRE);
-
     // Proposed Track year
     vColNames.add(Messages.getHumanPropertyName(Const.XML_YEAR));
     idList.add(Const.XML_YEAR);
-
     // Proposed Track number
     vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_ORDER));
     idList.add(Const.XML_TRACK_ORDER);
@@ -82,8 +73,8 @@ public class CDDBTableModel extends JajukTableModel {
   /**
    * Fill model with tracks.
    * 
-   * @param currentTracks DOCUMENT_ME
-   * @param fdbReader DOCUMENT_ME
+   * @param currentTracks 
+   * @param fdbReader 
    */
   public void populateModel(List<CDDBTrack> currentTracks, FreedbReadResult fdbReader) {
     iRowNum = currentTracks.size();
@@ -134,5 +125,4 @@ public class CDDBTableModel extends JajukTableModel {
   public void populateModel(String property, String pattern, List<String> columnsToShow) {
     // Doesn't apply here
   }
-
 }

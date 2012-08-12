@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
@@ -35,10 +35,9 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class PreparePartyAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -58,7 +57,6 @@ public class PreparePartyAction extends JajukAction {
   @Override
   public void perform(ActionEvent e) throws JajukException {
     JComponent source = (JComponent) e.getSource();
-
     // if we get a playlist, pass it on so that the Wizard does not provide a
     // choice of where to take the tracks anymore
     Object o = source.getClientProperty(Const.DETAIL_SELECTION);
@@ -70,7 +68,6 @@ public class PreparePartyAction extends JajukAction {
       } else {
         playlist = ((Playlist) o);
       }
-
       // indicate to the Wizard that it should use the pre-built Playlist and
       // not provide the first selection screen. We need to do this in a static
       // method before creation because the Wizard needs to use this during

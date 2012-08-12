@@ -23,17 +23,12 @@ import javax.swing.JScrollPane;
 import org.jdesktop.swingx.JXPanel;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class FlowScrollPanel extends JXPanel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** DOCUMENT_ME. */
   private FlowLayout layout = new FlowLayout();
-
-  /** DOCUMENT_ME. */
   private JScrollPane scroller;
 
   /**
@@ -46,7 +41,7 @@ public class FlowScrollPanel extends JXPanel {
   /**
    * Instantiates a new flow scroll panel.
    * 
-   * @param scrollPane DOCUMENT_ME
+   * @param scrollPane 
    */
   public FlowScrollPanel(JScrollPane scrollPane) {
     super();
@@ -103,7 +98,6 @@ public class FlowScrollPanel extends JXPanel {
     int x = 0, y = insets.top + vgap;
     int rowh = 0;
     int maxRowWidth = scrollerWidth;
-
     for (int i = 0; i < nmembers; i++) {
       Component m = getComponent(i);
       if (m.isVisible()) {
@@ -147,7 +141,6 @@ public class FlowScrollPanel extends JXPanel {
   //
   // Scrollable methods
   //
-
   /* (non-Javadoc)
    * @see org.jdesktop.swingx.JXPanel#getPreferredScrollableViewportSize()
    */
@@ -159,9 +152,9 @@ public class FlowScrollPanel extends JXPanel {
   /**
    * Returns height of a row.
    * 
-   * @param visibleRect DOCUMENT_ME
-   * @param orientation DOCUMENT_ME
-   * @param direction DOCUMENT_ME
+   * @param visibleRect 
+   * @param orientation 
+   * @param direction 
    * 
    * @return the scrollable unit increment
    */
@@ -174,9 +167,9 @@ public class FlowScrollPanel extends JXPanel {
   /**
    * returns the height of the visible rect (so it scrolls by one screenfull).
    * 
-   * @param visibleRect DOCUMENT_ME
-   * @param orientation DOCUMENT_ME
-   * @param direction DOCUMENT_ME
+   * @param visibleRect 
+   * @param orientation 
+   * @param direction 
    * 
    * @return the scrollable block increment
    */
@@ -200,5 +193,4 @@ public class FlowScrollPanel extends JXPanel {
   public boolean getScrollableTracksViewportHeight() {
     return false;
   }
-
 }

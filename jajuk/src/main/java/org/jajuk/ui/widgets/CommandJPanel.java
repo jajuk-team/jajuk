@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.widgets;
 
@@ -30,8 +30,6 @@ import static org.jajuk.ui.actions.JajukActions.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 import ext.DropDownButton;
-import ext.scrollablepopupmenu.XCheckedButton;
-import ext.scrollablepopupmenu.XJPopupMenu;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -43,9 +41,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.swing.Action;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JLabel;
@@ -69,8 +65,6 @@ import org.jajuk.services.dj.DigitalDJ;
 import org.jajuk.services.dj.DigitalDJManager;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
-import org.jajuk.services.webradio.WebRadio;
-import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukAction;
@@ -82,7 +76,6 @@ import org.jajuk.ui.substance.CircleButtonShaper;
 import org.jajuk.ui.substance.LeftConcaveButtonShaper;
 import org.jajuk.ui.substance.RightConcaveButtonShaper;
 import org.jajuk.ui.substance.RoundRectButtonShaper;
-import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -101,99 +94,39 @@ import org.jvnet.substance.SubstanceLookAndFeel;
  */
 public class CommandJPanel extends JXPanel implements ActionListener, ChangeListener, Observer,
     MouseWheelListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   // singleton
-  /** DOCUMENT_ME. */
   private static CommandJPanel command = new CommandJPanel();
-
   // widgets declaration
-
   /** Continue mode button. */
   private JajukToggleButton jbContinue;
-
-  /** DOCUMENT_ME. */
   private JajukToggleButton jbRepeat;
-
-  /** DOCUMENT_ME. */
   private JajukToggleButton jbRandom;
-
-  /** DOCUMENT_ME. */
   private JToolBar jtbSpecial;
-
-  /** DOCUMENT_ME. */
   private DropDownButton ddbGlobalRandom;
-
-  /** DOCUMENT_ME. */
   private JRadioButtonMenuItem jmiShuffleModeSong;
-
-  /** DOCUMENT_ME. */
   private JRadioButtonMenuItem jmiShuffleModeAlbum;
-
-  /** DOCUMENT_ME. */
   private JRadioButtonMenuItem jmiShuffleModeAlbum2;
-
-  /** DOCUMENT_ME. */
   private JPopupMenu popupGlobalRandom;
-
-  /** DOCUMENT_ME. */
   private JajukButton jbBestof;
-
-  /** DOCUMENT_ME. */
   private DropDownButton ddbNovelties;
-
-  /** DOCUMENT_ME. */
   private JPopupMenu popupNovelties;
-
-  /** DOCUMENT_ME. */
-  private DropDownButton ddbWebRadio;
-
-  /** DOCUMENT_ME. */
-  private XJPopupMenu popupWebRadio;
-
-  /** DOCUMENT_ME. */
+  private WebRadioButton webRadioButton;
   private JRadioButtonMenuItem jmiNoveltiesModeSong;
-
-  /** DOCUMENT_ME. */
   private JRadioButtonMenuItem jmiNoveltiesModeAlbum;
-
-  /** DOCUMENT_ME. */
   private JajukButton jbNorm;
-
-  /** DOCUMENT_ME. */
   private DropDownButton ddbDDJ;
-
-  /** DOCUMENT_ME. */
   private JPopupMenu popupDDJ;
-
-  /** DOCUMENT_ME. */
   private JButton jbPrevious;
-
-  /** DOCUMENT_ME. */
   private JButton jbNext;
-
-  /** DOCUMENT_ME. */
   private JButton jbPlayPause;
-
-  /** DOCUMENT_ME. */
   private JButton jbStop;
-
-  /** DOCUMENT_ME. */
   private JSlider jsVolume;
-
-  /** DOCUMENT_ME. */
   private JLabel jlVolume;
-
-  /** DOCUMENT_ME. */
   private PreferenceToolbar evaltoobar;
-
-  /** DOCUMENT_ME. */
   private JajukButton jbMute;
-
   // variables declaration
-  /** DOCUMENT_ME. */
   private JajukToggleButton jbRepeatAll;
 
   /**
@@ -215,16 +148,14 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
 
   /**
    * Inits the ui.
-   * DOCUMENT_ME
+   * 
    */
   public void initUI() {
     // Instanciate the PlayerStateMediator to listen for player basic controls
     PlayerStateMediator.getInstance();
-
     // Install keystrokes on invisible components
     ActionUtil.installKeystrokes(CommandJPanel.this, ActionManager.getAction(NEXT_ALBUM),
         ActionManager.getAction(PREVIOUS_ALBUM));
-
     // Mode toolbar
     // we need an inner toolbar to apply size properly
     JPanel jpModes = new JPanel();
@@ -242,10 +173,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     jpModes.add(jbRepeat);
     jpModes.add(jbRepeatAll);
     jpModes.add(jbRandom);
-
     // Eval toolbar
     evaltoobar = new PreferenceToolbar();
-
     // Volume
     int iVolume = (int) (100 * Conf.getFloat(Const.CONF_VOLUME));
     // Perform bounds test, -1 or >100 can occur in some undefined cases (see
@@ -269,7 +198,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
         ActionManager.getAction(JajukActions.INCREASE_VOLUME));
     ActionUtil.installKeystrokes(jsVolume, ActionManager.getAction(JajukActions.DECREASE_VOLUME),
         ActionManager.getAction(JajukActions.INCREASE_VOLUME));
-
     // Special functions toolbar
     jtbSpecial = new JajukJToolbar();
     ddbGlobalRandom = new DropDownButton(IconLoader.getIcon(JajukIcons.SHUFFLE_GLOBAL)) {
@@ -306,9 +234,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     popupGlobalRandom.add(jmiShuffleModeAlbum);
     popupGlobalRandom.add(jmiShuffleModeAlbum2);
     ddbGlobalRandom.setText("");// no text visible
-
     jbBestof = new JajukButton(ActionManager.getAction(JajukActions.BEST_OF));
-
     ddbNovelties = new DropDownButton(IconLoader.getIcon(JajukIcons.NOVELTIES)) {
       private static final long serialVersionUID = 1L;
 
@@ -335,7 +261,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     popupNovelties.add(jmiNoveltiesModeAlbum);
     ddbNovelties.setText("");// no text visible
     jbNorm = new JajukButton(ActionManager.getAction(FINISH_ALBUM));
-
     // Radio tool bar
     popupDDJ = new JPopupMenu();
     ddbDDJ = new DropDownButton(IconLoader.getIcon(JajukIcons.DIGITAL_DJ)) {
@@ -350,29 +275,14 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     populateDJs();
     // no text visible
     ddbDDJ.setText("");
-
-    popupWebRadio = new XJPopupMenu(JajukMainWindow.getInstance());
-    ddbWebRadio = new DropDownButton(IconLoader.getIcon(JajukIcons.WEBRADIO)) {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      protected JPopupMenu getPopupMenu() {
-        return popupWebRadio;
-      }
-    };
-    ddbWebRadio.setAction(ActionManager.getAction(JajukActions.WEB_RADIO));
-    populateWebRadios();
-    // no text
-    ddbWebRadio.setText("");
+    webRadioButton = new WebRadioButton(IconLoader.getIcon(JajukIcons.WEBRADIO));
     JToolBar jtbWebRadio = new JajukJToolbar();
-    ddbWebRadio.addToToolBar(jtbWebRadio);
-
+    webRadioButton.addToToolBar(jtbWebRadio);
     ddbDDJ.addToToolBar(jtbSpecial);
     ddbNovelties.addToToolBar(jtbSpecial);
     ddbGlobalRandom.addToToolBar(jtbSpecial);
     jtbSpecial.add(jbBestof);
     jtbSpecial.add(jbNorm);
-
     // Play buttons
     jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
     // Manage right click : replay the track (this not triggers an action so we use a MouseAdapter here)
@@ -401,13 +311,10 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     jbStop = new JajukButton(ActionManager.getAction(STOP_TRACK));
     jbStop.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
         new RoundRectButtonShaper());
-
     // Add items
     setLayout(new MigLayout("insets 5 0 0 5", "[grow][grow][grow]"));
-
     add(jtbWebRadio, "left,split 2,gapright 10");
     add(jtbSpecial, "left,gapright 10");
-
     add(jbStop, "center,split 7,width 40!,height 30,gapright 5!");
     add(jbPrevious, "center,width 58!,height 30!,gapright 0");
     add(jbPlayPause, "center,width 45!,height 45!,gapright 0");
@@ -415,16 +322,12 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     add(jbMute, "center,width 42!,height 30!,gapright 5");
     add(jsVolume, "center,growx,width 25::100,gapright 3");
     add(jlVolume, "width 40!,gapright 10");
-
     add(jpModes, "right,split 2,gapright 5");
     add(evaltoobar, "right");
-
     // register to player events
     ObservationManager.register(CommandJPanel.this);
-
     // Update initial status
     UtilFeatures.updateStatus(this);
-
   }
 
   /*
@@ -447,6 +350,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     eventSubjectSet.add(JajukEvents.DJS_CHANGE);
     eventSubjectSet.add(JajukEvents.WEBRADIOS_CHANGE);
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
+    eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
     return eventSubjectSet;
   }
 
@@ -501,7 +406,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
    */
   @Override
   public void mouseWheelMoved(MouseWheelEvent e) {
-    if (e.getSource() == jsVolume || e.getSource() == jbMute) {
+    if (e.getSource() == jsVolume
+        || (e.getSource() == jbMute && !Conf.getBoolean(Const.CONF_BIT_PERFECT))) {
       int iOld = jsVolume.getValue();
       float newVolume = ((float) (iOld - (e.getUnitsToScroll() * 3))) / 100;
       Player.setVolume(newVolume);
@@ -538,11 +444,11 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
         } else if (JajukEvents.PLAYER_RESUME.equals(subject)) {
           // Enable the volume when resuming (fix a mplayer issue, see
           // above)
-          jsVolume.setEnabled(true);
+          jsVolume.setEnabled(!Conf.getBoolean(Const.CONF_BIT_PERFECT));
           jbMute.addMouseWheelListener(CommandJPanel.this);
           jsVolume.addMouseWheelListener(CommandJPanel.this);
         } else if (JajukEvents.PLAYER_PLAY.equals(subject)) {
-          jsVolume.setEnabled(true);
+          jsVolume.setEnabled(!Conf.getBoolean(Const.CONF_BIT_PERFECT));
         } else if (JajukEvents.SPECIAL_MODE.equals(subject)) {
           if (ObservationManager.getDetail(event, Const.DETAIL_ORIGIN).equals(
               Const.DETAIL_SPECIAL_MODE_NORMAL)) {
@@ -581,9 +487,14 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
             action.setShortDescription(Messages.getString("CommandJPanel.18"));
           }
         } else if (JajukEvents.WEBRADIOS_CHANGE.equals(event.getSubject())) {
-          populateWebRadios();
+          webRadioButton.populateWebRadios();
         } else if (JajukEvents.WEBRADIO_LAUNCHED.equals(event.getSubject())) {
-          populateWebRadios();
+          webRadioButton.populateWebRadios();
+        } else if (JajukEvents.PARAMETERS_CHANGE.equals(event.getSubject())) {
+          // Disable volume GUI in bit perfect mode
+          jsVolume.setEnabled(!Conf.getBoolean(Const.CONF_BIT_PERFECT));
+        } else if (JajukEvents.DEVICE_REFRESH.equals(event.getSubject())) {
+          webRadioButton.populateWebRadios();
         }
       }
     });
@@ -602,8 +513,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
       Iterator<DigitalDJ> it = DigitalDJManager.getInstance().getDJs().iterator();
       while (it.hasNext()) {
         final DigitalDJ dj = it.next();
-        JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(dj.getName(), IconLoader
-            .getIcon(JajukIcons.DIGITAL_DJ_16X16));
+        JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(dj.getName(),
+            IconLoader.getIcon(JajukIcons.DIGITAL_DJ_16X16));
         jmi.addActionListener(new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent arg0) {
@@ -619,47 +530,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
         });
         popupDDJ.add(jmi);
         jmi.setSelected(Conf.getString(Const.CONF_DEFAULT_DJ).equals(dj.getID()));
-      }
-    } catch (Exception e) {
-      Log.error(e);
-    }
-  }
-
-  /**
-   * Populate webradios.
-   */
-  private void populateWebRadios() {
-    try {
-      // Update button tooltip
-      ddbWebRadio.setToolTipText(WebRadioManager.getCurrentWebRadioTooltip());
-      // Clear previous elements
-      popupWebRadio.removeAll();
-      // Add configure radios item
-      JajukAction actionConf = ActionManager.getAction(JajukActions.CONFIGURE_WEBRADIOS);
-      XCheckedButton jmiConf = new XCheckedButton(actionConf);
-      // Set icon so it is correctly displayed after a selection
-      jmiConf.setCheckedIcon((ImageIcon) actionConf.getValue(Action.SMALL_ICON));
-      // The icon should be always displayed
-      jmiConf.setIconAlwaysVisible(true);
-      popupWebRadio.add(jmiConf);
-      for (final WebRadio radio : WebRadioManager.getInstance().getWebRadios()) {
-        XCheckedButton jmi = new XCheckedButton(radio.getName());
-        jmi.addActionListener(new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            Conf.setProperty(Const.CONF_DEFAULT_WEB_RADIO, radio.getName());
-            // force to reselect the item
-            populateWebRadios();
-            // update action tooltip on main button with right item
-            JajukAction action = ActionManager.getAction(JajukActions.WEB_RADIO);
-            action.setShortDescription(Const.HTML + Messages.getString("CommandJPanel.25")
-                + Const.P_B + radio.getName() + Const.B_P_HTML);
-          }
-        });
-        jmi.setSelected(Conf.getString(Const.CONF_DEFAULT_WEB_RADIO).equals(radio.getName()));
-        // Show the check icon
-        jmi.setDisplayCheck(true);
-        popupWebRadio.add(jmi);
       }
     } catch (Exception e) {
       Log.error(e);

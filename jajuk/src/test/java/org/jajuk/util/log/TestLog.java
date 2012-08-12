@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,21 +16,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.util.log;
 
 import java.util.List;
 
 import org.jajuk.JajukTestCase;
-import org.jajuk.util.Const;
 import org.jajuk.util.error.JajukException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestLog extends JajukTestCase {
-
   /*
    * (non-Javadoc)
    * 
@@ -40,7 +38,6 @@ public class TestLog extends JajukTestCase {
   protected void setUp() throws Exception {
     // make sure we have logging initialized for these tests
     Log.init();
-
     super.setUp();
   }
 
@@ -83,7 +80,7 @@ public class TestLog extends JajukTestCase {
 
   /**
    * Test debug string throwable null.
-   * DOCUMENT_ME
+   * 
    */
   public void testDebugStringThrowableNull() {
     Log.debug(null, new Throwable("testthrowable2"));
@@ -134,7 +131,7 @@ public class TestLog extends JajukTestCase {
 
   /**
    * Test warn int string throwable null.
-   * DOCUMENT_ME
+   * 
    */
   public void testWarnIntStringThrowableNull() {
     Log.warn(10, null, new Throwable("testthrowable"));
@@ -217,7 +214,6 @@ public class TestLog extends JajukTestCase {
     // set verbosity first as we can not rely on INFO being set because other
     // tests might have adjusted it somehow
     Log.setVerbosity(Log.INFO);
-
     assertEquals(Log.INFO, Log.getVerbosity());
     Log.setVerbosity(Log.DEBUG);
     assertEquals(Log.DEBUG, Log.getVerbosity());
@@ -256,50 +252,19 @@ public class TestLog extends JajukTestCase {
     assertFalse(Log.isDebugEnabled());
   }
 
-  /**
-   * Test method for {@link org.jajuk.util.log.Log#getSpool()}.
-   */
-  public void testGetSpool() {
-    // should return a list and not null
-    assertNotNull(Log.getSpool());
-
-    // create enough spool to overflow
-    for (int i = 0; i < Const.FEEDBACK_LINES + 10; i++) {
-      Log.debug("Spooltest-" + i + '|');
-    }
-
-    // should return the expected number of lines now
-    assertEquals(Log.getSpool().toString(), Const.FEEDBACK_LINES, Log.getSpool().size());
-
-    // now the first ten should be moved out
-    verifySpool("Spooltest-0|", false);
-    verifySpool("Spooltest-9|", false);
-    verifySpool("Spooltest-11|");
-    verifySpool("Spooltest-" + Integer.toString(Const.FEEDBACK_LINES + 9) + '|');
-
-    // more details tested in other methods
-  }
-
-  /**
-   * Verify spool.
-   * DOCUMENT_ME
-   *
-   * @param substring DOCUMENT_ME
-   */
   private void verifySpool(String substring) {
     verifySpool(substring, true);
   }
 
   /**
    * Verify spool.
-   * DOCUMENT_ME
+   * 
    *
-   * @param substring DOCUMENT_ME
-   * @param expected DOCUMENT_ME
+   * @param substring 
+   * @param expected 
    */
   private void verifySpool(String substring, boolean expected) {
     List<String> list = Log.getSpool();
-
     for (String str : list) {
       if (str.contains(substring)) {
         // expected => return, not expected => fail
@@ -310,7 +275,6 @@ public class TestLog extends JajukTestCase {
         }
       }
     }
-
     // if we expected the string, but did not find it we need to fail here
     if (expected) {
       fail("List does not contain expected string '" + substring + "' in spool: " + list.toString());
@@ -319,7 +283,7 @@ public class TestLog extends JajukTestCase {
 
   /**
    * Test anonymization.
-   * DOCUMENT_ME
+   * 
    */
   public void testAnonymization() {
     // things in {{...}} are replaced in the spool. Verify that this happens
@@ -327,14 +291,13 @@ public class TestLog extends JajukTestCase {
     verifySpool("this is");
     verifySpool("sensitive", false);
     verifySpool("data...");
-
     // replaced by "***"
     verifySpool("***");
   }
 
   /**
    * Test anonymization player state.
-   * DOCUMENT_ME
+   * 
    */
   public void testAnonymizationPlayerState() {
     // special replacement that is done to not show personal data in the spool
@@ -343,5 +306,4 @@ public class TestLog extends JajukTestCase {
     verifySpool("OPENING");
     verifySpool("secret", false);
   }
-
 }

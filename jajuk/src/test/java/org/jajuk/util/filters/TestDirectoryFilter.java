@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,28 +16,31 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.util.filters;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.ConstTest;
+import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestDirectoryFilter extends JajukTestCase {
-
   /**
    * Test method for.
    *
    * {@link org.jajuk.util.filters.DirectoryFilter#accept(java.io.File)}.
+   * @throws IOException 
    */
-  public void testAcceptFile() {
-    assertTrue(DirectoryFilter.getInstance().accept(new File(System.getProperty("java.io.tmpdir"))));
-    assertFalse(DirectoryFilter.getInstance().accept(new File("notexisting")));
+  public void testAcceptFile() throws IOException {
+    assertTrue(DirectoryFilter.getInstance().accept(new File(ConstTest.TEMP_PATH)));
+    assertFalse(DirectoryFilter.getInstance().accept(JUnitHelpers.getFile().getFIO()));
   }
 
   /**

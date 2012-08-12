@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.lyrics;
 
 import java.util.ArrayList;
@@ -44,22 +43,14 @@ import org.jajuk.util.log.Log;
  * user. For now the lyrics providers list is static and stored directly in this class.
  */
 public final class LyricsService {
-
-  /** DOCUMENT_ME. */
   private static List<ILyricsProvider> providers = null;
-
-  /** DOCUMENT_ME. */
   private static ILyricsProvider current = null;
-
-  /** DOCUMENT_ME. */
   private static List<ILyricsPersister> persisters = null;
-
   /** Providers list. */
   private static String[] providersClasses = new String[] {
       "org.jajuk.services.lyrics.providers.TagLyricsProvider",
       "org.jajuk.services.lyrics.providers.TxtLyricsProvider",
       "org.jajuk.services.lyrics.providers.LyricWikiWebLyricsProvider", };
-
   /** Persisters list. */
   private static String[] persisterClasses = new String[] {
       "org.jajuk.services.lyrics.persisters.TagPersister",
@@ -69,7 +60,6 @@ public final class LyricsService {
    * Empty private constructor to avoid instantiating utility class.
    */
   private LyricsService() {
-
   }
 
   /**
@@ -99,7 +89,7 @@ public final class LyricsService {
 
   /**
    * Load persisters.
-   * DOCUMENT_ME
+   * 
    */
   @SuppressWarnings("unchecked")
   public static void loadPersisters() {
@@ -121,7 +111,7 @@ public final class LyricsService {
   /**
    * Cycles through lyrics providers to return the best matching lyrics.
    * 
-   * @param audioFile DOCUMENT_ME
+   * @param audioFile 
    * 
    * @return the song's lyrics
    */
@@ -178,7 +168,7 @@ public final class LyricsService {
   /**
    * Delete lyrics from any persister support.
    * 
-   * @param provider DOCUMENT_ME
+   * @param provider 
    * 
    * @throws LyricsPersistenceException if the lyrics cannot be removed
    */
@@ -202,7 +192,6 @@ public final class LyricsService {
       throw new LyricsPersistenceException("Lyrics could not be deleted from "
           + provider.getFile().getName());
     }
-
   }
 
   /**
@@ -237,5 +226,4 @@ public final class LyricsService {
     }
     return persisters;
   }
-
 }

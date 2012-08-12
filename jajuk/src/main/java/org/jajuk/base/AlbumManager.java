@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.base;
 
 import java.util.ArrayList;
@@ -42,20 +41,15 @@ import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.error.JajukException;
-import org.jajuk.util.error.JajukRuntimeException;
 
 /**
  * Convenient class to manage Albums.
  */
 public final class AlbumManager extends ItemManager implements Observer {
-
   /** Self instance. */
   private static AlbumManager singleton = new AlbumManager();
-
   /** Album max rating. */
   private long maxRate = 0l;
-
-  /** DOCUMENT_ME. */
   private int comp = 0;
 
   /**
@@ -111,7 +105,7 @@ public final class AlbumManager extends ItemManager implements Observer {
    * Return hashcode for this item.
    * 
    * @param sName item name
-   * @param discId DOCUMENT_ME
+   * @param discId 
    * 
    * @return ItemManager ID
    */
@@ -122,9 +116,9 @@ public final class AlbumManager extends ItemManager implements Observer {
   /**
    * Register an Album with a known id.
    *
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param discID DOCUMENT_ME
+   * @param sId 
+   * @param sName 
+   * @param discID 
    * @return the album
    */
   public Album registerAlbum(String sId, String sName, long discID) {
@@ -140,8 +134,8 @@ public final class AlbumManager extends ItemManager implements Observer {
   /**
    * Register an Album.
    * 
-   * @param sName DOCUMENT_ME
-   * @param discID DOCUMENT_ME
+   * @param sName 
+   * @param discID 
    * 
    * @return the album
    */
@@ -153,45 +147,39 @@ public final class AlbumManager extends ItemManager implements Observer {
   /**
    * Change the item.
    * 
-   * @param old DOCUMENT_ME
-   * @param sNewName DOCUMENT_ME
+   * @param old 
+   * @param sNewName 
    * 
    * @return new album
    * 
    * @throws JajukException the jajuk exception
    */
-  public Album changeAlbumName(Album old, String sNewName) throws JajukException {
+  Album changeAlbumName(Album old, String sNewName) throws JajukException {
     // check there is actually a change
     if (old.getName2().equals(sNewName)) {
       return old;
     }
-
     // check up front as later the state of the track is already changed
     boolean bQueueUpdateRequired = false;
     if (QueueModel.getPlayingFile() != null
         && QueueModel.getPlayingFile().getTrack().getAlbum().equals(old)) {
       bQueueUpdateRequired = true;
     }
-
     Album newItem = registerAlbum(sNewName, old.getDiscID());
     // re apply old properties from old item
     newItem.cloneProperties(old);
-
     // update tracks
     for (Track track : TrackManager.getInstance().getTracks()) {
       if (track.getAlbum().equals(old)) {
         TrackManager.getInstance().changeTrackAlbum(track, sNewName, null);
       }
     }
-
     // if current track album name is changed, notify it
     if (bQueueUpdateRequired) {
       ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
     }
-
     // remove old item
     removeItem(old);
-
     return newItem;
   }
 
@@ -226,7 +214,7 @@ public final class AlbumManager extends ItemManager implements Observer {
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
-  public String getLabel() {
+  public String getXMLTag() {
     return Const.XML_ALBUMS;
   }
 
@@ -237,7 +225,7 @@ public final class AlbumManager extends ItemManager implements Observer {
    * 
    * @return Element
    */
-  public Album getAlbumByID(String sID) {
+  Album getAlbumByID(String sID) {
     return (Album) getItemByID(sID);
   }
 
@@ -291,8 +279,6 @@ public final class AlbumManager extends ItemManager implements Observer {
                 albumSet.add(album);
               } else if (item instanceof Year && track.getYear().equals(item)) {
                 albumSet.add(album);
-              } else {
-                throw new JajukRuntimeException("Association not implemented " + item);
               }
             }
           }
@@ -304,7 +290,6 @@ public final class AlbumManager extends ItemManager implements Observer {
       }
     }
     return out;
-
   }
 
   /**
@@ -516,7 +501,7 @@ public final class AlbumManager extends ItemManager implements Observer {
   /**
    * Gets the album by name.
    * 
-   * @param name DOCUMENT_ME
+   * @param name 
    * 
    * @return associated album (case insensitive) or null if no match
    */
@@ -535,7 +520,6 @@ public final class AlbumManager extends ItemManager implements Observer {
     } finally {
       lock.readLock().unlock();
     }
-
   }
 
   /**
@@ -561,5 +545,4 @@ public final class AlbumManager extends ItemManager implements Observer {
       album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, "");
     }
   }
-
 }

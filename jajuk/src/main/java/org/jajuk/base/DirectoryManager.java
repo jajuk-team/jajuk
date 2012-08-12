@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.base;
 
 import java.util.ArrayList;
@@ -35,7 +34,6 @@ import org.jajuk.util.UtilSystem;
  * Convenient class to manage directories.
  */
 public final class DirectoryManager extends ItemManager {
-
   /** Self instance. */
   private static DirectoryManager singleton = new DirectoryManager();
 
@@ -150,14 +148,14 @@ public final class DirectoryManager extends ItemManager {
    * 
    * @return Directory matching the id
    */
-  public Directory getDirectoryByID(final String sID) {
+  Directory getDirectoryByID(final String sID) {
     return (Directory) getItemByID(sID);
   }
 
   /**
    * Gets the directory for io.
    *
-   * @param fio DOCUMENT_ME
+   * @param fio 
    * @param device Associated device
    * @return Directory matching the io file
    */
@@ -177,14 +175,14 @@ public final class DirectoryManager extends ItemManager {
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
-  public String getLabel() {
+  public String getXMLTag() {
     return Const.XML_DIRECTORIES;
   }
 
   /**
    * Register a root device directory.
    * 
-   * @param device DOCUMENT_ME
+   * @param device 
    * 
    * @return the directory
    */
@@ -195,9 +193,9 @@ public final class DirectoryManager extends ItemManager {
   /**
    * Register a directory.
    * 
-   * @param sName DOCUMENT_ME
-   * @param dParent DOCUMENT_ME
-   * @param device DOCUMENT_ME
+   * @param sName 
+   * @param dParent 
+   * @param device 
    * 
    * @return the directory
    */
@@ -210,13 +208,13 @@ public final class DirectoryManager extends ItemManager {
   /**
    * Register a directory with a known id.
    *
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param dParent DOCUMENT_ME
-   * @param device DOCUMENT_ME
+   * @param sId 
+   * @param sName 
+   * @param dParent 
+   * @param device 
    * @return the directory
    */
-  public Directory registerDirectory(final String sId, final String sName, final Directory dParent,
+  Directory registerDirectory(final String sId, final String sName, final Directory dParent,
       final Device device) {
     Directory directory = getDirectoryByID(sId);
     if (directory != null) {
@@ -231,7 +229,7 @@ public final class DirectoryManager extends ItemManager {
    * Remove a directory and all subdirectories from main directory repository.
    * Remove reference from parent directories as well.
    * 
-   * @param sId DOCUMENT_ME
+   * @param sId 
    */
   public void removeDirectory(final String sId) {
     lock.writeLock().lock();

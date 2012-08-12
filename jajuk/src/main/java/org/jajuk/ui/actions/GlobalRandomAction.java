@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
@@ -37,10 +37,9 @@ import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class GlobalRandomAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -77,8 +76,8 @@ public class GlobalRandomAction extends JajukAction {
           alToPlay = alToPlay.subList(0, Const.NB_TRACKS_ON_ACTION);
         }
         // Push them
-        QueueModel.push(UtilFeatures.createStackItems(alToPlay, Conf
-            .getBoolean(Const.CONF_STATE_REPEAT_ALL), false), false);
+        QueueModel.push(UtilFeatures.createStackItems(alToPlay,
+            Conf.getBoolean(Const.CONF_STATE_REPEAT), false), false);
       }
     }.start();
   }

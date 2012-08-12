@@ -19,7 +19,7 @@
            <all-permissions/>
        </security> 
        <resources>
-           <j2se version='1.6+' java-vm-args='-client -Xms20M -Xmx2G -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10'/>
+           <j2se version='1.6+' java-vm-args='-client -Xms20M -Xmx2G -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -Xverify:none'/>
            <property name='test' value='TEST_FLAG_REPLACED_BY_ANT'/>
            <jar href='jajuk.jar' version='JNLP_VERSION_REPLACED_BY_ANT'/> 
    		<extension name='Animation' href='animation.jnlp' />
@@ -39,6 +39,7 @@
         	<extension name='dbus' href='dbus.jnlp'/>
         	<extension name='xml' href='xml.jnlp'/>
         	<extension name='bindings' href='bindings.jnlp'/>
+        	<extension name='guava' href='guava.jnlp'/>
        </resources>
        <resources os='Windows'>
       	<nativelib href='windows/jintellitype-native.jar' version='JNLP_VERSION_REPLACED_BY_ANT'/>

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.wizard;
 
 import java.awt.BorderLayout;
@@ -44,83 +43,60 @@ import org.jajuk.base.FileManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * Tracks Duplicate dialog.
  */
 public class DuplicateTracksDialog extends JPanel implements ListSelectionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** DOCUMENT_ME. */
   private final JList list;
-
-  /** DOCUMENT_ME. */
   private final JScrollPane listScrollPane;
-
-  /** DOCUMENT_ME. */
   private final DefaultListModel listModel = new DefaultListModel();
-
-  /** DOCUMENT_ME. */
   private final List<List<File>> allFiles;
-
-  /** DOCUMENT_ME. */
   private List<File> flatFilesList;
-
-  /** DOCUMENT_ME. */
   private final JButton deleteButton;
-
-  /** DOCUMENT_ME. */
   private final JButton selectAllButton;
-
-  /** DOCUMENT_ME. */
   private final JButton closeButton;
 
   /**
    * Instantiates a new duplicate tracks list.
    * 
-   * @param files DOCUMENT_ME
-   * @param jbClose DOCUMENT_ME
+   * @param files 
+   * @param jbClose 
    */
   public DuplicateTracksDialog(List<List<File>> files, JButton jbClose) {
     super(new BorderLayout());
     allFiles = files;
     closeButton = jbClose;
     populateList(files);
-
     list = new JList(listModel);
     list.setVisibleRowCount(20);
     listScrollPane = new JScrollPane(list);
-
     deleteButton = new JButton(Messages.getString("Delete"));
     deleteButton.setActionCommand(Messages.getString("Delete"));
     deleteButton.addActionListener(new DeleteListener());
-
     selectAllButton = new JButton(Messages.getString("FindDuplicateTracksAction.4"));
     selectAllButton.setActionCommand(Messages.getString("FindDuplicateTracksAction.4"));
     selectAllButton.addActionListener(new SelectAllListener());
-
     JPanel buttonPane = new JPanel(new MigLayout("ins 5,right"));
-
     buttonPane.add(deleteButton, "sg buttons,center");
     buttonPane.add(selectAllButton, "sg buttons,center");
     buttonPane.add(closeButton, "sg buttons,center");
-
     buttonPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
     add(listScrollPane, BorderLayout.CENTER);
     add(buttonPane, BorderLayout.PAGE_END);
   }
 
   /**
    * Populate list.
-   * DOCUMENT_ME
    * 
-   * @param allFiles DOCUMENT_ME
+   * 
+   * @param allFiles 
    */
   public final void populateList(List<List<File>> allFiles) {
     flatFilesList = new ArrayList<File>();
@@ -129,24 +105,31 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
         flatFilesList.add(f);
       }
     }
-
     listModel.removeAllElements();
     for (List<File> dups : allFiles) {
       // dups's size can be 0 if dups are found among unmounted devices
-      listModel.addElement(dups.get(0).getName() + " ( "
-          + dups.get(0).getDirectory().getAbsolutePath() + " ) ");
+      File ref = dups.get(0);
+      String label = ref.getName() + getQualityLabel(ref) + "("
+          + ref.getDirectory().getAbsolutePath() + ")";
+      listModel.addElement(label);
       for (int i = 1; i < dups.size(); i++) {
-        listModel.addElement("  + " + dups.get(i).getName() + " ( "
-            + dups.get(i).getDirectory().getAbsolutePath() + " ) ");
+        File dup = dups.get(i);
+        listModel.addElement("  + " + dup.getName() + getQualityLabel(dup) + "( "
+            + dup.getDirectory().getAbsolutePath() + " )");
       }
     }
   }
 
-  /**
-   * DOCUMENT_ME.
-   */
-  class DeleteListener implements ActionListener {
+  private String getQualityLabel(File file) {
+    long quality = file.getLongValue(Const.XML_QUALITY);
+    if (quality != 0) {
+      return " [" + quality + Messages.getString("FIFO.13") + "] ";
+    } else {
+      return " [? " + Messages.getString("FIFO.13") + "] ";
+    }
+  }
 
+  class DeleteListener implements ActionListener {
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -154,14 +137,12 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
     public void actionPerformed(ActionEvent e) {
       int indices[] = list.getSelectedIndices();
       String sFiles = getSelectedFiles(indices);
-
       int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_files") + " : \n\n"
           + sFiles + "\n" + indices.length + " " + Messages.getString("Confirmation_file_number"),
           JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
       if (iResu != JOptionPane.YES_OPTION) {
         return;
       }
-
       // Delete physically files from disk and from collection
       for (int i : indices) {
         try {
@@ -171,7 +152,6 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
           Log.error(131, ioe);
         }
       }
-
       // Remove table rows
       int deletedRows = 0;
       for (int i : indices) {
@@ -180,17 +160,10 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
         deleteFilefromList(i - deletedRows);
         deletedRows++;
       }
-
       populateList(allFiles);
       ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
     }
 
-    /**
-     * Delete filefrom list.
-     * DOCUMENT_ME
-     * 
-     * @param index DOCUMENT_ME
-     */
     private void deleteFilefromList(int index) {
       // first iterate over all Lists of files, counting the overall index
       int count = 0;
@@ -202,13 +175,11 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
             if (allFiles.get(r).size() <= 2) {
               // if only one file is left now, remove the whole element
               allFiles.remove(r);
-
               // done, the required index was removed 
               return;
             } else {
               // remove the file that is removed
               allFiles.get(r).remove(c);
-
               // done, the required index was removed
               return;
             }
@@ -218,13 +189,6 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
       }
     }
 
-    /**
-     * Gets the selected files.
-     * 
-     * @param indices DOCUMENT_ME
-     * 
-     * @return the selected files
-     */
     private String getSelectedFiles(int indices[]) {
       String sFiles = "";
       for (int k : indices) {
@@ -234,11 +198,7 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
     }
   }
 
-  /**
-   * DOCUMENT_ME.
-   */
   class SelectAllListener implements ActionListener {
-
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -266,11 +226,9 @@ public class DuplicateTracksDialog extends JPanel implements ListSelectionListen
   @Override
   public void valueChanged(ListSelectionEvent e) {
     if (!e.getValueIsAdjusting()) {
-
       if (list.getSelectedIndex() == -1) {
         // No selection, disable delete button.
         deleteButton.setEnabled(false);
-
       } else {
         // Selection, enable the delete button.
         deleteButton.setEnabled(true);

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.views;
 
 import java.awt.event.ActionEvent;
@@ -64,98 +63,50 @@ import org.jdesktop.swingx.JXTree;
  * An abstract files or tracks tree view. Contains common methods
  */
 public abstract class AbstractTreeView extends ViewAdapter {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 8330315957562739918L;
-
   /** The tree scrollpane. */
   JScrollPane jspTree;
-
   /** The phyical tree. */
   JXTree jtree;
-
   /** The table/tree sync toggle button. */
   JajukToggleButton jtbSync;
-
   /** the collapse all button. */
   JButton jbCollapseAll;
-
   /** Current selection. */
   TreePath[] paths;
-
   /** Resursive items selection. */
   Set<Item> selectedRecursively = new HashSet<Item>(100);
-
   /** Items selection. */
   List<Item> alSelected = new ArrayList<Item>(100);
-
   /** Top tree node. */
   DefaultMutableTreeNode top;
-
-  /** DOCUMENT_ME. */
   javax.swing.JPopupMenu jmenu;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiPlay;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiPush;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiFrontPush;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiPlayShuffle;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiPlayRepeat;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiCut;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiCopy;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiPaste;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiRename;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiDelete;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiNewFolder;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiAddFavorite;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiReport;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiProperties;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiCDDBWizard;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiCopyURL;
-
   /** Jtree scroller position*. */
   private int pos;
-
   /** Preference menu. */
   PreferencesJMenu pjmTracks;
-
   /** Used to differentiate user action tree collapse from code tree collapse. */
   boolean bManualAction = true;
-
   /** Used to differentiate tree/table sync due to internal events from users's ones. */
   boolean bInternalAction = false;
-  
-  /** Flag used to set tree is refreshing */
+  /** Flag used to set tree is refreshing. */
   boolean refreshing = false;
 
   /*
@@ -173,13 +124,14 @@ public abstract class AbstractTreeView extends ViewAdapter {
     eventSubjectSet.add(JajukEvents.CDDB_WIZARD);
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     eventSubjectSet.add(JajukEvents.TABLE_SELECTION_CHANGED);
+    eventSubjectSet.add(JajukEvents.RATE_CHANGED);
     return eventSubjectSet;
   }
 
   /**
-   * Creates the tree. DOCUMENT_ME
+   * Creates the tree. 
    * 
-   * @param bLazy DOCUMENT_ME
+   * @param bLazy 
    * 
    * @return the j tree
    */
@@ -188,14 +140,12 @@ public abstract class AbstractTreeView extends ViewAdapter {
     jtree.putClientProperty("JTree.lineStyle", "Angled");
     jtree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
     setKeystrokes();
-
     // set the special controller for doing lazy loading if used for this View
     if (bLazy) {
       final LazyLoadingTreeExpander controller = new LazyLoadingTreeExpander(
           (DefaultTreeModel) jtree.getModel());
       jtree.addTreeWillExpandListener(controller);
     }
-
     return jtree;
   }
 
@@ -242,12 +192,10 @@ public abstract class AbstractTreeView extends ViewAdapter {
     jmiCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     jmiCopyURL.putClientProperty(Const.DETAIL_CONTENT, alSelected);
     pjmTracks = new PreferencesJMenu(alSelected);
-
     // Create the sync toggle button and restore its state
     jtbSync = new JajukToggleButton(ActionManager.getAction(JajukActions.SYNC_TREE_TABLE));
     jtbSync.putClientProperty(Const.DETAIL_VIEW, getID());
     jtbSync.setSelected(Conf.getBoolean(Const.CONF_SYNC_TABLE_TREE + "." + getID()));
-
     // Create the collapse all button, no need to a dedicated Action here as it
     // is used only in this class
     jbCollapseAll = new JButton(IconLoader.getIcon(JajukIcons.REMOVE));
@@ -261,23 +209,22 @@ public abstract class AbstractTreeView extends ViewAdapter {
         jtree.setSelectionInterval(0, 0);
       }
     });
-
   }
 
   /**
-   * Populate tree. DOCUMENT_ME
+   * Populate tree. 
    */
   abstract void populateTree();
 
   /**
-   * Expand. DOCUMENT_ME
+   * Expand. 
    */
   abstract void expand();
 
   /**
    * Expand a given item.
    * 
-   * @param item DOCUMENT_ME
+   * @param item 
    */
   abstract void scrollTo(Item item);
 
@@ -288,7 +235,6 @@ public abstract class AbstractTreeView extends ViewAdapter {
     jtree.putClientProperty(Const.DETAIL_SELECTION, alSelected);
     InputMap inputMap = jtree.getInputMap(JComponent.WHEN_FOCUSED);
     ActionMap actionMap = jtree.getActionMap();
-
     // Delete
     Action action = ActionManager.getAction(JajukActions.DELETE);
     inputMap.put(KeyStroke.getKeyStroke("DELETE"), "delete");
@@ -325,7 +271,8 @@ public abstract class AbstractTreeView extends ViewAdapter {
     final JajukEvents subject = event.getSubject();
     if (subject.equals(JajukEvents.DEVICE_MOUNT) || subject.equals(JajukEvents.DEVICE_UNMOUNT)
         || subject.equals(JajukEvents.DEVICE_REFRESH)
-        || subject.equals(JajukEvents.PARAMETERS_CHANGE)) {
+        || subject.equals(JajukEvents.PARAMETERS_CHANGE)
+        || JajukEvents.RATE_CHANGED.equals(subject)) {
       SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
         @Override
         public Void doInBackground() {
@@ -342,6 +289,8 @@ public abstract class AbstractTreeView extends ViewAdapter {
           bManualAction = false;
           expand();
           bManualAction = true;
+          // Make sure that preference menu icon is refreshed
+          pjmTracks.resetUI(alSelected);
           // Reset last position in tree
           // The scrollbar must be set after current EDT work to be effective,
           // so queue it
@@ -353,7 +302,6 @@ public abstract class AbstractTreeView extends ViewAdapter {
               }
             }
           });
-
         }
       };
       sw.execute();
@@ -373,7 +321,6 @@ public abstract class AbstractTreeView extends ViewAdapter {
               || sourceView.getID().equals(getID())) {
             return;
           }
-
           @SuppressWarnings("unchecked")
           List<Item> selection = (List<Item>) details.get(Const.DETAIL_SELECTION);
           if (selection.size() == 0) {

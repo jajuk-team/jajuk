@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
@@ -38,16 +38,12 @@ import org.jajuk.util.log.Log;
  * the {@link #actionPerformed(java.awt.event.ActionEvent)} method.
  */
 public abstract class JajukAction extends AbstractAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -2535230785022978297L;
-
   /** Is this action an hotkey ?. */
   private boolean bHotkey = false;
-
   /** enable state. */
   private boolean bEnable = true;
-
   // Instantiate a static JIntellitype object if under Windows
   // BEWARE ! don't use direct call to JIntellitype like
   // JIntellitype.isJIntellitypeSupported()) because we don't want to create a linkage
@@ -66,11 +62,11 @@ public abstract class JajukAction extends AbstractAction {
   /**
    * Construct an action with the given name, icon and accelerator keystroke.
    *
-   * @param pName DOCUMENT_ME
+   * @param pName 
    * @param icon The icon to use for visualization of the action.
    * @param stroke The keystroke to use.
    * @param enabled By default enable or disable the action.
-   * @param bHotkey DOCUMENT_ME
+   * @param bHotkey 
    */
   protected JajukAction(String pName, Icon icon, KeyStroke stroke, boolean enabled, boolean bHotkey) {
     // check hotkeys are enabled (false by default)
@@ -91,9 +87,9 @@ public abstract class JajukAction extends AbstractAction {
     if (stroke != null) {
       if (this.bHotkey) {
         try {
-          Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager").getMethod("registerHotKey",
-              new Class[] { KeyStroke.class, JajukAction.class }).invoke(null,
-              new Object[] { stroke, this });
+          Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager")
+              .getMethod("registerHotKey", new Class[] { KeyStroke.class, JajukAction.class })
+              .invoke(null, new Object[] { stroke, this });
         } catch (ClassNotFoundException e) {
           Log.error(e);
         } catch (IllegalArgumentException e) {
@@ -277,7 +273,6 @@ public abstract class JajukAction extends AbstractAction {
    * @param actionCommand The action command for this action. This is used for creating the
    * <code>ActionEvent</code>.
    */
-
   public void setActionCommand(String actionCommand) {
     putValue(ACCELERATOR_KEY, actionCommand);
   }
@@ -337,7 +332,9 @@ public abstract class JajukAction extends AbstractAction {
   public final void actionPerformed(ActionEvent evt) {
     try {
       perform(evt);
-    } catch (Throwable e2) {
+    } catch (Throwable e2) {//NOSONAR
+      // We want to catch even throwables because there is no point to 
+      // throw them again, caller can't do anything anyway.
       Log.error(e2);
     }
   }
@@ -345,7 +342,7 @@ public abstract class JajukAction extends AbstractAction {
   /**
    * Perform the action.
    * 
-   * @param evt DOCUMENT_ME
+   * @param evt 
    * 
    * @throws Exception When anything goes wrong when performing the action.
    */
@@ -358,8 +355,8 @@ public abstract class JajukAction extends AbstractAction {
    */
   public static void cleanup() throws Exception {
     if (UtilSystem.isUnderWindows()) {
-      Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager").getMethod("cleanup").invoke(null,
-          (Object[]) null);
+      Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager").getMethod("cleanup")
+          .invoke(null, (Object[]) null);
     }
   }
 
@@ -375,7 +372,7 @@ public abstract class JajukAction extends AbstractAction {
   /**
    * Enable or disable the action.
    * 
-   * @param enable DOCUMENT_ME
+   * @param enable 
    */
   protected void enable(boolean enable) {
     this.bEnable = enable;
@@ -389,5 +386,4 @@ public abstract class JajukAction extends AbstractAction {
   protected boolean isEnable() {
     return this.bEnable;
   }
-
 }

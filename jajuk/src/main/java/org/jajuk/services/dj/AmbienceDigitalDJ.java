@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.dj;
 
 import java.util.ArrayList;
@@ -33,14 +32,13 @@ import org.jajuk.util.Messages;
  * Ambience DJ.
  */
 public class AmbienceDigitalDJ extends DigitalDJ {
-
   /** Used ambience. */
   private Ambience ambience;
 
   /**
    * The Constructor.
    * 
-   * @param sID DOCUMENT_ME
+   * @param sID 
    */
   public AmbienceDigitalDJ(String sID) {
     super(sID);
@@ -83,10 +81,8 @@ public class AmbienceDigitalDJ extends DigitalDJ {
     }
     // Select by rate if needed
     filterFilesByRate(out);
-
     // finally ensure that we don't select more than the max number of tracks
     filterFilesByMaxTrack(out);
-
     return out;
   }
 
@@ -124,5 +120,4 @@ public class AmbienceDigitalDJ extends DigitalDJ {
   public void setAmbience(Ambience ambience) {
     this.ambience = ambience;
   }
-
 }

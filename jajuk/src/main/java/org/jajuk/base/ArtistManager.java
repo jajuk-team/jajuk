@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.base;
 
 import java.util.ArrayList;
@@ -42,12 +41,12 @@ import org.jajuk.util.error.JajukException;
  * Convenient class to manage artists.
  */
 public final class ArtistManager extends ItemManager {
-
   /** Self instance. */
   private static ArtistManager singleton = new ArtistManager();
-
   /** List of all known artists. */
   private Vector<String> artistsList = new Vector<String>(100); // NOPMD
+  /** note if we have already fully loaded the Collection to speed up initial startup */
+  private volatile boolean orderedState = false;
 
   /**
    * No constructor available, only static access.
@@ -95,7 +94,7 @@ public final class ArtistManager extends ItemManager {
    * @param sName The name of the new artist.
    * @return the artist
    */
-  public Artist registerArtist(String sId, String sName) {
+  Artist registerArtist(String sId, String sName) {
     Artist artist = getArtistByID(sId);
     // if we have this artist already, simply return the existing one
     if (artist != null) {
@@ -106,15 +105,33 @@ public final class ArtistManager extends ItemManager {
     // add it in genres list if new
     if (!artistsList.contains(sName)) {
       artistsList.add(artist.getName2());
-      // Sort items ignoring case
-      Collections.sort(artistsList, new Comparator<String>() {
-        @Override
-        public int compare(String o1, String o2) {
-          return o1.compareToIgnoreCase(o2);
-        }
-      });
+      // only sort as soon as we have the Collection fully loaded
+      if (orderedState) {
+        sortArtistList();
+      }
     }
     return artist;
+  }
+
+  private void sortArtistList() {
+    // Sort items ignoring case
+    Collections.sort(artistsList, new Comparator<String>() {
+      @Override
+      public int compare(String o1, String o2) {
+        return o1.compareToIgnoreCase(o2);
+      }
+    });
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.base.ItemManager#switchToOrderState()
+   */
+  @Override
+  public void switchToOrderState() {
+    // bring this Manager to ordered state when Collection is fully loaded
+    orderedState = true;
+    sortArtistList();
+    super.switchToOrderState();
   }
 
   /**
@@ -127,36 +144,30 @@ public final class ArtistManager extends ItemManager {
    * 
    * @throws JajukException Thrown if adjusting the name fails for some reason.
    */
-  public Artist changeArtistName(Artist old, String sNewName) throws JajukException {
-
+  Artist changeArtistName(Artist old, String sNewName) throws JajukException {
     // check if there is actually a change
     if (old.getName2().equals(sNewName)) {
       return old;
     }
-
     // find out if the QueueModel is playing this track before we change the track!
     boolean queueNeedsUpdate = false;
     if (QueueModel.getPlayingFile() != null
         && QueueModel.getPlayingFile().getTrack().getArtist().equals(old)) {
       queueNeedsUpdate = true;
     }
-
     Artist newItem = registerArtist(sNewName);
     // re apply old properties from old item
     newItem.cloneProperties(old);
-
     // update tracks
     for (Track track : TrackManager.getInstance().getTracks()) {
       if (track.getArtist().equals(old)) {
         TrackManager.getInstance().changeTrackArtist(track, sNewName, null);
       }
     }
-
     // if current track artist name is changed, notify it
     if (queueNeedsUpdate) {
       ObservationManager.notify(new JajukEvent(JajukEvents.ARTIST_CHANGED));
     }
-
     return newItem;
   }
 
@@ -166,7 +177,7 @@ public final class ArtistManager extends ItemManager {
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
-  public String getLabel() {
+  public String getXMLTag() {
     return Const.XML_ARTISTS;
   }
 
@@ -186,7 +197,7 @@ public final class ArtistManager extends ItemManager {
    * 
    * @return Element
    */
-  public Artist getArtistByID(String sID) {
+  Artist getArtistByID(String sID) {
     return (Artist) getItemByID(sID);
   }
 
@@ -228,7 +239,6 @@ public final class ArtistManager extends ItemManager {
         // [Perf] If item is a track, just return its artist
         // Use a set to avoid dups
         Set<Artist> artistSet = new HashSet<Artist>();
-
         List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item, true);
         for (Track track : tracks) {
           artistSet.add(track.getArtist());

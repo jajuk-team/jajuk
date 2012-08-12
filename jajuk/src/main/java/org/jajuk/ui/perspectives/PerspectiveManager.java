@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.perspectives;
 
@@ -53,16 +53,12 @@ import org.jajuk.util.log.Log;
  * Perspectives Manager.
  */
 public final class PerspectiveManager {
-
   /** Current perspective. */
   private static IPerspective currentPerspective = null;
-
   /** Perspective name -> perspective. */
   private static Map<String, IPerspective> hmNameInstance = new HashMap<String, IPerspective>(10);
-
   /** perspective, required despite the Map above in order to keep the order of the perspectives as the order in the Map is undefined. */
   private static Set<IPerspective> perspectives = new LinkedHashSet<IPerspective>(10);
-
   /** List of perspectives that need reset from version n-1. */
   // None perspective to reset from 1.6 to 1.7
   private static String[] perspectivesToReset = new String[] {};
@@ -115,7 +111,7 @@ public final class PerspectiveManager {
 
   /**
    * Reset perspectives.
-   * DOCUMENT_ME
+   * 
    */
   private static void resetPerspectives() {
     List<String> perspectivesToReset = Arrays.asList(PerspectiveManager.perspectivesToReset);
@@ -218,7 +214,7 @@ public final class PerspectiveManager {
   /**
    * Set current perspective.
    * 
-   * @param sPerspectiveID DOCUMENT_ME
+   * @param sPerspectiveID 
    */
   public static void setCurrentPerspective(String sPerspectiveID) {
     IPerspective perspective = hmNameInstance.get(sPerspectiveID);
@@ -259,31 +255,22 @@ public final class PerspectiveManager {
    */
   private static void registerDefaultPerspectives() {
     reset();
-
     // Simple perspective
     registerPerspective(new SimplePerspective());
-
     // Files perspective
     registerPerspective(new FilesPerspective());
-
     // Tracks perspective
     registerPerspective(new TracksPerspective());
-
     // Catalog perspective
     registerPerspective(new AlbumsPerspective());
-
     // Playlists perspective
     registerPerspective(new PlaylistsPerspective());
-
     // Display perspective
     registerPerspective(new DisplayPerspective());
-
     // Information perspective
     registerPerspective(new InfoPerspective());
-
     // Configuration perspective
     registerPerspective(new ConfigurationPerspective());
-
     // Stats perspective
     registerPerspective(new StatPerspective());
   }
@@ -291,7 +278,7 @@ public final class PerspectiveManager {
   /**
    * Register a new perspective.
    * 
-   * @param perspective DOCUMENT_ME
+   * @param perspective 
    * 
    * @return registered perspective
    */

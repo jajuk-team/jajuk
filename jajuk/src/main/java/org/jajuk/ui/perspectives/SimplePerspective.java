@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.perspectives;
 
 import javax.swing.ImageIcon;
@@ -31,7 +30,6 @@ import org.jajuk.util.Messages;
  * Simple perspective, contains only the logical table view.
  */
 public class SimplePerspective extends PerspectiveAdapter {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -52,5 +50,4 @@ public class SimplePerspective extends PerspectiveAdapter {
   public ImageIcon getIcon() {
     return IconLoader.getIcon(JajukIcons.PERSPECTIVE_SIMPLE);
   }
-
 }

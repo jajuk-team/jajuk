@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.widgets;
 
@@ -49,10 +49,8 @@ import org.jajuk.util.log.Log;
  * Ambience selection combo box.
  */
 public class AmbienceComboBox extends SteppedComboBox {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** An instance of the ambience combo listener. */
   private AmbienceListener ambienceListener;
 
@@ -60,7 +58,6 @@ public class AmbienceComboBox extends SteppedComboBox {
    * Ambience combo listener.
    */
   private class AmbienceListener implements ActionListener {
-
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -115,8 +112,8 @@ public class AmbienceComboBox extends SteppedComboBox {
       removeItemListener(element);
     }
     removeAllItems();
-    addItem(new JLabel(Messages.getString("CommandJPanel.19"), IconLoader
-        .getIcon(JajukIcons.CONFIGURATION), SwingConstants.LEFT));
+    addItem(new JLabel(Messages.getString("CommandJPanel.19"),
+        IconLoader.getIcon(JajukIcons.CONFIGURATION), SwingConstants.LEFT));
     addItem(new JLabel("<html><i>" + Messages.getString("DigitalDJWizard.64") + "</i></html>",
         IconLoader.getIcon(JajukIcons.GENRE), SwingConstants.LEFT));
     // Add available ambiences
@@ -167,5 +164,4 @@ public class AmbienceComboBox extends SteppedComboBox {
     ambienceListener = new AmbienceListener();
     addActionListener(ambienceListener);
   }
-
 }

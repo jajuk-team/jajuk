@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.views;
 
 import com.jgoodies.animation.Animation;
@@ -27,16 +26,17 @@ import com.jgoodies.animation.Animator;
 import com.jgoodies.animation.animations.BasicTextAnimation;
 import com.jgoodies.animation.components.BasicTextLabel;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.SwingUtilities;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.File;
 import org.jajuk.events.JajukEvent;
@@ -44,6 +44,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
+import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -56,28 +57,20 @@ import org.jajuk.util.log.Log;
 /**
  * Animation-based view.
  */
-public class AnimationView extends ViewAdapter implements ComponentListener {
-
+public class AnimationView extends ViewAdapter {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** The Constant DEFAULT_FRAME_RATE.  DOCUMENT_ME */
+  /** The Constant DEFAULT_FRAME_RATE.   */
   private static final int DEFAULT_FRAME_RATE = 25;
-
-  /** The Constant DEFAULT_DURATION.  DOCUMENT_ME */
+  /** The Constant DEFAULT_DURATION.   */
   private static final int DEFAULT_DURATION = 5000;
-
-  /** The Constant DEFAULT_PAUSE.  DOCUMENT_ME */
+  /** The Constant DEFAULT_PAUSE.   */
   private static final int DEFAULT_PAUSE = 500;
-
   /** Current panel width*. */
   private int iSize;
-
-  /** DOCUMENT_ME. */
   private BasicTextLabel btl1;
-
-  /** DOCUMENT_ME. */
   private Animator animator;
+  private boolean paused = false;
 
   /**
    * Instantiates a new animation view.
@@ -102,15 +95,28 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
    */
   @Override
   public void initUI() {
-    setLayout(new BorderLayout());
-    addComponentListener(this);
+    setLayout(new MigLayout("", "[cente,grow]", "[center,grow]"));
     btl1 = new BasicTextLabel(" ");
-    add(btl1);
+    // Allow to stop animation by left clicking on it
+    btl1.addMouseListener(new JajukMouseAdapter() {
+      @Override
+      public void handleAction(final MouseEvent e) {
+        if (animator != null) {
+          if (paused) {
+            animator.start();
+            paused = false;
+          } else {
+            animator.stop();
+            paused = true;
+          }
+        }
+      }
+    });
+    add(btl1, "grow,center");
     // Force initial message refresh
     UtilFeatures.updateStatus(this);
-
+    addComponentListener(this);
     ObservationManager.register(this);
-
   }
 
   /* (non-Javadoc)
@@ -121,6 +127,7 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.WEBRADIO_INFO_UPDATED);
     eventSubjectSet.add(JajukEvents.ZERO);
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
     return eventSubjectSet;
@@ -129,18 +136,21 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
   /**
    * Set the text to be displayed*.
    * 
-   * @param sText DOCUMENT_ME
+   * @param sText 
    */
   public void setText(final String sText) {
     SwingUtilities.invokeLater(new Runnable() {
-      // this is mandatory to
-      // get actual getWitdth
+      // This is mandatory to get actual getWitdth
       @Override
       public void run() {
+        // Make sure to stop any animation
+        if (animator != null) {
+          animator.stop();
+        }
+        btl1.setText("");
         iSize = AnimationView.this.getWidth();
-        // current width. Must be called inside an invoke and wait,
-        // otherwise, returns zero
         Font font = null;
+        // Find optimal target font size
         boolean bOk = false;
         int i = 40;
         while (!bOk) {
@@ -154,29 +164,47 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
           }
         }
         btl1.setFont(font);
-        if (animator != null) {
-          animator.stop();
-        }
         Animation animPause = Animations.pause(DEFAULT_PAUSE);
         Animation anim = null;
-        // select a random animation
-        int iShuffle = (int) (Math.random() * 3);
-        switch (iShuffle) {
-        case 0:
-          anim = BasicTextAnimation.defaultScale(btl1, DEFAULT_DURATION, sText, Color.darkGray);
-          break;
-        case 1:
-          anim = BasicTextAnimation.defaultSpace(btl1, DEFAULT_DURATION, sText, Color.darkGray);
-          break;
-        case 2:
+        // Select a random animation or fade animation if no animation (because 
+        // we want to make sure that long labels are not cut  after animation stop)
+        if (!Conf.getBoolean(Const.CONF_TITLE_ANIMATION)) {
           anim = BasicTextAnimation.defaultFade(btl1, DEFAULT_DURATION, sText, Color.darkGray);
-          break;
+        } else {
+          int iShuffle = (int) (Math.random() * 3); //NOSONAR
+          switch (iShuffle) {
+          case 0:
+            anim = BasicTextAnimation.defaultScale(btl1, DEFAULT_DURATION, sText, Color.darkGray);
+            break;
+          case 1:
+            anim = BasicTextAnimation.defaultSpace(btl1, DEFAULT_DURATION, sText, Color.darkGray);
+            break;
+          case 2:
+            anim = BasicTextAnimation.defaultFade(btl1, DEFAULT_DURATION, sText, Color.darkGray);
+            break;
+          }
         }
         Animation animAll = Animations.sequential(anim, animPause);
         anim = Animations.repeat(Float.POSITIVE_INFINITY, animAll);
         animator = new Animator(anim, DEFAULT_FRAME_RATE);
         animator.start();
-
+        if (!Conf.getBoolean(Const.CONF_TITLE_ANIMATION)) {
+          // Stop animation after few seconds if still the same label
+          new Thread() {
+            @Override
+            public void run() {
+              String title = sText;
+              try {
+                Thread.sleep(3000);
+              } catch (InterruptedException e) {
+                Log.error(e);
+              }
+              if (btl1.getText().equals(title) && animator != null) {
+                animator.stop();
+              }
+            }
+          }.start();
+        }
       }
     });
   }
@@ -208,6 +236,11 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
       if (radio != null) {
         setText(radio.getName());
       }
+    } else if (subject.equals(JajukEvents.WEBRADIO_INFO_UPDATED)) {
+      String webradioInfo = (String) event.getDetails().get(Const.CURRENT_RADIO_TRACK);
+      if (webradioInfo != null) {
+        setText(webradioInfo);
+      }
     }
   }
 
@@ -237,7 +270,6 @@ public class AnimationView extends ViewAdapter implements ComponentListener {
       animator.stop();
       animator = null;
     }
-
     super.cleanup();
   }
 }

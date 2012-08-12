@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.widgets;
 
@@ -28,7 +28,6 @@ import javax.swing.JButton;
  * jajuk default button, comes with few GUI default properties.
  */
 public class JajukButton extends JButton {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -42,7 +41,7 @@ public class JajukButton extends JButton {
   /**
    * Instantiates a new jajuk button.
    * 
-   * @param icon DOCUMENT_ME
+   * @param icon 
    */
   public JajukButton(Icon icon) {
     this(null, icon);
@@ -51,7 +50,7 @@ public class JajukButton extends JButton {
   /**
    * Instantiates a new jajuk button.
    * 
-   * @param a DOCUMENT_ME
+   * @param a 
    */
   public JajukButton(Action a) {
     super(a);
@@ -62,8 +61,8 @@ public class JajukButton extends JButton {
   /**
    * Instantiates a new jajuk button.
    * 
-   * @param text DOCUMENT_ME
-   * @param icon DOCUMENT_ME
+   * @param text 
+   * @param icon 
    */
   public JajukButton(String text, Icon icon) {
     super(text, icon);
@@ -92,5 +91,4 @@ public class JajukButton extends JButton {
     }
     super.configurePropertiesFromAction(action);
   }
-
 }

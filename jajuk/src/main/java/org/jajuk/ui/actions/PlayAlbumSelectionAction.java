@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
@@ -47,7 +47,6 @@ import org.jajuk.util.log.Log;
  * </p>
  */
 public class PlayAlbumSelectionAction extends SelectionAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -8078402652430413821L;
 
@@ -77,8 +76,9 @@ public class PlayAlbumSelectionAction extends SelectionAction {
           // Select all files from the first found album
           Album album = ((Track) selection.get(0)).getAlbum();
           List<File> files = UtilFeatures.getPlayableFiles(album);
-          QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
-              .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), false);
+          QueueModel.push(
+              UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files),
+                  Conf.getBoolean(Const.CONF_STATE_REPEAT), true), false);
         } catch (Exception e) {
           Log.error(e);
         }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.base;
 
@@ -33,12 +33,11 @@ import org.jajuk.util.Messages;
  * Logical item
  */
 public class Genre extends LogicalItem implements Comparable<Genre> {
-
   /**
    * Genre constructor.
    *
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
+   * @param sId 
+   * @param sName 
    */
   Genre(String sId, String sName) {
     super(sId, sName);
@@ -50,7 +49,7 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  public String getLabel() {
+  public String getXMLTag() {
     return XML_GENRE;
   }
 
@@ -70,7 +69,7 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
   /**
    * Alphabetical comparator used to display ordered lists.
    * 
-   * @param otherItem DOCUMENT_ME
+   * @param otherItem 
    * 
    * @return comparison result
    */
@@ -103,13 +102,11 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
         || Messages.getString(UNKNOWN_GENRE).equalsIgnoreCase(getName());
   }
 
-  /**
-   * Get item description.
-   * 
-   * @return the desc
+  /* (non-Javadoc)
+   * @see org.jajuk.base.Item#getTitle()
    */
   @Override
-  public String getDesc() {
+  public String getTitle() {
     return Messages.getString("Item_Genre") + " : " + getName2();
   }
 
@@ -136,5 +133,4 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
   public ImageIcon getIconRepresentation() {
     return IconLoader.getIcon(JajukIcons.GENRE);
   }
-
 }

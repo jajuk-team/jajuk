@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.core;
 
 import java.util.HashSet;
@@ -48,13 +47,9 @@ import org.jajuk.util.log.Log;
  * <p>
  */
 public final class RatingManager extends Thread implements Observer {
-
-  /** DOCUMENT_ME. */
   private static RatingManager self = new RatingManager();
-
   /** Flag the fact a rate has change for a track, used by bestof view refresh for perfs. */
   private static boolean bRateHasChanged = true;
-
   /** Max rate. */
   private static long lMaxPlaycount = 0l;
 
@@ -99,7 +94,6 @@ public final class RatingManager extends Thread implements Observer {
         ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
         bRateHasChanged = false;
       }
-
     }
   }
 
@@ -110,6 +104,15 @@ public final class RatingManager extends Thread implements Observer {
    */
   public static long getMaxPlaycount() {
     return lMaxPlaycount;
+  }
+
+  /**
+   * Return a valid [0;100] rating for given preference
+   * @param preference
+   * @return
+   */
+  public static long getRateForPreference(long preference) {
+    return Math.round((16.6 * preference + 50));
   }
 
   /**
@@ -124,15 +127,6 @@ public final class RatingManager extends Thread implements Observer {
       // Computes bestof
       FileManager.getInstance().refreshBestOfFiles();
     }
-  }
-
-  /**
-   * Checks for rate changed.
-   * 
-   * @return Returns the bRateHasChanged.
-   */
-  public static boolean hasRateChanged() {
-    return bRateHasChanged;
   }
 
   /**
@@ -154,6 +148,7 @@ public final class RatingManager extends Thread implements Observer {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.RATE_RESET);
     eventSubjectSet.add(JajukEvents.PREFERENCES_RESET);
+    eventSubjectSet.add(JajukEvents.RATING_MODE_CHANGED);
     return eventSubjectSet;
   }
 
@@ -206,7 +201,12 @@ public final class RatingManager extends Thread implements Observer {
       FileManager.getInstance().refreshBestOfFiles();
       InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.253"),
           InformationJPanel.MessageType.INFORMATIVE);
+    } else if (subject == JajukEvents.RATING_MODE_CHANGED) {
+      // Update rate in case of manual/auto ratings switch
+      for (Track track : TrackManager.getInstance().getTracks()) {
+        track.updateRate();
+      }
+      ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
     }
   }
-
 }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.base;
 
 import java.io.IOException;
@@ -43,7 +42,6 @@ import org.jajuk.util.log.Log;
  * Convenient class to manage playlists.
  */
 public final class PlaylistManager extends ItemManager implements Observer {
-
   /** Self instance. */
   private static PlaylistManager singleton = new PlaylistManager();
 
@@ -76,12 +74,12 @@ public final class PlaylistManager extends ItemManager implements Observer {
   /**
    * Register an Playlist with a known id.
    * 
-   * @param fio DOCUMENT_ME
-   * @param dParentDirectory DOCUMENT_ME
+   * @param fio 
+   * @param dParentDirectory 
    * 
    * @return the playlist
    */
-  public Playlist registerPlaylistFile(java.io.File fio, Directory dParentDirectory) {
+  Playlist registerPlaylistFile(java.io.File fio, Directory dParentDirectory) {
     String sId = createID(fio.getName(), dParentDirectory);
     return registerPlaylistFile(sId, fio.getName(), dParentDirectory);
   }
@@ -89,14 +87,14 @@ public final class PlaylistManager extends ItemManager implements Observer {
   /**
    * Creates the id.
    * 
-   * @param sName DOCUMENT_ME
-   * @param dParentDirectory DOCUMENT_ME
+   * @param sName 
+   * @param dParentDirectory 
    * 
    * @return ItemManager ID
    */
   protected static String createID(String sName, Directory dParentDirectory) {
-    return MD5Processor.hash(new StringBuilder(dParentDirectory.getDevice().getName()).append(
-        dParentDirectory.getRelativePath()).append(sName).toString());
+    return MD5Processor.hash(new StringBuilder(dParentDirectory.getDevice().getName())
+        .append(dParentDirectory.getRelativePath()).append(sName).toString());
   }
 
   /**
@@ -106,7 +104,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * 
    * @throws IOException Signals that an I/O exception has occurred.
    */
-  public void removePlaylistFile(Playlist plf) throws IOException {
+  private void removePlaylistFile(Playlist plf) throws IOException {
     String sFileToDelete = plf.getDirectory().getFio().getAbsoluteFile().toString()
         + java.io.File.separatorChar + plf.getName();
     lock.writeLock().lock();
@@ -115,7 +113,6 @@ public final class PlaylistManager extends ItemManager implements Observer {
       if (fileToDelete.exists()) {
         UtilSystem.deleteFile(fileToDelete);
       }
-
       // remove playlist
       removeItem(plf);
     } finally {
@@ -149,9 +146,9 @@ public final class PlaylistManager extends ItemManager implements Observer {
   /**
    * Register an Playlist with a known id.
    *
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param dParentDirectory DOCUMENT_ME
+   * @param sId 
+   * @param sName 
+   * @param dParentDirectory 
    * @return the playlist
    */
   public Playlist registerPlaylistFile(String sId, String sName, Directory dParentDirectory) {
@@ -184,21 +181,21 @@ public final class PlaylistManager extends ItemManager implements Observer {
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
-  public String getLabel() {
+  public String getXMLTag() {
     return Const.XML_PLAYLIST_FILES;
   }
 
   /**
    * Change a playlist name.
    * 
-   * @param plfOld DOCUMENT_ME
-   * @param sNewName DOCUMENT_ME
+   * @param plfOld 
+   * @param sNewName 
    * 
    * @return new playlist
    * 
    * @throws JajukException the jajuk exception
    */
-  public Playlist changePlaylistFileName(Playlist plfOld, String sNewName) throws JajukException {
+  Playlist changePlaylistFileName(Playlist plfOld, String sNewName) throws JajukException {
     lock.writeLock().lock();
     try {
       // check given name is different
@@ -217,9 +214,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
       // create a new playlist (with own fio and sAbs)
       Playlist plfNew = new Playlist(sNewId, sNewName, plfOld.getDirectory());
       // Transfer all properties (id and name)
-      // We use a shallow copy of properties to avoid any properties share between
-      // two items
-      plfNew.setProperties(plfOld.getShallowProperties());
+      plfNew.setProperties(plfOld.getProperties());
       plfNew.setProperty(Const.XML_ID, sNewId); // reset new id and name
       plfNew.setProperty(Const.XML_NAME, sNewName); // reset new id and name
       // check file name and extension
@@ -348,7 +343,6 @@ public final class PlaylistManager extends ItemManager implements Observer {
         return pl;
       }
     }
-
     // none found
     return null;
   }

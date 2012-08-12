@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,18 +16,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.wizard;
 
 import javax.swing.Icon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.jajuk.ui.widgets.JajukJDialog;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jdesktop.swingx.JXBusyLabel;
@@ -35,29 +36,15 @@ import org.jdesktop.swingx.JXBusyLabel;
 /**
  * Refresh dialog.
  */
-public class RefreshDialog extends JFrame {
-
+public class RefreshDialog extends JajukJDialog {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -7883506101436294760L;
-
-  /** DOCUMENT_ME. */
   private JXBusyLabel jlAction;
-
-  /** DOCUMENT_ME. */
   private JProgressBar progress;
-
-  /** DOCUMENT_ME. */
   private JLabel jlRefreshing;
-
-  /** DOCUMENT_ME. */
   private boolean indeterminate = false;
-
-  /** DOCUMENT_ME. */
   private long dateLastUpdateRefresh;
-
-  /** DOCUMENT_ME. */
   private long dateLastUpdateProgress;
-
   /** Minimum dialog refresh interval in ms, avoid to saturate the EDT*. */
   private static int MIN_REFRESH_INTERVAL = 100;
 
@@ -65,48 +52,41 @@ public class RefreshDialog extends JFrame {
    * Refresh dialog (labels and a progress bar).
    * 
    * @param indeterminate whether the progress is indeterminate or not
+   * @param frame title
    */
-  public RefreshDialog(final boolean indeterminate) {
+  public RefreshDialog(final boolean indeterminate, String title) {
+    super(JajukMainWindow.getInstance(), false);
+    setTitle(title);
     this.indeterminate = indeterminate;
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        setUndecorated(true);
-        setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
-        jlAction = new JXBusyLabel();
-        progress = new JProgressBar(0, 100);
-        progress.setIndeterminate(indeterminate);
-        jlRefreshing = new JLabel();
-        setLayout(new MigLayout("insets 10,gapx 5, gapy 5", "[500!]"));
-        add(jlAction, "center,wrap");
-        add(progress, "center,grow,wrap");
-        add(jlRefreshing, "center,wrap");
-        pack();
-        setLocationRelativeTo(RefreshDialog.this);
-        setVisible(true);
-      }
-    });
+    setUndecorated(true);
+    setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
+    jlAction = new JXBusyLabel();
+    progress = new JProgressBar(0, 100);
+    progress.setIndeterminate(indeterminate);
+    jlRefreshing = new JLabel();
+    setLayout(new MigLayout("insets 10,gapx 5, gapy 5", "[500!]"));
+    add(jlAction, "center,wrap");
+    add(progress, "center,grow,wrap");
+    add(jlRefreshing, "center,wrap");
+    pack();
+    setLocationRelativeTo(RefreshDialog.this);
+    setVisible(true);
   }
 
   /**
    * Sets the action.
-   * DOCUMENT_ME
    * 
-   * @param action DOCUMENT_ME
-   * @param icon DOCUMENT_ME
+   * 
+   * @param action 
+   * @param icon 
    */
   public void setAction(final String action, final Icon icon) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        // check if the dialog is still visible, may be closed before this code is executed
-        if (jlAction != null) {
-          jlAction.setText(action);
-          jlAction.setIcon(icon);
-          jlAction.setBusy(true);
-        }
-      }
-    });
+    // check if the dialog is still visible, may be closed before this code is executed
+    if (jlAction != null) {
+      jlAction.setText(action);
+      jlAction.setIcon(icon);
+      jlAction.setBusy(true);
+    }
   }
 
   /**
@@ -161,11 +141,11 @@ public class RefreshDialog extends JFrame {
    */
   @Override
   public void dispose() {
+    // Required to avoid a memory leak
     if (jlAction != null) {
       jlAction.setBusy(false);
       jlAction = null;
     }
-
     super.dispose();
   }
 }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.covers;
 
@@ -26,6 +26,7 @@ import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.ConstTest;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.services.covers.Cover.CoverType;
@@ -33,10 +34,9 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestCover extends JajukTestCase {
-
   /**
    * Test method for {@link org.jajuk.services.covers.Cover#hashCode()}.
    *
@@ -92,7 +92,6 @@ public class TestCover extends JajukTestCase {
     Cover notequal = new Cover(new URL("http://www.example.com/"), CoverType.LOCAL_COVER);
     Cover notequal2 = new Cover(Const.IMAGES_SPLASHSCREEN, CoverType.NO_COVER);
     Cover notequal3 = new Cover(new URL("http://www.example.com/"), CoverType.REMOTE_COVER);
-
     JUnitHelpers.CompareToTest(cover, equal, notequal);
     JUnitHelpers.CompareToTest(cover, equal, notequal2);
     JUnitHelpers.CompareToTest(cover, equal, notequal3);
@@ -146,12 +145,10 @@ public class TestCover extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testGetSize() throws Exception {
-    File file = File.createTempFile("test", ".txt");
-
+    File file = File.createTempFile("test", ".txt", new java.io.File(ConstTest.TECH_TESTS_PATH));
     // remove it and re-create it with some content
     assertTrue(file.delete());
     FileUtils.writeStringToFile(file, StringUtils.repeat(".", 2000));
-
     Cover cover = new Cover(file, CoverType.STANDARD_COVER);
     assertEquals("2", cover.getSize());
   }
@@ -162,12 +159,10 @@ public class TestCover extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testGetImage() throws Exception {
-    File file = File.createTempFile("test", ".txt");
+    File file = File.createTempFile("test", ".txt", new java.io.File(ConstTest.DEVICES_BASE_PATH));
     Cover cover = new Cover(file, CoverType.NO_COVER);
-
     // for no-cover, we get back a default image
     assertNotNull(cover.getImage());
-
     cover = new Cover(new URL("http://jajuk.info/skins/jajuk2010/jajuk_logotype.png"),
         CoverType.REMOTE_COVER);
     try {
@@ -175,7 +170,6 @@ public class TestCover extends JajukTestCase {
     } catch (HeadlessException e) {
       // ignore here...
     }
-
     cover = new Cover(new File("notexists"), CoverType.STANDARD_COVER);
     try {
       cover.getImage();
@@ -183,7 +177,6 @@ public class TestCover extends JajukTestCase {
     } catch (IllegalArgumentException e) {
       // ok here
     }
-
     // TODO: more testing is necessary here...
   }
 
@@ -196,7 +189,6 @@ public class TestCover extends JajukTestCase {
     // standard toString
     Cover cover = new Cover(new URL("http://www.example.com/"), CoverType.STANDARD_COVER);
     JUnitHelpers.ToStringTest(cover);
-
     // should also cope with items being null
     cover = new Cover(new URL("http://www.example.com/"), null);
     JUnitHelpers.ToStringTest(cover);
@@ -214,7 +206,6 @@ public class TestCover extends JajukTestCase {
     // Cover notequal = new Cover(new URL("http://www.example.com/"), CoverType.LOCAL_COVER);
     // Cover notequal2 = new Cover(new URL("http://www.example.com/"), CoverType.NO_COVER);
     Cover notequal3 = new Cover(new URL("http://www.test.com/"), CoverType.STANDARD_COVER);
-
     // JUnitHelpers.EqualsTest(cover, equal, notequal);
     // JUnitHelpers.EqualsTest(cover, equal, notequal2);
     JUnitHelpers.EqualsTest(cover, equal, notequal3);
@@ -227,8 +218,7 @@ public class TestCover extends JajukTestCase {
    */
   public final void testGetFile() throws Exception {
     Cover cover = new Cover(new URL("http://www.example.com/"), CoverType.REMOTE_COVER);
-    Cover cover2 = new Cover(new File("testfile"), CoverType.STANDARD_COVER);
-
+    Cover cover2 = new Cover(JUnitHelpers.getFile().getFIO(), CoverType.STANDARD_COVER);
     assertNotNull(cover.getFile());
     assertNotNull(cover2.getFile());
   }

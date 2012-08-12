@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.players;
 
@@ -37,28 +37,23 @@ import org.jajuk.util.log.Log;
  * Mplayer player implementation.
  */
 public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
-
   /** Stored Volume. */
   float fVolume;
-
   /** Mplayer process. */
   volatile Process proc;
-
   /** End of file flag *. */
   volatile boolean bEOF = false;
-
   /** File is opened flag *. */
   volatile boolean bOpening = false;
-
   /** Stop position thread flag. */
   volatile boolean bStop = false;
-
   /** Fading state. */
   volatile boolean bFading = false;
-
   /** pause flag *. */
   protected volatile boolean bPaused = false;
- 
+  /** Whether the track has been started in bitperfect mode **/
+  boolean bitPerfect = false;
+
   /*
    *
    * Kill abruptly the mplayer process (this way, killing is synchronous, and
@@ -91,7 +86,6 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
          * mplayer processes die gracefully. I guess the destroy() method
          * internally also tries to use -9 and so both pids are never killed.
          */
-
         Field field = proc.getClass().getDeclaredField("pid");
         field.setAccessible(true);
         int pid = field.getInt(proc);
@@ -115,6 +109,13 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   @Override
   public void setVolume(float fVolume) {
     this.fVolume = fVolume;
+    // Fix for a issue under Linux (at least with pulseaudio) : if a track is started in bitperfect mode (no volume specified), then 
+    // the mode is unset when the same track is playing. When the fade out occurs, the volume commands sent to mplayer are propagated for some reasons
+    // directly to the pulsaudio mixer and the next track sound volume is affected (muted most of times).
+    if (bitPerfect) {
+      Log.warn("This track was started in bit-perfect mode, even if the mode has been disabled, it can apply only to next track");
+      return;
+    }
     sendCommand("volume " + (int) (100 * fVolume) + " 2");
     // Not not log this when fading, generates too much logs
     if (!bFading) {
@@ -125,27 +126,25 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   /**
    * Send a command to mplayer slave.
    * 
-   * @param command DOCUMENT_ME
+   * @param command 
    */
   protected void sendCommand(String command) {
     if (proc != null) {
       PrintStream out = new PrintStream(proc.getOutputStream());
-
       // Do not use println() : it doesn't work under windows
       out.print(command + '\n');
       out.flush();
-
       // don't close out here otherwise the output stream of the Process
       // will be closed as well and subsequent sendCommant() calls will silently
       // fail!!
     }
   }
 
-   /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.players.IPlayerImpl#getCurrentVolume()
-   */
+  /*
+  * (non-Javadoc)
+  * 
+  * @see org.jajuk.players.IPlayerImpl#getCurrentVolume()
+  */
   @Override
   public float getCurrentVolume() {
     return fVolume;
@@ -179,13 +178,16 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     cmd.add("-quiet");
     // slave: slave mode (control with stdin)
     cmd.add("-slave");
-    // -af volume: Use volnorm to limit gain to max
-    // If mute, use -200db otherwise, use a linear scale
-    cmd.add("-af");
-    cmd.add(buildAudioFilters());
-    // -softvol : use soft mixer, allows to set volume only to this mplayer
-    // instance, not others programs
-    cmd.add("-softvol");
+    // No af options if bit perfect is enabled
+    if (!Conf.getBoolean(CONF_BIT_PERFECT)) {
+      // -af volume: Use volnorm to limit gain to max
+      // If mute, use -200db otherwise, use a linear scale
+      cmd.add("-af");
+      cmd.add(buildAudioFilters());
+      // -softvol : use soft mixer, allows to set volume only to this mplayer
+      // instance, not others programs
+      cmd.add("-softvol");
+    }
     // Define a cache. It is useful to avoid sound gliches but also to
     // overide a local mplayer large cache configuration in
     // ~/.mplayer/config file. User can set a large cache for video for ie.
@@ -232,7 +234,6 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
       volume = (int) (10 * Math.log(fVolume));
     }
     audiofilters.append("volume=" + volume);
-
     // Add karaoke state if required
     if (Conf.getBoolean(CONF_STATE_KARAOKE)) {
       audiofilters.append(",karaoke");
@@ -247,7 +248,6 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    */
   @Override
   public long getDurationSec() {
-
     return 0;
   }
 
@@ -258,7 +258,6 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    */
   @Override
   public float getCurrentPosition() {
-
     return 0;
   }
 
@@ -269,7 +268,6 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    */
   @Override
   public long getElapsedTimeMillis() {
-
     return 0;
   }
 
@@ -336,5 +334,4 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
       sendCommand("pause");
     }
   }
-  
 }

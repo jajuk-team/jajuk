@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.views;
 
 import ext.FlowScrollPanel;
@@ -30,7 +29,6 @@ import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -44,7 +42,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
-import javax.swing.FocusManager;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -96,95 +93,50 @@ import org.jdesktop.swingx.JXBusyLabel;
  * <p>
  * Catalog perspectives
  */
-public class CatalogView extends ViewAdapter implements ComponentListener, ActionListener,
-    TwoStepsDisplayable {
-
+public class CatalogView extends ViewAdapter implements ActionListener, TwoStepsDisplayable {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   // Top control panel
-  /** DOCUMENT_ME. */
   JPanel jpControlTop;
-
-  /** DOCUMENT_ME. */
   JLabel jlSorter;
-
-  /** DOCUMENT_ME. */
   SteppedComboBox jcbSorter;
-
-  /** DOCUMENT_ME. */
   JLabel jlFilter;
-
-  /** DOCUMENT_ME. */
   SteppedComboBox jcbFilter;
-
-  /** DOCUMENT_ME. */
   JLabel jlContains;
-
-  /** DOCUMENT_ME. */
   JTextField jtfValue;
-
-  /** DOCUMENT_ME. */
   JButton jbPrev;
-
-  /** DOCUMENT_ME. */
   JButton jbNext;
-
-  /** DOCUMENT_ME. */
   SteppedComboBox jcbPage;
-
   // Bottom control panel
-  /** DOCUMENT_ME. */
   JPanel jpControlBottom;
-
-  /** DOCUMENT_ME. */
   JComboBox jcbShowCover;
-
-  /** DOCUMENT_ME. */
   JSlider jsSize;
-
-  /** DOCUMENT_ME. */
   FlowScrollPanel jpItems;
-
-  /** DOCUMENT_ME. */
   JScrollPane jsp;
-
   /** Filter properties. */
   List<PropertyMetaInformation> alFilters;
-
   /** Sorter properties. */
   List<PropertyMetaInformation> alSorters;
-
   /** Do search panel need a search. */
   private boolean bNeedSearch = false;
-
   /** Populating flag. */
   private boolean bPopulating = false;
-
   /** Default time in ms before launching a search automatically. */
   private static final int WAIT_TIME = 600;
-
   /** Date last key pressed. */
   private long lDateTyped;
-
   /** Last selected item. */
   private LocalAlbumThumbnail item;
-
   /** Page index. */
   private int page = 0;
-
   /** Number of page in current selection. */
   int iNbPages = 0;
-
   /** Utility list used by size selector. */
   private final List<String> sizes = new ArrayList<String>(10);
-
   /** Thumbs list *. */
   private List<LocalAlbumThumbnail> thumbs;
-
   /** Last scrollbar position *. */
   private int scrollPosition;
-
   /** Swing Timer to refresh the component. */
   private final Timer timerSearch = new Timer(WAIT_TIME, new ActionListener() {
     @Override
@@ -200,7 +152,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
 
   /**
    * Gets the selected item.
-   * 
+   *
    * @return the selected item
    */
   public LocalAlbumThumbnail getSelectedItem() {
@@ -209,20 +161,18 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.IView#display()
    */
   @Override
   public void initUI() {
     initMetaInformation();
-
     sizes.add(THUMBNAIL_SIZE_50X50);
     sizes.add(THUMBNAIL_SIZE_100X100);
     sizes.add(THUMBNAIL_SIZE_150X150);
     sizes.add(THUMBNAIL_SIZE_200X200);
     sizes.add(THUMBNAIL_SIZE_250X250);
     sizes.add(THUMBNAIL_SIZE_300X300);
-
     // --Top (most used) control items
     jpControlTop = new JPanel();
     jlSorter = new JLabel(Messages.getString("Sort") + " ");
@@ -235,7 +185,6 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     }
     jcbSorter.setSelectedIndex(Conf.getInt(Const.CONF_THUMBS_SORTER));
     jcbSorter.addActionListener(this);
-
     jlFilter = new JLabel(Messages.getString("AbstractTableView.0") + " ");
     jlContains = new JLabel("   " + Messages.getString("AbstractTableView.7") + " ");
     jcbFilter = new SteppedComboBox();
@@ -256,7 +205,6 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     jtfValue.setMargin(new Insets(0, 3, 0, 0));
     jtfValue.setFont(FontManager.getInstance().getFont(JajukFont.SEARCHBOX));
     jtfValue.addKeyListener(new CatalogViewKeyAdaptor());
-
     JToolBar jtbPage = new JajukJToolbar();
     jtbPage.setFloatable(false);
     jtbPage.setRollover(true);
@@ -272,7 +220,6 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     jtbPage.add(jbPrev);
     jtbPage.add(jcbPage);
     jtbPage.add(jbNext);
-
     jpControlTop.setLayout(new MigLayout("ins 3", "[grow][grow][grow][grow]"));
     jpControlTop.add(jlFilter, "split 2");
     jpControlTop.add(jcbFilter, "grow");
@@ -281,17 +228,13 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     jpControlTop.add(jlSorter, "split 2");
     jpControlTop.add(jcbSorter, "gapright 40,grow");
     jpControlTop.add(jtbPage, "gapright 5,grow");
-
     // --Bottom (less used) items
-
     jcbShowCover = new JComboBox();
     jcbShowCover.addItem(Messages.getString("CatalogView.21"));
     jcbShowCover.addItem(Messages.getString("CatalogView.22"));
     jcbShowCover.addItem(Messages.getString("CatalogView.2"));
-
     jcbShowCover.setSelectedIndex(Conf.getInt(Const.CONF_THUMBS_SHOW_COVER));
     jcbShowCover.addActionListener(this);
-
     JLabel jlSize = new JLabel(Messages.getString("CatalogView.15"));
     jsSize = new JSlider(0, 5);
     jsSize.setMajorTickSpacing(1);
@@ -299,7 +242,6 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     jsSize.setSnapToTicks(true);
     jsSize.setPaintTicks(true);
     jsSize.addMouseWheelListener(new CatalogViewMouseWheelListener(jsSize));
-
     int index = sizes.indexOf(Conf.getString(Const.CONF_THUMBS_SIZE));
     if (index < 0) {
       index = 2; // 150x150 if a problem occurs
@@ -314,31 +256,24 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
         sliderValueChanged();
       }
     });
-
     jpControlBottom = new JPanel(new MigLayout("gapx 20"));
     jpControlBottom.add(jcbShowCover);
     jpControlBottom.add(jlSize, "split 2");
     jpControlBottom.add(jsSize);
-
     // Set layout
     initLayout();
-
     populateCatalog();
-
     // subscriptions to events
     ObservationManager.register(this);
-
     // Show facts
     showFacts();
-
     // Start the timers
     timerSearch.start();
   }
 
   /**
    * Inits the meta information.
-   * DOCUMENT_ME
-   */
+   **/
   private void initMetaInformation() {
     alFilters = new ArrayList<PropertyMetaInformation>(10);
     alFilters.add(null); // All
@@ -346,7 +281,6 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     alFilters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_ARTIST));
     alFilters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_ALBUM));
     alFilters.add(TrackManager.getInstance().getMetaInformation(Const.XML_YEAR));
-
     // please note: this needs to be kept in-sync with what we do in
     // AlbumComparator!
     alSorters = new ArrayList<PropertyMetaInformation>(10);
@@ -415,7 +349,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   @Override
@@ -442,14 +376,11 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       return;
     }
     bPopulating = true;
-
     // Store current state
     scrollPosition = jsp.getVerticalScrollBar().getValue();
     thumbs = new ArrayList<LocalAlbumThumbnail>(100);
-
     // Clear all the view and show a busy label instead
     showBusyLabel();
-
     // Show the page
     UtilGUI.populate(this);
   }
@@ -458,7 +389,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
    * Compute the catalog page to be displayed.
    * <p>
    * Do *not* call this from the EDT, can take a while to run
-   * 
+   *
    * @return the object
    */
   @Override
@@ -467,7 +398,6 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
     List<Album> albums = null;
     // The final album list we will display
     List<Album> pageAlbums = new ArrayList<Album>(Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE));
-
     try {
       Filter filter = null;
       if (jtfValue.getText().length() > 0) {
@@ -476,7 +406,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       }
       // filter albums matching tracks
       List<Track> alAllTracks = TrackManager.getInstance().getTracks();
-      Filter.filterItems(alAllTracks, filter);
+      alAllTracks = Filter.filterItems(alAllTracks, filter, Track.class);
       // keep matching albums
       HashSet<Album> hsAlbums = new HashSet<Album>(alAllTracks.size() / 10);
       for (Item item : alAllTracks) {
@@ -496,13 +426,10 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
           itAlbums.remove();
         }
       }
-
       albums = new ArrayList<Album>(hsAlbums);
-
       // sort albums
       final int index = jcbSorter.getSelectedIndex();
       Collections.sort(albums, new AlbumComparator(index));
-
       // Now process each album
       Set<Directory> directories = new HashSet<Directory>(albums.size());
       Iterator<Album> it = albums.iterator();
@@ -540,7 +467,6 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
           }
         }
       }
-
       // Force thumbs build if required, this is the longest task of this worker
       // we only keep albums for this page
       // computes the number of pages
@@ -554,8 +480,8 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       // After user changed the number of thumbs on a page, we can be
       // out of bounds exception so make sure to reinit the page index in
       // this case
-      if (page >= jcbPage.getItemCount()) {
-        page = 0;
+      if (page > iNbPages - 1) {
+        page = iNbPages - 1;
       }
       // Add all items
       int max = albums.size(); // upper limit
@@ -582,8 +508,8 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
 
   /**
    * Catalog page display (must be called from the EDT).
-   * 
-   * @param in DOCUMENT_ME
+   *
+   * @param in 
    */
   @Override
   public void shortCall(Object in) {
@@ -598,7 +524,6 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       final LocalAlbumThumbnail thumb = new LocalAlbumThumbnail(album, getSelectedSize(), true);
       thumb.populate();
       thumbs.add(thumb);
-
       // restore previous selected item if still set
       if (item != null) {
         if (((Album) thumb.getItem()).equals(item.getItem())) {
@@ -606,7 +531,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
           CatalogView.this.item.setSelected(true);
         }
       }
-      // Thumb selection mouse listener 
+      // Thumb selection mouse listener
       thumb.getIcon().addMouseListener(new MouseAdapter() {
         @Override
         public void mousePressed(MouseEvent e) {
@@ -620,14 +545,11 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
           CatalogView.this.item = thumb;
         }
       });
-
     }
-
     // populate page selector
     // remove action listener
     jcbPage.removeActionListener(CatalogView.this);
     jcbPage.removeAllItems(); // void it
-
     for (int i = 0; i < iNbPages; i++) { // add the pages
       jcbPage.addItem(Messages.getString("CatalogView.11") + " " + (i + 1) + "/" + iNbPages);
       // start at page 1, not 0
@@ -655,7 +577,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   @Override
@@ -678,7 +600,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.IView#getDesc()
    */
   @Override
@@ -688,7 +610,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   @Override
@@ -737,7 +659,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
 
   /**
    * Gets the selected size.
-   * 
+   *
    * @return current thumbs size as selected with the combo
    */
   private int getSelectedSize() {
@@ -745,13 +667,12 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private class CatalogViewKeyAdaptor extends KeyAdapter {
-
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.awt.event.KeyAdapter#keyReleased(java.awt.event.KeyEvent)
      */
     @Override
@@ -765,14 +686,13 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private class CatalogViewMouseWheelListener extends DefaultMouseWheelListener {
-
     /**
      * Instantiates a new catalog view mouse wheel listener.
-     * 
-     * @param js DOCUMENT_ME
+     *
+     * @param js 
      */
     public CatalogViewMouseWheelListener(JSlider js) {
       super(js);
@@ -780,7 +700,7 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.jajuk.ui.helpers.DefaultMouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent
      * )
@@ -795,7 +715,6 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
       // Add again the change listener
       jsSize.addChangeListener(cl);
     }
-
   }
 
   /**
@@ -818,18 +737,16 @@ public class CatalogView extends ViewAdapter implements ComponentListener, Actio
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.views.ViewAdapter#cleanup()
    */
   @Override
   public void cleanup() {
     // make sure the timer is not running any more
     timerSearch.stop();
-
     // we specifically request the focus for jtfValue, therefore we should make sure that we release
     // that focus to let this be destroyed
     KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
-
     // call the parent class to do more cleanup if necessary
     super.cleanup();
   }

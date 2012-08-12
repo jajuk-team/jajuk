@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,13 +16,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.notification;
 
 import java.awt.HeadlessException;
 import java.awt.TrayIcon;
 
+import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.base.File;
@@ -30,10 +31,9 @@ import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.windows.JajukSystray;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestJavaBalloonNotificator extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -45,7 +45,6 @@ public class TestJavaBalloonNotificator extends JajukTestCase {
     // "isAvailable"
     JavaBalloonNotificator notificator = JavaBalloonNotificator.getInstance();
     assertFalse(notificator.isAvailable());
-
     try {
       // should initialize correctly and return true for valid TrayIcon
       TrayIcon tray = JajukSystray.getInstance().getTrayIcon();
@@ -100,7 +99,7 @@ public class TestJavaBalloonNotificator extends JajukTestCase {
     try {
       JavaBalloonNotificator notificator = JavaBalloonNotificator.getInstance();
       if (notificator.isAvailable()) {
-        WebRadio webradio = new WebRadio("a web radio", "http://www.test.org/webradio");
+        WebRadio webradio = JUnitHelpers.getWebRadio();
         notificator.notify(webradio);
       }
     } catch (NoClassDefFoundError e) {

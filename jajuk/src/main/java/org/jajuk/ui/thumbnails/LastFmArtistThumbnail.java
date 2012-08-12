@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.thumbnails;
 
 import ext.services.lastfm.AlbumInfo;
@@ -58,23 +57,19 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * information display...
  */
 public class LastFmArtistThumbnail extends AbstractThumbnail {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -804471264407148566L;
-
   /** Associated artist. */
   private final ArtistInfo artist;
-
   /** Is this artist known in collection ?. */
   private final boolean bKnown;
-
   /** Thumb associated image *. */
   private ImageIcon ii;
 
   /**
    * The Constructor.
    * 
-   * @param artist DOCUMENT_ME
+   * @param artist 
    */
   public LastFmArtistThumbnail(ArtistInfo artist) {
     super(100);
@@ -165,7 +160,6 @@ public class LastFmArtistThumbnail extends AbstractThumbnail {
         Log.warn("Could not read remote file: {{" + remote.toString() + "}}");
         return;
       }
-
       BufferedImage image = ImageIO.read(fCover);
       if (image == null) {
         Log.warn("Could not read image data in file: {{" + fCover + "}}");
@@ -178,15 +172,14 @@ public class LastFmArtistThumbnail extends AbstractThumbnail {
       } else {
         ii = UtilGUI.getScaledImage(downloadedImage, 100);
       }
-
       // Free images memory
       downloadedImage.getImage().flush();
       image.flush();
     } catch (IIOException e) {
       // report IIOException only as warning here as we can expect this to
       // happen frequently with images on the net
-      Log.warn("Could not read image: {{" + artist.getImageUrl().toString() + "}} Cache: {{"
-          + fCover + "}}", e.getMessage());
+      Log.warn("Could not read image: {{" + artist.getImageUrl() + "}} Cache: {{" + fCover + "}}",
+          e.getMessage());
     } catch (UnknownHostException e) {
       Log.warn("Could not contact host for loading images: {{" + e.getMessage() + "}}");
     } catch (Exception e) {
@@ -247,5 +240,4 @@ public class LastFmArtistThumbnail extends AbstractThumbnail {
       jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, artist.getUrl());
     }
   }
-
 }

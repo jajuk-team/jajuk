@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.qdwizard;
 
@@ -30,19 +30,13 @@ package org.qdwizard;
  * </ul>.
  */
 public class ScreenState {
-
-  /** DOCUMENT_ME. */
   private boolean bCanFinish;
-
   /** Can Go Next. */
   private boolean bCanGoNext;
-
   /** Can Go Previous. */
   private boolean bCanGoPrevious;
-
   /** Can Cancel. */
   private boolean bCanCancel;
-
   /** Problem. */
   private String sProblem;
 
@@ -83,7 +77,7 @@ public class ScreenState {
   /**
    * Set whether the finish button should be enabled.
    * 
-   * @param bCanFinish DOCUMENT_ME
+   * @param bCanFinish 
    */
   public void setCanFinish(boolean bCanFinish) {
     this.bCanFinish = bCanFinish;
@@ -101,7 +95,7 @@ public class ScreenState {
   /**
    * Set whether the next button should be enabled.
    * 
-   * @param bCanGoNext DOCUMENT_ME
+   * @param bCanGoNext 
    */
   public void setCanGoNext(boolean bCanGoNext) {
     this.bCanGoNext = bCanGoNext;
@@ -119,7 +113,7 @@ public class ScreenState {
   /**
    * Set whether the previous button should be enabled.
    * 
-   * @param bCanGoPrevious DOCUMENT_ME
+   * @param bCanGoPrevious 
    */
   public void setCanGoPrevious(boolean bCanGoPrevious) {
     this.bCanGoPrevious = bCanGoPrevious;
@@ -137,7 +131,7 @@ public class ScreenState {
   /**
    * Set whether the cancel (or System menu close) button should be enabled.
    * 
-   * @param bCanCancel DOCUMENT_ME
+   * @param bCanCancel 
    */
   public void setCanCancel(boolean bCanCancel) {
     this.bCanCancel = bCanCancel;
@@ -161,5 +155,4 @@ public class ScreenState {
     this.sProblem = sProblem;
     setCanGoNext(sProblem == null);
   }
-
 }

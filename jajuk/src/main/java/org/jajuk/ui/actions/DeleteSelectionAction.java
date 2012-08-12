@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
@@ -43,6 +43,8 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.QueueModel;
+import org.jajuk.services.webradio.WebRadio;
+import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -54,26 +56,15 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class DeleteSelectionAction extends SelectionAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** DOCUMENT_ME. */
   private List<File> alFiles;
-
-  /** DOCUMENT_ME. */
   private List<File> rejFiles;
-
-  /** DOCUMENT_ME. */
   private List<Directory> alDirs;
-
-  /** DOCUMENT_ME. */
   private List<Directory> rejDirs;
-
-  /** DOCUMENT_ME. */
   private List<Directory> emptyDirs;
 
   /**
@@ -89,7 +80,6 @@ public class DeleteSelectionAction extends SelectionAction {
    * Called on files deletion (long task).
    */
   class FilesDeletionThread extends Thread {
-
     /**
      * Instantiates a new files deletion thread.
      */
@@ -136,7 +126,6 @@ public class DeleteSelectionAction extends SelectionAction {
    * Called on directories deletion (long task).
    */
   class DirectoriesDeletionThread extends Thread {
-
     /**
      * Instantiates a new directories deletion thread.
      */
@@ -167,7 +156,6 @@ public class DeleteSelectionAction extends SelectionAction {
       UtilGUI.stopWaiting();
       InformationJPanel.getInstance().setMessage(Messages.getString("ActionDelete.1"),
           InformationJPanel.MessageType.INFORMATIVE);
-
       if (rejDirs.size() > 0) {
         String rejString = "";
         for (Directory d : rejDirs) {
@@ -197,7 +185,6 @@ public class DeleteSelectionAction extends SelectionAction {
     alDirs = new ArrayList<Directory>(selection.size());
     rejDirs = new ArrayList<Directory>(selection.size());
     emptyDirs = new ArrayList<Directory>(selection.size());
-
     // Compute all files to move from various items list
     if (selection.size() == 0) {
       Log.debug("None item to move");
@@ -211,7 +198,10 @@ public class DeleteSelectionAction extends SelectionAction {
       }
     } else {
       for (Item item : selection) {
-        if (item instanceof File) {
+        if (item instanceof WebRadio) {
+          WebRadioManager.getInstance().removeItem(item);
+          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+        } else if (item instanceof File) {
           alFiles.add((File) item);
         } else if (item instanceof Track) {
           alFiles.addAll(((Track) item).getFiles());
@@ -242,7 +232,6 @@ public class DeleteSelectionAction extends SelectionAction {
     if (alFiles.size() > 0) {
       handleFiles();
     }
-
     // Now consider directories (selection can contain both files and directories)
     if (alDirs.size() > 0) {
       handleDirectories();
@@ -270,7 +259,6 @@ public class DeleteSelectionAction extends SelectionAction {
       if (iResu != JOptionPane.YES_OPTION) {
         return;
       }
-
       // Check if selection doesn't contain playing file's directory
       for (Directory dir : alDirs) {
         if (QueueModel.getPlayingFile() != null && QueueModel.getPlayingFile().hasAncestor(dir)) {
@@ -301,7 +289,6 @@ public class DeleteSelectionAction extends SelectionAction {
         return;
       }
     }
-
     // Check if selection doesn't contain playing file
     for (File f : alFiles) {
       if (QueueModel.getPlayingFile() != null && f.equals(QueueModel.getPlayingFile())) {
@@ -311,14 +298,12 @@ public class DeleteSelectionAction extends SelectionAction {
     }
     //Actual deletion
     new FilesDeletionThread().start();
-
     // Cleanup empty directories
     if (emptyDirs.size() > 0) {
       String emptyDirsString = "";
       for (Directory d : emptyDirs) {
         emptyDirsString += d.getName() + "\n";
       }
-
       int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_empty_dirs")
           + " : \n\n" + emptyDirsString, JOptionPane.YES_NO_CANCEL_OPTION,
           JOptionPane.INFORMATION_MESSAGE);
@@ -347,5 +332,4 @@ public class DeleteSelectionAction extends SelectionAction {
       }
     }
   }
-
 }

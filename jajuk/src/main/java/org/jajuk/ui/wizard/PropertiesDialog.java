@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,14 +16,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.wizard;
 
 import ext.AutoCompleteDecorator;
 
 import java.awt.Color;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -48,6 +50,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.text.JTextComponent;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -68,6 +71,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.widgets.CopyableLabel;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.widgets.JajukJDialog;
@@ -90,54 +94,39 @@ import org.jdesktop.swingx.VerticalLayout;
  * ItemManager properties dialog for any jajuk item.
  */
 public class PropertiesDialog extends JajukJDialog implements ActionListener {
-
-  /** The Constant PROPERTIES_WIZARD_6. DOCUMENT_ME */
+  /** The Constant PROPERTIES_WIZARD_6.  */
   private static final String PROPERTIES_WIZARD_6 = "PropertiesWizard.6";
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /* Main panel */
-  /** DOCUMENT_ME. */
   private JPanel jpMain;
-
   /** OK/Cancel panel. */
   private OKCancelPanel okc;
-
   /** Items. */
   private List<Item> alItems;
-
-  /** Items2. */
-  private List<Item> alItems2;
-
   /** Files filter. */
   private Set<File> filter = null;
-
   /** number of editable items (all panels). */
   private int iEditable = 0;
-
   /** First property panel. */
   private PropertiesPanel panel1;
-
   /** Second property panel. */
   private PropertiesPanel panel2;
-
-  /** Did user chnaged something ?. */
+  /** Did user changed something ?. */
   private boolean changes = false;
 
   /**
    * Constructor for normal wizard with only one wizard panel and n items to
    * display.
-   * 
+   *
    * @param alItems items to display
    */
   public PropertiesDialog(List<Item> alItems) {
-    super();
-
+    super(JajukMainWindow.getInstance(), false);
     // windows title: name of the element if there is
     // only one item, or "selection" word otherwise
     if (alItems.size() == 1) {
-      setTitle(alItems.get(0).getDesc());
+      setTitle(alItems.get(0).getTitle());
     } else {
       setTitle(Messages.getString(PROPERTIES_WIZARD_6));
     }
@@ -147,11 +136,11 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
       bMerged = true;
     }
     panel1 = new PropertiesPanel(alItems, alItems.size() == 1 ? UtilString.getLimitedString(alItems
-        .get(0).getDesc(), 50) : Messages.getString(PROPERTIES_WIZARD_6) + " [" + alItems.size()
+        .get(0).getTitle(), 50) : Messages.getString(PROPERTIES_WIZARD_6) + " [" + alItems.size()
         + "]", bMerged);
     // OK/Cancel buttons
-    okc = new OKCancelPanel(PropertiesDialog.this, Messages.getString("Apply"), Messages
-        .getString("Close"));
+    okc = new OKCancelPanel(PropertiesDialog.this, Messages.getString("Apply"),
+        Messages.getString("Close"));
     // Add items
     jpMain = new JPanel(new MigLayout("insets 5,gapx 5,gapy 5", "[grow]"));
     jpMain.add(panel1, "grow,wrap");
@@ -162,36 +151,33 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
   /**
    * Constructor for file wizard for ie with 2 wizard panels and n items to
    * display.
-   * 
+   *
    * @param alItems1 items to display in the first wizard panel (file for ie)
    * @param alItems2 items to display in the second panel (associated track for ie )
    */
   public PropertiesDialog(List<Item> alItems1, List<Item> alItems2) {
     super();
-
     // windows title: name of the element of only one item, or "selection"
     // word otherwise
-    setTitle(alItems1.size() == 1 ? alItems1.get(0).getDesc() : Messages
+    setTitle(alItems1.size() == 1 ? alItems1.get(0).getTitle() : Messages
         .getString(PROPERTIES_WIZARD_6));
     this.alItems = alItems1;
-    this.alItems2 = alItems2;
     if (alItems1.size() > 0) {
       // computes filter
       refreshFileFilter();
       if (alItems1.size() == 1) {
         panel1 = new PropertiesPanel(alItems1, UtilString.getLimitedString(alItems1.get(0)
-            .getDesc(), 50), false);
+            .getTitle(), 50), false);
       } else {
         panel1 = new PropertiesPanel(alItems1, UtilString.formatPropertyDesc(Messages
-            .getString(PROPERTIES_WIZARD_6)
-            + " [" + alItems.size() + "]"), true);
+            .getString(PROPERTIES_WIZARD_6) + " [" + alItems.size() + "]"), true);
       }
       panel1.setBorder(BorderFactory.createEtchedBorder());
     }
     if (alItems2.size() > 0) {
       if (alItems2.size() == 1) {
         panel2 = new PropertiesPanel(alItems2, UtilString.getLimitedString(alItems2.get(0)
-            .getDesc(), 50), false);
+            .getTitle(), 50), false);
       } else {
         panel2 = new PropertiesPanel(alItems2, UtilString.formatPropertyDesc(alItems2.size() + " "
             + Messages.getHumanPropertyName(Const.XML_TRACKS)), true);
@@ -200,7 +186,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
     }
     // OK/Cancel buttons
     okc = new OKCancelPanel(this, Messages.getString("Apply"), Messages.getString("Close"));
-
     // Add items
     jpMain = new JPanel(new MigLayout("insets 5,gapx 5,gapy 5", "[grow][grow]"));
     jpMain.add(panel1, "grow");
@@ -210,7 +195,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
     }
     // Use cell tag because the wrap is not done if panel2 is void
     jpMain.add(okc, "cell 0 1 1 1,span,right");
-
     display();
   }
 
@@ -221,6 +205,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
    * because files may have changed then (if user changed the file name).
    */
   private void refreshFileFilter() {
+    // TODO: alItems can be empty here!
     if (alItems.get(0) instanceof Directory) {
       filter = new HashSet<File>(alItems.size() * 10);
       for (Item item : alItems) {
@@ -238,12 +223,13 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
   }
 
   /**
-   * Display. DOCUMENT_ME
+   * Display. 
    */
   private void display() {
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
+        UtilGUI.setEscapeKeyboardAction(PropertiesDialog.this, jpMain);
         // If none editable item, save button is disabled
         if (iEditable == 0) {
           okc.getOKButton().setEnabled(false);
@@ -251,6 +237,8 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
         getRootPane().setDefaultButton(okc.getOKButton());
         getContentPane().add(new JScrollPane(jpMain));
         pack();
+        // set default focus to make escape work
+        okc.getOKButton().requestFocusInWindow();
         setLocationRelativeTo(JajukMainWindow.getInstance());
         setVisible(true);
       }
@@ -259,7 +247,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   @Override
@@ -299,12 +287,16 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
 
   /**
    * Tells whether a link button should be shown for a given property.
-   * 
-   * @param meta DOCUMENT_ME
-   * 
+   *
+   * @param meta 
+   *
    * @return true, if checks if is linkable
    */
   public boolean isLinkable(PropertyMetaInformation meta) {
+    // No links for webradios
+    if (alItems.get(0) instanceof WebRadio) {
+      return false;
+    }
     String sKey = meta.getName();
     return sKey.equals(Const.XML_DEVICE) || sKey.equals(Const.XML_TRACK)
         || sKey.equals(Const.XML_DEVICE) || sKey.equals(Const.XML_TRACK)
@@ -321,42 +313,41 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
    * A properties panel.
    */
   class PropertiesPanel extends JPanel implements ActionListener {
-
+    /** The Constant IDX_NAME.   */
+    private static final int IDX_NAME = 0;
+    /** The Constant IDX_VALUE.   */
+    private static final int IDX_VALUE = 1;
+    /** The Constant IDX_COPY.   */
+    private static final int IDX_COPY = 2;
+    /** The Constant IDX_LINK.   */
+    private static final int IDX_LINK = 3;
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
-
     /** Properties panel. */
     JPanel jpProperties;
-
     /** ItemManager description. */
     JLabel jlDesc;
-
     /** All dynamic widgets. */
     JComponent[][] widgets;
-
     /** Properties to display. */
     List<PropertyMetaInformation> alToDisplay;
-
     /** Items. */
-    List<Item> alItems;
-
+    List<Item> propItems;
     /** Changed properties. */
     Map<PropertyMetaInformation, Object> hmPropertyToChange = new HashMap<PropertyMetaInformation, Object>();
-
     /** Merge flag. */
     boolean bMerged = false;
 
     /**
      * Property panel for single types elements.
-     * 
+     *
      * @param alItems items to display
      * @param sDesc Description (title)
      * @param bMerged : whether this panel contains merged values
      */
     PropertiesPanel(List<Item> alItems, String sDesc, boolean bMerged) {
       super();
-
-      this.alItems = alItems;
+      this.propItems = alItems;
       this.bMerged = bMerged;
       Item pa = alItems.get(0);
       // first item Process properties to display
@@ -394,7 +385,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
           jlName.setForeground(Color.BLUE);
         }
         // Property value computes editable state
-        widgets[index][0] = jlName;
+        widgets[index][IDX_NAME] = jlName;
         // property editable ?
         boolean bEditable = meta.isEditable();
         // Check meta-data is supported for the file type
@@ -439,7 +430,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
               // to detect a change
               jdp.setDate(new Date(0));
             }
-            widgets[index][1] = jdp;
+            widgets[index][IDX_VALUE] = jdp;
           } else if (meta.getType().equals(Boolean.class)) {
             // for a boolean, value is a checkbox
             final JCheckBox jcb = new JCheckBox();
@@ -458,7 +449,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
             else {
               jcb.setSelected(!pa.getBooleanValue(meta.getName()));
             }
-            widgets[index][1] = jcb;
+            widgets[index][IDX_VALUE] = jcb;
           } else if (meta.getType().equals(Double.class) || meta.getType().equals(Integer.class)
               || meta.getType().equals(Long.class)) {
             // Note : we manage field validation by ourself, and we
@@ -497,7 +488,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
               jtfValue.setText(pa.getHumanValue(meta.getName()));
               // If several items, take first value found
             }
-            widgets[index][1] = jtfValue;
+            widgets[index][IDX_VALUE] = jtfValue;
           } else if (meta.getType().equals(String.class)
           // for genres
               && meta.getName().equals(Const.XML_GENRE)) {
@@ -539,7 +530,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
                 hmPropertyToChange.put(meta, oValue);
               }
             });
-            widgets[index][1] = jcb;
+            widgets[index][IDX_VALUE] = jcb;
           } else if (meta.getType().equals(String.class)
               && (Const.XML_ARTIST.equals(meta.getName()) || Const.XML_ALBUM_ARTIST.equals(meta
                   .getName()))) {
@@ -553,6 +544,9 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
             } else if (Const.XML_ALBUM_ARTIST.equals(meta.getName())) {
               artists = AlbumArtistManager.getAlbumArtistsList();
               valueToCheck = pa.getHumanValue(Const.XML_ALBUM_ARTIST);
+            }
+            if (artists == null) {
+              throw new IllegalStateException("Could not get a list of Artists!");
             }
             final JComboBox jcb = new JComboBox(artists);
             jcb.setEditable(true);
@@ -590,7 +584,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
                 hmPropertyToChange.put(meta, oValue);
               }
             });
-            widgets[index][1] = jcb;
+            widgets[index][IDX_VALUE] = jcb;
           } else { // for all others formats (string, class)
             final JTextField jtfValue = new JTextField();
             jtfValue.addKeyListener(new KeyAdapter() {
@@ -608,7 +602,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
               // If several items, take first value found
               jtfValue.setText(pa.getHumanValue(meta.getName()));
             }
-            widgets[index][1] = jtfValue;
+            widgets[index][IDX_VALUE] = jtfValue;
           }
         } else {
           CopyableLabel jl = null;
@@ -635,46 +629,66 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
               jl.setToolTipText(s);
             }
           }
-          widgets[index][1] = jl;
-
+          widgets[index][IDX_VALUE] = jl;
         }
         // Link
         if (isLinkable(meta)) {
           JButton jbLink = new JButton(IconLoader.getIcon(JajukIcons.PROPERTIES));
           jbLink.addActionListener(this);
           jbLink.setActionCommand("link");
+          // Not focusable to avoid tabbing between field focus this button instead next field
+          jbLink.setFocusable(false);
           jbLink.setToolTipText(Messages.getString("PropertiesWizard.12"));
-          widgets[index][2] = jbLink;
+          widgets[index][IDX_LINK] = jbLink;
+        }
+        // Copy
+        if (isCopyable(widgets[index][IDX_VALUE])) {
+          JButton jbCopy = new JButton(IconLoader.getIcon(JajukIcons.COPY_TO_CLIPBOARD));
+          jbCopy.addActionListener(this);
+          jbCopy.setActionCommand("copy");
+          // Not focusable to avoid tabbing between field focus this button instead next field
+          jbCopy.setFocusable(false);
+          jbCopy.setToolTipText(Messages.getString("PropertiesWizard.14"));
+          widgets[index][IDX_COPY] = jbCopy;
         }
         index++;
       }
-
       // Add title
       JLabel jlName = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.1")
           + "</b></html>");
-      jlName.setToolTipText(Messages.getString("PropertiesWizard.1"));
       JLabel jlValue = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.2")
           + "</b></html>");
-      jlValue.setToolTipText(Messages.getString("PropertiesWizard.2"));
       JLabel jlLink = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.4")
           + "</b></html>");
-      jlLink.setToolTipText(Messages.getString("PropertiesWizard.4"));
-
+      JLabel jlCopy = new JLabel("<html><b>" + Messages.getString("PropertiesWizard.13")
+          + "</b></html>");
       jpProperties = new JPanel(new MigLayout("insets 10,gapx 5,gapy 10", "[][grow][]"));
       jpProperties.add(jlName);
       jpProperties.add(jlValue, "grow");
+      jpProperties.add(jlCopy, "");
       jpProperties.add(jlLink, "wrap");
       // Add widgets
       int i = 0;
       int j = 4;
       // for (PropertyMetaInformation meta : alToDisplay) {
       for (int k = 0; k < alToDisplay.size(); k++) {
-        jpProperties.add(widgets[i][0]);
-        if (widgets[i][2] == null) { // link widget can be null
-          jpProperties.add(widgets[i][1], "grow,width 200:200, wrap");
+        jpProperties.add(widgets[i][IDX_NAME]);
+        if (widgets[i][IDX_LINK] == null) { // link widget can be null
+          if (widgets[i][IDX_COPY] == null) {
+            jpProperties.add(widgets[i][IDX_VALUE], "grow,width 200:200, wrap");
+          } else {
+            jpProperties.add(widgets[i][IDX_VALUE], "grow,width 200:200");
+            jpProperties.add(widgets[i][IDX_COPY], "wrap");
+          }
         } else {
-          jpProperties.add(widgets[i][1], "grow,width 200:200");
-          jpProperties.add(widgets[i][2], "wrap");
+          if (widgets[i][IDX_COPY] == null) {
+            jpProperties.add(widgets[i][IDX_VALUE], "grow,width 200:200");
+            jpProperties.add(widgets[i][IDX_LINK], "wrap");
+          } else {
+            jpProperties.add(widgets[i][IDX_VALUE], "grow,width 200:200");
+            jpProperties.add(widgets[i][IDX_COPY], "");
+            jpProperties.add(widgets[i][IDX_LINK], "wrap");
+          }
         }
         i++;
         j += 2;
@@ -686,9 +700,27 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
       add(jpProperties);
     }
 
+    /**
+     * Checks if is copyable.
+     *
+     * @param jComponent 
+     * @return true, if is copyable
+     */
+    private boolean isCopyable(JComponent jComponent) {
+      if (jComponent instanceof JXDatePicker || jComponent instanceof JTextComponent
+          || jComponent instanceof JComboBox || jComponent instanceof JLabel) {
+        // ignore some useless values...
+        if ("0".equals(extractValue(jComponent))) {
+          return false;
+        }
+        return true;
+      }
+      return false;
+    }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     @Override
@@ -698,14 +730,14 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
         PropertyMetaInformation meta = alToDisplay.get(getWidgetIndex((JComponent) ae.getSource()));
         String sProperty = meta.getName();
         if (Const.XML_FILES.equals(sProperty)) {
-          Track track = (Track) alItems.get(0);
+          Track track = (Track) propItems.get(0);
           List<Item> alFiles = new ArrayList<Item>(1);
           alFiles.addAll(track.getFiles());
           // show properties window for this item
           new PropertiesDialog(alFiles);
         } else if (Const.XML_PLAYLIST_FILES.equals(sProperty)) {
           // can only be a set a files
-          String sValue = alItems.get(0).getStringValue(sProperty);
+          String sValue = propItems.get(0).getStringValue(sProperty);
           StringTokenizer st = new StringTokenizer(sValue, ",");
           List<Item> items = new ArrayList<Item>(3);
           while (st.hasMoreTokens()) {
@@ -718,7 +750,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
           new PropertiesDialog(items);
           // show properties window for this item
         } else {
-          String sValue = alItems.get(0).getStringValue(sProperty);
+          String sValue = propItems.get(0).getStringValue(sProperty);
           // can be only an ID
           Item pa = ItemManager.getItemManager(sProperty).getItemByID(sValue);
           if (pa != null) {
@@ -728,7 +760,37 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
             new PropertiesDialog(items);
           }
         }
+      } else if (ae.getActionCommand().equals("copy")) {
+        int i = getWidgetIndex((JComponent) ae.getSource());
+        JComponent jComponent = widgets[i][IDX_VALUE];
+        StringSelection data = new StringSelection(extractValue(jComponent));
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(data, data);
       }
+    }
+
+    /**
+     * Extract value.
+     * 
+     *
+     * @param jComponent 
+     * @return the string
+     */
+    private String extractValue(JComponent jComponent) {
+      String sValue = null;
+      if (jComponent instanceof JXDatePicker) {
+        sValue = ((JXDatePicker) jComponent).getDate().toString();
+      } else if (jComponent instanceof JTextComponent) {
+        sValue = ((JTextComponent) jComponent).getText();
+      } else if (jComponent instanceof JComboBox) {
+        sValue = ((JComboBox) jComponent).getSelectedItem().toString();
+      } else if (jComponent instanceof JLabel) {
+        sValue = ((JLabel) jComponent).getText();
+      } else {
+        throw new IllegalArgumentException("Unexpected type of component: "
+            + jComponent.getClass().getName());
+      }
+      return sValue;
     }
 
     /**
@@ -748,155 +810,153 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
         if (hmPropertyToChange.size() == 0) {
           return;
         }
-        // Computes all items to change
-        // contains items to be changed
-        List<Item> itemsToChange = new ArrayList<Item>(alItems);
-        // Items in error
-        List<Item> alInError = new ArrayList<Item>(itemsToChange.size());
-        // details for errors
-        String sDetails = "";
-
-        // Check typed value format, display error message only once per
-        // property
-        for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
-          // New value
-          oValue = hmPropertyToChange.get(meta);
-          // Check it is not null for non custom properties. Note that
-          // we also allow void values for comments
-          if (oValue == null || (oValue.toString().trim().length() == 0)
-              && !(meta.isCustom() || meta.getName().equals(Const.XML_TRACK_COMMENT))) {
-            Log.error(137, '{' + meta.getName() + '}', null);
-            Messages.showErrorMessage(137, '{' + meta.getName() + '}');
-            return;
-          }
-        }
-
-        // Now we have all items to consider, write tags for each
-        // property to change
-        for (int i = 0; i < itemsToChange.size(); i++) {
-          // Note that item object can be changed during the next for loop, so
-          // do not declare it there
-          Item item = null;
+        try {
+          // Computes all items to change
+          // contains items to be changed
+          List<Item> itemsToChange = new ArrayList<Item>(propItems);
+          // Items in error
+          List<Item> alInError = new ArrayList<Item>(itemsToChange.size());
+          // details for errors
+          String sDetails = "";
+          // Check typed value format, display error message only once per
+          // property
           for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
-            item = itemsToChange.get(i);
-
             // New value
             oValue = hmPropertyToChange.get(meta);
-            // Old value
-            String sOldValue = item.getHumanValue(meta.getName());
-            if (!UtilString.format(oValue, meta, true).equals(sOldValue)) {
-              try {
-                newItem = ItemManager.changeItem(item, meta.getName(), oValue, filter);
-                changes = true;
-              }
-              // none accessible file for this track, for this error,
-              // we display an error and leave completely
-              catch (NoneAccessibleFileException none) {
-                Log.error(none);
-                Messages.showErrorMessage(none.getCode(), item.getHumanValue(Const.XML_NAME));
-                // close window to avoid reseting all properties to
-                // old values
-                dispose();
-                return;
-              }
-              // cannot rename file, for this error, we display an
-              // error and leave completely
-              catch (CannotRenameException cre) {
-                Log.error(cre);
-                Messages.showErrorMessage(cre.getCode());
-                dispose();
-                return;
-              }
-              // probably error writing a tag, store track reference
-              // and continue
-              catch (JajukException je) {
-                Log.error(je);
-                if (!alInError.contains(item)) {
-                  alInError.add(item);
-                  // create details label with 3 levels deep
-                  sDetails += buidlDetailsString(je);
+            // Check it is not null for non custom properties. Note that
+            // we also allow void values for comments
+            if (oValue == null || (oValue.toString().trim().length() == 0)
+                && !(meta.isCustom() || meta.getName().equals(Const.XML_TRACK_COMMENT))) {
+              Log.error(137, '{' + meta.getName() + '}', null);
+              Messages.showErrorMessage(137, '{' + meta.getName() + '}');
+              return;
+            }
+          }
+          // Now we have all items to consider, write tags for each
+          // property to change
+          for (int i = 0; i < itemsToChange.size(); i++) {
+            // Note that item object can be changed during the next for loop, so
+            // do not declare it there
+            Item item = null;
+            for (PropertyMetaInformation meta : hmPropertyToChange.keySet()) {
+              item = itemsToChange.get(i);
+              // New value
+              oValue = hmPropertyToChange.get(meta);
+              // Old value
+              String sOldValue = item.getHumanValue(meta.getName());
+              if (!UtilString.format(oValue, meta, true).equals(sOldValue)) {
+                try {
+                  newItem = ItemManager.changeItem(item, meta.getName(), oValue, filter);
+                  changes = true;
                 }
-                continue;
+                // none accessible file for this track, for this error,
+                // we display an error and leave completely
+                catch (NoneAccessibleFileException none) {
+                  Log.error(none);
+                  Messages.showErrorMessage(none.getCode(), item.getHumanValue(Const.XML_NAME));
+                  // close window to avoid reseting all properties to
+                  // old values
+                  dispose();
+                  return;
+                }
+                // cannot rename file, for this error, we display an
+                // error and leave completely
+                catch (CannotRenameException cre) {
+                  Log.error(cre);
+                  Messages.showErrorMessage(cre.getCode());
+                  dispose();
+                  return;
+                }
+                // probably error writing a tag, store track reference
+                // and continue
+                catch (JajukException je) {
+                  Log.error(je);
+                  if (!alInError.contains(item)) {
+                    alInError.add(item);
+                    // create details label with 3 levels deep
+                    sDetails += buidlDetailsString(je);
+                  }
+                  continue;
+                }
+                // if this item was element of property panel elements,
+                // update it
+                if (propItems.contains(item)) {
+                  propItems.remove(item);
+                  propItems.add(newItem);
+                }
+                // Update itemsToChange to replace the item. Indeed, if we change
+                // several properties to the same item, the item itself must
+                // change
+                itemsToChange.set(i, newItem);
+                // if individual item, change title in case of
+                // constructor element change
+                if (!bMerged) {
+                  jlDesc.setText(UtilString.formatPropertyDesc(newItem.getTitle()));
+                }
+                // note this property have been changed
+                if (!alChanged.contains(meta)) {
+                  alChanged.add(meta);
+                }
               }
-              // if this item was element of property panel elements,
-              // update it
-              if (alItems.contains(item)) {
-                alItems.remove(item);
-                alItems.add(newItem);
-              }
-              // Update itemsToChange to replace the item. Indeed, if we change
-              // several properties to the same item, the item itself must
-              // change
-              itemsToChange.set(i, newItem);
-              // if individual item, change title in case of
-              // constructor element change
-              if (!bMerged) {
-                jlDesc.setText(UtilString.formatPropertyDesc(newItem.getDesc()));
-              }
-              // note this property have been changed
-              if (!alChanged.contains(meta)) {
-                alChanged.add(meta);
+            }
+            // Require full commit for all changed tags on the current file
+            try {
+              TrackManager.getInstance().commit();
+            } catch (Exception e) {
+              Log.error(e);
+              if (!alInError.contains(item)) {
+                alInError.add(item);
+                // create details label with 3 levels deep
+                sDetails += buidlDetailsString(e);
               }
             }
           }
-          // Require full commit for all changed tags on the current file
-          try {
-            TrackManager.getInstance().commit();
-          } catch (Exception e) {
-            Log.error(e);
-            if (!alInError.contains(item)) {
-              alInError.add(item);
-              // create details label with 3 levels deep
-              sDetails += buidlDetailsString(e);
+          // display a message for file write issues
+          if (alInError.size() > 0) {
+            String sInfo = "";
+            int index = 0;
+            for (Item item : alInError) {
+              // limit number of errors
+              if (index == 15) {
+                sInfo += "\n...";
+                break;
+              }
+              sInfo += "\n" + item.getHumanValue(Const.XML_NAME);
+              index++;
             }
+            Messages.showDetailedErrorMessage(104, sInfo, sDetails);
           }
-        }
-
-        // display a message for file write issues
-        if (alInError.size() > 0) {
-          String sInfo = "";
-          int index = 0;
-          for (Item item : alInError) {
-            // limit number of errors
-            if (index == 15) {
-              sInfo += "\n...";
-              break;
+          // display a message if user changed at least one property
+          if (alChanged.size() > 0) {
+            StringBuilder sbChanged = new StringBuilder();
+            sbChanged.append("{ ");
+            for (PropertyMetaInformation meta : alChanged) {
+              sbChanged.append(meta.getHumanName()).append(' ');
             }
-            sInfo += "\n" + item.getHumanValue(Const.XML_NAME);
-            index++;
+            sbChanged.append('}');
+            InformationJPanel.getInstance().setMessage(
+                alChanged.size() + " " + Messages.getString("PropertiesWizard.10") + ": "
+                    + sbChanged.toString(), InformationJPanel.MessageType.INFORMATIVE);
           }
-          Messages.showDetailedErrorMessage(104, sInfo, sDetails);
-        }
-
-        // display a message if user changed at least one property
-        if (alChanged.size() > 0) {
-          StringBuilder sbChanged = new StringBuilder();
-          sbChanged.append("{ ");
-          for (PropertyMetaInformation meta : alChanged) {
-            sbChanged.append(meta.getHumanName()).append(' ');
-          }
-          sbChanged.append('}');
-          InformationJPanel.getInstance().setMessage(
-              alChanged.size() + " " + Messages.getString("PropertiesWizard.10") + ": "
-                  + sbChanged.toString(), InformationJPanel.MessageType.INFORMATIVE);
+        } finally {
+          // Force files resorting to ensure the sorting consistency, indeed,
+          // files are sorted by name *and* track order and we need to force a
+          // files resort after an order change (this is already done in case of
+          // file name change)
+          FileManager.getInstance().forceSorting();
         }
       } finally {
         UtilGUI.stopWaiting();
         // Reset auto-commit state
         TrackManager.getInstance().setAutocommit(true);
-        // Force files resorting to ensure the sorting consistency, indeed,
-        // files are sorted by name *and* track order and we need to force a
-        // files resort after an order change (this is already done in case of
-        // file name change)
-        FileManager.getInstance().forceSorting();
       }
     }
 
     /**
      * Build the errors details message.
-     * 
+     *
      * @param e the exception
-     * 
+     *
      * @return the errors details message
      */
     private String buidlDetailsString(Exception e) {
@@ -916,9 +976,9 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
 
     /**
      * Gets the widget index.
-     * 
-     * @param widget DOCUMENT_ME
-     * 
+     *
+     * @param widget 
+     *
      * @return index of a given widget in the widget table
      */
     private int getWidgetIndex(JComponent widget) {
@@ -930,10 +990,8 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
             break;
           }
         }
-
       }
       return resu;
     }
   }
-
 }

@@ -1,2 +1,27 @@
-# Disable Infinitest globally in 1.9.x 
-.*
+# Tests too long :
+.*TestQueueModel.*
+.*TestPlaylist.*
+.*TestMPlayerPlayerImpl.*
+.*ObserverRegistry.*
+.*AlarmManager.*
+.*TestMPlayerPlayerImpl.*
+.*TestStartupEngineService.*
+
+# Tests with special requirements
+.*TestDBusSupportImpl.*
+
+# Tests online
+.*TestLyrics.*
+.*TestCover.*
+.*TestNetwork.*
+.*Preset.*
+.*TestWebRadioHelper.*
+
+
+# Integration Tests with limited number of hits
+.*LastFm.*
+
+# Tests with GUI (even in headless mode)
+org.jajuk.services.notification.*
+.*ParameterView.*
+.*Splash.*

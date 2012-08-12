@@ -20,7 +20,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.network;
 
 import java.awt.Image;
@@ -41,10 +40,9 @@ import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public final class NetworkUtils {
-
   /**
    * Instantiates a new network utils.
    */
@@ -55,8 +53,8 @@ public final class NetworkUtils {
   /**
    * Gets the connection.
    * 
-   * @param urlString DOCUMENT_ME
-   * @param proxy DOCUMENT_ME
+   * @param urlString 
+   * @param proxy 
    * 
    * @return the connection
    * 
@@ -78,8 +76,8 @@ public final class NetworkUtils {
   /**
    * Gets the connection.
    * 
-   * @param url DOCUMENT_ME
-   * @param proxy DOCUMENT_ME
+   * @param url 
+   * @param proxy 
    * 
    * @return the connection
    * 
@@ -126,10 +124,10 @@ public final class NetworkUtils {
 
   /**
    * Read url.
-   * DOCUMENT_ME
    * 
-   * @param connection DOCUMENT_ME
-   * @param charset DOCUMENT_ME
+   * 
+   * @param connection 
+   * @param charset 
    * 
    * @return the string
    * 
@@ -158,9 +156,9 @@ public final class NetworkUtils {
 
   /**
    * Read url.
-   * DOCUMENT_ME
    * 
-   * @param connection DOCUMENT_ME
+   * 
+   * @param connection 
    * 
    * @return the string
    * 
@@ -172,10 +170,10 @@ public final class NetworkUtils {
 
   /**
    * Read post url.
-   * DOCUMENT_ME
    * 
-   * @param connection DOCUMENT_ME
-   * @param post DOCUMENT_ME
+   * 
+   * @param connection 
+   * @param post 
    * 
    * @return the string
    * 
@@ -196,11 +194,9 @@ public final class NetworkUtils {
     } finally {
       writer.close();
     }
-
     if (connection.getResponseCode() != 200) {
       throw new IllegalArgumentException("Invalid HTTP return code");
     }
-
     StringBuilder builder = new StringBuilder();
     InputStream input = connection.getInputStream();
     try {
@@ -212,14 +208,13 @@ public final class NetworkUtils {
     } finally {
       input.close();
     }
-
     return builder.toString();
   }
 
   /**
    * Gets the image.
    * 
-   * @param connection DOCUMENT_ME
+   * @param connection 
    * 
    * @return the image
    * 
@@ -239,7 +234,7 @@ public final class NetworkUtils {
   /**
    * Encodes a string in a format suitable to send a http request.
    * 
-   * @param s DOCUMENT_ME
+   * @param s 
    * 
    * @return the string
    */
@@ -250,5 +245,4 @@ public final class NetworkUtils {
       return s;
     }
   }
-
 }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.helpers;
 
@@ -29,7 +29,6 @@ package org.jajuk.ui.helpers;
  * </p>
  */
 public interface TwoStepsDisplayable {
-
   /**
    * Long call done in background in a dedicated thread.
    * 
@@ -40,8 +39,7 @@ public interface TwoStepsDisplayable {
   /**
    * Fast call done in the EDT, must be fast !.
    * 
-   * @param in DOCUMENT_ME
+   * @param in 
    */
   void shortCall(Object in);
-
 }

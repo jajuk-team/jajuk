@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.helpers.animations;
 
 import java.awt.Shape;
@@ -31,17 +30,15 @@ import java.lang.reflect.Method;
  * See https://trac.jajuk.info/ticket/1464 for more details
  */
 public class AWTUtilities {
-
   /**
    * Checks if is available.
    * 
    * @return true, if is available
    */
-  @SuppressWarnings("unchecked")
   public static boolean isAvailable() {
     try {
       @SuppressWarnings("unused")
-      Class awtutil = Class.forName("com.sun.awt.AWTUtilities");
+      Class<?> awtutil = Class.forName("com.sun.awt.AWTUtilities");
       return true;
     } catch (Exception ex) {
       // Void on purpose, means that this JRE doesn't support the com.sun.awt.AWTUtilities class, do
@@ -52,15 +49,14 @@ public class AWTUtilities {
 
   /**
    * Sets the window shape.
-   * DOCUMENT_ME
    * 
-   * @param window DOCUMENT_ME
-   * @param shape DOCUMENT_ME
+   * 
+   * @param window 
+   * @param shape 
    */
-  @SuppressWarnings("unchecked")
   public static void setWindowShape(Window window, Shape shape) {
     try {
-      Class awtutil = Class.forName("com.sun.awt.AWTUtilities");
+      Class<?> awtutil = Class.forName("com.sun.awt.AWTUtilities");
       Method setWindowShape = awtutil.getMethod("setWindowShape", Window.class, Shape.class);
       setWindowShape.invoke(null, window, shape);
     } catch (Exception ex) {
@@ -71,15 +67,14 @@ public class AWTUtilities {
 
   /**
    * Sets the window opacity.
-   * DOCUMENT_ME
    * 
-   * @param window DOCUMENT_ME
-   * @param alpha DOCUMENT_ME
+   * 
+   * @param window 
+   * @param alpha 
    */
-  @SuppressWarnings("unchecked")
   public static void setWindowOpacity(Window window, float alpha) {
     try {
-      Class awtutil = Class.forName("com.sun.awt.AWTUtilities");
+      Class<?> awtutil = Class.forName("com.sun.awt.AWTUtilities");
       Method setWindowOpaque = awtutil.getMethod("setWindowOpacity", Window.class, float.class);
       setWindowOpaque.invoke(null, window, alpha);
     } catch (Exception ex) {
@@ -92,6 +87,5 @@ public class AWTUtilities {
    * Instantiates a new aWT utilities.
    */
   private AWTUtilities() {
-
   }
 }

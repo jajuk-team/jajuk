@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.util;
 
 import java.io.File;
@@ -49,34 +48,26 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
   // that is overwritten later on, we should investigate if we can separate those two concerns...
   // also some filters do not really depend on JajukFileFilter, e.g. DirectoryFilter, and thus
   // might return incorrect data in certain cases, e.g. extension...
-
   /** Filters. */
   private JajukFileFilter[] filters = {};
-
   /** Show directories (useful to allow user to navigate). */
   protected boolean bShowDirectories = false;
-
   /** List of Extensions for the current filter. */
   protected String[] extensions = {};
-
-  /** DOCUMENT_ME. */
   protected String extensionsString = "";
-
   /** And or OR applied to multi filters ?. */
   private boolean bAND = true;
 
   /**
    * Filter constructor.
    *
-   * @param bAND DOCUMENT_ME
+   * @param bAND 
    * @param filters undefined list of jajuk filter to be applied (logical AND applied
    * between filters)
    */
   public JajukFileFilter(final boolean bAND, final JajukFileFilter... filters) {
     super();
-
     this.bAND = bAND;
-
     this.filters = new JajukFileFilter[filters.length];
     System.arraycopy(filters, 0, this.filters, 0, filters.length);
   }
@@ -104,7 +95,6 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
    */
   public JajukFileFilter(final String[] extensions) {
     super();
-
     this.extensions = (extensions != null) ? extensions : new String[] {};
     final int size = this.extensions.length;
     for (int i = 0; i < size; i++) {
@@ -128,7 +118,6 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
   @Override
   public boolean accept(final File f) {
     boolean acceptance = false;
-
     if (filters.length != 0) {
       boolean test = false;
       if (bAND) {
@@ -194,7 +183,6 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
   protected boolean isKnownExtension(final File file) {
     if (file != null) {
       final String extension = UtilSystem.getExtension(file).toLowerCase(Locale.getDefault());
-
       for (final String ext : extensions) {
         if (extension.equals(ext)) {
           return true;
@@ -225,5 +213,4 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter, C
   protected boolean show(final File file) {
     return (file.isDirectory()) ? bShowDirectories : (isKnownExtension(file));
   }
-
 }

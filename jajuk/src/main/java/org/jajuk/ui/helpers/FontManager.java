@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.awt.Font;
@@ -48,68 +47,17 @@ import org.jvnet.substance.fonts.FontSet;
  * Manages Jajuk fonts, stores or update them.
  */
 public final class FontManager implements Observer {
-
-  /** The Constant SANS_SERIF.  DOCUMENT_ME */
+  /** The Constant SANS_SERIF.   */
   private static final String SANS_SERIF = "sans-serif";
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public enum JajukFont {
-
-    /** DOCUMENT_ME. */
-    DEFAULT,
-    
-    /** DOCUMENT_ME. */
-    PLAIN,
-    
-    /** DOCUMENT_ME. */
-    PLAIN_S,
-    
-    /** DOCUMENT_ME. */
-    PLAIN_L,
-    
-    /** DOCUMENT_ME. */
-    PLAIN_XL,
-    
-    /** DOCUMENT_ME. */
-    BOLD,
-    
-    /** DOCUMENT_ME. */
-    BOLD_L,
-    
-    /** DOCUMENT_ME. */
-    BOLD_XL,
-    
-    /** DOCUMENT_ME. */
-    BOLD_XXL,
-    
-    /** DOCUMENT_ME. */
-    BOLD_TITLE,
-    
-    /** DOCUMENT_ME. */
-    PERSPECTIVES,
-    
-    /** DOCUMENT_ME. */
-    PLANNED,
-    
-    /** DOCUMENT_ME. */
-    SEARCHBOX,
-    
-    /** DOCUMENT_ME. */
-    SPLASH,
-    
-    /** DOCUMENT_ME. */
-    SPLASH_PROGRESS,
-    
-    /** DOCUMENT_ME. */
-    VIEW_FONT
+    DEFAULT, PLAIN, PLAIN_S, PLAIN_L, PLAIN_XL, BOLD, BOLD_L, BOLD_XL, BOLD_XXL, BOLD_TITLE, PERSPECTIVES, PLANNED, SEARCHBOX, SPLASH, SPLASH_PROGRESS, VIEW_FONT
   }
 
-  /** DOCUMENT_ME. */
   private static Map<JajukFont, Font> fontCache = new HashMap<JajukFont, Font>(10);
-
-  /** DOCUMENT_ME. */
   private static FontManager self = new FontManager();
 
   // No instantiation
@@ -117,7 +65,6 @@ public final class FontManager implements Observer {
    * Instantiates a new font manager.
    */
   private FontManager() {
-
     registerFonts();
     ObservationManager.register(this);
   }
@@ -133,7 +80,7 @@ public final class FontManager implements Observer {
 
   /**
    * Register fonts.
-   * DOCUMENT_ME
+   * 
    */
   private void registerFonts() {
     // static fonts
@@ -143,28 +90,28 @@ public final class FontManager implements Observer {
     fontCache.put(JajukFont.SPLASH, new Font(SANS_SERIF, Font.PLAIN, 12));
     fontCache.put(JajukFont.SPLASH_PROGRESS, new Font(SANS_SERIF, Font.BOLD, 12));
     // Bold
-    fontCache.put(JajukFont.BOLD, new Font(SANS_SERIF, Font.BOLD, Conf
-        .getInt(Const.CONF_FONTS_SIZE)));
-    fontCache.put(JajukFont.BOLD_L, new Font(SANS_SERIF, Font.BOLD, Conf
-        .getInt(Const.CONF_FONTS_SIZE) + 2));
-    fontCache.put(JajukFont.BOLD_XL, new Font(SANS_SERIF, Font.BOLD, Conf
-        .getInt(Const.CONF_FONTS_SIZE) + 4));
-    fontCache.put(JajukFont.BOLD_XXL, new Font(SANS_SERIF, Font.BOLD, Conf
-        .getInt(Const.CONF_FONTS_SIZE) + 6));
+    fontCache.put(JajukFont.BOLD,
+        new Font(SANS_SERIF, Font.BOLD, Conf.getInt(Const.CONF_FONTS_SIZE)));
+    fontCache.put(JajukFont.BOLD_L,
+        new Font(SANS_SERIF, Font.BOLD, Conf.getInt(Const.CONF_FONTS_SIZE) + 2));
+    fontCache.put(JajukFont.BOLD_XL,
+        new Font(SANS_SERIF, Font.BOLD, Conf.getInt(Const.CONF_FONTS_SIZE) + 4));
+    fontCache.put(JajukFont.BOLD_XXL,
+        new Font(SANS_SERIF, Font.BOLD, Conf.getInt(Const.CONF_FONTS_SIZE) + 6));
     // Plain
-    fontCache.put(JajukFont.DEFAULT, new Font(SANS_SERIF, Font.PLAIN, Conf
-        .getInt(Const.CONF_FONTS_SIZE)));
-    fontCache.put(JajukFont.PLAIN, new Font(SANS_SERIF, Font.PLAIN, Conf
-        .getInt(Const.CONF_FONTS_SIZE)));
-    fontCache.put(JajukFont.PLAIN_S, new Font(SANS_SERIF, Font.PLAIN, Conf
-        .getInt(Const.CONF_FONTS_SIZE) - 2));
-    fontCache.put(JajukFont.PLAIN_L, new Font(SANS_SERIF, Font.PLAIN, Conf
-        .getInt(Const.CONF_FONTS_SIZE) + 2));
-    fontCache.put(JajukFont.PLAIN_XL, new Font(SANS_SERIF, Font.PLAIN, Conf
-        .getInt(Const.CONF_FONTS_SIZE) + 4));
+    fontCache.put(JajukFont.DEFAULT,
+        new Font(SANS_SERIF, Font.PLAIN, Conf.getInt(Const.CONF_FONTS_SIZE)));
+    fontCache.put(JajukFont.PLAIN,
+        new Font(SANS_SERIF, Font.PLAIN, Conf.getInt(Const.CONF_FONTS_SIZE)));
+    fontCache.put(JajukFont.PLAIN_S,
+        new Font(SANS_SERIF, Font.PLAIN, Conf.getInt(Const.CONF_FONTS_SIZE) - 2));
+    fontCache.put(JajukFont.PLAIN_L,
+        new Font(SANS_SERIF, Font.PLAIN, Conf.getInt(Const.CONF_FONTS_SIZE) + 2));
+    fontCache.put(JajukFont.PLAIN_XL,
+        new Font(SANS_SERIF, Font.PLAIN, Conf.getInt(Const.CONF_FONTS_SIZE) + 4));
     // Italic
-    fontCache.put(JajukFont.PLANNED, new Font("serif", Font.ITALIC, Conf
-        .getInt(Const.CONF_FONTS_SIZE)));
+    fontCache.put(JajukFont.PLANNED,
+        new Font("serif", Font.ITALIC, Conf.getInt(Const.CONF_FONTS_SIZE)));
     Font font = new Font(SANS_SERIF, Font.PLAIN, Conf.getInt(Const.CONF_FONTS_SIZE));
     fontCache.put(JajukFont.VIEW_FONT, font);
   }
@@ -172,7 +119,7 @@ public final class FontManager implements Observer {
   /**
    * Gets the font.
    * 
-   * @param font DOCUMENT_ME
+   * @param font 
    * 
    * @return the font
    */
@@ -182,11 +129,10 @@ public final class FontManager implements Observer {
 
   /**
    * Sets the default font.
-   * DOCUMENT_ME
+   * 
    */
   public void setDefaultFont() {
     SwingUtilities.invokeLater(new Runnable() {
-
       @Override
       public void run() {
         // Create the wrapper font set
@@ -204,7 +150,6 @@ public final class FontManager implements Observer {
         }
       }
     });
-
   }
 
   /*
@@ -224,9 +169,9 @@ public final class FontManager implements Observer {
    * This method return the number of characters of a given string that fits in
    * the given size in pixels.
    * 
-   * @param text DOCUMENT_ME
-   * @param font DOCUMENT_ME
-   * @param maxSize DOCUMENT_ME
+   * @param text 
+   * @param font 
+   * @param maxSize 
    * 
    * @return the rows for text
    */
@@ -259,17 +204,15 @@ public final class FontManager implements Observer {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private static class CustomFontSet implements FontSet {
-
-    /** DOCUMENT_ME. */
     protected FontUIResource font;
 
     /**
      * Instantiates a new custom font set.
      * 
-     * @param font DOCUMENT_ME
+     * @param font 
      */
     public CustomFontSet(Font font) {
       this.font = new FontUIResource(font);

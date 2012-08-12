@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.players;
 
@@ -32,10 +32,7 @@ import org.jajuk.events.Observer;
  * FIFO convenient facilities <singleton>.
  */
 public final class QueueController implements Observer {
-
-  /** DOCUMENT_ME. */
   private static QueueController self = new QueueController();
-
   // Register this item, do not do this in the constructor as the instance is not yet available
   static {
     ObservationManager.register(self);
@@ -76,5 +73,4 @@ public final class QueueController implements Observer {
       QueueModel.clean();
     }
   }
-
 }

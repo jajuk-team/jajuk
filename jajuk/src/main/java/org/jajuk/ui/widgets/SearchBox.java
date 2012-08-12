@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.widgets;
 
 import java.awt.BorderLayout;
@@ -31,6 +30,8 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -64,7 +65,7 @@ import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.base.TrackManager;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
-import org.jajuk.services.webradio.WebRadioManager;
+import org.jajuk.services.webradio.WebRadioHelper;
 import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
@@ -82,34 +83,21 @@ import org.jajuk.util.log.Log;
  * selection implementation (see valueChanged() method) that could be changed
  */
 public class SearchBox extends JTextField implements KeyListener, ListSelectionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** Do search panel need a search. */
   private boolean bNeedSearch = false;
-
   /** Default time in ms before launching a search automatically. */
   private static final int WAIT_TIME = 1000;
-
   /** Minimum number of characters to start a search. */
   private static final int MIN_CRITERIA_LENGTH = 2;
-
   /** Search result. */
   private List<SearchResult> alResults;
-
   /** Typed string. */
   private String sTyped;
-
-  /** DOCUMENT_ME. */
   private Popup popup;
-
-  /** DOCUMENT_ME. */
   private JList jlist;
-
-  /** DOCUMENT_ME. */
   private long lDateTyped;
-
   /** Search when typing timer. */
   Timer timer = new Timer(100, new ActionListener() {
     @Override
@@ -124,13 +112,12 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
    * Display results as a jlabel with an icon.
    */
   private static class SearchListRenderer extends JPanel implements ListCellRenderer {
-
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 8975989658927794678L;
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing .JList,
      * java.lang.Object, int, boolean, boolean)
      */
@@ -157,7 +144,6 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
    */
   public SearchBox() {
     setMargin(new Insets(0, 20, 0, 0));
-    timer.start();
     addKeyListener(this);
     setToolTipText(Messages.getString("SearchBox.0"));
     // We use a font whose size cannot change with font size selected by user
@@ -176,11 +162,23 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
         }
       }
     });
+    // Add a focus listener to select all the text and ease previous text cleanup
+    addFocusListener(new FocusListener() {
+      @Override
+      public void focusLost(FocusEvent e) {
+        setCaretPosition(getText().length());
+      }
+
+      @Override
+      public void focusGained(FocusEvent e) {
+        selectAll();
+      }
+    });
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
    */
   @Override
@@ -190,7 +188,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
    */
   @Override
@@ -209,6 +207,10 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
       } else {
         bNeedSearch = true;
         lDateTyped = System.currentTimeMillis();
+        // make sure the timer is started before it is first used
+        if (!timer.isRunning()) {
+          timer.start();
+        }
       }
     } else if (popup != null) {
       popup.hide();
@@ -217,7 +219,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
    */
   @Override
@@ -236,7 +238,6 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
     // typed before entering this method
     if (sTyped.length() >= MIN_CRITERIA_LENGTH) {
       SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
-
         List<SearchResult> resu = null;
 
         @Override
@@ -245,7 +246,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
             UtilGUI.waiting();
             resu = TrackManager.getInstance().search(sTyped);
             // Add web radio names
-            resu.addAll(WebRadioManager.getInstance().search(sTyped));
+            resu.addAll(WebRadioHelper.search(sTyped));
             // Sort the whole list
             Collections.sort(resu);
           } catch (Exception e) {
@@ -268,7 +269,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
             jlist.setCellRenderer(new SearchListRenderer());
             PopupFactory factory = PopupFactory.getSharedInstance();
             JScrollPane jsp = new JScrollPane(jlist);
-            int width = (int) ((float) Toolkit.getDefaultToolkit().getScreenSize().getWidth() * 0.7f);
+            int width = (int) ((float) Toolkit.getDefaultToolkit().getScreenSize().getWidth() * 0.9f);
             jsp.setMinimumSize(new Dimension(width, 250));
             jsp.setPreferredSize(new Dimension(width, 250));
             jsp.setMaximumSize(new Dimension(width, 250));
@@ -287,15 +288,15 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
             // only on absolute coordinates in opposition to swing
             // widgets)
             SwingUtilities.convertPointToScreen(point, SearchBox.this);
-            if (((int) point.getY() > 300) && (((int) point.getX() + 500 - (width)) > 0)) {
-              popup = factory.getPopup(null, jsp, (int) point.getX() + 500 - (width), (int) point
-                  .getY() - 250);
-            } else if (((int) point.getX() + 500 - (width)) > 0) {
-              popup = factory.getPopup(null, jsp, (int) point.getX() + 500 - (width), (int) point
-                  .getY() + 30);
-            } else {
-              popup = factory.getPopup(null, jsp, 10, (int) point.getY() + 30);
+            int x = 10;
+            int y = (int) point.getY() + 25;
+            if ((int) point.getY() > 300) {
+              y = (int) point.getY() - 250;
             }
+            if (((int) point.getX() + 500 - width) > 0) {
+              x = (int) point.getX() + 500 - width;
+            }
+            popup = factory.getPopup(null, jsp, x, y);
             popup.show();
             jlist.addMouseListener(new MouseAdapter() {
               @Override
@@ -319,7 +320,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
 
   /**
    * Gets the selected index.
-   * 
+   *
    * @return the selected index
    */
   public int getSelectedIndex() {
@@ -347,7 +348,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
 
   /**
    * Display the search icon inside the texfield.
-   * 
+   *
    * @param g the graphics
    */
   @Override
@@ -359,8 +360,8 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
   /**
    * Default list selection implementation (may be overwritten for different
    * behavior).
-   * 
-   * @param e DOCUMENT_ME
+   *
+   * @param e 
    */
   @Override
   public void valueChanged(final ListSelectionEvent e) {
@@ -372,9 +373,8 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
           try {
             // If user selected a file
             if (sr.getType() == SearchResultType.FILE) {
-              QueueModel.push(new StackItem(sr.getFile(), Conf
-                  .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
-                  .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+              QueueModel.push(new StackItem(sr.getFile(), Conf.getBoolean(Const.CONF_STATE_REPEAT),
+                  true), Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
             }
             // User selected a web radio
             else if (sr.getType() == SearchResultType.WEBRADIO) {
@@ -400,7 +400,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
 
   /**
    * Free up resources, timers, ...
-   * 
+   *
    * TODO: I could not find out any way to do this automatically! How can I
    * listen on some event that is sent when the enclosing dialog is closed?
    */
@@ -416,7 +416,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
     InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
     ActionMap actionMap = getActionMap();
     inputMap.put(KeyStroke.getKeyStroke("ctrl F"), "search");
-    // We don't create a JajukAction dedicated class for this very simple case 
+    // We don't create a JajukAction dedicated class for this very simple case
     actionMap.put("search", new JajukAction("search", true) {
       private static final long serialVersionUID = 1L;
 

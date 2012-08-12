@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,11 +16,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.windows;
 
 import java.awt.Component;
+import java.awt.Window;
 
 import org.jajuk.util.log.Log;
 
@@ -29,10 +30,8 @@ import org.jajuk.util.log.Log;
  * fullscreen, tray, slimbar...)
  */
 public abstract class WindowStateDecorator {
-
   /** Current state. */
   private WindowState state = WindowState.NOT_BUILT;
-
   /** Decorated window *. */
   private IJajukWindow window;
 
@@ -82,7 +81,6 @@ public abstract class WindowStateDecorator {
       if (show && state == WindowState.NOT_BUILT) {
         window.initUI();
       }
-
       // Show or hide specific code before the window is made visible
       if (show) {
         window.getWindowStateDecorator().specificBeforeShown();
@@ -90,10 +88,8 @@ public abstract class WindowStateDecorator {
       } else {
         window.getWindowStateDecorator().specificBeforeHidden();
       }
-
       // Display or hide the window
       ((Component) window).setVisible(show);
-
       // Show or hide specific code after the window is made visible
       if (show) {
         window.getWindowStateDecorator().specificAfterShown();
@@ -101,7 +97,6 @@ public abstract class WindowStateDecorator {
       } else {
         window.getWindowStateDecorator().specificAfterHidden();
       }
-
       // store the new state
       if (show) {
         state = WindowState.BUILT_DISPLAYED;
@@ -111,7 +106,19 @@ public abstract class WindowStateDecorator {
     } catch (Exception e) {
       Log.error(e);
     }
+  }
 
+  /**
+   * Bring window to front if it is a java.awt.Window component or does nothing otherwise.
+   * @throws IllegalStateException if the component has not yet been displayed
+   */
+  public void toFront() {
+    if (state != WindowState.BUILT_DISPLAYED) {
+      throw new IllegalStateException("Can't call toFront() on non-displayed windows");
+    }
+    if (window instanceof Window) {
+      ((Window) window).toFront();
+    }
   }
 
   /**
@@ -156,5 +163,4 @@ public abstract class WindowStateDecorator {
    * class WindowDecorator.
    */
   abstract public void specificAfterHidden();
-
 }

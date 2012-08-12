@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.util;
 
@@ -37,13 +37,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.RandomAccessFile;
 import java.io.Writer;
 import java.net.InetAddress;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -70,13 +68,10 @@ import org.jajuk.util.log.Log;
  * Set of convenient methods for system and IO.
  */
 public final class UtilSystem {
-
-  /** The Constant LOCAL_IP.  DOCUMENT_ME */
+  /** The Constant LOCAL_IP.   */
   private static final String LOCAL_IP = "127.0.0.1";
-
   /** Is browser supported ?. */
   private static Boolean browserSupported;
-
   /** Size of the short names converter in bytes. */
   private static final int CONVERTER_FILE_SIZE = 23;
 
@@ -84,97 +79,68 @@ public final class UtilSystem {
    * MPlayer status possible values *.
    */
   public static enum MPlayerStatus {
-
-    /** DOCUMENT_ME. */
-    MPLAYER_STATUS_OK,
-    
-    /** DOCUMENT_ME. */
-    MPLAYER_STATUS_NOT_FOUND,
-    
-    /** DOCUMENT_ME. */
-    MPLAYER_STATUS_WRONG_VERSION,
-    
-    /** DOCUMENT_ME. */
-    MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
+    MPLAYER_STATUS_OK, MPLAYER_STATUS_NOT_FOUND, MPLAYER_STATUS_WRONG_VERSION, MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
   }
 
   /** Current date cached (for performances) *. */
   public static final Date TODAY = new Date();
-
   /** Central random object for all Jajuk *. */
-  private static final Random RANDOM = new MersenneTwister();
-
+  private static final Random RANDOM = MersenneTwister.getInstance();
   /** Cached user home directory *. */
   private static String cachedUserHomeDir;
-
   /** Are we under Linux ? *. */
   private static final boolean UNDER_LINUX;
-
   /** Are we under MAC OS Intel ? *. */
   private static final boolean UNDER_OSX;
-
   /** Are we under Windows ? *. */
   private static final boolean UNDER_WINDOWS;
-
   /** Are we under Windows 32 bits ? *. */
   private static final boolean UNDER_WINDOWS_32BIT;
-
   /** Are we under Windows 64 bits ? *. */
   private static final boolean UNDER_WINDOWS_64BIT;
-
   /** Are we in JNLP mode ? *. */
   private static final boolean UNDER_JNLP;
-
   /** Are we under KDE ? *. */
   private static final boolean UNDER_KDE;
-
   /** Directory filter used in refresh. */
   private static JajukFileFilter dirFilter;
-
   /** File filter used in refresh. */
   private static JajukFileFilter fileFilter;
-
   // Computes OS detection operations for perf reasons (can be called in loop
   // in refresh method for ie)
   static {
     final String sOS = (String) System.getProperties().get("os.name");
     // os.name can be null with JWS under MacOS
-    UNDER_WINDOWS = ((sOS != null) && (sOS.trim().toLowerCase(Locale.getDefault()).lastIndexOf(
-        "windows") != -1));
+    UNDER_WINDOWS = ((sOS != null) && (sOS.trim().toLowerCase(Locale.getDefault())
+        .lastIndexOf("windows") != -1));
   }
-
   static {
     UNDER_WINDOWS_32BIT = UtilSystem.isUnderWindows()
         && System.getProperties().get("sun.arch.data.model").equals("32");
   }
-
   static {
     UNDER_WINDOWS_64BIT = UtilSystem.isUnderWindows()
         && !System.getProperties().get("sun.arch.data.model").equals("32");
   }
-
   static {
     final String sOS = (String) System.getProperties().get("os.name");
     // os.name can be null with JWS under MacOS
-    UNDER_LINUX = ((sOS != null) && (sOS.trim().toLowerCase(Locale.getDefault()).lastIndexOf(
-        "linux") != -1));
+    UNDER_LINUX = ((sOS != null) && (sOS.trim().toLowerCase(Locale.getDefault())
+        .lastIndexOf("linux") != -1));
   }
-
   static {
     final String sArch = System.getProperty("os.arch");
     UNDER_OSX = org.jdesktop.swingx.util.OS.isMacOSX()
     // We only support Intel OSX
         && ((sArch != null) && sArch.matches(".*86.*"));
   }
-
   static {
     UNDER_JNLP = (System.getProperty("jnlpx.jvm") != null);
   }
-
   /**
   * Are we running in a KDE environment ?
   * 
-  * We check it by using ps command + a grep searching 'kdeinit' process*/
+  * We check it by using ps command + a grep searching 'ksmserver' process*/
   static {
     boolean underKDE = false;
     if (isUnderLinux()) {
@@ -186,7 +152,7 @@ public final class UtilSystem {
         proc.waitFor();
         String s;
         while ((s = stdInput.readLine()) != null) {
-          if (s.matches(".*kdeinit.*")) {
+          if (s.matches(".*ksmserver.*")) {
             underKDE = true;
             break;
           }
@@ -205,13 +171,10 @@ public final class UtilSystem {
     }
     UNDER_KDE = underKDE;
   }
-
   /** Icons cache. */
   static Map<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>(200);
-
   /** Mplayer exe path. */
   private static File mplayerPath = null;
-
   /** current class loader. */
   private static ClassLoader classLoader = null;
 
@@ -226,7 +189,7 @@ public final class UtilSystem {
    * with a given maximum Mb size for the file and its backup files
    * 
    * @param file The file to back up
-   * @param iMB DOCUMENT_ME
+   * @param iMB 
    */
   public static void backupFile(final File file, final int iMB) {
     try {
@@ -252,7 +215,7 @@ public final class UtilSystem {
         // too much backup files, delete older
         if (((lUsedMB - file.length()) / 1048576 > iMB) && (alFiles.size() > 0)) {
           final File fileToDelete = alFiles.get(0);
-          if (fileToDelete != null) {
+          if (fileToDelete != null) { //NOSONAR
             if (!fileToDelete.delete()) {
               Log.warn("Could not delete file " + fileToDelete);
             }
@@ -294,9 +257,7 @@ public final class UtilSystem {
     if (!file.exists() || !file.canRead()) {
       throw new JajukException(9, file.getAbsolutePath(), null);
     }
-
     FileUtils.copyFile(file, fNew);
-
     // Display a warning if copied file is void as it can happen with full
     // disks
     if (fNew.length() == 0) {
@@ -336,12 +297,11 @@ public final class UtilSystem {
   public static void copy(final File file, final String sNewName) throws JajukException,
       IOException {
     Log.debug("Renaming: {{" + file.getAbsolutePath() + "}}  to : " + sNewName);
-    final File fileNew = new File(new StringBuilder(file.getParentFile().getAbsolutePath()).append(
-        '/').append(sNewName).toString());
+    final File fileNew = new File(new StringBuilder(file.getParentFile().getAbsolutePath())
+        .append('/').append(sNewName).toString());
     if (!file.exists() || !file.canRead()) {
       throw new JajukException(9, file.getAbsolutePath(), null);
     }
-
     FileUtils.copyFile(file, fileNew);
   }
 
@@ -379,12 +339,11 @@ public final class UtilSystem {
 
   /**
    * Copy recursively files and directories.
-   * 
-   * @param dst DOCUMENT_ME
-   * @param src DOCUMENT_ME
-   * 
-   * @throws IOException Signals that an I/O exception has occurred.
+   *
+   * @param src 
+   * @param dst 
    * @throws JajukException the jajuk exception
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void copyRecursively(final File src, final File dst) throws JajukException,
       IOException {
@@ -420,14 +379,13 @@ public final class UtilSystem {
     if (!file.exists() || !file.canRead()) {
       throw new JajukException(9, file.getAbsolutePath(), null);
     }
-
     FileUtils.copyFileToDirectory(file, directory);
   }
 
   /**
    * Create empty file.
    * 
-   * @param file DOCUMENT_ME
+   * @param file 
    * 
    * @throws IOException Signals that an I/O exception has occurred.
    */
@@ -493,7 +451,7 @@ public final class UtilSystem {
   /**
    * Get a file extension.
    * 
-   * @param file DOCUMENT_ME
+   * @param file 
    * 
    * @return the extension
    */
@@ -511,12 +469,10 @@ public final class UtilSystem {
    */
   public static String getExtension(final String filename) {
     int dotIndex = filename.lastIndexOf('.');
-
     // File without point
     if (dotIndex == -1) {
       return "";
     }
-
     if (dotIndex > 0) {
       return filename.substring(dotIndex + 1, filename.length());
     } else {
@@ -531,7 +487,7 @@ public final class UtilSystem {
    * <p>
    * uses nio api for performances
    * 
-   * @param fio DOCUMENT_ME
+   * @param fio 
    * 
    * @return the file checksum
    * 
@@ -588,7 +544,7 @@ public final class UtilSystem {
    * 
    * This code no more work with last JRE 6  under JNLP (it returns only partial URL)
    * 
-   * @param cClass DOCUMENT_ME
+   * @param cClass 
    * 
    * @return URL of jar we are executing
    */
@@ -601,7 +557,7 @@ public final class UtilSystem {
   }
 
   /**
-   * Gets the mplayer windows path.
+   * Gets the m player windows path.
    * 
    * @return MPlayer exe file
    */
@@ -703,7 +659,7 @@ public final class UtilSystem {
   /**
    * Gets the mplayer status.
    * 
-   * @param mplayerPATH DOCUMENT_ME
+   * @param mplayerPATH 
    * 
    * @return the mplayer status
    */
@@ -765,7 +721,7 @@ public final class UtilSystem {
   /**
    * Return only the name of a file from a complete URL.
    * 
-   * @param sPath DOCUMENT_ME
+   * @param sPath 
    * 
    * @return the only file
    */
@@ -778,7 +734,7 @@ public final class UtilSystem {
    * http
    * ://java.sun.com/j2se/1.5.0/docs/guide/javaws/developersguide/faq.html#211
    * 
-   * @param name DOCUMENT_ME
+   * @param name 
    * 
    * @return the resource
    */
@@ -810,8 +766,8 @@ public final class UtilSystem {
   /**
    * Checks if is descendant.
    * 
-   * @param file1 DOCUMENT_ME
-   * @param file2 DOCUMENT_ME
+   * @param file1 
+   * @param file2 
    * 
    * @return whether file1 is a file2 descendant
    */
@@ -950,7 +906,6 @@ public final class UtilSystem {
     } catch (final FileNotFoundException e) {
       throw new JajukException(9, path, e);
     }
-
     try {
       final BufferedReader input = new BufferedReader(fileReader);
       try {
@@ -960,7 +915,6 @@ public final class UtilSystem {
         while ((line = input.readLine()) != null) {
           strColl.append(line);
         }
-
         return strColl;
       } finally {
         // Close the bufferedReader
@@ -975,7 +929,7 @@ public final class UtilSystem {
    * Open a file from current jar and return a string buffer with the file
    * content.
    * 
-   * @param sURL DOCUMENT_ME
+   * @param sURL 
    * 
    * @return StringBuilder - File content.
    * 
@@ -1005,13 +959,12 @@ public final class UtilSystem {
       throw new JajukException(9, e);
     }
     return sb;
-
   }
 
   /**
    * Remove an extension from a file name.
    * 
-   * @param sFilename DOCUMENT_ME
+   * @param sFilename 
    * 
    * @return filename without extension
    */
@@ -1105,7 +1058,7 @@ public final class UtilSystem {
    * 
    * Inspired from an aTunes method
    * 
-   * @param directory DOCUMENT_ME
+   * @param directory 
    */
   public static void openInExplorer(File directory) {
     final File directoryToOpen;
@@ -1123,7 +1076,6 @@ public final class UtilSystem {
     } else {
       directoryToOpen = directory;
     }
-
     // Try to open the location using the forced explorer path of provided
     if (StringUtils.isNotBlank(Conf.getString(Const.CONF_EXPLORER_PATH))) {
       new Thread("Explorer Open Thread 1") {
@@ -1202,7 +1154,6 @@ public final class UtilSystem {
     if (cachedUserHomeDir != null) {
       return cachedUserHomeDir;
     }
-
     /**
      * We search first in USERPROFILE env directory before than user.home.
      * 
@@ -1234,8 +1185,8 @@ public final class UtilSystem {
       File fileConverter = SessionService.getConfFileByPath(Const.FILE_FILENAME_CONVERTER);
       if (!fileConverter.exists()
       // Test that the converter version has not been updated
-          // IMPORTANT ! Don't forget to update the CONVERTER_FILE_SIZE constant if you change the
-          // script !
+      // IMPORTANT ! Don't forget to update the CONVERTER_FILE_SIZE constant if you change the
+      // script !
           || (fileConverter.exists() && fileConverter.length() != CONVERTER_FILE_SIZE)) {
         FileWriter fw = new FileWriter(fileConverter);
         fw.write("@echo off\n");
@@ -1326,34 +1277,11 @@ public final class UtilSystem {
   /**
    * Are we running in a KDE environment ?
    * 
-   * We check it by using ps command + a grep searching 'kdeinit' process.
+   * We check it by using ps command + a grep searching 'ksmserver' process.
    * 
    * @return whether we are running in a KDE environment
    */
   public static boolean isUnderKDE() {
     return UtilSystem.UNDER_KDE;
   }
-
-  /**
-   * Attempt to acquire a file lock for given file.
-   * 
-   * @param file the file to lock
-   * 
-   * @return a FileLock or null if it can't be acquired
-   */
-  public static FileLock tryLockFile(File file) {
-    FileLock lock = null;
-    try {
-      FileChannel channel = new RandomAccessFile(file, "rw").getChannel();
-      // Get an exclusive lock on the whole file
-      lock = channel.tryLock();
-      if (!lock.isValid()) {
-        throw new IOException("Lock invalid for : " + file.getAbsolutePath());
-      }
-    } catch (Exception e) {
-      Log.warn("Cannot acquire lock for file : " + file.getAbsolutePath());
-    }
-    return lock;
-  }
-
 }

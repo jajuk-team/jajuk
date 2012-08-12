@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.windows;
 
@@ -71,52 +71,24 @@ import org.jvnet.substance.SubstanceLookAndFeel;
  * handle any errors.
  */
 public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -2859302706462954993L;
-
-  /** DOCUMENT_ME. */
   private static JajukFullScreenWindow instance = null;
-
-  /** DOCUMENT_ME. */
   private GraphicsDevice graphicsDevice;
-
-  /** DOCUMENT_ME. */
   private JButton jbPrevious;
-
-  /** DOCUMENT_ME. */
   private JButton jbNext;
-
-  /** DOCUMENT_ME. */
   private JButton jbPlayPause;
-
-  /** DOCUMENT_ME. */
   private JButton jbStop;
-
-  /** DOCUMENT_ME. */
   private JajukButton jbFull;
-
-  /** DOCUMENT_ME. */
   private JajukButton jbExit;
-
-  /** DOCUMENT_ME. */
   private CoverView coverView;
-
   /** State decorator. */
   private WindowStateDecorator decorator;
-
-  /** DOCUMENT_ME. */
   private AnimationView animationView;
-
-  /** DOCUMENT_ME. */
   private JPanel jtbPlay;
-
-  /** DOCUMENT_ME. */
   private Timer hideMouseTimer;
-
   /** Owning frame, see bellow for explanations *. */
   private static JFrame owner;
-
   /**
    * See http://java.sun.com/docs/books/tutorial/uiswing/misc/focus.html We have
    * to use a frame owner of this jwindow to allow full screen mode to respond
@@ -127,7 +99,6 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
     owner.setSize(new Dimension(0, 0));
     owner.setUndecorated(true);
     owner.requestFocus();
-
     // Add escape listening to exit full-screen mode
     owner.addKeyListener(new KeyAdapter() {
       @Override
@@ -141,13 +112,13 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
         }
       }
     });
-
     // Install global keystrokes
     WindowGlobalKeystrokeManager.getInstance();
   }
 
   /**
-   * Return whether we should try to switch to fullscreen mode (and lose keystrokes controls) 
+   * Return whether we should try to switch to fullscreen mode (and lose keystrokes controls).
+   *
    * @return whether we should try to switch to fullscreen mode
    */
   private static boolean shouldTryNativeFullScreenmode() {
@@ -167,7 +138,6 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
   public static JajukFullScreenWindow getInstance() {
     if (instance == null) {
       instance = new JajukFullScreenWindow();
-
       instance.decorator = new WindowStateDecorator(instance) {
         @Override
         public void specificBeforeShown() {
@@ -260,7 +230,6 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
   public JajukFullScreenWindow() {
     super(owner);
     setAlwaysOnTop(true);
-
     // Add Mouse Listener to disable mouse cursor
     addMouseListener(new MouseAdapter() {
       @Override
@@ -268,14 +237,12 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
         hideMouseTimer();
       }
     });
-
     addMouseMotionListener(new MouseMotionAdapter() {
       @Override
       public void mouseMoved(MouseEvent e) {
         hideMouseTimer();
       }
     });
-
     // activate Timer
     hideMouseTimer();
   }
@@ -289,33 +256,26 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
   public void initUI() {
     // Full screen switch button
     jbFull = new JajukButton(ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK));
-
     // Exit button
     jbExit = new JajukButton(ActionManager.getAction(JajukActions.EXIT));
-
     // Animation view
     animationView = new AnimationView();
     animationView.initUI();
-
     // Cover view
     coverView = new CoverView();
     coverView.initUI(false);
-
     // Player toolbar
     jtbPlay = getPlayerPanel();
-
     // Information panel
     TrackPositionSliderToolbar tpst = new TrackPositionSliderToolbar();
-
     // Add items
-    setLayout(new MigLayout("ins 0", "[grow]", "[][grow][70%!][][]"));
+    setLayout(new MigLayout("ins 0,gap 0 0", "[grow]", "[][grow][70%!][][]"));
     add(jbFull, "right,split 2,gapright 5");
     add(jbExit, "right,wrap");
-    add(animationView, "alignx center,aligny top,grow,gap bottom 20,wrap");
+    add(animationView, "alignx center,aligny top,grow,wrap");
     add(coverView, "alignx center, grow,gap bottom 20,wrap");
     add(jtbPlay, "alignx center,gap bottom 20,wrap");
     add(tpst, "alignx center,width 50%!,aligny bottom,gap bottom 10");
-
     // Add a contextual menu to leave full screen mode or quit, see also
     // issue #1492
     // TODO : For some reasons, the popup doesn't appears over the cover pic,
@@ -324,7 +284,6 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
     popup.add(ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK));
     popup.add(ActionManager.getAction(JajukActions.EXIT));
     addMouseListener(new JajukMouseAdapter() {
-
       @Override
       public void handlePopup(MouseEvent e) {
         popup.show(e.getComponent(), e.getX(), e.getY());
@@ -345,7 +304,6 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
   private JPanel getPlayerPanel() {
     JPanel jPanelPlay = new JPanel();
     jPanelPlay.setLayout(new MigLayout("insets 5", "[grow][grow][grow]"));
-
     // previous
     jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
     int concavity = IconLoader.getIcon(JajukIcons.PLAYER_PLAY).getIconHeight();
@@ -366,27 +324,22 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
         }
       }
     });
-
     // next
     jbNext = new JajukButton(ActionManager.getAction(NEXT_TRACK));
     jbNext.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
         new LeftConcaveButtonShaper(concavity));
-
     // play pause
     jbPlayPause = new JajukButton(ActionManager.getAction(PAUSE_RESUME_TRACK));
     jbPlayPause.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
         new CircleButtonShaper());
-
     // stop
     jbStop = new JajukButton(ActionManager.getAction(STOP_TRACK));
     jbStop.putClientProperty(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
         new RoundRectButtonShaper());
-
     jPanelPlay.add(jbStop, "center,split 6,width 40!,height 30,gapright 5!");
     jPanelPlay.add(jbPrevious, "center,width 62!,height 30!,gapright 0");
     jPanelPlay.add(jbPlayPause, "center,width 45!,height 45!,gapright 0");
     jPanelPlay.add(jbNext, "center,width 62!,height 30!,gapright 3");
-
     return jPanelPlay;
   }
 

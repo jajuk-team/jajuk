@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,26 +16,30 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  
  */
 package org.jajuk.base;
+
+import java.io.IOException;
 
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.junit.Test;
 
 /**
- * 
+ * .
  */
 public class TestTrack extends JajukTestCase {
-
+  /* (non-Javadoc)
+   * @see org.jajuk.JajukTestCase#setUp()
+   */
   @Override
   protected void setUp() throws Exception {
     super.setUp();
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Track#getDesc()}.
+   * Test method for {@link org.jajuk.base.Track#getTitle()}.
    */
   @Test
   public void testGetDesc() {
@@ -51,7 +55,7 @@ public class TestTrack extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Track#getLabel()}.
+   * Test method for {@link org.jajuk.base.Track#getXMLTag()}.
    */
   @Test
   public void testGetLabel() {
@@ -124,16 +128,15 @@ public class TestTrack extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.Track#removeFile(org.jajuk.base.File)}.
+   * @throws IOException 
    */
   @Test
-  public void testRemoveFile() {
+  public void testRemoveFile() throws IOException {
     // Set-up...
     File file = JUnitHelpers.getFile();
     Track track = file.getTrack();
-
     // Remove the reference
     track.removeFile(file);
-
     // Check that associated track no more contains this file
     assertFalse(file.getTrack().getFiles().contains(file));
   }
@@ -361,5 +364,4 @@ public class TestTrack extends JajukTestCase {
   public void testGetFilesString() {
     //TODO To be implemented
   }
-
 }

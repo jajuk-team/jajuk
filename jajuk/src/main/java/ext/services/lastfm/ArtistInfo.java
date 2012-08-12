@@ -20,16 +20,14 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.lastfm;
 
 import javax.swing.ImageIcon;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public interface ArtistInfo {
-
   /**
    * Gets the image.
    * 
@@ -103,7 +101,7 @@ public interface ArtistInfo {
   /**
    * Sets the available property.
    * 
-   * @param available DOCUMENT_ME
+   * @param available 
    */
   public void setAvailable(boolean available);
 
@@ -113,5 +111,4 @@ public interface ArtistInfo {
    * @return true if the available property is set
    */
   public boolean isAvailable();
-
 }

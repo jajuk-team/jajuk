@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.reporting;
 
 import java.io.BufferedWriter;
@@ -52,16 +51,11 @@ import org.jajuk.util.UtilString;
  * This class exports music contents to XML.
  */
 public class XMLExporter extends Exporter {
-
   /** Private Constants. */
   private static final String NEWLINE = "\n";
-
-  /** The Constant XML_HEADER.  DOCUMENT_ME */
+  /** The Constant XML_HEADER.   */
   private static final String XML_HEADER = "<?xml version='1.0' encoding='UTF-8'?>";
-
-  /** DOCUMENT_ME. */
   private final BufferedWriter writer;
-
   /** Do we want to export tracks ?*. */
   private boolean showTracks = true;
 
@@ -70,7 +64,6 @@ public class XMLExporter extends Exporter {
    * 
    * @throws IOException Signals that an I/O exception has occurred.
    */
-
   public XMLExporter() throws IOException {
     cache = SessionService.getConfFileByPath(Const.FILE_REPORTING_CACHE_FILE + "_XML_"
         + System.currentTimeMillis());
@@ -208,7 +201,7 @@ public class XMLExporter extends Exporter {
   /**
    * Process collection.
    * 
-   * @param type DOCUMENT_ME
+   * @param type 
    * 
    * @throws Exception the exception
    * 
@@ -230,12 +223,11 @@ public class XMLExporter extends Exporter {
   /**
    * PRIVATE HELPER METHODS.
    * 
-   * @param level DOCUMENT_ME
-   * @param directory DOCUMENT_ME
+   * @param level 
+   * @param directory 
    * 
    * @throws Exception the exception
    */
-
   private void exportDirectoryHelper(int level, Directory directory) throws Exception {
     // Get the children
     List<Directory> children = new ArrayList<Directory>(directory.getDirectories());
@@ -260,10 +252,10 @@ public class XMLExporter extends Exporter {
 
   /**
    * Tag file.
-   * DOCUMENT_ME
    * 
-   * @param file DOCUMENT_ME
-   * @param level DOCUMENT_ME
+   * 
+   * @param file 
+   * @param level 
    * 
    * @throws Exception the exception
    */
@@ -283,9 +275,9 @@ public class XMLExporter extends Exporter {
 
   /**
    * Tag directory.
-   * DOCUMENT_ME
    * 
-   * @param directory DOCUMENT_ME
+   * 
+   * @param directory 
    * 
    * @throws Exception the exception
    */
@@ -296,12 +288,10 @@ public class XMLExporter extends Exporter {
       String sName = UtilString.formatXML(directory.getName());
       String sPath = UtilString.formatXML(directory.getAbsolutePath());
       String sID = directory.getID();
-
       // Tag directory data.
       writer.write(addTabs(1) + Tag.tagData(Const.XML_ID, sID) + NEWLINE);
       writer.write(addTabs(1) + Tag.tagData(Const.XML_NAME, sName) + NEWLINE);
       writer.write(addTabs(1) + Tag.tagData(Const.XML_PATH, sPath) + NEWLINE);
-
       // Tag directory children data.
       for (Directory d : new ArrayList<Directory>(directory.getDirectories())) {
         exportDirectoryHelper(1, d);
@@ -316,9 +306,9 @@ public class XMLExporter extends Exporter {
 
   /**
    * Tag device.
-   * DOCUMENT_ME
    * 
-   * @param device DOCUMENT_ME
+   * 
+   * @param device 
    * 
    * @throws Exception the exception
    */
@@ -332,7 +322,7 @@ public class XMLExporter extends Exporter {
         + Tag.tagData(Const.XML_TYPE, UtilString.formatXML(device.getDeviceTypeS())) + NEWLINE);
     writer.write(addTabs(1) + Tag.tagData(Const.XML_URL, UtilString.formatXML(device.getUrl()))
         + NEWLINE);
-    Directory dir = DirectoryManager.getInstance().getDirectoryForIO(device.getFio(), device);
+    Directory dir = DirectoryManager.getInstance().getDirectoryForIO(device.getFIO(), device);
     // check void devices
     if (dir != null) {
       // Tag children directories of device.
@@ -340,8 +330,8 @@ public class XMLExporter extends Exporter {
         exportDirectoryHelper(1, directory);
       }
       // Tag children files of device.
-      for (org.jajuk.base.File file : DirectoryManager.getInstance().getDirectoryForIO(
-          device.getFio(), device).getFiles()) {
+      for (org.jajuk.base.File file : DirectoryManager.getInstance()
+          .getDirectoryForIO(device.getFIO(), device).getFiles()) {
         tagFile(file, 1);
       }
     }
@@ -350,10 +340,10 @@ public class XMLExporter extends Exporter {
 
   /**
    * Tag track.
-   * DOCUMENT_ME
    * 
-   * @param track DOCUMENT_ME
-   * @param level DOCUMENT_ME
+   * 
+   * @param track 
+   * @param level 
    * 
    * @throws Exception the exception
    */
@@ -389,10 +379,10 @@ public class XMLExporter extends Exporter {
 
   /**
    * Tag album.
-   * DOCUMENT_ME
    * 
-   * @param album DOCUMENT_ME
-   * @param level DOCUMENT_ME
+   * 
+   * @param album 
+   * @param level 
    * 
    * @throws Exception the exception
    */
@@ -426,10 +416,10 @@ public class XMLExporter extends Exporter {
 
   /**
    * Tag artist.
-   * DOCUMENT_ME
    * 
-   * @param artist DOCUMENT_ME
-   * @param level DOCUMENT_ME
+   * 
+   * @param artist 
+   * @param level 
    * 
    * @throws Exception the exception
    */
@@ -448,10 +438,10 @@ public class XMLExporter extends Exporter {
 
   /**
    * Tag year.
-   * DOCUMENT_ME
    * 
-   * @param year DOCUMENT_ME
-   * @param level DOCUMENT_ME
+   * 
+   * @param year 
+   * @param level 
    * 
    * @throws Exception the exception
    */
@@ -470,10 +460,10 @@ public class XMLExporter extends Exporter {
 
   /**
    * Tag genre.
-   * DOCUMENT_ME
    * 
-   * @param genre DOCUMENT_ME
-   * @param level DOCUMENT_ME
+   * 
+   * @param genre 
+   * @param level 
    * 
    * @throws Exception the exception
    */
@@ -496,9 +486,9 @@ public class XMLExporter extends Exporter {
 
   /**
    * Adds the tabs.
-   * DOCUMENT_ME
    * 
-   * @param num DOCUMENT_ME
+   * 
+   * @param num 
    * 
    * @return the string
    */
@@ -534,41 +524,40 @@ public class XMLExporter extends Exporter {
       writer.write(Tag.openTag("i18n"));
       int i = 1;
       while (Messages.contains("ReportAction." + i)) {
-        writer.write('\t' + Tag.tagData("ReportAction." + i, Messages
-            .getString("ReportAction." + i)));
+        writer.write('\t' + Tag.tagData("ReportAction." + i,
+            Messages.getString("ReportAction." + i)));
         i++;
       }
-      writer.write('\t' + Tag.tagData("ReportAction.name", Messages
-          .getHumanPropertyName(Const.XML_NAME)));
-      writer.write('\t' + Tag.tagData("ReportAction.artist", Messages
-          .getHumanPropertyName(Const.XML_ARTIST)));
-      writer.write('\t' + Tag.tagData("ReportAction.genre", Messages
-          .getHumanPropertyName(Const.XML_GENRE)));
-      writer.write('\t' + Tag.tagData("ReportAction.order", Messages
-          .getHumanPropertyName(Const.XML_TRACK_ORDER)));
-      writer.write('\t' + Tag.tagData("ReportAction.track", Messages
-          .getHumanPropertyName(Const.XML_TRACK)));
-      writer.write('\t' + Tag.tagData("ReportAction.album", Messages
-          .getHumanPropertyName(Const.XML_ALBUM)));
-      writer.write('\t' + Tag.tagData("ReportAction.length", Messages
-          .getHumanPropertyName(Const.XML_TRACK_LENGTH)));
-      writer.write('\t' + Tag.tagData("ReportAction.year", Messages
-          .getHumanPropertyName(Const.XML_YEAR)));
-      writer.write('\t' + Tag.tagData("ReportAction.rate", Messages
-          .getHumanPropertyName(Const.XML_TRACK_RATE)));
-      writer.write('\t' + Tag.tagData("ReportAction.url", Messages
-          .getHumanPropertyName(Const.XML_URL)));
-      writer.write('\t' + Tag.tagData("ReportAction.type", Messages
-          .getHumanPropertyName(Const.XML_TYPE)));
-      writer.write('\t' + Tag.tagData("ReportAction.comment", Messages
-          .getHumanPropertyName(Const.XML_TRACK_COMMENT)));
+      writer.write('\t' + Tag.tagData("ReportAction.name",
+          Messages.getHumanPropertyName(Const.XML_NAME)));
+      writer.write('\t' + Tag.tagData("ReportAction.artist",
+          Messages.getHumanPropertyName(Const.XML_ARTIST)));
+      writer.write('\t' + Tag.tagData("ReportAction.genre",
+          Messages.getHumanPropertyName(Const.XML_GENRE)));
+      writer.write('\t' + Tag.tagData("ReportAction.order",
+          Messages.getHumanPropertyName(Const.XML_TRACK_ORDER)));
+      writer.write('\t' + Tag.tagData("ReportAction.track",
+          Messages.getHumanPropertyName(Const.XML_TRACK)));
+      writer.write('\t' + Tag.tagData("ReportAction.album",
+          Messages.getHumanPropertyName(Const.XML_ALBUM)));
+      writer.write('\t' + Tag.tagData("ReportAction.length",
+          Messages.getHumanPropertyName(Const.XML_TRACK_LENGTH)));
+      writer.write('\t' + Tag.tagData("ReportAction.year",
+          Messages.getHumanPropertyName(Const.XML_YEAR)));
+      writer.write('\t' + Tag.tagData("ReportAction.rate",
+          Messages.getHumanPropertyName(Const.XML_TRACK_RATE)));
+      writer.write('\t' + Tag.tagData("ReportAction.url",
+          Messages.getHumanPropertyName(Const.XML_URL)));
+      writer.write('\t' + Tag.tagData("ReportAction.type",
+          Messages.getHumanPropertyName(Const.XML_TYPE)));
+      writer.write('\t' + Tag.tagData("ReportAction.comment",
+          Messages.getHumanPropertyName(Const.XML_TRACK_COMMENT)));
       writer.write(Tag.closeTag("i18n"));
       writer.write(Tag.closeTag(Const.XML_COLLECTION));
     } finally {
       writer.flush();
       writer.close();
     }
-
   }
 
   /**
@@ -579,7 +568,6 @@ public class XMLExporter extends Exporter {
   protected void setShowTracks(boolean showTracks) {
     this.showTracks = showTracks;
   }
-
 }
 
 /**

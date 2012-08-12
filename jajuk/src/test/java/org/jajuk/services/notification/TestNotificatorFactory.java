@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.notification;
 
@@ -25,10 +25,9 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestNotificatorFactory extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -38,7 +37,6 @@ public class TestNotificatorFactory extends JajukTestCase {
   public void testNoneNotificator() {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.NONE.name());
-
     // now try to get a balloon notificator, but we cannot be sure if this works
     // on all
     // machines so we on't assume not null.
@@ -54,7 +52,6 @@ public class TestNotificatorFactory extends JajukTestCase {
   public void testBalloonNotificator() {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.BALLOON.name());
-
     // now try to get a balloon notificator, but we cannot be sure if this works
     // on all
     // machines so we on't assume not null.
@@ -76,12 +73,11 @@ public class TestNotificatorFactory extends JajukTestCase {
 
   /**
    * Test get system notificator false.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetSystemNotificatorFalse() {
     // disable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.NONE.name());
-
     // here we need to get null back as it is disabled
     assertNull(NotificatorFactory.getNotificator());
   }

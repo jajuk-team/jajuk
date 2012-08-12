@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.players;
 
@@ -42,28 +42,20 @@ import org.jajuk.util.log.Log;
  * abstract class for music player, independent from real implementation.
  */
 public final class Player {
-
-  /** The Constant PLAYER_0.  DOCUMENT_ME */
+  /** The Constant PLAYER_0.   */
   private static final String PLAYER_0 = "Player.0";
-
   /** Current file read. */
   private static File fCurrent;
-
   /** Current player used. */
   private static IPlayerImpl playerImpl;
-
   /** Current player used nb 1. */
   private static IPlayerImpl playerImpl1;
-
   /** Current player used nb 2. */
   private static IPlayerImpl playerImpl2;
-
   /** Mute flag. */
   private static boolean bMute = false;
-
   /** Paused flag. */
   private static boolean bPaused = false;
-
   /** Playing ?. */
   private static boolean bPlaying = false;
 
@@ -75,11 +67,10 @@ public final class Player {
 
   /**
    * Asynchronous play for specified file with specified time interval.
-   * 
+   *
    * @param file to play
+   * @param fPosition 
    * @param length in ms
-   * @param fPosition DOCUMENT_ME
-   * 
    * @return true if play is OK
    */
   public static boolean play(final File file, final float fPosition, final long length) {
@@ -140,7 +131,6 @@ public final class Player {
       }
       // Save playing state    
       Conf.setProperty(Const.CONF_STARTUP_STOPPED, "false");
-
       return true;
     } catch (final Throwable t) {
       Properties pDetails = new Properties();
@@ -154,7 +144,7 @@ public final class Player {
   /**
    * Play a web radio stream.
    * 
-   * @param radio DOCUMENT_ME
+   * @param radio 
    * 
    * @return true, if play
    */
@@ -165,7 +155,6 @@ public final class Player {
         Messages.showWarningMessage(Messages.getString("Warning.4"));
         return false;
       }
-      playerImpl = null;
       // Choose the player
       Class<IPlayerImpl> cPlayer = TypeManager.getInstance().getTypeByExtension(Const.EXT_RADIO)
           .getPlayerClass();
@@ -202,7 +191,6 @@ public final class Player {
       }
       // Save playing state    
       Conf.setProperty(Const.CONF_STARTUP_STOPPED, "false");
-
       return true;
     } catch (final Throwable t) {
       Properties pDetails = new Properties();
@@ -220,6 +208,10 @@ public final class Player {
    */
   public static void stop(boolean bAll) {
     try {
+      if (Conf.getBoolean(Const.CONF_FADE_OUT) && isPlaying()
+          && !Conf.getBoolean(Const.CONF_BIT_PERFECT) && !QueueModel.isInternalStop()) {
+        fadeOut();
+      }
       if (playerImpl1 != null && (playerImpl1.getState() != Const.FADING_STATUS || bAll)) {
         playerImpl1.stop();
         playerImpl1 = null;
@@ -230,30 +222,42 @@ public final class Player {
       }
       bPaused = false; // cancel any current pause
       bPlaying = false;
-
     } catch (Exception e) {
-      Log.debug(Messages.getString("Error.008") + e);
+      Log.debug(Messages.getString("Error.008"), e);
     }
   }
 
   /**
    * Alternative Mute/unmute the player.
-   * 
-   * @throws Exception    */
+   *
+   */
   public static void mute() {
-    mute(!Player.bMute);
+    // Ignore mute changes if Bit-perfect mode is enabled
+    // See code should not normally be called because we
+    // disable associated GUI
+    if (Conf.getBoolean(Const.CONF_BIT_PERFECT)) {
+      Log.warn("Bit-perfect option enabled, software mutes ignored");
+      return;
+    }
+    Player.bMute = !Player.bMute;
+    mute(Player.bMute);
   }
 
   /**
    * Mute/unmute the player.
-   * 
-   * @param pMute DOCUMENT_ME
-   * 
-   * @throws Exception    */
+   *
+   * @param pMute 
+   */
   public static void mute(boolean pMute) {
+    // Ignore mute changes if Bit-perfect mode is enabled
+    // See code should not normally be called because we
+    // disable associated GUI
+    if (Conf.getBoolean(Const.CONF_BIT_PERFECT)) {
+      Log.warn("Bit-perfect option enabled, software mutes ignored");
+      return;
+    }
     try {
-      if (playerImpl == null) { // none current player, set mute state and leave
-        Player.bMute = pMute;
+      if (playerImpl == null) { // none current player, leave
         return;
       }
       if (pMute) {
@@ -274,21 +278,26 @@ public final class Player {
 
   /**
    * Checks if is muted.
-   * 
+   *
    * @return whether the player is muted or not
-   * 
-   * @throws Exception    */
+   */
   public static boolean isMuted() {
     return bMute;
   }
 
   /**
    * Set the gain.
-   * 
-   * @param pVolume DOCUMENT_ME
-   * 
-   * @throws Exception    */
+   *
+   * @param pVolume 
+   */
   public static void setVolume(float pVolume) {
+    // Ignore volume changes if Bit-perfect mode is enabled
+    // See code should not normally be called because we
+    // disable associated GUI
+    if (Conf.getBoolean(Const.CONF_BIT_PERFECT)) {
+      Log.warn("Bit-perfect option enabled, software volume changes ignored");
+      return;
+    }
     float fVolume = pVolume;
     try {
       // if user move the volume slider, unmute
@@ -304,10 +313,8 @@ public final class Player {
       if (playerImpl != null) {
         playerImpl.setVolume(fVolume);
       }
-
       // Store the volume
       Conf.setProperty(Const.CONF_VOLUME, Float.toString(fVolume));
-
       // Require all GUI (like volume sliders) to update
       ObservationManager.notify(new JajukEvent(JajukEvents.VOLUME_CHANGED));
     } catch (Exception e) {
@@ -327,7 +334,7 @@ public final class Player {
       return 0;
     }
   }
-  
+
   /**
    * Gets the elapsed time.
    * 
@@ -351,6 +358,10 @@ public final class Player {
         return;
       }
       if (playerImpl != null) {
+        if (Conf.getBoolean(Const.CONF_FADE_OUT) && !Conf.getBoolean(Const.CONF_BIT_PERFECT)
+            && !QueueModel.isInternalStop()) {
+          fadeOut();
+        }
         playerImpl.pause();
       }
       bPaused = true;
@@ -358,6 +369,21 @@ public final class Player {
     } catch (Exception e) {
       Log.error(e);
     }
+  }
+
+  private static void fadeOut() throws Exception {
+    float initialVolume = playerImpl.getCurrentVolume();
+    if (initialVolume > 0) {
+      //Fade out
+      float steps = 10;
+      int totalTimeMillis = 500;
+      for (int i = 1; i <= 10; i++) {
+        float newVolume = initialVolume * (steps - i) / steps;
+        playerImpl.setVolume(newVolume);
+        Thread.sleep((int) (totalTimeMillis / (steps - 1)));
+      }
+    }
+    playerImpl.setVolume(initialVolume);
   }
 
   /**
@@ -388,7 +414,7 @@ public final class Player {
   /**
    * Seek to a given position in %. ex : 0.2 for 20%
    * 
-   * @param pfPosition DOCUMENT_ME
+   * @param pfPosition 
    */
   public static void seek(float pfPosition) {
     float fPosition = pfPosition;
@@ -407,7 +433,6 @@ public final class Player {
     } catch (Exception e) { // we can get some errors in unexpected cases
       Log.debug(e.toString());
     }
-
   }
 
   /**

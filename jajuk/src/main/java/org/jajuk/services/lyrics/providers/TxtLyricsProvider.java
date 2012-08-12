@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.lyrics.providers;
 
@@ -31,16 +31,11 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TxtLyricsProvider implements ILyricsProvider {
-
-  /** DOCUMENT_ME. */
   private BufferedReader lyricsReader = null;
-
-  /** DOCUMENT_ME. */
   private String readerPath = null;
-
   /** audio file we search lyrics for. */
   private File audioFile = null;
 
@@ -65,7 +60,6 @@ public class TxtLyricsProvider implements ILyricsProvider {
       }
       lyricsReader.close();
       lyricsReader = null; // So it will be instanced new
-
       if (StringUtils.isBlank(lyrics)) {
         return null;
       }
@@ -116,5 +110,4 @@ public class TxtLyricsProvider implements ILyricsProvider {
   public String getSourceAddress() {
     return UtilSystem.removeExtension(audioFile.getAbsolutePath()) + ".txt";
   }
-
 }

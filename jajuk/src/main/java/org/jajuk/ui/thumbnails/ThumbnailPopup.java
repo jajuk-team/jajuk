@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.thumbnails;
 
 import java.awt.KeyEventDispatcher;
@@ -71,20 +70,15 @@ import org.jajuk.util.log.Log;
  * </p>.
  */
 public class ThumbnailPopup extends JWindow {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -8131528719972829954L;
-
-  /** DOCUMENT_ME. */
   private final JEditorPane text;
-
-  /** DOCUMENT_ME. */
   private KeyEventDispatcher dispatcher = null;
 
   /**
    * Launch selection and set right cursor.
    * 
-   * @param tracks DOCUMENT_ME
+   * @param tracks 
    */
   private void launchLink(List<Track> tracks) {
     List<org.jajuk.base.File> toPlay = new ArrayList<org.jajuk.base.File>(1);
@@ -95,9 +89,10 @@ public class ThumbnailPopup extends JWindow {
       }
     }
     text.setCursor(UtilGUI.WAIT_CURSOR);
-    QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(toPlay), Conf
-        .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
-        .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+    QueueModel.push(
+        UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(toPlay),
+            Conf.getBoolean(Const.CONF_STATE_REPEAT), true),
+        Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
     // Change icon cursor and wait a while so user can see it in case
     // the PUSH_ON_CLICK option is set, otherwise, user may think
     // nothing appened.
@@ -176,7 +171,6 @@ public class ThumbnailPopup extends JWindow {
             }
           });
         }
-
       }
     });
     final JScrollPane jspText = new JScrollPane(text);
@@ -244,7 +238,6 @@ public class ThumbnailPopup extends JWindow {
    */
   private void setKeystrokes() {
     removeKeystrokes();
-
     dispatcher = new KeyEventDispatcher() {
       @Override
       public boolean dispatchKeyEvent(KeyEvent e) {
@@ -252,13 +245,12 @@ public class ThumbnailPopup extends JWindow {
         return false;
       }
     };
-
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(dispatcher);
   }
 
   /**
    * Removes the keystrokes.
-   * DOCUMENT_ME
+   * 
    */
   private void removeKeystrokes() {
     if (dispatcher != null) {

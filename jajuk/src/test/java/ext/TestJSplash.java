@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package ext;
 
@@ -26,10 +26,9 @@ import java.net.URL;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestJSplash extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -47,7 +46,7 @@ public class TestJSplash extends JajukTestCase {
 
   /**
    * Test j splash2.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -62,7 +61,7 @@ public class TestJSplash extends JajukTestCase {
 
   /**
    * Test j splash null url.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -87,7 +86,6 @@ public class TestJSplash extends JajukTestCase {
       JSplash splash = new JSplash(new URL("http://www.example.com"), true, true, true,
           "copyright", "version", null);
       splash.splashOn();
-
       splash.splashOff();
     } catch (HeadlessException e) {
       // expected when tests are executed without UI support
@@ -143,7 +141,7 @@ public class TestJSplash extends JajukTestCase {
 
   /**
    * Test set progress int string2.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -157,5 +155,4 @@ public class TestJSplash extends JajukTestCase {
       // expected when tests are executed without UI support
     }
   }
-
 }

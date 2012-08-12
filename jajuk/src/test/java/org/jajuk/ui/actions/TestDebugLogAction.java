@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
@@ -26,10 +26,9 @@ import org.jajuk.JajukTestCase;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestDebugLogAction extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -39,7 +38,6 @@ public class TestDebugLogAction extends JajukTestCase {
   public void testPerform() {
     // initialize Log
     Log.init();
-
     DebugLogAction action = new DebugLogAction();
     try {
       action.perform(null); // it doesn't look at the actionevent at all right
@@ -57,5 +55,4 @@ public class TestDebugLogAction extends JajukTestCase {
   public void testDebugLogAction() {
     new DebugLogAction();
   }
-
 }

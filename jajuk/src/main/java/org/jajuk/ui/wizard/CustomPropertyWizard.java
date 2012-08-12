@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.wizard;
 
 import java.awt.event.ActionListener;
@@ -47,32 +46,24 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public abstract class CustomPropertyWizard extends JajukJDialog implements ActionListener,
     ItemListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -5148687837661745898L;
-
-  /** DOCUMENT_ME. */
   JLabel jlItemChoice;
-
-  /** DOCUMENT_ME. */
   JComboBox jcbItemChoice;
-
-  /** DOCUMENT_ME. */
   OKCancelPanel okp;
-
-  /** DOCUMENT_ME. */
   JLabel jlName;
 
   /**
    * Constuctor.
    * 
-   * @param sTitle DOCUMENT_ME
+   * @param sTitle 
    */
   CustomPropertyWizard(String sTitle) {
+    super(JajukMainWindow.getInstance(), true);
     setTitle(sTitle);
     setModal(true);
     setLocationRelativeTo(JajukMainWindow.getInstance());
@@ -147,5 +138,4 @@ public abstract class CustomPropertyWizard extends JajukJDialog implements Actio
     }
     return im;
   }
-
 }

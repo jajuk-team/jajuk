@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.util.error;
 
@@ -24,17 +24,15 @@ package org.jajuk.util.error;
  * Error in lyrics persistence.
  */
 public class LyricsPersistenceException extends Exception {
-
   /** Default serial UID. */
   private static final long serialVersionUID = 1L;
 
   /**
    * The Constructor.
    * 
-   * @param pMessage DOCUMENT_ME
+   * @param pMessage 
    */
   public LyricsPersistenceException(String pMessage) {
     super(pMessage);
   }
-
 }

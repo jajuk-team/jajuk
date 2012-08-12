@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
@@ -32,7 +32,6 @@ import javax.swing.KeyStroke;
  * Utility class for swing actions.
  */
 public final class ActionUtil {
-
   /** The character to use as mnemonic indicator. */
   public static final char INDICATOR = '_';
 
@@ -90,7 +89,6 @@ public final class ActionUtil {
       if (stroke != null) {
         InputMap keyMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         keyMap.put(stroke, action);
-
         ActionMap actionMap = component.getActionMap();
         actionMap.put(action, action);
       }
@@ -100,8 +98,8 @@ public final class ActionUtil {
   /**
    * Return whether a key event matches the mnemonic of a provided action.
    * 
-   * @param action DOCUMENT_ME
-   * @param ke DOCUMENT_ME
+   * @param action 
+   * @param ke 
    * 
    * @return whether a key event matches the mnemonic of a provided action
    */

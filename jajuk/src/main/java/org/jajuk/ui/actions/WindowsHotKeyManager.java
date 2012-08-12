@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
@@ -46,25 +46,21 @@ import org.jajuk.util.log.Log;
  * </p>.
  */
 public abstract class WindowsHotKeyManager extends AbstractAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -6948447651091264530L;
-
   /** Maps hotkeylisteners with the event ID. */
   private static Map<Integer, JajukAction> hmIndexAction = new HashMap<Integer, JajukAction>(20);
-
   /** Jintellitype object used for hotkeys and intellitype events management under windows only. */
   private static JIntellitype jintellitype;
 
   /**
    * Register j intellitype.
-   * DOCUMENT_ME
+   * 
    */
   public static void registerJIntellitype() {
     jintellitype = JIntellitype.getInstance();
     // assign this class to be a IntellitypeListener
     jintellitype.addIntellitypeListener(new IntellitypeListener() {
-
       /*
        * (non-Javadoc)
        * 
@@ -107,15 +103,14 @@ public abstract class WindowsHotKeyManager extends AbstractAction {
         }
       }
     });
-
   }
 
   /**
    * Register hot key.
-   * DOCUMENT_ME
    * 
-   * @param stroke DOCUMENT_ME
-   * @param ab DOCUMENT_ME
+   * 
+   * @param stroke 
+   * @param ab 
    */
   public static void registerHotKey(KeyStroke stroke, final JajukAction ab) {
     // under windows, use hotkey that can be used even when window
@@ -127,7 +122,6 @@ public abstract class WindowsHotKeyManager extends AbstractAction {
     hmIndexAction.put(index + 1, ab);
     // add the listener
     jintellitype.addHotKeyListener(new HotkeyListener() {
-
       @Override
       public void onHotKey(int key) {
         // Leave if user disabled hotkeys
@@ -146,7 +140,6 @@ public abstract class WindowsHotKeyManager extends AbstractAction {
           }
         }
       }
-
     });
   }
 

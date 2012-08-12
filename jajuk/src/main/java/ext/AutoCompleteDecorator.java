@@ -24,7 +24,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package ext;
 
 import java.awt.event.ActionEvent;
@@ -82,7 +81,6 @@ import org.jdesktop.swingx.autocomplete.TextComponentAdaptor;
  * @author Thomas Bierhance
  */
 public final class AutoCompleteDecorator {
-
   /**
    * private constructor to avoid instantiating utility class.
    */
@@ -179,7 +177,6 @@ public final class AutoCompleteDecorator {
     final AutoCompleteDocument document = new AutoCompleteDocument(adaptor, strictMatching,
         stringConverter);
     decorate(editorComponent, document, adaptor);
-
     // show the popup list when the user presses a key
     final KeyListener keyListener = new KeyAdapter() {
       @Override
@@ -188,7 +185,6 @@ public final class AutoCompleteDecorator {
         if (keyEvent.isActionKey()) {
           return;
         }
-
         // don't popup if the combobox isn't visible anyway
         if (comboBox.isDisplayable() && !comboBox.isPopupVisible()) {
           int keyCode = keyEvent.getKeyCode();
@@ -201,17 +197,14 @@ public final class AutoCompleteDecorator {
           if (keyCode == KeyEvent.VK_ESCAPE) {
             return;
           }
-
           comboBox.setPopupVisible(true);
         }
       }
     };
     editorComponent.addKeyListener(keyListener);
-
     if (stringConverter != ObjectToStringConverter.DEFAULT_IMPLEMENTATION) {
       comboBox.setEditor(new AutoCompleteComboBoxEditor(comboBox.getEditor(), stringConverter));
     }
-
     // Changing the l&f can change the combobox' editor which in turn
     // would not be autocompletion-enabled. The new editor needs to be
     // set-up.
@@ -249,7 +242,6 @@ public final class AutoCompleteDecorator {
       final AbstractAutoCompleteAdaptor adaptor) {
     // install the document on the text component
     textComponent.setDocument(document);
-
     // mark entire text when the text component gains focus
     // otherwise the last mark would have been retained which is quiet
     // confusing
@@ -259,7 +251,6 @@ public final class AutoCompleteDecorator {
         adaptor.markEntireText();
       }
     });
-
     // Tweak some key bindings
     InputMap editorInputMap = textComponent.getInputMap();
     if (document.isStrictMatching()) {
@@ -280,35 +271,28 @@ public final class AutoCompleteDecorator {
       // it will delete the previous character otherwise
       editorInputMap.put(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SPACE, 0),
           "nonstrict-backspace");
-      editorActionMap.put("nonstrict-backspace", new NonStrictBackspaceAction(editorActionMap
-          .get(DefaultEditorKit.deletePrevCharAction), editorActionMap
-          .get(DefaultEditorKit.selectionBackwardAction), adaptor));
+      editorActionMap.put("nonstrict-backspace",
+          new NonStrictBackspaceAction(editorActionMap.get(DefaultEditorKit.deletePrevCharAction),
+              editorActionMap.get(DefaultEditorKit.selectionBackwardAction), adaptor));
     }
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   static class NonStrictBackspaceAction extends TextAction {
-
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = -5508607690462561673L;
-
-    /** DOCUMENT_ME. */
     private Action backspace;
-
-    /** DOCUMENT_ME. */
     private Action selectionBackward;
-
-    /** DOCUMENT_ME. */
     private AbstractAutoCompleteAdaptor adaptor;
 
     /**
      * Instantiates a new non strict backspace action.
      * 
-     * @param backspace DOCUMENT_ME
-     * @param selectionBackward DOCUMENT_ME
-     * @param adaptor DOCUMENT_ME
+     * @param backspace 
+     * @param selectionBackward 
+     * @param adaptor 
      */
     public NonStrictBackspaceAction(Action backspace, Action selectionBackward,
         AbstractAutoCompleteAdaptor adaptor) {

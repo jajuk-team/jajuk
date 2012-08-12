@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,13 +16,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -44,10 +47,9 @@ import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class DebugLogAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -71,10 +73,20 @@ public class DebugLogAction extends JajukAction {
     text.setBackground(Color.WHITE);
     text.setForeground(Color.DARK_GRAY);
     text.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
-    final JDialog dialog = new JDialog(JajukMainWindow.getInstance(), Messages
-        .getString("DebugLogAction.0"), false);
-    JButton jbRefresh = new JButton(Messages.getString("DebugLogAction.1"), IconLoader
-        .getIcon(JajukIcons.REFRESH));
+    final JDialog dialog = new JDialog(JajukMainWindow.getInstance(),
+        Messages.getString("DebugLogAction.0"), false);
+    JButton jbCopy = new JButton(Messages.getString("DebugLogAction.2"),
+        IconLoader.getIcon(JajukIcons.COPY_TO_CLIPBOARD));
+    jbCopy.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        StringSelection data = new StringSelection(text.getText());
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(data, data);
+      }
+    });
+    JButton jbRefresh = new JButton(Messages.getString("DebugLogAction.1"),
+        IconLoader.getIcon(JajukIcons.REFRESH));
     jbRefresh.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -93,7 +105,8 @@ public class DebugLogAction extends JajukAction {
     JScrollPane panel = new JScrollPane(text);
     UtilGUI.setEscapeKeyboardAction(dialog, panel);
     dialog.add(panel, "grow,wrap");
-    dialog.add(jbRefresh, "split 2,right,sg button");
+    dialog.add(jbCopy, "split 3,right,sg button");
+    dialog.add(jbRefresh, "split 3,right,sg button");
     dialog.add(jbClose, "right,sg button");
     dialog.setPreferredSize(new Dimension(800, 600));
     dialog.pack();
@@ -108,22 +121,22 @@ public class DebugLogAction extends JajukAction {
    */
   private String getTraces() {
     // Store system properties
-    StringBuilder traces = new StringBuilder("<HTML><font color='green'><b>").append(
-        cleanHTML(UtilString.getAnonymizedSystemProperties().toString())).append("<br>").append(
-        cleanHTML(UtilString.getAnonymizedJajukProperties().toString())).append("</b></font><br>");
+    StringBuilder traces = new StringBuilder("<HTML><font color='green'><b>")
+        .append(cleanHTML(UtilString.getAnonymizedSystemProperties().toString())).append("<br>")
+        .append(cleanHTML(UtilString.getAnonymizedJajukProperties().toString()))
+        .append("</b></font><br>");
     // Store last traces
     for (String line : Log.getSpool()) {
       traces.append(line).append("<br>");
     }
     traces.append("</HTML>");
-
     return traces.toString();
   }
 
   /**
    * Replace some HTML in the properties to make them suitable for printing.
    * 
-   * @param str DOCUMENT_ME
+   * @param str 
    * 
    * @return the string
    */

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,40 +16,37 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.ui.wizard.WebRadioWizard;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.error.JajukException;
 
 /**
- * Action for configure WebRadios.
+ * .
  */
-public class WebRadioConfigurationAction extends JajukAction {
-
+public class NewRadioAction extends JajukAction {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
   /**
-   * Instantiates a new web radio configuration action.
+   * Instantiates a new web radio action.
    */
-  WebRadioConfigurationAction() {
-    super(Messages.getString("CommandJPanel.24"), IconLoader.getIcon(JajukIcons.CONFIGURATION),
-        true);
+  NewRadioAction() {
+    super(Messages.getString("WebRadioView.8"), IconLoader.getIcon(JajukIcons.ADD), true);
+    setShortDescription(Messages.getString("WebRadioView.8"));
   }
 
   /* (non-Javadoc)
    * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
    */
   @Override
-  public void perform(ActionEvent evt) {
-    // display the wizard
-    WebRadioWizard wizard = new WebRadioWizard();
-    wizard.show();
+  public void perform(ActionEvent evt) throws JajukException {
+    //TODO code the dialog
   }
 }

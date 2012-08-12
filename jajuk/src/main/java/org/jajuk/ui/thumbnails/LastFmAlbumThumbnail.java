@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.thumbnails;
 
 import ext.services.lastfm.AlbumInfo;
@@ -28,6 +27,7 @@ import ext.services.lastfm.TrackInfo;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 
@@ -60,22 +60,18 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * information display...
  */
 public class LastFmAlbumThumbnail extends AbstractThumbnail {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -804471264407148566L;
-
   /** Associated album. */
   private AlbumInfo album;
-
   /** Is this artist known in collection ?. */
   private final boolean bKnown;
-
   /** Thumb associated image *. */
   private ImageIcon ii;
 
   /**
    * The Constructor.
-   * 
+   *
    * @param album :
    * associated album
    */
@@ -87,7 +83,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.thumbnails.AbstractThumbnail#getItem()
    */
   @Override
@@ -101,7 +97,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.thumbnails.AbstractThumbnail#getDescription()
    */
   @Override
@@ -144,7 +140,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.thumbnails.AbstractThumbnail#launch()
    */
   @Override
@@ -175,6 +171,14 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
       // Download image and store file reference (to generate the
       // popup thumb for ie)
       fCover = DownloadManager.downloadToCache(remote);
+      if (!fCover.exists()) {
+        Log.warn("Cache file not found: {{" + fCover.getAbsolutePath() + "}}");
+        return;
+      }
+      if (fCover.length() == 0) {
+        Log.warn("Cache file has zero bytes: {{" + fCover.getAbsolutePath() + "}}");
+        return;
+      }
       BufferedImage image = ImageIO.read(fCover);
       if (image == null) {
         Log.warn("Could not read cover from: {{" + fCover.getAbsolutePath() + "}}");
@@ -193,8 +197,21 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
       // only report a warning for FileNotFoundException and do not show a
       // stacktrace in the logfile as it is happening frequently
       Log.warn("Could not load image, timed out while reading address: {{" + e.getMessage() + "}}");
+    } catch (IOException e) {
+      if (e.getMessage().contains(" 403 ")) {
+        Log.warn("Could not access webpage, returned error 403: " + e.getMessage());
+      } else {
+        Log.error(e);
+      }
     } catch (Exception e) {
       Log.error(e);
+      // check for empty file to remove invalid cache entries
+      if (fCover.exists() && fCover.length() == 0) {
+        Log.warn("Removing empty file from cache: " + fCover.getAbsolutePath());
+        if (!fCover.delete()) {
+          Log.warn("Error removing file: " + fCover.getAbsolutePath());
+        }
+      }
     }
   }
 
@@ -225,8 +242,8 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
     }
     if (bKnown) {
       // Album known in collection, display its name in bold
-      jlTitle = new JLabel(UtilString.getLimitedString(fullTitle, textLength), IconLoader
-          .getIcon(JajukIcons.ALBUM), SwingConstants.CENTER);
+      jlTitle = new JLabel(UtilString.getLimitedString(fullTitle, textLength),
+          IconLoader.getIcon(JajukIcons.ALBUM), SwingConstants.CENTER);
       jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
     } else {
       jlTitle = new JLabel(UtilString.getLimitedString(fullTitle, textLength));
@@ -252,7 +269,5 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
     if (UtilSystem.isBrowserSupported()) {
       jmiOpenLastFMSite.putClientProperty(Const.DETAIL_CONTENT, album.getUrl());
     }
-
   }
-
 }

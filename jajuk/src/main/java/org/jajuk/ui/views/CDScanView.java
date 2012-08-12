@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.views;
 
 import java.awt.event.ActionEvent;
@@ -55,23 +54,12 @@ import org.jajuk.util.log.Log;
  * Configuration perspective *.
  */
 public class CDScanView extends ViewAdapter implements ActionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** DOCUMENT_ME. */
   JTextField jtfName;
-
-  /** DOCUMENT_ME. */
   JLabel jlMountPoint;
-
-  /** DOCUMENT_ME. */
   JTextField jtfMountPoint;
-
-  /** DOCUMENT_ME. */
   JButton jbScan;
-
-  /** DOCUMENT_ME. */
   JButton jbUrl;
 
   /**
@@ -97,14 +85,13 @@ public class CDScanView extends ViewAdapter implements ActionListener {
         }
         return;
       }
-
       SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
         @Override
         public Void doInBackground() {
           if (!"".equals(jtfName.getText().trim()) && !"".equals(jtfMountPoint.getText().trim())) {
             Device device = null;
-            device = DeviceManager.getInstance().registerDevice(jtfName.getText().trim(), 1,
-                jtfMountPoint.getText().trim());
+            device = DeviceManager.getInstance().registerDevice(jtfName.getText().trim(),
+                Device.Type.FILES_CD, jtfMountPoint.getText().trim());
             try {
               device.mount(true);
               // refresh synchronously
@@ -128,8 +115,8 @@ public class CDScanView extends ViewAdapter implements ActionListener {
       };
       sw.execute();
     } else if (e.getSource() == jbUrl) {
-      final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(DirectoryFilter
-          .getInstance()));
+      final JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
+          DirectoryFilter.getInstance()));
       jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
       jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));
       jfc.setMultiSelectionEnabled(false);

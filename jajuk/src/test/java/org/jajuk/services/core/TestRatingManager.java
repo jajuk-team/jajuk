@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.core;
 
@@ -47,10 +47,9 @@ import org.jajuk.services.tags.ITagImpl;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestRatingManager extends JajukTestCase {
-
   /**
    * Test method for {@link org.jajuk.services.core.RatingManager#run()}.
    */
@@ -78,7 +77,6 @@ public class TestRatingManager extends JajukTestCase {
     assertEquals(0, RatingManager.getMaxPlaycount());
     RatingManager.setMaxPlaycount(10);
     assertEquals(10, RatingManager.getMaxPlaycount());
-
     // set back to 0 as there is special handling
     RatingManager.setMaxPlaycount(0);
   }
@@ -95,37 +93,10 @@ public class TestRatingManager extends JajukTestCase {
   /**
    * Test method for.
    *
-   * {@link org.jajuk.services.core.RatingManager#hasRateChanged()}.
-   */
-  public void testHasAndSetRateChanged() {
-    assertTrue(RatingManager.hasRateChanged());
-
-    RatingManager.setRateHasChanged(false);
-
-    assertFalse(RatingManager.hasRateChanged());
-
-    RatingManager.setRateHasChanged(true);
-
-    assertTrue(RatingManager.hasRateChanged());
-  }
-
-  /**
-   * Test method for.
-   *
-   * {@link org.jajuk.services.core.RatingManager#setRateHasChanged(boolean)}.
-   */
-  public void testSetRateHasChanged() {
-    // tested above
-  }
-
-  /**
-   * Test method for.
-   *
    * {@link org.jajuk.services.core.RatingManager#getRegistrationKeys()}.
    */
   public void testGetRegistrationKeys() {
     Set<JajukEvents> set = RatingManager.getInstance().getRegistrationKeys();
-
     assertTrue(set.toString(), set.contains(JajukEvents.RATE_RESET));
   }
 
@@ -138,11 +109,9 @@ public class TestRatingManager extends JajukTestCase {
    */
   public void testUpdate() throws Exception {
     StartupCollectionService.registerItemManagers();
-
     // update uses some Tracks
     getTrack(1);
     getTrack(2);
-
     RatingManager.getInstance().update(new JajukEvent(JajukEvents.RATE_RESET, null));
     RatingManager.getInstance().update(new JajukEvent(JajukEvents.PREFERENCES_RESET, null));
   }
@@ -150,7 +119,7 @@ public class TestRatingManager extends JajukTestCase {
   /**
    * Gets the track.
    *
-   * @param i DOCUMENT_ME
+   * @param i 
    * @return the track
    * @throws Exception the exception
    */
@@ -160,15 +129,12 @@ public class TestRatingManager extends JajukTestCase {
     Album album = JUnitHelpers.getAlbum("name", 23);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-
     Artist artist = JUnitHelpers.getArtist("name");
     Year year = JUnitHelpers.getYear(2000);
-
     IPlayerImpl imp = new MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
     ITagImpl tagimp = new MyTagImpl();
     Class<ITagImpl> tl = (Class<ITagImpl>) tagimp.getClass();
-
     Type type = JUnitHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack(Integer.valueOf(i).toString(), "name",
         album, genre, artist, 120, year, 1, type, 1);
@@ -181,4 +147,13 @@ public class TestRatingManager extends JajukTestCase {
     return track;
   }
 
+  public void testGetRateForPreference() {
+    assertEquals(RatingManager.getRateForPreference(-3l), 0);
+    assertEquals(RatingManager.getRateForPreference(-2l), 17);
+    assertEquals(RatingManager.getRateForPreference(-1l), 33);
+    assertEquals(RatingManager.getRateForPreference(0l), 50);
+    assertEquals(RatingManager.getRateForPreference(1l), 67);
+    assertEquals(RatingManager.getRateForPreference(2l), 83);
+    assertEquals(RatingManager.getRateForPreference(3l), 100);
+  }
 }

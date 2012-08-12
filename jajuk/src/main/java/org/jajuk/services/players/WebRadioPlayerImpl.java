@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.players;
 
@@ -24,10 +24,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Map;
+import java.util.Properties;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.File;
+import org.jajuk.events.JajukEvent;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -39,12 +43,10 @@ import org.jajuk.util.log.Log;
  * Jajuk web radio player implementation based on Mplayer.
  */
 public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
-
   /**
    * Reader : read information from mplayer like position.
    */
   private class ReaderThread extends Thread {
-
     /**
      * Implemented to set a useful thread name.
      */
@@ -65,6 +67,32 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
           if (line == null) {
             break;
           }
+          if (line.startsWith(("ICY Info:"))) {
+            //Send an event that web radio info has been updated
+            Properties pDetails = new Properties();
+            String radioTrackDetail = "";
+            // Some stations doesn't include the StreamUrl in the ICY line. Sample :
+            //ICY Info: StreamTitle='-- Now On Air: URB Non-Stop :: Playing: xxx Cilmi - Sweet About Me :: Email the station xxx@yyy.uk --';
+            if (line.contains("';StreamUrl")) {
+              radioTrackDetail = line.substring(line.indexOf("StreamTitle='") + 13,
+                  line.indexOf("';StreamUrl"));
+              // Otherwise, the line should ends with ','
+            } else if (line.endsWith("';")) {
+              radioTrackDetail = line.substring(line.indexOf("StreamTitle='") + 13,
+                  line.length() - 2);
+            } else {
+              // Just in case, we also handle the case where the line doesn't ends with ';
+              radioTrackDetail = line.substring(line.indexOf("StreamTitle='") + 13,
+                  line.length() - 2);
+            }
+            String currentRadioTrack = QueueModel.getCurrentRadio().getName();
+            if (StringUtils.isNotEmpty(radioTrackDetail)) {
+              currentRadioTrack += ":: " + radioTrackDetail;
+            }
+            pDetails.put(Const.DETAIL_CONTENT, QueueModel.getCurrentRadio());
+            pDetails.put(Const.CURRENT_RADIO_TRACK, currentRadioTrack);
+            ObservationManager.notify(new JajukEvent(JajukEvents.WEBRADIO_INFO_UPDATED, pDetails));
+          }
           bOpening = false;
           // Search for Exiting (...) pattern
           if (line.matches(".*\\x2e\\x2e\\x2e.*\\(.*\\).*")) {
@@ -84,8 +112,8 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
   /**
    * (non-Javadoc).
    * 
-   * @param radio DOCUMENT_ME
-   * @param fVolume DOCUMENT_ME
+   * @param radio 
+   * @param fVolume 
    * 
    * @throws IOException Signals that an I/O exception has occurred.
    * @throws JajukException the jajuk exception
@@ -98,6 +126,7 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
     this.fVolume = fVolume;
     this.bOpening = true;
     this.bEOF = false;
+    this.bitPerfect = Conf.getBoolean(Const.CONF_BIT_PERFECT);
     // Start
     ProcessBuilder pb = new ProcessBuilder(buildCommand(radio.getUrl()));
     Log.debug("Using this Mplayer command: {{" + pb.command() + "}}");
@@ -150,6 +179,8 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
     if (bEOF) {
       throw new JajukException(7);
     }
+    // Get track length
+    sendCommand("get_time_length");
   }
 
   /*
@@ -171,5 +202,4 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
     // makes no sense for webradios
     return 0;
   }
-
 }

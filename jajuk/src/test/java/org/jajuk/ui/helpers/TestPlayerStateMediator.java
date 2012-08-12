@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.helpers;
 
@@ -44,16 +44,15 @@ import org.jajuk.services.notification.NotificatorTypes;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
-import org.jajuk.services.webradio.WebRadio;
+import org.jajuk.services.webradio.WebRadioOrigin;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestPlayerStateMediator extends JajukTestCase {
-
   /* (non-Javadoc)
    * @see org.jajuk.JajukTestCase#setUp()
    */
@@ -61,7 +60,6 @@ public class TestPlayerStateMediator extends JajukTestCase {
   protected void setUp() throws Exception {
     // to install actions...
     ActionManager.getInstance();
-
     super.setUp();
   }
 
@@ -73,7 +71,6 @@ public class TestPlayerStateMediator extends JajukTestCase {
   public final void testGetInstance() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     assertNotNull(med);
-
     // once again to cover other if-branch
     med = PlayerStateMediator.getInstance();
     assertNotNull(med);
@@ -106,7 +103,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test update stop.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdateStop() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
@@ -115,26 +112,21 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test update stop queue model.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
   public final void testUpdateStopQueueModel() throws Exception {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
-
     // test with queue size > 0
     Device device = JUnitHelpers.getDevice();
-
     // no files without a directory
     List<File> files = device.getFilesRecursively();
     assertEquals(0, files.size()); // no file available
-
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     File file = getFile(9, dir);
-
     QueueModel.insert(new StackItem(file), 0);
     assertTrue(QueueModel.getQueue().toString(), QueueModel.getQueue().size() > 0);
-
     // run the method
     med.update(new JajukEvent(JajukEvents.PLAYER_STOP, null));
   }
@@ -142,8 +134,8 @@ public class TestPlayerStateMediator extends JajukTestCase {
   /**
    * Gets the file.
    *
-   * @param i DOCUMENT_ME
-   * @param dir DOCUMENT_ME
+   * @param i 
+   * @param dir 
    * @return the file
    */
   private File getFile(int i, Directory dir) {
@@ -151,21 +143,18 @@ public class TestPlayerStateMediator extends JajukTestCase {
     Album album = JUnitHelpers.getAlbum("name", 0);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-
     Artist artist = JUnitHelpers.getArtist("name");
     Year year = JUnitHelpers.getYear(2000);
-
     Type type = JUnitHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
-
     return FileManager.getInstance().registerFile(Integer.valueOf(i).toString(), "test.tst", dir,
         track, 120, 70);
   }
 
   /**
    * Test update paused.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdatePaused() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
@@ -174,7 +163,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test update resume.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdateResume() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
@@ -183,7 +172,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test update opening error.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdateOpeningError() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
@@ -192,7 +181,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test update zero.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdateZero() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
@@ -201,7 +190,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test update webradio.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdateWebradio() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
@@ -210,61 +199,52 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test update webradio notifcator.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdateWebradioNotifcator() {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
-
     Properties prop = new Properties();
-    prop.put(Const.DETAIL_CONTENT, new WebRadio("test", "testurl"));
-
+    prop.put(Const.DETAIL_CONTENT,
+        JUnitHelpers.getWebRadio("myradio", "http://foo", WebRadioOrigin.CUSTOM));
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, prop));
   }
 
   /**
    * Test update file launched.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
   public final void testUpdateFileLaunched() throws Exception {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
-
-    Device device = JUnitHelpers.getDevice();
-    device.setUrl(System.getProperty("java.io.tmpdir"));
-    Directory dir = DirectoryManager.getInstance().registerDirectory(device);
+    Directory dir = JUnitHelpers.getDirectory();
     File file = getFile(3, dir);
-
     Properties prop = new Properties();
     prop.put(Const.DETAIL_CURRENT_FILE_ID, file.getID());
-
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, prop));
-
     JUnitHelpers.clearSwingUtilitiesQueue();
   }
 
   /**
    * Test update file launched null.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdateFileLaunchedNull() {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
-
     // just provide empty properties
     Properties prop = new Properties();
-
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, prop));
   }
 
   /**
    * Test update volume.
-   * DOCUMENT_ME
+   * 
    */
   public final void testUpdateVolume() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
@@ -273,7 +253,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
 
   /**
    * Test update mute.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -281,15 +261,11 @@ public class TestPlayerStateMediator extends JajukTestCase {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.MUTE_STATE, null));
     JUnitHelpers.clearSwingUtilitiesQueue();
-
     // test with muted player
     Player.mute();
-
     med.update(new JajukEvent(JajukEvents.MUTE_STATE, null));
     JUnitHelpers.clearSwingUtilitiesQueue();
-
     Player.mute(false);
-
     med.update(new JajukEvent(JajukEvents.MUTE_STATE, null));
   }
 }

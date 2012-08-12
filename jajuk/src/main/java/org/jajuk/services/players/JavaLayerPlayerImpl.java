@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.players;
 
@@ -33,6 +33,9 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
+import org.jajuk.events.JajukEvent;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -45,60 +48,41 @@ import org.jajuk.util.log.Log;
  * Jajuk player implementation based on javazoom BasicPlayer.
  */
 public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListener {
-
-  /** The Constant AUDIO_LENGTH_BYTES.  DOCUMENT_ME */
+  /** The Constant AUDIO_LENGTH_BYTES.   */
   private static final String AUDIO_LENGTH_BYTES = "audio.length.bytes";
-
   /** Current player. */
   private BasicPlayer player;
-
   /** Time elapsed in ms. */
   private long lTime = 0;
-
   /** Actually played time */
   private long actuallyPlayedTimeMillis = 0l;
-
   private long lastPlayTimeUpdate = System.currentTimeMillis();
-
   /** Date of last elapsed time update. */
   private long lDateLastUpdate = System.currentTimeMillis();
-
   /** current track info. */
   private Map<String, Object> mPlayingData;
-
   /** Current position in %. */
   private float fPos;
-
   /** Length to be played in secs. */
   private long length;
-
   /** Stored Volume. */
   private float fVolume;
-
   /** Current track estimated duration in ms. */
   private long lDuration;
-
   /** Cross fade duration in ms. */
   int iFadeDuration = 0;
-
   /** Fading state. */
   boolean bFading = false;
-
   /** Progress step in ms, do not set less than 300 or 400 to avoid using too much CPU. */
   private static final int PROGRESS_STEP = 500;
-
   /** Total play time is refreshed every TOTAL_PLAYTIME_UPDATE_INTERVAL times. */
   private static final int TOTAL_PLAYTIME_UPDATE_INTERVAL = 2;
-
   /** Volume when starting fade. */
   private float fadingVolume;
-
   /** current file. */
   private org.jajuk.base.File fCurrent;
-
   /** Inc rating flag. */
   private boolean bHasBeenRated = false;
-
   /** Used to compute total played time. */
   private int comp = 0;
 
@@ -157,6 +141,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
     }
     // Update track rate
     fCurrent.getTrack().updateRate();
+    // Force immediate rating refresh (without using the rating manager)
+    ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
   }
 
   /*
@@ -285,12 +271,13 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   /**
    * Opened listener implementation.
    * 
-   * @param arg0 DOCUMENT_ME
-   * @param arg1 DOCUMENT_ME
+   * @param arg0 
+   * @param arg1 
    */
   @Override
   @SuppressWarnings("unchecked")
-  public void opened(Object arg0, Map arg1) {
+  public void opened(Object arg0, @SuppressWarnings("rawtypes")
+  Map arg1) {
     this.mPlayingData = arg1;
     this.lDuration = UtilFeatures.getTimeLengthEstimation(mPlayingData);
     lastPlayTimeUpdate = System.currentTimeMillis();
@@ -299,14 +286,15 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   /**
    * Progress listener implementation. Called several times by sec
    * 
-   * @param iBytesread DOCUMENT_ME
-   * @param lMicroseconds DOCUMENT_ME
-   * @param bPcmdata DOCUMENT_ME
-   * @param mProperties DOCUMENT_ME
+   * @param iBytesread 
+   * @param lMicroseconds 
+   * @param bPcmdata 
+   * @param mProperties 
    */
   @Override
-  @SuppressWarnings("unchecked")
-  public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata, Map mProperties) {
+  public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata,
+      @SuppressWarnings("rawtypes")
+      Map mProperties) {
     if ((System.currentTimeMillis() - lDateLastUpdate) > PROGRESS_STEP) {
       lDateLastUpdate = System.currentTimeMillis();
       this.iFadeDuration = 1000 * Conf.getInt(Const.CONF_FADE_DURATION);
@@ -348,7 +336,6 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
           actuallyPlayedTimeMillis += (System.currentTimeMillis() - lastPlayTimeUpdate);
         }
         lastPlayTimeUpdate = System.currentTimeMillis();
-
       }
       // check if the track get rate increasing level (INC_RATE_TIME
       // secs or intro length)
@@ -376,6 +363,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
               QueueModel.finished();
               // Update track rate
               fCurrent.getTrack().updateRate();
+              // Force immediate rating refresh (without using the rating manager)
+              ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
             }
           }.start();
         }
@@ -389,6 +378,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
           public void run() {
             QueueModel.finished();
             fCurrent.getTrack().updateRate();
+            // Force immediate rating refresh (without using the rating manager)
+            ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
           }
         }.start();
       }
@@ -398,7 +389,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   /**
    * State updated implementation.
    * 
-   * @param bpe DOCUMENT_ME
+   * @param bpe 
    */
   @Override
   public void stateUpdated(BasicPlayerEvent bpe) {
@@ -426,7 +417,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   /**
    * Set controler implementation.
    * 
-   * @param arg0 DOCUMENT_ME
+   * @param arg0 
    */
   @Override
   public void setController(BasicController arg0) {
@@ -445,7 +436,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
 
   /**
    * Scrobble.
-   * DOCUMENT_ME
+   * 
    * 
    * @return the int
    */

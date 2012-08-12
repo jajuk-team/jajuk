@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.util.Date;
@@ -43,7 +42,6 @@ import org.jajuk.util.Messages;
  * Table model used for albums table view.
  */
 public class AlbumsTableModel extends JajukTableModel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -58,48 +56,37 @@ public class AlbumsTableModel extends JajukTableModel {
     // for proper display in some look and feel
     vColNames.add(" ");
     idList.add(Const.XML_PLAY);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_ALBUM));
     idList.add(Const.XML_ALBUM);
-
     // First track found artist. If different artists in album, will be
     // displayed in italic
     vColNames.add(Messages.getHumanPropertyName(Const.XML_ARTIST));
     idList.add(Const.XML_ARTIST);
-
     // First track found genre. If different genres in album, will be
     // displayed in italic
     vColNames.add(Messages.getHumanPropertyName(Const.XML_GENRE));
     idList.add(Const.XML_GENRE);
-
     // First found track year, italic if different values
     vColNames.add(Messages.getHumanPropertyName(Const.XML_YEAR));
     idList.add(Const.XML_YEAR);
-
     // Album rate (average of its tracks rate)
     vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_RATE));
     idList.add(Const.XML_TRACK_RATE);
-
     // Total album length
     vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_LENGTH));
     idList.add(Const.XML_TRACK_LENGTH);
-
     // Number of tracks
     vColNames.add(Messages.getString("AlbumsTableView.1"));
     idList.add(Const.XML_TRACKS);
-
     // First found track discovery date
     vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_DISCOVERY_DATE));
     idList.add(Const.XML_TRACK_DISCOVERY_DATE);
-
     // Sum of all tracks hits
     vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_HITS));
     idList.add(Const.XML_TRACK_HITS);
-
     // Disc ID
     vColNames.add(Messages.getHumanPropertyName(Const.XML_ALBUM_DISC_ID));
     idList.add(Const.XML_ALBUM_DISC_ID);
-
     // custom properties now
     for (PropertyMetaInformation meta : AlbumManager.getInstance().getCustomProperties()) {
       vColNames.add(meta.getName());
@@ -113,19 +100,17 @@ public class AlbumsTableModel extends JajukTableModel {
    * For now, this table will not be editable (except for custom properties) for
    * complexity reasons. This may be implemented in the future if required
    * </p>
-   * 
-   * @param sPropertyName DOCUMENT_ME
-   * @param sPattern DOCUMENT_ME
-   * @param columnsToShow DOCUMENT_ME
+   *
+   * @param sPropertyName 
+   * @param sPattern 
+   * @param columnsToShow 
    */
   @Override
-  @SuppressWarnings("unchecked")
   public void populateModel(String sPropertyName, String sPattern, List<String> columnsToShow) {
     List<Album> alToShow = AlbumManager.getInstance().getAlbums();
     // OK, begin by filtering using any provided pattern
     Filter filter = new Filter(sPropertyName, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
-    Filter.filterItems(alToShow, filter);
-
+    alToShow = Filter.filterItems(alToShow, filter, Album.class);
     // Filter unmounted files if required
     if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
       Iterator<Album> it = alToShow.iterator();
@@ -136,7 +121,6 @@ public class AlbumsTableModel extends JajukTableModel {
         }
       }
     }
-
     // Sort the result
     int iColNum = iNumberStandardCols + AlbumManager.getInstance().getCustomProperties().size();
     iRowNum = alToShow.size();
@@ -146,7 +130,6 @@ public class AlbumsTableModel extends JajukTableModel {
     // Allow only custom properties edition
     bEditable = true;
     Iterator<Album> it = alToShow.iterator();
-
     // For perfs, prepare columns visibility
     boolean bAlbum = (columnsToShow != null && columnsToShow.contains(Const.XML_ALBUM));
     boolean bArtist = (columnsToShow != null && columnsToShow.contains(Const.XML_ARTIST));
@@ -160,11 +143,9 @@ public class AlbumsTableModel extends JajukTableModel {
     boolean bHits = (columnsToShow != null && columnsToShow.contains(Const.XML_TRACK_HITS));
     boolean bAlbumDiscID = (columnsToShow != null && columnsToShow
         .contains(Const.XML_ALBUM_DISC_ID));
-
     for (int iRow = 0; it.hasNext(); iRow++) {
       Album album = it.next();
       setItemAt(iRow, album);
-      Map<String, Object> properties = album.getProperties();
       // Id
       oItems[iRow] = album;
       // Play
@@ -178,7 +159,6 @@ public class AlbumsTableModel extends JajukTableModel {
       // change
       oValues[iRow][0] = il;
       bCellEditable[iRow][0] = false;
-
       // Album name
       if (bAlbum) {
         oValues[iRow][1] = album.getName2();
@@ -186,7 +166,6 @@ public class AlbumsTableModel extends JajukTableModel {
         oValues[iRow][1] = "";
       }
       bCellEditable[iRow][1] = false;
-
       // Artist
       if (bArtist) {
         Artist artist = album.getArtist();
@@ -199,7 +178,6 @@ public class AlbumsTableModel extends JajukTableModel {
         oValues[iRow][2] = "";
       }
       bCellEditable[iRow][2] = false;
-
       // Genre
       if (bGenre) {
         Genre genre = album.getGenre();
@@ -212,7 +190,6 @@ public class AlbumsTableModel extends JajukTableModel {
         oValues[iRow][3] = "";
       }
       bCellEditable[iRow][3] = false;
-
       // Year
       if (bYear) {
         Year year = album.getYear();
@@ -225,7 +202,6 @@ public class AlbumsTableModel extends JajukTableModel {
         oValues[iRow][4] = "";
       }
       bCellEditable[iRow][4] = false;
-
       // Rate
       if (bRate) {
         oValues[iRow][5] = StarsHelper.getStarIconLabel(album);
@@ -233,7 +209,6 @@ public class AlbumsTableModel extends JajukTableModel {
         oValues[iRow][5] = "";
       }
       bCellEditable[iRow][5] = false;
-
       // Length
       if (bLength) {
         oValues[iRow][6] = new Duration(album.getDuration());
@@ -241,7 +216,6 @@ public class AlbumsTableModel extends JajukTableModel {
         oValues[iRow][6] = "";
       }
       bCellEditable[iRow][6] = false;
-
       // Number of tracks
       if (bTrackNb) {
         oValues[iRow][7] = album.getNbOfTracks();
@@ -249,7 +223,6 @@ public class AlbumsTableModel extends JajukTableModel {
         oValues[iRow][7] = "";
       }
       bCellEditable[iRow][7] = false;
-
       // Date discovery
       if (bDiscovery) {
         oValues[iRow][8] = album.getDiscoveryDate();
@@ -257,7 +230,6 @@ public class AlbumsTableModel extends JajukTableModel {
         oValues[iRow][8] = "";
       }
       bCellEditable[iRow][8] = false;
-
       // Hits
       if (bHits) {
         oValues[iRow][9] = album.getHits();
@@ -265,7 +237,6 @@ public class AlbumsTableModel extends JajukTableModel {
         oValues[iRow][9] = "";
       }
       bCellEditable[iRow][9] = false;
-
       // disc id
       if (bAlbumDiscID) {
         oValues[iRow][10] = Long.toHexString(album.getDiscID());
@@ -273,11 +244,12 @@ public class AlbumsTableModel extends JajukTableModel {
         oValues[iRow][10] = "";
       }
       bCellEditable[iRow][10] = false;
-
       // Custom properties now
-      Iterator it2 = AlbumManager.getInstance().getCustomProperties().iterator();
+      Map<String, Object> properties = album.getProperties();
+      Iterator<PropertyMetaInformation> it2 = AlbumManager.getInstance().getCustomProperties()
+          .iterator();
       for (int i = 0; it2.hasNext(); i++) {
-        PropertyMetaInformation meta = (PropertyMetaInformation) it2.next();
+        PropertyMetaInformation meta = it2.next();
         Object o = properties.get(meta.getName());
         if (o != null) {
           oValues[iRow][iNumberStandardCols + i] = o;

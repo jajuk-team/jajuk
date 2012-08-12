@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk;
 
@@ -46,69 +46,55 @@ import org.jajuk.services.players.MPlayerPlayerImpl;
 import org.jajuk.services.tags.JAudioTaggerTagImpl;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestHelpers extends JajukTestCase {
-
-  /** DOCUMENT_ME. */
   Exception exc = null;
-  
-  /** DOCUMENT_ME. */
   boolean finished = false;
 
   /**
    * Test clear swing utilities queue.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
   public void testClearSwingUtilitiesQueue() throws Exception {
     // verify test-helper to clear the Swing Utilities Queue
-
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
         try {
           Thread.sleep(1000);
-
           finished = true;
         } catch (InterruptedException e) {
           exc = e;
         }
       }
     });
-
     long now = System.currentTimeMillis();
-
     // after this method returns we expect the above invokeLater to be finished
     JUnitHelpers.clearSwingUtilitiesQueue();
-
     // now the finished needs to be true
     assertTrue("Elapsed time(ms): " + (System.currentTimeMillis() - now), finished);
   }
 
-  /** DOCUMENT_ME. */
   private final int COUNT = 10;
-  
-  /** DOCUMENT_ME. */
   private AtomicInteger count = new AtomicInteger(0);
 
   /**
    * Test clear swing utilities queue multiple.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
   public void testClearSwingUtilitiesQueueMultiple() throws Exception {
     // verify test-helper to clear the Swing Utilities Queue
-
     for (int i = 0; i < COUNT; i++) {
       SwingUtilities.invokeLater(new Runnable() {
         @Override
         public void run() {
           try {
             Thread.sleep(1000 / COUNT);
-
             count.incrementAndGet();
           } catch (InterruptedException e) {
             exc = e;
@@ -116,16 +102,13 @@ public class TestHelpers extends JajukTestCase {
         }
       });
     }
-
     long now = System.currentTimeMillis();
-
     // after this method returns we expect the above invokeLater to be finished
     JUnitHelpers.clearSwingUtilitiesQueue();
-
     // now the finished needs to be true
     assertTrue(
-        "Elapsed time(ms): " + (System.currentTimeMillis() - now) + " Count: " + count.get(), count
-            .get() == COUNT);
+        "Elapsed time(ms): " + (System.currentTimeMillis() - now) + " Count: " + count.get(),
+        count.get() == COUNT);
   }
 
   /**
@@ -142,7 +125,8 @@ public class TestHelpers extends JajukTestCase {
     Year year = YearManager.getInstance().registerYear("2000");
     Track track = TrackManager.getInstance().registerTrack("track name", album, genre, artist, 12l,
         year, 1l, type, 1l);
-    Device device = DeviceManager.getInstance().registerDevice("device name", 1l, "/tmp");
+    Device device = DeviceManager.getInstance().registerDevice("device name", Device.Type.FILES_CD,
+        "/tmp");
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     File file = FileManager.getInstance().registerFile("file name", dir, track, 12, 128);
     return file;

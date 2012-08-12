@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.dbus;
 
@@ -33,10 +33,9 @@ import org.freedesktop.dbus.DBusInterface;
  */
 @org.freedesktop.DBus.Description("Methods to remotely control Jajuk including play/pause/next/prev track and some other useful actions.")
 public interface DBusSupport extends DBusInterface {
-
   /**
    * Previous.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -45,7 +44,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Next.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -54,7 +53,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Rewind.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -63,7 +62,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Play pause.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -72,7 +71,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Stop.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -81,7 +80,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Forward.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -90,7 +89,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Exit.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -99,7 +98,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Shuffle global.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -108,7 +107,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Previous album.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -117,7 +116,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Next album.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -126,7 +125,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Increase volume.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -135,7 +134,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Decrease volume.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -144,7 +143,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Mute.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -153,7 +152,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Current html.
-   * DOCUMENT_ME
+   * 
    * 
    * @return the string
    * 
@@ -164,7 +163,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Current.
-   * DOCUMENT_ME
+   * 
    * 
    * @return the string
    * 
@@ -175,7 +174,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Ban current.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -184,7 +183,7 @@ public interface DBusSupport extends DBusInterface {
 
   /**
    * Show currently playing.
-   * DOCUMENT_ME
+   * 
    * 
    * @throws Exception the exception
    */
@@ -198,7 +197,6 @@ public interface DBusSupport extends DBusInterface {
    */
   @org.freedesktop.DBus.Description("Adds the currently playing track to the list of bookmarks/favourites. Does nothing, if there is no file currently playing.")
   void bookmarkCurrentlyPlaying() throws Exception;
-
   /*
   * Actions that are not supported (yet): REPEAT_MODE, SHUFFLE_MODE,
   * CONTINUE_MODE, INTRO_MODE, DEVICE_NEW, DEVICE_DELETE, DEVICE_PROPERTIES,

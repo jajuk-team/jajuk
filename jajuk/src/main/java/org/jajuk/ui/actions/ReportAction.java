@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
@@ -45,7 +45,6 @@ import org.jajuk.util.log.Log;
  * Report collection as a file.
  */
 public class ReportAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -69,8 +68,8 @@ public class ReportAction extends JajukAction {
     // Get required data from the tree (selected node and node type)
     final List<Item> alSelected = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
     // Display a save as dialog
-    final JajukFileFilter filter = new JajukFileFilter(XMLFilter.getInstance(), HTMLFilter
-        .getInstance());
+    final JajukFileFilter filter = new JajukFileFilter(XMLFilter.getInstance(),
+        HTMLFilter.getInstance());
     final JajukFileChooser chooser = new JajukFileChooser(filter);
     // Allow to navigate between directories
     chooser.setAcceptDirectories(true);
@@ -139,6 +138,5 @@ public class ReportAction extends JajukAction {
         }
       }.start();
     }
-
   }
 }

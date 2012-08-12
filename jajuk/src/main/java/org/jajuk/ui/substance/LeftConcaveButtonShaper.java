@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.substance;
 
 import java.awt.Insets;
@@ -37,14 +36,12 @@ import javax.swing.AbstractButton;
  * The Class LeftConcaveButtonShaper.
  */
 public class LeftConcaveButtonShaper extends ButtonShaper {
-
-  /** DOCUMENT_ME. */
   private int concaveDiameter;
 
   /**
    * Instantiates a new left concave button shaper.
    * 
-   * @param concaveDiameter DOCUMENT_ME
+   * @param concaveDiameter 
    */
   public LeftConcaveButtonShaper(int concaveDiameter) {
     super();
@@ -66,14 +63,10 @@ public class LeftConcaveButtonShaper extends ButtonShaper {
   public Shape getButtonOutline(AbstractButton button, Insets insets, int w, int h, boolean isInner) {
     int width = w - 1;
     int height = h - 1;
-
     int z = concaveDiameter / 3;
-
     Shape shape = new Ellipse2D.Double(0, 0, z, height);
     Area area = new Area(new RoundRectangle2D.Double(z / 2d, 0, width - z, height, z, z));
     area.subtract(new Area(shape));
-
     return new GeneralPath(area);
   }
-
 }

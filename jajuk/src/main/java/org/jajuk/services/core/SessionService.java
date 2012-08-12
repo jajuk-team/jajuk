@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.core;
 
@@ -55,37 +55,26 @@ import org.jajuk.util.log.Log;
  * Multi-session and test/final mode facilities.
  */
 public class SessionService {
-
   /** Debug mode. */
   private static boolean bIdeMode = false;
-
   /** Test mode. */
   private static boolean bTestMode = false;
-
   /** Workspace PATH*. */
   private static String workspace;
-
   /** Forced workspace location (required for some special packaging like portableapps) *. */
   private static String forcedWorkspacePath = null;
-
   /** Directory used to flag the current jajuk session. */
   private static File sessionIdFile;
-
   /** Lock used to trigger first time wizard window close*. */
   private static short[] isFirstTimeWizardClosed = new short[0];
-
   /** Bootstrap file content as key/value format. */
   private static Properties bootstrapContent = new Properties();
-
   /** For performances, store conf root path. */
   private static String confRoot;
-
   /** Boostrap file test workspace path key. */
   private static final String KEY_TEST = "test";
-
   /** Boostrap file final workspace path key. */
   private static final String KEY_FINAL = "final";
-
   /** First time wizard instance if required. */
   private static FirstTimeWizard ftw;
 
@@ -100,7 +89,6 @@ public class SessionService {
    * check if another session is already started.
    */
   public static void checkOtherSession() {
-
     try {
       SwingUtilities.invokeAndWait(new Runnable() {
         @Override
@@ -129,7 +117,7 @@ public class SessionService {
             optionPane.setMessage(UtilGUI.getLimitedMessage(Messages.getString("Warning.2")
                 + details.toString(), 20));
             Object[] options = { Messages.getString("Ok"), Messages.getString("Hide"),
-                Messages.getString("Purge") };
+                Messages.getString("Purge"), Messages.getString("Close") };
             optionPane.setOptions(options);
             optionPane.setMessageType(JOptionPane.WARNING_MESSAGE);
             JDialog dialog = optionPane.createDialog(null, Messages.getString("Warning"));
@@ -143,11 +131,14 @@ public class SessionService {
             if (Messages.getString("Hide").equals(optionPane.getValue())) {
               // Not show again
               Conf.setProperty(Const.CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, Const.TRUE);
+            } else if (Messages.getString("Close").equals(optionPane.getValue())) {
+              // exit with error code to not store the collection
+              ExitService.exit(1);
             } else if (Messages.getString("Purge").equals(optionPane.getValue())) {
               // Clean up old locks directories in session folder
               files = sessions.listFiles();
               for (int i = 0; i < files.length; i++) {
-                if (!files[i].delete()) {
+                if (!files[i].delete()) { //NOSONAR
                   Messages.showDetailedErrorMessage(131,
                       "Cannot delete : " + files[i].getAbsolutePath(), "");
                   Log.error(131);
@@ -167,7 +158,7 @@ public class SessionService {
 
   /**
    * Checks if is ide mode.
-   * 
+   *
    * @return true, if is ide mode
    */
   public static boolean isIdeMode() {
@@ -176,7 +167,7 @@ public class SessionService {
 
   /**
    * Checks if is test mode.
-   * 
+   *
    * @return true, if is test mode
    */
   public static boolean isTestMode() {
@@ -185,7 +176,7 @@ public class SessionService {
 
   /**
    * Gets the workspace.
-   * 
+   *
    * @return the workspace
    */
   public static String getWorkspace() {
@@ -194,7 +185,7 @@ public class SessionService {
 
   /**
    * Sets the test mode.
-   * 
+   *
    * @param bTestMode the new test mode
    */
   public static void setTestMode(boolean bTestMode) {
@@ -203,7 +194,7 @@ public class SessionService {
 
   /**
    * Sets the workspace.
-   * 
+   *
    * @param workspace the new workspace
    */
   public static void setWorkspace(String workspace) {
@@ -224,7 +215,7 @@ public class SessionService {
 
   /**
    * Gets the session id file.
-   * 
+   *
    * @return the session id file
    */
   public static File getSessionIdFile() {
@@ -245,7 +236,7 @@ public class SessionService {
   /**
    * Walks through the command line arguments and sets flags for any one that we
    * recognize.
-   * 
+   *
    * @param args The list of command line arguments that is passed to main()
    */
   public static void handleCommandline(final String[] args) {
@@ -296,7 +287,6 @@ public class SessionService {
     for (final Object element : System.getProperties().keySet()) {
       String key = (String) element;
       String value = System.getProperty(key);
-
       // Tells jajuk it is inside the IDE (useful to find right
       // location for images and jar resources)
       if (Const.CLI_IDE.equals(key) && Const.TRUE.equalsIgnoreCase(value)) {
@@ -311,7 +301,7 @@ public class SessionService {
 
   /**
    * Creates the session file.
-   * DOCUMENT_ME
+   * 
    */
   public static void createSessionFile() {
     if (!getSessionIdFile().mkdir()) {
@@ -328,7 +318,7 @@ public class SessionService {
    * <li>Default path presence</li>
    * <li>Human selection</li>
    * </ul>
-   * 
+   *
    * @throws InterruptedException the interrupted exception
    */
   public static void discoverWorkspace() throws InterruptedException {
@@ -336,7 +326,6 @@ public class SessionService {
       // Upgrade the bootstrap file if it exists (must be done here, not in upgrade step 1
       // because of the boot sequence dependencies)
       UpgradeManager.upgradeBootstrapFile();
-
       // Use any forced workspace location given in CLI. Note that this path has
       // already been validated in the handleCommand() method
       if (forcedWorkspacePath != null) {
@@ -361,16 +350,13 @@ public class SessionService {
             // Parse bootstrap file (XML format)
             FileInputStream fis = new FileInputStream(bootstrap);
             bootstrapContent.loadFromXML(fis);
-
             String workspacePath = null;
-
             // Compute the final workspace path
             if (isTestMode()) {
               workspacePath = (String) bootstrapContent.get(KEY_TEST);
             } else {
               workspacePath = (String) bootstrapContent.get(KEY_FINAL);
             }
-
             // Check if the repository can be found
             if (new File(workspacePath + '/'
                 + (isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk")).canRead()) {
@@ -432,7 +418,7 @@ public class SessionService {
       SwingUtilities.invokeLater(new Runnable() {
         @Override
         public void run() {
-          // default workspace displayed in the first time wizard is either the user home 
+          // default workspace displayed in the first time wizard is either the user home
           // or the forced path if provided (can't be changed by the user from the wizard anyway)
           String defaultWorkspacePath = UtilSystem.getUserHome();
           if (forcedWorkspacePath != null) {
@@ -496,9 +482,9 @@ public class SessionService {
    * Return destination file in cache for a given URL <br>
    * We store the file using the URL's MD3 5 hash to ensure unicity and avoid
    * unexpected characters in file names.
-   * 
+   *
    * @param url resource URL
-   * 
+   *
    * @return File in cache if any or null otherwise
    */
   public static File getCachePath(final URL url) {
@@ -509,9 +495,9 @@ public class SessionService {
 
   /**
    * Gets the conf file by path.
-   * 
+   *
    * @param sPATH Configuration file or directory path
-   * 
+   *
    * @return the file relative to jajuk directory
    */
   public static final File getConfFileByPath(final String sPATH) {
@@ -527,7 +513,7 @@ public class SessionService {
 
   /**
    * Return whether user provided a forced workspace on command line.
-   * 
+   *
    * @return whether user provided a forced workspace.
    */
   public static boolean isForcedWorkspace() {
@@ -536,7 +522,7 @@ public class SessionService {
 
   /**
    * Return default workspace location.
-   * 
+   *
    * @return default workspace location
    */
   public static final File getDefaultCollectionPath() {
@@ -561,20 +547,17 @@ public class SessionService {
         element.delete();
       }
     }
-
   }
 
   /**
    * Return bootstrap file absolute path
-   * 
-   * 
-   * 
+   *
    * This bootstrap file location can be overridden by providing -bootstrap=<URL> CLI option.
-   * 
-   * @param filename DOCUMENT_ME
-   * 
+   *
+   * @param filename 
+   *
    * @return bootstrap file absolute path
-   * 
+   *
    * @filename filename of the bootstrap path
    */
   public static String getBootstrapPath(String filename) {
@@ -583,17 +566,16 @@ public class SessionService {
 
   /**
    * Return bootstrap file absolute path
-   * 
+   *
    * It also fixes #1473 by moving if required the bootstrap file (see See
    * https://trac.jajuk.info/ticket/1473)
-   * 
-   * 
+   *
+   *
    * This bootstrap file location can be overridden by providing -bootstrap=<URL> CLI option
-   * 
+   *
    * @return bootstrap file absolute path
    */
   public static String getBootstrapPath() {
     return getBootstrapPath(Const.FILE_BOOTSTRAP);
   }
-
 }

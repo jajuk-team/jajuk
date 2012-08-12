@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,12 +16,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.notification;
 
 import java.awt.TrayIcon;
 
+import org.jajuk.base.Album;
 import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.windows.JajukSystray;
@@ -41,9 +42,7 @@ import org.jajuk.util.log.Log;
  */
 public class JavaBalloonNotificator implements INotificator {
   // the Systray is used to display the notification
-  /** DOCUMENT_ME. */
   TrayIcon trayIcon;
-
   /** Self instance *. */
   private static JavaBalloonNotificator self = new JavaBalloonNotificator();
 
@@ -94,6 +93,9 @@ public class JavaBalloonNotificator implements INotificator {
    */
   @Override
   public void notify(File file) {
+    // Force any new cover search before displaying it if the album is set "none" cover
+    Album album = file.getTrack().getAlbum();
+    album.resetCoverCache();
     String title = Messages.getString("Notificator.track_change.track_title");
     String pattern = Conf.getString(Const.CONF_PATTERN_BALLOON_NOTIFIER);
     String text;

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.helpers;
 
@@ -41,7 +41,6 @@ import java.awt.event.MouseEvent;
  * </p>
  */
 public class JajukMouseAdapter extends MouseAdapter {
-  
   /** Whether a popup request gesture has been recognized. */
   private boolean popupTrigger = false;
 
@@ -52,7 +51,6 @@ public class JajukMouseAdapter extends MouseAdapter {
   public void mousePressed(final MouseEvent e) {
     // Note that this method is not final as we sometimes need additional tests
     // or actions but overriding it is discouraged
-
     // reset the popup gesture state
     popupTrigger = false;
     // popupTrigger can be false here even if the user performed a right click
@@ -69,7 +67,6 @@ public class JajukMouseAdapter extends MouseAdapter {
   public void mouseReleased(final MouseEvent e) {
     // Note that this method is not final as we sometimes need additional tests
     // or actions but overriding it is discouraged
-
     // Actual popup request is an 'or' between state during mousePressed and
     // mouseReleased methods to deal with every JRE implementation
     popupTrigger = popupTrigger || e.isPopupTrigger();
@@ -127,5 +124,4 @@ public class JajukMouseAdapter extends MouseAdapter {
   public void handleAction(final MouseEvent e) {
     // Not abstract as we don't want to force user to override every methods
   }
-
 }

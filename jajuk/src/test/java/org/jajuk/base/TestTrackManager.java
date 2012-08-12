@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,26 +16,30 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  
  */
 package org.jajuk.base;
+
+import java.io.IOException;
 
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.junit.Test;
 
 /**
- * 
+ * .
  */
 public class TestTrackManager extends JajukTestCase {
-
+  /* (non-Javadoc)
+   * @see org.jajuk.JajukTestCase#setUp()
+   */
   @Override
   protected void setUp() throws Exception {
     super.setUp();
   }
 
   /**
-   * Test method for {@link org.jajuk.base.TrackManager#getLabel()}.
+   * Test method for {@link org.jajuk.base.TrackManager#getXMLTag()}.
    */
   @Test
   public void testGetLabel() {
@@ -172,18 +176,16 @@ public class TestTrackManager extends JajukTestCase {
 
   /**
    * Test method for {@link org.jajuk.base.TrackManager#removeFile(org.jajuk.base.Track, org.jajuk.base.File)}.
+   * @throws IOException 
    */
   @Test
-  public void testRemoveFile() {
+  public void testRemoveFile() throws IOException {
     // Set-up...
     File file = JUnitHelpers.getFile();
-
     // Remove the reference
     TrackManager.getInstance().removeFile(file);
-
     // Check if the collection no more contains the track (as it mapped a single file now removed)
     assertTrue(TrackManager.getInstance().getTrackByID(file.getTrack().getID()) == null);
-
     // Check if the associated track no more contains this file
     assertFalse(file.getTrack().getFiles().contains(file));
   }
@@ -259,5 +261,4 @@ public class TestTrackManager extends JajukTestCase {
   public void testSetAutocommit() {
     //TODO To be implemented
   }
-
 }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.widgets;
 
@@ -29,13 +29,10 @@ import javax.swing.ImageIcon;
  * Icon Label supporting rating stars.
  */
 public class StarIconLabel extends IconLabel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** Number of stars. */
   private int starsNumber = -1;
-
   /** Rate *. */
   private int rate = 0;
 
@@ -60,13 +57,13 @@ public class StarIconLabel extends IconLabel {
   /**
    * The Constructor.
    * 
-   * @param icon DOCUMENT_ME
-   * @param sText DOCUMENT_ME
-   * @param cBackground DOCUMENT_ME
-   * @param cForeground DOCUMENT_ME
-   * @param font DOCUMENT_ME
-   * @param rate DOCUMENT_ME
-   * @param starNumber DOCUMENT_ME
+   * @param icon 
+   * @param sText 
+   * @param cBackground 
+   * @param cForeground 
+   * @param font 
+   * @param rate 
+   * @param starNumber 
    */
   public StarIconLabel(ImageIcon icon, String sText, Color cBackground, Color cForeground,
       Font font, int rate, int starNumber) {
@@ -101,5 +98,4 @@ public class StarIconLabel extends IconLabel {
       }
     }
   }
-
 }

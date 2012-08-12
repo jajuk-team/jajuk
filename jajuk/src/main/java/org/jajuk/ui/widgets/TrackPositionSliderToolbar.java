@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.widgets;
 
@@ -55,29 +55,19 @@ import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TrackPositionSliderToolbar extends JPanel implements ChangeListener,
     MouseWheelListener, Observer {
-
   /** Generic playing position toolbar, used in information panel a full screen. */
   private static final long serialVersionUID = 1L;
-
   /** Last slider manual move date. */
   private long lDateLastAdjust;
-
-  /** DOCUMENT_ME. */
   private JSlider jsPosition;
-
-  /** DOCUMENT_ME. */
   private JLabel jlCurrent;
-
-  /** DOCUMENT_ME. */
   String sCurrentStatus;
-
   /** Swing Timer to refresh the component. */
   private final Timer timer = new Timer(JajukTimer.D_MS_HEARTBEAT, new ActionListener() {
-
     @Override
     public void actionPerformed(ActionEvent e) {
       try {
@@ -93,27 +83,22 @@ public class TrackPositionSliderToolbar extends JPanel implements ChangeListener
    */
   public TrackPositionSliderToolbar() {
     super();
-
     initGui();
-
     // check if some errors occurred before the view has been displayed
     if (ObservationManager.containsEvent(JajukEvents.PLAY_ERROR)) {
       update(new JajukEvent(JajukEvents.PLAY_ERROR,
           ObservationManager.getDetailsLastOccurence(JajukEvents.PLAY_ERROR)));
     }
-
     // check if some track has been launched before the view has been
     // displayed
     UtilFeatures.updateStatus(this);
-
     // register for given events
     ObservationManager.register(this);
-
     timer.start();
   }
 
   /**
-   * Inits the gui. DOCUMENT_ME
+   * Inits the gui. 
    */
   private void initGui() {
     setLayout(new MigLayout("ins 0 5 0 5", "[70%,fill][30%,grow]"));
@@ -126,8 +111,8 @@ public class TrackPositionSliderToolbar extends JPanel implements ChangeListener
     jlCurrent = new JLabel();
     jlCurrent.setToolTipText(Messages.getString("CommandJPanel.15"));
     jlCurrent.addMouseListener(new TimeDisplaySwitchMouseAdapter());
-    add(jsPosition,"grow");
-    add(jlCurrent,"grow,left");
+    add(jsPosition, "grow");
+    add(jlCurrent, "grow,left");
   }
 
   /*
@@ -148,11 +133,10 @@ public class TrackPositionSliderToolbar extends JPanel implements ChangeListener
   /**
    * Call a seek.
    * 
-   * @param fPosition DOCUMENT_ME
+   * @param fPosition 
    */
   private void setPosition(final float fPosition) {
     new Thread("TrackSlider Position Thread") {
-
       @Override
       public void run() {
         Player.seek(fPosition);
@@ -187,8 +171,8 @@ public class TrackPositionSliderToolbar extends JPanel implements ChangeListener
   /**
    * Set the current status for current track ex : 01:01:01/02:02:02.
    * 
-   * @param lTime DOCUMENT_ME
-   * @param length DOCUMENT_ME
+   * @param lTime 
+   * @param length 
    */
   public final void setCurrentTimeMessage(long lTime, long length) {
     String string;
@@ -340,7 +324,6 @@ public class TrackPositionSliderToolbar extends JPanel implements ChangeListener
    * elapsed time.
    */
   private final class TimeDisplaySwitchMouseAdapter extends MouseAdapter {
-
     /* (non-Javadoc)
      * @see java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
      */

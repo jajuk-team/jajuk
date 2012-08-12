@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.helpers;
 
@@ -39,18 +39,14 @@ import org.jajuk.util.log.Log;
  * Refresh reporter with GUI special operations.
  */
 public class ManualDeviceRefreshReporter extends RefreshReporter {
-
   // Refresh dialog
-  /** DOCUMENT_ME. */
   private RefreshDialog rdialog;
-
-  /** DOCUMENT_ME. */
   private int progress;
 
   /**
    * Instantiates a new manual device refresh reporter.
    * 
-   * @param device DOCUMENT_ME
+   * @param device 
    */
   public ManualDeviceRefreshReporter(Device device) {
     super(device);
@@ -70,10 +66,10 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
         public void run() {
           // if <0 directories count -> the progress bar is in indeterminate
           // state
-          rdialog = new RefreshDialog((dirTotal < 0));
-          rdialog.setTitle(Messages.getString("RefreshDialog.2") + " " + device.getName());
-          rdialog.setAction(Messages.getString("RefreshDialog.3"), IconLoader
-              .getIcon(JajukIcons.INFO));
+          rdialog = new RefreshDialog((dirTotal < 0), Messages.getString("RefreshDialog.2") + " "
+              + device.getName());
+          rdialog.setAction(Messages.getString("RefreshDialog.3"),
+              IconLoader.getIcon(JajukIcons.INFO));
         }
       });
     } catch (InterruptedException e) {
@@ -92,7 +88,6 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
   public void reset() {
     super.reset();
     this.progress = 0;
-
   }
 
   /*
@@ -121,8 +116,8 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
   @Override
   public void updateState(Directory dir) {
     if (rdialog != null) {
-      rdialog.setRefreshing(new StringBuilder(Messages.getString("Device.44")).append(' ').append(
-          dir.getRelativePath()).toString());
+      rdialog.setRefreshing(new StringBuilder(Messages.getString("Device.44")).append(' ')
+          .append(dir.getRelativePath()).toString());
       progress = 30 + (int) (70 * (float) dirCount / dirTotal);
       if (progress > 100) {
         progress = 100;
@@ -164,7 +159,6 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
 
   /** This timer limit dialog title changes (this can have side effect on performances or other in some window managers. Too many window title change causes others menu bar items freezes under KDE for ie) */
   Timer updateDialogTitle = new Timer(1000, new ActionListener() {
-
     @Override
     public void actionPerformed(ActionEvent e) {
       String sTitle = Messages.getString("RefreshDialog.2") + " " + device.getName() + " ("
@@ -173,7 +167,5 @@ public class ManualDeviceRefreshReporter extends RefreshReporter {
         rdialog.setTitle(sTitle);
       }
     }
-
   });
-
 }

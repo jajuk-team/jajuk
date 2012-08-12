@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.lastfm;
 
@@ -30,10 +30,9 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestLastFmManager extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -65,10 +64,8 @@ public class TestLastFmManager extends JajukTestCase {
     {
       Conf.setProperty(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE, "false");
       LastFmManager.getInstance().update(new JajukEvent(JajukEvents.FILE_FINISHED, null));
-
       // wait for thread to finish
       JUnitHelpers.waitForThreadToFinish("LastFM Update Thread");
     }
   }
-
 }

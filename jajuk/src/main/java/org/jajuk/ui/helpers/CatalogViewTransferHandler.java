@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.awt.datatransfer.DataFlavor;
@@ -33,19 +32,15 @@ import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
 /**
  * DND handler for table.
  */
-
 public class CatalogViewTransferHandler extends TransferHandler {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** DOCUMENT_ME. */
   private final LocalAlbumThumbnail item;
 
   /**
    * Constructor.
    * 
-   * @param item DOCUMENT_ME
+   * @param item 
    */
   public CatalogViewTransferHandler(LocalAlbumThumbnail item) {
     this.item = item;
@@ -54,7 +49,7 @@ public class CatalogViewTransferHandler extends TransferHandler {
   /**
    * Called when dragging.
    * 
-   * @param c DOCUMENT_ME
+   * @param c 
    * 
    * @return the transferable
    */
@@ -70,7 +65,7 @@ public class CatalogViewTransferHandler extends TransferHandler {
   /**
    * return action type.
    * 
-   * @param c DOCUMENT_ME
+   * @param c 
    * 
    * @return the source actions
    */
@@ -82,8 +77,8 @@ public class CatalogViewTransferHandler extends TransferHandler {
   /**
    * Called when dropping, no drop in catalog view for now.
    * 
-   * @param c DOCUMENT_ME
-   * @param t DOCUMENT_ME
+   * @param c 
+   * @param t 
    * 
    * @return true, if import data
    */
@@ -99,5 +94,4 @@ public class CatalogViewTransferHandler extends TransferHandler {
   public boolean canImport(JComponent c, DataFlavor[] flavors) {
     return false;
   }
-
 }

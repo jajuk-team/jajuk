@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.widgets;
 
 import java.awt.Frame;
@@ -35,7 +34,6 @@ import org.jajuk.util.UtilGUI;
  * Custom JDialog.
  */
 public class JajukJDialog extends JDialog {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 3280008357821054703L;
 
@@ -44,19 +42,17 @@ public class JajukJDialog extends JDialog {
    */
   public JajukJDialog() {
     super(JajukMainWindow.getInstance());
-
     setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
   }
 
   /**
    * The Constructor.
    * 
-   * @param owner DOCUMENT_ME
-   * @param modal DOCUMENT_ME
+   * @param owner 
+   * @param modal 
    */
   public JajukJDialog(Frame owner, boolean modal) {
     super(owner, modal);
-
     setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
   }
 

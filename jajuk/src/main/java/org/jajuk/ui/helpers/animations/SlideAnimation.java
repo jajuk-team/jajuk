@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.helpers.animations;
 
 import java.awt.Dimension;
@@ -40,38 +39,23 @@ import org.jajuk.util.log.Log;
  * Slide animation implementation.
  */
 public class SlideAnimation extends AbstractAnimation {
-
-  /** DOCUMENT_ME. */
   private ScreenPosition screenPosition;
-
-  /** DOCUMENT_ME. */
   private StartingPosition startingPosition;
-
-  /** DOCUMENT_ME. */
   private Direction direction;
-
-  /** DOCUMENT_ME. */
   private Timer animationTimer;
-
-  /** DOCUMENT_ME. */
   private long animationStart;
-
-  /** DOCUMENT_ME. */
   private Rectangle start;
-
-  /** DOCUMENT_ME. */
   private Rectangle windowBounds;
-
   /** Time (ms) of a frame displaying. */
   private static final int FRAME_DURATION = 5;
 
   /**
    * Instantiates a new slide animation.
    * 
-   * @param window DOCUMENT_ME
-   * @param screenPosition DOCUMENT_ME
-   * @param startingPosition DOCUMENT_ME
-   * @param direction DOCUMENT_ME
+   * @param window 
+   * @param screenPosition 
+   * @param startingPosition 
+   * @param direction 
    */
   public SlideAnimation(Window window, ScreenPosition screenPosition,
       StartingPosition startingPosition, Direction direction) {
@@ -90,11 +74,9 @@ public class SlideAnimation extends AbstractAnimation {
   public void animate(final int animationTime) {
     window.pack();
     windowBounds = window.getBounds();
-
     start = startingPosition.getStartingPosition(screenPosition.getScreenPosition(windowBounds));
     start.width = windowBounds.width;
     start.height = windowBounds.height;
-
     if (!AWTUtilities.isAvailable()) {
       SwingUtilities.invokeLater(new Runnable() {
         @Override
@@ -115,12 +97,10 @@ public class SlideAnimation extends AbstractAnimation {
       });
       return;
     }
-
     ActionListener animationLogic = new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         long elapsed = System.currentTimeMillis() - animationStart;
-
         if (elapsed > animationTime) {
           animationTimer.stop();
           animationCompleted();
@@ -132,7 +112,6 @@ public class SlideAnimation extends AbstractAnimation {
         }
       }
     };
-
     animationTimer = new Timer(FRAME_DURATION, animationLogic);
     animationStart = System.currentTimeMillis();
     animationTimer.start();
@@ -166,14 +145,13 @@ public class SlideAnimation extends AbstractAnimation {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public interface ScreenPosition {
-
     /**
      * Gets the screen position.
      * 
-     * @param size DOCUMENT_ME
+     * @param size 
      * 
      * @return the screen position
      */
@@ -181,14 +159,13 @@ public class SlideAnimation extends AbstractAnimation {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public interface StartingPosition {
-
     /**
      * Gets the starting position.
      * 
-     * @param position DOCUMENT_ME
+     * @param position 
      * 
      * @return the starting position
      */
@@ -196,15 +173,14 @@ public class SlideAnimation extends AbstractAnimation {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public interface Direction {
-
     /**
      * Gets the current location.
      * 
-     * @param start DOCUMENT_ME
-     * @param progress DOCUMENT_ME
+     * @param start 
+     * @param progress 
      * 
      * @return the current location
      */
@@ -213,8 +189,8 @@ public class SlideAnimation extends AbstractAnimation {
     /**
      * Gets the showing bounds.
      * 
-     * @param start DOCUMENT_ME
-     * @param progress DOCUMENT_ME
+     * @param start 
+     * @param progress 
      * 
      * @return the showing bounds
      */
@@ -222,11 +198,9 @@ public class SlideAnimation extends AbstractAnimation {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public enum ScreenPositions implements ScreenPosition {
-
-    /** DOCUMENT_ME. */
     TOP_LEFT {
       @Override
       public Rectangle getScreenPosition(Rectangle size) {
@@ -239,8 +213,6 @@ public class SlideAnimation extends AbstractAnimation {
         return position;
       }
     },
-
-    /** DOCUMENT_ME. */
     TOP_RIGHT {
       @Override
       public Rectangle getScreenPosition(Rectangle size) {
@@ -253,8 +225,6 @@ public class SlideAnimation extends AbstractAnimation {
         return position;
       }
     },
-
-    /** DOCUMENT_ME. */
     BOTTOM_LEFT {
       @Override
       public Rectangle getScreenPosition(Rectangle size) {
@@ -267,8 +237,6 @@ public class SlideAnimation extends AbstractAnimation {
         return position;
       }
     },
-
-    /** DOCUMENT_ME. */
     BOTTOM_RIGHT {
       @Override
       public Rectangle getScreenPosition(Rectangle size) {
@@ -281,15 +249,12 @@ public class SlideAnimation extends AbstractAnimation {
         return position;
       }
     },
-
-    /** DOCUMENT_ME. */
     CURRENT {
       @Override
       public Rectangle getScreenPosition(Rectangle size) {
         return new Rectangle(size);
       }
     };
-
     /**
      * Gets the desktop bounds.
      * 
@@ -312,11 +277,9 @@ public class SlideAnimation extends AbstractAnimation {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public enum StartingPositions implements StartingPosition {
-
-    /** DOCUMENT_ME. */
     TOP {
       @Override
       public Rectangle getStartingPosition(Rectangle position) {
@@ -328,8 +291,6 @@ public class SlideAnimation extends AbstractAnimation {
         return size;
       }
     },
-
-    /** DOCUMENT_ME. */
     BOTTOM {
       @Override
       public Rectangle getStartingPosition(Rectangle position) {
@@ -341,8 +302,6 @@ public class SlideAnimation extends AbstractAnimation {
         return size;
       }
     },
-
-    /** DOCUMENT_ME. */
     LEFT {
       @Override
       public Rectangle getStartingPosition(Rectangle position) {
@@ -354,8 +313,6 @@ public class SlideAnimation extends AbstractAnimation {
         return size;
       }
     },
-
-    /** DOCUMENT_ME. */
     RIGHT {
       @Override
       public Rectangle getStartingPosition(Rectangle position) {
@@ -367,8 +324,6 @@ public class SlideAnimation extends AbstractAnimation {
         return size;
       }
     },
-
-    /** DOCUMENT_ME. */
     TOP_LEFT {
       @Override
       public Rectangle getStartingPosition(Rectangle position) {
@@ -380,8 +335,6 @@ public class SlideAnimation extends AbstractAnimation {
         return size;
       }
     },
-
-    /** DOCUMENT_ME. */
     TOP_RIGHT {
       @Override
       public Rectangle getStartingPosition(Rectangle position) {
@@ -393,8 +346,6 @@ public class SlideAnimation extends AbstractAnimation {
         return size;
       }
     },
-
-    /** DOCUMENT_ME. */
     BOTTOM_LEFT {
       @Override
       public Rectangle getStartingPosition(Rectangle position) {
@@ -406,8 +357,6 @@ public class SlideAnimation extends AbstractAnimation {
         return size;
       }
     },
-
-    /** DOCUMENT_ME. */
     BOTTOM_RIGHT {
       @Override
       public Rectangle getStartingPosition(Rectangle position) {
@@ -419,8 +368,6 @@ public class SlideAnimation extends AbstractAnimation {
         return size;
       }
     },
-
-    /** DOCUMENT_ME. */
     FULL {
       @Override
       public Rectangle getStartingPosition(Rectangle position) {
@@ -430,11 +377,9 @@ public class SlideAnimation extends AbstractAnimation {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public enum InDirections implements Direction {
-
-    /** DOCUMENT_ME. */
     UP {
       @Override
       public Point getCurrentLocation(Rectangle start, float progress) {
@@ -454,8 +399,6 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-
-    /** DOCUMENT_ME. */
     DOWN {
       @Override
       public Point getCurrentLocation(Rectangle start, float progress) {
@@ -475,8 +418,6 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-
-    /** DOCUMENT_ME. */
     LEFT {
       @Override
       public Point getCurrentLocation(Rectangle start, float progress) {
@@ -496,8 +437,6 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-
-    /** DOCUMENT_ME. */
     RIGHT {
       @Override
       public Point getCurrentLocation(Rectangle start, float progress) {
@@ -517,8 +456,6 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-
-    /** DOCUMENT_ME. */
     UP_LEFT {
       @Override
       public Point getCurrentLocation(Rectangle start, float progress) {
@@ -538,8 +475,6 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-
-    /** DOCUMENT_ME. */
     UP_RIGHT {
       @Override
       public Point getCurrentLocation(Rectangle start, float progress) {
@@ -559,8 +494,6 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-
-    /** DOCUMENT_ME. */
     DOWN_LEFT {
       @Override
       public Point getCurrentLocation(Rectangle start, float progress) {
@@ -580,8 +513,6 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-
-    /** DOCUMENT_ME. */
     DOWN_RIGHT {
       @Override
       public Point getCurrentLocation(Rectangle start, float progress) {
@@ -604,11 +535,9 @@ public class SlideAnimation extends AbstractAnimation {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public enum OutDirections implements Direction {
-
-    /** DOCUMENT_ME. */
     UP {
       @Override
       public Point getCurrentLocation(Rectangle start, float progress) {
@@ -628,8 +557,6 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-
-    /** DOCUMENT_ME. */
     DOWN {
       @Override
       public Point getCurrentLocation(Rectangle start, float progress) {
@@ -649,8 +576,6 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-
-    /** DOCUMENT_ME. */
     LEFT {
       @Override
       public Point getCurrentLocation(Rectangle start, float progress) {
@@ -670,8 +595,6 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-
-    /** DOCUMENT_ME. */
     RIGHT {
       @Override
       public Point getCurrentLocation(Rectangle start, float progress) {
@@ -691,8 +614,6 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-
-    /** DOCUMENT_ME. */
     UP_LEFT {
       @Override
       public Point getCurrentLocation(Rectangle start, float progress) {
@@ -712,8 +633,6 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-
-    /** DOCUMENT_ME. */
     UP_RIGHT {
       @Override
       public Point getCurrentLocation(Rectangle start, float progress) {
@@ -733,8 +652,6 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-
-    /** DOCUMENT_ME. */
     DOWN_LEFT {
       @Override
       public Point getCurrentLocation(Rectangle start, float progress) {
@@ -754,8 +671,6 @@ public class SlideAnimation extends AbstractAnimation {
         return current;
       }
     },
-
-    /** DOCUMENT_ME. */
     DOWN_RIGHT {
       @Override
       public Point getCurrentLocation(Rectangle start, float progress) {

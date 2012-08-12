@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.dbus;
 
@@ -24,7 +24,6 @@ package org.jajuk.services.dbus;
  * Base class to connect/disconnect to the session wide DBus daemon.
  */
 public final class DBusManager {
-
   /** Support for D-Bus remote control of Jajuk. */
   private static DBusSupportImpl dbus;
 
@@ -43,8 +42,7 @@ public final class DBusManager {
     try {
       if (dbus == null) {
         dbus = new DBusSupportImpl();
-
-        // the connect method will internally catch errors and report them to the
+        // The connect method will internally catch errors and report them to the
         // logfile
         dbus.connect();
       }
@@ -62,7 +60,6 @@ public final class DBusManager {
   public static void disconnect() {
     if (dbus != null) {
       dbus.disconnect();
-
       // reset to let initialize work correctly in all cases
       dbus = null;
     }

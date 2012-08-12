@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.util;
 
@@ -43,6 +43,8 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.PixelGrabber;
@@ -90,6 +92,8 @@ import org.jajuk.ui.windows.JajukSystray;
 import org.jajuk.ui.windows.WindowState;
 import org.jajuk.ui.windows.WindowStateDecorator;
 import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.JXBusyLabel;
+import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jvnet.substance.SubstanceLookAndFeel;
@@ -102,32 +106,25 @@ import org.jvnet.substance.skin.SubstanceBusinessLookAndFeel;
  * Set of GUI convenient methods.
  */
 public final class UtilGUI {
-
   /* different types of Cursors that are available */
-  /** The Constant WAIT_CURSOR. DOCUMENT_ME */
+  /** The Constant WAIT_CURSOR.  */
   public static final Cursor WAIT_CURSOR = new Cursor(Cursor.WAIT_CURSOR);
-
-  /** The Constant LINK_CURSOR. DOCUMENT_ME */
+  /** The Constant LINK_CURSOR.  */
   public static final Cursor LINK_CURSOR = new Cursor(Cursor.HAND_CURSOR);
-
-  /** The Constant DEFAULT_CURSOR. DOCUMENT_ME */
+  /** The Constant DEFAULT_CURSOR.  */
   public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
-
   // Current cursor that is displayed
-  /** DOCUMENT_ME. */
   private static Cursor currentCursor = DEFAULT_CURSOR;
-
   /** Substance theme *. */
   private static String theme;
-
   /** Alternate color rows highlighter used in every table. */
   private static Highlighter alternateColorHighlighter;
 
   /**
    * Return whether the given highlighter is the alternateColorHighlighter.
-   * 
-   * @param other DOCUMENT_ME
-   * 
+   *
+   * @param other 
+   *
    * @return whether the given highlighter is the alternateColorHighlighter
    */
   public static boolean isAlternateColorHighlighter(Highlighter other) {
@@ -143,7 +140,6 @@ public final class UtilGUI {
 
   /** Current active color scheme *. */
   private static SubstanceColorScheme colorScheme;
-
   /** Set cursor thread, stored to avoid construction. */
   private static Runnable setCursorThread = new Runnable() {
     @Override
@@ -169,8 +165,8 @@ public final class UtilGUI {
 
   /**
    * Display a given image in a frame (for debuging purpose).
-   * 
-   * @param ii DOCUMENT_ME
+   *
+   * @param ii 
    */
   public static void displayImage(final ImageIcon ii) {
     final JFrame jf = new JFrame();
@@ -181,9 +177,9 @@ public final class UtilGUI {
 
   /**
    * Write down a memory image to a file.
-   * 
-   * @param src DOCUMENT_ME
-   * @param dest DOCUMENT_ME
+   *
+   * @param src 
+   * @param dest 
    */
   public static void extractImage(final Image src, final File dest) {
     final BufferedImage bi = UtilGUI.toBufferedImage(src);
@@ -197,7 +193,7 @@ public final class UtilGUI {
 
   /**
    * Gets the graphics device of main frame.
-   * 
+   *
    * @return the current display of the main frame
    */
   public static GraphicsDevice getGraphicsDeviceOfMainFrame() {
@@ -205,8 +201,8 @@ public final class UtilGUI {
         .getLocalGraphicsEnvironment();
     for (int i = 0; i < GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length; i++) {
       GraphicsDevice graphicsDevice = localGraphicsEnvironment.getScreenDevices()[i];
-      if (graphicsDevice.getDefaultConfiguration().getBounds().contains(
-          JajukMainWindow.getInstance().getLocation())) {
+      if (graphicsDevice.getDefaultConfiguration().getBounds()
+          .contains(JajukMainWindow.getInstance().getLocation())) {
         return graphicsDevice;
       }
     }
@@ -215,9 +211,9 @@ public final class UtilGUI {
 
   /**
    * Gets the centred panel.
-   * 
-   * @param jc DOCUMENT_ME
-   * 
+   *
+   * @param jc 
+   *
    * @return an horizontaly centred panel
    */
   public static JPanel getCentredPanel(final JComponent jc) {
@@ -226,11 +222,11 @@ public final class UtilGUI {
 
   /**
    * Gets the centred panel.
-   * 
-   * @param jc DOCUMENT_ME
+   *
+   * @param jc 
    * @param iOrientation : vertical or horizontal orientation, use BoxLayout.X_AXIS or
    * BoxLayout.Y_AXIS
-   * 
+   *
    * @return a centred panel
    */
   public static JPanel getCentredPanel(final JComponent jc, final int iOrientation) {
@@ -250,22 +246,21 @@ public final class UtilGUI {
 
   /**
    * Gets the html color.
-   * 
+   *
    * @param color java color
-   * 
+   *
    * @return HTML RGB color ex: FF0000
    */
   public static String getHTMLColor(final Color color) {
     return Long.toString(color.getRed(), 16) + Long.toString(color.getGreen(), 16)
         + Long.toString(color.getBlue(), 16);
-
   }
 
   /**
    * Get required image with specified url.
-   * 
-   * @param url DOCUMENT_ME
-   * 
+   *
+   * @param url 
+   *
    * @return the image
    */
   public static ImageIcon getImage(final URL url) {
@@ -278,7 +273,6 @@ public final class UtilGUI {
         ii = new ImageIcon(url);
         UtilSystem.iconCache.put(sURL, ii);
       }
-
     } catch (final Exception e) {
       Log.error(e);
     }
@@ -287,10 +281,10 @@ public final class UtilGUI {
 
   /**
    * Gets the limited message.
-   * 
+   *
    * @param sText text to display, lines separated by \n characters
    * @param limit : max number of lines to be displayed without scroller
-   * 
+   *
    * @return formated message: either a string, or a textarea
    */
   public static Object getLimitedMessage(final String sText, final int limit) {
@@ -312,21 +306,19 @@ public final class UtilGUI {
    * code from
    * http://java.sun.com/developer/onlineTraining/new2java/supplements/
    * 2005/July05.html#1 Used to correctly display long messages
-   * 
-   * @param maxCharactersPerLineCount DOCUMENT_ME
-   * 
+   *
+   * @param maxCharactersPerLineCount 
+   *
    * @return the narrow option pane
    */
   public static JOptionPane getNarrowOptionPane(final int maxCharactersPerLineCount) {
     // Our inner class definition
     class NarrowOptionPane extends JOptionPane {
       private static final long serialVersionUID = 1L;
-
       int lmaxCharactersPerLineCount;
 
       NarrowOptionPane(final int maxCharactersPerLineCount) {
         super();
-
         this.lmaxCharactersPerLineCount = maxCharactersPerLineCount;
       }
 
@@ -340,27 +332,54 @@ public final class UtilGUI {
 
   /**
    * Resize an image.
-   * 
+   *
    * @param img image to resize
-   * @param iNewWidth DOCUMENT_ME
-   * @param iNewHeight DOCUMENT_ME
-   * 
+   * @param iNewWidth 
+   * @param iNewHeight 
+   *
    * @return resized image
    */
   public static ImageIcon getResizedImage(final ImageIcon img, final int iNewWidth,
       final int iNewHeight) {
     Image scaleImg = img.getImage().getScaledInstance(iNewWidth, iNewHeight,
         Image.SCALE_AREA_AVERAGING);
-    // Leave image cache here as we may want to keep original image
+    // Leave source image cache here as we may want to keep original image
+    // but free the new image
+    scaleImg.flush();
     return new ImageIcon(scaleImg);
   }
 
   /**
+  * Show busy label when searching lyrics over provided panel.
+  * @param panel panel to override.
+  */
+  public static void showBusyLabel(final JXPanel panel) {
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        panel.removeAll();
+        Dimension dim = new Dimension(panel.getWidth() / 3, panel.getWidth() / 3);
+        final JXBusyLabel busy = new JXBusyLabel(dim);
+        JPanel inner = new JPanel();
+        inner.setMinimumSize(new Dimension(panel.getWidth(), panel.getHeight()));
+        inner.setLayout(new BoxLayout(inner, BoxLayout.X_AXIS));
+        inner.add(Box.createHorizontalGlue());
+        inner.add(UtilGUI.getCentredPanel(busy, BoxLayout.Y_AXIS));
+        inner.add(Box.createHorizontalGlue());
+        panel.add(inner);
+        panel.revalidate();
+        panel.repaint();
+        busy.setBusy(true);
+      }
+    });
+  }
+
+  /**
    * Gets the scaled image.
-   * 
-   * @param img DOCUMENT_ME
-   * @param iScale DOCUMENT_ME
-   * 
+   *
+   * @param img 
+   * @param iScale 
+   *
    * @return a scaled image
    */
   public static ImageIcon getScaledImage(final ImageIcon img, final int iScale) {
@@ -382,8 +401,8 @@ public final class UtilGUI {
 
   /**
    * Setup Substance look and feel.
-   * 
-   * @param pTheme DOCUMENT_ME
+   *
+   * @param pTheme 
    */
   public static void setupSubstanceLookAndFeel(final String pTheme) {
     // Check the theme is known, if not take the default theme
@@ -393,23 +412,18 @@ public final class UtilGUI {
       theme = Const.LNF_DEFAULT_THEME;
       Conf.setProperty(Const.CONF_OPTIONS_LNF, Const.LNF_DEFAULT_THEME);
     }
-
     // Set substance LAF
     try {
       UIManager.setLookAndFeel(new SubstanceBusinessLookAndFeel());
     } catch (UnsupportedLookAndFeelException e) {
       Log.error(e);
     }
-
     // Set substance LAF
     SubstanceLookAndFeel.setSkin(themes.get(theme).getClassName());
-
     // hide some useless elements such locker for not editable labels
     UIManager.put(SubstanceLookAndFeel.SHOW_EXTRA_WIDGETS, Boolean.FALSE);
-
     // Store current color scheme (cannot change for the wall session)
     colorScheme = SubstanceLookAndFeel.getCurrentSkin().getMainActiveColorScheme();
-
     // Set view foreground colors
     SubstanceSkin theme = SubstanceLookAndFeel.getCurrentSkin();
     SubstanceColorScheme scheme = theme.getMainActiveColorScheme();
@@ -432,24 +446,22 @@ public final class UtilGUI {
     UIManager.put("InternalFrame.inactiveTitleForeground", foregroundInactive);
     UIManager.put("InternalFrame.activeTitleBackground", backgroundActive);
     UIManager.put("InternalFrame.inactiveTitleBackground", backgroundInactive);
-    UIManager.put("DockViewTitleBar.titleFont", FontManager.getInstance().getFont(
-        JajukFont.VIEW_FONT));
-
+    UIManager.put("DockViewTitleBar.titleFont",
+        FontManager.getInstance().getFont(JajukFont.VIEW_FONT));
     // Set windows decoration to look and feel
     JFrame.setDefaultLookAndFeelDecorated(true);
     JDialog.setDefaultLookAndFeelDecorated(true);
-
   }
 
   /**
    * Display given container at given position.
-   * 
+   *
+   * @param window 
    * @param iFromTop max number of pixels from top
    * @param iFromLeft max number of pixels from left
-   * @param window DOCUMENT_ME
    */
   public static void setShuffleLocation(final Window window, final int iFromTop, final int iFromLeft) {
-    window.setLocation((int) (Math.random() * iFromTop), (int) (Math.random() * iFromLeft));
+    window.setLocation((int) (Math.random() * iFromTop), (int) (Math.random() * iFromLeft)); //NOSONAR
   }
 
   /**
@@ -473,10 +485,10 @@ public final class UtilGUI {
   }
 
   /**
-   * To buffered image. DOCUMENT_ME
-   * 
+   * To buffered image. 
+   *
    * @param image the input image
-   * 
+   *
    * @return the buffered image
    */
   public static BufferedImage toBufferedImage(final Image image) {
@@ -485,11 +497,11 @@ public final class UtilGUI {
 
   /**
    * Create a buffered image without forced alpha channel.
-   * 
+   *
    * @param image the input image
-   * @param targetWidth DOCUMENT_ME
-   * @param targetHeight DOCUMENT_ME
-   * 
+   * @param targetWidth 
+   * @param targetHeight 
+   *
    * @return the buffered image
    */
   public static BufferedImage toBufferedImage(final Image image, final int targetWidth,
@@ -502,12 +514,12 @@ public final class UtilGUI {
    * <p>
    * Code adapted from from http://today.java.net/pub/a/today/2007/04/03/perils-of-image-getscaledinstance.html
    * </p>
-   * 
+   *
    * @param image the input image
-   * @param forcedAlpha Force using an alpha chanel for target image
-   * @param targetWidth DOCUMENT_ME
-   * @param targetHeight DOCUMENT_ME
-   * 
+   * @param targetWidth 
+   * @param targetHeight 
+   * @param forcedAlpha Force using an alpha channel for target image
+   *
    * @return buffered image from an image
    */
   public static BufferedImage toBufferedImage(final Image image, final int targetWidth,
@@ -565,7 +577,6 @@ public final class UtilGUI {
         g2.dispose();
         ret = tmp;
       } while (w != targetWidth || h != targetHeight);
-
       image.flush();
       loadedImage.flush();
       return ret;
@@ -574,9 +585,9 @@ public final class UtilGUI {
 
   /**
    * Get3d image.
-   * 
-   * @param img DOCUMENT_ME
-   * 
+   *
+   * @param img 
+   *
    * @return the 3d image
    */
   public static BufferedImage get3dImage(Image img) {
@@ -584,16 +595,13 @@ public final class UtilGUI {
     int gap = 10;
     float opacity = 0.3f;
     float fadeHeight = 0.6f;
-
     // cover
     BufferedImage coverImage = UtilGUI.toBufferedImage(img, Const.MIRROW_COVER_SIZE,
         Const.MIRROW_COVER_SIZE, true);
-
-    PerspectiveFilter filter1 = new PerspectiveFilter(0, angle, Const.MIRROW_COVER_SIZE - angle / 2,
-        (int) (angle * (5.0 / 3.0)), Const.MIRROW_COVER_SIZE - angle / 2, Const.MIRROW_COVER_SIZE, 0,
-        Const.MIRROW_COVER_SIZE + angle);
+    PerspectiveFilter filter1 = new PerspectiveFilter(0, angle,
+        Const.MIRROW_COVER_SIZE - angle / 2, (int) (angle * (5.0 / 3.0)), Const.MIRROW_COVER_SIZE
+            - angle / 2, Const.MIRROW_COVER_SIZE, 0, Const.MIRROW_COVER_SIZE + angle);
     coverImage = filter1.filter(coverImage, null);
-
     // reflection
     int imageWidth = coverImage.getWidth();
     int imageHeight = coverImage.getHeight();
@@ -606,37 +614,31 @@ public final class UtilGUI {
         0, imageHeight, new Color(0.0f, 0.0f, 0.0f, opacity)));
     rg.fillRect(0, 0, imageWidth, imageHeight);
     rg.dispose();
-
     PerspectiveFilter filter2 = new PerspectiveFilter(0, 0, coverImage.getHeight() - angle / 2,
         angle * 2, coverImage.getHeight() - angle / 2, coverImage.getHeight() + angle * 2, 0,
         coverImage.getHeight());
     BufferedImage reflectedImage = filter2.filter(reflection, null);
-
     // now draw everything on one bufferedImage
     BufferedImage finalImage = new BufferedImage(imageWidth, (int) (1.4 * imageHeight),
         BufferedImage.TYPE_INT_ARGB);
-
     Graphics g = finalImage.getGraphics();
     Graphics2D g2d = (Graphics2D) g;
-
     g2d.drawRenderedImage(coverImage, null);
-
     g2d.translate(0, 2 * imageHeight + gap);
     g2d.scale(1, -1);
     g2d.drawRenderedImage(reflectedImage, null);
     g2d.dispose();
     reflection.flush();
     coverImage.flush();
-
     return finalImage;
   }
 
   /**
    * This method returns true if the specified image has transparent pixels
    * Found at http://www.exampledepot.com/egs/java.awt.image/HasAlpha.html
-   * 
-   * @param image DOCUMENT_ME
-   * 
+   *
+   * @param image 
+   *
    * @return true if the specified image has transparent pixels
    */
   public static boolean hasAlpha(Image image) {
@@ -668,7 +670,6 @@ public final class UtilGUI {
   public static void updateAllUIs() {
     Frame frames[];
     frames = Frame.getFrames();
-
     for (final Frame element : frames) {
       UtilGUI.updateWindowUI(element);
     }
@@ -684,8 +685,8 @@ public final class UtilGUI {
    * current look and feel. Based on the Sun
    * SwingUtilities.updateComponentTreeUI, but ensures that the update happens
    * on the components of a JToolbar before the JToolbar itself.
-   * 
-   * @param c DOCUMENT_ME
+   *
+   * @param c 
    */
   public static void updateComponentTreeUI(final Component c) {
     UtilGUI.updateComponentTreeUI0(c);
@@ -695,35 +696,29 @@ public final class UtilGUI {
   }
 
   /**
-   * Update component tree u i0. DOCUMENT_ME
-   * 
-   * @param c DOCUMENT_ME
+   * Update component tree u i0. 
+   *
+   * @param c 
    */
   private static void updateComponentTreeUI0(final Component c) {
-
     Component[] children = null;
-
     if (c instanceof JToolBar) {
       children = ((JToolBar) c).getComponents();
-
       if (children != null) {
         for (final Component element : children) {
           UtilGUI.updateComponentTreeUI0(element);
         }
       }
-
       ((JComponent) c).updateUI();
     } else {
       if (c instanceof JComponent) {
         ((JComponent) c).updateUI();
       }
-
       if (c instanceof JMenu) {
         children = ((JMenu) c).getMenuComponents();
       } else if (c instanceof Container) {
         children = ((Container) c).getComponents();
       }
-
       if (children != null) {
         for (final Component element : children) {
           UtilGUI.updateComponentTreeUI0(element);
@@ -735,7 +730,7 @@ public final class UtilGUI {
   /**
    * Method to attempt a dynamic update for all components of the given
    * <code>Window</code>.
-   * 
+   *
    * @param window The <code>Window</code> for which the look and feel update has to
    * be performed against.
    */
@@ -745,9 +740,7 @@ public final class UtilGUI {
     } catch (final Exception exception) {
       Log.error(exception);
     }
-
     final Window windows[] = window.getOwnedWindows();
-
     for (final Window element : windows) {
       UtilGUI.updateWindowUI(element);
     }
@@ -755,7 +748,7 @@ public final class UtilGUI {
 
   /**
    * Gets the alternate highlighter.
-   * 
+   *
    * @return a theme-dependent alternate row highlighter used in tables or trees
    */
   public static Highlighter getAlternateHighlighter() {
@@ -773,26 +766,24 @@ public final class UtilGUI {
 
   /**
    * Checks if is over.
-   * 
-   * @param location DOCUMENT_ME
-   * @param dimension DOCUMENT_ME
-   * 
+   *
+   * @param location 
+   * @param dimension 
+   *
    * @return whether the current mouse cursor if above a given component
    */
   public static boolean isOver(Point location, Dimension dimension) {
     java.awt.Point p = MouseInfo.getPointerInfo().getLocation();
-
     if (p.getX() <= location.getX() || p.getY() <= location.getY()) {
       return false;
     }
-
     return (p.getX() < (dimension.getWidth() + location.getX()) && p.getY() < (dimension
         .getHeight() + location.getY()));
   }
 
   /**
    * Gets the ultra light color.
-   * 
+   *
    * @return ultralight color for current color scheme
    */
   static public Color getUltraLightColor() {
@@ -801,7 +792,7 @@ public final class UtilGUI {
 
   /**
    * Gets the foreground color.
-   * 
+   *
    * @return foreground color for current color scheme
    */
   static public Color getForegroundColor() {
@@ -810,9 +801,9 @@ public final class UtilGUI {
 
   /**
    * Display a dialog with given url picture.
-   * 
-   * @param url DOCUMENT_ME
-   * 
+   *
+   * @param url 
+   *
    * @throws MalformedURLException the malformed url exception
    */
   static public void showPictureDialog(String url) throws MalformedURLException {
@@ -830,8 +821,8 @@ public final class UtilGUI {
 
   /**
    * configures gui for repeat single enable/disable.
-   * 
-   * @param enable DOCUMENT_ME
+   *
+   * @param enable 
    */
   public static void setRepeatSingleGui(boolean enable) {
     // always disable repeat all
@@ -841,49 +832,57 @@ public final class UtilGUI {
     Conf.setProperty(Const.CONF_STATE_REPEAT, Boolean.toString(enable));
     JajukJMenuBar.getInstance().setRepeatSelected(enable);
     CommandJPanel.getInstance().setRepeatSelected(enable);
-
   }
 
   /**
    * configures gui for repeat all enable/disable.
-   * 
-   * @param enable DOCUMENT_ME
+   *
+   * @param enable 
    */
   public static void setRepeatAllGui(boolean enable) {
     // always disable repeat single
     Conf.setProperty(Const.CONF_STATE_REPEAT, Boolean.toString(false));
     JajukJMenuBar.getInstance().setRepeatSelected(false);
     CommandJPanel.getInstance().setRepeatSelected(false);
-
     Conf.setProperty(Const.CONF_STATE_REPEAT_ALL, Boolean.toString(enable));
-
     JajukJMenuBar.getInstance().setRepeatAllSelected(enable);
     CommandJPanel.getInstance().setRepeatAllSelected(enable);
-
   }
 
   /**
    * Registers the ESCAPE key on the Panel so that it closes the Dialog.
-   * 
-   * @param window DOCUMENT_ME
-   * @param pane DOCUMENT_ME
+   *
+   * @param window 
+   * @param pane 
    */
   public static void setEscapeKeyboardAction(final Window window, JComponent pane) {
+    final KeyEventDispatcher dispatcher = new KeyEventDispatcher() {
+      @Override
+      public boolean dispatchKeyEvent(KeyEvent e) {
+        // For some reasons (under Linux at least), pressing escape only trigger PRESSED
+        // and RELEASED key events
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE && e.getID() == KeyEvent.KEY_PRESSED
+            && window.isFocused()) {
+          window.dispose();
+          return true;
+        }
+        return false;
+      }
+    };
     // Add keystroke to close window when pressing escape
-    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
-        new KeyEventDispatcher() {
-          @Override
-          public boolean dispatchKeyEvent(KeyEvent e) {
-            // For some reasons (under Linux at least), pressing escape only trigger PRESSED 
-            // and RELEASED key events 
-            if (e.getKeyCode() == KeyEvent.VK_ESCAPE && e.getID() == KeyEvent.KEY_PRESSED
-                && window.isFocused()) {
-              window.dispose();
-              return true;
-            }
-            return false;
-          }
-        });
+    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(dispatcher);
+    // make sure the key event dispatcher is removed as soon as the Window is closing
+    window.addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosing(WindowEvent e) {
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(dispatcher);
+      }
+
+      @Override
+      public void windowClosed(WindowEvent e) {
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(dispatcher);
+      }
+    });
   }
 
   /**
@@ -892,14 +891,13 @@ public final class UtilGUI {
    * <exception catching is preferred in the longCall() method without throwing
    * it to the fastCall() one.
    * </p>
-   * 
-   * @param displayable DOCUMENT_ME
+   *
+   * @param displayable 
    */
   public static void populate(final TwoStepsDisplayable displayable) {
     SwingWorker<Object, Void> sw = new SwingWorker<Object, Void>() {
-
       @Override
-      protected Object doInBackground() throws Exception {
+      protected Object doInBackground() {
         return displayable.longCall();
       }
 
@@ -920,21 +918,21 @@ public final class UtilGUI {
 
   /**
    * Center a given window to the center of the screen.
-   * 
-   * @param window DOCUMENT_ME
+   *
+   * @param window 
    */
   public static void centerWindow(Window window) {
     Toolkit tk = Toolkit.getDefaultToolkit();
     Dimension screenSize = tk.getScreenSize();
     int screenHeight = screenSize.height;
     int screenWidth = screenSize.width;
-    window.setLocation((screenWidth / 2) - (window.getWidth() / 2), (screenHeight / 2)
-        - (window.getHeight() / 2));
+    window.setLocation((screenWidth / 2) - (window.getWidth() / 2),
+        (screenHeight / 2) - (window.getHeight() / 2));
   }
 
   /**
    * Return any displayed window (between main window, slimbar...)
-   * 
+   *
    * @return any displayed window (between main window, slimbar...)
    */
   public static Window getActiveWindow() {
@@ -952,9 +950,9 @@ public final class UtilGUI {
 
   /**
    * Gets the given component's parent view.
-   * 
+   *
    * @param component the component
-   * 
+   *
    * @return the parent view or null if none IView is among its ancestors
    */
   public static IView getParentView(Component component) {
@@ -978,30 +976,23 @@ public final class UtilGUI {
     WindowStateDecorator sdMainWindow = JajukMainWindow.getInstance().getWindowStateDecorator();
     WindowStateDecorator sdfullscreen = JajukFullScreenWindow.getInstance()
         .getWindowStateDecorator();
-
     // Set main window display at next startup as a default
     Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_MAIN_WINDOW));
-
     if (sdSlimbar.getWindowState() == WindowState.BUILT_DISPLAYED) {
-      Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer
-          .toString(Const.DISPLAY_MODE_SLIMBAR_TRAY));
+      Conf.setProperty(Const.CONF_STARTUP_DISPLAY,
+          Integer.toString(Const.DISPLAY_MODE_SLIMBAR_TRAY));
     }
-
     if (sdMainWindow.isDisplayed()) {
-      Conf
-          .setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_MAIN_WINDOW));
+      Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_MAIN_WINDOW));
     }
-
     // None window displayed ? set the tray only (if the show tray option is
     // set)
     if (!sdSlimbar.isDisplayed() && !sdMainWindow.isDisplayed() && !sdfullscreen.isDisplayed()
         && Conf.getBoolean(Const.CONF_SHOW_SYSTRAY)) {
       Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_TRAY));
     }
-
     if (sdfullscreen.getWindowState() == WindowState.BUILT_DISPLAYED) {
       Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_FULLSCREEN));
     }
   }
-
 }

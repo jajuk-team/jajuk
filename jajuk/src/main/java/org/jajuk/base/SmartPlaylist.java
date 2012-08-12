@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.base;
 
@@ -29,28 +29,15 @@ package org.jajuk.base;
  * we call the constructor directly without performing any item registration.
  */
 public class SmartPlaylist extends Playlist {
-
   /**
    * The Constructor.
    * 
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param dParentDirectory DOCUMENT_ME
-   */
-  public SmartPlaylist(String sId, String sName, Directory dParentDirectory) {
-    super(sId, sName, dParentDirectory);
-  }
-
-  /**
-   * The Constructor.
-   * 
-   * @param type DOCUMENT_ME
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param dParentDirectory DOCUMENT_ME
+   * @param type 
+   * @param sId 
+   * @param sName 
+   * @param dParentDirectory 
    */
   public SmartPlaylist(Type type, String sId, String sName, Directory dParentDirectory) {
     super(type, sId, sName, dParentDirectory);
   }
-
 }

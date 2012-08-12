@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
@@ -39,7 +39,6 @@ import org.jajuk.util.Messages;
  * <br>When called against a table view, selecting an item in a tree view will filter the table accordingly.
  */
 public class SyncTreeTableAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -62,8 +61,8 @@ public class SyncTreeTableAction extends JajukAction {
     JajukToggleButton source = (JajukToggleButton) evt.getSource();
     String currentViewID = (String) (source.getClientProperty(Const.DETAIL_VIEW));
     // Store the new sync state into the view-level property
-    Conf.setProperty(Const.CONF_SYNC_TABLE_TREE + "." + currentViewID, Boolean.toString(source
-        .isSelected()));
+    Conf.setProperty(Const.CONF_SYNC_TABLE_TREE + "." + currentViewID,
+        Boolean.toString(source.isSelected()));
     // If the sync button is deselected, we force the tables to refresh to un-filtered state
     // We use the RATE_CHANGED event because this event force table views
     // refreshing but not the tree view's one.
@@ -84,5 +83,4 @@ public class SyncTreeTableAction extends JajukAction {
           .notify(new JajukEvent(JajukEvents.TREE_SELECTION_CHANGED, detailsTreeEvent));
     }
   }
-
 }

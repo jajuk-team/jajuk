@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.dj;
 
 import java.util.ArrayList;
@@ -49,10 +48,8 @@ import org.jajuk.util.log.Log;
  * Ambience manager.
  */
 public final class AmbienceManager implements Observer {
-
   /** Ambience id-> ambience. */
   private final Map<String, Ambience> ambiences = new HashMap<String, Ambience>(10);
-
   /** Self instance. */
   private static AmbienceManager self = new AmbienceManager();
 
@@ -68,6 +65,7 @@ public final class AmbienceManager implements Observer {
    * 
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
+  @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.GENRE_NAME_CHANGED);
@@ -187,6 +185,7 @@ public final class AmbienceManager implements Observer {
    * 
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
+  @Override
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.GENRE_NAME_CHANGED.equals(subject)) {
@@ -306,5 +305,4 @@ public final class AmbienceManager implements Observer {
     AmbienceManager.getInstance().registerAmbience(
         new Ambience("13", Messages.getString("Ambience.13"), genresLatin));
   }
-
 }

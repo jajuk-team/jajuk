@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,11 +16,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.helpers;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -44,7 +47,6 @@ import org.jajuk.util.filters.JajukPredicates;
  * Table model used holding playlist repository data.
  */
 public class PlaylistRepositoryTableModel extends JajukTableModel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -59,19 +61,14 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
     // for proper display in some look and feel
     vColNames.add(" ");
     idList.add(Const.XML_PLAY);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_NAME));
     idList.add(Const.XML_NAME);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_DEVICE));
     idList.add(Const.XML_DEVICE);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_DIRECTORY));
     idList.add(Const.XML_DIRECTORY);
-
     vColNames.add(Messages.getHumanPropertyName(Const.XML_PATH));
     idList.add(Const.XML_PATH);
-
     // custom properties now
     for (PropertyMetaInformation meta : PlaylistManager.getInstance().getCustomProperties()) {
       vColNames.add(meta.getName());
@@ -85,26 +82,50 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
    * For now, this table will not be editable (except for custom properties) for
    * complexity reasons. This may be implemented in the future if required
    * </p>
-   * 
-   * @param sPropertyName DOCUMENT_ME
-   * @param sPattern DOCUMENT_ME
-   * @param columnsToShow DOCUMENT_ME
+   *
+   * @param sPropertyName 
+   * @param sPattern 
+   * @param columnsToShow 
    */
   @Override
-  @SuppressWarnings("unchecked")
-  public void populateModel(String sPropertyName, String sPattern, List<String> columnsToShow) {
+  public void populateModel(final String sPropertyName, final String sPattern,
+      final List<String> columnsToShow) {
     List<Playlist> alToShow = PlaylistManager.getInstance().getPlaylists();
     // OK, begin by filtering using any provided pattern
-    Filter filter = new Filter(sPropertyName, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
-    Filter.filterItems(alToShow, filter);
-
-    // filter unavailable playlists
+    // Regular filtering for natural properties registrated as a playlist intern property
+    if (PlaylistManager.getInstance().getMetaInformation(sPropertyName) != null) {
+      Filter filter = new Filter(sPropertyName, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
+      alToShow = Filter.filterItems(alToShow, filter, Playlist.class);
+      // Filter against the device attribute
+    } else if (Const.XML_DEVICE.equals(sPropertyName)) {
+      alToShow = new ArrayList<Playlist>(Collections2.filter(alToShow, new Predicate<Playlist>() {
+        @Override
+        public boolean apply(Playlist playlist) {
+          return playlist.getDirectory().getDevice().getName().toLowerCase()
+              .contains(sPattern.toLowerCase());
+        }
+      }));
+      // Filter against the PATH attribute
+    } else if (Const.XML_PATH.equals(sPropertyName)) {
+      alToShow = new ArrayList<Playlist>(Collections2.filter(alToShow, new Predicate<Playlist>() {
+        @Override
+        public boolean apply(Playlist playlist) {
+          return playlist.getAbsolutePath().toLowerCase().contains(sPattern.toLowerCase());
+        }
+      }));
+      // Filter against "any"
+    } else if (Const.XML_ANY.equals(sPropertyName)) {
+      alToShow = new ArrayList<Playlist>(Collections2.filter(alToShow, new Predicate<Playlist>() {
+        @Override
+        public boolean apply(Playlist playlist) {
+          return playlist.getAny().toLowerCase().contains(sPattern.toLowerCase());
+        }
+      }));
+    } // filter unavailable playlists
     if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
       CollectionUtils.filter(alToShow, new JajukPredicates.ReadyPlaylistPredicate());
     }
-
     Iterator<Playlist> it = null;
-
     int iColNum = iNumberStandardCols + PlaylistManager.getInstance().getCustomProperties().size();
     iRowNum = alToShow.size();
     oValues = new Object[iRowNum][iColNum];
@@ -112,18 +133,15 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
     bCellEditable = new boolean[iRowNum][iColNum];
     // Allow only custom properties edition
     bEditable = true;
-
     // For perfs, prepare columns visibility
     boolean bName = (columnsToShow != null && columnsToShow.contains(Const.XML_NAME));
     boolean bDevice = (columnsToShow != null && columnsToShow.contains(Const.XML_DEVICE));
     boolean bDirectory = (columnsToShow != null && columnsToShow.contains(Const.XML_DIRECTORY));
     boolean bPath = (columnsToShow != null && columnsToShow.contains(Const.XML_PATH));
-
     it = alToShow.iterator();
     for (int iRow = 0; it.hasNext(); iRow++) {
       Playlist plf = it.next();
       setItemAt(iRow, plf);
-      Map<String, Object> properties = plf.getProperties();
       // Id
       oItems[iRow] = plf;
       // Play
@@ -137,7 +155,6 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
       // change
       oValues[iRow][0] = il;
       bCellEditable[iRow][0] = false;
-
       // Playlist Name
       if (bName) {
         oValues[iRow][1] = plf.getName();
@@ -145,7 +162,6 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
         oValues[iRow][1] = "";
       }
       bCellEditable[iRow][1] = false;
-
       // Device
       if (bDevice) {
         Device device = plf.getDirectory().getDevice();
@@ -154,7 +170,6 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
         oValues[iRow][2] = "";
       }
       bCellEditable[iRow][2] = false;
-
       // Directory
       if (bDirectory) {
         Directory directory = plf.getDirectory();
@@ -163,7 +178,6 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
         oValues[iRow][3] = "";
       }
       bCellEditable[iRow][3] = false;
-
       // PATH
       if (bPath) {
         String path = plf.getAbsolutePath();
@@ -172,11 +186,12 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
         oValues[iRow][4] = "";
       }
       bCellEditable[iRow][4] = false;
-
       // Custom properties now
-      Iterator it2 = PlaylistManager.getInstance().getCustomProperties().iterator();
+      Map<String, Object> properties = plf.getProperties();
+      Iterator<PropertyMetaInformation> it2 = PlaylistManager.getInstance().getCustomProperties()
+          .iterator();
       for (int i = 0; it2.hasNext(); i++) {
-        PropertyMetaInformation meta = (PropertyMetaInformation) it2.next();
+        PropertyMetaInformation meta = it2.next();
         Object o = properties.get(meta.getName());
         if (o != null) {
           oValues[iRow][iNumberStandardCols + i] = o;

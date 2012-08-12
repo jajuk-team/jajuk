@@ -20,16 +20,14 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.lastfm;
 
 import java.util.List;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public interface AlbumListInfo {
-
   /**
    * Gets the albums.
    * 
@@ -57,5 +55,4 @@ public interface AlbumListInfo {
    * @param artist the artist to set
    */
   public void setArtist(String artist);
-
 }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.windows;
 
@@ -32,11 +32,13 @@ import static org.jajuk.ui.actions.JajukActions.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.REPEAT_MODE;
 import static org.jajuk.ui.actions.JajukActions.REWIND_TRACK;
+import static org.jajuk.ui.actions.JajukActions.SHOW_CURRENTLY_PLAYING;
 import static org.jajuk.ui.actions.JajukActions.SHUFFLE_MODE;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
 
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import org.jajuk.ui.actions.ActionManager;
@@ -52,14 +54,13 @@ import org.jajuk.util.log.Log;
  * </p>.
  */
 public class WindowGlobalKeystrokeManager {
-
   /** Self instance. */
   private static WindowGlobalKeystrokeManager self;
-
   /** List of actions to enable globaly *. */
   private JajukActions[] globalActions = new JajukActions[] { NEXT_ALBUM, PREVIOUS_ALBUM,
       PREVIOUS_TRACK, NEXT_TRACK, MUTE_STATE, PAUSE_RESUME_TRACK, STOP_TRACK, DECREASE_VOLUME,
-      INCREASE_VOLUME, SHUFFLE_MODE, REPEAT_MODE, REWIND_TRACK, FORWARD_TRACK, HELP_REQUIRED };
+      INCREASE_VOLUME, SHUFFLE_MODE, REPEAT_MODE, REWIND_TRACK, FORWARD_TRACK, HELP_REQUIRED,
+      SHOW_CURRENTLY_PLAYING };
 
   /**
    * Gets the single instance of WindowGlobalKeystrokeManager.
@@ -78,9 +79,13 @@ public class WindowGlobalKeystrokeManager {
    */
   public WindowGlobalKeystrokeManager() {
     KeyEventDispatcher ked = new KeyEventDispatcher() {
-
       @Override
       public boolean dispatchKeyEvent(KeyEvent ke) {
+        //--- Drop disabled keystrokes ---
+        // Disable CTRL-Backspace : it closes the views due to VLDocking keystroke 
+        if (ke.getKeyCode() == KeyEvent.VK_BACK_SPACE && ke.getModifiers() == InputEvent.CTRL_MASK) {
+          return true;
+        }
         // Add all global keys to this dispatcher
         for (JajukActions actionName : globalActions) {
           JajukAction action = ActionManager.getAction(actionName);
@@ -98,7 +103,6 @@ public class WindowGlobalKeystrokeManager {
         return false;
       }
     };
-
     // Attach the event dispatcher
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(ked);
   }

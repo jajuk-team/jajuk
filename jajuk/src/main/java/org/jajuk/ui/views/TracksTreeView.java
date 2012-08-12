@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.views;
 
 import java.awt.Component;
@@ -89,10 +88,8 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
  * Logical tree view.
  */
 public class TracksTreeView extends AbstractTreeView implements ActionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** Sorting method selection combo. */
   private JComboBox jcbSort;
 
@@ -142,25 +139,18 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     jcbSort.setSelectedIndex(Conf.getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER));
     jcbSort.setActionCommand(JajukEvents.LOGICAL_TREE_SORT.toString());
     jcbSort.addActionListener(this);
-
     // Album details
     final JMenuItem jmiShowAlbumDetails = new JMenuItem(
         ActionManager.getAction(JajukActions.SHOW_ALBUM_DETAILS));
     jmiShowAlbumDetails.putClientProperty(Const.DETAIL_SELECTION, alSelected);
-
     top = new TreeRootElement(Messages.getString("TracksTreeView.27"));
-
     // Register on the list for subject we are interested in
     ObservationManager.register(this);
-
     // populate the tree
     populateTree();
-
     // create tree
     createTree(false);
-
     jtree.setCellRenderer(new TracksTreeCellRenderer());
-
     /**
      * CAUTION ! we register several listeners against this tree Swing can't
      * ensure the order where listeners will treat them so don't rely on the
@@ -168,17 +158,14 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
      */
     // Tree selection listener to detect a selection
     jtree.addTreeSelectionListener(new TracksTreeSelectionListener());
-
     // Listen for double click
     jtree.addMouseListener(new TracksMouseAdapter(jmiShowAlbumDetails));
-
     // Expansion analyze to keep expended state
     jtree.addTreeExpansionListener(new TracksTreeExpansionListener());
     jtree.setAutoscrolls(true);
     // DND support
     jtree.setTransferHandler(new TreeTransferHandler(jtree));
     jtree.setDragEnabled(true);
-
     jspTree = new JScrollPane(jtree);
     jspTree.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
     setLayout(new MigLayout("ins 3", "[][grow][][]", "[][grow]"));
@@ -193,7 +180,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   /**
    * Fill the tree.
    */
-
   @Override
   public void populateTree() {
     // Use a refreshing flag, not a 'synchronized' here (see deadlock, bug #1756 (Deadlock in AbstractTreeView and PerspectiveManager) 
@@ -205,12 +191,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
       refreshing = true;
       // delete previous tree
       top.removeAllChildren();
-
-      // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a
-      // small memory leak that is caused here...
-      if (jtree != null && jtree.getModel() != null) {
-        ((DefaultTreeModel) (jtree.getModel())).reload();
-      }
       TrackComparatorType comparatorType = TrackComparatorType.values()[Conf
           .getInt(Const.CONF_LOGICAL_TREE_SORT_ORDER)];
       if (comparatorType == TrackComparatorType.GENRE_ARTIST_ALBUM) {
@@ -239,6 +219,11 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
       else if (comparatorType == TrackComparatorType.HITS_ALBUM) {
         populateTreeByHits();
       }
+      // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a
+      // small memory leak that is caused here...
+      if (jtree != null && jtree.getModel() != null) {
+        ((DefaultTreeModel) (jtree.getModel())).reload();
+      }
     } finally {
       refreshing = false;
     }
@@ -259,52 +244,53 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         Artist artist = track.getArtist();
         AlbumNode albumNode = null;
         Album album = track.getAlbum();
-
         // create genre
-        Enumeration e = top.children();
-        boolean b = false;
-        while (e.hasMoreElements()) { // check the genre doesn't
-          // already exist
-          GenreNode sn = (GenreNode) e.nextElement();
-          if (sn.getGenre().equals(genre)) {
-            b = true;
-            genreNode = sn;
-            break;
+        {
+          Enumeration<GenreNode> e = top.children();
+          boolean b = false;
+          while (e.hasMoreElements()) { // check the genre doesn't
+            // already exist
+            GenreNode sn = e.nextElement();
+            if (sn.getGenre().equals(genre)) {
+              b = true;
+              genreNode = sn;
+              break;
+            }
+          }
+          if (!b) {
+            genreNode = new GenreNode(genre);
+            top.add(genreNode);
           }
         }
-        if (!b) {
-          genreNode = new GenreNode(genre);
-          top.add(genreNode);
+        if (genreNode == null) {
+          continue;
         }
         // create artist
-        if (genreNode != null) {
-          e = genreNode.children();
-        } else {
-          continue;
-        }
-        b = false;
-        while (e.hasMoreElements()) { // check if the artist doesn't
-          // already exist
-          ArtistNode an = (ArtistNode) e.nextElement();
-          if (an.getArtist().equals(artist)) {
-            b = true;
-            artistNode = an;
-            break;
+        {
+          Enumeration<ArtistNode> e2 = genreNode.children();
+          boolean b = false;
+          while (e2.hasMoreElements()) { // check if the artist doesn't
+            // already exist
+            ArtistNode an = e2.nextElement();
+            if (an.getArtist().equals(artist)) {
+              b = true;
+              artistNode = an;
+              break;
+            }
+          }
+          if (!b) {
+            artistNode = new ArtistNode(artist);
+            genreNode.add(artistNode);
           }
         }
-        if (!b) {
-          artistNode = new ArtistNode(artist);
-          genreNode.add(artistNode);
-        }
         // create album
-        if (artistNode != null) {
-          e = artistNode.children();
-        } else {
+        if (artistNode == null) {
           continue;
         }
-        b = false;
-        while (e.hasMoreElements()) {
-          AlbumNode an = (AlbumNode) e.nextElement();
+        Enumeration<AlbumNode> e3 = artistNode.children();
+        boolean b = false;
+        while (e3.hasMoreElements()) {
+          AlbumNode an = e3.nextElement();
           if (an.getAlbum().equals(album)) {
             b = true;
             albumNode = an;
@@ -335,33 +321,33 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         Artist artist = track.getArtist();
         AlbumNode albumNode = null;
         Album album = track.getAlbum();
-
         // create artist
-        Enumeration e = top.children();
-        boolean b = false;
-        while (e.hasMoreElements()) { // check if the artist doesn't
-          // already exist
-          ArtistNode an = (ArtistNode) e.nextElement();
-          if (an.getArtist().equals(artist)) {
-            b = true;
-            artistNode = an;
-            break;
+        {
+          Enumeration<ArtistNode> e = top.children();
+          boolean b = false;
+          while (e.hasMoreElements()) { // check if the artist doesn't
+            // already exist
+            ArtistNode an = e.nextElement();
+            if (an.getArtist().equals(artist)) {
+              b = true;
+              artistNode = an;
+              break;
+            }
+          }
+          if (!b) {
+            artistNode = new ArtistNode(artist);
+            top.add(artistNode);
           }
         }
-        if (!b) {
-          artistNode = new ArtistNode(artist);
-          top.add(artistNode);
-        }
-        // create album
-        if (artistNode != null) {
-          e = artistNode.children();
-        } else {
+        if (artistNode == null) {
           continue;
         }
-        b = false;
-        while (e.hasMoreElements()) { // check if the album doesn't
+        // create album
+        Enumeration<AlbumNode> e2 = artistNode.children();
+        boolean b = false;
+        while (e2.hasMoreElements()) { // check if the album doesn't
           // already exist
-          AlbumNode an = (AlbumNode) e.nextElement();
+          AlbumNode an = e2.nextElement();
           if (an.getAlbum().equals(album)) {
             b = true;
             albumNode = an;
@@ -378,7 +364,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         }
       }
     }
-
   }
 
   /**
@@ -395,31 +380,32 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         Album album = track.getAlbum();
         Year year = track.getYear();
         // create Year
-        Enumeration e = top.children();
-        boolean b = false;
-        // check if the artist doesn't already exist
-        while (e.hasMoreElements()) {
-          YearNode yn = (YearNode) e.nextElement();
-          if (yn.getYear().equals(year)) {
-            b = true;
-            yearNode = yn;
-            break;
+        {
+          Enumeration<YearNode> e = top.children();
+          boolean b = false;
+          // check if the artist doesn't already exist
+          while (e.hasMoreElements()) {
+            YearNode yn = e.nextElement();
+            if (yn.getYear().equals(year)) {
+              b = true;
+              yearNode = yn;
+              break;
+            }
+          }
+          if (!b) {
+            yearNode = new YearNode(year);
+            top.add(yearNode);
           }
         }
-        if (!b) {
-          yearNode = new YearNode(year);
-          top.add(yearNode);
-        }
-        // create album
-        if (yearNode != null) {
-          e = yearNode.children();
-        } else {
+        if (yearNode == null) {
           continue;
         }
-        b = false;
-        while (e.hasMoreElements()) { // check if the album doesn't
+        // create album
+        Enumeration<AlbumNode> e1 = yearNode.children();
+        boolean b = false;
+        while (e1.hasMoreElements()) { // check if the album doesn't
           // already exist
-          AlbumNode an = (AlbumNode) e.nextElement();
+          AlbumNode an = e1.nextElement();
           if (an.getAlbum().equals(album)) {
             b = true;
             albumNode = an;
@@ -545,8 +531,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   /**
    * Utility method used by populateByDiscovery method.
    * 
-   * @param node DOCUMENT_ME
-   * @param track DOCUMENT_ME
+   * @param node 
+   * @param track 
    */
   @SuppressWarnings("unchecked")
   private void addTrackAndAlbum(DefaultMutableTreeNode node, Track track) {
@@ -569,7 +555,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     if (currentAlbum != null) {
       currentAlbum.add(new TrackNode(track));
     }
-
   }
 
   /*
@@ -609,7 +594,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     // expand all
     for (int i = 0; i < jtree.getRowCount(); i++) {
       boolean bExp = false;
-
       Object o = jtree.getPathForRow(i).getLastPathComponent();
       if (o instanceof GenreNode) {
         Genre genre = ((GenreNode) o).getGenre();
@@ -624,7 +608,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         Year year = ((YearNode) o).getYear();
         bExp = year.getBooleanValue(Const.XML_EXPANDED);
       }
-
       // now expand row if it should be expanded
       if (bExp) {
         jtree.expandRow(i);
@@ -634,10 +617,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
   // needs to be inner class as it accesses various members
   /**
-   * DOCUMENT_ME.
+   * .
    */
   class TracksTreeSelectionListener implements TreeSelectionListener {
-
     /*
      * (non-Javadoc)
      * 
@@ -650,16 +632,13 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
       if (tpSelected == null) {
         return;
       }
-
       // get all components recursively
       alSelected.clear();
       selectedRecursively.clear();
       int items = handleSelected(tpSelected);
-
       StringBuilder sbOut = new StringBuilder().append(items).append(
           Messages.getString("TracksTreeView.31"));
       InformationJPanel.getInstance().setSelection(sbOut.toString());
-
       // Notify the tree selection change (used by tree/table sync)
       if (!bInternalAction) {
         Properties properties = new Properties();
@@ -669,7 +648,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         properties.put(Const.DETAIL_VIEW, getID());
         ObservationManager.notify(new JajukEvent(JajukEvents.TREE_SELECTION_CHANGED, properties));
       }
-
       // Update preference menu
       pjmTracks.resetUI(alSelected);
     }
@@ -677,7 +655,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     /**
      * Handle selected.
      * 
-     * @param tpSelected DOCUMENT_ME
+     * @param tpSelected 
      * 
      * @return the int
      */
@@ -698,7 +676,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
             alSelected.add((Item) userObject);
           }
         }
-
         // return all child nodes recursively
         Enumeration<DefaultMutableTreeNode> e2 = ((DefaultMutableTreeNode) o)
             .depthFirstEnumeration();
@@ -722,14 +699,12 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
    * Tracks Tree view mouse adapter.
    */
   class TracksMouseAdapter extends JajukMouseAdapter {
-
-    /** DOCUMENT_ME. */
     private final JMenuItem jmiShowAlbumDetails;
 
     /**
      * Instantiates a new tracks mouse adapter.
      * 
-     * @param jmiShowAlbumDetails DOCUMENT_ME
+     * @param jmiShowAlbumDetails 
      */
     public TracksMouseAdapter(JMenuItem jmiShowAlbumDetails) {
       super();
@@ -749,8 +724,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
           File file = track.getBestFile(false);
           if (file != null) {
             try {
-              QueueModel.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL),
-                  true), Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+              QueueModel.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT), true),
+                  Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
             } catch (JajukException je) {
               Log.error(je);
             }
@@ -779,7 +754,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         jtree.getSelectionModel().setSelectionPath(path);
       }
       paths = jtree.getSelectionModel().getSelectionPaths();
-
       // test mix between types ( not allowed )
       String sClass = paths[0].getLastPathComponent().getClass().toString();
       for (int i = 0; i < paths.length; i++) {
@@ -787,7 +761,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
           return;
         }
       }
-
       // display menus according node type
       buildMenu(e);
     }
@@ -795,7 +768,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     /**
      * Builds the menu.
      * 
-     * @param e DOCUMENT_ME
+     * @param e 
      */
     private void buildMenu(final MouseEvent e) {
       if (paths[0].getLastPathComponent() instanceof TrackNode) {
@@ -877,7 +850,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
       } else if (paths[0].getLastPathComponent() instanceof DefaultMutableTreeNode) {
         // Collection menu
         JPopupMenu jmenuCollection = new JPopupMenu();
-
         // Collection Report
         Action actionReportCollection = ActionManager.getAction(JajukActions.CREATE_REPORT);
         JMenuItem jmiCollectionReport = new JMenuItem(actionReportCollection);
@@ -885,12 +857,10 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         // to be able to get it
         jmiCollectionReport.putClientProperty(Const.DETAIL_ORIGIN, COLLECTION_LOGICAL);
         jmenuCollection.add(jmiCollectionReport);
-
         // Find duplicate files
         Action actionDuplicateFiles = ActionManager.getAction(JajukActions.FIND_DUPLICATE_FILES);
         JMenuItem jmiCollectionDuplicateFiles = new JMenuItem(actionDuplicateFiles);
         jmenuCollection.add(jmiCollectionDuplicateFiles);
-
         jmenuCollection.show(jtree, e.getX(), e.getY());
       }
     }
@@ -965,7 +935,6 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
  * Genre node
  */
 class GenreNode extends DefaultMutableTreeNode {
-
   private static final long serialVersionUID = 1L;
 
   /**
@@ -997,7 +966,6 @@ class GenreNode extends DefaultMutableTreeNode {
  * Artist node
  */
 class ArtistNode extends DefaultMutableTreeNode {
-
   /**
    * 
    */
@@ -1032,7 +1000,6 @@ class ArtistNode extends DefaultMutableTreeNode {
  * Year node
  */
 class YearNode extends DefaultMutableTreeNode {
-
   /**
    * 
    */
@@ -1071,7 +1038,6 @@ class YearNode extends DefaultMutableTreeNode {
  * Album node
  */
 class AlbumNode extends DefaultMutableTreeNode {
-
   private static final long serialVersionUID = 1L;
 
   /**
@@ -1103,7 +1069,6 @@ class AlbumNode extends DefaultMutableTreeNode {
  * Track node
  */
 class TrackNode extends DefaultMutableTreeNode {
-
   private static final long serialVersionUID = 1L;
 
   /**
@@ -1136,7 +1101,6 @@ class TrackNode extends DefaultMutableTreeNode {
  * Discovery date filter tree node
  */
 class DiscoveryDateNode extends DefaultMutableTreeNode {
-
   /**
    * @param string
    */
@@ -1163,7 +1127,6 @@ class DiscoveryDateNode extends DefaultMutableTreeNode {
   }
 
   private static final long serialVersionUID = 7123195836014138019L;
-
 }
 
 class TracksTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
@@ -1174,7 +1137,6 @@ class TracksTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
       boolean expanded, boolean leaf, int row, boolean hasFocus) {
     super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
     setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
-
     if (value instanceof GenreNode) {
       setIcon(IconLoader.getIcon(JajukIcons.GENRE));
     } else if (value instanceof ArtistNode) {
@@ -1192,7 +1154,6 @@ class TracksTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
     } else {
       setIcon(IconLoader.getIcon(JajukIcons.LIST));
     }
-
     return this;
   }
 }

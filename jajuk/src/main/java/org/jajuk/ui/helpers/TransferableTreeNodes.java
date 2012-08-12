@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.awt.datatransfer.DataFlavor;
@@ -34,27 +33,23 @@ import org.jajuk.base.Item;
  * Transferable tree nodes ( for DND ).
  */
 public class TransferableTreeNodes implements Transferable {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** The Constant NODE_FLAVOR.  DOCUMENT_ME */
+  /** The Constant NODE_FLAVOR.   */
   public static final DataFlavor NODE_FLAVOR = new DataFlavor(
       DataFlavor.javaJVMLocalObjectMimeType, "Node");
-
   /** Transferable model. */
   private List<Item> items;
 
   /**
    * Instantiates a new transferable tree node.
    * 
-   * @param items DOCUMENT_ME
+   * @param items 
    */
   public TransferableTreeNodes(List<Item> items) {
     this.items = items;
   }
 
-  /** DOCUMENT_ME. */
   private final DataFlavor[] flavors = { NODE_FLAVOR };
 
   /*

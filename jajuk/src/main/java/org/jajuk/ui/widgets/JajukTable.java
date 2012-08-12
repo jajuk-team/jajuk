@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.widgets;
 
 import java.awt.event.MouseEvent;
@@ -39,7 +38,6 @@ import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableColumnModelEvent;
-import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
@@ -75,42 +73,27 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * <p>
  * Bring a menu displayed on right click.
  */
-public class JajukTable extends JXTable implements Observer, TableColumnModelListener,
-    ListSelectionListener {
-
+public class JajukTable extends JXTable implements Observer, ListSelectionListener {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** DOCUMENT_ME. */
   private final String sConf;
-
   /** User Selection*. */
   private final List<Item> selection = new ArrayList<Item>();
-
-  /** DOCUMENT_ME. */
   private final JPopupMenu jmenu;
-
   /** Specific action on double click. */
   private ILaunchCommand command;
-
   /** Model refreshing flag. */
   private volatile boolean acceptColumnsEvents = false;
-
-  /** The Constant FORMATTER. DOCUMENT_ME */
+  /** The Constant FORMATTER.  */
   private static final DateFormat FORMATTER = UtilString.getLocaleDateFormatter();
-
   /** Stores the last index of column move to*. */
   private int lastToIndex = 0;
-
   /** Mouse draging flag. */
   private boolean isMouseDragging;
-
   /** List of list selection listeners whose valueChanged() method is called by this class valueChanged() method to avoid concurrency between them. Otherwise, the preference menu item could be set with the previous selection value. */
   List<ListSelectionListener> listeners = new ArrayList<ListSelectionListener>(1);
-
   /** The Jajuk table mouse adapter used to handle click events. */
   JajukMouseAdapter ma = new JajukMouseAdapter() {
-
     @Override
     public void handlePopup(MouseEvent e) {
       int iSelectedRow = rowAtPoint(e.getPoint());
@@ -134,7 +117,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /**
    * Return drop row.
-   * 
+   *
    * @return drop row
    */
   @SuppressWarnings("cast")
@@ -145,11 +128,11 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /**
    * Constructor.
-   * 
+   *
    * @param model : model to use
    * @param bSortable : is this table sortable
-   * @param sConf DOCUMENT_ME
-   * 
+   * @param sConf 
+   *
    * @sConf: configuration variable used to store columns conf
    */
   public JajukTable(TableModel model, boolean bSortable, String sConf) {
@@ -162,14 +145,11 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
     jmenu = new JPopupMenu();
     setShowGrid(false);
     init(bSortable);
-
     // Listen for clicks
     addMouseListener(ma);
-
     //Let Laf handle drag gesture recognition (don't remove it or
     // a mouse clik disable multiple selection)
     setDragEnabled(true);
-
     // Add the Alternate Highlighter
     addHighlighter(UtilGUI.getAlternateHighlighter());
     // Register itself to incoming events
@@ -178,7 +158,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /**
    * Register a new list selection listener.
-   * 
+   *
    * @param listener the listener to register
    */
   public void addListSelectionListener(ListSelectionListener listener) {
@@ -187,10 +167,10 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /**
    * Constructor.
-   * 
+   *
    * @param model : model to use
-   * @param sConf DOCUMENT_ME
-   * 
+   * @param sConf 
+   *
    * @sConf: configuration variable used to store columns conf
    */
   public JajukTable(TableModel model, String sConf) {
@@ -198,9 +178,9 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   }
 
   /**
-   * Inits the. DOCUMENT_ME
-   * 
-   * @param bSortable DOCUMENT_ME
+   * Inits the. 
+   *
+   * @param bSortable 
    */
   private void init(boolean bSortable) {
     super.setSortable(bSortable);
@@ -209,14 +189,14 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /**
    * Select columns to show colsToShow list of columns id to keep.
-   * 
-   * @param colsToShow DOCUMENT_ME
+   *
+   * @param colsToShow 
    */
-  @SuppressWarnings("unchecked")
   public void showColumns(List<String> colsToShow) {
     boolean acceptColumnsEventsSave = acceptColumnsEvents;
     // Ignore columns event during these actions
     acceptColumnsEvents = false;
+    @SuppressWarnings("rawtypes")
     Iterator it = ((DefaultTableColumnModelExt) getColumnModel()).getColumns(false).iterator();
     while (it.hasNext()) {
       TableColumnExt col = (TableColumnExt) it.next();
@@ -237,7 +217,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    */
   /**
    * Reorder columns.
-   * DOCUMENT_ME
+   * 
    */
   private void reorderColumns() {
     // Build the index array
@@ -269,24 +249,19 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
         getColumnModel().addColumn(column);
       }
     }
-
     // set stored column width
-
     // disable auto-resize temporary to set stored sizes
     setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     String tableID = getTableId();
-
     for (int currentColumnIndex = 0; currentColumnIndex < getColumnModel().getColumnCount(); currentColumnIndex++) {
       String identifier = ((JajukTableModel) getModel())
           .getIdentifier(convertColumnIndexToModel(currentColumnIndex));
       String confId = tableID + "." + identifier + ".width";
-
       if (Conf.containsProperty(confId)) {
         getColumnModel().getColumn(currentColumnIndex).setPreferredWidth(Conf.getInt(confId));
       }
     }
     setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
-
     // must be done here and not before we add columns
     if (Conf.containsProperty(getConfKeyForIsHorizontalScrollable())) {
       setHorizontalScrollEnabled(Conf.getBoolean(getConfKeyForIsHorizontalScrollable()));
@@ -295,7 +270,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /**
    * Gets the columns conf.
-   * 
+   *
    * @return list of visible columns names as string
    */
   public List<String> getColumnsConf() {
@@ -310,8 +285,8 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /**
    * Add a new property into columns conf.
-   * 
-   * @param property DOCUMENT_ME
+   *
+   * @param property 
    */
   public void addColumnIntoConf(String property) {
     if (sConf == null) {
@@ -326,8 +301,8 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /**
    * Remove a property from columns conf.
-   * 
-   * @param property DOCUMENT_ME
+   *
+   * @param property 
    */
   public void removeColumnFromConf(String property) {
     if (sConf == null) {
@@ -339,7 +314,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
   }
 
   /**
-   * Column change. DOCUMENT_ME
+   * Column change. 
    */
   private void columnChange() {
     // ignore this column change when reloading
@@ -359,7 +334,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see javax.swing.JTable#columnAdded(javax.swing.event.TableColumnModelEvent)
    */
   @Override
@@ -370,7 +345,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @seeorg.jdesktop.swingx.JXTable#columnRemoved(javax.swing.event. TableColumnModelEvent)
    */
   @Override
@@ -381,7 +356,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see javax.swing.JTable#columnMoved(javax.swing.event.TableColumnModelEvent)
    */
   @Override
@@ -422,9 +397,9 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /**
    * Gets the columns conf.
-   * 
-   * @param alCol DOCUMENT_ME
-   * 
+   *
+   * @param alCol 
+   *
    * @return columns configuration from given list of columns identifiers
    */
   private String getColumnsConf(List<String> alCol) {
@@ -443,9 +418,9 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /**
    * add tooltips to each cell.
-   * 
-   * @param e DOCUMENT_ME
-   * 
+   *
+   * @param e 
+   *
    * @return the tool tip text
    */
   @Override
@@ -471,7 +446,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /**
    * Select a list of rows.
-   * 
+   *
    * @param indexes list of row indexes to be selected
    */
   public void setSelectedRows(int[] indexes) {
@@ -482,7 +457,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see javax.swing.JTable#valueChanged(javax.swing.event.ListSelectionEvent)
    */
   @Override
@@ -508,7 +483,6 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
       properties.put(Const.DETAIL_VIEW, parentView);
     }
     ObservationManager.notify(new JajukEvent(JajukEvents.TABLE_SELECTION_CHANGED, properties));
-
     // Call specific behaviors
     for (ListSelectionListener listener : listeners) {
       listener.valueChanged(e);
@@ -530,7 +504,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /**
    * Gets the selection.
-   * 
+   *
    * @return the selection
    */
   public List<Item> getSelection() {
@@ -539,7 +513,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /**
    * Return generic popup menu for items in a table. <br>
-   * 
+   *
    * @return generic popup menu for items in a table
    */
   public JPopupMenu getMenu() {
@@ -548,52 +522,37 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
    */
-  /**
-   * Mouse clicked.
-   * DOCUMENT_ME
-   * 
-   * @param e DOCUMENT_ME
-   */
+  @SuppressWarnings("unused")
   public void mouseClicked(MouseEvent e) {
     // nothing to do here for now
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
    */
-  /**
-   * Mouse entered.
-   * DOCUMENT_ME
-   * 
-   * @param e DOCUMENT_ME
-   */
+  @SuppressWarnings("unused")
   public void mouseEntered(MouseEvent e) {
     // nothing to do here for now
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
    */
-  /**
-   * Mouse exited.
-   * DOCUMENT_ME
-   * 
-   * @param e DOCUMENT_ME
-   */
+  @SuppressWarnings("unused")
   public void mouseExited(MouseEvent e) {
     // nothing to do here for now
   }
 
   /**
    * Gets the command.
-   * 
+   *
    * @return the command
    */
   public ILaunchCommand getCommand() {
@@ -602,7 +561,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /**
    * Sets the command.
-   * 
+   *
    * @param command the new command
    */
   public void setCommand(ILaunchCommand command) {
@@ -611,7 +570,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /**
    * Sets the accept columns events.
-   * 
+   *
    * @param acceptColumnsEvents the new accept columns events
    */
   public void setAcceptColumnsEvents(boolean acceptColumnsEvents) {
@@ -620,7 +579,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   @Override
@@ -632,25 +591,21 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
    */
   @Override
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.EXITING.equals(subject)) {
-      Conf.setProperty(getConfKeyForIsHorizontalScrollable(), Boolean
-          .toString(isHorizontalScrollEnabled()));
-
+      Conf.setProperty(getConfKeyForIsHorizontalScrollable(),
+          Boolean.toString(isHorizontalScrollEnabled()));
       // store column margin
       String tableID = getTableId();
-
       for (int currentColumnIndex = 0; currentColumnIndex < getColumnModel().getColumnCount(); currentColumnIndex++) {
-
         String width = Integer.toString(getColumnModel().getColumn(currentColumnIndex).getWidth());
         String identifier = ((JajukTableModel) getModel())
             .getIdentifier(convertColumnIndexToModel(currentColumnIndex));
-
         Conf.setProperty(tableID + "." + identifier + ".width", width);
       }
     }
@@ -658,7 +613,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /**
    * Gets the conf key for is horizontal scrollable.
-   * 
+   *
    * @return the conf key for is horizontal scrollable
    */
   private String getConfKeyForIsHorizontalScrollable() {
@@ -667,7 +622,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   /**
    * Gets the table id.
-   * 
+   *
    * @return the table id
    */
   private String getTableId() {
@@ -682,7 +637,7 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
    * Remove previous alternate highlighter and add a new one
    * It is required because after theme change, the alternate
    * highlighter colors are no more valid.
-   * 
+   *
    * @see org.jdesktop.swingx.JXTable#updateUI()
    */
   @Override
@@ -701,12 +656,11 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
 
   // Fix for a JRE issue,see   :
   // During a single adjusting ListSelectionEvent, several rows can be selected
-  // before the drag actually begins (except when using SINGLE_SELECTION selection mode). 
+  // before the drag actually begins (except when using SINGLE_SELECTION selection mode).
   // For instance, select row 1 and release mouse
   // then select row 2 without releasing the mouse and begin to drag from the top to the bottom :
   // in some cases, when dragging quickly, rows 2 AND 3 (and even row 4 sometimes) are selected.
   // Fix thanks jeffsabin  in http://forums.sun.com/thread.jspa?threadID=5436355
-
   /* (non-Javadoc)
    * @see javax.swing.JComponent#processMouseEvent(java.awt.event.MouseEvent)
    */
@@ -754,5 +708,4 @@ public class JajukTable extends JXTable implements Observer, TableColumnModelLis
       super.changeSelection(rowIndex, columnIndex, toggle, extend);
     }
   }
-
 }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.views;
 
@@ -48,10 +48,9 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestTracksTreeView extends JajukTestCase {
-
   /* (non-Javadoc)
    * @see org.jajuk.JajukTestCase#setUp()
    */
@@ -63,7 +62,6 @@ public class TestTracksTreeView extends JajukTestCase {
     } catch (HeadlessException e) {
       // this is thrown in automated tests on Hudson/Sonar
     }
-
     super.setUp();
   }
 
@@ -72,15 +70,14 @@ public class TestTracksTreeView extends JajukTestCase {
    */
   public final void testInitUI() {
     TracksTreeView view = new TracksTreeView();
-
     tryInitUI(view);
   }
 
   /**
    * Try init ui.
-   * DOCUMENT_ME
+   * 
    *
-   * @param view DOCUMENT_ME
+   * @param view 
    */
   private void tryInitUI(TracksTreeView view) {
     try {
@@ -100,15 +97,12 @@ public class TestTracksTreeView extends JajukTestCase {
    */
   public final void testPopulateTree() {
     TracksTreeView view = new TracksTreeView();
-
     tryInitUI(view);
-
     try {
       view.populateTree();
     } catch (NullPointerException e) {
       // reported on headless settings
     }
-
     // try with different settings
     Conf.setProperty(Const.CONF_LOGICAL_TREE_SORT_ORDER, "0");
     try {
@@ -116,49 +110,42 @@ public class TestTracksTreeView extends JajukTestCase {
     } catch (NullPointerException e) {
       // reported on headless settings
     }
-
     Conf.setProperty(Const.CONF_LOGICAL_TREE_SORT_ORDER, "1");
     try {
       view.populateTree();
     } catch (NullPointerException e) {
       // reported on headless settings
     }
-
     Conf.setProperty(Const.CONF_LOGICAL_TREE_SORT_ORDER, "2");
     try {
       view.populateTree();
     } catch (NullPointerException e) {
       // reported on headless settings
     }
-
     Conf.setProperty(Const.CONF_LOGICAL_TREE_SORT_ORDER, "3");
     try {
       view.populateTree();
     } catch (NullPointerException e) {
       // reported on headless settings
     }
-
     Conf.setProperty(Const.CONF_LOGICAL_TREE_SORT_ORDER, "4");
     try {
       view.populateTree();
     } catch (NullPointerException e) {
       // reported on headless settings
     }
-
     Conf.setProperty(Const.CONF_LOGICAL_TREE_SORT_ORDER, "5");
     try {
       view.populateTree();
     } catch (NullPointerException e) {
       // reported on headless settings
     }
-
     Conf.setProperty(Const.CONF_LOGICAL_TREE_SORT_ORDER, "6");
     try {
       view.populateTree();
     } catch (NullPointerException e) {
       // reported on headless settings
     }
-
     Conf.setProperty(Const.CONF_LOGICAL_TREE_SORT_ORDER, "7");
     try {
       view.populateTree();
@@ -172,7 +159,6 @@ public class TestTracksTreeView extends JajukTestCase {
    */
   public final void testExpand() {
     TracksTreeView view = new TracksTreeView();
-
     try {
       view.expand();
     } catch (NullPointerException e) {
@@ -214,7 +200,6 @@ public class TestTracksTreeView extends JajukTestCase {
    */
   public final void testPopulateTreeByGenre() {
     TracksTreeView view = new TracksTreeView();
-
     try {
       view.populateTreeByGenre();
     } catch (NullPointerException e) {
@@ -229,7 +214,6 @@ public class TestTracksTreeView extends JajukTestCase {
    */
   public final void testPopulateTreeByArtist() {
     TracksTreeView view = new TracksTreeView();
-
     try {
       view.populateTreeByArtist();
     } catch (NullPointerException e) {
@@ -244,7 +228,6 @@ public class TestTracksTreeView extends JajukTestCase {
    */
   public final void testPopulateTreeByYear() {
     TracksTreeView view = new TracksTreeView();
-
     try {
       view.populateTreeByYear();
     } catch (NullPointerException e) {
@@ -259,7 +242,6 @@ public class TestTracksTreeView extends JajukTestCase {
    */
   public final void testPopulateTreeByAlbum() {
     TracksTreeView view = new TracksTreeView();
-
     try {
       view.populateTreeByAlbum();
     } catch (NullPointerException e) {
@@ -274,7 +256,6 @@ public class TestTracksTreeView extends JajukTestCase {
    */
   public final void testPopulateTreeByDiscovery() {
     TracksTreeView view = new TracksTreeView();
-
     try {
       view.populateTreeByDiscovery();
     } catch (NullPointerException e) {
@@ -289,7 +270,6 @@ public class TestTracksTreeView extends JajukTestCase {
    */
   public final void testPopulateTreeByRate() {
     TracksTreeView view = new TracksTreeView();
-
     try {
       view.populateTreeByRate();
     } catch (NullPointerException e) {
@@ -304,7 +284,6 @@ public class TestTracksTreeView extends JajukTestCase {
    */
   public final void testPopulateTreeByHits() {
     TracksTreeView view = new TracksTreeView();
-
     try {
       view.populateTreeByHits();
     } catch (NullPointerException e) {
@@ -325,12 +304,11 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test tracks tree selection listener.
-   * DOCUMENT_ME
+   * 
    */
   public final void testTracksTreeSelectionListener() {
     TracksTreeView view = new TracksTreeView();
     TracksTreeView.TracksTreeSelectionListener task = view.new TracksTreeSelectionListener();
-
     try {
       task.valueChanged(new TreeSelectionEvent(this, new TreePath("test"), false, null, null));
     } catch (NullPointerException e) {
@@ -340,31 +318,27 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test tracks mouse adapter.
-   * DOCUMENT_ME
+   * 
    */
   public final void testTracksMouseAdapter() {
     TracksTreeView view = new TracksTreeView();
     TracksMouseAdapter ad = view.new TracksMouseAdapter(null);
     assertNotNull(ad);
-
     MouseEvent event = new MouseEvent(new Component() {
       private static final long serialVersionUID = 1L;
     }, 1, 2l, 3, 2, 2, 3, true);
     assertTrue(event.isPopupTrigger());
-
     try {
       ad.handlePopup(event);
     } catch (NullPointerException e) {
       // reported on headless settings
     }
-
     // popup trigger
     try {
       ad.mousePressed(event);
     } catch (NullPointerException e) {
       // reported on headless settings
     }
-
     // normal event with CTRL is handled here
     event = new MouseEvent(new Component() {
       private static final long serialVersionUID = 1L;
@@ -374,7 +348,6 @@ public class TestTracksTreeView extends JajukTestCase {
     } catch (NullPointerException e) {
       // reported on headless settings
     }
-
     event = new MouseEvent(new Component() {
       private static final long serialVersionUID = 1L;
     }, 1, 2l, 0, 2, 2, 3, true);
@@ -387,12 +360,11 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test genre node.
-   * DOCUMENT_ME
+   * 
    */
   public final void testGenreNode() {
     GenreNode ad = new GenreNode(getGenre());
     assertNotNull(ad);
-
     JUnitHelpers.ToStringTest(ad);
     assertNotNull(ad.getGenre());
     assertEquals("name", ad.getGenre().getName());
@@ -409,12 +381,11 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test artist node.
-   * DOCUMENT_ME
+   * 
    */
   public final void testArtistNode() {
     ArtistNode ad = new ArtistNode(getArtist());
     assertNotNull(ad);
-
     JUnitHelpers.ToStringTest(ad);
     assertNotNull(ad.getArtist());
     assertEquals("name", ad.getArtist().getName());
@@ -431,12 +402,11 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test year node.
-   * DOCUMENT_ME
+   * 
    */
   public final void testYearNode() {
     YearNode ad = new YearNode(getYear());
     assertNotNull(ad);
-
     JUnitHelpers.ToStringTest(ad);
     assertNotNull(ad.getYear());
     assertEquals("2000", ad.getYear().getName());
@@ -453,12 +423,11 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test album node.
-   * DOCUMENT_ME
+   * 
    */
   public final void testAlbumNode() {
     AlbumNode ad = new AlbumNode(getAlbum());
     assertNotNull(ad);
-
     JUnitHelpers.ToStringTest(ad);
     assertNotNull(ad.getAlbum());
     assertEquals("name", ad.getAlbum().getName());
@@ -475,12 +444,11 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test track node.
-   * DOCUMENT_ME
+   * 
    */
   public final void testTrackNode() {
     TrackNode ad = new TrackNode(getTrack());
     assertNotNull(ad);
-
     JUnitHelpers.ToStringTest(ad);
     assertNotNull(ad.getTrack());
     assertEquals("name", ad.getTrack().getName());
@@ -498,7 +466,7 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test discovery date node.
-   * DOCUMENT_ME
+   * 
    */
   public final void testDiscoveryDateNode() {
     DiscoveryDateNode ad = new DiscoveryDateNode(null);
@@ -507,12 +475,11 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test tracks tree cell renderer.
-   * DOCUMENT_ME
+   * 
    */
   public final void testTracksTreeCellRenderer() {
     TracksTreeCellRenderer ad = new TracksTreeCellRenderer();
     assertNotNull(ad);
-
     Icon icon = ad.getIcon();
     // make sure we have a different icon after each call
     assertNotNull(ad.getTreeCellRendererComponent(new JTree(), new GenreNode(getGenre()), true,
@@ -547,12 +514,11 @@ public class TestTracksTreeView extends JajukTestCase {
 
   /**
    * Test tracks tree expansion listener.
-   * DOCUMENT_ME
+   * 
    */
   public final void testTracksTreeExpansionListener() {
     TracksTreeExpansionListener ad = new TracksTreeExpansionListener();
     assertNotNull(ad);
-
     {
       Genre genre = getGenre();
       assertNull(genre.getProperties().get(Const.XML_EXPANDED));
@@ -561,7 +527,6 @@ public class TestTracksTreeView extends JajukTestCase {
       ad.treeCollapsed(new TreeExpansionEvent("dummy", new TreePath(new GenreNode(genre))));
       assertNull(genre.getProperties().get(Const.XML_EXPANDED));
     }
-
     {
       Artist genre = getArtist();
       assertNull(genre.getProperties().get(Const.XML_EXPANDED));
@@ -570,7 +535,6 @@ public class TestTracksTreeView extends JajukTestCase {
       ad.treeCollapsed(new TreeExpansionEvent("dummy", new TreePath(new ArtistNode(genre))));
       assertNull(genre.getProperties().get(Const.XML_EXPANDED));
     }
-
     {
       Album genre = getAlbum();
       assertNull(genre.getProperties().get(Const.XML_EXPANDED));
@@ -579,7 +543,6 @@ public class TestTracksTreeView extends JajukTestCase {
       ad.treeCollapsed(new TreeExpansionEvent("dummy", new TreePath(new AlbumNode(genre))));
       assertNull(genre.getProperties().get(Const.XML_EXPANDED));
     }
-
     {
       Year genre = getYear();
       assertNull(genre.getProperties().get(Const.XML_EXPANDED));

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,12 +16,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.base;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.ConstTest;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.services.startup.StartupCollectionService;
@@ -32,17 +33,15 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestCollection extends JajukTestCase {
-
   /**
    * Test method for {@link org.jajuk.base.Collection#startDocument()}.
    */
   public final void testStartDocument() {
     Collection coll = Collection.getInstance();
     assertNotNull(coll);
-
     // just call it, this is part of the SAX interfaces
     coll.startDocument();
   }
@@ -53,7 +52,6 @@ public class TestCollection extends JajukTestCase {
   public final void testEndDocument() {
     Collection coll = Collection.getInstance();
     assertNotNull(coll);
-
     // just call it, this is part of the SAX interfaces
     coll.endDocument();
   }
@@ -73,80 +71,37 @@ public class TestCollection extends JajukTestCase {
    */
   public final void testCommit() throws Exception {
     StartupCollectionService.registerItemManagers();
-
     Collection coll = Collection.getInstance();
     assertNotNull(coll);
-
-    java.io.File file = java.io.File.createTempFile("testcoll", ".xml");
-
+    java.io.File file = java.io.File.createTempFile("testcoll", ".xml", new java.io.File(
+        ConstTest.SAMPLE_WORKSPACE_PATH));
     // delete the file before writing the collection
     assertTrue(file.delete());
-
     // commit without any item
     Collection.commit(file);
-
     // now it should exist and have some content
     assertTrue(file.exists());
     String str = FileUtils.readFileToString(file);
     assertTrue(str, StringUtils.isNotBlank(str));
     assertTrue(str, str.contains("<" + Const.XML_COLLECTION));
-
-    // now with some content
-    DeviceManager.getInstance().registerDevice("testdevice", 1,
-        System.getProperty("java.io.tmpdir"));
-    GenreManager.getInstance().registerGenre("cooldown");
-    {
-      Genre genre = GenreManager.getInstance().registerGenre("name");
-      Album album = AlbumManager.getInstance().registerAlbum("name", 23);
-      album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
-      // this test
-
-      Artist artist = ArtistManager.getInstance().registerArtist("name");
-      Year year = YearManager.getInstance().registerYear("2000");
-      YearManager.getInstance().registerYear("2000");
-
-      Type type = TypeManager.getInstance().registerType("MP3", "mp3", null, null);
-
-      TrackManager.getInstance()
-          .registerTrack("name5", album, genre, artist, 120, year, 1, type, 1);
-    }
-    YearManager.getInstance().registerYear("1900");
-    Device device = new Device("6", System.getProperty("java.io.tmpdir"));
-    device.setUrl(System.getProperty("java.io.tmpdir"));
-    Directory dir = JUnitHelpers.getDirectory();
-    PlaylistManager.getInstance().registerPlaylistFile("4", "plf", dir);
-    ArtistManager.getInstance().registerArtist("testartist");
-    AlbumManager.getInstance().registerAlbum("album2", "artist1", 0);
-
-    device = DeviceManager.getInstance().registerDevice("7", 0,
-        System.getProperty("java.io.tmpdir"));
-    DirectoryManager.getInstance().registerDirectory(device);
-    device = new Device("6", System.getProperty("java.io.tmpdir"));
-    device.setUrl(System.getProperty("java.io.tmpdir"));
-    FileManager.getInstance().registerFile("thisfile.mp3", dir,
-        TrackManager.getInstance().getTracks().get(0), 120, 100);
-
+    //Add a sample track and files
+    JUnitHelpers.getFile();
+    JUnitHelpers.getTrack(5);
     // delete the file before writing the collection
     assertTrue(file.delete());
-
     // commit without any item
     Collection.commit(file);
-
     // now it should exist and have some content
     assertTrue(file.exists());
     str = FileUtils.readFileToString(file);
     assertTrue(str, StringUtils.isNotBlank(str));
     assertTrue(str, str.contains("<" + Const.XML_COLLECTION));
     // it should also contain the content that we added
-    assertTrue(str, str.contains("testdevice"));
-    assertTrue(str, str.contains("cooldown"));
-
+    assertTrue(str, str.contains("sample_device"));
     // add test for strange error in this testcase on hudson
     assertNotNull(UtilString.getAdditionDateFormatter());
-
     // also test loading here
     Collection.load(file);
-
     // TODO: loading needs more testing and verification of results after
     // loading...
   }
@@ -160,7 +115,7 @@ public class TestCollection extends JajukTestCase {
 
   /**
    * Test load not exists.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */

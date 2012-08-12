@@ -20,44 +20,33 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.lastfm;
 
 import java.awt.Image;
-import java.io.File;
 import java.util.List;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
-import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang.StringUtils;
-import org.jajuk.base.Track;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 
 /**
  * The Class LastFmAlbumsRunnable.
  */
 public class LastFmAlbumsRunnable implements Runnable {
-
   /** The listener. */
   ContextListener listener;
-
   /** The service. */
   private LastFmService service;
-
   /** The audio object. */
   AudioObject audioObject;
-
   /** The interrupted. */
   private volatile boolean interrupted;
-
   /** The retrieve artist info. */
   private boolean retrieveArtistInfo = true;
-
   /** The id. */
   long id;
 
@@ -93,12 +82,10 @@ public class LastFmAlbumsRunnable implements Runnable {
   public void run() {
     if (!interrupted) {
       listener.setLastAlbumRetrieved(null, id);
-
       if (retrieveArtistInfo) {
         listener.setLastArtistRetrieved(null, id);
       }
     }
-
     // Get wiki start for artist
     final String wikiText = service.getWikiText(audioObject.getArtist());
     final String wikiURL = service.getWikiURL(audioObject.getArtist());
@@ -108,7 +95,6 @@ public class LastFmAlbumsRunnable implements Runnable {
         listener.notifyWikiInfoRetrieved(wikiText, wikiURL, id);
       }
     });
-
     Image image = null;
     AlbumInfo album = null;
     List<AlbumInfo> albums = null;
@@ -118,7 +104,6 @@ public class LastFmAlbumsRunnable implements Runnable {
           : audioObject.getAlbumArtist();
       album = service.getAlbum(artist, audioObject.getAlbum());
       final AlbumInfo albumHelp = album;
-
       listener.setAlbum(albumHelp, id);
       if (album != null) {
         image = service.getImage(album);
@@ -133,13 +118,11 @@ public class LastFmAlbumsRunnable implements Runnable {
         }
       });
     }
-
     try {
       Thread.sleep(1000); // Wait a second to prevent IP banning
     } catch (InterruptedException e) {
       Log.debug("albums runnable interrupted");
     }
-
     // If we have to retrieve artist info do it. If not, get previous retrieved
     // albums list
     if (retrieveArtistInfo) {
@@ -148,7 +131,7 @@ public class LastFmAlbumsRunnable implements Runnable {
         if (StringUtils.isNotBlank(sArtist)
             && !sArtist.equalsIgnoreCase(Messages.getString("unknown_artist"))) {
           AlbumListInfo albumList = service.getAlbumList(sArtist, true, 0);
-          if (albumList != null) {
+          if (albumList != null) { //NOSONAR
             albums = albumList.getAlbums();
           }
         }
@@ -160,7 +143,6 @@ public class LastFmAlbumsRunnable implements Runnable {
     } else {
       albums = listener.getAlbums();
     }
-
     if (album == null && albums != null && !interrupted) {
       // Try to find an album which fits
       AlbumInfo auxAlbum = null;
@@ -183,8 +165,8 @@ public class LastFmAlbumsRunnable implements Runnable {
               continue;
             }
           }
-          if (!audioObject.getAlbum().toLowerCase(Locale.getDefault()).contains(
-              t.toLowerCase(Locale.getDefault()))) {
+          if (!audioObject.getAlbum().toLowerCase(Locale.getDefault())
+              .contains(t.toLowerCase(Locale.getDefault()))) {
             matches = false;
           }
           tokensAnalyzed++;
@@ -211,7 +193,6 @@ public class LastFmAlbumsRunnable implements Runnable {
         });
       }
     }
-
   }
 
   /**
@@ -244,35 +225,5 @@ public class LastFmAlbumsRunnable implements Runnable {
    */
   private boolean forbiddenToken(String t) {
     return t.contains("/");
-  }
-
-  /**
-   * Returns an image associated to an audio file, with following order: - If a
-   * image saved by aTunes exists, then return it. - If not, find an internal
-   * image - If not, find an external image - If not, return null
-   *
-   * @param track DOCUMENT_ME
-   * @param width Width in pixels or -1 to keep original width
-   * @param height Height in pixels or -1 to keep original height
-   * @return the image for audio file
-   */
-  public static ImageIcon getImageForAudioFile(Track track, int width, int height) {
-    ImageIcon result = null;
-
-    File fileCover = track.getAlbum().findCover();
-    if (fileCover != null) {
-      if (fileCover.exists()) {
-        ImageIcon image = new ImageIcon(fileCover.getAbsolutePath());
-        if (width == -1 || height == -1) {
-          return image;
-        }
-        int maxSize = (image.getIconWidth() > image.getIconHeight()) ? image.getIconWidth() : image
-            .getIconHeight();
-        int newWidth = (int) ((float) image.getIconWidth() / (float) maxSize * width);
-        int newHeight = (int) ((float) image.getIconHeight() / (float) maxSize * height);
-        return UtilGUI.getResizedImage(image, newWidth, newHeight);
-      }
-    }
-    return result;
   }
 }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.cddb;
 
@@ -28,14 +28,12 @@ import org.jajuk.base.Track;
  * A CDDB track.
  */
 public class CDDBTrack implements FreedbTrack {
-
-  /** DOCUMENT_ME. */
   Track track;
 
   /**
    * Instantiates a new cDDB track.
    * 
-   * @param track DOCUMENT_ME
+   * @param track 
    */
   public CDDBTrack(Track track) {
     this.track = track;
@@ -47,7 +45,6 @@ public class CDDBTrack implements FreedbTrack {
   @Override
   public int getLength() {
     return (int) track.getDuration();
-
   }
 
   /* (non-Javadoc)
@@ -74,5 +71,4 @@ public class CDDBTrack implements FreedbTrack {
   public String toString() {
     return "CDDB: " + track.toString();
   }
-
 }

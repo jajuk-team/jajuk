@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.util.List;
@@ -34,29 +33,22 @@ import org.jajuk.util.log.Log;
  * Is responsible to manage various UI items changed during refreshing.
  */
 public class RefreshReporter {
-
-  /** DOCUMENT_ME. */
   protected Device device;
-
-  /** DOCUMENT_ME. */
   protected int dirTotal;
-
-  /** DOCUMENT_ME. */
   protected int dirCount;
-
   /** Actual refresh date start*. */
   protected long lRefreshDateStart;
-
   /** Number of new files found during refresh for stats. */
   protected int iNbNewFiles;
-
   /** Number of corrupted files found during refresh for stats. */
   protected int iNbCorruptedFiles;
+  /** Number of files or playlists removed during refresh */
+  protected int droppedFileOrPlaylist;
 
   /**
    * Instantiates a new refresh reporter.
    * 
-   * @param device DOCUMENT_ME
+   * @param device 
    */
   public RefreshReporter(Device device) {
     this.device = device;
@@ -64,7 +56,7 @@ public class RefreshReporter {
 
   /**
    * Startup.
-   * DOCUMENT_ME
+   * 
    */
   public void startup() {
     // reset all values as this object is reused
@@ -100,6 +92,14 @@ public class RefreshReporter {
   }
 
   /**
+  * Notify dropped file or playlist.
+  * 
+  */
+  public void notifyFileOrPlaylistDropped() {
+    droppedFileOrPlaylist++;
+  }
+
+  /**
    * Notify new file.
    * 
    */
@@ -119,17 +119,20 @@ public class RefreshReporter {
    * Builds the final message.
    * 
    * 
-   * @param time DOCUMENT_ME
+   * @param time 
    * 
    * @return the string
    */
   protected String buildFinalMessage(long time) {
-    StringBuilder sbOut = new StringBuilder("[").append(device.getName()).append(
-        Messages.getString("Device.25"))
-        .append(((time < 1000) ? time + " ms" : time / 1000 + " s")).append(" - ").append(
-            iNbNewFiles).append(Messages.getString("Device.27"));
+    StringBuilder sbOut = new StringBuilder("[").append(device.getName())
+        .append(Messages.getString("Device.25"))
+        .append(((time < 1000) ? time + " ms" : time / 1000 + " s")).append(" - ")
+        .append(iNbNewFiles).append(Messages.getString("Device.27"));
     if (iNbCorruptedFiles > 0) {
       sbOut.append(" - ").append(iNbCorruptedFiles).append(Messages.getString("Device.43"));
+    }
+    if (droppedFileOrPlaylist > 0) {
+      sbOut.append(" - ").append(droppedFileOrPlaylist).append(Messages.getString("Device.48"));
     }
     return sbOut.toString();
   }
@@ -156,10 +159,9 @@ public class RefreshReporter {
    * Callback method when an update state is required. Can be overwritten for
    * specific behaviors
    * 
-   * @param dir DOCUMENT_ME
+   * @param dir 
    */
   public void updateState(Directory dir) {
     // Intentionnal NOP
   }
-
 }

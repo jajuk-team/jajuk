@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.base;
 
@@ -26,25 +26,24 @@ import org.jajuk.JUnitHelpers;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestYear extends TestCase {
-
   /**
-   * Test method for {@link org.jajuk.base.Year#getDesc()}.
+   * Test method for {@link org.jajuk.base.Year#getTitle()}.
    */
   public void testGetDesc() {
     Year year = new Year("1", "1998");
-    assertNotNull(year.getDesc());
-    assertTrue(year.getDesc().contains("1998"));
+    assertNotNull(year.getTitle());
+    assertTrue(year.getTitle().contains("1998"));
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Year#getLabel()}.
+   * Test method for {@link org.jajuk.base.Year#getXMLTag()}.
    */
   public void testGetLabel() {
     Year year = new Year("1", "1998");
-    assertEquals(Const.XML_YEAR, year.getLabel());
+    assertEquals(Const.XML_YEAR, year.getXMLTag());
   }
 
   /**
@@ -99,7 +98,6 @@ public class TestYear extends TestCase {
   public void testGetName2() {
     Year year = new Year("1", "1998");
     assertNotNull(year.getName2());
-
     // test with zero-year
     year = new Year("1", "0");
     assertNotNull(year.getName2());
@@ -113,10 +111,8 @@ public class TestYear extends TestCase {
     assertTrue(new Year("1", "1998").looksValid());
     assertTrue(new Year("1", "1001").looksValid());
     assertTrue(new Year("1", "2999").looksValid());
-
     assertFalse(new Year("1", "1000").looksValid());
     assertFalse(new Year("1", "-340").looksValid());
     assertFalse(new Year("1", "10000").looksValid());
   }
-
 }

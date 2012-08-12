@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.views;
 
@@ -25,6 +25,7 @@ import ext.services.lastfm.LastFmService;
 
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Set;
@@ -57,28 +58,19 @@ import org.jdesktop.swingx.JXBusyLabel;
  * Display Artist bio and albums.
  */
 public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** The artist picture + labels. */
   private LastFmArtistThumbnail artistThumb;
-
   /** The artist bio (from last.fm wiki) */
   private JTextArea jtaArtistDesc;
-
-  /** DOCUMENT_ME. */
   private JScrollPane jspAlbums;
-
-  /** DOCUMENT_ME. */
   private String bio;
-
-  /** DOCUMENT_ME. */
   private ArtistInfo artistInfo;
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.views.IView#getDesc()
    */
   @Override
@@ -88,24 +80,22 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.views.IView#initUI()
    */
   @Override
   public void initUI() {
     // register to player events
     ObservationManager.register(this);
-
     // by default, show reseted view
     reset();
-
     // Update initial status
     UtilFeatures.updateStatus(this);
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   @Override
@@ -129,7 +119,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
    */
   @Override
@@ -167,7 +157,6 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
             add(busy1, "center");
             revalidate();
             repaint();
-
             ArtistView.this.artist = artist.getName();
             // Display the panel only if the artist is not unknown
             if (!artist.seemsUnknown()) {
@@ -180,7 +169,6 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
         }
       }
     });
-
   }
 
   /* (non-Javadoc)
@@ -208,20 +196,29 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.helpers.TwoStepsDisplayable#longCall()
    */
   @Override
   public Object longCall() {
+    final int iLocalEventID = iEventID;
     // Call last.fm wiki
     bio = LastFmService.getInstance().getWikiText(artist);
     artistInfo = LastFmService.getInstance().getArtist(artist);
     // Prefetch artist thumbs
     try {
-      preFetchOthersAlbum();
-      preFetchSimilarArtists();
+      preFetchOthersAlbum(iLocalEventID);
+      preFetchSimilarArtists(iLocalEventID);
     } catch (UnknownHostException e) {
       Log.warn("Could not contact host for loading album information: {{" + e.getMessage() + "}}");
+    } catch (IOException e) {
+      if (e.getMessage().contains(" 403 ")) {
+        // server responded with code "forbidden"
+        Log.warn("Server returned an error while fetching images: " + e.getMessage());
+      } else {
+        // other exception
+        Log.error(e);
+      }
     } catch (Exception e) {
       Log.error(e);
     }
@@ -230,7 +227,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.helpers.TwoStepsDisplayable#shortCall(java.lang.Object)
    */
   @Override
@@ -240,7 +237,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     // Artist unknown from last.fm, leave
     if (artistInfo == null
     // If image url is void, last.fm doesn't provide enough data about this
-        // artist, we reset the view
+    // artist, we reset the view
         || StringUtils.isBlank(artistInfo.getImageUrl())) {
       reset();
       return;
@@ -249,7 +246,6 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     // No known icon next to artist thumb
     artistThumb.setArtistView(true);
     artistThumb.populate();
-
     jtaArtistDesc = new JTextArea(bio) {
       private static final long serialVersionUID = 9217998016482118852L;
 
@@ -265,13 +261,10 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     jtaArtistDesc.setLineWrap(true);
     jtaArtistDesc.setWrapStyleWord(true);
     jtaArtistDesc.setOpaque(false);
-
     JScrollPane jspWiki = new JScrollPane(jtaArtistDesc);
     jspWiki.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     jspWiki.setBorder(null);
-
     jspWiki.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-
     // Add items, layout is different according wiki text availability
     if (StringUtils.isNotBlank(jtaArtistDesc.getText())) {
       setLayout(new MigLayout("ins 5,gapy 5", "[grow]", "[grow][20%!][grow]"));
@@ -288,5 +281,4 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     revalidate();
     repaint();
   }
-
 }

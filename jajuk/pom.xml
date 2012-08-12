@@ -4,7 +4,7 @@
 	<groupId>org.jajuk</groupId>
 	<artifactId>jajuk</artifactId>
 	<name>Jajuk</name>
-	<version>1.9.6</version>
+	<version>1.10</version>
 	<description>Jajuk is a Java music organizer for all platforms. The
 		main goal
 		of this project is to provide a fully-featured application to
@@ -55,6 +55,15 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+            		<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<encoding>UTF-8</encoding>
+					<docencoding>UTF-8</docencoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.4.2</version>
 				<configuration>
@@ -75,14 +84,14 @@
 	</build>
 	<dependencies>
 		<dependency>
-			<groupId>jfree</groupId>
-			<artifactId>jcommon</artifactId>
-			<version>1.0.2</version>
-		</dependency>
-		<dependency>
     			<groupId>com.google.guava</groupId>
     			<artifactId>guava</artifactId>
     			<version>11.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>jfree</groupId>
+			<artifactId>jcommon</artifactId>
+			<version>1.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-collections</groupId>

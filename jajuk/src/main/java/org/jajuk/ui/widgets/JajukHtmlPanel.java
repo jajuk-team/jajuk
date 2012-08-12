@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.widgets;
 
 import java.io.BufferedWriter;
@@ -58,20 +57,13 @@ import org.xml.sax.SAXException;
  * Cobra browser HTML panel.
  */
 public class JajukHtmlPanel extends HtmlPanel {
-
-  /** The Constant COLON.  DOCUMENT_ME */
+  /** The Constant COLON.   */
   private static final String COLON = " : ";
-
-  /** The Constant URL_COLON.  DOCUMENT_ME */
+  /** The Constant URL_COLON.   */
   private static final String URL_COLON = "URL: ";
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -4033441908072591661L;
-
-  /** DOCUMENT_ME. */
   private final SimpleHtmlRendererContext rcontext;
-
-  /** DOCUMENT_ME. */
   private final DocumentBuilderImpl dbi;
 
   /**
@@ -89,11 +81,10 @@ public class JajukHtmlPanel extends HtmlPanel {
   /**
    * Display a wikipedia url.
    *
-   * @param url DOCUMENT_ME
-   * @param lang DOCUMENT_ME
+   * @param url 
+   * @param lang 
    */
   public void setURL(final URL url, final String lang) {
-
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
       @Override
       public Void doInBackground() {
@@ -101,10 +92,8 @@ public class JajukHtmlPanel extends HtmlPanel {
             + '/' + UtilSystem.getOnlyFile(url.toString() + ".html"));
         try {
           setCursor(UtilGUI.WAIT_CURSOR);
-
           // first indicate that we are loading a new page
           setLoading(url);
-
           String sPage = DownloadManager.downloadText(url);
           // Leave if no result
           if (sPage == null) {
@@ -133,7 +122,6 @@ public class JajukHtmlPanel extends HtmlPanel {
         } catch (FileNotFoundException e) {
           // This happens whenever the Artist is not listed on Wikipedia, so we should report this more user-friendly
           Log.debug("Could not read page: {{" + url.toString() + " Cache: " + page + "}}");
-
           try {
             setFailedToLoad(Messages.getString("WikipediaView.9") + ": " + url.toString());
           } catch (IOException e1) {
@@ -144,9 +132,8 @@ public class JajukHtmlPanel extends HtmlPanel {
         } catch (IOException e) {
           // report IOException only as warning here as we can expect this to
           // happen frequently with images on the net
-          Log.warn("Could not read page: {{" + url.toString() + " Cache: " + page + "}}", e
-              .getMessage());
-
+          Log.warn("Could not read page: {{" + url.toString() + " Cache: " + page + "}}",
+              e.getMessage());
           try {
             setFailedToLoad(URL_COLON + url + COLON + e.getClass().getSimpleName() + COLON
                 + e.getMessage());
@@ -157,7 +144,6 @@ public class JajukHtmlPanel extends HtmlPanel {
           }
         } catch (Exception e) {
           Log.error(e);
-
           try {
             setFailedToLoad(URL_COLON + url + COLON + e.getClass().getSimpleName() + COLON
                 + e.getMessage());
@@ -225,8 +211,8 @@ public class JajukHtmlPanel extends HtmlPanel {
   /**
    * Make the internal operations.
    * 
-   * @param sPage DOCUMENT_ME
-   * @param page DOCUMENT_ME
+   * @param sPage 
+   * @param page 
    * 
    * @throws IOException Signals that an I/O exception has occurred.
    * @throws SAXException the SAX exception
@@ -251,7 +237,6 @@ public class JajukHtmlPanel extends HtmlPanel {
       // A documentURI should be provided to resolve relative
       // URIs.
       Document document = dbi.parse(is);
-
       // Now set document in panel. This is what causes the
       // document to render.
       setDocument(document, rcontext);
@@ -262,7 +247,7 @@ public class JajukHtmlPanel extends HtmlPanel {
 
   /**
    * Back.
-   * DOCUMENT_ME
+   * 
    */
   public void back() {
     rcontext.back();

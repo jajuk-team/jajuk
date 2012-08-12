@@ -1,4 +1,4 @@
-This is the full Jajuk SVN repository 
+This is the full Jajuk repository 
 
 --- USING MAVEN ---
 

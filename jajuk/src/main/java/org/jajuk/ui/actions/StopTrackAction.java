@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
@@ -31,10 +31,9 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class StopTrackAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -57,11 +56,9 @@ public class StopTrackAction extends JajukAction {
       public void run() {
         try {
           QueueModel.stopRequest();
-
           // Save the stopped state (do not do it in the QueueModel.stopRequest() 
           // method because it must be set only on a human request, not at jajuk engine shutdown      
           Conf.setProperty(Const.CONF_STARTUP_STOPPED, "true");
-
         } catch (Exception e) {
           Log.error(e);
         }

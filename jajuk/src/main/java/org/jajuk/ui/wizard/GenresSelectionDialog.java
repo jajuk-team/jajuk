@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.wizard;
 
 import java.awt.Dimension;
@@ -44,6 +43,7 @@ import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.widgets.OKCancelPanel;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
@@ -52,36 +52,22 @@ import org.jajuk.util.log.Log;
  * Allow a user to select a list of genres.
  */
 public class GenresSelectionDialog extends JajukJDialog implements ActionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** DOCUMENT_ME. */
   JComboBox jcbAmbiences;
-
-  /** DOCUMENT_ME. */
   JList jlist;
-
-  /** DOCUMENT_ME. */
   OKCancelPanel okc;
-
-  /** DOCUMENT_ME. */
   Set<Genre> selectedGenres;
-
-  /** DOCUMENT_ME. */
   Set<Genre> disabledGenres;
-
-  /** DOCUMENT_ME. */
   List<String> list;
 
   /**
    * The Constructor.
    * 
-   * @param disabledGenres DOCUMENT_ME
+   * @param disabledGenres 
    */
-  @SuppressWarnings("unchecked")
-  public GenresSelectionDialog(Set disabledGenres) {
-    super();
+  public GenresSelectionDialog(Set<Genre> disabledGenres) {
+    super(JajukMainWindow.getInstance(), true);
     this.selectedGenres = new HashSet<Genre>();
     this.disabledGenres = disabledGenres;
     setLocationByPlatform(true);
@@ -131,16 +117,16 @@ public class GenresSelectionDialog extends JajukJDialog implements ActionListene
 
   /**
    * Inits the ui.
-   * DOCUMENT_ME
+   * 
    */
   @SuppressWarnings("unchecked")
   private void initUI() {
-    list = (List) (GenreManager.getInstance().getGenresList()).clone();
+    list = (List<String>) (GenreManager.getInstance().getGenresList()).clone();
     // remove disabled items
     if (disabledGenres != null) {
-      Iterator it = list.iterator();
+      Iterator<String> it = list.iterator();
       while (it.hasNext()) {
-        String testedGenre = (String) it.next();
+        String testedGenre = it.next();
         for (Genre disabledGenre : disabledGenres) {
           if (disabledGenre.getName2().equals(testedGenre)) {
             it.remove();

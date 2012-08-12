@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.base;
 
@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
@@ -57,19 +56,17 @@ import org.jajuk.util.log.Log;
  * Logical item.
  */
 public class Album extends LogicalItem implements Comparable<Album> {
-
   /** For perfs, we cache the associated tracks. This cache is filled by the TrackManager using the getTracksCache() method */
   private final List<Track> cache = new ArrayList<Track>(15);
-
   /** This array stores thumbnail presence for all the available size (performance) By default all booleans are false. */
   private boolean[] availableTumbs;
 
   /**
    * Album constructor.
-   * 
-   * @param sName DOCUMENT_ME
-   * @param sId DOCUMENT_ME
-   * @param discID DOCUMENT_ME
+   *
+   * @param sId 
+   * @param sName 
+   * @param discID 
    */
   Album(String sId, String sName, long discID) {
     super(sId, sName);
@@ -114,7 +111,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * <p>
    * Used to display ordered lists.
    * 
-   * @param otherAlbum DOCUMENT_ME
+   * @param otherAlbum 
    * 
    * @return comparison result
    */
@@ -123,7 +120,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (otherAlbum == null) {
       return -1;
     }
-
     // compare using name and id to differentiate unknown items
     StringBuilder current = new StringBuilder(getName2());
     current.append(getID());
@@ -133,8 +129,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Return whether this item is strictly unknown : contains no tag
-   * 
+   * Return whether this item is strictly unknown : contains no tag.
+   *
    * @return whether this item is Unknown or not
    */
   public boolean isUnknown() {
@@ -142,10 +138,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-  * Return whether this item seems unknown (fuzzy search)
-  * 
-  * @return whether this item seems unknown
-  */
+   * Return whether this item seems unknown (fuzzy search).
+   *
+   * @return whether this item seems unknown
+   */
   public boolean seemsUnknown() {
     return isUnknown() || "unknown".equalsIgnoreCase(getName())
         || Messages.getString(UNKNOWN_ALBUM).equalsIgnoreCase(getName());
@@ -157,7 +153,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  public final String getLabel() {
+  public final String getXMLTag() {
     return XML_ALBUM;
   }
 
@@ -165,7 +161,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
     * @see org.jajuk.base.Item#getTitle()
     */
   @Override
-  public String getDesc() {
+  public String getTitle() {
     return Messages.getString("Item_Album") + " : " + getName2();
   }
 
@@ -205,7 +201,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Handle artist.
-   * DOCUMENT_ME
+   * 
    * 
    * @return the string
    */
@@ -221,7 +217,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Handle genre.
-   * DOCUMENT_ME
+   * 
    * 
    * @return the string
    */
@@ -237,7 +233,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Handle year.
-   * DOCUMENT_ME
+   * 
    * 
    * @return the string
    */
@@ -275,7 +271,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (first.getAlbumArtist() != null) {
       sb.append(first.getAlbumArtist().getName2());
     }
-
     Genre genre = getGenre();
     if (genre != null) {
       sb.append(genre.getName2());
@@ -300,14 +295,19 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * file is not guarantee to exist, so use a try/catch around a future access to this method.
    */
   public File findCover() {
-    String discoveredCoverPath = getStringValue(XML_ALBUM_DISCOVERED_COVER);
+    // first check if we have a selected cover that still exists
     String selectedCoverPath = getStringValue(XML_ALBUM_SELECTED_COVER);
     if (StringUtils.isNotBlank(selectedCoverPath) && new File(selectedCoverPath).exists()) {
       // If user-selected cover is available, just return its path
       return new File(selectedCoverPath);
-    } else if (StringUtils.isNotBlank(discoveredCoverPath) && COVER_NONE.equals(discoveredCoverPath)) {
+    }
+    // otherwise check if the "discovered cover" is set to "none"
+    String discoveredCoverPath = getStringValue(XML_ALBUM_DISCOVERED_COVER);
+    if (StringUtils.isNotBlank(discoveredCoverPath) && COVER_NONE.equals(discoveredCoverPath)) {
       return null;
-    } else if (StringUtils.isNotBlank(discoveredCoverPath)) {
+    }
+    // now check if the "discovered cover" is available
+    if (StringUtils.isNotBlank(discoveredCoverPath)) {
       // Check if discovered cover still exist. There is an overhead
       // drawback but otherwise, the album's cover
       // property may be stuck to an old device's cover url.
@@ -315,11 +315,15 @@ public class Album extends LogicalItem implements Comparable<Album> {
       // Regularly dropped.
       Device device = DeviceManager.getInstance().getDeviceByPath(new File(discoveredCoverPath));
       // If the device is not mounted, do not perform this existence check up
-      if (device != null && device.isMounted()) {
-        if (new File(discoveredCoverPath).exists()) {
+      if (device != null) {
+        if (device.isMounted()) {
+          if (new File(discoveredCoverPath).exists()) {
+            return new File(discoveredCoverPath);
+          }
+        } else {
           return new File(discoveredCoverPath);
         }
-      } else {
+      } else if (new File(discoveredCoverPath).exists()) {
         return new File(discoveredCoverPath);
       }
     }
@@ -328,7 +332,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
     // to reach other devices covers and display them together
     List<Track> lTracks = cache;
     if (lTracks.size() == 0) {
-      setProperty(XML_ALBUM_DISCOVERED_COVER, COVER_NONE);
       return null;
     }
     // List at directories we have to look in
@@ -344,20 +347,16 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (dirs.size() == 0) {
       return null;
     }
-
     // look for tag cover if tag supported for this type
     File cover = findTagCover();
-
     // none ? look for standard cover in collection
     if (cover == null) {
       cover = findCoverFile(dirs, true);
     }
-
     // none ? OK, return first cover file we find
     if (cover == null) {
       cover = findCoverFile(dirs, false);
     }
-
     // [PERF] Still nothing ? ok, set no cover to avoid further searches 
     if (cover == null) {
       setProperty(XML_ALBUM_DISCOVERED_COVER, COVER_NONE);
@@ -388,7 +387,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
     //Make sure to sort the cache
     List<Track> sortedTracks = new ArrayList<Track>(cache);
     Collections.sort(sortedTracks, new TrackComparator(TrackComparatorType.ALBUM));
-
     for (Track track : sortedTracks) {
       for (org.jajuk.base.File file : track.getReadyFiles()) {
         try {
@@ -431,7 +429,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
           if (onlyStandardCovers && !UtilFeatures.isStandardCover(files[i])) {
             continue;
           }
-
           // Test the image is not corrupted
           try {
             ImageIcon ii = new ImageIcon(files[i].getAbsolutePath());
@@ -499,11 +496,9 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (img == null) {
       return null;
     }
-
     ImageIcon icon = new ImageIcon(img);
     // Free thumb memory (DO IT AFTER FULL ImageIcon loading)
     img.flush();
-
     return icon;
   }
 
@@ -562,7 +557,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (cache.size() == 0) {
       return Const.UNKNOWN_ARTIST;
     }
-
     Artist artist = getArtist();
     if (artist != null && !artist.isUnknown()) {
       return artist.getName();
@@ -659,51 +653,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Returns true, if the pattern matches the specified property.
-   * 
-   * Currently only Const.XML_ALBUM and Const.XML_GENRE are supported
-   * properties. The pattern is used for a case-insensitive sub-string match,
-   * no regular expression is used!
-   * 
-   * @param property The property to use for the match, currently either Cosnt.XML_ALBUM
-   * or Const.XML_GENRE
-   * @param pattern The string to search for as case-insensitive sub-string
-   * 
-   * @return true if either parameter is null or if the pattern matches, false otherwise.
-   */
-  public boolean matches(String property, String pattern) {
-    if (StringUtils.isBlank(property) || StringUtils.isBlank(pattern)) {
-      return true;
-    }
-
-    String sValue = null;
-    if (Const.XML_ALBUM.equals(property)) {
-      sValue = getName2();
-    } else if (Const.XML_GENRE.equals(property)) {
-      Genre genre = getGenre();
-      if (genre == null) {
-        return false;
-      }
-      sValue = genre.getName2();
-    }
-    if (sValue == null) {
-      return false;
-    }
-
-    // do not use regexp matches(<string>) because the string may contain
-    // characters to be escaped
-    return (sValue.toLowerCase(Locale.getDefault()).indexOf(
-        pattern.toLowerCase(Locale.getDefault())) != -1);
-  }
-
-  /**
-   * Reset tracks cache.
-   */
-  protected void resetTracks() {
-    cache.clear();
-  }
-
-  /**
    * Gets the tracks cache.
    * 
    * @return ordered tracks cache for this album (perf)
@@ -729,7 +678,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * Set that the thumb for given size is available.
    * 
    * @param size (thumb size like 50)
-   * @param available DOCUMENT_ME
+   * @param available 
    */
   public void setAvailableThumb(int size, boolean available) {
     if (availableTumbs == null) {
@@ -757,4 +706,15 @@ public class Album extends LogicalItem implements Comparable<Album> {
     return availableTumbs[size / 50 - 1];
   }
 
+  /**
+   *  Force any new cover search before displaying it if the album is set "none" cover (for example, if the album contains no cover at all, 
+   *  the album is stuck as NONE_COVER while a thumb refresh is not done manually by the user). 
+   *  If a new cover is added from outside jajuk and no save or save as action is done, the new thumb is not built from the new cover so we force it.
+   */
+  public void resetCoverCache() {
+    String cachedCoverPath = getStringValue(Const.XML_ALBUM_DISCOVERED_COVER);
+    if (Const.COVER_NONE.equals(cachedCoverPath)) {
+      setProperty(Const.XML_ALBUM_DISCOVERED_COVER, "");
+    }
+  }
 }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.qdwizard;
 
@@ -85,54 +85,37 @@ import org.jajuk.util.log.Log;
  * @created 1 may 2006
  */
 public abstract class Wizard implements ActionListener, WindowListener {
-
   /** Wizard name. */
   private String sName;
-
   /** Current screen. */
   private Screen current;
-
   /** Wizard left side icon. */
   private ImageIcon icon;
-
   /** Wizard data. */
   protected final static Map<String, Object> data = new HashMap<String, Object>(10);
-
   /** Wizard header. */
   private Header header;
-
   /** Wizard action Panel. */
   private ActionsPanel actions;
-
   /** Wizard dialog. */
   private JDialog dialog;
-
   /** Parent window. */
   private Frame parentWindow;
-
   /** Screens instance repository. */
   private Map<Class<? extends Screen>, Screen> hmClassScreens = new HashMap<Class<? extends Screen>, Screen>(
       10);
-
   /** Default Wizard size. */
   protected static final int DEFAULT_H_SIZE = 700;
-
-  /** The Constant DEFAULT_V_SIZE.  DOCUMENT_ME */
+  /** The Constant DEFAULT_V_SIZE.   */
   protected static final int DEFAULT_V_SIZE = 500;
-
-  /** The Constant DEFAULT_H_LAYOUT_PADDING.  DOCUMENT_ME */
+  /** The Constant DEFAULT_H_LAYOUT_PADDING.   */
   protected static final int DEFAULT_H_LAYOUT_PADDING = 5;
-
-  /** The Constant DEFAULT_V_LAYOUT_PADDING.  DOCUMENT_ME */
+  /** The Constant DEFAULT_V_LAYOUT_PADDING.   */
   protected static final int DEFAULT_V_LAYOUT_PADDING = 5;
-
   /** Was the Wizard Canceled?. */
   private boolean bCancelled;
-
   /** Layout Padding. */
   private int layoutHPadding = DEFAULT_H_LAYOUT_PADDING;
-
-  /** DOCUMENT_ME. */
   private int layoutVPadding = DEFAULT_V_LAYOUT_PADDING;
 
   /**
@@ -149,10 +132,9 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * @param iLayoutHPadding Horizontal layout padding
    * @param iLayoutVPadding Vertical layout padding
    */
-  @SuppressWarnings("unchecked")
-  public Wizard(String sName, Class initial, ImageIcon icon, Image backgroundImage,
-      Frame parentWindow, Locale locale, int iHSize, int iVSize, int iLayoutHPadding,
-      int iLayoutVPadding) {
+  public Wizard(String sName, Class<? extends Screen> initial, ImageIcon icon,
+      Image backgroundImage, Frame parentWindow, Locale locale, int iHSize, int iVSize,
+      int iLayoutHPadding, int iLayoutVPadding) {
     bCancelled = false;
     this.sName = sName;
     this.parentWindow = parentWindow;
@@ -182,9 +164,8 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * @param iHSize Horizontal size
    * @param iVSize Vertical size
    */
-  @SuppressWarnings("unchecked")
-  public Wizard(String sName, Class initial, ImageIcon icon, Frame parentWindow, Locale locale,
-      int iHSize, int iVSize) {
+  public Wizard(String sName, Class<? extends Screen> initial, ImageIcon icon, Frame parentWindow,
+      Locale locale, int iHSize, int iVSize) {
     bCancelled = false;
     this.sName = sName;
     this.parentWindow = parentWindow;
@@ -259,7 +240,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
 
   /**
    * Show.
-   * DOCUMENT_ME
+   * 
    */
   public void show() {
     dialog.setVisible(true);
@@ -327,7 +308,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
   /**
    * Set the screen to display a a class.
    * 
-   * @param screenClass DOCUMENT_ME
+   * @param screenClass 
    */
   private void setScreen(Class<? extends Screen> screenClass) {
     Screen screen = null;
@@ -352,7 +333,6 @@ public abstract class Wizard implements ActionListener, WindowListener {
       Log.error(e);
       throw new RuntimeException("setScreen " + screenClass + " caused " + e.toString(), e);
     }
-
     current = screen;
     current.setWizard(this);
     current.setCanGoPrevious((getPreviousScreen(screenClass) != null));
@@ -380,7 +360,6 @@ public abstract class Wizard implements ActionListener, WindowListener {
       // Add a listener to resize left side image if wizard window is
       // resized
       jlIcon.addComponentListener(new ComponentListener() {
-
         @Override
         public void componentShown(ComponentEvent e) {
           // nothing to do here
@@ -409,7 +388,6 @@ public abstract class Wizard implements ActionListener, WindowListener {
         public void componentHidden(ComponentEvent e) {
           // nothing to do here
         }
-
       });
     }
     dialog.add(actions, BorderLayout.SOUTH);
@@ -417,14 +395,11 @@ public abstract class Wizard implements ActionListener, WindowListener {
     jsp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     jsp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     jsp.setBorder(BorderFactory.createEmptyBorder());
-
     dialog.add(jsp, BorderLayout.NORTH);
     if (current != null) {
       dialog.add(current, BorderLayout.CENTER);
     }
-
     dialog.getRootPane().setDefaultButton(actions.jbNext);
-
     ((JPanel) dialog.getContentPane()).revalidate();
     dialog.getContentPane().repaint();
   }
@@ -432,7 +407,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
   /**
    * Set the header image.
    * 
-   * @param img DOCUMENT_ME
+   * @param img 
    */
   public void setHeaderImage(Image img) {
     header.setImage(img);
@@ -441,7 +416,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
   /**
    * Set the header icon.
    * 
-   * @param icon DOCUMENT_ME
+   * @param icon 
    */
   public void setHeaderIcon(ImageIcon icon) {
     header.setIcon(icon);
@@ -450,7 +425,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
   /**
    * Set the background color of the ActionPanel.
    * 
-   * @param color DOCUMENT_ME
+   * @param color 
    */
   public void setActionsBackgroundColor(Color color) {
     actions.setBackgroundColor(color);
@@ -459,7 +434,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
   /**
    * Set the background color of the ActionPanel's Problem notification area.
    * 
-   * @param color DOCUMENT_ME
+   * @param color 
    */
   public void setProblemBackgroundColor(Color color) {
     actions.setProblemBackgroundColor(color);
@@ -468,7 +443,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
   /**
    * Gets the previous screen.
    * 
-   * @param screen DOCUMENT_ME
+   * @param screen 
    * 
    * @return previous screen class
    */
@@ -484,7 +459,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
   /**
    * Gets the next screen.
    * 
-   * @param screen DOCUMENT_ME
+   * @param screen 
    * 
    * @return next screen class
    */
@@ -532,9 +507,9 @@ public abstract class Wizard implements ActionListener, WindowListener {
   /**
    * Icon resizing.
    * 
-   * @param img DOCUMENT_ME
-   * @param iNewWidth DOCUMENT_ME
-   * @param iNewHeight DOCUMENT_ME
+   * @param img 
+   * @param iNewWidth 
+   * @param iNewHeight 
    * 
    * @return resized icon
    */
@@ -566,7 +541,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * Called when the wizard dialog opens. Override it if you want notification
    * of this event.
    * 
-   * @param windowEvent DOCUMENT_ME
+   * @param windowEvent 
    */
   /*
    * (non-Javadoc)
@@ -585,7 +560,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * <b>caution:</b> You must always call super.windowClosed(windowEvent)
    * within the override function to ensure that the Wizard closes completely.
    * 
-   * @param windowEvent DOCUMENT_ME
+   * @param windowEvent 
    */
   /*
    * (non-Javadoc)
@@ -601,7 +576,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * Called when the wizard dialog is iconified. Override it if you want
    * notification of this event.
    * 
-   * @param windowEvent DOCUMENT_ME
+   * @param windowEvent 
    */
   /*
    * (non-Javadoc)
@@ -617,7 +592,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * Called when the wizard dialog is deiconified. Override it if you want
    * notification of this event.
    * 
-   * @param windowEvent DOCUMENT_ME
+   * @param windowEvent 
    */
   /*
    * (non-Javadoc)
@@ -633,7 +608,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * Called when the wizard dialog is activated. Override it if you want
    * notification of this event.
    * 
-   * @param windowEvent DOCUMENT_ME
+   * @param windowEvent 
    */
   /*
    * (non-Javadoc)
@@ -649,7 +624,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * Called when the wizard dialog is deactivated. Override it if you want
    * notification of this event.
    * 
-   * @param windowEvent DOCUMENT_ME
+   * @param windowEvent 
    */
   /*
    * (non-Javadoc)
@@ -663,12 +638,11 @@ public abstract class Wizard implements ActionListener, WindowListener {
 
   /**
    * Was cancelled.
-   * DOCUMENT_ME
+   * 
    * 
    * @return true if...
    */
   public boolean wasCancelled() {
     return bCancelled;
   }
-
 }

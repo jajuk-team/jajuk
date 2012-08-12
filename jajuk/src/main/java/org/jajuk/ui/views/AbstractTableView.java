@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.views;
 
 import ext.AutoCompleteDecorator;
@@ -27,6 +26,8 @@ import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
@@ -49,6 +50,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
@@ -102,91 +104,44 @@ import org.jdesktop.swingx.table.TableColumnExt;
  */
 public abstract class AbstractTableView extends ViewAdapter implements ActionListener,
     ItemListener, TableModelListener, TwoStepsDisplayable, ListSelectionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -4418626517605128694L;
-
-  /** DOCUMENT_ME. */
   JajukTable jtable;
-
-  /** DOCUMENT_ME. */
-  private JPanel jpControl;
-
-  /** DOCUMENT_ME. */
+  JPanel jpControl;
   JajukToggleButton jtbEditable;
-
-  /** DOCUMENT_ME. */
   private JLabel jlFilter;
-
-  /** DOCUMENT_ME. */
   private JComboBox jcbProperty;
-
-  /** DOCUMENT_ME. */
   private JLabel jlEquals;
-
-  /** DOCUMENT_ME. */
   private JTextField jtfValue;
-
   /** Table model. */
   JajukTableModel model;
-
   /** Currently applied filter. */
-  private String sAppliedFilter = "";
-
+  String sAppliedFilter = "";
   /** Currently applied criteria. */
-  private String sAppliedCriteria;
-
+  String sAppliedCriteria;
   /** Do search panel need a search. */
   private boolean bNeedSearch = false;
-
   /** Default time in ms before launching a search automatically. */
-  private static final int WAIT_TIME = 300;
-
+  private static final int WAIT_TIME = 200;
   /** Date last key pressed. */
   private long lDateTyped;
-
   /** Editable table configuration name, must be overwritten by child classes. */
   String editableConf;
-
   /** Columns to show table configuration name, must be overwritten by child classes. */
   String columnsConf;
-
-  /** DOCUMENT_ME. */
   private JMenuItem jmiPlay;
-
-  /** DOCUMENT_ME. */
   private JMenuItem jmiPush;
-
-  /** DOCUMENT_ME. */
   private JMenuItem jmiFrontPush;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiDelete;
-
-  /** DOCUMENT_ME. */
   private JMenuItem jmiPlayRepeat;
-
-  /** DOCUMENT_ME. */
   private JMenuItem jmiPlayShuffle;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiBookmark;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiProperties;
-
-  /** DOCUMENT_ME. */
-  private JMenuItem jmiFileCopyURL;
-
-  /** DOCUMENT_ME. */
+  JMenuItem jmiFileCopyURL;
   PreferencesJMenu pjmTracks;
-
   /** The table/tree sync toggle button. */
   JajukToggleButton jtbSync;
-
-  /** DOCUMENT_ME. */
-  private boolean bStopThread = false;
-
+  private volatile boolean bStopThread = false;
   /** Launches a thread used to perform dynamic filtering when user is typing. */
   private Thread filteringThread = new Thread("Dynamic user input filtering thread") {
     @Override
@@ -197,11 +152,15 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         } catch (InterruptedException ie) {
           Log.error(ie);
         }
-        if (bNeedSearch && (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
-          sAppliedFilter = jtfValue.getText();
-          sAppliedCriteria = getApplyCriteria();
-          applyFilter(sAppliedCriteria, sAppliedFilter);
-          bNeedSearch = false;
+        try {
+          if (bNeedSearch && (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
+            sAppliedFilter = jtfValue.getText();
+            sAppliedCriteria = getApplyCriteria();
+            applyFilter(sAppliedCriteria, sAppliedFilter);
+            bNeedSearch = false;
+          }
+        } catch (Exception ie) {
+          Log.error(ie);
         }
       }
     }
@@ -209,7 +168,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   /**
    * Gets the apply criteria.
-   * 
+   *
    * @return Applied criteria
    */
   private String getApplyCriteria() {
@@ -225,7 +184,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /**
    * Code used in child class SwingWorker for long delay computations (used in
    * initUI()).
-   * 
+   *
    * @return the object
    */
   @Override
@@ -237,8 +196,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /**
    * Code used in child class SwingWorker for display computations (used in
    * initUI()).
-   * 
-   * @param in DOCUMENT_ME
+   *
+   * @param in 
    */
   @Override
   public void shortCall(Object in) {
@@ -246,41 +205,30 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jmiPlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
     jmiPlay.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPlay);
-
     jmiFrontPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_FRONT_SELECTION));
     jmiFrontPush.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiFrontPush);
-
     jmiPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
     jmiPush.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPush);
-
     jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_REPEAT_SELECTION));
     jmiPlayRepeat.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPlayRepeat);
-
     jmiPlayShuffle = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SHUFFLE_SELECTION));
     jmiPlayShuffle.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPlayShuffle);
-
     jtable.getMenu().addSeparator();
-
     jmiDelete = new JMenuItem(ActionManager.getAction(JajukActions.DELETE));
     jmiDelete.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiDelete);
-
     jmiFileCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     jmiFileCopyURL.putClientProperty(Const.DETAIL_CONTENT, jtable.getSelection());
     jtable.getMenu().add(jmiFileCopyURL);
-
     jmiBookmark = new JMenuItem(ActionManager.getAction(JajukActions.BOOKMARK_SELECTION));
     jmiBookmark.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
-
     jmiProperties = new JMenuItem(ActionManager.getAction(JajukActions.SHOW_PROPERTIES));
     jmiProperties.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
-
     pjmTracks = new PreferencesJMenu(jtable.getSelection());
-
     // Set a default behavior for double click or click on the play column
     jtable.setCommand(new ILaunchCommand() {
       @Override
@@ -289,11 +237,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         if (jtable.getSelectedColumnCount() != 1) {
           return;
         }
-
         int iSelectedCol = jtable.getSelectedColumn();
         // Convert column selection as columns may have been moved
         iSelectedCol = jtable.convertColumnIndexToModel(iSelectedCol);
-
         // We launch the selection :
         // - In any case if user clicked on the play column (column 0)
         // - Or in case of double click on any column when table is not editable
@@ -304,9 +250,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
           List<File> files = UtilFeatures.getPlayableFiles(item);
           if (files.size() > 0) {
             // launch it
-            QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files), Conf
-                .getBoolean(Const.CONF_STATE_REPEAT_ALL), true), Conf
-                .getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+            QueueModel.push(
+                UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files),
+                    Conf.getBoolean(Const.CONF_STATE_REPEAT), true),
+                Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
           } else {
             Messages.showErrorMessage(10);
           }
@@ -316,15 +263,30 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     // Control panel
     jpControl = new JPanel();
     jpControl.setBorder(BorderFactory.createEtchedBorder());
-    jtbEditable = new JajukToggleButton(IconLoader.getIcon(JajukIcons.EDIT));
-    jtbEditable.setToolTipText(Messages.getString("AbstractTableView.11"));
-    jtbEditable.addActionListener(this);
-
     // Create the sync toggle button and restore its state
     jtbSync = new JajukToggleButton(ActionManager.getAction(JajukActions.SYNC_TREE_TABLE));
     jtbSync.putClientProperty(Const.DETAIL_VIEW, getID());
     jtbSync.setSelected(Conf.getBoolean(Const.CONF_SYNC_TABLE_TREE + "." + getID()));
+    createGenericGUI(jtbSync);
+    // refresh columns conf in case of some attributes been removed
+    // or added before view instantiation
+    Properties properties = ObservationManager
+        .getDetailsLastOccurence(JajukEvents.CUSTOM_PROPERTIES_ADD);
+    JajukEvent event = new JajukEvent(JajukEvents.CUSTOM_PROPERTIES_ADD, properties);
+    update(event);
+    initTable(); // perform type-specific init
+    // Register keystrokes
+    setKeystrokes();
+  }
 
+  /**
+   * Generic part of the panel 
+   * @param component the component to display before filter
+   */
+  void createGenericGUI(JComponent component) {
+    jtbEditable = new JajukToggleButton(IconLoader.getIcon(JajukIcons.EDIT));
+    jtbEditable.setToolTipText(Messages.getString("AbstractTableView.11"));
+    jtbEditable.addActionListener(this);
     jlFilter = new JLabel(Messages.getString("AbstractTableView.0"));
     // properties combo box, fill with columns names expect ID
     jcbProperty = new JComboBox();
@@ -346,12 +308,28 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       public void keyReleased(KeyEvent e) {
         bNeedSearch = true;
         lDateTyped = System.currentTimeMillis();
+        // Start filtering thread
+        if (!filteringThread.isAlive()) {
+          filteringThread.start();
+        }
+      }
+    });
+    // Add a focus listener to select all the text and ease previous text cleanup
+    jtfValue.addFocusListener(new FocusListener() {
+      @Override
+      public void focusLost(FocusEvent e) {
+        jtfValue.setCaretPosition(jtfValue.getText().length());
+      }
+
+      @Override
+      public void focusGained(FocusEvent e) {
+        jtfValue.selectAll();
       }
     });
     jtfValue.setToolTipText(Messages.getString("AbstractTableView.3"));
-    jpControl.setLayout(new MigLayout("insets 5", "[][20][grow,gp 70][grow]"));
-    jpControl.add(jtbSync, "gapleft 5");
-    jpControl.add(jtbEditable, "gapright 15");
+    jpControl.setLayout(new MigLayout("insets 5", "[][][grow,gp 70][grow]"));
+    jpControl.add(jtbEditable, "gapleft 5");
+    jpControl.add(component, "gapright 15");
     jpControl.add(jlFilter, "split 2");
     jpControl.add(jcbProperty, "grow,gapright 15");
     jpControl.add(jlEquals, "split 2");
@@ -364,27 +342,16 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jtable.setTransferHandler(new TableTransferHandler(jtable));
     jtable.showColumns(jtable.getColumnsConf());
     applyFilter(null, null);
-
     jtable.getSelectionModel().addListSelectionListener(this);
-
     // Register on the list for subject we are interested in
     ObservationManager.register(this);
-    // refresh columns conf in case of some attributes been removed
-    // or added before view instantiation
-    Properties properties = ObservationManager
-        .getDetailsLastOccurence(JajukEvents.CUSTOM_PROPERTIES_ADD);
-    JajukEvent event = new JajukEvent(JajukEvents.CUSTOM_PROPERTIES_ADD, properties);
-    update(event);
-    initTable(); // perform type-specific init
-    // Start filtering thread
-    filteringThread.start();
     // Register keystrokes
     setKeystrokes();
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   @Override
@@ -396,7 +363,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     eventSubjectSet.add(JajukEvents.CUSTOM_PROPERTIES_ADD);
     eventSubjectSet.add(JajukEvents.CUSTOM_PROPERTIES_REMOVE);
     eventSubjectSet.add(JajukEvents.RATE_CHANGED);
-    eventSubjectSet.add(JajukEvents.TABLE_CLEAR_SELECTION);
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     eventSubjectSet.add(JajukEvents.VIEW_REFRESH_REQUEST);
     eventSubjectSet.add(JajukEvents.TREE_SELECTION_CHANGED);
@@ -406,9 +372,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /**
    * Apply a filter, to be implemented by files and tracks tables, alter the
    * model.
-   * 
-   * @param sPropertyName DOCUMENT_ME
-   * @param sPropertyValue DOCUMENT_ME
+   *
+   * @param sPropertyName 
+   * @param sPropertyValue 
    */
   public void applyFilter(final String sPropertyName, final String sPropertyValue) {
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
@@ -422,8 +388,11 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
       @Override
       public void done() {
+        int[] selection = jtable.getSelectedRows();
         // Force table repaint (for instance for rating stars update)
         model.fireTableDataChanged();
+        // Restore selection (even if rows content may have change)
+        jtable.setSelectedRows(selection);
         UtilGUI.stopWaiting();
       }
     };
@@ -433,7 +402,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   @Override
@@ -447,9 +416,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
           // column
           // events
           JajukEvents subject = event.getSubject();
-          if (JajukEvents.TABLE_CLEAR_SELECTION.equals(subject)) {
-            jtable.clearSelection();
-          }
           if (JajukEvents.DEVICE_MOUNT.equals(subject)
               || JajukEvents.DEVICE_UNMOUNT.equals(subject)) {
             jtable.clearSelection();
@@ -550,12 +516,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jtable.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     InputMap inputMap = jtable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     ActionMap actionMap = jtable.getActionMap();
-
     // Delete
     Action action = ActionManager.getAction(JajukActions.DELETE);
     inputMap.put(KeyStroke.getKeyStroke("DELETE"), "delete");
     actionMap.put("delete", action);
-
     // Properties ALT/ENTER
     action = ActionManager.getAction(JajukActions.SHOW_PROPERTIES);
     inputMap.put(KeyStroke.getKeyStroke("alt ENTER"), "properties");
@@ -564,13 +528,13 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   /**
    * Fill the table.
-   * 
+   *
    * @return the jajuk table model
    */
   abstract JajukTableModel populateTable();
 
   /**
-   * Sets the cell editors. DOCUMENT_ME
+   * Sets the cell editors. 
    */
   private void setCellEditors() {
     for (TableColumn tc : ((DefaultTableColumnModelExt) jtable.getColumnModel()).getColumns(true)) {
@@ -613,8 +577,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   /**
    * Detect property change.
-   * 
-   * @param ie DOCUMENT_ME
+   *
+   * @param ie 
    */
   @Override
   public void itemStateChanged(ItemEvent ie) {
@@ -627,7 +591,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @seejavax.swing.event.TableModelListener#tableChanged(javax.swing.event. TableModelEvent)
    */
   @Override
@@ -658,8 +622,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       // Require refresh of all tables
       Properties properties = new Properties();
       properties.put(Const.DETAIL_ORIGIN, AbstractTableView.this);
-      ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH, properties));
-
+      // No real device change if Webradio view
+      if (!(this instanceof WebRadioView)) {
+        ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH, properties));
+      }
     } catch (NoneAccessibleFileException none) {
       Messages.showErrorMessage(none.getCode());
       ((JajukTableModel) jtable.getModel()).undo(e.getFirstRow(), e.getColumn());
@@ -673,16 +639,11 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     }
   }
 
-  /**
-   * Table initialization after table display.
-   */
-  abstract void initTable();
-
   /*
-   * (non-Javadoc)
-   * 
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-   */
+  * (non-Javadoc)
+  *
+  * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+  */
   @Override
   public void actionPerformed(final ActionEvent e) {
     // Editable state
@@ -691,7 +652,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       model.setEditable(jtbEditable.isSelected());
       return;
     }
-
   }
 
   /* (non-Javadoc)
@@ -709,13 +669,12 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         Log.error(e);
       }
     }
-
     super.cleanup();
   }
 
   /**
    * Called when table selection changed.
-   * 
+   *
    * @param e the List selection event
    */
   @Override
@@ -724,19 +683,15 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       // leave during normal refresh
       return;
     }
-
     // Ignore event if the model is refreshing
     if (((JajukTableModel) jtable.getModel()).isRefreshing()) {
       return;
     }
-
     // Call view specific behavior on selection change
     onSelectionChange();
-
     // Hide the copy url if several items selection. Do not simply disable them
     // as the getMenu() method enable all menu items
     jmiFileCopyURL.setVisible(jtable.getSelectedRowCount() < 2);
-
     // Compute Information view message
     if (AbstractTableView.this instanceof TracksTableView) {
       int rows = jtable.getSelection().size();
@@ -757,16 +712,18 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       StringBuilder sbOut = new StringBuilder().append(items).append(
           Messages.getString("FilesTreeView.52"));
       if (lSize > 1024) { // more than 1024 MB -> in GB
-        sbOut.append(lSize / 1024).append('.').append(lSize % 1024).append(
-            Messages.getString("FilesTreeView.53"));
+        sbOut.append(lSize / 1024).append('.').append(lSize % 1024)
+            .append(Messages.getString("FilesTreeView.53"));
       } else {
         sbOut.append(lSize).append(Messages.getString("FilesTreeView.54"));
       }
       InformationJPanel.getInstance().setSelection(sbOut.toString());
     }
-
     // Refresh the preference menu according to the selection
-    pjmTracks.resetUI(jtable.getSelection());
+    // (Useless for WebRadioView)
+    if (!(AbstractTableView.this instanceof WebRadioView)) {
+      pjmTracks.resetUI(jtable.getSelection());
+    }
   }
 
   /**
@@ -777,4 +734,15 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     Log.debug("Table selection changed for : " + this);
   }
 
+  /**
+  * Table initialization after table display.
+  * Default implementation for table initialization :
+  * update editable button state.
+  * 
+  */
+  void initTable() {
+    jtbEditable.setSelected(Conf.getBoolean(editableConf));
+    // Sort by name by default
+    jtable.setSortOrder(1, SortOrder.ASCENDING);
+  }
 }

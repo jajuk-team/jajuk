@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.wizard;
 
 import java.awt.event.ActionEvent;
@@ -42,11 +41,8 @@ import org.jajuk.util.Messages;
  * Remove property wizard.
  */
 public class RemovePropertyWizard extends CustomPropertyWizard {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** DOCUMENT_ME. */
   JComboBox jcbName;
 
   /**
@@ -109,7 +105,7 @@ public class RemovePropertyWizard extends CustomPropertyWizard {
 
   /**
    * Populate properties.
-   * DOCUMENT_ME
+   * 
    */
   public final void populateProperties() {
     // clear combo
@@ -124,5 +120,4 @@ public class RemovePropertyWizard extends CustomPropertyWizard {
       }
     }
   }
-
 }

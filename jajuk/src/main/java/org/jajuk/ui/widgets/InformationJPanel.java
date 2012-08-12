@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.widgets;
 
@@ -61,29 +61,20 @@ import org.jdesktop.swingx.JXPanel;
  * Status / information panel ( static view ).
  */
 public final class InformationJPanel extends JXPanel implements Observer {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public static enum MessageType {
-    
-    /** DOCUMENT_ME. */
-    INFORMATIVE, 
- /** DOCUMENT_ME. */
- ERROR, 
- /** DOCUMENT_ME. */
- WARNING
+    INFORMATIVE, ERROR, WARNING
   }
 
   /** Self instance. */
   private static InformationJPanel ijp = new InformationJPanel();
-
   /** Swing Timer to refresh the component. */
   private final Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT, new ActionListener() {
-
     @Override
     public void actionPerformed(ActionEvent e) {
       try {
@@ -104,31 +95,15 @@ public final class InformationJPanel extends JXPanel implements Observer {
   }
 
   // widgets declaration
-
-  /** DOCUMENT_ME. */
   public JLabel jlMessage;
-
-  /** DOCUMENT_ME. */
   JLabel jlSelection;
-
-  /** DOCUMENT_ME. */
   JLabel jlTotal;
-
   // attributes
-
-  /** DOCUMENT_ME. */
   String sMessage;
-
   /** Current message type. */
   MessageType type = MessageType.INFORMATIVE;
-
-  /** DOCUMENT_ME. */
   String sSelection;
-
-  /** DOCUMENT_ME. */
   String sTotalStatus;
-
-  /** DOCUMENT_ME. */
   private final TrackPositionSliderToolbar trackPositionSliderToolbar;
 
   /**
@@ -146,36 +121,29 @@ public final class InformationJPanel extends JXPanel implements Observer {
     jtbMessage.add(jlMessage);
     jtbMessage.add(Box.createHorizontalGlue());
     jtbMessage.addSeparator();
-
     trackPositionSliderToolbar = new TrackPositionSliderToolbar();
-
     jlTotal = new JLabel();
     // Make sure to get always 5 px at the left and right of the label
-    jlTotal.setBorder(new EmptyBorder(0,5,0,5));
+    jlTotal.setBorder(new EmptyBorder(0, 5, 0, 5));
     jlTotal.setToolTipText(Messages.getString("InformationJPanel.5"));
- 
     // selection bar
     jlSelection = new JLabel(Messages.getString("InformationJPanel.9"));
     // Make sure to get always 5 px at the left and right of the label
-    jlSelection.setBorder(new EmptyBorder(0,5,0,3));
-  
+    jlSelection.setBorder(new EmptyBorder(0, 5, 0, 3));
     // add widgets
     setLayout(new MigLayout("insets 2", "[40%,grow][40%,grow][10%,grow][10%,grow]"));
     add(jtbMessage, "grow,left");
     add(trackPositionSliderToolbar, "grow");
     add(jlTotal, "grow");
     add(jlSelection, "grow,right");
-
     // check if some errors occurred before the view has been displayed
     if (ObservationManager.containsEvent(JajukEvents.PLAY_ERROR)) {
-      update(new JajukEvent(JajukEvents.PLAY_ERROR, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.PLAY_ERROR)));
+      update(new JajukEvent(JajukEvents.PLAY_ERROR,
+          ObservationManager.getDetailsLastOccurence(JajukEvents.PLAY_ERROR)));
     }
-
     // check if some track has been launched before the view has been
     // displayed
     UtilFeatures.updateStatus(this);
-
     // register for given events
     ObservationManager.register(this);
     // start timer
@@ -194,6 +162,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.PLAY_ERROR);
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
+    eventSubjectSet.add(JajukEvents.WEBRADIO_INFO_UPDATED);
     eventSubjectSet.add(JajukEvents.PLAYER_STOP);
     eventSubjectSet.add(JajukEvents.THUMB_CREATED);
     eventSubjectSet.add(JajukEvents.FILE_COPIED);
@@ -222,8 +191,8 @@ public final class InformationJPanel extends JXPanel implements Observer {
   /**
    * Sets the message.
    * 
-   * @param sMessage DOCUMENT_ME
-   * @param messageType DOCUMENT_ME
+   * @param sMessage 
+   * @param messageType 
    */
   public void setMessage(final String sMessage, final MessageType messageType) {
     this.sMessage = sMessage;
@@ -249,7 +218,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
   /**
    * Sets the selection.
    * 
-   * @param sSelection DOCUMENT_ME
+   * @param sSelection 
    */
   public void setSelection(String sSelection) {
     this.sSelection = sSelection;
@@ -269,7 +238,7 @@ public final class InformationJPanel extends JXPanel implements Observer {
   /**
    * Sets the total time message.
    * 
-   * @param string DOCUMENT_ME
+   * @param string 
    */
   public void setTotalTimeMessage(String string) {
     sTotalStatus = string;
@@ -313,7 +282,6 @@ public final class InformationJPanel extends JXPanel implements Observer {
             }
           } else if (o instanceof WebRadio) {
             WebRadio radio = (WebRadio) o;
-
             // display associated error code is given
             if (detail != null) {
               setMessage(Messages.getErrorMessage(errorCode) + ": " + radio.toString(),
@@ -375,6 +343,15 @@ public final class InformationJPanel extends JXPanel implements Observer {
               String message = Messages.getString("FIFO.14") + " " + radio.getName();
               setMessage(message, InformationJPanel.MessageType.INFORMATIVE);
             }
+          } else if (JajukEvents.WEBRADIO_INFO_UPDATED.equals(subject)) {
+            if (event.getDetails() == null) {
+              return;
+            }
+            String webradioInfo = (String) event.getDetails().get(Const.CURRENT_RADIO_TRACK);
+            if (webradioInfo != null) {
+              String message = Messages.getString("FIFO.14") + " " + webradioInfo;
+              setMessage(message, InformationJPanel.MessageType.INFORMATIVE);
+            }
           } else if (JajukEvents.FILE_COPIED.equals(subject)) {
             Properties properties = event.getDetails();
             if (properties == null) {
@@ -396,9 +373,9 @@ public final class InformationJPanel extends JXPanel implements Observer {
               String filename = properties.getProperty(Const.DETAIL_CONTENT);
               String target = properties.getProperty(Const.DETAIL_NEW);
               if (filename != null) {
-                setMessage(Messages.getString("Device.46") + filename
-                    + Messages.getString("Device.47") + target + "]",
-                    InformationJPanel.MessageType.INFORMATIVE);
+                setMessage(
+                    Messages.getString("Device.46") + filename + Messages.getString("Device.47")
+                        + target + "]", InformationJPanel.MessageType.INFORMATIVE);
               }
             }
           }
@@ -425,5 +402,4 @@ public final class InformationJPanel extends JXPanel implements Observer {
   public MessageType getMessageType() {
     return type;
   }
-
 }

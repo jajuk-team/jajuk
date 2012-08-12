@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.players;
 
 import org.jajuk.base.File;
@@ -29,16 +28,12 @@ import org.jajuk.util.log.Log;
  * A FIFO item.
  */
 public class StackItem implements Cloneable {
-
   /** Associated file. */
   private final File file;
-
   /** Repeat flag. */
   private boolean bRepeat = false;
-
   /** User launch flag. */
   private boolean bUserLaunch = false;
-
   /** Planned track ?. */
   private boolean bPlanned = false;
 
@@ -59,8 +54,8 @@ public class StackItem implements Cloneable {
   /**
    * Constructor.
    * 
-   * @param file DOCUMENT_ME
-   * @param bUserLauched DOCUMENT_ME
+   * @param file 
+   * @param bUserLauched 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -71,9 +66,9 @@ public class StackItem implements Cloneable {
   /**
    * Constructor.
    *
-   * @param file DOCUMENT_ME
-   * @param bRepeat DOCUMENT_ME
-   * @param bUserLauched DOCUMENT_ME
+   * @param file 
+   * @param bRepeat 
+   * @param bUserLauched 
    * @throws JajukException the jajuk exception
    */
   public StackItem(File file, boolean bRepeat, boolean bUserLauched) throws JajukException {
@@ -161,7 +156,6 @@ public class StackItem implements Cloneable {
     try {
       StackItem item = new StackItem(file, bRepeat, bUserLaunch);
       item.setPlanned(bPlanned);
-
       return item;
     } catch (JajukException je) { // can be thrown if FileManager return a
       // null file
@@ -173,7 +167,7 @@ public class StackItem implements Cloneable {
   /**
    * Equals method.
    * 
-   * @param o DOCUMENT_ME
+   * @param o 
    * 
    * @return whether both items are equals. Condition : file is the same and
    * planned flag is the same
@@ -184,13 +178,11 @@ public class StackItem implements Cloneable {
     if (!(o instanceof StackItem)) {
       return false;
     }
-
     StackItem itemOther = (StackItem) o;
     File fOther = itemOther.getFile();
     if (fOther == null || file == null) {
       return false;
     }
-
     return (fOther.equals(file) && itemOther.isPlanned() == isPlanned());
   }
 
@@ -215,5 +207,4 @@ public class StackItem implements Cloneable {
   public String toString() {
     return file.toString();
   }
-
 }

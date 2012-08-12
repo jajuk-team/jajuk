@@ -20,7 +20,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.lastfm;
 
 import javax.swing.ImageIcon;
@@ -32,30 +31,24 @@ import net.roarsoftware.lastfm.ImageSize;
  * The Class LastFmArtist.
  */
 public class LastFmArtist implements ArtistInfo {
-
   /** The name. */
   private String name;
-
   /** The match. */
   private String match;
-
   /** The url. */
   private String url;
-
   /** The image url. */
   private String imageUrl;
-
   // Used by renderers
   /** The image. */
   private ImageIcon image;
-
   /** <Code>true</code> if this artist is available at repository. */
   private transient boolean available;
 
   /**
    * Gets the artist.
    * 
-   * @param a DOCUMENT_ME
+   * @param a 
    * 
    * @return the artist
    */

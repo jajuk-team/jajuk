@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.base;
 
@@ -27,7 +27,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
-import org.jajuk.ThreadTestHelper;
 import org.jajuk.services.covers.Cover;
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.QueueModel;
@@ -40,21 +39,19 @@ import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.KeyNotFoundException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestArtistManager extends JajukTestCase {
-
-  /** The Constant NUMBER_OF_TESTS.  DOCUMENT_ME */
+  /** The Constant NUMBER_OF_TESTS.   */
   private static final int NUMBER_OF_TESTS = 10;
-  
-  /** The Constant NUMBER_OF_THREADS.  DOCUMENT_ME */
+  /** The Constant NUMBER_OF_THREADS.   */
   private static final int NUMBER_OF_THREADS = 10;
 
   /**
-   * Test method for {@link org.jajuk.base.ArtistManager#getLabel()}.
+   * Test method for {@link org.jajuk.base.ArtistManager#getXMLTag()}.
    */
   public final void testGetLabel() {
-    assertEquals(Const.XML_ARTISTS, ArtistManager.getInstance().getLabel());
+    assertEquals(Const.XML_ARTISTS, ArtistManager.getInstance().getXMLTag());
   }
 
   /**
@@ -83,10 +80,8 @@ public class TestArtistManager extends JajukTestCase {
    */
   public final void testCreateID() {
     String id = ItemManager.createID("name");
-
     // same for same name
     assertEquals(id, ItemManager.createID("name"));
-
     // different for other name
     assertFalse(id.equals(ItemManager.createID("name2")));
   }
@@ -113,26 +108,21 @@ public class TestArtistManager extends JajukTestCase {
    */
   public final void testChangeArtistName() throws Exception {
     StartupCollectionService.registerItemManagers();
-
     Artist artistold = JUnitHelpers.getArtist("nameold");
-
     // we get the same object back if we have the same name
     assertTrue(artistold == ArtistManager.getInstance().changeArtistName(artistold, "nameold"));
-
     // now try with a new name
     Artist artist = ArtistManager.getInstance().changeArtistName(artistold, "namenew");
     assertFalse(artistold == artist); // not null
     assertFalse("4".equals(artist.getID())); // new ID
     assertTrue(StringUtils.isNotBlank(artist.getID())); // useful ID
     assertEquals("namenew", artist.getName()); // correct name
-
     // test with Tracks for the artist and Queue Model playing that file
     File track1 = getFile(14, artist);
     List<StackItem> list = new ArrayList<StackItem>();
     list.add(new StackItem(track1));
     QueueModel.insert(list, 0);
     QueueModel.goTo(0); // to have the Queue in playing mode
-
     // verify that Queue is playing now
     assertFalse(QueueModel.isStopped());
     assertNotNull(QueueModel.getPlayingFile());
@@ -140,7 +130,6 @@ public class TestArtistManager extends JajukTestCase {
     assertNotNull(QueueModel.getPlayingFile().getTrack().getArtist());
     assertEquals(track1.getTrack(), QueueModel.getPlayingFile().getTrack());
     assertEquals(artist, QueueModel.getPlayingFile().getTrack().getArtist());
-
     // now try to change again with the track and the item playing in the queue
     artist = ArtistManager.getInstance().changeArtistName(artist, "namenewnew");
     assertFalse(artistold == artist); // not null
@@ -149,49 +138,11 @@ public class TestArtistManager extends JajukTestCase {
     assertEquals("namenewnew", artist.getName()); // correct name
   }
 
-  // test this in a thread as well to cover the synchronized block...
-  /**
-   * Test change artist name threads.
-   * DOCUMENT_ME
-   *
-   * @throws Exception the exception
-   */
-  public final void testChangeArtistNameThreads() throws Exception {
-    StartupCollectionService.registerItemManagers();
-
-    final Artist artistold = JUnitHelpers.getArtist("nameold");
-
-    // we get the same object back if we have the same name
-    assertTrue(artistold == ArtistManager.getInstance().changeArtistName(artistold, "nameold"));
-
-    ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS, NUMBER_OF_TESTS);
-
-    helper.executeTest(new ThreadTestHelper.TestRunnable() {
-      @Override
-      public void doEnd(int threadnum) throws Exception {
-        // do stuff at the end, nothing here for now
-      }
-
-      @Override
-      public void run(int threadnum, int iter) throws Exception {
-        // just call the method in a thread multiple times at the same time
-        ArtistManager.getInstance().changeArtistName(artistold, "namenew");
-      }
-    });
-  }
-
-  /**
-   * Test multiple threads.
-   * DOCUMENT_ME
-   */
-  public void testMultipleThreads() {
-  }
-
-  /**
+   /**
    * Gets the file.
    *
-   * @param i DOCUMENT_ME
-   * @param artist DOCUMENT_ME
+   * @param i 
+   * @param artist 
    * @return the file
    * @throws Exception the exception
    */
@@ -202,26 +153,18 @@ public class TestArtistManager extends JajukTestCase {
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read
     // covers for
     // this test
-
     Year year = new Year(Integer.valueOf(i).toString(), "2000");
-
     IPlayerImpl imp = new JUnitHelpers.MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
-
     Type type = TypeManager.getInstance().registerType("name", "tst", cl, MyTagImpl.class);
-
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
-
     Device device = JUnitHelpers.getDevice();
     device.mount(true);
     Directory dir = JUnitHelpers.getDirectory();
-
     File file = new org.jajuk.base.File(Integer.valueOf(i).toString(), "test.tst", dir, track, 120,
         70);
-
     track.addFile(file);
-
     return file;
   }
 
@@ -232,16 +175,12 @@ public class TestArtistManager extends JajukTestCase {
    */
   public final void testFormat() {
     assertEquals("Testname", ItemManager.format("testname"));
-
     // trim spaces
     assertEquals("Testname", ItemManager.format("  testname  "));
-
     // -
     assertEquals("Te s tname", ItemManager.format("  te-s-tname  "));
-
     // _
     assertEquals("Te s tname", ItemManager.format("  te_s_tname  "));
-
     // all of them
     assertEquals("TE s tnam  e ", ItemManager.format("  tE_s_tnam--e-  "));
   }
@@ -252,13 +191,11 @@ public class TestArtistManager extends JajukTestCase {
   public final void testGetArtistsList() {
     List<String> list = ArtistManager.getArtistsList();
     assertNotNull(list);
-
     // not sure how many elements we should expect as this is static and other
     // tests
     // could already have added some items, let's just try to add a new one
     int i = list.size();
     ArtistManager.getInstance().registerArtist("newandnotanywhereelseusedname");
-
     // the vector should be updated directly, we use the same in the
     // combobox-models,
     // this is the reason for using Vector in the first place!
@@ -272,7 +209,6 @@ public class TestArtistManager extends JajukTestCase {
    */
   public final void testGetArtistByID() {
     Artist artist = ArtistManager.getInstance().registerArtist("anothernewartist");
-
     Artist artist2 = ArtistManager.getInstance().getArtistByID(artist.getID());
     assertEquals("anothernewartist", artist2.getName());
   }
@@ -283,13 +219,11 @@ public class TestArtistManager extends JajukTestCase {
   public final void testGetArtists() {
     List<Artist> list = ArtistManager.getInstance().getArtists();
     assertNotNull(list);
-
     // not sure how many elements we should expect as this is static and other
     // tests
     // could already have added some items, let's just try to add a new one
     int i = list.size();
     ArtistManager.getInstance().registerArtist("newname");
-
     // the list is a copy, so we need to get it again
     list = ArtistManager.getInstance().getArtists();
     assertEquals(i + 1, list.size());
@@ -318,17 +252,14 @@ public class TestArtistManager extends JajukTestCase {
     List<Artist> list = ArtistManager.getInstance().getAssociatedArtists(null);
     assertNotNull(list);
     assertEquals(0, list.size());
-
     Artist artist = ArtistManager.getInstance().registerArtist("myartisthere");
     File file = getFile(15, artist); // also registers the Track
     list = ArtistManager.getInstance().getAssociatedArtists(file.getTrack());
     assertNotNull(list);
     assertEquals(1, list.size());
     assertEquals("myartisthere", list.get(0).getName());
-
     Album album = file.getTrack().getAlbum();
     album.getTracksCache().add(file.getTrack());
-
     list = ArtistManager.getInstance().getAssociatedArtists(album);
     assertNotNull(list);
     assertEquals(1, list.size());
@@ -342,26 +273,23 @@ public class TestArtistManager extends JajukTestCase {
    */
   public final void testGetArtistByName() {
     Artist artist = ArtistManager.getInstance().registerArtist("anothernewartist");
-
     Artist artist2 = ArtistManager.getInstance().getArtistByName("anothernewartist");
     assertEquals(artist.getID(), artist2.getID());
   }
 
   /**
    * Test sorting.
-   * DOCUMENT_ME
+   * 
    */
   public final void testSorting() {
     // make sure we have "ordered state"
     ArtistManager.getInstance().switchToOrderState();
-
     List<String> ids = new ArrayList<String>();
     ids.add(ArtistManager.getInstance().registerArtist("anothernewartist").getID());
     ids.add(ArtistManager.getInstance().registerArtist("yet another artist").getID());
     ids.add(ArtistManager.getInstance().registerArtist("one more artist").getID());
     ids.add(ArtistManager.getInstance().registerArtist("number 10").getID());
     ids.add(ArtistManager.getInstance().registerArtist("number 11").getID());
-
     // now they are sorted by name
     Iterator<? extends Item> it = ArtistManager.getInstance().getItemsIterator();
     assertEquals("anothernewartist", it.next().getName());
@@ -370,28 +298,24 @@ public class TestArtistManager extends JajukTestCase {
     assertEquals("one more artist", it.next().getName());
     assertEquals("yet another artist", it.next().getName());
     assertFalse(it.hasNext());
-
     // make sure we can fetch all of these by ID
     for (String id : ids) {
       assertNotNull("Did not find ID: " + id, ArtistManager.getInstance().getArtistByID(id));
     }
-
     assertNull(ArtistManager.getInstance().getArtistByID("notexisting"));
     assertNull(ArtistManager.getInstance().getArtistByID("number 12"));
     assertNull(ArtistManager.getInstance().getArtistByID("number 09"));
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public static class MyTagImpl implements ITagImpl {
-
     /* (non-Javadoc)
      * @see org.jajuk.services.tags.ITagImpl#commit()
      */
     @Override
     public void commit() throws Exception {
-
     }
 
     /* (non-Javadoc)
@@ -399,7 +323,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public String getAlbumArtist() throws Exception {
-
       return null;
     }
 
@@ -408,7 +331,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public String getAlbumName() throws Exception {
-
       return null;
     }
 
@@ -417,7 +339,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public String getArtistName() throws Exception {
-
       return null;
     }
 
@@ -426,7 +347,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public String getComment() throws Exception {
-
       return null;
     }
 
@@ -435,7 +355,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public long getDiscNumber() throws Exception {
-
       return 0;
     }
 
@@ -444,7 +363,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public long getLength() throws Exception {
-
       return 0;
     }
 
@@ -453,7 +371,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public long getOrder() throws Exception {
-
       return 0;
     }
 
@@ -462,7 +379,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public long getQuality() throws Exception {
-
       return 0;
     }
 
@@ -471,7 +387,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public String getGenreName() throws Exception {
-
       return null;
     }
 
@@ -480,7 +395,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public String getTrackName() throws Exception {
-
       return null;
     }
 
@@ -489,7 +403,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public String getYear() throws Exception {
-
       return null;
     }
 
@@ -498,7 +411,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public void setAlbumArtist(String albumArtist) throws Exception {
-
     }
 
     /* (non-Javadoc)
@@ -506,7 +418,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public void setAlbumName(String albumName) throws Exception {
-
     }
 
     /* (non-Javadoc)
@@ -514,7 +425,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public void setArtistName(String artistName) throws Exception {
-
     }
 
     /* (non-Javadoc)
@@ -522,7 +432,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public void setComment(String comment) throws Exception {
-
     }
 
     /* (non-Javadoc)
@@ -530,7 +439,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public void setDiscNumber(long discnumber) throws Exception {
-
     }
 
     /* (non-Javadoc)
@@ -538,7 +446,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public void setFile(java.io.File fio) throws Exception {
-
     }
 
     /* (non-Javadoc)
@@ -546,7 +453,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public void setOrder(long order) throws Exception {
-
     }
 
     /* (non-Javadoc)
@@ -554,7 +460,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public void setGenreName(String genre) throws Exception {
-
     }
 
     /* (non-Javadoc)
@@ -562,7 +467,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public void setTrackName(String trackName) throws Exception {
-
     }
 
     /* (non-Javadoc)
@@ -570,7 +474,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public void setYear(String year) throws Exception {
-
     }
 
     /*
@@ -580,7 +483,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public String getTagField(String tagFieldKey) throws Exception {
-
       return null;
     }
 
@@ -593,7 +495,6 @@ public class TestArtistManager extends JajukTestCase {
     @Override
     public void setTagField(String tagFieldKey, String tagFieldValue)
         throws FieldDataInvalidException, KeyNotFoundException {
-
     }
 
     /*
@@ -603,7 +504,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public void deleteLyrics() throws Exception {
-
     }
 
     /*
@@ -613,7 +513,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public String getLyrics() throws Exception {
-
       return null;
     }
 
@@ -624,7 +523,6 @@ public class TestArtistManager extends JajukTestCase {
      */
     @Override
     public void setLyrics(String sLyrics) throws Exception {
-
     }
 
     /* (non-Javadoc)
@@ -644,6 +542,5 @@ public class TestArtistManager extends JajukTestCase {
       // TODO Auto-generated method stub
       return null;
     }
-
   }
 }

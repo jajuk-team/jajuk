@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
@@ -37,10 +37,9 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class ContinueModeAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -59,14 +58,12 @@ public class ContinueModeAction extends JajukAction {
   public void perform(ActionEvent evt) throws JajukException {
     boolean b = Conf.getBoolean(Const.CONF_STATE_CONTINUE);
     Conf.setProperty(Const.CONF_STATE_CONTINUE, Boolean.toString(!b));
-
     JajukJMenuBar.getInstance().setContinueSelected(!b);
-
     if (!b) { // enabled button
       if (QueueModel.isStopped()) {
         // if nothing playing, play next track if possible
         StackItem item = QueueModel.getLastPlayed();
-        if (item != null) {
+        if (item != null) { //NOSONAR
           QueueModel.push(new StackItem(FileManager.getInstance().getNextFile(item.getFile())),
               false);
         }

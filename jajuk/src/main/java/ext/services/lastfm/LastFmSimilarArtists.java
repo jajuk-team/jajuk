@@ -20,7 +20,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.lastfm;
 
 import java.util.ArrayList;
@@ -36,34 +35,28 @@ import net.roarsoftware.lastfm.ImageSize;
  * The Class LastFmSimilarArtists.
  */
 public class LastFmSimilarArtists implements SimilarArtistsInfo {
-
   /** The Constant MAX_SIMILAR_ARTISTS. */
   private static final int MAX_SIMILAR_ARTISTS = 15;
-
   /** The artist name. */
   private String artistName;
-
   /** The picture. */
   private String picture;
-
   /** The artists. */
   private List<ArtistInfo> artists;
 
   /**
    * Gets the similar artists.
    * 
-   * @param as DOCUMENT_ME
-   * @param a DOCUMENT_ME
+   * @param as 
+   * @param a 
    * 
    * @return the similar artists
    */
   public static SimilarArtistsInfo getSimilarArtists(Collection<Artist> as, Artist a) {
     List<Artist> list = new ArrayList<Artist>(as);
     LastFmSimilarArtists similar = new LastFmSimilarArtists();
-
     similar.setArtistName(a.getName());
     similar.setPicture(a.getImageURL(ImageSize.LARGE));
-
     List<ArtistInfo> artists = new ArrayList<ArtistInfo>();
     for (int i = 0; i < list.size(); i++) {
       if (i == MAX_SIMILAR_ARTISTS) {
@@ -144,5 +137,4 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
   public void setPicture(String picture) {
     this.picture = picture;
   }
-
 }

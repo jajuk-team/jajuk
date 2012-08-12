@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.dj;
 
 import java.util.ArrayList;
@@ -40,14 +39,13 @@ import org.jajuk.util.filters.JajukPredicates;
  * Type description.
  */
 public class TransitionDigitalDJ extends DigitalDJ {
-
   /** List of transitions, need to be a list, not a set for offset. */
   private List<Transition> transitions;
 
   /**
    * The Constructor.
    * 
-   * @param sID DOCUMENT_ME
+   * @param sID 
    */
   public TransitionDigitalDJ(String sID) {
     super(sID);
@@ -66,7 +64,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
   /**
    * Delete a transition at given offset.
    * 
-   * @param offset DOCUMENT_ME
+   * @param offset 
    */
   public void deleteTransition(int offset) {
     this.transitions.remove(offset);
@@ -75,8 +73,8 @@ public class TransitionDigitalDJ extends DigitalDJ {
   /**
    * Add a transition.
    * 
-   * @param transition DOCUMENT_ME
-   * @param offset DOCUMENT_ME
+   * @param transition 
+   * @param offset 
    */
   public void addTransition(Transition transition, int offset) {
     this.transitions.add(offset, transition);
@@ -85,7 +83,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
   /**
    * Gets the transition.
    * 
-   * @param ambience DOCUMENT_ME
+   * @param ambience 
    * 
    * @return transition mapping this FROM ambience or null if none maps it
    */
@@ -107,7 +105,6 @@ public class TransitionDigitalDJ extends DigitalDJ {
   @Override
   public List<File> generatePlaylist() {
     List<File> out = new ArrayList<File>(500);
-
     // get a global shuffle selection
     List<File> global = FileManager.getInstance().getGlobalShufflePlaylist();
     // Select by rate if needed
@@ -125,7 +122,6 @@ public class TransitionDigitalDJ extends DigitalDJ {
       // several times the same files
       items = Const.MIN_TRACKS_NUMBER_WITHOUT_UNICITY;
     }
-
     // Get first track
     for (File file : global) {
       if (transitions.get(0).getFrom().getGenres().contains(file.getTrack().getGenre())) {
@@ -143,7 +139,6 @@ public class TransitionDigitalDJ extends DigitalDJ {
     if (out.size() == 0) {
       return out;
     }
-
     // initialize current ambience with first track ambience (can be null for
     // unsorted tracks)
     Ambience currentAmbience = getAmbience(out.get(0).getTrack().getGenre());
@@ -173,7 +168,6 @@ public class TransitionDigitalDJ extends DigitalDJ {
       } else { // no more tracks for this ambience ? leave
         // finally ensure that we don't select more than the max number of tracks
         filterFilesByMaxTrack(out);
-
         return out;
       }
       if (currentTransition != null) {
@@ -182,10 +176,8 @@ public class TransitionDigitalDJ extends DigitalDJ {
         break;
       }
     }
-
     // finally ensure that we don't select more than the max number of tracks
     filterFilesByMaxTrack(out);
-
     return out;
   }
 
@@ -220,7 +212,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
   /**
    * Gets the ambience.
    * 
-   * @param genre DOCUMENT_ME
+   * @param genre 
    * 
    * @return ambience associated with a genre known in transitions or null if
    * none
@@ -265,5 +257,4 @@ public class TransitionDigitalDJ extends DigitalDJ {
   public void setTransitions(List<Transition> transitions) {
     this.transitions = transitions;
   }
-
 }

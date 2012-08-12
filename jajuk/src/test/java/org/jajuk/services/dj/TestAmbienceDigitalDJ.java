@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.dj;
 
@@ -42,24 +42,20 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestAmbienceDigitalDJ extends JajukTestCase {
-
   /**
    * Test method for {@link org.jajuk.services.dj.AmbienceDigitalDJ#toXML()}.
    */
   public final void testToXML() {
     AmbienceDigitalDJ dj = new AmbienceDigitalDJ("3");
     assertTrue(StringUtils.isNotBlank(dj.toXML()));
-
     // try to parse the resulting XML
     XMLUtils.getDocument(dj.toXML());
-
     // set an Ambience
     GenreManager.getInstance().registerGenre("mystyle");
     dj.setAmbience(new Ambience("5", "ambience", new String[] { "mystyle" }));
-
     // try to parse the resulting XML
     XMLUtils.getDocument(dj.toXML());
   }
@@ -72,38 +68,32 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
    */
   public final void testGeneratePlaylist() throws Exception {
     StartupCollectionService.registerItemManagers();
-
     AmbienceDigitalDJ dj = new AmbienceDigitalDJ("4");
-
     // empty without Ambience set
     assertEquals(0, dj.generatePlaylist().size());
-
     // set an Ambience
     Genre genre = GenreManager.getInstance().registerGenre("mystyle");
     dj.setAmbience(new Ambience("5", "ambience", new String[] { "mystyle" }));
-
     getFile(6, genre);
-
     // assert a few conditions to find out why this test fails sometimes when
     // run in combination with others
     assertFalse(dj.isTrackUnicity());
     assertTrue(FileManager.getInstance().getGlobalShufflePlaylist().size() > 0);
-    assertTrue(dj.getAmbience().getGenres().contains(
-        FileManager.getInstance().getGlobalShufflePlaylist().get(0).getTrack().getGenre()));
-
+    assertTrue(dj
+        .getAmbience()
+        .getGenres()
+        .contains(FileManager.getInstance().getGlobalShufflePlaylist().get(0).getTrack().getGenre()));
     assertEquals(Const.MIN_TRACKS_NUMBER_WITHOUT_UNICITY, dj.generatePlaylist().size());
-
     // once again with "unicity"
     dj.setTrackUnicity(true);
     assertEquals(1, dj.generatePlaylist().size());
-
   }
 
   /**
    * Gets the file.
    *
-   * @param i DOCUMENT_ME
-   * @param genre DOCUMENT_ME
+   * @param i 
+   * @param genre 
    * @return the file
    * @throws Exception the exception
    */
@@ -111,22 +101,16 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
     Album album = JUnitHelpers.getAlbum("myalbum", 0);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-
     Artist artist = JUnitHelpers.getArtist("name");
     Year year = JUnitHelpers.getYear(2000);
-
     // IPlayerImpl imp = new MockPlayer();
     // Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
-
     Type type = JUnitHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
-
     Device device = JUnitHelpers.getDevice();
     device.mount(true);
-
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
-
     return FileManager.getInstance().registerFile(Integer.valueOf(i).toString(), "test.tst", dir,
         track, 120, 70);
   }
@@ -148,14 +132,11 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
    */
   public final void testGetAndSetAmbience() {
     AmbienceDigitalDJ dj = new AmbienceDigitalDJ("4");
-
     // empty without Ambience set
     assertNull(dj.getAmbience());
-
     // set an Ambience
     GenreManager.getInstance().registerGenre("mystyle");
     dj.setAmbience(new Ambience("5", "ambience", new String[] { "mystyle" }));
-
     assertNotNull(dj.getAmbience());
   }
 
@@ -168,5 +149,4 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
   public final void testSetAmbience() {
     // tested above
   }
-
 }

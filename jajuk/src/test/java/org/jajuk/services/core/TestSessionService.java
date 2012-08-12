@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.core;
 
@@ -24,6 +24,7 @@ import java.io.File;
 import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
+import org.jajuk.ConstTest;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.util.Const;
@@ -31,7 +32,7 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukRuntimeException;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestSessionService extends JajukTestCase {
   /*
@@ -41,9 +42,6 @@ public class TestSessionService extends JajukTestCase {
    */
   @Override
   protected void setUp() throws Exception {
-    // reset some of the values...
-    JUnitHelpers.createSessionDirectory();
-
     super.setUp();
   }
 
@@ -87,15 +85,6 @@ public class TestSessionService extends JajukTestCase {
   /**
    * Test method for.
    *
-   * {@link org.jajuk.services.core.SessionService#setTestMode(boolean)}.
-   */
-  public void testSetTestMode() {
-    SessionService.setTestMode(true);
-  }
-
-  /**
-   * Test method for.
-   *
    * {@link org.jajuk.services.core.SessionService#setWorkspace(java.lang.String)}
    * .
    */
@@ -123,7 +112,7 @@ public class TestSessionService extends JajukTestCase {
     SessionService.handleCommandline(new String[] { "-test", "-ide", "-something" });
     assertFalse(parseWorkspaceLocation(""));
     assertFalse(parseWorkspaceLocation("/foo"));
-    String tmpDir = System.getProperty("java.io.tmpdir");
+    String tmpDir = ConstTest.TEMP_PATH;
     String rightWorkspaceLocation = tmpDir;
     assertTrue(parseWorkspaceLocation(rightWorkspaceLocation));
     SessionService.handleCommandline(new String[] { "-test", "-ide", "-workspace=" + tmpDir,
@@ -133,7 +122,7 @@ public class TestSessionService extends JajukTestCase {
   /**
    * Return true if the workspace location is valid.
    *
-   * @param workspaceLocation DOCUMENT_ME
+   * @param workspaceLocation 
    * @return true if the workspace location is valid
    */
   private boolean parseWorkspaceLocation(String workspaceLocation) {
@@ -154,7 +143,6 @@ public class TestSessionService extends JajukTestCase {
    */
   public void testHandleSystemProperties() {
     SessionService.handleSystemProperties();
-
     System.setProperty("ide", "true");
     System.setProperty("test", "true");
     SessionService.handleSystemProperties();
@@ -167,7 +155,6 @@ public class TestSessionService extends JajukTestCase {
    */
   public void testCreateSessionFile() {
     SessionService.createSessionFile();
-
     SessionService.setWorkspace("/invalidpath");
     SessionService.createSessionFile();
   }
@@ -183,26 +170,19 @@ public class TestSessionService extends JajukTestCase {
     { // ensure that the base jajuk-directory exists, otherwise the
       // "first time wizard" is run, which blocks the test
       File bootstrap = new File(SessionService.getBootstrapPath());
-
       // try to create it if it is missing
       if (!bootstrap.exists()) {
-        String content = "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n"+
-                          "<properties><entry key='final'>"+UtilSystem.getUserHome()+"</entry>\n"+
-                          "<entry key='test'>"+UtilSystem.getUserHome()+"</entry>\n</properties>";
+        String content = "<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n"
+            + "<properties><entry key='final'>" + UtilSystem.getUserHome() + "</entry>\n"
+            + "<entry key='test'>" + UtilSystem.getUserHome() + "</entry>\n</properties>";
         FileUtils.writeStringToFile(bootstrap, content);
       }
-
       // needs to be a directory, needs to be readable, ...
       assertTrue(bootstrap.isFile());
       assertTrue(bootstrap.canRead());
     }
-
     // Reset CLI parameters
     SessionService.handleCommandline(new String[] { "-test", "-ide", "-something" });
-    SessionService.discoverWorkspace();
-
-    // without test mode...
-    SessionService.setTestMode(false);
     SessionService.discoverWorkspace();
   }
 
@@ -235,12 +215,7 @@ public class TestSessionService extends JajukTestCase {
    */
   public void testGetConfFileByPath() {
     SessionService.getConfFileByPath("/tmp");
-
-    SessionService.setTestMode(false);
     SessionService.getConfFileByPath("/tmp");
-    SessionService.setTestMode(true);
-    SessionService.getConfFileByPath("/tmp");
-
   }
 
   /**
@@ -260,7 +235,6 @@ public class TestSessionService extends JajukTestCase {
    */
   public void testClearCache() throws Exception {
     SessionService.clearCache();
-
     // create some dummy file
     File file = SessionService.getConfFileByPath(Const.FILE_CACHE);
     assertNotNull(file);
@@ -272,12 +246,11 @@ public class TestSessionService extends JajukTestCase {
   // For EMMA code-coverage tests
   /**
    * Test private constructor.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
   public void testPrivateConstructor() throws Exception {
     JUnitHelpers.executePrivateConstructor(SessionService.class);
   }
-
 }

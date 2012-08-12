@@ -40,20 +40,14 @@ import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
  * the AbstractAutoCompleteAdaptor.
  */
 public class AutoCompleteDocument extends PlainDocument {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -4353609211147483101L;
-
   /** Flag to indicate if adaptor.setSelectedItem has been called. Subsequent calls to remove/insertString should be ignored as they are likely have been caused by the adapted Component that is trying to set the text for the selected component. */
   boolean selecting = false;
-
   /** true, if only items from the adaptors's list can be entered false, otherwise (selected item might not be in the adaptors's list). */
   boolean strictMatching;
-
   /** The adaptor that is used to find and select items. */
   AbstractAutoCompleteAdaptor adaptor;
-
-  /** DOCUMENT_ME. */
   ObjectToStringConverter stringConverter;
 
   /**
@@ -81,10 +75,10 @@ public class AutoCompleteDocument extends PlainDocument {
   /**
    * Creates a new AutoCompleteDocument for the given
    * AbstractAutoCompleteAdaptor.
-   * 
+   *
+   * @param adaptor The adaptor that will be used to find and select matching items.
    * @param strictMatching true, if only items from the adaptor's list should be allowed to
    * be entered
-   * @param adaptor The adaptor that will be used to find and select matching items.
    */
   public AutoCompleteDocument(AbstractAutoCompleteAdaptor adaptor, boolean strictMatching) {
     this(adaptor, strictMatching, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
@@ -110,7 +104,6 @@ public class AutoCompleteDocument extends PlainDocument {
     if (selecting) {
       return;
     }
-
     super.remove(offs, len);
     if (!strictMatching) {
       setSelectedItem(getText(0, getLength()), getText(0, getLength()));
@@ -128,7 +121,6 @@ public class AutoCompleteDocument extends PlainDocument {
     if (selecting) {
       return;
     }
-
     // insert the string into the document
     super.insertString(offs, str, a);
     // lookup and select a matching item
@@ -173,9 +165,9 @@ public class AutoCompleteDocument extends PlainDocument {
 
   /**
    * Selects the given item using the AbstractAutoCompleteAdaptor.
-   * 
-   * @param itemAsString string representation of the item to be selected
+   *
    * @param item the item that is to be selected
+   * @param itemAsString string representation of the item to be selected
    */
   private void setSelectedItem(Object item, String itemAsString) {
     selecting = true;
@@ -201,7 +193,6 @@ public class AutoCompleteDocument extends PlainDocument {
     if (ret != null) {
       return ret;
     }
-
     // check if the currently selected item matches
     Object selectedItem = adaptor.getSelectedItem();
     String[] possibleStrings = stringConverter.getPossibleStringsForItem(selectedItem);
@@ -217,7 +208,6 @@ public class AutoCompleteDocument extends PlainDocument {
     if (ret != null) {
       return ret;
     }
-
     // no item starts with the pattern => return null
     return new LookupResult(null, "");
   }
@@ -225,8 +215,8 @@ public class AutoCompleteDocument extends PlainDocument {
   /**
    * Find match.
    * 
-   * @param pattern DOCUMENT_ME
-   * @param exactMatch DOCUMENT_ME
+   * @param pattern 
+   * @param exactMatch 
    * 
    * @return the lookup result
    */
@@ -246,26 +236,21 @@ public class AutoCompleteDocument extends PlainDocument {
         }
       }
     }
-
     return null;
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private static class LookupResult {
-
-    /** DOCUMENT_ME. */
     Object matchingItem;
-
-    /** DOCUMENT_ME. */
     String matchingString;
 
     /**
      * Instantiates a new lookup result.
      * 
-     * @param matchingItem DOCUMENT_ME
-     * @param matchingString DOCUMENT_ME
+     * @param matchingItem 
+     * @param matchingString 
      */
     public LookupResult(Object matchingItem, String matchingString) {
       this.matchingItem = matchingItem;
@@ -287,8 +272,6 @@ public class AutoCompleteDocument extends PlainDocument {
     if (base.length() < prefix.length()) {
       return false;
     }
-
     return base.regionMatches(false, 0, prefix, 0, prefix.length());
   }
-
 }

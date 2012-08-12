@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.widgets;
 
@@ -35,13 +35,9 @@ import org.jajuk.util.log.Log;
 /**
  * Stepped combo box allowing to display a long text in the history bar.
  */
-
 public class SteppedComboBox extends JComboBox {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** DOCUMENT_ME. */
   protected int popupWidth;
 
   /**
@@ -55,7 +51,7 @@ public class SteppedComboBox extends JComboBox {
   /**
    * Instantiates a new stepped combo box.
    * 
-   * @param aModel DOCUMENT_ME
+   * @param aModel 
    */
   public SteppedComboBox(ComboBoxModel aModel) {
     super(aModel);
@@ -65,7 +61,7 @@ public class SteppedComboBox extends JComboBox {
   /**
    * Instantiates a new stepped combo box.
    * 
-   * @param items DOCUMENT_ME
+   * @param items 
    */
   public SteppedComboBox(final Object[] items) {
     super(items);
@@ -75,7 +71,7 @@ public class SteppedComboBox extends JComboBox {
   /**
    * Instantiates a new stepped combo box.
    * 
-   * @param items DOCUMENT_ME
+   * @param items 
    */
   @SuppressWarnings("unchecked")
   public SteppedComboBox(List<?> items) {
@@ -107,7 +103,7 @@ public class SteppedComboBox extends JComboBox {
 
   /**
    * Inits the.
-   * DOCUMENT_ME
+   * 
    */
   protected final void init() {
     try {
@@ -122,7 +118,6 @@ public class SteppedComboBox extends JComboBox {
           return popup1;
         }
       };
-
       setUI(cbui);
       popupWidth = 0;
     } catch (Exception e) {

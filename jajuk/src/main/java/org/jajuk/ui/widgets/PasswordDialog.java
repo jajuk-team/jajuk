@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.widgets;
 
 import java.awt.event.ActionEvent;
@@ -38,20 +37,15 @@ import org.jajuk.util.Messages;
  * A password dialog.
  */
 public class PasswordDialog extends JajukJDialog implements ActionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** DOCUMENT_ME. */
   JPasswordField pf;
-
-  /** DOCUMENT_ME. */
   JOptionPane optionPane;
 
   /**
    * Instantiates a new password dialog.
    * 
-   * @param sMessage DOCUMENT_ME
+   * @param sMessage 
    */
   public PasswordDialog(String sMessage) {
     setTitle(sMessage);
@@ -74,16 +68,12 @@ public class PasswordDialog extends JajukJDialog implements ActionListener {
         }
       }
     });
-
     // Make this dialog display it.
     setContentPane(optionPane);
-
     // Handle window closing correctly.
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-
     // Register an event handler that puts the text into the option pane.
     pf.addActionListener(this);
-
     // Ensure the text field always gets the first focus.
     addComponentListener(new ComponentAdapter() {
       @Override
@@ -101,7 +91,7 @@ public class PasswordDialog extends JajukJDialog implements ActionListener {
   /**
    * This method handles events for the text field.
    * 
-   * @param e DOCUMENT_ME
+   * @param e 
    */
   @Override
   public void actionPerformed(ActionEvent e) {
@@ -117,5 +107,4 @@ public class PasswordDialog extends JajukJDialog implements ActionListener {
   public JOptionPane getOptionPane() {
     return optionPane;
   }
-
 }

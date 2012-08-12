@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,21 +16,18 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.tags;
 
 import java.util.List;
 
 import org.jajuk.services.covers.Cover;
-import org.jaudiotagger.tag.FieldDataInvalidException;
-import org.jaudiotagger.tag.KeyNotFoundException;
 
 /**
  * Mandatory methods required for all tag implementations.
  */
 public interface ITagImpl {
-
   /**
    * Gets the track name.
    * 
@@ -142,7 +139,7 @@ public interface ITagImpl {
   /**
    * Sets the track name.
    * 
-   * @param sTrackName DOCUMENT_ME
+   * @param sTrackName 
    * 
    * @throws Exception the exception
    */
@@ -151,7 +148,7 @@ public interface ITagImpl {
   /**
    * Sets the album name.
    * 
-   * @param sAlbumName DOCUMENT_ME
+   * @param sAlbumName 
    * 
    * @throws Exception the exception
    */
@@ -160,7 +157,7 @@ public interface ITagImpl {
   /**
    * Sets the artist name.
    * 
-   * @param sArtistName DOCUMENT_ME
+   * @param sArtistName 
    * 
    * @throws Exception the exception
    */
@@ -169,7 +166,7 @@ public interface ITagImpl {
   /**
    * Sets the album artist.
    * 
-   * @param sAlbumArtist DOCUMENT_ME
+   * @param sAlbumArtist 
    * 
    * @throws Exception the exception
    */
@@ -178,7 +175,7 @@ public interface ITagImpl {
   /**
    * Sets the disc number.
    * 
-   * @param discnumber DOCUMENT_ME
+   * @param discnumber 
    * 
    * @throws Exception the exception
    */
@@ -187,7 +184,7 @@ public interface ITagImpl {
   /**
    * Sets the genre name.
    * 
-   * @param genre DOCUMENT_ME
+   * @param genre 
    * 
    * @throws Exception the exception
    */
@@ -196,7 +193,7 @@ public interface ITagImpl {
   /**
    * Sets the year.
    * 
-   * @param sYear DOCUMENT_ME
+   * @param sYear 
    * 
    * @throws Exception the exception
    */
@@ -205,7 +202,7 @@ public interface ITagImpl {
   /**
    * Sets the comment.
    * 
-   * @param sComment DOCUMENT_ME
+   * @param sComment 
    * 
    * @throws Exception the exception
    */
@@ -214,7 +211,7 @@ public interface ITagImpl {
   /**
    * Sets the lyrics.
    * 
-   * @param sLyrics DOCUMENT_ME
+   * @param sLyrics 
    * 
    * @throws Exception the exception
    */
@@ -230,7 +227,7 @@ public interface ITagImpl {
   /**
    * Set current file to work with.
    * 
-   * @param fio DOCUMENT_ME
+   * @param fio 
    * 
    * @throws Exception the exception
    */
@@ -239,7 +236,7 @@ public interface ITagImpl {
   /**
    * Set track order.
    * 
-   * @param lOrder DOCUMENT_ME
+   * @param lOrder 
    * 
    * @throws Exception the exception
    */
@@ -255,7 +252,7 @@ public interface ITagImpl {
   /**
    * Get value of tagFieldKey.
    * 
-   * @param tagFieldKey DOCUMENT_ME
+   * @param tagFieldKey 
    * 
    * @return the tag field
    * 
@@ -265,12 +262,9 @@ public interface ITagImpl {
 
   /**
    * Set value of tagFieldKey.
-   * 
-   * @param tagFieldKey DOCUMENT_ME
-   * @param tagFieldValue DOCUMENT_ME
-   * 
-   * @throws FieldDataInvalidException the field data invalid exception
-   * @throws KeyNotFoundException the key not found exception
+   *
+   * @param tagFieldKey 
+   * @param tagFieldValue 
    * @throws Exception the exception
    */
   public void setTagField(String tagFieldKey, String tagFieldValue) throws Exception;
@@ -281,12 +275,12 @@ public interface ITagImpl {
    * @return the supported tag fields
    */
   public List<String> getSupportedTagFields();
-  
+
   /**
-   * Gets the embedded covers. 
-   * 
+   * Gets the embedded covers.
+   *
    * @return the covers or a void list if none.
+   * @throws Exception the exception
    */
   public List<Cover> getCovers() throws Exception;
-
 }

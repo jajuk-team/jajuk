@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.views;
 
 import ext.FlowScrollPanel;
@@ -67,47 +66,23 @@ import org.jajuk.util.error.JajukException;
  * <p>
  * Configuration perspective.
  */
-public class DeviceView extends ViewAdapter implements IView, ActionListener {
-
+public class DeviceView extends ViewAdapter implements ActionListener {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** self instance. */
   private static DeviceView dv = new DeviceView();
-
-  /** DOCUMENT_ME. */
   FlowScrollPanel jpDevices;
-
-  /** DOCUMENT_ME. */
   JPopupMenu jpmenu;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiDelete;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiProperties;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiMount;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiUnmount;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiTest;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiRefresh;
-
-  /** DOCUMENT_ME. */
   JMenuItem jmiSynchronize;
-
-  /** DOCUMENT_ME. */
   DeviceItem diSelected;
-
   /** Mouse adapter used over device items to manage action or popup clicks. */
   MouseAdapter ma = new JajukMouseAdapter() {
-
     @Override
     public void handleActionSingleClick(final MouseEvent e) {
       selectItem(e);
@@ -147,59 +122,47 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
     JScrollPane jsp = new JScrollPane(jpDevices, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
         ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     jsp.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
-
     jpDevices.setScroller(jsp);
-
     jpDevices.setLayout(new FlowLayout(FlowLayout.LEFT));
-
     // Popup menus
     jpmenu = new JPopupMenu();
-
-    jmiMount = new JMenuItem(Messages.getString("DeviceView.8"), IconLoader
-        .getIcon(JajukIcons.MOUNT));
+    jmiMount = new JMenuItem(Messages.getString("DeviceView.8"),
+        IconLoader.getIcon(JajukIcons.MOUNT));
     jmiMount.addActionListener(this);
     jmiMount.setActionCommand(JajukEvents.DEVICE_MOUNT.toString());
     jpmenu.add(jmiMount);
-
-    jmiUnmount = new JMenuItem(Messages.getString("DeviceView.9"), IconLoader
-        .getIcon(JajukIcons.UNMOUNT));
+    jmiUnmount = new JMenuItem(Messages.getString("DeviceView.9"),
+        IconLoader.getIcon(JajukIcons.UNMOUNT));
     jmiUnmount.addActionListener(this);
     jmiUnmount.setActionCommand(JajukEvents.DEVICE_UNMOUNT.toString());
     jpmenu.add(jmiUnmount);
-
-    jmiRefresh = new JMenuItem(Messages.getString("DeviceView.11"), IconLoader
-        .getIcon(JajukIcons.REFRESH));
+    jmiRefresh = new JMenuItem(Messages.getString("DeviceView.11"),
+        IconLoader.getIcon(JajukIcons.REFRESH));
     jmiRefresh.addActionListener(this);
     jmiRefresh.setActionCommand(JajukEvents.DEVICE_REFRESH.toString());
     jpmenu.add(jmiRefresh);
-
-    jmiTest = new JMenuItem(Messages.getString("DeviceView.10"), IconLoader
-        .getIcon(JajukIcons.TEST));
+    jmiTest = new JMenuItem(Messages.getString("DeviceView.10"),
+        IconLoader.getIcon(JajukIcons.TEST));
     jmiTest.addActionListener(this);
     jmiTest.setActionCommand(JajukEvents.DEVICE_TEST.toString());
     jpmenu.add(jmiTest);
-
-    jmiSynchronize = new JMenuItem(Messages.getString("DeviceView.12"), IconLoader
-        .getIcon(JajukIcons.SYNCHRO));
+    jmiSynchronize = new JMenuItem(Messages.getString("DeviceView.12"),
+        IconLoader.getIcon(JajukIcons.SYNCHRO));
     jmiSynchronize.addActionListener(this);
     jmiSynchronize.setActionCommand(JajukEvents.DEVICE_SYNCHRO.toString());
     jpmenu.add(jmiSynchronize);
-
-    jmiDelete = new JMenuItem(Messages.getString("DeviceView.13"), IconLoader
-        .getIcon(JajukIcons.DELETE));
+    jmiDelete = new JMenuItem(Messages.getString("DeviceView.13"),
+        IconLoader.getIcon(JajukIcons.DELETE));
     jmiDelete.addActionListener(this);
     jmiDelete.setActionCommand(JajukEvents.DEVICE_DELETE.toString());
     jpmenu.add(jmiDelete);
-
-    jmiProperties = new JMenuItem(Messages.getString("DeviceView.14"), IconLoader
-        .getIcon(JajukIcons.CONFIGURATION));
+    jmiProperties = new JMenuItem(Messages.getString("DeviceView.14"),
+        IconLoader.getIcon(JajukIcons.CONFIGURATION));
     jmiProperties.addActionListener(this);
     jmiProperties.setActionCommand(JajukEvents.DEVICE_PROPERTIES.toString());
     jpmenu.add(jmiProperties);
-
     // add devices
     refreshDevices();
-
     // add components
     setLayout(new MigLayout("ins 0", "[grow]", "[grow]"));
     add(jsp, "grow");
@@ -223,7 +186,7 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
   }
 
   /**
-   * Refresh devices. DOCUMENT_ME
+   * Refresh devices. 
    */
   private void refreshDevices() {
     // remove all devices
@@ -231,8 +194,8 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
       jpDevices.removeAll();
     }
     // New device
-    DeviceItem diNew = new DeviceItem(IconLoader.getIcon(JajukIcons.DEVICE_NEW), Messages
-        .getString("DeviceView.17"), null);
+    DeviceItem diNew = new DeviceItem(IconLoader.getIcon(JajukIcons.DEVICE_NEW),
+        Messages.getString("DeviceView.17"), null);
     diNew.setToolTipText(Messages.getString("DeviceView.18"));
     jpDevices.add(diNew);
     diNew.addMouseListener(new MouseAdapter() {
@@ -247,54 +210,11 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
     // Add devices
     List<Device> devices = DeviceManager.getInstance().getDevices();
     for (Device device : devices) {
-      ImageIcon icon = IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED);
-      String sTooltip = "";
-      switch ((int) device.getType()) {
-      case 0:
-        sTooltip = Messages.getString("Device_type.directory");
-        if (device.isMounted()) {
-          icon = IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED);
-        } else {
-          icon = IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_UNMOUNTED);
-        }
-        break;
-      case 1:
-        sTooltip = Messages.getString("Device_type.file_cd");
-        if (device.isMounted()) {
-          icon = IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED);
-        } else {
-          icon = IconLoader.getIcon(JajukIcons.DEVICE_CD_UNMOUNTED);
-        }
-        break;
-      case 2:
-        sTooltip = Messages.getString("Device_type.network_drive");
-        if (device.isMounted()) {
-          icon = IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_MOUNTED);
-        } else {
-          icon = IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_UNMOUNTED);
-        }
-        break;
-      case 3:
-        sTooltip = Messages.getString("Device_type.extdd");
-        if (device.isMounted()) {
-          icon = IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED);
-        } else {
-          icon = IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_UNMOUNTED);
-        }
-        break;
-      case 4:
-        sTooltip = Messages.getString("Device_type.player");
-        if (device.isMounted()) {
-          icon = IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED);
-        } else {
-          icon = IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_UNMOUNTED);
-        }
-        break;
-      }
+      ImageIcon icon = device.getIconRepresentationLarge();
+      String sTooltip = device.getHumanValue(XML_TYPE);
       DeviceItem di = new DeviceItem(icon, device.getName(), device);
       di.setToolTipText(sTooltip);
       di.addMouseListener(ma);
-      di.setToolTipText(device.getDeviceTypeS());
       di.addKeyListener(new KeyAdapter() {
         @Override
         public void keyTyped(KeyEvent e) {
@@ -351,11 +271,9 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
       dw.setVisible(true);
       return;
     }
-
     if (diSelected == null) { // test a device is selected
       return;
     }
-
     if (ae.getActionCommand().equals(JajukEvents.DEVICE_DELETE.toString())) {
       handleDelete();
     } else if (ae.getActionCommand().equals(JajukEvents.DEVICE_MOUNT.toString())) {
@@ -388,11 +306,11 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
         @Override
         public void run() {
           if (diSelected.getDevice().test()) {
-            Messages.showInfoMessage(Messages.getString("DeviceView.21"), IconLoader
-                .getIcon(JajukIcons.OK));
+            Messages.showInfoMessage(Messages.getString("DeviceView.21"),
+                IconLoader.getIcon(JajukIcons.OK));
           } else {
-            Messages.showInfoMessage(Messages.getString("DeviceView.22"), IconLoader
-                .getIcon(JajukIcons.KO));
+            Messages.showInfoMessage(Messages.getString("DeviceView.22"),
+                IconLoader.getIcon(JajukIcons.KO));
           }
         }
       }.start();
@@ -443,9 +361,9 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
   }
 
   /**
-   * Select item. DOCUMENT_ME
+   * Select item. 
    * 
-   * @param e DOCUMENT_ME
+   * @param e 
    */
   private void selectItem(final MouseEvent e) {
     boolean bSameDevice = ((diSelected != null) && e.getSource().equals(diSelected));
@@ -472,7 +390,13 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
    * 
    * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
    */
-  public void mouseExited(@SuppressWarnings("unused") MouseEvent arg0) {
+  /**
+   * Mouse exited.
+   * 
+   *
+   * @param arg0 
+   */
+  public void mouseExited(MouseEvent arg0) {
     // required by interface, but nothing to do here...
   }
 
@@ -481,7 +405,13 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
    * 
    * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
    */
-  public void mouseEntered(@SuppressWarnings("unused") MouseEvent e) {
+  /**
+   * Mouse entered.
+   * 
+   *
+   * @param e 
+   */
+  public void mouseEntered(MouseEvent e) {
     // required by interface, but nothing to do here...
   }
 
@@ -490,7 +420,13 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
    * 
    * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
    */
-  public void mouseClicked(@SuppressWarnings("unused") MouseEvent e) {
+  /**
+   * Mouse clicked.
+   * 
+   *
+   * @param e 
+   */
+  public void mouseClicked(MouseEvent e) {
     // required by interface, but nothing to do here...
   }
 }
@@ -500,7 +436,6 @@ public class DeviceView extends ViewAdapter implements IView, ActionListener {
  */
 class DeviceItem extends JPanel {
   private static final long serialVersionUID = 1L;
-
   /** Associated device */
   private Device device;
 
@@ -508,8 +443,6 @@ class DeviceItem extends JPanel {
    * Constructor
    */
   DeviceItem(ImageIcon icon, String sName, Device device) {
-    super();
-
     this.device = device;
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -536,5 +469,4 @@ class DeviceItem extends JPanel {
   public void setDevice(Device device) {
     this.device = device;
   }
-
 }

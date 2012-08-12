@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.util.filters;
 
 import java.util.Date;
@@ -38,19 +37,16 @@ import org.jajuk.util.Const;
  * </p>.
  */
 public class JajukPredicates {
-
   /**
    * Age-filtering predicate Applied on tracks only.
    */
   public static class AgePredicate implements Predicate {
-
-    /** DOCUMENT_ME. */
     private int iAge = 0;
 
     /**
      * Instantiates a new age predicate.
      * 
-     * @param iAge DOCUMENT_ME
+     * @param iAge 
      */
     public AgePredicate(int iAge) {
       this.iAge = iAge;
@@ -74,14 +70,12 @@ public class JajukPredicates {
       }
       return false;
     }
-
   }
 
   /**
    * Ready (mounted) filtering predicate Applied on files only.
    */
   public static class ReadyFilePredicate implements Predicate {
-
     /*
      * (non-Javadoc)
      * 
@@ -91,14 +85,12 @@ public class JajukPredicates {
     public boolean evaluate(Object o) {
       return ((File) o).isReady();
     }
-
   }
 
   /**
    * Banned filtering predicate Applied against tracks only.
    */
   public static class BannedTrackPredicate implements Predicate {
-
     /*
      * (non-Javadoc)
      * 
@@ -109,14 +101,12 @@ public class JajukPredicates {
       Track track = (Track) o;
       return !(track.getBooleanValue(Const.XML_TRACK_BANNED));
     }
-
   }
 
   /**
    * Banned filtering predicate Applied against files only.
    */
   public static class BannedFilePredicate implements Predicate {
-
     /*
      * (non-Javadoc)
      * 
@@ -127,14 +117,12 @@ public class JajukPredicates {
       Track track = ((File) o).getTrack();
       return !(track.getBooleanValue(Const.XML_TRACK_BANNED));
     }
-
   }
 
   /**
    * Any file available predicate, applies against tracks only.
    */
   public static class AnyFileReady implements Predicate {
-
     /*
      * (non-Javadoc)
      * 
@@ -145,14 +133,12 @@ public class JajukPredicates {
       Track track = ((File) o).getTrack();
       return track.getBestFile(true) != null;
     }
-
   }
 
   /**
    * Playlist predicate, filter playlists located on unmounted devices.
    */
   public static class ReadyPlaylistPredicate implements Predicate {
-
     /*
      * (non-Javadoc)
      * 
@@ -162,21 +148,18 @@ public class JajukPredicates {
     public boolean evaluate(Object o) {
       return ((Playlist) o).isReady();
     }
-
   }
 
   /**
    * Ambience predicate on files, filter by provided ambience.
    */
   public static class AmbiencePredicate implements Predicate {
-
-    /** DOCUMENT_ME. */
     private final Ambience ambience;
 
     /**
      * Instantiates a new ambience predicate.
      * 
-     * @param ambience DOCUMENT_ME
+     * @param ambience 
      */
     public AmbiencePredicate(Ambience ambience) {
       this.ambience = ambience;
@@ -192,14 +175,12 @@ public class JajukPredicates {
       File tested = (File) o;
       return ambience.getGenres().contains(tested.getTrack().getGenre());
     }
-
   }
 
   /**
    * Not Video predicate on tracks, filter video files.
    */
   public static class NotVideoPredicate implements Predicate {
-
     /*
      * (non-Javadoc)
      * 
@@ -212,7 +193,5 @@ public class JajukPredicates {
       File fileTested = files.get(0);
       return !fileTested.getType().isVideo();
     }
-
   }
-
 }

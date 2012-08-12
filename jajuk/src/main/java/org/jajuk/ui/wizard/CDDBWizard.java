@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.wizard;
 
@@ -60,55 +60,36 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class CDDBWizard extends JajukJDialog implements ActionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** DOCUMENT_ME. */
   private SteppedComboBox jcbAlbum;
-
-  /** DOCUMENT_ME. */
   private JajukTable jtable;
-
-  /** DOCUMENT_ME. */
   private CDDBTableModel model;
-
   /** OK/Cancel panel. */
   private OKCancelPanel okc;
-
   /** Items to be retagged. */
   private List<CDDBTrack> alCddbTracks;
-
   /** Freedb Items. */
   private Freedb fdb;
-
-  /** DOCUMENT_ME. */
   private FreedbQueryResult[] foundAlbums;
-
-  /** DOCUMENT_ME. */
   private FreedbReadResult fdbReader;
-
-  /** DOCUMENT_ME. */
   private List<String> jcbFoundAlbums;
 
   /**
    * CDDB wizard.
    * 
-   * @param tracks DOCUMENT_ME
+   * @param tracks 
    */
   public CDDBWizard(final List<Track> tracks) {
-    super();
-
+    super(JajukMainWindow.getInstance(), false);
     UtilGUI.waiting();
-
     // windows title: absolute path name of the given directory
     setTitle(Messages.getString("CDDBWizard.19"));
     setModal(true);
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
-
       @Override
       public Void doInBackground() {
         try {
@@ -166,7 +147,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   }
 
   /**
-   * Populate model. DOCUMENT_ME
+   * Populate model. 
    * 
    * @return the cDDB table model
    */
@@ -197,14 +178,13 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   }
 
   /**
-   * Inits the ui. DOCUMENT_ME
+   * Inits the ui. 
    */
   public void initUI() {
     okc = new OKCancelPanel(CDDBWizard.this, Messages.getString("Apply"),
         Messages.getString("Close"));
     // Albums List
     jcbAlbum = new SteppedComboBox();
-
     // add all matches
     jcbAlbum.setModel(new DefaultComboBoxModel(jcbFoundAlbums.toArray()));
     jcbAlbum.setSelectedIndex(jcbAlbum.getSelectedIndex());
@@ -217,10 +197,8 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
         jtable.selectAll();
       }
     });
-
     // Show the number of matches found
     JLabel jlCurrent = new JLabel(foundAlbums.length + " " + Messages.getString("CDDBWizard.18"));
-
     // Add items
     setLayout(new MigLayout("insets 10,gapx 15,gapy 15", "[grow,800:800:]"));
     add(new JLabel(Messages.getString("CDDBWizard.5")), "split 3");
@@ -228,7 +206,6 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
     add(jlCurrent, "wrap");
     add(new JScrollPane(jtable), "grow,wrap");
     add(okc, "span,right");
-
     getRootPane().setDefaultButton(okc.getOKButton());
     pack();
     setLocationRelativeTo(JajukMainWindow.getInstance());
@@ -238,7 +215,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   /**
    * Perform the actual freedb query.
    * 
-   * @param cddbtracks DOCUMENT_ME
+   * @param cddbtracks 
    * 
    * @return number of results (0 if no result). -1 if a technical problem
    * occurred.
@@ -278,7 +255,7 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   }
 
   /**
-   * Retag files. DOCUMENT_ME
+   * Retag files. 
    */
   public void retagFiles() {
     int[] aIdxToTag = jtable.getSelectedRows();
@@ -322,8 +299,8 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
   /**
    * Retag internal.
    * 
-   * @param iRow DOCUMENT_ME
-   * @param trackin DOCUMENT_ME
+   * @param iRow 
+   * @param trackin 
    * 
    * @return the track
    * 
@@ -389,5 +366,4 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
       }.start();
     }
   }
-
 }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.actions;
 
 import java.io.IOException;
@@ -46,19 +45,12 @@ import org.jajuk.util.filters.NotAudioFilter;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class RefactorAction {
-
-  /** DOCUMENT_ME. */
   private static boolean bStopAll = false;
-
-  /** DOCUMENT_ME. */
   private static String sFS = java.io.File.separator;
-
-  /** DOCUMENT_ME. */
   private final List<File> alFiles;
-
   /** [PERF] Stores directory to be refreshed to avoid rescanning them twice. */
   private final List<Directory> toBeRefreshed = new ArrayList<Directory>(1);
 
@@ -117,14 +109,12 @@ public class RefactorAction {
         sErrors += je.getMessage() + '\n';
         continue;
       }
-
       filename += "." + tCurrent.getType().getExtension();
       filename = filename.replace("/", RefactorAction.sFS);
       final java.io.File fOld = fCurrent.getFIO();
-      final String sPathname = fCurrent.getDevice().getFio().getPath() + RefactorAction.sFS
+      final String sPathname = fCurrent.getDevice().getFIO().getPath() + RefactorAction.sFS
           + filename;
       java.io.File fNew = new java.io.File(sPathname);
-
       // Confirm if destination dir already exist
       if (fNew.getParentFile().exists() && !bOKToOverwrite) {
         final int resu = Messages.getChoice(Messages.getString("Warning.5"),
@@ -139,7 +129,6 @@ public class RefactorAction {
       // file
       bOKToOverwrite = true;
       fNew.getParentFile().mkdirs();
-
       // Move file and related cover but save old Directory pathname
       // for future deletion
       try {
@@ -151,7 +140,6 @@ public class RefactorAction {
             throw new IOException("Cannot move item: " + fCover.getAbsolutePath() + " to "
                 + destFile.getAbsolutePath());
           }
-
         }
       } catch (Exception e) {
         // This exception can be thrown by instance if default cover is not
@@ -160,7 +148,6 @@ public class RefactorAction {
       }
       // Rename audio files
       boolean bRenameSuccess = false;
-
       // Test if source and target files are equals
       if (fNew.getAbsolutePath().equalsIgnoreCase(fOld.getAbsolutePath())) {
         sErrors += fCurrent.getAbsolutePath() + " (" + Messages.getString("Error.160") + ")\n";
@@ -171,29 +158,24 @@ public class RefactorAction {
             sErrors += fCurrent.getAbsolutePath() + " (" + Messages.getString("Error.154") + ")\n";
           }
           Log.debug("[Refactoring] {{" + fNew.getAbsolutePath() + "}} Success ? " + bRenameSuccess);
-
         } catch (Exception e) {
           Log.error(e);
           sErrors += fCurrent.getAbsolutePath() + " (" + Messages.getString("Error.161") + ")\n";
         }
       }
-
       // Register and scans new directories
       String sFirstDir = null;
-      final String sTest[] = sPathname.split(fCurrent.getDevice().getFio().getPath().replace("\\",
-          "\\\\"));
+      final String sTest[] = sPathname.split(fCurrent.getDevice().getFIO().getPath()
+          .replace("\\", "\\\\"));
       sFirstDir = sTest[1].split("\\" + RefactorAction.sFS)[1];
-
       final Directory dir = DirectoryManager.getInstance().registerDirectory(
           sFirstDir,
-          DirectoryManager.getInstance().getDirectoryForIO(fCurrent.getDevice().getFio(),
+          DirectoryManager.getInstance().getDirectoryForIO(fCurrent.getDevice().getFIO(),
               fCurrent.getDevice()), fCurrent.getDevice());
-
       // Ask to refresh this directory afterward
       if (!toBeRefreshed.contains(dir)) {
         toBeRefreshed.add(dir);
       }
-
       // See if old directory contain other files and move them
       final java.io.File dOld = fOld.getParentFile();
       final java.io.File[] list = dOld.listFiles(new JajukFileFilter(NotAudioFilter.getInstance()));
@@ -209,7 +191,6 @@ public class RefactorAction {
             }
             Log.debug("[Refactoring] {{" + fNew.getAbsolutePath() + "}} Success ? "
                 + bRenameSuccess);
-
           } catch (Exception e) {
             Log.error(e);
             sErrors += f.getAbsolutePath() + " (" + Messages.getString("Error.161") + ")\n";
@@ -221,7 +202,6 @@ public class RefactorAction {
       else if (list.length == 0 && dOld.delete()) {
         DirectoryManager.getInstance().removeDirectory(fOld.getParent());
       }
-
       InformationJPanel.getInstance().setMessage(
           Messages.getString("RefactorWizard.0") + sPathname,
           InformationJPanel.MessageType.INFORMATIVE);
@@ -241,7 +221,6 @@ public class RefactorAction {
       InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
           InformationJPanel.MessageType.INFORMATIVE);
     }
-
   }
 
   /**
@@ -255,7 +234,7 @@ public class RefactorAction {
 
   /**
    * Reset stop all.
-   * DOCUMENT_ME
+   * 
    */
   public static void resetStopAll() {
     bStopAll = false;

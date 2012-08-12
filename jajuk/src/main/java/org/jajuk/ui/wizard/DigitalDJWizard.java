@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.wizard;
 
@@ -82,40 +82,28 @@ import org.qdwizard.Wizard;
  * DJ creation wizard.
  */
 public class DigitalDJWizard extends Wizard {
-
   /** Wizard action. */
   private static final String KEY_ACTION = "ACTION";
-
   /** DJ type variable name. */
-  private static final String KEY_DJ_TYPE = "TYPE";
-
+  private static final String KEY_DJ_TYPE = "Type";
   /** DJ name variable name. */
   private static final String KEY_DJ_NAME = "NAME";
-
   /** Track unicity. */
   private static final String KEY_UNICITY = "UNICITY";
-
   /** Ratings level. */
   private static final String KEY_RATINGS_LEVEL = "RATING_LEVEL";
-
   /** Fade duration. */
   private static final String KEY_FADE_DURATION = "FADE_DURATION";
-
   /** Transitions. */
   private static final String KEY_TRANSITIONS = "TRANSITIONS";
-
   /** Proportions. */
   private static final String KEY_PROPORTIONS = "PROPORTIONS";
-
   /** Ambience. */
   private static final String KEY_AMBIENCE = "AMBIENCE";
-
   /** DJ to remove. */
   private static final String KEY_REMOVE = "REMOVE";
-
   /** DJ to change. */
   private static final String KEY_CHANGE = "CHANGE";
-
   /** Max number of tracks to queue. */
   private static final String KEY_MAX_TRACKS = "MAXTRACKS";
 
@@ -123,29 +111,17 @@ public class DigitalDJWizard extends Wizard {
    * DJ type choice.
    */
   public static class TypeSelectionPanel extends Screen implements ActionListener {
-
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
-
     /** Transition DJ code. */
     private static final String DJ_TYPE_TRANSITION = "0";
-
     /** Proportions DJ code. */
     private static final String DJ_TYPE_PROPORTION = "1";
-
     /** Ambience DJ code. */
     private static final String DJ_TYPE_AMBIENCE = "2";
-
-    /** DOCUMENT_ME. */
     ButtonGroup bgTypes;
-
-    /** DOCUMENT_ME. */
     JRadioButton jrbTransitions;
-
-    /** DOCUMENT_ME. */
     JRadioButton jrbProp;
-
-    /** DOCUMENT_ME. */
     JRadioButton jrbAmbiance;
 
     /**
@@ -178,7 +154,7 @@ public class DigitalDJWizard extends Wizard {
      * @see
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-
+    @Override
     public void actionPerformed(ActionEvent e) {
       if (e.getSource() == jrbTransitions) {
         data.put(KEY_DJ_TYPE, DJ_TYPE_TRANSITION);
@@ -210,23 +186,15 @@ public class DigitalDJWizard extends Wizard {
    * DJ removal.
    */
   public static class RemovePanel extends Screen implements ActionListener {
-
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
-
-    /** DOCUMENT_ME. */
     JComponent[][] widgets;
-
-    /** DOCUMENT_ME. */
     ButtonGroup bgDJS;
-
-    /** DOCUMENT_ME. */
     List<DigitalDJ> djs;
 
     /**
      * Create panel UI.
      */
-
     @Override
     public void initUI() {
       djs = new ArrayList<DigitalDJ>(DigitalDJManager.getInstance().getDJs());
@@ -262,7 +230,7 @@ public class DigitalDJWizard extends Wizard {
      * @see
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-
+    @Override
     public void actionPerformed(ActionEvent e) {
       int row = getWidgetIndex(widgets, (JComponent) e.getSource());
       data.put(KEY_REMOVE, djs.get(row));
@@ -290,23 +258,15 @@ public class DigitalDJWizard extends Wizard {
    * DJ Selection for change.
    */
   public static class ChangePanel extends Screen implements ActionListener {
-
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
-
-    /** DOCUMENT_ME. */
     JComponent[][] widgets;
-
-    /** DOCUMENT_ME. */
     ButtonGroup bgDJS;
-
-    /** DOCUMENT_ME. */
     List<DigitalDJ> djs;
 
     /**
      * Create panel UI.
      */
-
     @Override
     public void initUI() {
       djs = DigitalDJManager.getInstance().getDJsSorted();
@@ -344,7 +304,7 @@ public class DigitalDJWizard extends Wizard {
      * @see
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-
+    @Override
     public void actionPerformed(ActionEvent e) {
       int row = getWidgetIndex(widgets, (JComponent) e.getSource());
       // set DJ type useful for screen choice
@@ -383,29 +343,17 @@ public class DigitalDJWizard extends Wizard {
    * Action type (new or alter).
    */
   public static class ActionSelectionPanel extends Screen implements ClearPoint, ActionListener {
-
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
-
     /** NEW code. */
     public static final String ACTION_CREATION = "0";
-
     /** CHANGE code. */
     public static final String ACTION_CHANGE = "1";
-
     /** DELETE code. */
     public static final String ACTION_DELETE = "2";
-
-    /** DOCUMENT_ME. */
     ButtonGroup bgActions;
-
-    /** DOCUMENT_ME. */
     JRadioButton jrbNew;
-
-    /** DOCUMENT_ME. */
     JRadioButton jrbChange;
-
-    /** DOCUMENT_ME. */
     JRadioButton jrbDelete;
 
     /**
@@ -441,7 +389,7 @@ public class DigitalDJWizard extends Wizard {
      * @see
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-
+    @Override
     public void actionPerformed(ActionEvent e) {
       if (e.getSource() == jrbNew) {
         data.put(KEY_ACTION, ACTION_CREATION);
@@ -474,41 +422,19 @@ public class DigitalDJWizard extends Wizard {
    */
   public static class GeneralOptionsPanel extends Screen implements ActionListener, CaretListener,
       ChangeListener {
-
-    /** The Constant NO_MAX_TRACKS.  DOCUMENT_ME */
+    /** The Constant NO_MAX_TRACKS.   */
     private static final String NO_MAX_TRACKS = "  ";
-
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
-
-    /** DOCUMENT_ME. */
     JLabel jlName;
-
-    /** DOCUMENT_ME. */
     JTextField jtfName;
-
-    /** DOCUMENT_ME. */
     JLabel jlRatingLevel;
-
-    /** DOCUMENT_ME. */
     JSlider jsRatingLevel;
-
-    /** DOCUMENT_ME. */
     JLabel jlFadeDuration;
-
-    /** DOCUMENT_ME. */
     JSlider jsFadeDuration;
-
-    /** DOCUMENT_ME. */
     JCheckBox jcbMaxTracks;
-
-    /** DOCUMENT_ME. */
     JSlider jsMaxTracks;
-
-    /** DOCUMENT_ME. */
     JLabel jnMaxTracks;
-
-    /** DOCUMENT_ME. */
     JCheckBox jcbUnicity;
 
     /* (non-Javadoc)
@@ -530,7 +456,6 @@ public class DigitalDJWizard extends Wizard {
     /**
      * Create panel UI.
      */
-
     @Override
     public void initUI() {
       if (ActionSelectionPanel.ACTION_CREATION.equals(data.get(KEY_ACTION))) {
@@ -552,7 +477,6 @@ public class DigitalDJWizard extends Wizard {
       jtfName.setToolTipText(Messages.getString("DigitalDJWizard.6"));
       jtfName.addCaretListener(this);
       jtfName.requestFocusInWindow();
-
       jlRatingLevel = new JLabel(Messages.getString("DigitalDJWizard.8"));
       jlRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.53"));
       jsRatingLevel = new JSlider(0, 4, (Integer) data.get(KEY_RATINGS_LEVEL));
@@ -564,7 +488,6 @@ public class DigitalDJWizard extends Wizard {
       jsRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.53"));
       jsRatingLevel.addMouseWheelListener(new DefaultMouseWheelListener(jsRatingLevel));
       jsRatingLevel.addChangeListener(this);
-
       jlFadeDuration = new JLabel(Messages.getString("DigitalDJWizard.9"));
       jlFadeDuration.setToolTipText(Messages.getString("DigitalDJWizard.54"));
       jsFadeDuration = new JSlider(0, 30, (Integer) data.get(KEY_FADE_DURATION));
@@ -575,12 +498,10 @@ public class DigitalDJWizard extends Wizard {
       jsFadeDuration.setPaintTicks(true);
       jsFadeDuration.setPaintLabels(true);
       jsFadeDuration.setToolTipText(Messages.getString("DigitalDJWizard.54"));
-
       // CheckBox for enabling/disabling slider, jsMaxTrack
       int nMaxTracks = (Integer) data.get(KEY_MAX_TRACKS);
       jcbMaxTracks = new JCheckBox(Messages.getString("DigitalDJWizard.67"), nMaxTracks != -1);
       jcbMaxTracks.setToolTipText(Messages.getString("DigitalDJWizard.68"));
-
       // initialize the slider based if max track is enabled or not
       if (nMaxTracks != -1) {
         jsMaxTracks = new JSlider(0, 5000, nMaxTracks);
@@ -599,19 +520,17 @@ public class DigitalDJWizard extends Wizard {
       jsMaxTracks.setPaintTicks(false);
       jsMaxTracks.setPaintLabels(false);
       jsMaxTracks.setToolTipText(Messages.getString("DigitalDJWizard.68"));
-
       // enable/disable slider depending on checkbox
       jcbMaxTracks.addActionListener(this);
-
-      jcbUnicity = new JCheckBox(Messages.getString("DigitalDJWizard.10"), (Boolean) data
-          .get(KEY_UNICITY));
+      jcbUnicity = new JCheckBox(Messages.getString("DigitalDJWizard.10"),
+          (Boolean) data.get(KEY_UNICITY));
       jcbUnicity.setToolTipText(Messages.getString("DigitalDJWizard.55"));
       jcbUnicity.addActionListener(new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent arg0) {
           data.put(KEY_UNICITY, jcbUnicity.isSelected());
         }
       });
-
       // DJ change, set default values
       if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))) {
         DigitalDJ dj = (DigitalDJ) data.get(KEY_CHANGE);
@@ -627,7 +546,6 @@ public class DigitalDJWizard extends Wizard {
       } else { // new dj, dj name is required
         setProblem(Messages.getString("DigitalDJWizard.41"));
       }
-
       setLayout(new MigLayout("insets 10,gapx 10,gapy 15", "[][grow]"));
       add(jlName);
       add(jtfName, "grow,wrap");
@@ -652,7 +570,7 @@ public class DigitalDJWizard extends Wizard {
      * @see
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-
+    @Override
     public void actionPerformed(ActionEvent ae) {
       if (ae.getSource() == jcbUnicity) {
         data.put(KEY_UNICITY, jcbUnicity.isSelected());
@@ -668,7 +586,7 @@ public class DigitalDJWizard extends Wizard {
      * @see
      * javax.swing.event.CaretListener#caretUpdate(javax.swing.event.CaretEvent)
      */
-
+    @Override
     public void caretUpdate(CaretEvent ce) {
       if (ce.getSource() == jtfName) {
         data.put(KEY_DJ_NAME, jtfName.getText());
@@ -701,7 +619,7 @@ public class DigitalDJWizard extends Wizard {
      * javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent
      * )
      */
-
+    @Override
     public void stateChanged(ChangeEvent ie) {
       if (ie.getSource() == jsFadeDuration && !jsFadeDuration.getValueIsAdjusting()) {
         data.put(KEY_FADE_DURATION, jsFadeDuration.getValue());
@@ -710,7 +628,6 @@ public class DigitalDJWizard extends Wizard {
       } else if (ie.getSource() == jsMaxTracks) {
         updateMaxTracks();
       }
-
     }
 
     /**
@@ -736,13 +653,10 @@ public class DigitalDJWizard extends Wizard {
    * Transitions panel.
    */
   public static class TransitionsPanel extends Screen {
-
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
-
     /** All dynamic widgets. */
     JComponent[][] widgets;
-
     /** Transitions*. */
     List<Transition> alTransitions;
 
@@ -782,7 +696,6 @@ public class DigitalDJWizard extends Wizard {
     /**
      * Create panel UI.
      */
-
     @Override
     @SuppressWarnings("unchecked")
     public void initUI() {
@@ -818,7 +731,7 @@ public class DigitalDJWizard extends Wizard {
         // Delete button
         JButton jbDelete = new JButton(IconLoader.getIcon(JajukIcons.DELETE));
         jbDelete.addActionListener(new ActionListener() {
-
+          @Override
           public void actionPerformed(ActionEvent ae) {
             alTransitions.remove(getWidgetIndex(widgets, (JComponent) ae.getSource()));
             refreshScreen();
@@ -839,6 +752,7 @@ public class DigitalDJWizard extends Wizard {
           jbFrom.setToolTipText(transition.getFromString());
         }
         jbFrom.addActionListener(new ActionListener() {
+          @Override
           public void actionPerformed(ActionEvent ae) {
             int row = getWidgetIndex(widgets, (JComponent) ae.getSource());
             addGenre(row, true);
@@ -853,6 +767,7 @@ public class DigitalDJWizard extends Wizard {
           jbTo.setToolTipText(transition.getToString());
         }
         jbTo.addActionListener(new ActionListener() {
+          @Override
           public void actionPerformed(ActionEvent ae) {
             int row = getWidgetIndex(widgets, (JComponent) ae.getSource());
             addGenre(row, false);
@@ -863,6 +778,7 @@ public class DigitalDJWizard extends Wizard {
         // Nb of tracks
         JSpinner jsNb = new JSpinner(new SpinnerNumberModel(transition.getNbTracks(), 1, 10, 1));
         jsNb.addChangeListener(new ChangeListener() {
+          @Override
           public void stateChanged(ChangeEvent ce) {
             int row = getWidgetIndex(widgets, (JComponent) ce.getSource());
             int nb = Integer.parseInt(((JSpinner) ce.getSource()).getValue().toString());
@@ -950,19 +866,15 @@ public class DigitalDJWizard extends Wizard {
             && transition.getTo().getGenres().size() > 0) {
           // Make sure current delete button is now enabled
           ((JButton) widgets[row][0]).setEnabled(true);
-
           // Reset wizard error message
           setProblem(null);
-
           // Fill wizard data
           data.put(KEY_TRANSITIONS, getCleanedTransitions());
-
           // create a new void proportion if needed
           if (!containsVoidItem()) {
             // we duplicate the nb for new row
             alTransitions.add(new Transition(nb));
           }
-
           // Refresh screen to add a new void row
           refreshScreen();
         }
@@ -996,20 +908,16 @@ public class DigitalDJWizard extends Wizard {
       revalidate();
       repaint();
     }
-
   }
 
   /**
    * Proportion panel.
    */
   public static class ProportionsPanel extends Screen {
-
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
-
     /** All dynamic widgets. */
     JComponent[][] widgets;
-
     /** Proportions*. */
     List<Proportion> proportions;
 
@@ -1032,7 +940,6 @@ public class DigitalDJWizard extends Wizard {
     /**
      * Create panel UI.
      */
-
     @Override
     @SuppressWarnings("unchecked")
     public void initUI() {
@@ -1048,7 +955,6 @@ public class DigitalDJWizard extends Wizard {
         setProblem(Messages.getString("DigitalDJWizard.30"));
       }
       setCanFinish(true);
-
       // set layout
       setLayout(new MigLayout("insets 10,gapx 5", "[grow]"));
       add(getProportionsPanel(), "grow");
@@ -1083,7 +989,7 @@ public class DigitalDJWizard extends Wizard {
         // Delete button
         JButton jbDelete = new JButton(IconLoader.getIcon(JajukIcons.DELETE));
         jbDelete.addActionListener(new ActionListener() {
-
+          @Override
           public void actionPerformed(ActionEvent ae) {
             proportions.remove(getWidgetIndex(widgets, (JComponent) ae.getSource()));
             data.put(KEY_PROPORTIONS, getCleanedProportions());
@@ -1104,6 +1010,7 @@ public class DigitalDJWizard extends Wizard {
           jbGenre.setToolTipText(proportion.getGenresDesc());
         }
         jbGenre.addActionListener(new ActionListener() {
+          @Override
           public void actionPerformed(ActionEvent ae) {
             int row = getWidgetIndex(widgets, (JComponent) ae.getSource());
             addGenre(row);
@@ -1115,6 +1022,7 @@ public class DigitalDJWizard extends Wizard {
         JSpinner jsNb = new JSpinner(new SpinnerNumberModel(
             (int) (proportion.getProportion() * 100), 1, 100, 1));
         jsNb.addChangeListener(new ChangeListener() {
+          @Override
           public void stateChanged(ChangeEvent ce) {
             if (getTotalValue() > 100) {
               setProblem(Messages.getString("DigitalDJWizard.59"));
@@ -1207,7 +1115,6 @@ public class DigitalDJWizard extends Wizard {
             Log.warn("Could not add genre, got an empty genre from the Wizard Dialog!");
             continue;
           }
-
           proportion.addGenre(genre);
           sText += genre.getName2() + ',';
         }
@@ -1218,18 +1125,14 @@ public class DigitalDJWizard extends Wizard {
         if (proportion.getGenres().size() > 0) {
           // Make sure current delete button is now enabled
           ((JButton) widgets[row][0]).setEnabled(true);
-
           // Reset wizard error message
           setProblem(null);
-
           // Fill wizard data
           data.put(KEY_PROPORTIONS, getCleanedProportions());
-
           // create a new void proportion if needed
           if (!containsVoidItem()) {
             proportions.add(new Proportion());
           }
-
           // Refresh screen to add a new void row
           refreshScreen();
         }
@@ -1268,19 +1171,14 @@ public class DigitalDJWizard extends Wizard {
    * Ambience based.
    */
   public static class AmbiencePanel extends Screen implements ActionListener {
-
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
-
     /** All dynamic widgets. */
     JComponent[][] widgets;
-
     /** Ambiences*. */
     List<Ambience> ambiences;
-
     /** DJ*. */
     AmbienceDigitalDJ dj = null;
-
     /** Selected ambience index. */
     int ambienceIndex = 0;
 
@@ -1307,7 +1205,6 @@ public class DigitalDJWizard extends Wizard {
     public void initUI() {
       // the returned list is sorted by name
       ambiences = AmbienceManager.getInstance().getAmbiences();
-
       // We need at least one ambience
       if (ambiences.size() == 0) {
         setProblem(Messages.getString("DigitalDJWizard.38"));
@@ -1316,7 +1213,6 @@ public class DigitalDJWizard extends Wizard {
       // Get DJ
       dj = (AmbienceDigitalDJ) DigitalDJManager.getInstance().getDJByName(
           (String) data.get(KEY_DJ_NAME));
-
       setLayout(new MigLayout("insets 10,gapx 5", "[grow]"));
       add(getAmbiencesPanel(), "grow");
     }
@@ -1370,19 +1266,19 @@ public class DigitalDJWizard extends Wizard {
      * @see
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
       int row = getWidgetIndex(widgets, (JComponent) e.getSource());
       data.put(KEY_AMBIENCE, ambiences.get(row));
       setProblem(null);
     }
-
   }
 
   /**
    * Gets the widget index.
    *
-   * @param widgets DOCUMENT_ME
-   * @param widget DOCUMENT_ME
+   * @param widgets 
+   * @param widget 
    * @return index of a given widget row in the widget table
    */
   private static int getWidgetIndex(JComponent[][] widgets, JComponent widget) {
@@ -1476,7 +1372,6 @@ public class DigitalDJWizard extends Wizard {
    * 
    * @see org.jajuk.ui.wizard.Wizard#finish()
    */
-
   @SuppressWarnings("unchecked")
   @Override
   public void finish() {
@@ -1522,10 +1417,10 @@ public class DigitalDJWizard extends Wizard {
         Ambience ambience = (Ambience) data.get(KEY_AMBIENCE);
         ((AmbienceDigitalDJ) dj).setAmbience(ambience);
       } else if (TypeSelectionPanel.DJ_TYPE_PROPORTION.equals(sType)) {
-        List<Proportion> proportions = (List) data.get(KEY_PROPORTIONS);
+        List<Proportion> proportions = (List<Proportion>) data.get(KEY_PROPORTIONS);
         ((ProportionDigitalDJ) dj).setProportions(proportions);
       } else if (TypeSelectionPanel.DJ_TYPE_TRANSITION.equals(sType)) {
-        List<Transition> transitions = (List) data.get(KEY_TRANSITIONS);
+        List<Transition> transitions = (List<Transition>) data.get(KEY_TRANSITIONS);
         ((TransitionDigitalDJ) dj).setTransitions(transitions);
       }
       setProperties(dj);

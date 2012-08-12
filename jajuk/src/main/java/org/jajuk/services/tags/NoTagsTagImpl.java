@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.tags;
 
 import java.io.File;
@@ -39,14 +38,10 @@ import org.jajuk.util.UtilFeatures;
  * Tagger implementation for formats without tags and read by BasicPlayer API.
  */
 public class NoTagsTagImpl implements ITagImpl {
-
   /** Analyzed file. */
   private File fio;
-
   /** Current file data. */
   private Map<String, Object> mapInfo;
-
-  /** DOCUMENT_ME. */
   private static List<String> tagFieldKeyArrayList = new ArrayList<String>();
 
   /*
@@ -104,13 +99,13 @@ public class NoTagsTagImpl implements ITagImpl {
     BasicPlayer player = new BasicPlayer();
     player.addBasicPlayerListener(new BasicPlayerListener() {
       @Override
-      @SuppressWarnings( { "unchecked", "rawtypes" })
+      @SuppressWarnings({ "unchecked", "rawtypes" })
       public void opened(Object arg0, Map mProperties) {
         NoTagsTagImpl.this.mapInfo = mProperties;
       }
 
       @Override
-      @SuppressWarnings( { "rawtypes", "unchecked" })
+      @SuppressWarnings({ "rawtypes" })
       public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata, Map mProperties) {
         // required by interface, but nothing to do here...
       }
@@ -367,7 +362,7 @@ public class NoTagsTagImpl implements ITagImpl {
    */
   @Override
   public List<Cover> getCovers() throws Exception {
-    return new ArrayList<Cover>(1);
+    // TODO Auto-generated method stub
+    return null;
   }
-
 }

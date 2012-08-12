@@ -32,36 +32,25 @@ import org.jajuk.util.JajukIcons;
  * http://www.beginner-java-tutorial.com/scrollable-jpopupmenu.html
  */
 public class XCheckedButton extends JButton {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 6665536733427576873L;
-
   // Icon to be used to for the Checked Icon of the Button
-  /** DOCUMENT_ME. */
   private ImageIcon checkedIcon;
-
   /** Requires the icon to be always displayed, even when the item is unselected. */
   private boolean iconAlwaysVisible = false;
-
   /** These colors are required in order to simulate the JMenuItem's L&F. */
   public static final Color MENU_HIGHLIGHT_BG_COLOR = UIManager
       .getColor("MenuItem.selectionBackground");
-
-  /** The Constant MENU_HIGHLIGHT_FG_COLOR.  DOCUMENT_ME */
+  /** The Constant MENU_HIGHLIGHT_FG_COLOR.   */
   public static final Color MENU_HIGHLIGHT_FG_COLOR = UIManager
       .getColor("MenuItem.selectionForeground");
-
-  /** The Constant MENUITEM_BG_COLOR.  DOCUMENT_ME */
+  /** The Constant MENUITEM_BG_COLOR.   */
   public static final Color MENUITEM_BG_COLOR = UIManager.getColor("MenuItem.background");
-
-  /** The Constant MENUITEM_FG_COLOR.  DOCUMENT_ME */
+  /** The Constant MENUITEM_FG_COLOR.   */
   public static final Color MENUITEM_FG_COLOR = UIManager.getColor("MenuItem.foreground");
-
   // This property if set to false, will result in the checked Icon not being
   // displayed
-
   // when the button is selected
-  /** DOCUMENT_ME. */
   private boolean displayCheck = true;
 
   /**
@@ -70,13 +59,12 @@ public class XCheckedButton extends JButton {
   public XCheckedButton() {
     super();
     init();
-
   }
 
   /**
    * Instantiates a new x checked button.
    * 
-   * @param a DOCUMENT_ME
+   * @param a 
    */
   public XCheckedButton(Action a) {
     super(a);
@@ -86,7 +74,7 @@ public class XCheckedButton extends JButton {
   /**
    * Instantiates a new x checked button.
    * 
-   * @param icon DOCUMENT_ME
+   * @param icon 
    */
   public XCheckedButton(Icon icon) {
     super(icon);
@@ -96,8 +84,8 @@ public class XCheckedButton extends JButton {
   /**
    * Instantiates a new x checked button.
    * 
-   * @param text DOCUMENT_ME
-   * @param icon DOCUMENT_ME
+   * @param text 
+   * @param icon 
    */
   public XCheckedButton(String text, Icon icon) {
     super(text, icon);
@@ -107,7 +95,7 @@ public class XCheckedButton extends JButton {
   /**
    * Instantiates a new x checked button.
    * 
-   * @param text DOCUMENT_ME
+   * @param text 
    */
   public XCheckedButton(String text) {
     super(text);
@@ -119,7 +107,6 @@ public class XCheckedButton extends JButton {
    */
   private void init() {
     MouseAdapter mouseAdapter = getMouseAdapter();
-
     // Basically JGoodies LAF UI for JButton does not allow Background color
     // to be set.
     // So we need to set the default UI,
@@ -134,12 +121,11 @@ public class XCheckedButton extends JButton {
     setModel(new XCheckedButtonModel());
     setSelected(false);
     this.addMouseListener(mouseAdapter);
-
   }
 
   /**
    * Sets the menu item default colors.
-   * DOCUMENT_ME
+   * 
    */
   private void setMenuItemDefaultColors() {
     XCheckedButton.this.setBackground(MENUITEM_BG_COLOR);
@@ -170,14 +156,13 @@ public class XCheckedButton extends JButton {
       public void mouseExited(MouseEvent e) {
         setMenuItemDefaultColors();
       }
-
     };
   }
 
   /**
    * Display icon.
    * 
-   * @param checkedFlag DOCUMENT_ME
+   * @param checkedFlag 
    */
   public void displayIcon(boolean checkedFlag) {
     if (checkedFlag && isDisplayCheck()) {
@@ -192,10 +177,9 @@ public class XCheckedButton extends JButton {
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private class XCheckedButtonModel extends JToggleButton.ToggleButtonModel {
-
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 4628990599914525833L;
 
@@ -214,33 +198,25 @@ public class XCheckedButton extends JButton {
         group.setSelected(this, set);
         set = group.isSelected(this);
       }
-
       if (isSelected() == set) {
         return;
       }
-
       if (set) {
         stateMask |= SELECTED;
       } else {
         stateMask &= ~SELECTED;
       }
-
       // Send ChangeEvent
       fireStateChanged();
-
       // Send ItemEvent
-      fireItemStateChanged(new ItemEvent(this, ItemEvent.ITEM_STATE_CHANGED, this, this
-          .isSelected() ? ItemEvent.SELECTED : ItemEvent.DESELECTED));
-
+      fireItemStateChanged(new ItemEvent(this, ItemEvent.ITEM_STATE_CHANGED, this,
+          this.isSelected() ? ItemEvent.SELECTED : ItemEvent.DESELECTED));
       XCheckedButton.this.displayIcon(set | iconAlwaysVisible);
-
     }
-
   }
 
   // Returns true if Button will display Checked Icon on Click. Default
   // Behaviour is to display a Checked Icon
-
   /**
    * Checks if is display check.
    * 
@@ -255,7 +231,7 @@ public class XCheckedButton extends JButton {
    * displayed or not Setting to false, makes this button display like a normal
    * button.
    * 
-   * @param displayCheck DOCUMENT_ME
+   * @param displayCheck 
    */
   public void setDisplayCheck(boolean displayCheck) {
     this.displayCheck = displayCheck;
@@ -278,5 +254,4 @@ public class XCheckedButton extends JButton {
   public void setIconAlwaysVisible(boolean iconAlwaysVisible) {
     this.iconAlwaysVisible = iconAlwaysVisible;
   }
-
 }

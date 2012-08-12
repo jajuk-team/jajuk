@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.base;
 
 import java.util.ArrayList;
@@ -52,13 +51,10 @@ import org.jajuk.util.log.Log;
  * Convenient class to manage files.
  */
 public final class FileManager extends ItemManager {
-
   /** Best of files. */
   private final List<File> alBestofFiles = new ArrayList<File>(20);
-
   /** Self instance. */
   private static FileManager singleton = new FileManager();
-
   /** File comparator based on rate. */
   private final Comparator<File> rateComparator = new Comparator<File>() {
     @Override
@@ -106,7 +102,7 @@ public final class FileManager extends ItemManager {
 
   /**
    * Gets the instance.
-   * 
+   *
    * @return singleton
    */
   public static FileManager getInstance() {
@@ -115,14 +111,14 @@ public final class FileManager extends ItemManager {
 
   /**
    * Register an File with a known id.
-   * 
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param directory DOCUMENT_ME
-   * @param track DOCUMENT_ME
-   * @param lSize DOCUMENT_ME
-   * @param lQuality DOCUMENT_ME
-   * 
+   *
+   * @param sId 
+   * @param sName 
+   * @param directory 
+   * @param track 
+   * @param lSize 
+   * @param lQuality 
+   *
    * @return the file
    */
   public File registerFile(String sId, String sName, Directory directory, Track track, long lSize,
@@ -154,13 +150,13 @@ public final class FileManager extends ItemManager {
 
   /**
    * Register an File without known id.
-   * 
-   * @param sName DOCUMENT_ME
-   * @param directory DOCUMENT_ME
-   * @param track DOCUMENT_ME
-   * @param lSize DOCUMENT_ME
-   * @param lQuality DOCUMENT_ME
-   * 
+   *
+   * @param sName 
+   * @param directory 
+   * @param track 
+   * @param lSize 
+   * @param lQuality 
+   *
    * @return the file
    */
   public File registerFile(String sName, Directory directory, Track track, long lSize, long lQuality) {
@@ -170,10 +166,10 @@ public final class FileManager extends ItemManager {
 
   /**
    * Get file hashcode (ID).
-   * 
-   * @param sName DOCUMENT_ME
-   * @param dir DOCUMENT_ME
-   * 
+   *
+   * @param sName 
+   * @param dir 
+   *
    * @return file ID
    */
   protected static String createID(String sName, Directory dir) {
@@ -193,12 +189,12 @@ public final class FileManager extends ItemManager {
 
   /**
    * Change a file name.
-   * 
-   * @param fileOld DOCUMENT_ME
-   * @param sNewName DOCUMENT_ME
-   * 
+   *
+   * @param fileOld 
+   * @param sNewName 
+   *
    * @return new file
-   * 
+   *
    * @throws JajukException the jajuk exception
    */
   public File changeFileName(org.jajuk.base.File fileOld, String sNewName) throws JajukException {
@@ -217,10 +213,8 @@ public final class FileManager extends ItemManager {
           && QueueModel.getCurrentItem().getFile().equals(fileOld) && QueueModel.isPlayingTrack()) {
         throw new CannotRenameException(172);
       }
-
       java.io.File fileNew = new java.io.File(fileOld.getFIO().getParentFile().getAbsolutePath()
           + java.io.File.separator + sNewName);
-
       // check file name and extension
       if (!(UtilSystem.getExtension(fileNew).equals(UtilSystem.getExtension(fileOld.getFIO())))) {
         // no extension change
@@ -239,7 +233,6 @@ public final class FileManager extends ItemManager {
       } catch (Exception e) {
         throw new CannotRenameException(134, e);
       }
-
       // OK, remove old file and register this new file
       // Compute file ID
       Directory dir = fileOld.getDirectory();
@@ -251,12 +244,9 @@ public final class FileManager extends ItemManager {
       org.jajuk.base.File fNew = new File(sNewId, sNewName, fileOld.getDirectory(), track,
           fileOld.getSize(), fileOld.getQuality());
       // transfer all properties and reset id and name
-      // We use a shallow copy of properties to avoid any properties share between
-      // two items
-      fNew.setProperties(fileOld.getShallowProperties());
+      fNew.setProperties(fileOld.getProperties());
       fNew.setProperty(Const.XML_ID, sNewId); // reset new id and name
       fNew.setProperty(Const.XML_NAME, sNewName); // reset new id and name
-
       removeFile(fileOld);
       registerItem(fNew);
       track.addFile(fNew);
@@ -274,10 +264,10 @@ public final class FileManager extends ItemManager {
 
   /**
    * Change a file directory and actually move the old file to the new directory.
-   * 
+   *
    * @param old old file
    * @param newDir new dir
-   * 
+   *
    * @return new file or null if an error occurs
    * @throws JajukException the jajuk exception
    */
@@ -290,12 +280,9 @@ public final class FileManager extends ItemManager {
       // create a new file (with own fio and sAbs)
       File fNew = new File(sNewId, old.getName(), newDir, track, old.getSize(), old.getQuality());
       // Transfer all properties (including id), then set right id and directory
-      // We use a shallow copy of properties to avoid any properties share between
-      // two items
-      fNew.setProperties(old.getShallowProperties());
+      fNew.setProperties(old.getProperties());
       fNew.setProperty(Const.XML_ID, sNewId);
       fNew.setProperty(Const.XML_DIRECTORY, newDir.getID());
-
       // Real IO move
       try {
         if (!old.getFIO().renameTo(fNew.getFIO())) {
@@ -304,7 +291,6 @@ public final class FileManager extends ItemManager {
       } catch (Exception e) {
         throw new CannotRenameException(134, e);
       }
-
       // OK, remove old file and register this new file
       removeFile(old);
       registerItem(fNew);
@@ -317,7 +303,7 @@ public final class FileManager extends ItemManager {
 
   /**
    * Clean all references for the given device.
-   * 
+   *
    * @param sId :
    * Device id
    */
@@ -336,8 +322,8 @@ public final class FileManager extends ItemManager {
 
   /**
    * Remove a file reference.
-   * 
-   * @param file DOCUMENT_ME
+   *
+   * @param file 
    */
   public void removeFile(File file) {
     lock.writeLock().lock();
@@ -352,14 +338,13 @@ public final class FileManager extends ItemManager {
 
   /**
    * Return file by full path.
-   * 
+   *
    * @param sPath :
    * full path
-   * 
+   *
    * @return file or null if given path is not known
    */
-
-  public File getFileByPath(String sPath) {
+  File getFileByPath(String sPath) {
     lock.readLock().lock();
     try {
       File fOut = null;
@@ -394,11 +379,11 @@ public final class FileManager extends ItemManager {
 
   /**
    * Gets the ready files.
-   * 
+   *
    * @return All accessible files of the collection
    */
   public List<File> getReadyFiles() {
-    List<File> files = FileManager.getInstance().getFiles();
+    List<File> files = getFiles();
     CollectionUtils.filter(files, new JajukPredicates.ReadyFilePredicate());
     return files;
   }
@@ -406,7 +391,7 @@ public final class FileManager extends ItemManager {
   /**
    * Return a shuffle mounted and unbaned file from the entire collection or
    * null if none available using these criterias.
-   * 
+   *
    * @return the file
    */
   public File getShuffleFile() {
@@ -423,7 +408,7 @@ public final class FileManager extends ItemManager {
 
   /**
    * Return an ordered playlist with the entire accessible shuffle collection.
-   * 
+   *
    * @return The entire accessible shuffle collection (can return a void
    * collection)
    */
@@ -447,7 +432,6 @@ public final class FileManager extends ItemManager {
         index.put(album, albums.indexOf(album));
       }
       Collections.sort(alEligibleFiles, new Comparator<File>() {
-
         @Override
         public int compare(File f1, File f2) {
           if (f1.getTrack().getAlbum().equals(f2.getTrack().getAlbum())) {
@@ -461,7 +445,6 @@ public final class FileManager extends ItemManager {
           }
           return index.get(f1.getTrack().getAlbum()) - index.get(f2.getTrack().getAlbum());
         }
-
       });
       return alEligibleFiles;
       // else return shuffle albums
@@ -472,7 +455,7 @@ public final class FileManager extends ItemManager {
 
   /**
    * Return a shuffle mounted file from the novelties.
-   * 
+   *
    * @return the novelty file
    */
   public File getNoveltyFile() {
@@ -482,7 +465,7 @@ public final class FileManager extends ItemManager {
 
   /**
    * Return a shuffled playlist with the entire accessible novelties collection.
-   * 
+   *
    * @return The entire accessible novelties collection (can return a void
    * collection)
    */
@@ -494,12 +477,12 @@ public final class FileManager extends ItemManager {
    * Return an ordered playlist with the accessible novelties collection The
    * number of returned items is limited to NB_TRACKS_ON_ACTION for performance
    * reasons.
-   * 
-   * @param bHideUnmounted DOCUMENT_ME
-   * 
+   *
+   * @param bHideUnmounted 
+   *
    * @return The entire accessible novelties collection
    */
-  public List<File> getGlobalNoveltiesPlaylist(boolean bHideUnmounted) {
+  List<File> getGlobalNoveltiesPlaylist(boolean bHideUnmounted) {
     List<File> alEligibleFiles = new ArrayList<File>(1000);
     List<Track> tracks = TrackManager.getInstance().getTracks();
     // Filter by age
@@ -533,7 +516,7 @@ public final class FileManager extends ItemManager {
 
   /**
    * Return a shuffled playlist with the entire accessible novelties collection.
-   * 
+   *
    * @return The entire accessible novelties collection
    */
   public List<File> getShuffleNoveltiesPlaylist() {
@@ -551,9 +534,9 @@ public final class FileManager extends ItemManager {
 
   /**
    * Convenient method used to return shuffled files by album.
-   * 
-   * @param alEligibleFiles DOCUMENT_ME
-   * 
+   *
+   * @param alEligibleFiles 
+   *
    * @return Shuffled tracks by album
    */
   private List<File> getShuffledFilesByAlbum(List<File> alEligibleFiles) {
@@ -586,7 +569,7 @@ public final class FileManager extends ItemManager {
 
   /**
    * Gets the sorted by rate.
-   * 
+   *
    * @return a sorted set of the collection by rate, highest first
    */
   private List<File> getSortedByRate() {
@@ -600,7 +583,7 @@ public final class FileManager extends ItemManager {
   /**
    * Return a shuffled playlist with the entire accessible bestof collection,
    * best first.
-   * 
+   *
    * @return Shuffled best tracks (n% of favorite)
    */
   public List<File> getGlobalBestofPlaylist() {
@@ -622,7 +605,7 @@ public final class FileManager extends ItemManager {
 
   /**
    * Return ordered (by rate) bestof files.
-   * 
+   *
    * @return top files
    */
   public List<File> getBestOfFiles() {
@@ -639,15 +622,12 @@ public final class FileManager extends ItemManager {
    */
   public void refreshBestOfFiles() {
     Log.debug("Invoking Refresh of BestOf-Files");
-
     // clear data
     alBestofFiles.clear();
-
     // create a temporary table to remove unmounted files
     int iNbBestofFiles = Integer.parseInt(Conf.getString(Const.CONF_BESTOF_TRACKS_SIZE));
     List<File> alEligibleFiles = new ArrayList<File>(iNbBestofFiles);
     List<Track> tracks = TrackManager.getInstance().getTracks();
-
     // filter banned tracks
     CollectionUtils.filter(tracks, new JajukPredicates.BannedTrackPredicate());
     for (Track track : tracks) {
@@ -657,7 +637,6 @@ public final class FileManager extends ItemManager {
       }
     }
     Collections.sort(alEligibleFiles, rateComparator);
-
     // Keep as much items as we can
     int i = 0;
     while (i < alEligibleFiles.size() && i < iNbBestofFiles) {
@@ -669,10 +648,10 @@ public final class FileManager extends ItemManager {
 
   /**
    * Return next mounted file ( used in continue mode ).
-   * 
+   *
    * @param file :
    * a file
-   * 
+   *
    * @return next file from entire collection
    */
   public File getNextFile(File file) {
@@ -708,10 +687,10 @@ public final class FileManager extends ItemManager {
 
   /**
    * Return next mounted file from a different album than the provided file.
-   * 
+   *
    * @param file :
    * a file
-   * 
+   *
    * @return next file from entire collection
    */
   public File getNextAlbumFile(File file) {
@@ -732,10 +711,10 @@ public final class FileManager extends ItemManager {
 
   /**
    * Return previous mounted file.
-   * 
+   *
    * @param file :
    * a file
-   * 
+   *
    * @return previous file from entire collection
    */
   public File getPreviousFile(File file) {
@@ -768,9 +747,9 @@ public final class FileManager extends ItemManager {
 
   /**
    * Return whether the given file is the very first file from collection.
-   * 
-   * @param file DOCUMENT_ME
-   * 
+   *
+   * @param file 
+   *
    * @return true, if checks if is very first file
    */
   public boolean isVeryfirstFile(File file) {
@@ -783,19 +762,19 @@ public final class FileManager extends ItemManager {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
-  public String getLabel() {
+  public String getXMLTag() {
     return Const.XML_FILES;
   }
 
   /**
    * Gets the file by id.
-   * 
+   *
    * @param sID Item ID
-   * 
+   *
    * @return File matching the id
    */
   public File getFileByID(String sID) {
@@ -804,7 +783,7 @@ public final class FileManager extends ItemManager {
 
   /**
    * Gets the files.
-   * 
+   *
    * @return ordered files list
    */
   @SuppressWarnings("unchecked")
@@ -814,12 +793,11 @@ public final class FileManager extends ItemManager {
 
   /**
    * Gets the files iterator.
-   * 
+   *
    * @return files iterator
    */
   @SuppressWarnings("unchecked")
   public ReadOnlyIterator<File> getFilesIterator() {
     return new ReadOnlyIterator<File>((Iterator<File>) getItemsIterator());
   }
-
 }

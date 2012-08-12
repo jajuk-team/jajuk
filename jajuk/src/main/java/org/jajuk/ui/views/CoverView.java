@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.views;
 
 import java.awt.Component;
@@ -27,7 +26,6 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -52,7 +50,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
@@ -99,93 +96,50 @@ import org.jajuk.util.log.Log;
 
 /**
  * Cover view. Displays an image for the current album
- * 
- * All methods dealing with covers content must be synchronized.
  */
-public class CoverView extends ViewAdapter implements ComponentListener, ActionListener {
-
-  /** The Constant PLUS_QUOTE.  DOCUMENT_ME */
+public class CoverView extends ViewAdapter implements ActionListener {
+  /** The Constant PLUS_QUOTE.   */
   private static final String PLUS_QUOTE = "+\"";
-
-  /** The Constant QUOTE_BLANK.  DOCUMENT_ME */
+  /** The Constant QUOTE_BLANK.   */
   private static final String QUOTE_BLANK = "\" ";
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** No cover cover. */
-  private static Cover nocover;
-
+  private static Cover nocover = new Cover(Const.IMAGES_SPLASHSCREEN, CoverType.NO_COVER);
   /** Error counter to check connection availability. */
   private static int iErrorCounter = 0;
-
   /** Connected one flag : true if jajuk managed once to connect to the web to bring covers. */
   private static boolean bOnceConnected = false;
-
   /** Reference File for cover. */
   private org.jajuk.base.File fileReference;
-
   /** File directory used as a cache for perfs. */
   private Directory dirReference;
-
   /** List of available covers for the current file. */
   private final LinkedList<Cover> alCovers = new LinkedList<Cover>(); // NOPMD
-
   // control panel
-  /** DOCUMENT_ME. */
   private JPanel jpControl;
-
-  /** DOCUMENT_ME. */
   private JajukButton jbPrevious;
-
-  /** DOCUMENT_ME. */
   private JajukButton jbNext;
-
-  /** DOCUMENT_ME. */
   private JajukButton jbDelete;
-
-  /** DOCUMENT_ME. */
   private JajukButton jbSave;
-
-  /** DOCUMENT_ME. */
   private JajukButton jbDefault;
-
-  /** DOCUMENT_ME. */
   private JLabel jlSize;
-
-  /** DOCUMENT_ME. */
   private JLabel jlFound;
-
-  /** DOCUMENT_ME. */
-  private JLabel jlSearching;
-
   /** Cover search accuracy combo. */
   private JComboBox jcbAccuracy;
-
   /** Date last resize (used for adjustment management). */
   private long lDateLastResize;
-
   /** URL and size of the image. */
   private JLabel jl;
-
   /** Used Cover index. */
   private int index = 0;
-
-  /** Event ID. */
-  private volatile int iEventID;
-
   /** Flag telling that user wants to display a better cover. */
   private boolean bGotoBetter = false;
-
   /** Final image to display. */
   private ImageIcon ii;
-
   /** Force next track cover reload flag*. */
   private boolean bForceCoverReload = true;
-
-  /** DOCUMENT_ME. */
   private boolean includeControls;
-
   /** Whether the view has not yet been displayed for its first time */
   private boolean initEvent = true;
 
@@ -253,18 +207,15 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /**
    * Inits the ui.
    *  
-   * @param includeControls DOCUMENT_ME
+   * @param includeControls 
    */
   public void initUI(boolean includeControls) {
     this.includeControls = includeControls;
-
     // Control panel
-    jlSearching = new JLabel("", IconLoader.getIcon(JajukIcons.NET_SEARCH), SwingConstants.CENTER);
     jpControl = new JPanel();
     if (includeControls) {
       jpControl.setBorder(BorderFactory.createEtchedBorder());
     }
-
     final JToolBar jtb = new JajukJToolbar();
     jbPrevious = new JajukButton(IconLoader.getIcon(JajukIcons.PLAYER_PREVIOUS_SMALL));
     jbPrevious.addActionListener(this);
@@ -317,14 +268,12 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       }
     });
     jcbAccuracy.setToolTipText(Messages.getString("ParameterView.155"));
-
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ACCURACY_LOW));
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ACCURACY_MEDIUM));
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ACCURACY_HIGH));
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ARTIST));
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ALBUM));
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.TRACK));
-
     int i = 1; // medium accuracy
     try {
       i = Conf.getInt(Const.CONF_COVERS_ACCURACY + "_"
@@ -334,34 +283,22 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     }
     jcbAccuracy.setSelectedIndex(i);
     jcbAccuracy.addActionListener(this);
-
     jtb.add(jbPrevious);
     jtb.add(jbNext);
     jtb.addSeparator();
     jtb.add(jbDelete);
     jtb.add(jbSave);
     jtb.add(jbDefault);
-
     if (includeControls) {
-      jpControl.setLayout(new MigLayout("insets 5 2 5 2", "[][grow][grow][][25]"));
+      jpControl.setLayout(new MigLayout("insets 5 2 5 2", "[][grow][grow][]"));
       jpControl.add(jtb);
       jpControl.add(jlSize, "center,gapright 5::");
       jpControl.add(jlFound, "center,gapright 5::");
       jpControl.add(jcbAccuracy, "grow,width 47!,gapright 5");
-      jpControl.add(jlSearching);
     }
-
     // Cover view used in catalog view should not listen events
     if (fileReference == null) {
       ObservationManager.register(this);
-    }
-    try {
-      // instantiate default cover
-      if (CoverView.nocover == null) {
-        CoverView.nocover = new Cover(Const.IMAGES_SPLASHSCREEN, CoverType.NO_COVER);
-      }
-    } catch (final Exception e) {
-      Log.error(e);
     }
     // global layout
     MigLayout globalLayout = null;
@@ -372,10 +309,10 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     }
     setLayout(globalLayout);
     add(jpControl, "grow,wrap");
-
     // We have to start using the componentListener AFTER the view is fully displayed
     // to avoid blank covers due to wrong (negative) cover dimensions.
     new Thread() {
+      @Override
       public void run() {
         try {
           Thread.sleep(1000);
@@ -388,7 +325,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         addComponentListener(CoverView.this);
       }
     }.start();
-
   }
 
   /*
@@ -426,7 +362,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     Conf.setProperty(Const.CONF_COVERS_ACCURACY + "_"
         + ((getPerspective() == null) ? "popup" : getPerspective().getID()),
         Integer.toString(jcbAccuracy.getSelectedIndex()));
-
     new Thread("Cover Accuracy Thread") {
       @Override
       public void run() {
@@ -442,7 +377,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /**
    * Called on the previous cover button event.
    */
-  private synchronized void handlePrevious() {
+  private void handlePrevious() {
     // better cover
     bGotoBetter = true;
     index++;
@@ -457,7 +392,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /**
    * Called on the next cover button event.
    */
-  private synchronized void handleNext() {
+  private void handleNext() {
     bGotoBetter = false;
     index--;
     if (index < 0) {
@@ -469,7 +404,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /**
    * Called on the delete cover button event.
    */
-  private synchronized void handleDelete() {
+  private void handleDelete() {
     // sanity check
     if (index >= alCovers.size()) {
       Log.warn("Cannot delete cover that is not available.");
@@ -479,16 +414,13 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       Log.warn("Cannot delete cover with invalid index.");
       return;
     }
-
     // get the cover at the specified position
     final Cover cover = alCovers.get(index);
-
     // don't delete the splashscreen-jpg!!
     if (cover.getType().equals(CoverType.NO_COVER)) {
       Log.warn("Cannot delete default Jajuk cover.");
       return;
     }
-
     // show confirmation message if required
     if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_COVER)) {
       final int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_cover") + " : "
@@ -497,7 +429,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         return;
       }
     }
-
     // yet there? ok, delete the cover
     try {
       final File file = cover.getFile();
@@ -512,29 +443,29 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       Messages.showErrorMessage(131);
       return;
     }
-
     // If this was the absolute cover, remove the reference in the
     // collection
     if (cover.getType() == CoverType.SELECTED_COVER) {
       dirReference.removeProperty("default_cover");
     }
-
     // reorganize covers
-    alCovers.remove(index);
-    index--;
-    if (index < 0) {
-      index = alCovers.size() - 1;
-    }
-    ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
-    if (fileReference != null) {
-      update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
+    synchronized (this) {
+      alCovers.remove(index);
+      index--;
+      if (index < 0) {
+        index = alCovers.size() - 1;
+      }
+      ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
+      if (fileReference != null) {
+        update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
+      }
     }
   }
 
   /**
    * Called when saving a cover.
    */
-  private synchronized void handleSave() {
+  private void handleSave() {
     // sanity check
     if (index >= alCovers.size()) {
       Log.warn("Cannot save cover that is not available.");
@@ -544,46 +475,41 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       Log.warn("Cannot save cover with invalid index.");
       return;
     }
-
     // save a file with its original name
     new Thread("Cover Save Thread") {
       @Override
       public void run() {
-        synchronized (CoverView.this) {
-          final Cover cover = alCovers.get(index);
-          // should not happen, only remote covers here
-          if (cover.getType() != CoverType.REMOTE_COVER) {
-            Log.debug("Try to save a local cover");
-            return;
+        final Cover cover = alCovers.get(index);
+        // should not happen, only remote covers here
+        if (cover.getType() != CoverType.REMOTE_COVER) {
+          Log.debug("Try to save a local cover");
+          return;
+        }
+        String sFilePath = null;
+        sFilePath = dirReference.getFio().getPath() + "/"
+            + UtilSystem.getOnlyFile(cover.getURL().toString());
+        sFilePath = convertCoverPath(sFilePath);
+        try {
+          // copy file from cache
+          final File fSource = DownloadManager.downloadToCache(cover.getURL());
+          final File file = new File(sFilePath);
+          UtilSystem.copy(fSource, file);
+          InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
+              InformationJPanel.MessageType.INFORMATIVE);
+          final Cover cover2 = new Cover(file, CoverType.SELECTED_COVER);
+          if (!alCovers.contains(cover2)) {
+            alCovers.add(cover2);
+            setFoundText();
           }
-          String sFilePath = null;
-          sFilePath = dirReference.getFio().getPath() + "/"
-              + UtilSystem.getOnlyFile(cover.getURL().toString());
-          sFilePath = convertCoverPath(sFilePath);
-          try {
-            // copy file from cache
-            final File fSource = DownloadManager.downloadToCache(cover.getURL());
-            final File file = new File(sFilePath);
-            UtilSystem.copy(fSource, file);
-            InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
-                InformationJPanel.MessageType.INFORMATIVE);
-            final Cover cover2 = new Cover(file, CoverType.SELECTED_COVER);
-            if (!alCovers.contains(cover2)) {
-              alCovers.add(cover2);
-              setFoundText();
-            }
-
-            // Reset cached cover in associated albums to make sure that new covers
-            // will be discovered in various views like Catalog View.
-            resetCachedCover();
-
-            // Notify cover change
-            ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
-            // add new cover in others cover views
-          } catch (final Exception ex) {
-            Log.error(24, ex);
-            Messages.showErrorMessage(24);
-          }
+          // Reset cached cover in associated albums to make sure that new covers
+          // will be discovered in various views like Catalog View.
+          resetCachedCover();
+          // Notify cover change
+          ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
+          // add new cover in others cover views
+        } catch (final Exception ex) {
+          Log.error(24, ex);
+          Messages.showErrorMessage(24);
         }
       }
     }.start();
@@ -593,7 +519,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
    * Reset cached cover in associated albums to make sure that new covers
    *  will be discovered in various views like Catalog View.
    */
-  private synchronized void resetCachedCover() {
+  private void resetCachedCover() {
     org.jajuk.base.File fCurrent = fileReference;
     if (fCurrent == null) {
       fCurrent = QueueModel.getPlayingFile();
@@ -610,20 +536,27 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * Converts a cover path according to options and jajuk conventions
-   * 
+   * Converts a cover path according to options and jajuk conventions.
+   *
    * @param sFilePath current cover path
-   * 
    * @return the converted cover file path
    */
   private String convertCoverPath(String sFilePath) {
     int pos = sFilePath.lastIndexOf('.');
     if (Conf.getBoolean(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY)) {
       // Covers should be stored as folder.xxx for windows explorer
-      String ext = sFilePath.substring(pos, sFilePath.length());
+      final String ext;
+      if (pos == -1) {
+        ext = "";
+      } else {
+        ext = sFilePath.substring(pos, sFilePath.length());
+      }
       String parent = new File(sFilePath).getParent();
       return parent + System.getProperty("file.separator") + "Folder" + ext;
     } else {
+      if (pos == -1) {
+        return sFilePath + Const.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX;
+      }
       // Add a jajuk suffix to know this cover has been downloaded by jajuk
       return new StringBuilder(sFilePath).insert(pos, Const.FILE_JAJUK_DOWNLOADED_FILES_SUFFIX)
           .toString();
@@ -633,7 +566,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /**
    * Called when saving as a cover.
    */
-  private synchronized void handleSaveAs() {
+  private void handleSaveAs() {
     // sanity check
     if (index >= alCovers.size()) {
       Log.warn("Cannot save cover that is not available.");
@@ -643,43 +576,38 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       Log.warn("Cannot save cover with invalid index.");
       return;
     }
-
     new Thread("Cover SaveAs Thread") {
       @Override
       public void run() {
-        synchronized (CoverView.this) {
-          final Cover cover = alCovers.get(index);
-          final JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(
-              GIFFilter.getInstance(), PNGFilter.getInstance(), JPGFilter.getInstance()));
-          jfchooser.setAcceptDirectories(true);
-          jfchooser.setCurrentDirectory(dirReference.getFio());
-          jfchooser.setDialogTitle(Messages.getString("CoverView.10"));
-          final File finalFile = new File(dirReference.getFio().getPath() + "/"
-              + UtilSystem.getOnlyFile(cover.getURL().toString()));
-          jfchooser.setSelectedFile(finalFile);
-          final int returnVal = jfchooser.showSaveDialog(JajukMainWindow.getInstance());
-          File fNew = null;
-          if (returnVal == JFileChooser.APPROVE_OPTION) {
-            fNew = jfchooser.getSelectedFile();
-            // if user try to save as without changing file name
-            if (fNew.getAbsolutePath().equals(cover.getFile().getAbsolutePath())) {
-              return;
-            }
-            try {
-              UtilSystem.copy(cover.getFile(), fNew);
-              InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
-                  InformationJPanel.MessageType.INFORMATIVE);
-
-              // Reset cached cover in associated albums to make sure that new covers
-              // will be discovered in various views like Catalog View.
-              resetCachedCover();
-
-              // Notify cover change
-              ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
-            } catch (final Exception ex) {
-              Log.error(24, ex);
-              Messages.showErrorMessage(24);
-            }
+        final Cover cover = alCovers.get(index);
+        final JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(
+            GIFFilter.getInstance(), PNGFilter.getInstance(), JPGFilter.getInstance()));
+        jfchooser.setAcceptDirectories(true);
+        jfchooser.setCurrentDirectory(dirReference.getFio());
+        jfchooser.setDialogTitle(Messages.getString("CoverView.10"));
+        final File finalFile = new File(dirReference.getFio().getPath() + "/"
+            + UtilSystem.getOnlyFile(cover.getURL().toString()));
+        jfchooser.setSelectedFile(finalFile);
+        final int returnVal = jfchooser.showSaveDialog(JajukMainWindow.getInstance());
+        File fNew = null;
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+          fNew = jfchooser.getSelectedFile();
+          // if user try to save as without changing file name
+          if (fNew.getAbsolutePath().equals(cover.getFile().getAbsolutePath())) {
+            return;
+          }
+          try {
+            UtilSystem.copy(cover.getFile(), fNew);
+            InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),
+                InformationJPanel.MessageType.INFORMATIVE);
+            // Reset cached cover in associated albums to make sure that new covers
+            // will be discovered in various views like Catalog View.
+            resetCachedCover();
+            // Notify cover change
+            ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
+          } catch (final Exception ex) {
+            Log.error(24, ex);
+            Messages.showErrorMessage(24);
           }
         }
       }
@@ -689,7 +617,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /**
    * Called when making a cover default.
    */
-  private synchronized void handleDefault() {
+  private void handleDefault() {
     // sanity check
     if (index >= alCovers.size()) {
       Log.warn("Cannot default cover which is not available.");
@@ -700,68 +628,67 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       return;
     }
     new Thread("Default cover thread") {
+      @Override
       public void run() {
-        synchronized (CoverView.this) {
-          Cover cover = alCovers.get(index);
-          org.jajuk.base.File fCurrent = fileReference;
-          // Path of the default cover, it is simply the URL of the current cover for local covers
-          // but it is another path to a newly created image for tag or remote covers
-          String destPath = cover.getFile().getAbsolutePath();
-          if (fCurrent == null) {
-            fCurrent = QueueModel.getPlayingFile();
+        Cover cover = alCovers.get(index);
+        org.jajuk.base.File fCurrent = fileReference;
+        // Path of the default cover, it is simply the URL of the current cover for local covers
+        // but it is another path to a newly created image for tag or remote covers
+        String destPath = cover.getFile().getAbsolutePath();
+        if (fCurrent == null) {
+          fCurrent = QueueModel.getPlayingFile();
+        }
+        if (cover.getType() == CoverType.TAG_COVER) {
+          destPath = dirReference.getFio().getPath() + "/" + cover.getFile().getName();
+          destPath = convertCoverPath(destPath);
+          File destFile = new File(destPath);
+          try {
+            // Copy cached file to music directory
+            // Note that the refreshCover() methods automatically 
+            // extract any track cover tag to an image file in the cache
+            UtilSystem.copy(cover.getFile(), destFile);
+            Cover cover2 = new Cover(destFile, CoverType.SELECTED_COVER);
+            alCovers.add(cover2);
+          } catch (Exception ex) {
+            Log.error(24, ex);
+            Messages.showErrorMessage(24);
+            return;
           }
-          if (cover.getType() == CoverType.TAG_COVER) {
-            destPath = dirReference.getFio().getPath() + "/" + cover.getFile().getName();
-            destPath = convertCoverPath(destPath);
-            File destFile = new File(destPath);
-            try {
-              // Copy cached file to music directory
-              // Note that the refreshCover() methods automatically 
-              // extract any track cover tag to an image file in the cache
-              UtilSystem.copy(cover.getFile(), destFile);
-              Cover cover2 = new Cover(destFile, CoverType.SELECTED_COVER);
+        } else if (cover.getType() == CoverType.REMOTE_COVER) {
+          String sFilename = UtilSystem.getOnlyFile(cover.getURL().toString());
+          destPath = dirReference.getFio().getPath() + "/" + sFilename;
+          destPath = convertCoverPath(destPath);
+          try {
+            // Download cover and copy file from cache to music directory
+            File fSource = DownloadManager.downloadToCache(cover.getURL());
+            File fileDest = new File(destPath);
+            UtilSystem.copy(fSource, new File(destPath));
+            Cover cover2 = new Cover(fileDest, CoverType.SELECTED_COVER);
+            if (!alCovers.contains(cover2)) {
               alCovers.add(cover2);
-            } catch (Exception ex) {
-              Log.error(24, ex);
-              Messages.showErrorMessage(24);
-              return;
+              setFoundText();
             }
-          } else if (cover.getType() == CoverType.REMOTE_COVER) {
-            String sFilename = UtilSystem.getOnlyFile(cover.getURL().toString());
-            destPath = dirReference.getFio().getPath() + "/" + sFilename;
-            destPath = convertCoverPath(destPath);
-            try {
-              // Download cover and copy file from cache to music directory
-              File fSource = DownloadManager.downloadToCache(cover.getURL());
-              File fileDest = new File(destPath);
-              UtilSystem.copy(fSource, new File(destPath));
-              Cover cover2 = new Cover(fileDest, CoverType.SELECTED_COVER);
-              if (!alCovers.contains(cover2)) {
-                alCovers.add(cover2);
-                setFoundText();
-              }
-            } catch (Exception ex) {
-              Log.error(24, ex);
-              Messages.showErrorMessage(24);
-              return;
-            }
+          } catch (Exception ex) {
+            Log.error(24, ex);
+            Messages.showErrorMessage(24);
+            return;
           }
-          // Remove previous thumbs to avoid using outdated images
-          // Reset cached cover
-          ThumbnailManager.cleanThumbs(fCurrent.getTrack().getAlbum());
-          refreshThumbs(cover);
-          InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
-              InformationJPanel.MessageType.INFORMATIVE);
-          // For every kind of cover types :
-          ObservationManager.notify(new JajukEvent(JajukEvents.COVER_DEFAULT_CHANGED));
-          ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
-          // then make it the default cover for this album
-          if (fCurrent != null && fCurrent.getTrack() != null
-              && fCurrent.getTrack().getAlbum() != null && cover.getFile() != null) {
-            Album album = fCurrent.getTrack().getAlbum();
-            album.setProperty(XML_ALBUM_SELECTED_COVER, destPath);
-            album.setProperty(XML_ALBUM_DISCOVERED_COVER, destPath);
-          }
+        }
+        // Remove previous thumbs to avoid using outdated images
+        // Reset cached cover
+        ThumbnailManager.cleanThumbs(fCurrent.getTrack().getAlbum());
+        refreshThumbs(cover);
+        InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
+            InformationJPanel.MessageType.INFORMATIVE);
+        // For every kind of cover types :
+        ObservationManager.notify(new JajukEvent(JajukEvents.COVER_DEFAULT_CHANGED));
+        ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
+        // then make it the default cover for this album
+        if (fCurrent != null && fCurrent.getTrack() != null
+            && fCurrent.getTrack().getAlbum() != null && cover.getFile() != null) {
+          Album album = fCurrent.getTrack().getAlbum();
+          album.setProperty(XML_ALBUM_SELECTED_COVER, destPath);
+          album.setProperty(XML_ALBUM_DISCOVERED_COVER, destPath);
         }
       }
     }.start();
@@ -792,7 +719,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /**
    * Creates the query.
    * 
-   * @param file DOCUMENT_ME
+   * @param file 
    * 
    * @return an accurate google search query for a file
    */
@@ -856,103 +783,14 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * Display given cover.
-   * 
-   * @param index index of the cover to display
-   */
-  private synchronized void displayCover(final int index) {
-    if ((alCovers.size() == 0) || (index >= alCovers.size()) || (index < 0)) {
-      // just a check
-      alCovers.add(CoverView.nocover); // display nocover by default
-      displayCover(0);
-      return;
-    }
-    final Cover cover = alCovers.get(index); // take image at the given index
-    final URL url = cover.getURL();
-    // enable delete button only for local covers
-    jbDelete.setEnabled(cover.getType() == CoverType.LOCAL_COVER
-        || cover.getType() == CoverType.SELECTED_COVER
-        || cover.getType() == CoverType.STANDARD_COVER);
-
-    //Disable default command for "none" cover
-    jbDefault.setEnabled(cover.getType() != CoverType.NO_COVER);
-
-    if (url != null) {
-      jbSave.setEnabled(false);
-      String sType = " (L)"; // local cover
-      if (cover.getType() == CoverType.REMOTE_COVER) {
-        sType = "(@)"; // Web cover
-        jbSave.setEnabled(true);
-      } else if (cover.getType() == CoverType.TAG_COVER) {
-        sType = "(T)"; // Tag cover
-      }
-      final String size = cover.getSize();
-      jl = new JLabel(ii);
-      jl.setMinimumSize(new Dimension(0, 0)); // required for info
-      // node resizing
-      if (cover.getType() == CoverType.TAG_COVER) {
-        jl.setToolTipText("<html>Tag<br>" + size + "K");
-      } else {
-        jl.setToolTipText("<html>" + url.toString() + "<br>" + size + "K");
-      }
-      setSizeText(size + "K" + sType);
-      setFoundText();
-    }
-    // set tooltip for previous and next track
-    try {
-      int indexPrevious = index + 1;
-      if (indexPrevious > alCovers.size() - 1) {
-        indexPrevious = 0;
-      }
-      final URL urlPrevious = alCovers.get(indexPrevious).getURL();
-      if (urlPrevious != null) {
-        jbPrevious.setToolTipText("<html>" + Messages.getString("CoverView.4") + "<br>"
-            + urlPrevious.toString() + "</html>");
-      }
-      int indexNext = index - 1;
-      if (indexNext < 0) {
-        indexNext = alCovers.size() - 1;
-      }
-      final URL urlNext = alCovers.get(indexNext).getURL();
-      if (urlNext != null) {
-        jbNext.setToolTipText("<html>" + Messages.getString("CoverView.5") + "<br>"
-            + urlNext.toString() + "</html>");
-      }
-    } catch (final Exception e) { // the url code can throw out of bounds
-      // exception for unknown reasons so check it
-      Log.debug("jl=" + jl + " url={{" + url + "}}");
-      Log.error(e);
-    }
-    if (getComponentCount() > 0) {
-      removeAll();
-    }
-    if (includeControls) {
-      add(jpControl, "grow,wrap");
-    }
-    // Invert the mirrow option when clicking on the cover
-    jl.addMouseListener(new JajukMouseAdapter() {
-      @Override
-      public void mousePressed(MouseEvent e) {
-        boolean isMirrowed = Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER);
-        Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER, !isMirrowed + "");
-        ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
-      }
-    });
-    add(jl, "center,wrap");
-    // make sure the image is repainted to avoid overlapping covers
-    CoverView.this.revalidate();
-    CoverView.this.repaint();
-    searching(false);
-  }
-
-  /**
    * Display current cover (at this.index), try all covers in case of error
    */
   private void displayCurrentCover() {
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
       @Override
       public Void doInBackground() {
-        synchronized (CoverView.this) {
+        synchronized (this) {
+          UtilGUI.showBusyLabel(CoverView.this); // lookup icon
           // Avoid looping
           if (alCovers.size() == 0) {
             // should not append
@@ -1025,7 +863,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
    * 
    * @return number of real covers (not default) covers found
    */
-  private synchronized int getCoverNumber() {
+  private int getCoverNumber() {
     return alCovers.size();
   }
 
@@ -1058,64 +896,51 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /**
    * Long action to compute image to display (download, resizing...)
    * 
-   * @param index DOCUMENT_ME
-   * 
-   * @return null (just used by the SwingWorker)
+   * @param index 
    * 
    * @throws JajukException the jajuk exception
    */
-  private Object prepareDisplay(final int index) throws JajukException {
-    final int iLocalEventID = iEventID;
-    Log.debug("display index: " + index);
-    searching(true); // lookup icon
+  private void prepareDisplay(final int index) throws JajukException {
     // find next correct cover
-    ImageIcon icon = null;
     Cover cover = null;
+    ImageIcon icon = null;
     try {
-      if (iEventID == iLocalEventID) {
-        cover = alCovers.get(index); // take image at the given index
-        Image img = cover.getImage();
-
-        if (!Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER)
-            || cover.getType().equals(CoverType.NO_COVER)) {
-          icon = new ImageIcon(img);
-        } else {
-          icon = new ImageIcon(UtilGUI.get3dImage(img));
-        }
-
-        if (icon.getIconHeight() == 0 || icon.getIconWidth() == 0) {
-          throw new JajukException(0, "Wrong picture, size is null");
-        }
+      cover = alCovers.get(index); // take image at the given index
+      Log.debug("Display cover: " + cover + " at index :" + index);
+      Image img = cover.getImage();
+      // Never mirror our no cover image
+      if (cover.getType().equals(CoverType.NO_COVER)) {
+        icon = new ImageIcon(img);
       } else {
-        Log.debug("Download stopped - 2");
-        return null;
+        if (
+        // should we mirror in our GUI
+        (includeControls && Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER))
+        // should we mirror in fullscreen mode
+            || (!includeControls && Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER_FS_MODE))) {
+          icon = new ImageIcon(UtilGUI.get3dImage(img));
+        } else {
+          icon = new ImageIcon(img);
+        }
+      }
+      if (icon.getIconHeight() == 0 || icon.getIconWidth() == 0) {
+        throw new JajukException(0, "Wrong picture, size is null");
       }
     } catch (final FileNotFoundException e) {
-      setCursor(UtilGUI.DEFAULT_CURSOR);
-      searching(false);
-
       // do not display a stacktrace for FileNotfound as we expect this in cases
       // where the picture is gone on the net
       Log.warn("Cover image not found at URL: "
           + (cover == null ? "<null>" : cover.getURL().toString()));
-      return null;
+      return;
     } catch (final UnknownHostException e) {
-      setCursor(UtilGUI.DEFAULT_CURSOR);
-      searching(false);
-
       // do not display a stacktrace for HostNotFound as we expect this in cases
       // where the whole server is gone on the net
       Log.warn("Cover image not found at URL: "
           + (cover == null ? "<null>" : cover.getURL().toString()));
-      return null;
+      return;
     } catch (final IOException e) { // this cover cannot be loaded
-      setCursor(UtilGUI.DEFAULT_CURSOR);
-      searching(false);
       Log.error(e);
       throw new JajukException(0, e);
     } catch (final InterruptedException e) { // this cover cannot be loaded
-      setCursor(UtilGUI.DEFAULT_CURSOR);
-      searching(false);
       Log.error(e);
       throw new JajukException(0, e);
     }
@@ -1124,7 +949,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     final int iDisplayAreaWidth = (int) (0.9f * CoverView.this.getWidth() - 10);
     // check minimum sizes
     if ((iDisplayAreaHeight < 1) || (iDisplayAreaWidth < 1)) {
-      return null;
+      return;
     }
     int iNewWidth;
     int iNewHeight;
@@ -1155,24 +980,113 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         iNewWidth = (int) (icon.getIconWidth() * ((float) iNewHeight / icon.getIconHeight()));
       }
     }
-    if (iEventID == iLocalEventID) {
-      // Note that at this point, the image is fully loaded (done in the ImageIcon constructor)
-      ii = UtilGUI.getResizedImage(icon, iNewWidth, iNewHeight);
-      // Free source and destination image buffer, see
-      // http://forums.sun.com/thread.jspa?threadID=5424304&tstart=60
-      icon.getImage().flush();
-      ii.getImage().flush();
-    } else {
-      Log.debug("Download stopped - 2");
-      return null;
+    // Note that at this point, the image is fully loaded (done in the ImageIcon constructor)
+    ii = UtilGUI.getResizedImage(icon, iNewWidth, iNewHeight);
+    // Free memory of source image, removing this causes severe memory leaks ! (tested)
+    icon.getImage().flush();
+  }
+
+  /**
+  * Display given cover.
+  * 
+  * @param index index of the cover to display
+  */
+  private void displayCover(final int index) {
+    if ((alCovers.size() == 0) || (index >= alCovers.size()) || (index < 0)) {
+      // just a check
+      alCovers.add(CoverView.nocover); // display nocover by default
+      displayCover(0);
+      return;
     }
-    return null;
+    final Cover cover = alCovers.get(index); // take image at the given index
+    final URL url = cover.getURL();
+    // enable delete button only for local covers
+    jbDelete.setEnabled(cover.getType() == CoverType.LOCAL_COVER
+        || cover.getType() == CoverType.SELECTED_COVER
+        || cover.getType() == CoverType.STANDARD_COVER);
+    //Disable default command for "none" cover
+    jbDefault.setEnabled(cover.getType() != CoverType.NO_COVER);
+    if (url != null) {
+      jbSave.setEnabled(false);
+      String sType = " (L)"; // local cover
+      if (cover.getType() == CoverType.REMOTE_COVER) {
+        sType = "(@)"; // Web cover
+        jbSave.setEnabled(true);
+      } else if (cover.getType() == CoverType.TAG_COVER) {
+        sType = "(T)"; // Tag cover
+      }
+      final String size = cover.getSize();
+      jl = new JLabel(ii);
+      jl.setMinimumSize(new Dimension(0, 0)); // required for info
+      // node resizing
+      if (cover.getType() == CoverType.TAG_COVER) {
+        jl.setToolTipText("<html>Tag<br>" + size + "K");
+      } else {
+        jl.setToolTipText("<html>" + url.toString() + "<br>" + size + "K");
+      }
+      setSizeText(size + "K" + sType);
+      setFoundText();
+    }
+    // set tooltip for previous and next track
+    try {
+      int indexPrevious = index + 1;
+      if (indexPrevious > alCovers.size() - 1) {
+        indexPrevious = 0;
+      }
+      final URL urlPrevious = alCovers.get(indexPrevious).getURL();
+      if (urlPrevious != null) {
+        jbPrevious.setToolTipText("<html>" + Messages.getString("CoverView.4") + "<br>"
+            + urlPrevious.toString() + "</html>");
+      }
+      int indexNext = index - 1;
+      if (indexNext < 0) {
+        indexNext = alCovers.size() - 1;
+      }
+      final URL urlNext = alCovers.get(indexNext).getURL();
+      if (urlNext != null) {
+        jbNext.setToolTipText("<html>" + Messages.getString("CoverView.5") + "<br>"
+            + urlNext.toString() + "</html>");
+      }
+    } catch (final Exception e) { // the url code can throw out of bounds
+      // exception for unknown reasons so check it
+      Log.debug("jl=" + jl + " url={{" + url + "}}");
+      Log.error(e);
+    }
+    if (getComponentCount() > 0) {
+      removeAll();
+    }
+    if (includeControls) {
+      add(jpControl, "grow,wrap");
+    }
+    // Invert the mirrow option when clicking on the cover
+    jl.addMouseListener(new JajukMouseAdapter() {
+      @Override
+      public void mousePressed(MouseEvent e) {
+        if (!(cover.getType().equals(CoverType.NO_COVER))) {
+          boolean isMirrowed = includeControls ? Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER)
+              : Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER_FS_MODE);
+          // Normal cover view
+          if (includeControls) {
+            Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER, !isMirrowed + "");
+          } else {
+            // Full screen mode
+            Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER_FS_MODE, !isMirrowed + "");
+          }
+          ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
+          ObservationManager.notify(new JajukEvent(JajukEvents.PARAMETERS_CHANGE));
+        }
+      }
+    });
+    add(jl, "center,wrap");
+    // make sure the image is repainted to avoid overlapping covers
+    CoverView.this.revalidate();
+    CoverView.this.repaint();
   }
 
   /**
    * Refresh default cover thumb (used in catalog view).
    * 
-   * @param cover DOCUMENT_ME
+   * @param cover 
    */
   private void refreshThumbs(final Cover cover) {
     if (dirReference == null) {
@@ -1196,26 +1110,8 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   }
 
   /**
-   * Display or hide search icon.
-   * 
-   * @param bSearching DOCUMENT_ME
-   */
-  public void searching(final boolean bSearching) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        if (bSearching) {
-          jlSearching.setIcon(IconLoader.getIcon(JajukIcons.NET_SEARCH));
-        } else {
-          jlSearching.setIcon(null);
-        }
-      }
-    });
-  }
-
-  /**
-   * Set the cover Found text.
-   */
+  * Set the cover Found text.
+  */
   private void setFoundText() {
     SwingUtilities.invokeLater(new Runnable() {
       @Override
@@ -1250,7 +1146,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /**
    * Set the cover size text.
    * 
-   * @param sSize DOCUMENT_ME
+   * @param sSize 
    */
   private void setSizeText(final String sSize) {
     if (sSize != null) {
@@ -1285,36 +1181,33 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   @Override
-  public void update(final JajukEvent event) {
+  public synchronized void update(final JajukEvent event) {
     final JajukEvents subject = event.getSubject();
-    iEventID = (int) (Integer.MAX_VALUE * Math.random());
-    final int iLocalEventID = iEventID;
     try {
-      searching(true);
       // When receiving this event, check if we should change the cover or
       // not
       // (we don't change cover if playing another track of the same album
       // except if option shuffle cover is set)
       if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
-        updateFileLaunched(event, iLocalEventID);
+        updateFileLaunched(event);
       } else if (JajukEvents.ZERO.equals(subject) || JajukEvents.WEBRADIO_LAUNCHED.equals(subject)
           || JajukEvents.PLAYER_STOP.equals(subject)) {
         updateStopOrWebRadioLaunched();
-      } else if (JajukEvents.COVER_NEED_REFRESH.equals(subject)) {
-        refreshCovers(iLocalEventID, true);
+      } else if (JajukEvents.COVER_NEED_REFRESH.equals(subject) && !QueueModel.isPlayingRadio()) {
+        refreshCovers(true);
+        displayCurrentCover();
       }
     } catch (final IOException e) {
       Log.error(e);
     } finally {
-      searching(false); // hide searching icon
     }
   }
 
   /**
    * Update stop or web radio launched.
-   * DOCUMENT_ME
+   * 
    */
-  private synchronized void updateStopOrWebRadioLaunched() {
+  private void updateStopOrWebRadioLaunched() {
     // Ignore this event if a reference file has been set
     if (fileReference != null) {
       return;
@@ -1335,13 +1228,11 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
   /**
    * Update file launched.
    * 
-   * @param event DOCUMENT_ME
-   * @param iLocalEventID DOCUMENT_ME
+   * @param event 
    * 
    * @throws IOException Signals that an I/O exception has occurred.
    */
-  private synchronized void updateFileLaunched(final JajukEvent event, final int iLocalEventID)
-      throws IOException {
+  private void updateFileLaunched(final JajukEvent event) throws IOException {
     org.jajuk.base.File last = null;
     Properties details = event.getDetails();
     if (details != null) {
@@ -1362,8 +1253,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     if (bForceCoverReload) {
       dirChanged = true;
     }
-    refreshCovers(iLocalEventID, dirChanged);
-
+    refreshCovers(dirChanged);
     if (Conf.getBoolean(Const.CONF_COVERS_SHUFFLE)) {
       // Ignore this event if a reference file has been set
       if (fileReference != null) {
@@ -1371,15 +1261,15 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       }
       // choose a random cover
       index = (int) (Math.random() * alCovers.size() - 1);
-      displayCurrentCover();
     }
+    displayCurrentCover();
     enableCommands(true);
   }
 
   /**
    * Convenient method to massively enable/disable this view buttons.
    * 
-   * @param enable DOCUMENT_ME
+   * @param enable 
    */
   private void enableCommands(final boolean enable) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -1394,9 +1284,7 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         jlFound.setVisible(enable);
         jlSize.setVisible(enable);
       }
-
     });
-
   }
 
   /**
@@ -1405,44 +1293,40 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
    * Must be called outside the EDT, contains network access
    * </p>.
    * 
-   * @param iLocalEventID DOCUMENT_ME
-   * @param dirChanged DOCUMENT_ME
+   * @param dirChanged 
    * 
    * @throws IOException Signals that an I/O exception has occurred.
    */
-  private synchronized void refreshCovers(int iLocalEventID, boolean dirChanged) throws IOException {
+  private void refreshCovers(boolean dirChanged) throws IOException {
     // Reset this flag
     bForceCoverReload = false;
+    UtilGUI.showBusyLabel(CoverView.this); // lookup icon
     org.jajuk.base.File fCurrent = fileReference;
     // check if a file has been given for this cover view
     // if not, take current cover
     if (fCurrent == null) {
       fCurrent = QueueModel.getPlayingFile();
     }
-    // no current cover
+    // no current cover and nothing playing
     if (fCurrent == null) {
       dirReference = null;
     } else {
       // store this dir
       dirReference = fCurrent.getDirectory();
     }
-
     if (dirReference == null) {
       alCovers.clear();
       alCovers.add(CoverView.nocover);
       index = 0;
-      displayCurrentCover();
       return;
     }
-
     if (fCurrent == null) {
       throw new IllegalArgumentException("Internal Error: Unexpected value, "
           + "variable fCurrent should not be empty. dirReference: " + dirReference);
     }
-
     // We only need to refresh the other covers if the directory changed 
     // but we still clear tag-based covers even if directory didn't change
-    // so the song-specific tag is token into account. 
+    // so the song-specific tag is taken into account. 
     Iterator<Cover> it = alCovers.iterator();
     while (it.hasNext()) {
       Cover cover = it.next();
@@ -1453,13 +1337,11 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     if (dirChanged) {
       // remove all existing covers
       alCovers.clear();
-
       // Search for local covers in all directories mapping
       // the current track to reach other devices covers and
       // display them together
       final Track trackCurrent = fCurrent.getTrack();
       final List<org.jajuk.base.File> alFiles = trackCurrent.getFiles();
-
       // Add any selected default cover
       String defaultCoverPath = trackCurrent.getAlbum().getStringValue(XML_ALBUM_SELECTED_COVER);
       if (StringUtils.isNotBlank(defaultCoverPath)) {
@@ -1472,7 +1354,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
           }
         }
       }
-
       // list of files mapping the track
       for (final org.jajuk.base.File file : alFiles) {
         final Directory dirScanned = file.getDirectory();
@@ -1502,7 +1383,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
           }
         }
       }
-
       // Then we search for web covers online if max
       // connection errors number is not reached or if user
       // already managed to connect.
@@ -1528,11 +1408,10 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
             // set best results to be displayed first
             final Iterator<URL> it2 = alUrls.iterator();
             // add found covers
-            while (it2.hasNext() && (iEventID == iLocalEventID)) {
+            while (it2.hasNext()) {
               // load each cover (pre-load or post-load)
               // and stop if a signal has been emitted
               final URL url = it2.next();
-
               final Cover cover = new Cover(url, CoverType.REMOTE_COVER);
               // Create a cover with given url ( image
               // will be really downloaded when
@@ -1541,13 +1420,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
                 Log.debug("Found Cover: {{" + url.toString() + "}}");
                 alCovers.add(cover);
               }
-
-            }
-            if (iEventID != iLocalEventID) {
-              // a stop signal has been emitted
-              // from a concurrent thread
-              Log.debug("Download stopped - 1");
-              return;
             }
           }
         } catch (final IOException e) {
@@ -1565,7 +1437,6 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
         }
       }
     }
-
     // Check for tag covers 
     try {
       Tag tag = new Tag(fCurrent.getFIO(), false);
@@ -1582,14 +1453,11 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
     } catch (JajukException e1) {
       Log.error(e1);
     }
-
     if (alCovers.size() == 0) {// add the default cover if none
       // other cover has been found
       alCovers.add(CoverView.nocover);
     }
-
     Collections.sort(alCovers);
-
     Log.debug("Local cover list: {{" + alCovers + "}}");
     if (Conf.getBoolean(Const.CONF_COVERS_SHUFFLE)) {
       // choose a random cover
@@ -1598,6 +1466,5 @@ public class CoverView extends ViewAdapter implements ComponentListener, ActionL
       index = alCovers.size() - 1;
       // current index points to the best available cover
     }
-    displayCurrentCover();
   }
 }

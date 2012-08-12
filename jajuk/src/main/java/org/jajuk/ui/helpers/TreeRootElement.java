@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.helpers;
 
@@ -26,7 +26,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * Flag class telling a tree node is a root element.
  */
 public class TreeRootElement extends DefaultMutableTreeNode {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -3183130517695923747L;
 
@@ -40,7 +39,7 @@ public class TreeRootElement extends DefaultMutableTreeNode {
   /**
    * The Constructor.
    * 
-   * @param userObject DOCUMENT_ME
+   * @param userObject 
    */
   public TreeRootElement(Object userObject) {
     super(userObject);

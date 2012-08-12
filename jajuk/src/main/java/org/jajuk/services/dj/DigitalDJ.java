@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.dj;
 
 import java.util.HashSet;
@@ -35,23 +34,16 @@ import org.jajuk.util.Const;
  * Digital DJ.
  */
 public abstract class DigitalDJ implements Comparable<DigitalDJ> {
-
   /** DJ unique ID. */
   private final String sID;
-
   /** DJ name. */
   protected String sName;
-
   /** Rating floor. */
   protected int iRatingLevel = 0;
-
   /** Fading duration in sec. */
   protected int iFadingDuration = 0;
-
   /** Track unicity. */
   protected boolean bUnicity = false;
-
-  /** DOCUMENT_ME. */
   private int iMaxTracks = -1;
 
   /**
@@ -76,7 +68,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
   /**
    * Compare to method, sorted alphaticaly.
    * 
-   * @param other DOCUMENT_ME
+   * @param other 
    * 
    * @return the int
    */
@@ -86,7 +78,6 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
     if (other == null) {
       return -1;
     }
-
     return this.sName.compareTo(other.getName());
   }
 
@@ -119,7 +110,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
   /**
    * Filter by rate and remove duplicates (unicity).
    * 
-   * @param files DOCUMENT_ME
+   * @param files 
    */
   void filterFilesByRate(List<File> files) {
     // this set stores already used tracks
@@ -141,9 +132,9 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
   /**
    * Filter files by max track.
-   * DOCUMENT_ME
    * 
-   * @param files DOCUMENT_ME
+   * 
+   * @param files 
    */
   void filterFilesByMaxTrack(List<File> files) {
     // cut off some tracks if less are selected for queuing
@@ -152,7 +143,6 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
       if (iMaxTracks > files.size()) {
         return;
       }
-
       // remove until we have less than max tracks
       while (files.size() > iMaxTracks) {
         files.remove(files.size() - 1);
@@ -172,7 +162,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
   /**
    * equals method.
    * 
-   * @param other DOCUMENT_ME
+   * @param other 
    * 
    * @return whether two object are equals
    */
@@ -197,7 +187,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
   /**
    * Sets the name.
    * 
-   * @param name DOCUMENT_ME
+   * @param name 
    */
   public void setName(String name) {
     this.sName = name;
@@ -215,7 +205,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
   /**
    * Sets the fading duration.
    * 
-   * @param fadingDuration DOCUMENT_ME
+   * @param fadingDuration 
    */
   public void setFadingDuration(int fadingDuration) {
     this.iFadingDuration = fadingDuration;

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.helpers;
 
@@ -39,7 +39,6 @@ import javax.swing.tree.TreePath;
  * requests involved.
  */
 public class LazyLoadingTreeExpander implements TreeWillExpandListener {
-  
   /** Tree Model. */
   private DefaultTreeModel model;
 
@@ -65,7 +64,7 @@ public class LazyLoadingTreeExpander implements TreeWillExpandListener {
    * 
    * If the Node is a LazyLoadingTreeNode load it's children.
    * 
-   * @param event DOCUMENT_ME
+   * @param event 
    * 
    * @throws ExpandVetoException the expand veto exception
    */
@@ -75,7 +74,6 @@ public class LazyLoadingTreeExpander implements TreeWillExpandListener {
     Object lastPathComponent = path.getLastPathComponent();
     if (lastPathComponent instanceof LazyLoadingTreeNode) {
       LazyLoadingTreeNode lazyNode = (LazyLoadingTreeNode) lastPathComponent;
-
       if (!lazyNode.areChildrenLoaded()) {
         MutableTreeNode[] nodes = lazyNode.loadChildren(model);
         ((DefaultMutableTreeNode) lazyNode).setAllowsChildren(nodes != null && nodes.length > 0);
@@ -87,7 +85,7 @@ public class LazyLoadingTreeExpander implements TreeWillExpandListener {
   /**
    * Define nodes children.
    *
-   * @param lazyNode DOCUMENT_ME
+   * @param lazyNode 
    * @param nodes new nodes
    */
   private void setChildren(LazyLoadingTreeNode lazyNode, MutableTreeNode... nodes) {

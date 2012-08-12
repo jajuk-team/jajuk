@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.startup;
 
@@ -31,7 +31,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JOptionPane;
-import javax.xml.parsers.ParserConfigurationException;
 
 import net.miginfocom.layout.LinkHandler;
 
@@ -52,6 +51,7 @@ import org.jajuk.base.YearManager;
 import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.tags.Tag;
+import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
@@ -60,21 +60,15 @@ import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-import org.xml.sax.SAXException;
 
 /**
  * Startup facilities of the collection.
  */
-public class StartupCollectionService {
-
-  /** Mplayer state. */
+public final class StartupCollectionService {
+  /** MPlayer state. */
   private static UtilSystem.MPlayerStatus mplayerStatus;
-
   /** Does a collection parsing error occurred ? *. */
   private static boolean bCollectionLoadRecover = true;
-
-  /** Lock used to trigger a first time wizard device creation and refresh *. */
-  static short[] canLaunchRefresh = new short[0];
 
   /**
    * Instantiates a new startup collection service.
@@ -84,23 +78,14 @@ public class StartupCollectionService {
   }
 
   /**
-   * Register device types*.
-   */
-  public static void registerDevicesTypes() {
-    for (final String deviceTypeId : DeviceManager.DEVICE_TYPES) {
-      DeviceManager.getInstance().registerDeviceType(Messages.getString(deviceTypeId));
-    }
-  }
-
-  /**
-   * Register all the different managers for the types of items that we know
-   * about.
-   */
+  * Register all the different managers for the types of items that we know
+  * about.
+  */
   public static void registerItemManagers() {
     ItemManager.registerItemManager(org.jajuk.base.Album.class, AlbumManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Artist.class, ArtistManager.getInstance());
-    ItemManager.registerItemManager(org.jajuk.base.AlbumArtist.class, AlbumArtistManager
-        .getInstance());
+    ItemManager.registerItemManager(org.jajuk.base.AlbumArtist.class,
+        AlbumArtistManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Device.class, DeviceManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.File.class, FileManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Directory.class, DirectoryManager.getInstance());
@@ -109,6 +94,8 @@ public class StartupCollectionService {
     ItemManager.registerItemManager(org.jajuk.base.Track.class, TrackManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Type.class, TypeManager.getInstance());
     ItemManager.registerItemManager(org.jajuk.base.Year.class, YearManager.getInstance());
+    ItemManager.registerItemManager(org.jajuk.services.webradio.WebRadio.class,
+        WebRadioManager.getInstance());
   }
 
   /**
@@ -129,7 +116,7 @@ public class StartupCollectionService {
             // make sure to delete corrupted mplayer in case of
             // download problem
             if (fMPlayer.length() != Const.MPLAYER_WINDOWS_EXE_SIZE) {
-              if (!fMPlayer.delete()) {
+              if (!fMPlayer.delete()) { //NOSONAR
                 Log.warn("Could not delete file " + fMPlayer);
               }
               mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
@@ -148,7 +135,7 @@ public class StartupCollectionService {
             DownloadManager.download(new URL(Const.URL_MPLAYER_OSX), fMPlayer);
             fMPlayer.setExecutable(true);
             if (fMPlayer.length() != Const.MPLAYER_OSX_EXE_SIZE) {
-              if (!fMPlayer.delete()) {
+              if (!fMPlayer.delete()) { //NOSONAR
                 Log.warn("Could not delete file " + fMPlayer);
               }
               mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
@@ -213,15 +200,12 @@ public class StartupCollectionService {
         try {
           Thread.sleep(Const.AUTO_COMMIT_DELAY);
           Log.debug("Auto commit");
-
           // call the overall "commit" to store things like Queue and
           // configuration periodically as well
           ExitService.commit(false);
-
           // workaround to free space in MigLayout
           // see http://migcalendar.com/forum/viewtopic.php?f=8&t=3236&p=7012
           LinkHandler.getValue("", "", 1); // simulated read
-
           // Clear the tag cache to avoid growing memory usage over time
           Tag.clearCache();
         } catch (Exception e) {
@@ -244,7 +228,6 @@ public class StartupCollectionService {
     final File fCollectionExitProof = SessionService
         .getConfFileByPath(Const.FILE_COLLECTION_EXIT_PROOF);
     boolean bParsingOK = false;
-
     // Keep this complex proof / multiple collection file code, it is required
     // (see #1362)
     // The problem is that a bad shutdown can write down corrupted collection
@@ -258,7 +241,9 @@ public class StartupCollectionService {
         Collection.load(fCollectionExit);
         // Remove the collection (required by renameTo next line under
         // Windows)
-        UtilSystem.deleteFile(fCollection);
+        if (fCollection.exists()) { // fCollection can be missing if corrupted durbg previous session
+          UtilSystem.deleteFile(fCollection);
+        }
         // parsing of collection exit ok, use this collection file as
         // final collection
         if (!fCollectionExit.renameTo(fCollection)) {
@@ -282,7 +267,6 @@ public class StartupCollectionService {
           Log.error(e1);
         }
       }
-
     }
     // If regular collection_exit.xml file parsing failed, try to parse
     // collection.xml. should be OK but not
@@ -291,21 +275,11 @@ public class StartupCollectionService {
       try {
         Collection.load(fCollection);
         bParsingOK = true;
-      } catch (final SAXException e1) {
-        Log.error(5, fCollection.getAbsolutePath(), e1);
-        bParsingOK = false;
-      } catch (final ParserConfigurationException e1) {
-        Log.error(5, fCollection.getAbsolutePath(), e1);
-        bParsingOK = false;
-      } catch (final JajukException e1) {
-        Log.error(5, fCollection.getAbsolutePath(), e1);
-        bParsingOK = false;
-      } catch (final IOException e1) {
+      } catch (final Exception e1) {
         Log.error(5, fCollection.getAbsolutePath(), e1);
         bParsingOK = false;
       }
     }
-
     // If even final collection file parsing failed
     // (very unlikely), try to restore a backup file
     if (!bParsingOK) {
@@ -334,36 +308,28 @@ public class StartupCollectionService {
           Collection.load(file);
           bParsingOK = true;
           // Show a message telling user that we use a backup file
-          final int i = Messages.getChoice(Messages.getString("Error.133") + ":\n"
-              + file.getAbsolutePath(), JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
+          final int i = Messages.getChoice(
+              Messages.getString("Error.133") + ":\n" + file.getAbsolutePath(),
+              JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
           if (i == JOptionPane.CANCEL_OPTION) {
-            System.exit(-1);
+            System.exit(-1); //NOSONAR
           }
           break;
-        } catch (final SAXException e2) {
-          Log.error(5, file.getAbsolutePath(), e2);
-        } catch (final ParserConfigurationException e2) {
-          Log.error(5, file.getAbsolutePath(), e2);
-        } catch (final JajukException e2) {
-          Log.error(5, file.getAbsolutePath(), e2);
-        } catch (final IOException e2) {
+        } catch (final Exception e2) {
           Log.error(5, file.getAbsolutePath(), e2);
         }
       }
     }
-
     // Still not better? ok, commit a void
     // collection (and a void collection is loaded)
     if (!bParsingOK) {
       Collection.clearCollection();
-      System.gc();
       try {
         Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
       } catch (final Exception e2) {
         Log.error(e2);
       }
     }
-
     Log.debug("Loaded " + FileManager.getInstance().getElementCount() + " files with "
         + TrackManager.getInstance().getElementCount() + " tracks, "
         + AlbumManager.getInstance().getElementCount() + " albums, "
@@ -371,23 +337,9 @@ public class StartupCollectionService {
         + AlbumArtistManager.getInstance().getElementCount() + " album-artists, "
         + PlaylistManager.getInstance().getElementCount() + " playlists in "
         + DirectoryManager.getInstance().getElementCount() + " directories on "
-        + DeviceManager.getInstance().getElementCount() + "devices.");
-
+        + DeviceManager.getInstance().getElementCount() + " devices.");
     // start auto commit thread
     tAutoCommit.start();
-  }
-
-  /**
-   * Wait until user selected a device path in first time wizard.
-   */
-  public static void waitForLaunchRefresh() {
-    synchronized (canLaunchRefresh) {
-      try {
-        canLaunchRefresh.wait();
-      } catch (final InterruptedException e) {
-        Log.error(e);
-      }
-    }
   }
 
   /**
@@ -398,5 +350,4 @@ public class StartupCollectionService {
   public static boolean isCollectionLoadRecover() {
     return bCollectionLoadRecover;
   }
-
 }

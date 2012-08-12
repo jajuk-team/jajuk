@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,13 +16,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.util;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -46,7 +45,6 @@ import javax.xml.parsers.SAXParserFactory;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.log.Log;
 import org.xml.sax.SAXException;
@@ -59,29 +57,23 @@ import org.xml.sax.helpers.DefaultHandler;
  * </p>.
  */
 public class Messages extends DefaultHandler {
-
   /** Messages initialized flag. */
   protected static boolean bInitialized = false;
-
   /** All choice option, completes JDialog options. */
   public static final int ALL_OPTION = 10;
-
   /** Specific Yes NO All Cancel option. */
   public static final int YES_NO_ALL_CANCEL_OPTION = 11;
-
   /** User choice. */
   private static int choice;
-
   /** Messages themselves extracted from an XML file to this properties class*. */
   protected static Properties properties;
-
   /** English messages used as default*. */
   private static Properties propertiesEn;
 
   /**
    * Contains.
    * 
-   * @param sKey DOCUMENT_ME
+   * @param sKey 
    * 
    * @return whether given key exists
    */
@@ -92,7 +84,7 @@ public class Messages extends DefaultHandler {
   /**
    * Gets the string.
    * 
-   * @param key DOCUMENT_ME
+   * @param key 
    * 
    * @return the string
    */
@@ -143,14 +135,11 @@ public class Messages extends DefaultHandler {
   public static String[] getAll(final String base) {
     final List<String> msgs = new ArrayList<String>();
     final String prefix = base + ".";
-
     try {
       final Properties lProperties = getProperties();
       final Properties defaultProperties = getPropertiesEn();
-
       for (int i = 0;; i++) {
         String sOut = lProperties.getProperty(prefix + i);
-
         if (sOut == null) {
           // this property is unknown for this local, try in English
           sOut = defaultProperties.getProperty(prefix + i);
@@ -198,7 +187,7 @@ public class Messages extends DefaultHandler {
   /**
    * Return Flag icon for given description.
    * 
-   * @param sDesc DOCUMENT_ME
+   * @param sDesc 
    * 
    * @return the icon
    */
@@ -211,19 +200,16 @@ public class Messages extends DefaultHandler {
   /**
    * ***************************************************************************
    * Parse a fake properties file inside an XML file as CDATA.
-   * 
-   * @param locale DOCUMENT_ME
-   * 
+   *
+   * @param locale 
    * @return a properties with all entries
-   * 
-   * @throws IOException Signals that an I/O exception has occurred.
    * @throws SAXException the SAX exception
+   * @throws IOException Signals that an I/O exception has occurred.
    * @throws ParserConfigurationException the parser configuration exception
-   * @throws Exception    */
+   */
   private static Properties parseLangpack(final Locale locale) throws SAXException, IOException,
       ParserConfigurationException {
     final Properties lProperties = new Properties();
-
     // Choose right jajuk_<lang>.properties file to load
     final StringBuilder sbFilename = new StringBuilder(Const.FILE_LANGPACK_PART1);
     if (!Locale.ENGLISH.equals(locale)) { // for English, properties file is
@@ -231,7 +217,6 @@ public class Messages extends DefaultHandler {
       sbFilename.append('_').append(locale);
     }
     sbFilename.append(Const.FILE_LANGPACK_PART2);
-
     // property file URL, either in the jajuk.jar jar
     // (normal execution) or found as regular file if in
     // development debug mode
@@ -240,7 +225,6 @@ public class Messages extends DefaultHandler {
     if (url == null) {
       throw new IOException("Could not read resource: " + resource);
     }
-
     // parse it, actually it is a big properties file as CDATA in an XML
     // file
     final SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -306,11 +290,10 @@ public class Messages extends DefaultHandler {
    * CAUTION! the thread which calls this method musn't have locks on resources
    * : otherwise it can conduct to GUI freeze
    * </p>.
-   * 
+   *
    * @param sText : dialog text
+   * @param optionsType 
    * @param iType message type like JOptionPane.WARNING
-   * @param optionsType DOCUMENT_ME
-   * 
    * @return the choice
    */
   public static int getChoice(final String sText, final int optionsType, final int iType) {
@@ -344,7 +327,7 @@ public class Messages extends DefaultHandler {
   /**
    * Gets the title for type.
    * 
-   * @param iType DOCUMENT_ME
+   * @param iType 
    * 
    * @return String for given JOptionPane message type
    */
@@ -363,7 +346,7 @@ public class Messages extends DefaultHandler {
   /**
    * Show a dialog with specified warning message.
    * 
-   * @param sMessage DOCUMENT_ME
+   * @param sMessage 
    */
   public static void showWarningMessage(final String sMessage) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -378,7 +361,7 @@ public class Messages extends DefaultHandler {
   /**
    * Show a dialog with specified warning message + a "not show again" button.
    * 
-   * @param sMessage DOCUMENT_ME
+   * @param sMessage 
    * @param sProperty : property name
    */
   public static void showHideableWarningMessage(final String sMessage, final String sProperty) {
@@ -394,15 +377,14 @@ public class Messages extends DefaultHandler {
             null);
         message.getResu();
       }
-
     });
   }
 
   /**
    * Show a dialog with specified error message and an icon.
    * 
-   * @param sMessage DOCUMENT_ME
-   * @param icon DOCUMENT_ME
+   * @param sMessage 
+   * @param icon 
    */
   public static void showInfoMessage(final String sMessage, final Icon icon) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -417,8 +399,8 @@ public class Messages extends DefaultHandler {
   /**
    * Show a dialog with specified error message and infosup.
    * 
-   * @param code DOCUMENT_ME
-   * @param sInfoSup DOCUMENT_ME
+   * @param code 
+   * @param sInfoSup 
    */
   public static void showErrorMessage(final int code, final String sInfoSup) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -432,7 +414,7 @@ public class Messages extends DefaultHandler {
   /**
    * Show a dialog with specified error message.
    * 
-   * @param code DOCUMENT_ME
+   * @param code 
    */
   public static void showErrorMessage(final int code) {
     showErrorMessage(code, null);
@@ -440,10 +422,10 @@ public class Messages extends DefaultHandler {
 
   /**
    * Show a dialog with specified error message and infosup and details.
-   * 
-   * @param sInfoSup DOCUMENT_ME
-   * @param code DOCUMENT_ME
-   * @param sDetails DOCUMENT_ME
+   *
+   * @param code 
+   * @param sInfoSup 
+   * @param sDetails 
    */
   public static void showDetailedErrorMessage(final int code, final String sInfoSup,
       final String sDetails) {
@@ -459,8 +441,8 @@ public class Messages extends DefaultHandler {
   /**
    * Show a dialog with specified error message with infos up.
    * 
-   * @param sMessage DOCUMENT_ME
-   * @param sInfoSup DOCUMENT_ME
+   * @param sMessage 
+   * @param sInfoSup 
    */
   public static void showInfoMessage(final String sMessage, final String sInfoSup) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -476,7 +458,7 @@ public class Messages extends DefaultHandler {
   /**
    * Show a dialog with specified error message.
    * 
-   * @param sMessage DOCUMENT_ME
+   * @param sMessage 
    */
   public static void showInfoMessage(final String sMessage) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -502,7 +484,7 @@ public class Messages extends DefaultHandler {
   /**
    * Gets localized and human property name for given key.
    * 
-   * @param sKey DOCUMENT_ME
+   * @param sKey 
    * 
    * @return the human property name or the property itself if not translated
    */
@@ -516,12 +498,11 @@ public class Messages extends DefaultHandler {
 
   /**
    * Gets the properties.
-   * 
+   *
    * @return Returns the properties.
-   * 
-   * @throws ParserConfigurationException the parser configuration exception
-   * @throws IOException Signals that an I/O exception has occurred.
    * @throws SAXException the SAX exception
+   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws ParserConfigurationException the parser configuration exception
    */
   public static Properties getProperties() throws SAXException, IOException,
       ParserConfigurationException {
@@ -557,7 +538,6 @@ public class Messages extends DefaultHandler {
  * Confirmation Dialog
  */
 class ConfirmDialog extends JajukDialog {
-
   /**
    * Confirm dialog constructor
    * 
@@ -573,7 +553,6 @@ class ConfirmDialog extends JajukDialog {
   ConfirmDialog(final String sText, final String sTitle, final int optionsType, final int iType,
       Component parent) {
     super();
-
     final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
     if (optionsType == Messages.YES_NO_ALL_CANCEL_OPTION) {
       optionPane.setOptions(new Object[] { Messages.getString("Yes"), Messages.getString("No"),
@@ -614,18 +593,15 @@ class ConfirmDialog extends JajukDialog {
       // result is an integer when using JOptionPane standard types
       iResu = (Integer) resu;
     }
-
     // manually dispose to free up memory, somehow this is not done automatically!
     dialog.dispose();
   }
-
 }
 
 /**
  * Message Dialog
  */
 class DetailsMessageDialog extends JajukDialog {
-
   /**
    * Message dialog constructor
    * 
@@ -636,7 +612,6 @@ class DetailsMessageDialog extends JajukDialog {
   DetailsMessageDialog(final String sText, final String sTitle, final int iType,
       final String sDetails, final Icon icon) {
     super();
-
     final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
     optionPane.setMessage(sText);
     if (sDetails != null) {
@@ -654,40 +629,30 @@ class DetailsMessageDialog extends JajukDialog {
     if (optionPane.getValue().equals(Messages.getString("Details"))) {
       // details
       final JDialog dialogDetail = new JDialog(dialog, Messages.getString("Details"));
+      dialogDetail.setMaximumSize(new Dimension(800, 600));
       final JPanel jp = new JPanel();
-      jp.setLayout(new MigLayout("ins 5", "[800]", "[600][]"));
+      jp.setLayout(new MigLayout("ins 5", "[grow]", "[grow]"));
       final JTextArea jta = new JTextArea(sDetails);
       jta.setEditable(false);
-      jp.add(new JScrollPane(jta), "wrap");
-      final OKCancelPanel jbOKC = new OKCancelPanel(new ActionListener() {
-        @Override
-        public void actionPerformed(final ActionEvent arg0) {
-          dialogDetail.dispose();
-        }
-      });
-      jp.add(jbOKC, "span,alignx center");
+      jp.add(new JScrollPane(jta), "wrap,grow");
       dialogDetail.setModal(true);
       dialogDetail.setAlwaysOnTop(true);
       dialogDetail.setContentPane(jp);
       dialogDetail.pack();
       dialogDetail.setLocationRelativeTo(JajukMainWindow.getInstance());
       dialogDetail.setVisible(true);
-
       // manually dispose to free up memory, somehow this is not done automatically!
       dialog.dispose();
     }
-
     // manually dispose to free up memory, somehow this is not done automatically!
     dialog.dispose();
   }
-
 }
 
 /**
  * Hideable message dialog (has a "not show again" button)
  */
 class HideableMessageDialog extends JajukDialog {
-
   /**
    * Message dialog constructor
    * 
@@ -700,7 +665,6 @@ class HideableMessageDialog extends JajukDialog {
   HideableMessageDialog(final String sText, final String sTitle, final String sProperty,
       final int iType, final Icon icon) {
     super();
-
     final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
     optionPane.setMessage(UtilGUI.getLimitedMessage(sText, 20));
     final Object[] options = { Messages.getString("Ok"), Messages.getString("Hide") };
@@ -720,18 +684,15 @@ class HideableMessageDialog extends JajukDialog {
       // Not show again
       Conf.setProperty(sProperty, Const.TRUE);
     }
-
     // manually dispose to free up memory, somehow this is not done automatically!
     dialog.dispose();
   }
-
 }
 
 /**
  * Error message dialog
  */
 class ErrorMessageDialog extends JajukDialog {
-
   /**
    * Message dialog constructor
    * 
@@ -743,7 +704,6 @@ class ErrorMessageDialog extends JajukDialog {
    */
   ErrorMessageDialog(final int code, final String sInfoSup) {
     super();
-
     final JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
     optionPane.setMessage(UtilGUI.getLimitedMessage(Messages.getErrorMessage(code)
         + (sInfoSup != null ? (" : " + sInfoSup) : ""), 20));
@@ -757,7 +717,6 @@ class ErrorMessageDialog extends JajukDialog {
     dialog.pack();
     dialog.setLocationRelativeTo(JajukMainWindow.getInstance());
     dialog.setVisible(true);
-
     // manually dispose to free up memory, somehow this is not done automatically!
     dialog.dispose();
   }
@@ -774,5 +733,4 @@ abstract class JajukDialog {
   public int getResu() {
     return iResu;
   }
-
 }

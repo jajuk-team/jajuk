@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.lyrics.persisters;
 
 import org.jajuk.base.File;
@@ -27,7 +26,6 @@ import org.jajuk.base.File;
  * Interface for lyrics persisters to be used by the modified LyricsService.
  */
 public interface ILyricsPersister {
-
   /**
    * Sets the audio file to set lyrics to.
    * 
@@ -39,8 +37,8 @@ public interface ILyricsPersister {
    * Commit lyrics for a given filename <br>
    * Returns true if commited correctly, false otherwise.
    *
-   * @param artist DOCUMENT_ME
-   * @param title DOCUMENT_ME
+   * @param artist 
+   * @param title 
    * @param lyrics lyrics as a string
    * @return true if OK, false otherwise
    */
@@ -61,5 +59,4 @@ public interface ILyricsPersister {
    * @return the destination file
    */
   java.io.File getDestinationFile();
-
 }

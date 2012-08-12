@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,37 +16,30 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.core;
 
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.services.startup.StartupCollectionService;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestExitService extends JajukTestCase {
-
   /**
    * Test method for {@link org.jajuk.services.core.ExitService#run()}.
    *
    * @throws Exception the exception
    */
   public void testRun() throws Exception {
-    JUnitHelpers.createSessionDirectory();
-
     StartupCollectionService.registerItemManagers();
-
     ExitService service = new ExitService();
     service.run();
-
     // once again with sessionidfile
     SessionService.getSessionIdFile().getParentFile().mkdirs();
     SessionService.getSessionIdFile().createNewFile();
     service.run();
-
   }
 
   /**
@@ -62,7 +55,6 @@ public class TestExitService extends JajukTestCase {
   public void testExit() {
     ExitService service = new ExitService();
     assertNotNull(service);
-
     // don't run this as it stops the JVM! service.exit(1);
   }
 
@@ -72,5 +64,4 @@ public class TestExitService extends JajukTestCase {
   public void testIsExiting() {
     assertFalse(ExitService.isExiting());
   }
-
 }

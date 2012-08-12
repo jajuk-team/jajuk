@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.base;
 
@@ -27,24 +27,23 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestArtist extends JajukTestCase {
-
   /**
-   * Test method for {@link org.jajuk.base.Artist#getDesc()}.
+   * Test method for {@link org.jajuk.base.Artist#getTitle()}.
    */
   public final void testGetDesc() {
     Artist artist = JUnitHelpers.getArtist();
-    assertTrue(StringUtils.isNotBlank(artist.getDesc()));
+    assertTrue(StringUtils.isNotBlank(artist.getTitle()));
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Artist#getLabel()}.
+   * Test method for {@link org.jajuk.base.Artist#getXMLTag()}.
    */
   public final void testGetLabel() {
     Artist artist = JUnitHelpers.getArtist();
-    assertEquals(Const.XML_ARTIST, artist.getLabel());
+    assertEquals(Const.XML_ARTIST, artist.getXMLTag());
   }
 
   /**
@@ -55,7 +54,6 @@ public class TestArtist extends JajukTestCase {
   public final void testGetHumanValue() {
     // need ArtistManager for MetaInformation here...
     StartupCollectionService.registerItemManagers();
-
     Artist artist = JUnitHelpers.getArtist();
     assertEquals("name", artist.getHumanValue(Const.XML_NAME));
   }
@@ -82,10 +80,8 @@ public class TestArtist extends JajukTestCase {
    */
   public final void testGetName2() {
     Artist artist = JUnitHelpers.getArtist();
-
     // usually equal to getName()
     assertEquals("name", artist.getName2());
-
     // only different for unknown_artist
     artist = JUnitHelpers.getArtist(Const.UNKNOWN_ARTIST);
     // should be replaced by some localized string
@@ -98,7 +94,6 @@ public class TestArtist extends JajukTestCase {
   public final void testToString() {
     Artist artist = new Artist("1", "name");
     JUnitHelpers.ToStringTest(artist);
-
     artist = new Artist("1", null);
     JUnitHelpers.ToStringTest(artist);
   }
@@ -113,7 +108,6 @@ public class TestArtist extends JajukTestCase {
     Artist equal = new Artist("1", "name");
     Artist notequal1 = new Artist("1", "name2");
     Artist notequal2 = new Artist("2", "name");
-
     JUnitHelpers.CompareToTest(artist, equal, notequal1);
     JUnitHelpers.CompareToTest(artist, equal, notequal2);
   }
@@ -124,9 +118,7 @@ public class TestArtist extends JajukTestCase {
   public final void testIsUnknown() {
     Artist artist = JUnitHelpers.getArtist();
     assertFalse(artist.isUnknown());
-
     artist = JUnitHelpers.getArtist(Const.UNKNOWN_ARTIST);
     assertTrue(artist.isUnknown());
   }
-
 }

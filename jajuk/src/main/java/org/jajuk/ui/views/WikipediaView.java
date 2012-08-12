@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.views;
 
 import java.awt.FlowLayout;
@@ -64,55 +63,28 @@ import org.jajuk.util.log.Log;
  * Wikipedia view.
  */
 public class WikipediaView extends ViewAdapter implements ActionListener {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** DOCUMENT_ME. */
   JLabel jlLanguage;
-
-  /** DOCUMENT_ME. */
   JComboBox jcbLanguage;
-
   /** Cobra web browser. */
   JajukHtmlPanel browser;
-
-  /** DOCUMENT_ME. */
   JButton jbCopy;
-
-  /** DOCUMENT_ME. */
   JButton jbLaunchInExternalBrowser;
-
-  /** DOCUMENT_ME. */
   JToggleButton jbArtistSearch;
-
-  /** DOCUMENT_ME. */
   JToggleButton jbAlbumSearch;
-
-  /** DOCUMENT_ME. */
   JToggleButton jbTrackSearch;
-
   /** Language index. */
   int indexLang = 0;
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   enum Type {
-
-    /** DOCUMENT_ME. */
-    ARTIST,
-    
-    /** DOCUMENT_ME. */
-    ALBUM,
-    
-    /** DOCUMENT_ME. */
-    TRACK
+    ARTIST, ALBUM, TRACK
   }
 
-  /** DOCUMENT_ME. */
   Type type = Type.ARTIST;
-
   /** Current search. */
   String search = null;
 
@@ -146,8 +118,8 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
     JajukAction aCopy = ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD);
     jbCopy = new JButton(aCopy);
     if (UtilSystem.isBrowserSupported()) {
-      jbLaunchInExternalBrowser = new JButton(ActionManager
-          .getAction(JajukActions.LAUNCH_IN_BROWSER));
+      jbLaunchInExternalBrowser = new JButton(
+          ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER));
       // Remove text inside the buttons
       jbLaunchInExternalBrowser.setText(null);
     }
@@ -168,7 +140,6 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
     bg.add(jbArtistSearch);
     bg.add(jbAlbumSearch);
     bg.add(jbTrackSearch);
-
     JToolBar jtb = new JajukJToolbar();
     jtb.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
     // Add items
@@ -182,28 +153,23 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
       jtb.addSeparator();
     }
     jtb.add(jcbLanguage);
-
     JPanel jpCommand = new JPanel();
     jpCommand.setBorder(BorderFactory.createEtchedBorder());
     jpCommand.setLayout(new FlowLayout(FlowLayout.LEFT));
     jpCommand.add(jtb);
-
     // global layout
     setLayout(new MigLayout("ins 0", "[grow]", "[][grow]"));
     browser = new JajukHtmlPanel();
     add(jpCommand, "growx,wrap");
     add(browser, "grow");
-
     // Display default page at startup is none track launch
     // avoid to launch this if a track is playing
     // to avoid thread concurrency
     if (QueueModel.getPlayingFile() == null) {
       reset();
     }
-
     // subscriptions to events
     ObservationManager.register(WikipediaView.this);
-
     // Force initial message refresh
     UtilFeatures.updateStatus(this);
   }
@@ -270,10 +236,8 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
       } catch (Exception e) {
         Log.error(e);
       }
-
       return;
     }
-
     Thread t = new Thread("Wikipedia Search Thread") {
       @Override
       public void run() {
@@ -307,7 +271,6 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
           }
           // Store the search to avoid future identical searches
           WikipediaView.this.search = lSearch;
-
           URL url = new URL(("http://"
               + LocaleManager.getLocaleForDesc((String) jcbLanguage.getSelectedItem())
               + ".wikipedia.org/wiki/" + lSearch).replaceAll(" ", "_"));
@@ -327,7 +290,6 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
         } catch (Exception e) {
           Log.error(e);
         }
-
       }
     };
     t.setPriority(Thread.MIN_PRIORITY);
@@ -339,7 +301,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
    */
   /**
    * Reset.
-   * DOCUMENT_ME
+   * 
    */
   private void reset() {
     // Reset current search

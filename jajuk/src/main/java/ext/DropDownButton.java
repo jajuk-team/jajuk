@@ -8,7 +8,6 @@
  * 
  * @author santhosh kumar - santhosh@in.fiorano.com Drop down button
  */
-
 package ext;
 
 import java.awt.Insets;
@@ -33,24 +32,19 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public abstract class DropDownButton extends JajukButton implements ChangeListener,
     PopupMenuListener, ActionListener, PropertyChangeListener, Const {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 9126200472940409277L;
-
-  /** DOCUMENT_ME. */
   private final JButton arrowButton;
-
-  /** DOCUMENT_ME. */
   private boolean popupVisible = false;
 
   /**
    * Instantiates a new drop down button.
    * 
-   * @param icon DOCUMENT_ME
+   * @param icon 
    */
   public DropDownButton(ImageIcon icon) {
     super(icon);
@@ -68,7 +62,6 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
   }
 
   /*------------------------------[ PropertyChangeListener ]---------------------------------------------------*/
-
   /* (non-Javadoc)
    * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
    */
@@ -78,7 +71,6 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
   }
 
   /*------------------------------[ ChangeListener ]---------------------------------------------------*/
-
   /* (non-Javadoc)
    * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
    */
@@ -101,7 +93,6 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
   }
 
   /*------------------------------[ ActionListener ]---------------------------------------------------*/
-
   /* (non-Javadoc)
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
@@ -113,7 +104,6 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
   }
 
   /*------------------------------[ PopupMenuListener ]---------------------------------------------------*/
-
   /* (non-Javadoc)
    * @see javax.swing.event.PopupMenuListener#popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent)
    */
@@ -130,7 +120,6 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
   @Override
   public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
     popupVisible = false;
-
     getModel().setRollover(false);
     arrowButton.getModel().setSelected(false);
     ((JPopupMenu) e.getSource()).removePopupMenuListener(this);
@@ -146,7 +135,6 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
   }
 
   /*------------------------------[ Other Methods ]---------------------------------------------------*/
-
   /**
    * Gets the popup menu.
    * 
@@ -156,9 +144,9 @@ public abstract class DropDownButton extends JajukButton implements ChangeListen
 
   /**
    * Adds the to tool bar.
-   * DOCUMENT_ME
    * 
-   * @param toolbar DOCUMENT_ME
+   * 
+   * @param toolbar 
    * 
    * @return the j button
    */

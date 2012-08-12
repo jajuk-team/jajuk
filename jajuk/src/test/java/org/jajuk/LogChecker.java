@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk;
 
@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 
 import junit.framework.TestCase;
 
+import org.jajuk.services.core.SessionService;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -35,12 +36,8 @@ import org.jajuk.util.log.Log;
  * when redirecting stdin et stderr to a file named /tmp/jajuk_out.log
  */
 public class LogChecker extends TestCase {
-
-  /** The Constant FILE_PATH.  DOCUMENT_ME */
-  private static final String FILE_PATH = System.getProperty("java.io.tmpdir") + File.separator
-      + "jajuk_out.log";
-
-  /** DOCUMENT_ME. */
+  /** The Constant FILE_PATH.   */
+  private static final File FILE_PATH = SessionService.getConfFileByPath("jajuk.log");
   private String logs;
 
   /* (non-Javadoc)
@@ -49,16 +46,14 @@ public class LogChecker extends TestCase {
   @Override
   public void setUp() throws Exception {
     try {
-      logs = UtilSystem.readFile(FILE_PATH).toString();
+      logs = UtilSystem.readFile(FILE_PATH.getAbsolutePath()).toString();
     } catch (JajukException e) {
       // if an exception occurs, ensure it is a "FileNotFound"
       assertNotNull("Should have an underlying cause when catching JajukException", e.getCause());
-      assertTrue("We only accept FileNotFoundException as valid exception in this test", e
-          .getCause() instanceof FileNotFoundException);
-
+      assertTrue("We only accept FileNotFoundException as valid exception in this test",
+          e.getCause() instanceof FileNotFoundException);
       // set string to empty to not fail any of the tests in this case
       logs = "";
-
       // also log a warning to indicate that this test did not do anything
       Log.warn("File " + FILE_PATH + " not found, cannot run checks on log file.");
     }
@@ -92,5 +87,4 @@ public class LogChecker extends TestCase {
   public void testOutEDT() {
     assertFalse(logs.matches("creation must be done on Event Dispatch Thread "));
   }
-
 }

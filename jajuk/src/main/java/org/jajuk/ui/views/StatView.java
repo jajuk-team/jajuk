@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.views;
 
 import java.text.DateFormat;
@@ -84,7 +83,6 @@ import org.jfree.util.SortOrder;
  * Help perspective.
  */
 public class StatView extends ViewAdapter {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -153,7 +151,6 @@ public class StatView extends ViewAdapter {
         double dValue = Math.round(100 * (dOthers / iTotal));
         pdata.setValue(Messages.getString("StatView.0"), dValue);
       }
-
       // chart
       jfchart = ChartFactory.createPieChart3D(Messages.getString("StatView.1"), pdata, true, true,
           true);
@@ -233,9 +230,7 @@ public class StatView extends ViewAdapter {
    */
   private ChartPanel createCollectionSize() {
     try {
-
       final DateFormat additionFormatter = UtilString.getAdditionDateFormatter();
-
       CategoryDataset cdata = null;
       JFreeChart jfchart = null;
       int iMonthsNumber = 5; // number of mounts we show, mounts
@@ -258,7 +253,6 @@ public class StatView extends ViewAdapter {
       for (int i = 0; i < iMonthsNumber + 1; i++) {
         data[0][i] = (double) lSizeByMonth[i] / 1073741824;
       }
-
       cdata = DatasetUtilities.createCategoryDataset(new String[] { "" },
           getMonthsLabels(iMonthsNumber), data);
       // chart, use local copy of method to use better format string for
@@ -273,13 +267,11 @@ public class StatView extends ViewAdapter {
           true, // tooltips
           false, // urls
           "{1} = {2} GB");
-
       CategoryPlot plot = jfchart.getCategoryPlot();
       CategoryAxis axis = plot.getDomainAxis();
       new CategoryLabelPosition(RectangleAnchor.TOP, TextBlockAnchor.TOP_RIGHT,
           TextAnchor.TOP_RIGHT, -Math.PI / 8.0, CategoryLabelWidthType.CATEGORY, 0);
       axis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
-
       // set the background color for the chart...
       plot.setNoDataMessage(Messages.getString("StatView.10"));
       plot.setForegroundAlpha(0.5f);
@@ -296,17 +288,17 @@ public class StatView extends ViewAdapter {
   // otherwise hardcoded in ChartFactory
   /**
    * Creates the bar chart3 d.
-   * DOCUMENT_ME
    * 
-   * @param title DOCUMENT_ME
-   * @param categoryAxisLabel DOCUMENT_ME
-   * @param valueAxisLabel DOCUMENT_ME
-   * @param dataset DOCUMENT_ME
-   * @param orientation DOCUMENT_ME
-   * @param legend DOCUMENT_ME
-   * @param tooltips DOCUMENT_ME
-   * @param urls DOCUMENT_ME
-   * @param format DOCUMENT_ME
+   * 
+   * @param title 
+   * @param categoryAxisLabel 
+   * @param valueAxisLabel 
+   * @param dataset 
+   * @param orientation 
+   * @param legend 
+   * @param tooltips 
+   * @param urls 
+   * @param format 
    * 
    * @return the j free chart
    */
@@ -315,30 +307,22 @@ public class StatView extends ViewAdapter {
       boolean tooltips, boolean urls, String format) {
     if (orientation == null)
       throw new IllegalArgumentException("Null 'orientation' argument.");
-
     CategoryAxis categoryAxis = new CategoryAxis3D(categoryAxisLabel);
     ValueAxis valueAxis = new NumberAxis3D(valueAxisLabel);
-
     BarRenderer3D renderer = new BarRenderer3D();
     if (tooltips)
       renderer.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator(format, NumberFormat
           .getInstance()));
-
     if (urls)
       renderer.setBaseItemURLGenerator(new StandardCategoryURLGenerator());
-
     CategoryPlot plot = new CategoryPlot(dataset, categoryAxis, valueAxis, renderer);
-
     plot.setOrientation(orientation);
     if (orientation == PlotOrientation.HORIZONTAL) {
-
       plot.setRowRenderingOrder(SortOrder.DESCENDING);
       plot.setColumnRenderingOrder(SortOrder.DESCENDING);
     }
     plot.setForegroundAlpha(0.75F);
-
     JFreeChart chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT, plot, legend);
-
     ChartFactory.getChartTheme().apply(chart);
     return chart;
   }
@@ -351,7 +335,6 @@ public class StatView extends ViewAdapter {
   private ChartPanel createTrackNumber() {
     try {
       final DateFormat additionFormatter = UtilString.getAdditionDateFormatter();
-
       CategoryDataset cdata = null;
       JFreeChart jfchart = null;
       // number of months we show, mounts
@@ -371,7 +354,6 @@ public class StatView extends ViewAdapter {
           }
         }
       }
-
       double[][] data = new double[1][iMonthsNumber + 1];
       // cannot use System.arraycopy() here because we have different types in
       // the arrays...
@@ -381,7 +363,6 @@ public class StatView extends ViewAdapter {
       }
       cdata = DatasetUtilities.createCategoryDataset(new String[] { "" },
           getMonthsLabels(iMonthsNumber), data);
-
       // chart, use local copy of method to use better format string for
       // tooltips
       jfchart = createBarChart3D(Messages.getString("StatView.12"), // chart
@@ -399,7 +380,6 @@ public class StatView extends ViewAdapter {
       new CategoryLabelPosition(RectangleAnchor.TOP, TextBlockAnchor.TOP_RIGHT,
           TextAnchor.TOP_RIGHT, -Math.PI / 8.0, CategoryLabelWidthType.CATEGORY, 0);
       axis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
-
       // set the background color for the chart...
       plot.setNoDataMessage(Messages.getString("StatView.15"));
       plot.setForegroundAlpha(0.5f);
@@ -432,7 +412,6 @@ public class StatView extends ViewAdapter {
     JajukEvents subject = event.getSubject();
     if (JajukEvents.DEVICE_REFRESH.equals(subject) || JajukEvents.DEVICE_DELETE.equals(subject)) {
       SwingUtilities.invokeLater(new Runnable() {
-
         @Override
         public void run() {
           try {
@@ -440,27 +419,22 @@ public class StatView extends ViewAdapter {
             if (getComponentCount() > 0) {
               removeAll();
             }
-
             ChartPanel cp1 = createGenreRepartition();
             if (cp1 != null) {
               add(cp1);
             }
-
             ChartPanel cp2 = createCollectionSize();
             if (cp2 != null) {
               add(cp2, "wrap");
             }
-
             ChartPanel cp3 = createTrackNumber();
             if (cp3 != null) {
               add(cp3);
             }
-
             ChartPanel cp4 = createDeviceRepartition();
             if (cp4 != null) {
               add(cp4, "wrap");
             }
-
             revalidate();
             repaint();
           } finally {
@@ -502,7 +476,7 @@ public class StatView extends ViewAdapter {
   /**
    * Get months as integers.
    * 
-   * @param iMonthsNumber DOCUMENT_ME
+   * @param iMonthsNumber 
    * 
    * @return the months
    */

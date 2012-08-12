@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package ext;
 
@@ -48,10 +48,9 @@ import java.util.Map;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestJScrollingText extends JajukTestCase {
-
   /**
    * Test method for {@link ext.JScrollingText#JScrollingText(String)}.
    */
@@ -89,38 +88,34 @@ public class TestJScrollingText extends JajukTestCase {
   public void testPaintComponent() {
     JScrollingText t = new JScrollingText("teststring");
     assertNotNull(t);
-
     t.paintComponent(new MyGraphics2D());
   }
 
   /**
    * Test paint component opaque.
-   * DOCUMENT_ME
+   * 
    */
   public void testPaintComponentOpaque() {
     JScrollingText t = new JScrollingText("teststring");
-
     t.setOpaque(true);
     t.paintComponent(new MyGraphics2D());
   }
 
   /**
    * Test paint component speed.
-   * DOCUMENT_ME
+   * 
    */
   public void testPaintComponentSpeed() {
     JScrollingText t = new JScrollingText("teststring", 1000);
-
     t.paintComponent(new MyGraphics2D());
   }
 
   /**
    * Test paint component speed zero.
-   * DOCUMENT_ME
+   * 
    */
   public void testPaintComponentSpeedZero() {
     JScrollingText t = new JScrollingText("teststring", 0);
-
     t.paintComponent(new MyGraphics2D());
   }
 
@@ -133,22 +128,19 @@ public class TestJScrollingText extends JajukTestCase {
     JScrollingText t = new JScrollingText("teststring");
     assertNotNull(t);
     t.start();
-
     // have to sleep some time here to make the Timer run at least once
     Thread.sleep(1100);
   }
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   private final class MyGraphics2D extends Graphics2D {
-    
     /* (non-Javadoc)
      * @see java.awt.Graphics#setXORMode(java.awt.Color)
      */
     @Override
     public void setXORMode(Color c1) {
-
     }
 
     /* (non-Javadoc)
@@ -156,7 +148,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void setPaintMode() {
-
     }
 
     /* (non-Javadoc)
@@ -164,7 +155,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void setFont(Font font) {
-
     }
 
     /* (non-Javadoc)
@@ -172,7 +162,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void setColor(Color c) {
-
     }
 
     /* (non-Javadoc)
@@ -180,7 +169,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void setClip(int x, int y, int width, int height) {
-
     }
 
     /* (non-Javadoc)
@@ -188,7 +176,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void setClip(Shape clip) {
-
     }
 
     /* (non-Javadoc)
@@ -196,7 +183,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public FontMetrics getFontMetrics(Font f) {
-
       return new FontMetrics(f) {
         private static final long serialVersionUID = 9139781111511738969L;
 
@@ -214,7 +200,6 @@ public class TestJScrollingText extends JajukTestCase {
         public int getAscent() {
           return 10;
         }
-
       };
     }
 
@@ -223,7 +208,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public Font getFont() {
-
       return null;
     }
 
@@ -232,7 +216,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public Color getColor() {
-
       return null;
     }
 
@@ -241,7 +224,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public Rectangle getClipBounds() {
-
       return null;
     }
 
@@ -250,7 +232,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public Shape getClip() {
-
       return null;
     }
 
@@ -259,7 +240,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
-
     }
 
     /* (non-Javadoc)
@@ -267,7 +247,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void fillRect(int x, int y, int width, int height) {
-
     }
 
     /* (non-Javadoc)
@@ -275,7 +254,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void fillPolygon(int[] xPoints, int[] yPoints, int nPoints) {
-
     }
 
     /* (non-Javadoc)
@@ -283,7 +261,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void fillOval(int x, int y, int width, int height) {
-
     }
 
     /* (non-Javadoc)
@@ -291,7 +268,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
-
     }
 
     /* (non-Javadoc)
@@ -299,7 +275,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void drawRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
-
     }
 
     /* (non-Javadoc)
@@ -307,7 +282,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void drawPolyline(int[] xPoints, int[] yPoints, int nPoints) {
-
     }
 
     /* (non-Javadoc)
@@ -315,7 +289,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void drawPolygon(int[] xPoints, int[] yPoints, int nPoints) {
-
     }
 
     /* (non-Javadoc)
@@ -323,7 +296,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void drawOval(int x, int y, int width, int height) {
-
     }
 
     /* (non-Javadoc)
@@ -331,7 +303,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void drawLine(int x1, int y1, int x2, int y2) {
-
     }
 
     /* (non-Javadoc)
@@ -340,7 +311,6 @@ public class TestJScrollingText extends JajukTestCase {
     @Override
     public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1,
         int sx2, int sy2, Color bgcolor, ImageObserver observer) {
-
       return false;
     }
 
@@ -350,7 +320,6 @@ public class TestJScrollingText extends JajukTestCase {
     @Override
     public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1,
         int sx2, int sy2, ImageObserver observer) {
-
       return false;
     }
 
@@ -360,7 +329,6 @@ public class TestJScrollingText extends JajukTestCase {
     @Override
     public boolean drawImage(Image img, int x, int y, int width, int height, Color bgcolor,
         ImageObserver observer) {
-
       return false;
     }
 
@@ -369,7 +337,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public boolean drawImage(Image img, int x, int y, int width, int height, ImageObserver observer) {
-
       return false;
     }
 
@@ -378,7 +345,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public boolean drawImage(Image img, int x, int y, Color bgcolor, ImageObserver observer) {
-
       return false;
     }
 
@@ -387,7 +353,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
-
       return false;
     }
 
@@ -396,7 +361,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
-
     }
 
     /* (non-Javadoc)
@@ -404,7 +368,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void dispose() {
-
     }
 
     /* (non-Javadoc)
@@ -412,7 +375,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public Graphics create() {
-
       return null;
     }
 
@@ -421,7 +383,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void copyArea(int x, int y, int width, int height, int dx, int dy) {
-
     }
 
     /* (non-Javadoc)
@@ -429,7 +390,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void clipRect(int x, int y, int width, int height) {
-
     }
 
     /* (non-Javadoc)
@@ -437,7 +397,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void clearRect(int x, int y, int width, int height) {
-
     }
 
     /* (non-Javadoc)
@@ -445,7 +404,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void translate(double tx, double ty) {
-
     }
 
     /* (non-Javadoc)
@@ -453,7 +411,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void translate(int x, int y) {
-
     }
 
     /* (non-Javadoc)
@@ -461,7 +418,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void transform(AffineTransform Tx) {
-
     }
 
     /* (non-Javadoc)
@@ -469,7 +425,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void shear(double shx, double shy) {
-
     }
 
     /* (non-Javadoc)
@@ -477,7 +432,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void setTransform(AffineTransform Tx) {
-
     }
 
     /* (non-Javadoc)
@@ -485,7 +439,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void setStroke(Stroke s) {
-
     }
 
     /* (non-Javadoc)
@@ -493,7 +446,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void setRenderingHints(Map<?, ?> hints) {
-
     }
 
     /* (non-Javadoc)
@@ -501,7 +453,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void setRenderingHint(Key hintKey, Object hintValue) {
-
     }
 
     /* (non-Javadoc)
@@ -509,7 +460,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void setPaint(Paint paint) {
-
     }
 
     /* (non-Javadoc)
@@ -517,7 +467,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void setComposite(Composite comp) {
-
     }
 
     /* (non-Javadoc)
@@ -525,7 +474,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void setBackground(Color color) {
-
     }
 
     /* (non-Javadoc)
@@ -533,7 +481,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void scale(double sx, double sy) {
-
     }
 
     /* (non-Javadoc)
@@ -541,7 +488,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void rotate(double theta, double x, double y) {
-
     }
 
     /* (non-Javadoc)
@@ -549,7 +495,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void rotate(double theta) {
-
     }
 
     /* (non-Javadoc)
@@ -557,7 +502,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public boolean hit(Rectangle rect, Shape s, boolean onStroke) {
-
       return false;
     }
 
@@ -566,7 +510,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public AffineTransform getTransform() {
-
       return null;
     }
 
@@ -575,7 +518,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public Stroke getStroke() {
-
       return null;
     }
 
@@ -584,7 +526,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public RenderingHints getRenderingHints() {
-
       return null;
     }
 
@@ -593,7 +534,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public Object getRenderingHint(Key hintKey) {
-
       return null;
     }
 
@@ -602,7 +542,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public Paint getPaint() {
-
       return null;
     }
 
@@ -611,7 +550,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public FontRenderContext getFontRenderContext() {
-
       return null;
     }
 
@@ -620,7 +558,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public GraphicsConfiguration getDeviceConfiguration() {
-
       return null;
     }
 
@@ -629,7 +566,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public Composite getComposite() {
-
       return null;
     }
 
@@ -638,7 +574,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public Color getBackground() {
-
       return null;
     }
 
@@ -647,7 +582,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void fill(Shape s) {
-
     }
 
     /* (non-Javadoc)
@@ -655,7 +589,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void drawString(AttributedCharacterIterator iterator, float x, float y) {
-
     }
 
     /* (non-Javadoc)
@@ -663,7 +596,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void drawString(AttributedCharacterIterator iterator, int x, int y) {
-
     }
 
     /* (non-Javadoc)
@@ -671,7 +603,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void drawString(String str, float x, float y) {
-
     }
 
     /* (non-Javadoc)
@@ -679,7 +610,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void drawString(String str, int x, int y) {
-
     }
 
     /* (non-Javadoc)
@@ -687,7 +617,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void drawRenderedImage(RenderedImage img, AffineTransform xform) {
-
     }
 
     /* (non-Javadoc)
@@ -695,7 +624,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void drawRenderableImage(RenderableImage img, AffineTransform xform) {
-
     }
 
     /* (non-Javadoc)
@@ -703,7 +631,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y) {
-
     }
 
     /* (non-Javadoc)
@@ -711,7 +638,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs) {
-
       return false;
     }
 
@@ -720,7 +646,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void drawGlyphVector(GlyphVector g, float x, float y) {
-
     }
 
     /* (non-Javadoc)
@@ -728,7 +653,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void draw(Shape s) {
-
     }
 
     /* (non-Javadoc)
@@ -736,7 +660,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void clip(Shape s) {
-
     }
 
     /* (non-Javadoc)
@@ -744,7 +667,6 @@ public class TestJScrollingText extends JajukTestCase {
      */
     @Override
     public void addRenderingHints(Map<?, ?> hints) {
-
     }
   }
 }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.base;
 
@@ -51,26 +51,21 @@ import org.jajuk.util.log.Log;
  * Physical item.
  */
 public class Directory extends PhysicalItem implements Comparable<Directory> {
-
   /** Parent directory ID*. */
   private final Directory dParent;
-
   /** Directory device. */
   private final Device device;
-
   /** IO file for optimizations*. */
   private java.io.File fio;
-
-  /** DOCUMENT_ME. */
   private long discID = -1l;
 
   /**
    * Directory constructor.
-   * 
-   * @param sName DOCUMENT_ME
-   * @param sId DOCUMENT_ME
-   * @param dParent DOCUMENT_ME
-   * @param device DOCUMENT_ME
+   *
+   * @param sId 
+   * @param sName 
+   * @param dParent 
+   * @param device 
    */
   Directory(String sId, String sName, Directory dParent, Device device) {
     super(sId, sName);
@@ -91,7 +86,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  public final String getLabel() {
+  public final String getXMLTag() {
     return XML_DIRECTORY;
   }
 
@@ -189,7 +184,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /**
    * return ordered sibling files from the given file index.
    * 
-   * @param fileStart DOCUMENT_ME
+   * @param fileStart 
    * 
    * @return files or null if the given file is unknown
    */
@@ -242,7 +237,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * 
    * @return true, if given directory is a parent directory of this directory
    */
-  public boolean hasAncestor(Directory directory) {
+  boolean hasAncestor(Directory directory) {
     Directory dirTested = this;
     while (true) {
       if (!dirTested.equals(this) && dirTested.equals(directory)) {
@@ -279,27 +274,17 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * force files tag read
    * @param reporter Refresh handler
    */
-  public void scan(boolean bDeepScan, RefreshReporter reporter) {
-
-    // Wait a given delay (Bug #1793 : some NAS crash due to overload)
-    try {
-      Thread.sleep(Conf.getInt(CONF_REFRESHING_DELAY_MS));
-    } catch (Exception e) {
-      Log.error(e);
-    }
-
+  void scan(boolean bDeepScan, RefreshReporter reporter) {
     // Make sure to reset the disc ID
     this.discID = -1;
     java.io.File[] filelist = getFio().listFiles(UtilSystem.getFileFilter());
     if (filelist == null || filelist.length == 0) { // none file, leave
       return;
     }
-
     // Create a list of music files and playlist files to consider
     List<File> musicFiles = new ArrayList<File>(filelist.length);
     List<File> playlistFiles = new ArrayList<File>(filelist.length);
     List<Long> durations = new ArrayList<Long>(filelist.length);
-
     for (int i = 0; i < filelist.length; i++) {
       // Leave ASAP if exit request
       if (ExitService.isExiting()) {
@@ -312,16 +297,13 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
             + "}}");
         continue;
       }
-
       // Ignore iTunes files
       if (filelist[i].getName().startsWith("._")) {
         continue;
       }
-
       // check if we recognize the file as music file
       String extension = UtilSystem.getExtension(filelist[i]);
       Type type = TypeManager.getInstance().getTypeByExtension(extension);
-
       // Now, compute disc ID and cache tags (only in deep mode because we don't
       // want to read tags in fast modes)
       if (bDeepScan && type.getTagImpl() != null) {
@@ -332,7 +314,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
           Log.error(je);
         }
       }
-
       boolean bIsMusic = (Boolean) type.getValue(Const.XML_TYPE_IS_MUSIC);
       if (bIsMusic) {
         musicFiles.add(filelist[i]);
@@ -340,12 +321,10 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
         playlistFiles.add(filelist[i]);
       }
     }
-
     // Compute the disc id (deep mode only)
     if (bDeepScan) {
       this.discID = UtilFeatures.computeDiscID(durations);
     }
-
     // Perform actual scan and check errors for each file
     for (File musicfile : musicFiles) {
       try {
@@ -363,7 +342,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     }
     // Clear the tag cache so tags are actually read at next deep refresh
     Tag.clearCache();
-
     // Force cover detection (after done once, the cover file is cached as album property)
     // We need this to avoid bug #1550 : if the device is created, then unplugged, catalog
     // view cover/no-cover filter is messed-up because the findCover() method always return null.
@@ -375,9 +353,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Return list of albums for current directory.
-   * 
-   * @param 
-   * 
+   *
    * @return list of albums for current directory
    */
   public Set<Album> getAlbums() {
@@ -391,11 +367,10 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Scan music.
-   * 
-   * @param bDeepScan DOCUMENT_ME
-   * @param reporter DOCUMENT_ME
-   * @param music DOCUMENT_ME
-   * 
+   *
+   * @param music 
+   * @param bDeepScan 
+   * @param reporter 
    * @throws JajukException the jajuk exception
    */
   private void scanMusic(java.io.File music, boolean bDeepScan, RefreshReporter reporter)
@@ -409,22 +384,18 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     if (UtilSystem.isUnderWindows() && fileRef != null) {
       fileRef.setName(lName);
     }
-
     // if known file and no deep scan, just leave
     if (fileRef != null && !bDeepScan) {
       return;
     }
-
     // Is this format tag readable ?
     Type type = TypeManager.getInstance().getTypeByExtension(UtilSystem.getExtension(music));
     boolean tagSupported = (type.getTaggerClass() != null);
-
     // Deep refresh : if the audio file format doesn't support tagging (like wav) and the file
     // is already known, continue, no need to try to read tags
     if (!tagSupported && fileRef != null) {
       return;
     }
-
     // Ignore tag error to make sure to get a
     // tag object in all cases.
     Tag tag = Tag.getTagForFio(music, true);
@@ -437,7 +408,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       // if an error occurs, just display a message but keep the track
       Log.error(103, "{{" + music.getAbsolutePath() + "}}", null);
     }
-
     String sTrackName = tag.getTrackName();
     String sAlbumName = tag.getAlbumName();
     String sArtistName = tag.getArtistName();
@@ -449,24 +419,20 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     long lOrder = tag.getOrder();
     String sAlbumArtist = tag.getAlbumArtist();
     long discNumber = tag.getDiscNumber();
-
     if (fileRef == null && reporter != null) {
       // stats, do it here and not
       // before because we ignore the
       // file if we cannot read it
       reporter.notifyNewFile();
     }
-
     // Store oldDiscID, it is used to clone album and track
     // properties when album disc ID was unset to avoid loosing ratings or custom properties
     long oldDiscID = 0;
     if (fileRef != null) {
       oldDiscID = fileRef.getTrack().getAlbum().getDiscID();
     }
-
     Track track = registerFile(music, sId, sTrackName, sAlbumName, sArtistName, sGenre, length,
         sYear, lQuality, sComment, lOrder, sAlbumArtist, oldDiscID, discID, discNumber);
-
     for (String s : Tag.getActivatedExtraTags()) {
       track.setProperty(s, tag.getTagField(s));
     }
@@ -474,23 +440,22 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Register file.
-   * 
-   * @param music DOCUMENT_ME
-   * @param sTrackName DOCUMENT_ME
-   * @param sAlbumName DOCUMENT_ME
-   * @param sArtistName DOCUMENT_ME
-   * @param sGenre DOCUMENT_ME
-   * @param length DOCUMENT_ME
-   * @param sYear DOCUMENT_ME
-   * @param lQuality DOCUMENT_ME
-   * @param sComment DOCUMENT_ME
-   * @param lOrder DOCUMENT_ME
-   * @param sAlbumArtist DOCUMENT_ME
-   * @param discID DOCUMENT_ME
-   * @param discNumber DOCUMENT_ME
-   * @param sFileId DOCUMENT_ME
-   * @param oldDiskID DOCUMENT_ME
-   * 
+   *
+   * @param music 
+   * @param sFileId 
+   * @param sTrackName 
+   * @param sAlbumName 
+   * @param sArtistName 
+   * @param sGenre 
+   * @param length 
+   * @param sYear 
+   * @param lQuality 
+   * @param sComment 
+   * @param lOrder 
+   * @param sAlbumArtist 
+   * @param oldDiskID 
+   * @param discID 
+   * @param discNumber 
    * @return the track
    */
   private Track registerFile(java.io.File music, String sFileId, String sTrackName,
@@ -524,19 +489,16 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
         }
       }
     }
-
     // Note date for file date property. CAUTION: do not try to
     // check current date to accelerate refreshing if file has not
     // been modified since last refresh as user can rename a parent
     // directory and the files times under it are not modified
     long lastModified = music.lastModified();
-
     // Use file date if the "force file date" option is used
     if (Conf.getBoolean(Const.CONF_FORCE_FILE_DATE)) {
       track.setDiscoveryDate(new Date(lastModified));
     } else if (TrackManager.getInstance().getElementCount() > trackNumber) {
       // Update discovery date only if it is a new track
-
       // A new track has been created, we can safely update
       // the track date
       // We don't want to update date if the track is already
@@ -546,7 +508,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       // is a track attribute, not file one
       track.setDiscoveryDate(new Date());
     }
-
     org.jajuk.base.File file = FileManager.getInstance().registerFile(sFileId, music.getName(),
         this, track, music.length(), lQuality);
     // Set file date
@@ -559,17 +520,16 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     track.setAlbumArtist(albumArtist);
     // Make sure to refresh file size
     file.setProperty(Const.XML_SIZE, music.length());
-
     return track;
   }
 
   /**
    * Scan playlist.
-   * DOCUMENT_ME
    * 
-   * @param file DOCUMENT_ME
-   * @param bDeepScan DOCUMENT_ME
-   * @param reporter DOCUMENT_ME
+   * 
+   * @param file 
+   * @param bDeepScan 
+   * @param reporter 
    * 
    * @throws JajukException the jajuk exception
    */
@@ -582,7 +542,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       return;
     }
     Playlist plFile = PlaylistManager.getInstance().registerPlaylistFile(file, this);
-    plFile.forceRefresh(); // force refresh
+    plFile.load(); // force refresh
     if (plfRef == null && reporter != null) {
       // stats, do it here and not
       // before because we ignore the
@@ -642,7 +602,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * Sort ignoring cases
    * </p>.
    * 
-   * @param otherDirectory DOCUMENT_ME
+   * @param otherDirectory 
    * 
    * @return comparison result
    */
@@ -651,7 +611,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     if (otherDirectory == null) {
       return -1;
     }
-
     // Perf: leave if directories are equals
     if (otherDirectory.equals(this)) {
       return 0;
@@ -682,13 +641,11 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     return true;
   }
 
-  /**
-   * Get item description.
-   * 
-   * @return the desc
+  /* (non-Javadoc)
+   * @see org.jajuk.base.Item#getTitle()
    */
   @Override
-  public String getDesc() {
+  public String getTitle() {
     String sName = null;
     if (getParentDirectory() == null) {
       sName = getDevice().getUrl();
@@ -747,16 +704,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       icon = IconLoader.getIcon(JajukIcons.DIRECTORY_DESYNCHRO);
     }
     return icon;
-  }
-
-  /**
-   * Set name (useful for Windows because same object can have different cases).
-   * 
-   * @param name Item name
-   */
-  protected void setName(String name) {
-    setProperty(Const.XML_NAME, name);
-    this.name = name;
   }
 
   /**

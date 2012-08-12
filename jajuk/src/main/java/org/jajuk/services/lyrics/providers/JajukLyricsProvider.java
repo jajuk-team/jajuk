@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.lyrics.providers;
 
@@ -26,24 +26,15 @@ import org.jajuk.base.File;
  * Class container of lyrics written by user from Jajuk GUI itself.
  */
 public class JajukLyricsProvider implements ILyricsProvider {
-
-  /** DOCUMENT_ME. */
   private String sLyrics = null;
-
-  /** DOCUMENT_ME. */
   private String sArtist = null;
-
-  /** DOCUMENT_ME. */
   private String sTitle = null;
-
-  /** DOCUMENT_ME. */
   private File audioFile = null;
 
   /**
    * Instantiates a new jajuk lyrics provider.
    */
   public JajukLyricsProvider() {
-
   }
 
   /* (non-Javadoc)
@@ -97,7 +88,6 @@ public class JajukLyricsProvider implements ILyricsProvider {
    */
   public File getFile() {
     return audioFile;
-
   }
 
   /**
@@ -126,5 +116,4 @@ public class JajukLyricsProvider implements ILyricsProvider {
   public String getSourceAddress() {
     return "<Jajuk>";
   }
-
 }

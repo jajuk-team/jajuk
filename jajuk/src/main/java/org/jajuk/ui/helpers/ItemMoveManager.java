@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.helpers;
 
 import java.util.ArrayList;
@@ -29,28 +28,17 @@ import org.jajuk.base.Item;
 /**
  * Convenient class to manage Items to be moved using Cut/Copy/Paste Actions.
  */
-
 public class ItemMoveManager {
-
-  /** DOCUMENT_ME. */
   private static ItemMoveManager singleton = new ItemMoveManager();
-
-  /** DOCUMENT_ME. */
   private final List<Item> itemsToMove = new ArrayList<Item>(20);
 
   /**
-   * DOCUMENT_ME.
+   * .
    */
   public enum MoveActions {
-
-    /** DOCUMENT_ME. */
-    CUT,
-    
-    /** DOCUMENT_ME. */
-    COPY
+    CUT, COPY
   }
 
-  /** DOCUMENT_ME. */
   private MoveActions moveAction;
 
   /**
@@ -64,9 +52,9 @@ public class ItemMoveManager {
 
   /**
    * Adds the items.
-   * DOCUMENT_ME
    * 
-   * @param items DOCUMENT_ME
+   * 
+   * @param items 
    */
   public void addItems(List<Item> items) {
     itemsToMove.addAll(items);
@@ -83,7 +71,7 @@ public class ItemMoveManager {
 
   /**
    * Removes the all.
-   * DOCUMENT_ME
+   * 
    */
   public void removeAll() {
     itemsToMove.clear();

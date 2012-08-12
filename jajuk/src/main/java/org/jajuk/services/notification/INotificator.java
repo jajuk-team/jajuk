@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.notification;
 
@@ -35,7 +35,6 @@ import org.jajuk.services.webradio.WebRadio;
  * Base interface for multiple different notification services that we can use.
  */
 public interface INotificator {
-
   /**
    * Indicates if this notificator is available on the current platform.
    * 
@@ -51,7 +50,7 @@ public interface INotificator {
    * 
    * This method should only be called if @link isAvailable() returns true!
    * 
-   * @param webradio DOCUMENT_ME
+   * @param webradio 
    */
   void notify(WebRadio webradio);
 
@@ -62,14 +61,14 @@ public interface INotificator {
    * 
    * This method should only be called if @link isAvailable() returns true!
    * 
-   * @param file DOCUMENT_ME
+   * @param file 
    */
   void notify(File file);
 
   /**
    * Ask the notificator to provide some arbitrary status information.
    *
-   * @param title DOCUMENT_ME
+   * @param title 
    * @param status The string to print.
    */
   void notify(String title, String status);

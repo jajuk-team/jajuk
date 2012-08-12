@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.widgets;
 
 import java.awt.Color;
@@ -46,14 +45,9 @@ import org.jajuk.util.filters.DirectoryFilter;
  * PATH selection button opening up a file selector.
  */
 public class PathSelector extends JPanel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -8370527665529267952L;
-
-  /** DOCUMENT_ME. */
   JTextField jtfUrl;
-
-  /** DOCUMENT_ME. */
   JButton button;
 
   /**
@@ -64,7 +58,6 @@ public class PathSelector extends JPanel {
    */
   public PathSelector(final JajukFileFilter filter, final String sDefault) {
     super();
-
     initUI(sDefault);
     button.addActionListener(new ActionListener() {
       @Override
@@ -100,7 +93,6 @@ public class PathSelector extends JPanel {
    */
   public PathSelector(final String sDefault) {
     super();
-
     initUI(sDefault);
     button.addActionListener(new ActionListener() {
       @Override
@@ -141,9 +133,9 @@ public class PathSelector extends JPanel {
 
   /**
    * Inits the ui.
-   * DOCUMENT_ME
    * 
-   * @param sDefault DOCUMENT_ME
+   * 
+   * @param sDefault 
    */
   private void initUI(final String sDefault) {
     // Set layout
@@ -182,7 +174,7 @@ public class PathSelector extends JPanel {
   /**
    * Set tooltip.
    * 
-   * @param s DOCUMENT_ME
+   * @param s 
    */
   @Override
   public void setToolTipText(final String s) {
@@ -198,5 +190,4 @@ public class PathSelector extends JPanel {
   public void setURL(final String sURL) {
     jtfUrl.setText(sURL);
   }
-
 }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.lyrics.providers;
 
 import ext.services.network.NetworkUtils;
@@ -41,20 +40,15 @@ import org.jajuk.util.log.Log;
  * specific providers.
  */
 public abstract class GenericWebLyricsProvider implements ILyricsProvider {
-
-  /** DOCUMENT_ME. */
   private String source = null;
-
-  /** DOCUMENT_ME. */
   private String queryUrlTemplate = null;
-
   /** audio file we search lyrics for. */
   File audioFile = null;
 
   /**
    * Instantiates a new generic web lyrics provider.
    * 
-   * @param queryUrlTemplate DOCUMENT_ME
+   * @param queryUrlTemplate 
    */
   public GenericWebLyricsProvider(final String queryUrlTemplate) {
     this.queryUrlTemplate = queryUrlTemplate;
@@ -66,10 +60,10 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
    */
   /**
    * Call provider.
-   * DOCUMENT_ME
    * 
-   * @param artist DOCUMENT_ME
-   * @param title DOCUMENT_ME
+   * 
+   * @param artist 
+   * @param title 
    * 
    * @return the string
    */
@@ -79,7 +73,8 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
       URL url = getActualURL(artist, title);
       text = DownloadManager.getTextFromCachedFile(url, getResponseEncoding());
     } catch (final Exception e) {
-      Log.warn("Could not retrieve URL {{" + getProviderHostname() + "}}", e.getMessage());
+      Log.warn("Could not retrieve URL {{" + getProviderHostname() + "}}", "{{" + e.getMessage()
+          + "}}");
     }
     return text;
   }
@@ -121,12 +116,10 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
   URL getActualURL(final String artist, final String title) {
     try {
       String queryString = getQueryURLTemplate();
-
-      queryString = queryString.replace(Const.PATTERN_ARTIST, (artist != null) ? NetworkUtils
-          .encodeString(artist) : "");
-      queryString = queryString.replace(Const.PATTERN_TRACKNAME, (title != null) ? NetworkUtils
-          .encodeString(title) : "");
-
+      queryString = queryString.replace(Const.PATTERN_ARTIST,
+          (artist != null) ? NetworkUtils.encodeString(artist) : "");
+      queryString = queryString.replace(Const.PATTERN_TRACKNAME,
+          (title != null) ? NetworkUtils.encodeString(title) : "");
       return new URL(queryString);
     } catch (MalformedURLException e) {
       Log.error(e);
@@ -142,8 +135,8 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
    * corresponding URL) and a Web page (this is this URL that is returned from
    * this method).
    * 
-   * @param artist DOCUMENT_ME
-   * @param title DOCUMENT_ME
+   * @param artist 
+   * @param title 
    * 
    * @return the Web URL or null if a problem occurred
    */
@@ -152,8 +145,8 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
   /**
    * Gets the lyrics.
    * 
-   * @param artist DOCUMENT_ME
-   * @param title DOCUMENT_ME
+   * @param artist 
+   * @param title 
    * 
    * @return the lyrics
    */
@@ -184,5 +177,4 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
     Track track = audioFile.getTrack();
     return getWebURL(track.getArtist().getName2(), track.getName()).toString();
   }
-
 }

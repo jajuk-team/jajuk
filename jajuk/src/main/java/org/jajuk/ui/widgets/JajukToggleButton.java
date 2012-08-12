@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.widgets;
 
@@ -31,14 +31,11 @@ import javax.swing.border.Border;
  * A Jajuk button with two states.
  */
 public class JajukToggleButton extends JajukButton {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** The Constant PRESSED_BORDER.  DOCUMENT_ME */
+  /** The Constant PRESSED_BORDER.   */
   private static final Border PRESSED_BORDER = BorderFactory.createLoweredBevelBorder();
-
-  /** The Constant UNPRESSED_BORDER.  DOCUMENT_ME */
+  /** The Constant UNPRESSED_BORDER.   */
   private static final Border UNPRESSED_BORDER = BorderFactory.createRaisedBevelBorder();
 
   /**
@@ -51,7 +48,7 @@ public class JajukToggleButton extends JajukButton {
   /**
    * Instantiates a new jajuk toggle button.
    * 
-   * @param selected DOCUMENT_ME
+   * @param selected 
    */
   public JajukToggleButton(boolean selected) {
     this(null, null, selected);
@@ -60,7 +57,7 @@ public class JajukToggleButton extends JajukButton {
   /**
    * Instantiates a new jajuk toggle button.
    * 
-   * @param icon DOCUMENT_ME
+   * @param icon 
    */
   public JajukToggleButton(Icon icon) {
     this(icon, false);
@@ -69,8 +66,8 @@ public class JajukToggleButton extends JajukButton {
   /**
    * Instantiates a new jajuk toggle button.
    * 
-   * @param icon DOCUMENT_ME
-   * @param selected DOCUMENT_ME
+   * @param icon 
+   * @param selected 
    */
   public JajukToggleButton(Icon icon, boolean selected) {
     this(null, icon, selected);
@@ -79,7 +76,7 @@ public class JajukToggleButton extends JajukButton {
   /**
    * Instantiates a new jajuk toggle button.
    * 
-   * @param text DOCUMENT_ME
+   * @param text 
    */
   public JajukToggleButton(String text) {
     this(text, false);
@@ -88,8 +85,8 @@ public class JajukToggleButton extends JajukButton {
   /**
    * Instantiates a new jajuk toggle button.
    * 
-   * @param text DOCUMENT_ME
-   * @param selected DOCUMENT_ME
+   * @param text 
+   * @param selected 
    */
   public JajukToggleButton(String text, boolean selected) {
     this(text, null, selected);
@@ -98,7 +95,7 @@ public class JajukToggleButton extends JajukButton {
   /**
    * Instantiates a new jajuk toggle button.
    * 
-   * @param a DOCUMENT_ME
+   * @param a 
    */
   public JajukToggleButton(Action a) {
     this(a, false);
@@ -107,8 +104,8 @@ public class JajukToggleButton extends JajukButton {
   /**
    * Instantiates a new jajuk toggle button.
    * 
-   * @param a DOCUMENT_ME
-   * @param selected DOCUMENT_ME
+   * @param a 
+   * @param selected 
    */
   public JajukToggleButton(Action a, boolean selected) {
     super(a);
@@ -118,8 +115,8 @@ public class JajukToggleButton extends JajukButton {
   /**
    * Instantiates a new jajuk toggle button.
    * 
-   * @param text DOCUMENT_ME
-   * @param icon DOCUMENT_ME
+   * @param text 
+   * @param icon 
    */
   public JajukToggleButton(String text, Icon icon) {
     this(text, icon, false);
@@ -128,9 +125,9 @@ public class JajukToggleButton extends JajukButton {
   /**
    * Instantiates a new jajuk toggle button.
    * 
-   * @param text DOCUMENT_ME
-   * @param icon DOCUMENT_ME
-   * @param selected DOCUMENT_ME
+   * @param text 
+   * @param icon 
+   * @param selected 
    */
   public JajukToggleButton(String text, Icon icon, boolean selected) {
     super(text, icon);
@@ -154,5 +151,4 @@ public class JajukToggleButton extends JajukButton {
     setSelected(!isSelected());
     super.fireActionPerformed(event);
   }
-
 }

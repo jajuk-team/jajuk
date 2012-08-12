@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.base;
 
@@ -33,12 +33,11 @@ import org.jajuk.util.Messages;
  * Logical item.
  */
 public class Artist extends LogicalItem implements Comparable<Artist> {
-
   /**
    * Artist constructor.
    *
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
+   * @param sId 
+   * @param sName 
    */
   Artist(String sId, String sName) {
     super(sId, sName);
@@ -50,7 +49,7 @@ public class Artist extends LogicalItem implements Comparable<Artist> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  public String getLabel() {
+  public String getXMLTag() {
     return XML_ARTIST;
   }
 
@@ -69,7 +68,7 @@ public class Artist extends LogicalItem implements Comparable<Artist> {
   /**
    * Alphabetical comparator used to display ordered lists.
    * 
-   * @param otherItem DOCUMENT_ME
+   * @param otherItem 
    * 
    * @return comparison result
    */
@@ -79,7 +78,6 @@ public class Artist extends LogicalItem implements Comparable<Artist> {
     if (otherItem == null) {
       return 1;
     }
-
     // compare using name and id to differentiate unknown items
     StringBuilder current = new StringBuilder(getName2());
     current.append(getID());
@@ -107,13 +105,11 @@ public class Artist extends LogicalItem implements Comparable<Artist> {
         || Messages.getString(UNKNOWN_ARTIST).equalsIgnoreCase(getName());
   }
 
-  /**
-   * Get item description.
-   * 
-   * @return the desc
+  /* (non-Javadoc)
+   * @see org.jajuk.base.Item#getTitle()
    */
   @Override
-  public String getDesc() {
+  public String getTitle() {
     return Messages.getString("Item_Artist") + " : " + getName2();
   }
 

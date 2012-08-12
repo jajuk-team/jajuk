@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.util;
 
@@ -27,10 +27,9 @@ import org.jajuk.JajukTestCase;
 import org.jajuk.base.Item;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestFilter extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -41,7 +40,6 @@ public class TestFilter extends JajukTestCase {
     Filter filter = new Filter("test", "test", true, false);
     assertTrue(filter.isHuman());
     assertFalse(filter.isExact());
-
     filter = new Filter("test", "test", false, true);
     assertFalse(filter.isHuman());
     assertTrue(filter.isExact());
@@ -71,26 +69,19 @@ public class TestFilter extends JajukTestCase {
    */
   public final void testFilterItems() {
     // works with empty filter
-    Filter.filterItems(null, null);
-
+    assertNull(Filter.filterItems(null, null, Item.class));
     // returns with empty expression
     Filter filter = new Filter("any", null, true, false);
-    Filter.filterItems(null, filter);
-
+    assertNull(Filter.filterItems(null, filter, Item.class));
     List<Item> list = new ArrayList<Item>();
-
     // try to trigger a regex error
     filter = new Filter("any", "asdfas(sasdfsa", true, false);
-    Filter.filterItems(list, filter);
-
+    list = Filter.filterItems(list, filter, Item.class);
     // works with useful filter
     filter = new Filter("any", "test", true, false);
-    Filter.filterItems(list, filter);
-
+    list = Filter.filterItems(list, filter, Item.class);
     filter = new Filter("something", "test", true, false);
-    Filter.filterItems(list, filter);
-
+    list = Filter.filterItems(list, filter, Item.class);
     // TODO: more sophisticated testing is missing here
   }
-
 }

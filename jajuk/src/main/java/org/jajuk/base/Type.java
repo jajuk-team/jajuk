@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.base;
 
@@ -34,13 +34,10 @@ import org.jajuk.util.log.Log;
  * Music type.
  */
 public class Type extends PhysicalItem implements Comparable<Type> {
-
   /** Type extension ex:mp3,ogg. */
   private final String sExtension;
-
   /** Player impl. */
   private final Class<ITagImpl> cTagImpl;
-
   /** Player class. */
   private final Class<IPlayerImpl> cPlayerImpl;
 
@@ -50,8 +47,8 @@ public class Type extends PhysicalItem implements Comparable<Type> {
    * @param sId type id if given
    * @param sName type name
    * @param sExtension type file extension (.mp3...)
-   * @param cPlayerImpl DOCUMENT_ME
-   * @param cTagImpl DOCUMENT_ME
+   * @param cPlayerImpl 
+   * @param cTagImpl 
    */
   Type(final String sId, final String sName, final String sExtension,
       final Class<IPlayerImpl> cPlayerImpl, final Class<ITagImpl> cTagImpl) {
@@ -78,13 +75,11 @@ public class Type extends PhysicalItem implements Comparable<Type> {
     return toString().compareTo(other.toString());
   }
 
-  /**
-   * Get item description.
-   * 
-   * @return the desc
+  /* (non-Javadoc)
+   * @see org.jajuk.base.Item#getTitle()
    */
   @Override
-  public String getDesc() {
+  public String getTitle() {
     return Messages.getString("Type") + " : " + getName();
   }
 
@@ -113,7 +108,7 @@ public class Type extends PhysicalItem implements Comparable<Type> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  public final String getLabel() {
+  public final String getXMLTag() {
     return XML_TYPE;
   }
 
@@ -137,12 +132,14 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 
   /**
    * Gets the tag impl.
-   * 
+   *
    * @return Returns the tagImpl.
    */
   public ITagImpl getTagImpl() {
     try {
       if (cTagImpl == null) {
+        Log.warn("Did not have a tagging implementation for Type: '" + getID() + "/" + getName()
+            + "'");
         return null;
       }
       return cTagImpl.newInstance();
@@ -171,11 +168,9 @@ public class Type extends PhysicalItem implements Comparable<Type> {
    */
   public static String[] getExtensionsFromTypes(final List<Type> types) {
     String[] extensions = {};
-
     if (types != null) {
       final int typesSize = types.size();
       final Type[] typesArray = types.toArray(new Type[typesSize]);
-
       extensions = new String[typesSize];
       for (int i = 0; i < typesSize; i++) {
         extensions[i] = typesArray[i].getExtension();
@@ -192,5 +187,4 @@ public class Type extends PhysicalItem implements Comparable<Type> {
   public boolean isVideo() {
     return Messages.getString(Const.TYPE_VIDEO).equals(getName());
   }
-
 }

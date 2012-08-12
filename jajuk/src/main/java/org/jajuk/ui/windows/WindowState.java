@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.windows;
 
@@ -24,17 +24,10 @@ package org.jajuk.ui.windows;
  * Possible states for a Jajuk window.
  */
 public enum WindowState {
-
   // Not yet build
-  /** DOCUMENT_ME. */
   NOT_BUILT,
-
   // Build but not yet displayed
-  /** DOCUMENT_ME. */
   BUILT_NOT_DISPLAYED,
-
   // Build and displayed
-  /** DOCUMENT_ME. */
   BUILT_DISPLAYED,
-
 }

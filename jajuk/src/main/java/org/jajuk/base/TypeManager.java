@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.base;
 
@@ -29,6 +29,7 @@ import java.util.Map;
 
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.tags.ITagImpl;
+import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.ReadOnlyIterator;
@@ -39,40 +40,28 @@ import org.jajuk.util.UtilSystem;
  * <p>
  */
 public final class TypeManager extends ItemManager {
-
   /** The Constant ICON_16X16_VIDEO for the supported media types. */
   private static final String ICON_16X16_VIDEO = "icons/16x16/type_video_16x16.png";
-
   /** The Constant ICONS_16X16_TYPE_APE for the supported media types. */
   private static final String ICONS_16X16_TYPE_APE = "icons/16x16/type_ape_16x16.png";
-
   /** The Constant ICONS_16X16_TYPE_MP2 for the supported media types. */
   private static final String ICONS_16X16_TYPE_MP2 = "icons/16x16/type_mp2_16x16.png";
-
   /** The Constant ICONS_16X16_TYPE_AAC for the supported media types. */
   private static final String ICONS_16X16_TYPE_AAC = "icons/16x16/type_aac_16x16.png";
-
   /** The Constant ICONS_16X16_TYPE_WMA for the supported media types. */
   private static final String ICONS_16X16_TYPE_WMA = "icons/16x16/type_wma_16x16.png";
-
   /** The Constant ICONS_16X16_TYPE_FLAC for the supported media types. */
   private static final String ICONS_16X16_TYPE_FLAC = "icons/16x16/type_flac_16x16.png";
-
   /** The Constant ICONS_16X16_TYPE_RAM for the supported media types. */
   private static final String ICONS_16X16_TYPE_RAM = "icons/16x16/type_ram_16x16.png";
-
   /** The Constant ICONS_16X16_TYPE_OGG for the supported media types. */
   private static final String ICONS_16X16_TYPE_OGG = "icons/16x16/type_ogg_16x16.png";
-
   /** The Constant ICONS_16X16_TYPE_WAV for the supported media types. */
   private static final String ICONS_16X16_TYPE_WAV = "icons/16x16/type_wav_16x16.png";
-
   /** The Constant ICONS_16X16_TYPE_MP3 for the supported media types. */
   private static final String ICONS_16X16_TYPE_MP3 = "icons/16x16/type_mp3_16x16.png";
-
   /** extensions->types. */
   private final Map<String, Type> hmSupportedTypes = new HashMap<String, Type>(10);
-
   /** Self instance. */
   private static TypeManager singleton = new TypeManager();
 
@@ -142,7 +131,6 @@ public final class TypeManager extends ItemManager {
       // if the type is already in memory, use it
       return hmSupportedTypes.get(sExtension);
     }
-
     type = new Type(sId, sName, sExtension, (Class<IPlayerImpl>) cPlayerImpl,
         (Class<ITagImpl>) cTagImpl);
     registerItem(type);
@@ -198,7 +186,6 @@ public final class TypeManager extends ItemManager {
     if (hmSupportedTypes.isEmpty()) {
       return "";
     }
-
     StringBuilder sb = new StringBuilder();
     Iterator<String> it = hmSupportedTypes.keySet().iterator();
     while (it.hasNext()) {
@@ -215,7 +202,7 @@ public final class TypeManager extends ItemManager {
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
-  public String getLabel() {
+  public String getXMLTag() {
     return Const.XML_TYPES;
   }
 
@@ -226,7 +213,7 @@ public final class TypeManager extends ItemManager {
    * 
    * @return item
    */
-  public Type getTypeByID(String sID) {
+  Type getTypeByID(String sID) {
     return (Type) getItemByID(sID);
   }
 
@@ -304,9 +291,9 @@ public final class TypeManager extends ItemManager {
    * Note that we use explicite strings for icon location. It's to avoid loading
    * all icons at startup, we do it asynchronously to accelerate startup
    * </p>
-   * 
+   *
    * @throws ClassNotFoundException the class not found exception
-   * @throws Exception    */
+   */
   public static void registerTypesMplayerAvailable() throws ClassNotFoundException {
     // mp3
     Type type = TypeManager.getInstance().registerType(Messages.getString("Type.mp3"),
@@ -323,6 +310,12 @@ public final class TypeManager extends ItemManager {
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, false);
     // Ogg vorbis
     type = TypeManager.getInstance().registerType(Messages.getString("Type.ogg"), Const.EXT_OGG,
+        Class.forName(Const.PLAYER_IMPL_MPLAYER), Class.forName(Const.TAG_IMPL_JAUDIOTAGGER));
+    type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
+    type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, true);
+    type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICONS_16X16_TYPE_OGG)
+        .toExternalForm());
+    type = TypeManager.getInstance().registerType(Messages.getString("Type.ogg"), Const.EXT_OGA,
         Class.forName(Const.PLAYER_IMPL_MPLAYER), Class.forName(Const.TAG_IMPL_JAUDIOTAGGER));
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, true);
@@ -395,34 +388,33 @@ public final class TypeManager extends ItemManager {
         .toExternalForm());
     // mp2
     type = TypeManager.getInstance().registerType(Messages.getString("Type.mp2"), Const.EXT_MP2,
-        Class.forName(Const.PLAYER_IMPL_MPLAYER), Class.forName(Const.TAG_IMPL_NO_TAGS));
+        Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, true);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICONS_16X16_TYPE_MP2)
         .toExternalForm());
     // web radios
     type = TypeManager.getInstance().registerType(Messages.getString("Type.radio"),
-        Const.EXT_RADIO, Class.forName(Const.PLAYER_IMPL_WEBRADIOS),
-        Class.forName(Const.TAG_IMPL_NO_TAGS));
+        Const.EXT_RADIO, Class.forName(Const.PLAYER_IMPL_WEBRADIOS), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, true);
     // APE
     type = TypeManager.getInstance().registerType(Messages.getString("Type.ape"), Const.EXT_APE,
-        Class.forName(Const.PLAYER_IMPL_MPLAYER), Class.forName(Const.TAG_IMPL_NO_TAGS));
+        Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICONS_16X16_TYPE_APE)
         .toExternalForm());
     // MAC = APE
     type = TypeManager.getInstance().registerType(Messages.getString("Type.mac"), Const.EXT_MAC,
-        Class.forName(Const.PLAYER_IMPL_MPLAYER), Class.forName(Const.TAG_IMPL_NO_TAGS));
+        Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICONS_16X16_TYPE_APE)
         .toExternalForm());
     // MPC
     type = TypeManager.getInstance().registerType(Messages.getString("Type.mpc"), Const.EXT_MPC,
-        Class.forName(Const.PLAYER_IMPL_MPLAYER), Class.forName(Const.TAG_IMPL_NO_TAGS));
+        Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     // Change the MPC icon here if you find one
@@ -430,7 +422,7 @@ public final class TypeManager extends ItemManager {
         .toExternalForm());
     // MP+
     type = TypeManager.getInstance().registerType(Messages.getString("Type.mpc"), Const.EXT_MPPLUS,
-        Class.forName(Const.PLAYER_IMPL_MPLAYER), Class.forName(Const.TAG_IMPL_NO_TAGS));
+        Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     // Change the MPC icon here if you find one
@@ -438,7 +430,7 @@ public final class TypeManager extends ItemManager {
         .toExternalForm());
     // MPP
     type = TypeManager.getInstance().registerType(Messages.getString("Type.mpc"), Const.EXT_MPP,
-        Class.forName(Const.PLAYER_IMPL_MPLAYER), Class.forName(Const.TAG_IMPL_NO_TAGS));
+        Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     // Change the MPC icon here if you find one
@@ -446,26 +438,30 @@ public final class TypeManager extends ItemManager {
         .toExternalForm());
     // WavPack
     type = TypeManager.getInstance().registerType(Messages.getString("Type.wavpack"), Const.EXT_WV,
-        Class.forName(Const.PLAYER_IMPL_MPLAYER), Class.forName(Const.TAG_IMPL_NO_TAGS));
+        Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     // Official logo contains text and doesn't display well in 16x16, take wav
     // logo
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICONS_16X16_TYPE_WAV)
         .toExternalForm());
-
     // -- VIDEO --
+    if (Conf.getBoolean(Const.CONF_SHOW_VIDEOS)) {
+      registerVideoTypes();
+    }
+  }
+
+  private static void registerVideoTypes() throws ClassNotFoundException {
+    Type type;
     // AVI
     type = TypeManager.getInstance().registerType(Messages.getString(Const.TYPE_VIDEO),
-        Const.EXT_AVI, Class.forName(Const.PLAYER_IMPL_MPLAYER),
-        Class.forName(Const.TAG_IMPL_NO_TAGS));
+        Const.EXT_AVI, Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICON_16X16_VIDEO).toExternalForm());
     // mpg
     type = TypeManager.getInstance().registerType(Messages.getString(Const.TYPE_VIDEO),
-        Const.EXT_MPG, Class.forName(Const.PLAYER_IMPL_MPLAYER),
-        Class.forName(Const.TAG_IMPL_NO_TAGS));
+        Const.EXT_MPG, Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICON_16X16_VIDEO).toExternalForm());
@@ -478,43 +474,37 @@ public final class TypeManager extends ItemManager {
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICON_16X16_VIDEO).toExternalForm());
     // mpeg
     type = TypeManager.getInstance().registerType(Messages.getString(Const.TYPE_VIDEO),
-        Const.EXT_MPEG, Class.forName(Const.PLAYER_IMPL_MPLAYER),
-        Class.forName(Const.TAG_IMPL_NO_TAGS));
+        Const.EXT_MPEG, Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICON_16X16_VIDEO).toExternalForm());
     // mkv
     type = TypeManager.getInstance().registerType(Messages.getString(Const.TYPE_VIDEO),
-        Const.EXT_MKV, Class.forName(Const.PLAYER_IMPL_MPLAYER),
-        Class.forName(Const.TAG_IMPL_NO_TAGS));
+        Const.EXT_MKV, Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICON_16X16_VIDEO).toExternalForm());
     // asf
     type = TypeManager.getInstance().registerType(Messages.getString(Const.TYPE_VIDEO),
-        Const.EXT_ASF, Class.forName(Const.PLAYER_IMPL_MPLAYER),
-        Class.forName(Const.TAG_IMPL_NO_TAGS));
+        Const.EXT_ASF, Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICON_16X16_VIDEO).toExternalForm());
     // wmv
     type = TypeManager.getInstance().registerType(Messages.getString(Const.TYPE_VIDEO),
-        Const.EXT_WMV, Class.forName(Const.PLAYER_IMPL_MPLAYER),
-        Class.forName(Const.TAG_IMPL_NO_TAGS));
+        Const.EXT_WMV, Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICON_16X16_VIDEO).toExternalForm());
     // mov
     type = TypeManager.getInstance().registerType(Messages.getString(Const.TYPE_VIDEO),
-        Const.EXT_MOV, Class.forName(Const.PLAYER_IMPL_MPLAYER),
-        Class.forName(Const.TAG_IMPL_NO_TAGS));
+        Const.EXT_MOV, Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICON_16X16_VIDEO).toExternalForm());
     // ogm
     type = TypeManager.getInstance().registerType(Messages.getString(Const.TYPE_VIDEO),
-        Const.EXT_OGM, Class.forName(Const.PLAYER_IMPL_MPLAYER),
-        Class.forName(Const.TAG_IMPL_NO_TAGS));
+        Const.EXT_OGM, Class.forName(Const.PLAYER_IMPL_MPLAYER), null);
     type.setProperty(Const.XML_TYPE_IS_MUSIC, true);
     type.setProperty(Const.XML_TYPE_SEEK_SUPPORTED, Const.TRUE);
     type.setProperty(Const.XML_TYPE_ICON, UtilSystem.getResource(ICON_16X16_VIDEO).toExternalForm());

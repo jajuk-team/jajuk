@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.substance;
 
 import java.awt.Insets;
@@ -35,7 +34,6 @@ import javax.swing.AbstractButton;
  * The Class CircleButtonShaper.
  */
 public class CircleButtonShaper extends ButtonShaper {
-
   /* (non-Javadoc)
    * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getDisplayName()
    */
@@ -51,11 +49,8 @@ public class CircleButtonShaper extends ButtonShaper {
   public Shape getButtonOutline(AbstractButton button, Insets insets, int w, int h, boolean isInner) {
     int width = w - 1;
     int height = h - 1;
-
     Shape shape = new Ellipse2D.Double(0, 0, width, height);
     GeneralPath generalPath = new GeneralPath(shape);
-
     return generalPath;
   }
-
 }

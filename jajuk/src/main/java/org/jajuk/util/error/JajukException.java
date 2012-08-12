@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.util.error;
 
@@ -26,17 +26,15 @@ import org.jajuk.util.Messages;
  * JajukException.
  */
 public class JajukException extends Exception {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
   /** Error code. */
   private final int code;
 
   /**
    * JajukException constructor.
    * 
-   * @param code DOCUMENT_ME
+   * @param code 
    */
   public JajukException(int code) {
     this(code, null, null);
@@ -44,9 +42,9 @@ public class JajukException extends Exception {
 
   /**
    * JajukException constructor.
-   * 
+   *
+   * @param code 
    * @param pCause Original exception of the error.
-   * @param code DOCUMENT_ME
    */
   public JajukException(int code, Throwable pCause) {
     this(code, null, pCause);
@@ -85,5 +83,4 @@ public class JajukException extends Exception {
         + pMessage : Messages.getErrorMessage(code));
     this.code = code;
   }
-
 }

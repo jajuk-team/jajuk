@@ -20,7 +20,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.lastfm;
 
 import java.text.ParseException;
@@ -44,7 +43,6 @@ import org.jajuk.util.UtilString;
  * The Class LastFmAlbum.
  */
 public class LastFmAlbum implements AlbumInfo {
-
   /** The Constant DF. */
   private static final ThreadLocal<SimpleDateFormat> DF = new ThreadLocal<SimpleDateFormat>() {
     @Override
@@ -52,31 +50,22 @@ public class LastFmAlbum implements AlbumInfo {
       return new SimpleDateFormat("d MMM yyyy, HH:mm", Locale.US);
     }
   };
-
   /** The artist. */
   private String artist;
-
   /** The title. */
   private String title;
-
   /** The url. */
   private String url;
-
   /** The release date string. */
   private String releaseDateString;
-
   /** The big cover url. */
   private String bigCoverURL;
-
   /** The cover url. */
   private String coverURL;
-
   /** The small cover url. */
   private String smallCoverURL;
-
   /** The tracks. */
   private List<TrackInfo> tracks;
-
   // Used by renderers
   /** The cover. */
   private ImageIcon cover;
@@ -84,14 +73,13 @@ public class LastFmAlbum implements AlbumInfo {
   /**
    * Gets the album.
    * 
-   * @param a DOCUMENT_ME
-   * @param pl DOCUMENT_ME
+   * @param a 
+   * @param pl 
    * 
    * @return the album
    */
   public static AlbumInfo getAlbum(Album a, Playlist pl) {
     LastFmAlbum album = new LastFmAlbum();
-
     album.artist = a.getArtist();
     album.title = a.getName();
     album.url = a.getUrl();
@@ -99,31 +87,27 @@ public class LastFmAlbum implements AlbumInfo {
     album.bigCoverURL = a.getImageURL(ImageSize.LARGE);
     album.coverURL = a.getImageURL(ImageSize.ORIGINAL);
     album.smallCoverURL = a.getImageURL(ImageSize.SMALL);
-
     if (pl != null) {
       List<TrackInfo> ts = new ArrayList<TrackInfo>();
       for (Track t : pl.getTracks()) {
         ts.add(LastFmTrack.getTrack(t));
       }
-
       // Process track list: if all tracks have a common string between (), [],
       // {} as "(Live)" then it's removed from all of them
       // In this way track names are more accurate
       if (!ts.isEmpty()) {
         handleTracks(ts);
       }
-
       album.tracks = ts;
     }
-
     return album;
   }
 
   /**
    * Handle tracks.
-   * DOCUMENT_ME
    * 
-   * @param ts DOCUMENT_ME
+   * 
+   * @param ts 
    */
   private static void handleTracks(List<TrackInfo> ts) {
     String firstTrackTitle = ts.get(0).getTitle();
@@ -132,7 +116,6 @@ public class LastFmAlbum implements AlbumInfo {
         .getTextBetweenChars(firstTrackTitle, '(', ')');
     tokensOfFirstTrackTitle.addAll(UtilString.getTextBetweenChars(firstTrackTitle, '[', ']'));
     tokensOfFirstTrackTitle.addAll(UtilString.getTextBetweenChars(firstTrackTitle, '{', '}'));
-
     // Check what tokens are present in all track titles
     List<String> commonTokens = new ArrayList<String>();
     for (String token : tokensOfFirstTrackTitle) {
@@ -142,12 +125,10 @@ public class LastFmAlbum implements AlbumInfo {
           common = false;
         }
       }
-
       if (common) {
         commonTokens.add(token);
       }
     }
-
     // Then remove common tokens from all titles
     for (TrackInfo ti : ts) {
       for (String token : commonTokens) {
@@ -180,7 +161,6 @@ public class LastFmAlbum implements AlbumInfo {
     if (!url.contains("/")) {
       return url;
     }
-
     return url.substring(0, url.lastIndexOf('/'));
   }
 
@@ -224,7 +204,6 @@ public class LastFmAlbum implements AlbumInfo {
     if (releaseDateString == null) {
       return null;
     }
-
     try {
       return DF.get().parse(releaseDateString);
     } catch (ParseException e) {

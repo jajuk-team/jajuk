@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.util.filters;
 
@@ -32,7 +32,6 @@ import org.jajuk.util.UtilSystem;
  * Playlist filter.
  */
 public final class PlaylistFilter extends JajukFileFilter {
-
   /** Self instance. */
   private static PlaylistFilter self = new PlaylistFilter();
 
@@ -65,7 +64,6 @@ public final class PlaylistFilter extends JajukFileFilter {
     } else {
       final String extension = UtilSystem.getExtension(f);
       final TypeManager mgr = TypeManager.getInstance();
-
       // check extension is known
       if (mgr.isExtensionSupported(extension)) {
         // check it is a playlist

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.base;
 
@@ -40,26 +40,23 @@ import org.jajuk.util.log.Log;
  * <p>
  * Physical item.
  */
-public class File extends PhysicalItem implements Comparable<File>, Const {
-
+public class File extends PhysicalItem implements Comparable<File> {
   /** Parent directory. */
-  protected final Directory directory;
-
+  private final Directory directory;
   /** Associated track. */
-  protected Track track;
-
+  private Track track;
   /** IO file associated with this file. */
   private java.io.File fio;
 
   /**
-   * File instanciation.
-   * 
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param directory DOCUMENT_ME
-   * @param track DOCUMENT_ME
-   * @param lSize DOCUMENT_ME
-   * @param lQuality DOCUMENT_ME
+   * File instantiation.
+   *
+   * @param sId 
+   * @param sName 
+   * @param directory 
+   * @param track 
+   * @param lSize 
+   * @param lQuality 
    */
   File(String sId, String sName, Directory directory, Track track, long lSize, long lQuality) {
     super(sId, sName);
@@ -73,17 +70,17 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  public final String getLabel() {
+  public final String getXMLTag() {
     return XML_FILE;
   }
 
   /**
    * toString method.
-   * 
+   *
    * @return the string
    */
   @Override
@@ -94,10 +91,10 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /**
    * String representation as displayed in a search result.
-   * 
+   *
    * @return the string
    */
-  public String toStringSearch() {
+  String toStringSearch() {
     StringBuilder sb = new StringBuilder(track.getGenre().getName2()).append('/')
         .append(track.getArtist().getName2()).append('/').append(track.getAlbum().getName2())
         .append('/').append(track.getName()).append(" [").append(directory.getName()).append('/')
@@ -107,9 +104,9 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /**
    * Return true is the specified directory is an ancestor for this file.
-   * 
-   * @param directory DOCUMENT_ME
-   * 
+   *
+   * @param directory 
+   *
    * @return true, if checks for ancestor
    */
   public boolean hasAncestor(Directory directory) {
@@ -128,7 +125,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /**
    * Gets the size.
-   * 
+   *
    * @return the size
    */
   public long getSize() {
@@ -137,7 +134,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /**
    * Gets the directory.
-   * 
+   *
    * @return the directory
    */
   public Directory getDirectory() {
@@ -146,7 +143,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /**
    * Gets the device.
-   * 
+   *
    * @return associated device
    */
   public Device getDevice() {
@@ -155,7 +152,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /**
    * Gets the type.
-   * 
+   *
    * @return associated type
    */
   public Type getType() {
@@ -168,7 +165,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /**
    * Gets the quality.
-   * 
+   *
    * @return the quality
    */
   public long getQuality() {
@@ -177,7 +174,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /**
    * Gets the track.
-   * 
+   *
    * @return the track
    */
   public Track getTrack() {
@@ -186,7 +183,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /**
    * Return absolute file path name.
-   * 
+   *
    * @return String
    */
   public String getAbsolutePath() {
@@ -202,9 +199,9 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
    * Sort ignoring cases
    * </p>
    * .
-   * 
-   * @param otherFile DOCUMENT_ME
-   * 
+   *
+   * @param otherFile 
+   *
    * @return comparison result
    */
   @Override
@@ -212,7 +209,6 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     // Begin by comparing file parent directory for performances
     if (directory.equals(otherFile.getDirectory())) {
       // If both files are in the same directory, sort by track order
-
       int iOrder = (int) getTrack().getOrder();
       int iOrderOther = (int) otherFile.getTrack().getOrder();
       if (iOrder != iOrderOther) {
@@ -237,7 +233,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /**
    * Return true if the file can be accessed right now.
-   * 
+   *
    * @return true the file can be accessed right now
    */
   public boolean isReady() {
@@ -246,7 +242,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /**
    * Return true if the file is currently refreshed or synchronized.
-   * 
+   *
    * @return true if the file is currently refreshed or synchronized
    */
   public boolean isScanned() {
@@ -258,7 +254,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /**
    * Return Io file associated with this file.
-   * 
+   *
    * @return the FIO
    */
   public java.io.File getFIO() {
@@ -270,7 +266,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /**
    * Return whether this item should be hidden with hide option.
-   * 
+   *
    * @return whether this item should be hidden with hide option
    */
   public boolean shouldBeHidden() {
@@ -283,7 +279,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /**
    * Sets the track.
-   * 
+   *
    * @param track The track to set.
    */
   public void setTrack(Track track) {
@@ -298,19 +294,17 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     }
   }
 
-  /**
-   * Get item description.
-   * 
-   * @return the desc
+  /* (non-Javadoc)
+   * @see org.jajuk.base.Item#getTitle()
    */
   @Override
-  public String getDesc() {
+  public String getTitle() {
     return Messages.getString("Item_File") + " : " + getName();
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
    */
   @Override
@@ -354,7 +348,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /**
    * Gets the any.
-   * 
+   *
    * @return a human representation of all concatenated properties
    */
   @Override
@@ -373,7 +367,6 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     sb.append(lTrack.getDuration());
     sb.append(lTrack.getRate());
     sb.append(lTrack.getValue(Const.XML_TRACK_COMMENT));
-    sb.append(lTrack.getAlbumArtist().getName2());
     AlbumArtist albumArtist = lTrack.getAlbumArtist();
     if (albumArtist != null) {
       sb.append(albumArtist.getName2());
@@ -391,7 +384,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#getIconRepresentation()
    */
   @Override
@@ -406,7 +399,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     URL iconUrl = null;
     String sIcon;
     if (type != null) {
-      sIcon = (String) type.getProperties().get(Const.XML_TYPE_ICON);
+      sIcon = (String) type.getValue(Const.XML_TYPE_ICON);
       try {
         iconUrl = new URL(sIcon);
       } catch (MalformedURLException e) {
@@ -423,9 +416,10 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /**
    * Set name (useful for Windows because same object can have different cases).
-   * 
+   *
    * @param name Item name
    */
+  @Override
   protected void setName(String name) {
     setProperty(Const.XML_NAME, name);
     this.name = name;
@@ -433,7 +427,7 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
 
   /**
    * Gets the html format text.
-   * 
+   *
    * @return text to be displayed in the tray balloon and tooltip with HTML
    * formating that is used correctly under Linux
    */
@@ -459,5 +453,4 @@ public class File extends PhysicalItem implements Comparable<File>, Const {
     sOut += "</HTML>";
     return sOut;
   }
-
 }

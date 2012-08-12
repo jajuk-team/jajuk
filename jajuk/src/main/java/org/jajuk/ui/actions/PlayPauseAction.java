@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
@@ -29,14 +29,11 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class PlayPauseAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** DOCUMENT_ME. */
   private static boolean bAlreadyLaunching = false;
 
   /**
@@ -55,7 +52,6 @@ public class PlayPauseAction extends JajukAction {
   public void perform(ActionEvent evt) {
     // Note that we don't change here the label and icon, already done in
     // PlayerstateMediator
-
     if (QueueModel.isStopped()) {
       // We use here a flag to avoid launching the goTo() thread twice. In case
       // of playing error, this would create several looping threads trying to

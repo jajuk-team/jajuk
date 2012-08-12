@@ -20,7 +20,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.lastfm;
 
 import java.awt.Image;
@@ -32,22 +31,16 @@ import javax.swing.SwingUtilities;
  * The Class LastFmCoversRunnable.
  */
 public class LastFmCoversRunnable implements Runnable {
-
   /** The listener. */
   ContextListener listener;
-
   /** The service. */
   private LastFmService service;
-
   /** The albums. */
   private List<? extends AlbumInfo> albums;
-
   /** The interrupted. */
   private volatile boolean interrupted;
-
   /** The id. */
   long id;
-
   /** The audio file. */
   AudioObject audioObject;
 
@@ -58,7 +51,7 @@ public class LastFmCoversRunnable implements Runnable {
    * @param service the service
    * @param albums the albums
    * @param id the id
-   * @param audioObject DOCUMENT_ME
+   * @param audioObject 
    */
   public LastFmCoversRunnable(ContextListener listener, LastFmService service,
       List<? extends AlbumInfo> albums, long id, AudioObject audioObject) {
@@ -98,7 +91,6 @@ public class LastFmCoversRunnable implements Runnable {
         } else {
           img = null;
         }
-
         if (!interrupted) {
           SwingUtilities.invokeLater(new Runnable() {
             @Override

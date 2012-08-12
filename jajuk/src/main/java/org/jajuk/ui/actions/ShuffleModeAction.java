@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
@@ -35,10 +35,9 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class ShuffleModeAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -54,13 +53,12 @@ public class ShuffleModeAction extends JajukAction {
   /**
    * Invoked when an action occurs.
    * 
-   * @param evt DOCUMENT_ME
+   * @param evt 
    */
   @Override
   public void perform(ActionEvent evt) {
     boolean b = Conf.getBoolean(Const.CONF_STATE_SHUFFLE);
     Conf.setProperty(Const.CONF_STATE_SHUFFLE, Boolean.toString(!b));
-
     JajukJMenuBar.getInstance().setShuffleSelected(!b);
     CommandJPanel.getInstance().setRandomSelected(!b);
     if (!b) { // enabled button
@@ -70,6 +68,5 @@ public class ShuffleModeAction extends JajukAction {
     QueueModel.computesPlanned(true);
     // Refresh Queue View
     ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
-
   }
 }

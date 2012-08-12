@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.lyrics;
 
@@ -39,28 +39,22 @@ import org.jajuk.util.log.Log;
  * Lyrics unit tests.
  */
 public class TestLyrics extends JajukTestCase {
-
-  /** DOCUMENT_ME. */
-  private final File tmp = new File("test.tmp");
-  
-  /** The Constant ARTIST.  DOCUMENT_ME */
+  private File tmp = null;
+  /** The Constant ARTIST.   */
   private static final String ARTIST = "Massive Attack";
-  
-  /** The Constant TITLE.  DOCUMENT_ME */
+  /** The Constant TITLE.   */
   private static final String TITLE = "Dissolved Girl";
-  
-  /** The Constant TESTED_WORD.  DOCUMENT_ME */
+  /** The Constant TESTED_WORD.   */
   private static final String TESTED_WORD = "Day, yesterday";
-
   // LyricsFly put a delay of 1500 ms before we are allowed to query again, we
   // need to take that into account for some of the tests
-  /** The Constant FLY_DELAY.  DOCUMENT_ME */
+  /** The Constant FLY_DELAY.   */
   private static final long FLY_DELAY = 1500 + 200;
 
   // helper method to emma-coverage of the unused constructor
   /**
    * Test private constructor.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -76,14 +70,9 @@ public class TestLyrics extends JajukTestCase {
    */
   @Override
   public void setUp() throws IOException {
-    if (tmp.exists()) {
-      tmp.delete();
-    }
-
-    JUnitHelpers.createSessionDirectory();
-
     // to first cover this method while no providers are loaded yet
     LyricsService.getProviders();
+    tmp = JUnitHelpers.getFile("test.tmp", true).getFIO();
   }
 
   /**
@@ -99,17 +88,15 @@ public class TestLyrics extends JajukTestCase {
   /**
    * Test provider response to get lyrics (shared code).
    *
-   * @param provider DOCUMENT_ME
+   * @param provider 
    */
   private void testWebService(GenericWebLyricsProvider provider) {
     String lyrics = provider.getLyrics(ARTIST, TITLE);
     Log.debug("Resulting Lyrics(" + provider.getProviderHostname() + "): " + lyrics);
-
     if (provider.getProviderHostname().equals("api.lyricsfly.com") && lyrics == null) {
       Log.fatal("In Sonar this can happen, seems we do not have internet access there...");
       return;
     }
-
     assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics,
         StringUtils.isNotBlank(lyrics));
     assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics,
@@ -119,7 +106,7 @@ public class TestLyrics extends JajukTestCase {
   /**
    * Test provider web site url (shared code).
    *
-   * @param provider DOCUMENT_ME
+   * @param provider 
    * @throws IOException Signals that an I/O exception has occurred.
    */
   private void testWeb(GenericWebLyricsProvider provider) throws IOException {
@@ -131,11 +118,9 @@ public class TestLyrics extends JajukTestCase {
       Log.fatal("In Sonar this exception occurs, seems we do not have internet access there...");
       return;
     }
-
     assertTrue(tmp.exists());
     assertTrue(tmp.length() > 0);
   }
-  
 
   /**
    * Test LyricWiki provider response to get lyrics.
@@ -154,5 +139,4 @@ public class TestLyrics extends JajukTestCase {
     GenericWebLyricsProvider provider = new LyricWikiWebLyricsProvider();
     testWeb(provider);
   }
-
 }

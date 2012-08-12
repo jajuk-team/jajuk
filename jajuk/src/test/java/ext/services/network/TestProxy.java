@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package ext.services.network;
 
@@ -31,17 +31,12 @@ import org.jajuk.JajukTestCase;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestProxy extends JajukTestCase {
-  
-  /** The Constant PROXY_PORT.  DOCUMENT_ME */
+  /** The Constant PROXY_PORT.   */
   private static final int PROXY_PORT = 0; // auto-choose
-  
-  /** DOCUMENT_ME. */
   ServerSocket socket;
-
-  /** DOCUMENT_ME. */
   boolean bStop = false;
 
   /*
@@ -52,13 +47,11 @@ public class TestProxy extends JajukTestCase {
   @Override
   protected void setUp() throws Exception {
     socket = new ServerSocket(PROXY_PORT);
-
     Thread thread = new Thread("ProxySocketAcceptThread") {
       @Override
       public void run() {
         try {
           while (!bStop) {
-
             Socket sock = socket.accept();
             Log.debug("Accepted connection, sending back garbage and close socket...");
             sock.getOutputStream().write(1);
@@ -67,12 +60,10 @@ public class TestProxy extends JajukTestCase {
         } catch (IOException e) {
           Log.error(e);
         }
-
       }
     };
     thread.setDaemon(true); // to finish tests even if this is still running
     thread.start();
-
     super.setUp();
   }
 
@@ -85,7 +76,6 @@ public class TestProxy extends JajukTestCase {
   protected void tearDown() throws Exception {
     bStop = true;
     socket.close();
-
     super.tearDown();
   }
 

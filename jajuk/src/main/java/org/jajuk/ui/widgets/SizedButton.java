@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.widgets;
 
@@ -33,11 +33,8 @@ import org.jajuk.util.UtilGUI;
  * is called in constructor before we can do anything).
  */
 public class SizedButton extends JajukButton {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -3859493434696496345L;
-
-  /** DOCUMENT_ME. */
   private boolean showText = false;
 
   /**
@@ -52,8 +49,8 @@ public class SizedButton extends JajukButton {
   /**
    * Instantiates a new sized button.
    * 
-   * @param text DOCUMENT_ME
-   * @param icon DOCUMENT_ME
+   * @param text 
+   * @param icon 
    */
   public SizedButton(String text, Icon icon) {
     super(text, icon);
@@ -63,7 +60,7 @@ public class SizedButton extends JajukButton {
    * The Constructor.
    * 
    * @param action Action
-   * @param bText DOCUMENT_ME
+   * @param bText 
    */
   public SizedButton(Action action, boolean bText) {
     super(action);
@@ -111,5 +108,4 @@ public class SizedButton extends JajukButton {
   public int getH() {
     return 16;
   }
-
 }

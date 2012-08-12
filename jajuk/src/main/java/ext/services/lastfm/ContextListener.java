@@ -20,7 +20,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.lastfm;
 
 import java.awt.Image;
@@ -30,7 +29,6 @@ import java.util.List;
  * The listener interface for receiving context events.
  */
 public interface ContextListener {
-
   /**
    * Gets the albums.
    * 

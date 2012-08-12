@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.base;
 
 import org.jajuk.services.webradio.WebRadio;
@@ -27,44 +26,27 @@ import org.jajuk.services.webradio.WebRadio;
  * A search result, contains a file and a search description.
  */
 public class SearchResult implements Comparable<SearchResult> {
-
   /**
    * Result type *.
    */
   public enum SearchResultType {
-
-    /** DOCUMENT_ME. */
-    FILE,
-    
-    /** DOCUMENT_ME. */
-    WEBRADIO
+    FILE, WEBRADIO
   }
 
   /** The associated file. */
-  File file;
-
+  private File file;
   /** The associated web radio. */
-  WebRadio radio;
-
+  private WebRadio radio;
   /** Pre-calculated search string. */
-  String sResu;
+  private String sResu;
 
   /**
-   * Instantiates a new search result.
-   * 
-   * @param file DOCUMENT_ME
-   */
-  public SearchResult(File file) {
-    this(file, file.toStringSearch());
-  }
-
-  /**
-   * Instantiates a new search result.
-   * 
-   * @param file DOCUMENT_ME
-   * @param sResu DOCUMENT_ME
-   */
-  public SearchResult(File file, String sResu) {
+  * Instantiates a new search result.
+  * 
+  * @param file 
+  * @param sResu 
+  */
+  SearchResult(File file, String sResu) {
     this.file = file;
     this.sResu = sResu;
   }
@@ -72,8 +54,8 @@ public class SearchResult implements Comparable<SearchResult> {
   /**
    * Instantiates a new search result.
    * 
-   * @param radio DOCUMENT_ME
-   * @param sResu DOCUMENT_ME
+   * @param radio 
+   * @param sResu 
    */
   public SearchResult(WebRadio radio, String sResu) {
     this.radio = radio;
@@ -100,7 +82,6 @@ public class SearchResult implements Comparable<SearchResult> {
     if (sr == null) {
       return -1;
     }
-
     return sResu.compareToIgnoreCase(sr.getResu());
   }
 
@@ -143,5 +124,4 @@ public class SearchResult implements Comparable<SearchResult> {
   public String getResu() {
     return sResu;
   }
-
 }

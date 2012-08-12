@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.wizard;
 
 import java.awt.Dimension;
@@ -63,75 +62,43 @@ import org.jajuk.util.log.Log;
  * TODO : add validation on fields
  */
 public class AlarmClockDialog extends JajukJDialog implements ActionListener, ItemListener, Const {
-
   /** Constant for MigLayout hint. */
   private static final String LEFT_WRAP = "left,wrap";
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** DOCUMENT_ME. */
   private final JLabel jlChoice;
-
-  /** DOCUMENT_ME. */
   private final JCheckBox jcbTime;
-
-  /** DOCUMENT_ME. */
   private final JRadioButton jrbShuffle;
-
-  /** DOCUMENT_ME. */
   private final JRadioButton jrbBestof;
-
-  /** DOCUMENT_ME. */
   private final JRadioButton jrbNovelties;
-
-  /** DOCUMENT_ME. */
   private final JRadioButton jrbFile;
-
-  /** DOCUMENT_ME. */
   private final JTextField jtfHour;
-
-  /** DOCUMENT_ME. */
   private final JTextField jtfMinutes;
-
-  /** DOCUMENT_ME. */
   private final JTextField jtfSeconds;
-
-  /** DOCUMENT_ME. */
   private final JComboBox jcbAlarmAction;
-
-  /** DOCUMENT_ME. */
   private final SearchBox sbSearch;
-
-  /** DOCUMENT_ME. */
   private SearchResult sr;
-
-  /** DOCUMENT_ME. */
   private OKCancelPanel okCancelPanel;
 
   /**
    * Instantiates a new alarm clock dialog.
    */
   public AlarmClockDialog() {
-    super();
-
+    super(JajukMainWindow.getInstance(), true);
     jcbTime = new JCheckBox(Messages.getString("AlarmDialog.0"));
     jcbTime.addActionListener(this);
-
     jtfHour = new JTextField(2);
     jtfHour.setToolTipText(Messages.getString("AlarmDialog.1"));
     jtfMinutes = new JTextField(2);
     jtfMinutes.setToolTipText(Messages.getString("AlarmDialog.2"));
     jtfSeconds = new JTextField(2);
     jtfSeconds.setToolTipText(Messages.getString("AlarmDialog.3"));
-
     final JLabel jlAlarmAction = new JLabel(Messages.getString("AlarmDialog.4"));
     jcbAlarmAction = new JComboBox();
     jcbAlarmAction.addItem(Const.ALARM_START_ACTION);
     jcbAlarmAction.addItem(Const.ALARM_STOP_ACTION);
     jcbAlarmAction.setToolTipText(Messages.getString("AlarmDialog.5"));
     jcbAlarmAction.addActionListener(this);
-
     jlChoice = new JLabel(Messages.getString("ParameterView.9"));
     jrbShuffle = new JRadioButton(Messages.getString("ParameterView.14"));
     jrbShuffle.setToolTipText(Messages.getString("ParameterView.15"));
@@ -165,16 +132,13 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
     // disabled by default, is enabled only if jrbFile is enabled
     sbSearch.setEnabled(false);
     sbSearch.setToolTipText(Messages.getString("ParameterView.18"));
-
     final ButtonGroup bgChoices = new ButtonGroup();
     bgChoices.add(jrbShuffle);
     bgChoices.add(jrbBestof);
     bgChoices.add(jrbNovelties);
     bgChoices.add(jrbFile);
-
     jrbShuffle.setSelected(true);
     okCancelPanel = new OKCancelPanel(this);
-
     setLayout(new MigLayout("insets 5,gapy 15", "[grow][grow]"));
     add(jcbTime, "right");
     add(jtfHour, "left,split 5,width 30!");
@@ -191,10 +155,8 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
     add(jrbFile, "left");
     add(sbSearch, "left,wrap,grow");
     add(okCancelPanel, "right,span");
-
     // Reload on GUI saved values
     loadValues();
-
     setTitle(Messages.getString("AlarmClock.0"));
     setMinimumSize(new Dimension(250, 100));
     pack();
@@ -222,7 +184,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
   /**
    * Handle action.
    * 
-   * @param playAction DOCUMENT_ME
+   * @param playAction 
    */
   private void handleAction(boolean playAction) {
     jlChoice.setEnabled(playAction);
@@ -236,7 +198,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
   /**
    * Handle time checkbox.
    * 
-   * @param playAction DOCUMENT_ME
+   * @param playAction 
    */
   private void handleTimeCheckbox(boolean playAction) {
     // Enable/ disable all widgets if user enables or disables the entire
@@ -263,7 +225,6 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
       sr = sbSearch.getResult();
       sbSearch.setEnabled(jrbFile.isSelected());
     }
-
   }
 
   /**
@@ -301,7 +262,6 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
           Conf.setProperty(Const.CONF_ALARM_FILE, SearchResultType.WEBRADIO.name() + '/'
               + sr.getWebradio().getName());
         }
-
       }
     } else if (jrbBestof.isSelected()) {
       Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_BESTOF);
@@ -372,7 +332,6 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
   public void dispose() {
     // there are some resources to close in the Search-Box that I could not get rid of with any of the default dispose-methods in Swing...
     sbSearch.close();
-
     super.dispose();
   }
 }

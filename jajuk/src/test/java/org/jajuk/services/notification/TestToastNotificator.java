@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,12 +16,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.notification;
 
 import java.awt.HeadlessException;
 
+import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.base.File;
@@ -29,10 +30,9 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.services.webradio.WebRadio;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestToastNotificator extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -88,7 +88,7 @@ public class TestToastNotificator extends JajukTestCase {
   public void testNotifyWebradio() {
     try {
       ToastNotificator notificator = ToastNotificator.getInstance();
-      WebRadio webradio = new WebRadio("a web radio", "http://www.test.org/webradio");
+      WebRadio webradio = JUnitHelpers.getWebRadio();
       notificator.notify(webradio);
     } catch (NoClassDefFoundError e) {
       // expected when run without UI support

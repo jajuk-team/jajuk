@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.events;
 
@@ -26,10 +26,9 @@ import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestJajukEvent extends JajukTestCase {
-
   /**
    * Test method for {@link org.jajuk.events.JajukEvent#hashCode()}.
    */
@@ -41,14 +40,13 @@ public class TestJajukEvent extends JajukTestCase {
 
   /**
    * Test hash code2.
-   * DOCUMENT_ME
+   * 
    */
   public void testHashCode2() {
     Properties prop1 = new Properties();
     prop1.setProperty("test", "value");
     Properties prop2 = new Properties();
     prop2.setProperty("test", "value");
-
     JajukEvent event1 = new JajukEvent(JajukEvents.VOLUME_CHANGED, prop1);
     JajukEvent event2 = new JajukEvent(JajukEvents.VOLUME_CHANGED, prop2);
     JUnitHelpers.HashCodeTest(event1, event2);
@@ -63,7 +61,6 @@ public class TestJajukEvent extends JajukTestCase {
   public void testJajukEventJajukEventsProperties() {
     Properties prop1 = new Properties();
     prop1.setProperty("test", "value");
-
     new JajukEvent(JajukEvents.VOLUME_CHANGED, prop1);
   }
 
@@ -83,12 +80,10 @@ public class TestJajukEvent extends JajukTestCase {
   public void testGetDetails() {
     Properties prop1 = new Properties();
     prop1.setProperty("test", "value");
-
     JajukEvent event1 = new JajukEvent(JajukEvents.VOLUME_CHANGED, prop1);
     assertNotNull(event1.getDetails());
     assertNotNull(event1.getDetails().get("test"));
     assertNull(event1.getDetails().get("notexist"));
-
     JajukEvent event2 = new JajukEvent(JajukEvents.VOLUME_CHANGED);
     assertNull(event2.getDetails());
   }
@@ -99,7 +94,6 @@ public class TestJajukEvent extends JajukTestCase {
   public void testGetSubject() {
     Properties prop1 = new Properties();
     prop1.setProperty("test", "value");
-
     JajukEvent event1 = new JajukEvent(JajukEvents.VOLUME_CHANGED, prop1);
     assertEquals(JajukEvents.VOLUME_CHANGED, event1.getSubject());
   }
@@ -110,10 +104,8 @@ public class TestJajukEvent extends JajukTestCase {
   public void testToString() {
     Properties prop1 = new Properties();
     prop1.setProperty("test", "value");
-
     JajukEvent event1 = new JajukEvent(JajukEvents.VOLUME_CHANGED, prop1);
     JajukEvent event2 = new JajukEvent(JajukEvents.VOLUME_CHANGED);
-
     JUnitHelpers.ToStringTest(event1);
     JUnitHelpers.ToStringTest(event2);
   }
@@ -132,7 +124,7 @@ public class TestJajukEvent extends JajukTestCase {
 
   /**
    * Test equals object2.
-   * DOCUMENT_ME
+   * 
    */
   public void testEqualsObject2() {
     Properties prop1 = new Properties();
@@ -141,7 +133,6 @@ public class TestJajukEvent extends JajukTestCase {
     prop2.setProperty("test", "value");
     Properties prop3 = new Properties();
     prop3.setProperty("test", "diffvalue");
-
     JajukEvent event1 = new JajukEvent(JajukEvents.VOLUME_CHANGED, prop1);
     JajukEvent event2 = new JajukEvent(JajukEvents.VOLUME_CHANGED, prop2);
     JajukEvent event3 = new JajukEvent(JajukEvents.VOLUME_CHANGED, prop3);

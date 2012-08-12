@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.bookmark;
 
 import java.util.ArrayList;
@@ -35,10 +34,8 @@ import org.jajuk.util.Const;
  * Manages bookmarks.
  */
 public final class Bookmarks {
-
   /** Singleton self-instance. */
   private static Bookmarks bookmarks = new Bookmarks();
-
   /** Bookmarked files. */
   private List<File> alFiles = new ArrayList<File>(100);
 
@@ -81,7 +78,6 @@ public final class Bookmarks {
     for (File file : alFiles) {
       sbOut.append(file.getID()).append(',');
     }
-
     if (sbOut.length() > 0) {
       return sbOut.substring(0, sbOut.length() - 1);// remove last ','
     } else {
@@ -109,7 +105,7 @@ public final class Bookmarks {
   /**
    * Down a track in the playlist.
    * 
-   * @param index DOCUMENT_ME
+   * @param index 
    */
   public synchronized void down(int index) {
     if (index < alFiles.size() - 1) { // the last track cannot go
@@ -122,7 +118,7 @@ public final class Bookmarks {
   /**
    * Up a track in the playlist.
    * 
-   * @param index DOCUMENT_ME
+   * @param index 
    */
   public synchronized void up(int index) {
     if (index > 0) { // the first track cannot go further
@@ -134,7 +130,7 @@ public final class Bookmarks {
   /**
    * Remove a track from the playlist.
    * 
-   * @param index DOCUMENT_ME
+   * @param index 
    */
   public synchronized void remove(int index) {
     alFiles.remove(index);
@@ -144,8 +140,8 @@ public final class Bookmarks {
   /**
    * Add a track from the playlist.
    * 
-   * @param index DOCUMENT_ME
-   * @param file DOCUMENT_ME
+   * @param index 
+   * @param file 
    */
   public synchronized void addFile(int index, File file) {
     alFiles.add(index, file);
@@ -155,7 +151,7 @@ public final class Bookmarks {
   /**
    * Add a file to this playlist.
    * 
-   * @param file DOCUMENT_ME
+   * @param file 
    */
   public void addFile(File file) {
     int index = alFiles.size();
@@ -165,7 +161,7 @@ public final class Bookmarks {
   /**
    * Add files to this playlist.
    * 
-   * @param alFilesToAdd DOCUMENT_ME
+   * @param alFilesToAdd 
    */
   public void addFiles(List<File> alFilesToAdd) {
     for (File file : alFilesToAdd) {

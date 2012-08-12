@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.util;
 
@@ -30,7 +30,6 @@ import java.util.Locale;
  * Manages locales used in jajuk.
  */
 public class LocaleManager {
-
   /**
    * private constructor for utility class with only static methods.
    */
@@ -43,7 +42,6 @@ public class LocaleManager {
       Locale.FRENCH, Locale.GERMAN, new Locale("nl"), new Locale("es"), new Locale("ca"),
       new Locale("ko"), new Locale("el"), new Locale("ru"), new Locale("gl"), new Locale("cs"),
       new Locale("pt") });
-
   /** Local ( language) to be used, default is English. */
   private static Locale locale = getNativeLocale();
 
@@ -103,7 +101,7 @@ public class LocaleManager {
   /**
    * Return Description for a given local id.
    * 
-   * @param sLocal DOCUMENT_ME
+   * @param sLocal 
    * 
    * @return localized description
    */
@@ -114,7 +112,7 @@ public class LocaleManager {
   /**
    * Return local for a given description.
    * 
-   * @param sDesc DOCUMENT_ME
+   * @param sDesc 
    * 
    * @return local
    */
@@ -126,5 +124,4 @@ public class LocaleManager {
     }
     return null;
   }
-
 }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.base;
 
@@ -45,44 +45,36 @@ import org.jajuk.util.log.Log;
  * Logical item.
  */
 public class Track extends LogicalItem implements Comparable<Track> {
-
   /** Track album*. */
   private final Album album;
-
   /** Track genre. */
   private final Genre genre;
-
   /** Track artist. */
   private final Artist artist;
-
   /** Track length. */
   private final long length;
-
   /** Track year. */
   private final Year year;
-
   /** Track type. */
   private final Type type;
-
   /** Album Artist. */
   private AlbumArtist albumArtist;
-
   /** Track associated files. */
   private final List<File> alFiles = new ArrayList<File>(1);
 
   /**
    * Track constructor.
    *
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param album DOCUMENT_ME
-   * @param genre DOCUMENT_ME
-   * @param artist DOCUMENT_ME
-   * @param length DOCUMENT_ME
-   * @param year DOCUMENT_ME
-   * @param lOrder DOCUMENT_ME
-   * @param type DOCUMENT_ME
-   * @param lDiscNumber DOCUMENT_ME
+   * @param sId 
+   * @param sName 
+   * @param album 
+   * @param genre 
+   * @param artist 
+   * @param length 
+   * @param year 
+   * @param lOrder 
+   * @param type 
+   * @param lDiscNumber 
    */
   Track(String sId, String sName, Album album, Genre genre, Artist artist, long length, Year year,
       long lOrder, Type type, long lDiscNumber) {
@@ -117,13 +109,12 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * toString method.
-   * 
+   *
    * @return the string
    */
   @Override
   public String toString() {
     StringBuilder sOut = new StringBuilder();
-
     sOut.append("Track[ID=").append(getID()).append(" Name={{").append(getName()).append("}} ")
         .append(album).append(" ").append(genre).append(" ").append(artist).append(" Length=")
         .append(length).append(" Year=").append(year.getValue()).append(" Rate=").append(getRate())
@@ -139,7 +130,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Gets the any.
-   * 
+   *
    * @return a human representation of all concatenated properties
    */
   @Override
@@ -157,9 +148,9 @@ public class Track extends LogicalItem implements Comparable<Track> {
   /**
    * Default comparator for tracks, not used for sorting (use TrackComparator
    * for that) But only for storage.
-   * 
-   * @param otherTrack DOCUMENT_ME
-   * 
+   *
+   * @param otherTrack 
+   *
    * @return comparison result
    */
   @Override
@@ -169,7 +160,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Gets the album.
-   * 
+   *
    * @return the album
    */
   public Album getAlbum() {
@@ -178,7 +169,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Gets a copy of associated files.
-   * 
+   *
    * @return a copy of associated files
    */
   public List<org.jajuk.base.File> getFiles() {
@@ -187,35 +178,18 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Remove specified file from associated files.
-   * 
+   *
    * @param file : the file to remove
    */
-  public void removeFile(File file) {
+  void removeFile(File file) {
     alFiles.remove(file);
   }
 
   /**
-   * Gets the files.
-   * 
-   * @param filter files we want to deal with, null means no filter
-   * 
-   * @return all associated files
-   */
-  public List<org.jajuk.base.File> getFiles(Set<File> filter) {
-    List<File> out = new ArrayList<File>(alFiles.size());
-    for (File file : alFiles) {
-      if (filter == null || filter.contains(file)) {
-        out.add(file);
-      }
-    }
-    return out;
-  }
-
-  /**
-   * Gets the ready files.
-   * 
-   * @return ready files
-   */
+  * Gets the ready files.
+  *
+  * @return ready files
+  */
   public List<File> getReadyFiles() {
     List<File> alReadyFiles = new ArrayList<File>(alFiles.size());
     for (File file : alFiles) {
@@ -228,12 +202,12 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Gets the ready files.
-   * 
+   *
    * @param filter files we want to deal with, null means no filter
-   * 
+   *
    * @return ready files with given filter
    */
-  public List<File> getReadyFiles(Set<File> filter) {
+  List<File> getReadyFiles(Set<File> filter) {
     List<File> alReadyFiles = new ArrayList<File>(alFiles.size());
     for (File file : alFiles) {
       if (file.isReady() && (filter == null || filter.contains(file))) {
@@ -245,12 +219,11 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Get sum size of all files this track map to.
-   * 
+   *
    * @return the total size
    */
   public long getTotalSize() {
     long l = 0;
-
     for (final File file : alFiles) {
       l += file.getSize();
     }
@@ -259,15 +232,14 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Gets the playable file.
-   * 
+   *
    * @param bIgnoreUnmounted Do we return unmounted files
-   * 
+   *
    * @return best file to play for this track or null if none available
    */
   public File getBestFile(boolean bIgnoreUnmounted) {
     File fileOut = null;
     final List<File> alMountedFiles = new ArrayList<File>(2);
-
     // firstly, filter mounted files if needed
     for (final File file : alFiles) {
       if (!bIgnoreUnmounted || file.isReady()) {
@@ -305,7 +277,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Gets the hits.
-   * 
+   *
    * @return the hits
    */
   public long getHits() {
@@ -314,7 +286,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Gets the comment.
-   * 
+   *
    * @return the comment
    */
   public String getComment() {
@@ -323,7 +295,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Get track number.
-   * 
+   *
    * @return the order
    */
   public long getOrder() {
@@ -332,7 +304,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Get disc number.
-   * 
+   *
    * @return the disc number
    */
   public long getDiscNumber() {
@@ -341,7 +313,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Get album artist.
-   * 
+   *
    * @return the album artist
    */
   public AlbumArtist getAlbumArtist() {
@@ -350,7 +322,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Gets the album artist or artist if album-artist is not available.
-   * 
+   *
    * @return the albumArtist or artist if album artist not available
    * <p>
    * If this is various, the album artist is tried to be defined by the
@@ -359,9 +331,10 @@ public class Track extends LogicalItem implements Comparable<Track> {
    */
   public String getAlbumArtistOrArtist() {
     // If the album artist tag is provided, perfect, let's use it !
-    String albumArtist = getAlbumArtist().getName();
-    if (StringUtils.isNotBlank(albumArtist) && !(Const.UNKNOWN_ARTIST.equals(albumArtist))) {
-      return albumArtist;
+    AlbumArtist albumArtist = getAlbumArtist();
+    if (albumArtist != null && StringUtils.isNotBlank(albumArtist.getName())
+        && !(Const.UNKNOWN_ARTIST.equals(albumArtist.getName()))) {
+      return albumArtist.getName();
     }
     // various artist? check if all artists are the same
     Artist artist = getArtist();
@@ -376,7 +349,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Gets the year.
-   * 
+   *
    * @return the year
    */
   public Year getYear() {
@@ -385,7 +358,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Gets the duration.
-   * 
+   *
    * @return length in sec
    */
   public long getDuration() {
@@ -402,7 +375,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Gets the discovery date.
-   * 
+   *
    * @return the date where the track has been discovered (added into the
    * collection)
    */
@@ -412,7 +385,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Gets the type.
-   * 
+   *
    * @return the type
    */
   public Type getType() {
@@ -421,7 +394,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Gets the artist.
-   * 
+   *
    * @return the artist
    */
   public Artist getArtist() {
@@ -430,7 +403,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Gets the genre.
-   * 
+   *
    * @return the genre
    */
   public Genre getGenre() {
@@ -439,8 +412,8 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Add an associated file.
-   * 
-   * @param file DOCUMENT_ME
+   *
+   * @param file 
    */
   public void addFile(File file) {
     // make sure a file will be referenced by only one track (first found)
@@ -451,7 +424,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Sets the hits.
-   * 
+   *
    * @param hits The iHits to set.
    */
   public void setHits(long hits) {
@@ -474,7 +447,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * Set track preference (from -3 to 3: -3: hate, -2=dislike, -1=poor, +1=like,
    * +2=love +3=crazy). The preference is a factor given by the user to increase
    * or decrease a track rate.
-   * 
+   *
    * @param preference from -3 to 3
    */
   public void setPreference(long preference) {
@@ -490,60 +463,67 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Compute final track rate.
-   * 
+   *
    * @see http://trac.jajuk.info/ticket/1179
    */
   public void updateRate() {
     try {
-      // rate contains final rate [0,100]
-      long rate = 0;
-      // Normalize values to avoid division by zero
-      long duration = getDuration();
-      long playcount = getHits();
-      // Playcount must be > 0 to avoid divisions by zero and log(0) operations
-      if (playcount <= 0) {
-        playcount = 1;
-      }
-      float playtimeRate = 0.5f;
-      if (duration == 0) {
-        // If duration = 0, always set playtimeRate to 0.5
-        Log.info("Duration = 0 for: {{" + getName() + "}}. Playtime forced to 0.5");
+      // -- Manual rating : just use preference
+      if (Conf.getBoolean(Const.CONF_MANUAL_RATINGS)) {
+        long preference = getLongValue(Const.XML_TRACK_PREFERENCE);
+        long rate = RatingManager.getRateForPreference(preference);
+        setRate(rate);
+        // -- Semi-Automatic (standard) rating 
       } else {
-        // Compute playtime rate = total play time / (play count * track length)
-        playtimeRate = (float) getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME)
-            / (playcount * duration);
+        // rate contains final rate [0,100]
+        long rate = 0;
+        // Normalize values to avoid division by zero
+        long duration = getDuration();
+        long playcount = getHits();
+        // Playcount must be > 0 to avoid divisions by zero and log(0) operations
+        if (playcount <= 0) {
+          playcount = 1;
+        }
+        float playtimeRate = 0.5f;
+        if (duration == 0) {
+          // If duration = 0, always set playtimeRate to 0.5
+          Log.info("Duration = 0 for: {{" + getName() + "}}. Playtime forced to 0.5");
+        } else {
+          // Compute playtime rate = total play time / (play count * track length)
+          playtimeRate = (float) getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME)
+              / (playcount * duration);
+        }
+        // playtimeRate can be > 1 because of player impl duration computation
+        // precision issue or if user seeks back into the track
+        // set =1.
+        if (playtimeRate > 1) {
+          Log.warn("Playtime rate > 1 for: {{" + getName() + "}} value=" + playtimeRate);
+          // We reset tpt and hits to
+          // make things clear and to avoid increasing the error with time
+          setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, duration * playcount);
+          playtimeRate = 1f;
+        }
+        // compute the playcount rate (logarithmic scale to take number of plays
+        // into account)
+        // playcountRate = ln(track playcount)/ln(max playcount)
+        long maxPlayCount = RatingManager.getMaxPlaycount();
+        if (maxPlayCount <= 0) {
+          maxPlayCount = 1;
+        }
+        float playcountRate = (float) (Math.log(playcount) / Math.log(maxPlayCount));
+        // Intermediate rate is a mix between playtime and playcount rates with
+        // factor 0.75 for the first one and 0.25 for the second
+        float intermediateRate = (0.75f * playtimeRate) + (0.25f * playcountRate);
+        // Final rate is intermediateRate in whish we apply the user preference
+        // from
+        // -3 (hate) to 3 (adore)
+        long preference = getLongValue(Const.XML_TRACK_PREFERENCE);
+        long absPreference = Math.abs(preference);
+        rate = Math.round(100 * (intermediateRate + (preference + absPreference) / 2)
+            / (absPreference + 1));
+        // Apply new rate
+        setRate(rate);
       }
-      // playtimeRate can be > 1 because of player impl duration computation
-      // precision issue or if user seeks back into the track
-      // set =1.
-      if (playtimeRate > 1) {
-        Log.warn("Playtime rate > 1 for: {{" + getName() + "}} value=" + playtimeRate);
-        // We reset tpt and hits to
-        // make things clear and to avoid increasing the error with time
-        setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, duration * playcount);
-        playtimeRate = 1f;
-      }
-
-      // compute the playcount rate (logarithmic scale to take number of plays
-      // into account)
-      // playcountRate = ln(track playcount)/ln(max playcount)
-      long maxPlayCount = RatingManager.getMaxPlaycount();
-      if (maxPlayCount <= 0) {
-        maxPlayCount = 1;
-      }
-      float playcountRate = (float) (Math.log(playcount) / Math.log(maxPlayCount));
-      // Intermediate rate is a mix between playtime and playcount rates with
-      // factor 0.75 for the first one and 0.25 for the second
-      float intermediateRate = (0.75f * playtimeRate) + (0.25f * playcountRate);
-      // Final rate is intermediateRate in whish we apply the user preference
-      // from
-      // -3 (hate) to 3 (adore)
-      long preference = getLongValue(Const.XML_TRACK_PREFERENCE);
-      long absPreference = Math.abs(preference);
-      rate = Math.round(100 * (intermediateRate + (preference + absPreference) / 2)
-          / (absPreference + 1));
-      // Apply new rate
-      setRate(rate);
     } catch (Exception e) {
       // We catch any arithmetic issue here to avoid preventing next track
       // startup
@@ -553,7 +533,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Sets the rate.
-   * 
+   *
    * @param rate The lRate to set.
    */
   protected void setRate(long rate) {
@@ -563,8 +543,8 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Sets the comment.
-   * 
-   * @param sComment DOCUMENT_ME
+   *
+   * @param sComment 
    */
   public void setComment(String sComment) {
     setProperty(Const.XML_TRACK_COMMENT, sComment);
@@ -572,7 +552,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Sets the album artist.
-   * 
+   *
    * @param albumArtist : the album artist
    */
   public void setAlbumArtist(AlbumArtist albumArtist) {
@@ -583,7 +563,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Sets the discovery date.
-   * 
+   *
    * @param additionDate The sAdditionDate to set.
    */
   public void setDiscoveryDate(Date additionDate) {
@@ -592,7 +572,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Return whether this item should be hidden with hide option.
-   * 
+   *
    * @return whether this item should be hidden with hide option
    */
   public boolean shouldBeHidden() {
@@ -604,27 +584,25 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  public final String getLabel() {
+  public final String getXMLTag() {
     return XML_TRACK;
   }
 
-  /**
-   * Get item description.
-   * 
-   * @return the desc
+  /* (non-Javadoc)
+   * @see org.jajuk.base.Item#getTitle()
    */
   @Override
-  public String getDesc() {
+  public String getTitle() {
     return Messages.getString("Item_Track") + " : " + getName();
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
    */
   @Override
@@ -662,7 +640,6 @@ public class Track extends LogicalItem implements Comparable<Track> {
       return getStringValue(sKey);
     } else if (Const.XML_FILES.equals(sKey)) {
       final StringBuilder sbOut = new StringBuilder();
-
       for (final File file : alFiles) {
         sbOut.append(file.getAbsolutePath());
         sbOut.append(',');
@@ -679,7 +656,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#getIconRepresentation()
    */
   @Override
@@ -689,7 +666,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Gets the files string.
-   * 
+   *
    * @return a list of associated files in format : file1,file2...
    */
   public String getFilesString() {

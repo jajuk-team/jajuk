@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.base;
 
 import java.io.Serializable;
@@ -31,10 +30,8 @@ import org.jajuk.util.UtilString;
  * Multi-method track comparator.
  */
 public class TrackComparator implements Comparator<Track>, Serializable {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -4735723947400147134L;
-
   /** Sorting method. */
   private final TrackComparatorType comparatorType;
 
@@ -42,32 +39,23 @@ public class TrackComparator implements Comparator<Track>, Serializable {
    * Sorting methods constants.
    */
   public enum TrackComparatorType {
-    
     /** Compare first based on the genre, then on artist and then on album. */
     GENRE_ARTIST_ALBUM,
-    
     /** Compare based on artist and then album. */
     ARTIST_ALBUM,
-    
     /** Compare only on album. */
     ALBUM,
-    
     /** Compare only on year. */
     YEAR_ALBUM,
-    
     /** Compare only on the discovery date of the album. */
     DISCOVERY_ALBUM,
-    
     /** Compare on the rate and then the album. */
     RATE_ALBUM,
-    
     /** Compare on the number of hits and then on the album. */
     HITS_ALBUM,
-    
     /** Compare on disc number and order of the track in the album. */
     ORDER,
-    
-    /** Compare to find identifical tracks. */
+    /** Compare to find identical tracks. */
     ALMOST_IDENTICAL
   }
 
@@ -100,42 +88,43 @@ public class TrackComparator implements Comparator<Track>, Serializable {
     // 2 tracks with different years
     // Genre/artist/album
     if (comparatorType == TrackComparatorType.GENRE_ARTIST_ALBUM) {
-      sHashCompare = new StringBuilder().append(track.getGenre().getName2()).append(
-          track.getArtist().getName2()).append(track.getAlbum().getName2()).append(
-          UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
+      sHashCompare = new StringBuilder().append(track.getGenre().getName2())
+          .append(track.getArtist().getName2()).append(track.getAlbum().getName2())
+          .append(UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
     }// Artist/album
     else if (comparatorType == TrackComparatorType.ARTIST_ALBUM) {
-      sHashCompare = new StringBuilder().append(track.getArtist().getName2()).append(
-          track.getAlbum().getName2()).append(UtilString.padNumber(track.getOrder(), 5)).append(
-          track.getName()).toString();
+      sHashCompare = new StringBuilder().append(track.getArtist().getName2())
+          .append(track.getAlbum().getName2()).append(UtilString.padNumber(track.getOrder(), 5))
+          .append(track.getName()).toString();
     }
     // Album
     else if (comparatorType == TrackComparatorType.ALBUM) {
-      sHashCompare = new StringBuilder().append(track.getAlbum().getName2()).append(
-          UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
+      sHashCompare = new StringBuilder().append(track.getAlbum().getName2())
+          .append(UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
     }
     // Year / album
     if (comparatorType == TrackComparatorType.YEAR_ALBUM) {
-      sHashCompare = new StringBuilder().append(
-          UtilString.padNumber(999999999 - track.getYear().getValue(), 10)).append(
-          UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
+      sHashCompare = new StringBuilder()
+          .append(UtilString.padNumber(999999999 - track.getYear().getValue(), 10))
+          .append(UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
     }
     // discovery date / album
     else if (comparatorType == TrackComparatorType.DISCOVERY_ALBUM) {
-      sHashCompare = new StringBuilder().append(FORMATTER.format(track.getDiscoveryDate())).append(
-          track.getAlbum().getName2()).append(UtilString.padNumber(track.getOrder(), 5)).append(
-          track.getName()).toString();
+      sHashCompare = new StringBuilder().append(FORMATTER.format(track.getDiscoveryDate()))
+          .append(track.getAlbum().getName2()).append(UtilString.padNumber(track.getOrder(), 5))
+          .append(track.getName()).toString();
     }
     // Rate / album
     else if (comparatorType == TrackComparatorType.RATE_ALBUM) {
-      sHashCompare = new StringBuilder().append(
-          UtilString.padNumber(999999999 - track.getRate(), 10)).append(
-          UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
+      sHashCompare = new StringBuilder()
+          .append(UtilString.padNumber(999999999 - track.getRate(), 10))
+          .append(UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
     }
     // Hits / album
     else if (comparatorType == TrackComparatorType.HITS_ALBUM) {
-      sHashCompare = new StringBuilder().append(
-          UtilString.padNumber(999999999 - track.getHits(), 10)).append(track.getName()).toString();
+      sHashCompare = new StringBuilder()
+          .append(UtilString.padNumber(999999999 - track.getHits(), 10)).append(track.getName())
+          .toString();
     }
     // Disc number / Order / track name
     else if (comparatorType == TrackComparatorType.ORDER) {
@@ -148,14 +137,13 @@ public class TrackComparator implements Comparator<Track>, Serializable {
     else if (comparatorType == TrackComparatorType.ALMOST_IDENTICAL) {
       sHashCompare = buildIdenticalTestFootprint(track);
     }
-
     return sHashCompare;
   }
 
   /**
    * Return a footprint used to find almost-identical track.
    * 
-   * @param track DOCUMENT_ME
+   * @param track 
    * 
    * @return a footprint used to find almost-identical track
    */

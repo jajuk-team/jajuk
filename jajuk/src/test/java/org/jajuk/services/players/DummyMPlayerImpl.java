@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,19 +16,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.players;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class DummyMPlayerImpl {
-  
-  /** The Constant POSITION.  DOCUMENT_ME */
+  /** The Constant POSITION.   */
   public final static float POSITION = 17.7f;
-  
-  /** The Constant LENGTH.  DOCUMENT_ME */
+  /** The Constant LENGTH.   */
   public final static float LENGTH = 235.28f;
 
   /**
@@ -39,13 +37,10 @@ public class DummyMPlayerImpl {
    */
   public static void main(final String[] args) throws InterruptedException {
     System.out.println("TestMPlayerPlayerImpl was called!");
-
     // simulate normal reply by MPlayer to commands that are sent in
     System.out.println("ANS_LENGTH=" + new Float(LENGTH).toString());
     System.out.println("ANS_TIME_POSITION=" + new Float(POSITION).toString());
-
     Thread.sleep(5000);
-
     System.out.println("Exiting... (Quit)");
   }
 }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,263 +16,409 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  $Revision: 3132 $
  */
 package org.jajuk.util;
 
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Random;
+
+import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
-import org.junit.Test;
+import org.jajuk.TestHelpers;
+import org.jajuk.ThreadTestHelper;
+import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
+import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
+import org.jajuk.util.error.JajukException;
 
-/**
- * DOCUMENT_ME.
- */
 public class TestUtilString extends JajukTestCase {
+  // settings for the micro-benchmarks done for some methods
+  private static final int MATCHES_PER_TEST = 300000;
+  private static final int NUMBER_OF_MATCH_TESTS = 5;
+  private static final int NUMBER_OF_THREADS = 10;
+  private static final int NUMBER_OF_TESTS = 1000;
+  private static final Random random = new Random();
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see junit.framework.TestCase#setUp()
-   */
   @Override
-  protected void setUp() throws Exception {
+  public final void setUp() throws Exception {
+    random.setSeed(System.currentTimeMillis());
     super.setUp();
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#applyPattern(org.jajuk.base.File, java.lang.String, boolean, boolean)}.
+   * @throws Exception
    */
-  @Test
-  public void testApplyPattern() {
-    //TODO to be implemented
+  public void testApplyPattern() throws Exception {
+    UtilString.applyPattern(TestHelpers.getMockFile(), "somepattern", false, false);
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#containsNonDigitOrLetters(java.lang.String)}.
    */
-  @Test
   public void testContainsNonDigitOrLetters() {
-    //TODO to be implemented
+    // TODO: implement test
+  }
+
+  public void testCustomTrackCustomPropertyPattern() throws JajukException {
+    try {
+      TrackManager.getInstance().registerProperty(
+          new PropertyMetaInformation("foo", true, false, false, false, false, String.class, ""));
+      File file = JUnitHelpers.getFile();
+      Track track = file.getTrack();
+      track.setProperty("foo", "bar");
+      assertEquals("foo : bar", UtilString.applyPattern(file, "foo : %foo", true, false));
+      track.setProperty("foo", "");
+      assertEquals("foo : ", UtilString.applyPattern(file, "foo : %foo", true, false));
+    } finally {
+      TrackManager.getInstance().removeProperty("foo");
+    }
+  }
+
+  public void testCustomFileCustomPropertyPattern() throws JajukException {
+    try {
+      FileManager.getInstance().registerProperty(
+          new PropertyMetaInformation("foo", true, false, false, false, false, String.class, ""));
+      File file = JUnitHelpers.getFile();
+      file.setProperty("foo", "bar");
+      assertEquals("foo : bar", UtilString.applyPattern(file, "foo : %foo", true, false));
+      file.setProperty("foo", "");
+      assertEquals("foo : ", UtilString.applyPattern(file, "foo : %foo", true, false));
+    } finally {
+      FileManager.getInstance().removeProperty("foo");
+    }
+  }
+
+  // Files and track have the same custom property
+  public void testCustomFileAndTrackCustomPropertyPattern() throws JajukException {
+    try {
+      FileManager.getInstance().registerProperty(
+          new PropertyMetaInformation("foo", true, false, false, false, false, String.class, ""));
+      TrackManager.getInstance().registerProperty(
+          new PropertyMetaInformation("foo", true, false, false, false, false, String.class, ""));
+      File file = JUnitHelpers.getFile();
+      file.setProperty("foo", "bar");
+      Track track = file.getTrack();
+      track.setProperty("foo", "baz");
+      assertEquals("foo : bar", UtilString.applyPattern(file, "foo : %foo", true, false));
+    } finally {
+      FileManager.getInstance().removeProperty("foo");
+      TrackManager.getInstance().removeProperty("foo");
+    }
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#encodeURL(java.lang.String)}.
    */
-  @Test
   public void testEncodeURL() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#escapeString(java.lang.String)}.
    */
-  @Test
   public void testEscapeString() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#format(java.lang.Object, org.jajuk.base.PropertyMetaInformation, boolean)}.
    */
-  @Test
   public void testFormat() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#getLocaleDateFormatter()}.
    */
-  @Test
   public void testGetLocaleDateFormatter() {
-    //TODO to be implemented
+    assertNotNull(UtilString.getLocaleDateFormatter());
+  }
+
+  public void testMultipleThreads() throws Exception {
+    ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS, NUMBER_OF_TESTS);
+    helper.executeTest(new ThreadTestHelper.TestRunnable() {
+      @Override
+      public void doEnd(int threadnum) throws Exception {
+        // do stuff at the end ...
+      }
+
+      @Override
+      public void run(int threadnum, int iter) {
+        DateFormat format = UtilString.getLocaleDateFormatter();
+        assertNotNull(format.format(new Date()));
+      }
+    });
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#formatPropertyDesc(java.lang.String)}.
    */
-  @Test
   public void testFormatPropertyDesc() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#formatGenre(java.lang.String)}.
    */
-  @Test
   public void testFormatGenre() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#formatTag(java.lang.String)}.
    */
-  @Test
   public void testFormatTag() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#formatTimeBySec(long)}.
    */
-  @Test
   public void testFormatTimeBySec() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#formatXML(java.lang.String)}.
    */
-  @Test
   public void testFormatXML() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#getAdditionDateFormatter()}.
    */
-  @Test
   public void testGetAdditionDateFormatter() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#getAnonymizedJajukProperties()}.
    */
-  @Test
   public void testGetAnonymizedJajukProperties() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#getAnonymizedSystemProperties()}.
    */
-  @Test
   public void testGetAnonymizedSystemProperties() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#getLimitedString(java.lang.String, int)}.
    */
-  @Test
   public void testGetLimitedString() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#isChar(int)}.
    */
-  @Test
   public void testIsChar() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#isXMLValid(java.lang.String)}.
    */
-  @Test
   public void testIsXMLValid() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#padNumber(long, int)}.
    */
-  @Test
   public void testPadNumber() {
-    //TODO to be implemented
+    assertEquals("00099", UtilString.padNumber(99, 5));
+    assertEquals("00011", UtilString.padNumber(11, 5));
+    assertEquals("00000", UtilString.padNumber(0, 5));
+    assertEquals("99999", UtilString.padNumber(99999, 5));
+    assertEquals("100000", UtilString.padNumber(100000, 5));
+    assertEquals("000-9", UtilString.padNumber(-9, 5));
+    assertEquals("00-19", UtilString.padNumber(-19, 5));
+    assertEquals("1", UtilString.padNumber(1, 1));
+    assertEquals("11", UtilString.padNumber(11, 2));
+    assertEquals("113", UtilString.padNumber(113, 3));
+  }
+
+  public void testPadNumberBenchmark() {
+    testPadNumber();
+    long overall = 0;
+    for (int i = 0; i < NUMBER_OF_MATCH_TESTS; i++) {
+      long dur = runPadMicroBenchmark();
+      System.out.println("Test run took " + dur + "ms");
+      overall += dur;
+    }
+    System.out.println("Average test duration: " + (overall / NUMBER_OF_MATCH_TESTS));
+  }
+
+  /**
+   * @return
+   *
+   */
+  private long runPadMicroBenchmark() {
+    long start = System.currentTimeMillis();
+    for (int i = 0; i < MATCHES_PER_TEST * 10; i++) {
+      UtilString.padNumber(random.nextInt(10000), 5);
+      //StringUtils.leftPad(Long.toString(random.nextInt(10000)), 5, '0');
+    }
+    return System.currentTimeMillis() - start;
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#parse(java.lang.String, java.lang.Class)}.
    */
-  @Test
   public void testParse() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#fastLongParser(java.lang.String)}.
    */
-  @Test
   public void testFastLongParser() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#fastBooleanParser(java.lang.String)}.
    */
-  @Test
   public void testFastBooleanParser() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#rot13(java.lang.String)}.
    */
-  @Test
   public void testRot13() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#matchesIgnoreCaseAndOrder(java.lang.String, java.lang.String)}.
    */
-  @Test
   public void testMatchesIgnoreCaseAndOrder() {
-    //TODO to be implemented
+    assertTrue(UtilString.matchesIgnoreCaseAndOrder("", ""));
+    assertTrue(UtilString.matchesIgnoreCaseAndOrder("", "123"));
+    assertTrue(UtilString.matchesIgnoreCaseAndOrder("t", "test"));
+    assertTrue(UtilString.matchesIgnoreCaseAndOrder("t", "TesT"));
+    assertTrue(UtilString.matchesIgnoreCaseAndOrder("tes", "TesT"));
+    assertTrue(UtilString.matchesIgnoreCaseAndOrder("Tes", "test"));
+    assertTrue(UtilString.matchesIgnoreCaseAndOrder("te", "123te123"));
+    assertTrue(UtilString.matchesIgnoreCaseAndOrder("te1", "123te123"));
+    assertTrue(UtilString.matchesIgnoreCaseAndOrder("3te", "123te123"));
+    assertTrue(UtilString.matchesIgnoreCaseAndOrder("3te 12", "123te123"));
+    assertTrue(UtilString.matchesIgnoreCaseAndOrder("3te 3te1", "123te123"));
+    assertTrue(UtilString.matchesIgnoreCaseAndOrder("3Te 12", "123te123"));
+    assertTrue(UtilString.matchesIgnoreCaseAndOrder("3Te 3tE1", "123te123"));
+    assertTrue(UtilString.matchesIgnoreCaseAndOrder("3te 12", "123TE123"));
+    assertTrue(UtilString.matchesIgnoreCaseAndOrder("3te 3te1", "123TE123"));
+    assertTrue(UtilString.matchesIgnoreCaseAndOrder("3te 12", "1 2 3te 12 3"));
+    assertTrue(UtilString.matchesIgnoreCaseAndOrder("3te 3te1", "12 3te1 23"));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("1", ""));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("t", ""));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("test", ""));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("test", "t"));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("TesT", "t"));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("TesT", "tes"));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("test", "Tes"));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("123te123", "te"));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("123te123", "te1"));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("123te123", "3te"));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("TesT test", "tt"));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("123te123", "1te"));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("123te123", "te3"));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("3te 12", "123ate123"));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("3te 3te1", "123tae123"));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("3Te 12", "1323te1323"));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("3Te 3tE1", "123.te123"));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("3te 12", "123T_E123"));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("3te 3te1", "123TEa123"));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("3te 12", "1 2 3te 1 2 3"));
+    assertFalse(UtilString.matchesIgnoreCaseAndOrder("3te 3te1", "12 3toe1 23"));
+  }
+
+  public void testMatchesIgnoreCaseAndOrderBenchmark() {
+    long overall = 0;
+    for (int i = 0; i < NUMBER_OF_MATCH_TESTS; i++) {
+      long dur = runMicroBenchmark();
+      System.out.println("Test run took " + dur + "ms");
+      overall += dur;
+    }
+    System.out.println("Average test duration: " + (overall / NUMBER_OF_MATCH_TESTS));
+  }
+
+  /**
+   * @return
+   *
+   */
+  private long runMicroBenchmark() {
+    long start = System.currentTimeMillis();
+    RandomString str = new RandomString(30);
+    RandomString search = new RandomString(6);
+    for (int i = 0; i < MATCHES_PER_TEST; i++) {
+      UtilString.matchesIgnoreCaseAndOrder(str.nextString(), search.nextString());
+    }
+    return System.currentTimeMillis() - start;
+  }
+
+  public static class RandomString {
+    private static final char[] symbols = new char[63];
+    static {
+      for (int idx = 0; idx < 10; ++idx)
+        symbols[idx] = (char) ('0' + idx);
+      for (int idx = 10; idx < 36; ++idx)
+        symbols[idx] = (char) ('a' + idx - 10);
+      for (int idx = 36; idx < 62; ++idx)
+        symbols[idx] = (char) ('A' + idx - 36);
+      symbols[62] = ' ';
+    }
+    private final char[] buf;
+
+    public RandomString(int length) {
+      if (length < 1)
+        throw new IllegalArgumentException("length < 1: " + length);
+      buf = new char[length];
+    }
+
+    public String nextString() {
+      for (int idx = 0; idx < buf.length; ++idx)
+        buf[idx] = symbols[random.nextInt(symbols.length)];
+      return new String(buf);
+    }
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#encodeToUnicode(java.lang.String)}.
    */
-  @Test
   public void testEncodeToUnicode() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#byteToHex(byte)}.
    */
-  @Test
   public void testByteToHex() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#concat(java.lang.Object[])}.
    */
-  @Test
   public void testConcat() {
-    //TODO to be implemented
+    // TODO: implement test
   }
 
   /**
    * Test method for {@link org.jajuk.util.UtilString#getTextBetweenChars(java.lang.String, char, char)}.
    */
-  @Test
   public void testGetTextBetweenChars() {
-    //TODO to be implemented
+    // TODO: implement test
   }
-
-  /**
-   * Test method for {@link org.jajuk.util.UtilString#normalizeFilename(java.lang.String)}.
-   */
-  @Test
-  public void testNormalizeFilename() {
-    // Regular string check 
-    String fileName = "foo.txt";
-    String normFileName = UtilString.normalizeFilename(fileName);
-    assertTrue("foo.txt".equals(normFileName));
-
-    // Contains a Windows forbidden chars : ?
-    fileName = "?-e.txt";
-    normFileName = UtilString.normalizeFilename(fileName);
-    assertTrue("_-e.txt".equals(normFileName));
-
-    // Contains an accent
-    fileName = '\u00E0' + "" + '\u00E9' + "!?-e.txt";
-    normFileName = UtilString.normalizeFilename(fileName);
-    assertTrue("ae!_-e.txt".equals(normFileName));
-  }
-
 }

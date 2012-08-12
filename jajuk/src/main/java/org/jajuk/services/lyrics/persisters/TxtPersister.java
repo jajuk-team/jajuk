@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.lyrics.persisters;
 
@@ -31,13 +31,8 @@ import org.jajuk.util.log.Log;
  * Class to read/write lyrics to TXT file.
  */
 public class TxtPersister implements ILyricsPersister {
-
-  /** DOCUMENT_ME. */
   private java.io.File lyricsFile = null;
-
-  /** DOCUMENT_ME. */
   private Writer lyricsWriter = null;
-
   /** Audio file to set lyrics to. */
   private org.jajuk.base.File file = null;
 
@@ -67,7 +62,6 @@ public class TxtPersister implements ILyricsPersister {
       lyricsFile = null;
       return false;
     }
-
   }
 
   /* (non-Javadoc)
@@ -120,5 +114,4 @@ public class TxtPersister implements ILyricsPersister {
   public void setAudioFile(org.jajuk.base.File file) {
     this.file = file;
   }
-
 }

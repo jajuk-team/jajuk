@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,36 +16,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.util;
 
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestUpgradeManager extends JajukTestCase {
-
-  /** DOCUMENT_ME. */
   String v1 = "1.8.4";
-  
-  /** DOCUMENT_ME. */
   String v2 = "1.9.1";
-  
-  /** DOCUMENT_ME. */
   String v3 = "1.9.2RC3";
-  
-  /** DOCUMENT_ME. */
   String v4 = "1.8.5";
-  
-  /** DOCUMENT_ME. */
   String v5 = "1.8";
-  
-  /** DOCUMENT_ME. */
   String v6 = "1.9";
-  
-  /** DOCUMENT_ME. */
   String v7 = "1.9.2RC4";
 
   /*
@@ -94,11 +80,12 @@ public class TestUpgradeManager extends JajukTestCase {
    * {@link org.jajuk.util.UpgradeManager#isNewer(String,String)}.
    */
   public void testIsNewer() throws Exception {
-    assertEquals(true, UpgradeManager.isNewer(v1, v2));
-    assertEquals(true, UpgradeManager.isNewer(v1, v4));
-    assertEquals(true, UpgradeManager.isNewer(v2, v3));
-    assertEquals(false, UpgradeManager.isNewer(v2, v1));
-    assertEquals(true, UpgradeManager.isNewer(v5, v6));
+    assertTrue(UpgradeManager.isNewer(v2, v1));
+    assertTrue(UpgradeManager.isNewer(v4, v1));
+    assertFalse(UpgradeManager.isNewer(v3, v3));
+    assertFalse(UpgradeManager.isNewer(v1, v2));
+    assertTrue(UpgradeManager.isNewer(v6, v5));
+    assertTrue(UpgradeManager.isNewer("1.10dev", "1.7"));
+    assertFalse(UpgradeManager.isNewer("1.7", "1.7"));
   }
-
 }

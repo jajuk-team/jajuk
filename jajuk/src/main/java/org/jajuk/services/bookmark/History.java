@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.bookmark;
 
 import java.io.BufferedWriter;
@@ -35,7 +34,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
 
-import javax.swing.SwingUtilities;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -65,16 +63,12 @@ import org.xml.sax.helpers.DefaultHandler;
  * .sun.com/javase/6/docs/api/javax/swing/package-summary.html#threading
  */
 public final class History extends DefaultHandler implements HighPriorityObserver {
-
   /** Self instance. */
   private static History history = new History();
-
   /** History repository, last play first. */
   private static Vector<HistoryItem> vHistory = new Vector<HistoryItem>(100); // NOPMD
-
   /** History begin date. */
   private static long lDateStart;
-
   /** Cached date formatter. */
   private SimpleDateFormat formatter;
 
@@ -92,15 +86,14 @@ public final class History extends DefaultHandler implements HighPriorityObserve
    */
   private History() {
     super();
-
     ObservationManager.register(this);
     // check if something has already started
     if (ObservationManager.getDetailLastOccurence(JajukEvents.FILE_LAUNCHED,
         Const.DETAIL_CURRENT_FILE_ID) != null
         && ObservationManager.getDetailLastOccurence(JajukEvents.FILE_LAUNCHED,
             Const.DETAIL_CURRENT_DATE) != null) {
-      update(new JajukEvent(JajukEvents.FILE_LAUNCHED, ObservationManager
-          .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
+      update(new JajukEvent(JajukEvents.FILE_LAUNCHED,
+          ObservationManager.getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
     }
     // Fill date formatter
     formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"), Locale.getDefault());
@@ -119,7 +112,6 @@ public final class History extends DefaultHandler implements HighPriorityObserve
     eventSubjectSet.add(JajukEvents.CLEAR_HISTORY);
     eventSubjectSet.add(JajukEvents.FILE_NAME_CHANGED);
     eventSubjectSet.add(JajukEvents.LANGUAGE_CHANGED);
-
     return eventSubjectSet;
   }
 
@@ -135,8 +127,8 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   /**
    * Add an history item.
    * 
-   * @param sFileId DOCUMENT_ME
-   * @param lDate DOCUMENT_ME
+   * @param sFileId 
+   * @param lDate 
    */
   public void addItem(String sFileId, long lDate) {
     // no history
@@ -177,72 +169,56 @@ public final class History extends DefaultHandler implements HighPriorityObserve
    * Cleanup history of dead items (removed files after a refresh).
    */
   public void cleanup() {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        Iterator<HistoryItem> it = vHistory.iterator();
-        while (it.hasNext()) {
-          HistoryItem hi = it.next();
-          if (FileManager.getInstance().getFileByID(hi.getFileId()) == null) {
-            it.remove();
-          }
-        }
+    Iterator<HistoryItem> it = vHistory.iterator();
+    while (it.hasNext()) {
+      HistoryItem hi = it.next();
+      if (FileManager.getInstance().getFileByID(hi.getFileId()) == null) {
+        it.remove();
       }
-    });
+    }
   }
 
   /**
    * Change ID for a file.
    * 
-   * @param sIDOld DOCUMENT_ME
-   * @param sIDNew DOCUMENT_ME
+   * @param sIDOld 
+   * @param sIDNew 
    */
   public void changeID(final String sIDOld, final String sIDNew) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        for (int i = 0; i < vHistory.size(); i++) {
-          HistoryItem hi = vHistory.get(i);
-          if (hi.getFileId().equals(sIDOld)) {
-            vHistory.remove(i);
-            vHistory.add(i, new HistoryItem(sIDNew, hi.getDate()));
-          }
-        }
+    for (int i = 0; i < vHistory.size(); i++) {
+      HistoryItem hi = vHistory.get(i);
+      if (hi.getFileId().equals(sIDOld)) {
+        vHistory.remove(i);
+        vHistory.add(i, new HistoryItem(sIDNew, hi.getDate()));
       }
-    });
+    }
   }
 
   /**
    * Clear history for all history items before iDays days.
    * 
-   * @param iDays DOCUMENT_ME
+   * @param iDays 
    */
   public void clear(final int iDays) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-
-        // Begins by clearing deleted files
-        Iterator<HistoryItem> it = vHistory.iterator();
-        while (it.hasNext()) {
-          HistoryItem hi = it.next();
-          if (FileManager.getInstance().getFileByID(hi.getFileId()) == null) {
-            it.remove();
-          }
-        }
-        // Follow day limits
-        if (iDays == -1) { // infinite history
-          return;
-        }
-        it = vHistory.iterator();
-        while (it.hasNext()) {
-          HistoryItem hi = it.next();
-          if (hi.getDate() < (System.currentTimeMillis() - (((long) iDays) * Const.MILLISECONDS_IN_A_DAY))) {
-            it.remove();
-          }
-        }
+    // Begins by clearing deleted files
+    Iterator<HistoryItem> it = vHistory.iterator();
+    while (it.hasNext()) {
+      HistoryItem hi = it.next();
+      if (FileManager.getInstance().getFileByID(hi.getFileId()) == null) {
+        it.remove();
       }
-    });
+    }
+    // Follow day limits
+    if (iDays == -1) { // infinite history
+      return;
+    }
+    it = vHistory.iterator();
+    while (it.hasNext()) {
+      HistoryItem hi = it.next();
+      if (hi.getDate() < (System.currentTimeMillis() - (((long) iDays) * Const.MILLISECONDS_IN_A_DAY))) {
+        it.remove();
+      }
+    }
   }
 
   /**
@@ -296,25 +272,9 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   }
 
   /**
-   * Gets the last file.
-   * 
-   * @return id of last played registered track or null if history is empty
-   */
-  public String getLastFile() {
-    HistoryItem hiLast = null;
-    if (vHistory.size() == 0) {
-      return null;
-    }
-    hiLast = vHistory.get(0);
-
-    // we only add valid entries to hiLast, so hiLast cannot be null at this point...
-    return hiLast.getFileId();
-  }
-
-  /**
    * Return the history item by index.
    * 
-   * @param index DOCUMENT_ME
+   * @param index 
    * 
    * @return the history item
    */
@@ -325,7 +285,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   /**
    * parsing warning.
    *
-   * @param spe DOCUMENT_ME
+   * @param spe 
    * @throws SAXException the SAX exception
    */
   @Override
@@ -337,7 +297,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   /**
    * parsing error.
    *
-   * @param spe DOCUMENT_ME
+   * @param spe 
    * @throws SAXException the SAX exception
    */
   @Override
@@ -349,7 +309,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   /**
    * parsing fatal error.
    *
-   * @param spe DOCUMENT_ME
+   * @param spe 
    * @throws SAXException the SAX exception
    */
   @Override
@@ -377,10 +337,10 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   /**
    * Called when we start an element.
    * 
-   * @param sUri DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param sQName DOCUMENT_ME
-   * @param attributes DOCUMENT_ME
+   * @param sUri 
+   * @param sName 
+   * @param sQName 
+   * @param attributes 
    * 
    * @throws SAXException the SAX exception
    */
@@ -407,20 +367,6 @@ public final class History extends DefaultHandler implements HighPriorityObserve
     }
   }
 
-  /**
-   * Called when we reach the end of an element.
-   * 
-   * @param sUri DOCUMENT_ME
-   * @param sName DOCUMENT_ME
-   * @param sQName DOCUMENT_ME
-   * 
-   * @throws SAXException the SAX exception
-   */
-  @Override
-  public void endElement(String sUri, String sName, String sQName) throws SAXException {
-    // nothing to do here...
-  }
-
   /*
    * (non-Javadoc)
    *
@@ -428,41 +374,33 @@ public final class History extends DefaultHandler implements HighPriorityObserve
    */
   @Override
   public void update(final JajukEvent event) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        JajukEvents subject = event.getSubject();
-        try {
-          if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
-            String sFileID = (String) ObservationManager.getDetail(event,
-                Const.DETAIL_CURRENT_FILE_ID);
-            long lDate = ((Long) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_DATE))
-                .longValue();
-            addItem(sFileID, lDate);
-          } else if (JajukEvents.DEVICE_REFRESH.equals(subject)) {
-            cleanup();
-          } else if (JajukEvents.CLEAR_HISTORY.equals(subject)) {
-            clear();
-            InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.251"),
-                InformationJPanel.MessageType.INFORMATIVE);
-          } else if (JajukEvents.LANGUAGE_CHANGED.equals(subject)) {
-            // reset formatter
-            formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"), Locale
-                .getDefault());
-          } else if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) {
-            Properties properties = event.getDetails();
-            org.jajuk.base.File fileOld = (org.jajuk.base.File) properties.get(Const.DETAIL_OLD);
-            org.jajuk.base.File fNew = (org.jajuk.base.File) properties.get(Const.DETAIL_NEW);
-            // change id in history
-            changeID(fileOld.getID(), fNew.getID());
-          }
-        } catch (Exception e) {
-          Log.error(e);
-          return;
-        }
+    JajukEvents subject = event.getSubject();
+    try {
+      if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
+        String sFileID = (String) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_FILE_ID);
+        long lDate = ((Long) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_DATE))
+            .longValue();
+        addItem(sFileID, lDate);
+      } else if (JajukEvents.DEVICE_REFRESH.equals(subject)) {
+        cleanup();
+      } else if (JajukEvents.CLEAR_HISTORY.equals(subject)) {
+        clear();
+        InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.251"),
+            InformationJPanel.MessageType.INFORMATIVE);
+      } else if (JajukEvents.LANGUAGE_CHANGED.equals(subject)) {
+        // reset formatter
+        formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"), Locale.getDefault());
+      } else if (JajukEvents.FILE_NAME_CHANGED.equals(subject)) {
+        Properties properties = event.getDetails();
+        org.jajuk.base.File fileOld = (org.jajuk.base.File) properties.get(Const.DETAIL_OLD);
+        org.jajuk.base.File fNew = (org.jajuk.base.File) properties.get(Const.DETAIL_NEW);
+        // change id in history
+        changeID(fileOld.getID(), fNew.getID());
       }
-    });
-
+    } catch (Exception e) {
+      Log.error(e);
+      return;
+    }
   }
 
   /**

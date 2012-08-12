@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.base;
 
@@ -45,6 +45,7 @@ import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.helpers.ManualDeviceRefreshReporter;
 import org.jajuk.ui.helpers.RefreshReporter;
 import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -63,74 +64,52 @@ import org.xml.sax.Attributes;
 /**
  * A device ( music files repository )
  * <p>
- * Some properties of a device are immuatable : name, url and type *
+ * Some properties of a device are immutable : name, url and type *
  * <p>
  * Physical item.
  */
 public class Device extends PhysicalItem implements Comparable<Device> {
-
-  /** The Constant OPTION_REFRESH_DEEP.  DOCUMENT_ME */
-  protected static final int OPTION_REFRESH_DEEP = 1;
-
-  /** The Constant OPTION_REFRESH_CANCEL.  DOCUMENT_ME */
-  protected static final int OPTION_REFRESH_CANCEL = 2;
+  /** The Constant OPTION_REFRESH_DEEP.*/
+  private static final int OPTION_REFRESH_DEEP = 1;
+  /** The Constant OPTION_REFRESH_CANCEL. */
+  private static final int OPTION_REFRESH_CANCEL = 2;
 
   // Device type constants
-  // Note: these need to correspond with the static array in @see
-  // org.jajuk.base.DeviceManager !!
-  /** The Constant TYPE_DIRECTORY.  DOCUMENT_ME */
-  public static final int TYPE_DIRECTORY = 0;
-
-  /** The Constant TYPE_CD.  DOCUMENT_ME */
-  public static final int TYPE_CD = 1;
-
-  /** The Constant TYPE_NETWORK_DRIVE.  DOCUMENT_ME */
-  public static final int TYPE_NETWORK_DRIVE = 2;
-
-  /** The Constant TYPE_EXT_DD.  DOCUMENT_ME */
-  public static final int TYPE_EXT_DD = 3;
-
-  /** The Constant TYPE_PLAYER.  DOCUMENT_ME */
-  public static final int TYPE_PLAYER = 4;
+  /**
+   * .
+   */
+  public enum Type {
+    DIRECTORY, FILES_CD, NETWORK_DRIVE, EXTDD, PLAYER
+  }
 
   /** Device URL (performances). */
   private String sUrl;
-
   /** IO file for optimizations*. */
   private java.io.File fio;
-
   /** Mounted device flag. */
   private boolean bMounted = false;
-
   /** directories. */
   private final List<Directory> alDirectories = new ArrayList<Directory>(20);
-
   /** Already refreshing flag. */
-  private volatile boolean bAlreadyRefreshing = false;
-
+  private volatile boolean bAlreadyRefreshing = false; //NOSONAR
   /** Already synchronizing flag. */
-  private volatile boolean bAlreadySynchronizing = false;
-
+  private volatile boolean bAlreadySynchronizing = false; //NOSONAR
   /** Volume of created files during synchronization. */
   private long lVolume = 0;
-
   /** date last refresh. */
   private long lDateLastRefresh;
-
   /** Progress reporter *. */
   private RefreshReporter reporter;
-
   /** Refresh deepness choice *. */
   private int choice = Device.OPTION_REFRESH_DEEP;
-
-  /** [PERF] cache rootDir directory */
+  /** [PERF] cache rootDir directory. */
   private Directory rootDir;
 
   /**
    * Device constructor.
    * 
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
+   * @param sId 
+   * @param sName 
    */
   Device(final String sId, final String sName) {
     super(sId, sName);
@@ -139,9 +118,9 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   /**
    * Adds the directory.
    * 
-   * @param directory DOCUMENT_ME
+   * @param directory 
    */
-  public void addDirectory(final Directory directory) {
+  void addDirectory(final Directory directory) {
     alDirectories.add(directory);
   }
 
@@ -156,23 +135,18 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     long l = System.currentTimeMillis();
     // directories cleanup
     boolean bChanges = cleanDirectories(dirsToRefresh);
-
     // files cleanup
     bChanges = bChanges | cleanFiles(dirsToRefresh);
-
     // Playlist cleanup
     bChanges = bChanges | cleanPlaylist(dirsToRefresh);
-
     // clear history to remove old files referenced in it
     if (Conf.getString(Const.CONF_HISTORY) != null) {
       History.getInstance().clear(Integer.parseInt(Conf.getString(Const.CONF_HISTORY)));
     }
-
     // delete old history items
     l = System.currentTimeMillis() - l;
     Log.debug("{{" + getName() + "}} Old file references cleaned in: "
         + ((l < 1000) ? l + " ms" : l / 1000 + " s, changes: " + bChanges));
-
     return bChanges;
   }
 
@@ -204,6 +178,9 @@ public class Device extends PhysicalItem implements Comparable<Device> {
           && !plf.getFIO().exists()) {
         PlaylistManager.getInstance().removeItem(plf);
         Log.debug("Removed: " + plf);
+        if (reporter != null) {
+          reporter.notifyFileOrPlaylistDropped();
+        }
         bChanges = true;
       }
     }
@@ -242,6 +219,9 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         FileManager.getInstance().removeFile(file);
         Log.debug("Removed: " + file);
         bChanges = true;
+        if (reporter != null) {
+          reporter.notifyFileOrPlaylistDropped();
+        }
       }
     }
     return bChanges;
@@ -256,15 +236,16 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    */
   private boolean cleanDirectories(List<Directory> dirsToRefresh) {
     boolean bChanges = false;
-    // need to use a shallow copy to avoid concurrent exceptions
-
     List<Directory> dirs = null;
     if (dirsToRefresh == null) {
       dirs = DirectoryManager.getInstance().getDirectories();
     } else {
-      dirs = dirsToRefresh;
+      // If one or more named directories are provided, not only clean them up but also their sub directories
+      dirs = new ArrayList<Directory>(dirsToRefresh);
+      for (Directory dir : dirsToRefresh) {
+        dirs.addAll(dir.getDirectoriesRecursively());
+      }
     }
-
     for (final Directory dir : dirs) {
       if (!ExitService.isExiting() && dir.getDevice().equals(this) && dir.getDevice().isMounted()
           && !dir.getFio().exists()) {
@@ -280,7 +261,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   /**
    * Alphabetical comparator used to display ordered lists of devices.
    * 
-   * @param otherDevice DOCUMENT_ME
+   * @param otherDevice 
    * 
    * @return comparison result
    */
@@ -290,7 +271,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     if (otherDevice == null) {
       return -1;
     }
-
     // We must be consistent with equals, see
     // http://java.sun.com/javase/6/docs/api/java/lang/Comparable.html
     int comp = getName().compareToIgnoreCase(otherDevice.getName());
@@ -310,23 +290,21 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     return lDateLastRefresh;
   }
 
-  /**
-   * Get item description.
-   * 
-   * @return the desc
+  /* (non-Javadoc)
+   * @see org.jajuk.base.Item#getTitle()
    */
   @Override
-  public String getDesc() {
+  public String getTitle() {
     return Messages.getString("Item_Device") + " : " + getName();
   }
 
   /**
-   * Gets the device type s.
+   * Gets the device type as a string.
    * 
-   * @return the device type s
+   * @return the device type as string
    */
   public String getDeviceTypeS() {
-    return DeviceManager.getInstance().getDeviceType(getType());
+    return getType().name();
   }
 
   /**
@@ -349,7 +327,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     if (dirRoot != null) {
       return dirRoot.getFilesRecursively();
     }
-
     // nothing found, return empty list
     return new ArrayList<org.jajuk.base.File>();
   }
@@ -359,7 +336,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * 
    * @return Returns the IO file reference to this directory.
    */
-  public File getFio() {
+  public File getFIO() {
     return fio;
   }
 
@@ -371,10 +348,31 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   @Override
   public String getHumanValue(final String sKey) {
     if (Const.XML_TYPE.equals(sKey)) {
-      final long lType = getLongValue(sKey);
-      return DeviceManager.getInstance().getDeviceType(lType);
+      return getTypeLabel(getType());
     } else {// default
       return super.getHumanValue(sKey);
+    }
+  }
+
+  /**
+   * Return label for a type.
+   *
+   * @param type 
+   * @return label for a type
+   */
+  public static String getTypeLabel(Type type) {
+    if (type == Type.DIRECTORY) {
+      return Messages.getString("Device_type.directory");
+    } else if (type == Type.FILES_CD) {
+      return Messages.getString("Device_type.file_cd");
+    } else if (type == Type.EXTDD) {
+      return Messages.getString("Device_type.extdd");
+    } else if (type == Type.PLAYER) {
+      return Messages.getString("Device_type.player");
+    } else if (type == Type.NETWORK_DRIVE) {
+      return Messages.getString("Device_type.network_drive");
+    } else {
+      return null;
     }
   }
 
@@ -385,38 +383,67 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    */
   @Override
   public ImageIcon getIconRepresentation() {
-    switch ((int) getType()) {
-    case 0:
-      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED_SMALL),
+    if (getType() == Type.DIRECTORY) {
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED_SMALL),
           IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_UNMOUNTED_SMALL));
-    case 1:
-      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED_SMALL),
+    } else if (getType() == Type.FILES_CD) {
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED_SMALL),
           IconLoader.getIcon(JajukIcons.DEVICE_CD_UNMOUNTED_SMALL));
-    case 2:
-      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_MOUNTED_SMALL),
+    } else if (getType() == Type.NETWORK_DRIVE) {
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_MOUNTED_SMALL),
           IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL));
-    case 3:
-      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED_SMALL),
+    } else if (getType() == Type.EXTDD) {
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED_SMALL),
           IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_UNMOUNTED_SMALL));
-    case 4:
-      return setIcon(IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED_SMALL),
+    } else if (getType() == Type.PLAYER) {
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED_SMALL),
           IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_UNMOUNTED_SMALL));
-    default:
-      Log.warn("Unknown type of device detected: " + getType());
+    } else {
+      Log.warn("Unknown type of device detected: " + getType().name());
+      return null;
+    }
+  }
+
+  /*
+   * Return large icon representation of the device
+   * @Return large icon representation of the device
+   */
+  /**
+   * Gets the icon representation large.
+   *
+   * @return the icon representation large
+   */
+  public ImageIcon getIconRepresentationLarge() {
+    if (getType() == Type.DIRECTORY) {
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_MOUNTED),
+          IconLoader.getIcon(JajukIcons.DEVICE_DIRECTORY_UNMOUNTED));
+    } else if (getType() == Type.FILES_CD) {
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_CD_MOUNTED),
+          IconLoader.getIcon(JajukIcons.DEVICE_CD_UNMOUNTED));
+    } else if (getType() == Type.NETWORK_DRIVE) {
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_MOUNTED),
+          IconLoader.getIcon(JajukIcons.DEVICE_NETWORK_DRIVE_UNMOUNTED));
+    } else if (getType() == Type.EXTDD) {
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_MOUNTED),
+          IconLoader.getIcon(JajukIcons.DEVICE_EXT_DD_UNMOUNTED));
+    } else if (getType() == Type.PLAYER) {
+      return rightIcon(IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_MOUNTED),
+          IconLoader.getIcon(JajukIcons.DEVICE_PLAYER_UNMOUNTED));
+    } else {
+      Log.warn("Unknown type of device detected: " + getType().name());
       return null;
     }
   }
 
   /**
-   * Sets the icon.
-   * 
+   * Return the right icon between mounted or unmounted.
+   *
    * @param mountedIcon The icon to return for a mounted device
    * @param unmountedIcon The icon to return for an unmounted device
-   * 
    * @return Returns either of the two provided icons depending on the state of
    * the device
    */
-  private ImageIcon setIcon(ImageIcon mountedIcon, ImageIcon unmountedIcon) {
+  private ImageIcon rightIcon(ImageIcon mountedIcon, ImageIcon unmountedIcon) {
     if (isMounted()) {
       return mountedIcon;
     } else {
@@ -430,7 +457,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  public final String getLabel() {
+  public final String getXMLTag() {
     return Const.XML_DEVICE;
   }
 
@@ -441,7 +468,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    */
   public Directory getRootDirectory() {
     if (rootDir == null) {
-      rootDir = DirectoryManager.getInstance().getDirectoryForIO(getFio(), this);
+      rootDir = DirectoryManager.getInstance().getDirectoryForIO(getFIO(), this);
     }
     return rootDir;
   }
@@ -451,8 +478,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * 
    * @return the type
    */
-  public long getType() {
-    return getLongValue(Const.XML_TYPE);
+  public Device.Type getType() {
+    return Type.values()[(int) getLongValue(Const.XML_TYPE)];
   }
 
   /**
@@ -533,15 +560,14 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         cleanRemovedFiles(dirsToRefresh);
       }
       reporter.cleanupDone();
-
       // Actual refresh
       refreshCommand(((i == Device.OPTION_REFRESH_DEEP) || forcedDeep), true, dirsToRefresh);
-     
+      // cleanup logical items
+      org.jajuk.base.Collection.cleanupLogical();
       // if it is a move, clean old files *after* the refresh
       if (bAfterMove) {
         cleanRemovedFiles(dirsToRefresh);
       }
-
       // notify views to refresh
       ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
       // Commit collection at each refresh (can be useful if
@@ -568,14 +594,14 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   /**
    * Prepare manual refresh.
    * 
-   * @param bAsk DOCUMENT_ME
+   * @param bAsk ask user to perform deep or fast refresh 
    * 
    * @return the user choice (deep or fast)
    * 
    * @throws JajukException if user canceled, device cannot be refreshed or device already
    * refreshing
    */
-  public int prepareRefresh(final boolean bAsk) throws JajukException {
+  int prepareRefresh(final boolean bAsk) throws JajukException {
     if (bAsk) {
       final Object[] possibleValues = { Messages.getString("FilesTreeView.60"),// fast
           Messages.getString("FilesTreeView.61"),// deep
@@ -584,9 +610,10 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         SwingUtilities.invokeAndWait(new Runnable() {
           @Override
           public void run() {
-            choice = JOptionPane.showOptionDialog(null, Messages.getString("FilesTreeView.59"),
-                Messages.getString("Option"), JOptionPane.DEFAULT_OPTION,
-                JOptionPane.QUESTION_MESSAGE, null, possibleValues, possibleValues[0]);
+            choice = JOptionPane.showOptionDialog(JajukMainWindow.getInstance(),
+                Messages.getString("FilesTreeView.59"), Messages.getString("Option"),
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, possibleValues,
+                possibleValues[0]);
           }
         });
       } catch (Exception e) {
@@ -597,7 +624,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         return choice;
       }
     }
-
     // JajukException are not trapped, will be thrown to the caller
     final Device device = this;
     if (!device.isMounted()) {
@@ -614,37 +640,34 @@ public class Device extends PhysicalItem implements Comparable<Device> {
 
   /**
    * Check that the device is available and not void.
-   * 
-   * @param bManual manual or automatic refresh ?
+   * <p>We Cannot mount void devices because of the jajuk reference cleanup thread 
+   * ( a refresh would clear the entire device collection)</p>
    * 
    * @return true if the device is ready for mounting, false if the device is void
    * 
-   * @throws JajukException if the device is not accessible
    */
-  private boolean checkDevice(boolean bManual) throws JajukException {
+  private boolean checkDevice() {
+    return pathExists() && !isVoid();
+  }
+
+  /**
+   * Return whether a device maps a void directory.
+   *
+   * @return whether a device maps a void directory
+   */
+  private boolean isVoid() {
     final File file = new File(getUrl());
-    if (!file.exists()) {
-      throw new JajukException(11, "\"" + getName() + "\" at URL : " + getUrl());
-    }
-    /*
-     * Cannot mount void devices because of the jajuk reference cleanup thread 
-     * ( a refresh would clear the entire device collection)
-     */
-    if (file.listFiles() == null || file.listFiles().length == 0) {
-      if (bManual) {
-        final int answer = Messages.getChoice(
-            "[" + getName() + "] " + Messages.getString("Confirmation_void_refresh"),
-            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-        // leave if user doesn't confirm to mount the void device
-        return (answer == JOptionPane.YES_OPTION);
-      } else {
-        // In auto mode, never mount a void device
-        return false;
-      }
-    } else {
-      // Device is not void
-      return true;
-    }
+    return (file.listFiles() == null || file.listFiles().length == 0);
+  }
+
+  /**
+   * Return whether the device path exists at this time.
+   *
+   * @return whether the device path exists at this time
+   */
+  private boolean pathExists() {
+    final File file = new File(getUrl());
+    return file.exists();
   }
 
   /**
@@ -652,20 +675,34 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * 
    * @param bManual set whether mount is manual or auto
    * 
-   * @return whether the device has been mounted
+   * @return whether the device has been mounted. If user is asked for mounting but cancel, this method returns false.
    * 
-   * @throws JajukException if device cannot be mounted
+   * @throws JajukException if device cannot be mounted due to technical reason.
    */
   public boolean mount(final boolean bManual) throws JajukException {
     if (bMounted) {
+      // Device already mounted
       throw new JajukException(111);
     }
-    // Check if we can mount the device. It can throw a JajukException if void or unavailable
-    // device
-    boolean readyToMount = checkDevice(bManual);
+    // Check if we can mount the device. 
+    boolean readyToMount = checkDevice();
     // Effective mounting if available.
     if (readyToMount) {
       bMounted = true;
+    } else if (pathExists() && isVoid() && bManual) {
+      // If the device is void and in manual mode, leave a chance to the user to 
+      // force it
+      final int answer = Messages.getChoice(
+          "[" + getName() + "] " + Messages.getString("Confirmation_void_refresh"),
+          JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+      // leave if user doesn't confirm to mount the void device
+      if (answer != JOptionPane.YES_OPTION) {
+        return false;
+      } else {
+        bMounted = true;
+      }
+    } else {
+      throw new JajukException(11, "\"" + getName() + "\" at URL : " + getUrl());
     }
     // notify views to refresh if needed
     ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_MOUNT));
@@ -690,22 +727,20 @@ public class Device extends PhysicalItem implements Comparable<Device> {
         // no more a boolean
         if (meta.getName().equals(Const.XML_DEVICE_AUTO_REFRESH)
             && (sValue.equalsIgnoreCase(Const.TRUE) || sValue.equalsIgnoreCase(Const.FALSE))) {
-          switch ((int) getType()) {
-          case TYPE_DIRECTORY: // directory
+          if (getType() == Type.DIRECTORY) {
             sValue = "0.5d";
-            break;
-          case TYPE_CD: // file cd
+          }
+          if (getType() == Type.FILES_CD) {
             sValue = "0d";
-            break;
-          case TYPE_NETWORK_DRIVE: // network drive
+          }
+          if (getType() == Type.NETWORK_DRIVE) {
             sValue = "0d";
-            break;
-          case TYPE_EXT_DD: // ext dd
+          }
+          if (getType() == Type.EXTDD) {
             sValue = "3d";
-            break;
-          case TYPE_PLAYER: // player
+          }
+          if (getType() == Type.PLAYER) {
             sValue = "3d";
-            break;
           }
         }
         try {
@@ -766,7 +801,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * 
    * @return true if some changes occurred in device
    */
-  public synchronized boolean refreshCommand(final boolean bDeepScan, final boolean bManual,
+  boolean refreshCommand(final boolean bDeepScan, final boolean bManual,
       List<Directory> dirsToRefresh) {
     try {
       // Check if this device is mounted (useful when called by
@@ -774,13 +809,11 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       if (!isMounted()) {
         return false;
       }
-
       // Check that device is still available
-      boolean readyToMount = checkDevice(bManual);
+      boolean readyToMount = checkDevice();
       if (!readyToMount) {
         return false;
       }
-
       bAlreadyRefreshing = true;
       // reporter is already set in case of manual refresh
       if (reporter == null) {
@@ -797,7 +830,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       int iNbFilesBeforeRefresh = FileManager.getInstance().getElementCount();
       int iNbDirsBeforeRefresh = DirectoryManager.getInstance().getElementCount();
       int iNbPlaylistsBeforeRefresh = PlaylistManager.getInstance().getElementCount();
-
       if (bDeepScan && Log.isDebugEnabled()) {
         Log.debug("Starting refresh of device : " + this);
       }
@@ -807,7 +839,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       if (!getDirectories().contains(top)) {
         addDirectory(top);
       }
-
       // Start actual scan
       List<Directory> dirs = null;
       if (dirsToRefresh == null) {
@@ -820,7 +851,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       for (Directory dir : dirs) {
         scanRecursively(dir, bDeepScan);
       }
-
       // Force a GUI refresh if new files or directories discovered or have been
       // removed
       if (((FileManager.getInstance().getElementCount() - iNbFilesBeforeRefresh) != 0)
@@ -836,8 +866,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     } finally {
       // make sure to unlock refreshing even if an error occurred
       bAlreadyRefreshing = false;
-      // cleanup logical items
-      org.jajuk.base.Collection.cleanupLogical();
       // reporter is null if mount is not mounted due to early return
       if (reporter != null) {
         // Notify the reporter of the actual refresh startup
@@ -937,7 +965,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   /**
    * Synchronize action itself.
    */
-  public void synchronizeCommand() {
+  void synchronizeCommand() {
     try {
       bAlreadySynchronizing = true;
       long lTime = System.currentTimeMillis();
@@ -1003,8 +1031,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
   /**
    * Synchronize a device with another one (unidirectional).
    * 
-   * @param dSrc DOCUMENT_ME
-   * @param dest DOCUMENT_ME
+   * @param dSrc 
+   * @param dest 
    * 
    * @return nb of created files
    */
@@ -1173,9 +1201,8 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    */
   @Override
   public String toString() {
-    return "Device[ID=" + getID() + " Name=" + getName() + " Type="
-        + DeviceManager.getInstance().getDeviceType(getLongValue(Const.XML_TYPE)) + " URL=" + sUrl
-        + "]";
+    return "Device[ID=" + getID() + " Name=" + getName() + " Type=" + getType().name() + " URL="
+        + sUrl + "]";
   }
 
   /**
@@ -1189,7 +1216,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
    * Unmount the device with ejection.
    * 
    * @param bEjection set whether the device must be ejected
-   * @param bUIRefresh set wheter the UI should be refreshed
+   * @param bUIRefresh set whether the UI should be refreshed
    */
   public void unmount(final boolean bEjection, final boolean bUIRefresh) {
     // look to see if the device is already mounted
@@ -1207,5 +1234,4 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_UNMOUNT));
     }
   }
-
 }

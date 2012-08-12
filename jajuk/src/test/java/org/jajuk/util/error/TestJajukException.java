@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,17 +16,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.util.error;
 
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestJajukException extends JajukTestCase {
-
   /**
    * Test method for.
    *
@@ -67,7 +66,7 @@ public class TestJajukException extends JajukTestCase {
 
   /**
    * Test jajuk exception int string throwable null.
-   * DOCUMENT_ME
+   * 
    */
   public void testJajukExceptionIntStringThrowableNull() {
     new JajukException(28, null, new Throwable("Testthrowable"));
@@ -86,7 +85,7 @@ public class TestJajukException extends JajukTestCase {
 
   /**
    * Test jajuk exception int string null.
-   * DOCUMENT_ME
+   * 
    */
   public void testJajukExceptionIntStringNull() {
     new JajukException(29, (String) null);

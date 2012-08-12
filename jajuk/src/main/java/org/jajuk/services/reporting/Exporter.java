@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.reporting;
 
 import java.io.File;
@@ -31,13 +30,10 @@ import org.jajuk.util.UtilSystem;
  * The base abstract class for exporting music contents to different formats.
  */
 public abstract class Exporter {
-
   /** Public Constants. */
   public static final int PHYSICAL_COLLECTION = 0;
-
-  /** The Constant LOGICAL_COLLECTION.  DOCUMENT_ME */
+  /** The Constant LOGICAL_COLLECTION.   */
   public static final int LOGICAL_COLLECTION = 1;
-
   /** Cache file (used to handle concurrency issues), set by child classes. */
   protected File cache;
 
@@ -83,5 +79,4 @@ public abstract class Exporter {
   public File getCacheFile() {
     return this.cache;
   }
-
 }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.players;
 
@@ -27,7 +27,6 @@ import org.jajuk.services.webradio.WebRadio;
  * Minimum methods required for all Player implementations.
  */
 public interface IPlayerImpl {
-
   /**
    * Launches player.
    * 
@@ -45,8 +44,8 @@ public interface IPlayerImpl {
   /**
    * Play a web radio stream.
    * 
-   * @param radio DOCUMENT_ME
-   * @param fVolume DOCUMENT_ME
+   * @param radio 
+   * @param fVolume 
    * 
    * @throws Exception the exception
    */
@@ -75,12 +74,12 @@ public interface IPlayerImpl {
    * @return elapsed time (ms) for this player
    */
   long getElapsedTimeMillis();
-  
-   /**
-   * Gets the actually played time (including rewinds and forward, pause not included)
-   * 
-   * @return actually played time (ms) for this player
-   */
+
+  /**
+  * Gets the actually played time (including rewinds and forward, pause not included)
+  * 
+  * @return actually played time (ms) for this player
+  */
   long getActuallyPlayedTimeMillis();
 
   /**
@@ -100,7 +99,7 @@ public interface IPlayerImpl {
   /**
    * Seek to a given position in %. ex : 0.2 for 20%
    * 
-   * @param fPosition DOCUMENT_ME
+   * @param fPosition 
    */
   void seek(float fPosition);
 
@@ -131,5 +130,4 @@ public interface IPlayerImpl {
    * @return the state
    */
   int getState();
-
 }

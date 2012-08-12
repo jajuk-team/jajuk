@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.covers;
 
 import java.awt.Image;
@@ -45,7 +44,6 @@ import org.jajuk.util.log.Log;
  * A cover, encapsulates URL, files and manages cover priority to display.
  */
 public class Cover implements Comparable<Cover>, Const {
-
   /**
    * Covers type enumeration.
    * <p>
@@ -70,43 +68,25 @@ public class Cover implements Comparable<Cover>, Const {
    * </p>
    */
   public enum CoverType {
-
-    /** DOCUMENT_ME. */
-    NO_COVER,
-
-    /** DOCUMENT_ME. */
-    REMOTE_COVER,
-
-    /** DOCUMENT_ME. */
-    LOCAL_COVER,
-
+    NO_COVER, REMOTE_COVER, LOCAL_COVER,
     // cover stored in the tag of a file
-    TAG_COVER,
-    
-    /** DOCUMENT_ME. */
-    STANDARD_COVER,
-    
-    /** DOCUMENT_ME. */
-    SELECTED_COVER
+    TAG_COVER, STANDARD_COVER, SELECTED_COVER
   }
 
   /** Cover URL*. */
   private final URL url;
-
   /** Cover Type. */
   private final CoverType type;
-
   /** Associated file. */
   private File file;
-
   /** Default cover image. */
   private static final ImageIcon DEFAULT_COVER_ICON = UtilGUI.getImage(IMAGES_SPLASHSCREEN);
 
   /**
    * Constructor for remote covers.
-   * 
-   * @param type DOCUMENT_ME
-   * @param url DOCUMENT_ME
+   *
+   * @param url 
+   * @param type 
    */
   public Cover(final URL url, final CoverType type) {
     this.url = url;
@@ -120,10 +100,9 @@ public class Cover implements Comparable<Cover>, Const {
 
   /**
    * Constructor for local covers.
-   * 
-   * @param type DOCUMENT_ME
-   * @param localFile DOCUMENT_ME
-   * 
+   *
+   * @param localFile 
+   * @param type 
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public Cover(final File localFile, final CoverType type) throws IOException {
@@ -209,11 +188,10 @@ public class Cover implements Comparable<Cover>, Const {
 
   /**
    * Gets the image.
-   * 
+   *
    * @return Returns the image.
-   * 
-   * @throws InterruptedException the interrupted exception
    * @throws IOException Signals that an I/O exception has occurred.
+   * @throws InterruptedException the interrupted exception
    * @throws JajukException the jajuk exception
    */
   public Image getImage() throws IOException, InterruptedException, JajukException {
@@ -231,6 +209,7 @@ public class Cover implements Comparable<Cover>, Const {
       MediaTracker tracker = new MediaTracker(JajukMainWindow.getInstance());
       tracker.addImage(image, 1);
       tracker.waitForAll();
+      tracker.removeImage(image);
       // If image cannot be correctly loaded, throw an exception
       if (tracker.getErrorsAny() != null && tracker.getErrorsAny().length > 0) {
         throw new JajukException(9, getFile().getAbsolutePath());
@@ -253,7 +232,7 @@ public class Cover implements Comparable<Cover>, Const {
   /**
    * Equals needed for consistency for sorting.
    * 
-   * @param o DOCUMENT_ME
+   * @param o 
    * 
    * @return true, if equals
    */
@@ -263,12 +242,9 @@ public class Cover implements Comparable<Cover>, Const {
     if (!(o instanceof Cover)) {
       return false;
     }
-
     // we have an item of type Cover, so we can cast it safely
     Cover cOther = (Cover) o;
-
     return url.toString().equals(cOther.getURL().toString());
-
   }
 
   /**
@@ -294,5 +270,4 @@ public class Cover implements Comparable<Cover>, Const {
   public File getFile() {
     return this.file;
   }
-
 }

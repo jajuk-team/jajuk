@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.helpers;
 
@@ -40,9 +40,8 @@ import org.jajuk.util.JajukIcons;
  * Stars are only visible from the GUI, they are never stored into collection itself
  */
 public class StarsHelper {
-
   /** Cache iconLabel for each different rate to save memory and CPU. Map at index 0 stores banned tracks. */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("rawtypes")
   private static Map map[] = { new HashMap<Long, StarIconLabel>(),
       new HashMap<Long, StarIconLabel>(), new HashMap<Long, StarIconLabel>(),
       new HashMap<Long, StarIconLabel>(), new HashMap<Long, StarIconLabel>(),
@@ -51,7 +50,7 @@ public class StarsHelper {
   /**
    * Gets the icon.
    * 
-   * @param starsNumber DOCUMENT_ME
+   * @param starsNumber 
    * 
    * @return the icon
    */
@@ -77,7 +76,7 @@ public class StarsHelper {
   /**
    * Gets the stars number.
    * 
-   * @param item DOCUMENT_ME
+   * @param item 
    * 
    * @return Number of stars based on the rate of this item
    */
@@ -106,7 +105,7 @@ public class StarsHelper {
   /**
    * Gets the stars.
    * 
-   * @param item DOCUMENT_ME
+   * @param item 
    * 
    * @return the stars icon or ban icon if banned
    */
@@ -127,5 +126,4 @@ public class StarsHelper {
     }
     return sil;
   }
-
 }

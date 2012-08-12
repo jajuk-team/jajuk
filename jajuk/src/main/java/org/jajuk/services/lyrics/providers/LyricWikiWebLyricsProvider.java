@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.lyrics.providers;
 
 import ext.services.network.NetworkUtils;
@@ -34,10 +33,8 @@ import org.jajuk.util.log.Log;
  * Lyrics Provider extracting lyrics from lyricwiki.org
  */
 public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
-
   /** URL pattern used by jajuk to retrieve lyrics. */
   private static final String URL = "http://lyrics.wikia.com/%artist:%title";
-
   /** URL pattern to web page (see ILyricsProvider interface for details). */
   private static final String WEB_URL = "http://lyrics.wikia.com/%artist:%title";
 
@@ -69,7 +66,7 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
       html = cleanLyrics(html);
       // From oct 2009, lyrics wiki returns lyrics encoded as HTML chars
       // like &#83;&#104;&#97; ...
-      StringBuffer sbFinalHtml = new StringBuffer(1000);
+      StringBuilder sbFinalHtml = new StringBuilder(1000);
       StringTokenizer st = new StringTokenizer(html, "&#");
       while (st.hasMoreTokens()) {
         String token = st.nextToken();
@@ -96,7 +93,7 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
    * Extracts lyrics from the HTML page. The correct subsection is to be
    * extracted first, before being cleaned and stripped from useless HTML tags.
    * 
-   * @param html DOCUMENT_ME
+   * @param html 
    * 
    * @return the lyrics
    */
@@ -109,7 +106,6 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
       if (startIndex == -1) {
         startIndex = html.indexOf("<div class='lyricbox'>");
         ret = html.substring(startIndex + 22);
-
         // LyricWiki added some additional div class now...
         if (ret.startsWith("<div class='rtMatcher'>")) {
           startIndex = ret.indexOf("</div>");
@@ -131,7 +127,6 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
       ret = ret.replaceAll("<b>", "");
       ret = ret.replaceAll("</b>", "");
       return ret;
-
     } else {
       return null;
     }
@@ -159,12 +154,10 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
     // Replace spaces by _
     String artist = pArtist.replaceAll(" ", "_");
     String title = pTitle.replaceAll(" ", "_");
-
-    queryString = queryString.replace(Const.PATTERN_ARTIST, (artist != null) ? NetworkUtils
-        .encodeString(artist) : "");
-    queryString = queryString.replace(Const.PATTERN_TRACKNAME, (title != null) ? NetworkUtils
-        .encodeString(title) : "");
-
+    queryString = queryString.replace(Const.PATTERN_ARTIST,
+        (artist != null) ? NetworkUtils.encodeString(artist) : "");
+    queryString = queryString.replace(Const.PATTERN_TRACKNAME,
+        (title != null) ? NetworkUtils.encodeString(title) : "");
     java.net.URL out = null;
     try {
       out = new java.net.URL(queryString);
@@ -183,5 +176,4 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
   public String getLyrics() {
     return getLyrics(audioFile.getTrack().getArtist().getName2(), audioFile.getTrack().getName());
   }
-
 }

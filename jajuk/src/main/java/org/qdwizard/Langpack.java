@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.qdwizard;
 
@@ -32,14 +32,9 @@ import java.util.Map;
  * non-latin1 characters) and because QDwizard comes with very few strings
  */
 public class Langpack {
-
-  /** DOCUMENT_ME. */
   private static List<String> defaults = Arrays.asList("Finish", "Cancel", "Previous", "Next");
-
   // Strings content : "Finish", "Cancel", "Previous", "Next"
-  /** DOCUMENT_ME. */
   static private Map<Locale, List<String>> strings = new HashMap<Locale, List<String>>(4);
-
   /** static set of strings, can contain non-ISO8859 chars * */
   static {
     strings.put(new Locale("ca"), Arrays.asList("Finalitzar", "Cancelar", "Anterior", "Següent"));
@@ -50,12 +45,11 @@ public class Langpack {
     strings.put(new Locale("el"), Arrays.asList("Τέλος", "Ακύρωση", "Προηγούμενο", "Επόμενο"));
     strings.put(new Locale("fr"), Arrays.asList("Terminé", "Annuler", "Précédent", "Suivant"));
     strings.put(new Locale("gl"), Arrays.asList("Rematar", "Cancelar", "Anterior", "Seguinte"));
-    strings.put(new Locale("nl"), Arrays.asList("Afgerond", "Annuleren", "Vooropgaand",
-        "Aanstaande"));
+    strings.put(new Locale("nl"),
+        Arrays.asList("Afgerond", "Annuleren", "Vooropgaand", "Aanstaande"));
     strings.put(new Locale("ru"), Arrays.asList("Готово", "Отмена", "Назад", "Дальше"));
     strings.put(new Locale("pt"), Arrays.asList("Terminar", "Cancelar", "Anterior", "Seguinte"));
   }
-
   /** Used locale for the wizard buttons, use English as a default *. */
   private static Locale locale = new Locale("en");
 
@@ -69,7 +63,7 @@ public class Langpack {
   /**
    * Set the QDwizard locale.
    * 
-   * @param locale DOCUMENT_ME
+   * @param locale 
    */
   public static void setLocale(Locale locale) {
     Langpack.locale = locale;

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.base;
 
 import java.util.ArrayList;
@@ -30,6 +29,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -39,6 +40,7 @@ import org.jajuk.services.tags.Tag;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.Messages;
 import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
@@ -49,13 +51,10 @@ import org.jajuk.util.log.Log;
  * Convenient class to manage Tracks.
  */
 public final class TrackManager extends ItemManager {
-
   /** Self instance. */
   private static TrackManager singleton = new TrackManager();
-
   /** Autocommit flag for tags *. */
   private volatile boolean bAutocommit = true;
-
   /** Set of tags to commit. */
   private final Set<Tag> tagsToCommit = new HashSet<Tag>(10);
 
@@ -64,7 +63,6 @@ public final class TrackManager extends ItemManager {
    */
   private TrackManager() {
     super();
-
     // ---register properties---
     // ID
     registerProperty(new PropertyMetaInformation(Const.XML_ID, false, true, false, false, false,
@@ -97,7 +95,7 @@ public final class TrackManager extends ItemManager {
     // not editable
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_RATE, false, false, true, false,
         true, Long.class, 0));
-    // Files
+    // Files. This is now a derivated property, build on demand. Never commited because always null.
     registerProperty(new PropertyMetaInformation(Const.XML_FILES, false, false, true, false, false,
         String.class, null));
     // Hits
@@ -127,7 +125,9 @@ public final class TrackManager extends ItemManager {
     // Track ban status
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_BANNED, false, false, true, true,
         false, Boolean.class, false));
-
+    // Scrobble flag
+    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_SCROBBLE, false, false, true,
+        true, true, Boolean.class, true));
   }
 
   /**
@@ -140,17 +140,32 @@ public final class TrackManager extends ItemManager {
   }
 
   /**
+   * Confirm before actually changing a tag
+   * @param track the track to be changed
+   * @return whether user accept to actually change a tag
+   */
+  private boolean confirm(Track track) {
+    if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_BEFORE_TAG_WRITE)) {
+      final int iResu = Messages.getChoice(Messages.getString("Confirmation_tag_write") + " : \n"
+          + track.getFilesString(), JOptionPane.YES_NO_CANCEL_OPTION,
+          JOptionPane.INFORMATION_MESSAGE);
+      return iResu == JOptionPane.YES_OPTION;
+    }
+    return true;
+  }
+
+  /**
    * Register an Track.
    * 
-   * @param sName DOCUMENT_ME
-   * @param album DOCUMENT_ME
-   * @param genre DOCUMENT_ME
-   * @param artist DOCUMENT_ME
-   * @param length DOCUMENT_ME
-   * @param year DOCUMENT_ME
-   * @param lOrder DOCUMENT_ME
-   * @param type DOCUMENT_ME
-   * @param lDiscNumber DOCUMENT_ME
+   * @param sName 
+   * @param album 
+   * @param genre 
+   * @param artist 
+   * @param length 
+   * @param year 
+   * @param lOrder 
+   * @param type 
+   * @param lDiscNumber 
    * 
    * @return the track
    */
@@ -163,15 +178,15 @@ public final class TrackManager extends ItemManager {
   /**
    * Return hashcode for a track.
    * 
-   * @param sName DOCUMENT_ME
-   * @param album DOCUMENT_ME
-   * @param genre DOCUMENT_ME
-   * @param artist DOCUMENT_ME
-   * @param length DOCUMENT_ME
-   * @param year DOCUMENT_ME
-   * @param lOrder DOCUMENT_ME
-   * @param type DOCUMENT_ME
-   * @param lDiscNumber DOCUMENT_ME
+   * @param sName 
+   * @param album 
+   * @param genre 
+   * @param artist 
+   * @param length 
+   * @param year 
+   * @param lOrder 
+   * @param type 
+   * @param lDiscNumber 
    * 
    * @return the string
    */
@@ -188,18 +203,17 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Register an Track with a known id.
-   * 
-   * @param sName DOCUMENT_ME
-   * @param sId DOCUMENT_ME
-   * @param album DOCUMENT_ME
-   * @param genre DOCUMENT_ME
-   * @param artist DOCUMENT_ME
-   * @param length DOCUMENT_ME
-   * @param year DOCUMENT_ME
-   * @param lOrder DOCUMENT_ME
-   * @param type DOCUMENT_ME
-   * @param lDiscNumber DOCUMENT_ME
-   * 
+   *
+   * @param sId 
+   * @param sName 
+   * @param album 
+   * @param genre 
+   * @param artist 
+   * @param length 
+   * @param year 
+   * @param lOrder 
+   * @param type 
+   * @param lDiscNumber 
    * @return the track
    */
   public Track registerTrack(String sId, String sName, Album album, Genre genre, Artist artist,
@@ -219,7 +233,6 @@ public final class TrackManager extends ItemManager {
       synchronized (cache) {
         cache.add(track);
       }
-
       return track;
     } finally {
       lock.writeLock().unlock();
@@ -234,8 +247,8 @@ public final class TrackManager extends ItemManager {
    * @throw an exception if a tag cannot be commited
    */
   public void commit() throws JajukException {
-    lock.writeLock().lock();
     try {
+      lock.writeLock().lock();
       // Iterate over a shallow copy to avoid concurrent issues (note also that
       // several threads can commit at the same time). We synchronize the copy and
       // we drop tags to commit.
@@ -278,19 +291,20 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Change a track album.
-   * 
+   *
+   * @param track 
+   * @param sNewAlbum 
    * @param filter files we want to deal with
-   * @param track DOCUMENT_ME
-   * @param sNewAlbum DOCUMENT_ME
-   * 
    * @return new track
-   * 
    * @throws JajukException the jajuk exception
    */
   public Track changeTrackAlbum(Track track, String sNewAlbum, Set<File> filter)
       throws JajukException {
-    lock.writeLock().lock();
     try {
+      lock.writeLock().lock();
+      if (!confirm(track)) {
+        return track;
+      }
       // check there is actually a change
       if (track.getAlbum().getName2().equals(sNewAlbum)) {
         return track;
@@ -338,19 +352,20 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Change a track artist.
-   * 
+   *
+   * @param track 
+   * @param sNewArtist 
    * @param filter files we want to deal with
-   * @param track DOCUMENT_ME
-   * @param sNewArtist DOCUMENT_ME
-   * 
    * @return new track
-   * 
    * @throws JajukException the jajuk exception
    */
   public Track changeTrackArtist(Track track, String sNewArtist, Set<File> filter)
       throws JajukException {
-    lock.writeLock().lock();
     try {
+      lock.writeLock().lock();
+      if (!confirm(track)) {
+        return track;
+      }
       // check there is actually a change
       if (track.getArtist().getName2().equals(sNewArtist)) {
         return track;
@@ -364,7 +379,6 @@ public final class TrackManager extends ItemManager {
       // change tag in files
       for (final File file : alReady) {
         final Tag tag = Tag.getTagForFio(file.getFIO(), false);
-
         tag.setArtistName(sNewArtist);
         if (bAutocommit) {
           tag.commit();
@@ -377,7 +391,6 @@ public final class TrackManager extends ItemManager {
       synchronized (cache) {
         cache.remove(track);
       }
-
       // if current track artist name is changed, notify it
       if (QueueModel.getPlayingFile() != null
           && QueueModel.getPlayingFile().getTrack().getArtist().equals(track.getArtist())) {
@@ -399,21 +412,21 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Change a track genre.
-   * 
+   *
+   * @param track 
+   * @param sNewGenre 
    * @param filter files we want to deal with
-   * @param track DOCUMENT_ME
-   * @param sNewGenre DOCUMENT_ME
-   * 
    * @return new track
-   * 
    * @throws JajukException the jajuk exception
    */
   public Track changeTrackGenre(Track track, String sNewGenre, Set<File> filter)
       throws JajukException {
-    lock.writeLock().lock();
     try {
+      lock.writeLock().lock();
+      if (!confirm(track)) {
+        return track;
+      }
       // check there is actually a change
-
       if (track.getGenre().getName2().equals(sNewGenre)) {
         return track;
       }
@@ -426,7 +439,6 @@ public final class TrackManager extends ItemManager {
       // change tag in files
       for (final File file : alReady) {
         Tag tag = Tag.getTagForFio(file.getFIO(), false);
-
         tag.setGenreName(sNewGenre);
         if (bAutocommit) {
           tag.commit();
@@ -439,7 +451,6 @@ public final class TrackManager extends ItemManager {
       synchronized (cache) {
         cache.remove(track);
       }
-
       // register the new item
       Genre newGenre = GenreManager.getInstance().registerGenre(sNewGenre);
       Track newTrack = registerTrack(track.getName(), track.getAlbum(), newGenre,
@@ -456,18 +467,19 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Change a track year.
-   * 
+   *
+   * @param track 
+   * @param newItem 
    * @param filter files we want to deal with
-   * @param track DOCUMENT_ME
-   * @param newItem DOCUMENT_ME
-   * 
    * @return new track or null if wrong format
-   * 
    * @throws JajukException the jajuk exception
    */
   public Track changeTrackYear(Track track, String newItem, Set<File> filter) throws JajukException {
-    lock.writeLock().lock();
     try {
+      lock.writeLock().lock();
+      if (!confirm(track)) {
+        return track;
+      }
       // check there is actually a change
       if (track.getYear().getName().equals(newItem)) {
         return track;
@@ -485,7 +497,6 @@ public final class TrackManager extends ItemManager {
       // change tag in files
       for (final File file : alReady) {
         Tag tag = Tag.getTagForFio(file.getFIO(), false);
-
         tag.setYear(newItem);
         if (bAutocommit) {
           tag.commit();
@@ -498,7 +509,6 @@ public final class TrackManager extends ItemManager {
       synchronized (cache) {
         cache.remove(track);
       }
-
       // Register new item
       Year newYear = YearManager.getInstance().registerYear(newItem);
       Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(),
@@ -513,19 +523,19 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Change a track comment.
-   * 
+   *
+   * @param track 
+   * @param sNewItem 
    * @param filter files we want to deal with
-   * @param track DOCUMENT_ME
-   * @param sNewItem DOCUMENT_ME
-   * 
-   * @return new track or null if wronf format
-   * 
+   * @return new track or null if wrong format
    * @throws JajukException the jajuk exception
    */
-  public Track changeTrackComment(Track track, String sNewItem, Set<File> filter)
-      throws JajukException {
-    lock.writeLock().lock();
+  Track changeTrackComment(Track track, String sNewItem, Set<File> filter) throws JajukException {
     try {
+      lock.writeLock().lock();
+      if (!confirm(track)) {
+        return track;
+      }
       // check there is actually a change
       if (track.getComment().equals(sNewItem)) {
         return track;
@@ -562,14 +572,15 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track rate.
    * 
-   * @param track DOCUMENT_ME
-   * @param lNew DOCUMENT_ME
+   * @param track 
+   * @param lNew 
    * 
    * @return new track or null if wrong format
    */
   public Track changeTrackRate(Track track, long lNew) {
-    lock.writeLock().lock();
     try {
+      lock.writeLock().lock();
+      // No confirmation here as this code is called during startup and is not available from GUI anyway
       // check there is actually a change
       if (track.getRate() == lNew) {
         return track;
@@ -589,19 +600,20 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Change a track order.
-   * 
+   *
+   * @param track 
+   * @param lNewOrder 
    * @param filter files we want to deal with
-   * @param track DOCUMENT_ME
-   * @param lNewOrder DOCUMENT_ME
-   * 
    * @return new track or null if wrong format
-   * 
    * @throws JajukException the jajuk exception
    */
   public Track changeTrackOrder(Track track, long lNewOrder, Set<File> filter)
       throws JajukException {
-    lock.writeLock().lock();
     try {
+      lock.writeLock().lock();
+      if (!confirm(track)) {
+        return track;
+      }
       // check there is actually a change
       if (track.getOrder() == lNewOrder) {
         return track;
@@ -626,13 +638,11 @@ public final class TrackManager extends ItemManager {
           tagsToCommit.add(tag);
         }
       }
-
       // Remove the track from the old album
       List<Track> cache = track.getAlbum().getTracksCache();
       synchronized (cache) {
         cache.remove(track);
       }
-
       Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(),
           track.getArtist(), track.getDuration(), track.getYear(), lNewOrder, track.getType(),
           track.getDiscNumber());
@@ -644,20 +654,62 @@ public final class TrackManager extends ItemManager {
   }
 
   /**
+  * Change a generic field.
+  * 
+  * @param track the track to write against.
+  * @param tagFieldKey the tag key
+  * @param tagFieldValue the tag value as a string
+  * @param filter files we want to deal with
+   * 
+  * @return the track
+  *
+  * @throws JajukException if the tag can't be written
+  */
+  public Track changeTrackField(Track track, String tagFieldKey, String tagFieldValue,
+      Set<File> filter) throws JajukException {
+    try {
+      lock.writeLock().lock();
+      if (!confirm(track)) {
+        return track;
+      }
+      List<File> alReady = null;
+      // check if files are accessible
+      alReady = track.getReadyFiles();
+      if (alReady.size() == 0) {
+        throw new NoneAccessibleFileException(10);
+      }
+      // change tag in files
+      for (File file : alReady) {
+        Tag tag = Tag.getTagForFio(file.getFIO(), false);
+        tag.setTagField(tagFieldKey, tagFieldValue);
+        if (bAutocommit) {
+          tag.commit();
+        } else {
+          tagsToCommit.add(tag);
+        }
+      }
+      return track;
+    } finally {
+      lock.writeLock().unlock();
+    }
+  }
+
+  /**
    * Change a track name.
-   * 
+   *
+   * @param track 
+   * @param sNewItem 
    * @param filter files we want to deal with
-   * @param track DOCUMENT_ME
-   * @param sNewItem DOCUMENT_ME
-   * 
    * @return new track
-   * 
    * @throws JajukException the jajuk exception
    */
   public Track changeTrackName(Track track, String sNewItem, Set<File> filter)
       throws JajukException {
-    lock.writeLock().lock();
     try {
+      lock.writeLock().lock();
+      if (!confirm(track)) {
+        return track;
+      }
       // check there is actually a change
       if (track.getName().equals(sNewItem)) {
         return track;
@@ -678,13 +730,11 @@ public final class TrackManager extends ItemManager {
           tagsToCommit.add(tag);
         }
       }
-
       // Remove old track from the album
       List<Track> cache = track.getAlbum().getTracksCache();
       synchronized (cache) {
         cache.remove(track);
       }
-
       Track newTrack = registerTrack(sNewItem, track.getAlbum(), track.getGenre(),
           track.getArtist(), track.getDuration(), track.getYear(), track.getOrder(),
           track.getType(), track.getDiscNumber());
@@ -702,19 +752,19 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Change track album artist.
-   * 
-   * @param track DOCUMENT_ME
-   * @param filter DOCUMENT_ME
-   * @param sNewItem DOCUMENT_ME
-   * 
+   *
+   * @param track 
+   * @param sNewItem 
+   * @param filter 
    * @return the item
-   * 
    * @throws JajukException the jajuk exception
    */
-  public Item changeTrackAlbumArtist(Track track, String sNewItem, Set<File> filter)
-      throws JajukException {
-    lock.writeLock().lock();
+  Item changeTrackAlbumArtist(Track track, String sNewItem, Set<File> filter) throws JajukException {
     try {
+      lock.writeLock().lock();
+      if (!confirm(track)) {
+        return track;
+      }
       // check there is actually a change
       if (track.getAlbumArtist() != null && track.getAlbumArtist().getName2().equals(sNewItem)) {
         return track;
@@ -752,19 +802,20 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Change track disc number.
-   * 
-   * @param track DOCUMENT_ME
-   * @param filter DOCUMENT_ME
-   * @param lNewDiscNumber DOCUMENT_ME
-   * 
+   *
+   * @param track 
+   * @param lNewDiscNumber 
+   * @param filter 
    * @return the item
-   * 
    * @throws JajukException the jajuk exception
    */
   public Item changeTrackDiscNumber(Track track, long lNewDiscNumber, Set<File> filter)
       throws JajukException {
-    lock.writeLock().lock();
     try {
+      lock.writeLock().lock();
+      if (!confirm(track)) {
+        return track;
+      }
       // check there is actually a change
       if (track.getDiscNumber() == lNewDiscNumber) {
         return track;
@@ -789,19 +840,16 @@ public final class TrackManager extends ItemManager {
           tagsToCommit.add(tag);
         }
       }
-
       // Remove the track from the old album
       List<Track> cache = track.getAlbum().getTracksCache();
       synchronized (cache) {
         cache.remove(track);
       }
-
       // if current track album name is changed, notify it
       if (QueueModel.getPlayingFile() != null
           && QueueModel.getPlayingFile().getTrack().getAlbum().equals(track.getAlbum())) {
         ObservationManager.notify(new JajukEvent(JajukEvents.ALBUM_CHANGED));
       }
-
       Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(),
           track.getArtist(), track.getDuration(), track.getYear(), track.getDiscNumber(),
           track.getType(), lNewDiscNumber);
@@ -815,9 +863,9 @@ public final class TrackManager extends ItemManager {
   /**
    * Update files references. 
    * 
-   * @param oldTrack DOCUMENT_ME
-   * @param newTrack DOCUMENT_ME
-   * @param filter DOCUMENT_ME
+   * @param oldTrack 
+   * @param newTrack 
+   * @param filter 
    */
   private void updateFilesReferences(Track oldTrack, Track newTrack, Set<File> filter) {
     lock.writeLock().lock();
@@ -832,11 +880,11 @@ public final class TrackManager extends ItemManager {
   }
 
   /**
-   * Post change. DOCUMENT_ME
+   * Post change. 
    * 
-   * @param track DOCUMENT_ME
-   * @param newTrack DOCUMENT_ME
-   * @param filter DOCUMENT_ME
+   * @param track 
+   * @param newTrack 
+   * @param filter 
    */
   private void postChange(Track track, Track newTrack, Set<File> filter) {
     lock.writeLock().lock();
@@ -882,7 +930,7 @@ public final class TrackManager extends ItemManager {
   /**
    * Remove a file mapping from a track.
    * 
-   * @param file DOCUMENT_ME
+   * @param file 
    */
   public void removeFile(File file) {
     Track track = file.getTrack();
@@ -890,7 +938,6 @@ public final class TrackManager extends ItemManager {
     try {
       // Remove file reference
       track.removeFile(file);
-
       // If the track contained a single file, drop it
       if (track.getFiles().size() == 0) {
         // the track don't map
@@ -900,7 +947,6 @@ public final class TrackManager extends ItemManager {
     } finally {
       lock.writeLock().unlock();
     }
-
   }
 
   /*
@@ -909,7 +955,7 @@ public final class TrackManager extends ItemManager {
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
-  public String getLabel() {
+  public String getXMLTag() {
     return Const.XML_TRACKS;
   }
 
@@ -920,7 +966,7 @@ public final class TrackManager extends ItemManager {
    * </p>
    * .
    * 
-   * @param item DOCUMENT_ME
+   * @param item 
    * @param sorted Whether the output should be sorted on it (actually applied on
    * artists,years and genres because others items are already sorted)
    * 
@@ -938,11 +984,10 @@ public final class TrackManager extends ItemManager {
    * This is a shallow copy only
    * </p>
    * .
-   * 
+   *
+   * @param items 
    * @param sorted Whether the output should be sorted on it (actually applied on
    * artists,years and genres because others items are already sorted)
-   * @param items DOCUMENT_ME
-   * 
    * @return the associated tracks
    */
   @SuppressWarnings("unchecked")
@@ -1102,7 +1147,7 @@ public final class TrackManager extends ItemManager {
   /**
    * Perform a search in all files names with given criteria.
    * 
-   * @param criteria DOCUMENT_ME
+   * @param criteria 
    * 
    * @return an ordered list of available files
    */
@@ -1127,7 +1172,6 @@ public final class TrackManager extends ItemManager {
     } finally {
       lock.readLock().unlock();
     }
-
   }
 
   /**
@@ -1147,5 +1191,4 @@ public final class TrackManager extends ItemManager {
   public void setAutocommit(boolean autocommit) {
     this.bAutocommit = autocommit;
   }
-
 }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.wizard;
 
 import java.awt.Container;
@@ -30,7 +29,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
@@ -38,6 +36,7 @@ import javax.swing.WindowConstants;
 import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.ui.widgets.JajukJDialog;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -50,22 +49,18 @@ import org.jajuk.util.log.Log;
  * Help perspective *
  */
 public class DonateWindow extends JajukJDialog {
-  
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** The Constant BUDGET_LINK.  DOCUMENT_ME */
+  /** The Constant BUDGET_LINK.   */
   private static final String BUDGET_LINK = "http://jajuk.info/index.php/Project_budget";
-  
-  /** The Constant DONATE_LINK.  DOCUMENT_ME */
+  /** The Constant DONATE_LINK.   */
   private static final String DONATE_LINK = "http://jajuk.info/index.php/Donate";
 
   /**
    * Constructor.
    */
   public DonateWindow() {
-    super();
-
+    super(JajukMainWindow.getInstance(), true);
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
@@ -77,7 +72,6 @@ public class DonateWindow extends JajukJDialog {
         setResizable(false);
         setVisible(true);
       }
-
     });
   }
 
@@ -88,7 +82,7 @@ public class DonateWindow extends JajukJDialog {
    */
   /**
    * Inits the ui.
-   * DOCUMENT_ME
+   * 
    */
   public void initUI() {
     Container cp = this.getContentPane();
@@ -97,7 +91,6 @@ public class DonateWindow extends JajukJDialog {
     cp.add(new JLabel(Messages.getString("JajukDonate.2")), "wrap");
     JButton jbBudget = new JButton(Messages.getString("JajukDonate.3"));
     jbBudget.addActionListener(new ActionListener() {
-
       @Override
       public void actionPerformed(ActionEvent e) {
         try {
@@ -108,14 +101,12 @@ public class DonateWindow extends JajukJDialog {
         } catch (URISyntaxException e1) {
           Log.error(e1);
         }
-
       }
     });
     cp.add(jbBudget, "wrap");
     cp.add(new JLabel(Messages.getString("JajukDonate.4")), "wrap");
     JButton jbDonation = new JButton(Messages.getString("JajukDonate.1"));
     jbDonation.addActionListener(new ActionListener() {
-
       @Override
       public void actionPerformed(ActionEvent e) {
         try {
@@ -126,7 +117,6 @@ public class DonateWindow extends JajukJDialog {
         } catch (URISyntaxException e1) {
           Log.error(e1);
         }
-
       }
     });
     cp.add(jbDonation, "wrap");

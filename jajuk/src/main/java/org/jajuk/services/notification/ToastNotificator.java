@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,10 +16,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.notification;
 
+import org.jajuk.base.Album;
 import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.widgets.JajukToast;
@@ -36,7 +37,6 @@ import org.jajuk.util.UtilGUI;
  * </p>
  */
 public class ToastNotificator implements INotificator {
-
   /** Self instance *. */
   private static ToastNotificator self = new ToastNotificator();
 
@@ -99,6 +99,9 @@ public class ToastNotificator implements INotificator {
    */
   @Override
   public void notify(File file) {
+    // Force any new cover search before displaying it if the album is set "none" cover
+    Album album = file.getTrack().getAlbum();
+    album.resetCoverCache();
     String text = file.getHTMLFormatText();
     displayToast(text);
   }

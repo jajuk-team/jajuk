@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package ext.services.xml;
 
@@ -25,6 +25,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.jajuk.ConstTest;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.util.log.Log;
@@ -32,14 +33,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestXMLUtils extends JajukTestCase {
-
   // helper method to emma-coverage of the unused constructor
   /**
    * Test serializable utilities private constructor.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -57,13 +57,12 @@ public class TestXMLUtils extends JajukTestCase {
   public void testGetChildElement() {
     Document doc = XMLUtils.getDocument("<xml><test/></xml>");
     assertNotNull(doc);
-
     assertNotNull(XMLUtils.getChildElement(doc.getDocumentElement(), "test"));
   }
 
   /**
    * Test get child element null.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetChildElementNull() {
     assertNull(XMLUtils.getChildElement(null, "test"));
@@ -71,12 +70,11 @@ public class TestXMLUtils extends JajukTestCase {
 
   /**
    * Test get child element not existing.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetChildElementNotExisting() {
     Document doc = XMLUtils.getDocument("<xml><test/></xml>");
     assertNotNull(doc);
-
     assertNull(XMLUtils.getChildElement(doc.getDocumentElement(), "notexist"));
   }
 
@@ -89,10 +87,8 @@ public class TestXMLUtils extends JajukTestCase {
   public void testGetAttributeValue() {
     Document doc = XMLUtils.getDocument("<xml><test value=\"1\"/></xml>");
     assertNotNull(doc);
-
     Element test = XMLUtils.getChildElement(doc.getDocumentElement(), "test");
     assertNotNull(test);
-
     assertNotNull(XMLUtils.getAttributeValue(test, "value"));
     assertEquals("", XMLUtils.getAttributeValue(test, "notexist"));
     assertEquals("", XMLUtils.getAttributeValue(doc.getDocumentElement(), "value"));
@@ -100,7 +96,7 @@ public class TestXMLUtils extends JajukTestCase {
 
   /**
    * Test get attribute value null.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetAttributeValueNull() {
     assertNull(XMLUtils.getAttributeValue(null, "value"));
@@ -115,13 +111,12 @@ public class TestXMLUtils extends JajukTestCase {
   public void testGetChildElementContent() {
     Document doc = XMLUtils.getDocument("<xml><test value=\"1\">testcontent</test></xml>");
     assertNotNull(doc);
-
     assertEquals("testcontent", XMLUtils.getChildElementContent(doc.getDocumentElement(), "test"));
   }
 
   /**
    * Test get child element content null.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetChildElementContentNull() {
     assertEquals("", XMLUtils.getChildElementContent(null, "test"));
@@ -130,17 +125,15 @@ public class TestXMLUtils extends JajukTestCase {
   /**
    * Test method for {@link ext.XMLUtils#getDocument(java.lang.String)}.
    */
-
   public void testGetDocument() {
     Document doc = XMLUtils.getDocument("<xml><test value=\"1\"/></xml>");
     assertNotNull(doc);
-
     assertEquals("xml", doc.getDocumentElement().getTagName());
   }
 
   /**
    * Test get document parse error.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetDocumentParseError() {
     Document doc = XMLUtils.getDocument("<xmlinvalid>adsasd<asdksdtest value=\"1\"/></xml>");
@@ -159,22 +152,18 @@ public class TestXMLUtils extends JajukTestCase {
    * .
    */
   public final void testWriteBeanToFile() throws Exception {
-
     PersonBean bean = new PersonBean();
     bean.setName("testvalue");
-
-    File file = File.createTempFile("test", ".bean");
-    assertTrue(file.delete()); // delte file to create it from scratch
+    File file = File.createTempFile("test", ".bean", new java.io.File(ConstTest.TECH_TESTS_PATH));
+    assertTrue(file.delete()); // delete file to create it from scratch
     assertFalse(file.exists());
     XMLUtils.writeBeanToFile(bean, file.getAbsolutePath());
-
     { // check file
       assertTrue(file.exists());
       String contents = FileUtils.readFileToString(file);
       Log.debug("Contents: " + contents);
       assertTrue(contents, file.length() > 0);
     }
-
     /*
      * TODO: somehow this test does not work, we should find out and fix this
      * test...
@@ -188,13 +177,11 @@ public class TestXMLUtils extends JajukTestCase {
 
   /**
    * Test write bean to file invalid file.
-   * DOCUMENT_ME
+   * 
    */
   public final void testWriteBeanToFileInvalidFile() {
-
     PersonBean bean = new PersonBean();
     bean.setName("testvalue");
-
     try {
       XMLUtils.writeBeanToFile(bean,
           "&@#$@(*^)!#!@#@#)}{?M<>?<?,/.,/.,\"'\\][|}{{:2zqwq;sInvalidFileName/\\/");
@@ -208,14 +195,9 @@ public class TestXMLUtils extends JajukTestCase {
    * Class <code>PersonBean</code>.
    */
   public class PersonBean implements java.io.Serializable {
-    
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1124123276327532379L;
-
-    /** DOCUMENT_ME. */
     private String name;
-
-    /** DOCUMENT_ME. */
     private boolean deceased;
 
     /** No-arg constructor (takes no arguments). */
@@ -286,19 +268,14 @@ public class TestXMLUtils extends JajukTestCase {
    */
   public final void testReadObjectFromString() throws Exception {
     String str = new String("teststring");
-
-    File file = File.createTempFile("test", ".bean");
+    File file = File.createTempFile("test", ".bean", new java.io.File(ConstTest.TECH_TESTS_PATH));
     assertTrue(file.delete()); // delte file to create it from scratch
     assertFalse(file.exists());
     XMLUtils.writeObjectToFile(str, file.getAbsolutePath());
-
     assertTrue(file.exists());
-
     String xml = FileUtils.readFileToString(file);
-
     assertTrue(StringUtils.isNotBlank(xml));
     assertNotNull(XMLUtils.getDocument(xml));
-
     /*
      * TODO: currently this reports an error about xpp3 pull parser missing, not
      * sure how this works inside Jajuk...
@@ -319,14 +296,11 @@ public class TestXMLUtils extends JajukTestCase {
    */
   public final void testWriteObjectToFile() throws Exception {
     String str = new String("teststring");
-
-    File file = File.createTempFile("test", ".bean");
+    File file = File.createTempFile("test", ".bean", new java.io.File(ConstTest.TECH_TESTS_PATH));
     assertTrue(file.delete()); // delte file to create it from scratch
     assertFalse(file.exists());
     XMLUtils.writeObjectToFile(str, file.getAbsolutePath());
-
     assertTrue(file.exists());
-
     /*
      * TODO: currently this reports an error about xpp3 pull parser missing, not
      * sure how this works inside Jajuk...
@@ -340,11 +314,10 @@ public class TestXMLUtils extends JajukTestCase {
 
   /**
    * Test write object to file invalid file.
-   * DOCUMENT_ME
+   * 
    */
   public final void testWriteObjectToFileInvalidFile() {
     String str = new String("teststring");
-
     try {
       XMLUtils.writeObjectToFile(str,
           "&@#$@(*^)!#!@#@#)}{?M<>?<?,/.,/.,\"'\\][|}{{:2zqwq;sInvalidFileName/\\/");

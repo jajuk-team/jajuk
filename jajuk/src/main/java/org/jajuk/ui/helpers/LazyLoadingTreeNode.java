@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.helpers;
 
@@ -31,7 +31,6 @@ import javax.swing.tree.MutableTreeNode;
  * created a lot.
  */
 public abstract class LazyLoadingTreeNode extends DefaultMutableTreeNode {
-  
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -73,7 +72,7 @@ public abstract class LazyLoadingTreeNode extends DefaultMutableTreeNode {
    * This method will be executed in a background thread. If you have to do some
    * GUI stuff use {@link SwingUtilities#invokeLater(Runnable)}
    * 
-   * @param model DOCUMENT_ME
+   * @param model 
    * 
    * @return The created nodes.
    */

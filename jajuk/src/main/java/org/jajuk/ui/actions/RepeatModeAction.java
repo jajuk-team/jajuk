@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
@@ -35,10 +35,9 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class RepeatModeAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -54,7 +53,7 @@ public class RepeatModeAction extends JajukAction {
   /**
    * Invoked when an action occurs.
    * 
-   * @param evt DOCUMENT_ME
+   * @param evt 
    */
   @Override
   public void perform(ActionEvent evt) {
@@ -63,7 +62,6 @@ public class RepeatModeAction extends JajukAction {
     // disabling repeat for an item forced unset for all items and enabling single repeat unset
     // repeat for all items and then set it only for current track
     QueueModel.setRepeatModeToAll(false);
-
     if (!b) { // enabled button
       // if FIFO is not void, repeat over current item
       StackItem item = QueueModel.getCurrentItem();

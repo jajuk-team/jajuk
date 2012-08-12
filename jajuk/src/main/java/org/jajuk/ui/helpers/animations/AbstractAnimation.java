@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.helpers.animations;
 
 import java.awt.Window;
@@ -28,17 +27,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Base implementation of IAnimation.
  */
 public abstract class AbstractAnimation implements IAnimation {
-
-  /** DOCUMENT_ME. */
   protected Window window;
-
-  /** DOCUMENT_ME. */
   private CopyOnWriteArrayList<AnimationCompletedListener> listeners = new CopyOnWriteArrayList<AnimationCompletedListener>();
 
   /**
    * Instantiates a new abstract animation.
    * 
-   * @param window DOCUMENT_ME
+   * @param window 
    */
   protected AbstractAnimation(Window window) {
     this.window = window;
@@ -54,9 +49,9 @@ public abstract class AbstractAnimation implements IAnimation {
 
   /**
    * Adds the animation completed listener.
-   * DOCUMENT_ME
    * 
-   * @param listener DOCUMENT_ME
+   * 
+   * @param listener 
    */
   public void addAnimationCompletedListener(AnimationCompletedListener listener) {
     listeners.add(listener);
@@ -64,9 +59,9 @@ public abstract class AbstractAnimation implements IAnimation {
 
   /**
    * Removes the animation completed listener.
-   * DOCUMENT_ME
    * 
-   * @param listener DOCUMENT_ME
+   * 
+   * @param listener 
    */
   public void removeAnimationCompletedListener(AnimationCompletedListener listener) {
     listeners.remove(listener);
@@ -74,7 +69,7 @@ public abstract class AbstractAnimation implements IAnimation {
 
   /**
    * Animation completed.
-   * DOCUMENT_ME
+   * 
    */
   protected void animationCompleted() {
     AnimationCompletedEvent event = new AnimationCompletedEvent(this, window);

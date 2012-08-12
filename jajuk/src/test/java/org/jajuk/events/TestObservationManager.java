@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.events;
 
@@ -28,11 +28,9 @@ import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestObservationManager extends JajukTestCase {
-  
-  /** DOCUMENT_ME. */
   AtomicInteger called = new AtomicInteger(0);
 
   /*
@@ -67,11 +65,10 @@ public class TestObservationManager extends JajukTestCase {
 
   /**
    * Test unregister null.
-   * DOCUMENT_ME
+   * 
    */
   public void testUnregisterNull() {
     ObservationManager.unregister(new Observer() {
-
       @Override
       public void update(JajukEvent event) {
         // nothing to do
@@ -140,8 +137,8 @@ public class TestObservationManager extends JajukTestCase {
     Properties prop = new Properties();
     prop.setProperty("test", "value");
     ObservationManager.notifySync(new JajukEvent(JajukEvents.VOLUME_CHANGED, prop));
-    assertEquals("value", ObservationManager.getDetailLastOccurence(JajukEvents.VOLUME_CHANGED,
-        "test"));
+    assertEquals("value",
+        ObservationManager.getDetailLastOccurence(JajukEvents.VOLUME_CHANGED, "test"));
   }
 
   /**
@@ -153,20 +150,19 @@ public class TestObservationManager extends JajukTestCase {
   public void testGetDetail() {
     Properties prop = new Properties();
     prop.setProperty("test", "value");
-    assertEquals("value", ObservationManager.getDetail(new JajukEvent(JajukEvents.VOLUME_CHANGED,
-        prop), "test"));
+    assertEquals("value",
+        ObservationManager.getDetail(new JajukEvent(JajukEvents.VOLUME_CHANGED, prop), "test"));
   }
 
   /**
    * Test get detail null.
-   * DOCUMENT_ME
+   * 
    */
   public void testGetDetailNull() {
     Properties prop = new Properties();
     prop.setProperty("test", "value");
     assertNull(ObservationManager.getDetail(new JajukEvent(JajukEvents.VOLUME_CHANGED, prop),
         "notexisting"));
-
     assertNull(ObservationManager.getDetail(new JajukEvent(JajukEvents.VOLUME_CHANGED),
         "notexisting"));
   }
@@ -190,7 +186,7 @@ public class TestObservationManager extends JajukTestCase {
   // helper method to emma-coverage of the unused constructor
   /**
    * Test private constructor.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
@@ -201,7 +197,7 @@ public class TestObservationManager extends JajukTestCase {
 
   /**
    * Test exception.
-   * DOCUMENT_ME
+   * 
    */
   public void testException() {
     Observer observer = new TestObserverRegistry.LocalObserver(true, called);

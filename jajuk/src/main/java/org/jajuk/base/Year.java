@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.base;
 
@@ -33,7 +33,6 @@ import org.jajuk.util.UtilString;
  * <br>Logical item
  */
 public class Year extends LogicalItem implements Comparable<Year> {
-
   /** The year that is stored in this object. */
   private final long value;
 
@@ -58,7 +57,7 @@ public class Year extends LogicalItem implements Comparable<Year> {
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
-  public final String getLabel() {
+  public final String getXMLTag() {
     return XML_YEAR;
   }
 
@@ -83,17 +82,14 @@ public class Year extends LogicalItem implements Comparable<Year> {
     if (other == null) {
       return -1;
     }
-
     return (int) (getValue() - other.getValue());
   }
 
-  /**
-   * Get item description.
-   * 
-   * @return the desc
+  /* (non-Javadoc)
+   * @see org.jajuk.base.Item#getTitle()
    */
   @Override
-  public String getDesc() {
+  public String getTitle() {
     return Messages.getHumanPropertyName(Const.XML_YEAR) + " : " + getName();
   }
 
@@ -125,7 +121,7 @@ public class Year extends LogicalItem implements Comparable<Year> {
    * 
    * @return true, if looks valid
    */
-  public boolean looksValid() {
+  boolean looksValid() {
     return value > 1000 && value < 3000;
   }
 }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.notification;
 
@@ -29,8 +29,6 @@ import org.jajuk.util.log.Log;
  * Factory returning a INotifictor according to user choice.
  */
 public class NotificatorFactory {
-
-  /** DOCUMENT_ME. */
   private static INotificator notificator;
 
   /**
@@ -42,13 +40,11 @@ public class NotificatorFactory {
    * @return the notificator
    */
   public synchronized static INotificator getNotificator() {
-
     // first check show balloon option and return null
     String optionValue = Conf.getString(Const.CONF_UI_NOTIFICATOR_TYPE);
     if (StringUtils.isBlank(optionValue) || NotificatorTypes.NONE.name().equals(optionValue)) {
       return null;
     }
-
     // Balloon
     if (NotificatorTypes.BALLOON.name().equals(optionValue)) {
       // Try the NotifySend implementation first
@@ -69,7 +65,6 @@ public class NotificatorFactory {
         }
       }
     }
-
     // Animated popup
     else if (NotificatorTypes.TOAST.name().equals(optionValue)) {
       notificator = ToastNotificator.getInstance();
@@ -84,5 +79,4 @@ public class NotificatorFactory {
     }
     return notificator;
   }
-
 }

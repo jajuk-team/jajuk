@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.helpers;
 
@@ -61,10 +61,8 @@ import org.jajuk.util.log.Log;
  * buttons state) accordingly.
  */
 public class PlayerStateMediator implements Observer {
-
   /** Singleton. */
   private static PlayerStateMediator self = new PlayerStateMediator();
-
   // Register this item, do not do this in the constructor as the instance is not yet available
   static {
     ObservationManager.register(self);
@@ -106,10 +104,8 @@ public class PlayerStateMediator implements Observer {
     eventSubjectSet.add(JajukEvents.VOLUME_CHANGED);
     eventSubjectSet.add(JajukEvents.MUTE_STATE);
     eventSubjectSet.add(JajukEvents.SHOW_CURRENTLY_PLAYING);
-
     // for notification display
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
-
     return eventSubjectSet;
   }
 
@@ -134,7 +130,6 @@ public class PlayerStateMediator implements Observer {
           ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(bQueueNotVoid);
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(bQueueNotVoid);
           ActionManager.getAction(NEXT_TRACK).setEnabled(bQueueNotVoid);
-
           setToPlay();
           ActionManager.getAction(STOP_TRACK).setEnabled(false);
           ActionManager.getAction(FORWARD_TRACK).setEnabled(false);
@@ -203,7 +198,6 @@ public class PlayerStateMediator implements Observer {
           ActionManager.getAction(PAUSE_RESUME_TRACK).setEnabled(true);
           setToPause();
           ActionManager.getAction(STOP_TRACK).setEnabled(true);
-
           // display a system notification if specified
           INotificator notifier = NotificatorFactory.getNotificator();
           if (notifier != null) {
@@ -225,7 +219,6 @@ public class PlayerStateMediator implements Observer {
               Log.debug("No id found on FILE_LAUNCHED");
               return;
             }
-
             File file = FileManager.getInstance().getFileByID(id);
             Log.debug("Got update for new file launched, item: {{" + file + "}}. Sending text: {{"
                 + QueueModel.getCurrentFileTitle() + "}}");
@@ -245,7 +238,6 @@ public class PlayerStateMediator implements Observer {
             }
           }
         }
-
         // For all events except Volume Change/Mute, refresh the queue
         if (!JajukEvents.VOLUME_CHANGED.equals(subject) && !JajukEvents.MUTE_STATE.equals(subject)
             && !JajukEvents.FILE_LAUNCHED.equals(subject)
@@ -272,5 +264,4 @@ public class PlayerStateMediator implements Observer {
     ActionManager.getAction(PAUSE_RESUME_TRACK).setIcon(IconLoader.getIcon(JajukIcons.PLAYER_PLAY));
     ActionManager.getAction(PAUSE_RESUME_TRACK).setName(Messages.getString("JajukWindow.12"));
   }
-
 }

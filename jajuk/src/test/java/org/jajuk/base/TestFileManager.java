@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision: 3132 $
+ *  
  */
 package org.jajuk.base;
 
@@ -29,39 +29,39 @@ import org.jajuk.util.error.JajukException;
 import org.junit.Test;
 
 /**
- * 
+ * .
  */
 public class TestFileManager extends JajukTestCase {
-
+  /* (non-Javadoc)
+   * @see org.jajuk.JajukTestCase#setUp()
+   */
   @Override
   protected void setUp() throws Exception {
     super.setUp();
   }
-  
-   /**
+
+  /**
    * Test method for {@link org.jajuk.base.FileManager#removeFile(File)}.
    * @throws IOException 
+   *
    */
   @Test
-  public void testRemoveFile() {
-     // Set-up...
+  public void testRemoveFile() throws IOException {
+    // Set-up...
     File file = JUnitHelpers.getFile();
-    
     // Remove the reference
     FileManager.getInstance().removeFile(file);
-    
     // 1- Check that the collection no more contains the file
     assertTrue(FileManager.getInstance().getFileByID(file.getID()) == null);
-    
     // 2- check that associated track no more contains this file
     assertFalse(file.getTrack().getFiles().contains(file));
-    
-    
   }
 
   /**
    * Test method for {@link org.jajuk.base.FileManager#changeFileDirectory(org.jajuk.base.File, org.jajuk.base.Directory)}.
-   * @throws IOException 
+   *
+   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws JajukException the jajuk exception
    */
   @Test
   public void testChangeFileDirectory() throws IOException, JajukException {
@@ -78,13 +78,10 @@ public class TestFileManager extends JajukTestCase {
     // Perform the move
     File newFile = FileManager.getInstance().changeFileDirectory(oldFile, newDir);
     // Now test ...
-
     //1- Does the new file exist ?
     assertTrue(new java.io.File(newDir.getAbsolutePath() + '/' + oldFile.getName()).exists());
-
     //2- Does the old file is removed ?
     assertFalse(oldFile.getFIO().exists());
-    
     //3- Does the associated track contains the right file (and only it)
     List<File> files = newFile.getTrack().getFiles();
     assertTrue(files.size() == 1 && files.get(0).equals(newFile));

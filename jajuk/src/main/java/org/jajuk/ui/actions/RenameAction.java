@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.actions;
 
@@ -44,10 +44,9 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class RenameAction extends JajukAction {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -100,7 +99,6 @@ public class RenameAction extends JajukAction {
        * files (hopefully not the tracks ones) because we simply remove the directory and force its
        * scan again. A better implementation would clone all files recursively
        */
-
       // check that the directory is not an ancestor of the currently played file
       if (QueueModel.getPlayingFile() != null
           && QueueModel.getPlayingFile().hasAncestor((Directory) currentItem)) {
@@ -113,13 +111,12 @@ public class RenameAction extends JajukAction {
         try {
           UtilGUI.waiting();
           java.io.File newFile = new java.io.File(((Directory) currentItem).getParentDirectory()
-              .getAbsolutePath()
-              + "/" + newName);
+              .getAbsolutePath() + "/" + newName);
           java.io.File dir = ((Directory) currentItem).getFio();
           // For directories, we don't copy / delete, we just rename for performance reasons
           // and because the Utilsystem.move() code only works for files.
           // We check that the directory has actually been renamed.
-          if (!dir.renameTo(newFile)) {
+          if (!dir.renameTo(newFile)) { //NONAR
             throw new IOException("Cannot rename directory : " + dir.getAbsolutePath());
           }
           DirectoryManager.getInstance().removeDirectory(((Directory) currentItem).getID());

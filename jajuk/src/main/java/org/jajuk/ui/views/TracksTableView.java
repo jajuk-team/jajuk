@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.ui.views;
 
 import javax.swing.JMenuItem;
@@ -27,9 +26,7 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.TracksTableModel;
-import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.widgets.JajukTable;
-import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
@@ -37,15 +34,10 @@ import org.jajuk.util.UtilGUI;
 /**
  * Logical table view.
  */
-public class TracksTableView extends AbstractTableView implements TwoStepsDisplayable {
-
+public class TracksTableView extends AbstractTableView {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** DOCUMENT_ME. */
   private JMenuItem jmiTrackPlayAlbum;
-
-  /** DOCUMENT_ME. */
   private JMenuItem jmiTrackPlayArtist;
 
   /**
@@ -123,16 +115,4 @@ public class TracksTableView extends AbstractTableView implements TwoStepsDispla
     // model creation
     return new TracksTableModel(getID());
   }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.views.AbstractTableView#initTable()
-   */
-  @Override
-  void initTable() {
-    boolean bEditable = Conf.getBoolean(Const.CONF_TRACKS_TABLE_EDITION);
-    jtbEditable.setSelected(bEditable);
-  }
-
 }

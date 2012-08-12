@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.views;
 
@@ -30,7 +30,6 @@ import org.jajuk.ui.perspectives.IPerspective;
  * A view.
  */
 public interface IView extends ComponentListener, Dockable {
-
   /**
    * Returns the view identifier.
    * 
@@ -41,7 +40,7 @@ public interface IView extends ComponentListener, Dockable {
   /**
    * Set view ID.
    * 
-   * @param sID DOCUMENT_ME
+   * @param sID 
    */
   void setID(String sID);
 
@@ -67,7 +66,7 @@ public interface IView extends ComponentListener, Dockable {
   /**
    * Sets the is populated.
    * 
-   * @param isDisplayed DOCUMENT_ME
+   * @param isDisplayed 
    */
   void setIsPopulated(boolean isDisplayed);
 
@@ -81,7 +80,7 @@ public interface IView extends ComponentListener, Dockable {
   /**
    * Sets the perspective.
    * 
-   * @param perspective DOCUMENT_ME
+   * @param perspective 
    */
   void setPerspective(IPerspective perspective);
 
@@ -89,5 +88,4 @@ public interface IView extends ComponentListener, Dockable {
    * Called when the view perspective is selected.
    */
   void onPerspectiveSelection();
-
 }

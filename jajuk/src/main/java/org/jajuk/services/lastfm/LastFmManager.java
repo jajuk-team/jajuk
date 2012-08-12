@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.lastfm;
 
 import ext.services.lastfm.LastFmService;
@@ -34,8 +33,6 @@ import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
-import org.jajuk.util.DownloadManager;
-import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
 /**
@@ -46,10 +43,8 @@ import org.jajuk.util.log.Log;
  * </p>
  */
 public final class LastFmManager implements Observer, Const {
-
   /** Self instance. */
   private static LastFmManager self = new LastFmManager();
-
   /** Lastfm service. */
   private LastFmService service;
 
@@ -59,10 +54,8 @@ public final class LastFmManager implements Observer, Const {
   private LastFmManager() {
     // Register on the list for subject we are interested in
     ObservationManager.register(this);
-
     // Create the service
     service = LastFmService.getInstance();
-
   }
 
   /**
@@ -96,10 +89,15 @@ public final class LastFmManager implements Observer, Const {
     if (Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE)
         && JajukEvents.FILE_FINISHED == event.getSubject()
         && !Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
+      final File file = (File) event.getDetails().get(Const.DETAIL_CURRENT_FILE);
+      if (!file.getTrack().getBooleanValue(XML_TRACK_SCROBBLE)) {
+        Log.debug("Track scrobble property unset, not submitted to last.fm : "
+            + file.getTrack().getID());
+        return;
+      }
       new Thread("LastFM Update Thread") {
         @Override
         public void run() {
-          File file = (File) event.getDetails().get(Const.DETAIL_CURRENT_FILE);
           long playedTime = (Long) event.getDetails().get(Const.DETAIL_CONTENT);
           // Last.FM rule : only submit >= 30secs playbacks
           if (playedTime >= 30000) {
@@ -129,5 +127,4 @@ public final class LastFmManager implements Observer, Const {
       Log.error(e);
     }
   }
-
 }

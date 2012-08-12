@@ -20,7 +20,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package ext.services.lastfm;
 
 import java.util.ArrayList;
@@ -33,30 +32,26 @@ import net.roarsoftware.lastfm.Album;
  * The Class LastFmAlbumList.
  */
 public class LastFmAlbumList implements AlbumListInfo {
-
   /** The artist. */
   private String artist;
-
   /** The albums. */
   private List<AlbumInfo> albums;
 
   /**
    * Gets the album list.
    * 
-   * @param as DOCUMENT_ME
-   * @param artist DOCUMENT_ME
+   * @param as 
+   * @param artist 
    * 
    * @return the album list
    */
   public static AlbumListInfo getAlbumList(Collection<Album> as, String artist) {
     List<AlbumInfo> albums = new ArrayList<AlbumInfo>();
     AlbumListInfo albumList = new LastFmAlbumList();
-
     for (Album a : as) {
       AlbumInfo album = LastFmAlbum.getAlbum(a, null);
       albums.add(album);
     }
-
     albumList.setAlbums(albums);
     return albumList;
   }
@@ -100,5 +95,4 @@ public class LastFmAlbumList implements AlbumListInfo {
   public void setArtist(String artist) {
     this.artist = artist;
   }
-
 }

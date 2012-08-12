@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.ui.windows;
 
@@ -35,7 +35,6 @@ package org.jajuk.ui.windows;
  * These states are managed by the WindowStateDecorator
  */
 public interface IJajukWindow {
-
   /**
    * Build the GUI (widgets)
    * <p>
@@ -50,5 +49,4 @@ public interface IJajukWindow {
    * @return the window state decorator
    */
   public WindowStateDecorator getWindowStateDecorator();
-
 }

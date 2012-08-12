@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.base;
 
 import java.util.Arrays;
@@ -42,13 +41,12 @@ import org.jajuk.util.error.JajukException;
  * Convenient class to manage genres.
  */
 public final class GenreManager extends ItemManager {
-
   /** Self instance. */
   private static GenreManager singleton = new GenreManager();
-
   /* List of all known genres */
-  /** DOCUMENT_ME. */
   private Vector<String> genresList; // NOPMD
+  /** note if we have already fully loaded the Collection to speed up initial startup */
+  private volatile boolean orderedState = false;
 
   /**
    * No constructor available, only static access.
@@ -81,7 +79,7 @@ public final class GenreManager extends ItemManager {
   /**
    * Register a genre.
    * 
-   * @param sName DOCUMENT_ME
+   * @param sName 
    * 
    * @return the genre
    */
@@ -93,11 +91,11 @@ public final class GenreManager extends ItemManager {
   /**
    * Register a genre with a known id.
    *
-   * @param sId DOCUMENT_ME
-   * @param sName DOCUMENT_ME
+   * @param sId 
+   * @param sName 
    * @return the genre
    */
-  public Genre registerGenre(String sId, String sName) {
+  Genre registerGenre(String sId, String sName) {
     Genre genre = getGenreByID(sId);
     if (genre != null) {
       return genre;
@@ -107,22 +105,43 @@ public final class GenreManager extends ItemManager {
     // add it in genres list if new
     if (!genresList.contains(sName)) {
       genresList.add(genre.getName2());
-      // Sort items ignoring case
-      Collections.sort(genresList, new Comparator<String>() {
-        @Override
-        public int compare(String o1, String o2) {
-          return o1.compareToIgnoreCase(o2);
-        }
-      });
+      // only sort as soon as we have the Collection fully loaded
+      if (orderedState) {
+        sortGenreList();
+      }
     }
     return genre;
   }
 
   /**
-   * Register preset genres.
-   * DOCUMENT_ME
+   * 
    */
-  public void registerPresetGenres() {
+  private void sortGenreList() {
+    // Sort items ignoring case
+    Collections.sort(genresList, new Comparator<String>() {
+      @Override
+      public int compare(String o1, String o2) {
+        return o1.compareToIgnoreCase(o2);
+      }
+    });
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.base.ItemManager#switchToOrderState()
+   */
+  @Override
+  public void switchToOrderState() {
+    // bring this Manager to ordered state when Collection is fully loaded
+    orderedState = true;
+    sortGenreList();
+    super.switchToOrderState();
+  }
+
+  /**
+   * Register preset genres.
+   * 
+   */
+  private void registerPresetGenres() {
     // create default genre list
     genresList = new Vector<String>(Arrays.asList(UtilFeatures.GENRES));
     Collections.sort(genresList);
@@ -134,7 +153,7 @@ public final class GenreManager extends ItemManager {
   /**
    * Return genre by name.
    * 
-   * @param name DOCUMENT_ME
+   * @param name 
    * 
    * @return the genre by name
    */
@@ -152,14 +171,14 @@ public final class GenreManager extends ItemManager {
   /**
    * Change the item name.
    * 
-   * @param old DOCUMENT_ME
-   * @param sNewName DOCUMENT_ME
+   * @param old 
+   * @param sNewName 
    * 
    * @return new item
    * 
    * @throws JajukException the jajuk exception
    */
-  public Genre changeGenreName(Genre old, String sNewName) throws JajukException {
+  Genre changeGenreName(Genre old, String sNewName) throws JajukException {
     // check there is actually a change
     if (old.getName2().equals(sNewName)) {
       return old;
@@ -197,7 +216,7 @@ public final class GenreManager extends ItemManager {
    * <p>
    * example: "ROCK".
    * 
-   * @param sName DOCUMENT_ME
+   * @param sName 
    * 
    * @return the string
    */
@@ -216,7 +235,7 @@ public final class GenreManager extends ItemManager {
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
-  public String getLabel() {
+  public String getXMLTag() {
     return Const.XML_GENRES;
   }
 
@@ -260,5 +279,4 @@ public final class GenreManager extends ItemManager {
   public ReadOnlyIterator<Genre> getGenresIterator() {
     return new ReadOnlyIterator<Genre>((Iterator<Genre>) getItemsIterator());
   }
-
 }

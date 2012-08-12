@@ -20,6 +20,6 @@
     <jdkPreference>preferJre</jdkPreference>
     <initialHeapSize>20</initialHeapSize>
     <maxHeapSize>512</maxHeapSize>
-    <opt>-client -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10</opt>
+    <opt>-client -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -Xverify:none</opt>
   </jre>
 </launch4jConfig>

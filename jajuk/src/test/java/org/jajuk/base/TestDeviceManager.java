@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,20 +16,21 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.base;
 
+import org.jajuk.ConstTest;
+import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
 /**
- * DOCUMENT_ME.
+ * .
  */
 public class TestDeviceManager extends JajukTestCase {
-
   /* (non-Javadoc)
    * @see org.jajuk.JajukTestCase#setUp()
    */
@@ -41,10 +42,10 @@ public class TestDeviceManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.DeviceManager#getLabel()}.
+   * Test method for {@link org.jajuk.base.DeviceManager#getXMLTag()}.
    */
   public final void testGetLabel() {
-    assertEquals(Const.XML_DEVICES, DeviceManager.getInstance().getLabel());
+    assertEquals(Const.XML_DEVICES, DeviceManager.getInstance().getXMLTag());
   }
 
   /**
@@ -54,7 +55,6 @@ public class TestDeviceManager extends JajukTestCase {
    */
   public final void testStartAutoRefreshThread() {
     DeviceManager.getInstance().startAutoRefreshThread();
-
     // what happens if done twice?
     DeviceManager.getInstance().startAutoRefreshThread();
   }
@@ -73,43 +73,27 @@ public class TestDeviceManager extends JajukTestCase {
    * .
    */
   public final void testRegisterDeviceStringLongString() {
-    assertNotNull(DeviceManager.getInstance().registerDevice("device", 0,
-        System.getProperty("java.io.tmpdir")));
-
-    assertNotNull(DeviceManager.getInstance().getDeviceByName("device"));
+    assertNotNull(JUnitHelpers.getDevice());
+    assertNotNull(DeviceManager.getInstance().getDeviceByName("sample_device"));
   }
 
   /**
    * Test register device twice.
-   * DOCUMENT_ME
+   * 
    */
   public final void testRegisterDeviceTwice() {
-    assertNotNull(DeviceManager.getInstance().registerDevice("device", 0,
-        System.getProperty("java.io.tmpdir")));
-    assertNotNull(DeviceManager.getInstance().registerDevice("device", 0,
-        System.getProperty("java.io.tmpdir")));
-
+    assertNotNull(DeviceManager.getInstance().registerDevice("device", Device.Type.DIRECTORY,
+        ConstTest.DEVICES_BASE_PATH + "/dev"));
+    assertNotNull(DeviceManager.getInstance().registerDevice("device", Device.Type.DIRECTORY,
+        ConstTest.DEVICES_BASE_PATH + "/dev"));
     assertNotNull(DeviceManager.getInstance().getDeviceByName("device"));
   }
 
   /**
-   * Test method for.
-   *
-   * {@link org.jajuk.base.DeviceManager#registerDevice(java.lang.String, java.lang.String, long, java.lang.String)}
-   * .
-   */
-  public final void testRegisterDeviceStringStringLongString() {
-    assertNotNull(DeviceManager.getInstance().registerDevice("2", "device2", 0,
-        System.getProperty("java.io.tmpdir")));
-
-    assertNotNull(DeviceManager.getInstance().getDeviceByName("device2"));
-  }
-
-  /**
-   * Test method for.
-   *
-   * {@link org.jajuk.base.DeviceManager#createID(java.lang.String)}.
-   */
+  * Test method for.
+  *
+  * {@link org.jajuk.base.DeviceManager#createID(java.lang.String)}.
+  */
   public final void testCreateID() {
     assertNotNull(ItemManager.createID("device123"));
   }
@@ -121,100 +105,83 @@ public class TestDeviceManager extends JajukTestCase {
    * .
    */
   public final void testCheckDeviceAvailablityCD() {
-    assertEquals(0, DeviceManager.getInstance().checkDeviceAvailablity("device3", Device.TYPE_CD,
-        System.getProperty("java.io.tmpdir"), true));
-
+    assertEquals(
+        0,
+        DeviceManager.getInstance().checkDeviceAvailablity("device3", Device.Type.FILES_CD,
+            ConstTest.DEVICES_BASE_PATH + "/dev", true));
   }
 
   /**
    * Test check device availablity existing name.
-   * DOCUMENT_ME
+   * 
    */
   public final void testCheckDeviceAvailablityExistingName() {
-    assertNotNull(DeviceManager.getInstance().registerDevice("device4", Device.TYPE_DIRECTORY,
-        System.getProperty("java.io.tmpdir")));
-
+    assertNotNull(DeviceManager.getInstance().registerDevice("device4", Device.Type.DIRECTORY,
+        ConstTest.DEVICES_BASE_PATH + "/dev"));
     // error, name already exists
-    assertEquals(19, DeviceManager.getInstance().checkDeviceAvailablity("device4",
-        Device.TYPE_DIRECTORY, System.getProperty("java.io.tmpdir"), true));
+    assertEquals(
+        19,
+        DeviceManager.getInstance().checkDeviceAvailablity("device4", Device.Type.DIRECTORY,
+            ConstTest.DEVICES_BASE_PATH + "/dev", true));
   }
 
   /**
-   * Test check device availablity existing name not new.
-   * DOCUMENT_ME
-   */
+   * Test check device availability existing name not new.
+   **/
   public final void testCheckDeviceAvailablityExistingNameNotNew() {
-    assertNotNull(DeviceManager.getInstance().registerDevice("device4", Device.TYPE_DIRECTORY,
-        System.getProperty("java.io.tmpdir")));
-
+    assertNotNull(JUnitHelpers.getDevice("device4", Device.Type.DIRECTORY,
+        ConstTest.DEVICES_BASE_PATH + "/dev"));
     // error, name already exists
-    assertEquals(0, DeviceManager.getInstance().checkDeviceAvailablity("device4",
-        Device.TYPE_DIRECTORY, System.getProperty("java.io.tmpdir"), false));
+    assertEquals(
+        0,
+        DeviceManager.getInstance().checkDeviceAvailablity("device4", Device.Type.DIRECTORY,
+            ConstTest.DEVICES_BASE_PATH + "/dev", false));
   }
 
   /**
-   * Test check device availablity parent or descendant.
-   * DOCUMENT_ME
+   * Test check device availability parent or descendant.
+   * 
    */
   public final void testCheckDeviceAvailablityParentOrDescendant() {
-    assertNotNull(DeviceManager.getInstance().registerDevice("device5", Device.TYPE_DIRECTORY,
-        System.getProperty("java.io.tmpdir")));
-
+    assertNotNull(JUnitHelpers.getDevice("device5", Device.Type.DIRECTORY,
+        ConstTest.DEVICES_BASE_PATH + "/dev"));
     // error, same url
-    assertEquals(29, DeviceManager.getInstance().checkDeviceAvailablity("device3", 0,
-        System.getProperty("java.io.tmpdir"), true));
+    assertEquals(
+        29,
+        DeviceManager.getInstance().checkDeviceAvailablity("device3", Device.Type.DIRECTORY,
+            ConstTest.DEVICES_BASE_PATH + "/dev", true));
     // error, descendant url
-    assertEquals(29, DeviceManager.getInstance().checkDeviceAvailablity("device3", 0,
-        System.getProperty("java.io.tmpdir") + java.io.File.separator + "test", true));
+    assertEquals(
+        29,
+        DeviceManager.getInstance().checkDeviceAvailablity("device3", Device.Type.DIRECTORY,
+            ConstTest.DEVICES_BASE_PATH + "/dev/subdir", true));
     // error, parent url
-    assertEquals(29, DeviceManager.getInstance().checkDeviceAvailablity("device3", 0,
-        new java.io.File(System.getProperty("java.io.tmpdir")).getParent(), true));
-
+    assertEquals(
+        29,
+        DeviceManager.getInstance().checkDeviceAvailablity("device3", Device.Type.DIRECTORY,
+            ConstTest.DEVICES_BASE_PATH, true));
   }
 
   /**
-   * Test check device availablity not exists.
-   * DOCUMENT_ME
+   * Test check device availability not exists.
+   * 
    */
   public final void testCheckDeviceAvailablityNotExists() {
-    assertEquals(143, DeviceManager.getInstance().checkDeviceAvailablity("device3", 0,
-        "notexistingpath", true));
-
+    assertEquals(
+        143,
+        DeviceManager.getInstance().checkDeviceAvailablity("device3", Device.Type.DIRECTORY,
+            "notexistingpath", true));
   }
 
   /**
-   * Test check device availablity exists.
-   * DOCUMENT_ME
+   * Test check device availability exists.
+   * 
    */
   public final void testCheckDeviceAvailablityExists() {
-    assertEquals(0, DeviceManager.getInstance().checkDeviceAvailablity("device3", 0,
-        System.getProperty("java.io.tmpdir"), true));
-
-  }
-
-  /**
-   * Test method for.
-   *
-   * {@link org.jajuk.base.DeviceManager#registerDeviceType(java.lang.String)}.
-   */
-  public final void testRegisterDeviceType() {
-    DeviceManager.getInstance().registerDeviceType("testtype");
-  }
-
-  /**
-   * Test method for {@link org.jajuk.base.DeviceManager#getDeviceTypesNumber()}
-   * .
-   */
-  public final void testGetDeviceTypesNumber() {
-    int n = DeviceManager.getInstance().getDeviceTypesNumber();
-    DeviceManager.getInstance().registerDeviceType("testtype2");
-    assertEquals(n + 1, DeviceManager.getInstance().getDeviceTypesNumber());
-
-    // the first can be any of them
-    assertNotNull(DeviceManager.getInstance().getDeviceTypes().next());
-
-    // the last one should be the new one from us
-    assertEquals("testtype2", DeviceManager.getInstance().getDeviceType(n));
+    assertEquals(
+        0,
+        DeviceManager.getInstance().checkDeviceAvailablity("device3", Device.Type.DIRECTORY,
+            ConstTest.TEMP_PATH, true));
   }
 
   /**
@@ -237,32 +204,25 @@ public class TestDeviceManager extends JajukTestCase {
    * {@link org.jajuk.base.DeviceManager#removeDevice(org.jajuk.base.Device)}.
    */
   public final void testRemoveDevice() {
-    assertNotNull(DeviceManager.getInstance().registerDevice("5", "device5", Device.TYPE_DIRECTORY,
-        System.getProperty("java.io.tmpdir")));
-
+    assertNotNull(DeviceManager.getInstance().registerDevice("5", "device5", Device.Type.DIRECTORY,
+        ConstTest.DEVICES_BASE_PATH + "/dev"));
     assertNotNull(DeviceManager.getInstance().getDeviceByID("5"));
-
     DeviceManager.getInstance().removeDevice(DeviceManager.getInstance().getDeviceByID("5"));
-
     assertNull(DeviceManager.getInstance().getDeviceByID("5"));
   }
 
   /**
    * Test remove device mounted.
-   * DOCUMENT_ME
+   * 
    *
    * @throws Exception the exception
    */
   public final void testRemoveDeviceMounted() throws Exception {
-    Device device = DeviceManager.getInstance().registerDevice("14", "device14",
-        Device.TYPE_DIRECTORY, System.getProperty("java.io.tmpdir"));
-    device.mount(true);
-
-    assertNotNull(DeviceManager.getInstance().getDeviceByID("14"));
-
-    DeviceManager.getInstance().removeDevice(DeviceManager.getInstance().getDeviceByID("14"));
-
-    assertNull(DeviceManager.getInstance().getDeviceByID("14"));
+    JUnitHelpers.getDevice();
+    String id = DeviceManager.createID("sample_device");
+    assertNotNull(DeviceManager.getInstance().getDeviceByID(id));
+    DeviceManager.getInstance().removeDevice(DeviceManager.getInstance().getDeviceByID(id));
+    assertNull(DeviceManager.getInstance().getDeviceByID(id));
   }
 
   /**
@@ -271,11 +231,10 @@ public class TestDeviceManager extends JajukTestCase {
    * {@link org.jajuk.base.DeviceManager#isAnyDeviceRefreshing()}.
    */
   public final void testIsAnyDeviceRefreshing() {
-    assertNotNull(DeviceManager.getInstance().registerDevice("device8", Device.TYPE_DIRECTORY,
-        System.getProperty("java.io.tmpdir")));
-    assertNotNull(DeviceManager.getInstance().registerDevice("device9", Device.TYPE_CD,
-        System.getProperty("java.io.tmpdir")));
-
+    assertNotNull(DeviceManager.getInstance().registerDevice("device8", Device.Type.DIRECTORY,
+        ConstTest.DEVICES_BASE_PATH + "/dev8"));
+    assertNotNull(DeviceManager.getInstance().registerDevice("device9", Device.Type.FILES_CD,
+        ConstTest.DEVICES_BASE_PATH + "/dev9"));
     assertFalse(DeviceManager.getInstance().isAnyDeviceRefreshing());
   }
 
@@ -283,12 +242,11 @@ public class TestDeviceManager extends JajukTestCase {
    * Test method for {@link org.jajuk.base.DeviceManager#cleanAllDevices()}.
    */
   public final void testCleanAllDevices() {
-    DeviceManager.getInstance().registerDevice("device6", Device.TYPE_DIRECTORY,
-        System.getProperty("java.io.tmpdir"));
-    DeviceManager.getInstance().registerDevice("device7", Device.TYPE_CD,
-        System.getProperty("java.io.tmpdir"));
-
-    DeviceManager.getInstance().cleanAllDevices();
+    DeviceManager.getInstance().registerDevice("device6", Device.Type.DIRECTORY,
+        ConstTest.DEVICES_BASE_PATH + "/dev6");
+    DeviceManager.getInstance().registerDevice("device7", Device.Type.FILES_CD,
+        ConstTest.DEVICES_BASE_PATH + "/dev7");
+    JUnitHelpers.cleanAllDevices();
   }
 
   /**
@@ -298,18 +256,14 @@ public class TestDeviceManager extends JajukTestCase {
    */
   public final void testGetDateLastGlobalRefresh() {
     StartupCollectionService.registerItemManagers();
-
-    DeviceManager.getInstance().registerDevice("device6", Device.TYPE_DIRECTORY,
-        System.getProperty("java.io.tmpdir"));
-    DeviceManager.getInstance().registerDevice("device7", Device.TYPE_CD,
-        System.getProperty("java.io.tmpdir"));
-
+    DeviceManager.getInstance().registerDevice("device6", Device.Type.DIRECTORY,
+        ConstTest.DEVICES_BASE_PATH + "/dev6");
+    DeviceManager.getInstance().registerDevice("device7", Device.Type.FILES_CD,
+        ConstTest.DEVICES_BASE_PATH + "/dev7");
     // first do a refresh
     DeviceManager.getInstance().refreshAllDevices();
-
     // then the timestamp should be non-zero
     assertTrue(0 != DeviceManager.getInstance().getDateLastGlobalRefresh());
-
   }
 
   /**
@@ -317,12 +271,10 @@ public class TestDeviceManager extends JajukTestCase {
    */
   public final void testRefreshAllDevices() {
     StartupCollectionService.registerItemManagers();
-
-    DeviceManager.getInstance().registerDevice("device6", Device.TYPE_DIRECTORY,
-        System.getProperty("java.io.tmpdir"));
-    DeviceManager.getInstance().registerDevice("device7", Device.TYPE_CD,
-        System.getProperty("java.io.tmpdir"));
-
+    DeviceManager.getInstance().registerDevice("device6", Device.Type.DIRECTORY,
+        ConstTest.DEVICES_BASE_PATH + "/dev6");
+    DeviceManager.getInstance().registerDevice("device7", Device.Type.FILES_CD,
+        ConstTest.DEVICES_BASE_PATH + "/dev7");
     DeviceManager.getInstance().refreshAllDevices();
   }
 
@@ -341,11 +293,10 @@ public class TestDeviceManager extends JajukTestCase {
    * {@link org.jajuk.base.DeviceManager#getDeviceByName(java.lang.String)}.
    */
   public final void testGetDeviceByName() {
-    DeviceManager.getInstance().registerDevice("device10", Device.TYPE_DIRECTORY,
-        System.getProperty("java.io.tmpdir"));
-    DeviceManager.getInstance().registerDevice("device11", Device.TYPE_CD,
-        System.getProperty("java.io.tmpdir"));
-
+    DeviceManager.getInstance().registerDevice("device10", Device.Type.DIRECTORY,
+        ConstTest.DEVICES_BASE_PATH + "/dev10");
+    DeviceManager.getInstance().registerDevice("device11", Device.Type.FILES_CD,
+        ConstTest.DEVICES_BASE_PATH + "/dev11");
     assertNotNull(DeviceManager.getInstance().getDeviceByName("device10"));
     assertNull(DeviceManager.getInstance().getDeviceByName("notexistingdevice"));
   }
@@ -355,10 +306,10 @@ public class TestDeviceManager extends JajukTestCase {
    */
   public final void testGetDevices() {
     assertEquals(0, DeviceManager.getInstance().getDevices().size());
-    DeviceManager.getInstance().registerDevice("device12", Device.TYPE_DIRECTORY,
-        System.getProperty("java.io.tmpdir"));
-    DeviceManager.getInstance().registerDevice("device13", Device.TYPE_CD,
-        System.getProperty("java.io.tmpdir"));
+    DeviceManager.getInstance().registerDevice("device12", Device.Type.DIRECTORY,
+        ConstTest.DEVICES_BASE_PATH + "/dev12");
+    DeviceManager.getInstance().registerDevice("device13", Device.Type.FILES_CD,
+        ConstTest.DEVICES_BASE_PATH + "/dev13");
     assertEquals(2, DeviceManager.getInstance().getDevices().size());
   }
 
@@ -367,11 +318,10 @@ public class TestDeviceManager extends JajukTestCase {
    */
   public final void testGetDevicesIterator() {
     assertFalse(DeviceManager.getInstance().getDevicesIterator().hasNext());
-    DeviceManager.getInstance().registerDevice("device12", Device.TYPE_DIRECTORY,
-        System.getProperty("java.io.tmpdir"));
-    DeviceManager.getInstance().registerDevice("device13", Device.TYPE_CD,
-        System.getProperty("java.io.tmpdir"));
+    DeviceManager.getInstance().registerDevice("device12", Device.Type.DIRECTORY,
+        ConstTest.DEVICES_BASE_PATH + "/dev12");
+    DeviceManager.getInstance().registerDevice("device13", Device.Type.FILES_CD,
+        ConstTest.DEVICES_BASE_PATH + "/dev13");
     assertTrue(DeviceManager.getInstance().getDevicesIterator().hasNext());
   }
-
 }

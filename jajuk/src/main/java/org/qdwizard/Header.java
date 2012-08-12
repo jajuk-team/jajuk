@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.qdwizard;
 
@@ -41,23 +41,12 @@ import javax.swing.JPanel;
  * @created 1 may 2006
  */
 class Header extends JPanel {
-
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-
-  /** DOCUMENT_ME. */
   JPanel jta;
-
-  /** DOCUMENT_ME. */
   Image backgroundImage;
-
-  /** DOCUMENT_ME. */
   ImageIcon icon;
-
-  /** DOCUMENT_ME. */
   String sTitleText;
-
-  /** DOCUMENT_ME. */
   String sSubtitleText;
 
   /**
@@ -74,7 +63,7 @@ class Header extends JPanel {
   /**
    * Set the header title text.
    * 
-   * @param sText DOCUMENT_ME
+   * @param sText 
    */
   public void setTitleText(String sText) {
     sTitleText = sText;
@@ -83,7 +72,7 @@ class Header extends JPanel {
   /**
    * Set the header subtitle text.
    * 
-   * @param sText DOCUMENT_ME
+   * @param sText 
    */
   public void setSubtitleText(String sText) {
     sSubtitleText = sText;
@@ -92,7 +81,7 @@ class Header extends JPanel {
   /**
    * Set the header Image.
    * 
-   * @param img DOCUMENT_ME
+   * @param img 
    */
   public void setImage(Image img) {
     backgroundImage = img;
@@ -101,7 +90,7 @@ class Header extends JPanel {
   /**
    * Set the header right-side icon.
    * 
-   * @param icon DOCUMENT_ME
+   * @param icon 
    */
   public void setIcon(ImageIcon icon) {
     this.icon = icon;
@@ -117,25 +106,20 @@ class Header extends JPanel {
     java.awt.Rectangle rect = getBounds();
     g2D.setColor(java.awt.Color.WHITE);
     g2D.fillRect(rect.x, rect.y, rect.width, rect.height);
-
     if (backgroundImage != null) {
       g2D.drawImage(backgroundImage, 0, 0, rect.width, rect.height, this);
     }
-
     if (icon != null) {
       int h = icon.getIconHeight();
       int w = icon.getIconWidth();
       g2D.drawImage(icon.getImage(), rect.width - w - 10, (rect.height - h) / 2, w, h, this);
     }
-
     g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2D.setColor(java.awt.Color.BLACK);
     g2D.setFont(new Font("Dialog", Font.BOLD, 14));
     g2D.drawString(sTitleText, 20, 25);
-
     g2D.setFont(new Font("Dialog", Font.PLAIN, 13));
     g2D.drawString(sSubtitleText, 20, 50);
-
     g2D.setColor(java.awt.Color.BLACK);
     g2D.drawLine(rect.x, rect.height - 1, rect.width, rect.height - 1);
   }

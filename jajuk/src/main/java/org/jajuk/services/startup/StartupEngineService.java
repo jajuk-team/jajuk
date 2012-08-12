@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
 package org.jajuk.services.startup;
 
@@ -39,7 +39,6 @@ import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceManager;
@@ -57,19 +56,15 @@ import org.jajuk.util.log.Log;
 /**
  * Startup facilities for sound engine.
  */
-public class StartupEngineService {
-
+public final class StartupEngineService {
   /** List of items to play at startup. */
   private static List<org.jajuk.base.File> alToPlay = new ArrayList<org.jajuk.base.File>();
-
   /** File to play. */
   private static org.jajuk.base.File fileToPlay;
-
   /** Web radio to play. */
   private static WebRadio radio;
-
   /** Index in the queue of the startup file. */
-  private static int index = 0;
+  private static int index = -1;
 
   /**
    * Instantiates a new startup engine service.
@@ -82,43 +77,47 @@ public class StartupEngineService {
    * Launch initial track at startup.
    */
   public static void launchInitialTrack() {
-    String startupMode = Conf.getString(Const.CONF_STARTUP_MODE);
-
-    // User explicitely required nothing to start or he left jajuk stopped
-    boolean doNotStartAnything = Const.STARTUP_MODE_NOTHING.equals(startupMode)
-        || Conf.getBoolean(Const.CONF_STARTUP_STOPPED)
-        //  CONF_STARTUP_ITEM is void at first jajuk session and until user launched an item
-        || (Const.STARTUP_MODE_ITEM.equals(startupMode) && StringUtils.isBlank(Conf
-            .getString(Const.CONF_STARTUP_ITEM)))
-        // Void collection
-        || FileManager.getInstance().getElementCount() == 0;
-
-    // Populate item to be started and load the stored queue
-    populateStartupItems();
-
-    // Check that the file to play is not null and try to mount its device if required 
-    if (!doNotStartAnything && !isWebradioStartup()) {
-      checkFileToPlay();
-    }
-    // Set the index of the file to play within the queue.
-    // We still need to compute index of file to play even if we play nothing or a radio
-    // because user may do a "play" and the next file index must be ready.
-    // However, we don't need to test file availability with checkFileToPlay() method.
-    setIndex();
-
-    // Push the new queue
-    boolean bRepeat = Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL)
-        || Conf.getBoolean(Const.CONF_STATE_REPEAT);
-    QueueModel.insert(UtilFeatures.createStackItems(alToPlay, bRepeat, false), 0);
-    // Force queue index because insert increase it so it would be set to queue size after the insert
-    QueueModel.setIndex(index);
-
-    // Start the file or the radio
-    // If user leaved jajuk in stopped mode, do nothing
-    if (!doNotStartAnything && isWebradioStartup() && radio != null) {
-      launchRadio();
-    } else if (!doNotStartAnything && fileToPlay != null) {
-      launchFile();
+    try {
+      String startupMode = Conf.getString(Const.CONF_STARTUP_MODE);
+      final File fifo = SessionService.getConfFileByPath(Const.FILE_FIFO);
+      // User explicitely required nothing to start or he left jajuk stopped
+      boolean doNotStartAnything = Const.STARTUP_MODE_NOTHING.equals(startupMode)
+          || Conf.getBoolean(Const.CONF_STARTUP_STOPPED)
+          //  CONF_STARTUP_ITEM is void at first jajuk session and until user launched an item
+          || (Const.STARTUP_MODE_ITEM.equals(startupMode) && StringUtils.isBlank(Conf
+              .getString(Const.CONF_STARTUP_ITEM)))
+          // Void collection
+          || FileManager.getInstance().getElementCount() == 0
+          // FIFO void or not exists
+          || (!fifo.exists() || fifo.length() == 0);
+      // Populate item to be started and load the stored queue
+      populateStartupItems();
+      // Check that the file to play is not null and try to mount its device if required 
+      if (!doNotStartAnything && !isWebradioStartup()) {
+        checkFileToPlay();
+      }
+      // Set the index of the file to play within the queue.
+      // We still need to compute index of file to play even if we play nothing or a radio
+      // because user may do a "play" and the next file index must be ready.
+      // However, we don't need to test file availability with checkFileToPlay() method.
+      updateIndex();
+      // Push the new queue
+      boolean bRepeat = Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL)
+          || Conf.getBoolean(Const.CONF_STATE_REPEAT);
+      QueueModel.insert(UtilFeatures.createStackItems(alToPlay, bRepeat, false), 0);
+      // Force queue index because insert increase it so it would be set to queue size after the insert
+      QueueModel.setIndex(index);
+      // Start the file or the radio
+      // If user leaved jajuk in stopped mode, do nothing
+      if (!doNotStartAnything && isWebradioStartup() && radio != null) {
+        launchRadio();
+      } else if (!doNotStartAnything && fileToPlay != null) {
+        launchFile();
+      }
+    } catch (Exception e) {
+      Log.error(e);
+      Messages.getChoice(Messages.getErrorMessage(23), JOptionPane.DEFAULT_OPTION,
+          JOptionPane.WARNING_MESSAGE);
     }
   }
 
@@ -146,7 +145,6 @@ public class StartupEngineService {
             .equals(startupMode))) {
       return true;
     }
-
     if (Const.STARTUP_MODE_ITEM.equals(startupMode)) {
       String conf = Conf.getString(Const.CONF_STARTUP_ITEM);
       if (conf.matches(SearchResultType.WEBRADIO.name() + ".*")) {
@@ -165,8 +163,8 @@ public class StartupEngineService {
       Log.debug("No fifo file");
     } else {
       try {
-        final BufferedReader br = new BufferedReader(new FileReader(SessionService
-            .getConfFileByPath(Const.FILE_FIFO)));
+        final BufferedReader br = new BufferedReader(new FileReader(
+            SessionService.getConfFileByPath(Const.FILE_FIFO)));
         try {
           String s = null;
           for (;;) {
@@ -194,7 +192,6 @@ public class StartupEngineService {
   private static void populateStartupItems() {
     String startupMode = Conf.getString(Const.CONF_STARTUP_MODE);
     Ambience ambience = AmbienceManager.getInstance().getSelectedAmbience();
-
     // an item (track or radio) has been forced by user
     if (Const.STARTUP_MODE_ITEM.equals(startupMode)) {
       String conf = Conf.getString(Const.CONF_STARTUP_ITEM);
@@ -211,29 +208,27 @@ public class StartupEngineService {
         }
       }
     }
-
     // We play last item
     else if (Const.STARTUP_MODE_LAST.equals(startupMode)
         || Const.STARTUP_MODE_LAST_KEEP_POS.equals(startupMode)) {
-
+      //Restore the queue in these cases
+      restoreQueue();
       // If we were playing a webradio when leaving, launch it
       if (Conf.getBoolean(Const.CONF_WEBRADIO_WAS_PLAYING)) {
         radio = WebRadioManager.getInstance().getWebRadioByName(
             Conf.getString(Const.CONF_DEFAULT_WEB_RADIO));
       }
       // last file from beginning or last file keep position
-      else if (History.getInstance().getHistory().size() > 0) {
-        fileToPlay = FileManager.getInstance().getFileByID(History.getInstance().getLastFile());
+      else {
+        index = Conf.getInt(Const.CONF_STARTUP_QUEUE_INDEX);
+        if (index >= 0 && index < alToPlay.size()) {
+          fileToPlay = alToPlay.get(index);
+        }
       }
+    } else if (Const.STARTUP_MODE_NOTHING.equals(startupMode)) {
       //Restore the queue in these cases
       restoreQueue();
     }
-
-    else if (Const.STARTUP_MODE_NOTHING.equals(startupMode)) {
-      //Restore the queue in these cases
-      restoreQueue();
-    }
-
     // Shuffle mode
     else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_SHUFFLE)) {
       // Filter files by ambience or if none ambience matches, perform a global shuffle 
@@ -246,7 +241,6 @@ public class StartupEngineService {
       if (alToPlay != null && alToPlay.size() > 0) {
         fileToPlay = alToPlay.get(0);
       }
-
       // Best of mode
     } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_BESTOF)) {
       // Filter files by ambience or if none ambience matches, perform a global best-of selection 
@@ -259,7 +253,6 @@ public class StartupEngineService {
       if (alToPlay != null && alToPlay.size() > 0) {
         fileToPlay = alToPlay.get(0);
       }
-
       // Novelties mode
     } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOVELTIES)) {
       // Filter files by ambience or if none ambience matches, perform a global novelties selection 
@@ -279,7 +272,6 @@ public class StartupEngineService {
             InformationJPanel.MessageType.ERROR);
       }
     }
-
     // If the queue was empty and a file to play is provided, build a new queue
     // with this track alone
     if (alToPlay.size() == 0 && fileToPlay != null) {
@@ -327,7 +319,11 @@ public class StartupEngineService {
   /**
    * Set index of fileToPlay among alToPlay list.
    */
-  private static void setIndex() {
+  private static void updateIndex() {
+    // keep index from configuration if already set
+    if (index != -1) {
+      return;
+    }
     // fileToPlay is null if nothing has to be played, then we keep default index value (0)
     if (fileToPlay != null) {
       // find the index of last played track
@@ -373,5 +369,4 @@ public class StartupEngineService {
       }
     }
   }
-
 }

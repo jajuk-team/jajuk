@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003-2011 The Jajuk Team
+ *  Copyright (C) The Jajuk Team
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ *  
  */
-
 package org.jajuk.services.reporting;
 
 import java.io.BufferedInputStream;
@@ -45,7 +44,6 @@ import org.xml.sax.SAXException;
  * This class will take a XML file and either convert it to HTML or PDF.
  */
 public final class XMLTransformer {
-
   /**
    * Private constructor to prevent instantiation of utility class.
    */
@@ -68,18 +66,14 @@ public final class XMLTransformer {
       SAXException, IOException, TransformerException {
     Source source = new SAXSource(
         new InputSource(new BufferedInputStream(new FileInputStream(xml))));
-
     // Create output file
     Result result = new StreamResult(html);
-
     // Transformer configuration
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     StreamSource genresource = new StreamSource(xsl.openStream());
     Transformer transformer = transformerFactory.newTransformer(genresource);
     transformer.setOutputProperty(OutputKeys.METHOD, "html");
-
     // Transformation
     transformer.transform(source, result);
   }
-
 }
