@@ -21,13 +21,14 @@
 package org.jajuk.ui.wizard;
 
 import javax.swing.Icon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.jajuk.ui.widgets.JajukJDialog;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jdesktop.swingx.JXBusyLabel;
@@ -35,7 +36,7 @@ import org.jdesktop.swingx.JXBusyLabel;
 /**
  * Refresh dialog.
  */
-public class RefreshDialog extends JFrame {
+public class RefreshDialog extends JajukJDialog {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -7883506101436294760L;
   private JXBusyLabel jlAction;
@@ -51,27 +52,25 @@ public class RefreshDialog extends JFrame {
    * Refresh dialog (labels and a progress bar).
    * 
    * @param indeterminate whether the progress is indeterminate or not
+   * @param frame title
    */
-  public RefreshDialog(final boolean indeterminate) {
+  public RefreshDialog(final boolean indeterminate, String title) {
+    super(JajukMainWindow.getInstance(), false);
+    setTitle(title);
     this.indeterminate = indeterminate;
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        setUndecorated(true);
-        setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
-        jlAction = new JXBusyLabel();
-        progress = new JProgressBar(0, 100);
-        progress.setIndeterminate(indeterminate);
-        jlRefreshing = new JLabel();
-        setLayout(new MigLayout("insets 10,gapx 5, gapy 5", "[500!]"));
-        add(jlAction, "center,wrap");
-        add(progress, "center,grow,wrap");
-        add(jlRefreshing, "center,wrap");
-        pack();
-        setLocationRelativeTo(RefreshDialog.this);
-        setVisible(true);
-      }
-    });
+    setUndecorated(true);
+    setIconImage(IconLoader.getIcon(JajukIcons.LOGO).getImage());
+    jlAction = new JXBusyLabel();
+    progress = new JProgressBar(0, 100);
+    progress.setIndeterminate(indeterminate);
+    jlRefreshing = new JLabel();
+    setLayout(new MigLayout("insets 10,gapx 5, gapy 5", "[500!]"));
+    add(jlAction, "center,wrap");
+    add(progress, "center,grow,wrap");
+    add(jlRefreshing, "center,wrap");
+    pack();
+    setLocationRelativeTo(RefreshDialog.this);
+    setVisible(true);
   }
 
   /**
@@ -82,17 +81,12 @@ public class RefreshDialog extends JFrame {
    * @param icon 
    */
   public void setAction(final String action, final Icon icon) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        // check if the dialog is still visible, may be closed before this code is executed
-        if (jlAction != null) {
-          jlAction.setText(action);
-          jlAction.setIcon(icon);
-          jlAction.setBusy(true);
-        }
-      }
-    });
+    // check if the dialog is still visible, may be closed before this code is executed
+    if (jlAction != null) {
+      jlAction.setText(action);
+      jlAction.setIcon(icon);
+      jlAction.setBusy(true);
+    }
   }
 
   /**
@@ -147,6 +141,7 @@ public class RefreshDialog extends JFrame {
    */
   @Override
   public void dispose() {
+    // Required to avoid a memory leak
     if (jlAction != null) {
       jlAction.setBusy(false);
       jlAction = null;

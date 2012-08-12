@@ -27,7 +27,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
-import org.jajuk.ThreadTestHelper;
 import org.jajuk.services.covers.Cover;
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.QueueModel;
@@ -139,41 +138,7 @@ public class TestArtistManager extends JajukTestCase {
     assertEquals("namenewnew", artist.getName()); // correct name
   }
 
-  // test this in a thread as well to cover the synchronized block...
-  /**
-   * Test change artist name threads.
-   * 
-   *
-   * @throws Exception the exception
-   */
-  public final void testChangeArtistNameThreads() throws Exception {
-    StartupCollectionService.registerItemManagers();
-    final Artist artistold = JUnitHelpers.getArtist("nameold");
-    // we get the same object back if we have the same name
-    assertTrue(artistold == ArtistManager.getInstance().changeArtistName(artistold, "nameold"));
-    ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS, NUMBER_OF_TESTS);
-    helper.executeTest(new ThreadTestHelper.TestRunnable() {
-      @Override
-      public void doEnd(int threadnum) throws Exception {
-        // do stuff at the end, nothing here for now
-      }
-
-      @Override
-      public void run(int threadnum, int iter) throws Exception {
-        // just call the method in a thread multiple times at the same time
-        ArtistManager.getInstance().changeArtistName(artistold, "namenew");
-      }
-    });
-  }
-
-  /**
-   * Test multiple threads.
-   * 
-   */
-  public void testMultipleThreads() {
-  }
-
-  /**
+   /**
    * Gets the file.
    *
    * @param i 

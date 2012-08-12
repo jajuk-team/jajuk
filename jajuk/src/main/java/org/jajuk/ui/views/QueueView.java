@@ -230,7 +230,7 @@ public class QueueView extends PlaylistView {
           StackItem item = editorModel.getStackItem(editorTable.getSelectedRow());
           if (item.isPlanned()) {
             item.setPlanned(false);
-            item.setRepeat(Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL));
+            item.setRepeat(Conf.getBoolean(Const.CONF_STATE_REPEAT));
             item.setUserLaunch(true);
             QueueModel.push(item, Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
           } else { // non planned items
@@ -516,8 +516,9 @@ public class QueueView extends PlaylistView {
         File file = FileManager.getInstance().getShuffleFile();
         List<File> files = new ArrayList<File>();
         files.add(file);
-        QueueModel.insert(UtilFeatures.createStackItems(files,
-            Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), iRow);
+        QueueModel.insert(
+            UtilFeatures.createStackItems(files, Conf.getBoolean(Const.CONF_STATE_REPEAT), true),
+            iRow);
         refreshQueue();
       } else if (ae.getSource() == jbClear) {
         // Reset the FIFO

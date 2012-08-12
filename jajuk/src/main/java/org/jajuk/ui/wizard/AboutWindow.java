@@ -33,6 +33,7 @@ import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.ui.widgets.JajukJDialog;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -62,7 +63,7 @@ public class AboutWindow extends JajukJDialog {
    * Constructor.
    */
   public AboutWindow() {
-    super();
+    super(JajukMainWindow.getInstance(), true);
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {

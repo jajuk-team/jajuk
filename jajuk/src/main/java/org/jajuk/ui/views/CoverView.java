@@ -133,8 +133,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
   private JLabel jl;
   /** Used Cover index. */
   private int index = 0;
-  /** Event ID., it should be volatile because this mutable field can be set by different threads */
-  private volatile int iEventID = 0;//NOSONAR
   /** Flag telling that user wants to display a better cover. */
   private boolean bGotoBetter = false;
   /** Final image to display. */
@@ -903,35 +901,29 @@ public class CoverView extends ViewAdapter implements ActionListener {
    * @throws JajukException the jajuk exception
    */
   private void prepareDisplay(final int index) throws JajukException {
-    final int iLocalEventID = this.iEventID;
     // find next correct cover
     Cover cover = null;
     ImageIcon icon = null;
     try {
-      if (this.iEventID == iLocalEventID) {
-        cover = alCovers.get(index); // take image at the given index
-        Log.debug("Display cover: " + cover + "at index :" + index);
-        Image img = cover.getImage();
-        // Never mirror our no cover image
-        if (cover.getType().equals(CoverType.NO_COVER)) {
-          icon = new ImageIcon(img);
-        } else {
-          if (
-          // should we mirror in our GUI
-          (includeControls && Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER))
-          // should we mirror in fullscreen mode
-              || (!includeControls && Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER_FS_MODE))) {
-            icon = new ImageIcon(UtilGUI.get3dImage(img));
-          } else {
-            icon = new ImageIcon(img);
-          }
-        }
-        if (icon.getIconHeight() == 0 || icon.getIconWidth() == 0) {
-          throw new JajukException(0, "Wrong picture, size is null");
-        }
+      cover = alCovers.get(index); // take image at the given index
+      Log.debug("Display cover: " + cover + " at index :" + index);
+      Image img = cover.getImage();
+      // Never mirror our no cover image
+      if (cover.getType().equals(CoverType.NO_COVER)) {
+        icon = new ImageIcon(img);
       } else {
-        Log.debug("Download stopped - 2");
-        return;
+        if (
+        // should we mirror in our GUI
+        (includeControls && Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER))
+        // should we mirror in fullscreen mode
+            || (!includeControls && Conf.getBoolean(Const.CONF_COVERS_MIRROW_COVER_FS_MODE))) {
+          icon = new ImageIcon(UtilGUI.get3dImage(img));
+        } else {
+          icon = new ImageIcon(img);
+        }
+      }
+      if (icon.getIconHeight() == 0 || icon.getIconWidth() == 0) {
+        throw new JajukException(0, "Wrong picture, size is null");
       }
     } catch (final FileNotFoundException e) {
       // do not display a stacktrace for FileNotfound as we expect this in cases
@@ -988,15 +980,10 @@ public class CoverView extends ViewAdapter implements ActionListener {
         iNewWidth = (int) (icon.getIconWidth() * ((float) iNewHeight / icon.getIconHeight()));
       }
     }
-    if (this.iEventID == iLocalEventID) {
-      // Note that at this point, the image is fully loaded (done in the ImageIcon constructor)
-      ii = UtilGUI.getResizedImage(icon, iNewWidth, iNewHeight);
-      // Free memory of source image, removing this causes severe memory leaks ! (tested)
-      icon.getImage().flush();
-    } else {
-      Log.debug("Download stopped - 2");
-      return;
-    }
+    // Note that at this point, the image is fully loaded (done in the ImageIcon constructor)
+    ii = UtilGUI.getResizedImage(icon, iNewWidth, iNewHeight);
+    // Free memory of source image, removing this causes severe memory leaks ! (tested)
+    icon.getImage().flush();
   }
 
   /**
@@ -1194,22 +1181,20 @@ public class CoverView extends ViewAdapter implements ActionListener {
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   @Override
-  public void update(final JajukEvent event) {
+  public synchronized void update(final JajukEvent event) {
     final JajukEvents subject = event.getSubject();
-    this.iEventID++;
-    final int iLocalEventID = iEventID;
     try {
       // When receiving this event, check if we should change the cover or
       // not
       // (we don't change cover if playing another track of the same album
       // except if option shuffle cover is set)
       if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
-        updateFileLaunched(event, iLocalEventID);
+        updateFileLaunched(event);
       } else if (JajukEvents.ZERO.equals(subject) || JajukEvents.WEBRADIO_LAUNCHED.equals(subject)
           || JajukEvents.PLAYER_STOP.equals(subject)) {
         updateStopOrWebRadioLaunched();
       } else if (JajukEvents.COVER_NEED_REFRESH.equals(subject) && !QueueModel.isPlayingRadio()) {
-        refreshCovers(iLocalEventID, true);
+        refreshCovers(true);
         displayCurrentCover();
       }
     } catch (final IOException e) {
@@ -1244,12 +1229,10 @@ public class CoverView extends ViewAdapter implements ActionListener {
    * Update file launched.
    * 
    * @param event 
-   * @param iLocalEventID 
    * 
    * @throws IOException Signals that an I/O exception has occurred.
    */
-  private void updateFileLaunched(final JajukEvent event, final int iLocalEventID)
-      throws IOException {
+  private void updateFileLaunched(final JajukEvent event) throws IOException {
     org.jajuk.base.File last = null;
     Properties details = event.getDetails();
     if (details != null) {
@@ -1270,7 +1253,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
     if (bForceCoverReload) {
       dirChanged = true;
     }
-    refreshCovers(iLocalEventID, dirChanged);
+    refreshCovers(dirChanged);
     if (Conf.getBoolean(Const.CONF_COVERS_SHUFFLE)) {
       // Ignore this event if a reference file has been set
       if (fileReference != null) {
@@ -1310,12 +1293,11 @@ public class CoverView extends ViewAdapter implements ActionListener {
    * Must be called outside the EDT, contains network access
    * </p>.
    * 
-   * @param iLocalEventID 
    * @param dirChanged 
    * 
    * @throws IOException Signals that an I/O exception has occurred.
    */
-  private void refreshCovers(int iLocalEventID, boolean dirChanged) throws IOException {
+  private void refreshCovers(boolean dirChanged) throws IOException {
     // Reset this flag
     bForceCoverReload = false;
     UtilGUI.showBusyLabel(CoverView.this); // lookup icon
@@ -1426,7 +1408,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
             // set best results to be displayed first
             final Iterator<URL> it2 = alUrls.iterator();
             // add found covers
-            while (it2.hasNext() && iEventID == iLocalEventID) {
+            while (it2.hasNext()) {
               // load each cover (pre-load or post-load)
               // and stop if a signal has been emitted
               final URL url = it2.next();
@@ -1438,12 +1420,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
                 Log.debug("Found Cover: {{" + url.toString() + "}}");
                 alCovers.add(cover);
               }
-            }
-            if (iEventID != iLocalEventID) {
-              // a stop signal has been emitted
-              // from a concurrent thread
-              Log.debug("Download stopped - 1");
-              return;
             }
           }
         } catch (final IOException e) {

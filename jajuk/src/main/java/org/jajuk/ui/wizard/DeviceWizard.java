@@ -117,7 +117,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
    * Device wizard by default, is used for void configuration.
    */
   public DeviceWizard() {
-    super();
+    super(JajukMainWindow.getInstance(), true);
     devices = DeviceManager.getInstance().getDevices();
     addWindowListener(new WindowAdapter() {
       @Override

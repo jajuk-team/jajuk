@@ -33,6 +33,9 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
+import org.jajuk.events.JajukEvent;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -138,6 +141,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
     }
     // Update track rate
     fCurrent.getTrack().updateRate();
+    // Force immediate rating refresh (without using the rating manager)
+    ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
   }
 
   /*
@@ -358,6 +363,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
               QueueModel.finished();
               // Update track rate
               fCurrent.getTrack().updateRate();
+              // Force immediate rating refresh (without using the rating manager)
+              ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
             }
           }.start();
         }
@@ -371,6 +378,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
           public void run() {
             QueueModel.finished();
             fCurrent.getTrack().updateRate();
+            // Force immediate rating refresh (without using the rating manager)
+            ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
           }
         }.start();
       }

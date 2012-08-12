@@ -1020,12 +1020,8 @@ public class ParameterView extends ViewAdapter {
     });
     jcbShowSystray.setToolTipText(Messages.getString("ParameterView.272"));
     jcbMinimizeToTray = new JCheckBox(Messages.getString("ParameterView.281"));
-    // Disable this option if the tray is not supported by the platform and if the tray is actually shown
-    jcbMinimizeToTray.setEnabled(SystemTray.isSupported() && jcbShowSystray.isSelected());
     jcbMinimizeToTray.setToolTipText(Messages.getString("ParameterView.282"));
     jcbClickTrayAlwaysDisplayWindow = new JCheckBox(Messages.getString("ParameterView.303"));
-    // Disable this option if the tray is not supported by the platform
-    jcbClickTrayAlwaysDisplayWindow.setEnabled(SystemTray.isSupported());
     jcbClickTrayAlwaysDisplayWindow.setToolTipText(Messages.getString("ParameterView.304"));
     JLabel jlPerspectiveSize = new JLabel(Messages.getString("ParameterView.246"));
     jsPerspectiveSize = new JSlider(16, 45, Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE));

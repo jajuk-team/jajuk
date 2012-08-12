@@ -120,12 +120,12 @@ public class PlaylistEditorTransferHandler extends TableTransferHandler {
           if (Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_DROP)) {
             QueueModel.push(
                 UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alSelectedFiles),
-                    Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), true);
+                    Conf.getBoolean(Const.CONF_STATE_REPEAT), true), true);
           } else {
             // Insert the selection at drop target
             QueueModel.insert(
                 UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alSelectedFiles),
-                    Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true), row);
+                    Conf.getBoolean(Const.CONF_STATE_REPEAT), true), row);
           }
         }
         // normal or new playlist case

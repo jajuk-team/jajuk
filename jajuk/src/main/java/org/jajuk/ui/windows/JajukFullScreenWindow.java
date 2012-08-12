@@ -269,10 +269,10 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
     // Information panel
     TrackPositionSliderToolbar tpst = new TrackPositionSliderToolbar();
     // Add items
-    setLayout(new MigLayout("ins 0", "[grow]", "[][grow][70%!][][]"));
+    setLayout(new MigLayout("ins 0,gap 0 0", "[grow]", "[][grow][70%!][][]"));
     add(jbFull, "right,split 2,gapright 5");
     add(jbExit, "right,wrap");
-    add(animationView, "alignx center,aligny top,grow,gap bottom 20,wrap");
+    add(animationView, "alignx center,aligny top,grow,wrap");
     add(coverView, "alignx center, grow,gap bottom 20,wrap");
     add(jtbPlay, "alignx center,gap bottom 20,wrap");
     add(tpst, "alignx center,width 50%!,aligny bottom,gap bottom 10");

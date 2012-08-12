@@ -654,6 +654,47 @@ public final class TrackManager extends ItemManager {
   }
 
   /**
+  * Change a generic field.
+  * 
+  * @param track the track to write against.
+  * @param tagFieldKey the tag key
+  * @param tagFieldValue the tag value as a string
+  * @param filter files we want to deal with
+   * 
+  * @return the track
+  *
+  * @throws JajukException if the tag can't be written
+  */
+  public Track changeTrackField(Track track, String tagFieldKey, String tagFieldValue,
+      Set<File> filter) throws JajukException {
+    try {
+      lock.writeLock().lock();
+      if (!confirm(track)) {
+        return track;
+      }
+      List<File> alReady = null;
+      // check if files are accessible
+      alReady = track.getReadyFiles();
+      if (alReady.size() == 0) {
+        throw new NoneAccessibleFileException(10);
+      }
+      // change tag in files
+      for (File file : alReady) {
+        Tag tag = Tag.getTagForFio(file.getFIO(), false);
+        tag.setTagField(tagFieldKey, tagFieldValue);
+        if (bAutocommit) {
+          tag.commit();
+        } else {
+          tagsToCommit.add(tag);
+        }
+      }
+      return track;
+    } finally {
+      lock.writeLock().unlock();
+    }
+  }
+
+  /**
    * Change a track name.
    *
    * @param track 

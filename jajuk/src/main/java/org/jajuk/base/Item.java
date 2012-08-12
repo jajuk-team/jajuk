@@ -294,11 +294,6 @@ public abstract class Item implements Const {
     properties.put(sKey, oValue);
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.base.Item#getAny()
-   */
   /**
    * Gets the any.
    * 

@@ -817,6 +817,22 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   }
 
   /**
+    * Gets the any.
+    *
+    * @return a human representation of all concatenated properties
+    */
+  @Override
+  public String getAny() {
+    // rebuild any
+    StringBuilder sb = new StringBuilder(100);
+    sb.append(super.getAny()); // add all files-based properties
+    // now add others properties
+    sb.append(getDirectory().getDevice().getName());
+    sb.append(getAbsolutePath());
+    return sb.toString();
+  }
+
+  /**
    * Return true is the specified directory is an ancestor for this playlist.
    * 
    * @param directory 

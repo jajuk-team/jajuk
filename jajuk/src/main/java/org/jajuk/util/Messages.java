@@ -21,8 +21,7 @@
 package org.jajuk.util;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -46,7 +45,6 @@ import javax.xml.parsers.SAXParserFactory;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.log.Log;
 import org.xml.sax.SAXException;
@@ -631,18 +629,12 @@ class DetailsMessageDialog extends JajukDialog {
     if (optionPane.getValue().equals(Messages.getString("Details"))) {
       // details
       final JDialog dialogDetail = new JDialog(dialog, Messages.getString("Details"));
+      dialogDetail.setMaximumSize(new Dimension(800, 600));
       final JPanel jp = new JPanel();
-      jp.setLayout(new MigLayout("ins 5", "[800]", "[600][]"));
+      jp.setLayout(new MigLayout("ins 5", "[grow]", "[grow]"));
       final JTextArea jta = new JTextArea(sDetails);
       jta.setEditable(false);
-      jp.add(new JScrollPane(jta), "wrap");
-      final OKCancelPanel jbOKC = new OKCancelPanel(new ActionListener() {
-        @Override
-        public void actionPerformed(final ActionEvent arg0) {
-          dialogDetail.dispose();
-        }
-      });
-      jp.add(jbOKC, "span,alignx center");
+      jp.add(new JScrollPane(jta), "wrap,grow");
       dialogDetail.setModal(true);
       dialogDetail.setAlwaysOnTop(true);
       dialogDetail.setContentPane(jp);

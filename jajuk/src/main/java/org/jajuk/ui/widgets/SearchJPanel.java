@@ -176,8 +176,8 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
           org.jajuk.base.File file = FileManager.getInstance().getFileByID(hi.getFileId());
           if (file != null) {
             try {
-              QueueModel.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL),
-                  true), Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+              QueueModel.push(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT), true),
+                  Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
             } catch (JajukException je) {
               // can be thrown if file is null
             }

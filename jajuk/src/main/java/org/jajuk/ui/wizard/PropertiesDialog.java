@@ -122,7 +122,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
    * @param alItems items to display
    */
   public PropertiesDialog(List<Item> alItems) {
-    super();
+    super(JajukMainWindow.getInstance(), false);
     // windows title: name of the element if there is
     // only one item, or "selection" word otherwise
     if (alItems.size() == 1) {

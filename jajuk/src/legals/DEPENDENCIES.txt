@@ -1,22 +1,4 @@
-Jajuk Dependencies
-==================
-This list is an extract from http://jajuk.info/index.php/jajuk_dependencies 
-NOTE FOR MAINTENERS : edit first the wiki page, then update this file.
-
-This is the list of API, frameworks or packaging tools (jars) included in this 
-directory. We would like to thank their teams for making Jajuk possible.
-
-These third party softwares used by Jajuk come with their own licenses as listed 
-out below. A copy of the following licenses is include in this directory.
-
--------------------------------------------------------------------------------
-GPL    				=> LICENSE-GPL.txt
-LGPL   				=> LICENSE-LGPL.txt
-BSD   				=> LICENSE-BSD.txt
-Apache				=> LICENSE-Apache.txt
-Creative Commons 	=> LICENSE-CREATIVE-COMMONS.txt
-CeCILL              => LICENSE_CeCILL_V2-en.txt
--------------------------------------------------------------------------------
+Jajuk Dependencies :
 
 --- Sound ---
 Project  : Javalayer, BasicPlayer, Tritonus, mp3spi

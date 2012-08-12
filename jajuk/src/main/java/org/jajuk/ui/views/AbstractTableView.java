@@ -252,7 +252,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
             // launch it
             QueueModel.push(
                 UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files),
-                    Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true),
+                    Conf.getBoolean(Const.CONF_STATE_REPEAT), true),
                 Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
           } else {
             Messages.showErrorMessage(10);

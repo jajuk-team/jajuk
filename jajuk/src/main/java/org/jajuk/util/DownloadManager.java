@@ -77,24 +77,24 @@ public final class DownloadManager {
     String size = null;
     switch (i) {
     case 0: // small only
-      size = "small";
+      size = "i";
       break;
     case 1: // small or medium
-      size = "small|medium";
+      size = "m";
       break;
     case 2: // medium only
-      size = "medium";
+      size = "m";
       break;
     case 3: // medium or large
-      size = "medium|large";
+      size = "m";
       break;
     case 4: // large only
-      size = "large";
+      size = "l";
       break;
     }
     String sSearchUrl = "http://images.google.com/images?q="
         + URLEncoder.encode(search, "ISO-8859-1") + "&ie=ISO-8859-1&hl=en&btnG=Google+Search"
-        + "&imgsz=" + size;
+        + "&tbs=isz:" + size;
     Log.debug("Search URL: {{" + sSearchUrl + "}}");
     String sRes = downloadText(new URL(sSearchUrl));
     if (sRes == null || sRes.length() == 0) {

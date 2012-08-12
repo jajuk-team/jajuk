@@ -93,28 +93,6 @@ public class TestRatingManager extends JajukTestCase {
   /**
    * Test method for.
    *
-   * {@link org.jajuk.services.core.RatingManager#hasRateChanged()}.
-   */
-  public void testHasAndSetRateChanged() {
-    assertTrue(RatingManager.hasRateChanged());
-    RatingManager.setRateHasChanged(false);
-    assertFalse(RatingManager.hasRateChanged());
-    RatingManager.setRateHasChanged(true);
-    assertTrue(RatingManager.hasRateChanged());
-  }
-
-  /**
-   * Test method for.
-   *
-   * {@link org.jajuk.services.core.RatingManager#setRateHasChanged(boolean)}.
-   */
-  public void testSetRateHasChanged() {
-    // tested above
-  }
-
-  /**
-   * Test method for.
-   *
    * {@link org.jajuk.services.core.RatingManager#getRegistrationKeys()}.
    */
   public void testGetRegistrationKeys() {

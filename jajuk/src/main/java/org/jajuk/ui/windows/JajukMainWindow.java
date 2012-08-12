@@ -103,12 +103,6 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
         @Override
         public void specificBeforeShown() {
           jw.applyStoredSize();
-          if (UtilSystem.isUnderLinux()) {
-            // hide and show again is a workaround for a toFront() issue
-            // under Metacity, see
-            // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472274
-            jw.setVisible(false);
-          }
         }
 
         @Override
@@ -118,7 +112,6 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
           // frame)
           jw.applyStoredSize();
           jw.toFront();
-          jw.setState(Frame.NORMAL);
           // Need focus for keystrokes
           jw.requestFocus();
           // Make sure to display right title if a track or a webradio is launched at startup

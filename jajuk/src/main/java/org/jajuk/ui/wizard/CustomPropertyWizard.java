@@ -63,6 +63,7 @@ public abstract class CustomPropertyWizard extends JajukJDialog implements Actio
    * @param sTitle 
    */
   CustomPropertyWizard(String sTitle) {
+    super(JajukMainWindow.getInstance(), true);
     setTitle(sTitle);
     setModal(true);
     setLocationRelativeTo(JajukMainWindow.getInstance());

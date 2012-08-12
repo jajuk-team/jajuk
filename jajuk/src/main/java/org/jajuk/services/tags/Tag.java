@@ -714,9 +714,24 @@ public class Tag {
     try {
       return tagImpl.getTagField(tagFieldKey).trim();
     } catch (Exception e) {
-      // this file does not support this tag, so we do nothing
+      Log.error(e);
     }
     return "";
+  }
+
+  /**
+  * Set the tag field.
+  * 
+  * @param tagFieldKey 
+  * @param tagFieldValue
+  * 
+  */
+  public void setTagField(String tagFieldKey, String tagFieldValue) {
+    try {
+      tagImpl.setTagField(tagFieldKey, tagFieldValue);
+    } catch (Exception e) {
+      Log.error(e);
+    }
   }
 
   /**
