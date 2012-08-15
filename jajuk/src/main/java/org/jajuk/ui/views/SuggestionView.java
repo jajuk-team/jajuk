@@ -104,8 +104,6 @@ public class SuggestionView extends ViewAdapter {
   AbstractThumbnail selectedThumb;
   private AlbumListInfo albums;
   private SimilarArtistsInfo similar;
-  /** Event ID., it should be volatile because this mutable field can be set by different threads */
-  protected volatile int iEventID = 0;//NOSONAR
 
   /**
    * .
@@ -294,7 +292,6 @@ public class SuggestionView extends ViewAdapter {
    * 
    */
   private void refreshLastFMCollectionTabs() {
-    final int iLocalEventID = SuggestionView.this.iEventID;
     String newArtist = null;
     File current = QueueModel.getPlayingFile();
     if (current != null) {
@@ -348,14 +345,8 @@ public class SuggestionView extends ViewAdapter {
       public Void doInBackground() {
         try {
           // Fetch last.fm calls and downloads covers
-          preFetchOthersAlbum(iLocalEventID);
-          // stop this list of albums if there was another file launched in the meantime 
-          if (iLocalEventID != SuggestionView.this.iEventID) {
-            Log.debug("Stopping downloading of LastFM data because there was another update-event in the meantime. Now: "
-                + SuggestionView.this.iEventID + ", previous: " + iLocalEventID);
-            return null;
-          }
-          preFetchSimilarArtists(iLocalEventID);
+          preFetchOthersAlbum();
+          preFetchSimilarArtists();
         } catch (Exception e) {
           Log.error(e);
         }
@@ -364,13 +355,6 @@ public class SuggestionView extends ViewAdapter {
 
       @Override
       public void done() {
-        // stop this list of albums if there was another file launched in the meantime 
-        if (iLocalEventID != SuggestionView.this.iEventID) {
-          Log.debug("Stopping populating of LastFM data because there was another update-event in the meantime. Now: "
-              + SuggestionView.this.iEventID + ", previous: " + iLocalEventID);
-          stopAllBusyLabels();
-          return;
-        }
         jsp1 = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, false);
         jsp2 = getLastFMSuggestionsPanel(SuggestionType.SIMILAR_ARTISTS, false);
         stopAllBusyLabels();
@@ -383,21 +367,16 @@ public class SuggestionView extends ViewAdapter {
 
   /**
    * Pre-load other album (done outside the EDT).
-   * @param iLocalEventID 
+  
    *
    * @throws Exception the exception
    */
-  void preFetchOthersAlbum(int iLocalEventID) throws Exception {
+  void preFetchOthersAlbum() throws Exception {
     albums = LastFmService.getInstance().getAlbumList(artist, true, 0);
     // Perform images downloads and caching
     if (albums != null && albums.getAlbums().size() > 0) {
       for (AlbumInfo album : albums.getAlbums()) {
         // stop this list of albums if there was another file launched in the meantime 
-        if (iLocalEventID != this.iEventID) {
-          Log.debug("Stopping downloading of similar albums because there was another update-event in the meantime. Now: "
-              + this.iEventID + ", previous: " + iLocalEventID);
-          break;
-        }
         String albumUrl = album.getBigCoverURL();
         if (StringUtils.isBlank(albumUrl)) {
           continue;
@@ -413,11 +392,10 @@ public class SuggestionView extends ViewAdapter {
 
   /**
    * Pre-load other album (done outside the EDT).
-   * @param iLocalEventID 
-   *
+     *
    * @throws Exception the exception
    */
-  void preFetchSimilarArtists(int iLocalEventID) throws Exception {
+  void preFetchSimilarArtists() throws Exception {
     // Perform last.fm calls
     similar = LastFmService.getInstance().getSimilarArtists(artist);
     // artists is null for void (unknown) similar artists
@@ -425,11 +403,6 @@ public class SuggestionView extends ViewAdapter {
       List<ArtistInfo> artists = similar.getArtists();
       for (ArtistInfo similarArtist : artists) {
         // stop this list of albums if there was another file launched in the meantime, another refresh will take place anyway 
-        if (iLocalEventID != this.iEventID) {
-          Log.debug("Stopping downloading of similar artists because there was another update-event in the meantime. Now: "
-              + this.iEventID + ", previous: " + iLocalEventID);
-          break;
-        }
         String artistUrl = similarArtist.getImageUrl();
         if (StringUtils.isBlank(artistUrl)) {
           continue;
@@ -537,26 +510,23 @@ public class SuggestionView extends ViewAdapter {
    */
   @Override
   public void update(JajukEvent event) {
-    synchronized (SuggestionView.class) {
-      this.iEventID++;
-      JajukEvents subject = event.getSubject();
-      if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
-        comp++;
-        // Change local collection suggestions every 10 track plays
-        if (comp % 10 == 0) {
-          refreshLocalCollectionTabs();
-        }
-        // update last.fm panels
-        refreshLastFMCollectionTabs();
-      } else if (subject.equals(JajukEvents.PARAMETERS_CHANGE) && isLastFMTabsVisible()) {
-        // The show/hide unmounted may have changed, refresh local
-        // collection panels
-        refreshLastFMCollectionTabs();
-      } else if (subject.equals(JajukEvents.COVER_DEFAULT_CHANGED)
-          || subject.equals(JajukEvents.SUGGESTIONS_REFRESH)) {
-        // New default cover, refresh the view
+    JajukEvents subject = event.getSubject();
+    if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
+      comp++;
+      // Change local collection suggestions every 10 track plays
+      if (comp % 10 == 0) {
         refreshLocalCollectionTabs();
       }
+      // update last.fm panels
+      refreshLastFMCollectionTabs();
+    } else if (subject.equals(JajukEvents.PARAMETERS_CHANGE) && isLastFMTabsVisible()) {
+      // The show/hide unmounted may have changed, refresh local
+      // collection panels
+      refreshLastFMCollectionTabs();
+    } else if (subject.equals(JajukEvents.COVER_DEFAULT_CHANGED)
+        || subject.equals(JajukEvents.SUGGESTIONS_REFRESH)) {
+      // New default cover, refresh the view
+      refreshLocalCollectionTabs();
     }
   }
 
