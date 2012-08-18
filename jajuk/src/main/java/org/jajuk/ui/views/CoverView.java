@@ -51,7 +51,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
@@ -107,15 +106,15 @@ public class CoverView extends ViewAdapter implements ActionListener {
   /** No cover cover. */
   private static Cover nocover = new Cover(Const.IMAGES_SPLASHSCREEN, CoverType.NO_COVER);
   /** Error counter to check connection availability. */
-  private static int iErrorCounter = 0;
+  private volatile static int iErrorCounter = 0;
   /** Connected one flag : true if jajuk managed once to connect to the web to bring covers. */
-  private static boolean bOnceConnected = false;
+  private volatile static boolean bOnceConnected = false;
   /** Reference File for cover. */
-  private org.jajuk.base.File fileReference;
+  private volatile org.jajuk.base.File fileReference;
   /** File directory used as a cache for perfs. */
-  private Directory dirReference;
+  private volatile Directory dirReference;
   /** List of available covers for the current file. */
-  private final LinkedList<Cover> alCovers = new LinkedList<Cover>(); // NOPMD
+  private final LinkedList<Cover> alCovers = new LinkedList<Cover>();
   // control panel
   private JPanel jpControl;
   private JajukButton jbPrevious;
@@ -128,48 +127,20 @@ public class CoverView extends ViewAdapter implements ActionListener {
   /** Cover search accuracy combo. */
   private JComboBox jcbAccuracy;
   /** Date last resize (used for adjustment management). */
-  private long lDateLastResize;
+  private volatile long lDateLastResize;
   /** URL and size of the image. */
   private JLabel jl;
   /** Used Cover index. */
-  private int index = 0;
+  private volatile int index = 0;
   /** Flag telling that user wants to display a better cover. */
   private boolean bGotoBetter = false;
   /** Final image to display. */
-  private ImageIcon ii;
+  private volatile ImageIcon ii;
   /** Force next track cover reload flag*. */
-  private boolean bForceCoverReload = true;
+  private volatile boolean bForceCoverReload = true;
   private boolean includeControls;
   /** Whether the view has not yet been displayed for its first time */
-  private boolean initEvent = true;
-
-  /** Thread launch at view init to reset its state */
-  private class CoverResetThread extends Thread {
-    @Override
-    public void run() {
-      if (fileReference == null) { // regular cover view
-        if (QueueModel.isStopped()) {
-          update(new JajukEvent(JajukEvents.ZERO));
-        }
-        // check if a track has already been launched
-        else if (QueueModel.isPlayingRadio()) {
-          update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED,
-              ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
-          // If the view is displayed for the first time, a ComponentResized event is launched at its first display but
-          // we want to perform the full process : update past launches files (FILE_LAUNCHED). 
-          // But if it is no more the initial resize event, we only want to refresh the cover, not the full story.
-        } else if (!initEvent) {
-          displayCurrentCover();
-        } else {
-          update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
-        }
-      } else { // cover view used as dialog
-        update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
-      }
-      // It will never more be the first time ...
-      CoverView.this.initEvent = false;
-    }
-  }
+  private volatile boolean initEvent = true;
 
   /**
    * Constructor.
@@ -309,22 +280,10 @@ public class CoverView extends ViewAdapter implements ActionListener {
     }
     setLayout(globalLayout);
     add(jpControl, "grow,wrap");
-    // We have to start using the componentListener AFTER the view is fully displayed
-    // to avoid blank covers due to wrong (negative) cover dimensions.
-    new Thread() {
-      @Override
-      public void run() {
-        try {
-          Thread.sleep(1000);
-        } catch (InterruptedException e) {
-          Log.error(e);
-        }
-        // Force a init event as the ComponentListener was not yet attached to the view.
-        componentResized(null);
-        // Attach the listener for further manual actions against the view.
-        addComponentListener(CoverView.this);
-      }
-    }.start();
+    //Force initial resizing (required after a perspective reset as the component event is not thrown in this case)
+    componentResized(null);
+    // Attach the listener for initial cover display and further manual actions against the view when resizing.
+    addComponentListener(CoverView.this);
   }
 
   /*
@@ -701,19 +660,44 @@ public class CoverView extends ViewAdapter implements ActionListener {
    */
   @Override
   public void componentResized(final ComponentEvent e) {
+    Dimension dim = getSize();
+    if (dim.getHeight() <= 0 || dim.getWidth() <= 0) {
+      return;
+    }
     final long lCurrentDate = System.currentTimeMillis(); // adjusting code
     if (lCurrentDate - lDateLastResize < 500) { // Do consider only one event every 
       // 500 ms to avoid race conditions and lead to unexpected states (verified)
-      lDateLastResize = lCurrentDate;
       return;
     }
     lDateLastResize = lCurrentDate;
-    Log.debug("Cover resized");
-    // Force initial cover refresh. We do this inside this method and not initUI() 
-    // because we make sure that the window is fully displayed then (otherwise, we get 
-    // a black cover when switching from slimbar to main window for ie)
-    CoverResetThread refresh = new CoverResetThread();
-    refresh.start();
+    Log.debug("Cover resized, view=" + getID() + " size=" + getSize());
+    // Run this in another thread to accelerate the component resize events processing and filter by time
+    new Thread() {
+      @Override
+      public void run() {
+        if (fileReference == null) { // regular cover view
+          if (QueueModel.isStopped()) {
+            update(new JajukEvent(JajukEvents.ZERO));
+          }
+          // check if a track has already been launched
+          else if (QueueModel.isPlayingRadio()) {
+            update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED,
+                ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
+            // If the view is displayed for the first time, a ComponentResized event is launched at its first display but
+            // we want to perform the full process : update past launches files (FILE_LAUNCHED). 
+            // But if it is no more the initial resize event, we only want to refresh the cover, not the full story.
+          } else if (!initEvent) {
+            displayCurrentCover();
+          } else {
+            update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
+          }
+        } else { // cover view used as dialog
+          update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
+        }
+        // It will never more be the first time ...
+        CoverView.this.initEvent = false;
+      }
+    }.start();
   }
 
   /**
@@ -786,76 +770,75 @@ public class CoverView extends ViewAdapter implements ActionListener {
    * Display current cover (at this.index), try all covers in case of error
    */
   private void displayCurrentCover() {
-    SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
+    UtilGUI.showBusyLabel(CoverView.this); // lookup icon
+    findRightCover();
+    SwingUtilities.invokeLater(new Runnable() {
       @Override
-      public Void doInBackground() {
-        synchronized (this) {
-          UtilGUI.showBusyLabel(CoverView.this); // lookup icon
-          // Avoid looping
-          if (alCovers.size() == 0) {
-            // should not append
-            alCovers.add(CoverView.nocover);
-            // Add at last the default cover if all remote cover has
-            // been discarded
-            try {
-              prepareDisplay(0);
-            } catch (JajukException e) {
-              Log.error(e);
-            }
-            return null;
-          }
-          if ((alCovers.size() == 1) && ((alCovers.get(0)).getType() == CoverType.NO_COVER)) {
-            // only a default cover
-            try {
-              prepareDisplay(0);
-            } catch (JajukException e) {
-              Log.error(e);
-            }
-            return null;
-          }
-          // else, there is at least one local cover and no
-          // default cover
-          while (alCovers.size() > 0) {
-            try {
-              prepareDisplay(index);
-              return null; // OK, leave
-            } catch (Exception e) {
-              Log.debug("Removed cover: {{" + alCovers.get(index) + "}}");
-              alCovers.remove(index);
-              // refresh number of found covers
-              if (!bGotoBetter) {
-                // we go to worse covers. If we go to better
-                // covers, we just
-                // keep the same index try a worse cover...
-                if (index - 1 >= 0) {
-                  index--;
-                } else { // no more worse cover
-                  index = alCovers.size() - 1;
-                  // come back to best cover
-                }
-              }
-            }
-          }
-          // if this code is executed, it means than no available
-          // cover was found, then display default cover
-          alCovers.add(CoverView.nocover); // Add at last the default cover
-          // if all remote cover has been discarded
-          try {
-            index = 0;
-            prepareDisplay(index);
-          } catch (JajukException e) {
-            Log.error(e);
-          }
-        }
-        return null;
-      }
-
-      @Override
-      public void done() {
+      public void run() {
         displayCover(index);
       }
-    };
-    sw.execute();
+    });
+  }
+
+  private void findRightCover() {
+    synchronized (this) {
+      // Avoid looping
+      if (alCovers.size() == 0) {
+        // should not append
+        alCovers.add(CoverView.nocover);
+        // Add at last the default cover if all remote cover has
+        // been discarded
+        try {
+          prepareDisplay(0);
+        } catch (JajukException e) {
+          Log.error(e);
+        }
+        return;
+      }
+      if ((alCovers.size() == 1) && ((alCovers.get(0)).getType() == CoverType.NO_COVER)) {
+        // only a default cover
+        try {
+          prepareDisplay(0);
+        } catch (JajukException e) {
+          Log.error(e);
+        }
+        return;
+      }
+      // else, there is at least one local cover and no
+      // default cover
+      while (alCovers.size() > 0) {
+        try {
+          prepareDisplay(index);
+          return; // OK, leave
+        } catch (Exception e) {
+          Log.debug("Removed cover: {{" + alCovers.get(index) + "}}");
+          alCovers.remove(index);
+          // refresh number of found covers
+          if (!bGotoBetter) {
+            // we go to worse covers. If we go to better
+            // covers, we just
+            // keep the same index try a worse cover...
+            if (index - 1 >= 0) {
+              index--;
+            } else { // no more worse cover
+              index = alCovers.size() - 1;
+              // come back to best cover
+            }
+          }
+        }
+      }
+      // if this code is executed, it means than no available
+      // cover was found, then display default cover
+      alCovers.add(CoverView.nocover); // Add at last the default cover
+      // if all remote cover has been discarded
+      try {
+        index = 0;
+        prepareDisplay(index);
+      } catch (JajukException e) {
+        Log.error(e);
+      }
+    }
+    return;
   }
 
   /**
@@ -1077,6 +1060,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
         }
       }
     });
+    System.out.println("display: " + getID() + " " + System.currentTimeMillis());
     add(jl, "center,wrap");
     // make sure the image is repainted to avoid overlapping covers
     CoverView.this.revalidate();
@@ -1100,11 +1084,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
         final File fThumb = ThumbnailManager.getThumbBySize(album, size);
         ThumbnailManager.createThumbnail(cover.getFile(), fThumb, size);
       }
-    } catch (final InterruptedException ex) {
-      Log.error(24, ex);
-    } catch (final IOException ex) {
-      Log.error(24, ex);
-    } catch (final RuntimeException ex) {
+    } catch (final Exception ex) {
       Log.error(24, ex);
     }
   }
@@ -1185,21 +1165,19 @@ public class CoverView extends ViewAdapter implements ActionListener {
     final JajukEvents subject = event.getSubject();
     try {
       // When receiving this event, check if we should change the cover or
-      // not
-      // (we don't change cover if playing another track of the same album
+      // not (we don't change cover if playing another track of the same album
       // except if option shuffle cover is set)
       if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
         updateFileLaunched(event);
       } else if (JajukEvents.ZERO.equals(subject) || JajukEvents.WEBRADIO_LAUNCHED.equals(subject)
           || JajukEvents.PLAYER_STOP.equals(subject)) {
-        updateStopOrWebRadioLaunched();
+        reset();
       } else if (JajukEvents.COVER_NEED_REFRESH.equals(subject) && !QueueModel.isPlayingRadio()) {
         refreshCovers(true);
         displayCurrentCover();
       }
     } catch (final IOException e) {
       Log.error(e);
-    } finally {
     }
   }
 
@@ -1207,7 +1185,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
    * Update stop or web radio launched.
    * 
    */
-  private void updateStopOrWebRadioLaunched() {
+  private void reset() {
     // Ignore this event if a reference file has been set
     if (fileReference != null) {
       return;
@@ -1300,7 +1278,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
   private void refreshCovers(boolean dirChanged) throws IOException {
     // Reset this flag
     bForceCoverReload = false;
-    UtilGUI.showBusyLabel(CoverView.this); // lookup icon
     org.jajuk.base.File fCurrent = fileReference;
     // check if a file has been given for this cover view
     // if not, take current cover
