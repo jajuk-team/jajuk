@@ -391,8 +391,17 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         int[] selection = jtable.getSelectedRows();
         // Force table repaint (for instance for rating stars update)
         model.fireTableDataChanged();
-        // Restore selection (even if rows content may have change)
-        jtable.setSelectedRows(selection);
+        // Restore selection (even if rows content may have change) if is is not now out of bound
+        boolean outOfBounds = false;
+        for (int index : selection) {
+          if (index >= model.getRowCount()) {
+            outOfBounds = true;
+            break;
+          }
+        }
+        if (!outOfBounds) {
+          jtable.setSelectedRows(selection);
+        }
         UtilGUI.stopWaiting();
       }
     };
