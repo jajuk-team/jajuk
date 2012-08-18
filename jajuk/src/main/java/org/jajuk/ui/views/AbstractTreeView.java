@@ -269,10 +269,17 @@ public abstract class AbstractTreeView extends ViewAdapter {
   @Override
   public void update(JajukEvent event) {
     final JajukEvents subject = event.getSubject();
-    if (subject.equals(JajukEvents.DEVICE_MOUNT) || subject.equals(JajukEvents.DEVICE_UNMOUNT)
-        || subject.equals(JajukEvents.DEVICE_REFRESH)
-        || subject.equals(JajukEvents.PARAMETERS_CHANGE)
-        || JajukEvents.RATE_CHANGED.equals(subject)) {
+    if (JajukEvents.RATE_CHANGED.equals(subject)) {
+      // Make sure that preference menu icon is refreshed
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          pjmTracks.resetUI(alSelected);
+        }
+      });
+    } else if (subject.equals(JajukEvents.DEVICE_MOUNT)
+        || subject.equals(JajukEvents.DEVICE_UNMOUNT) || subject.equals(JajukEvents.DEVICE_REFRESH)
+        || subject.equals(JajukEvents.PARAMETERS_CHANGE)) {
       SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
         @Override
         public Void doInBackground() {
