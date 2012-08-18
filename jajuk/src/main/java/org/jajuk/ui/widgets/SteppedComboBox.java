@@ -73,7 +73,7 @@ public class SteppedComboBox extends JComboBox {
    * 
    * @param items 
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public SteppedComboBox(List<?> items) {
     super(new Vector(items));
     init();
