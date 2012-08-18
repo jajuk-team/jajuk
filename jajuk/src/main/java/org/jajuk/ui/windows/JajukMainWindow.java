@@ -79,7 +79,7 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
   /** Self instance. */
-  private static JajukMainWindow jw;
+  private static JajukMainWindow jw = new JajukMainWindow();
   /** Left side perspective selection panel. */
   private PerspectiveBarJPanel perspectiveBar;
   /** Main frame panel. */
@@ -88,6 +88,41 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
   private JPanel perspectivePanel;
   /** State decorator. */
   private WindowStateDecorator decorator;
+  static {
+    // Install global keystrokes
+    WindowGlobalKeystrokeManager.getInstance();
+    jw.decorator = new WindowStateDecorator(jw) {
+      @Override
+      public void specificBeforeShown() {
+        jw.applyStoredSize();
+      }
+
+      @Override
+      public void specificAfterShown() {
+        // Apply size and location again
+        // (required by Gnome for ie to fix the 0-sized maximized
+        // frame)
+        jw.applyStoredSize();
+        jw.toFront();
+        // Need focus for keystrokes
+        jw.requestFocus();
+        // Make sure to display right title if a track or a webradio is launched at startup
+        // Indeed, the window can appear after the track/webradio has been launched and miss this event 
+        UtilFeatures.updateStatus(jw);
+      }
+
+      @Override
+      public void specificBeforeHidden() {
+        // hide the window only if it is explicitely required
+        jw.saveSize();
+      }
+
+      @Override
+      public void specificAfterHidden() {
+        // Nothing particular
+      }
+    };
+  }
 
   /**
    * Get the window instance and create the specific WindowStateHandler.
@@ -95,42 +130,6 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
    * @return the instance
    */
   public static JajukMainWindow getInstance() {
-    if (jw == null) {
-      jw = new JajukMainWindow();
-      // Install global keystrokes
-      WindowGlobalKeystrokeManager.getInstance();
-      jw.decorator = new WindowStateDecorator(jw) {
-        @Override
-        public void specificBeforeShown() {
-          jw.applyStoredSize();
-        }
-
-        @Override
-        public void specificAfterShown() {
-          // Apply size and location again
-          // (required by Gnome for ie to fix the 0-sized maximized
-          // frame)
-          jw.applyStoredSize();
-          jw.toFront();
-          // Need focus for keystrokes
-          jw.requestFocus();
-          // Make sure to display right title if a track or a webradio is launched at startup
-          // Indeed, the window can appear after the track/webradio has been launched and miss this event 
-          UtilFeatures.updateStatus(jw);
-        }
-
-        @Override
-        public void specificBeforeHidden() {
-          // hide the window only if it is explicitely required
-          jw.saveSize();
-        }
-
-        @Override
-        public void specificAfterHidden() {
-          // Nothing particular
-        }
-      };
-    }
     return jw;
   }
 
