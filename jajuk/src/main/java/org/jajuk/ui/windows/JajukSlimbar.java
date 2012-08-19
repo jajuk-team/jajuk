@@ -132,7 +132,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
    * 
    * @return single instance of JajukSlimbar
    */
-  public static JajukSlimbar getInstance() {
+  public static synchronized JajukSlimbar getInstance() {
     if (self == null) {
       self = new JajukSlimbar();
       self.decorator = new WindowStateDecorator(self) {
