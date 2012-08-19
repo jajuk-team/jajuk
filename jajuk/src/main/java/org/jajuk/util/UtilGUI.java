@@ -42,6 +42,8 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -883,6 +885,14 @@ public final class UtilGUI {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(dispatcher);
       }
     });
+    
+    window.addComponentListener(new ComponentAdapter() {
+      @Override
+      public void componentHidden(ComponentEvent e) {
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(dispatcher);
+      }
+    });
+    
   }
 
   /**
