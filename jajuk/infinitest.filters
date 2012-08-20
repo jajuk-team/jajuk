@@ -21,11 +21,6 @@
 # Integration Tests with limited number of hits
 .*LastFm.*
 
-# Tests that fail in ClassNotFoundException for unknown reason
-.*TestDebugLog.*
-.*TestDigitalDJ.*
-.*TestPrepareParty.*
-
 # Tests with GUI (even in headless mode)
 org.jajuk.services.notification.*
 .*ParameterView.*
