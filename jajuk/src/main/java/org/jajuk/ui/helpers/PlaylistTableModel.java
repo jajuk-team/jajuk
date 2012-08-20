@@ -226,7 +226,7 @@ public class PlaylistTableModel extends JajukTableModel {
         } else if (item.isRepeat()) {
           // normal file, repeated
           oValues[iRow][0] = IconLabel.getIconLabel(JajukIcons.TRACK_FIFO_REPEAT);
-        } else if (iRow == QueueModel.getIndex()) {
+        } else if (iRow == QueueModel.getIndex() && QueueModel.isPlayingTrack()) {
           // Played file
           oValues[iRow][0] = IconLabel.getIconLabel(JajukIcons.TRACK_FIFO_PLAYING);
         } else {
