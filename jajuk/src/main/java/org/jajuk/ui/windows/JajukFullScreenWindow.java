@@ -135,7 +135,7 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
    * 
    * @return single instance of JajukFullScreenWindow
    */
-  public static JajukFullScreenWindow getInstance() {
+  public static synchronized JajukFullScreenWindow getInstance() {
     if (instance == null) {
       instance = new JajukFullScreenWindow();
       instance.decorator = new WindowStateDecorator(instance) {
