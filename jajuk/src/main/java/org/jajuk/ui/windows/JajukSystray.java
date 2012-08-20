@@ -116,7 +116,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
    * 
    * @return singleton
    */
-  public static JajukSystray getInstance() {
+  public static synchronized JajukSystray getInstance() {
     if (jsystray == null) {
       jsystray = new JajukSystray();
       jsystray.decorator = new WindowStateDecorator(jsystray) {
