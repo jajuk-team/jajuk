@@ -228,7 +228,7 @@ public class JajukFullScreenWindow extends JWindow implements IJajukWindow {
    * Instantiates a new jajuk full screen window.
    */
   public JajukFullScreenWindow() {
-    super(owner);
+    super();
     setAlwaysOnTop(true);
     // Add Mouse Listener to disable mouse cursor
     addMouseListener(new MouseAdapter() {
