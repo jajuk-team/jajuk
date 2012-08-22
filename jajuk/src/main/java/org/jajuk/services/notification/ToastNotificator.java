@@ -24,9 +24,7 @@ import org.jajuk.base.Album;
 import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.widgets.JajukToast;
-import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
 
 /**
  * Notificator that displays a full Swing album toast (notification frame that
@@ -84,12 +82,7 @@ public class ToastNotificator implements INotificator {
    */
   private void displayToast(String text) {
     // Useful for #1582 ([Linux] Void entry in task bar for information dialog)
-    if (UtilGUI.getActiveWindow() != null // null if none window displayed
-        && UtilGUI.getActiveWindow().equals(JajukMainWindow.getInstance())) {
-      new JajukToast(text, null).display();
-    } else {
-      new JajukToast(text, UtilGUI.getActiveWindow()).display();
-    }
+      new JajukToast(text).display();
   }
 
   /*

@@ -55,10 +55,7 @@ public class JajukInformationDialog extends JDialog {
    */
   public JajukInformationDialog(String text, Window owner) {
     // An annoying entry appears under linux in the taskbar. We have no way so far to fix it.
-    // We tried this trick : set the owner window to fix a JRE issue under Linux only
-    // See http://www.velocityreviews.com/forums/t125048-re-jdialog-in-taskbar-under-linux.html
-    // It fixes the problem but a new problem arises : the main window appears / disappears
-    // with the toast, it is even worse than the previous issue.
+    //see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7078460
     super(owner);
     setFocusableWindowState(false);
     setFocusable(false);

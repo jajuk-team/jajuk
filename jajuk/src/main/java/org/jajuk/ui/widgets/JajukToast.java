@@ -20,8 +20,6 @@
  */
 package org.jajuk.ui.widgets;
 
-import java.awt.Window;
-
 import org.jajuk.ui.helpers.animations.AnimationCompletedEvent;
 import org.jajuk.ui.helpers.animations.AnimationCompletedListener;
 import org.jajuk.ui.helpers.animations.FadeAnimation;
@@ -42,10 +40,9 @@ public class JajukToast extends JajukInformationDialog {
    * Instantiates a new jajuk toast.
    * 
    * @param text 
-   * @param owner parent owner, see  #1582 ([Linux] Void entry in task bar for information dialog)
    */
-  public JajukToast(String text, Window owner) {
-    super(text, owner);
+  public JajukToast(String text) {
+    super(text,null);
   }
 
   /*
