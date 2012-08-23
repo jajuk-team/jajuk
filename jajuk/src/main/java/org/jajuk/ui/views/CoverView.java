@@ -1060,7 +1060,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
         }
       }
     });
-    System.out.println("display: " + getID() + " " + System.currentTimeMillis());
     add(jl, "center,wrap");
     // make sure the image is repainted to avoid overlapping covers
     CoverView.this.revalidate();

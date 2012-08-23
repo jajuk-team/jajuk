@@ -68,9 +68,7 @@ public class NotificatorFactory {
     // Animated popup
     else if (NotificatorTypes.TOAST.name().equals(optionValue)) {
       notificator = ToastNotificator.getInstance();
-      if (notificator.isAvailable()) {
-        Log.debug("JajukInformationDialog implementation is available for system notifications.");
-      } else {
+      if (!notificator.isAvailable()) {
         notificator = null;
       }
     } else {
