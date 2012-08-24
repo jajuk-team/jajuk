@@ -40,6 +40,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -141,6 +144,9 @@ public class CoverView extends ViewAdapter implements ActionListener {
   private boolean includeControls;
   /** Whether the view has not yet been displayed for its first time */
   private volatile boolean initEvent = true;
+  /** Used to lock access to covers collection, we don't synchronize this as this may create thread 
+   * starvations because the EDT requires this lock as well in ViewAdater.stopAllBusyLabels() method. */
+  private final Lock listLock = new ReentrantLock(true);
 
   /**
    * Constructor.
@@ -408,7 +414,8 @@ public class CoverView extends ViewAdapter implements ActionListener {
       dirReference.removeProperty("default_cover");
     }
     // reorganize covers
-    synchronized (this) {
+    try {
+      listLock.lock();
       alCovers.remove(index);
       index--;
       if (index < 0) {
@@ -418,6 +425,8 @@ public class CoverView extends ViewAdapter implements ActionListener {
       if (fileReference != null) {
         update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
       }
+    } finally {
+      listLock.unlock();
     }
   }
 
@@ -781,7 +790,8 @@ public class CoverView extends ViewAdapter implements ActionListener {
   }
 
   private void findRightCover() {
-    synchronized (this) {
+    try {
+      listLock.lock();
       // Avoid looping
       if (alCovers.size() == 0) {
         // should not append
@@ -837,8 +847,9 @@ public class CoverView extends ViewAdapter implements ActionListener {
       } catch (JajukException e) {
         Log.error(e);
       }
+    } finally {
+      listLock.unlock();
     }
-    return;
   }
 
   /**
@@ -1160,9 +1171,10 @@ public class CoverView extends ViewAdapter implements ActionListener {
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   @Override
-  public synchronized void update(final JajukEvent event) {
+  public void update(final JajukEvent event) {
     final JajukEvents subject = event.getSubject();
     try {
+      listLock.lock();
       // When receiving this event, check if we should change the cover or
       // not (we don't change cover if playing another track of the same album
       // except if option shuffle cover is set)
@@ -1177,6 +1189,8 @@ public class CoverView extends ViewAdapter implements ActionListener {
       }
     } catch (final IOException e) {
       Log.error(e);
+    } finally {
+      listLock.unlock();
     }
   }
 
