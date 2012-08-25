@@ -22,7 +22,6 @@ package org.jajuk.services.lyrics.persisters;
 
 import org.jajuk.base.File;
 import org.jajuk.services.tags.Tag;
-import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -43,8 +42,7 @@ public class TagPersister implements ILyricsPersister {
       g.setLyrics(lyrics);
       return true;
     } catch (JajukException e) {
-      Log.error(e);
-      Messages.showErrorMessage(155, file.getFIO().getAbsolutePath());
+      Log.error(155, file.getFIO().getAbsolutePath(), e);
       return false;
     }
   }
