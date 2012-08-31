@@ -16,7 +16,7 @@
 
 	<!--Build type : 'unstable', 'final', 'pre-release' or 'maintenance' -->
 	<property name='type' value='maintenance' />
-	
+
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
 	<property name='version' value='1.10.1dev' />
@@ -26,12 +26,11 @@
 	In maintenance or unstable daily builds, jnlp_version=${JNLP_DATE} : we don't use regular version 
 	so the version changes each day -->
 	<property name='jnlp_version' value='${JNLP_DATE}' />
-	
+
 	<!--Test flag: values: 'test' or 'notest' 
 	'test' for 'unstable' branches, 'notest' for master, pre-release and maintenance branches
 	-->
 	<property name='test' value='notest' />
-				
 
 	<!-- ======================= -->
 	<!-- | Configuration paths | -->
@@ -77,6 +76,13 @@
  	disk space -->
 	<property name='jnlpdir' value='${conf_jnlp-dist}/${version}' />
 	<property name='srcdir' value='${basedir}/src' />
+
+	<!-- Izpack binary path -->
+	<path id="izpack.classpath">
+		<fileset dir="${conf_izpackdir}">
+			<include name="lib/*.jar" />
+		</fileset>
+	</path>
 
 	<target name='get-jvm'>
 		<echo message='Verifying Java Version used for building, found version ${java.specification.version}, expecting ${jajuk.java.build.version6} or ${jajuk.java.build.version7}' />
@@ -277,7 +283,7 @@
 	<!--IzPack package creation -->
 
 	<target name='package_izpack' description='o Create Jajuk IzPack package' depends='download_mplayer,startup,clean,package_jar,mkdist_izpack'>
-		<taskdef name='izpack' classpath='${conf_izpackdir}/lib/izpack-ant-5.0.0-beta10.jar;izpack-compiler-5.0.0-beta10.jar' classname='com.izforge.izpack.ant.IzPackTask' />
+		<taskdef name='izpack' classpathref="izpack.classpath" classname='com.izforge.izpack.ant.IzPackTask' />
 		<echo message='Create Jajuk IzPack package' />
 		<echo message='Makes the installer using IzPack' />
 		<izpack input='${izpackdir}/jajuk.izpack' output='${izpackdir}/${distjarname}${version}.jar' basedir='${srcdir}' izPackDir='${conf_izpackdir}' />
@@ -341,8 +347,8 @@
 	<target name='package_sfx' description='o Create IzPack Windows executable file' depends='package_exe,package_izpack'>
 		<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
 			        :${launch4j.dir}/lib/xstream.jar" />
-				<echo message='Create Jajuk Windows executable file' />
-				<launch4j configFile="${windowsdir}/installer.launch4j" />
+		<echo message='Create Jajuk Windows executable file' />
+		<launch4j configFile="${windowsdir}/installer.launch4j" />
 	</target>
 
 	<target name='package_jnlp' description='o Create Java Web Start war distribution' depends='startup,clean,package_jar'>
@@ -390,7 +396,7 @@
 			<include name='*.jnlp' />
 			<replacetoken>JNLP_VERSION_REPLACED_BY_ANT</replacetoken>
 		</replace>
-		
+
 		<!-- Sign all jars -->
 		<signjar alias='jajukteam' storepass='passpass'>
 			<fileset dir='${jnlpdir}'>
