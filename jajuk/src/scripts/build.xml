@@ -277,7 +277,7 @@
 	<!--IzPack package creation -->
 
 	<target name='package_izpack' description='o Create Jajuk IzPack package' depends='download_mplayer,startup,clean,package_jar,mkdist_izpack'>
-		<taskdef name='izpack' classpath='${conf_izpackdir}/lib/compiler.jar' classname='com.izforge.izpack.ant.IzPackTask' />
+		<taskdef name='izpack' classpath='${conf_izpackdir}/lib/compiler.jar,${conf_izpackdir}/lib/izpack-ant.jar' classname='com.izforge.izpack.ant.IzPackTask' />
 		<echo message='Create Jajuk IzPack package' />
 		<echo message='Makes the installer using IzPack' />
 		<izpack input='${izpackdir}/jajuk.izpack' output='${izpackdir}/${distjarname}${version}.jar' basedir='${srcdir}' izPackDir='${conf_izpackdir}' />
