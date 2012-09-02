@@ -34,7 +34,9 @@
 		<langpack iso3='glg' />
 		<langpack iso3='cze' />
 	</locale>
-	<native name='ShellLink.dll' type='izpack' />
+	<natives>
+		<native name='ShellLink.dll' type='izpack' />
+	</natives>
 	<resources>
 		<res id='LicencePanel.licence' src='legals/LICENSE-GPL.txt' />
 		<res id='shortcutSpec.xml' src='/tmp/jajuk-dist/java/shortcutSpec.xml' />
