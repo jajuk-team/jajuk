@@ -29,7 +29,8 @@
 		<langpack iso3='cze' />
 	</locale>
 	<natives>
-		<native name='ShellLink.dll' type='izpack' />
+		<native type="izpack" name="ShellLink.dll"/>
+		<native type="izpack" name="ShellLink_x64.dll"/>
 	</natives>
 	<resources>
 		<res id='LicencePanel.licence' src='legals/LICENSE-GPL.txt' />
@@ -44,6 +45,7 @@
 		<panel classname='TargetPanel' />
 		<panel classname='InstallPanel' />
 		<panel classname='ShortcutPanel' />
+		<panel classname="FinishPanel"/>
 	</panels>
 	<packs>
 		<pack name='main pack' required='yes'>
