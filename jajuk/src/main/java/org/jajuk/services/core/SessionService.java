@@ -436,7 +436,10 @@ public class SessionService {
           Log.error(e);
         }
       }
-      setWorkspace(ftw.getUserWorkspacePath());
+      // selection can be null if user postpone the configuration
+      if (ftw.getUserWorkspacePath() != null) {
+        setWorkspace(ftw.getUserWorkspacePath());
+      }
     }
   }
 
