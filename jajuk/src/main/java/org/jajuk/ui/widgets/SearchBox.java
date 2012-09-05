@@ -377,7 +377,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
                   true), Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
             }
             // User selected a web radio
-            else if (sr.getType() == SearchResultType.WEBRADIO) {
+            else if (sr.getType() == SearchResultType.WEBRADIO && sr.getWebradio() != null) {
               QueueModel.launchRadio(sr.getWebradio());
             }
           } catch (JajukException je) {
