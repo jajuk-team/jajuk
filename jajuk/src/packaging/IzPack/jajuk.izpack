@@ -34,8 +34,8 @@
 		<langpack iso3='glg' />
 		<langpack iso3='cze' />
 	</locale>
-	<native type='izpack' name='ShellLink.dll' />
-	<native type="izpack" name="ShellLink_x64.dll" />
+	<native type='izpack' name='ShellLink.dll'/>
+	<native type="izpack" name="ShellLink_x64.dll"/>
 	<resources>
 		<res id='LicencePanel.licence' src='legals/LICENSE-GPL.txt' />
 		<res id='shortcutSpec.xml' src='/tmp/jajuk-dist/java/shortcutSpec.xml' />
@@ -49,6 +49,7 @@
 		<panel classname='TargetPanel' />
 		<panel classname='InstallPanel' />
 		<panel classname='ShortcutPanel' />
+		<panel classname='SimpleFinishPanel' />
 	</panels>
 	<packs>
 		<pack name='main pack' required='yes'>
