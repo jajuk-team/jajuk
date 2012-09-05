@@ -25,11 +25,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.net.URL;
 import java.util.Locale;
 import java.util.Properties;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -46,6 +48,7 @@ import org.jajuk.services.core.RatingManager;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.notification.NotificatorTypes;
 import org.jajuk.services.webradio.WebRadio;
+import org.jajuk.services.webradio.WebRadioHelper;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
@@ -837,6 +840,38 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         pv.jcbUseVolnorm.setSelected(false);
       }
       pv.crossFadeDuration.setEnabled(!pv.jcbEnableBitPerfect.isSelected());
+    }
+    else if (e.getSource().equals(pv.jbReloadRadiosPreset)){
+      SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
+        @Override
+        protected Boolean doInBackground() throws Exception {
+          try {
+            java.io.File fPresets = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET);
+            DownloadManager.download(new URL(Const.URL_WEBRADIO_PRESETS), fPresets);
+            WebRadioHelper.loadPresetsRadios(fPresets);
+            return true;
+          } catch (Exception ex) {
+            Log.error(ex);
+            return false;
+          }
+        }
+
+        @Override
+        protected void done() {
+          try {
+            boolean result = get();
+            if (result) {
+              Messages.showInfoMessage(Messages.getString("Success"));
+              ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+            } else {
+              Messages.showErrorMessage(9);
+            }
+          } catch (Exception e) {
+            Log.error(e);
+          }
+        }
+      };
+      worker.execute();
     }
   }
 
