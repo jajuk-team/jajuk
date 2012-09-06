@@ -6,6 +6,7 @@
 		<javaversion>1.6</javaversion>
 		<url>http://jajuk.info</url>
 	</info>
+	<guiprefs height='600' resizable='yes' width='800'/>
 	<!-- See ISO3 country codes in /prog/IzPack/bin/langpacks/installer -->
 	<locale>
 		<langpack iso3='eng' />
