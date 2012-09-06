@@ -6,7 +6,14 @@
 		<javaversion>1.6</javaversion>
 		<url>http://jajuk.info</url>
 	</info>
-	<guiprefs height='600' resizable='yes' width='800'/>
+	<guiprefs height='600' resizable='yes' width='800'>
+		<laf name='substance'>
+			<os family='unix' />
+			<os family='windows' />
+			<os family='mac' />
+		</laf>
+	</guiprefs>
+
 	<!-- See ISO3 country codes in /prog/IzPack/bin/langpacks/installer -->
 	<locale>
 		<langpack iso3='eng' />
