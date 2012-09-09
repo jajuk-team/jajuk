@@ -42,7 +42,7 @@ public class JajukToast extends JajukInformationDialog {
    * @param text 
    */
   public JajukToast(String text) {
-    super(text,null);
+    super(text);
   }
 
   /*

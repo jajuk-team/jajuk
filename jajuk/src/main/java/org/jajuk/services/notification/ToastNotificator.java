@@ -81,8 +81,7 @@ public class ToastNotificator implements INotificator {
    * @param text toast text
    */
   private void displayToast(String text) {
-    // Useful for #1582 ([Linux] Void entry in task bar for information dialog)
-      new JajukToast(text).display();
+    new JajukToast(text).display();
   }
 
   /*

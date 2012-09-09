@@ -622,7 +622,7 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     if (balloon != null && balloon.isVisible()) {
       return;
     }
-    balloon = new JajukInformationDialog(QueueModel.getCurrentFileTitle(), this);
+    balloon = new JajukInformationDialog(QueueModel.getCurrentFileTitle());
     Point buttonLocation = jbInfo.getLocationOnScreen();
     Point location = null;
     // If slimbar is too height in the screen, display the popup bellow it
