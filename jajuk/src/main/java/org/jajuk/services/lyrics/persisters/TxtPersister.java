@@ -20,6 +20,7 @@
  */
 package org.jajuk.services.lyrics.persisters;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -31,8 +32,6 @@ import org.jajuk.util.log.Log;
  * Class to read/write lyrics to TXT file.
  */
 public class TxtPersister implements ILyricsPersister {
-  private java.io.File lyricsFile = null;
-  private Writer lyricsWriter = null;
   /** Audio file to set lyrics to. */
   private org.jajuk.base.File file = null;
 
@@ -41,8 +40,10 @@ public class TxtPersister implements ILyricsPersister {
     */
   @Override
   public boolean commitLyrics(String artist, String title, String lyrics) {
+    File lyricsFile = getDestinationFile();
+    Writer lyricsWriter = null;
     try {
-      lyricsWriter = getLyricsWriter();
+      lyricsWriter = new FileWriter(lyricsFile);
       lyricsWriter.write("# This is a Jajuk generated lyrics file\n");
       lyricsWriter.write("# Artist:\t" + artist + "\n");
       lyricsWriter.write("# Title:\t" + title + "\n#");
@@ -61,6 +62,15 @@ public class TxtPersister implements ILyricsPersister {
       }
       lyricsFile = null;
       return false;
+    } finally {
+      if (lyricsWriter != null) {
+        try {
+          lyricsWriter.flush();
+          lyricsWriter.close();
+        } catch (IOException e) {
+          Log.error(e);
+        }
+      }
     }
   }
 
@@ -69,9 +79,8 @@ public class TxtPersister implements ILyricsPersister {
    */
   @Override
   public boolean deleteLyrics() {
-    lyricsFile = getDestinationFile();
     try {
-      UtilSystem.deleteFile(lyricsFile);
+      UtilSystem.deleteFile(getDestinationFile());
       return true;
     } catch (IOException e) {
       Log.error(e);
@@ -86,25 +95,7 @@ public class TxtPersister implements ILyricsPersister {
    */
   @Override
   public java.io.File getDestinationFile() {
-    if (lyricsFile == null) {
-      lyricsFile = new java.io.File(UtilSystem.removeExtension(file.getAbsolutePath()) + ".txt");
-    }
-    return lyricsFile;
-  }
-
-  /**
-   * Gets the lyrics writer.
-   * 
-   * @return the lyrics writer
-   * 
-   * @throws IOException Signals that an I/O exception has occurred.
-   */
-  private Writer getLyricsWriter() throws IOException {
-    lyricsFile = getDestinationFile();
-    if (lyricsWriter == null) {
-      lyricsWriter = new FileWriter(lyricsFile);
-    }
-    return lyricsWriter;
+    return new java.io.File(UtilSystem.removeExtension(file.getAbsolutePath()) + ".txt");
   }
 
   /* (non-Javadoc)

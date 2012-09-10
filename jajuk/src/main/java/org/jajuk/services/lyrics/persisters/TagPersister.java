@@ -42,8 +42,7 @@ public class TagPersister implements ILyricsPersister {
       g.setLyrics(lyrics);
       return true;
     } catch (JajukException e) {
-      Log.error(e);
-      Log.warn(e.getMessage());
+      Log.error(155, file.getFIO().getAbsolutePath(), e);
       return false;
     }
   }

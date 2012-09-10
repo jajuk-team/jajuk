@@ -34,7 +34,11 @@
 		<langpack iso3='glg' />
 		<langpack iso3='cze' />
 	</locale>
-	<native name='ShellLink.dll' type='izpack' />
+	<native type='izpack' name='ShellLink.dll' />
+	<native type="izpack" name="ShellLink_x64.dll" />
+	<native type="3rdparty" name="COIOSHelper.dll" stage="both">
+		<os family="windows" />
+	</native>
 	<resources>
 		<res id='LicencePanel.licence' src='legals/LICENSE-GPL.txt' />
 		<res id='shortcutSpec.xml' src='/tmp/jajuk-dist/java/shortcutSpec.xml' />
@@ -48,8 +52,14 @@
 		<panel classname='TargetPanel' />
 		<panel classname='InstallPanel' />
 		<panel classname='ShortcutPanel' />
-		<panel classname='SimpleFinishPanel' />
+		<panel classname='FinishPanel' />
 	</panels>
+	<!-- The listeners section for CustomActions -->
+	<listeners>
+		<listener installer="RegistryInstallerListener" uninstaller="RegistryUninstallerListener">
+			<os family="windows" />
+		</listener>
+	</listeners>
 	<packs>
 		<pack name='main pack' required='yes'>
 			<description>Main pack</description>

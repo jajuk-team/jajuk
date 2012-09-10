@@ -24,8 +24,6 @@ import java.awt.Component;
 import java.awt.SystemTray;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -64,7 +62,6 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.notification.NotificatorTypes;
-import org.jajuk.services.webradio.WebRadioHelper;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
@@ -78,7 +75,6 @@ import org.jajuk.ui.widgets.SteppedComboBox;
 import org.jajuk.ui.widgets.ToggleLink;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
-import org.jajuk.util.DownloadManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.LocaleManager;
@@ -398,21 +394,7 @@ public class ParameterView extends ViewAdapter {
     jbReloadRadiosPreset = new JButton(Messages.getString("WebRadioView.10"),
         IconLoader.getIcon(JajukIcons.CLEAR));
     jbReloadRadiosPreset.setToolTipText(Messages.getString("WebRadioView.11"));
-    jbReloadRadiosPreset.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        try {
-          File fPresets = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET);
-          DownloadManager.download(new URL(Const.URL_WEBRADIO_PRESETS), fPresets);
-          WebRadioHelper.loadPresetsRadios(fPresets);
-          Messages.showInfoMessage(Messages.getString("Success"));
-          ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-        } catch (Exception ex) {
-          Log.error(ex);
-          Messages.showErrorMessage(9);
-        }
-      }
-    });
+    jbReloadRadiosPreset.addActionListener(updateHelper);
     jpWebradios.add(jbReloadRadiosPreset);
     return jpWebradios;
   }
