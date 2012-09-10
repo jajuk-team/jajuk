@@ -840,8 +840,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         pv.jcbUseVolnorm.setSelected(false);
       }
       pv.crossFadeDuration.setEnabled(!pv.jcbEnableBitPerfect.isSelected());
-    }
-    else if (e.getSource().equals(pv.jbReloadRadiosPreset)){
+    } else if (e.getSource().equals(pv.jbReloadRadiosPreset)) {
       SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
         @Override
         protected Boolean doInBackground() throws Exception {
