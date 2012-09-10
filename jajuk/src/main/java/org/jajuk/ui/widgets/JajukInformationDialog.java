@@ -58,7 +58,7 @@ public class JajukInformationDialog extends JWindow {
     super();
     setFocusableWindowState(false);
     setFocusable(false);
-    // Don't use setAlwaysOnTop or the toast steals the focus, see #1636
+    setAlwaysOnTop(true);
     getRootPane().setWindowDecorationStyle(JRootPane.NONE);
     getRootPane().setBorder(new LineBorder(Color.BLACK));
     JLabel jl = new JLabel(text);
