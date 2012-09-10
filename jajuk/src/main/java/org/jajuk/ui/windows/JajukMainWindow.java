@@ -94,7 +94,7 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
    * 
    * @return the instance
    */
-  public static JajukMainWindow getInstance() {
+  public static synchronized JajukMainWindow getInstance() {
     if (jw == null) {
       jw = new JajukMainWindow();
       // Install global keystrokes

@@ -51,7 +51,7 @@ public class FullscreenAction extends JajukAction {
   public void perform(ActionEvent evt) throws Exception {
     /*
      * If full screen window is visible, hide it and show the main window. Note
-     * that both main window and fsw can"t be displayed at the same time:
+     * that main window and fsw are mutually exclusive :
      */
     WindowStateDecorator sdFullscreen = JajukFullScreenWindow.getInstance()
         .getWindowStateDecorator();

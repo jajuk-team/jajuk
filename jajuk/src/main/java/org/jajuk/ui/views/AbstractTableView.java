@@ -391,8 +391,17 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         int[] selection = jtable.getSelectedRows();
         // Force table repaint (for instance for rating stars update)
         model.fireTableDataChanged();
-        // Restore selection (even if rows content may have change)
-        jtable.setSelectedRows(selection);
+        // Restore selection (even if rows content may have change) if is is not now out of bound
+        boolean outOfBounds = false;
+        for (int index : selection) {
+          if (index >= model.getRowCount()) {
+            outOfBounds = true;
+            break;
+          }
+        }
+        if (!outOfBounds) {
+          jtable.setSelectedRows(selection);
+        }
         UtilGUI.stopWaiting();
       }
     };
@@ -458,12 +467,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
               applyFilter(sAppliedCriteria, sAppliedFilter);
             }
           } else if (JajukEvents.RATE_CHANGED.equals(subject)) {
-            // Ignore the refresh if the event comes from the table itself
-            Properties properties = event.getDetails();
-            if (properties != null
-                && AbstractTableView.this.equals(properties.get(Const.DETAIL_ORIGIN))) {
-              return;
-            }
             // Keep current selection and nb of rows
             int[] selection = jtable.getSelectedRows();
             // force filter to refresh
@@ -687,43 +690,52 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     if (((JajukTableModel) jtable.getModel()).isRefreshing()) {
       return;
     }
-    // Call view specific behavior on selection change
-    onSelectionChange();
-    // Hide the copy url if several items selection. Do not simply disable them
-    // as the getMenu() method enable all menu items
-    jmiFileCopyURL.setVisible(jtable.getSelectedRowCount() < 2);
-    // Compute Information view message
-    if (AbstractTableView.this instanceof TracksTableView) {
-      int rows = jtable.getSelection().size();
-      StringBuilder sbOut = new StringBuilder().append(rows).append(
-          Messages.getString("TracksTreeView.31"));
-      InformationJPanel.getInstance().setSelection(sbOut.toString());
-    } else if (AbstractTableView.this instanceof FilesTableView) {
-      // Compute recursive selection size, nb of items...
-      long lSize = 0l;
-      int items = 0;
-      for (Item item : jtable.getSelection()) {
-        if (item instanceof File) {
-          lSize += ((File) item).getSize();
+    // We absolutely need to perform the actual treatment in the next EDT call because otherwise, 
+    // the selection is wrong because the selection event is catch first here and after in the JajukTable
+    // valueChanged() that performs the actual selection computation. Doing this invokeLater ensure to 
+    // serialize the event treatment in the correct order.
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        // Call view specific behavior on selection change
+        onSelectionChange();
+        // Hide the copy url if several items selection. Do not simply disable them
+        // as the getMenu() method enable all menu items
+        jmiFileCopyURL.setVisible(jtable.getSelectedRowCount() < 2);
+        // Compute Information view message
+        if (AbstractTableView.this instanceof TracksTableView) {
+          int rows = jtable.getSelection().size();
+          StringBuilder sbOut = new StringBuilder().append(rows).append(
+              Messages.getString("TracksTreeView.31"));
+          InformationJPanel.getInstance().setSelection(sbOut.toString());
+        } else if (AbstractTableView.this instanceof FilesTableView) {
+          // Compute recursive selection size, nb of items...
+          long lSize = 0l;
+          int items = 0;
+          for (Item item : jtable.getSelection()) {
+            if (item instanceof File) {
+              lSize += ((File) item).getSize();
+            }
+          }
+          items = jtable.getSelection().size();
+          lSize /= 1048576; // set size in MB
+          StringBuilder sbOut = new StringBuilder().append(items).append(
+              Messages.getString("FilesTreeView.52"));
+          if (lSize > 1024) { // more than 1024 MB -> in GB
+            sbOut.append(lSize / 1024).append('.').append(lSize % 1024)
+                .append(Messages.getString("FilesTreeView.53"));
+          } else {
+            sbOut.append(lSize).append(Messages.getString("FilesTreeView.54"));
+          }
+          InformationJPanel.getInstance().setSelection(sbOut.toString());
+        }
+        // Refresh the preference menu according to the selection
+        // (Useless for WebRadioView)
+        if (!(AbstractTableView.this instanceof WebRadioView)) {
+          pjmTracks.resetUI(jtable.getSelection());
         }
       }
-      items = jtable.getSelection().size();
-      lSize /= 1048576; // set size in MB
-      StringBuilder sbOut = new StringBuilder().append(items).append(
-          Messages.getString("FilesTreeView.52"));
-      if (lSize > 1024) { // more than 1024 MB -> in GB
-        sbOut.append(lSize / 1024).append('.').append(lSize % 1024)
-            .append(Messages.getString("FilesTreeView.53"));
-      } else {
-        sbOut.append(lSize).append(Messages.getString("FilesTreeView.54"));
-      }
-      InformationJPanel.getInstance().setSelection(sbOut.toString());
-    }
-    // Refresh the preference menu according to the selection
-    // (Useless for WebRadioView)
-    if (!(AbstractTableView.this instanceof WebRadioView)) {
-      pjmTracks.resetUI(jtable.getSelection());
-    }
+    });
   }
 
   /**

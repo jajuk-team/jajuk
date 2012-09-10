@@ -68,7 +68,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
-import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
@@ -116,7 +115,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
    * 
    * @return singleton
    */
-  public static JajukSystray getInstance() {
+  public static synchronized JajukSystray getInstance() {
     if (jsystray == null) {
       jsystray = new JajukSystray();
       jsystray.decorator = new WindowStateDecorator(jsystray) {
@@ -258,13 +257,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
         if (balloon != null && balloon.isVisible()) {
           return;
         }
-        // Useful for #1582 ([Linux] Void entry in task bar for information dialog)
-        if (UtilGUI.getActiveWindow() != null //can happen if tray only
-            && UtilGUI.getActiveWindow().equals(JajukMainWindow.getInstance())) {
-          balloon = new JajukInformationDialog(title, null);
-        } else {
-          balloon = new JajukInformationDialog(title, UtilGUI.getActiveWindow());
-        }
+        balloon = new JajukInformationDialog(title);
         Point location = new Point(e.getX() - balloon.getWidth(), e.getY()
             - (20 + balloon.getHeight()));
         balloon.setLocation(location);

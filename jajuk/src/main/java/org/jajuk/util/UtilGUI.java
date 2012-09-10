@@ -360,6 +360,7 @@ public final class UtilGUI {
         panel.removeAll();
         Dimension dim = new Dimension(panel.getWidth() / 3, panel.getWidth() / 3);
         final JXBusyLabel busy = new JXBusyLabel(dim);
+        busy.setBusy(true);
         JPanel inner = new JPanel();
         inner.setMinimumSize(new Dimension(panel.getWidth(), panel.getHeight()));
         inner.setLayout(new BoxLayout(inner, BoxLayout.X_AXIS));
@@ -369,7 +370,6 @@ public final class UtilGUI {
         panel.add(inner);
         panel.revalidate();
         panel.repaint();
-        busy.setBusy(true);
       }
     });
   }

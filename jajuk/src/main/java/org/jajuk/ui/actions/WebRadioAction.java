@@ -58,7 +58,9 @@ public class WebRadioAction extends JajukAction {
       public void run() {
         WebRadio radio = WebRadioManager.getInstance().getWebRadioByName(
             Conf.getString(Const.CONF_DEFAULT_WEB_RADIO));
-        QueueModel.launchRadio(radio);
+        if (radio != null) {
+          QueueModel.launchRadio(radio);
+        }
       }
     }.start();
   }

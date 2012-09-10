@@ -21,15 +21,14 @@
 package org.jajuk.ui.widgets;
 
 import java.awt.Color;
-import java.awt.Window;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JRootPane;
+import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -41,7 +40,7 @@ import org.jajuk.util.log.Log;
 /**
  * Dialog displayed by slimbar and tray or notificators.
  */
-public class JajukInformationDialog extends JDialog {
+public class JajukInformationDialog extends JWindow {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
   /** Has this dialog already been hidden ?. */
@@ -53,18 +52,13 @@ public class JajukInformationDialog extends JDialog {
    * @param text : text to display
    * @param owner parent owner, see  #1582 ([Linux] Void entry in task bar for information dialog)
    */
-  public JajukInformationDialog(String text, Window owner) {
+  public JajukInformationDialog(String text) {
     // An annoying entry appears under linux in the taskbar. We have no way so far to fix it.
-    // We tried this trick : set the owner window to fix a JRE issue under Linux only
-    // See http://www.velocityreviews.com/forums/t125048-re-jdialog-in-taskbar-under-linux.html
-    // It fixes the problem but a new problem arises : the main window appears / disappears
-    // with the toast, it is even worse than the previous issue.
-    super(owner);
+    //see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7078460
+    super();
     setFocusableWindowState(false);
     setFocusable(false);
-    setUndecorated(true);
-    // Don't use setAlwaysOnTop or the toast steals the focus, see #1636
-    //setAlwaysOnTop(true);
+    setAlwaysOnTop(true);
     getRootPane().setWindowDecorationStyle(JRootPane.NONE);
     getRootPane().setBorder(new LineBorder(Color.BLACK));
     JLabel jl = new JLabel(text);
