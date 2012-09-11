@@ -357,6 +357,10 @@ public class SessionService {
             } else {
               workspacePath = (String) bootstrapContent.get(KEY_FINAL);
             }
+            // Case where the file exist but doesn't contain the path lines
+            if (workspacePath == null) {
+              throw new IllegalStateException("the bootsrap file doesn't contain the path lines");
+            }
             // Check if the repository can be found
             if (new File(workspacePath + '/'
                 + (isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk")).canRead()) {
