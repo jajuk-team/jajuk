@@ -75,7 +75,6 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
         - this.getToolkit().getScreenInsets(jframe.getGraphicsConfiguration()).top
         - this.getToolkit().getScreenInsets(jframe.getGraphicsConfiguration()).bottom - 4));
     super.add(scroll, BorderLayout.CENTER);
-    // super.add(scroll);
   }
 
   /* (non-Javadoc)
@@ -84,7 +83,6 @@ public class XJPopupMenu extends JPopupMenu implements ActionListener {
   @Override
   public void show(Component invoker, int x, int y) {
     init();
-    // this.pack();
     panelMenus.validate();
     int maxsize = scroll.getMaximumSize().height;
     int realsize = panelMenus.getPreferredSize().height;
