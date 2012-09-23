@@ -39,6 +39,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.helpers.JajukTimer;
@@ -592,7 +593,7 @@ public final class QueueModel {
    * @return the bInternalStop
    */
   public static boolean isInternalStop() {
-    return bInternalStop;
+    return bInternalStop || ExitService.isExiting();
   }
 
   /**
