@@ -35,10 +35,11 @@ import org.jajuk.util.Messages;
 
 /**
  * Jajuk table model, adds identifier to model.
+ * 
+ * <p>Note that we don't synchronize this class because all calls have to be done in the EDT.</p>
  */
+@SuppressWarnings("serial")
 public abstract class JajukTableModel extends DefaultTableModel {
-  /** Generated serialVersionUID. */
-  private static final long serialVersionUID = -7296786603161189590L;
   /** Column identifiers. */
   volatile protected List<String> idList = new ArrayList<String>(10);
   /** Rows number. */
