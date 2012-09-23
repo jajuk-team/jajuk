@@ -206,8 +206,11 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
       }
     }
     // If it is a playlist, add the -playlist option, must be the last option
-    // because options after -playlist are ignored (see mplayer man page)
-    if (url.matches("http://.*")) {
+    // because options after -playlist are ignored (see mplayer man page).
+    // Moreover, we only use this option if we are about to play line-based stream like m3u or the playback will fail.
+    if (url.matches(".*://.*")
+        && (url.toLowerCase().endsWith(".m3u") || url.toLowerCase().endsWith(".asx") || url
+            .toLowerCase().endsWith(".pls"))) {
       cmd.add("-playlist");
     }
     cmd.add(url);
