@@ -99,6 +99,12 @@ public class WebRadioButton extends DropDownButton {
             JajukAction action = ActionManager.getAction(JajukActions.WEB_RADIO);
             action.setShortDescription(Const.HTML + Messages.getString("CommandJPanel.25")
                 + Const.P_B + radio.getName() + Const.B_P_HTML);
+            // Actually launch the webradio
+            try {
+              action.perform(null);
+            } catch (Exception e1) {
+              Log.error(e1);
+            }
           }
         });
         jmi.setSelected(Conf.getString(Const.CONF_DEFAULT_WEB_RADIO).equals(radio.getName()));
