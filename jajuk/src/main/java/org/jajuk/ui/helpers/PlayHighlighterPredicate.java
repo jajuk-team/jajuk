@@ -62,7 +62,7 @@ public class PlayHighlighterPredicate implements HighlightPredicate {
     if (QueueModel.isStopped()) {
       return false;
     }
-    Item item = model.getItemAt(adapter.row);
+    Item item = model.getItemAt(jtable.convertRowIndexToModel(adapter.row));
     if (item instanceof File && QueueModel.getPlayingFile() != null) {
       File file = (File) item;
       if (file.equals(QueueModel.getPlayingFile())) {

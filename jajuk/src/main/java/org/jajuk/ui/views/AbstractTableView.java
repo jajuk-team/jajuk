@@ -77,6 +77,7 @@ import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
+import org.jajuk.ui.helpers.PlayHighlighterPredicate;
 import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.ui.helpers.TableTransferHandler;
 import org.jajuk.ui.helpers.TwoStepsDisplayable;
@@ -95,6 +96,7 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
+import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
 
@@ -268,6 +270,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jtbSync.putClientProperty(Const.DETAIL_VIEW, getID());
     jtbSync.setSelected(Conf.getBoolean(Const.CONF_SYNC_TABLE_TREE + "." + getID()));
     createGenericGUI(jtbSync);
+    ColorHighlighter colorHighlighter = new ColorHighlighter(new PlayHighlighterPredicate(jtable),
+        Color.ORANGE, null);
+    jtable.addHighlighter(colorHighlighter);
     // refresh columns conf in case of some attributes been removed
     // or added before view instantiation
     Properties properties = ObservationManager
