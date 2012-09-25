@@ -20,11 +20,8 @@
  */
 package org.jajuk.services.webradio;
 
-import java.util.List;
-
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
-import org.jajuk.util.Const;
 
 public class TestWebRadioHelper extends JajukTestCase {
   private WebRadioManager man = WebRadioManager.getInstance();
@@ -44,17 +41,5 @@ public class TestWebRadioHelper extends JajukTestCase {
     custom2 = JUnitHelpers.getWebRadio("Custom2", "http://custom2", WebRadioOrigin.CUSTOM);
   }
 
-  public void testForcePresetsRefresh() throws Exception {
-    //Make sure keywords will not be lost
-    radio1.setProperty(Const.XML_KEYWORDS, "foo;bar");
-    custom1.setProperty(Const.XML_KEYWORDS, "foo2;bar2");
-    WebRadioHelper.forcePresetsRefresh();
-    //check custom radios are still there
-    List<WebRadio> shouldBeCustom = man.getWebRadiosByOrigin(WebRadioOrigin.CUSTOM);
-    assertTrue(shouldBeCustom.size() == 2 && shouldBeCustom.contains(custom1));
-    // Check that the preset keywords are not lost
-    assertEquals(radio1.getKeywords(), "foo;bar");
-    // Same thing for custom radios
-    assertEquals(custom1.getKeywords(), "foo2;bar2");
-  }
+ 
 }
