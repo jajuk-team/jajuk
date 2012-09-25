@@ -71,6 +71,9 @@ public class WebRadioButton extends DropDownButton {
    */
   @Override
   protected JPopupMenu getPopupMenu() {
+    // Force populating the radios each time the drop down button is pressed to make sure the 
+    // current radio icon is synchronized between slimar and main window, see #1866
+    populateWebRadios();
     return popupWebRadio;
   }
 
