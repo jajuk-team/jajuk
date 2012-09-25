@@ -30,6 +30,8 @@ import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -164,7 +166,8 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
   */
   public static void commit() throws IOException {
     WebRadioManager manager = WebRadioManager.getInstance();
-    File out = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET);
+    // Write first to a temporary file, override previous file only if everything seems fine
+    File out = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET + "~");
     String sCharset = Conf.getString(Const.CONF_COLLECTION_CHARSET);
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out),
         sCharset), 1000000);
@@ -212,6 +215,16 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
       // close
       bw.write("</" + TAG_LIST + ">\n");
       bw.flush();
+      // Override initial file
+      if (out.length() > 0) {
+        File finalFile = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET);
+        try {
+          UtilSystem.move(out, finalFile);
+        } catch (JajukException e) {
+          Log.error(e);
+          throw new IOException(e);
+        }
+      }
       Log.debug("Preset webradios list commited to : " + out.getAbsolutePath());
     } finally {
       bw.close();
