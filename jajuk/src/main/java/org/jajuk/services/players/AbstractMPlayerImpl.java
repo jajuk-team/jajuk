@@ -330,7 +330,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    */
   @Override
   public void resume() throws Exception {
-    // This test is required because we in case of volume change, mplayer is
+    // This test is required because in case of volume change, mplayer is
     // already resumed and we don't want to send another pause command
     if (bPaused) {
       bPaused = false;

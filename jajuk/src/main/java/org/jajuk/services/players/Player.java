@@ -394,7 +394,16 @@ public final class Player {
       if (playerImpl == null) { // none current player, leave
         return;
       }
-      playerImpl.resume();
+      // If we are playing a webradio, we stop and restart because players 
+      // like mplayer can't deal with resuming a stream (it cant restart under 
+      // mplayer when the resume is done after the end of the buffer)
+      if (QueueModel.isPlayingRadio()) {
+        WebRadio radio = QueueModel.getCurrentRadio();
+        stop(true);
+        play(radio);
+      } else {
+        playerImpl.resume();
+      }
       bPaused = false;
       ObservationManager.notify(new JajukEvent(JajukEvents.PLAYER_RESUME));
     } catch (Exception e) {
