@@ -71,6 +71,9 @@ public class WebRadioButton extends DropDownButton {
    */
   @Override
   protected JPopupMenu getPopupMenu() {
+    // Force populating the radios each time the drop down button is pressed to make sure the 
+    // current radio icon is synchronized between slimar and main window, see #1866
+    populateWebRadios();
     return popupWebRadio;
   }
 
@@ -99,6 +102,12 @@ public class WebRadioButton extends DropDownButton {
             JajukAction action = ActionManager.getAction(JajukActions.WEB_RADIO);
             action.setShortDescription(Const.HTML + Messages.getString("CommandJPanel.25")
                 + Const.P_B + radio.getName() + Const.B_P_HTML);
+            // Actually launch the webradio
+            try {
+              action.perform(null);
+            } catch (Exception e1) {
+              Log.error(e1);
+            }
           }
         });
         jmi.setSelected(Conf.getString(Const.CONF_DEFAULT_WEB_RADIO).equals(radio.getName()));

@@ -23,7 +23,6 @@ package org.jajuk.services.webradio;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
@@ -125,37 +124,6 @@ public class WebRadioHelper {
     spf.setNamespaceAware(false);
     SAXParser saxParser = spf.newSAXParser();
     saxParser.parse(presetToLoad, new PresetRadiosPersistenceHelper());
-  }
-
-  /**
-  * Copy the default radio file to the current repository file.
-  * 
-  * @throws IOException Signals that an I/O exception has occurred.
-  */
-  public static void forcePresetsRefresh() throws IOException {
-    // Clear existing preset radios and store user keywords if any
-    HashMap<WebRadio, String> radioKeywords = new HashMap<WebRadio, String>();
-    for (WebRadio radio : manager.getWebRadiosByOrigin(WebRadioOrigin.PRESET)) {
-      // Note that we iterate over a defensive copy of the webradios list, no problem to remove items here.
-      manager.removeItem(radio);
-      if (UtilString.isNotEmpty(radio.getKeywords())) {
-        radioKeywords.put(radio, radio.getKeywords());
-      }
-    }
-    // Download presets and store them in the cache to avoid loosing user keywords
-    File cachedPreset = DownloadManager.downloadToCache(new URL(Const.URL_WEBRADIO_PRESETS));
-    try {
-      loadPresetsRadios(cachedPreset);
-    } catch (Exception e) {
-      handleFileCorrupted(fPresets, e);
-    }
-    // Restore user keywords
-    for (WebRadio radio : manager.getWebRadiosByOrigin(WebRadioOrigin.PRESET)) {
-      String keywords = radioKeywords.get(radio);
-      if (UtilString.isNotEmpty(keywords)) {
-        radio.setProperty(Const.XML_KEYWORDS, keywords);
-      }
-    }
   }
 
   private static void handleFileCorrupted(File file, Exception e) {

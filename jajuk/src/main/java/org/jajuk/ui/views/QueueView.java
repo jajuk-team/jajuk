@@ -60,6 +60,7 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.IndexHighlighterPredicate;
 import org.jajuk.ui.helpers.JajukTableModel;
+import org.jajuk.ui.helpers.PlayHighlighterPredicate;
 import org.jajuk.ui.helpers.PlaylistEditorTransferHandler;
 import org.jajuk.ui.helpers.PlaylistTableModel;
 import org.jajuk.ui.widgets.JajukButton;
@@ -201,6 +202,9 @@ public class QueueView extends PlaylistView {
     ColorHighlighter colorHighlighter = new ColorHighlighter(new IndexHighlighterPredicate(),
         queueHighlighterColor, null);
     editorTable.addHighlighter(colorHighlighter);
+    ColorHighlighter playHighlighter = new ColorHighlighter(new PlayHighlighterPredicate(editorTable),
+        Color.ORANGE, null);
+    editorTable.addHighlighter(playHighlighter);
     // register events
     ObservationManager.register(this);
     // Add key listener to enable row suppression using SUPR key
@@ -316,8 +320,6 @@ public class QueueView extends PlaylistView {
         try {
           JajukEvents subject = event.getSubject();
           editorTable.setAcceptColumnsEvents(false); // flag reloading
-          // to avoid
-          // wrong
           if (JajukEvents.QUEUE_NEED_REFRESH.equals(subject)
               || JajukEvents.DEVICE_REFRESH.equals(subject)
               || JajukEvents.DEVICE_MOUNT.equals(subject)

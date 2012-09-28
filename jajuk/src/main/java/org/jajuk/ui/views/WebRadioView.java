@@ -22,8 +22,6 @@ package org.jajuk.ui.views;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -37,7 +35,6 @@ import javax.swing.SwingUtilities;
 import org.jajuk.base.Item;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
-import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
@@ -56,7 +53,6 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
-import org.jajuk.util.UtilString;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
 
 /**
@@ -164,17 +160,7 @@ public class WebRadioView extends AbstractTableView {
         radio.setProperty(XML_ORIGIN, WebRadioOrigin.CUSTOM);
         List<Item> webradios = new ArrayList<Item>();
         webradios.add(radio);
-        PropertiesDialog dialog = new PropertiesDialog(webradios);
-        dialog.addWindowListener(new WindowAdapter() {
-          @Override
-          public void windowClosed(WindowEvent e) {
-            // Drop the void webradio if user didn't set its name and URL in the dialog
-            if (UtilString.isEmpty(radio.getName()) || UtilString.isEmpty(radio.getUrl())) {
-              WebRadioManager.getInstance().removeItem(radio);
-              ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-            }
-          }
-        });
+        new PropertiesDialog(webradios);
       }
     });
     ColorHighlighter colorHighlighter = new ColorHighlighter(new PlayHighlighterPredicate(jtable),
