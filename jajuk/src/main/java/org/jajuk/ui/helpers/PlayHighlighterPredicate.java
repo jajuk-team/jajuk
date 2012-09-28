@@ -55,14 +55,20 @@ public class PlayHighlighterPredicate implements HighlightPredicate {
    */
   @Override
   public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-    if (model instanceof WebRadioTableModel) {
-      WebRadio radio = (WebRadio) model.getItemAt(jtable.convertRowIndexToModel(adapter.row));
-      return QueueModel.isPlayingRadio() && QueueModel.getCurrentRadio().equals(radio);
-    }
     if (QueueModel.isStopped()) {
       return false;
     }
-    Item item = model.getItemAt(adapter.row);
+    int convertedRow = jtable.convertRowIndexToModel(adapter.row);
+    // For some reasons, we get OutOfBoundException here when the model is updated (note that 
+    // however the model can only be accessed by the EDT), so we enforce a bound test :
+    if (convertedRow >= model.getRowCount()) {
+      return false;
+    }
+    if (model instanceof WebRadioTableModel) {
+      WebRadio radio = (WebRadio) model.getItemAt(convertedRow);
+      return QueueModel.isPlayingRadio() && QueueModel.getCurrentRadio().equals(radio);
+    }
+    Item item = model.getItemAt(convertedRow);
     if (item instanceof File && QueueModel.getPlayingFile() != null) {
       File file = (File) item;
       if (file.equals(QueueModel.getPlayingFile())) {

@@ -39,6 +39,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.helpers.JajukTimer;
@@ -592,7 +593,7 @@ public final class QueueModel {
    * @return the bInternalStop
    */
   public static boolean isInternalStop() {
-    return bInternalStop;
+    return bInternalStop || ExitService.isExiting();
   }
 
   /**
@@ -1361,11 +1362,16 @@ public final class QueueModel {
     if (isPlayingRadio()) {
       Properties webradioInfoUpdatedEvent = ObservationManager
           .getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED);
-      WebRadio updatedWebRadio = (WebRadio) webradioInfoUpdatedEvent.get(Const.DETAIL_CONTENT);
-      if (getCurrentRadio().getName().equals(updatedWebRadio.getName())) {
-        title = (String) webradioInfoUpdatedEvent.get(Const.CURRENT_RADIO_TRACK);
+      // TODO Strange but we experienced NPE here coming from a call from tray/mouseMoved, so we perform sanity check, to be investigated
+      if (webradioInfoUpdatedEvent != null) {
+        WebRadio updatedWebRadio = (WebRadio) webradioInfoUpdatedEvent.get(Const.DETAIL_CONTENT);
+        if (getCurrentRadio().getName().equals(updatedWebRadio.getName())) {
+          title = (String) webradioInfoUpdatedEvent.get(Const.CURRENT_RADIO_TRACK);
+        } else {
+          title = getCurrentRadio().getName();
+        }
       } else {
-        title = getCurrentRadio().getName();
+        title = Messages.getString("JajukWindow.18");
       }
     } else if (file != null && !isStopped()) {
       title = file.getHTMLFormatText();

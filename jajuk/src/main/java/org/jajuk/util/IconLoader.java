@@ -360,8 +360,6 @@ final public class IconLoader {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/player_play_16x16.png"));
     } else if (icon == JajukIcons.TRACK_FIFO_REPEAT) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/repeat_16x16.png"));
-    } else if (icon == JajukIcons.TRACK_FIFO_PLAYING) {
-      out = new ImageIcon(UtilSystem.getResource("icons/16x16/ok_16x16.png"));
     } else if (icon == JajukIcons.WIZARD) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/wizard_16x16.png"));
     } else if (icon == JajukIcons.TYPE_MP3) {

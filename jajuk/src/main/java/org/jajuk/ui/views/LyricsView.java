@@ -88,7 +88,7 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
   private JLabel jlTitle;
   private String sURL;
   /** Currently analyzed file. */
-  private File file;
+  private volatile File file;
   private String lyrics;
   private JMenuItem jmiCopyToClipboard;
   private JMenuItem jmiLaunchInBrowser;
@@ -332,7 +332,9 @@ public class LyricsView extends ViewAdapter implements DocumentListener {
     } else if (subject.equals(JajukEvents.WEBRADIO_LAUNCHED)) {
       resetWebradio((WebRadio) event.getDetails().get(Const.DETAIL_CONTENT));
       file = null;
-    } else if (subject.equals(JajukEvents.LYRICS_DOWNLOADED)) {
+    } else if (subject.equals(JajukEvents.LYRICS_DOWNLOADED)
+    // file can be null if the search has been aborted in the mean time
+        && file != null) {
       refreshLyrics();
     }
   }

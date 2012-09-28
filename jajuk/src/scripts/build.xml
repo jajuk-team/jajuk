@@ -15,11 +15,11 @@
 	</tstamp>
 
 	<!--Build type : 'unstable', 'final', 'pre-release' or 'maintenance' -->
-	<property name='type' value='final' />
+	<property name='type' value='maintenance' />
 
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.10.2' />
+	<property name='version' value='1.10.3' />
 
 	<!--JNLP version-->
 	<!-- In final releases (including RC), jnlp_version=${version} 
