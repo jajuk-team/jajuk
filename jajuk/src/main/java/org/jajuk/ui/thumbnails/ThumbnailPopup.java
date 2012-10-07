@@ -226,7 +226,7 @@ public class ThumbnailPopup extends JWindow {
   }
 
   /**
-   * Add keystroke to dispose the popup when escape is pressed For unknown
+   * Add keystroke to dispose the popup when a key is pressed. For unknown
    * reasons, registerKeyboardAction() against JWindow doesn't work (it does for
    * JFrame) but we need to use JWindow for performance reasons. for that
    * reason, we add a keyboard focus manager which is called before any focus
