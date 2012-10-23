@@ -11,7 +11,7 @@
 	<classpathentry kind="lib" path="lib/jorbis-0.0.13.jar"/>
 	<classpathentry kind="lib" path="lib/jspeex-0.9.3.jar"/>
 	<classpathentry kind="lib" path="lib/tritonus_share-release.jar"/>
-	<classpathentry kind="lib" path="lib/mp3spi-1.9.4.jar"/>
+	<classpathentry kind="lib" path="lib/mp3spi-1.9.5.jar"/>
 	<classpathentry kind="lib" path="lib/jcommon-1.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/log4j_reduced-1.2.6.jar"/>
 	<classpathentry kind="lib" path="lib/entagged-freedb-0.04.jar"/>

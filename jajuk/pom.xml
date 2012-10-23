@@ -271,6 +271,13 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/last.fm-bindings-7.3.jar</systemPath>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.googlecode.soundlibs</groupId>
+			<artifactId>mp3spi</artifactId>
+			<version>1.9.5-1</version>
+			<scope>runtime</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>netbeans</groupId>
