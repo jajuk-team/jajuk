@@ -348,29 +348,34 @@ public final class FileManager extends ItemManager {
     lock.readLock().lock();
     try {
       File fOut = null;
+      File fOutNoCase = null;
+
       java.io.File fToCompare = new java.io.File(sPath);
+
       ReadOnlyIterator<File> it = getFilesIterator();
       while (it.hasNext()) {
         File file = it.next();
+
         // we compare io files and not paths
         // to avoid dealing with path name issues
         if (file.getFIO().equals(fToCompare)) {
           fOut = file;
           break;
         }
-      }
-      // Fix  #1717 (Cannot load some playlists) : if the file is not found, second chance ignoring the case
-      // This can happen under Unix when using an SMB drive
-      if (fOut == null) {
-        it = getFilesIterator();
-        while (it.hasNext()) {
-          File file = it.next();
-          if (file.getFIO().getAbsolutePath().equalsIgnoreCase(fToCompare.getAbsolutePath())) {
-            fOut = file;
-            break;
-          }
+        
+        // at the same time look for the lowercase filename and remember if we did find it this way to use
+        // this instead of the normal-case filename match
+        if (fOutNoCase == null && file.getFIO().getAbsolutePath().equalsIgnoreCase(fToCompare.getAbsolutePath())) {
+          fOutNoCase = file;
         }
       }
+
+      // Fix #1717 (Cannot load some playlists) : if the file is not found, second chance ignoring the case
+      // This can happen under Unix when using an SMB drive
+      if (fOut == null) {
+        return fOutNoCase;
+      }
+
       return fOut;
     } finally {
       lock.readLock().unlock();
