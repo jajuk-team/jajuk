@@ -56,7 +56,7 @@
 	<property name='jnidir' value='/usr/lib/jajuk/' />
 	<property name='distdir' value='${rootdir}/jajuk' />
 	<property name='rpmbuilddir' value='${rootdir}/RPMBUILD' />
-	<property name='rpmdistdir' value='${rpmbuilddir}/jajuk' />
+	<property name='rpmdistdir' value='${rpmbuilddir}/BUILDROOT/jajuk-${version}-1.noarch' />
 	<property name='windowsdir' value='${rootdir}/windows' />
 	<property name='izpackdir' value='${rootdir}/java' />
 	<property name='sourcesdir' value='${rootdir}/sources' />
