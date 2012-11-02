@@ -32,6 +32,7 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilSystem;
+import org.jajuk.util.log.Log;
 
 /**
  * .
@@ -44,6 +45,7 @@ public abstract class JajukTestCase extends TestCase {
    */
   @Override
   protected void setUp() throws Exception {
+    Log.info("Setting up testcase: " + getClass());
     // Make sure to use a test workspace
     SessionService.setTestMode(true);
     // let's clean up before we begin any test
