@@ -34,6 +34,11 @@ import org.jajuk.util.error.JajukException;
  * .
  */
 public class TestQueueList extends JajukTestCase {
+  @Override
+  public void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for {@link org.jajuk.services.players.QueueList#add(org.jajuk.services.players.StackItem)}.
    *

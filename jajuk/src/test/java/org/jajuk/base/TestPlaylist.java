@@ -34,7 +34,6 @@ import org.jajuk.ConstTest;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JUnitHelpers.MockPlayer;
 import org.jajuk.JajukTestCase;
-import org.jajuk.NeedDummyPlayer;
 import org.jajuk.services.bookmark.Bookmarks;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
@@ -46,7 +45,7 @@ import org.jajuk.util.error.JajukException;
 /**
  * .
  */
-public class TestPlaylist extends JajukTestCase implements NeedDummyPlayer {
+public class TestPlaylist extends JajukTestCase {
   /* (non-Javadoc)
    * @see org.jajuk.JajukTestCase#setUp()
    */

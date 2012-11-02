@@ -54,6 +54,7 @@ public class TestQueueModel extends JajukTestCase {
    */
   @Override
   protected void setUp() throws Exception {
+    super.setUp();
     // reset before each test to have a clean start for each test as most
     // data is held statically for QueueModel
     QueueModel.reset();
@@ -68,7 +69,6 @@ public class TestQueueModel extends JajukTestCase {
     for (File file : FileManager.getInstance().getFiles()) {
       FileManager.getInstance().removeFile(file);
     }
-    super.setUp();
   }
 
   // helper method to emma-coverage of the unused constructor
