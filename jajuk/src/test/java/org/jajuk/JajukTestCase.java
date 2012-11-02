@@ -107,7 +107,6 @@ public abstract class JajukTestCase extends TestCase {
       // Force dummy player
       scriptFile = java.io.File.createTempFile("dummy", "mplayer.sh", new java.io.File(
           ConstTest.TECH_TESTS_PATH));
-      scriptFile.delete();
       scriptFile.setExecutable(true);
       URL thisClassAbsUrl = getClass().getProtectionDomain().getCodeSource().getLocation();
       String thisClassAbsPath = new java.io.File(thisClassAbsUrl.toURI()).getAbsolutePath();
