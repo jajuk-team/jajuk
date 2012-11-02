@@ -20,8 +20,6 @@
  */
 package org.jajuk.services.players;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
@@ -64,8 +62,8 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
    * @see org.jajuk.JajukTestCase#setUp()
    */
   @Override
-  public void setUp() throws IOException, URISyntaxException {
-    Log.info("Setting up testcase");
+  public void setUp() throws Exception {
+    super.setUp();
     scriptFile = java.io.File.createTempFile("dummy", "mplayer.sh", new java.io.File(
         ConstTest.TECH_TESTS_PATH));
     scriptFile.setExecutable(true);
