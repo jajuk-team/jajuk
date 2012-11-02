@@ -20,14 +20,10 @@
  */
 package org.jajuk.services.players;
 
-import java.net.URL;
-
-import org.apache.commons.io.FileUtils;
-import org.jajuk.ConstTest;
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.NeedDummyPlayer;
 import org.jajuk.base.File;
-import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -36,43 +32,13 @@ import org.jajuk.util.log.Log;
 /**
  * .
  */
-public class TestMPlayerPlayerImpl extends JajukTestCase {
-  /** The Constant JAVA_PROCESS.   */
-  private static final String JAVA_PROCESS = "java";
-  /** The Constant MAIN_CLASS.   */
-  private static final String MAIN_CLASS = DummyMPlayerImpl.class.getName();
-  java.io.File scriptFile;
-  /** Property which is used to find the current installation location of java. */
-  protected static final String PROPERTY_JAVA_HOME = "java.home";
-
-  /**
-   * Find java executable.
-   * 
-   *
-   * @return the string
-   */
-  private String findJavaExecutable() {
-    assertNotNull("Need to have a property 'java.home' to run this test!",
-        System.getProperty(PROPERTY_JAVA_HOME));
-    return "\"" + System.getProperty(PROPERTY_JAVA_HOME) + java.io.File.separator + "bin"
-        + java.io.File.separator + JAVA_PROCESS + "\"";
-  }
-
+public class TestMPlayerPlayerImpl extends JajukTestCase implements NeedDummyPlayer{
   /* (non-Javadoc)
    * @see org.jajuk.JajukTestCase#setUp()
    */
   @Override
   public void setUp() throws Exception {
     super.setUp();
-    scriptFile = java.io.File.createTempFile("dummy", "mplayer.sh", new java.io.File(
-        ConstTest.TECH_TESTS_PATH));
-    scriptFile.setExecutable(true);
-    URL thisClassAbsUrl = getClass().getProtectionDomain().getCodeSource().getLocation();
-    String thisClassAbsPath = new java.io.File(thisClassAbsUrl.toURI()).getAbsolutePath();
-    FileUtils.writeStringToFile(scriptFile, "#!/bin/sh\n\n" + findJavaExecutable() + " -cp \""
-        + thisClassAbsPath + "\" " + MAIN_CLASS);
-    Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, scriptFile.getAbsolutePath());
-    StartupCollectionService.registerItemManagers();
   }
 
   /* (non-Javadoc)
@@ -83,7 +49,6 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
     JUnitHelpers.waitForThreadToFinish("MPlayer reader thread");
     JUnitHelpers.waitForThreadToFinish("MPlayer writer thread");
     Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, "");
-    assertTrue(scriptFile.delete());
     Log.info("Tearing down testcase");
   }
 

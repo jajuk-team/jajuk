@@ -21,15 +21,19 @@
 package org.jajuk;
 
 import java.io.File;
+import java.net.URL;
 
 import junit.framework.TestCase;
 
+import org.apache.commons.io.FileUtils;
 import org.jajuk.base.Collection;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.SessionService;
+import org.jajuk.services.players.DummyMPlayerImpl;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.services.webradio.WebRadioManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
@@ -38,6 +42,27 @@ import org.jajuk.util.log.Log;
  * .
  */
 public abstract class JajukTestCase extends TestCase {
+  /** The Constant JAVA_PROCESS.   */
+  private static final String JAVA_PROCESS = "java";
+  /** The Constant MAIN_CLASS.   */
+  private static final String MAIN_CLASS = DummyMPlayerImpl.class.getName();
+  java.io.File scriptFile;
+  /** Property which is used to find the current installation location of java. */
+  protected static final String PROPERTY_JAVA_HOME = "java.home";
+
+  /**
+   * Find java executable.
+   * 
+   *
+   * @return the string
+   */
+  private String findJavaExecutable() {
+    assertNotNull("Need to have a property 'java.home' to run this test!",
+        System.getProperty(PROPERTY_JAVA_HOME));
+    return "\"" + System.getProperty(PROPERTY_JAVA_HOME) + java.io.File.separator + "bin"
+        + java.io.File.separator + JAVA_PROCESS + "\"";
+  }
+
   /*
    * (non-Javadoc)
    * 
@@ -78,6 +103,18 @@ public abstract class JajukTestCase extends TestCase {
     History.commit();
     // Create a tmp directory as a music folder or tmp trash
     SessionService.getConfFileByPath("tests").mkdirs();
+    if (this instanceof NeedDummyPlayer) {
+      // Force dummy player
+      scriptFile = java.io.File.createTempFile("dummy", "mplayer.sh", new java.io.File(
+          ConstTest.TECH_TESTS_PATH));
+      scriptFile.delete();
+      scriptFile.setExecutable(true);
+      URL thisClassAbsUrl = getClass().getProtectionDomain().getCodeSource().getLocation();
+      String thisClassAbsPath = new java.io.File(thisClassAbsUrl.toURI()).getAbsolutePath();
+      FileUtils.writeStringToFile(scriptFile, "#!/bin/sh\n\n" + findJavaExecutable() + " -cp \""
+          + thisClassAbsPath + "\" " + MAIN_CLASS);
+      Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, scriptFile.getAbsolutePath());
+    }
     super.setUp();
   }
 }
