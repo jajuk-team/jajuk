@@ -23,8 +23,8 @@ package org.jajuk.base;
 import java.io.IOException;
 import java.util.List;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.util.error.JajukException;
 import org.junit.Test;
 

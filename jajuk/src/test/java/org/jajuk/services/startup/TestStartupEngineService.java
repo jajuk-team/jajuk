@@ -26,8 +26,8 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.File;
 import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.services.core.SessionService;

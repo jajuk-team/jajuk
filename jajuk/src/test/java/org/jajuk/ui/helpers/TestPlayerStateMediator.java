@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Device;

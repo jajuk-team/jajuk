@@ -20,8 +20,8 @@
  */
 package org.jajuk.services.notification;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
 

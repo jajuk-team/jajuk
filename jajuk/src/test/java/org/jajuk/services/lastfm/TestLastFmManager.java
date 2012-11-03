@@ -22,8 +22,8 @@ package org.jajuk.services.lastfm;
 
 import java.util.Set;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.util.Conf;

@@ -20,8 +20,8 @@
  */
 package org.jajuk.services.players;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.File;
 import org.jajuk.util.error.JajukException;
 

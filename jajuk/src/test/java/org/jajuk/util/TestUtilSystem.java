@@ -30,8 +30,8 @@ import java.util.Random;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.jajuk.ConstTest;
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.Directory;
 import org.jajuk.util.error.JajukException;
 

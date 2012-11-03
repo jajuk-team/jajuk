@@ -31,9 +31,9 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.ConstTest;
-import org.jajuk.TestHelpers;
-import org.jajuk.TestHelpers.MockPlayer;
 import org.jajuk.JajukTestCase;
+import org.jajuk.MockPlayer;
+import org.jajuk.TestHelpers;
 import org.jajuk.services.bookmark.Bookmarks;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;

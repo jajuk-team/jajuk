@@ -22,8 +22,8 @@ package org.jajuk.services.webradio;
 
 import java.util.List;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 
 public class TestWebRadioManager extends JajukTestCase {
   private WebRadioManager man = WebRadioManager.getInstance();

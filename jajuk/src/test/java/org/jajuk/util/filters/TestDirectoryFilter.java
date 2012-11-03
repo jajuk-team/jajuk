@@ -25,8 +25,8 @@ import java.io.IOException;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.ConstTest;
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 
 /**
  * .

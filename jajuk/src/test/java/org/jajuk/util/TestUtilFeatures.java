@@ -23,8 +23,8 @@ package org.jajuk.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.services.players.StackItem;
 
 /**

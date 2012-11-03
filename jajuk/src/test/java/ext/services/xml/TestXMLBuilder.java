@@ -20,8 +20,8 @@
  */
 package ext.services.xml;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 
 /**
  * .

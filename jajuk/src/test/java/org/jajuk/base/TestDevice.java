@@ -26,9 +26,9 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.ConstTest;
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
-import org.jajuk.base.TestAlbumManager.MockPlayer;
+import org.jajuk.MockPlayer;
+import org.jajuk.TestHelpers;
 import org.jajuk.services.core.ExitService;
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.QueueModel;

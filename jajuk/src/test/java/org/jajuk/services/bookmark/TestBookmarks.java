@@ -23,8 +23,8 @@ package org.jajuk.services.bookmark;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.File;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;

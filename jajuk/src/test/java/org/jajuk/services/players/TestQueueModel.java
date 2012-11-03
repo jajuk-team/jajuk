@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Device;

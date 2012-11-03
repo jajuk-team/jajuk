@@ -25,8 +25,8 @@ import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
 import org.jajuk.ConstTest;
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukRuntimeException;

@@ -22,8 +22,8 @@ package org.jajuk.base;
 
 import java.io.IOException;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.junit.Test;
 
 /**

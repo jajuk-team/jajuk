@@ -23,8 +23,8 @@ package org.jajuk.services.notification;
 import java.awt.HeadlessException;
 import java.awt.TrayIcon;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.windows.JajukSystray;

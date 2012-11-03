@@ -33,8 +33,8 @@ import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.TreePath;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Genre;

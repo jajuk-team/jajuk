@@ -24,8 +24,8 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Random;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.ThreadTestHelper;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;

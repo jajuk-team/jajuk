@@ -22,8 +22,8 @@ package org.jajuk.ui.actions;
 
 import java.util.List;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumArtist;
 import org.jajuk.base.AlbumArtistManager;

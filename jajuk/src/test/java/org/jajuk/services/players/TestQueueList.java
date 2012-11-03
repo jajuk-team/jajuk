@@ -25,8 +25,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.File;
 import org.jajuk.util.error.JajukException;
 

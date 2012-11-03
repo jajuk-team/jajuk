@@ -21,8 +21,8 @@
 package org.jajuk.base;
 
 import org.jajuk.ConstTest;
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;

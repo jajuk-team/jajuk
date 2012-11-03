@@ -22,8 +22,9 @@ package org.jajuk.services.core;
 
 import java.util.Set;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.MockPlayer;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
@@ -32,7 +33,6 @@ import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Genre;
-import org.jajuk.base.TestAlbumManager.MockPlayer;
 import org.jajuk.base.TestAlbumManager.MyTagImpl;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
