@@ -22,7 +22,6 @@ package org.jajuk.services.players;
 
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
-import org.jajuk.NeedDummyPlayer;
 import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Conf;
@@ -32,7 +31,7 @@ import org.jajuk.util.log.Log;
 /**
  * .
  */
-public class TestMPlayerPlayerImpl extends JajukTestCase implements NeedDummyPlayer {
+public class TestMPlayerPlayerImpl extends JajukTestCase {
   /* (non-Javadoc)
    * @see org.jajuk.JajukTestCase#setUp()
    */
