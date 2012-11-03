@@ -67,6 +67,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.12.3</version>
 				<configuration>
+					<forkedProcessTimeoutInSeconds>3600</forkedProcessTimeoutInSeconds>
 					<additionalClasspathElements>
 						<additionalClasspathElement>src/main/resources</additionalClasspathElement>
 						<additionalClasspathElement>src/main/java</additionalClasspathElement>
@@ -75,6 +76,11 @@
 						<property>
 							<name>java.awt.headless</name>
 							<value>true</value>
+						</property>
+						<property>
+							<!-- set java.library.path so that the DBus-tests find the libunix-java.so library -->
+							<name>java.library.path</name>
+							<value>${basedir}/lib/lib32:${basedir}/lib/lib64:/usr/lib/jni</value>
 						</property>
 					</systemProperties>
 				</configuration>

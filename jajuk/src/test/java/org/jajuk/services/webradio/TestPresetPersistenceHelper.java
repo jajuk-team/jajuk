@@ -144,12 +144,13 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
     PresetRadiosPersistenceHelper.commit();
     // Cleanup radios
     WebRadioManager.getInstance().cleanup();
+    assertNull(WebRadioManager.getInstance().getWebRadioByName("Preset1"));
     // load it again
     WebRadioHelper
         .loadPresetsRadios(SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET));
     // Check that the preset keywords are not lost
     radio1 = WebRadioManager.getInstance().getWebRadioByName("Preset1");
-    assertEquals(radio1.getKeywords(), "foo;bar");
+    assertEquals("foo;bar", radio1.getKeywords());
   }
 
   public void testCheckGenres() throws Exception {
