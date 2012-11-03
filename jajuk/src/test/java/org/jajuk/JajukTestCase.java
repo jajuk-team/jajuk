@@ -70,7 +70,7 @@ public abstract class JajukTestCase extends TestCase {
    */
   @Override
   protected void setUp() throws Exception {
-    Log.info("Setting up testcase: " + getClass());
+    Log.info("Setting up testcase: " + getClass() + "." + getName() + "()");
     // Make sure to use a test workspace
     SessionService.setTestMode(true);
     // let's clean up before we begin any test
