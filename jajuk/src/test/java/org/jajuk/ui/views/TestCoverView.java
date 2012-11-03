@@ -26,7 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.util.Set;
 
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
@@ -95,14 +95,14 @@ public class TestCoverView extends JajukTestCase {
    * @return the file
    */
   private File getFile() {
-    Genre genre = JUnitHelpers.getGenre();
-    Album album = JUnitHelpers.getAlbum("name", 0);
-    Artist artist = JUnitHelpers.getArtist("name");
-    Year year = JUnitHelpers.getYear(2000);
-    Type type = JUnitHelpers.getType();
+    Genre genre = TestHelpers.getGenre();
+    Album album = TestHelpers.getAlbum("name", 0);
+    Artist artist = TestHelpers.getArtist("name");
+    Year year = TestHelpers.getYear(2000);
+    Type type = TestHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
-    Device device = JUnitHelpers.getDevice();
+    Device device = TestHelpers.getDevice();
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     File file = FileManager.getInstance().registerFile("test.tst", dir, track, 120, 70);
     return file;

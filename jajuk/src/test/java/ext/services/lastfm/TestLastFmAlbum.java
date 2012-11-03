@@ -29,7 +29,7 @@ import net.roarsoftware.lastfm.Album;
 import net.roarsoftware.lastfm.CallException;
 import net.roarsoftware.lastfm.Playlist;
 
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.UtilString;
@@ -309,11 +309,11 @@ public class TestLastFmAlbum extends JajukTestCase {
    */
   public void testToString() {
     LastFmAlbum album = new LastFmAlbum();
-    JUnitHelpers.ToStringTest(album);
+    TestHelpers.ToStringTest(album);
     album.setArtist("artist");
     album.setBigCoverURL("url");
-    JUnitHelpers.ToStringTest(album);
+    TestHelpers.ToStringTest(album);
     album.setTitle("title");
-    JUnitHelpers.ToStringTest(album);
+    TestHelpers.ToStringTest(album);
   }
 }

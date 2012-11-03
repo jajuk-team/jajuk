@@ -23,7 +23,7 @@ package org.jajuk.base;
 import java.io.IOException;
 import java.util.List;
 
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.util.error.JajukException;
 import org.junit.Test;
@@ -48,7 +48,7 @@ public class TestFileManager extends JajukTestCase {
   @Test
   public void testRemoveFile() throws IOException {
     // Set-up...
-    File file = JUnitHelpers.getFile();
+    File file = TestHelpers.getFile();
     // Remove the reference
     FileManager.getInstance().removeFile(file);
     // 1- Check that the collection no more contains the file
@@ -66,12 +66,12 @@ public class TestFileManager extends JajukTestCase {
   @Test
   public void testChangeFileDirectory() throws IOException, JajukException {
     // Set-up...
-    File oldFile = JUnitHelpers.getFile();
+    File oldFile = TestHelpers.getFile();
     oldFile.getDirectory().getFio().mkdirs();
     oldFile.getFIO().createNewFile();
     String newDirName = "top2";
     // Create a top2 directory just bellow device root
-    Directory newDir = JUnitHelpers.getDirectory(newDirName,
+    Directory newDir = TestHelpers.getDirectory(newDirName,
         oldFile.getDevice().getRootDirectory(), oldFile.getDevice());
     // Create the physical directory if required
     newDir.getFio().mkdirs();
@@ -90,11 +90,11 @@ public class TestFileManager extends JajukTestCase {
   @Test
   public void testGetFileByPath() {
     // test with default file 
-    testWithFile(JUnitHelpers.getFile());
+    testWithFile(TestHelpers.getFile());
     // test with different files
-    testWithFile(JUnitHelpers.getFile("ABC.tst", true));
-    testWithFile(JUnitHelpers.getFile("ABC.tst", true));
-    testWithFile(JUnitHelpers.getFile("0123234327\"§$%!§\"()432ABC-.,_:;#+*'*~\\}][{.tst", true));
+    testWithFile(TestHelpers.getFile("ABC.tst", true));
+    testWithFile(TestHelpers.getFile("ABC.tst", true));
+    testWithFile(TestHelpers.getFile("0123234327\"§$%!§\"()432ABC-.,_:;#+*'*~\\}][{.tst", true));
   }
 
   /**

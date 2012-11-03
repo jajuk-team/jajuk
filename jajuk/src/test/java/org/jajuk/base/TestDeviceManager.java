@@ -21,7 +21,7 @@
 package org.jajuk.base;
 
 import org.jajuk.ConstTest;
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Conf;
@@ -73,7 +73,7 @@ public class TestDeviceManager extends JajukTestCase {
    * .
    */
   public final void testRegisterDeviceStringLongString() {
-    assertNotNull(JUnitHelpers.getDevice());
+    assertNotNull(TestHelpers.getDevice());
     assertNotNull(DeviceManager.getInstance().getDeviceByName("sample_device"));
   }
 
@@ -129,7 +129,7 @@ public class TestDeviceManager extends JajukTestCase {
    * Test check device availability existing name not new.
    **/
   public final void testCheckDeviceAvailablityExistingNameNotNew() {
-    assertNotNull(JUnitHelpers.getDevice("device4", Device.Type.DIRECTORY,
+    assertNotNull(TestHelpers.getDevice("device4", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/dev"));
     // error, name already exists
     assertEquals(
@@ -143,7 +143,7 @@ public class TestDeviceManager extends JajukTestCase {
    * 
    */
   public final void testCheckDeviceAvailablityParentOrDescendant() {
-    assertNotNull(JUnitHelpers.getDevice("device5", Device.Type.DIRECTORY,
+    assertNotNull(TestHelpers.getDevice("device5", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/dev"));
     // error, same url
     assertEquals(
@@ -218,7 +218,7 @@ public class TestDeviceManager extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testRemoveDeviceMounted() throws Exception {
-    JUnitHelpers.getDevice();
+    TestHelpers.getDevice();
     String id = DeviceManager.createID("sample_device");
     assertNotNull(DeviceManager.getInstance().getDeviceByID(id));
     DeviceManager.getInstance().removeDevice(DeviceManager.getInstance().getDeviceByID(id));
@@ -246,7 +246,7 @@ public class TestDeviceManager extends JajukTestCase {
         ConstTest.DEVICES_BASE_PATH + "/dev6");
     DeviceManager.getInstance().registerDevice("device7", Device.Type.FILES_CD,
         ConstTest.DEVICES_BASE_PATH + "/dev7");
-    JUnitHelpers.cleanAllDevices();
+    TestHelpers.cleanAllDevices();
   }
 
   /**

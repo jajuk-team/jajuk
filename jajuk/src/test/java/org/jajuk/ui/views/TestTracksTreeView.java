@@ -33,7 +33,7 @@ import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.TreePath;
 
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
@@ -365,7 +365,7 @@ public class TestTracksTreeView extends JajukTestCase {
   public final void testGenreNode() {
     GenreNode ad = new GenreNode(getGenre());
     assertNotNull(ad);
-    JUnitHelpers.ToStringTest(ad);
+    TestHelpers.ToStringTest(ad);
     assertNotNull(ad.getGenre());
     assertEquals("name", ad.getGenre().getName());
   }
@@ -376,7 +376,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * @return the genre
    */
   private Genre getGenre() {
-    return JUnitHelpers.getGenre();
+    return TestHelpers.getGenre();
   }
 
   /**
@@ -386,7 +386,7 @@ public class TestTracksTreeView extends JajukTestCase {
   public final void testArtistNode() {
     ArtistNode ad = new ArtistNode(getArtist());
     assertNotNull(ad);
-    JUnitHelpers.ToStringTest(ad);
+    TestHelpers.ToStringTest(ad);
     assertNotNull(ad.getArtist());
     assertEquals("name", ad.getArtist().getName());
   }
@@ -397,7 +397,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * @return the artist
    */
   private Artist getArtist() {
-    return JUnitHelpers.getArtist("name");
+    return TestHelpers.getArtist("name");
   }
 
   /**
@@ -407,7 +407,7 @@ public class TestTracksTreeView extends JajukTestCase {
   public final void testYearNode() {
     YearNode ad = new YearNode(getYear());
     assertNotNull(ad);
-    JUnitHelpers.ToStringTest(ad);
+    TestHelpers.ToStringTest(ad);
     assertNotNull(ad.getYear());
     assertEquals("2000", ad.getYear().getName());
   }
@@ -418,7 +418,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * @return the year
    */
   private Year getYear() {
-    return JUnitHelpers.getYear(2000);
+    return TestHelpers.getYear(2000);
   }
 
   /**
@@ -428,7 +428,7 @@ public class TestTracksTreeView extends JajukTestCase {
   public final void testAlbumNode() {
     AlbumNode ad = new AlbumNode(getAlbum());
     assertNotNull(ad);
-    JUnitHelpers.ToStringTest(ad);
+    TestHelpers.ToStringTest(ad);
     assertNotNull(ad.getAlbum());
     assertEquals("name", ad.getAlbum().getName());
   }
@@ -439,7 +439,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * @return the album
    */
   private Album getAlbum() {
-    return JUnitHelpers.getAlbum("name", 234);
+    return TestHelpers.getAlbum("name", 234);
   }
 
   /**
@@ -449,7 +449,7 @@ public class TestTracksTreeView extends JajukTestCase {
   public final void testTrackNode() {
     TrackNode ad = new TrackNode(getTrack());
     assertNotNull(ad);
-    JUnitHelpers.ToStringTest(ad);
+    TestHelpers.ToStringTest(ad);
     assertNotNull(ad.getTrack());
     assertEquals("name", ad.getTrack().getName());
   }
@@ -461,7 +461,7 @@ public class TestTracksTreeView extends JajukTestCase {
    */
   private Track getTrack() {
     return TrackManager.getInstance().registerTrack("name", getAlbum(), getGenre(), getArtist(),
-        123, getYear(), 1, JUnitHelpers.getType(), 1);
+        123, getYear(), 1, TestHelpers.getType(), 1);
   }
 
   /**

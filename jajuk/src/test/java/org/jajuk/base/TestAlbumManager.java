@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -487,10 +487,10 @@ public class TestAlbumManager extends JajukTestCase {
    */
   @SuppressWarnings("unchecked")
   private Track getTrack(int i, Album album) throws Exception {
-    Genre genre = JUnitHelpers.getGenre("name");
+    Genre genre = TestHelpers.getGenre("name");
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE);
     // don't read covers for this test
-    Artist artist = JUnitHelpers.getArtist("atist_" + i);
+    Artist artist = TestHelpers.getArtist("atist_" + i);
     Year year = YearManager.getInstance().registerYear(Integer.valueOf(i).toString());
     IPlayerImpl imp = new MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
@@ -499,8 +499,8 @@ public class TestAlbumManager extends JajukTestCase {
     Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, tl);
     Track track = TrackManager.getInstance().registerTrack("track_" + i, album, genre, artist, 120,
         year, 1, type, 1);
-    Device device = JUnitHelpers.getDevice();
-    Directory dir = JUnitHelpers.getDirectory();
+    Device device = TestHelpers.getDevice();
+    Directory dir = TestHelpers.getDirectory();
     if (!device.isMounted()) {
       device.mount(true);
     }

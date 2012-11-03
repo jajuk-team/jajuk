@@ -24,7 +24,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Genre;
 import org.jajuk.base.GenreManager;
@@ -44,7 +44,7 @@ public class TestAmbience extends JajukTestCase {
   public final void testHashCode() {
     Ambience amb = new Ambience("1", "name");
     Ambience equal = new Ambience("1", "name");
-    JUnitHelpers.HashCodeTest(amb, equal);
+    TestHelpers.HashCodeTest(amb, equal);
   }
 
   /**
@@ -55,7 +55,7 @@ public class TestAmbience extends JajukTestCase {
    */
   public final void testAmbienceStringStringSetOfGenre() {
     Set<Genre> genres = new HashSet<Genre>();
-    genres.add(JUnitHelpers.getGenre("mygenre"));
+    genres.add(TestHelpers.getGenre("mygenre"));
     new Ambience("1", "name", genres);
   }
 
@@ -96,7 +96,7 @@ public class TestAmbience extends JajukTestCase {
    */
   public final void testAddGenre() {
     Ambience amb = new Ambience("1", "name");
-    amb.addGenre(JUnitHelpers.getGenre("anothergenre"));
+    amb.addGenre(TestHelpers.getGenre("anothergenre"));
   }
 
   /**
@@ -106,7 +106,7 @@ public class TestAmbience extends JajukTestCase {
    */
   public final void testRemoveGenre() {
     Ambience amb = new Ambience("1", "name");
-    Genre genre = JUnitHelpers.getGenre("anothergenre");
+    Genre genre = TestHelpers.getGenre("anothergenre");
     assertEquals(0, amb.getGenres().size());
     amb.addGenre(genre);
     assertEquals(1, amb.getGenres().size());
@@ -160,9 +160,9 @@ public class TestAmbience extends JajukTestCase {
     Ambience amb = new Ambience("1", "name");
     assertEquals(0, amb.getGenres().size());
     Set<Genre> genres = new HashSet<Genre>();
-    genres.add(JUnitHelpers.getGenre("mygenre"));
-    genres.add(JUnitHelpers.getGenre("mygenre2"));
-    genres.add(JUnitHelpers.getGenre("mygenre3"));
+    genres.add(TestHelpers.getGenre("mygenre"));
+    genres.add(TestHelpers.getGenre("mygenre2"));
+    genres.add(TestHelpers.getGenre("mygenre3"));
     amb.setGenres(genres);
     assertEquals(3, amb.getGenres().size());
   }
@@ -175,9 +175,9 @@ public class TestAmbience extends JajukTestCase {
     // first an empty string results without any genre set
     assertEquals("", amb.getGenresDesc());
     // then add some genres
-    amb.addGenre(JUnitHelpers.getGenre("mygenre"));
-    amb.addGenre(JUnitHelpers.getGenre("mygenre2"));
-    amb.addGenre(JUnitHelpers.getGenre("mygenre3"));
+    amb.addGenre(TestHelpers.getGenre("mygenre"));
+    amb.addGenre(TestHelpers.getGenre("mygenre2"));
+    amb.addGenre(TestHelpers.getGenre("mygenre3"));
     assertTrue(StringUtils.isNotBlank(amb.getGenresDesc()));
   }
 
@@ -186,19 +186,19 @@ public class TestAmbience extends JajukTestCase {
    */
   public final void testToString() {
     Ambience amb = new Ambience("1", "name");
-    JUnitHelpers.ToStringTest(amb);
+    TestHelpers.ToStringTest(amb);
     // also when some items are null
     amb = new Ambience(null, "name");
-    JUnitHelpers.ToStringTest(amb);
+    TestHelpers.ToStringTest(amb);
     amb = new Ambience("1", null);
-    JUnitHelpers.ToStringTest(amb);
+    TestHelpers.ToStringTest(amb);
     amb = new Ambience(null, null);
-    JUnitHelpers.ToStringTest(amb);
+    TestHelpers.ToStringTest(amb);
     // also with genres
     amb = new Ambience("9", "name0987");
-    amb.addGenre(JUnitHelpers.getGenre("mygenre"));
-    amb.addGenre(JUnitHelpers.getGenre("mygenre2"));
-    JUnitHelpers.ToStringTest(amb);
+    amb.addGenre(TestHelpers.getGenre("mygenre"));
+    amb.addGenre(TestHelpers.getGenre("mygenre2"));
+    TestHelpers.ToStringTest(amb);
   }
 
   /**
@@ -213,9 +213,9 @@ public class TestAmbience extends JajukTestCase {
     Ambience notequal1 = new Ambience("1", "name1");
     // and also compares on genres
     Ambience notequal2 = new Ambience("1", "name");
-    notequal2.addGenre(JUnitHelpers.getGenre("mygenre2"));
-    JUnitHelpers.EqualsTest(amb, equal, notequal1);
-    JUnitHelpers.EqualsTest(amb, equal, notequal2);
+    notequal2.addGenre(TestHelpers.getGenre("mygenre2"));
+    TestHelpers.EqualsTest(amb, equal, notequal1);
+    TestHelpers.EqualsTest(amb, equal, notequal2);
   }
 
   /**
@@ -224,16 +224,16 @@ public class TestAmbience extends JajukTestCase {
    */
   public final void testEqualsObject2() {
     Ambience amb = new Ambience("1", "name");
-    amb.addGenre(JUnitHelpers.getGenre("mygenre4"));
+    amb.addGenre(TestHelpers.getGenre("mygenre4"));
     Ambience equal = new Ambience("1", "name");
-    equal.addGenre(JUnitHelpers.getGenre("mygenre4"));
+    equal.addGenre(TestHelpers.getGenre("mygenre4"));
     // equals compares on name
     Ambience notequal1 = new Ambience("1", "name1");
     // and also compares on genres
     Ambience notequal2 = new Ambience("1", "name");
-    notequal2.addGenre(JUnitHelpers.getGenre("mygenre2"));
-    JUnitHelpers.EqualsTest(amb, equal, notequal1);
-    JUnitHelpers.EqualsTest(amb, equal, notequal2);
+    notequal2.addGenre(TestHelpers.getGenre("mygenre2"));
+    TestHelpers.EqualsTest(amb, equal, notequal1);
+    TestHelpers.EqualsTest(amb, equal, notequal2);
   }
 
   /**
@@ -247,7 +247,7 @@ public class TestAmbience extends JajukTestCase {
     Ambience equal = new Ambience("1", "name");
     Ambience notequal = new Ambience("1", "name1");
     // only compares on name
-    JUnitHelpers.CompareToTest(amb, equal, notequal);
+    TestHelpers.CompareToTest(amb, equal, notequal);
   }
 
   /**
@@ -259,10 +259,10 @@ public class TestAmbience extends JajukTestCase {
     // try without any genres, returns an empty string
     assertEquals("", amb.toXML());
     // then add some
-    amb.addGenre(JUnitHelpers.getGenre("mygenre4123"));
+    amb.addGenre(TestHelpers.getGenre("mygenre4123"));
     assertTrue(StringUtils.isNotBlank(amb.toXML()));
     // and then some more
-    amb.addGenre(JUnitHelpers.getGenre("mygenre4234"));
-    amb.addGenre(JUnitHelpers.getGenre("mygenre834874"));
+    amb.addGenre(TestHelpers.getGenre("mygenre4234"));
+    amb.addGenre(TestHelpers.getGenre("mygenre834874"));
   }
 }

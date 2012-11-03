@@ -22,7 +22,7 @@ package org.jajuk.base;
 
 import java.io.IOException;
 
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.junit.Test;
 
@@ -133,7 +133,7 @@ public class TestTrack extends JajukTestCase {
   @Test
   public void testRemoveFile() throws IOException {
     // Set-up...
-    File file = JUnitHelpers.getFile();
+    File file = TestHelpers.getFile();
     Track track = file.getTrack();
     // Remove the reference
     track.removeFile(file);
