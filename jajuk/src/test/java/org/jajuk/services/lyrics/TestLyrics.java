@@ -27,8 +27,8 @@ import java.net.URL;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.services.lyrics.providers.GenericWebLyricsProvider;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;
 import org.jajuk.services.lyrics.providers.LyricWikiWebLyricsProvider;

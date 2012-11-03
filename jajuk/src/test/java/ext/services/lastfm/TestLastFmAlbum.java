@@ -29,8 +29,8 @@ import net.roarsoftware.lastfm.Album;
 import net.roarsoftware.lastfm.CallException;
 import net.roarsoftware.lastfm.Playlist;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.UtilString;
 

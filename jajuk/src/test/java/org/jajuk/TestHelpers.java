@@ -427,36 +427,34 @@ public class TestHelpers {
     // JUnitHelpers.waitForThreadToFinish("Event Executor for: " +
     // event.toString());
     // }
-    TestHelpers.waitForThreadToFinish("Event Executor for: "
-        + JajukEvents.ALARMS_CHANGE.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: "
-        + JajukEvents.ALBUM_CHANGED.toString());
+    TestHelpers
+        .waitForThreadToFinish("Event Executor for: " + JajukEvents.ALARMS_CHANGE.toString());
+    TestHelpers
+        .waitForThreadToFinish("Event Executor for: " + JajukEvents.ALBUM_CHANGED.toString());
     TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.BANNED.toString());
     TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.CDDB_WIZARD.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: "
-        + JajukEvents.CLEAR_HISTORY.toString());
+    TestHelpers
+        .waitForThreadToFinish("Event Executor for: " + JajukEvents.CLEAR_HISTORY.toString());
     TestHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.COVER_NEED_REFRESH.toString());
     TestHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.DEVICE_REFRESH.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: "
-        + JajukEvents.FILE_FINISHED.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: "
-        + JajukEvents.FILE_LAUNCHED.toString());
+    TestHelpers
+        .waitForThreadToFinish("Event Executor for: " + JajukEvents.FILE_FINISHED.toString());
+    TestHelpers
+        .waitForThreadToFinish("Event Executor for: " + JajukEvents.FILE_LAUNCHED.toString());
     TestHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.FILE_NAME_CHANGED.toString());
     TestHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.LANGUAGE_CHANGED.toString());
     TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.MUTE_STATE.toString());
-    TestHelpers
-        .waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAYER_PAUSE.toString());
+    TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAYER_PAUSE.toString());
     TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAYER_PLAY.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: "
-        + JajukEvents.PLAYER_RESUME.toString());
+    TestHelpers
+        .waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAYER_RESUME.toString());
     TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAYER_STOP.toString());
     TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAY_ERROR.toString());
-    TestHelpers
-        .waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAY_OPENING.toString());
+    TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAY_OPENING.toString());
     TestHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.PREFERENCES_RESET.toString());
     TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.RATE_RESET.toString());
@@ -807,111 +805,6 @@ public class TestHelpers {
   */
   public static Type getType(Class<? extends IPlayerImpl> clazz) {
     return TypeManager.getInstance().registerType("type", "mp3", clazz, null);
-  }
-
-  // needs to be public to be callable from the outside...
-  /**
-   * .
-   */
-  public static class MockPlayer implements IPlayerImpl {
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#stop()
-     */
-    @Override
-    public void stop() throws Exception {
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#setVolume(float)
-     */
-    @Override
-    public void setVolume(float fVolume) throws Exception {
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#seek(float)
-     */
-    @Override
-    public void seek(float fPosition) {
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#resume()
-     */
-    @Override
-    public void resume() throws Exception {
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#play(org.jajuk.services.webradio.WebRadio, float)
-     */
-    @Override
-    public void play(WebRadio radio, float fVolume) throws Exception {
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#play(org.jajuk.base.File, float, long, float)
-     */
-    @Override
-    public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume)
-        throws Exception {
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#pause()
-     */
-    @Override
-    public void pause() throws Exception {
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#getState()
-     */
-    @Override
-    public int getState() {
-      return 0;
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#getElapsedTime()
-     */
-    @Override
-    public long getElapsedTimeMillis() {
-      return 0;
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#getCurrentVolume()
-     */
-    @Override
-    public float getCurrentVolume() {
-      return 0;
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#getCurrentPosition()
-     */
-    @Override
-    public float getCurrentPosition() {
-      return 0;
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#getCurrentLength()
-     */
-    @Override
-    public long getDurationSec() {
-      return 0;
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#getActuallyPlayedTimeMillis()
-     */
-    @Override
-    public long getActuallyPlayedTimeMillis() {
-      // TODO Auto-generated method stub
-      return 0;
-    }
   }
 
   /**

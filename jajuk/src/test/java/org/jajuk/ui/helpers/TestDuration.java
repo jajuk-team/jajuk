@@ -20,8 +20,8 @@
  */
 package org.jajuk.ui.helpers;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.junit.Test;
 
 public class TestDuration extends JajukTestCase {

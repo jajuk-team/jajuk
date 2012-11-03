@@ -25,8 +25,8 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 
 /**
  * .

@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.services.webradio.WebRadioOrigin;
 import org.jajuk.util.Const;
 import org.junit.Test;

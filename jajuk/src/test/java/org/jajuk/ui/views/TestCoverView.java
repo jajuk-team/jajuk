@@ -26,8 +26,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.util.Set;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Device;

@@ -29,8 +29,8 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.Item;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Const;

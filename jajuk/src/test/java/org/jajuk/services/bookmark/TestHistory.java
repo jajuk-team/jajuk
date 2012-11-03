@@ -23,8 +23,8 @@ package org.jajuk.services.bookmark;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.events.JajukEvent;

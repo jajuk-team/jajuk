@@ -22,8 +22,8 @@ package org.jajuk.services.notification;
 
 import java.awt.HeadlessException;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.File;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.services.webradio.WebRadio;

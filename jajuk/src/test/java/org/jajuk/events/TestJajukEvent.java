@@ -22,8 +22,8 @@ package org.jajuk.events;
 
 import java.util.Properties;
 
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 
 /**
  * .

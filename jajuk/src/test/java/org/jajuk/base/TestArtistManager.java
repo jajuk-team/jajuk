@@ -25,8 +25,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.MockPlayer;
+import org.jajuk.TestHelpers;
 import org.jajuk.services.covers.Cover;
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.QueueModel;
@@ -163,7 +164,7 @@ public class TestArtistManager extends JajukTestCase {
     // covers for
     // this test
     Year year = new Year(Integer.valueOf(i).toString(), "2000");
-    IPlayerImpl imp = new TestHelpers.MockPlayer();
+    IPlayerImpl imp = new MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
     Type type = TypeManager.getInstance().registerType("name", "tst", cl, MyTagImpl.class);
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
