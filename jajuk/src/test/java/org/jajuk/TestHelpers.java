@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.SwingUtilities;
 
+import org.jajuk.JUnitHelpers.MockPlayer;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Artist;
@@ -42,7 +43,6 @@ import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.base.Year;
 import org.jajuk.base.YearManager;
-import org.jajuk.services.players.MPlayerPlayerImpl;
 import org.jajuk.services.tags.JAudioTaggerTagImpl;
 
 /**
@@ -117,7 +117,7 @@ public class TestHelpers extends JajukTestCase {
    * @return a mock file for testing purposes
    */
   public static File getMockFile() {
-    Type type = TypeManager.getInstance().registerType("mp3", "mp3", MPlayerPlayerImpl.class,
+    Type type = TypeManager.getInstance().registerType("mp3", "mp3", MockPlayer.class,
         JAudioTaggerTagImpl.class);
     Album album = AlbumManager.getInstance().registerAlbum("album name", "album artist", 2222l);
     Genre genre = GenreManager.getInstance().registerGenre("genre name");
