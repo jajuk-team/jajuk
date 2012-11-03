@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
@@ -80,7 +80,7 @@ public class TestQueueModel extends JajukTestCase {
    */
   public void testPrivateConstructor() throws Exception {
     // For EMMA code-coverage tests
-    JUnitHelpers.executePrivateConstructor(QueueModel.class);
+    TestHelpers.executePrivateConstructor(QueueModel.class);
   }
 
   /*
@@ -91,7 +91,7 @@ public class TestQueueModel extends JajukTestCase {
   @Override
   protected void tearDown() throws Exception {
     // make sure that the SwingUtilities.invokeLater() are all done
-    JUnitHelpers.clearSwingUtilitiesQueue();
+    TestHelpers.clearSwingUtilitiesQueue();
     super.tearDown();
   }
 
@@ -130,10 +130,10 @@ public class TestQueueModel extends JajukTestCase {
    */
   public void testPushListOfStackItemBoolean() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(JUnitHelpers.getFile("file1", true)));
+    list.add(new StackItem(TestHelpers.getFile("file1", true)));
     QueueModel.push(list, true);
     // we try to wait for the thread started inside push() to finish
-    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
+    TestHelpers.waitForThreadToFinish("Queue Push Thread");
     assertEquals(1, QueueModel.getQueue().size());
   }
 
@@ -145,10 +145,10 @@ public class TestQueueModel extends JajukTestCase {
    */
   public void testPushListOfStackItemBooleanNoPush() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(JUnitHelpers.getFile("file1", true)));
+    list.add(new StackItem(TestHelpers.getFile("file1", true)));
     QueueModel.push(list, false);
     // we try to wait for the thread started inside push() to finish
-    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
+    TestHelpers.waitForThreadToFinish("Queue Push Thread");
     assertEquals(1, QueueModel.getQueue().size());
   }
 
@@ -174,12 +174,12 @@ public class TestQueueModel extends JajukTestCase {
    */
   public void testPushListOfStackItemBooleanNullItems() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(JUnitHelpers.getFile("file1", true)));
+    list.add(new StackItem(TestHelpers.getFile("file1", true)));
     list.add(null);
-    list.add(new StackItem(JUnitHelpers.getFile("file3", true)));
+    list.add(new StackItem(TestHelpers.getFile("file3", true)));
     QueueModel.push(list, true);
     // we try to wait for the thread started inside push() to finish
-    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
+    TestHelpers.waitForThreadToFinish("Queue Push Thread");
     assertEquals(2, QueueModel.getQueue().size());
   }
 
@@ -192,10 +192,10 @@ public class TestQueueModel extends JajukTestCase {
    */
   public void testPushListOfStackItemBooleanBoolean() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(JUnitHelpers.getFile("file1", true)));
+    list.add(new StackItem(TestHelpers.getFile("file1", true)));
     QueueModel.push(list, true, true);
     // we try to wait for the thread started inside push() to finish
-    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
+    TestHelpers.waitForThreadToFinish("Queue Push Thread");
     assertEquals(1, QueueModel.getQueue().size());
   }
 
@@ -207,10 +207,10 @@ public class TestQueueModel extends JajukTestCase {
    */
   public void testPushListOfStackItemBooleanBooleanNoPushNext() throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(JUnitHelpers.getFile("file1", true)));
+    list.add(new StackItem(TestHelpers.getFile("file1", true)));
     QueueModel.push(list, false, false);
     // we try to wait for the thread started inside push() to finish
-    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
+    TestHelpers.waitForThreadToFinish("Queue Push Thread");
     assertEquals(1, QueueModel.getQueue().size());
   }
 
@@ -222,9 +222,9 @@ public class TestQueueModel extends JajukTestCase {
    * .
    */
   public void testPushStackItemBoolean() throws Exception {
-    QueueModel.push(new StackItem(JUnitHelpers.getFile("file1", true)), true);
+    QueueModel.push(new StackItem(TestHelpers.getFile("file1", true)), true);
     // we try to wait for the thread started inside push() to finish
-    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
+    TestHelpers.waitForThreadToFinish("Queue Push Thread");
     assertEquals(1, QueueModel.getQueue().size());
   }
 
@@ -236,9 +236,9 @@ public class TestQueueModel extends JajukTestCase {
    * .
    */
   public void testPushStackItemBooleanBoolean() throws Exception {
-    QueueModel.push(new StackItem(JUnitHelpers.getFile("file1", true)), true, true);
+    QueueModel.push(new StackItem(TestHelpers.getFile("file1", true)), true, true);
     // we try to wait for the thread started inside push() to finish
-    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
+    TestHelpers.waitForThreadToFinish("Queue Push Thread");
     assertEquals(1, QueueModel.getQueue().size());
   }
 
@@ -252,7 +252,7 @@ public class TestQueueModel extends JajukTestCase {
   private void addItems(int count) throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
     for (int i = 0; i < count; i++) {
-      list.add(new StackItem(JUnitHelpers.getFile("file" + i, true)));
+      list.add(new StackItem(TestHelpers.getFile("file" + i, true)));
     }
     QueueModel.insert(list, 0);
   }
@@ -264,7 +264,7 @@ public class TestQueueModel extends JajukTestCase {
    * .
    */
   public void testLaunchRadio() {
-    QueueModel.launchRadio(JUnitHelpers.getWebRadio());
+    QueueModel.launchRadio(TestHelpers.getWebRadio());
   }
 
   /**
@@ -406,10 +406,10 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(2, QueueModel.getQueueSize());
     { // start a track
       List<StackItem> list = new ArrayList<StackItem>();
-      list.add(new StackItem(JUnitHelpers.getFile("file" + 21, true)));
+      list.add(new StackItem(TestHelpers.getFile("file" + 21, true)));
       QueueModel.push(list, true);
       // we try to wait for the thread started inside push() to finish
-      JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
+      TestHelpers.waitForThreadToFinish("Queue Push Thread");
       assertEquals(3, QueueModel.getQueue().size());
     }
     // one more to finish now
@@ -778,7 +778,7 @@ public class TestQueueModel extends JajukTestCase {
    * .
    */
   public void testCanUnmount() throws Exception {
-    Device device = JUnitHelpers.getDevice();
+    Device device = TestHelpers.getDevice();
     assertTrue(QueueModel.canUnmount(device));
     addItems(10);
     // still true as we are not playing
@@ -863,21 +863,21 @@ public class TestQueueModel extends JajukTestCase {
    */
   public void testInsertStackItemInt() throws Exception {
     assertEquals(0, QueueModel.getQueueSize());
-    QueueModel.insert(new StackItem(JUnitHelpers.getFile("file0", true)), 0);
+    QueueModel.insert(new StackItem(TestHelpers.getFile("file0", true)), 0);
     assertEquals(1, QueueModel.getQueueSize());
     // when we insert the next one at 0, the previous one should be moved
-    QueueModel.insert(new StackItem(JUnitHelpers.getFile("file1", true)), 0);
+    QueueModel.insert(new StackItem(TestHelpers.getFile("file1", true)), 0);
     assertEquals(2, QueueModel.getQueueSize());
     assertEquals("file1", QueueModel.getItem(0).getFile().getName());
     assertEquals("file0", QueueModel.getItem(1).getFile().getName());
     // adding in between now, should again adjust the queue accordingly
-    QueueModel.insert(new StackItem(JUnitHelpers.getFile("file2", true)), 1);
+    QueueModel.insert(new StackItem(TestHelpers.getFile("file2", true)), 1);
     assertEquals(3, QueueModel.getQueueSize());
     assertEquals("file1", QueueModel.getItem(0).getFile().getName());
     assertEquals("file2", QueueModel.getItem(1).getFile().getName());
     assertEquals("file0", QueueModel.getItem(2).getFile().getName());
     // and adding at the end should work as well
-    QueueModel.insert(new StackItem(JUnitHelpers.getFile("file3", true)), 3);
+    QueueModel.insert(new StackItem(TestHelpers.getFile("file3", true)), 3);
     assertEquals(4, QueueModel.getQueueSize());
     assertEquals("file1", QueueModel.getItem(0).getFile().getName());
     assertEquals("file2", QueueModel.getItem(1).getFile().getName());
@@ -1116,7 +1116,7 @@ public class TestQueueModel extends JajukTestCase {
     // make sure we reset WebRadio
     QueueModel.launchRadio(null);
     assertNull(QueueModel.getCurrentRadio());
-    QueueModel.launchRadio(JUnitHelpers.getWebRadio());
+    QueueModel.launchRadio(TestHelpers.getWebRadio());
     assertNotNull(QueueModel.getCurrentRadio());
   }
 
@@ -1166,16 +1166,16 @@ public class TestQueueModel extends JajukTestCase {
     QueueModel.clean();
     assertEquals(10, QueueModel.getQueueSize());
     // we can add a dummy-file and check that it is removed
-    Genre genre = JUnitHelpers.getGenre();
-    Album album = JUnitHelpers.getAlbum("name", 23);
+    Genre genre = TestHelpers.getGenre();
+    Album album = TestHelpers.getAlbum("name", 23);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-    Artist artist = JUnitHelpers.getArtist("name");
-    Year year = JUnitHelpers.getYear(2000);
-    Type type = JUnitHelpers.getType();
+    Artist artist = TestHelpers.getArtist("name");
+    Year year = TestHelpers.getYear(2000);
+    Type type = TestHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
-    Device device = JUnitHelpers.getDevice();
+    Device device = TestHelpers.getDevice();
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     File file = FileManager.getInstance().registerFile("test.tst", dir, track, 120, 70);
     QueueModel.insert(new StackItem(file), 0);

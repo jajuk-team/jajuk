@@ -22,7 +22,7 @@ package org.jajuk.services.core;
 
 import java.util.Set;
 
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
@@ -130,21 +130,21 @@ public class TestRatingManager extends JajukTestCase {
    */
   @SuppressWarnings("unchecked")
   private Track getTrack(int i) throws Exception {
-    Genre genre = JUnitHelpers.getGenre();
-    Album album = JUnitHelpers.getAlbum("name", 23);
+    Genre genre = TestHelpers.getGenre();
+    Album album = TestHelpers.getAlbum("name", 23);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-    Artist artist = JUnitHelpers.getArtist("name");
-    Year year = JUnitHelpers.getYear(2000);
+    Artist artist = TestHelpers.getArtist("name");
+    Year year = TestHelpers.getYear(2000);
     IPlayerImpl imp = new MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
     ITagImpl tagimp = new MyTagImpl();
     Class<ITagImpl> tl = (Class<ITagImpl>) tagimp.getClass();
-    Type type = JUnitHelpers.getType();
+    Type type = TestHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack(Integer.valueOf(i).toString(), "name",
         album, genre, artist, 120, year, 1, type, 1);
     album.getTracksCache().add(track);
-    Device device = JUnitHelpers.getDevice();
+    Device device = TestHelpers.getDevice();
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     File file = FileManager.getInstance().registerFile("test.tst", dir, track, 120, 70);
     track.addFile(file);

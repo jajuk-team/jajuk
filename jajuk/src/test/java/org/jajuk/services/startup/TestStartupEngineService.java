@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.File;
 import org.jajuk.base.SearchResult.SearchResultType;
@@ -57,9 +57,9 @@ public class TestStartupEngineService extends JajukTestCase {
   protected void setUp() throws Exception {
     super.setUp();
     // Populate collection with a few files and associated items 
-    file1 = JUnitHelpers.getFile("file1", true);
-    file2 = JUnitHelpers.getFile("file2", true);
-    file3 = JUnitHelpers.getFile("file3", true);
+    file1 = TestHelpers.getFile("file1", true);
+    file2 = TestHelpers.getFile("file2", true);
+    file3 = TestHelpers.getFile("file3", true);
     // Add last played radio
     radio1 = WebRadioManager.getInstance().registerWebRadio("myRadio");
     radio1.setProperty(Const.XML_URL, "http://di.fm/mp3/classictechno.pls");

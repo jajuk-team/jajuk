@@ -26,7 +26,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -59,7 +59,7 @@ public class TestParameterView extends JajukTestCase {
   public void testActionPerformed() throws Exception {
     ParameterView view = new ParameterView();
     view.initUI();
-    JUnitHelpers.waitForAllWorkToFinishAndCleanup();
+    TestHelpers.waitForAllWorkToFinishAndCleanup();
     // make sure the logger is initialized
     Log.init();
   }
@@ -115,13 +115,13 @@ public class TestParameterView extends JajukTestCase {
     // once without details
     view.update(new JajukEvent(JajukEvents.PARAMETERS_CHANGE, null));
     // wait for invokeLater to finish();
-    JUnitHelpers.clearSwingUtilitiesQueue();
+    TestHelpers.clearSwingUtilitiesQueue();
     // then with details
     Properties prop = new Properties();
     prop.put(Const.DETAIL_ORIGIN, view);
     view.update(new JajukEvent(JajukEvents.PARAMETERS_CHANGE, prop));
     // wait for invokeLater to finish();
-    JUnitHelpers.clearSwingUtilitiesQueue();
+    TestHelpers.clearSwingUtilitiesQueue();
   }
 
   /**

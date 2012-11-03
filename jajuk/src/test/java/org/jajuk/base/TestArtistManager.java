@@ -25,7 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.services.covers.Cover;
 import org.jajuk.services.players.IPlayerImpl;
@@ -117,7 +117,7 @@ public class TestArtistManager extends JajukTestCase {
    */
   public final void testChangeArtistName() throws Exception {
     StartupCollectionService.registerItemManagers();
-    Artist artistold = JUnitHelpers.getArtist("nameold");
+    Artist artistold = TestHelpers.getArtist("nameold");
     // we get the same object back if we have the same name
     assertTrue(artistold == ArtistManager.getInstance().changeArtistName(artistold, "nameold"));
     // now try with a new name
@@ -157,20 +157,20 @@ public class TestArtistManager extends JajukTestCase {
   */
   @SuppressWarnings("unchecked")
   private File getFile(int i, Artist artist) throws Exception {
-    Genre genre = JUnitHelpers.getGenre("name");
-    Album album = JUnitHelpers.getAlbum("myalbum", 0);
+    Genre genre = TestHelpers.getGenre("name");
+    Album album = TestHelpers.getAlbum("myalbum", 0);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read
     // covers for
     // this test
     Year year = new Year(Integer.valueOf(i).toString(), "2000");
-    IPlayerImpl imp = new JUnitHelpers.MockPlayer();
+    IPlayerImpl imp = new TestHelpers.MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
     Type type = TypeManager.getInstance().registerType("name", "tst", cl, MyTagImpl.class);
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
-    Device device = JUnitHelpers.getDevice();
+    Device device = TestHelpers.getDevice();
     device.mount(true);
-    Directory dir = JUnitHelpers.getDirectory();
+    Directory dir = TestHelpers.getDirectory();
     File file = new org.jajuk.base.File(Integer.valueOf(i).toString(), "test.tst", dir, track, 120,
         70);
     track.addFile(file);

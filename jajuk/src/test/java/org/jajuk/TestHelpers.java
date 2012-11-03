@@ -70,7 +70,7 @@ import org.jajuk.util.log.Log;
 /**
  * Small helper class with functionality that is used in multiple unit tests.
  */
-public class JUnitHelpers {
+public class TestHelpers {
   /**
    * Helper method for removing emma-reports for classes with only static
    * methods
@@ -414,60 +414,60 @@ public class JUnitHelpers {
     cleanAllDevices();
     History.getInstance().clear();
     // wait a bit to let deferred actions take place before we shut down
-    JUnitHelpers.waitForThreadToFinish("PlayPause Thread");
-    JUnitHelpers.waitForThreadToFinish("Cover Refresh Thread");
-    JUnitHelpers.waitForThreadToFinish("Queue Push Thread");
-    JUnitHelpers.waitForThreadToFinish("Device Refresh Thread");
-    JUnitHelpers.waitForThreadToFinish("Playlist Prepare Party Thread");
-    JUnitHelpers.waitForThreadToFinish("LastFM Update Thread");
-    JUnitHelpers.waitForThreadToFinish("Parameter Catalog refresh Thread");
-    JUnitHelpers.waitForThreadToFinish("Manual Refresh Thread");
+    TestHelpers.waitForThreadToFinish("PlayPause Thread");
+    TestHelpers.waitForThreadToFinish("Cover Refresh Thread");
+    TestHelpers.waitForThreadToFinish("Queue Push Thread");
+    TestHelpers.waitForThreadToFinish("Device Refresh Thread");
+    TestHelpers.waitForThreadToFinish("Playlist Prepare Party Thread");
+    TestHelpers.waitForThreadToFinish("LastFM Update Thread");
+    TestHelpers.waitForThreadToFinish("Parameter Catalog refresh Thread");
+    TestHelpers.waitForThreadToFinish("Manual Refresh Thread");
     // clear this for all available events
     // for(JajukEvents event : JajukEvents.values()) {
     // JUnitHelpers.waitForThreadToFinish("Event Executor for: " +
     // event.toString());
     // }
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: "
+    TestHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.ALARMS_CHANGE.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: "
+    TestHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.ALBUM_CHANGED.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.BANNED.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.CDDB_WIZARD.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: "
+    TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.BANNED.toString());
+    TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.CDDB_WIZARD.toString());
+    TestHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.CLEAR_HISTORY.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: "
+    TestHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.COVER_NEED_REFRESH.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: "
+    TestHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.DEVICE_REFRESH.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: "
+    TestHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.FILE_FINISHED.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: "
+    TestHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.FILE_LAUNCHED.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: "
+    TestHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.FILE_NAME_CHANGED.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: "
+    TestHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.LANGUAGE_CHANGED.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.MUTE_STATE.toString());
-    JUnitHelpers
+    TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.MUTE_STATE.toString());
+    TestHelpers
         .waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAYER_PAUSE.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAYER_PLAY.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: "
+    TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAYER_PLAY.toString());
+    TestHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.PLAYER_RESUME.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAYER_STOP.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAY_ERROR.toString());
-    JUnitHelpers
+    TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAYER_STOP.toString());
+    TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAY_ERROR.toString());
+    TestHelpers
         .waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAY_OPENING.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: "
+    TestHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.PREFERENCES_RESET.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.RATE_RESET.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: "
+    TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.RATE_RESET.toString());
+    TestHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.GENRE_NAME_CHANGED.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: "
+    TestHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.VOLUME_CHANGED.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: "
+    TestHelpers.waitForThreadToFinish("Event Executor for: "
         + JajukEvents.WEBRADIO_LAUNCHED.toString());
-    JUnitHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.ZERO.toString());
-    JUnitHelpers.clearSwingUtilitiesQueue();
+    TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.ZERO.toString());
+    TestHelpers.clearSwingUtilitiesQueue();
     //Reset everything again as it could have been changed during threads finishing
     ObservationManager.clear();
     // Reset everything
@@ -542,7 +542,7 @@ public class JUnitHelpers {
    * @throws IOException 
    */
   public static org.jajuk.base.File getFile(String name, boolean mount) {
-    Directory dir = JUnitHelpers.getDirectory();
+    Directory dir = TestHelpers.getDirectory();
     return getFile(name, dir, mount, MockPlayer.class);
   }
 
@@ -554,7 +554,7 @@ public class JUnitHelpers {
    */
   public static Playlist getPlaylist() throws IOException {
     Device device = getDevice();
-    Directory dir = JUnitHelpers.getDirectory();
+    Directory dir = TestHelpers.getDirectory();
     File playlistFile = new File(dir.getAbsolutePath() + "/sample_playlist.m3u");
     org.jajuk.base.File file1 = getFile("1", true);
     org.jajuk.base.File file2 = getFile("2", true);
@@ -584,7 +584,7 @@ public class JUnitHelpers {
    */
   public static Playlist getVoidPlaylist() throws IOException {
     Device device = getDevice();
-    Directory dir = JUnitHelpers.getDirectory();
+    Directory dir = TestHelpers.getDirectory();
     File playlistFile = new File(dir.getAbsolutePath() + "/sample_playlist.m3u");
     String id = MD5Processor.hash(new StringBuilder(device.getName()).append(dir.getRelativePath())
         .append(playlistFile.getName()).toString());

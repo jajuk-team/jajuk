@@ -28,7 +28,7 @@ import java.util.List;
 import javax.swing.JButton;
 
 import org.apache.commons.io.FileUtils;
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
@@ -110,16 +110,16 @@ public class TestPreparePartyAction extends JajukTestCase {
    * @throws Exception the exception
    */
   private static Playlist getPlaylist(int i, boolean register) throws Exception {
-    Genre genre = JUnitHelpers.getGenre();
-    Album album = JUnitHelpers.getAlbum("name", 23);
+    Genre genre = TestHelpers.getGenre();
+    Album album = TestHelpers.getAlbum("name", 23);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-    Artist artist = JUnitHelpers.getArtist("name");
-    Year year = JUnitHelpers.getYear(2000);
-    Type type = JUnitHelpers.getType();
+    Artist artist = TestHelpers.getArtist("name");
+    Year year = TestHelpers.getYear(2000);
+    Type type = TestHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
-    Device device = JUnitHelpers.getDevice();
+    Device device = TestHelpers.getDevice();
     if (!device.isMounted()) {
       device.mount(true);
     }

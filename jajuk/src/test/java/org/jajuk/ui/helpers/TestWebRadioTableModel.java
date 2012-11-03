@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.services.webradio.WebRadioOrigin;
 import org.jajuk.util.Const;
@@ -45,7 +45,7 @@ public class TestWebRadioTableModel extends JajukTestCase {
   @Test
   public void testModel() {
     // Load radios
-    JUnitHelpers.getWebRadios();
+    TestHelpers.getWebRadios();
     //Create and populate the model
     WebRadioTableModel model = new WebRadioTableModel();
     model.populateModel(getColumnsConf(Const.XML_PLAY + ',' + Const.XML_NAME + ','

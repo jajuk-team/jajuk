@@ -22,7 +22,7 @@ package org.jajuk.services.lastfm;
 
 import java.util.Set;
 
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -70,7 +70,7 @@ public class TestLastFmManager extends JajukTestCase {
       Conf.setProperty(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE, "false");
       LastFmManager.getInstance().update(new JajukEvent(JajukEvents.FILE_FINISHED, null));
       // wait for thread to finish
-      JUnitHelpers.waitForThreadToFinish("LastFM Update Thread");
+      TestHelpers.waitForThreadToFinish("LastFM Update Thread");
     }
   }
 }

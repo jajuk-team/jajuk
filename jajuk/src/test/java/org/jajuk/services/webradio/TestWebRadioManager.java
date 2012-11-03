@@ -22,7 +22,7 @@ package org.jajuk.services.webradio;
 
 import java.util.List;
 
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 
 public class TestWebRadioManager extends JajukTestCase {
@@ -37,10 +37,10 @@ public class TestWebRadioManager extends JajukTestCase {
     super.setUp();
     man.cleanup();
     // Fill few radio
-    radio1 = JUnitHelpers.getWebRadio("Preset1", "http://preset1", WebRadioOrigin.PRESET);
-    radio2 = JUnitHelpers.getWebRadio("Preset2", "http://preset2", WebRadioOrigin.PRESET);
-    radio3 = JUnitHelpers.getWebRadio("Custom1", "http://custom1", WebRadioOrigin.CUSTOM);
-    radio4 = JUnitHelpers.getWebRadio("Custom2", "http://custom2", WebRadioOrigin.CUSTOM);
+    radio1 = TestHelpers.getWebRadio("Preset1", "http://preset1", WebRadioOrigin.PRESET);
+    radio2 = TestHelpers.getWebRadio("Preset2", "http://preset2", WebRadioOrigin.PRESET);
+    radio3 = TestHelpers.getWebRadio("Custom1", "http://custom1", WebRadioOrigin.CUSTOM);
+    radio4 = TestHelpers.getWebRadio("Custom2", "http://custom2", WebRadioOrigin.CUSTOM);
   }
 
   public void testGetWebRadiosByOrigin() throws Exception {

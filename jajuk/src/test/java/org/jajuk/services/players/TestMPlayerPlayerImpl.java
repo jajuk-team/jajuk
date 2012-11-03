@@ -20,7 +20,7 @@
  */
 package org.jajuk.services.players;
 
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
@@ -45,8 +45,8 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
    */
   @Override
   protected void tearDown() throws Exception {
-    JUnitHelpers.waitForThreadToFinish("MPlayer reader thread");
-    JUnitHelpers.waitForThreadToFinish("MPlayer writer thread");
+    TestHelpers.waitForThreadToFinish("MPlayer reader thread");
+    TestHelpers.waitForThreadToFinish("MPlayer writer thread");
     Log.info("Tearing down testcase");
   }
 
@@ -58,7 +58,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testStop() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
     try {
-      File file = JUnitHelpers.getFile("file1", false);
+      File file = TestHelpers.getFile("file1", false);
       impl.play(file, 0, 2, 10);
       // sleep a bit to let threads do some work
       Thread.sleep(2000);
@@ -75,7 +75,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testSetVolume() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
     try {
-      File file = JUnitHelpers.getFile("file2", false);
+      File file = TestHelpers.getFile("file2", false);
       impl.play(file, 0, 2, 10);
       impl.setVolume(10);
       assertEquals(10.0, impl.getCurrentVolume(), 0.0001);
@@ -92,7 +92,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testGetCurrentLength() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
     try {
-      File file = JUnitHelpers.getFile("file3", false);
+      File file = TestHelpers.getFile("file3", false);
       impl.play(file, 0, 2, 10);
       // returns duration from tag if there is one
       assertEquals(120000l, impl.getDurationSec());
@@ -109,7 +109,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testGetCurrentPosition() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
     try {
-      File file = JUnitHelpers.getFile("file4", false);
+      File file = TestHelpers.getFile("file4", false);
       impl.play(file, 0, 2, 10);
       //float vbrCorrection = 120000f / (DummyMPlayerImpl.LENGTH*1000);
       // returns duration from tag if there is one
@@ -130,7 +130,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testGetElapsedTime() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
     try {
-      File file = JUnitHelpers.getFile("file5", false);
+      File file = TestHelpers.getFile("file5", false);
       impl.play(file, 0, 2, 10);
       // returns duration from tag if there is one
       // assertEquals(DummyMPlayerImpl.POSITION, impl.getElapsedTime(), 0.0001f);
@@ -148,7 +148,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
    */
   public void testPlayWebRadioFloat() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
-    WebRadio radio = JUnitHelpers.getWebRadio();
+    WebRadio radio = TestHelpers.getWebRadio();
     impl.play(radio, 1);
     // does not really start anything here: impl.stop();
   }
@@ -161,7 +161,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testSeek() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
     try {
-      File file = JUnitHelpers.getFile("file6", false);
+      File file = TestHelpers.getFile("file6", false);
       impl.play(file, 0, 2, 10);
       impl.seek(20);
       // wait a bit to let threads do some work
@@ -179,7 +179,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testGetState() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
     try {
-      File file = JUnitHelpers.getFile("file7", false);
+      File file = TestHelpers.getFile("file7", false);
       impl.play(file, 0, 2, 10);
       assertEquals("Returns -1 when not fading.", -1, impl.getState());
     } finally {
@@ -195,7 +195,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testResume() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
     try {
-      File file = JUnitHelpers.getFile("file8", false);
+      File file = TestHelpers.getFile("file8", false);
       impl.play(file, 0, 2, 10);
       impl.pause();
       // sleep a bit to lead reader thread do some work
@@ -216,7 +216,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testPlayFileFloatLongFloat() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
     try {
-      File file = JUnitHelpers.getFile("file9", false);
+      File file = TestHelpers.getFile("file9", false);
       impl.play(file, 0, 2, 10);
     } finally {
       impl.stop();
@@ -263,7 +263,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testPlayPosition() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
     try {
-      File file = JUnitHelpers.getFile("file10", false);
+      File file = TestHelpers.getFile("file10", false);
       impl.play(file, 3, 20, 1);
     } finally {
       impl.stop();

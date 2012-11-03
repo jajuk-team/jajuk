@@ -20,7 +20,7 @@
  */
 package ext.services.xml;
 
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 
 /**
@@ -50,6 +50,6 @@ public class TestXMLBuilder extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testPrivateConstructor() throws Exception {
-    JUnitHelpers.executePrivateConstructor(XMLBuilder.class);
+    TestHelpers.executePrivateConstructor(XMLBuilder.class);
   }
 }

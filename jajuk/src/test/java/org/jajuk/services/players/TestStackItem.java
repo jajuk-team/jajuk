@@ -20,7 +20,7 @@
  */
 package org.jajuk.services.players;
 
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.File;
 import org.jajuk.util.error.JajukException;
@@ -40,10 +40,10 @@ public class TestStackItem extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testHashCode() throws Exception {
-    File file = JUnitHelpers.getFile("file1", true);
+    File file = TestHelpers.getFile("file1", true);
     StackItem item1 = new StackItem(file);
     StackItem item2 = new StackItem(file);
-    JUnitHelpers.HashCodeTest(item1, item2);
+    TestHelpers.HashCodeTest(item1, item2);
   }
 
   /**
@@ -54,7 +54,7 @@ public class TestStackItem extends JajukTestCase {
    * .
    */
   public void testStackItemFile() throws Exception {
-    new StackItem(JUnitHelpers.getFile("file1", true));
+    new StackItem(TestHelpers.getFile("file1", true));
     // test null input
     try {
       new StackItem(null);
@@ -72,7 +72,7 @@ public class TestStackItem extends JajukTestCase {
    * .
    */
   public void testStackItemFileBoolean() throws Exception {
-    new StackItem(JUnitHelpers.getFile("file2", true), true);
+    new StackItem(TestHelpers.getFile("file2", true), true);
     // test null input
     try {
       new StackItem(null, true);
@@ -90,7 +90,7 @@ public class TestStackItem extends JajukTestCase {
    * .
    */
   public void testStackItemFileBooleanBoolean() throws Exception {
-    new StackItem(JUnitHelpers.getFile("file2", true), true, true);
+    new StackItem(TestHelpers.getFile("file2", true), true, true);
     // test null input
     try {
       new StackItem(null, true, true);
@@ -106,7 +106,7 @@ public class TestStackItem extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testIsAndSetRepeat() throws Exception {
-    StackItem item = new StackItem(JUnitHelpers.getFile("file1", true));
+    StackItem item = new StackItem(TestHelpers.getFile("file1", true));
     assertFalse(item.isRepeat());
     item.setRepeat(true);
     assertTrue(item.isRepeat());
@@ -118,7 +118,7 @@ public class TestStackItem extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testgetFile() throws Exception {
-    StackItem item = new StackItem(JUnitHelpers.getFile("file1", true));
+    StackItem item = new StackItem(TestHelpers.getFile("file1", true));
     assertNotNull(item.getFile());
   }
 
@@ -129,7 +129,7 @@ public class TestStackItem extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testIsAndSetUserLaunch() throws Exception {
-    StackItem item = new StackItem(JUnitHelpers.getFile("file1", true));
+    StackItem item = new StackItem(TestHelpers.getFile("file1", true));
     assertFalse(item.isUserLaunch());
     item.setUserLaunch(true);
     assertTrue(item.isUserLaunch());
@@ -141,7 +141,7 @@ public class TestStackItem extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testIsAndSetPlanned() throws Exception {
-    StackItem item = new StackItem(JUnitHelpers.getFile("file1", true));
+    StackItem item = new StackItem(TestHelpers.getFile("file1", true));
     assertFalse(item.isPlanned());
     item.setPlanned(true);
     assertTrue(item.isPlanned());
@@ -153,8 +153,8 @@ public class TestStackItem extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testClone() throws Exception {
-    StackItem item = new StackItem(JUnitHelpers.getFile("file1", true));
-    JUnitHelpers.CloneTest(item);
+    StackItem item = new StackItem(TestHelpers.getFile("file1", true));
+    TestHelpers.CloneTest(item);
   }
 
   /**
@@ -164,11 +164,11 @@ public class TestStackItem extends JajukTestCase {
    * {@link org.jajuk.services.players.StackItem#equals(java.lang.Object)}.
    */
   public void testEqualsObject() throws Exception {
-    File file = JUnitHelpers.getFile("file1", true);
+    File file = TestHelpers.getFile("file1", true);
     StackItem item1 = new StackItem(file);
     StackItem item2 = new StackItem(file);
-    StackItem item3 = new StackItem(JUnitHelpers.getFile("file2", true));
-    JUnitHelpers.EqualsTest(item1, item2, item3);
+    StackItem item3 = new StackItem(TestHelpers.getFile("file2", true));
+    TestHelpers.EqualsTest(item1, item2, item3);
   }
 
   /**
@@ -177,7 +177,7 @@ public class TestStackItem extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testToString() throws Exception {
-    StackItem item = new StackItem(JUnitHelpers.getFile("file1", true));
-    JUnitHelpers.ToStringTest(item);
+    StackItem item = new StackItem(TestHelpers.getFile("file1", true));
+    TestHelpers.ToStringTest(item);
   }
 }

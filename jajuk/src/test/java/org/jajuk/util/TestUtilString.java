@@ -24,7 +24,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Random;
 
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.ThreadTestHelper;
 import org.jajuk.base.File;
@@ -53,7 +53,7 @@ public class TestUtilString extends JajukTestCase {
    * @throws Exception
    */
   public void testApplyPattern() throws Exception {
-    UtilString.applyPattern(JUnitHelpers.getFile(), "somepattern", false, false);
+    UtilString.applyPattern(TestHelpers.getFile(), "somepattern", false, false);
   }
 
   /**
@@ -67,7 +67,7 @@ public class TestUtilString extends JajukTestCase {
     try {
       TrackManager.getInstance().registerProperty(
           new PropertyMetaInformation("foo", true, false, false, false, false, String.class, ""));
-      File file = JUnitHelpers.getFile();
+      File file = TestHelpers.getFile();
       Track track = file.getTrack();
       track.setProperty("foo", "bar");
       assertEquals("foo : bar", UtilString.applyPattern(file, "foo : %foo", true, false));
@@ -82,7 +82,7 @@ public class TestUtilString extends JajukTestCase {
     try {
       FileManager.getInstance().registerProperty(
           new PropertyMetaInformation("foo", true, false, false, false, false, String.class, ""));
-      File file = JUnitHelpers.getFile();
+      File file = TestHelpers.getFile();
       file.setProperty("foo", "bar");
       assertEquals("foo : bar", UtilString.applyPattern(file, "foo : %foo", true, false));
       file.setProperty("foo", "");
@@ -99,7 +99,7 @@ public class TestUtilString extends JajukTestCase {
           new PropertyMetaInformation("foo", true, false, false, false, false, String.class, ""));
       TrackManager.getInstance().registerProperty(
           new PropertyMetaInformation("foo", true, false, false, false, false, String.class, ""));
-      File file = JUnitHelpers.getFile();
+      File file = TestHelpers.getFile();
       file.setProperty("foo", "bar");
       Track track = file.getTrack();
       track.setProperty("foo", "baz");

@@ -74,9 +74,9 @@ public abstract class JajukTestCase extends TestCase {
     // Make sure to use a test workspace
     SessionService.setTestMode(true);
     // let's clean up before we begin any test
-    JUnitHelpers.waitForAllWorkToFinishAndCleanup();
+    TestHelpers.waitForAllWorkToFinishAndCleanup();
     // do the cleanup twice as we have to ensure to clean up things once again when the threads are finally stopped
-    JUnitHelpers.waitForAllWorkToFinishAndCleanup();
+    TestHelpers.waitForAllWorkToFinishAndCleanup();
     // assert to find cases where we do not clean up correctly
     assertEquals(-1, QueueModel.getIndex());
     assertEquals(0, QueueModel.getQueueSize());

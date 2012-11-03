@@ -30,7 +30,7 @@ import java.util.Random;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.jajuk.ConstTest;
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.Directory;
 import org.jajuk.util.error.JajukException;
@@ -124,8 +124,8 @@ public class TestUtilSystem extends JajukTestCase {
    * {@link org.jajuk.util.UtilSystem#copy(java.io.File, java.lang.String)}.
    */
   public void testCopyFileString() throws Exception {
-    File file1 = JUnitHelpers.getFile("testfile1", true).getFIO();
-    File file2 = JUnitHelpers.getFile("testfile2", true).getFIO();
+    File file1 = TestHelpers.getFile("testfile1", true).getFIO();
+    File file2 = TestHelpers.getFile("testfile2", true).getFIO();
     FileUtils.writeStringToFile(file1, "this is some test data");
     UtilSystem.copy(file1, file2);
     // file is written into same directory as file1 here
@@ -204,8 +204,8 @@ public class TestUtilSystem extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testCopyRecursively() throws Exception {
-    Directory dir1 = JUnitHelpers.getDirectory("dir1");
-    Directory dir2 = JUnitHelpers.getDirectory("dir2");
+    Directory dir1 = TestHelpers.getDirectory("dir1");
+    Directory dir2 = TestHelpers.getDirectory("dir2");
     File file = new File(dir1.getAbsolutePath() + "/testfile");
     FileUtils.writeStringToFile(file, "this is some test data");
     UtilSystem.copyRecursively(dir1.getFio(), dir2.getFio());
@@ -221,7 +221,7 @@ public class TestUtilSystem extends JajukTestCase {
    */
   public void testCopyToDir() throws Exception {
     FileUtils.writeStringToFile(file1, "this is some test data");
-    Directory dir = JUnitHelpers.getDirectory();
+    Directory dir = TestHelpers.getDirectory();
     UtilSystem.copyToDir(file1, dir.getFio());
     assertEquals(
         "this is some test data",
@@ -274,7 +274,7 @@ public class TestUtilSystem extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testDeleteDirWithContent() throws Exception {
-    File file = JUnitHelpers.getFile().getFIO();
+    File file = TestHelpers.getFile().getFIO();
     UtilSystem.deleteDir(file);
     assertFalse(file.exists());
   }
@@ -295,7 +295,7 @@ public class TestUtilSystem extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testDeleteDirDir() throws Exception {
-    Directory top = JUnitHelpers.getDirectory();
+    Directory top = TestHelpers.getDirectory();
     File fileChild = new File(top.getAbsolutePath() + "/child");
     fileChild.mkdirs();
     UtilSystem.deleteDir(fileChild);
@@ -750,6 +750,6 @@ public class TestUtilSystem extends JajukTestCase {
    */
   public void testPrivateConstructor() throws Exception {
     // For EMMA code-coverage tests
-    JUnitHelpers.executePrivateConstructor(UtilSystem.class);
+    TestHelpers.executePrivateConstructor(UtilSystem.class);
   }
 }

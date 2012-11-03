@@ -22,7 +22,7 @@ package org.jajuk.services.tags;
 
 import java.io.File;
 
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.JajukTestCase;
 import org.jajuk.base.TypeManager;
 import org.jajuk.util.error.JajukException;
@@ -94,10 +94,10 @@ public class TestTag extends JajukTestCase {
         NoTagsTagImpl.class));
     Tag tag = new Tag(new File("somefile.tst"), false);
     Tag equ = new Tag(new File("somefile.tst"), false);
-    JUnitHelpers.HashCodeTest(tag, equ);
+    TestHelpers.HashCodeTest(tag, equ);
     tag = new Tag(null, true);
     equ = new Tag(null, true);
-    JUnitHelpers.HashCodeTest(tag, equ);
+    TestHelpers.HashCodeTest(tag, equ);
   }
 
   /**
@@ -313,13 +313,13 @@ public class TestTag extends JajukTestCase {
     Tag tag = new Tag(new File("somefile.tst"), false);
     Tag equ = new Tag(new File("somefile.tst"), false);
     Tag notequ = new Tag(new File("somefile1.tst"), false);
-    JUnitHelpers.EqualsTest(tag, equ, notequ);
+    TestHelpers.EqualsTest(tag, equ, notequ);
     notequ = new Tag(null, true);
-    JUnitHelpers.EqualsTest(tag, equ, notequ);
+    TestHelpers.EqualsTest(tag, equ, notequ);
     tag = new Tag(null, true);
     equ = new Tag(null, true);
     notequ = new Tag(new File("somefile.tst"), false);
-    JUnitHelpers.EqualsTest(tag, equ, notequ);
+    TestHelpers.EqualsTest(tag, equ, notequ);
   }
 
   /**
@@ -331,8 +331,8 @@ public class TestTag extends JajukTestCase {
         NoTagsTagImpl.class));
     Tag tag = new Tag(new File("somefile.tst"), false);
     Tag tag2 = new Tag(null, true);
-    JUnitHelpers.ToStringTest(tag);
-    JUnitHelpers.ToStringTest(tag2);
+    TestHelpers.ToStringTest(tag);
+    TestHelpers.ToStringTest(tag2);
   }
 
   /**
