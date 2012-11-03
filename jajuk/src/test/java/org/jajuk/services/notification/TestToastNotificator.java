@@ -24,7 +24,6 @@ import java.awt.HeadlessException;
 
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
-import org.jajuk.TestHelpers;
 import org.jajuk.base.File;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.services.webradio.WebRadio;
@@ -75,7 +74,7 @@ public class TestToastNotificator extends JajukTestCase {
     try {
       StartupCollectionService.registerItemManagers();
       ToastNotificator notificator = ToastNotificator.getInstance();
-      File file = TestHelpers.getMockFile();
+      File file = JUnitHelpers.getFile();
       notificator.notify(file);
     } catch (NoClassDefFoundError e) {
       // expected when run without UI support

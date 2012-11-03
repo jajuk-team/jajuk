@@ -25,7 +25,6 @@ import java.awt.TrayIcon;
 
 import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
-import org.jajuk.TestHelpers;
 import org.jajuk.base.File;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.windows.JajukSystray;
@@ -84,7 +83,7 @@ public class TestJavaBalloonNotificator extends JajukTestCase {
     try {
       JavaBalloonNotificator notificator = JavaBalloonNotificator.getInstance();
       if (notificator.isAvailable()) {
-        File file = TestHelpers.getMockFile();
+        File file = JUnitHelpers.getFile();
         notificator.notify(file);
       }
     } catch (NoClassDefFoundError e) {
