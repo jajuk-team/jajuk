@@ -103,17 +103,15 @@ public abstract class JajukTestCase extends TestCase {
     History.commit();
     // Create a tmp directory as a music folder or tmp trash
     SessionService.getConfFileByPath("tests").mkdirs();
-    if (this instanceof NeedDummyPlayer) {
-      // Force dummy player
-      scriptFile = java.io.File.createTempFile("dummy", "mplayer.sh", new java.io.File(
-          ConstTest.TECH_TESTS_PATH));
-      scriptFile.setExecutable(true);
-      URL thisClassAbsUrl = getClass().getProtectionDomain().getCodeSource().getLocation();
-      String thisClassAbsPath = new java.io.File(thisClassAbsUrl.toURI()).getAbsolutePath();
-      FileUtils.writeStringToFile(scriptFile, "#!/bin/sh\n\n" + findJavaExecutable() + " -cp \""
-          + thisClassAbsPath + "\" " + MAIN_CLASS);
-      Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, scriptFile.getAbsolutePath());
-    }
+    // Force dummy player
+    scriptFile = java.io.File.createTempFile("dummy", "mplayer.sh", new java.io.File(
+        ConstTest.TECH_TESTS_PATH));
+    scriptFile.setExecutable(true);
+    URL thisClassAbsUrl = getClass().getProtectionDomain().getCodeSource().getLocation();
+    String thisClassAbsPath = new java.io.File(thisClassAbsUrl.toURI()).getAbsolutePath();
+    FileUtils.writeStringToFile(scriptFile, "#!/bin/sh\n\n" + findJavaExecutable() + " -cp \""
+        + thisClassAbsPath + "\" " + MAIN_CLASS);
+    Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, scriptFile.getAbsolutePath());
     super.setUp();
   }
 }
