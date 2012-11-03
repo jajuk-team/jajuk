@@ -48,7 +48,6 @@ public class TestMPlayerPlayerImpl extends JajukTestCase implements NeedDummyPla
   protected void tearDown() throws Exception {
     JUnitHelpers.waitForThreadToFinish("MPlayer reader thread");
     JUnitHelpers.waitForThreadToFinish("MPlayer writer thread");
-    Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, "");
     Log.info("Tearing down testcase");
   }
 
