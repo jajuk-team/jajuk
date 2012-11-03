@@ -47,6 +47,11 @@ import org.w3c.dom.Document;
  * .
  */
 public class TestDigitalDJ extends JajukTestCase {
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for {@link org.jajuk.services.dj.DigitalDJ#hashCode()}.
    */

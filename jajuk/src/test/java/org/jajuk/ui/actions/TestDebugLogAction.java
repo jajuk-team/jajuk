@@ -29,6 +29,11 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class TestDebugLogAction extends JajukTestCase {
+  @Override
+  public void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for.
    *

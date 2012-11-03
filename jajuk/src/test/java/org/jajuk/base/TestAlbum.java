@@ -36,6 +36,15 @@ import org.jajuk.util.Messages;
  * .
  */
 public class TestAlbum extends JajukTestCase {
+  /* (non-Javadoc)
+   * @see org.jajuk.JajukTestCase#setUp()
+   */
+  @Override
+  protected void setUp() throws Exception {
+    // TODO Auto-generated method stub
+    super.setUp();
+  }
+
   /**
    * Test method for {@link org.jajuk.base.Album#getTitle()}.
    */

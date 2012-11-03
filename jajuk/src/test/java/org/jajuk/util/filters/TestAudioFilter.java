@@ -32,6 +32,11 @@ import org.jajuk.services.startup.StartupCollectionService;
  * .
  */
 public class TestAudioFilter extends JajukTestCase {
+  @Override
+  public void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for.
    *

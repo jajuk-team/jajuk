@@ -41,9 +41,9 @@ public class TestDBusSupportImpl extends JajukTestCase {
    */
   @Override
   protected void setUp() throws Exception {
+    super.setUp();
     // make sure this is initialized with Actions
     ActionManager.getInstance();
-    super.setUp();
   }
 
   /**

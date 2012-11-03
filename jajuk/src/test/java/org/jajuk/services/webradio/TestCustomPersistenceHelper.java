@@ -39,9 +39,9 @@ public class TestCustomPersistenceHelper extends JajukTestCase {
 
   @Override
   public void setUp() throws Exception {
-    super.setUp();
     man.cleanup();
     writeSampleFile();
+    super.setUp();
   }
 
   private void writeSampleFile() throws Exception {

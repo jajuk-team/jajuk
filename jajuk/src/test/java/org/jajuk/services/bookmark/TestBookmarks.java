@@ -40,8 +40,8 @@ public class TestBookmarks extends JajukTestCase {
    */
   @Override
   protected void setUp() throws Exception {
-    Bookmarks.getInstance().clear();
     super.setUp();
+    Bookmarks.getInstance().clear();
   }
 
   /**

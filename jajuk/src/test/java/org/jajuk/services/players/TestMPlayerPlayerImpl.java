@@ -32,7 +32,7 @@ import org.jajuk.util.log.Log;
 /**
  * .
  */
-public class TestMPlayerPlayerImpl extends JajukTestCase implements NeedDummyPlayer{
+public class TestMPlayerPlayerImpl extends JajukTestCase implements NeedDummyPlayer {
   /* (non-Javadoc)
    * @see org.jajuk.JajukTestCase#setUp()
    */

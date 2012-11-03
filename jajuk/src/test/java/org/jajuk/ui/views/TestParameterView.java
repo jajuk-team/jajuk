@@ -37,6 +37,11 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class TestParameterView extends JajukTestCase {
+  @Override
+  public void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for {@link org.jajuk.ui.views.ParameterView#ParameterView()}.
    */

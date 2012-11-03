@@ -45,9 +45,9 @@ public class TestDirectory extends JajukTestCase {
    */
   @Override
   protected void setUp() throws Exception {
+    super.setUp();
     // reset some conf-options
     Conf.setProperty(Const.CONF_OPTIONS_HIDE_UNMOUNTED, "false");
-    super.setUp();
   }
 
   /**
