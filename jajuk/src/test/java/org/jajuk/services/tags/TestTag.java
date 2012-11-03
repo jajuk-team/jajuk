@@ -22,16 +22,20 @@ package org.jajuk.services.tags;
 
 import java.io.File;
 
-import junit.framework.TestCase;
-
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
 import org.jajuk.base.TypeManager;
 import org.jajuk.util.error.JajukException;
 
 /**
  * 
  */
-public class TestTag extends TestCase {
+public class TestTag extends JajukTestCase {
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#Tag(java.io.File, boolean)}.
    * @throws Exception 

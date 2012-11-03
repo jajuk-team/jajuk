@@ -49,6 +49,11 @@ import org.jajuk.util.Const;
  * .
  */
 public class TestCoverView extends JajukTestCase {
+  @Override
+  public void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for.
    *

@@ -45,9 +45,14 @@ import org.jajuk.util.Const;
  * .
  */
 public class TestAmbienceDigitalDJ extends JajukTestCase {
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
-   * Test method for {@link org.jajuk.services.dj.AmbienceDigitalDJ#toXML()}.
-   */
+  * Test method for {@link org.jajuk.services.dj.AmbienceDigitalDJ#toXML()}.
+  */
   public final void testToXML() {
     AmbienceDigitalDJ dj = new AmbienceDigitalDJ("3");
     assertTrue(StringUtils.isNotBlank(dj.toXML()));

@@ -86,12 +86,11 @@ public class TestFileManager extends JajukTestCase {
     List<File> files = newFile.getTrack().getFiles();
     assertTrue(files.size() == 1 && files.get(0).equals(newFile));
   }
-  
+
   @Test
   public void testGetFileByPath() {
     // test with default file 
     testWithFile(JUnitHelpers.getFile());
-    
     // test with different files
     testWithFile(JUnitHelpers.getFile("ABC.tst", true));
     testWithFile(JUnitHelpers.getFile("ABC.tst", true));
@@ -102,11 +101,11 @@ public class TestFileManager extends JajukTestCase {
    * 
    */
   private void testWithFile(File file) {
-    assertNotNull("file " + file.getFIO() + " is not found if we look for the actual file name", 
+    assertNotNull("file " + file.getFIO() + " is not found if we look for the actual file name",
         FileManager.getInstance().getFileByPath(file.getFIO().getAbsolutePath()));
-    assertNotNull("file " + file.getFIO() + " is not found if we look for the lowercase file name", 
+    assertNotNull("file " + file.getFIO() + " is not found if we look for the lowercase file name",
         FileManager.getInstance().getFileByPath(file.getFIO().getAbsolutePath().toLowerCase()));
-    assertNotNull("file " + file.getFIO() + " is not found if we look for the uppercase file name", 
+    assertNotNull("file " + file.getFIO() + " is not found if we look for the uppercase file name",
         FileManager.getInstance().getFileByPath(file.getFIO().getAbsolutePath().toUpperCase()));
   }
 }

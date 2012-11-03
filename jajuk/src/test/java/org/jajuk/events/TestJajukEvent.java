@@ -29,6 +29,11 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestJajukEvent extends JajukTestCase {
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for {@link org.jajuk.events.JajukEvent#hashCode()}.
    */

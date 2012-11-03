@@ -47,6 +47,15 @@ public class TestArtistManager extends JajukTestCase {
   /** The Constant NUMBER_OF_THREADS.   */
   private static final int NUMBER_OF_THREADS = 10;
 
+  /* (non-Javadoc)
+   * @see org.jajuk.JajukTestCase#setUp()
+   */
+  @Override
+  protected void setUp() throws Exception {
+    // TODO Auto-generated method stub
+    super.setUp();
+  }
+
   /**
    * Test method for {@link org.jajuk.base.ArtistManager#getXMLTag()}.
    */
@@ -138,14 +147,14 @@ public class TestArtistManager extends JajukTestCase {
     assertEquals("namenewnew", artist.getName()); // correct name
   }
 
-   /**
-   * Gets the file.
-   *
-   * @param i 
-   * @param artist 
-   * @return the file
-   * @throws Exception the exception
-   */
+  /**
+  * Gets the file.
+  *
+  * @param i 
+  * @param artist 
+  * @return the file
+  * @throws Exception the exception
+  */
   @SuppressWarnings("unchecked")
   private File getFile(int i, Artist artist) throws Exception {
     Genre genre = JUnitHelpers.getGenre("name");

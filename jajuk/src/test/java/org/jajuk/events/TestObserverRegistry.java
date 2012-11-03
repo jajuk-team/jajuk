@@ -38,6 +38,11 @@ public class TestObserverRegistry extends JajukTestCase {
   private static final int NUMBER_OF_TESTS = 1000;
   private AtomicInteger called = new AtomicInteger(0);
 
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for.
    *

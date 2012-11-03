@@ -30,6 +30,11 @@ import org.jajuk.services.webradio.WebRadio;
  * .
  */
 public class TestNotifySendBalloonNotificator extends JajukTestCase {
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for.
    *

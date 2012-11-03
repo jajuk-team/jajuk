@@ -20,15 +20,16 @@
  */
 package org.jajuk.ui.helpers;
 
-import static org.junit.Assert.assertEquals;
-
 import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
 import org.junit.Test;
 
-/**
- * .
- */
-public class TestDuration {
+public class TestDuration extends JajukTestCase {
+  @Override
+  public void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for {@link org.jajuk.ui.helpers.Duration#hashCode()}.
    */

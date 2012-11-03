@@ -27,6 +27,11 @@ import org.jajuk.services.startup.StartupCollectionService;
  * .
  */
 public class TestExitService extends JajukTestCase {
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for {@link org.jajuk.services.core.ExitService#run()}.
    *

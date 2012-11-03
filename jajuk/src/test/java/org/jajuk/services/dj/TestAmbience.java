@@ -33,6 +33,11 @@ import org.jajuk.base.GenreManager;
  * .
  */
 public class TestAmbience extends JajukTestCase {
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for {@link org.jajuk.services.dj.Ambience#hashCode()}.
    */

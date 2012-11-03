@@ -26,6 +26,11 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestCannotRenameException extends JajukTestCase {
+  @Override
+  public void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for.
    *
