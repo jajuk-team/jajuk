@@ -982,10 +982,20 @@ public class TestQueueModel extends JajukTestCase {
    */
   public void testGoToRepeat() throws Exception {
     addItems(5);
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        5, QueueModel.getQueueSize());
     QueueModel.goTo(2);
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        5, QueueModel.getQueueSize());
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        2, QueueModel.getIndex());
     { // first choose one that is not set to repeat
       // now set some repeat
       QueueModel.getItem(2).setRepeat(true);
+      assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+          5, QueueModel.getQueueSize());
+      assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+          2, QueueModel.getIndex());
       QueueModel.goTo(4);
       assertNotNull("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
           QueueModel.getCurrentItem());

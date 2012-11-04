@@ -30,6 +30,7 @@ import org.jajuk.base.Collection;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.players.DummyMPlayerImpl;
+import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.services.webradio.WebRadioManager;
@@ -77,6 +78,8 @@ public abstract class JajukTestCase extends TestCase {
     TestHelpers.waitForAllWorkToFinishAndCleanup();
     // do the cleanup twice as we have to ensure to clean up things once again when the threads are finally stopped
     TestHelpers.waitForAllWorkToFinishAndCleanup();
+    // stop any Player from previous tests
+    Player.stop(true);
     // assert to find cases where we do not clean up correctly
     assertEquals(-1, QueueModel.getIndex());
     assertEquals(0, QueueModel.getQueueSize());
