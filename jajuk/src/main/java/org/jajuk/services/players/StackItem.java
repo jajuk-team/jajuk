@@ -45,10 +45,7 @@ public class StackItem implements Cloneable {
    * @throws JajukException the jajuk exception
    */
   public StackItem(File file) throws JajukException {
-    if (file == null) {
-      throw new JajukException(0);
-    }
-    this.file = file;
+    this(file, false, false);
   }
 
   /**
