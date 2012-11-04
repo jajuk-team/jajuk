@@ -987,13 +987,25 @@ public class TestQueueModel extends JajukTestCase {
       // now set some repeat
       QueueModel.getItem(2).setRepeat(true);
       QueueModel.goTo(4);
-      assertEquals("file4", QueueModel.getCurrentItem().getFile().getName());
+      assertNotNull("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+          QueueModel.getCurrentItem());
+      assertNotNull("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+          QueueModel.getCurrentItem().getFile());
+      assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+          "file4", QueueModel.getCurrentItem().getFile().getName());
+      // item 4 is now not repeated
+      assertFalse(QueueModel.getItem(4).isRepeat());
     }
     { // and then try to go to a repeated one
       // now set some repeat
       QueueModel.getItem(2).setRepeat(true);
       QueueModel.goTo(2);
-      assertEquals("file2", QueueModel.getCurrentItem().getFile().getName());
+      assertNotNull("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+          QueueModel.getCurrentItem());
+      assertNotNull("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+          QueueModel.getCurrentItem().getFile());
+      assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(),
+          "file2", QueueModel.getCurrentItem().getFile().getName());
       // item 2 is now still repeated
       assertTrue(QueueModel.getItem(2).isRepeat());
     }
