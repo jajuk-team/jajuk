@@ -967,11 +967,31 @@ public class TestQueueModel extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testGoTo() throws Exception {
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        0, QueueModel.getQueueSize());
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        -1, QueueModel.getIndex());
     QueueModel.goTo(0);
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        0, QueueModel.getQueueSize());
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        0, QueueModel.getIndex());
     addItems(5);
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        5, QueueModel.getQueueSize());
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        5, QueueModel.getIndex());
     QueueModel.goTo(2);
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        5, QueueModel.getQueueSize());
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        2, QueueModel.getIndex());
     QueueModel.goTo(4);
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        5, QueueModel.getQueueSize());
     assertEquals("file4", QueueModel.getCurrentItem().getFile().getName());
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        4, QueueModel.getIndex());
   }
 
   /**
