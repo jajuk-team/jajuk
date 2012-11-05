@@ -249,7 +249,7 @@ public final class TrackManager extends ItemManager {
   public void commit() throws JajukException {
     try {
       lock.writeLock().lock();
-      // Iterate over a shallow copy to avoid concurrent issues (note also that
+      // Iterate over a defensive copy to avoid concurrent issues (note also that
       // several threads can commit at the same time). We synchronize the copy and
       // we drop tags to commit.
       List<Tag> toCommit = null;
@@ -908,7 +908,7 @@ public final class TrackManager extends ItemManager {
    */
   @Override
   public void cleanup() {
-    // No need to lock or synchronize, getTracks() is a shallow copy of tracks
+    // No need to lock or synchronize, getTracks() is a defensive copy of tracks
     for (Track track : getTracks()) {
       if (track.getFiles().size() == 0) { // no associated file
         removeItem(track);
@@ -962,7 +962,7 @@ public final class TrackManager extends ItemManager {
   /**
    * Get ordered tracks list associated with this item
    * <p>
-   * This is a shallow copy only
+   * This is a defensive copy only
    * </p>
    * .
    * 
@@ -981,7 +981,7 @@ public final class TrackManager extends ItemManager {
   /**
    * Get ordered tracks list associated with a list of items (of the same type)
    * <p>
-   * This is a shallow copy only
+   * This is a defensive copy only
    * </p>
    * .
    *
