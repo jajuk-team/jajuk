@@ -292,6 +292,14 @@ public final class AlbumManager extends ItemManager implements Observer {
     return out;
   }
 
+  @Override
+  public void cleanup() {
+    for (Item item : getItems()) {
+      ((Album) item).cleanupCache();
+    }
+    super.cleanup();
+  }
+
   /**
    * Return sorted top albums based on the average of each album rating.
    * 
