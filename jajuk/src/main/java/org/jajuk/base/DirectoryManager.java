@@ -122,7 +122,7 @@ public final class DirectoryManager extends ItemManager {
   }
 
   /**
-   * Gets a shallow copy of all directories.
+   * Gets a defensive copy of all directories.
    * 
    * @return ordered directories list
    */
@@ -240,7 +240,7 @@ public final class DirectoryManager extends ItemManager {
         return;
       }
       // remove all files
-      // need to use a shallow copy to avoid concurrent exceptions
+      // need to use a defensive copy to avoid concurrent exceptions
       final List<File> alFiles = new ArrayList<File>(dir.getFiles());
       for (final File file : alFiles) {
         FileManager.getInstance().removeFile(file);

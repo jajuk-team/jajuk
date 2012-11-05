@@ -727,7 +727,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    */
   public boolean cleanRemovedFiles() {
     boolean bChanges = false;
-    // need to use a shallow copy to avoid concurrent exceptions
+    // need to use a defensive copy to avoid concurrent exceptions
     final List<Directory> dirs = DirectoryManager.getInstance().getDirectories();
     // directories cleanup
     for (final Item item : dirs) {

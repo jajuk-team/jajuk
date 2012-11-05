@@ -1092,7 +1092,7 @@ public final class QueueModel {
   /**
    * Gets the queue.
    * 
-   * @return Returns a shallow copy of the fifo
+   * @return Returns a defensive copy of the fifo
    */
   public static List<StackItem> getQueue() {
     return queue.getQueue();
@@ -1299,7 +1299,7 @@ public final class QueueModel {
   /**
    * Gets the planned.
    * 
-   * @return Returns a shallow copy of planned files
+   * @return Returns a defensive copy of planned files
    */
   public static List<StackItem> getPlanned() {
     return queue.getPlanned();
