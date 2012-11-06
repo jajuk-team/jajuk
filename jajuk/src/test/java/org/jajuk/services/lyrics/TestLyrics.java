@@ -66,10 +66,11 @@ public class TestLyrics extends JajukTestCase {
   /**
    * Test setup.
    *
-   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws Exception Signals that an exception has occurred.
    */
   @Override
-  public void setUp() throws IOException {
+  public void setUp() throws Exception {
+    super.setUp();
     // to first cover this method while no providers are loaded yet
     LyricsService.getProviders();
     tmp = TestHelpers.getFile("test.tmp", true).getFIO();
