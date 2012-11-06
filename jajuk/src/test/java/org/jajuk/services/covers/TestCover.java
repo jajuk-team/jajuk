@@ -53,6 +53,7 @@ public class TestCover extends JajukTestCase {
    */
   @Override
   protected void setUp() throws Exception {
+    super.setUp();
     // Make sure to reset default conf for this option :
     Conf.restoreValue(Const.FILE_DEFAULT_COVER);
   }

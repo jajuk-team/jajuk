@@ -106,8 +106,9 @@ public class TestAutoCompleteDecorator extends TestCase {
    * @see junit.framework.TestCase#setUp()
    */
   @Override
-  protected void setUp() {
+  protected void setUp() throws Exception {
     combo = new JComboBox(new String[] { "Alpha", "Bravo", "Charlie", "Delta" });
+    super.setUp();
   }
 
   /**
