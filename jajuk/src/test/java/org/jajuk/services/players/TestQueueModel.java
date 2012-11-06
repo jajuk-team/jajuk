@@ -70,6 +70,8 @@ public class TestQueueModel extends JajukTestCase {
       FileManager.getInstance().removeFile(file);
     }
   }
+  
+  
 
   // helper method to emma-coverage of the unused constructor
   /**
@@ -90,8 +92,9 @@ public class TestQueueModel extends JajukTestCase {
    */
   @Override
   protected void tearDown() throws Exception {
-    // make sure that the SwingUtilities.invokeLater() are all done
-    TestHelpers.clearSwingUtilitiesQueue();
+    // make sure that all work is stopped before starting the next test
+    TestHelpers.waitForAllWorkToFinishAndCleanup();
+    
     super.tearDown();
   }
 
