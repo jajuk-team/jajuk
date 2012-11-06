@@ -29,7 +29,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
@@ -422,49 +424,21 @@ public class TestHelpers {
     TestHelpers.waitForThreadToFinish("LastFM Update Thread");
     TestHelpers.waitForThreadToFinish("Parameter Catalog refresh Thread");
     TestHelpers.waitForThreadToFinish("Manual Refresh Thread");
+    // hangs... TestHelpers.waitForThreadToFinish("Observation Manager Thread");
     // clear this for all available events
     // for(JajukEvents event : JajukEvents.values()) {
     // JUnitHelpers.waitForThreadToFinish("Event Executor for: " +
     // event.toString());
     // }
-    TestHelpers
-        .waitForThreadToFinish("Event Executor for: " + JajukEvents.ALARMS_CHANGE.toString());
-    TestHelpers
-        .waitForThreadToFinish("Event Executor for: " + JajukEvents.ALBUM_CHANGED.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.BANNED.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.CDDB_WIZARD.toString());
-    TestHelpers
-        .waitForThreadToFinish("Event Executor for: " + JajukEvents.CLEAR_HISTORY.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: "
-        + JajukEvents.COVER_NEED_REFRESH.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: "
-        + JajukEvents.DEVICE_REFRESH.toString());
-    TestHelpers
-        .waitForThreadToFinish("Event Executor for: " + JajukEvents.FILE_FINISHED.toString());
-    TestHelpers
-        .waitForThreadToFinish("Event Executor for: " + JajukEvents.FILE_LAUNCHED.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: "
-        + JajukEvents.FILE_NAME_CHANGED.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: "
-        + JajukEvents.LANGUAGE_CHANGED.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.MUTE_STATE.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAYER_PAUSE.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAYER_PLAY.toString());
-    TestHelpers
-        .waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAYER_RESUME.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAYER_STOP.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAY_ERROR.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.PLAY_OPENING.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: "
-        + JajukEvents.PREFERENCES_RESET.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.RATE_RESET.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: "
-        + JajukEvents.GENRE_NAME_CHANGED.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: "
-        + JajukEvents.VOLUME_CHANGED.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: "
-        + JajukEvents.WEBRADIO_LAUNCHED.toString());
-    TestHelpers.waitForThreadToFinish("Event Executor for: " + JajukEvents.ZERO.toString());
+
+    for(JajukEvents event : JajukEvents.values()) {
+      TestHelpers
+      .waitForThreadToFinish("Event Executor for: " + event.toString());
+      TestHelpers
+      .waitForThreadToFinish("Event Executor for: " + event.toString() + " no details");
+    }
+    
+
     TestHelpers.clearSwingUtilitiesQueue();
     //Reset everything again as it could have been changed during threads finishing
     ObservationManager.clear();
@@ -842,5 +816,22 @@ public class TestHelpers {
     Field field = obj.getClass().getDeclaredField(fieldName);
     field.setAccessible(true);
     field.set(obj, value);
+  }
+  
+  /**
+   * Print a dump of all current threads to System.out
+   */
+  public static void dumpThreads() {
+    Map<Thread,StackTraceElement[]> traces = Thread.getAllStackTraces();
+    Iterator<Thread> i = traces.keySet().iterator();
+    while (i.hasNext()) {
+       Thread thd = i.next();
+       System.out.println("*** Thread id"+thd.getId()+":"+thd.getName()+" ***");
+       StackTraceElement[] trace = traces.get(thd);
+       for (int j=0; j < trace.length; ++j) {
+          System.out.println(trace[j]);
+       }
+       System.out.println();
+    }    
   }
 }
