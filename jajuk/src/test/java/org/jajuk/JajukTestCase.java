@@ -29,6 +29,7 @@ import junit.framework.TestCase;
 
 import org.apache.commons.io.FileUtils;
 import org.jajuk.base.Collection;
+import org.jajuk.base.TypeManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.players.DummyMPlayerImpl;
@@ -84,6 +85,7 @@ public abstract class JajukTestCase extends TestCase {
     assertEquals(0, QueueModel.getQueueSize());
     // Clean the collection
     StartupCollectionService.registerItemManagers();
+    TypeManager.getInstance().clear();
     Collection.clearCollection();
     WebRadioManager.getInstance().clear();
     // And use a specific workspace
