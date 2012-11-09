@@ -22,6 +22,8 @@ package org.jajuk;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -114,4 +116,25 @@ public abstract class JajukTestCase extends TestCase {
     Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, scriptFile.getAbsolutePath());
     super.setUp();
   }
+
+  /* (non-Javadoc)
+   * @see junit.framework.TestCase#tearDown()
+   */
+  @Override
+  protected void tearDown() throws Exception {
+    Map<Thread,StackTraceElement[]> traces = Thread.getAllStackTraces();
+    Iterator<Thread> i = traces.keySet().iterator();
+    while (i.hasNext()) {
+       Thread thd = i.next();
+       if(thd.getName().contains("MPlayer reader thread") || thd.getName().contains("MPlayer writer thread")) {
+         TestHelpers.dumpThreads();
+         throw new IllegalStateException("Had leftover MPlayer thread: " + thd.getName());
+       }
+    }    
+    
+    
+    super.tearDown();
+  }
+  
+  
 }
