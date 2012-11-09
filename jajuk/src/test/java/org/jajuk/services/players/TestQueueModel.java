@@ -56,8 +56,8 @@ public class TestQueueModel extends JajukTestCase {
   protected void setUp() throws Exception {
     super.setUp();
     
-    System.out.println("Thread dump after cleanup");
-    TestHelpers.dumpThreads();
+    //System.out.println("Thread dump after cleanup");
+    //TestHelpers.dumpThreads();
 
     // reset before each test to have a clean start for each test as most
     // data is held statically for QueueModel
@@ -979,8 +979,8 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
         -1, QueueModel.getIndex());
     
-    System.out.println("Thread dump at failure");
-    TestHelpers.dumpThreads();
+    //System.out.println("Thread dump at failure");
+    //TestHelpers.dumpThreads();
 
     QueueModel.goTo(0);
     assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
