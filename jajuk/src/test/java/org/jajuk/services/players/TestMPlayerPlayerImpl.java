@@ -48,6 +48,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
     TestHelpers.waitForThreadToFinish("MPlayer reader thread");
     TestHelpers.waitForThreadToFinish("MPlayer writer thread");
     Log.info("Tearing down testcase");
+    super.tearDown();
   }
 
   /**
