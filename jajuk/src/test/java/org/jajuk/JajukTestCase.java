@@ -22,14 +22,18 @@ package org.jajuk;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
 import org.apache.commons.io.FileUtils;
 import org.jajuk.base.Collection;
+import org.jajuk.base.TypeManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.players.DummyMPlayerImpl;
+import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.services.webradio.WebRadioManager;
@@ -77,11 +81,14 @@ public abstract class JajukTestCase extends TestCase {
     TestHelpers.waitForAllWorkToFinishAndCleanup();
     // do the cleanup twice as we have to ensure to clean up things once again when the threads are finally stopped
     TestHelpers.waitForAllWorkToFinishAndCleanup();
+    // stop any Player from previous tests
+    Player.stop(true);
     // assert to find cases where we do not clean up correctly
     assertEquals(-1, QueueModel.getIndex());
     assertEquals(0, QueueModel.getQueueSize());
     // Clean the collection
     StartupCollectionService.registerItemManagers();
+    TypeManager.getInstance().clear();
     Collection.clearCollection();
     WebRadioManager.getInstance().clear();
     // And use a specific workspace
@@ -114,4 +121,25 @@ public abstract class JajukTestCase extends TestCase {
     Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, scriptFile.getAbsolutePath());
     super.setUp();
   }
+
+  /* (non-Javadoc)
+   * @see junit.framework.TestCase#tearDown()
+   */
+  @Override
+  protected void tearDown() throws Exception {
+    Map<Thread,StackTraceElement[]> traces = Thread.getAllStackTraces();
+    Iterator<Thread> i = traces.keySet().iterator();
+    while (i.hasNext()) {
+       Thread thd = i.next();
+       if(thd.getName().contains("MPlayer reader thread") || thd.getName().contains("MPlayer writer thread")) {
+         TestHelpers.dumpThreads();
+         throw new IllegalStateException("Had leftover MPlayer thread: " + thd.getName());
+       }
+    }    
+    
+    
+    super.tearDown();
+  }
+  
+  
 }

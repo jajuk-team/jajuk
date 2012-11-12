@@ -393,7 +393,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     } else {
       // try to kill the mplayer process if still alive
       if (proc != null) {
-        Log.warn("OOT Mplayer process, try to kill it");
+        Log.warn("OOT Mplayer process, try to kill it (Opening: " + bOpening + ", EOF: " + bEOF + ")");
         proc.destroy();
         Log.warn("OK, the process should have been killed now");
       }

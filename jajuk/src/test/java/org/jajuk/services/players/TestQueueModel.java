@@ -55,6 +55,10 @@ public class TestQueueModel extends JajukTestCase {
   @Override
   protected void setUp() throws Exception {
     super.setUp();
+    
+    //System.out.println("Thread dump after cleanup");
+    //TestHelpers.dumpThreads();
+
     // reset before each test to have a clean start for each test as most
     // data is held statically for QueueModel
     QueueModel.reset();
@@ -70,6 +74,8 @@ public class TestQueueModel extends JajukTestCase {
       FileManager.getInstance().removeFile(file);
     }
   }
+  
+  
 
   // helper method to emma-coverage of the unused constructor
   /**
@@ -90,8 +96,9 @@ public class TestQueueModel extends JajukTestCase {
    */
   @Override
   protected void tearDown() throws Exception {
-    // make sure that the SwingUtilities.invokeLater() are all done
-    TestHelpers.clearSwingUtilitiesQueue();
+    // make sure that all work is stopped before starting the next test
+    TestHelpers.waitForAllWorkToFinishAndCleanup();
+    
     super.tearDown();
   }
 
@@ -967,11 +974,35 @@ public class TestQueueModel extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testGoTo() throws Exception {
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        0, QueueModel.getQueueSize());
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        -1, QueueModel.getIndex());
+    
+    //System.out.println("Thread dump at failure");
+    //TestHelpers.dumpThreads();
+
     QueueModel.goTo(0);
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        0, QueueModel.getQueueSize());
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        0, QueueModel.getIndex());
     addItems(5);
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        5, QueueModel.getQueueSize());
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        5, QueueModel.getIndex());
     QueueModel.goTo(2);
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        5, QueueModel.getQueueSize());
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        2, QueueModel.getIndex());
     QueueModel.goTo(4);
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        5, QueueModel.getQueueSize());
     assertEquals("file4", QueueModel.getCurrentItem().getFile().getName());
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        4, QueueModel.getIndex());
   }
 
   /**
@@ -982,18 +1013,40 @@ public class TestQueueModel extends JajukTestCase {
    */
   public void testGoToRepeat() throws Exception {
     addItems(5);
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        5, QueueModel.getQueueSize());
     QueueModel.goTo(2);
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        5, QueueModel.getQueueSize());
+    assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+        2, QueueModel.getIndex());
     { // first choose one that is not set to repeat
       // now set some repeat
       QueueModel.getItem(2).setRepeat(true);
+      assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+          5, QueueModel.getQueueSize());
+      assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+          2, QueueModel.getIndex());
       QueueModel.goTo(4);
-      assertEquals("file4", QueueModel.getCurrentItem().getFile().getName());
+      assertNotNull("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+          QueueModel.getCurrentItem());
+      assertNotNull("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+          QueueModel.getCurrentItem().getFile());
+      assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+          "file4", QueueModel.getCurrentItem().getFile().getName());
+      // item 4 is now not repeated
+      assertFalse(QueueModel.getItem(4).isRepeat());
     }
     { // and then try to go to a repeated one
       // now set some repeat
       QueueModel.getItem(2).setRepeat(true);
       QueueModel.goTo(2);
-      assertEquals("file2", QueueModel.getCurrentItem().getFile().getName());
+      assertNotNull("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+          QueueModel.getCurrentItem());
+      assertNotNull("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(), 
+          QueueModel.getCurrentItem().getFile());
+      assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize() + ", item: " + QueueModel.getCurrentItem(),
+          "file2", QueueModel.getCurrentItem().getFile().getName());
       // item 2 is now still repeated
       assertTrue(QueueModel.getItem(2).isRepeat());
     }
