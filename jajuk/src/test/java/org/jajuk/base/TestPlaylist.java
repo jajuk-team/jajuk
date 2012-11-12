@@ -41,6 +41,7 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 /**
  * .
@@ -203,10 +204,22 @@ public class TestPlaylist extends JajukTestCase {
     Playlist play = getPlaylistQueue();
     File file = TestHelpers.getFile("file1", false);
     file.getDirectory().getDevice().mount(true);
+    System.out.println("QueueBefore: " + QueueModel.getQueue());
+    assertEquals(0, QueueModel.getQueueSize());
+    System.out.println("PlannedBefore: " + QueueModel.getPlanned());
+    assertEquals(0, QueueModel.getPlanned().size());
     play.addFile(file);
+    System.out.println("Queue: " + QueueModel.getQueue());
+    assertEquals(0, QueueModel.getQueueSize());
+    System.out.println("Planned: " + QueueModel.getPlanned());
+    assertEquals(0, QueueModel.getPlanned().size());
     // wait a bit to let the "push" be done in a separate thread
     TestHelpers.waitForThreadToFinish("Queue Push Thread");
     assertEquals(1, QueueModel.getQueueSize());
+    assertNotNull(QueueModel.getQueue().get(0));
+    assertNotNull(QueueModel.getQueue().get(0).getFile());
+    /*assertNotNull(QueueModel.getQueue().get(0).getFile().getType());
+    assertEquals(MockPlayer.class, QueueModel.getQueue().get(0).getFile().getType().getClass());*/
     file = TestHelpers.getFile("file1", false);
     play.addFile(1, file);
     // wait a bit to let the "push" be done in a separate thread
@@ -222,6 +235,10 @@ public class TestPlaylist extends JajukTestCase {
     TestHelpers.waitForThreadToFinish("Queue Push Thread");
     assertEquals(3, QueueModel.getQueueSize());
     assertEquals(3, play.getFiles().size());
+    
+    Log.info("Tearing down testcase");
+    TestHelpers.waitForThreadToFinish("MPlayer reader thread");
+    TestHelpers.waitForThreadToFinish("MPlayer writer thread");
   }
 
   /**
