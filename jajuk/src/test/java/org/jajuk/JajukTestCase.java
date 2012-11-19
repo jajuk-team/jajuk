@@ -53,6 +53,15 @@ public abstract class JajukTestCase extends TestCase {
   java.io.File scriptFile;
   /** Property which is used to find the current installation location of java. */
   protected static final String PROPERTY_JAVA_HOME = "java.home";
+  /* Need to initialize workspace here because some src classes call SessionService.getConfFileByPath() 
+   * from class init and then override the workspace path, then use the user home directory instead (and even worst, it's cached in 
+   * SessionService.getConfFileByPath())*/
+  static {
+    // Make sure to use a test workspace
+    SessionService.setTestMode(true);
+    File workspace = new File(ConstTest.SAMPLE_WORKSPACE_PATH);
+    SessionService.setWorkspace(workspace.getAbsolutePath());
+  }
 
   /**
    * Find java executable.
@@ -75,8 +84,6 @@ public abstract class JajukTestCase extends TestCase {
   @Override
   protected void setUp() throws Exception {
     Log.info("Setting up testcase: " + getClass() + "." + getName() + "()");
-    // Make sure to use a test workspace
-    SessionService.setTestMode(true);
     // let's clean up before we begin any test
     TestHelpers.waitForAllWorkToFinishAndCleanup();
     // do the cleanup twice as we have to ensure to clean up things once again when the threads are finally stopped
@@ -100,7 +107,6 @@ public abstract class JajukTestCase extends TestCase {
     if (basedir.exists()) {
       UtilSystem.deleteDir(basedir);
     }
-    SessionService.setWorkspace(workspace.getAbsolutePath());
     workspace.mkdirs();
     sample_devices.mkdirs();
     tech_tests.mkdirs();
@@ -127,19 +133,16 @@ public abstract class JajukTestCase extends TestCase {
    */
   @Override
   protected void tearDown() throws Exception {
-    Map<Thread,StackTraceElement[]> traces = Thread.getAllStackTraces();
+    Map<Thread, StackTraceElement[]> traces = Thread.getAllStackTraces();
     Iterator<Thread> i = traces.keySet().iterator();
     while (i.hasNext()) {
-       Thread thd = i.next();
-       if(thd.getName().contains("MPlayer reader thread") || thd.getName().contains("MPlayer writer thread")) {
-         TestHelpers.dumpThreads();
-         throw new IllegalStateException("Had leftover MPlayer thread: " + thd.getName());
-       }
-    }    
-    
-    
+      Thread thd = i.next();
+      if (thd.getName().contains("MPlayer reader thread")
+          || thd.getName().contains("MPlayer writer thread")) {
+        TestHelpers.dumpThreads();
+        throw new IllegalStateException("Had leftover MPlayer thread: " + thd.getName());
+      }
+    }
     super.tearDown();
   }
-  
-  
 }
