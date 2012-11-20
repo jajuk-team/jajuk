@@ -321,10 +321,8 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
         playlistFiles.add(filelist[i]);
       }
     }
-    // Compute the disc id (deep mode only)
-    if (bDeepScan) {
-      this.discID = UtilFeatures.computeDiscID(durations);
-    }
+    // Compute the disc id
+    this.discID = UtilFeatures.computeDiscID(durations);
     // Perform actual scan and check errors for each file
     for (File musicfile : musicFiles) {
       try {
