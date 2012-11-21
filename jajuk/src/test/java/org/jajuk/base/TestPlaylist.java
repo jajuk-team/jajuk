@@ -209,10 +209,6 @@ public class TestPlaylist extends JajukTestCase {
     System.out.println("PlannedBefore: " + QueueModel.getPlanned());
     assertEquals(0, QueueModel.getPlanned().size());
     play.addFile(file);
-    System.out.println("Queue: " + QueueModel.getQueue());
-    assertEquals(0, QueueModel.getQueueSize());
-    System.out.println("Planned: " + QueueModel.getPlanned());
-    assertEquals(0, QueueModel.getPlanned().size());
     // wait a bit to let the "push" be done in a separate thread
     TestHelpers.waitForThreadToFinish("Queue Push Thread");
     assertEquals(1, QueueModel.getQueueSize());
