@@ -22,7 +22,6 @@ package org.jajuk.base;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -32,7 +31,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.ZipInputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -50,7 +48,6 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -301,12 +298,7 @@ public final class Collection extends DefaultHandler {
     if (!file.exists()) {
       throw new JajukException(5, file.toString());
     }
-    if (file.getAbsolutePath().endsWith(".zip")) {
-      InputSource input = new InputSource(new ZipInputStream(new FileInputStream(file)));
-      saxParser.parse(input, getInstance());
-    } else {
-      saxParser.parse(file.toURI().toURL().toString(), getInstance());
-    }
+    saxParser.parse(file.toURI().toURL().toString(), getInstance());
   }
 
   /**
