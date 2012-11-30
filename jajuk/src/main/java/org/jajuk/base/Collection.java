@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -172,14 +171,8 @@ public final class Collection extends DefaultHandler {
   public static synchronized void commit(File collectionFile) throws IOException {
     long time = System.currentTimeMillis();
     String sCharset = Conf.getString(Const.CONF_COLLECTION_CHARSET);
-    final BufferedWriter bw;
-    if (collectionFile.getAbsolutePath().endsWith(".zip")) {
-      bw = new BufferedWriter(new OutputStreamWriter(new ZipOutputStream(new FileOutputStream(
-          collectionFile)), sCharset), 1000000);
-    } else {
-      bw = new BufferedWriter(
+    final BufferedWriter bw = new BufferedWriter(
           new OutputStreamWriter(new FileOutputStream(collectionFile), sCharset), 1000000);
-    }
     try {
       bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");
       bw.write("<" + Const.XML_COLLECTION + " " + Const.XML_VERSION + "='" + Const.JAJUK_VERSION
