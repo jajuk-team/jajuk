@@ -23,6 +23,7 @@ package org.jajuk.ui.windows;
 import java.awt.Component;
 import java.awt.Window;
 
+import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 
 /**
@@ -60,6 +61,8 @@ public abstract class WindowStateDecorator {
    */
   public void setWindowState(WindowState state) {
     this.state = state;
+    // Store window-type displayed (useful for tray display/hide feature for ie.)
+    UtilGUI.storeWindowSate();
   }
 
   /**
@@ -99,9 +102,9 @@ public abstract class WindowStateDecorator {
       }
       // store the new state
       if (show) {
-        state = WindowState.BUILT_DISPLAYED;
+        setWindowState(WindowState.BUILT_DISPLAYED);
       } else {
-        state = WindowState.BUILT_NOT_DISPLAYED;
+        setWindowState(WindowState.BUILT_NOT_DISPLAYED);
       }
     } catch (Exception e) {
       Log.error(e);

@@ -994,5 +994,10 @@ public final class UtilGUI {
     if (sdfullscreen.getWindowState() == WindowState.BUILT_DISPLAYED) {
       Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_FULLSCREEN));
     }
+    try {
+      Conf.commit();
+    } catch (IOException e) {
+      Log.error(e);
+    }
   }
 }
