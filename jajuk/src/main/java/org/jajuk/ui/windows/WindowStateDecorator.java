@@ -21,8 +21,11 @@
 package org.jajuk.ui.windows;
 
 import java.awt.Component;
+import java.awt.Frame;
 import java.awt.Window;
 import java.io.IOException;
+
+import javax.swing.JFrame;
 
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -63,13 +66,13 @@ public abstract class WindowStateDecorator {
    */
   public void setWindowState(WindowState state) {
     this.state = state;
-    storeWindowSate();
+    storeWindowState();
   }
 
   /**
    * Store window-type configuration.
    */
-  private void storeWindowSate() {
+  private void storeWindowState() {
     WindowStateDecorator sdSlimbar = JajukSlimbar.getInstance().getWindowStateDecorator();
     WindowStateDecorator sdMainWindow = JajukMainWindow.getInstance().getWindowStateDecorator();
     WindowStateDecorator sdfullscreen = JajukFullScreenWindow.getInstance()
@@ -166,6 +169,16 @@ public abstract class WindowStateDecorator {
   public boolean isInitialized() {
     return getWindowState() == WindowState.BUILT_DISPLAYED
         || getWindowState() == WindowState.BUILT_NOT_DISPLAYED;
+  }
+
+  /**
+   * Return whether the managed window is minimalized to the taskbar. 
+   * Returns false if the window doesn't exist or is not a JFrame.
+   * @return whether the managed window is minimalized to the taskbar
+   */
+  public boolean isMinimalized() {
+    return window != null && window instanceof JFrame
+        && ((JFrame) window).getState() == Frame.ICONIFIED;
   }
 
   /**

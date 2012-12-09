@@ -107,6 +107,8 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
 
         @Override
         public void specificAfterShown() {
+          // Force window to normal state in case the window was minimized before hidding 
+          jw.setState(Frame.NORMAL);
           // Apply size and location again
           // (required by Gnome for ie to fix the 0-sized maximized
           // frame)
