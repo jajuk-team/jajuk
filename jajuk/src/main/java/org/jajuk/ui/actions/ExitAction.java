@@ -36,7 +36,6 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 
 /**
@@ -86,8 +85,6 @@ public class ExitAction extends JajukAction {
           Log.error(e);
         }
       }
-      // Store window/tray/slimbar configuration
-      UtilGUI.storeWindowSate();
       // hide windows ASAP
       JajukMainWindow.getInstance().getWindowStateDecorator().display(false);
       // hide systray

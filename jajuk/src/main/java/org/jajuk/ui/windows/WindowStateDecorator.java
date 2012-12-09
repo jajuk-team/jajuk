@@ -22,8 +22,10 @@ package org.jajuk.ui.windows;
 
 import java.awt.Component;
 import java.awt.Window;
+import java.io.IOException;
 
-import org.jajuk.util.UtilGUI;
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
@@ -61,8 +63,40 @@ public abstract class WindowStateDecorator {
    */
   public void setWindowState(WindowState state) {
     this.state = state;
-    // Store window-type displayed (useful for tray display/hide feature for ie.)
-    UtilGUI.storeWindowSate();
+    storeWindowSate();
+  }
+
+  /**
+   * Store window-type configuration.
+   */
+  private void storeWindowSate() {
+    WindowStateDecorator sdSlimbar = JajukSlimbar.getInstance().getWindowStateDecorator();
+    WindowStateDecorator sdMainWindow = JajukMainWindow.getInstance().getWindowStateDecorator();
+    WindowStateDecorator sdfullscreen = JajukFullScreenWindow.getInstance()
+        .getWindowStateDecorator();
+    // Set main window display at next startup as a default
+    Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_MAIN_WINDOW));
+    if (sdSlimbar.getWindowState() == WindowState.BUILT_DISPLAYED) {
+      Conf.setProperty(Const.CONF_STARTUP_DISPLAY,
+          Integer.toString(Const.DISPLAY_MODE_SLIMBAR_TRAY));
+    }
+    if (sdMainWindow.isDisplayed()) {
+      Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_MAIN_WINDOW));
+    }
+    // None window displayed ? set the tray only (if the show tray option is
+    // set)
+    if (!sdSlimbar.isDisplayed() && !sdMainWindow.isDisplayed() && !sdfullscreen.isDisplayed()
+        && Conf.getBoolean(Const.CONF_SHOW_SYSTRAY)) {
+      Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_TRAY));
+    }
+    if (sdfullscreen.getWindowState() == WindowState.BUILT_DISPLAYED) {
+      Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_FULLSCREEN));
+    }
+    try {
+      Conf.commit();
+    } catch (IOException e) {
+      Log.error(e);
+    }
   }
 
   /**
