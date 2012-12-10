@@ -30,7 +30,6 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 
-import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.ExitService;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.ui.helpers.RefreshReporter;
@@ -716,64 +715,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     List<Directory> dirsToRefresh = new ArrayList<Directory>(1);
     dirsToRefresh.add(this);
     return getDevice().refreshCommand(bDeepScan, false, dirsToRefresh);
-  }
-
-  /**
-   * Scan directory to cleanup removed files and playlists.
-   * 
-   * @return whether some items have been removed
-   */
-  public boolean cleanRemovedFiles() {
-    boolean bChanges = false;
-    // need to use a defensive copy to avoid concurrent exceptions
-    final List<Directory> dirs = DirectoryManager.getInstance().getDirectories();
-    // directories cleanup
-    for (final Item item : dirs) {
-      final Directory dir = (Directory) item;
-      if (!ExitService.isExiting() && dir.getDevice().isMounted() && dir.isChildOf(this)
-          && !dir.getFio().exists()) {
-        // note that associated files are removed too
-        DirectoryManager.getInstance().removeDirectory(dir.getID());
-        Log.debug("Removed: " + dir);
-        bChanges = true;
-      }
-    }
-    // files cleanup
-    final List<org.jajuk.base.File> lFiles = FileManager.getInstance().getFiles();
-    for (final org.jajuk.base.File file : lFiles) {
-      if (!ExitService.isExiting()
-          // Only take into consideration files from this directory or
-          // from
-          // sub-directories
-          && (file.getDirectory().equals(this) || file.getDirectory().isChildOf(this))
-          && file.isReady() &&
-          // Remove file if it doesn't exist any more or if it is a iTunes
-          // file (useful for jajuk < 1.4)
-          !file.getFIO().exists() || file.getName().startsWith("._")) {
-        FileManager.getInstance().removeFile(file);
-        Log.debug("Removed: " + file);
-        bChanges = true;
-      }
-    }
-    // Playlist cleanup
-    final List<Playlist> plfiles = PlaylistManager.getInstance().getPlaylists();
-    for (final Playlist plf : plfiles) {
-      if (!ExitService.isExiting()
-          // Only take into consideration files from this directory or
-          // from
-          // sub-directories
-          && (plf.getDirectory().equals(this) || plf.getDirectory().isChildOf(this))
-          && plf.isReady() && !plf.getFIO().exists()) {
-        PlaylistManager.getInstance().removeItem(plf);
-        Log.debug("Removed: " + plf);
-        bChanges = true;
-      }
-    }
-    // clear history to remove old files referenced in it
-    if (Conf.getString(Const.CONF_HISTORY) != null) {
-      History.getInstance().clear(Integer.parseInt(Conf.getString(Const.CONF_HISTORY)));
-    }
-    return bChanges;
   }
 
   /**

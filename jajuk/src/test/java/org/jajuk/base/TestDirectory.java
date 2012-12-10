@@ -400,14 +400,6 @@ public class TestDirectory extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Directory#cleanRemovedFiles()}.
-   */
-  public void testCleanRemovedFiles() {
-    Directory dir = TestHelpers.getDirectory("dir1");
-    dir.cleanRemovedFiles();
-  }
-
-  /**
    * Test method for {@link org.jajuk.base.Directory#isChildOf(org.jajuk.base.Directory)}.
    */
   public void testIsChildOf() {
