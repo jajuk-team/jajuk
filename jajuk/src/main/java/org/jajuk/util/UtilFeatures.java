@@ -425,31 +425,6 @@ public final class UtilFeatures {
   }
 
   /**
-   * Computes a disk id. Code based on
-   * http://www.cs.princeton.edu/introcs/51data/CDDB.java.html
-   * 
-   * @param durations List of durations
-   * 
-   * @return the disk ID as a long
-   */
-  public static long computeDiscID(List<Long> durations) {
-    int totalLength = 0;
-    int nbTracks = durations.size();
-    for (Long l : durations) {
-      totalLength += l;
-    }
-    int checkSum = 0;
-    for (Long duration : durations) {
-      checkSum += sumOfDigits(duration);
-    }
-    long xx = checkSum % 255;
-    long yyyy = totalLength;
-    long zz = nbTracks;
-    // XXYYYYZZ
-    return ((xx << 24) | (yyyy << 8) | zz);
-  }
-
-  /**
    * Shuffle a list of items and ensure that final list first element
    * is different from the initial list's one
    * <p>The list should not be void</p>.
