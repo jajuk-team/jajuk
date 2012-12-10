@@ -66,7 +66,6 @@ public abstract class WindowStateDecorator {
    */
   public void setWindowState(WindowState state) {
     this.state = state;
-    storeWindowState();
   }
 
   /**
@@ -79,22 +78,21 @@ public abstract class WindowStateDecorator {
         .getWindowStateDecorator();
     // Set main window display at next startup as a default
     Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_MAIN_WINDOW));
-    if (sdSlimbar.getWindowState() == WindowState.BUILT_DISPLAYED) {
+    if (sdSlimbar.isDisplayed()) {
       Conf.setProperty(Const.CONF_STARTUP_DISPLAY,
           Integer.toString(Const.DISPLAY_MODE_SLIMBAR_TRAY));
-    }
-    if (sdMainWindow.isDisplayed()) {
+    } else if (sdfullscreen.isDisplayed()) {
+      Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_FULLSCREEN));
+    } else if (sdMainWindow.isDisplayed()) {
       Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_MAIN_WINDOW));
     }
     // None window displayed ? set the tray only (if the show tray option is
     // set)
-    if (!sdSlimbar.isDisplayed() && !sdMainWindow.isDisplayed() && !sdfullscreen.isDisplayed()
+    else if (!sdSlimbar.isDisplayed() && !sdMainWindow.isDisplayed() && !sdfullscreen.isDisplayed()
         && Conf.getBoolean(Const.CONF_SHOW_SYSTRAY)) {
       Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_TRAY));
     }
-    if (sdfullscreen.getWindowState() == WindowState.BUILT_DISPLAYED) {
-      Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_FULLSCREEN));
-    }
+    // Persist GUI configuration now to make sure it is stored even if the app is killed
     try {
       Conf.commit();
     } catch (IOException e) {
@@ -134,13 +132,11 @@ public abstract class WindowStateDecorator {
       if (show) {
         window.getWindowStateDecorator().specificAfterShown();
         ((Component) window).validate();
+        setWindowState(WindowState.BUILT_DISPLAYED);
+        // Store state only when windows appear, not when they close as they can be forced to close at exit for example
+        storeWindowState();
       } else {
         window.getWindowStateDecorator().specificAfterHidden();
-      }
-      // store the new state
-      if (show) {
-        setWindowState(WindowState.BUILT_DISPLAYED);
-      } else {
         setWindowState(WindowState.BUILT_NOT_DISPLAYED);
       }
     } catch (Exception e) {
