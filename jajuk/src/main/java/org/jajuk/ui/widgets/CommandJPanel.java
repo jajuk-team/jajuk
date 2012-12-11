@@ -102,7 +102,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   /** Continue mode button. */
   private JajukToggleButton jbContinue;
   private JajukToggleButton jbRepeat;
-  private JajukToggleButton jbRandom;
+  private JajukToggleButton jbShuffle;
   private JToolBar jtbSpecial;
   private DropDownButton ddbGlobalRandom;
   private JRadioButtonMenuItem jmiShuffleModeSong;
@@ -167,12 +167,12 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     jbRepeat.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT));
     jbRepeatAll = new JajukToggleButton(ActionManager.getAction(JajukActions.REPEAT_ALL_MODE));
     jbRepeatAll.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL));
-    jbRandom = new JajukToggleButton(ActionManager.getAction(JajukActions.SHUFFLE_MODE));
-    jbRandom.setSelected(Conf.getBoolean(Const.CONF_STATE_SHUFFLE));
+    jbShuffle = new JajukToggleButton(ActionManager.getAction(JajukActions.SHUFFLE_MODE));
+    jbShuffle.setSelected(Conf.getBoolean(Const.CONF_STATE_SHUFFLE));
     jpModes.add(jbContinue);
     jpModes.add(jbRepeat);
     jpModes.add(jbRepeatAll);
-    jpModes.add(jbRandom);
+    jpModes.add(jbShuffle);
     // Eval toolbar
     evaltoobar = new PreferenceToolbar();
     // Volume
@@ -455,7 +455,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
             // deselect shuffle mode
             Conf.setProperty(Const.CONF_STATE_SHUFFLE, Const.FALSE);
             JajukJMenuBar.getInstance().setShuffleSelected(false);
-            CommandJPanel.getInstance().jbRandom.setSelected(false);
+            CommandJPanel.getInstance().jbShuffle.setSelected(false);
             // computes planned tracks
             QueueModel.computesPlanned(true);
           }
@@ -565,11 +565,11 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   }
 
   /**
-   * Sets the random selected.
+   * Sets the shuffle selected.
    * 
-   * @param b the new random selected
+   * @param b wether the shuffle mode is selected
    */
-  public void setRandomSelected(final boolean b) {
-    this.jbRandom.setSelected(b);
+  public void setShuffleSelected(final boolean b) {
+    this.jbShuffle.setSelected(b);
   }
 }

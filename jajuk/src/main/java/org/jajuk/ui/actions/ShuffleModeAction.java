@@ -60,7 +60,7 @@ public class ShuffleModeAction extends JajukAction {
     boolean b = Conf.getBoolean(Const.CONF_STATE_SHUFFLE);
     Conf.setProperty(Const.CONF_STATE_SHUFFLE, Boolean.toString(!b));
     JajukJMenuBar.getInstance().setShuffleSelected(!b);
-    CommandJPanel.getInstance().setRandomSelected(!b);
+    CommandJPanel.getInstance().setShuffleSelected(!b);
     if (!b) { // enabled button
       QueueModel.shuffle(); // shuffle current selection
     }
