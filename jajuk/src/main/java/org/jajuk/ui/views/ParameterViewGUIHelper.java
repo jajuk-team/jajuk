@@ -195,8 +195,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     pv.jtfNoveltiesAge.setText(Conf.getString(Const.CONF_OPTIONS_NOVELTIES_AGE));
     pv.crossFadeDuration.setValue(Conf.getInt(Const.CONF_FADE_DURATION));
     pv.jcbUseParentDir.setSelected(Conf.getBoolean(Const.CONF_TAGS_USE_PARENT_DIR));
-    pv.jcbDropPlayedTracksFromQueue.setSelected(Conf
-        .getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE));
     pv.jcbUseVolnorm.setSelected(Conf.getBoolean(Const.CONF_USE_VOLNORM));
     pv.jcbEnableBitPerfect.setSelected(Conf.getBoolean(Const.CONF_BIT_PERFECT));
     // Disable features incompatible with Bit-perfect mode
@@ -386,8 +384,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     Conf.setProperty(Const.CONF_OPTIONS_INTRO_LENGTH, Integer.toString(pv.introLength.getValue()));
     Conf.setProperty(Const.CONF_TAGS_USE_PARENT_DIR,
         Boolean.toString(pv.jcbUseParentDir.isSelected()));
-    Conf.setProperty(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE,
-        Boolean.toString(pv.jcbDropPlayedTracksFromQueue.isSelected()));
     final String sBestofSize = pv.jtfBestofSize.getText();
     if (!sBestofSize.isEmpty()) {
       Conf.setProperty(Const.CONF_BESTOF_TRACKS_SIZE, sBestofSize);

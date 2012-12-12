@@ -209,7 +209,6 @@ public class ParameterView extends ViewAdapter {
   JLabel jlDefaultCoverSearchPattern;
   JTextField jtfDefaultCoverSearchPattern;
   JCheckBox jcbSaveExplorerFriendly;
-  JCheckBox jcbDropPlayedTracksFromQueue;
   JCheckBox jcb3dCover;
   JCheckBox jcb3dCoverFS;
   /** Enable Title view animation effect. */
@@ -608,8 +607,6 @@ public class ParameterView extends ViewAdapter {
     scbLanguage.addActionListener(updateHelper);
     jcbUseParentDir = new JCheckBox(Messages.getString("ParameterView.101"));
     jcbUseParentDir.setToolTipText(Messages.getString("ParameterView.102"));
-    jcbDropPlayedTracksFromQueue = new JCheckBox(Messages.getString("ParameterView.266"));
-    jcbDropPlayedTracksFromQueue.setToolTipText(Messages.getString("ParameterView.267"));
     jcbShowVideos = new JCheckBox(Messages.getString("ParameterView.301"));
     jcbShowVideos.setToolTipText(Messages.getString("ParameterView.302"));
     jcbPreserveFileDates = new JCheckBox(Messages.getString("ParameterView.305"));
@@ -622,7 +619,6 @@ public class ParameterView extends ViewAdapter {
     jpOptions.add(jcbDefaultActionDrop);
     jpOptions.add(jcbHotkeys);
     jpOptions.add(jcbUseParentDir);
-    jpOptions.add(jcbDropPlayedTracksFromQueue);
     jpOptions.add(jcbShowVideos);
     jpOptions.add(jcbPreserveFileDates);
     return jpOptions;

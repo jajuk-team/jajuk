@@ -502,7 +502,6 @@ public final class QueueModel {
         return;
       }
       notifyFinishedIfRequired();
-      removeTrailingTracksIfRequired(current);
       computeNewIndex(forceNext, current);
       unsetRepeatModeIfRequired(current);
       // Leave if stop after current track option is set
@@ -589,14 +588,6 @@ public final class QueueModel {
       StackItem item = queue.get(index);
       JajukTimer.getInstance().removeTrackTime(item.getFile());
       index++;
-    }
-  }
-
-  private static void removeTrailingTracksIfRequired(StackItem current) {
-    // Clean up trailing tracks in CONF_DROP_PLAYED_TRACKS_FROM_QUEUE mode
-    if (index > 0 && Conf.getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)
-        && !current.isRepeat()) {
-      remove(index, index);
     }
   }
 
@@ -1213,12 +1204,7 @@ public final class QueueModel {
   public static void goTo(final int pIndex) {
     bStop = false;
     try {
-      if (Conf.getBoolean(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE)) {
-        remove(0, pIndex - 1);
-        index = 0;
-      } else {
-        index = pIndex;
-      }
+      index = pIndex;
       // need to stop before launching! this fixes a
       // wrong EOM event in BasicPlayer
       Player.stop(false);
