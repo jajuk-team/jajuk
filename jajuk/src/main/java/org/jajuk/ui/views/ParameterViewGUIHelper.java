@@ -193,7 +193,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     pv.introPosition.setValue(Conf.getInt(Const.CONF_OPTIONS_INTRO_BEGIN));
     pv.jtfBestofSize.setText(Conf.getString(Const.CONF_BESTOF_TRACKS_SIZE));
     pv.jtfNoveltiesAge.setText(Conf.getString(Const.CONF_OPTIONS_NOVELTIES_AGE));
-    pv.jtfVisiblePlanned.setText(Conf.getString(Const.CONF_OPTIONS_VISIBLE_PLANNED));
     pv.crossFadeDuration.setValue(Conf.getInt(Const.CONF_FADE_DURATION));
     pv.jcbUseParentDir.setSelected(Conf.getBoolean(Const.CONF_TAGS_USE_PARENT_DIR));
     pv.jcbDropPlayedTracksFromQueue.setSelected(Conf
@@ -402,10 +401,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     final String sNoveltiesAge = pv.jtfNoveltiesAge.getText();
     if (!sNoveltiesAge.isEmpty()) {
       Conf.setProperty(Const.CONF_OPTIONS_NOVELTIES_AGE, sNoveltiesAge);
-    }
-    final String sVisiblePlanned = pv.jtfVisiblePlanned.getText();
-    if (!sVisiblePlanned.isEmpty()) {
-      Conf.setProperty(Const.CONF_OPTIONS_VISIBLE_PLANNED, sVisiblePlanned);
     }
     final int oldDuration = Conf.getInt(Const.CONF_FADE_DURATION);
     // Show an hideable message if user set cross fade under linux for sound
