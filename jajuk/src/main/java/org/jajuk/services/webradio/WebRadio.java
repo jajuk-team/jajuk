@@ -78,10 +78,6 @@ public class WebRadio extends PhysicalItem implements Comparable<WebRadio> {
     if (this.equals(other)) {
       return 0;
     }
-    // make null url web radio to appear first (useful for the wizard)
-    if (getUrl() == null && other.getUrl() != null) {
-      return -1;
-    }
     // ensure that even radios with the same name can't return a compareTo = 0 (only equal items can)
     StringBuilder sb = new StringBuilder(getName());
     sb.append(getID());
