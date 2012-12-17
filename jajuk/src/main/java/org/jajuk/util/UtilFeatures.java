@@ -352,15 +352,11 @@ public final class UtilFeatures {
     if (trackList.size() == 0) {
       return Const.PREFERENCE_UNSET;
     }
-    Track firstTrack = trackList.get(0);
-    long preferenceFirstItem = firstTrack.getLongValue(Const.XML_TRACK_PREFERENCE);
-    for (int i = 1; i < trackList.size(); i++) {
-      Track track = trackList.get(i);
-      if (track.getLongValue(Const.XML_TRACK_PREFERENCE) != preferenceFirstItem) {
-        return Const.PREFERENCE_UNSET;
-      }
+    long sum = 0;
+    for (Track track : trackList) {
+      sum +=  track.getLongValue(Const.XML_TRACK_PREFERENCE);
     }
-    return preferenceFirstItem;
+    return (sum)/trackList.size();
   }
 
   /**
