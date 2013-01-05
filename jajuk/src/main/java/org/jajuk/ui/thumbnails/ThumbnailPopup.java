@@ -66,14 +66,17 @@ import org.jajuk.util.log.Log;
  * It is displayed nicely from provided jlabel position
  * </p>
  * <p>
- * We use a JWindow instead of a JDialog because the painting is faster
+ * We use a JWindow instead of a JDialog because (for unknown reasons) the painting is much faster. 
+ * Using JDialog for instance, we can see the layout arranging the elements. 
  * </p>.
  */
+@SuppressWarnings("serial")
 public class ThumbnailPopup extends JWindow {
-  /** Generated serialVersionUID. */
-  private static final long serialVersionUID = -8131528719972829954L;
   private final JEditorPane text;
   private KeyEventDispatcher dispatcher = null;
+  private static final int WIDTH = 500;
+  private static final int HEIGHT = 400;
+  private boolean autoclose = false;
 
   /**
    * Launch selection and set right cursor.
@@ -95,7 +98,7 @@ public class ThumbnailPopup extends JWindow {
         Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
     // Change icon cursor and wait a while so user can see it in case
     // the PUSH_ON_CLICK option is set, otherwise, user may think
-    // nothing appened.
+    // nothing appended.
     try {
       Thread.sleep(250);
     } catch (InterruptedException e1) {
@@ -109,18 +112,31 @@ public class ThumbnailPopup extends JWindow {
    * 
    * @param description HTML text to display (HTML 3.0)
    * @param origin :
-   * coordinates of the origin item on whish we want to display the
-   * popup
+   * coordinates of the origin item on which we want to display the popup
    * @param autoclose :
    * whether the popup should close when mouse leave the origin item or
    * is displayed as a regular Dialog
    */
   public ThumbnailPopup(String description, Rectangle origin, boolean autoclose) {
+    this.autoclose = autoclose;
+    setAlwaysOnTop(!autoclose);
     getRootPane().setOpaque(true);
     text = new JEditorPane("text/html", description);
     text.setEditable(false);
     text.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
     text.setFont(FontManager.getInstance().getFont(JajukFont.DEFAULT));
+    setHyperlinkHandling();
+    final JScrollPane jspText = new JScrollPane(text);
+    add(jspText);
+    addAutoCloseHandling(autoclose);
+    setSizeAndLocation(origin);
+    setVisible(true);
+    setKeystrokes();
+    // Force scrollbar to stay on top (otherwise, it scrolls automatically to the bottom)
+    forceScrollbarToTop(jspText);
+  }
+
+  private void setHyperlinkHandling() {
     text.addHyperlinkListener(new HyperlinkListener() {
       @Override
       public void hyperlinkUpdate(HyperlinkEvent e) {
@@ -173,68 +189,104 @@ public class ThumbnailPopup extends JWindow {
         }
       }
     });
-    final JScrollPane jspText = new JScrollPane(text);
-    add(jspText);
-    if (autoclose) {
-      // Make sure to close this popup when it lost focus
-      text.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseExited(MouseEvent e) {
-          // Test if mouse is really outside the popup, for unknown reason,
-          // this event is catch when entering the popup (Windows)
-          if (!jspText.contains(e.getPoint())) {
-            dispose();
-          }
-        }
-      });
-    }
-    if (origin != null) {
-      // compute dialog position ( note that setRelativeTo
-      // is buggy and that we need more advanced positioning)
-      int x = (int) origin.getX() + (int) (0.6 * origin.getWidth());
-      // set position at 60 % of the picture
-      int y = (int) origin.getY() + (int) (0.6 * origin.getHeight());
-      int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-      int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-      // Adjust position if details are located outside
-      // the screen
-      // in x-axis
-      if ((x + 500) > screenWidth) {
-        x = screenWidth - 510;
-      }
-      if ((y + 400) > screenHeight) {
-        x = (int) origin.getX() + (int) (0.6 * origin.getWidth());
-        if ((x + 500) > screenWidth) {
-          x = screenWidth - 510;
-        }
-        y = (int) origin.getY() + (int) (0.4 * origin.getHeight()) - 350;
-      }
-      setLocation(x, y);
-    } else {
-      setLocationByPlatform(true);
-    }
-    setSize(500, 400);
-    setVisible(true);
-    // Force scrollbar to stay on top
+  }
+
+  /**
+   * @param jspText
+   */
+  private void forceScrollbarToTop(final JScrollPane jspText) {
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
         jspText.getVerticalScrollBar().setValue(0);
       }
     });
-    setKeystrokes();
+  }
+
+  /**
+   * @param origin
+   */
+  private void setSizeAndLocation(Rectangle origin) {
+    if (origin != null) {
+      setLocationRelativeToOrigin(origin);
+    } else {
+      setLocationToScreenCenter();
+    }
+    setSize(WIDTH, HEIGHT);
+  }
+
+  /**
+   * @param autoclose
+   */
+  private void addAutoCloseHandling(boolean autoclose) {
+    if (autoclose) {
+      // Make sure to close this popup when it lost focus
+      text.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseExited(MouseEvent e) {
+          dispose();
+        }
+      });
+    }
+  }
+
+  /**
+   * 
+   */
+  private void setLocationToScreenCenter() {
+    int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+    int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+    int x = screenWidth / 2 - WIDTH / 2;
+    int y = screenHeight / 2 - HEIGHT / 2200;
+    setLocation(x, y);
+  }
+
+  /**
+   * @param origin
+   */
+  private void setLocationRelativeToOrigin(Rectangle origin) {
+    // compute dialog position ( note that setRelativeTo
+    // is buggy and that we need more advanced positioning)
+    int x = (int) origin.getX() + (int) (0.6 * origin.getWidth());
+    // set position at 60 % of the picture
+    int y = (int) origin.getY() + (int) (0.6 * origin.getHeight());
+    int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+    int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+    // Adjust position if details are located outside
+    // the screen
+    // in x-axis
+    if ((x + WIDTH) > screenWidth) {
+      x = screenWidth - (WIDTH + 10);
+    }
+    if ((y + HEIGHT) > screenHeight) {
+      x = (int) origin.getX() + (int) (0.6 * origin.getWidth());
+      if ((x + WIDTH) > screenWidth) {
+        x = screenWidth - (WIDTH + 10);
+      }
+      y = (int) origin.getY() + (int) (0.4 * origin.getHeight()) - (HEIGHT - 50);
+    }
+    setLocation(x, y);
+  }
+
+  /* (non-Javadoc)
+   * @see java.awt.Window#dispose()
+   */
+  @Override
+  public void dispose() {
+    removeKeystrokes();
+    super.dispose();
+  }
+
+  public void closeIfAutoclose() {
+    if (autoclose) {
+      dispose();
+    }
   }
 
   /**
    * Add keystroke to dispose the popup when escape is pressed For unknown
-   * reasons, registerKeyboardAction() against JWindow doesn't work (it does for
-   * JFrame) but we need to use JWindow for performance reasons. for that
-   * reason, we add a keyboard focus manager which is called before any focus
-   * consideration
-   * 
-   * Note that for a JFrame, we would use
-   * rootPane.registerKeyboardAction(actionListener, stroke,
-   * JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+   * reasons, registerKeyboardAction() against this dialog has no effect (maybe because 
+   * it doesn't get the focus)
    */
   private void setKeystrokes() {
     removeKeystrokes();
@@ -257,14 +309,5 @@ public class ThumbnailPopup extends JWindow {
       KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(dispatcher);
       dispatcher = null;
     }
-  }
-
-  /* (non-Javadoc)
-   * @see java.awt.Window#dispose()
-   */
-  @Override
-  public void dispose() {
-    removeKeystrokes();
-    super.dispose();
   }
 }
