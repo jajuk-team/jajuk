@@ -304,8 +304,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       String extension = UtilSystem.getExtension(filelist[i]);
       Type type = TypeManager.getInstance().getTypeByExtension(extension);
       // Now, compute disc ID and cache tags 
-      boolean bIsMusic = (Boolean) type.getValue(Const.XML_TYPE_IS_MUSIC);
-      if (bIsMusic) {
+      if (type.getBooleanValue(Const.XML_TYPE_IS_MUSIC)) {
         musicFiles.add(filelist[i]);
       } else { // playlist
         playlistFiles.add(filelist[i]);
@@ -314,11 +313,11 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     // Compute the disc id 
     this.discID = computeDiscID();
     // Perform actual scan and check errors for each file
-    for (File musicfile : musicFiles) {
+    for (File musicFile : musicFiles) {
       try {
-        scanMusic(musicfile, bDeepScan, reporter);
+        scanMusic(musicFile, bDeepScan, reporter);
       } catch (Exception e) {
-        Log.error(103, filelist.length > 0 ? "{{" + musicfile.toString() + "}}" : "", e);
+        Log.error(103, filelist.length > 0 ? "{{" + musicFile.toString() + "}}" : "", e);
       }
     }
     for (File playlistFile : playlistFiles) {
