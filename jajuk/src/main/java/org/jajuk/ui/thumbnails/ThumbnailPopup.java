@@ -224,7 +224,11 @@ public class ThumbnailPopup extends JWindow {
       text.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseExited(MouseEvent e) {
-          dispose();
+          // Test if mouse is really outside the popup, for unknown reason,
+          // this event is catch when entering the popup (Windows)
+          if (!text.contains(e.getPoint())) {
+            dispose();
+          }
         }
       });
     }
