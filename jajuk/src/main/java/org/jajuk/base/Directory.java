@@ -283,7 +283,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     }
     // Create a list of music files and playlist files to consider
     List<File> musicFiles = new ArrayList<File>(filelist.length);
-    List<File> playlistFiles = new ArrayList<File>(filelist.length);
+    List<File> playlistFiles = new ArrayList<File>(1 + filelist.length / 10);
     for (int i = 0; i < filelist.length; i++) {
       // Leave ASAP if exit request
       if (ExitService.isExiting()) {
