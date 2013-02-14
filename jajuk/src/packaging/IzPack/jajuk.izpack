@@ -1,13 +1,16 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<installation version='1.0'>
+<installation version="5.0"
+              xmlns:izpack="http://izpack.org/schema/installation"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://izpack.org/schema/installation http://izpack.org/schema/5.0/izpack-installation-5.0.xsd">
 	<info>
 		<appname>Jajuk</appname>
 		<appversion>VERSION_REPLACED_BY_ANT</appversion>
 		<javaversion>1.6</javaversion>
 		<url>http://jajuk.info</url>
 	</info>
-	<guiprefs height='600' resizable='yes' width='800'/>
-		
+	<guiprefs height='600' resizable='yes' width='800' />
+
 	<!-- See ISO3 country codes in /prog/IzPack/bin/langpacks/installer -->
 	<locale>
 		<langpack iso3='eng' />
@@ -28,10 +31,12 @@
 		<langpack iso3='glg' />
 		<langpack iso3='cze' />
 	</locale>
-	<native type='izpack' name='ShellLink.dll' />
-	<native type="izpack" name="ShellLink_x64.dll" />
-	<native type="3rdparty" name="COIOSHelper.dll" stage="both">
-		<os family="windows" />
+	<native>
+		<native type='izpack' name='ShellLink.dll' />
+		<native type="izpack" name="ShellLink_x64.dll" />
+		<native type="3rdparty" name="COIOSHelper.dll" stage="both">
+			<os family="windows" />
+		</native>
 	</native>
 	<resources>
 		<res id='LicencePanel.licence' src='legals/LICENSE-GPL.txt' />
