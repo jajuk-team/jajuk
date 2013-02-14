@@ -26,7 +26,6 @@
 		<langpack iso3='spa' />
 		<langpack iso3='swe' />
 		<langpack iso3='glg' />
-		<langpack iso3='cze' />
 	</locale>
 	<native>
 		<native type='izpack' name='ShellLink.dll' />
@@ -50,7 +49,7 @@
 		<panel classname='ShortcutPanel' />
 		<panel classname='FinishPanel' />
 	</panels>
-	
+
 	<!-- The listeners section for CustomActions -->
 	<listeners>
 		<listener classname="RegistryInstallerListener" stage="install">
@@ -60,7 +59,7 @@
 			<os family="windows" />
 		</listener>
 	</listeners>
-	
+
 	<packs>
 		<pack name='main pack' required='yes'>
 			<description>Main pack</description>
