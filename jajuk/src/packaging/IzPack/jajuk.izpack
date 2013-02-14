@@ -8,8 +8,6 @@
 	</info>
 	<guiprefs height='600' resizable='yes' width='800'/>
 		
-	</guiprefs>
-
 	<!-- See ISO3 country codes in /prog/IzPack/bin/langpacks/installer -->
 	<locale>
 		<langpack iso3='eng' />
