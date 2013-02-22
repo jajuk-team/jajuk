@@ -334,6 +334,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
       throw new RuntimeException("setScreen " + screenClass + " caused " + e.toString(), e);
     }
     current = screen;
+    screen.initUI();
     current.setWizard(this);
     current.setCanGoPrevious((getPreviousScreen(screenClass) != null));
     current.setCanGoNext((getNextScreen(screenClass) != null));

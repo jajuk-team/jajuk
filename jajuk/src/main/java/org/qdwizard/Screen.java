@@ -52,7 +52,6 @@ public abstract class Screen extends JPanel {
   public Screen() {
     data = Wizard.data;
     state = new ScreenState(true, true, true, false, null);
-    initUI();
   }
 
   /**
