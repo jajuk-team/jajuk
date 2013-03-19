@@ -1,6 +1,6 @@
 /*
- *  Jajuk
- *  Copyright (C) The Jajuk Team
+ *  QDWizard
+ *  Copyright (C) Bertrand Florat and others
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or

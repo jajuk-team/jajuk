@@ -167,11 +167,12 @@ public class PreparePartyWizard extends Wizard {
    * first page is not displayed
    */
   public PreparePartyWizard(boolean bProvidedPlaylist) {
-    super(Messages.getString("PreparePartyWizard.1"), bProvidedPlaylist ? GeneralOptionsPanel.class
-        : ActionSelectionPanel.class, null, JajukMainWindow.getInstance(), LocaleManager
-        .getLocale(), 800, 550);
-    super.setHeaderIcon(IconLoader.getIcon(JajukIcons.PREPARE_PARTY_32X32));
-    // check if pacpl can be used, do it every time the dialog starts as the
+    super(new Wizard.Builder(Messages.getString("PreparePartyWizard.1"),
+        bProvidedPlaylist ? GeneralOptionsPanel.class : ActionSelectionPanel.class,
+        JajukMainWindow.getInstance()).hSize(800).vSize(550).locale(LocaleManager.getLocale())
+        .icon(IconLoader.getIcon(JajukIcons.PREPARE_PARTY_32X32)));
+    restoreProperties();
+    // Check if pacpl can be used, do it every time the dialog starts as the
     // user might have installed it by now
     bPACPLAvailable = UtilPrepareParty.checkPACPL((String) data.get(KEY_CONVERT_COMMAND));
   }
@@ -534,9 +535,6 @@ public class PreparePartyWizard extends Wizard {
      */
     @Override
     public void initUI() {
-      // workaround as the dialog is initialized before the constructor of
-      // PreparePartyWizard fully executes
-      restoreProperties();
       bgActions = new ButtonGroup();
       jrbDJ = new JRadioButton(Messages.getString("PreparePartyWizard.6"));
       jrbDJ.addActionListener(this);
@@ -819,9 +817,6 @@ public class PreparePartyWizard extends Wizard {
      */
     @Override
     public void initUI() {
-      // workaround as the dialog is initialized before the constructor of
-      // PreparePartyWizard fully executes
-      restoreProperties();
       { // Max Tracks
         jcbMaxTracks = new JCheckBox(Messages.getString("PreparePartyWizard.10"));
         jcbMaxTracks.setToolTipText(Messages.getString("PreparePartyWizard.11"));

@@ -31,10 +31,10 @@ import java.util.Map;
  * ResourceBundle here to ease translation tasks (properties doesn't support
  * non-latin1 characters) and because QDwizard comes with very few strings
  */
-public class Langpack {
+class Langpack {
   private static List<String> defaults = Arrays.asList("Finish", "Cancel", "Previous", "Next");
   // Strings content : "Finish", "Cancel", "Previous", "Next"
-  static private Map<Locale, List<String>> strings = new HashMap<Locale, List<String>>(4);
+  static private Map<Locale, List<String>> strings = new HashMap<Locale, List<String>>(20);
   /** static set of strings, can contain non-ISO8859 chars * */
   static {
     strings.put(new Locale("ca"), Arrays.asList("Finalitzar", "Cancelar", "Anterior", "Següent"));

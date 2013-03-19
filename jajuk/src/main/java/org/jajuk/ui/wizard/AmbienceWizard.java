@@ -50,6 +50,7 @@ import org.jajuk.services.dj.AmbienceDigitalDJ;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
@@ -352,9 +353,9 @@ public class AmbienceWizard extends Wizard {
    * Instantiates a new ambience wizard.
    */
   public AmbienceWizard() {
-    super(Messages.getString("DigitalDJWizard.56"), AmbiencePanel.class, null, JajukMainWindow
-        .getInstance(), LocaleManager.getLocale(), 500, 600);
-    setHeaderIcon(IconLoader.getIcon(JajukIcons.AMBIENCE));
+    super(new Wizard.Builder(Messages.getString("DigitalDJWizard.56"), AmbiencePanel.class,
+        JajukMainWindow.getInstance()).hSize(600).vSize(500).locale(LocaleManager.getLocale())
+        .icon(IconLoader.getIcon(JajukIcons.AMBIENCE)));
   }
 
   /*
@@ -377,6 +378,8 @@ public class AmbienceWizard extends Wizard {
     }
     // Refresh UI
     ObservationManager.notify(new JajukEvent(JajukEvents.AMBIENCES_CHANGE));
+    InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
+        InformationJPanel.MessageType.INFORMATIVE);
   }
 
   /*

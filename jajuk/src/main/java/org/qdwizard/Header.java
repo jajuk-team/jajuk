@@ -40,42 +40,23 @@ import javax.swing.JPanel;
  * @author Bertrand Florat
  * @created 1 may 2006
  */
+@SuppressWarnings("serial")
 class Header extends JPanel {
-  /** Generated serialVersionUID. */
-  private static final long serialVersionUID = 1L;
-  JPanel jta;
-  Image backgroundImage;
-  ImageIcon icon;
-  String sTitleText;
-  String sSubtitleText;
+  private JPanel panel;
+  private Image backgroundImage;
+  private ImageIcon icon;
+  private String title;
+  private String subtitle;
 
   /**
-   * The Constructor.
+   * Build a header 
    */
   public Header() {
     setLayout(new GridLayout());
-    jta = new JPanel();
-    jta.setOpaque(true);
-    jta.setPreferredSize(new Dimension(0, 70));
-    add(jta);
-  }
-
-  /**
-   * Set the header title text.
-   * 
-   * @param sText 
-   */
-  public void setTitleText(String sText) {
-    sTitleText = sText;
-  }
-
-  /**
-   * Set the header subtitle text.
-   * 
-   * @param sText 
-   */
-  public void setSubtitleText(String sText) {
-    sSubtitleText = sText;
+    panel = new JPanel();
+    panel.setOpaque(true);
+    panel.setPreferredSize(new Dimension(0, 70));
+    add(panel);
   }
 
   /**
@@ -83,8 +64,26 @@ class Header extends JPanel {
    * 
    * @param img 
    */
-  public void setImage(Image img) {
+  public void setBackgroundImage(Image img) {
     backgroundImage = img;
+  }
+
+  /**
+   * Set the header title. The title is the screen name.
+   * 
+   * @param title the title
+   */
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  /**
+   * Set the header subtitle text. It is a text that can be changed at will among screens.
+   * 
+   * @param subtitle the subtitle 
+   */
+  public void setSubtitle(String subtitle) {
+    this.subtitle = subtitle;
   }
 
   /**
@@ -117,9 +116,9 @@ class Header extends JPanel {
     g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2D.setColor(java.awt.Color.BLACK);
     g2D.setFont(new Font("Dialog", Font.BOLD, 14));
-    g2D.drawString(sTitleText, 20, 25);
+    g2D.drawString(title, 20, 25);
     g2D.setFont(new Font("Dialog", Font.PLAIN, 13));
-    g2D.drawString(sSubtitleText, 20, 50);
+    g2D.drawString(subtitle, 20, 50);
     g2D.setColor(java.awt.Color.BLACK);
     g2D.drawLine(rect.x, rect.height - 1, rect.width, rect.height - 1);
   }
