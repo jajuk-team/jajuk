@@ -51,7 +51,6 @@ public abstract class Screen extends JPanel {
    * Construct a screen.
    */
   public Screen() {
-    data = Wizard.data;
     state = new ScreenState(true, true, true, false, null);
   }
 
@@ -222,6 +221,8 @@ public abstract class Screen extends JPanel {
    */
   protected void setWizard(Wizard wizard) {
     this.wizard = wizard;
+    // Screen data = wizard data
+    this.data = wizard.data;
   }
 
   /**

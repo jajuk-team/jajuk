@@ -69,16 +69,13 @@ public class PreparePartyAction extends JajukAction {
         playlist = ((Playlist) o);
       }
       // indicate to the Wizard that it should use the pre-built Playlist and
-      // not provide the first selection screen. We need to do this in a static
-      // method before creation because the Wizard needs to use this during
-      // construction already
-      PreparePartyWizard.setPlaylist(playlist);
-      PreparePartyWizard wizard = new PreparePartyWizard(true);
+      // not provide the first selection screen. 
+      PreparePartyWizard wizard = new PreparePartyWizard(true,playlist);
       wizard.show();
     } else {
       // without playlist, just display the general wizard that allows all kinds
       // of sources for the tracks
-      PreparePartyWizard wizard = new PreparePartyWizard(false);
+      PreparePartyWizard wizard = new PreparePartyWizard(false,null);
       wizard.show();
     }
   }

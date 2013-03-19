@@ -65,9 +65,6 @@ import org.qdwizard.Wizard;
  * Ambiences management wizard.
  */
 public class AmbienceWizard extends Wizard {
-  /**
-   * .
-   */
   public static class AmbiencePanel extends Screen implements ActionListener {
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;

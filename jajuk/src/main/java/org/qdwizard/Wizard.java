@@ -89,7 +89,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
   private Screen current;
   private final Class<? extends Screen> initial;
   /** Wizard data. */
-  protected final static Map<String, Object> data = new HashMap<String, Object>(10);
+  protected final Map<String, Object> data = new HashMap<String, Object>(10);
   /** Wizard header. */
   private Header header;
   /** Wizard action Panel. */

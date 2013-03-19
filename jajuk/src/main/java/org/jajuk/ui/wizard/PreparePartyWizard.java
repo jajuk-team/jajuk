@@ -131,7 +131,7 @@ public class PreparePartyWizard extends Wizard {
   /** store a temporary playlist that is provided by the PlaylistView without storing it in the PlaylistManager we keep it here to be able to re-display it in the Pages later on  We need to keep it outside the ActionSelectionPanel because the panel is re-created during back-forward operations. */
   private static Playlist tempPlaylist;
   /** Indicator to only restore properties once and not overwrite them again later. */
-  private static boolean bPropertiesRestored = false;
+  private boolean bPropertiesRestored = false;
   /** Indicates if the PACPL tool for audio conversion is available. */
   private static boolean bPACPLAvailable = false;
 
@@ -166,11 +166,14 @@ public class PreparePartyWizard extends Wizard {
    * @param bProvidedPlaylist Indicates that a playlist was provided to the dialog and thus the
    * first page is not displayed
    */
-  public PreparePartyWizard(boolean bProvidedPlaylist) {
+  public PreparePartyWizard(boolean bProvidedPlaylist, Playlist playlist) {
     super(new Wizard.Builder(Messages.getString("PreparePartyWizard.1"),
         bProvidedPlaylist ? GeneralOptionsPanel.class : ActionSelectionPanel.class,
         JajukMainWindow.getInstance()).hSize(800).vSize(550).locale(LocaleManager.getLocale())
         .icon(IconLoader.getIcon(JajukIcons.PREPARE_PARTY_32X32)));
+    if (playlist != null) {
+      setPlaylist(playlist);
+    }
     restoreProperties();
     // Check if pacpl can be used, do it every time the dialog starts as the
     // user might have installed it by now
@@ -185,7 +188,7 @@ public class PreparePartyWizard extends Wizard {
    * 
    * @param playlist The playlist to use for the party
    */
-  public static void setPlaylist(Playlist playlist) {
+  public void setPlaylist(Playlist playlist) {
     // store playlist and the mode that we are now having
     tempPlaylist = playlist;
     // store the mode and the playlist in the data as well
@@ -193,18 +196,7 @@ public class PreparePartyWizard extends Wizard {
     data.put(KEY_ITEM, playlist.getName());
   }
 
-  /**
-   * Return if the specified element is true in the data-map.
-   * 
-   * @param key The key to look up in the data-object.
-   * 
-   * @return true if the value was stored as boolean true, false otherwise.
-   */
-  private static final boolean isTrue(final String key) {
-    return data.containsKey(key) && Boolean.TRUE.equals(data.get(key));
-  }
-
-  /*
+   /*
    * (non-Javadoc)
    * 
    * @see org.qdwizard.Wizard#finish()
@@ -239,6 +231,17 @@ public class PreparePartyWizard extends Wizard {
     UtilPrepareParty.copyFiles(files, destDir, isTrue(KEY_NORMALIZE_FILENAME_ON),
         isTrue(KEY_ONE_MEDIA_ON) && isTrue(KEY_CONVERT_MEDIA), (String) data.get(KEY_MEDIA),
         (String) data.get(KEY_CONVERT_COMMAND));
+  }
+  
+  /**
+   * Return if the specified element is true in the data-map.
+   * 
+   * @param key The key to look up in the data-object.
+   * 
+   * @return true if the value was stored as boolean true, false otherwise.
+   */
+  private final boolean isTrue(final String key) {
+    return data.containsKey(key) && Boolean.TRUE.equals(data.get(key));
   }
 
   /**
@@ -320,7 +323,7 @@ public class PreparePartyWizard extends Wizard {
   /**
    * Stores all the values that are stored in the data-map to the Conf-system.
    */
-  private static void storeProperties() {
+  private void storeProperties() {
     storeValue(KEY_MODE);
     storeValue(KEY_ITEM);
     storeValue(KEY_DEST_PATH);
@@ -343,7 +346,7 @@ public class PreparePartyWizard extends Wizard {
    * 
    * @param key The name of the property to store in the overall configuration
    */
-  private static void storeValue(final String key) {
+  private void storeValue(final String key) {
     // nothing to do?
     if (data.get(key) == null) {
       return;
@@ -355,7 +358,7 @@ public class PreparePartyWizard extends Wizard {
    * Restore all the values that are potentially stored in the configuration
    * system.
    */
-  private static void restoreProperties() {
+  private void restoreProperties() {
     // only restore once to not overwrite, due to the Wizard implementation we
     // don't know for sure when this is called;
     if (bPropertiesRestored) {
@@ -387,7 +390,7 @@ public class PreparePartyWizard extends Wizard {
    * 
    * @param key The key to restore.
    */
-  private static void restoreStringValue(final String key) {
+  private void restoreStringValue(final String key) {
     String sValue = Conf.getString(Const.CONF_PREPARE_PARTY + key);
     // nothing to do if not set
     if (sValue == null) {
@@ -401,7 +404,7 @@ public class PreparePartyWizard extends Wizard {
    * 
    * @param key The key to restore.
    */
-  private static void restoreIntValue(final String key) {
+  private void restoreIntValue(final String key) {
     // do nothing if not available yet
     if (Conf.getString(Const.CONF_PREPARE_PARTY + key) == null) {
       return;
@@ -414,7 +417,7 @@ public class PreparePartyWizard extends Wizard {
    * 
    * @param key The key to restore.
    */
-  private static void restoreBooleanValue(final String key) {
+  private void restoreBooleanValue(final String key) {
     // do nothing if not available yet
     if (Conf.getString(Const.CONF_PREPARE_PARTY + key) == null) {
       return;
@@ -425,7 +428,7 @@ public class PreparePartyWizard extends Wizard {
   /**
    * Restore mode and item values, they may require some special handling.
    */
-  private static void restoreModeAndItemValue() {
+  private void restoreModeAndItemValue() {
     String sMode = Conf.getString(Const.CONF_PREPARE_PARTY + KEY_MODE);
     // nothing to do if not set
     if (sMode == null) {
@@ -607,7 +610,7 @@ public class PreparePartyWizard extends Wizard {
     }
 
     /**
-     * Initialize the UI items of the panel with values from the static data
+     * Initialize the UI items of the panel with values from the data
      * object.
      */
     private void readData() {
@@ -697,7 +700,7 @@ public class PreparePartyWizard extends Wizard {
     }
 
     /**
-     * Store the current values from the UI items into the static data object.
+     * Store the current values from the UI items into the data object.
      */
     private void updateData() {
       // depending on the selected radio button read the combo box value and set
@@ -749,8 +752,8 @@ public class PreparePartyWizard extends Wizard {
   /**
    * General options panel.
    */
-  public static class GeneralOptionsPanel extends Screen implements ActionListener, ChangeListener,
-      ClearPoint, MouseListener {
+  public static class GeneralOptionsPanel extends Screen implements ActionListener, ChangeListener, ClearPoint,
+      MouseListener {
     /** Constant for MigLayout. */
     private static final String GROW = "grow";
     /** Constant for MigLayout. */
@@ -891,7 +894,7 @@ public class PreparePartyWizard extends Wizard {
       }
       jcbNormalizeFilename = new JCheckBox(Messages.getString("PreparePartyWizard.26"));
       jcbNormalizeFilename.setToolTipText(Messages.getString("PreparePartyWizard.27"));
-      // populate the UI items with values from the static data object
+      // populate the UI items with values from the data object
       readData();
       // add listeners after reading initial data to not overwrite them with
       // init-state-change actions
@@ -963,7 +966,7 @@ public class PreparePartyWizard extends Wizard {
     }
 
     /**
-     * Populate the UI items with values from the static data object.
+     * Populate the UI items with values from the data object.
      */
     private void readData() {
       // set the values from the stored data
@@ -1034,7 +1037,7 @@ public class PreparePartyWizard extends Wizard {
     }
 
     /**
-     * Write the data from the UI items to the static data object.
+     * Write the data from the UI items to the data object.
      */
     private void updateData() {
       // store if checkbox is enabled and update the label accordingly
@@ -1060,8 +1063,8 @@ public class PreparePartyWizard extends Wizard {
      * @param cb The checkbox to check for selected/deselected state
      * @param slider The slider to get the value from
      * @param label The Label to populate with the current value from the Slider.
-     * @param key The key in the static data object for the value of the Slider.
-     * @param keyOn The key in the static data object to store the enabled/disabled
+     * @param key The key in the data object for the value of the Slider.
+     * @param keyOn The key in the data object to store the enabled/disabled
      * state.
      */
     private void updateOneItem(JCheckBox cb, JSlider slider, JLabel label, String key, String keyOn) {
@@ -1078,6 +1081,17 @@ public class PreparePartyWizard extends Wizard {
         }
         label.setText(NO_VALUE);
       }
+    }
+    
+    /**
+     * Return if the specified element is true in the data-map.
+     * 
+     * @param key The key to look up in the data-object.
+     * 
+     * @return true if the value was stored as boolean true, false otherwise.
+     */
+    private final boolean isTrue(final String key) {
+      return data.containsKey(key) && Boolean.TRUE.equals(data.get(key));
     }
 
     /*
@@ -1113,7 +1127,8 @@ public class PreparePartyWizard extends Wizard {
             Log.debug("New pacpl-command: " + e.getSource().toString());
             data.put(KEY_CONVERT_COMMAND, e.getSource().toString());
             // re-check if pacpl can be called now
-            bPACPLAvailable = UtilPrepareParty.checkPACPL((String) data.get(KEY_CONVERT_COMMAND));
+            boolean bPACPLAvailable = UtilPrepareParty.checkPACPL((String) data
+                .get(KEY_CONVERT_COMMAND));
             // disable media conversion if pacpl is not found
             if (bPACPLAvailable) {
               Log.debug("Updated settings for media conversion allow pacpl to be used.");
@@ -1138,7 +1153,7 @@ public class PreparePartyWizard extends Wizard {
      */
     @Override
     public void stateChanged(ChangeEvent ie) {
-      // just update the stored static data whenever we receive an interesting
+      // just update the stored data whenever we receive an interesting
       // event
       if (ie.getSource() == jsMaxTracks) {
         updateData();
@@ -1310,7 +1325,7 @@ public class PreparePartyWizard extends Wizard {
   /**
    * Compare two types.
    */
-  private static final class TypeComparator implements Comparator<Type> {
+  final static class TypeComparator implements Comparator<Type> {
     /* (non-Javadoc)
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
