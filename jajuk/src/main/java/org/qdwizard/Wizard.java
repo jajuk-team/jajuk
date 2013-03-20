@@ -217,7 +217,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
 
     /**
      * Set the horizontal padding
-     * @param layoutHPadding horizontal padding in pixel between header and body
+     * @param layoutHPadding horizontal padding in pixel between left side image and body
      * @return the wizard builder
      */
     public Builder hPadding(int layoutHPadding) {

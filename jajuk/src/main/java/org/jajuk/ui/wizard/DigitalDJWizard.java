@@ -72,7 +72,6 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
-import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 import org.qdwizard.ClearPoint;
@@ -1364,7 +1363,7 @@ public class DigitalDJWizard extends Wizard {
    */
   public DigitalDJWizard() {
     super(new Wizard.Builder(Messages.getString("DigitalDJWizard.4"), ActionSelectionPanel.class,
-        JajukMainWindow.getInstance()).hSize(700).vSize(500).locale(LocaleManager.getLocale())
+        JajukMainWindow.getInstance()).hSize(700).vSize(500)
         .icon(IconLoader.getIcon(JajukIcons.DIGITAL_DJ)));
   }
 
