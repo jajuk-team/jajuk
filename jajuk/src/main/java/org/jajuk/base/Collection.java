@@ -22,7 +22,6 @@ package org.jajuk.base;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -32,8 +31,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -51,7 +48,6 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -172,14 +168,8 @@ public final class Collection extends DefaultHandler {
   public static synchronized void commit(File collectionFile) throws IOException {
     long time = System.currentTimeMillis();
     String sCharset = Conf.getString(Const.CONF_COLLECTION_CHARSET);
-    final BufferedWriter bw;
-    if (collectionFile.getAbsolutePath().endsWith(".zip")) {
-      bw = new BufferedWriter(new OutputStreamWriter(new ZipOutputStream(new FileOutputStream(
-          collectionFile)), sCharset), 1000000);
-    } else {
-      bw = new BufferedWriter(
+    final BufferedWriter bw = new BufferedWriter(
           new OutputStreamWriter(new FileOutputStream(collectionFile), sCharset), 1000000);
-    }
     try {
       bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");
       bw.write("<" + Const.XML_COLLECTION + " " + Const.XML_VERSION + "='" + Const.JAJUK_VERSION
@@ -308,12 +298,7 @@ public final class Collection extends DefaultHandler {
     if (!file.exists()) {
       throw new JajukException(5, file.toString());
     }
-    if (file.getAbsolutePath().endsWith(".zip")) {
-      InputSource input = new InputSource(new ZipInputStream(new FileInputStream(file)));
-      saxParser.parse(input, getInstance());
-    } else {
-      saxParser.parse(file.toURI().toURL().toString(), getInstance());
-    }
+    saxParser.parse(file.toURI().toURL().toString(), getInstance());
   }
 
   /**
