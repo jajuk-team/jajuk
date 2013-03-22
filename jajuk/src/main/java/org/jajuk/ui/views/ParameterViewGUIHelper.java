@@ -638,10 +638,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
           final java.io.File from = SessionService.getConfFileByPath("");
           final java.io.File dest = new java.io.File(newWorkspace + '/'
               + (SessionService.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk"));
-          // Remove the session file to avoid getting a message when
-          // switching to new workspace
-          java.io.File session = SessionService.getSessionIdFile();
-          session.delete();
           UtilSystem.copyRecursively(from, dest);
           bPreviousPathExist = false;
         }

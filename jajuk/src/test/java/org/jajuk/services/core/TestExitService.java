@@ -41,10 +41,6 @@ public class TestExitService extends JajukTestCase {
     StartupCollectionService.registerItemManagers();
     ExitService service = new ExitService();
     service.run();
-    // once again with sessionidfile
-    SessionService.getSessionIdFile().getParentFile().mkdirs();
-    SessionService.getSessionIdFile().createNewFile();
-    service.run();
   }
 
   /**

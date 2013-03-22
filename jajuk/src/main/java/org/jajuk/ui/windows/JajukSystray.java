@@ -190,7 +190,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
       @Override
       public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-          showWindow(e);
+          showMainOrSlimbarWindow(e);
         }
       }
     });
@@ -268,7 +268,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
             // popup gesture recognized, display the jdialog
             trayIcon.showJPopupMenu(e);
           } else {
-            showWindow(e);
+            showMainOrSlimbarWindow(e);
           }
         }
       });
@@ -276,7 +276,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
       trayIcon.addMouseListener(new JajukMouseAdapter() {
         @Override
         public void handleActionSingleClick(MouseEvent e) {
-          showWindow(e);
+          showMainOrSlimbarWindow(e);
         }
 
         @Override
@@ -300,7 +300,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
    * 
    * @param e the mouse event 
    */
-  private void showWindow(MouseEvent e) {
+  private void showMainOrSlimbarWindow(MouseEvent e) {
     int displayMode = Conf.getInt(Const.CONF_STARTUP_DISPLAY);
     if (displayMode == Const.DISPLAY_MODE_TRAY) {
       displayMode = lastHiddenDisplayMode;

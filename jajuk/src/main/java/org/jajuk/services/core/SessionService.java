@@ -24,29 +24,16 @@ import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.net.InetAddress;
 import java.net.URL;
-import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.ui.wizard.FirstTimeWizard;
-import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukIcons;
 import org.jajuk.util.MD5Processor;
-import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
-import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukRuntimeException;
 import org.jajuk.util.log.Log;
@@ -63,8 +50,6 @@ public class SessionService {
   private static String workspace;
   /** Forced workspace location (required for some special packaging like portableapps) *. */
   private static String forcedWorkspacePath = null;
-  /** Directory used to flag the current jajuk session. */
-  private static File sessionIdFile;
   /** Lock used to trigger first time wizard window close*. */
   private static short[] isFirstTimeWizardClosed = new short[0];
   /** Bootstrap file content as key/value format. */
@@ -83,77 +68,6 @@ public class SessionService {
    */
   private SessionService() {
     super();
-  }
-
-  /**
-   * check if another session is already started.
-   */
-  public static void checkOtherSession() {
-    try {
-      SwingUtilities.invokeAndWait(new Runnable() {
-        @Override
-        public void run() {
-          // Check for remote concurrent users using the same
-          // configuration
-          // files. Create concurrent session directory if needed
-          File sessions = getConfFileByPath(Const.FILE_SESSIONS);
-          if (!sessions.exists() && !sessions.mkdir()) {
-            Log.warn("Could not create directory " + sessions.toString());
-          }
-          // Check for concurrent session
-          File[] files = sessions.listFiles();
-          // display a warning if sessions directory contains some
-          // others users
-          // We ignore presence of ourself session id that can be
-          // caused by a
-          // crash
-          if (files.length > 0 && !Conf.getBoolean(Const.CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION)) {
-            StringBuilder details = new StringBuilder();
-            for (File element : files) {
-              details.append(element.getName());
-              details.append('\n');
-            }
-            JOptionPane optionPane = UtilGUI.getNarrowOptionPane(72);
-            optionPane.setMessage(UtilGUI.getLimitedMessage(Messages.getString("Warning.2")
-                + details.toString(), 20));
-            Object[] options = { Messages.getString("Ok"), Messages.getString("Hide"),
-                Messages.getString("Purge"), Messages.getString("Close") };
-            optionPane.setOptions(options);
-            optionPane.setMessageType(JOptionPane.WARNING_MESSAGE);
-            JDialog dialog = optionPane.createDialog(null, Messages.getString("Warning"));
-            dialog.setAlwaysOnTop(true);
-            // keep it modal (useful at startup)
-            dialog.setModal(true);
-            dialog.pack();
-            dialog.setIconImage(IconLoader.getIcon(JajukIcons.LOGO_FRAME).getImage());
-            dialog.setLocationRelativeTo(JajukMainWindow.getInstance());
-            dialog.setVisible(true);
-            if (Messages.getString("Hide").equals(optionPane.getValue())) {
-              // Not show again
-              Conf.setProperty(Const.CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, Const.TRUE);
-            } else if (Messages.getString("Close").equals(optionPane.getValue())) {
-              // exit with error code to not store the collection
-              ExitService.exit(1);
-            } else if (Messages.getString("Purge").equals(optionPane.getValue())) {
-              // Clean up old locks directories in session folder
-              files = sessions.listFiles();
-              for (int i = 0; i < files.length; i++) {
-                if (!files[i].delete()) { //NOSONAR
-                  Messages.showDetailedErrorMessage(131,
-                      "Cannot delete : " + files[i].getAbsolutePath(), "");
-                  Log.error(131);
-                  break;
-                }
-              }
-            }
-          }
-        }
-      });
-    } catch (InterruptedException e) {
-      Log.error(e);
-    } catch (InvocationTargetException e) {
-      Log.error(e);
-    }
   }
 
   /**
@@ -211,26 +125,6 @@ public class SessionService {
     if (!bootstrapContent.containsKey(KEY_TEST)) {
       bootstrapContent.put(KEY_TEST, workspace);
     }
-  }
-
-  /**
-   * Gets the session id file.
-   *
-   * @return the session id file
-   */
-  public static File getSessionIdFile() {
-    if (sessionIdFile == null) {
-      String sHostname;
-      try {
-        sHostname = InetAddress.getLocalHost().getHostName();
-      } catch (final UnknownHostException e) {
-        sHostname = "localhost";
-      }
-      sessionIdFile = getConfFileByPath(Const.FILE_SESSIONS + '/' + sHostname + '_'
-          + System.getProperty("user.name") + '_'
-          + new SimpleDateFormat("yyyyMMdd-kkmmss", Locale.getDefault()).format(UtilSystem.TODAY));
-    }
-    return sessionIdFile;
   }
 
   /**
@@ -296,16 +190,6 @@ public class SessionService {
       if (Const.CLI_TEST.equals(key) && Const.TRUE.equalsIgnoreCase(value)) {
         bTestMode = true;
       }
-    }
-  }
-
-  /**
-   * Creates the session file.
-   * 
-   */
-  public static void createSessionFile() {
-    if (!getSessionIdFile().mkdir()) {
-      Log.warn("Could not create directory for session: " + sessionIdFile);
     }
   }
 

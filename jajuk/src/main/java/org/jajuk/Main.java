@@ -142,10 +142,6 @@ public final class Main {
       Log.debug(UtilString.getAnonymizedSystemProperties().toString());
       // Display user Jajuk configuration
       Log.debug(UtilString.getAnonymizedJajukProperties().toString());
-      // check for another session (needs setLocal)
-      SessionService.checkOtherSession();
-      // Create a session file
-      SessionService.createSessionFile();
       // registers supported audio supports and default properties. Display a
       // "Downloading mplayer" message by default in the splash screen in case
       // of it is downloaded

@@ -465,8 +465,6 @@ public interface Const {
   String CONF_DEFAULT_AMBIENCE = "jajuk.default_ambience";
   /* Wrong player not show again flag */
   String CONF_NOT_SHOW_AGAIN_PLAYER = "jajuk.not_show_again.player";
-  /** Concurrent session not show again flag. */
-  String CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION = "jajuk.not_show_again.concurrent_session";
   /** Cross fade alert not show again flag *. */
   String CONF_NOT_SHOW_AGAIN_CROSS_FADE = "jajuk.not_show_again.fade";
   /** Laf change not show again flag *. */

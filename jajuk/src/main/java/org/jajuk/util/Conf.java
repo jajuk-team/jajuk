@@ -344,7 +344,6 @@ public final class Conf implements Const {
     defaults.put(CONF_STARTUP_QUEUE_INDEX, "-1");
     // NOT SHOW AGAIN
     defaults.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
-    defaults.put(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_CROSS_FADE, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_LAF_CHANGE, FALSE);
     // Make a copy of default values
@@ -356,7 +355,6 @@ public final class Conf implements Const {
    */
   public static void resetDontShowAgain() {
     setProperty(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
-    setProperty(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
     setProperty(CONF_NOT_SHOW_AGAIN_CROSS_FADE, FALSE);
     setProperty(CONF_NOT_SHOW_AGAIN_LAF_CHANGE, FALSE);
   }

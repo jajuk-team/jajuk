@@ -137,14 +137,6 @@ public class ExitService extends Thread {
             }
           }
         }
-        // Remove session flag.
-        File file = SessionService.getSessionIdFile();
-        if (!file.exists()) {
-          Log.info("Cannot delete file, file: " + file.toString()
-              + " does not exist or workspace move.");
-        } else if (!file.delete()) {
-          Log.warn("Could not delete file: " + file.toString());
-        }
       }
     } catch (Exception e) {
       Log.error(e);
