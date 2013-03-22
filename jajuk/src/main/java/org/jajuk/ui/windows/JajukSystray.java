@@ -149,11 +149,6 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     return jsystray;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.widgets.JajukWindow#getWindowStateDecorator()
-   */
   @Override
   public WindowStateDecorator getWindowStateDecorator() {
     return decorator;
@@ -169,14 +164,12 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.widgets.CommandJPanel#initUI()
+  /**
+   * {@inheritDoc}
    */
   @Override
   public final void initUI() {
-    // Instanciate the PlayerStateMediator to listen for player basic controls
+    // Instantiate the PlayerStateMediator to listen for player basic controls
     PlayerStateMediator.getInstance();
     jmenu = new JPopupMenu(Messages.getString("JajukWindow.3"));
     jmiExit = new JMenuItem(ActionManager.getAction(JajukActions.EXIT));
@@ -197,7 +190,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
       @Override
       public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-          showHideWindow(e);
+          showWindow(e);
         }
       }
     });
@@ -275,7 +268,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
             // popup gesture recognized, display the jdialog
             trayIcon.showJPopupMenu(e);
           } else {
-            showHideWindow(e);
+            showWindow(e);
           }
         }
       });
@@ -283,7 +276,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
       trayIcon.addMouseListener(new JajukMouseAdapter() {
         @Override
         public void handleActionSingleClick(MouseEvent e) {
-          showHideWindow(e);
+          showWindow(e);
         }
 
         @Override
@@ -303,34 +296,20 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
   }
 
   /**
-   * Invert current window visibility with a left click on the tray icon.
+   * Force window displaying on a tray left click.
    * 
-   * @param e 
+   * @param e the mouse event 
    */
-  private void showHideWindow(MouseEvent e) {
+  private void showWindow(MouseEvent e) {
     int displayMode = Conf.getInt(Const.CONF_STARTUP_DISPLAY);
-    // We don't want to hide/show the tray itself by only the 
     if (displayMode == Const.DISPLAY_MODE_TRAY) {
       displayMode = lastHiddenDisplayMode;
     } else {
       lastHiddenDisplayMode = displayMode;
     }
     WindowStateDecorator windowDecorator = getWindowStateDecoratorByDisplayMode(displayMode);
-    boolean bShouldDisplay = false;
-    // Check the CONF_TRAY_CLICK_DISPLAY_WINDOW option
-    if (Conf.getBoolean(Const.CONF_TRAY_CLICK_DISPLAY_WINDOW)) {
-      bShouldDisplay = true;
-    } else {
-      // Invert visibility for the current window
-      bShouldDisplay = (windowDecorator.getWindowState() != WindowState.BUILT_DISPLAYED)
-      // force display if the window was minimalized 
-          || windowDecorator.isMinimalized();
-    }
-    windowDecorator.display(bShouldDisplay);
-    //Make sure to bring the window to front
-    if (bShouldDisplay) {
-      windowDecorator.toFront();
-    }
+    windowDecorator.display(true);
+    windowDecorator.toFront();
   }
 
   /**
@@ -354,10 +333,8 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     return windowDecorator;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.widgets.CommandJPanel#getRegistrationKeys()
+  /**
+   * {@inheritDoc}
    */
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
@@ -371,10 +348,8 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     return eventSubjectSet;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.Observer#update(java.lang.String)
+  /**
+   * {@inheritDoc}
    */
   @Override
   public final void update(final JajukEvent event) {
@@ -495,11 +470,9 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     return this.trayIcon;
   }
 
-  /*
-  * (non-Javadoc)
-  * 
-  * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event. MouseWheelEvent)
-  */
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void mouseWheelMoved(MouseWheelEvent e) {
     if (e.getSource().equals(jmiMute) && !Conf.getBoolean(Const.CONF_BIT_PERFECT)) {

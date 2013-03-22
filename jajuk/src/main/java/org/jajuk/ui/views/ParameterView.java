@@ -190,7 +190,6 @@ public class ParameterView extends ViewAdapter {
   JCheckBox jcbShowPopups;
   JCheckBox jcbShowSystray;
   JCheckBox jcbMinimizeToTray;
-  JCheckBox jcbClickTrayAlwaysDisplayWindow;
   JLabel jlFonts;
   JSlider jsFonts;
   JCheckBox jcbEnableLastFMInformation;
@@ -958,18 +957,14 @@ public class ParameterView extends ViewAdapter {
       @Override
       public void actionPerformed(ActionEvent e) {
         jcbMinimizeToTray.setEnabled(jcbShowSystray.isSelected());
-        jcbClickTrayAlwaysDisplayWindow.setEnabled(jcbShowSystray.isSelected());
         if (!jcbShowSystray.isSelected()) {
           jcbMinimizeToTray.setSelected(false);
-          jcbClickTrayAlwaysDisplayWindow.setSelected(false);
         }
       }
     });
     jcbShowSystray.setToolTipText(Messages.getString("ParameterView.272"));
     jcbMinimizeToTray = new JCheckBox(Messages.getString("ParameterView.281"));
     jcbMinimizeToTray.setToolTipText(Messages.getString("ParameterView.282"));
-    jcbClickTrayAlwaysDisplayWindow = new JCheckBox(Messages.getString("ParameterView.303"));
-    jcbClickTrayAlwaysDisplayWindow.setToolTipText(Messages.getString("ParameterView.304"));
     JLabel jlPerspectiveSize = new JLabel(Messages.getString("ParameterView.246"));
     jsPerspectiveSize = new JSlider(16, 45, Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE));
     jsPerspectiveSize.setSnapToTicks(true);
@@ -1038,8 +1033,7 @@ public class ParameterView extends ViewAdapter {
     jpUI.add(jcbShowPopups, "wrap");
     jpUI.add(jcbSplashscreen, "wrap");
     jpUI.add(jcbShowSystray, "split 3");
-    jpUI.add(jcbMinimizeToTray);
-    jpUI.add(jcbClickTrayAlwaysDisplayWindow, "wrap");
+    jpUI.add(jcbMinimizeToTray, "wrap");
     jpUI.add(jlFonts);
     jpUI.add(jsFonts, "wrap,grow");
     jpUI.add(jlNotificationType);
