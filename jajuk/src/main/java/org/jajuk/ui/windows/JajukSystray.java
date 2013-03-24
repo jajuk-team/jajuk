@@ -149,6 +149,11 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     return jsystray;
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.widgets.JajukWindow#getWindowStateDecorator()
+   */
   @Override
   public WindowStateDecorator getWindowStateDecorator() {
     return decorator;
@@ -164,12 +169,14 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     }
   }
 
-  /**
-   * {@inheritDoc}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.widgets.CommandJPanel#initUI()
    */
   @Override
   public final void initUI() {
-    // Instantiate the PlayerStateMediator to listen for player basic controls
+    // Instanciate the PlayerStateMediator to listen for player basic controls
     PlayerStateMediator.getInstance();
     jmenu = new JPopupMenu(Messages.getString("JajukWindow.3"));
     jmiExit = new JMenuItem(ActionManager.getAction(JajukActions.EXIT));
@@ -296,20 +303,34 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
   }
 
   /**
-   * Force window displaying on a tray left click.
+   * Invert current window visibility with a left click on the tray icon.
    * 
-   * @param e the mouse event 
+   * @param e 
    */
   private void showMainOrSlimbarWindow(MouseEvent e) {
     int displayMode = Conf.getInt(Const.CONF_STARTUP_DISPLAY);
+    // We don't want to hide/show the tray itself by only the 
     if (displayMode == Const.DISPLAY_MODE_TRAY) {
       displayMode = lastHiddenDisplayMode;
     } else {
       lastHiddenDisplayMode = displayMode;
     }
     WindowStateDecorator windowDecorator = getWindowStateDecoratorByDisplayMode(displayMode);
-    windowDecorator.display(true);
-    windowDecorator.toFront();
+    boolean bShouldDisplay = false;
+    // Check the CONF_TRAY_CLICK_DISPLAY_WINDOW option
+    if (Conf.getBoolean(Const.CONF_TRAY_CLICK_DISPLAY_WINDOW)) {
+      bShouldDisplay = true;
+    } else {
+      // Invert visibility for the current window
+      bShouldDisplay = (windowDecorator.getWindowState() != WindowState.BUILT_DISPLAYED)
+      // force display if the window was minimalized 
+          || windowDecorator.isMinimalized();
+    }
+    windowDecorator.display(bShouldDisplay);
+    //Make sure to bring the window to front
+    if (bShouldDisplay) {
+      windowDecorator.toFront();
+    }
   }
 
   /**
@@ -333,8 +354,10 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     return windowDecorator;
   }
 
-  /**
-   * {@inheritDoc}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.widgets.CommandJPanel#getRegistrationKeys()
    */
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
@@ -348,8 +371,10 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     return eventSubjectSet;
   }
 
-  /**
-   * {@inheritDoc}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   @Override
   public final void update(final JajukEvent event) {
@@ -470,9 +495,11 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
     return this.trayIcon;
   }
 
-  /**
-   * {@inheritDoc}
-   */
+  /*
+  * (non-Javadoc)
+  * 
+  * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event. MouseWheelEvent)
+  */
   @Override
   public void mouseWheelMoved(MouseWheelEvent e) {
     if (e.getSource().equals(jmiMute) && !Conf.getBoolean(Const.CONF_BIT_PERFECT)) {

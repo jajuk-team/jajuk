@@ -346,6 +346,9 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     pv.jcbShowSystray.setSelected(Conf.getBoolean(Const.CONF_SHOW_SYSTRAY));
     pv.jcbMinimizeToTray.setEnabled(SystemTray.isSupported() && pv.jcbShowSystray.isSelected());
     pv.jcbMinimizeToTray.setSelected(Conf.getBoolean(Const.CONF_MINIMIZE_TO_TRAY));
+    pv.jcbClickTrayAlwaysDisplayWindow.setSelected(Conf
+        .getBoolean(Const.CONF_TRAY_CLICK_DISPLAY_WINDOW));
+    pv.jcbClickTrayAlwaysDisplayWindow.setEnabled(SystemTray.isSupported());
     pv.jcbSplashscreen.setSelected(Conf.getBoolean(Const.CONF_SPLASH_SCREEN));
     pv.scbLAF.removeActionListener(this);
     pv.scbLAF.setSelectedItem(Conf.getString(Const.CONF_OPTIONS_LNF));
@@ -543,6 +546,8 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     // Minimize to tray
     Conf.setProperty(Const.CONF_MINIMIZE_TO_TRAY,
         Boolean.toString(pv.jcbMinimizeToTray.isSelected()));
+    Conf.setProperty(Const.CONF_TRAY_CLICK_DISPLAY_WINDOW,
+        Boolean.toString(pv.jcbClickTrayAlwaysDisplayWindow.isSelected()));
     final int oldPerspectiveSize = Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE);
     // If we perspective size changed and no font message have been already
     // displayed, display a message
