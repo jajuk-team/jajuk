@@ -26,6 +26,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -44,7 +45,7 @@ import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.core.RatingManager;
+import org.jajuk.services.core.RatingService;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.notification.NotificatorTypes;
 import org.jajuk.services.webradio.WebRadio;
@@ -106,13 +107,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     updateConfFromGUINetwork();
     // Covers
     updateConfFromGUICover();
-    // configuration
-    try {
-      Conf.commit();
-    } catch (final Exception e) {
-      Log.error(113, e);
-      Messages.showErrorMessage(113);
-    }
     // Force a full refresh (useful for catalog view for instance)
     ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
     // display a message
@@ -277,6 +271,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     pv.jcbRegexp.setSelected(Conf.getBoolean(Const.CONF_REGEXP));
     pv.jcbCheckUpdates.setSelected(Conf.getBoolean(Const.CONF_CHECK_FOR_UPDATE));
     pv.jcbForceFileDate.setSelected(Conf.getBoolean(Const.CONF_FORCE_FILE_DATE));
+    pv.psJajukWorkspace.setURL(Conf.getString(Const.CONF_TARGET_WORKSPACE_PATH));
   }
 
   /**
@@ -363,40 +358,41 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
   *
   */
   private void updateConfFromGUIOptions() {
-    Conf.setProperty(Const.CONF_OPTIONS_HIDE_UNMOUNTED,
+    HashMap<String, String> properties = new HashMap<String, String>(10);
+    properties.put(Const.CONF_OPTIONS_HIDE_UNMOUNTED,
         Boolean.toString(pv.jcbDisplayUnmounted.isSelected()));
-    Conf.setProperty(Const.CONF_OPTIONS_PUSH_ON_CLICK,
+    properties.put(Const.CONF_OPTIONS_PUSH_ON_CLICK,
         Boolean.toString(pv.jcbDefaultActionClick.isSelected()));
-    Conf.setProperty(Const.CONF_OPTIONS_PUSH_ON_DROP,
+    properties.put(Const.CONF_OPTIONS_PUSH_ON_DROP,
         Boolean.toString(pv.jcbDefaultActionDrop.isSelected()));
-    Conf.setProperty(Const.CONF_OPTIONS_HOTKEYS, Boolean.toString(pv.jcbHotkeys.isSelected()));
-    Conf.setProperty(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE,
+    properties.put(Const.CONF_OPTIONS_HOTKEYS, Boolean.toString(pv.jcbHotkeys.isSelected()));
+    properties.put(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE,
         Boolean.toString(pv.jcbAudioScrobbler.isSelected()));
-    Conf.setProperty(Const.CONF_LASTFM_INFO,
+    properties.put(Const.CONF_LASTFM_INFO,
         Boolean.toString(pv.jcbEnableLastFMInformation.isSelected()));
-    Conf.setProperty(Const.CONF_LASTFM_USER, pv.jtfASUser.getText());
-    Conf.setProperty(Const.CONF_LASTFM_PASSWORD,
+    properties.put(Const.CONF_LASTFM_USER, pv.jtfASUser.getText());
+    properties.put(Const.CONF_LASTFM_PASSWORD,
         UtilString.rot13(new String(pv.jpfASPassword.getPassword())));
     final int iLogLevel = pv.scbLogLevel.getSelectedIndex();
     Log.setVerbosity(iLogLevel);
-    Conf.setProperty(Const.CONF_OPTIONS_LOG_LEVEL, Integer.toString(iLogLevel));
-    Conf.setProperty(Const.CONF_OPTIONS_INTRO_BEGIN, Integer.toString(pv.introPosition.getValue()));
-    Conf.setProperty(Const.CONF_OPTIONS_INTRO_LENGTH, Integer.toString(pv.introLength.getValue()));
-    Conf.setProperty(Const.CONF_TAGS_USE_PARENT_DIR,
+    properties.put(Const.CONF_OPTIONS_LOG_LEVEL, Integer.toString(iLogLevel));
+    properties.put(Const.CONF_OPTIONS_INTRO_BEGIN, Integer.toString(pv.introPosition.getValue()));
+    properties.put(Const.CONF_OPTIONS_INTRO_LENGTH, Integer.toString(pv.introLength.getValue()));
+    properties.put(Const.CONF_TAGS_USE_PARENT_DIR,
         Boolean.toString(pv.jcbUseParentDir.isSelected()));
     final String sBestofSize = pv.jtfBestofSize.getText();
     if (!sBestofSize.isEmpty()) {
-      Conf.setProperty(Const.CONF_BESTOF_TRACKS_SIZE, sBestofSize);
+      properties.put(Const.CONF_BESTOF_TRACKS_SIZE, sBestofSize);
     }
     Locale locale = LocaleManager.getLocaleForDesc(((JLabel) pv.scbLanguage.getSelectedItem())
         .getText());
     final String sLocal = locale.getLanguage();
-    Conf.setProperty(Const.CONF_OPTIONS_LANGUAGE, sLocal);
+    properties.put(Const.CONF_OPTIONS_LANGUAGE, sLocal);
     // force refresh of bestof files
-    RatingManager.setRateHasChanged(true);
+    RatingService.setRateHasChanged(true);
     final String sNoveltiesAge = pv.jtfNoveltiesAge.getText();
     if (!sNoveltiesAge.isEmpty()) {
-      Conf.setProperty(Const.CONF_OPTIONS_NOVELTIES_AGE, sNoveltiesAge);
+      properties.put(Const.CONF_OPTIONS_NOVELTIES_AGE, sNoveltiesAge);
     }
     final int oldDuration = Conf.getInt(Const.CONF_FADE_DURATION);
     // Show an hideable message if user set cross fade under linux for sound
@@ -406,16 +402,17 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
       Messages.showHideableWarningMessage(Messages.getString("ParameterView.210"),
           Const.CONF_NOT_SHOW_AGAIN_CROSS_FADE);
     }
-    Conf.setProperty(Const.CONF_FADE_DURATION, Integer.toString(pv.crossFadeDuration.getValue()));
-    Conf.setProperty(Const.CONF_USE_VOLNORM, Boolean.toString(pv.jcbUseVolnorm.isSelected()));
-    Conf.setProperty(Const.CONF_BIT_PERFECT, Boolean.toString(pv.jcbEnableBitPerfect.isSelected()));
+    properties.put(Const.CONF_FADE_DURATION, Integer.toString(pv.crossFadeDuration.getValue()));
+    properties.put(Const.CONF_USE_VOLNORM, Boolean.toString(pv.jcbUseVolnorm.isSelected()));
+    properties.put(Const.CONF_BIT_PERFECT, Boolean.toString(pv.jcbEnableBitPerfect.isSelected()));
     boolean oldShowVideo = Conf.getBoolean(Const.CONF_SHOW_VIDEOS);
     if (oldShowVideo != pv.jcbShowVideos.isSelected()) {
       this.someOptionsAppliedAtNextStartup = true;
     }
-    Conf.setProperty(Const.CONF_SHOW_VIDEOS, Boolean.toString(pv.jcbShowVideos.isSelected()));
-    Conf.setProperty(Const.CONF_PRESERVE_FILE_DATES,
+    properties.put(Const.CONF_SHOW_VIDEOS, Boolean.toString(pv.jcbShowVideos.isSelected()));
+    properties.put(Const.CONF_PRESERVE_FILE_DATES,
         Boolean.toString(pv.jcbPreserveFileDates.isSelected()));
+    Conf.setProperties(properties);
   }
 
   /**
@@ -423,21 +420,23 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
    *
    */
   private void updateConfFromGUIStartup() {
+    HashMap<String, String> properties = new HashMap<String, String>(10);
     if (pv.jrbNothing.isSelected()) {
-      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOTHING);
+      properties.put(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOTHING);
     } else if (pv.jrbLast.isSelected()) {
-      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST);
+      properties.put(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST);
     } else if (pv.jrbLastKeepPos.isSelected()) {
-      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
+      properties.put(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     } else if (pv.jrbShuffle.isSelected()) {
-      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_SHUFFLE);
+      properties.put(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_SHUFFLE);
     } else if (pv.jrbFile.isSelected()) {
-      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_ITEM);
+      properties.put(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_ITEM);
     } else if (pv.jrbBestof.isSelected()) {
-      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_BESTOF);
+      properties.put(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_BESTOF);
     } else if (pv.jrbNovelties.isSelected()) {
-      Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOVELTIES);
+      properties.put(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOVELTIES);
     }
+    Conf.setProperties(properties);
   }
 
   /**
@@ -445,21 +444,23 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
    *
    */
   private void updateConfFromGUIConfirmation() {
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_DELETE_FILE,
+    HashMap<String, String> properties = new HashMap<String, String>(10);
+    properties.put(Const.CONF_CONFIRMATIONS_DELETE_FILE,
         Boolean.toString(pv.jcbBeforeDelete.isSelected()));
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_EXIT, Boolean.toString(pv.jcbBeforeExit.isSelected()));
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE,
+    properties.put(Const.CONF_CONFIRMATIONS_EXIT, Boolean.toString(pv.jcbBeforeExit.isSelected()));
+    properties.put(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE,
         Boolean.toString(pv.jcbBeforeRemoveDevice.isSelected()));
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_DELETE_COVER,
+    properties.put(Const.CONF_CONFIRMATIONS_DELETE_COVER,
         Boolean.toString(pv.jcbBeforeDeleteCover.isSelected()));
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY,
+    properties.put(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY,
         Boolean.toString(pv.jcbBeforeClearingHistory.isSelected()));
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_RESET_RATINGS,
+    properties.put(Const.CONF_CONFIRMATIONS_RESET_RATINGS,
         Boolean.toString(pv.jcbBeforeResetingRatings.isSelected()));
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_REFACTOR_FILES,
+    properties.put(Const.CONF_CONFIRMATIONS_REFACTOR_FILES,
         Boolean.toString(pv.jcbBeforeRefactorFiles.isSelected()));
-    Conf.setProperty(Const.CONF_CONFIRMATIONS_BEFORE_TAG_WRITE,
+    properties.put(Const.CONF_CONFIRMATIONS_BEFORE_TAG_WRITE,
         Boolean.toString(pv.jcbBeforeWritingTag.isSelected()));
+    Conf.setProperties(properties);
   }
 
   /**
@@ -484,11 +485,13 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
    *
    */
   private void updateConfFromGUIPatterns() {
-    Conf.setProperty(Const.CONF_PATTERN_REFACTOR, pv.jtfRefactorPattern.getText());
-    Conf.setProperty(Const.CONF_PATTERN_ANIMATION, pv.jtfAnimationPattern.getText());
-    Conf.setProperty(Const.CONF_PATTERN_FRAME_TITLE, pv.jtfFrameTitle.getText());
-    Conf.setProperty(Const.CONF_PATTERN_BALLOON_NOTIFIER, pv.jtfBalloonNotifierPattern.getText());
-    Conf.setProperty(Const.CONF_PATTERN_INFORMATION, pv.jtfInformationPattern.getText());
+    HashMap<String, String> properties = new HashMap<String, String>(10);
+    properties.put(Const.CONF_PATTERN_REFACTOR, pv.jtfRefactorPattern.getText());
+    properties.put(Const.CONF_PATTERN_ANIMATION, pv.jtfAnimationPattern.getText());
+    properties.put(Const.CONF_PATTERN_FRAME_TITLE, pv.jtfFrameTitle.getText());
+    properties.put(Const.CONF_PATTERN_BALLOON_NOTIFIER, pv.jtfBalloonNotifierPattern.getText());
+    properties.put(Const.CONF_PATTERN_INFORMATION, pv.jtfInformationPattern.getText());
+    Conf.setProperties(properties);
   }
 
   /**
@@ -496,21 +499,23 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
    *
    */
   private void updateConfFromGUIAdvanced() {
-    Conf.setProperty(Const.CONF_BACKUP_SIZE, Integer.toString(pv.backupSize.getValue()));
-    Conf.setProperty(Const.CONF_COLLECTION_CHARSET, pv.jcbCollectionEncoding.getSelectedItem()
+    HashMap<String, String> properties = new HashMap<String, String>(10);
+    properties.put(Const.CONF_BACKUP_SIZE, Integer.toString(pv.backupSize.getValue()));
+    properties.put(Const.CONF_COLLECTION_CHARSET, pv.jcbCollectionEncoding.getSelectedItem()
         .toString());
-    Conf.setProperty(Const.CONF_REGEXP, Boolean.toString(pv.jcbRegexp.isSelected()));
-    Conf.setProperty(Const.CONF_CHECK_FOR_UPDATE, Boolean.toString(pv.jcbCheckUpdates.isSelected()));
-    Conf.setProperty(Const.CONF_FORCE_FILE_DATE, Boolean.toString(pv.jcbForceFileDate.isSelected()));
+    properties.put(Const.CONF_REGEXP, Boolean.toString(pv.jcbRegexp.isSelected()));
+    properties.put(Const.CONF_CHECK_FOR_UPDATE, Boolean.toString(pv.jcbCheckUpdates.isSelected()));
+    properties.put(Const.CONF_FORCE_FILE_DATE, Boolean.toString(pv.jcbForceFileDate.isSelected()));
     // Apply new mplayer path and display a warning message if changed
     final String oldMplayerPath = Conf.getString(Const.CONF_MPLAYER_PATH_FORCED);
     if (!(oldMplayerPath.equals(pv.jtfMPlayerPath.getText()))) {
       this.someOptionsAppliedAtNextStartup = true;
     }
-    Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, pv.jtfMPlayerPath.getText());
-    Conf.setProperty(Const.CONF_MPLAYER_ARGS, pv.jtfMPlayerArgs.getText());
-    Conf.setProperty(Const.CONF_ENV_VARIABLES, pv.jtfEnvVariables.getText());
-    Conf.setProperty(Const.CONF_EXPLORER_PATH, pv.jtfExplorerPath.getText());
+    properties.put(Const.CONF_MPLAYER_PATH_FORCED, pv.jtfMPlayerPath.getText());
+    properties.put(Const.CONF_MPLAYER_ARGS, pv.jtfMPlayerArgs.getText());
+    properties.put(Const.CONF_ENV_VARIABLES, pv.jtfEnvVariables.getText());
+    properties.put(Const.CONF_EXPLORER_PATH, pv.jtfExplorerPath.getText());
+    Conf.setProperties(properties);
   }
 
   /**
@@ -518,21 +523,22 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
    *
    */
   private void updateConfFromGUIGUI() {
-    Conf.setProperty(Const.CONF_CATALOG_PAGE_SIZE, Integer.toString(pv.jsCatalogPages.getValue()));
-    Conf.setProperty(Const.CONF_SHOW_POPUPS, Boolean.toString(pv.jcbShowPopups.isSelected()));
-    Conf.setProperty(Const.CONF_SPLASH_SCREEN, Boolean.toString(pv.jcbSplashscreen.isSelected()));
+    HashMap<String, String> properties = new HashMap<String, String>(10);
+    properties.put(Const.CONF_CATALOG_PAGE_SIZE, Integer.toString(pv.jsCatalogPages.getValue()));
+    properties.put(Const.CONF_SHOW_POPUPS, Boolean.toString(pv.jcbShowPopups.isSelected()));
+    properties.put(Const.CONF_SPLASH_SCREEN, Boolean.toString(pv.jcbSplashscreen.isSelected()));
     final int oldFont = Conf.getInt(Const.CONF_FONTS_SIZE);
     // Display a message if font size changed
     if (oldFont != pv.jsFonts.getValue()) {
       this.someOptionsAppliedAtNextStartup = true;
     }
-    Conf.setProperty(Const.CONF_FONTS_SIZE, Integer.toString(pv.jsFonts.getValue()));
+    properties.put(Const.CONF_FONTS_SIZE, Integer.toString(pv.jsFonts.getValue()));
     // Notificator type
     String notificatorTypeDisplayed = (String) pv.jcbNotificationType.getSelectedItem();
     for (NotificatorTypes notificatorType : NotificatorTypes.values()) {
       if (Messages.getString(ParameterView.NOTIFICATOR_PREFIX + notificatorType).equals(
           notificatorTypeDisplayed)) {
-        Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, notificatorType.name());
+        properties.put(Const.CONF_UI_NOTIFICATOR_TYPE, notificatorType.name());
       }
     }
     // Message if show systray is changed
@@ -540,13 +546,12 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     if (bOldShowSystray != pv.jcbShowSystray.isSelected()) {
       this.someOptionsAppliedAtNextStartup = true;
     }
-    Conf.setProperty(Const.CONF_SHOW_SYSTRAY, Boolean.toString(pv.jcbShowSystray.isSelected()));
-    Conf.setProperty(Const.CONF_TITLE_ANIMATION,
-        Boolean.toString(pv.jcbTitleAnimation.isSelected()));
+    properties.put(Const.CONF_SHOW_SYSTRAY, Boolean.toString(pv.jcbShowSystray.isSelected()));
+    properties.put(Const.CONF_TITLE_ANIMATION, Boolean.toString(pv.jcbTitleAnimation.isSelected()));
     // Minimize to tray
-    Conf.setProperty(Const.CONF_MINIMIZE_TO_TRAY,
-        Boolean.toString(pv.jcbMinimizeToTray.isSelected()));
-    Conf.setProperty(Const.CONF_TRAY_CLICK_DISPLAY_WINDOW,
+    properties
+        .put(Const.CONF_MINIMIZE_TO_TRAY, Boolean.toString(pv.jcbMinimizeToTray.isSelected()));
+    properties.put(Const.CONF_TRAY_CLICK_DISPLAY_WINDOW,
         Boolean.toString(pv.jcbClickTrayAlwaysDisplayWindow.isSelected()));
     final int oldPerspectiveSize = Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE);
     // If we perspective size changed and no font message have been already
@@ -554,17 +559,18 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     if (oldPerspectiveSize != pv.jsPerspectiveSize.getValue()) {
       this.someOptionsAppliedAtNextStartup = true;
     }
-    Conf.setProperty(Const.CONF_PERSPECTIVE_ICONS_SIZE,
+    properties.put(Const.CONF_PERSPECTIVE_ICONS_SIZE,
         Integer.toString(pv.jsPerspectiveSize.getValue()));
     // LAF change
     final String oldTheme = Conf.getString(Const.CONF_OPTIONS_LNF);
-    Conf.setProperty(Const.CONF_OPTIONS_LNF, (String) pv.scbLAF.getSelectedItem());
+    properties.put(Const.CONF_OPTIONS_LNF, (String) pv.scbLAF.getSelectedItem());
     if (!oldTheme.equals(pv.scbLAF.getSelectedItem())) {
       // theme will be applied at next startup
       Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
           Const.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
       pv.bLAFMessage = true;
     }
+    Conf.setProperties(properties);
   }
 
   /**
@@ -572,20 +578,22 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
   *
   */
   private void updateConfFromGUINetwork() {
-    Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS,
+    HashMap<String, String> properties = new HashMap<String, String>(10);
+    properties.put(Const.CONF_NETWORK_NONE_INTERNET_ACCESS,
         Boolean.toString(pv.jcbNoneInternetAccess.isSelected()));
-    Conf.setProperty(Const.CONF_NETWORK_USE_PROXY, Boolean.toString(!pv.jcbProxyNone.isSelected()));
+    properties.put(Const.CONF_NETWORK_USE_PROXY, Boolean.toString(!pv.jcbProxyNone.isSelected()));
     if (pv.jcbProxyHttp.isSelected()) {
-      Conf.setProperty(Const.CONF_NETWORK_PROXY_TYPE, Const.PROXY_TYPE_HTTP);
+      properties.put(Const.CONF_NETWORK_PROXY_TYPE, Const.PROXY_TYPE_HTTP);
     } else if (pv.jcbProxySocks.isSelected()) {
-      Conf.setProperty(Const.CONF_NETWORK_PROXY_TYPE, Const.PROXY_TYPE_SOCKS);
+      properties.put(Const.CONF_NETWORK_PROXY_TYPE, Const.PROXY_TYPE_SOCKS);
     }
-    Conf.setProperty(Const.CONF_NETWORK_PROXY_HOSTNAME, pv.jtfProxyHostname.getText());
-    Conf.setProperty(Const.CONF_NETWORK_PROXY_PORT, pv.jtfProxyPort.getText());
-    Conf.setProperty(Const.CONF_NETWORK_PROXY_LOGIN, pv.jtfProxyLogin.getText());
-    Conf.setProperty(Const.CONF_NETWORK_PROXY_PWD,
+    properties.put(Const.CONF_NETWORK_PROXY_HOSTNAME, pv.jtfProxyHostname.getText());
+    properties.put(Const.CONF_NETWORK_PROXY_PORT, pv.jtfProxyPort.getText());
+    properties.put(Const.CONF_NETWORK_PROXY_LOGIN, pv.jtfProxyLogin.getText());
+    properties.put(Const.CONF_NETWORK_PROXY_PWD,
         UtilString.rot13(new String(pv.jtfProxyPwd.getPassword())));
-    Conf.setProperty(Const.CONF_NETWORK_CONNECTION_TO, Integer.toString(pv.connectionTO.getValue()));
+    properties.put(Const.CONF_NETWORK_CONNECTION_TO, Integer.toString(pv.connectionTO.getValue()));
+    Conf.setProperties(properties);
     // Force global reload of proxy variables
     DownloadManager.setDefaultProxySettings();
   }
@@ -595,16 +603,18 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
    *
    */
   private void updateConfFromGUICover() {
-    Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER, Boolean.toString(pv.jcb3dCover.isSelected()));
-    Conf.setProperty(Const.CONF_COVERS_MIRROW_COVER_FS_MODE,
+    HashMap<String, String> properties = new HashMap<String, String>(10);
+    properties.put(Const.CONF_COVERS_MIRROW_COVER, Boolean.toString(pv.jcb3dCover.isSelected()));
+    properties.put(Const.CONF_COVERS_MIRROW_COVER_FS_MODE,
         Boolean.toString(pv.jcb3dCoverFS.isSelected()));
     ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
-    Conf.setProperty(Const.CONF_COVERS_AUTO_COVER, Boolean.toString(pv.jcbAutoCover.isSelected()));
-    Conf.setProperty(Const.CONF_COVERS_SHUFFLE, Boolean.toString(pv.jcbShuffleCover.isSelected()));
-    Conf.setProperty(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY,
+    properties.put(Const.CONF_COVERS_AUTO_COVER, Boolean.toString(pv.jcbAutoCover.isSelected()));
+    properties.put(Const.CONF_COVERS_SHUFFLE, Boolean.toString(pv.jcbShuffleCover.isSelected()));
+    properties.put(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY,
         Boolean.toString(pv.jcbSaveExplorerFriendly.isSelected()));
-    Conf.setProperty(Const.CONF_COVERS_SIZE, Integer.toString(pv.jcbCoverSize.getSelectedIndex()));
-    Conf.setProperty(Const.FILE_DEFAULT_COVER, pv.jtfDefaultCoverSearchPattern.getText());
+    properties.put(Const.CONF_COVERS_SIZE, Integer.toString(pv.jcbCoverSize.getSelectedIndex()));
+    properties.put(Const.FILE_DEFAULT_COVER, pv.jtfDefaultCoverSearchPattern.getText());
+    Conf.setProperties(properties);
   }
 
   /**
@@ -612,8 +622,8 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
   *
   */
   private void handleWorkspaceChange() {
-    if ((SessionService.getWorkspace() != null)
-        && !SessionService.getWorkspace().equals(pv.psJajukWorkspace.getUrl())) {
+    if (!Conf.getString(Const.CONF_TARGET_WORKSPACE_PATH).equals(pv.psJajukWorkspace.getUrl())) {
+      Conf.setProperty(Const.CONF_TARGET_WORKSPACE_PATH, pv.psJajukWorkspace.getUrl());
       // Check workspace directory
       if (!pv.psJajukWorkspace.getUrl().trim().isEmpty()) {
         // Check workspace presence and create it if required

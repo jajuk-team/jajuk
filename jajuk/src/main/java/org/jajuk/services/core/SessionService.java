@@ -33,6 +33,7 @@ import javax.swing.SwingUtilities;
 import org.jajuk.ui.wizard.FirstTimeWizard;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukRuntimeException;
@@ -246,14 +247,18 @@ public class SessionService {
               throw new IllegalStateException("the bootsrap file doesn't contain the path lines");
             }
             // Check if the repository can be found
-            if (new File(workspacePath + '/'
-                + (isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk")).canRead()) {
+            File targetWorkspace = new File(workspacePath + '/'
+                + (isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk"));
+            if (targetWorkspace.canRead()) {
               setWorkspace(workspacePath);
             } else {
               // Use default directory but do not commit the bootstrap file because the workspace could
               // be available again later, especially if located in a detachable device
               System.out
                   .println("[BOOT] Workspace given in bootstrap file is not accessible, using home directory as a workspace");
+              if (!targetWorkspace.getAbsolutePath().equals(UtilSystem.getUserHome())) {
+                Messages.showErrorMessage(182, targetWorkspace.getAbsolutePath());
+              }
               setWorkspace(UtilSystem.getUserHome());
             }
             // Bootstrap file corrupted
