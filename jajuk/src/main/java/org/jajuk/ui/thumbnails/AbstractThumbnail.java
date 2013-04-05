@@ -178,12 +178,10 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     if (jmenu.isVisible()) {
       return;
     }
-    UtilGUI.waiting();
     String description = getDescription();
     if (description != null) {
       details = new ThumbnailPopup(description, new Rectangle(jlIcon.getLocationOnScreen(),
           new Dimension(jlIcon.getWidth(), jlIcon.getHeight())), autoclose);
-      UtilGUI.stopWaiting();
     }
   }
 
