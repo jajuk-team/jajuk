@@ -128,7 +128,9 @@ public class ThumbnailPopup extends JWindow {
     setHyperlinkHandling();
     final JScrollPane jspText = new JScrollPane(text);
     add(jspText);
-    addAutoCloseHandling(autoclose);
+    if (autoclose) {
+      addAutoCloseHandling();
+    }
     setSizeAndLocation(origin);
     setVisible(true);
     setKeystrokes();
@@ -218,20 +220,18 @@ public class ThumbnailPopup extends JWindow {
   /**
    * @param autoclose
    */
-  private void addAutoCloseHandling(boolean autoclose) {
-    if (autoclose) {
-      // Make sure to close this popup when it lost focus
-      text.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseExited(MouseEvent e) {
-          // Test if mouse is really outside the popup, for unknown reason,
-          // this event is catch when entering the popup (Windows)
-          if (!text.contains(e.getPoint())) {
-            dispose();
-          }
+  private void addAutoCloseHandling() {
+    // Make sure to close this popup when it lost focus
+    text.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseExited(MouseEvent e) {
+        // Test if mouse is really outside the popup, for unknown reason,
+        // this event is catch when entering the popup (Windows)
+        if (!text.contains(e.getPoint())) {
+          dispose();
         }
-      });
-    }
+      }
+    });
   }
 
   /**
