@@ -28,11 +28,19 @@
 		<langpack iso3='glg' />
 	</locale>
 	<native>
-		<native type='izpack' name='ShellLink.dll' />
-		<native type="izpack" name="ShellLink_x64.dll" />
+		<native type='izpack' name='ShellLink.dll'>
+			<os family="windows" />
+		</native>
+		<native type="izpack" name="ShellLink_x64.dll">
+			<os family="windows" />
+		</native>
 		<native type="3rdparty" name="COIOSHelper.dll" stage="both">
 			<os family="windows" />
 		</native>
+		<native type="3rdparty" name="COIOSHelper_x64.dll" stage="both">
+			<os family="windows" />
+		</native>
+
 	</native>
 	<resources>
 		<res id='LicencePanel.licence' src='legals/LICENSE-GPL.txt' />
