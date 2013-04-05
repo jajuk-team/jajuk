@@ -130,7 +130,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
   JMenuItem jmiAbout;
   JLabel jlUpdate;
   JButton jbGC;
-  JButton jbCommit;
   JButton jbSlim;
   private JajukButton jbFull = null;
   private final JCheckBoxMenuItem jcbmiRepeatAll;
@@ -310,7 +309,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     // Apply mnemonics (Alt + first char of the menu keystroke)
     applyMnemonics();
     if (SessionService.isTestMode()) {
-      jbCommit = new JajukButton(ActionManager.getAction(JajukActions.COMMIT));
       jbGC = new JajukButton(ActionManager.getAction(JajukActions.GC));
     }
     jbSlim = new JajukButton(ActionManager.getAction(JajukActions.SLIM_JAJUK));
@@ -318,7 +316,6 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     JMenuBar eastmenu = new JMenuBar();
     // only show GC-button in test-mode
     if (SessionService.isTestMode()) {
-      eastmenu.add(jbCommit);
       eastmenu.add(jbGC);
     }
     eastmenu.add(jbSlim);

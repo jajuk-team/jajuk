@@ -56,7 +56,7 @@ public class TestRatingManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.core.RatingManager#run()}.
+   * Test method for {@link org.jajuk.services.core.RatingService#run()}.
    */
   public void testRun() {
     // cannot be tested, is an endless loop:
@@ -64,32 +64,32 @@ public class TestRatingManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.core.RatingManager#getInstance()}
+   * Test method for {@link org.jajuk.services.core.RatingService#getInstance()}
    * .
    */
   public void testGetInstance() {
-    assertNotNull(RatingManager.getInstance());
+    assertNotNull(RatingService.getInstance());
   }
 
   /**
    * Test method for.
    *
-   * {@link org.jajuk.services.core.RatingManager#getMaxPlaycount()}.
+   * {@link org.jajuk.services.core.RatingService#getMaxPlaycount()}.
    */
   public void testGetAndSetMaxPlaycount() {
     // Reset the rating manager
-    RatingManager.getInstance().update(new JajukEvent(JajukEvents.RATE_RESET, null));
-    assertEquals(0, RatingManager.getMaxPlaycount());
-    RatingManager.setMaxPlaycount(10);
-    assertEquals(10, RatingManager.getMaxPlaycount());
+    RatingService.getInstance().update(new JajukEvent(JajukEvents.RATE_RESET, null));
+    assertEquals(0, RatingService.getMaxPlaycount());
+    RatingService.setMaxPlaycount(10);
+    assertEquals(10, RatingService.getMaxPlaycount());
     // set back to 0 as there is special handling
-    RatingManager.setMaxPlaycount(0);
+    RatingService.setMaxPlaycount(0);
   }
 
   /**
    * Test method for.
    *
-   * {@link org.jajuk.services.core.RatingManager#setMaxPlaycount(long)}.
+   * {@link org.jajuk.services.core.RatingService#setMaxPlaycount(long)}.
    */
   public void testSetMaxPlaycount() {
     // tested above
@@ -98,10 +98,10 @@ public class TestRatingManager extends JajukTestCase {
   /**
    * Test method for.
    *
-   * {@link org.jajuk.services.core.RatingManager#getRegistrationKeys()}.
+   * {@link org.jajuk.services.core.RatingService#getRegistrationKeys()}.
    */
   public void testGetRegistrationKeys() {
-    Set<JajukEvents> set = RatingManager.getInstance().getRegistrationKeys();
+    Set<JajukEvents> set = RatingService.getInstance().getRegistrationKeys();
     assertTrue(set.toString(), set.contains(JajukEvents.RATE_RESET));
   }
 
@@ -109,7 +109,7 @@ public class TestRatingManager extends JajukTestCase {
    * Test method for.
    *
    * @throws Exception the exception
-   * {@link org.jajuk.services.core.RatingManager#update(org.jajuk.events.JajukEvent)}
+   * {@link org.jajuk.services.core.RatingService#update(org.jajuk.events.JajukEvent)}
    * .
    */
   public void testUpdate() throws Exception {
@@ -117,8 +117,8 @@ public class TestRatingManager extends JajukTestCase {
     // update uses some Tracks
     getTrack(1);
     getTrack(2);
-    RatingManager.getInstance().update(new JajukEvent(JajukEvents.RATE_RESET, null));
-    RatingManager.getInstance().update(new JajukEvent(JajukEvents.PREFERENCES_RESET, null));
+    RatingService.getInstance().update(new JajukEvent(JajukEvents.RATE_RESET, null));
+    RatingService.getInstance().update(new JajukEvent(JajukEvents.PREFERENCES_RESET, null));
   }
 
   /**
@@ -153,12 +153,12 @@ public class TestRatingManager extends JajukTestCase {
   }
 
   public void testGetRateForPreference() {
-    assertEquals(RatingManager.getRateForPreference(-3l), 0);
-    assertEquals(RatingManager.getRateForPreference(-2l), 17);
-    assertEquals(RatingManager.getRateForPreference(-1l), 33);
-    assertEquals(RatingManager.getRateForPreference(0l), 50);
-    assertEquals(RatingManager.getRateForPreference(1l), 67);
-    assertEquals(RatingManager.getRateForPreference(2l), 83);
-    assertEquals(RatingManager.getRateForPreference(3l), 100);
+    assertEquals(RatingService.getRateForPreference(-3l), 0);
+    assertEquals(RatingService.getRateForPreference(-2l), 17);
+    assertEquals(RatingService.getRateForPreference(-1l), 33);
+    assertEquals(RatingService.getRateForPreference(0l), 50);
+    assertEquals(RatingService.getRateForPreference(1l), 67);
+    assertEquals(RatingService.getRateForPreference(2l), 83);
+    assertEquals(RatingService.getRateForPreference(3l), 100);
   }
 }

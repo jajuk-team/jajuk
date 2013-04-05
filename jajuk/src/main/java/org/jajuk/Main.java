@@ -31,6 +31,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import org.jajuk.base.Collection;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.ExitService;
+import org.jajuk.services.core.PersistenceService;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.dj.DigitalDJManager;
@@ -186,6 +187,8 @@ public final class Main {
       StartupGUIService.launchUI();
       // Late collection upgrade actions
       UpgradeManager.upgradeStep3();
+      // Start persistence service
+      PersistenceService.getInstance().start();
     } catch (final Exception e) { // last chance to catch any error for
       // logging
       // purpose

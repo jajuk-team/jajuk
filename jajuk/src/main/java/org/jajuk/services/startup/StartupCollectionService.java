@@ -32,8 +32,6 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import net.miginfocom.layout.LinkHandler;
-
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.AlbumArtistManager;
 import org.jajuk.base.AlbumManager;
@@ -48,9 +46,7 @@ import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.TypeManager;
 import org.jajuk.base.YearManager;
-import org.jajuk.services.core.ExitService;
 import org.jajuk.services.core.SessionService;
-import org.jajuk.services.tags.Tag;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -192,29 +188,6 @@ public final class StartupCollectionService {
     }
   }
 
-  /** Auto commit thread. */
-  private static Thread tAutoCommit = new Thread("Auto Commit Thread") {
-    @Override
-    public void run() {
-      while (!ExitService.isExiting()) {
-        try {
-          Thread.sleep(Const.AUTO_COMMIT_DELAY);
-          Log.debug("Auto commit");
-          // call the overall "commit" to store things like Queue and
-          // configuration periodically as well
-          ExitService.commit(false);
-          // workaround to free space in MigLayout
-          // see http://migcalendar.com/forum/viewtopic.php?f=8&t=3236&p=7012
-          LinkHandler.getValue("", "", 1); // simulated read
-          // Clear the tag cache to avoid growing memory usage over time
-          Tag.clearCache();
-        } catch (Exception e) {
-          Log.error(e);
-        }
-      }
-    }
-  };
-
   /**
    * Load persisted collection file.
    */
@@ -225,8 +198,6 @@ public final class StartupCollectionService {
     }
     final File fCollection = SessionService.getConfFileByPath(Const.FILE_COLLECTION);
     final File fCollectionExit = SessionService.getConfFileByPath(Const.FILE_COLLECTION_EXIT);
-    final File fCollectionExitProof = SessionService
-        .getConfFileByPath(Const.FILE_COLLECTION_EXIT_PROOF);
     boolean bParsingOK = false;
     // Keep this complex proof / multiple collection file code, it is required
     // (see #1362)
@@ -234,10 +205,7 @@ public final class StartupCollectionService {
     // file that would overwrite at exit good collection.xml automatically
     // commited during last jajuk session
     try {
-      if (fCollectionExit.exists() && fCollectionExitProof.exists()) {
-        // delete this file created just
-        // after collection exit commit
-        UtilSystem.deleteFile(fCollectionExitProof);
+      if (fCollectionExit.exists()) {
         Collection.load(fCollectionExit);
         // Remove the collection (required by renameTo next line under
         // Windows)
@@ -338,8 +306,6 @@ public final class StartupCollectionService {
         + PlaylistManager.getInstance().getElementCount() + " playlists in "
         + DirectoryManager.getInstance().getElementCount() + " directories on "
         + DeviceManager.getInstance().getElementCount() + " devices.");
-    // start auto commit thread
-    tAutoCommit.start();
   }
 
   /**

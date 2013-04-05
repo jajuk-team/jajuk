@@ -196,20 +196,15 @@ public class PreparePartyWizard extends Wizard {
     data.put(KEY_ITEM, playlist.getName());
   }
 
-   /*
-   * (non-Javadoc)
-   * 
-   * @see org.qdwizard.Wizard#finish()
-   */
+  /*
+  * (non-Javadoc)
+  * 
+  * @see org.qdwizard.Wizard#finish()
+  */
   @Override
   public void finish() {
     // write properties to keep the selected directory
-    try {
-      storeProperties();
-      Conf.commit();
-    } catch (IOException e1) {
-      Log.error(e1);
-    }
+    storeProperties();
     // retrieve the full list of files according to the selected mode
     List<org.jajuk.base.File> files = getFiles();
     if (files == null) {
@@ -232,7 +227,7 @@ public class PreparePartyWizard extends Wizard {
         isTrue(KEY_ONE_MEDIA_ON) && isTrue(KEY_CONVERT_MEDIA), (String) data.get(KEY_MEDIA),
         (String) data.get(KEY_CONVERT_COMMAND));
   }
-  
+
   /**
    * Return if the specified element is true in the data-map.
    * 
@@ -752,8 +747,8 @@ public class PreparePartyWizard extends Wizard {
   /**
    * General options panel.
    */
-  public static class GeneralOptionsPanel extends Screen implements ActionListener, ChangeListener, ClearPoint,
-      MouseListener {
+  public static class GeneralOptionsPanel extends Screen implements ActionListener, ChangeListener,
+      ClearPoint, MouseListener {
     /** Constant for MigLayout. */
     private static final String GROW = "grow";
     /** Constant for MigLayout. */
@@ -1082,7 +1077,7 @@ public class PreparePartyWizard extends Wizard {
         label.setText(NO_VALUE);
       }
     }
-    
+
     /**
      * Return if the specified element is true in the data-map.
      * 

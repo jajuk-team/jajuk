@@ -268,12 +268,6 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
     } else if (jrbNovelties.isSelected()) {
       Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_NOVELTIES);
     }
-    // Store properties in case of
-    try {
-      Conf.commit();
-    } catch (Exception e) {
-      Log.error(e);
-    }
     // Close the window
     dispose();
     // Notify the Alarm manager

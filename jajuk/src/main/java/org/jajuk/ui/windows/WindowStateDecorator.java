@@ -23,7 +23,6 @@ package org.jajuk.ui.windows;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Window;
-import java.io.IOException;
 
 import javax.swing.JFrame;
 
@@ -91,12 +90,6 @@ public abstract class WindowStateDecorator {
     else if (!sdSlimbar.isDisplayed() && !sdMainWindow.isDisplayed() && !sdfullscreen.isDisplayed()
         && Conf.getBoolean(Const.CONF_SHOW_SYSTRAY)) {
       Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_TRAY));
-    }
-    // Persist GUI configuration now to make sure it is stored even if the app is killed
-    try {
-      Conf.commit();
-    } catch (IOException e) {
-      Log.error(e);
     }
   }
 

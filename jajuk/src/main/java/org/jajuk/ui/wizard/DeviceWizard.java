@@ -414,7 +414,6 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
             }
             // Keep previous references when changing device url
             device.refresh(true, false, true, null);
-            ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
           } catch (final Exception e2) {
             Log.error(112, device.getName(), e2);
             Messages.showErrorMessage(112, device.getName());

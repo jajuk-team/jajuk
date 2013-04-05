@@ -316,8 +316,6 @@ public final class InformationJPanel extends JXPanel implements Observer {
             String sCurrentTotalMessage = UtilString.formatTimeBySec(timeToPlay);
             setTotalTimeMessage(sCurrentTotalMessage + " [" + QueueModel.getCountTracksLeft() + "]");
           } else if (JajukEvents.ZERO.equals(subject) || JajukEvents.PLAYER_STOP.equals(subject)) {
-            // reset startup position
-            Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, "0");
             setTotalTimeMessage("00:00:00");
             setMessage(Messages.getString("JajukWindow.18"),
                 InformationJPanel.MessageType.INFORMATIVE);
