@@ -48,7 +48,6 @@ import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.MuteAction;
-import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -135,7 +134,7 @@ public class PlayerStateMediator implements Observer {
           ActionManager.getAction(FORWARD_TRACK).setEnabled(false);
           ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
           // reset startup position
-          Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, "0");
+          UtilFeatures.storePersistedPlayingPosition(0f);
         } else if (JajukEvents.ZERO.equals(subject)) {
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(false);
           ActionManager.getAction(NEXT_TRACK).setEnabled(false);
@@ -148,7 +147,7 @@ public class PlayerStateMediator implements Observer {
           ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
           setToPlay();
           // reset startup position
-          Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, "0");
+          UtilFeatures.storePersistedPlayingPosition(0f);
           ActionManager.getAction(FINISH_ALBUM).setEnabled(true);
         } else if (JajukEvents.PLAYER_PLAY.equals(subject)) {
           ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);

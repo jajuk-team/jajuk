@@ -140,6 +140,7 @@ public interface Const {
   String FILE_LANGPACK_PART2 = ".properties";
   // logs
   String FILE_LOGS = "jajuk.log";
+  String FILE_PLAYING_POSITION = "position";
   URL FILE_LOG4J_CONF = UtilSystem.getResource("org/jajuk/util/log/jajuk-log4j-conf.xml");
   /** Cache directory name. */
   String FILE_CACHE = "cache";

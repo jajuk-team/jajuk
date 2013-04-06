@@ -36,6 +36,7 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
+import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -226,8 +227,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               }
               lastPlayTimeUpdate = System.currentTimeMillis();
               // Store current position for use at next startup
-              Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION,
-                  Float.toString(getCurrentPosition()));
+              UtilFeatures.storePersistedPlayingPosition(getCurrentPosition());
               // Cross-Fade test
               if (!bFading && iFadeDuration > 0
               // Length = 0 for some buggy audio headers

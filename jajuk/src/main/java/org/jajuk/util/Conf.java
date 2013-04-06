@@ -174,7 +174,6 @@ public final class Conf implements Const {
     // no startup file by default
     defaults.put(CONF_STARTUP_ITEM, "");
     defaults.put(CONF_STARTUP_MODE, STARTUP_MODE_LAST_KEEP_POS);
-    defaults.put(CONF_STARTUP_LAST_POSITION, "0");
     defaults.put(CONF_STARTUP_STOPPED, "false");
     defaults.put(CONF_CONFIRMATIONS_DELETE_FILE, TRUE);
     defaults.put(CONF_CONFIRMATIONS_EXIT, FALSE);

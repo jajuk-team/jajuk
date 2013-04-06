@@ -20,6 +20,9 @@
  */
 package org.jajuk.util;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,6 +46,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
@@ -354,9 +358,9 @@ public final class UtilFeatures {
     }
     long sum = 0;
     for (Track track : trackList) {
-      sum +=  track.getLongValue(Const.XML_TRACK_PREFERENCE);
+      sum += track.getLongValue(Const.XML_TRACK_PREFERENCE);
     }
-    return (sum)/trackList.size();
+    return (sum) / trackList.size();
   }
 
   /**
@@ -482,5 +486,34 @@ public final class UtilFeatures {
       }
     }
     return new ArrayList<File>(out);
+  }
+
+  /**
+   * Return the last played track position as read from the position file from disk
+   * @return the last played track position
+   */
+  public static float readPersistedPlayingPosition() {
+    float out = 0.0f;
+    java.io.File positionFile = SessionService.getConfFileByPath(Const.FILE_PLAYING_POSITION);
+    try {
+      String content = Files.readFirstLine(positionFile, Charsets.UTF_8);
+      out = Float.parseFloat(content);
+    } catch (Exception e) {
+      Log.error(e);
+    }
+    return out;
+  }
+
+  /**
+   * Store the current played track position as a float to the position file
+   * @param position the playing position as a float. Example : 0.1
+   */
+  public static void storePersistedPlayingPosition(float position) {
+    java.io.File positionFile = SessionService.getConfFileByPath(Const.FILE_PLAYING_POSITION);
+    try {
+      Files.write(Float.toString(position).getBytes(), positionFile);
+    } catch (Exception e) {
+      Log.error(e);
+    }
   }
 }

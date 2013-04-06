@@ -655,7 +655,7 @@ public final class QueueModel {
           && Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)) {
         // if it is the first played file of the session and we are in
         // startup mode keep position
-        float fPos = Conf.getFloat(Const.CONF_STARTUP_LAST_POSITION);
+        float fPos = UtilFeatures.readPersistedPlayingPosition();
         // play it
         bPlayOK = Player.play(toPlay, fPos, Const.TO_THE_END);
       } else {
