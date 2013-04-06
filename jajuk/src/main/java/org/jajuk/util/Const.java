@@ -134,7 +134,7 @@ public interface Const {
   String FILE_CONFIGURATION_TEMP = "temp_conf.properties";
   String FILE_HISTORY = "history.xml";
   String FILE_DEFAULT_COVER = "jajuk.file.default.cover";
-  String FILE_ABSOLUTE_DEFAULT_COVER = "jajuk-default-cover.";
+  String FILE_ABSOLUTE_DEFAULT_COVER = "default-cover.";
   // langpack name : jajuk_<locale>.properties
   String FILE_LANGPACK_PART1 = "jajuk";
   String FILE_LANGPACK_PART2 = ".properties";
@@ -375,7 +375,6 @@ public interface Const {
   String CONF_COLLECTION_CHARSET = "jajuk.collection_charset";
   /** Path of workspace the user wants to use but may be unavailable */
   String CONF_TARGET_WORKSPACE_PATH = "jajuk.target_workspace";
-  String CONF_STARTUP_LAST_POSITION = "jajuk.startup.last_position";
   String CONF_NETWORK_USE_PROXY = "jajuk.network.use_proxy";
   String CONF_NETWORK_PROXY_TYPE = "jajuk.network.proxy_type";
   String CONF_NETWORK_PROXY_HOSTNAME = "jajuk.network.proxy_hostname";
