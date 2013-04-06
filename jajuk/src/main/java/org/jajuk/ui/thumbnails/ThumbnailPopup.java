@@ -33,9 +33,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.JDialog;
 import javax.swing.JEditorPane;
+import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
-import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkEvent.EventType;
@@ -51,8 +52,6 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.base.Year;
 import org.jajuk.base.YearManager;
 import org.jajuk.services.players.QueueModel;
-import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilFeatures;
@@ -65,17 +64,11 @@ import org.jajuk.util.log.Log;
  * <p>
  * It is displayed nicely from provided jlabel position
  * </p>
- * <p>
- * We use a JWindow instead of a JDialog because (for unknown reasons) the painting is much faster. 
- * Using JDialog for instance, we can see the layout arranging the elements. 
- * </p>.
  */
 @SuppressWarnings("serial")
-public class ThumbnailPopup extends JWindow {
+public class ThumbnailPopup extends JDialog {
   private final JEditorPane text;
   private KeyEventDispatcher dispatcher = null;
-  private static final int WIDTH = 500;
-  private static final int HEIGHT = 400;
   private boolean autoclose = false;
 
   /**
@@ -119,19 +112,23 @@ public class ThumbnailPopup extends JWindow {
    */
   public ThumbnailPopup(String description, Rectangle origin, boolean autoclose) {
     this.autoclose = autoclose;
-    setAlwaysOnTop(!autoclose);
     getRootPane().setOpaque(true);
     text = new JEditorPane("text/html", description);
     text.setEditable(false);
-    text.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
-    text.setFont(FontManager.getInstance().getFont(JajukFont.DEFAULT));
     setHyperlinkHandling();
     final JScrollPane jspText = new JScrollPane(text);
     add(jspText);
+    setUndecorated(true);
     if (autoclose) {
+      getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+      setAlwaysOnTop(false);
       addAutoCloseHandling();
+    } else {
+      setDefaultLookAndFeelDecorated(true);
+      setAlwaysOnTop(true);
     }
     setSizeAndLocation(origin);
+    pack();
     setVisible(true);
     setKeystrokes();
     // Force scrollbar to stay on top (otherwise, it scrolls automatically to the bottom)
@@ -212,9 +209,8 @@ public class ThumbnailPopup extends JWindow {
     if (origin != null) {
       setLocationRelativeToOrigin(origin);
     } else {
-      setLocationToScreenCenter();
+      UtilGUI.centerWindow(this);
     }
-    setSize(WIDTH, HEIGHT);
   }
 
   /**
@@ -222,7 +218,7 @@ public class ThumbnailPopup extends JWindow {
    */
   private void addAutoCloseHandling() {
     // Make sure to close this popup when it lost focus
-    text.addMouseListener(new MouseAdapter() {
+    getContentPane().addMouseListener(new MouseAdapter() {
       @Override
       public void mouseExited(MouseEvent e) {
         // Test if mouse is really outside the popup, for unknown reason,
@@ -232,17 +228,6 @@ public class ThumbnailPopup extends JWindow {
         }
       }
     });
-  }
-
-  /**
-   * 
-   */
-  private void setLocationToScreenCenter() {
-    int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-    int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-    int x = screenWidth / 2 - WIDTH / 2;
-    int y = screenHeight / 2 - HEIGHT / 2200;
-    setLocation(x, y);
   }
 
   /**
@@ -259,15 +244,15 @@ public class ThumbnailPopup extends JWindow {
     // Adjust position if details are located outside
     // the screen
     // in x-axis
-    if ((x + WIDTH) > screenWidth) {
-      x = screenWidth - (WIDTH + 10);
+    if ((x + getWidth()) > screenWidth) {
+      x = screenWidth - (getWidth() + 10);
     }
-    if ((y + HEIGHT) > screenHeight) {
+    if ((y + getHeight()) > screenHeight) {
       x = (int) origin.getX() + (int) (0.6 * origin.getWidth());
-      if ((x + WIDTH) > screenWidth) {
-        x = screenWidth - (WIDTH + 10);
+      if ((x + getWidth()) > screenWidth) {
+        x = screenWidth - (getWidth() + 10);
       }
-      y = (int) origin.getY() + (int) (0.4 * origin.getHeight()) - (HEIGHT - 50);
+      y = (int) origin.getY() + (int) (0.4 * origin.getHeight()) - (getHeight() - 50);
     }
     setLocation(x, y);
   }

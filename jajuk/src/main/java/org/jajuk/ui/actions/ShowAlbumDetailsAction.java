@@ -20,6 +20,9 @@
  */
 package org.jajuk.ui.actions;
 
+import java.awt.Dimension;
+import java.awt.MouseInfo;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
@@ -72,7 +75,8 @@ public class ShowAlbumDetailsAction extends JajukAction {
     } else {
       return;
     }
-    LocalAlbumThumbnail thumb = new LocalAlbumThumbnail(album, 200, true);
-    new ThumbnailPopup(thumb.getDescription(), null, false);
+    LocalAlbumThumbnail thumb = new LocalAlbumThumbnail(album, 0, true);
+    java.awt.Point p = MouseInfo.getPointerInfo().getLocation();
+    new ThumbnailPopup(thumb.getDescription(), new Rectangle(p, new Dimension(-10, -50)), false);
   }
 }
