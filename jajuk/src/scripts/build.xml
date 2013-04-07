@@ -273,7 +273,7 @@
 
 
 	<!--NSIS package creation -->
-	<taskdef name="nsis" classname="net.sf.nsisant.Task">
+	<taskdef name="nsis" classname="com.danielreese.nsisant.Task">
 		<classpath location="/data/build_tools/nsis-ant/nsisant-1.3.jar" />
 	</taskdef>
 
