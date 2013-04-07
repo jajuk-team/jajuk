@@ -280,6 +280,10 @@
 	<target name='package_nsis' description='o Create Jajuk NSIS package' depends='download_mplayer,startup,clean,package_jar'>
 		<echo message='Create Jajuk NSIS installer' />
 		<mkdir dir='${nsisdir}' />
+		<!-- Set release in nsis descriptor files-->
+		<replace file="${srcdir}/packaging/NSIS/jajuk.nsis" value='${version}'>
+			<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+		</replace>
 		<nsis script="${srcdir}/packaging/NSIS/jajuk.nsis"/>
 	</target>
 
