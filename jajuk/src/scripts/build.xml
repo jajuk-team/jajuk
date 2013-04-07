@@ -36,7 +36,6 @@
 	<!-- ======================= -->
 	<!-- | Configuration paths | -->
 	<!-- ======================= -->
-	<property name='conf_izpackdir' value='/data/build_tools/IzPack' />
 	<property name='conf_jnlp-dist' value='/tmp/jajuk-dist/jnlp-dist' />
 	<property name='conf_homeuser' value='/home/tomcat55' />
 	<property name='conf_uploaddir' value='/tmp/jajuk-dist/packages/' />
@@ -58,7 +57,7 @@
 	<property name='rpmbuilddir' value='${rootdir}/RPMBUILD' />
 	<property name='rpmdistdir' value='${rpmbuilddir}/BUILDROOT/jajuk-${version}-1.noarch' />
 	<property name='windowsdir' value='${rootdir}/windows' />
-	<property name='izpackdir' value='${rootdir}/java' />
+	<property name='nsisdir' value='${rootdir}/java' />
 	<property name='sourcesdir' value='${rootdir}/sources' />
 	<property name='libdir' value='lib' />
 	<property name='distfiles' value='dist-files' />
@@ -77,13 +76,6 @@
  	disk space -->
 	<property name='jnlpdir' value='${conf_jnlp-dist}/${version}' />
 	<property name='srcdir' value='${basedir}/src' />
-
-	<!-- Izpack binary path -->
-	<path id="izpack.classpath">
-		<fileset dir="${conf_izpackdir}">
-			<include name="lib/*.jar" />
-		</fileset>
-	</path>
 
 	<target name='get-jvm'>
 		<echo message='Verifying Java Version used for building, found version ${java.specification.version}, expecting ${jajuk.java.build.version6} or ${jajuk.java.build.version7}' />
@@ -268,12 +260,11 @@
 	</target>
 
 
-	<target name='package_all' description='o Create all packages' depends='package_exe,package_izpack,package_rpm,package_source,package_sfx,package_jnlp,package_macos'>
+	<target name='package_all' description='o Create all packages' depends='package_exe,package_nsis,package_rpm,package_source,package_jnlp,package_macos'>
 		<echo message='Successfully built packages:' />
 		<echo message=' Jajuk Jar file in:     ${distdir}/bin/${jarname}' />
 		<echo message=' RPM package in:        ${rpmbuilddir}/RPMS/noarch/jajuk-${version}-1.noarch.rpm' />
 		<echo message=' Windows executable in: ${windowsdir}/jajuk-${version}-setup.exe' />
-		<echo message=' Java installer in:     ${izpackdir}/jajuk-java-installer-${version}.jar' />
 		<echo message=' MAC OS X in:           ${distdir}/jajuk-macos-${version}.zip' />
 		<echo message=' Source archive in:     ${sourcesdist}' />
 		<echo message=' JNLP war file in:      ${rootdir}/jajuk-${type}.war' />
@@ -281,13 +272,15 @@
 	</target>
 
 
-	<!--IzPack package creation -->
+	<!--NSIS package creation -->
+	<taskdef name="nsis" classname="net.sf.nsisant.Task">
+		<classpath location="/data/build_tools/nsis-ant/nsisant-1.3.jar" />
+	</taskdef>
 
-	<target name='package_izpack' description='o Create Jajuk IzPack package' depends='download_mplayer,startup,clean,package_jar,mkdist_izpack'>
-		<taskdef name='izpack' classpathref="izpack.classpath" classname='com.izforge.izpack.ant.IzPackTask' />
-		<echo message='Create Jajuk IzPack package' />
-		<echo message='Makes the installer using IzPack' />
-		<izpack input='${izpackdir}/jajuk.izpack' output='${izpackdir}/${distjarname}${version}.jar' basedir='${srcdir}' izPackDir='${conf_izpackdir}' />
+	<target name='package_nsis' description='o Create Jajuk NSIS package' depends='download_mplayer,startup,clean,package_jar'>
+		<echo message='Create Jajuk NSIS installer' />
+		<mkdir dir='${nsisdir}' />
+		<nsis script="${srcdir}/packaging/NSIS/jajuk.nsis"/>
 	</target>
 
 
@@ -336,20 +329,12 @@
 		<zip basedir='${sourcesdir}' destfile='${sourcesdist}' />
 	</target>
 
-	<!-- Windows EXE creation using launch4j-->
+	<!-- Windows jajuk.exe creation using launch4j-->
 	<target name='package_exe' description='o Create Jajuk Windows executable file' depends='package_jar,mkdist_windows'>
 		<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
 	        :${launch4j.dir}/lib/xstream.jar" />
 		<echo message='Create Jajuk Windows executable file' />
 		<launch4j configFile="${windowsdir}/jajuk.launch4j" />
-	</target>
-
-	<!-- Windows installer EXE creation from IzPack jar-->
-	<target name='package_sfx' description='o Create IzPack Windows executable file' depends='package_exe,package_izpack'>
-		<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
-			        :${launch4j.dir}/lib/xstream.jar" />
-		<echo message='Create Jajuk Windows executable file' />
-		<launch4j configFile="${windowsdir}/installer.launch4j" />
 	</target>
 
 	<target name='package_jnlp' description='o Create Java Web Start war distribution' depends='startup,clean,package_jar'>
@@ -412,28 +397,6 @@
 			<lib file='${srcdir}/packaging/jnlp/jnlp-servlet.jar' />
 		</war>
 	</target>
-
-
-	<target name='mkdist_izpack'>
-		<echo message='Prepare files to build IzPack package' />
-		<mkdir dir='${izpackdir}' />
-		<!--Izpack specific -->
-		<copy todir='${izpackdir}'>
-			<fileset file='${srcdir}/packaging/IzPack/jajuk.izpack' />
-			<fileset file='${srcdir}/packaging/IzPack/shortcutSpec.xml' />
-			<fileset file='${srcdir}/packaging/IzPack/installDirectory.unix.txt' />
-		</copy>
-		<!-- Set release in IzPack descriptor file -->
-		<replace dir='${izpackdir}' value='${version}'>
-			<include name='jajuk.izpack' />
-			<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
-		</replace>
-		<replace dir='${izpackdir}' value='-${test}'>
-			<include name='shortcutSpec.xml' />
-			<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
-		</replace>
-	</target>
-
 
 	<target name='mkdist_rpm'>
 		<echo message='Prepare files to build RPM package' />
@@ -580,7 +543,6 @@
 			<fileset file='${sourcesdist}' />
 			<fileset file='${rpmbuilddir}/RPMS/noarch/*' />
 			<fileset file='${windowsdir}/jajuk-${version}-setup.exe' />
-			<fileset file='${izpackdir}/jajuk-java-installer-${version}.jar' />
 			<fileset file='${distdir}/jajuk-macos-${version}.zip' />
 		</copy>
 	</target>
