@@ -167,7 +167,7 @@ Section
   File /r "/tmp/jajuk-dist/jajuk/bin"
   File /r "/tmp/jajuk-dist/jajuk/DERIVATED.txt"
   File /r "/tmp/jajuk-dist/jajuk/dist-files"
-  File /r "/tmp/jajuk-dist/jajuk/jajuk.exe"
+  File /r "/tmp/jajuk-dist/windows/jajuk.exe"
   File /r "/tmp/jajuk-dist/jajuk/jajuk-icon.ico"
   File /r "/tmp/jajuk-dist/jajuk/jajuk-icon-shortcut_64x64.png"
   File /r "/tmp/jajuk-dist/jajuk/jajuk-uninstall.ico"
