@@ -174,7 +174,7 @@ Section
   File /r "/tmp/jajuk-dist/jajuk/jajuk-uninstall.png"
   File /r "/tmp/jajuk-dist/jajuk/lib"
   File /r "/tmp/jajuk-dist/jajuk/LICENSE-GPL.txt"
-  File /r "/tmp/jajuk-dist/jajuk/mplayer.exe"
+  File /r "/tmp/mplayer/windows/mplayer.exe"
   File /r "/tmp/jajuk-dist/jajuk/README.html"
 SectionEnd
 
