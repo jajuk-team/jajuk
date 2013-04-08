@@ -363,17 +363,16 @@ public final class QueueModel {
           if (!bNoMount) {
             // not mounted, ok let them a chance to mount it:
             final String sMessage = Messages.getString("Error.025") + " ("
-                + item.getFile().getDirectory().getDevice().getName()
-                + Messages.getString("FIFO.4");
+                + item.getFile().getDevice().getName() + Messages.getString("FIFO.4");
             int i = Messages.getChoice(sMessage, JOptionPane.YES_NO_CANCEL_OPTION,
                 JOptionPane.INFORMATION_MESSAGE);
             if (i == JOptionPane.YES_OPTION) {
               try {
-                item.getFile().getDirectory().getDevice().mount(true);
+                item.getFile().getDevice().mount(true);
               } catch (Exception e) {
                 it.remove();
                 Log.error(e);
-                Messages.showErrorMessage(11, item.getFile().getDirectory().getDevice().getName());
+                Messages.showErrorMessage(11, item.getFile().getDevice().getName());
                 return;
               }
             } else if (i == JOptionPane.NO_OPTION) {
