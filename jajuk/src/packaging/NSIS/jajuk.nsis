@@ -229,7 +229,6 @@ SectionEnd
 Section
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${AppID}" "" "${Title}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${AppID}" "InstallDirectory" "$INSTDIR"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${AppID}" "DisplayIcon" "$INSTDIR\jajuk-icon.ico"
 SectionEnd
 
 
