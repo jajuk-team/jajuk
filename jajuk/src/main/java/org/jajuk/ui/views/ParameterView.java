@@ -146,7 +146,6 @@ public class ParameterView extends ViewAdapter {
   JSlider introLength;
   JTextField jtfBestofSize;
   JTextField jtfNoveltiesAge;
-  JTextField jtfVisiblePlanned;
   JSlider crossFadeDuration;
   JCheckBox jcbDefaultActionClick;
   JCheckBox jcbDefaultActionDrop;
@@ -210,7 +209,6 @@ public class ParameterView extends ViewAdapter {
   JLabel jlDefaultCoverSearchPattern;
   JTextField jtfDefaultCoverSearchPattern;
   JCheckBox jcbSaveExplorerFriendly;
-  JCheckBox jcbDropPlayedTracksFromQueue;
   JCheckBox jcb3dCover;
   JCheckBox jcb3dCoverFS;
   /** Enable Title view animation effect. */
@@ -556,34 +554,6 @@ public class ParameterView extends ViewAdapter {
         return true;
       }
     });
-    // number of visible tracks
-    JLabel jlVisiblePlanned = new JLabel(Messages.getString("ParameterView.177"));
-    jlVisiblePlanned.setToolTipText(Messages.getString("ParameterView.178"));
-    jtfVisiblePlanned = new JTextField(3);
-    jtfVisiblePlanned.setToolTipText(Messages.getString("ParameterView.178"));
-    jtfVisiblePlanned.setInputVerifier(new InputVerifier() {
-      @Override
-      public boolean shouldYieldFocus(final JComponent input) {
-        return verify(input);
-      }
-
-      @Override
-      public boolean verify(final JComponent input) {
-        final JTextField tf = (JTextField) input;//NOSONAR
-        final String sText = tf.getText();
-        try {
-          final int iValue = Integer.parseInt(sText);
-          // number of planned tracks between 0 and 100
-          if ((iValue < 0) || (iValue > 100)) {
-            return false;
-          }
-        } catch (final Exception e) {
-          return false;
-        }
-        jbOK.setEnabled(true);
-        return true;
-      }
-    });
     // add panels
     JPanel jpModes = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[][grow,200:300:300]"));
     jpModes.add(new JLabel(Messages.getString("ParameterView.59")));
@@ -594,8 +564,6 @@ public class ParameterView extends ViewAdapter {
     jpModes.add(jtfBestofSize, "grow,wrap");
     jpModes.add(jlNoveltiesAge);
     jpModes.add(jtfNoveltiesAge, "grow,wrap");
-    jpModes.add(jlVisiblePlanned);
-    jpModes.add(jtfVisiblePlanned, "grow,wrap");
     return jpModes;
   }
 
@@ -639,8 +607,6 @@ public class ParameterView extends ViewAdapter {
     scbLanguage.addActionListener(updateHelper);
     jcbUseParentDir = new JCheckBox(Messages.getString("ParameterView.101"));
     jcbUseParentDir.setToolTipText(Messages.getString("ParameterView.102"));
-    jcbDropPlayedTracksFromQueue = new JCheckBox(Messages.getString("ParameterView.266"));
-    jcbDropPlayedTracksFromQueue.setToolTipText(Messages.getString("ParameterView.267"));
     jcbShowVideos = new JCheckBox(Messages.getString("ParameterView.301"));
     jcbShowVideos.setToolTipText(Messages.getString("ParameterView.302"));
     jcbPreserveFileDates = new JCheckBox(Messages.getString("ParameterView.305"));
@@ -653,7 +619,6 @@ public class ParameterView extends ViewAdapter {
     jpOptions.add(jcbDefaultActionDrop);
     jpOptions.add(jcbHotkeys);
     jpOptions.add(jcbUseParentDir);
-    jpOptions.add(jcbDropPlayedTracksFromQueue);
     jpOptions.add(jcbShowVideos);
     jpOptions.add(jcbPreserveFileDates);
     return jpOptions;

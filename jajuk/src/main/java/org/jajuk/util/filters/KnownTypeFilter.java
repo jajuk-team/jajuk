@@ -31,21 +31,12 @@ import org.jajuk.util.UtilSystem;
  * Known type filter.
  */
 public final class KnownTypeFilter extends JajukFileFilter {
-  /** Self instance. */
   private static KnownTypeFilter self = new KnownTypeFilter();
 
-  /**
-   * Gets the instance.
-   * 
-   * @return singleton
-   */
   public static KnownTypeFilter getInstance() {
     return KnownTypeFilter.self;
   }
 
-  /**
-   * Singleton constructor (protected for testing purposes).
-   */
   private KnownTypeFilter() {
     super(Type.getExtensionsFromTypes(TypeManager.getInstance().getTypes()));
   }
@@ -57,8 +48,6 @@ public final class KnownTypeFilter extends JajukFileFilter {
    */
   @Override
   public boolean accept(final File f) {
-    // Force directories acceptation if user wants to navigate into
-    // directories
     if (f.isDirectory()) {
       return bShowDirectories;
     }

@@ -20,24 +20,15 @@
  */
 package org.jajuk.services.core;
 
-import java.io.File;
-
-import org.jajuk.base.Collection;
-import org.jajuk.base.DeviceManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
-import org.jajuk.services.bookmark.History;
 import org.jajuk.services.dbus.DBusManager;
-import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
-import org.jajuk.services.webradio.CustomRadiosPersistenceHelper;
-import org.jajuk.services.webradio.PresetRadiosPersistenceHelper;
 import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
-import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
@@ -56,95 +47,24 @@ public class ExitService extends Thread {
     super("Exit hook thread");
   }
 
-  /**
-   * commit some of the managers and other things that are
-   * stored. This is usually only called during exit, but
-   * should be called in-between sometimes.
-   * 
-   * @param bExit 
-   * 
-   * @throws Exception the exception
-   */
-  public static void commit(boolean bExit) throws Exception {
-    Log.debug("Commiting Queue, Ambiences, WebRadio, Configuration and collection.");
-    // Store current FIFO for next session
-    QueueModel.commit();
-    // commit ambiences
-    AmbienceManager.getInstance().commit();
-    // Commit webradios
-    CustomRadiosPersistenceHelper.commit();
-    PresetRadiosPersistenceHelper.commit();
-    // Store webradio state
-    Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(QueueModel.isPlayingRadio()));
-    // commit configuration
-    org.jajuk.util.Conf.commit();
-    // commit history
-    History.commit();
-    // Wait few secs if some devices are still refreshing, a kill signal has
-    // been sent to them
-    if (DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-      for (int i = 0; i < 10; i++) {
-        if (DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-          Thread.sleep(1000);
-          Log.debug("Waiting for refresh process end...");
-        } else {
-          continue;
-        }
-      }
-    }
-    // Commit collection if not still refreshing
-    if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-      Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION_EXIT));
-      // create an exit proof file if required
-      if (bExit) {
-        UtilSystem.createEmptyFile(SessionService
-            .getConfFileByPath(Const.FILE_COLLECTION_EXIT_PROOF));
-      }
-    }
-  }
-
   /* (non-Javadoc)
    * @see java.lang.Thread#run()
    */
   @Override
   public void run() {
     Log.debug("Exit Hook begin");
+    // Store webradio state
+    Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, Boolean.toString(QueueModel.isPlayingRadio()));
     // stop sound ASAP
     Player.stop(true);
     ObservationManager.notifySync(new JajukEvent(JajukEvents.EXITING));
     try {
       // commit only if exit is safe (to avoid commiting empty collection) 
       if (iExitCode == 0) {
-        // commit all managers/items
-        commit(true);
         // Disconnect Dbus if required
         DBusManager.disconnect();
         /* release keystrokes resources */
         JajukAction.cleanup();
-        // Remove localhost_<user> session files
-        // (can occur when network is not available)
-        File[] files = SessionService.getConfFileByPath(Const.FILE_SESSIONS).listFiles();
-        if (files != null) {
-          for (File element : files) {
-            if (element.getName().indexOf("localhost") != -1) {
-              if (!element.exists()) {
-                Log.info("Session file: " + element.getAbsolutePath() + " does not exist.");
-              } else if (element.delete()) {
-                Log.warn("Deleted session file: " + element.getAbsolutePath());
-              } else {
-                Log.warn("Could not delete file: " + element.getAbsolutePath());
-              }
-            }
-          }
-        }
-        // Remove session flag.
-        File file = SessionService.getSessionIdFile();
-        if (!file.exists()) {
-          Log.info("Cannot delete file, file: " + file.toString()
-              + " does not exist or workspace move.");
-        } else if (!file.delete()) {
-          Log.warn("Could not delete file: " + file.toString());
-        }
       }
     } catch (Exception e) {
       Log.error(e);

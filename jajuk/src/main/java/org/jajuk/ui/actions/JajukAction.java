@@ -21,7 +21,6 @@
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
-import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
@@ -90,19 +89,9 @@ public abstract class JajukAction extends AbstractAction {
           Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager")
               .getMethod("registerHotKey", new Class[] { KeyStroke.class, JajukAction.class })
               .invoke(null, new Object[] { stroke, this });
-        } catch (ClassNotFoundException e) {
+        } catch (Exception e) {
           Log.error(e);
-        } catch (IllegalArgumentException e) {
-          Log.error(e);
-        } catch (SecurityException e) {
-          Log.error(e);
-        } catch (IllegalAccessException e) {
-          Log.error(e);
-        } catch (InvocationTargetException e) {
-          Log.error(e);
-        } catch (NoSuchMethodException e) {
-          Log.error(e);
-        }
+        } 
       }
       // else use standard swing keystroke feature
       setAcceleratorKey(stroke);

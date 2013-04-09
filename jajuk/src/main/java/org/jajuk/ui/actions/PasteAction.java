@@ -217,7 +217,6 @@ public class PasteAction extends JajukAction {
               destDir.refresh(false);
               // Refresh source directories as well
               for (Directory srcDir : srcDirs) {
-                srcDir.cleanRemovedFiles();
                 srcDir.refresh(false);
               }
             } catch (Exception ioe) {

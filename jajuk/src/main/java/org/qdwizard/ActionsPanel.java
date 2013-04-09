@@ -1,6 +1,6 @@
 /*
- *  Jajuk
- *  Copyright (C) The Jajuk Team
+ *  QDWizard
+ *  Copyright (C) Bertrand Florat and others
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -34,6 +34,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.SwingConstants;
 
 /**
@@ -49,15 +50,15 @@ class ActionsPanel extends JPanel {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
   /** Problem text area. */
-  JLabel jlProblem;
-  JButton jbPrevious;
-  JButton jbNext;
-  JButton jbFinish;
-  JButton jbCancel;
+  private JLabel jlProblem;
+  private JButton jbPrevious;
+  private JButton jbNext;
+  private JButton jbFinish;
+  private JButton jbCancel;
   private Color backgroundColor;
   private Color backgroundColorProblem;
   /** Associated action listener. */
-  ActionListener al;
+  private ActionListener al;
 
   /**
    * The Constructor.
@@ -153,6 +154,14 @@ class ActionsPanel extends JPanel {
    */
   public void setProblemBackgroundColor(Color color) {
     this.backgroundColorProblem = color;
+  }
+
+  /**
+   * Set the "next" button as default button
+  * @param rootPane the wizard root pane
+   */
+  public void setNextAsDefaultButtonInPanel(JRootPane rootPane) {
+    rootPane.setDefaultButton(jbNext);
   }
 
   /**

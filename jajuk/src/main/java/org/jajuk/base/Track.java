@@ -30,7 +30,7 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 
 import org.apache.commons.lang.StringUtils;
-import org.jajuk.services.core.RatingManager;
+import org.jajuk.services.core.RatingService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -430,8 +430,8 @@ public class Track extends LogicalItem implements Comparable<Track> {
   public void setHits(long hits) {
     setProperty(Const.XML_TRACK_HITS, hits);
     // Store max playcount
-    if (hits > RatingManager.getMaxPlaycount()) {
-      RatingManager.setMaxPlaycount(hits);
+    if (hits > RatingService.getMaxPlaycount()) {
+      RatingService.setMaxPlaycount(hits);
     }
   }
 
@@ -471,7 +471,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
       // -- Manual rating : just use preference
       if (Conf.getBoolean(Const.CONF_MANUAL_RATINGS)) {
         long preference = getLongValue(Const.XML_TRACK_PREFERENCE);
-        long rate = RatingManager.getRateForPreference(preference);
+        long rate = RatingService.getRateForPreference(preference);
         setRate(rate);
         // -- Semi-Automatic (standard) rating 
       } else {
@@ -506,7 +506,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
         // compute the playcount rate (logarithmic scale to take number of plays
         // into account)
         // playcountRate = ln(track playcount)/ln(max playcount)
-        long maxPlayCount = RatingManager.getMaxPlaycount();
+        long maxPlayCount = RatingService.getMaxPlaycount();
         if (maxPlayCount <= 0) {
           maxPlayCount = 1;
         }
@@ -538,7 +538,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    */
   protected void setRate(long rate) {
     setProperty(Const.XML_TRACK_RATE, rate);
-    RatingManager.setRateHasChanged(true);
+    RatingService.setRateHasChanged(true);
   }
 
   /**

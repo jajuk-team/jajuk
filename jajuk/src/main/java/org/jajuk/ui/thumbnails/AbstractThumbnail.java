@@ -121,7 +121,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
             // Finally display the popup (Leave if user unselected
             // the option "Show catalog popups"
             if (Conf.getBoolean(Const.CONF_SHOW_POPUPS)) {
-              mouseOverItem.displayPopup();
+              mouseOverItem.displayPopup(true);
             }
           }
           bDragging = false;
@@ -164,12 +164,13 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   }
 
   /**
-   * display a popup over the catalog item.
+   * Display a popup over the catalog item.
+   * @param autoclose should the popup close by itself or stuck on the screen ?
    */
-  private void displayPopup() {
+  private void displayPopup(boolean autoclose) {
     // close popup if any visible
     if (details != null) {
-      details.dispose();
+      details.closeIfAutoclose();
       details = null;
     }
     // don't show details if the contextual popup menu
@@ -177,12 +178,10 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     if (jmenu.isVisible()) {
       return;
     }
-    UtilGUI.waiting();
     String description = getDescription();
     if (description != null) {
       details = new ThumbnailPopup(description, new Rectangle(jlIcon.getLocationOnScreen(),
-          new Dimension(jlIcon.getWidth(), jlIcon.getHeight())), true);
-      UtilGUI.stopWaiting();
+          new Dimension(jlIcon.getWidth(), jlIcon.getHeight())), autoclose);
     }
   }
 
@@ -393,7 +392,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
         Messages.showErrorMessage(166);
       }
     } else if (e.getSource() == jmiShowPopup) {
-      displayPopup();
+      displayPopup(false);
     }
   }
 

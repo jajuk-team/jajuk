@@ -22,6 +22,7 @@ package org.jajuk.ui.views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -60,7 +61,6 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.IndexHighlighterPredicate;
 import org.jajuk.ui.helpers.JajukTableModel;
-import org.jajuk.ui.helpers.PlayHighlighterPredicate;
 import org.jajuk.ui.helpers.PlaylistEditorTransferHandler;
 import org.jajuk.ui.helpers.PlaylistTableModel;
 import org.jajuk.ui.widgets.JajukButton;
@@ -75,6 +75,8 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
+import org.jdesktop.swingx.decorator.ComponentAdapter;
+import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.api.SubstanceColorScheme;
 import org.jvnet.substance.api.SubstanceSkin;
@@ -92,14 +94,14 @@ public class QueueView extends PlaylistView {
   /** Stop after button. */
   private JajukToggleButton jtbStopAfter;
   /** Action when user clicks on stop after. */
-  ActionListener alStopAfter = new ActionListener() {
+  private ActionListener alStopAfter = new ActionListener() {
     @Override
     public void actionPerformed(ActionEvent e) {
       QueueModel.setStopAfter(jtbStopAfter.isSelected());
     }
   };
   /** Action for auto scrolling. */
-  ActionListener alAutoScroll = new ActionListener() {
+  private ActionListener alAutoScroll = new ActionListener() {
     @Override
     public void actionPerformed(ActionEvent e) {
       Conf.setProperty(Const.CONF_AUTO_SCROLL, Boolean.toString(jtbAutoScroll.isSelected()));
@@ -202,8 +204,14 @@ public class QueueView extends PlaylistView {
     ColorHighlighter colorHighlighter = new ColorHighlighter(new IndexHighlighterPredicate(),
         queueHighlighterColor, null);
     editorTable.addHighlighter(colorHighlighter);
-    ColorHighlighter playHighlighter = new ColorHighlighter(new PlayHighlighterPredicate(editorTable),
-        Color.ORANGE, null);
+    HighlightPredicate hpPlaying = new HighlightPredicate() {
+      @Override
+      public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
+        int convertedRow = editorTable.convertRowIndexToModel(adapter.row);
+        return QueueModel.isPlayingTrack() && convertedRow == QueueModel.getIndex();
+      }
+    };
+    ColorHighlighter playHighlighter = new ColorHighlighter(hpPlaying, Color.ORANGE, null);
     editorTable.addHighlighter(playHighlighter);
     // register events
     ObservationManager.register(this);

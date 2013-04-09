@@ -23,6 +23,7 @@ package org.jajuk.services.players;
 import java.util.Properties;
 
 import javax.sound.sampled.LineUnavailableException;
+import javax.swing.JOptionPane;
 
 import javazoom.jlgui.basicplayer.BasicPlayer;
 
@@ -36,6 +37,7 @@ import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
+import org.jajuk.util.error.JajukRuntimeException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -76,6 +78,25 @@ public final class Player {
   public static boolean play(final File file, final float fPosition, final long length) {
     if (file == null) {
       throw new IllegalArgumentException("Cannot play empty file.");
+    }
+    // Check if the file is on a mounted device, should be tested before but not always, see #1915
+    if (!file.getDevice().isMounted()) {
+      // not mounted, ok let them a chance to mount it:
+      final String sMessage = Messages.getString("Error.025") + " ("
+          + file.getDirectory().getDevice().getName() + Messages.getString("FIFO.4");
+      int i = Messages.getChoice(sMessage, JOptionPane.YES_NO_CANCEL_OPTION,
+          JOptionPane.INFORMATION_MESSAGE);
+      if (i == JOptionPane.YES_OPTION) {
+        try {
+          file.getDevice().mount(true);
+        } catch (Exception e) {
+          Log.error(e);
+          Messages.showErrorMessage(11, file.getDevice().getName());
+          throw new JajukRuntimeException("Device not mounted");
+        }
+      } else { // "cancel" or "no"
+        throw new JajukRuntimeException("Device not mounted");
+      }
     }
     fCurrent = file;
     try {

@@ -66,7 +66,6 @@ public class TestQueueModel extends JajukTestCase {
     QueueModel.stopRequest();
     // reset conf changes to default
     Conf.setProperty(Const.CONF_STATE_CONTINUE, "false");
-    Conf.setProperty(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE, "false");
     Conf.setProperty(Const.CONF_STATE_CONTINUE, "false");
     Conf.setProperty(Const.CONF_STATE_SHUFFLE, "false");
     // remove any registered files
@@ -350,27 +349,7 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(10, QueueModel.getQueueSize());
   }
 
-  /**
-   * Test finished boolean remove played.
-   * 
-   *
-   * @throws Exception the exception
-   */
-  public void testFinishedBooleanRemovePlayed() throws Exception {
-    // set config option that we want to test
-    Conf.setProperty(Const.CONF_DROP_PLAYED_TRACKS_FROM_QUEUE, "true");
-    // without item it just returns
-    QueueModel.finished(true);
-    // with items, it will go to the next line
-    addItems(10);
-    QueueModel.goTo(0);
-    assertEquals(0, QueueModel.getIndex());
-    QueueModel.finished(true);
-    assertEquals(0, QueueModel.getIndex());
-    // here we should have 9 now...
-    assertEquals(9, QueueModel.getQueueSize());
-  }
-
+ 
   /**
    * Test finished end of queue no planned.
    * 

@@ -467,6 +467,10 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
           }
         }
       }
+      // Leave if zero match
+      if (albums.size() == 0) {
+        return pageAlbums;
+      }
       // Force thumbs build if required, this is the longest task of this worker
       // we only keep albums for this page
       // computes the number of pages

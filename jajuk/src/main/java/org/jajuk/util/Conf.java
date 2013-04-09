@@ -28,12 +28,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.Properties;
 
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.notification.NotificatorTypes;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.perspectives.SimplePerspective;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -172,7 +174,6 @@ public final class Conf implements Const {
     // no startup file by default
     defaults.put(CONF_STARTUP_ITEM, "");
     defaults.put(CONF_STARTUP_MODE, STARTUP_MODE_LAST_KEEP_POS);
-    defaults.put(CONF_STARTUP_LAST_POSITION, "0");
     defaults.put(CONF_STARTUP_STOPPED, "false");
     defaults.put(CONF_CONFIRMATIONS_DELETE_FILE, TRUE);
     defaults.put(CONF_CONFIRMATIONS_EXIT, FALSE);
@@ -205,7 +206,6 @@ public final class Conf implements Const {
     defaults.put(CONF_P2P_HIDE_LOCAL_PROPERTIES, TRUE);
     defaults.put(CONF_HISTORY, "-1");
     defaults.put(CONF_TAGS_USE_PARENT_DIR, TRUE);
-    defaults.put(CONF_DROP_PLAYED_TRACKS_FROM_QUEUE, FALSE);
     defaults.put(CONF_BOOKMARKS, "");
     defaults.put(CONF_STARTUP_DISPLAY, Integer.toString(DISPLAY_MODE_MAIN_WINDOW));
     defaults.put(CONF_BESTOF_TRACKS_SIZE, "20");
@@ -346,9 +346,9 @@ public final class Conf implements Const {
     defaults.put(CONF_STARTUP_QUEUE_INDEX, "-1");
     // NOT SHOW AGAIN
     defaults.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
-    defaults.put(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_CROSS_FADE, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_LAF_CHANGE, FALSE);
+    defaults.put(CONF_TARGET_WORKSPACE_PATH, UtilSystem.getUserHome());
     // Make a copy of default values
     properties = (Properties) defaults.clone();
   }
@@ -358,7 +358,6 @@ public final class Conf implements Const {
    */
   public static void resetDontShowAgain() {
     setProperty(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
-    setProperty(CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION, FALSE);
     setProperty(CONF_NOT_SHOW_AGAIN_CROSS_FADE, FALSE);
     setProperty(CONF_NOT_SHOW_AGAIN_LAF_CHANGE, FALSE);
   }
@@ -384,13 +383,34 @@ public final class Conf implements Const {
   }
 
   /**
-   * Set a property.
+   * Set a property and persist the configuration
    * 
-   * @param sName 
-   * @param sValue 
+   * @param sName property name
+   * @param sValue  property value as string
    */
   public static void setProperty(String sName, String sValue) {
     properties.setProperty(sName, sValue);
+    try {
+      commit();
+    } catch (IOException e) {
+      Log.error(e);
+    }
+  }
+
+  /**
+   * Set a bunch of properties and persist the configuration
+   * 
+    * @param  properties a map of string key to string values 
+   */
+  public static void setProperties(final HashMap<String, String> properties) {
+    for (String propertyName : properties.keySet()) {
+      Conf.properties.setProperty(propertyName, properties.get(propertyName));
+    }
+    try {
+      commit();
+    } catch (IOException e) {
+      Log.error(e);
+    }
   }
 
   /**
@@ -470,6 +490,10 @@ public final class Conf implements Const {
    */
   public static void load() {
     try {
+      // if a temp conf file is found, it may mean that the temp 
+      // to final move has not be done at last shutdown so we do it now
+      replaceCorruptedConfFile();
+      // Now read the conf file
       InputStream str = new FileInputStream(
           SessionService.getConfFileByPath(Const.FILE_CONFIGURATION));
       try {
@@ -477,9 +501,18 @@ public final class Conf implements Const {
       } finally {
         str.close();
       }
-    } catch (IOException e) {
-      e.printStackTrace(); // do not use log system here
+    } catch (Exception e) {
+      Log.error(e);
       Messages.showErrorMessage(114);
+    }
+  }
+
+  private static void replaceCorruptedConfFile() throws IOException, JajukException {
+    File finalFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION);
+    File fTempFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION_TEMP);
+    if (fTempFile.exists()) {
+      Log.warn("Conf file seems not to having been fully stored at last session");
+      UtilSystem.move(fTempFile, finalFile);
     }
   }
 

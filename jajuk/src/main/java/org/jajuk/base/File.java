@@ -226,8 +226,9 @@ public class File extends PhysicalItem implements Comparable<File> {
         return comp;
       }
     } else {
-      // Files are in different directories, sort by parent directory
-      return this.getDirectory().compareTo(otherFile.getDirectory());
+      // Files are in different directories, sort by absolute path
+      // Do not compare simply parent directories to avoid general contact violation about transitivity
+      return this.getAbsolutePath().compareToIgnoreCase(otherFile.getAbsolutePath());
     }
   }
 

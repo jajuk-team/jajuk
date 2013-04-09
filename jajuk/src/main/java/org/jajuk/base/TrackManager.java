@@ -23,10 +23,12 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JOptionPane;
@@ -57,6 +59,8 @@ public final class TrackManager extends ItemManager {
   private volatile boolean bAutocommit = true;
   /** Set of tags to commit. */
   private final Set<Tag> tagsToCommit = new HashSet<Tag>(10);
+  /** Attic for tracks that have been dropped but may be useful when a file is renamed to restore its properties */
+  private final Map<String, Track> attic = new HashMap<String, Track>(0);
 
   /**
    * No constructor available, only static access.
@@ -938,6 +942,8 @@ public final class TrackManager extends ItemManager {
     try {
       // Remove file reference
       track.removeFile(file);
+      // Put it in the attic 
+      attic.put(track.getID(), track);
       // If the track contained a single file, drop it
       if (track.getFiles().size() == 0) {
         // the track don't map
@@ -947,6 +953,15 @@ public final class TrackManager extends ItemManager {
     } finally {
       lock.writeLock().unlock();
     }
+  }
+
+  /**
+   * Return a track from attic or null if not found
+   * @param id the track id to search for
+   * @return a track from attic or null if not found
+   */
+  public Track getTrackFromAttic(String id) {
+    return attic.get(id);
   }
 
   /*

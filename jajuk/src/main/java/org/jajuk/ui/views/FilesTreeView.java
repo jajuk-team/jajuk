@@ -826,7 +826,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
     public void valueChanged(TreeSelectionEvent e) {
       paths = jtree.getSelectionModel().getSelectionPaths();
       // nothing selected, can be called during dnd
-      if (paths == null) {
+      if (paths == null || paths.length == 0) {
         return;
       }
       int items = 0;

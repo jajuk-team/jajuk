@@ -31,10 +31,10 @@ import java.util.Map;
  * ResourceBundle here to ease translation tasks (properties doesn't support
  * non-latin1 characters) and because QDwizard comes with very few strings
  */
-public class Langpack {
+class Langpack {
   private static List<String> defaults = Arrays.asList("Finish", "Cancel", "Previous", "Next");
   // Strings content : "Finish", "Cancel", "Previous", "Next"
-  static private Map<Locale, List<String>> strings = new HashMap<Locale, List<String>>(4);
+  static private Map<Locale, List<String>> strings = new HashMap<Locale, List<String>>(20);
   /** static set of strings, can contain non-ISO8859 chars * */
   static {
     strings.put(new Locale("ca"), Arrays.asList("Finalitzar", "Cancelar", "Anterior", "Següent"));
@@ -49,6 +49,7 @@ public class Langpack {
         Arrays.asList("Afgerond", "Annuleren", "Vooropgaand", "Aanstaande"));
     strings.put(new Locale("ru"), Arrays.asList("Готово", "Отмена", "Назад", "Дальше"));
     strings.put(new Locale("pt"), Arrays.asList("Terminar", "Cancelar", "Anterior", "Seguinte"));
+    strings.put(new Locale("zh"), Arrays.asList("完成", "取消", "上一步", "下一步"));
   }
   /** Used locale for the wizard buttons, use English as a default *. */
   private static Locale locale = new Locale("en");

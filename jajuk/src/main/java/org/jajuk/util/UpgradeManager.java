@@ -32,6 +32,7 @@ import java.util.StringTokenizer;
 import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Collection;
@@ -93,17 +94,17 @@ public final class UpgradeManager implements Const {
       stringRelease = pStringRelease.split("dev.*")[0];
     }
     // Add a trailing .0 if it is a main release like 1.X -> 1.X.0
-    int countDot = stringRelease.replaceAll("[^.]", "").length();
+    int countDot = StringUtils.countMatches(stringRelease, ".");
     if (countDot == 1) {
       stringRelease = stringRelease + ".0";
     }
     // Analyze each part of the release, throw a runtime exception if
     // the format is wrong at this point
     StringTokenizer st = new StringTokenizer(stringRelease, ".");
-    String main = UtilString.padNumber(Integer.parseInt(st.nextToken()), 2);
-    String minor = UtilString.padNumber(Integer.parseInt(st.nextToken()), 2);
-    String fix = UtilString.padNumber(Integer.parseInt(st.nextToken()), 2);
-    return Integer.parseInt(main + minor + fix);
+    int main = 10000 * Integer.parseInt(st.nextToken());
+    int minor = 100 * Integer.parseInt(st.nextToken());
+    int fix = Integer.parseInt(st.nextToken());
+    return main + minor + fix;
   }
 
   /**
@@ -666,8 +667,8 @@ public final class UpgradeManager implements Const {
    * 
    * @return whether two releases switch is a major upgrade or not
    */
-  protected static boolean isMajorMigration(String currentRelease, String comparedRelease) {
-    int iCurrentRelease = getNumberRelease(currentRelease);
+  protected static boolean isMajorMigration(String codeRelease, String comparedRelease) {
+    int iCurrentRelease = getNumberRelease(codeRelease);
     int iComparedRelease = getNumberRelease(comparedRelease);
     return iComparedRelease / 100 != iCurrentRelease / 100;
   }

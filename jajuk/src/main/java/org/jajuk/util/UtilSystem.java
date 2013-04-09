@@ -253,7 +253,6 @@ public final class UtilSystem {
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void copy(final File file, final File fNew) throws JajukException, IOException {
-    Log.debug("Copying: {{" + file.getAbsolutePath() + "}}  to : " + fNew.getAbsolutePath());
     if (!file.exists() || !file.canRead()) {
       throw new JajukException(9, file.getAbsolutePath(), null);
     }

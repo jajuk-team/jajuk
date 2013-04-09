@@ -287,8 +287,6 @@ public class TrackPositionSliderToolbar extends JPanel implements ChangeListener
             // use set value, not setPosition that would cause
             // a seek that could fail with some formats
             jsPosition.setValue(0);
-            // reset startup position
-            Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, "0");
             jsPosition.addMouseWheelListener(TrackPositionSliderToolbar.this);
             jsPosition.addChangeListener(TrackPositionSliderToolbar.this);
           } else if (JajukEvents.PLAYER_PAUSE.equals(subject)) {

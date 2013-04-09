@@ -36,6 +36,7 @@ import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
+import org.jajuk.util.UtilFeatures;
 
 /**
  * Tests for org.jajuk.services.StartupEngineService
@@ -73,7 +74,7 @@ public class TestStartupEngineService extends JajukTestCase {
     bw.write(file3.getID() + "\n");
     bw.close();
     // Set others properties
-    Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, POSITION + "");
+    UtilFeatures.storePersistedPlayingPosition(POSITION);
     Conf.setProperty(Const.CONF_STARTUP_STOPPED, "false");
     Conf.setProperty(Const.CONF_STARTUP_ITEM, file3.getID());
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "false");

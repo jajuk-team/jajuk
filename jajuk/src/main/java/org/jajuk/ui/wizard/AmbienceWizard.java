@@ -50,13 +50,12 @@ import org.jajuk.services.dj.AmbienceDigitalDJ;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.windows.JajukMainWindow;
-import org.jajuk.util.Conf;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
-import org.jajuk.util.log.Log;
 import org.qdwizard.Screen;
 import org.qdwizard.Wizard;
 
@@ -64,9 +63,6 @@ import org.qdwizard.Wizard;
  * Ambiences management wizard.
  */
 public class AmbienceWizard extends Wizard {
-  /**
-   * .
-   */
   public static class AmbiencePanel extends Screen implements ActionListener {
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
@@ -352,9 +348,9 @@ public class AmbienceWizard extends Wizard {
    * Instantiates a new ambience wizard.
    */
   public AmbienceWizard() {
-    super(Messages.getString("DigitalDJWizard.56"), AmbiencePanel.class, null, JajukMainWindow
-        .getInstance(), LocaleManager.getLocale(), 500, 600);
-    setHeaderIcon(IconLoader.getIcon(JajukIcons.AMBIENCE));
+    super(new Wizard.Builder(Messages.getString("DigitalDJWizard.56"), AmbiencePanel.class,
+        JajukMainWindow.getInstance()).hSize(600).vSize(500).locale(LocaleManager.getLocale())
+        .icon(IconLoader.getIcon(JajukIcons.AMBIENCE)));
   }
 
   /*
@@ -369,14 +365,10 @@ public class AmbienceWizard extends Wizard {
     }
     // commit it to avoid it is lost before the app close
     AmbienceManager.getInstance().commit();
-    try {
-      Conf.commit();
-    } catch (final Exception e) {
-      Log.error(113, e);
-      Messages.showErrorMessage(113);
-    }
     // Refresh UI
     ObservationManager.notify(new JajukEvent(JajukEvents.AMBIENCES_CHANGE));
+    InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
+        InformationJPanel.MessageType.INFORMATIVE);
   }
 
   /*

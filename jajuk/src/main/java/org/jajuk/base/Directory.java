@@ -37,12 +37,13 @@ import org.jajuk.ui.helpers.RefreshReporter;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
+import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.JajukRuntimeException;
+import org.jajuk.util.filters.AudioFilter;
 import org.jajuk.util.log.Log;
 
 /**
@@ -283,8 +284,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     }
     // Create a list of music files and playlist files to consider
     List<File> musicFiles = new ArrayList<File>(filelist.length);
-    List<File> playlistFiles = new ArrayList<File>(filelist.length);
-    List<Long> durations = new ArrayList<Long>(filelist.length);
+    List<File> playlistFiles = new ArrayList<File>(1 + filelist.length / 10);
     for (int i = 0; i < filelist.length; i++) {
       // Leave ASAP if exit request
       if (ExitService.isExiting()) {
@@ -304,33 +304,21 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
       // check if we recognize the file as music file
       String extension = UtilSystem.getExtension(filelist[i]);
       Type type = TypeManager.getInstance().getTypeByExtension(extension);
-      // Now, compute disc ID and cache tags (only in deep mode because we don't
-      // want to read tags in fast modes)
-      if (bDeepScan && type.getTagImpl() != null) {
-        try {
-          Tag tag = Tag.getTagForFio(filelist[i], false);
-          durations.add(tag.getLength());
-        } catch (JajukException je) {
-          Log.error(je);
-        }
-      }
-      boolean bIsMusic = (Boolean) type.getValue(Const.XML_TYPE_IS_MUSIC);
-      if (bIsMusic) {
+      // Now, compute disc ID and cache tags 
+      if (type.getBooleanValue(Const.XML_TYPE_IS_MUSIC)) {
         musicFiles.add(filelist[i]);
       } else { // playlist
         playlistFiles.add(filelist[i]);
       }
     }
-    // Compute the disc id (deep mode only)
-    if (bDeepScan) {
-      this.discID = UtilFeatures.computeDiscID(durations);
-    }
+    // Compute the disc id 
+    this.discID = computeDiscID();
     // Perform actual scan and check errors for each file
-    for (File musicfile : musicFiles) {
+    for (File musicFile : musicFiles) {
       try {
-        scanMusic(musicfile, bDeepScan, reporter);
+        scanMusic(musicFile, bDeepScan, reporter);
       } catch (Exception e) {
-        Log.error(103, filelist.length > 0 ? "{{" + musicfile.toString() + "}}" : "", e);
+        Log.error(103, filelist.length > 0 ? "{{" + musicFile.toString() + "}}" : "", e);
       }
     }
     for (File playlistFile : playlistFiles) {
@@ -349,6 +337,24 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     for (Album album : albumsToCheck) {
       album.findCover();
     }
+  }
+
+  /**
+   * Compute the directory disc id (simply the sum in bits of the audio files lengths)
+   * @return the directory disc id
+   */
+  private long computeDiscID() {
+    long out = 0;
+    JajukFileFilter filter = new JajukFileFilter(AudioFilter.getInstance());
+    File fDir = getFio();
+    java.io.File[] files = fDir.listFiles();// null if none file
+    // found
+    for (int i = 0; files != null && i < files.length; i++) {
+      if (filter.accept(files[i])) {
+        out += files[i].length();
+      }
+    }
+    return out;
   }
 
   /**
@@ -438,26 +444,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     }
   }
 
-  /**
-   * Register file.
-   *
-   * @param music 
-   * @param sFileId 
-   * @param sTrackName 
-   * @param sAlbumName 
-   * @param sArtistName 
-   * @param sGenre 
-   * @param length 
-   * @param sYear 
-   * @param lQuality 
-   * @param sComment 
-   * @param lOrder 
-   * @param sAlbumArtist 
-   * @param oldDiskID 
-   * @param discID 
-   * @param discNumber 
-   * @return the track
-   */
   private Track registerFile(java.io.File music, String sFileId, String sTrackName,
       String sAlbumName, String sArtistName, String sGenre, long length, String sYear,
       long lQuality, String sComment, long lOrder, String sAlbumArtist, long oldDiskID,
@@ -472,10 +458,62 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     long trackNumber = TrackManager.getInstance().getElementCount();
     Track track = TrackManager.getInstance().registerTrack(sTrackName, album, genre, artist,
         length, year, lOrder, type, discNumber);
-    // Fix for #1630 : if a album discID = 0 or -1 (when upgrading from older releases), we
-    // clone the properties from the old track mapped with the old album id so we keep rating
+    cloneTrackPropertiesIfRemovedMeanwhile(track);
+    cloneAlbumAndTrackPropertiesIfAlbumIDChanged(sTrackName, sAlbumName, length, lOrder, oldDiskID,
+        discID, discNumber, album, genre, year, artist, type, track);
+    org.jajuk.base.File file = FileManager.getInstance().registerFile(sFileId, music.getName(),
+        this, track, music.length(), lQuality);
+    updateDateInformation(file, music, trackNumber, track);
+    // Comment is at the track level, note that we take last
+    // found file comment but we changing a comment, we will
+    // apply to all files for a track
+    track.setComment(sComment);
+    // Apply the album artist
+    track.setAlbumArtist(albumArtist);
+    // Make sure to refresh file size
+    file.setProperty(Const.XML_SIZE, music.length());
+    return track;
+  }
+
+  /**
+   * Force to reset track properties if the track name has been changed so its associated track has been moved to a the attic
+   * @param track
+   */
+  private void cloneTrackPropertiesIfRemovedMeanwhile(Track track) {
+    Track removedTrack = TrackManager.getInstance().getTrackFromAttic(track.getID());
+    if (removedTrack != null) {
+      track.cloneProperties(removedTrack);
+    }
+  }
+
+  private void updateDateInformation(org.jajuk.base.File file, java.io.File music,
+      long trackNumber, Track track) {
+    // Note date for file date property. CAUTION: do not try to
+    // check current date to accelerate refreshing if file has not
+    // been modified since last refresh as user can rename a parent
+    // directory and the files times under it are not modified
+    long lastModified = music.lastModified();
+    // Use file date if the "force file date" option is used
+    if (Conf.getBoolean(Const.CONF_FORCE_FILE_DATE)) {
+      track.setDiscoveryDate(new Date(lastModified));
+    } else if (TrackManager.getInstance().getElementCount() > trackNumber) {
+      // Update discovery date only if it is a new track
+      // A new track has been created, we can safely update  the track date
+      // We don't want to update date if the track is already known, even if
+      // it is a new file because a track can map several files and discovery date
+      // is a track attribute, not file one.
+      track.setDiscoveryDate(new Date());
+    }
+    // Set file date
+    file.setProperty(Const.XML_FILE_DATE, new Date(lastModified));
+  }
+
+  private void cloneAlbumAndTrackPropertiesIfAlbumIDChanged(String sTrackName, String sAlbumName,
+      long length, long lOrder, long oldDiskID, long discID, long discNumber, Album album,
+      Genre genre, Year year, Artist artist, Type type, Track track) {
+    // Fix for #1630 : we clone the properties from the old track mapped with the old album id so we keep rating
     // (among other data)
-    if (oldDiskID == -1 || oldDiskID == 0) {
+    if (oldDiskID != discID) {
       String oldAlbumID = AlbumManager.createID(sAlbumName, oldDiskID);
       Album oldAlbum = AlbumManager.getInstance().getAlbumByID(oldAlbumID);
       if (oldAlbum != null) {
@@ -489,38 +527,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
         }
       }
     }
-    // Note date for file date property. CAUTION: do not try to
-    // check current date to accelerate refreshing if file has not
-    // been modified since last refresh as user can rename a parent
-    // directory and the files times under it are not modified
-    long lastModified = music.lastModified();
-    // Use file date if the "force file date" option is used
-    if (Conf.getBoolean(Const.CONF_FORCE_FILE_DATE)) {
-      track.setDiscoveryDate(new Date(lastModified));
-    } else if (TrackManager.getInstance().getElementCount() > trackNumber) {
-      // Update discovery date only if it is a new track
-      // A new track has been created, we can safely update
-      // the track date
-      // We don't want to update date if the track is already
-      // known, even if
-      // it is a new file because a track can map several
-      // files and discovery date
-      // is a track attribute, not file one
-      track.setDiscoveryDate(new Date());
-    }
-    org.jajuk.base.File file = FileManager.getInstance().registerFile(sFileId, music.getName(),
-        this, track, music.length(), lQuality);
-    // Set file date
-    file.setProperty(Const.XML_FILE_DATE, new Date(lastModified));
-    // Comment is at the track level, note that we take last
-    // found file comment but we changing a comment, we will
-    // apply to all files for a track
-    track.setComment(sComment);
-    // Apply the album artist
-    track.setAlbumArtist(albumArtist);
-    // Make sure to refresh file size
-    file.setProperty(Const.XML_SIZE, music.length());
-    return track;
   }
 
   /**
@@ -779,6 +785,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   }
 
   /**
+
    * Return true is this is a child directory of the specified directory.
    * 
    * @param directory ancestor directory

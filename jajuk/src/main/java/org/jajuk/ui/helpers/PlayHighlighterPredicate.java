@@ -43,9 +43,9 @@ public class PlayHighlighterPredicate implements HighlightPredicate {
   /**
    * Instantiates a new play highlighter predicate.
    * 
-   * @param model 
+   * @param jtable the table the predicate apple
    */
-  public PlayHighlighterPredicate(JajukTable jtable) {
+  public PlayHighlighterPredicate(final JajukTable jtable) {
     this.jtable = jtable;
     this.model = (JajukTableModel) jtable.getModel();
   }
@@ -59,8 +59,8 @@ public class PlayHighlighterPredicate implements HighlightPredicate {
       return false;
     }
     int convertedRow = jtable.convertRowIndexToModel(adapter.row);
-    // For some reasons, we get OutOfBoundException here when the model is updated (note that 
-    // however the model can only be accessed by the EDT), so we enforce a bound test :
+    // For some reasons, we get OutOfBoundException here when the model is updated, 
+    // so we enforce a boundaries test :
     if (convertedRow >= model.getRowCount()) {
       return false;
     }

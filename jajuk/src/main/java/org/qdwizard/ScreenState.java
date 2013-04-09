@@ -1,6 +1,6 @@
 /*
- *  Jajuk
- *  Copyright (C) The Jajuk Team
+ *  QDWizard
+ *  Copyright (C) Bertrand Florat and others
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@ package org.qdwizard;
  * <li>can go previous ?</li>
  * </ul>.
  */
-public class ScreenState {
+class ScreenState {
   private boolean bCanFinish;
   /** Can Go Next. */
   private boolean bCanGoNext;
