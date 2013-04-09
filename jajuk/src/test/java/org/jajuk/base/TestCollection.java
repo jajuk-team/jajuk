@@ -23,8 +23,8 @@ package org.jajuk.base;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.ConstTest;
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilString;
@@ -36,6 +36,15 @@ import org.xml.sax.SAXParseException;
  * .
  */
 public class TestCollection extends JajukTestCase {
+  /* (non-Javadoc)
+   * @see org.jajuk.JajukTestCase#setUp()
+   */
+  @Override
+  protected void setUp() throws Exception {
+    // TODO Auto-generated method stub
+    super.setUp();
+  }
+
   /**
    * Test method for {@link org.jajuk.base.Collection#startDocument()}.
    */
@@ -85,8 +94,8 @@ public class TestCollection extends JajukTestCase {
     assertTrue(str, StringUtils.isNotBlank(str));
     assertTrue(str, str.contains("<" + Const.XML_COLLECTION));
     //Add a sample track and files
-    JUnitHelpers.getFile();
-    JUnitHelpers.getTrack(5);
+    TestHelpers.getFile();
+    TestHelpers.getTrack(5);
     // delete the file before writing the collection
     assertTrue(file.delete());
     // commit without any item

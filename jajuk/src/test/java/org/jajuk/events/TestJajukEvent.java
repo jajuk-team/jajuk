@@ -22,20 +22,25 @@ package org.jajuk.events;
 
 import java.util.Properties;
 
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 
 /**
  * .
  */
 public class TestJajukEvent extends JajukTestCase {
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for {@link org.jajuk.events.JajukEvent#hashCode()}.
    */
   public void testHashCode() {
     JajukEvent event1 = new JajukEvent(JajukEvents.VOLUME_CHANGED);
     JajukEvent event2 = new JajukEvent(JajukEvents.VOLUME_CHANGED);
-    JUnitHelpers.HashCodeTest(event1, event2);
+    TestHelpers.HashCodeTest(event1, event2);
   }
 
   /**
@@ -49,7 +54,7 @@ public class TestJajukEvent extends JajukTestCase {
     prop2.setProperty("test", "value");
     JajukEvent event1 = new JajukEvent(JajukEvents.VOLUME_CHANGED, prop1);
     JajukEvent event2 = new JajukEvent(JajukEvents.VOLUME_CHANGED, prop2);
-    JUnitHelpers.HashCodeTest(event1, event2);
+    TestHelpers.HashCodeTest(event1, event2);
   }
 
   /**
@@ -106,8 +111,8 @@ public class TestJajukEvent extends JajukTestCase {
     prop1.setProperty("test", "value");
     JajukEvent event1 = new JajukEvent(JajukEvents.VOLUME_CHANGED, prop1);
     JajukEvent event2 = new JajukEvent(JajukEvents.VOLUME_CHANGED);
-    JUnitHelpers.ToStringTest(event1);
-    JUnitHelpers.ToStringTest(event2);
+    TestHelpers.ToStringTest(event1);
+    TestHelpers.ToStringTest(event2);
   }
 
   /**
@@ -119,7 +124,7 @@ public class TestJajukEvent extends JajukTestCase {
     JajukEvent event1 = new JajukEvent(JajukEvents.VOLUME_CHANGED);
     JajukEvent event2 = new JajukEvent(JajukEvents.VOLUME_CHANGED);
     JajukEvent event3 = new JajukEvent(JajukEvents.FILE_FINISHED);
-    JUnitHelpers.EqualsTest(event1, event2, event3);
+    TestHelpers.EqualsTest(event1, event2, event3);
   }
 
   /**
@@ -136,6 +141,6 @@ public class TestJajukEvent extends JajukTestCase {
     JajukEvent event1 = new JajukEvent(JajukEvents.VOLUME_CHANGED, prop1);
     JajukEvent event2 = new JajukEvent(JajukEvents.VOLUME_CHANGED, prop2);
     JajukEvent event3 = new JajukEvent(JajukEvents.VOLUME_CHANGED, prop3);
-    JUnitHelpers.EqualsTest(event1, event2, event3);
+    TestHelpers.EqualsTest(event1, event2, event3);
   }
 }

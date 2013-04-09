@@ -23,8 +23,8 @@ package org.jajuk.services.dj;
 import ext.services.xml.XMLUtils;
 
 import org.apache.commons.lang.StringUtils;
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
@@ -45,9 +45,14 @@ import org.jajuk.util.Const;
  * .
  */
 public class TestAmbienceDigitalDJ extends JajukTestCase {
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
-   * Test method for {@link org.jajuk.services.dj.AmbienceDigitalDJ#toXML()}.
-   */
+  * Test method for {@link org.jajuk.services.dj.AmbienceDigitalDJ#toXML()}.
+  */
   public final void testToXML() {
     AmbienceDigitalDJ dj = new AmbienceDigitalDJ("3");
     assertTrue(StringUtils.isNotBlank(dj.toXML()));
@@ -98,17 +103,17 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
    * @throws Exception the exception
    */
   private File getFile(int i, Genre genre) throws Exception {
-    Album album = JUnitHelpers.getAlbum("myalbum", 0);
+    Album album = TestHelpers.getAlbum("myalbum", 0);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-    Artist artist = JUnitHelpers.getArtist("name");
-    Year year = JUnitHelpers.getYear(2000);
+    Artist artist = TestHelpers.getArtist("name");
+    Year year = TestHelpers.getYear(2000);
     // IPlayerImpl imp = new MockPlayer();
     // Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
-    Type type = JUnitHelpers.getType();
+    Type type = TestHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
-    Device device = JUnitHelpers.getDevice();
+    Device device = TestHelpers.getDevice();
     device.mount(true);
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     return FileManager.getInstance().registerFile(Integer.valueOf(i).toString(), "test.tst", dir,

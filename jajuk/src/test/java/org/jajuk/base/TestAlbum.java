@@ -26,8 +26,8 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.jajuk.ConstTest;
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
@@ -36,6 +36,15 @@ import org.jajuk.util.Messages;
  * .
  */
 public class TestAlbum extends JajukTestCase {
+  /* (non-Javadoc)
+   * @see org.jajuk.JajukTestCase#setUp()
+   */
+  @Override
+  protected void setUp() throws Exception {
+    // TODO Auto-generated method stub
+    super.setUp();
+  }
+
   /**
    * Test method for {@link org.jajuk.base.Album#getTitle()}.
    */
@@ -215,7 +224,7 @@ public class TestAlbum extends JajukTestCase {
    */
   public final void testToString() {
     Album album = new Album("1", "name", 123);
-    JUnitHelpers.ToStringTest(album);
+    TestHelpers.ToStringTest(album);
   }
 
   /**
@@ -227,7 +236,7 @@ public class TestAlbum extends JajukTestCase {
     Album album = new Album("1", "name", 123);
     Album equal = new Album("1", "name", 123);
     Album nonequal = new Album("2", "name", 123);
-    JUnitHelpers.CompareToTest(album, equal, nonequal);
+    TestHelpers.CompareToTest(album, equal, nonequal);
   }
 
   /**
@@ -254,7 +263,7 @@ public class TestAlbum extends JajukTestCase {
     assertNull(album.findCover());
     // set a cover file which does not exist
     // We need to make the cover inside a known device
-    Device tmpDevice = JUnitHelpers.getDevice();
+    Device tmpDevice = TestHelpers.getDevice();
     tmpDevice.mount(false);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, tmpDevice.getUrl() + java.io.File.separator
         + "cover.tst");
@@ -421,7 +430,7 @@ public class TestAlbum extends JajukTestCase {
    * @throws Exception the exception
    */
   private File getFile(int i, Track track) throws Exception {
-    Device device = JUnitHelpers.getDevice();
+    Device device = TestHelpers.getDevice();
     if (!device.isMounted()) {
       device.mount(true);
     }

@@ -26,6 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
@@ -106,7 +107,7 @@ public final class SearchJPanel extends JXPanel implements Observer, ActionListe
     jlHistory.setToolTipText(Messages.getString("CommandJPanel.0"));
     // We use a combo box model to make sure we get good performances after
     // rebuilding the entire model like after a refresh
-    jcbHistory.setModel(new DefaultComboBoxModel(History.getInstance().getHistory()));
+    jcbHistory.setModel(new DefaultComboBoxModel(new Vector(History.getInstance().getItems())));
     // None selection because if we start in stop mode, a selection of the
     // first item will not launch the track because the selected item is
     // still the same and no action event is thrown (Java >= 1.6)

@@ -22,13 +22,18 @@ package org.jajuk.base;
 
 import junit.framework.TestCase;
 
-import org.jajuk.JUnitHelpers;
+import org.jajuk.TestHelpers;
 import org.jajuk.util.Const;
 
 /**
  * .
  */
 public class TestYear extends TestCase {
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for {@link org.jajuk.base.Year#getTitle()}.
    */
@@ -68,10 +73,10 @@ public class TestYear extends TestCase {
    * Test method for {@link org.jajuk.base.Year#toString()}.
    */
   public void testToString() {
-    JUnitHelpers.ToStringTest(new Year("1", "1998"));
-    JUnitHelpers.ToStringTest(new Year("1", null));
-    JUnitHelpers.ToStringTest(new Year(null, "1998"));
-    JUnitHelpers.ToStringTest(new Year(null, null));
+    TestHelpers.ToStringTest(new Year("1", "1998"));
+    TestHelpers.ToStringTest(new Year("1", null));
+    TestHelpers.ToStringTest(new Year(null, "1998"));
+    TestHelpers.ToStringTest(new Year(null, null));
   }
 
   /**
@@ -89,7 +94,7 @@ public class TestYear extends TestCase {
     Year year = new Year("1", "1998");
     Year yeareq = new Year("2", "1998");
     Year yearne = new Year("3", "1997");
-    JUnitHelpers.CompareToTest(year, yeareq, yearne);
+    TestHelpers.CompareToTest(year, yeareq, yearne);
   }
 
   /**

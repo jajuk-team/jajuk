@@ -27,8 +27,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import org.apache.commons.lang.StringUtils;
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
@@ -281,6 +281,6 @@ public class TestNetworkUtils extends JajukTestCase {
    */
   public void testPrivateConstructor() throws Exception { // For EMMA
     // code-coverage tests
-    JUnitHelpers.executePrivateConstructor(NetworkUtils.class);
+    TestHelpers.executePrivateConstructor(NetworkUtils.class);
   }
 }

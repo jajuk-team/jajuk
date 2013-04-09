@@ -26,8 +26,8 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.ConstTest;
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.util.log.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -45,7 +45,7 @@ public class TestXMLUtils extends JajukTestCase {
    */
   public void testSerializableUtilitiesPrivateConstructor() throws Exception {
     // For EMMA code-coverage tests
-    JUnitHelpers.executePrivateConstructor(XMLUtils.class);
+    TestHelpers.executePrivateConstructor(XMLUtils.class);
   }
 
   /**

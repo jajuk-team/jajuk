@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.services.webradio.WebRadioOrigin;
 import org.jajuk.util.Const;
 import org.junit.Test;
@@ -34,18 +34,18 @@ import org.junit.Test;
  * Test methods for {@link org.jajuk.ui.helpers.WebRadioTableModel}.
  */
 public class TestWebRadioTableModel extends JajukTestCase {
-  /**
-   * Test method for {@link org.jajuk.ui.helpers.Duration#Duration(long)}.
-   * @throws Exception 
+  /* (non-Javadoc)
+   * @see org.jajuk.JajukTestCase#setUp()
    */
-  public TestWebRadioTableModel() throws Exception {
+  @Override
+  protected void setUp() throws Exception {
     super.setUp();
   }
 
   @Test
   public void testModel() {
     // Load radios
-    JUnitHelpers.getWebRadios();
+    TestHelpers.getWebRadios();
     //Create and populate the model
     WebRadioTableModel model = new WebRadioTableModel();
     model.populateModel(getColumnsConf(Const.XML_PLAY + ',' + Const.XML_NAME + ','

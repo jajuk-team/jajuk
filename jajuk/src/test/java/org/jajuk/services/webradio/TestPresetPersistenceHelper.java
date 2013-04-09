@@ -29,8 +29,8 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.Item;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Const;
@@ -131,8 +131,8 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
   public void testPresetRadiosCommit() throws Exception {
     // Add a few radios and commit the preset file
     // Fill few radio
-    JUnitHelpers.getWebRadio("Preset1", "http://preset1", WebRadioOrigin.PRESET);
-    JUnitHelpers.getWebRadio("Preset2", "http://preset2", WebRadioOrigin.PRESET);
+    TestHelpers.getWebRadio("Preset1", "http://preset1", WebRadioOrigin.PRESET);
+    TestHelpers.getWebRadio("Preset2", "http://preset2", WebRadioOrigin.PRESET);
     PresetRadiosPersistenceHelper.commit();
     // Load the sample file
     WebRadioHelper
@@ -144,12 +144,13 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
     PresetRadiosPersistenceHelper.commit();
     // Cleanup radios
     WebRadioManager.getInstance().cleanup();
+    assertNull(WebRadioManager.getInstance().getWebRadioByName("Preset1"));
     // load it again
     WebRadioHelper
         .loadPresetsRadios(SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET));
     // Check that the preset keywords are not lost
     radio1 = WebRadioManager.getInstance().getWebRadioByName("Preset1");
-    assertEquals(radio1.getKeywords(), "foo;bar");
+    assertEquals("foo;bar", radio1.getKeywords());
   }
 
   public void testCheckGenres() throws Exception {

@@ -66,12 +66,12 @@ import org.jajuk.services.dj.TransitionDigitalDJ;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
-import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 import org.qdwizard.ClearPoint;
@@ -1187,7 +1187,7 @@ public class DigitalDJWizard extends Wizard {
      */
     @Override
     public String getDescription() {
-      return Messages.getString("DigitalDJWizard.47");
+      return Messages.getString("DigitalDJWizard.58");
     }
 
     /* (non-Javadoc)
@@ -1362,9 +1362,9 @@ public class DigitalDJWizard extends Wizard {
    * Instantiates a new digital dj wizard.
    */
   public DigitalDJWizard() {
-    super(Messages.getString("DigitalDJWizard.4"), ActionSelectionPanel.class, null,
-        JajukMainWindow.getInstance(), LocaleManager.getLocale());
-    super.setHeaderIcon(IconLoader.getIcon(JajukIcons.DIGITAL_DJ));
+    super(new Wizard.Builder(Messages.getString("DigitalDJWizard.4"), ActionSelectionPanel.class,
+        JajukMainWindow.getInstance()).hSize(700).vSize(500)
+        .icon(IconLoader.getIcon(JajukIcons.DIGITAL_DJ)));
   }
 
   /*
@@ -1429,6 +1429,8 @@ public class DigitalDJWizard extends Wizard {
     }
     // Refresh command panel (useful for ie if DJ names changed)
     ObservationManager.notify(new JajukEvent(JajukEvents.DJS_CHANGE));
+    InformationJPanel.getInstance().setMessage(Messages.getString("Success"),
+        InformationJPanel.MessageType.INFORMATIVE);
   }
 
   /**

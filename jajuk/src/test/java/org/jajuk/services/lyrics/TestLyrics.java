@@ -27,8 +27,8 @@ import java.net.URL;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.services.lyrics.providers.GenericWebLyricsProvider;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;
 import org.jajuk.services.lyrics.providers.LyricWikiWebLyricsProvider;
@@ -60,19 +60,20 @@ public class TestLyrics extends JajukTestCase {
    */
   public void testPrivateConstructor() throws Exception {
     // For EMMA code-coverage tests
-    JUnitHelpers.executePrivateConstructor(LyricsService.class);
+    TestHelpers.executePrivateConstructor(LyricsService.class);
   }
 
   /**
    * Test setup.
    *
-   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws Exception Signals that an exception has occurred.
    */
   @Override
-  public void setUp() throws IOException {
+  public void setUp() throws Exception {
+    super.setUp();
     // to first cover this method while no providers are loaded yet
     LyricsService.getProviders();
-    tmp = JUnitHelpers.getFile("test.tmp", true).getFIO();
+    tmp = TestHelpers.getFile("test.tmp", true).getFIO();
   }
 
   /**

@@ -26,8 +26,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.ConstTest;
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.Collection;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
@@ -36,10 +36,12 @@ import org.jajuk.util.Const;
 import org.jajuk.util.error.JajukException;
 import org.xml.sax.SAXException;
 
-/**
- * 
- */
 public class TestRatingsImportExport extends JajukTestCase {
+  @Override
+  public void setUp() throws Exception {
+    super.setUp();
+  }
+
   public void testExportImport() throws IOException, SAXException, JajukException,
       ParserConfigurationException {
     ExportRatingsAction exportRatings = new ExportRatingsAction();
@@ -60,7 +62,7 @@ public class TestRatingsImportExport extends JajukTestCase {
     assertTrue(str, str.contains("<" + Const.XML_TRACKS));
     assertFalse(str, str.contains(" " + Const.XML_TRACK_HITS));
     // now with some content
-    String id = JUnitHelpers.getTrack(5).getID();
+    String id = TestHelpers.getTrack(5).getID();
     Track track = TrackManager.getInstance().getTrackByID(id);
     track.setHits(29);
     track.setProperty(Const.XML_TRACK_PREFERENCE, -2l);

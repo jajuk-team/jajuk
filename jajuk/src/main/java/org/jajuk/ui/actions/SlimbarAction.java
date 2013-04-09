@@ -31,7 +31,6 @@ import org.jajuk.ui.windows.WindowStateDecorator;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
 
 /**
  * Action to hide slim bar.
@@ -74,8 +73,6 @@ public class SlimbarAction extends JajukAction {
       // Update the icon according to status
       setIcon(IconLoader.getIcon(JajukIcons.FULL_SCREEN));
     }
-    // Store window-type displayed (useful for tray display/hide feature for ie.)
-    UtilGUI.storeWindowSate();
     // Notify that slimbar visibility change (menu bar is interested in it)
     ObservationManager.notify(new JajukEvent(JajukEvents.SLIMBAR_VISIBILTY_CHANGED));
   }

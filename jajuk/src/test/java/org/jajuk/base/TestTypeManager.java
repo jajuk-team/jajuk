@@ -36,9 +36,9 @@ public class TestTypeManager extends TestCase {
    */
   @Override
   protected void setUp() throws Exception {
+    super.setUp();
     // clear to make sure previous tests did not add anything
     TypeManager.getInstance().clear();
-    super.setUp();
   }
 
   /**

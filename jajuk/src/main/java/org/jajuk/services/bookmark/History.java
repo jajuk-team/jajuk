@@ -26,13 +26,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -66,7 +67,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   /** Self instance. */
   private static History history = new History();
   /** History repository, last play first. */
-  private static Vector<HistoryItem> vHistory = new Vector<HistoryItem>(100); // NOPMD
+  private static List<HistoryItem> items = new ArrayList<HistoryItem>(100); 
   /** History begin date. */
   private static long lDateStart;
   /** Cached date formatter. */
@@ -120,8 +121,8 @@ public final class History extends DefaultHandler implements HighPriorityObserve
    * 
    * @return the history
    */
-  public Vector<HistoryItem> getHistory() { // NOPMD
-    return vHistory;
+  public List<HistoryItem> getItems() { 
+    return items;
   }
 
   /**
@@ -143,18 +144,18 @@ public final class History extends DefaultHandler implements HighPriorityObserve
     HistoryItem hi = new HistoryItem(sFileId, lDate);
     // check if previous history item is not the same,
     // otherwise, keep last one
-    if (vHistory.size() > 0) {
-      HistoryItem hiPrevious = vHistory.get(0);
+    if (items.size() > 0) {
+      HistoryItem hiPrevious = items.get(0);
       if (hiPrevious.getFileId().equals(hi.getFileId())) {
-        vHistory.remove(0);
+        items.remove(0);
       }
-      vHistory.add(0, hi); // keep only most recent date
+      items.add(0, hi); // keep only most recent date
       // test maximum history size, if >, remove oldest item
-      if (vHistory.size() > Const.MAX_HISTORY_SIZE) {
-        vHistory.remove(vHistory.size() - 1);
+      if (items.size() > Const.MAX_HISTORY_SIZE) {
+        items.remove(items.size() - 1);
       }
     } else { // first element in history
-      vHistory.add(0, hi);
+      items.add(0, hi);
     }
   }
 
@@ -162,14 +163,14 @@ public final class History extends DefaultHandler implements HighPriorityObserve
    * Clear history.
    */
   public void clear() {
-    vHistory.clear();
+    items.clear();
   }
 
   /**
    * Cleanup history of dead items (removed files after a refresh).
    */
   public void cleanup() {
-    Iterator<HistoryItem> it = vHistory.iterator();
+    Iterator<HistoryItem> it = items.iterator();
     while (it.hasNext()) {
       HistoryItem hi = it.next();
       if (FileManager.getInstance().getFileByID(hi.getFileId()) == null) {
@@ -185,11 +186,11 @@ public final class History extends DefaultHandler implements HighPriorityObserve
    * @param sIDNew 
    */
   public void changeID(final String sIDOld, final String sIDNew) {
-    for (int i = 0; i < vHistory.size(); i++) {
-      HistoryItem hi = vHistory.get(i);
+    for (int i = 0; i < items.size(); i++) {
+      HistoryItem hi = items.get(i);
       if (hi.getFileId().equals(sIDOld)) {
-        vHistory.remove(i);
-        vHistory.add(i, new HistoryItem(sIDNew, hi.getDate()));
+        items.remove(i);
+        items.add(i, new HistoryItem(sIDNew, hi.getDate()));
       }
     }
   }
@@ -201,7 +202,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
    */
   public void clear(final int iDays) {
     // Begins by clearing deleted files
-    Iterator<HistoryItem> it = vHistory.iterator();
+    Iterator<HistoryItem> it = items.iterator();
     while (it.hasNext()) {
       HistoryItem hi = it.next();
       if (FileManager.getInstance().getFileByID(hi.getFileId()) == null) {
@@ -212,7 +213,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
     if (iDays == -1) { // infinite history
       return;
     }
-    it = vHistory.iterator();
+    it = items.iterator();
     while (it.hasNext()) {
       HistoryItem hi = it.next();
       if (hi.getDate() < (System.currentTimeMillis() - (((long) iDays) * Const.MILLISECONDS_IN_A_DAY))) {
@@ -236,7 +237,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
       bw.write("<?xml version='1.0' encoding='UTF-8'?>\n");
       bw.write("<history JAJUK_VERSION='" + Const.JAJUK_VERSION + "' begin_date='"
           + Long.toString(lDateStart) + "'>\n");
-      Iterator<HistoryItem> it = vHistory.iterator();
+      Iterator<HistoryItem> it = items.iterator();
       while (it.hasNext()) {
         HistoryItem hi = it.next();
         bw.write("\t<play file='" + hi.getFileId() + "' date='" + hi.getDate() + "'/>\n");
@@ -279,7 +280,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
    * @return the history item
    */
   public HistoryItem getHistoryItem(int index) {
-    return (index >= 0 && index < vHistory.size() ? vHistory.get(index) : null);
+    return (index >= 0 && index < items.size() ? items.get(index) : null);
   }
 
   /**
@@ -362,7 +363,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
       if (FileManager.getInstance().getFileByID(sID) != null) {
         HistoryItem hi = new HistoryItem(sID, UtilString.fastLongParser(attributes
             .getValue(attributes.getIndex("date"))));
-        vHistory.add(hi);
+        items.add(hi);
       }
     }
   }

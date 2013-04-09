@@ -27,8 +27,8 @@ import java.net.URL;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.ConstTest;
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.services.covers.Cover.CoverType;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -45,7 +45,7 @@ public class TestCover extends JajukTestCase {
   public final void testHashCode() throws Exception {
     Cover cover = new Cover(new URL("http://www.example.com/"), CoverType.STANDARD_COVER);
     Cover equal = new Cover(new URL("http://www.example.com/"), CoverType.STANDARD_COVER);
-    JUnitHelpers.HashCodeTest(cover, equal);
+    TestHelpers.HashCodeTest(cover, equal);
   }
 
   /* (non-Javadoc)
@@ -53,6 +53,7 @@ public class TestCover extends JajukTestCase {
    */
   @Override
   protected void setUp() throws Exception {
+    super.setUp();
     // Make sure to reset default conf for this option :
     Conf.restoreValue(Const.FILE_DEFAULT_COVER);
   }
@@ -92,9 +93,9 @@ public class TestCover extends JajukTestCase {
     Cover notequal = new Cover(new URL("http://www.example.com/"), CoverType.LOCAL_COVER);
     Cover notequal2 = new Cover(Const.IMAGES_SPLASHSCREEN, CoverType.NO_COVER);
     Cover notequal3 = new Cover(new URL("http://www.example.com/"), CoverType.REMOTE_COVER);
-    JUnitHelpers.CompareToTest(cover, equal, notequal);
-    JUnitHelpers.CompareToTest(cover, equal, notequal2);
-    JUnitHelpers.CompareToTest(cover, equal, notequal3);
+    TestHelpers.CompareToTest(cover, equal, notequal);
+    TestHelpers.CompareToTest(cover, equal, notequal2);
+    TestHelpers.CompareToTest(cover, equal, notequal3);
   }
 
   /**
@@ -188,10 +189,10 @@ public class TestCover extends JajukTestCase {
   public final void testToString() throws Exception {
     // standard toString
     Cover cover = new Cover(new URL("http://www.example.com/"), CoverType.STANDARD_COVER);
-    JUnitHelpers.ToStringTest(cover);
+    TestHelpers.ToStringTest(cover);
     // should also cope with items being null
     cover = new Cover(new URL("http://www.example.com/"), null);
-    JUnitHelpers.ToStringTest(cover);
+    TestHelpers.ToStringTest(cover);
   }
 
   /**
@@ -208,7 +209,7 @@ public class TestCover extends JajukTestCase {
     Cover notequal3 = new Cover(new URL("http://www.test.com/"), CoverType.STANDARD_COVER);
     // JUnitHelpers.EqualsTest(cover, equal, notequal);
     // JUnitHelpers.EqualsTest(cover, equal, notequal2);
-    JUnitHelpers.EqualsTest(cover, equal, notequal3);
+    TestHelpers.EqualsTest(cover, equal, notequal3);
   }
 
   /**
@@ -218,7 +219,7 @@ public class TestCover extends JajukTestCase {
    */
   public final void testGetFile() throws Exception {
     Cover cover = new Cover(new URL("http://www.example.com/"), CoverType.REMOTE_COVER);
-    Cover cover2 = new Cover(JUnitHelpers.getFile().getFIO(), CoverType.STANDARD_COVER);
+    Cover cover2 = new Cover(TestHelpers.getFile().getFIO(), CoverType.STANDARD_COVER);
     assertNotNull(cover.getFile());
     assertNotNull(cover2.getFile());
   }

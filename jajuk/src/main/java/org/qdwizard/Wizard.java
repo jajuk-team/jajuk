@@ -1,6 +1,6 @@
 /*
- *  Jajuk
- *  Copyright (C) The Jajuk Team
+ *  QDWizard
+ *  Copyright (C) Bertrand Florat and others
  *  http://jajuk.info
  *
  *  This program is free software; you can redistribute it and/or
@@ -27,8 +27,8 @@ import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.Arrays;
@@ -49,16 +49,16 @@ import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.util.log.Log;
 
 /**
- * A Wizard dialog displaying one to many screens
+ * A Wizard dialog displaying one or more screens
  * <ul>
  * <li>Create a class that extends Wizard. You have to implement
  * getPreviousScreen(), getNextScreen() and finish() abstract methods</li>
  * <li> Displaying the wizard:</li>
  * 
  * <pre>
- * MyWizard wizard = new MyWizard(String sName,Class initial,
- * ImageIcon icon,Frame parentWindow,
- * Locale locale,int iHSize,int iVSize);
+ * MyWizard wizard = new Wizard(new Wizard.Builder("wizard name", ActionSelectionPanel.class,
+        window).hSize(600).vSize(500).locale(LocaleManager.getLocale())
+        .icon(anIcon));
  * wizard.show();
  * </pre>
  * 
@@ -85,38 +85,146 @@ import org.jajuk.util.log.Log;
  * @created 1 may 2006
  */
 public abstract class Wizard implements ActionListener, WindowListener {
-  /** Wizard name. */
-  private String sName;
-  /** Current screen. */
+  private final String name;
   private Screen current;
-  /** Wizard left side icon. */
-  private ImageIcon icon;
+  private final Class<? extends Screen> initial;
   /** Wizard data. */
-  protected final static Map<String, Object> data = new HashMap<String, Object>(10);
+  protected final Map<String, Object> data = new HashMap<String, Object>(10);
   /** Wizard header. */
   private Header header;
   /** Wizard action Panel. */
   private ActionsPanel actions;
   /** Wizard dialog. */
   private JDialog dialog;
-  /** Parent window. */
-  private Frame parentWindow;
+  private final Image leftSideImage;
+  private final Frame parentWindow;
+  private final int horizontalSize;
+  private final int verticalSize;
   /** Screens instance repository. */
-  private Map<Class<? extends Screen>, Screen> hmClassScreens = new HashMap<Class<? extends Screen>, Screen>(
+  private final Map<Class<? extends Screen>, Screen> hmClassScreens = new HashMap<Class<? extends Screen>, Screen>(
       10);
   /** Default Wizard size. */
   protected static final int DEFAULT_H_SIZE = 700;
   /** The Constant DEFAULT_V_SIZE.   */
   protected static final int DEFAULT_V_SIZE = 500;
-  /** The Constant DEFAULT_H_LAYOUT_PADDING.   */
+  /** Default horizontal padding.   */
   protected static final int DEFAULT_H_LAYOUT_PADDING = 5;
-  /** The Constant DEFAULT_V_LAYOUT_PADDING.   */
+  /** Default vertical padding.   */
   protected static final int DEFAULT_V_LAYOUT_PADDING = 5;
   /** Was the Wizard Canceled?. */
   private boolean bCancelled;
-  /** Layout Padding. */
-  private int layoutHPadding = DEFAULT_H_LAYOUT_PADDING;
-  private int layoutVPadding = DEFAULT_V_LAYOUT_PADDING;
+  private final int layoutHPadding;
+  private final int layoutVPadding;
+
+  public static class Builder {
+    // Mandatory fields
+    private final String name;
+    /** Initial screen class */
+    private final Class<? extends Screen> initial;
+    /** Parent window. */
+    private final Frame parentWindow;
+    // Optional fields
+    private ImageIcon icon;
+    private Image headerBackgroundImage;
+    private Image leftSideImage;
+    private int horizontalSize = -1;
+    private int verticalSize = -1;
+    private int layoutHPadding = -1;
+    private int layoutVPadding = -1;
+    private Locale locale;
+
+    /**
+     * 
+     * @param name Wizard name displayed in the frame title
+     * @param initial initial screen to display
+     * @param parentWindow wizard parent window
+     */
+    public Builder(String name, Class<? extends Screen> initial, Frame parentWindow) {
+      this.name = name;
+      this.initial = initial;
+      this.parentWindow = parentWindow;
+    }
+
+    /**
+     * Set the header left-side icon
+     * @param icon header left-side icon
+     * @return the wizard builder
+     */
+    public Builder icon(ImageIcon icon) {
+      this.icon = icon;
+      return this;
+    }
+
+    /**
+     * Set the background image
+     * @param backgroundImage image displayed in the header
+     * @return the wizard builder
+     */
+    public Builder headerBackgroundImage(Image image) {
+      this.headerBackgroundImage = image;
+      return this;
+    }
+
+    /**
+     * Set the left-side image
+     * @param left-side image displayed in the wizard body
+     * @return the wizard builder
+     */
+    public Builder leftSideImage(Image image) {
+      this.leftSideImage = image;
+      return this;
+    }
+
+    /**
+     * Set the locale
+     * @param locale locale (language) of the wizard
+     * @return the wizard builder
+     */
+    public Builder locale(Locale locale) {
+      this.locale = locale;
+      return this;
+    }
+
+    /**
+     * Set the vertical size
+     * @param verticalSize vertical size in pixel of the wizard
+     * @return the wizard builder
+     */
+    public Builder vSize(int verticalSize) {
+      this.verticalSize = verticalSize;
+      return this;
+    }
+
+    /**
+     * Set the horizontal size
+     * @param horizontalSize horizontal size in pixel of the wizard
+     * @return the wizard builder
+     */
+    public Builder hSize(int horizontalSize) {
+      this.horizontalSize = horizontalSize;
+      return this;
+    }
+
+    /**
+     * Set the vertical padding
+     * @param layoutVPadding vertical padding in pixel between header and body
+     * @return the wizard builder
+     */
+    public Builder vPadding(int layoutVPadding) {
+      this.layoutVPadding = layoutVPadding;
+      return this;
+    }
+
+    /**
+     * Set the horizontal padding
+     * @param layoutHPadding horizontal padding in pixel between left side image and body
+     * @return the wizard builder
+     */
+    public Builder hPadding(int layoutHPadding) {
+      this.layoutHPadding = layoutHPadding;
+      return this;
+    }
+  }
 
   /**
    * Wizard constructor.
@@ -124,7 +232,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * @param sName Wizard name displayed in dialog title
    * @param initial Initial screen class
    * @param icon Wizard icon (null if no icon)
-   * @param backgroundImage background image
+   * @param headerBackgroundImage background image
    * @param parentWindow wizard parent window
    * @param locale Wizard locale
    * @param iHSize Horizontal size
@@ -132,117 +240,31 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * @param iLayoutHPadding Horizontal layout padding
    * @param iLayoutVPadding Vertical layout padding
    */
-  public Wizard(String sName, Class<? extends Screen> initial, ImageIcon icon,
-      Image backgroundImage, Frame parentWindow, Locale locale, int iHSize, int iVSize,
-      int iLayoutHPadding, int iLayoutVPadding) {
+  public Wizard(Builder builder) {
     bCancelled = false;
-    this.sName = sName;
-    this.parentWindow = parentWindow;
-    if (locale != null) {
-      Langpack.setLocale(locale);
-    } else {
-      Langpack.setLocale(Locale.getDefault());
-    }
-    this.icon = icon;
-    this.layoutHPadding = iLayoutHPadding;
-    this.layoutVPadding = iLayoutVPadding;
-    createUI();
-    header.setImage(backgroundImage);
-    setScreen(initial);
-    current.onEnter();
-    dialog.setSize(iHSize, iVSize);
+    this.name = builder.name;
+    this.parentWindow = builder.parentWindow;
+    Langpack.setLocale((builder.locale == null) ? Locale.getDefault() : builder.locale);
+    this.header = new Header();
+    header.setIcon(builder.icon);
+    header.setBackgroundImage(builder.headerBackgroundImage);
+    this.layoutHPadding = (builder.layoutHPadding >= 0) ? builder.layoutHPadding
+        : DEFAULT_H_LAYOUT_PADDING;
+    this.layoutVPadding = (builder.layoutVPadding >= 0) ? builder.layoutVPadding
+        : DEFAULT_V_LAYOUT_PADDING;
+    this.initial = builder.initial;
+    this.leftSideImage = builder.leftSideImage;
+    this.horizontalSize = (builder.horizontalSize >= 0) ? builder.horizontalSize : DEFAULT_H_SIZE;
+    this.verticalSize = (builder.verticalSize >= 0) ? builder.verticalSize : DEFAULT_V_SIZE;
   }
 
   /**
-   * Wizard constructor.
-   * 
-   * @param sName Wizard name displayed in dialog title
-   * @param initial Initial screen class
-   * @param icon Wizard icon (null if no icon)
-   * @param parentWindow wizard parent window
-   * @param locale Wizard locale
-   * @param iHSize Horizontal size
-   * @param iVSize Vertical size
-   */
-  public Wizard(String sName, Class<? extends Screen> initial, ImageIcon icon, Frame parentWindow,
-      Locale locale, int iHSize, int iVSize) {
-    bCancelled = false;
-    this.sName = sName;
-    this.parentWindow = parentWindow;
-    if (locale != null) {
-      Langpack.setLocale(locale);
-    } else {
-      Langpack.setLocale(Locale.getDefault());
-    }
-    this.icon = icon;
-    createUI();
-    setScreen(initial);
-    current.onEnter();
-    dialog.setSize(iHSize, iVSize);
-  }
-
-  /**
-   * Wizard constructor.
-   * 
-   * @param sName Wizard name displayed in dialog title
-   * @param initial Initial screen class
-   * @param icon Wizard icon (null if no icon)
-   * @param backgroundImage Wizard header background (null if no image)
-   * @param parentWindow wizard parent window
-   * @param locale Wizard locale
-   */
-  public Wizard(String sName, Class<? extends Screen> initial, ImageIcon icon,
-      Image backgroundImage, Frame parentWindow, Locale locale) {
-    this(sName, initial, icon, backgroundImage, parentWindow, locale, DEFAULT_H_SIZE,
-        DEFAULT_V_SIZE, DEFAULT_H_LAYOUT_PADDING, DEFAULT_V_LAYOUT_PADDING);
-  }
-
-  /**
-   * Wizard constructor.
-   * 
-   * @param sName Wizard name displayed in dialog title
-   * @param initial Initial screen class
-   * @param icon Wizard icon (null if no icon)
-   * @param parentWindow wizard parent window
-   * @param locale Wizard locale
-   */
-  public Wizard(String sName, Class<? extends Screen> initial, ImageIcon icon, Frame parentWindow,
-      Locale locale) {
-    this(sName, initial, icon, null, parentWindow, locale, DEFAULT_H_SIZE, DEFAULT_V_SIZE,
-        DEFAULT_H_LAYOUT_PADDING, DEFAULT_V_LAYOUT_PADDING);
-  }
-
-  /**
-   * Wizard constructor (uses default locale).
-   * 
-   * @param sName Wizard name displayed in dialog title
-   * @param initial Initial screen class
-   * @param icon Wizard icon (null if no icon)
-   * @param backgroundImage Wizard header background (null if no image)
-   * @param parentWindow wizard parent window
-   */
-  public Wizard(String sName, Class<? extends Screen> initial, ImageIcon icon,
-      Image backgroundImage, Frame parentWindow) {
-    this(sName, initial, icon, backgroundImage, parentWindow, Locale.getDefault());
-  }
-
-  /**
-   * Wizard constructor (uses default locale).
-   * 
-   * @param sName Wizard name displayed in dialog title
-   * @param initial Initial screen class
-   * @param icon Wizard icon (null if no icon)
-   * @param parentWindow wizard parent window
-   */
-  public Wizard(String sName, Class<? extends Screen> initial, ImageIcon icon, Frame parentWindow) {
-    this(sName, initial, icon, null, parentWindow, Locale.getDefault());
-  }
-
-  /**
-   * Show.
-   * 
+   * Show the wizard * 
    */
   public void show() {
+    createDialog();
+    setScreen(initial);
+    current.onEnter();
     dialog.setVisible(true);
   }
 
@@ -259,16 +281,15 @@ public abstract class Wizard implements ActionListener, WindowListener {
   /**
    * UI manager.
    */
-  private void createUI() {
+  private void createDialog() {
     dialog = new JajukJDialog(parentWindow, true);// modal
     // Set default size
-    dialog.setSize(DEFAULT_H_SIZE, DEFAULT_V_SIZE);
-    dialog.setTitle(sName);
-    header = new Header();
+    dialog.setSize(this.horizontalSize == 0 ? DEFAULT_H_SIZE : horizontalSize,
+        this.verticalSize == 0 ? DEFAULT_V_SIZE : verticalSize);
+    dialog.setTitle(name);
     actions = new ActionsPanel(this);
     dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
     dialog.addWindowListener(this);
-    display();
     dialog.setLocationRelativeTo(parentWindow);
   }
 
@@ -283,19 +304,19 @@ public abstract class Wizard implements ActionListener, WindowListener {
     try {
       // Previous required. Note that the previous button is enabled only
       // if the user can go previous
-      if (ae.getActionCommand().equals("Prev")) { //$NON-NLS-1$
+      if ("Prev".equals(ae.getActionCommand())) {
         setScreen(getPreviousScreen(current.getClass()));
-      } else if (ae.getActionCommand().equals("Next")) { //$NON-NLS-1$
+      } else if ("Next".equals(ae.getActionCommand())) {
         current.onNext();
         setScreen(getNextScreen(current.getClass()));
         current.onEnter();
-      } else if (ae.getActionCommand().equals("Cancel")) { //$NON-NLS-1$
+      } else if ("Cancel".equals(ae.getActionCommand())) {
         current.onCancelled();
         data.clear();
         bCancelled = true;
         onCancel();
         dialog.dispose();
-      } else if (ae.getActionCommand().equals("Finish")) { //$NON-NLS-1$
+      } else if ("Finish".equals(ae.getActionCommand())) {
         current.onFinished();
         finish();
         dialog.dispose();
@@ -315,78 +336,54 @@ public abstract class Wizard implements ActionListener, WindowListener {
     try {
       // If the class is an clear point, we clean up all previous screens
       if (Arrays.asList(screenClass.getInterfaces()).contains(ClearPoint.class)) {
-        clearScreens();
-        screen = screenClass.newInstance();
+        resetScreens();
       }
-      // otherwise, try to get a screen from buffer or create it if needed
-      else {
-        if (!hmClassScreens.containsKey(screenClass)) {
-          screen = screenClass.newInstance();
-          hmClassScreens.put(screenClass, screen);
-        }
+      // Try to get a screen from buffer or create it if needed
+      if (hmClassScreens.containsKey(screenClass)) {
         screen = hmClassScreens.get(screenClass);
+      } else {
+        screen = screenClass.newInstance();
+        screen.setWizard(this);
+        screen.initUI();
+        hmClassScreens.put(screenClass, screen);
       }
-    } catch (InstantiationException e) {
-      Log.error(e);
-      throw new RuntimeException("setScreen " + screenClass + " caused " + e.toString(), e);
-    } catch (IllegalAccessException e) {
+    } catch (Exception e) {
       Log.error(e);
       throw new RuntimeException("setScreen " + screenClass + " caused " + e.toString(), e);
     }
     current = screen;
-    current.setWizard(this);
     current.setCanGoPrevious((getPreviousScreen(screenClass) != null));
     current.setCanGoNext((getNextScreen(screenClass) != null));
     String sDesc = screen.getDescription();
     if (sDesc != null) {
-      header.setTitleText(screen.getName());
-      header.setSubtitleText(sDesc);
+      header.setTitle(screen.getName());
+      header.setSubtitle(sDesc);
     } else {
-      header.setTitleText(screen.getName());
-      header.setSubtitleText("");
+      header.setTitle(screen.getName());
+      header.setSubtitle("");
     }
-    display();
+    refreshGUI();
   }
 
   /**
    * Called at each screen refresh.
    */
-  private void display() {
+  private void refreshGUI() {
     ((JPanel) dialog.getContentPane()).removeAll();
     dialog.setLayout(new BorderLayout(layoutHPadding, layoutVPadding));
-    if (icon != null) {
-      final JLabel jlIcon = new JLabel(icon);
+    if (leftSideImage != null) {
+      final JLabel jlIcon = new JLabel(new ImageIcon(leftSideImage));
       dialog.add(jlIcon, BorderLayout.WEST);
       // Add a listener to resize left side image if wizard window is
       // resized
-      jlIcon.addComponentListener(new ComponentListener() {
-        @Override
-        public void componentShown(ComponentEvent e) {
-          // nothing to do here
-        }
-
+      jlIcon.addComponentListener(new ComponentAdapter() {
         /* (non-Javadoc)
          * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
          */
         @Override
         public void componentResized(ComponentEvent e) {
-          Wizard.this.icon = getResizedImage(icon, jlIcon.getWidth(), jlIcon.getHeight());
-          jlIcon.setIcon(Wizard.this.icon);
+          jlIcon.setIcon(Utils.getResizedImage(leftSideImage, jlIcon.getWidth(), jlIcon.getHeight()));
           jlIcon.setVisible(true);
-          // Display icon new size, useful to create an image with
-          // right default size
-          System.out.println("Icon new size : " + jlIcon.getIcon().getIconWidth() + "x"
-              + jlIcon.getIcon().getIconHeight());
-        }
-
-        @Override
-        public void componentMoved(ComponentEvent e) {
-          // nothing to do here
-        }
-
-        @Override
-        public void componentHidden(ComponentEvent e) {
-          // nothing to do here
         }
       });
     }
@@ -399,7 +396,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
     if (current != null) {
       dialog.add(current, BorderLayout.CENTER);
     }
-    dialog.getRootPane().setDefaultButton(actions.jbNext);
+    actions.setNextAsDefaultButtonInPanel(dialog.getRootPane());
     ((JPanel) dialog.getContentPane()).revalidate();
     dialog.getContentPane().repaint();
   }
@@ -410,7 +407,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * @param img 
    */
   public void setHeaderImage(Image img) {
-    header.setImage(img);
+    header.setBackgroundImage(img);
   }
 
   /**
@@ -450,9 +447,9 @@ public abstract class Wizard implements ActionListener, WindowListener {
   abstract public Class<? extends Screen> getPreviousScreen(Class<? extends Screen> screen);
 
   /**
-   * Clear screens history.
+   * Clear screens history, all screens are dropped along with their data and will be recreated in future use.
    */
-  public final void clearScreens() {
+  public final void resetScreens() {
     hmClassScreens.clear();
   }
 
@@ -478,7 +475,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
    * Refresh buttons and problems. Called asynchronously by the screens or by
    * the wizard itself.
    */
-  public void updateGUI() {
+  public void updateGUIState() {
     boolean bPrevious = current.canGoPrevious();
     boolean bNext = current.canGoNext();
     boolean bFinish = current.canFinish();
@@ -502,26 +499,6 @@ public abstract class Wizard implements ActionListener, WindowListener {
    */
   public boolean onCancel() {
     return true;
-  }
-
-  /**
-   * Icon resizing.
-   * 
-   * @param img 
-   * @param iNewWidth 
-   * @param iNewHeight 
-   * 
-   * @return resized icon
-   */
-  private static ImageIcon getResizedImage(ImageIcon img, int iNewWidth, int iNewHeight) {
-    if (img == null) {
-      return null;
-    }
-    ImageIcon iiNew = new ImageIcon();
-    Image image = img.getImage();
-    Image scaleImg = image.getScaledInstance(iNewWidth, iNewHeight, Image.SCALE_AREA_AVERAGING);
-    iiNew.setImage(scaleImg);
-    return iiNew;
   }
 
   /* (non-Javadoc)
@@ -637,7 +614,7 @@ public abstract class Wizard implements ActionListener, WindowListener {
   }
 
   /**
-   * Was cancelled.
+   * Was canceled.
    * 
    * 
    * @return true if...

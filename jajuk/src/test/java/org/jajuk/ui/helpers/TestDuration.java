@@ -20,15 +20,16 @@
  */
 package org.jajuk.ui.helpers;
 
-import static org.junit.Assert.assertEquals;
-
-import org.jajuk.JUnitHelpers;
+import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.junit.Test;
 
-/**
- * .
- */
-public class TestDuration {
+public class TestDuration extends JajukTestCase {
+  @Override
+  public void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for {@link org.jajuk.ui.helpers.Duration#hashCode()}.
    */
@@ -36,7 +37,7 @@ public class TestDuration {
   public void testHashCode() {
     Duration dur = new Duration(123);
     Duration equ = new Duration(123);
-    JUnitHelpers.HashCodeTest(dur, equ);
+    TestHelpers.HashCodeTest(dur, equ);
   }
 
   /**
@@ -52,7 +53,7 @@ public class TestDuration {
    */
   @Test
   public void testToString() {
-    JUnitHelpers.ToStringTest(new Duration(993));
+    TestHelpers.ToStringTest(new Duration(993));
   }
 
   /**
@@ -65,7 +66,7 @@ public class TestDuration {
     Duration dur = new Duration(234);
     Duration equal = new Duration(234);
     Duration notequal = new Duration(233);
-    JUnitHelpers.EqualsTest(dur, equal, notequal);
+    TestHelpers.EqualsTest(dur, equal, notequal);
   }
 
   /**
@@ -79,7 +80,7 @@ public class TestDuration {
     Duration dur = new Duration(234);
     Duration equal = new Duration(234);
     Duration notequal = new Duration(233);
-    JUnitHelpers.CompareToTest(dur, equal, notequal);
+    TestHelpers.CompareToTest(dur, equal, notequal);
   }
 
   /**

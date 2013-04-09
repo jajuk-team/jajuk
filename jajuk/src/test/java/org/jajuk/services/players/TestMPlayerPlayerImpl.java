@@ -20,16 +20,9 @@
  */
 package org.jajuk.services.players;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-
-import org.apache.commons.io.FileUtils;
-import org.jajuk.ConstTest;
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.File;
-import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -39,42 +32,12 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class TestMPlayerPlayerImpl extends JajukTestCase {
-  /** The Constant JAVA_PROCESS.   */
-  private static final String JAVA_PROCESS = "java";
-  /** The Constant MAIN_CLASS.   */
-  private static final String MAIN_CLASS = DummyMPlayerImpl.class.getName();
-  java.io.File scriptFile;
-  /** Property which is used to find the current installation location of java. */
-  protected static final String PROPERTY_JAVA_HOME = "java.home";
-
-  /**
-   * Find java executable.
-   * 
-   *
-   * @return the string
-   */
-  private String findJavaExecutable() {
-    assertNotNull("Need to have a property 'java.home' to run this test!",
-        System.getProperty(PROPERTY_JAVA_HOME));
-    return "\"" + System.getProperty(PROPERTY_JAVA_HOME) + java.io.File.separator + "bin"
-        + java.io.File.separator + JAVA_PROCESS + "\"";
-  }
-
   /* (non-Javadoc)
    * @see org.jajuk.JajukTestCase#setUp()
    */
   @Override
-  public void setUp() throws IOException, URISyntaxException {
-    Log.info("Setting up testcase");
-    scriptFile = java.io.File.createTempFile("dummy", "mplayer.sh", new java.io.File(
-        ConstTest.TECH_TESTS_PATH));
-    scriptFile.setExecutable(true);
-    URL thisClassAbsUrl = getClass().getProtectionDomain().getCodeSource().getLocation();
-    String thisClassAbsPath = new java.io.File(thisClassAbsUrl.toURI()).getAbsolutePath();
-    FileUtils.writeStringToFile(scriptFile, "#!/bin/sh\n\n" + findJavaExecutable() + " -cp \""
-        + thisClassAbsPath + "\" " + MAIN_CLASS);
-    Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, scriptFile.getAbsolutePath());
-    StartupCollectionService.registerItemManagers();
+  public void setUp() throws Exception {
+    super.setUp();
   }
 
   /* (non-Javadoc)
@@ -82,11 +45,10 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
    */
   @Override
   protected void tearDown() throws Exception {
-    JUnitHelpers.waitForThreadToFinish("MPlayer reader thread");
-    JUnitHelpers.waitForThreadToFinish("MPlayer writer thread");
-    Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, "");
-    assertTrue(scriptFile.delete());
+    TestHelpers.waitForThreadToFinish("MPlayer reader thread");
+    TestHelpers.waitForThreadToFinish("MPlayer writer thread");
     Log.info("Tearing down testcase");
+    super.tearDown();
   }
 
   /**
@@ -97,7 +59,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testStop() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
     try {
-      File file = JUnitHelpers.getFile("file1", false);
+      File file = TestHelpers.getFile("file1", false);
       impl.play(file, 0, 2, 10);
       // sleep a bit to let threads do some work
       Thread.sleep(2000);
@@ -114,7 +76,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testSetVolume() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
     try {
-      File file = JUnitHelpers.getFile("file2", false);
+      File file = TestHelpers.getFile("file2", false);
       impl.play(file, 0, 2, 10);
       impl.setVolume(10);
       assertEquals(10.0, impl.getCurrentVolume(), 0.0001);
@@ -131,7 +93,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testGetCurrentLength() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
     try {
-      File file = JUnitHelpers.getFile("file3", false);
+      File file = TestHelpers.getFile("file3", false);
       impl.play(file, 0, 2, 10);
       // returns duration from tag if there is one
       assertEquals(120000l, impl.getDurationSec());
@@ -148,7 +110,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testGetCurrentPosition() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
     try {
-      File file = JUnitHelpers.getFile("file4", false);
+      File file = TestHelpers.getFile("file4", false);
       impl.play(file, 0, 2, 10);
       //float vbrCorrection = 120000f / (DummyMPlayerImpl.LENGTH*1000);
       // returns duration from tag if there is one
@@ -169,7 +131,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testGetElapsedTime() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
     try {
-      File file = JUnitHelpers.getFile("file5", false);
+      File file = TestHelpers.getFile("file5", false);
       impl.play(file, 0, 2, 10);
       // returns duration from tag if there is one
       // assertEquals(DummyMPlayerImpl.POSITION, impl.getElapsedTime(), 0.0001f);
@@ -187,7 +149,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
    */
   public void testPlayWebRadioFloat() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
-    WebRadio radio = JUnitHelpers.getWebRadio();
+    WebRadio radio = TestHelpers.getWebRadio();
     impl.play(radio, 1);
     // does not really start anything here: impl.stop();
   }
@@ -200,7 +162,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testSeek() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
     try {
-      File file = JUnitHelpers.getFile("file6", false);
+      File file = TestHelpers.getFile("file6", false);
       impl.play(file, 0, 2, 10);
       impl.seek(20);
       // wait a bit to let threads do some work
@@ -218,7 +180,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testGetState() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
     try {
-      File file = JUnitHelpers.getFile("file7", false);
+      File file = TestHelpers.getFile("file7", false);
       impl.play(file, 0, 2, 10);
       assertEquals("Returns -1 when not fading.", -1, impl.getState());
     } finally {
@@ -234,7 +196,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testResume() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
     try {
-      File file = JUnitHelpers.getFile("file8", false);
+      File file = TestHelpers.getFile("file8", false);
       impl.play(file, 0, 2, 10);
       impl.pause();
       // sleep a bit to lead reader thread do some work
@@ -255,7 +217,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testPlayFileFloatLongFloat() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
     try {
-      File file = JUnitHelpers.getFile("file9", false);
+      File file = TestHelpers.getFile("file9", false);
       impl.play(file, 0, 2, 10);
     } finally {
       impl.stop();
@@ -302,7 +264,7 @@ public class TestMPlayerPlayerImpl extends JajukTestCase {
   public void testPlayPosition() throws Exception {
     MPlayerPlayerImpl impl = new MPlayerPlayerImpl();
     try {
-      File file = JUnitHelpers.getFile("file10", false);
+      File file = TestHelpers.getFile("file10", false);
       impl.play(file, 3, 20, 1);
     } finally {
       impl.stop();

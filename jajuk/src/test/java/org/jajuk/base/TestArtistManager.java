@@ -25,8 +25,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.MockPlayer;
+import org.jajuk.TestHelpers;
 import org.jajuk.services.covers.Cover;
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.QueueModel;
@@ -46,6 +47,15 @@ public class TestArtistManager extends JajukTestCase {
   private static final int NUMBER_OF_TESTS = 10;
   /** The Constant NUMBER_OF_THREADS.   */
   private static final int NUMBER_OF_THREADS = 10;
+
+  /* (non-Javadoc)
+   * @see org.jajuk.JajukTestCase#setUp()
+   */
+  @Override
+  protected void setUp() throws Exception {
+    // TODO Auto-generated method stub
+    super.setUp();
+  }
 
   /**
    * Test method for {@link org.jajuk.base.ArtistManager#getXMLTag()}.
@@ -108,7 +118,7 @@ public class TestArtistManager extends JajukTestCase {
    */
   public final void testChangeArtistName() throws Exception {
     StartupCollectionService.registerItemManagers();
-    Artist artistold = JUnitHelpers.getArtist("nameold");
+    Artist artistold = TestHelpers.getArtist("nameold");
     // we get the same object back if we have the same name
     assertTrue(artistold == ArtistManager.getInstance().changeArtistName(artistold, "nameold"));
     // now try with a new name
@@ -138,30 +148,30 @@ public class TestArtistManager extends JajukTestCase {
     assertEquals("namenewnew", artist.getName()); // correct name
   }
 
-   /**
-   * Gets the file.
-   *
-   * @param i 
-   * @param artist 
-   * @return the file
-   * @throws Exception the exception
-   */
+  /**
+  * Gets the file.
+  *
+  * @param i 
+  * @param artist 
+  * @return the file
+  * @throws Exception the exception
+  */
   @SuppressWarnings("unchecked")
   private File getFile(int i, Artist artist) throws Exception {
-    Genre genre = JUnitHelpers.getGenre("name");
-    Album album = JUnitHelpers.getAlbum("myalbum", 0);
+    Genre genre = TestHelpers.getGenre("name");
+    Album album = TestHelpers.getAlbum("myalbum", 0);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read
     // covers for
     // this test
     Year year = new Year(Integer.valueOf(i).toString(), "2000");
-    IPlayerImpl imp = new JUnitHelpers.MockPlayer();
+    IPlayerImpl imp = new MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
     Type type = TypeManager.getInstance().registerType("name", "tst", cl, MyTagImpl.class);
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
-    Device device = JUnitHelpers.getDevice();
+    Device device = TestHelpers.getDevice();
     device.mount(true);
-    Directory dir = JUnitHelpers.getDirectory();
+    Directory dir = TestHelpers.getDirectory();
     File file = new org.jajuk.base.File(Integer.valueOf(i).toString(), "test.tst", dir, track, 120,
         70);
     track.addFile(file);

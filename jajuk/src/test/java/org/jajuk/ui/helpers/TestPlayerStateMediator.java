@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
@@ -119,7 +119,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
   public final void testUpdateStopQueueModel() throws Exception {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     // test with queue size > 0
-    Device device = JUnitHelpers.getDevice();
+    Device device = TestHelpers.getDevice();
     // no files without a directory
     List<File> files = device.getFilesRecursively();
     assertEquals(0, files.size()); // no file available
@@ -139,13 +139,13 @@ public class TestPlayerStateMediator extends JajukTestCase {
    * @return the file
    */
   private File getFile(int i, Directory dir) {
-    Genre genre = JUnitHelpers.getGenre();
-    Album album = JUnitHelpers.getAlbum("name", 0);
+    Genre genre = TestHelpers.getGenre();
+    Album album = TestHelpers.getAlbum("name", 0);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-    Artist artist = JUnitHelpers.getArtist("name");
-    Year year = JUnitHelpers.getYear(2000);
-    Type type = JUnitHelpers.getType();
+    Artist artist = TestHelpers.getArtist("name");
+    Year year = TestHelpers.getYear(2000);
+    Type type = TestHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
     return FileManager.getInstance().registerFile(Integer.valueOf(i).toString(), "test.tst", dir,
@@ -206,7 +206,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
     Properties prop = new Properties();
     prop.put(Const.DETAIL_CONTENT,
-        JUnitHelpers.getWebRadio("myradio", "http://foo", WebRadioOrigin.CUSTOM));
+        TestHelpers.getWebRadio("myradio", "http://foo", WebRadioOrigin.CUSTOM));
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, prop));
   }
@@ -220,13 +220,13 @@ public class TestPlayerStateMediator extends JajukTestCase {
   public final void testUpdateFileLaunched() throws Exception {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
-    Directory dir = JUnitHelpers.getDirectory();
+    Directory dir = TestHelpers.getDirectory();
     File file = getFile(3, dir);
     Properties prop = new Properties();
     prop.put(Const.DETAIL_CURRENT_FILE_ID, file.getID());
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.FILE_LAUNCHED, prop));
-    JUnitHelpers.clearSwingUtilitiesQueue();
+    TestHelpers.clearSwingUtilitiesQueue();
   }
 
   /**
@@ -260,11 +260,11 @@ public class TestPlayerStateMediator extends JajukTestCase {
   public final void testUpdateMute() throws Exception {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.MUTE_STATE, null));
-    JUnitHelpers.clearSwingUtilitiesQueue();
+    TestHelpers.clearSwingUtilitiesQueue();
     // test with muted player
     Player.mute();
     med.update(new JajukEvent(JajukEvents.MUTE_STATE, null));
-    JUnitHelpers.clearSwingUtilitiesQueue();
+    TestHelpers.clearSwingUtilitiesQueue();
     Player.mute(false);
     med.update(new JajukEvent(JajukEvents.MUTE_STATE, null));
   }

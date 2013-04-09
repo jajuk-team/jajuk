@@ -25,13 +25,18 @@ import java.io.IOException;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.ConstTest;
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 
 /**
  * .
  */
 public class TestDirectoryFilter extends JajukTestCase {
+  @Override
+  public void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for.
    *
@@ -40,7 +45,7 @@ public class TestDirectoryFilter extends JajukTestCase {
    */
   public void testAcceptFile() throws IOException {
     assertTrue(DirectoryFilter.getInstance().accept(new File(ConstTest.TEMP_PATH)));
-    assertFalse(DirectoryFilter.getInstance().accept(JUnitHelpers.getFile().getFIO()));
+    assertFalse(DirectoryFilter.getInstance().accept(TestHelpers.getFile().getFIO()));
   }
 
   /**

@@ -25,8 +25,8 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 
 /**
  * .
@@ -69,7 +69,7 @@ public class TestLastFmAlbumsRunnable extends JajukTestCase {
     // and tell it to interrupt at some point
     runnable.interrupt();
     // now wait for it to finish
-    JUnitHelpers.clearSwingUtilitiesQueue();
+    TestHelpers.clearSwingUtilitiesQueue();
   }
 
   /**

@@ -23,8 +23,8 @@ package org.jajuk.services.bookmark;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.File;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -40,8 +40,8 @@ public class TestBookmarks extends JajukTestCase {
    */
   @Override
   protected void setUp() throws Exception {
-    Bookmarks.getInstance().clear();
     super.setUp();
+    Bookmarks.getInstance().clear();
   }
 
   /**
@@ -62,8 +62,8 @@ public class TestBookmarks extends JajukTestCase {
     // JUnitHelpers.ToStringTest(Bookmarks.getInstance());
     assertNotNull(Bookmarks.getInstance().toString());
     // test with some files
-    Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file1", true));
-    JUnitHelpers.ToStringTest(Bookmarks.getInstance());
+    Bookmarks.getInstance().addFile(TestHelpers.getFile("file1", true));
+    TestHelpers.ToStringTest(Bookmarks.getInstance());
   }
 
   /**
@@ -74,9 +74,9 @@ public class TestBookmarks extends JajukTestCase {
   public void testGetFiles() throws Exception {
     assertEquals(0, Bookmarks.getInstance().getFiles().size());
     // test with some files
-    Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file1", true));
+    Bookmarks.getInstance().addFile(TestHelpers.getFile("file1", true));
     assertEquals(1, Bookmarks.getInstance().getFiles().size());
-    Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file1", true));
+    Bookmarks.getInstance().addFile(TestHelpers.getFile("file1", true));
     assertEquals(2, Bookmarks.getInstance().getFiles().size());
   }
 
@@ -86,7 +86,7 @@ public class TestBookmarks extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testClear() throws Exception {
-    Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file1", true));
+    Bookmarks.getInstance().addFile(TestHelpers.getFile("file1", true));
     assertEquals(1, Bookmarks.getInstance().getFiles().size());
     Bookmarks.getInstance().clear();
     assertEquals(0, Bookmarks.getInstance().getFiles().size());
@@ -102,9 +102,9 @@ public class TestBookmarks extends JajukTestCase {
     Bookmarks.getInstance().down(0);
     Bookmarks.getInstance().up(0);
     // add some files
-    Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file1", true));
-    Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file2", true));
-    Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file3", true));
+    Bookmarks.getInstance().addFile(TestHelpers.getFile("file1", true));
+    Bookmarks.getInstance().addFile(TestHelpers.getFile("file2", true));
+    Bookmarks.getInstance().addFile(TestHelpers.getFile("file3", true));
     // check the order
     assertEquals("file1", Bookmarks.getInstance().getFiles().get(0).getName());
     assertEquals("file2", Bookmarks.getInstance().getFiles().get(1).getName());
@@ -138,9 +138,9 @@ public class TestBookmarks extends JajukTestCase {
    */
   public void testRemove() throws Exception {
     // add some files
-    Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file1", true));
-    Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file2", true));
-    Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file3", true));
+    Bookmarks.getInstance().addFile(TestHelpers.getFile("file1", true));
+    Bookmarks.getInstance().addFile(TestHelpers.getFile("file2", true));
+    Bookmarks.getInstance().addFile(TestHelpers.getFile("file3", true));
     Bookmarks.getInstance().remove(0);
     assertEquals("file2", Bookmarks.getInstance().getFiles().get(0).getName());
     assertEquals("file3", Bookmarks.getInstance().getFiles().get(1).getName());
@@ -155,14 +155,14 @@ public class TestBookmarks extends JajukTestCase {
    */
   public void testAddFileIntFile() throws Exception {
     // add some files
-    Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file1", true));
-    Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file2", true));
-    Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file3", true));
+    Bookmarks.getInstance().addFile(TestHelpers.getFile("file1", true));
+    Bookmarks.getInstance().addFile(TestHelpers.getFile("file2", true));
+    Bookmarks.getInstance().addFile(TestHelpers.getFile("file3", true));
     // check the order
     assertEquals("file1", Bookmarks.getInstance().getFiles().get(0).getName());
     assertEquals("file2", Bookmarks.getInstance().getFiles().get(1).getName());
     assertEquals("file3", Bookmarks.getInstance().getFiles().get(2).getName());
-    Bookmarks.getInstance().addFile(1, JUnitHelpers.getFile("file4", true));
+    Bookmarks.getInstance().addFile(1, TestHelpers.getFile("file4", true));
     assertEquals("file1", Bookmarks.getInstance().getFiles().get(0).getName());
     assertEquals("file4", Bookmarks.getInstance().getFiles().get(1).getName());
     assertEquals("file2", Bookmarks.getInstance().getFiles().get(2).getName());
@@ -177,9 +177,9 @@ public class TestBookmarks extends JajukTestCase {
    */
   public void testAddFileFile() throws Exception {
     // add some files
-    Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file1", true));
-    Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file2", true));
-    Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file3", true));
+    Bookmarks.getInstance().addFile(TestHelpers.getFile("file1", true));
+    Bookmarks.getInstance().addFile(TestHelpers.getFile("file2", true));
+    Bookmarks.getInstance().addFile(TestHelpers.getFile("file3", true));
     // check the order
     assertEquals("file1", Bookmarks.getInstance().getFiles().get(0).getName());
     assertEquals("file2", Bookmarks.getInstance().getFiles().get(1).getName());
@@ -195,9 +195,9 @@ public class TestBookmarks extends JajukTestCase {
   public void testAddFiles() throws Exception {
     List<File> list = new ArrayList<File>();
     // add some files
-    list.add(JUnitHelpers.getFile("file1", true));
-    list.add(JUnitHelpers.getFile("file2", true));
-    list.add(JUnitHelpers.getFile("file3", true));
+    list.add(TestHelpers.getFile("file1", true));
+    list.add(TestHelpers.getFile("file2", true));
+    list.add(TestHelpers.getFile("file3", true));
     Bookmarks.getInstance().addFiles(list);
     // check the order
     assertEquals("file1", Bookmarks.getInstance().getFiles().get(0).getName());
@@ -214,10 +214,10 @@ public class TestBookmarks extends JajukTestCase {
    */
   public void testPrivateConstructor() throws Exception {
     // test with some files
-    Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file1", true));
-    Bookmarks.getInstance().addFile(JUnitHelpers.getFile("file1", true));
+    Bookmarks.getInstance().addFile(TestHelpers.getFile("file1", true));
+    Bookmarks.getInstance().addFile(TestHelpers.getFile("file1", true));
     // For EMMA code-coverage tests
-    JUnitHelpers.executePrivateConstructor(Bookmarks.class);
+    TestHelpers.executePrivateConstructor(Bookmarks.class);
   }
 
   /**
@@ -229,12 +229,12 @@ public class TestBookmarks extends JajukTestCase {
   public void testCoverage() throws Exception {
     Conf.setProperty(Const.CONF_BOOKMARKS, "");
     // For EMMA code-coverage tests
-    JUnitHelpers.executePrivateConstructor(Bookmarks.class);
+    TestHelpers.executePrivateConstructor(Bookmarks.class);
     Conf.removeProperty(Const.CONF_BOOKMARKS);
     // For EMMA code-coverage tests
-    JUnitHelpers.executePrivateConstructor(Bookmarks.class);
+    TestHelpers.executePrivateConstructor(Bookmarks.class);
     Conf.setProperty(Const.CONF_BOOKMARKS, "1,2,3,4");
     // For EMMA code-coverage tests
-    JUnitHelpers.executePrivateConstructor(Bookmarks.class);
+    TestHelpers.executePrivateConstructor(Bookmarks.class);
   }
 }

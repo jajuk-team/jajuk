@@ -20,6 +20,9 @@
  */
 package org.jajuk.util;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,6 +46,7 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
@@ -352,15 +356,11 @@ public final class UtilFeatures {
     if (trackList.size() == 0) {
       return Const.PREFERENCE_UNSET;
     }
-    Track firstTrack = trackList.get(0);
-    long preferenceFirstItem = firstTrack.getLongValue(Const.XML_TRACK_PREFERENCE);
-    for (int i = 1; i < trackList.size(); i++) {
-      Track track = trackList.get(i);
-      if (track.getLongValue(Const.XML_TRACK_PREFERENCE) != preferenceFirstItem) {
-        return Const.PREFERENCE_UNSET;
-      }
+    long sum = 0;
+    for (Track track : trackList) {
+      sum += track.getLongValue(Const.XML_TRACK_PREFERENCE);
     }
-    return preferenceFirstItem;
+    return (sum) / trackList.size();
   }
 
   /**
@@ -425,31 +425,6 @@ public final class UtilFeatures {
   }
 
   /**
-   * Computes a disk id. Code based on
-   * http://www.cs.princeton.edu/introcs/51data/CDDB.java.html
-   * 
-   * @param durations List of durations
-   * 
-   * @return the disk ID as a long
-   */
-  public static long computeDiscID(List<Long> durations) {
-    int totalLength = 0;
-    int nbTracks = durations.size();
-    for (Long l : durations) {
-      totalLength += l;
-    }
-    int checkSum = 0;
-    for (Long duration : durations) {
-      checkSum += sumOfDigits(duration);
-    }
-    long xx = checkSum % 255;
-    long yyyy = totalLength;
-    long zz = nbTracks;
-    // XXYYYYZZ
-    return ((xx << 24) | (yyyy << 8) | zz);
-  }
-
-  /**
    * Shuffle a list of items and ensure that final list first element
    * is different from the initial list's one
    * <p>The list should not be void</p>.
@@ -511,5 +486,34 @@ public final class UtilFeatures {
       }
     }
     return new ArrayList<File>(out);
+  }
+
+  /**
+   * Return the last played track position as read from the position file from disk
+   * @return the last played track position
+   */
+  public static float readPersistedPlayingPosition() {
+    float out = 0.0f;
+    java.io.File positionFile = SessionService.getConfFileByPath(Const.FILE_PLAYING_POSITION);
+    try {
+      String content = Files.readFirstLine(positionFile, Charsets.UTF_8);
+      out = Float.parseFloat(content);
+    } catch (Exception e) {
+      Log.error(e);
+    }
+    return out;
+  }
+
+  /**
+   * Store the current played track position as a float to the position file
+   * @param position the playing position as a float. Example : 0.1
+   */
+  public static void storePersistedPlayingPosition(float position) {
+    java.io.File positionFile = SessionService.getConfFileByPath(Const.FILE_PLAYING_POSITION);
+    try {
+      Files.write(Float.toString(position).getBytes(), positionFile);
+    } catch (Exception e) {
+      Log.error(e);
+    }
   }
 }

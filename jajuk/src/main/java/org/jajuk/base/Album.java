@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -715,6 +716,21 @@ public class Album extends LogicalItem implements Comparable<Album> {
     String cachedCoverPath = getStringValue(Const.XML_ALBUM_DISCOVERED_COVER);
     if (Const.COVER_NONE.equals(cachedCoverPath)) {
       setProperty(Const.XML_ALBUM_DISCOVERED_COVER, "");
+    }
+  }
+
+  /**
+   * Cleanup orphan tracks
+   */
+  protected void cleanupCache() {
+    synchronized (cache) {
+      Iterator<Track> it = cache.iterator();
+      while (it.hasNext()) {
+        Track track = it.next();
+        if (track.getFiles().size() == 0) {
+          it.remove();
+        }
+      }
     }
   }
 }

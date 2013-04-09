@@ -27,6 +27,11 @@ import org.jajuk.services.startup.StartupCollectionService;
  * .
  */
 public class TestExitService extends JajukTestCase {
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for {@link org.jajuk.services.core.ExitService#run()}.
    *
@@ -35,10 +40,6 @@ public class TestExitService extends JajukTestCase {
   public void testRun() throws Exception {
     StartupCollectionService.registerItemManagers();
     ExitService service = new ExitService();
-    service.run();
-    // once again with sessionidfile
-    SessionService.getSessionIdFile().getParentFile().mkdirs();
-    SessionService.getSessionIdFile().createNewFile();
     service.run();
   }
 

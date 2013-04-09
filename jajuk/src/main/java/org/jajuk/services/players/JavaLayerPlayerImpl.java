@@ -153,7 +153,11 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   @Override
   public void setVolume(float fVolume) throws Exception {
     this.fVolume = fVolume;
-    player.setGain(fVolume * 0.6);
+    if (player.hasGainControl()) {
+      player.setGain(fVolume * 0.6);
+    } else {
+      Log.warn("Gain control not supported");
+    }
     // limit gain to avoid saturation
   }
 
@@ -329,7 +333,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
       if (mPlayingData.containsKey(AUDIO_LENGTH_BYTES)) {
         int byteslength = ((Integer) mPlayingData.get(AUDIO_LENGTH_BYTES)).intValue();
         fPos = (byteslength != 0) ? (float) iBytesread / (float) byteslength : 0;
-        Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, Float.toString(fPos));
+        UtilFeatures.storePersistedPlayingPosition(fPos);
         lTime = (long) (lDuration * fPos);
         // update actually played duration
         if (lastPlayTimeUpdate > 0 && player.getStatus() != BasicPlayer.PAUSED) {

@@ -22,10 +22,6 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.events.JajukEvent;
-import org.jajuk.events.JajukEvents;
-import org.jajuk.events.ObservationManager;
-import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.widgets.CommandJPanel;
 import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.Conf;
@@ -60,13 +56,6 @@ public class ShuffleModeAction extends JajukAction {
     boolean b = Conf.getBoolean(Const.CONF_STATE_SHUFFLE);
     Conf.setProperty(Const.CONF_STATE_SHUFFLE, Boolean.toString(!b));
     JajukJMenuBar.getInstance().setShuffleSelected(!b);
-    CommandJPanel.getInstance().setRandomSelected(!b);
-    if (!b) { // enabled button
-      QueueModel.shuffle(); // shuffle current selection
-    }
-    // computes planned tracks
-    QueueModel.computesPlanned(true);
-    // Refresh Queue View
-    ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
+    CommandJPanel.getInstance().setShuffleSelected(!b);
   }
 }

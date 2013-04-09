@@ -21,8 +21,8 @@
 package org.jajuk.services.bookmark;
 
 import org.jajuk.ConstTest;
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
@@ -41,6 +41,11 @@ import org.jajuk.util.Const;
  * .
  */
 public class TestHistoryItem extends JajukTestCase {
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for.
    *
@@ -80,7 +85,7 @@ public class TestHistoryItem extends JajukTestCase {
   public final void testToStringNull() {
     long date = System.currentTimeMillis();
     HistoryItem item = new HistoryItem("1", date);
-    JUnitHelpers.ToStringTest(item);
+    TestHelpers.ToStringTest(item);
   }
 
   /**
@@ -89,23 +94,23 @@ public class TestHistoryItem extends JajukTestCase {
    */
   public final void testToStringFile() {
     File file;
-    Genre genre = JUnitHelpers.getGenre("genrename");
-    Album album = JUnitHelpers.getAlbum("myalbum", 0);
+    Genre genre = TestHelpers.getGenre("genrename");
+    Album album = TestHelpers.getAlbum("myalbum", 0);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-    Artist artist = JUnitHelpers.getArtist("artistname");
-    Year year = JUnitHelpers.getYear(2000);
-    Type type = JUnitHelpers.getType();
+    Artist artist = TestHelpers.getArtist("artistname");
+    Year year = TestHelpers.getYear(2000);
+    Type type = TestHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack("trackname", album, genre, artist, 120,
         year, 1, type, 1);
-    Device device = JUnitHelpers.getDevice("devicename", Device.Type.DIRECTORY,
+    Device device = TestHelpers.getDevice("devicename", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/device1");
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     file = FileManager.getInstance().registerFile("test.tst", dir, track, 120, 70);
     long date = System.currentTimeMillis();
     HistoryItem item = new HistoryItem(file.getID(), date);
     // verify toString in general
-    JUnitHelpers.ToStringTest(item);
+    TestHelpers.ToStringTest(item);
     // verify that the necessary information is contained
     assertTrue(item.toString(), item.toString().contains("trackname"));
     assertTrue(item.toString(), item.toString().contains("artistname"));

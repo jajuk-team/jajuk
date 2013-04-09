@@ -46,8 +46,8 @@ import org.jajuk.util.log.Log;
  * Singleton
  * <p>
  */
-public final class RatingManager extends Thread implements Observer {
-  private static RatingManager self = new RatingManager();
+public final class RatingService extends Thread implements Observer {
+  private static RatingService self = new RatingService();
   /** Flag the fact a rate has change for a track, used by bestof view refresh for perfs. */
   private static boolean bRateHasChanged = true;
   /** Max rate. */
@@ -56,7 +56,7 @@ public final class RatingManager extends Thread implements Observer {
   /**
    * Instantiates a new rating manager.
    */
-  private RatingManager() {
+  private RatingService() {
     // set thread name
     super("Rating Manager Thread");
     setPriority(Thread.MIN_PRIORITY);
@@ -69,7 +69,7 @@ public final class RatingManager extends Thread implements Observer {
    * 
    * @return single instance of RatingManager
    */
-  public static RatingManager getInstance() {
+  public static RatingService getInstance() {
     return self;
   }
 

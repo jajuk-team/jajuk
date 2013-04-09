@@ -21,8 +21,13 @@
 package org.jajuk.ui.windows;
 
 import java.awt.Component;
+import java.awt.Frame;
 import java.awt.Window;
 
+import javax.swing.JFrame;
+
+import org.jajuk.util.Conf;
+import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
@@ -63,6 +68,32 @@ public abstract class WindowStateDecorator {
   }
 
   /**
+   * Store window-type configuration.
+   */
+  private void storeWindowState() {
+    WindowStateDecorator sdSlimbar = JajukSlimbar.getInstance().getWindowStateDecorator();
+    WindowStateDecorator sdMainWindow = JajukMainWindow.getInstance().getWindowStateDecorator();
+    WindowStateDecorator sdfullscreen = JajukFullScreenWindow.getInstance()
+        .getWindowStateDecorator();
+    // Set main window display at next startup as a default
+    Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_MAIN_WINDOW));
+    if (sdSlimbar.isDisplayed()) {
+      Conf.setProperty(Const.CONF_STARTUP_DISPLAY,
+          Integer.toString(Const.DISPLAY_MODE_SLIMBAR_TRAY));
+    } else if (sdfullscreen.isDisplayed()) {
+      Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_FULLSCREEN));
+    } else if (sdMainWindow.isDisplayed()) {
+      Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_MAIN_WINDOW));
+    }
+    // None window displayed ? set the tray only (if the show tray option is
+    // set)
+    else if (!sdSlimbar.isDisplayed() && !sdMainWindow.isDisplayed() && !sdfullscreen.isDisplayed()
+        && Conf.getBoolean(Const.CONF_SHOW_SYSTRAY)) {
+      Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_TRAY));
+    }
+  }
+
+  /**
    * Show or hide the frame
    * <p>
    * Must be called within the EDT
@@ -94,14 +125,12 @@ public abstract class WindowStateDecorator {
       if (show) {
         window.getWindowStateDecorator().specificAfterShown();
         ((Component) window).validate();
+        setWindowState(WindowState.BUILT_DISPLAYED);
+        // Store state only when windows appear, not when they close as they can be forced to close at exit for example
+        storeWindowState();
       } else {
         window.getWindowStateDecorator().specificAfterHidden();
-      }
-      // store the new state
-      if (show) {
-        state = WindowState.BUILT_DISPLAYED;
-      } else {
-        state = WindowState.BUILT_NOT_DISPLAYED;
+        setWindowState(WindowState.BUILT_NOT_DISPLAYED);
       }
     } catch (Exception e) {
       Log.error(e);
@@ -129,6 +158,16 @@ public abstract class WindowStateDecorator {
   public boolean isInitialized() {
     return getWindowState() == WindowState.BUILT_DISPLAYED
         || getWindowState() == WindowState.BUILT_NOT_DISPLAYED;
+  }
+
+  /**
+   * Return whether the managed window is minimalized to the taskbar. 
+   * Returns false if the window doesn't exist or is not a JFrame.
+   * @return whether the managed window is minimalized to the taskbar
+   */
+  public boolean isMinimalized() {
+    return window != null && window instanceof JFrame
+        && ((JFrame) window).getState() == Frame.ICONIFIED;
   }
 
   /**

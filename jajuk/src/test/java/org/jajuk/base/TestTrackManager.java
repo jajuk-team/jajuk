@@ -22,8 +22,8 @@ package org.jajuk.base;
 
 import java.io.IOException;
 
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.junit.Test;
 
 /**
@@ -181,7 +181,7 @@ public class TestTrackManager extends JajukTestCase {
   @Test
   public void testRemoveFile() throws IOException {
     // Set-up...
-    File file = JUnitHelpers.getFile();
+    File file = TestHelpers.getFile();
     // Remove the reference
     TrackManager.getInstance().removeFile(file);
     // Check if the collection no more contains the track (as it mapped a single file now removed)

@@ -24,8 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.MockPlayer;
+import org.jajuk.TestHelpers;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.services.covers.Cover;
@@ -34,7 +35,6 @@ import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.services.tags.ITagImpl;
-import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Const;
 import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.KeyNotFoundException;
@@ -487,10 +487,10 @@ public class TestAlbumManager extends JajukTestCase {
    */
   @SuppressWarnings("unchecked")
   private Track getTrack(int i, Album album) throws Exception {
-    Genre genre = JUnitHelpers.getGenre("name");
+    Genre genre = TestHelpers.getGenre("name");
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE);
     // don't read covers for this test
-    Artist artist = JUnitHelpers.getArtist("atist_" + i);
+    Artist artist = TestHelpers.getArtist("atist_" + i);
     Year year = YearManager.getInstance().registerYear(Integer.valueOf(i).toString());
     IPlayerImpl imp = new MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
@@ -499,8 +499,8 @@ public class TestAlbumManager extends JajukTestCase {
     Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, tl);
     Track track = TrackManager.getInstance().registerTrack("track_" + i, album, genre, artist, 120,
         year, 1, type, 1);
-    Device device = JUnitHelpers.getDevice();
-    Directory dir = JUnitHelpers.getDirectory();
+    Device device = TestHelpers.getDevice();
+    Directory dir = TestHelpers.getDirectory();
     if (!device.isMounted()) {
       device.mount(true);
     }
@@ -790,110 +790,6 @@ public class TestAlbumManager extends JajukTestCase {
     public List<Cover> getCovers() throws Exception {
       // TODO Auto-generated method stub
       return null;
-    }
-  }
-
-  // needs to be public to be callable from the outside...
-  /**
-   * .
-   */
-  public static class MockPlayer implements IPlayerImpl {
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#stop()
-     */
-    @Override
-    public void stop() throws Exception {
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#setVolume(float)
-     */
-    @Override
-    public void setVolume(float fVolume) throws Exception {
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#seek(float)
-     */
-    @Override
-    public void seek(float fPosition) {
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#resume()
-     */
-    @Override
-    public void resume() throws Exception {
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#play(org.jajuk.services.webradio.WebRadio, float)
-     */
-    @Override
-    public void play(WebRadio radio, float fVolume) throws Exception {
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#play(org.jajuk.base.File, float, long, float)
-     */
-    @Override
-    public void play(File file, float fPosition, long length, float fVolume) throws Exception {
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#pause()
-     */
-    @Override
-    public void pause() throws Exception {
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#getState()
-     */
-    @Override
-    public int getState() {
-      return 0;
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#getElapsedTime()
-     */
-    @Override
-    public long getElapsedTimeMillis() {
-      return 0;
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#getCurrentVolume()
-     */
-    @Override
-    public float getCurrentVolume() {
-      return 0;
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#getCurrentPosition()
-     */
-    @Override
-    public float getCurrentPosition() {
-      return 0;
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#getCurrentLength()
-     */
-    @Override
-    public long getDurationSec() {
-      return 0;
-    }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.services.players.IPlayerImpl#getActuallyPlayedTimeMillis()
-     */
-    @Override
-    public long getActuallyPlayedTimeMillis() {
-      // TODO Auto-generated method stub
-      return 0;
     }
   }
 }

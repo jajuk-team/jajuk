@@ -23,8 +23,8 @@ package org.jajuk.base;
 import java.io.IOException;
 import java.util.List;
 
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.util.error.JajukException;
 import org.junit.Test;
 
@@ -48,7 +48,7 @@ public class TestFileManager extends JajukTestCase {
   @Test
   public void testRemoveFile() throws IOException {
     // Set-up...
-    File file = JUnitHelpers.getFile();
+    File file = TestHelpers.getFile();
     // Remove the reference
     FileManager.getInstance().removeFile(file);
     // 1- Check that the collection no more contains the file
@@ -66,12 +66,12 @@ public class TestFileManager extends JajukTestCase {
   @Test
   public void testChangeFileDirectory() throws IOException, JajukException {
     // Set-up...
-    File oldFile = JUnitHelpers.getFile();
+    File oldFile = TestHelpers.getFile();
     oldFile.getDirectory().getFio().mkdirs();
     oldFile.getFIO().createNewFile();
     String newDirName = "top2";
     // Create a top2 directory just bellow device root
-    Directory newDir = JUnitHelpers.getDirectory(newDirName,
+    Directory newDir = TestHelpers.getDirectory(newDirName,
         oldFile.getDevice().getRootDirectory(), oldFile.getDevice());
     // Create the physical directory if required
     newDir.getFio().mkdirs();
@@ -85,5 +85,27 @@ public class TestFileManager extends JajukTestCase {
     //3- Does the associated track contains the right file (and only it)
     List<File> files = newFile.getTrack().getFiles();
     assertTrue(files.size() == 1 && files.get(0).equals(newFile));
+  }
+
+  @Test
+  public void testGetFileByPath() {
+    // test with default file 
+    testWithFile(TestHelpers.getFile());
+    // test with different files
+    testWithFile(TestHelpers.getFile("ABC.tst", true));
+    testWithFile(TestHelpers.getFile("ABC.tst", true));
+    testWithFile(TestHelpers.getFile("0123234327\"§$%!§\"()432ABC-.,_:;#+*'*~\\}][{.tst", true));
+  }
+
+  /**
+   * 
+   */
+  private void testWithFile(File file) {
+    assertNotNull("file " + file.getFIO() + " is not found if we look for the actual file name",
+        FileManager.getInstance().getFileByPath(file.getFIO().getAbsolutePath()));
+    assertNotNull("file " + file.getFIO() + " is not found if we look for the lowercase file name",
+        FileManager.getInstance().getFileByPath(file.getFIO().getAbsolutePath().toLowerCase()));
+    assertNotNull("file " + file.getFIO() + " is not found if we look for the uppercase file name",
+        FileManager.getInstance().getFileByPath(file.getFIO().getAbsolutePath().toUpperCase()));
   }
 }

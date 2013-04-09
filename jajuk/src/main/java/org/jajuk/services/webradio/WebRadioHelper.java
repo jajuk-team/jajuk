@@ -119,6 +119,10 @@ public class WebRadioHelper {
    */
   public static void loadPresetsRadios(File presetToLoad) throws SAXException, IOException,
       ParserConfigurationException {
+    //cleanup existing presets
+    for (WebRadio radio : WebRadioManager.getInstance().getWebRadiosByOrigin(WebRadioOrigin.PRESET)) {
+      WebRadioManager.getInstance().removeItem(radio);
+    }
     SAXParserFactory spf = SAXParserFactory.newInstance();
     spf.setValidating(false);
     spf.setNamespaceAware(false);

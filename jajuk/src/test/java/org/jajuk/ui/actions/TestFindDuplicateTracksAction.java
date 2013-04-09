@@ -22,8 +22,8 @@ package org.jajuk.ui.actions;
 
 import java.util.List;
 
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumArtist;
 import org.jajuk.base.AlbumArtistManager;
@@ -57,13 +57,13 @@ public class TestFindDuplicateTracksAction extends JajukTestCase {
   public void setUp() throws Exception {
     super.setUp();
     // Populate tracks and files
-    dir = JUnitHelpers.getDirectory();
+    dir = TestHelpers.getDirectory();
     dir.getDevice().mount(false);
-    type = JUnitHelpers.getType();
-    artist = JUnitHelpers.getArtist();
-    album = JUnitHelpers.getAlbum();
-    genre = JUnitHelpers.getGenre();
-    year = JUnitHelpers.getYear();
+    type = TestHelpers.getType();
+    artist = TestHelpers.getArtist();
+    album = TestHelpers.getAlbum();
+    genre = TestHelpers.getGenre();
+    year = TestHelpers.getYear();
     action = new FindDuplicateTracksAction();
     albumArtist = AlbumArtistManager.getInstance().registerAlbumArtist(Const.UNKNOWN_ARTIST);
   }

@@ -26,8 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
@@ -47,6 +47,11 @@ import org.w3c.dom.Document;
  * .
  */
 public class TestDigitalDJ extends JajukTestCase {
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for {@link org.jajuk.services.dj.DigitalDJ#hashCode()}.
    */
@@ -55,7 +60,7 @@ public class TestDigitalDJ extends JajukTestCase {
     dj.setName("ambience1");
     DigitalDJ equ = new AmbienceDigitalDJ("3");
     equ.setName("ambience1");
-    JUnitHelpers.HashCodeTest(dj, equ);
+    TestHelpers.HashCodeTest(dj, equ);
   }
 
   /**
@@ -74,11 +79,11 @@ public class TestDigitalDJ extends JajukTestCase {
   public final void testToString() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
-    JUnitHelpers.ToStringTest(dj);
+    TestHelpers.ToStringTest(dj);
     // also test null values
     dj = new AmbienceDigitalDJ(null);
     dj.setName(null);
-    JUnitHelpers.ToStringTest(dj);
+    TestHelpers.ToStringTest(dj);
   }
 
   /**
@@ -95,7 +100,7 @@ public class TestDigitalDJ extends JajukTestCase {
     DigitalDJ notequ = new AmbienceDigitalDJ("3");
     notequ.setName("other");
     // only compares on name
-    JUnitHelpers.CompareToTest(dj, equ, notequ);
+    TestHelpers.CompareToTest(dj, equ, notequ);
   }
 
   /**
@@ -192,16 +197,16 @@ public class TestDigitalDJ extends JajukTestCase {
    * @throws Exception the exception
    */
   private File getFile(int i) throws Exception {
-    Genre genre = JUnitHelpers.getGenre();
-    Album album = JUnitHelpers.getAlbum("name" + i, 0);
+    Genre genre = TestHelpers.getGenre();
+    Album album = TestHelpers.getAlbum("name" + i, 0);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-    Artist artist = JUnitHelpers.getArtist("name");
-    Year year = JUnitHelpers.getYear(2000);
-    Type type = JUnitHelpers.getType();
+    Artist artist = TestHelpers.getArtist("name");
+    Year year = TestHelpers.getYear(2000);
+    Type type = TestHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);
-    Device device = JUnitHelpers.getDevice();
+    Device device = TestHelpers.getDevice();
     if (!device.isMounted()) {
       device.mount(true);
     }
@@ -232,7 +237,7 @@ public class TestDigitalDJ extends JajukTestCase {
     DigitalDJ notequ = new AmbienceDigitalDJ("3");
     notequ.setName("other");
     // only compares on name
-    JUnitHelpers.EqualsTest(dj, equ, notequ);
+    TestHelpers.EqualsTest(dj, equ, notequ);
   }
 
   /**

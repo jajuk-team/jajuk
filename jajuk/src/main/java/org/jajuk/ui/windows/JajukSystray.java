@@ -100,6 +100,8 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
   private static JajukSystray jsystray;
   /** HTML Tooltip. */
   JajukInformationDialog balloon;
+  /** Window type the tray has hidden on click if any */
+  private int lastHiddenDisplayMode = Const.DISPLAY_MODE_MAIN_WINDOW;
 
   /**
    * Checks if is loaded.
@@ -195,11 +197,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
       @Override
       public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-          // show main window if it is not visible and hide it if it is visible
-          WindowState mainWindowState = JajukMainWindow.getInstance().getWindowStateDecorator()
-              .getWindowState();
-          boolean bShouldDisplayMainWindow = !(mainWindowState == WindowState.BUILT_DISPLAYED);
-          JajukMainWindow.getInstance().getWindowStateDecorator().display(bShouldDisplayMainWindow);
+          showMainOrSlimbarWindow(e);
         }
       }
     });
@@ -277,7 +275,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
             // popup gesture recognized, display the jdialog
             trayIcon.showJPopupMenu(e);
           } else {
-            showHideWindow(e);
+            showMainOrSlimbarWindow(e);
           }
         }
       });
@@ -285,7 +283,7 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
       trayIcon.addMouseListener(new JajukMouseAdapter() {
         @Override
         public void handleActionSingleClick(MouseEvent e) {
-          showHideWindow(e);
+          showMainOrSlimbarWindow(e);
         }
 
         @Override
@@ -309,32 +307,51 @@ public class JajukSystray extends CommandJPanel implements IJajukWindow {
    * 
    * @param e 
    */
-  private void showHideWindow(MouseEvent e) {
-    WindowStateDecorator windowDecorator = null;
-    if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_MAIN_WINDOW) {
-      windowDecorator = JajukMainWindow.getInstance().getWindowStateDecorator();
-    } else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_SLIMBAR_TRAY) {
-      windowDecorator = JajukSlimbar.getInstance().getWindowStateDecorator();
-    } else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_FULLSCREEN) {
-      windowDecorator = JajukFullScreenWindow.getInstance().getWindowStateDecorator();
+  private void showMainOrSlimbarWindow(MouseEvent e) {
+    int displayMode = Conf.getInt(Const.CONF_STARTUP_DISPLAY);
+    // We don't want to hide/show the tray itself by only the 
+    if (displayMode == Const.DISPLAY_MODE_TRAY) {
+      displayMode = lastHiddenDisplayMode;
+    } else {
+      lastHiddenDisplayMode = displayMode;
     }
-    // show Main if no other found, i.e. only Systray is displayed
-    if (windowDecorator == null) {
-      windowDecorator = JajukMainWindow.getInstance().getWindowStateDecorator();
-    }
+    WindowStateDecorator windowDecorator = getWindowStateDecoratorByDisplayMode(displayMode);
     boolean bShouldDisplay = false;
     // Check the CONF_TRAY_CLICK_DISPLAY_WINDOW option
     if (Conf.getBoolean(Const.CONF_TRAY_CLICK_DISPLAY_WINDOW)) {
       bShouldDisplay = true;
     } else {
       // Invert visibility for the current window
-      bShouldDisplay = !(windowDecorator.getWindowState() == WindowState.BUILT_DISPLAYED);
+      bShouldDisplay = (windowDecorator.getWindowState() != WindowState.BUILT_DISPLAYED)
+      // force display if the window was minimalized 
+          || windowDecorator.isMinimalized();
     }
     windowDecorator.display(bShouldDisplay);
     //Make sure to bring the window to front
     if (bShouldDisplay) {
       windowDecorator.toFront();
     }
+  }
+
+  /**
+   * Return the window decorator for given mode value or main window decorator if unknown mode
+   * @param display mode
+   * @return the window decorator for given mode value
+   */
+  private WindowStateDecorator getWindowStateDecoratorByDisplayMode(int mode) {
+    WindowStateDecorator windowDecorator = null;
+    if (mode == Const.DISPLAY_MODE_MAIN_WINDOW) {
+      windowDecorator = JajukMainWindow.getInstance().getWindowStateDecorator();
+    } else if (mode == Const.DISPLAY_MODE_TRAY) {
+      windowDecorator = JajukSystray.getInstance().getWindowStateDecorator();
+    } else if (mode == Const.DISPLAY_MODE_SLIMBAR_TRAY) {
+      windowDecorator = JajukSlimbar.getInstance().getWindowStateDecorator();
+    } else if (mode == Const.DISPLAY_MODE_FULLSCREEN) {
+      windowDecorator = JajukFullScreenWindow.getInstance().getWindowStateDecorator();
+    } else {
+      windowDecorator = JajukMainWindow.getInstance().getWindowStateDecorator();
+    }
+    return windowDecorator;
   }
 
   /*

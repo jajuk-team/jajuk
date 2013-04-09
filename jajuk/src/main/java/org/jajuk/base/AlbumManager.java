@@ -74,7 +74,7 @@ public final class AlbumManager extends ItemManager implements Observer {
     registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_SELECTED_COVER, false, false,
         false, false, false, String.class, null));
     // Disc id
-    registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_DISC_ID, false, true, true, false,
+    registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_DISC_ID, false, true, false, false,
         false, Long.class, -1l));
     // Register events
     ObservationManager.register(this);
@@ -290,6 +290,14 @@ public final class AlbumManager extends ItemManager implements Observer {
       }
     }
     return out;
+  }
+
+  @Override
+  public void cleanup() {
+    for (Item item : getItems()) {
+      ((Album) item).cleanupCache();
+    }
+    super.cleanup();
   }
 
   /**

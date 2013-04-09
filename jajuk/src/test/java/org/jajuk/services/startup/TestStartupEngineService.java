@@ -26,8 +26,8 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.File;
 import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.services.core.SessionService;
@@ -36,6 +36,7 @@ import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
+import org.jajuk.util.UtilFeatures;
 
 /**
  * Tests for org.jajuk.services.StartupEngineService
@@ -57,9 +58,9 @@ public class TestStartupEngineService extends JajukTestCase {
   protected void setUp() throws Exception {
     super.setUp();
     // Populate collection with a few files and associated items 
-    file1 = JUnitHelpers.getFile("file1", true);
-    file2 = JUnitHelpers.getFile("file2", true);
-    file3 = JUnitHelpers.getFile("file3", true);
+    file1 = TestHelpers.getFile("file1", true);
+    file2 = TestHelpers.getFile("file2", true);
+    file3 = TestHelpers.getFile("file3", true);
     // Add last played radio
     radio1 = WebRadioManager.getInstance().registerWebRadio("myRadio");
     radio1.setProperty(Const.XML_URL, "http://di.fm/mp3/classictechno.pls");
@@ -73,7 +74,7 @@ public class TestStartupEngineService extends JajukTestCase {
     bw.write(file3.getID() + "\n");
     bw.close();
     // Set others properties
-    Conf.setProperty(Const.CONF_STARTUP_LAST_POSITION, POSITION + "");
+    UtilFeatures.storePersistedPlayingPosition(POSITION);
     Conf.setProperty(Const.CONF_STARTUP_STOPPED, "false");
     Conf.setProperty(Const.CONF_STARTUP_ITEM, file3.getID());
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "false");

@@ -24,14 +24,19 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 
 /**
  * .
  */
 public class TestObservationManager extends JajukTestCase {
   AtomicInteger called = new AtomicInteger(0);
+
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+  }
 
   /*
    * (non-Javadoc)
@@ -192,7 +197,7 @@ public class TestObservationManager extends JajukTestCase {
    */
   public void testPrivateConstructor() throws Exception {
     // For EMMA code-coverage tests
-    JUnitHelpers.executePrivateConstructor(ObservationManager.class);
+    TestHelpers.executePrivateConstructor(ObservationManager.class);
   }
 
   /**

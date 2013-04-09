@@ -23,8 +23,8 @@ package org.jajuk.util.filters;
 import java.io.File;
 
 import org.apache.commons.lang.StringUtils;
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.TypeManager;
 import org.jajuk.services.startup.StartupCollectionService;
 
@@ -32,6 +32,11 @@ import org.jajuk.services.startup.StartupCollectionService;
  * .
  */
 public class TestAudioFilter extends JajukTestCase {
+  @Override
+  public void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
    * Test method for.
    *
@@ -51,9 +56,9 @@ public class TestAudioFilter extends JajukTestCase {
     assertTrue(AudioFilter.getInstance().accept(new File("test.ogG")));
     // directories, depends on the setting
     AudioFilter.getInstance().setAcceptDirectories(false);
-    assertFalse(AudioFilter.getInstance().accept(JUnitHelpers.getDirectory().getFio()));
+    assertFalse(AudioFilter.getInstance().accept(TestHelpers.getDirectory().getFio()));
     AudioFilter.getInstance().setAcceptDirectories(true);
-    assertTrue(AudioFilter.getInstance().accept(JUnitHelpers.getDirectory().getFio()));
+    assertTrue(AudioFilter.getInstance().accept(TestHelpers.getDirectory().getFio()));
   }
 
   /**

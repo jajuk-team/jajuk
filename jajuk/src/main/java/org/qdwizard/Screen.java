@@ -43,6 +43,7 @@ public abstract class Screen extends JPanel {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
   private final ScreenState state;
+  /** Data is shared with wizard scope */
   public Map<String, Object> data;
   private Wizard wizard;
 
@@ -50,9 +51,7 @@ public abstract class Screen extends JPanel {
    * Construct a screen.
    */
   public Screen() {
-    data = Wizard.data;
     state = new ScreenState(true, true, true, false, null);
-    initUI();
   }
 
   /**
@@ -182,7 +181,7 @@ public abstract class Screen extends JPanel {
    * screen via the previous button.
    */
   public void onEnter() {
-    // required by interface, but nothing to do here...
+    // Do nothing by default
   }
 
   /**
@@ -216,21 +215,14 @@ public abstract class Screen extends JPanel {
   }
 
   /**
-   * access to wizard instance.
-   * 
-   * @return the wizard
-   */
-  public Wizard getWizard() {
-    return wizard;
-  }
-
-  /**
-   * Sets the wizard.
+   * Sets the associated wizard.
    * 
    * @param wizard the new wizard
    */
   protected void setWizard(Wizard wizard) {
     this.wizard = wizard;
+    // Screen data = wizard data
+    this.data = wizard.data;
   }
 
   /**
@@ -241,7 +233,7 @@ public abstract class Screen extends JPanel {
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
-        Screen.this.wizard.updateGUI();
+        Screen.this.wizard.updateGUIState();
       }
     });
   }

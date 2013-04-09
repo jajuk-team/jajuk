@@ -571,8 +571,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       // notify views to refresh
       ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
       // Commit collection at each refresh (can be useful if
-      // application
-      // is closed brutally with control-C or shutdown and that
+      // application is closed brutally with control-C or shutdown and that
       // exit hook has no time to perform commit).
       // But don't commit when any device is refreshing to avoid collisions.
       if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {

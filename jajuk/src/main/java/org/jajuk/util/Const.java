@@ -127,23 +127,20 @@ public interface Const {
   String FILE_COLLECTION = "collection.xml";
   // File written by the exit hook
   String FILE_COLLECTION_EXIT = "collection_exit.xml";
-  // Void file created after exit collection file
-  String FILE_COLLECTION_EXIT_PROOF = "exit_proof";
   String FILE_REPORTING_CACHE_FILE = "cache/report";
   /** Name of the preferences property file. */
   String FILE_CONFIGURATION = "conf.properties";
   /** Name of the temporary preferences property file. */
   String FILE_CONFIGURATION_TEMP = "temp_conf.properties";
   String FILE_HISTORY = "history.xml";
-  /** Directory containing all sessions using this workspace. */
-  String FILE_SESSIONS = "sessions";
   String FILE_DEFAULT_COVER = "jajuk.file.default.cover";
-  String FILE_ABSOLUTE_DEFAULT_COVER = "jajuk-default-cover.";
+  String FILE_ABSOLUTE_DEFAULT_COVER = "default-cover.";
   // langpack name : jajuk_<locale>.properties
   String FILE_LANGPACK_PART1 = "jajuk";
   String FILE_LANGPACK_PART2 = ".properties";
   // logs
   String FILE_LOGS = "jajuk.log";
+  String FILE_PLAYING_POSITION = "position";
   URL FILE_LOG4J_CONF = UtilSystem.getResource("org/jajuk/util/log/jajuk-log4j-conf.xml");
   /** Cache directory name. */
   String FILE_CACHE = "cache";
@@ -350,7 +347,6 @@ public interface Const {
   String CONF_HISTORY = "jajuk.options.history";
   String CONF_MANUAL_RATINGS = "jajuk.options.manual_ratings";
   String CONF_TAGS_USE_PARENT_DIR = "jajuk.tags.use_parent_dir";
-  String CONF_DROP_PLAYED_TRACKS_FROM_QUEUE = "jajuk.drop.played.tracks.from.queue";
   /** Contains files id separated by a colon. */
   String CONF_BOOKMARKS = "jajuk.bookmarks";
   /** Startup display mode: 0= main window + tray, 1: tray only, 2: slimbar + tray 3 : full screen. */
@@ -378,7 +374,8 @@ public interface Const {
   String CONF_BACKUP_SIZE = "jajuk.backup_size";
   /** Collection file charset (utf-8 or utf-16). */
   String CONF_COLLECTION_CHARSET = "jajuk.collection_charset";
-  String CONF_STARTUP_LAST_POSITION = "jajuk.startup.last_position";
+  /** Path of workspace the user wants to use but may be unavailable */
+  String CONF_TARGET_WORKSPACE_PATH = "jajuk.target_workspace";
   String CONF_NETWORK_USE_PROXY = "jajuk.network.use_proxy";
   String CONF_NETWORK_PROXY_TYPE = "jajuk.network.proxy_type";
   String CONF_NETWORK_PROXY_HOSTNAME = "jajuk.network.proxy_hostname";
@@ -466,8 +463,6 @@ public interface Const {
   String CONF_DEFAULT_AMBIENCE = "jajuk.default_ambience";
   /* Wrong player not show again flag */
   String CONF_NOT_SHOW_AGAIN_PLAYER = "jajuk.not_show_again.player";
-  /** Concurrent session not show again flag. */
-  String CONF_NOT_SHOW_AGAIN_CONCURRENT_SESSION = "jajuk.not_show_again.concurrent_session";
   /** Cross fade alert not show again flag *. */
   String CONF_NOT_SHOW_AGAIN_CROSS_FADE = "jajuk.not_show_again.fade";
   /** Laf change not show again flag *. */

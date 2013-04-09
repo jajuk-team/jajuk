@@ -23,8 +23,8 @@ package org.jajuk.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.TestHelpers;
 import org.jajuk.services.players.StackItem;
 
 /**
@@ -48,8 +48,8 @@ public class TestUtilFeatures extends JajukTestCase {
    * {@link org.jajuk.util.UtilFeatures#forcedShuffle(List<StackItem>)}.
    */
   public void testCopyFileFile() throws Exception {
-    StackItem si1 = new StackItem(JUnitHelpers.getFile("1", true));
-    StackItem si2 = new StackItem(JUnitHelpers.getFile("2", true));
+    StackItem si1 = new StackItem(TestHelpers.getFile("1", true));
+    StackItem si2 = new StackItem(TestHelpers.getFile("2", true));
     List<StackItem> items = new ArrayList<StackItem>(2);
     items.add(si1);
     items.add(si2);
@@ -66,6 +66,6 @@ public class TestUtilFeatures extends JajukTestCase {
    */
   public void testPrivateConstructor() throws Exception {
     // For EMMA code-coverage tests
-    JUnitHelpers.executePrivateConstructor(UtilFeatures.class);
+    TestHelpers.executePrivateConstructor(UtilFeatures.class);
   }
 }

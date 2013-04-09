@@ -22,8 +22,9 @@ package org.jajuk.services.core;
 
 import java.util.Set;
 
-import org.jajuk.JUnitHelpers;
 import org.jajuk.JajukTestCase;
+import org.jajuk.MockPlayer;
+import org.jajuk.TestHelpers;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
@@ -32,7 +33,6 @@ import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Genre;
-import org.jajuk.base.TestAlbumManager.MockPlayer;
 import org.jajuk.base.TestAlbumManager.MyTagImpl;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
@@ -50,8 +50,13 @@ import org.jajuk.util.Const;
  * .
  */
 public class TestRatingManager extends JajukTestCase {
+  @Override
+  protected void setUp() throws Exception {
+    super.setUp();
+  }
+
   /**
-   * Test method for {@link org.jajuk.services.core.RatingManager#run()}.
+   * Test method for {@link org.jajuk.services.core.RatingService#run()}.
    */
   public void testRun() {
     // cannot be tested, is an endless loop:
@@ -59,32 +64,32 @@ public class TestRatingManager extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.core.RatingManager#getInstance()}
+   * Test method for {@link org.jajuk.services.core.RatingService#getInstance()}
    * .
    */
   public void testGetInstance() {
-    assertNotNull(RatingManager.getInstance());
+    assertNotNull(RatingService.getInstance());
   }
 
   /**
    * Test method for.
    *
-   * {@link org.jajuk.services.core.RatingManager#getMaxPlaycount()}.
+   * {@link org.jajuk.services.core.RatingService#getMaxPlaycount()}.
    */
   public void testGetAndSetMaxPlaycount() {
     // Reset the rating manager
-    RatingManager.getInstance().update(new JajukEvent(JajukEvents.RATE_RESET, null));
-    assertEquals(0, RatingManager.getMaxPlaycount());
-    RatingManager.setMaxPlaycount(10);
-    assertEquals(10, RatingManager.getMaxPlaycount());
+    RatingService.getInstance().update(new JajukEvent(JajukEvents.RATE_RESET, null));
+    assertEquals(0, RatingService.getMaxPlaycount());
+    RatingService.setMaxPlaycount(10);
+    assertEquals(10, RatingService.getMaxPlaycount());
     // set back to 0 as there is special handling
-    RatingManager.setMaxPlaycount(0);
+    RatingService.setMaxPlaycount(0);
   }
 
   /**
    * Test method for.
    *
-   * {@link org.jajuk.services.core.RatingManager#setMaxPlaycount(long)}.
+   * {@link org.jajuk.services.core.RatingService#setMaxPlaycount(long)}.
    */
   public void testSetMaxPlaycount() {
     // tested above
@@ -93,10 +98,10 @@ public class TestRatingManager extends JajukTestCase {
   /**
    * Test method for.
    *
-   * {@link org.jajuk.services.core.RatingManager#getRegistrationKeys()}.
+   * {@link org.jajuk.services.core.RatingService#getRegistrationKeys()}.
    */
   public void testGetRegistrationKeys() {
-    Set<JajukEvents> set = RatingManager.getInstance().getRegistrationKeys();
+    Set<JajukEvents> set = RatingService.getInstance().getRegistrationKeys();
     assertTrue(set.toString(), set.contains(JajukEvents.RATE_RESET));
   }
 
@@ -104,7 +109,7 @@ public class TestRatingManager extends JajukTestCase {
    * Test method for.
    *
    * @throws Exception the exception
-   * {@link org.jajuk.services.core.RatingManager#update(org.jajuk.events.JajukEvent)}
+   * {@link org.jajuk.services.core.RatingService#update(org.jajuk.events.JajukEvent)}
    * .
    */
   public void testUpdate() throws Exception {
@@ -112,8 +117,8 @@ public class TestRatingManager extends JajukTestCase {
     // update uses some Tracks
     getTrack(1);
     getTrack(2);
-    RatingManager.getInstance().update(new JajukEvent(JajukEvents.RATE_RESET, null));
-    RatingManager.getInstance().update(new JajukEvent(JajukEvents.PREFERENCES_RESET, null));
+    RatingService.getInstance().update(new JajukEvent(JajukEvents.RATE_RESET, null));
+    RatingService.getInstance().update(new JajukEvent(JajukEvents.PREFERENCES_RESET, null));
   }
 
   /**
@@ -125,21 +130,21 @@ public class TestRatingManager extends JajukTestCase {
    */
   @SuppressWarnings("unchecked")
   private Track getTrack(int i) throws Exception {
-    Genre genre = JUnitHelpers.getGenre();
-    Album album = JUnitHelpers.getAlbum("name", 23);
+    Genre genre = TestHelpers.getGenre();
+    Album album = TestHelpers.getAlbum("name", 23);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
-    Artist artist = JUnitHelpers.getArtist("name");
-    Year year = JUnitHelpers.getYear(2000);
+    Artist artist = TestHelpers.getArtist("name");
+    Year year = TestHelpers.getYear(2000);
     IPlayerImpl imp = new MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
     ITagImpl tagimp = new MyTagImpl();
     Class<ITagImpl> tl = (Class<ITagImpl>) tagimp.getClass();
-    Type type = JUnitHelpers.getType();
+    Type type = TestHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack(Integer.valueOf(i).toString(), "name",
         album, genre, artist, 120, year, 1, type, 1);
     album.getTracksCache().add(track);
-    Device device = JUnitHelpers.getDevice();
+    Device device = TestHelpers.getDevice();
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     File file = FileManager.getInstance().registerFile("test.tst", dir, track, 120, 70);
     track.addFile(file);
@@ -148,12 +153,12 @@ public class TestRatingManager extends JajukTestCase {
   }
 
   public void testGetRateForPreference() {
-    assertEquals(RatingManager.getRateForPreference(-3l), 0);
-    assertEquals(RatingManager.getRateForPreference(-2l), 17);
-    assertEquals(RatingManager.getRateForPreference(-1l), 33);
-    assertEquals(RatingManager.getRateForPreference(0l), 50);
-    assertEquals(RatingManager.getRateForPreference(1l), 67);
-    assertEquals(RatingManager.getRateForPreference(2l), 83);
-    assertEquals(RatingManager.getRateForPreference(3l), 100);
+    assertEquals(RatingService.getRateForPreference(-3l), 0);
+    assertEquals(RatingService.getRateForPreference(-2l), 17);
+    assertEquals(RatingService.getRateForPreference(-1l), 33);
+    assertEquals(RatingService.getRateForPreference(0l), 50);
+    assertEquals(RatingService.getRateForPreference(1l), 67);
+    assertEquals(RatingService.getRateForPreference(2l), 83);
+    assertEquals(RatingService.getRateForPreference(3l), 100);
   }
 }

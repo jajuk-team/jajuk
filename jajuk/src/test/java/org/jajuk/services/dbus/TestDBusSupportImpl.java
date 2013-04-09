@@ -41,9 +41,9 @@ public class TestDBusSupportImpl extends JajukTestCase {
    */
   @Override
   protected void setUp() throws Exception {
+    super.setUp();
     // make sure this is initialized with Actions
     ActionManager.getInstance();
-    super.setUp();
   }
 
   /**
@@ -55,7 +55,11 @@ public class TestDBusSupportImpl extends JajukTestCase {
     try {
       new UnixSocket();
     } catch (UnsatisfiedLinkError e) {
-      Log.fatal("Could not load class UnixSocket, maybe the java.library.path is not set correctly: "
+      Log.fatal("Could not load class UnixSocket, maybe the java.library.path is not set correctly: \n"
+          + "java.home: "
+          + System.getProperty("java.home")
+          + "\n"
+          + "java.library.path: "
           + System.getProperty("java.library.path") + ": " + e.getMessage());
     }
     // will fail where dbus is not available and report an error to the log...
