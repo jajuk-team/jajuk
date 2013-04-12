@@ -60,6 +60,15 @@ public final class PersistenceService extends Thread implements Observer {
   private String lastWebRadioCheckSum;
   private String lastHistoryCheckSum;
   private static final int DELAY_BETWEEN_CHECKS_MS = 5000;
+  /** Collection change flag **/
+  private static boolean collectionChanged = false;
+
+  /**
+   * @param collectionChanged the collectionChanged to set
+   */
+  public static void tagCollectionChanged() {
+    PersistenceService.collectionChanged = true;
+  }
 
   /**
    * Instantiates a new rating manager.
@@ -90,12 +99,22 @@ public final class PersistenceService extends Thread implements Observer {
         try {
           commitWebradiosIfRequired();
           commitHistoryIfRequired();
+          commitCollectionIfRequired();
         } catch (Exception e) {
           Log.error(e);
         }
       } catch (InterruptedException e) {
         Log.error(e);
       }
+    }
+  }
+
+  private void commitCollectionIfRequired() throws IOException {
+    // Commit collection if not still refreshing
+    if (!DeviceManager.getInstance().isAnyDeviceRefreshing()
+        && PersistenceService.collectionChanged) {
+      Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION_EXIT));
+      PersistenceService.collectionChanged = false;
     }
   }
 
@@ -157,7 +176,6 @@ public final class PersistenceService extends Thread implements Observer {
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
-    eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
     return eventSubjectSet;
   }
 
@@ -173,11 +191,6 @@ public final class PersistenceService extends Thread implements Observer {
       if (subject == JajukEvents.FILE_LAUNCHED) {
         // Store current FIFO for next session
         QueueModel.commit();
-      } else if (subject == JajukEvents.DEVICE_REFRESH) {
-        // Commit collection if not still refreshing
-        if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-          Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION_EXIT));
-        }
       }
     } catch (Exception e) {
       Log.error(e);

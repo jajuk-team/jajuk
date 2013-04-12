@@ -27,6 +27,7 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
+import org.jajuk.services.core.PersistenceService;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
@@ -50,6 +51,7 @@ public abstract class Item implements Const {
   /** Cache-string which holds the filter-string for the default "any"-Searches, this is filled during the first search and 
    * cleaned on all points where the properties are adjusted. */
   private String any = null;
+  
 
   /**
    * Constructor.
@@ -89,6 +91,7 @@ public abstract class Item implements Const {
   void setName(String newName) {
     this.name = newName;
     setProperty(XML_NAME, newName);
+    PersistenceService.tagCollectionChanged();
   }
 
   /**
@@ -292,6 +295,7 @@ public abstract class Item implements Const {
     // reset cached value
     any = null;
     properties.put(sKey, oValue);
+    PersistenceService.tagCollectionChanged();
   }
 
   /**
@@ -426,6 +430,7 @@ public abstract class Item implements Const {
     this.properties = properties;
     // remove cached value
     any = null;
+    PersistenceService.tagCollectionChanged();
   }
 
   /*
@@ -443,6 +448,7 @@ public abstract class Item implements Const {
     properties.remove(sKey);
     // remove cached value
     any = null;
+    PersistenceService.tagCollectionChanged();
   }
 
   /**
@@ -488,6 +494,7 @@ public abstract class Item implements Const {
     }
     // reset cached value
     any = null;
+    PersistenceService.tagCollectionChanged();
   }
 
   /**
