@@ -46,8 +46,6 @@ public interface Const {
   int FEEDBACK_LINES = 200;
   /** Max history size. */
   int MAX_HISTORY_SIZE = 1000;
-  /** Autocommit delay in ms. */
-  int AUTO_COMMIT_DELAY = 3600000;
   /** Autorefresh thread delay in ms. */
   int AUTO_REFRESH_DELAY = 30000;
   /** Default refresh interval in mins for unknown types devices *. */
