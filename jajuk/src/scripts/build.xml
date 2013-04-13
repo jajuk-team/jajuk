@@ -207,7 +207,7 @@
 		<get src='http://repository.jajuk.info/mplayer/osx/1.0rc2/mplayer' dest='${mplayerdir}/osx/mplayer' />
 		<!-- Windows mplayer -->
 		<mkdir dir='${mplayerdir}/windows' />
-		<get src='http://repository.jajuk.info/mplayer/20090114/mplayer.exe' dest='${mplayerdir}/windows/mplayer.exe' />
+		<get src='http://repository.jajuk.info/mplayer/20130411/mplayer.exe' dest='${mplayerdir}/windows/mplayer.exe' />
 	</target>
 
 	<target name='compile'>
