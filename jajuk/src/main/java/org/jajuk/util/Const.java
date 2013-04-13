@@ -110,7 +110,7 @@ public interface Const {
   /** Last elapsed time display mode format + 1 *. */
   int FORMAT_TIME_ELAPSED_MAX = 4;
   /** Mplayer windows exe size in bytes. */
-  long MPLAYER_WINDOWS_EXE_SIZE = 15265280l;
+  long MPLAYER_WINDOWS_EXE_SIZE = 7846954l;
   /** Mplayer windows exe size in bytes. */
   long MPLAYER_OSX_EXE_SIZE = 21490476l;
   /** Update URL = PAD file URL. */
