@@ -189,9 +189,7 @@ public final class Main {
       UpgradeManager.upgradeStep3();
       // Start persistence service
       PersistenceService.getInstance().start();
-    } catch (final Exception e) { // last chance to catch any error for
-      // logging
-      // purpose
+    } catch (final Exception e) { // last chance to catch any error for logging purpose
       e.printStackTrace();
       Log.error(106, e);
       ExitService.exit(1);
