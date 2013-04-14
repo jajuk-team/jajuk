@@ -61,13 +61,17 @@ public final class PersistenceService extends Thread implements Observer {
   private String lastHistoryCheckSum;
   private static final int DELAY_BETWEEN_CHECKS_MS = 5000;
   /** Collection change flag **/
-  private static boolean collectionChanged = false;
+  private volatile boolean collectionChanged = false;
+  private boolean started = false;
 
   /**
    * @param collectionChanged the collectionChanged to set
    */
-  public static void tagCollectionChanged() {
-    PersistenceService.collectionChanged = true;
+  public void tagCollectionChanged() {
+    // Do not start listening for collection change while this service is not started because items are loaded mean-while
+    if (started) {
+      collectionChanged = true;
+    }
   }
 
   /**
@@ -76,14 +80,6 @@ public final class PersistenceService extends Thread implements Observer {
   private PersistenceService() {
     // set thread name
     super("Persistence Manager Thread");
-    // Store current history to avoid commiting it at startup. 
-    // Note however that the history will be changed (thus commited) 
-    // if jajuk is in last-track restart mode because this mode changes the item date at next session startup 
-    this.lastHistoryCheckSum = getHistoryChecksum();
-    this.lastWebRadioCheckSum = getWebradiosChecksum();
-    setPriority(Thread.MAX_PRIORITY);
-    // Look for events
-    ObservationManager.register(this);
   }
 
   /*
@@ -93,6 +89,15 @@ public final class PersistenceService extends Thread implements Observer {
    */
   @Override
   public void run() {
+    // Store current history to avoid commiting it at startup. 
+    // Note however that the history will be changed (thus commited) 
+    // if jajuk is in last-track restart mode because this mode changes the item date at next session startup 
+    this.lastHistoryCheckSum = getHistoryChecksum();
+    this.lastWebRadioCheckSum = getWebradiosChecksum();
+    setPriority(Thread.MAX_PRIORITY);
+    // Look for events
+    ObservationManager.register(this);
+    started = true;
     while (!ExitService.isExiting()) {
       try {
         Thread.sleep(DELAY_BETWEEN_CHECKS_MS);
@@ -111,10 +116,9 @@ public final class PersistenceService extends Thread implements Observer {
 
   private void commitCollectionIfRequired() throws IOException {
     // Commit collection if not still refreshing
-    if (!DeviceManager.getInstance().isAnyDeviceRefreshing()
-        && PersistenceService.collectionChanged) {
+    if (!DeviceManager.getInstance().isAnyDeviceRefreshing() && this.collectionChanged) {
       Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION_EXIT));
-      PersistenceService.collectionChanged = false;
+      this.collectionChanged = false;
     }
   }
 

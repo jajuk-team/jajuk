@@ -91,7 +91,7 @@ public abstract class Item implements Const {
   void setName(String newName) {
     this.name = newName;
     setProperty(XML_NAME, newName);
-    PersistenceService.tagCollectionChanged();
+    PersistenceService.getInstance().tagCollectionChanged();
   }
 
   /**
@@ -295,7 +295,7 @@ public abstract class Item implements Const {
     // reset cached value
     any = null;
     properties.put(sKey, oValue);
-    PersistenceService.tagCollectionChanged();
+    PersistenceService.getInstance().tagCollectionChanged();
   }
 
   /**
@@ -430,7 +430,7 @@ public abstract class Item implements Const {
     this.properties = properties;
     // remove cached value
     any = null;
-    PersistenceService.tagCollectionChanged();
+    PersistenceService.getInstance().tagCollectionChanged();
   }
 
   /*
@@ -448,7 +448,7 @@ public abstract class Item implements Const {
     properties.remove(sKey);
     // remove cached value
     any = null;
-    PersistenceService.tagCollectionChanged();
+    PersistenceService.getInstance().tagCollectionChanged();
   }
 
   /**
@@ -494,7 +494,7 @@ public abstract class Item implements Const {
     }
     // reset cached value
     any = null;
-    PersistenceService.tagCollectionChanged();
+    PersistenceService.getInstance().tagCollectionChanged();
   }
 
   /**
