@@ -199,11 +199,6 @@ public final class StartupCollectionService {
     final File fCollection = SessionService.getConfFileByPath(Const.FILE_COLLECTION);
     final File fCollectionExit = SessionService.getConfFileByPath(Const.FILE_COLLECTION_EXIT);
     boolean bParsingOK = false;
-    // Keep this complex proof / multiple collection file code, it is required
-    // (see #1362)
-    // The problem is that a bad shutdown can write down corrupted collection
-    // file that would overwrite at exit good collection.xml automatically
-    // commited during last jajuk session
     try {
       if (fCollectionExit.exists()) {
         Collection.load(fCollectionExit);

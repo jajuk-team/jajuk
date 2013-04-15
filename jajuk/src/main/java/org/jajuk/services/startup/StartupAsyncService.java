@@ -26,6 +26,7 @@ import org.jajuk.base.DeviceManager;
 import org.jajuk.base.ItemManager;
 import org.jajuk.services.alarm.AlarmManager;
 import org.jajuk.services.core.ExitService;
+import org.jajuk.services.core.PersistenceService;
 import org.jajuk.services.core.RatingService;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.dbus.DBusManager;
@@ -95,6 +96,8 @@ public final class StartupAsyncService {
           }
           // Wait few secs to avoid GUI startup perturbations
           Thread.sleep(5000);
+          // Start persistence service
+          PersistenceService.getInstance().start();
           // Switch to sorted mode, must be done before starting auto-refresh
           // thread !
           ItemManager.switchAllManagersToOrderState();

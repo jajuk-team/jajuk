@@ -22,8 +22,10 @@ package org.jajuk.services.core;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.jajuk.base.Collection;
@@ -56,22 +58,34 @@ import org.jajuk.util.log.Log;
  * <p>
  */
 public final class PersistenceService extends Thread implements Observer {
+  public enum Urgency {
+    HIGH, MEDIUM, LOW
+  }
+
   private static PersistenceService self = new PersistenceService();
   private String lastWebRadioCheckSum;
   private String lastHistoryCheckSum;
-  private static final int DELAY_BETWEEN_CHECKS_MS = 5000;
+  private static final int HEART_BEAT_MS = 1000;
+  private static final int DELAY_HIGH_URGENCY_BEATS = 5;
+  private static final int DELAY_MEDIUM_URGENCY_BEATS = 15;
+  private static final int DELAY_LOW_URGENCY_BEATS = 60 * HEART_BEAT_MS;
   /** Collection change flag **/
-  private volatile boolean collectionChanged = false;
+  private Map<Urgency, Boolean> collectionChanged = new HashMap<Urgency, Boolean>(3);
   private boolean started = false;
 
   /**
-   * @param collectionChanged the collectionChanged to set
+   * @return the started
    */
-  public void tagCollectionChanged() {
-    // Do not start listening for collection change while this service is not started because items are loaded mean-while
-    if (started) {
-      collectionChanged = true;
-    }
+  public boolean isStarted() {
+    return this.started;
+  }
+
+  /**
+   * Inform the persister service that the collection should be commited with the given urgency
+   * @param urgency the urgency for the collection to be commited
+   */
+  public void tagCollectionChanged(Urgency urgency) {
+    collectionChanged.put(urgency, true);
   }
 
   /**
@@ -89,36 +103,78 @@ public final class PersistenceService extends Thread implements Observer {
    */
   @Override
   public void run() {
+    init();
+    int comp = 1;
+    while (!ExitService.isExiting()) {
+      try {
+        Thread.sleep(HEART_BEAT_MS);
+        if (comp % DELAY_HIGH_URGENCY_BEATS == 0) {
+          performHighUrgencyActions();
+        }
+        if (comp % DELAY_MEDIUM_URGENCY_BEATS == 0) {
+          performMediumUrgencyActions();
+        }
+        if (comp % DELAY_LOW_URGENCY_BEATS == 0) {
+          performLowUrgencyActions();
+        }
+        comp++;
+      } catch (Exception e) {
+        Log.error(e);
+      }
+    }
+  }
+
+  private void init() {
     // Store current history to avoid commiting it at startup. 
     // Note however that the history will be changed (thus commited) 
     // if jajuk is in last-track restart mode because this mode changes the item date at next session startup 
     this.lastHistoryCheckSum = getHistoryChecksum();
     this.lastWebRadioCheckSum = getWebradiosChecksum();
+    collectionChanged.put(Urgency.LOW, false);
+    collectionChanged.put(Urgency.MEDIUM, false);
+    collectionChanged.put(Urgency.HIGH, false);
     setPriority(Thread.MAX_PRIORITY);
     // Look for events
     ObservationManager.register(this);
     started = true;
-    while (!ExitService.isExiting()) {
+  }
+
+  private void performHighUrgencyActions() throws Exception {
+    commitHistoryIfRequired();
+    if (collectionChanged.get(Urgency.HIGH)) {
       try {
-        Thread.sleep(DELAY_BETWEEN_CHECKS_MS);
-        try {
-          commitWebradiosIfRequired();
-          commitHistoryIfRequired();
-          commitCollectionIfRequired();
-        } catch (Exception e) {
-          Log.error(e);
-        }
-      } catch (InterruptedException e) {
-        Log.error(e);
+        commitCollectionIfRequired();
+      } finally {
+        collectionChanged.put(Urgency.HIGH, false);
+      }
+    }
+  }
+
+  private void performMediumUrgencyActions() throws Exception {
+    commitWebradiosIfRequired();
+    if (collectionChanged.get(Urgency.MEDIUM)) {
+      try {
+        commitCollectionIfRequired();
+      } finally {
+        collectionChanged.put(Urgency.MEDIUM, false);
+      }
+    }
+  }
+
+  private void performLowUrgencyActions() throws Exception {
+    if (collectionChanged.get(Urgency.LOW)) {
+      try {
+        commitCollectionIfRequired();
+      } finally {
+        collectionChanged.put(Urgency.LOW, false);
       }
     }
   }
 
   private void commitCollectionIfRequired() throws IOException {
     // Commit collection if not still refreshing
-    if (!DeviceManager.getInstance().isAnyDeviceRefreshing() && this.collectionChanged) {
+    if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
       Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION_EXIT));
-      this.collectionChanged = false;
     }
   }
 
