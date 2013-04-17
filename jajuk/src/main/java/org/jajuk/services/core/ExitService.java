@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.core;
 
+import java.io.IOException;
+
+import org.jajuk.base.Collection;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -58,6 +61,13 @@ public class ExitService extends Thread {
     // stop sound ASAP
     Player.stop(true);
     ObservationManager.notifySync(new JajukEvent(JajukEvents.EXITING));
+    // Last attempt to store the collection, may not be reached on fast computers but persistence manager
+    // should have save already most of the data
+    try {
+      Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION_EXIT));
+    } catch (IOException e1) {
+      Log.error(e1);
+    }
     try {
       // commit only if exit is safe (to avoid commiting empty collection) 
       if (iExitCode == 0) {
