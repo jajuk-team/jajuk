@@ -38,8 +38,9 @@ SetDatablockOptimize On
 !define InstallDir "$PROGRAMFILES\Jajuk"; the *default* destination directory
 !define OutFile "/tmp/jajuk-dist/windows/jajuk-VERSION_REPLACED_BY_ANT-setup.exe"; the file to save the installer EXE to
 !define IconFile "Modern-Default"; the installer icon
-!define HeaderImage "NSIS"; the herader image
+!define HeaderImage "NSIS"; the header image
 !define WizardImage "Win"; the wizard image
+
 
 # -------------------------------------------------------------------
 # Reserve Files
@@ -49,9 +50,6 @@ ReserveFile "Plugins\InstallOptions.dll"
 ReserveFile "Plugins\LangDLL.dll"
 ReserveFile "Plugins\StartMenu.dll"
 ReserveFile "Plugins\UserInfo.dll"
-ReserveFile "Contrib\Graphics\Wizard\${WizardImage}.bmp"
-ReserveFile "Contrib\Graphics\Header\${HeaderImage}.bmp"
-ReserveFile "Contrib\Graphics\Header\${HeaderImage}-R.bmp"
 ReserveFile "Contrib\Modern UI\ioSpecial.ini"
 
 
@@ -75,11 +73,20 @@ InstallDirRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${App
 
 !include "MUI.nsh"
 
-!define MUI_ICON "Contrib\Graphics\Icons\${IconFile}-Install.ico"
-!define MUI_WELCOMEFINISHPAGE_BITMAP "Contrib\Graphics\Wizard\${WizardImage}.bmp"
+; MUI Settings / Icons
+!define MUI_ICON "Contrib\Graphics\Icons\orange-install-nsis.ico"
+!define MUI_UNICON "Contrib\Graphics\Icons\orange-uninstall-nsis.ico"
+; MUI Settings / Header
 !define MUI_HEADERIMAGE
-!define MUI_HEADERIMAGE_BITMAP "Contrib\Graphics\Header\${HeaderImage}.bmp"
+!define MUI_HEADERIMAGE_RIGHT
+!define MUI_HEADERIMAGE_BITMAP "Contrib\Graphics\Header\orange-r-nsis.bmp"
+!define MUI_HEADERIMAGE_UNBITMAP "Contrib\Graphics\Header\orange-uninstall-r-nsis.bmp"
+ 
+; MUI Settings / Wizard
+!define MUI_WELCOMEFINISHPAGE_BITMAP "Contrib\Graphics\Wizard\orange-nsis.bmp"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "Contrib\Graphics\Wizard\orange-uninstall-nsis.bmp"
 !define MUI_HEADERIMAGE_BITMAP_RTL "Contrib\Graphics\Header\${HeaderImage}-R.bmp"
+
 !define MUI_ABORTWARNING
 !define MUI_WELCOMEPAGE_TITLE_3LINES
 !define MUI_FINISHPAGE_TITLE_3LINES
@@ -96,12 +103,9 @@ InstallDirRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${App
 !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${AppID}"
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "StartmenuFolder"
 !define MUI_LICENSEPAGE_RADIOBUTTONS
-!define MUI_UNICON "Contrib\Graphics\Icons\${IconFile}-Uninstall.ico"
-!define MUI_UNWELCOMEFINISHPAGE_BITMAP "Contrib\Graphics\Wizard\${WizardImage}.bmp"
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 !define MUI_UNABORTWARNING
 
-!insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "/tmp/jajuk-dist/jajuk/LICENSE-GPL.txt"
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_STARTMENU Application $STARTMENU_FOLDER
