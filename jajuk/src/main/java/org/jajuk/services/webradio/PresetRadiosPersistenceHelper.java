@@ -223,7 +223,7 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
       File finalFile = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET);
       try {
         UtilSystem.move(out, finalFile);
-        Log.debug("Preset webradios list commited to : " + out.getAbsolutePath());
+        Log.debug("Preset webradios list commited to : " + finalFile.getAbsolutePath());
       } catch (JajukException e) {
         Log.error(e);
         throw new IOException(e);

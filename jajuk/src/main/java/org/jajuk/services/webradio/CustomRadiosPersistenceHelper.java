@@ -139,7 +139,7 @@ public class CustomRadiosPersistenceHelper extends DefaultHandler {
       File finalFile = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_CUSTOM);
       try {
         UtilSystem.move(out, finalFile);
-        Log.debug("Custom webradios list commited to : " + out.getAbsolutePath());
+        Log.debug("Custom webradios list commited to : " + finalFile.getAbsolutePath());
       } catch (JajukException e) {
         Log.error(e);
         throw new IOException(e);
