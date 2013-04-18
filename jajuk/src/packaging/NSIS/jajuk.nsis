@@ -50,10 +50,10 @@ ReserveFile "Plugins\InstallOptions.dll"
 ReserveFile "Plugins\LangDLL.dll"
 ReserveFile "Plugins\StartMenu.dll"
 ReserveFile "Plugins\UserInfo.dll"
-ReserveFile "Contrib\Graphics\Icons\orange-install-NSIS.ico"
-ReserveFile "Contrib\Graphics\Icons\orange-uninstall-NSIS.ico"
-ReserveFile "Contrib\Graphics\Header\orange-r-NSIS.bmp"
-ReserveFile "Contrib\Graphics\Wizard\orange-NSIS.bmp"
+ReserveFile "Contrib\Graphics\Icons\orange-install.ico"
+ReserveFile "Contrib\Graphics\Icons\orange-uninstall.ico"
+ReserveFile "Contrib\Graphics\Header\orange-r.bmp"
+ReserveFile "Contrib\Graphics\Wizard\orange.bmp"
 ReserveFile "Contrib\Modern UI\ioSpecial.ini"
 
 
@@ -78,18 +78,18 @@ InstallDirRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${App
 !include "MUI.nsh"
 
 ; MUI Settings / Icons
-!define MUI_ICON "Contrib\Graphics\Icons\orange-install-NSIS.ico"
-!define MUI_UNICON "Contrib\Graphics\Icons\orange-uninstall-NSIS.ico"
+!define MUI_ICON "Contrib\Graphics\Icons\orange-install.ico"
+!define MUI_UNICON "Contrib\Graphics\Icons\orange-uninstall.ico"
 ; MUI Settings / Header
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_RIGHT
-!define MUI_HEADERIMAGE_BITMAP "Contrib\Graphics\Header\orange-r-NSIS.bmp"
-!define MUI_HEADERIMAGE_UNBITMAP "Contrib\Graphics\Header\orange-uninstall-r-NSIS.bmp"
+!define MUI_HEADERIMAGE_BITMAP "Contrib\Graphics\Header\orange-r.bmp"
+!define MUI_HEADERIMAGE_UNBITMAP "Contrib\Graphics\Header\orange-uninstall-r.bmp"
  
 ; MUI Settings / Wizard
-!define MUI_WELCOMEFINISHPAGE_BITMAP "Contrib\Graphics\Wizard\orange-NSIS.bmp"
-!define MUI_UNWELCOMEFINISHPAGE_BITMAP "Contrib\Graphics\Wizard\orange-uninstall-NSIS.bmp"
-!define MUI_HEADERIMAGE_BITMAP_RTL "Contrib\Graphics\Header\orange-uninstall-r-NSIS.bmp"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "Contrib\Graphics\Wizard\orange.bmp"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "Contrib\Graphics\Wizard\orange-uninstall.bmp"
+!define MUI_HEADERIMAGE_BITMAP_RTL "Contrib\Graphics\Header\orange-uninstall-r.bmp"
 
 !define MUI_ABORTWARNING
 !define MUI_WELCOMEPAGE_TITLE_3LINES
