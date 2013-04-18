@@ -131,19 +131,19 @@ public class CustomRadiosPersistenceHelper extends DefaultHandler {
       // close
       bw.write("</" + Const.XML_STREAMS + ">\n");
       bw.flush();
-      // Override initial file
-      if (out.length() > 0) {
-        File finalFile = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_CUSTOM);
-        try {
-          UtilSystem.move(out, finalFile);
-        } catch (JajukException e) {
-          Log.error(e);
-          throw new IOException(e);
-        }
-      }
-      Log.debug("Custom webradios list commited to : " + out.getAbsolutePath());
     } finally {
       bw.close();
+    }
+    // Override initial file
+    if (out.length() > 0) {
+      File finalFile = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_CUSTOM);
+      try {
+        UtilSystem.move(out, finalFile);
+        Log.debug("Custom webradios list commited to : " + out.getAbsolutePath());
+      } catch (JajukException e) {
+        Log.error(e);
+        throw new IOException(e);
+      }
     }
   }
 }

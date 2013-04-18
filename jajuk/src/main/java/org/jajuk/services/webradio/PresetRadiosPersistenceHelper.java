@@ -215,19 +215,19 @@ public class PresetRadiosPersistenceHelper extends DefaultHandler {
       // close
       bw.write("</" + TAG_LIST + ">\n");
       bw.flush();
-      // Override initial file
-      if (out.length() > 0) {
-        File finalFile = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET);
-        try {
-          UtilSystem.move(out, finalFile);
-        } catch (JajukException e) {
-          Log.error(e);
-          throw new IOException(e);
-        }
-      }
-      Log.debug("Preset webradios list commited to : " + out.getAbsolutePath());
     } finally {
       bw.close();
+    }
+    // Override initial file
+    if (out.length() > 0) {
+      File finalFile = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET);
+      try {
+        UtilSystem.move(out, finalFile);
+        Log.debug("Preset webradios list commited to : " + out.getAbsolutePath());
+      } catch (JajukException e) {
+        Log.error(e);
+        throw new IOException(e);
+      }
     }
   }
 }
