@@ -136,6 +136,7 @@ public final class PersistenceService extends Thread {
 
   private void performHighUrgencyActions() throws Exception {
     commitHistoryIfRequired();
+    commitWebradiosIfRequired();
     if (collectionChanged.get(Urgency.HIGH)) {
       try {
         commitCollectionIfRequired();
@@ -146,7 +147,6 @@ public final class PersistenceService extends Thread {
   }
 
   private void performMediumUrgencyActions() throws Exception {
-    commitWebradiosIfRequired();
     commitQueueModelIfRequired();
     if (collectionChanged.get(Urgency.MEDIUM)) {
       try {
