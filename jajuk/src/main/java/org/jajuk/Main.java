@@ -168,8 +168,7 @@ public final class Main {
       // Load djs
       DigitalDJManager.getInstance().loadAllDJs();
       // Various asynchronous startup actions that needs collection load
-      boolean bCollectionLoadRecover = StartupCollectionService.isCollectionLoadRecover();
-      StartupAsyncService.startupAsyncAfterCollectionLoad(bCollectionLoadRecover);
+      StartupAsyncService.startupAsyncAfterCollectionLoad();
       // Auto mount devices, freeze for SMB drives
       // if network is not reachable
       // Do not start this if first session, it is causes concurrency with

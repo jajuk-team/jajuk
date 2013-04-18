@@ -170,7 +170,7 @@ public final class PersistenceService extends Thread {
   private void commitCollectionIfRequired() throws IOException {
     // Commit collection if not still refreshing
     if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-      Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION_EXIT));
+      Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
     }
   }
 

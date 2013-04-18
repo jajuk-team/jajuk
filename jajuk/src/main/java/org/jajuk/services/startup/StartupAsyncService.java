@@ -57,7 +57,7 @@ public final class StartupAsyncService {
    * 
    * @param bCollectionLoadRecover 
    */
-  public static void startupAsyncAfterCollectionLoad(final boolean bCollectionLoadRecover) {
+  public static void startupAsyncAfterCollectionLoad() {
     Thread startup = new Thread("Startup Async After Collection Load Thread") {
       @Override
       public void run() {
@@ -66,11 +66,6 @@ public final class StartupAsyncService {
           final ExitService exit = new ExitService();
           exit.setPriority(Thread.MAX_PRIORITY);
           Runtime.getRuntime().addShutdownHook(exit);
-          // backup the collection if no parsing error occurred
-          if (!bCollectionLoadRecover) {
-            UtilSystem.backupFile(SessionService.getConfFileByPath(Const.FILE_COLLECTION),
-                Conf.getInt(Const.CONF_BACKUP_SIZE));
-          }
           // Register FIFO manager
           QueueController.getInstance();
           // Refresh max album rating

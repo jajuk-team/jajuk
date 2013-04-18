@@ -159,7 +159,9 @@ public final class Collection extends DefaultHandler {
 
   /**
    * Write current collection to collection file for persistence between
-   * sessions.
+   * sessions. The collection is actually written first to a temporary file and then the destination is
+   * created or overridden. This is done to limit file corruption risks when the collection is commited at 
+   * application shutdown for instance.
    *
    * @param collectionFile 
    *
@@ -168,8 +170,9 @@ public final class Collection extends DefaultHandler {
   public static synchronized void commit(File collectionFile) throws IOException {
     long time = System.currentTimeMillis();
     String sCharset = Conf.getString(Const.CONF_COLLECTION_CHARSET);
-    final BufferedWriter bw = new BufferedWriter(
-          new OutputStreamWriter(new FileOutputStream(collectionFile), sCharset), 1000000);
+    File tempFile = new File(collectionFile.getAbsoluteFile() + "~");
+    final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
+        tempFile), sCharset), 1000000);
     try {
       bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");
       bw.write("<" + Const.XML_COLLECTION + " " + Const.XML_VERSION + "='" + Const.JAJUK_VERSION
@@ -234,7 +237,12 @@ public final class Collection extends DefaultHandler {
     } finally {
       bw.close();
     }
-    Log.debug("Collection commited in " + (System.currentTimeMillis() - time) + " ms");
+    try {
+      UtilSystem.move(tempFile, collectionFile);
+      Log.debug("Collection commited in " + (System.currentTimeMillis() - time) + " ms");
+    } catch (JajukException e) {
+      Log.error(e);
+    }
   }
 
   /**

@@ -64,7 +64,7 @@ public class ExitService extends Thread {
     // Last attempt to store the collection, may not be reached on fast computers but persistence manager
     // should have save already most of the data
     try {
-      Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION_EXIT));
+      Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
     } catch (IOException e1) {
       Log.error(e1);
     }
