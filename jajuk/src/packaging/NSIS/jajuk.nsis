@@ -50,6 +50,10 @@ ReserveFile "Plugins\InstallOptions.dll"
 ReserveFile "Plugins\LangDLL.dll"
 ReserveFile "Plugins\StartMenu.dll"
 ReserveFile "Plugins\UserInfo.dll"
+ReserveFile "Contrib\Graphics\Icons\orange-install-nsis.ico"
+ReserveFile "Contrib\Graphics\Icons\orange-uninstall-nsis.ico"
+ReserveFile "Contrib\Graphics\Header\orange-r-nsis.bmp"
+ReserveFile "Contrib\Graphics\Wizard\orange-nsis.bmp"
 ReserveFile "Contrib\Modern UI\ioSpecial.ini"
 
 
@@ -85,7 +89,7 @@ InstallDirRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${App
 ; MUI Settings / Wizard
 !define MUI_WELCOMEFINISHPAGE_BITMAP "Contrib\Graphics\Wizard\orange-nsis.bmp"
 !define MUI_UNWELCOMEFINISHPAGE_BITMAP "Contrib\Graphics\Wizard\orange-uninstall-nsis.bmp"
-!define MUI_HEADERIMAGE_BITMAP_RTL "Contrib\Graphics\Header\${HeaderImage}-R.bmp"
+!define MUI_HEADERIMAGE_BITMAP_RTL "Contrib\Graphics\Header\orange-uninstall-r-nsis.bmp"
 
 !define MUI_ABORTWARNING
 !define MUI_WELCOMEPAGE_TITLE_3LINES
