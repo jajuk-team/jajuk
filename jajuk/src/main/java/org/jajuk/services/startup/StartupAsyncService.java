@@ -26,6 +26,7 @@ import org.jajuk.base.DeviceManager;
 import org.jajuk.base.ItemManager;
 import org.jajuk.services.alarm.AlarmManager;
 import org.jajuk.services.core.ExitService;
+import org.jajuk.services.core.PersistenceService;
 import org.jajuk.services.core.RatingService;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.dbus.DBusManager;
@@ -56,7 +57,7 @@ public final class StartupAsyncService {
    * 
    * @param bCollectionLoadRecover 
    */
-  public static void startupAsyncAfterCollectionLoad(final boolean bCollectionLoadRecover) {
+  public static void startupAsyncAfterCollectionLoad() {
     Thread startup = new Thread("Startup Async After Collection Load Thread") {
       @Override
       public void run() {
@@ -65,11 +66,6 @@ public final class StartupAsyncService {
           final ExitService exit = new ExitService();
           exit.setPriority(Thread.MAX_PRIORITY);
           Runtime.getRuntime().addShutdownHook(exit);
-          // backup the collection if no parsing error occurred
-          if (!bCollectionLoadRecover) {
-            UtilSystem.backupFile(SessionService.getConfFileByPath(Const.FILE_COLLECTION),
-                Conf.getInt(Const.CONF_BACKUP_SIZE));
-          }
           // Register FIFO manager
           QueueController.getInstance();
           // Refresh max album rating
@@ -95,6 +91,8 @@ public final class StartupAsyncService {
           }
           // Wait few secs to avoid GUI startup perturbations
           Thread.sleep(5000);
+          // Start persistence service
+          PersistenceService.getInstance().start();
           // Switch to sorted mode, must be done before starting auto-refresh
           // thread !
           ItemManager.switchAllManagersToOrderState();

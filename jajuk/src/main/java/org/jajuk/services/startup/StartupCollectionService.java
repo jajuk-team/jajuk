@@ -54,7 +54,6 @@ import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.UtilSystem;
-import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -63,8 +62,6 @@ import org.jajuk.util.log.Log;
 public final class StartupCollectionService {
   /** MPlayer state. */
   private static UtilSystem.MPlayerStatus mplayerStatus;
-  /** Does a collection parsing error occurred ? *. */
-  private static boolean bCollectionLoadRecover = true;
 
   /**
    * Instantiates a new startup collection service.
@@ -197,106 +194,12 @@ public final class StartupCollectionService {
       return;
     }
     final File fCollection = SessionService.getConfFileByPath(Const.FILE_COLLECTION);
-    final File fCollectionExit = SessionService.getConfFileByPath(Const.FILE_COLLECTION_EXIT);
-    boolean bParsingOK = false;
-    // Keep this complex proof / multiple collection file code, it is required
-    // (see #1362)
-    // The problem is that a bad shutdown can write down corrupted collection
-    // file that would overwrite at exit good collection.xml automatically
-    // commited during last jajuk session
     try {
-      if (fCollectionExit.exists()) {
-        Collection.load(fCollectionExit);
-        // Remove the collection (required by renameTo next line under
-        // Windows)
-        if (fCollection.exists()) { // fCollection can be missing if corrupted durbg previous session
-          UtilSystem.deleteFile(fCollection);
-        }
-        // parsing of collection exit ok, use this collection file as
-        // final collection
-        if (!fCollectionExit.renameTo(fCollection)) {
-          Log.warn("Cannot rename collection file");
-        }
-        bCollectionLoadRecover = false;
-        bParsingOK = true;
-      } else {
-        bCollectionLoadRecover = true;
-        throw new JajukException(5);
-      }
+      Collection.load(fCollection);
+      backupCollectionFileAsynchronously();
     } catch (final Exception e) {
-      Log.error(5, fCollectionExit.getAbsolutePath(), e);
-      Log.debug("Jajuk was not closed properly during previous session, "
-          + "we try to load a backup file");
-      // Remove the corrupted collection file
-      if (fCollectionExit.exists()) {
-        try {
-          UtilSystem.deleteFile(fCollectionExit);
-        } catch (IOException e1) {
-          Log.error(e1);
-        }
-      }
-    }
-    // If regular collection_exit.xml file parsing failed, try to parse
-    // collection.xml. should be OK but not
-    // always up-to-date.
-    if (!bParsingOK) {
-      try {
-        Collection.load(fCollection);
-        bParsingOK = true;
-      } catch (final Exception e1) {
-        Log.error(5, fCollection.getAbsolutePath(), e1);
-        bParsingOK = false;
-      }
-    }
-    // If even final collection file parsing failed
-    // (very unlikely), try to restore a backup file
-    if (!bParsingOK) {
-      // try to restore a backup file
-      final File[] fBackups = SessionService.getConfFileByPath("").listFiles(new FilenameFilter() {
-        @Override
-        public boolean accept(File dir, String name) {
-          if (name.indexOf("backup") != -1) {
-            return true;
-          }
-          return false;
-        }
-      });
-      final List<File> alBackupFiles = new ArrayList<File>(Arrays.asList(fBackups));
-      Collections.sort(alBackupFiles); // sort alphabetically (newest
-      // last)
-      Collections.reverse(alBackupFiles); // newest first now
-      final Iterator<File> it = alBackupFiles.iterator();
-      // parse all backup files, newest first
-      while (!bParsingOK && it.hasNext()) {
-        final File file = it.next();
-        try {
-          // Clear all previous collection
-          Collection.clearCollection();
-          // Load the backup file
-          Collection.load(file);
-          bParsingOK = true;
-          // Show a message telling user that we use a backup file
-          final int i = Messages.getChoice(
-              Messages.getString("Error.133") + ":\n" + file.getAbsolutePath(),
-              JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
-          if (i == JOptionPane.CANCEL_OPTION) {
-            System.exit(-1); //NOSONAR
-          }
-          break;
-        } catch (final Exception e2) {
-          Log.error(5, file.getAbsolutePath(), e2);
-        }
-      }
-    }
-    // Still not better? ok, commit a void
-    // collection (and a void collection is loaded)
-    if (!bParsingOK) {
-      Collection.clearCollection();
-      try {
-        Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
-      } catch (final Exception e2) {
-        Log.error(e2);
-      }
+      handleCollectionParsingError(fCollection, e);
+      tryToParseABackupFile();
     }
     Log.debug("Loaded " + FileManager.getInstance().getElementCount() + " files with "
         + TrackManager.getInstance().getElementCount() + " tracks, "
@@ -308,12 +211,59 @@ public final class StartupCollectionService {
         + DeviceManager.getInstance().getElementCount() + " devices.");
   }
 
-  /**
-   * Checks if is collection load recover.
-   * 
-   * @return true, if is collection load recover
-   */
-  public static boolean isCollectionLoadRecover() {
-    return bCollectionLoadRecover;
+  private static void tryToParseABackupFile() {
+    final File[] fBackups = SessionService.getConfFileByPath("").listFiles(new FilenameFilter() {
+      @Override
+      public boolean accept(File dir, String name) {
+        if (name.indexOf("backup") != -1) {
+          return true;
+        }
+        return false;
+      }
+    });
+    final List<File> alBackupFiles = new ArrayList<File>(Arrays.asList(fBackups));
+    Collections.sort(alBackupFiles); // sort alphabetically (newest
+    // last)
+    Collections.reverse(alBackupFiles); // newest first now
+    final Iterator<File> it = alBackupFiles.iterator();
+    // parse all backup files, newest first
+    boolean parsingOK = false;
+    while (!parsingOK && it.hasNext()) {
+      final File file = it.next();
+      try {
+        // Clear all previous collection
+        Collection.clearCollection();
+        // Load the backup file
+        Collection.load(file);
+        parsingOK = true;
+        // Show a message telling user that we use a backup file
+        final int i = Messages.getChoice(
+            Messages.getString("Error.133") + ":\n" + file.getAbsolutePath(),
+            JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
+        if (i == JOptionPane.CANCEL_OPTION) {
+          System.exit(-1); //NOSONAR
+        }
+        break;
+      } catch (final Exception e2) {
+        Log.error(5, file.getAbsolutePath(), e2);
+      }
+    }
+  }
+
+  private static void handleCollectionParsingError(final File fCollection, final Exception e) {
+    Log.error(5, fCollection.getAbsolutePath(), e);
+    Log.debug("Jajuk was not closed properly during previous session, "
+        + "we try to load a backup file");
+    Messages.showErrorMessage(5, e.getMessage());
+  }
+
+  private static void backupCollectionFileAsynchronously() {
+    new Thread() {
+      @Override
+      public void run() {
+        UtilSystem.backupFile(SessionService.getConfFileByPath(Const.FILE_COLLECTION),
+            Conf.getInt(Const.CONF_BACKUP_SIZE));
+      }
+    }.start();
   }
 }
