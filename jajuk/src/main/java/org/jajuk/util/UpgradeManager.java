@@ -190,6 +190,8 @@ public final class UpgradeManager implements Const {
         upgradeStartupConf();
         // for Jajuk < 1.10
         upgradeWebRadioFile();
+        // for jajuk < 1.10.5
+        upgradeCollectionExitFile();
       }
     } catch (Exception e) {
       Log.error(e);
@@ -536,6 +538,22 @@ public final class UpgradeManager implements Const {
       }
     } catch (Exception e) {
       Log.debug("Can't upgrade Webradio file", e);
+    }
+  }
+
+  /**
+   * For jajuk < 1.10.5, move collection_exit.xml to collection.xml
+   */
+  private static void upgradeCollectionExitFile() {
+    try {
+      File oldFile = SessionService.getConfFileByPath("collection_exit.xml");
+      if (oldFile.exists()) {
+        Log.info("Migrating old collection_exit file to collection.xml");
+        File newCollectionFile = SessionService.getConfFileByPath(Const.FILE_COLLECTION);
+        UtilSystem.move(oldFile, newCollectionFile);
+      }
+    } catch (Exception e) {
+      Log.debug("Can't migrate collection_exit.xml file", e);
     }
   }
 
