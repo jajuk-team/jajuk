@@ -180,27 +180,21 @@ public final class Collection extends DefaultHandler {
       // Devices
       writeItemList(bw, DeviceManager.getInstance().toXML(), DeviceManager.getInstance()
           .getDevices(), DeviceManager.getInstance().getXMLTag(), 40);
-      Log.debug("Devices committed.");
       // Genres
       writeItemList(bw, GenreManager.getInstance().toXML(), GenreManager.getInstance().getGenres(),
           GenreManager.getInstance().getXMLTag(), 40);
-      Log.debug("Genres committed.");
       // Artists
       writeItemList(bw, ArtistManager.getInstance().toXML(), ArtistManager.getInstance()
           .getArtists(), ArtistManager.getInstance().getXMLTag(), 40);
-      Log.debug("Artists committed.");
       // Album artists
       writeItemList(bw, AlbumArtistManager.getInstance().toXML(), AlbumArtistManager.getInstance()
           .getAlbumArtists(), AlbumArtistManager.getInstance().getXMLTag(), 40);
-      Log.debug("Album-artists committed.");
       // Albums
       writeItemList(bw, AlbumManager.getInstance().toXML(), AlbumManager.getInstance().getAlbums(),
           AlbumManager.getInstance().getXMLTag(), 40);
-      Log.debug("Albums committed.");
       // Years
       writeItemList(bw, YearManager.getInstance().toXML(), YearManager.getInstance().getYears(),
           YearManager.getInstance().getXMLTag(), 40);
-      Log.debug("Years committed.");
       // Tracks
       // Cannot use writeItemList() method as we have a bit of special handling inside the loop here
       TrackManager.getInstance().getLock().readLock().lock();
@@ -218,19 +212,15 @@ public final class Collection extends DefaultHandler {
         TrackManager.getInstance().getLock().readLock().unlock();
       }
       writeString(bw, TrackManager.getInstance().getXMLTag(), 200);
-      Log.debug("Tracks committed.");
       // Directories
       writeItemList(bw, DirectoryManager.getInstance().toXML(), DirectoryManager.getInstance()
           .getDirectories(), DirectoryManager.getInstance().getXMLTag(), 100);
-      Log.debug("Directories committed.");
       // Files
       writeItemList(bw, FileManager.getInstance().toXML(), FileManager.getInstance().getFiles(),
           FileManager.getInstance().getXMLTag(), 200);
-      Log.debug("Files committed.");
       // Playlists
       writeItemList(bw, PlaylistManager.getInstance().toXML(), PlaylistManager.getInstance()
           .getPlaylists(), PlaylistManager.getInstance().getXMLTag(), 200);
-      Log.debug("Playlists committed.");
       // end of collection
       bw.write("</" + Const.XML_COLLECTION + TAG_CLOSE_NEWLINE);
       bw.flush();
