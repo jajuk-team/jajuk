@@ -31,7 +31,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 import org.jajuk.base.Collection;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.ExitService;
-import org.jajuk.services.core.PersistenceService;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.dj.DigitalDJManager;
@@ -169,8 +168,7 @@ public final class Main {
       // Load djs
       DigitalDJManager.getInstance().loadAllDJs();
       // Various asynchronous startup actions that needs collection load
-      boolean bCollectionLoadRecover = StartupCollectionService.isCollectionLoadRecover();
-      StartupAsyncService.startupAsyncAfterCollectionLoad(bCollectionLoadRecover);
+      StartupAsyncService.startupAsyncAfterCollectionLoad();
       // Auto mount devices, freeze for SMB drives
       // if network is not reachable
       // Do not start this if first session, it is causes concurrency with
@@ -187,8 +185,6 @@ public final class Main {
       StartupGUIService.launchUI();
       // Late collection upgrade actions
       UpgradeManager.upgradeStep3();
-      // Start persistence service
-      PersistenceService.getInstance().start();
     } catch (final Exception e) { // last chance to catch any error for logging purpose
       e.printStackTrace();
       Log.error(106, e);

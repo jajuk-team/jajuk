@@ -123,8 +123,6 @@ public interface Const {
   String TYPE_VIDEO = "Type.video";
   // -- Files and paths --
   String FILE_COLLECTION = "collection.xml";
-  // File written by the exit hook
-  String FILE_COLLECTION_EXIT = "collection_exit.xml";
   String FILE_REPORTING_CACHE_FILE = "cache/report";
   /** Name of the preferences property file. */
   String FILE_CONFIGURATION = "conf.properties";

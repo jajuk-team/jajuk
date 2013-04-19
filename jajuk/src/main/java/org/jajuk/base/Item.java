@@ -28,6 +28,8 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import org.jajuk.services.core.PersistenceService;
+import org.jajuk.services.core.PersistenceService.Urgency;
+import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
@@ -51,7 +53,6 @@ public abstract class Item implements Const {
   /** Cache-string which holds the filter-string for the default "any"-Searches, this is filled during the first search and 
    * cleaned on all points where the properties are adjusted. */
   private String any = null;
-  
 
   /**
    * Constructor.
@@ -91,7 +92,7 @@ public abstract class Item implements Const {
   void setName(String newName) {
     this.name = newName;
     setProperty(XML_NAME, newName);
-    PersistenceService.getInstance().tagCollectionChanged();
+    notifyCollectionChange(XML_NAME);
   }
 
   /**
@@ -295,7 +296,30 @@ public abstract class Item implements Const {
     // reset cached value
     any = null;
     properties.put(sKey, oValue);
-    PersistenceService.getInstance().tagCollectionChanged();
+    notifyCollectionChange(sKey);
+  }
+
+  private final void notifyCollectionChange(String key) {
+    // Ignore this if the persistence service is not yet started to speed up startup
+    if (!PersistenceService.getInstance().isStarted()) {
+      return;
+    }
+    // Webradios are stored outside the collection file and are persisted separately
+    if (this instanceof WebRadio
+    // SmartPlaylist are not persisted
+        || this instanceof SmartPlaylist) {
+      return;
+    }
+    // The track total play time is incremented very often and we don't want to commit 
+    // collection that soon so we set a low urgency to its commit
+    if (XML_TRACK_TOTAL_PLAYTIME.equals(key)
+    // Same thing for tree expanded states 
+        || XML_EXPANDED.equals(key)) {
+      PersistenceService.getInstance().tagCollectionChanged(Urgency.LOW);
+    } else {
+      // On the contrary, we want others changes to be commited ASAP
+      PersistenceService.getInstance().tagCollectionChanged(Urgency.HIGH);
+    }
   }
 
   /**
@@ -430,7 +454,7 @@ public abstract class Item implements Const {
     this.properties = properties;
     // remove cached value
     any = null;
-    PersistenceService.getInstance().tagCollectionChanged();
+    notifyCollectionChange(null);
   }
 
   /*
@@ -448,7 +472,7 @@ public abstract class Item implements Const {
     properties.remove(sKey);
     // remove cached value
     any = null;
-    PersistenceService.getInstance().tagCollectionChanged();
+    notifyCollectionChange(null);
   }
 
   /**
@@ -494,7 +518,6 @@ public abstract class Item implements Const {
     }
     // reset cached value
     any = null;
-    PersistenceService.getInstance().tagCollectionChanged();
   }
 
   /**
