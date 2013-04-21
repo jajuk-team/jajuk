@@ -99,6 +99,9 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    */
   @Override
   public String getAlbumName() throws Exception {
+    if (tag == null) {
+      return null;
+    }
     return this.tag.getFirst(FieldKey.ALBUM);
   }
 
@@ -109,6 +112,9 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    */
   @Override
   public String getArtistName() throws Exception {
+    if (tag == null) {
+      return null;
+    }
     return this.tag.getFirst(FieldKey.ARTIST);
   }
 
@@ -119,6 +125,9 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    */
   @Override
   public String getComment() throws Exception {
+    if (tag == null) {
+      return null;
+    }
     return this.tag.getFirst(FieldKey.COMMENT);
   }
 
@@ -129,6 +138,9 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    */
   @Override
   public long getLength() throws Exception {
+    if (tag == null) {
+      return 0;
+    }
     return this.audioFile.getAudioHeader().getTrackLength();
   }
 
@@ -139,6 +151,9 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    */
   @Override
   public long getOrder() throws Exception {
+    if (tag == null) {
+      return 0;
+    }
     String sOrder = this.tag.getFirst(FieldKey.TRACK);
     if (StringUtils.isBlank(sOrder)) {
       return 0;
@@ -156,6 +171,9 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    */
   @Override
   public long getQuality() throws Exception {
+    if (tag == null) {
+      return 0;
+    }
     return this.audioFile.getAudioHeader().getBitRateAsNumber();
   }
 
@@ -166,6 +184,9 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    */
   @Override
   public String getGenreName() throws Exception {
+    if (tag == null) {
+      return null;
+    }
     String result = this.tag.getFirst(FieldKey.GENRE);
     if (StringUtils.isBlank(result) || "genre".equals(result)) {
       // the item will be the default jajuk unknown string
@@ -199,6 +220,9 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    */
   @Override
   public String getTrackName() throws Exception {
+    if (tag == null) {
+      return null;
+    }
     return this.tag.getFirst(FieldKey.TITLE);
   }
 
@@ -209,6 +233,9 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
    */
   @Override
   public String getYear() throws Exception {
+    if (tag == null) {
+      return "0";
+    }
     String result = this.tag.getFirst(FieldKey.YEAR);
     if (StringUtils.isBlank(result)) {
       result = "0";
@@ -501,8 +528,11 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
           }
         }
       }
-      Cover cover = new Cover(coverFile, CoverType.TAG_COVER);
-      covers.add(cover);
+      // test if the cover has actually been created, it is not if the tag image was corrupted
+      if (coverFile.exists()) {
+        Cover cover = new Cover(coverFile, CoverType.TAG_COVER);
+        covers.add(cover);
+      }
       index++;
     }
     return covers;
@@ -524,5 +554,13 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
     File coverFile = SessionService.getConfFileByPath(Const.FILE_CACHE + '/' + hash + "_" + index
         + "_" + Const.TAG_COVER_FILE);
     return coverFile;
+  }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.tags.ITagImpl#isTagAvailable()
+   */
+  @Override
+  public boolean isTagAvailable() {
+    return (tag != null);
   }
 }

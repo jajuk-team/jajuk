@@ -106,7 +106,7 @@ public class Tag {
   public String getTrackName() {
     // by default, track name is the file name without extension
     String sTrackName = UtilSystem.removeExtension(fio.getName());
-    if (tagImpl == null) { // if the type doesn't support tags ( like wav )
+    if (tagImpl == null || !tagImpl.isTagAvailable()) {
       return sTrackName;
     }
     try {
@@ -127,7 +127,7 @@ public class Tag {
    * @return album name
    */
   public String getAlbumName() {
-    if (tagImpl == null) { // if the type doesn't support tags ( like wav )
+    if (tagImpl == null || !tagImpl.isTagAvailable()) {
       if (Conf.getBoolean(Const.CONF_TAGS_USE_PARENT_DIR)) {
         return fio.getParentFile().getName();
         // if album is not found, take current directory as album name
@@ -170,7 +170,7 @@ public class Tag {
   public String getArtistName() {
     String sArtistName = Const.UNKNOWN_ARTIST;
     // if the type doesn't support tags ( like wav )
-    if (tagImpl == null) {
+    if (tagImpl == null || !tagImpl.isTagAvailable()) {
       return sArtistName;
     }
     try {
@@ -198,7 +198,7 @@ public class Tag {
   public String getAlbumArtist() {
     String sAlbumArtist = Const.UNKNOWN_ARTIST;
     // if the type doesn't support tags ( like wav )
-    if (tagImpl == null) {
+    if (tagImpl == null || !tagImpl.isTagAvailable()) {
       return sAlbumArtist;
     }
     try {
@@ -222,8 +222,7 @@ public class Tag {
    */
   public String getGenreName() {
     String genre = Const.UNKNOWN_GENRE;
-    // if the type doesn't support tags ( like wav )
-    if (tagImpl == null) {
+    if (tagImpl == null || !tagImpl.isTagAvailable()) {
       return genre;
     }
     try {
@@ -253,8 +252,7 @@ public class Tag {
    */
   public long getLength() {
     long length = 0;
-    // if the type doesn't support tags ( like wav )
-    if (tagImpl == null) {
+    if (tagImpl == null || !tagImpl.isTagAvailable()) {
       return 0;
     }
     try {
@@ -272,13 +270,13 @@ public class Tag {
    */
   public long getDiscNumber() {
     long l = 0l;
+    if (tagImpl == null || !tagImpl.isTagAvailable()) {
+      return l;
+    }
     try {
       l = tagImpl.getDiscNumber();
     } catch (Exception e) {
-      // just debug, no warn because wrong order are too often and
-      // generate too much traces
       Log.info("Wrong disc number:{{" + fio.getName() + "}}");
-      l = 01;
     }
     return l;
   }
@@ -290,8 +288,7 @@ public class Tag {
    */
   public String getYear() {
     String year = "0";
-    // if the type doesn't support tags ( like wav )
-    if (tagImpl == null) {
+    if (tagImpl == null || !tagImpl.isTagAvailable()) {
       return year;
     }
     try {
@@ -310,8 +307,7 @@ public class Tag {
    */
   public long getQuality() {
     long lQuality = 0l;
-    // if the type doesn't support tags ( like wav )
-    if (tagImpl == null) {
+    if (tagImpl == null || !tagImpl.isTagAvailable()) {
       return lQuality;
     }
     try {
@@ -329,8 +325,7 @@ public class Tag {
    */
   public String getComment() {
     String sComment = "";
-    // if the type doesn't support tags ( like wav )
-    if (tagImpl == null) {
+    if (tagImpl == null || !tagImpl.isTagAvailable()) {
       return sComment;
     }
     try {
@@ -351,19 +346,20 @@ public class Tag {
    * @return comment
    */
   public long getOrder() {
-    long l = 0l;
+    long order = 0l;
+    if (tagImpl == null || !tagImpl.isTagAvailable()) {
+      return order;
+    }
     try {
-      l = tagImpl.getOrder();
-      if (l < 0) {
+      order = tagImpl.getOrder();
+      if (order < 0) {
         throw new Exception("Negative Order");
       }
     } catch (Exception e) {
-      // just debug, no warn because wrong order are too often and
-      // generate too much traces
       Log.info("Wrong order:{{" + fio.getName() + "}}");
-      l = 0;
+      order = 0;
     }
-    return l;
+    return order;
   }
 
   /**
@@ -373,8 +369,7 @@ public class Tag {
    */
   public String getLyrics() {
     String sLyrics = "";
-    // if the type doesn't support tags ( like wav )
-    if (tagImpl == null) {
+    if (tagImpl == null || !tagImpl.isTagAvailable()) {
       return sLyrics;
     }
     try {
@@ -393,7 +388,7 @@ public class Tag {
   public List<Cover> getCovers() {
     List<Cover> covers = new ArrayList<Cover>(1);
     // if the type doesn't support tags ( like wav )
-    if (tagImpl == null) {
+    if (tagImpl == null || !tagImpl.isTagAvailable()) {
       return covers;
     }
     try {
@@ -711,6 +706,9 @@ public class Tag {
    * @return the tag field
    */
   public String getTagField(String tagFieldKey) {
+    if (tagImpl == null || !tagImpl.isTagAvailable()) {
+      return "";
+    }
     try {
       return tagImpl.getTagField(tagFieldKey).trim();
     } catch (Exception e) {

@@ -365,4 +365,12 @@ public class NoTagsTagImpl implements ITagImpl {
     // TODO Auto-generated method stub
     return null;
   }
+
+  /* (non-Javadoc)
+   * @see org.jajuk.services.tags.ITagImpl#isTagAvailable()
+   */
+  @Override
+  public boolean isTagAvailable() {
+    return true;
+  }
 }
