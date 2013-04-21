@@ -146,7 +146,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     // delete old history items
     l = System.currentTimeMillis() - l;
     Log.debug("{{" + getName() + "}} Old file references cleaned in: "
-        + ((l < 1000) ? l + " ms" : l / 1000 + " s, changes: " + bChanges));
+        + ((l < 1000) ? l + " ms, changes: " + bChanges : l / 1000 + " s, changes: " + bChanges));
     return bChanges;
   }
 
