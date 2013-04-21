@@ -21,9 +21,7 @@
 package org.jajuk.services.core;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.jajuk.base.Collection;
@@ -34,8 +32,6 @@ import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.services.webradio.CustomRadiosPersistenceHelper;
 import org.jajuk.services.webradio.PresetRadiosPersistenceHelper;
-import org.jajuk.services.webradio.WebRadio;
-import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.log.Log;
@@ -57,7 +53,6 @@ public final class PersistenceService extends Thread {
   }
 
   private static PersistenceService self = new PersistenceService();
-  private String lastWebRadioCheckSum;
   private String lastHistoryCheckSum;
   private String lastQueueCheckSum;
   private static final int HEART_BEAT_MS = 1000;
@@ -66,7 +61,7 @@ public final class PersistenceService extends Thread {
   private static final int DELAY_LOW_URGENCY_BEATS = 600 * HEART_BEAT_MS;
   /** Collection change flag **/
   private Map<Urgency, Boolean> collectionChanged = new HashMap<Urgency, Boolean>(3);
-  private boolean queueModelChanged = false;
+  private boolean radiosChanged = false;
   private boolean started = false;
 
   /**
@@ -82,6 +77,13 @@ public final class PersistenceService extends Thread {
    */
   public void tagCollectionChanged(Urgency urgency) {
     collectionChanged.put(urgency, true);
+  }
+  
+  /**
+   * Inform the persister service that the radios should be commited
+   */
+  public void tagRadiosChanged() {
+    radiosChanged = true;
   }
 
   /**
@@ -125,7 +127,6 @@ public final class PersistenceService extends Thread {
     // Note however that the history will be changed (thus commited) 
     // if jajuk is in last-track restart mode because this mode changes the item date at next session startup 
     this.lastHistoryCheckSum = getHistoryChecksum();
-    this.lastWebRadioCheckSum = getWebradiosChecksum();
     this.lastQueueCheckSum = getQueueModelChecksum();
     collectionChanged.put(Urgency.LOW, false);
     collectionChanged.put(Urgency.MEDIUM, false);
@@ -137,9 +138,9 @@ public final class PersistenceService extends Thread {
   private void performHighUrgencyActions() throws Exception {
     commitHistoryIfRequired();
     commitWebradiosIfRequired();
-    if (collectionChanged.get(Urgency.HIGH)) {
+    if (collectionChanged.get(Urgency.HIGH) && !DeviceManager.getInstance().isAnyDeviceRefreshing()) {
       try {
-        commitCollectionIfRequired();
+        Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
       } finally {
         collectionChanged.put(Urgency.HIGH, false);
       }
@@ -148,9 +149,10 @@ public final class PersistenceService extends Thread {
 
   private void performMediumUrgencyActions() throws Exception {
     commitQueueModelIfRequired();
-    if (collectionChanged.get(Urgency.MEDIUM)) {
+    if (collectionChanged.get(Urgency.MEDIUM)
+        && !DeviceManager.getInstance().isAnyDeviceRefreshing()) {
       try {
-        commitCollectionIfRequired();
+        Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
       } finally {
         collectionChanged.put(Urgency.MEDIUM, false);
       }
@@ -158,36 +160,34 @@ public final class PersistenceService extends Thread {
   }
 
   private void performLowUrgencyActions() throws Exception {
-    if (collectionChanged.get(Urgency.LOW)) {
+    if (collectionChanged.get(Urgency.LOW) && !DeviceManager.getInstance().isAnyDeviceRefreshing()) {
       try {
-        commitCollectionIfRequired();
+        Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
       } finally {
         collectionChanged.put(Urgency.LOW, false);
       }
     }
   }
 
-  private void commitCollectionIfRequired() throws IOException {
-    // Commit collection if not still refreshing
-    if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-      Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
-    }
-  }
-
   private void commitWebradiosIfRequired() throws IOException {
-    String checksum = getWebradiosChecksum();
-    if (!checksum.equals(lastWebRadioCheckSum)) {
-      // Commit webradios
-      CustomRadiosPersistenceHelper.commit();
-      PresetRadiosPersistenceHelper.commit();
-      lastWebRadioCheckSum = checksum;
+    try {
+      if (radiosChanged) {
+        // Commit webradios
+        CustomRadiosPersistenceHelper.commit();
+        PresetRadiosPersistenceHelper.commit();
+      }
+    } finally {
+      radiosChanged = false;
     }
   }
 
   private void commitQueueModelIfRequired() throws IOException {
     String checksum = getQueueModelChecksum();
-    if (!checksum.equals(lastQueueCheckSum)) {
-      QueueModel.commit();
+    try {
+      if (!checksum.equals(lastQueueCheckSum)) {
+        QueueModel.commit();
+      }
+    } finally {
       lastQueueCheckSum = checksum;
     }
   }
@@ -210,23 +210,14 @@ public final class PersistenceService extends Thread {
     return checksum;
   }
 
-  private String getWebradiosChecksum() {
-    StringBuilder sb = new StringBuilder();
-    List<WebRadio> radios = WebRadioManager.getInstance().getWebRadios();
-    // Sort webradios because collections sorting is done asynchronously for startup 
-    // speed reasons and we need a stable radios order for our checksum
-    Collections.sort(radios);
-    for (WebRadio radio : radios) {
-      sb.append(radio.toString());
-    }
-    String checksum = MD5Processor.hash(sb.toString());
-    return checksum;
-  }
-
+ 
   private void commitHistoryIfRequired() throws IOException {
     String checksum = getHistoryChecksum();
-    if (!checksum.equals(lastHistoryCheckSum)) {
-      History.commit();
+    try {
+      if (!checksum.equals(lastHistoryCheckSum)) {
+        History.commit();
+      }
+    } finally {
       this.lastHistoryCheckSum = checksum;
     }
   }
