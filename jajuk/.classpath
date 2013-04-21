@@ -54,6 +54,10 @@
 	<classpathentry kind="lib" path="lib/animation-1.2.0.jar"/>
 	<classpathentry kind="lib" path="lib/substance-5.3.jar"/>
 	<classpathentry kind="lib" path="lib/guava-11.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/jaudiotagger-2.0.4-20111207.115108-15.jar"/>
+	<classpathentry kind="lib" path="lib/jaudiotagger-2.2.0-20130420.jar" sourcepath="/prog/api/jaudiotagger/trunk/src">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/prog/api/jaudiotagger/trunk/target/apidocs/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
