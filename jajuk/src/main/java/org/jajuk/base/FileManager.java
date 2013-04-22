@@ -138,8 +138,6 @@ public final class FileManager extends ItemManager {
         // could have changed but we keep the same file object
         file.setName(sName);
       }
-      // add this file to track
-      file.setTrack(track);
       // Add file to track
       track.addFile(file);
       return file;
