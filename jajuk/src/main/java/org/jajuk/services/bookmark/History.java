@@ -50,6 +50,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
@@ -67,7 +68,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   /** Self instance. */
   private static History history = new History();
   /** History repository, last play first. */
-  private static List<HistoryItem> items = new ArrayList<HistoryItem>(100); 
+  private static List<HistoryItem> items = new ArrayList<HistoryItem>(100);
   /** History begin date. */
   private static long lDateStart;
   /** Cached date formatter. */
@@ -121,7 +122,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
    * 
    * @return the history
    */
-  public List<HistoryItem> getItems() { 
+  public List<HistoryItem> getItems() {
     return items;
   }
 
@@ -232,7 +233,8 @@ public final class History extends DefaultHandler implements HighPriorityObserve
       lDateStart = System.currentTimeMillis();
     }
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-        SessionService.getConfFileByPath(Const.FILE_HISTORY)), "UTF-8"));
+        SessionService.getConfFileByPath(Const.FILE_HISTORY + "."
+            + Const.FILE_SAVING_FILE_EXTENSION)), "UTF-8"));
     try {
       bw.write("<?xml version='1.0' encoding='UTF-8'?>\n");
       bw.write("<history JAJUK_VERSION='" + Const.JAJUK_VERSION + "' begin_date='"
@@ -247,6 +249,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
     } finally {
       bw.close();
     }
+    UtilSystem.saveFileWithRecoverySupport(SessionService.getConfFileByPath(Const.FILE_HISTORY));
   }
 
   /**
@@ -255,11 +258,12 @@ public final class History extends DefaultHandler implements HighPriorityObserve
    */
   public static void load() {
     try {
+      File historyFile = SessionService.getConfFileByPath(Const.FILE_HISTORY);
+      UtilSystem.recoveredFileIfRequired(historyFile);
       SAXParserFactory spf = SAXParserFactory.newInstance();
       spf.setValidating(false);
       SAXParser saxParser = spf.newSAXParser();
-      File frt = SessionService.getConfFileByPath(Const.FILE_HISTORY);
-      saxParser.parse(frt.toURI().toURL().toString(), getInstance());
+      saxParser.parse(historyFile.toURI().toURL().toString(), getInstance());
       // delete old history items
       getInstance().clear(Integer.parseInt(Conf.getString(Const.CONF_HISTORY)));
     } catch (Exception e) {

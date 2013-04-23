@@ -124,6 +124,8 @@ public interface Const {
   String JAJUK_COPYRIGHT = "Copyright 2003-2012 The Jajuk Team";
   String TYPE_VIDEO = "Type.video";
   // -- Files and paths --
+  String FILE_SAVING_FILE_EXTENSION = "saving";
+  String FILE_SAVED_PROOF_FILE_EXTENSION = "proof";
   String FILE_COLLECTION = "collection.xml";
   String FILE_REPORTING_CACHE_FILE = "cache/report";
   /** Name of the preferences property file. */
