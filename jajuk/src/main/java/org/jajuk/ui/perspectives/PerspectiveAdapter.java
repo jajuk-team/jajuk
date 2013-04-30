@@ -37,6 +37,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -63,14 +64,10 @@ import org.xml.sax.SAXException;
  * Perspective adapter, provide default implementation for perspectives.
  */
 public abstract class PerspectiveAdapter extends DockingDesktop implements IPerspective, Const {
-  /** The Constant XML_EXT.   */
-  private static final String XML_EXT = ".xml";
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 698162872976536725L;
   /** Perspective id (class). */
   private final String sID;
-  /** As been selected flag (workaround for VLDocking issue when saving position). */
-  protected boolean bAsBeenSelected = false;
 
   /**
    * Constructor.
@@ -107,19 +104,22 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
    */
   @Override
   public void commit() throws IOException {
-    // workaround for a VLDocking issue + performances
-    if (!bAsBeenSelected) {
-      return;
-    }
-    // The writeXML method must be called in the EDT to avoid freezing, it
-    // requires a lock some UI components
-    File saveFile = SessionService.getConfFileByPath(getClass().getSimpleName() + XML_EXT);
-    BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(saveFile));
     try {
-      writeXML(out);
-      out.flush();
-    } finally {
-      out.close();
+      // The writeXML method must be called in the EDT to avoid freezing, it
+      // requires a lock some UI components
+      File saveFile = SessionService.getConfFileByPath(PerspectiveAdapter.this.getClass()
+          .getSimpleName() + Const.FILE_XML_EXT);
+      BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(saveFile));
+      try {
+        writeXML(out);
+        out.flush();
+      } finally {
+        out.close();
+      }
+      Log.debug("Perspective " + getID() + " commited");
+    } catch (Exception e) {
+      Log.error(e);
+      throw new IOException(e);
     }
   }
 
@@ -131,18 +131,19 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
   @Override
   public void load() throws IOException, ParserConfigurationException, SAXException {
     // Try to read XML conf file from home directory
-    File loadFile = SessionService.getConfFileByPath(getClass().getSimpleName() + XML_EXT);
+    File loadFile = SessionService.getConfFileByPath(getClass().getSimpleName()
+        + Const.FILE_XML_EXT);
     // If file doesn't exist (normally only at first install), read
     // perspective conf from the jar
     URL url = loadFile.toURI().toURL();
     if (!loadFile.exists()) {
       url = UtilSystem.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/'
-          + getClass().getSimpleName() + XML_EXT);
+          + getClass().getSimpleName() + Const.FILE_XML_EXT);
     }
     BufferedInputStream in = new BufferedInputStream(url.openStream());
     // then, load the workspace
     try {
-      DockingContext ctx = new DockingContext();
+      final DockingContext ctx = new DockingContext();
       DockableResolver resolver = new DockableResolver() {
         @Override
         public Dockable resolveDockable(String keyName) {
@@ -202,13 +203,34 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
         Log.error(e);
         Log.debug("Error parsing conf file, use defaults - " + getID());
         url = UtilSystem.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/'
-            + getClass().getSimpleName() + XML_EXT);
-        in = new BufferedInputStream(url.openStream());
-        ctx.readXML(in);
+            + getClass().getSimpleName() + Const.FILE_XML_EXT);
+        in.close();
+        BufferedInputStream defaultConf = new BufferedInputStream(url.openStream());
+        ctx.readXML(defaultConf);
+        // Override the corrupted file
+        commit();
       }
     } finally {
-      in.close(); // stream isn't closed
+      if (in != null)
+        in.close();
     }
+  }
+
+  public String getPositionsAsString() {
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    try {
+      writeXML(bos);
+    } catch (IOException e1) {
+      Log.error(e1);
+    } finally {
+      try {
+        bos.flush();
+        bos.close();
+      } catch (IOException e1) {
+        Log.error(e1);
+      }
+    }
+    return new String(bos.toByteArray());
   }
 
   /**
@@ -288,7 +310,8 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     try {
       // Remove current conf file to force using default file from the
       // jar
-      File loadFile = SessionService.getConfFileByPath(getClass().getSimpleName() + XML_EXT);
+      File loadFile = SessionService.getConfFileByPath(getClass().getSimpleName()
+          + Const.FILE_XML_EXT);
       // lazy deletion, the file can be already removed by a previous reset
       loadFile.delete();
       // Remove all registered dockables
@@ -305,16 +328,6 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
       Log.error(e);
       Messages.showErrorMessage(163);
     }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.IPerspective#setAsBeenSelected()
-   */
-  @Override
-  public void setAsBeenSelected(boolean b) {
-    bAsBeenSelected = b;
   }
 
   /*

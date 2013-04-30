@@ -20,9 +20,13 @@
  */
 package org.jajuk.ui.perspectives;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -62,6 +66,7 @@ public final class PerspectiveManager {
   /** List of perspectives that need reset from version n-1. */
   // None perspective to reset from 1.6 to 1.7
   private static String[] perspectivesToReset = new String[] {};
+  private static Map<String, String> idAndFormat = new HashMap<String, String>(10);
 
   /**
    * private constructor to avoid instantiating utility class.
@@ -106,6 +111,17 @@ public final class PerspectiveManager {
       }
     } catch (Exception e) {
       throw new JajukException(108, e);
+    }
+  }
+
+  private static void storeInitialPositionAsString(IPerspective perspective) throws IOException {
+    File loadFile = SessionService.getConfFileByPath(perspective.getClass().getSimpleName()
+        + Const.FILE_XML_EXT);
+    if (loadFile.exists()) {
+      String initialConf = Files.toString(loadFile, Charsets.UTF_8);
+      idAndFormat.put(perspective.getID(), initialConf);
+    } else {
+      idAndFormat.put(perspective.getID(), perspective.getPositionsAsString());
     }
   }
 
@@ -173,7 +189,6 @@ public final class PerspectiveManager {
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
-        perspective.setAsBeenSelected(true);
         PerspectiveManager.currentPerspective = perspective;
         for (IView view : perspective.getViews()) {
           if (!view.isPopulated()) {
@@ -203,6 +218,15 @@ public final class PerspectiveManager {
         PerspectiveBarJPanel.getInstance().setActivated(perspective);
         // store perspective selection
         Conf.setProperty(Const.CONF_PERSPECTIVE_DEFAULT, perspective.getID());
+        // Store the initial position 
+        try {
+          storeInitialPositionAsString(perspective);
+        } catch (IOException e) {
+          Log.error(e);
+          // In case of error, make sure to set the initial values or the XML file 
+          // will never be commited
+          idAndFormat.put(perspective.getID(), perspective.getPositionsAsString());
+        }
         UtilGUI.stopWaiting();
         // Emit a event
         ObservationManager.notify(new JajukEvent(JajukEvents.PERSPECTIVE_CHANGED,
@@ -234,14 +258,27 @@ public final class PerspectiveManager {
   }
 
   /**
-   * Saves perspectives and views position in the perspective.xml file Must be
-   * executed in EDT to avoid dead locks on getComponent()
+   * Saves perspectives and views position in the perspective.xml file.
    * 
+   * Note that we don't use the VLDocking events to trigger perspective commiting for various reasons. 
+   * It is easier to check regularly XML format changes. For instance, the VlDocking action event is called
+   * at each view close when we restore the desktop so we commit it and some views are then lost during the process.
+   *  
    * @throws Exception the exception
    */
-  public static void commit() throws Exception {
+  public static void commitIfRequired() throws Exception {
     for (IPerspective perspective : getPerspectives()) {
-      perspective.commit();
+      String conf = perspective.getPositionsAsString();
+      String id = perspective.getID();
+      // Note that idAndFormat contains null while the perspective has not be displayed at least once
+      if (conf != null && idAndFormat.get(id) != null && !conf.equals(idAndFormat.get(id))) {
+        idAndFormat.put(id, conf);
+        try {
+          perspective.commit();
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
     }
   }
 

@@ -128,6 +128,8 @@ public interface Const {
   String FILE_SAVED_PROOF_FILE_EXTENSION = "proof";
   String FILE_COLLECTION = "collection.xml";
   String FILE_REPORTING_CACHE_FILE = "cache/report";
+  /** The Constant XML_EXT.   */
+  String FILE_XML_EXT = ".xml";
   /** Name of the preferences property file. */
   String FILE_CONFIGURATION = "conf.properties";
   /** Name of the temporary preferences property file. */

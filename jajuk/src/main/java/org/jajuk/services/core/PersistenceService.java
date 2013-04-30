@@ -32,6 +32,7 @@ import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.services.webradio.CustomRadiosPersistenceHelper;
 import org.jajuk.services.webradio.PresetRadiosPersistenceHelper;
+import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.log.Log;
@@ -149,6 +150,7 @@ public final class PersistenceService extends Thread {
 
   private void performMediumUrgencyActions() throws Exception {
     commitQueueModelIfRequired();
+    PerspectiveManager.commitIfRequired();
     if (collectionChanged.get(Urgency.MEDIUM)
         && !DeviceManager.getInstance().isAnyDeviceRefreshing()) {
       try {

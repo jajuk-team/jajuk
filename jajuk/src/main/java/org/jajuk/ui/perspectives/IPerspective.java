@@ -86,9 +86,8 @@ public interface IPerspective {
   void restoreDefaults();
 
   /**
-   * As been selected flag.
-   * 
-   * @param b 
+   * Return String representation of the views positions
+   * @return
    */
-  void setAsBeenSelected(boolean b);
+  String getPositionsAsString();
 }
