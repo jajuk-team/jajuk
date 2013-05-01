@@ -26,14 +26,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -67,8 +66,9 @@ import org.xml.sax.helpers.DefaultHandler;
 public final class History extends DefaultHandler implements HighPriorityObserver {
   /** Self instance. */
   private static History history = new History();
-  /** History repository, last play first. */
-  private static List<HistoryItem> items = new ArrayList<HistoryItem>(100);
+  /** History repository, last play first. KEEP THIS A VECTOR, not an ARRAYLIST, 
+   * it is accessed directly as model for the SearchJPanel*/
+  private static Vector<HistoryItem> items = new Vector<HistoryItem>(100);
   /** History begin date. */
   private static long lDateStart;
   /** Cached date formatter. */
@@ -122,7 +122,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
    * 
    * @return the history
    */
-  public List<HistoryItem> getItems() {
+  public Vector<HistoryItem> getItems() {
     return items;
   }
 
@@ -232,9 +232,10 @@ public final class History extends DefaultHandler implements HighPriorityObserve
     if (lDateStart == 0) {
       lDateStart = System.currentTimeMillis();
     }
-    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-        SessionService.getConfFileByPath(Const.FILE_HISTORY + "."
-            + Const.FILE_SAVING_FILE_EXTENSION)), "UTF-8"));
+    java.io.File out = SessionService.getConfFileByPath(Const.FILE_HISTORY + "."
+        + Const.FILE_SAVING_FILE_EXTENSION);
+    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out),
+        "UTF-8"));
     try {
       bw.write("<?xml version='1.0' encoding='UTF-8'?>\n");
       bw.write("<history JAJUK_VERSION='" + Const.JAJUK_VERSION + "' begin_date='"
@@ -249,7 +250,8 @@ public final class History extends DefaultHandler implements HighPriorityObserve
     } finally {
       bw.close();
     }
-    UtilSystem.saveFileWithRecoverySupport(SessionService.getConfFileByPath(Const.FILE_HISTORY));
+    java.io.File finalFile = SessionService.getConfFileByPath(Const.FILE_HISTORY);
+    UtilSystem.saveFileWithRecoverySupport(finalFile);
   }
 
   /**
