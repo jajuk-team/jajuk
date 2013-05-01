@@ -84,10 +84,9 @@ public interface IPerspective {
    * Restore defaults views.
    */
   void restoreDefaults();
-
+  
   /**
-   * Return String representation of the views positions
-   * @return
+   * Callback method called when the perspective is initially loaded
    */
-  String getPositionsAsString();
+  void initialyLoaded();
 }

@@ -35,9 +35,10 @@ import com.vlsolutions.swing.docking.event.DockingActionListener;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -62,12 +63,16 @@ import org.xml.sax.SAXException;
 
 /**
  * Perspective adapter, provide default implementation for perspectives.
+ * While a perspective disposition has not been changed, the views disposition is loaded
+ * from a default file for each perspective from the jajuk jar file.
  */
+@SuppressWarnings("serial")
 public abstract class PerspectiveAdapter extends DockingDesktop implements IPerspective, Const {
-  /** Generated serialVersionUID. */
-  private static final long serialVersionUID = 698162872976536725L;
   /** Perspective id (class). */
   private final String sID;
+  private long dateLastCommit;
+  private boolean restoringDefaults = false;
+  private long datePerspectiveDisplay;
 
   /**
    * Constructor.
@@ -77,24 +82,23 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     this.sID = getClass().getName();
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.perspectives.IPerspective#getID()
-   */
-  @Override
-  public String getID() {
-    return sID;
-  }
-
   /**
-   * toString method.
-   * 
-   * @return the string
+   * Commit only if we are not restoring defaults views and if the perspective
+   * has not already been commited for one second to filter duplicate events.
+   * We also check if the perspective is displayed for more than few secs to avoid commiting 
+   * at first display when the views are resizing themselves.
    */
-  @Override
-  public String toString() {
-    return "Perspective[name=" + getID() + " description='" + getDesc() + "]";
+  private synchronized void commitIfRequired() {
+    if (!restoringDefaults && (System.currentTimeMillis() - dateLastCommit > 1000)
+        && (System.currentTimeMillis() - datePerspectiveDisplay > 5000)) {
+      try {
+        commit();
+      } catch (Exception e) {
+        Log.error(e);
+      } finally {
+        dateLastCommit = System.currentTimeMillis();
+      }
+    }
   }
 
   /*
@@ -115,6 +119,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
         out.flush();
       } finally {
         out.close();
+        dateLastCommit = System.currentTimeMillis();
       }
       Log.debug("Perspective " + getID() + " commited");
     } catch (Exception e) {
@@ -123,11 +128,11 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.perspectives.IPerspective#load()
-   */
+  @Override
+  public void initialyLoaded() {
+    datePerspectiveDisplay = System.currentTimeMillis();
+  }
+
   @Override
   public void load() throws IOException, ParserConfigurationException, SAXException {
     // Try to read XML conf file from home directory
@@ -143,7 +148,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     BufferedInputStream in = new BufferedInputStream(url.openStream());
     // then, load the workspace
     try {
-      final DockingContext ctx = new DockingContext();
+      DockingContext ctx = new DockingContext();
       DockableResolver resolver = new DockableResolver() {
         @Override
         public Dockable resolveDockable(String keyName) {
@@ -153,6 +158,13 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
             String className = st.nextToken();
             int id = Integer.parseInt(st.nextToken());
             view = ViewFactory.createView(Class.forName(className), PerspectiveAdapter.this, id);
+            // save disposition upon resize
+            view.getComponent().addComponentListener(new ComponentAdapter() {
+              @Override
+              public void componentResized(ComponentEvent e) {
+                commitIfRequired();
+              }
+            });
           } catch (Exception e) {
             Log.error(e);
           }
@@ -184,6 +196,8 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
               ((ViewAdapter) obj).cleanup();
             }
           }
+          // Save the new disposition
+          commitIfRequired();
         }
 
         @Override
@@ -207,30 +221,14 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
         in.close();
         BufferedInputStream defaultConf = new BufferedInputStream(url.openStream());
         ctx.readXML(defaultConf);
-        // Override the corrupted file
-        commit();
+        // Delete the corrupted file
+        loadFile.delete();
       }
     } finally {
-      if (in != null)
+      if (in != null) {
         in.close();
-    }
-  }
-
-  public String getPositionsAsString() {
-    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-    try {
-      writeXML(bos);
-    } catch (IOException e1) {
-      Log.error(e1);
-    } finally {
-      try {
-        bos.flush();
-        bos.close();
-      } catch (IOException e1) {
-        Log.error(e1);
       }
     }
-    return new String(bos.toByteArray());
   }
 
   /**
@@ -308,8 +306,10 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     // SHOULD BE CALLED ONLY FOR THE CURRENT PERSPECTIVE
     // to ensure views are not invisible
     try {
-      // Remove current conf file to force using default file from the
-      // jar
+      // Disable listeners because the load() method will throw many events and we don't want
+      // the perspective to be commited to an intermediate state
+      restoringDefaults = true;
+      // Remove current conf file to force using default file from the jar
       File loadFile = SessionService.getConfFileByPath(getClass().getSimpleName()
           + Const.FILE_XML_EXT);
       // lazy deletion, the file can be already removed by a previous reset
@@ -323,10 +323,14 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
       load();
       // set perspective again to force UI refresh
       PerspectiveManager.setCurrentPerspective(this);
+      // Force a manual commit
+      commit();
     } catch (Exception e) {
       // display an error message
       Log.error(e);
       Messages.showErrorMessage(163);
+    } finally {
+      restoringDefaults = false;
     }
   }
 
@@ -343,5 +347,25 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
       views.add((IView) element.getDockable());
     }
     return views;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.jajuk.ui.perspectives.IPerspective#getID()
+   */
+  @Override
+  public String getID() {
+    return sID;
+  }
+
+  /**
+   * toString method.
+   * 
+   * @return the string
+   */
+  @Override
+  public String toString() {
+    return "Perspective[name=" + getID() + " description='" + getDesc() + "]";
   }
 }
