@@ -258,7 +258,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
       pv.backupSize.setEnabled(true);
     }
     pv.backupSize.setValue(backupSize);
-    pv.jcbCollectionEncoding.setSelectedItem(Conf.getString(Const.CONF_COLLECTION_CHARSET));
     pv.jtfRefactorPattern.setText(Conf.getString(Const.CONF_PATTERN_REFACTOR));
     pv.jtfAnimationPattern.setText(Conf.getString(Const.CONF_PATTERN_ANIMATION));
     pv.jtfFrameTitle.setText(Conf.getString(Const.CONF_PATTERN_FRAME_TITLE));
@@ -501,8 +500,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
   private void updateConfFromGUIAdvanced() {
     HashMap<String, String> properties = new HashMap<String, String>(10);
     properties.put(Const.CONF_BACKUP_SIZE, Integer.toString(pv.backupSize.getValue()));
-    properties.put(Const.CONF_COLLECTION_CHARSET, pv.jcbCollectionEncoding.getSelectedItem()
-        .toString());
     properties.put(Const.CONF_REGEXP, Boolean.toString(pv.jcbRegexp.isSelected()));
     properties.put(Const.CONF_CHECK_FOR_UPDATE, Boolean.toString(pv.jcbCheckUpdates.isSelected()));
     properties.put(Const.CONF_FORCE_FILE_DATE, Boolean.toString(pv.jcbForceFileDate.isSelected()));
