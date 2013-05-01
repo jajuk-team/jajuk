@@ -159,6 +159,11 @@ public final class StartupEngineService {
    */
   private static void restoreQueue() {
     final File fifo = SessionService.getConfFileByPath(Const.FILE_FIFO);
+    try {
+      UtilSystem.recoveredFileIfRequired(fifo);
+    } catch (IOException e) {
+      Log.error(e);
+    }
     if (!fifo.exists()) {
       Log.debug("No fifo file");
     } else {

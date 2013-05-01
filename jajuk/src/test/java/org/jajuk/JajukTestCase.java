@@ -112,7 +112,6 @@ public abstract class JajukTestCase extends TestCase {
     tech_tests.mkdirs();
     //create cache directory and expected conf files
     SessionService.getConfFileByPath(Const.FILE_CACHE).mkdirs();
-    org.jajuk.util.Conf.commit();
     History.commit();
     // Create a tmp directory as a music folder or tmp trash
     SessionService.getConfFileByPath("tests").mkdirs();

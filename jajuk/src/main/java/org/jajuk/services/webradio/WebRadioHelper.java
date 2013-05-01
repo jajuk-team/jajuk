@@ -39,6 +39,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.xml.sax.SAXException;
 
@@ -103,6 +104,10 @@ public class WebRadioHelper {
    */
   public static void loadCustomRadios() throws SAXException, IOException,
       ParserConfigurationException {
+    // Attempt a recovery if crash during previous commit
+    File customFile = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_CUSTOM);
+    UtilSystem.recoveredFileIfRequired(customFile);
+    // Parse the file
     SAXParserFactory spf = SAXParserFactory.newInstance();
     spf.setValidating(false);
     spf.setNamespaceAware(false);
@@ -123,6 +128,10 @@ public class WebRadioHelper {
     for (WebRadio radio : WebRadioManager.getInstance().getWebRadiosByOrigin(WebRadioOrigin.PRESET)) {
       WebRadioManager.getInstance().removeItem(radio);
     }
+    // Attempt a recovery if crash during previous commit
+    File presetFile = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET);
+    UtilSystem.recoveredFileIfRequired(presetFile);
+    // Parse the file
     SAXParserFactory spf = SAXParserFactory.newInstance();
     spf.setValidating(false);
     spf.setNamespaceAware(false);

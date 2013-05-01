@@ -252,6 +252,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
     }
     java.io.File finalFile = SessionService.getConfFileByPath(Const.FILE_HISTORY);
     UtilSystem.saveFileWithRecoverySupport(finalFile);
+    Log.debug("History commited to : " + finalFile.getAbsolutePath());
   }
 
   /**

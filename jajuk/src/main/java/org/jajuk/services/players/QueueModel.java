@@ -1297,9 +1297,10 @@ public final class QueueModel {
    *             Signals that an I/O exception has occurred.
    */
   public static void commit() throws IOException {
-    java.io.File file = SessionService.getConfFileByPath(Const.FILE_FIFO + "~");
+    java.io.File out = SessionService.getConfFileByPath(Const.FILE_FIFO + "."
+        + Const.FILE_SAVING_FILE_EXTENSION);
     PrintWriter writer = new PrintWriter(
-        new BufferedOutputStream(new FileOutputStream(file, false)));
+        new BufferedOutputStream(new FileOutputStream(out, false)));
     for (StackItem st : queue) {
       writer.println(st.getFile().getID());
     }
@@ -1309,13 +1310,8 @@ public final class QueueModel {
     Conf.setProperty(Const.CONF_STARTUP_QUEUE_INDEX, Integer.toString(index));
     // Override initial file
     java.io.File finalFile = SessionService.getConfFileByPath(Const.FILE_FIFO);
-    try {
-      UtilSystem.move(file, finalFile);
-      Log.debug("Queue commited to : " + finalFile.getAbsolutePath());
-    } catch (JajukException e) {
-      Log.error(e);
-      throw new IOException(e);
-    }
+    UtilSystem.saveFileWithRecoverySupport(finalFile);
+    Log.debug("Queue commited to : " + finalFile.getAbsolutePath());
   }
 
   /**

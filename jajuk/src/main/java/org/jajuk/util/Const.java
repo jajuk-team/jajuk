@@ -132,8 +132,6 @@ public interface Const {
   String FILE_XML_EXT = ".xml";
   /** Name of the preferences property file. */
   String FILE_CONFIGURATION = "conf.properties";
-  /** Name of the temporary preferences property file. */
-  String FILE_CONFIGURATION_TEMP = "temp_conf.properties";
   String FILE_HISTORY = "history.xml";
   String FILE_DEFAULT_COVER = "jajuk.file.default.cover";
   String FILE_ABSOLUTE_DEFAULT_COVER = "default-cover.";
