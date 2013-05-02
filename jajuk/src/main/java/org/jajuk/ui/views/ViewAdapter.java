@@ -40,12 +40,11 @@ import org.jdesktop.swingx.JXPanel;
 /**
  * Default implementation for views.
  */
+@SuppressWarnings("serial")
 public abstract class ViewAdapter extends JXPanel implements IView, Const, Comparable<IView>,
     Observer {
-  /** Generated serialVersionUID. */
-  private static final long serialVersionUID = 1526958318911770642L;
   /** Populated state. */
-  private boolean bIsPopulated = false;
+  private boolean isPopulated = false;
   /** View ID; note that a same view can be used several times in the same or in others perspectives. */
   private String sID;
   /** Associated perspective*. */
@@ -83,17 +82,12 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
    */
   @Override
   public boolean isPopulated() {
-    return bIsPopulated;
+    return isPopulated;
   }
 
-  /**
-   * Sets the is populated.
-   * 
-   * @param isPopulated Defines, if this View is populated fully.
-   */
   @Override
-  public void setIsPopulated(boolean isPopulated) {
-    bIsPopulated = isPopulated;
+  public void setPopulated() {
+    isPopulated = true;
   }
 
   /*

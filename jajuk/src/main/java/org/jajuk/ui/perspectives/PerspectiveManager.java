@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -77,6 +76,20 @@ public final class PerspectiveManager {
     hmNameInstance.clear();
   }
 
+  public static void restoreAllPerspectives() {
+    IPerspective current = getCurrentPerspective();
+    for (IPerspective perspective : perspectives) {
+      setCurrentPerspective(perspective);
+      perspective.restoreDefaults();
+    }
+    setCurrentPerspective(current);
+    try {
+      commitAllPerspectives();
+    } catch (Exception e) {
+      Log.error(e);
+    }
+  }
+
   /**
    * Load configuration file.
    * 
@@ -96,25 +109,20 @@ public final class PerspectiveManager {
       if (UpgradeManager.doNeedPerspectiveResetAtUpgrade()) {
         // upgrade message
         Messages.showInfoMessage(Messages.getString("Note.0"));
-        resetPerspectives();
+        resetPerspectivesAfterUpgrade();
       }
     }
     // Load each perspective
     try {
       for (IPerspective perspective : getPerspectives()) {
         perspective.load();
-        perspective.initialyLoaded();
       }
     } catch (Exception e) {
       throw new JajukException(108, e);
     }
   }
 
-  /**
-   * Reset perspectives.
-   * 
-   */
-  private static void resetPerspectives() {
+  private static void resetPerspectivesAfterUpgrade() {
     List<String> perspectivesToReset = Arrays.asList(PerspectiveManager.perspectivesToReset);
     for (IPerspective perspective : getPerspectives()) {
       String className = perspective.getClass().getSimpleName();
@@ -160,9 +168,6 @@ public final class PerspectiveManager {
     return PerspectiveManager.currentPerspective;
   }
 
-  /*
-   * @see org.jajuk.ui.perspectives.IPerspectiveManager#setCurrentPerspective(Perspective)
-   */
   /**
    * Sets the current perspective.
    * 
@@ -171,44 +176,39 @@ public final class PerspectiveManager {
   protected static void setCurrentPerspective(final IPerspective perspective) {
     UtilGUI.waiting();
     // views display
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        PerspectiveManager.currentPerspective = perspective;
-        for (IView view : perspective.getViews()) {
-          if (!view.isPopulated()) {
-            try {
-              view.initUI();
-            } catch (Exception e) {
-              Log.error(e);
-            }
-            view.setIsPopulated(true);
-          }
-          // Perform specific view operation at perspective display
-          view.onPerspectiveSelection();
+    PerspectiveManager.currentPerspective = perspective;
+    for (IView view : perspective.getViews()) {
+      if (!view.isPopulated()) {
+        try {
+          view.initUI();
+        } catch (Exception e) {
+          Log.error(e);
         }
-        // Clear the perspective panel
-        JPanel perspectivePanel = JajukMainWindow.getInstance().getPerspectivePanel();
-        if (perspectivePanel.getComponentCount() > 0) {
-          Component[] components = perspectivePanel.getComponents();
-          for (Component element : components) {
-            perspectivePanel.remove(element);
-          }
-        }
-        perspectivePanel.add(perspective.getContentPane(), BorderLayout.CENTER);
-        // refresh UI
-        perspectivePanel.revalidate();
-        perspectivePanel.repaint();
-        // Select right item in perspective selector
-        PerspectiveBarJPanel.getInstance().setActivated(perspective);
-        // store perspective selection
-        Conf.setProperty(Const.CONF_PERSPECTIVE_DEFAULT, perspective.getID());
-        UtilGUI.stopWaiting();
-        // Emit a event
-        ObservationManager.notify(new JajukEvent(JajukEvents.PERSPECTIVE_CHANGED,
-            ObservationManager.getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
+        view.setPopulated();
       }
-    });
+      // Perform specific view operation at perspective display
+      view.onPerspectiveSelection();
+    }
+    // Clear the perspective panel
+    JPanel perspectivePanel = JajukMainWindow.getInstance().getPerspectivePanel();
+    if (perspectivePanel.getComponentCount() > 0) {
+      Component[] components = perspectivePanel.getComponents();
+      for (Component element : components) {
+        perspectivePanel.remove(element);
+      }
+    }
+    perspectivePanel.add(perspective.getContentPane(), BorderLayout.CENTER);
+    // refresh UI
+    perspectivePanel.revalidate();
+    perspectivePanel.repaint();
+    // Select right item in perspective selector
+    PerspectiveBarJPanel.getInstance().setActivated(perspective);
+    // store perspective selection
+    Conf.setProperty(Const.CONF_PERSPECTIVE_DEFAULT, perspective.getID());
+    UtilGUI.stopWaiting();
+    // Emit a event
+    ObservationManager.notify(new JajukEvent(JajukEvents.PERSPECTIVE_CHANGED, ObservationManager
+        .getDetailsLastOccurence(JajukEvents.FILE_LAUNCHED)));
   }
 
   /**
@@ -231,6 +231,18 @@ public final class PerspectiveManager {
    */
   public static Set<IPerspective> getPerspectives() {
     return perspectives;
+  }
+
+  /**
+   * Saves perspectives and views position in the perspective.xml file Must be
+   * executed in EDT to avoid dead locks on getComponent()
+   * 
+   * @throws Exception the exception
+   */
+  public static void commitAllPerspectives() throws Exception {
+    for (IPerspective perspective : getPerspectives()) {
+      perspective.commit();
+    }
   }
 
   /**

@@ -84,9 +84,4 @@ public interface IPerspective {
    * Restore defaults views.
    */
   void restoreDefaults();
-  
-  /**
-   * Callback method called when the perspective is initially loaded
-   */
-  void initialyLoaded();
 }

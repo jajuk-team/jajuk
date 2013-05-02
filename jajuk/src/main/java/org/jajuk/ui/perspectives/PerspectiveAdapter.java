@@ -35,8 +35,6 @@ import com.vlsolutions.swing.docking.event.DockingActionListener;
 
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -65,14 +63,16 @@ import org.xml.sax.SAXException;
  * Perspective adapter, provide default implementation for perspectives.
  * While a perspective disposition has not been changed, the views disposition is loaded
  * from a default file for each perspective from the jajuk jar file.
+ * Note that we cannot properly handle commit on views resize here because we don't actually control
+ * how many and when resizes will occur. They can occur asynchronously after initUI() and a commit 
+ * may then be catastrophic because some views would stay closed. We commit on docking events and we commit on jajuk exit to 
+ * handle resizing.
  */
 @SuppressWarnings("serial")
 public abstract class PerspectiveAdapter extends DockingDesktop implements IPerspective, Const {
   /** Perspective id (class). */
   private final String sID;
-  private long dateLastCommit;
   private boolean restoringDefaults = false;
-  private long datePerspectiveDisplay;
 
   /**
    * Constructor.
@@ -82,32 +82,11 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     this.sID = getClass().getName();
   }
 
-  /**
-   * Commit only if we are not restoring defaults views and if the perspective
-   * has not already been commited for one second to filter duplicate events.
-   * We also check if the perspective is displayed for more than few secs to avoid commiting 
-   * at first display when the views are resizing themselves.
-   */
-  private synchronized void commitIfRequired() {
-    if (!restoringDefaults && (System.currentTimeMillis() - dateLastCommit > 1000)
-        && (System.currentTimeMillis() - datePerspectiveDisplay > 5000)) {
-      try {
-        commit();
-      } catch (Exception e) {
-        Log.error(e);
-      } finally {
-        dateLastCommit = System.currentTimeMillis();
-      }
-    }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.perspectives.IPerspective#commit()
-   */
   @Override
-  public void commit() throws IOException {
+  public synchronized void commit() throws IOException {
+    if (restoringDefaults) {
+      return;
+    }
     try {
       // The writeXML method must be called in the EDT to avoid freezing, it
       // requires a lock some UI components
@@ -119,18 +98,12 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
         out.flush();
       } finally {
         out.close();
-        dateLastCommit = System.currentTimeMillis();
       }
       Log.debug("Perspective " + getID() + " commited");
     } catch (Exception e) {
       Log.error(e);
       throw new IOException(e);
     }
-  }
-
-  @Override
-  public void initialyLoaded() {
-    datePerspectiveDisplay = System.currentTimeMillis();
   }
 
   @Override
@@ -158,54 +131,13 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
             String className = st.nextToken();
             int id = Integer.parseInt(st.nextToken());
             view = ViewFactory.createView(Class.forName(className), PerspectiveAdapter.this, id);
-            // save disposition upon resize
-            view.getComponent().addComponentListener(new ComponentAdapter() {
-              @Override
-              public void componentResized(ComponentEvent e) {
-                commitIfRequired();
-              }
-            });
           } catch (Exception e) {
             Log.error(e);
           }
           return view;
         }
       };
-      // register a listener to unregister the view upon closing
-      ctx.addDockingActionListener(new DockingActionListener() {
-        @Override
-        public void dockingActionPerformed(DockingActionEvent dockingactionevent) {
-          // on closing/removing of a view try to unregister it at the
-          // ObservationManager
-          if (dockingactionevent instanceof DockingActionCloseEvent) {
-            Dockable obj = ((DockingActionDockableEvent) dockingactionevent).getDockable();
-            if (obj instanceof Observer) {
-              ObservationManager.unregister((Observer) obj);
-            }
-            // it seems the Docking-library does not unregister these things by itself
-            // so we need to do it on our own here as well. We create the Dockable (i.e.
-            // the View) from scratch every time (see constructor of JajukJMenuBar where we create
-            // the menu entries to add new views and ViewFactory)
-            unregisterDockable(obj);
-            // workaround for DockingDesktop-leaks, we need to remove the Dockable from the
-            // "TitleBar"
-            // if it is one of those that are hidden on the left side.
-            removeFromDockingDesktop(PerspectiveAdapter.this, obj);
-            // do some additional cleanup on the View itself if necessary
-            if (obj instanceof ViewAdapter) {
-              ((ViewAdapter) obj).cleanup();
-            }
-          }
-          // Save the new disposition
-          commitIfRequired();
-        }
-
-        @Override
-        public boolean acceptDockingAction(DockingActionEvent dockingactionevent) {
-          // always accept here
-          return true;
-        }
-      });
+      addDockableListener(ctx);
       ctx.setDockableResolver(resolver);
       setContext(ctx);
       ctx.addDesktop(this);
@@ -229,6 +161,48 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
         in.close();
       }
     }
+  }
+
+  private void addDockableListener(DockingContext ctx) {
+    // register a listener to unregister the view upon closing
+    ctx.addDockingActionListener(new DockingActionListener() {
+      @Override
+      public void dockingActionPerformed(DockingActionEvent dockingactionevent) {
+        // on closing/removing of a view try to unregister it at the
+        // ObservationManager
+        if (dockingactionevent instanceof DockingActionCloseEvent) {
+          Dockable obj = ((DockingActionDockableEvent) dockingactionevent).getDockable();
+          if (obj instanceof Observer) {
+            ObservationManager.unregister((Observer) obj);
+          }
+          // Seems that the Docking-library does not unregister these things by itself
+          // so we need to do it on our own here as well. We create the Dockable (i.e.
+          // the View) from scratch every time (see constructor of JajukJMenuBar where we create
+          // the menu entries to add new views and ViewFactory)
+          unregisterDockable(obj);
+          // workaround for DockingDesktop-leaks, we need to remove the Dockable from the
+          // "TitleBar"
+          // if it is one of those that are hidden on the left side.
+          removeFromDockingDesktop(PerspectiveAdapter.this, obj);
+          // do some additional cleanup on the View itself if necessary
+          if (obj instanceof ViewAdapter) {
+            ((ViewAdapter) obj).cleanup();
+          }
+        }
+        // Save the new disposition
+        try {
+          commit();
+        } catch (IOException e) {
+          Log.error(e);
+        }
+      }
+
+      @Override
+      public boolean acceptDockingAction(DockingActionEvent dockingactionevent) {
+        // always accept here
+        return true;
+      }
+    });
   }
 
   /**
@@ -286,21 +260,11 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.perspectives.IPerspective#getContentPane()
-   */
   @Override
   public Container getContentPane() {
     return this;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.IPerspective#restaureDefaults()
-   */
   @Override
   public void restoreDefaults() {
     // SHOULD BE CALLED ONLY FOR THE CURRENT PERSPECTIVE
@@ -334,11 +298,6 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.perspectives.IPerspective#getViews()
-   */
   @Override
   public Set<IView> getViews() {
     Set<IView> views = new HashSet<IView>();
@@ -349,21 +308,11 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     return views;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.perspectives.IPerspective#getID()
-   */
   @Override
   public String getID() {
     return sID;
   }
 
-  /**
-   * toString method.
-   * 
-   * @return the string
-   */
   @Override
   public String toString() {
     return "Perspective[name=" + getID() + " description='" + getDesc() + "]";

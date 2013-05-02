@@ -22,8 +22,6 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.SwingUtilities;
-
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.IconLoader;
@@ -51,13 +49,8 @@ public class RestoreViewsAction extends JajukAction {
    */
   @Override
   public void perform(final ActionEvent e) throws JajukException {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        IPerspective perspective = PerspectiveManager.getCurrentPerspective();
-        // Restore local or global views
-        perspective.restoreDefaults();
-      }
-    });
+    IPerspective perspective = PerspectiveManager.getCurrentPerspective();
+    // Restore local or global views
+    perspective.restoreDefaults();
   }
 }
