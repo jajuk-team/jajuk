@@ -35,6 +35,8 @@ import com.vlsolutions.swing.docking.event.DockingActionListener;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -49,6 +51,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
+import org.jajuk.services.core.PersistenceService;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ViewAdapter;
@@ -61,18 +64,14 @@ import org.xml.sax.SAXException;
 
 /**
  * Perspective adapter, provide default implementation for perspectives.
- * While a perspective disposition has not been changed, the views disposition is loaded
- * from a default file for each perspective from the jajuk jar file.
- * Note that we cannot properly handle commit on views resize here because we don't actually control
- * how many and when resizes will occur. They can occur asynchronously after initUI() and a commit 
- * may then be catastrophic because some views would stay closed. We commit on docking events and we commit on jajuk exit to 
- * handle resizing.
  */
 @SuppressWarnings("serial")
 public abstract class PerspectiveAdapter extends DockingDesktop implements IPerspective, Const {
   /** Perspective id (class). */
   private final String sID;
-  private boolean restoringDefaults = false;
+  private long dateFirstDisplay;
+  private boolean alreadySelected = false;
+  private static final int RESIZE_EVENTS_DISABLING_DELAY_MS = 5000;
 
   /**
    * Constructor.
@@ -83,10 +82,15 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
   }
 
   @Override
-  public synchronized void commit() throws IOException {
-    if (restoringDefaults) {
-      return;
+  public void selected() {
+    if (!alreadySelected) {
+      this.dateFirstDisplay = System.currentTimeMillis();
     }
+    alreadySelected = true;
+  }
+
+  @Override
+  public synchronized void commit() throws IOException {
     try {
       // The writeXML method must be called in the EDT to avoid freezing, it
       // requires a lock some UI components
@@ -131,6 +135,17 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
             String className = st.nextToken();
             int id = Integer.parseInt(st.nextToken());
             view = ViewFactory.createView(Class.forName(className), PerspectiveAdapter.this, id);
+            // save disposition upon resize
+            view.getComponent().addComponentListener(new ComponentAdapter() {
+              @Override
+              public void componentResized(ComponentEvent e) {
+                // Avoid persisting the perspective for nothing at first display display.
+                // We disable the resize events during a small period of time to make sure events are done.
+                if (System.currentTimeMillis() - dateFirstDisplay > RESIZE_EVENTS_DISABLING_DELAY_MS) {
+                  PersistenceService.getInstance().tickPerspectiveChanged(PerspectiveAdapter.this);
+                }
+              }
+            });
           } catch (Exception e) {
             Log.error(e);
           }
@@ -189,12 +204,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
             ((ViewAdapter) obj).cleanup();
           }
         }
-        // Save the new disposition
-        try {
-          commit();
-        } catch (IOException e) {
-          Log.error(e);
-        }
+        PersistenceService.getInstance().tickPerspectiveChanged(PerspectiveAdapter.this);
       }
 
       @Override
@@ -270,9 +280,6 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     // SHOULD BE CALLED ONLY FOR THE CURRENT PERSPECTIVE
     // to ensure views are not invisible
     try {
-      // Disable listeners because the load() method will throw many events and we don't want
-      // the perspective to be commited to an intermediate state
-      restoringDefaults = true;
       // Remove current conf file to force using default file from the jar
       File loadFile = SessionService.getConfFileByPath(getClass().getSimpleName()
           + Const.FILE_XML_EXT);
@@ -287,14 +294,10 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
       load();
       // set perspective again to force UI refresh
       PerspectiveManager.setCurrentPerspective(this);
-      // Force a manual commit
-      commit();
     } catch (Exception e) {
       // display an error message
       Log.error(e);
       Messages.showErrorMessage(163);
-    } finally {
-      restoringDefaults = false;
     }
   }
 

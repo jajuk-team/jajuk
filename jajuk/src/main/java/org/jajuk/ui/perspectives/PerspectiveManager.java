@@ -83,11 +83,6 @@ public final class PerspectiveManager {
       perspective.restoreDefaults();
     }
     setCurrentPerspective(current);
-    try {
-      commitAllPerspectives();
-    } catch (Exception e) {
-      Log.error(e);
-    }
   }
 
   /**
@@ -175,6 +170,7 @@ public final class PerspectiveManager {
    */
   protected static void setCurrentPerspective(final IPerspective perspective) {
     UtilGUI.waiting();
+    perspective.selected();
     // views display
     PerspectiveManager.currentPerspective = perspective;
     for (IView view : perspective.getViews()) {
@@ -231,18 +227,6 @@ public final class PerspectiveManager {
    */
   public static Set<IPerspective> getPerspectives() {
     return perspectives;
-  }
-
-  /**
-   * Saves perspectives and views position in the perspective.xml file Must be
-   * executed in EDT to avoid dead locks on getComponent()
-   * 
-   * @throws Exception the exception
-   */
-  public static void commitAllPerspectives() throws Exception {
-    for (IPerspective perspective : getPerspectives()) {
-      perspective.commit();
-    }
   }
 
   /**

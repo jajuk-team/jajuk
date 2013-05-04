@@ -21,7 +21,9 @@
 package org.jajuk.services.core;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.jajuk.base.Collection;
@@ -32,6 +34,7 @@ import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.services.webradio.CustomRadiosPersistenceHelper;
 import org.jajuk.services.webradio.PresetRadiosPersistenceHelper;
+import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.log.Log;
@@ -55,6 +58,7 @@ public final class PersistenceService extends Thread {
   private static PersistenceService self = new PersistenceService();
   private String lastHistoryCheckSum;
   private String lastQueueCheckSum;
+  private static final int MIN_DELAY_AFTER_PERSPECTIVE_CHANGE_MS = 5000;
   private static final int HEART_BEAT_MS = 1000;
   private static final int DELAY_HIGH_URGENCY_BEATS = 5;
   private static final int DELAY_MEDIUM_URGENCY_BEATS = 15;
@@ -63,6 +67,8 @@ public final class PersistenceService extends Thread {
   private Map<Urgency, Boolean> collectionChanged = new HashMap<Urgency, Boolean>(3);
   private boolean radiosChanged = false;
   private boolean started = false;
+  private volatile Map<IPerspective, Long> dateMinNextPerspectiveCommit = new HashMap<IPerspective, Long>(
+      10);
 
   /**
    * @return the started
@@ -72,17 +78,28 @@ public final class PersistenceService extends Thread {
   }
 
   /**
+   * Inform the persister service that the perspective should be commited
+   * @param perspective the perspective that changed
+   */
+  public void tickPerspectiveChanged(IPerspective perspective) {
+    synchronized (dateMinNextPerspectiveCommit) {
+      dateMinNextPerspectiveCommit.put(perspective,
+          (System.currentTimeMillis() + MIN_DELAY_AFTER_PERSPECTIVE_CHANGE_MS));
+    }
+  }
+
+  /**
    * Inform the persister service that the collection should be commited with the given urgency
    * @param urgency the urgency for the collection to be commited
    */
-  public void tagCollectionChanged(Urgency urgency) {
+  public void tickCollectionChanged(Urgency urgency) {
     collectionChanged.put(urgency, true);
   }
-  
+
   /**
    * Inform the persister service that the radios should be commited
    */
-  public void tagRadiosChanged() {
+  public void tickRadiosChanged() {
     radiosChanged = true;
   }
 
@@ -148,13 +165,33 @@ public final class PersistenceService extends Thread {
   }
 
   private void performMediumUrgencyActions() throws Exception {
+    // Queue
     commitQueueModelIfRequired();
+    // Collection
     if (collectionChanged.get(Urgency.MEDIUM)
         && !DeviceManager.getInstance().isAnyDeviceRefreshing()) {
       try {
         Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
       } finally {
         collectionChanged.put(Urgency.MEDIUM, false);
+      }
+    }
+    // Perspectives
+    handlePerspectives();
+  }
+
+  private void handlePerspectives() throws Exception {
+    List<IPerspective> datesCopy = new ArrayList<IPerspective>(
+        dateMinNextPerspectiveCommit.keySet());
+    for (IPerspective perspective : datesCopy) {
+      if (System.currentTimeMillis() - dateMinNextPerspectiveCommit.get(perspective) >= 0) {
+        try {
+          perspective.commit();
+        } finally {
+          synchronized (dateMinNextPerspectiveCommit) {
+            dateMinNextPerspectiveCommit.remove(perspective);
+          }
+        }
       }
     }
   }
@@ -210,7 +247,6 @@ public final class PersistenceService extends Thread {
     return checksum;
   }
 
- 
   private void commitHistoryIfRequired() throws IOException {
     String checksum = getHistoryChecksum();
     try {

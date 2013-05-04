@@ -31,7 +31,6 @@ import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.CustomRadiosPersistenceHelper;
 import org.jajuk.services.webradio.PresetRadiosPersistenceHelper;
 import org.jajuk.ui.actions.JajukAction;
-import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
@@ -72,8 +71,6 @@ public class ExitService extends Thread {
       PresetRadiosPersistenceHelper.commit();
       QueueModel.commit();
       History.commit();
-      // Commit perspectives to handle views resize
-      PerspectiveManager.commitAllPerspectives();
     } catch (Exception e1) {
       Log.error(e1);
     }
