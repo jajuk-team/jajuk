@@ -107,8 +107,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     updateConfFromGUINetwork();
     // Covers
     updateConfFromGUICover();
-    // Force a full refresh (useful for catalog view for instance)
-    ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
     // display a message
     InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.109"),
         InformationJPanel.MessageType.INFORMATIVE);
