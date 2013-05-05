@@ -56,10 +56,9 @@ public final class PersistenceService extends Thread {
   }
 
   private static PersistenceService self = new PersistenceService();
-  private String lastHistoryCheckSum;
   private String lastQueueCheckSum;
-  private static final int MIN_DELAY_AFTER_PERSPECTIVE_CHANGE_MS = 5000;
   private static final int HEART_BEAT_MS = 1000;
+  private static final int MIN_DELAY_AFTER_PERSPECTIVE_CHANGE_MS = 5000;
   private static final int DELAY_HIGH_URGENCY_BEATS = 5;
   private static final int DELAY_MEDIUM_URGENCY_BEATS = 15;
   private static final int DELAY_LOW_URGENCY_BEATS = 600 * HEART_BEAT_MS;
@@ -81,7 +80,7 @@ public final class PersistenceService extends Thread {
    * Inform the persister service that the perspective should be commited
    * @param perspective the perspective that changed
    */
-  public void tickPerspectiveChanged(IPerspective perspective) {
+  public void setPerspectiveChanged(IPerspective perspective) {
     synchronized (dateMinNextPerspectiveCommit) {
       dateMinNextPerspectiveCommit.put(perspective,
           (System.currentTimeMillis() + MIN_DELAY_AFTER_PERSPECTIVE_CHANGE_MS));
@@ -92,14 +91,14 @@ public final class PersistenceService extends Thread {
    * Inform the persister service that the collection should be commited with the given urgency
    * @param urgency the urgency for the collection to be commited
    */
-  public void tickCollectionChanged(Urgency urgency) {
+  public void setCollectionChanged(Urgency urgency) {
     collectionChanged.put(urgency, true);
   }
 
   /**
    * Inform the persister service that the radios should be commited
    */
-  public void tickRadiosChanged() {
+  public void setRadiosChanged() {
     radiosChanged = true;
   }
 
@@ -140,10 +139,6 @@ public final class PersistenceService extends Thread {
   }
 
   private void init() {
-    // Store current history to avoid commiting it at startup. 
-    // Note however that the history will be changed (thus commited) 
-    // if jajuk is in last-track restart mode because this mode changes the item date at next session startup 
-    this.lastHistoryCheckSum = getHistoryChecksum();
     this.lastQueueCheckSum = getQueueModelChecksum();
     collectionChanged.put(Urgency.LOW, false);
     collectionChanged.put(Urgency.MEDIUM, false);
@@ -153,7 +148,6 @@ public final class PersistenceService extends Thread {
   }
 
   private void performHighUrgencyActions() throws Exception {
-    commitHistoryIfRequired();
     commitWebradiosIfRequired();
     if (collectionChanged.get(Urgency.HIGH) && !DeviceManager.getInstance().isAnyDeviceRefreshing()) {
       try {
@@ -243,19 +237,9 @@ public final class PersistenceService extends Thread {
     for (StackItem item : QueueModel.getQueue()) {
       sb.append(item.toString());
     }
+    System.out.println(sb.toString());
     String checksum = MD5Processor.hash(sb.toString());
     return checksum;
-  }
-
-  private void commitHistoryIfRequired() throws IOException {
-    String checksum = getHistoryChecksum();
-    try {
-      if (!checksum.equals(lastHistoryCheckSum)) {
-        History.commit();
-      }
-    } finally {
-      this.lastHistoryCheckSum = checksum;
-    }
   }
 
   public static PersistenceService getInstance() {

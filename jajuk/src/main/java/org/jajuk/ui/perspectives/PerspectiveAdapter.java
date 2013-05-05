@@ -144,7 +144,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
                 // Avoid persisting the perspective for nothing at first display display.
                 // We disable the resize events during a small period of time to make sure events are done.
                 if (System.currentTimeMillis() - dateFirstDisplay > RESIZE_EVENTS_DISABLING_DELAY_MS) {
-                  PersistenceService.getInstance().tickPerspectiveChanged(PerspectiveAdapter.this);
+                  PersistenceService.getInstance().setPerspectiveChanged(PerspectiveAdapter.this);
                 }
               }
             });
@@ -186,7 +186,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     addDockingActionListener(new DockingActionListener() {
       @Override
       public void dockingActionPerformed(DockingActionEvent dockingactionevent) {
-        PersistenceService.getInstance().tickPerspectiveChanged(PerspectiveAdapter.this);
+        PersistenceService.getInstance().setPerspectiveChanged(PerspectiveAdapter.this);
       }
 
       @Override
@@ -219,7 +219,7 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
             ((ViewAdapter) obj).cleanup();
           }
         }
-        PersistenceService.getInstance().tickPerspectiveChanged(PerspectiveAdapter.this);
+        PersistenceService.getInstance().setPerspectiveChanged(PerspectiveAdapter.this);
       }
 
       @Override

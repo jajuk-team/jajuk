@@ -316,15 +316,15 @@ public abstract class Item implements Const {
     }
     // Webradios are stored outside the collection file and are persisted separately
     if (this instanceof WebRadio) {
-      PersistenceService.getInstance().tickRadiosChanged();
+      PersistenceService.getInstance().setRadiosChanged();
     } else {
       // Some properties like the track total play time is incremented very often and we don't want to commit 
       // collection that soon so we set a low urgency to its commit
       if (lowPriorityCollectionProperties.contains(key)) {
-        PersistenceService.getInstance().tickCollectionChanged(Urgency.LOW);
+        PersistenceService.getInstance().setCollectionChanged(Urgency.LOW);
       } else {
         // On the contrary, we want others changes to be commited ASAP
-        PersistenceService.getInstance().tickCollectionChanged(Urgency.HIGH);
+        PersistenceService.getInstance().setCollectionChanged(Urgency.HIGH);
       }
     }
   }

@@ -389,6 +389,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
         long lDate = ((Long) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_DATE))
             .longValue();
         addItem(sFileID, lDate);
+        commit();
       } else if (JajukEvents.DEVICE_REFRESH.equals(subject)) {
         cleanup();
       } else if (JajukEvents.CLEAR_HISTORY.equals(subject)) {

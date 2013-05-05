@@ -427,9 +427,9 @@ public abstract class ItemManager {
     }
     // Webradios are stored outside the collection file and are persisted separately
     if (item instanceof WebRadio) {
-      PersistenceService.getInstance().tickRadiosChanged();
+      PersistenceService.getInstance().setRadiosChanged();
     } else {
-      PersistenceService.getInstance().tickCollectionChanged(Urgency.HIGH);
+      PersistenceService.getInstance().setCollectionChanged(Urgency.HIGH);
     }
   }
 
