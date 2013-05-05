@@ -78,12 +78,13 @@ public class WebRadio extends PhysicalItem implements Comparable<WebRadio> {
     if (this.equals(other)) {
       return 0;
     }
-    // ensure that even radios with the same name can't return a compareTo = 0 (only equal items can)
-    StringBuilder sb = new StringBuilder(getName());
-    sb.append(getID());
-    StringBuilder sbOther = new StringBuilder(other.getName());
-    sbOther.append(other.getID());
-    return sb.toString().compareToIgnoreCase(sbOther.toString());
+    if (other == null) {
+      return 1;
+    }
+    if (getName().equals(other.getName())) {
+      return getID().compareTo(other.getID());
+    }
+    return getName().compareToIgnoreCase(other.getName());
   }
 
   /* (non-Javadoc)

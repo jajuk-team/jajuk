@@ -760,13 +760,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   void initTable() {
     jtbEditable.setSelected(Conf.getBoolean(editableConf));
     // Sort by name by default. 
-    // TODO Note that since Java 7 and its new tim default sorting algorithm,
-    // we get some random "Comparison method violates its general contract!" when calling setSortOrder
-    // and we have no clue of its reason.
-    try {
-      jtable.setSortOrder(1, SortOrder.ASCENDING);
-    } catch (Exception e) {
-      Log.error(e);
-    }
+    jtable.setSortOrder(1, SortOrder.ASCENDING);
   }
 }

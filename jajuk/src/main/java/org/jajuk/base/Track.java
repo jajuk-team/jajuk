@@ -146,16 +146,26 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
-   * Default comparator for tracks, not used for sorting (use TrackComparator
-   * for that) But only for storage.
+   * Default comparator for tracks, not used for actual sorting (use TrackComparator
+   * for that), only for storage purpose.
    *
    * @param otherTrack 
    *
    * @return comparison result
    */
   @Override
-  public int compareTo(Track otherTrack) {
-    return getID().compareTo(otherTrack.getID());
+  public int compareTo(Track other) {
+    // We must ensure that compareTo is consistent with equals because this kind of items are used in Tree Sets
+    if (this.equals(other)) {
+      return 0;
+    }
+    if (other == null) {
+      return 1;
+    }
+    if (getName().equals(other.getName())) {
+      return getID().compareTo(other.getID());
+    }
+    return getName().compareTo(other.getName());
   }
 
   /**

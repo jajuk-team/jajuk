@@ -41,7 +41,6 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Filter;
 import org.jajuk.util.Messages;
-import org.jajuk.util.log.Log;
 
 /**
  * Table model used for logical table view.
@@ -132,11 +131,7 @@ public class TracksTableModel extends JajukTableModel {
     Filter filter = new Filter(property, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
     alToShow = Filter.filterItems(alToShow, filter, Track.class);
     // sort by album
-    long before = System.currentTimeMillis();
     Collections.sort(alToShow, new TrackComparator(TrackComparatorType.ALBUM));
-    // Collections.sort(alToShow, new TrackComparator(TrackComparatorType.ALBUM));
-    Log.debug("Sorting of " + alToShow.size() + " elements took: "
-        + (System.currentTimeMillis() - before) + " mseconds");
     Iterator<Track> it = alToShow.iterator();
     int iColNum = iNumberStandardCols + TrackManager.getInstance().getCustomProperties().size();
     iRowNum = alToShow.size();
