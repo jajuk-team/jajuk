@@ -21,7 +21,13 @@
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 
+import javax.swing.JOptionPane;
+
+import org.jajuk.services.core.ExitService;
+import org.jajuk.services.core.SessionService;
+import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -44,6 +50,20 @@ public class RestoreAllViewsAction extends JajukAction {
 
   @Override
   public void perform(final ActionEvent e) throws JajukException {
-    PerspectiveManager.restoreAllPerspectives();
+    // display a confirmation message
+    int i = Messages.getChoice(Messages.getString("Confirmation_restore_all"),
+        JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+    if (i != JOptionPane.YES_OPTION) {
+      return;
+    }
+    // Drop all perspectives conf
+    for (IPerspective perspective : PerspectiveManager.getPerspectives()) {
+      File loadFile = SessionService.getConfFileByPath(perspective.getClass().getSimpleName()
+          + ".xml");
+      // Note that this file may have already been removed by a previous reset
+      loadFile.delete();
+    }
+    // Exit Jajuk
+    ExitService.exit(0);
   }
 }
