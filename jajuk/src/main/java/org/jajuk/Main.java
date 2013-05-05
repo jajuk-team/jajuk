@@ -219,5 +219,7 @@ public final class Main {
       // In full screen mode, only use a single screen instead of darkening others
       System.setProperty("apple.awt.fullscreencapturealldisplays", "false");
     }
+    // Workaround for #1928 (Random "Comparison method violates its general contract!" errors)
+    System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
   }
 }
