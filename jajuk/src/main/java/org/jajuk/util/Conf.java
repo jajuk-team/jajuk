@@ -388,6 +388,11 @@ public final class Conf implements Const {
    * @param sValue  property value as string
    */
   public static void setProperty(String sName, String sValue) {
+    // [Perf] Ignore cases where the same value is set again 
+    Object current = properties.get(sName);
+    if (current != null && current.equals(sValue)){
+      return;
+    }
     properties.setProperty(sName, sValue);
     try {
       commit();
