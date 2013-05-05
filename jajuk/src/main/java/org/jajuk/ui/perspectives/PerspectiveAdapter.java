@@ -96,6 +96,8 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
       // requires a lock some UI components
       File saveFile = SessionService.getConfFileByPath(PerspectiveAdapter.this.getClass()
           .getSimpleName() + Const.FILE_XML_EXT);
+      // No need for recovery-enable commit here as the perspective can be restored to default 
+      // any time in case of write failure
       BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(saveFile));
       try {
         writeXML(out);
@@ -179,7 +181,20 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
   }
 
   private void addDockableListener(DockingContext ctx) {
-    // register a listener to unregister the view upon closing
+    // Listen action on the perspective itself, used to track events like drag over 
+    // another view of the same size that doesn't throw a view event
+    addDockingActionListener(new DockingActionListener() {
+      @Override
+      public void dockingActionPerformed(DockingActionEvent dockingactionevent) {
+        PersistenceService.getInstance().tickPerspectiveChanged(PerspectiveAdapter.this);
+      }
+
+      @Override
+      public boolean acceptDockingAction(DockingActionEvent arg0) {
+        return true;
+      }
+    });
+    // Actions on views themselves
     ctx.addDockingActionListener(new DockingActionListener() {
       @Override
       public void dockingActionPerformed(DockingActionEvent dockingactionevent) {

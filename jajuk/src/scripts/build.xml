@@ -283,7 +283,7 @@
 		<replace file="${srcdir}/packaging/NSIS/jajuk.nsis" value='${version}'>
 			<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
 		</replace>
-		<nsis script="${srcdir}/packaging/NSIS/jajuk.nsis"/>
+		<nsis script="${srcdir}/packaging/NSIS/jajuk.nsis" />
 	</target>
 
 
