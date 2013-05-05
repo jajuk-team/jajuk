@@ -19,7 +19,8 @@
            <all-permissions/>
        </security> 
        <resources>
-           <j2se version='1.6+' java-vm-args='-client -Xms20M -Xmx2G -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -Xverify:none -Djava.util.Arrays.useLegacyMergeSort=true'/>
+           <j2se version='1.6+' java-vm-args='-client -Xms20M -Xmx2G -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -Xverify:none'/>
+           <property name='java.util.Arrays.useLegacyMergeSort' value='true'/>
            <property name='test' value='TEST_FLAG_REPLACED_BY_ANT'/>
            <jar href='jajuk.jar' version='JNLP_VERSION_REPLACED_BY_ANT'/> 
    		<extension name='Animation' href='animation.jnlp' />
