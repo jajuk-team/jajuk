@@ -43,6 +43,7 @@ import org.jajuk.events.HighPriorityObserver;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.core.PersistenceService;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
@@ -327,22 +328,6 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   }
 
   /**
-   * Called at parsing start.
-   */
-  @Override
-  public void startDocument() {
-    Log.debug("Starting history file parsing...");
-  }
-
-  /**
-   * Called at parsing end.
-   */
-  @Override
-  public void endDocument() {
-    Log.debug("History file parsing done");
-  }
-
-  /**
    * Called when we start an element.
    * 
    * @param sUri 
@@ -364,7 +349,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
       Map<String, String> hm = Collection.getInstance().getHmWrongRightFileID();
       if (hm.size() > 0 && hm.containsKey(sID)) {
         sID = hm.get(sID);
-        Log.debug("upload:" + sID);
+        Log.debug("upgrade ID:" + sID);
       }
       // test if this file is still known in the collection
       if (FileManager.getInstance().getFileByID(sID) != null) {
@@ -389,7 +374,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
         long lDate = ((Long) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_DATE))
             .longValue();
         addItem(sFileID, lDate);
-        commit();
+        PersistenceService.getInstance().setHistoryChanged();
       } else if (JajukEvents.DEVICE_REFRESH.equals(subject)) {
         cleanup();
       } else if (JajukEvents.CLEAR_HISTORY.equals(subject)) {

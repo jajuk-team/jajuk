@@ -63,9 +63,10 @@ public final class PersistenceService extends Thread {
   private static final int DELAY_MEDIUM_URGENCY_BEATS = 15;
   private static final int DELAY_LOW_URGENCY_BEATS = 600 * HEART_BEAT_MS;
   /** Collection change flag **/
-  private Map<Urgency, Boolean> collectionChanged = new HashMap<Urgency, Boolean>(3);
-  private boolean radiosChanged = false;
-  private boolean started = false;
+  private volatile Map<Urgency, Boolean> collectionChanged = new HashMap<Urgency, Boolean>(3);
+  private volatile boolean radiosChanged = false;
+  private volatile boolean started = false;
+  private volatile boolean historyChanged = false;
   private volatile Map<IPerspective, Long> dateMinNextPerspectiveCommit = new HashMap<IPerspective, Long>(
       10);
 
@@ -85,6 +86,13 @@ public final class PersistenceService extends Thread {
       dateMinNextPerspectiveCommit.put(perspective,
           (System.currentTimeMillis() + MIN_DELAY_AFTER_PERSPECTIVE_CHANGE_MS));
     }
+  }
+
+  /**
+   * Inform the persister service that the history should be commited
+   */
+  public void setHistoryChanged() {
+    historyChanged = true;
   }
 
   /**
@@ -191,6 +199,9 @@ public final class PersistenceService extends Thread {
   }
 
   private void performLowUrgencyActions() throws Exception {
+    //History
+    commitHistoryIfRequired();
+    // Collection
     if (collectionChanged.get(Urgency.LOW) && !DeviceManager.getInstance().isAnyDeviceRefreshing()) {
       try {
         Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
@@ -223,6 +234,16 @@ public final class PersistenceService extends Thread {
     }
   }
 
+  private void commitHistoryIfRequired() throws IOException {
+    if (historyChanged) {
+      try {
+        History.commit();
+      } finally {
+        historyChanged = false;
+      }
+    }
+  }
+
   private String getHistoryChecksum() {
     StringBuilder sb = new StringBuilder();
     for (HistoryItem item : History.getInstance().getItems()) {
@@ -237,7 +258,6 @@ public final class PersistenceService extends Thread {
     for (StackItem item : QueueModel.getQueue()) {
       sb.append(item.toString());
     }
-    System.out.println(sb.toString());
     String checksum = MD5Processor.hash(sb.toString());
     return checksum;
   }
