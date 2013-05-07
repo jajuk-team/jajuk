@@ -418,7 +418,7 @@ public abstract class ItemManager {
 
   private final void notifyCollectionChange(Item item) {
     // Ignore this if the persistence service is not yet started to speed up startup
-    if (!PersistenceService.getInstance().isStarted()) {
+    if (!PersistenceService.getInstance().isAlive()) {
       return;
     }
     // SmartPlaylist are not persisted

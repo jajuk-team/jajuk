@@ -26,17 +26,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.jajuk.base.Collection;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.services.bookmark.History;
-import org.jajuk.services.bookmark.HistoryItem;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.services.webradio.CustomRadiosPersistenceHelper;
 import org.jajuk.services.webradio.PresetRadiosPersistenceHelper;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.util.Const;
-import org.jajuk.util.MD5Processor;
 import org.jajuk.util.log.Log;
 
 /**
@@ -56,8 +55,8 @@ public final class PersistenceService extends Thread {
   }
 
   private static PersistenceService self = new PersistenceService();
-  private String lastQueueCheckSum;
-  private static final int HEART_BEAT_MS = 1000;
+  private String lastCommitQueueCheckSum;
+  private static final int HEART_BEAT_MS = 10;
   private static final int MIN_DELAY_AFTER_PERSPECTIVE_CHANGE_MS = 5000;
   private static final int DELAY_HIGH_URGENCY_BEATS = 5;
   private static final int DELAY_MEDIUM_URGENCY_BEATS = 15;
@@ -65,17 +64,9 @@ public final class PersistenceService extends Thread {
   /** Collection change flag **/
   private volatile Map<Urgency, Boolean> collectionChanged = new HashMap<Urgency, Boolean>(3);
   private volatile boolean radiosChanged = false;
-  private volatile boolean started = false;
   private volatile boolean historyChanged = false;
   private volatile Map<IPerspective, Long> dateMinNextPerspectiveCommit = new HashMap<IPerspective, Long>(
       10);
-
-  /**
-   * @return the started
-   */
-  public boolean isStarted() {
-    return this.started;
-  }
 
   /**
    * Inform the persister service that the perspective should be commited
@@ -147,12 +138,11 @@ public final class PersistenceService extends Thread {
   }
 
   private void init() {
-    this.lastQueueCheckSum = getQueueModelChecksum();
+    this.lastCommitQueueCheckSum = getQueueModelChecksum();
     collectionChanged.put(Urgency.LOW, false);
     collectionChanged.put(Urgency.MEDIUM, false);
     collectionChanged.put(Urgency.HIGH, false);
     setPriority(Thread.MAX_PRIORITY);
-    started = true;
   }
 
   private void performHighUrgencyActions() throws Exception {
@@ -225,12 +215,12 @@ public final class PersistenceService extends Thread {
 
   private void commitQueueModelIfRequired() throws IOException {
     String checksum = getQueueModelChecksum();
-    try {
-      if (!checksum.equals(lastQueueCheckSum)) {
+    if (!checksum.equals(this.lastCommitQueueCheckSum)) {
+      try {
         QueueModel.commit();
+      } finally {
+        this.lastCommitQueueCheckSum = checksum;
       }
-    } finally {
-      lastQueueCheckSum = checksum;
     }
   }
 
@@ -244,22 +234,15 @@ public final class PersistenceService extends Thread {
     }
   }
 
-  private String getHistoryChecksum() {
-    StringBuilder sb = new StringBuilder();
-    for (HistoryItem item : History.getInstance().getItems()) {
-      sb.append(item.toString());
-    }
-    String checksum = MD5Processor.hash(sb.toString());
-    return checksum;
-  }
-
   private String getQueueModelChecksum() {
     StringBuilder sb = new StringBuilder();
     for (StackItem item : QueueModel.getQueue()) {
-      sb.append(item.toString());
+      sb.append(item.getFile().getID());
     }
-    String checksum = MD5Processor.hash(sb.toString());
-    return checksum;
+    // Do not use MD5Processor class here to avoid the intern() method that 
+    // could create a permgen memory leak
+    byte[] checksum = DigestUtils.md5(sb.toString());
+    return new String(checksum);
   }
 
   public static PersistenceService getInstance() {
