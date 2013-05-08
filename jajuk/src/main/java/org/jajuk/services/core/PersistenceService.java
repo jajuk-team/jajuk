@@ -56,7 +56,7 @@ public final class PersistenceService extends Thread {
 
   private static PersistenceService self = new PersistenceService();
   private String lastCommitQueueCheckSum;
-  private static final int HEART_BEAT_MS = 10;
+  private static final int HEART_BEAT_MS = 1000;
   private static final int MIN_DELAY_AFTER_PERSPECTIVE_CHANGE_MS = 5000;
   private static final int DELAY_HIGH_URGENCY_BEATS = 5;
   private static final int DELAY_MEDIUM_URGENCY_BEATS = 15;
