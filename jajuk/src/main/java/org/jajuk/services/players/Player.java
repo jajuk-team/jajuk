@@ -230,7 +230,7 @@ public final class Player {
   public static void stop(boolean bAll) {
     try {
       if (Conf.getBoolean(Const.CONF_FADE_OUT) && isPlaying()
-          && !Conf.getBoolean(Const.CONF_BIT_PERFECT) && !QueueModel.isInternalStop()) {
+          && !Conf.getBoolean(Const.CONF_BIT_PERFECT) && !QueueModel.isInternalStop() && !isMuted()) {
         fadeOut();
       }
       if (playerImpl1 != null && (playerImpl1.getState() != Const.FADING_STATUS || bAll)) {
@@ -380,7 +380,7 @@ public final class Player {
       }
       if (playerImpl != null) {
         if (Conf.getBoolean(Const.CONF_FADE_OUT) && !Conf.getBoolean(Const.CONF_BIT_PERFECT)
-            && !QueueModel.isInternalStop()) {
+            && !QueueModel.isInternalStop() && !isMuted()) {
           fadeOut();
         }
         playerImpl.pause();
@@ -396,15 +396,14 @@ public final class Player {
     float initialVolume = playerImpl.getCurrentVolume();
     if (initialVolume > 0) {
       //Fade out
-      float steps = 10;
+      float steps = 5;
       int totalTimeMillis = 500;
-      for (int i = 1; i <= 10; i++) {
+      for (int i = 1; i <= steps; i++) {
         float newVolume = initialVolume * (steps - i) / steps;
         playerImpl.setVolume(newVolume);
         Thread.sleep((int) (totalTimeMillis / (steps - 1)));
       }
     }
-    playerImpl.setVolume(initialVolume);
   }
 
   /**
@@ -414,6 +413,9 @@ public final class Player {
     try {
       if (playerImpl == null) { // none current player, leave
         return;
+      }
+      if (!isMuted()) {
+        playerImpl.setVolume(Conf.getFloat(Const.CONF_VOLUME));
       }
       // If we are playing a webradio, we stop and restart because players 
       // like mplayer can't deal with resuming a stream (it cant restart under 
