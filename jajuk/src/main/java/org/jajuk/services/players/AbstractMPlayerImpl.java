@@ -135,7 +135,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
       out.print(command + '\n');
       out.flush();
       // don't close out here otherwise the output stream of the Process
-      // will be closed as well and subsequent sendCommant() calls will silently
+      // will be closed as well and subsequent sendCommand() calls will silently
       // fail!!
     }
   }
@@ -174,6 +174,12 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     // Build command
     List<String> cmd = new ArrayList<String>(10);
     cmd.add(sCommand);
+    // Make sure mplayer can't be controlled from user or pre-existing configuration
+    // This also fixes issue #1930 (Fade out issue when pausing) under Windows
+    cmd.add("-input");
+    cmd.add("nodefault-bindings");
+    cmd.add("noconfig");
+    cmd.add("all");
     // quiet: less traces
     cmd.add("-quiet");
     // slave: slave mode (control with stdin)

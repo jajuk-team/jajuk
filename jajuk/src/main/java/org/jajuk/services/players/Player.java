@@ -396,7 +396,7 @@ public final class Player {
     float initialVolume = playerImpl.getCurrentVolume();
     if (initialVolume > 0) {
       //Fade out
-      float steps = 5;
+      float steps = 10;
       int totalTimeMillis = 500;
       for (int i = 1; i <= steps; i++) {
         float newVolume = initialVolume * (steps - i) / steps;
