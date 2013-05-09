@@ -666,27 +666,12 @@ public final class UtilSystem {
         // Extract file name from URL. URI returns jar path, its parent
         // is the bin directory and the right dir is the parent of bin
         // dir
-        if (SessionService.isIdeMode()) {
-          // If under dev, take mplayer exe file from the packaging
-          // directory
-          sPATH = "./src/packaging";
-        } else {
-          sPATH = new File(getJarLocation(Main.class).toURI()).getParentFile().getParentFile()
-              .getAbsolutePath();
-        }
+        sPATH = new File(getJarLocation(Main.class).toURI()).getParentFile().getParentFile()
+            .getAbsolutePath();
         // Add MPlayer file name
         file = new File(sPATH + '/' + Const.FILE_MPLAYER_WINDOWS_EXE);
         if (file.exists() && file.length() == Const.MPLAYER_WINDOWS_EXE_SIZE) {
           UtilSystem.mplayerPath = file;
-        } else {
-          // For bundle project, Jajuk should check if mplayer was
-          // installed along with aTunes. In this case, mplayer is
-          // found in sPATH\win_tools\ directory. Hence, changed sPATH
-          // Note that we don't test mplayer.exe size in this case
-          file = new File(sPATH + "/win_tools/" + Const.MPLAYER_WINDOWS_EXE_SIZE);
-          if (file.exists()) {
-            UtilSystem.mplayerPath = file;
-          }
         }
       } catch (Exception e) {
         Log.error(e);
