@@ -35,7 +35,6 @@ import org.jajuk.services.players.StackItem;
 import org.jajuk.services.webradio.CustomRadiosPersistenceHelper;
 import org.jajuk.services.webradio.PresetRadiosPersistenceHelper;
 import org.jajuk.ui.perspectives.IPerspective;
-import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
@@ -149,7 +148,7 @@ public final class PersistenceService extends Thread {
     commitWebradiosIfRequired();
     if (collectionChanged.get(Urgency.HIGH) && !DeviceManager.getInstance().isAnyDeviceRefreshing()) {
       try {
-        Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
+        Collection.commit();
       } finally {
         collectionChanged.put(Urgency.HIGH, false);
       }
@@ -163,7 +162,7 @@ public final class PersistenceService extends Thread {
     if (collectionChanged.get(Urgency.MEDIUM)
         && !DeviceManager.getInstance().isAnyDeviceRefreshing()) {
       try {
-        Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
+        Collection.commit();
       } finally {
         collectionChanged.put(Urgency.MEDIUM, false);
       }
@@ -194,7 +193,7 @@ public final class PersistenceService extends Thread {
     // Collection
     if (collectionChanged.get(Urgency.LOW) && !DeviceManager.getInstance().isAnyDeviceRefreshing()) {
       try {
-        Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
+        Collection.commit();
       } finally {
         collectionChanged.put(Urgency.LOW, false);
       }

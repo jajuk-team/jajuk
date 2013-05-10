@@ -22,9 +22,9 @@ package org.jajuk.base;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.jajuk.ConstTest;
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
+import org.jajuk.services.core.SessionService;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilString;
@@ -82,12 +82,11 @@ public class TestCollection extends JajukTestCase {
     StartupCollectionService.registerItemManagers();
     Collection coll = Collection.getInstance();
     assertNotNull(coll);
-    java.io.File file = java.io.File.createTempFile("testcoll", ".xml", new java.io.File(
-        ConstTest.SAMPLE_WORKSPACE_PATH));
-    // delete the file before writing the collection
+    java.io.File file = SessionService.getConfFileByPath(Const.FILE_COLLECTION);
+   // delete the file before writing the collection
     assertTrue(file.delete());
     // commit without any item
-    Collection.commit(file);
+    Collection.commit();
     // now it should exist and have some content
     assertTrue(file.exists());
     String str = FileUtils.readFileToString(file);
@@ -99,7 +98,7 @@ public class TestCollection extends JajukTestCase {
     // delete the file before writing the collection
     assertTrue(file.delete());
     // commit without any item
-    Collection.commit(file);
+    Collection.commit();
     // now it should exist and have some content
     assertTrue(file.exists());
     str = FileUtils.readFileToString(file);
