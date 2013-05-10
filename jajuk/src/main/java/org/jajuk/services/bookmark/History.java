@@ -159,6 +159,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
     } else { // first element in history
       items.add(0, hi);
     }
+    PersistenceService.getInstance().setHistoryChanged();
   }
 
   /**
@@ -263,7 +264,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   public static void load() {
     try {
       File historyFile = SessionService.getConfFileByPath(Const.FILE_HISTORY);
-      UtilSystem.recoveredFileIfRequired(historyFile);
+      UtilSystem.recoverFileIfRequired(historyFile);
       SAXParserFactory spf = SAXParserFactory.newInstance();
       spf.setValidating(false);
       SAXParser saxParser = spf.newSAXParser();
@@ -374,7 +375,6 @@ public final class History extends DefaultHandler implements HighPriorityObserve
         long lDate = ((Long) ObservationManager.getDetail(event, Const.DETAIL_CURRENT_DATE))
             .longValue();
         addItem(sFileID, lDate);
-        PersistenceService.getInstance().setHistoryChanged();
       } else if (JajukEvents.DEVICE_REFRESH.equals(subject)) {
         cleanup();
       } else if (JajukEvents.CLEAR_HISTORY.equals(subject)) {
