@@ -196,7 +196,12 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               bOpening = false;
               StringTokenizer st = new StringTokenizer(line, "=");
               st.nextToken();
-              lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
+              try {
+                lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
+              } catch (NumberFormatException nfe) {
+                Log.error(nfe);
+                lTime = 0l;
+              }
               pauseCount = 0;
               pauseCountStamp = -1;
               // update actually played duration
@@ -265,7 +270,12 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                */
               StringTokenizer st = new StringTokenizer(line, "=");
               st.nextToken();
-              long mplayerDuration = (long) (Float.parseFloat(st.nextToken()) * 1000);
+              long mplayerDuration = 0l;
+              try {
+                mplayerDuration = (long) (Float.parseFloat(st.nextToken()) * 1000);
+              } catch (NumberFormatException nfe) {
+                Log.error(nfe);
+              }
               long tagDuration = fCurrent.getTrack().getDuration() * 1000;
               if (tagDuration <= 0) {
                 lDuration = mplayerDuration;
