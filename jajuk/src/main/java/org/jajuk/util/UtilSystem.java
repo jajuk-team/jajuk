@@ -509,7 +509,7 @@ public final class UtilSystem {
   }
 
   /**
-   * Delete a file.
+   * Delete a file that exists.
    * 
    * @param file : source file
    * 
@@ -517,17 +517,19 @@ public final class UtilSystem {
    */
   public static void deleteFile(final File file) throws IOException {
     Log.debug("Deleting: {{" + file.getAbsolutePath() + "}}");
-    if (file.isFile() && file.exists()) {
-      if (!file.delete()) {
-        Log.warn("Could not delete file " + file);
-      }
-      // check that file has been really deleted (sometimes,
-      // we get no exception)
-      if (file.exists()) {
-        throw new IOException("File" + file.getAbsolutePath() + " still exists");
-      }
-    } else {// not a file, must have a problem
+    if (!file.isFile()) {
+      throw new IOException("File " + file.getAbsolutePath() + " is not a file");
+    }
+    if (!file.exists()) {
       throw new IOException("File " + file.getAbsolutePath() + " didn't exist");
+    }
+    if (!file.delete()) {
+      Log.warn("Could not delete file " + file);
+    }
+    // check that file has been really deleted (sometimes,
+    // we get no exception)
+    if (file.exists()) {
+      throw new IOException("File" + file.getAbsolutePath() + " still exists");
     }
     return;
   }
