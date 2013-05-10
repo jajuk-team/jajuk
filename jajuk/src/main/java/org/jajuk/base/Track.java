@@ -154,18 +154,8 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @return comparison result
    */
   @Override
-  public int compareTo(Track other) {
-    // We must ensure that compareTo is consistent with equals because this kind of items are used in Tree Sets
-    if (this.equals(other)) {
-      return 0;
-    }
-    if (other == null) {
-      return 1;
-    }
-    if (getName().equals(other.getName())) {
-      return getID().compareTo(other.getID());
-    }
-    return getName().compareTo(other.getName());
+  public int compareTo(Track otherTrack) {
+    return getID().compareTo(otherTrack.getID());
   }
 
   /**
