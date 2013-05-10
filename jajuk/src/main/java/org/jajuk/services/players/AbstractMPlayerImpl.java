@@ -153,11 +153,12 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   /**
    * Build the mplayer command line.
    * 
-   * @param url to play
+   * @param url the url to play
+   * @param startPositionSec the position in the track when starting in secs (0 means we plat from the begining)
    * 
    * @return command line as a String array
    */
-  List<String> buildCommand(String url) {
+  List<String> buildCommand(String url, int startPositionSec) {
     String sCommand = "mplayer";
     // Use any forced mplayer path
     String forced = Conf.getString(Const.CONF_MPLAYER_PATH_FORCED);
@@ -174,6 +175,9 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     // Build command
     List<String> cmd = new ArrayList<String>(10);
     cmd.add(sCommand);
+    // Start at given position
+    cmd.add("-ss");
+    cmd.add(Integer.toString(startPositionSec));
     // Make sure mplayer can't be controlled from user or pre-existing configuration
     // This also fixes issue #1930 (Fade out issue when pausing) under Windows
     cmd.add("-input");

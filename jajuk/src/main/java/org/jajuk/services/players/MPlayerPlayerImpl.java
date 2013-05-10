@@ -373,7 +373,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     // Reset all states
     reset();
     // Try to launch mplayer
-    launchMplayer();
+    int startPos = (int) (fPosition * file.getTrack().getDuration());
+    launchMplayer(startPos);
     // If under windows and the launch failed, try once again
     // with other short names configuration (see #1267)
     if (bInError && UtilSystem.isUnderWindows()) {
@@ -381,16 +382,12 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
       Log.warn("Force shortname filename scheme" + " for : " + file.getAbsolutePath());
       // Reset any state changed by the previous reader thread
       reset();
-      launchMplayer();
+      launchMplayer(startPos);
       // Disable forced shortnames because the shortnames converter takes a while (2 secs)
       bForcedShortnames = false;
     }
     // Check the file has been property opened
-    if (!bOpening && !bEOF) {
-      if (fPosition > 0.0f) {
-        seek(fPosition);
-      }
-    } else {
+    if (bOpening || bEOF) {
       // try to kill the mplayer process if still alive
       if (proc != null) {
         Log.warn("OOT Mplayer process, try to kill it");
@@ -412,21 +409,20 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     this.bStop = false;
     this.bOpening = true;
     this.bEOF = false;
-    this.vbrCorrection = 1.0f;
     this.iFadeDuration = 1000 * Conf.getInt(Const.CONF_FADE_DURATION);
     this.dateStart = System.currentTimeMillis();
     this.pauseCount = 0;
     this.pauseCountStamp = -1;
-    this.seeked = false;
   }
 
   /**
    * Launch mplayer.
    * 
-   *
+     * @param startPositionSec the position in the track when starting in secs (0 means we plat from the begining)
    * @throws IOException Signals that an I/O exception has occurred.
+   * 
    */
-  private void launchMplayer() throws IOException {
+  private void launchMplayer(int startPositionSec) throws IOException {
     // Build the file url. Under windows, we convert path to short
     // version to fix a mplayer bug when reading some pathnames including
     // special characters (see #1267)
@@ -434,7 +430,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     if (UtilSystem.isUnderWindows() && bForcedShortnames) {
       pathname = UtilSystem.getShortPathNameW(pathname);
     }
-    ProcessBuilder pb = new ProcessBuilder(buildCommand(pathname));
+    ProcessBuilder pb = new ProcessBuilder(buildCommand(pathname, startPositionSec));
     Log.debug("Using this Mplayer command: {{" + pb.command() + "}}");
     // Set all environment variables format: var1=xxx var2=yyy
     try {
