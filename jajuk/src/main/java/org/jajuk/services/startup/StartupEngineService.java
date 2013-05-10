@@ -81,7 +81,7 @@ public final class StartupEngineService {
       String startupMode = Conf.getString(Const.CONF_STARTUP_MODE);
       final File fifo = SessionService.getConfFileByPath(Const.FILE_FIFO);
       // Restore if required
-      UtilSystem.recoveredFileIfRequired(fifo);
+      UtilSystem.recoverFileIfRequired(fifo);
       // User explicitly required nothing to start or he left jajuk stopped
       boolean doNotStartAnything = Const.STARTUP_MODE_NOTHING.equals(startupMode)
           || Conf.getBoolean(Const.CONF_STARTUP_STOPPED)
@@ -162,7 +162,7 @@ public final class StartupEngineService {
   private static void restoreQueue() {
     final File fifo = SessionService.getConfFileByPath(Const.FILE_FIFO);
     try {
-      UtilSystem.recoveredFileIfRequired(fifo);
+      UtilSystem.recoverFileIfRequired(fifo);
     } catch (IOException e) {
       Log.error(e);
     }

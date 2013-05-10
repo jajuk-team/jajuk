@@ -23,7 +23,6 @@ package org.jajuk.ui.actions;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 import org.jajuk.services.core.ExitService;
 import org.jajuk.ui.windows.JajukFullScreenWindow;
@@ -67,20 +66,14 @@ public class ExitAction extends JajukAction {
         return;
       }
     }
-    // IMPORTANT: all the following code must be done in EDT to avoid dead
-    // locks.
-    // Not not use SwingUtilities.invokeLater method in the ExitHook Thread,
-    // this code may never be run
-    if (SwingUtilities.isEventDispatchThread()) {
-      // hide windows ASAP
-      JajukMainWindow.getInstance().getWindowStateDecorator().display(false);
-      // hide systray
-      JajukSystray.getInstance().getWindowStateDecorator().display(false);
-      // Hide slimbar
-      JajukSlimbar.getInstance().getWindowStateDecorator().display(false);
-      // Hide full screen
-      JajukFullScreenWindow.getInstance().getWindowStateDecorator().display(false);
-    }
+    // hide windows ASAP
+    JajukMainWindow.getInstance().getWindowStateDecorator().display(false);
+    // hide systray
+    JajukSystray.getInstance().getWindowStateDecorator().display(false);
+    // Hide slimbar
+    JajukSlimbar.getInstance().getWindowStateDecorator().display(false);
+    // Hide full screen
+    JajukFullScreenWindow.getInstance().getWindowStateDecorator().display(false);
     // Exit Jajuk
     ExitService.exit(0);
   }

@@ -76,15 +76,6 @@ public final class PerspectiveManager {
     hmNameInstance.clear();
   }
 
-  public static void restoreAllPerspectives() {
-    IPerspective current = getCurrentPerspective();
-    for (IPerspective perspective : perspectives) {
-      setCurrentPerspective(perspective);
-      perspective.restoreDefaults();
-    }
-    setCurrentPerspective(current);
-  }
-
   /**
    * Load configuration file.
    * 

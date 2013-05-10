@@ -456,7 +456,7 @@ public final class Conf implements Const {
   public static void load() {
     try {
       File confFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION);
-      UtilSystem.recoveredFileIfRequired(confFile);
+      UtilSystem.recoverFileIfRequired(confFile);
       // Conf file doesn't exist at first launch
       if (confFile.exists()) {
         // Now read the conf file

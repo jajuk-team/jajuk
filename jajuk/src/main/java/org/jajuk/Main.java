@@ -209,6 +209,10 @@ public final class Main {
    * 
    */
   public static void setSystemProperties() {
+    // -- Global properties
+    // Workaround for #1928 (Random "Comparison method violates its general contract!" errors)
+    System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
+    // -- OSX-specific
     if (UtilSystem.isUnderOSX()) {
       String title = "Jajuk" + (SessionService.isTestMode() ? " (test)" : "");
       System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
@@ -219,7 +223,5 @@ public final class Main {
       // In full screen mode, only use a single screen instead of darkening others
       System.setProperty("apple.awt.fullscreencapturealldisplays", "false");
     }
-    // Workaround for #1928 (Random "Comparison method violates its general contract!" errors)
-    System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
   }
 }

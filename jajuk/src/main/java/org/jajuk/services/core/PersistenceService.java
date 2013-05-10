@@ -169,10 +169,10 @@ public final class PersistenceService extends Thread {
       }
     }
     // Perspectives
-    handlePerspectives();
+    handcommitPerspectivesIfRequired();
   }
 
-  private void handlePerspectives() throws Exception {
+  private void handcommitPerspectivesIfRequired() throws Exception {
     List<IPerspective> datesCopy = new ArrayList<IPerspective>(
         dateMinNextPerspectiveCommit.keySet());
     for (IPerspective perspective : datesCopy) {

@@ -126,57 +126,54 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     }
     BufferedInputStream in = new BufferedInputStream(url.openStream());
     // then, load the workspace
-    try {
-      DockingContext ctx = new DockingContext();
-      DockableResolver resolver = new DockableResolver() {
-        @Override
-        public Dockable resolveDockable(String keyName) {
-          Dockable view = null;
-          try {
-            StringTokenizer st = new StringTokenizer(keyName, "/");
-            String className = st.nextToken();
-            int id = Integer.parseInt(st.nextToken());
-            view = ViewFactory.createView(Class.forName(className), PerspectiveAdapter.this, id);
-            // save disposition upon resize
-            view.getComponent().addComponentListener(new ComponentAdapter() {
-              @Override
-              public void componentResized(ComponentEvent e) {
-                // Avoid persisting the perspective for nothing at first display display.
-                // We disable the resize events during a small period of time to make sure events are done.
-                if (System.currentTimeMillis() - dateFirstDisplay > RESIZE_EVENTS_DISABLING_DELAY_MS) {
-                  PersistenceService.getInstance().setPerspectiveChanged(PerspectiveAdapter.this);
-                }
+    DockingContext ctx = new DockingContext();
+    DockableResolver resolver = new DockableResolver() {
+      @Override
+      public Dockable resolveDockable(String keyName) {
+        Dockable view = null;
+        try {
+          StringTokenizer st = new StringTokenizer(keyName, "/");
+          String className = st.nextToken();
+          int id = Integer.parseInt(st.nextToken());
+          view = ViewFactory.createView(Class.forName(className), PerspectiveAdapter.this, id);
+          // save disposition upon resize
+          view.getComponent().addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+              // Avoid persisting the perspective for nothing at first display display.
+              // We disable the resize events during a small period of time to make sure events are done.
+              if (System.currentTimeMillis() - dateFirstDisplay > RESIZE_EVENTS_DISABLING_DELAY_MS) {
+                PersistenceService.getInstance().setPerspectiveChanged(PerspectiveAdapter.this);
               }
-            });
-          } catch (Exception e) {
-            Log.error(e);
-          }
-          return view;
+            }
+          });
+        } catch (Exception e) {
+          Log.error(e);
         }
-      };
-      addDockableListener(ctx);
-      ctx.setDockableResolver(resolver);
-      setContext(ctx);
-      ctx.addDesktop(this);
-      try {
-        ctx.readXML(in);
-      } catch (Exception e) {
-        // error parsing the file, user can't be blocked, use
-        // default conf
-        Log.error(e);
-        Log.debug("Error parsing conf file, use defaults - " + getID());
-        url = UtilSystem.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/'
-            + getClass().getSimpleName() + Const.FILE_XML_EXT);
-        in.close();
-        BufferedInputStream defaultConf = new BufferedInputStream(url.openStream());
-        ctx.readXML(defaultConf);
-        // Delete the corrupted file
-        loadFile.delete();
+        return view;
       }
-    } finally {
+    };
+    addDockableListener(ctx);
+    ctx.setDockableResolver(resolver);
+    setContext(ctx);
+    ctx.addDesktop(this);
+    try {
+      ctx.readXML(in);
+      in.close();
+    } catch (Exception e) {
+      // error parsing the file, user can't be blocked, use
+      // default conf
+      Log.error(e);
+      Log.debug("Error parsing conf file, use defaults - " + getID());
+      url = UtilSystem.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/'
+          + getClass().getSimpleName() + Const.FILE_XML_EXT);
+      BufferedInputStream defaultConf = new BufferedInputStream(url.openStream());
+      ctx.readXML(defaultConf);
+      // Delete the corrupted file
       if (in != null) {
         in.close();
       }
+      loadFile.delete();
     }
   }
 

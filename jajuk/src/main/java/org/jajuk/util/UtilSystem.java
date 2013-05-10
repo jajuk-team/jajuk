@@ -389,7 +389,7 @@ public final class UtilSystem {
     -> execute saveFileWithRecoverySupport step 5</pre>
    * @throws IOException if a temporary file cannot be deleted
    */
-  public static void recoveredFileIfRequired(File finalFile) throws IOException {
+  public static void recoverFileIfRequired(File finalFile) throws IOException {
     File saving = new File(finalFile.getAbsoluteFile() + "." + Const.FILE_SAVING_FILE_EXTENSION);
     File proof = new File(finalFile.getAbsoluteFile() + "." + Const.FILE_SAVED_PROOF_FILE_EXTENSION);
     // No recovery required

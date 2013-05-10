@@ -106,7 +106,7 @@ public class WebRadioHelper {
       ParserConfigurationException {
     // Attempt a recovery if crash during previous commit
     File customFile = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_CUSTOM);
-    UtilSystem.recoveredFileIfRequired(customFile);
+    UtilSystem.recoverFileIfRequired(customFile);
     // Parse the file
     SAXParserFactory spf = SAXParserFactory.newInstance();
     spf.setValidating(false);
@@ -130,7 +130,7 @@ public class WebRadioHelper {
     }
     // Attempt a recovery if crash during previous commit
     File presetFile = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET);
-    UtilSystem.recoveredFileIfRequired(presetFile);
+    UtilSystem.recoverFileIfRequired(presetFile);
     // Parse the file
     SAXParserFactory spf = SAXParserFactory.newInstance();
     spf.setValidating(false);
