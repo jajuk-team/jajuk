@@ -227,7 +227,7 @@ public final class Collection extends DefaultHandler {
       bw.close();
     }
     // Override initial file
-    java.io.File finalFile = SessionService.getConfFileByPath(Const.FILE_FIFO);
+    java.io.File finalFile = SessionService.getConfFileByPath(Const.FILE_COLLECTION);
     UtilSystem.saveFileWithRecoverySupport(finalFile);
     Log.debug("Collection commited in " + (System.currentTimeMillis() - time) + " ms");
   }
