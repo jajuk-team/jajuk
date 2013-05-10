@@ -178,21 +178,21 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     // This also fixes issue #1930 (Fade out issue when pausing) under Windows
     cmd.add("-input");
     cmd.add("nodefault-bindings");
-    cmd.add("noconfig");
+    cmd.add("-noconfig");
     cmd.add("all");
     // quiet: less traces
     cmd.add("-quiet");
     // slave: slave mode (control with stdin)
     cmd.add("-slave");
-    // No af options if bit perfect is enabled
+    // No af options if bit perfect is enabled.
+    // Do not use -softvol under Windows with latest mplayer releases, 
+    // it conflicts with fading out : when resuming the sound is reset and 
+    // lower back to zero for about one second (see #1930: Bug: Fade out issue when pausing)
     if (!Conf.getBoolean(CONF_BIT_PERFECT)) {
       // -af volume: Use volnorm to limit gain to max
       // If mute, use -200db otherwise, use a linear scale
       cmd.add("-af");
       cmd.add(buildAudioFilters());
-      // -softvol : use soft mixer, allows to set volume only to this mplayer
-      // instance, not others programs
-      cmd.add("-softvol");
     }
     // Define a cache. It is useful to avoid sound gliches but also to
     // overide a local mplayer large cache configuration in
