@@ -65,12 +65,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /** Pause time correction *. */
   private long pauseCount = 0;
   private long pauseCountStamp = -1;
-  /** Does the user made a seek in current track ?*. */
-  private boolean seeked;
   /** Is the play is in error. */
   private boolean bInError = false;
-  /** VBR correction. VBR MP3 files are confusing for mplayer that shows wrong length and seek position. This value is the correction computed with id3 tag when available */
-  float vbrCorrection = 1.0f;
   /** Progress step in ms, do not set less than 300 or 400 to avoid using too much CPU. */
   private static final int PROGRESS_STEP = 500;
   /** Total play time is refreshed every TOTAL_PLAYTIME_UPDATE_INTERVAL times. */
@@ -200,27 +196,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               bOpening = false;
               StringTokenizer st = new StringTokenizer(line, "=");
               st.nextToken();
-              // We need to compute the elapsed time. The issue here is the fact
-              // that mplayer sometimes returns false getPos() values (for vbr).
-              // The other problem is that the user can seek forward or rewind
-              // in the track so we can't just count the system time.
-              // The solution we got is :
-              // - If user never seeked into the current track, compute the
-              // elapsed time upon real system date.
-              // - If user seeked, take the mplayer time but use a vbr
-              // correction.
-              // Note however that the resulting time, while being better than
-              // the raw mplayer time can be pretty wrong (10 secs or more in some
-              // cases)
-              if (seeked) {
-                lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
-                // VBR correction
-                lTime = (long) (lTime * vbrCorrection);
-                pauseCount = 0;
-                pauseCountStamp = -1;
-              } else {
-                lTime = System.currentTimeMillis() - dateStart - pauseCount;
-              }
+              lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
+              pauseCount = 0;
+              pauseCountStamp = -1;
               // update actually played duration
               if (lastPlayTimeUpdate > 0 && !bPaused) {
                 actuallyPlayedTimeMillis += (System.currentTimeMillis() - lastPlayTimeUpdate);
@@ -293,8 +271,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                 lDuration = mplayerDuration;
               } else {
                 lDuration = tagDuration;
-                // Save VBR correction, used after seeking
-                vbrCorrection = ((float) tagDuration) / mplayerDuration;
               }
             }
             // End of file
@@ -520,7 +496,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     if (!Conf.getBoolean(CONF_BIT_PERFECT)) {
       setVolume(fVolume); // need this because a seek reset volume
     }
-    this.seeked = true;
   }
 
   /**
