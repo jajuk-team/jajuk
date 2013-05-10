@@ -35,7 +35,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
-import org.jajuk.base.Collection;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.SearchResult.SearchResultType;
@@ -497,12 +496,6 @@ public final class UpgradeManager implements Const {
       for (Track track : TrackManager.getInstance().getTracks()) {
         long newRate = (long) (100f * track.getRate() / maxRating);
         TrackManager.getInstance().changeTrackRate(track, newRate);
-      }
-      // Save collection
-      try {
-        Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
-      } catch (final IOException e) {
-        Log.error(e);
       }
       Log.info("Migrating rating done");
       Messages.showInfoMessage(Messages.getString("Note.1"));
