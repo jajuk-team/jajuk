@@ -77,7 +77,7 @@ public class TestAmbienceManager extends JajukTestCase {
     // make sure "UpgradeManager.bFirstSession" is not set
     {
       Class<?> c = UpgradeManager.class;
-      Field f = c.getDeclaredField("bFirstSession");
+      Field f = c.getDeclaredField("firstSession");
       f.setAccessible(true);
       f.setBoolean(null, Boolean.FALSE);
     }

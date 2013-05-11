@@ -84,7 +84,7 @@ public class TestCollection extends JajukTestCase {
     assertNotNull(coll);
     java.io.File file = SessionService.getConfFileByPath(Const.FILE_COLLECTION);
     // delete the file before writing the collection
-    assertTrue(file.delete());
+    file.delete();
     // commit without any item
     Collection.commit();
     // now it should exist and have some content
