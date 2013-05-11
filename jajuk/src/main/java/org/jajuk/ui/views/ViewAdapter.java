@@ -34,7 +34,6 @@ import org.jajuk.events.Observer;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.widgets.JajukTable;
 import org.jajuk.util.Const;
-import org.jdesktop.swingx.JXBusyLabel;
 import org.jdesktop.swingx.JXPanel;
 
 /**
@@ -219,55 +218,6 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
     // required by interface, but nothing to do here...
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.awt.Container#removeAll()
-   */
-  @Override
-  public void removeAll() {
-    // We have to override removeAll() to work around a memory leak related to
-    // JXBusyLabel..
-    // first look for any JXBusyLabel and stop it
-    stopAllBusyLabels(this);
-    super.removeAll();
-  }
-
-  /**
-   * walk through the list of components and stop any BusyLabel.
-   */
-  public void stopAllBusyLabels() {
-    stopAllBusyLabels(this);
-  }
-
-  /**
-   * walk through the list of components and stop any BusyLabel.
-   * 
-   * @param c 
-   */
-  private static void stopAllBusyLabels(Container c) {
-    for (int i = 0; i < c.getComponentCount(); i++) {
-      Component comp = c.getComponent(i);
-      if (comp instanceof JXBusyLabel) {
-        JXBusyLabel busy = (JXBusyLabel) comp;
-        if (busy.isBusy()) {
-          // make sure we correctly stop the BusyLabel in all cases here,
-          // sometimes this did not work...
-          // this can probably removed after upgrading swingx, see
-          // https://swingx.dev.java.net/issues/show_bug.cgi?id=626
-          busy.setBusy(false);
-        }
-      } else if (comp instanceof Container) {
-        // recursively call the Container to also look at it's components
-        stopAllBusyLabels((Container) comp);
-      }
-    }
-  }
-
-  /**
-   * Cleanup.
-   * 
-   */
   public void cleanup() {
     // unregister any component that is still registered as observer
     cleanupRecursive(this);
