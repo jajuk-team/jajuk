@@ -62,7 +62,7 @@ import org.jaudiotagger.tag.images.Artwork;
 public class JAudioTaggerTagImpl implements ITagImpl, Const {
   private static List<String> tagFieldKeyArrayList = new ArrayList<String>();
   private static final Pattern PATTERN_NON_DIGIT = Pattern.compile(".*[^0-9].*");
-  private static final Pattern PATTERN_FOUR_DIGITS = Pattern.compile(".*\\D*(\\d{4})\\D*.*");
+  private static final Pattern PATTERN_FOUR_DIGITS = Pattern.compile("\\D*(\\d{4})\\D*");
   static {
     try {
       // Disable Jaudiotagger logs
