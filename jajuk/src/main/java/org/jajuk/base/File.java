@@ -220,10 +220,10 @@ public class File extends PhysicalItem implements Comparable<File> {
       String otherAbs = otherFile.getName();
       // We must be consistent with equals, see
       // http://java.sun.com/javase/6/docs/api/java/lang/Comparable.html
-      if (UtilSystem.isUnderWindows()) {
-        comp = abs.compareToIgnoreCase(otherAbs);
-      } else {
+      if (abs.equalsIgnoreCase(otherAbs)) {
         comp = abs.compareTo(otherAbs);
+      } else {
+        comp = abs.compareToIgnoreCase(otherAbs);
       }
       return comp;
     } else {
