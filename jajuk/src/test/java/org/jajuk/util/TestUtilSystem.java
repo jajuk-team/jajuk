@@ -274,20 +274,12 @@ public class TestUtilSystem extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testDeleteDirWithContent() throws Exception {
-    File file = TestHelpers.getFile().getFIO();
+    File file = TestHelpers.getDirectory().getFio();
     UtilSystem.deleteDir(file);
     assertFalse(file.exists());
   }
 
-  /**
-  * Test method for {@link org.jajuk.util.UtilSystem#deleteDir(java.io.File)}.
-  *
-  * @throws Exception the exception
-  */
-  public void testDeleteDirFile() throws Exception {
-    UtilSystem.deleteDir(file1);
-    assertFalse(file1.exists());
-  }
+
 
   /**
    * Test method for {@link org.jajuk.util.UtilSystem#deleteDir(java.io.File)}.
