@@ -29,8 +29,8 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -60,7 +60,7 @@ import org.jdesktop.swingx.VerticalLayout;
 /**
  * First time Wizard.
  */
-public class FirstTimeWizard extends JDialog implements ActionListener, PropertyChangeListener {
+public class FirstTimeWizard extends JFrame implements ActionListener, PropertyChangeListener {
   // Do not extend JajukJDialog because it requires main window to be instantiated and it comes with
   // many trouble (like Global keystrokes issues in file path selection) in this low-level dialog
   /** Generated serialVersionUID. */
