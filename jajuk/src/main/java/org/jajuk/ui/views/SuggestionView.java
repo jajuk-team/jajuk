@@ -70,6 +70,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
@@ -78,15 +79,25 @@ import org.jdesktop.swingx.JXBusyLabel;
  * Show suggested albums based on current collection (bestof, novelties) and
  * LAstFM.
  */
+@SuppressWarnings("serial")
 public class SuggestionView extends ViewAdapter {
-  /** Generated serialVersionUID. */
-  private static final long serialVersionUID = 1L;
   private JTabbedPane tabs;
   protected String artist;
 
-  /**
-   * .
-   */
+  //Remove tab border, see
+  // http://forum.java.sun.com/thread.jspa?threadID=260746&messageID=980405
+  class MyTabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
+    @Override
+    protected Insets getContentBorderInsets(int tabPlacement) {
+      return new Insets(0, 0, 0, 0);
+    }
+
+    @Override
+    protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
+      // nothing to do here...
+    }
+  }
+
   enum SuggestionType {
     BEST_OF, NEWEST, RARE, OTHERS_ALBUMS, SIMILAR_ARTISTS
   }
@@ -104,16 +115,13 @@ public class SuggestionView extends ViewAdapter {
   AbstractThumbnail selectedThumb;
   private AlbumListInfo albums;
   private SimilarArtistsInfo similar;
+  JXBusyLabel busyLocal1 = new JXBusyLabel();
+  JXBusyLabel busyLocal2 = new JXBusyLabel();
+  JXBusyLabel busyLocal3 = new JXBusyLabel();
+  JXBusyLabel busyLastFM1 = new JXBusyLabel();
+  JXBusyLabel busyLastFM2 = new JXBusyLabel();
 
-  /**
-   * .
-   */
-  class ThumbMouseListener extends MouseAdapter {
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
-     */
+  private class ThumbMouseListener extends MouseAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
       AbstractThumbnail thumb = (AbstractThumbnail) ((JLabel) e.getSource()).getParent();
@@ -128,44 +136,18 @@ public class SuggestionView extends ViewAdapter {
     }
   }
 
-  /**
-   * Instantiates a new suggestion view.
-   */
   public SuggestionView() {
     super();
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.ui.views.IView#getDesc()
-   */
   @Override
   public String getDesc() {
     return Messages.getString("SuggestionView.0");
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.ui.views.IView#populate()
-   */
   @Override
   public void initUI() {
     tabs = new JTabbedPane();
-    // Remove tab border, see
-    // http://forum.java.sun.com/thread.jspa?threadID=260746&messageID=980405
-    class MyTabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
-      @Override
-      protected Insets getContentBorderInsets(int tabPlacement) {
-        return new Insets(0, 0, 0, 0);
-      }
-
-      @Override
-      protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
-        // nothing to do here...
-      }
-    }
     // Now use the new TabbedPaneUI
     tabs.setUI(new MyTabbedPaneUI());
     // Fill tabs with empty tabs
@@ -179,8 +161,28 @@ public class SuggestionView extends ViewAdapter {
         new JLabel(Messages.getString("SuggestionView.7")));
     tabs.addTab(Messages.getString("SuggestionView.4"),
         new JLabel(Messages.getString("SuggestionView.7")));
-    // Refresh tabs on demand only, add changelisterner after tab creation to
-    // avoid that the stored tab is overwrited at startup
+    addTabChangeListener();
+    selectTabFromConf();
+    refreshLocalCollectionTabs();
+    setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+    add(tabs);
+    ObservationManager.register(this);
+  }
+
+  private void selectTabFromConf() {
+    if (Conf.containsProperty(getClass().getName() + "_"
+        + ((getPerspective() == null) ? "solo" : getPerspective().getID()))) {
+      int index = Conf.getInt(getClass().getName() + "_"
+          + ((getPerspective() == null) ? "solo" : getPerspective().getID()));
+      if (index > 0 && index < tabs.getTabCount()) {
+        tabs.setSelectedIndex(index);
+      }
+    }
+  }
+
+  private void addTabChangeListener() {
+    // Refresh tabs on demand only, add changeListerner after tab creation to
+    // avoid the stored tab to be overwriten at startup
     tabs.addChangeListener(new ChangeListener() {
       @Override
       public void stateChanged(ChangeEvent arg0) {
@@ -191,28 +193,8 @@ public class SuggestionView extends ViewAdapter {
             Integer.toString(tabs.getSelectedIndex()).toString());
       }
     });
-    if (Conf.containsProperty(getClass().getName() + "_"
-        + ((getPerspective() == null) ? "solo" : getPerspective().getID()))) {
-      int index = Conf.getInt(getClass().getName() + "_"
-          + ((getPerspective() == null) ? "solo" : getPerspective().getID()));
-      if (index > 0 && index < tabs.getTabCount()) {
-        tabs.setSelectedIndex(index);
-      }
-    }
-    // Add panels
-    refreshLocalCollectionTabs();
-    // Add tabs
-    setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-    add(tabs);
-    // Look for events
-    ObservationManager.register(this);
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.events.Observer#getRegistrationKeys()
-   */
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
@@ -220,6 +202,7 @@ public class SuggestionView extends ViewAdapter {
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     eventSubjectSet.add(JajukEvents.COVER_DEFAULT_CHANGED);
     eventSubjectSet.add(JajukEvents.SUGGESTIONS_REFRESH);
+    eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
     return eventSubjectSet;
   }
 
@@ -227,23 +210,14 @@ public class SuggestionView extends ViewAdapter {
    * Refresh local thumbs.
    */
   private void refreshLocalCollectionTabs() {
-    // Display a busy panel in the mean-time
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        JXBusyLabel busy1 = new JXBusyLabel();
-        busy1.setBusy(true);
-        JXBusyLabel busy2 = new JXBusyLabel();
-        busy2.setBusy(true);
-        JXBusyLabel busy3 = new JXBusyLabel();
-        busy3.setBusy(true);
-        // stop all existing busy labels before we add the new ones...
-        stopAllBusyLabels();
-        tabs.setComponentAt(0, UtilGUI.getCentredPanel(busy1));
-        tabs.setComponentAt(1, UtilGUI.getCentredPanel(busy2));
-        tabs.setComponentAt(2, UtilGUI.getCentredPanel(busy3));
-      }
-    });
+    busyLocal1.setBusy(true);
+    busyLocal2.setBusy(true);
+    busyLocal3.setBusy(true);
+    // stop all existing busy labels before we add the new ones...
+    //stopAllBusyLabels();
+    tabs.setComponentAt(0, UtilGUI.getCentredPanel(busyLocal1));
+    tabs.setComponentAt(1, UtilGUI.getCentredPanel(busyLocal2));
+    tabs.setComponentAt(2, UtilGUI.getCentredPanel(busyLocal3));
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
       JScrollPane jsp1;
       JScrollPane jsp2;
@@ -251,14 +225,19 @@ public class SuggestionView extends ViewAdapter {
 
       @Override
       public Void doInBackground() {
-        // Refresh thumbs for required albums
-        List<Album> albums = new ArrayList<Album>(10);
         albumsPrefered = AlbumManager.getInstance().getBestOfAlbums(
             Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
         albumsNewest = AlbumManager.getInstance().getNewestAlbums(
             Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
         albumsRare = AlbumManager.getInstance().getRarelyListenAlbums(
             Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED), NB_BESTOF_ALBUMS);
+        refreshThumbsForLocalAlbums();
+        return null;
+      }
+
+      private void refreshThumbsForLocalAlbums() {
+        // Refresh thumbs for required albums
+        List<Album> albums = new ArrayList<Album>(10);
         albums.addAll(albumsPrefered);
         albums.addAll(albumsNewest);
         albums.addAll(albumsRare);
@@ -268,7 +247,6 @@ public class SuggestionView extends ViewAdapter {
             ThumbnailManager.refreshThumbnail(album, 100);
           }
         }
-        return null;
       }
 
       @Override
@@ -276,12 +254,12 @@ public class SuggestionView extends ViewAdapter {
         jsp1 = getLocalSuggestionsPanel(SuggestionType.BEST_OF);
         jsp2 = getLocalSuggestionsPanel(SuggestionType.NEWEST);
         jsp3 = getLocalSuggestionsPanel(SuggestionType.RARE);
-        // If panel is void, add a void panel as a null object keeps
-        // previous element
-        stopAllBusyLabels();
-        tabs.setComponentAt(0, (jsp1 == null) ? new JPanel() : jsp1);
-        tabs.setComponentAt(1, (jsp2 == null) ? new JPanel() : jsp2);
-        tabs.setComponentAt(2, (jsp3 == null) ? new JPanel() : jsp3);
+        busyLocal1.setBusy(false);
+        busyLocal2.setBusy(false);
+        busyLocal3.setBusy(false);
+        tabs.setComponentAt(0, jsp1);
+        tabs.setComponentAt(1, jsp2);
+        tabs.setComponentAt(2, jsp3);
       }
     };
     sw.execute();
@@ -309,7 +287,6 @@ public class SuggestionView extends ViewAdapter {
       SwingUtilities.invokeLater(new Runnable() {
         @Override
         public void run() {
-          stopAllBusyLabels();
           tabs.setComponentAt(3, new JLabel(Messages.getString("SuggestionView.7")));
           tabs.setComponentAt(4, new JLabel(Messages.getString("SuggestionView.7")));
         }
@@ -326,14 +303,10 @@ public class SuggestionView extends ViewAdapter {
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
-        JXBusyLabel busy1 = new JXBusyLabel();
-        busy1.setBusy(true);
-        JXBusyLabel busy2 = new JXBusyLabel();
-        busy2.setBusy(true);
-        // stop all existing busy labels before we add the new ones...
-        stopAllBusyLabels();
-        tabs.setComponentAt(3, UtilGUI.getCentredPanel(busy1));
-        tabs.setComponentAt(4, UtilGUI.getCentredPanel(busy2));
+        busyLastFM1.setBusy(true);
+        busyLastFM2.setBusy(true);
+        tabs.setComponentAt(3, UtilGUI.getCentredPanel(busyLastFM1));
+        tabs.setComponentAt(4, UtilGUI.getCentredPanel(busyLastFM2));
       }
     });
     // Use a swing worker as construct takes a lot of time
@@ -357,9 +330,10 @@ public class SuggestionView extends ViewAdapter {
       public void done() {
         jsp1 = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, false);
         jsp2 = getLastFMSuggestionsPanel(SuggestionType.SIMILAR_ARTISTS, false);
-        stopAllBusyLabels();
-        tabs.setComponentAt(3, (jsp1 == null) ? new JPanel() : jsp1);
-        tabs.setComponentAt(4, (jsp2 == null) ? new JPanel() : jsp2);
+        busyLastFM1.setBusy(false);
+        busyLastFM2.setBusy(false);
+        tabs.setComponentAt(3, jsp1);
+        tabs.setComponentAt(4, jsp2);
       }
     };
     sw.execute();
@@ -503,11 +477,6 @@ public class SuggestionView extends ViewAdapter {
     return jsp;
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.ui.Observer#update(java.lang.String)
-   */
   @Override
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
@@ -524,7 +493,10 @@ public class SuggestionView extends ViewAdapter {
       // collection panels
       refreshLastFMCollectionTabs();
     } else if (subject.equals(JajukEvents.COVER_DEFAULT_CHANGED)
-        || subject.equals(JajukEvents.SUGGESTIONS_REFRESH)) {
+        || subject.equals(JajukEvents.SUGGESTIONS_REFRESH)
+        // Fix for #1935 (Local suggestions void at very first start), we need to force a refresh when 
+        // collection has been refreshed for the first time
+        || (subject.equals(JajukEvents.DEVICE_REFRESH) && UpgradeManager.isFirstSession())) {
       // New default cover, refresh the view
       refreshLocalCollectionTabs();
     }
