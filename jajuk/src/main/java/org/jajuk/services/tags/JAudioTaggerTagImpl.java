@@ -26,6 +26,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.LogManager;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
@@ -61,7 +62,7 @@ import org.jaudiotagger.tag.images.Artwork;
 public class JAudioTaggerTagImpl implements ITagImpl, Const {
   private static List<String> tagFieldKeyArrayList = new ArrayList<String>();
   private static final Pattern PATTERN_NON_DIGIT = Pattern.compile(".*[^0-9].*");
-  private static final Pattern PATTERN_FOUR_DIGITS = Pattern.compile("\\d{4}");
+  private static final Pattern PATTERN_FOUR_DIGITS = Pattern.compile(".*\\D*(\\d{4})\\D*.*");
   static {
     try {
       // Disable Jaudiotagger logs
@@ -186,12 +187,9 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
     // The string contains at least a single character other than a digit, 
     // then try to parse the first four digits if any 
     if (PATTERN_NON_DIGIT.matcher(result).matches()) {
-      if (result.length() < 4) {
-        throw new NumberFormatException("Wrong year or date format");
-      }
-      String sub = result.substring(0, 4);
-      if (PATTERN_FOUR_DIGITS.matcher(sub).matches()) {
-        return sub;
+      Matcher matcher = PATTERN_FOUR_DIGITS.matcher(result);
+      if (matcher.find()) {
+        return matcher.group(1);
       } else {
         throw new NumberFormatException("Wrong year or date format");
       }
