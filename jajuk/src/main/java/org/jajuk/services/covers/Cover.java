@@ -226,7 +226,7 @@ public class Cover implements Comparable<Cover>, Const {
    */
   @Override
   public String toString() {
-    return "Type=" + type + " URL={{" + url+"}}";
+    return "Type=" + type + " URL={{" + url + "}}";
   }
 
   /**

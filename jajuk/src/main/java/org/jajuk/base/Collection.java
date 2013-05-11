@@ -298,7 +298,6 @@ public final class Collection extends DefaultHandler {
     spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
     spf.setFeature("http://xml.org/sax/features/string-interning", true);
     SAXParser saxParser = spf.newSAXParser();
-    
     saxParser.parse(file.toURI().toURL().toString(), getInstance());
   }
 

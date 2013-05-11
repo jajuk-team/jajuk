@@ -28,13 +28,12 @@ import org.jajuk.services.covers.Cover;
  * Mandatory methods required for all tag implementations.
  */
 public interface ITagImpl {
-  
   /**
    * Whether the file contains a tag
    * @return whether the file contains a tag
    */
   boolean isTagAvailable();
-  
+
   /**
    * Gets the track name.
    * 

@@ -128,7 +128,7 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
     this.bEOF = false;
     this.bitPerfect = Conf.getBoolean(Const.CONF_BIT_PERFECT);
     // Start
-    ProcessBuilder pb = new ProcessBuilder(buildCommand(radio.getUrl(),0));
+    ProcessBuilder pb = new ProcessBuilder(buildCommand(radio.getUrl(), 0));
     Log.debug("Using this Mplayer command: {{" + pb.command() + "}}");
     // Set all environment variables format: var1=xxx var2=yyy
     try {

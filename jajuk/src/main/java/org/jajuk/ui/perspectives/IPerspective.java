@@ -84,7 +84,7 @@ public interface IPerspective {
    * Restore defaults views.
    */
   void restoreDefaults();
-  
+
   /**
    * The perspective has been selected
    */

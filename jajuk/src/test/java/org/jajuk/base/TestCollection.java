@@ -83,7 +83,7 @@ public class TestCollection extends JajukTestCase {
     Collection coll = Collection.getInstance();
     assertNotNull(coll);
     java.io.File file = SessionService.getConfFileByPath(Const.FILE_COLLECTION);
-   // delete the file before writing the collection
+    // delete the file before writing the collection
     assertTrue(file.delete());
     // commit without any item
     Collection.commit();

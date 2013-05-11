@@ -133,7 +133,7 @@ public class CustomRadiosPersistenceHelper extends DefaultHandler {
     } finally {
       bw.close();
     }
-    File finalFile = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_CUSTOM );
+    File finalFile = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_CUSTOM);
     UtilSystem.saveFileWithRecoverySupport(finalFile);
     Log.debug("Custom webradios list commited to : " + finalFile.getAbsolutePath());
   }

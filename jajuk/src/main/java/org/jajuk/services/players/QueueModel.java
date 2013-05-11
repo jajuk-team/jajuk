@@ -1299,8 +1299,7 @@ public final class QueueModel {
   public static void commit() throws IOException {
     java.io.File out = SessionService.getConfFileByPath(Const.FILE_FIFO + "."
         + Const.FILE_SAVING_FILE_EXTENSION);
-    PrintWriter writer = new PrintWriter(
-        new BufferedOutputStream(new FileOutputStream(out, false)));
+    PrintWriter writer = new PrintWriter(new BufferedOutputStream(new FileOutputStream(out, false)));
     for (StackItem st : queue) {
       writer.println(st.getFile().getID());
     }

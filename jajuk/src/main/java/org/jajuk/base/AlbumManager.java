@@ -74,8 +74,8 @@ public final class AlbumManager extends ItemManager implements Observer {
     registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_SELECTED_COVER, false, false,
         false, false, false, String.class, null));
     // Disc id
-    registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_DISC_ID, false, true, false, false,
-        false, Long.class, -1l));
+    registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_DISC_ID, false, true, false,
+        false, false, Long.class, -1l));
     // Register events
     ObservationManager.register(this);
   }

@@ -91,7 +91,7 @@ public abstract class JajukAction extends AbstractAction {
               .invoke(null, new Object[] { stroke, this });
         } catch (Exception e) {
           Log.error(e);
-        } 
+        }
       }
       // else use standard swing keystroke feature
       setAcceleratorKey(stroke);

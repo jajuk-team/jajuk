@@ -123,8 +123,8 @@ public class DebugLogAction extends JajukAction {
   private String getTraces() {
     // Store system properties
     StringBuilder traces = new StringBuilder("<HTML><font color='green'><b>")
-    //Add build date in case the version was not propertly set in maintenance branches (like missing 'dev' suffix)
-        .append(Const.JAJUK_VERSION).append('/') .append(Const.JAJUK_VERSION_DATE).append('/') 
+        //Add build date in case the version was not propertly set in maintenance branches (like missing 'dev' suffix)
+        .append(Const.JAJUK_VERSION).append('/').append(Const.JAJUK_VERSION_DATE).append('/')
         .append(cleanHTML(UtilString.getAnonymizedSystemProperties().toString())).append("<br>")
         .append(cleanHTML(UtilString.getAnonymizedJajukProperties().toString()))
         .append("</b></font><br>");
