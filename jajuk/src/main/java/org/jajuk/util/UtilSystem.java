@@ -491,19 +491,9 @@ public final class UtilSystem {
    */
   public static void deleteDir(final File dir) throws IOException {
     Log.debug("Deleting: {{" + dir.getAbsolutePath() + "}}");
-    if (dir.isDirectory()) {
-      for (final File file : dir.listFiles()) {
-        if (file.isDirectory()) {
-          UtilSystem.deleteDir(file);
-        } else {
-          UtilSystem.deleteFile(file);
-        }
-      }
-      if (!dir.delete()) {
-        Log.warn("Could not delete directory " + dir);
-      }
-    } else {
-      UtilSystem.deleteFile(dir);
+    FileUtils.deleteDirectory(dir);
+    if (dir.exists()) {
+      throw new IOException("Directory" + dir.getAbsolutePath() + " still exists");
     }
     return;
   }
