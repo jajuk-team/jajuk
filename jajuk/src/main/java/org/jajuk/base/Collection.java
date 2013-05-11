@@ -287,6 +287,9 @@ public final class Collection extends DefaultHandler {
       UtilSystem.recoverFileIfRequired(regularFile);
     }
     Log.debug("Loading: " + file.getName());
+    if (!file.exists()) {
+      throw new JajukException(5, file.toString());
+    }
     lTime = System.currentTimeMillis();
     SAXParserFactory spf = SAXParserFactory.newInstance();
     spf.setValidating(false);
@@ -295,9 +298,7 @@ public final class Collection extends DefaultHandler {
     spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
     spf.setFeature("http://xml.org/sax/features/string-interning", true);
     SAXParser saxParser = spf.newSAXParser();
-    if (!file.exists()) {
-      throw new JajukException(5, file.toString());
-    }
+    
     saxParser.parse(file.toURI().toURL().toString(), getInstance());
   }
 

@@ -57,7 +57,7 @@ public final class UpgradeManager implements Const {
   /** Is it a minor or major X.Y upgrade */
   private static boolean bUpgraded = false;
   /** Is it the first session ever ?. */
-  private static boolean bFirstSession = false;
+  private static boolean firstSession = false;
   /** Is it an old migration (more than 1 major release) ?. */
   private static boolean majorMigration = false;
   /** List of versions that doesn't require perspective reset at upgrade. */
@@ -120,7 +120,7 @@ public final class UpgradeManager implements Const {
       // Upgrade detection. Depends on: Configuration manager load
       final String sStoredRelease = Conf.getString(Const.CONF_RELEASE);
       // check if it is a new major 'x.y' release: 1.2 != 1.3 for instance
-      if (!bFirstSession
+      if (!firstSession
       // if first session, not taken as an upgrade
           && (sStoredRelease == null || // null for jajuk releases < 1.2
           !sStoredRelease.equals(Const.JAJUK_VERSION))) {
@@ -148,7 +148,7 @@ public final class UpgradeManager implements Const {
    * @return true, if is first session
    */
   public static boolean isFirstSession() {
-    return bFirstSession;
+    return firstSession;
   }
 
   /**
@@ -156,7 +156,7 @@ public final class UpgradeManager implements Const {
    * 
    */
   public static void setFirstSession() {
-    bFirstSession = true;
+    firstSession = true;
   }
 
   /**
