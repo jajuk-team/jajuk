@@ -32,6 +32,8 @@ import java.util.TreeSet;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import org.jajuk.services.core.PersistenceService;
+import org.jajuk.services.core.PersistenceService.Urgency;
 import org.jajuk.services.tags.Tag;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Const;
@@ -407,9 +409,27 @@ public abstract class ItemManager {
       if (item != null) {
         items.remove(item);
         internalMap.remove(item.getID());
+        notifyCollectionChange(item);
       }
     } finally {
       lock.writeLock().unlock();
+    }
+  }
+
+  private final void notifyCollectionChange(Item item) {
+    // Ignore this if the persistence service is not yet started to speed up startup
+    if (!PersistenceService.getInstance().isAlive()) {
+      return;
+    }
+    // SmartPlaylist are not persisted
+    if (item instanceof SmartPlaylist) {
+      return;
+    }
+    // Webradios are stored outside the collection file and are persisted separately
+    if (item instanceof WebRadio) {
+      PersistenceService.getInstance().setRadiosChanged();
+    } else {
+      PersistenceService.getInstance().setCollectionChanged(Urgency.HIGH);
     }
   }
 
@@ -423,6 +443,7 @@ public abstract class ItemManager {
     try {
       items.add(item);
       internalMap.put(item.getID(), item);
+      notifyCollectionChange(item);
     } finally {
       lock.writeLock().unlock();
     }

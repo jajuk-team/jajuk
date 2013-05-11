@@ -135,7 +135,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
       out.print(command + '\n');
       out.flush();
       // don't close out here otherwise the output stream of the Process
-      // will be closed as well and subsequent sendCommant() calls will silently
+      // will be closed as well and subsequent sendCommand() calls will silently
       // fail!!
     }
   }
@@ -153,11 +153,12 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   /**
    * Build the mplayer command line.
    * 
-   * @param url to play
+   * @param url the url to play
+   * @param startPositionSec the position in the track when starting in secs (0 means we plat from the begining)
    * 
    * @return command line as a String array
    */
-  List<String> buildCommand(String url) {
+  List<String> buildCommand(String url, int startPositionSec) {
     String sCommand = "mplayer";
     // Use any forced mplayer path
     String forced = Conf.getString(Const.CONF_MPLAYER_PATH_FORCED);
@@ -174,19 +175,28 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     // Build command
     List<String> cmd = new ArrayList<String>(10);
     cmd.add(sCommand);
+    // Start at given position
+    cmd.add("-ss");
+    cmd.add(Integer.toString(startPositionSec));
+    // Make sure mplayer can't be controlled from user or pre-existing configuration
+    // This also fixes issue #1930 (Fade out issue when pausing) under Windows
+    cmd.add("-input");
+    cmd.add("nodefault-bindings");
+    cmd.add("-noconfig");
+    cmd.add("all");
     // quiet: less traces
     cmd.add("-quiet");
     // slave: slave mode (control with stdin)
     cmd.add("-slave");
-    // No af options if bit perfect is enabled
+    // No af options if bit perfect is enabled.
+    // Do not use -softvol under Windows with latest mplayer releases, 
+    // it conflicts with fading out : when resuming the sound is reset and 
+    // lower back to zero for about one second (see #1930: Bug: Fade out issue when pausing)
     if (!Conf.getBoolean(CONF_BIT_PERFECT)) {
       // -af volume: Use volnorm to limit gain to max
       // If mute, use -200db otherwise, use a linear scale
       cmd.add("-af");
       cmd.add(buildAudioFilters());
-      // -softvol : use soft mixer, allows to set volume only to this mplayer
-      // instance, not others programs
-      cmd.add("-softvol");
     }
     // Define a cache. It is useful to avoid sound gliches but also to
     // overide a local mplayer large cache configuration in

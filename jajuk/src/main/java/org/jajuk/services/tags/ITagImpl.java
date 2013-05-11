@@ -29,6 +29,12 @@ import org.jajuk.services.covers.Cover;
  */
 public interface ITagImpl {
   /**
+   * Whether the file contains a tag
+   * @return whether the file contains a tag
+   */
+  boolean isTagAvailable();
+
+  /**
    * Gets the track name.
    * 
    * @return track name as defined in tags are file name otherwise

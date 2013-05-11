@@ -22,7 +22,6 @@ package org.jajuk.base;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,7 +39,6 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.ExitService;
-import org.jajuk.services.core.SessionService;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.helpers.ManualDeviceRefreshReporter;
 import org.jajuk.ui.helpers.RefreshReporter;
@@ -146,7 +144,7 @@ public class Device extends PhysicalItem implements Comparable<Device> {
     // delete old history items
     l = System.currentTimeMillis() - l;
     Log.debug("{{" + getName() + "}} Old file references cleaned in: "
-        + ((l < 1000) ? l + " ms" : l / 1000 + " s, changes: " + bChanges));
+        + ((l < 1000) ? l + " ms, changes: " + bChanges : l / 1000 + " s, changes: " + bChanges));
     return bChanges;
   }
 
@@ -570,17 +568,6 @@ public class Device extends PhysicalItem implements Comparable<Device> {
       }
       // notify views to refresh
       ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-      // Commit collection at each refresh (can be useful if
-      // application is closed brutally with control-C or shutdown and that
-      // exit hook has no time to perform commit).
-      // But don't commit when any device is refreshing to avoid collisions.
-      if (!DeviceManager.getInstance().isAnyDeviceRefreshing()) {
-        try {
-          org.jajuk.base.Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
-        } catch (final IOException e) {
-          Log.error(e);
-        }
-      }
     } finally {
       // Do not let current reporter as a manual reporter because it would fail
       // in NPE with auto-refresh

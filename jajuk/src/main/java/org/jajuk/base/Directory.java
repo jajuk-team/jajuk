@@ -604,9 +604,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Alphabetical comparator used to display ordered lists of directories
-   * <p>
-   * Sort ignoring cases
-   * </p>.
    * 
    * @param otherDirectory 
    * 

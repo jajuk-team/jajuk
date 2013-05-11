@@ -71,8 +71,8 @@ public class TestFileManager extends JajukTestCase {
     oldFile.getFIO().createNewFile();
     String newDirName = "top2";
     // Create a top2 directory just bellow device root
-    Directory newDir = TestHelpers.getDirectory(newDirName,
-        oldFile.getDevice().getRootDirectory(), oldFile.getDevice());
+    Directory newDir = TestHelpers.getDirectory(newDirName, oldFile.getDevice().getRootDirectory(),
+        oldFile.getDevice());
     // Create the physical directory if required
     newDir.getFio().mkdirs();
     // Perform the move

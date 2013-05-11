@@ -20,15 +20,16 @@
  */
 package org.jajuk.services.core;
 
-import java.io.IOException;
-
 import org.jajuk.base.Collection;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.bookmark.History;
 import org.jajuk.services.dbus.DBusManager;
 import org.jajuk.services.players.Player;
 import org.jajuk.services.players.QueueModel;
+import org.jajuk.services.webradio.CustomRadiosPersistenceHelper;
+import org.jajuk.services.webradio.PresetRadiosPersistenceHelper;
 import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -61,11 +62,16 @@ public class ExitService extends Thread {
     // stop sound ASAP
     Player.stop(true);
     ObservationManager.notifySync(new JajukEvent(JajukEvents.EXITING));
-    // Last attempt to store the collection, may not be reached on fast computers but persistence manager
+    // Last attempt to store the collection data, may not be reached on fast computers but persistence manager
     // should have save already most of the data
     try {
-      Collection.commit(SessionService.getConfFileByPath(Const.FILE_COLLECTION));
-    } catch (IOException e1) {
+      Collection.commit();
+      // Commit webradios
+      CustomRadiosPersistenceHelper.commit();
+      PresetRadiosPersistenceHelper.commit();
+      QueueModel.commit();
+      History.commit();
+    } catch (Exception e1) {
       Log.error(e1);
     }
     try {

@@ -20,9 +20,12 @@
  */
 package org.jajuk.base;
 
+import com.google.common.collect.Lists;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
@@ -53,6 +56,9 @@ public abstract class Item implements Const {
   /** Cache-string which holds the filter-string for the default "any"-Searches, this is filled during the first search and 
    * cleaned on all points where the properties are adjusted. */
   private String any = null;
+  private static final List<String> lowPriorityCollectionProperties = Lists.asList(XML_TRACK_HITS,
+      new String[] { XML_TRACK_TOTAL_PLAYTIME, XML_EXPANDED, XML_ALBUM_DISCOVERED_COVER,
+          XML_TRACK_RATE, XML_ORIGIN });
 
   /**
    * Constructor.
@@ -301,24 +307,25 @@ public abstract class Item implements Const {
 
   private final void notifyCollectionChange(String key) {
     // Ignore this if the persistence service is not yet started to speed up startup
-    if (!PersistenceService.getInstance().isStarted()) {
+    if (!PersistenceService.getInstance().isAlive()) {
+      return;
+    }
+    // SmartPlaylist are not persisted
+    if (this instanceof SmartPlaylist) {
       return;
     }
     // Webradios are stored outside the collection file and are persisted separately
-    if (this instanceof WebRadio
-    // SmartPlaylist are not persisted
-        || this instanceof SmartPlaylist) {
-      return;
-    }
-    // The track total play time is incremented very often and we don't want to commit 
-    // collection that soon so we set a low urgency to its commit
-    if (XML_TRACK_TOTAL_PLAYTIME.equals(key)
-    // Same thing for tree expanded states 
-        || XML_EXPANDED.equals(key)) {
-      PersistenceService.getInstance().tagCollectionChanged(Urgency.LOW);
+    if (this instanceof WebRadio) {
+      PersistenceService.getInstance().setRadiosChanged();
     } else {
-      // On the contrary, we want others changes to be commited ASAP
-      PersistenceService.getInstance().tagCollectionChanged(Urgency.HIGH);
+      // Some properties like the track total play time is incremented very often and we don't want to commit 
+      // collection that soon so we set a low urgency to its commit
+      if (lowPriorityCollectionProperties.contains(key)) {
+        PersistenceService.getInstance().setCollectionChanged(Urgency.LOW);
+      } else {
+        // On the contrary, we want others changes to be commited ASAP
+        PersistenceService.getInstance().setCollectionChanged(Urgency.HIGH);
+      }
     }
   }
 

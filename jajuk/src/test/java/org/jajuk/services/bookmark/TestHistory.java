@@ -49,21 +49,6 @@ public class TestHistory extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.bookmark.History#startDocument()}
-   * .
-   */
-  public final void testStartDocument() {
-    History.getInstance().startDocument();
-  }
-
-  /**
-   * Test method for {@link org.jajuk.services.bookmark.History#endDocument()}.
-   */
-  public final void testEndDocument() {
-    History.getInstance().endDocument();
-  }
-
-  /**
    * Test method for {@link org.jajuk.services.bookmark.History#getInstance()}.
    */
   public final void testGetInstance() {
@@ -576,8 +561,8 @@ public class TestHistory extends JajukTestCase {
     // add the file
     History.getInstance().addItem(file11.getID(), 123);
     // now it is there
-    assertEquals(History.getInstance().getItems().toString(), 1, History.getInstance()
-        .getItems().size());
+    assertEquals(History.getInstance().getItems().toString(), 1, History.getInstance().getItems()
+        .size());
     // change from id 11 to 3
     Properties detail = new Properties();
     File file = FileManager.getInstance().getFileByID(file11.getID());

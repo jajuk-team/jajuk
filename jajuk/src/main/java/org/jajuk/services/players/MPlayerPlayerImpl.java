@@ -65,12 +65,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /** Pause time correction *. */
   private long pauseCount = 0;
   private long pauseCountStamp = -1;
-  /** Does the user made a seek in current track ?*. */
-  private boolean seeked;
   /** Is the play is in error. */
   private boolean bInError = false;
-  /** VBR correction. VBR MP3 files are confusing for mplayer that shows wrong length and seek position. This value is the correction computed with id3 tag when available */
-  float vbrCorrection = 1.0f;
   /** Progress step in ms, do not set less than 300 or 400 to avoid using too much CPU. */
   private static final int PROGRESS_STEP = 500;
   /** Total play time is refreshed every TOTAL_PLAYTIME_UPDATE_INTERVAL times. */
@@ -200,27 +196,14 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               bOpening = false;
               StringTokenizer st = new StringTokenizer(line, "=");
               st.nextToken();
-              // We need to compute the elapsed time. The issue here is the fact
-              // that mplayer sometimes returns false getPos() values (for vbr).
-              // The other problem is that the user can seek forward or rewind
-              // in the track so we can't just count the system time.
-              // The solution we got is :
-              // - If user never seeked into the current track, compute the
-              // elapsed time upon real system date.
-              // - If user seeked, take the mplayer time but use a vbr
-              // correction.
-              // Note however that the resulting time, while being better than
-              // the raw mplayer time can be pretty wrong (10 secs or more in some
-              // cases)
-              if (seeked) {
+              try {
                 lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
-                // VBR correction
-                lTime = (long) (lTime * vbrCorrection);
-                pauseCount = 0;
-                pauseCountStamp = -1;
-              } else {
-                lTime = System.currentTimeMillis() - dateStart - pauseCount;
+              } catch (NumberFormatException nfe) {
+                Log.error(nfe);
+                lTime = 0l;
               }
+              pauseCount = 0;
+              pauseCountStamp = -1;
               // update actually played duration
               if (lastPlayTimeUpdate > 0 && !bPaused) {
                 actuallyPlayedTimeMillis += (System.currentTimeMillis() - lastPlayTimeUpdate);
@@ -287,14 +270,17 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                */
               StringTokenizer st = new StringTokenizer(line, "=");
               st.nextToken();
-              long mplayerDuration = (long) (Float.parseFloat(st.nextToken()) * 1000);
+              long mplayerDuration = 0l;
+              try {
+                mplayerDuration = (long) (Float.parseFloat(st.nextToken()) * 1000);
+              } catch (NumberFormatException nfe) {
+                Log.error(nfe);
+              }
               long tagDuration = fCurrent.getTrack().getDuration() * 1000;
               if (tagDuration <= 0) {
                 lDuration = mplayerDuration;
               } else {
                 lDuration = tagDuration;
-                // Save VBR correction, used after seeking
-                vbrCorrection = ((float) tagDuration) / mplayerDuration;
               }
             }
             // End of file
@@ -373,7 +359,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     // Reset all states
     reset();
     // Try to launch mplayer
-    launchMplayer();
+    int startPos = (int) (fPosition * file.getTrack().getDuration());
+    launchMplayer(startPos);
     // If under windows and the launch failed, try once again
     // with other short names configuration (see #1267)
     if (bInError && UtilSystem.isUnderWindows()) {
@@ -381,16 +368,12 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
       Log.warn("Force shortname filename scheme" + " for : " + file.getAbsolutePath());
       // Reset any state changed by the previous reader thread
       reset();
-      launchMplayer();
+      launchMplayer(startPos);
       // Disable forced shortnames because the shortnames converter takes a while (2 secs)
       bForcedShortnames = false;
     }
     // Check the file has been property opened
-    if (!bOpening && !bEOF) {
-      if (fPosition > 0.0f) {
-        seek(fPosition);
-      }
-    } else {
+    if (bOpening || bEOF) {
       // try to kill the mplayer process if still alive
       if (proc != null) {
         Log.warn("OOT Mplayer process, try to kill it (Opening: " + bOpening + ", EOF: " + bEOF + ")");
@@ -412,21 +395,20 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     this.bStop = false;
     this.bOpening = true;
     this.bEOF = false;
-    this.vbrCorrection = 1.0f;
     this.iFadeDuration = 1000 * Conf.getInt(Const.CONF_FADE_DURATION);
     this.dateStart = System.currentTimeMillis();
     this.pauseCount = 0;
     this.pauseCountStamp = -1;
-    this.seeked = false;
   }
 
   /**
    * Launch mplayer.
    * 
-   *
+     * @param startPositionSec the position in the track when starting in secs (0 means we plat from the begining)
    * @throws IOException Signals that an I/O exception has occurred.
+   * 
    */
-  private void launchMplayer() throws IOException {
+  private void launchMplayer(int startPositionSec) throws IOException {
     // Build the file url. Under windows, we convert path to short
     // version to fix a mplayer bug when reading some pathnames including
     // special characters (see #1267)
@@ -434,7 +416,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     if (UtilSystem.isUnderWindows() && bForcedShortnames) {
       pathname = UtilSystem.getShortPathNameW(pathname);
     }
-    ProcessBuilder pb = new ProcessBuilder(buildCommand(pathname));
+    ProcessBuilder pb = new ProcessBuilder(buildCommand(pathname, startPositionSec));
     Log.debug("Using this Mplayer command: {{" + pb.command() + "}}");
     // Set all environment variables format: var1=xxx var2=yyy
     try {
@@ -524,7 +506,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     if (!Conf.getBoolean(CONF_BIT_PERFECT)) {
       setVolume(fVolume); // need this because a seek reset volume
     }
-    this.seeked = true;
   }
 
   /**

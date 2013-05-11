@@ -23,10 +23,8 @@ package org.jajuk.ui.actions;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 import org.jajuk.services.core.ExitService;
-import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.windows.JajukFullScreenWindow;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.ui.windows.JajukSlimbar;
@@ -36,7 +34,6 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.log.Log;
 
 /**
  * .
@@ -69,31 +66,14 @@ public class ExitAction extends JajukAction {
         return;
       }
     }
-    // IMPORTANT: all the following code must be done in EDT to avoid dead
-    // locks.
-    // Not not use SwingUtilities.invokeLater method in the ExitHook Thread,
-    // this code may never be run
-    if (SwingUtilities.isEventDispatchThread()) {
-      // commit perspectives if no full restore
-      // engaged. Perspective should be commited before the window
-      // being closed to avoid a dead lock in VLDocking
-      if (!RestoreAllViewsAction.isFullRestore()
-          && JajukMainWindow.getInstance().getWindowStateDecorator().isDisplayed()) {
-        try {
-          PerspectiveManager.commit();
-        } catch (Exception e) {
-          Log.error(e);
-        }
-      }
-      // hide windows ASAP
-      JajukMainWindow.getInstance().getWindowStateDecorator().display(false);
-      // hide systray
-      JajukSystray.getInstance().getWindowStateDecorator().display(false);
-      // Hide slimbar
-      JajukSlimbar.getInstance().getWindowStateDecorator().display(false);
-      // Hide full screen
-      JajukFullScreenWindow.getInstance().getWindowStateDecorator().display(false);
-    }
+    // hide windows ASAP
+    JajukMainWindow.getInstance().getWindowStateDecorator().display(false);
+    // hide systray
+    JajukSystray.getInstance().getWindowStateDecorator().display(false);
+    // Hide slimbar
+    JajukSlimbar.getInstance().getWindowStateDecorator().display(false);
+    // Hide full screen
+    JajukFullScreenWindow.getInstance().getWindowStateDecorator().display(false);
     // Exit Jajuk
     ExitService.exit(0);
   }

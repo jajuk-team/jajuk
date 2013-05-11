@@ -66,9 +66,8 @@ public interface IView extends ComponentListener, Dockable {
   /**
    * Sets the is populated.
    * 
-   * @param isDisplayed 
    */
-  void setIsPopulated(boolean isDisplayed);
+  void setPopulated();
 
   /**
    * Gets the perspective.

@@ -92,16 +92,8 @@ public final class StartupControlsService {
         }
       }
     }
-    // checking preference file
-    File file = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION);
-    if (!file.exists()) {
-      // if config file doesn't exit, create
-      // it with default values
-      Log.warn("Create missing preference file");
-      org.jajuk.util.Conf.commit();
-    }
     // checking required history file
-    file = SessionService.getConfFileByPath(Const.FILE_HISTORY);
+    File file = SessionService.getConfFileByPath(Const.FILE_HISTORY);
     if (!file.exists()) {
       // if config file doesn't exit, create
       // it with default values

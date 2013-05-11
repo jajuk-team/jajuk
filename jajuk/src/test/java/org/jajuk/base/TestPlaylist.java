@@ -231,7 +231,6 @@ public class TestPlaylist extends JajukTestCase {
     TestHelpers.waitForThreadToFinish("Queue Push Thread");
     assertEquals(3, QueueModel.getQueueSize());
     assertEquals(3, play.getFiles().size());
-    
     Log.info("Tearing down testcase");
     TestHelpers.waitForThreadToFinish("MPlayer reader thread");
     TestHelpers.waitForThreadToFinish("MPlayer writer thread");

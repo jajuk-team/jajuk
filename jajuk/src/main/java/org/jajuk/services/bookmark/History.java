@@ -26,14 +26,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -44,12 +43,14 @@ import org.jajuk.events.HighPriorityObserver;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.core.PersistenceService;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.ui.widgets.InformationJPanel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
@@ -66,8 +67,9 @@ import org.xml.sax.helpers.DefaultHandler;
 public final class History extends DefaultHandler implements HighPriorityObserver {
   /** Self instance. */
   private static History history = new History();
-  /** History repository, last play first. */
-  private static List<HistoryItem> items = new ArrayList<HistoryItem>(100); 
+  /** History repository, last play first. KEEP THIS A VECTOR, not an ARRAYLIST, 
+   * it is accessed directly as model for the SearchJPanel*/
+  private static Vector<HistoryItem> items = new Vector<HistoryItem>(100);
   /** History begin date. */
   private static long lDateStart;
   /** Cached date formatter. */
@@ -121,7 +123,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
    * 
    * @return the history
    */
-  public List<HistoryItem> getItems() { 
+  public Vector<HistoryItem> getItems() {
     return items;
   }
 
@@ -157,6 +159,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
     } else { // first element in history
       items.add(0, hi);
     }
+    PersistenceService.getInstance().setHistoryChanged();
   }
 
   /**
@@ -231,8 +234,10 @@ public final class History extends DefaultHandler implements HighPriorityObserve
     if (lDateStart == 0) {
       lDateStart = System.currentTimeMillis();
     }
-    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-        SessionService.getConfFileByPath(Const.FILE_HISTORY)), "UTF-8"));
+    java.io.File out = SessionService.getConfFileByPath(Const.FILE_HISTORY + "."
+        + Const.FILE_SAVING_FILE_EXTENSION);
+    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out),
+        "UTF-8"));
     try {
       bw.write("<?xml version='1.0' encoding='UTF-8'?>\n");
       bw.write("<history JAJUK_VERSION='" + Const.JAJUK_VERSION + "' begin_date='"
@@ -247,6 +252,9 @@ public final class History extends DefaultHandler implements HighPriorityObserve
     } finally {
       bw.close();
     }
+    java.io.File finalFile = SessionService.getConfFileByPath(Const.FILE_HISTORY);
+    UtilSystem.saveFileWithRecoverySupport(finalFile);
+    Log.debug("History commited to : " + finalFile.getAbsolutePath());
   }
 
   /**
@@ -255,11 +263,12 @@ public final class History extends DefaultHandler implements HighPriorityObserve
    */
   public static void load() {
     try {
+      File historyFile = SessionService.getConfFileByPath(Const.FILE_HISTORY);
+      UtilSystem.recoverFileIfRequired(historyFile);
       SAXParserFactory spf = SAXParserFactory.newInstance();
       spf.setValidating(false);
       SAXParser saxParser = spf.newSAXParser();
-      File frt = SessionService.getConfFileByPath(Const.FILE_HISTORY);
-      saxParser.parse(frt.toURI().toURL().toString(), getInstance());
+      saxParser.parse(historyFile.toURI().toURL().toString(), getInstance());
       // delete old history items
       getInstance().clear(Integer.parseInt(Conf.getString(Const.CONF_HISTORY)));
     } catch (Exception e) {
@@ -320,22 +329,6 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   }
 
   /**
-   * Called at parsing start.
-   */
-  @Override
-  public void startDocument() {
-    Log.debug("Starting history file parsing...");
-  }
-
-  /**
-   * Called at parsing end.
-   */
-  @Override
-  public void endDocument() {
-    Log.debug("History file parsing done");
-  }
-
-  /**
    * Called when we start an element.
    * 
    * @param sUri 
@@ -357,7 +350,7 @@ public final class History extends DefaultHandler implements HighPriorityObserve
       Map<String, String> hm = Collection.getInstance().getHmWrongRightFileID();
       if (hm.size() > 0 && hm.containsKey(sID)) {
         sID = hm.get(sID);
-        Log.debug("upload:" + sID);
+        Log.debug("upgrade ID:" + sID);
       }
       // test if this file is still known in the collection
       if (FileManager.getInstance().getFileByID(sID) != null) {

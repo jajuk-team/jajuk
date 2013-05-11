@@ -26,6 +26,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.LogManager;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
@@ -54,9 +56,13 @@ import org.jaudiotagger.tag.images.Artwork;
  *
  * {@link ITagImpl} Implementation based on <a
  * href="https://jaudiotagger.dev.java.net">JAudiotagger</a>
+ * 
+ * We expect that tag is not null when calling getXXX() methods
  */
 public class JAudioTaggerTagImpl implements ITagImpl, Const {
   private static List<String> tagFieldKeyArrayList = new ArrayList<String>();
+  private static final Pattern PATTERN_NON_DIGIT = Pattern.compile(".*[^0-9].*");
+  private static final Pattern PATTERN_FOUR_DIGITS = Pattern.compile("\\D*(\\d{4})\\D*");
   static {
     try {
       // Disable Jaudiotagger logs
@@ -82,61 +88,46 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
   /** the current {@linkplain Tag tag} ( {@link AudioFile#getTag()} ) set by {@link #setFile(File)}.<br> */
   private Tag tag;
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#commit()
-   */
   @Override
   public void commit() throws Exception {
     this.audioFile.commit();
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#getAlbumName()
-   */
   @Override
   public String getAlbumName() throws Exception {
     return this.tag.getFirst(FieldKey.ALBUM);
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#getArtistName()
-   */
   @Override
   public String getArtistName() throws Exception {
     return this.tag.getFirst(FieldKey.ARTIST);
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#getComment()
-   */
+  @Override
+  public String getLyrics() throws Exception {
+    String lyrics = tag.getFirst(FieldKey.LYRICS);
+    if (StringUtils.isBlank(lyrics)) {
+      return "";
+    } else {
+      return lyrics;
+    }
+  }
+
+  @Override
+  public String getAlbumArtist() throws Exception {
+    return this.tag.getFirst(FieldKey.ALBUM_ARTIST);
+  }
+
   @Override
   public String getComment() throws Exception {
     return this.tag.getFirst(FieldKey.COMMENT);
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#getLength()
-   */
   @Override
   public long getLength() throws Exception {
     return this.audioFile.getAudioHeader().getTrackLength();
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#getOrder()
-   */
   @Override
   public long getOrder() throws Exception {
     String sOrder = this.tag.getFirst(FieldKey.TRACK);
@@ -149,21 +140,11 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
     return Long.parseLong(sOrder);
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#getQuality()
-   */
   @Override
   public long getQuality() throws Exception {
     return this.audioFile.getAudioHeader().getBitRateAsNumber();
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#getGenreName()
-   */
   @Override
   public String getGenreName() throws Exception {
     String result = this.tag.getFirst(FieldKey.GENRE);
@@ -192,85 +173,50 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
     return result;
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#getTrackName()
-   */
   @Override
   public String getTrackName() throws Exception {
     return this.tag.getFirst(FieldKey.TITLE);
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#getYear()
-   */
   @Override
   public String getYear() throws Exception {
     String result = this.tag.getFirst(FieldKey.YEAR);
     if (StringUtils.isBlank(result)) {
-      result = "0";
-    } else {
-      Long.parseLong(result);
+      return "0";
     }
-    return result;
-  }
-
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#getLyrics()
-   */
-  @Override
-  public String getLyrics() throws Exception {
-    String lyrics = tag.getFirst(FieldKey.LYRICS);
-    if (StringUtils.isBlank(lyrics)) {
-      return "";
+    // The string contains at least a single character other than a digit, 
+    // then try to parse the first four digits if any 
+    if (PATTERN_NON_DIGIT.matcher(result).matches()) {
+      Matcher matcher = PATTERN_FOUR_DIGITS.matcher(result);
+      if (matcher.find()) {
+        return matcher.group(1);
+      } else {
+        throw new NumberFormatException("Wrong year or date format");
+      }
     } else {
-      return lyrics;
+      // Only digits
+      return result;
     }
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#setAlbumName(java.lang.String)
-   */
   @Override
   public void setAlbumName(String albumName) throws Exception {
     createTagIfNeeded();
     this.tag.setField(FieldKey.ALBUM, albumName);
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#setArtistName(java.lang.String)
-   */
   @Override
   public void setArtistName(String artistName) throws Exception {
     createTagIfNeeded();
     this.tag.setField(FieldKey.ARTIST, artistName);
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#setComment(java.lang.String)
-   */
   @Override
   public void setComment(String comment) throws Exception {
     createTagIfNeeded();
     this.tag.setField(FieldKey.COMMENT, comment);
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#setLyrics(java.lang.String)
-   */
   @Override
   public void setLyrics(String sLyrics) throws Exception {
     createTagIfNeeded();
@@ -279,22 +225,12 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
     commit();
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#deleteLyrics()
-   */
   @Override
   public void deleteLyrics() throws Exception {
     tag.deleteField(FieldKey.LYRICS);
     commit();
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#setFile(java.io.File)
-   */
   @Override
   public void setFile(File fio) throws Exception {
     try {
@@ -351,65 +287,30 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
     }
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#setOrder(long)
-   */
   @Override
   public void setOrder(long order) throws Exception {
     createTagIfNeeded();
     this.tag.setField(FieldKey.TRACK, Long.toString(order));
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#setGenreName(java.lang.String)
-   */
   @Override
   public void setGenreName(String genre) throws Exception {
     createTagIfNeeded();
     this.tag.setField(FieldKey.GENRE, genre);
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#setTrackName(java.lang.String)
-   */
   @Override
   public void setTrackName(String trackName) throws Exception {
     createTagIfNeeded();
     this.tag.setField(FieldKey.TITLE, trackName);
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#setYear(java.lang.String)
-   */
   @Override
   public void setYear(String year) throws Exception {
     createTagIfNeeded();
     this.tag.setField(FieldKey.YEAR, year);
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#getAlbumArtist()
-   */
-  @Override
-  public String getAlbumArtist() throws Exception {
-    return this.tag.getFirst(FieldKey.ALBUM_ARTIST);
-  }
-
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#setTagField(java.lang.String, java.lang.String)
-   */
   @Override
   public void setTagField(String tagFieldKey, String tagFieldValue) {
     try {
@@ -431,21 +332,11 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
     return tagFieldKeyArrayList;
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#getTagField(java.lang.String)
-   */
   @Override
   public String getTagField(String tagFieldKey) throws Exception {
     return this.tag.getFirst(FieldKey.valueOf(tagFieldKey));
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#getDiscNumber()
-   */
   @Override
   public long getDiscNumber() throws Exception {
     String sDiscNumber = this.tag.getFirst(FieldKey.DISC_NO);
@@ -458,31 +349,18 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
     return Long.parseLong(sDiscNumber);
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#setAlbumArtist(java.lang.String)
-   */
   @Override
   public void setAlbumArtist(String albumArtist) throws Exception {
     createTagIfNeeded();
     tag.setField(FieldKey.ALBUM_ARTIST, albumArtist);
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.services.tags.ITagImpl#setDiscNumber(int)
-   */
   @Override
   public void setDiscNumber(long discnumber) throws Exception {
     createTagIfNeeded();
     tag.setField(FieldKey.DISC_NO, Long.toString(discnumber));
   }
 
-  /* (non-Javadoc)
-   * @see org.jajuk.services.tags.ITagImpl#getCovers()
-   */
   @Override
   public List<Cover> getCovers() throws Exception {
     List<Cover> covers = new ArrayList<Cover>(1);
@@ -501,8 +379,11 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
           }
         }
       }
-      Cover cover = new Cover(coverFile, CoverType.TAG_COVER);
-      covers.add(cover);
+      // test if the cover has actually been created, it is not if the tag image was corrupted
+      if (coverFile.exists()) {
+        Cover cover = new Cover(coverFile, CoverType.TAG_COVER);
+        covers.add(cover);
+      }
       index++;
     }
     return covers;
@@ -524,5 +405,10 @@ public class JAudioTaggerTagImpl implements ITagImpl, Const {
     File coverFile = SessionService.getConfFileByPath(Const.FILE_CACHE + '/' + hash + "_" + index
         + "_" + Const.TAG_COVER_FILE);
     return coverFile;
+  }
+
+  @Override
+  public boolean isTagAvailable() {
+    return (tag != null);
   }
 }

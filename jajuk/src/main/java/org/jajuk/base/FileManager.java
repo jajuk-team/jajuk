@@ -132,14 +132,12 @@ public final class FileManager extends ItemManager {
         if (directory.getDevice().isRefreshing() && Log.isDebugEnabled()) {
           Log.debug("registrated new file: " + file);
         }
-      } else {
+      } else if (!file.getName().equals(sName)) {
         // If file already exist and the track has changed, make changes
         // Set name again because under Windows, the file name case
         // could have changed but we keep the same file object
         file.setName(sName);
       }
-      // add this file to track
-      file.setTrack(track);
       // Add file to track
       track.addFile(file);
       return file;

@@ -122,12 +122,14 @@ public interface Const {
   String JAJUK_COPYRIGHT = "Copyright 2003-2012 The Jajuk Team";
   String TYPE_VIDEO = "Type.video";
   // -- Files and paths --
+  String FILE_SAVING_FILE_EXTENSION = "saving";
+  String FILE_SAVED_PROOF_FILE_EXTENSION = "proof";
   String FILE_COLLECTION = "collection.xml";
   String FILE_REPORTING_CACHE_FILE = "cache/report";
+  /** The Constant XML_EXT.   */
+  String FILE_XML_EXT = ".xml";
   /** Name of the preferences property file. */
   String FILE_CONFIGURATION = "conf.properties";
-  /** Name of the temporary preferences property file. */
-  String FILE_CONFIGURATION_TEMP = "temp_conf.properties";
   String FILE_HISTORY = "history.xml";
   String FILE_DEFAULT_COVER = "jajuk.file.default.cover";
   String FILE_ABSOLUTE_DEFAULT_COVER = "default-cover.";
@@ -190,7 +192,7 @@ public interface Const {
   URL FILE_REPORTING_CSS_PRINT_PATH = UtilSystem.getResource("xslt/"
       + FILE_REPORTING_CSS_PRINT_FILENAME);
   /** Mplayer Windows exe provided by jajuk URL . */
-  String URL_MPLAYER_WINDOWS = "http://repository.jajuk.info/mplayer/20090114/mplayer.exe";
+  String URL_MPLAYER_WINDOWS = "http://repository.jajuk.info/mplayer/20130411/mplayer.exe";
   /** Mplayer OSX exe provided by jajuk URL . */
   String URL_MPLAYER_OSX = "http://repository.jajuk.info/mplayer/osx/1.0rc2/mplayer";
   String URL_WEBRADIO_PRESETS = "http://svn2.assembla.com/svn/common-jukebox/common-jukebox/src/main/resources/preset_radios.xml";
@@ -664,7 +666,7 @@ public interface Const {
       XML_PLAYLIST_FILES, XML_TRACK_COMMENT, XML_ANY, XML_TRACK_ORDER, XML_DEVICE_SYNCHRO_MODE,
       XML_DEVICE_SYNCHRO_SOURCE, XML_FILE_DATE, XML_TRACK_TOTAL_PLAYTIME, XML_TRACK_PREFERENCE,
       XML_TRACK_BANNED, XML_TRACK_DISC_NUMBER, XML_ALBUM_ARTIST, XML_ALBUM_DISC_ID,
-      XML_TRACK_SCROBBLE };
+      XML_TRACK_SCROBBLE, XML_ORIGIN };
   /** Option name. */
   String PROPERTY_SEPARATOR = "Property_";
   // Formats

@@ -159,7 +159,6 @@ public class ParameterView extends ViewAdapter {
   JTextField jtfAnimationPattern;
   JCheckBox jcbBackup;
   JSlider backupSize;
-  JComboBox jcbCollectionEncoding;
   JCheckBox jcbRegexp;
   ButtonGroup bgProxy;
   JCheckBox jcbNoneInternetAccess;
@@ -686,14 +685,8 @@ public class ParameterView extends ViewAdapter {
     backupSize.setPaintLabels(true);
     backupSize.setToolTipText(Messages.getString("ParameterView.119"));
     backupSize.addMouseWheelListener(new DefaultMouseWheelListener(backupSize));
-    JLabel jlCollectionEncoding = new JLabel(Messages.getString("ParameterView.120"));
-    jlCollectionEncoding.setToolTipText(Messages.getString("ParameterView.121"));
-    jcbCollectionEncoding = new JComboBox();
-    jcbCollectionEncoding.setToolTipText(Messages.getString("ParameterView.121"));
     jcbRegexp = new JCheckBox(Messages.getString("ParameterView.113"));
     jcbRegexp.setToolTipText(Messages.getString("ParameterView.114"));
-    jcbCollectionEncoding.addItem("UTF-8");
-    jcbCollectionEncoding.addItem("UTF-16");
     JLabel jlLogLevel = new JLabel(Messages.getString("ParameterView.46"));
     scbLogLevel = new SteppedComboBox();
     scbLogLevel.addItem(Messages.getString("ParameterView.47"));
@@ -735,8 +728,6 @@ public class ParameterView extends ViewAdapter {
     JPanel jpAdvanced = new JPanel(new MigLayout("insets 10,gapy 15, gapx 10", "[][grow][fill]"));
     jpAdvanced.add(jcbBackup);
     jpAdvanced.add(backupSize, "wrap,grow");
-    jpAdvanced.add(jlCollectionEncoding);
-    jpAdvanced.add(jcbCollectionEncoding, "wrap,grow");
     jpAdvanced.add(jlLogLevel);
     jpAdvanced.add(scbLogLevel, "wrap,grow");
     jpAdvanced.add(jlMPlayerPath);

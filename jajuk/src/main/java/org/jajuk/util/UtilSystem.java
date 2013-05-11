@@ -20,6 +20,8 @@
  */
 package org.jajuk.util;
 
+import com.google.common.io.Files;
+
 import ext.MersenneTwister;
 
 import java.awt.Desktop;
@@ -337,6 +339,89 @@ public final class UtilSystem {
   }
 
   /**
+   * Activate recovery support for a file than has been written into the the collection so it can be gratefully recover 
+   * in case of breakdown during the save operation. This method must be called after the file.xml.sav has been successfully written. 
+   * <pre>The steps are the following (every step can fail, all files in the same (collection) directory, thus on the same disk) :
+   * 1) Write file.xml.saving (already done when calling this method)
+   * 2) Write the proof file file.xml.proof (void)
+   * 3) Delete the file.xml file if it exists (optional under POSIX systems but we do it for consistency with Windows and to avoid a OS specific behavior)
+   * 4) Delete the proof file
+   * 5) Rename file.xml.saving to file.xml</pre>
+   * </p>
+   * @param finalFile : the final file (like collection.xml)
+   * @throws IOException
+   */
+  public static void saveFileWithRecoverySupport(File finalFile) throws IOException {
+    // Check saving file existence
+    File saving = new File(finalFile.getAbsoluteFile() + "." + Const.FILE_SAVING_FILE_EXTENSION);
+    if (!saving.exists()) {
+      throw new IOException("Saving file does not exist for file : " + finalFile.getAbsolutePath());
+    }
+    // Create the proof file
+    File proof = new File(finalFile.getAbsoluteFile() + "." + Const.FILE_SAVED_PROOF_FILE_EXTENSION);
+    Files.touch(proof);
+    if (finalFile.exists()) {
+      deleteFile(finalFile);
+    }
+    deleteFile(proof);
+    saving.renameTo(finalFile);
+  }
+
+  /**
+   * Recover a file after a breakdown (at next jajuk session) if required. Most of the time, this does nothing but 
+   * if a file has been partially saved using the @see saveFileWithRecoverySupport() method, the previous version is revored.
+   * This is guarantee to work always, except if the filesystem can't be read or written.
+   *  
+   * Note that this generic method doesn't handle the special collection.xml backup files.
+   * 
+   * <pre>Recovery actions and files existence when failure at step :
+  * No failure : only file.xml file
+    -> no recovery action
+  * @1 : file.xml, partial file.xml.saving and no file.xml.proof
+    -> delete file.xml.sav and file.xml.proof
+  * @2 : file.xml, file.xml.saving but no file.xml.proof
+    -> delete file.sav
+  * @3 : file.xml, file.xml.saving and file.xml.proof
+    -> execute saveFileWithRecoverySupport steps 3 to 5
+  * @4 : file.sav and file.xml.proof
+    -> execute saveFileWithRecoverySupport steps 4 to 5
+  * @5 : file.xml.saving only
+    -> execute saveFileWithRecoverySupport step 5</pre>
+   * @throws IOException if a temporary file cannot be deleted
+   */
+  public static void recoverFileIfRequired(File finalFile) throws IOException {
+    File saving = new File(finalFile.getAbsoluteFile() + "." + Const.FILE_SAVING_FILE_EXTENSION);
+    File proof = new File(finalFile.getAbsoluteFile() + "." + Const.FILE_SAVED_PROOF_FILE_EXTENSION);
+    // No recovery required
+    if (!saving.exists() && !proof.exists()) {
+      return;
+    }
+    // Recovery after crash at saving step 1 and 2
+    if (finalFile.exists() && saving.exists() && !proof.exists()) {
+      Log.warn("Recover step 1 or 2");
+      deleteFile(saving);
+    }
+    // Recovery after crash at saving step 3
+    else if (finalFile.exists() && saving.exists() && proof.exists()) {
+      Log.warn("Recover step 3");
+      deleteFile(finalFile);
+      deleteFile(proof);
+      saving.renameTo(finalFile);
+    }
+    // Recovery after crash at saving step 4
+    else if (!finalFile.exists() && saving.exists() && proof.exists()) {
+      Log.warn("Recover step 4");
+      deleteFile(proof);
+      saving.renameTo(finalFile);
+    }
+    // Recovery after crash at saving step 5
+    else if (!finalFile.exists() && saving.exists() && !proof.exists()) {
+      Log.warn("Recover step 5");
+      saving.renameTo(finalFile);
+    }
+  }
+
+  /**
    * Copy recursively files and directories.
    *
    * @param src 
@@ -406,25 +491,15 @@ public final class UtilSystem {
    */
   public static void deleteDir(final File dir) throws IOException {
     Log.debug("Deleting: {{" + dir.getAbsolutePath() + "}}");
-    if (dir.isDirectory()) {
-      for (final File file : dir.listFiles()) {
-        if (file.isDirectory()) {
-          UtilSystem.deleteDir(file);
-        } else {
-          UtilSystem.deleteFile(file);
-        }
-      }
-      if (!dir.delete()) {
-        Log.warn("Could not delete directory " + dir);
-      }
-    } else {
-      UtilSystem.deleteFile(dir);
+    FileUtils.deleteDirectory(dir);
+    if (dir.exists()) {
+      throw new IOException("Directory" + dir.getAbsolutePath() + " still exists");
     }
     return;
   }
 
   /**
-   * Delete a file.
+   * Delete a file that exists.
    * 
    * @param file : source file
    * 
@@ -432,17 +507,19 @@ public final class UtilSystem {
    */
   public static void deleteFile(final File file) throws IOException {
     Log.debug("Deleting: {{" + file.getAbsolutePath() + "}}");
-    if (file.isFile() && file.exists()) {
-      if (!file.delete()) {
-        Log.warn("Could not delete file " + file);
-      }
-      // check that file has been really deleted (sometimes,
-      // we get no exception)
-      if (file.exists()) {
-        throw new IOException("File" + file.getAbsolutePath() + " still exists");
-      }
-    } else {// not a file, must have a problem
+    if (!file.isFile()) {
+      throw new IOException("File " + file.getAbsolutePath() + " is not a file");
+    }
+    if (!file.exists()) {
       throw new IOException("File " + file.getAbsolutePath() + " didn't exist");
+    }
+    if (!file.delete()) {
+      Log.warn("Could not delete file " + file);
+    }
+    // check that file has been really deleted (sometimes,
+    // we get no exception)
+    if (file.exists()) {
+      throw new IOException("File" + file.getAbsolutePath() + " still exists");
     }
     return;
   }
@@ -581,27 +658,12 @@ public final class UtilSystem {
         // Extract file name from URL. URI returns jar path, its parent
         // is the bin directory and the right dir is the parent of bin
         // dir
-        if (SessionService.isIdeMode()) {
-          // If under dev, take mplayer exe file from the packaging
-          // directory
-          sPATH = "./src/packaging";
-        } else {
-          sPATH = new File(getJarLocation(Main.class).toURI()).getParentFile().getParentFile()
-              .getAbsolutePath();
-        }
+        sPATH = new File(getJarLocation(Main.class).toURI()).getParentFile().getParentFile()
+            .getAbsolutePath();
         // Add MPlayer file name
         file = new File(sPATH + '/' + Const.FILE_MPLAYER_WINDOWS_EXE);
         if (file.exists() && file.length() == Const.MPLAYER_WINDOWS_EXE_SIZE) {
           UtilSystem.mplayerPath = file;
-        } else {
-          // For bundle project, Jajuk should check if mplayer was
-          // installed along with aTunes. In this case, mplayer is
-          // found in sPATH\win_tools\ directory. Hence, changed sPATH
-          // Note that we don't test mplayer.exe size in this case
-          file = new File(sPATH + "/win_tools/" + Const.MPLAYER_WINDOWS_EXE_SIZE);
-          if (file.exists()) {
-            UtilSystem.mplayerPath = file;
-          }
         }
       } catch (Exception e) {
         Log.error(e);

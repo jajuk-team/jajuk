@@ -190,8 +190,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     Color bgcolor = UtilGUI.getUltraLightColor();
     Color fgcolor = UtilGUI.getForegroundColor();
     String sOut = "<html bgcolor='#" + UtilGUI.getHTMLColor(bgcolor) + "'> <b>" + album.getName2()
-        + "</b><br><TABLE color='"
-        + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'>";
+        + "</b><br><TABLE color='" + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'>";
     // display cover
     if (cover.exists()) {
       sOut += "<img src='file:" + cover.getAbsolutePath() + "'><br>";

@@ -35,13 +35,10 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.error.JajukException;
 
 /**
- * .
+ * .Restore default disposition of all views from every perspectives 
  */
+@SuppressWarnings("serial")
 public class RestoreAllViewsAction extends JajukAction {
-  /** Generated serialVersionUID. */
-  private static final long serialVersionUID = 1L;
-  private static boolean fullRestore = false;
-
   /**
    * Instantiates a new restore all views action.
    */
@@ -51,48 +48,22 @@ public class RestoreAllViewsAction extends JajukAction {
     setShortDescription(Messages.getString("JajukJMenuBar.26"));
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
-   */
   @Override
   public void perform(final ActionEvent e) throws JajukException {
-    new Thread("Restore All Views Thread") {
-      @Override
-      public void run() {
-        // display a confirmation message
-        int i = Messages.getChoice(Messages.getString("Confirmation_restore_all"),
-            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-        if (i != JOptionPane.YES_OPTION) {
-          return;
-        }
-        // Drop all perspectives conf
-        for (IPerspective perspective : PerspectiveManager.getPerspectives()) {
-          File loadFile = SessionService.getConfFileByPath(perspective.getClass().getSimpleName()
-              + ".xml");
-          // Lazy deletion, this file have already been removed by a previous reset
-          loadFile.delete();
-        }
-        // Indicates to not commiting current configuration
-        fullRestore = true;
-        // Exit Jajuk
-        new Thread("Restore All Views - Exit Thread") {
-          @Override
-          public void run() {
-            ExitService.exit(0);
-          }
-        }.start();
-      }
-    }.start();
-  }
-
-  /**
-   * Checks if is full restore.
-   * 
-   * @return true, if is full restore
-   */
-  public static boolean isFullRestore() {
-    return fullRestore;
+    // display a confirmation message
+    int i = Messages.getChoice(Messages.getString("Confirmation_restore_all"),
+        JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+    if (i != JOptionPane.YES_OPTION) {
+      return;
+    }
+    // Drop all perspectives conf
+    for (IPerspective perspective : PerspectiveManager.getPerspectives()) {
+      File loadFile = SessionService.getConfFileByPath(perspective.getClass().getSimpleName()
+          + ".xml");
+      // Note that this file may have already been removed by a previous reset
+      loadFile.delete();
+    }
+    // Exit Jajuk
+    ExitService.exit(0);
   }
 }

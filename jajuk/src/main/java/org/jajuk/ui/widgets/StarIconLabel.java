@@ -98,4 +98,14 @@ public class StarIconLabel extends IconLabel {
       }
     }
   }
+
+  @Override
+  public boolean equals(Object other) {
+    // this also catches null
+    if (!(other instanceof StarIconLabel)) {
+      return false;
+    }
+    StarIconLabel otherIcon = (StarIconLabel) other;
+    return getStarsNumber() == otherIcon.getStarsNumber();
+  }
 }

@@ -35,6 +35,8 @@ import com.vlsolutions.swing.docking.event.DockingActionListener;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -49,6 +51,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
+import org.jajuk.services.core.PersistenceService;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ViewAdapter;
@@ -62,15 +65,13 @@ import org.xml.sax.SAXException;
 /**
  * Perspective adapter, provide default implementation for perspectives.
  */
+@SuppressWarnings("serial")
 public abstract class PerspectiveAdapter extends DockingDesktop implements IPerspective, Const {
-  /** The Constant XML_EXT.   */
-  private static final String XML_EXT = ".xml";
-  /** Generated serialVersionUID. */
-  private static final long serialVersionUID = 698162872976536725L;
   /** Perspective id (class). */
   private final String sID;
-  /** As been selected flag (workaround for VLDocking issue when saving position). */
-  protected boolean bAsBeenSelected = false;
+  private long dateFirstDisplay;
+  private boolean alreadySelected = false;
+  private static final int RESIZE_EVENTS_DISABLING_DELAY_MS = 5000;
 
   /**
    * Constructor.
@@ -80,135 +81,150 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     this.sID = getClass().getName();
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.perspectives.IPerspective#getID()
-   */
   @Override
-  public String getID() {
-    return sID;
-  }
-
-  /**
-   * toString method.
-   * 
-   * @return the string
-   */
-  @Override
-  public String toString() {
-    return "Perspective[name=" + getID() + " description='" + getDesc() + "]";
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.perspectives.IPerspective#commit()
-   */
-  @Override
-  public void commit() throws IOException {
-    // workaround for a VLDocking issue + performances
-    if (!bAsBeenSelected) {
-      return;
+  public void selected() {
+    if (!alreadySelected) {
+      this.dateFirstDisplay = System.currentTimeMillis();
     }
-    // The writeXML method must be called in the EDT to avoid freezing, it
-    // requires a lock some UI components
-    File saveFile = SessionService.getConfFileByPath(getClass().getSimpleName() + XML_EXT);
-    BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(saveFile));
+    alreadySelected = true;
+  }
+
+  @Override
+  public synchronized void commit() throws IOException {
     try {
-      writeXML(out);
-      out.flush();
-    } finally {
-      out.close();
+      // The writeXML method must be called in the EDT to avoid freezing, it
+      // requires a lock some UI components
+      File saveFile = SessionService.getConfFileByPath(PerspectiveAdapter.this.getClass()
+          .getSimpleName() + Const.FILE_XML_EXT);
+      // No need for recovery-enable commit here as the perspective can be restored to default 
+      // any time in case of write failure
+      BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(saveFile));
+      try {
+        writeXML(out);
+        out.flush();
+      } finally {
+        out.close();
+      }
+      Log.debug("Perspective " + getID() + " commited");
+    } catch (Exception e) {
+      Log.error(e);
+      throw new IOException(e);
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.perspectives.IPerspective#load()
-   */
   @Override
   public void load() throws IOException, ParserConfigurationException, SAXException {
     // Try to read XML conf file from home directory
-    File loadFile = SessionService.getConfFileByPath(getClass().getSimpleName() + XML_EXT);
+    File loadFile = SessionService.getConfFileByPath(getClass().getSimpleName()
+        + Const.FILE_XML_EXT);
     // If file doesn't exist (normally only at first install), read
     // perspective conf from the jar
     URL url = loadFile.toURI().toURL();
     if (!loadFile.exists()) {
       url = UtilSystem.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/'
-          + getClass().getSimpleName() + XML_EXT);
+          + getClass().getSimpleName() + Const.FILE_XML_EXT);
     }
     BufferedInputStream in = new BufferedInputStream(url.openStream());
     // then, load the workspace
-    try {
-      DockingContext ctx = new DockingContext();
-      DockableResolver resolver = new DockableResolver() {
-        @Override
-        public Dockable resolveDockable(String keyName) {
-          Dockable view = null;
-          try {
-            StringTokenizer st = new StringTokenizer(keyName, "/");
-            String className = st.nextToken();
-            int id = Integer.parseInt(st.nextToken());
-            view = ViewFactory.createView(Class.forName(className), PerspectiveAdapter.this, id);
-          } catch (Exception e) {
-            Log.error(e);
-          }
-          return view;
-        }
-      };
-      // register a listener to unregister the view upon closing
-      ctx.addDockingActionListener(new DockingActionListener() {
-        @Override
-        public void dockingActionPerformed(DockingActionEvent dockingactionevent) {
-          // on closing/removing of a view try to unregister it at the
-          // ObservationManager
-          if (dockingactionevent instanceof DockingActionCloseEvent) {
-            Dockable obj = ((DockingActionDockableEvent) dockingactionevent).getDockable();
-            if (obj instanceof Observer) {
-              ObservationManager.unregister((Observer) obj);
+    DockingContext ctx = new DockingContext();
+    DockableResolver resolver = new DockableResolver() {
+      @Override
+      public Dockable resolveDockable(String keyName) {
+        Dockable view = null;
+        try {
+          StringTokenizer st = new StringTokenizer(keyName, "/");
+          String className = st.nextToken();
+          int id = Integer.parseInt(st.nextToken());
+          view = ViewFactory.createView(Class.forName(className), PerspectiveAdapter.this, id);
+          // save disposition upon resize
+          view.getComponent().addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+              // Avoid persisting the perspective for nothing at first display display.
+              // We disable the resize events during a small period of time to make sure events are done.
+              if (System.currentTimeMillis() - dateFirstDisplay > RESIZE_EVENTS_DISABLING_DELAY_MS) {
+                PersistenceService.getInstance().setPerspectiveChanged(PerspectiveAdapter.this);
+              }
             }
-            // it seems the Docking-library does not unregister these things by itself
-            // so we need to do it on our own here as well. We create the Dockable (i.e.
-            // the View) from scratch every time (see constructor of JajukJMenuBar where we create
-            // the menu entries to add new views and ViewFactory)
-            unregisterDockable(obj);
-            // workaround for DockingDesktop-leaks, we need to remove the Dockable from the
-            // "TitleBar"
-            // if it is one of those that are hidden on the left side.
-            removeFromDockingDesktop(PerspectiveAdapter.this, obj);
-            // do some additional cleanup on the View itself if necessary
-            if (obj instanceof ViewAdapter) {
-              ((ViewAdapter) obj).cleanup();
-            }
-          }
+          });
+        } catch (Exception e) {
+          Log.error(e);
         }
-
-        @Override
-        public boolean acceptDockingAction(DockingActionEvent dockingactionevent) {
-          // always accept here
-          return true;
-        }
-      });
-      ctx.setDockableResolver(resolver);
-      setContext(ctx);
-      ctx.addDesktop(this);
-      try {
-        ctx.readXML(in);
-      } catch (Exception e) {
-        // error parsing the file, user can't be blocked, use
-        // default conf
-        Log.error(e);
-        Log.debug("Error parsing conf file, use defaults - " + getID());
-        url = UtilSystem.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/'
-            + getClass().getSimpleName() + XML_EXT);
-        in = new BufferedInputStream(url.openStream());
-        ctx.readXML(in);
+        return view;
       }
-    } finally {
-      in.close(); // stream isn't closed
+    };
+    addDockableListener(ctx);
+    ctx.setDockableResolver(resolver);
+    setContext(ctx);
+    ctx.addDesktop(this);
+    try {
+      ctx.readXML(in);
+      in.close();
+    } catch (Exception e) {
+      // error parsing the file, user can't be blocked, use
+      // default conf
+      Log.error(e);
+      Log.debug("Error parsing conf file, use defaults - " + getID());
+      url = UtilSystem.getResource(FILE_DEFAULT_PERSPECTIVES_PATH + '/'
+          + getClass().getSimpleName() + Const.FILE_XML_EXT);
+      BufferedInputStream defaultConf = new BufferedInputStream(url.openStream());
+      ctx.readXML(defaultConf);
+      // Delete the corrupted file
+      if (in != null) {
+        in.close();
+      }
+      loadFile.delete();
     }
+  }
+
+  private void addDockableListener(DockingContext ctx) {
+    // Listen action on the perspective itself, used to track events like drag over 
+    // another view of the same size that doesn't throw a view event
+    addDockingActionListener(new DockingActionListener() {
+      @Override
+      public void dockingActionPerformed(DockingActionEvent dockingactionevent) {
+        PersistenceService.getInstance().setPerspectiveChanged(PerspectiveAdapter.this);
+      }
+
+      @Override
+      public boolean acceptDockingAction(DockingActionEvent arg0) {
+        return true;
+      }
+    });
+    // Actions on views themselves
+    ctx.addDockingActionListener(new DockingActionListener() {
+      @Override
+      public void dockingActionPerformed(DockingActionEvent dockingactionevent) {
+        // on closing/removing of a view try to unregister it at the
+        // ObservationManager
+        if (dockingactionevent instanceof DockingActionCloseEvent) {
+          Dockable obj = ((DockingActionDockableEvent) dockingactionevent).getDockable();
+          if (obj instanceof Observer) {
+            ObservationManager.unregister((Observer) obj);
+          }
+          // Seems that the Docking-library does not unregister these things by itself
+          // so we need to do it on our own here as well. We create the Dockable (i.e.
+          // the View) from scratch every time (see constructor of JajukJMenuBar where we create
+          // the menu entries to add new views and ViewFactory)
+          unregisterDockable(obj);
+          // workaround for DockingDesktop-leaks, we need to remove the Dockable from the
+          // "TitleBar"
+          // if it is one of those that are hidden on the left side.
+          removeFromDockingDesktop(PerspectiveAdapter.this, obj);
+          // do some additional cleanup on the View itself if necessary
+          if (obj instanceof ViewAdapter) {
+            ((ViewAdapter) obj).cleanup();
+          }
+        }
+        PersistenceService.getInstance().setPerspectiveChanged(PerspectiveAdapter.this);
+      }
+
+      @Override
+      public boolean acceptDockingAction(DockingActionEvent dockingactionevent) {
+        // always accept here
+        return true;
+      }
+    });
   }
 
   /**
@@ -266,29 +282,19 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.perspectives.IPerspective#getContentPane()
-   */
   @Override
   public Container getContentPane() {
     return this;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.IPerspective#restaureDefaults()
-   */
   @Override
   public void restoreDefaults() {
     // SHOULD BE CALLED ONLY FOR THE CURRENT PERSPECTIVE
     // to ensure views are not invisible
     try {
-      // Remove current conf file to force using default file from the
-      // jar
-      File loadFile = SessionService.getConfFileByPath(getClass().getSimpleName() + XML_EXT);
+      // Remove current conf file to force using default file from the jar
+      File loadFile = SessionService.getConfFileByPath(getClass().getSimpleName()
+          + Const.FILE_XML_EXT);
       // lazy deletion, the file can be already removed by a previous reset
       loadFile.delete();
       // Remove all registered dockables
@@ -307,21 +313,6 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.IPerspective#setAsBeenSelected()
-   */
-  @Override
-  public void setAsBeenSelected(boolean b) {
-    bAsBeenSelected = b;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.perspectives.IPerspective#getViews()
-   */
   @Override
   public Set<IView> getViews() {
     Set<IView> views = new HashSet<IView>();
@@ -330,5 +321,15 @@ public abstract class PerspectiveAdapter extends DockingDesktop implements IPers
       views.add((IView) element.getDockable());
     }
     return views;
+  }
+
+  @Override
+  public String getID() {
+    return sID;
+  }
+
+  @Override
+  public String toString() {
+    return "Perspective[name=" + getID() + " description='" + getDesc() + "]";
   }
 }

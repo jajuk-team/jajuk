@@ -430,15 +430,10 @@ public class TestHelpers {
     // JUnitHelpers.waitForThreadToFinish("Event Executor for: " +
     // event.toString());
     // }
-
-    for(JajukEvents event : JajukEvents.values()) {
-      TestHelpers
-      .waitForThreadToFinish("Event Executor for: " + event.toString());
-      TestHelpers
-      .waitForThreadToFinish("Event Executor for: " + event.toString() + " no details");
+    for (JajukEvents event : JajukEvents.values()) {
+      TestHelpers.waitForThreadToFinish("Event Executor for: " + event.toString());
+      TestHelpers.waitForThreadToFinish("Event Executor for: " + event.toString() + " no details");
     }
-    
-
     TestHelpers.clearSwingUtilitiesQueue();
     //Reset everything again as it could have been changed during threads finishing
     ObservationManager.clear();
@@ -817,21 +812,21 @@ public class TestHelpers {
     field.setAccessible(true);
     field.set(obj, value);
   }
-  
+
   /**
    * Print a dump of all current threads to System.out
    */
   public static void dumpThreads() {
-    Map<Thread,StackTraceElement[]> traces = Thread.getAllStackTraces();
+    Map<Thread, StackTraceElement[]> traces = Thread.getAllStackTraces();
     Iterator<Thread> i = traces.keySet().iterator();
     while (i.hasNext()) {
-       Thread thd = i.next();
-       System.out.println("*** Thread id"+thd.getId()+":"+thd.getName()+" ***");
-       StackTraceElement[] trace = traces.get(thd);
-       for (int j=0; j < trace.length; ++j) {
-          System.out.println(trace[j]);
-       }
-       System.out.println();
-    }    
+      Thread thd = i.next();
+      System.out.println("*** Thread id" + thd.getId() + ":" + thd.getName() + " ***");
+      StackTraceElement[] trace = traces.get(thd);
+      for (int j = 0; j < trace.length; ++j) {
+        System.out.println(trace[j]);
+      }
+      System.out.println();
+    }
   }
 }

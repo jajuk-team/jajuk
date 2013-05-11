@@ -759,7 +759,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   */
   void initTable() {
     jtbEditable.setSelected(Conf.getBoolean(editableConf));
-    // Sort by name by default
+    // Sort by name by default. 
     jtable.setSortOrder(1, SortOrder.ASCENDING);
   }
 }

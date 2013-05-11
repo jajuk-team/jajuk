@@ -86,9 +86,7 @@ public interface IPerspective {
   void restoreDefaults();
 
   /**
-   * As been selected flag.
-   * 
-   * @param b 
+   * The perspective has been selected
    */
-  void setAsBeenSelected(boolean b);
+  void selected();
 }

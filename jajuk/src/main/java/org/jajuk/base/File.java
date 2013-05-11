@@ -206,6 +206,7 @@ public class File extends PhysicalItem implements Comparable<File> {
    */
   @Override
   public int compareTo(File otherFile) {
+    int comp;
     // Begin by comparing file parent directory for performances
     if (directory.equals(otherFile.getDirectory())) {
       // If both files are in the same directory, sort by track order
@@ -219,16 +220,21 @@ public class File extends PhysicalItem implements Comparable<File> {
       String otherAbs = otherFile.getName();
       // We must be consistent with equals, see
       // http://java.sun.com/javase/6/docs/api/java/lang/Comparable.html
-      int comp = abs.compareToIgnoreCase(otherAbs);
-      if (comp == 0) {
-        return abs.compareTo(otherAbs);
+      if (abs.equalsIgnoreCase(otherAbs)) {
+        comp = abs.compareTo(otherAbs);
       } else {
-        return comp;
+        comp = abs.compareToIgnoreCase(otherAbs);
       }
+      return comp;
     } else {
       // Files are in different directories, sort by absolute path
       // Do not compare simply parent directories to avoid general contact violation about transitivity
-      return this.getAbsolutePath().compareToIgnoreCase(otherFile.getAbsolutePath());
+      if (UtilSystem.isUnderWindows()) {
+        comp = this.getAbsolutePath().compareToIgnoreCase(otherFile.getAbsolutePath());
+      } else {
+        comp = this.getAbsolutePath().compareTo(otherFile.getAbsolutePath());
+      }
+      return comp;
     }
   }
 

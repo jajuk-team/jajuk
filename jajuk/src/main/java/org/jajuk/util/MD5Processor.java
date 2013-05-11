@@ -58,7 +58,7 @@ public final class MD5Processor {
     try {
       msgDigest.update(sIn.getBytes("UTF-8"));
     } catch (UnsupportedEncodingException e) {
-      // This cannot normaly happen
+      // This should not happen
       Log.error(e);
       return null;
     }

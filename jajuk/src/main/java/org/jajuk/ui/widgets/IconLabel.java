@@ -73,17 +73,6 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
   }
 
   /**
-   * Instantiates a new icon label.
-   * 
-   * @param icon 
-   * @param sText 
-   */
-  private IconLabel(ImageIcon icon, String sText) {
-    super(icon.getImage());
-    this.sText = sText;
-  }
-
-  /**
    * Gets the text.
    * 
    * @return Returns the sText.
@@ -151,6 +140,16 @@ public class IconLabel extends ImageIcon implements Comparable<IconLabel> {
     } else {
       return 0;
     }
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    // this also catches null
+    if (!(other instanceof IconLabel)) {
+      return false;
+    }
+    IconLabel otherIcon = (IconLabel) other;
+    return getText().equals(otherIcon.getText());
   }
 
   /**

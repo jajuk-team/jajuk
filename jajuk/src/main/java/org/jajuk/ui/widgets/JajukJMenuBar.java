@@ -181,7 +181,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
           IView newView = ViewFactory.createView(view, current,
               Math.abs(UtilSystem.getRandom().nextInt()));
           newView.initUI();
-          newView.setIsPopulated(true);
+          newView.setPopulated();
           current.addDockable(newView);
         }
       });

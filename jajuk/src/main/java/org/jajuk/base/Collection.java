@@ -159,20 +159,19 @@ public final class Collection extends DefaultHandler {
 
   /**
    * Write current collection to collection file for persistence between
-   * sessions. The collection is actually written first to a temporary file and then the destination is
-   * created or overridden. This is done to limit file corruption risks when the collection is commited at 
-   * application shutdown for instance.
+   * sessions. 
    *
    * @param collectionFile 
    *
    * @throws IOException Signals that an I/O exception has occurred.
    */
-  public static synchronized void commit(File collectionFile) throws IOException {
+  public static synchronized void commit() throws IOException {
     long time = System.currentTimeMillis();
     String sCharset = Conf.getString(Const.CONF_COLLECTION_CHARSET);
-    File tempFile = new File(collectionFile.getAbsoluteFile() + "~");
-    final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-        tempFile), sCharset), 1000000);
+    java.io.File out = SessionService.getConfFileByPath(Const.FILE_COLLECTION + "."
+        + Const.FILE_SAVING_FILE_EXTENSION);
+    final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out),
+        sCharset), 1000000);
     try {
       bw.write("<?xml version='1.0' encoding='" + sCharset + "'?>\n");
       bw.write("<" + Const.XML_COLLECTION + " " + Const.XML_VERSION + "='" + Const.JAJUK_VERSION
@@ -227,12 +226,10 @@ public final class Collection extends DefaultHandler {
     } finally {
       bw.close();
     }
-    try {
-      UtilSystem.move(tempFile, collectionFile);
-      Log.debug("Collection commited in " + (System.currentTimeMillis() - time) + " ms");
-    } catch (JajukException e) {
-      Log.error(e);
-    }
+    // Override initial file
+    java.io.File finalFile = SessionService.getConfFileByPath(Const.FILE_COLLECTION);
+    UtilSystem.saveFileWithRecoverySupport(finalFile);
+    Log.debug("Collection commited in " + (System.currentTimeMillis() - time) + " ms");
   }
 
   /**
@@ -284,7 +281,15 @@ public final class Collection extends DefaultHandler {
    */
   public static void load(File file) throws SAXException, ParserConfigurationException,
       JajukException, IOException {
+    // If we load the regular collection.xml file, try to recover it from previous crash
+    java.io.File regularFile = SessionService.getConfFileByPath(Const.FILE_COLLECTION);
+    if (file.equals(regularFile)) {
+      UtilSystem.recoverFileIfRequired(regularFile);
+    }
     Log.debug("Loading: " + file.getName());
+    if (!file.exists()) {
+      throw new JajukException(5, file.toString());
+    }
     lTime = System.currentTimeMillis();
     SAXParserFactory spf = SAXParserFactory.newInstance();
     spf.setValidating(false);
@@ -293,9 +298,6 @@ public final class Collection extends DefaultHandler {
     spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
     spf.setFeature("http://xml.org/sax/features/string-interning", true);
     SAXParser saxParser = spf.newSAXParser();
-    if (!file.exists()) {
-      throw new JajukException(5, file.toString());
-    }
     saxParser.parse(file.toURI().toURL().toString(), getInstance());
   }
 

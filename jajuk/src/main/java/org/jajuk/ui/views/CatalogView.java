@@ -520,7 +520,6 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
     @SuppressWarnings("unchecked")
     List<Album> albums = (List<Album>) in;
     if (in == null) {
-      stopAllBusyLabels();
       return;
     }
     // Populate each thumb if required (this is short because the thumb should have already been built in the long call )

@@ -35,7 +35,6 @@ import org.jajuk.services.core.SessionService;
 import org.jajuk.services.notification.NotificatorTypes;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.perspectives.SimplePerspective;
-import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -389,6 +388,11 @@ public final class Conf implements Const {
    * @param sValue  property value as string
    */
   public static void setProperty(String sName, String sValue) {
+    // [Perf] Ignore cases where the same value is set again 
+    Object current = properties.get(sName);
+    if (current != null && current.equals(sValue)) {
+      return;
+    }
     properties.setProperty(sName, sValue);
     try {
       commit();
@@ -414,18 +418,14 @@ public final class Conf implements Const {
   }
 
   /**
-   * Commit properties into a file. Some preferences corruption
-   * have been reported (see https://trac.jajuk.info/ticket/1611)
-   * so we added more robust commit features : we commit the properties
-   * to a temporary file, try to parse it back (to detect invalid characters like \n) and
-   * if the parsing is ok, we override the old preference file with the
-   * temporary one.
+   * Commit properties into a file. 
    * 
    * @throws IOException Signals that an I/O exception has occurred.
    */
-  public static void commit() throws IOException {
-    File fTempFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION_TEMP);
-    OutputStream str = new FileOutputStream(fTempFile);
+  private static void commit() throws IOException {
+    java.io.File out = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION + "."
+        + Const.FILE_SAVING_FILE_EXTENSION);
+    OutputStream str = new FileOutputStream(out);
     // Write the temporary file
     try {
       properties.store(str, "User configuration");
@@ -433,45 +433,10 @@ public final class Conf implements Const {
       str.flush();
       str.close();
     }
-    // Check if it is valid
-    checkTempPreferenceFile();
-    // If still here, we override the old preference file
-    // by the temporary one.
-    // Note that the system may crash then. It is why'll try
-    // to load the temp file at next startup if we can't find
-    // the regular file.
-    overridePreferenceFile();
-  }
-
-  /**
-   * Check if the temporary preference file is valid.
-   * 
-   * @throws IOException if the file is invalid
-   */
-  private static void checkTempPreferenceFile() throws IOException {
-    File fTempFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION_TEMP);
-    // Try to parse it again
-    InputStream in = new FileInputStream(fTempFile);
-    try {
-      new Properties().load(in);
-    } finally {
-      in.close();
-    }
-  }
-
-  /**
-   * Override.
-   * 
-   * @throws IOException Signals that an I/O exception has occurred.
-   */
-  private static void overridePreferenceFile() throws IOException {
-    File finalFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION);
-    File fTempFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION_TEMP);
-    try {
-      UtilSystem.move(fTempFile, finalFile);
-    } catch (Exception e) {
-      throw new IOException(e);
-    }
+    // Commit with recovery support
+    java.io.File finalFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION);
+    UtilSystem.saveFileWithRecoverySupport(finalFile);
+    Log.debug("Conf commited to : " + finalFile.getAbsolutePath());
   }
 
   /**
@@ -490,29 +455,21 @@ public final class Conf implements Const {
    */
   public static void load() {
     try {
-      // if a temp conf file is found, it may mean that the temp 
-      // to final move has not be done at last shutdown so we do it now
-      replaceCorruptedConfFile();
-      // Now read the conf file
-      InputStream str = new FileInputStream(
-          SessionService.getConfFileByPath(Const.FILE_CONFIGURATION));
-      try {
-        properties.load(str);
-      } finally {
-        str.close();
+      File confFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION);
+      UtilSystem.recoverFileIfRequired(confFile);
+      // Conf file doesn't exist at first launch
+      if (confFile.exists()) {
+        // Now read the conf file
+        InputStream str = new FileInputStream(confFile);
+        try {
+          properties.load(str);
+        } finally {
+          str.close();
+        }
       }
     } catch (Exception e) {
       Log.error(e);
       Messages.showErrorMessage(114);
-    }
-  }
-
-  private static void replaceCorruptedConfFile() throws IOException, JajukException {
-    File finalFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION);
-    File fTempFile = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION_TEMP);
-    if (fTempFile.exists()) {
-      Log.warn("Conf file seems not to having been fully stored at last session");
-      UtilSystem.move(fTempFile, finalFile);
     }
   }
 

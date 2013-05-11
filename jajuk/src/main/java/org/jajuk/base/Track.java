@@ -146,8 +146,8 @@ public class Track extends LogicalItem implements Comparable<Track> {
   }
 
   /**
-   * Default comparator for tracks, not used for sorting (use TrackComparator
-   * for that) But only for storage.
+   * Default comparator for tracks, not used for actual sorting (use TrackComparator
+   * for that), only for storage purpose.
    *
    * @param otherTrack 
    *

@@ -22,7 +22,6 @@ package org.jajuk.services.core;
 
 import net.miginfocom.layout.LinkHandler;
 
-import org.jajuk.services.tags.Tag;
 import org.jajuk.util.log.Log;
 
 /**
@@ -33,7 +32,7 @@ import org.jajuk.util.log.Log;
  */
 public final class CleanupService extends Thread {
   private static CleanupService self = new CleanupService();
-  private static final int DELAY_BETWEEN_CHECKS_MS = 5000;
+  private static final int DELAY_BETWEEN_CHECKS_SEC = 1800;
 
   /**
    * Instantiates a new rating manager.
@@ -53,13 +52,11 @@ public final class CleanupService extends Thread {
   public void run() {
     while (!ExitService.isExiting()) {
       try {
-        Thread.sleep(DELAY_BETWEEN_CHECKS_MS);
+        Thread.sleep(1000 * DELAY_BETWEEN_CHECKS_SEC);
         Log.debug("Cleanup");
         // workaround to free space in MigLayout
         // see http://migcalendar.com/forum/viewtopic.php?f=8&t=3236&p=7012
         LinkHandler.getValue("", "", 1); // simulated read
-        // Clear the tag cache to avoid growing memory usage over time
-        Tag.clearCache();
       } catch (Exception e) {
         Log.error(e);
       }
