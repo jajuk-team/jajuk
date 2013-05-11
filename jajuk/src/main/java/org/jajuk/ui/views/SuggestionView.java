@@ -70,7 +70,6 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
@@ -202,7 +201,6 @@ public class SuggestionView extends ViewAdapter {
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     eventSubjectSet.add(JajukEvents.COVER_DEFAULT_CHANGED);
     eventSubjectSet.add(JajukEvents.SUGGESTIONS_REFRESH);
-    eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
     return eventSubjectSet;
   }
 
@@ -481,11 +479,11 @@ public class SuggestionView extends ViewAdapter {
   public void update(JajukEvent event) {
     JajukEvents subject = event.getSubject();
     if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
-      comp++;
       // Change local collection suggestions every 10 track plays
       if (comp % 10 == 0) {
         refreshLocalCollectionTabs();
       }
+      comp++;
       // update last.fm panels
       refreshLastFMCollectionTabs();
     } else if (subject.equals(JajukEvents.PARAMETERS_CHANGE) && isLastFMTabsVisible()) {
@@ -493,10 +491,7 @@ public class SuggestionView extends ViewAdapter {
       // collection panels
       refreshLastFMCollectionTabs();
     } else if (subject.equals(JajukEvents.COVER_DEFAULT_CHANGED)
-        || subject.equals(JajukEvents.SUGGESTIONS_REFRESH)
-        // Fix for #1935 (Local suggestions void at very first start), we need to force a refresh when 
-        // collection has been refreshed for the first time
-        || (subject.equals(JajukEvents.DEVICE_REFRESH) && UpgradeManager.isFirstSession())) {
+        || subject.equals(JajukEvents.SUGGESTIONS_REFRESH)) {
       // New default cover, refresh the view
       refreshLocalCollectionTabs();
     }
