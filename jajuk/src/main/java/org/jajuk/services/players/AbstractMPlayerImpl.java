@@ -180,10 +180,14 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     cmd.add(Integer.toString(startPositionSec));
     // Make sure mplayer can't be controlled from user or pre-existing configuration
     // This also fixes issue #1930 (Fade out issue when pausing) under Windows
-    cmd.add("-input");
-    cmd.add("nodefault-bindings");
-    cmd.add("-noconfig");
-    cmd.add("all");
+    // TODO These options are too recent for the current OSX mplayer binary we provide, 
+    // try to provide a newer one and enable them again
+    if (UtilSystem.isUnderOSX()) {
+      cmd.add("-input");
+      cmd.add("nodefault-bindings");
+      cmd.add("-noconfig");
+      cmd.add("all");
+    }
     // quiet: less traces
     cmd.add("-quiet");
     // slave: slave mode (control with stdin)

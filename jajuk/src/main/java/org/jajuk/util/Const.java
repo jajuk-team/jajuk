@@ -112,7 +112,7 @@ public interface Const {
   /** Mplayer windows exe size in bytes. */
   long MPLAYER_WINDOWS_EXE_SIZE = 21718016l;
   /** Mplayer windows exe size in bytes. */
-  long MPLAYER_OSX_EXE_SIZE = 21490476l;
+  long MPLAYER_OSX_EXE_SIZE = 10533264l;
   /** Update URL = PAD file URL. */
   String CHECK_FOR_UPDATE_URL = "http://repository.jajuk.info/jajuk_pad.xml";
   // Jajuk version
@@ -196,7 +196,7 @@ public interface Const {
   /** Mplayer Windows exe provided by jajuk URL . */
   String URL_MPLAYER_WINDOWS = "http://repository.jajuk.info/mplayer/20130411/mplayer.exe";
   /** Mplayer OSX exe provided by jajuk URL . */
-  String URL_MPLAYER_OSX = "http://repository.jajuk.info/mplayer/osx/1.0rc2/mplayer";
+  String URL_MPLAYER_OSX = "http://repository.jajuk.info/mplayer/osx/1.1-4.2.1/mplayer";
   String URL_WEBRADIO_PRESETS = "http://svn2.assembla.com/svn/common-jukebox/common-jukebox/src/main/resources/preset_radios.xml";
   // sequence
   String AMBIENCE_PREFIX = "jajuk.ambience.";
