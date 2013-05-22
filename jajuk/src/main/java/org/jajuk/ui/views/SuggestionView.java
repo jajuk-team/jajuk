@@ -208,14 +208,21 @@ public class SuggestionView extends ViewAdapter {
    * Refresh local thumbs.
    */
   private void refreshLocalCollectionTabs() {
-    busyLocal1.setBusy(true);
-    busyLocal2.setBusy(true);
-    busyLocal3.setBusy(true);
-    // stop all existing busy labels before we add the new ones...
-    //stopAllBusyLabels();
-    tabs.setComponentAt(0, UtilGUI.getCentredPanel(busyLocal1));
-    tabs.setComponentAt(1, UtilGUI.getCentredPanel(busyLocal2));
-    tabs.setComponentAt(2, UtilGUI.getCentredPanel(busyLocal3));
+    // Display a busy panel in the mean-time
+    // For some reasons, if we put that code into an invokeLater() call
+    // it is executed after the next done() in next swing worker, no clue why
+    // As a compromise, we only show busy label when called in EDT (not the case when the 
+    // call is from an update() )
+    if (SwingUtilities.isEventDispatchThread()) {
+      busyLocal1.setBusy(true);
+      busyLocal2.setBusy(true);
+      busyLocal3.setBusy(true);
+      // stop all existing busy labels before we add the new ones...
+      //stopAllBusyLabels();
+      tabs.setComponentAt(0, UtilGUI.getCentredPanel(busyLocal1));
+      tabs.setComponentAt(1, UtilGUI.getCentredPanel(busyLocal2));
+      tabs.setComponentAt(2, UtilGUI.getCentredPanel(busyLocal3));
+    }
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
       JScrollPane jsp1;
       JScrollPane jsp2;
