@@ -82,6 +82,7 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
   private final JPopupMenu jmenu;
   /** Specific action on double click. */
   private ILaunchCommand command;
+  private volatile boolean manualSelectionRequired = false;
   /** Model refreshing flag. */
   private volatile boolean acceptColumnsEvents = false;
   /** The Constant FORMATTER.  */
@@ -450,8 +451,13 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
    * @param indexes list of row indexes to be selected
    */
   public void setSelectedRows(int[] indexes) {
-    for (int element : indexes) {
-      addRowSelectionInterval(element, element);
+    try {
+      manualSelectionRequired = true;
+      for (int element : indexes) {
+        addRowSelectionInterval(element, element);
+      }
+    } finally {
+      manualSelectionRequired = false;
     }
   }
 
@@ -462,7 +468,7 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
    */
   @Override
   public void valueChanged(ListSelectionEvent e) {
-    if (e.getValueIsAdjusting()) {
+    if (e.getValueIsAdjusting() || manualSelectionRequired) {
       return;
     }
     // Ignore event if the model is refreshing
@@ -482,6 +488,7 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
     if (parentView != null) {
       properties.put(Const.DETAIL_VIEW, parentView);
     }
+    System.out.println("====");
     ObservationManager.notify(new JajukEvent(JajukEvents.TABLE_SELECTION_CHANGED, properties));
     // Call specific behaviors
     for (ListSelectionListener listener : listeners) {
@@ -685,7 +692,12 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
   @Override
   public void setRowSelectionInterval(int index0, int index1) {
     if (!isMouseDragging) {
-      super.setRowSelectionInterval(index0, index1);
+      try {
+        manualSelectionRequired = true;
+        super.setRowSelectionInterval(index0, index1);
+      } finally {
+        manualSelectionRequired = false;
+      }
     }
   }
 
@@ -695,7 +707,12 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
   @Override
   public void setColumnSelectionInterval(int index0, int index1) {
     if (!isMouseDragging) {
-      super.setColumnSelectionInterval(index0, index1);
+      try {
+        manualSelectionRequired = true;
+        super.setColumnSelectionInterval(index0, index1);
+      } finally {
+        manualSelectionRequired = false;
+      }
     }
   }
 
@@ -705,7 +722,12 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
   @Override
   public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
     if (!isMouseDragging) {
-      super.changeSelection(rowIndex, columnIndex, toggle, extend);
+      try {
+        manualSelectionRequired = true;
+        super.changeSelection(rowIndex, columnIndex, toggle, extend);
+      } finally {
+        manualSelectionRequired = false;
+      }
     }
   }
 }

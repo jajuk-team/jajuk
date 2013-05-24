@@ -748,7 +748,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
    */
   void onSelectionChange() {
     // Do nothing by default
-    Log.debug("Table selection changed for : " + this);
   }
 
   /**
