@@ -229,10 +229,6 @@ public final class Player {
    */
   public static void stop(boolean bAll) {
     try {
-      if (Conf.getBoolean(Const.CONF_FADE_OUT) && isPlaying()
-          && !Conf.getBoolean(Const.CONF_BIT_PERFECT) && !QueueModel.isInternalStop() && !isMuted()) {
-        fadeOut();
-      }
       if (playerImpl1 != null && (playerImpl1.getState() != Const.FADING_STATUS || bAll)) {
         playerImpl1.stop();
         playerImpl1 = null;
@@ -379,30 +375,12 @@ public final class Player {
         return;
       }
       if (playerImpl != null) {
-        if (Conf.getBoolean(Const.CONF_FADE_OUT) && !Conf.getBoolean(Const.CONF_BIT_PERFECT)
-            && !QueueModel.isInternalStop() && !isMuted()) {
-          fadeOut();
-        }
         playerImpl.pause();
       }
       bPaused = true;
       ObservationManager.notify(new JajukEvent(JajukEvents.PLAYER_PAUSE));
     } catch (Exception e) {
       Log.error(e);
-    }
-  }
-
-  private static void fadeOut() throws Exception {
-    float initialVolume = playerImpl.getCurrentVolume();
-    if (initialVolume > 0) {
-      //Fade out
-      float steps = 10;
-      int totalTimeMillis = 500;
-      for (int i = 1; i <= steps; i++) {
-        float newVolume = initialVolume * (steps - i) / steps;
-        playerImpl.setVolume(newVolume);
-        Thread.sleep((int) (totalTimeMillis / (steps - 1)));
-      }
     }
   }
 

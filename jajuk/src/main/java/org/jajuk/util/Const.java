@@ -718,7 +718,6 @@ public interface Const {
   String CONF_BIT_PERFECT = "jajuk.bit_perfect";
   String CONF_SHOW_VIDEOS = "jajuk.show_videos";
   String CONF_PRESERVE_FILE_DATES = "jajuk.preserve_date";
-  String CONF_FADE_OUT = "jajuk.options.fade_out";
   // Alarm actions
   String ALARM_START_ACTION = "Start Playing";
   String ALARM_STOP_ACTION = "Stop Playing";
