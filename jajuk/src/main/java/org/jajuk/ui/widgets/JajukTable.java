@@ -488,7 +488,6 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
     if (parentView != null) {
       properties.put(Const.DETAIL_VIEW, parentView);
     }
-    System.out.println("====");
     ObservationManager.notify(new JajukEvent(JajukEvents.TABLE_SELECTION_CHANGED, properties));
     // Call specific behaviors
     for (ListSelectionListener listener : listeners) {
