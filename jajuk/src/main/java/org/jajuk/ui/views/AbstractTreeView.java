@@ -334,7 +334,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
             return;
           }
           // for tree/table consideration, we only expand the first found item, we don't
-          // support multiple expands (useful?)
+          // support multiple expands
           final Item item = selection.get(0);
           // Do not scroll if a webradio has been launched
           if (item instanceof org.jajuk.base.File) {

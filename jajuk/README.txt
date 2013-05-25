@@ -13,7 +13,7 @@ To compile Jajuk :
 (Ant is required, download it on http://ant.apache.org/ )  
          
 $ cd src/scripts
-$ ant
+$ ant package_jar
 
 ----------------
 

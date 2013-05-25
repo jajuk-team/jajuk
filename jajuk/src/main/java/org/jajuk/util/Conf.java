@@ -340,7 +340,6 @@ public final class Conf implements Const {
     defaults.put(CONF_SPLASH_SCREEN, TRUE);
     defaults.put(CONF_SHOW_VIDEOS, FALSE);
     defaults.put(CONF_PRESERVE_FILE_DATES, FALSE);
-    defaults.put(CONF_FADE_OUT, TRUE);
     defaults.put(CONF_MANUAL_RATINGS, FALSE);
     defaults.put(CONF_STARTUP_QUEUE_INDEX, "-1");
     // NOT SHOW AGAIN
