@@ -409,7 +409,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     JMenuItem jmiFileCopyURL = new JMenuItem(
         ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     jmiFileCopyURL.putClientProperty(Const.DETAIL_CONTENT, editorTable.getSelection());
-    jmiFileCopyURL = new JMenuItem(ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD));
     jmiOpenExplorer = new JMenuItem(ActionManager.getAction(JajukActions.OPEN_EXPLORER));
     jmiOpenExplorer.putClientProperty(Const.DETAIL_CONTENT, editorTable.getSelection());
     editorTable.getMenu().add(jmiFilePlay);
