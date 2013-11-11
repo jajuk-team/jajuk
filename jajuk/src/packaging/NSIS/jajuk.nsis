@@ -183,7 +183,8 @@ Section
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 
   SetShellVarContext all
-  CreateShortCut "$SMPROGRAMS\Jajuk.lnk" "$INSTDIR\jajuk.exe"
+  CreateDirectory "$SMPROGRAMS\$STARTMENU_FOLDER"
+  CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Jajuk.lnk" "$INSTDIR\jajuk.exe"
   SetShellVarContext current
 
   !insertmacro MUI_STARTMENU_WRITE_END
