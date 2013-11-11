@@ -186,7 +186,6 @@ Section
   SetShellVarContext all
   CreateDirectory "$SMPROGRAMS\$STARTMENU_FOLDER"
   CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Jajuk.lnk" "$INSTDIR\jajuk.exe"
-  CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\$(^UninstallCaption).lnk" "$INSTDIR\Uninstall.exe"
   SetShellVarContext current
 
   !insertmacro MUI_STARTMENU_WRITE_END
