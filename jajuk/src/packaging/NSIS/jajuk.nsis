@@ -250,7 +250,6 @@ Section "Uninstall"
 
   SetShellVarContext all
   Delete "$DESKTOP\Jajuk.lnk"
-  Delete "$SMPROGRAMS\Jajuk.lnk"
   SetShellVarContext current
 
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${AppID}"
