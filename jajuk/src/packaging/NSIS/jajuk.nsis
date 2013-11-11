@@ -14,13 +14,6 @@
  
 
 # -------------------------------------------------------------------
-# Define Variables
-# -------------------------------------------------------------------
-
-var STARTMENU_FOLDER
-
-
-# -------------------------------------------------------------------
 # Choosing Compressor
 # -------------------------------------------------------------------
 
@@ -174,23 +167,6 @@ Section
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${AppID}" "NoRepair" 1
 SectionEnd
 
-
-# -------------------------------------------------------------------
-# Startmenu Section
-# -------------------------------------------------------------------
-
-Section
-  !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
-
-  SetShellVarContext all
-  CreateDirectory "$SMPROGRAMS\$STARTMENU_FOLDER"
-  CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Jajuk.lnk" "$INSTDIR\jajuk.exe"
-  SetShellVarContext current
-
-  !insertmacro MUI_STARTMENU_WRITE_END
-SectionEnd
-
-
 # -------------------------------------------------------------------
 # Desktop Section
 # -------------------------------------------------------------------
@@ -198,6 +174,7 @@ SectionEnd
 Section
   SetShellVarContext all
   CreateShortCut "$DESKTOP\Jajuk.lnk" "$INSTDIR\jajuk.exe"
+  CreateShortCut "$SMPROGRAMS\Jajuk.lnk" "$INSTDIR\jajuk.exe"
   SetShellVarContext current
 SectionEnd
 
