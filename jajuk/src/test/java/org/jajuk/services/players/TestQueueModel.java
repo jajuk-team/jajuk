@@ -91,8 +91,6 @@ public class TestQueueModel extends JajukTestCase {
    */
   @Override
   protected void tearDown() throws Exception {
-    // make sure that all work is stopped before starting the next test
-    TestHelpers.waitForAllWorkToFinishAndCleanup();
     super.tearDown();
   }
 

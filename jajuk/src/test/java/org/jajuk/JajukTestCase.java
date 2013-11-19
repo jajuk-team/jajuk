@@ -84,10 +84,12 @@ public abstract class JajukTestCase extends TestCase {
   @Override
   protected void setUp() throws Exception {
     Log.info("Setting up testcase: " + getClass() + "." + getName() + "()");
+    // Set the exiting state flag to force still running threads to suspend
+    TestHelpers.forceExitState();
     // let's clean up before we begin any test
-    TestHelpers.waitForAllWorkToFinishAndCleanup();
+    TestHelpers.cleanup();
     // do the cleanup twice as we have to ensure to clean up things once again when the threads are finally stopped
-    TestHelpers.waitForAllWorkToFinishAndCleanup();
+    TestHelpers.waitForAllThreadToFinish();
     // stop any Player from previous tests
     Player.stop(true);
     // assert to find cases where we do not clean up correctly

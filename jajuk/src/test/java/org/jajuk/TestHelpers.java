@@ -56,9 +56,9 @@ import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.base.Year;
 import org.jajuk.base.YearManager;
-import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
+import org.jajuk.services.core.ExitService;
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;
@@ -381,9 +381,7 @@ public class TestHelpers {
   }
 
   /**
-   * Wait for thread to finish.
-   * 
-   *
+   * Wait for a specific thread to finish.
    * @param name 
    * @throws InterruptedException the interrupted exception
    */
@@ -398,15 +396,34 @@ public class TestHelpers {
     }
   }
 
+
   /**
-   * Wait for all work to finish and cleanup.
+   * Wait for all threads to finish.
+   * 
+   *
+  * @throws InterruptedException the interrupted exception
+   */
+  public static void waitForAllThreadToFinish() throws InterruptedException {
+    int count = Thread.currentThread().getThreadGroup().activeCount();
+    System.out.println(count + " threads active");
+    Thread[] threads = new Thread[count];
+    Thread.currentThread().getThreadGroup().enumerate(threads);
+    for (Thread t : threads) {
+      if (t != null && t.getClass().getPackage().getName().startsWith("org.jajuk")) {
+        System.out.println(t.getClass().getPackage().getName() + "/" + t.getName());
+        t.join();
+      }
+    }
+  }
+
+  /**
+   * Cleanup all the environment
    * 
    *
    * @throws InterruptedException the interrupted exception
    * @throws InvocationTargetException the invocation target exception
    */
-  public static void waitForAllWorkToFinishAndCleanup() throws InterruptedException,
-      InvocationTargetException {
+  public static void cleanup() throws InterruptedException, InvocationTargetException {
     ObservationManager.clear();
     // Reset everything
     QueueModel.stopRequest();
@@ -415,25 +432,6 @@ public class TestHelpers {
     DirectoryManager.getInstance().clear();
     cleanAllDevices();
     History.getInstance().clear();
-    // wait a bit to let deferred actions take place before we shut down
-    TestHelpers.waitForThreadToFinish("PlayPause Thread");
-    TestHelpers.waitForThreadToFinish("Cover Refresh Thread");
-    TestHelpers.waitForThreadToFinish("Queue Push Thread");
-    TestHelpers.waitForThreadToFinish("Device Refresh Thread");
-    TestHelpers.waitForThreadToFinish("Playlist Prepare Party Thread");
-    TestHelpers.waitForThreadToFinish("LastFM Update Thread");
-    TestHelpers.waitForThreadToFinish("Parameter Catalog refresh Thread");
-    TestHelpers.waitForThreadToFinish("Manual Refresh Thread");
-    // hangs... TestHelpers.waitForThreadToFinish("Observation Manager Thread");
-    // clear this for all available events
-    // for(JajukEvents event : JajukEvents.values()) {
-    // JUnitHelpers.waitForThreadToFinish("Event Executor for: " +
-    // event.toString());
-    // }
-    for (JajukEvents event : JajukEvents.values()) {
-      TestHelpers.waitForThreadToFinish("Event Executor for: " + event.toString());
-      TestHelpers.waitForThreadToFinish("Event Executor for: " + event.toString() + " no details");
-    }
     TestHelpers.clearSwingUtilitiesQueue();
     //Reset everything again as it could have been changed during threads finishing
     ObservationManager.clear();
@@ -444,6 +442,22 @@ public class TestHelpers {
     DirectoryManager.getInstance().clear();
     cleanAllDevices();
     History.getInstance().clear();
+  }
+
+  public static void forceExitState() {
+    try {
+      Field exitingField = ExitService.class.getDeclaredField("bExiting");
+      exitingField.setAccessible(true);
+      exitingField.setBoolean(null, true);
+    } catch (SecurityException e) {
+      Log.error(e);
+    } catch (NoSuchFieldException e) {
+      Log.error(e);
+    } catch (IllegalArgumentException e) {
+      Log.error(e);
+    } catch (IllegalAccessException e) {
+      Log.error(e);
+    }
   }
 
   /**

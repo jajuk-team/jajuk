@@ -59,7 +59,7 @@ public class TestParameterView extends JajukTestCase {
   public void testActionPerformed() throws Exception {
     ParameterView view = new ParameterView();
     view.initUI();
-    TestHelpers.waitForAllWorkToFinishAndCleanup();
+    TestHelpers.cleanup();
     // make sure the logger is initialized
     Log.init();
   }
