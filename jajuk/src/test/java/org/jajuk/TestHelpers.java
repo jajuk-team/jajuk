@@ -396,7 +396,6 @@ public class TestHelpers {
     }
   }
 
-
   /**
    * Wait for all threads to finish.
    * 
@@ -405,12 +404,12 @@ public class TestHelpers {
    */
   public static void waitForAllThreadToFinish() throws InterruptedException {
     int count = Thread.currentThread().getThreadGroup().activeCount();
-    System.out.println(count + " threads active");
+    Log.info(count + " threads active");
     Thread[] threads = new Thread[count];
     Thread.currentThread().getThreadGroup().enumerate(threads);
     for (Thread t : threads) {
       if (t != null && t.getClass().getPackage().getName().startsWith("org.jajuk")) {
-        System.out.println(t.getClass().getPackage().getName() + "/" + t.getName());
+        Log.info(t.getClass().getPackage().getName() + "/" + t.getName());
         t.join();
       }
     }
