@@ -444,11 +444,11 @@ public class TestHelpers {
     History.getInstance().clear();
   }
 
-  public static void forceExitState() {
+  public static void forceExitState(boolean state) {
     try {
       Field exitingField = ExitService.class.getDeclaredField("bExiting");
       exitingField.setAccessible(true);
-      exitingField.setBoolean(null, true);
+      exitingField.setBoolean(null, state);
     } catch (SecurityException e) {
       Log.error(e);
     } catch (NoSuchFieldException e) {

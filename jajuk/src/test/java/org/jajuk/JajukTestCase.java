@@ -85,7 +85,7 @@ public abstract class JajukTestCase extends TestCase {
   protected void setUp() throws Exception {
     Log.info("Setting up testcase: " + getClass() + "." + getName() + "()");
     // Set the exiting state flag to force still running threads to suspend
-    TestHelpers.forceExitState();
+    TestHelpers.forceExitState(true);
     // let's clean up before we begin any test
     TestHelpers.cleanup();
     // do the cleanup twice as we have to ensure to clean up things once again when the threads are finally stopped
@@ -126,6 +126,8 @@ public abstract class JajukTestCase extends TestCase {
     FileUtils.writeStringToFile(scriptFile, "#!/bin/sh\n\n" + findJavaExecutable() + " -cp \""
         + thisClassAbsPath + "\" " + MAIN_CLASS);
     Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, scriptFile.getAbsolutePath());
+    // Unset exiting state
+    TestHelpers.forceExitState(false);
     super.setUp();
   }
 
