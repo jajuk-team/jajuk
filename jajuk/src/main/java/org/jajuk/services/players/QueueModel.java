@@ -564,7 +564,9 @@ public final class QueueModel {
    * @param current
    */
   private static synchronized void computeNewIndex(boolean forceNext, StackItem current) {
-    if (Conf.getBoolean(Const.CONF_STATE_SHUFFLE) && queue.size() > 1) {
+    if (Conf.getBoolean(Const.CONF_STATE_SHUFFLE) && queue.size() > 1
+        // In repeat mode, shuffle has no effect
+        && !Conf.getBoolean(Const.CONF_STATE_REPEAT)) {
       index = UtilSystem.getRandom().nextInt(queue.size() - 1);
     } else if (current.isRepeat()) {
       // if the track was in repeat mode, don't remove it from the
@@ -637,8 +639,7 @@ public final class QueueModel {
        */
       ObservationManager.notifySync(new JajukEvent(JajukEvents.PLAY_OPENING));
       // Check if we are in single repeat mode, transfer it to new
-      // launched
-      // track
+      // launched track
       if (Conf.getBoolean(Const.CONF_STATE_REPEAT)) {
         getCurrentItem().setRepeat(true);
         ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
