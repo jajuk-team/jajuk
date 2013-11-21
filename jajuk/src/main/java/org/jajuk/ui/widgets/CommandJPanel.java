@@ -342,7 +342,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     eventSubjectSet.add(JajukEvents.PLAYER_PLAY);
     eventSubjectSet.add(JajukEvents.PLAYER_PAUSE);
     eventSubjectSet.add(JajukEvents.PLAYER_RESUME);
-    eventSubjectSet.add(JajukEvents.SPECIAL_MODE);
+    eventSubjectSet.add(JajukEvents.SMART_FUNCTION_LAUNCHED);
     eventSubjectSet.add(JajukEvents.ZERO);
     eventSubjectSet.add(JajukEvents.REPEAT_MODE_STATUS_CHANGED);
     eventSubjectSet.add(JajukEvents.CLEAR_HISTORY);
@@ -449,7 +449,7 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
           jsVolume.addMouseWheelListener(CommandJPanel.this);
         } else if (JajukEvents.PLAYER_PLAY.equals(subject)) {
           jsVolume.setEnabled(!Conf.getBoolean(Const.CONF_BIT_PERFECT));
-        } else if (JajukEvents.SPECIAL_MODE.equals(subject)) {
+        } else if (JajukEvents.SMART_FUNCTION_LAUNCHED.equals(subject)) {
           if (ObservationManager.getDetail(event, Const.DETAIL_ORIGIN).equals(
               Const.DETAIL_SPECIAL_MODE_NORMAL)) {
             // deselect shuffle mode

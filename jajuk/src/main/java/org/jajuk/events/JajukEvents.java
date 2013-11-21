@@ -67,8 +67,8 @@ public enum JajukEvents {
   WEBRADIO_INFO_UPDATED,
   /** a reinit has been required. */
   ZERO,
-  /** special mode (global shuffle, novelties, bestof...) */
-  SPECIAL_MODE,
+  /** Smart functions (global shuffle, novelties, bestof...) */
+  SMART_FUNCTION_LAUNCHED,
   /** an error occurred during a play. */
   PLAY_ERROR,
   /** A track is opening. */

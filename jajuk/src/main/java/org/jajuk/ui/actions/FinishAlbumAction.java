@@ -77,7 +77,7 @@ public class FinishAlbumAction extends JajukAction {
             QueueModel.computesPlanned(true); // update planned list
             Properties properties = new Properties();
             properties.put(Const.DETAIL_ORIGIN, Const.DETAIL_SPECIAL_MODE_NORMAL);
-            ObservationManager.notify(new JajukEvent(JajukEvents.SPECIAL_MODE, properties));
+            ObservationManager.notify(new JajukEvent(JajukEvents.SMART_FUNCTION_LAUNCHED, properties));
           }
         } catch (Exception e) {
           Log.error(e);
