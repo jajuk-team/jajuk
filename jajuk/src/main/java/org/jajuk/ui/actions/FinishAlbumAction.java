@@ -22,15 +22,10 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
-import java.util.Properties;
 
 import org.jajuk.base.Directory;
-import org.jajuk.events.JajukEvent;
-import org.jajuk.events.JajukEvents;
-import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
-import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
@@ -75,9 +70,6 @@ public class FinishAlbumAction extends JajukAction {
           if (stack != null && stack.size() > 0) {
             QueueModel.push(stack, true, true);
             QueueModel.computesPlanned(true); // update planned list
-            Properties properties = new Properties();
-            properties.put(Const.DETAIL_ORIGIN, Const.DETAIL_SPECIAL_MODE_NORMAL);
-            ObservationManager.notify(new JajukEvent(JajukEvents.SMART_FUNCTION_LAUNCHED, properties));
           }
         } catch (Exception e) {
           Log.error(e);

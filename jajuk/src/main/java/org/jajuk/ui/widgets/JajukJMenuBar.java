@@ -375,6 +375,7 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
     Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     eventSubjectSet.add(JajukEvents.SLIMBAR_VISIBILTY_CHANGED);
+    eventSubjectSet.add(JajukEvents.MODE_STATUS_CHANGED);
     return eventSubjectSet;
   }
 
@@ -416,62 +417,22 @@ public final class JajukJMenuBar extends JMenuBar implements Observer {
           } else {
             jcbmiKaraoke.setEnabled(true);
           }
+        } else if (JajukEvents.MODE_STATUS_CHANGED.equals(event.getSubject())) {
+          updateModesGUIStatus();
         }
       }
     });
   }
 
   /**
-   * Sets the repeat selected.
-   * 
-   * @param b the new repeat selected
+   * Update mode buttons after a mode change
    */
-  public void setRepeatSelected(final boolean b) {
-    jcbmiRepeat.setSelected(b);
-  }
-
-  /**
-   * Sets the repeat all selected.
-   * 
-   * @param b the new repeat all selected
-   */
-  public void setRepeatAllSelected(final boolean b) {
-    jcbmiRepeatAll.setSelected(b);
-  }
-
-  /**
-   * Sets the shuffle selected.
-   * 
-   * @param b the new shuffle selected
-   */
-  public void setShuffleSelected(final boolean b) {
-    jcbmiShuffle.setSelected(b);
-  }
-
-  /**
-   * Sets the continue selected.
-   * 
-   * @param b the new continue selected
-   */
-  public void setContinueSelected(final boolean b) {
-    jcbmiContinue.setSelected(b);
-  }
-
-  /**
-   * Sets the intro selected.
-   * 
-   * @param b the new intro selected
-   */
-  public void setIntroSelected(final boolean b) {
-    jcbmiIntro.setSelected(b);
-  }
-
-  /**
-   * Sets the karaoke selected.
-   * 
-   * @param b the new karaoke selected
-   */
-  public void setKaraokeSelected(final boolean b) {
-    jcbmiKaraoke.setSelected(b);
+  private void updateModesGUIStatus() {
+    this.jcbmiRepeat.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT));
+    this.jcbmiRepeatAll.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL));
+    this.jcbmiContinue.setSelected(Conf.getBoolean(Const.CONF_STATE_CONTINUE));
+    this.jcbmiShuffle.setSelected(Conf.getBoolean(Const.CONF_STATE_SHUFFLE));
+    this.jcbmiKaraoke.setSelected(Conf.getBoolean(Const.CONF_STATE_KARAOKE));
+    this.jcbmiIntro.setSelected(Conf.getBoolean(Const.CONF_STATE_INTRO));
   }
 }

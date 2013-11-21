@@ -24,8 +24,8 @@ package org.jajuk.events;
  * .
  */
 public enum JajukEvents {
-  /** repeat mode changed. */
-  REPEAT_MODE_STATUS_CHANGED,
+  /** At least one mode (shuffle, repeat, repaet all, continue ...) has changed. */
+  MODE_STATUS_CHANGED,
   /** new device. */
   DEVICE_NEW,
   /** removed device. */

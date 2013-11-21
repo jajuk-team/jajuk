@@ -281,7 +281,6 @@ public interface Const {
   String DETAIL_CURRENT_FILE_ID = "current file id";
   String DETAIL_CURRENT_FILE = "current file";
   String DETAIL_CURRENT_DATE = "current date";
-  String DETAIL_SPECIAL_MODE_NORMAL = "norm";
   String DETAIL_SELECTION = "selection";
   String DETAIL_ORIGIN = "origin";
   /** Provides details on the perspective that thrown the event. */

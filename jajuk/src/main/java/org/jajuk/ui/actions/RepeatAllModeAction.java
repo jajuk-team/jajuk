@@ -31,15 +31,13 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
 
 /**
- * .
+ * Repeat All mode action
  */
+@SuppressWarnings("serial")
 public class RepeatAllModeAction extends JajukAction {
-  /** Generated serialVersionUID. */
-  private static final long serialVersionUID = 1L;
-
+ 
   /**
    * Instantiates a new repeat all mode action.
    */
@@ -55,11 +53,17 @@ public class RepeatAllModeAction extends JajukAction {
    */
   @Override
   public void perform(ActionEvent evt) {
-    boolean b = Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL);
-    UtilGUI.setRepeatAllGui(!b);
-    QueueModel.setRepeatModeToAll(!b);
-    // computes planned tracks
+    boolean newRepeatAllModeState = !Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL);
+    Conf.invert(Const.CONF_STATE_REPEAT_ALL);
+    if (newRepeatAllModeState) {
+      // single repeat and repeat all modes are mutually exclusive
+      Conf.setProperty(Const.CONF_STATE_REPEAT, Const.FALSE);
+    }
+    QueueModel.setRepeatModeToAll(newRepeatAllModeState);
+    // Computes planned tracks without clearing existing planned tracks if any
     QueueModel.computesPlanned(false);
+    // Refresh mode buttons
+    ObservationManager.notify(new JajukEvent(JajukEvents.MODE_STATUS_CHANGED));
     // Refresh Queue View
     ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
   }

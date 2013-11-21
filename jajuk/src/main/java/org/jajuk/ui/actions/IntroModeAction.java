@@ -22,20 +22,20 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.ui.widgets.JajukJMenuBar;
+import org.jajuk.events.JajukEvent;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
+@SuppressWarnings("serial")
 /**
- * .
+ * Intro mode button action
  */
 public class IntroModeAction extends JajukAction {
-  /** Generated serialVersionUID. */
-  private static final long serialVersionUID = 1L;
-
   /**
    * Instantiates a new intro mode action.
    */
@@ -49,8 +49,8 @@ public class IntroModeAction extends JajukAction {
    */
   @Override
   public void perform(ActionEvent evt) {
-    boolean b = Boolean.valueOf(Conf.getString(Const.CONF_STATE_INTRO));
-    Conf.setProperty(Const.CONF_STATE_INTRO, Boolean.toString(!b));
-    JajukJMenuBar.getInstance().setIntroSelected(!b);
+    Conf.invert(Const.CONF_STATE_INTRO);
+    // Refresh mode buttons
+    ObservationManager.notify(new JajukEvent(JajukEvents.MODE_STATUS_CHANGED));
   }
 }

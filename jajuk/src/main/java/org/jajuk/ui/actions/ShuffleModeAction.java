@@ -22,8 +22,9 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.ui.widgets.CommandJPanel;
-import org.jajuk.ui.widgets.JajukJMenuBar;
+import org.jajuk.events.JajukEvent;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -31,12 +32,10 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 
 /**
- * .
+ * Shuffle mode action
  */
+@SuppressWarnings("serial")
 public class ShuffleModeAction extends JajukAction {
-  /** Generated serialVersionUID. */
-  private static final long serialVersionUID = 1L;
-
   /**
    * Instantiates a new shuffle mode action.
    */
@@ -53,9 +52,8 @@ public class ShuffleModeAction extends JajukAction {
    */
   @Override
   public void perform(ActionEvent evt) {
-    boolean b = Conf.getBoolean(Const.CONF_STATE_SHUFFLE);
-    Conf.setProperty(Const.CONF_STATE_SHUFFLE, Boolean.toString(!b));
-    JajukJMenuBar.getInstance().setShuffleSelected(!b);
-    CommandJPanel.getInstance().setShuffleSelected(!b);
+    Conf.invert(Const.CONF_STATE_SHUFFLE);
+    // Refresh mode buttons
+    ObservationManager.notify(new JajukEvent(JajukEvents.MODE_STATUS_CHANGED));
   }
 }
