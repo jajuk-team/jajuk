@@ -813,26 +813,6 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.players.QueueModel#shuffle()}.
-   *
-   * @throws Exception the exception
-   */
-  public void testShuffle() throws Exception {
-    // shuffle should not fail if queue is empty
-    QueueModel.shuffle();
-    addItems(10);
-    // verify that we have them in order before
-    assertEquals("file0", QueueModel.getItem(0).getFile().getName());
-    assertEquals("file5", QueueModel.getItem(5).getFile().getName());
-    assertEquals("file9", QueueModel.getItem(9).getFile().getName());
-    QueueModel.shuffle();
-    assertFalse("Queue: " + QueueModel.getQueue(), QueueModel.getItem(0).getFile().getName()
-        .equals("file0")
-        && QueueModel.getItem(5).getFile().getName().equals("file5")
-        && QueueModel.getItem(9).getFile().getName().equals("file9"));
-  }
-
-  /**
    * Test method for.
    *
    * @throws Exception the exception

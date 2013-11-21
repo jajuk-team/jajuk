@@ -565,7 +565,7 @@ public final class QueueModel {
    */
   private static synchronized void computeNewIndex(boolean forceNext, StackItem current) {
     if (Conf.getBoolean(Const.CONF_STATE_SHUFFLE) && queue.size() > 1
-        // In repeat mode, shuffle has no effect
+    // In repeat mode, shuffle has no effect
         && !Conf.getBoolean(Const.CONF_STATE_REPEAT)) {
       index = UtilSystem.getRandom().nextInt(queue.size() - 1);
     } else if (current.isRepeat()) {
@@ -1096,21 +1096,6 @@ public final class QueueModel {
    */
   public static int getQueueSize() {
     return queue.size();
-  }
-
-  /**
-   * Shuffle the FIFO, used when user select the Random mode.
-   */
-  public static void shuffle() {
-    if (queue.size() > 1) {
-      if (index >= 0) {
-        queue.get(index);
-      }
-      UtilFeatures.forcedShuffle(queue);
-      // Refresh Queue View
-      ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
-    }
-    queue.clearPlanned(); // force recomputes planned tracks
   }
 
   /**
