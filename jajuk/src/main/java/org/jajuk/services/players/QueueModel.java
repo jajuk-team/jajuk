@@ -612,7 +612,6 @@ public final class QueueModel {
    * To do when nothing more is to played,.
    */
   private static void endOfQueueReached() {
-    reset();
     if (queue.size() > 0) {
       ObservationManager.notify(new JajukEvent(JajukEvents.PLAYER_STOP));
     } else {
