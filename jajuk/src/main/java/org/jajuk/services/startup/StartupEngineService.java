@@ -104,8 +104,7 @@ public final class StartupEngineService {
       // However, we don't need to test file availability with checkFileToPlay() method.
       updateIndex();
       // Push the new queue
-      boolean bRepeat = Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL)
-          || Conf.getBoolean(Const.CONF_STATE_REPEAT);
+      boolean bRepeat = Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL);
       QueueModel.insert(UtilFeatures.createStackItems(alToPlay, bRepeat, false), 0);
       // Force queue index because insert increase it so it would be set to queue size after the insert
       QueueModel.setIndex(index);
