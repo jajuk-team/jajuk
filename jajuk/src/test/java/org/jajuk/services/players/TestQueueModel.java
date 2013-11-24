@@ -359,9 +359,6 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(1, QueueModel.getIndex());
     // still 2 as we do not remove items from queue in default setup
     assertEquals(2, QueueModel.getQueueSize());
-    // next time it will reset the index as we do not "plan" new tracks automatically
-    QueueModel.finished(true);
-    assertEquals(-1, QueueModel.getIndex());
   }
 
   /**
@@ -411,9 +408,6 @@ public class TestQueueModel extends JajukTestCase {
     addItems(1);
     QueueModel.goTo(0);
     assertEquals(0, QueueModel.getIndex());
-    QueueModel.finished(false);
-    // Index should be incremented for next play
-    assertEquals(0, QueueModel.getQueueSize());
   }
 
   /**
