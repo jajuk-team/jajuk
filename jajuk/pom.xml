@@ -100,6 +100,11 @@
 			<version>1.0.2</version>
 		</dependency>
 		<dependency>
+			<groupId>net.sf.qdwizard</groupId>
+			<artifactId>qdwizard</artifactId>
+			<version>3.0.1</version>
+		</dependency>
+		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
 			<version>3.2</version>
