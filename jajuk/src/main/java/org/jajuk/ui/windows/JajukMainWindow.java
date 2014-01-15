@@ -23,9 +23,10 @@ package org.jajuk.ui.windows;
 import com.vlsolutions.swing.docking.ui.DockingUISettings;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
@@ -65,6 +66,7 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
+import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -88,6 +90,15 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
   private JPanel perspectivePanel;
   /** State decorator. */
   private WindowStateDecorator decorator;
+  /** Number of pixels around window at initial startup. */
+  private static final int FRAME_INITIAL_BORDER = 60;
+  /** Window minimal width in pixels, set a bit less than 1024px 
+   * (lowest resolution of compatible screens) to avoid a side effect 
+   * due to negative coordinates which leads to display the frame on 
+   * the other screen if larger */
+  private static final int FRAME_MIN_WIDTH_PX = 1000;
+  /** Window minimal height in pixels*/
+  private static final int FRAME_MIN_HEIGHT_PX = 600;
 
   /**
    * Get the window instance and create the specific WindowStateHandler.
@@ -107,13 +118,18 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
 
         @Override
         public void specificAfterShown() {
-          // Force window to normal state in case the window was minimized before hidding 
-          jw.setState(Frame.NORMAL);
-          // Apply size and location again
-          // (required by Gnome for ie to fix the 0-sized maximized
-          // frame)
-          jw.applyStoredSize();
-          jw.toFront();
+          // We have to force the new frame state, otherwise the window is deiconified but never gets focus
+          jw.setExtendedState(Frame.NORMAL);
+          if (Conf.getBoolean(Const.CONF_WINDOW_MAXIMIZED)) {
+            //We have to call this next in the EDT to make sure that the window is displayed so maximalize() method get 
+            //proper screen for jw window.
+            SwingUtilities.invokeLater(new Runnable() {
+              @Override
+              public void run() {
+                jw.maximalize();
+              }
+            });
+          }
           // Need focus for keystrokes
           jw.requestFocus();
           // Make sure to display right title if a track or a webradio is launched at startup
@@ -123,7 +139,7 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
 
         @Override
         public void specificBeforeHidden() {
-          // hide the window only if it is explicitely required
+          // This is required to store last position of frame before hide
           jw.saveSize();
         }
 
@@ -262,131 +278,155 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
    * Save current window size and position.
    */
   public void saveSize() {
-    boolean maxmimized = false;
+    boolean maximized = false;
     if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)
         && (getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH) {
-      Log.debug("Frame maximized");
-      maxmimized = true;
+      maximized = true;
     }
-    Conf.setProperty(Const.CONF_WINDOW_MAXIMIZED, Boolean.toString(maxmimized));
+    Conf.setProperty(Const.CONF_WINDOW_MAXIMIZED, Boolean.toString(maximized));
     String sValue = (int) getLocationOnScreen().getX() + "," + (int) getLocationOnScreen().getY()
         + "," + getBounds().width + "," + getBounds().height;
-    Log.debug("Frame moved or resized, new bounds=" + sValue);
+    Log.debug("Frame position position stored as :" + sValue + " maximalized=" + maximized);
     // Store the new position
     Conf.setProperty(Const.CONF_WINDOW_POSITION, sValue);
   }
 
   /**
-   * Apply size and position stored as property.
+   * Return the forced position as a rectangle or null if no forced position is provided or if the provided position is invalid
+   * <br>See http://jajuk.info/index.php/Hidden_options
+   * <br>The forced position is an hidden option used to force Jajuk window position manually.
+   * @return the forced position as a rectangle or null
    */
-  public void applyStoredSize() {
-    // Note that defaults sizes (for very first startup) are set in
-    // Conf.setDefaultProperties() method ,see
-    // CONF_WINDOW_POSITION
-    int iScreenWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
-    int iScreenHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
-    int iX = 0;
-    int iY = 0;
-    int iHorizSize = 0;
-    int iVertSize = 0;
-    // Forced frame position ?
-    String sForcedValue = Conf.getString(Const.CONF_FRAME_POS_FORCED);
-    if (sForcedValue != null && !sForcedValue.trim().equals("")) {
-      try {
-        StringTokenizer st = new StringTokenizer(sForcedValue, ",");
-        iX = Integer.parseInt(st.nextToken());
-        iY = Integer.parseInt(st.nextToken());
-        iHorizSize = Integer.parseInt(st.nextToken());
-        iVertSize = Integer.parseInt(st.nextToken());
-        setBounds(iX, iY, iHorizSize, iVertSize);
-      } catch (Exception e) {
-        // Wrong forced value
-        Log.error(e);
-        setBounds(Const.FRAME_INITIAL_BORDER, Const.FRAME_INITIAL_BORDER, iScreenWidth - 2
-            * Const.FRAME_INITIAL_BORDER, iScreenHeight - 2 * Const.FRAME_INITIAL_BORDER);
+  private Rectangle getForcedPosition() {
+    try {
+      String forcedPosition = Conf.getString(Const.CONF_FRAME_POS_FORCED);
+      int x = 0;
+      int y = 0;
+      int horizSize = 0;
+      int vertSize = 0;
+      if (UtilString.isNotEmpty(forcedPosition)) {
+        StringTokenizer st = new StringTokenizer(forcedPosition, ",");
+        x = Integer.parseInt(st.nextToken());
+        y = Integer.parseInt(st.nextToken());
+        horizSize = Integer.parseInt(st.nextToken());
+        vertSize = Integer.parseInt(st.nextToken());
+        return new Rectangle(x, y, horizSize, vertSize);
       }
-      return;
+    } catch (Exception e) {
+      Log.error(e);
     }
-    // Detect strange or buggy Window Manager like XGL using this test
-    // and apply default size for them
-    if (!Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
-      setBounds(Const.FRAME_INITIAL_BORDER, Const.FRAME_INITIAL_BORDER, iScreenWidth - 2
-          * Const.FRAME_INITIAL_BORDER, iScreenHeight - 2 * Const.FRAME_INITIAL_BORDER);
-      return;
+    return null;
+  }
+
+  /**
+   * Return the stored position as a rectangle or default coordinates if no stored position is provided or if the stored position is invalid.
+   * @return the stored position as a rectangle or null
+   */
+  private Rectangle getStoredPosition() {
+    try {
+      String storedPosition = Conf.getString(Const.CONF_WINDOW_POSITION);
+      int x = 0;
+      int y = 0;
+      int horizSize = 0;
+      int vertSize = 0;
+      if (UtilString.isNotEmpty(storedPosition)) {
+        StringTokenizer st = new StringTokenizer(storedPosition, ",");
+        x = Integer.parseInt(st.nextToken());
+        y = Integer.parseInt(st.nextToken());
+        horizSize = Integer.parseInt(st.nextToken());
+        vertSize = Integer.parseInt(st.nextToken());
+        return new Rectangle(x, y, horizSize, vertSize);
+      }
+    } catch (Exception e) {
+      Log.error(e);
     }
-    // first get the stored position to get the correct display
+    return null;
+  }
+
+  /**
+   * Return whether the window should be maximalized.
+   * <br>Maximized state here refers to maximum size of JFrame on a desktop screen however not covering the taskbar.
+   * <br>Prior to 1.9, "max" was inside CONF_WINDOW_POSITION, then it is 
+   * externalize in a specific boolean property : CONF_WINDOW_MAXIMIZED
+   * 
+   * @return whether the window should be maximalized.
+   */
+  private boolean isMaximalizationRequired() {
+    // CONF_WINDOW_POSITION contains the last session stored position or "max" if maximalized (jajuk <1.9)
     String sPosition = Conf.getString(Const.CONF_WINDOW_POSITION);
     // workaround: needed for old configuration files to avoid an exception in
-    // the
-    // StringTokenizer, since Jajuk 1.9 Jajuk stores in an extra property if it
+    // the StringTokenizer, since Jajuk 1.9 Jajuk stores in an extra property if it
     // is maximized
-    if (sPosition.equals(Const.FRAME_MAXIMIZED)) {
-      // Always set a size that is used when un-maximazing the frame
-      setBounds(Const.FRAME_INITIAL_BORDER, Const.FRAME_INITIAL_BORDER, iScreenWidth - 2
-          * Const.FRAME_INITIAL_BORDER, iScreenHeight - 2 * Const.FRAME_INITIAL_BORDER);
-      if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
-        setExtendedState(Frame.MAXIMIZED_BOTH);
-      }
-      return;
+    if (Const.FRAME_MAXIMIZED.equals(sPosition)) {
+      return true;
     }
-    // workaround: end
-    // could be removed in future releases, also Const.FRAME_MAXIMIZED
-    StringTokenizer st = new StringTokenizer(sPosition, ",");
-    iX = Integer.parseInt(st.nextToken());
-    iY = Integer.parseInt(st.nextToken());
-    iHorizSize = Integer.parseInt(st.nextToken());
-    iVertSize = Integer.parseInt(st.nextToken());
-    // second set the stored position/size
-    setLocation(iX, iY);
-    setSize(iHorizSize, iVertSize);
-    // get the display conf where the main frame is displayed, if the position
-    // is outside, the default screen is returned
+    return Conf.getBoolean(Const.CONF_WINDOW_MAXIMIZED);
+  }
+
+  /**
+   * Actually maximalize this frame.
+   * Do not call this when hidden before the first screen will always been returned.
+   */
+  private void maximalize() {
     GraphicsConfiguration gConf = UtilGUI.getGraphicsDeviceOfMainFrame().getDefaultConfiguration();
-    int iScreenXzero = (int) gConf.getBounds().getX();
-    int iScreenYzero = (int) gConf.getBounds().getY();
-    iScreenWidth = (int) gConf.getBounds().getWidth();
-    iScreenHeight = (int) gConf.getBounds().getHeight();
-    // check if position/size is correct
-    // if X position is higher than screen width, set default
-    if (iX < iScreenXzero || iX > iScreenXzero + iScreenWidth) {
-      iX = Const.FRAME_INITIAL_BORDER;
+    setMaximizedBounds(gConf.getBounds());
+    setExtendedState(getExtendedState() | Frame.MAXIMIZED_BOTH);
+    setBounds(FRAME_INITIAL_BORDER, FRAME_INITIAL_BORDER,
+        (int) (gConf.getBounds().getWidth() - 2 * FRAME_INITIAL_BORDER), (int) (gConf.getBounds()
+            .getHeight() - 2 * FRAME_INITIAL_BORDER));
+  }
+
+  /**
+   * Check if provided position is correct
+   * @return whether provided position is valid.
+   */
+  private boolean isPositionValid(Rectangle position) {
+    GraphicsConfiguration gConf = UtilGUI.getGraphicsDeviceOfMainFrame().getDefaultConfiguration();
+    if (position.getX() < gConf.getBounds().getX()
+        || position.getX() > gConf.getBounds().getWidth()) {
+      return false;
     }
-    // if Y position is higher than screen height, set default
-    if (iY < iScreenYzero || iY > iScreenYzero + iScreenHeight) {
-      iY = Const.FRAME_INITIAL_BORDER;
+    if (position.getY() < gConf.getBounds().getY()
+        || position.getY() > gConf.getBounds().getHeight()) {
+      return false;
     }
-    // if zero horiz size or
-    // if height > to screen height (switching from a dual to a single head
-    // for ie),
-    // set max size available (minus some space to deal with task bars)
-    if (iHorizSize <= 0 || iHorizSize > iScreenWidth) {
-      iHorizSize = iScreenWidth - 2 * Const.FRAME_INITIAL_BORDER;
+    if (position.getWidth() <= 0 || position.getWidth() > gConf.getBounds().getWidth()
+        || position.getWidth() < 800) {
+      return false;
     }
-    // Same for width
-    if (iVertSize <= 0 || iVertSize > iScreenHeight) {
-      iVertSize = iScreenHeight - 2 * Const.FRAME_INITIAL_BORDER;
+    if (position.getHeight() <= 0 || position.getHeight() > gConf.getBounds().getHeight()
+        || position.getHeight() < 600) {
+      return false;
     }
-    setLocation(iX, iY);
-    setSize(iHorizSize, iVertSize);
-    // was the frame maximized
-    if (Conf.getBoolean(Const.CONF_WINDOW_MAXIMIZED)) {
-      if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
-        // are we on the primary display
-        if (gConf.getBounds().equals(
-            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()
-                .getDefaultConfiguration().getBounds())) {
-          // default size, if frame is unmaximized
-          setSize(iScreenWidth - 2 * Const.FRAME_INITIAL_BORDER, iScreenHeight - 2
-              * Const.FRAME_INITIAL_BORDER);
-          if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) { //NOSONAR
-            setExtendedState(Frame.MAXIMIZED_BOTH);
-          }
+    return true;
+  }
+
+  /**
+  * Apply size and position stored as property.
+  * <br>
+  * Note that defaults sizes (for very first startup) are set in
+   {@code Conf.setDefaultProperties()} method ,see {@code CONF_WINDOW_POSITION}
+  */
+  public void applyStoredSize() {
+    try {
+      setMinimumSize(new Dimension(FRAME_MIN_WIDTH_PX, FRAME_MIN_HEIGHT_PX));
+      Rectangle forcedPosition = getForcedPosition();
+      if (forcedPosition != null) {
+        setBounds(forcedPosition);
+      } else {
+        if (isMaximalizationRequired()
+            && Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
+          maximalize();
         } else {
-          // setExtendedState not be used on the other displays, because Java
-          // takes always the solution of the primary display...
-          setBounds(gConf.getBounds());
+          Rectangle storedPosition = getStoredPosition();
+          // Note that setBounds handle out of bounds issues like task bar overriding, 
+          // number of screens changes since previous jajuk session...
+          setBounds(storedPosition);
         }
       }
+    } catch (Exception e) {
+      Log.error(e);
+      maximalize();
     }
   }
 

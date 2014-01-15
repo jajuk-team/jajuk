@@ -20,8 +20,6 @@
  */
 package org.jajuk.util;
 
-import java.awt.HeadlessException;
-import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -249,32 +247,8 @@ public final class Conf implements Const {
         + Const.XML_TRACK_DISCOVERY_DATE);
     defaults.put(CONF_WEBRADIO_COLUMNS, XML_PLAY + ',' + Const.XML_NAME + ',' + Const.XML_DESC
         + ',' + Const.XML_KEYWORDS + ',' + Const.XML_GENRE + ',' + Const.XML_ORIGIN);
-    int width = 800;
-    int height = 600;
-    // When ran as unit tests, no X11 server is available, catch HeadLess
-    // Exception
-    try {
-      // Default Window position: X,Y,X_size,Y_size
-      width = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
-      // Limit initial screen size (reported as problematic by some users on
-      // dual heads)
-      if (width > 1400) {
-        width = 1200;
-      } else {
-        width = width - 2 * FRAME_INITIAL_BORDER;
-      }
-      height = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
-      if (height > 1200) {
-        height = 1000;
-      } else {
-        height = height - 2 * FRAME_INITIAL_BORDER;
-      }
-    } catch (HeadlessException he) {
-      Log.debug("No graphical server available, use default screen values");
-    }
-    defaults.put(CONF_WINDOW_POSITION, FRAME_INITIAL_BORDER + "," + FRAME_INITIAL_BORDER + ","
-        + width + "," + height);
-    defaults.put(CONF_WINDOW_MAXIMIZED, "false");
+    defaults.put(CONF_WINDOW_POSITION, "");
+    defaults.put(CONF_WINDOW_MAXIMIZED, "true");
     defaults.put(CONF_THUMBS_SHOW_COVER, Integer.toString(Const.CATALOG_VIEW_COVER_MODE_ALL));
     defaults.put(CONF_THUMBS_SIZE, THUMBNAIL_SIZE_100X100);
     defaults.put(CONF_THUMBS_SORTER, "2"); // sort by album
@@ -322,9 +296,8 @@ public final class Conf implements Const {
     defaults.put(CONF_SHOW_DUPLICATE_PLAYLISTS, FALSE);
     defaults.put(CONF_FORMAT_TIME_ELAPSED, "0");
     defaults.put(CONF_AUTO_SCROLL, TRUE);
-    // By defaults, display slimbar at the center of the screen to fix #768 : under MAC,
-    // it is overlaid the menu bar (the menu bar can't be overlaid, even by always on top frames)
-    defaults.put(CONF_SLIMBAR_POSITION, (width / 2) + "," + (height / 2));
+    // Let the OS show the slimbar to an optimal position.
+    defaults.put(CONF_SLIMBAR_POSITION, "");
     defaults.put(CONF_SLIMBAR_DISPLAY_QUEUE, FALSE);
     defaults.put(CONF_SLIMBAR_SMART_MODE, JajukActions.SHUFFLE_GLOBAL.toString());
     defaults.put(CONF_ALARM_ACTION, ALARM_START_ACTION);

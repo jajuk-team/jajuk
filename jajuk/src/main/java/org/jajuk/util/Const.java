@@ -76,8 +76,6 @@ public interface Const {
   int SECONDS_IN_A_MINUTE = 60;
   /** Number of minutes in an hour. */
   int MINUTES_IN_AN_HOUR = 60;
-  /** Number of pixels around window at initial startup. */
-  int FRAME_INITIAL_BORDER = 60;
   /** Maximum images cache size in MB. */
   int MAX_IMAGES_CACHE_SIZE = 100;
   /** Default webradio. */
