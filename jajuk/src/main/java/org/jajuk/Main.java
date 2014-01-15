@@ -24,6 +24,8 @@ import ext.JVM;
 
 import java.util.Locale;
 
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -84,13 +86,14 @@ public final class Main {
       // set flags from system properties
       SessionService.handleSystemProperties();
       // Set substance theme (for raw error windows displayed by initial
-      // checkups only)
-      // (must be done in the EDT)
+      // checkups only), must be done in the EDT.
       SwingUtilities.invokeLater(new Runnable() {
         @Override
         public void run() {
           try {
             UIManager.setLookAndFeel(new SubstanceBusinessLookAndFeel());
+            JFrame.setDefaultLookAndFeelDecorated(true);
+            JDialog.setDefaultLookAndFeelDecorated(true);
           } catch (UnsupportedLookAndFeelException e) {
             // No Log here, logs are not yet initialized
             e.printStackTrace();

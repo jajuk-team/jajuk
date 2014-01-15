@@ -445,9 +445,6 @@ public final class UtilGUI {
     UIManager.put("InternalFrame.inactiveTitleBackground", backgroundInactive);
     UIManager.put("DockViewTitleBar.titleFont",
         FontManager.getInstance().getFont(JajukFont.VIEW_FONT));
-    // Set windows decoration to look and feel
-    JFrame.setDefaultLookAndFeelDecorated(true);
-    JDialog.setDefaultLookAndFeelDecorated(true);
   }
 
   /**

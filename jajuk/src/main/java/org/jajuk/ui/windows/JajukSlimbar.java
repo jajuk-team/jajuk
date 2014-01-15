@@ -50,7 +50,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -244,9 +243,6 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
   private JajukSlimbar() {
     setUndecorated(true);
     setAlwaysOnTop(true);
-    // Set windows decoration to look and feel
-    JFrame.setDefaultLookAndFeelDecorated(true);
-    JDialog.setDefaultLookAndFeelDecorated(true);
   }
 
   /*
