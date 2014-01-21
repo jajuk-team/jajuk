@@ -462,9 +462,9 @@ public class PreparePartyWizard extends Wizard {
    */
   @Override
   public Class<? extends Screen> getNextScreen(Class<? extends Screen> screen) {
-    if (ActionSelectionPanel.class.equals(getCurrentScreen())) {
+    if (ActionSelectionPanel.class.equals(screen)) {
       return GeneralOptionsPanel.class;
-    } else if (GeneralOptionsPanel.class.equals(getCurrentScreen())) {
+    } else if (GeneralOptionsPanel.class.equals(screen)) {
       return PathSelectionPanel.class;
     }
     return null;
@@ -478,10 +478,10 @@ public class PreparePartyWizard extends Wizard {
   @Override
   public Class<? extends Screen> getPreviousScreen(Class<? extends Screen> screen) {
     // there is no "back" if we got a playlist passed in
-    if (GeneralOptionsPanel.class.equals(getCurrentScreen())
+    if (GeneralOptionsPanel.class.equals(screen)
         && !Mode.ProvidedPlaylist.equals(data.get(KEY_MODE))) {
       return ActionSelectionPanel.class;
-    } else if (PathSelectionPanel.class.equals(getCurrentScreen())) {
+    } else if (PathSelectionPanel.class.equals(screen)) {
       return GeneralOptionsPanel.class;
     }
     return null;

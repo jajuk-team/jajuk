@@ -1300,23 +1300,22 @@ public class DigitalDJWizard extends Wizard {
   @Override
   public Class<? extends org.qdwizard.Screen> getPreviousScreen(
       Class<? extends org.qdwizard.Screen> screen) {
-    if (ActionSelectionPanel.class.equals(getCurrentScreen())) {
+    if (ActionSelectionPanel.class.equals(screen)) {
       return null;
-    } else if (TypeSelectionPanel.class.equals(getCurrentScreen())) {
+    } else if (TypeSelectionPanel.class.equals(screen)) {
       return ActionSelectionPanel.class;
-    } else if (GeneralOptionsPanel.class.equals(getCurrentScreen())) {
+    } else if (GeneralOptionsPanel.class.equals(screen)) {
       if (ActionSelectionPanel.ACTION_CREATION.equals(data.get(KEY_ACTION))) {
         return TypeSelectionPanel.class;
       } else {
         return ChangePanel.class;
       }
-    } else if (TransitionsPanel.class.equals(getCurrentScreen())
-        || ProportionsPanel.class.equals(getCurrentScreen())
-        || AmbiencePanel.class.equals(getCurrentScreen())) {
+    } else if (TransitionsPanel.class.equals(screen) || ProportionsPanel.class.equals(screen)
+        || AmbiencePanel.class.equals(screen)) {
       return GeneralOptionsPanel.class;
-    } else if (RemovePanel.class.equals(getCurrentScreen())) {
+    } else if (RemovePanel.class.equals(screen)) {
       return ActionSelectionPanel.class;
-    } else if (ChangePanel.class.equals(getCurrentScreen())) {
+    } else if (ChangePanel.class.equals(screen)) {
       return ActionSelectionPanel.class;
     }
     return null;
@@ -1330,7 +1329,7 @@ public class DigitalDJWizard extends Wizard {
   @Override
   public Class<? extends org.qdwizard.Screen> getNextScreen(
       Class<? extends org.qdwizard.Screen> screen) {
-    if (ActionSelectionPanel.class.equals(getCurrentScreen())) {
+    if (ActionSelectionPanel.class.equals(screen)) {
       String sAction = (String) data.get(KEY_ACTION);
       if (ActionSelectionPanel.ACTION_CREATION.equals(sAction)) {
         return TypeSelectionPanel.class;
@@ -1339,9 +1338,9 @@ public class DigitalDJWizard extends Wizard {
       } else if (ActionSelectionPanel.ACTION_DELETE.equals(sAction)) {
         return RemovePanel.class;
       }
-    } else if (TypeSelectionPanel.class.equals(getCurrentScreen())) {
+    } else if (TypeSelectionPanel.class.equals(screen)) {
       return GeneralOptionsPanel.class;
-    } else if (GeneralOptionsPanel.class.equals(getCurrentScreen())) {
+    } else if (GeneralOptionsPanel.class.equals(screen)) {
       String sType = (String) data.get(KEY_DJ_TYPE);
       if (TypeSelectionPanel.DJ_TYPE_AMBIENCE.equals(sType)) {
         return AmbiencePanel.class;
@@ -1350,9 +1349,9 @@ public class DigitalDJWizard extends Wizard {
       } else if (TypeSelectionPanel.DJ_TYPE_TRANSITION.equals(sType)) {
         return TransitionsPanel.class;
       }
-    } else if (RemovePanel.class.equals(getCurrentScreen())) {
+    } else if (RemovePanel.class.equals(screen)) {
       return null;
-    } else if (ChangePanel.class.equals(getCurrentScreen())) {
+    } else if (ChangePanel.class.equals(screen)) {
       return GeneralOptionsPanel.class;
     }
     return null;
