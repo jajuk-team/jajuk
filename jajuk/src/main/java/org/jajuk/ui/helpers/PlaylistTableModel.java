@@ -55,7 +55,7 @@ public class PlaylistTableModel extends JajukTableModel {
    * @param bQueue 
    */
   public PlaylistTableModel(boolean bQueue) {
-    super(17);
+    super(18);
     this.bQueue = bQueue;
     setEditable(false); // table not editable
     prepareColumns();
@@ -171,6 +171,9 @@ public class PlaylistTableModel extends JajukTableModel {
     // Hits
     vColNames.add(Messages.getHumanPropertyName(Const.XML_TRACK_HITS));
     idList.add(Const.XML_TRACK_HITS);
+    // File size
+    vColNames.add(Messages.getHumanPropertyName(Const.XML_SIZE));
+    idList.add(Const.XML_SIZE);
     // custom properties now
     // for tracks
     for (PropertyMetaInformation meta : TrackManager.getInstance().getCustomProperties()) {
@@ -216,6 +219,7 @@ public class PlaylistTableModel extends JajukTableModel {
     boolean bDirectory = (columnsToShow != null && columnsToShow.contains(Const.XML_DIRECTORY));
     boolean bDevice = (columnsToShow != null && columnsToShow.contains(Const.XML_DEVICE));
     boolean bFileName = (columnsToShow != null && columnsToShow.contains(Const.XML_FILE));
+    boolean bFileSize = (columnsToShow != null && columnsToShow.contains(Const.XML_SIZE));
     for (int iRow = 0; iRow < iRowNum; iRow++) {
       StackItem item = getStackItem(iRow);
       // Play
@@ -328,6 +332,12 @@ public class PlaylistTableModel extends JajukTableModel {
         oValues[iRow][16] = bf.getTrack().getHits();
       } else {
         oValues[iRow][16] = "";
+      }
+      // file size
+      if (bFileSize) {
+        oValues[iRow][17] = Math.round(bf.getSize() / 10485.76) / 100f;
+      } else {
+        oValues[iRow][17] = "";
       }
       // Custom properties now
       // for tracks
