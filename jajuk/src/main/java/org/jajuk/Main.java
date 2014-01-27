@@ -141,7 +141,7 @@ public final class Main {
       // Upgrade configuration from previous releases
       UpgradeManager.upgradeStep1();
       // Display user system configuration
-      Log.debug("Workspace used: " + SessionService.getWorkspace());
+      Log.debug("Collection used: " + SessionService.getConfFileByPath(Const.FILE_COLLECTION));
       Log.debug(UtilString.getAnonymizedSystemProperties().toString());
       // Display user Jajuk configuration
       Log.debug(UtilString.getAnonymizedJajukProperties().toString());
