@@ -127,7 +127,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   private JLabel jlSize;
   private JLabel jlFound;
   /** Cover search accuracy combo. */
-  private JComboBox<ImageIcon> jcbAccuracy;
+  private JComboBox jcbAccuracy;
   /** Date last resize (used for adjustment management). */
   private volatile long lDateLastResize;
   /** URL and size of the image. */
@@ -205,7 +205,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
     jbDefault.setToolTipText(Messages.getString("CoverView.8"));
     jlSize = new JLabel("");
     jlFound = new JLabel("");
-    jcbAccuracy = new JComboBox<ImageIcon>();
+    jcbAccuracy = new JComboBox();
     // Add tooltips on combo items
     jcbAccuracy.setRenderer(new BasicComboBoxRenderer() {
       private static final long serialVersionUID = -6943363556191659895L;
