@@ -319,6 +319,7 @@ public final class Conf implements Const {
     defaults.put(CONF_NOT_SHOW_AGAIN_PLAYER, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_CROSS_FADE, FALSE);
     defaults.put(CONF_NOT_SHOW_AGAIN_LAF_CHANGE, FALSE);
+    defaults.put(CONF_STATS_MIN_VALUE_GENRE_DISPLAY, "2");
     defaults.put(CONF_TARGET_WORKSPACE_PATH, UtilSystem.getUserHome());
     // Make a copy of default values
     properties = (Properties) defaults.clone();
@@ -397,7 +398,7 @@ public final class Conf implements Const {
   private static void commit() throws IOException {
     java.io.File out = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION + "."
         + Const.FILE_SAVING_FILE_EXTENSION);
-    OutputStream str = new FileOutputStream(out);
+   OutputStream str = new FileOutputStream(out);
     // Write the temporary file
     try {
       properties.store(str, "User configuration");

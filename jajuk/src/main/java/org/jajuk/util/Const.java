@@ -516,6 +516,8 @@ public interface Const {
   String CONF_SPLASH_SCREEN = "jajuk.splashscreen";
   /** Current item index in fifo. */
   String CONF_STARTUP_QUEUE_INDEX = "jajuk.current_file_index";
+  /** Current item index in fifo. */
+  String CONF_STATS_MIN_VALUE_GENRE_DISPLAY = "jajuk.stats.min_value_genre_display";
   /** Shuffle/novelties mode. */
   String MODE_ALBUM = "album";
   String MODE_TRACK = "track";
