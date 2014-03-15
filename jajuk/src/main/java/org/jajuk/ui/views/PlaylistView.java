@@ -843,19 +843,19 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
    * Removes the selection. 
    */
   private void removeSelection() {
-    int[] iRows = editorTable.getSelectedRows();
-    if (iRows.length > 1) {// if multiple selection, remove
+    int[] selectedRows = editorTable.getSelectedRows();
+    if (selectedRows.length > 1) {// if multiple selection, remove
       // selection
       editorTable.getSelectionModel().removeIndexInterval(0, editorTable.getRowCount() - 1);
     }
-    for (int i = 0; i < iRows.length; i++) {
+    for (int i = 0; i < selectedRows.length; i++) {
       // don't forget that index changes when removing
-      plf.remove(iRows[i] - i);
+      plf.remove(selectedRows[i] - i);
     }
     // set selection to last line if end reached
-    int iLastRow = editorTable.getRowCount() - 1;
-    if (iRows[0] == editorTable.getRowCount()) {
-      editorTable.getSelectionModel().setSelectionInterval(iLastRow, iLastRow);
+    int lastRow = editorTable.getRowCount() - 1;
+    if (selectedRows[0] == lastRow && editorTable.getRowCount() > 0) {
+      editorTable.getSelectionModel().setSelectionInterval(lastRow - 1, lastRow - 1);
     }
   }
 
