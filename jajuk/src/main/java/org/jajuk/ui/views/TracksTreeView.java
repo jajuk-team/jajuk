@@ -90,8 +90,9 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 public class TracksTreeView extends AbstractTreeView implements ActionListener {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-  /** Sorting method selection combo. */
-  private JComboBox<String> jcbSort;
+  /** Sorting method selection combo. 
+   * <br>DO NOT PARAMETRIZE THIS COMBO, 1.6 COMPILATION WOULD FAIL*/
+  private JComboBox jcbSort;
 
   /*
    * (non-Javadoc)
