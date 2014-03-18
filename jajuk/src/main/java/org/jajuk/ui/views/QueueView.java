@@ -193,6 +193,8 @@ public class QueueView extends PlaylistView {
       }
     });
     initMenuItems();
+    //handle track removing for the queue when deleting it
+    jmiDelete.addActionListener(this);
     SubstanceSkin theme = SubstanceLookAndFeel.getCurrentSkin();
     SubstanceColorScheme scheme = theme.getMainActiveColorScheme();
     Color queueHighlighterColor = null;
@@ -539,6 +541,9 @@ public class QueueView extends PlaylistView {
         } catch (Exception e) {
           Log.error(e);
         }
+      } else if (ae.getSource() == jmiDelete) {
+        // We remove the track. It has already been deleted in the DELETE action.
+        removeAction();
       }
     } catch (Exception e2) {
       Log.error(e2);
