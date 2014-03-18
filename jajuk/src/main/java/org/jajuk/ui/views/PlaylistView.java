@@ -144,6 +144,8 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   JMenuItem jmiFileDown;
   /** Menu item : Open with Explorer. */
   JMenuItem jmiOpenExplorer;
+  /** Menu item : delete. */
+  JMenuItem jmiDelete;
   /** Current playlist. */
   Playlist plf;
   /** Editor Model. */
@@ -411,6 +413,8 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     jmiFileCopyURL.putClientProperty(Const.DETAIL_CONTENT, editorTable.getSelection());
     jmiOpenExplorer = new JMenuItem(ActionManager.getAction(JajukActions.OPEN_EXPLORER));
     jmiOpenExplorer.putClientProperty(Const.DETAIL_CONTENT, editorTable.getSelection());
+    jmiDelete = new JMenuItem(ActionManager.getAction(JajukActions.DELETE));
+    jmiDelete.putClientProperty(Const.DETAIL_SELECTION, editorTable.getSelection());
     editorTable.getMenu().add(jmiFilePlay);
     editorTable.getMenu().add(jmiFileFrontPush);
     editorTable.getMenu().add(jmiFilePush);
@@ -421,6 +425,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     editorTable.getMenu().addSeparator();
     editorTable.getMenu().add(jmiFileCopyURL);
     editorTable.getMenu().add(jmiOpenExplorer);
+    editorTable.getMenu().add(jmiDelete);
     editorTable.getMenu().addSeparator();
     editorTable.getMenu().add(pjmFilesEditor);
     editorTable.getMenu().add(jmiFileAddFavorites);
