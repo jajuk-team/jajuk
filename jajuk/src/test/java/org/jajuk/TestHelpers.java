@@ -486,9 +486,8 @@ public class TestHelpers {
   }
 
   public static org.jajuk.base.File getFile(String name, Directory dir, boolean mount,
-      Class<? extends IPlayerImpl> clazz) {
+      Class<? extends IPlayerImpl> clazz, Album album) {
     Genre genre = getGenre();
-    Album album = getAlbum("name", 0);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
     Artist artist = getArtist("myartist");
@@ -511,6 +510,12 @@ public class TestHelpers {
       throw new RuntimeException(e);
     }
     return file;
+  }
+
+  public static org.jajuk.base.File getFile(String name, Directory dir, boolean mount,
+      Class<? extends IPlayerImpl> clazz) {
+    Album album = getAlbum("name", 0);
+    return getFile(name, dir, mount, clazz, album);
   }
 
   /**

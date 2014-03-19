@@ -224,9 +224,7 @@ public class QueueView extends PlaylistView {
         // The fact that a selection can be removed or not is
         // in the jbRemove state
         if (e.getKeyCode() == KeyEvent.VK_DELETE && jbRemove.isEnabled()) {
-          removeSelection();
-          // Refresh table
-          refreshQueue();
+          removeAction();
         }
       }
     });
@@ -253,8 +251,7 @@ public class QueueView extends PlaylistView {
         }
       }
     });
-    // Note : don't add a ListSelectionListener here, see JajukTable code,
-    // all the event code is centralized over there
+    // see JajukTable code, all the event code is centralized over there
     editorTable.addListSelectionListener(this);
     // Register keystrokes over table
     super.setKeystrokes();
@@ -336,8 +333,6 @@ public class QueueView extends PlaylistView {
               || JajukEvents.DEVICE_UNMOUNT.equals(subject)
               || JajukEvents.RATE_CHANGED.equals(subject)
               || JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
-            editorModel.getItems().clear();
-            editorModel.getPlanned().clear();
             refreshQueue();
             // Only scroll if song actually changed, otherwise, any
             // queue refresh
@@ -381,8 +376,7 @@ public class QueueView extends PlaylistView {
             refreshQueue();
           } else if (JajukEvents.VIEW_REFRESH_REQUEST.equals(subject)) {
             // force filter to refresh if the events has been
-            // triggered by the
-            // table itself after a column change
+            // triggered by the table itself after a column change
             JTable table = (JTable) event.getDetails().get(Const.DETAIL_CONTENT);
             if (table.equals(editorTable)) {
               editorModel.getItems().clear();
@@ -433,7 +427,7 @@ public class QueueView extends PlaylistView {
   /**
    * Refresh queue. 
    */
-  private void refreshQueue() {
+  private synchronized void refreshQueue() {
     // when nothing is selected, set default button state
     if (editorTable.getSelectionModel().getMinSelectionIndex() == -1) {
       setDefaultButtonState();
@@ -514,8 +508,7 @@ public class QueueView extends PlaylistView {
           }
         }
       } else if (ae.getSource() == jbRemove || ae.getSource() == jmiFileRemove) {
-        removeSelection();
-        refreshQueue();
+        removeAction();
       } else if (ae.getSource() == jbAddShuffle) {
         int iRow = editorTable.getSelectedRow();
         if (iRow < 0
@@ -551,24 +544,28 @@ public class QueueView extends PlaylistView {
     }
   }
 
-  /**
-   * Removes the selection. 
-   */
-  private void removeSelection() {
-    int[] iRows = editorTable.getSelectedRows();
-    if (iRows.length > 1) {// if multiple selection, remove
-      // selection
+  private void removeAction() {
+    int[] selectedRows = editorTable.getSelectedRows();
+    removeItems(selectedRows);
+    // Update selection : if multiple selection, remove selection, for multiple selection, we disable buttons after the actions
+    if (selectedRows.length > 1) {
       editorTable.getSelectionModel().removeIndexInterval(0, editorTable.getRowCount() - 1);
+      setDefaultButtonState();
     }
-    for (int i = 0; i < iRows.length; i++) {
-      // don't forget that index changes when removing
-      plf.remove(iRows[i] - i);
+    // No queue refresh as it will be triggered indirectly by the QUEUE_NEED_REFRESH events
+    updateInformationPanel(getSelectedFiles());
+  }
+
+  protected void removeItems(int[] selectedRows) {
+    // Remove items
+    HashSet<Integer> rows = new HashSet<Integer>();
+    for (Integer i : selectedRows) {
+      rows.add(i);
     }
-    // set selection to last line if end reached
-    int iLastRow = editorTable.getRowCount() - 1;
-    if (iRows[0] == editorTable.getRowCount()) {
-      editorTable.getSelectionModel().setSelectionInterval(iLastRow, iLastRow);
-    }
+    plf.remove(rows);
+    // Refresh queue asynchronously to serialize refresh due to remove() call. This is necessary only for the case where 
+    // we drop a non-playing track.
+    ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
   }
 
   /**
@@ -580,94 +577,71 @@ public class QueueView extends PlaylistView {
   @Override
   public void valueChanged(ListSelectionEvent e) {
     ListSelectionModel selection = (ListSelectionModel) e.getSource();
-    if (!selection.isSelectionEmpty()) {
-      updateSelection();
-      updateInformationView(selectedFiles);
-      // Refresh the preference menu according to the selection
-      pjmFilesEditor.resetUI(editorTable.getSelection());
-      int selectedRow = selection.getMaxSelectionIndex();
-      // true if selected line is a planned track
-      boolean bPlanned = false;
-      if (selectedRow > editorModel.getItems().size() - 1) {
-        // means it is a planned track
-        bPlanned = true;
-      }
-      // -- now analyze each button --
-      // Remove button
-      if (bPlanned) {
-        jbRemove.setEnabled(false);
-        jmiFileRemove.setEnabled(false);
-      } else {
-        // check for current track case : we can't remove currently
-        // played track
-        jbRemove.setEnabled(!selectionContainsCurrentTrack(selection));
-        jmiFileRemove.setEnabled(!selectionContainsCurrentTrack(selection));
-      }
-      // Add shuffle button
-      // No adding for planned track
-      jbAddShuffle.setEnabled(!bPlanned);
-      // Up button
-      if (selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()) {
-        // check if several rows have been selected :
-        // doesn't supported yet
-        jbUp.setEnabled(false);
-        jmiFileUp.setEnabled(false);
-      } else {
-        // still here ?
-        if (bPlanned) {
-          // No up/down buttons for planned tracks
-          jbUp.setEnabled(false);
-          jmiFileUp.setEnabled(false);
-        } else { // normal item
-          if (selection.getMinSelectionIndex() == 0) {
-            // already at the top
-            jbUp.setEnabled(false);
-            jmiFileUp.setEnabled(false);
-          } else {
-            jbUp.setEnabled(true);
-            jmiFileUp.setEnabled(true);
-          }
-        }
-      }
-      // Down button
-      if (selection.getMinSelectionIndex() != selection.getMaxSelectionIndex()) {
-        // check if several rows have been selected :
-        // doesn't supported yet
-        jbDown.setEnabled(false);
-        jmiFileDown.setEnabled(false);
-      } else { // yet here ?
-        if (bPlanned) {
-          // No up/down buttons for planned tracks
-          jbDown.setEnabled(false);
-          jmiFileDown.setEnabled(false);
-        } else { // normal item
-          if (selection.getMaxSelectionIndex() < editorModel.getItems().size() - 1) {
-            // a normal item can't go in the planned items
-            jbDown.setEnabled(true);
-            jmiFileDown.setEnabled(true);
-          } else {
-            jbDown.setEnabled(false);
-            jmiFileDown.setEnabled(false);
-          }
-        }
-      }
-    }
+    updateButtonsStateForSelection(selection.getMinSelectionIndex(),
+        selection.getMaxSelectionIndex());
+    updateInformationPanel(getSelectedFiles());
   }
 
-  /**
-   * Return whether a given row selection contains the current played track.
-   * 
-   * @param selection
-   *            the selection
-   * 
-   * @return whether a given row selection contains the current played track
-   */
-  private boolean selectionContainsCurrentTrack(ListSelectionModel selection) {
-    for (int i = selection.getMinSelectionIndex(); i <= selection.getMaxSelectionIndex(); i++) {
-      if (QueueModel.getItem(i).equals(QueueModel.getCurrentItem())) {
-        return true;
+  private void updateButtonsStateForSelection(int min, int max) {
+    // Refresh the preference menu according to the selection
+    pjmFilesEditor.resetUI(editorTable.getSelection());
+    int selectedRow = max;
+    // true if selected line is a planned track
+    boolean bPlanned = false;
+    if (selectedRow > editorModel.getItems().size() - 1) {
+      // means it is a planned track
+      bPlanned = true;
+    }
+    // -- now analyze each button --
+    // Remove button
+    jbRemove.setEnabled(!bPlanned);
+    jmiFileRemove.setEnabled(!bPlanned);
+    // Add shuffle button
+    // No adding for planned track
+    jbAddShuffle.setEnabled(!bPlanned);
+    // Up button
+    if (min != max) {
+      // check if several rows have been selected 
+      jbUp.setEnabled(false);
+      jmiFileUp.setEnabled(false);
+    } else {
+      // still here ?
+      if (bPlanned) {
+        // No up/down buttons for planned tracks
+        jbUp.setEnabled(false);
+        jmiFileUp.setEnabled(false);
+      } else { // normal item
+        if (min == 0) {
+          // already at the top
+          jbUp.setEnabled(false);
+          jmiFileUp.setEnabled(false);
+        } else {
+          jbUp.setEnabled(true);
+          jmiFileUp.setEnabled(true);
+        }
       }
     }
-    return false;
+    // Down button
+    if (min != max) {
+      // check if several rows have been selected :
+      // doesn't supported yet
+      jbDown.setEnabled(false);
+      jmiFileDown.setEnabled(false);
+    } else { // yet here ?
+      if (bPlanned) {
+        // No up/down buttons for planned tracks
+        jbDown.setEnabled(false);
+        jmiFileDown.setEnabled(false);
+      } else { // normal item
+        if (max < editorModel.getItems().size() - 1) {
+          // a normal item can't go in the planned items
+          jbDown.setEnabled(true);
+          jmiFileDown.setEnabled(true);
+        } else {
+          jbDown.setEnabled(false);
+          jmiFileDown.setEnabled(false);
+        }
+      }
+    }
   }
 }

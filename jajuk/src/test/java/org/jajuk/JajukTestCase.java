@@ -43,7 +43,8 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * .
+ * Common behavior for every jajuk test. 
+ * <p>EVERY JAJUK UNIT TEST *MUST* EXTEND THIS CLASS.</p>
  */
 public abstract class JajukTestCase extends TestCase {
   /** The Constant JAVA_PROCESS.   */

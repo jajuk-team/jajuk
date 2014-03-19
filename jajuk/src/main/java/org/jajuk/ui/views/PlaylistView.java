@@ -159,8 +159,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   private SmartPlaylistView spNew;
   /** Selected smart playlist. */
   private SmartPlaylistView spSelected;
-  /** List of selected files in the editor table. We don't just rely upon JajukTable's selection because we need here a deep selection computation including playlists contents */
-  List<File> selectedFiles = new ArrayList<File>(20);
   /** Mouse adapter for smart playlist items. */
   private MouseAdapter ma = new JajukMouseAdapter() {
     private static final long serialVersionUID = 1L;
@@ -249,13 +247,6 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     sp.getIcon().setBorder(BorderFactory.createLineBorder(Color.ORANGE, 5));
     // set new item
     spSelected = sp;
-    try {
-      selectedFiles.clear();
-      selectedFiles.addAll(sp.getPlaylist().getFiles());
-    } catch (JajukException e) {
-      Log.error(e);
-      return;
-    }
     // Update playlist editor
     selectPlaylist(sp.getPlaylist());
   }
@@ -329,8 +320,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
     editorTable.getColumnModel().getColumn(0).setMaxWidth(20);
     editorTable.getTableHeader().setPreferredSize(new Dimension(0, 20));
     editorTable.showColumns(editorTable.getColumnsConf());
-    //  Note : don't add a ListSelectionListener here, see JajukTable code, 
-    //  all the event code is centralized over there 
+    // see JajukTable code, all the event code is centralized over there
     editorTable.addListSelectionListener(this);
     jpEditor.setLayout(new MigLayout("ins 0", "[grow]"));
     jpEditor.add(jpEditorControl, "growx,wrap");
@@ -882,8 +872,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   public void valueChanged(ListSelectionEvent e) {
     ListSelectionModel selection = (ListSelectionModel) e.getSource();
     if (!selection.isSelectionEmpty()) {
-      updateSelection();
-      updateInformationView(selectedFiles);
+      updateInformationPanel(getSelectedFiles());
       // Refresh the preference menu according to the selection
       pjmFilesEditor.resetUI(editorTable.getSelection());
       // -- now analyze each button --
@@ -948,7 +937,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
    * 
    * @param files : selection to consider
    */
-  void updateInformationView(List<File> files) {
+  void updateInformationPanel(List<File> files) {
     // Update information view
     // Compute recursive selection size, nb of items...
     long lSize = 0l;
@@ -968,14 +957,17 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
   }
 
   /**
-   * Update editor files selection.
+   * Get selection as files.
+   * 
+   * @return selected files
    */
-  void updateSelection() {
-    selectedFiles.clear();
+  List<File> getSelectedFiles() {
+    List<File> selectedFiles = new ArrayList<File>(10);
     for (Item item : editorTable.getSelection()) {
       File file = (File) item;
       selectedFiles.add(file);
     }
+    return selectedFiles;
   }
 
   /**
@@ -1009,31 +1001,16 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       columnsConf = CONF_PLAYLIST_REPOSITORY_COLUMNS;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.jajuk.ui.views.AbstractTableView#initTable()
-     */
     @Override
     void initTable() {
       // required by abstract superclass, but nothing to do here...
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.jajuk.ui.views.AbstractTableView#populateTable()
-     */
     @Override
     JajukTableModel populateTable() {
       return new PlaylistRepositoryTableModel();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.jajuk.ui.views.IView#getDesc()
-     */
     @Override
     public String getDesc() {
       return null;
@@ -1050,21 +1027,11 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       return PlaylistView.this.getID() + "/PlaylistRepository";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.jajuk.ui.views.IView#initUI()
-     */
     @Override
     public void initUI() {
       UtilGUI.populate(this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.jajuk.ui.helpers.TwoStepsDisplayable#shortCall(java.lang.Object)
-     */
     @Override
     public void shortCall(Object in) {
       jtable = new JajukTable(model, true, columnsConf);
@@ -1091,20 +1058,12 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       selectSmartPlaylist(spNew);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.jajuk.ui.helpers.TwoStepsDisplayable#longCall()
-     */
     @Override
     public Object longCall() {
       super.longCall();
       return null;
     }
 
-    /* (non-Javadoc)
-    * @see org.jajuk.ui.views.AbstractTableView#onSelectionChange()
-    */
     @Override
     void onSelectionChange() {
       Playlist playlist = null;
@@ -1130,7 +1089,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
       // Select the playlist even if it cannot be read (we still have some titles)
       selectPlaylist(playlist);
       if (files != null) {
-        updateInformationView(files);
+        updateInformationPanel(files);
       } else {
         // Reset selection tip
         InformationJPanel.getInstance().setSelection(Messages.getString("InformationJPanel.9"));
