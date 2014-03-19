@@ -1,5 +1,5 @@
 # Tests too long :
-.*TestQueueModel.*
+#.*TestQueueModel.*
 .*TestPlaylist.*
 .*TestMPlayerPlayerImpl.*
 .*ObserverRegistry.*
