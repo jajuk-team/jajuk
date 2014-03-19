@@ -451,12 +451,13 @@ public class QueueView extends PlaylistView {
         // set saved selection after a refresh
         editorTable.getSelectionModel().addSelectionInterval(element, element);
       }
+      // Refresh menu item along with preference icon. This is only useful when 
+      // a user change the preference and display again the menu (right click) again
+      // without changing the selection.
+      pjmFilesEditor.resetUI(editorTable.getSelection());
     } finally {
       editorModel.setRefreshing(false);
     }
-    // Refresh the preference menu according to the selection
-    // (useful on rating change for a single-row model for ie)
-    pjmFilesEditor.resetUI(editorTable.getSelection());
   }
 
   /**
