@@ -121,7 +121,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     super.initUI();
     // ComboBox sort
     JLabel jlSort = new JLabel(Messages.getString("Sort"));
-    jcbSort = new JComboBox<String>();
+    jcbSort = new JComboBox();
     jcbSort.addItem(Messages.getHumanPropertyName(Const.XML_GENRE)); // sort by
     // Genre/Artist/Album
     jcbSort.addItem(Messages.getHumanPropertyName(Const.XML_ARTIST)); // sort by
