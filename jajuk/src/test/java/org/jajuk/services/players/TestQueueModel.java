@@ -429,9 +429,7 @@ public class TestQueueModel extends JajukTestCase {
       TestHelpers.waitForThreadToFinish("Queue Push Thread");
       assertEquals(3, QueueModel.getQueue().size());
     }
-    // one more to finish now
     QueueModel.finished(true);
-    // next time it will reset the index as we do not "plan" new tracks automatically
     QueueModel.finished(true);
     assertEquals(3, QueueModel.getIndex());
   }

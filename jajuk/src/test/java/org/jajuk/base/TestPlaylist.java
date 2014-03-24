@@ -465,9 +465,12 @@ public class TestPlaylist extends JajukTestCase {
    *
    * @return the playlist queue
    */
-  private Playlist getPlaylistQueue() {
-    // make sure the Queue is empty before creating a playlist on it
-    QueueModel.clear();
+  private Playlist getPlaylistQueue()  {
+    try {
+      QueueModel.push(new StackItem(TestHelpers.getFile()), true);
+    } catch (JajukException e) {
+      Log.error(e);
+    }
     return new Playlist(Playlist.Type.QUEUE, "1", "name", null);
   }
 
