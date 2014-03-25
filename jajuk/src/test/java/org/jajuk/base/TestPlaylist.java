@@ -47,14 +47,6 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class TestPlaylist extends JajukTestCase {
-  /* (non-Javadoc)
-   * @see org.jajuk.JajukTestCase#setUp()
-   */
-  @Override
-  public void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for {@link org.jajuk.base.Playlist#hashCode()}.
    */
@@ -464,7 +456,7 @@ public class TestPlaylist extends JajukTestCase {
    *
    * @return the playlist queue
    */
-  private Playlist getPlaylistQueue()  {
+  private Playlist getPlaylistQueue() {
     try {
       QueueModel.push(new StackItem(TestHelpers.getFile()), true);
       TestHelpers.waitForThreadToFinish("Queue Push Thread");

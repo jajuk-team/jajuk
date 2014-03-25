@@ -24,12 +24,12 @@ import java.awt.HeadlessException;
 
 import javax.swing.AbstractButton;
 
-import org.jajuk.JajukTestCase;
+import junit.framework.TestCase;
 
 /**
  * .
  */
-public class TestXJPopupMenu extends JajukTestCase {
+public class TestXJPopupMenu extends TestCase {
   /**
    * Test method for {@link ext.scrollablepopupmenu.XJPopupMenu#removeAll()}.
    */

@@ -45,11 +45,6 @@ import org.jajuk.util.Const;
  * .
  */
 public class TestAmbienceDigitalDJ extends JajukTestCase {
-  @Override
-  protected void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
   * Test method for {@link org.jajuk.services.dj.AmbienceDigitalDJ#toXML()}.
   */

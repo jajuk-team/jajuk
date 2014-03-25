@@ -23,12 +23,12 @@ package ext;
 import java.awt.HeadlessException;
 import java.net.URL;
 
-import org.jajuk.JajukTestCase;
+import junit.framework.TestCase;
 
 /**
  * .
  */
-public class TestJSplash extends JajukTestCase {
+public class TestJSplash extends TestCase {
   /**
    * Test method for.
    *

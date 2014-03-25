@@ -23,15 +23,15 @@ package ext.services.lastfm;
 import java.util.ArrayList;
 import java.util.List;
 
+import junit.framework.TestCase;
 import net.roarsoftware.lastfm.Album;
 
-import org.jajuk.JajukTestCase;
 import org.jajuk.util.UtilString;
 
 /**
  * .
  */
-public class TestLastFmAlbumList extends JajukTestCase {
+public class TestLastFmAlbumList extends TestCase {
   /** The Constant API_KEY.   */
   private static final String API_KEY = "711591ss6q695ps349o6681pr1oq1467";
 

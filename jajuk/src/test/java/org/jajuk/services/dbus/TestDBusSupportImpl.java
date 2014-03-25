@@ -36,12 +36,8 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class TestDBusSupportImpl extends JajukTestCase {
-  /* (non-Javadoc)
-   * @see org.jajuk.JajukTestCase#setUp()
-   */
   @Override
-  protected void setUp() throws Exception {
-    super.setUp();
+  protected void specificSetUp() throws Exception {
     // make sure this is initialized with Actions
     ActionManager.getInstance();
   }

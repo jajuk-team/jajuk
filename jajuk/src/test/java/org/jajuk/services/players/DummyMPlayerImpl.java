@@ -20,9 +20,6 @@
  */
 package org.jajuk.services.players;
 
-/**
- * .
- */
 public class DummyMPlayerImpl {
   /** The Constant POSITION.   */
   public final static float POSITION = 17.7f;

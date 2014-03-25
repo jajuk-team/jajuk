@@ -41,14 +41,8 @@ import org.jajuk.util.error.JajukException;
 public class TestUtilSystem extends JajukTestCase {
   private File file1, file2;
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
-   */
   @Override
-  protected void setUp() throws Exception {
-    super.setUp();
+  protected void specificSetUp() throws Exception {
     file1 = File.createTempFile("test", ".jajuk", new java.io.File(ConstTest.DEVICES_BASE_PATH));
     file2 = File.createTempFile("test", ".jajuk", new java.io.File(ConstTest.DEVICES_BASE_PATH));
   }
@@ -278,8 +272,6 @@ public class TestUtilSystem extends JajukTestCase {
     UtilSystem.deleteDir(file);
     assertFalse(file.exists());
   }
-
-
 
   /**
    * Test method for {@link org.jajuk.util.UtilSystem#deleteDir(java.io.File)}.

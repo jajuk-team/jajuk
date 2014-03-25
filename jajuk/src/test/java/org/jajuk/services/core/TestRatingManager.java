@@ -46,15 +46,7 @@ import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.services.tags.ITagImpl;
 import org.jajuk.util.Const;
 
-/**
- * .
- */
 public class TestRatingManager extends JajukTestCase {
-  @Override
-  protected void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for {@link org.jajuk.services.core.RatingService#run()}.
    */

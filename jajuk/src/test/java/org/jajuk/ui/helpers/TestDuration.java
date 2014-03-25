@@ -25,11 +25,6 @@ import org.jajuk.TestHelpers;
 import org.junit.Test;
 
 public class TestDuration extends JajukTestCase {
-  @Override
-  public void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for {@link org.jajuk.ui.helpers.Duration#hashCode()}.
    */

@@ -47,22 +47,15 @@ import org.jajuk.ui.views.TracksTreeView.TracksMouseAdapter;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 
-/**
- * .
- */
 public class TestTracksTreeView extends JajukTestCase {
-  /* (non-Javadoc)
-   * @see org.jajuk.JajukTestCase#setUp()
-   */
   @Override
-  protected void setUp() throws Exception {
+  protected void specificSetUp() throws Exception {
     try {
       // initialize the actions
       ActionManager.getInstance();
     } catch (HeadlessException e) {
       // this is thrown in automated tests on Hudson/Sonar
     }
-    super.setUp();
   }
 
   /**

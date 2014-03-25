@@ -102,13 +102,9 @@ public class TestAutoCompleteDecorator extends TestCase {
   // Tests from singx itself
   private JComboBox combo;
 
-  /* (non-Javadoc)
-   * @see junit.framework.TestCase#setUp()
-   */
   @Override
   protected void setUp() throws Exception {
     combo = new JComboBox(new String[] { "Alpha", "Bravo", "Charlie", "Delta" });
-    super.setUp();
   }
 
   /**

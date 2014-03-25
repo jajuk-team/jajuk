@@ -32,14 +32,6 @@ import org.junit.Test;
  * .
  */
 public class TestFileManager extends JajukTestCase {
-  /* (non-Javadoc)
-   * @see org.jajuk.JajukTestCase#setUp()
-   */
-  @Override
-  protected void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for {@link org.jajuk.base.FileManager#removeFile(File)}.
    * @throws IOException 

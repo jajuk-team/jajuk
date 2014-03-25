@@ -33,11 +33,6 @@ import org.qdwizard.Screen;
  * .
  */
 public class TestDigitalDJWizard extends JajukTestCase {
-  @Override
-  public void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for.
    *

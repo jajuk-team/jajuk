@@ -45,12 +45,12 @@ import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
 import java.util.Map;
 
-import org.jajuk.JajukTestCase;
+import junit.framework.TestCase;
 
 /**
  * .
  */
-public class TestJScrollingText extends JajukTestCase {
+public class TestJScrollingText extends TestCase {
   /**
    * Test method for {@link ext.JScrollingText#JScrollingText(String)}.
    */

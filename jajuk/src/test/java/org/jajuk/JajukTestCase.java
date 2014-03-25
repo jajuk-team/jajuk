@@ -44,7 +44,7 @@ import org.jajuk.util.log.Log;
 
 /**
  * Common behavior for every jajuk test. 
- * <p>EVERY JAJUK UNIT TEST *MUST* EXTEND THIS CLASS.</p>
+ * <p>EVERY JAJUK UNIT TEST *MUST* EXTEND THIS CLASS (except from the "ext" package).</p>
  */
 public abstract class JajukTestCase extends TestCase {
   /** The Constant JAVA_PROCESS.   */
@@ -77,13 +77,15 @@ public abstract class JajukTestCase extends TestCase {
         + java.io.File.separator + JAVA_PROCESS + "\"";
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
+  /**
+   * Every UT must extend JajukTestCase and implement this method for specific initialization if any
    */
+  protected void specificSetUp() throws Exception {
+    // Does nothing by default
+  }
+
   @Override
-  protected void setUp() throws Exception {
+  protected final void setUp() throws Exception {
     Log.info("Setting up testcase: " + getClass() + "." + getName() + "()");
     // Set the exiting state flag to force still running threads to suspend
     TestHelpers.forceExitState(true);
@@ -131,7 +133,7 @@ public abstract class JajukTestCase extends TestCase {
     Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, scriptFile.getAbsolutePath());
     // Unset exiting state
     TestHelpers.forceExitState(false);
-    super.setUp();
+    specificSetUp();
   }
 
   /* (non-Javadoc)

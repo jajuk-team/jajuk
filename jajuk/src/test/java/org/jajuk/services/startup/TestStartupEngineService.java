@@ -49,14 +49,8 @@ public class TestStartupEngineService extends JajukTestCase {
   /** The Constant POSITION.   */
   private static final float POSITION = 0.5f;
 
-  /*
-  * (non-Javadoc)
-  * 
-  * @see junit.framework.TestCase#setUp()
-  */
   @Override
-  protected void setUp() throws Exception {
-    super.setUp();
+  protected void specificSetUp() throws Exception {
     // Populate collection with a few files and associated items 
     file1 = TestHelpers.getFile("file1", true);
     file2 = TestHelpers.getFile("file2", true);

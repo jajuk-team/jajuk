@@ -48,8 +48,7 @@ import org.w3c.dom.Document;
  */
 public class TestDigitalDJ extends JajukTestCase {
   @Override
-  protected void setUp() throws Exception {
-    super.setUp();
+  protected void specificSetUp() throws Exception {
   }
 
   /**

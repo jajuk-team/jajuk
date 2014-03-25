@@ -52,14 +52,8 @@ import org.jajuk.util.error.JajukException;
  * .
  */
 public class TestQueueModel extends JajukTestCase {
-  /*
-   * (non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
-   */
   @Override
-  protected void setUp() throws Exception {
-    super.setUp();
+  protected void specificSetUp() throws Exception {
     UtilFeatures.storePersistedPlayingPosition(0);
     // reset before each test to have a clean start for each test as most
     // data is held statically for QueueModel

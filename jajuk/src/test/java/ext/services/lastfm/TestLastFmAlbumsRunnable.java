@@ -25,13 +25,14 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import org.jajuk.JajukTestCase;
+import junit.framework.TestCase;
+
 import org.jajuk.TestHelpers;
 
 /**
  * .
  */
-public class TestLastFmAlbumsRunnable extends JajukTestCase {
+public class TestLastFmAlbumsRunnable extends TestCase {
   /**
    * Test method for.
    *

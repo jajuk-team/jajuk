@@ -43,9 +43,8 @@ public class TestUtilString extends JajukTestCase {
   private static final Random random = new Random();
 
   @Override
-  public final void setUp() throws Exception {
+  public void specificSetUp() throws Exception {
     random.setSeed(System.currentTimeMillis());
-    super.setUp();
   }
 
   /**

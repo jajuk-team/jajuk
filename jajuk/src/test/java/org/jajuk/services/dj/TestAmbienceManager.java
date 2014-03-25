@@ -38,16 +38,12 @@ import org.jajuk.util.UpgradeManager;
  * .
  */
 public class TestAmbienceManager extends JajukTestCase {
-  /* (non-Javadoc)
-   * @see org.jajuk.JajukTestCase#setUp()
-   */
   @Override
-  protected void setUp() throws Exception {
+  protected void specificSetUp() throws Exception {
     // clean out all leftover ambiences from other testing
     for (Ambience amb : AmbienceManager.getInstance().getAmbiences()) {
       AmbienceManager.getInstance().removeAmbience(amb.getID());
     }
-    super.setUp();
   }
 
   /**

@@ -33,11 +33,6 @@ import org.jajuk.util.Const;
  * .
  */
 public class TestLastFmManager extends JajukTestCase {
-  @Override
-  protected void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for.
    *
