@@ -203,7 +203,6 @@ public class TestPlaylist extends JajukTestCase {
   public final void testAddFileQueue() throws Exception {
     Playlist play = getPlaylistQueue();
     File file = TestHelpers.getFile("file1", false);
-    file.getDirectory().getDevice().mount(true);
     System.out.println("QueueBefore: " + QueueModel.getQueue());
     assertEquals(0, QueueModel.getQueueSize());
     System.out.println("PlannedBefore: " + QueueModel.getPlanned());
@@ -468,7 +467,8 @@ public class TestPlaylist extends JajukTestCase {
   private Playlist getPlaylistQueue()  {
     try {
       QueueModel.push(new StackItem(TestHelpers.getFile()), true);
-    } catch (JajukException e) {
+      TestHelpers.waitForThreadToFinish("Queue Push Thread");
+    } catch (Exception e) {
       Log.error(e);
     }
     return new Playlist(Playlist.Type.QUEUE, "1", "name", null);
@@ -747,7 +747,6 @@ public class TestPlaylist extends JajukTestCase {
     Playlist play = getPlaylistQueue();
     // for type Queue, we need to push to the Queue
     File file = TestHelpers.getFile("file1", false);
-    file.getDirectory().getDevice().mount(true);
     QueueModel.insert(new StackItem(file), 0);
     assertEquals(1, play.getFiles().size());
     assertNotNull(play.getFiles().get(0));

@@ -61,6 +61,7 @@ import org.jajuk.services.bookmark.History;
 import org.jajuk.services.core.ExitService;
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.QueueModel;
+import org.jajuk.services.players.StackItem;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.services.webradio.WebRadioOrigin;
@@ -393,6 +394,31 @@ public class TestHelpers {
       if (t != null && name.equals(t.getName())) {
         t.join();
       }
+    }
+  }
+
+  public static void push(final List<StackItem> items, final boolean bKeepPrevious,
+      final boolean bPushNext) {
+    try {
+      Class<?> queueModelClass = Class.forName("org.jajuk.services.players.QueueModel");
+      Method pushMethod = queueModelClass.getDeclaredMethod("pushCommand", List.class,
+          boolean.class, boolean.class);
+      pushMethod.setAccessible(true);
+      pushMethod.invoke(null, items, bKeepPrevious, bPushNext);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public static void push(final StackItem item, final boolean bKeepPrevious, final boolean bPushNext) {
+    try {
+      Class<?> queueModelClass = Class.forName("org.jajuk.services.players.QueueModel");
+      Method pushMethod = queueModelClass.getDeclaredMethod("pushCommand", StackItem.class,
+          boolean.class, boolean.class);
+      pushMethod.setAccessible(true);
+      pushMethod.invoke(null, item, bKeepPrevious, bPushNext);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 

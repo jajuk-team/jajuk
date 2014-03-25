@@ -132,11 +132,8 @@ public class TestQueueModel extends JajukTestCase {
    * .
    */
   public void testPushListOfStackItemBoolean() throws Exception {
-    List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(TestHelpers.getFile("file1", true)));
-    QueueModel.push(list, true);
-    // we try to wait for the thread started inside push() to finish
-    TestHelpers.waitForThreadToFinish("Queue Push Thread");
+    StackItem item = new StackItem(TestHelpers.getFile("file1", true));
+    TestHelpers.push(item, true, false);
     assertEquals(1, QueueModel.getQueue().size());
   }
 
@@ -147,11 +144,8 @@ public class TestQueueModel extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testPushListOfStackItemBooleanNoPush() throws Exception {
-    List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(TestHelpers.getFile("file1", true)));
-    QueueModel.push(list, false);
-    // we try to wait for the thread started inside push() to finish
-    TestHelpers.waitForThreadToFinish("Queue Push Thread");
+    StackItem item = new StackItem(TestHelpers.getFile("file1", true));
+    TestHelpers.push(item, false, false);
     assertEquals(1, QueueModel.getQueue().size());
   }
 
@@ -180,9 +174,7 @@ public class TestQueueModel extends JajukTestCase {
     list.add(new StackItem(TestHelpers.getFile("file1", true)));
     list.add(null);
     list.add(new StackItem(TestHelpers.getFile("file3", true)));
-    QueueModel.push(list, true);
-    // we try to wait for the thread started inside push() to finish
-    TestHelpers.waitForThreadToFinish("Queue Push Thread");
+    TestHelpers.push(list, true, false);
     assertEquals(2, QueueModel.getQueue().size());
   }
 
@@ -194,11 +186,8 @@ public class TestQueueModel extends JajukTestCase {
    * .
    */
   public void testPushListOfStackItemBooleanBoolean() throws Exception {
-    List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(TestHelpers.getFile("file1", true)));
-    QueueModel.push(list, true, true);
-    // we try to wait for the thread started inside push() to finish
-    TestHelpers.waitForThreadToFinish("Queue Push Thread");
+    StackItem item = new StackItem(TestHelpers.getFile("file1", true));
+    TestHelpers.push(item, true, true);
     assertEquals(1, QueueModel.getQueue().size());
   }
 
@@ -209,9 +198,8 @@ public class TestQueueModel extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testPushListOfStackItemBooleanBooleanNoPushNext() throws Exception {
-    List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(TestHelpers.getFile("file1", true)));
-    QueueModel.push(list, false, false);
+    StackItem item = new StackItem(TestHelpers.getFile("file1", true));
+    TestHelpers.push(item, false, false);
     // we try to wait for the thread started inside push() to finish
     TestHelpers.waitForThreadToFinish("Queue Push Thread");
     assertEquals(1, QueueModel.getQueue().size());
@@ -318,7 +306,7 @@ public class TestQueueModel extends JajukTestCase {
     QueueModel.finished();
     assertEquals(1, QueueModel.getIndex());
   }
-  
+
   /**
    * Test method for {@link org.jajuk.services.players.QueueModel#finished()}.
    *
@@ -411,6 +399,8 @@ public class TestQueueModel extends JajukTestCase {
    */
   public void testFinishedEndOfQueueWithPlanned() throws Exception {
     Conf.setProperty(Const.CONF_STATE_CONTINUE, "true");
+    Conf.setProperty(Const.CONF_STATE_REPEAT, "false");
+    Conf.setProperty(Const.CONF_STATE_REPEAT_ALL, "false");
     // without item it just returns
     QueueModel.finished(true);
     // with items, it will go to the next line
@@ -421,16 +411,15 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(1, QueueModel.getIndex());
     // still 2 as we do not remove items from queue in default setup
     assertEquals(2, QueueModel.getQueueSize());
-    { // start a track
-      List<StackItem> list = new ArrayList<StackItem>();
-      list.add(new StackItem(TestHelpers.getFile("file" + 21, true)));
-      QueueModel.push(list, true);
-      // we try to wait for the thread started inside push() to finish
-      TestHelpers.waitForThreadToFinish("Queue Push Thread");
-      assertEquals(3, QueueModel.getQueue().size());
-    }
+    // start a track
+    StackItem item = new StackItem(TestHelpers.getFile("file" + 21, true));
+    TestHelpers.push(item, true, false);
+    // we try to wait for the thread started inside push() to finish
+    TestHelpers.waitForThreadToFinish("Queue Push Thread");
+    assertEquals(3, QueueModel.getQueue().size());
     QueueModel.finished(true);
     QueueModel.finished(true);
+    assertEquals(4, QueueModel.getQueue().size()); // a  planned track has been selected, we have now 4 tracks in queue
     assertEquals(3, QueueModel.getIndex());
   }
 
