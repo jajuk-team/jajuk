@@ -38,25 +38,15 @@ import org.jajuk.util.Const;
  */
 public class JajukPredicates {
   /**
-   * Age-filtering predicate Applied on tracks only.
+   * Age-filtering predicate
    */
   public static class AgePredicate implements Predicate {
     private int iAge = 0;
 
-    /**
-     * Instantiates a new age predicate.
-     * 
-     * @param iAge 
-     */
     public AgePredicate(int iAge) {
       this.iAge = iAge;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
-     */
     @Override
     public boolean evaluate(Object o) {
       if (!(o instanceof Track)) {
@@ -76,11 +66,6 @@ public class JajukPredicates {
    * Ready (mounted) filtering predicate Applied on files only.
    */
   public static class ReadyFilePredicate implements Predicate {
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
-     */
     @Override
     public boolean evaluate(Object o) {
       return ((File) o).isReady();
@@ -91,11 +76,6 @@ public class JajukPredicates {
    * Banned filtering predicate Applied against tracks only.
    */
   public static class BannedTrackPredicate implements Predicate {
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
-     */
     @Override
     public boolean evaluate(Object o) {
       Track track = (Track) o;
@@ -107,11 +87,6 @@ public class JajukPredicates {
    * Banned filtering predicate Applied against files only.
    */
   public static class BannedFilePredicate implements Predicate {
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
-     */
     @Override
     public boolean evaluate(Object o) {
       Track track = ((File) o).getTrack();
@@ -123,11 +98,6 @@ public class JajukPredicates {
    * Any file available predicate, applies against tracks only.
    */
   public static class AnyFileReady implements Predicate {
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
-     */
     @Override
     public boolean evaluate(Object o) {
       Track track = ((File) o).getTrack();
@@ -139,11 +109,6 @@ public class JajukPredicates {
    * Playlist predicate, filter playlists located on unmounted devices.
    */
   public static class ReadyPlaylistPredicate implements Predicate {
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
-     */
     @Override
     public boolean evaluate(Object o) {
       return ((Playlist) o).isReady();
@@ -165,11 +130,6 @@ public class JajukPredicates {
       this.ambience = ambience;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
-     */
     @Override
     public boolean evaluate(Object o) {
       File tested = (File) o;
@@ -181,11 +141,6 @@ public class JajukPredicates {
    * Not Video predicate on tracks, filter video files.
    */
   public static class NotVideoPredicate implements Predicate {
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.commons.collections.Predicate#evaluate(java.lang.Object)
-     */
     @Override
     public boolean evaluate(Object o) {
       Track tested = (Track) o;
