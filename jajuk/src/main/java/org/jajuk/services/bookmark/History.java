@@ -67,7 +67,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public final class History extends DefaultHandler implements HighPriorityObserver {
   /** Self instance. */
   private static History history = new History();
-  /** History repository, last play first. KEEP THIS A VECTOR, not an ARRAYLIST, 
+  /** History repository, last play first. KEEP THIS A VECTOR, not an ArrayList, 
    * it is accessed directly as model for the SearchJPanel*/
   private static Vector<HistoryItem> items = new Vector<HistoryItem>(100);
   /** History begin date. */
@@ -119,12 +119,13 @@ public final class History extends DefaultHandler implements HighPriorityObserve
   }
 
   /**
-   * Gets the history.
+   * Gets the history, newest played tracks first.
+   * <br/>This returns a defensive copy
    * 
    * @return the history
    */
   public Vector<HistoryItem> getItems() {
-    return items;
+    return new Vector<HistoryItem>(items);
   }
 
   /**
