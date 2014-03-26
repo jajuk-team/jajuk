@@ -342,7 +342,8 @@ public class DigitalDJWizard extends Wizard {
   /**
    * Action type (new or alter).
    */
-  public static class ActionSelectionPanel extends Screen implements ClearPoint, ActionListener {
+  @ClearPoint
+  public static class ActionSelectionPanel extends Screen implements ActionListener {
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = 1L;
     /** NEW code. */

@@ -500,7 +500,8 @@ public class PreparePartyWizard extends Wizard {
   /**
    * First Panel of the Wizard, it shows a selection of sources where the user can choose one, e.g. DJs, Ambiences, ...
    */
-  public static class ActionSelectionPanel extends Screen implements ActionListener, ClearPoint {
+  @ClearPoint
+  public static class ActionSelectionPanel extends Screen implements ActionListener {
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = -6981770030816500259L;
     /** The group for the various sources. */
@@ -747,8 +748,8 @@ public class PreparePartyWizard extends Wizard {
   /**
    * General options panel.
    */
-  public static class GeneralOptionsPanel extends Screen implements ActionListener, ChangeListener,
-      ClearPoint, MouseListener {
+  @ClearPoint
+  public static class GeneralOptionsPanel extends Screen implements ActionListener, ChangeListener, MouseListener {
     /** Constant for MigLayout. */
     private static final String GROW = "grow";
     /** Constant for MigLayout. */
