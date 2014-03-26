@@ -193,7 +193,7 @@ public class TestPlaylist extends JajukTestCase {
    * @throws Exception the exception
    */
   public final void testAddFileQueue() throws Exception {
-    Playlist play = getPlaylistQueue();
+    Playlist play = getVoidPlaylistQueue();
     File file = TestHelpers.getFile("file1", false);
     System.out.println("QueueBefore: " + QueueModel.getQueue());
     assertEquals(0, QueueModel.getQueueSize());
@@ -423,6 +423,13 @@ public class TestPlaylist extends JajukTestCase {
   }
 
   /**
+   * Test method for {@link org.jajuk.base.Playlist#up(int)}.
+   */
+  public final void testUp() {
+    // tested as part of testDown()
+  }
+
+  /**
    * Test down bookmark.
    * 
    */
@@ -443,12 +450,23 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test down queue.
+   * @throws JajukException 
    * 
    */
-  public final void testDownQueue() {
+  public final void testDownQueue() throws JajukException {
+    // 1 track
     Playlist play = getPlaylistQueue();
-    play.down(-1);
-    play.up(0);
+    // We add a second track
+    TestHelpers.push(new StackItem(TestHelpers.getFile("2.mp3", false)), true, false);
+    StackItem st1 = QueueModel.getItem(0);
+    StackItem st2 = QueueModel.getItem(1);
+    assertEquals(st2.getFile().getName(), "2.mp3");
+    play.down(0);
+    assertEquals(st1, QueueModel.getItem(1));
+    assertEquals(st2, QueueModel.getItem(0));
+    play.up(1);
+    assertEquals(st1, QueueModel.getItem(0));
+    assertEquals(st2, QueueModel.getItem(1));
   }
 
   /**
@@ -458,11 +476,19 @@ public class TestPlaylist extends JajukTestCase {
    */
   private Playlist getPlaylistQueue() {
     try {
-      QueueModel.push(new StackItem(TestHelpers.getFile()), true);
-      TestHelpers.waitForThreadToFinish("Queue Push Thread");
-    } catch (Exception e) {
+      TestHelpers.push(new StackItem(TestHelpers.getFile()), true, false);
+    } catch (JajukException e) {
       Log.error(e);
     }
+    return new Playlist(Playlist.Type.QUEUE, "1", "name", null);
+  }
+
+  /**
+   * Gets a void playlist queue.
+   *
+   * @return a void playlist queue
+   */
+  private Playlist getVoidPlaylistQueue() {
     return new Playlist(Playlist.Type.QUEUE, "1", "name", null);
   }
 
@@ -736,7 +762,7 @@ public class TestPlaylist extends JajukTestCase {
   public final void testReplaceFileQueue() throws Exception {
     // make sure Queue is empty
     QueueModel.clear();
-    Playlist play = getPlaylistQueue();
+    Playlist play = getVoidPlaylistQueue();
     // for type Queue, we need to push to the Queue
     File file = TestHelpers.getFile("file1", false);
     QueueModel.insert(new StackItem(file), 0);
@@ -911,13 +937,6 @@ public class TestPlaylist extends JajukTestCase {
     // then with a directory
     play = new Playlist("1", "name", dir);
     TestHelpers.ToStringTest(play);
-  }
-
-  /**
-   * Test method for {@link org.jajuk.base.Playlist#up(int)}.
-   */
-  public final void testUp() {
-    // tested as part of testDown()
   }
 
   /**

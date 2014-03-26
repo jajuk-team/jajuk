@@ -324,7 +324,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * Down a track in the playlist.
    * 
-   * @param index 
+   * @param index index of the track to down
    */
   public void down(final int index) {
     if (type == Type.BOOKMARK) {
