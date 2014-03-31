@@ -289,15 +289,6 @@
 			<version>1.9.5-1</version>
 			<scope>runtime</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>netbeans</groupId>
-			<artifactId>simple_validation</artifactId>
-			<version>0.4</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/simple_validation-0.4.jar</systemPath>
-		</dependency>
-
 	</dependencies>
 
 	<reporting>

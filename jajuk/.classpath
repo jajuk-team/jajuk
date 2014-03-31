@@ -45,11 +45,6 @@
 	<classpathentry kind="lib" path="lib/jfreechart-1.0.13.jar"/>
 	<classpathentry kind="lib" path="lib/cobra-0.98.4.jar"/>
 	<classpathentry kind="lib" path="lib/js-0.98.4.jar"/>
-	<classpathentry kind="lib" path="lib/simple_validation-0.4.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/prog/api/validation-javadoc.zip!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="lib/swingx-1.6.jar"/>
 	<classpathentry kind="lib" path="lib/animation-1.2.0.jar"/>
 	<classpathentry kind="lib" path="lib/substance-5.3.jar"/>
