@@ -54,7 +54,9 @@ import org.jajuk.util.log.Log;
 public class GenresSelectionDialog extends JajukJDialog implements ActionListener {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
+  @SuppressWarnings("rawtypes")
   JComboBox jcbAmbiences;
+  @SuppressWarnings("rawtypes")
   JList jlist;
   OKCancelPanel okc;
   Set<Genre> selectedGenres;
@@ -119,7 +121,7 @@ public class GenresSelectionDialog extends JajukJDialog implements ActionListene
    * Inits the ui.
    * 
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   private void initUI() {
     list = (List<String>) (GenreManager.getInstance().getGenresList()).clone();
     // remove disabled items

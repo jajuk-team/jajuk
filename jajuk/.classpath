@@ -54,6 +54,7 @@
 			<attribute name="javadoc_location" value="file:/prog/api/jaudiotagger/trunk/target/apidocs/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/qdwizard-3.1.2.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/qdwizard"/>
+	<classpathentry kind="lib" path="lib/qdwizard-4.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,3 +1,6 @@
+# Stop testing if uncommented
+#.*
+
 # Tests too long :
 #.*TestQueueModel.*
 .*TestPlaylist.*

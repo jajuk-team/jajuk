@@ -27,6 +27,15 @@ import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.services.dj.DigitalDJ;
 import org.jajuk.services.dj.DigitalDJManager;
 import org.jajuk.services.dj.TransitionDigitalDJ;
+import org.jajuk.ui.wizard.digital_dj.ActionSelectionScreen;
+import org.jajuk.ui.wizard.digital_dj.AmbiencesScreen;
+import org.jajuk.ui.wizard.digital_dj.ChangeScreen;
+import org.jajuk.ui.wizard.digital_dj.GeneralOptionsScreen;
+import org.jajuk.ui.wizard.digital_dj.ProportionsScreen;
+import org.jajuk.ui.wizard.digital_dj.RemoveScreen;
+import org.jajuk.ui.wizard.digital_dj.TransitionsScreen;
+import org.jajuk.ui.wizard.digital_dj.TypeSelectionScreen;
+import org.jajuk.ui.wizard.digital_dj.DigitalDJWizard;
 import org.qdwizard.Screen;
 
 /**
@@ -37,7 +46,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
    * Test method for.
    *
    * @throws Exception the exception
-   * {@link org.jajuk.ui.wizard.DigitalDJWizard#getPreviousScreen(java.lang.Class)}
+   * {@link org.jajuk.ui.wizard.digital_dj.DigitalDJWizard#getPreviousScreen(java.lang.Class)}
    * .
    */
   public void testGetPreviousScreenClassOfQextendsScreen() throws Exception {
@@ -61,7 +70,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
    * Test method for.
    *
    * @throws Exception the exception
-   * {@link org.jajuk.ui.wizard.DigitalDJWizard#getNextScreen(java.lang.Class)}.
+   * {@link org.jajuk.ui.wizard.digital_dj.DigitalDJWizard#getNextScreen(java.lang.Class)}.
    */
   public void testGetNextScreenClassOfQextendsScreen() throws Exception {
     try {
@@ -78,7 +87,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
   /**
    * Test method for.
    *
-   * {@link org.jajuk.ui.wizard.DigitalDJWizard#DigitalDJWizard()}.
+   * {@link org.jajuk.ui.wizard.digital_dj.DigitalDJWizard#DigitalDJWizard()}.
    */
   public void testDigitalDJWizard() {
     try {
@@ -98,7 +107,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
       // TODO: this looks a bit weird in the code of Wizard and Screen, why is
       // it needed?
       new DigitalDJWizard();
-      coverScreen(new DigitalDJWizard.ActionSelectionPanel());
+      coverScreen(new ActionSelectionScreen());
     } catch (HeadlessException e) {
       // on some servers we cannot initalize any ui and thus cannot test this
     }
@@ -116,7 +125,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
       new DigitalDJWizard();
       // we need to load ambiences before this will work
       AmbienceManager.getInstance().load();
-      coverScreen(new DigitalDJWizard.AmbiencePanel());
+      coverScreen(new AmbiencesScreen());
     } catch (HeadlessException e) {
       // on some servers we cannot initalize any ui and thus cannot test this
     }
@@ -132,11 +141,11 @@ public class TestDigitalDJWizard extends JajukTestCase {
       // TODO: this looks a bit weird in the code of Wizard and Screen, why is
       // it needed?
       new DigitalDJWizard();
-      coverScreen(new DigitalDJWizard.ChangePanel());
+      coverScreen(new ChangeScreen());
       // also cover the case when a digital dj is registered
       DigitalDJ dj = new TransitionDigitalDJ("1");
       DigitalDJManager.getInstance().register(dj);
-      coverScreen(new DigitalDJWizard.ChangePanel());
+      coverScreen(new ChangeScreen());
     } catch (HeadlessException e) {
       // on some servers we cannot initalize any ui and thus cannot test this
     }
@@ -152,7 +161,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
       // TODO: this looks a bit weird in the code of Wizard and Screen, why is
       // it needed?
       new DigitalDJWizard();
-      coverScreen(new DigitalDJWizard.GeneralOptionsPanel());
+      coverScreen(new GeneralOptionsScreen());
     } catch (HeadlessException e) {
       // on some servers we cannot initalize any ui and thus cannot test this
     }
@@ -168,7 +177,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
       // TODO: this looks a bit weird in the code of Wizard and Screen, why is
       // it needed?
       new DigitalDJWizard();
-      coverScreen(new DigitalDJWizard.ProportionsPanel());
+      coverScreen(new ProportionsScreen());
     } catch (HeadlessException e) {
       // on some servers we cannot initalize any ui and thus cannot test this
     }
@@ -186,7 +195,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
       new DigitalDJWizard();
       DigitalDJ dj = new TransitionDigitalDJ("1");
       DigitalDJManager.getInstance().register(dj);
-      coverScreen(new DigitalDJWizard.RemovePanel());
+      coverScreen(new RemoveScreen());
     } catch (HeadlessException e) {
       // on some servers we cannot initalize any ui and thus cannot test this
     }
@@ -202,9 +211,9 @@ public class TestDigitalDJWizard extends JajukTestCase {
       // TODO: this looks a bit weird in the code of Wizard and Screen, why is
       // it needed?
       new DigitalDJWizard();
-      coverScreen(new DigitalDJWizard.TransitionsPanel());
+      coverScreen(new TransitionsScreen());
     } catch (HeadlessException e) {
-      // on some servers we cannot initalize any ui and thus cannot test this
+      // on some servers we cannot initialize any ui and thus cannot test this
     }
   }
 
@@ -218,7 +227,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
       // TODO: this looks a bit weird in the code of Wizard and Screen, why is
       // it needed?
       new DigitalDJWizard();
-      coverScreen(new DigitalDJWizard.TypeSelectionPanel());
+      coverScreen(new TypeSelectionScreen());
     } catch (HeadlessException e) {
       // on some servers we cannot initalize any ui and thus cannot test this
     }
@@ -238,12 +247,12 @@ public class TestDigitalDJWizard extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.ui.wizard.DigitalDJWizard#finish()}.
+   * Test method for {@link org.jajuk.ui.wizard.digital_dj.DigitalDJWizard#finish()}.
    */
   public void testFinish() {
     // TODO: find out how to test this...
     /*
-     * coverScreen(new DigitalDJWizard.TypeSelectionPanel());
+     * coverScreen(new DJWizardTypeSelectionScreen());
      * 
      * DigitalDJWizard wizard = new DigitalDJWizard(); wizard.finish();
      */
