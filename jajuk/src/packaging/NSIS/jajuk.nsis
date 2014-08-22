@@ -153,9 +153,9 @@ Section
   File /r "/tmp/mplayer/windows/mplayer.exe"
   File /r "/tmp/jajuk-dist/jajuk/README.html"
   ${If} ${RunningX64}
-    File /r "/tmp/jajuk-dist/jajuk/lib/lib64/JIntellitype.dll"
+    File /r /oname="bin/JIntellitype.dll" "/tmp/jajuk-dist/jajuk/lib/lib64/JIntellitype.dll" 
   ${else}
-    File /r "/tmp/jajuk-dist/jajuk/lib/lib32/JIntellitype.dll"
+    File /r /oname="bin/JIntellitype.dll" "/tmp/jajuk-dist/jajuk/lib/lib32/JIntellitype.dll"
   ${EndIf} 
 SectionEnd
 
