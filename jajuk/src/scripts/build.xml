@@ -136,11 +136,6 @@
 			<fileset file='${basedir}/src/doc/README.html' />
 			<fileset file='${basedir}/src/legals/AUTHORS.txt' />
 		</copy>
-
-		<!--copy native dll to bin directory-->
-		<copy todir='${distdir}/bin'>
-			<fileset file='${basedir}/lib/*.dll' />
-		</copy>
 		<copy todir='${distdir}/src'>
 			<fileset file='${srcdir}/packaging/MANIFEST.MF' />
 		</copy>
@@ -478,6 +473,10 @@
 
 	<target name='mkdist_windows'>
 		<echo message='Prepare files to build Windows executable' />
+		<!--copy native dll to bin directory-->
+		<copy todir='${distdir}/bin'>
+			<fileset file='${basedir}/lib/*.dll' />
+		</copy>
 		<mkdir dir='${windowsdir}' />
 		<!--Windows specific -->
 		<copy todir='${windowsdir}'>
