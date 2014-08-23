@@ -148,15 +148,13 @@ Section
   File /r "/tmp/jajuk-dist/jajuk/jajuk-icon-shortcut_64x64.png"
   File /r "/tmp/jajuk-dist/jajuk/jajuk-uninstall.ico"
   File /r "/tmp/jajuk-dist/jajuk/jajuk-uninstall.png"
-  File "/tmp/jajuk-dist/jajuk/lib/*"
+  File /r "/tmp/jajuk-dist/jajuk/lib"
   File /r "/tmp/jajuk-dist/jajuk/LICENSE-GPL.txt"
   File /r "/tmp/mplayer/windows/mplayer.exe"
   File /r "/tmp/jajuk-dist/jajuk/README.html"
   ${If} ${RunningX64}
-    File "/tmp/jajuk-dist/jajuk/lib/lib64/JIntellitype.dll"
     Rename "$INSTDIR\lib\lib64\JIntellitype.dll" "$INSTDIR\bin\JIntellitype.dll"
   ${else}
-    File "/tmp/jajuk-dist/jajuk/lib/lib32/JIntellitype.dll"
     Rename "$INSTDIR\lib\lib32\JIntellitype.dll" "$INSTDIR\bin\JIntellitype.dll"
   ${EndIf}
    
