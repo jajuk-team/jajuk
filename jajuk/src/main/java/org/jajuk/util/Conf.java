@@ -310,7 +310,7 @@ public final class Conf implements Const {
     defaults.put(CONF_EXPLORER_PATH, "");
     defaults.put(CONF_BIT_PERFECT, FALSE);
     defaults.put(CONF_TITLE_ANIMATION, FALSE);
-    defaults.put(CONF_SPLASH_SCREEN, TRUE);
+    defaults.put(CONF_SPLASH_SCREEN, FALSE);
     defaults.put(CONF_SHOW_VIDEOS, FALSE);
     defaults.put(CONF_PRESERVE_FILE_DATES, FALSE);
     defaults.put(CONF_MANUAL_RATINGS, FALSE);
