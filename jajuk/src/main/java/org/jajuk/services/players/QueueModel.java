@@ -806,6 +806,10 @@ public final class QueueModel {
       if (index > 0) {
         index--;
       }
+      // Except if we are in full repeat, then we jump to last item
+      else if (Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL)){
+        index = queue.size() - 1;
+      }
       launch();
     } catch (Exception e) {
       Log.error(e);
