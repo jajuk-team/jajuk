@@ -704,7 +704,9 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   public void saveAs() throws JajukException, InterruptedException, InvocationTargetException {
     FileChooserRunnable runnable = new FileChooserRunnable();
-    SwingUtilities.invokeLater(runnable);
+    // We have to wait the runnable to ensure that the caller get the correct selected
+    // path before remaining code execution
+    SwingUtilities.invokeAndWait(runnable);
     if (runnable.getException() != null) {
       throw runnable.getException();
     }

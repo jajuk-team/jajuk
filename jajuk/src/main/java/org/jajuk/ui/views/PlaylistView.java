@@ -60,7 +60,6 @@ import javax.swing.table.TableColumn;
 import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Device;
-import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
@@ -101,6 +100,7 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
+
 
 /**
  * Playlist view. This views contains two parts : the "repository" selection panel (list of smart playlists icons 
@@ -744,22 +744,13 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
                 plf.saveAs();
                 // If the new playlist is saved in a known device location,
                 // force a refresh to make it visible immediately (issue #1263)
-                boolean known = false;
-                Device knownDevice = null;
-                for (Device device : DeviceManager.getInstance().getDevices()) {
-                  if (UtilSystem.isAncestor(device.getFIO(), plf.getFIO())) {
-                    known = true;
-                    knownDevice = device;
-                    break;
-                  }
-                }
-                if (known) {
+                Device knownDevice = UtilSystem.getDeviceForFio(plf.getFIO());
+                if (knownDevice != null) {
                   Directory directory = DirectoryManager.getInstance().getDirectoryForIO(
                       plf.getFIO().getParentFile(), knownDevice);
                   directory.refresh(false);
                   // Force a table refresh to show the new playlist if it has
-                  // been
-                  // saved in a known device
+                  // been saved in a known device
                   ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
                 }
               } catch (JajukException je) {
