@@ -734,7 +734,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
             Messages.showErrorMessage(je.getCode());
           }
         } else {
-          // Save as for normal playlists
+          // "Save as" for any other playlist type
           new Thread("Playlist Action Thread") {
             @Override
             public void run() {
@@ -743,8 +743,7 @@ public class PlaylistView extends ViewAdapter implements ActionListener, ListSel
                 // special playlist, same behavior than a save as
                 plf.saveAs();
                 // If the new playlist is saved in a known device location,
-                // force a
-                // refresh to make it visible immediately (issue #1263)
+                // force a refresh to make it visible immediately (issue #1263)
                 boolean known = false;
                 Device knownDevice = null;
                 for (Device device : DeviceManager.getInstance().getDevices()) {

@@ -914,7 +914,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
                 + UtilString.getAdditionDateFormatter().format(new Date());
           } else {
             sPlaylist = file.getDirectory().getAbsolutePath() + java.io.File.separatorChar
-                + file.getTrack().getHumanValue(Const.XML_ALBUM);
+                + UtilSystem.getNormalizedFilename(file.getTrack().getHumanValue(Const.XML_ALBUM));
           }
         } else {
           return;
