@@ -127,6 +127,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   private JLabel jlSize;
   private JLabel jlFound;
   /** Cover search accuracy combo. */
+  @SuppressWarnings("rawtypes")
   private JComboBox jcbAccuracy;
   /** Date last resize (used for adjustment management). */
   private volatile long lDateLastResize;
@@ -180,6 +181,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
    *  
    * @param includeControls 
    */
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void initUI(boolean includeControls) {
     this.includeControls = includeControls;
     // Control panel
@@ -924,13 +926,13 @@ public class CoverView extends ViewAdapter implements ActionListener {
       // where the picture is gone on the net
       Log.warn("Cover image not found at URL: "
           + (cover == null ? "<null>" : cover.getURL().toString()));
-      return;
+      throw new JajukException(0, e);
     } catch (final UnknownHostException e) {
       // do not display a stacktrace for HostNotFound as we expect this in cases
       // where the whole server is gone on the net
       Log.warn("Cover image not found at URL: "
           + (cover == null ? "<null>" : cover.getURL().toString()));
-      return;
+      throw new JajukException(0, e);
     } catch (final IOException e) { // this cover cannot be loaded
       Log.error(e);
       throw new JajukException(0, e);
