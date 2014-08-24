@@ -495,11 +495,14 @@ public final class UtilFeatures {
   public static float readPersistedPlayingPosition() {
     float out = 0.0f;
     java.io.File positionFile = SessionService.getConfFileByPath(Const.FILE_PLAYING_POSITION);
-    try {
-      String content = Files.readFirstLine(positionFile, Charsets.UTF_8);
-      out = Float.parseFloat(content);
-    } catch (Exception e) {
-      Log.error(e);
+    // Note that the position file is written by the player during playing
+    if (positionFile.exists()) {
+      try {
+        String content = Files.readFirstLine(positionFile, Charsets.UTF_8);
+        out = Float.parseFloat(content);
+      } catch (Exception e) {
+        Log.error(e);
+      }
     }
     return out;
   }
