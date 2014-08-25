@@ -135,7 +135,7 @@ public class PasteAction extends JajukAction {
           // We have to iterate using items index because the collection can
           // grow
           for (int i = 0; i < srcDirs.size(); i++) {
-            Directory directory = (Directory) srcDirs.get(i);
+            Directory directory = srcDirs.get(i);
             if (file.getDirectory().isChildOf(directory)) {
               parentAlreadyPresent = true;
               break;
@@ -150,7 +150,7 @@ public class PasteAction extends JajukAction {
           // We have to iterate using items index because the collection can
           // grow
           for (int i = 0; i < srcDirs.size(); i++) {
-            Directory directory = (Directory) srcDirs.get(i);
+            Directory directory = srcDirs.get(i);
             if (pl.getDirectory().isChildOf(directory)) {
               parentAlreadyPresent = true;
               break;

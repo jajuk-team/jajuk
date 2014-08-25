@@ -30,12 +30,12 @@ import org.jajuk.services.dj.TransitionDigitalDJ;
 import org.jajuk.ui.wizard.digital_dj.ActionSelectionScreen;
 import org.jajuk.ui.wizard.digital_dj.AmbiencesScreen;
 import org.jajuk.ui.wizard.digital_dj.ChangeScreen;
+import org.jajuk.ui.wizard.digital_dj.DigitalDJWizard;
 import org.jajuk.ui.wizard.digital_dj.GeneralOptionsScreen;
 import org.jajuk.ui.wizard.digital_dj.ProportionsScreen;
 import org.jajuk.ui.wizard.digital_dj.RemoveScreen;
 import org.jajuk.ui.wizard.digital_dj.TransitionsScreen;
 import org.jajuk.ui.wizard.digital_dj.TypeSelectionScreen;
-import org.jajuk.ui.wizard.digital_dj.DigitalDJWizard;
 import org.qdwizard.Screen;
 
 /**

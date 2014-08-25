@@ -84,8 +84,8 @@ public class PreparePartyWizardPathSelectionScreen extends Screen implements Act
   public void actionPerformed(ActionEvent e) {
     // display a FileChooser
     if (e.getSource() == jbFileSelection) {
-      JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(
-          DirectoryFilter.getInstance()), fDir);
+      JajukFileChooser jfc = new JajukFileChooser(
+          new JajukFileFilter(DirectoryFilter.getInstance()), fDir);
       jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
       jfc.setDialogTitle(Messages.getString("PreparePartyWizard.22"));
       jfc.setMultiSelectionEnabled(false);

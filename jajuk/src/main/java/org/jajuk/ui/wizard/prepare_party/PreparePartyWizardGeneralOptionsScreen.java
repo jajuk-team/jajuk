@@ -393,7 +393,8 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
    * @param keyOn The key in the data object to store the enabled/disabled
    * state.
    */
-  private void updateOneItem(JCheckBox cb, JSlider slider, JLabel label, Variable key, Variable keyOn) {
+  private void updateOneItem(JCheckBox cb, JSlider slider, JLabel label, Variable key,
+      Variable keyOn) {
     if (cb.isSelected()) {
       if (!slider.getValueIsAdjusting()) {
         data.put(key, slider.getValue());

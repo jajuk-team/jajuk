@@ -103,10 +103,9 @@ public class TestFileManager extends JajukTestCase {
     int totalTracksNb = 500; // the 150 first tracks are recent and should be dropped
     List<File> files = populateHistory(totalTracksNb);
     FileManager.getInstance().filterRecentlyPlayedTracks(files);
-    assertEquals(350, files.size()); 
+    assertEquals(350, files.size());
   }
-  
-  
+
   public void testFilterRecentlyPlayedTracksLessThanActionNumber() {
     int totalTracksNb = 100; // all the 100 are recent but will not be dropped because 
     // we are under the lower of tracks
@@ -114,7 +113,7 @@ public class TestFileManager extends JajukTestCase {
     FileManager.getInstance().filterRecentlyPlayedTracks(files);
     assertEquals(100, files.size());
   }
-  
+
   public void testFilterRecentlyPlayedTracksABitMoreThanActionNumber() {
     int totalTracksNb = 250; // the first 150 are recent but not all of them will be
     // dropped to deal with the lower limit

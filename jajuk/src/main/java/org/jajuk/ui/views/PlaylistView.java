@@ -101,7 +101,6 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
 
-
 /**
  * Playlist view. This views contains two parts : the "repository" selection panel (list of smart playlists icons 
  * + the list of playlists table) and the playlist editor table.

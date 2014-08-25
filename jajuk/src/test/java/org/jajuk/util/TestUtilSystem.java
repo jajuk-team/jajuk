@@ -77,16 +77,16 @@ public class TestUtilSystem extends JajukTestCase {
     UtilSystem.backupFile(file1, 1);
     // TODO: create a huge file and make sure it is truncated during backup
   }
-  
+
   @Test
-  public void testGetDeviceForFio(){
+  public void testGetDeviceForFio() {
     org.jajuk.base.File file = TestHelpers.getFile();
     Device device = file.getDevice();
     // Case where the file is attached to a known device
-    assertEquals(device, UtilSystem.getDeviceForFio(file.getFIO())); 
+    assertEquals(device, UtilSystem.getDeviceForFio(file.getFIO()));
     // Case where it is not the case
     java.io.File fioOutsideAnyKnownDevice = new java.io.File("/tmp/toto");
-    assertEquals(null, UtilSystem.getDeviceForFio(fioOutsideAnyKnownDevice)); 
+    assertEquals(null, UtilSystem.getDeviceForFio(fioOutsideAnyKnownDevice));
   }
 
   /**

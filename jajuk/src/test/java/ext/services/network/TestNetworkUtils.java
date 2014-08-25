@@ -47,7 +47,7 @@ public class TestNetworkUtils extends TestCase {
 
   @Override
   protected void setUp() throws Exception {
-     Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, "false");
+    Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, "false");
   }
 
   /**

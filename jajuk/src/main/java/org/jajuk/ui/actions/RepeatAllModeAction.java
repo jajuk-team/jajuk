@@ -37,7 +37,6 @@ import org.jajuk.util.Messages;
  */
 @SuppressWarnings("serial")
 public class RepeatAllModeAction extends JajukAction {
- 
   /**
    * Instantiates a new repeat all mode action.
    */

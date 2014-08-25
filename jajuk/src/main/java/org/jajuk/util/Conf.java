@@ -398,7 +398,7 @@ public final class Conf implements Const {
   private static void commit() throws IOException {
     java.io.File out = SessionService.getConfFileByPath(Const.FILE_CONFIGURATION + "."
         + Const.FILE_SAVING_FILE_EXTENSION);
-   OutputStream str = new FileOutputStream(out);
+    OutputStream str = new FileOutputStream(out);
     // Write the temporary file
     try {
       properties.store(str, "User configuration");

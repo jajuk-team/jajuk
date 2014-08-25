@@ -76,7 +76,7 @@ public class PreparePartyConvertSettings extends JajukJDialog implements ActionL
     setVisible(true);
   }
 
- @Override
+  @Override
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == okp.getCancelButton()) {
       dispose(); // close window

@@ -58,5 +58,4 @@ public class TestUtilFeatures extends JajukTestCase {
     // For EMMA code-coverage tests
     TestHelpers.executePrivateConstructor(UtilFeatures.class);
   }
-  
 }
