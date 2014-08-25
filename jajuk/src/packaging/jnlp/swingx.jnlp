@@ -10,9 +10,6 @@
     <resources>
         <jar href="filters-2.0.235.jar" version='JNLP_VERSION_REPLACED_BY_ANT'/>
     </resources>
-    <resources>
-        <jar href="simple_validation-0.4.jar" version='JNLP_VERSION_REPLACED_BY_ANT'/>
-    </resources>
     <security> 
            <all-permissions/>
     </security> 
