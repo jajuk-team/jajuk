@@ -20,20 +20,14 @@
  */
 package org.jajuk.base;
 
-import junit.framework.TestCase;
-
+import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.util.Const;
 
 /**
  * .
  */
-public class TestYear extends TestCase {
-  @Override
-  protected void setUp() throws Exception {
-    super.setUp();
-  }
-
+public class TestYear extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Year#getTitle()}.
    */

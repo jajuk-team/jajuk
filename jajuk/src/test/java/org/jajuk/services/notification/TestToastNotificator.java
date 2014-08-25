@@ -28,15 +28,7 @@ import org.jajuk.base.File;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.services.webradio.WebRadio;
 
-/**
- * .
- */
 public class TestToastNotificator extends JajukTestCase {
-  @Override
-  protected void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for.
    *

@@ -28,6 +28,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -39,12 +40,12 @@ import net.miginfocom.swing.MigLayout;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.windows.JajukMainWindow;
+import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
-import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
 /**
@@ -67,7 +68,7 @@ public class DebugLogAction extends JajukAction {
    */
   @Override
   public void perform(ActionEvent evt) {
-    final JEditorPane text = new JEditorPane("text/html", getTraces());
+    final JEditorPane text = new JEditorPane("text/html", getHTMLTraces());
     text.setEditable(false);
     text.setMargin(new Insets(10, 10, 10, 10));
     text.setOpaque(true);
@@ -81,7 +82,7 @@ public class DebugLogAction extends JajukAction {
     jbCopy.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        StringSelection data = new StringSelection(text.getText());
+        StringSelection data = new StringSelection(getRawTraces());
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(data, data);
       }
@@ -92,7 +93,7 @@ public class DebugLogAction extends JajukAction {
       @Override
       public void actionPerformed(ActionEvent e) {
         // Refresh traces
-        text.setText(getTraces());
+        text.setText(getHTMLTraces());
       }
     });
     JButton jbClose = new JButton(Messages.getString("Close"), IconLoader.getIcon(JajukIcons.CLOSE));
@@ -115,24 +116,34 @@ public class DebugLogAction extends JajukAction {
     dialog.setVisible(true);
   }
 
-  /**
-   * Gets the traces.
-   * 
-   * @return Current traces
-   */
-  private String getTraces() {
-    // Store system properties
+  private String getHTMLTraces() {
+    final Properties systemProperties = System.getProperties();
+    final Properties jajukProperties = Conf.getProperties();
     StringBuilder traces = new StringBuilder("<HTML><font color='green'><b>")
-        //Add build date in case the version was not propertly set in maintenance branches (like missing 'dev' suffix)
+        //Add build date in case the version was not properly set in maintenance branches (like missing 'dev' suffix)
         .append(Const.JAJUK_VERSION).append('/').append(Const.JAJUK_VERSION_DATE).append('/')
-        .append(cleanHTML(UtilString.getAnonymizedSystemProperties().toString())).append("<br>")
-        .append(cleanHTML(UtilString.getAnonymizedJajukProperties().toString()))
-        .append("</b></font><br>");
-    // Store last traces
-    for (String line : Log.getSpool()) {
+        .append(cleanHTML(systemProperties.toString())).append("<br>")
+        .append(cleanHTML(jajukProperties.toString())).append("</b></font><br>");
+    // Display last traces in clear
+    for (String line : Log.getSpool(false)) {
       traces.append(line).append("<br>");
     }
     traces.append("</HTML>");
+    return traces.toString();
+  }
+
+  private String getRawTraces() {
+    final Properties systemProperties = System.getProperties();
+    final Properties jajukProperties = Conf.getProperties();
+    StringBuilder traces = new StringBuilder()
+        //Add build date in case the version was not propertly set in maintenance branches (like missing 'dev' suffix)
+        .append(Const.JAJUK_VERSION).append('/').append(Const.JAJUK_VERSION_DATE).append('/')
+        .append(systemProperties.toString()).append("\n").append(jajukProperties.toString())
+        .append("\n");
+    // Display last traces in clear
+    for (String line : Log.getSpool(false)) {
+      traces.append(line).append("\n");
+    }
     return traces.toString();
   }
 

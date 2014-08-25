@@ -40,14 +40,6 @@ import org.xml.sax.SAXParseException;
  * .
  */
 public class TestHistory extends JajukTestCase {
-  /* (non-Javadoc)
-   * @see org.jajuk.JajukTestCase#setUp()
-   */
-  @Override
-  protected void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for {@link org.jajuk.services.bookmark.History#getInstance()}.
    */

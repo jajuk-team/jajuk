@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.SwingUtilities;
 
-import org.jajuk.ui.wizard.AmbienceWizard;
+import org.jajuk.ui.wizard.ambience.AmbienceWizard;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;

@@ -61,7 +61,7 @@ public class QualityAction extends JajukAction {
     sBody.append("Version: ").append(Const.JAJUK_VERSION).append('\n');
     sBody.append(UtilString.getAnonymizedSystemProperties().toString()).append('\n');
     sBody.append(UtilString.getAnonymizedJajukProperties().toString()).append('\n');
-    for (String line : Log.getSpool()) {
+    for (String line : Log.getSpool(true)) {
       sBody.append(line).append('\n');
     }
     // if it is a bug, copy logs into the clipboard

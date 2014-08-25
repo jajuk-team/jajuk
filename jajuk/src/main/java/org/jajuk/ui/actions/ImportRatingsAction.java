@@ -76,7 +76,7 @@ public class ImportRatingsAction extends SelectionAction {
         String banned = attributes.getValue(Const.XML_TRACK_BANNED);
         Track track = TrackManager.getInstance().getTrackByID(id);
         if (track == null) {
-          Log.debug("Track no more exists : " + track.getID());
+          Log.debug("Track no more exists : " + id);
         }
         track.setHits(UtilString.fastLongParser(hits));
         track.setPreference(Long.parseLong(preference));

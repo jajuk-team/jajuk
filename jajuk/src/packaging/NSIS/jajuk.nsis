@@ -14,13 +14,6 @@
  
 
 # -------------------------------------------------------------------
-# Define Variables
-# -------------------------------------------------------------------
-
-var STARTMENU_FOLDER
-
-
-# -------------------------------------------------------------------
 # Choosing Compressor
 # -------------------------------------------------------------------
 
@@ -79,7 +72,7 @@ InstallDirRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${App
 
 ; MUI Settings / Icons
 !define MUI_ICON "Contrib\Graphics\Icons\orange-install.ico"
-!define MUI_UNICON "Contrib\Graphics\Icons\orange-uninstall.ico"
+!define MUI_UNICON "Jajuk\jajuk-icon.ico"
 ; MUI Settings / Header
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_RIGHT
@@ -112,13 +105,14 @@ InstallDirRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${App
 
 !insertmacro MUI_PAGE_LICENSE "/tmp/jajuk-dist/jajuk/LICENSE-GPL.txt"
 !insertmacro MUI_PAGE_DIRECTORY
-!insertmacro MUI_PAGE_STARTMENU Application $STARTMENU_FOLDER
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
 !insertmacro MUI_UNPAGE_WELCOME
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
 !insertmacro MUI_UNPAGE_FINISH
+
+!include "x64.nsh"
 
 
 # -------------------------------------------------------------------
@@ -158,6 +152,12 @@ Section
   File /r "/tmp/jajuk-dist/jajuk/LICENSE-GPL.txt"
   File /r "/tmp/mplayer/windows/mplayer.exe"
   File /r "/tmp/jajuk-dist/jajuk/README.html"
+  ${If} ${RunningX64}
+    Rename "$INSTDIR\lib\lib64\JIntellitype.dll" "$INSTDIR\bin\JIntellitype.dll"
+  ${else}
+    Rename "$INSTDIR\lib\lib32\JIntellitype.dll" "$INSTDIR\bin\JIntellitype.dll"
+  ${EndIf}
+   
 SectionEnd
 
 
@@ -175,24 +175,6 @@ Section
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${AppID}" "NoRepair" 1
 SectionEnd
 
-
-# -------------------------------------------------------------------
-# Startmenu Section
-# -------------------------------------------------------------------
-
-Section
-  !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
-
-  SetShellVarContext all
-  CreateDirectory "$SMPROGRAMS\$STARTMENU_FOLDER"
-  CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Jajuk.lnk" "$INSTDIR\jajuk.exe"
-  CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\$(^UninstallCaption).lnk" "$INSTDIR\Uninstall.exe"
-  SetShellVarContext current
-
-  !insertmacro MUI_STARTMENU_WRITE_END
-SectionEnd
-
-
 # -------------------------------------------------------------------
 # Desktop Section
 # -------------------------------------------------------------------
@@ -200,6 +182,7 @@ SectionEnd
 Section
   SetShellVarContext all
   CreateShortCut "$DESKTOP\Jajuk.lnk" "$INSTDIR\jajuk.exe"
+  CreateShortCut "$SMPROGRAMS\Jajuk.lnk" "$INSTDIR\jajuk.exe"
   SetShellVarContext current
 SectionEnd
 
@@ -253,6 +236,7 @@ Section "Uninstall"
 
   SetShellVarContext all
   Delete "$DESKTOP\Jajuk.lnk"
+  Delete "$SMPROGRAMS\Jajuk.lnk"
   SetShellVarContext current
 
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${AppID}"

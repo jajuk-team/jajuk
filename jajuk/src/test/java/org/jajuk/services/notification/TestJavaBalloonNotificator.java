@@ -33,11 +33,6 @@ import org.jajuk.ui.windows.JajukSystray;
  * .
  */
 public class TestJavaBalloonNotificator extends JajukTestCase {
-  @Override
-  protected void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for.
    *

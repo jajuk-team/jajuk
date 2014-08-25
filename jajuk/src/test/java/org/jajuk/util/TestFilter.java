@@ -30,11 +30,6 @@ import org.jajuk.base.Item;
  * .
  */
 public class TestFilter extends JajukTestCase {
-  @Override
-  public void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for.
    *

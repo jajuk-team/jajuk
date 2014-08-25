@@ -48,15 +48,6 @@ public class TestArtistManager extends JajukTestCase {
   /** The Constant NUMBER_OF_THREADS.   */
   private static final int NUMBER_OF_THREADS = 10;
 
-  /* (non-Javadoc)
-   * @see org.jajuk.JajukTestCase#setUp()
-   */
-  @Override
-  protected void setUp() throws Exception {
-    // TODO Auto-generated method stub
-    super.setUp();
-  }
-
   /**
    * Test method for {@link org.jajuk.base.ArtistManager#getXMLTag()}.
    */

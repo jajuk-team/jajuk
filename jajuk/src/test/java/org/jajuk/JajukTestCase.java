@@ -43,7 +43,8 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * .
+ * Common behavior for every jajuk test. 
+ * <p>EVERY JAJUK UNIT TEST *MUST* EXTEND THIS CLASS (except from the "ext" package).</p>
  */
 public abstract class JajukTestCase extends TestCase {
   /** The Constant JAVA_PROCESS.   */
@@ -76,18 +77,24 @@ public abstract class JajukTestCase extends TestCase {
         + java.io.File.separator + JAVA_PROCESS + "\"";
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
+  /**
+   * Every UT must extend JajukTestCase and implement this method for specific initialization if any
    */
+  protected void specificSetUp() throws Exception {
+    // Does nothing by default
+  }
+
   @Override
-  protected void setUp() throws Exception {
+  protected final void setUp() throws Exception {
     Log.info("Setting up testcase: " + getClass() + "." + getName() + "()");
+    // Set the exiting state flag to force still running threads to suspend
+    TestHelpers.forceExitState(true);
+    // Wait for all threads to finish
+    TestHelpers.waitForAllThreadToFinish();
     // let's clean up before we begin any test
-    TestHelpers.waitForAllWorkToFinishAndCleanup();
-    // do the cleanup twice as we have to ensure to clean up things once again when the threads are finally stopped
-    TestHelpers.waitForAllWorkToFinishAndCleanup();
+    TestHelpers.cleanup();
+    // do the cleanup twice as the cleanup itself may launch some threads
+    TestHelpers.waitForAllThreadToFinish();
     // stop any Player from previous tests
     Player.stop(true);
     // assert to find cases where we do not clean up correctly
@@ -124,7 +131,9 @@ public abstract class JajukTestCase extends TestCase {
     FileUtils.writeStringToFile(scriptFile, "#!/bin/sh\n\n" + findJavaExecutable() + " -cp \""
         + thisClassAbsPath + "\" " + MAIN_CLASS);
     Conf.setProperty(Const.CONF_MPLAYER_PATH_FORCED, scriptFile.getAbsolutePath());
-    super.setUp();
+    // Unset exiting state
+    TestHelpers.forceExitState(false);
+    specificSetUp();
   }
 
   /* (non-Javadoc)

@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-package org.jajuk.ui.wizard;
+package org.jajuk.ui.wizard.prepare_party;
 
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -36,8 +36,7 @@ import org.jajuk.ui.widgets.OKCancelPanel;
 import org.jajuk.util.Messages;
 
 /**
- * Simple device creation wizard that creates a directory device given a
- * directory.
+ * Inner dialog of prepare party wizard used to configure PACPL (format converter)s
  */
 public class PreparePartyConvertSettings extends JajukJDialog implements ActionListener {
   /** Generated serialVersionUID. */
@@ -77,9 +76,6 @@ public class PreparePartyConvertSettings extends JajukJDialog implements ActionL
     setVisible(true);
   }
 
-  /* (non-Javadoc)
-   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-   */
   @Override
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == okp.getCancelButton()) {

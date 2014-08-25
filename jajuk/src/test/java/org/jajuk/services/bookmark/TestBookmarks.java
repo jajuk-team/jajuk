@@ -33,14 +33,8 @@ import org.jajuk.util.Const;
  * .
  */
 public class TestBookmarks extends JajukTestCase {
-  /*
-   * (non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
-   */
   @Override
-  protected void setUp() throws Exception {
-    super.setUp();
+  protected void specificSetUp() throws Exception {
     Bookmarks.getInstance().clear();
   }
 

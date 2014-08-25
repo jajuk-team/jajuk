@@ -31,13 +31,14 @@ import javax.swing.DefaultButtonModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import junit.framework.TestCase;
+
 import org.apache.commons.lang.ArrayUtils;
-import org.jajuk.JajukTestCase;
 
 /**
  * .
  */
-public class TestXCheckedButton extends JajukTestCase {
+public class TestXCheckedButton extends TestCase {
   /**
    * Test method for.
    *

@@ -90,7 +90,8 @@ import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 public class TracksTreeView extends AbstractTreeView implements ActionListener {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-  /** Sorting method selection combo. */
+  /** Sorting method selection combo. 
+   * <br>DO NOT PARAMETRIZE THIS COMBO, 1.6 COMPILATION WOULD FAIL*/
   private JComboBox jcbSort;
 
   /*
@@ -866,19 +867,12 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.views.AbstractTreeView#scrollTo(org.jajuk.base.Item)
-   */
   @Override
   void scrollTo(Item item) {
     // Set manual change because we force here tree selection and
     // we don't want to force table views to synchronize
     bInternalAction = true;
     try {
-      // Clear selection so we only select new synchronized item
-      jtree.getSelectionModel().clearSelection();
       // make sure the main element is expanded
       jtree.expandRow(0);
       Track track = null;
@@ -921,7 +915,62 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
           if (tested.getID() == track.getID()) {
             jtree.expandRow(i);
             jtree.scrollPathToVisible(jtree.getPathForRow(i));
-            jtree.getSelectionModel().addSelectionPath(jtree.getPathForRow(i));
+          }
+        }
+      }
+    } finally {
+      bInternalAction = false;
+    }
+  }
+
+  @Override
+  void selectNodes(List<Item> items) {
+    // Set manual change because we force here tree selection and
+    // we don't want to force table views to synchronize
+    bInternalAction = true;
+    try {
+      // Clear selection so we only select new synchronized item
+      jtree.getSelectionModel().clearSelection();
+      // make sure the main element is expanded
+      jtree.expandRow(0);
+      for (Item item : items) {
+        Track track = null;
+        // received item is a file when the event comes from a queue view in the
+        // track perspective
+        if (item instanceof File) {
+          track = ((File) item).getTrack();
+        } else {
+          track = (Track) item;
+        }
+        for (int i = 0; i < jtree.getRowCount(); i++) {
+          Object o = jtree.getPathForRow(i).getLastPathComponent();
+          if (o instanceof AlbumNode) {
+            Album testedAlbum = ((AlbumNode) o).getAlbum();
+            if (track.getAlbum().equals(testedAlbum)) {
+              jtree.expandRow(i);
+            }
+          } else if (o instanceof ArtistNode) {
+            Artist testedArtist = ((ArtistNode) o).getArtist();
+            if (track.getArtist().equals(testedArtist)) {
+              jtree.expandRow(i);
+            }
+          } else if (o instanceof GenreNode) {
+            Genre testedGenre = ((GenreNode) o).getGenre();
+            if (track.getGenre().equals(testedGenre)) {
+              jtree.expandRow(i);
+            }
+          } else if (o instanceof YearNode) {
+            Year testedYear = ((YearNode) o).getYear();
+            if (track.getYear().equals(testedYear)) {
+              jtree.expandRow(i);
+            }
+          } else if (o instanceof TrackNode) {
+            Track tested = ((TrackNode) o).getTrack();
+            // == here thanks to .intern optimization
+            if (tested.getID() == track.getID()) {
+              jtree.expandRow(i);
+              jtree.getSelectionModel().addSelectionPath(jtree.getPathForRow(i));
+            }
           }
         }
       }

@@ -28,7 +28,6 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
-import org.jajuk.ui.widgets.JajukJMenuBar;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -56,10 +55,9 @@ public class ContinueModeAction extends JajukAction {
    */
   @Override
   public void perform(ActionEvent evt) throws JajukException {
-    boolean b = Conf.getBoolean(Const.CONF_STATE_CONTINUE);
-    Conf.setProperty(Const.CONF_STATE_CONTINUE, Boolean.toString(!b));
-    JajukJMenuBar.getInstance().setContinueSelected(!b);
-    if (!b) { // enabled button
+    boolean newModeState = !Conf.getBoolean(Const.CONF_STATE_CONTINUE);
+    Conf.invert(Const.CONF_STATE_CONTINUE);
+    if (newModeState) {
       if (QueueModel.isStopped()) {
         // if nothing playing, play next track if possible
         StackItem item = QueueModel.getLastPlayed();
@@ -69,8 +67,10 @@ public class ContinueModeAction extends JajukAction {
         }
       }
     }
-    // computes planned tracks
+    // Computes planned tracks without clearing planned tracks if any
     QueueModel.computesPlanned(false);
+    // Refresh mode buttons
+    ObservationManager.notify(new JajukEvent(JajukEvents.MODE_STATUS_CHANGED));
     // Refresh Queue View
     ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
   }

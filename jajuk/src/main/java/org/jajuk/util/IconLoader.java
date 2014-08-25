@@ -51,7 +51,7 @@ final public class IconLoader {
   public static ImageIcon getNoCoverIcon(int size) {
     String constant = new StringBuilder("NO_COVER_").append(size).append('X').append(size)
         .toString();
-    return getIcon(JajukIcons.valueOf(JajukIcons.class, constant));
+    return getIcon(JajukIcons.valueOf(constant));
   }
 
   /**

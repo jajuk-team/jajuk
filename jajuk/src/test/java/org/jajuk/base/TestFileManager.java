@@ -21,25 +21,18 @@
 package org.jajuk.base;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
+import org.jajuk.services.bookmark.History;
+import org.jajuk.util.Const;
 import org.jajuk.util.error.JajukException;
 import org.junit.Test;
 
-/**
- * .
- */
 public class TestFileManager extends JajukTestCase {
-  /* (non-Javadoc)
-   * @see org.jajuk.JajukTestCase#setUp()
-   */
-  @Override
-  protected void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for {@link org.jajuk.base.FileManager#removeFile(File)}.
    * @throws IOException 
@@ -97,9 +90,6 @@ public class TestFileManager extends JajukTestCase {
     testWithFile(TestHelpers.getFile("0123234327\"§$%!§\"()432ABC-.,_:;#+*'*~\\}][{.tst", true));
   }
 
-  /**
-   * 
-   */
   private void testWithFile(File file) {
     assertNotNull("file " + file.getFIO() + " is not found if we look for the actual file name",
         FileManager.getInstance().getFileByPath(file.getFIO().getAbsolutePath()));
@@ -107,5 +97,42 @@ public class TestFileManager extends JajukTestCase {
         FileManager.getInstance().getFileByPath(file.getFIO().getAbsolutePath().toLowerCase()));
     assertNotNull("file " + file.getFIO() + " is not found if we look for the uppercase file name",
         FileManager.getInstance().getFileByPath(file.getFIO().getAbsolutePath().toUpperCase()));
+  }
+
+  public void testFilterRecentlyPlayedTracksEnoughTracks() {
+    int totalTracksNb = 500; // the 150 first tracks are recent and should be dropped
+    List<File> files = populateHistory(totalTracksNb);
+    FileManager.getInstance().filterRecentlyPlayedTracks(files);
+    assertEquals(350, files.size());
+  }
+
+  public void testFilterRecentlyPlayedTracksLessThanActionNumber() {
+    int totalTracksNb = 100; // all the 100 are recent but will not be dropped because 
+    // we are under the lower of tracks
+    List<File> files = populateHistory(totalTracksNb);
+    FileManager.getInstance().filterRecentlyPlayedTracks(files);
+    assertEquals(100, files.size());
+  }
+
+  public void testFilterRecentlyPlayedTracksABitMoreThanActionNumber() {
+    int totalTracksNb = 250; // the first 150 are recent but not all of them will be
+    // dropped to deal with the lower limit
+    List<File> files = populateHistory(totalTracksNb);
+    FileManager.getInstance().filterRecentlyPlayedTracks(files);
+    assertEquals(Const.NB_TRACKS_ON_ACTION, files.size());
+  }
+
+  private List<File> populateHistory(int totalTracksNb) {
+    long now = new Date().getTime();
+    // create 500 items in collection and add them into history, 
+    // we simulate a file per day in history.
+    // file0 is now, file499 is 500 days away
+    List<File> files = new ArrayList<File>(totalTracksNb);
+    for (long i = totalTracksNb - 1; i >= 0; i--) { // i must be a long to avoid out of bounds
+      File file = TestHelpers.getFile("file" + i, true);
+      files.add(file);
+      History.getInstance().addItem(file.getID(), now - i * 1000 * 3600 * 24);
+    }
+    return files;
   }
 }

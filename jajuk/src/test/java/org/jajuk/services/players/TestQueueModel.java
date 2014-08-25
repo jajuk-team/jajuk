@@ -21,10 +21,13 @@
 package org.jajuk.services.players;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.jajuk.JajukTestCase;
+import org.jajuk.MockPlayer;
 import org.jajuk.TestHelpers;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
@@ -42,21 +45,16 @@ import org.jajuk.services.core.SessionService;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
+import org.jajuk.util.UtilFeatures;
+import org.jajuk.util.error.JajukException;
 
 /**
  * .
  */
 public class TestQueueModel extends JajukTestCase {
-  /*
-   * (non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
-   */
   @Override
-  protected void setUp() throws Exception {
-    super.setUp();
-    //System.out.println("Thread dump after cleanup");
-    //TestHelpers.dumpThreads();
+  protected void specificSetUp() throws Exception {
+    UtilFeatures.storePersistedPlayingPosition(0);
     // reset before each test to have a clean start for each test as most
     // data is held statically for QueueModel
     QueueModel.reset();
@@ -91,8 +89,6 @@ public class TestQueueModel extends JajukTestCase {
    */
   @Override
   protected void tearDown() throws Exception {
-    // make sure that all work is stopped before starting the next test
-    TestHelpers.waitForAllWorkToFinishAndCleanup();
     super.tearDown();
   }
 
@@ -130,11 +126,8 @@ public class TestQueueModel extends JajukTestCase {
    * .
    */
   public void testPushListOfStackItemBoolean() throws Exception {
-    List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(TestHelpers.getFile("file1", true)));
-    QueueModel.push(list, true);
-    // we try to wait for the thread started inside push() to finish
-    TestHelpers.waitForThreadToFinish("Queue Push Thread");
+    StackItem item = new StackItem(TestHelpers.getFile("file1", true));
+    TestHelpers.push(item, true, false);
     assertEquals(1, QueueModel.getQueue().size());
   }
 
@@ -145,11 +138,8 @@ public class TestQueueModel extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testPushListOfStackItemBooleanNoPush() throws Exception {
-    List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(TestHelpers.getFile("file1", true)));
-    QueueModel.push(list, false);
-    // we try to wait for the thread started inside push() to finish
-    TestHelpers.waitForThreadToFinish("Queue Push Thread");
+    StackItem item = new StackItem(TestHelpers.getFile("file1", true));
+    TestHelpers.push(item, false, false);
     assertEquals(1, QueueModel.getQueue().size());
   }
 
@@ -178,9 +168,7 @@ public class TestQueueModel extends JajukTestCase {
     list.add(new StackItem(TestHelpers.getFile("file1", true)));
     list.add(null);
     list.add(new StackItem(TestHelpers.getFile("file3", true)));
-    QueueModel.push(list, true);
-    // we try to wait for the thread started inside push() to finish
-    TestHelpers.waitForThreadToFinish("Queue Push Thread");
+    TestHelpers.push(list, true, false);
     assertEquals(2, QueueModel.getQueue().size());
   }
 
@@ -192,11 +180,8 @@ public class TestQueueModel extends JajukTestCase {
    * .
    */
   public void testPushListOfStackItemBooleanBoolean() throws Exception {
-    List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(TestHelpers.getFile("file1", true)));
-    QueueModel.push(list, true, true);
-    // we try to wait for the thread started inside push() to finish
-    TestHelpers.waitForThreadToFinish("Queue Push Thread");
+    StackItem item = new StackItem(TestHelpers.getFile("file1", true));
+    TestHelpers.push(item, true, true);
     assertEquals(1, QueueModel.getQueue().size());
   }
 
@@ -207,9 +192,8 @@ public class TestQueueModel extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testPushListOfStackItemBooleanBooleanNoPushNext() throws Exception {
-    List<StackItem> list = new ArrayList<StackItem>();
-    list.add(new StackItem(TestHelpers.getFile("file1", true)));
-    QueueModel.push(list, false, false);
+    StackItem item = new StackItem(TestHelpers.getFile("file1", true));
+    TestHelpers.push(item, false, false);
     // we try to wait for the thread started inside push() to finish
     TestHelpers.waitForThreadToFinish("Queue Push Thread");
     assertEquals(1, QueueModel.getQueue().size());
@@ -248,14 +232,34 @@ public class TestQueueModel extends JajukTestCase {
    * 
    *
    * @param count number of items to create
+   * @param repeat repeat mode ?
+   * @param userLaunched : is it an excplicite user action ?
    * @throws Exception the exception
    */
-  private void addItems(int count) throws Exception {
+  private List<StackItem> addItems(int count, boolean repeat, boolean userLaunched)
+      throws Exception {
+    List<StackItem> list = new ArrayList<StackItem>();
+    for (int i = 0; i < count; i++) {
+      list.add(new StackItem(TestHelpers.getFile("file" + i, true), userLaunched, repeat));
+    }
+    QueueModel.insert(list, QueueModel.getQueueSize());
+    return list;
+  }
+
+  /**
+   * Adds the items.
+   * 
+   *
+   * @param count number of items to create
+   * @throws Exception the exception
+   */
+  private List<StackItem> addItems(int count) throws Exception {
     List<StackItem> list = new ArrayList<StackItem>();
     for (int i = 0; i < count; i++) {
       list.add(new StackItem(TestHelpers.getFile("file" + i, true)));
     }
-    QueueModel.insert(list, 0);
+    QueueModel.insert(list, QueueModel.getQueueSize());
+    return list;
   }
 
   /**
@@ -295,6 +299,24 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(0, QueueModel.getIndex());
     QueueModel.finished();
     assertEquals(1, QueueModel.getIndex());
+  }
+
+  /**
+   * Test method for {@link org.jajuk.services.players.QueueModel#finished()}.
+   *
+   * @throws Exception the exception
+   */
+  public void testFinishedStoped() throws Exception {
+    // without item it just returns
+    QueueModel.finished();
+    // with items, it will go to the next ine
+    addItems(10);
+    QueueModel.goTo(0);
+    assertEquals(0, QueueModel.getIndex());
+    QueueModel.stopRequest();
+    QueueModel.finished();
+    assertEquals(1, QueueModel.getIndex());
+    assertTrue(QueueModel.isStopped());
   }
 
   /**
@@ -361,9 +383,6 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(1, QueueModel.getIndex());
     // still 2 as we do not remove items from queue in default setup
     assertEquals(2, QueueModel.getQueueSize());
-    // next time it will reset the index as we do not "plan" new tracks automatically
-    QueueModel.finished(true);
-    assertEquals(-1, QueueModel.getIndex());
   }
 
   /**
@@ -374,6 +393,8 @@ public class TestQueueModel extends JajukTestCase {
    */
   public void testFinishedEndOfQueueWithPlanned() throws Exception {
     Conf.setProperty(Const.CONF_STATE_CONTINUE, "true");
+    Conf.setProperty(Const.CONF_STATE_REPEAT, "false");
+    Conf.setProperty(Const.CONF_STATE_REPEAT_ALL, "false");
     // without item it just returns
     QueueModel.finished(true);
     // with items, it will go to the next line
@@ -384,19 +405,16 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(1, QueueModel.getIndex());
     // still 2 as we do not remove items from queue in default setup
     assertEquals(2, QueueModel.getQueueSize());
-    { // start a track
-      List<StackItem> list = new ArrayList<StackItem>();
-      list.add(new StackItem(TestHelpers.getFile("file" + 21, true)));
-      QueueModel.push(list, true);
-      // we try to wait for the thread started inside push() to finish
-      TestHelpers.waitForThreadToFinish("Queue Push Thread");
-      assertEquals(3, QueueModel.getQueue().size());
-    }
-    // one more to finish now
+    // start a track
+    StackItem item = new StackItem(TestHelpers.getFile("file" + 21, true));
+    TestHelpers.push(item, true, false);
+    // we try to wait for the thread started inside push() to finish
+    TestHelpers.waitForThreadToFinish("Queue Push Thread");
+    assertEquals(3, QueueModel.getQueue().size());
     QueueModel.finished(true);
-    // next time it will reset the index as we do not "plan" new tracks automatically
     QueueModel.finished(true);
-    assertEquals(0, QueueModel.getIndex());
+    assertEquals(4, QueueModel.getQueue().size()); // a  planned track has been selected, we have now 4 tracks in queue
+    assertEquals(3, QueueModel.getIndex());
   }
 
   /**
@@ -413,9 +431,6 @@ public class TestQueueModel extends JajukTestCase {
     addItems(1);
     QueueModel.goTo(0);
     assertEquals(0, QueueModel.getIndex());
-    QueueModel.finished(false);
-    // Index should be incremented for next play
-    assertEquals(0, QueueModel.getQueueSize());
   }
 
   /**
@@ -684,6 +699,28 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
+   * Test method for {@link org.jajuk.services.players.QueueModel#playNext()}.
+   * We test case where we launch several tracks in simple repeat mode and we force a next.
+   *
+   * @throws Exception the exception
+   */
+  public void testPlayNextSetOfSimpleRepeat() throws Exception {
+    // with items:
+    addItems(10, true, true);
+    assertTrue(QueueModel.getItem(0).isRepeat());
+    assertTrue(QueueModel.getItem(9).isRepeat());
+    assertEquals(QueueModel.getQueueSize(), 10);
+    QueueModel.goTo(0);
+    Thread.sleep(100);
+    assertEquals(0, QueueModel.getIndex());
+    QueueModel.finished(true);
+    Thread.sleep(100);
+    assertTrue(QueueModel.getItem(0).isRepeat());
+    assertEquals(1, QueueModel.getIndex());
+    assertEquals(QueueModel.getQueueSize(), 10);
+  }
+
+  /**
    * Test method for.
    *
    * {@link org.jajuk.services.players.QueueModel#playNextAlbum()}.
@@ -701,7 +738,7 @@ public class TestQueueModel extends JajukTestCase {
   public void testGetPlayingFile() throws Exception {
     assertNull(QueueModel.getPlayingFile());
     addItems(10);
-    // QueueModel.playNext();
+    // QueueModel.finished(true);
     QueueModel.goTo(0);
     assertFalse(QueueModel.isStopped());
     assertNotNull(QueueModel.getPlayingFile());
@@ -718,7 +755,7 @@ public class TestQueueModel extends JajukTestCase {
   public void testGetPlayingFileTitle() throws Exception {
     assertNull(QueueModel.getPlayingFileTitle());
     addItems(10);
-    // QueueModel.playNext();
+    // QueueModel.finished(true);
     QueueModel.goTo(0);
     assertFalse(QueueModel.isStopped());
     assertNotNull(QueueModel.getPlayingFileTitle());
@@ -764,7 +801,7 @@ public class TestQueueModel extends JajukTestCase {
     // still true as we are not playing
     assertTrue(QueueModel.canUnmount(device));
     // try to start playing/planning
-    QueueModel.playNext();
+    QueueModel.goTo(0);
     assertFalse(QueueModel.canUnmount(QueueModel.getItem(1).getFile().getDevice()));
   }
 
@@ -785,7 +822,7 @@ public class TestQueueModel extends JajukTestCase {
     assertTrue(QueueModel.isStopped());
     addItems(10);
     // try to start playing/planning
-    QueueModel.playNext();
+    QueueModel.goTo(0);
     assertFalse(QueueModel.isStopped());
     QueueModel.stopRequest();
     assertTrue(QueueModel.isStopped());
@@ -812,26 +849,6 @@ public class TestQueueModel extends JajukTestCase {
     assertEquals(0, QueueModel.getQueueSize());
     addItems(10);
     assertEquals(10, QueueModel.getQueueSize());
-  }
-
-  /**
-   * Test method for {@link org.jajuk.services.players.QueueModel#shuffle()}.
-   *
-   * @throws Exception the exception
-   */
-  public void testShuffle() throws Exception {
-    // shuffle should not fail if queue is empty
-    QueueModel.shuffle();
-    addItems(10);
-    // verify that we have them in order before
-    assertEquals("file0", QueueModel.getItem(0).getFile().getName());
-    assertEquals("file5", QueueModel.getItem(5).getFile().getName());
-    assertEquals("file9", QueueModel.getItem(9).getFile().getName());
-    QueueModel.shuffle();
-    assertFalse("Queue: " + QueueModel.getQueue(), QueueModel.getItem(0).getFile().getName()
-        .equals("file0")
-        && QueueModel.getItem(5).getFile().getName().equals("file5")
-        && QueueModel.getItem(9).getFile().getName().equals("file9"));
   }
 
   /**
@@ -1026,16 +1043,249 @@ public class TestQueueModel extends JajukTestCase {
   }
 
   /**
+   * Album1..2..1 , reset album 2 at index 1 -> album 1, 1
+   * @throws JajukException
+   */
+  public void testRemoveAround1() throws JajukException {
+    List<StackItem> list = new ArrayList<StackItem>();
+    Album album1 = TestHelpers.getAlbum("album1", 1);
+    Album album2 = TestHelpers.getAlbum("album2", 1);
+    Directory dir = TestHelpers.getDirectory();
+    StackItem si1 = new StackItem(TestHelpers.getFile("file1", dir, true, MockPlayer.class, album1));
+    StackItem si2 = new StackItem(TestHelpers.getFile("file2", dir, true, MockPlayer.class, album2));
+    StackItem si3 = new StackItem(TestHelpers.getFile("file3", dir, true, MockPlayer.class, album1));
+    list.add(si1);
+    list.add(si2);
+    list.add(si3);
+    QueueModel.insert(list, QueueModel.getQueueSize());
+    QueueModel.resetAround(1, album2);
+    assertEquals(2, QueueModel.getCountTracksLeft());
+    assertEquals(album1, QueueModel.getItem(0).getFile().getTrack().getAlbum());
+    assertEquals(album1, QueueModel.getItem(1).getFile().getTrack().getAlbum());
+  }
+
+  /**
+   * Album1..2..2 , reset album 2 at index 1 -> album 1
+   * @throws JajukException
+   */
+  public void testRemoveAround2() throws JajukException {
+    List<StackItem> list = new ArrayList<StackItem>();
+    Album album1 = TestHelpers.getAlbum("album1", 1);
+    Album album2 = TestHelpers.getAlbum("album2", 1);
+    Directory dir = TestHelpers.getDirectory();
+    StackItem si1 = new StackItem(TestHelpers.getFile("file1", dir, true, MockPlayer.class, album1));
+    StackItem si2 = new StackItem(TestHelpers.getFile("file2", dir, true, MockPlayer.class, album2));
+    StackItem si3 = new StackItem(TestHelpers.getFile("file3", dir, true, MockPlayer.class, album2));
+    list.add(si1);
+    list.add(si2);
+    list.add(si3);
+    QueueModel.insert(list, QueueModel.getQueueSize());
+    QueueModel.resetAround(1, album2);
+    assertEquals(1, QueueModel.getCountTracksLeft());
+    assertEquals(album1, QueueModel.getItem(0).getFile().getTrack().getAlbum());
+  }
+
+  /**
+   * Album2..2..2 , reset album 2 at index 1 -> <nothing>
+   * @throws JajukException
+   */
+  public void testRemoveAround3() throws JajukException {
+    List<StackItem> list = new ArrayList<StackItem>();
+    Album album2 = TestHelpers.getAlbum("album2", 1);
+    Directory dir = TestHelpers.getDirectory();
+    StackItem si1 = new StackItem(TestHelpers.getFile("file1", dir, true, MockPlayer.class, album2));
+    StackItem si2 = new StackItem(TestHelpers.getFile("file2", dir, true, MockPlayer.class, album2));
+    StackItem si3 = new StackItem(TestHelpers.getFile("file3", dir, true, MockPlayer.class, album2));
+    list.add(si1);
+    list.add(si2);
+    list.add(si3);
+    QueueModel.insert(list, QueueModel.getQueueSize());
+    QueueModel.resetAround(1, album2);
+    assertEquals(0, QueueModel.getCountTracksLeft());
+  }
+
+  /**
+   * Album1..1..1 , reset album 2 at index 1 -> album 1,1
+   * @throws JajukException
+   */
+  public void testRemoveAround4() throws JajukException {
+    List<StackItem> list = new ArrayList<StackItem>();
+    Album album1 = TestHelpers.getAlbum("album1", 1);
+    Album album2 = TestHelpers.getAlbum("album2", 1);
+    Directory dir = TestHelpers.getDirectory();
+    StackItem si1 = new StackItem(TestHelpers.getFile("file1", dir, true, MockPlayer.class, album1));
+    StackItem si2 = new StackItem(TestHelpers.getFile("file2", dir, true, MockPlayer.class, album1));
+    StackItem si3 = new StackItem(TestHelpers.getFile("file3", dir, true, MockPlayer.class, album1));
+    list.add(si1);
+    list.add(si2);
+    list.add(si3);
+    QueueModel.insert(list, QueueModel.getQueueSize());
+    QueueModel.resetAround(1, album2);
+    assertEquals(2, QueueModel.getCountTracksLeft());
+    assertEquals(album1, QueueModel.getItem(0).getFile().getTrack().getAlbum());
+  }
+
+  /**
    * Test method for.
    *
    * @throws Exception the exception
    * {@link org.jajuk.services.players.QueueModel#remove(int, int)}.
    */
-  public void testRemove() throws Exception {
-    QueueModel.remove(0, 0);
+  public void testRemoveCountInterval() throws Exception {
     addItems(10);
-    QueueModel.remove(1, 3);
+    QueueModel.remove(fromArray(1, 2, 3));
+    Thread.sleep(100); // wait for the push thread to be done
     assertEquals(QueueModel.getQueue().toString(), 7, QueueModel.getQueueSize());
+  }
+
+  private Set<Integer> fromArray(Integer... indexes) {
+    HashSet<Integer> out = new HashSet<Integer>();
+    for (Integer i : indexes) {
+      out.add(i);
+    }
+    return out;
+  }
+
+  public void testRemoveUnplayedTracks() throws Exception {
+    Conf.setProperty(Const.CONF_STATE_CONTINUE, "true");
+    List<StackItem> items = addItems(3);
+    QueueModel.goTo(0);
+    assertEquals(0, QueueModel.getIndex());
+    assertEquals(items.get(0), QueueModel.getCurrentItem());
+    QueueModel.remove(fromArray(1, 2));
+    Thread.sleep(100); // wait for the push thread to be done
+    assertEquals(1, QueueModel.getQueueSize());
+    assertEquals(0, QueueModel.getIndex());
+    assertEquals(items.get(0), QueueModel.getCurrentItem());
+  }
+
+  public void testRemoveTracksIncludingPlaying() throws Exception {
+    Conf.setProperty(Const.CONF_STATE_CONTINUE, "true");
+    List<StackItem> items = addItems(4);
+    QueueModel.goTo(1);
+    assertEquals(1, QueueModel.getIndex());
+    assertEquals(items.get(1), QueueModel.getCurrentItem());
+    QueueModel.remove(fromArray(1, 2));
+    Thread.sleep(100); // wait for the push thread to be done
+    assertEquals(2, QueueModel.getQueueSize());
+    assertEquals(1, QueueModel.getIndex());
+    assertEquals(items.get(3), QueueModel.getCurrentItem());
+  }
+
+  public void testRemoveTracksIncludingPlayingFirstPosition() throws Exception {
+    Conf.setProperty(Const.CONF_STATE_CONTINUE, "true");
+    List<StackItem> items = addItems(4);
+    assertEquals(4, QueueModel.getQueueSize());
+    QueueModel.goTo(0);
+    assertEquals(items.get(0), QueueModel.getCurrentItem());
+    assertEquals(0, QueueModel.getIndex());
+    QueueModel.remove(fromArray(0, 1));
+    Thread.sleep(100); // wait for the push thread to be done
+    assertEquals(2, QueueModel.getQueueSize());
+    assertEquals(0, QueueModel.getIndex());
+    assertEquals(items.get(2), QueueModel.getCurrentItem());
+  }
+
+  public void testRemoveTracksIncludingPlayingLastPosition() throws Exception {
+    /** First planned track should be played */
+    Conf.setProperty(Const.CONF_STATE_CONTINUE, "true");
+    List<StackItem> items = addItems(4);
+    assertEquals(4, QueueModel.getQueueSize());
+    QueueModel.goTo(3);
+    List<StackItem> planned = QueueModel.getPlanned();
+    StackItem firstPlanned = planned.get(0);
+    assertEquals(items.get(3), QueueModel.getCurrentItem());
+    assertEquals(3, QueueModel.getIndex());
+    QueueModel.remove(fromArray(2, 3));
+    Thread.sleep(100); // wait for the push thread to be done
+    assertEquals(3, QueueModel.getQueueSize());
+    assertEquals(2, QueueModel.getIndex());
+    assertEquals(firstPlanned, QueueModel.getCurrentItem());
+  }
+
+  public void testRemoveTrackNoContinue() throws Exception {
+    /** First planned track should be played */
+    Conf.setProperty(Const.CONF_STATE_CONTINUE, "false");
+    List<StackItem> items = addItems(1);
+    assertEquals(1, QueueModel.getQueueSize());
+    QueueModel.goTo(0);
+    assertEquals(items.get(0), QueueModel.getCurrentItem());
+    assertEquals(0, QueueModel.getIndex());
+    QueueModel.remove(fromArray(0));
+    Thread.sleep(100); // wait for the push thread to be done
+    assertEquals(0, QueueModel.getQueueSize());
+    assertEquals(-1, QueueModel.getIndex());
+    assertFalse(QueueModel.isPlayingTrack());
+  }
+
+  public void testRemoveNoPlanningTrackPlaying() throws Exception {
+    /** Test a regression : when dropping playing last track in queue, next planned track is played */
+    Conf.setProperty(Const.CONF_STATE_CONTINUE, "true");
+    List<StackItem> items = addItems(10);
+    assertEquals(10, QueueModel.getQueueSize());
+    // planned tracks are file0, file1...
+    QueueModel.goTo(9);
+    assertEquals(items.get(9), QueueModel.getCurrentItem());
+    assertEquals(9, QueueModel.getIndex());
+    QueueModel.remove(9);
+    Thread.sleep(100); // wait for the push thread to be done
+    assertEquals(10, QueueModel.getQueueSize()); // dropped track should be replaced by first planned one
+    assertEquals(9, QueueModel.getIndex());
+    assertEquals(items.get(0), QueueModel.getCurrentItem());
+    assertTrue(QueueModel.isPlayingTrack());
+    assertFalse(QueueModel.getCurrentItem().isPlanned());
+  }
+
+  public void testRemoveTrackIncludingPlayingLastPosition() throws Exception {
+    /** First planned track should be played */
+    Conf.setProperty(Const.CONF_STATE_CONTINUE, "true");
+    List<StackItem> items = addItems(4);
+    assertEquals(4, QueueModel.getQueueSize());
+    QueueModel.goTo(3);
+    List<StackItem> planned = QueueModel.getPlanned();
+    StackItem firstPlanned = planned.get(0);
+    assertEquals(items.get(3), QueueModel.getCurrentItem());
+    assertEquals(3, QueueModel.getIndex());
+    QueueModel.remove(fromArray(3));
+    Thread.sleep(100); // wait for the push thread to be done
+    assertEquals(4, QueueModel.getQueueSize());
+    assertEquals(3, QueueModel.getIndex());
+    assertEquals(firstPlanned, QueueModel.getCurrentItem());
+  }
+
+  public void testRemoveTracksIncludingRepeatedAndPlayingFirstPosition() throws Exception {
+    Conf.setProperty(Const.CONF_STATE_CONTINUE, "true");
+    StackItem repeated = new StackItem(TestHelpers.getFile("repeated", true), true, true);
+    List<StackItem> items = addItems(3);
+    QueueModel.insert(repeated, 0);
+    assertEquals(repeated, QueueModel.getItem(0));
+    assertEquals(4, QueueModel.getQueueSize());
+    QueueModel.goTo(0);
+    assertEquals(repeated, QueueModel.getCurrentItem());
+    assertEquals(0, QueueModel.getIndex());
+    QueueModel.remove(fromArray(0, 1));
+    Thread.sleep(100); // wait for the push thread to be done
+    assertEquals(2, QueueModel.getQueueSize());
+    assertEquals(0, QueueModel.getIndex());
+    assertEquals(items.get(1), QueueModel.getCurrentItem());
+  }
+
+  public void testRemoveTracksIncludingRepeatedAndPlayingMiddlePosition() throws Exception {
+    Conf.setProperty(Const.CONF_STATE_CONTINUE, "true");
+    addItems(2);
+    StackItem repeated = new StackItem(TestHelpers.getFile("repetead", true), true, true);
+    QueueModel.insert(repeated, 2);
+    List<StackItem> items2 = addItems(2);
+    assertEquals(5, QueueModel.getQueueSize());
+    QueueModel.goTo(2);
+    assertEquals(repeated, QueueModel.getCurrentItem());
+    assertEquals(2, QueueModel.getIndex());
+    assertEquals(repeated, QueueModel.getCurrentItem());
+    QueueModel.remove(fromArray(1, 2, 3));
+    Thread.sleep(100); // wait for the push thread to be done
+    assertEquals(2, QueueModel.getQueueSize());
+    assertEquals(1, QueueModel.getIndex());
+    assertEquals(items2.get(1), QueueModel.getCurrentItem());
   }
 
   /**
@@ -1058,7 +1308,7 @@ public class TestQueueModel extends JajukTestCase {
   public void testGetLastPlayed() throws Exception {
     assertNull(QueueModel.getLastPlayed());
     addItems(10);
-    QueueModel.playNext();
+    QueueModel.goTo(0);
     // maybe we have one now
     assertNotNull(QueueModel.getLastPlayed());
   }
@@ -1081,8 +1331,8 @@ public class TestQueueModel extends JajukTestCase {
     addItems(10);
     assertEquals(10, QueueModel.getCountTracksLeft());
     QueueModel.goTo(0);
-    QueueModel.playNext();
-    QueueModel.playNext();
+    QueueModel.finished(true);
+    QueueModel.finished(true);
     assertEquals(8, QueueModel.getCountTracksLeft());
   }
 
@@ -1156,7 +1406,7 @@ public class TestQueueModel extends JajukTestCase {
     assertTrue(QueueModel.isStopped());
     assertFalse(QueueModel.isPlayingTrack());
     addItems(3);
-    QueueModel.playNext();
+    QueueModel.goTo(0);
     assertTrue(QueueModel.isPlayingTrack());
   }
 
@@ -1172,7 +1422,7 @@ public class TestQueueModel extends JajukTestCase {
     // QueueModel.getCurrentFileTitle());
     assertNotNull(QueueModel.getCurrentFileTitle());
     addItems(3);
-    QueueModel.playNext();
+    QueueModel.goTo(0);
     assertNotNull(QueueModel.getCurrentFileTitle());
     // should not be the same as before
     assertFalse(QueueModel.getCurrentFileTitle().equals("Ready to play"));
@@ -1224,14 +1474,14 @@ public class TestQueueModel extends JajukTestCase {
     assertTrue(QueueModel.isStopped());
     assertFalse(QueueModel.isPlayingTrack());
     addItems(3);
-    QueueModel.playNext();
+    QueueModel.goTo(0);
     assertTrue(QueueModel.isPlayingTrack());
     // Test next track will be stopped 
     QueueModel.setStopAfter(true);
     // Simulate end of file 
     QueueModel.finished();
     assertTrue(QueueModel.isStopped());
-    QueueModel.playNext();
+    QueueModel.goTo(0);
     assertTrue(QueueModel.isPlayingTrack());
     // Now test without the stop after option
     QueueModel.setStopAfter(false);

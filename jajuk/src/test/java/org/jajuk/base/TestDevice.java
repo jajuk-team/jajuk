@@ -43,16 +43,6 @@ import org.xml.sax.Attributes;
  * .
  */
 public class TestDevice extends JajukTestCase {
-  /*
-   * (non-Javadoc)
-   *
-   * @see junit.framework.TestCase#setUp()
-   */
-  @Override
-  public void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for {@link org.jajuk.base.Device#getTitle()}.
    */

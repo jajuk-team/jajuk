@@ -31,16 +31,6 @@ import org.jajuk.services.players.StackItem;
  * .
  */
 public class TestUtilFeatures extends JajukTestCase {
-  /*
-   * (non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
-   */
-  @Override
-  protected void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for.
    *

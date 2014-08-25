@@ -20,23 +20,16 @@
  */
 package org.jajuk.base;
 
-import junit.framework.TestCase;
-
+import org.jajuk.JajukTestCase;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
 
 /**
  * .
  */
-public class TestTypeManager extends TestCase {
-  /*
-   * (non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
-   */
+public class TestTypeManager extends JajukTestCase {
   @Override
-  protected void setUp() throws Exception {
-    super.setUp();
+  protected void specificSetUp() throws Exception {
     // clear to make sure previous tests did not add anything
     TypeManager.getInstance().clear();
   }

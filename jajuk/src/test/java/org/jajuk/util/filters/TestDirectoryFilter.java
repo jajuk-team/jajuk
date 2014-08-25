@@ -32,11 +32,6 @@ import org.jajuk.TestHelpers;
  * .
  */
 public class TestDirectoryFilter extends JajukTestCase {
-  @Override
-  public void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for.
    *

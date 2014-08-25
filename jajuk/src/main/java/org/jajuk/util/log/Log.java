@@ -56,8 +56,10 @@ public final class Log {
   private static int verbosity = INFO;
   /** Jajuk logger. */
   private static Logger logger;
-  /** Debug traces spool. */
-  private static List<String> alSpool;
+  /** Anonymized Debug traces spool. */
+  private static List<String> spoolAnonymized;
+  /** Clear Debug traces spool. */
+  private static List<String> spoolClear;
   /** The Constant FULL_QUALIFIED_CLASS_NAME.   */
   private static final String FULL_QUALIFIED_CLASS_NAME = Log.class.getName();
 
@@ -74,7 +76,8 @@ public final class Log {
       Log.stack(e);
     }
     logger = Logger.getLogger(Log.class.getName());
-    alSpool = new ArrayList<String>(Const.FEEDBACK_LINES);
+    spoolAnonymized = new ArrayList<String>(Const.FEEDBACK_LINES);
+    spoolClear = new ArrayList<String>(Const.FEEDBACK_LINES);
     // message for logging system start
     Log.info("******************JAJUK******************");
     Log.info("Version: " + Const.JAJUK_VERSION);
@@ -387,13 +390,34 @@ public final class Log {
   /**
    * Add this message in the memory spool.
    * 
-   * @param sMessage 
+   * @param message 
    */
-  private synchronized static void spool(String sMessage) {
-    // we maz have to make some room
-    if (alSpool.size() >= Const.FEEDBACK_LINES) {
-      alSpool.remove(0);
+  private synchronized static void spool(String message) {
+    spoolWithAnonymization(message);
+    spoolInClear(message);
+  }
+
+  private static void spoolWithAnonymization(String message) {
+    if (spoolAnonymized.size() >= Const.FEEDBACK_LINES) {
+      spoolAnonymized.remove(0);
     }
+    String anonymizedMessage = anonymize(message);
+    spoolAnonymized.add(anonymizedMessage);
+  }
+
+  private static void spoolInClear(String message) {
+    if (spoolClear.size() >= Const.FEEDBACK_LINES) {
+      spoolClear.remove(0);
+    }
+    spoolClear.add(message);
+  }
+
+  /**
+   * Anonymize a string by replacing strings between braces by stars
+   * @param sMessage the string to anonymise
+   * @return anonymized string
+   */
+  private static String anonymize(String sMessage) {
     // anonymize standard labels (with {{xxx}})
     String sAnonymizedMessage = sMessage.replaceAll("\\{\\{.*\\}\\}", "***");
     // additionally anonymize Basic Player logs
@@ -402,7 +426,7 @@ public final class Log {
       // cut away trailing stuff which is personal data
       sAnonymizedMessage = sAnonymizedMessage.substring(0, pos + 40);
     }
-    alSpool.add(sAnonymizedMessage);
+    return sAnonymizedMessage;
   }
 
   /**
@@ -426,7 +450,11 @@ public final class Log {
    * @return Spool traces
    */
   @SuppressWarnings("unchecked")
-  public static List<String> getSpool() {
-    return (List<String>) ((ArrayList<String>) alSpool).clone();
+  public static List<String> getSpool(boolean anonymized) {
+    if (anonymized) {
+      return (List<String>) ((ArrayList<String>) spoolAnonymized).clone();
+    } else {
+      return (List<String>) ((ArrayList<String>) spoolClear).clone();
+    }
   }
 }

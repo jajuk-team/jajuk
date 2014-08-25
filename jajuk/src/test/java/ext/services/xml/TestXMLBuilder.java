@@ -20,13 +20,14 @@
  */
 package ext.services.xml;
 
-import org.jajuk.JajukTestCase;
+import junit.framework.TestCase;
+
 import org.jajuk.TestHelpers;
 
 /**
  * .
  */
-public class TestXMLBuilder extends JajukTestCase {
+public class TestXMLBuilder extends TestCase {
   /**
    * Test method for.
    *

@@ -58,15 +58,10 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.UtilString;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.log.Log;
-import org.netbeans.validation.api.Problem;
-import org.netbeans.validation.api.Problems;
-import org.netbeans.validation.api.Severity;
-import org.netbeans.validation.api.Validator;
-import org.netbeans.validation.api.builtin.Validators;
-import org.netbeans.validation.api.ui.ValidationGroup;
-import org.netbeans.validation.api.ui.ValidationPanel;
 
 /**
  * Device creation wizard.
@@ -77,6 +72,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
   /** Device type combo. */
+  @SuppressWarnings("rawtypes")
   private final JComboBox jcbType;
   /** Device name text field. */
   private final JTextField jtfName;
@@ -93,6 +89,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   /** Device sync checkbox. */
   private final JCheckBox jcboxSynchronized;
   /** Other device combo. */
+  @SuppressWarnings("rawtypes")
   private final JComboBox jcbSynchronized;
   /** Bidi sync choice. */
   private final JRadioButton jrbBidirSynchro;
@@ -110,12 +107,11 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
   private String sInitialURL;
   /** A convenient NumberFormat instance. */
   private NumberFormat nformat = NumberFormat.getInstance();
-  /** Validation group. */
-  private ValidationGroup vg;
 
   /**
    * Device wizard by default, is used for void configuration.
    */
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   public DeviceWizard() {
     super(JajukMainWindow.getInstance(), true);
     devices = DeviceManager.getInstance().getDevices();
@@ -185,10 +181,6 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
     jrbBidirSynchro.addActionListener(this);
     bgSynchro.add(jrbBidirSynchro);
     bgSynchro.add(jrbUnidirSynchro);
-    // Validation
-    ValidationPanel vp = new ValidationPanel();
-    vg = vp.getValidationGroup();
-    installValidators();
     // buttons
     okp = new OKCancelPanel(this);
     // Add items
@@ -209,7 +201,6 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
     add(jcbSynchronized, "grow,wrap");
     add(jrbUnidirSynchro, "left,gap left 20,span,wrap");
     add(jrbBidirSynchro, "left,gap left 20,span,wrap");
-    add(vp, "height 50!,span,wrap");
     add(okp, "span,right");
     // Set default behaviors
     if (jcbSynchronized.getItemCount() == 0) {
@@ -222,49 +213,43 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
     okp.getOKButton().requestFocusInWindow();
   }
 
-  /**
-   * Install validators.
-   */
-  @SuppressWarnings("unchecked")
-  private void installValidators() {
+  private void validateAutoRefreshDelay() throws JajukException {
     // Auto-refresh interval validation : should be 0 or a double >= 0.5
-    vg.add(jtfAutoRefresh, Validators.REQUIRE_NON_NEGATIVE_NUMBER, Validators.NO_WHITESPACE,
-        Validators.REQUIRE_VALID_NUMBER, new Validator<String>() {
-          @Override
-          public boolean validate(Problems problems, String compName, String model) {
-            try {
-              double value = nformat.parse(model).doubleValue();
-              // If value is zero, validate the user input
-              boolean resu = (value == 0 || value >= 0.5d);
-              // If a problem occurred, add this problem to the problem stack
-              if (!resu) {
-                Problem problem = new Problem(Messages.getString("DeviceWizard.55"), Severity.FATAL);
-                problems.add(problem);
-              }
-              return resu;
-            } catch (Exception e) {
-              // This happen when the text field is not yet populated (model is
-              // void). Note that wrong number format issues are already handled
-              // by the previous Validators
-              return true;
-            }
-          }
-        });
-    // Validate device name
-    vg.add(jtfName, Validators.REQUIRE_NON_EMPTY_STRING);
-    vg.add(jtfName, new Validator<String>() {
-      @Override
-      public boolean validate(Problems problems, String compName, String model) {
-        for (Device deviceToCheck : DeviceManager.getInstance().getDevices()) {
-          // check for a new device with an existing name
-          if (bNew && (jtfName.getText().equalsIgnoreCase(deviceToCheck.getName()))) {
-            problems.add(new Problem(Messages.getErrorMessage(19), Severity.FATAL));
-            return false;
-          }
-        }
-        return true;
+    String autoRefreshDelay = jtfAutoRefresh.getText();
+    double value;
+    try {
+      value = nformat.parse(autoRefreshDelay).doubleValue();
+    } catch (Exception ex) {
+      throw new JajukException(137);
+    }
+    // If value is zero, validate the user input
+    if (value != 0 && value < 0.5d) {
+      throw new JajukException(184);
+    }
+  }
+
+  private void validateDeviceName() throws JajukException {
+    // Validate device name : not void and not an existing name
+    if (UtilString.isEmpty(jtfName.getText())) {
+      throw new JajukException(183);
+    }
+    for (Device deviceToCheck : DeviceManager.getInstance().getDevices()) {
+      // check for a new device with an existing name
+      if (bNew && jtfName.getText().equalsIgnoreCase(deviceToCheck.getName())) {
+        throw new JajukException(19);
       }
-    });
+    }
+  }
+
+  private void validateDeviceLocation() throws JajukException {
+    // Validate device url : not void and maps an existing device
+    if (UtilString.isEmpty(jtfUrl.getText())) {
+      throw new JajukException(183);
+    }
+    String url = jtfUrl.getText();
+    if (!new File(url).exists()) {
+      throw new JajukException(143);
+    }
   }
 
   /*
@@ -353,8 +338,13 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
    * Handle ok. 
    */
   private void handleOk() {
-    // Ignore the ok if there are still problems 
-    if (vg.validateAll() != null) {
+    // validate fields
+    try {
+      validateAutoRefreshDelay();
+      validateDeviceName();
+      validateDeviceLocation();
+    } catch (JajukException je) {
+      Messages.showErrorMessage(je.getCode());
       return;
     }
     new Thread("Device Wizard Action Thread") {
@@ -449,6 +439,7 @@ public class DeviceWizard extends JajukJDialog implements ActionListener, Const 
    *
    * @param device1 
    */
+  @SuppressWarnings("unchecked")
   public void updateWidgets(final Device device1) {
     bNew = false;
     setTitle(Messages.getString("DeviceWizard.0") + " : " + device1.getName());

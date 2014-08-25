@@ -25,11 +25,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import junit.framework.TestCase;
 import net.roarsoftware.lastfm.Album;
 import net.roarsoftware.lastfm.CallException;
 import net.roarsoftware.lastfm.Playlist;
 
-import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.UtilString;
@@ -37,7 +37,7 @@ import org.jajuk.util.UtilString;
 /**
  * .
  */
-public class TestLastFmAlbum extends JajukTestCase {
+public class TestLastFmAlbum extends TestCase {
   /** The Constant API_KEY.   */
   private static final String API_KEY = "711591ss6q695ps349o6681pr1oq1467";
 

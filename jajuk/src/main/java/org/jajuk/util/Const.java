@@ -76,8 +76,6 @@ public interface Const {
   int SECONDS_IN_A_MINUTE = 60;
   /** Number of minutes in an hour. */
   int MINUTES_IN_AN_HOUR = 60;
-  /** Number of pixels around window at initial startup. */
-  int FRAME_INITIAL_BORDER = 60;
   /** Maximum images cache size in MB. */
   int MAX_IMAGES_CACHE_SIZE = 100;
   /** Default webradio. */
@@ -281,7 +279,6 @@ public interface Const {
   String DETAIL_CURRENT_FILE_ID = "current file id";
   String DETAIL_CURRENT_FILE = "current file";
   String DETAIL_CURRENT_DATE = "current date";
-  String DETAIL_SPECIAL_MODE_NORMAL = "norm";
   String DETAIL_SELECTION = "selection";
   String DETAIL_ORIGIN = "origin";
   /** Provides details on the perspective that thrown the event. */
@@ -519,6 +516,8 @@ public interface Const {
   String CONF_SPLASH_SCREEN = "jajuk.splashscreen";
   /** Current item index in fifo. */
   String CONF_STARTUP_QUEUE_INDEX = "jajuk.current_file_index";
+  /** Current item index in fifo. */
+  String CONF_STATS_MIN_VALUE_GENRE_DISPLAY = "jajuk.stats.min_value_genre_display";
   /** Shuffle/novelties mode. */
   String MODE_ALBUM = "album";
   String MODE_TRACK = "track";

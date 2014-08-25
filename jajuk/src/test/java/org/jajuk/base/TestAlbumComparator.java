@@ -36,13 +36,8 @@ import org.jajuk.JajukTestCase;
  * We should also drop the direct items instantiations but use managers instead.
  */
 public class TestAlbumComparator extends JajukTestCase {
-  /* (non-Javadoc)
-   * @see org.jajuk.JajukTestCase#setUp()
-   */
   @Override
-  protected void setUp() throws Exception {
-    // TODO Auto-generated method stub
-    super.setUp();
+  protected void specificSetUp() throws Exception {
   }
 
   /**
