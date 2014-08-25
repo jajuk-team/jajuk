@@ -34,14 +34,6 @@ import org.junit.Test;
  * Test methods for {@link org.jajuk.ui.helpers.WebRadioTableModel}.
  */
 public class TestWebRadioTableModel extends JajukTestCase {
-  /* (non-Javadoc)
-   * @see org.jajuk.JajukTestCase#setUp()
-   */
-  @Override
-  protected void setUp() throws Exception {
-    super.setUp();
-  }
-
   @Test
   public void testModel() {
     // Load radios

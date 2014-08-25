@@ -46,13 +46,14 @@ import java.net.URL;
 import java.text.AttributedCharacterIterator;
 import java.util.Map;
 
-import org.jajuk.JajukTestCase;
+import junit.framework.TestCase;
+
 import org.jajuk.util.Const;
 
 /**
  * .
  */
-public class TestJSplashLabel extends JajukTestCase {
+public class TestJSplashLabel extends TestCase {
   /**
    * Test method for.
    *

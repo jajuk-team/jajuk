@@ -53,14 +53,10 @@ import org.jajuk.util.Const;
  * .
  */
 public class TestPlayerStateMediator extends JajukTestCase {
-  /* (non-Javadoc)
-   * @see org.jajuk.JajukTestCase#setUp()
-   */
   @Override
-  protected void setUp() throws Exception {
+  protected void specificSetUp() throws Exception {
     // to install actions...
     ActionManager.getInstance();
-    super.setUp();
   }
 
   /**

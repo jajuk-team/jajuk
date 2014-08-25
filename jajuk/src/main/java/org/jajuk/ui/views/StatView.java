@@ -46,6 +46,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.util.Conf;
 import org.jajuk.util.Messages;
 import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilGUI;
@@ -139,7 +140,7 @@ public class StatView extends ViewAdapter {
       // Cleanup genre with weight < 5 %
       for (Map.Entry<Genre, Integer> entry : genreNbTracks.entrySet()) {
         double d = entry.getValue();
-        if (iTotal > 0 && d / iTotal < 0.05) {
+        if (iTotal > 0 && d / iTotal < Conf.getFloat(CONF_STATS_MIN_VALUE_GENRE_DISPLAY) / 100) {
           // less than 5% -> go to others
           dOthers += d;
         } else {

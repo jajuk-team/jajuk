@@ -56,11 +56,12 @@ import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.base.Year;
 import org.jajuk.base.YearManager;
-import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.bookmark.History;
+import org.jajuk.services.core.ExitService;
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.players.QueueModel;
+import org.jajuk.services.players.StackItem;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.services.webradio.WebRadioOrigin;
@@ -381,9 +382,7 @@ public class TestHelpers {
   }
 
   /**
-   * Wait for thread to finish.
-   * 
-   *
+   * Wait for a specific thread to finish.
    * @param name 
    * @throws InterruptedException the interrupted exception
    */
@@ -398,15 +397,58 @@ public class TestHelpers {
     }
   }
 
+  public static void push(final List<StackItem> items, final boolean bKeepPrevious,
+      final boolean bPushNext) {
+    try {
+      Class<?> queueModelClass = Class.forName("org.jajuk.services.players.QueueModel");
+      Method pushMethod = queueModelClass.getDeclaredMethod("pushCommand", List.class,
+          boolean.class, boolean.class);
+      pushMethod.setAccessible(true);
+      pushMethod.invoke(null, items, bKeepPrevious, bPushNext);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public static void push(final StackItem item, final boolean bKeepPrevious, final boolean bPushNext) {
+    try {
+      Class<?> queueModelClass = Class.forName("org.jajuk.services.players.QueueModel");
+      Method pushMethod = queueModelClass.getDeclaredMethod("pushCommand", StackItem.class,
+          boolean.class, boolean.class);
+      pushMethod.setAccessible(true);
+      pushMethod.invoke(null, item, bKeepPrevious, bPushNext);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
   /**
-   * Wait for all work to finish and cleanup.
+   * Wait for all threads to finish.
+   * 
+   *
+  * @throws InterruptedException the interrupted exception
+   */
+  public static void waitForAllThreadToFinish() throws InterruptedException {
+    int count = Thread.currentThread().getThreadGroup().activeCount();
+    Log.info(count + " threads active");
+    Thread[] threads = new Thread[count];
+    Thread.currentThread().getThreadGroup().enumerate(threads);
+    for (Thread t : threads) {
+      if (t != null && t.getClass().getPackage().getName().startsWith("org.jajuk")) {
+        Log.info(t.getClass().getPackage().getName() + "/" + t.getName());
+        t.join();
+      }
+    }
+  }
+
+  /**
+   * Cleanup all the environment
    * 
    *
    * @throws InterruptedException the interrupted exception
    * @throws InvocationTargetException the invocation target exception
    */
-  public static void waitForAllWorkToFinishAndCleanup() throws InterruptedException,
-      InvocationTargetException {
+  public static void cleanup() throws InterruptedException, InvocationTargetException {
     ObservationManager.clear();
     // Reset everything
     QueueModel.stopRequest();
@@ -415,25 +457,6 @@ public class TestHelpers {
     DirectoryManager.getInstance().clear();
     cleanAllDevices();
     History.getInstance().clear();
-    // wait a bit to let deferred actions take place before we shut down
-    TestHelpers.waitForThreadToFinish("PlayPause Thread");
-    TestHelpers.waitForThreadToFinish("Cover Refresh Thread");
-    TestHelpers.waitForThreadToFinish("Queue Push Thread");
-    TestHelpers.waitForThreadToFinish("Device Refresh Thread");
-    TestHelpers.waitForThreadToFinish("Playlist Prepare Party Thread");
-    TestHelpers.waitForThreadToFinish("LastFM Update Thread");
-    TestHelpers.waitForThreadToFinish("Parameter Catalog refresh Thread");
-    TestHelpers.waitForThreadToFinish("Manual Refresh Thread");
-    // hangs... TestHelpers.waitForThreadToFinish("Observation Manager Thread");
-    // clear this for all available events
-    // for(JajukEvents event : JajukEvents.values()) {
-    // JUnitHelpers.waitForThreadToFinish("Event Executor for: " +
-    // event.toString());
-    // }
-    for (JajukEvents event : JajukEvents.values()) {
-      TestHelpers.waitForThreadToFinish("Event Executor for: " + event.toString());
-      TestHelpers.waitForThreadToFinish("Event Executor for: " + event.toString() + " no details");
-    }
     TestHelpers.clearSwingUtilitiesQueue();
     //Reset everything again as it could have been changed during threads finishing
     ObservationManager.clear();
@@ -444,6 +467,22 @@ public class TestHelpers {
     DirectoryManager.getInstance().clear();
     cleanAllDevices();
     History.getInstance().clear();
+  }
+
+  public static void forceExitState(boolean state) {
+    try {
+      Field exitingField = ExitService.class.getDeclaredField("bExiting");
+      exitingField.setAccessible(true);
+      exitingField.setBoolean(null, state);
+    } catch (SecurityException e) {
+      Log.error(e);
+    } catch (NoSuchFieldException e) {
+      Log.error(e);
+    } catch (IllegalArgumentException e) {
+      Log.error(e);
+    } catch (IllegalAccessException e) {
+      Log.error(e);
+    }
   }
 
   /**
@@ -473,9 +512,8 @@ public class TestHelpers {
   }
 
   public static org.jajuk.base.File getFile(String name, Directory dir, boolean mount,
-      Class<? extends IPlayerImpl> clazz) {
+      Class<? extends IPlayerImpl> clazz, Album album) {
     Genre genre = getGenre();
-    Album album = getAlbum("name", 0);
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE); // don't read covers for
     // this test
     Artist artist = getArtist("myartist");
@@ -498,6 +536,12 @@ public class TestHelpers {
       throw new RuntimeException(e);
     }
     return file;
+  }
+
+  public static org.jajuk.base.File getFile(String name, Directory dir, boolean mount,
+      Class<? extends IPlayerImpl> clazz) {
+    Album album = getAlbum("name", 0);
+    return getFile(name, dir, mount, clazz, album);
   }
 
   /**

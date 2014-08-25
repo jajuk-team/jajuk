@@ -32,15 +32,12 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
 
 /**
- * .
+ * Single repeat mode action
  */
+@SuppressWarnings("serial")
 public class RepeatModeAction extends JajukAction {
-  /** Generated serialVersionUID. */
-  private static final long serialVersionUID = 1L;
-
   /**
    * Instantiates a new repeat mode action.
    */
@@ -57,20 +54,23 @@ public class RepeatModeAction extends JajukAction {
    */
   @Override
   public void perform(ActionEvent evt) {
-    boolean b = Conf.getBoolean(Const.CONF_STATE_REPEAT);
-    UtilGUI.setRepeatSingleGui(!b);
-    // disabling repeat for an item forced unset for all items and enabling single repeat unset
-    // repeat for all items and then set it only for current track
+    boolean newSingleRepeatState = !Conf.getBoolean(Const.CONF_STATE_REPEAT);
+    Conf.setProperty(Const.CONF_STATE_REPEAT, Boolean.toString(newSingleRepeatState));
+    //Disable repeat mode for every item (we will set it again later if required) 
     QueueModel.setRepeatModeToAll(false);
-    if (!b) { // enabled button
+    if (newSingleRepeatState) {
+      // single repeat and repeat all modes are mutually exclusive
+      Conf.setProperty(Const.CONF_STATE_REPEAT_ALL, Const.FALSE);
       // if FIFO is not void, repeat over current item
       StackItem item = QueueModel.getCurrentItem();
       if (item != null) {
         item.setRepeat(true);
       }
     }
-    // computes planned tracks
+    // Computes planned tracks without clearing existing planned tracks if any
     QueueModel.computesPlanned(false);
+    // Refresh mode buttons
+    ObservationManager.notify(new JajukEvent(JajukEvents.MODE_STATUS_CHANGED));
     // Refresh Queue View
     ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
   }

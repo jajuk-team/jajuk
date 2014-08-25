@@ -21,7 +21,6 @@
 package org.jajuk.ui.helpers;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.jajuk.base.File;
 import org.jajuk.services.players.Player;
@@ -96,21 +95,6 @@ public final class JajukTimer {
   public void removeTrackTime(File file) {
     if (file != null) {
       lTimeToPlay -= file.getTrack().getDuration();
-    }
-  }
-
-  /**
-   * Remove time of the given set of files.
-   * 
-   * @param alFiles The list of files which duration to remove from the overall playing time.
-   */
-  public void removeTrackTime(List<File> alFiles) {
-    Iterator<File> it = alFiles.iterator();
-    while (it.hasNext()) {
-      File file = it.next();
-      if (file != null) {
-        removeTrackTime(it.next());
-      }
     }
   }
 

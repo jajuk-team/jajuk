@@ -38,14 +38,8 @@ import org.jajuk.util.Const;
  * TODO: some more coverage is possible by enhancing the tests accordingly.
  */
 public class TestDirectory extends JajukTestCase {
-  /*
-   * (non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
-   */
   @Override
-  protected void setUp() throws Exception {
-    super.setUp();
+  protected void specificSetUp() throws Exception {
     // reset some conf-options
     Conf.setProperty(Const.CONF_OPTIONS_HIDE_UNMOUNTED, "false");
   }

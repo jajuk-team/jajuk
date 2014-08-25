@@ -50,12 +50,8 @@ public class TestFindDuplicateTracksAction extends JajukTestCase {
   Directory dir;
   AlbumArtist albumArtist;
 
-  /* (non-Javadoc)
-   * @see org.jajuk.JajukTestCase#setUp()
-   */
   @Override
-  public void setUp() throws Exception {
-    super.setUp();
+  public void specificSetUp() throws Exception {
     // Populate tracks and files
     dir = TestHelpers.getDirectory();
     dir.getDevice().mount(false);

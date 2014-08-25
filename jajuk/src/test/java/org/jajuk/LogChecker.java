@@ -32,7 +32,8 @@ import org.jajuk.util.log.Log;
 
 /**
  * This Test is used to check conveniently jajuk log content to find special
- * warnings or errors that may imply a problem Note that this test only work
+ * warnings or errors that may imply a problem. 
+ * <br/> Note that this test only work
  * when redirecting stdin et stderr to a file named /tmp/jajuk_out.log
  */
 public class LogChecker extends TestCase {
@@ -40,9 +41,6 @@ public class LogChecker extends TestCase {
   private static final File FILE_PATH = SessionService.getConfFileByPath("jajuk.log");
   private String logs;
 
-  /* (non-Javadoc)
-   * @see junit.framework.TestCase#setUp()
-   */
   @Override
   public void setUp() throws Exception {
     try {

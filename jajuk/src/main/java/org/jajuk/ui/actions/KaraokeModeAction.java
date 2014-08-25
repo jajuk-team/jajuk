@@ -22,7 +22,9 @@ package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
 
-import org.jajuk.ui.widgets.JajukJMenuBar;
+import org.jajuk.events.JajukEvent;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -32,10 +34,8 @@ import org.jajuk.util.Messages;
 /**
  * Karaoke mode state change action.
  */
+@SuppressWarnings("serial")
 public class KaraokeModeAction extends JajukAction {
-  /** Generated serialVersionUID. */
-  private static final long serialVersionUID = 1L;
-
   /**
    * Instantiates a new karaoke mode action.
    */
@@ -49,8 +49,8 @@ public class KaraokeModeAction extends JajukAction {
    */
   @Override
   public void perform(ActionEvent evt) {
-    boolean b = Boolean.valueOf(Conf.getString(Const.CONF_STATE_KARAOKE));
-    Conf.setProperty(Const.CONF_STATE_KARAOKE, Boolean.toString(!b));
-    JajukJMenuBar.getInstance().setKaraokeSelected(!b);
+    Conf.invert(Const.CONF_STATE_KARAOKE);
+    // Refresh mode buttons
+    ObservationManager.notify(new JajukEvent(JajukEvents.MODE_STATUS_CHANGED));
   }
 }

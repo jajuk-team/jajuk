@@ -29,16 +29,10 @@ import org.jajuk.util.error.JajukException;
  * .
  */
 public class TestLog extends JajukTestCase {
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.JajukTestCase#setUp()
-   */
   @Override
-  protected void setUp() throws Exception {
+  protected void specificSetUp() throws Exception {
     // make sure we have logging initialized for these tests
     Log.init();
-    super.setUp();
   }
 
   /**
@@ -264,7 +258,7 @@ public class TestLog extends JajukTestCase {
    * @param expected 
    */
   private void verifySpool(String substring, boolean expected) {
-    List<String> list = Log.getSpool();
+    List<String> list = Log.getSpool(true);
     for (String str : list) {
       if (str.contains(substring)) {
         // expected => return, not expected => fail

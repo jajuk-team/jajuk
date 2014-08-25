@@ -28,11 +28,6 @@ import org.jajuk.util.Const;
  * .
  */
 public class TestNotificatorFactory extends JajukTestCase {
-  @Override
-  protected void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for.
    *

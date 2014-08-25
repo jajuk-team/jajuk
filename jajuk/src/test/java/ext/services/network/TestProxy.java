@@ -27,23 +27,19 @@ import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
 
-import org.jajuk.JajukTestCase;
+import junit.framework.TestCase;
+
 import org.jajuk.util.log.Log;
 
 /**
  * .
  */
-public class TestProxy extends JajukTestCase {
+public class TestProxy extends TestCase {
   /** The Constant PROXY_PORT.   */
   private static final int PROXY_PORT = 0; // auto-choose
   ServerSocket socket;
   boolean bStop = false;
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
-   */
   @Override
   protected void setUp() throws Exception {
     socket = new ServerSocket(PROXY_PORT);
@@ -64,7 +60,6 @@ public class TestProxy extends JajukTestCase {
     };
     thread.setDaemon(true); // to finish tests even if this is still running
     thread.start();
-    super.setUp();
   }
 
   /*

@@ -64,7 +64,6 @@ import org.jajuk.events.Observer;
 import org.jajuk.services.dj.DigitalDJ;
 import org.jajuk.services.dj.DigitalDJManager;
 import org.jajuk.services.players.Player;
-import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.ActionUtil;
 import org.jajuk.ui.actions.JajukAction;
@@ -342,9 +341,9 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     eventSubjectSet.add(JajukEvents.PLAYER_PLAY);
     eventSubjectSet.add(JajukEvents.PLAYER_PAUSE);
     eventSubjectSet.add(JajukEvents.PLAYER_RESUME);
-    eventSubjectSet.add(JajukEvents.SPECIAL_MODE);
+    eventSubjectSet.add(JajukEvents.SMART_FUNCTION_LAUNCHED);
     eventSubjectSet.add(JajukEvents.ZERO);
-    eventSubjectSet.add(JajukEvents.REPEAT_MODE_STATUS_CHANGED);
+    eventSubjectSet.add(JajukEvents.MODE_STATUS_CHANGED);
     eventSubjectSet.add(JajukEvents.CLEAR_HISTORY);
     eventSubjectSet.add(JajukEvents.VOLUME_CHANGED);
     eventSubjectSet.add(JajukEvents.DJS_CHANGE);
@@ -449,23 +448,8 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
           jsVolume.addMouseWheelListener(CommandJPanel.this);
         } else if (JajukEvents.PLAYER_PLAY.equals(subject)) {
           jsVolume.setEnabled(!Conf.getBoolean(Const.CONF_BIT_PERFECT));
-        } else if (JajukEvents.SPECIAL_MODE.equals(subject)) {
-          if (ObservationManager.getDetail(event, Const.DETAIL_ORIGIN).equals(
-              Const.DETAIL_SPECIAL_MODE_NORMAL)) {
-            // deselect shuffle mode
-            Conf.setProperty(Const.CONF_STATE_SHUFFLE, Const.FALSE);
-            JajukJMenuBar.getInstance().setShuffleSelected(false);
-            CommandJPanel.getInstance().jbShuffle.setSelected(false);
-            // computes planned tracks
-            QueueModel.computesPlanned(true);
-          }
-        } else if (JajukEvents.REPEAT_MODE_STATUS_CHANGED.equals(subject)) {
-          if (ObservationManager.getDetail(event, Const.DETAIL_SELECTION).equals(Const.FALSE)) {
-            // deselect repeat mode
-            Conf.setProperty(Const.CONF_STATE_REPEAT, Const.FALSE);
-            JajukJMenuBar.getInstance().setRepeatSelected(false);
-            CommandJPanel.getInstance().jbRepeat.setSelected(false);
-          }
+        } else if (JajukEvents.MODE_STATUS_CHANGED.equals(subject)) {
+          updateModesGUIStatus();
         } else if (JajukEvents.VOLUME_CHANGED.equals(event.getSubject())) {
           // Update volume GUI
           jsVolume.removeChangeListener(CommandJPanel.this);
@@ -547,29 +531,12 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
   }
 
   /**
-   * Sets the repeat selected.
-   * 
-   * @param b the new repeat selected
+   * Update mode buttons after a mode change
    */
-  public void setRepeatSelected(final boolean b) {
-    this.jbRepeat.setSelected(b);
-  }
-
-  /**
-   * Sets the repeat all selected.
-   * 
-   * @param b the new repeat all selected
-   */
-  public void setRepeatAllSelected(final boolean b) {
-    this.jbRepeatAll.setSelected(b);
-  }
-
-  /**
-   * Sets the shuffle selected.
-   * 
-   * @param b wether the shuffle mode is selected
-   */
-  public void setShuffleSelected(final boolean b) {
-    this.jbShuffle.setSelected(b);
+  private void updateModesGUIStatus() {
+    this.jbRepeat.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT));
+    this.jbRepeatAll.setSelected(Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL));
+    this.jbContinue.setSelected(Conf.getBoolean(Const.CONF_STATE_CONTINUE));
+    this.jbShuffle.setSelected(Conf.getBoolean(Const.CONF_STATE_SHUFFLE));
   }
 }

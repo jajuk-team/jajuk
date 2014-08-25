@@ -25,9 +25,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.JOptionPane;
 
@@ -138,7 +141,7 @@ public final class QueueModel {
   }
 
   /**
-   * Remove all items from the given album just before and after the given
+   * Remove current item (it is always removed independently of its album) and all items from the given album just before and after the given
    * index, i.e. remove all tracks before and after the current one that have
    * the same album.
    * 
@@ -148,19 +151,20 @@ public final class QueueModel {
    *            The album to remove.
    */
   public static void resetAround(int index, Album album) {
-    int begin = 0;
-    int end = 0;
+    Set<Integer> indexesToRemove = new TreeSet<Integer>();
+    // Add provided index, this one is always removed
+    indexesToRemove.add(index);
     for (int i = index; i >= 0; i--) {
       if (queue.get(i).getFile().getTrack().getAlbum().equals(album)) {
-        begin = i;
+        indexesToRemove.add(i);
       }
     }
     for (int i = index; i < queue.size(); i++) {
       if (queue.get(i).getFile().getTrack().getAlbum().equals(album)) {
-        end = i;
+        indexesToRemove.add(i);
       }
     }
-    remove(begin, end);
+    remove(indexesToRemove);
   }
 
   /**
@@ -493,7 +497,7 @@ public final class QueueModel {
    */
   public static void finished(boolean forceNext) {
     try {
-      // Tell jajuk not to enable fade-out for this kind o stop request
+      // Tell jajuk not to enable fade-out for this kind of stop request
       bInternalStop = true;
       // If no playing item, just leave
       StackItem current = getCurrentItem();
@@ -564,7 +568,9 @@ public final class QueueModel {
    * @param current
    */
   private static synchronized void computeNewIndex(boolean forceNext, StackItem current) {
-    if (Conf.getBoolean(Const.CONF_STATE_SHUFFLE) && queue.size() > 1) {
+    if (Conf.getBoolean(Const.CONF_STATE_SHUFFLE) && queue.size() > 1
+    // In repeat mode, shuffle has no effect
+        && !Conf.getBoolean(Const.CONF_STATE_REPEAT)) {
       index = UtilSystem.getRandom().nextInt(queue.size() - 1);
     } else if (current.isRepeat()) {
       // if the track was in repeat mode, don't remove it from the
@@ -584,8 +590,6 @@ public final class QueueModel {
         }
       }
     } else if (index < queue.size()) {
-      StackItem item = queue.get(index);
-      JajukTimer.getInstance().removeTrackTime(item.getFile());
       index++;
     }
   }
@@ -610,7 +614,7 @@ public final class QueueModel {
    * To do when nothing more is to played,.
    */
   private static void endOfQueueReached() {
-    reset();
+    stopRequest();
     if (queue.size() > 0) {
       ObservationManager.notify(new JajukEvent(JajukEvents.PLAYER_STOP));
     } else {
@@ -637,8 +641,7 @@ public final class QueueModel {
        */
       ObservationManager.notifySync(new JajukEvent(JajukEvents.PLAY_OPENING));
       // Check if we are in single repeat mode, transfer it to new
-      // launched
-      // track
+      // launched track
       if (Conf.getBoolean(Const.CONF_STATE_REPEAT)) {
         getCurrentItem().setRepeat(true);
         ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
@@ -772,8 +775,7 @@ public final class QueueModel {
         queue.addPlanned(item);
       } catch (JajukException je) {
         // can be thrown if FileManager return a null file (like
-        // when
-        // reaching end of collection)
+        // when reaching the end of the collection)
         break;
       }
     }
@@ -803,6 +805,10 @@ public final class QueueModel {
       // If we are playing first item, keep index = 0
       if (index > 0) {
         index--;
+      }
+      // Except if we are in full repeat, then we jump to last item
+      else if (Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL)) {
+        index = queue.size() - 1;
       }
       launch();
     } catch (Exception e) {
@@ -995,13 +1001,13 @@ public final class QueueModel {
   /**
    * Get an item at given index in FIFO.
    * 
-   * @param lIndex
+   * @param index
    *            : index
    * 
    * @return stack item
    */
-  public static StackItem getItem(int lIndex) {
-    return queue.get(lIndex);
+  public static StackItem getItem(int index) {
+    return queue.get(index);
   }
 
   /**
@@ -1095,21 +1101,6 @@ public final class QueueModel {
    */
   public static int getQueueSize() {
     return queue.size();
-  }
-
-  /**
-   * Shuffle the FIFO, used when user select the Random mode.
-   */
-  public static void shuffle() {
-    if (queue.size() > 1) {
-      if (index >= 0) {
-        queue.get(index);
-      }
-      UtilFeatures.forcedShuffle(queue);
-      // Refresh Queue View
-      ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
-    }
-    queue.clearPlanned(); // force recomputes planned tracks
   }
 
   /**
@@ -1214,28 +1205,81 @@ public final class QueueModel {
   }
 
   /**
-   * Remove files at specified positions.
+   * Remove a track at specified index from the queue model.
    * 
-   * @param iStart
-   *            Position from where to start removing.
-   * @param iStop
-   *            Position from up to where items are removed.
+   * @param int index
+   *            index of the item to remove
+   *               
+   **/
+  public static void remove(final int index) {
+    Set<Integer> indexes = new HashSet<Integer>(1);
+    indexes.add(index);
+    remove(indexes);
+  }
+
+  /**
+   * Remove files at specified indexes.
+     * @param Set<Integer> indexes
+   *            set of index to drop. We expect the array to contain integers sorted by ascendent order. The set may be void (a warning is then logged) but not null
    */
-  public static void remove(int iStart, int iStop) {
-    if (iStart <= iStop && iStart >= 0 && iStop < queue.size() + queue.sizePlanned()) {
-      // check size drop items from the end to the beginning
-      for (int i = iStop; i >= iStart; i--) {
-        StackItem item = queue.get(i);
-        JajukTimer.getInstance().removeTrackTime(item.getFile());
-        // remove this file from fifo
-        queue.remove(i);
-        if (i <= index) {
-          index--;
-        }
-        // Recomputes all planned tracks from last file in fifo
-        computesPlanned(true);
+  public static void remove(final Set<Integer> initialIndexes) {
+    List<Integer> indexes = new ArrayList<Integer>(initialIndexes);
+    // controls indexes
+    if (indexes.size() == 0) {
+      Log.warn("Removal required for a void list of indexes");
+      return;
+    }
+    for (int indexToRemove : indexes) {
+      if (indexToRemove < 0 || indexToRemove >= queue.size()) {
+        throw new IllegalStateException("Illegal removal index : " + index + " / " + queue.size()
+            + " / " + queue.sizePlanned());
       }
     }
+    boolean removePlayedTrack = isPlayingTrack() && initialIndexes.contains(QueueModel.index);
+    boolean removePlayedTrackThatIsLastInQueue = removePlayedTrack
+        && indexes.get(indexes.size() - 1) == (queue.size() - 1);
+    StackItem firstPlannedTrack = null;
+    List<StackItem> plannedQueue = QueueModel.getPlanned();
+    if (plannedQueue.size() > 0) {
+      firstPlannedTrack = plannedQueue.get(0);
+      firstPlannedTrack.setPlanned(false);
+    }
+    for (int indexToRemove : indexes) {
+      // Remove this file from fifo and recompute current index if required.
+      // We have to decrement current index if we drop tracks prior current or 
+      // if we dropped the last item.
+      queue.remove(indexToRemove);
+      if (indexToRemove < index || removePlayedTrackThatIsLastInQueue) {
+        index--;
+      }
+      // Recompute indexes to remove to take into account the offset created by the removal.
+      // First indexes may become negative, this is not an issue as they are already processed.
+      int comp = 0;
+      for (int i : indexes) {
+        if (i >= indexToRemove) {
+          indexes.set(comp, i - 1);
+        }
+        comp++;
+      }
+    }
+    // Take launcher actions due to removals
+    // If this is the playing track, stop it before dropping it
+    // However, we have an issue if we remove the last file of the queue if it is playing : the new first 
+    // planned track of the new queue is the removed file itself so we would replay the removed track again. 
+    // To avoid this, we store the first planned track and we force it.  
+    if (removePlayedTrack) {
+      if (removePlayedTrackThatIsLastInQueue) {
+        if (firstPlannedTrack != null) { // null is not in continue mode
+          push(firstPlannedTrack, false);
+        } else {
+          stopRequest();
+        }
+      } else {
+        goTo(index);
+      }
+    }
+    // Recomputes all planned tracks from last file in fifo
+    computesPlanned(true);
   }
 
   /**

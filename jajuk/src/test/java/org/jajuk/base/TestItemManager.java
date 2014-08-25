@@ -37,11 +37,6 @@ import org.jajuk.util.Messages;
  * .
  */
 public class TestItemManager extends JajukTestCase {
-  @Override
-  protected void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for {@link org.jajuk.base.ItemManager#ItemManager()}.
    */

@@ -8,7 +8,7 @@
   <cmdLine>TEST_FLAG_REPLACED_BY_ANT</cmdLine>
   <priority>normal</priority>
   <downloadUrl>http://java.com/download</downloadUrl>
-  <supportUrl>http://trac.jajuk.info/</supportUrl>
+  <supportUrl>http://www.java.com/en/download/help/</supportUrl>
   <customProcName>false</customProcName>
   <stayAlive>false</stayAlive>
   <manifest></manifest>

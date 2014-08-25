@@ -457,11 +457,41 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
     }
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.jajuk.ui.views.AbstractTreeView#scrollTo(org.jajuk.base.Item)
-   */
+  @Override
+  void selectNodes(List<Item> items) {
+    if (items == null || items.size() == 0) {
+      Log.warn("None item to select in Tree view");
+      return;
+    }
+    // Set manual change because we force here tree selection and
+    // we don't want to force table views to synchronize
+    bInternalAction = true;
+    try {
+      // Clear selection so we only select new synchronized item
+      jtree.getSelectionModel().clearSelection();
+      for (Item item : items) {
+        // Expand recursively item's directory because of the lazy loading stuff
+        expandRecursively(item);
+        // Now scroll to the item and select it
+        for (int i = 0; i < jtree.getRowCount(); i++) {
+          Object o = jtree.getPathForRow(i).getLastPathComponent();
+          if (o instanceof FileNode) {
+            o = ((FileNode) o).getFile();
+          } else if (o instanceof PlaylistFileNode) {
+            o = ((PlaylistFileNode) o).getPlaylistFile();
+          } else {
+            continue;
+          }
+          if (item.equals(o)) {
+            jtree.getSelectionModel().addSelectionPath(jtree.getPathForRow(i));
+          }
+        }
+      }
+    } finally {
+      bInternalAction = false;
+    }
+  }
+
   @Override
   void scrollTo(Item item) {
     // Make sure item is a file (may be webradio)
@@ -472,8 +502,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
     // we don't want to force table views to synchronize
     bInternalAction = true;
     try {
-      // Clear selection so we only select new synchronized item
-      jtree.getSelectionModel().clearSelection();
       // Expand recursively item's directory because of the lazy loading stuff
       expandRecursively(item);
       // Now scroll to the item and select it
@@ -488,7 +516,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
         }
         if (item.equals(o)) {
           jtree.scrollRowToVisible(i);
-          jtree.getSelectionModel().addSelectionPath(jtree.getPathForRow(i));
         }
       }
     } finally {
@@ -829,8 +856,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
       if (paths == null || paths.length == 0) {
         return;
       }
-      int items = 0;
-      long lSize = 0;
       // get all components recursively
       selectedRecursively.clear();
       alSelected.clear();
@@ -862,23 +887,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
           }
         }
       }
-      // Compute recursive selection size, nb of items...
-      for (Item item : selectedRecursively) {
-        if (item instanceof File) {
-          lSize += ((File) item).getSize();
-        }
-      }
-      items = selectedRecursively.size();
-      lSize /= 1048576; // set size in MB
-      StringBuilder sbOut = new StringBuilder().append(items).append(
-          Messages.getString("FilesTreeView.52"));
-      if (lSize > 1024) { // more than 1024 MB -> in GB
-        sbOut.append(lSize / 1024).append('.').append(lSize % 1024)
-            .append(Messages.getString("FilesTreeView.53"));
-      } else {
-        sbOut.append(lSize).append(Messages.getString("FilesTreeView.54"));
-      }
-      InformationJPanel.getInstance().setSelection(sbOut.toString());
+      updateSelectionMessage();
       // Notify the tree selection change (used by tree/table sync)
       if (!bInternalAction) {
         Properties properties = new Properties();
@@ -905,6 +914,28 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
           && alSelected.get(0) instanceof Playlist);
       // Update preference menu
       pjmTracks.resetUI(alSelected);
+    }
+
+    private void updateSelectionMessage() {
+      long lSize = 0;
+      int items;
+      // Compute recursive selection size, nb of items...
+      for (Item item : selectedRecursively) {
+        if (item instanceof File) {
+          lSize += ((File) item).getSize();
+        }
+      }
+      items = selectedRecursively.size();
+      lSize /= 1048576; // set size in MB
+      StringBuilder sbOut = new StringBuilder().append(items).append(
+          Messages.getString("FilesTreeView.52"));
+      if (lSize > 1024) { // more than 1024 MB -> in GB
+        sbOut.append(lSize / 1024).append('.').append(lSize % 1024)
+            .append(Messages.getString("FilesTreeView.53"));
+      } else {
+        sbOut.append(lSize).append(Messages.getString("FilesTreeView.54"));
+      }
+      InformationJPanel.getInstance().setSelection(sbOut.toString());
     }
   }
 

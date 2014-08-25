@@ -1,3 +1,4 @@
+infinitest.filters
 
 # Ignore classes
 bin/
@@ -5,3 +6,4 @@ bin/
 # maven built directories
 target/
 
+/_CurrentlySelectedTest.launch

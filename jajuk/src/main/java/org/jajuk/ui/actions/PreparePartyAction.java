@@ -27,7 +27,7 @@ import javax.swing.JComponent;
 
 import org.jajuk.base.Item;
 import org.jajuk.base.Playlist;
-import org.jajuk.ui.wizard.PreparePartyWizard;
+import org.jajuk.ui.wizard.prepare_party.PreparePartyWizard;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;

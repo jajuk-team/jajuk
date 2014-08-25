@@ -229,6 +229,12 @@ public abstract class AbstractTreeView extends ViewAdapter {
   abstract void scrollTo(Item item);
 
   /**
+   * Select a set of items
+   * @param items items to select
+   */
+  abstract void selectNodes(List<Item> items);
+
+  /**
    * Add keystroke support on the tree.
    */
   private void setKeystrokes() {
@@ -329,18 +335,17 @@ public abstract class AbstractTreeView extends ViewAdapter {
             return;
           }
           @SuppressWarnings("unchecked")
-          List<Item> selection = (List<Item>) details.get(Const.DETAIL_SELECTION);
+          final List<Item> selection = (List<Item>) details.get(Const.DETAIL_SELECTION);
           if (selection.size() == 0) {
             return;
           }
-          // for tree/table consideration, we only expand the first found item, we don't
-          // support multiple expands
           final Item item = selection.get(0);
           // Do not scroll if a webradio has been launched
-          if (item instanceof org.jajuk.base.File) {
+          if (item instanceof org.jajuk.base.File | item instanceof org.jajuk.base.Track) {
             SwingUtilities.invokeLater(new Runnable() {
               @Override
               public void run() {
+                selectNodes(selection);
                 scrollTo(item);
               }
             });

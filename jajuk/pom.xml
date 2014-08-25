@@ -4,10 +4,9 @@
 	<groupId>org.jajuk</groupId>
 	<artifactId>jajuk</artifactId>
 	<name>Jajuk</name>
-	<version>1.11dev</version>
+	<version>1.11-SNAPSHOT</version>
 	<description>Jajuk is a Java music organizer for all platforms. The
-		main goal
-		of this project is to provide a fully-featured application to
+		main goal of this project is to provide a fully-featured application to
 		advanced users with large or scattered music collections.</description>
 	<url>http://jajuk.info</url>
 	<issueManagement>
@@ -98,6 +97,11 @@
 			<groupId>jfree</groupId>
 			<artifactId>jcommon</artifactId>
 			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.qdwizard</groupId>
+			<artifactId>qdwizard</artifactId>
+			<version>4.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-collections</groupId>
@@ -284,15 +288,6 @@
 			<version>1.9.5-1</version>
 			<scope>runtime</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>netbeans</groupId>
-			<artifactId>simple_validation</artifactId>
-			<version>0.4</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/simple_validation-0.4.jar</systemPath>
-		</dependency>
-
 	</dependencies>
 
 	<reporting>

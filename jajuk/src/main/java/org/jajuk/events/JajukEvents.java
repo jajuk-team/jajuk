@@ -24,8 +24,8 @@ package org.jajuk.events;
  * .
  */
 public enum JajukEvents {
-  /** repeat mode changed. */
-  REPEAT_MODE_STATUS_CHANGED,
+  /** At least one mode (shuffle, repeat, repaet all, continue ...) has changed. */
+  MODE_STATUS_CHANGED,
   /** new device. */
   DEVICE_NEW,
   /** removed device. */
@@ -67,8 +67,8 @@ public enum JajukEvents {
   WEBRADIO_INFO_UPDATED,
   /** a reinit has been required. */
   ZERO,
-  /** special mode (global shuffle, novelties, bestof...) */
-  SPECIAL_MODE,
+  /** Smart functions (global shuffle, novelties, bestof...) */
+  SMART_FUNCTION_LAUNCHED,
   /** an error occurred during a play. */
   PLAY_ERROR,
   /** A track is opening. */

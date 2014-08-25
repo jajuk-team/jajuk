@@ -34,17 +34,13 @@ import org.jajuk.util.Const;
  * .
  */
 public class TestAlarmManager extends JajukTestCase {
-  /* (non-Javadoc)
-   * @see org.jajuk.JajukTestCase#setUp()
-   */
   @Override
-  protected void setUp() throws Exception {
+  protected void specificSetUp() throws Exception {
     // make sure the FileManager is registered correctly for each invocation
     // this is done during the first access to the singleton
     FileManager.getInstance();
     // clear File Manager to avoid files being left in there and causing trouble
     FileManager.getInstance().clear();
-    super.setUp();
   }
 
   /**

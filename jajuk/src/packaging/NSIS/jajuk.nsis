@@ -112,6 +112,8 @@ InstallDirRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${App
 !insertmacro MUI_UNPAGE_INSTFILES
 !insertmacro MUI_UNPAGE_FINISH
 
+!include "x64.nsh"
+
 
 # -------------------------------------------------------------------
 # Multi-Language Support
@@ -150,6 +152,12 @@ Section
   File /r "/tmp/jajuk-dist/jajuk/LICENSE-GPL.txt"
   File /r "/tmp/mplayer/windows/mplayer.exe"
   File /r "/tmp/jajuk-dist/jajuk/README.html"
+  ${If} ${RunningX64}
+    Rename "$INSTDIR\lib\lib64\JIntellitype.dll" "$INSTDIR\bin\JIntellitype.dll"
+  ${else}
+    Rename "$INSTDIR\lib\lib32\JIntellitype.dll" "$INSTDIR\bin\JIntellitype.dll"
+  ${EndIf}
+   
 SectionEnd
 
 

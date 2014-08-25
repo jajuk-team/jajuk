@@ -124,4 +124,9 @@ public class Year extends LogicalItem implements Comparable<Year> {
   boolean looksValid() {
     return value > 1000 && value < 3000;
   }
+
+  @Override
+  public String toString() {
+    return Long.toString(value);
+  }
 }

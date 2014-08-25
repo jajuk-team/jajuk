@@ -51,11 +51,6 @@ import org.jajuk.util.log.Log;
  * .
  */
 public class TestPreparePartyAction extends JajukTestCase {
-  @Override
-  public void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for.
    *

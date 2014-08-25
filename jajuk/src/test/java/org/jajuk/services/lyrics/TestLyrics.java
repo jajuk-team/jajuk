@@ -63,14 +63,8 @@ public class TestLyrics extends JajukTestCase {
     TestHelpers.executePrivateConstructor(LyricsService.class);
   }
 
-  /**
-   * Test setup.
-   *
-   * @throws Exception Signals that an exception has occurred.
-   */
   @Override
-  public void setUp() throws Exception {
-    super.setUp();
+  public void specificSetUp() throws Exception {
     // to first cover this method while no providers are loaded yet
     LyricsService.getProviders();
     tmp = TestHelpers.getFile("test.tmp", true).getFIO();

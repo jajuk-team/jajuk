@@ -25,15 +25,7 @@ import org.jajuk.TestHelpers;
 import org.jajuk.base.File;
 import org.jajuk.util.error.JajukException;
 
-/**
- * .
- */
 public class TestStackItem extends JajukTestCase {
-  @Override
-  public void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for {@link org.jajuk.services.players.StackItem#hashCode()}.
    *

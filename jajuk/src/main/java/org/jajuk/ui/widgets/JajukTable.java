@@ -77,8 +77,12 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
   private final String sConf;
-  /** User Selection*. */
+  /** User Selection
+   *  <br>KEEP THIS LIST because actions are mapped to this object directly : 
+   * {@code jmiFileCopyURL.putClientProperty(Const.DETAIL_CONTENT, editorTable.getSelection()); 
+   */
   private final List<Item> selection = new ArrayList<Item>();
+  /** DOCUMENT_ME. */
   private final JPopupMenu jmenu;
   /** Specific action on double click. */
   private ILaunchCommand command;
@@ -121,9 +125,8 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
    *
    * @return drop row
    */
-  @SuppressWarnings("cast")
   public int getDropRow() {
-    JTable.DropLocation dl = (JTable.DropLocation) getDropLocation();
+    JTable.DropLocation dl = getDropLocation();
     return dl.getRow();
   }
 
@@ -477,7 +480,6 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
         return;
       }
     }
-    updateSelection();
     // throw a table selection changed event providing the current perspective, view and
     // selection (used for tree/table sync)
     Properties properties = new Properties();
@@ -496,25 +498,25 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
   }
 
   /**
-   * Update the selection.
-   */
-  public void updateSelection() {
-    JajukTableModel model = (JajukTableModel) getModel();
-    selection.clear();
-    int[] rows = getSelectedRows();
-    for (int element : rows) {
-      Item o = model.getItemAt(convertRowIndexToModel(element));
-      selection.add(o);
-    }
-  }
-
-  /**
    * Gets the selection.
    *
    * @return the selection
    */
   public List<Item> getSelection() {
-    return this.selection;
+    selection.clear();
+    JajukTableModel model = (JajukTableModel) getModel();
+    // we need this because when an item is dropped, the previous selection is still here but 
+    // the model is void so we get some out of bounds exceptions
+    // Maybe we should do better here.
+    if (model.getRowCount() == 0) {
+      return selection;
+    }
+    int[] rows = getSelectedRows();
+    for (int element : rows) {
+      Item o = model.getItemAt(convertRowIndexToModel(element));
+      selection.add(o);
+    }
+    return selection;
   }
 
   /**
@@ -691,12 +693,7 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
   @Override
   public void setRowSelectionInterval(int index0, int index1) {
     if (!isMouseDragging) {
-      try {
-        manualSelectionRequired = true;
-        super.setRowSelectionInterval(index0, index1);
-      } finally {
-        manualSelectionRequired = false;
-      }
+      super.setRowSelectionInterval(index0, index1);
     }
   }
 
@@ -706,12 +703,7 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
   @Override
   public void setColumnSelectionInterval(int index0, int index1) {
     if (!isMouseDragging) {
-      try {
-        manualSelectionRequired = true;
-        super.setColumnSelectionInterval(index0, index1);
-      } finally {
-        manualSelectionRequired = false;
-      }
+      super.setColumnSelectionInterval(index0, index1);
     }
   }
 
@@ -721,12 +713,7 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
   @Override
   public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
     if (!isMouseDragging) {
-      try {
-        manualSelectionRequired = true;
-        super.changeSelection(rowIndex, columnIndex, toggle, extend);
-      } finally {
-        manualSelectionRequired = false;
-      }
+      super.changeSelection(rowIndex, columnIndex, toggle, extend);
     }
   }
 }

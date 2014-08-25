@@ -33,8 +33,7 @@ public class TestWebRadioManager extends JajukTestCase {
   WebRadio radio4;
 
   @Override
-  public void setUp() throws Exception {
-    super.setUp();
+  public void specificSetUp() throws Exception {
     man.cleanup();
     // Fill few radio
     radio1 = TestHelpers.getWebRadio("Preset1", "http://preset1", WebRadioOrigin.PRESET);

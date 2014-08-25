@@ -26,8 +26,9 @@ import java.net.Proxy.Type;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import junit.framework.TestCase;
+
 import org.apache.commons.lang.StringUtils;
-import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -36,7 +37,7 @@ import org.jajuk.util.log.Log;
 /**
  * .
  */
-public class TestNetworkUtils extends JajukTestCase {
+public class TestNetworkUtils extends TestCase {
   /** The Constant PROXY_PORT.   */
   private static final int PROXY_PORT = 0; // auto-choose
   /** The Constant URL.   */
@@ -44,15 +45,9 @@ public class TestNetworkUtils extends JajukTestCase {
   /** The Constant FTP_URL.   */
   private static final String FTP_URL = "ftp://www.google.com/";
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
-   */
   @Override
   protected void setUp() throws Exception {
     Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, "false");
-    super.setUp();
   }
 
   /**

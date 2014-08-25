@@ -35,6 +35,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.bookmark.History;
+import org.jajuk.services.bookmark.HistoryItem;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -55,6 +57,11 @@ public final class FileManager extends ItemManager {
   private final List<File> alBestofFiles = new ArrayList<File>(20);
   /** Self instance. */
   private static FileManager singleton = new FileManager();
+  /**
+   * Played recently filtering predicate
+   * <br/>Applies on HistoryItem collections 
+   */
+  protected static final int CONSIDERE_AS_RECENTLY_PLAYED_DAYS = 150;
   /** File comparator based on rate. */
   private final Comparator<File> rateComparator = new Comparator<File>() {
     @Override
@@ -419,6 +426,8 @@ public final class FileManager extends ItemManager {
     List<File> alEligibleFiles = getReadyFiles();
     // filter banned files
     CollectionUtils.filter(alEligibleFiles, new JajukPredicates.BannedFilePredicate());
+    // We filter recently played tracks to improve the quality of the randomness
+    filterRecentlyPlayedTracks(alEligibleFiles);
     // shuffle
     Collections.shuffle(alEligibleFiles, UtilSystem.getRandom());
     // song level, just shuffle full collection
@@ -453,6 +462,36 @@ public final class FileManager extends ItemManager {
       // else return shuffle albums
     } else {
       return getShuffledFilesByAlbum(alEligibleFiles);
+    }
+  }
+
+  /**
+   * Filter files to keep only files not played recently. 
+   * <br/>It contributes to improve the shuffling experience by avoiding playing the same track twice 
+   * in a small period of time. It can't be implemented using a predicate because we want to break ASAP, 
+   * when the max time is reached.
+   * <br/>Note however that we stop filtering when we reach a too small size of remaining files.
+   * @param files files to filter
+   */
+  protected void filterRecentlyPlayedTracks(List<File> files) {
+    long now = new Date().getTime();
+    for (HistoryItem item : History.getInstance().getItems()) {
+      int trackAgeDays = (int) ((now - item.getDate()) / Const.MILLISECONDS_IN_A_DAY);
+      if (trackAgeDays < CONSIDERE_AS_RECENTLY_PLAYED_DAYS) {
+        if (files.size() > Const.NB_TRACKS_ON_ACTION) {
+          File file = FileManager.getInstance().getFileByID(item.getFileId());
+          if (file != null && file.getTrack() != null) {
+            // Remove this item if it exist in the list (otherwise, List does nothing)
+            files.remove(file);
+          }
+        } else {
+          //We reach the floor of too few tracks so we stop to filter by date
+          break;
+        }
+      } else {
+        // We reach the non-recently played area of the history, we can leave
+        break;
+      }
     }
   }
 

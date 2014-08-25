@@ -25,24 +25,19 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jajuk.JajukTestCase;
+import junit.framework.TestCase;
 
 /**
  * .
  */
-public class TestLastFmCache extends JajukTestCase {
-  /*
-   * (non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
-   */
+public class TestLastFmCache extends TestCase {
   @Override
   protected void setUp() throws Exception {
+    super.setUp();
     // make sure the cache is cleaned up front to not find items from previous
     // runs
     LastFmCache cache = new LastFmCache();
     cache.clearCache();
-    super.setUp();
   }
 
   /**

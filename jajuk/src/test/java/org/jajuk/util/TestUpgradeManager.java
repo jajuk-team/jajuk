@@ -36,16 +36,6 @@ public class TestUpgradeManager extends JajukTestCase {
   String v8 = "1.10.3";
   String v9 = "1.10.4dev";
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#setUp()
-   */
-  @Override
-  protected void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for.
    *

@@ -27,15 +27,7 @@ import org.jajuk.JajukTestCase;
 import org.jajuk.util.filters.AnyFileFilter;
 import org.junit.Test;
 
-/**
- * .
- */
 public class TestJajukFileFilter extends JajukTestCase {
-  @Override
-  public void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for.
    *

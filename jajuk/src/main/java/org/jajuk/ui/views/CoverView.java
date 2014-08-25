@@ -127,6 +127,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   private JLabel jlSize;
   private JLabel jlFound;
   /** Cover search accuracy combo. */
+  @SuppressWarnings("rawtypes")
   private JComboBox jcbAccuracy;
   /** Date last resize (used for adjustment management). */
   private volatile long lDateLastResize;
@@ -175,16 +176,12 @@ public class CoverView extends ViewAdapter implements ActionListener {
     initUI(true);
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.ui.IView#display()
-   */
   /**
    * Inits the ui.
    *  
    * @param includeControls 
    */
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void initUI(boolean includeControls) {
     this.includeControls = includeControls;
     // Control panel
@@ -250,14 +247,8 @@ public class CoverView extends ViewAdapter implements ActionListener {
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ARTIST));
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.ALBUM));
     jcbAccuracy.addItem(IconLoader.getIcon(JajukIcons.TRACK));
-    int i = 1; // medium accuracy
-    try {
-      i = Conf.getInt(Const.CONF_COVERS_ACCURACY + "_"
-          + ((getPerspective() == null) ? "popup" : getPerspective().getID()));
-    } catch (final NumberFormatException e) {
-      // Will reach this point at first launch
-    }
-    jcbAccuracy.setSelectedIndex(i);
+    int accuracy = getCurrentAccuracy();
+    jcbAccuracy.setSelectedIndex(accuracy);
     jcbAccuracy.addActionListener(this);
     jtb.add(jbPrevious);
     jtb.add(jbNext);
@@ -716,8 +707,66 @@ public class CoverView extends ViewAdapter implements ActionListener {
    * @return an accurate google search query for a file
    */
   public String createQuery(final org.jajuk.base.File file) {
-    String sQuery = "";
-    int iAccuracy = 0;
+    String query = "";
+    int iAccuracy = getCurrentAccuracy();
+    final Track track = file.getTrack();
+    final Artist artist = track.getArtist();
+    final Album album = track.getAlbum();
+    switch (iAccuracy) {
+    case 0: // low, default
+      if (!artist.seemsUnknown()) {
+        query += artist.getName() + " ";
+      } else if (!track.getAlbumArtist().seemsUnknown()) {
+        query += track.getAlbumArtist().getName() + " ";
+      }
+      if (!album.seemsUnknown()) {
+        query += album.getName() + " ";
+      }
+      break;
+    case 1: // medium
+      if (!artist.seemsUnknown()) {
+        query += '\"' + artist.getName() + QUOTE_BLANK;
+      } else if (!track.getAlbumArtist().seemsUnknown()) {
+        query += '\"' + track.getAlbumArtist().getName() + QUOTE_BLANK;
+      }
+      if (!album.seemsUnknown()) {
+        query += '\"' + album.getName() + QUOTE_BLANK;
+      }
+      break;
+    case 2: // high
+      if (!artist.seemsUnknown()) {
+        query += PLUS_QUOTE + artist.getName() + QUOTE_BLANK;
+      } else if (!track.getAlbumArtist().seemsUnknown()) {
+        query += PLUS_QUOTE + track.getAlbumArtist().getName() + QUOTE_BLANK;
+      }
+      if (!album.seemsUnknown()) {
+        query += PLUS_QUOTE + album.getName() + QUOTE_BLANK;
+      }
+      break;
+    case 3: // by artist
+      if (!artist.seemsUnknown()) {
+        query += artist.getName() + " ";
+      } else if (!track.getAlbumArtist().seemsUnknown()) {
+        query += track.getAlbumArtist().getName() + " ";
+      }
+      break;
+    case 4: // by album
+      if (!album.seemsUnknown()) {
+        query += album.getName() + " ";
+      }
+      break;
+    case 5: // by track name
+      query += track.getName();
+      break;
+    default:
+      break;
+    }
+    return query;
+  }
+
+  private int getCurrentAccuracy() {
+    // Default = medium
+    int iAccuracy = 1;
     try {
       iAccuracy = Conf.getInt(Const.CONF_COVERS_ACCURACY + "_"
           + ((getPerspective() == null) ? "popup" : getPerspective().getID()));
@@ -725,53 +774,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
       // can append if accuracy never set
       Log.debug("Unknown accuracy");
     }
-    final Track track = file.getTrack();
-    final Artist artist = track.getArtist();
-    final Album album = track.getAlbum();
-    switch (iAccuracy) {
-    case 0: // low, default
-      if (!artist.seemsUnknown()) {
-        sQuery += artist.getName() + " ";
-      }
-      if (!album.seemsUnknown()) {
-        sQuery += album.getName() + " ";
-      }
-      break;
-    case 1: // medium
-      if (!artist.seemsUnknown()) {
-        sQuery += '\"' + artist.getName() + QUOTE_BLANK;
-        // put quotes around it
-      }
-      if (!album.seemsUnknown()) {
-        sQuery += '\"' + album.getName() + QUOTE_BLANK;
-      }
-      break;
-    case 2: // high
-      if (!artist.seemsUnknown()) {
-        sQuery += PLUS_QUOTE + artist.getName() + QUOTE_BLANK;
-        // put "" around it
-      }
-      if (!album.seemsUnknown()) {
-        sQuery += PLUS_QUOTE + album.getName() + QUOTE_BLANK;
-      }
-      break;
-    case 3: // by artist
-      if (!artist.seemsUnknown()) {
-        sQuery += artist.getName() + " ";
-      }
-      break;
-    case 4: // by album
-      if (!album.seemsUnknown()) {
-        sQuery += album.getName() + " ";
-      }
-      break;
-    case 5: // by track name
-      sQuery += track.getName();
-      break;
-    default:
-      break;
-    }
-    return sQuery;
+    return iAccuracy;
   }
 
   /**
@@ -804,7 +807,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
         }
         return;
       }
-      if ((alCovers.size() == 1) && ((alCovers.get(0)).getType() == CoverType.NO_COVER)) {
+      if (alCovers.size() == 1 && (alCovers.get(0)).getType() == CoverType.NO_COVER) {
         // only a default cover
         try {
           prepareDisplay(0);
@@ -923,13 +926,13 @@ public class CoverView extends ViewAdapter implements ActionListener {
       // where the picture is gone on the net
       Log.warn("Cover image not found at URL: "
           + (cover == null ? "<null>" : cover.getURL().toString()));
-      return;
+      throw new JajukException(0, e);
     } catch (final UnknownHostException e) {
       // do not display a stacktrace for HostNotFound as we expect this in cases
       // where the whole server is gone on the net
       Log.warn("Cover image not found at URL: "
           + (cover == null ? "<null>" : cover.getURL().toString()));
-      return;
+      throw new JajukException(0, e);
     } catch (final IOException e) { // this cover cannot be loaded
       Log.error(e);
       throw new JajukException(0, e);

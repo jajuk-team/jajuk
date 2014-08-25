@@ -33,11 +33,6 @@ import org.jajuk.TestHelpers;
 public class TestObservationManager extends JajukTestCase {
   AtomicInteger called = new AtomicInteger(0);
 
-  @Override
-  protected void setUp() throws Exception {
-    super.setUp();
-  }
-
   /*
    * (non-Javadoc)
    * 

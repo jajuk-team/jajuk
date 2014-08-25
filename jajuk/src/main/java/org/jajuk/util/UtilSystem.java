@@ -59,6 +59,8 @@ import javax.swing.ImageIcon;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.Main;
+import org.jajuk.base.Device;
+import org.jajuk.base.DeviceManager;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.JajukRuntimeException;
@@ -264,6 +266,20 @@ public final class UtilSystem {
     if (fNew.length() == 0) {
       Log.warn("Copied file is void: {{" + file.getAbsolutePath() + "}}");
     }
+  }
+
+  /**
+   * Return the device containing the io file
+   * @param fio the IO file to test
+   * @return the containing device or null if the file is outside any known device
+   */
+  public static Device getDeviceForFio(java.io.File fio) {
+    for (Device device : DeviceManager.getInstance().getDevices()) {
+      if (UtilSystem.isAncestor(device.getFIO(), fio)) {
+        return device;
+      }
+    }
+    return null;
   }
 
   /**

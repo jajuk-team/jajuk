@@ -50,7 +50,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -244,9 +243,6 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
   private JajukSlimbar() {
     setUndecorated(true);
     setAlwaysOnTop(true);
-    // Set windows decoration to look and feel
-    JFrame.setDefaultLookAndFeelDecorated(true);
-    JDialog.setDefaultLookAndFeelDecorated(true);
   }
 
   /*
@@ -414,23 +410,12 @@ public final class JajukSlimbar extends JFrame implements IJajukWindow, Observer
     setAlwaysOnTop(true);
     // Set location
     String lastPosition = Conf.getString(Const.CONF_SLIMBAR_POSITION);
-    int iScreenWidth = (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth());
-    int iScreenHeight = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight());
-    int x = iScreenWidth / 2;
-    int y = iScreenHeight / 2;
     try {
       StringTokenizer st = new StringTokenizer(lastPosition, ",");
-      x = Integer.parseInt(st.nextToken());
-      y = Integer.parseInt(st.nextToken());
-      // Reset if position are out of bounds (after a resolution changing for
-      // eg)
-      if (x < 0 || x > iScreenWidth) {
-        x = 0;
-      }
-      if (y < 0 || y > iScreenHeight) {
-        y = 0;
-      }
+      int x = Integer.parseInt(st.nextToken());
+      int y = Integer.parseInt(st.nextToken());
       Point point = new Point(x, y);
+      // Note that setLocation handle odd positions and fix them
       setLocation(point);
     } catch (Exception e) {
       Log.debug("Cannot restore slimbar position");

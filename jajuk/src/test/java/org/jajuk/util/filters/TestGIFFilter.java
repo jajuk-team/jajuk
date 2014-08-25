@@ -28,11 +28,6 @@ import org.jajuk.JajukTestCase;
  * .
  */
 public class TestGIFFilter extends JajukTestCase {
-  @Override
-  public void setUp() throws Exception {
-    super.setUp();
-  }
-
   /**
    * Test method for {@link org.jajuk.util.filters.GIFFilter#getInstance()}.
    */

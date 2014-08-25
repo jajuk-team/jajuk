@@ -27,8 +27,7 @@ import org.jajuk.JajukTestCase;
  */
 public class TestDBusSignalImpl extends JajukTestCase {
   @Override
-  protected void setUp() throws Exception {
-    super.setUp();
+  protected void specificSetUp() throws Exception {
   }
 
   /**

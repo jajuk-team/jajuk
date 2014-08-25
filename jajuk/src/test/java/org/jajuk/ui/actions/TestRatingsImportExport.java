@@ -37,11 +37,6 @@ import org.jajuk.util.error.JajukException;
 import org.xml.sax.SAXException;
 
 public class TestRatingsImportExport extends JajukTestCase {
-  @Override
-  public void setUp() throws Exception {
-    super.setUp();
-  }
-
   public void testExportImport() throws IOException, SAXException, JajukException,
       ParserConfigurationException {
     ExportRatingsAction exportRatings = new ExportRatingsAction();

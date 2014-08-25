@@ -32,9 +32,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -325,7 +327,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   /**
    * Down a track in the playlist.
    * 
-   * @param index 
+   * @param index index of the track to down
    */
   public void down(final int index) {
     if (type == Type.BOOKMARK) {
@@ -533,10 +535,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       try {
         String sLine = null;
         boolean bUnknownDevicesMessage = false;
-        
         // make a local cache of filenames to speed up searching
         Map<String, File> map = getFileMapByFIO();
-        
         while ((sLine = br.readLine()) != null) {
           if (sLine.length() == 0) { // void line
             continue;
@@ -564,18 +564,19 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
             // Don't use File.getAbsolutePath() because its result can contain ./ or ../
             // Don't use File.getCanonicalPath() because it resolves symlinks under unix.
             File jajukFile = map.get(Files.simplifyPath(fioAbsPath));
-            if(jajukFile == null) {
+            if (jajukFile == null) {
               jajukFile = map.get(Files.simplifyPath(fioAbsPath).toLowerCase());
             }
             if (jajukFile == null) { // check if this file is known in collection
               fio = new java.io.File(sLine); // check if given url is not absolute
               jajukFile = map.get(fio.getAbsolutePath());
-              if(jajukFile == null) {
+              if (jajukFile == null) {
                 jajukFile = map.get(fio.getAbsolutePath().toLowerCase());
               }
               if (jajukFile == null) { // no more ? leave
-                if(Log.isDebugEnabled()) {
-                  Log.debug("Playlist-track {{" + sLine + "}} from playlist {{" + getName() + "}} not found.");
+                if (Log.isDebugEnabled()) {
+                  Log.debug("Playlist-track {{" + sLine + "}} from playlist {{" + getName()
+                      + "}} not found.");
                 }
                 bUnknownDevicesMessage = true;
                 continue;
@@ -606,10 +607,9 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   private Map<String, File> getFileMapByFIO() {
     Map<String, File> map = new HashMap<String, File>();
     ReadOnlyIterator<File> filesIterator = FileManager.getInstance().getFilesIterator();
-    while(filesIterator.hasNext()) {
+    while (filesIterator.hasNext()) {
       File file = filesIterator.next();
       String absolutePath = file.getFIO().getAbsolutePath();
-      
       // put the file both with normal case and with all lowercase to allow
       // to match in both ways
       map.put(absolutePath, file);
@@ -635,19 +635,38 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
   }
 
   /**
-   * Remove a track from the playlist.
+   * Remove an set of tracks index from the playlist.
    * We expect at this point that the playlist has already been loaded once at least.
    * 
-   * @param index 
-   */
-  public void remove(final int index) {
+   * @param Set<Integer> indexes
+   *            Array of index to drop. We expect the array to contain integers sorted by ascendent order.
+   *               
+   **/
+  public void remove(final Set<Integer> indexes) {
     if (type == Type.BOOKMARK) {
-      Bookmarks.getInstance().remove(index);
+      for (int index : indexes) {
+        Bookmarks.getInstance().remove(index);
+      }
     } else if (type == Type.QUEUE) {
-      QueueModel.remove(index, index);
+      QueueModel.remove(indexes);
     } else {
-      alFiles.remove(index);
+      for (int index : indexes) {
+        alFiles.remove(index);
+      }
     }
+  }
+
+  /**
+   * Remove a track at specified index from the playlist.
+   * 
+   * @param int index
+   *            index of the track to remove
+   *               
+   **/
+  public void remove(final int index) {
+    Set<Integer> indexes = new HashSet<Integer>(1);
+    indexes.add(index);
+    remove(indexes);
   }
 
   /**
@@ -677,7 +696,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       for (int i = 0; it.hasNext(); i++) {
         final File fileToTest = it.next().getFile();
         if (fileToTest.equals(fOld)) {
-          QueueModel.remove(i, i); // just remove
+          QueueModel.remove(i); // just remove
           final List<StackItem> al = new ArrayList<StackItem>(1);
           al.add(new StackItem(fNew));
           QueueModel.insert(al, i);
@@ -716,7 +735,9 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   public void saveAs() throws JajukException, InterruptedException, InvocationTargetException {
     FileChooserRunnable runnable = new FileChooserRunnable();
-    SwingUtilities.invokeLater(runnable);
+    // We have to wait the runnable to ensure that the caller get the correct selected
+    // path before remaining code execution
+    SwingUtilities.invokeAndWait(runnable);
     if (runnable.getException() != null) {
       throw runnable.getException();
     }
@@ -926,7 +947,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
                 + UtilString.getAdditionDateFormatter().format(new Date());
           } else {
             sPlaylist = file.getDirectory().getAbsolutePath() + java.io.File.separatorChar
-                + file.getTrack().getHumanValue(Const.XML_ALBUM);
+                + UtilSystem.getNormalizedFilename(file.getTrack().getHumanValue(Const.XML_ALBUM));
           }
         } else {
           return;
