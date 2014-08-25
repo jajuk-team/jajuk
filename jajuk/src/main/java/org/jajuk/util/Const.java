@@ -119,7 +119,7 @@ public interface Const {
   /** Extention to the .jajuk_test directory in test mode only */
   String TEST_VERSION = "1.10";
   String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
-  String JAJUK_COPYRIGHT = "Copyright 2003-2012 The Jajuk Team";
+  String JAJUK_COPYRIGHT = "Copyright 2003-2014 The Jajuk Team";
   String TYPE_VIDEO = "Type.video";
   // -- Files and paths --
   String FILE_SAVING_FILE_EXTENSION = "saving";
