@@ -91,6 +91,9 @@ public class JajukHtmlPanel extends HtmlPanel {
         File page = new File(SessionService.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath()
             + '/' + UtilSystem.getOnlyFile(url.toString() + ".html"));
         try {
+          if (!page.exists()) {
+            throw new FileNotFoundException(url.toString());
+          }
           setCursor(UtilGUI.WAIT_CURSOR);
           // first indicate that we are loading a new page
           setLoading(url);
