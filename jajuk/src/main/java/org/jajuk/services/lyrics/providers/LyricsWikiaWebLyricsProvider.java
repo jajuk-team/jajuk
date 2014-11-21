@@ -30,9 +30,9 @@ import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 /**
- * Lyrics Provider extracting lyrics from lyricwiki.org
+ * Lyrics Provider extracting lyrics from lyrics.wikia.com
  */
-public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
+public class LyricsWikiaWebLyricsProvider extends GenericWebLyricsProvider {
   /** URL pattern used by jajuk to retrieve lyrics. */
   private static final String URL = "http://lyrics.wikia.com/%artist:%title";
   /** URL pattern to web page (see ILyricsProvider interface for details). */
@@ -41,7 +41,7 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
   /**
    * Instantiates a new lyric wiki web lyrics provider.
    */
-  public LyricWikiWebLyricsProvider() {
+  public LyricsWikiaWebLyricsProvider() {
     super(URL);
   }
 
@@ -56,7 +56,7 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
     try {
       // This provider waits for '_' instead of regular '+' for spaces in URL
       String formattedArtist = artist.replaceAll(" ", "_");
-      String formattedTitle = title.replaceAll(" ", "_");
+      String formattedTitle = title.replaceAll(" ", "_").replace(",", "_");
       String html = callProvider(formattedArtist, formattedTitle);
       if (StringUtils.isBlank(html)) {
         Log.debug("Empty return from callProvider().");
@@ -114,7 +114,8 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
       } else {
         ret = html.substring(startIndex + 23);
       }
-      int stopIndex = ret.indexOf("<!--");
+      //int stopIndex = ret.indexOf("<!--");
+      int stopIndex = ret.indexOf("</div");
       ret = ret.substring(0, stopIndex);
       ret = ret.replaceAll("<br />", "\n");
       ret = ret.replaceAll("&#8217;", "'");
@@ -176,4 +177,5 @@ public class LyricWikiWebLyricsProvider extends GenericWebLyricsProvider {
   public String getLyrics() {
     return getLyrics(audioFile.getTrack().getArtist().getName2(), audioFile.getTrack().getName());
   }
+
 }
