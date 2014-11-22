@@ -44,8 +44,8 @@ public class AzLyricsWebLyricsProvider extends GenericWebLyricsProvider {
     super(URL);
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see ext.services.lyrics.providers.GenericProvider#getLyrics(java.lang.String,
    * java.lang.String)
@@ -53,22 +53,27 @@ public class AzLyricsWebLyricsProvider extends GenericWebLyricsProvider {
   @Override
   public String getLyrics(final String artist, final String title) {
     try {
-      String formattedArtist = artist.toLowerCase().replace("the ", "").replace(" ", "");
-      String titleTemp = title.replace(" ", "");
-      titleTemp = titleTemp.replace("(", "");
-      titleTemp = titleTemp.replace(")", "");
-      titleTemp = titleTemp.replace("´", "");
-      titleTemp = titleTemp.replace("-", "");
-      titleTemp = titleTemp.replace(",", "");
-      titleTemp = titleTemp.replace("'", "").toLowerCase();
-      String formattedTitle = titleTemp;
-      String html = callProvider(formattedArtist, formattedTitle);
-      if (StringUtils.isBlank(html)) {
-        Log.debug("Empty return from callProvider().");
-        return null;
+      String lyrics = null;
+      if (StringUtils.isNotBlank(artist) && StringUtils.isNotBlank(title)) {
+        // Specific rule : lowercase, no space, remove "the " par ex for "The Beatles "
+        String formattedArtist = artist.toLowerCase().replace("the ", "").replace(" ", "");
+        // Specific rule : lowercase, no space, no extra signs ()'-,
+        String formattedTitle = title.replace(" ", "");
+        formattedTitle = formattedTitle.replace("(", "");
+        formattedTitle = formattedTitle.replace(")", "");
+        formattedTitle = formattedTitle.replace("´", "");
+        formattedTitle = formattedTitle.replace("-", "");
+        formattedTitle = formattedTitle.replace(",", "");
+        formattedTitle = formattedTitle.replace("'", "").toLowerCase();
+        String html = callProvider(formattedArtist, formattedTitle);
+        if (StringUtils.isNotBlank(html)) {
+          // Remove html part
+          lyrics = cleanLyrics(html);
+        } else {
+          Log.debug("Empty return from callProvider().");
+        }
       }
-      // Remove html part
-      return cleanLyrics(html);
+      return lyrics;
     } catch (Exception e) {
       Log.debug("Cannot fetch lyrics for: {{" + artist + "/" + title + "}}");
       return null;
@@ -84,30 +89,25 @@ public class AzLyricsWebLyricsProvider extends GenericWebLyricsProvider {
    * @return the lyrics
    */
   private String cleanLyrics(final String html) {
-    String ret = html;
-    if (ret.contains("<!-- start of lyrics -->")) {
+    String ret = null;
+    if (html != null) {
       int startIndex = html.indexOf("<!-- start of lyrics -->");
-      ret = html.substring(startIndex + 26);
-      int stopIndex = ret.indexOf("<!-- end of lyrics -->");
-      ret = ret.substring(0, stopIndex);
-      ret = ret.replaceAll("<br />", "\n");
-      ret = ret.replaceAll("&#8217;", "'");
-      ret = ret.replaceAll("&#8211;", "-");
-      ret = ret.replaceAll("\u0092", "'");
-      ret = ret.replaceAll("\u009c", "oe");
-      ret = ret.replaceAll("<p>", "\n");
-      ret = ret.replaceAll("<i>", "");
-      ret = ret.replaceAll("</i>", "");
-      ret = ret.replaceAll("<b>", "");
-      ret = ret.replaceAll("</b>", "");
-      return ret;
-    } else {
-      return null;
+      if (startIndex > -1) {
+        ret = html.substring(startIndex + 26);
+        int stopIndex = ret.indexOf("<!-- end of lyrics -->");
+        if (stopIndex > -1) {
+          ret = ret.substring(0, stopIndex);
+          return cleanHtml(ret);
+        } else {
+          ret = null;
+        }
+      }
     }
+    return ret;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getResponseEncoding()
    */
@@ -116,8 +116,8 @@ public class AzLyricsWebLyricsProvider extends GenericWebLyricsProvider {
     return "UTF-8";
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getWebURL(java.lang .String,
    * java.lang.String)
@@ -141,8 +141,8 @@ public class AzLyricsWebLyricsProvider extends GenericWebLyricsProvider {
     return out;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics()
    */

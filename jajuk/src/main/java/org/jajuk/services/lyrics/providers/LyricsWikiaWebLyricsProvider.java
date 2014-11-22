@@ -23,7 +23,6 @@ package org.jajuk.services.lyrics.providers;
 import ext.services.network.NetworkUtils;
 
 import java.net.MalformedURLException;
-import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.util.Const;
@@ -34,9 +33,9 @@ import org.jajuk.util.log.Log;
  */
 public class LyricsWikiaWebLyricsProvider extends GenericWebLyricsProvider {
   /** URL pattern used by jajuk to retrieve lyrics. */
-  private static final String URL = "http://lyrics.wikia.com/%artist:%title";
+  private static final String URL = "http://lyrics.wikia.com/api.php?artist=%artist&song=%title";
   /** URL pattern to web page (see ILyricsProvider interface for details). */
-  private static final String WEB_URL = "http://lyrics.wikia.com/%artist:%title";
+  private static final String WEB_URL = "http://lyrics.wikia.com/api.php?artist=%artist&song=%title";
 
   /**
    * Instantiates a new lyric wiki web lyrics provider.
@@ -45,8 +44,8 @@ public class LyricsWikiaWebLyricsProvider extends GenericWebLyricsProvider {
     super(URL);
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see ext.services.lyrics.providers.GenericProvider#getLyrics(java.lang.String,
    * java.lang.String)
@@ -54,35 +53,20 @@ public class LyricsWikiaWebLyricsProvider extends GenericWebLyricsProvider {
   @Override
   public String getLyrics(final String artist, final String title) {
     try {
-      // This provider waits for '_' instead of regular '+' for spaces in URL
-      String formattedArtist = artist.replaceAll(" ", "_");
-      String formattedTitle = title.replaceAll(" ", "_").replace(",", "_");
-      String html = callProvider(formattedArtist, formattedTitle);
-      if (StringUtils.isBlank(html)) {
-        Log.debug("Empty return from callProvider().");
-        return null;
-      }
-      // Remove html part
-      html = cleanLyrics(html);
-      // From oct 2009, lyrics wiki returns lyrics encoded as HTML chars
-      // like &#83;&#104;&#97; ...
-      StringBuilder sbFinalHtml = new StringBuilder(1000);
-      StringTokenizer st = new StringTokenizer(html, "&#");
-      while (st.hasMoreTokens()) {
-        String token = st.nextToken();
-        // Remove trailing ';'
-        if (token.endsWith("\n")) {
-          String trailing = token.substring(token.indexOf(';') + 1);
-          token = token.substring(0, token.indexOf(';'));
-          sbFinalHtml.append((char) Integer.parseInt(token, 10));
-          // Re-add carriage returns
-          sbFinalHtml.append(trailing);
+      String lyrics = null;
+      if (StringUtils.isNotBlank(artist) && StringUtils.isNotBlank(title)) {
+        // This provider waits for '_' instead of regular '+' for spaces in URL
+        String formattedArtist = artist.replaceAll(" ", "_");
+        String formattedTitle = title.replaceAll(" ", "_").replace(",", "_");
+        String html = callProvider(formattedArtist, formattedTitle);
+        if (StringUtils.isNotBlank(html)) {
+          // Remove html part
+          lyrics = cleanLyrics(html);
         } else {
-          token = token.substring(0, token.length() - 1);
-          sbFinalHtml.append((char) Integer.parseInt(token, 10));
+          Log.debug("Empty return from callProvider().");
         }
       }
-      return sbFinalHtml.toString();
+      return lyrics;
     } catch (Exception e) {
       Log.debug("Cannot fetch lyrics for: {{" + artist + "/" + title + "}}");
       return null;
@@ -98,43 +82,24 @@ public class LyricsWikiaWebLyricsProvider extends GenericWebLyricsProvider {
    * @return the lyrics
    */
   private String cleanLyrics(final String html) {
-    String ret = html;
-    // LyricWiki uses this with and without blank sometimes, maybe we should use
-    // a regular expression instead...
-    if (ret.contains("<div class='lyricbox' >") || ret.contains("<div class='lyricbox'>")) {
-      int startIndex = html.indexOf("<div class='lyricbox' >");
-      if (startIndex == -1) {
-        startIndex = html.indexOf("<div class='lyricbox'>");
-        ret = html.substring(startIndex + 22);
-        // LyricWiki added some additional div class now...
-        if (ret.startsWith("<div class='rtMatcher'>")) {
-          startIndex = ret.indexOf("</div>");
-          ret = ret.substring(startIndex + 6);
-        }
+    String ret = null;
+    if (html != null) {
+      int startIndex = html.indexOf("<pre>");
+      if (startIndex > -1) {
+        ret = html.substring(startIndex + 5);
+        int stopIndex = ret.indexOf("</pre>");
+        if (stopIndex > -1)
+          ret = ret.substring(0, stopIndex);
+        ret = cleanHtml(ret);
       } else {
-        ret = html.substring(startIndex + 23);
+        ret = null;
       }
-      //int stopIndex = ret.indexOf("<!--");
-      int stopIndex = ret.indexOf("</div");
-      ret = ret.substring(0, stopIndex);
-      ret = ret.replaceAll("<br />", "\n");
-      ret = ret.replaceAll("&#8217;", "'");
-      ret = ret.replaceAll("&#8211;", "-");
-      ret = ret.replaceAll("\u0092", "'");
-      ret = ret.replaceAll("\u009c", "oe");
-      ret = ret.replaceAll("<p>", "\n");
-      ret = ret.replaceAll("<i>", "");
-      ret = ret.replaceAll("</i>", "");
-      ret = ret.replaceAll("<b>", "");
-      ret = ret.replaceAll("</b>", "");
-      return ret;
-    } else {
-      return null;
     }
+    return ret;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getResponseEncoding()
    */
@@ -143,8 +108,8 @@ public class LyricsWikiaWebLyricsProvider extends GenericWebLyricsProvider {
     return "UTF-8";
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getWebURL(java.lang .String,
    * java.lang.String)
@@ -168,8 +133,8 @@ public class LyricsWikiaWebLyricsProvider extends GenericWebLyricsProvider {
     return out;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics()
    */
@@ -177,5 +142,4 @@ public class LyricsWikiaWebLyricsProvider extends GenericWebLyricsProvider {
   public String getLyrics() {
     return getLyrics(audioFile.getTrack().getArtist().getName2(), audioFile.getTrack().getName());
   }
-
 }

@@ -31,7 +31,7 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * .
+ * Lyrics provide from text file in the same directory of the audio file.
  */
 public class TxtLyricsProvider implements ILyricsProvider {
   private BufferedReader lyricsReader = null;
@@ -39,7 +39,8 @@ public class TxtLyricsProvider implements ILyricsProvider {
   /** audio file we search lyrics for. */
   private File audioFile = null;
 
-  /* (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics()
    */
   @Override
@@ -73,7 +74,8 @@ public class TxtLyricsProvider implements ILyricsProvider {
     }
   }
 
-  /* (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getResponseEncoding()
    */
   @Override
@@ -95,7 +97,8 @@ public class TxtLyricsProvider implements ILyricsProvider {
     return lyricsReader;
   }
 
-  /* (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#setAudioFile(org.jajuk.base.File)
    */
   @Override
@@ -103,7 +106,8 @@ public class TxtLyricsProvider implements ILyricsProvider {
     this.audioFile = file;
   }
 
-  /* (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getSourceAddress()
    */
   @Override

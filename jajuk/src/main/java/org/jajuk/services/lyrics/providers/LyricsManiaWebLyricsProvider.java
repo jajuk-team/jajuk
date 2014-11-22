@@ -46,8 +46,8 @@ public class LyricsManiaWebLyricsProvider extends GenericWebLyricsProvider {
     super(URL);
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see ext.services.lyrics.providers.GenericProvider#getLyrics(java.lang.String,
    * java.lang.String)
@@ -55,28 +55,30 @@ public class LyricsManiaWebLyricsProvider extends GenericWebLyricsProvider {
   @Override
   public String getLyrics(final String artist, final String title) {
     try {
-      String formattedArtist = removeAccent(artist).replace(" ", "_").toLowerCase();
-      String formattedTitle = title.replace(" ", "_").replace("(", "").replace(")", "")
-          .replace("'", "").toLowerCase();
-      String html = callProvider(formattedArtist, formattedTitle);
-      if (StringUtils.isBlank(html)) {
-        Log.debug("Empty return from callProvider().");
-        return null;
-      }
-      // Remove html part
-      String result = cleanLyrics(html);
-      if (result == null) {
-        // Another trial without accent
-        formattedTitle = removeAccent(title).replaceAll(" ", "_").replace("(", "")
-            .replace(")", "").replace("'", "").toLowerCase();
-        html = callProvider(formattedArtist, formattedTitle);
-        if (StringUtils.isBlank(html)) {
-          Log.debug("Empty return from callProvider().");
-          return null;
+      String lyrics = null;
+      if (StringUtils.isNotBlank(artist) && StringUtils.isNotBlank(title)) {
+        // Specific rule for artist : lowercase, no space, no accent 
+        String formattedArtist = removeAccent(artist).replace(" ", "_").toLowerCase();
+        // Specific rule for title : lowercas, no space with accent
+        String formattedTitle = title.replace(" ", "_").replace("(", "").replace(")", "");
+        formattedTitle = formattedTitle.replace("'", "").toLowerCase();
+        String html = callProvider(formattedArtist, formattedTitle);
+        String result = cleanLyrics(html);
+        if (StringUtils.isNotBlank(result)) {
+          lyrics = result;
+        } else {
+            // Another trial without accent on title
+            formattedTitle = removeAccent(title).replaceAll(" ", "_").replace("(", "");
+            formattedTitle = formattedTitle.replace(")", "").replace("'", "").toLowerCase();
+            html = callProvider(formattedArtist, formattedTitle);
+            if (StringUtils.isNotBlank(html)) {
+              lyrics = cleanLyrics(html);  
+            } else {
+              Log.debug("Empty return from callProvider().");
+            }
         }
-        result = cleanLyrics(html);
       }
-      return result;
+      return lyrics;
     } catch (Exception e) {
       Log.debug("Cannot fetch lyrics for: {{" + artist + "/" + title + "}}");
       return null;
@@ -92,36 +94,28 @@ public class LyricsManiaWebLyricsProvider extends GenericWebLyricsProvider {
    * @return the lyrics
    */
   private String cleanLyrics(final String html) {
-    String ret = html;
-    String searchString = "<div class=\"lyrics-body\"";
-    if (ret.contains(searchString)) {
-      int startIndex = html.indexOf("<div class=\"lyrics-body\"");
-      ret = html.substring(startIndex + searchString.length());
-      int secondIndex = ret.indexOf("</strong>");
-      ret = ret.substring(secondIndex + 10);
-      int stopIndex = ret.indexOf("</div>");
-      ret = ret.substring(0, stopIndex);
-      ret = ret.replaceAll("\t", "");
-      ret = ret.replaceAll("&#146;", "'");
-      ret = ret.replaceAll("&#133;", "…");
-      ret = ret.replaceAll("<br />", "\n");
-      ret = ret.replaceAll("&#8217;", "'");
-      ret = ret.replaceAll("&#8211;", "-");
-      ret = ret.replaceAll("\u0092", "'");
-      ret = ret.replaceAll("\u009c", "oe");
-      ret = ret.replaceAll("<p>", "\n");
-      ret = ret.replaceAll("<i>", "");
-      ret = ret.replaceAll("</i>", "");
-      ret = ret.replaceAll("<b>", "");
-      ret = ret.replaceAll("</b>", "");
-      return ret;
-    } else {
-      return null;
+    String ret = null;
+    if (html != null) {
+      String searchString = "<div class=\"lyrics-body\"";
+      int startIndex = html.indexOf(searchString);
+      if (startIndex > -1) {
+        ret = html.substring(startIndex + searchString.length());
+        int secondIndex = ret.indexOf("</strong>");
+        if (secondIndex > -1) {
+          ret = ret.substring(secondIndex + 10);
+          int stopIndex = ret.indexOf("</div>");
+          ret = ret.substring(0, stopIndex);
+          ret = cleanHtml(ret);
+        } else {
+          ret = null;
+        }
+      }
     }
+    return ret;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getResponseEncoding()
    */
@@ -130,8 +124,8 @@ public class LyricsManiaWebLyricsProvider extends GenericWebLyricsProvider {
     return "UTF-8";
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getWebURL(java.lang .String,
    * java.lang.String)
@@ -156,8 +150,8 @@ public class LyricsManiaWebLyricsProvider extends GenericWebLyricsProvider {
     return out;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * 
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics()
    */
@@ -166,6 +160,11 @@ public class LyricsManiaWebLyricsProvider extends GenericWebLyricsProvider {
     return getLyrics(audioFile.getTrack().getArtist().getName2(), audioFile.getTrack().getName());
   }
 
+  /**
+   * Replace each accent in the string with the non accent character.
+   * @param s the string to process
+   * @return the string without accents
+   */
   public String removeAccent(String s) {
     String strTemp = Normalizer.normalize(s, Normalizer.Form.NFD);
     Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
