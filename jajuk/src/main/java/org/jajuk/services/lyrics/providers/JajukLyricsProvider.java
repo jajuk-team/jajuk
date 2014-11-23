@@ -37,9 +37,6 @@ public class JajukLyricsProvider implements ILyricsProvider {
   public JajukLyricsProvider() {
   }
 
-  /* (non-Javadoc)
-   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics()
-   */
   /**
    * Gets the lyrics.
    * 
@@ -50,9 +47,6 @@ public class JajukLyricsProvider implements ILyricsProvider {
     return sLyrics;
   }
 
-  /* (non-Javadoc)
-   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getResponseEncoding()
-   */
   /**
    * Gets the response encoding.
    * 
@@ -99,7 +93,8 @@ public class JajukLyricsProvider implements ILyricsProvider {
     this.sLyrics = sLyrics;
   }
 
-  /* (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#setAudioFile(org.jajuk.base.File)
    */
   @Override
@@ -109,9 +104,10 @@ public class JajukLyricsProvider implements ILyricsProvider {
     sTitle = this.audioFile.getTrack().getName();
   }
 
-  /* (non-Javadoc)
-  * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getSourceAddress()
-  */
+  /**
+   * {@inheritDoc}
+   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getSourceAddress()
+   */
   @Override
   public String getSourceAddress() {
     return "<Jajuk>";

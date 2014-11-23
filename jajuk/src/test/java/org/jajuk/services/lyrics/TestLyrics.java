@@ -29,9 +29,11 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
+import org.jajuk.services.lyrics.providers.AzLyricsWebLyricsProvider;
 import org.jajuk.services.lyrics.providers.GenericWebLyricsProvider;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;
-import org.jajuk.services.lyrics.providers.LyricWikiWebLyricsProvider;
+import org.jajuk.services.lyrics.providers.LyricsManiaWebLyricsProvider;
+import org.jajuk.services.lyrics.providers.LyricsWikiaWebLyricsProvider;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.log.Log;
 
@@ -39,17 +41,66 @@ import org.jajuk.util.log.Log;
  * Lyrics unit tests.
  */
 public class TestLyrics extends JajukTestCase {
-  private File tmp = null;
   /** The Constant ARTIST.   */
   private static final String ARTIST = "Massive Attack";
-  /** The Constant TITLE.   */
-  private static final String TITLE = "Dissolved Girl";
-  /** The Constant TESTED_WORD.   */
-  private static final String TESTED_WORD = "Day, yesterday";
   // LyricsFly put a delay of 1500 ms before we are allowed to query again, we
   // need to take that into account for some of the tests
   /** The Constant FLY_DELAY.   */
   private static final long FLY_DELAY = 1500 + 200;
+  /** The Constant TESTED_WORD.   */
+  private static final String TESTED_WORD = "Day, yesterday";
+  /** The Constant TITLE.   */
+  private static final String TITLE = "Dissolved Girl";
+  private File tmp = null;
+
+  @Override
+  public void specificSetUp() throws Exception {
+    // to first cover this method while no providers are loaded yet
+    LyricsService.getProviders();
+    tmp = TestHelpers.getFile("test.tmp", true).getFIO();
+  }
+
+  /**
+   * Test AZLyrics provider response to get lyrics.
+   */
+  public void testAZLyricsWebProvider() {
+    GenericWebLyricsProvider provider = new AzLyricsWebLyricsProvider();
+    testWebService(provider);
+  }
+
+  /**
+   * Test Lyricsmania provider response to get lyrics.
+   */
+  public void testLyricsManiaWeb() throws Exception {
+    GenericWebLyricsProvider provider = new LyricsManiaWebLyricsProvider();
+    testWeb(provider);
+  }
+
+  /**
+   * Test Lyricsmania provider response to get lyrics.
+   */
+  public void testLyricsManiaWebService() {
+    GenericWebLyricsProvider provider = new LyricsManiaWebLyricsProvider();
+    testWebService(provider);
+  }
+
+  /**
+   * Test LyricsWikia provider response to get lyrics.
+   */
+  public void testLyricsWikiaService() {
+    GenericWebLyricsProvider provider = new LyricsWikiaWebLyricsProvider();
+    testWebService(provider);
+  }
+
+  /**
+   * Test LyricWiki web url availability.
+   *
+   * @throws Exception the exception
+   */
+  public void testLyricsWikiaWeb() throws Exception {
+    GenericWebLyricsProvider provider = new LyricsWikiaWebLyricsProvider();
+    testWeb(provider);
+  }
 
   // helper method to emma-coverage of the unused constructor
   /**
@@ -63,13 +114,6 @@ public class TestLyrics extends JajukTestCase {
     TestHelpers.executePrivateConstructor(LyricsService.class);
   }
 
-  @Override
-  public void specificSetUp() throws Exception {
-    // to first cover this method while no providers are loaded yet
-    LyricsService.getProviders();
-    tmp = TestHelpers.getFile("test.tmp", true).getFIO();
-  }
-
   /**
    * Test provider loading.
    */
@@ -78,24 +122,6 @@ public class TestLyrics extends JajukTestCase {
     List<ILyricsProvider> providers = LyricsService.getProviders();
     assertNotNull(providers);
     assertFalse(providers.size() == 0);
-  }
-
-  /**
-   * Test provider response to get lyrics (shared code).
-   *
-   * @param provider 
-   */
-  private void testWebService(GenericWebLyricsProvider provider) {
-    String lyrics = provider.getLyrics(ARTIST, TITLE);
-    Log.debug("Resulting Lyrics(" + provider.getProviderHostname() + "): " + lyrics);
-    if (provider.getProviderHostname().equals("api.lyricsfly.com") && lyrics == null) {
-      Log.fatal("In Sonar this can happen, seems we do not have internet access there...");
-      return;
-    }
-    assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics,
-        StringUtils.isNotBlank(lyrics));
-    assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics,
-        lyrics.indexOf(TESTED_WORD) != -1);
   }
 
   /**
@@ -118,20 +144,20 @@ public class TestLyrics extends JajukTestCase {
   }
 
   /**
-   * Test LyricWiki provider response to get lyrics.
-   */
-  public void testLyricWikiService() {
-    GenericWebLyricsProvider provider = new LyricWikiWebLyricsProvider();
-    testWebService(provider);
-  }
-
-  /**
-   * Test LyricWiki web url availability.
+   * Test provider response to get lyrics (shared code).
    *
-   * @throws Exception the exception
+   * @param provider 
    */
-  public void testLyricWikiWeb() throws Exception {
-    GenericWebLyricsProvider provider = new LyricWikiWebLyricsProvider();
-    testWeb(provider);
+  private void testWebService(GenericWebLyricsProvider provider) {
+    String lyrics = provider.getLyrics(ARTIST, TITLE);
+    Log.debug("Resulting Lyrics(" + provider.getProviderHostname() + "): " + lyrics);
+    if (provider.getProviderHostname().equals("api.lyricsfly.com") && lyrics == null) {
+      Log.fatal("In Sonar this can happen, seems we do not have internet access there...");
+      return;
+    }
+    assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics,
+        StringUtils.isNotBlank(lyrics));
+    assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics,
+        lyrics.indexOf(TESTED_WORD) != -1);
   }
 }

@@ -48,9 +48,11 @@ public final class LyricsService {
   private static List<ILyricsPersister> persisters = null;
   /** Providers list. */
   private static String[] providersClasses = new String[] {
-      "org.jajuk.services.lyrics.providers.TagLyricsProvider",
-      "org.jajuk.services.lyrics.providers.TxtLyricsProvider",
-      "org.jajuk.services.lyrics.providers.LyricWikiWebLyricsProvider", };
+    "org.jajuk.services.lyrics.providers.TagLyricsProvider",
+    "org.jajuk.services.lyrics.providers.TxtLyricsProvider",
+    "org.jajuk.services.lyrics.providers.AzLyricsWebLyricsProvider",
+    "org.jajuk.services.lyrics.providers.LyricsManiaWebLyricsProvider",
+    "org.jajuk.services.lyrics.providers.LyricsWikiaWebLyricsProvider", };
   /** Persisters list. */
   private static String[] persisterClasses = new String[] {
       "org.jajuk.services.lyrics.persisters.TagPersister",
