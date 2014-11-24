@@ -8,11 +8,6 @@
 		<format property='TODAY' pattern='yyyyMMdd' locale='en,UK' />
 	</tstamp>
 
-	<!-- JNLP date -->
-	<tstamp>
-		<format property='JNLP_DATE' pattern='yyyyMMdd_hhmm' locale='en,UK' />
-	</tstamp>
-
 	<!--Build type : 'unstable', 'final', 'pre-release' or 'maintenance' -->
 	<property name='type' value='final' />
 
@@ -20,14 +15,7 @@
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
 	<property name='version' value='1.10.8-SNAPSHOT' />
 
-	<!--JNLP version-->
-	<!-- In final releases (including RC), jnlp_version=${version} 
-	In maintenance or unstable daily builds, jnlp_version=${JNLP_DATE} : we don't use regular version 
-	so the version changes each day -->
-	<property name='jnlp_version' value='${JNLP_DATE}' />
-	<!--<property name='jnlp_version' value='${version}' />-->
-
-	<!--Test flag: values: 'test' or 'notest' 
+	 <!--Test flag: values: 'test' or 'notest' 
 	'test' for 'unstable' branches, 'notest' for master, pre-release and maintenance branches
 	-->
 	<property name='test' value='notest' />
@@ -35,7 +23,6 @@
 	<!-- ======================= -->
 	<!-- | Configuration paths | -->
 	<!-- ======================= -->
-	<property name='conf_jnlp-dist' value='/tmp/jajuk-dist/jnlp-dist' />
 	<property name='conf_uploaddir' value='/tmp/jajuk-dist/packages/' />
 	<property name='conf_jarbundler' value='/data/build_tools/jarbundler' />
 	<property name='conf_jarbundler-jar' value='jarbundler-1.9.jar' />
@@ -67,12 +54,6 @@
 	<property name='distjarname' value='jajuk-java-installer-' />
 	<property name='sourcesdist' value='${sourcesdir}/jajuk-sources-${version}.zip' />
 	<property name='mplayerdir' value='/tmp/mplayer' />
-
-	<!-- This used to be the intermediate directory used to build war file, we used a persisitent 
- 	directory to use jar files in next war (each war contains current and previous jars for 
- 	incremental upgrade). We don't use incremental udated anymore as it does require too much 
- 	disk space -->
-	<property name='jnlpdir' value='${conf_jnlp-dist}/${version}' />
 	<property name='srcdir' value='${basedir}/src' />
 
 	<target name='get-jvm'>
@@ -103,7 +84,6 @@
 
 	<target name='clean' description='o Clean up previous build files'>
 		<delete failonerror='true' dir='${rootdir}' />
-		<delete failonerror='true' dir='${jnlpdir}' />
 		<delete failonerror='true' dir='${mplayerdir}' />
 	</target>
 
@@ -253,14 +233,13 @@
 	</target>
 
 
-	<target name='package_all' description='o Create all packages' depends='package_exe,package_nsis,package_rpm,package_source,package_jnlp,package_macos'>
+	<target name='package_all' description='o Create all packages' depends='package_exe,package_nsis,package_rpm,package_source,package_macos'>
 		<echo message='Successfully built packages:' />
 		<echo message=' Jajuk Jar file in:     ${distdir}/bin/${jarname}' />
 		<echo message=' RPM package in:        ${rpmbuilddir}/RPMS/noarch/jajuk-${version}-1.noarch.rpm' />
 		<echo message=' Windows executable in: ${windowsdir}/jajuk-${version}-setup.exe' />
 		<echo message=' MAC OS X in:           ${distdir}/jajuk-macos-${version}.zip' />
 		<echo message=' Source archive in:     ${sourcesdist}' />
-		<echo message=' JNLP war file in:      ${rootdir}/jajuk-${type}.war' />
 		<echo message=' Jajuk binary file in:  ${distdir}/bin/${jarname}' />
 	</target>
 
@@ -329,67 +308,6 @@
 	        :${launch4j.dir}/lib/xstream.jar" />
 		<echo message='Create Jajuk Windows executable file' />
 		<launch4j configFile="${windowsdir}/jajuk.launch4j" />
-	</target>
-
-	<target name='package_jnlp' description='o Create Java Web Start war distribution' depends='startup,clean,package_jar'>
-		<echo message='Create Java Web Start war distribution' />
-		<!--Note that all jars (including jajuk-native.jar must be signed with the same certificate), we do this manually -->
-		<mkdir dir='${jnlpdir}' />
-		<mkdir dir='${jnlpdir}/app' />
-		<mkdir dir='${jnlpdir}/app/windows' />
-		<!--Copy current jars -->
-		<copy todir='${jnlpdir}/app'>
-			<fileset file='${distdir}/lib/*.jar' />
-		</copy>
-		<copy todir='${jnlpdir}/app'>
-			<fileset file='${distdir}/bin/*.jar' />
-		</copy>
-		<copy todir='${jnlpdir}/app'>
-			<fileset file='${srcdir}/packaging/jnlp/*.jnlp' />
-		</copy>
-		<copy todir='${jnlpdir}/app'>
-			<fileset file='${srcdir}/packaging/jnlp/*.gif' />
-		</copy>
-		<copy todir='${jnlpdir}/app'>
-			<fileset file='${srcdir}/main/resources/images/included/jajuk-splashscreen.jpg' />
-		</copy>
-		<!--Copy native jars -->
-		<copy todir='${jnlpdir}/app/windows'>
-			<fileset file='${srcdir}/packaging/jnlp/windows/*.jar' />
-		</copy>
-		<!-- Rename all jars to add JNLP-way release: <name>__V<release>.jar -->
-		<move todir='${jnlpdir}'>
-			<fileset dir='${jnlpdir}'>
-				<include name='**/*.jar' />
-			</fileset>
-			<mapper type='glob' from='*.jar' to='*__V${jnlp_version}.jar' />
-		</move>
-
-		<!-- Set test or no test in jnlp file-->
-		<replace dir='${jnlpdir}/app' value='-${test}'>
-			<include name='*.jnlp' />
-			<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
-		</replace>
-
-		<!-- Set JNLP_VERSION -->
-		<replace dir='${jnlpdir}/app' value='${jnlp_version}'>
-			<include name='*.jnlp' />
-			<replacetoken>JNLP_VERSION_REPLACED_BY_ANT</replacetoken>
-		</replace>
-
-		<!-- Sign all jars -->
-		<signjar alias='jajukteam' storepass='passpass'>
-			<fileset dir='${jnlpdir}'>
-				<include name='**/*.jar' />
-			</fileset>
-		</signjar>
-
-
-		<!-- Create the war file -->
-		<war destfile='${rootdir}/jajuk-${type}.war' webxml='${srcdir}/packaging/jnlp/web.xml'>
-			<fileset dir='${jnlpdir}' />
-			<lib file='${srcdir}/packaging/jnlp/jnlp-servlet.jar' />
-		</war>
 	</target>
 
 	<target name='mkdist_rpm'>
