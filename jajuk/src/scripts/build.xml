@@ -13,7 +13,7 @@
 
 	<!--Distribution release  
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.10.8-SNAPSHOT' />
+	<property name='version' value='1.10.8dev' />
 
 	 <!--Test flag: values: 'test' or 'notest' 
 	'test' for 'unstable' branches, 'notest' for master, pre-release and maintenance branches
