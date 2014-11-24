@@ -9,9 +9,7 @@
 # -------------------------------------------------------------------
 # Set Working Directory
 # -------------------------------------------------------------------
-
 !cd "/data/build_tools/NSIS-SFX/Resources"
-!verbose 2
 
 # -------------------------------------------------------------------
 # Choosing Compressor
@@ -102,6 +100,7 @@ InstallDirRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${App
 !define MUI_LICENSEPAGE_RADIOBUTTONS
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 !define MUI_UNABORTWARNING
+!define: "MUI_VERBOSE"="2"
 
 !insertmacro MUI_PAGE_LICENSE "/tmp/jajuk-dist/jajuk/LICENSE-GPL.txt"
 !insertmacro MUI_PAGE_DIRECTORY
