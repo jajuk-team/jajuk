@@ -79,7 +79,8 @@ public class JajukHtmlPanel extends HtmlPanel {
   }
 
   /**
-   * Display a wikipedia url.
+   * Display a wikipedia url given a cache file.
+   * <p>Download the url to cache if not already in cache</p>
    *
    * @param url 
    * @param lang 
@@ -88,16 +89,17 @@ public class JajukHtmlPanel extends HtmlPanel {
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
       @Override
       public Void doInBackground() {
-        File page = new File(SessionService.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath()
-            + '/' + UtilSystem.getOnlyFile(url.toString() + ".html"));
+    	 File page = new File(SessionService.getConfFileByPath(Const.FILE_CACHE).getAbsolutePath()
+    	            + '/' + UtilSystem.getOnlyFile(url.toString() + ".html"));
+        File expectedCacheFile =  SessionService.getCachePath(url);
         try {
-          if (!page.exists()) {
-            throw new FileNotFoundException(url.toString());
-          }
           setCursor(UtilGUI.WAIT_CURSOR);
+          if (!expectedCacheFile.exists()) {
+            DownloadManager.downloadToCache(url);
+          }
           // first indicate that we are loading a new page
           setLoading(url);
-          String sPage = DownloadManager.downloadText(url);
+          String sPage = DownloadManager.getTextFromCachedFile(url,"UTF-8");
           // Leave if no result
           if (sPage == null) {
             return null;
