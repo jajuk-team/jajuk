@@ -174,7 +174,7 @@
 			<artifactId>cobra</artifactId>
 			<version>0.96.5R2</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/lib/cobra-0.98.4.jar</systemPath>
+			<systemPath>${basedir}/lib/cobra_jajuk-0.98.5.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>JS</groupId>

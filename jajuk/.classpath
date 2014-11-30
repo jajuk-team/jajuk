@@ -54,6 +54,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/qdwizard-4.1.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/cobra-0.98.4_jajuk.jar"/>
+	<classpathentry kind="lib" path="lib/cobra_jajuk-0.98.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
