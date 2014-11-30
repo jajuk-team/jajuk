@@ -120,12 +120,12 @@ public final class History extends DefaultHandler implements HighPriorityObserve
 
   /**
    * Gets the history, newest played tracks first.
-   * <br/>This returns a defensive copy
+   * <br/>Do not return a defensive copy as the history combobox relies on it as model
    * 
    * @return the history
    */
   public Vector<HistoryItem> getItems() {
-    return new Vector<HistoryItem>(items);
+    return items;
   }
 
   /**
