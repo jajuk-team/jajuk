@@ -276,7 +276,7 @@ public final class UpgradeManager implements Const {
       File bootstrapOldOldHome = new File(System.getProperty("user.home") + "/"
           + Const.FILE_BOOTSTRAP_OLD);
       File bootstrapNew = new File(SessionService.getBootstrapPath());
-      // Fix for #1473 : move the bootstrap file if required (See https://trac.jajuk.info/ticket/1473)
+      // Fix for #1473 : move the bootstrap file if required (See #1473)
       if (UtilSystem.isUnderWindows() && !bootstrapOld.equals(bootstrapOldOldHome)
           && !bootstrapOld.exists() && bootstrapOldOldHome.exists()) {
         try {

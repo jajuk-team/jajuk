@@ -464,7 +464,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   /**
    * Compute final track rate.
    *
-   * @see http://trac.jajuk.info/ticket/1179
+   * @see #1179
    */
   public void updateRate() {
     try {

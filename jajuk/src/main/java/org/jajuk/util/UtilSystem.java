@@ -1237,7 +1237,7 @@ public final class UtilSystem {
      * But we give priority to user.home if it already contains a suitable jajuk
      * collection to maintain backward compatibility
      * 
-     * See https://trac.jajuk.info/ticket/1473 and
+     * See #1473 and
      * http://bugs.sun.com/view_bug.do?bug_id=4787931
      **/
     if (StringUtils.isNotBlank(System.getenv("USERPROFILE"))) {

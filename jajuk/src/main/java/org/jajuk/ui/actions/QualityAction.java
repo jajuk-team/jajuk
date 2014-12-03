@@ -40,6 +40,11 @@ import org.jajuk.util.log.Log;
  * information into the ticket.
  */
 public class QualityAction extends JajukAction {
+  /**
+   * Jajuk issue reporting URL
+   */
+  private static final String JAJUK_ISSUES_URL = "http://github.com/jajuk-team/jajuk/issues/new";
+  
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
 
@@ -70,7 +75,7 @@ public class QualityAction extends JajukAction {
     clipboard.setContents(data, data);
     try {
       // Show Trac ticket creation page in an external browser
-      Desktop.getDesktop().browse(new URI("http://trac.jajuk.info/newticket"));
+      Desktop.getDesktop().browse(new URI(JAJUK_ISSUES_URL));
       // Display a message
       Messages.showInfoMessage(Messages.getString("QualityFeedbackWizard.20"));
     } catch (Exception e) {
