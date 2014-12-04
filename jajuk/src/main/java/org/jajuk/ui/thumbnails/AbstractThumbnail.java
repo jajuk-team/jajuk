@@ -377,7 +377,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
       }
       CoverView cv = null;
       if (file != null) {
-        cv = new CoverView(file);
+        cv = new CoverView(file, jd);
         cv.setID("catalog/0");
         cv.initUI();
         jd.add(cv);
