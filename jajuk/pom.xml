@@ -35,8 +35,8 @@
 		</license>
 	</licenses>
 	<scm>
-		<connection>scm:git:git://gitorious.org/jajuk/jajuk.git</connection>
-		<url>http://gitorious.org/jajuk/jajuk/</url>
+		<connection>scm:git:https://github.com/jajuk-team/jajuk.git</connection>
+		<url>https://github.com/jajuk-team/jajuk</url>
 	</scm>
 	<organization>
 		<name>Jajuk team</name>
