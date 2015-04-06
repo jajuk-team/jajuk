@@ -113,23 +113,26 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
       jw.decorator = new WindowStateDecorator(jw) {
         @Override
         public void specificBeforeShown() {
-          jw.applyStoredSize();
+          //Nothing here, frame bounds is set after display (see next method)
         }
 
         @Override
         public void specificAfterShown() {
           // We have to force the new frame state, otherwise the window is deiconified but never gets focus
           jw.setExtendedState(Frame.NORMAL);
-          if (Conf.getBoolean(Const.CONF_WINDOW_MAXIMIZED)) {
-            //We have to call this next in the EDT to make sure that the window is displayed so maximalize() method get 
-            //proper screen for jw window.
-            SwingUtilities.invokeLater(new Runnable() {
-              @Override
-              public void run() {
+          //We have to call this next in the EDT to make sure that the window is displayed so maximalize() method get 
+          //proper screen for jw window.
+          SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+              if (Conf.getBoolean(Const.CONF_WINDOW_MAXIMIZED)) {
                 jw.maximalize();
+              } else {
+            	  // We set bounds after display, otherwise, the window is blank under Gnome3
+                jw.applyStoredSize();
               }
-            });
-          }
+            }
+          });
           // Need focus for keystrokes
           jw.requestFocus();
           // Make sure to display right title if a track or a webradio is launched at startup
