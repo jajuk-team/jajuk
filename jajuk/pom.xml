@@ -101,7 +101,7 @@
 		<dependency>
 			<groupId>net.sf.qdwizard</groupId>
 			<artifactId>qdwizard</artifactId>
-			<version>4.1.0</version>
+			<version>5.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-collections</groupId>
