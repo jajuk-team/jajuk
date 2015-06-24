@@ -275,8 +275,34 @@
 		<rpm failOnError='true' specFile='jajuk.spec' topDir='${rpmbuilddir}' cleanBuildDir='yes' removeSpec='no' command='-bb -vv --target noarch' />
 	</target>
 
+	<!--jarbundler Mac OS X package creation (Jajuk.app)-->
+		<target name='jarbundler' depends='package_jar'>
+			<taskdef name='jarbundler' classpath='${conf_jarbundler}/${conf_jarbundler-jar}' classname='net.sourceforge.jarbundler.JarBundler' />
+			<echo message='jarbundler' />
+			<mkdir dir='${distdir}/jarbundler/' />
+			<jarbundler dir='${distdir}/jarbundler/' 
+				name='Jajuk' 
+				shortname="Jajuk"
+				mainclass='org.jajuk.Main' 
+				icon='${distdir}/dist-files/images/jajuk-icon_source.icns' 
+				jvmversion='1.7+' 
+				version='${version}' 
+				useJavaXKey='true' 
+				stubfile='${basedir}/src/packaging/OSX/universalJavaApplicationStub'
+				build='${version}' 
+				vmoptions='-client -Xms20M -Xmx2G -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -Xverify:none' 
+				arguments='-${test}' 
+				verbose='true'>
+				<jarfileset dir='${distdir}/lib'>
+					<include name='**/*.jar' />
+				</jarfileset>
+				<jarfileset dir='${distdir}/bin'>
+					<include name='**/*.jar' />
+				</jarfileset>
+			</jarbundler>
+		</target>
 
-	<!--jarbundler Mac OS zip package creation -->
+	<!--jarbundler Mac OS zip package creation (Jajuk.app + mplayer binaries) -->
 	<target name='package_macos' description='o Create Jajuk MAC OS package' depends='startup,clean,mkdist_macos,package_jar,jarbundler'>
 		<echo message='Create Jajuk MAC OS package' />
 		<!-- Create the distribution directory -->
@@ -286,7 +312,7 @@
 		<copy file='${mplayerdir}/osx/mplayer' todir='${distdir}/jarbundler/Jajuk.app/Contents/Resources/External_Binaries' />
 		<zip zipfile='${distdir}/jajuk-macos-${version}.zip'>
 			<zipfileset dir='${distdir}/jarbundler/Jajuk.app/Contents' filemode='755' prefix='Jajuk.app/Contents'>
-				<include name='MacOS/JavaApplicationStub' />
+				<include name='MacOS/universalJavaApplicationStub' />
 				<include name='PkgInfo' />
 				<include name='Info.plist' />
 				<include name='Resources/**' />
@@ -434,22 +460,6 @@
 				<pathelement location='target/${final.name}.jar' />
 			</classpath>
 		</javadoc>
-	</target>
-
-
-	<!--jarbundler Mac OS X package creation -->
-	<target name='jarbundler' depends='package_jar'>
-		<taskdef name='jarbundler' classpath='${conf_jarbundler}/${conf_jarbundler-jar}' classname='net.sourceforge.jarbundler.JarBundler' />
-		<echo message='jarbundler' />
-		<mkdir dir='${distdir}/jarbundler/' />
-		<jarbundler dir='${distdir}/jarbundler/' name='Jajuk' mainclass='org.jajuk.Main' icon='${distdir}/dist-files/images/jajuk-icon_source.icns' jvmversion='1.7+' version='${version}' useJavaXKey="true" stubfile='${basedir}/src/packaging/OSX/universalJavaApplicationStub' build='${version}' vmoptions='-client -Xms20M -Xmx2G -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -Xverify:none' arguments='-${test}' verbose='true'>
-			<jarfileset dir='${distdir}/lib'>
-				<include name='**/*.jar' />
-			</jarfileset>
-			<jarfileset dir='${distdir}/bin'>
-				<include name='**/*.jar' />
-			</jarfileset>
-		</jarbundler>
 	</target>
 
 	<!-- Create hash files and upload packages-->
