@@ -312,10 +312,12 @@
 		<copy file='${mplayerdir}/osx/mplayer' todir='${distdir}/jarbundler/Jajuk.app/Contents/Resources/External_Binaries' />
 		<zip zipfile='${distdir}/jajuk-macos-${version}.zip'>
 			<zipfileset dir='${distdir}/jarbundler/Jajuk.app/Contents' filemode='755' prefix='Jajuk.app/Contents'>
-				<include name='universalJavaApplicationStub' />
 				<include name='PkgInfo' />
 				<include name='Info.plist' />
 				<include name='Resources/**' />
+			</zipfileset>
+			<zipfileset dir='${distdir}/jarbundler/Jajuk.app/Contents/MacOS' filemode='755' prefix='Jajuk.app/Contents'>
+				<include name='universalJavaApplicationStub' />
 			</zipfileset>
 			<fileset file='${basedir}/src/doc/README.html' />
 			<fileset file='${basedir}/src/legals/LICENSE.txt' />
