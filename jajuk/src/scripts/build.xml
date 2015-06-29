@@ -299,8 +299,9 @@
 				<jarfileset dir='${distdir}/bin'>
 					<include name='**/*.jar' />
 				</jarfileset>
-				<execfilelist files="${mplayerdir}/osx/mplayer"/>
-				<resourcefilelist files="${basedir}/src/doc/README.html,${basedir}/src/legals/LICENSE.txt,${basedir}/src/legals/AUTHORS.txt"/>
+				<execfilelist dir='${mplayerdir}/osx' files="mplayer"/>
+				<resourcefilelist dir='${basedir}/src/doc' files='README.html'/>
+				<resourcefilelist dir='${basedir}/src/legals' files='LICENSE.txt,AUTHORS.txt'/>
 			</jarbundler>
 		</target>
 
@@ -309,7 +310,7 @@
 		<echo message='Create Jajuk MAC OS package' />
 		<!-- Create the distribution directory -->
 		<mkdir dir='${distdir}/macos' />
-		<zip zipfile='${distdir}/jajuk-macos-${version}.zip' basedir='${distdir}/jarbundler/Jajuk.app' filemode='755'/>
+		<zip zipfile='${distdir}/jajuk-macos-${version}.zip' basedir='${distdir}/jarbundler/Jajuk.app'/>
 	</target>
 
 	<target name='package_source' description='o Create Jajuk source package (zip)' depends='startup,clean,mkdist_source'>
