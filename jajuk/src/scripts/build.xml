@@ -299,30 +299,17 @@
 				<jarfileset dir='${distdir}/bin'>
 					<include name='**/*.jar' />
 				</jarfileset>
+				<execfilelist files="${mplayerdir}/osx/mplayer"/>
+				<resourcefilelist files="${basedir}/src/doc/README.html,${basedir}/src/legals/LICENSE.txt,${basedir}/src/legals/AUTHORS.txt"/>
 			</jarbundler>
 		</target>
 
-	<!--jarbundler Mac OS zip package creation (Jajuk.app + mplayer binaries) -->
+	<!--Create jarbundler zip -->
 	<target name='package_macos' description='o Create Jajuk MAC OS package' depends='startup,clean,mkdist_macos,package_jar,jarbundler'>
 		<echo message='Create Jajuk MAC OS package' />
 		<!-- Create the distribution directory -->
 		<mkdir dir='${distdir}/macos' />
-		<!-- Copy mplayer OSX binary into it -->
-		<mkdir dir='${distdir}/jarbundler/Jajuk.app/Contents/Resources/External_Binaries' />
-		<copy file='${mplayerdir}/osx/mplayer' todir='${distdir}/jarbundler/Jajuk.app/Contents/Resources/External_Binaries' />
-		<zip zipfile='${distdir}/jajuk-macos-${version}.zip'>
-			<zipfileset dir='${distdir}/jarbundler/Jajuk.app/Contents' filemode='755' prefix='Jajuk.app/Contents'>
-				<include name='PkgInfo' />
-				<include name='Info.plist' />
-				<include name='Resources/**' />
-			</zipfileset>
-			<zipfileset dir='${distdir}/jarbundler/Jajuk.app/Contents/MacOS' filemode='755' prefix='Jajuk.app/Contents'>
-				<include name='universalJavaApplicationStub' />
-			</zipfileset>
-			<fileset file='${basedir}/src/doc/README.html' />
-			<fileset file='${basedir}/src/legals/LICENSE.txt' />
-			<fileset file='${basedir}/src/legals/AUTHORS.txt' />
-		</zip>
+		<zip zipfile='${distdir}/jajuk-macos-${version}.zip' basedir='${distdir}/jarbundler/Jajuk.app' filemode='755'/>
 	</target>
 
 	<target name='package_source' description='o Create Jajuk source package (zip)' depends='startup,clean,mkdist_source'>

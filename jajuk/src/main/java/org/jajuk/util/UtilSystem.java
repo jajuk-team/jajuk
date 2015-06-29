@@ -699,7 +699,7 @@ public final class UtilSystem {
       return UtilSystem.mplayerPath;
     }
     // Search in /Applications first
-    File file = new File("/Applications/Jajuk.app/Contents/Resources/External_Binaries/"
+    File file = new File("/Applications/Jajuk.app/Contents/MacOS/"
         + Const.FILE_MPLAYER_OSX_EXE);
     if (file.canExecute() && file.length() == Const.MPLAYER_OSX_EXE_SIZE) {
       UtilSystem.mplayerPath = file;
