@@ -276,41 +276,31 @@
 	</target>
 
 	<!--jarbundler Mac OS X package creation (Jajuk.app)-->
-		<target name='jarbundler' depends='package_jar'>
-			<taskdef name='jarbundler' classpath='${conf_jarbundler}/${conf_jarbundler-jar}' classname='net.sourceforge.jarbundler.JarBundler' />
-			<echo message='jarbundler' />
-			<mkdir dir='${distdir}/jarbundler/' />
-			<jarbundler dir='${distdir}/jarbundler/' 
-				name='Jajuk' 
-				shortname="Jajuk"
-				mainclass='org.jajuk.Main' 
-				icon='${distdir}/dist-files/images/jajuk-icon_source.icns' 
-				jvmversion='1.7+' 
-				version='${version}' 
-				useJavaXKey='true' 
-				stubfile='${basedir}/src/packaging/OSX/universalJavaApplicationStub'
-				build='${version}' 
-				vmoptions='-client -Xms20M -Xmx2G -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -Xverify:none' 
-				arguments='-${test}' 
-				verbose='true'>
-				<jarfileset dir='${distdir}/lib'>
-					<include name='**/*.jar' />
-				</jarfileset>
-				<jarfileset dir='${distdir}/bin'>
-					<include name='**/*.jar' />
-				</jarfileset>
-				<execfilelist dir='${mplayerdir}/osx' files="mplayer"/>
-				<resourcefilelist dir='${basedir}/src/doc' files='README.html'/>
-				<resourcefilelist dir='${basedir}/src/legals' files='LICENSE.txt,AUTHORS.txt'/>
-			</jarbundler>
-		</target>
+	<target name='jarbundler' depends='package_jar'>
+		<taskdef name='jarbundler' classpath='${conf_jarbundler}/${conf_jarbundler-jar}' classname='net.sourceforge.jarbundler.JarBundler' />
+		<echo message='jarbundler' />
+		<mkdir dir='${distdir}/jarbundler/' />
+		<jarbundler dir='${distdir}/jarbundler/' name='Jajuk' shortname="Jajuk" mainclass='org.jajuk.Main' icon='${distdir}/dist-files/images/jajuk-icon_source.icns' jvmversion='1.7+' version='${version}' useJavaXKey='true' stubfile='${basedir}/src/packaging/OSX/universalJavaApplicationStub' build='${version}' vmoptions='-client -Xms20M -Xmx2G -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -Xverify:none' arguments='-${test}' verbose='true'>
+			<jarfileset dir='${distdir}/lib'>
+				<include name='**/*.jar' />
+			</jarfileset>
+			<jarfileset dir='${distdir}/bin'>
+				<include name='**/*.jar' />
+			</jarfileset>
+			<execfilelist dir='${mplayerdir}/osx' files="mplayer" />
+		</jarbundler>
+	</target>
 
 	<!--Create jarbundler zip -->
-	<target name='package_macos' description='o Create Jajuk MAC OS package' depends='startup,clean,mkdist_macos,package_jar,jarbundler'>
+	<target name='package_macos' description='o Create Jajuk MAC OS package' depends='startup,clean,package_jar,jarbundler'>
 		<echo message='Create Jajuk MAC OS package' />
-		<!-- Create the distribution directory -->
-		<mkdir dir='${distdir}/macos' />
-		<zip zipfile='${distdir}/jajuk-macos-${version}.zip' basedir='${distdir}/jarbundler/Jajuk.app'/>
+		<zip zipfile='${distdir}/jajuk-macos-${version}.zip'>
+			<zipfileset dir='${distdir}/jarbundler' filemode='755'>
+				<include name='*/**' />
+			</zipfileset>
+			<fileset file='${basedir}/src/doc/README.html' />
+			<fileset file='${basedir}/src/legals/*' />
+		</zip>
 	</target>
 
 	<target name='package_source' description='o Create Jajuk source package (zip)' depends='startup,clean,mkdist_source'>
