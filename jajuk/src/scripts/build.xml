@@ -15,7 +15,7 @@
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
 	<property name='version' value='1.10.8dev' />
 
-	 <!--Test flag: values: 'test' or 'notest' 
+	<!--Test flag: values: 'test' or 'notest' 
 	'test' for 'unstable' branches, 'notest' for master, pre-release and maintenance branches
 	-->
 	<property name='test' value='notest' />
@@ -398,12 +398,6 @@
 		</replace>
 	</target>
 
-
-	<target name='mkdist_macos'>
-		<echo message='Prepare files to build MAC OS X package' />
-	</target>
-
-
 	<target name='mkdist_windows'>
 		<echo message='Prepare files to build Windows executable' />
 		<!--copy native dll to bin directory-->
@@ -435,21 +429,6 @@
 			<!--Exclude files created during the maven execution -->
 			<fileset file='${basedir}/**' excludes='test*,**/target/**' />
 		</copy>
-	</target>
-
-	<target name='javadoc'>
-		<delete dir='${javadocdir}' />
-		<mkdir dir='${javadocdir}' />
-		<property name='copyright' value='Copyright &amp;copy;  Jajuk team. All Rights Reserved.' />
-		<javadoc destdir='${javadocdir}' access='private' use='true' notree='false' nonavbar='false' noindex='false' splitindex='true' author='true' version='true' nodeprecatedlist='false' nodeprecated='false' packagenames='org.jajuk.base,org.jajuk.ui.views,org.jajuk,org.jajuk.i18n,org.jajuk.ui.perspectives,org.jajuk.util.log,org.jajuk.ui,org.jajuk.util,org.jajuk.util.error,org.jajuk.players' sourcepath='src' source='1.6' Windowtitle='Jajuk ${version} API'>
-			<classpath>
-				<fileset dir='${libdir}'>
-					<include name='*.jar'>
-					</include>
-				</fileset>
-				<pathelement location='target/${final.name}.jar' />
-			</classpath>
-		</javadoc>
 	</target>
 
 	<!-- Create hash files and upload packages-->
