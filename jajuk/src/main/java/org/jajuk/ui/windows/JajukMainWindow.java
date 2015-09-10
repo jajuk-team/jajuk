@@ -325,7 +325,7 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
    * Return the stored position as a rectangle or default coordinates if no stored position is provided or if the stored position is invalid.
    * @return the stored position as a rectangle or null
    */
-  private Rectangle getStoredPosition() {
+  Rectangle getStoredPosition() {
     try {
       String storedPosition = Conf.getString(Const.CONF_WINDOW_POSITION);
       int x = 0;
@@ -334,8 +334,11 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
       int vertSize = 0;
       if (UtilString.isNotEmpty(storedPosition)) {
         StringTokenizer st = new StringTokenizer(storedPosition, ",");
+        // We need to floor the position to zero due to issues with dual screens that can produce negative x and y 
         x = Integer.parseInt(st.nextToken());
+        x = Math.max(x, 0);
         y = Integer.parseInt(st.nextToken());
+        y = Math.max(y, 0);
         horizSize = Integer.parseInt(st.nextToken());
         vertSize = Integer.parseInt(st.nextToken());
         return new Rectangle(x, y, horizSize, vertSize);
