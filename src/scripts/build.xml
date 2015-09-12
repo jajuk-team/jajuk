@@ -68,11 +68,7 @@
 		</condition>
 	</target>
 
-	<target name='check-jvm' depends='get-jvm' if='jvm.not.ok'>
-		<fail message='Wrong Java version used for building: ${java.specification.version}, the build requires version ${jajuk.java.build.version6} or ${jajuk.java.build.version7}' />
-	</target>
-
-	<target name='startup' depends='check-jvm'>
+	<target name='startup' >
 		<echo message='Building Jajuk release: ${version} using Java ${java.specification.version}' />
 		<echo message='Building Jajuk release: ${version}' />
 		<echo message='Basedir: ${basedir}' />
