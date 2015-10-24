@@ -20,8 +20,6 @@
  */
 package org.jajuk;
 
-import ext.JVM;
-
 import java.util.Locale;
 
 import javax.swing.JDialog;
@@ -53,7 +51,9 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
-import org.jvnet.substance.skin.SubstanceBusinessLookAndFeel;
+import org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel;
+
+import ext.JVM;
 
 /**
  * Jajuk launching class.

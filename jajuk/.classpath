@@ -24,6 +24,9 @@
 	<classpathentry kind="lib" path="lib/filters-2.0.235.jar"/>
 	<classpathentry kind="lib" path="lib/jintellitype-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/vldocking-2.1.5.jar"/>
+	<classpathentry kind="lib" path="lib/laf-widget-7.3.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/trident-7.3.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/laf-plugin-7.3.1-SNAPSHOT.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/libdbus-java-2.6.jar">
 		<attributes>
@@ -45,7 +48,6 @@
 	<classpathentry kind="lib" path="lib/js-0.98.4.jar"/>
 	<classpathentry kind="lib" path="lib/swingx-1.6.jar"/>
 	<classpathentry kind="lib" path="lib/animation-1.2.0.jar"/>
-	<classpathentry kind="lib" path="lib/substance-5.3.jar"/>
 	<classpathentry kind="lib" path="lib/guava-11.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/jaudiotagger-2.2.0-20130420.jar" sourcepath="/prog/api/jaudiotagger/trunk/src">
 		<attributes>
@@ -55,5 +57,6 @@
 	<classpathentry kind="lib" path="lib/qdwizard-4.1.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/cobra_jajuk-0.98.5.jar"/>
+	<classpathentry kind="lib" path="lib/substance-7.3.1-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -49,8 +49,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
 import org.jajuk.base.File;
@@ -82,7 +80,9 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
+import org.pushingpixels.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Logical tree view.

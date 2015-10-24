@@ -27,10 +27,9 @@ import java.util.Vector;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.plaf.ComboBoxUI;
-import javax.swing.plaf.basic.BasicComboPopup;
-import javax.swing.plaf.basic.ComboPopup;
 
 import org.jajuk.util.log.Log;
+import org.pushingpixels.substance.internal.ui.SubstanceComboBoxUI;
 
 /**
  * Stepped combo box allowing to display a long text in the history bar.
@@ -107,17 +106,18 @@ public class SteppedComboBox extends JComboBox {
    */
   protected final void init() {
     try {
-      ComboBoxUI cbui = new org.jvnet.substance.SubstanceComboBoxUI() {
-        @Override
-        protected ComboPopup createPopup() {
-          BasicComboPopup popup1 = new org.jajuk.ui.widgets.JajukBasicComboPopup(comboBox);
-          popup1.getAccessibleContext().setAccessibleParent(comboBox);
-          // Non opaque to avoid being transparent so we can't read
-          // popup content over others text
-          popup1.setOpaque(true);
-          return popup1;
-        }
-      };
+      ComboBoxUI cbui = new SubstanceComboBoxUI(this);
+//      ComboBoxUI cbui = new org.jvnet.substance.SubstanceComboBoxUI() {
+//        @Override
+//        protected ComboPopup createPopup() {
+//          BasicComboPopup popup1 = new org.jajuk.ui.widgets.JajukBasicComboPopup(comboBox);
+//          popup1.getAccessibleContext().setAccessibleParent(comboBox);
+//          // Non opaque to avoid being transparent so we can't read
+//          // popup content over others text
+//          popup1.setOpaque(true);
+//          return popup1;
+//        }
+//      };
       setUI(cbui);
       popupWidth = 0;
     } catch (Exception e) {
