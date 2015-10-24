@@ -38,10 +38,10 @@
 	</Company_Info>
 	<Program_Info>
 		<Program_Name>Jajuk</Program_Name>
-		<Program_Version>1.10.7</Program_Version>
-		<Program_Release_Month>08</Program_Release_Month>
-		<Program_Release_Day>25</Program_Release_Day>
-		<Program_Release_Year>2014</Program_Release_Year>
+		<Program_Version>1.10.8</Program_Version>
+		<Program_Release_Month>10</Program_Release_Month>
+		<Program_Release_Day>24</Program_Release_Day>
+		<Program_Release_Year>2015</Program_Release_Year>
 		<Program_Cost_Dollars />
 		<Program_Cost_Other_Code />
 		<Program_Cost_Other />
@@ -98,12 +98,12 @@
 		<Application_URLs>
 			<Application_Info_URL>http://jajuk.info</Application_Info_URL>
 			<Application_Order_URL />
-			<Application_Screenshot_URL>http://jajuk.info/upload/f/fe/Mainpage_screenshot.png</Application_Screenshot_URL>
-			<Application_Icon_URL>http://gitorious.org/jajuk/jajuk/blobs/raw/master/jajuk/src/packaging/pad/jajuk-icon_32x32.gif</Application_Icon_URL>
+			<Application_Screenshot_URL>http://jajuk.info/images/jajuk_screenshot.png</Application_Screenshot_URL>
+			<Application_Icon_URL>http://jajuk.info/images/jajuk_logo_small.png</Application_Icon_URL>
 			<Application_XML_File_URL>http://repository.jajuk.info/jajuk_pad.xml</Application_XML_File_URL>
 		</Application_URLs>
 		<Download_URLs>
-			<Primary_Download_URL>http://sourceforge.net/projects/jajuk/files/jajuk/1.10.7/jajuk-1.10.7-setup.exe</Primary_Download_URL>
+			<Primary_Download_URL>http://jajuk.info/download.html</Primary_Download_URL>
 			<Secondary_Download_URL />
 			<Additional_Download_URL_1 />
 			<Additional_Download_URL_2 />

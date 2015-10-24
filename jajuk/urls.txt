@@ -1,0 +1,11 @@
+
+http://jajuk.info/index.php/jajuk_license_derivated NO REPLACEMENT
+ http://jajuk.info/index.php/Tip_of_the_day NO REPLACEMENT
+http://jajuk.info/index.php/Hidden_options NO REPLACEMENT
+http://jajuk.info/index.php/Installing_Perl_Audio_Converter NO REPLACEMENT
+http://jajuk.info/index.php/Table_of_contents => http://jajuk.info/jajuk_manual.html (incomplete)
+
+http://sourceforge.net/mailarchive/forum.php?forum=jajuk-developers NOT WORKING
+http://sourceforge.net/mailarchive/forum.php?forum=jajuk-i18n NOT WORKING
+
+

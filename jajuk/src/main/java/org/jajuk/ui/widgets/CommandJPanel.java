@@ -29,7 +29,6 @@ import static org.jajuk.ui.actions.JajukActions.PAUSE_RESUME_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
-import ext.DropDownButton;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -83,7 +82,9 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
-import org.jvnet.substance.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+
+import ext.DropDownButton;
 
 /**
  * Command panel ( static view )

@@ -63,7 +63,7 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
-import org.jvnet.substance.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 
 /**
  * The full screen window Note that not all operating support full screen mode.

@@ -52,8 +52,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Directory;
@@ -93,7 +91,9 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-import org.jvnet.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
+import org.pushingpixels.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Physical tree view.
