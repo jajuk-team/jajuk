@@ -107,7 +107,7 @@ public class SteppedComboBox extends JComboBox {
    */
   protected final void init() {
     try {
-      ComboBoxUI cbui = new org.jvnet.substance.SubstanceComboBoxUI() {
+      ComboBoxUI cbui = new org.pushingpixels.substance.internal.ui.SubstanceComboBoxUI(this) {
         @Override
         protected ComboPopup createPopup() {
           BasicComboPopup popup1 = new org.jajuk.ui.widgets.JajukBasicComboPopup(comboBox);

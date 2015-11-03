@@ -44,8 +44,11 @@
 	<classpathentry kind="lib" path="lib/jfreechart-1.0.13.jar"/>
 	<classpathentry kind="lib" path="lib/js-0.98.4.jar"/>
 	<classpathentry kind="lib" path="lib/swingx-1.6.jar"/>
+	<classpathentry kind="lib" path="lib/substance-7.3.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/laf-widget-7.3.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/trident-7.3.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/laf-plugin-7.3.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/animation-1.2.0.jar"/>
-	<classpathentry kind="lib" path="lib/substance-5.3.jar"/>
 	<classpathentry kind="lib" path="lib/guava-11.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/jaudiotagger-2.2.0-20130420.jar" sourcepath="/prog/api/jaudiotagger/trunk/src">
 		<attributes>

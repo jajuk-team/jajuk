@@ -93,11 +93,12 @@ import org.jdesktop.swingx.JXBusyLabel;
 import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.api.SubstanceColorScheme;
-import org.jvnet.substance.api.SubstanceSkin;
-import org.jvnet.substance.skin.SkinInfo;
-import org.jvnet.substance.skin.SubstanceBusinessLookAndFeel;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.skin.SkinInfo;
+import org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel;
 
 /**
  * Set of GUI convenient methods.
@@ -112,7 +113,7 @@ public final class UtilGUI {
   public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
   // Current cursor that is displayed
   private static Cursor currentCursor = DEFAULT_CURSOR;
-  /** Substance theme *. */
+  /** Substance theme. */
   private static String theme;
   /** Alternate color rows highlighter used in every table. */
   private static Highlighter alternateColorHighlighter;
@@ -420,10 +421,11 @@ public final class UtilGUI {
     // hide some useless elements such locker for not editable labels
     UIManager.put(SubstanceLookAndFeel.SHOW_EXTRA_WIDGETS, Boolean.FALSE);
     // Store current color scheme (cannot change for the wall session)
-    colorScheme = SubstanceLookAndFeel.getCurrentSkin().getMainActiveColorScheme();
+    colorScheme = SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.NONE);
     // Set view foreground colors
     SubstanceSkin theme = SubstanceLookAndFeel.getCurrentSkin();
-    SubstanceColorScheme scheme = theme.getMainActiveColorScheme();
+    
+    SubstanceColorScheme scheme = theme.getActiveColorScheme(DecorationAreaType.NONE);
     Color foregroundActive = null;
     Color foregroundInactive = null;
     Color backgroundActive = null;
@@ -750,7 +752,7 @@ public final class UtilGUI {
       return alternateColorHighlighter;
     }
     SubstanceSkin theme = SubstanceLookAndFeel.getCurrentSkin();
-    SubstanceColorScheme scheme = theme.getMainActiveColorScheme();
+    SubstanceColorScheme scheme = theme.getActiveColorScheme(DecorationAreaType.NONE);
     Color color1 = scheme.getWatermarkStampColor();
     Color color2 = scheme.getWatermarkDarkColor();
     Highlighter highlighter = HighlighterFactory.createAlternateStriping(color1, color2);

@@ -53,7 +53,7 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
-import org.jvnet.substance.skin.SubstanceBusinessLookAndFeel;
+import org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel;
 
 /**
  * Jajuk launching class.

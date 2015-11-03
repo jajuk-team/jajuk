@@ -105,6 +105,9 @@ public class LyricsManiaWebLyricsProvider extends GenericWebLyricsProvider {
           ret = ret.substring(secondIndex + 10);
           int stopIndex = ret.indexOf("</div>");
           ret = ret.substring(0, stopIndex);
+          ret = ret.replace('\r', '\n');
+          ret = ret.replace("<div class=\"p402_premium\">", "");
+          ret += "\n<-- LyricsMania -->";
           ret = cleanHtml(ret);
         } else {
           ret = null;

@@ -43,7 +43,7 @@ public class TestLastFmAlbumList extends TestCase {
    */
   public void testGetAlbumList() {
     List<Album> list = getAlbumList();
-    AlbumListInfo info = LastFmAlbumList.getAlbumList(list, "Red Hot Chilli Peppers");
+    AlbumListInfo info = LastFmAlbumList.getAlbumList(list, "Red Hot Chili Peppers");
     assertNotNull(info);
     assertEquals(2, info.getAlbums().size());
   }
@@ -54,8 +54,8 @@ public class TestLastFmAlbumList extends TestCase {
    * @return the album list
    */
   private List<Album> getAlbumList() {
-    Album a1 = Album.getInfo("Red Hot Chilli Peppers", "By The Way", UtilString.rot13(API_KEY));
-    Album a2 = Album.getInfo("Red Hot Chilli Peppers", "Stadium Arcadium",
+    Album a1 = Album.getInfo("Red Hot Chili Peppers", "By The Way", UtilString.rot13(API_KEY));
+    Album a2 = Album.getInfo("Red Hot Chili Peppers", "Stadium Arcadium",
         UtilString.rot13(API_KEY));
     List<Album> list = new ArrayList<Album>();
     list.add(a1);

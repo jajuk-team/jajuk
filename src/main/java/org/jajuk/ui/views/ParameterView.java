@@ -84,8 +84,8 @@ import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.JXCollapsiblePane;
 import org.jdesktop.swingx.VerticalLayout;
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.skin.SkinInfo;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.skin.SkinInfo;
 
 /**
  * View used to set Jajuk parameters.

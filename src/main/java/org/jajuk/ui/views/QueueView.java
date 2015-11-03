@@ -78,9 +78,10 @@ import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.api.SubstanceColorScheme;
-import org.jvnet.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSkin;
 
 /**
  * Adapter for playlists editors *.
@@ -197,7 +198,7 @@ public class QueueView extends PlaylistView {
     //handle track removing for the queue when deleting it
     jmiDelete.addActionListener(this);
     SubstanceSkin theme = SubstanceLookAndFeel.getCurrentSkin();
-    SubstanceColorScheme scheme = theme.getMainActiveColorScheme();
+    SubstanceColorScheme scheme = theme.getActiveColorScheme(DecorationAreaType.NONE);
     Color queueHighlighterColor = null;
     if (scheme.isDark()) {
       queueHighlighterColor = scheme.getUltraLightColor();

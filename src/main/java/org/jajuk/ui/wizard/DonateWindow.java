@@ -52,7 +52,7 @@ public class DonateWindow extends JajukJDialog {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
   /** The Constant BUDGET_LINK.   */
-  private static final String BUDGET_LINK = "http://jajuk.info/index.php/Project_budget";
+  private static final String BUDGET_LINK = "http://www.jajuk.info/budget.html";
   /** The Constant DONATE_LINK.   */
   private static final String DONATE_LINK = "http://jajuk.info/index.php/Donate";
 

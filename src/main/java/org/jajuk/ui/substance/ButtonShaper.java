@@ -29,10 +29,11 @@ import java.awt.geom.GeneralPath;
 import javax.swing.AbstractButton;
 import javax.swing.border.Border;
 
-import org.jvnet.substance.SubstanceButtonUI;
-import org.jvnet.substance.shaper.StandardButtonShaper;
-import org.jvnet.substance.shaper.SubstanceButtonShaper;
-import org.jvnet.substance.utils.border.SubstanceButtonBorder;
+import org.pushingpixels.substance.api.shaper.StandardButtonShaper;
+import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
+import org.pushingpixels.substance.internal.ui.SubstanceButtonUI;
+import org.pushingpixels.substance.internal.utils.border.SubstanceButtonBorder;
+
 
 /*
  * based on code from Xtreme Media Player
@@ -44,7 +45,6 @@ public abstract class ButtonShaper implements SubstanceButtonShaper {
   /* (non-Javadoc)
    * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getButtonOutline(javax.swing.AbstractButton)
    */
-  @Override
   public Shape getButtonOutline(AbstractButton button) {
     return getButtonOutline(button, null, button.getWidth(), button.getHeight(), true);
   }
@@ -52,7 +52,6 @@ public abstract class ButtonShaper implements SubstanceButtonShaper {
   /* (non-Javadoc)
    * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getButtonOutline(javax.swing.AbstractButton, java.awt.Insets)
    */
-  @Override
   public GeneralPath getButtonOutline(AbstractButton button, Insets insets) {
     throw new UnsupportedOperationException();
   }
@@ -60,7 +59,6 @@ public abstract class ButtonShaper implements SubstanceButtonShaper {
   /* (non-Javadoc)
    * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getButtonOutline(javax.swing.AbstractButton, java.awt.Insets, int, int)
    */
-  @Override
   public GeneralPath getButtonOutline(AbstractButton button, Insets insets, int width, int height) {
     throw new UnsupportedOperationException();
   }

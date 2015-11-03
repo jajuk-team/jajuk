@@ -39,9 +39,9 @@ import org.jajuk.events.Observer;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
-import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.fonts.FontPolicy;
-import org.jvnet.substance.fonts.FontSet;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.fonts.FontPolicy;
+import org.pushingpixels.substance.api.fonts.FontSet;
 
 /**
  * Manages Jajuk fonts, stores or update them.

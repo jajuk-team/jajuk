@@ -56,7 +56,7 @@ public class AzLyricsWebLyricsProvider extends GenericWebLyricsProvider {
       String lyrics = null;
       if (StringUtils.isNotBlank(artist) && StringUtils.isNotBlank(title)) {
         // Specific rule : lowercase, no space, remove "the " par ex for "The Beatles "
-        String formattedArtist = artist.toLowerCase().replace("the ", "").replace(" ", "");
+        String formattedArtist = artist.toLowerCase().replace(" ", "").replaceFirst("the ", "").replace("/", "").replace("&","");
         // Specific rule : lowercase, no space, no extra signs ()'-,
         String formattedTitle = title.replace(" ", "");
         formattedTitle = formattedTitle.replace("(", "");
@@ -91,12 +91,14 @@ public class AzLyricsWebLyricsProvider extends GenericWebLyricsProvider {
   private String cleanLyrics(final String html) {
     String ret = null;
     if (html != null) {
-      int startIndex = html.indexOf("<!-- start of lyrics -->");
+      String searchStart = "Sorry about that. -->";
+      int startIndex = html.indexOf(searchStart);
       if (startIndex > -1) {
-        ret = html.substring(startIndex + 26);
-        int stopIndex = ret.indexOf("<!-- end of lyrics -->");
+        ret = html.substring(startIndex + searchStart.length());
+        int stopIndex = ret.indexOf("</div>");
         if (stopIndex > -1) {
           ret = ret.substring(0, stopIndex);
+          ret += "\n<-- AZLyrics -->";
           return cleanHtml(ret);
         } else {
           ret = null;

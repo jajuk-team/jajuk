@@ -183,6 +183,8 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
    */
   String cleanHtml(String lyrics) {
     String ret = lyrics.replaceAll("<br />", "\n");
+    ret = ret.replaceAll("<br/>", "\n");
+    ret = ret.replaceAll("<br>", "\n");
     ret = ret.replaceAll("&#8217;", "'");
     ret = ret.replaceAll("&#8211;", "-");
     ret = ret.replaceAll("\u0092", "'");
@@ -193,6 +195,8 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
     ret = ret.replaceAll("<b>", "");
     ret = ret.replaceAll("</b>", "");
     ret = ret.replaceAll("\t", "");
+    ret = ret.replaceAll("&quot;", "'");
+    ret = ret.replaceAll("&#039;", "'");
     ret = ret.replaceAll("&#146;", "'");
     ret = ret.replaceAll("&#133;", "…");
     return ret;
