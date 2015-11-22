@@ -11,11 +11,11 @@
 	<!--Build type : 'unstable', 'final', 'pre-release' or 'maintenance' -->
 	<property name='type' value='final' />
 
-	<!--Distribution release  
+	<!--Distribution release
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
 	<property name='version' value='1.10.8dev' />
 
-	<!--Test flag: values: 'test' or 'notest' 
+	<!--Test flag: values: 'test' or 'notest'
 	'test' for 'unstable' branches, 'notest' for master, pre-release and maintenance branches
 	-->
 	<property name='test' value='notest' />
@@ -73,7 +73,9 @@
 	</target>
 
 	<target name='clean' description='o Clean up previous build files'>
-		<delete failonerror='true' dir='${rootdir}' />
+		<delete failonerror='true' includeemptydirs='true' >
+			<fileset dir='${rootdir}' includes="**/*"/>
+		</delete>
 		<delete failonerror='true' dir='${mplayerdir}' />
 	</target>
 
