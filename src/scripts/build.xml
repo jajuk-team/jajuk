@@ -28,7 +28,7 @@
 	<property name="launch4j.dir" location="/data/build_tools/launch4j" />
 	<property name='jajuk.java.build.version6' value='1.6' />
 	<property name='jajuk.java.build.version7' value='1.7' />
-	<property name='rootdir' value='/data/jajuk-dist' />
+	<property name='rootdir' value='/tmp/jajuk-dist' />
 	<property name='conf_uploaddir' value='${rootdir}/packages/' />
 	<property name='installdir' value='/usr/share/jajuk/' />
 	<property name='jnidir' value='/usr/lib/jajuk/' />
