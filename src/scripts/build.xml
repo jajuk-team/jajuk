@@ -302,6 +302,7 @@
 	<target name='package_source' description='o Create Jajuk source package (zip)' depends='startup,clean,mkdist_source'>
 		<echo message='Create Jajuk source package' />
 		<zip basedir='${sourcesdir}' destfile='${sourcesdist}' />
+		<delete dir='{sourcesdir}' />
 	</target>
 
 	<!-- Windows jajuk.exe creation using launch4j-->
