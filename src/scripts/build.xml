@@ -23,19 +23,13 @@
 	<!-- ======================= -->
 	<!-- | Configuration paths | -->
 	<!-- ======================= -->
-	<property name='conf_uploaddir' value='/tmp/jajuk-dist/packages/' />
 	<property name='conf_jarbundler' value='/data/build_tools/jarbundler' />
 	<property name='conf_jarbundler-jar' value='jarbundler-2.4.0.jar' />
 	<property name="launch4j.dir" location="/data/build_tools/launch4j" />
-
-	<!-- ============================== -->
-	<!-- | End of configuration paths | -->
-	<!-- ============================== -->
-
-	<!--CONST-->
 	<property name='jajuk.java.build.version6' value='1.6' />
 	<property name='jajuk.java.build.version7' value='1.7' />
-	<property name='rootdir' value='/tmp/jajuk-dist' />
+	<property name='rootdir' value='/data/jajuk-dist' />
+	<property name='conf_uploaddir' value='${rootdir}/packages/' />
 	<property name='installdir' value='/usr/share/jajuk/' />
 	<property name='jnidir' value='/usr/lib/jajuk/' />
 	<property name='distdir' value='${rootdir}/jajuk' />
