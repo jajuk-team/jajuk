@@ -26,8 +26,6 @@
 	<property name='conf_jarbundler' value='/data/build_tools/jarbundler' />
 	<property name='conf_jarbundler-jar' value='jarbundler-2.4.0.jar' />
 	<property name="launch4j.dir" location="/data/build_tools/launch4j" />
-	<property name='jajuk.java.build.version6' value='1.6' />
-	<property name='jajuk.java.build.version7' value='1.7' />
 	<property name='rootdir' value='/tmp/jajuk-dist' />
 	<property name='conf_uploaddir' value='${rootdir}/packages/' />
 	<property name='installdir' value='/usr/share/jajuk/' />
@@ -49,18 +47,6 @@
 	<property name='sourcesdist' value='${sourcesdir}/jajuk-sources-${version}.zip' />
 	<property name='mplayerdir' value='/tmp/mplayer' />
 	<property name='srcdir' value='${basedir}/src' />
-
-	<target name='get-jvm'>
-		<echo message='Verifying Java Version used for building, found version ${java.specification.version}, expecting ${jajuk.java.build.version6} or ${jajuk.java.build.version7}' />
-		<condition property='jvm.not.ok'>
-			<not>
-				<or>
-					<equals arg1='${java.specification.version}' arg2='${jajuk.java.build.version6}' />
-					<equals arg1='${java.specification.version}' arg2='${jajuk.java.build.version7}' />
-				</or>
-			</not>
-		</condition>
-	</target>
 
 	<target name='startup' >
 		<echo message='Building Jajuk release: ${version} using Java ${java.specification.version}' />
