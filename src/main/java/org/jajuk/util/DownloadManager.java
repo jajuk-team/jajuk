@@ -20,30 +20,32 @@
  */
 package org.jajuk.util;
 
-import ext.services.network.NetworkUtils;
-import ext.services.network.Proxy;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.Proxy.Type;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.log.Log;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import ext.services.network.NetworkUtils;
+import ext.services.network.Proxy;
 
 /**
  * Manages network downloads.
@@ -72,48 +74,24 @@ public final class DownloadManager {
     if (search == null || search.trim().equals("")) {
       return alOut;
     }
-    // Select cover size
-    int i = Conf.getInt(Const.CONF_COVERS_SIZE);
-    String size = null;
-    switch (i) {
-    case 0: // small only
-      size = "i";
-      break;
-    case 1: // small or medium
-      size = "m";
-      break;
-    case 2: // medium only
-      size = "m";
-      break;
-    case 3: // medium or large
-      size = "m";
-      break;
-    case 4: // large only
-      size = "l";
-      break;
+    final URL sSearchUrl = new URL(
+        "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q="
+            + URLEncoder.encode(search, "ISO-8859-1"));
+    final URLConnection connection = sSearchUrl.openConnection();
+    String line;
+    final StringBuilder builder = new StringBuilder();
+    final BufferedReader reader = new BufferedReader(
+        new InputStreamReader(connection.getInputStream()));
+    while ((line = reader.readLine()) != null) {
+      builder.append(line);
     }
-    String sSearchUrl = "http://images.google.com/images?q="
-        + URLEncoder.encode(search, "ISO-8859-1") + "&ie=ISO-8859-1&hl=en&btnG=Google+Search"
-        + "&tbs=isz:" + size;
-    Log.debug("Search URL: {{" + sSearchUrl + "}}");
-    String sRes = downloadText(new URL(sSearchUrl));
-    if (sRes == null || sRes.length() == 0) {
-      return alOut;
-    }
-    // Extract urls
-    Pattern pattern = Pattern.compile("http://[^,<>]*(.jpg|.gif|.png)");
-    // "http://[^,]*(.jpg|.gif|.png).*[0-9]* [xX] [0-9]*.*- [0-9]*");
-    Matcher matcher = pattern.matcher(sRes);
-    while (matcher.find()) {
-      // Clean up URLS
-      String sUrl = matcher.group().replaceAll("%2520", "%20");
+    final JSONObject json = new JSONObject(builder.toString());
+    final JSONArray array = json.getJSONObject("responseData").getJSONArray("results");
+    for (int i = 0; i < array.length(); i++) {
+      final String sUrl = array.getJSONObject(i).getString("url");
       URL url = new URL(sUrl);
       // Remove duplicates
       if (alOut.contains(url)) {
-        continue;
-      }
-      // Ignore URLs related to Google
-      if (url.toString().toLowerCase(Locale.getDefault()).matches(".*google.*")) {
         continue;
       }
       // Add the new url
