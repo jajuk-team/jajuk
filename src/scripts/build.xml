@@ -187,10 +187,10 @@
 			<fileset file='${srcdir}/main/resources/images/included/*' />
 		</copy>
 		<copy todir='${distdir}/${classdir}/org/jajuk/i18n'>
-			<fileset file='${javadir}/org/jajuk/i18n/*.properties' />
+			<fileset file='${srcdir}/main/resources/org/jajuk/i18n/*.properties' />
 		</copy>
 		<copy todir='${distdir}/${classdir}/org/jajuk/util/log'>
-			<fileset file='${javadir}/org/jajuk/util/log/*.xml' />
+			<fileset file='${srcdir}/main/resources/jajuk-log4j-conf.xml' />
 			<fileset file='${javadir}/org/jajuk/util/log/*.properties' />
 		</copy>
 		<copy todir='${distdir}/${classdir}/perspectives'>

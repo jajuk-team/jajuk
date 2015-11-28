@@ -139,7 +139,7 @@ public interface Const {
   // logs
   String FILE_LOGS = "jajuk.log";
   String FILE_PLAYING_POSITION = "position";
-  URL FILE_LOG4J_CONF = UtilSystem.getResource("org/jajuk/util/log/jajuk-log4j-conf.xml");
+  URL FILE_LOG4J_CONF = UtilSystem.getResource("jajuk-log4j-conf.xml");
   /** Cache directory name. */
   String FILE_CACHE = "cache";
   /** Bat Converter to DOS 8.3 format */
