@@ -20,12 +20,6 @@
 			<unsubscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-developers</unsubscribe>
 			<archive>http://sourceforge.net/mailarchive/forum.php?forum=jajuk-developers</archive>
 		</mailingList>
-		<mailingList>
-			<name>Jajuk Internalionalization</name>
-			<subscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-i18n</subscribe>
-			<unsubscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-i18n</unsubscribe>
-			<archive>http://sourceforge.net/mailarchive/forum.php?forum=jajuk-i18n</archive>
-		</mailingList>
 	</mailingLists>
 	<licenses>
 		<license>
@@ -292,18 +286,6 @@
 
 	<reporting>
 		<plugins>
-			<plugin>
-				<artifactId>maven-pmd-plugin</artifactId>
-				<configuration>
-					<sourceEncoding>UTF-8</sourceEncoding>
-					<minimumTokens>100</minimumTokens>
-					<targetJdk>1.6</targetJdk>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>taglist-maven-plugin</artifactId>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
