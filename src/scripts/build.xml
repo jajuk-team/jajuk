@@ -59,10 +59,10 @@
 	</target>
 
 	<target name='clean' description='o Clean up previous build files'>
-		<delete failonerror='true' includeemptydirs='true' >
+		<delete failonerror='false' includeemptydirs='true' >
 			<fileset dir='${rootdir}' includes="**/*"/>
 		</delete>
-		<delete failonerror='true' dir='${mplayerdir}' />
+		<delete failonerror='false' dir='${mplayerdir}' />
 	</target>
 
 
