@@ -63,16 +63,17 @@ public class AboutWindow extends JajukJDialog {
    * Constructor.
    */
   public AboutWindow() {
-    super(JajukMainWindow.getInstance(), true);
     SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        setTitle(Messages.getString("JajukJMenuBar.16"));
-        initUI();
-        setSize(new Dimension(600, 300));
-        UtilGUI.centerWindow(AboutWindow.this);
-        setVisible(true);
-      }
+        @Override
+        public void run() {
+            setTitle(Messages.getString("JajukJMenuBar.16"));
+            initUI();
+            //for some reasons, required to avoid blank dialogs
+            pack();
+            setSize(new Dimension(600, 300));
+            UtilGUI.centerWindow(AboutWindow.this);
+            setVisible(true);
+        }
     });
   }
 

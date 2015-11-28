@@ -73,7 +73,7 @@ public final class Log {
           .getAbsolutePath());
       DOMConfigurator.configure(Const.FILE_LOG4J_CONF);
     } catch (Exception e) {
-      Log.stack(e);
+      e.printStackTrace();
     }
     logger = Logger.getLogger(Log.class.getName());
     spoolAnonymized = new ArrayList<String>(Const.FEEDBACK_LINES);
