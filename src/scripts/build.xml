@@ -189,9 +189,8 @@
 		<copy todir='${distdir}/${classdir}/org/jajuk/i18n'>
 			<fileset file='${srcdir}/main/resources/org/jajuk/i18n/*.properties' />
 		</copy>
-		<copy todir='${distdir}/${classdir}/org/jajuk/util/log'>
+		<copy todir='${distdir}/${classdir}'>
 			<fileset file='${srcdir}/main/resources/jajuk-log4j-conf.xml' />
-			<fileset file='${javadir}/org/jajuk/util/log/*.properties' />
 		</copy>
 		<copy todir='${distdir}/${classdir}/perspectives'>
 			<fileset file='${srcdir}/main/resources/perspectives/*.xml' />
