@@ -51,10 +51,8 @@ import org.jajuk.util.log.Log;
 public class DonateWindow extends JajukJDialog {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-  /** The Constant BUDGET_LINK.   */
-  private static final String BUDGET_LINK = "http://www.jajuk.info/budget.html";
   /** The Constant DONATE_LINK.   */
-  private static final String DONATE_LINK = "http://jajuk.info/index.php/Donate";
+  private static final String DONATE_LINK = "http://www.jajuk.info/donation.html";
 
   /**
    * Constructor.
@@ -86,24 +84,8 @@ public class DonateWindow extends JajukJDialog {
    */
   public void initUI() {
     Container cp = this.getContentPane();
-    cp.setLayout(new MigLayout("", "center", "center"));
+    cp.setLayout(new MigLayout("", "center"));
     cp.add(new JLabel(IconLoader.getIcon(JajukIcons.LOGO)), "wrap");
-    cp.add(new JLabel(Messages.getString("JajukDonate.2")), "wrap");
-    JButton jbBudget = new JButton(Messages.getString("JajukDonate.3"));
-    jbBudget.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        try {
-          Desktop.getDesktop().browse(new URI(BUDGET_LINK));
-          dispose();
-        } catch (IOException e1) {
-          Log.error(e1);
-        } catch (URISyntaxException e1) {
-          Log.error(e1);
-        }
-      }
-    });
-    cp.add(jbBudget, "wrap");
     cp.add(new JLabel(Messages.getString("JajukDonate.4")), "wrap");
     JButton jbDonation = new JButton(Messages.getString("JajukDonate.1"));
     jbDonation.addActionListener(new ActionListener() {
