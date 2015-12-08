@@ -58,5 +58,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/cobra_jajuk-0.98.5.jar"/>
 	<classpathentry kind="lib" path="lib/qdwizard-5.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/json-20140107.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

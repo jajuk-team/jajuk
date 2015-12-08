@@ -282,6 +282,15 @@
 			<version>1.9.5-1</version>
 			<scope>runtime</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20140107</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/json-20140107.jar</systemPath>
+		</dependency>
+
 	</dependencies>
 
 	<reporting>
