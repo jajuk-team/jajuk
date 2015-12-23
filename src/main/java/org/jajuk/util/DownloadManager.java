@@ -38,11 +38,11 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.log.Log;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import ext.services.network.NetworkUtils;
 import ext.services.network.Proxy;
@@ -74,10 +74,14 @@ public final class DownloadManager {
     if (search == null || search.trim().equals("")) {
       return alOut;
     }
-    final URL sSearchUrl = new URL(
-        "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q="
-            + URLEncoder.encode(search, "ISO-8859-1"));
-    final URLConnection connection = sSearchUrl.openConnection();
+    URL url = new URL("https://www.google.com/search?q=" + URLEncoder.encode(search, "ISO-8859-1")
+        + "&tbm=isch&biw=1092&source=lnms");
+    final URLConnection connection = url.openConnection();
+    // User-Agent is required to avoid 403 Google response
+    connection.setRequestProperty("User-Agent",
+        "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0");
+
+    // Retrieve response
     String line;
     final StringBuilder builder = new StringBuilder();
     final BufferedReader reader = new BufferedReader(
@@ -85,17 +89,19 @@ public final class DownloadManager {
     while ((line = reader.readLine()) != null) {
       builder.append(line);
     }
-    final JSONObject json = new JSONObject(builder.toString());
-    final JSONArray array = json.getJSONObject("responseData").getJSONArray("results");
-    for (int i = 0; i < array.length(); i++) {
-      final String sUrl = array.getJSONObject(i).getString("url");
-      URL url = new URL(sUrl);
-      // Remove duplicates
-      if (alOut.contains(url)) {
-        continue;
+
+    // Analyse response with a pattern to extract image url
+    final Pattern pattern = Pattern.compile("data-src=\"https://[^ ]*\"");
+    final Matcher matcher = pattern.matcher(builder);
+    while (matcher.find()) {
+      final String sUrl = matcher.group();
+      if (sUrl.length() > 11) {
+        url = new URL(sUrl.substring(10, sUrl.length() - 1));
+        // Remove duplicates
+        if (!alOut.contains(url)) {
+          alOut.add(url);
+        }
       }
-      // Add the new url
-      alOut.add(url);
     }
     return alOut;
   }
