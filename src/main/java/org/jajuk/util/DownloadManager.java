@@ -53,6 +53,8 @@ import ext.services.network.Proxy;
 public final class DownloadManager {
   private static Proxy proxy;
 
+  private static final int BUFFER_SIZE = 8000;
+
   /**
    * private constructor to avoid instantiating utility class.
    */
@@ -120,9 +122,10 @@ public final class DownloadManager {
     try {
       BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
       try {
-        int i;
-        while ((i = bis.read()) != -1) {
-          bos.write(i);
+        int bytesRead = -1;
+        byte[] buffer = new byte[BUFFER_SIZE];
+        while ((bytesRead = bis.read(buffer)) != -1) {
+          bos.write(buffer, 0, bytesRead);
         }
       } finally {
         bis.close();
@@ -160,23 +163,7 @@ public final class DownloadManager {
       if (file.exists() && file.length() > 0) {
         return file;
       }
-      HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
-      BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-      try {
-        BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
-        try {
-          int i;
-          while ((i = bis.read()) != -1) {
-            bos.write(i);
-          }
-        } finally {
-          bis.close();
-        }
-        bos.flush();
-      } finally {
-        bos.close();
-      }
-      connection.disconnect();
+      download(url,file);
       return file;
     }
   }
