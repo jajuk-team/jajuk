@@ -133,6 +133,22 @@
 		</dependency>
 
 		<dependency>
+			<groupId>laf-plugin</groupId>
+			<artifactId>laf-plugin</artifactId>
+			<version>7.3.1-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/laf-plugin-7.3.1-SNAPSHOT.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>laf-widget</groupId>
+			<artifactId>laf-widget</artifactId>
+			<version>7.3.1-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/laf-widget-7.3.1-SNAPSHOT.jar</systemPath>
+		</dependency>
+
+		<dependency>
 			<groupId>Swingx</groupId>
 			<artifactId>swingx</artifactId>
 			<version>1.6</version>
