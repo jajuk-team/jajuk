@@ -112,7 +112,7 @@ public interface Const {
   /** Mplayer windows exe size in bytes. */
   long MPLAYER_OSX_EXE_SIZE = 21490476l;
   /** Update URL = PAD file URL. */
-  String CHECK_FOR_UPDATE_URL = "http://repository.jajuk.info/jajuk_pad.xml";
+  String CHECK_FOR_UPDATE_URL = "http://jajuk.info/repository/pad/jajuk_pad.xml";
   // Jajuk version
   String JAJUK_VERSION = "VERSION_REPLACED_BY_ANT";
   String JAJUK_CODENAME = "Gute Laune";
