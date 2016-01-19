@@ -123,6 +123,15 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/substance-7.3.1-SNAPSHOT.jar</systemPath>
 		</dependency>
+
+		<dependency>
+			<groupId>trident</groupId>
+			<artifactId>trident</artifactId>
+			<version>7.3.1-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/trident-7.3.1-SNAPSHOT.jar</systemPath>
+		</dependency>
+
 		<dependency>
 			<groupId>Swingx</groupId>
 			<artifactId>swingx</artifactId>
