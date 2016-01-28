@@ -59,9 +59,7 @@
 	</target>
 
 	<target name='clean' description='o Clean up previous build files'>
-		<delete failonerror='false' includeemptydirs='true' >
-			<fileset dir='${rootdir}' includes="**/*"/>
-		</delete>
+		<delete failonerror='false' dir='${rootdir}' />
 		<delete failonerror='false' dir='${mplayerdir}' />
 	</target>
 
@@ -395,7 +393,7 @@
 		<mkdir dir='${sourcesdir}/jajuk-src-${version}' />
 		<copy todir='${sourcesdir}/jajuk-src-${version}'>
 			<!--Exclude files created during the maven execution -->
-			<fileset file='${basedir}/**' excludes='test*,**/target/**' />
+			<fileset file='${distdir}/**' excludes='test*,**/target/**' />
 		</copy>
 	</target>
 
