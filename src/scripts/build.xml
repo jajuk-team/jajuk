@@ -161,7 +161,7 @@
 
 	<target name='compile'>
 		<echo message='Compile the code' />
-		<javac destdir='${distdir}/${classdir}' source='1.6' target='1.6' deprecation='true' debug='true' optimize='true' excludes='**/package.html' encoding='UTF-8'>
+		<javac destdir='${distdir}/${classdir}' source='1.7' target='1.7' deprecation='true' debug='true' optimize='true' excludes='**/package.html' encoding='UTF-8'>
 			<compilerarg value='-Xlint:all' />
 			<src>
 				<pathelement path='${distdir}/src'>

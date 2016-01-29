@@ -10,7 +10,7 @@
   <stayAlive>false</stayAlive>
   <icon>/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-icon.ico</icon>
   <jre>
-    <minVersion>1.6.0</minVersion>
+    <minVersion>1.7.0</minVersion>
     <jdkPreference>preferJre</jdkPreference>
   </jre>
 </launch4jConfig>
