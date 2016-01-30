@@ -7,3 +7,6 @@ bin/
 target/
 
 /_CurrentlySelectedTest.launch
+
+.idea/
+jajuk.iml
