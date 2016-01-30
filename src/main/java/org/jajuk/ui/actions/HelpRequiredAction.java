@@ -50,7 +50,7 @@ public class HelpRequiredAction extends JajukAction {
   @Override
   public void perform(ActionEvent evt) {
     try {
-      Desktop.getDesktop().browse(new URI("http://jajuk.info/index.php/Table_of_contents"));
+      Desktop.getDesktop().browse(new URI("http://www.jajuk.info/manual/main.html"));
     } catch (Exception e) {
       Messages.showErrorMessage(136);
       Log.error(e);

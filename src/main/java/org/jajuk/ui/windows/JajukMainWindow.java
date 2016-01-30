@@ -113,23 +113,26 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
       jw.decorator = new WindowStateDecorator(jw) {
         @Override
         public void specificBeforeShown() {
-          jw.applyStoredSize();
+          //Nothing here, frame bounds is set after display (see next method)
         }
 
         @Override
         public void specificAfterShown() {
           // We have to force the new frame state, otherwise the window is deiconified but never gets focus
           jw.setExtendedState(Frame.NORMAL);
-          if (Conf.getBoolean(Const.CONF_WINDOW_MAXIMIZED)) {
-            //We have to call this next in the EDT to make sure that the window is displayed so maximalize() method get 
-            //proper screen for jw window.
-            SwingUtilities.invokeLater(new Runnable() {
-              @Override
-              public void run() {
+          //We have to call this next in the EDT to make sure that the window is displayed so maximalize() method get 
+          //proper screen for jw window.
+          SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+              if (Conf.getBoolean(Const.CONF_WINDOW_MAXIMIZED)) {
                 jw.maximalize();
+              } else {
+            	  // We set bounds after display, otherwise, the window is blank under Gnome3
+                jw.applyStoredSize();
               }
-            });
-          }
+            }
+          });
           // Need focus for keystrokes
           jw.requestFocus();
           // Make sure to display right title if a track or a webradio is launched at startup
@@ -195,17 +198,6 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
           ActionManager.getAction(JajukActions.EXIT).perform(null);
         } catch (Exception e1) {
           Log.error(e1);
-        }
-      }
-
-      @Override
-      public void windowIconified(WindowEvent we) {
-        if (UtilSystem.isUnderOSX() // Fix for #1825 (OSX 10.7 - UI doesn't work after minimize/maximize)
-            // we need to hide the window when iconified  otherwise (under OSX 10.7, but not 10.5), 
-            // the window is frozen after deiconification. 
-            || (Conf.getBoolean(Const.CONF_MINIMIZE_TO_TRAY) && SystemTray.isSupported())) { // If user
-          // set the minimize to tray option and if the tray is supported, we minimize to tray only.
-          getWindowStateDecorator().display(false);
         }
       }
 
@@ -322,7 +314,7 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
    * Return the stored position as a rectangle or default coordinates if no stored position is provided or if the stored position is invalid.
    * @return the stored position as a rectangle or null
    */
-  private Rectangle getStoredPosition() {
+  Rectangle getStoredPosition() {
     try {
       String storedPosition = Conf.getString(Const.CONF_WINDOW_POSITION);
       int x = 0;
@@ -331,8 +323,11 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
       int vertSize = 0;
       if (UtilString.isNotEmpty(storedPosition)) {
         StringTokenizer st = new StringTokenizer(storedPosition, ",");
+        // We need to floor the position to zero due to issues with dual screens that can produce negative x and y 
         x = Integer.parseInt(st.nextToken());
+        x = Math.max(x, 0);
         y = Integer.parseInt(st.nextToken());
+        y = Math.max(y, 0);
         horizSize = Integer.parseInt(st.nextToken());
         vertSize = Integer.parseInt(st.nextToken());
         return new Rectangle(x, y, horizSize, vertSize);

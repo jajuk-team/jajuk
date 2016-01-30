@@ -90,9 +90,7 @@ final public class IconLoader {
       out = new ImageIcon(UtilSystem.getResource("icons/22x22/jajuk-icon_22x22.png"));
     } else if (icon == JajukIcons.COVER_16X16) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/thumbnail_16x16.png"));
-    }
-    // Correctly displayed under JRE 1.6, ugly under Linux/JRE 1.5
-    else if (icon == JajukIcons.LOGO_FRAME) {
+    } else if (icon == JajukIcons.LOGO_FRAME) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/jajuk-icon_16x16.png"));
     } else if (icon == JajukIcons.REPEAT) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/repeat_16x16.png"));

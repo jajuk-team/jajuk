@@ -20,36 +20,40 @@
  */
 package org.jajuk.util;
 
-import ext.services.network.NetworkUtils;
-import ext.services.network.Proxy;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.Proxy.Type;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.log.Log;
 
+import ext.services.network.NetworkUtils;
+import ext.services.network.Proxy;
+
 /**
  * Manages network downloads.
  */
 public final class DownloadManager {
   private static Proxy proxy;
+
+  private static final int BUFFER_SIZE = 8000;
 
   /**
    * private constructor to avoid instantiating utility class.
@@ -72,52 +76,34 @@ public final class DownloadManager {
     if (search == null || search.trim().equals("")) {
       return alOut;
     }
-    // Select cover size
-    int i = Conf.getInt(Const.CONF_COVERS_SIZE);
-    String size = null;
-    switch (i) {
-    case 0: // small only
-      size = "i";
-      break;
-    case 1: // small or medium
-      size = "m";
-      break;
-    case 2: // medium only
-      size = "m";
-      break;
-    case 3: // medium or large
-      size = "m";
-      break;
-    case 4: // large only
-      size = "l";
-      break;
+    URL url = new URL("https://www.google.com/search?q=" + URLEncoder.encode(search, "ISO-8859-1")
+        + "&tbm=isch&biw=1092&source=lnms");
+    final URLConnection connection = url.openConnection();
+    // User-Agent is required to avoid 403 Google response
+    connection.setRequestProperty("User-Agent",
+        "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0");
+
+    // Retrieve response
+    String line;
+    final StringBuilder builder = new StringBuilder();
+    final BufferedReader reader = new BufferedReader(
+        new InputStreamReader(connection.getInputStream()));
+    while ((line = reader.readLine()) != null) {
+      builder.append(line);
     }
-    String sSearchUrl = "http://images.google.com/images?q="
-        + URLEncoder.encode(search, "ISO-8859-1") + "&ie=ISO-8859-1&hl=en&btnG=Google+Search"
-        + "&tbs=isz:" + size;
-    Log.debug("Search URL: {{" + sSearchUrl + "}}");
-    String sRes = downloadText(new URL(sSearchUrl));
-    if (sRes == null || sRes.length() == 0) {
-      return alOut;
-    }
-    // Extract urls
-    Pattern pattern = Pattern.compile("http://[^,<>]*(.jpg|.gif|.png)");
-    // "http://[^,]*(.jpg|.gif|.png).*[0-9]* [xX] [0-9]*.*- [0-9]*");
-    Matcher matcher = pattern.matcher(sRes);
+
+    // Analyse response with a pattern to extract image url
+    final Pattern pattern = Pattern.compile("data-src=\"https://[^ ]*\"");
+    final Matcher matcher = pattern.matcher(builder);
     while (matcher.find()) {
-      // Clean up URLS
-      String sUrl = matcher.group().replaceAll("%2520", "%20");
-      URL url = new URL(sUrl);
-      // Remove duplicates
-      if (alOut.contains(url)) {
-        continue;
+      final String sUrl = matcher.group();
+      if (sUrl.length() > 11) {
+        url = new URL(sUrl.substring(10, sUrl.length() - 1));
+        // Remove duplicates
+        if (!alOut.contains(url)) {
+          alOut.add(url);
+        }
       }
-      // Ignore URLs related to Google
-      if (url.toString().toLowerCase(Locale.getDefault()).matches(".*google.*")) {
-        continue;
-      }
-      // Add the new url
-      alOut.add(url);
     }
     return alOut;
   }
@@ -136,9 +122,10 @@ public final class DownloadManager {
     try {
       BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
       try {
-        int i;
-        while ((i = bis.read()) != -1) {
-          bos.write(i);
+        int bytesRead = -1;
+        byte[] buffer = new byte[BUFFER_SIZE];
+        while ((bytesRead = bis.read(buffer)) != -1) {
+          bos.write(buffer, 0, bytesRead);
         }
       } finally {
         bis.close();
@@ -176,23 +163,7 @@ public final class DownloadManager {
       if (file.exists() && file.length() > 0) {
         return file;
       }
-      HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
-      BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-      try {
-        BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
-        try {
-          int i;
-          while ((i = bis.read()) != -1) {
-            bos.write(i);
-          }
-        } finally {
-          bis.close();
-        }
-        bos.flush();
-      } finally {
-        bos.close();
-      }
-      connection.disconnect();
+      download(url,file);
       return file;
     }
   }

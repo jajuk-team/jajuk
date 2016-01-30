@@ -464,7 +464,7 @@ public class SessionService {
    * Return bootstrap file absolute path
    *
    * It also fixes #1473 by moving if required the bootstrap file (see See
-   * https://trac.jajuk.info/ticket/1473)
+   * #1473)
    *
    *
    * This bootstrap file location can be overridden by providing -bootstrap=<URL> CLI option

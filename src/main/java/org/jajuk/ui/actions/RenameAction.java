@@ -71,14 +71,14 @@ public class RenameAction extends JajukAction {
     // Get required data from the tree (selected node and node type)
     final List<Item> alSelected = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
     final Item currentItem = alSelected.get(0);
-    // Check if file is currently played
-    if (QueueModel.getPlayingFile() != null && QueueModel.getPlayingFile().equals(currentItem)) {
-      Messages.showErrorMessage(134);
-      return;
-    }
     if (currentItem instanceof File) {
       String newName = JOptionPane.showInputDialog(null, Messages.getString("RenameAction.1")
           + "\n\n", ((File) currentItem).getName());
+      // Check if file is currently played
+      if (QueueModel.getPlayingFile() != null && QueueModel.getPlayingFile().equals(currentItem)) {
+        Messages.showErrorMessage(134);
+        return;
+      }
       if ((newName != null) && (newName.length() > 0)) {
         try {
           UtilGUI.waiting();
@@ -99,14 +99,14 @@ public class RenameAction extends JajukAction {
        * files (hopefully not the tracks ones) because we simply remove the directory and force its
        * scan again. A better implementation would clone all files recursively
        */
+      String newName = JOptionPane.showInputDialog(null, Messages.getString("RenameAction.2")
+          + "\n\n", ((Directory) currentItem).getName());
       // check that the directory is not an ancestor of the currently played file
       if (QueueModel.getPlayingFile() != null
           && QueueModel.getPlayingFile().hasAncestor((Directory) currentItem)) {
         Messages.showWarningMessage(Messages.getErrorMessage(172));
         return;
       }
-      String newName = JOptionPane.showInputDialog(null, Messages.getString("RenameAction.2")
-          + "\n\n", ((Directory) currentItem).getName());
       if ((newName != null) && (newName.length() > 0)) {
         try {
           UtilGUI.waiting();

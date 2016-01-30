@@ -4,13 +4,13 @@
 	<groupId>org.jajuk</groupId>
 	<artifactId>jajuk</artifactId>
 	<name>Jajuk</name>
-	<version>1.10.7</version>
+	<version>1.10.8</version>
 	<description>Jajuk is a Java music organizer for all platforms. The
 		main goal of this project is to provide a fully-featured application to
 		advanced users with large or scattered music collections.</description>
 	<url>http://jajuk.info</url>
 	<issueManagement>
-		<url>http://trac.jajuk.info</url>
+		<url>http://github.com/jajuk-team/jajuk/issues</url>
 	</issueManagement>
 	<inceptionYear>2003</inceptionYear>
 	<mailingLists>
@@ -19,12 +19,6 @@
 			<subscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-developers</subscribe>
 			<unsubscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-developers</unsubscribe>
 			<archive>http://sourceforge.net/mailarchive/forum.php?forum=jajuk-developers</archive>
-		</mailingList>
-		<mailingList>
-			<name>Jajuk Internalionalization</name>
-			<subscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-i18n</subscribe>
-			<unsubscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-i18n</unsubscribe>
-			<archive>http://sourceforge.net/mailarchive/forum.php?forum=jajuk-i18n</archive>
 		</mailingList>
 	</mailingLists>
 	<licenses>
@@ -35,8 +29,8 @@
 		</license>
 	</licenses>
 	<scm>
-		<connection>scm:git:git://gitorious.org/jajuk/jajuk.git</connection>
-		<url>http://gitorious.org/jajuk/jajuk/</url>
+		<connection>scm:git:https://github.com/jajuk-team/jajuk.git</connection>
+		<url>https://github.com/jajuk-team/jajuk</url>
 	</scm>
 	<organization>
 		<name>Jajuk team</name>
@@ -47,8 +41,8 @@
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
@@ -56,7 +50,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
             		<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
-					<source>1.6</source>
+					<source>1.7</source>
 					<encoding>UTF-8</encoding>
 					<docencoding>UTF-8</docencoding>
 				</configuration>
@@ -101,7 +95,7 @@
 		<dependency>
 			<groupId>net.sf.qdwizard</groupId>
 			<artifactId>qdwizard</artifactId>
-			<version>4.1.0</version>
+			<version>5.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-collections</groupId>
@@ -125,10 +119,35 @@
 		<dependency>
 			<groupId>Substance</groupId>
 			<artifactId>substance</artifactId>
-			<version>4.2dev</version>
+			<version>7.3</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/lib/substance-5.3.jar</systemPath>
+			<systemPath>${basedir}/lib/substance-7.3.jar</systemPath>
 		</dependency>
+
+		<dependency>
+			<groupId>trident</groupId>
+			<artifactId>trident</artifactId>
+			<version>7.3</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/trident-7.3.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>laf-plugin</groupId>
+			<artifactId>laf-plugin</artifactId>
+			<version>7.3</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/laf-plugin-7.3.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>laf-widget</groupId>
+			<artifactId>laf-widget</artifactId>
+			<version>7.3</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/laf-widget-7.3.jar</systemPath>
+		</dependency>
+
 		<dependency>
 			<groupId>Swingx</groupId>
 			<artifactId>swingx</artifactId>
@@ -174,7 +193,7 @@
 			<artifactId>cobra</artifactId>
 			<version>0.96.5R2</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/lib/cobra-0.98.4.jar</systemPath>
+			<systemPath>${basedir}/lib/cobra_jajuk-0.98.5.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>JS</groupId>
@@ -288,22 +307,19 @@
 			<version>1.9.5-1</version>
 			<scope>runtime</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20140107</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/json-20140107.jar</systemPath>
+		</dependency>
+
 	</dependencies>
 
 	<reporting>
 		<plugins>
-			<plugin>
-				<artifactId>maven-pmd-plugin</artifactId>
-				<configuration>
-					<sourceEncoding>UTF-8</sourceEncoding>
-					<minimumTokens>100</minimumTokens>
-					<targetJdk>1.6</targetJdk>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>taglist-maven-plugin</artifactId>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>

@@ -112,14 +112,14 @@ public interface Const {
   /** Mplayer windows exe size in bytes. */
   long MPLAYER_OSX_EXE_SIZE = 21490476l;
   /** Update URL = PAD file URL. */
-  String CHECK_FOR_UPDATE_URL = "http://repository.jajuk.info/jajuk_pad.xml";
+  String CHECK_FOR_UPDATE_URL = "http://jajuk.info/repository/pad/jajuk_pad.xml";
   // Jajuk version
   String JAJUK_VERSION = "VERSION_REPLACED_BY_ANT";
   String JAJUK_CODENAME = "Gute Laune";
   /** Extention to the .jajuk_test directory in test mode only */
   String TEST_VERSION = "1.10";
   String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
-  String JAJUK_COPYRIGHT = "Copyright 2003-2014 The Jajuk Team";
+  String JAJUK_COPYRIGHT = "Copyright 2003-2016 The Jajuk Team";
   String TYPE_VIDEO = "Type.video";
   // -- Files and paths --
   String FILE_SAVING_FILE_EXTENSION = "saving";
@@ -139,7 +139,7 @@ public interface Const {
   // logs
   String FILE_LOGS = "jajuk.log";
   String FILE_PLAYING_POSITION = "position";
-  URL FILE_LOG4J_CONF = UtilSystem.getResource("org/jajuk/util/log/jajuk-log4j-conf.xml");
+  URL FILE_LOG4J_CONF = UtilSystem.getResource("jajuk-log4j-conf.xml");
   /** Cache directory name. */
   String FILE_CACHE = "cache";
   /** Bat Converter to DOS 8.3 format */

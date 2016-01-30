@@ -53,7 +53,7 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
-import org.jvnet.substance.skin.SubstanceBusinessLookAndFeel;
+import org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel;
 
 /**
  * Jajuk launching class.
@@ -74,8 +74,8 @@ public final class Main {
     // non ui init
     try {
       // check JVM version
-      if (!JVM.current().isOrLater(JVM.JDK1_6)) {
-        System.out.println("[BOOT] Java Runtime Environment 1.6 minimum required."
+      if (!JVM.current().isOrLater(JVM.JDK1_7)) {
+        System.out.println("[BOOT] Java Runtime Environment 1.7 minimum required."
             + " You use a JVM " + JVM.current());
         System.exit(2); // error code 2 : wrong JVM
       }

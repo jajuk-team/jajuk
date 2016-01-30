@@ -13,7 +13,7 @@
 
 	<!--Distribution release
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
-	<property name='version' value='1.10.8dev' />
+	<property name='version' value='1.10.8' />
 
 	<!--Test flag: values: 'test' or 'notest'
 	'test' for 'unstable' branches, 'notest' for master, pre-release and maintenance branches
@@ -59,9 +59,7 @@
 	</target>
 
 	<target name='clean' description='o Clean up previous build files'>
-		<delete failonerror='false' includeemptydirs='true' >
-			<fileset dir='${rootdir}' includes="**/*"/>
-		</delete>
+		<delete failonerror='false' dir='${rootdir}' />
 		<delete failonerror='false' dir='${mplayerdir}' />
 	</target>
 
@@ -163,7 +161,7 @@
 
 	<target name='compile'>
 		<echo message='Compile the code' />
-		<javac destdir='${distdir}/${classdir}' source='1.6' target='1.6' deprecation='true' debug='true' optimize='true' excludes='**/package.html' encoding='UTF-8'>
+		<javac destdir='${distdir}/${classdir}' source='1.7' target='1.7' deprecation='true' debug='true' optimize='true' excludes='**/package.html' encoding='UTF-8'>
 			<compilerarg value='-Xlint:all' />
 			<src>
 				<pathelement path='${distdir}/src'>
@@ -187,11 +185,10 @@
 			<fileset file='${srcdir}/main/resources/images/included/*' />
 		</copy>
 		<copy todir='${distdir}/${classdir}/org/jajuk/i18n'>
-			<fileset file='${javadir}/org/jajuk/i18n/*.properties' />
+			<fileset file='${srcdir}/main/resources/org/jajuk/i18n/*.properties' />
 		</copy>
-		<copy todir='${distdir}/${classdir}/org/jajuk/util/log'>
-			<fileset file='${javadir}/org/jajuk/util/log/*.xml' />
-			<fileset file='${javadir}/org/jajuk/util/log/*.properties' />
+		<copy todir='${distdir}/${classdir}'>
+			<fileset file='${srcdir}/main/resources/jajuk-log4j-conf.xml' />
 		</copy>
 		<copy todir='${distdir}/${classdir}/perspectives'>
 			<fileset file='${srcdir}/main/resources/perspectives/*.xml' />
@@ -396,7 +393,7 @@
 		<mkdir dir='${sourcesdir}/jajuk-src-${version}' />
 		<copy todir='${sourcesdir}/jajuk-src-${version}'>
 			<!--Exclude files created during the maven execution -->
-			<fileset file='${basedir}/**' excludes='test*,**/target/**' />
+			<fileset file='${distdir}/**' excludes='test*,**/target/**' />
 		</copy>
 	</target>
 

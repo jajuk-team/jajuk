@@ -271,7 +271,9 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
           }
           // Store the search to avoid future identical searches
           WikipediaView.this.search = lSearch;
-          URL url = new URL(("http://"
+          // Wikipedia now redirect to HTTPS automatically so we need to use the
+          // HTTPS URL
+          URL url = new URL(("https://"
               + LocaleManager.getLocaleForDesc((String) jcbLanguage.getSelectedItem())
               + ".wikipedia.org/wiki/" + lSearch).replaceAll(" ", "_"));
           Log.debug("Wikipedia search: {{" + url + "}}");

@@ -27,10 +27,10 @@ URL      : http://www.jthink.net/jaudiotagger/index.jsp
 License  : GLPL
 
 --- Look and feel ---
-Project  : Substance
-By       : Kirill Grouchnikov
+Project  : Insubstantial
+By       : Insubstantial team, fork of Substance look and feel by Kirill Grouchnikov
 Used for : A cross-platform look & feel for Swing applications
-URL      : https://substance.dev.java.net/
+URL      : https://github.com/Insubstantial/insubstantial
 License  : BSD
 
 --- GUI helpers ---
@@ -69,12 +69,6 @@ By       : VLSolutions
 Used for : Docking framework
 URL      : http://www.vlsolutions.com/en/products/docking/index.php
 License  : CeCILL
-
-Project  : JHlabs Filters
-By       : JHLabs
-Used for : Images filters
-URL      : http://www.jhlabs.com/ip/filters
-License  : Apache 2.0
 
 Project  : Cobra
 By       : Cobra team

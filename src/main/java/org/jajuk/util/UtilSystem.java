@@ -699,7 +699,7 @@ public final class UtilSystem {
       return UtilSystem.mplayerPath;
     }
     // Search in /Applications first
-    File file = new File("/Applications/Jajuk.app/Contents/Resources/External_Binaries/"
+    File file = new File("/Applications/Jajuk.app/Contents/MacOS/"
         + Const.FILE_MPLAYER_OSX_EXE);
     if (file.canExecute() && file.length() == Const.MPLAYER_OSX_EXE_SIZE) {
       UtilSystem.mplayerPath = file;
@@ -1237,7 +1237,7 @@ public final class UtilSystem {
      * But we give priority to user.home if it already contains a suitable jajuk
      * collection to maintain backward compatibility
      * 
-     * See https://trac.jajuk.info/ticket/1473 and
+     * See #1473 and
      * http://bugs.sun.com/view_bug.do?bug_id=4787931
      **/
     if (StringUtils.isNotBlank(System.getenv("USERPROFILE"))) {

@@ -46,6 +46,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -147,6 +148,8 @@ public class CoverView extends ViewAdapter implements ActionListener {
   /** Used to lock access to covers collection, we don't synchronize this as this may create thread 
    * starvations because the EDT requires this lock as well in ViewAdater.stopAllBusyLabels() method. */
   private final Lock listLock = new ReentrantLock(true);
+  /** Parent of this view. */
+  private JDialog parentJDialog; 
 
   /**
    * Constructor.
@@ -164,6 +167,19 @@ public class CoverView extends ViewAdapter implements ActionListener {
   public CoverView(final org.jajuk.base.File file) {
     super();
     fileReference = file;
+  }
+
+  /**
+   * Constructor.
+   * 
+   * @param file Reference file. Used to display cover for a particular file, null if the cover view is used in the "reular" way as a view, not 
+   * as a dialog from catalog view for ie.
+   * @param jd parent dialog (closed after a default cover is selected) 
+   */
+  public CoverView(final org.jajuk.base.File file, JDialog jd) {
+    super();
+    fileReference = file;
+    parentJDialog = jd;
   }
 
   /*
@@ -647,6 +663,10 @@ public class CoverView extends ViewAdapter implements ActionListener {
           Album album = fCurrent.getTrack().getAlbum();
           album.setProperty(XML_ALBUM_SELECTED_COVER, destPath);
           album.setProperty(XML_ALBUM_DISCOVERED_COVER, destPath);
+        }
+        // Close the current dialog
+        if (parentJDialog!= null) {
+          parentJDialog.dispose();
         }
       }
     }.start();

@@ -203,7 +203,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
      */
     @Override
     public String getAlbumArtist() {
-      return "Red Hot Chilli Peppers";
+      return "Red Hot Chili Peppers";
     }
 
     /*

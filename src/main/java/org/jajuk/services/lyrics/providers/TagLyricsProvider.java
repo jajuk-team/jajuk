@@ -27,13 +27,14 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
- * .
+ * Lyrics provider from the tag information of the audio file.
  */
 public class TagLyricsProvider implements ILyricsProvider {
   /** audio file we search lyrics for. */
   private File audioFile = null;
 
-  /* (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics()
    */
   @Override
@@ -53,7 +54,8 @@ public class TagLyricsProvider implements ILyricsProvider {
     return lyrics;
   }
 
-  /* (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getResponseEncoding()
    */
   @Override
@@ -61,7 +63,8 @@ public class TagLyricsProvider implements ILyricsProvider {
     return "UTF-8";
   }
 
-  /* (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#setAudioFile(org.jajuk.base.File)
    */
   @Override
@@ -69,7 +72,8 @@ public class TagLyricsProvider implements ILyricsProvider {
     this.audioFile = file;
   }
 
-  /* (non-Javadoc)
+  /**
+  * {@inheritDoc}
   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getSourceAddress()
   */
   @Override

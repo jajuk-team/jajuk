@@ -4,7 +4,6 @@
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="lib" path="lib/vorbisspi-1.0.1.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/jlayer-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/jogg-0.0.7.jar"/>
@@ -43,18 +42,22 @@
 	<classpathentry kind="lib" path="lib/xstream-1.3.1.jar"/>
 	<classpathentry kind="lib" path="lib/last.fm-bindings-7.3.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart-1.0.13.jar"/>
-	<classpathentry kind="lib" path="lib/cobra-0.98.4.jar"/>
 	<classpathentry kind="lib" path="lib/js-0.98.4.jar"/>
 	<classpathentry kind="lib" path="lib/swingx-1.6.jar"/>
+	<classpathentry kind="lib" path="lib/substance-7.3.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/laf-widget-7.3.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/trident-7.3.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/laf-plugin-7.3.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/animation-1.2.0.jar"/>
-	<classpathentry kind="lib" path="lib/substance-5.3.jar"/>
 	<classpathentry kind="lib" path="lib/guava-11.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/jaudiotagger-2.2.0-20130420.jar" sourcepath="/prog/api/jaudiotagger/trunk/src">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/prog/api/jaudiotagger/trunk/target/apidocs/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/qdwizard"/>
-	<classpathentry kind="lib" path="lib/qdwizard-4.1.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/cobra_jajuk-0.98.5.jar"/>
+	<classpathentry kind="lib" path="lib/qdwizard-5.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/json-20140107.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

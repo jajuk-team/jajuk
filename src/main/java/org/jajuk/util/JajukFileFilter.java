@@ -29,9 +29,7 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * Advanced file filter.
- * 
- * @see <a href="https://trac.jajuk.info/wiki/JajukDevGuide#Filesfilters">The
- * description</a> for direction to use
+ *  * 
  * <p>
  * Example: new
  * JajukFilter(false,JajukFileFilter.DirectoryFilter.getInstance(),

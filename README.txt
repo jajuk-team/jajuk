@@ -11,3 +11,4 @@ $ ant -lib . package_jar
 -> jajuk.jar is built in the /tmp/jajuk-dist/jajuk/bin directory
 
 All legals information are in the 'src/legals' directory
+

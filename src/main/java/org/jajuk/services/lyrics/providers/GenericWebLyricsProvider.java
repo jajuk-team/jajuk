@@ -54,18 +54,14 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
     this.queryUrlTemplate = queryUrlTemplate;
   }
 
-  /*
-   * Call the provider @artist non encoded artist @title non encoded title
-   * @return query return or null if query fails
-   */
   /**
-   * Call provider.
+   * Call the provider @artist non encoded artist @title non encoded title.
    * 
    * 
    * @param artist 
    * @param title 
    * 
-   * @return the string
+   * @return query return or null if query fails
    */
   public String callProvider(final String artist, final String title) {
     String text = null;
@@ -113,7 +109,7 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
    * 
    * @return URL the final url
    */
-  URL getActualURL(final String artist, final String title) {
+  public URL getActualURL(final String artist, final String title) {
     try {
       String queryString = getQueryURLTemplate();
       queryString = queryString.replace(Const.PATTERN_ARTIST,
@@ -152,16 +148,17 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
    */
   public abstract String getLyrics(String artist, String title);
 
-  /* (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getLyrics()
    */
   @Override
   public String getLyrics() {
-    // TODO Auto-generated method stub
     return null;
   }
 
-  /* (non-Javadoc)
+  /**
+   * {@inheritDoc}
    * @see org.jajuk.services.lyrics.providers.ILyricsProvider#setAudioFile(org.jajuk.base.File)
    */
   @Override
@@ -169,12 +166,39 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
     this.audioFile = file;
   }
 
-  /* (non-Javadoc)
-  * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getSourceAddress()
-  */
+  /**
+   * {@inheritDoc}
+   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getSourceAddress()
+   */
   @Override
   public String getSourceAddress() {
     Track track = audioFile.getTrack();
     return getWebURL(track.getArtist().getName2(), track.getName()).toString();
+  }
+  
+  /**
+   * Remove HTML entities from the text.
+   * @param lyrics the lyrics in HTML text
+   * @return text
+   */
+  String cleanHtml(String lyrics) {
+    String ret = lyrics.replaceAll("<br />", "\n");
+    ret = ret.replaceAll("<br/>", "\n");
+    ret = ret.replaceAll("<br>", "\n");
+    ret = ret.replaceAll("&#8217;", "'");
+    ret = ret.replaceAll("&#8211;", "-");
+    ret = ret.replaceAll("\u0092", "'");
+    ret = ret.replaceAll("\u009c", "oe");
+    ret = ret.replaceAll("<p>", "\n");
+    ret = ret.replaceAll("<i>", "");
+    ret = ret.replaceAll("</i>", "");
+    ret = ret.replaceAll("<b>", "");
+    ret = ret.replaceAll("</b>", "");
+    ret = ret.replaceAll("\t", "");
+    ret = ret.replaceAll("&quot;", "'");
+    ret = ret.replaceAll("&#039;", "'");
+    ret = ret.replaceAll("&#146;", "'");
+    ret = ret.replaceAll("&#133;", "…");
+    return ret;
   }
 }

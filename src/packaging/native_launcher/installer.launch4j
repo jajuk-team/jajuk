@@ -5,12 +5,12 @@
   <outfile>/tmp/jajuk-dist/windows/jajuk-VERSION_REPLACED_BY_ANT-setup.exe</outfile>
   <priority>normal</priority>
   <downloadUrl>http://java.com/download</downloadUrl>
-  <supportUrl>http://trac.jajuk.info/</supportUrl>
+  <supportUrl>http://github.com/jajuk-team/jajuk/issues</supportUrl>
   <customProcName>false</customProcName>
   <stayAlive>false</stayAlive>
   <icon>/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-icon.ico</icon>
   <jre>
-    <minVersion>1.6.0</minVersion>
+    <minVersion>1.7.0</minVersion>
     <jdkPreference>preferJre</jdkPreference>
   </jre>
 </launch4jConfig>
