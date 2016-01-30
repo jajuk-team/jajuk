@@ -1,0 +1,410 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--Ant script for users (target package_jar) and packagers (other targets)-->
+
+<project default='package_jar' name='jajuk' basedir='../..'>
+	<!--VARIABLES-->
+
+	<tstamp>
+		<format property='TODAY' pattern='yyyyMMdd' locale='en,UK' />
+	</tstamp>
+
+	<!--Build type : 'unstable', 'final', 'pre-release' or 'maintenance' -->
+	<property name='type' value='final' />
+
+	<!--Distribution release
+	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
+	<property name='version' value='1.11.0dev' />
+
+	<!--Test flag: values: 'test' or 'notest'
+	'test' for 'unstable' branches, 'notest' for master, pre-release and maintenance branches
+	-->
+	<property name='test' value='test' />
+
+	<!-- ======================= -->
+	<!-- | Configuration paths | -->
+	<!-- ======================= -->
+	<property name='conf_jarbundler' value='/data/build_tools/jarbundler' />
+	<property name='conf_jarbundler-jar' value='jarbundler-2.4.0.jar' />
+	<property name="launch4j.dir" location="/data/build_tools/launch4j" />
+	<property name='rootdir' value='/tmp/jajuk-dist' />
+	<property name='conf_uploaddir' value='${rootdir}/packages/' />
+	<property name='installdir' value='/usr/share/jajuk/' />
+	<property name='jnidir' value='/usr/lib/jajuk/' />
+	<property name='distdir' value='${rootdir}/jajuk' />
+	<property name='rpmbuilddir' value='${rootdir}/RPMBUILD' />
+	<property name='rpmdistdir' value='${rpmbuilddir}/BUILDROOT/jajuk-${version}-1.noarch' />
+	<property name='windowsdir' value='${rootdir}/windows' />
+	<property name='nsisdir' value='${rootdir}/java' />
+	<property name='sourcesdir' value='${rootdir}/sources' />
+	<property name='libdir' value='lib' />
+	<property name='distfiles' value='dist-files' />
+	<property name='nativedir' value='native' />
+	<property name='javadir' value='src/main/java' />
+	<property name='classdir' value='classes' />
+	<property name='javadocdir' value='dist-files/doc/javadoc' />
+	<property name='jarname' value='jajuk.jar' />
+	<property name='distjarname' value='jajuk-java-installer-' />
+	<property name='sourcesdist' value='${sourcesdir}/jajuk-sources-${version}.zip' />
+	<property name='mplayerdir' value='/tmp/mplayer' />
+	<property name='srcdir' value='${basedir}/src' />
+
+	<target name='startup' >
+		<echo message='Building Jajuk release: ${version} using Java ${java.specification.version}' />
+		<echo message='Building Jajuk release: ${version}' />
+		<echo message='Basedir: ${basedir}' />
+		<!--Prepare timestamp-->
+		<tstamp>
+			<format property='JAJUK_TIMESTAMP' pattern='yyyy-MM-dd HH:mm:ss' />
+		</tstamp>
+	</target>
+
+	<target name='clean' description='o Clean up previous build files'>
+		<delete failonerror='false' dir='${rootdir}' />
+		<delete failonerror='false' dir='${mplayerdir}' />
+	</target>
+
+
+	<target name='mkdist_jar'>
+		<echo message='Prepare files to build jar package' />
+		<mkdir dir='${rootdir}' />
+		<mkdir dir='${distdir}' />
+		<copy todir='${distdir}/lib'>
+			<fileset dir='${libdir}' />
+			<fileset file='${basedir}/src/legals/*.*' />
+		</copy>
+		<mkdir dir='${distdir}/bin' />
+		<mkdir dir='${distdir}/${classdir}' />
+		<copy todir='${distdir}/src'>
+			<fileset dir='${javadir}' />
+		</copy>
+		<!--copy README and legals file in / for package distribution-->
+		<copy todir='${distdir}'>
+			<fileset file='${basedir}/src/legals/LICENSE-GPL.txt' />
+			<fileset file='${basedir}/src/legals/DERIVATED.txt' />
+			<fileset file='${basedir}/src/doc/README.html' />
+			<fileset file='${basedir}/src/legals/AUTHORS.txt' />
+		</copy>
+		<!--copy both README and LICENCE files as must also be in src/ for source distribution-->
+		<copy todir='${distdir}/src'>
+			<fileset file='${basedir}/src/legals/LICENSE-GPL.txt' />
+			<fileset file='${basedir}/src/legals/DERIVATED.txt' />
+			<fileset file='${basedir}/src/doc/README.html' />
+			<fileset file='${basedir}/src/legals/AUTHORS.txt' />
+		</copy>
+		<copy todir='${distdir}/src'>
+			<fileset file='${srcdir}/packaging/MANIFEST.MF' />
+		</copy>
+		<copy todir='${distdir}'>
+			<fileset file='${srcdir}/scripts/build.xml' />
+		</copy>
+		<mkdir dir='${distdir}/dist-files' />
+		<copy todir='${distdir}/dist-files/icons'>
+			<fileset file='${srcdir}/main/resources/icons/**' />
+		</copy>
+		<copy todir='${distdir}/dist-files/images'>
+			<fileset file='${srcdir}/main/resources/images/**' />
+		</copy>
+		<copy todir='${distdir}/dist-files/perspectives'>
+			<fileset file='${srcdir}/main/resources/perspectives/**' />
+		</copy>
+		<copy todir='${distdir}/dist-files/xslt'>
+			<fileset file='${srcdir}/main/resources/xslt/**' />
+		</copy>
+		<copy todir='${distdir}'>
+			<fileset file='${srcdir}/main/resources/icons/64x64/jajuk-icon-shortcut_64x64.png' />
+			<fileset file='${srcdir}/main/resources/icons/16x16/jajuk-uninstall.png' />
+		</copy>
+		<copy todir='${distdir}'>
+			<fileset file='${srcdir}/scripts/jajuk' />
+			<fileset file='${srcdir}/scripts/jajuk.bat' />
+		</copy>
+		<chmod file='${distdir}/jajuk' perm='ugo+rx' />
+
+		<!-- Set build date -->
+		<tstamp>
+			<format property='build.time' pattern='yyyy/MM/dd HH:mm' />
+		</tstamp>
+		<echo message='Build time: ${build.time}' />
+		<replace dir='${distdir}/src/org/jajuk/util' value='${build.time}' encoding='UTF-8'>
+			<include name='Const.java' />
+			<replacetoken>DATE_REPLACED_BY_ANT</replacetoken>
+		</replace>
+		<!-- Set release in code-->
+		<replace dir='${distdir}/src/org/jajuk/util' value='${version}' encoding='UTF-8'>
+			<include name='Const.java' />
+			<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+		</replace>
+		<!-- Set release in user build.xml file-->
+		<replace dir='${distdir}' value='${version}'>
+			<include name='build.xml' />
+			<include name='jajuk' />
+			<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+		</replace>
+		<!-- Set debug value in scripts-->
+		<replace dir='${distdir}' value='-${test}'>
+			<include name='jajuk' />
+			<include name='jajuk.bat' />
+			<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
+		</replace>
+	</target>
+
+	<target name='download_mplayer'>
+		<!-- We include the mplayer staticaly linked binary under OSX and Windows -->
+		<echo message='Download mplayer for inclusion inside packages' />
+		<!-- OSX mplayer -->
+		<mkdir dir='${mplayerdir}/osx' />
+		<get src='http://repository.jajuk.info/mplayer/osx/1.0rc2/mplayer' dest='${mplayerdir}/osx/mplayer' />
+		<!-- Windows mplayer -->
+		<mkdir dir='${mplayerdir}/windows' />
+		<get src='http://repository.jajuk.info/mplayer/20130411/mplayer.exe' dest='${mplayerdir}/windows/mplayer.exe' />
+	</target>
+
+	<target name='compile'>
+		<echo message='Compile the code' />
+		<javac destdir='${distdir}/${classdir}' source='1.7' target='1.7' deprecation='true' debug='true' optimize='true' excludes='**/package.html' encoding='UTF-8'>
+			<compilerarg value='-Xlint:all' />
+			<src>
+				<pathelement path='${distdir}/src'>
+				</pathelement>
+			</src>
+			<classpath>
+				<fileset dir='${distdir}/lib'>
+					<include name='*.jar' />
+				</fileset>
+			</classpath>
+		</javac>
+		<mkdir dir='${distdir}/${classdir}/icons' />
+		<mkdir dir='${distdir}/${classdir}/images' />
+		<mkdir dir='${distdir}/${classdir}/perspectives' />
+		<mkdir dir='${distdir}/${classdir}/xslt' />
+		<!-- Copy files to be embeded into the jar -->
+		<copy todir='${distdir}/${classdir}/icons'>
+			<fileset dir='${srcdir}/main/resources/icons' />
+		</copy>
+		<copy todir='${distdir}/${classdir}/images/included'>
+			<fileset file='${srcdir}/main/resources/images/included/*' />
+		</copy>
+		<copy todir='${distdir}/${classdir}/org/jajuk/i18n'>
+			<fileset file='${srcdir}/main/resources/org/jajuk/i18n/*.properties' />
+		</copy>
+		<copy todir='${distdir}/${classdir}'>
+			<fileset file='${srcdir}/main/resources/jajuk-log4j-conf.xml' />
+		</copy>
+		<copy todir='${distdir}/${classdir}/perspectives'>
+			<fileset file='${srcdir}/main/resources/perspectives/*.xml' />
+		</copy>
+		<copy todir='${distdir}/${classdir}/xslt'>
+			<fileset file='${srcdir}/main/resources/xslt/**' />
+		</copy>
+	</target>
+
+	<target name='package_jar' description='o Create Jajuk jar file' depends='startup,clean,mkdist_jar,compile'>
+		<echo message='Create Jajuk jar file' />
+		<jar jarfile='${distdir}/bin/${jarname}' excludes='**/package.html' manifest='${srcdir}/packaging/MANIFEST.MF' compress='true'>
+			<fileset dir='${distdir}/${classdir}' />
+		</jar>
+		<delete dir='${distdir}/${classdir}' />
+		<echo message='jajuk.jar had been successfully built in: ${distdir}/bin/${jarname}' />
+	</target>
+
+
+	<target name='package_all' description='o Create all packages' depends='package_exe,package_nsis,package_rpm,package_source,package_macos'>
+		<echo message='Successfully built packages:' />
+		<echo message=' Jajuk Jar file in:     ${distdir}/bin/${jarname}' />
+		<echo message=' RPM package in:        ${rpmbuilddir}/RPMS/noarch/jajuk-${version}-1.noarch.rpm' />
+		<echo message=' Windows executable in: ${windowsdir}/jajuk-${version}-setup.exe' />
+		<echo message=' MAC OS X in:           ${distdir}/jajuk-macos-${version}.zip' />
+		<echo message=' Source archive in:     ${sourcesdist}' />
+		<echo message=' Jajuk binary file in:  ${distdir}/bin/${jarname}' />
+	</target>
+
+
+	<!--NSIS package creation -->
+	<taskdef name="nsis" classname="com.danielreese.nsisant.Task">
+		<classpath location="/data/build_tools/nsis-ant/nsisant-1.3.jar" />
+	</taskdef>
+
+	<target name='package_nsis' description='o Create Jajuk NSIS package' depends='download_mplayer,startup,clean,package_jar'>
+		<echo message='Create Jajuk NSIS installer' />
+		<mkdir dir='${nsisdir}' />
+		<!-- Set release in nsis descriptor files-->
+		<replace file="${srcdir}/packaging/NSIS/jajuk.nsis" value='${version}'>
+			<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+		</replace>
+		<nsis script="${srcdir}/packaging/NSIS/jajuk.nsis" />
+	</target>
+
+
+	<target name='package_rpm' description='o Create Jajuk RPM package' depends='startup,clean,mkdist_rpm,package_jar'>
+		<echo message='Create Jajuk RPM package' />
+		<!-- Copy jajuk.jar in the RPM distdir -->
+		<copy todir='${rpmdistdir}${installdir}/bin'>
+			<fileset file='${distdir}/bin/${jarname}' />
+		</copy>
+
+		<!-- rights-->
+		<chmod file='${rpmdistdir}/usr/bin/jajuk' perm='ugo+rx' />
+		<chmod file='${rpmdistdir}/usr/share/applications/jajuk.desktop' perm='ugo+rwx' />
+
+		<!--RPM, see http://forgeftp.novell.com//library/SUSE%20Package%20Conventions/spc_desktop_menu.html-->
+		<rpm failOnError='true' specFile='jajuk.spec' topDir='${rpmbuilddir}' cleanBuildDir='yes' removeSpec='no' command='-bb -vv --target noarch' />
+	</target>
+
+	<!--jarbundler Mac OS X package creation (Jajuk.app)-->
+	<target name='jarbundler' depends='package_jar'>
+		<taskdef name='jarbundler' classpath='${conf_jarbundler}/${conf_jarbundler-jar}' classname='net.sourceforge.jarbundler.JarBundler' />
+		<echo message='jarbundler' />
+		<mkdir dir='${distdir}/jarbundler/' />
+		<jarbundler dir='${distdir}/jarbundler/' name='Jajuk' shortname="Jajuk" mainclass='org.jajuk.Main' icon='${distdir}/dist-files/images/jajuk-icon_source.icns' jvmversion='1.7+' version='${version}' useJavaXKey='true' stubfile='${basedir}/src/packaging/OSX/universalJavaApplicationStub' build='${version}' vmoptions='-client -Xms20M -Xmx2G -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -Xverify:none' arguments='-${test}' verbose='true'>
+			<jarfileset dir='${distdir}/lib'>
+				<include name='**/*.jar' />
+			</jarfileset>
+			<jarfileset dir='${distdir}/bin'>
+				<include name='**/*.jar' />
+			</jarfileset>
+			<execfilelist dir='${mplayerdir}/osx' files="mplayer" />
+		</jarbundler>
+	</target>
+
+	<!--Create jarbundler zip -->
+	<target name='package_macos' description='o Create Jajuk MAC OS package' depends='startup,clean,package_jar,jarbundler'>
+		<echo message='Create Jajuk MAC OS package' />
+		<zip zipfile='${distdir}/jajuk-macos-${version}.zip'>
+			<zipfileset dir='${distdir}/jarbundler' filemode='755'>
+				<include name='*/**' />
+			</zipfileset>
+			<fileset file='${basedir}/src/doc/README.html' />
+			<fileset file='${basedir}/src/legals/*' />
+		</zip>
+	</target>
+
+	<target name='package_source' description='o Create Jajuk source package (zip)' depends='startup,clean,mkdist_source'>
+		<echo message='Create Jajuk source package' />
+		<zip basedir='${sourcesdir}' destfile='${sourcesdist}' />
+		<delete dir='{sourcesdir}' />
+	</target>
+
+	<!-- Windows jajuk.exe creation using launch4j-->
+	<target name='package_exe' description='o Create Jajuk Windows executable file' depends='package_jar,mkdist_windows'>
+		<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
+	        :${launch4j.dir}/lib/xstream.jar" />
+		<echo message='Create Jajuk Windows executable file' />
+		<launch4j configFile="${windowsdir}/jajuk.launch4j" />
+	</target>
+
+	<target name='mkdist_rpm'>
+		<echo message='Prepare files to build RPM package' />
+		<!--RPM specific-->
+		<!-- Create structure-->
+		<mkdir dir='${rootdir}' />
+		<mkdir dir='${rpmbuilddir}' />
+		<mkdir dir='${rpmbuilddir}/tmp' />
+		<mkdir dir='${rpmbuilddir}/SRMPS' />
+		<mkdir dir='${rpmbuilddir}/RPMS' />
+		<mkdir dir='${rpmbuilddir}/SPECS' />
+		<mkdir dir='${rpmbuilddir}/BUILD' />
+		<mkdir dir='${rpmdistdir}' />
+		<mkdir dir='${rpmdistdir}/usr/bin' />
+		<mkdir dir='${rpmdistdir}${installdir}/bin' />
+		<mkdir dir='${rpmdistdir}${installdir}/lib' />
+		<mkdir dir='${rpmdistdir}${installdir}/lib64' />
+		<mkdir dir='${rpmdistdir}${jnidir}' />
+		<mkdir dir='${rpmdistdir}${installdir}/native' />
+		<mkdir dir='${rpmdistdir}/usr/share/applications' />
+		<mkdir dir='${rpmdistdir}/usr/share/doc/packages/jajuk' />
+		<mkdir dir='${rpmdistdir}/usr/share/pixmaps' />
+
+		<!-- Copy files -->
+		<!--RPM-->
+		<copy todir='${rpmbuilddir}/SPECS'>
+			<fileset file='${srcdir}/packaging/RPMS/jajuk.spec' />
+		</copy>
+		<copy todir='${rpmdistdir}/usr/bin'>
+			<fileset file='${srcdir}/scripts/jajuk' />
+		</copy>
+		<!--DO SOMETHING BETTER HERE -->
+		<copy todir='${rpmdistdir}${installdir}/lib'>
+			<fileset file='${basedir}/lib/*.jar'>
+			</fileset>
+		</copy>
+		<copy todir='${rpmdistdir}${installdir}/lib'>
+			<fileset file='${basedir}/lib/lib32/*.so' />
+		</copy>
+		<copy todir='${rpmdistdir}${installdir}/lib64'>
+			<fileset file='${basedir}/lib/lib64/*.so' />
+		</copy>
+		<copy todir='${rpmdistdir}${installdir}/lib'>
+			<fileset file='${basedir}/src/legals/*.*' />
+		</copy>
+		<!--/DO SOMETHING BETTER HERE -->
+		<copy todir='${rpmdistdir}/usr/share/applications'>
+			<fileset file='${srcdir}/packaging/RPMS/jajuk.desktop' />
+		</copy>
+		<copy todir='${rpmdistdir}/usr/share/doc/jajuk'>
+			<fileset file='${basedir}/src/doc/README.html' />
+			<fileset file='${basedir}/src/legals/*.*' />
+		</copy>
+		<copy todir='${rpmdistdir}/usr/share/pixmaps'>
+			<fileset file='${srcdir}/main/resources/icons/16x16/jajuk-icon_16x16.png' />
+			<fileset file='${srcdir}/main/resources/icons/64x64/jajuk-icon_64x64.png' />
+			<fileset file='${srcdir}/main/resources/icons/64x64/jajuk-icon-shortcut_64x64.png' />
+		</copy>
+		<!-- Set release in RPM descriptor file-->
+		<replace dir='${rpmbuilddir}/SPECS' value='${version}'>
+			<include name='jajuk.spec' />
+			<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+		</replace>
+		<replace dir='${rpmdistdir}/usr/bin' value='-${test}'>
+			<include name='jajuk' />
+			<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
+		</replace>
+		<replace dir='${rpmdistdir}/usr/bin' value='${version}'>
+			<include name='jajuk' />
+			<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+		</replace>
+	</target>
+
+	<target name='mkdist_windows'>
+		<echo message='Prepare files to build Windows executable' />
+		<!--copy native dll to bin directory-->
+		<copy todir='${distdir}/bin'>
+			<fileset file='${basedir}/lib/*.dll' />
+		</copy>
+		<mkdir dir='${windowsdir}' />
+		<!--Windows specific -->
+		<copy todir='${windowsdir}'>
+			<fileset file='${srcdir}/packaging/native_launcher/*' />
+		</copy>
+		<!-- Set release in native launcher descriptor files-->
+		<replace dir='${windowsdir}' value='${version}'>
+			<include name='installer.launch4j' />
+			<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+		</replace>
+		<!-- Set test value in launch4j descriptor files-->
+		<replace dir='${windowsdir}' value='-${test}'>
+			<include name='jajuk.launch4j' />
+			<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
+		</replace>
+	</target>
+
+
+	<target name='mkdist_source'>
+		<echo message='Prepare files to build source package' />
+		<mkdir dir='${sourcesdir}/jajuk-src-${version}' />
+		<copy todir='${sourcesdir}/jajuk-src-${version}'>
+			<!--Exclude files created during the maven execution -->
+			<fileset file='${distdir}/**' excludes='test*,**/target/**' />
+		</copy>
+	</target>
+
+	<!-- Create hash files and upload packages-->
+	<target name='deploy_new_release' description='o Put all generated packages and checksums into Jajuk webserver repository directory' depends='package_all'>
+		<mkdir dir='${conf_uploaddir}' />
+		<copy todir='${conf_uploaddir}'>
+			<fileset file='${sourcesdist}' />
+			<fileset file='${rpmbuilddir}/RPMS/noarch/*' />
+			<fileset file='${windowsdir}/jajuk-${version}-setup.exe' />
+			<fileset file='${distdir}/jajuk-macos-${version}.zip' />
+		</copy>
+	</target>
+</project>
