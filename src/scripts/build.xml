@@ -9,7 +9,7 @@
 	</tstamp>
 
 	<!--Build type : 'unstable', 'final', 'pre-release' or 'maintenance' -->
-	<property name='type' value='final' />
+	<property name='type' value='unstable' />
 
 	<!--Distribution release
 	!!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
@@ -394,6 +394,7 @@
 		<copy todir='${sourcesdir}/jajuk-src-${version}'>
 			<!--Exclude files created during the maven execution -->
 			<fileset file='${distdir}/**' excludes='test*,**/target/**' />
+			<fileset file='${srcdir}/scripts/*' />
 		</copy>
 	</target>
 
