@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--Ant script for users (target package_jar) only -->
+
+<project default='package_jar' name='jajuk' basedir='.'>
+	<!--Distribution release -->
+	<property name='version' value='1.11.0dev' />
+
+	<!-- Name of the directory that will contain the jajuk.jar file once compiled -->
+	<property name='distdir' value='bin'/>
+
+	<target name='clean' description='o Clean up previous build files'>
+		<delete failonerror='false' dir='${distdir}' />
+		<delete failonerror='false' dir='${distdir}' />
+		<mkdir dir='${distdir}' />
+                <mkdir dir='${distdir}'/>
+	</target>
+
+	<target name='compile'>
+		<echo message='Compile the code' />
+		<javac destdir='${distdir}' source='1.7' target='1.7' deprecation='false' debug='false' optimize='true'  encoding='UTF-8'>
+			<src>
+				<pathelement path='src'>
+				</pathelement>
+			</src>
+			<classpath>
+				<fileset dir='lib'>
+					<include name='*.jar' />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name='package_jar' description='o Create Jajuk jar file' depends='clean,compile'>
+		<echo message='Building Jajuk release: ${version} using Java ${java.specification.version}' />
+                <echo message='Basedir: ${basedir}' />	
+		<jar jarfile='${distdir}/jajuk.jar' manifest='src/packaging/MANIFEST.MF' compress='true'>
+			<fileset dir='${distdir}' />
+			<fileset dir='src/main/resources'>
+				<exclude name='images/*.*'/>
+			</fileset>
+		</jar>
+		<!-- Make the jajuk bash script executable -->
+		<chmod file='jajuk' perm='ugo+rx' />
+		<echo message='jajuk.jar had been successfully built in: ${distdir}/jajuk.jar' />
+	</target>
+</project>
