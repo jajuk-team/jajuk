@@ -81,21 +81,16 @@
 		<copy todir='${distdir}'>
 			<fileset file='${basedir}/src/legals/LICENSE-GPL.txt' />
 			<fileset file='${basedir}/src/legals/DERIVATED.txt' />
-			<fileset file='${basedir}/src/doc/README.html' />
 			<fileset file='${basedir}/src/legals/AUTHORS.txt' />
 		</copy>
 		<!--copy both README and LICENCE files as must also be in src/ for source distribution-->
 		<copy todir='${distdir}/src'>
 			<fileset file='${basedir}/src/legals/LICENSE-GPL.txt' />
 			<fileset file='${basedir}/src/legals/DERIVATED.txt' />
-			<fileset file='${basedir}/src/doc/README.html' />
 			<fileset file='${basedir}/src/legals/AUTHORS.txt' />
 		</copy>
 		<copy todir='${distdir}/src'>
 			<fileset file='${srcdir}/packaging/MANIFEST.MF' />
-		</copy>
-		<copy todir='${distdir}'>
-			<fileset file='${srcdir}/scripts/build.xml' />
 		</copy>
 		<mkdir dir='${distdir}/dist-files' />
 		<copy todir='${distdir}/dist-files/icons'>
@@ -273,7 +268,6 @@
 			<zipfileset dir='${distdir}/jarbundler' filemode='755'>
 				<include name='*/**' />
 			</zipfileset>
-			<fileset file='${basedir}/src/doc/README.html' />
 			<fileset file='${basedir}/src/legals/*' />
 		</zip>
 	</target>
@@ -341,7 +335,6 @@
 			<fileset file='${srcdir}/packaging/RPMS/jajuk.desktop' />
 		</copy>
 		<copy todir='${rpmdistdir}/usr/share/doc/jajuk'>
-			<fileset file='${basedir}/src/doc/README.html' />
 			<fileset file='${basedir}/src/legals/*.*' />
 		</copy>
 		<copy todir='${rpmdistdir}/usr/share/pixmaps'>
@@ -395,6 +388,7 @@
 			<!--Exclude files created during the maven execution -->
 			<fileset file='${distdir}/**' excludes='test*,**/target/**' />
 			<fileset file='${srcdir}/scripts/*' />
+			<fileset file='${srcdir}/doc/BUILD.txt' />
 		</copy>
 	</target>
 
