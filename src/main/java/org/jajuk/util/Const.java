@@ -208,8 +208,8 @@ public interface Const {
   String VARIOUS_ARTIST = "various_artist";
   String COVER_NONE = "none";
   // images
-  URL IMAGES_SPLASHSCREEN = UtilSystem.getResource("images/included/jajuk-splashscreen.jpg");
-  URL IMAGE_SEARCH = UtilSystem.getResource("images/included/search.png");
+  URL IMAGES_SPLASHSCREEN = UtilSystem.getResource("images/jajuk-splashscreen.jpg");
+  URL IMAGE_SEARCH = UtilSystem.getResource("images/search.png");
   // XSLT Files
   URL XSLT_ARTIST = UtilSystem.getResource("xslt/artist.xsl");
   URL XSLT_ALBUM = UtilSystem.getResource("xslt/album.xsl");
