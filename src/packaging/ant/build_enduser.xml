@@ -79,12 +79,11 @@
 			</batchtest> 
 			<classpath>
 				<fileset dir='lib'>
-                                        <include name='*.jar' />
-                                </fileset>
-				<pathelement location="lib/lib64"/>
+					<include name='*.jar' />
+                </fileset>
 				<pathelement location="bin"/>
 				<pathelement location="src/main/resources"/>
-                        </classpath>
+            </classpath>
 		</junit> 
 	</target>
 </project>

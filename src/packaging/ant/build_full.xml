@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--Ant script for users Jajuk team packagers -->
+
+<project default='package_all' name='jajuk' basedir='../..'>
+    <!--VARIABLES-->
+
+    <!--Build type : 'unstable', 'final', 'pre-release' or 'maintenance' -->
+    <property name='type' value='unstable'/>
+
+    <!--Distribution release
+    !!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
+    <property name='version' value='1.11.0dev'/>
+
+    <!--Test flag: values: 'test' or 'notest'
+    'test' for 'unstable' branches, 'notest' for master, pre-release and maintenance branches
+    -->
+    <property name='test_flag' value='test'/>
+
+    <!-- ======================= -->
+    <!-- | Configuration paths | -->
+    <!-- ======================= -->
+
+    <!-- Root directory for all produced files -->
+    <property name='root_dir' value='/tmp/jajuk-dist'/>
+
+    <!-- Source distribution repository, contains the sources for end user and to build jajuk.jar and run tests -->
+    <property name='sources_dist_dir' value='${root_dir}/sources.dist'/>
+
+    <!-- Directory that contains the final artefacts (source .zip, rpm, deb, exe ...) -->
+    <property name='packages_dir' value='${root_dir}/packages'/>
+
+
+    <!-- ======================= -->
+    <!-- | Tasks definition    | -->
+    <!-- ======================= -->
+
+
+    <!-- ======================= -->
+    <!-- | Targets             | -->
+    <!-- ======================= -->
+
+    <target name='startup'>
+        <echo message='Building Jajuk release: ${version} using Java ${java.specification.version}'/>
+        <echo message='Basedir: ${basedir}'/>
+    </target>
+
+    <target name='clean' description='o Clean up previous build files'>
+        <delete failonerror='false' dir='${root_dir}'/>
+    </target>
+
+    <target name='package_all' description='o Create all packages'
+            depends='build_sources_dist'>
+        <echo message=' Source archive in:     ${sources_dist_dir}'/>
+    </target>
+
+    <target name='build_sources_dist'>
+        <echo message='Prepare the source package'/>
+        <mkdir dir='${sources_dist_dir}/src/main'/>
+        <copy todir='${sources_dist_dir}'>
+            <fileset dir='${basedir}'>
+                <exclude name=".*"/>
+            </fileset>
+        </copy>
+
+        <!--copy informative, build and scripts files to the root of the source distribution-->
+        <copy todir='${sources_dist_dir}'>
+            <fileset file='${basedir}/legals/LICENSE-GPL.txt'/>
+            <fileset file='${basedir}/legals/DERIVATED.txt'/>
+            <fileset file='${basedir}/legals/AUTHORS.txt'/>
+            <fileset file='${basedir}/scripts/jajuk'/>
+            <fileset file='${basedir}/packaging/ant/BUILD.txt'/>
+        </copy>
+
+        <!-- Copy and rename the end user ant script -->
+        <copy file='${basedir}/packaging/ant/build_enduser.xml' tofile='${sources_dist_dir}/build.xml'/>
+
+        <!-- Copy the junit jar used for junit tests performed by the end users -->
+        <copy todir='${sources_dist_dir}/lib'>
+            <fileset dir="${basedir}/packaging/ant">
+                <include name="junit*.jar"/>
+            </fileset>
+        </copy>
+
+        <!-- Set build date -->
+        <tstamp>
+            <format property='build.time' pattern='yyyy/MM/dd HH:mm'/>
+        </tstamp>
+        <echo message='Build time: ${build.time}'/>
+        <replace dir='${sources_dist_dir}/src/main/java/org/jajuk/util' value='${build.time}' encoding='UTF-8'>
+            <include name='Const.java'/>
+            <replacetoken>DATE_REPLACED_BY_ANT</replacetoken>
+        </replace>
+        <!-- Set release -->
+        <replace dir='${sources_dist_dir}/src/main/java/org/jajuk/util' value='${version}' encoding='UTF-8'>
+            <include name='Const.java'/>
+            <replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+        </replace>
+        <!-- Set release -->
+        <replace dir='${sources_dist_dir}' value='${version}'>
+            <include name='build.xml'/>
+            <include name='jajuk'/>
+            <replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+        </replace>
+        <!-- Set debug value -->
+        <replace dir='${sources_dist_dir}' value='-${test_flag}'>
+            <include name='jajuk'/>
+            <replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
+        </replace>
+
+        <!-- Build the sources zip -->
+        <zip basedir='${sources_dist_dir}' destfile='${packages_dir}/jajuk-sources-${version}.zip'/>
+    </target>
+
+    <target name='build_jajuk' depends="build_sources_dist">
+        <echo message='Build jajuk from the source package'/>
+        <ant dir="${sources_dist_dir}" target="package_jar" inheritall="false" useNativeBasedir='true'/>
+    </target>
+
+    <target name='test_jajuk' depends="build_sources_dist">
+        <echo message='Test jajuk from the source package'/>
+        <ant dir="${sources_dist_dir}" target="tests" inheritall="false" useNativeBasedir='true'/>
+    </target>
+
+</project>
