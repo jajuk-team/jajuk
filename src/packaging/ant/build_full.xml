@@ -49,11 +49,11 @@
     </target>
 
     <target name='package_all' description='o Create all packages'
-            depends='build_sources_dist,build_jajuk,test_jajuk'>
+            depends='startup,build_sources_dist,build_jajuk,test_jajuk'>
         <echo message=' Source archive in:     ${sources_dist_dir}'/>
     </target>
 
-    <target name='build_sources_dist'>
+    <target name='build_sources_dist' depends="clean">
         <echo message='Prepare the source package'/>
         <mkdir dir='${sources_dist_dir}/src/main'/>
         <copy todir='${sources_dist_dir}'>
