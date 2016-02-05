@@ -221,8 +221,6 @@ public interface Const {
   String COLLECTION_LOGICAL = "logical";
   String COLLECTION_PHYSICAL = "physical";
   // -- Command line options --
-  /** Tells jajuk it is inside the IDE. */
-  String CLI_IDE = "ide";
   /** Tells jajuk to use a .jajuk_test repository */
   String CLI_TEST = "test";
   /** Special forced workspace location CLI option. */

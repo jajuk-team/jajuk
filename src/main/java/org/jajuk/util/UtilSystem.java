@@ -714,14 +714,8 @@ public final class UtilSystem {
       // Search in jajuk installation directory, do not work under JNLP
       String sPATH = null;
       try {
-        if (SessionService.isIdeMode()) {
-          // If under dev, take mplayer exe file from /Applications (the mplayer osx binary is not
-          // in SCM)
-          sPATH = "/Applications";
-        } else {
-          sPATH = new File(getJarLocation(Main.class).toURI()).getParentFile().getParentFile()
+        sPATH = new File(getJarLocation(Main.class).toURI()).getParentFile().getParentFile()
               .getAbsolutePath();
-        }
         file = new File(sPATH + '/' + Const.FILE_MPLAYER_OSX_EXE);
         if (file.exists() && file.length() == Const.MPLAYER_OSX_EXE_SIZE) {
           UtilSystem.mplayerPath = file;
