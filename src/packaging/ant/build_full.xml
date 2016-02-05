@@ -64,11 +64,11 @@
 
         <!--copy informative, build and scripts files to the root of the source distribution-->
         <copy todir='${sources_dist_dir}'>
-            <fileset file='src/main/legals/LICENSE-GPL.txt'/>
-            <fileset file='src/main/legals/DERIVATED.txt'/>
-            <fileset file='src/main/legals/AUTHORS.txt'/>
-            <fileset file='src/main/scripts/jajuk'/>
-            <fileset file='src/main/packaging/ant/BUILD.txt'/>
+            <fileset file='src/legals/LICENSE-GPL.txt'/>
+            <fileset file='src/legals/DERIVATED.txt'/>
+            <fileset file='src/legals/AUTHORS.txt'/>
+            <fileset file='src/scripts/jajuk'/>
+            <fileset file='src/packaging/ant/BUILD.txt'/>
         </copy>
 
         <!-- Copy and rename the end user ant script -->
