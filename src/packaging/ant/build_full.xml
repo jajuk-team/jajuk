@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--Ant script for users Jajuk team packagers -->
 
-<project default='package_all' name='jajuk' basedir='../..'>
+<project default='package_all' name='jajuk' basedir="../../..">
     <!--VARIABLES-->
 
     <!--Build type : 'unstable', 'final', 'pre-release' or 'maintenance' -->
@@ -49,7 +49,7 @@
     </target>
 
     <target name='package_all' description='o Create all packages'
-            depends='build_sources_dist'>
+            depends='build_sources_dist,build_jajuk,test_jajuk'>
         <echo message=' Source archive in:     ${sources_dist_dir}'/>
     </target>
 
