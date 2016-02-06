@@ -114,6 +114,8 @@
     <target name='build_jajuk' depends="build_sources_dist">
         <echo message='Build jajuk from the source package'/>
         <ant dir="${sources_dist_dir}" target="package_jar" inheritall="false" useNativeBasedir='true'/>
+        <!-- copy the jar to the final packages directory -->
+        <copy file="${sources_dist_dir}/bin/jajuk.jar" todir="${packages_dir}"/>
     </target>
 
     <target name='test_jajuk' depends="build_sources_dist">
