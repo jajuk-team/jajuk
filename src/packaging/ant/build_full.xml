@@ -21,7 +21,7 @@
     <!-- ======================= -->
 
     <!-- Root directory for all produced files -->
-    <property name='root_dir' value='/tmp/jajuk-dist'/>
+    <property name='root_dir' value='build'/>
 
     <!-- Source distribution repository, contains the sources for end user and to build jajuk.jar and run tests -->
     <property name='sources_dist_dir' value='${root_dir}/sources.dist'/>
