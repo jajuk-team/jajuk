@@ -61,7 +61,7 @@
 	</target>
 
 	<target name="tests" depends="compile_all"> 
-		<junit printsummary="on" fork="true" haltonfailure="no" timeout="30000">
+		<junit printsummary="on" fork="true" haltonfailure="no" timeout="60000">
 			<formatter type="xml" /> 
 			<batchtest todir="${test.report.dir}"> 
 				<fileset dir="src/test/java"> 
