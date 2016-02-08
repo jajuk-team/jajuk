@@ -29,11 +29,29 @@
     <!-- Directory that contains the final artefacts (source .zip, rpm, deb, exe ...) -->
     <property name='packages_dir' value='${root_dir}/packages'/>
 
+    <!-- windows distribution repository -->
+    <property name='windows_dist_dir' value='${root_dir}/windows'/>
+
+    <!-- Launch4j installation path, do not change the name of this property -->
+    <property name="launch4j.dir" location="/opt/launch4j"/>
+
 
     <!-- ======================= -->
     <!-- | Tasks definition    | -->
     <!-- ======================= -->
 
+    <!-- Windows executable creation from jar -->
+    <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
+	        :${launch4j.dir}/lib/xstream.jar"/>
+
+    <!--NSIS installer Windows package creation -->
+    <taskdef name="nsis" classname="com.danielreese.nsisant.Task">
+        <classpath location="src/packaging/ant/nsisant-1.3.jar"/>
+    </taskdef>
+
+    <!-- jarbundler OSX package creation -->
+    <taskdef name='jarbundler' classpath='src/packaging/ant/jarbundler-2.4.0.jar'
+             classname='net.sourceforge.jarbundler.JarBundler'/>
 
     <!-- ======================= -->
     <!-- | Targets             | -->
@@ -58,7 +76,8 @@
         <mkdir dir='${sources_dist_dir}/src/main'/>
         <copy todir='${sources_dist_dir}'>
             <fileset dir='.'>
-                <exclude name=".*"/>
+                <exclude name=".*/"/>
+                <exclude name="lib/mplayer/"/>
             </fileset>
         </copy>
 
@@ -121,6 +140,29 @@
     <target name='test_jajuk' depends="build_sources_dist">
         <echo message='Test jajuk from the source package'/>
         <ant dir="${sources_dist_dir}" target="tests" inheritall="false" useNativeBasedir='true'/>
+    </target>
+
+    <!-- Windows jajuk.exe creation using launch4j-->
+    <target name='launch4j' description='o Create Jajuk Windows executable file'
+            depends='build_jajuk'>
+        <echo message='Prepare files to build Windows executable'/>
+        <mkdir dir='${windows_dist_dir}'/>
+        <!--Windows specific -->
+        <copy todir='${windows_dist_dir}'>
+            <fileset file='src/packaging/native_launcher/*'/>
+        </copy>
+        <!-- Set release in native launcher descriptor files-->
+        <replace dir='${windows_dist_dir}' value='${version}'>
+            <include name='installer.launch4j'/>
+            <replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+        </replace>
+        <!-- Set test value in launch4j descriptor files-->
+        <replace dir='${windows_dist_dir}' value='-${test_flag}'>
+            <include name='jajuk.launch4j'/>
+            <replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
+        </replace>
+        <echo message='Create Jajuk Windows executable file'/>
+        <launch4j configFile="${windows_dist_dir}/jajuk.launch4j"/>
     </target>
 
 </project>

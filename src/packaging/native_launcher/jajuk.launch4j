@@ -1,8 +1,8 @@
 <launch4jConfig>
   <dontWrapJar>true</dontWrapJar>
-  <jar>bin/jajuk.jar</jar>
+  <jar>build/packages/jajuk.jar</jar>
   <headerType>gui</headerType>
-  <outfile>/tmp/jajuk-dist/windows/jajuk.exe</outfile>
+  <outfile>jajuk.exe</outfile>
   <errTitle></errTitle>
   <chdir>bin</chdir>
   <cmdLine>TEST_FLAG_REPLACED_BY_ANT</cmdLine>
@@ -12,7 +12,8 @@
   <customProcName>false</customProcName>
   <stayAlive>false</stayAlive>
   <manifest></manifest>
-  <icon>/tmp/jajuk-dist/jajuk/dist-files/images/jajuk-icon.ico</icon>
+  <!-- icon path is relative to .launch4j config file -->
+  <icon>jajuk-icon.ico</icon>
   <jre>
     <path></path>
     <minVersion>1.7.0</minVersion>
