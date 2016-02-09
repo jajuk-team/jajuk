@@ -1,6 +1,6 @@
 Summary: Jajuk Advanced Jukebox
 Name: jajuk
-Version: VERSION_REPLACED_BY_ANT
+Version: @VERSION_REPLACED_BY_ANT@
 Release: 1
 Group: Applications/Audio
 URL: http://jajuk.sourceforge.net

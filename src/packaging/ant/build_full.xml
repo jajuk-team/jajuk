@@ -17,6 +17,17 @@
     <property name='test_flag' value='test'/>
 
     <!-- ======================= -->
+    <!-- | Gobal Filters        | -->
+    <!-- ======================= -->
+    <!-- Set build date -->
+    <tstamp>
+        <format property='build.time' pattern='yyyy/MM/dd HH:mm'/>
+    </tstamp>
+    <filter token="DATE_REPLACED_BY_ANT" value="${build.time}"/>
+    <filter token="VERSION_REPLACED_BY_ANT" value="${version}"/>
+    <filter token="TEST_FLAG_REPLACED_BY_ANT" value="${test_flag}"/>
+
+    <!-- ======================= -->
     <!-- | Configuration paths | -->
     <!-- ======================= -->
 
@@ -60,6 +71,7 @@
     <target name='startup'>
         <echo message='Building Jajuk release: ${version} using Java ${java.specification.version}'/>
         <echo message='Basedir: ${basedir}'/>
+        <echo message='Build time: ${build.time}'/>
     </target>
 
     <target name='clean' description='o Clean up previous build files'>
@@ -74,15 +86,16 @@
     <target name='build_sources_dist' depends="clean">
         <echo message='Prepare the source package'/>
         <mkdir dir='${sources_dist_dir}/src/main'/>
-        <copy todir='${sources_dist_dir}'>
+        <copy todir='${sources_dist_dir}' filtering="true">
             <fileset dir='.'>
                 <exclude name=".*/"/>
+                <exclude name="build/"/>
                 <exclude name="lib/mplayer/"/>
             </fileset>
         </copy>
 
         <!--copy informative, build and scripts files to the root of the source distribution-->
-        <copy todir='${sources_dist_dir}'>
+        <copy todir='${sources_dist_dir}' filtering="true">
             <fileset file='src/legals/LICENSE-GPL.txt'/>
             <fileset file='src/legals/DERIVATED.txt'/>
             <fileset file='src/legals/AUTHORS.txt'/>
@@ -91,7 +104,7 @@
         </copy>
 
         <!-- Copy and rename the end user ant script -->
-        <copy file='src/packaging/ant/build_enduser.xml' tofile='${sources_dist_dir}/build.xml'/>
+        <copy file='src/packaging/ant/build_enduser.xml' tofile='${sources_dist_dir}/build.xml' filtering="true"/>
 
         <!-- Copy the junit jar used for junit tests performed by the end users -->
         <copy todir='${sources_dist_dir}/lib'>
@@ -99,33 +112,6 @@
                 <include name="junit*.jar"/>
             </fileset>
         </copy>
-
-        <!-- Set build date -->
-        <tstamp>
-            <format property='build.time' pattern='yyyy/MM/dd HH:mm'/>
-        </tstamp>
-        <echo message='Build time: ${build.time}'/>
-        <replace dir='${sources_dist_dir}/src/main/java/org/jajuk/util' value='${build.time}' encoding='UTF-8'>
-            <include name='Const.java'/>
-            <replacetoken>DATE_REPLACED_BY_ANT</replacetoken>
-        </replace>
-        <!-- Set release -->
-        <replace dir='${sources_dist_dir}/src/main/java/org/jajuk/util' value='${version}' encoding='UTF-8'>
-            <include name='Const.java'/>
-            <replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
-        </replace>
-        <!-- Set release -->
-        <replace dir='${sources_dist_dir}' value='${version}'>
-            <include name='build.xml'/>
-            <include name='jajuk'/>
-            <replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
-        </replace>
-        <!-- Set debug value -->
-        <replace dir='${sources_dist_dir}' value='-${test_flag}'>
-            <include name='jajuk'/>
-            <replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
-        </replace>
-
         <!-- Build the sources zip -->
         <zip basedir='${sources_dist_dir}' destfile='${packages_dir}/jajuk-sources-${version}.zip'/>
     </target>
@@ -148,21 +134,37 @@
         <echo message='Prepare files to build Windows executable'/>
         <mkdir dir='${windows_dist_dir}'/>
         <!--Windows specific -->
-        <copy todir='${windows_dist_dir}'>
+        <copy todir='${windows_dist_dir}' filtering="true">
             <fileset file='src/packaging/native_launcher/*'/>
         </copy>
-        <!-- Set release in native launcher descriptor files-->
-        <replace dir='${windows_dist_dir}' value='${version}'>
-            <include name='installer.launch4j'/>
-            <replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
-        </replace>
-        <!-- Set test value in launch4j descriptor files-->
-        <replace dir='${windows_dist_dir}' value='-${test_flag}'>
-            <include name='jajuk.launch4j'/>
-            <replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
-        </replace>
         <echo message='Create Jajuk Windows executable file'/>
         <launch4j configFile="${windows_dist_dir}/jajuk.launch4j"/>
+    </target>
+
+    <!-- Windows Nullsoft installer -->
+    <target name='build_nsis' description='o Create Jajuk NSIS package'
+            depends='launch4j'>
+        <echo message='Create Jajuk NSIS installer'/>
+        <!-- Copy and Set release in nsis descriptor files-->
+        <copy todir='${windows_dist_dir}'>
+            <fileset file='src/packaging/NSIS/*.*'/>
+        </copy>
+        <replace file="${windows_dist_dir}/jajuk.nsis" value='${version}'>
+            <replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+        </replace>
+        <!-- Prepare the bin directories with the jajuk jar-->
+        <mkdir dir="${windows_dist_dir}/bin"/>
+        <copy todir='${windows_dist_dir}/bin'>
+            <fileset file='build/packages/jajuk.jar'/>
+        </copy>
+        <copy todir='${windows_dist_dir}'>
+            <fileset file='lib'>
+                <!-- No unix lib -->
+                <exclude name="**/*.so"/>
+            </fileset>
+        </copy>
+        <!-- Launch the installer creation -->
+        <nsis script="${windows_dist_dir}/jajuk.nsis"/>
     </target>
 
 </project>

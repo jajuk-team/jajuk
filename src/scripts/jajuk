@@ -14,7 +14,7 @@ JAVA_BIN="java"
 JAVA_OPTIONS="-client -Xms20M -Xmx2G -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -Xverify:none"
 
 #Jajuk options
-JAJUK_OPTIONS="TEST_FLAG_REPLACED_BY_ANT"
+JAJUK_OPTIONS="@TEST_FLAG_REPLACED_BY_ANT@"
 
 ### CONFIGURATION END ###
 #########################

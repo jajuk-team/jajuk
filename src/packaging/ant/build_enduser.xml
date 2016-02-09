@@ -3,7 +3,7 @@
 
 <project default='package_jar' name='jajuk' basedir='.'>
 	<!--Distribution release -->
-	<property name='version' value='1.11.0dev' />
+	<property name='version' value='@VERSION_REPLACED_BY_ANT@' />
 
 	<!-- Name of the directory that will contain the jajuk.jar file once compiled -->
 	<property name='dist.dir' value='bin'/>

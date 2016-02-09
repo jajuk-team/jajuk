@@ -5,7 +5,7 @@
   <outfile>jajuk.exe</outfile>
   <errTitle></errTitle>
   <chdir>bin</chdir>
-  <cmdLine>TEST_FLAG_REPLACED_BY_ANT</cmdLine>
+  <cmdLine>@TEST_FLAG_REPLACED_BY_ANT@</cmdLine>
   <priority>normal</priority>
   <downloadUrl>http://java.com/download</downloadUrl>
   <supportUrl>http://www.java.com/en/download/help/</supportUrl>
