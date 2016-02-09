@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.Playlist;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;

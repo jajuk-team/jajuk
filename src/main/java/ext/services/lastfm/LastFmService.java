@@ -43,8 +43,8 @@ import net.roarsoftware.lastfm.scrobble.Scrobbler;
 import net.roarsoftware.lastfm.scrobble.Source;
 import net.roarsoftware.lastfm.scrobble.SubmissionData;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.Track;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -424,7 +424,7 @@ public class LastFmService {
         wikiText = a != null ? a.getWikiSummary() : "";
         if (wikiText != null) {
           wikiText = wikiText.replaceAll("<.*?>", "");
-          wikiText = StringEscapeUtils.unescapeHtml(wikiText);
+          wikiText = StringEscapeUtils.unescapeHtml3(wikiText);
         }
         lastFmCache.storeArtistWiki(artist, wikiText);
       }

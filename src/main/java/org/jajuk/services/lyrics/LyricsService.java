@@ -23,7 +23,7 @@ package org.jajuk.services.lyrics;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.File;
 import org.jajuk.services.lyrics.persisters.ILyricsPersister;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;

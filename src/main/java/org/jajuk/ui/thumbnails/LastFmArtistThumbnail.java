@@ -37,7 +37,7 @@ import javax.swing.JLabel;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.ArtistManager;
 import org.jajuk.base.Item;
 import org.jajuk.ui.helpers.FontManager;

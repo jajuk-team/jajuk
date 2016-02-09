@@ -25,7 +25,7 @@ import java.util.Locale;
 
 import javax.swing.filechooser.FileFilter;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Advanced file filter.

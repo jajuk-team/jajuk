@@ -37,7 +37,7 @@ import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.Artist;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;

@@ -33,7 +33,7 @@ import javax.swing.ImageIcon;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * .

@@ -25,7 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.File;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;

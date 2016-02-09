@@ -34,7 +34,7 @@ import javax.swing.JOptionPane;
 import static org.jajuk.util.Const.*;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Device;

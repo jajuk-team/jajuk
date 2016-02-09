@@ -36,7 +36,7 @@ import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.File;

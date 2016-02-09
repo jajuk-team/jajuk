@@ -26,7 +26,7 @@ import java.net.MalformedURLException;
 import java.text.Normalizer;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
