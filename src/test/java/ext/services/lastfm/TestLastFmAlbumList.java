@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
-import net.roarsoftware.lastfm.Album;
+import de.umass.lastfm.Album;
 
 import org.jajuk.util.UtilString;
 

@@ -120,3 +120,12 @@ By       : Common-jukebox team
 Used for : Various shared code between several jukebox projects
 URL      : http://www.assembla.com/wiki/show/common-jukebox
 License  : LGPL
+
+--- Web 2.0 ----
+Project  : lastfm.java
+By       : Johann Kovacs
+Used for : Getting Last.fm data
+URL      : https://github.com/jkovacs/lastfm-java
+License  : Custom Open source, https://github.com/jkovacs/lastfm-java/blob/master/license.txt (provided in the bundle as LICENSE-LASTFM-JAVA.txt)
+Copyright (c) 2012, the Last.fm Java Project and Committers
+All rights reserved.
