@@ -24,8 +24,8 @@ package ext.services.lastfm;
 
 import javax.swing.ImageIcon;
 
-import net.roarsoftware.lastfm.Artist;
-import net.roarsoftware.lastfm.ImageSize;
+import de.umass.lastfm.Artist;
+import de.umass.lastfm.ImageSize;
 
 /**
  * The Class LastFmArtist.

@@ -34,7 +34,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import net.roarsoftware.lastfm.scrobble.SubmissionData;
+import de.umass.lastfm.scrobble.SubmissionData;
 
 import org.apache.commons.io.FileUtils;
 import org.jajuk.services.core.SessionService;

@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.roarsoftware.lastfm.Album;
+import de.umass.lastfm.Album;
 
 /**
  * The Class LastFmAlbumList.

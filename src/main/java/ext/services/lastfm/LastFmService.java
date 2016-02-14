@@ -22,6 +22,7 @@
  */
 package ext.services.lastfm;
 
+import de.umass.lastfm.*;
 import ext.services.network.Proxy;
 
 import java.awt.Image;
@@ -32,16 +33,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import net.roarsoftware.lastfm.Album;
-import net.roarsoftware.lastfm.Artist;
-import net.roarsoftware.lastfm.Caller;
-import net.roarsoftware.lastfm.ImageSize;
-import net.roarsoftware.lastfm.PaginatedResult;
-import net.roarsoftware.lastfm.Playlist;
-import net.roarsoftware.lastfm.scrobble.ResponseStatus;
-import net.roarsoftware.lastfm.scrobble.Scrobbler;
-import net.roarsoftware.lastfm.scrobble.Source;
-import net.roarsoftware.lastfm.scrobble.SubmissionData;
+import de.umass.lastfm.scrobble.ResponseStatus;
+import de.umass.lastfm.scrobble.Scrobbler;
+import de.umass.lastfm.scrobble.Source;
+import de.umass.lastfm.scrobble.SubmissionData;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -56,7 +51,7 @@ import org.jajuk.util.log.Log;
 
 /**
  * The Class LastFmService.
- * 
+ *
  * This class is responsible of retrieve information from Last.fm web services.
  * <singleton>
  */
@@ -95,12 +90,12 @@ public class LastFmService {
 
   /**
    * Instantiates a new Last.fm service
-   * 
+   *
    * @param proxy the proxy
    * @param user the Last.fm username
    * @param password the Last.fm password
-   * @param locale 
-   * @param lastFmCache 
+   * @param locale
+   * @param lastFmCache
    */
   private LastFmService(Locale locale, LastFmCache lastFmCache) {
     Proxy proxy = DownloadManager.getProxy();
@@ -118,7 +113,7 @@ public class LastFmService {
 
   /**
    * Return the LastFMService singleton.
-   * 
+   *
    * @return the LastFMService singleton
    */
   static public LastFmService getInstance() {
@@ -132,9 +127,9 @@ public class LastFmService {
 
   /**
    * Gets the artist.
-   * 
-   * @param artist 
-   * 
+   *
+   * @param artist
+   *
    * @return the artist
    */
   public ArtistInfo getArtist(String artist) {
@@ -157,10 +152,10 @@ public class LastFmService {
 
   /**
    * Gets the album.
-   * 
+   *
    * @param artist the artist
    * @param album the album
-   * 
+   *
    * @return the album
    */
   public AlbumInfo getAlbum(String artist, String album) {
@@ -184,12 +179,12 @@ public class LastFmService {
 
   /**
    * Gets the album list.
-   * 
+   *
    * @param artist the artist
    * @param hideVariousArtists if <code>true</code> albums with artist name "Various Artists"
    * are nor returned
    * @param minimumSongNumber albums with less songs than this argument won't be returned
-   * 
+   *
    * @return the album list
    */
   public AlbumListInfo getAlbumList(String artist, boolean hideVariousArtists, int minimumSongNumber) {
@@ -246,29 +241,11 @@ public class LastFmService {
     return null;
   }
 
-  /**
-   * Gets the artist top tag.
-   * 
-   * @param artist the artist
-   * 
-   * @return the artist top tag
-   */
-  public String getArtistTopTag(String artist) {
-    try {
-      Collection<String> topTags = Artist.getTopTags(artist, UtilString.rot13(API_KEY));
-      List<String> tags = new ArrayList<String>(topTags);
-      return tags.isEmpty() ? "" : tags.get(0);
-    } catch (Exception e) {
-      Log.error(e);
-    }
-    return null;
-  }
-
-  /**
+   /**
    * Gets the image.
-   * 
+   *
    * @param album the album
-   * 
+   *
    * @return the image
    */
   public Image getImage(AlbumInfo album) {
@@ -291,9 +268,9 @@ public class LastFmService {
 
   /**
    * Gets the image of an artist.
-   * 
+   *
    * @param artist the artist
-   * 
+   *
    * @return the image
    */
   public Image getImage(ArtistInfo artist) {
@@ -320,9 +297,9 @@ public class LastFmService {
 
   /**
    * Gets the image of the artist.
-   * 
+   *
    * @param similar the similar
-   * 
+   *
    * @return the image
    */
   public Image getImage(SimilarArtistsInfo similar) {
@@ -355,18 +332,18 @@ public class LastFmService {
 
   /**
    * Returns current artist image at LastFM.
-   * 
-   * @param artistName 
-   * 
+   *
+   * @param artistName
+   *
    * @return the artist image from last fm
    */
   private Image getArtistImageFromLastFM(String artistName) {
     try {
       Proxy proxy = DownloadManager.getProxy();
       // Try to get from Artist.getImages() method
-      PaginatedResult<net.roarsoftware.lastfm.Image> images = Artist.getImages(artistName, 1, 1,
+      PaginatedResult<de.umass.lastfm.Image> images = Artist.getImages(artistName, 1, 1,
           UtilString.rot13(API_KEY));
-      List<net.roarsoftware.lastfm.Image> imageList = new ArrayList<net.roarsoftware.lastfm.Image>(
+      List<de.umass.lastfm.Image> imageList = new ArrayList<de.umass.lastfm.Image>(
           images.getPageResults());
       if (!imageList.isEmpty()) {
         Set<ImageSize> sizes = imageList.get(0).availableSizes();
@@ -384,9 +361,9 @@ public class LastFmService {
 
   /**
    * Gets the similar artists.
-   * 
+   *
    * @param artist the artist
-   * 
+   *
    * @return the similar artists
    */
   public SimilarArtistsInfo getSimilarArtists(String artist) {
@@ -410,9 +387,9 @@ public class LastFmService {
 
   /**
    * Gets the wiki text.
-   * 
+   *
    * @param artist the artist
-   * 
+   *
    * @return the wiki text
    */
   public String getWikiText(String artist) {
@@ -420,7 +397,8 @@ public class LastFmService {
       // Try to get from cache
       String wikiText = lastFmCache.retrieveArtistWiki(artist);
       if (wikiText == null) {
-        Artist a = Artist.getInfo(artist, locale, UtilString.rot13(API_KEY));
+        String userName = null;
+        Artist a = Artist.getInfo(artist, locale, userName, UtilString.rot13(API_KEY));
         wikiText = a != null ? a.getWikiSummary() : "";
         if (wikiText != null) {
           wikiText = wikiText.replaceAll("<.*?>", "");
@@ -437,9 +415,9 @@ public class LastFmService {
 
   /**
    * Gets the wiki url.
-   * 
+   *
    * @param artist the artist
-   * 
+   *
    * @return the wiki url
    */
   public String getWikiURL(String artist) {
@@ -451,7 +429,7 @@ public class LastFmService {
   /**
    * Submits song to Last.fm
    *
-   * @param track 
+   * @param track
    * @param millisPlayed ms the audio file has already played
    * @throws ScrobblerException the scrobbler exception
    */
@@ -491,7 +469,7 @@ public class LastFmService {
 
   /**
    * Submits cache data to Last.fm
-   * 
+   *
    * @throws ScrobblerException the scrobbler exception
    */
   public void submitCache() throws ScrobblerException {
@@ -536,9 +514,9 @@ public class LastFmService {
 
   /**
    * Submits now playing info to Last.fm
-   * 
-   * @param track 
-   * 
+   *
+   * @param track
+   *
    * @throws ScrobblerException the scrobbler exception
    */
   public void submitNowPlayingInfo(Track track) throws ScrobblerException {
@@ -566,7 +544,7 @@ public class LastFmService {
 
   /**
    * Performs handshake for submissions if needed.
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    * @throws ScrobblerException the scrobbler exception
    */
@@ -583,7 +561,7 @@ public class LastFmService {
 
   /**
    * Checks user.
-   * 
+   *
    * @return true, if check user
    */
   private boolean checkUser() {
@@ -597,7 +575,7 @@ public class LastFmService {
 
   /**
    * Check password.
-   * 
+   *
    * @return true, if check password
    */
   private boolean checkPassword() {
@@ -611,9 +589,9 @@ public class LastFmService {
 
   /**
    * Check artist.
-   * 
-   * @param track 
-   * 
+   *
+   * @param track
+   *
    * @return true, if check artist
    */
   private boolean checkArtist(Track track) {
@@ -628,9 +606,9 @@ public class LastFmService {
 
   /**
    * Check title.
-   * 
-   * @param track 
-   * 
+   *
+   * @param track
+   *
    * @return true, if check title
    */
   private boolean checkTitle(Track track) {
@@ -643,9 +621,9 @@ public class LastFmService {
 
   /**
    * Check duration.
-   * 
-   * @param track 
-   * 
+   *
+   * @param track
+   *
    * @return true, if check duration
    */
   private boolean checkDuration(Track track) {

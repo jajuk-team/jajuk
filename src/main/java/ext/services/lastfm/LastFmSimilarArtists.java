@@ -28,8 +28,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import net.roarsoftware.lastfm.Artist;
-import net.roarsoftware.lastfm.ImageSize;
+import de.umass.lastfm.Artist;
+import de.umass.lastfm.ImageSize;
 
 /**
  * The Class LastFmSimilarArtists.
