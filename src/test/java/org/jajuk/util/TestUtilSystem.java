@@ -427,6 +427,7 @@ public class TestUtilSystem extends JajukTestCase {
    */
   public void testGetOnlyFile() {
     assertEquals("name.txt", UtilSystem.getOnlyFile("file:///tmp/some/name.txt"));
+    assertEquals("imagesqtbnANd9GcR3oc63qGvD-UNIESfnOD3ABwJ9JeFdhzE6eEZZFTzw-PBNyOZWdw", UtilSystem.getOnlyFile("images?q=tbn:ANd9GcR3oc63qGvD-UNIESfnOD3ABwJ9JeFdhzE6eEZZFTzw-PBNyOZWdw"));
   }
 
   /**

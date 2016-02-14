@@ -797,7 +797,7 @@ public final class UtilSystem {
    * @return the only file
    */
   public static String getOnlyFile(final String sPath) {
-    return new File(sPath).getName();
+    return new File(sPath).getName().replaceAll("[\\?:]", "_");
   }
 
   /**
