@@ -29,7 +29,7 @@ SetDatablockOptimize On
 !define AppID "{23131D94-868A-4F2D-935A-6E89A7F19D00}"; a unique ID (It's real GUID)
 !define Title "Jajuk"; the installer title
 !define InstallDir "$PROGRAMFILES\Jajuk"; the *default* destination directory
-!define OutFile "build/packages/jajuk-@VERSION_REPLACED_BY_ANT@-setup.exe"; the file to save the installer EXE to
+!define OutFile "jajuk-@VERSION_REPLACED_BY_ANT@-setup.exe"; the file to save the installer EXE to
 !define IconFile "Modern-Default"; the installer icon
 !define HeaderImage "NSIS"; the header image
 !define WizardImage "Win"; the wizard image
@@ -103,7 +103,9 @@ InstallDirRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${App
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 !define MUI_UNABORTWARNING
 
-!insertmacro MUI_PAGE_LICENSE "build/sources_dist/LICENSE-GPL.txt"
+
+
+!insertmacro MUI_PAGE_LICENSE "/home/bflorat/IdeaProjects/jajuk/build/sources_dist/LICENSE-GPL.txt"
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
@@ -140,13 +142,11 @@ InstallDirRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${App
 
 Section
   SetOutPath "$INSTDIR"
-  File /r "build/sources_dist/DERIVATED.txt"
-  File /r "build/sources_dist/LICENSE-GPL.txt"
-  File /r "build/windows/jajuk.exe"
-  File /r "build/windows/jajuk-icon.ico"
-  File /r "build/windows/lib"
-  File /r "build/windows/bin"
-  File /r "lib/mplayer/windows/mplayer.exe"
+  File "LICENSE-GPL.txt"
+  File "jajuk.exe"
+  File "jajuk-icon.ico"
+  File /r "lib"
+  File /r "bin"
   ${If} ${RunningX64}
     Rename "$INSTDIR\lib\lib64\JIntellitype.dll" "$INSTDIR\bin\JIntellitype.dll"
   ${else}

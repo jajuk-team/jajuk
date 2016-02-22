@@ -34,9 +34,6 @@
     <!-- Root directory for all produced files -->
     <property name='root.dir' value='build'/>
 
-    <!-- Temporary directory for conf files that will not be embedded must must be expanded -->
-    <property name='temp.dir' value='${root.dir}/temp'/>
-
     <!-- Source distribution repository, contains the sources for end user and to build jajuk.jar and run tests -->
     <property name='sources_dist.dir' value='${root.dir}/sources_dist'/>
 
@@ -82,7 +79,6 @@
 
     <target name='clean' description='o Clean up previous build files'>
         <delete failonerror='false' dir='${root.dir}'/>
-        <mkdir dir='${temp.dir}'/>
     </target>
 
     <target name='package_all' description='o Create all packages'
@@ -150,7 +146,10 @@
         <mkdir dir='${windows_dist.dir}'/>
         <!--Windows specific -->
         <copy todir='${windows_dist.dir}' filtering="true">
-            <fileset file='src/packaging/native_launcher/*'/>
+            <fileset file='src/packaging/Windows/jajuk.launch4j'/>
+        </copy>
+        <copy todir='${windows_dist.dir}' filtering="true">
+            <fileset file='src/packaging/Windows/jajuk-icon.ico'/>
         </copy>
         <echo message='Create Jajuk Windows executable file'/>
         <launch4j configFile="${windows_dist.dir}/jajuk.launch4j"/>
@@ -162,10 +161,11 @@
         <echo message='Create Jajuk NSIS installer'/>
         <!-- Copy and Set release in nsis descriptor files-->
         <copy todir='${windows_dist.dir}' filtering="true">
-            <fileset file='src/packaging/NSIS/jajuk.nsis'/>
+            <fileset file='src/packaging/Windows/jajuk.nsis'/>
+            <fileset file='src/legals/LICENSE-GPL.txt'/>
         </copy>
         <copy todir='${windows_dist.dir}'>
-            <fileset file='src/packaging/native_launcher/jajuk-icon.ico'/>
+            <fileset file='src/packaging/Windows/jajuk-icon.ico'/>
         </copy>
         <!-- Prepare the bin directories with the jajuk jar-->
         <mkdir dir="${windows_dist.dir}/bin"/>
@@ -179,7 +179,7 @@
             </fileset>
         </copy>
         <!-- Launch the installer creation -->
-        <nsis script="${windows_dist.dir}/jajuk.nsis"/>
+        <nsis script="${windows_dist.dir}/jajuk.nsis" />
     </target>
 
     <!-- ========================== -->
