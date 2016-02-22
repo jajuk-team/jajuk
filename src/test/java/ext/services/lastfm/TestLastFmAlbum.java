@@ -26,9 +26,9 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import junit.framework.TestCase;
-import net.roarsoftware.lastfm.Album;
-import net.roarsoftware.lastfm.CallException;
-import net.roarsoftware.lastfm.Playlist;
+import de.umass.lastfm.Album;
+import de.umass.lastfm.CallException;
+import de.umass.lastfm.Playlist;
 
 import org.jajuk.TestHelpers;
 import org.jajuk.util.IconLoader;
@@ -44,7 +44,7 @@ public class TestLastFmAlbum extends TestCase {
   /**
    * Test method for.
    *
-   * {@link ext.services.lastfm.LastFmAlbum#getAlbum(net.roarsoftware.lastfm.Album, net.roarsoftware.lastfm.Playlist)}
+   * {@link ext.services.lastfm.LastFmAlbum#getAlbum(de.umass.lastfm.Album, de.umass.lastfm.Playlist)}
    * .
    */
   public void testGetAlbum() {

@@ -22,7 +22,7 @@
  */
 package ext.services.lastfm;
 
-import net.roarsoftware.lastfm.Track;
+import de.umass.lastfm.Track;
 
 /**
  * The Class LastFmTrack.
