@@ -294,11 +294,11 @@
 		</dependency>
 
 		<dependency>
-			<groupId>last.fm-bindings</groupId>
-			<artifactId>last.fm-bindings</artifactId>
-			<version>7.3</version>
+			<groupId>lastfm-java</groupId>
+			<artifactId>lastfm-java</artifactId>
+			<version>0.1.2</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/lib/last.fm-bindings-7.3.jar</systemPath>
+			<systemPath>${basedir}/lib/lastfm-java-0.1.2.jar</systemPath>
 		</dependency>
 		
 		<dependency>
