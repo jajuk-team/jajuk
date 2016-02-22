@@ -4,7 +4,7 @@
 	<groupId>org.jajuk</groupId>
 	<artifactId>jajuk</artifactId>
 	<name>Jajuk</name>
-	<version>1.10.8</version>
+	<version>1.10.9</version>
 	<description>Jajuk is a Java music organizer for all platforms. The
 		main goal of this project is to provide a fully-featured application to
 		advanced users with large or scattered music collections.</description>
@@ -307,15 +307,6 @@
 			<version>1.9.5-1</version>
 			<scope>runtime</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20140107</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/json-20140107.jar</systemPath>
-		</dependency>
-
 	</dependencies>
 
 	<reporting>
