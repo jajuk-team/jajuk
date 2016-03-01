@@ -10,7 +10,6 @@
 # Set Working Directory
 # -------------------------------------------------------------------
 
-!cd "/opt/NSIS-SFX/Resources"
 !verbose 2
 
 # -------------------------------------------------------------------
@@ -72,7 +71,7 @@ InstallDirRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${App
 
 ; MUI Settings / Icons
 !define MUI_ICON "Contrib\Graphics\Icons\orange-install.ico"
-!define MUI_UNICON "Jajuk\jajuk-icon.ico"
+!define MUI_UNICON "jajuk-icon.ico"
 ; MUI Settings / Header
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_RIGHT

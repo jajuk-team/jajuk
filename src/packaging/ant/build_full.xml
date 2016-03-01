@@ -82,7 +82,7 @@
     </target>
 
     <target name='package_all' description='o Create all packages'
-            depends='startup,build_sources_dist,build_jajuk,test_jajuk'>
+            depends='startup,build_sources_dist,build_jajuk,test_jajuk,build_nsis'>
         <echo message=' Source archive in:     ${sources_dist.dir}'/>
     </target>
 
@@ -159,22 +159,26 @@
     <target name='build_nsis' description='o Create Jajuk NSIS package'
             depends='launch4j'>
         <echo message='Create Jajuk NSIS installer'/>
-        <!-- Copy and Set release in nsis descriptor files-->
+        <!-- Copy and Set release in nsis descriptor files -->
         <copy todir='${windows_dist.dir}' filtering="true">
             <fileset file='src/packaging/Windows/jajuk.nsis'/>
             <fileset file='src/legals/LICENSE-GPL.txt'/>
         </copy>
+        <!-- Uncompress the nsis resources used to build the installer -->
+        <unzip src="src/packaging/Windows/Resources_nsis.zip" dest="${windows_dist.dir}"/>
+        <!-- Copy others resources -->
         <copy todir='${windows_dist.dir}'>
             <fileset file='src/packaging/Windows/jajuk-icon.ico'/>
         </copy>
-        <!-- Prepare the bin directories with the jajuk jar-->
+        <!-- Prepare the bin directories with the jajuk jar -->
         <mkdir dir="${windows_dist.dir}/bin"/>
         <copy todir='${windows_dist.dir}/bin'>
             <fileset file='${packages.dir}/jajuk.jar'/>
         </copy>
         <copy todir='${windows_dist.dir}'>
-            <fileset file='lib'>
-                <!-- No unix lib -->
+            <fileset dir='.'>
+            <!-- No unix lib -->
+                <include name="lib/**"/>
                 <exclude name="**/*.so"/>
             </fileset>
         </copy>
