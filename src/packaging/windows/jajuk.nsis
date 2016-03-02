@@ -104,7 +104,7 @@ InstallDirRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${App
 
 
 
-!insertmacro MUI_PAGE_LICENSE "/home/bflorat/IdeaProjects/jajuk/build/sources_dist/LICENSE-GPL.txt"
+!insertmacro MUI_PAGE_LICENSE "LICENSE-GPL.txt"
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
@@ -221,11 +221,6 @@ FunctionEnd
 
 Section "Uninstall"
   RMDir /r "$INSTDIR"
-
-  !insertmacro MUI_STARTMENU_GETFOLDER Application $R0
-  SetShellVarContext all
-  RMDir /r "$SMPROGRAMS\$R0"
-  SetShellVarContext current
 
   SetShellVarContext all
   Delete "$DESKTOP\Jajuk.lnk"
