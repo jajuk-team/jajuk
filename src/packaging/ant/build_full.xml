@@ -180,6 +180,8 @@
         </copy>
         <!-- Launch the installer creation -->
         <nsis script="${windows_dist.dir}/jajuk.nsis" />
+        <!-- copy the jar to the final packages directory -->
+        <copy file="${windows_dist.dir}/jajuk*-setup.exe" todir="${packages.dir}"/>
     </target>
 
     <!-- ========================== -->
