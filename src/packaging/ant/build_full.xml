@@ -60,11 +60,11 @@
 
     <!--NSIS installer Windows package creation -->
     <taskdef name="nsis" classname="com.danielreese.nsisant.Task">
-        <classpath location="src/packaging/ant/nsisant-1.3.jar"/>
+        <classpath location="lib/build/nsisant-1.3.jar"/>
     </taskdef>
 
     <!-- jarbundler OSX package creation -->
-    <taskdef name='jarbundler' classpath='src/packaging/ant/jarbundler-2.4.0.jar'
+    <taskdef name='jarbundler' classpath='lib/build/jarbundler-2.4.0.jar'
              classname='net.sourceforge.jarbundler.JarBundler'/>
 
     <!-- ========================== -->
@@ -88,13 +88,14 @@
 
     <target name='build_sources_dist' depends="clean">
         <echo message='Prepare the source package'/>
-        <mkdir dir='${sources_dist.dir}/src/main'/>
-        <copy todir='${sources_dist.dir}' filtering="true">
+        <copy todir='${sources_dist.dir}'>
             <fileset dir='.'>
                 <exclude name=".*/"/>
                 <exclude name="lib/"/>
                 <exclude name="build/"/>
                 <exclude name="lib/mplayer/"/>
+                <exclude name="tools/"/>
+                <exclude name="bin/"/>
             </fileset>
         </copy>
 
@@ -110,15 +111,22 @@
         <!-- Copy and rename the end user ant script -->
         <copy file='src/packaging/ant/build_enduser.xml' tofile='${sources_dist.dir}/build.xml' filtering="true"/>
 
-        <!-- Copy the junit jar used for junit tests performed by the end users. Also copy all jajuk dependencies (this copy must not use filtering)-->
+        <!-- Filter remaining files -->
+        <copy todir='${sources_dist.dir}/src/main/java/org/jajuk/util' filtering="true" overwrite="true">
+            <fileset file='src/main/java/org/jajuk/util/Const.java'/>
+        </copy>
+
+        <!-- Copy the junit jar used for junit tests performed by the end users.
+        Also copy all jajuk dependencies (this copy must not use filtering)-->
         <copy todir='${sources_dist.dir}/lib'>
-            <fileset dir="src/packaging/ant">
-                <include name="junit*.jar"/>
-            </fileset>
             <fileset dir="lib">
                 <include name="*.jar"/>
             </fileset>
+            <fileset dir="lib/build">
+                <include name="junit*.jar"/>
+            </fileset>
         </copy>
+
         <!-- Build the sources zip -->
         <zip basedir='${sources_dist.dir}' destfile='${packages.dir}/jajuk-sources-${version}.zip'/>
     </target>
@@ -173,13 +181,19 @@
         </copy>
         <copy todir='${windows_dist.dir}'>
             <fileset dir='.'>
-            <!-- No unix lib -->
+                <!-- No unix lib, no mplayer -->
                 <include name="lib/**"/>
+                <exclude name="lib/build"/>
                 <exclude name="**/*.so"/>
+                <exclude name="**/mplayer/**"/>
             </fileset>
         </copy>
+        <!-- copy mplayer.exe to the root destination directory -->
+        <copy todir='${windows_dist.dir}'>
+            <fileset file="lib/mplayer/windows/mplayer.exe"/>
+        </copy>
         <!-- Launch the installer creation -->
-        <nsis script="${windows_dist.dir}/jajuk.nsis" />
+        <nsis script="${windows_dist.dir}/jajuk.nsis"/>
         <!-- copy the jar to the final packages directory -->
         <copy todir='${packages.dir}'>
             <fileset file='${windows_dist.dir}/jajuk*-setup.exe'/>

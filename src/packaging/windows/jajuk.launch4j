@@ -1,6 +1,6 @@
 <launch4jConfig>
   <dontWrapJar>true</dontWrapJar>
-  <jar>build/packages/jajuk.jar</jar>
+  <jar>bin/jajuk.jar</jar>
   <headerType>gui</headerType>
   <outfile>jajuk.exe</outfile>
   <errTitle></errTitle>

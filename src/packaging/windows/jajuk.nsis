@@ -141,11 +141,10 @@ InstallDirRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${App
 
 Section
   SetOutPath "$INSTDIR"
-  File "LICENSE-GPL.txt"
   File "jajuk.exe"
-  File "jajuk-icon.ico"
   File /r "lib"
   File /r "bin"
+  File "mplayer.exe"
   ${If} ${RunningX64}
     Rename "$INSTDIR\lib\lib64\JIntellitype.dll" "$INSTDIR\bin\JIntellitype.dll"
   ${else}
