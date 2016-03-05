@@ -215,11 +215,9 @@
                     vmoptions='-client -Xms20M -Xmx2G -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -Xverify:none'
                     arguments='-${test_flag}' verbose='true'>
             <jarfileset dir='lib'>
-                <include name='**/*.jar'/>
+                <include name='*.jar'/>
             </jarfileset>
-            <jarfileset dir='${packages.dir}/jajuk.jar'>
-                <include name='**/*.jar'/>
-            </jarfileset>
+            <jarfileset file="${packages.dir}/jajuk.jar"/>
             <execfilelist dir='lib/mplayer/osx' files="mplayer"/>
         </jarbundler>
     </target>
