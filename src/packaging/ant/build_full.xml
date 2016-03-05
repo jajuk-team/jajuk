@@ -183,7 +183,7 @@
             <fileset dir='.'>
                 <!-- No unix lib, no mplayer -->
                 <include name="lib/**"/>
-                <exclude name="lib/build"/>
+                <exclude name="lib/build/"/>
                 <exclude name="**/*.so"/>
                 <exclude name="**/mplayer/**"/>
             </fileset>
