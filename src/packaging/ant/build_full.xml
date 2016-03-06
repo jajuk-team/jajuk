@@ -2,7 +2,10 @@
 <!--Ant script for users Jajuk team packagers -->
 
 <project default='package_all' name='jajuk' basedir="../../..">
-    <!--VARIABLES-->
+
+    <!-- ======================= -->
+    <!-- | Properties          | -->
+    <!-- ======================= -->
 
     <!--Build type : 'unstable', 'final', 'pre-release' or 'maintenance' -->
     <property name='type' value='unstable'/>
@@ -15,21 +18,6 @@
     'test' for 'unstable' branches, 'notest' for master, pre-release and maintenance branches
     -->
     <property name='test_flag' value='test'/>
-
-    <!-- ======================= -->
-    <!-- | Gobal Filters        | -->
-    <!-- ======================= -->
-    <!-- Set build date -->
-    <tstamp>
-        <format property='build.time' pattern='yyyy/MM/dd HH:mm'/>
-    </tstamp>
-    <filter token="DATE_REPLACED_BY_ANT" value="${build.time}"/>
-    <filter token="VERSION_REPLACED_BY_ANT" value="${version}"/>
-    <filter token="TEST_FLAG_REPLACED_BY_ANT" value="${test_flag}"/>
-
-    <!-- ======================= -->
-    <!-- | Configuration paths | -->
-    <!-- ======================= -->
 
     <!-- Root directory for all produced files -->
     <property name='root.dir' value='build'/>
@@ -49,6 +37,16 @@
     <!-- Launch4j installation path, do not change the name of this property -->
     <property name="launch4j.dir" location="/opt/launch4j"/>
 
+    <!-- ======================= -->
+    <!-- | Gobal Filters        | -->
+    <!-- ======================= -->
+    <!-- Set build date -->
+    <tstamp>
+        <format property='build.time' pattern='yyyy/MM/dd HH:mm'/>
+    </tstamp>
+    <filter token="DATE_REPLACED_BY_ANT" value="${build.time}"/>
+    <filter token="VERSION_REPLACED_BY_ANT" value="${version}"/>
+    <filter token="TEST_FLAG_REPLACED_BY_ANT" value="${test_flag}"/>
 
     <!-- ======================= -->
     <!-- | Tasks definition    | -->
@@ -82,7 +80,7 @@
     </target>
 
     <target name='package_all' description='o Create all packages'
-            depends='startup,build_sources_dist,build_jajuk,test_jajuk,build_nsis'>
+            depends='startup,build_sources_dist,build_jajuk,test_jajuk,build_nsis,package_macos'>
         <echo message=' Source archive in:     ${sources_dist.dir}'/>
     </target>
 
