@@ -37,6 +37,12 @@
     <!-- Launch4j installation path, do not change the name of this property -->
     <property name="launch4j.dir" location="/opt/launch4j"/>
 
+    <!-- RPM build directory -->
+    <property name="rpm_build.dir" location="${root.dir}/rpm/build"/>
+
+    <!-- RPM dist directory -->
+    <property name="rpm_dist.dir" location="${root.dir}/rpm/dist"/>
+
     <!-- ======================= -->
     <!-- | Gobal Filters        | -->
     <!-- ======================= -->
@@ -80,7 +86,7 @@
     </target>
 
     <target name='package_all' description='o Create all packages'
-            depends='startup,build_sources_dist,build_jajuk,test_jajuk,build_nsis,package_macos'>
+            depends='startup,build_sources_dist,build_jajuk,test_jajuk,build_nsis,build_macos,build_rpm'>
         <echo message=' Source archive in:     ${sources_dist.dir}'/>
     </target>
 
@@ -192,7 +198,7 @@
         </copy>
         <!-- Launch the installer creation -->
         <nsis script="${windows_dist.dir}/jajuk.nsis"/>
-        <!-- copy the jar to the final packages directory -->
+        <!-- Copy the jar to the final packages directory -->
         <copy todir='${packages.dir}'>
             <fileset file='${windows_dist.dir}/jajuk*-setup.exe'/>
         </copy>
@@ -221,7 +227,7 @@
     </target>
 
     <!--Create jarbundler zip -->
-    <target name='package_macos' description='o Create Jajuk MAC OS package'
+    <target name='build_macos' description='o Create Jajuk MAC OS package'
             depends='jarbundler'>
         <echo message='Create Jajuk MAC OS package'/>
         <zip zipfile='${packages.dir}/jajuk-macos-${version}.zip'>
@@ -231,5 +237,59 @@
             <fileset file='src/legals/*'/>
         </zip>
     </target>
+
+    <!-- ========================== -->
+    <!-- | RPM  targets           | -->
+    <!-- ========================== -->
+    <target name='mkdist_rpm' depends="build_jajuk">
+        <echo message='Prepare files to build RPM package' />
+        <copy todir='${rpm_build.dir}/SPECS' filtering="true">
+            <fileset file='src/packaging/RPMS/jajuk.spec' />
+        </copy>
+        <copy todir='${rpm_dist.dir}/usr/bin' filtering="true">
+            <fileset file='src/scripts/jajuk' />
+        </copy>
+       <copy todir='${rpm_dist.dir}/usr/share/jajuk/lib'>
+           <fileset file='lib/*.jar'/>
+           <fileset file='lib/lib32/*.so' />
+       </copy>
+        <copy todir='${rpm_dist.dir}/usr/share/jajuk/lib64'>
+             <fileset file='lib/lib64/*.so' />
+        </copy>
+       <copy todir='${rpm_dist.dir}/usr/share/applications'>
+            <fileset file='src/packaging/RPMS/jajuk.desktop' />
+        </copy>
+        <copy todir='${rpm_dist.dir}/usr/share/doc/jajuk'>
+            <fileset file='src/legals/*.*' />
+        </copy>
+        <copy todir='${rpm_dist.dir}/usr/share/pixmaps'>
+            <fileset file='src/main/resources/icons/16x16/jajuk-icon_16x16.png' />
+            <fileset file='src/main/resources/icons/64x64/jajuk-icon_64x64.png' />
+            <fileset file='src/main/resources/icons/64x64/jajuk-icon-shortcut_64x64.png' />
+        </copy>
+   </target>
+
+    <target name='build_rpm' description='o Create Jajuk RPM package' depends='mkdist_rpm'>
+        <echo message='Create Jajuk RPM package' />
+        <!-- Copy jajuk.jar in the RPM distdir -->
+        <copy todir='${rpm_dist.dir}/usr/share/jajuk/bin'>
+            <fileset file='${packages.dir}/jajuk.jar' />
+        </copy>
+
+        <!-- Set rights-->
+        <chmod file='${rpm_dist.dir}/usr/bin/jajuk' perm='ugo+rx' />
+        <chmod file='${rpm_dist.dir}/usr/share/applications/jajuk.desktop' perm='ugo+rwx' />
+
+        <!-- Build the RPM -->
+        <rpm failOnError='true' specFile='jajuk.spec' topDir='${rpm_dist.dir}' cleanBuildDir='yes' removeSpec='no' command='-bb -vv --target noarch' />
+
+        <!-- Copy the rpm to the final packages directory -->
+        <copy todir='${packages.dir}'>
+            <fileset file='${rpm_build.dir}/jajuk*.rpm'/>
+        </copy>
+
+    </target>
+
+
 
 </project>
