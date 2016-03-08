@@ -6,7 +6,7 @@ Group: Applications/Audio
 URL: http://jajuk.sourceforge.net
 License: GPL
 Source: http://jajuk.sourceforge.net
-Packager: Bertrand Florat
+Packager: Jajuk team
 BuildRoot: %{_topdir}/%{name}
 
 %description

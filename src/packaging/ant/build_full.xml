@@ -38,10 +38,10 @@
     <property name="launch4j.dir" location="/opt/launch4j"/>
 
     <!-- RPM build directory -->
-    <property name="rpm_build.dir" location="${root.dir}/rpm/build"/>
+    <property name="rpm_build.dir" location="${root.dir}/rpm"/>
 
     <!-- RPM dist directory -->
-    <property name="rpm_dist.dir" location="${root.dir}/rpm/dist"/>
+    <property name="rpm_dist.dir" location="${rpm_build.dir}/BUILDROOT/jajuk-${version}-1.noarch"/>
 
     <!-- ======================= -->
     <!-- | Gobal Filters        | -->
@@ -281,7 +281,7 @@
         <chmod file='${rpm_dist.dir}/usr/share/applications/jajuk.desktop' perm='ugo+rwx' />
 
         <!-- Build the RPM -->
-        <rpm failOnError='true' specFile='jajuk.spec' topDir='${rpm_dist.dir}' cleanBuildDir='yes' removeSpec='no' command='-bb -vv --target noarch' />
+        <rpm failOnError='true' specFile='jajuk.spec' topDir='${rpm_build.dir}' cleanBuildDir='yes' removeSpec='no' command='-bb -vv --target noarch' />
 
         <!-- Copy the rpm to the final packages directory -->
         <copy todir='${packages.dir}'>
