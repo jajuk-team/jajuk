@@ -19,7 +19,7 @@ under GPL license.
 Jajuk main principles are :
    * Maximum portability: 100% pure Java when possible.
    * Maximum features: Jajuk is made firstly for advanced
-   users looking for powerful functionalities.
+   users looking for powerful features.
    * Maximum usability: Jajuk is designed to be simple, fast
    and provide multiple ways to perform the same operation.
    
