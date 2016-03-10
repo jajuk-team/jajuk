@@ -285,7 +285,7 @@
 
         <!-- Copy the rpm to the final packages directory -->
         <copy todir='${packages.dir}'>
-            <fileset file='${rpm_build.dir}/jajuk*.rpm'/>
+            <fileset file='${rpm_build.dir}/RPMS/noarch/jajuk*.rpm'/>
         </copy>
 
     </target>
