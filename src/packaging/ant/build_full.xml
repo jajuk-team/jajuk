@@ -41,7 +41,10 @@
     <property name="rpm_build.dir" location="${root.dir}/rpm"/>
 
     <!-- RPM dist directory -->
-    <property name="rpm_dist.dir" location="${rpm_build.dir}/BUILDROOT/jajuk-${version}-1.noarch"/>
+    <property name="linux_dist.dir" location="${rpm_build.dir}/BUILDROOT/jajuk-${version}-1.noarch"/>
+
+    <!-- Debian build directory -->
+    <property name="deb_build.dir" location="${root.dir}/debian"/>
 
     <!-- ======================= -->
     <!-- | Gobal Filters        | -->
@@ -70,6 +73,9 @@
     <!-- jarbundler OSX package creation -->
     <taskdef name='jarbundler' classpath='lib/build/jarbundler-2.4.0.jar'
              classname='net.sourceforge.jarbundler.JarBundler'/>
+
+    <!-- jdeb, .deb packages creation -->
+    <taskdef name="deb" classname="org.vafer.jdeb.ant.DebAntTask" classpath="lib/build/jdeb-1.5.jar"/>
 
     <!-- ========================== -->
     <!-- | OS-independent targets | -->
@@ -239,57 +245,69 @@
     </target>
 
     <!-- ========================== -->
-    <!-- | RPM  targets           | -->
+    <!-- | Linux  targets           | -->
     <!-- ========================== -->
-    <target name='mkdist_rpm' depends="build_jajuk">
-        <echo message='Prepare files to build RPM package' />
-        <copy todir='${rpm_build.dir}/SPECS' filtering="true">
-            <fileset file='src/packaging/RPMS/jajuk.spec' />
+    <target name='mkdist_Linux' depends="build_jajuk">
+        <echo message='Prepare files to build Linux packages'/>
+        <copy todir='${linux_dist.dir}/usr/bin' filtering="true">
+            <fileset file='src/scripts/jajuk'/>
         </copy>
-        <copy todir='${rpm_dist.dir}/usr/bin' filtering="true">
-            <fileset file='src/scripts/jajuk' />
+        <copy todir='${linux_dist.dir}/usr/share/jajuk/lib'>
+            <fileset file='lib/*.jar'/>
+            <fileset file='lib/lib32/*.so'/>
         </copy>
-       <copy todir='${rpm_dist.dir}/usr/share/jajuk/lib'>
-           <fileset file='lib/*.jar'/>
-           <fileset file='lib/lib32/*.so' />
-       </copy>
-        <copy todir='${rpm_dist.dir}/usr/share/jajuk/lib64'>
-             <fileset file='lib/lib64/*.so' />
+        <copy todir='${linux_dist.dir}/usr/share/jajuk/lib64'>
+            <fileset file='lib/lib64/*.so'/>
         </copy>
-       <copy todir='${rpm_dist.dir}/usr/share/applications'>
-            <fileset file='src/packaging/RPMS/jajuk.desktop' />
+        <copy todir='${linux_dist.dir}/usr/share/applications'>
+            <fileset file='src/packaging/RPMS/jajuk.desktop'/>
         </copy>
-        <copy todir='${rpm_dist.dir}/usr/share/doc/jajuk'>
-            <fileset file='src/legals/*.*' />
+        <copy todir='${linux_dist.dir}/usr/share/doc/jajuk'>
+            <fileset file='src/legals/*.*'/>
         </copy>
-        <copy todir='${rpm_dist.dir}/usr/share/pixmaps'>
-            <fileset file='src/main/resources/icons/16x16/jajuk-icon_16x16.png' />
-            <fileset file='src/main/resources/icons/64x64/jajuk-icon_64x64.png' />
-            <fileset file='src/main/resources/icons/64x64/jajuk-icon-shortcut_64x64.png' />
+        <copy todir='${linux_dist.dir}/usr/share/pixmaps'>
+            <fileset file='src/main/resources/icons/16x16/jajuk-icon_16x16.png'/>
+            <fileset file='src/main/resources/icons/64x64/jajuk-icon_64x64.png'/>
+            <fileset file='src/main/resources/icons/64x64/jajuk-icon-shortcut_64x64.png'/>
         </copy>
-   </target>
+    </target>
 
-    <target name='build_rpm' description='o Create Jajuk RPM package' depends='mkdist_rpm'>
-        <echo message='Create Jajuk RPM package' />
+    <target name='build_rpm' description='o Create Jajuk RPM package' depends='mkdist_Linux'>
+        <echo message='Create Jajuk RPM package'/>
+        <copy todir='${rpm_build.dir}/SPECS' filtering="true">
+            <fileset file='src/packaging/RPMS/jajuk.spec'/>
+        </copy>
         <!-- Copy jajuk.jar in the RPM distdir -->
-        <copy todir='${rpm_dist.dir}/usr/share/jajuk/bin'>
-            <fileset file='${packages.dir}/jajuk.jar' />
+        <copy todir='${linux_dist.dir}/usr/share/jajuk/bin'>
+            <fileset file='${packages.dir}/jajuk.jar'/>
         </copy>
 
         <!-- Set rights-->
-        <chmod file='${rpm_dist.dir}/usr/bin/jajuk' perm='ugo+rx' />
-        <chmod file='${rpm_dist.dir}/usr/share/applications/jajuk.desktop' perm='ugo+rwx' />
+        <chmod file='${linux_dist.dir}/usr/bin/jajuk' perm='ugo+rx'/>
+        <chmod file='${linux_dist.dir}/usr/share/applications/jajuk.desktop' perm='ugo+rwx'/>
 
         <!-- Build the RPM -->
-        <rpm failOnError='true' specFile='jajuk.spec' topDir='${rpm_build.dir}' cleanBuildDir='yes' removeSpec='no' command='-bb -vv --target noarch' />
+        <rpm failOnError='true' specFile='jajuk.spec' topDir='${rpm_build.dir}' cleanBuildDir='yes' removeSpec='no'
+             command='-bb -vv --target noarch'/>
 
         <!-- Copy the rpm to the final packages directory -->
         <copy todir='${packages.dir}'>
             <fileset file='${rpm_build.dir}/RPMS/noarch/jajuk*.rpm'/>
         </copy>
-
     </target>
 
-
-
+    <target name='build_debian' depends="mkdist_Linux">
+        <echo message='Prepare files to build .deb package'/>
+        <copy todir='${deb_build.dir}' filtering="true">
+            <fileset file='src/packaging/Debian/control'/>
+        </copy>
+        <!-- We reuse the BUILDROOT RPM package to build the Debian package -->
+        <deb destfile="${deb_build.dir}/jajuk_${version}_all.deb" control="${deb_build.dir}" verbose="true">
+            <data src="${linux_dist.dir}" type="directory"/>
+        </deb>
+        <!-- Copy the deb to the final packages directory -->
+        <copy todir='${packages.dir}'>
+            <fileset file='${deb_build.dir}/jajuk*.deb'/>
+        </copy>
+    </target>
 </project>
