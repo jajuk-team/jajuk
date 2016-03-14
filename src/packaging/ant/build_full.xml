@@ -92,7 +92,7 @@
     </target>
 
     <target name='package_all' description='o Create all packages'
-            depends='startup,build_sources_dist,build_jajuk,test_jajuk,build_nsis,build_macos,build_rpm'>
+            depends='startup,build_sources_dist,build_jajuk,test_jajuk,build_nsis,build_macos,build_rpm,build_debian'>
         <echo message=' Source archive in:     ${sources_dist.dir}'/>
     </target>
 
