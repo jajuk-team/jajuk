@@ -92,7 +92,7 @@
     </target>
 
     <target name='package_all' description='o Create all packages'
-            depends='startup,build_sources_dist,build_jajuk,test_jajuk,build_nsis,build_macos,build_rpm,build_debian'>
+            depends='startup,build_sources_dist,build_jajuk,test_jajuk,build_nsis,build_macos,build_debian,build_rpm'>
         <echo message=' Source archive in:     ${sources_dist.dir}'/>
     </target>
 
@@ -272,6 +272,8 @@
         </copy>
     </target>
 
+    <!-- Build the RPM, note that the rpm command performs a delete (cleanup)
+    of the BUILDROOT directory when done so we have to build debian before the rpm -->
     <target name='build_rpm' description='o Create Jajuk RPM package' depends='mkdist_Linux'>
         <echo message='Create Jajuk RPM package'/>
         <copy todir='${rpm_build.dir}/SPECS' filtering="true">
