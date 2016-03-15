@@ -1,0 +1,16 @@
+Package: jajuk
+Version: @VERSION_REPLACED_BY_ANT@
+Section: sound
+Priority: optional
+Maintainer: Jajuk Team
+Uploaders: Bertrand Florat <bertrand@florat.net>
+Vcs-Git: https://github.com/jajuk-team/jajuk.git
+Vcs-Browser: https://github.com/jajuk-team/jajuk
+Homepage: http://jajuk.info
+Architecture: all
+Depends: default-jre (>= 1:1.7) | java7-runtime | java8-runtime, mplayer
+Description: advanced jukebox and music organizer
+ Jajuk is software that organizes and plays music. Jajuk is designed
+ to be intuitive, fast and provide multiple ways to perform the same
+ operation. It is a fully-featured application geared towards advanced
+ users with very large or scattered music collections.
