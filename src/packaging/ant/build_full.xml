@@ -252,6 +252,7 @@
         <copy todir='${linux_dist.dir}/usr/bin' filtering="true">
             <fileset file='src/scripts/jajuk'/>
         </copy>
+        <chmod file="${linux_dist.dir}/usr/bin/jajuk" perm="755"/>
         <copy todir='${linux_dist.dir}/usr/share/jajuk/lib'>
             <fileset file='lib/*.jar'/>
             <fileset file='lib/lib32/*.so'/>
@@ -305,8 +306,13 @@
         </copy>
         <!-- We reuse the BUILDROOT RPM package to build the Debian package -->
         <deb destfile="${deb_build.dir}/jajuk_${version}_all.deb" control="${deb_build.dir}" verbose="true">
-            <data src="${linux_dist.dir}" type="directory"/>
+            <data src="${linux_dist.dir}" type="directory">
+                <!-- Ignore the .so files to avoid E: jajuk: arch-independent-package-contains-binary-or-object .. errors
+                  libunix-java has been added as suggested dependency to make dbus work -->
+                <exclude name="**/*.so"/>
+            </data>
         </deb>
+
         <!-- Copy the deb to the final packages directory -->
         <copy todir='${packages.dir}'>
             <fileset file='${deb_build.dir}/jajuk*.deb'/>
