@@ -252,7 +252,6 @@
         <copy todir='${linux_dist.dir}/usr/bin' filtering="true">
             <fileset file='src/scripts/jajuk'/>
         </copy>
-        <chmod file="${linux_dist.dir}/usr/bin/jajuk" perm="755"/>
         <copy todir='${linux_dist.dir}/usr/share/jajuk/lib'>
             <fileset file='lib/*.jar'/>
             <fileset file='lib/lib32/*.so'/>
@@ -271,6 +270,9 @@
             <fileset file='src/main/resources/icons/64x64/jajuk-icon_64x64.png'/>
             <fileset file='src/main/resources/icons/64x64/jajuk-icon-shortcut_64x64.png'/>
         </copy>
+        <!-- Set rights-->
+        <chmod file='${linux_dist.dir}/usr/bin/jajuk' perm='ugo+rx'/>
+        <chmod file='${linux_dist.dir}/usr/share/applications/jajuk.desktop' perm='ugo+rwx'/>
 
     </target>
 
@@ -285,10 +287,6 @@
         <copy todir='${linux_dist.dir}/usr/share/jajuk/bin'>
             <fileset file='${packages.dir}/jajuk.jar'/>
         </copy>
-
-        <!-- Set rights-->
-        <chmod file='${linux_dist.dir}/usr/bin/jajuk' perm='ugo+rx'/>
-        <chmod file='${linux_dist.dir}/usr/share/applications/jajuk.desktop' perm='ugo+rwx'/>
 
         <!-- Build the RPM -->
         <rpm failOnError='true' specFile='jajuk.spec' topDir='${rpm_build.dir}' cleanBuildDir='yes' removeSpec='no'
@@ -305,14 +303,13 @@
         <copy todir='${deb_build.dir}' filtering="true">
             <fileset file='src/packaging/Debian/control'/>
         </copy>
-        <!-- Create a tar from linux dist, required to keep bin/jajuk permissions -->
-        <tar basedir="${linux_dist.dir}" compression="bzip2" destfile="${deb_build.dir}/jajuk.tar.bz2"/>
         <!-- We reuse the BUILDROOT RPM package to build the Debian package -->
         <deb destfile="${deb_build.dir}/jajuk_${version}_all.deb" control="${deb_build.dir}" verbose="true">
-            <data src="${deb_build.dir}/jajuk.tar.bz2" type="archive">
+            <data src="${linux_dist.dir}" type="directory">
                 <!-- Ignore the .so files to avoid E: jajuk: arch-independent-package-contains-binary-or-object .. errors
                   libunix-java has been added as suggested dependency to make dbus work -->
                 <exclude name="**/*.so"/>
+                <mapper type="perm"/>
             </data>
         </deb>
 
