@@ -303,14 +303,16 @@
             <fileset file='src/packaging/Debian/control'/>
         </copy>
         <!-- Create a tar from linux dist, required to keep bin/jajuk permissions -->
-        <tar basedir="${linux_dist.dir}" compression="bzip2" destfile="${deb_build.dir}/jajuk.tar.bz2"/>
+        <tar compression="bzip2" destfile="${deb_build.dir}/jajuk.tar.bz2">
+            <!-- Ignore the .so files to avoid "E: jajuk: arch-independent-package-contains-binary-or-object .." errors
+                  libunix-java has been added as suggested dependency to make dbus work -->
+            <tarfileset file="${linux_dist.dir}/**" filemode="644" excludes="usr/bin/jajuk,usr,**/*.so"/>
+            <tarfileset file="${linux_dist.dir}/usr" filemode="755" includes="usr/bin/jajuk,usr/share/applications/jajuk.desktop"/>
+        </tar>
         <!-- We reuse the BUILDROOT RPM package to build the Debian package -->
         <deb destfile="${deb_build.dir}/jajuk_${version}_all.deb" control="${deb_build.dir}" verbose="true">
             <data src="${deb_build.dir}/jajuk.tar.bz2" type="archive">
-                <!-- Ignore the .so files to avoid E: jajuk: arch-independent-package-contains-binary-or-object .. errors
-                  libunix-java has been added as suggested dependency to make dbus work -->
-                <exclude name="**/*.so"/>
-                <mapper type="perm"/>
+               <mapper type="perm"/>
             </data>
         </deb>
 
