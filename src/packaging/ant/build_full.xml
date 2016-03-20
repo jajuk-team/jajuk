@@ -266,7 +266,6 @@
             <fileset file='src/legals/*.*'/>
         </copy>
         <copy todir='${linux_dist.dir}/usr/share/pixmaps'>
-            <fileset file='src/main/resources/icons/16x16/jajuk-icon_16x16.png'/>
             <fileset file='src/main/resources/icons/64x64/jajuk-icon_64x64.png'/>
             <fileset file='src/main/resources/icons/64x64/jajuk-icon-shortcut_64x64.png'/>
         </copy>
