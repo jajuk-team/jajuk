@@ -304,7 +304,7 @@
             <fileset file='src/packaging/Debian/control'/>
         </copy>
         <!-- Create a tar from linux dist, required to keep bin/jajuk permissions -->
-        <tar basedir="${linux_dist.dir}" compression="true" destfile="${deb_build.dir}/jajuk.tar.bz2"/>
+        <tar basedir="${linux_dist.dir}" compression="bzip2" destfile="${deb_build.dir}/jajuk.tar.bz2"/>
         <!-- We reuse the BUILDROOT RPM package to build the Debian package -->
         <deb destfile="${deb_build.dir}/jajuk_${version}_all.deb" control="${deb_build.dir}" verbose="true">
             <data src="${deb_build.dir}/jajuk.tar.bz2" type="archive">
