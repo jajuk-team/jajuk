@@ -2,8 +2,9 @@
 Name=Jajuk
 Comment=Jajuk Advanced Jukebox
 Exec=jajuk
-Icon=jajuk-icon_16x16
+Icon=jajuk.png
 Terminal=false
 Type=Application
 Encoding=UTF-8
 Categories=AudioVideo
+Keywords=Jukebox; Music management; Organize music; advanced music collection

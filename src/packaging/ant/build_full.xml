@@ -252,6 +252,9 @@
         <copy todir='${linux_dist.dir}/usr/bin' filtering="true">
             <fileset file='src/scripts/jajuk'/>
         </copy>
+        <copy todir='${linux_dist.dir}/usr/share/jajuk/bin'>
+            <fileset file='${packages.dir}/jajuk.jar'/>
+        </copy>
         <copy todir='${linux_dist.dir}/usr/share/jajuk/lib'>
             <fileset file='lib/*.jar'/>
             <fileset file='lib/lib32/*.so'/>
@@ -267,8 +270,9 @@
         </copy>
         <copy todir='${linux_dist.dir}/usr/share/pixmaps'>
             <fileset file='src/main/resources/icons/64x64/jajuk-icon_64x64.png'/>
-            <fileset file='src/main/resources/icons/64x64/jajuk-icon-shortcut_64x64.png'/>
         </copy>
+        <rename src="${linux_dist.dir}/usr/share/pixmaps/jajuk-icon_64x64.png"
+                dest="${linux_dist.dir}/usr/share/pixmaps/jajuk.png"/>
         <!-- Set rights-->
         <chmod file='${linux_dist.dir}/usr/bin/jajuk' perm='ugo+rx'/>
         <chmod file='${linux_dist.dir}/usr/share/applications/jajuk.desktop' perm='ugo+rwx'/>
@@ -307,12 +311,13 @@
             <!-- Ignore the .so files to avoid "E: jajuk: arch-independent-package-contains-binary-or-object .." errors
                   libunix-java has been added as suggested dependency to make dbus work -->
             <tarfileset file="${linux_dist.dir}/**" filemode="644" excludes="usr/bin/jajuk,usr,**/*.so"/>
-            <tarfileset file="${linux_dist.dir}/usr" filemode="755" includes="usr/bin/jajuk,usr/share/applications/jajuk.desktop"/>
+            <tarfileset file="${linux_dist.dir}/usr" filemode="755"
+                        includes="usr/bin/jajuk,usr/share/applications/jajuk.desktop"/>
         </tar>
         <!-- We reuse the BUILDROOT RPM package to build the Debian package -->
         <deb destfile="${deb_build.dir}/jajuk_${version}_all.deb" control="${deb_build.dir}" verbose="true">
             <data src="${deb_build.dir}/jajuk.tar.bz2" type="archive">
-               <mapper type="perm"/>
+                <mapper type="perm"/>
             </data>
         </deb>
 
