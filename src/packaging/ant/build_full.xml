@@ -252,15 +252,14 @@
         <copy todir='${linux_dist.dir}/usr/bin' filtering="true">
             <fileset file='src/scripts/jajuk'/>
         </copy>
-        <copy todir='${linux_dist.dir}/usr/share/jajuk/bin'>
+        <copy todir='${linux_dist.dir}/usr/share/java'>
             <fileset file='${packages.dir}/jajuk.jar'/>
         </copy>
         <copy todir='${linux_dist.dir}/usr/share/jajuk/lib'>
-            <fileset file='lib/*.jar'/>
-            <fileset file='lib/lib32/*.so'/>
-        </copy>
-        <copy todir='${linux_dist.dir}/usr/share/jajuk/lib64'>
-            <fileset file='lib/lib64/*.so'/>
+            <fileset file='lib/**'>
+                <exclude name="lib/mplayer"/>
+                <exclude name="**/*.dll"/>
+            </fileset>
         </copy>
         <copy todir='${linux_dist.dir}/usr/share/applications'>
             <fileset file='src/packaging/RPMS/jajuk.desktop'/>

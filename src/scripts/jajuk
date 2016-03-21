@@ -1,86 +1,23 @@
 #!/bin/bash
-
-###########################
-### CONFIGURATION START ###
-
-#to use your default jre on your system use JAVA_BIN="java", or you can give the full path of java.
-JAVA_BIN="java"
+# RPM or Debian script (assumes that libs are in /usr/share/jajuk/lib and jajuk.jar in /usr/share/java)
 
 #JVM arguments used by Jajuk. It's important  to notice that some of this tuning is useful only when using Java player (when mplayer is not available)
 # * -client : Use the client JVM, optimized for single user usage [Don't change this setting]
-# * -Xms : Initial Heap (total JVM reserved memory) size. We set it to a pretty large value because it requires resources to expand heap size and it causes a blanck when using java player. [it can be reduced to 25M by some users if required]
+# * -Xms : Initial Heap (total JVM reserved memory) size. We set it to a pretty large value because it requires resources to expand heap size.
 # * -Xmx: Maximal Heap size. We set a large size because Out Of Memory errors make the application crash. In some rare cases, very large collection (>200Gb) users could increase this setting (see Performance section in the manual) [Change this setting only if you have very large collection, do not reduce it]
-# * -XX:MinHeapFreeRatio -XX:MaxHeapFreeRatio : fine running parameters that optimizes JVM to garbage collecting as rarely as possible (because a gc 'end of the world' causes an audio blanck). These values have been set by experience [keep these parameters as it]
-JAVA_OPTIONS="-client -Xms20M -Xmx2G -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -Xverify:none"
+# * -Xverify:none : quicker startup, no bytecode check
+JAVA_OPTIONS="-client -Xms30M -Xmx2G -Xverify:none"
 
 #Jajuk options
 JAJUK_OPTIONS="@TEST_FLAG_REPLACED_BY_ANT@"
 
-### CONFIGURATION END ###
-#########################
-
-PROGNAME=`basename $0`
-
-## find java version in the default path
-JAVA_VER=$($JAVA_BIN -version 2>&1 | grep version | cut -d\" -f 2-2 | cut -c 1-3)
-
-find_java () {
-    if [[ "$JAVA_VER" = "1.7" || "$JAVA_VER" = "1.8" || "$JAVA_VER" = "1.9" ]] ; then
-        echo "Java version in the default path is: $JAVA_VER"
-    else
-        echo "Java version in the default path is: $JAVA_VER"
-        echo "No Java compatible version detected, but let's still try to run it!"
-     fi
-}
-
-##Go in the right /bin directory
-#test if jajuk has been installed in default directory /usr/lib/jajuk/ via RPM/Deb package
-if [ "/usr/bin/jajuk" = "$0" ] && [ -e /usr/share/jajuk/bin/jajuk.jar ] ; then
-    JAJUK_HOME="/usr/share/jajuk/bin"
-    cd /usr/share/jajuk/bin
-else
-    JAJUK_HOME=$(pwd)/`dirname "$0"`/bin
-    cd "$JAJUK_HOME"
-fi
-
-##Options 
-if [ $# -gt 0 ]; then
-    case $1 in
-        -h|--help)
-            cat <<EOF
-Usage: $PROGNAME [options] [<arg> ...]
-Options:
-   -h, --help     This help
-   -v, --version  Report Jajuk, Java version and exit
-EOF
-            exit 1
-            ;;
-        -v|--version)
-            echo "$PROGNAME ($JAJUK_HOME)"
-            echo "Jajuk options: $JAJUK_OPTIONS"                        
-            find_java 
-            echo "   Java bin: $JAVA_BIN"
-            $JAVA_BIN -version
-            echo "   Java options: $JAVA_OPTIONS"
-            exit 0
-            ;;
-    esac
-fi
-
 ## Check 32- or 64-bit system
 if [ "`uname -m`" = "x86_64" ]; then
-	echo Detected a 64-bit operating system, using the lib64 native library directory.
 	ARCHLIB=lib64
-	RPMLIB=lib64
 else
-	ARCHLIB=lib32
-	RPMLIB=lib
+    ARCHLIB=lib32
 fi
 
-
-## find installed java version 
-find_java 
-
-##let's finally start Jajuk:
-echo $JAVA_BIN $JAVA_OPTIONS -Djava.library.path=/usr/lib/jni:/usr/lib:/usr/share/jajuk/$RPMLIB:$JAJUK_HOME/../lib/$ARCHLIB -jar jajuk.jar $JAJUK_OPTIONS
-$JAVA_BIN $JAVA_OPTIONS -Djava.library.path=/usr/lib/jni:/usr/lib:/usr/share/jajuk/$RPMLIB:"$JAJUK_HOME"/../lib/$ARCHLIB -jar jajuk.jar $JAJUK_OPTIONS
+##let's finally start Jajuk displaying the command:
+set -o xtrace
+java $JAVA_OPTIONS -Djava.library.path=/usr/share/jajuk/$ARCHLIB -jar /usr/share/java/jajuk.jar $JAJUK_OPTIONS

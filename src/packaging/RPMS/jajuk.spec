@@ -25,13 +25,13 @@ Jajuk main principles are :
    
 %files
 %defattr(-,root,root)
-   /usr/bin/*
-   /usr/share/jajuk/bin/*
-   /usr/share/applications/*
+   /usr/bin/jajuk
+   /usr/share/java/jajuk.jar
+   /usr/share/applications/jajuk.desktop
    /usr/share/doc/jajuk/*
    /usr/share/pixmaps/*
 %defattr(555,root,root)
-   /usr/share/jajuk/lib/*
+   /usr/share/jajuk/lib32/*
    /usr/share/jajuk/lib64/*
    
 %post
