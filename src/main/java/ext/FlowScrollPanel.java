@@ -1,6 +1,6 @@
 /*
  * Code found at: http://groups.google.fr/group/comp.lang.java.gui/browse_thread/thread/11403002a25da9a3/da4cea55cf283a52?q=%2BJscrollPane++%2Bflowlayout&rnum=2&hl=fr#da4cea55cf283a52
- * Chris Long <*> all...@cs.berkeley.edu <*> http://www.cs.berkeley.edu/~allanl 
+ * Copyright (2000) Chris Long <*> all...@cs.berkeley.edu <*> http://www.cs.berkeley.edu/~allanl
  *
  * This file has been adapted to Jajuk by the Jajuk Team.
  * 

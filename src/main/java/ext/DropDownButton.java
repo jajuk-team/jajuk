@@ -4,7 +4,7 @@
  * Found at http://www.jroller.com/santhosh/date/20050528
  * Original copyright information follows:
  *
- * Copyright santhosh kumar
+ * Copyright Santhosh Kumar
  * 
  * @author santhosh kumar - santhosh@in.fiorano.com Drop down button
  */
@@ -31,9 +31,6 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 
-/**
- * .
- */
 public abstract class DropDownButton extends JajukButton implements ChangeListener,
     PopupMenuListener, ActionListener, PropertyChangeListener, Const {
   /** Generated serialVersionUID. */
