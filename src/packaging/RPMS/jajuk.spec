@@ -8,34 +8,24 @@ License: GPL
 Source: http://jajuk.sourceforge.net
 Packager: Jajuk team
 BuildRoot: %{_topdir}/%{name}
+Requires: libmatthew-java
 
 %description
-Jajuk is a Java music organizer for all platforms.
-The main goal of this project is to provide a fully-featured
-application to advanced users with large or scattered music
-collections. Jajuk is a Free Software published
-under GPL license.
+Jajuk is software that organizes and plays music. Jajuk is designed
+ to be intuitive, fast and provide multiple ways to perform the same
+ operation. It is a fully-featured application geared towards advanced
+ users with very large or scattered music collections.
 
-Jajuk main principles are :
-   * Maximum portability: 100% pure Java when possible.
-   * Maximum features: Jajuk is made firstly for advanced
-   users looking for powerful features.
-   * Maximum usability: Jajuk is designed to be simple, fast
-   and provide multiple ways to perform the same operation.
-   
 %files
 %defattr(-,root,root)
    /usr/bin/jajuk
+   /usr/share/jajuk/lib/*
    /usr/share/java/jajuk.jar
    /usr/share/applications/jajuk.desktop
    /usr/share/doc/jajuk/*
    /usr/share/pixmaps/*
-%defattr(555,root,root)
-   /usr/share/jajuk/lib32/*
-   /usr/share/jajuk/lib64/*
-   
+
 %post
 
 %postun
    
-%define _binaries_in_noarch_packages_terminate_build   0

@@ -258,16 +258,6 @@
         <copy todir='${linux_dist.dir}/usr/share/jajuk/lib'>
             <fileset file='lib/*.jar'/>
         </copy>
-        <copy todir='${linux_dist.dir}/usr/share/jajuk/lib32'>
-            <fileset dir='lib/lib32/'>
-                <exclude name="**/*.dll"/>
-            </fileset>
-        </copy>
-        <copy todir='${linux_dist.dir}/usr/share/jajuk/lib64'>
-            <fileset dir='lib/lib64/'>
-                <exclude name="**/*.dll"/>
-            </fileset>
-        </copy>
         <copy todir='${linux_dist.dir}/usr/share/applications'>
             <fileset file='src/packaging/RPMS/jajuk.desktop'/>
         </copy>
@@ -292,11 +282,6 @@
         <copy todir='${rpm_build.dir}/SPECS' filtering="true">
             <fileset file='src/packaging/RPMS/jajuk.spec'/>
         </copy>
-        <!-- Copy jajuk.jar in the RPM distdir -->
-        <copy todir='${linux_dist.dir}/usr/share/jajuk/bin'>
-            <fileset file='${packages.dir}/jajuk.jar'/>
-        </copy>
-
         <!-- Build the RPM -->
         <rpm failOnError='true' specFile='jajuk.spec' topDir='${rpm_build.dir}' cleanBuildDir='yes' removeSpec='no'
              command='-bb -vv --target noarch'/>
