@@ -252,7 +252,7 @@
         <copy todir='${linux_dist.dir}/usr/bin' filtering="true">
             <fileset file='src/scripts/jajuk'/>
         </copy>
-        <copy todir='${linux_dist.dir}/usr/share/java'>
+        <copy todir='${linux_dist.dir}/usr/share/jajuk'>
             <fileset file='${packages.dir}/jajuk.jar'/>
             <fileset file='lib/*.jar'/>
         </copy>
