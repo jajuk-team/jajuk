@@ -254,8 +254,6 @@
         </copy>
         <copy todir='${linux_dist.dir}/usr/share/java'>
             <fileset file='${packages.dir}/jajuk.jar'/>
-        </copy>
-        <copy todir='${linux_dist.dir}/usr/share/jajuk/lib'>
             <fileset file='lib/*.jar'/>
         </copy>
         <copy todir='${linux_dist.dir}/usr/share/applications'>

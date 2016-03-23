@@ -9,15 +9,8 @@
 JAVA_OPTIONS="-client -Xms30M -Xmx2G -Xverify:none"
 
 #Jajuk options
-JAJUK_OPTIONS="@TEST_FLAG_REPLACED_BY_ANT@"
-
-## Check 32- or 64-bit system
-if [ "`uname -m`" = "x86_64" ]; then
-	ARCHLIB=lib64
-else
-    ARCHLIB=lib32
-fi
+JAJUK_OPTIONS="-@TEST_FLAG_REPLACED_BY_ANT@"
 
 ##let's finally start Jajuk displaying the command:
 set -o xtrace
-java $JAVA_OPTIONS -Djava.library.path=/usr/share/jajuk/$ARCHLIB -jar /usr/share/java/jajuk.jar $JAJUK_OPTIONS
+java $JAVA_OPTIONS -jar /usr/share/java/jajuk.jar $JAJUK_OPTIONS
