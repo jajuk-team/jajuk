@@ -252,6 +252,9 @@
         <copy todir='${linux_dist.dir}/usr/bin' filtering="true">
             <fileset file='src/scripts/jajuk'/>
         </copy>
+        <!-- We put jajuk.jar and all deps in the same directory to avoid setting
+        the -cp : the MANIFEST is enough. We don't put jars in /usr/share/java to avoid
+        collisions with others packages (animation.jar collides for ex) -->
         <copy todir='${linux_dist.dir}/usr/share/jajuk'>
             <fileset file='${packages.dir}/jajuk.jar'/>
             <fileset file='lib/*.jar'/>
@@ -280,6 +283,16 @@
         <copy todir='${rpm_build.dir}/SPECS' filtering="true">
             <fileset file='src/packaging/RPMS/jajuk.spec'/>
         </copy>
+        <!-- We take the libmatthew-javalibs into the rpm as most RPM-flavor distros doesn't have
+        this dependency in their repository (only Fedrora so far). We have to build a 32 and
+        a 64 bits RPM because a noarch RPM cannot contain native libs -->
+        <copy todir='${linux_dist.dir}/usr/share/jajuk/lib32'>
+            <fileset file='lib/lib32/*.so'/>
+        </copy>
+        <copy todir='${linux_dist.dir}/usr/share/jajuk/lib64'>
+            <fileset file='lib/lib64/*.so'/>
+        </copy>
+
         <!-- Build the RPM -->
         <rpm failOnError='true' specFile='jajuk.spec' topDir='${rpm_build.dir}' cleanBuildDir='yes' removeSpec='no'
              command='-bb -vv --target noarch'/>

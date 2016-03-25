@@ -8,7 +8,6 @@ License: GPL
 Source: http://jajuk.sourceforge.net
 Packager: Jajuk team
 BuildRoot: %{_topdir}/%{name}
-Requires: libmatthew-java
 
 %description
 Jajuk is software that organizes and plays music. Jajuk is designed
@@ -23,6 +22,9 @@ Jajuk is software that organizes and plays music. Jajuk is designed
    /usr/share/applications/jajuk.desktop
    /usr/share/doc/jajuk/*
    /usr/share/pixmaps/*
+%defattr(555,root,root)
+   /usr/share/jajuk/lib32/*
+   /usr/share/jajuk/lib64/*
 
 %post
 
