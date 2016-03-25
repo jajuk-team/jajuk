@@ -19,7 +19,7 @@ Jajuk is software that organizes and plays music. Jajuk is designed
 %files
 %defattr(-,root,root)
    /usr/bin/jajuk
-   /usr/share/java/*
+   /usr/share/jajuk/*
    /usr/share/applications/jajuk.desktop
    /usr/share/doc/jajuk/*
    /usr/share/pixmaps/*
