@@ -247,7 +247,7 @@
     <!-- ========================== -->
     <!-- | Linux  targets           | -->
     <!-- ========================== -->
-    <target name='mkdist_Linux' depends="build_jajuk">
+    <target name='mkdist_linux' depends="build_jajuk">
         <echo message='Prepare files to build Linux packages'/>
         <copy todir='${linux_dist.dir}/usr/bin' filtering="true">
             <fileset file='src/scripts/jajuk'/>
@@ -268,8 +268,8 @@
         <copy todir='${linux_dist.dir}/usr/share/pixmaps'>
             <fileset file='src/main/resources/icons/64x64/jajuk-icon_64x64.png'/>
         </copy>
-        <rename src="${linux_dist.dir}/usr/share/pixmaps/jajuk-icon_64x64.png"
-                dest="${linux_dist.dir}/usr/share/pixmaps/jajuk.png"/>
+        <move file="${linux_dist.dir}/usr/share/pixmaps/jajuk-icon_64x64.png"
+                tofile="${linux_dist.dir}/usr/share/pixmaps/jajuk.png"/>
         <!-- Set rights-->
         <chmod file='${linux_dist.dir}/usr/bin/jajuk' perm='ugo+rx'/>
         <chmod file='${linux_dist.dir}/usr/share/applications/jajuk.desktop' perm='ugo+rwx'/>
@@ -278,7 +278,7 @@
 
     <!-- Build the RPM, note that the rpm command performs a delete (cleanup)
     of the BUILDROOT directory when done so we have to build debian before the rpm -->
-    <target name='build_rpm' description='o Create Jajuk RPM package' depends='mkdist_Linux'>
+    <target name='build_rpm' description='o Create Jajuk RPM package' depends='mkdist_linux'>
         <echo message='Create Jajuk RPM package'/>
         <copy todir='${rpm_build.dir}/SPECS' filtering="true">
             <fileset file='src/packaging/RPMS/jajuk.spec'/>
@@ -303,7 +303,7 @@
         </copy>
     </target>
 
-    <target name='build_debian' depends="mkdist_Linux">
+    <target name='build_debian' depends="mkdist_linux">
         <echo message='Prepare files to build .deb package'/>
         <copy todir='${deb_build.dir}' filtering="true">
             <fileset file='src/packaging/Debian/control'/>
