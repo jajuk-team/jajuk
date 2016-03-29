@@ -41,7 +41,7 @@
     <property name="rpm_build.dir" location="${root.dir}/rpm"/>
 
     <!-- RPM dist directory -->
-    <property name="linux_dist.dir" location="${rpm_build.dir}/BUILDROOT/jajuk-${version}-1.noarch"/>
+    <property name="linux_dist.dir" location="${root.dir}/linux_dist"/>
 
     <!-- Debian build directory -->
     <property name="deb_build.dir" location="${root.dir}/debian"/>
@@ -269,37 +269,55 @@
             <fileset file='src/main/resources/icons/64x64/jajuk-icon_64x64.png'/>
         </copy>
         <move file="${linux_dist.dir}/usr/share/pixmaps/jajuk-icon_64x64.png"
-                tofile="${linux_dist.dir}/usr/share/pixmaps/jajuk.png"/>
+              tofile="${linux_dist.dir}/usr/share/pixmaps/jajuk.png"/>
         <!-- Set rights-->
         <chmod file='${linux_dist.dir}/usr/bin/jajuk' perm='ugo+rx'/>
         <chmod file='${linux_dist.dir}/usr/share/applications/jajuk.desktop' perm='ugo+rwx'/>
 
     </target>
 
-    <!-- Build the RPM, note that the rpm command performs a delete (cleanup)
+    <!-- Build the 32 bits RPM, note that the rpm command performs a delete (cleanup)
     of the BUILDROOT directory when done so we have to build debian before the rpm -->
     <target name='build_rpm' description='o Create Jajuk RPM package' depends='mkdist_linux'>
-        <echo message='Create Jajuk RPM package'/>
+        <echo message='Create Jajuk 32 bits RPM package'/>
         <copy todir='${rpm_build.dir}/SPECS' filtering="true">
             <fileset file='src/packaging/RPMS/jajuk.spec'/>
         </copy>
+
         <!-- We take the libmatthew-javalibs into the rpm as most RPM-flavor distros doesn't have
         this dependency in their repository (only Fedrora so far). We have to build a 32 and
         a 64 bits RPM because a noarch RPM cannot contain native libs -->
-        <copy todir='${linux_dist.dir}/usr/share/jajuk/lib32'>
+
+        <!-- Build the 32 bits RPM -->
+        <copy todir='${rpm_build.dir}/BUILDROOT/jajuk-${version}-1.i386'>
+            <fileset dir='${linux_dist.dir}' includes="**"/>
+        </copy>
+        <copy todir='${rpm_build.dir}/BUILDROOT/jajuk-${version}-1.i386/usr/share/jajuk'>
             <fileset file='lib/lib32/*.so'/>
         </copy>
-        <copy todir='${linux_dist.dir}/usr/share/jajuk/lib64'>
-            <fileset file='lib/lib64/*.so'/>
-        </copy>
-
-        <!-- Build the RPM -->
         <rpm failOnError='true' specFile='jajuk.spec' topDir='${rpm_build.dir}' cleanBuildDir='yes' removeSpec='no'
-             command='-bb -vv --target noarch'/>
-
+             command='-bb -vv --target i386'/>
         <!-- Copy the rpm to the final packages directory -->
         <copy todir='${packages.dir}'>
-            <fileset file='${rpm_build.dir}/RPMS/noarch/jajuk*.rpm'/>
+            <fileset file='${rpm_build.dir}/RPMS/i386/jajuk*.rpm'/>
+        </copy>
+
+        <!-- Build the 64 bits RPM -->
+        <copy todir='${rpm_build.dir}/BUILDROOT/jajuk-${version}-1.x86_64/'>
+            <fileset dir='${linux_dist.dir}' includes="**"/>
+        </copy>
+        <copy todir='${rpm_build.dir}/BUILDROOT/jajuk-${version}-1.x86_64/usr/share/jajuk'>
+            <fileset file='lib/lib64/*.so'/>
+        </copy>
+        <rpm failOnError='true' specFile='jajuk.spec' topDir='${rpm_build.dir}' cleanBuildDir='yes' removeSpec='no'
+             command='-bb -vv --target x86_64'/>
+
+        <copy todir='${linux_dist.dir}/usr/share/jajuk'>
+            <fileset file='lib/lib64/*.so'/>
+        </copy>
+        <!-- Copy the rpm to the final packages directory -->
+        <copy todir='${packages.dir}'>
+            <fileset file='${rpm_build.dir}/RPMS/x86_64/jajuk*.rpm'/>
         </copy>
     </target>
 
