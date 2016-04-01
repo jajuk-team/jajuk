@@ -2,88 +2,95 @@
 <!--Ant script for users (target package_jar) only -->
 
 <project default='package_jar' name='jajuk' basedir='.'>
-	<!--Distribution release -->
-	<property name='version' value='@VERSION_REPLACED_BY_ANT@' />
+    <!--Distribution release -->
+    <property name='version' value='@VERSION_REPLACED_BY_ANT@'/>
 
-	<!-- Name of the directory that will contain the jajuk.jar file once compiled -->
-	<property name='dist.dir' value='bin'/>
+    <!-- Name of the directory that will contain the jajuk.jar file once compiled -->
+    <property name='dist.dir' value='bin'/>
 
-	<!-- Location of the tests results -->
-	<property name="test.report.dir" value="test-reports"/>
+    <!-- Location of the tests results -->
+    <property name="test.report.dir" value="test-reports"/>
 
-	<target name='clean' description='o Clean up previous build files'>
-		<delete failonerror='false' dir='${dist.dir}' />
-	  	<delete failonerror='false' dir='${test.report.dir}' />	
-		<mkdir dir='${dist.dir}' />
-		<mkdir dir='${test.report.dir}'/>
-	</target>
-	
-	<target name='compile' depends="clean">
-		<echo message='Compile the code' />
-		<javac destdir='${dist.dir}' source='1.7' target='1.7' deprecation='false' debug='false' optimize='true'  encoding='UTF-8'>
-			<src>
-				<pathelement path='src/main'>
-				</pathelement>
-			</src>
-			<classpath>
-				<fileset dir='lib'>
-					<include name='*.jar' />
-				</fileset>
-			</classpath>
-		</javac>
-	</target>
+    <target name='clean' description='o Clean up previous build files'>
+        <delete failonerror='false' dir='${dist.dir}'/>
+        <delete failonerror='false' dir='${test.report.dir}'/>
+        <mkdir dir='${dist.dir}'/>
+        <mkdir dir='${test.report.dir}'/>
+    </target>
 
-	<target name='compile_all' depends="clean">
-                <echo message='Compile the code and the tests' />
-                <javac destdir='${dist.dir}' source='1.7' target='1.7' deprecation='false' debug='false' optimize='true'  encoding='UTF-8'>
-                        <src>
-                                <pathelement path='src'>
-                                </pathelement>
-                        </src>
-                        <classpath>
-                                <fileset dir='lib'>
-                                        <include name='*.jar' />
-                                </fileset>
-                        </classpath>
-                </javac>
-        </target>
-
-	<target name='package_jar' description='o Create Jajuk jar file' depends='clean,compile'>
-		<echo message='Building Jajuk release: ${version} using Java ${java.specification.version}' />
-                <echo message='Basedir: ${basedir}' />	
-		<jar jarfile='${dist.dir}/jajuk.jar' manifest='src/packaging/MANIFEST.MF' compress='true'>
-			<fileset dir='${dist.dir}' />
-			<fileset dir='src/main/resources'/>
-		</jar>
-		<!-- Make the jajuk bash script executable -->
-		<chmod file='jajuk' perm='ugo+rx' />
-		<echo message='jajuk.jar had been successfully built in: ${dist.dir}/jajuk.jar' />
-	</target>
-
-	<target name="tests" depends="compile_all"> 
-		<junit printsummary="on" fork="true" haltonfailure="no" timeout="60000">
-			<formatter type="xml" /> 
-			<batchtest todir="${test.report.dir}"> 
-				<fileset dir="src/test/java"> 
-					<include name="**/*Test*.java" />
-
-					<!-- Exclude test helpers, not test themselve -->
-					<exclude name="**/ConstTest.java" />
-					<exclude name="**/JajukTestCase.java" />
-					<exclude name="**/TestHelpers.java" />
-					<exclude name="**/ThreadTestHelper.java" />
-
-					<!-- exclude system-specific tests -->
-					<exclude name="**/TestDBusSupportImpl.java" />
-				</fileset> 
-			</batchtest> 
-			<classpath>
-				<fileset dir='lib'>
-					<include name='*.jar' />
+    <target name='compile' depends="clean">
+        <echo message='Compile the code'/>
+        <javac destdir='${dist.dir}' source='1.7' target='1.7' deprecation='false' debug='false' optimize='true'
+               encoding='UTF-8'>
+            <src>
+                <pathelement path='src/main'>
+                </pathelement>
+            </src>
+            <classpath>
+                <fileset dir='lib'>
+                    <include name='*.jar'/>
                 </fileset>
-				<pathelement location="bin"/>
-				<pathelement location="src/main/resources"/>
             </classpath>
-		</junit> 
-	</target>
+        </javac>
+    </target>
+
+    <target name='compile_all' depends="clean">
+        <echo message='Compile the code and the tests'/>
+        <javac destdir='${dist.dir}' source='1.7' target='1.7' deprecation='false' debug='false' optimize='true'
+               encoding='UTF-8'>
+            <src>
+                <pathelement path='src'>
+                </pathelement>
+            </src>
+            <classpath>
+                <fileset dir='lib'>
+                    <include name='*.jar'/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name='package_jar' description='o Create Jajuk jar file' depends='clean,compile'>
+        <echo message='Building Jajuk release: ${version} using Java ${java.specification.version}'/>
+        <echo message='Basedir: ${basedir}'/>
+        <jar jarfile='${dist.dir}/jajuk.jar' compress='true'>
+            <manifest>
+                <attribute name="Built-By" value="Jajuk team"/>
+                <attribute name="Main-Class" value="org.jajuk.Main"/>
+            </manifest>
+            <fileset dir='${dist.dir}'/>
+            <fileset dir='src/main/resources'/>
+
+        </jar>
+        <!-- Make the jajuk bash script executable -->
+        <chmod file='jajuk' perm='ugo+rx'/>
+        <echo message='jajuk.jar had been successfully built in: ${dist.dir}/jajuk.jar'/>
+    </target>
+
+    <target name="tests" depends="compile_all">
+        <junit printsummary="on" fork="true" haltonfailure="no" timeout="60000">
+            <formatter type="xml"/>
+            <batchtest todir="${test.report.dir}">
+                <fileset dir="src/test/java">
+                    <include name="**/*Test*.java"/>
+
+                    <!-- Exclude test helpers, not test themselve -->
+                    <exclude name="**/ConstTest.java"/>
+                    <exclude name="**/JajukTestCase.java"/>
+                    <exclude name="**/TestHelpers.java"/>
+                    <exclude name="**/ThreadTestHelper.java"/>
+
+                    <!-- exclude system-specific tests -->
+                    <exclude name="**/TestDBusSupportImpl.java"/>
+                </fileset>
+            </batchtest>
+            <classpath>
+                <fileset dir='lib'>
+                    <include name='*.jar'/>
+                </fileset>
+                <pathelement location="bin"/>
+                <pathelement location="src/main/resources"/>
+            </classpath>
+        </junit>
+    </target>
 </project>
