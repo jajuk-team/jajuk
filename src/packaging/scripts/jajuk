@@ -8,7 +8,7 @@
 # -Xmx: Maximal Heap size. We set a large size because Out Of Memory errors make the application crash. In some rare cases, very large collection (>200Gb) users could increase this setting (see Performance section in the manual) [Change this setting only if you have very large collection, do not reduce it]
 # -Xverify:none : quicker startup, no bytecode check
 # -Djava.library.path : chemin contenant les librairies .so
-JAVA_OPTIONS="-client -cp ../lib/*.jar -Xms30M -Xmx2G -Xverify:none -Djava.library.path=/usr/share/jajuk"
+JAVA_OPTIONS="-client -cp /usr/share/jajuk/lib/*.jar -Xms30M -Xmx2G -Xverify:none -Djava.library.path=/usr/share/jajuk/jni"
 
 #Jajuk options
 JAJUK_OPTIONS="-@TEST_FLAG_REPLACED_BY_ANT@"

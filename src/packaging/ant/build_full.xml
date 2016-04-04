@@ -114,7 +114,7 @@
             <fileset file='src/legals/LICENSE-GPL.txt'/>
             <fileset file='src/legals/DERIVATED.txt'/>
             <fileset file='src/legals/AUTHORS.txt'/>
-            <fileset file='src/scripts/jajuk'/>
+            <fileset file='src/packaging/scripts/jajuk'/>
             <fileset file='src/packaging/ant/BUILD.txt'/>
         </copy>
 
@@ -250,7 +250,7 @@
     <target name='mkdist_linux' depends="build_jajuk">
         <echo message='Prepare files to build Linux packages'/>
         <copy todir='${linux_dist.dir}/usr/bin' filtering="true">
-            <fileset file='src/scripts/jajuk'/>
+            <fileset file='src/packaging/scripts/jajuk'/>
         </copy>
         <!-- We put jajuk.jar and all deps in the same directory to avoid setting
         the -cp : the MANIFEST is enough. We don't put jars in /usr/share/java to avoid
@@ -294,21 +294,20 @@
         <copy todir='${rpm_build.dir}/BUILDROOT/jajuk-${version}-1.i386'>
             <fileset dir='${linux_dist.dir}' includes="**"/>
         </copy>
-        <copy todir='${rpm_build.dir}/BUILDROOT/jajuk-${version}-1.i386/usr/share/jajuk'>
+        <copy todir='${rpm_build.dir}/BUILDROOT/jajuk-${version}-1.i386/usr/share/jajuk/jni'>
             <fileset file='lib/lib32/*.so'/>
         </copy>
         <rpm failOnError='true' specFile='jajuk.spec' topDir='${rpm_build.dir}' cleanBuildDir='yes' removeSpec='no'
              command='-bb -vv --target i386'/>
         <!-- Copy the rpm to the final packages directory -->
         <copy todir='${packages.dir}'>
-            <fileset file='${rpm_build.dir}/RPMS/i386/jajuk*.rpm'/>
         </copy>
 
         <!-- Build the 64 bits RPM -->
         <copy todir='${rpm_build.dir}/BUILDROOT/jajuk-${version}-1.x86_64/'>
             <fileset dir='${linux_dist.dir}' includes="**"/>
         </copy>
-        <copy todir='${rpm_build.dir}/BUILDROOT/jajuk-${version}-1.x86_64/usr/share/jajuk'>
+        <copy todir='${rpm_build.dir}/BUILDROOT/jajuk-${version}-1.x86_64/usr/share/jajuk/jni'>
             <fileset file='lib/lib64/*.so'/>
         </copy>
         <rpm failOnError='true' specFile='jajuk.spec' topDir='${rpm_build.dir}' cleanBuildDir='yes' removeSpec='no'
