@@ -313,10 +313,6 @@
         </copy>
         <rpm failOnError='true' specFile='jajuk.spec' topDir='${rpm_build.dir}' cleanBuildDir='yes' removeSpec='no'
              command='-bb -vv --target x86_64'/>
-
-        <copy todir='${linux_dist.dir}/usr/share/jajuk'>
-            <fileset file='lib/lib64/*.so'/>
-        </copy>
         <!-- Copy the rpm to the final packages directory -->
         <copy todir='${packages.dir}'>
             <fileset file='${rpm_build.dir}/RPMS/x86_64/jajuk*.rpm'/>

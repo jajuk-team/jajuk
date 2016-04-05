@@ -11,6 +11,11 @@ $ ant
 
 -> jajuk.jar is built in the 'bin' directory
 
+------
+Run
+------
+java -cp "lib/*:bin/jajuk.jar" org.jajuk.Main
+
 ------------
 Junit tests
 ------------
