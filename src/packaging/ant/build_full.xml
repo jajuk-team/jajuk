@@ -114,7 +114,7 @@
             <fileset file='src/legals/LICENSE-GPL.txt'/>
             <fileset file='src/legals/DERIVATED.txt'/>
             <fileset file='src/legals/AUTHORS.txt'/>
-            <fileset file='src/packaging/scripts/jajuk'/>
+            <fileset file='src/packaging/Debian/jajuk'/>
             <fileset file='src/packaging/ant/BUILD.txt'/>
         </copy>
 
@@ -249,9 +249,6 @@
     <!-- ========================== -->
     <target name='mkdist_linux' depends="build_jajuk">
         <echo message='Prepare files to build Linux packages'/>
-        <copy todir='${linux_dist.dir}/usr/bin' filtering="true">
-            <fileset file='src/packaging/scripts/jajuk'/>
-        </copy>
         <!-- We put jajuk.jar and all deps in the same directory to avoid setting
         the -cp : the MANIFEST is enough. We don't put jars in /usr/share/java to avoid
         collisions with others packages (animation.jar collides for ex) -->
@@ -272,8 +269,6 @@
         </copy>
         <move file="${linux_dist.dir}/usr/share/pixmaps/jajuk-icon_64x64.png"
               tofile="${linux_dist.dir}/usr/share/pixmaps/jajuk.png"/>
-        <!-- Set rights-->
-        <chmod file='${linux_dist.dir}/usr/bin/jajuk' perm='ugo+rx'/>
         <chmod file='${linux_dist.dir}/usr/share/applications/jajuk.desktop' perm='ugo+rwx'/>
 
     </target>
@@ -285,6 +280,12 @@
         <copy todir='${rpm_build.dir}/SPECS' filtering="true">
             <fileset file='src/packaging/RPMS/jajuk.spec'/>
         </copy>
+        <!-- Copy the RPM-flavor shell -->
+        <copy todir='${linux_dist.dir}/usr/bin' filtering="true">
+            <fileset file='src/packaging/RPMS/jajuk'/>
+        </copy>
+        <!-- Set rights-->
+        <chmod file='${linux_dist.dir}/usr/bin/jajuk' perm='ugo+rx'/>
 
         <!-- We take the libmatthew-javalibs into the rpm as most RPM-flavor distros doesn't have
         this dependency in their repository (only Fedrora so far). We have to build a 32 and
@@ -321,6 +322,12 @@
 
     <target name='build_debian' depends="mkdist_linux">
         <echo message='Prepare files to build .deb package'/>
+        <!-- Copy the Debian-flavor shell -->
+        <copy todir='${linux_dist.dir}/usr/bin' filtering="true">
+            <fileset file='src/packaging/Debian/jajuk'/>
+        </copy>
+        <!-- Set rights-->
+        <chmod file='${linux_dist.dir}/usr/bin/jajuk' perm='ugo+rx'/>
         <copy todir='${deb_build.dir}' filtering="true">
             <fileset file='src/packaging/Debian/control'/>
         </copy>

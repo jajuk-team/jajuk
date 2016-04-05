@@ -20,6 +20,10 @@
     <jdkPreference>preferJre</jdkPreference>
     <initialHeapSize>20</initialHeapSize>
     <maxHeapSize>512</maxHeapSize>
-    <opt>-client -cp ../lib/*.jar -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -Xverify:none</opt>
+    <opt>-client -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -Xverify:none</opt>
   </jre>
+  <classPath mainClass="org.jajuk.Main">
+      <cp>./lib/*.jar</cp>
+      <cp>./bin/jajuk.jar</cp>
+   </classPath>
 </launch4jConfig>

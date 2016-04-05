@@ -1,13 +1,13 @@
 #!/bin/bash
-# RPM or Debian script (assumes that libs are in /usr/share/jajuk/lib and jajuk.jar in /usr/share/java)
+# RPM Jajuk launch script (assumes that libs are in /usr/share/jajuk/lib and jajuk.jar in /usr/share/java)
 
 #JVM arguments used by Jajuk. It's important  to notice that some of this tuning is useful only when using Java player (when mplayer is not available)
 # -client : Use the client JVM, optimized for single user usage [Don't change this setting]
-# -cp : classpath vers les librairies. Note: Incompatible with -jar option.
+# -cp : classpath to libs. Note: Incompatible with -jar option.
 # -Xms : Initial Heap (total JVM reserved memory) size. We set it to a pretty large value because it requires resources to expand heap size.
 # -Xmx: Maximal Heap size. We set a large size because Out Of Memory errors make the application crash. In some rare cases, very large collection (>200Gb) users could increase this setting (see Performance section in the manual) [Change this setting only if you have very large collection, do not reduce it]
 # -Xverify:none : quicker startup, no bytecode check
-# -Djava.library.path : chemin contenant les librairies .so
+# -Djava.library.path : directory containing the .so files.
 JAVA_OPTIONS="-client -cp "/usr/share/jajuk/lib/*:/usr/share/jajuk/jajuk.jar" -Xms30M -Xmx2G -Xverify:none -Djava.library.path=/usr/share/jajuk/jni"
 
 #Jajuk options
