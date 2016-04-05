@@ -301,6 +301,7 @@
              command='-bb -vv --target i386'/>
         <!-- Copy the rpm to the final packages directory -->
         <copy todir='${packages.dir}'>
+            <fileset file='${rpm_build.dir}/RPMS/i386/jajuk*.rpm'/>
         </copy>
 
         <!-- Build the 64 bits RPM -->
