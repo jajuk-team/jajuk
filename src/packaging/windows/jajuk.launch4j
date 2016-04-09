@@ -1,6 +1,6 @@
 <launch4jConfig>
-  <dontWrapJar>true</dontWrapJar>
-  <jar>bin/jajuk.jar</jar>
+  <dontWrapJar>false</dontWrapJar>
+  <jar>jajuk.jar</jar>
   <headerType>gui</headerType>
   <outfile>jajuk.exe</outfile>
   <errTitle></errTitle>
@@ -20,10 +20,6 @@
     <jdkPreference>preferJre</jdkPreference>
     <initialHeapSize>20</initialHeapSize>
     <maxHeapSize>512</maxHeapSize>
-    <opt>-client -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -Xverify:none</opt>
+    <opt>-cp lib/*.jar -client -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -Xverify:none</opt>
   </jre>
-  <classPath mainClass="org.jajuk.Main">
-      <cp>./lib/*.jar</cp>
-      <cp>./bin/jajuk.jar</cp>
-   </classPath>
 </launch4jConfig>

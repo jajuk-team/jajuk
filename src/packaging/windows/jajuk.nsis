@@ -143,7 +143,6 @@ Section
   SetOutPath "$INSTDIR"
   File "jajuk.exe"
   File /r "lib"
-  File /r "bin"
   File "mplayer.exe"
   ${If} ${RunningX64}
     Rename "$INSTDIR\lib\lib64\JIntellitype.dll" "$INSTDIR\bin\JIntellitype.dll"

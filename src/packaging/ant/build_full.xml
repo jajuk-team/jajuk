@@ -166,6 +166,10 @@
         <copy todir='${windows_dist.dir}' filtering="true">
             <fileset file='src/packaging/windows/jajuk.launch4j'/>
         </copy>
+        <!-- Copy jajuk.jar to be embedded into the exe -->
+        <copy todir='${windows_dist.dir}' filtering="true">
+            <fileset file='${packages.dir}/jajuk.jar'/>
+        </copy>
         <copy todir='${windows_dist.dir}'>
             <fileset file='src/packaging/windows/jajuk-icon.ico'/>
         </copy>
@@ -184,11 +188,6 @@
         </copy>
         <!-- Uncompress the nsis resources used to build the installer -->
         <unzip src="src/packaging/windows/Resources_nsis.zip" dest="${windows_dist.dir}"/>
-        <!-- Prepare the bin directories with the jajuk jar -->
-        <mkdir dir="${windows_dist.dir}/bin"/>
-        <copy todir='${windows_dist.dir}/bin'>
-            <fileset file='${packages.dir}/jajuk.jar'/>
-        </copy>
         <copy todir='${windows_dist.dir}'>
             <fileset dir='.'>
                 <!-- No unix lib, no mplayer -->
