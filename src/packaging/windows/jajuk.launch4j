@@ -1,4 +1,6 @@
 <launch4jConfig>
+  <!-- Produce an exe that contains jajuk.jar -->
+  <!-- Note : the JIntellitype dll should be in the same directory than the exe to be loaded -->
   <dontWrapJar>false</dontWrapJar>
   <jar>jajuk.jar</jar>
   <headerType>gui</headerType>
@@ -9,10 +11,14 @@
   <downloadUrl>http://java.com/download</downloadUrl>
   <supportUrl>http://www.java.com/en/download/help/</supportUrl>
   <customProcName>false</customProcName>
-  <stayAlive>false</stayAlive>
+  <stayAlive>true</stayAlive>
   <manifest></manifest>
   <!-- icon path is relative to .launch4j config file -->
   <icon>jajuk-icon.ico</icon>
+  <classPath>
+      <mainClass>org.jajuk.Main</mainClass>
+      <cp>lib/*.jar</cp>
+  </classPath>
   <jre>
     <path></path>
     <minVersion>1.7.0</minVersion>
@@ -20,6 +26,6 @@
     <jdkPreference>preferJre</jdkPreference>
     <initialHeapSize>20</initialHeapSize>
     <maxHeapSize>512</maxHeapSize>
-    <opt>-cp lib/*.jar -client -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -Xverify:none</opt>
+    <opt>-client -Xverify:none</opt>
   </jre>
 </launch4jConfig>
