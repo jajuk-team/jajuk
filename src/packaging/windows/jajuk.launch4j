@@ -3,7 +3,7 @@
   <!-- Note : the JIntellitype dll should be in the same directory than the exe to be loaded -->
   <dontWrapJar>false</dontWrapJar>
   <jar>jajuk.jar</jar>
-  <headerType>gui</headerType>
+  <headerType>console</headerType>
   <outfile>jajuk.exe</outfile>
   <errTitle></errTitle>
   <cmdLine>-@TEST_FLAG_REPLACED_BY_ANT@</cmdLine>
@@ -26,6 +26,7 @@
     <jdkPreference>preferJre</jdkPreference>
     <initialHeapSize>20</initialHeapSize>
     <maxHeapSize>512</maxHeapSize>
-    <opt>-client -Xverify:none</opt>
+    <opt>-client</opt>
+    <opt>-Xverify:none</opt>
   </jre>
 </launch4jConfig>
