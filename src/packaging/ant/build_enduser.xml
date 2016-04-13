@@ -53,14 +53,11 @@
     <target name='package_jar' description='o Create Jajuk jar file' depends='clean,compile'>
         <echo message='Building Jajuk release: ${version} using Java ${java.specification.version}'/>
         <echo message='Basedir: ${basedir}'/>
+        <!-- The jar is non-executable (no MANIFEST) : it is simpler on most OS to make a -cp *.lib in command
+        line and -cp is uncompilable with executable jars -->
         <jar jarfile='${dist.dir}/jajuk.jar' compress='true'>
-            <manifest>
-                <attribute name="Built-By" value="Jajuk team"/>
-                <attribute name="Main-Class" value="org.jajuk.Main"/>
-            </manifest>
             <fileset dir='${dist.dir}'/>
             <fileset dir='src/main/resources'/>
-
         </jar>
         <!-- Make the jajuk bash script executable -->
         <chmod file='jajuk' perm='ugo+rx'/>

@@ -248,9 +248,6 @@
     <!-- ========================== -->
     <target name='mkdist_linux' depends="build_jajuk">
         <echo message='Prepare files to build Linux packages'/>
-        <!-- We put jajuk.jar and all deps in the same directory to avoid setting
-        the -cp : the MANIFEST is enough. We don't put jars in /usr/share/java to avoid
-        collisions with others packages (animation.jar collides for ex) -->
         <copy todir='${linux_dist.dir}/usr/share/jajuk'>
             <fileset file='${packages.dir}/jajuk.jar'/>
         </copy>
