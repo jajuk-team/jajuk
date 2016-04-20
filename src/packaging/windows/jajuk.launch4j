@@ -18,6 +18,7 @@
   <classPath>
       <mainClass>org.jajuk.Main</mainClass>
       <cp>lib/*.jar</cp>
+      <cp>.</cp>
   </classPath>
   <jre>
     <path></path>
