@@ -23,8 +23,7 @@ package org.jajuk.ui.views;
 import com.jgoodies.animation.Animation;
 import com.jgoodies.animation.Animations;
 import com.jgoodies.animation.Animator;
-import com.jgoodies.animation.animations.BasicTextAnimation;
-import com.jgoodies.animation.components.BasicTextLabel;
+
 
 import java.awt.Color;
 import java.awt.Font;
@@ -36,6 +35,8 @@ import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
+import com.jgoodies.animation.swing.animations.BasicTextAnimation;
+import com.jgoodies.animation.swing.components.BasicTextLabel;
 import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.File;
@@ -185,7 +186,7 @@ public class AnimationView extends ViewAdapter {
           }
         }
         Animation animAll = Animations.sequential(anim, animPause);
-        anim = Animations.repeat(Float.POSITIVE_INFINITY, animAll);
+        anim = Animations.repeat(animAll, Float.POSITIVE_INFINITY);
         animator = new Animator(anim, DEFAULT_FRAME_RATE);
         animator.start();
         if (!Conf.getBoolean(Const.CONF_TITLE_ANIMATION)) {
