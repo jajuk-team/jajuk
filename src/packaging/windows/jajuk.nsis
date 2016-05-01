@@ -142,6 +142,7 @@ InstallDirRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${App
 Section
   SetOutPath "$INSTDIR"
   File "jajuk.exe"
+  File "jajuk.jar"
   File /r "lib"
   File "mplayer.exe"
   ${If} ${RunningX64}
