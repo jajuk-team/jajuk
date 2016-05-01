@@ -167,7 +167,7 @@
             <fileset file='src/packaging/windows/jajuk.launch4j'/>
         </copy>
         <!-- Copy jajuk.jar to be embedded into the exe -->
-        <copy todir='${windows_dist.dir}' filtering="true">
+        <copy todir='${windows_dist.dir}'>
             <fileset file='${packages.dir}/jajuk.jar'/>
         </copy>
         <copy todir='${windows_dist.dir}'>
