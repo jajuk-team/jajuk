@@ -221,7 +221,7 @@
                     icon='src/packaging/OSX/jajuk-icon_source.icns' jvmversion='1.7+' version='${version}'
                     useJavaXKey='true' stubfile='src/packaging/OSX/universalJavaApplicationStub'
                     build='${version}'
-                    vmoptions='-client -cp ../lib/*.jar -Xms20M -Xmx2G -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -Xverify:none'
+                    vmoptions='-client -cp *.jar -Xms20M -Xmx2G -Xverify:none'
                     arguments='-${test_flag}' verbose='true'>
             <jarfileset dir='lib'>
                 <include name='*.jar'/>
@@ -239,7 +239,6 @@
             <zipfileset dir='${osx_dist.dir}' filemode='755'>
                 <include name='*/**'/>
             </zipfileset>
-            <fileset file='src/legals/*'/>
         </zip>
     </target>
 
