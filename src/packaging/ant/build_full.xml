@@ -217,16 +217,15 @@
     <target name='jarbundler' depends='build_jajuk'>
         <echo message='jarbundler'/>
         <mkdir dir='${osx_dist.dir}'/>
-        <jarbundler dir='${osx_dist.dir}' name='Jajuk' shortname="Jajuk" mainclass='org.jajuk.Main'
+        <jarbundler dir='${osx_dist.dir}' name='Jajuk' shortname="Jajuk" jar='${packages.dir}/jajuk.jar' mainclass='org.jajuk.Main'
                     icon='src/packaging/OSX/jajuk-icon_source.icns' jvmversion='1.7+' version='${version}'
                     useJavaXKey='true' stubfile='src/packaging/OSX/universalJavaApplicationStub'
                     build='${version}'
-                    vmoptions='-client -cp *.jar -Xms20M -Xmx2G -Xverify:none'
+                    vmoptions='-client -Xms20M -Xmx2G -Xverify:none'
                     arguments='-${test_flag}' verbose='true'>
             <jarfileset dir='lib'>
                 <include name='*.jar'/>
             </jarfileset>
-            <jarfileset file="${packages.dir}/jajuk.jar"/>
             <execfilelist dir='lib/mplayer/osx' files="mplayer"/>
         </jarbundler>
     </target>
