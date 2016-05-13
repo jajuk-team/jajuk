@@ -265,7 +265,6 @@
         <move file="${linux_dist.dir}/usr/share/pixmaps/jajuk-icon_64x64.png"
               tofile="${linux_dist.dir}/usr/share/pixmaps/jajuk.png"/>
         <chmod file='${linux_dist.dir}/usr/share/applications/jajuk.desktop' perm='ugo+rwx'/>
-
     </target>
 
     <!-- Build the 32 bits RPM, note that the rpm command performs a delete (cleanup)
@@ -275,8 +274,8 @@
         <copy todir='${rpm_build.dir}/SPECS' filtering="true">
             <fileset file='src/packaging/RPMS/jajuk.spec'/>
         </copy>
-        <!-- Copy the RPM-flavor shell -->
-        <copy todir='${linux_dist.dir}/usr/bin' filtering="true">
+        <!-- Copy the RPM-flavor shell, override any shell already copied-->
+        <copy todir='${linux_dist.dir}/usr/bin' filtering="true" force="true">
             <fileset file='src/packaging/RPMS/jajuk'/>
         </copy>
         <!-- Set rights-->
@@ -317,8 +316,8 @@
 
     <target name='build_debian' depends="mkdist_linux">
         <echo message='Prepare files to build .deb package'/>
-        <!-- Copy the Debian-flavor shell -->
-        <copy todir='${linux_dist.dir}/usr/bin' filtering="true">
+        <!-- Copy the Debian-flavor shell, override any shell already copied -->
+        <copy todir='${linux_dist.dir}/usr/bin' filtering="true" force="true">
             <fileset file='src/packaging/Debian/jajuk'/>
         </copy>
         <!-- Set rights-->
