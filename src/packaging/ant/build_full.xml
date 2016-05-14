@@ -246,7 +246,8 @@
     <!-- | Linux  targets           | -->
     <!-- ========================== -->
     <target name='mkdist_linux' depends="build_jajuk">
-        <echo message='Prepare files to build Linux packages'/>
+        <echo message='Prepare files to build Linux packages and copy common files among all distros' />
+        <delete failonerror='false' dir='${linux_dist.dir}'/>
         <copy todir='${linux_dist.dir}/usr/share/jajuk'>
             <fileset file='${packages.dir}/jajuk.jar'/>
         </copy>
@@ -269,13 +270,15 @@
 
     <!-- Build the 32 bits RPM, note that the rpm command performs a delete (cleanup)
     of the BUILDROOT directory when done so we have to build debian before the rpm -->
-    <target name='build_rpm' description='o Create Jajuk RPM package' depends='mkdist_linux'>
+    <target name='build_rpm' description='o Create Jajuk RPM package'>
         <echo message='Create Jajuk 32 bits RPM package'/>
+        <!-- Force to rebuild linux dist shared among several targets -->
+        <antcall target="mkdist_linux"/>
         <copy todir='${rpm_build.dir}/SPECS' filtering="true">
             <fileset file='src/packaging/RPMS/jajuk.spec'/>
         </copy>
-        <!-- Copy the RPM-flavor shell, override any shell already copied-->
-        <copy todir='${linux_dist.dir}/usr/bin' filtering="true" force="true">
+        <!-- Copy the RPM-flavor shell-->
+        <copy todir='${linux_dist.dir}/usr/bin' filtering="true">
             <fileset file='src/packaging/RPMS/jajuk'/>
         </copy>
         <!-- Set rights-->
@@ -314,10 +317,12 @@
         </copy>
     </target>
 
-    <target name='build_debian' depends="mkdist_linux">
+    <target name='build_debian' >
         <echo message='Prepare files to build .deb package'/>
-        <!-- Copy the Debian-flavor shell, override any shell already copied -->
-        <copy todir='${linux_dist.dir}/usr/bin' filtering="true" force="true">
+        <!-- Force to rebuild linux dist shared among several targets -->
+        <antcall target="mkdist_linux"/>
+        <!-- Copy the Debian-flavor shell -->
+        <copy todir='${linux_dist.dir}/usr/bin' filtering="true">
             <fileset file='src/packaging/Debian/jajuk'/>
         </copy>
         <!-- Set rights-->
