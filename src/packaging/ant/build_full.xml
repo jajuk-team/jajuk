@@ -333,7 +333,7 @@
                         includes="usr/bin/jajuk,usr/share/applications/jajuk.desktop"/>
         </tar>
         <!-- We reuse the BUILDROOT RPM package to build the Debian package -->
-        <deb destfile="${deb_build.dir}/jajuk_${version}_all.deb" control="src/packaging/Debian/control" verbose="true">
+        <deb destfile="${deb_build.dir}/jajuk_${version}_all.deb" control="src/packaging/Debian/control_dir" verbose="true">
             <data src="${deb_build.dir}/jajuk.tar.bz2" type="archive">
                 <mapper type="perm"/>
             </data>
