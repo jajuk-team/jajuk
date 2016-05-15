@@ -324,6 +324,9 @@
         </copy>
         <!-- Set rights-->
         <chmod file='${linux_dist.dir}/usr/bin/jajuk' perm='ugo+rx'/>
+        <copy todir='${deb_build.dir}/control_dir' filtering="true">
+            <fileset file='src/packaging/Debian/control'/>
+        </copy>
         <!-- Create a tar from linux dist, required to keep bin/jajuk permissions -->
         <tar compression="bzip2" destfile="${deb_build.dir}/jajuk.tar.bz2">
             <!-- Ignore the .so files to avoid "E: jajuk: arch-independent-package-contains-binary-or-object .." errors
@@ -333,7 +336,7 @@
                         includes="usr/bin/jajuk,usr/share/applications/jajuk.desktop"/>
         </tar>
         <!-- We reuse the BUILDROOT RPM package to build the Debian package -->
-        <deb destfile="${deb_build.dir}/jajuk_${version}_all.deb" control="src/packaging/Debian/control_dir" verbose="true">
+        <deb destfile="${deb_build.dir}/jajuk_${version}_all.deb" control="${deb_build.dir}/control_dir" verbose="true">
             <data src="${deb_build.dir}/jajuk.tar.bz2" type="archive">
                 <mapper type="perm"/>
             </data>
