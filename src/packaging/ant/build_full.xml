@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!--Ant script for users Jajuk team packagers -->
 
+<!--Ant build script for Jajuk team packagers -->
 <project default='package_all' name='jajuk' basedir="../../..">
 
     <!-- ======================= -->
@@ -10,25 +10,23 @@
     <!--Build type : 'unstable', 'final', 'pre-release' or 'maintenance' -->
     <property name='type' value='unstable'/>
 
-    <!--Distribution release
-    !!! DO NOT USE '-' CHARACTER IN VERSION !!!-->
+    <!--Distribution release-->
     <property name='version' value='1.11.0dev'/>
 
     <!--Test flag: values: 'test' or 'notest'
-    'test' for 'unstable' branches, 'notest' for master, pre-release and maintenance branches
-    -->
+    'test' for 'unstable' branches, 'notest' for master, pre-release and maintenance branches -->
     <property name='test_flag' value='test'/>
 
     <!-- Root directory for all produced files -->
     <property name='root.dir' value='build'/>
 
-    <!-- Source distribution repository, contains the sources for end user and to build jajuk.jar and run tests -->
+    <!-- Source distribution repository, contains the sources for end-user and to build jajuk.jar and run tests -->
     <property name='sources_dist.dir' value='${root.dir}/sources_dist/jajuk-src-${version}'/>
 
     <!-- Directory that contains the final artefacts (source .zip, rpm, deb, exe ...) -->
     <property name='packages.dir' value='${root.dir}/packages'/>
 
-    <!-- windows distribution repository -->
+    <!-- Windows distribution repository -->
     <property name='windows_dist.dir' value='${root.dir}/windows'/>
 
     <!-- OSX distribution repository -->
@@ -47,7 +45,7 @@
     <property name="deb_build.dir" location="${root.dir}/debian"/>
 
     <!-- ======================= -->
-    <!-- | Gobal Filters        | -->
+    <!-- | Global Filters        | -->
     <!-- ======================= -->
     <!-- Set build date -->
     <tstamp>
@@ -269,8 +267,7 @@
         <chmod file='${linux_dist.dir}/usr/share/applications/jajuk.desktop' perm='ugo+rwx'/>
     </target>
 
-    <!-- Build the 32 bits RPM, note that the rpm command performs a delete (cleanup)
-    of the BUILDROOT directory when done so we have to build debian before the rpm -->
+    <!-- Build the 32 bits RPM -->
     <target name='build_rpm'  depends="build_jajuk">
         <echo message='Create Jajuk 32 bits RPM package'/>
         <!-- Force to rebuild linux dist shared among several targets -->
@@ -285,7 +282,7 @@
         <!-- Set rights-->
         <chmod file='${linux_dist.dir}/usr/bin/jajuk' perm='ugo+rx'/>
 
-        <!-- We take the libmatthew-javalibs into the rpm as most RPM-flavor distros doesn't have
+        <!-- We bring the libmatthew-javalibs into the rpm as most RPM-flavor distros doesn't have
         this dependency in their repository (only Fedrora so far). We have to build a 32 and
         a 64 bits RPM because a noarch RPM cannot contain native libs -->
 
@@ -331,10 +328,10 @@
         <copy todir='${deb_build.dir}/control_dir' filtering="true">
             <fileset file='src/packaging/Debian/control'/>
         </copy>
-        <!-- Create a tar from linux dist, required to keep bin/jajuk permissions -->
+        <!-- Create a tar from linux dist, required to keep bin/jajuk permissions.
+         We don't bring the .so to build a platform independent package (but the
+         control file has a dependency to the libunixsocket-java package)-->
         <tar compression="bzip2" destfile="${deb_build.dir}/jajuk.tar.bz2">
-            <!-- Ignore the .so files to avoid "E: jajuk: arch-independent-package-contains-binary-or-object .." errors
-                  libunix-java has been added as suggested dependency to make dbus work -->
             <tarfileset file="${linux_dist.dir}/**" filemode="644" excludes="usr/bin/jajuk,usr,**/*.so"/>
             <tarfileset file="${linux_dist.dir}/usr" filemode="755"
                         includes="usr/bin/jajuk,usr/share/applications/jajuk.desktop"/>
