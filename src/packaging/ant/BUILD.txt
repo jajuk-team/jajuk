@@ -2,7 +2,7 @@ To compile Jajuk :
 
 Requirements :
 - JDK 1.7+
-- Ant (download it on http://ant.apache.org/ )
+- Ant (available at http://ant.apache.org/ )
 
 -------
 Build 
@@ -19,7 +19,7 @@ java -cp "lib/*:bin/jajuk.jar" org.jajuk.Main
 ------------
 Junit tests
 ------------
-$ unset DISPLAY  (to run tests headless)
+$ unset DISPLAY  (so tests are run headless)
 $ ant tests
 
 
