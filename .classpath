@@ -22,7 +22,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/commons-logging-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/filters-2.0.235.jar"/>
-	<classpathentry kind="lib" path="lib/jintellitype-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/vldocking-2.1.5.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/libdbus-java-2.6.jar">
@@ -35,11 +34,9 @@
 	<classpathentry kind="lib" path="lib/hexdump-0.2.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io-1.4.jar"/>
 	<classpathentry kind="lib" path="lib/xstream-1.3.1.jar"/>
-	<classpathentry kind="lib" path="lib/last.fm-bindings-7.3.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart-1.0.13.jar"/>
 	<classpathentry kind="lib" path="lib/js-0.98.4.jar"/>
 	<classpathentry kind="lib" path="lib/swingx-1.6.jar"/>
-	<classpathentry kind="lib" path="lib/animation-1.2.0.jar"/>
 	<classpathentry kind="lib" path="lib/guava-11.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/jaudiotagger-2.2.0-20130420.jar" sourcepath="/prog/api/jaudiotagger/trunk/src">
 		<attributes>
@@ -48,12 +45,14 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/cobra_jajuk-0.98.5.jar"/>
-	<classpathentry kind="lib" path="lib/qdwizard-5.0.0.jar"/>
-	<classpathentry kind="lib" path="lib/json-20140107.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang3-3.4.jar"/>
 	<classpathentry kind="lib" path="lib/laf-plugin-7.3.jar"/>
 	<classpathentry kind="lib" path="lib/laf-widget-7.3.jar"/>
 	<classpathentry kind="lib" path="lib/substance-7.3.jar"/>
 	<classpathentry kind="lib" path="lib/trident-7.3.jar"/>
+	<classpathentry kind="lib" path="lib/animation-1.4.3.jar"/>
+	<classpathentry kind="lib" path="lib/jintellitype-1.3.9.jar"/>
+	<classpathentry kind="lib" path="lib/lastfm-java-0.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/qdwizard-5.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
