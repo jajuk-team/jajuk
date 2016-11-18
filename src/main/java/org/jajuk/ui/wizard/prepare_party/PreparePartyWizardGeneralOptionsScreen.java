@@ -41,8 +41,6 @@ import javax.swing.border.BevelBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
@@ -54,6 +52,8 @@ import org.jajuk.util.UtilPrepareParty;
 import org.jajuk.util.log.Log;
 import org.qdwizard.ClearPoint;
 import org.qdwizard.Screen;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * General options panel.
@@ -145,12 +145,12 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
     { // Max Size
       jcbMaxSize = new JCheckBox(Messages.getString("PreparePartyWizard.12"));
       jcbMaxSize.setToolTipText(Messages.getString("PreparePartyWizard.13"));
-      jsMaxSize = new JSlider(0, 1000, 100);
+      jsMaxSize = new JSlider(0, 10000, 100);
       jnMaxSize = new JLabel(NO_VALUE);
       jnMaxSize.setBorder(new BevelBorder(BevelBorder.LOWERED));
       jnMaxSize.setHorizontalAlignment(SwingConstants.RIGHT);
-      jsMaxSize.setMajorTickSpacing(100);
-      jsMaxSize.setMinorTickSpacing(10);
+      jsMaxSize.setMajorTickSpacing(1000);
+      jsMaxSize.setMinorTickSpacing(100);
       jsMaxSize.setPaintTicks(true);
       jsMaxSize.setPaintLabels(true);
       jsMaxSize.setToolTipText(Messages.getString("PreparePartyWizard.13"));
