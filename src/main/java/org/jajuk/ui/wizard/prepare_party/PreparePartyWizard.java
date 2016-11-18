@@ -124,7 +124,7 @@ public class PreparePartyWizard extends Wizard {
     super(new Wizard.Builder(Messages.getString("PreparePartyWizard.1"),
         bProvidedPlaylist ? PreparePartyWizardGeneralOptionsScreen.class
             : PreparePartyWizardActionSelectionScreen.class, JajukMainWindow.getInstance())
-        .hSize(800).vSize(550).locale(LocaleManager.getLocale())
+        .hSize(800).vSize(600).locale(LocaleManager.getLocale())
         .icon(IconLoader.getIcon(JajukIcons.PREPARE_PARTY_32X32)));
     if (playlist != null) {
       setPlaylist(playlist);
