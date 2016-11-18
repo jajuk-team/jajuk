@@ -410,17 +410,6 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
     }
   }
 
-  /**
-   * Return if the specified element is true in the data-map.
-   * 
-   * @param key The key to look up in the data-object.
-   * 
-   * @return true if the value was stored as boolean true, false otherwise.
-   */
-  private final boolean isTrue(final String key) {
-    return data.containsKey(key) && Boolean.TRUE.equals(data.get(key));
-  }
-
   /*
    * (non-Javadoc)
    * 
