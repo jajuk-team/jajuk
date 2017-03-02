@@ -832,7 +832,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       rate += file.getTrack().getRate();
       nb++;
     }
-    return Math.round(rate / nb);
+    return (nb > 0) ? Math.round(rate / nb) : 0;
   }
 
   /**
