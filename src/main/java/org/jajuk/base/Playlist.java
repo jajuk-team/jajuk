@@ -678,43 +678,52 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @throws JajukException the jajuk exception
    */
   void replaceFile(final File fOld, final File fNew) throws JajukException {
-    if (type == Type.BOOKMARK) {
-      List<File> files = Bookmarks.getInstance().getFiles();
-      final Iterator<File> it = files.iterator();
-      for (int i = 0; it.hasNext(); i++) {
-        final File fileToTest = it.next();
-        if (fileToTest.equals(fOld)) {
-          files.set(i, fNew);
-          /*
-           * this leads to ConcurrentModificationException: Bookmarks.getInstance().remove(i);
-           * Bookmarks.getInstance().addFile(i, fNew);
-           */
-        }
-      }
-    } else if (type == Type.QUEUE) {
-      final Iterator<StackItem> it = QueueModel.getQueue().iterator();
-      for (int i = 0; it.hasNext(); i++) {
-        final File fileToTest = it.next().getFile();
-        if (fileToTest.equals(fOld)) {
-          QueueModel.remove(i); // just remove
-          final List<StackItem> al = new ArrayList<StackItem>(1);
-          al.add(new StackItem(fNew));
-          QueueModel.insert(al, i);
-        }
-      }
-    } else {
-      final Iterator<File> it = alFiles.iterator();
-      for (int i = 0; it.hasNext(); i++) {
-        final File fileToTest = it.next();
-        if (fileToTest.equals(fOld)) {
-          alFiles.set(i, fNew);
-          try {
-            commit();// save changed playlist
-          } catch (final JajukException e) {
-            Log.error(e);
+    
+    
+    switch (type){
+    
+      case BOOKMARK: 
+        List<File> bookmarkFiles = Bookmarks.getInstance().getFiles();
+        int bookmarkFileCounter = 0;
+        for (File bookmarkFile: bookmarkFiles){
+          if (bookmarkFile.equals(fOld)){
+            bookmarkFiles.set(bookmarkFileCounter, fNew);
+            break;
           }
+          bookmarkFileCounter++;
         }
-      }
+        break;
+        
+      case QUEUE:
+        List<StackItem> queueStackItems = QueueModel.getQueue();
+        int queueCounter = 0;
+        for (StackItem stackItem : queueStackItems){
+          if (stackItem.getFile().equals(fOld)){
+            QueueModel.remove(queueCounter);
+            final List<StackItem> al = new ArrayList<StackItem>(1);
+            al.add(new StackItem(fNew));
+            QueueModel.insert(al, queueCounter);
+            break;
+          }
+          queueCounter++; 
+        }
+        break;
+      
+      default:
+        int defaultCounter = 0;
+        for (File defaultFile : alFiles){
+          if (defaultFile.equals(fOld)){
+            alFiles.set(defaultCounter, fNew);
+            try {
+              commit();// save changed playlist
+            } catch (final JajukException e) {
+              Log.error(e);
+            }
+            break;
+          }
+          defaultCounter++;
+        }
+        break;
     }
   }
 
@@ -823,7 +832,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       rate += file.getTrack().getRate();
       nb++;
     }
-    return Math.round(rate / nb);
+    return (nb > 0) ? Math.round(rate / nb) : 0;
   }
 
   /**
