@@ -182,7 +182,7 @@ public class PreparePartyWizard extends Wizard {
    * 
    * @return true if the value was stored as boolean true, false otherwise.
    */
-  private final boolean isTrue(final Variable key) {
+  private boolean isTrue(final Variable key) {
     return data.containsKey(key) && Boolean.TRUE.equals(data.get(key));
   }
 

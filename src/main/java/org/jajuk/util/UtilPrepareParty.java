@@ -28,13 +28,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Playlist;
@@ -56,9 +53,6 @@ import org.jajuk.util.log.Log;
  * easier testing.
  */
 public class UtilPrepareParty {
-  /** character that is used to replace if filename normalization is used. */
-  private static final String FILLER_CHAR = "_";
-
   /**
    * Instantiates a new util prepare party.
    * 
@@ -76,7 +70,7 @@ public class UtilPrepareParty {
    * @return The adjusted list.
    */
   public static List<org.jajuk.base.File> filterRating(List<org.jajuk.base.File> files, Integer rate) {
-    final List<org.jajuk.base.File> newFiles = new ArrayList<org.jajuk.base.File>();
+    final List<org.jajuk.base.File> newFiles = new ArrayList<>();
     for (org.jajuk.base.File file : files) {
       // only add files that have a rate equal or higher than the level set
       if (StarsHelper.getStarsNumber(file.getTrack()) >= rate) {
@@ -97,7 +91,7 @@ public class UtilPrepareParty {
    */
   public static List<org.jajuk.base.File> filterMaxLength(List<org.jajuk.base.File> files,
       Integer time) {
-    final List<org.jajuk.base.File> newFiles = new ArrayList<org.jajuk.base.File>();
+    final List<org.jajuk.base.File> newFiles = new ArrayList<>();
     long accumulated = 0;
     for (org.jajuk.base.File file : files) {
       // check if we now exceed the max length, getDuration() is in seconds, but
@@ -123,7 +117,7 @@ public class UtilPrepareParty {
    */
   public static List<org.jajuk.base.File> filterMaxSize(List<org.jajuk.base.File> files,
       Integer size) {
-    final List<org.jajuk.base.File> newFiles = new ArrayList<org.jajuk.base.File>();
+    final List<org.jajuk.base.File> newFiles = new ArrayList<>();
     long accumulated = 0;
     for (org.jajuk.base.File file : files) {
       // check if we now exceed the max size, getSize() is in byte, but we want
@@ -149,7 +143,7 @@ public class UtilPrepareParty {
    */
   public static List<org.jajuk.base.File> filterMaxTracks(List<org.jajuk.base.File> files,
       Integer tracks) {
-    final List<org.jajuk.base.File> newFiles = new ArrayList<org.jajuk.base.File>();
+    final List<org.jajuk.base.File> newFiles = new ArrayList<>();
     int count = 0;
     for (org.jajuk.base.File file : files) {
       // check if we have reached the max
@@ -174,7 +168,7 @@ public class UtilPrepareParty {
    */
   public static List<org.jajuk.base.File> filterMedia(final List<org.jajuk.base.File> files,
       final String ext) {
-    final List<org.jajuk.base.File> newFiles = new ArrayList<org.jajuk.base.File>();
+    final List<org.jajuk.base.File> newFiles = new ArrayList<>();
     for (org.jajuk.base.File file : files) {
       if (file.getType() != null && file.getType().getExtension() != null
           && file.getType().getExtension().equals(ext)) {
@@ -183,9 +177,6 @@ public class UtilPrepareParty {
     }
     return newFiles;
   }
-
-  /** Map containing all the replacements that we do to "normalize" a filename. */
-  private static Map<Character, String> replaceMap = null;
 
    /**
    * Get files from the specified DJ.
@@ -209,7 +200,7 @@ public class UtilPrepareParty {
   public static List<org.jajuk.base.File> getAmbienceFiles(String name) {
     final List<org.jajuk.base.File> files;
     Ambience ambience = AmbienceManager.getInstance().getAmbienceByName(name);
-    files = new ArrayList<org.jajuk.base.File>();
+    files = new ArrayList<>();
     // Get a shuffle selection
     List<org.jajuk.base.File> allFiles = FileManager.getInstance().getGlobalShufflePlaylist();
     // Keep only right genres and check for unicity
@@ -311,7 +302,7 @@ public class UtilPrepareParty {
    * @return A list of single command elements. e.g. {"perl", "/usr/bin/pacpl"}
    */
   private static List<String> splitCommand(String command) {
-    List<String> list = new ArrayList<String>();
+    List<String> list = new ArrayList<>();
     StringBuilder word = new StringBuilder();
     boolean quote = false;
     int i = 0;
@@ -360,7 +351,7 @@ public class UtilPrepareParty {
     // create streams for catching stdout and stderr
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     ByteArrayOutputStream err = new ByteArrayOutputStream();
-    int ret = 0;
+    int ret;
     final ProcessLauncher launcher = new ProcessLauncher(out, err, 10000);
     try {
       ret = launcher.exec(list.toArray(new String[list.size()]));
@@ -424,10 +415,10 @@ public class UtilPrepareParty {
     // create streams for catching stdout and stderr
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     ByteArrayOutputStream err = new ByteArrayOutputStream();
-    int ret = 0;
+    int ret;
     StringBuilder commandLog = new StringBuilder();
     for (String arg : list) {
-      commandLog.append(arg + " ");
+      commandLog.append(arg).append(" ");
     }
     Log.debug("Using this pacpl command: {{" + commandLog.toString() + "}}");
     final ProcessLauncher launcher = new ProcessLauncher(out, err);
@@ -441,7 +432,7 @@ public class UtilPrepareParty {
     // log out the results
     if (!out.toString().isEmpty()) {
       Log.debug("pacpl command returned to out(" + ret + "): " + out.toString());
-      if (out.toString().indexOf("encode failed") != -1) {
+      if (out.toString().contains("encode failed")) {
         ret = -1;
       }
     } else {
@@ -449,7 +440,7 @@ public class UtilPrepareParty {
     }
     if (!err.toString().isEmpty()) {
       Log.debug("pacpl command returned to err: " + err.toString());
-      if (err.toString().indexOf("encode failed") != -1) {
+      if (err.toString().contains("encode failed")) {
         ret = -1;
       }
     }
@@ -489,6 +480,7 @@ public class UtilPrepareParty {
               // We can use the actual file name as we do numbering of the files,
               // this is important for existing playlists to keep the order
               String name = StringUtils.leftPad(Integer.valueOf(count).toString(), 5, '0') + '_'
+                      + StringUtils.leftPad(Integer.valueOf(files.size()).toString(), 5, '0') + '_'
                   + entry.getFIO().getName();
               // normalize filenames if necessary
               if (isNormalize) {

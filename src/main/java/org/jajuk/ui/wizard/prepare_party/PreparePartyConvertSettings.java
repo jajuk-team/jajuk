@@ -42,11 +42,11 @@ public class PreparePartyConvertSettings extends JajukJDialog implements ActionL
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
   /** Listener which is informed about changes to the settings. */
-  ChangeListener listener;
+  private ChangeListener listener;
   /** Text field for the input of the command. */
-  JTextField jtfPACPLCommand;
+  private JTextField jtfPACPLCommand;
   /** OK/Cancel buttons. */
-  OKCancelPanel okp;
+  private OKCancelPanel okp;
 
   /**
    * Instantiates a new prepare party convert settings.
