@@ -26,7 +26,6 @@ import static org.jajuk.ui.actions.JajukActions.PAUSE_RESUME_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.QUEUE_TO_SLIM;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
-import ext.DropDownButton;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -88,6 +87,8 @@ import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+
+import ext.DropDownButton;
 
 /**
  * Jajuk Slim Interface

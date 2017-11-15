@@ -53,8 +53,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.events.JajukEvent;
@@ -86,6 +84,8 @@ import org.jdesktop.swingx.JXCollapsiblePane;
 import org.jdesktop.swingx.VerticalLayout;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.SkinInfo;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * View used to set Jajuk parameters.

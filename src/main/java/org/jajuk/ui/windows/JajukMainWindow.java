@@ -27,7 +27,6 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GraphicsConfiguration;
 import java.awt.Rectangle;
-import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -42,8 +41,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
-
-import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -71,6 +68,8 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Jajuk main window

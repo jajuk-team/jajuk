@@ -2,12 +2,21 @@
 
 package ext;
 
-import org.jdesktop.swingx.JXPanel;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.AWTError;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.Scrollable;
+
+import org.jdesktop.swingx.JXPanel;
 
 /**
  * <P>

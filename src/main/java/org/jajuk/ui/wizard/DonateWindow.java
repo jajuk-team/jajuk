@@ -33,8 +33,6 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.IconLoader;
@@ -42,6 +40,8 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * View used to show the Jajuk about and contributors.

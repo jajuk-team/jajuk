@@ -20,8 +20,6 @@
  */
 package org.jajuk.ui.windows;
 
-import ext.JXTrayIcon;
-
 import java.awt.AWTException;
 import java.awt.Point;
 import java.awt.SystemTray;
@@ -41,8 +39,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
-
-import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -70,6 +66,9 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
+
+import ext.JXTrayIcon;
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Jajuk systray <br>

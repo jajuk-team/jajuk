@@ -20,8 +20,13 @@
  */
 package org.jajuk.ui.widgets;
 
-import ext.DropDownButton;
-import ext.MenuScroller;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioHelper;
 import org.jajuk.services.webradio.WebRadioManager;
@@ -34,9 +39,8 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import ext.DropDownButton;
+import ext.MenuScroller;
 
 /**
  * Factorizes code dealing with Web Radio button shared by command panel and slimbar.

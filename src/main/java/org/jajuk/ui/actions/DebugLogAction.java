@@ -35,8 +35,6 @@ import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.windows.JajukMainWindow;
@@ -47,6 +45,8 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * .

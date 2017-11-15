@@ -20,13 +20,6 @@
  */
 package org.jajuk.ui.views;
 
-import ext.FlowScrollPanel;
-import ext.services.lastfm.AlbumInfo;
-import ext.services.lastfm.AlbumListInfo;
-import ext.services.lastfm.ArtistInfo;
-import ext.services.lastfm.LastFmService;
-import ext.services.lastfm.SimilarArtistsInfo;
-
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Insets;
@@ -50,8 +43,6 @@ import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
@@ -73,6 +64,14 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
+
+import ext.FlowScrollPanel;
+import ext.services.lastfm.AlbumInfo;
+import ext.services.lastfm.AlbumListInfo;
+import ext.services.lastfm.ArtistInfo;
+import ext.services.lastfm.LastFmService;
+import ext.services.lastfm.SimilarArtistsInfo;
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Show suggested albums based on current collection (bestof, novelties) and

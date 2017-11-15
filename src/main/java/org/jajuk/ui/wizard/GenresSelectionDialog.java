@@ -35,8 +35,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.Genre;
 import org.jajuk.base.GenreManager;
 import org.jajuk.services.dj.Ambience;
@@ -47,6 +45,8 @@ import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Allow a user to select a list of genres.

@@ -30,8 +30,6 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.ui.widgets.JajukFileChooser;
@@ -46,6 +44,8 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.log.Log;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Simple device creation wizard that creates a directory device given a

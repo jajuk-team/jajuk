@@ -35,8 +35,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.SearchResult;
@@ -55,6 +53,8 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Alarm Clock Dialog window.

@@ -20,8 +20,6 @@
  */
 package org.jajuk.util;
 
-import ext.ProcessLauncher;
-
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -47,6 +45,8 @@ import org.jajuk.services.dj.DigitalDJManager;
 import org.jajuk.ui.helpers.StarsHelper;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+
+import ext.ProcessLauncher;
 
 /**
  * Utilities for the Prepare Party Wizard. Extracted into a separate class for

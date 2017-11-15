@@ -92,7 +92,7 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-import org.pushingpixels.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
+import org.pushingpixels.substance.api.renderer.SubstanceDefaultTreeCellRenderer;
 
 import net.miginfocom.swing.MigLayout;
 

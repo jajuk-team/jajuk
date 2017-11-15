@@ -20,9 +20,6 @@
  */
 package org.jajuk.ui.views;
 
-import ext.services.lastfm.ArtistInfo;
-import ext.services.lastfm.LastFmService;
-
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.io.IOException;
@@ -34,8 +31,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
-
-import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.Artist;
@@ -53,6 +48,10 @@ import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
+
+import ext.services.lastfm.ArtistInfo;
+import ext.services.lastfm.LastFmService;
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Display Artist bio and albums.

@@ -27,8 +27,6 @@ import java.util.Properties;
 
 import javax.swing.JComboBox;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.events.JajukEvent;
@@ -36,6 +34,8 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Remove property wizard.

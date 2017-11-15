@@ -25,14 +25,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.jajuk.services.covers.Cover;
+import org.jajuk.util.UtilFeatures;
+
 import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayer;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
-
-import org.jajuk.services.covers.Cover;
-import org.jajuk.util.UtilFeatures;
 
 /**
  * Tagger implementation for formats without tags and read by BasicPlayer API.
