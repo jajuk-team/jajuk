@@ -38,8 +38,6 @@ import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.Album;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
@@ -61,6 +59,8 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Album thumb represented as album cover + (optionally) others text information

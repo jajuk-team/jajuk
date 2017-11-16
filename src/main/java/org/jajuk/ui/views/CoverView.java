@@ -57,8 +57,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
@@ -95,6 +93,8 @@ import org.jajuk.util.filters.ImageFilter;
 import org.jajuk.util.filters.JPGFilter;
 import org.jajuk.util.filters.PNGFilter;
 import org.jajuk.util.log.Log;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Cover view. Displays an image for the current album

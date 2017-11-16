@@ -22,9 +22,6 @@
  */
 package ext.services.lastfm;
 
-import de.umass.lastfm.*;
-import ext.services.network.Proxy;
-
 import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,11 +29,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-
-import de.umass.lastfm.scrobble.ResponseStatus;
-import de.umass.lastfm.scrobble.Scrobbler;
-import de.umass.lastfm.scrobble.Source;
-import de.umass.lastfm.scrobble.SubmissionData;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -48,6 +40,18 @@ import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
+
+import de.umass.lastfm.Album;
+import de.umass.lastfm.Artist;
+import de.umass.lastfm.Caller;
+import de.umass.lastfm.ImageSize;
+import de.umass.lastfm.PaginatedResult;
+import de.umass.lastfm.Playlist;
+import de.umass.lastfm.scrobble.ResponseStatus;
+import de.umass.lastfm.scrobble.Scrobbler;
+import de.umass.lastfm.scrobble.Source;
+import de.umass.lastfm.scrobble.SubmissionData;
+import ext.services.network.Proxy;
 
 /**
  * The Class LastFmService.

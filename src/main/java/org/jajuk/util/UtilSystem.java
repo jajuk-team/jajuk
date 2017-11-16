@@ -22,8 +22,6 @@ package org.jajuk.util;
 
 import com.google.common.io.Files;
 
-import ext.MersenneTwister;
-
 import java.awt.Desktop;
 import java.awt.GraphicsEnvironment;
 import java.io.BufferedReader;
@@ -67,6 +65,8 @@ import org.jajuk.util.error.JajukRuntimeException;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.filters.KnownTypeFilter;
 import org.jajuk.util.log.Log;
+
+import ext.MersenneTwister;
 
 /**
  * Set of convenient methods for system and IO.

@@ -36,8 +36,6 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.events.JajukEvent;
@@ -47,6 +45,8 @@ import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Tracks Duplicate dialog.

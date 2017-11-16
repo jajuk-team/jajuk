@@ -20,8 +20,6 @@
  */
 package org.jajuk.services.lyrics.providers;
 
-import ext.services.network.NetworkUtils;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -30,6 +28,8 @@ import org.jajuk.base.Track;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.log.Log;
+
+import ext.services.network.NetworkUtils;
 
 /**
  * GenericProvider is a basic processor for web-based lyrics providers. It

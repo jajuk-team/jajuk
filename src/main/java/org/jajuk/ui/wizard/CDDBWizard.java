@@ -20,12 +20,6 @@
  */
 package org.jajuk.ui.wizard;
 
-import entagged.freedb.Freedb;
-import entagged.freedb.FreedbAlbum;
-import entagged.freedb.FreedbException;
-import entagged.freedb.FreedbQueryResult;
-import entagged.freedb.FreedbReadResult;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -36,8 +30,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingWorker;
-
-import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Track;
@@ -58,6 +50,13 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+
+import entagged.freedb.Freedb;
+import entagged.freedb.FreedbAlbum;
+import entagged.freedb.FreedbException;
+import entagged.freedb.FreedbQueryResult;
+import entagged.freedb.FreedbReadResult;
+import net.miginfocom.swing.MigLayout;
 
 /**
  * .

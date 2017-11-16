@@ -45,8 +45,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JWindow;
 import javax.swing.Timer;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.JajukMouseAdapter;
@@ -64,6 +62,8 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * The full screen window Note that not all operating support full screen mode.

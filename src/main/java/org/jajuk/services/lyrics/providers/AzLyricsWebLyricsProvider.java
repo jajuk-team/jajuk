@@ -20,13 +20,13 @@
  */
 package org.jajuk.services.lyrics.providers;
 
-import ext.services.network.NetworkUtils;
-
 import java.net.MalformedURLException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
+
+import ext.services.network.NetworkUtils;
 
 /**
  * Lyrics Provider extracting lyrics from azlyrics.com

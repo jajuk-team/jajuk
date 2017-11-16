@@ -35,8 +35,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.Album;
 import org.jajuk.base.File;
 import org.jajuk.events.JajukEvent;
@@ -56,6 +54,8 @@ import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Status / information panel ( static view ).

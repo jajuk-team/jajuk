@@ -20,8 +20,6 @@
  */
 package org.jajuk.ui.views;
 
-import ext.AutoCompleteDecorator;
-
 import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -58,8 +56,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
-
-import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.AlbumArtistManager;
 import org.jajuk.base.ArtistManager;
@@ -99,6 +95,9 @@ import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
+
+import ext.AutoCompleteDecorator;
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Abstract table view : common implementation for both files and tracks table

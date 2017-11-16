@@ -20,8 +20,6 @@
  */
 package org.jajuk.services.startup;
 
-import ext.JSplash;
-
 import java.awt.SystemTray;
 import java.lang.reflect.InvocationTargetException;
 
@@ -41,6 +39,8 @@ import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.log.Log;
+
+import ext.JSplash;
 
 /**
  * Startup facilities for GUI part.

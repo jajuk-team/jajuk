@@ -57,8 +57,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
@@ -100,6 +98,8 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Playlist view. This views contains two parts : the "repository" selection panel (list of smart playlists icons 

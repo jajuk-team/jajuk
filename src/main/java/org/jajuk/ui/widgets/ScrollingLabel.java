@@ -21,10 +21,12 @@
 
 package org.jajuk.ui.widgets;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import javax.swing.JLabel;
 
 /**
  * Label that scrolls text horizontally

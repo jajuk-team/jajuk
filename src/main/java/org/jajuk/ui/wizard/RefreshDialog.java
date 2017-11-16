@@ -25,13 +25,13 @@ import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.ui.widgets.JajukJDialog;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jdesktop.swingx.JXBusyLabel;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Refresh dialog.

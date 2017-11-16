@@ -39,8 +39,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.PropertyMetaInformation;
@@ -57,6 +55,8 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jdesktop.swingx.VerticalLayout;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Wizard allowing user to select the extra tags to be displayed by jajuk.

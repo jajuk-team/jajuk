@@ -46,7 +46,7 @@ public abstract class ButtonShaper implements SubstanceButtonShaper {
    * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getButtonOutline(javax.swing.AbstractButton)
    */
   public Shape getButtonOutline(AbstractButton button) {
-    return getButtonOutline(button, null, button.getWidth(), button.getHeight(), true);
+    return getButtonOutline(button, null, button.getWidth(), button.getHeight());
   }
 
   /* (non-Javadoc)

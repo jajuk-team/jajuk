@@ -22,8 +22,6 @@
  */
 package ext.services.lastfm;
 
-import ext.services.xml.XMLUtils;
-
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
@@ -34,8 +32,6 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import de.umass.lastfm.scrobble.SubmissionData;
-
 import org.apache.commons.io.FileUtils;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.Const;
@@ -43,6 +39,9 @@ import org.jajuk.util.MD5Processor;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
+
+import de.umass.lastfm.scrobble.SubmissionData;
+import ext.services.xml.XMLUtils;
 
 /**
  * The Class LastFmCache.

@@ -23,7 +23,8 @@ package org.jajuk.ui.views;
 import com.jgoodies.animation.Animation;
 import com.jgoodies.animation.Animations;
 import com.jgoodies.animation.Animator;
-
+import com.jgoodies.animation.swing.animations.BasicTextAnimation;
+import com.jgoodies.animation.swing.components.BasicTextLabel;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -34,10 +35,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.SwingUtilities;
-
-import com.jgoodies.animation.swing.animations.BasicTextAnimation;
-import com.jgoodies.animation.swing.components.BasicTextLabel;
-import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.File;
 import org.jajuk.events.JajukEvent;
@@ -54,6 +51,8 @@ import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Animation-based view.

@@ -20,10 +20,6 @@
  */
 package org.jajuk.ui.thumbnails;
 
-import ext.services.lastfm.AlbumInfo;
-import ext.services.lastfm.LastFmService;
-import ext.services.lastfm.TrackInfo;
-
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
@@ -35,8 +31,6 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-
-import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.Album;
@@ -54,6 +48,11 @@ import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.border.DropShadowBorder;
+
+import ext.services.lastfm.AlbumInfo;
+import ext.services.lastfm.LastFmService;
+import ext.services.lastfm.TrackInfo;
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Last.FM Album thumb represented as album cover + (optionally) others text

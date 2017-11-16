@@ -47,9 +47,8 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
-
-import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.Artist;
@@ -82,7 +81,9 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-import org.pushingpixels.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
+import org.pushingpixels.substance.api.renderer.SubstanceDefaultTreeCellRenderer;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Logical tree view.
@@ -247,11 +248,11 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         Album album = track.getAlbum();
         // create genre
         {
-          Enumeration<GenreNode> e = top.children();
+          Enumeration<TreeNode> e = top.children();
           boolean b = false;
           while (e.hasMoreElements()) { // check the genre doesn't
             // already exist
-            GenreNode sn = e.nextElement();
+            GenreNode sn = (GenreNode) e.nextElement();
             if (sn.getGenre().equals(genre)) {
               b = true;
               genreNode = sn;
@@ -268,11 +269,11 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         }
         // create artist
         {
-          Enumeration<ArtistNode> e2 = genreNode.children();
+          Enumeration<TreeNode> e2 = genreNode.children();
           boolean b = false;
           while (e2.hasMoreElements()) { // check if the artist doesn't
             // already exist
-            ArtistNode an = e2.nextElement();
+            ArtistNode an = (ArtistNode) e2.nextElement();
             if (an.getArtist().equals(artist)) {
               b = true;
               artistNode = an;
@@ -288,10 +289,10 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         if (artistNode == null) {
           continue;
         }
-        Enumeration<AlbumNode> e3 = artistNode.children();
+        Enumeration<TreeNode> e3 = artistNode.children();
         boolean b = false;
         while (e3.hasMoreElements()) {
-          AlbumNode an = e3.nextElement();
+          AlbumNode an = (AlbumNode) e3.nextElement();
           if (an.getAlbum().equals(album)) {
             b = true;
             albumNode = an;
@@ -324,11 +325,11 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         Album album = track.getAlbum();
         // create artist
         {
-          Enumeration<ArtistNode> e = top.children();
+          Enumeration<TreeNode> e = top.children();
           boolean b = false;
           while (e.hasMoreElements()) { // check if the artist doesn't
             // already exist
-            ArtistNode an = e.nextElement();
+            ArtistNode an = (ArtistNode) e.nextElement();
             if (an.getArtist().equals(artist)) {
               b = true;
               artistNode = an;
@@ -344,11 +345,11 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
           continue;
         }
         // create album
-        Enumeration<AlbumNode> e2 = artistNode.children();
+        Enumeration<TreeNode> e2 = artistNode.children();
         boolean b = false;
         while (e2.hasMoreElements()) { // check if the album doesn't
           // already exist
-          AlbumNode an = e2.nextElement();
+          AlbumNode an = (AlbumNode) e2.nextElement();
           if (an.getAlbum().equals(album)) {
             b = true;
             albumNode = an;
@@ -382,11 +383,11 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
         Year year = track.getYear();
         // create Year
         {
-          Enumeration<YearNode> e = top.children();
+          Enumeration<TreeNode> e = top.children();
           boolean b = false;
           // check if the artist doesn't already exist
           while (e.hasMoreElements()) {
-            YearNode yn = e.nextElement();
+            YearNode yn = (YearNode) e.nextElement();
             if (yn.getYear().equals(year)) {
               b = true;
               yearNode = yn;
@@ -402,11 +403,11 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
           continue;
         }
         // create album
-        Enumeration<AlbumNode> e1 = yearNode.children();
+        Enumeration<TreeNode> e1 = yearNode.children();
         boolean b = false;
         while (e1.hasMoreElements()) { // check if the album doesn't
           // already exist
-          AlbumNode an = e1.nextElement();
+          AlbumNode an = (AlbumNode) e1.nextElement();
           if (an.getAlbum().equals(album)) {
             b = true;
             albumNode = an;
@@ -539,9 +540,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   private void addTrackAndAlbum(DefaultMutableTreeNode node, Track track) {
     boolean bAlbumExists = false;
     AlbumNode currentAlbum = null;
-    Enumeration<AlbumNode> e = node.children();
+    Enumeration<TreeNode> e = node.children();
     while (e.hasMoreElements()) {
-      AlbumNode an = e.nextElement();
+      AlbumNode an = (AlbumNode) e.nextElement();
       if (an.getAlbum().equals(track.getAlbum())) {
         bAlbumExists = true;
         currentAlbum = an;
@@ -678,10 +679,10 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
           }
         }
         // return all child nodes recursively
-        Enumeration<DefaultMutableTreeNode> e2 = ((DefaultMutableTreeNode) o)
+        Enumeration<TreeNode> e2 = ((DefaultMutableTreeNode) o)
             .depthFirstEnumeration();
         while (e2.hasMoreElements()) {
-          DefaultMutableTreeNode node = e2.nextElement();
+          DefaultMutableTreeNode node = (DefaultMutableTreeNode) e2.nextElement();
           if (node instanceof TrackNode) {
             Track track = ((TrackNode) node).getTrack();
             // don't count the same track several time
@@ -1167,9 +1168,9 @@ class DiscoveryDateNode extends DefaultMutableTreeNode {
   @Override
   public Object getUserObject() {
     List<Item> out = new ArrayList<Item>(10);
-    Enumeration<DefaultMutableTreeNode> childrens = children();
+    Enumeration<TreeNode> childrens = children();
     while (childrens.hasMoreElements()) {
-      DefaultMutableTreeNode node = childrens.nextElement();
+      DefaultMutableTreeNode node = (DefaultMutableTreeNode) childrens.nextElement();
       out.add((Item) node.getUserObject());
     }
     return out;

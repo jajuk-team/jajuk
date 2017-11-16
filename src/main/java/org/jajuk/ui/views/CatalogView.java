@@ -20,8 +20,6 @@
  */
 package org.jajuk.ui.views;
 
-import ext.FlowScrollPanel;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -56,8 +54,6 @@ import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumComparator;
 import org.jajuk.base.AlbumManager;
@@ -87,6 +83,9 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
+
+import ext.FlowScrollPanel;
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Catalog view. Displays all default covers by album
