@@ -36,23 +36,28 @@
 	<classpathentry kind="lib" path="lib/xstream-1.3.1.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart-1.0.13.jar"/>
 	<classpathentry kind="lib" path="lib/js-0.98.4.jar"/>
-	<classpathentry kind="lib" path="lib/swingx-1.6.jar"/>
 	<classpathentry kind="lib" path="lib/guava-11.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/jaudiotagger-2.2.0-20130420.jar" sourcepath="/prog/api/jaudiotagger/trunk/src">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/prog/api/jaudiotagger/trunk/target/apidocs/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="lib/cobra_jajuk-0.98.5.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang3-3.4.jar"/>
 	<classpathentry kind="lib" path="lib/laf-plugin-7.3.jar"/>
 	<classpathentry kind="lib" path="lib/laf-widget-7.3.jar"/>
-	<classpathentry kind="lib" path="lib/substance-7.3.jar"/>
-	<classpathentry kind="lib" path="lib/trident-7.3.jar"/>
 	<classpathentry kind="lib" path="lib/animation-1.4.3.jar"/>
 	<classpathentry kind="lib" path="lib/jintellitype-1.3.9.jar"/>
 	<classpathentry kind="lib" path="lib/lastfm-java-0.1.2.jar"/>
 	<classpathentry kind="lib" path="lib/qdwizard-5.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/jgoodies-common-1.6.0.jar"/>
+	<classpathentry kind="lib" path="lib/swingx-1.6.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/substance"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/trident"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
