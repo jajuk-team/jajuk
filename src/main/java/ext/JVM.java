@@ -77,7 +77,7 @@ public class JVM {
    * @param pJavaVersion 
    */
   public JVM(String pJavaVersion) {
-    if ("9".equals(pJavaVersion)) {
+    if (pJavaVersion.startsWith("9")) {
       jdkVersion = JDK1_9;
     } else if (pJavaVersion.startsWith("1.8.")) {
       jdkVersion = JDK1_8;
