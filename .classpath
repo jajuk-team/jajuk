@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="src" path="src/main/resources"/>
+	<classpathentry kind="lib" path="lib/vorbisspi-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/jlayer-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/jogg-0.0.7.jar"/>
+	<classpathentry kind="lib" path="lib/jorbis-0.0.13.jar"/>
+	<classpathentry kind="lib" path="lib/jspeex-0.9.3.jar"/>
+	<classpathentry kind="lib" path="lib/tritonus_share-release.jar"/>
+	<classpathentry kind="lib" path="lib/mp3spi-1.9.5.jar"/>
+	<classpathentry kind="lib" path="lib/jcommon-1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/log4j_reduced-1.2.6.jar"/>
+	<classpathentry kind="lib" path="lib/entagged-freedb-0.04.jar"/>
+	<classpathentry kind="lib" path="lib/commons-collections-3.2.jar"/>
+	<classpathentry kind="lib" path="lib/basicplayer-3.0.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://www.javazoom.net/jlgui/docs/docs2.3/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/commons-logging-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/filters-2.0.235.jar"/>
+	<classpathentry kind="lib" path="lib/vldocking-2.1.5.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="lib/libdbus-java-2.6.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://dbus.freedesktop.org/doc/dbus-java/api/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/miglayout-swing-3.7.jar"/>
+	<classpathentry kind="lib" path="lib/unix-0.5.jar"/>
+	<classpathentry kind="lib" path="lib/hexdump-0.2.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/xstream-1.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/jfreechart-1.0.13.jar"/>
+	<classpathentry kind="lib" path="lib/js-0.98.4.jar"/>
+	<classpathentry kind="lib" path="lib/guava-11.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/jaudiotagger-2.2.0-20130420.jar" sourcepath="/prog/api/jaudiotagger/trunk/src">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/prog/api/jaudiotagger/trunk/target/apidocs/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/cobra_jajuk-0.98.5.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.4.jar"/>
+	<classpathentry kind="lib" path="lib/laf-plugin-7.3.jar"/>
+	<classpathentry kind="lib" path="lib/laf-widget-7.3.jar"/>
+	<classpathentry kind="lib" path="lib/animation-1.4.3.jar"/>
+	<classpathentry kind="lib" path="lib/jintellitype-1.3.9.jar"/>
+	<classpathentry kind="lib" path="lib/lastfm-java-0.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/qdwizard-5.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/jgoodies-common-1.6.0.jar"/>
+	<classpathentry kind="lib" path="lib/swingx-1.6.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/substance"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/trident"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
+
