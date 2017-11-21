@@ -20,7 +20,6 @@
  */
 package org.jajuk.services.startup;
 
-import java.awt.SystemTray;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
@@ -31,7 +30,6 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.windows.JajukMainWindow;
-import org.jajuk.ui.windows.JajukSystray;
 import org.jajuk.ui.wizard.SimpleDeviceWizard;
 import org.jajuk.ui.wizard.TipOfTheDayWizard;
 import org.jajuk.util.Conf;
@@ -201,12 +199,6 @@ public final class StartupGUIService {
           // Start the slimbar if required
           else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_SLIMBAR_TRAY) {
             ActionManager.getAction(JajukActions.SLIM_JAJUK).perform(null);
-          }
-          // In all cases, display the tray is user didn't force to hide it and
-          // if the platform supports it
-          if (Conf.getBoolean(Const.CONF_SHOW_SYSTRAY) && SystemTray.isSupported()) {
-            JajukSystray tray = JajukSystray.getInstance();
-            tray.getWindowStateDecorator().display(true);
           }
           // Display simple device wizard if user didn't yet created any device
           if (DeviceManager.getInstance().getDevices().size() == 0

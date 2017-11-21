@@ -51,18 +51,6 @@ public class NotificatorFactory {
       notificator = NotifySendBalloonNotificator.getInstance();
       if (notificator.isAvailable()) {
         Log.debug("'notify-send' implementation is available for system notifications.");
-      } else {
-        // OK, let's try the java build-in balloon system
-        notificator = JavaBalloonNotificator.getInstance();
-        if (notificator.isAvailable()) {
-          Log.debug("Java systray implementation is available for system notifications.");
-        } else {
-          Log.debug("No implementation is available for system notifications.");
-          // reset member again to not keep an implementation that does not
-          // work and don't try to find the right implementation gain (costly
-          // for some notifiers)
-          notificator = null;
-        }
       }
     }
     // Animated popup

@@ -85,12 +85,6 @@ public abstract class WindowStateDecorator {
     } else if (sdMainWindow.isDisplayed()) {
       Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_MAIN_WINDOW));
     }
-    // None window displayed ? set the tray only (if the show tray option is
-    // set)
-    else if (!sdSlimbar.isDisplayed() && !sdMainWindow.isDisplayed() && !sdfullscreen.isDisplayed()
-        && Conf.getBoolean(Const.CONF_SHOW_SYSTRAY)) {
-      Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_TRAY));
-    }
   }
 
   /**

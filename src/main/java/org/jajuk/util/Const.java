@@ -480,14 +480,8 @@ public interface Const {
   String CONF_CATALOG_PAGE_SIZE = "jajuk.catalog.pages_size";
   /** Show Catalog popups. */
   String CONF_SHOW_POPUPS = "jajuk.show_popups";
-  /** Show systray. */
-  String CONF_SHOW_SYSTRAY = "jajuk.show_systray";
-  /** Enable Title view Animation. */
+   /** Enable Title view Animation. */
   String CONF_TITLE_ANIMATION = "jajuk.title_animation";
-  /** Minimize to tray. */
-  String CONF_MINIMIZE_TO_TRAY = "jajuk.minimize_to_tray";
-  /** Display on tray click. */
-  String CONF_TRAY_CLICK_DISPLAY_WINDOW = "jajuk.tray_click_display_window";
   /** Enable Last.FM information queries */
   String CONF_LASTFM_INFO = "jajuk.lastfm_information";
   /** Webradio playing at jajuk stop ?. */

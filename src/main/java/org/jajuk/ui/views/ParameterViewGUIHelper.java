@@ -20,7 +20,6 @@
  */
 package org.jajuk.ui.views;
 
-import java.awt.SystemTray;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -335,12 +334,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     String notificatorType = Messages.getString(ParameterView.NOTIFICATOR_PREFIX
         + Conf.getString(Const.CONF_UI_NOTIFICATOR_TYPE));
     pv.jcbNotificationType.setSelectedItem(notificatorType);
-    pv.jcbShowSystray.setSelected(Conf.getBoolean(Const.CONF_SHOW_SYSTRAY));
-    pv.jcbMinimizeToTray.setEnabled(SystemTray.isSupported() && pv.jcbShowSystray.isSelected());
-    pv.jcbMinimizeToTray.setSelected(Conf.getBoolean(Const.CONF_MINIMIZE_TO_TRAY));
-    pv.jcbClickTrayAlwaysDisplayWindow.setSelected(Conf
-        .getBoolean(Const.CONF_TRAY_CLICK_DISPLAY_WINDOW));
-    pv.jcbClickTrayAlwaysDisplayWindow.setEnabled(SystemTray.isSupported());
     pv.jcbSplashscreen.setSelected(Conf.getBoolean(Const.CONF_SPLASH_SCREEN));
     pv.scbLAF.removeActionListener(this);
     pv.scbLAF.setSelectedItem(Conf.getString(Const.CONF_OPTIONS_LNF));
@@ -536,18 +529,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         properties.put(Const.CONF_UI_NOTIFICATOR_TYPE, notificatorType.name());
       }
     }
-    // Message if show systray is changed
-    final boolean bOldShowSystray = Conf.getBoolean(Const.CONF_SHOW_SYSTRAY);
-    if (bOldShowSystray != pv.jcbShowSystray.isSelected()) {
-      this.someOptionsAppliedAtNextStartup = true;
-    }
-    properties.put(Const.CONF_SHOW_SYSTRAY, Boolean.toString(pv.jcbShowSystray.isSelected()));
     properties.put(Const.CONF_TITLE_ANIMATION, Boolean.toString(pv.jcbTitleAnimation.isSelected()));
-    // Minimize to tray
-    properties
-        .put(Const.CONF_MINIMIZE_TO_TRAY, Boolean.toString(pv.jcbMinimizeToTray.isSelected()));
-    properties.put(Const.CONF_TRAY_CLICK_DISPLAY_WINDOW,
-        Boolean.toString(pv.jcbClickTrayAlwaysDisplayWindow.isSelected()));
     final int oldPerspectiveSize = Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE);
     // If we perspective size changed and no font message have been already
     // displayed, display a message

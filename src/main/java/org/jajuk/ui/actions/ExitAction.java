@@ -28,7 +28,6 @@ import org.jajuk.services.core.ExitService;
 import org.jajuk.ui.windows.JajukFullScreenWindow;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.ui.windows.JajukSlimbar;
-import org.jajuk.ui.windows.JajukSystray;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
@@ -68,9 +67,7 @@ public class ExitAction extends JajukAction {
     }
     // hide windows ASAP
     JajukMainWindow.getInstance().getWindowStateDecorator().display(false);
-    // hide systray
-    JajukSystray.getInstance().getWindowStateDecorator().display(false);
-    // Hide slimbar
+     // Hide slimbar
     JajukSlimbar.getInstance().getWindowStateDecorator().display(false);
     // Hide full screen
     JajukFullScreenWindow.getInstance().getWindowStateDecorator().display(false);

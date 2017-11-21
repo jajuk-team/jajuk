@@ -270,9 +270,6 @@ public final class Conf implements Const {
     defaults.put(CONF_SHOW_TIP_ON_STARTUP, FALSE);
     defaults.put(CONF_CATALOG_PAGE_SIZE, "100");
     defaults.put(CONF_SHOW_POPUPS, FALSE);
-    defaults.put(CONF_SHOW_SYSTRAY, TRUE);
-    defaults.put(CONF_MINIMIZE_TO_TRAY, FALSE);
-    defaults.put(CONF_TRAY_CLICK_DISPLAY_WINDOW, FALSE);
     defaults.put(CONF_FONTS_SIZE, "12");
     defaults.put(CONF_MPLAYER_PATH_FORCED, "");
     defaults.put(CONF_INC_RATING, "5");

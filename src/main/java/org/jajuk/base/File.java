@@ -435,7 +435,7 @@ public class File extends PhysicalItem implements Comparable<File> {
   /**
    * Gets the html format text.
    *
-   * @return text to be displayed in the tray balloon and tooltip with HTML
+   * @return text to be displayed in the system notification and tooltip with HTML
    * formating that is used correctly under Linux
    */
   public String getHTMLFormatText() {
