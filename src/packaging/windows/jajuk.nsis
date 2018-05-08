@@ -145,11 +145,7 @@ Section
   File "jajuk.jar"
   File /r "lib"
   File "mplayer.exe"
-  ${If} ${RunningX64}
-    Rename "$INSTDIR\lib\lib64\JIntellitype.dll" "$INSTDIR\JIntellitype.dll"
-  ${else}
-    Rename "$INSTDIR\lib\lib32\JIntellitype.dll" "$INSTDIR\JIntellitype.dll"
-  ${EndIf}
+  Rename "$INSTDIR\lib\native\JIntellitype.dll" "$INSTDIR\JIntellitype.dll"
 SectionEnd
 
 

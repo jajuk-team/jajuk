@@ -117,7 +117,7 @@ public interface Const {
   String JAJUK_VERSION = VERSION_REPLACED_BY_ANT;
   String JAJUK_CODENAME = "Deepest Blue";
   /** Extention to the .jajuk_test directory in test mode only */
-  String TEST_VERSION = "1.11";
+  String TEST_VERSION = "11";
   String JAJUK_VERSION_DATE = "Build: @DATE_REPLACED_BY_ANT@";
   String JAJUK_COPYRIGHT = "Copyright 2003-2016 The Jajuk Team";
   String TYPE_VIDEO = "Type.video";
