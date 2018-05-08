@@ -11,7 +11,7 @@
     <property name='type' value='unstable'/>
 
     <!--Distribution release-->
-    <property name='version' value='1.11.0dev'/>
+    <property name='version' value='11dev'/>
 
     <!--Test flag: values: 'test' or 'notest'
     'test' for 'unstable' branches, 'notest' for master, pre-release and maintenance branches -->
