@@ -59,9 +59,6 @@
 	<classpathentry kind="lib" path="lib/swingx-1.6.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/substance"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/trident"/>
-	<classpathentry kind="lib" path="lib/jaudiotagger-2.2.6-20170406.jar"/>
-	<classpathentry kind="lib" path="lib/substance-8.0.00-dev.jar"/>
-	<classpathentry kind="lib" path="lib/trident-1.5.00-dev.jar"/>
-	<classpathentry kind="lib" path="lib/xstream-1.4.10.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
+
