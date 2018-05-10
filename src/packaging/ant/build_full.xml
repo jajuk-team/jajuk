@@ -3,349 +3,257 @@
 <!--Ant build script for Jajuk team packagers -->
 <project default='package_all' name='jajuk' basedir="../../..">
 
-    <!-- ======================= -->
-    <!-- | Properties          | -->
-    <!-- ======================= -->
+	<!-- ======================= -->
+	<!-- | Properties          | -->
+	<!-- ======================= -->
 
-    <!--Build type : 'unstable', 'final', 'pre-release' or 'maintenance' -->
-    <property name='type' value='unstable'/>
+	<!--Build type : 'unstable', 'final', 'pre-release' or 'maintenance' -->
+	<property name='type' value='unstable' />
 
-    <!--Distribution release-->
-    <property name='version' value='11dev'/>
+	<!--Distribution release-->
+	<property name='version' value='11dev' />
 
-    <!--Test flag: values: 'test' or 'notest'
+	<!--Test flag: values: 'test' or 'notest'
     'test' for 'unstable' branches, 'notest' for master, pre-release and maintenance branches -->
-    <property name='test_flag' value='test'/>
+	<property name='test_flag' value='test' />
 
-    <!-- Root directory for all produced files -->
-    <property name='root.dir' value='build'/>
+	<!-- Root directory for all produced files -->
+	<property name='root.dir' value='build' />
 
-    <!-- Source distribution repository, contains the sources for end-user and to build jajuk.jar and run tests -->
-    <property name='sources_dist.dir' value='${root.dir}/sources_dist/jajuk-src-${version}'/>
+	<!-- Source distribution repository, contains the sources for end-user and to build jajuk.jar and run tests -->
+	<property name='sources_dist.dir' value='${root.dir}/sources_dist/jajuk-src-${version}' />
 
-    <!-- Directory that contains the final artefacts (source .zip, rpm, deb, exe ...) -->
-    <property name='packages.dir' value='${root.dir}/packages'/>
+	<!-- Directory that contains the final artefacts (source, .zip, exe ...) -->
+	<property name='packages.dir' value='${root.dir}/packages' />
 
-    <!-- Windows distribution repository -->
-    <property name='windows_dist.dir' value='${root.dir}/windows'/>
+	<!-- Windows distribution repository -->
+	<property name='windows_dist.dir' value='${root.dir}/windows' />
 
-    <!-- OSX distribution repository -->
-    <property name='osx_dist.dir' value='${root.dir}/osx'/>
+	<!-- Linux distribution repository -->
+        <property name='linux_dist.dir' value='${root.dir}/linux' />
 
-    <!-- Launch4j installation path, do not change the name of this property -->
-    <property name="launch4j.dir" location="/opt/launch4j"/>
+	<!-- OSX distribution repository -->
+	<property name='osx_dist.dir' value='${root.dir}/osx' />
 
-    <!-- RPM build directory -->
-    <property name="rpm_build.dir" location="${root.dir}/rpm"/>
+	<!-- Launch4j installation path, do not change the name of this property -->
+	<property name="launch4j.dir" location="/opt/launch4j" />
 
-    <!-- RPM dist directory -->
-    <property name="linux_dist.dir" location="${root.dir}/linux_dist"/>
+	
+	<!-- ======================= -->
+	<!-- | Global Filters        | -->
+	<!-- ======================= -->
+	<!-- Set build date -->
+	<tstamp>
+		<format property='build.time' pattern='yyyy/MM/dd HH:mm' />
+	</tstamp>
+	<filter token="DATE_REPLACED_BY_ANT" value="${build.time}" />
+	<filter token="VERSION_REPLACED_BY_ANT" value="${version}" />
+	<filter token="TEST_FLAG_REPLACED_BY_ANT" value="${test_flag}" />
 
-    <!-- Debian build directory -->
-    <property name="deb_build.dir" location="${root.dir}/debian"/>
+	<!-- ======================= -->
+	<!-- | Tasks definition    | -->
+	<!-- ======================= -->
 
-    <!-- ======================= -->
-    <!-- | Global Filters        | -->
-    <!-- ======================= -->
-    <!-- Set build date -->
-    <tstamp>
-        <format property='build.time' pattern='yyyy/MM/dd HH:mm'/>
-    </tstamp>
-    <filter token="DATE_REPLACED_BY_ANT" value="${build.time}"/>
-    <filter token="VERSION_REPLACED_BY_ANT" value="${version}"/>
-    <filter token="TEST_FLAG_REPLACED_BY_ANT" value="${test_flag}"/>
+	<!-- Windows executable creation from jar -->
+	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
+	        :${launch4j.dir}/lib/xstream.jar" />
 
-    <!-- ======================= -->
-    <!-- | Tasks definition    | -->
-    <!-- ======================= -->
+	<!--NSIS installer Windows package creation -->
+	<taskdef name="nsis" classname="com.danielreese.nsisant.Task">
+		<classpath location="lib/build/nsisant-1.3.jar" />
+	</taskdef>
 
-    <!-- Windows executable creation from jar -->
-    <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
-	        :${launch4j.dir}/lib/xstream.jar"/>
+	<!-- jarbundler OSX package creation -->
+	<taskdef name='jarbundler' classpath='lib/build/jarbundler-2.4.0.jar' classname='net.sourceforge.jarbundler.JarBundler' />
 
-    <!--NSIS installer Windows package creation -->
-    <taskdef name="nsis" classname="com.danielreese.nsisant.Task">
-        <classpath location="lib/build/nsisant-1.3.jar"/>
-    </taskdef>
+	<!-- ========================== -->
+	<!-- | OS-independent targets | -->
+	<!-- ========================== -->
 
-    <!-- jarbundler OSX package creation -->
-    <taskdef name='jarbundler' classpath='lib/build/jarbundler-2.4.0.jar'
-             classname='net.sourceforge.jarbundler.JarBundler'/>
+	<target name='startup'>
+		<echo message='Building Jajuk release: ${version} using Java ${java.specification.version}' />
+		<echo message='Basedir: ${basedir}' />
+		<echo message='Build time: ${build.time}' />
+	</target>
 
-    <!-- jdeb, .deb packages creation -->
-    <taskdef name="deb" classname="org.vafer.jdeb.ant.DebAntTask" classpath="lib/build/jdeb-1.5.jar"/>
+	<target name='clean'>
+		<echo message='Clean up previous build files' />
+		<delete failonerror='false' dir='${root.dir}' />
+	</target>
 
-    <!-- ========================== -->
-    <!-- | OS-independent targets | -->
-    <!-- ========================== -->
+	<target name='package_all' depends='startup,build_sources_dist,build_jajuk,test_jajuk,build_nsis,build_macos,mkdist_linux'>
+		<echo message='Create all packages, source archive in:  ${sources_dist.dir}' />
+	</target>
 
-    <target name='startup'>
-        <echo message='Building Jajuk release: ${version} using Java ${java.specification.version}'/>
-        <echo message='Basedir: ${basedir}'/>
-        <echo message='Build time: ${build.time}'/>
-    </target>
+	<target name='build_sources_dist' depends="clean">
+		<echo message='Prepare the source package' />
+		<copy todir='${sources_dist.dir}'>
+			<fileset dir='.'>
+				<exclude name=".*/" />
+				<exclude name="*.iml" />
+				<exclude name="lib/" />
+				<exclude name="build/" />
+				<exclude name="lib/mplayer/" />
+				<exclude name="src/tools/" />
+				<exclude name="src/packaging/" />
+				<exclude name="bin/" />
+				<exclude name="test-reports/" />
+			</fileset>
+		</copy>
 
-    <target name='clean'>
-        <echo message='Clean up previous build files'/>
-        <delete failonerror='false' dir='${root.dir}'/>
-    </target>
+		<!--copy informative, build and scripts files to the root of the source distribution-->
+		<copy todir='${sources_dist.dir}' filtering="true">
+			<fileset file='src/legals/LICENSE-GPL.txt' />
+			<fileset file='src/legals/DERIVATED.txt' />
+			<fileset file='src/legals/AUTHORS.txt' />
+			<fileset file='src/packaging/linux/jajuk' />
+			<fileset file='src/packaging/ant/BUILD.txt' />
+		</copy>
 
-    <target name='package_all' depends='startup,build_sources_dist,build_jajuk,test_jajuk,build_nsis,build_macos,build_debian,build_rpm'>
-        <echo message='Create all packages, source archive in:  ${sources_dist.dir}'/>
-    </target>
+		<!-- Copy and rename the end user ant script -->
+		<copy file='src/packaging/ant/build_enduser.xml' tofile='${sources_dist.dir}/build.xml' filtering="true" />
 
-    <target name='build_sources_dist' depends="clean">
-        <echo message='Prepare the source package'/>
-        <copy todir='${sources_dist.dir}'>
-            <fileset dir='.'>
-                <exclude name=".*/"/>
-                <exclude name="*.iml"/>
-                <exclude name="lib/"/>
-                <exclude name="build/"/>
-                <exclude name="lib/mplayer/"/>
-                <exclude name="src/tools/"/>
-                <exclude name="src/packaging/"/>
-                <exclude name="bin/"/>
-                <exclude name="test-reports/"/>
-            </fileset>
-        </copy>
+		<!-- Filter remaining files -->
+		<copy todir='${sources_dist.dir}/src/main/java/org/jajuk/util' filtering="true" overwrite="true">
+			<fileset file='src/main/java/org/jajuk/util/Const.java' />
+		</copy>
 
-        <!--copy informative, build and scripts files to the root of the source distribution-->
-        <copy todir='${sources_dist.dir}' filtering="true">
-            <fileset file='src/legals/LICENSE-GPL.txt'/>
-            <fileset file='src/legals/DERIVATED.txt'/>
-            <fileset file='src/legals/AUTHORS.txt'/>
-            <fileset file='src/packaging/Debian/jajuk'/>
-            <fileset file='src/packaging/ant/BUILD.txt'/>
-        </copy>
-
-        <!-- Copy and rename the end user ant script -->
-        <copy file='src/packaging/ant/build_enduser.xml' tofile='${sources_dist.dir}/build.xml' filtering="true"/>
-
-        <!-- Filter remaining files -->
-        <copy todir='${sources_dist.dir}/src/main/java/org/jajuk/util' filtering="true" overwrite="true">
-            <fileset file='src/main/java/org/jajuk/util/Const.java'/>
-        </copy>
-
-        <!-- Copy the junit jar used for junit tests performed by the end users.
+		<!-- Copy the junit jar used for junit tests performed by the end users.
         Also copy all jajuk dependencies (this copy must not use filtering)-->
-        <copy todir='${sources_dist.dir}/lib'>
-            <fileset dir="lib">
-                <include name="*.jar"/>
-            </fileset>
-            <fileset dir="lib/build">
-                <include name="junit*.jar"/>
-            </fileset>
-        </copy>
+		<copy todir='${sources_dist.dir}/lib'>
+			<fileset dir="lib">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="lib/build">
+				<include name="junit*.jar" />
+			</fileset>
+		</copy>
 
-        <!-- Build the sources zip, we zip the parent directory of sources to create a root directory
+		<!-- Build the sources zip, we zip the parent directory of sources to create a root directory
          at unzipping -->
-        <zip basedir='${sources_dist.dir}/..' destfile='${packages.dir}/jajuk-sources-${version}.zip'/>
-    </target>
+		<zip basedir='${sources_dist.dir}/..' destfile='${packages.dir}/jajuk-sources-${version}.zip' />
+	</target>
 
-    <target name='build_jajuk' depends="build_sources_dist">
-        <echo message='Build jajuk from the source package'/>
-        <ant dir="${sources_dist.dir}" target="package_jar" inheritall="false" useNativeBasedir='true'/>
-        <!-- copy the jar to the final packages directory -->
-        <copy file="${sources_dist.dir}/bin/jajuk.jar" todir="${packages.dir}"/>
-    </target>
+	<target name='build_jajuk' depends="build_sources_dist">
+		<echo message='Build jajuk from the source package' />
+		<ant dir="${sources_dist.dir}" target="package_jar" inheritall="false" useNativeBasedir='true' />
+		<!-- copy the jar to the final packages directory -->
+		<copy file="${sources_dist.dir}/bin/jajuk.jar" todir="${packages.dir}" />
+	</target>
 
-    <target name='test_jajuk' depends="build_sources_dist">
-        <echo message='Test jajuk from the source package'/>
-        <ant dir="${sources_dist.dir}" target="tests" inheritall="false" useNativeBasedir='true'/>
-    </target>
+	<target name='test_jajuk' depends="build_sources_dist">
+		<echo message='Test jajuk from the source package' />
+		<ant dir="${sources_dist.dir}" target="tests" inheritall="false" useNativeBasedir='true' />
+	</target>
 
-    <!-- ========================== -->
-    <!-- | MS Windows targets     | -->
-    <!-- ========================== -->
+	<!-- ========================== -->
+	<!-- | MS Windows targets     | -->
+	<!-- ========================== -->
 
-    <!-- Windows jajuk.exe creation using launch4j-->
-    <target name='launch4j' depends='build_jajuk'>
-        <echo message='Prepare files to build Windows executable'/>
-        <mkdir dir='${windows_dist.dir}'/>
-        <!--Windows specific -->
-        <copy todir='${windows_dist.dir}' filtering="true">
-            <fileset file='src/packaging/windows/jajuk.launch4j'/>
-        </copy>
-        <!-- Copy jajuk.jar to be embedded into the exe -->
-        <copy todir='${windows_dist.dir}'>
-            <fileset file='${packages.dir}/jajuk.jar'/>
-        </copy>
-        <copy todir='${windows_dist.dir}'>
-            <fileset file='src/packaging/windows/jajuk-icon.ico'/>
-        </copy>
-        <echo message='Create Jajuk Windows executable file'/>
-        <launch4j configFile="${windows_dist.dir}/jajuk.launch4j"/>
-    </target>
+	<!-- Windows jajuk.exe creation using launch4j-->
+	<target name='launch4j' depends='build_jajuk'>
+		<echo message='Prepare files to build Windows executable' />
+		<mkdir dir='${windows_dist.dir}' />
+		<!--Windows specific -->
+		<copy todir='${windows_dist.dir}' filtering="true">
+			<fileset file='src/packaging/windows/jajuk.launch4j' />
+		</copy>
+		<!-- Copy jajuk.jar to be embedded into the exe -->
+		<copy todir='${windows_dist.dir}'>
+			<fileset file='${packages.dir}/jajuk.jar' />
+		</copy>
+		<copy todir='${windows_dist.dir}'>
+			<fileset file='src/packaging/windows/jajuk-icon.ico' />
+		</copy>
+		<echo message='Create Jajuk Windows executable file' />
+		<launch4j configFile="${windows_dist.dir}/jajuk.launch4j" />
+	</target>
 
-    <!-- Windows Nullsoft installer -->
-    <target name='build_nsis' depends='launch4j'>
-        <echo message='Create Jajuk NSIS installer'/>
-        <!-- Copy and Set release in nsis descriptor files -->
-        <copy todir='${windows_dist.dir}' filtering="true">
-            <fileset file='src/packaging/windows/jajuk.nsis'/>
-            <fileset file='src/legals/LICENSE-GPL.txt'/>
-        </copy>
-        <!-- Uncompress the nsis resources used to build the installer -->
-        <unzip src="src/packaging/windows/Resources_nsis.zip" dest="${windows_dist.dir}"/>
-        <copy todir='${windows_dist.dir}'>
-            <fileset dir='.'>
-                <!-- No unix lib, no mplayer -->
-                <include name="lib/**"/>
-                <exclude name="lib/build/"/>
-                <exclude name="**/*.so"/>
-                <exclude name="**/mplayer/**"/>
-            </fileset>
-        </copy>
-        <!-- copy mplayer.exe to the root destination directory -->
-        <copy todir='${windows_dist.dir}'>
-            <fileset file="lib/mplayer/windows/mplayer.exe"/>
-        </copy>
-        <!-- Launch the installer creation -->
-        <nsis script="${windows_dist.dir}/jajuk.nsis"/>
-        <!-- Copy the jar to the final packages directory -->
-        <copy todir='${packages.dir}'>
-            <fileset file='${windows_dist.dir}/jajuk*-setup.exe'/>
-        </copy>
-    </target>
+	<!-- Windows Nullsoft installer -->
+	<target name='build_nsis' depends='launch4j'>
+		<echo message='Create Jajuk NSIS installer' />
+		<!-- Copy and Set release in nsis descriptor files -->
+		<copy todir='${windows_dist.dir}' filtering="true">
+			<fileset file='src/packaging/windows/jajuk.nsis' />
+			<fileset file='src/legals/LICENSE-GPL.txt' />
+		</copy>
+		<!-- Uncompress the nsis resources used to build the installer -->
+		<unzip src="src/packaging/windows/Resources_nsis.zip" dest="${windows_dist.dir}" />
+		<copy todir='${windows_dist.dir}'>
+			<fileset dir='.'>
+				<!-- No unix lib, no mplayer -->
+				<include name="lib/**" />
+				<exclude name="lib/build/" />
+				<exclude name="**/*.so" />
+				<exclude name="**/mplayer/**" />
+			</fileset>
+		</copy>
+		<!-- copy mplayer.exe to the root destination directory -->
+		<copy todir='${windows_dist.dir}'>
+			<fileset file="lib/mplayer/windows/mplayer.exe" />
+		</copy>
+		<!-- Launch the installer creation -->
+		<nsis script="${windows_dist.dir}/jajuk.nsis" />
+		<!-- Copy the jar to the final packages directory -->
+		<copy todir='${packages.dir}'>
+			<fileset file='${windows_dist.dir}/jajuk*-setup.exe' />
+		</copy>
+	</target>
 
-    <!-- ========================== -->
-    <!-- | OS X targets           | -->
-    <!-- ========================== -->
+	<!-- ========================== -->
+	<!-- | OS X targets           | -->
+	<!-- ========================== -->
 
-    <!--jarbundler Mac OS X package creation (Jajuk.app)-->
-    <target name='jarbundler' depends='build_jajuk'>
-        <echo message='jarbundler'/>
-        <mkdir dir='${osx_dist.dir}'/>
-        <jarbundler dir='${osx_dist.dir}' name='Jajuk' shortname="Jajuk" mainclass='org.jajuk.Main'
-                    icon='src/packaging/OSX/jajuk-icon_source.icns' jvmversion='1.8+' version='${version}'
-                    useJavaXKey='true' stubfile='src/packaging/OSX/universalJavaApplicationStub'
-                    build='${version}'
-                    vmoptions='-client -Xms20M -Xmx2G -Xverify:none'
-                    arguments='-${test_flag}' verbose='true'>
-            <jarfileset dir='lib'>
-                <include name='*.jar'/>
-            </jarfileset>
-            <jarfileset file="${packages.dir}/jajuk.jar"/>
-            <execfilelist dir='lib/mplayer/osx' files="mplayer"/>
-        </jarbundler>
-    </target>
+	<!--jarbundler Mac OS X package creation (Jajuk.app)-->
+	<target name='jarbundler' depends='build_jajuk'>
+		<echo message='jarbundler' />
+		<mkdir dir='${osx_dist.dir}' />
+		<jarbundler dir='${osx_dist.dir}' name='Jajuk' shortname="Jajuk" mainclass='org.jajuk.Main' icon='src/packaging/OSX/jajuk-icon_source.icns' jvmversion='1.8+' version='${version}' useJavaXKey='true' stubfile='src/packaging/OSX/universalJavaApplicationStub' build='${version}' vmoptions='-client -Xms20M -Xmx2G -Xverify:none' arguments='-${test_flag}' verbose='true'>
+			<jarfileset dir='lib'>
+				<include name='*.jar' />
+			</jarfileset>
+			<jarfileset file="${packages.dir}/jajuk.jar" />
+			<execfilelist dir='lib/mplayer/osx' files="mplayer" />
+		</jarbundler>
+	</target>
 
-    <!--Create jarbundler zip -->
-    <target name='build_macos' depends='jarbundler'>
-        <echo message='Create Jajuk MAC OS package'/>
-        <zip zipfile='${packages.dir}/jajuk-macos-${version}.zip'>
-            <zipfileset dir='${osx_dist.dir}' filemode='755'>
-                <include name='*/**'/>
-            </zipfileset>
-        </zip>
-    </target>
+	<!--Create jarbundler zip -->
+	<target name='build_macos' depends='jarbundler'>
+		<echo message='Create Jajuk MAC OS package' />
+		<zip zipfile='${packages.dir}/jajuk-macos-${version}.zip'>
+			<zipfileset dir='${osx_dist.dir}' filemode='755'>
+				<include name='*/**' />
+			</zipfileset>
+		</zip>
+	</target>
 
-    <!-- ========================== -->
-    <!-- | Linux  targets           | -->
-    <!-- ========================== -->
-    <target name='mkdist_linux'>
-        <echo message='Prepare files to build Linux packages and copy common files among all distros' />
-        <delete failonerror='false' dir='${linux_dist.dir}'/>
-        <copy todir='${linux_dist.dir}/usr/share/jajuk'>
-            <fileset file='${packages.dir}/jajuk.jar'/>
-        </copy>
-        <copy todir='${linux_dist.dir}/usr/share/jajuk/lib'>
-            <fileset file='lib/*.jar'/>
-        </copy>
-        <copy todir='${linux_dist.dir}/usr/share/applications'>
-            <fileset file='src/packaging/RPMS/jajuk.desktop'/>
-        </copy>
-        <copy todir='${linux_dist.dir}/usr/share/doc/jajuk'>
-            <fileset file='src/legals/*.*'/>
-        </copy>
-        <copy todir='${linux_dist.dir}/usr/share/pixmaps'>
-            <fileset file='src/main/resources/icons/64x64/jajuk-icon_64x64.png'/>
-        </copy>
-        <move file="${linux_dist.dir}/usr/share/pixmaps/jajuk-icon_64x64.png"
-              tofile="${linux_dist.dir}/usr/share/pixmaps/jajuk.png"/>
-        <chmod file='${linux_dist.dir}/usr/share/applications/jajuk.desktop' perm='ugo+rwx'/>
-    </target>
+	<!-- ========================== -->
+	<!-- | Linux  targets           | -->
+	<!-- ========================== -->
+	<target name='mkdist_linux'>
+		<echo message='Prepare files to build Linux packages and copy common files among all distros' />
+		<delete failonerror='false' dir='${linux_dist.dir}' />
+		<copy todir='${linux_dist.dir}/usr/share/jajuk'>
+			<fileset file='${packages.dir}/jajuk.jar' />
+		</copy>
+		<copy todir='${linux_dist.dir}/usr/share/jajuk/lib'>
+			<fileset file='lib/*.jar' />
+		</copy>
+		<copy todir='${linux_dist.dir}/usr/share/doc/jajuk'>
+			<fileset file='src/legals/*.*' />
+		</copy>
+		<copy todir='${linux_dist.dir}/usr/share/pixmaps'>
+			<fileset file='src/main/resources/icons/64x64/jajuk-icon_64x64.png' />
+		</copy>
+		<move file="${linux_dist.dir}/usr/share/pixmaps/jajuk-icon_64x64.png" tofile="${linux_dist.dir}/usr/share/pixmaps/jajuk.png" />
+		<copy todir='${linux_dist.dir}/usr/bin' filtering="true">
+			<fileset file='src/packaging/linux/jajuk' />
+		</copy>
+		<chmod file='${linux_dist.dir}/usr/bin/jajuk' perm='ugo+rx' />
+		<copy todir='${linux_dist.dir}/usr/share/jajuk/native'>
+			<fileset file='lib/native/*.so' />
+		</copy>
+	</target>
 
-    <!-- Build the 32 bits RPM -->
-    <target name='build_rpm'  depends="build_jajuk">
-        <echo message='Create Jajuk 32 bits RPM package'/>
-        <!-- Force to rebuild linux dist shared among several targets -->
-        <antcall target="mkdist_linux"/>
-        <copy todir='${rpm_build.dir}/SPECS' filtering="true">
-            <fileset file='src/packaging/RPMS/jajuk.spec'/>
-        </copy>
-        <!-- Copy the RPM-flavor shell-->
-        <copy todir='${linux_dist.dir}/usr/bin' filtering="true">
-            <fileset file='src/packaging/RPMS/jajuk'/>
-        </copy>
-        <!-- Set rights-->
-        <chmod file='${linux_dist.dir}/usr/bin/jajuk' perm='ugo+rx'/>
 
-        <!-- We bring the libmatthew-javalibs into the rpm as most RPM-flavor distros doesn't have
-        this dependency in their repository (only Fedrora so far). We have to build a 32 and
-        a 64 bits RPM because a noarch RPM cannot contain native libs -->
-
-        <!-- Build the 32 bits RPM -->
-        <copy todir='${rpm_build.dir}/BUILDROOT/jajuk-${version}-1.i386'>
-            <fileset dir='${linux_dist.dir}' includes="**"/>
-        </copy>
-        <copy todir='${rpm_build.dir}/BUILDROOT/jajuk-${version}-1.i386/usr/share/jajuk/jni'>
-            <fileset file='lib/lib32/*.so'/>
-        </copy>
-        <rpm failOnError='true' specFile='jajuk.spec' topDir='${rpm_build.dir}' cleanBuildDir='yes' removeSpec='no'
-             command='-bb -vv --target i386'/>
-        <!-- Copy the rpm to the final packages directory -->
-        <copy todir='${packages.dir}'>
-            <fileset file='${rpm_build.dir}/RPMS/i386/jajuk*.rpm'/>
-        </copy>
-
-        <!-- Build the 64 bits RPM -->
-        <copy todir='${rpm_build.dir}/BUILDROOT/jajuk-${version}-1.x86_64/'>
-            <fileset dir='${linux_dist.dir}' includes="**"/>
-        </copy>
-        <copy todir='${rpm_build.dir}/BUILDROOT/jajuk-${version}-1.x86_64/usr/share/jajuk/jni'>
-            <fileset file='lib/lib64/*.so'/>
-        </copy>
-        <rpm failOnError='true' specFile='jajuk.spec' topDir='${rpm_build.dir}' cleanBuildDir='yes' removeSpec='no'
-             command='-bb -vv --target x86_64'/>
-        <!-- Copy the rpm to the final packages directory -->
-        <copy todir='${packages.dir}'>
-            <fileset file='${rpm_build.dir}/RPMS/x86_64/jajuk*.rpm'/>
-        </copy>
-    </target>
-
-    <target name='build_debian' depends="build_jajuk">
-        <echo message='Prepare files to build .deb package'/>
-        <!-- Force to rebuild linux dist shared among several targets -->
-        <antcall target="mkdist_linux"/>
-        <!-- Copy the Debian-flavor shell -->
-        <copy todir='${linux_dist.dir}/usr/bin' filtering="true">
-            <fileset file='src/packaging/Debian/jajuk'/>
-        </copy>
-        <!-- Set rights-->
-        <chmod file='${linux_dist.dir}/usr/bin/jajuk' perm='ugo+rx'/>
-        <copy todir='${deb_build.dir}/control_dir' filtering="true">
-            <fileset file='src/packaging/Debian/control'/>
-        </copy>
-        <!-- Create a tar from linux dist, required to keep bin/jajuk permissions.
-         We don't bring the .so to build a platform independent package (but the
-         control file has a dependency to the libunixsocket-java package)-->
-        <tar compression="bzip2" destfile="${deb_build.dir}/jajuk.tar.bz2">
-            <tarfileset file="${linux_dist.dir}/**" filemode="644" excludes="usr/bin/jajuk,usr,**/*.so"/>
-            <tarfileset file="${linux_dist.dir}/usr" filemode="755"
-                        includes="usr/bin/jajuk,usr/share/applications/jajuk.desktop"/>
-        </tar>
-        <!-- We reuse the BUILDROOT RPM package to build the Debian package -->
-        <deb destfile="${deb_build.dir}/jajuk_${version}_all.deb" control="${deb_build.dir}/control_dir" verbose="true">
-            <data src="${deb_build.dir}/jajuk.tar.bz2" type="archive">
-                <mapper type="perm"/>
-            </data>
-        </deb>
-
-        <!-- Copy the deb to the final packages directory -->
-        <copy todir='${packages.dir}'>
-            <fileset file='${deb_build.dir}/jajuk*.deb'/>
-        </copy>
-    </target>
 </project>
