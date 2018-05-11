@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Jajuk
+Comment=Jajuk Advanced Jukebox
+Exec=jajuk
+Icon=jajuk
+Terminal=false
+Type=Application
+Encoding=UTF-8
+Categories=Audio;AudioVideo;
+StartupNotify=true
+NoDisplay=false

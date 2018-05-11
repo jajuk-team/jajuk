@@ -30,7 +30,7 @@
 	<property name='windows_dist.dir' value='${root.dir}/windows' />
 
 	<!-- Linux distribution repository -->
-        <property name='linux_dist.dir' value='${root.dir}/linux' />
+    <property name='linux_dist.dir' value='${root.dir}/linux' />
 
 	<!-- OSX distribution repository -->
 	<property name='osx_dist.dir' value='${root.dir}/osx' />
@@ -228,9 +228,9 @@
 	</target>
 
 	<!-- ========================== -->
-	<!-- | Linux  targets           | -->
+	<!-- | Linux  targets         | -->
 	<!-- ========================== -->
-	<target name='mkdist_linux'>
+	<target name='mkdist_linux' depends='build_jajuk'>
 		<echo message='Prepare files to build Linux packages and copy common files among all distros' />
 		<delete failonerror='false' dir='${linux_dist.dir}' />
 		<copy todir='${linux_dist.dir}/usr/share/jajuk'>
@@ -254,6 +254,38 @@
 			<fileset file='lib/native/*.so' />
 		</copy>
 	</target>
+	
 
+	<target name='appimage' depends='mkdist_linux'>
+ 		<property name='appimage.dir' value='${linux_dist.dir}/Jajuk.AppDir' />
+		<echo message='Prepare the appimage structure and build it' />
+		<delete failonerror='false' dir='${appimage.dir}' />
+		<mkdir dir="${appimage.dir}"/>
+		<!-- destination directory, required by appimage -->
+		<mkdir dir="${appimage.dir}/AppRun"/>
+		<copy todir='${appimage.dir}/usr/bin'>
+			<fileset file='${packages.dir}/jajuk.jar' />
+		</copy>
+		<copy todir='${appimage.dir}/usr/lib'>
+			<fileset file='lib/*.jar' />
+		</copy>
+		<copy todir='${appimage.dir}/usr/legals'>
+			<fileset file='src/legals/*.*' />
+		</copy>
+		<copy todir='${appimage.dir}'>
+			<fileset file='src/main/resources/icons/64x64/jajuk-icon_64x64.png' />
+		</copy>
+		<copy todir='${appimage.dir}'>
+			<fileset file='src/packaging/linux/jajuk.desktop' />
+		</copy>
+		<move file="${appimage.dir}/jajuk-icon_64x64.png" tofile="${appimage.dir}/jajuk.png" />
+		<copy todir='${appimage.dir}/usr/bin' filtering="true">
+			<fileset file='src/packaging/linux/jajuk' />
+		</copy>
+		<chmod file='${appimage.dir}/usr/bin/jajuk' perm='ugo+rx' />
+		<copy todir='${appimage.dir}/usr/lib'>
+			<fileset file='lib/native/*.so' />
+		</copy>
+	</target>
 
 </project>
