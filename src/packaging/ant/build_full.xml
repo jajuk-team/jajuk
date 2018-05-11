@@ -37,6 +37,13 @@
 
 	<!-- Launch4j installation path, do not change the name of this property -->
 	<property name="launch4j.dir" location="/opt/launch4j" />
+	
+	<!-- AppImage build tool path -->
+	<property name="appImageTool" location="/opt/appimagetool-x86_64.AppImage" />
+	
+	<!-- Linux oracle 64 bits 1.8 JRE -->
+	<property name="jre.dir" location="/opt/jre" />
+		
 
 	
 	<!-- ======================= -->
@@ -81,7 +88,7 @@
 		<delete failonerror='false' dir='${root.dir}' />
 	</target>
 
-	<target name='package_all' depends='startup,mkdist_linux'>
+	<target name='package_all' depends='startup,build_sources_dist,build_jajuk,test_jajuk,build_nsis,build_macos,appimage'>
 		<echo message='Create all packages, source archive in:  ${sources_dist.dir}' />
 	</target>
 
@@ -230,39 +237,11 @@
 	<!-- ========================== -->
 	<!-- | Linux  targets         | -->
 	<!-- ========================== -->
-	<target name='mkdist_linux' depends='build_jajuk'>
-		<echo message='Prepare files to build Linux packages and copy common files among all distros' />
-		<delete failonerror='false' dir='${linux_dist.dir}' />
-		<copy todir='${linux_dist.dir}/usr/share/jajuk'>
-			<fileset file='${packages.dir}/jajuk.jar' />
-		</copy>
-		<copy todir='${linux_dist.dir}/usr/share/jajuk/lib'>
-			<fileset file='lib/*.jar' />
-		</copy>
-		<copy todir='${linux_dist.dir}/usr/share/doc/jajuk'>
-			<fileset file='src/legals/*.*' />
-		</copy>
-		<copy todir='${linux_dist.dir}/usr/share/pixmaps'>
-			<fileset file='src/main/resources/icons/64x64/jajuk-icon_64x64.png' />
-		</copy>
-		<move file="${linux_dist.dir}/usr/share/pixmaps/jajuk-icon_64x64.png" tofile="${linux_dist.dir}/usr/share/pixmaps/jajuk.png" />
-		<copy todir='${linux_dist.dir}/usr/bin' filtering="true">
-			<fileset file='src/packaging/linux/jajuk' />
-		</copy>
-		<chmod file='${linux_dist.dir}/usr/bin/jajuk' perm='ugo+rx' />
-		<copy todir='${linux_dist.dir}/usr/share/jajuk/native'>
-			<fileset file='lib/native/*.so' />
-		</copy>
-	</target>
-	
-
-	<target name='appimage' depends='mkdist_linux'>
+	<target name='appimage' depends='build_jajuk'>
  		<property name='appimage.dir' value='${linux_dist.dir}/Jajuk.AppDir' />
 		<echo message='Prepare the appimage structure and build it' />
 		<delete failonerror='false' dir='${appimage.dir}' />
 		<mkdir dir="${appimage.dir}"/>
-		<!-- destination directory, required by appimage -->
-		<mkdir dir="${appimage.dir}/AppRun"/>
 		<copy todir='${appimage.dir}/usr/bin'>
 			<fileset file='${packages.dir}/jajuk.jar' />
 		</copy>
@@ -275,17 +254,26 @@
 		<copy todir='${appimage.dir}'>
 			<fileset file='src/main/resources/icons/64x64/jajuk-icon_64x64.png' />
 		</copy>
+		<move file="${appimage.dir}/jajuk-icon_64x64.png" tofile="${appimage.dir}/jajuk.png" />
 		<copy todir='${appimage.dir}'>
 			<fileset file='src/packaging/linux/jajuk.desktop' />
 		</copy>
-		<move file="${appimage.dir}/jajuk-icon_64x64.png" tofile="${appimage.dir}/jajuk.png" />
 		<copy todir='${appimage.dir}/usr/bin' filtering="true">
 			<fileset file='src/packaging/linux/jajuk' />
 		</copy>
 		<chmod file='${appimage.dir}/usr/bin/jajuk' perm='ugo+rx' />
+		<copy todir='${appimage.dir}/usr/bin'>
+			<fileset dir='${jre.dir}' />
+		</copy>
+		<symlink link="${appimage.dir}/AppRun" resource="usr/bin/jajuk"/>
 		<copy todir='${appimage.dir}/usr/lib'>
 			<fileset file='lib/native/*.so' />
 		</copy>
+		<exec executable="${appImageTool}">
+			<env key="ARCH" value="x86_64"/>
+			<arg value="${appimage.dir}" />
+			<arg value="${packages.dir}/Jajuk-x86_64.AppImage" />
+		</exec>
 	</target>
 
 </project>
