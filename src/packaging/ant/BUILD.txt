@@ -1,7 +1,10 @@
+Note : this is instructions to build Jajuk from the source distribution. 
+It will not work from the full Github sources.
+
 To compile Jajuk :
 
 Requirements :
-- JDK 1.7+
+- JDK 1.8+
 - Ant (available at http://ant.apache.org/ )
 
 -------

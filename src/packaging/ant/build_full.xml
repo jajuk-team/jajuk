@@ -81,7 +81,7 @@
 		<delete failonerror='false' dir='${root.dir}' />
 	</target>
 
-	<target name='package_all' depends='startup,build_sources_dist,build_jajuk,test_jajuk,build_nsis,build_macos,mkdist_linux'>
+	<target name='package_all' depends='startup,mkdist_linux'>
 		<echo message='Create all packages, source archive in:  ${sources_dist.dir}' />
 	</target>
 

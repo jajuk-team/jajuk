@@ -1,6 +1,4 @@
 #!/bin/bash
-# RPM Jajuk launch script (assumes that libs are in /usr/share/jajuk/lib and jajuk.jar in /usr/share/java)
-
 #JVM arguments used by Jajuk. It's important  to notice that some of this tuning is useful only when using Java player (when mplayer is not available)
 # -client : Use the client JVM, optimized for single user usage [Don't change this setting]
 # -cp : classpath to libs. Note: Incompatible with -jar option.
@@ -8,11 +6,11 @@
 # -Xmx: Maximal Heap size. We set a large size because Out Of Memory errors make the application crash. In some rare cases, very large collection (>200Gb) users could increase this setting (see Performance section in the manual) [Change this setting only if you have very large collection, do not reduce it]
 # -Xverify:none : quicker startup, no bytecode check
 # -Djava.library.path : directory containing the .so files.
-JAVA_OPTIONS="-client -cp "/usr/share/jajuk/lib/*:/usr/share/jajuk/jajuk.jar" -Xms30M -Xmx2G -Xverify:none -Djava.library.path=/usr/share/jajuk/jni"
+JAVA_OPTIONS="-client -cp "/usr/share/jajuk/lib/*:/usr/share/jajuk/jajuk.jar" -Xms30M -Xmx2G -Xverify:none -Djava.library.path=/usr/share/jajuk/native"
 
 #Jajuk options
 JAJUK_OPTIONS="-@TEST_FLAG_REPLACED_BY_ANT@"
 
-##let's finally start Jajuk displaying the command:
+##let's start Jajuk displaying the command:
 set -o xtrace
 java $JAVA_OPTIONS org.jajuk.Main $JAJUK_OPTIONS
