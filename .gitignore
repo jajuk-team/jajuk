@@ -11,3 +11,4 @@ target/
 .idea/
 jajuk.iml
 /.settings/
+build
