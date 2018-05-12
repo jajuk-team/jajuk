@@ -43,7 +43,7 @@ public class ReplayAlbumAction extends JajukAction {
    * Instantiates a new replay album action.
    */
   ReplayAlbumAction() {
-    super("replay album", "alt F9", false, true);
+    super("replay album", "alt F9", false);
   }
 
   /* (non-Javadoc)

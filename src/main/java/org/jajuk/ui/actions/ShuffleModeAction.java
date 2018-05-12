@@ -41,7 +41,7 @@ public class ShuffleModeAction extends JajukAction {
    */
   ShuffleModeAction() {
     super(Messages.getString("JajukJMenuBar.11"), IconLoader.getIcon(JajukIcons.SHUFFLE), "ctrl H",
-        true, false);
+        true);
     setShortDescription(Messages.getString("CommandJPanel.2"));
   }
 

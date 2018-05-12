@@ -1,7 +1,5 @@
 <launch4jConfig>
   <!-- Produce an exe that contains jajuk.jar -->
-  <!-- Note : the JIntellitype dll should be in the same directory than the exe to be loaded -->
-  <!-- Note : we don't wrap jajuk.jar : jajuk runs but JIntellytype makes a NPE when running from an exe -->
   <dontWrapJar>true</dontWrapJar>
   <jar>jajuk.jar</jar>
   <headerType>gui</headerType>

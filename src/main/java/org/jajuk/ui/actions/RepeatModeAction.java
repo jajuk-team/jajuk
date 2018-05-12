@@ -43,7 +43,7 @@ public class RepeatModeAction extends JajukAction {
    */
   RepeatModeAction() {
     super(Messages.getString("JajukJMenuBar.10"), IconLoader.getIcon(JajukIcons.REPEAT), "ctrl T",
-        true, false);
+        true);
     setShortDescription(Messages.getString("CommandJPanel.1"));
   }
 

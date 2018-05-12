@@ -39,25 +39,9 @@ import org.jajuk.util.log.Log;
 public abstract class JajukAction extends AbstractAction {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -2535230785022978297L;
-  /** Is this action an hotkey ?. */
-  private boolean bHotkey = false;
   /** enable state. */
   private boolean bEnable = true;
-  // Instantiate a static JIntellitype object if under Windows
-  // BEWARE ! don't use direct call to JIntellitype like
-  // JIntellitype.isJIntellitypeSupported()) because we don't want to create a linkage
-  // dependency for non Windows OS. The JIntellitype jar is not available under Debian for ie
-  static {
-    if (UtilSystem.isUnderWindows()) {
-      try {
-        Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager")
-            .getMethod("registerJIntellitype").invoke(null, (Object[]) null);
-      } catch (Exception e) {
-        Log.error(e);
-      }
-    }
-  }
-
+  
   /**
    * Construct an action with the given name, icon and accelerator keystroke.
    *
@@ -65,12 +49,8 @@ public abstract class JajukAction extends AbstractAction {
    * @param icon The icon to use for visualization of the action.
    * @param stroke The keystroke to use.
    * @param enabled By default enable or disable the action.
-   * @param bHotkey 
    */
-  protected JajukAction(String pName, Icon icon, KeyStroke stroke, boolean enabled, boolean bHotkey) {
-    // check hotkeys are enabled (false by default)
-    this.bHotkey = UtilSystem.isUnderWindows() && bHotkey
-        && Conf.getBoolean(Const.CONF_OPTIONS_HOTKEYS);
+  protected JajukAction(String pName, Icon icon, KeyStroke stroke, boolean enabled) {
     String name = pName;
     if (name != null) {
       int mnemonic = ActionUtil.getMnemonic(name);
@@ -84,16 +64,6 @@ public abstract class JajukAction extends AbstractAction {
       setIcon(icon);
     }
     if (stroke != null) {
-      if (this.bHotkey) {
-        try {
-          Class.forName("org.jajuk.ui.actions.WindowsHotKeyManager")
-              .getMethod("registerHotKey", new Class[] { KeyStroke.class, JajukAction.class })
-              .invoke(null, new Object[] { stroke, this });
-        } catch (Exception e) {
-          Log.error(e);
-        }
-      }
-      // else use standard swing keystroke feature
       setAcceleratorKey(stroke);
     }
     setEnabled(enabled);
@@ -110,12 +80,11 @@ public abstract class JajukAction extends AbstractAction {
    * @param stroke The keystroke to use. If the keystroke given is not a valid
    * keystroke using the rules describe in
    * @param enabled By default enable or disable the action.
-   * @param bHotkey is it a hotkey (available even when window has not the focus) ?
    * {@link javax.swing.KeyStroke#getKeyStroke(String)}, null is used
    * instead.
    */
-  protected JajukAction(String name, Icon icon, String stroke, boolean enabled, boolean bHotkey) {
-    this(name, icon, KeyStroke.getKeyStroke(stroke), enabled, bHotkey);
+  protected JajukAction(String name, Icon icon, String stroke, boolean enabled) {
+    this(name, icon, KeyStroke.getKeyStroke(stroke), enabled);
   }
 
   /**
@@ -127,10 +96,9 @@ public abstract class JajukAction extends AbstractAction {
    * mnemonic key for the action.
    * @param stroke The keystroke to use.
    * @param enabled By default enable or disable the action.
-   * @param bHotkey is it a hotkey (available even when window has not the focus) ?
    */
-  protected JajukAction(String name, KeyStroke stroke, boolean enabled, boolean bHotkey) {
-    this(name, null, stroke, enabled, bHotkey);
+  protected JajukAction(String name, KeyStroke stroke, boolean enabled) {
+    this(name, null, stroke, enabled);
   }
 
   /**
@@ -143,12 +111,11 @@ public abstract class JajukAction extends AbstractAction {
    * @param stroke The keystroke to use. If the keystroke given is not a valid
    * keystroke using the rules describe in
    * @param enabled By default enable or disable the action.
-   * @param bHotkey is it a hotkey (available even when window has not the focus) ?
    * {@link javax.swing.KeyStroke#getKeyStroke(String)}, null is used
    * instead.
    */
-  protected JajukAction(String name, String stroke, boolean enabled, boolean bHotkey) {
-    this(name, null, stroke, enabled, bHotkey);
+  protected JajukAction(String name, String stroke, boolean enabled) {
+    this(name, null, stroke, enabled);
   }
 
   /**
@@ -157,12 +124,11 @@ public abstract class JajukAction extends AbstractAction {
    * @param icon The icon to use for visualization of the action.
    * @param stroke The keystroke to use.
    * @param enabled By default enable or disable the action.
-   * @param bHotkey is it a hotkey (available even when window has not the focus) ?
    * 
    * @see javax.swing.KeyStroke#getKeyStroke(String)
    */
   protected JajukAction(Icon icon, KeyStroke stroke, boolean enabled, boolean bHotkey) {
-    this(null, icon, stroke, enabled, bHotkey);
+    this(null, icon, stroke, enabled);
   }
 
   /**
@@ -172,13 +138,12 @@ public abstract class JajukAction extends AbstractAction {
    * @param stroke The keystroke to use. If the keystroke given is not a valid
    * keystroke using the rules describe in
    * @param enabled By default enable or disable the action.
-   * @param bHotkey is it a hotkey (available even when window has not the focus) ?
    * {@link javax.swing.KeyStroke#getKeyStroke(String)}, null is used
    * instead.
    * @see javax.swing.KeyStroke#getKeyStroke(String)
    */
   protected JajukAction(Icon icon, String stroke, boolean enabled, boolean bHotkey) {
-    this(null, icon, stroke, enabled, bHotkey);
+    this(null, icon, stroke, enabled);
   }
 
   /**
@@ -192,7 +157,7 @@ public abstract class JajukAction extends AbstractAction {
    * @param enabled By default enable or disable the action.
    */
   protected JajukAction(String name, Icon icon, boolean enabled) {
-    this(name, icon, (KeyStroke) null, enabled, false);
+    this(name, icon, (KeyStroke) null, enabled);
   }
 
   /**
@@ -202,7 +167,7 @@ public abstract class JajukAction extends AbstractAction {
    * @param enabled By default enable or disable the action.
    */
   protected JajukAction(Icon icon, boolean enabled) {
-    this(null, icon, (KeyStroke) null, enabled, false);
+    this(null, icon, (KeyStroke) null, enabled);
   }
 
   /**
@@ -215,7 +180,7 @@ public abstract class JajukAction extends AbstractAction {
    * @param enabled By default enable or disable the action.
    */
   protected JajukAction(String name, boolean enabled) {
-    this(name, null, (KeyStroke) null, enabled, false);
+    this(name, null, (KeyStroke) null, enabled);
   }
 
   /**
@@ -349,15 +314,7 @@ public abstract class JajukAction extends AbstractAction {
     }
   }
 
-  /**
-   * Checks if is hotkey.
-   * 
-   * @return whether it is an hotkey
-   */
-  public boolean isHotkey() {
-    return this.bHotkey;
-  }
-
+  
   /**
    * Enable or disable the action.
    * 

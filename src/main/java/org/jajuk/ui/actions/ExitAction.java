@@ -45,8 +45,7 @@ public class ExitAction extends JajukAction {
    * Instantiates a new exit action.
    */
   ExitAction() {
-    super(Messages.getString("JajukWindow.4"), IconLoader.getIcon(JajukIcons.EXIT), "alt X", true,
-        false);
+    super(Messages.getString("JajukWindow.4"), IconLoader.getIcon(JajukIcons.EXIT), "alt X", true);
     setShortDescription(Messages.getString("JajukWindow.21"));
   }
 

@@ -40,8 +40,7 @@ public class HelpRequiredAction extends JajukAction {
    * Instantiates a new help required action.
    */
   HelpRequiredAction() {
-    super(Messages.getString("JajukJMenuBar.15"), IconLoader.getIcon(JajukIcons.INFO), "F1", true,
-        false);
+    super(Messages.getString("JajukJMenuBar.15"), IconLoader.getIcon(JajukIcons.INFO), "F1", true);
   }
 
   /* (non-Javadoc)

@@ -44,7 +44,7 @@ public class CopyAction extends JajukAction {
    */
   CopyAction() {
     super(Messages.getString("FilesTreeView.3"), IconLoader.getIcon(JajukIcons.COPY), "ctrl C",
-        true, false);
+        true);
     setShortDescription(Messages.getString("FilesTreeView.3"));
   }
 

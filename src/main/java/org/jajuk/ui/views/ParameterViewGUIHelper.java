@@ -166,7 +166,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     pv.jcbDisplayUnmounted.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
     pv.jcbDefaultActionClick.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
     pv.jcbDefaultActionDrop.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_DROP));
-    pv.jcbHotkeys.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HOTKEYS));
     String rightLanguageDesc = LocaleManager.getDescForLocale(Conf
         .getString(Const.CONF_OPTIONS_LANGUAGE));
     // Select the right language
@@ -355,7 +354,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         Boolean.toString(pv.jcbDefaultActionClick.isSelected()));
     properties.put(Const.CONF_OPTIONS_PUSH_ON_DROP,
         Boolean.toString(pv.jcbDefaultActionDrop.isSelected()));
-    properties.put(Const.CONF_OPTIONS_HOTKEYS, Boolean.toString(pv.jcbHotkeys.isSelected()));
     properties.put(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE,
         Boolean.toString(pv.jcbAudioScrobbler.isSelected()));
     properties.put(Const.CONF_LASTFM_INFO,
@@ -783,8 +781,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         // local has changed
         someOptionsAppliedAtNextStartup = true;
       }
-    } else if (e.getSource() == pv.jcbHotkeys) {
-      someOptionsAppliedAtNextStartup = true;
     } else if (e.getSource() == pv.jbCatalogRefresh) {
       new Thread("Parameter Catalog refresh Thread") {
         @Override

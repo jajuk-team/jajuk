@@ -263,7 +263,6 @@ public final class Conf implements Const {
     defaults.put(CONF_NOVELTIES_MODE, MODE_TRACK);
     defaults.put(CONF_PATTERN_ANIMATION, PATTERN_DEFAULT_ANIMATION);
     defaults.put(CONF_FRAME_POS_FORCED, "");
-    defaults.put(CONF_OPTIONS_HOTKEYS, FALSE);
     defaults.put(CONF_MPLAYER_ARGS, "");
     defaults.put(CONF_ENV_VARIABLES, "");
     defaults.put(CONF_USE_VOLNORM, "false");

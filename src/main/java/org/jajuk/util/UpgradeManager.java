@@ -184,7 +184,6 @@ public final class UpgradeManager implements Const {
                 upgradeTrackPattern();
                 upgradeSerFiles();
                 upgradeNocover();
-                upgradeWrongHotketOption();
                 // For Jajuk < 1.4
                 upgradePerspectivesRename();
                 // For Jajuk < 1.6
@@ -358,21 +357,7 @@ public final class UpgradeManager implements Const {
         }
     }
 
-    /**
-     * jajuk 1.3: wrong option name: "false" instead of
-     * "jajuk.options.use_hotkeys"
-     */
-    private static void upgradeWrongHotketOption() {
-        String sUseHotkeys = Conf.getString("false");
-        if (sUseHotkeys != null) {
-            if (sUseHotkeys.equalsIgnoreCase(Const.FALSE) || sUseHotkeys.equalsIgnoreCase(Const.TRUE)) {
-                Conf.setProperty(Const.CONF_OPTIONS_HOTKEYS, sUseHotkeys);
-                Conf.removeProperty("false");
-            } else {
-                Conf.setProperty(Const.CONF_OPTIONS_HOTKEYS, Const.FALSE);
-            }
-        }
-    }
+  
 
     /**
      * For jajuk < 1.9: Alarm configuration, file / webradio to be launched

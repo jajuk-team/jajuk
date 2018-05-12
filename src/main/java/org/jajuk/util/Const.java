@@ -470,8 +470,6 @@ public interface Const {
   String CONF_FRAME_POS_FORCED = "jajuk.frame.forced_position";
   // Forced mplayer path
   String CONF_MPLAYER_PATH_FORCED = "jajuk.mplayer.forced_path";
-  /** Hotkeys flag *. */
-  String CONF_OPTIONS_HOTKEYS = "jajuk.options.use_hotkeys";
   /** MPLayer additional arguments *. */
   String CONF_MPLAYER_ARGS = "jajuk.player.mplayer_args";
   /** MPlayer additional environment variables *. */

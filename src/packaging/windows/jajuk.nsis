@@ -144,8 +144,7 @@ Section
   File "jajuk.exe"
   File "jajuk.jar"
   File /r "lib"
-  File "mplayer.exe"
-  Rename "$INSTDIR\lib\native\JIntellitype.dll" "$INSTDIR\JIntellitype.dll"
+  File "mplayer.exe"  
 SectionEnd
 
 

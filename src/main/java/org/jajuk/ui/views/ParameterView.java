@@ -150,7 +150,6 @@ public class ParameterView extends ViewAdapter {
   JCheckBox jcbDefaultActionDrop;
   JLabel jlNotificationType;
   JComboBox jcbNotificationType;
-  JCheckBox jcbHotkeys;
   JCheckBox jcbShowVideos;
   JCheckBox jcbPreserveFileDates;
   JCheckBox jcbUseParentDir;
@@ -575,11 +574,6 @@ public class ParameterView extends ViewAdapter {
     jcbDefaultActionClick.setToolTipText(Messages.getString("ParameterView.180"));
     jcbDefaultActionDrop = new JCheckBox(Messages.getString("ParameterView.181"));
     jcbDefaultActionDrop.setToolTipText(Messages.getString("ParameterView.182"));
-    jcbHotkeys = new JCheckBox(Messages.getString("ParameterView.196"));
-    jcbHotkeys.addActionListener(updateHelper);
-    jcbHotkeys.setToolTipText(Messages.getString("ParameterView.197"));
-    // Disable this option if not under windows
-    jcbHotkeys.setEnabled(UtilSystem.isUnderWindows());
     scbLanguage = new SteppedComboBox();
     scbLanguage.setRenderer(new BasicComboBoxRenderer() {
       private static final long serialVersionUID = -6943363556191659895L;
@@ -612,7 +606,6 @@ public class ParameterView extends ViewAdapter {
     jpOptions.add(jcbDisplayUnmounted);
     jpOptions.add(jcbDefaultActionClick);
     jpOptions.add(jcbDefaultActionDrop);
-    jpOptions.add(jcbHotkeys);
     jpOptions.add(jcbUseParentDir);
     jpOptions.add(jcbShowVideos);
     jpOptions.add(jcbPreserveFileDates);

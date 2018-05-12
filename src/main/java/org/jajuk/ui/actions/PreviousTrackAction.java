@@ -46,7 +46,7 @@ public class PreviousTrackAction extends JajukAction {
    */
   PreviousTrackAction() {
     super(Messages.getString("JajukWindow.13"), IconLoader
-        .getIcon(JajukIcons.PLAYER_PREVIOUS_SMALL), "F9", false, true);
+        .getIcon(JajukIcons.PLAYER_PREVIOUS_SMALL), "F9", false);
     setShortDescription(Messages.getString("CommandJPanel.8"));
   }
 

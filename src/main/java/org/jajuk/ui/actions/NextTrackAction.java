@@ -45,7 +45,7 @@ public class NextTrackAction extends JajukAction {
    */
   NextTrackAction() {
     super(Messages.getString("JajukWindow.14"), IconLoader.getIcon(JajukIcons.PLAYER_NEXT_SMALL),
-        "F10", false, true);
+        "F10", false);
     setShortDescription(Messages.getString("CommandJPanel.9"));
   }
 
