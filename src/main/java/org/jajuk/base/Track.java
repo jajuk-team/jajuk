@@ -79,31 +79,21 @@ public class Track extends LogicalItem implements Comparable<Track> {
   Track(String sId, String sName, Album album, Genre genre, Artist artist, long length, Year year,
       long lOrder, Type type, long lDiscNumber) {
     super(sId, sName);
-    // album
     this.album = album;
     setProperty(Const.XML_ALBUM, album.getID());
-    // genre
     this.genre = genre;
     setProperty(Const.XML_GENRE, genre.getID());
-    // artist
     this.artist = artist;
     setProperty(Const.XML_ARTIST, artist.getID());
-    // Length
     this.length = length;
     setProperty(Const.XML_TRACK_LENGTH, length);
-    // Type
     this.type = type;
     setProperty(Const.XML_TYPE, type.getID());
-    // Year
     this.year = year;
     setProperty(Const.XML_YEAR, year.getID());
-    // Order
     setProperty(Const.XML_TRACK_ORDER, lOrder);
-    // Order
     setProperty(Const.XML_TRACK_DISC_NUMBER, lDiscNumber);
-    // Rate
     setProperty(Const.XML_TRACK_RATE, 0l);
-    // Hits
     setProperty(Const.XML_TRACK_HITS, 0l);
   }
 
