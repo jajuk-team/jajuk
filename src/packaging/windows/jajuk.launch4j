@@ -21,7 +21,6 @@
     <jdkPreference>preferJre</jdkPreference>
     <initialHeapSize>20</initialHeapSize>
     <maxHeapSize>512</maxHeapSize>
-    <opt>-client</opt>
     <opt>-Xverify:none</opt>
   </jre>
 </launch4jConfig>
