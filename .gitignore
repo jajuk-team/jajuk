@@ -13,3 +13,7 @@ jajuk.iml
 /.settings/
 build
 /packages/
+/.gradle/
+/out/
+/src/main/main.iml
+/src/test/test.iml
