@@ -102,8 +102,6 @@ public final class UtilSystem {
   private static final boolean UNDER_WINDOWS_32BIT;
   /** Are we under Windows 64 bits ? *. */
   private static final boolean UNDER_WINDOWS_64BIT;
-  /** Are we in JNLP mode ? *. */
-  private static final boolean UNDER_JNLP;
   /** Are we under KDE ? *. */
   private static final boolean UNDER_KDE;
   /** Directory filter used in refresh. */
@@ -138,9 +136,7 @@ public final class UtilSystem {
     // We only support Intel OSX
         && ((sArch != null) && sArch.matches(".*86.*"));
   }
-  static {
-    UNDER_JNLP = (System.getProperty("jnlpx.jvm") != null);
-  }
+
   /**
   * Are we running in a KDE environment ?
   * 
@@ -634,18 +630,13 @@ public final class UtilSystem {
   /**
    * Return url of jar we are executing.
    * 
-   * This code no more work with last JRE 6  under JNLP (it returns only partial URL)
    * 
    * @param cClass 
    * 
    * @return URL of jar we are executing
    */
   public static URL getJarLocation(final Class<?> cClass) {
-    URL url = cClass.getProtectionDomain().getCodeSource().getLocation();
-    if (UtilSystem.isUnderJNLP()) {
-      Log.debug("JAR location: " + url.getFile());
-    }
-    return url;
+    return cClass.getProtectionDomain().getCodeSource().getLocation();    
   }
 
   /**
@@ -666,25 +657,7 @@ public final class UtilSystem {
     if (file.exists() && file.length() == Const.MPLAYER_WINDOWS_EXE_SIZE) {
       UtilSystem.mplayerPath = file;
       return UtilSystem.mplayerPath;
-    } else if (!UtilSystem.isUnderJNLP()) {
-      // Check in the path where jajuk.jar is executed (all others
-      // distributions). does not work under JNLP
-      String sPATH = null;
-      try {
-        // Extract file name from URL. URI returns jar path, its parent
-        // is the bin directory and the right dir is the parent of bin
-        // dir
-        sPATH = new File(getJarLocation(Main.class).toURI()).getParentFile().getParentFile()
-            .getAbsolutePath();
-        // Add MPlayer file name
-        file = new File(sPATH + '/' + Const.FILE_MPLAYER_WINDOWS_EXE);
-        if (file.exists() && file.length() == Const.MPLAYER_WINDOWS_EXE_SIZE) {
-          UtilSystem.mplayerPath = file;
-        }
-      } catch (Exception e) {
-        Log.error(e);
-      }
-    }
+    } 
     return UtilSystem.mplayerPath; // can be null if none suitable file found
   }
 
@@ -710,20 +683,7 @@ public final class UtilSystem {
     if (file.exists() && file.length() == Const.MPLAYER_OSX_EXE_SIZE) {
       UtilSystem.mplayerPath = file;
       return UtilSystem.mplayerPath;
-    } else if (!UtilSystem.isUnderJNLP()) {
-      // Search in jajuk installation directory, do not work under JNLP
-      String sPATH = null;
-      try {
-        sPATH = new File(getJarLocation(Main.class).toURI()).getParentFile().getParentFile()
-              .getAbsolutePath();
-        file = new File(sPATH + '/' + Const.FILE_MPLAYER_OSX_EXE);
-        if (file.exists() && file.length() == Const.MPLAYER_OSX_EXE_SIZE) {
-          UtilSystem.mplayerPath = file;
-        }
-      } catch (Exception e) {
-        Log.error(e);
-      }
-    }
+    } 
     return UtilSystem.mplayerPath; // can be null if none suitable file found
   }
 
@@ -857,14 +817,6 @@ public final class UtilSystem {
     return UtilSystem.UNDER_LINUX;
   }
 
-  /**
-   * Checks if we are running as jnlp app.
-   * 
-   * @return whether we are running as jnlp app
-   */
-  public static boolean isUnderJNLP() {
-    return UtilSystem.UNDER_JNLP;
-  }
 
   /**
    * Checks if is under OSX (Intel or PowerPC).
