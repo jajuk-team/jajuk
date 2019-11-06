@@ -16,7 +16,7 @@
   </classPath>
   <jre>
     <path></path>
-    <minVersion>8</minVersion>
+    <minVersion>1.8.0</minVersion>
     <maxVersion></maxVersion>
     <jdkPreference>preferJre</jdkPreference>
     <initialHeapSize>20</initialHeapSize>
