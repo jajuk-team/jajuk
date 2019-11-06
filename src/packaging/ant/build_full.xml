@@ -7,9 +7,6 @@
 	<!-- | Properties          | -->
 	<!-- ======================= -->
 
-	<!--Build type : 'unstable', 'final', 'pre-release' or 'maintenance' -->
-	<property name='type' value='unstable' />
-
 	<!--Distribution release-->
 	<property name='version' value='11.0' />
 
@@ -286,7 +283,7 @@
 		<!-- We don't use the ant tar task because it doesn't preserve permissions -->
 		<exec executable="tar" dir="${linux_dist.dir}" os="Linux">
 			<arg value="-cvz" />
-			<arg value="--file=jajuk-${version}.tar.gz" />
+			<arg value="--file=../packages/jajuk-${version}.tar.gz" />
 			<arg value="jajuk-${version}" />
 		</exec>
 	</target>
