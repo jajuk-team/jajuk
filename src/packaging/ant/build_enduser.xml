@@ -20,7 +20,7 @@
 
     <target name='compile' depends="clean">
         <echo message='Compile the code'/>
-        <javac destdir='${dist.dir}' source='1.7' target='1.7' deprecation='false' debug='false' optimize='true'
+        <javac destdir='${dist.dir}' source='8' target='8' includeantruntime="false" deprecation='false' debug='false' optimize='true'
                encoding='UTF-8'>
             <src>
                 <pathelement path='src/main'>
@@ -36,7 +36,7 @@
 
     <target name='compile_all' depends="clean">
         <echo message='Compile the code and the tests'/>
-        <javac destdir='${dist.dir}' source='1.7' target='1.7' deprecation='false' debug='false' optimize='true'
+        <javac destdir='${dist.dir}' source='8' target='8' includeantruntime="false" deprecation='false' debug='false' optimize='true'
                encoding='UTF-8'>
             <src>
                 <pathelement path='src'>
