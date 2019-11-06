@@ -94,7 +94,7 @@ InstallDirRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${App
 !define MUI_FINISHPAGE_RUN "$INSTDIR\jajuk.exe"
 !define MUI_FINISHPAGE_RUN_PARAMETERS ""
 !define MUI_FINISHPAGE_LINK "Release notes"
-!define MUI_FINISHPAGE_LINK_LOCATION "http://www.jajuk.info/release_notes_1.10.html"
+!define MUI_FINISHPAGE_LINK_LOCATION "http://www.jajuk.info/release_notes.html"
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKLM"
 !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${AppID}"
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "StartmenuFolder"
