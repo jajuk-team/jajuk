@@ -82,7 +82,10 @@ public final class UpgradeManager implements Const {
     /**
      * Return Jajuk number version = integer format of the padded release
      * <p>
-     * Jajuk version scheme is XX.YY.ZZ[RCn] (two digits possible for each part of the release)
+     * Jajuk version scheme is XX.YY  
+     * (previouly XX.YY.ZZ[RCn]) 
+     * 
+     * (two digits possible for each part of the release)
      *
      * @param pStringRelease
      * @return Jajuk number version = integer format of the padded release
@@ -101,18 +104,26 @@ public final class UpgradeManager implements Const {
         if (pStringRelease.contains("dev")) {
             stringRelease = pStringRelease.split("dev.*")[0];
         }
-        // Add a trailing .0 if it is a main release like 1.X -> 1.X.0
         int countDot = StringUtils.countMatches(stringRelease, ".");
-        if (countDot == 1) {
-            stringRelease = stringRelease + ".0";
-        }
-        // Analyze each part of the release, throw a runtime exception if
-        // the format is wrong at this point
         StringTokenizer st = new StringTokenizer(stringRelease, ".");
-        int main = 10000 * Integer.parseInt(st.nextToken());
-        int minor = 100 * Integer.parseInt(st.nextToken());
-        int fix = Integer.parseInt(st.nextToken());
-        return main + minor + fix;
+        if (countDot == 1) {
+        	// New versioning sheme
+        	int main = 10000 * Integer.parseInt(st.nextToken());
+            int minor = 100 * Integer.parseInt(st.nextToken());
+            return main + minor;
+        }
+        else if (countDot == 2) {
+        	// Analyze each part of the release, throw a runtime exception if
+            // the format is wrong at this point
+            int main = 10000 * Integer.parseInt(st.nextToken());
+            int minor = 100 * Integer.parseInt(st.nextToken());
+            int fix = Integer.parseInt(st.nextToken());
+           	return main + minor + fix;	
+        }
+        else {
+        	throw new IllegalStateException("Wrong version");
+        }
+        
     }
 
     /**
@@ -121,8 +132,9 @@ public final class UpgradeManager implements Const {
     public static void detectRelease() {
         try {
             // In dev, don't try to upgrade
-            if (VERSION_REPLACED_BY_ANT.equals(Const.JAJUK_VERSION)) {
-                bUpgraded = false;
+            if ( Const.JAJUK_VERSION.indexOf("VERSION_REPLACED_BY_ANT") != -1) {
+            	Log.info("Jajuk runs in the IDE");
+            	bUpgraded = false;
                 majorMigration = false;
                 return;
             }
@@ -151,6 +163,8 @@ public final class UpgradeManager implements Const {
         Conf.setProperty(Const.CONF_RELEASE, Const.JAJUK_VERSION);
     }
 
+  
+   
     /**
      * Checks if is first session.
      *
@@ -176,7 +190,7 @@ public final class UpgradeManager implements Const {
         // We ignore errors during upgrade
         try {
             if (isUpgradeDetected()) {
-                // For jajuk < 0.2
+            	// For jajuk < 0.2
                 upgradeOldCollectionBackupFile();
                 // For Jajuk < 1.2
                 upgradeDefaultAmbience();
@@ -198,6 +212,7 @@ public final class UpgradeManager implements Const {
                 upgradeWebRadioFile();
                 // for jajuk < 1.10.5
                 upgradeCollectionExitFile();
+                resetWindowType();
             }
         } catch (Exception e) {
             Log.error(e);
@@ -542,6 +557,13 @@ public final class UpgradeManager implements Const {
             Log.debug("Can't migrate collection_exit.xml file", e);
         }
     }
+    
+    /**
+     * For jajuk 11 : we reset window type to main windows because full screen no more work
+     */
+    private static void resetWindowType() {
+    	Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_MAIN_WINDOW));
+    }
 
     /**
      * For any jajuk version, after major upgrade, force thumbs cleanup.
@@ -631,7 +653,7 @@ public final class UpgradeManager implements Const {
             sPadRelease = pad.substring(beginIndex + 17, endIndex);
             if (!Const.JAJUK_VERSION.equals(sPadRelease)
                     // Don't use this in test
-                    && !(VERSION_REPLACED_BY_ANT.equals(Const.JAJUK_VERSION))
+                    && Const.JAJUK_VERSION.indexOf("VERSION_REPLACED_BY_ANT") != -1
                     // We display the upgrade icon only if PAD release is newer than current release
                     && isNewer(sPadRelease, Const.JAJUK_VERSION)) {
                 newVersionName = sPadRelease;
@@ -698,8 +720,8 @@ public final class UpgradeManager implements Const {
      */
     protected static boolean isOlder(String comparedRelease, String currentRelease) {
         // Manage dev case
-        if (VERSION_REPLACED_BY_ANT.equals(comparedRelease)
-                || VERSION_REPLACED_BY_ANT.equals(currentRelease)) {
+        if (comparedRelease.indexOf("VERSION_REPLACED_BY_ANT") != -1
+                || currentRelease.indexOf("VERSION_REPLACED_BY_ANT") != -1) {
             return false;
         }
         int iCurrentRelease = getNumberRelease(currentRelease);

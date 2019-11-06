@@ -28,8 +28,6 @@ import java.net.URL;
  */
 public interface Const {
   // Misc
-  /** Remplacement string for unknown version **/
-  String VERSION_REPLACED_BY_ANT = "@VERSION_REPLACED_BY_ANT@";
   /** Maximum size for covers in KB. */
   int MAX_COVER_SIZE = 2048;
   /** Maximum number of remote covers. */
@@ -114,7 +112,7 @@ public interface Const {
   /** Update URL = PAD file URL. */
   String CHECK_FOR_UPDATE_URL = "http://jajuk.info/repository/pad/jajuk_pad.xml";
   // Jajuk version
-  String JAJUK_VERSION = VERSION_REPLACED_BY_ANT;
+  String JAJUK_VERSION = "@VERSION_REPLACED_BY_ANT@";
   String JAJUK_CODENAME = "Deepest Blue";
   /** Extention to the .jajuk_test directory in test mode only */
   String TEST_VERSION = "11";
