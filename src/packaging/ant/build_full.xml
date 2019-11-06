@@ -11,11 +11,11 @@
 	<property name='type' value='unstable' />
 
 	<!--Distribution release-->
-	<property name='version' value='11dev' />
+	<property name='version' value='11.0' />
 
 	<!--Test flag: values: 'test' or 'notest'
     'test' for 'unstable' branches, 'notest' for master, pre-release and maintenance branches -->
-	<property name='test_flag' value='test' />
+	<property name='test_flag' value='notest' />
 
 	<!-- Root directory for all produced files -->
 	<property name='root.dir' value='build' />
@@ -29,23 +29,24 @@
 	<!-- Windows distribution repository -->
 	<property name='windows_dist.dir' value='${root.dir}/windows' />
 
-	<!-- Linux distribution repository -->
-    <property name='linux_dist.dir' value='${root.dir}/linux' />
+	<!-- Linux distributions repository -->
+	<property name='linux_dist.dir' value='${root.dir}/linux' />
+
+	<!-- Linux tarball directory -->
+	<property name='linux_tarball.dir' value='${linux_dist.dir}/jajuk-${version}' />
+
 
 	<!-- OSX distribution repository -->
 	<property name='osx_dist.dir' value='${root.dir}/osx' />
 
 	<!-- Launch4j installation path, do not change the name of this property -->
 	<property name="launch4j.dir" location="/opt/launch4j" />
-	
-	<!-- AppImage build tool path -->
-	<property name="appImageTool" location="/opt/appimagetool-x86_64.AppImage" />
-	
+
 	<!-- Linux oracle 64 bits 1.8 JRE -->
 	<property name="jre.dir" location="/opt/jre" />
-		
 
-	
+
+
 	<!-- ======================= -->
 	<!-- | Global Filters        | -->
 	<!-- ======================= -->
@@ -88,7 +89,7 @@
 		<delete failonerror='false' dir='${root.dir}' />
 	</target>
 
-	<target name='package_all' depends='startup,build_sources_dist,build_jajuk,test_jajuk,build_nsis,build_windows_portable,build_macos,appimage'>
+	<target name='package_all' depends='startup,build_sources_dist,build_jajuk,test_jajuk,build_nsis,build_windows_portable,build_macos,tarball_linux'>
 		<echo message='Create all packages, source archive in:  ${sources_dist.dir}' />
 	</target>
 
@@ -206,14 +207,14 @@
 			<fileset file='${windows_dist.dir}/jajuk*-setup.exe' />
 		</copy>
 	</target>
-	
+
 	<!-- Windows portable without JRE -->
 	<target name='build_windows_portable' depends='build_jajuk'>
 		<echo message='Create Jajuk Windows portable distribution' />
-		<property  name='portable.dir' value='${windows_dist.dir}/jajuk-${version}'/>
+		<property name='portable.dir' value='${windows_dist.dir}/jajuk-${version}' />
 		<delete failonerror='false' dir='${windows_dist.dir}' />
-		<mkdir dir='${windows_dist.dir}'/>
-		<mkdir dir='${portable.dir}'/>
+		<mkdir dir='${windows_dist.dir}' />
+		<mkdir dir='${portable.dir}' />
 		<copy todir='${portable.dir}' filtering="true">
 			<fileset file='src/legals/LICENSE-GPL.txt' />
 			<fileset file='src/packaging/windows/jajuk.bat' />
@@ -232,7 +233,8 @@
 		<copy todir='${portable.dir}'>
 			<fileset file="lib/mplayer/windows/mplayer.exe" />
 		</copy>
-		<zip destfile="${packages.dir}/jajuk-portable-${version}.zip" basedir="${windows_dist.dir}"></zip>
+		<zip destfile="${packages.dir}/jajuk-portable-${version}.zip" basedir="${windows_dist.dir}">
+		</zip>
 	</target>
 
 	<!-- ========================== -->
@@ -262,45 +264,30 @@
 		</zip>
 	</target>
 
+
 	<!-- ========================== -->
-	<!-- | Linux  targets         | -->
+	<!-- | Linux targets          | -->
 	<!-- ========================== -->
-	<target name='appimage' depends='build_jajuk'>
- 		<property name='appimage.dir' value='${linux_dist.dir}/Jajuk.AppDir' />
-		<echo message='Prepare the appimage structure and build it' />
-		<delete failonerror='false' dir='${appimage.dir}' />
-		<mkdir dir="${appimage.dir}"/>
-		<copy todir='${appimage.dir}/usr/bin'>
-			<fileset file='${packages.dir}/jajuk.jar' />
-		</copy>
-		<copy todir='${appimage.dir}/usr/lib'>
+
+	<!-- tarball with jajuk jars, dependencies and mplayer -->
+	<target name='tarball_linux' depends='build_jajuk'>
+		<echo message='Prepare files to build Linux tarball' />
+		<mkdir dir='${linux_tarball.dir}/lib' />
+		<copy todir='${linux_tarball.dir}/lib'>
+			<fileset dir='lib/native' />
 			<fileset file='lib/*.jar' />
 		</copy>
-		<copy todir='${appimage.dir}/usr/legals'>
-			<fileset file='src/legals/*.*' />
+		<copy todir='${linux_tarball.dir}'>
+			<fileset file='${packages.dir}/jajuk.jar' />
+			<fileset file='src/packaging/linux/*' />
 		</copy>
-		<copy todir='${appimage.dir}'>
-			<fileset file='src/main/resources/icons/64x64/jajuk-icon_64x64.png' />
-		</copy>
-		<move file="${appimage.dir}/jajuk-icon_64x64.png" tofile="${appimage.dir}/jajuk.png" />
-		<copy todir='${appimage.dir}'>
-			<fileset file='src/packaging/linux/jajuk.desktop' />
-		</copy>
-		<copy todir='${appimage.dir}/usr/bin' filtering="true">
-			<fileset file='src/packaging/linux/jajuk' />
-		</copy>
-		<chmod file='${appimage.dir}/usr/bin/jajuk' perm='ugo+rx' />
-		<copy todir='${appimage.dir}/usr/bin'>
-			<fileset dir='${jre.dir}' />
-		</copy>
-		<symlink link="${appimage.dir}/AppRun" resource="usr/bin/jajuk"/>
-		<copy todir='${appimage.dir}/usr/lib'>
-			<fileset file='lib/native/*.so' />
-		</copy>
-		<exec executable="${appImageTool}">
-			<env key="ARCH" value="x86_64"/>
-			<arg value="${appimage.dir}" />
-			<arg value="${packages.dir}/Jajuk-x86_64.AppImage" />
+		<copy file='src/main/resources/icons/64x64/jajuk-icon_64x64.png' tofile='${linux_tarball.dir}/jajuk.png' />
+		<chmod file="${linux_tarball.dir}/jajuk" perm="ugo+rx" />
+		<!-- We don't use the ant tar task because it doesn't preserve permissions -->
+		<exec executable="tar" dir="${linux_dist.dir}" os="Linux">
+			<arg value="-cvz" />
+			<arg value="--file=jajuk-${version}.tar.gz" />
+			<arg value="jajuk-${version}" />
 		</exec>
 	</target>
 
