@@ -46,7 +46,6 @@
 	<classpathentry kind="lib" path="lib/laf-plugin-7.3.jar"/>
 	<classpathentry kind="lib" path="lib/laf-widget-7.3.jar"/>
 	<classpathentry kind="lib" path="lib/animation-1.4.3.jar"/>
-	<classpathentry kind="lib" path="lib/jintellitype-1.3.9.jar"/>
 	<classpathentry kind="lib" path="lib/lastfm-java-0.1.2.jar"/>
 	<classpathentry kind="lib" path="lib/qdwizard-5.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/jgoodies-common-1.6.0.jar"/>
