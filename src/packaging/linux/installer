@@ -15,7 +15,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Create a 'jajuk' command available from PATH that will simply cd 
 # into this directory and launch the actual jajuk shell script
-echo "cd $DIR && ./jajuk" > /usr/local/bin/jajuk
+echo "cd \"$DIR\" && ./jajuk" > /usr/local/bin/jajuk
 chmod +x /usr/local/bin/jajuk
 
 # prepare the desktop file and pixmap
