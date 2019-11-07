@@ -113,9 +113,9 @@ public interface Const {
   String CHECK_FOR_UPDATE_URL = "http://jajuk.info/repository/pad/jajuk_pad.xml";
   // Jajuk version
   String JAJUK_VERSION = "@VERSION_REPLACED_BY_ANT@";
-  String JAJUK_CODENAME = "Deepest Blue";
+  String JAJUK_CODENAME = "TBD";
   /** Extention to the .jajuk_test directory in test mode only */
-  String TEST_VERSION = "11";
+  String TEST_VERSION = "12dev";
   String JAJUK_VERSION_DATE = "Build: @DATE_REPLACED_BY_ANT@";
   String JAJUK_COPYRIGHT = "Copyright 2003-2019 The Jajuk Team";
   String TYPE_VIDEO = "Type.video";
