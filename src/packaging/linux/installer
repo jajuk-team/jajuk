@@ -1,0 +1,26 @@
+#!/bin/sh
+# This script must be launched by root
+# It installs jajuk desktop files and makes jajuk available from PATH
+# Tested successfully under Gnome
+
+set -e
+
+if [[ $USER != root ]]; then
+  echo "This script must be launched by root only, exiting"
+  exit 1
+fi
+
+# Current directory
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# Create a 'jajuk' command available from PATH that will simply cd 
+# into this directory and launch the actual jajuk shell script
+echo "cd $DIR && ./jajuk" > /usr/local/bin/jajuk
+chmod +x /usr/local/bin/jajuk
+
+# prepare the desktop file and pixmap
+cp jajuk.png /usr/share/pixmaps/
+cp jajuk.desktop /usr/share/applications/
+
+echo "Installation successful"
+echo "You can now launch the 'jajuk' command or the desktop menu."

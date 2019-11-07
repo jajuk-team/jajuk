@@ -280,6 +280,7 @@
 		</copy>
 		<copy file='src/main/resources/icons/64x64/jajuk-icon_64x64.png' tofile='${linux_tarball.dir}/jajuk.png' />
 		<chmod file="${linux_tarball.dir}/jajuk" perm="ugo+rx" />
+		<chmod file="${linux_tarball.dir}/installer" perm="ugo+rx" />
 		<!-- We don't use the ant tar task because it doesn't preserve permissions -->
 		<exec executable="tar" dir="${linux_dist.dir}" os="Linux">
 			<arg value="-cvz" />
