@@ -44,7 +44,7 @@ public class CutAction extends JajukAction {
    */
   CutAction() {
     super(Messages.getString("FilesTreeView.4"), IconLoader.getIcon(JajukIcons.CUT), "ctrl X",
-        true, false);
+        true);
     setShortDescription(Messages.getString("FilesTreeView.4"));
   }
 

@@ -32,12 +32,20 @@ import java.util.Locale;
 
 import javax.swing.ImageIcon;
 
+<<<<<<< HEAD
 import de.umass.lastfm.Album;
 import de.umass.lastfm.ImageSize;
 import de.umass.lastfm.Playlist;
 import de.umass.lastfm.Track;
 
+=======
+>>>>>>> release/11.0
 import org.jajuk.util.UtilString;
+
+import de.umass.lastfm.Album;
+import de.umass.lastfm.ImageSize;
+import de.umass.lastfm.Playlist;
+import de.umass.lastfm.Track;
 
 /**
  * The Class LastFmAlbum.

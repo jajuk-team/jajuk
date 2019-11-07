@@ -35,7 +35,7 @@ import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.TrackComparator.TrackComparatorType;
 import org.jajuk.services.covers.Cover;
 import org.jajuk.services.tags.Tag;

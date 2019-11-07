@@ -25,12 +25,12 @@ import java.awt.event.ActionListener;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.services.dj.AmbienceManager;
 import org.jajuk.ui.wizard.digital_dj.DigitalDJWizard.Variable;
 import org.jajuk.util.Messages;
 import org.qdwizard.Screen;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * DJ type choice.

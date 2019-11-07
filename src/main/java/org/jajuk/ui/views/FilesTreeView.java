@@ -50,9 +50,8 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
-
-import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
@@ -93,7 +92,9 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-import org.pushingpixels.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
+import org.pushingpixels.substance.api.renderer.SubstanceDefaultTreeCellRenderer;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Physical tree view.
@@ -617,9 +618,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
           Messages.showErrorMessage(18);
           return;
         } else {
-          QueueModel.push(
-              UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay),
-                  Conf.getBoolean(Const.CONF_STATE_REPEAT), true), false);
+          QueueModel.push(UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(alToPlay),
+              Conf.getBoolean(Const.CONF_STATE_REPEAT), true), false);
         }
       }
     }
@@ -701,10 +701,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
       for (TreePath element : paths) {
         Object o = element.getLastPathComponent();
         // return all childs nodes recursively
-        Enumeration<DefaultMutableTreeNode> e2 = ((DefaultMutableTreeNode) o)
-            .depthFirstEnumeration();
+        Enumeration<TreeNode> e2 = ((DefaultMutableTreeNode) o).depthFirstEnumeration();
         while (e2.hasMoreElements()) {
-          DefaultMutableTreeNode node = e2.nextElement();
+          DefaultMutableTreeNode node = (DefaultMutableTreeNode) e2.nextElement();
           if (node instanceof DirectoryNode) {
             Directory dir = ((DirectoryNode) node).getDirectory();
             alDirs.add(dir);
@@ -892,8 +891,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
       if (!bInternalAction) {
         Properties properties = new Properties();
         properties.put(Const.DETAIL_SELECTION, selectedRecursively);
-        properties
-            .put(Const.DETAIL_PERSPECTIVE, PerspectiveManager.getCurrentPerspective().getID());
+        properties.put(Const.DETAIL_PERSPECTIVE,
+            PerspectiveManager.getCurrentPerspective().getID());
         properties.put(Const.DETAIL_VIEW, getID());
         ObservationManager.notify(new JajukEvent(JajukEvents.TREE_SELECTION_CHANGED, properties));
       }
@@ -904,14 +903,12 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
       // Enable Copy url for a single item only
       jmiCopyURL.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof File);
       jmiDirCopyURL.setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Directory);
-      jmiOpenExplorer
-          .setEnabled(alSelected.size() == 1
-              && (alSelected.get(0) instanceof Directory || alSelected.get(0) instanceof File || alSelected
-                  .get(0) instanceof Playlist));
+      jmiOpenExplorer.setEnabled(alSelected.size() == 1 && (alSelected.get(0) instanceof Directory
+          || alSelected.get(0) instanceof File || alSelected.get(0) instanceof Playlist));
       jmiPlaylistCopyURL
           .setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Playlist);
-      jmiPlaylistPrepareParty.setEnabled(alSelected.size() == 1
-          && alSelected.get(0) instanceof Playlist);
+      jmiPlaylistPrepareParty
+          .setEnabled(alSelected.size() == 1 && alSelected.get(0) instanceof Playlist);
       // Update preference menu
       pjmTracks.resetUI(alSelected);
     }
@@ -927,8 +924,8 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
       }
       items = selectedRecursively.size();
       lSize /= 1048576; // set size in MB
-      StringBuilder sbOut = new StringBuilder().append(items).append(
-          Messages.getString("FilesTreeView.52"));
+      StringBuilder sbOut = new StringBuilder().append(items)
+          .append(Messages.getString("FilesTreeView.52"));
       if (lSize > 1024) { // more than 1024 MB -> in GB
         sbOut.append(lSize / 1024).append('.').append(lSize % 1024)
             .append(Messages.getString("FilesTreeView.53"));

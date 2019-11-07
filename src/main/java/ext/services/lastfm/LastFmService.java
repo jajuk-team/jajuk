@@ -22,9 +22,12 @@
  */
 package ext.services.lastfm;
 
+<<<<<<< HEAD
 import de.umass.lastfm.*;
 import ext.services.network.Proxy;
 
+=======
+>>>>>>> release/11.0
 import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +36,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+<<<<<<< HEAD
 import de.umass.lastfm.scrobble.ResponseStatus;
 import de.umass.lastfm.scrobble.Scrobbler;
 import de.umass.lastfm.scrobble.Source;
@@ -40,6 +44,10 @@ import de.umass.lastfm.scrobble.SubmissionData;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
+=======
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
+>>>>>>> release/11.0
 import org.jajuk.base.Track;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -48,6 +56,18 @@ import org.jajuk.util.LocaleManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.log.Log;
+
+import de.umass.lastfm.Album;
+import de.umass.lastfm.Artist;
+import de.umass.lastfm.Caller;
+import de.umass.lastfm.ImageSize;
+import de.umass.lastfm.PaginatedResult;
+import de.umass.lastfm.Playlist;
+import de.umass.lastfm.scrobble.ResponseStatus;
+import de.umass.lastfm.scrobble.Scrobbler;
+import de.umass.lastfm.scrobble.Source;
+import de.umass.lastfm.scrobble.SubmissionData;
+import ext.services.network.Proxy;
 
 /**
  * The Class LastFmService.
@@ -402,7 +422,7 @@ public class LastFmService {
         wikiText = a != null ? a.getWikiSummary() : "";
         if (wikiText != null) {
           wikiText = wikiText.replaceAll("<.*?>", "");
-          wikiText = StringEscapeUtils.unescapeHtml(wikiText);
+          wikiText = StringEscapeUtils.unescapeHtml3(wikiText);
         }
         lastFmCache.storeArtistWiki(artist, wikiText);
       }

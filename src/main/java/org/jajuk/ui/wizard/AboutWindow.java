@@ -30,10 +30,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.ui.widgets.JajukJDialog;
-import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
@@ -41,6 +38,8 @@ import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jfree.ui.about.Licences;
 import org.jfree.ui.about.SystemPropertiesPanel;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * View used to show the Jajuk about and contributors.

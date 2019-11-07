@@ -35,6 +35,7 @@ public class TestUpgradeManager extends JajukTestCase {
   String v7 = "1.9.2RC4";
   String v8 = "1.10.3";
   String v9 = "1.10.4dev";
+  
 
   /**
    * Test method for.
@@ -64,6 +65,7 @@ public class TestUpgradeManager extends JajukTestCase {
     assertEquals(true, UpgradeManager.isMajorMigration(v5, v6));
     assertEquals(false, UpgradeManager.isMajorMigration(v3, v7));
     assertEquals(false, UpgradeManager.isMajorMigration(v8, v9));
+    assertEquals(true, UpgradeManager.isMajorMigration("1.11", "1.10.3"));
   }
 
   /**
@@ -80,5 +82,6 @@ public class TestUpgradeManager extends JajukTestCase {
     assertTrue(UpgradeManager.isNewer(v6, v5));
     assertTrue(UpgradeManager.isNewer("1.10dev", "1.7"));
     assertFalse(UpgradeManager.isNewer("1.7", "1.7"));
+    assertTrue(UpgradeManager.isNewer("11.0","1.10.4" ));
   }
 }

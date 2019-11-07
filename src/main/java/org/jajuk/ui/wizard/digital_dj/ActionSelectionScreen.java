@@ -25,13 +25,13 @@ import java.awt.event.ActionListener;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.services.dj.DigitalDJManager;
 import org.jajuk.ui.wizard.digital_dj.DigitalDJWizard.Variable;
 import org.jajuk.util.Messages;
 import org.qdwizard.ClearPoint;
 import org.qdwizard.Screen;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Action type (new or alter).

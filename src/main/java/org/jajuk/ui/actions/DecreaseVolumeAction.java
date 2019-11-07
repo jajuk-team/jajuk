@@ -37,7 +37,7 @@ public class DecreaseVolumeAction extends JajukAction {
    * Instantiates a new decrease volume action.
    */
   DecreaseVolumeAction() {
-    super("decrease volume", "ctrl DOWN", true, true);
+    super("decrease volume", "ctrl DOWN", true);
   }
 
   /* (non-Javadoc)

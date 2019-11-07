@@ -20,7 +20,6 @@
  */
 package org.jajuk.ui.substance;
 
-import java.awt.Insets;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.RoundRectangle2D;
@@ -42,13 +41,15 @@ public class RoundRectButtonShaper extends ButtonShaper {
     return "RoundRect";
   }
 
+ 
   /* (non-Javadoc)
-   * @see org.jvnet.substance.shaper.SubstanceButtonShaper#getButtonOutline(javax.swing.AbstractButton, java.awt.Insets, int, int, boolean)
+   * @see org.pushingpixels.substance.api.shaper.SubstanceButtonShaper#getButtonOutline(javax.swing.AbstractButton, float, float, float, boolean)
    */
   @Override
-  public Shape getButtonOutline(AbstractButton button, Insets insets, int w, int h, boolean isInner) {
-    int width = w - 1;
-    int height = h - 1;
+  public Shape getButtonOutline(AbstractButton arg0, float arg1, float w, float h,
+      boolean arg4) {
+    int width = (int)w - 1;
+    int height = (int)h - 1;
     Shape shape = new RoundRectangle2D.Double(0, 0, width, height, width / 3d, height / 3d);
     GeneralPath generalPath = new GeneralPath(shape);
     return generalPath;

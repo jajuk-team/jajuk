@@ -29,8 +29,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.services.dj.AmbienceDigitalDJ;
 import org.jajuk.services.dj.AmbienceManager;
@@ -39,6 +37,8 @@ import org.jajuk.services.dj.DigitalDJManager;
 import org.jajuk.ui.wizard.digital_dj.DigitalDJWizard.Variable;
 import org.jajuk.util.Messages;
 import org.qdwizard.Screen;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Ambience based.

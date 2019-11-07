@@ -43,12 +43,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.log.Log;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Utility class to get strings from localized property files

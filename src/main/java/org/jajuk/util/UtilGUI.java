@@ -42,6 +42,8 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -87,7 +89,6 @@ import org.jajuk.ui.widgets.PerspectiveBarJPanel;
 import org.jajuk.ui.windows.JajukFullScreenWindow;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.ui.windows.JajukSlimbar;
-import org.jajuk.ui.windows.JajukSystray;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
 import org.jdesktop.swingx.JXPanel;
@@ -669,10 +670,6 @@ public final class UtilGUI {
     for (final Frame element : frames) {
       UtilGUI.updateWindowUI(element);
     }
-    // update tray
-    if (JajukSystray.isLoaded() && (JajukSystray.getInstance().getMenu() != null)) {
-      UtilGUI.updateComponentTreeUI(JajukSystray.getInstance().getMenu());
-    }
   }
 
   /**
@@ -849,6 +846,14 @@ public final class UtilGUI {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(dispatcher);
       }
     });
+    
+    window.addComponentListener(new ComponentAdapter() {
+      @Override
+      public void componentHidden(ComponentEvent e) {
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(dispatcher);
+      }
+    });
+    
   }
 
   /**

@@ -27,6 +27,8 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -96,7 +98,7 @@ public class TipOfTheDayWizard extends JFrame {
     bClose.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent actionevent) {
-        setVisible(false);
+        dispose();
       }
     });
     JScrollPane scroll = new JScrollPane(tipArea);
@@ -112,7 +114,7 @@ public class TipOfTheDayWizard extends JFrame {
     JPanel pCenter = new JPanel(new BorderLayout());
     pCenter.setBorder(BorderFactory.createEmptyBorder(10, 10, 3, 10));
     pCenter.add(scroll, BorderLayout.CENTER);
-    UtilGUI.setEscapeKeyboardAction(this, pCenter);
+    //UtilGUI.setEscapeKeyboardAction(this, pCenter);
     JPanel pPrevNext = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
     pPrevNext.add(bPrevious);
     pPrevNext.add(lCounter);
@@ -126,10 +128,18 @@ public class TipOfTheDayWizard extends JFrame {
     JPanel pBottom = new JPanel(new BorderLayout());
     pBottom.add(pControls, BorderLayout.NORTH);
     pBottom.add(pButton);
-    UtilGUI.setEscapeKeyboardAction(this, pBottom);
+    //UtilGUI.setEscapeKeyboardAction(this, pBottom);
     add(pTop, BorderLayout.NORTH);
     add(pCenter, BorderLayout.CENTER);
     add(pBottom, BorderLayout.SOUTH);
+    
+    addComponentListener(new ComponentAdapter() {
+      @Override
+      public void componentHidden(ComponentEvent e) {
+        dispose();
+      }
+    });
+    
     // Display a shuffled tip of the day
     shuffleIndex();
     updateTip();

@@ -27,7 +27,6 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GraphicsConfiguration;
 import java.awt.Rectangle;
-import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -42,8 +41,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
-
-import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -71,6 +68,8 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Jajuk main window
@@ -370,31 +369,7 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
         (int) (gConf.getBounds().getWidth() - 2 * FRAME_INITIAL_BORDER), (int) (gConf.getBounds()
             .getHeight() - 2 * FRAME_INITIAL_BORDER));
   }
-
-  /**
-   * Check if provided position is correct
-   * @return whether provided position is valid.
-   */
-  private boolean isPositionValid(Rectangle position) {
-    GraphicsConfiguration gConf = UtilGUI.getGraphicsDeviceOfMainFrame().getDefaultConfiguration();
-    if (position.getX() < gConf.getBounds().getX()
-        || position.getX() > gConf.getBounds().getWidth()) {
-      return false;
-    }
-    if (position.getY() < gConf.getBounds().getY()
-        || position.getY() > gConf.getBounds().getHeight()) {
-      return false;
-    }
-    if (position.getWidth() <= 0 || position.getWidth() > gConf.getBounds().getWidth()
-        || position.getWidth() < 800) {
-      return false;
-    }
-    if (position.getHeight() <= 0 || position.getHeight() > gConf.getBounds().getHeight()
-        || position.getHeight() < 600) {
-      return false;
-    }
-    return true;
-  }
+  
 
   /**
   * Apply size and position stored as property.

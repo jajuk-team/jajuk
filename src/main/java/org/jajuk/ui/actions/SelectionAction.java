@@ -60,11 +60,9 @@ public abstract class SelectionAction extends JajukAction {
    * @param icon 
    * @param stroke 
    * @param enabled 
-   * @param bHotkey 
-   */
-  public SelectionAction(String name, ImageIcon icon, String stroke, boolean enabled,
-      boolean bHotkey) {
-    super(name, icon, stroke, enabled, bHotkey);
+  */
+  public SelectionAction(String name, ImageIcon icon, String stroke, boolean enabled) {
+    super(name, icon, stroke, enabled);
   }
 
   /*

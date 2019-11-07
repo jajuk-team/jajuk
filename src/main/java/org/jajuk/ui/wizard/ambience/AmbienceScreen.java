@@ -37,8 +37,6 @@ import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.Genre;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -53,6 +51,8 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.qdwizard.Screen;
+
+import net.miginfocom.swing.MigLayout;
 
 public class AmbienceScreen extends Screen implements ActionListener {
   /** Generated serialVersionUID. */

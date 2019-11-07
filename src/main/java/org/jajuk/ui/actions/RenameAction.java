@@ -54,8 +54,7 @@ public class RenameAction extends JajukAction {
    * Instantiates a new rename action.
    */
   RenameAction() {
-    super(Messages.getString("RenameAction.0"), IconLoader.getIcon(JajukIcons.EDIT), "F2", true,
-        false);
+    super(Messages.getString("RenameAction.0"), IconLoader.getIcon(JajukIcons.EDIT), "F2", true);
     setShortDescription(Messages.getString("RenameAction.0"));
   }
 

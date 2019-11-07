@@ -1,10 +1,9 @@
 /*
  * This file has been adapted to Jajuk by the Jajuk Team.
- * 
- * Found at http://www.jroller.com/santhosh/date/20050528
  * Original copyright information follows:
- *
- * Copyright santhosh kumar
+ * https://github.com/santhosh-tekuri/MyBlog/tree/master/DropDownButton
+ * Copyright Santhosh Kumar
+ * Apache License
  * 
  * @author santhosh kumar - santhosh@in.fiorano.com Drop down button
  */
@@ -31,9 +30,6 @@ import org.jajuk.util.Const;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 
-/**
- * .
- */
 public abstract class DropDownButton extends JajukButton implements ChangeListener,
     PopupMenuListener, ActionListener, PropertyChangeListener, Const {
   /** Generated serialVersionUID. */

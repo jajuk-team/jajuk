@@ -20,7 +20,6 @@
  */
 package org.jajuk.ui.views;
 
-import java.awt.SystemTray;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -36,7 +35,7 @@ import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.File;
@@ -167,7 +166,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     pv.jcbDisplayUnmounted.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
     pv.jcbDefaultActionClick.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
     pv.jcbDefaultActionDrop.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_DROP));
-    pv.jcbHotkeys.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HOTKEYS));
     String rightLanguageDesc = LocaleManager.getDescForLocale(Conf
         .getString(Const.CONF_OPTIONS_LANGUAGE));
     // Select the right language
@@ -335,12 +333,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     String notificatorType = Messages.getString(ParameterView.NOTIFICATOR_PREFIX
         + Conf.getString(Const.CONF_UI_NOTIFICATOR_TYPE));
     pv.jcbNotificationType.setSelectedItem(notificatorType);
-    pv.jcbShowSystray.setSelected(Conf.getBoolean(Const.CONF_SHOW_SYSTRAY));
-    pv.jcbMinimizeToTray.setEnabled(SystemTray.isSupported() && pv.jcbShowSystray.isSelected());
-    pv.jcbMinimizeToTray.setSelected(Conf.getBoolean(Const.CONF_MINIMIZE_TO_TRAY));
-    pv.jcbClickTrayAlwaysDisplayWindow.setSelected(Conf
-        .getBoolean(Const.CONF_TRAY_CLICK_DISPLAY_WINDOW));
-    pv.jcbClickTrayAlwaysDisplayWindow.setEnabled(SystemTray.isSupported());
     pv.jcbSplashscreen.setSelected(Conf.getBoolean(Const.CONF_SPLASH_SCREEN));
     pv.scbLAF.removeActionListener(this);
     pv.scbLAF.setSelectedItem(Conf.getString(Const.CONF_OPTIONS_LNF));
@@ -362,7 +354,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         Boolean.toString(pv.jcbDefaultActionClick.isSelected()));
     properties.put(Const.CONF_OPTIONS_PUSH_ON_DROP,
         Boolean.toString(pv.jcbDefaultActionDrop.isSelected()));
-    properties.put(Const.CONF_OPTIONS_HOTKEYS, Boolean.toString(pv.jcbHotkeys.isSelected()));
     properties.put(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE,
         Boolean.toString(pv.jcbAudioScrobbler.isSelected()));
     properties.put(Const.CONF_LASTFM_INFO,
@@ -536,18 +527,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         properties.put(Const.CONF_UI_NOTIFICATOR_TYPE, notificatorType.name());
       }
     }
-    // Message if show systray is changed
-    final boolean bOldShowSystray = Conf.getBoolean(Const.CONF_SHOW_SYSTRAY);
-    if (bOldShowSystray != pv.jcbShowSystray.isSelected()) {
-      this.someOptionsAppliedAtNextStartup = true;
-    }
-    properties.put(Const.CONF_SHOW_SYSTRAY, Boolean.toString(pv.jcbShowSystray.isSelected()));
     properties.put(Const.CONF_TITLE_ANIMATION, Boolean.toString(pv.jcbTitleAnimation.isSelected()));
-    // Minimize to tray
-    properties
-        .put(Const.CONF_MINIMIZE_TO_TRAY, Boolean.toString(pv.jcbMinimizeToTray.isSelected()));
-    properties.put(Const.CONF_TRAY_CLICK_DISPLAY_WINDOW,
-        Boolean.toString(pv.jcbClickTrayAlwaysDisplayWindow.isSelected()));
     final int oldPerspectiveSize = Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE);
     // If we perspective size changed and no font message have been already
     // displayed, display a message
@@ -801,8 +781,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         // local has changed
         someOptionsAppliedAtNextStartup = true;
       }
-    } else if (e.getSource() == pv.jcbHotkeys) {
-      someOptionsAppliedAtNextStartup = true;
     } else if (e.getSource() == pv.jbCatalogRefresh) {
       new Thread("Parameter Catalog refresh Thread") {
         @Override

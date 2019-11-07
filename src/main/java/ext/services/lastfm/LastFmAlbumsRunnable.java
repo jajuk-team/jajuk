@@ -29,7 +29,7 @@ import java.util.StringTokenizer;
 
 import javax.swing.SwingUtilities;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 

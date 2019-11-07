@@ -20,9 +20,9 @@
  */
 package org.jajuk.services.core;
 
-import net.miginfocom.layout.LinkHandler;
-
 import org.jajuk.util.log.Log;
+
+import net.miginfocom.layout.LinkHandler;
 
 /**
  * This thread is responsible for various cleanups during jajuk execution

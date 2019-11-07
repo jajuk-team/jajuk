@@ -189,10 +189,11 @@ public final class Conf implements Const {
     // -1 : max available buffer set default trace level, debug in debug
     // mode and warning in normal mode
     defaults.put(CONF_AUDIO_BUFFER_SIZE, "-1");
-    if (SessionService.isIdeMode()) {
+    if (SessionService.isTestMode()) {
       defaults.put(CONF_OPTIONS_LOG_LEVEL, Integer.toString(Log.DEBUG));
-    } else {
-      defaults.put(CONF_OPTIONS_LOG_LEVEL, Integer.toString(Log.WARNING));
+    }
+    else {
+    	defaults.put(CONF_OPTIONS_LOG_LEVEL, Integer.toString(Log.INFO));
     }
     defaults.put(CONF_OPTIONS_TAB, "0");
     defaults.put(CONF_OPTIONS_INTRO_BEGIN, "0");
@@ -265,16 +266,12 @@ public final class Conf implements Const {
     defaults.put(CONF_NOVELTIES_MODE, MODE_TRACK);
     defaults.put(CONF_PATTERN_ANIMATION, PATTERN_DEFAULT_ANIMATION);
     defaults.put(CONF_FRAME_POS_FORCED, "");
-    defaults.put(CONF_OPTIONS_HOTKEYS, FALSE);
     defaults.put(CONF_MPLAYER_ARGS, "");
     defaults.put(CONF_ENV_VARIABLES, "");
     defaults.put(CONF_USE_VOLNORM, "false");
     defaults.put(CONF_SHOW_TIP_ON_STARTUP, FALSE);
     defaults.put(CONF_CATALOG_PAGE_SIZE, "100");
     defaults.put(CONF_SHOW_POPUPS, FALSE);
-    defaults.put(CONF_SHOW_SYSTRAY, TRUE);
-    defaults.put(CONF_MINIMIZE_TO_TRAY, FALSE);
-    defaults.put(CONF_TRAY_CLICK_DISPLAY_WINDOW, FALSE);
     defaults.put(CONF_FONTS_SIZE, "12");
     defaults.put(CONF_MPLAYER_PATH_FORCED, "");
     defaults.put(CONF_INC_RATING, "5");

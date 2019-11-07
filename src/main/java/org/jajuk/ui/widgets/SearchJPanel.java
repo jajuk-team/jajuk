@@ -33,8 +33,6 @@ import javax.swing.JList;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.FileManager;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -59,6 +57,8 @@ import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Ambience + History + search panel used in main jajuk window.

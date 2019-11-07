@@ -20,8 +20,6 @@
  */
 package org.jajuk.ui.wizard;
 
-import ext.AutoCompleteDecorator;
-
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -51,8 +49,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
-
-import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.AlbumArtistManager;
 import org.jajuk.base.ArtistManager;
@@ -89,6 +85,9 @@ import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXDatePicker;
 import org.jdesktop.swingx.VerticalLayout;
+
+import ext.AutoCompleteDecorator;
+import net.miginfocom.swing.MigLayout;
 
 /**
  * ItemManager properties dialog for any jajuk item.

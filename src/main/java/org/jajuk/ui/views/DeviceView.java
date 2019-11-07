@@ -20,8 +20,6 @@
  */
 package org.jajuk.ui.views;
 
-import ext.FlowScrollPanel;
-
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -45,8 +43,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.events.JajukEvent;
@@ -60,6 +56,9 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.error.JajukException;
+
+import ext.FlowScrollPanel;
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Device view used to create and modify Jajuk devices

@@ -46,8 +46,6 @@ public interface Const {
   int FEEDBACK_LINES = 200;
   /** Max history size. */
   int MAX_HISTORY_SIZE = 1000;
-  /** Autocommit delay in ms. */
-  int AUTO_COMMIT_DELAY = 3600000;
   /** Autorefresh thread delay in ms. */
   int AUTO_REFRESH_DELAY = 30000;
   /** Default refresh interval in mins for unknown types devices *. */
@@ -114,12 +112,12 @@ public interface Const {
   /** Update URL = PAD file URL. */
   String CHECK_FOR_UPDATE_URL = "http://jajuk.info/repository/pad/jajuk_pad.xml";
   // Jajuk version
-  String JAJUK_VERSION = "VERSION_REPLACED_BY_ANT";
-  String JAJUK_CODENAME = "Gute Laune";
+  String JAJUK_VERSION = "@VERSION_REPLACED_BY_ANT@";
+  String JAJUK_CODENAME = "Deepest Blue";
   /** Extention to the .jajuk_test directory in test mode only */
-  String TEST_VERSION = "1.10";
-  String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
-  String JAJUK_COPYRIGHT = "Copyright 2003-2016 The Jajuk Team";
+  String TEST_VERSION = "11";
+  String JAJUK_VERSION_DATE = "Build: @DATE_REPLACED_BY_ANT@";
+  String JAJUK_COPYRIGHT = "Copyright 2003-2019 The Jajuk Team";
   String TYPE_VIDEO = "Type.video";
   // -- Files and paths --
   String FILE_SAVING_FILE_EXTENSION = "saving";
@@ -210,8 +208,8 @@ public interface Const {
   String VARIOUS_ARTIST = "various_artist";
   String COVER_NONE = "none";
   // images
-  URL IMAGES_SPLASHSCREEN = UtilSystem.getResource("images/included/jajuk-splashscreen.jpg");
-  URL IMAGE_SEARCH = UtilSystem.getResource("images/included/search.png");
+  URL IMAGES_SPLASHSCREEN = UtilSystem.getResource("images/jajuk-splashscreen.jpg");
+  URL IMAGE_SEARCH = UtilSystem.getResource("images/search.png");
   // XSLT Files
   URL XSLT_ARTIST = UtilSystem.getResource("xslt/artist.xsl");
   URL XSLT_ALBUM = UtilSystem.getResource("xslt/album.xsl");
@@ -223,8 +221,6 @@ public interface Const {
   String COLLECTION_LOGICAL = "logical";
   String COLLECTION_PHYSICAL = "physical";
   // -- Command line options --
-  /** Tells jajuk it is inside the IDE. */
-  String CLI_IDE = "ide";
   /** Tells jajuk to use a .jajuk_test repository */
   String CLI_TEST = "test";
   /** Special forced workspace location CLI option. */
@@ -472,8 +468,6 @@ public interface Const {
   String CONF_FRAME_POS_FORCED = "jajuk.frame.forced_position";
   // Forced mplayer path
   String CONF_MPLAYER_PATH_FORCED = "jajuk.mplayer.forced_path";
-  /** Hotkeys flag *. */
-  String CONF_OPTIONS_HOTKEYS = "jajuk.options.use_hotkeys";
   /** MPLayer additional arguments *. */
   String CONF_MPLAYER_ARGS = "jajuk.player.mplayer_args";
   /** MPlayer additional environment variables *. */
@@ -482,14 +476,8 @@ public interface Const {
   String CONF_CATALOG_PAGE_SIZE = "jajuk.catalog.pages_size";
   /** Show Catalog popups. */
   String CONF_SHOW_POPUPS = "jajuk.show_popups";
-  /** Show systray. */
-  String CONF_SHOW_SYSTRAY = "jajuk.show_systray";
-  /** Enable Title view Animation. */
+   /** Enable Title view Animation. */
   String CONF_TITLE_ANIMATION = "jajuk.title_animation";
-  /** Minimize to tray. */
-  String CONF_MINIMIZE_TO_TRAY = "jajuk.minimize_to_tray";
-  /** Display on tray click. */
-  String CONF_TRAY_CLICK_DISPLAY_WINDOW = "jajuk.tray_click_display_window";
   /** Enable Last.FM information queries */
   String CONF_LASTFM_INFO = "jajuk.lastfm_information";
   /** Webradio playing at jajuk stop ?. */
@@ -737,4 +725,6 @@ public interface Const {
   String TAG_COVER_FILE = "tag_cover.png";
   /** Current radio track */
   String CURRENT_RADIO_TRACK = "current_radio_track";
+
+
 }

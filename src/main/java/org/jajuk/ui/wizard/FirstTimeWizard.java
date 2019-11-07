@@ -38,8 +38,6 @@ import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.services.core.SessionService;
@@ -56,6 +54,8 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.jdesktop.swingx.JXCollapsiblePane;
 import org.jdesktop.swingx.VerticalLayout;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * First time Wizard.

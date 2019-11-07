@@ -63,8 +63,7 @@ public class PasteAction extends JajukAction {
    * Instantiates a new paste action.
    */
   PasteAction() {
-    super(Messages.getString("ActionMove.0"), IconLoader.getIcon(JajukIcons.PASTE), "ctrl V", true,
-        false);
+    super(Messages.getString("ActionMove.0"), IconLoader.getIcon(JajukIcons.PASTE), "ctrl V", true);
     setShortDescription(Messages.getString("ActionMove.0"));
   }
 

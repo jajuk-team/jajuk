@@ -20,8 +20,6 @@
  */
 package org.jajuk.ui.helpers;
 
-import entagged.freedb.FreedbReadResult;
-
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,6 +29,8 @@ import org.jajuk.services.cddb.CDDBTrack;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
+
+import entagged.freedb.FreedbReadResult;
 
 /**
  * .

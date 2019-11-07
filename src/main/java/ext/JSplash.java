@@ -44,6 +44,7 @@ import javax.swing.border.EmptyBorder;
 
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.widgets.ScrollingLabel;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilSystem;
 
@@ -130,13 +131,13 @@ public final class JSplash extends JFrame {
       totd = totd.substring(0, totd.indexOf("<a"));
     }
     totd += "     ";
-    JScrollingText scrollingText = new JScrollingText(totd, -5);
+    ScrollingLabel scrollingText = new ScrollingLabel(totd);
     scrollingText.setPreferredSize(new Dimension(400, 20));
     scrollingText.setMaximumSize(new Dimension(400, 20));
     GridLayout layout = new GridLayout(2, 1, 0, 0);
     JPanel jpTotdAndProgress = new JPanel(layout);
     jpTotdAndProgress.setBorder(new EmptyBorder(4, 5, 0, 5));
-    scrollingText.start();
+    scrollingText.startScrolling();
     if (mProgressBar) {
       mProgress = new JProgressBar();
       if (mProgressBarMessages || mProgressBarPercent) {

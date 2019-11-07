@@ -27,8 +27,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JRadioButton;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistManager;
 import org.jajuk.services.bookmark.Bookmarks;
@@ -42,6 +40,8 @@ import org.jajuk.ui.wizard.prepare_party.PreparePartyWizard.Variable;
 import org.jajuk.util.Messages;
 import org.qdwizard.ClearPoint;
 import org.qdwizard.Screen;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * First Panel of the Wizard, it shows a selection of sources where the user can choose one, e.g. DJs, Ambiences, ...
@@ -154,17 +154,6 @@ public class PreparePartyWizardActionSelectionScreen extends Screen implements A
     // and there was no data stored before (an hence nothing was read in
     // readData())
     updateData();
-  }
-
-  /**
-   * Return if the specified element is true in the data-map.
-   * 
-   * @param key The key to look up in the data-object.
-   * 
-   * @return true if the value was stored as boolean true, false otherwise.
-   */
-  private final boolean isTrue(final Variable key) {
-    return data.containsKey(key) && Boolean.TRUE.equals(data.get(key));
   }
 
   /**

@@ -31,13 +31,13 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.services.dj.DigitalDJ;
 import org.jajuk.services.dj.DigitalDJManager;
 import org.jajuk.ui.wizard.digital_dj.DigitalDJWizard.Variable;
 import org.jajuk.util.Messages;
 import org.qdwizard.Screen;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * DJ removal.

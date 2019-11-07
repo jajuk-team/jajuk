@@ -28,7 +28,7 @@ import java.net.Socket;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.TestHelpers;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;

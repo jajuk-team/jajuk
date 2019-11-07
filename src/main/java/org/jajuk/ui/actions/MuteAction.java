@@ -43,7 +43,7 @@ public class MuteAction extends JajukAction {
    */
   MuteAction() {
     super(Messages.getString("JajukWindow.2"), IconLoader.getIcon(JajukIcons.VOLUME_LEVEL1), "F8",
-        true, true);
+        true);
     setShortDescription(Messages.getString("JajukWindow.19"));
   }
 

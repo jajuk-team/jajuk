@@ -22,7 +22,7 @@ package org.jajuk.services.dj;
 
 import ext.services.xml.XMLUtils;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.base.Album;

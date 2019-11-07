@@ -21,7 +21,6 @@
 package org.jajuk.ui.views;
 
 import java.awt.Component;
-import java.awt.SystemTray;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
@@ -52,8 +51,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
-
-import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.SearchResult.SearchResultType;
@@ -86,6 +83,8 @@ import org.jdesktop.swingx.JXCollapsiblePane;
 import org.jdesktop.swingx.VerticalLayout;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.SkinInfo;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * View used to set Jajuk parameters.
@@ -151,7 +150,6 @@ public class ParameterView extends ViewAdapter {
   JCheckBox jcbDefaultActionDrop;
   JLabel jlNotificationType;
   JComboBox jcbNotificationType;
-  JCheckBox jcbHotkeys;
   JCheckBox jcbShowVideos;
   JCheckBox jcbPreserveFileDates;
   JCheckBox jcbUseParentDir;
@@ -187,9 +185,6 @@ public class ParameterView extends ViewAdapter {
   JSlider jsCatalogPages;
   JButton jbCatalogRefresh;
   JCheckBox jcbShowPopups;
-  JCheckBox jcbShowSystray;
-  JCheckBox jcbMinimizeToTray;
-  JCheckBox jcbClickTrayAlwaysDisplayWindow;
   JLabel jlFonts;
   JSlider jsFonts;
   JCheckBox jcbEnableLastFMInformation;
@@ -579,11 +574,6 @@ public class ParameterView extends ViewAdapter {
     jcbDefaultActionClick.setToolTipText(Messages.getString("ParameterView.180"));
     jcbDefaultActionDrop = new JCheckBox(Messages.getString("ParameterView.181"));
     jcbDefaultActionDrop.setToolTipText(Messages.getString("ParameterView.182"));
-    jcbHotkeys = new JCheckBox(Messages.getString("ParameterView.196"));
-    jcbHotkeys.addActionListener(updateHelper);
-    jcbHotkeys.setToolTipText(Messages.getString("ParameterView.197"));
-    // Disable this option if not under windows
-    jcbHotkeys.setEnabled(UtilSystem.isUnderWindows());
     scbLanguage = new SteppedComboBox();
     scbLanguage.setRenderer(new BasicComboBoxRenderer() {
       private static final long serialVersionUID = -6943363556191659895L;
@@ -616,7 +606,6 @@ public class ParameterView extends ViewAdapter {
     jpOptions.add(jcbDisplayUnmounted);
     jpOptions.add(jcbDefaultActionClick);
     jpOptions.add(jcbDefaultActionDrop);
-    jpOptions.add(jcbHotkeys);
     jpOptions.add(jcbUseParentDir);
     jpOptions.add(jcbShowVideos);
     jpOptions.add(jcbPreserveFileDates);
@@ -941,26 +930,6 @@ public class ParameterView extends ViewAdapter {
     // Splashscreen
     jcbSplashscreen = new JCheckBox(Messages.getString("ParameterView.290"));
     jcbSplashscreen.setToolTipText(Messages.getString("ParameterView.291"));
-    jcbShowSystray = new JCheckBox(Messages.getString("ParameterView.271"));
-    // Disable this option if the tray is not supported by the platform
-    jcbShowSystray.setEnabled(SystemTray.isSupported());
-    // Disable minimize to systray option if unchecked
-    jcbShowSystray.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        jcbMinimizeToTray.setEnabled(jcbShowSystray.isSelected());
-        jcbClickTrayAlwaysDisplayWindow.setEnabled(jcbShowSystray.isSelected());
-        if (!jcbShowSystray.isSelected()) {
-          jcbMinimizeToTray.setSelected(false);
-          jcbClickTrayAlwaysDisplayWindow.setSelected(false);
-        }
-      }
-    });
-    jcbShowSystray.setToolTipText(Messages.getString("ParameterView.272"));
-    jcbMinimizeToTray = new JCheckBox(Messages.getString("ParameterView.281"));
-    jcbMinimizeToTray.setToolTipText(Messages.getString("ParameterView.282"));
-    jcbClickTrayAlwaysDisplayWindow = new JCheckBox(Messages.getString("ParameterView.303"));
-    jcbClickTrayAlwaysDisplayWindow.setToolTipText(Messages.getString("ParameterView.304"));
     JLabel jlPerspectiveSize = new JLabel(Messages.getString("ParameterView.246"));
     jsPerspectiveSize = new JSlider(16, 45, Conf.getInt(Const.CONF_PERSPECTIVE_ICONS_SIZE));
     jsPerspectiveSize.setSnapToTicks(true);
@@ -1028,9 +997,6 @@ public class ParameterView extends ViewAdapter {
     JPanel jpUI = new JPanel(new MigLayout("insets 10,gapx 10,gapy 15"));
     jpUI.add(jcbShowPopups, "wrap");
     jpUI.add(jcbSplashscreen, "wrap");
-    jpUI.add(jcbShowSystray, "split 3");
-    jpUI.add(jcbMinimizeToTray);
-    jpUI.add(jcbClickTrayAlwaysDisplayWindow, "wrap");
     jpUI.add(jlFonts);
     jpUI.add(jsFonts, "wrap,grow");
     jpUI.add(jlNotificationType);

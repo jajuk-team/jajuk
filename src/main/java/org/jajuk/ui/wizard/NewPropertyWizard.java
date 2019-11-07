@@ -34,8 +34,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.events.JajukEvent;
@@ -45,6 +43,8 @@ import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jdesktop.swingx.JXDatePicker;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * New property wizard.

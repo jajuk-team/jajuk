@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.Playlist;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.Conf;
@@ -124,7 +124,7 @@ public class PreparePartyWizard extends Wizard {
     super(new Wizard.Builder(Messages.getString("PreparePartyWizard.1"),
         bProvidedPlaylist ? PreparePartyWizardGeneralOptionsScreen.class
             : PreparePartyWizardActionSelectionScreen.class, JajukMainWindow.getInstance())
-        .hSize(800).vSize(550).locale(LocaleManager.getLocale())
+        .hSize(800).vSize(600).locale(LocaleManager.getLocale())
         .icon(IconLoader.getIcon(JajukIcons.PREPARE_PARTY_32X32)));
     if (playlist != null) {
       setPlaylist(playlist);
@@ -182,7 +182,7 @@ public class PreparePartyWizard extends Wizard {
    * 
    * @return true if the value was stored as boolean true, false otherwise.
    */
-  private final boolean isTrue(final Variable key) {
+  private boolean isTrue(final Variable key) {
     return data.containsKey(key) && Boolean.TRUE.equals(data.get(key));
   }
 

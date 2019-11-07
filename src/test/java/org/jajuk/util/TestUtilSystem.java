@@ -28,7 +28,7 @@ import java.io.OutputStream;
 import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.SystemUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.jajuk.ConstTest;
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
@@ -427,6 +427,7 @@ public class TestUtilSystem extends JajukTestCase {
    */
   public void testGetOnlyFile() {
     assertEquals("name.txt", UtilSystem.getOnlyFile("file:///tmp/some/name.txt"));
+    assertEquals("imagesqtbnANd9GcR3oc63qGvD-UNIESfnOD3ABwJ9JeFdhzE6eEZZFTzw-PBNyOZWdw", UtilSystem.getOnlyFile("images?q=tbn:ANd9GcR3oc63qGvD-UNIESfnOD3ABwJ9JeFdhzE6eEZZFTzw-PBNyOZWdw"));
   }
 
   /**

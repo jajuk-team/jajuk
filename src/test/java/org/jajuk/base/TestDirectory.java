@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.ConstTest;
 import org.jajuk.JajukTestCase;
 import org.jajuk.MockPlayer;
@@ -391,6 +391,14 @@ public class TestDirectory extends JajukTestCase {
     dir.getDevice().mount(true);
     // now false because device is mounted now
     assertFalse(dir.shouldBeHidden());
+  }
+
+  /**
+   * Test method for {@link org.jajuk.base.Directory#cleanRemovedFiles()}.
+   */
+  public void testCleanRemovedFiles() {
+    Directory dir = TestHelpers.getDirectory("dir1");
+    dir.cleanRemovedFiles();
   }
 
   /**

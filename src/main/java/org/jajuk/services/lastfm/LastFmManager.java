@@ -20,9 +20,6 @@
  */
 package org.jajuk.services.lastfm;
 
-import ext.services.lastfm.LastFmService;
-import ext.services.lastfm.ScrobblerException;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,6 +31,9 @@ import org.jajuk.events.Observer;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
+
+import ext.services.lastfm.LastFmService;
+import ext.services.lastfm.ScrobblerException;
 
 /**
  * LastFM Manager, handle file launch events to submit informations among others

@@ -33,7 +33,7 @@ import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.widgets.IconLabel;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilString;
-import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableCellRenderer;
+import org.pushingpixels.substance.api.renderer.SubstanceDefaultTableCellRenderer;
 
 /**
  * Cell renderer to support cells color and icons

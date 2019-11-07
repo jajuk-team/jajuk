@@ -20,9 +20,9 @@
  */
 package org.jajuk.services.cddb;
 
-import entagged.freedb.FreedbTrack;
-
 import org.jajuk.base.Track;
+
+import entagged.freedb.FreedbTrack;
 
 /**
  * A CDDB track.

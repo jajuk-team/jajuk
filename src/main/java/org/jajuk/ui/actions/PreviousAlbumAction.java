@@ -37,7 +37,7 @@ public class PreviousAlbumAction extends JajukAction {
    * Instantiates a new previous album action.
    */
   PreviousAlbumAction() {
-    super("previous album", "shift F9", false, true);
+    super("previous album", "shift F9", false);
   }
 
   /* (non-Javadoc)

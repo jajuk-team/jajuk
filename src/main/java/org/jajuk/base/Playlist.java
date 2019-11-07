@@ -31,9 +31,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
@@ -52,6 +54,7 @@ import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+import org.jajuk.util.ReadOnlyIterator;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
@@ -532,6 +535,8 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       try {
         String sLine = null;
         boolean bUnknownDevicesMessage = false;
+        // make a local cache of filenames to speed up searching
+        Map<String, File> map = getFileMapByFIO();
         while ((sLine = br.readLine()) != null) {
           if (sLine.length() == 0) { // void line
             continue;
@@ -558,12 +563,21 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
             // Check for file existence in jajuk collection using Guava Files.simplyPath
             // Don't use File.getAbsolutePath() because its result can contain ./ or ../
             // Don't use File.getCanonicalPath() because it resolves symlinks under unix.
-            File jajukFile = FileManager.getInstance()
-                .getFileByPath(Files.simplifyPath(fioAbsPath));
+            File jajukFile = map.get(Files.simplifyPath(fioAbsPath));
+            if (jajukFile == null) {
+              jajukFile = map.get(Files.simplifyPath(fioAbsPath).toLowerCase());
+            }
             if (jajukFile == null) { // check if this file is known in collection
               fio = new java.io.File(sLine); // check if given url is not absolute
-              jajukFile = FileManager.getInstance().getFileByPath(fio.getAbsolutePath());
+              jajukFile = map.get(fio.getAbsolutePath());
+              if (jajukFile == null) {
+                jajukFile = map.get(fio.getAbsolutePath().toLowerCase());
+              }
               if (jajukFile == null) { // no more ? leave
+                if (Log.isDebugEnabled()) {
+                  Log.debug("Playlist-track {{" + sLine + "}} from playlist {{" + getName()
+                      + "}} not found.");
+                }
                 bUnknownDevicesMessage = true;
                 continue;
               }
@@ -585,6 +599,23 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
           .getAbsolutePath() : "<unknown>"), e);
     }
     this.alFiles = files;
+  }
+
+  /**
+   * @return
+   */
+  private Map<String, File> getFileMapByFIO() {
+    Map<String, File> map = new HashMap<String, File>();
+    ReadOnlyIterator<File> filesIterator = FileManager.getInstance().getFilesIterator();
+    while (filesIterator.hasNext()) {
+      File file = filesIterator.next();
+      String absolutePath = file.getFIO().getAbsolutePath();
+      // put the file both with normal case and with all lowercase to allow
+      // to match in both ways
+      map.put(absolutePath, file);
+      map.put(absolutePath.toLowerCase(), file);
+    }
+    return map;
   }
 
   /**
@@ -647,43 +678,52 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    * @throws JajukException the jajuk exception
    */
   void replaceFile(final File fOld, final File fNew) throws JajukException {
-    if (type == Type.BOOKMARK) {
-      List<File> files = Bookmarks.getInstance().getFiles();
-      final Iterator<File> it = files.iterator();
-      for (int i = 0; it.hasNext(); i++) {
-        final File fileToTest = it.next();
-        if (fileToTest.equals(fOld)) {
-          files.set(i, fNew);
-          /*
-           * this leads to ConcurrentModificationException: Bookmarks.getInstance().remove(i);
-           * Bookmarks.getInstance().addFile(i, fNew);
-           */
-        }
-      }
-    } else if (type == Type.QUEUE) {
-      final Iterator<StackItem> it = QueueModel.getQueue().iterator();
-      for (int i = 0; it.hasNext(); i++) {
-        final File fileToTest = it.next().getFile();
-        if (fileToTest.equals(fOld)) {
-          QueueModel.remove(i); // just remove
-          final List<StackItem> al = new ArrayList<StackItem>(1);
-          al.add(new StackItem(fNew));
-          QueueModel.insert(al, i);
-        }
-      }
-    } else {
-      final Iterator<File> it = alFiles.iterator();
-      for (int i = 0; it.hasNext(); i++) {
-        final File fileToTest = it.next();
-        if (fileToTest.equals(fOld)) {
-          alFiles.set(i, fNew);
-          try {
-            commit();// save changed playlist
-          } catch (final JajukException e) {
-            Log.error(e);
+    
+    
+    switch (type){
+    
+      case BOOKMARK: 
+        List<File> bookmarkFiles = Bookmarks.getInstance().getFiles();
+        int bookmarkFileCounter = 0;
+        for (File bookmarkFile: bookmarkFiles){
+          if (bookmarkFile.equals(fOld)){
+            bookmarkFiles.set(bookmarkFileCounter, fNew);
+            break;
           }
+          bookmarkFileCounter++;
         }
-      }
+        break;
+        
+      case QUEUE:
+        List<StackItem> queueStackItems = QueueModel.getQueue();
+        int queueCounter = 0;
+        for (StackItem stackItem : queueStackItems){
+          if (stackItem.getFile().equals(fOld)){
+            QueueModel.remove(queueCounter);
+            final List<StackItem> al = new ArrayList<StackItem>(1);
+            al.add(new StackItem(fNew));
+            QueueModel.insert(al, queueCounter);
+            break;
+          }
+          queueCounter++; 
+        }
+        break;
+      
+      default:
+        int defaultCounter = 0;
+        for (File defaultFile : alFiles){
+          if (defaultFile.equals(fOld)){
+            alFiles.set(defaultCounter, fNew);
+            try {
+              commit();// save changed playlist
+            } catch (final JajukException e) {
+              Log.error(e);
+            }
+            break;
+          }
+          defaultCounter++;
+        }
+        break;
     }
   }
 
@@ -792,7 +832,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
       rate += file.getTrack().getRate();
       nb++;
     }
-    return Math.round(rate / nb);
+    return (nb > 0) ? Math.round(rate / nb) : 0;
   }
 
   /**

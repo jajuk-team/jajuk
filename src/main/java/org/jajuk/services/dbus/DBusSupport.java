@@ -187,7 +187,7 @@ public interface DBusSupport extends DBusInterface {
    * 
    * @throws Exception the exception
    */
-  @org.freedesktop.DBus.Description("Reports the currently played file via the configured notification system, i.e. usually some sort of popup in the Systray-Area.")
+  @org.freedesktop.DBus.Description("Reports the currently played file via the configured notification system, i.e. usually a system notification.")
   void showCurrentlyPlaying() throws Exception;
 
   /**

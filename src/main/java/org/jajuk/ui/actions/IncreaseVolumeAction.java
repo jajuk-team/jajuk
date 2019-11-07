@@ -37,7 +37,7 @@ public class IncreaseVolumeAction extends JajukAction {
    * Instantiates a new increase volume action.
    */
   IncreaseVolumeAction() {
-    super("increase volume", "ctrl UP", true, true);
+    super("increase volume", "ctrl UP", true);
   }
 
   /* (non-Javadoc)

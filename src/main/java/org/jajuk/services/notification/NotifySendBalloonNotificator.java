@@ -20,8 +20,6 @@
  */
 package org.jajuk.services.notification;
 
-import ext.ProcessLauncher;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,6 +34,8 @@ import org.jajuk.util.UtilString;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+
+import ext.ProcessLauncher;
 
 /**
  * An implementation of INotificator which uses the notify-send functionality

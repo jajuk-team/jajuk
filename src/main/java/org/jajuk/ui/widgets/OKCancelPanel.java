@@ -24,11 +24,11 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Ok Cancel generic panel.

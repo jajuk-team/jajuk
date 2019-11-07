@@ -29,8 +29,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.border.BevelBorder;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.Type;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.ui.wizard.prepare_party.PreparePartyWizard.Variable;
@@ -40,6 +38,8 @@ import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.qdwizard.Screen;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Panel for selecting the location in the filesystem.

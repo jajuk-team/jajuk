@@ -37,7 +37,7 @@ public class NextAlbumAction extends JajukAction {
    * Instantiates a new next album action.
    */
   NextAlbumAction() {
-    super("next album", "shift F10", false, true);
+    super("next album", "shift F10", false);
   }
 
   /* (non-Javadoc)

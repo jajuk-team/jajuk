@@ -33,8 +33,6 @@ import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.File;
@@ -77,6 +75,8 @@ import org.jfree.text.TextBlockAnchor;
 import org.jfree.ui.RectangleAnchor;
 import org.jfree.ui.TextAnchor;
 import org.jfree.util.SortOrder;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Statistics view

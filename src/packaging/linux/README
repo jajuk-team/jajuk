@@ -1,0 +1,7 @@
+To launch Jajuk : 
+$ ./jajuk
+
+To install Jajuk into your PATH and install the menu icon :
+$ sudo ./installer
+
+Manual, help at https://jajuk.info

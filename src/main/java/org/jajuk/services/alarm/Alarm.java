@@ -23,7 +23,7 @@ package org.jajuk.services.alarm;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.jajuk.base.File;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.webradio.WebRadio;

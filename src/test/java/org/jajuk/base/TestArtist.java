@@ -20,7 +20,7 @@
  */
 package org.jajuk.base;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.services.startup.StartupCollectionService;

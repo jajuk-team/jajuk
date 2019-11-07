@@ -29,7 +29,6 @@ import static org.jajuk.ui.actions.JajukActions.PAUSE_RESUME_TRACK;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_ALBUM;
 import static org.jajuk.ui.actions.JajukActions.PREVIOUS_TRACK;
 import static org.jajuk.ui.actions.JajukActions.STOP_TRACK;
-import ext.DropDownButton;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -54,8 +53,6 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import net.miginfocom.swing.MigLayout;
 
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -84,6 +81,9 @@ import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXPanel;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+
+import ext.DropDownButton;
+import net.miginfocom.swing.MigLayout;
 
 
 /**

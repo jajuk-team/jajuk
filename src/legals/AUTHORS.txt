@@ -4,6 +4,7 @@ Bertrand Florat <bertrand@florat.net>
 Dominik Stadler <jajuk-developers@lists.sourceforge.net>
 Fsck222 <jajuk-developers@lists.sourceforge.net>
 Florian Strienz <jajuk-developers@lists.sourceforge.net>
+Gwen Kerdal (gkerdal) <jajuk-developers@lists.sourceforge.net>
 Varun Hiremath <jajuk-developers@lists.sourceforge.net>
 Dominik Stadler <dominik.stadler@gmx.at>
 Gerhard Dietrichsteiner <jajuk-developers@lists.sourceforge.net>
