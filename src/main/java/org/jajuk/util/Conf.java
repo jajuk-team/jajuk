@@ -192,6 +192,9 @@ public final class Conf implements Const {
     if (SessionService.isTestMode()) {
       defaults.put(CONF_OPTIONS_LOG_LEVEL, Integer.toString(Log.DEBUG));
     }
+    else {
+    	defaults.put(CONF_OPTIONS_LOG_LEVEL, Integer.toString(Log.INFO));
+    }
     defaults.put(CONF_OPTIONS_TAB, "0");
     defaults.put(CONF_OPTIONS_INTRO_BEGIN, "0");
     defaults.put(CONF_OPTIONS_INTRO_LENGTH, "20");

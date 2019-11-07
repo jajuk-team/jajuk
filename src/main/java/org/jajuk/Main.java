@@ -125,7 +125,7 @@ public final class Main {
 			// Conf.load
 			if (!SessionService.isTestMode()) {
 				// test mode is always in debug mode
-				Log.setVerbosity(Integer.parseInt(Conf.getString(Const.CONF_OPTIONS_LOG_LEVEL)));
+				Log.setVerbosity(Conf.getInt(Const.CONF_OPTIONS_LOG_LEVEL));
 			}
 			// Set locale. setSystemLocal
 			LocaleManager.setLocale(new Locale(Conf.getString(Const.CONF_OPTIONS_LANGUAGE)));
