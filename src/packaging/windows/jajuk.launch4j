@@ -16,7 +16,8 @@
   </classPath>
   <jre>
     <path></path>
-    <minVersion>1.8.0</minVersion>
+    <!-- No min version, launch4J has some issue to detect last JRE versions -->
+    <minVersion></minVersion>
     <maxVersion></maxVersion>
     <jdkPreference>preferJre</jdkPreference>
     <initialHeapSize>20</initialHeapSize>
