@@ -342,11 +342,10 @@ public interface Const {
   String CONF_TAGS_USE_PARENT_DIR = "jajuk.tags.use_parent_dir";
   /** Contains files id separated by a colon. */
   String CONF_BOOKMARKS = "jajuk.bookmarks";
-  /** Startup display mode: 0= main window + tray, 1: tray only, 2: slimbar + tray 3 : full screen. */
+  /** Startup display mode: 0= main window, 1: deprecated, 2: slimbar,  3 : full screen. */
   String CONF_STARTUP_DISPLAY = "jajuk.startup_display_mode";
   int DISPLAY_MODE_MAIN_WINDOW = 0;
-  int DISPLAY_MODE_TRAY = 1;
-  int DISPLAY_MODE_SLIMBAR_TRAY = 2;
+  int DISPLAY_MODE_SLIMBAR = 2;
   int DISPLAY_MODE_FULLSCREEN = 3;
   /** Catalog view cover mode. */
   int CATALOG_VIEW_COVER_MODE_ALL = 0;

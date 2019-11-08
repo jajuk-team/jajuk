@@ -27,7 +27,6 @@ import org.jajuk.services.webradio.WebRadio;
  * System notification in Jajuk means informing the user about things like newly
  * started tracks via a system specific notification mechanism.
  * 
- * On Windows the System Tray can take care of this.
  * 
  * On Linux, especially Linux there are more sophisticated notification
  * mechanisms available which can be used as well.

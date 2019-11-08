@@ -86,8 +86,6 @@ final public class IconLoader {
       out = UtilGUI.getResizedImage(getIcon(JajukIcons.NO_COVER), 300, 300);
     } else if (icon == JajukIcons.LOGO) {
       out = new ImageIcon(UtilSystem.getResource("icons/64x64/jajuk-icon_64x64.png"));
-    } else if (icon == JajukIcons.TRAY) {
-      out = new ImageIcon(UtilSystem.getResource("icons/22x22/jajuk-icon_22x22.png"));
     } else if (icon == JajukIcons.COVER_16X16) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/thumbnail_16x16.png"));
     } else if (icon == JajukIcons.LOGO_FRAME) {

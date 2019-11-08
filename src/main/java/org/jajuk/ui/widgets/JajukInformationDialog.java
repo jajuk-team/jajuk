@@ -38,7 +38,7 @@ import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.util.log.Log;
 
 /**
- * Dialog displayed by slimbar and tray or notificators.
+ * Dialog displayed by slimbar or notificators.
  */
 public class JajukInformationDialog extends JWindow {
   /** Generated serialVersionUID. */

@@ -66,16 +66,15 @@ public final class Main {
 	/**
 	 * Main entry.
 	 * 
-	 * @param args
-	 *            CLI arguments
+	 * @param args CLI arguments
 	 */
 	public static void main(final String[] args) {
 		// non ui init
 		try {
 			// check JVM version
 			if (isJavaVersionNotSupported()) {
-				System.out.println(
-						"[BOOT] Java Runtime Environment 1.8 minimum required." + " You use a JVM " + System.getProperty("java.version"));
+				System.out.println("[BOOT] Java Runtime Environment 1.8 minimum required." + " You use a JVM "
+						+ System.getProperty("java.version"));
 				System.exit(2); // error code 2 : wrong JVM
 			}
 			// set flags from command line options
@@ -207,7 +206,7 @@ public final class Main {
 	 * 
 	 * Check java version.
 	 * 
-	 * JVM version before 9 : "1.0","1.6"... then "9", "10" 
+	 * JVM version before 9 : "1.0","1.6"... then "9", "10"
 	 * 
 	 * @return true whether Java version is correct
 	 */

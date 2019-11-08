@@ -21,7 +21,7 @@
 package org.jajuk.ui.windows;
 
 /**
- * Global contract for jajuk frames (main window, fullscreen, tray, slimbar...)
+ * Global contract for jajuk frames (main window, fullscreen, slimbar...)
  * A window has four states :
  * <p>- Instanciated (the constructor contains general initialization or
  * nothing)

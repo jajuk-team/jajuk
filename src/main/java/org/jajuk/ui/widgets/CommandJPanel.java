@@ -138,10 +138,6 @@ public class CommandJPanel extends JXPanel implements ActionListener, ChangeList
     return command;
   }
 
-  /**
-   * Constructor, this objects needs to be implemented for the tray (child
-   * object).
-   */
   public CommandJPanel() {
     super();
   }

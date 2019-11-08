@@ -197,7 +197,7 @@ public final class StartupGUIService {
             ActionManager.getAction(JajukActions.FULLSCREEN_JAJUK).perform(null);
           }
           // Start the slimbar if required
-          else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_SLIMBAR_TRAY) {
+          else if (Conf.getInt(Const.CONF_STARTUP_DISPLAY) == Const.DISPLAY_MODE_SLIMBAR) {
             ActionManager.getAction(JajukActions.SLIM_JAJUK).perform(null);
           }
           // Display simple device wizard if user didn't yet created any device

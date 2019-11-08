@@ -914,7 +914,6 @@ public final class UtilGUI {
     } else if (JajukFullScreenWindow.getInstance().getWindowStateDecorator().isDisplayed()) {
       return JajukFullScreenWindow.getInstance();
     } else {
-      // Can happen in sys tray mode only
       return null;
     }
   }

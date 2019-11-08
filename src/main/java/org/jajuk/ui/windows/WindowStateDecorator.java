@@ -32,7 +32,7 @@ import org.jajuk.util.log.Log;
 
 /**
  * Add display and state storage functionalities to jajuk windows (main window,
- * fullscreen, tray, slimbar...)
+ * fullscreen, slimbar...)
  */
 public abstract class WindowStateDecorator {
   /** Current state. */
@@ -79,7 +79,7 @@ public abstract class WindowStateDecorator {
     Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_MAIN_WINDOW));
     if (sdSlimbar.isDisplayed()) {
       Conf.setProperty(Const.CONF_STARTUP_DISPLAY,
-          Integer.toString(Const.DISPLAY_MODE_SLIMBAR_TRAY));
+          Integer.toString(Const.DISPLAY_MODE_SLIMBAR));
     } else if (sdfullscreen.isDisplayed()) {
       Conf.setProperty(Const.CONF_STARTUP_DISPLAY, Integer.toString(Const.DISPLAY_MODE_FULLSCREEN));
     } else if (sdMainWindow.isDisplayed()) {

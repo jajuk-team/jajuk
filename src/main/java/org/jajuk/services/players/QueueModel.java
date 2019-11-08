@@ -1395,7 +1395,6 @@ public final class QueueModel {
     if (isPlayingRadio()) {
       Properties webradioInfoUpdatedEvent = ObservationManager
           .getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED);
-      // TODO Strange but we experienced NPE here coming from a call from tray/mouseMoved, so we perform sanity check, to be investigated
       if (webradioInfoUpdatedEvent != null) {
         WebRadio updatedWebRadio = (WebRadio) webradioInfoUpdatedEvent.get(Const.DETAIL_CONTENT);
         if (getCurrentRadio().getName().equals(updatedWebRadio.getName())) {

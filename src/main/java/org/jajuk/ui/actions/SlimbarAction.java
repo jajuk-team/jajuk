@@ -54,11 +54,7 @@ public class SlimbarAction extends JajukAction {
    */
   @Override
   public void perform(ActionEvent evt) throws Exception {
-    /*
-     * If slimbar is visible, hide it and show the main window. Note that both main window and
-     * slimbar can be displayed at the same time: If the slimbar is visible and user display main
-     * window by right clicking on the tray, the main window is displayed, this is a normal behavior
-     */
+   // If slimbar is visible, hide it and show the main window. 
     WindowStateDecorator sdSlimbar = JajukSlimbar.getInstance().getWindowStateDecorator();
     WindowStateDecorator sdMainWindow = JajukMainWindow.getInstance().getWindowStateDecorator();
     if (sdSlimbar.isDisplayed()) {
