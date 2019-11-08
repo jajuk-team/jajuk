@@ -4,4 +4,11 @@ $ ./jajuk
 To install Jajuk into your PATH and install the menu icon :
 $ sudo ./installer
 
-Manual, help at https://jajuk.info
+Jajuk requires :
+- A JRE 1.8+ like : java-13-openjdk-devel.x86_64
+CAUTION : do not use a headless (server) Java release.
+
+- Recommended : mplayer
+Check http://www.mplayerhq.hu/design7/dload.html for a list of Linux packages 
+
+Manual and help at https://jajuk.info
