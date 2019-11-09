@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Jajuk
 Comment=Jajuk Advanced Jukebox
-Exec=jajuk
+Exec=/usr/local/bin/jajuk
 Icon=jajuk
 Terminal=false
 Type=Application
