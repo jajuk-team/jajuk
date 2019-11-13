@@ -5,13 +5,13 @@
 
 set -e
 
-if [[ $USER != root ]]; then
+if [ $USER != "root" ]; then
   echo "This script must be launched by root only, exiting"
   exit 1
 fi
 
 # Current directory
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DIR="$( cd "$( dirname "$0" )" && pwd )"
 
 # Create a 'jajuk' command available from PATH that will simply cd 
 # into this directory and launch the actual jajuk shell script
