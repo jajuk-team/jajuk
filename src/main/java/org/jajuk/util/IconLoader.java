@@ -482,6 +482,8 @@ final public class IconLoader {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/donate_16x16.png"));
     } else if (icon == JajukIcons.DISC_NUMBER) {
       out = new ImageIcon(UtilSystem.getResource("icons/16x16/disc_number_16x16.png"));
+    } else if (icon == JajukIcons.ALBUM_ARTIST) {
+      out = new ImageIcon(UtilSystem.getResource("icons/16x16/album_artist_16x16.png"));
     }
     // Cache the result
     if (!cache.containsKey(icon)) {

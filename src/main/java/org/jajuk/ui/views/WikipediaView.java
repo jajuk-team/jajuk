@@ -38,6 +38,7 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
+import org.jajuk.base.Track;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -66,13 +67,14 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
   JLabel jlLanguage;
-  JComboBox jcbLanguage;
+  JComboBox<String> jcbLanguage;
   /** Cobra web browser. */
   JajukHtmlPanel browser;
   JButton jbCopy;
   JButton jbLaunchInExternalBrowser;
   JToggleButton jbArtistSearch;
   JToggleButton jbAlbumSearch;
+  JToggleButton jbAlbumArtistSearch;
   JToggleButton jbTrackSearch;
   /** Language index. */
   int indexLang = 0;
@@ -81,7 +83,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
    * .
    */
   enum Type {
-    ARTIST, ALBUM, TRACK
+    ARTIST, ALBUM, TRACK, ALBUM_ARTIST
   }
 
   Type type = Type.ARTIST;
@@ -106,7 +108,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
   @Override
   public void initUI() {
     jlLanguage = new JLabel(Messages.getString("WikipediaView.1"));
-    jcbLanguage = new JComboBox();
+    jcbLanguage = new JComboBox<String>();
     for (String sDesc : LocaleManager.getLocalesDescs()) {
       jcbLanguage.addItem(sDesc);
     }
@@ -133,18 +135,23 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
     jbAlbumSearch = new JToggleButton(IconLoader.getIcon(JajukIcons.ALBUM), true);
     jbAlbumSearch.setToolTipText(Messages.getString("WikipediaView.6"));
     jbAlbumSearch.addActionListener(this);
+    jbAlbumArtistSearch = new JToggleButton(IconLoader.getIcon(JajukIcons.ALBUM_ARTIST), true);
+    jbAlbumArtistSearch.setToolTipText(Messages.getString("WikipediaView.11"));
+    jbAlbumArtistSearch.addActionListener(this);
     jbTrackSearch = new JToggleButton(IconLoader.getIcon(JajukIcons.TRACK), false);
     jbTrackSearch.setToolTipText(Messages.getString("WikipediaView.7"));
     jbTrackSearch.addActionListener(this);
     // Group this three mutual exclusive buttons
     bg.add(jbArtistSearch);
     bg.add(jbAlbumSearch);
+    bg.add(jbAlbumArtistSearch);
     bg.add(jbTrackSearch);
     JToolBar jtb = new JajukJToolbar();
     jtb.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
     // Add items
     jtb.add(jbArtistSearch);
     jtb.add(jbAlbumSearch);
+    jtb.add(jbAlbumArtistSearch);
     jtb.add(jbTrackSearch);
     jtb.addSeparator();
     jtb.add(jbCopy);
@@ -244,20 +251,28 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
         try {
           String lSearch = null;
           if (QueueModel.getPlayingFile() != null) {
-            if (type == Type.ARTIST) {
-              lSearch = QueueModel.getPlayingFile().getTrack().getArtist().getName2();
-              // don't display page if item is unknown
-              if (Messages.getString(UNKNOWN_ARTIST).equals(lSearch)) {
-                lSearch = null;
-              }
-            } else if (type == Type.ALBUM) {
-              lSearch = QueueModel.getPlayingFile().getTrack().getAlbum().getName2();
-              // don't display page if item is unknown
-              if (Messages.getString(UNKNOWN_ALBUM).equals(lSearch)) {
-                lSearch = null;
-              }
-            } else if (type == Type.TRACK) {
-              lSearch = QueueModel.getPlayingFile().getTrack().getName();
+            Track track = QueueModel.getPlayingFile().getTrack();
+            switch (type) {
+              case ARTIST :
+                lSearch = track.getArtist().getName2();
+                // don't display page if item is unknown
+                if (Messages.getString(UNKNOWN_ARTIST).equals(lSearch)) {
+                  lSearch = null;
+                }
+                break;
+              case ALBUM :
+                lSearch = track.getAlbum().getName2();
+                // don't display page if item is unknown
+                if (Messages.getString(UNKNOWN_ALBUM).equals(lSearch)) {
+                  lSearch = null;
+                }
+                break;
+              case TRACK :
+                lSearch = track.getName();
+                break;
+              case ALBUM_ARTIST :
+                lSearch = track.getAlbumArtist().getName2();
+                break;
             }
           }
           // If search is still null, display an nothing found page
@@ -339,6 +354,10 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
       launchSearch(true);
     } else if (arg0.getSource() == jbAlbumSearch) {
       type = Type.ALBUM;
+      // force event
+      launchSearch(true);
+    } else if (arg0.getSource() == jbAlbumArtistSearch) {
+      type = Type.ALBUM_ARTIST;
       // force event
       launchSearch(true);
     } else if (arg0.getSource() == jbArtistSearch) {
