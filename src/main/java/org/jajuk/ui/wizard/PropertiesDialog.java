@@ -671,7 +671,7 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
       int j = 4;
       // for (PropertyMetaInformation meta : alToDisplay) {
       for (int k = 0; k < alToDisplay.size(); k++) {
-        jpProperties.add(widgets[i][IDX_NAME]);
+        jpProperties.add(widgets[i][IDX_NAME], "grow");
         if (widgets[i][IDX_LINK] == null) { // link widget can be null
           if (widgets[i][IDX_COPY] == null) {
             jpProperties.add(widgets[i][IDX_VALUE], "grow,width 200:200, wrap");
