@@ -59,7 +59,11 @@ public abstract class ViewAdapter extends JXPanel implements IView, Const, Compa
     // create a new DockKey (note that ID is set in setID() method)
     key = new DockKey();
     // View title - replacing blank space by the non breaking space fix the issue "Three dots in cover size #2045"
-    key.setName(getDesc().replace(" ", "\u00A0"));
+    String keyName = getDesc();
+    if (keyName != null) {
+      keyName = keyName.replace(" ", "\u00A0");
+    }
+    key.setName(keyName);
     key.setResizeWeight(0.5f);
     setOpaque(true);
   }
