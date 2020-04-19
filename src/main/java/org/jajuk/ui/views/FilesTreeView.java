@@ -125,7 +125,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
   JMenuItem jmiPlaylistFilePaste;
   JMenuItem jmiPlaylistCopyURL;
   JMenuItem jmiPlaylistPrepareParty;
-  JMenuItem jmiPlaylistSave;
 
   /*
    * (non-Javadoc)
@@ -162,8 +161,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
     jmiDirResynchro = new JMenuItem(Messages.getString("FilesTreeView.15"),
         IconLoader.getIcon(JajukIcons.DIRECTORY_SYNCHRO));
     jmiDirResynchro.addActionListener(this);
-    jmiDirCreatePlaylist = new JMenuItem(Messages.getString("FilesTreeView.16"));
-    jmiDirCreatePlaylist.setEnabled(false);
+    jmiDirCreatePlaylist = new JMenuItem(Messages.getString("FilesTreeView.16"), IconLoader.getIcon(JajukIcons.SAVE));
     jmiDirCreatePlaylist.addActionListener(this);
     jmiDirRefactor = new JMenuItem(Messages.getString(("FilesTreeView.62")),
         IconLoader.getIcon(JajukIcons.REORGANIZE));
@@ -211,9 +209,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
     jmiPlaylistCopyURL.putClientProperty(Const.DETAIL_CONTENT, alSelected);
     jmiPlaylistPrepareParty = new JMenuItem(ActionManager.getAction(JajukActions.PREPARE_PARTY));
     jmiPlaylistPrepareParty.putClientProperty(Const.DETAIL_SELECTION, alSelected);
-    // Save playlist
-    jmiPlaylistSave = new JMenuItem(Messages.getString("FilesTreeView.63"), IconLoader.getIcon(JajukIcons.SAVE));
-    jmiPlaylistSave.addActionListener(this);
 
     // Add Action Listener
     jmiCopy.addActionListener(this);
@@ -404,7 +399,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
       DeviceManager.getInstance().removeDevice(device);
       // refresh views
       ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
-    } else if (e.getSource() == jmiPlaylistSave) {
+    } else if (e.getSource() == jmiDirCreatePlaylist) {
       Directory directory = ((DirectoryNode) (paths[0].getLastPathComponent())).getDirectory();
       // Save Playlist (to be done in a thread because saveAs() uses invokeAndWait())
       new Thread("SaveAsAction") {
@@ -787,7 +782,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
         jmenu.add(jmiCDDBWizard);
         jmenu.add(jmiReport);
         jmenu.add(jmiDirRefactor);
-        jmenu.add(jmiPlaylistSave);
+        jmenu.add(jmiDirCreatePlaylist);
         jmenu.addSeparator();
         jmenu.add(pjmTracks);
         jmenu.addSeparator();
