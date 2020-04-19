@@ -61,6 +61,7 @@ import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
 import org.jajuk.base.Playlist;
+import org.jajuk.base.SmartPlaylist;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.events.JajukEvent;
@@ -124,6 +125,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
   JMenuItem jmiPlaylistFilePaste;
   JMenuItem jmiPlaylistCopyURL;
   JMenuItem jmiPlaylistPrepareParty;
+  JMenuItem jmiPlaylistSave;
 
   /*
    * (non-Javadoc)
@@ -209,6 +211,10 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
     jmiPlaylistCopyURL.putClientProperty(Const.DETAIL_CONTENT, alSelected);
     jmiPlaylistPrepareParty = new JMenuItem(ActionManager.getAction(JajukActions.PREPARE_PARTY));
     jmiPlaylistPrepareParty.putClientProperty(Const.DETAIL_SELECTION, alSelected);
+    // Save playlist
+    jmiPlaylistSave = new JMenuItem(Messages.getString("FilesTreeView.63"), IconLoader.getIcon(JajukIcons.SAVE));
+    jmiPlaylistSave.addActionListener(this);
+
     // Add Action Listener
     jmiCopy.addActionListener(this);
     jmiCut.addActionListener(this);
@@ -290,9 +296,9 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
       }
       // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6472844 for a
       // small memory leak that is caused here...
-      if (jtree != null && jtree.getModel() != null) {
-        ((DefaultTreeModel) (jtree.getModel())).reload();
-      }
+//      if (jtree != null && jtree.getModel() != null) {
+//        ((DefaultTreeModel) (jtree.getModel())).reload();
+//      }
     } finally {
       refreshing = false;
     }
@@ -398,6 +404,35 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
       DeviceManager.getInstance().removeDevice(device);
       // refresh views
       ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+    } else if (e.getSource() == jmiPlaylistSave) {
+      Directory directory = ((DirectoryNode) (paths[0].getLastPathComponent())).getDirectory();
+      // Save Playlist (to be done in a thread because saveAs() uses invokeAndWait())
+      new Thread("SaveAsAction") {
+        @Override
+        public void run() {
+          try {
+            SmartPlaylist plf = new SmartPlaylist(Playlist.Type.NEW, Integer.toString(Playlist.Type.NEW.ordinal()), null, null);
+            plf.addFiles(directory.getFilesRecursively(), 0);
+            plf.saveAs();
+            // If the new playlist is saved in a known device location,
+            // force a refresh to make it visible immediately (issue #1263)
+            Device knownDevice = UtilSystem.getDeviceForFio(plf.getFIO());
+            if (knownDevice != null) {
+              Directory directory = DirectoryManager.getInstance().getDirectoryForIO(
+                  plf.getFIO().getParentFile(), knownDevice);
+              directory.refresh(false);
+              // Force a table refresh to show the new playlist if it has
+              // been saved in a known device
+              ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
+            }
+          } catch (JajukException je) {
+            Log.error(je);
+            Messages.showErrorMessage(je.getCode());
+          } catch (Exception ex) {
+            Log.error(ex);
+          }
+        }
+      }.start();
     }
   }
 
@@ -630,7 +665,6 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
      * @see org.jajuk.ui.helpers.JajukMouseAdapter#handlePopup(java.awt.event.MouseEvent)
      */
     @Override
-    @SuppressWarnings("unchecked")
     public void handlePopup(final MouseEvent e) {
       TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
       if (path == null) {
@@ -753,6 +787,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
         jmenu.add(jmiCDDBWizard);
         jmenu.add(jmiReport);
         jmenu.add(jmiDirRefactor);
+        jmenu.add(jmiPlaylistSave);
         jmenu.addSeparator();
         jmenu.add(pjmTracks);
         jmenu.addSeparator();
