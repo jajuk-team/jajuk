@@ -362,6 +362,10 @@ public class JajukMainWindow extends JFrame implements IJajukWindow, Observer {
    * Do not call this when hidden before the first screen will always been returned.
    */
   private void maximalize() {
+    if (getSize().getHeight() <= 1 || getSize().getHeight() <= 1) {
+      // Prevents the main window to be restored with a size of 1*1, after opening Jajuk with maximal size 
+      setSize(new Dimension(FRAME_MIN_WIDTH_PX, FRAME_MIN_HEIGHT_PX));
+    }
     GraphicsConfiguration gConf = UtilGUI.getGraphicsDeviceOfMainFrame().getDefaultConfiguration();
     setMaximizedBounds(gConf.getBounds());
     setExtendedState(getExtendedState() | Frame.MAXIMIZED_BOTH);
