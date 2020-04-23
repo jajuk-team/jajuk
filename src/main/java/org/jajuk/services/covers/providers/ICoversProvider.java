@@ -18,31 +18,27 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-package org.jajuk.util;
+package org.jajuk.services.covers.providers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-import org.jajuk.JajukTestCase;
-
 /**
- * .
+ * Interface for cover providers to be used by CoverService.
  */
-public class TestDownloadManager extends JajukTestCase {
-  /** The Constant ARTIST.   */
-  private static final String ARTIST = "Massive Attack";
-  /** The Constant ALBUM.   */
-  private static final String ALBUM = "Collected";
+public interface ICoversProvider {
 
   /**
-   * Test method for {@link org.jajuk.util.DownloadManager#getRemoteCoversList()}.
-   *
-   * @throws Exception the exception
-   * {@link org.jajuk.util.DownloadManager#getRemoteCoversList(String)}.
+   * Gets the remote covers list.
+   * 
+   * @param search
+   * 
+   * @return a list of urls
+   * 
+   * @throws IOException
+   *           Signals that an I/O exception has occurred.
    */
-  public void testGetRemoteCoversList() throws Exception {
-    List<URL> res = DownloadManager.getRemoteCoversList(ARTIST + " " + ALBUM);
-    assertEquals(true, res.size()>0);
-  }
+  public List<URL> getRemoteCoversList(String search) throws IOException;
 
 }

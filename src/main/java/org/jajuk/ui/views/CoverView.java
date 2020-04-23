@@ -67,6 +67,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.covers.Cover;
 import org.jajuk.services.covers.Cover.CoverType;
+import org.jajuk.services.covers.CoverService;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.services.tags.Tag;
@@ -1409,7 +1410,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
             // there is not enough information in tags
             // for a web search
             List<URL> alUrls;
-            alUrls = DownloadManager.getRemoteCoversList(sQuery);
+            alUrls = CoverService.getRemoteCoversList(sQuery);
             CoverView.bOnceConnected = true;
             // user managed once to connect to the web
             if (alUrls.size() > Const.MAX_REMOTE_COVERS) {

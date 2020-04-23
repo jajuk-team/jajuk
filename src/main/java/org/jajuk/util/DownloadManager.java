@@ -22,24 +22,16 @@ package org.jajuk.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.Proxy.Type;
 import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.log.Log;
@@ -61,52 +53,7 @@ public final class DownloadManager {
   private DownloadManager() {
   }
 
-  /**
-   * Gets the remote covers list.
-   * 
-   * @param search 
-   * 
-   * @return a list of urls
-   * 
-   * @throws IOException Signals that an I/O exception has occurred.
-   */
-  public static List<URL> getRemoteCoversList(String search) throws IOException {
-    List<URL> alOut = new ArrayList<URL>(20); // URL list
-    // check void searches
-    if (search == null || search.trim().equals("")) {
-      return alOut;
-    }
-    URL url = new URL("https://www.google.com/search?q=" + URLEncoder.encode(search, "ISO-8859-1")
-        + "&tbm=isch&biw=1092&source=lnms");
-    final URLConnection connection = url.openConnection();
-    // User-Agent is required to avoid 403 Google response
-    connection.setRequestProperty("User-Agent",
-        "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0");
 
-    // Retrieve response
-    String line;
-    final StringBuilder builder = new StringBuilder();
-    final BufferedReader reader = new BufferedReader(
-        new InputStreamReader(connection.getInputStream()));
-    while ((line = reader.readLine()) != null) {
-      builder.append(line);
-    }
-
-    // Analyse response with a pattern to extract image url
-    final Pattern pattern = Pattern.compile("data-src=\"https://[^ ]*\"");
-    final Matcher matcher = pattern.matcher(builder);
-    while (matcher.find()) {
-      final String sUrl = matcher.group();
-      if (sUrl.length() > 11) {
-        url = new URL(sUrl.substring(10, sUrl.length() - 1));
-        // Remove duplicates
-        if (!alOut.contains(url)) {
-          alOut.add(url);
-        }
-      }
-    }
-    return alOut;
-  }
 
   /**
    * Download the resource at the given url.
