@@ -33,9 +33,9 @@ import ext.services.network.NetworkUtils;
  */
 public class AzLyricsWebLyricsProvider extends GenericWebLyricsProvider {
   /** URL pattern used by jajuk to retrieve lyrics. */
-  private static final String URL = "http://www.azlyrics.com/lyrics/%artist/%title.html";
+  private static final String URL = "https://www.azlyrics.com/lyrics/%artist/%title.html";
   /** URL pattern to web page (see ILyricsProvider interface for details). */
-  private static final String WEB_URL = "http://www.azlyrics.com/lyrics/%artist/%title.html";
+  private static final String WEB_URL = "https://www.azlyrics.com/lyrics/%artist/%title.html";
 
   /**
    * Instantiates a new azlyrics web lyrics provider.
