@@ -193,7 +193,7 @@ public interface Const {
   String URL_MPLAYER_WINDOWS = "http://repository.jajuk.info/mplayer/20130411/mplayer.exe";
   /** Mplayer OSX exe provided by jajuk URL . */
   String URL_MPLAYER_OSX = "http://repository.jajuk.info/mplayer/osx/1.0rc2/mplayer";
-  String URL_WEBRADIO_PRESETS = "https://github.com/jajuk-team/jajuk-resources/master/preset_radios.xml";
+  String URL_WEBRADIO_PRESETS = "https://raw.githubusercontent.com/jajuk-team/resources/master/preset_radios.xml";
   // sequence
   String AMBIENCE_PREFIX = "jajuk.ambience.";
   // Proxy type: http
