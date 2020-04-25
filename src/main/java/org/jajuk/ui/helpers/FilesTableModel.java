@@ -31,6 +31,7 @@ import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
 import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.ui.widgets.IconLabel;
@@ -199,51 +200,52 @@ public class FilesTableModel extends JajukTableModel {
       if (type != null) {
         bHasATagEditor = (type.getTaggerClass() != null);
       }
+      Track track = file.getTrack();
       // Track name
       if (bTrackName) {
-        oValues[iRow][1] = file.getTrack().getName();
+        oValues[iRow][1] = track.getName();
       } else {
         oValues[iRow][1] = "";
       }
       bCellEditable[iRow][1] = bHasATagEditor;
       // Album
-      if (bAlbum) {
-        oValues[iRow][2] = file.getTrack().getAlbum().getName2();
+      if (bAlbum & track.getAlbum() != null) {
+        oValues[iRow][2] = track.getAlbum().getName2();
       } else {
         oValues[iRow][2] = "";
       }
       bCellEditable[iRow][2] = bHasATagEditor;
       // Artist
       if (bArtist) {
-        oValues[iRow][3] = file.getTrack().getArtist().getName2();
+        oValues[iRow][3] = track.getArtist().getName2();
       } else {
         oValues[iRow][3] = "";
       }
       bCellEditable[iRow][3] = bHasATagEditor;
       // AlbumArtist
-      if (bAlbumArtist) {
-        oValues[iRow][4] = file.getTrack().getAlbumArtist().getName2();
+      if (bAlbumArtist && track.getAlbumArtist() != null) {
+        oValues[iRow][4] = track.getAlbumArtist().getName2();
       } else {
         oValues[iRow][4] = "";
       }
       bCellEditable[iRow][4] = bHasATagEditor;
       // Genre
-      if (bGenre) {
-        oValues[iRow][5] = file.getTrack().getGenre().getName2();
+      if (bGenre && track.getGenre()!= null) {
+        oValues[iRow][5] = track.getGenre().getName2();
       } else {
         oValues[iRow][5] = "";
       }
       bCellEditable[iRow][5] = bHasATagEditor;
       // Rate
       if (bRate) {
-        oValues[iRow][6] = StarsHelper.getStarIconLabel(file.getTrack());
+        oValues[iRow][6] = StarsHelper.getStarIconLabel(track);
       } else {
         oValues[iRow][6] = "";
       }
       bCellEditable[iRow][6] = false;
       // Length
       if (bLength) {
-        oValues[iRow][7] = new Duration(file.getTrack().getDuration());
+        oValues[iRow][7] = new Duration(track.getDuration());
       } else {
         oValues[iRow][7] = "";
       }
@@ -264,7 +266,7 @@ public class FilesTableModel extends JajukTableModel {
       bCellEditable[iRow][9] = true;
       // Comment
       if (bComment) {
-        oValues[iRow][10] = file.getTrack().getValue(Const.XML_TRACK_COMMENT);
+        oValues[iRow][10] = track.getComment();
       } else {
         oValues[iRow][10] = "";
       }
@@ -286,21 +288,21 @@ public class FilesTableModel extends JajukTableModel {
       bCellEditable[iRow][12] = false;
       // Order
       if (bOrder) {
-        oValues[iRow][13] = file.getTrack().getOrder();
+        oValues[iRow][13] = track.getOrder();
       } else {
         oValues[iRow][13] = "";
       }
       bCellEditable[iRow][13] = bHasATagEditor;
       // Disc number
       if (bDiscNumber) {
-        oValues[iRow][14] = file.getTrack().getDiscNumber();
+        oValues[iRow][14] = track.getDiscNumber();
       } else {
         oValues[iRow][14] = "";
       }
       bCellEditable[iRow][14] = bHasATagEditor;
       // year
-      if (bYear) {
-        oValues[iRow][15] = file.getTrack().getYear().getValue();
+      if (bYear && track.getYear() != null) {
+        oValues[iRow][15] = track.getYear().getValue();
       } else {
         oValues[iRow][15] = "";
       }
@@ -321,14 +323,14 @@ public class FilesTableModel extends JajukTableModel {
       bCellEditable[iRow][17] = false;
       // Hits
       if (bHits) {
-        oValues[iRow][18] = file.getTrack().getHits();
+        oValues[iRow][18] = track.getHits();
       } else {
         oValues[iRow][18] = "";
       }
       bCellEditable[iRow][18] = false;
       // Discovery date
       if (bDiscovery) {
-        oValues[iRow][19] = file.getTrack().getDiscoveryDate();
+        oValues[iRow][19] = track.getDiscoveryDate();
       } else {
         oValues[iRow][19] = "";
       }
@@ -355,7 +357,7 @@ public class FilesTableModel extends JajukTableModel {
         }
       }
       // tracks custom properties
-      properties = file.getTrack().getProperties();
+      properties = track.getProperties();
       it2 = TrackManager.getInstance().getCustomProperties().iterator();
       for (int i = FileManager.getInstance().getCustomProperties().size(); it2.hasNext(); i++) {
         PropertyMetaInformation meta = it2.next();
