@@ -23,9 +23,8 @@ package org.jajuk;
 import java.util.LinkedList;
 import java.util.List;
 
-import junit.framework.Assert;
-
 import org.jajuk.util.log.Log;
+import org.junit.Assert;
 
 /**
  * Helper class to test with many threads.

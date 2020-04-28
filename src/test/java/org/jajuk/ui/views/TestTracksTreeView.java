@@ -36,6 +36,7 @@ import javax.swing.tree.TreePath;
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.base.Album;
+import org.jajuk.base.AlbumArtist;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Genre;
 import org.jajuk.base.Track;
@@ -453,8 +454,9 @@ public class TestTracksTreeView extends JajukTestCase {
    * @return the track
    */
   private Track getTrack() {
+    AlbumArtist albumArtist = TestHelpers.getAlbumArtist();
     return TrackManager.getInstance().registerTrack("name", getAlbum(), getGenre(), getArtist(),
-        123, getYear(), 1, TestHelpers.getType(), 1);
+        123, getYear(), 1, TestHelpers.getType(), 1, albumArtist);
   }
 
   /**

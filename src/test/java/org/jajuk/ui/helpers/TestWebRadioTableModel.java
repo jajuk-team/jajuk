@@ -52,9 +52,9 @@ public class TestWebRadioTableModel extends JajukTestCase {
     assertEquals(model.getValueAt(0, 4), "foo,bar");
     assertEquals(model.getValueAt(0, 5), "Pop");
     assertEquals(model.getValueAt(0, 6), WebRadioOrigin.CUSTOM.name());
-    assertEquals(model.getValueAt(0, 7), new Long(127));
+    assertEquals(model.getValueAt(0, 7), Long.valueOf(127));
     // Frequency is not shown
-    assertEquals(model.getValueAt(0, 8), new Long(45000));
+    assertEquals(model.getValueAt(0, 8), Long.valueOf(45000));
     assertEquals(model.getValueAt(3, 1), "Preset 2");
     assertEquals(model.getValueAt(3, 3), "http://preset2");
     assertEquals(model.getValueAt(3, 6), WebRadioOrigin.PRESET.name());

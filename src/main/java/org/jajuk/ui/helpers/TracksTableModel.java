@@ -188,28 +188,28 @@ public class TracksTableModel extends JajukTableModel {
       }
       bCellEditable[iRow][1] = bHasATagEditor;
       // Album
-      if (bAlbum) {
+      if (bAlbum && track.getAlbum() != null) {
         oValues[iRow][2] = track.getAlbum().getName2();
       } else {
         oValues[iRow][2] = "";
       }
       bCellEditable[iRow][2] = bHasATagEditor;
       // Artist
-      if (bArtist) {
+      if (bArtist && track.getArtist() != null) {
         oValues[iRow][3] = track.getArtist().getName2();
       } else {
         oValues[iRow][3] = "";
       }
       bCellEditable[iRow][3] = bHasATagEditor;
       // Album Artist
-      if (bAlbumArtist) {
+      if (bAlbumArtist && track.getAlbumArtist() != null) {
         oValues[iRow][4] = track.getAlbumArtist().getName2();
       } else {
         oValues[iRow][4] = "";
       }
       bCellEditable[iRow][4] = bHasATagEditor;
       // Genre
-      if (bGenre) {
+      if (bGenre && track.getGenre() != null) {
         oValues[iRow][5] = track.getGenre().getName2();
       } else {
         oValues[iRow][5] = "";
@@ -231,7 +231,7 @@ public class TracksTableModel extends JajukTableModel {
       bCellEditable[iRow][7] = false;
       // Comment
       if (bComment) {
-        oValues[iRow][8] = track.getValue(Const.XML_TRACK_COMMENT);
+        oValues[iRow][8] = track.getComment();
       } else {
         oValues[iRow][8] = "";
       }

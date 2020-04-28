@@ -158,8 +158,9 @@ public class TestArtistManager extends JajukTestCase {
     IPlayerImpl imp = new MockPlayer();
     Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
     Type type = TypeManager.getInstance().registerType("name", "tst", cl, MyTagImpl.class);
+    AlbumArtist albumArtist = TestHelpers.getAlbumArtist(artist.getName()); 
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
-        1, type, 1);
+        1, type, 1, albumArtist);
     Device device = TestHelpers.getDevice();
     device.mount(true);
     Directory dir = TestHelpers.getDirectory();

@@ -589,7 +589,8 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
             jtfValue.addKeyListener(new KeyAdapter() {
               @Override
               public void keyReleased(KeyEvent arg0) {
-                if (jtfValue.getText().length() == 0) {
+                if (jtfValue.getText().length() == 0 && !meta.getName().equals(Const.XML_TRACK_COMMENT)) {
+                  // If we remove the meta from hmPropertyToChange for comment, an empty comment is never saved. 
                   hmPropertyToChange.remove(meta);
                   return;
                 }
@@ -668,7 +669,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
       jpProperties.add(jlLink, "wrap");
       // Add widgets
       int i = 0;
-      int j = 4;
       // for (PropertyMetaInformation meta : alToDisplay) {
       for (int k = 0; k < alToDisplay.size(); k++) {
         jpProperties.add(widgets[i][IDX_NAME], "grow");
@@ -690,7 +690,6 @@ public class PropertiesDialog extends JajukJDialog implements ActionListener {
           }
         }
         i++;
-        j += 2;
       }
       setLayout(new VerticalLayout(10));
       // desc

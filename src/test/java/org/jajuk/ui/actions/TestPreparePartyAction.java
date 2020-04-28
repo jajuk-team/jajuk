@@ -31,6 +31,7 @@ import org.apache.commons.io.FileUtils;
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.base.Album;
+import org.jajuk.base.AlbumArtist;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
@@ -112,8 +113,9 @@ public class TestPreparePartyAction extends JajukTestCase {
     Artist artist = TestHelpers.getArtist("name");
     Year year = TestHelpers.getYear(2000);
     Type type = TestHelpers.getType();
+    AlbumArtist albumArtist = TestHelpers.getAlbumArtist(artist.getName());
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
-        1, type, 1);
+        1, type, 1, albumArtist);
     Device device = TestHelpers.getDevice();
     if (!device.isMounted()) {
       device.mount(true);

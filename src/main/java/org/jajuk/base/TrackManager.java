@@ -109,7 +109,7 @@ public final class TrackManager extends ItemManager {
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_DISCOVERY_DATE, false, false,
         true, false, true, Date.class, null));
     // Comment
-    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_COMMENT, false, false, true, true,
+    registerProperty(new PropertyMetaInformation(Const.XML_TRACK_COMMENT, false, true, true, true,
         true, String.class, null));
     // Track order
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_ORDER, false, true, true, true,
@@ -174,9 +174,9 @@ public final class TrackManager extends ItemManager {
    * @return the track
    */
   public Track registerTrack(String sName, Album album, Genre genre, Artist artist, long length,
-      Year year, long lOrder, Type type, long lDiscNumber) {
+      Year year, long lOrder, Type type, long lDiscNumber, AlbumArtist albumArtist) {
     String sId = createID(sName, album, genre, artist, length, year, lOrder, type, lDiscNumber);
-    return registerTrack(sId, sName, album, genre, artist, length, year, lOrder, type, lDiscNumber);
+    return registerTrack(sId, sName, album, genre, artist, length, year, lOrder, type, lDiscNumber, albumArtist);
   }
 
   /**
@@ -221,7 +221,7 @@ public final class TrackManager extends ItemManager {
    * @return the track
    */
   public Track registerTrack(String sId, String sName, Album album, Genre genre, Artist artist,
-      long length, Year year, long lOrder, Type type, long lDiscNumber) {
+      long length, Year year, long lOrder, Type type, long lDiscNumber, AlbumArtist albumArtist) {
     lock.writeLock().lock();
     try {
       // We absolutely need to return the same track if already registrated to
@@ -231,6 +231,7 @@ public final class TrackManager extends ItemManager {
         return track;
       }
       track = new Track(sId, sName, album, genre, artist, length, year, lOrder, type, lDiscNumber);
+      track.setAlbumArtist(albumArtist);
       registerItem(track);
       // For performances, add the track to the album cache
       List<Track> cache = track.getAlbum().getTracksCache();
@@ -344,7 +345,7 @@ public final class TrackManager extends ItemManager {
           track.getAlbum().getDiscID());
       Track newTrack = registerTrack(track.getName(), newAlbum, track.getGenre(),
           track.getArtist(), track.getDuration(), track.getYear(), track.getOrder(),
-          track.getType(), track.getDiscNumber());
+          track.getType(), track.getDiscNumber(), track.getAlbumArtist());
       postChange(track, newTrack, filter);
       // remove this album if no more references
       AlbumManager.getInstance().cleanOrphanTracks(track.getAlbum());
@@ -404,7 +405,7 @@ public final class TrackManager extends ItemManager {
       Artist newArtist = ArtistManager.getInstance().registerArtist(sNewArtist);
       Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(),
           newArtist, track.getDuration(), track.getYear(), track.getOrder(), track.getType(),
-          track.getDiscNumber());
+          track.getDiscNumber(), track.getAlbumArtist());
       postChange(track, newTrack, filter);
       // remove this item if no more references
       ArtistManager.getInstance().cleanOrphanTracks(track.getArtist());
@@ -459,7 +460,7 @@ public final class TrackManager extends ItemManager {
       Genre newGenre = GenreManager.getInstance().registerGenre(sNewGenre);
       Track newTrack = registerTrack(track.getName(), track.getAlbum(), newGenre,
           track.getArtist(), track.getDuration(), track.getYear(), track.getOrder(),
-          track.getType(), track.getDiscNumber());
+          track.getType(), track.getDiscNumber(), track.getAlbumArtist());
       postChange(track, newTrack, filter);
       // remove this item if no more references
       GenreManager.getInstance().cleanOrphanTracks(track.getGenre());
@@ -517,7 +518,7 @@ public final class TrackManager extends ItemManager {
       Year newYear = YearManager.getInstance().registerYear(newItem);
       Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(),
           track.getArtist(), track.getDuration(), newYear, track.getOrder(), track.getType(),
-          track.getDiscNumber());
+          track.getDiscNumber(), track.getAlbumArtist());
       postChange(track, newTrack, filter);
       return newTrack;
     } finally {
@@ -649,7 +650,7 @@ public final class TrackManager extends ItemManager {
       }
       Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(),
           track.getArtist(), track.getDuration(), track.getYear(), lNewOrder, track.getType(),
-          track.getDiscNumber());
+          track.getDiscNumber(), track.getAlbumArtist());
       postChange(track, newTrack, filter);
       return newTrack;
     } finally {
@@ -741,7 +742,7 @@ public final class TrackManager extends ItemManager {
       }
       Track newTrack = registerTrack(sNewItem, track.getAlbum(), track.getGenre(),
           track.getArtist(), track.getDuration(), track.getYear(), track.getOrder(),
-          track.getType(), track.getDiscNumber());
+          track.getType(), track.getDiscNumber(), track.getAlbumArtist());
       postChange(track, newTrack, filter);
       // if current track name is changed, notify it
       if (QueueModel.getPlayingFile() != null
@@ -856,7 +857,7 @@ public final class TrackManager extends ItemManager {
       }
       Track newTrack = registerTrack(track.getName(), track.getAlbum(), track.getGenre(),
           track.getArtist(), track.getDuration(), track.getYear(), track.getDiscNumber(),
-          track.getType(), lNewDiscNumber);
+          track.getType(), lNewDiscNumber, track.getAlbumArtist());
       postChange(track, newTrack, filter);
       return newTrack;
     } finally {

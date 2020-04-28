@@ -26,6 +26,7 @@ import org.jajuk.JajukTestCase;
 import org.jajuk.MockPlayer;
 import org.jajuk.TestHelpers;
 import org.jajuk.base.Album;
+import org.jajuk.base.AlbumArtist;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
@@ -133,8 +134,9 @@ public class TestRatingManager extends JajukTestCase {
     ITagImpl tagimp = new MyTagImpl();
     Class<ITagImpl> tl = (Class<ITagImpl>) tagimp.getClass();
     Type type = TestHelpers.getType();
+    AlbumArtist albumArtist = TestHelpers.getAlbumArtist(artist.getName()); 
     Track track = TrackManager.getInstance().registerTrack(Integer.valueOf(i).toString(), "name",
-        album, genre, artist, 120, year, 1, type, 1);
+        album, genre, artist, 120, year, 1, type, 1, albumArtist);
     album.getTracksCache().add(track);
     Device device = TestHelpers.getDevice();
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);

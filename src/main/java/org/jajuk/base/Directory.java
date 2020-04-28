@@ -457,19 +457,19 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     // Store number of tracks in collection
     long trackNumber = TrackManager.getInstance().getElementCount();
     Track track = TrackManager.getInstance().registerTrack(sTrackName, album, genre, artist,
-        length, year, lOrder, type, discNumber);
+        length, year, lOrder, type, discNumber, albumArtist);
+    // Comment is at the track level, note that we take last
+    // found file comment but we changing a comment, we will
+    // apply to all files for a track
+    track.setComment(sComment);
+
     cloneTrackPropertiesIfRemovedMeanwhile(track);
     cloneAlbumAndTrackPropertiesIfAlbumIDChanged(sTrackName, sAlbumName, length, lOrder, oldDiskID,
         discID, discNumber, album, genre, year, artist, type, track);
     org.jajuk.base.File file = FileManager.getInstance().registerFile(sFileId, music.getName(),
         this, track, music.length(), lQuality);
     updateDateInformation(file, music, trackNumber, track);
-    // Comment is at the track level, note that we take last
-    // found file comment but we changing a comment, we will
-    // apply to all files for a track
-    track.setComment(sComment);
-    // Apply the album artist
-    track.setAlbumArtist(albumArtist);
+
     // Make sure to refresh file size
     file.setProperty(Const.XML_SIZE, music.length());
     return track;

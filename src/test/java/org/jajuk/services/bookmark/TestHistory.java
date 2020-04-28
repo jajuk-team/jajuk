@@ -464,7 +464,7 @@ public class TestHistory extends JajukTestCase {
     File file3 = TestHelpers.getFile("file_3", false);
     Properties detail = new Properties();
     detail.put(Const.DETAIL_CURRENT_FILE_ID, file3.getID());
-    detail.put(Const.DETAIL_CURRENT_DATE, new Long(12345));
+    detail.put(Const.DETAIL_CURRENT_DATE, Long.valueOf(12345));
     History.getInstance().update(new JajukEvent(JajukEvents.FILE_LAUNCHED, detail));
     // we have to sleep a bit as it is executed in the background
     TestHelpers.clearSwingUtilitiesQueue();
@@ -622,7 +622,7 @@ public class TestHistory extends JajukTestCase {
     File file3 = TestHelpers.getFile("file_3", false);
     Properties detail = new Properties();
     detail.put(Const.DETAIL_CURRENT_FILE_ID, file3.getID());
-    detail.put(Const.DETAIL_CURRENT_DATE, new Long(12345));
+    detail.put(Const.DETAIL_CURRENT_DATE, Long.valueOf(12345));
     // set the necessary things in the ObservationManager
     ObservationManager.notifySync(new JajukEvent(JajukEvents.FILE_LAUNCHED, detail));
     // make sure we have the correct last-file now

@@ -35,9 +35,9 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
-import junit.framework.Assert;
-
 import org.jajuk.base.Album;
+import org.jajuk.base.AlbumArtist;
+import org.jajuk.base.AlbumArtistManager;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Artist;
 import org.jajuk.base.ArtistManager;
@@ -69,6 +69,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+import org.junit.Assert;
 
 /**
  * Small helper class with functionality that is used in multiple unit tests.
@@ -519,8 +520,9 @@ public class TestHelpers {
     Artist artist = getArtist("myartist");
     Year year = getYear(2000);
     Type type = getType(clazz);
+    AlbumArtist albumArtist = getAlbumArtist(artist.getName());
     Track track = TrackManager.getInstance().registerTrack(name, album, genre, artist, 120, year,
-        1, type, 1);
+        1, type, 1, albumArtist);
     Device device = getDevice();
     if (mount & !device.isMounted()) {
       try {
@@ -622,6 +624,24 @@ public class TestHelpers {
    */
   public static Album getAlbum() {
     return getAlbum("name", 0);
+  }
+  
+  /**
+   * Gets the album artist.
+   *
+   * @return the album
+   */
+  public static AlbumArtist getAlbumArtist() {
+    return getAlbumArtist("name");
+  }
+
+  /**
+   * Gets the album artist.
+   *
+   * @return the album
+   */
+  public static AlbumArtist getAlbumArtist(String name) {
+    return AlbumArtistManager.getInstance().registerAlbumArtist(name);
   }
 
   /**
@@ -776,8 +796,8 @@ public class TestHelpers {
     //Reset radios
     WebRadioManager.getInstance().cleanup();
     WebRadio custom1 = getWebRadio("Custom 1", "http://custom1", WebRadioOrigin.CUSTOM);
-    custom1.setProperty(Const.XML_BITRATE, new Long(127));
-    custom1.setProperty(Const.XML_FREQUENCY, new Long(45000));
+    custom1.setProperty(Const.XML_BITRATE, Long.valueOf(127));
+    custom1.setProperty(Const.XML_FREQUENCY, Long.valueOf(45000));
     custom1.setProperty(Const.XML_KEYWORDS, "foo,bar");
     custom1.setProperty(Const.XML_GENRE, "Pop");
     custom1.setProperty(Const.XML_DESC, "a cool radio");
@@ -834,8 +854,9 @@ public class TestHelpers {
     Artist artist = getArtist("myartist_" + i);
     Year year = getYear(2000);
     Type type = getType();
+    AlbumArtist albumArtist = getAlbumArtist();
     return TrackManager.getInstance().registerTrack("track_" + i, album, genre, artist, 120, year,
-        1, type, 1);
+        1, type, 1, albumArtist);
   }
 
   /**

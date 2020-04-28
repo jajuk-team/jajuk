@@ -487,8 +487,9 @@ public class TestAlbumManager extends JajukTestCase {
     ITagImpl tagimp = new MyTagImpl();
     Class<ITagImpl> tl = (Class<ITagImpl>) tagimp.getClass();
     Type type = new Type(Integer.valueOf(i).toString(), "name", "mp3", cl, tl);
+    AlbumArtist albumArtist = TestHelpers.getAlbumArtist("artist_" + i);
     Track track = TrackManager.getInstance().registerTrack("track_" + i, album, genre, artist, 120,
-        year, 1, type, 1);
+        year, 1, type, 1, albumArtist);
     Device device = TestHelpers.getDevice();
     Directory dir = TestHelpers.getDirectory();
     if (!device.isMounted()) {

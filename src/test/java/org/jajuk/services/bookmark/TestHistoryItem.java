@@ -24,6 +24,7 @@ import org.jajuk.ConstTest;
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.base.Album;
+import org.jajuk.base.AlbumArtist;
 import org.jajuk.base.Artist;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
@@ -100,8 +101,9 @@ public class TestHistoryItem extends JajukTestCase {
     Artist artist = TestHelpers.getArtist("artistname");
     Year year = TestHelpers.getYear(2000);
     Type type = TestHelpers.getType();
+    AlbumArtist albumArtist = TestHelpers.getAlbumArtist(artist.getName()); 
     Track track = TrackManager.getInstance().registerTrack("trackname", album, genre, artist, 120,
-        year, 1, type, 1);
+        year, 1, type, 1, albumArtist);
     Device device = TestHelpers.getDevice("devicename", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/device1");
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);

@@ -804,7 +804,7 @@ public final class Collection extends DefaultHandler {
       }
     }
     Track track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, genre,
-        artist, length, year, lOrder, type, lDiscNumber);
+        artist, length, year, lOrder, type, lDiscNumber, albumArtist);
     TrackManager.getInstance().changeTrackRate(track,
         UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_RATE)));
     track.setHits(UtilString.fastLongParser(attributes.getValue(Const.XML_TRACK_HITS)));
