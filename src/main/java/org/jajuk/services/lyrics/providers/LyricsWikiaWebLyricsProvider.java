@@ -29,13 +29,13 @@ import org.jajuk.util.log.Log;
 import ext.services.network.NetworkUtils;
 
 /**
- * Lyrics Provider extracting lyrics from lyrics.wikia.com
+ * Lyrics Provider extracting lyrics from lyrics.fandom.com (former lyrics.wikia.com)
  */
 public class LyricsWikiaWebLyricsProvider extends GenericWebLyricsProvider {
   /** URL pattern used by jajuk to retrieve lyrics. */
-  private static final String URL = "http://lyrics.wikia.com/api.php?action=lyrics&artist=%artist&song=%title";
+  private static final String URL = "https://lyrics.fandom.com/api.php?action=lyrics&artist=%artist&song=%title";
   /** URL pattern to web page (see ILyricsProvider interface for details). */
-  private static final String WEB_URL = "http://lyrics.wikia.com/api.php?action=lyrics&artist=%artist&song=%title";
+  private static final String WEB_URL = "https://lyrics.fandom.com/api.php?action=lyrics&artist=%artist&song=%title";
 
   /**
    * Instantiates a new lyric wiki web lyrics provider.
@@ -93,7 +93,7 @@ public class LyricsWikiaWebLyricsProvider extends GenericWebLyricsProvider {
           if (ret.length()<15) {
             return null;
           } else {
-            ret += "\n<-- LyricsWikia -->";
+            ret += "\n<-- LyricsFandom (former LyricsWikia) -->";
         	ret = cleanHtml(ret);
           }
         }
