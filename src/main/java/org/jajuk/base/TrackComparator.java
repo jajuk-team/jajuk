@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
@@ -64,7 +64,7 @@ public class TrackComparator implements Comparator<Track>, Serializable {
 
   /**
    * Constructor.
-   * 
+   *
    * @param comparatorType Specifies the type of comparison that should be done.
    */
   public TrackComparator(TrackComparatorType comparatorType) {
@@ -74,9 +74,9 @@ public class TrackComparator implements Comparator<Track>, Serializable {
   /**
    * Gets the compare string based on the input-track and the type of comparison
    * that is selected when constructing the comparator.
-   * 
+   *
    * @param track The track that should be used for constructing the string.
-   * 
+   *
    * @return Hashcode string used to compare two tracks in accordance with the
    * sorting method
    */
@@ -88,49 +88,44 @@ public class TrackComparator implements Comparator<Track>, Serializable {
     // 2 tracks with different years
     // Genre/artist/album
     if (comparatorType == TrackComparatorType.GENRE_ARTIST_ALBUM) {
-      sHashCompare = new StringBuilder().append(track.getGenre().getName2())
-          .append(track.getArtist().getName2()).append(track.getAlbum().getName2())
-          .append(UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
+      sHashCompare = track.getGenre().getName2() +
+              track.getArtist().getName2() + track.getAlbum().getName2() +
+              UtilString.padNumber(track.getOrder(), 5) + track.getName();
     }// Artist/album
     else if (comparatorType == TrackComparatorType.ARTIST_ALBUM) {
-      sHashCompare = new StringBuilder().append(track.getArtist().getName2())
-          .append(track.getAlbum().getName2()).append(UtilString.padNumber(track.getOrder(), 5))
-          .append(track.getName()).toString();
+      sHashCompare = track.getArtist().getName2() +
+              track.getAlbum().getName2() + UtilString.padNumber(track.getOrder(), 5) +
+              track.getName();
     }
     // Album
     else if (comparatorType == TrackComparatorType.ALBUM) {
-      sHashCompare = new StringBuilder().append(track.getAlbum().getName2())
-          .append(UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
+      sHashCompare = track.getAlbum().getName2() +
+              UtilString.padNumber(track.getOrder(), 5) + track.getName();
     }
     // Year / album
-    if (comparatorType == TrackComparatorType.YEAR_ALBUM) {
-      sHashCompare = new StringBuilder()
-          .append(UtilString.padNumber(999999999 - track.getYear().getValue(), 10))
-          .append(UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
+    else if (comparatorType == TrackComparatorType.YEAR_ALBUM) {
+      sHashCompare = UtilString.padNumber(999999999 - track.getYear().getValue(), 10) +
+              UtilString.padNumber(track.getOrder(), 5) + track.getName();
     }
     // discovery date / album
     else if (comparatorType == TrackComparatorType.DISCOVERY_ALBUM) {
-      sHashCompare = new StringBuilder().append(FORMATTER.format(track.getDiscoveryDate()))
-          .append(track.getAlbum().getName2()).append(UtilString.padNumber(track.getOrder(), 5))
-          .append(track.getName()).toString();
+      sHashCompare = FORMATTER.format(track.getDiscoveryDate()) +
+              track.getAlbum().getName2() + UtilString.padNumber(track.getOrder(), 5) +
+              track.getName();
     }
     // Rate / album
     else if (comparatorType == TrackComparatorType.RATE_ALBUM) {
-      sHashCompare = new StringBuilder()
-          .append(UtilString.padNumber(999999999 - track.getRate(), 10))
-          .append(UtilString.padNumber(track.getOrder(), 5)).append(track.getName()).toString();
+      sHashCompare = UtilString.padNumber(999999999 - track.getRate(), 10) +
+              UtilString.padNumber(track.getOrder(), 5) + track.getName();
     }
     // Hits / album
     else if (comparatorType == TrackComparatorType.HITS_ALBUM) {
-      sHashCompare = new StringBuilder()
-          .append(UtilString.padNumber(999999999 - track.getHits(), 10)).append(track.getName())
-          .toString();
+      sHashCompare = UtilString.padNumber(999999999 - track.getHits(), 10) + track.getName();
     }
     // Disc number / Order / track name
     else if (comparatorType == TrackComparatorType.ORDER) {
-      sHashCompare = new StringBuilder().append(
-          UtilString.padNumber(track.getDiscNumber(), 5)
-              + UtilString.padNumber(track.getOrder(), 5) + track.getName()).toString();
+      sHashCompare = UtilString.padNumber(track.getDiscNumber(), 5)
+              + UtilString.padNumber(track.getOrder(), 5) + track.getName();
     }
     // We want to find identical tracks but using album name, not album id.
     // We only use set tags, not unknown ones
@@ -142,9 +137,9 @@ public class TrackComparator implements Comparator<Track>, Serializable {
 
   /**
    * Return a footprint used to find almost-identical track.
-   * 
-   * @param track 
-   * 
+   *
+   * @param track The Track to use for building the footprint.
+   *
    * @return a footprint used to find almost-identical track
    */
   public String buildIdenticalTestFootprint(Track track) {
@@ -175,16 +170,17 @@ public class TrackComparator implements Comparator<Track>, Serializable {
   /**
    * Compares two tracks according to the type selected during constructing of
    * the comparator..
-   * 
+   *
    * @param track1 The first track for comparison.
    * @param track2 The second track for comparison.
-   * 
+   *
    * @return the value <code>0</code> if track1 is equal to track2; a value less
    * than <code>0</code> if track1 is less than track2; and a value
    * greater than <code>0</code> if track1 is greater than track2.
    */
   @Override
   public int compare(Track track1, Track track2) {
+    // TODO: replace costly string creation with a more direct comparison of the single parts
     String sHashCompare = getCompareString(track1);
     String sHashCompareOther = getCompareString(track2);
     return sHashCompare.compareToIgnoreCase(sHashCompareOther);
