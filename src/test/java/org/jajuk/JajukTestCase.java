@@ -16,13 +16,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Iterator;
 import java.util.Map;
 
 import junit.framework.TestCase;
@@ -43,7 +42,7 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 
 /**
- * Common behavior for every jajuk test. 
+ * Common behavior for every jajuk test.
  * <p>EVERY JAJUK UNIT TEST *MUST* EXTEND THIS CLASS (except from the "ext" package).</p>
  */
 public abstract class JajukTestCase extends TestCase {
@@ -54,8 +53,8 @@ public abstract class JajukTestCase extends TestCase {
   java.io.File scriptFile;
   /** Property which is used to find the current installation location of java. */
   protected static final String PROPERTY_JAVA_HOME = "java.home";
-  /* Need to initialize workspace here because some src classes call SessionService.getConfFileByPath() 
-   * from class init and then override the workspace path, then use the user home directory instead (and even worst, it's cached in 
+  /* Need to initialize workspace here because some src classes call SessionService.getConfFileByPath()
+   * from class init and then override the workspace path, then use the user home directory instead (and even worst, it's cached in
    * SessionService.getConfFileByPath())*/
   static {
     // Make sure to use a test workspace
@@ -66,7 +65,7 @@ public abstract class JajukTestCase extends TestCase {
 
   /**
    * Find java executable.
-   * 
+   *
    *
    * @return the string
    */
@@ -114,18 +113,18 @@ public abstract class JajukTestCase extends TestCase {
     if (basedir.exists()) {
       UtilSystem.deleteDir(basedir);
     }
-    workspace.mkdirs();
-    sample_devices.mkdirs();
-    tech_tests.mkdirs();
+    assertTrue(workspace.mkdirs());
+    assertTrue(sample_devices.mkdirs());
+    assertTrue(tech_tests.mkdirs());
     //create cache directory and expected conf files
-    SessionService.getConfFileByPath(Const.FILE_CACHE).mkdirs();
+    assertTrue(SessionService.getConfFileByPath(Const.FILE_CACHE).mkdirs());
     History.commit();
     // Create a tmp directory as a music folder or tmp trash
-    SessionService.getConfFileByPath("tests").mkdirs();
+    assertTrue(SessionService.getConfFileByPath("tests").mkdirs());
     // Force dummy player
     scriptFile = java.io.File.createTempFile("dummy", "mplayer.sh", new java.io.File(
         ConstTest.TECH_TESTS_PATH));
-    scriptFile.setExecutable(true);
+    assertTrue(scriptFile.setExecutable(true));
     URL thisClassAbsUrl = getClass().getProtectionDomain().getCodeSource().getLocation();
     String thisClassAbsPath = new java.io.File(thisClassAbsUrl.toURI()).getAbsolutePath();
     FileUtils.writeStringToFile(scriptFile, "#!/bin/sh\n\n" + findJavaExecutable() + " -cp \""
@@ -142,11 +141,9 @@ public abstract class JajukTestCase extends TestCase {
   @Override
   protected void tearDown() throws Exception {
     Map<Thread, StackTraceElement[]> traces = Thread.getAllStackTraces();
-    Iterator<Thread> i = traces.keySet().iterator();
-    while (i.hasNext()) {
-      Thread thd = i.next();
+    for (Thread thd : traces.keySet()) {
       if (thd.getName().contains("MPlayer reader thread")
-          || thd.getName().contains("MPlayer writer thread")) {
+              || thd.getName().contains("MPlayer writer thread")) {
         TestHelpers.dumpThreads();
         throw new IllegalStateException("Had leftover MPlayer thread: " + thd.getName());
       }

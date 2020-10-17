@@ -72,70 +72,6 @@ public class TrackComparator implements Comparator<Track>, Serializable {
   }
 
   /**
-   * Gets the compare string based on the input-track and the type of comparison
-   * that is selected when constructing the comparator.
-   *
-   * @param track The track that should be used for constructing the string.
-   *
-   * @return Hashcode string used to compare two tracks in accordance with the
-   * sorting method
-   */
-  private String getCompareString(Track track) {
-    String sHashCompare = null;
-    // comparison based on genre, artist, album, name and year to
-    // differentiate 2 tracks with all the same attributes
-    // note we need to use year because in sorted set, we must differentiate
-    // 2 tracks with different years
-    // Genre/artist/album
-    if (comparatorType == TrackComparatorType.GENRE_ARTIST_ALBUM) {
-      sHashCompare = track.getGenre().getName2() +
-              track.getArtist().getName2() + track.getAlbum().getName2() +
-              UtilString.padNumber(track.getOrder(), 5) + track.getName();
-    }// Artist/album
-    else if (comparatorType == TrackComparatorType.ARTIST_ALBUM) {
-      sHashCompare = track.getArtist().getName2() +
-              track.getAlbum().getName2() + UtilString.padNumber(track.getOrder(), 5) +
-              track.getName();
-    }
-    // Album
-    else if (comparatorType == TrackComparatorType.ALBUM) {
-      sHashCompare = track.getAlbum().getName2() +
-              UtilString.padNumber(track.getOrder(), 5) + track.getName();
-    }
-    // Year / album
-    else if (comparatorType == TrackComparatorType.YEAR_ALBUM) {
-      sHashCompare = UtilString.padNumber(999999999 - track.getYear().getValue(), 10) +
-              UtilString.padNumber(track.getOrder(), 5) + track.getName();
-    }
-    // discovery date / album
-    else if (comparatorType == TrackComparatorType.DISCOVERY_ALBUM) {
-      sHashCompare = FORMATTER.format(track.getDiscoveryDate()) +
-              track.getAlbum().getName2() + UtilString.padNumber(track.getOrder(), 5) +
-              track.getName();
-    }
-    // Rate / album
-    else if (comparatorType == TrackComparatorType.RATE_ALBUM) {
-      sHashCompare = UtilString.padNumber(999999999 - track.getRate(), 10) +
-              UtilString.padNumber(track.getOrder(), 5) + track.getName();
-    }
-    // Hits / album
-    else if (comparatorType == TrackComparatorType.HITS_ALBUM) {
-      sHashCompare = UtilString.padNumber(999999999 - track.getHits(), 10) + track.getName();
-    }
-    // Disc number / Order / track name
-    else if (comparatorType == TrackComparatorType.ORDER) {
-      sHashCompare = UtilString.padNumber(track.getDiscNumber(), 5)
-              + UtilString.padNumber(track.getOrder(), 5) + track.getName();
-    }
-    // We want to find identical tracks but using album name, not album id.
-    // We only use set tags, not unknown ones
-    else if (comparatorType == TrackComparatorType.ALMOST_IDENTICAL) {
-      sHashCompare = buildIdenticalTestFootprint(track);
-    }
-    return sHashCompare;
-  }
-
-  /**
    * Return a footprint used to find almost-identical track.
    *
    * @param track The Track to use for building the footprint.
@@ -180,9 +116,125 @@ public class TrackComparator implements Comparator<Track>, Serializable {
    */
   @Override
   public int compare(Track track1, Track track2) {
-    // TODO: replace costly string creation with a more direct comparison of the single parts
-    String sHashCompare = getCompareString(track1);
-    String sHashCompareOther = getCompareString(track2);
-    return sHashCompare.compareToIgnoreCase(sHashCompareOther);
+    if (track1 == null && track2 == null) {
+      return 0;
+    } else if (track1 == null) {
+      return -1;
+    } else if (track2 == null) {
+      return 1;
+    }
+
+    // comparison based on genre, artist, album, name and year to
+    // differentiate 2 tracks with all the same attributes
+    // note we need to use year because in sorted set, we must differentiate
+    // 2 tracks with different years
+
+    // Genre/artist/album
+    if (comparatorType == TrackComparatorType.GENRE_ARTIST_ALBUM) {
+      int ret = track1.getGenre().getName2().compareToIgnoreCase(track2.getGenre().getName2());
+      if(ret != 0) {
+        return ret;
+      }
+
+      ret = track1.getArtist().getName2().compareToIgnoreCase(track2.getArtist().getName2());
+      if(ret != 0) {
+        return ret;
+      }
+
+      return compareAlbumOrderAndTrackName(track1, track2);
+    }
+
+    // Artist/album
+    if (comparatorType == TrackComparatorType.ARTIST_ALBUM) {
+      int ret = track1.getArtist().getName2().compareToIgnoreCase(track2.getArtist().getName2());
+      if(ret != 0) {
+        return ret;
+      }
+
+      return compareAlbumOrderAndTrackName(track1, track2);
+    }
+
+    // Album
+    if (comparatorType == TrackComparatorType.ALBUM) {
+      return compareAlbumOrderAndTrackName(track1, track2);
+    }
+
+    // Year / album
+    if (comparatorType == TrackComparatorType.YEAR_ALBUM) {
+      if(track1.getYear().getValue() != track2.getYear().getValue()) {
+        // reverse order here to sort year in the proper order
+        return Long.compare(track2.getYear().getValue(), track1.getYear().getValue());
+      }
+
+      return compareOrderAndTrackName(track1, track2);
+    }
+
+    // discovery date / album
+    if (comparatorType == TrackComparatorType.DISCOVERY_ALBUM) {
+      int ret = FORMATTER.format(track1.getDiscoveryDate()).compareTo(
+              FORMATTER.format(track2.getDiscoveryDate()));
+      if(ret != 0) {
+        return ret;
+      }
+
+      return compareAlbumOrderAndTrackName(track1, track2);
+    }
+
+    // Rate / album
+    if (comparatorType == TrackComparatorType.RATE_ALBUM) {
+      if(track1.getRate() != track2.getRate()) {
+        // reverse order to for proper order
+        return Long.compare(track2.getRate(), track1.getRate());
+      }
+
+      return compareOrderAndTrackName(track1, track2);
+    }
+
+    // Hits / album
+    if (comparatorType == TrackComparatorType.HITS_ALBUM) {
+      if(track1.getHits() != track2.getHits()) {
+        // reverse order to get proper sorting
+        return Long.compare(track2.getHits(), track1.getHits());
+      }
+      int ret = track1.getAlbum().getName2().compareToIgnoreCase(track2.getAlbum().getName2());
+      if(ret != 0) {
+        return ret;
+      }
+
+      return track1.getName().compareToIgnoreCase(track2.getName());
+    }
+    // Disc number / Order / track name
+    else if (comparatorType == TrackComparatorType.ORDER) {
+      if(track1.getDiscNumber() != track2.getDiscNumber()) {
+        return Long.compare(track1.getDiscNumber(), track2.getDiscNumber());
+      }
+
+      return compareOrderAndTrackName(track1, track2);
+    }
+    // We want to find identical tracks but using album name, not album id.
+    // We only use set tags, not unknown ones
+    else if (comparatorType == TrackComparatorType.ALMOST_IDENTICAL) {
+      return buildIdenticalTestFootprint(track1).compareToIgnoreCase(buildIdenticalTestFootprint(track2));
+    }
+
+    throw new IllegalArgumentException("Unknown type of comparator: " + comparatorType);
+  }
+
+  private int compareAlbumOrderAndTrackName(Track track1, Track track2) {
+    int ret;
+    ret = track1.getAlbum().getName2().compareToIgnoreCase(track2.getAlbum().getName2());
+    if (ret != 0) {
+      return ret;
+    }
+
+    return compareOrderAndTrackName(track1, track2);
+  }
+
+  private int compareOrderAndTrackName(Track track1, Track track2) {
+    if (track1.getOrder() != track2.getOrder()) {
+      return Long.compare(track1.getOrder(), track2.getOrder());
+    }
+
+    return track1.getName().compareToIgnoreCase(track2.getName());
   }
 }
