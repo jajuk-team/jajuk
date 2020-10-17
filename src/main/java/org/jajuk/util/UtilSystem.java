@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.ImageIcon;
 
@@ -149,7 +150,7 @@ public final class UtilSystem {
         ProcessBuilder pb = new ProcessBuilder("ps", "-eaf");
         Process proc = pb.start();
         stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-        proc.waitFor();
+        proc.waitFor(5, TimeUnit.SECONDS);
         String s;
         while ((s = stdInput.readLine()) != null) {
           if (s.matches(".*ksmserver.*")) {
