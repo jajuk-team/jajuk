@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
@@ -24,7 +24,6 @@ import com.google.common.collect.Lists;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -48,12 +47,12 @@ import org.xml.sax.Attributes;
  */
 public abstract class Item implements Const {
   /** We cache the ID to avoid getting it from properties for CPU performance reasons. */
-  private String sID;
+  private final String sID;
   /** We cache the name to avoid getting it from properties for CPU performance reasons. */
   String name;
   /** Item properties, singleton use very high load factor as this size will not change often. */
-  private Map<String, Object> properties = new HashMap<String, Object>(2, 1f);
-  /** Cache-string which holds the filter-string for the default "any"-Searches, this is filled during the first search and 
+  private Map<String, Object> properties = new HashMap<>(2, 1f);
+  /** Cache-string which holds the filter-string for the default "any"-Searches, this is filled during the first search and
    * cleaned on all points where the properties are adjusted. */
   private String any = null;
   private static final List<String> lowPriorityCollectionProperties = Lists.asList(XML_TRACK_HITS,
@@ -62,7 +61,7 @@ public abstract class Item implements Const {
 
   /**
    * Constructor.
-   * 
+   *
    * @param sId element ID
    * @param sName element name
    */
@@ -75,7 +74,7 @@ public abstract class Item implements Const {
 
   /**
    * Gets the iD.
-   * 
+   *
    * @return the iD
    */
   public String getID() {
@@ -84,7 +83,7 @@ public abstract class Item implements Const {
 
   /**
    * Gets the name.
-   * 
+   *
    * @return the name
    */
   public String getName() {
@@ -93,7 +92,6 @@ public abstract class Item implements Const {
 
   /**
    * Set a new name
-   * @param newName
    */
   void setName(String newName) {
     this.name = newName;
@@ -104,9 +102,9 @@ public abstract class Item implements Const {
   /**
    * Item hashcode (used by the equals method) See
    * http://www.geocities.com/technofundo/tech/java/equalhash.html
-   * 
+   *
    * Note that the hashCode is already cached in String class, no need to do it again.
-   * 
+   *
    * @return the int
    */
   @Override
@@ -116,16 +114,14 @@ public abstract class Item implements Const {
 
   /**
    * Get item title (HTML) used in some dialogs.
-   * 
+   *
    * @return item description
    */
   public abstract String getTitle();
 
   /**
    * Equal method to check two items are identical.
-   * 
-   * @param otherItem 
-   * 
+   *
    * @return true, if equals
    */
   @Override
@@ -136,28 +132,27 @@ public abstract class Item implements Const {
     }
     // [Perf] We can compare with an == operator here because
     // all ID are stored into String intern() buffer
+    //noinspection StringEquality
     return getID() == ((Item) otherItem).getID();
   }
 
   /**
    * Get a defensive copy of all the item properties.
-   * 
+   *
    * @return a defensive copy of all the item properties
    */
   public Map<String, Object> getProperties() {
-    return new HashMap<String, Object>(properties);
+    return new HashMap<>(properties);
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#getProperty(java.lang.String)
    */
   /**
    * Gets the value.
-   * 
-   * @param sKey 
-   * 
+   *
    * @return the value
    */
   public Object getValue(String sKey) {
@@ -172,9 +167,7 @@ public abstract class Item implements Const {
 
   /**
    * Gets the long value.
-   * 
-   * @param sKey 
-   * 
+   *
    * @return the long value
    */
   public long getLongValue(String sKey) {
@@ -189,9 +182,7 @@ public abstract class Item implements Const {
 
   /**
    * Gets the double value.
-   * 
-   * @param sKey 
-   * 
+   *
    * @return the double value
    */
   public double getDoubleValue(String sKey) {
@@ -207,9 +198,7 @@ public abstract class Item implements Const {
   /**
    * Return String value for String type values. We assume that given property
    * is a String.
-   * 
-   * @param sKey 
-   * 
+   *
    * @return the string value
    */
   public String getStringValue(String sKey) {
@@ -224,9 +213,7 @@ public abstract class Item implements Const {
 
   /**
    * Gets the boolean value.
-   * 
-   * @param sKey 
-   * 
+   *
    * @return the boolean value
    */
   public boolean getBooleanValue(String sKey) {
@@ -241,9 +228,7 @@ public abstract class Item implements Const {
 
   /**
    * Gets the date value.
-   * 
-   * @param sKey 
-   * 
+   *
    * @return the date value
    */
   public Date getDateValue(String sKey) {
@@ -258,9 +243,7 @@ public abstract class Item implements Const {
 
   /**
    * Gets the default value.
-   * 
-   * @param sKey 
-   * 
+   *
    * @return the default value
    */
   private Object getDefaultValue(String sKey) {
@@ -270,15 +253,12 @@ public abstract class Item implements Const {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#containsKey(java.lang.String)
    */
   /**
    * Contains property.
-   * 
-   * 
-   * @param sKey 
-   * 
+   *
    * @return true if...
    */
   public boolean containsProperty(String sKey) {
@@ -288,15 +268,11 @@ public abstract class Item implements Const {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#setProperty(java.lang.String, java.lang.String)
    */
   /**
    * Sets the property.
-   * 
-   * 
-   * @param sKey 
-   * @param oValue 
    */
   public final void setProperty(String sKey, Object oValue) {
     // reset cached value
@@ -305,7 +281,7 @@ public abstract class Item implements Const {
     notifyCollectionChange(sKey);
   }
 
-  private final void notifyCollectionChange(String key) {
+  private void notifyCollectionChange(String key) {
     // Ignore this if the persistence service is not yet started to speed up startup
     if (!PersistenceService.getInstance().isAlive()) {
       return;
@@ -318,7 +294,7 @@ public abstract class Item implements Const {
     if (this instanceof WebRadio) {
       PersistenceService.getInstance().setRadiosChanged();
     } else {
-      // Some properties like the track total play time is incremented very often and we don't want to commit 
+      // Some properties like the track total play time is incremented very often and we don't want to commit
       // collection that soon so we set a low urgency to its commit
       if (lowPriorityCollectionProperties.contains(key)) {
         PersistenceService.getInstance().setCollectionChanged(Urgency.LOW);
@@ -331,7 +307,7 @@ public abstract class Item implements Const {
 
   /**
    * Gets the any.
-   * 
+   *
    * @return the any
    */
   public String getAny() {
@@ -339,9 +315,7 @@ public abstract class Item implements Const {
       return any;
     }
     StringBuilder sb = new StringBuilder(100);
-    Iterator<String> it = properties.keySet().iterator();
-    while (it.hasNext()) {
-      String sKey = it.next();
+    for (String sKey : properties.keySet()) {
       String sValue = getHumanValue(sKey);
       if (sValue != null) {
         PropertyMetaInformation meta = getMeta(sKey);
@@ -358,7 +332,7 @@ public abstract class Item implements Const {
 
   /**
    * Return an XML representation of this item.
-   * 
+   *
    * @return the string
    */
   String toXml() {
@@ -377,20 +351,19 @@ public abstract class Item implements Const {
 
   /**
    * Gets the XML tag.
-   * 
+   *
    * @return an identifier used to generate XML representation of this item
    */
   public abstract String getXMLTag();
 
   /**
    * Gets the properties xml.
-   * 
+   *
    * @return XML representation for item properties
    */
   private String getPropertiesXml() {
     StringBuilder sb = new StringBuilder();
     for (String sKey : properties.keySet()) {
-      String sValue = null;
       Object oValue = properties.get(sKey);
       if (oValue != null) {
         PropertyMetaInformation meta = getMeta(sKey);
@@ -400,7 +373,7 @@ public abstract class Item implements Const {
           continue;
         }
         try {
-          sValue = UtilString.format(oValue, meta, false);
+          String sValue = UtilString.format(oValue, meta, false);
           // make sure to remove
           // non-XML characters
           sValue = UtilString.formatXML(sValue);
@@ -421,7 +394,7 @@ public abstract class Item implements Const {
   /**
    * Set all personal properties of an XML file for an item (doesn't overwrite
    * existing properties for perfs).
-   * 
+   *
    * @param attributes :
    * list of attributes for this XML item
    */
@@ -433,10 +406,10 @@ public abstract class Item implements Const {
         PropertyMetaInformation meta = getMeta(sProperty);
         try {
           if (meta != null) {
-            // small memory optimization: there are some properties that we do not automatically intern during collection loading, 
+            // small memory optimization: there are some properties that we do not automatically intern during collection loading,
             // therefore do it manually here to not have the strings duplicated.
             // This is currently useful for "ALBUM_ARTIST" and for Const.NONE Cover in Albums
-            // measured gain: aprox. 1MB for 25k tracks 
+            // measured gain: aprox. 1MB for 25k tracks
             if (Const.XML_ALBUM_ARTIST.equals(sProperty) || Const.COVER_NONE.equals(sValue)) {
               setProperty(sProperty, UtilString.parse(sValue.intern(), meta.getType()));
             } else {
@@ -454,7 +427,7 @@ public abstract class Item implements Const {
 
   /**
    * Sets the properties.
-   * 
+   *
    * @param properties The properties to set.
    */
   public void setProperties(Map<String, Object> properties) {
@@ -466,14 +439,11 @@ public abstract class Item implements Const {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#removeProperty(java.lang.String)
    */
   /**
    * Removes the property.
-   * 
-   * 
-   * @param sKey 
    */
   public void removeProperty(String sKey) {
     properties.remove(sKey);
@@ -484,9 +454,7 @@ public abstract class Item implements Const {
 
   /**
    * Default implementation for this method, simply return standard value.
-   * 
-   * @param sKey 
-   * 
+   *
    * @return the human value
    */
   public String getHumanValue(String sKey) {
@@ -500,9 +468,9 @@ public abstract class Item implements Const {
 
   /**
    * Gets the meta.
-   * 
+   *
    * @param sProperty Property name
-   * 
+   *
    * @return Meta information for current item and given property name
    */
   public PropertyMetaInformation getMeta(String sProperty) {
@@ -512,13 +480,9 @@ public abstract class Item implements Const {
   /**
    * Clone all properties from a given properties list but not overwrite
    * constructor properties.
-   * 
-   * @param propertiesSource 
    */
   void cloneProperties(Item propertiesSource) {
-    Iterator<String> it = propertiesSource.getProperties().keySet().iterator();
-    while (it.hasNext()) {
-      String sProperty = it.next();
+    for (String sProperty : propertiesSource.getProperties().keySet()) {
       if (!getMeta(sProperty).isConstructor()) {
         this.properties.put(sProperty, propertiesSource.getValue(sProperty));
       }
@@ -529,14 +493,14 @@ public abstract class Item implements Const {
 
   /**
    * Gets the icon representation.
-   * 
+   *
    * @return an icon representation for this item or null if none available
    */
   public abstract ImageIcon getIconRepresentation();
 
   /**
    * Item rate. Should be overwritten by sub classes
-   * 
+   *
    * @return item rate if item supports rating or -1 otherwise
    */
   public long getRate() {

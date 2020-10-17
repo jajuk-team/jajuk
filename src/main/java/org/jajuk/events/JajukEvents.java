@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.events;
 
@@ -58,8 +58,8 @@ public enum JajukEvents {
   QUEUE_NEED_REFRESH,
   /** a file has been launched by the fifo. */
   FILE_LAUNCHED,
-  /** heart beat for general use to refresh subscribers. */
-  /** every n secs */
+  /** heart beat for general use to refresh subscribers
+   * every n secs */
   HEART_BEAT,
   /** a web radio has been launched. */
   WEBRADIO_LAUNCHED,
@@ -99,24 +99,19 @@ public enum JajukEvents {
   COVER_DEFAULT_CHANGED,
   /** DJ creation or removal. */
   DJS_CHANGE,
-  /** One or more ambiences have been. */
-  /** removed/added/changed */
+  /** One or more ambiences have been removed/added/changed. */
   AMBIENCES_CHANGE,
-  /** One or more webradios have been. */
-  /** removed/added/changed */
+  /** One or more webradios have been removed/added/changed. */
   WEBRADIOS_CHANGE,
   /** user changed current ambience. */
   AMBIENCES_SELECTION_CHANGE,
   /** An ambience has been removed. */
   AMBIENCE_REMOVED,
-  /** Current played track artist name has been. */
-  /** changed */
+  /** Current played track artist name has been changed. */
   ARTIST_CHANGED,
-  /** Current played track album name has been. */
-  /** changed */
+  /** Current played track album name has been changed. */
   ALBUM_CHANGED,
-  /** Current played track album name has been. */
-  /** changed */
+  /** Current played track album name has been changed. */
   TRACK_CHANGED,
   /** Language changed. */
   LANGUAGE_CHANGED,

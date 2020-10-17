@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
@@ -35,9 +35,6 @@ import org.jajuk.util.Messages;
 public class Genre extends LogicalItem implements Comparable<Genre> {
   /**
    * Genre constructor.
-   *
-   * @param sId 
-   * @param sName 
    */
   Genre(String sId, String sName) {
     super(sId, sName);
@@ -45,7 +42,7 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
@@ -55,7 +52,7 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
 
   /**
    * Return genre name, dealing with unknown for any language.
-   * 
+   *
    * @return artist name
    */
   public String getName2() {
@@ -68,19 +65,13 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
 
   /**
    * Alphabetical comparator used to display ordered lists.
-   * 
-   * @param otherItem 
-   * 
+   *
    * @return comparison result
    */
   @Override
   public int compareTo(Genre otherItem) {
     // compare using name and id to differentiate unknown items
-    StringBuilder current = new StringBuilder(getName2());
-    current.append(getID());
-    StringBuilder other = new StringBuilder(otherItem.getName2());
-    other.append(otherItem.getID());
-    return current.toString().compareToIgnoreCase(other.toString());
+    return (getName2() + getID()).compareToIgnoreCase(otherItem.getName2() + otherItem.getID());
   }
 
   /**
@@ -112,7 +103,7 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
    */
   @Override
@@ -126,7 +117,7 @@ public class Genre extends LogicalItem implements Comparable<Genre> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#getIconRepresentation()
    */
   @Override

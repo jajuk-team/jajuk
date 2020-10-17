@@ -82,7 +82,7 @@ public final class UtilSystem {
   /**
    * MPlayer status possible values *.
    */
-  public static enum MPlayerStatus {
+  public enum MPlayerStatus {
     MPLAYER_STATUS_OK, MPLAYER_STATUS_NOT_FOUND, MPLAYER_STATUS_WRONG_VERSION, MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
   }
 
@@ -137,7 +137,7 @@ public final class UtilSystem {
         && ((sArch != null) && sArch.matches(".*86.*"));
   }
 
-  /**
+  /*
   * Are we running in a KDE environment ?
   *
   * We check it by using ps command + a grep searching 'ksmserver' process*/
@@ -172,7 +172,7 @@ public final class UtilSystem {
     UNDER_KDE = underKDE;
   }
   /** Icons cache. */
-  static Map<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>(200);
+  static Map<String, ImageIcon> iconCache = new HashMap<>(200);
   /** Mplayer exe path. */
   private static File mplayerPath = null;
   /** current class loader. */
@@ -189,7 +189,7 @@ public final class UtilSystem {
    * with a given maximum Mb size for the file and its backup files
    *
    * @param file The file to back up
-   * @param iMB
+   * @param iMB The maximum size of the file in mega-bytes
    */
   public static void backupFile(final File file, final int iMB) {
     try {
@@ -200,11 +200,11 @@ public final class UtilSystem {
       // calculates total size in MB for the file to backup and its
       // backup files
       long lUsedMB = 0;
-      final List<File> alFiles = new ArrayList<File>(10);
+      final List<File> alFiles = new ArrayList<>(10);
       final File[] files = new File(file.getAbsolutePath()).getParentFile().listFiles();
       if (files != null) {
         for (final File element : files) {
-          if (element.getName().indexOf(UtilSystem.removeExtension(file.getName())) != -1) {
+          if (element.getName().contains(UtilSystem.removeExtension(file.getName()))) {
             lUsedMB += element.length();
             alFiles.add(element);
           }
@@ -227,16 +227,10 @@ public final class UtilSystem {
       final String sExt = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
       final File fileNew = new File(UtilSystem.removeExtension(file.getAbsolutePath()) + "-backup-"
           + sExt + "." + UtilSystem.getExtension(file));
-      final FileChannel fcSrc = new FileInputStream(file).getChannel();
-      try {
-        final FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
-        try {
+      try (FileChannel fcSrc = new FileInputStream(file).getChannel()) {
+        try (FileChannel fcDest = new FileOutputStream(fileNew).getChannel()) {
           fcDest.transferFrom(fcSrc, 0, fcSrc.size());
-        } finally {
-          fcDest.close();
         }
-      } finally {
-        fcSrc.close();
       }
     } catch (final IOException ie) {
       Log.error(ie);
@@ -310,8 +304,8 @@ public final class UtilSystem {
   public static void copy(final File file, final String sNewName) throws JajukException,
       IOException {
     Log.debug("Renaming: {{" + file.getAbsolutePath() + "}}  to : " + sNewName);
-    final File fileNew = new File(new StringBuilder(file.getParentFile().getAbsolutePath())
-        .append('/').append(sNewName).toString());
+    final File fileNew = new File(file.getParentFile().getAbsolutePath() +
+            '/' + sNewName);
     if (!file.exists() || !file.canRead()) {
       throw new JajukException(9, file.getAbsolutePath(), null);
     }
@@ -329,11 +323,9 @@ public final class UtilSystem {
    * @throws IOException If the src or dest cannot be opened/created.
    */
   public static void copy(final URL src, final String dest) throws IOException {
-    final BufferedReader br = new BufferedReader(new InputStreamReader(src.openStream()));
-    try {
-      final BufferedWriter bw = new BufferedWriter(new FileWriter(dest));
-      try {
-        String sLine = null;
+    try (BufferedReader br = new BufferedReader(new InputStreamReader(src.openStream()))) {
+      try (BufferedWriter bw = new BufferedWriter(new FileWriter(dest))) {
+        String sLine;
         do {
           sLine = br.readLine();
           if (sLine != null) {
@@ -342,11 +334,7 @@ public final class UtilSystem {
           }
         } while (sLine != null);
         bw.flush();
-      } finally {
-        bw.close();
       }
-    } finally {
-      br.close();
     }
   }
 
@@ -361,7 +349,7 @@ public final class UtilSystem {
    * 5) Rename file.xml.saving to file.xml</pre>
    * </p>
    * @param finalFile : the final file (like collection.xml)
-   * @throws IOException
+   * @throws IOException If the file does not exist or deleting the file fails
    */
   public static void saveFileWithRecoverySupport(File finalFile) throws IOException {
     // Check saving file existence
@@ -447,7 +435,7 @@ public final class UtilSystem {
       if (!dst.mkdirs()) {
         Log.warn("Could not create directory structure " + dst.toString());
       }
-      final String list[] = src.list();
+      final String[] list = src.list();
       for (final String element : list) {
         final String dest1 = dst.getAbsolutePath() + '/' + element;
         final String src1 = src.getAbsolutePath() + '/' + element;
@@ -463,8 +451,6 @@ public final class UtilSystem {
    *
    * @param file : file to copy
    * @param directory : destination directory
-   *
-   * @return destination file
    *
    * @throws JajukException the jajuk exception
    * @throws IOException Signals that an I/O exception has occurred.
@@ -486,11 +472,8 @@ public final class UtilSystem {
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void createEmptyFile(final File file) throws IOException {
-    final OutputStream fos = new FileOutputStream(file);
-    try {
+    try (OutputStream fos = new FileOutputStream(file)) {
       fos.write(new byte[0]);
-    } finally {
-      fos.close();
     }
   }
 
@@ -507,7 +490,6 @@ public final class UtilSystem {
     if (dir.exists()) {
       throw new IOException("Directory" + dir.getAbsolutePath() + " still exists");
     }
-    return;
   }
 
   /**
@@ -533,7 +515,6 @@ public final class UtilSystem {
     if (file.exists()) {
       throw new IOException("File" + file.getAbsolutePath() + " still exists");
     }
-    return;
   }
 
   /**
@@ -562,7 +543,7 @@ public final class UtilSystem {
       return "";
     }
     if (dotIndex > 0) {
-      return filename.substring(dotIndex + 1, filename.length());
+      return filename.substring(dotIndex + 1);
     } else {
       // File beginning by a point (unix hidden file)
       return filename;
@@ -583,14 +564,11 @@ public final class UtilSystem {
    */
   public static String getFileChecksum(final File fio) throws JajukException {
     try {
-      String sOut = "";
-      final FileChannel fc = new FileInputStream(fio).getChannel();
-      try {
+      final String sOut;
+      try (FileChannel fc = new FileInputStream(fio).getChannel()) {
         final ByteBuffer bb = ByteBuffer.allocate(500);
         fc.read(bb, fio.length() / 2);
         sOut = new String(bb.array());
-      } finally {
-        fc.close();
       }
       return MD5Processor.hash(sOut);
     } catch (final IOException e) {
@@ -649,7 +627,7 @@ public final class UtilSystem {
     if (UtilSystem.mplayerPath != null) {
       return UtilSystem.mplayerPath;
     }
-    File file = null;
+    final File file;
     // Check in ~/.jajuk directory (used by JNLP distribution
     // as well). Test exe size as well to detect unfinished downloads of
     // mplayer.exe in JNLP mode
@@ -695,10 +673,10 @@ public final class UtilSystem {
    * @return the mplayer status
    */
   public static UtilSystem.MPlayerStatus getMplayerStatus(final String mplayerPATH) {
-    Process proc = null;
+    final Process proc;
     UtilSystem.MPlayerStatus mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
     try {
-      String fullPath = null;
+      final String fullPath;
       if ("".equals(mplayerPATH)) {
         fullPath = "mplayer";
       } else {
@@ -707,22 +685,19 @@ public final class UtilSystem {
       Log.debug("Testing path: " + fullPath);
       // check MPlayer release : 1.0pre8 min
       proc = Runtime.getRuntime().exec(new String[] { fullPath, "-input", "cmdlist" }); //$NON-NLS-2$
-      final BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-      try {
+      try (BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()))) {
         String line = null;
-        mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION;
-        for (;;) {
+        mplayerStatus = MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION;
+        for (; ; ) {
           line = in.readLine();
           if (line == null) {
             break;
           }
           if (line.matches("get_time_pos.*")) {
-            mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK;
+            mplayerStatus = MPlayerStatus.MPLAYER_STATUS_OK;
             break;
           }
         }
-      } finally {
-        in.close();
       }
     } catch (final IOException e) {
       mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
@@ -743,9 +718,9 @@ public final class UtilSystem {
     // Replace / : < > and \ by -
     out = in.replaceAll("[/:<>\\\\]", "-");
     // Replace * and | by spaces
-    out = out.replaceAll("[\\*|]", " ");
+    out = out.replaceAll("[*|]", " ");
     // Remove " and ? characters
-    out = out.replaceAll("[\"\\?]", "");
+    out = out.replaceAll("[\"?]", "");
     return out;
   }
 
@@ -930,19 +905,16 @@ public final class UtilSystem {
       throw new JajukException(9, path, e);
     }
     try {
-      final BufferedReader input = new BufferedReader(fileReader);
-      try {
+      try (BufferedReader input = new BufferedReader(fileReader)) {
         // Read
         final StringBuilder strColl = new StringBuilder();
-        String line = null;
+        String line;
         while ((line = input.readLine()) != null) {
           strColl.append(line);
         }
         return strColl;
-      } finally {
-        // Close the bufferedReader
-        input.close();
       }
+      // Close the bufferedReader
     } catch (final IOException e) {
       throw new JajukException(9, path, e);
     }
@@ -962,14 +934,14 @@ public final class UtilSystem {
   public static StringBuilder readJarFile(final String sURL) throws JajukException {
     // Read
     InputStream is;
-    StringBuilder sb = null;
+    final StringBuilder sb;
     try {
       is = Main.class.getResourceAsStream(sURL);
       try {
         // Read
         final byte[] b = new byte[200];
         sb = new StringBuilder();
-        int i = 0;
+        int i;
         do {
           i = is.read(b, 0, b.length);
           sb.append(new String(b));
@@ -1044,14 +1016,11 @@ public final class UtilSystem {
   public static boolean replaceInFile(File file, String oldS, String newS, String encoding) {
     try {
       String s = FileUtils.readFileToString(file);
-      if (s.indexOf(oldS) != -1) {
+      if (s.contains(oldS)) {
         s = s.replaceAll(oldS, newS);
-        Writer bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), encoding));
-        try {
+        try (Writer bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), encoding))) {
           bw.write(s);
           bw.flush();
-        } finally {
-          bw.close();
         }
         return true;
       }
@@ -1177,7 +1146,7 @@ public final class UtilSystem {
     if (cachedUserHomeDir != null) {
       return cachedUserHomeDir;
     }
-    /**
+    /*
      * We search first in USERPROFILE env directory before than user.home.
      *
      * But we give priority to user.home if it already contains a suitable jajuk
@@ -1237,7 +1206,7 @@ public final class UtilSystem {
        * 07/06/2010 14:41 20Â 108 -(_)~1.MP3 ÂµÃ—Ã¹Ã•â”‚Â» - ÂµÃ¿Ã„Ã•Ã±Â®Ãµâ•—Ã‘Ã•Â¥Ã® (ÂµÃ—Ã¹Ã•â”‚Â»+Âµâ”‚Ã•Ã Ã†Ã•Ã‰ÃªÃ•Ã¶â–’).mp3
        */
       BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-      String line = "";
+      String line;
       String lineDirectory = null;
       while ((line = br.readLine()) != null) {
         String ext = UtilSystem.getExtension(new File(longname));
@@ -1255,7 +1224,7 @@ public final class UtilSystem {
             break;
           } else if (indexExtension != -1) {
             // We get parent directory full path in shortname thanks the %~s1 in the script
-            lineDirectory = line.substring(indexExtension, line.length()).trim();
+            lineDirectory = line.substring(indexExtension).trim();
           }
         }
       }

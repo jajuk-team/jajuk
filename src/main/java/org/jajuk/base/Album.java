@@ -62,10 +62,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Album constructor.
-   *
-   * @param sId
-   * @param sName
-   * @param discID
    */
   Album(String sId, String sName, long discID) {
     super(sId, sName);
@@ -109,8 +105,6 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * Alphabetical comparator on the name
    * <p>
    * Used to display ordered lists.
-   *
-   * @param otherAlbum
    *
    * @return comparison result
    */
@@ -673,7 +667,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * Set that the thumb for given size is available.
    *
    * @param size (thumb size like 50)
-   * @param available
+   * @param available the state to set for the given size
    */
   public void setAvailableThumb(int size, boolean available) {
     if (availableTumbs == null) {

@@ -231,7 +231,7 @@ public final class ArtistManager extends ItemManager {
         out.add(((Track) item).getArtist());
       } else {
         // [Perf] If item is a track, just return its artist
-        // Use a set to avoid dups
+        // Use a set to avoid duplicates
         Set<Artist> artistSet = new HashSet<>();
         List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item, true);
         for (Track track : tracks) {

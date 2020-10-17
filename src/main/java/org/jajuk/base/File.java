@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
@@ -50,13 +50,6 @@ public class File extends PhysicalItem implements Comparable<File> {
 
   /**
    * File instantiation.
-   *
-   * @param sId 
-   * @param sName 
-   * @param directory 
-   * @param track 
-   * @param lSize 
-   * @param lQuality 
    */
   File(String sId, String sName, Directory directory, Track track, long lSize, long lQuality) {
     super(sId, sName);
@@ -95,17 +88,14 @@ public class File extends PhysicalItem implements Comparable<File> {
    * @return the string
    */
   String toStringSearch() {
-    StringBuilder sb = new StringBuilder(track.getGenre().getName2()).append('/')
-        .append(track.getArtist().getName2()).append('/').append(track.getAlbum().getName2())
-        .append('/').append(track.getName()).append(" [").append(directory.getName()).append('/')
-        .append(getName()).append(']');
-    return sb.toString();
+    return track.getGenre().getName2() + '/' +
+            track.getArtist().getName2() + '/' + track.getAlbum().getName2() +
+            '/' + track.getName() + " [" + directory.getName() + '/' +
+            getName() + ']';
   }
 
   /**
    * Return true is the specified directory is an ancestor for this file.
-   *
-   * @param directory 
    *
    * @return true, if checks for ancestor
    */
@@ -187,10 +177,9 @@ public class File extends PhysicalItem implements Comparable<File> {
    * @return String
    */
   public String getAbsolutePath() {
-    StringBuilder sbOut = new StringBuilder(getDevice().getUrl())
-        .append(getDirectory().getRelativePath()).append(java.io.File.separatorChar)
-        .append(this.getName());
-    return sbOut.toString();
+    return getDevice().getUrl() +
+            getDirectory().getRelativePath() + java.io.File.separatorChar +
+            this.getName();
   }
 
   /**
@@ -199,9 +188,6 @@ public class File extends PhysicalItem implements Comparable<File> {
    * Sort ignoring cases
    * </p>
    * .
-   *
-   * @param otherFile 
-   *
    * @return comparison result
    */
   @Override
@@ -253,10 +239,7 @@ public class File extends PhysicalItem implements Comparable<File> {
    * @return true if the file is currently refreshed or synchronized
    */
   public boolean isScanned() {
-    if (getDirectory().getDevice().isRefreshing() || getDirectory().getDevice().isSynchronizing()) {
-      return true;
-    }
-    return false;
+    return getDirectory().getDevice().isRefreshing() || getDirectory().getDevice().isSynchronizing();
   }
 
   /**
@@ -277,11 +260,8 @@ public class File extends PhysicalItem implements Comparable<File> {
    * @return whether this item should be hidden with hide option
    */
   public boolean shouldBeHidden() {
-    if (getDirectory().getDevice().isMounted()
-        || !Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
-      return false;
-    }
-    return true;
+    return !getDirectory().getDevice().isMounted()
+            && Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED);
   }
 
   /**
@@ -396,7 +376,7 @@ public class File extends PhysicalItem implements Comparable<File> {
    */
   @Override
   public ImageIcon getIconRepresentation() {
-    ImageIcon icon = null;
+    final ImageIcon icon;
     String ext = UtilSystem.getExtension(getName()); // getName() is better
     // here as
     // it will do less and not

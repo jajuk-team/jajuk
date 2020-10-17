@@ -62,17 +62,6 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Track constructor.
-   *
-   * @param sId
-   * @param sName
-   * @param album
-   * @param genre
-   * @param artist
-   * @param length
-   * @param year
-   * @param lOrder
-   * @param type
-   * @param lDiscNumber
    */
   Track(String sId, String sName, Album album, Genre genre, Artist artist, long length, Year year,
       long lOrder, Type type, long lDiscNumber) {
@@ -136,8 +125,6 @@ public class Track extends LogicalItem implements Comparable<Track> {
   /**
    * Default comparator for tracks, not used for actual sorting (use TrackComparator
    * for that), only for storage purpose.
-   *
-   * @param otherTrack
    *
    * @return comparison result
    */
@@ -397,8 +384,6 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Add an associated file.
-   *
-   * @param file
    */
   public void addFile(File file) {
     // make sure a file will be referenced by only one track (first found)
@@ -527,8 +512,6 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Sets the comment.
-   *
-   * @param sComment
    */
   public void setComment(String sComment) {
     setProperty(Const.XML_TRACK_COMMENT, sComment);

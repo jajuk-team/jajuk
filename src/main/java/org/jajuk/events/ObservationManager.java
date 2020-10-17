@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.events;
 
@@ -39,10 +39,10 @@ import org.jajuk.util.log.Log;
 public final class ObservationManager {
   /** one event -> list of components. */
   static ObserverRegistry observerRegistry = new ObserverRegistry();
-  /** Last event for a given subject (used for new objects that just registrated to this subject). */
-  static Map<JajukEvents, Properties> hLastEventBySubject = new HashMap<JajukEvents, Properties>(10);
+  /** Last event for a given subject (used for new objects that just registered to this subject). */
+  static Map<JajukEvents, Properties> hLastEventBySubject = new HashMap<>(10);
   /** The queue itself. Must be synchronized, so we use a ConcurrentLinkedQueue which is thread-safe */
-  static BlockingQueue<JajukEvent> queue = new LinkedBlockingQueue<JajukEvent>();
+  static BlockingQueue<JajukEvent> queue = new LinkedBlockingQueue<>();
   /** The observation fifo. */
   private static ObservationManagerThread observationThread;
 
@@ -56,7 +56,7 @@ public final class ObservationManager {
    * Register a component for a list of subjects. This calls the
    * interface @see Observer.getRegistrationKeys() to retrieve
    * a list of events which the Observer is interested in.
-   * 
+   *
    * @param observer The Observer to register.
    */
   public static synchronized void register(Observer observer) {
@@ -69,10 +69,10 @@ public final class ObservationManager {
 
   /**
    * Unregister a component for a list of subjects.
-   * 
+   *
    * @param observer The Observer to unregister.
-   * 
-   * @see Observer.getRegistrationKeys() is called on the Observer
+   *
+   * @see Observer#getRegistrationKeys() is called on the Observer
    * to get the list of events.
    */
   public static synchronized void unregister(Observer observer) {
@@ -91,7 +91,7 @@ public final class ObservationManager {
 
   /**
    * Notify all components having registered for the given subject.
-   * 
+   *
    * @param event The event that is triggered including any additional
    * data that is of interest as part of the event.
    */
@@ -124,7 +124,7 @@ public final class ObservationManager {
 
   /**
    * Notify synchronously all components having registered for the given subject.
-   * 
+   *
    * @param event The event that is triggered including any additional
    * data that is of interest as part of the event.
    */
@@ -138,9 +138,9 @@ public final class ObservationManager {
 
   /**
    * Return whether the event already occurred at least once.
-   * 
+   *
    * @param subject The type of event to check for.
-   * 
+   *
    * @return true, if contains event, false otherwise.
    */
   public static boolean containsEvent(JajukEvents subject) {
@@ -150,10 +150,10 @@ public final class ObservationManager {
   /**
    * Return the details for last event of the given subject, or null if there is
    * no details.
-   * 
+   *
    * @param subject The type of event to check for.
    * @param sDetailName The detailed piece of information to fetch.
-   * 
+   *
    * @return the detail as an object or null if the event or the detail doesn't
    * exist
    */
@@ -167,10 +167,10 @@ public final class ObservationManager {
 
   /**
    * Return the details for an event, or null if there is no details.
-   * 
+   *
    * @param event The event to retrieve the detail from.
    * @param sDetailName The detailed piece of information to fetch.
-   * 
+   *
    * @return the detail as an object or null if the event or the detail doesn't
    * exist
    */
@@ -184,9 +184,9 @@ public final class ObservationManager {
 
   /**
    * Return the details for an event, or null if there is no details.
-   * 
+   *
    * @param subject The event to query for.
-   * 
+   *
    * @return the details or null there are not details
    */
   public static Properties getDetailsLastOccurence(JajukEvents subject) {

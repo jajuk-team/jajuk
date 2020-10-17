@@ -105,7 +105,6 @@ public final class AlbumManager extends ItemManager implements Observer {
    * Return hashcode for this item.
    *
    * @param sName item name
-   * @param discId
    *
    * @return ItemManager ID
    */
@@ -116,9 +115,6 @@ public final class AlbumManager extends ItemManager implements Observer {
   /**
    * Register an Album with a known id.
    *
-   * @param sId
-   * @param sName
-   * @param discID
    * @return the album
    */
   public Album registerAlbum(String sId, String sName, long discID) {
@@ -134,9 +130,6 @@ public final class AlbumManager extends ItemManager implements Observer {
   /**
    * Register an Album.
    *
-   * @param sName
-   * @param discID
-   *
    * @return the album
    */
   public Album registerAlbum(String sName, long discID) {
@@ -146,9 +139,6 @@ public final class AlbumManager extends ItemManager implements Observer {
 
   /**
    * Change the item.
-   *
-   * @param old
-   * @param sNewName
    *
    * @return new album
    *
@@ -497,8 +487,6 @@ public final class AlbumManager extends ItemManager implements Observer {
 
   /**
    * Gets the album by name.
-   *
-   * @param name
    *
    * @return associated album (case insensitive) or null if no match
    */

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
@@ -43,7 +43,7 @@ import org.jajuk.util.log.Log;
  */
 public final class PlaylistManager extends ItemManager implements Observer {
   /** Self instance. */
-  private static PlaylistManager singleton = new PlaylistManager();
+  private static final PlaylistManager singleton = new PlaylistManager();
 
   /**
    * No constructor available, only static access.
@@ -64,7 +64,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
 
   /**
    * Gets the instance.
-   * 
+   *
    * @return singleton
    */
   public static PlaylistManager getInstance() {
@@ -73,10 +73,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
 
   /**
    * Register an Playlist with a known id.
-   * 
-   * @param fio 
-   * @param dParentDirectory 
-   * 
+   *
    * @return the playlist
    */
   Playlist registerPlaylistFile(java.io.File fio, Directory dParentDirectory) {
@@ -86,22 +83,19 @@ public final class PlaylistManager extends ItemManager implements Observer {
 
   /**
    * Creates the id.
-   * 
-   * @param sName 
-   * @param dParentDirectory 
-   * 
+   *
    * @return ItemManager ID
    */
   protected static String createID(String sName, Directory dParentDirectory) {
-    return MD5Processor.hash(new StringBuilder(dParentDirectory.getDevice().getName())
-        .append(dParentDirectory.getRelativePath()).append(sName).toString());
+    return MD5Processor.hash(dParentDirectory.getDevice().getName() +
+            dParentDirectory.getRelativePath() + sName);
   }
 
   /**
    * Remove a playlist.
-   * 
+   *
    * @param plf the playlist
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   private void removePlaylistFile(Playlist plf) throws IOException {
@@ -122,9 +116,9 @@ public final class PlaylistManager extends ItemManager implements Observer {
 
   /**
    * Delete physically a playlist.
-   * 
+   *
    * @param plf the playlist
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public void deletePlaylistFile(Playlist plf) throws IOException {
@@ -146,9 +140,6 @@ public final class PlaylistManager extends ItemManager implements Observer {
   /**
    * Register an Playlist with a known id.
    *
-   * @param sId 
-   * @param sName 
-   * @param dParentDirectory 
    * @return the playlist
    */
   public Playlist registerPlaylistFile(String sId, String sName, Directory dParentDirectory) {
@@ -163,7 +154,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
 
   /**
    * Clean all references for the given device.
-   * 
+   *
    * @param sId :
    * Device id
    */
@@ -177,7 +168,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
@@ -187,12 +178,9 @@ public final class PlaylistManager extends ItemManager implements Observer {
 
   /**
    * Change a playlist name.
-   * 
-   * @param plfOld 
-   * @param sNewName 
-   * 
+   *
    * @return new playlist
-   * 
+   *
    * @throws JajukException the jajuk exception
    */
   Playlist changePlaylistFileName(Playlist plfOld, String sNewName) throws JajukException {
@@ -252,7 +240,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
    */
   @Override
@@ -288,21 +276,21 @@ public final class PlaylistManager extends ItemManager implements Observer {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
-    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<>();
     eventSubjectSet.add(JajukEvents.FILE_NAME_CHANGED);
     return eventSubjectSet;
   }
 
   /**
    * Gets the playlist by id.
-   * 
+   *
    * @param sID Item ID
-   * 
+   *
    * @return item
    */
   public Playlist getPlaylistByID(String sID) {
@@ -311,7 +299,7 @@ public final class PlaylistManager extends ItemManager implements Observer {
 
   /**
    * Gets the playlists.
-   * 
+   *
    * @return ordered playlists list
    */
   @SuppressWarnings("unchecked")
@@ -321,19 +309,19 @@ public final class PlaylistManager extends ItemManager implements Observer {
 
   /**
    * Gets the playlists iterator.
-   * 
+   *
    * @return playlists iterator
    */
   @SuppressWarnings("unchecked")
   public ReadOnlyIterator<Playlist> getPlaylistsIterator() {
-    return new ReadOnlyIterator<Playlist>((Iterator<Playlist>) getItemsIterator());
+    return new ReadOnlyIterator<>((Iterator<Playlist>) getItemsIterator());
   }
 
   /**
    * Returns the first playlist with the given name.
-   * 
+   *
    * @param name The name of the Playlist to search
-   * 
+   *
    * @return The playlist if found, null otherwise.
    */
   public Playlist getPlaylistByName(String name) {

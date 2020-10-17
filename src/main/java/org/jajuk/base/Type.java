@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
@@ -47,8 +47,8 @@ public class Type extends PhysicalItem implements Comparable<Type> {
    * @param sId type id if given
    * @param sName type name
    * @param sExtension type file extension (.mp3...)
-   * @param cPlayerImpl 
-   * @param cTagImpl 
+   * @param cPlayerImpl the class providing playback functionality
+   * @param cTagImpl the class providing tagging
    */
   Type(final String sId, final String sName, final String sExtension,
       final Class<IPlayerImpl> cPlayerImpl, final Class<ITagImpl> cTagImpl) {
@@ -65,9 +65,9 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 
   /**
    * Alphabetical comparator used to display ordered lists.
-   * 
+   *
    * @param other item to be compared
-   * 
+   *
    * @return comparison result
    */
   @Override
@@ -85,7 +85,7 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 
   /**
    * Gets the extension.
-   * 
+   *
    * @return the extension
    */
   public String getExtension() {
@@ -94,7 +94,7 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#getIconRepresentation()
    */
   @Override
@@ -104,7 +104,7 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
@@ -114,7 +114,7 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 
   /**
    * Gets the player class.
-   * 
+   *
    * @return Player class for this type
    */
   public Class<IPlayerImpl> getPlayerClass() {
@@ -123,7 +123,7 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 
   /**
    * Gets the tagger class.
-   * 
+   *
    * @return Tagger class for this type
    */
   public Class<ITagImpl> getTaggerClass() {
@@ -149,7 +149,7 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 
   /**
    * toString method.
-   * 
+   *
    * @return the string
    */
   @Override
@@ -159,9 +159,9 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 
   /**
    * Return an array of supported file extensions for given types.
-   * 
+   *
    * @param types the types
-   * 
+   *
    * @return Return an array of supported file extensions
    */
   public static String[] getExtensionsFromTypes(final List<Type> types) {
@@ -179,7 +179,7 @@ public class Type extends PhysicalItem implements Comparable<Type> {
 
   /**
    * Return whether this type is video.
-   * 
+   *
    * @return whether this type is video
    */
   public boolean isVideo() {

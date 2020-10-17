@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
@@ -25,7 +25,7 @@ import java.util.Comparator;
 
 /**
  * Compares albums.
- * 
+ *
  * @TODO Convert criteria from int to an enum
  */
 public class AlbumComparator implements Comparator<Album>, Serializable {
@@ -34,16 +34,14 @@ public class AlbumComparator implements Comparator<Album>, Serializable {
   /*
    * This needs to be kept in-sync with what we use in
    * CatalogView.initMetaInformation()!
-   * 
+   *
    * 0 .. genre 1 .. artist 2 .. album 3 .. year 4 .. discovery date 5 .. rate 6 ..
    * hits
    */
-  private int criteria = 0;
+  private final int criteria;
 
   /**
    * Instantiates a new album comparator.
-   * 
-   * @param criteria 
    */
   public AlbumComparator(int criteria) {
     this.criteria = criteria;

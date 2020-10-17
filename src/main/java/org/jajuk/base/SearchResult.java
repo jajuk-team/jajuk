@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
@@ -38,13 +38,10 @@ public class SearchResult implements Comparable<SearchResult> {
   /** The associated web radio. */
   private WebRadio radio;
   /** Pre-calculated search string. */
-  private String sResu;
+  private final String sResu;
 
   /**
   * Instantiates a new search result.
-  * 
-  * @param file 
-  * @param sResu 
   */
   SearchResult(File file, String sResu) {
     this.file = file;
@@ -53,9 +50,6 @@ public class SearchResult implements Comparable<SearchResult> {
 
   /**
    * Instantiates a new search result.
-   * 
-   * @param radio 
-   * @param sResu 
    */
   public SearchResult(WebRadio radio, String sResu) {
     this.radio = radio;
@@ -64,7 +58,7 @@ public class SearchResult implements Comparable<SearchResult> {
 
   /**
    * Return hashcode, used during sorting.
-   * 
+   *
    * @return the int
    */
   @Override
@@ -74,7 +68,7 @@ public class SearchResult implements Comparable<SearchResult> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
   @Override
@@ -87,7 +81,7 @@ public class SearchResult implements Comparable<SearchResult> {
 
   /**
    * Gets the file.
-   * 
+   *
    * @return Returns the file.
    */
   public File getFile() {
@@ -96,7 +90,7 @@ public class SearchResult implements Comparable<SearchResult> {
 
   /**
    * Gets the type.
-   * 
+   *
    * @return result type: file or web radio
    */
   public SearchResultType getType() {
@@ -109,7 +103,7 @@ public class SearchResult implements Comparable<SearchResult> {
 
   /**
    * Gets the webradio.
-   * 
+   *
    * @return Returns the webradio.
    */
   public WebRadio getWebradio() {
@@ -118,7 +112,7 @@ public class SearchResult implements Comparable<SearchResult> {
 
   /**
    * Gets the resu.
-   * 
+   *
    * @return Returns the sResu.
    */
   public String getResu() {

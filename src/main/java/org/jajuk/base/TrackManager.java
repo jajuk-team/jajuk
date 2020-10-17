@@ -160,16 +160,6 @@ public final class TrackManager extends ItemManager {
   /**
    * Register an Track.
    *
-   * @param sName
-   * @param album
-   * @param genre
-   * @param artist
-   * @param length
-   * @param year
-   * @param lOrder
-   * @param type
-   * @param lDiscNumber
-   *
    * @return the track
    */
   public Track registerTrack(String sName, Album album, Genre genre, Artist artist, long length,
@@ -180,16 +170,6 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Return hashcode for a track.
-   *
-   * @param sName
-   * @param album
-   * @param genre
-   * @param artist
-   * @param length
-   * @param year
-   * @param lOrder
-   * @param type
-   * @param lDiscNumber
    *
    * @return the string
    */
@@ -206,16 +186,6 @@ public final class TrackManager extends ItemManager {
   /**
    * Register an Track with a known id.
    *
-   * @param sId
-   * @param sName
-   * @param album
-   * @param genre
-   * @param artist
-   * @param length
-   * @param year
-   * @param lOrder
-   * @param type
-   * @param lDiscNumber
    * @return the track
    */
   public Track registerTrack(String sId, String sName, Album album, Genre genre, Artist artist,
@@ -295,8 +265,8 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track album.
    *
-   * @param track
-   * @param sNewAlbum
+   * @param track The track to change
+   * @param sNewAlbum The new album to set for the track
    * @param filter files we want to deal with
    * @return new track
    * @throws JajukException the jajuk exception
@@ -356,8 +326,8 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track artist.
    *
-   * @param track
-   * @param sNewArtist
+   * @param track The track to change
+   * @param sNewArtist The new artist to set on the track
    * @param filter files we want to deal with
    * @return new track
    * @throws JajukException the jajuk exception
@@ -416,8 +386,8 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track genre.
    *
-   * @param track
-   * @param sNewGenre
+   * @param track The track to change
+   * @param sNewGenre The new genre to set on the track
    * @param filter files we want to deal with
    * @return new track
    * @throws JajukException the jajuk exception
@@ -471,8 +441,8 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track year.
    *
-   * @param track
-   * @param newItem
+   * @param track The track to change
+   * @param newItem The new year to set on the track
    * @param filter files we want to deal with
    * @return new track or null if wrong format
    * @throws JajukException the jajuk exception
@@ -527,8 +497,8 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track comment.
    *
-   * @param track
-   * @param sNewItem
+   * @param track The track to change
+   * @param sNewItem The new comment to set on the track
    * @param filter files we want to deal with
    * @return new track or null if wrong format
    * @throws JajukException the jajuk exception
@@ -575,8 +545,8 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track rate.
    *
-   * @param track
-   * @param lNew
+   * @param track The track to change
+   * @param lNew The new rating to set on the track
    *
    * @return new track or null if wrong format
    */
@@ -604,8 +574,8 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track order.
    *
-   * @param track
-   * @param lNewOrder
+   * @param track The track to change
+   * @param lNewOrder The new order to set on the track
    * @param filter files we want to deal with
    * @return new track or null if wrong format
    * @throws JajukException the jajuk exception
@@ -700,8 +670,8 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track name.
    *
-   * @param track
-   * @param sNewItem
+   * @param track The track to change
+   * @param sNewItem The new name to set on the track
    * @param filter files we want to deal with
    * @return new track
    * @throws JajukException the jajuk exception
@@ -756,9 +726,9 @@ public final class TrackManager extends ItemManager {
   /**
    * Change track album artist.
    *
-   * @param track
-   * @param sNewItem
-   * @param filter
+   * @param track The track to change
+   * @param sNewItem The new album-artist to set on the track
+   * @param filter The filer for filtering files of the track
    * @return the item
    * @throws JajukException the jajuk exception
    */
@@ -806,9 +776,9 @@ public final class TrackManager extends ItemManager {
   /**
    * Change track disc number.
    *
-   * @param track
-   * @param lNewDiscNumber
-   * @param filter
+   * @param track The track to change
+   * @param lNewDiscNumber The new disc number to set
+   * @param filter The filter for filtering files of the track
    * @return the item
    * @throws JajukException the jajuk exception
    */
@@ -866,9 +836,9 @@ public final class TrackManager extends ItemManager {
   /**
    * Update files references.
    *
-   * @param oldTrack
-   * @param newTrack
-   * @param filter
+   * @param oldTrack The previous track for the files
+   * @param newTrack The new track for the files
+   * @param filter A filter to identify matching files in the old track
    */
   private void updateFilesReferences(Track oldTrack, Track newTrack, Set<File> filter) {
     lock.writeLock().lock();
@@ -885,9 +855,9 @@ public final class TrackManager extends ItemManager {
   /**
    * Post change.
    *
-   * @param track
-   * @param newTrack
-   * @param filter
+   * @param track The track to post changes for
+   * @param newTrack The new track to change to
+   * @param filter A filter to identify matching files in the old track
    */
   private void postChange(Track track, Track newTrack, Set<File> filter) {
     lock.writeLock().lock();
@@ -933,7 +903,7 @@ public final class TrackManager extends ItemManager {
   /**
    * Remove a file mapping from a track.
    *
-   * @param file
+   * @param file The file to remove from the track
    */
   public void removeFile(File file) {
     Track track = file.getTrack();
@@ -980,7 +950,7 @@ public final class TrackManager extends ItemManager {
    * </p>
    * .
    *
-   * @param item
+   * @param item Find tracks related to this item
    * @param sorted Whether the output should be sorted on it (actually applied on
    * artists,years and genres because others items are already sorted)
    *
@@ -997,9 +967,9 @@ public final class TrackManager extends ItemManager {
    * <p>
    * This is a defensive copy only
    * </p>
-   * .
+   * Note: The list should contain only items of one type.
    *
-   * @param items
+   * @param items Find tracks for the given list of items.
    * @param sorted Whether the output should be sorted on it (actually applied on
    * artists,years and genres because others items are already sorted)
    * @return the associated tracks
@@ -1161,7 +1131,7 @@ public final class TrackManager extends ItemManager {
   /**
    * Perform a search in all files names with given criteria.
    *
-   * @param criteria
+   * @param criteria the search keywords
    *
    * @return an ordered list of available files
    */
@@ -1176,8 +1146,7 @@ public final class TrackManager extends ItemManager {
         File playable = track.getBestFile(hide);
         if (playable != null) {
           String sResu = track.getAny();
-          if (sResu.toLowerCase(Locale.getDefault()).indexOf(
-              criteria.toLowerCase(Locale.getDefault())) != -1) {
+          if (sResu.toLowerCase(Locale.getDefault()).contains(criteria.toLowerCase(Locale.getDefault()))) {
             resu.add(new SearchResult(playable, playable.toStringSearch()));
           }
         }
@@ -1200,7 +1169,7 @@ public final class TrackManager extends ItemManager {
   /**
    * Set autocommit behavior for tags.
    *
-   * @param autocommit should tag changes be commited at each change or on demand ?
+   * @param autocommit should tag changes be committed at each change or on demand ?
    */
   public void setAutocommit(boolean autocommit) {
     this.bAutocommit = autocommit;

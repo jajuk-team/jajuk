@@ -78,8 +78,6 @@ public final class GenreManager extends ItemManager {
   /**
    * Register a genre.
    *
-   * @param sName
-   *
    * @return the genre
    */
   public Genre registerGenre(String sName) {
@@ -90,8 +88,6 @@ public final class GenreManager extends ItemManager {
   /**
    * Register a genre with a known id.
    *
-   * @param sId
-   * @param sName
    * @return the genre
    */
   Genre registerGenre(String sId, String sName) {
@@ -147,8 +143,6 @@ public final class GenreManager extends ItemManager {
   /**
    * Return genre by name.
    *
-   * @param name
-   *
    * @return the genre by name
    */
   public Genre getGenreByName(String name) {
@@ -164,9 +158,6 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Change the item name.
-   *
-   * @param old
-   * @param sNewName
    *
    * @return new item
    *
@@ -207,8 +198,6 @@ public final class GenreManager extends ItemManager {
    * -All in upper case
    * <p>
    * example: "ROCK".
-   *
-   * @param sName
    *
    * @return the string
    */
