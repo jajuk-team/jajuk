@@ -16,18 +16,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.helpers;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 import org.jajuk.base.File;
 import org.jajuk.base.Item;
 import org.jajuk.base.PropertyMetaInformation;
@@ -49,7 +47,7 @@ public class TracksTableModel extends JajukTableModel {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
   /** Associated view ID. */
-  private String viewID;
+  private final String viewID;
 
   /**
    * Model constructor.
@@ -113,29 +111,25 @@ public class TracksTableModel extends JajukTableModel {
     // / Filter mounted files if needed and apply sync table with tree
     // option if needed
     final boolean syncTreeTable = Conf.getBoolean(Const.CONF_SYNC_TABLE_TREE + "." + viewID);
-    CollectionUtils.filter(alToShow, new Predicate() {
-      @Override
-      public boolean evaluate(Object o) {
-        Track track = (Track) o;
-        // show it if no sync option or if item is in the selection
-        boolean bShowWithTree = !syncTreeTable
-        // tree selection = null means none election have been
-        // selected in tree so far
-            || treeSelection == null
-            // check if the tree selection contains the current file
-            || (treeSelection.size() > 0 && treeSelection.contains(track));
-        return (!track.shouldBeHidden() && bShowWithTree);
-      }
+    CollectionUtils.filter(alToShow, o -> {
+      Track track = (Track) o;
+      // show it if no sync option or if item is in the selection
+      boolean bShowWithTree = !syncTreeTable
+      // tree selection = null means none election have been
+      // selected in tree so far
+          || treeSelection == null
+          // check if the tree selection contains the current file
+          || (treeSelection.size() > 0 && treeSelection.contains(track));
+      return (!track.shouldBeHidden() && bShowWithTree);
     });
     // Filter values using given pattern
     Filter filter = new Filter(property, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
     alToShow = Filter.filterItems(alToShow, filter, Track.class);
     // sort by album
-    Collections.sort(alToShow, new TrackComparator(TrackComparatorType.ALBUM));
+    alToShow.sort(new TrackComparator(TrackComparatorType.ALBUM));
     Iterator<Track> it = alToShow.iterator();
     int iColNum = iNumberStandardCols + TrackManager.getInstance().getCustomProperties().size();
     iRowNum = alToShow.size();
-    it = alToShow.iterator();
     oValues = new Object[iRowNum][iColNum];
     oItems = new Item[iRowNum];
     bCellEditable = new boolean[iRowNum][iColNum];
@@ -162,7 +156,7 @@ public class TracksTableModel extends JajukTableModel {
       // Id
       oItems[iRow] = track;
       // Play
-      IconLabel il = null;
+      final IconLabel il;
       if (track.getBestFile(true) != null) {
         il = getIcon(false);
       } else {

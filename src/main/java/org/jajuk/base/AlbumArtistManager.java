@@ -16,12 +16,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 
@@ -32,9 +30,9 @@ import org.jajuk.util.Const;
  */
 public final class AlbumArtistManager extends ItemManager {
   /** Self instance. */
-  private static AlbumArtistManager singleton = new AlbumArtistManager();
+  private static final AlbumArtistManager singleton = new AlbumArtistManager();
   /** List of all known album-artists. */
-  private static Vector<String> albumArtistsList = new Vector<String>(100); // NOPMD
+  private static final Vector<String> albumArtistsList = new Vector<>(100); // NOPMD
 
   /**
    * No constructor available, only static access.
@@ -55,7 +53,7 @@ public final class AlbumArtistManager extends ItemManager {
 
   /**
    * Gets the instance.
-   * 
+   *
    * @return singleton
    */
   public static AlbumArtistManager getInstance() {
@@ -64,9 +62,9 @@ public final class AlbumArtistManager extends ItemManager {
 
   /**
    * Register an albumArtist.
-   * 
+   *
    * @param sName The name of the albumArtist to search for.
-   * 
+   *
    * @return the albumArtist
    */
   public AlbumArtist registerAlbumArtist(String sName) {
@@ -93,12 +91,7 @@ public final class AlbumArtistManager extends ItemManager {
     if (!albumArtistsList.contains(sName)) {
       albumArtistsList.add(albumArtist.getName2());
       // Sort items ignoring case
-      Collections.sort(albumArtistsList, new Comparator<String>() {
-        @Override
-        public int compare(String o1, String o2) {
-          return o1.compareToIgnoreCase(o2);
-        }
-      });
+      albumArtistsList.sort(String::compareToIgnoreCase);
     }
     return albumArtist;
   }
@@ -115,7 +108,7 @@ public final class AlbumArtistManager extends ItemManager {
 
   /**
    * Gets the albumArtists list.
-   * 
+   *
    * @return albumArtists as a string list (used for albumArtists combos)
    */
   public static Vector<String> getAlbumArtistsList() {
@@ -124,9 +117,9 @@ public final class AlbumArtistManager extends ItemManager {
 
   /**
    * Gets the albumArtist by id.
-   * 
+   *
    * @param sID Item ID
-   * 
+   *
    * @return Element
    */
   AlbumArtist getAlbumArtistByID(String sID) {
@@ -135,7 +128,7 @@ public final class AlbumArtistManager extends ItemManager {
 
   /**
    * Gets the albumArtists.
-   * 
+   *
    * @return ordered albums list
    */
   @SuppressWarnings("unchecked")

@@ -1,8 +1,8 @@
 /*
  * aTunes 1.14.0 code adapted by Jajuk team
- * 
- * Original copyright notice bellow : 
- * 
+ *
+ * Original copyright notice bellow :
+ *
  * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
  *
  * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
@@ -24,8 +24,6 @@ package ext.services.lastfm;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import de.umass.lastfm.Artist;
@@ -46,18 +44,18 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
 
   /**
    * Gets the similar artists.
-   * 
-   * @param as 
-   * @param a 
-   * 
+   *
+   * @param as
+   * @param a
+   *
    * @return the similar artists
    */
   public static SimilarArtistsInfo getSimilarArtists(Collection<Artist> as, Artist a) {
-    List<Artist> list = new ArrayList<Artist>(as);
+    List<Artist> list = new ArrayList<>(as);
     LastFmSimilarArtists similar = new LastFmSimilarArtists();
     similar.setArtistName(a.getName());
     similar.setPicture(a.getImageURL(ImageSize.LARGE));
-    List<ArtistInfo> artists = new ArrayList<ArtistInfo>();
+    List<ArtistInfo> artists = new ArrayList<>();
     for (int i = 0; i < list.size(); i++) {
       if (i == MAX_SIMILAR_ARTISTS) {
         break;
@@ -70,7 +68,7 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
 
   /**
    * Gets the artist name.
-   * 
+   *
    * @return the artist name
    */
   @Override
@@ -80,7 +78,7 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
 
   /**
    * Gets the artists.
-   * 
+   *
    * @return the artists
    */
   @Override
@@ -88,19 +86,14 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
     // artists is null for void (unknown) similar artists
     if (artists != null) {
       // Sort similar artists ignoring case
-      Collections.sort(artists, new Comparator<ArtistInfo>() {
-        @Override
-        public int compare(ArtistInfo o1, ArtistInfo o2) {
-          return o1.getName().compareToIgnoreCase(o2.getName());
-        }
-      });
+      artists.sort((o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
     }
     return artists;
   }
 
   /**
    * Gets the picture.
-   * 
+   *
    * @return the picture
    */
   @Override
@@ -110,7 +103,7 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
 
   /**
    * Sets the artist name.
-   * 
+   *
    * @param artistName the artistName to set
    */
   @Override
@@ -120,17 +113,17 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
 
   /**
    * Sets the artists.
-   * 
+   *
    * @param artists the artists to set
    */
   @Override
   public void setArtists(List<ArtistInfo> artists) {
-    this.artists = artists != null ? artists : new ArrayList<ArtistInfo>();
+    this.artists = artists != null ? artists : new ArrayList<>();
   }
 
   /**
    * Sets the picture.
-   * 
+   *
    * @param picture the picture to set
    */
   @Override

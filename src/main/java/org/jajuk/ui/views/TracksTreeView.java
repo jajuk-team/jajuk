@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.views;
 
@@ -25,7 +25,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
@@ -91,13 +90,13 @@ import net.miginfocom.swing.MigLayout;
 public class TracksTreeView extends AbstractTreeView implements ActionListener {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-  /** Sorting method selection combo. 
+  /** Sorting method selection combo.
    * <br>DO NOT PARAMETRIZE THIS COMBO, 1.6 COMPILATION WOULD FAIL*/
   private JComboBox jcbSort;
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.IView#getDesc()
    */
   @Override
@@ -114,7 +113,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.IView#display()
    */
   @Override
@@ -184,7 +183,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
    */
   @Override
   public void populateTree() {
-    // Use a refreshing flag, not a 'synchronized' here (see deadlock, bug #1756 (Deadlock in AbstractTreeView and PerspectiveManager) 
+    // Use a refreshing flag, not a 'synchronized' here (see deadlock, bug #1756 (Deadlock in AbstractTreeView and PerspectiveManager)
     if (refreshing) {
       Log.debug("Tree view already refreshing. Leaving.");
       return;
@@ -237,7 +236,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   @SuppressWarnings("unchecked")
   public void populateTreeByGenre() {
     List<Track> tracks = TrackManager.getInstance().getTracks();
-    Collections.sort(tracks, TrackManager.getInstance().getComparator());
+    tracks.sort(TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
         GenreNode genreNode = null;
@@ -316,7 +315,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   @SuppressWarnings("unchecked")
   public void populateTreeByArtist() {
     List<Track> tracks = TrackManager.getInstance().getTracks();
-    Collections.sort(tracks, TrackManager.getInstance().getComparator());
+    tracks.sort(TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
         ArtistNode artistNode = null;
@@ -374,7 +373,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   @SuppressWarnings("unchecked")
   public void populateTreeByYear() {
     List<Track> tracks = TrackManager.getInstance().getTracks();
-    Collections.sort(tracks, TrackManager.getInstance().getComparator());
+    tracks.sort(TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
         YearNode yearNode = null;
@@ -431,7 +430,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
    */
   public void populateTreeByAlbum() {
     List<Track> tracks = TrackManager.getInstance().getTracks();
-    Collections.sort(tracks, TrackManager.getInstance().getComparator());
+    tracks.sort(TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
         addTrackAndAlbum(top, track);
@@ -444,7 +443,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
    */
   public void populateTreeByDiscovery() {
     List<Track> tracks = TrackManager.getInstance().getTracks();
-    Collections.sort(tracks, TrackManager.getInstance().getComparator());
+    tracks.sort(TrackManager.getInstance().getComparator());
     // Create separator nodes
     DefaultMutableTreeNode nodeWeekly = new DiscoveryDateNode(
         Messages.getString("TracksTreeView.36"));
@@ -509,7 +508,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
    */
   public void populateTreeByRate() {
     List<Track> tracks = TrackManager.getInstance().getTracks();
-    Collections.sort(tracks, TrackManager.getInstance().getComparator());
+    tracks.sort(TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
         addTrackAndAlbum(top, track);
@@ -522,7 +521,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
    */
   public void populateTreeByHits() {
     List<Track> tracks = TrackManager.getInstance().getTracks();
-    Collections.sort(tracks, TrackManager.getInstance().getComparator());
+    tracks.sort(TrackManager.getInstance().getComparator());
     for (Track track : tracks) {
       if (!track.shouldBeHidden()) {
         addTrackAndAlbum(top, track);
@@ -532,9 +531,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
   /**
    * Utility method used by populateByDiscovery method.
-   * 
-   * @param node 
-   * @param track 
+   *
+   * @param node
+   * @param track
    */
   @SuppressWarnings("unchecked")
   private void addTrackAndAlbum(DefaultMutableTreeNode node, Track track) {
@@ -561,7 +560,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
   @Override
@@ -624,7 +623,7 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
   class TracksTreeSelectionListener implements TreeSelectionListener {
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event
      * .TreeSelectionEvent)
      */
@@ -656,9 +655,9 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
     /**
      * Handle selected.
-     * 
-     * @param tpSelected 
-     * 
+     *
+     * @param tpSelected
+     *
      * @return the int
      */
     @SuppressWarnings("unchecked")
@@ -705,8 +704,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
     /**
      * Instantiates a new tracks mouse adapter.
-     * 
-     * @param jmiShowAlbumDetails 
+     *
+     * @param jmiShowAlbumDetails
      */
     public TracksMouseAdapter(JMenuItem jmiShowAlbumDetails) {
       super();
@@ -769,8 +768,8 @@ public class TracksTreeView extends AbstractTreeView implements ActionListener {
 
     /**
      * Builds the menu.
-     * 
-     * @param e 
+     *
+     * @param e
      */
     private void buildMenu(final MouseEvent e) {
       if (paths[0].getLastPathComponent() instanceof TrackNode) {
@@ -989,7 +988,7 @@ class GenreNode extends DefaultMutableTreeNode {
 
   /**
    * Constructor
-   * 
+   *
    * @param track
    */
   public GenreNode(Genre track) {
@@ -1017,13 +1016,13 @@ class GenreNode extends DefaultMutableTreeNode {
  */
 class ArtistNode extends DefaultMutableTreeNode {
   /**
-   * 
+   *
    */
   private static final long serialVersionUID = 1L;
 
   /**
    * Constructor
-   * 
+   *
    * @param artist
    */
   public ArtistNode(Artist artist) {
@@ -1051,14 +1050,14 @@ class ArtistNode extends DefaultMutableTreeNode {
  */
 class YearNode extends DefaultMutableTreeNode {
   /**
-   * 
+   *
    */
   private static final long serialVersionUID = 1L;
 
   /**
    * Constructor
-   * 
-   * @param artist
+   *
+   * @param year
    */
   public YearNode(Year year) {
     super(year);
@@ -1092,7 +1091,7 @@ class AlbumNode extends DefaultMutableTreeNode {
 
   /**
    * Constructor
-   * 
+   *
    * @param album
    */
   public AlbumNode(Album album) {
@@ -1123,7 +1122,7 @@ class TrackNode extends DefaultMutableTreeNode {
 
   /**
    * Constructor
-   * 
+   *
    * @param track
    */
   public TrackNode(Track track) {
@@ -1147,7 +1146,7 @@ class TrackNode extends DefaultMutableTreeNode {
 }
 
 /**
- * 
+ *
  * Discovery date filter tree node
  */
 class DiscoveryDateNode extends DefaultMutableTreeNode {
@@ -1160,14 +1159,14 @@ class DiscoveryDateNode extends DefaultMutableTreeNode {
 
   /**
    * We have to override this method for drag and drop
-   * whish waits for an item. A period is not an item. 
-   * 
-   * @see DefaultMutableTreeNode.getUserObject() 
+   * whish waits for an item. A period is not an item.
+   *
+   * @see DefaultMutableTreeNode
    */
   @SuppressWarnings("unchecked")
   @Override
   public Object getUserObject() {
-    List<Item> out = new ArrayList<Item>(10);
+    List<Item> out = new ArrayList<>(10);
     Enumeration<TreeNode> childrens = children();
     while (childrens.hasMoreElements()) {
       DefaultMutableTreeNode node = (DefaultMutableTreeNode) childrens.nextElement();

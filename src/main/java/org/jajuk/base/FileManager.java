@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
@@ -54,28 +54,19 @@ import org.jajuk.util.log.Log;
  */
 public final class FileManager extends ItemManager {
   /** Best of files. */
-  private final List<File> alBestofFiles = new ArrayList<File>(20);
+  private final List<File> alBestofFiles = new ArrayList<>(20);
   /** Self instance. */
-  private static FileManager singleton = new FileManager();
+  private static final FileManager singleton = new FileManager();
   /**
    * Played recently filtering predicate
-   * <br/>Applies on HistoryItem collections 
+   * <br/>Applies on HistoryItem collections
    */
   protected static final int CONSIDERE_AS_RECENTLY_PLAYED_DAYS = 150;
   /** File comparator based on rate. */
-  private final Comparator<File> rateComparator = new Comparator<File>() {
-    @Override
-    public int compare(File file1, File file2) {
-      long lRate1 = file1.getTrack().getRate();
-      long lRate2 = file2.getTrack().getRate();
-      if (lRate1 == lRate2) {
-        return 0;
-      } else if (lRate1 < lRate2) {
-        return 1;
-      } else {
-        return -1;
-      }
-    }
+  private final Comparator<File> rateComparator = (file1, file2) -> {
+    long lRate1 = file1.getTrack().getRate();
+    long lRate2 = file2.getTrack().getRate();
+    return Long.compare(lRate2, lRate1);
   };
 
   /**
@@ -119,12 +110,12 @@ public final class FileManager extends ItemManager {
   /**
    * Register an File with a known id.
    *
-   * @param sId 
-   * @param sName 
-   * @param directory 
-   * @param track 
-   * @param lSize 
-   * @param lQuality 
+   * @param sId
+   * @param sName
+   * @param directory
+   * @param track
+   * @param lSize
+   * @param lQuality
    *
    * @return the file
    */
@@ -156,11 +147,11 @@ public final class FileManager extends ItemManager {
   /**
    * Register an File without known id.
    *
-   * @param sName 
-   * @param directory 
-   * @param track 
-   * @param lSize 
-   * @param lQuality 
+   * @param sName
+   * @param directory
+   * @param track
+   * @param lSize
+   * @param lQuality
    *
    * @return the file
    */
@@ -172,22 +163,22 @@ public final class FileManager extends ItemManager {
   /**
    * Get file hashcode (ID).
    *
-   * @param sName 
-   * @param dir 
+   * @param sName
+   * @param dir
    *
    * @return file ID
    */
   protected static String createID(String sName, Directory dir) {
-    String id = null;
+    final String id;
     // Under windows, all files/directories with different cases should get
     // the same ID
     if (UtilSystem.isUnderWindows()) {
-      id = MD5Processor.hash(new StringBuilder(dir.getDevice().getName())
-          .append(dir.getRelativePath().toLowerCase(Locale.getDefault()))
-          .append(sName.toLowerCase(Locale.getDefault())).toString());
+      id = MD5Processor.hash(dir.getDevice().getName() +
+              dir.getRelativePath().toLowerCase(Locale.getDefault()) +
+              sName.toLowerCase(Locale.getDefault()));
     } else {
-      id = MD5Processor.hash(new StringBuilder(dir.getDevice().getName())
-          .append(dir.getRelativePath()).append(sName).toString());
+      id = MD5Processor.hash(dir.getDevice().getName() +
+              dir.getRelativePath() + sName);
     }
     return id;
   }
@@ -195,8 +186,8 @@ public final class FileManager extends ItemManager {
   /**
    * Change a file name.
    *
-   * @param fileOld 
-   * @param sNewName 
+   * @param fileOld
+   * @param sNewName
    *
    * @return new file
    *
@@ -328,7 +319,7 @@ public final class FileManager extends ItemManager {
   /**
    * Remove a file reference.
    *
-   * @param file 
+   * @param file
    */
   public void removeFile(File file) {
     lock.writeLock().lock();
@@ -367,7 +358,7 @@ public final class FileManager extends ItemManager {
           fOut = file;
           break;
         }
-        
+
         // at the same time look for the lowercase filename and remember if we did find it this way to use
         // this instead of the normal-case filename match
         if (fOutNoCase == null && file.getFIO().getAbsolutePath().equalsIgnoreCase(fToCompare.getAbsolutePath())) {
@@ -439,24 +430,21 @@ public final class FileManager extends ItemManager {
       final List<Album> albums = AlbumManager.getInstance().getAlbums();
       Collections.shuffle(albums, UtilSystem.getRandom());
       // We need an index (bench: 45* faster)
-      final Map<Album, Integer> index = new HashMap<Album, Integer>();
+      final Map<Album, Integer> index = new HashMap<>();
       for (Album album : albums) {
         index.put(album, albums.indexOf(album));
       }
-      Collections.sort(alEligibleFiles, new Comparator<File>() {
-        @Override
-        public int compare(File f1, File f2) {
-          if (f1.getTrack().getAlbum().equals(f2.getTrack().getAlbum())) {
-            int comp = (int) (f1.getTrack().getOrder() - f2.getTrack().getOrder());
-            if (comp == 0) {
-              // If no track number is given, try to sort by
-              // filename than can contain the track
-              return f1.getName().compareTo(f2.getName());
-            }
-            return comp;
+      alEligibleFiles.sort((f1, f2) -> {
+        if (f1.getTrack().getAlbum().equals(f2.getTrack().getAlbum())) {
+          int comp = (int) (f1.getTrack().getOrder() - f2.getTrack().getOrder());
+          if (comp == 0) {
+            // If no track number is given, try to sort by
+            // filename than can contain the track
+            return f1.getName().compareTo(f2.getName());
           }
-          return index.get(f1.getTrack().getAlbum()) - index.get(f2.getTrack().getAlbum());
+          return comp;
         }
+        return index.get(f1.getTrack().getAlbum()) - index.get(f2.getTrack().getAlbum());
       });
       return alEligibleFiles;
       // else return shuffle albums
@@ -466,9 +454,9 @@ public final class FileManager extends ItemManager {
   }
 
   /**
-   * Filter files to keep only files not played recently. 
-   * <br/>It contributes to improve the shuffling experience by avoiding playing the same track twice 
-   * in a small period of time. It can't be implemented using a predicate because we want to break ASAP, 
+   * Filter files to keep only files not played recently.
+   * <br/>It contributes to improve the shuffling experience by avoiding playing the same track twice
+   * in a small period of time. It can't be implemented using a predicate because we want to break ASAP,
    * when the max time is reached.
    * <br/>Note however that we stop filtering when we reach a too small size of remaining files.
    * @param files files to filter
@@ -520,12 +508,12 @@ public final class FileManager extends ItemManager {
    * number of returned items is limited to NB_TRACKS_ON_ACTION for performance
    * reasons.
    *
-   * @param bHideUnmounted 
+   * @param bHideUnmounted
    *
    * @return The entire accessible novelties collection
    */
   List<File> getGlobalNoveltiesPlaylist(boolean bHideUnmounted) {
-    List<File> alEligibleFiles = new ArrayList<File>(1000);
+    List<File> alEligibleFiles = new ArrayList<>(1000);
     List<Track> tracks = TrackManager.getInstance().getTracks();
     // Filter by age
     CollectionUtils.filter(tracks,
@@ -545,13 +533,10 @@ public final class FileManager extends ItemManager {
       alEligibleFiles.add(file);
     }
     // sort alphabetically and by date, newest first
-    Collections.sort(alEligibleFiles, new Comparator<File>() {
-      @Override
-      public int compare(File file1, File file2) {
-        String sCompared1 = file1.getTrack().getDiscoveryDate().getTime() + file1.getAbsolutePath();
-        String sCompared2 = file2.getTrack().getDiscoveryDate().getTime() + file2.getAbsolutePath();
-        return sCompared2.compareTo(sCompared1);
-      }
+    alEligibleFiles.sort((file1, file2) -> {
+      String sCompared1 = file1.getTrack().getDiscoveryDate().getTime() + file1.getAbsolutePath();
+      String sCompared2 = file2.getTrack().getDiscoveryDate().getTime() + file2.getAbsolutePath();
+      return sCompared2.compareTo(sCompared1);
     });
     return alEligibleFiles;
   }
@@ -577,28 +562,28 @@ public final class FileManager extends ItemManager {
   /**
    * Convenient method used to return shuffled files by album.
    *
-   * @param alEligibleFiles 
+   * @param alEligibleFiles
    *
    * @return Shuffled tracks by album
    */
   private List<File> getShuffledFilesByAlbum(List<File> alEligibleFiles) {
     // start with filling a set of albums containing
     // at least one ready file
-    Map<Album, List<File>> albumsFiles = new HashMap<Album, List<File>>(alEligibleFiles.size() / 10);
+    Map<Album, List<File>> albumsFiles = new HashMap<>(alEligibleFiles.size() / 10);
     for (File file : alEligibleFiles) {
       // maintain a map between each albums and
       // eligible files
       Album album = file.getTrack().getAlbum();
       List<File> files = albumsFiles.get(album);
       if (files == null) {
-        files = new ArrayList<File>(10);
+        files = new ArrayList<>(10);
       }
       files.add(file);
       albumsFiles.put(album, files);
     }
     // build output
-    List<File> out = new ArrayList<File>(alEligibleFiles.size());
-    List<Album> albums = new ArrayList<Album>(albumsFiles.keySet());
+    List<File> out = new ArrayList<>(alEligibleFiles.size());
+    List<Album> albums = new ArrayList<>(albumsFiles.keySet());
     // we need to force a new shuffle as internal hashmap arrange items
     Collections.shuffle(albums, UtilSystem.getRandom());
     for (Album album : albums) {
@@ -618,7 +603,7 @@ public final class FileManager extends ItemManager {
     // use only mounted files
     List<File> alEligibleFiles = getReadyFiles();
     // now sort by rate
-    Collections.sort(alEligibleFiles, rateComparator);
+    alEligibleFiles.sort(rateComparator);
     return alEligibleFiles;
   }
 
@@ -668,7 +653,7 @@ public final class FileManager extends ItemManager {
     alBestofFiles.clear();
     // create a temporary table to remove unmounted files
     int iNbBestofFiles = Integer.parseInt(Conf.getString(Const.CONF_BESTOF_TRACKS_SIZE));
-    List<File> alEligibleFiles = new ArrayList<File>(iNbBestofFiles);
+    List<File> alEligibleFiles = new ArrayList<>(iNbBestofFiles);
     List<Track> tracks = TrackManager.getInstance().getTracks();
     // filter banned tracks
     CollectionUtils.filter(tracks, new JajukPredicates.BannedTrackPredicate());
@@ -678,7 +663,7 @@ public final class FileManager extends ItemManager {
         alEligibleFiles.add(file);
       }
     }
-    Collections.sort(alEligibleFiles, rateComparator);
+    alEligibleFiles.sort(rateComparator);
     // Keep as much items as we can
     int i = 0;
     while (i < alEligibleFiles.size() && i < iNbBestofFiles) {
@@ -790,7 +775,7 @@ public final class FileManager extends ItemManager {
   /**
    * Return whether the given file is the very first file from collection.
    *
-   * @param file 
+   * @param file
    *
    * @return true, if checks if is very first file
    */
@@ -840,6 +825,6 @@ public final class FileManager extends ItemManager {
    */
   @SuppressWarnings("unchecked")
   public ReadOnlyIterator<File> getFilesIterator() {
-    return new ReadOnlyIterator<File>((Iterator<File>) getItemsIterator());
+    return new ReadOnlyIterator<>((Iterator<File>) getItemsIterator());
   }
 }

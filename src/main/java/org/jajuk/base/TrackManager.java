@@ -16,12 +16,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -54,13 +53,13 @@ import org.jajuk.util.log.Log;
  */
 public final class TrackManager extends ItemManager {
   /** Self instance. */
-  private static TrackManager singleton = new TrackManager();
+  private static final TrackManager singleton = new TrackManager();
   /** Autocommit flag for tags *. */
   private volatile boolean bAutocommit = true;
   /** Set of tags to commit. */
-  private final Set<Tag> tagsToCommit = new HashSet<Tag>(10);
+  private final Set<Tag> tagsToCommit = new HashSet<>(10);
   /** Attic for tracks that have been dropped but may be useful when a file is renamed to restore its properties */
-  private final Map<String, Track> attic = new HashMap<String, Track>(0);
+  private final Map<String, Track> attic = new HashMap<>(0);
 
   /**
    * No constructor available, only static access.
@@ -122,10 +121,10 @@ public final class TrackManager extends ItemManager {
     // actions must be done (updateRate() and we want user to use contextual
     // menus and commands instead of the properties wizard to set preference)
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_PREFERENCE, false, false, true,
-        false, true, Long.class, 0l));
+        false, true, Long.class, 0L));
     // Track total playtime
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_TOTAL_PLAYTIME, false, false,
-        true, false, false, Long.class, 0l));
+        true, false, false, Long.class, 0L));
     // Track ban status
     registerProperty(new PropertyMetaInformation(Const.XML_TRACK_BANNED, false, false, true, true,
         false, Boolean.class, false));
@@ -136,7 +135,7 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Gets the instance.
-   * 
+   *
    * @return singleton
    */
   public static TrackManager getInstance() {
@@ -160,17 +159,17 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Register an Track.
-   * 
-   * @param sName 
-   * @param album 
-   * @param genre 
-   * @param artist 
-   * @param length 
-   * @param year 
-   * @param lOrder 
-   * @param type 
-   * @param lDiscNumber 
-   * 
+   *
+   * @param sName
+   * @param album
+   * @param genre
+   * @param artist
+   * @param length
+   * @param year
+   * @param lOrder
+   * @param type
+   * @param lDiscNumber
+   *
    * @return the track
    */
   public Track registerTrack(String sName, Album album, Genre genre, Artist artist, long length,
@@ -181,43 +180,42 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Return hashcode for a track.
-   * 
-   * @param sName 
-   * @param album 
-   * @param genre 
-   * @param artist 
-   * @param length 
-   * @param year 
-   * @param lOrder 
-   * @param type 
-   * @param lDiscNumber 
-   * 
+   *
+   * @param sName
+   * @param album
+   * @param genre
+   * @param artist
+   * @param length
+   * @param year
+   * @param lOrder
+   * @param type
+   * @param lDiscNumber
+   *
    * @return the string
    */
   protected static String createID(String sName, Album album, Genre genre, Artist artist,
       long length, Year year, long lOrder, Type type, long lDiscNumber) {
-    StringBuilder sb = new StringBuilder(100);
-    sb.append(genre.getID()).append(artist.getID()).append(album.getID()).append(sName)
-        .append(year.getValue()).append(length).append(lOrder).append(type.getID())
-        .append(lDiscNumber);
     // distinguish tracks by type because we can't find best file
     // on different quality levels by format
-    return MD5Processor.hash(sb.toString());
+    String sb = genre.getID() + artist.getID() + album.getID() + sName +
+            year.getValue() + length + lOrder + type.getID() +
+            lDiscNumber;
+    return MD5Processor.hash(sb);
   }
 
   /**
    * Register an Track with a known id.
    *
-   * @param sId 
-   * @param sName 
-   * @param album 
-   * @param genre 
-   * @param artist 
-   * @param length 
-   * @param year 
-   * @param lOrder 
-   * @param type 
-   * @param lDiscNumber 
+   * @param sId
+   * @param sName
+   * @param album
+   * @param genre
+   * @param artist
+   * @param length
+   * @param year
+   * @param lOrder
+   * @param type
+   * @param lDiscNumber
    * @return the track
    */
   public Track registerTrack(String sId, String sName, Album album, Genre genre, Artist artist,
@@ -246,10 +244,10 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Commit tags.
-   * 
+   *
    * @throws JajukException the jajuk exception
-   * 
-   * @throw an exception if a tag cannot be commited
+   *
+   * throw an exception if a tag cannot be commited
    */
   public void commit() throws JajukException {
     try {
@@ -257,9 +255,9 @@ public final class TrackManager extends ItemManager {
       // Iterate over a defensive copy to avoid concurrent issues (note also that
       // several threads can commit at the same time). We synchronize the copy and
       // we drop tags to commit.
-      List<Tag> toCommit = null;
+      final List<Tag> toCommit;
       synchronized (tagsToCommit) {
-        toCommit = new ArrayList<Tag>(tagsToCommit);
+        toCommit = new ArrayList<>(tagsToCommit);
         tagsToCommit.clear();
       }
       for (Tag tag : toCommit) {
@@ -297,8 +295,8 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track album.
    *
-   * @param track 
-   * @param sNewAlbum 
+   * @param track
+   * @param sNewAlbum
    * @param filter files we want to deal with
    * @return new track
    * @throws JajukException the jajuk exception
@@ -314,7 +312,7 @@ public final class TrackManager extends ItemManager {
       if (track.getAlbum().getName2().equals(sNewAlbum)) {
         return track;
       }
-      List<File> alReady = null;
+      final List<File> alReady;
       // check if files are accessible
       alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
@@ -358,8 +356,8 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track artist.
    *
-   * @param track 
-   * @param sNewArtist 
+   * @param track
+   * @param sNewArtist
    * @param filter files we want to deal with
    * @return new track
    * @throws JajukException the jajuk exception
@@ -375,7 +373,7 @@ public final class TrackManager extends ItemManager {
       if (track.getArtist().getName2().equals(sNewArtist)) {
         return track;
       }
-      List<File> alReady = null;
+      final List<File> alReady;
       // check if files are accessible
       alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
@@ -418,8 +416,8 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track genre.
    *
-   * @param track 
-   * @param sNewGenre 
+   * @param track
+   * @param sNewGenre
    * @param filter files we want to deal with
    * @return new track
    * @throws JajukException the jajuk exception
@@ -435,7 +433,7 @@ public final class TrackManager extends ItemManager {
       if (track.getGenre().getName2().equals(sNewGenre)) {
         return track;
       }
-      List<File> alReady = null;
+      final List<File> alReady;
       // check if files are accessible
       alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
@@ -473,8 +471,8 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track year.
    *
-   * @param track 
-   * @param newItem 
+   * @param track
+   * @param newItem
    * @param filter files we want to deal with
    * @return new track or null if wrong format
    * @throws JajukException the jajuk exception
@@ -493,7 +491,7 @@ public final class TrackManager extends ItemManager {
       if (lNewItem < 0 || lNewItem > 10000) {
         throw new JajukException(137);
       }
-      List<File> alReady = null;
+      final List<File> alReady;
       // check if files are accessible
       alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
@@ -529,8 +527,8 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track comment.
    *
-   * @param track 
-   * @param sNewItem 
+   * @param track
+   * @param sNewItem
    * @param filter files we want to deal with
    * @return new track or null if wrong format
    * @throws JajukException the jajuk exception
@@ -545,7 +543,7 @@ public final class TrackManager extends ItemManager {
       if (track.getComment().equals(sNewItem)) {
         return track;
       }
-      List<File> alReady = null;
+      final List<File> alReady;
       // check if files are accessible
       alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
@@ -576,10 +574,10 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Change a track rate.
-   * 
-   * @param track 
-   * @param lNew 
-   * 
+   *
+   * @param track
+   * @param lNew
+   *
    * @return new track or null if wrong format
    */
   public Track changeTrackRate(Track track, long lNew) {
@@ -592,7 +590,7 @@ public final class TrackManager extends ItemManager {
       }
       // check format, rate in [0,100]
       if (lNew < 0 || lNew > 100) {
-        track.setRate(0l);
+        track.setRate(0L);
         Log.error(137);
       } else {
         track.setRate(lNew);
@@ -606,8 +604,8 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track order.
    *
-   * @param track 
-   * @param lNewOrder 
+   * @param track
+   * @param lNewOrder
    * @param filter files we want to deal with
    * @return new track or null if wrong format
    * @throws JajukException the jajuk exception
@@ -627,7 +625,7 @@ public final class TrackManager extends ItemManager {
       if (lNewOrder < 0) {
         throw new JajukException(137);
       }
-      List<File> alReady = null;
+      final List<File> alReady;
       // check if files are accessible
       alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
@@ -660,12 +658,12 @@ public final class TrackManager extends ItemManager {
 
   /**
   * Change a generic field.
-  * 
+  *
   * @param track the track to write against.
   * @param tagFieldKey the tag key
   * @param tagFieldValue the tag value as a string
   * @param filter files we want to deal with
-   * 
+   *
   * @return the track
   *
   * @throws JajukException if the tag can't be written
@@ -677,7 +675,7 @@ public final class TrackManager extends ItemManager {
       if (!confirm(track)) {
         return track;
       }
-      List<File> alReady = null;
+      final List<File> alReady;
       // check if files are accessible
       alReady = track.getReadyFiles();
       if (alReady.size() == 0) {
@@ -702,8 +700,8 @@ public final class TrackManager extends ItemManager {
   /**
    * Change a track name.
    *
-   * @param track 
-   * @param sNewItem 
+   * @param track
+   * @param sNewItem
    * @param filter files we want to deal with
    * @return new track
    * @throws JajukException the jajuk exception
@@ -719,7 +717,7 @@ public final class TrackManager extends ItemManager {
       if (track.getName().equals(sNewItem)) {
         return track;
       }
-      List<File> alReady = null;
+      final List<File> alReady;
       // check if files are accessible
       alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
@@ -758,9 +756,9 @@ public final class TrackManager extends ItemManager {
   /**
    * Change track album artist.
    *
-   * @param track 
-   * @param sNewItem 
-   * @param filter 
+   * @param track
+   * @param sNewItem
+   * @param filter
    * @return the item
    * @throws JajukException the jajuk exception
    */
@@ -774,7 +772,7 @@ public final class TrackManager extends ItemManager {
       if (track.getAlbumArtist() != null && track.getAlbumArtist().getName2().equals(sNewItem)) {
         return track;
       }
-      List<File> alReady = null;
+      final List<File> alReady;
       // check if files are accessible
       alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
@@ -808,9 +806,9 @@ public final class TrackManager extends ItemManager {
   /**
    * Change track disc number.
    *
-   * @param track 
-   * @param lNewDiscNumber 
-   * @param filter 
+   * @param track
+   * @param lNewDiscNumber
+   * @param filter
    * @return the item
    * @throws JajukException the jajuk exception
    */
@@ -829,7 +827,7 @@ public final class TrackManager extends ItemManager {
       if (lNewDiscNumber < 0) {
         throw new JajukException(137);
       }
-      List<File> alReady = null;
+      final List<File> alReady;
       // check if files are accessible
       alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
@@ -866,11 +864,11 @@ public final class TrackManager extends ItemManager {
   }
 
   /**
-   * Update files references. 
-   * 
-   * @param oldTrack 
-   * @param newTrack 
-   * @param filter 
+   * Update files references.
+   *
+   * @param oldTrack
+   * @param newTrack
+   * @param filter
    */
   private void updateFilesReferences(Track oldTrack, Track newTrack, Set<File> filter) {
     lock.writeLock().lock();
@@ -885,11 +883,11 @@ public final class TrackManager extends ItemManager {
   }
 
   /**
-   * Post change. 
-   * 
-   * @param track 
-   * @param newTrack 
-   * @param filter 
+   * Post change.
+   *
+   * @param track
+   * @param newTrack
+   * @param filter
    */
   private void postChange(Track track, Track newTrack, Set<File> filter) {
     lock.writeLock().lock();
@@ -934,8 +932,8 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Remove a file mapping from a track.
-   * 
-   * @param file 
+   *
+   * @param file
    */
   public void removeFile(File file) {
     Track track = file.getTrack();
@@ -943,7 +941,7 @@ public final class TrackManager extends ItemManager {
     try {
       // Remove file reference
       track.removeFile(file);
-      // Put it in the attic 
+      // Put it in the attic
       attic.put(track.getID(), track);
       // If the track contained a single file, drop it
       if (track.getFiles().size() == 0) {
@@ -967,7 +965,7 @@ public final class TrackManager extends ItemManager {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
@@ -981,15 +979,15 @@ public final class TrackManager extends ItemManager {
    * This is a defensive copy only
    * </p>
    * .
-   * 
-   * @param item 
+   *
+   * @param item
    * @param sorted Whether the output should be sorted on it (actually applied on
    * artists,years and genres because others items are already sorted)
-   * 
+   *
    * @return the associated tracks
    */
   public List<Track> getAssociatedTracks(Item item, boolean sorted) {
-    List<Item> items = new ArrayList<Item>(1);
+    List<Item> items = new ArrayList<>(1);
     items.add(item);
     return getAssociatedTracks(items, sorted);
   }
@@ -1001,7 +999,7 @@ public final class TrackManager extends ItemManager {
    * </p>
    * .
    *
-   * @param items 
+   * @param items
    * @param sorted Whether the output should be sorted on it (actually applied on
    * artists,years and genres because others items are already sorted)
    * @return the associated tracks
@@ -1009,9 +1007,9 @@ public final class TrackManager extends ItemManager {
   @SuppressWarnings("unchecked")
   public List<Track> getAssociatedTracks(List<Item> items, boolean sorted) {
     if (items == null || items.size() == 0) {
-      return new ArrayList<Track>(0);
+      return new ArrayList<>(0);
     }
-    List<Track> out = new ArrayList<Track>(items.size());
+    List<Track> out = new ArrayList<>(items.size());
     if (items.get(0) instanceof Album) {
       // check the album cache
       for (Item item : items) {
@@ -1025,7 +1023,7 @@ public final class TrackManager extends ItemManager {
       // cache is not sorted correct for albums with more than 1 disc
       if (sorted) {
         // sort Tracks
-        Collections.sort(out, new TrackComparator(TrackComparatorType.ORDER));
+        out.sort(new TrackComparator(TrackComparatorType.ORDER));
       }
     }
     // If the item is itself a track, simply return it
@@ -1034,14 +1032,14 @@ public final class TrackManager extends ItemManager {
         out.add((Track) item);
       }
       if (sorted) {
-        Collections.sort(out, new TrackComparator(TrackComparatorType.ALBUM));
+        out.sort(new TrackComparator(TrackComparatorType.ALBUM));
       }
     } else if (items.get(0) instanceof File) {
       for (Item item : items) {
         out.add(((File) item).getTrack());
       }
       if (sorted) {
-        Collections.sort(out, new TrackComparator(TrackComparatorType.ALBUM));
+        out.sort(new TrackComparator(TrackComparatorType.ALBUM));
       }
     } else if (items.get(0) instanceof Directory) {
       for (Item item : items) {
@@ -1055,7 +1053,7 @@ public final class TrackManager extends ItemManager {
         }
       }
       if (sorted) {
-        Collections.sort(out, new TrackComparator(TrackComparatorType.ORDER));
+        out.sort(new TrackComparator(TrackComparatorType.ORDER));
       }
     } else if (items.get(0) instanceof Playlist) {
       for (Item item : items) {
@@ -1076,7 +1074,7 @@ public final class TrackManager extends ItemManager {
         }
       }
       if (sorted) {
-        Collections.sort(out, new TrackComparator(TrackComparatorType.ALBUM));
+        out.sort(new TrackComparator(TrackComparatorType.ALBUM));
       }
     } else if (items.get(0) instanceof Artist) {
       Iterator<Item> tracks = (Iterator<Item>) getItemsIterator();
@@ -1087,7 +1085,7 @@ public final class TrackManager extends ItemManager {
         }
         // Sort by album
         if (sorted) {
-          Collections.sort(out, new TrackComparator(TrackComparatorType.ARTIST_ALBUM));
+          out.sort(new TrackComparator(TrackComparatorType.ARTIST_ALBUM));
         }
       }
       return out;
@@ -1100,7 +1098,7 @@ public final class TrackManager extends ItemManager {
         }
         // Sort by genre
         if (sorted) {
-          Collections.sort(out, new TrackComparator(TrackComparatorType.GENRE_ARTIST_ALBUM));
+          out.sort(new TrackComparator(TrackComparatorType.GENRE_ARTIST_ALBUM));
         }
       }
     } else if (items.get(0) instanceof Year) {
@@ -1112,7 +1110,7 @@ public final class TrackManager extends ItemManager {
         }
         // Sort by year
         if (sorted) {
-          Collections.sort(out, new TrackComparator(TrackComparatorType.YEAR_ALBUM));
+          out.sort(new TrackComparator(TrackComparatorType.YEAR_ALBUM));
         }
       }
     }
@@ -1121,7 +1119,7 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Gets the comparator.
-   * 
+   *
    * @return the comparator
    */
   public TrackComparator getComparator() {
@@ -1131,9 +1129,9 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Gets the track by id.
-   * 
+   *
    * @param sID Item ID
-   * 
+   *
    * @return item
    */
   public Track getTrackByID(String sID) {
@@ -1142,7 +1140,7 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Gets the tracks.
-   * 
+   *
    * @return ordered tracks list
    */
   @SuppressWarnings("unchecked")
@@ -1152,26 +1150,26 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Gets the tracks iterator.
-   * 
+   *
    * @return tracks iterator
    */
   @SuppressWarnings("unchecked")
   public ReadOnlyIterator<Track> getTracksIterator() {
-    return new ReadOnlyIterator<Track>((Iterator<Track>) getItemsIterator());
+    return new ReadOnlyIterator<>((Iterator<Track>) getItemsIterator());
   }
 
   /**
    * Perform a search in all files names with given criteria.
-   * 
-   * @param criteria 
-   * 
+   *
+   * @param criteria
+   *
    * @return an ordered list of available files
    */
   public List<SearchResult> search(String criteria) {
     lock.readLock().lock();
     try {
       boolean hide = Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED);
-      List<SearchResult> resu = new ArrayList<SearchResult>();
+      List<SearchResult> resu = new ArrayList<>();
       ReadOnlyIterator<Track> tracks = getTracksIterator();
       while (tracks.hasNext()) {
         Track track = tracks.next();
@@ -1192,7 +1190,7 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Checks if is autocommit.
-   * 
+   *
    * @return autocommit behavior for tags
    */
   public boolean isAutocommit() {
@@ -1201,7 +1199,7 @@ public final class TrackManager extends ItemManager {
 
   /**
    * Set autocommit behavior for tags.
-   * 
+   *
    * @param autocommit should tag changes be commited at each change or on demand ?
    */
   public void setAutocommit(boolean autocommit) {

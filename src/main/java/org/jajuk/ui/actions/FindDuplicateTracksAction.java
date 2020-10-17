@@ -16,14 +16,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.actions;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -75,7 +73,7 @@ public class FindDuplicateTracksAction extends JajukAction {
   /**
    * Add a dup for a given track.
    *
-   * @param track 
+   * @param track
    * @param files list of files
    */
   private void addDup(Track track, List<File> files) {
@@ -85,7 +83,7 @@ public class FindDuplicateTracksAction extends JajukAction {
       Set<File> dups = mapTrackDups.get(key);
       if (dups == null) {
         // We sort files by path because we don't want to allow user to drop files from different directories
-        dups = new TreeSet<File>();
+        dups = new TreeSet<>();
         mapTrackDups.put(key, dups);
       }
       dups.addAll(files);
@@ -98,10 +96,10 @@ public class FindDuplicateTracksAction extends JajukAction {
    */
   /**
    * Gets the next track.
-   * 
-   * @param tracks 
-   * @param index 
-   * 
+   *
+   * @param tracks
+   * @param index
+   *
    * @return the next track
    */
   private Track getNextTrack(List<Track> tracks, int index) {
@@ -115,9 +113,9 @@ public class FindDuplicateTracksAction extends JajukAction {
   /**
    * Return either all or only mounted files for given track
    * according to OPTIONS_HIDE_UNMOUNTED option.
-   * 
-   * @param track 
-   * 
+   *
+   * @param track
+   *
    * @return either all or only mounted files for given track
    */
   private List<File> getFiles(Track track) {
@@ -132,9 +130,9 @@ public class FindDuplicateTracksAction extends JajukAction {
    * Create the dups list.
    */
   void populateDups() {
-    duplicateTracksList = new ArrayList<List<File>>();
+    duplicateTracksList = new ArrayList<>();
     // Use a tree map so footprints are sorted
-    mapTrackDups = new TreeMap<String, Set<File>>();
+    mapTrackDups = new TreeMap<>();
     List<Track> tracks = TrackManager.getInstance().getTracks();
     // For finding duplicate files, we don't just rely on the number of files associated with
     // a track (>1), we also find almost-identical tracks, ie based on album name, not its ID
@@ -142,7 +140,7 @@ public class FindDuplicateTracksAction extends JajukAction {
     // different set of files (because track uses album id in its hashcode and album id uses CDDB discid
     // computed by jajuk based on the duration of all files in a given directory)
     // Sort using the ALMOST-IDENTICAL
-    Collections.sort(tracks, comparator);
+    tracks.sort(comparator);
     int index = 0;
     while (index <= tracks.size() - 1) {
       Track track = tracks.get(index);
@@ -163,14 +161,14 @@ public class FindDuplicateTracksAction extends JajukAction {
       Set<File> dups = mapTrackDups.get(footprint);
       // dups can be 1 in fuzzy search if track1 ~= track2 and track1 files are mounted and not the tracks2's ones
       if (dups.size() > 1) {
-        duplicateTracksList.add(new ArrayList<File>(dups));
+        duplicateTracksList.add(new ArrayList<>(dups));
       }
     }
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.actions.JajukAction#perform(java.awt.event.ActionEvent)
    */
   @Override
@@ -178,7 +176,7 @@ public class FindDuplicateTracksAction extends JajukAction {
     UtilGUI.waiting();
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
       @Override
-      protected Void doInBackground() throws Exception {
+      protected Void doInBackground() {
         populateDups();
         return null;
       }
@@ -194,12 +192,7 @@ public class FindDuplicateTracksAction extends JajukAction {
                 Messages.getString("FindDuplicateTracksAction.3"));
             duplicateFiles.setResizable(true);
             JButton jbClose = new JButton(Messages.getString("Close"));
-            jbClose.addActionListener(new ActionListener() {
-              @Override
-              public void actionPerformed(ActionEvent e) {
-                duplicateFiles.dispose();
-              }
-            });
+            jbClose.addActionListener(e -> duplicateFiles.dispose());
             // Create and set up the content pane.
             JComponent newContentPane = new DuplicateTracksDialog(duplicateTracksList, jbClose);
             newContentPane.setOpaque(true);

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
@@ -47,9 +47,9 @@ import org.jajuk.util.error.JajukException;
  */
 public final class AlbumManager extends ItemManager implements Observer {
   /** Self instance. */
-  private static AlbumManager singleton = new AlbumManager();
+  private static final AlbumManager singleton = new AlbumManager();
   /** Album max rating. */
-  private long maxRate = 0l;
+  private long maxRate = 0L;
   private int comp = 0;
 
   /**
@@ -75,7 +75,7 @@ public final class AlbumManager extends ItemManager implements Observer {
         false, false, false, String.class, null));
     // Disc id
     registerProperty(new PropertyMetaInformation(Const.XML_ALBUM_DISC_ID, false, true, false,
-        false, false, Long.class, -1l));
+        false, false, Long.class, -1L));
     // Register events
     ObservationManager.register(this);
   }
@@ -87,14 +87,14 @@ public final class AlbumManager extends ItemManager implements Observer {
    */
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
-    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
     return eventSubjectSet;
   }
 
   /**
    * Gets the instance.
-   * 
+   *
    * @return singleton
    */
   public static AlbumManager getInstance() {
@@ -103,10 +103,10 @@ public final class AlbumManager extends ItemManager implements Observer {
 
   /**
    * Return hashcode for this item.
-   * 
+   *
    * @param sName item name
-   * @param discId 
-   * 
+   * @param discId
+   *
    * @return ItemManager ID
    */
   protected static String createID(String sName, long discId) {
@@ -116,9 +116,9 @@ public final class AlbumManager extends ItemManager implements Observer {
   /**
    * Register an Album with a known id.
    *
-   * @param sId 
-   * @param sName 
-   * @param discID 
+   * @param sId
+   * @param sName
+   * @param discID
    * @return the album
    */
   public Album registerAlbum(String sId, String sName, long discID) {
@@ -133,10 +133,10 @@ public final class AlbumManager extends ItemManager implements Observer {
 
   /**
    * Register an Album.
-   * 
-   * @param sName 
-   * @param discID 
-   * 
+   *
+   * @param sName
+   * @param discID
+   *
    * @return the album
    */
   public Album registerAlbum(String sName, long discID) {
@@ -146,12 +146,12 @@ public final class AlbumManager extends ItemManager implements Observer {
 
   /**
    * Change the item.
-   * 
-   * @param old 
-   * @param sNewName 
-   * 
+   *
+   * @param old
+   * @param sNewName
+   *
    * @return new album
-   * 
+   *
    * @throws JajukException the jajuk exception
    */
   Album changeAlbumName(Album old, String sNewName) throws JajukException {
@@ -193,9 +193,9 @@ public final class AlbumManager extends ItemManager implements Observer {
    * -All in lower case expect first letter of first word
    * <p>
    * example: "My album title".
-   * 
+   *
    * @param sName The name to format.
-   * 
+   *
    * @return The formatted string.
    */
   public static String format(String sName) {
@@ -220,9 +220,9 @@ public final class AlbumManager extends ItemManager implements Observer {
 
   /**
    * Gets the album by id.
-   * 
+   *
    * @param sID Item ID
-   * 
+   *
    * @return Element
    */
   Album getAlbumByID(String sID) {
@@ -231,7 +231,7 @@ public final class AlbumManager extends ItemManager implements Observer {
 
   /**
    * Gets the albums.
-   * 
+   *
    * @return ordered albums list
    */
   @SuppressWarnings("unchecked")
@@ -241,33 +241,33 @@ public final class AlbumManager extends ItemManager implements Observer {
 
   /**
    * Gets the albums iterator.
-   * 
+   *
    * @return albums iterator
    */
   @SuppressWarnings("unchecked")
   public ReadOnlyIterator<Album> getAlbumsIterator() {
-    return new ReadOnlyIterator<Album>((Iterator<Album>) getItemsIterator());
+    return new ReadOnlyIterator<>((Iterator<Album>) getItemsIterator());
   }
 
   /**
    * Get sorted list of albums associated with this item.
-   * 
+   *
    * @param item the item
-   * 
+   *
    * @return a list of item, void list if no result
    */
   public List<Album> getAssociatedAlbums(Item item) {
     List<Album> out;
     // [Perf] If item is a track, just return its album
     if (item instanceof Track) {
-      out = new ArrayList<Album>(1);
+      out = new ArrayList<>(1);
       out.add(((Track) item).getAlbum());
     } else {
       try {
         lock.readLock().lock();
         ReadOnlyIterator<Album> albums = getAlbumsIterator();
         // Use a set to avoid dups
-        Set<Album> albumSet = new HashSet<Album>();
+        Set<Album> albumSet = new HashSet<>();
         while (albums.hasNext()) {
           Album album = albums.next();
           List<Track> cache = album.getTracksCache();
@@ -283,7 +283,7 @@ public final class AlbumManager extends ItemManager implements Observer {
             }
           }
         }
-        out = new ArrayList<Album>(albumSet);
+        out = new ArrayList<>(albumSet);
         Collections.sort(out);
       } finally {
         lock.readLock().unlock();
@@ -302,10 +302,10 @@ public final class AlbumManager extends ItemManager implements Observer {
 
   /**
    * Return sorted top albums based on the average of each album rating.
-   * 
+   *
    * @param bHideUnmounted if true, unmounted albums are not chosen
    * @param iNbBestofAlbums nb of items to return
-   * 
+   *
    * @return top albums, can be less items than required according to nb of
    * available albums
    */
@@ -315,8 +315,8 @@ public final class AlbumManager extends ItemManager implements Observer {
       // Create a temporary table to remove unmounted albums
       // We consider an album as mounted if a least one track is mounted
       // This hashmap contains album-> album rates
-      final Map<Album, Float> cacheRate = new HashMap<Album, Float>(AlbumManager.getInstance()
-          .getElementCount());
+      final Map<Album, Float> cacheRate = new HashMap<>(AlbumManager.getInstance()
+              .getElementCount());
       ReadOnlyIterator<Album> it = AlbumManager.getInstance().getAlbumsIterator();
       while (it.hasNext()) {
         Album album = it.next();
@@ -325,13 +325,10 @@ public final class AlbumManager extends ItemManager implements Observer {
         }
       }
       // Now sort albums by rating
-      List<Album> sortedAlbums = new ArrayList<Album>(cacheRate.keySet());
-      Collections.sort(sortedAlbums, new Comparator<Album>() {
-        @Override
-        public int compare(Album o1, Album o2) {
+      List<Album> sortedAlbums = new ArrayList<>(cacheRate.keySet());
+      sortedAlbums.sort((o1, o2) -> {
           // lowest first
           return (int) (cacheRate.get(o1) - cacheRate.get(o2));
-        }
       });
       return getTopAlbums(sortedAlbums, iNbBestofAlbums);
     } finally {
@@ -341,10 +338,10 @@ public final class AlbumManager extends ItemManager implements Observer {
 
   /**
    * Return ordered list of newest albums.
-   * 
+   *
    * @param bHideUnmounted if true, unmounted albums are not chosen
    * @param iNb nb of items to return
-   * 
+   *
    * @return newest albums
    */
   public List<Album> getNewestAlbums(boolean bHideUnmounted, int iNb) {
@@ -353,8 +350,8 @@ public final class AlbumManager extends ItemManager implements Observer {
       // create a temporary table to remove unmounted albums
       // We consider an album as mounted if a least one track is mounted
       // This hashmap contains album-> discovery date
-      final Map<Album, Date> cache = new HashMap<Album, Date>(AlbumManager.getInstance()
-          .getElementCount());
+      final Map<Album, Date> cache = new HashMap<>(AlbumManager.getInstance()
+              .getElementCount());
       ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
       while (it.hasNext()) {
         Track track = it.next();
@@ -363,13 +360,8 @@ public final class AlbumManager extends ItemManager implements Observer {
         }
       }
       // Now sort albums by discovery date
-      List<Album> sortedAlbums = new ArrayList<Album>(cache.keySet());
-      Collections.sort(sortedAlbums, new Comparator<Album>() {
-        @Override
-        public int compare(Album o1, Album o2) {
-          return cache.get(o1).compareTo(cache.get(o2));
-        }
-      });
+      List<Album> sortedAlbums = new ArrayList<>(cache.keySet());
+      sortedAlbums.sort(Comparator.comparing(cache::get));
       return getTopAlbums(sortedAlbums, iNb);
     } finally {
       lock.readLock().unlock();
@@ -378,10 +370,10 @@ public final class AlbumManager extends ItemManager implements Observer {
 
   /**
    * Return ordered rarely listen albums list.
-   * 
+   *
    * @param bHideUnmounted if true, unmounted albums are not chosen
    * @param iNb nb of items to return
-   * 
+   *
    * @return top albums, can be less items than required according to nb of
    * available albums
    */
@@ -391,17 +383,17 @@ public final class AlbumManager extends ItemManager implements Observer {
       // create a temporary table to remove unmounted albums
       // We consider an album as mounted if a least one track is mounted
       // This hashmap contains album-> album hits (each track hit average)
-      final Map<Album, Float> cache = new HashMap<Album, Float>(AlbumManager.getInstance()
-          .getElementCount());
+      final Map<Album, Float> cache = new HashMap<>(AlbumManager.getInstance()
+              .getElementCount());
       // This hashmap contains album-> nb of tracks already taken into account
       // for average
-      Map<Album, Integer> cacheNb = new HashMap<Album, Integer>(AlbumManager.getInstance()
-          .getElementCount());
+      Map<Album, Integer> cacheNb = new HashMap<>(AlbumManager.getInstance()
+              .getElementCount());
       ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
       while (it.hasNext()) {
         Track track = it.next();
         if (track.getBestFile(bHideUnmounted) != null) {
-          float newHits = 0f;
+          final float newHits;
           Integer nb = cacheNb.get(track.getAlbum());
           if (nb == null) {
             nb = 0;
@@ -417,13 +409,10 @@ public final class AlbumManager extends ItemManager implements Observer {
         }
       }
       // Now sort albums by rating
-      List<Album> sortedAlbums = new ArrayList<Album>(cache.keySet());
-      Collections.sort(sortedAlbums, new Comparator<Album>() {
-        @Override
-        public int compare(Album o1, Album o2) {
+      List<Album> sortedAlbums = new ArrayList<>(cache.keySet());
+      sortedAlbums.sort((o1, o2) -> {
           // We inverse comparison as we want lowest scores
           return (int) (cache.get(o2) - cache.get(o1));
-        }
       });
       return getTopAlbums(sortedAlbums, iNb);
     } finally {
@@ -433,10 +422,10 @@ public final class AlbumManager extends ItemManager implements Observer {
 
   /**
    * Convenient method to keep top albums (used by getBestof, newest... albums)
-   * 
+   *
    * @param sortedAlbums sorted albums according desired criteria, size >= iNb
    * @param iNb Number of albums to return
-   * 
+   *
    * @return a nicely sorted / shuffled list of albums or a void list of none
    * available albums
    */
@@ -448,7 +437,7 @@ public final class AlbumManager extends ItemManager implements Observer {
     }
     // Leave if none album so far
     if (sortedAlbums.size() == 0) {
-      return new ArrayList<Album>();
+      return new ArrayList<>();
     }
     List<Album> sublist = sortedAlbums.subList(sortedAlbums.size() - (1 + size),
         sortedAlbums.size() - 1);
@@ -456,12 +445,12 @@ public final class AlbumManager extends ItemManager implements Observer {
     Collections.shuffle(sublist);
     // The result is a sublist of shuffled albums, if we have less
     // albums than required, take max size possible
-    return sublist.subList(0, (size >= iNb) ? iNb : size);
+    return sublist.subList(0, Math.min(size, iNb));
   }
 
   /**
    * Gets the max rate.
-   * 
+   *
    * @return max rating for an album
    */
   public long getMaxRate() {
@@ -476,8 +465,8 @@ public final class AlbumManager extends ItemManager implements Observer {
     // create a temporary table to remove unmounted albums
     // We consider an album as mounted if a least one track is mounted
     // This hashmap contains album-> album rates
-    final Map<Album, Float> cacheRate = new HashMap<Album, Float>(AlbumManager.getInstance()
-        .getElementCount());
+    final Map<Album, Float> cacheRate = new HashMap<>(AlbumManager.getInstance()
+            .getElementCount());
     for (Album album : AlbumManager.getInstance().getAlbums()) {
       cacheRate.put(album, (float) album.getRate());
     }
@@ -508,9 +497,9 @@ public final class AlbumManager extends ItemManager implements Observer {
 
   /**
    * Gets the album by name.
-   * 
-   * @param name 
-   * 
+   *
+   * @param name
+   *
    * @return associated album (case insensitive) or null if no match
    */
   public Album getAlbumByName(String name) {
@@ -539,7 +528,7 @@ public final class AlbumManager extends ItemManager implements Observer {
     for (Album album : getAlbums()) {
       List<Track> cache = album.getTracksCache();
       synchronized (cache) {
-        Collections.sort(cache, new TrackComparator(TrackComparatorType.ALBUM));
+        cache.sort(new TrackComparator(TrackComparatorType.ALBUM));
       }
     }
   }
