@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.util;
 
@@ -35,7 +35,6 @@ import org.jajuk.TestHelpers;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.util.error.JajukException;
-import org.junit.Test;
 
 /**
  * .
@@ -51,15 +50,15 @@ public class TestUtilSystem extends JajukTestCase {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see junit.framework.TestCase#tearDown()
    */
   @Override
   protected void tearDown() throws Exception {
     // just try to remove those and ignore errors as the file might not have
     // been created
-    file1.delete();
-    file2.delete();
+    assertTrue(!file1.exists() || file1.delete());
+    assertTrue(!file2.exists() || file2.delete());
     super.tearDown();
   }
 
@@ -78,7 +77,6 @@ public class TestUtilSystem extends JajukTestCase {
     // TODO: create a huge file and make sure it is truncated during backup
   }
 
-  @Test
   public void testGetDeviceForFio() {
     org.jajuk.base.File file = TestHelpers.getFile();
     Device device = file.getDevice();
@@ -86,7 +84,7 @@ public class TestUtilSystem extends JajukTestCase {
     assertEquals(device, UtilSystem.getDeviceForFio(file.getFIO()));
     // Case where it is not the case
     java.io.File fioOutsideAnyKnownDevice = new java.io.File("/tmp/toto");
-    assertEquals(null, UtilSystem.getDeviceForFio(fioOutsideAnyKnownDevice));
+    assertNull(UtilSystem.getDeviceForFio(fioOutsideAnyKnownDevice));
   }
 
   /**
@@ -109,7 +107,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test copy file file not exists.
-   * 
+   *
    *
    * @throws Exception the exception
    */
@@ -168,7 +166,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test copy url string empty.
-   * 
+   *
    *
    * @throws Exception the exception
    */
@@ -180,7 +178,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test copy url string not exists.
-   * 
+   *
    */
   public void testCopyURLStringNotExists() {
     try {
@@ -206,7 +204,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test copy recursively.
-   * 
+   *
    *
    * @throws Exception the exception
    */
@@ -238,7 +236,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test copy to dir exception.
-   * 
+   *
    *
    * @throws Exception the exception
    */
@@ -294,7 +292,7 @@ public class TestUtilSystem extends JajukTestCase {
   public void testDeleteDirDir() throws Exception {
     Directory top = TestHelpers.getDirectory();
     File fileChild = new File(top.getAbsolutePath() + "/child");
-    fileChild.mkdirs();
+    assertTrue(fileChild.mkdirs());
     UtilSystem.deleteDir(fileChild);
     assertFalse(fileChild.exists());
     assertTrue(top.getFio().exists());
@@ -322,7 +320,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test get extension file none.
-   * 
+   *
    */
   public void testGetExtensionFileNone() {
     assertEquals("", UtilSystem.getExtension("/tmp/testfile"));
@@ -330,7 +328,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test get extension file dot.
-   * 
+   *
    */
   public void testGetExtensionFileDot() {
     // TODO: why do we return the full filename in this case? I.e. if there is a
@@ -363,7 +361,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test get file checksum error.
-   * 
+   *
    */
   public void testGetFileChecksumError() {
     try {
@@ -427,7 +425,8 @@ public class TestUtilSystem extends JajukTestCase {
    */
   public void testGetOnlyFile() {
     assertEquals("name.txt", UtilSystem.getOnlyFile("file:///tmp/some/name.txt"));
-    assertEquals("imagesqtbnANd9GcR3oc63qGvD-UNIESfnOD3ABwJ9JeFdhzE6eEZZFTzw-PBNyOZWdw", UtilSystem.getOnlyFile("images?q=tbn:ANd9GcR3oc63qGvD-UNIESfnOD3ABwJ9JeFdhzE6eEZZFTzw-PBNyOZWdw"));
+    assertEquals("images_q=tbn_ANd9GcR3oc63qGvD-UNIESfnOD3ABwJ9JeFdhzE6eEZZFTzw-PBNyOZWdw",
+            UtilSystem.getOnlyFile("images?q=tbn:ANd9GcR3oc63qGvD-UNIESfnOD3ABwJ9JeFdhzE6eEZZFTzw-PBNyOZWdw"));
   }
 
   /**
@@ -535,7 +534,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test read file error.
-   * 
+   *
    */
   public void testReadFileError() {
     try {
@@ -621,7 +620,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test replace in file replaced.
-   * 
+   *
    *
    * @throws Exception the exception
    */
@@ -681,7 +680,7 @@ public class TestUtilSystem extends JajukTestCase {
     /**
      * Instantiates a new mock process.
      *
-     * @param throwInWait 
+     * @param throwInWait
      */
     public MockProcess(boolean throwInWait) {
       super();
@@ -692,7 +691,7 @@ public class TestUtilSystem extends JajukTestCase {
      * @see java.lang.Process#waitFor()
      */
     @Override
-    public int waitFor() throws InterruptedException {
+    public int waitFor() {
       return 0;
     }
 
@@ -742,7 +741,7 @@ public class TestUtilSystem extends JajukTestCase {
   // helper method to emma-coverage of the unused constructor
   /**
    * Test private constructor.
-   * 
+   *
    *
    * @throws Exception the exception
    */
