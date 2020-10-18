@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.helpers;
 
@@ -100,10 +100,6 @@ public class AlbumsTableModel extends JajukTableModel {
    * For now, this table will not be editable (except for custom properties) for
    * complexity reasons. This may be implemented in the future if required
    * </p>
-   *
-   * @param sPropertyName 
-   * @param sPattern 
-   * @param columnsToShow 
    */
   @Override
   public void populateModel(String sPropertyName, String sPattern, List<String> columnsToShow) {
@@ -113,13 +109,7 @@ public class AlbumsTableModel extends JajukTableModel {
     alToShow = Filter.filterItems(alToShow, filter, Album.class);
     // Filter unmounted files if required
     if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
-      Iterator<Album> it = alToShow.iterator();
-      while (it.hasNext()) {
-        Album album = it.next();
-        if (!album.containsReadyFiles()) {
-          it.remove();
-        }
-      }
+      alToShow.removeIf(album -> !album.containsReadyFiles());
     }
     // Sort the result
     int iColNum = iNumberStandardCols + AlbumManager.getInstance().getCustomProperties().size();
@@ -149,7 +139,7 @@ public class AlbumsTableModel extends JajukTableModel {
       // Id
       oItems[iRow] = album;
       // Play
-      IconLabel il = null;
+      final IconLabel il;
       if (album.containsReadyFiles()) {
         il = getIcon(false);
       } else {
@@ -196,7 +186,7 @@ public class AlbumsTableModel extends JajukTableModel {
         if (year != null) {
           oValues[iRow][4] = year.getValue();
         } else {
-          oValues[iRow][4] = 0l;
+          oValues[iRow][4] = 0L;
         }
       } else {
         oValues[iRow][4] = "";

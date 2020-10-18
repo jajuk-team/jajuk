@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.services.startup;
 
@@ -94,7 +94,7 @@ public final class StartupEngineService {
           || (!fifo.exists() || fifo.length() == 0);
       // Populate item to be started and load the stored queue
       populateStartupItems();
-      // Check that the file to play is not null and try to mount its device if required 
+      // Check that the file to play is not null and try to mount its device if required
       if (!doNotStartAnything && !isWebradioStartup()) {
         checkFileToPlay();
       }
@@ -136,7 +136,7 @@ public final class StartupEngineService {
 
   /**
    * Return whether a webradio startup is required (it may be null if the webradio is unknown by the collection).
-   * 
+   *
    * @return whether a webradio startup is required
    */
   private static boolean isWebradioStartup() {
@@ -201,7 +201,7 @@ public final class StartupEngineService {
     // an item (track or radio) has been forced by user
     if (Const.STARTUP_MODE_ITEM.equals(startupMode)) {
       String conf = Conf.getString(Const.CONF_STARTUP_ITEM);
-      String item = conf.substring(conf.indexOf('/') + 1, conf.length());
+      String item = conf.substring(conf.indexOf('/') + 1);
       if (conf.matches(SearchResultType.FILE.name() + ".*")) {
         fileToPlay = FileManager.getInstance().getFileByID(item);
         if (fileToPlay == null) {
@@ -237,7 +237,7 @@ public final class StartupEngineService {
     }
     // Shuffle mode
     else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_SHUFFLE)) {
-      // Filter files by ambience or if none ambience matches, perform a global shuffle 
+      // Filter files by ambience or if none ambience matches, perform a global shuffle
       // ignoring current ambience
       alToPlay = UtilFeatures.filterByAmbience(
           FileManager.getInstance().getGlobalShufflePlaylist(), ambience);
@@ -249,7 +249,7 @@ public final class StartupEngineService {
       }
       // Best of mode
     } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_BESTOF)) {
-      // Filter files by ambience or if none ambience matches, perform a global best-of selection 
+      // Filter files by ambience or if none ambience matches, perform a global best-of selection
       // ignoring current ambience
       alToPlay = UtilFeatures.filterByAmbience(FileManager.getInstance().getGlobalBestofPlaylist(),
           ambience);
@@ -261,7 +261,7 @@ public final class StartupEngineService {
       }
       // Novelties mode
     } else if (Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_NOVELTIES)) {
-      // Filter files by ambience or if none ambience matches, perform a global novelties selection 
+      // Filter files by ambience or if none ambience matches, perform a global novelties selection
       // ignoring current ambience
       alToPlay = UtilFeatures.filterByAmbience(FileManager.getInstance()
           .getGlobalNoveltiesPlaylist(), ambience);
@@ -287,7 +287,7 @@ public final class StartupEngineService {
 
   /**
    * Check that the file can actually be played and handle errors if it's not the case.
-   * 
+   *
    * @return whether the file can actually be played
    */
   private static boolean checkFileToPlay() {

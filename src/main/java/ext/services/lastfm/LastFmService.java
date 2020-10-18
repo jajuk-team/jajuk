@@ -1,8 +1,8 @@
 /*
  * aTunes 1.14.0 code adapted by Jajuk team
- * 
- * Original copyright notice bellow : 
- * 
+ *
+ * Original copyright notice bellow :
+ *
  * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
  *
  * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
@@ -85,21 +85,15 @@ public class LastFmService {
   private static final int MIN_DURATION_TO_SUBMIT = 30;
   /** The Constant MAX_SUBMISSIONS.   */
   private static final int MAX_SUBMISSIONS = 50;
-  private Scrobbler scrobbler;
+  private final Scrobbler scrobbler;
   private boolean handshakePerformed;
-  private Locale locale;
-  private LastFmCache lastFmCache;
+  private final Locale locale;
+  private final LastFmCache lastFmCache;
   /** The singleton. */
   private static LastFmService self;
 
   /**
    * Instantiates a new Last.fm service
-   *
-   * @param proxy the proxy
-   * @param user the Last.fm username
-   * @param password the Last.fm password
-   * @param locale
-   * @param lastFmCache
    */
   private LastFmService(Locale locale, LastFmCache lastFmCache) {
     Proxy proxy = DownloadManager.getProxy();
@@ -131,8 +125,6 @@ public class LastFmService {
 
   /**
    * Gets the artist.
-   *
-   * @param artist
    *
    * @return the artist
    */
@@ -199,7 +191,7 @@ public class LastFmService {
         Collection<Album> as = Artist.getTopAlbums(artist, UtilString.rot13(API_KEY));
         if (as != null) {
           AlbumListInfo albums = LastFmAlbumList.getAlbumList(as, artist);
-          List<AlbumInfo> result = new ArrayList<AlbumInfo>();
+          List<AlbumInfo> result = new ArrayList<>();
           for (AlbumInfo a : albums.getAlbums()) {
             if (a.getBigCoverURL() != null && !a.getBigCoverURL().isEmpty()) { //NOSONAR
               result.add(a);
@@ -215,7 +207,7 @@ public class LastFmService {
         List<AlbumInfo> albumsFiltered = null;
         // Apply filter to hide "Various Artists" albums
         if (hideVariousArtists) {
-          albumsFiltered = new ArrayList<AlbumInfo>();
+          albumsFiltered = new ArrayList<>();
           for (AlbumInfo albumInfo : albumList.getAlbums()) {
             if (!albumInfo.getArtist().equals(VARIOUS_ARTISTS)) { //NOSONAR
               albumsFiltered.add(albumInfo);
@@ -225,7 +217,7 @@ public class LastFmService {
         }
         // Apply filter to hide albums with less than X songs
         if (minimumSongNumber > 0) {
-          albumsFiltered = new ArrayList<AlbumInfo>();
+          albumsFiltered = new ArrayList<>();
           for (AlbumInfo albumInfo : albumList.getAlbums()) {
             AlbumInfo extendedAlbumInfo = getAlbum(artist, albumInfo.getTitle());
             if (extendedAlbumInfo != null && extendedAlbumInfo.getTracks() != null //NOSONAR
@@ -254,10 +246,9 @@ public class LastFmService {
    */
   public Image getImage(AlbumInfo album) {
     try {
-      Image img = null;
       Proxy proxy = DownloadManager.getProxy();
       // Try to retrieve from cache
-      img = lastFmCache.retrieveAlbumCover(album);
+      Image img = lastFmCache.retrieveAlbumCover(album);
       if (img == null && album.getBigCoverURL() != null && !album.getBigCoverURL().isEmpty()) {
         img = ext.services.network.NetworkUtils.getImage(ext.services.network.NetworkUtils
             .getConnection(album.getBigCoverURL(), proxy));
@@ -337,8 +328,6 @@ public class LastFmService {
   /**
    * Returns current artist image at LastFM.
    *
-   * @param artistName
-   *
    * @return the artist image from last fm
    */
   private Image getArtistImageFromLastFM(String artistName) {
@@ -347,8 +336,8 @@ public class LastFmService {
       // Try to get from Artist.getImages() method
       PaginatedResult<de.umass.lastfm.Image> images = Artist.getImages(artistName, 1, 1,
           UtilString.rot13(API_KEY));
-      List<de.umass.lastfm.Image> imageList = new ArrayList<de.umass.lastfm.Image>(
-          images.getPageResults());
+      List<de.umass.lastfm.Image> imageList = new ArrayList<>(
+              images.getPageResults());
       if (!imageList.isEmpty()) {
         Set<ImageSize> sizes = imageList.get(0).availableSizes();
         // Try to get original
@@ -433,7 +422,7 @@ public class LastFmService {
   /**
    * Submits song to Last.fm
    *
-   * @param track
+   * @param track The track that was played
    * @param millisPlayed ms the audio file has already played
    * @throws ScrobblerException the scrobbler exception
    */
@@ -492,7 +481,7 @@ public class LastFmService {
       Log.info("Trying to submit cache to Last.fm");
       try {
         performHandshakeIfNeeded();
-        List<SubmissionData> submissionDataList = new ArrayList<SubmissionData>();
+        List<SubmissionData> submissionDataList = new ArrayList<>();
         for (ext.services.lastfm.FullSubmissionData submissionData : collectionWithSubmissionData) {
           SubmissionData sd = new SubmissionData(submissionData.getArtist(),
               submissionData.getTitle(), submissionData.getAlbum(), submissionData.getDuration(),
@@ -518,8 +507,6 @@ public class LastFmService {
 
   /**
    * Submits now playing info to Last.fm
-   *
-   * @param track
    *
    * @throws ScrobblerException the scrobbler exception
    */
@@ -594,8 +581,6 @@ public class LastFmService {
   /**
    * Check artist.
    *
-   * @param track
-   *
    * @return true, if check artist
    */
   private boolean checkArtist(Track track) {
@@ -611,8 +596,6 @@ public class LastFmService {
   /**
    * Check title.
    *
-   * @param track
-   *
    * @return true, if check title
    */
   private boolean checkTitle(Track track) {
@@ -625,8 +608,6 @@ public class LastFmService {
 
   /**
    * Check duration.
-   *
-   * @param track
    *
    * @return true, if check duration
    */

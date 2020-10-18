@@ -16,12 +16,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.util;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -49,19 +49,13 @@ public final class MD5Processor {
 
   /**
    * MD5 hashcoding, return a hashcode.
-   * 
+   *
    * @param sIn input String
-   * 
+   *
    * @return hashed output
    */
-  public static final String hash(String sIn) {
-    try {
-      msgDigest.update(sIn.getBytes("UTF-8"));
-    } catch (UnsupportedEncodingException e) {
-      // This should not happen
-      Log.error(e);
-      return null;
-    }
+  public static String hash(String sIn) {
+    msgDigest.update(sIn.getBytes(StandardCharsets.UTF_8));
     byte[] digest = msgDigest.digest();
     // Important : we internalize the result of this computation
     // because all equals between items is done with '==' operator

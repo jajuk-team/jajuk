@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.views;
 
@@ -59,11 +59,6 @@ import net.miginfocom.swing.MigLayout;
 public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-  /** The artist picture + labels. */
-  private LastFmArtistThumbnail artistThumb;
-  /** The artist bio (from last.fm wiki) */
-  private JTextArea jtaArtistDesc;
-  private JScrollPane jspAlbums;
   private String bio;
   private ArtistInfo artistInfo;
 
@@ -99,7 +94,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
    */
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
-    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<>();
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
     eventSubjectSet.add(JajukEvents.ZERO);
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
@@ -123,47 +118,44 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
    */
   @Override
   public void update(final JajukEvent event) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        // If internet access or lastfm is disable, just reset
-        if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)
-            || !Conf.getBoolean(Const.CONF_LASTFM_INFO)) {
+    SwingUtilities.invokeLater(() -> {
+      // If internet access or lastfm is disable, just reset
+      if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)
+          || !Conf.getBoolean(Const.CONF_LASTFM_INFO)) {
+        reset();
+        return;
+      }
+      JajukEvents subject = event.getSubject();
+      if (JajukEvents.WEBRADIO_LAUNCHED.equals(subject)
+          || JajukEvents.ZERO.equals(event.getSubject())) {
+        reset();
+      } else if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
+        // If no playing track, reset the view
+        StackItem currentItem = QueueModel.getCurrentItem();
+        if (currentItem == null) {
           reset();
           return;
         }
-        JajukEvents subject = event.getSubject();
-        if (JajukEvents.WEBRADIO_LAUNCHED.equals(subject)
-            || JajukEvents.ZERO.equals(event.getSubject())) {
-          reset();
-        } else if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
-          // If no playing track, reset the view
-          StackItem currentItem = QueueModel.getCurrentItem();
-          if (currentItem == null) {
-            reset();
-            return;
-          }
-          Artist artist = currentItem.getFile().getTrack().getArtist();
-          // If we already display the artist, leave
-          if (artist.getName().equals(ArtistView.this.artist)) {
-            return;
+        Artist artist = currentItem.getFile().getTrack().getArtist();
+        // If we already display the artist, leave
+        if (artist.getName().equals(ArtistView.this.artist)) {
+          return;
+        } else {
+          // Display a busy panel in the mean-time
+          setLayout(new MigLayout("ins 5", "[grow]", "[grow]"));
+          JXBusyLabel busy1 = new JXBusyLabel(new Dimension(50, 50));
+          busy1.setBusy(true);
+          removeAll();
+          add(busy1, "center");
+          revalidate();
+          repaint();
+          ArtistView.this.artist = artist.getName();
+          // Display the panel only if the artist is not unknown
+          if (!artist.seemsUnknown()) {
+            // This is done in a swing worker
+            displayArtist();
           } else {
-            // Display a busy panel in the mean-time
-            setLayout(new MigLayout("ins 5", "[grow]", "[grow]"));
-            JXBusyLabel busy1 = new JXBusyLabel(new Dimension(50, 50));
-            busy1.setBusy(true);
-            removeAll();
-            add(busy1, "center");
-            revalidate();
-            repaint();
-            ArtistView.this.artist = artist.getName();
-            // Display the panel only if the artist is not unknown
-            if (!artist.seemsUnknown()) {
-              // This is done in a swing worker
-              displayArtist();
-            } else {
-              reset();
-            }
+            reset();
           }
         }
       }
@@ -231,7 +223,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
   @Override
   public void shortCall(Object in) {
     removeAll();
-    jspAlbums = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, true);
+    JScrollPane jspAlbums = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, true);
     // Artist unknown from last.fm, leave
     if (artistInfo == null
     // If image url is void, last.fm doesn't provide enough data about this
@@ -240,11 +232,15 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
       reset();
       return;
     }
-    artistThumb = new LastFmArtistThumbnail(artistInfo);
+    // The artist picture + labels
+    LastFmArtistThumbnail artistThumb = new LastFmArtistThumbnail(artistInfo);
     // No known icon next to artist thumb
     artistThumb.setArtistView(true);
     artistThumb.populate();
-    jtaArtistDesc = new JTextArea(bio) {
+    // We set the margin this way, setMargin() doesn't work due to
+    // existing border
+    // The artist bio (from last.fm wiki)
+    JTextArea jtaArtistDesc = new JTextArea(bio) {
       private static final long serialVersionUID = 9217998016482118852L;
 
       // We set the margin this way, setMargin() doesn't work due to

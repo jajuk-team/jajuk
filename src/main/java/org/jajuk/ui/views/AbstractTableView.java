@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.views;
 
@@ -71,7 +71,6 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.PlayHighlighterPredicate;
 import org.jajuk.ui.helpers.PreferencesJMenu;
@@ -110,9 +109,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   JajukTable jtable;
   JPanel jpControl;
   JajukToggleButton jtbEditable;
-  private JLabel jlFilter;
-  private JComboBox jcbProperty;
-  private JLabel jlEquals;
+  private JComboBox<String> jcbProperty;
   private JTextField jtfValue;
   /** Table model. */
   JajukTableModel model;
@@ -130,12 +127,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   String editableConf;
   /** Columns to show table configuration name, must be overwritten by child classes. */
   String columnsConf;
-  private JMenuItem jmiPlay;
-  private JMenuItem jmiPush;
-  private JMenuItem jmiFrontPush;
   JMenuItem jmiDelete;
-  private JMenuItem jmiPlayRepeat;
-  private JMenuItem jmiPlayShuffle;
   JMenuItem jmiBookmark;
   JMenuItem jmiProperties;
   JMenuItem jmiFileCopyURL;
@@ -197,25 +189,23 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /**
    * Code used in child class SwingWorker for display computations (used in
    * initUI()).
-   *
-   * @param in 
    */
   @Override
   public void shortCall(Object in) {
     // Add generic menus
-    jmiPlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
+    JMenuItem jmiPlay = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SELECTION));
     jmiPlay.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPlay);
-    jmiFrontPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_FRONT_SELECTION));
+    JMenuItem jmiFrontPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_FRONT_SELECTION));
     jmiFrontPush.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiFrontPush);
-    jmiPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
+    JMenuItem jmiPush = new JMenuItem(ActionManager.getAction(JajukActions.PUSH_SELECTION));
     jmiPush.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPush);
-    jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_REPEAT_SELECTION));
+    JMenuItem jmiPlayRepeat = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_REPEAT_SELECTION));
     jmiPlayRepeat.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPlayRepeat);
-    jmiPlayShuffle = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SHUFFLE_SELECTION));
+    JMenuItem jmiPlayShuffle = new JMenuItem(ActionManager.getAction(JajukActions.PLAY_SHUFFLE_SELECTION));
     jmiPlayShuffle.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     jtable.getMenu().add(jmiPlayShuffle);
     jtable.getMenu().addSeparator();
@@ -231,33 +221,30 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     jmiProperties.putClientProperty(Const.DETAIL_SELECTION, jtable.getSelection());
     pjmTracks = new PreferencesJMenu(jtable.getSelection());
     // Set a default behavior for double click or click on the play column
-    jtable.setCommand(new ILaunchCommand() {
-      @Override
-      public void launch(int nbClicks) {
-        // Ignore event if several rows are selected
-        if (jtable.getSelectedColumnCount() != 1) {
-          return;
-        }
-        int iSelectedCol = jtable.getSelectedColumn();
-        // Convert column selection as columns may have been moved
-        iSelectedCol = jtable.convertColumnIndexToModel(iSelectedCol);
-        // We launch the selection :
-        // - In any case if user clicked on the play column (column 0)
-        // - Or in case of double click on any column when table is not editable
-        if (iSelectedCol == 0 || // click on play icon
-            // double click on any column and edition state false
-            (nbClicks == 2 && !jtbEditable.isSelected())) {
-          Item item = model.getItemAt(jtable.convertRowIndexToModel(jtable.getSelectedRow()));
-          List<File> files = UtilFeatures.getPlayableFiles(item);
-          if (files.size() > 0) {
-            // launch it
-            QueueModel.push(
-                UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files),
-                    Conf.getBoolean(Const.CONF_STATE_REPEAT), true),
-                Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
-          } else {
-            Messages.showErrorMessage(10);
-          }
+    jtable.setCommand(nbClicks -> {
+      // Ignore event if several rows are selected
+      if (jtable.getSelectedColumnCount() != 1) {
+        return;
+      }
+      int iSelectedCol = jtable.getSelectedColumn();
+      // Convert column selection as columns may have been moved
+      iSelectedCol = jtable.convertColumnIndexToModel(iSelectedCol);
+      // We launch the selection :
+      // - In any case if user clicked on the play column (column 0)
+      // - Or in case of double click on any column when table is not editable
+      if (iSelectedCol == 0 || // click on play icon
+          // double click on any column and edition state false
+          (nbClicks == 2 && !jtbEditable.isSelected())) {
+        Item item = model.getItemAt(jtable.convertRowIndexToModel(jtable.getSelectedRow()));
+        List<File> files = UtilFeatures.getPlayableFiles(item);
+        if (files.size() > 0) {
+          // launch it
+          QueueModel.push(
+              UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files),
+                  Conf.getBoolean(Const.CONF_STATE_REPEAT), true),
+              Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+        } else {
+          Messages.showErrorMessage(10);
         }
       }
     });
@@ -284,16 +271,16 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   }
 
   /**
-   * Generic part of the panel 
+   * Generic part of the panel
    * @param component the component to display before filter
    */
   void createGenericGUI(JComponent component) {
     jtbEditable = new JajukToggleButton(IconLoader.getIcon(JajukIcons.EDIT));
     jtbEditable.setToolTipText(Messages.getString("AbstractTableView.11"));
     jtbEditable.addActionListener(this);
-    jlFilter = new JLabel(Messages.getString("AbstractTableView.0"));
+    JLabel jlFilter = new JLabel(Messages.getString("AbstractTableView.0"));
     // properties combo box, fill with columns names expect ID
-    jcbProperty = new JComboBox();
+    jcbProperty = new JComboBox<>();
     // "any" criteria
     jcbProperty.addItem(Messages.getString("AbstractTableView.8"));
     for (int i = 1; i < model.getColumnCount(); i++) {
@@ -302,7 +289,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     }
     jcbProperty.setToolTipText(Messages.getString("AbstractTableView.1"));
     jcbProperty.addItemListener(this);
-    jlEquals = new JLabel(Messages.getString("AbstractTableView.7"));
+    JLabel jlEquals = new JLabel(Messages.getString("AbstractTableView.7"));
     jtfValue = new JTextField();
     jtfValue.setFont(FontManager.getInstance().getFont(JajukFont.SEARCHBOX));
     jtfValue.setMargin(new Insets(0, 3, 0, 0));
@@ -360,7 +347,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
    */
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
-    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<>();
     eventSubjectSet.add(JajukEvents.DEVICE_MOUNT);
     eventSubjectSet.add(JajukEvents.DEVICE_UNMOUNT);
     eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
@@ -376,9 +363,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   /**
    * Apply a filter, to be implemented by files and tracks tables, alter the
    * model.
-   *
-   * @param sPropertyName 
-   * @param sPropertyValue 
    */
   public void applyFilter(final String sPropertyName, final String sPropertyValue) {
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
@@ -420,98 +404,94 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
    */
   @Override
   public void update(final JajukEvent event) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      @SuppressWarnings("unchecked")
-      public void run() {
-        try {
-          jtable.setAcceptColumnsEvents(false); // flag reloading to avoid wrong
-          // column
-          // events
-          JajukEvents subject = event.getSubject();
-          if (JajukEvents.DEVICE_MOUNT.equals(subject)
-              || JajukEvents.DEVICE_UNMOUNT.equals(subject)) {
-            jtable.clearSelection();
-            // force filter to refresh
-            applyFilter(sAppliedCriteria, sAppliedFilter);
-          } else if (JajukEvents.TREE_SELECTION_CHANGED.equals(subject)) {
-            // Check if the sync tree table option is set for this tree
-            if (jtbSync.isSelected()) {
-              // Consume only events from the same perspective and different view
-              // (for table/tree synchronization)
-              Properties details = event.getDetails();
-              if (details != null) {
-                String sourcePerspective = details.getProperty(Const.DETAIL_PERSPECTIVE);
-                String sourceView = details.getProperty(Const.DETAIL_VIEW);
-                if (!(sourcePerspective.equals(getPerspective().getID()))
-                    || sourceView.equals(getID())) {
-                  return;
-                }
+    SwingUtilities.invokeLater(() -> {
+      try {
+        jtable.setAcceptColumnsEvents(false); // flag reloading to avoid wrong
+        // column
+        // events
+        JajukEvents subject = event.getSubject();
+        if (JajukEvents.DEVICE_MOUNT.equals(subject)
+            || JajukEvents.DEVICE_UNMOUNT.equals(subject)) {
+          jtable.clearSelection();
+          // force filter to refresh
+          applyFilter(sAppliedCriteria, sAppliedFilter);
+        } else if (JajukEvents.TREE_SELECTION_CHANGED.equals(subject)) {
+          // Check if the sync tree table option is set for this tree
+          if (jtbSync.isSelected()) {
+            // Consume only events from the same perspective and different view
+            // (for table/tree synchronization)
+            Properties details = event.getDetails();
+            if (details != null) {
+              String sourcePerspective = details.getProperty(Const.DETAIL_PERSPECTIVE);
+              String sourceView = details.getProperty(Const.DETAIL_VIEW);
+              if (!(sourcePerspective.equals(getPerspective().getID()))
+                  || sourceView.equals(getID())) {
+                return;
               }
-              // Update model tree selection
-              model.setTreeSelection((Set<Item>) details.get(Const.DETAIL_SELECTION));
-              // force redisplay to apply the filter
-              jtable.clearSelection();
-              // force filter to refresh
-              applyFilter(sAppliedCriteria, sAppliedFilter);
             }
-          } else if (JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
+            // Update model tree selection
+            model.setTreeSelection((Set<Item>) details.get(Const.DETAIL_SELECTION));
             // force redisplay to apply the filter
             jtable.clearSelection();
             // force filter to refresh
             applyFilter(sAppliedCriteria, sAppliedFilter);
-          } else if (JajukEvents.DEVICE_REFRESH.equals(subject)) {
-            // force filter to refresh
-            applyFilter(sAppliedCriteria, sAppliedFilter);
-          } else if (JajukEvents.VIEW_REFRESH_REQUEST.equals(subject)) {
-            // force filter to refresh if the events has been triggered by the
-            // table itself after a column change
-            JTable table = (JTable) event.getDetails().get(Const.DETAIL_CONTENT);
-            if (table.equals(jtable)) {
-              applyFilter(sAppliedCriteria, sAppliedFilter);
-            }
-          } else if (JajukEvents.RATE_CHANGED.equals(subject)) {
-            // Keep current selection and nb of rows
-            int[] selection = jtable.getSelectedRows();
-            // force filter to refresh
-            applyFilter(sAppliedCriteria, sAppliedFilter);
-            jtable.setSelectedRows(selection);
-          } else if (JajukEvents.CUSTOM_PROPERTIES_ADD.equals(subject)) {
-            Properties properties = event.getDetails();
-            if (properties == null) {
-              // can be null at view populate
-              return;
-            }
-            model = populateTable();
-            model.addTableModelListener(AbstractTableView.this);
-            jtable.setModel(model);
-            setCellEditors();
-            // add new item in configuration columns
-            jtable.addColumnIntoConf((String) properties.get(Const.DETAIL_CONTENT));
-            jtable.showColumns(jtable.getColumnsConf());
-            applyFilter(sAppliedCriteria, sAppliedFilter);
-            jcbProperty.addItem(properties.get(Const.DETAIL_CONTENT));
-          } else if (JajukEvents.CUSTOM_PROPERTIES_REMOVE.equals(subject)) {
-            Properties properties = event.getDetails();
-            if (properties == null) { // can be null at view
-              // populate
-              return;
-            }
-            // remove item from configuration columns
-            model = populateTable();// create a new model
-            model.addTableModelListener(AbstractTableView.this);
-            jtable.setModel(model);
-            setCellEditors();
-            jtable.addColumnIntoConf((String) properties.get(Const.DETAIL_CONTENT));
-            jtable.showColumns(jtable.getColumnsConf());
-            applyFilter(sAppliedCriteria, sAppliedFilter);
-            jcbProperty.removeItem(properties.get(Const.DETAIL_CONTENT));
           }
-        } catch (Exception e) {
-          Log.error(e);
-        } finally {
-          jtable.setAcceptColumnsEvents(true); // make sure to remove this flag
+        } else if (JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
+          // force redisplay to apply the filter
+          jtable.clearSelection();
+          // force filter to refresh
+          applyFilter(sAppliedCriteria, sAppliedFilter);
+        } else if (JajukEvents.DEVICE_REFRESH.equals(subject)) {
+          // force filter to refresh
+          applyFilter(sAppliedCriteria, sAppliedFilter);
+        } else if (JajukEvents.VIEW_REFRESH_REQUEST.equals(subject)) {
+          // force filter to refresh if the events has been triggered by the
+          // table itself after a column change
+          JTable table = (JTable) event.getDetails().get(Const.DETAIL_CONTENT);
+          if (table.equals(jtable)) {
+            applyFilter(sAppliedCriteria, sAppliedFilter);
+          }
+        } else if (JajukEvents.RATE_CHANGED.equals(subject)) {
+          // Keep current selection and nb of rows
+          int[] selection = jtable.getSelectedRows();
+          // force filter to refresh
+          applyFilter(sAppliedCriteria, sAppliedFilter);
+          jtable.setSelectedRows(selection);
+        } else if (JajukEvents.CUSTOM_PROPERTIES_ADD.equals(subject)) {
+          Properties properties = event.getDetails();
+          if (properties == null) {
+            // can be null at view populate
+            return;
+          }
+          model = populateTable();
+          model.addTableModelListener(AbstractTableView.this);
+          jtable.setModel(model);
+          setCellEditors();
+          // add new item in configuration columns
+          jtable.addColumnIntoConf((String) properties.get(Const.DETAIL_CONTENT));
+          jtable.showColumns(jtable.getColumnsConf());
+          applyFilter(sAppliedCriteria, sAppliedFilter);
+          jcbProperty.addItem((String) properties.get(Const.DETAIL_CONTENT));
+        } else if (JajukEvents.CUSTOM_PROPERTIES_REMOVE.equals(subject)) {
+          Properties properties = event.getDetails();
+          if (properties == null) { // can be null at view
+            // populate
+            return;
+          }
+          // remove item from configuration columns
+          model = populateTable();// create a new model
+          model.addTableModelListener(AbstractTableView.this);
+          jtable.setModel(model);
+          setCellEditors();
+          jtable.addColumnIntoConf((String) properties.get(Const.DETAIL_CONTENT));
+          jtable.showColumns(jtable.getColumnsConf());
+          applyFilter(sAppliedCriteria, sAppliedFilter);
+          jcbProperty.removeItem(properties.get(Const.DETAIL_CONTENT));
         }
+      } catch (Exception e) {
+        Log.error(e);
+      } finally {
+        jtable.setAcceptColumnsEvents(true); // make sure to remove this flag
       }
     });
   }
@@ -541,7 +521,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   abstract JajukTableModel populateTable();
 
   /**
-   * Sets the cell editors. 
+   * Sets the cell editors.
    */
   private void setCellEditors() {
     for (TableColumn tc : ((DefaultTableColumnModelExt) jtable.getColumnModel()).getColumns(true)) {
@@ -550,7 +530,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       // create a combo box for genres, note that we can't add new
       // genres dynamically
       if (Const.XML_GENRE.equals(sIdentifier)) {
-        JComboBox jcb = new JComboBox(GenreManager.getInstance().getGenresList());
+        JComboBox<String> jcb = new JComboBox<>(GenreManager.getInstance().getGenresList());
         jcb.setEditable(true);
         AutoCompleteDecorator.decorate(jcb);
         col.setCellEditor(new ComboBoxCellEditor(jcb));
@@ -559,14 +539,14 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       // create a combo box for artists, note that we can't add new
       // artists dynamically
       else if (Const.XML_ARTIST.equals(sIdentifier)) {
-        JComboBox jcb = new JComboBox(ArtistManager.getArtistsList());
+        JComboBox<String> jcb = new JComboBox<>(ArtistManager.getArtistsList());
         jcb.setEditable(true);
         AutoCompleteDecorator.decorate(jcb);
         col.setCellEditor(new ComboBoxCellEditor(jcb));
       }
       // Same for for album-artists
       else if (Const.XML_ALBUM_ARTIST.equals(sIdentifier)) {
-        JComboBox jcb = new JComboBox(AlbumArtistManager.getAlbumArtistsList());
+        JComboBox<String> jcb = new JComboBox<>(AlbumArtistManager.getAlbumArtistsList());
         jcb.setEditable(true);
         AutoCompleteDecorator.decorate(jcb);
         col.setCellEditor(new ComboBoxCellEditor(jcb));
@@ -584,8 +564,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 
   /**
    * Detect property change.
-   *
-   * @param ie 
    */
   @Override
   public void itemStateChanged(ItemEvent ie) {
@@ -617,7 +595,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       // file, not all files associated with the track
       Set<File> filter = null;
       if (item instanceof File) {
-        filter = new HashSet<File>();
+        filter = new HashSet<>();
         filter.add((File) item);
       }
       Item itemNew = ItemManager.changeItem(item, sKey, oValue, filter);
@@ -633,11 +611,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
       if (!(this instanceof WebRadioView)) {
         ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH, properties));
       }
-    } catch (NoneAccessibleFileException none) {
+    } catch (NoneAccessibleFileException | CannotRenameException none) {
       Messages.showErrorMessage(none.getCode());
-      ((JajukTableModel) jtable.getModel()).undo(e.getFirstRow(), e.getColumn());
-    } catch (CannotRenameException cre) {
-      Messages.showErrorMessage(cre.getCode());
       ((JajukTableModel) jtable.getModel()).undo(e.getFirstRow(), e.getColumn());
     } catch (JajukException je) {
       Log.error("104", je);
@@ -657,7 +632,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     if (e.getSource() == jtbEditable) {
       Conf.setProperty(editableConf, Boolean.toString(jtbEditable.isSelected()));
       model.setEditable(jtbEditable.isSelected());
-      return;
     }
   }
 
@@ -694,50 +668,46 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     if (((JajukTableModel) jtable.getModel()).isRefreshing()) {
       return;
     }
-    // We absolutely need to perform the actual treatment in the next EDT call because otherwise, 
+    // We absolutely need to perform the actual treatment in the next EDT call because otherwise,
     // the selection is wrong because the selection event is catch first here and after in the JajukTable
-    // valueChanged() that performs the actual selection computation. Doing this invokeLater ensure to 
+    // valueChanged() that performs the actual selection computation. Doing this invokeLater ensure to
     // serialize the event treatment in the correct order.
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        // Call view specific behavior on selection change
-        onSelectionChange();
-        // Hide the copy url if several items selection. Do not simply disable them
-        // as the getMenu() method enable all menu items
-        jmiFileCopyURL.setVisible(jtable.getSelectedRowCount() < 2);
-        // Compute Information view message
-        if (AbstractTableView.this instanceof TracksTableView) {
-          int rows = jtable.getSelection().size();
-          StringBuilder sbOut = new StringBuilder().append(rows).append(
-              Messages.getString("TracksTreeView.31"));
-          InformationJPanel.getInstance().setSelection(sbOut.toString());
-        } else if (AbstractTableView.this instanceof FilesTableView) {
-          // Compute recursive selection size, nb of items...
-          long lSize = 0l;
-          int items = 0;
-          for (Item item : jtable.getSelection()) {
-            if (item instanceof File) {
-              lSize += ((File) item).getSize();
-            }
+    SwingUtilities.invokeLater(() -> {
+      // Call view specific behavior on selection change
+      onSelectionChange();
+      // Hide the copy url if several items selection. Do not simply disable them
+      // as the getMenu() method enable all menu items
+      jmiFileCopyURL.setVisible(jtable.getSelectedRowCount() < 2);
+      // Compute Information view message
+      if (AbstractTableView.this instanceof TracksTableView) {
+        int rows = jtable.getSelection().size();
+        String sbOut = rows +
+                Messages.getString("TracksTreeView.31");
+        InformationJPanel.getInstance().setSelection(sbOut);
+      } else if (AbstractTableView.this instanceof FilesTableView) {
+        // Compute recursive selection size, nb of items...
+        long lSize = 0L;
+        for (Item item : jtable.getSelection()) {
+          if (item instanceof File) {
+            lSize += ((File) item).getSize();
           }
-          items = jtable.getSelection().size();
-          lSize /= 1048576; // set size in MB
-          StringBuilder sbOut = new StringBuilder().append(items).append(
-              Messages.getString("FilesTreeView.52"));
-          if (lSize > 1024) { // more than 1024 MB -> in GB
-            sbOut.append(lSize / 1024).append('.').append(lSize % 1024)
-                .append(Messages.getString("FilesTreeView.53"));
-          } else {
-            sbOut.append(lSize).append(Messages.getString("FilesTreeView.54"));
-          }
-          InformationJPanel.getInstance().setSelection(sbOut.toString());
         }
-        // Refresh the preference menu according to the selection
-        // (Useless for WebRadioView)
-        if (!(AbstractTableView.this instanceof WebRadioView)) {
-          pjmTracks.resetUI(jtable.getSelection());
+        int items = jtable.getSelection().size();
+        lSize /= 1048576; // set size in MB
+        StringBuilder sbOut = new StringBuilder().append(items).append(
+            Messages.getString("FilesTreeView.52"));
+        if (lSize > 1024) { // more than 1024 MB -> in GB
+          sbOut.append(lSize / 1024).append('.').append(lSize % 1024)
+              .append(Messages.getString("FilesTreeView.53"));
+        } else {
+          sbOut.append(lSize).append(Messages.getString("FilesTreeView.54"));
         }
+        InformationJPanel.getInstance().setSelection(sbOut.toString());
+      }
+      // Refresh the preference menu according to the selection
+      // (Useless for WebRadioView)
+      if (!(AbstractTableView.this instanceof WebRadioView)) {
+        pjmTracks.resetUI(jtable.getSelection());
       }
     });
   }
@@ -753,11 +723,11 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
   * Table initialization after table display.
   * Default implementation for table initialization :
   * update editable button state.
-  * 
+  *
   */
   void initTable() {
     jtbEditable.setSelected(Conf.getBoolean(editableConf));
-    // Sort by name by default. 
+    // Sort by name by default.
     jtable.setSortOrder(1, SortOrder.ASCENDING);
   }
 }

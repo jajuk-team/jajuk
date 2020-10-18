@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.util;
 
@@ -85,9 +85,7 @@ public final class UtilFeatures {
 
   /**
    * Apply play option.
-   * 
-   * @param alFiles 
-   * 
+   *
    * @return Given list to play with shuffle or others rules applied
    */
   @SuppressWarnings("unchecked")
@@ -107,16 +105,12 @@ public final class UtilFeatures {
    * <p>
    * null files are ignored
    * </p>.
-   * 
-   * @param alFiles 
-   * @param bRepeat 
-   * @param bUserLauched 
-   * 
+   *
    * @return the list< stack item>
    */
   public static List<StackItem> createStackItems(final List<org.jajuk.base.File> alFiles,
       final boolean bRepeat, final boolean bUserLauched) {
-    final List<StackItem> alOut = new ArrayList<StackItem>(alFiles.size());
+    final List<StackItem> alOut = new ArrayList<>(alFiles.size());
     for (org.jajuk.base.File file : alFiles) {
       if (file != null) {
         try {
@@ -134,24 +128,24 @@ public final class UtilFeatures {
 
   /**
    * Filter a given file list by ambience.
-   * 
+   *
    * @param al file list
    * @param ambience ambience
-   * 
+   *
    * @return the list filtered or a void list if none available track
    */
   public static List<org.jajuk.base.File> filterByAmbience(final List<org.jajuk.base.File> al,
       final Ambience ambience) {
     // If track list is null, return a void list
     if (al == null || al.size() == 0) {
-      return new ArrayList<org.jajuk.base.File>(0);
+      return new ArrayList<>(0);
     }
     // Void filter, return the input
     if ((ambience == null) || (ambience.getGenres().size() == 0)) {
       return al;
     }
     // Filter by ambience
-    final List<org.jajuk.base.File> out = new ArrayList<org.jajuk.base.File>(al.size() / 2);
+    final List<org.jajuk.base.File> out = new ArrayList<>(al.size() / 2);
     for (final org.jajuk.base.File file : al) {
       if (ambience.getGenres().contains(file.getTrack().getGenre())) {
         out.add(file);
@@ -162,13 +156,11 @@ public final class UtilFeatures {
 
   /**
    * Convenient method for getPlayableFiles(collection<item>).
-   * 
-   * @param item 
-   * 
+   *
    * @return files
    */
   public static List<org.jajuk.base.File> getPlayableFiles(Item item) {
-    List<Item> list = new ArrayList<Item>(1);
+    List<Item> list = new ArrayList<>(1);
     list.add(item);
     return getPlayableFiles(list);
   }
@@ -180,14 +172,14 @@ public final class UtilFeatures {
    * </p>
    * Unmounted files are selected according to the value of
    * CONF_OPTIONS_HIDE_UNMOUNTED option.
-   * 
+   *
    * @param selection an item selection (directories, files...)
-   * 
+   *
    * @return the files (empty list if none matching)
    */
   public static List<org.jajuk.base.File> getPlayableFiles(List<Item> selection) {
     // computes selection
-    List<org.jajuk.base.File> files = new ArrayList<org.jajuk.base.File>(100);
+    List<org.jajuk.base.File> files = new ArrayList<>(100);
     if (selection == null || selection.size() == 0) {
       return files;
     }
@@ -222,8 +214,6 @@ public final class UtilFeatures {
   /**
    * Gets the shuffle item.
    *
-   * @param <T> 
-   * @param col 
    * @return a single shuffle element from a list, null if none element in
    * provided collection
    */
@@ -231,20 +221,18 @@ public final class UtilFeatures {
     if (col.size() == 0) {
       return null;
     }
-    List<T> list = null;
+    final List<T> list;
     if (col instanceof List<?>) {
       list = (List<T>) col;
     } else {
-      list = new ArrayList<T>(col);
+      list = new ArrayList<>(col);
     }
     return list.get((int) (Math.random() * list.size()));
   }
 
   /**
    * Return a genre string for a given genre id *.
-   * 
-   * @param i 
-   * 
+   *
    * @return the string genre
    */
   public static String getStringGenre(final int i) {
@@ -257,9 +245,7 @@ public final class UtilFeatures {
 
   /**
    * Checks if is standard cover.
-   * 
-   * @param file 
-   * 
+   *
    * @return whether the given filename is a standard cover or not
    */
   public static boolean isStandardCover(final java.io.File file) {
@@ -292,9 +278,7 @@ public final class UtilFeatures {
   /**
    * Try to compute time length in milliseconds using BasicPlayer API. (code
    * from jlGui 2.3)
-   * 
-   * @param properties 
-   * 
+   *
    * @return the time length estimation
    */
   public static long getTimeLengthEstimation(final Map<String, Object> properties) {
@@ -302,10 +286,10 @@ public final class UtilFeatures {
     int byteslength = -1;
     if (properties != null) {
       if (properties.containsKey("audio.length.bytes")) {
-        byteslength = ((Integer) properties.get("audio.length.bytes")).intValue();
+        byteslength = (Integer) properties.get("audio.length.bytes");
       }
       if (properties.containsKey("duration")) {
-        milliseconds = (((Long) properties.get("duration")).longValue()) / 1000;
+        milliseconds = ((Long) properties.get("duration")) / 1000;
       } else {
         // Try to compute duration
         int bitspersample = -1;
@@ -313,16 +297,16 @@ public final class UtilFeatures {
         float samplerate = -1.0f;
         int framesize = -1;
         if (properties.containsKey("audio.samplesize.bits")) {
-          bitspersample = ((Integer) properties.get("audio.samplesize.bits")).intValue();
+          bitspersample = (Integer) properties.get("audio.samplesize.bits");
         }
         if (properties.containsKey("audio.channels")) {
-          channels = ((Integer) properties.get("audio.channels")).intValue();
+          channels = (Integer) properties.get("audio.channels");
         }
         if (properties.containsKey("audio.samplerate.hz")) {
-          samplerate = ((Float) properties.get("audio.samplerate.hz")).floatValue();
+          samplerate = (Float) properties.get("audio.samplerate.hz");
         }
         if (properties.containsKey("audio.framesize.bytes")) {
-          framesize = ((Integer) properties.get("audio.framesize.bytes")).intValue();
+          framesize = (Integer) properties.get("audio.framesize.bytes");
         }
         if (bitspersample > 0) {
           milliseconds = (int) (1000.0f * byteslength / (samplerate * channels * (((float) bitspersample) / 8)));
@@ -336,9 +320,7 @@ public final class UtilFeatures {
 
   /**
    * Gets the preference for selection.
-   * 
-   * @param selection 
-   * 
+   *
    * @return first item in selection preference
    */
   public static long getPreferenceForSelection(List<? extends Item> selection) {
@@ -346,7 +328,7 @@ public final class UtilFeatures {
     if (selection.size() == 0) {
       return Const.PREFERENCE_UNSET;
     }
-    List<Item> items = new ArrayList<Item>(selection);
+    List<Item> items = new ArrayList<>(selection);
     // For each entry of the selection (can be album, year, track,
     // directory...),
     // we add all associated tracks and we get equals preference if any
@@ -365,7 +347,7 @@ public final class UtilFeatures {
 
   /**
    * Helper method factorizing updates used to reflect current playing item status.
-   * 
+   *
    * @param observer the observer to update
    */
   public static void updateStatus(Observer observer) {
@@ -379,7 +361,7 @@ public final class UtilFeatures {
         // We consider that if WEBRADIO_INFO_UPDATED event is not null, WEBRADIO_LAUNCHED can't be null.
         WebRadio updatedWebRadio = (WebRadio) webradioInfoUpdatedEvent.get(Const.DETAIL_CONTENT);
         WebRadio radio = (WebRadio) webradioLaunchedEvent.get(Const.DETAIL_CONTENT);
-        //If web radio has an updated event then use that event else use the default event from the web radio launch      
+        //If web radio has an updated event then use that event else use the default event from the web radio launch
         if (radio.getName().equals(updatedWebRadio.getName())) {
           observer.update(new JajukEvent(JajukEvents.WEBRADIO_INFO_UPDATED,
               webradioInfoUpdatedEvent));
@@ -409,9 +391,7 @@ public final class UtilFeatures {
   /**
    * Return sum of decimal digits in n. Code from
    * http://www.cs.princeton.edu/introcs/51data/CDDB.java.html
-   * 
-   * @param n 
-   * 
+   *
    * @return the long
    */
   private static long sumOfDigits(long n) {
@@ -428,10 +408,6 @@ public final class UtilFeatures {
    * Shuffle a list of items and ensure that final list first element
    * is different from the initial list's one
    * <p>The list should not be void</p>.
-   * 
-   * @param list 
-   * 
-   * @return shuffled list
    */
   public static void forcedShuffle(List<StackItem> list) {
     StackItem first = list.get(0);
@@ -444,22 +420,17 @@ public final class UtilFeatures {
 
   /**
    * Return a flat list of files for given input list without duplicates nor sorting.
-   * 
-   * @param in 
-   * 
+   *
    * @return a flat list of files for given input list
-   * 
+   *
    * @throws JajukException if a playlist cannot be read
    */
   public static List<File> getFilesForItems(List<Item> in) throws JajukException {
     // We use a set to drop duplicates, for ie if user select both a directory and its files
-    Set<File> out = new LinkedHashSet<File>(in.size());
+    Set<File> out = new LinkedHashSet<>(in.size());
     for (Item item : in) {
       if (item instanceof File) {
         out.add((File) item);
-      } else if (item instanceof Directory) {
-        Directory dir = (Directory) item;
-        out.addAll(dir.getFilesRecursively());
       } else if (item instanceof Directory) {
         Directory dir = (Directory) item;
         out.addAll(dir.getFilesRecursively());
@@ -485,7 +456,7 @@ public final class UtilFeatures {
         }
       }
     }
-    return new ArrayList<File>(out);
+    return new ArrayList<>(out);
   }
 
   /**

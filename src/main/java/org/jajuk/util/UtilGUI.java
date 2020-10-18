@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.util;
 
@@ -114,15 +114,11 @@ public final class UtilGUI {
   public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
   // Current cursor that is displayed
   private static Cursor currentCursor = DEFAULT_CURSOR;
-  /** Substance theme. */
-  private static String theme;
   /** Alternate color rows highlighter used in every table. */
   private static Highlighter alternateColorHighlighter;
 
   /**
    * Return whether the given highlighter is the alternateColorHighlighter.
-   *
-   * @param other 
    *
    * @return whether the given highlighter is the alternateColorHighlighter
    */
@@ -140,19 +136,15 @@ public final class UtilGUI {
   /** Current active color scheme *. */
   private static SubstanceColorScheme colorScheme;
   /** Set cursor thread, stored to avoid construction. */
-  private static Runnable setCursorThread = new Runnable() {
-    @Override
-    public void run() {
-      Container container = null;
-      IPerspective perspective = PerspectiveManager.getCurrentPerspective();
-      if (perspective != null) {
-        // Log.debug("** Set cursor: " + currentCursor);
-        container = perspective.getContentPane();
-        container.setCursor(currentCursor);
-        CommandJPanel.getInstance().setCursor(currentCursor);
-        InformationJPanel.getInstance().setCursor(currentCursor);
-        PerspectiveBarJPanel.getInstance().setCursor(currentCursor);
-      }
+  private static final Runnable setCursorThread = () -> {
+    IPerspective perspective = PerspectiveManager.getCurrentPerspective();
+    if (perspective != null) {
+      // Log.debug("** Set cursor: " + currentCursor);
+      Container container = perspective.getContentPane();
+      container.setCursor(currentCursor);
+      CommandJPanel.getInstance().setCursor(currentCursor);
+      InformationJPanel.getInstance().setCursor(currentCursor);
+      PerspectiveBarJPanel.getInstance().setCursor(currentCursor);
     }
   };
 
@@ -164,8 +156,6 @@ public final class UtilGUI {
 
   /**
    * Display a given image in a frame (for debuging purpose).
-   *
-   * @param ii 
    */
   public static void displayImage(final ImageIcon ii) {
     final JFrame jf = new JFrame();
@@ -176,9 +166,6 @@ public final class UtilGUI {
 
   /**
    * Write down a memory image to a file.
-   *
-   * @param src 
-   * @param dest 
    */
   public static void extractImage(final Image src, final File dest) {
     final BufferedImage bi = UtilGUI.toBufferedImage(src);
@@ -211,8 +198,6 @@ public final class UtilGUI {
   /**
    * Gets the centred panel.
    *
-   * @param jc 
-   *
    * @return an horizontaly centred panel
    */
   public static JPanel getCentredPanel(final JComponent jc) {
@@ -222,7 +207,7 @@ public final class UtilGUI {
   /**
    * Gets the centred panel.
    *
-   * @param jc 
+   * @param jc
    * @param iOrientation : vertical or horizontal orientation, use BoxLayout.X_AXIS or
    * BoxLayout.Y_AXIS
    *
@@ -258,8 +243,6 @@ public final class UtilGUI {
   /**
    * Get required image with specified url.
    *
-   * @param url 
-   *
    * @return the image
    */
   public static ImageIcon getImage(final URL url) {
@@ -288,7 +271,7 @@ public final class UtilGUI {
    */
   public static Object getLimitedMessage(final String sText, final int limit) {
     final int iNbLines = new StringTokenizer(sText, "\n").countTokens();
-    Object message = null;
+    final Object message;
     if (iNbLines > limit) {
       final JTextArea area = new JTextArea(sText);
       area.setRows(10);
@@ -306,15 +289,13 @@ public final class UtilGUI {
    * http://java.sun.com/developer/onlineTraining/new2java/supplements/
    * 2005/July05.html#1 Used to correctly display long messages
    *
-   * @param maxCharactersPerLineCount 
-   *
    * @return the narrow option pane
    */
   public static JOptionPane getNarrowOptionPane(final int maxCharactersPerLineCount) {
     // Our inner class definition
     class NarrowOptionPane extends JOptionPane {
       private static final long serialVersionUID = 1L;
-      int lmaxCharactersPerLineCount;
+      final int lmaxCharactersPerLineCount;
 
       NarrowOptionPane(final int maxCharactersPerLineCount) {
         super();
@@ -333,8 +314,8 @@ public final class UtilGUI {
    * Resize an image.
    *
    * @param img image to resize
-   * @param iNewWidth 
-   * @param iNewHeight 
+   * @param iNewWidth
+   * @param iNewHeight
    *
    * @return resized image
    */
@@ -353,31 +334,25 @@ public final class UtilGUI {
   * @param panel panel to override.
   */
   public static void showBusyLabel(final JXPanel panel) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        panel.removeAll();
-        Dimension dim = new Dimension(panel.getWidth() / 3, panel.getWidth() / 3);
-        final JXBusyLabel busy = new JXBusyLabel(dim);
-        busy.setBusy(true);
-        JPanel inner = new JPanel();
-        inner.setMinimumSize(new Dimension(panel.getWidth(), panel.getHeight()));
-        inner.setLayout(new BoxLayout(inner, BoxLayout.X_AXIS));
-        inner.add(Box.createHorizontalGlue());
-        inner.add(UtilGUI.getCentredPanel(busy, BoxLayout.Y_AXIS));
-        inner.add(Box.createHorizontalGlue());
-        panel.add(inner);
-        panel.revalidate();
-        panel.repaint();
-      }
+    SwingUtilities.invokeLater(() -> {
+      panel.removeAll();
+      Dimension dim = new Dimension(panel.getWidth() / 3, panel.getWidth() / 3);
+      final JXBusyLabel busy = new JXBusyLabel(dim);
+      busy.setBusy(true);
+      JPanel inner = new JPanel();
+      inner.setMinimumSize(new Dimension(panel.getWidth(), panel.getHeight()));
+      inner.setLayout(new BoxLayout(inner, BoxLayout.X_AXIS));
+      inner.add(Box.createHorizontalGlue());
+      inner.add(UtilGUI.getCentredPanel(busy, BoxLayout.Y_AXIS));
+      inner.add(Box.createHorizontalGlue());
+      panel.add(inner);
+      panel.revalidate();
+      panel.repaint();
     });
   }
 
   /**
    * Gets the scaled image.
-   *
-   * @param img 
-   * @param iScale 
    *
    * @return a scaled image
    */
@@ -400,15 +375,14 @@ public final class UtilGUI {
 
   /**
    * Setup Substance look and feel.
-   *
-   * @param pTheme 
    */
   public static void setupSubstanceLookAndFeel(final String pTheme) {
     // Check the theme is known, if not take the default theme
     final Map<String, SkinInfo> themes = SubstanceLookAndFeel.getAllSkins();
-    theme = pTheme;
-    if (themes.get(theme) == null) {
-      theme = Const.LNF_DEFAULT_THEME;
+    // Substance theme
+    String theme1 = pTheme;
+    if (themes.get(theme1) == null) {
+      theme1 = Const.LNF_DEFAULT_THEME;
       Conf.setProperty(Const.CONF_OPTIONS_LNF, Const.LNF_DEFAULT_THEME);
     }
     // Set substance LAF
@@ -418,19 +392,19 @@ public final class UtilGUI {
       Log.error(e);
     }
     // Set substance LAF
-    SubstanceLookAndFeel.setSkin(themes.get(theme).getClassName());
+    SubstanceLookAndFeel.setSkin(themes.get(theme1).getClassName());
     // hide some useless elements such locker for not editable labels
     UIManager.put(SubstanceLookAndFeel.SHOW_EXTRA_WIDGETS, Boolean.FALSE);
     // Store current color scheme (cannot change for the wall session)
     colorScheme = SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.NONE);
     // Set view foreground colors
     SubstanceSkin theme = SubstanceLookAndFeel.getCurrentSkin();
-    
+
     SubstanceColorScheme scheme = theme.getActiveColorScheme(DecorationAreaType.NONE);
-    Color foregroundActive = null;
-    Color foregroundInactive = null;
-    Color backgroundActive = null;
-    Color backgroundInactive = null;
+    final Color foregroundActive;
+    final Color foregroundInactive;
+    final Color backgroundActive;
+    final Color backgroundInactive;
     if (scheme.isDark()) {
       foregroundActive = Color.BLACK;
       foregroundInactive = Color.WHITE;
@@ -453,7 +427,7 @@ public final class UtilGUI {
   /**
    * Display given container at given position.
    *
-   * @param window 
+   * @param window
    * @param iFromTop max number of pixels from top
    * @param iFromLeft max number of pixels from left
    */
@@ -482,7 +456,7 @@ public final class UtilGUI {
   }
 
   /**
-   * To buffered image. 
+   * To buffered image.
    *
    * @param image the input image
    *
@@ -496,8 +470,8 @@ public final class UtilGUI {
    * Create a buffered image without forced alpha channel.
    *
    * @param image the input image
-   * @param targetWidth 
-   * @param targetHeight 
+   * @param targetWidth
+   * @param targetHeight
    *
    * @return the buffered image
    */
@@ -513,8 +487,8 @@ public final class UtilGUI {
    * </p>
    *
    * @param image the input image
-   * @param targetWidth 
-   * @param targetHeight 
+   * @param targetWidth
+   * @param targetHeight
    * @param forcedAlpha Force using an alpha channel for target image
    *
    * @return buffered image from an image
@@ -583,8 +557,6 @@ public final class UtilGUI {
   /**
    * Get3d image.
    *
-   * @param img 
-   *
    * @return the 3d image
    */
   public static BufferedImage get3dImage(Image img) {
@@ -634,8 +606,6 @@ public final class UtilGUI {
    * This method returns true if the specified image has transparent pixels
    * Found at http://www.exampledepot.com/egs/java.awt.image/HasAlpha.html
    *
-   * @param image 
-   *
    * @return true if the specified image has transparent pixels
    */
   public static boolean hasAlpha(Image image) {
@@ -665,7 +635,7 @@ public final class UtilGUI {
    * will filter through all frames and sub-components of the frames.
    */
   public static void updateAllUIs() {
-    Frame frames[];
+    Frame[] frames;
     frames = Frame.getFrames();
     for (final Frame element : frames) {
       UtilGUI.updateWindowUI(element);
@@ -678,8 +648,6 @@ public final class UtilGUI {
    * current look and feel. Based on the Sun
    * SwingUtilities.updateComponentTreeUI, but ensures that the update happens
    * on the components of a JToolbar before the JToolbar itself.
-   *
-   * @param c 
    */
   public static void updateComponentTreeUI(final Component c) {
     UtilGUI.updateComponentTreeUI0(c);
@@ -689,9 +657,7 @@ public final class UtilGUI {
   }
 
   /**
-   * Update component tree u i0. 
-   *
-   * @param c 
+   * Update component tree u i0.
    */
   private static void updateComponentTreeUI0(final Component c) {
     Component[] children = null;
@@ -733,7 +699,7 @@ public final class UtilGUI {
     } catch (final Exception exception) {
       Log.error(exception);
     }
-    final Window windows[] = window.getOwnedWindows();
+    final Window[] windows = window.getOwnedWindows();
     for (final Window element : windows) {
       UtilGUI.updateWindowUI(element);
     }
@@ -759,9 +725,6 @@ public final class UtilGUI {
 
   /**
    * Checks if is over.
-   *
-   * @param location 
-   * @param dimension 
    *
    * @return whether the current mouse cursor if above a given component
    */
@@ -795,8 +758,6 @@ public final class UtilGUI {
   /**
    * Display a dialog with given url picture.
    *
-   * @param url 
-   *
    * @throws MalformedURLException the malformed url exception
    */
   static public void showPictureDialog(String url) throws MalformedURLException {
@@ -814,23 +775,17 @@ public final class UtilGUI {
 
   /**
    * Registers the ESCAPE key on the Panel so that it closes the Dialog.
-   *
-   * @param window 
-   * @param pane 
    */
   public static void setEscapeKeyboardAction(final Window window, JComponent pane) {
-    final KeyEventDispatcher dispatcher = new KeyEventDispatcher() {
-      @Override
-      public boolean dispatchKeyEvent(KeyEvent e) {
-        // For some reasons (under Linux at least), pressing escape only trigger PRESSED
-        // and RELEASED key events
-        if (e.getKeyCode() == KeyEvent.VK_ESCAPE && e.getID() == KeyEvent.KEY_PRESSED
-            && window.isFocused()) {
-          window.dispose();
-          return true;
-        }
-        return false;
+    final KeyEventDispatcher dispatcher = e -> {
+      // For some reasons (under Linux at least), pressing escape only trigger PRESSED
+      // and RELEASED key events
+      if (e.getKeyCode() == KeyEvent.VK_ESCAPE && e.getID() == KeyEvent.KEY_PRESSED
+          && window.isFocused()) {
+        window.dispose();
+        return true;
       }
+      return false;
     };
     // Add keystroke to close window when pressing escape
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(dispatcher);
@@ -846,14 +801,14 @@ public final class UtilGUI {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(dispatcher);
       }
     });
-    
+
     window.addComponentListener(new ComponentAdapter() {
       @Override
       public void componentHidden(ComponentEvent e) {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(dispatcher);
       }
     });
-    
+
   }
 
   /**
@@ -862,8 +817,6 @@ public final class UtilGUI {
    * <exception catching is preferred in the longCall() method without throwing
    * it to the fastCall() one.
    * </p>
-   *
-   * @param displayable 
    */
   public static void populate(final TwoStepsDisplayable displayable) {
     SwingWorker<Object, Void> sw = new SwingWorker<Object, Void>() {
@@ -877,9 +830,7 @@ public final class UtilGUI {
         try {
           Object in = get();
           displayable.shortCall(in);
-        } catch (InterruptedException e) {
-          Log.error(e);
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
           Log.error(e);
         }
       }
@@ -889,8 +840,6 @@ public final class UtilGUI {
 
   /**
    * Center a given window to the center of the screen.
-   *
-   * @param window 
    */
   public static void centerWindow(Window window) {
     Toolkit tk = Toolkit.getDefaultToolkit();

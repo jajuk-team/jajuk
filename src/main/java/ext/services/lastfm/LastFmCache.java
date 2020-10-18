@@ -822,9 +822,6 @@ public class LastFmCache {
 
   /**
    * Adds the submission data.
-   *
-   *
-   * @param submissionData
    */
   public synchronized void addSubmissionData(FullSubmissionData submissionData) {
     List<FullSubmissionData> submissionDataList = getSubmissionData();

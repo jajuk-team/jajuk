@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.util;
 
@@ -72,9 +72,7 @@ public class Messages extends DefaultHandler {
 
   /**
    * Contains.
-   * 
-   * @param sKey 
-   * 
+   *
    * @return whether given key exists
    */
   public static boolean contains(final String sKey) {
@@ -83,9 +81,7 @@ public class Messages extends DefaultHandler {
 
   /**
    * Gets the string.
-   * 
-   * @param key 
-   * 
+   *
    * @return the string
    */
   public static String getString(final String key) {
@@ -112,28 +108,28 @@ public class Messages extends DefaultHandler {
    * Fetch all messages from a given base key.
    * <P/>
    * Example:
-   * 
+   *
    * <pre>
    * example.0=Message 1
    * example.1=Message 2
    * example.2=Message 3
    * </pre>
-   * 
+   *
    * Using <tt>Messages.getAll("example");</tt> will return a size 3 String
    * array containing the messages in order.
    * <P/>
    * The keys need to have continuous numbers. So, adding
    * <tt>example.5=Message 5</tt> to the bundle, will not result in adding it to
    * the array without first adding <tt>example.3</tt> and <tt>example.4</tt>.
-   * 
+   *
    * @param base The base to use for generating the keys.
-   * 
+   *
    * @return An array of Strings containing the messages linked to the key,
    * never <tt>null</tt>. If <tt>base.0</tt> is not found, and empty
    * array is returned.
    */
   public static String[] getAll(final String base) {
-    final List<String> msgs = new ArrayList<String>();
+    final List<String> msgs = new ArrayList<>();
     final String prefix = base + ".";
     try {
       final Properties lProperties = getProperties();
@@ -156,22 +152,21 @@ public class Messages extends DefaultHandler {
     } catch (final Exception e) { // System error
       Log.error(e);
     }
-    return msgs.toArray(new String[msgs.size()]);
+    return msgs.toArray(new String[0]);
   }
 
   /**
    * Gets the shuffle tip of the day.
-   * 
+   *
    * @return a shuffled tip of the day <br>
    */
   public static String getShuffleTipOfTheDay() {
     try {
-      String totd = null;
       String[] tips = Messages.getAll("TipOfTheDay");
       // index contains the index of the last provided totd
       int index = (int) (UtilSystem.getRandom().nextFloat() * (tips.length - 1));
       // display the next one
-      totd = Messages.getString("TipOfTheDay." + index);
+      String totd = Messages.getString("TipOfTheDay." + index);
       // Remove <img> tags
       totd = totd.replaceAll("<.*>", "");
       // Increment and save index
@@ -186,22 +181,18 @@ public class Messages extends DefaultHandler {
 
   /**
    * Return Flag icon for given description.
-   * 
-   * @param sDesc 
-   * 
+   *
    * @return the icon
    */
   public static Icon getIcon(final String sDesc) {
-    Icon icon = new ImageIcon(UtilSystem.getResource("icons/16x16/flag_"
+    return new ImageIcon(UtilSystem.getResource("icons/16x16/flag_"
         + LocaleManager.getLocaleForDesc(sDesc) + ".png"));
-    return icon;
   }
 
   /**
    * ***************************************************************************
    * Parse a fake properties file inside an XML file as CDATA.
    *
-   * @param locale 
    * @return a properties with all entries
    * @throws SAXException the SAX exception
    * @throws IOException Signals that an I/O exception has occurred.
@@ -233,20 +224,18 @@ public class Messages extends DefaultHandler {
     final SAXParser saxParser = spf.newSAXParser();
     saxParser.parse(url.openStream(), new DefaultHandler() {
       // this buffer will contain the entire properties strings
-      StringBuilder sb = new StringBuilder(15000);
+      final StringBuilder sb = new StringBuilder(15000);
 
       // call for each element strings, actually will be called
       // several time if the element is large (our case : large CDATA)
       @Override
-      public void characters(final char[] ch, final int start, final int length)
-          throws SAXException {
+      public void characters(final char[] ch, final int start, final int length) {
         sb.append(ch, start, length);
       }
 
       // call when closing the tag (</body> in our case )
       @Override
-      public void endElement(final String uri, final String localName, final String qName)
-          throws SAXException {
+      public void endElement(final String uri, final String localName, final String qName) {
         final String sWhole = sb.toString();
         // ok, parse it ( comments start with #)
         final StringTokenizer st = new StringTokenizer(sWhole, "\n");
@@ -269,9 +258,9 @@ public class Messages extends DefaultHandler {
 
   /**
    * Return the message display to the user corresponding to the error code.
-   * 
+   *
    * @param code Error code.
-   * 
+   *
    * @return String Message corresponding to the error code.
    */
   public static String getErrorMessage(final int code) {
@@ -292,7 +281,10 @@ public class Messages extends DefaultHandler {
    * </p>.
    *
    * @param sText : dialog text
-   * @param optionsType 
+   * @param optionsType kind of options like {@link JOptionPane}#OK_CANCEL
+   *        <p>
+   *        Specific option: Messages.ALL_OPTION
+   *        </p>
    * @param iType message type like JOptionPane.WARNING
    * @return the choice
    */
@@ -316,9 +308,7 @@ public class Messages extends DefaultHandler {
       } else {
         SwingUtilities.invokeAndWait(t);
       }
-    } catch (InterruptedException e) {
-      Log.error(e);
-    } catch (InvocationTargetException e) {
+    } catch (InterruptedException | InvocationTargetException e) {
       Log.error(e);
     }
     return choice;
@@ -326,9 +316,7 @@ public class Messages extends DefaultHandler {
 
   /**
    * Gets the title for type.
-   * 
-   * @param iType 
-   * 
+   *
    * @return String for given JOptionPane message type
    */
   private static String getTitleForType(final int iType) {
@@ -345,23 +333,16 @@ public class Messages extends DefaultHandler {
 
   /**
    * Show a dialog with specified warning message.
-   * 
-   * @param sMessage 
    */
   public static void showWarningMessage(final String sMessage) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.WARNING_MESSAGE),
-            JOptionPane.WARNING_MESSAGE, null, null);
-      }
-    });
+    SwingUtilities.invokeLater(() -> new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.WARNING_MESSAGE),
+        JOptionPane.WARNING_MESSAGE, null, null));
   }
 
   /**
    * Show a dialog with specified warning message + a "not show again" button.
-   * 
-   * @param sMessage 
+   *
+   * @param sMessage : the message to show
    * @param sProperty : property name
    */
   public static void showHideableWarningMessage(final String sMessage, final String sProperty) {
@@ -369,52 +350,31 @@ public class Messages extends DefaultHandler {
     if (Conf.getBoolean(sProperty)) {
       return;
     }
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        final HideableMessageDialog message = new HideableMessageDialog(sMessage,
-            getTitleForType(JOptionPane.WARNING_MESSAGE), sProperty, JOptionPane.WARNING_MESSAGE,
-            null);
-        message.getResu();
-      }
+    SwingUtilities.invokeLater(() -> {
+      final HideableMessageDialog message = new HideableMessageDialog(sMessage,
+          getTitleForType(JOptionPane.WARNING_MESSAGE), sProperty, JOptionPane.WARNING_MESSAGE,
+          null);
+      message.getResu();
     });
   }
 
   /**
    * Show a dialog with specified error message and an icon.
-   * 
-   * @param sMessage 
-   * @param icon 
    */
   public static void showInfoMessage(final String sMessage, final Icon icon) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.INFORMATION_MESSAGE),
-            JOptionPane.INFORMATION_MESSAGE, null, icon);
-      }
-    });
+    SwingUtilities.invokeLater(() -> new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.INFORMATION_MESSAGE),
+        JOptionPane.INFORMATION_MESSAGE, null, icon));
   }
 
   /**
    * Show a dialog with specified error message and infosup.
-   * 
-   * @param code 
-   * @param sInfoSup 
    */
   public static void showErrorMessage(final int code, final String sInfoSup) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        new ErrorMessageDialog(code, sInfoSup);
-      }
-    });
+    SwingUtilities.invokeLater(() -> new ErrorMessageDialog(code, sInfoSup));
   }
 
   /**
    * Show a dialog with specified error message.
-   * 
-   * @param code 
    */
   public static void showErrorMessage(final int code) {
     showErrorMessage(code, null);
@@ -422,59 +382,35 @@ public class Messages extends DefaultHandler {
 
   /**
    * Show a dialog with specified error message and infosup and details.
-   *
-   * @param code 
-   * @param sInfoSup 
-   * @param sDetails 
    */
   public static void showDetailedErrorMessage(final int code, final String sInfoSup,
       final String sDetails) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        new DetailsMessageDialog(Messages.getErrorMessage(code) + " : " + sInfoSup,
-            getTitleForType(JOptionPane.ERROR_MESSAGE), JOptionPane.ERROR_MESSAGE, sDetails, null);
-      }
-    });
+    SwingUtilities.invokeLater(() -> new DetailsMessageDialog(Messages.getErrorMessage(code) + " : " + sInfoSup,
+        getTitleForType(JOptionPane.ERROR_MESSAGE), JOptionPane.ERROR_MESSAGE, sDetails, null));
   }
 
   /**
    * Show a dialog with specified error message with infos up.
-   * 
-   * @param sMessage 
-   * @param sInfoSup 
    */
   public static void showInfoMessage(final String sMessage, final String sInfoSup) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        new DetailsMessageDialog(sMessage + " : " + sInfoSup,
-            getTitleForType(JOptionPane.INFORMATION_MESSAGE), JOptionPane.INFORMATION_MESSAGE,
-            null, null);
-      }
-    });
+    SwingUtilities.invokeLater(() -> new DetailsMessageDialog(sMessage + " : " + sInfoSup,
+        getTitleForType(JOptionPane.INFORMATION_MESSAGE), JOptionPane.INFORMATION_MESSAGE,
+        null, null));
   }
 
   /**
    * Show a dialog with specified error message.
-   * 
-   * @param sMessage 
    */
   public static void showInfoMessage(final String sMessage) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.INFORMATION_MESSAGE),
-            JOptionPane.INFORMATION_MESSAGE, null, null);
-      }
-    });
+    SwingUtilities.invokeLater(() -> new DetailsMessageDialog(sMessage, getTitleForType(JOptionPane.INFORMATION_MESSAGE),
+        JOptionPane.INFORMATION_MESSAGE, null, null));
   }
 
   /**
    * Return true if the messaging system is started, can be useful mainly at
    * startup by services ( like logs) using them to avoid dead locks Messages
    * service is initialized after current has been set.
-   * 
+   *
    * @return true, if checks if is initialized
    */
   public static boolean isInitialized() {
@@ -483,17 +419,14 @@ public class Messages extends DefaultHandler {
 
   /**
    * Gets localized and human property name for given key.
-   * 
-   * @param sKey 
-   * 
+   *
    * @return the human property name or the property itself if not translated
    */
   public static String getHumanPropertyName(String sKey) {
-    String sOut = sKey;
     if (Messages.contains(Const.PROPERTY_SEPARATOR + sKey)) {
       return Messages.getString(Const.PROPERTY_SEPARATOR + sKey);
     }
-    return sOut;
+    return sKey;
   }
 
   /**
@@ -519,7 +452,7 @@ public class Messages extends DefaultHandler {
 
   /**
    * Gets the properties en.
-   * 
+   *
    * @return Returns the propertiesEn.
    */
   public static Properties getPropertiesEn() {
@@ -540,10 +473,10 @@ public class Messages extends DefaultHandler {
 class ConfirmDialog extends JajukDialog {
   /**
    * Confirm dialog constructor
-   * 
+   *
    * @param sText
    * @param sTitle
-   * @param int optionType : kind of options like JOptionPane.OK_CANCEL
+   * @param optionsType : kind of options like JOptionPane.OK_CANCEL
    *        <p>
    *        Specific option: Messages.ALL_OPTION
    *        </p>
@@ -604,10 +537,6 @@ class ConfirmDialog extends JajukDialog {
 class DetailsMessageDialog extends JajukDialog {
   /**
    * Message dialog constructor
-   * 
-   * @param sText
-   * @param sTitle
-   * @param iType
    */
   DetailsMessageDialog(final String sText, final String sTitle, final int iType,
       final String sDetails, final Icon icon) {
@@ -655,12 +584,6 @@ class DetailsMessageDialog extends JajukDialog {
 class HideableMessageDialog extends JajukDialog {
   /**
    * Message dialog constructor
-   * 
-   * @param sText
-   * @param sTitle
-   * @param sProperty
-   * @param iType
-   * @param icon
    */
   HideableMessageDialog(final String sText, final String sTitle, final String sProperty,
       final int iType, final Icon icon) {
@@ -695,12 +618,6 @@ class HideableMessageDialog extends JajukDialog {
 class ErrorMessageDialog extends JajukDialog {
   /**
    * Message dialog constructor
-   * 
-   * @param sText
-   * @param sTitle
-   * @param sProperty
-   * @param iType
-   * @param icon
    */
   ErrorMessageDialog(final int code, final String sInfoSup) {
     super();
@@ -727,7 +644,7 @@ abstract class JajukDialog {
   protected int iResu = -2;
 
   /**
-   * 
+   *
    * @return the user option
    */
   public int getResu() {

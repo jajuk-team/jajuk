@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.actions;
 
@@ -78,9 +78,9 @@ public class PasteAction extends JajukAction {
     final List<Item> alSelected = (List<Item>) source.getClientProperty(Const.DETAIL_SELECTION);
     final List<Item> itemsToMove = ItemMoveManager.getInstance().getAll();
     final ItemMoveManager.MoveActions moveAction = ItemMoveManager.getInstance().getAction();
-    final List<File> alFiles = new ArrayList<File>(alSelected.size());
-    final List<Playlist> alPlaylists = new ArrayList<Playlist>(alSelected.size());
-    final List<Directory> alDirs = new ArrayList<Directory>(alSelected.size());
+    final List<File> alFiles = new ArrayList<>(alSelected.size());
+    final List<Playlist> alPlaylists = new ArrayList<>(alSelected.size());
+    final List<Directory> alDirs = new ArrayList<>(alSelected.size());
     new Thread("Paste Thread") {
       @SuppressWarnings("cast")
       @Override
@@ -128,13 +128,12 @@ public class PasteAction extends JajukAction {
         // Compute source directories
         // We need to find the highest directory in order to refresh it along
         // with the destination file to avoid phantom references
-        List<Directory> srcDirs = new ArrayList<Directory>(1);
+        List<Directory> srcDirs = new ArrayList<>(1);
         for (File file : alFiles) {
           boolean parentAlreadyPresent = false;
           // We have to iterate using items index because the collection can
           // grow
-          for (int i = 0; i < srcDirs.size(); i++) {
-            Directory directory = srcDirs.get(i);
+          for (Directory directory : srcDirs) {
             if (file.getDirectory().isChildOf(directory)) {
               parentAlreadyPresent = true;
               break;
@@ -148,8 +147,7 @@ public class PasteAction extends JajukAction {
           boolean parentAlreadyPresent = false;
           // We have to iterate using items index because the collection can
           // grow
-          for (int i = 0; i < srcDirs.size(); i++) {
-            Directory directory = srcDirs.get(i);
+          for (Directory directory : srcDirs) {
             if (pl.getDirectory().isChildOf(directory)) {
               parentAlreadyPresent = true;
               break;
@@ -205,9 +203,7 @@ public class PasteAction extends JajukAction {
             }
             try {
               showMessage(pl.getFIO());
-              final java.io.File fileNew = new java.io.File(
-                  new StringBuilder(dir.getAbsolutePath()).append("/").append(pl.getName())
-                      .toString());
+              final java.io.File fileNew = new java.io.File(dir.getAbsolutePath() + "/" + pl.getName());
               if (!pl.getFIO().renameTo(fileNew)) {
                 throw new Exception("Cannot move item: " + pl.getFIO().getAbsolutePath() + " to "
                     + fileNew.getAbsolutePath());
@@ -229,11 +225,9 @@ public class PasteAction extends JajukAction {
               java.io.File src = new java.io.File(d.getAbsolutePath());
               java.io.File dst = new java.io.File(dir.getAbsolutePath() + "/" + d.getName());
               showMessage(src);
-              java.io.File newDir = new java.io.File(
-                  new StringBuilder(dst.getAbsolutePath()).toString());
+              java.io.File newDir = new java.io.File(dst.getAbsolutePath());
               if (!src.renameTo(newDir)) {
-                throw new Exception("Cannot move item: " + src.getAbsolutePath() + " to "
-                    + dst.getAbsolutePath());
+                throw new Exception("Cannot move item: " + src.getAbsolutePath() + " to " + dst.getAbsolutePath());
               }
               DirectoryManager.getInstance().removeDirectory(d.getID());
               destDir.refresh(false);
@@ -341,8 +335,8 @@ public class PasteAction extends JajukAction {
 
   /**
    * Display currently copied file to information panel.
-   * 
-   * @param file 
+   *
+   * @param file The file to display in the information panel
    */
   private void showMessage(java.io.File file) {
     String message = Messages.getString("Device.45");

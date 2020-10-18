@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.views;
 
@@ -84,7 +84,7 @@ public class SuggestionView extends ViewAdapter {
 
   //Remove tab border, see
   // http://forum.java.sun.com/thread.jspa?threadID=260746&messageID=980405
-  class MyTabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
+  static class MyTabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
     @Override
     protected Insets getContentBorderInsets(int tabPlacement) {
       return new Insets(0, 0, 0, 0);
@@ -100,11 +100,6 @@ public class SuggestionView extends ViewAdapter {
     BEST_OF, NEWEST, RARE, OTHERS_ALBUMS, SIMILAR_ARTISTS
   }
 
-  JScrollPane jpBestof;
-  JScrollPane jpNewest;
-  JScrollPane jpRare;
-  JScrollPane jpOthersAlbums;
-  JScrollPane jpSimilarArtists;
   private int comp = 0;
   List<Album> albumsNewest;
   List<Album> albumsPrefered;
@@ -188,14 +183,14 @@ public class SuggestionView extends ViewAdapter {
         // store the selected tab
         Conf.setProperty(getClass().getName() + "_"
             + ((getPerspective() == null) ? "solo" : getPerspective().getID()),
-            Integer.toString(tabs.getSelectedIndex()).toString());
+                Integer.toString(tabs.getSelectedIndex()));
       }
     });
   }
 
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
-    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.PARAMETERS_CHANGE);
     eventSubjectSet.add(JajukEvents.COVER_DEFAULT_CHANGED);
@@ -210,7 +205,7 @@ public class SuggestionView extends ViewAdapter {
     // Display a busy panel in the mean-time
     // For some reasons, if we put that code into an invokeLater() call
     // it is executed after the next done() in next swing worker, no clue why
-    // As a compromise, we only show busy label when called in EDT (not the case when the 
+    // As a compromise, we only show busy label when called in EDT (not the case when the
     // call is from an update() )
     if (SwingUtilities.isEventDispatchThread()) {
       busyLocal1.setBusy(true);
@@ -241,7 +236,7 @@ public class SuggestionView extends ViewAdapter {
 
       private void refreshThumbsForLocalAlbums() {
         // Refresh thumbs for required albums
-        List<Album> albums = new ArrayList<Album>(10);
+        List<Album> albums = new ArrayList<>(10);
         albums.addAll(albumsPrefered);
         albums.addAll(albumsNewest);
         albums.addAll(albumsRare);
@@ -271,7 +266,7 @@ public class SuggestionView extends ViewAdapter {
 
   /**
    * Refresh last fm collection tabs.
-   * 
+   *
    */
   private void refreshLastFMCollectionTabs() {
     String newArtist = null;
@@ -288,12 +283,9 @@ public class SuggestionView extends ViewAdapter {
         // If unknown artist
         || (newArtist == null || newArtist.equals(Messages.getString(UNKNOWN_ARTIST)))) {
       // Set empty panels
-      SwingUtilities.invokeLater(new Runnable() {
-        @Override
-        public void run() {
-          tabs.setComponentAt(3, new JLabel(Messages.getString("SuggestionView.7")));
-          tabs.setComponentAt(4, new JLabel(Messages.getString("SuggestionView.7")));
-        }
+      SwingUtilities.invokeLater(() -> {
+        tabs.setComponentAt(3, new JLabel(Messages.getString("SuggestionView.7")));
+        tabs.setComponentAt(4, new JLabel(Messages.getString("SuggestionView.7")));
       });
       return;
     }
@@ -304,14 +296,11 @@ public class SuggestionView extends ViewAdapter {
     // Save current artist
     artist = newArtist;
     // Display a busy panel in the mean-time
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        busyLastFM1.setBusy(true);
-        busyLastFM2.setBusy(true);
-        tabs.setComponentAt(3, UtilGUI.getCentredPanel(busyLastFM1));
-        tabs.setComponentAt(4, UtilGUI.getCentredPanel(busyLastFM2));
-      }
+    SwingUtilities.invokeLater(() -> {
+      busyLastFM1.setBusy(true);
+      busyLastFM2.setBusy(true);
+      tabs.setComponentAt(3, UtilGUI.getCentredPanel(busyLastFM1));
+      tabs.setComponentAt(4, UtilGUI.getCentredPanel(busyLastFM2));
     });
     // Use a swing worker as construct takes a lot of time
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
@@ -345,7 +334,7 @@ public class SuggestionView extends ViewAdapter {
 
   /**
    * Pre-load other album (done outside the EDT).
-  
+
    *
    * @throws Exception the exception
    */
@@ -354,7 +343,7 @@ public class SuggestionView extends ViewAdapter {
     // Perform images downloads and caching
     if (albums != null && albums.getAlbums().size() > 0) {
       for (AlbumInfo album : albums.getAlbums()) {
-        // stop this list of albums if there was another file launched in the meantime 
+        // stop this list of albums if there was another file launched in the meantime
         String albumUrl = album.getBigCoverURL();
         if (StringUtils.isBlank(albumUrl)) {
           continue;
@@ -380,7 +369,7 @@ public class SuggestionView extends ViewAdapter {
     if (similar != null && similar.getArtists() != null) {
       List<ArtistInfo> artists = similar.getArtists();
       for (ArtistInfo similarArtist : artists) {
-        // stop this list of albums if there was another file launched in the meantime, another refresh will take place anyway 
+        // stop this list of albums if there was another file launched in the meantime, another refresh will take place anyway
         String artistUrl = similarArtist.getImageUrl();
         if (StringUtils.isBlank(artistUrl)) {
           continue;
@@ -396,8 +385,6 @@ public class SuggestionView extends ViewAdapter {
 
   /**
    * Return the result panel for local albums.
-   *
-   * @param type 
    *
    * @return the local suggestions panel
    */
@@ -431,9 +418,6 @@ public class SuggestionView extends ViewAdapter {
 
   /**
    * Return the result panel for lastFM information.
-   *
-   * @param type 
-   * @param artistView 
    *
    * @return the last fm suggestions panel
    */

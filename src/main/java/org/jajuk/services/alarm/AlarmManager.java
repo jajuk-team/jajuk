@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.services.alarm;
 
@@ -47,7 +47,7 @@ import org.jajuk.util.log.Log;
 
 /**
  * Manages alarms
- * 
+ *
  * TODO: We could use Timer instead of implementing the Timer loop ourselves here!.
  * TODO : multi-alarms management
  */
@@ -86,7 +86,7 @@ public class AlarmManager implements Observer {
 
   /**
    * Gets the single instance of AlarmManager.
-   * 
+   *
    * @return single instance of AlarmManager
    */
   public static AlarmManager getInstance() {
@@ -95,7 +95,7 @@ public class AlarmManager implements Observer {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#update(org.jajuk.events.JajukEvent)
    */
   @Override
@@ -126,7 +126,7 @@ public class AlarmManager implements Observer {
         if (alarmAction.equals(Const.ALARM_START_ACTION)) {
           String mode = Conf.getString(Const.CONF_ALARM_MODE);
           String conf = Conf.getString(Const.CONF_ALARM_FILE);
-          String item = conf.substring(conf.indexOf('/') + 1, conf.length());
+          String item = conf.substring(conf.indexOf('/') + 1);
           alToPlay = new ArrayList<File>();
           if (mode.equals(Const.STARTUP_MODE_ITEM)) {
             if (conf.matches(SearchResultType.FILE.name() + ".*")) { //NOSONAR
@@ -138,7 +138,7 @@ public class AlarmManager implements Observer {
               radio = WebRadioManager.getInstance().getWebRadioByName(item);
             }
           } else if (mode.equals(Const.STARTUP_MODE_SHUFFLE)) {
-            // Filter files by ambience or if none ambience matches, perform a global shuffle 
+            // Filter files by ambience or if none ambience matches, perform a global shuffle
             // ignoring current ambience
             alToPlay = UtilFeatures.filterByAmbience(FileManager.getInstance()
                 .getGlobalShufflePlaylist(), ambience);
@@ -173,7 +173,7 @@ public class AlarmManager implements Observer {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   @Override
