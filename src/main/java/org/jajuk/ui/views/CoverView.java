@@ -1023,19 +1023,23 @@ public class CoverView extends ViewAdapter implements ActionListener {
       if (indexPrevious > alCovers.size() - 1) {
         indexPrevious = 0;
       }
-      final URL urlPrevious = alCovers.get(indexPrevious).getURL();
-      if (urlPrevious != null) {
-        jbPrevious.setToolTipText("<html>" + Messages.getString("CoverView.4") + "<br>"
-            + urlPrevious.toString() + "</html>");
+      if(indexPrevious < alCovers.size()) {
+        final URL urlPrevious = alCovers.get(indexPrevious).getURL();
+        if (urlPrevious != null) {
+          jbPrevious.setToolTipText("<html>" + Messages.getString("CoverView.4") + "<br>"
+                  + urlPrevious.toString() + "</html>");
+        }
       }
       int indexNext = index - 1;
       if (indexNext < 0) {
         indexNext = alCovers.size() - 1;
       }
-      final URL urlNext = alCovers.get(indexNext).getURL();
-      if (urlNext != null) {
-        jbNext.setToolTipText("<html>" + Messages.getString("CoverView.5") + "<br>"
-            + urlNext.toString() + "</html>");
+      if(indexNext >= 0 && indexNext < alCovers.size()) {
+        final URL urlNext = alCovers.get(indexNext).getURL();
+        if (urlNext != null) {
+          jbNext.setToolTipText("<html>" + Messages.getString("CoverView.5") + "<br>"
+                  + urlNext.toString() + "</html>");
+        }
       }
     } catch (final Exception e) { // the url code can throw out of bounds
       // exception for unknown reasons so check it
