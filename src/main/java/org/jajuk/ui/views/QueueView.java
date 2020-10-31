@@ -252,23 +252,20 @@ public class QueueView extends PlaylistView {
    * the GUI
    */
   private void goToSelection() {
-    new Thread("Queue Selection Thread") {
-      @Override
-      public void run() {
-        try {
-          QueueModel.goTo(editorTable.getSelectedRow());
-          // remove selection for planned tracks
-          ListSelectionModel lsm = editorTable.getSelectionModel();
-          editorModel.setRefreshing(true);
-          editorTable.getSelectionModel().removeSelectionInterval(lsm.getMinSelectionIndex(),
-              lsm.getMaxSelectionIndex());
-        } catch (Exception e) {
-          Log.error(e);
-        } finally {
-          editorModel.setRefreshing(false);
-        }
+    SwingUtilities.invokeLater(() -> {
+      try {
+        QueueModel.goTo(editorTable.getSelectedRow());
+        // remove selection for planned tracks
+        ListSelectionModel lsm = editorTable.getSelectionModel();
+        editorModel.setRefreshing(true);
+        editorTable.getSelectionModel().removeSelectionInterval(lsm.getMinSelectionIndex(),
+                lsm.getMaxSelectionIndex());
+      } catch (Exception e) {
+        Log.error(e);
+      } finally {
+        editorModel.setRefreshing(false);
       }
-    }.start();
+    });
   }
 
   /*
