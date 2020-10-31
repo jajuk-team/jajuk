@@ -198,6 +198,7 @@ public final class TrackManager extends ItemManager {
       if (track != null) {
         return track;
       }
+
       track = new Track(sId, sName, album, genre, artist, length, year, lOrder, type, lDiscNumber);
       track.setAlbumArtist(albumArtist);
       registerItem(track);
@@ -220,8 +221,8 @@ public final class TrackManager extends ItemManager {
    * throw an exception if a tag cannot be commited
    */
   public void commit() throws JajukException {
+    lock.writeLock().lock();
     try {
-      lock.writeLock().lock();
       // Iterate over a defensive copy to avoid concurrent issues (note also that
       // several threads can commit at the same time). We synchronize the copy and
       // we drop tags to commit.
@@ -230,6 +231,7 @@ public final class TrackManager extends ItemManager {
         toCommit = new ArrayList<>(tagsToCommit);
         tagsToCommit.clear();
       }
+
       for (Tag tag : toCommit) {
         try {
           tag.commit();
@@ -273,21 +275,23 @@ public final class TrackManager extends ItemManager {
    */
   public Track changeTrackAlbum(Track track, String sNewAlbum, Set<File> filter)
       throws JajukException {
+    lock.writeLock().lock();
     try {
-      lock.writeLock().lock();
-      if (!confirm(track)) {
-        return track;
-      }
-      // check there is actually a change
+      // check if there is actually a change
       if (track.getAlbum().getName2().equals(sNewAlbum)) {
         return track;
       }
-      final List<File> alReady;
+
+      if (!confirm(track)) {
+        return track;
+      }
+
       // check if files are accessible
-      alReady = track.getReadyFiles(filter);
+      final List<File> alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
         throw new NoneAccessibleFileException(10);
       }
+
       // change tag in files
       for (File file : alReady) {
         Tag tag = Tag.getTagForFio(file.getFIO(), false);
@@ -334,21 +338,23 @@ public final class TrackManager extends ItemManager {
    */
   public Track changeTrackArtist(Track track, String sNewArtist, Set<File> filter)
       throws JajukException {
+    lock.writeLock().lock();
     try {
-      lock.writeLock().lock();
-      if (!confirm(track)) {
-        return track;
-      }
-      // check there is actually a change
+      // check if there is actually a change
       if (track.getArtist().getName2().equals(sNewArtist)) {
         return track;
       }
-      final List<File> alReady;
+
+      if (!confirm(track)) {
+        return track;
+      }
+
       // check if files are accessible
-      alReady = track.getReadyFiles(filter);
+      final List<File> alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
         throw new NoneAccessibleFileException(10);
       }
+
       // change tag in files
       for (final File file : alReady) {
         final Tag tag = Tag.getTagForFio(file.getFIO(), false);
@@ -394,21 +400,23 @@ public final class TrackManager extends ItemManager {
    */
   public Track changeTrackGenre(Track track, String sNewGenre, Set<File> filter)
       throws JajukException {
+    lock.writeLock().lock();
     try {
-      lock.writeLock().lock();
-      if (!confirm(track)) {
-        return track;
-      }
-      // check there is actually a change
+      // check if there is actually a change
       if (track.getGenre().getName2().equals(sNewGenre)) {
         return track;
       }
-      final List<File> alReady;
+
+      if (!confirm(track)) {
+        return track;
+      }
+
       // check if files are accessible
-      alReady = track.getReadyFiles(filter);
+      final List<File> alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
         throw new NoneAccessibleFileException(10);
       }
+
       // change tag in files
       for (final File file : alReady) {
         Tag tag = Tag.getTagForFio(file.getFIO(), false);
@@ -448,25 +456,28 @@ public final class TrackManager extends ItemManager {
    * @throws JajukException the jajuk exception
    */
   public Track changeTrackYear(Track track, String newItem, Set<File> filter) throws JajukException {
+    lock.writeLock().lock();
     try {
-      lock.writeLock().lock();
-      if (!confirm(track)) {
-        return track;
-      }
-      // check there is actually a change
+      // check if there is actually a change
       if (track.getYear().getName().equals(newItem)) {
         return track;
       }
+
+      if (!confirm(track)) {
+        return track;
+      }
+
       long lNewItem = UtilString.fastLongParser(newItem);
       if (lNewItem < 0 || lNewItem > 10000) {
         throw new JajukException(137);
       }
-      final List<File> alReady;
+
       // check if files are accessible
-      alReady = track.getReadyFiles(filter);
+      final List<File> alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
         throw new NoneAccessibleFileException(10);
       }
+
       // change tag in files
       for (final File file : alReady) {
         Tag tag = Tag.getTagForFio(file.getFIO(), false);
@@ -504,21 +515,23 @@ public final class TrackManager extends ItemManager {
    * @throws JajukException the jajuk exception
    */
   Track changeTrackComment(Track track, String sNewItem, Set<File> filter) throws JajukException {
+    lock.writeLock().lock();
     try {
-      lock.writeLock().lock();
-      if (!confirm(track)) {
-        return track;
-      }
       // check there is actually a change
       if (track.getComment().equals(sNewItem)) {
         return track;
       }
-      final List<File> alReady;
+
+      if (!confirm(track)) {
+        return track;
+      }
+
       // check if files are accessible
-      alReady = track.getReadyFiles(filter);
+      final List<File> alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
         throw new NoneAccessibleFileException(10);
       }
+
       // change tag in files
       for (File file : alReady) {
         Tag tag = Tag.getTagForFio(file.getFIO(), false);
@@ -551,8 +564,8 @@ public final class TrackManager extends ItemManager {
    * @return new track or null if wrong format
    */
   public Track changeTrackRate(Track track, long lNew) {
+    lock.writeLock().lock();
     try {
-      lock.writeLock().lock();
       // No confirmation here as this code is called during startup and is not available from GUI anyway
       // check there is actually a change
       if (track.getRate() == lNew) {
@@ -582,25 +595,28 @@ public final class TrackManager extends ItemManager {
    */
   public Track changeTrackOrder(Track track, long lNewOrder, Set<File> filter)
       throws JajukException {
+    lock.writeLock().lock();
     try {
-      lock.writeLock().lock();
-      if (!confirm(track)) {
-        return track;
-      }
       // check there is actually a change
       if (track.getOrder() == lNewOrder) {
         return track;
       }
+
+      if (!confirm(track)) {
+        return track;
+      }
+
       // check format
       if (lNewOrder < 0) {
         throw new JajukException(137);
       }
-      final List<File> alReady;
+
       // check if files are accessible
-      alReady = track.getReadyFiles(filter);
+      final List<File> alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
         throw new NoneAccessibleFileException(10);
       }
+
       // change tag in files
       for (File file : alReady) {
         Tag tag = Tag.getTagForFio(file.getFIO(), false);
@@ -640,17 +656,18 @@ public final class TrackManager extends ItemManager {
   */
   public Track changeTrackField(Track track, String tagFieldKey, String tagFieldValue,
       Set<File> filter) throws JajukException {
+    lock.writeLock().lock();
     try {
-      lock.writeLock().lock();
       if (!confirm(track)) {
         return track;
       }
-      final List<File> alReady;
+
       // check if files are accessible
-      alReady = track.getReadyFiles();
+      final List<File> alReady = track.getReadyFiles();
       if (alReady.size() == 0) {
         throw new NoneAccessibleFileException(10);
       }
+
       // change tag in files
       for (File file : alReady) {
         Tag tag = Tag.getTagForFio(file.getFIO(), false);
@@ -678,21 +695,24 @@ public final class TrackManager extends ItemManager {
    */
   public Track changeTrackName(Track track, String sNewItem, Set<File> filter)
       throws JajukException {
+    // check if there is actually a change
+    if (track.getName().equals(sNewItem)) {
+      return track;
+    }
+
+    lock.writeLock().lock();
     try {
-      lock.writeLock().lock();
+
       if (!confirm(track)) {
         return track;
       }
-      // check there is actually a change
-      if (track.getName().equals(sNewItem)) {
-        return track;
-      }
-      final List<File> alReady;
+
       // check if files are accessible
-      alReady = track.getReadyFiles(filter);
+      final List<File> alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
         throw new NoneAccessibleFileException(10);
       }
+
       // change tag in files
       for (File file : alReady) {
         Tag tag = Tag.getTagForFio(file.getFIO(), false);
@@ -703,6 +723,7 @@ public final class TrackManager extends ItemManager {
           tagsToCommit.add(tag);
         }
       }
+
       // Remove old track from the album
       List<Track> cache = track.getAlbum().getTracksCache();
       synchronized (cache) {
@@ -733,21 +754,23 @@ public final class TrackManager extends ItemManager {
    * @throws JajukException the jajuk exception
    */
   Item changeTrackAlbumArtist(Track track, String sNewItem, Set<File> filter) throws JajukException {
+    lock.writeLock().lock();
     try {
-      lock.writeLock().lock();
-      if (!confirm(track)) {
-        return track;
-      }
-      // check there is actually a change
+      // check if there is actually a change
       if (track.getAlbumArtist() != null && track.getAlbumArtist().getName2().equals(sNewItem)) {
         return track;
       }
-      final List<File> alReady;
+
+      if (!confirm(track)) {
+        return track;
+      }
+
       // check if files are accessible
-      alReady = track.getReadyFiles(filter);
+      final List<File> alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
         throw new NoneAccessibleFileException(10);
       }
+
       // change tag in files
       for (File file : alReady) {
         Tag tag = Tag.getTagForFio(file.getFIO(), false);
@@ -784,25 +807,28 @@ public final class TrackManager extends ItemManager {
    */
   public Item changeTrackDiscNumber(Track track, long lNewDiscNumber, Set<File> filter)
       throws JajukException {
+    lock.writeLock().lock();
     try {
-      lock.writeLock().lock();
-      if (!confirm(track)) {
-        return track;
-      }
-      // check there is actually a change
+      // check if there is actually a change
       if (track.getDiscNumber() == lNewDiscNumber) {
         return track;
       }
+
+      if (!confirm(track)) {
+        return track;
+      }
+
       // check format
       if (lNewDiscNumber < 0) {
         throw new JajukException(137);
       }
-      final List<File> alReady;
+
       // check if files are accessible
-      alReady = track.getReadyFiles(filter);
+      final List<File> alReady = track.getReadyFiles(filter);
       if (alReady.size() == 0) {
         throw new NoneAccessibleFileException(10);
       }
+
       // change tag in files
       for (File file : alReady) {
         Tag tag = Tag.getTagForFio(file.getFIO(), false);
@@ -813,6 +839,7 @@ public final class TrackManager extends ItemManager {
           tagsToCommit.add(tag);
         }
       }
+
       // Remove the track from the old album
       List<Track> cache = track.getAlbum().getTracksCache();
       synchronized (cache) {

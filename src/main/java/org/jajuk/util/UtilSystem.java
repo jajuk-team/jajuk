@@ -514,7 +514,7 @@ public final class UtilSystem {
     // check that file has been really deleted (sometimes,
     // we get no exception)
     if (file.exists()) {
-      throw new IOException("File" + file.getAbsolutePath() + " still exists");
+      throw new IOException("File '" + file.getAbsolutePath() + "' still exists");
     }
   }
 
