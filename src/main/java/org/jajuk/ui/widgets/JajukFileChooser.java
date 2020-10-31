@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.widgets;
 
@@ -41,7 +41,7 @@ public class JajukFileChooser extends JFileChooser {
 
   /**
    * Constructor with specified file filter.
-   * 
+   *
    * @param jfilter filter to use
    */
   public JajukFileChooser(JajukFileFilter jfilter) {
@@ -55,9 +55,9 @@ public class JajukFileChooser extends JFileChooser {
 
   /**
    * Constructor with specified file filter and starting directory/file.
-   * 
+   *
    * @param jfilter filter to use
-   * @param file 
+   * @param file the initial path to select
    */
   public JajukFileChooser(JajukFileFilter jfilter, File file) {
     super(file);
@@ -71,7 +71,7 @@ public class JajukFileChooser extends JFileChooser {
   /**
    * Inits the.
    */
-  private final void init() {
+  private void init() {
     setDialogTitle(Messages.getString("JajukFileChooser.0"));
     setMultiSelectionEnabled(true);
     // don't hide hidden files
@@ -84,8 +84,6 @@ public class JajukFileChooser extends JFileChooser {
 
   /**
    * Force the filter to accept directories.
-   * 
-   * @param b 
    */
   public void setAcceptDirectories(boolean b) {
     for (int i = 0; i < filter.getFilters().length; i++) {
@@ -95,11 +93,9 @@ public class JajukFileChooser extends JFileChooser {
 
   /**
    * Make sure to keep the dialog always on top.
-   * 
-   * @param parent 
-   * 
+   *
    * @return the j dialog
-   * 
+   *
    * @throws HeadlessException the headless exception
    */
   @Override

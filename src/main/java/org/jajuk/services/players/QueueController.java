@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.services.players;
 
@@ -32,7 +32,7 @@ import org.jajuk.events.Observer;
  * FIFO convenient facilities <singleton>.
  */
 public final class QueueController implements Observer {
-  private static QueueController self = new QueueController();
+  private static final QueueController self = new QueueController();
   // Register this item, do not do this in the constructor as the instance is not yet available
   static {
     ObservationManager.register(self);
@@ -40,7 +40,7 @@ public final class QueueController implements Observer {
 
   /**
    * Gets the single instance of QueueController.
-   * 
+   *
    * @return single instance of QueueController
    */
   public static QueueController getInstance() {
@@ -49,19 +49,19 @@ public final class QueueController implements Observer {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
-    Set<JajukEvents> keys = new HashSet<JajukEvents>();
+    Set<JajukEvents> keys = new HashSet<>();
     keys.add(JajukEvents.DEVICE_REFRESH);
     return keys;
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#update(org.jajuk.events.Event)
    */
   @Override

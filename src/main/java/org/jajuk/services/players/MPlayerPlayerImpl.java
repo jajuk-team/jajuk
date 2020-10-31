@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.services.players;
 
@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.IOUtils;
 import org.jajuk.base.Track;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -44,11 +45,12 @@ import org.jajuk.util.log.Log;
 /**
  * Jajuk player implementation based on Mplayer.
  */
+@SuppressWarnings("unused")
 public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /** Time elapsed in ms. */
   private long lTime = 0;
   /** Actually played time */
-  private long actuallyPlayedTimeMillis = 0l;
+  private long actuallyPlayedTimeMillis = 0L;
   private long lastPlayTimeUpdate = System.currentTimeMillis();
   /** Length to be played in secs. */
   private long length;
@@ -76,10 +78,10 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /** [Windows only] Force use of shortnames. */
   private boolean bForcedShortnames = false;
   /** English-specific end of file pattern */
-  private Pattern patternEndOfFileEnglish = Pattern
+  private static final Pattern patternEndOfFileEnglish = Pattern
       .compile("Exiting\\x2e\\x2e\\x2e.*\\(End of file\\)");
   /** Language-agnostic end of file pattern */
-  private Pattern patternEndOfFileGeneric = Pattern.compile(".*\\x2e\\x2e\\x2e.*\\(.*\\)");
+  private static final Pattern patternEndOfFileGeneric = Pattern.compile(".*\\x2e\\x2e\\x2e.*\\(.*\\)");
 
   /**
    * Position and elapsed time getter.
@@ -87,8 +89,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   private class PositionThread extends Thread {
     /**
      * Instantiates a new position thread.
-     *
-     * @param name 
      */
     public PositionThread(String name) {
       super(name);
@@ -119,7 +119,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             // Do not call a get_percent_pos if paused, it resumes the player
             // (mplayer issue)
             sendCommand("get_time_pos");
-            // Get track length if required. Do not launch "get_time_length" only 
+            // Get track length if required. Do not launch "get_time_length" only
             // once because some fast computer makes mplayer start too fast and
             // the slave mode is not yet opened so this command is not token into account.
             // See bug #1816 (Track length is zero after a restart)
@@ -153,8 +153,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   private class ReaderThread extends Thread {
     /**
      * Instantiates a new reader thread.
-     *
-     * @param name 
      */
     public ReaderThread(String name) {
       super(name);
@@ -169,12 +167,11 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     @Override
     public void run() {
       try {
-        BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-        // While we don't know the mplayer language, patternEndOfFile matches any language end of file pattern : .*... (.*)
-        Pattern patternEndOfFile = patternEndOfFileGeneric;
-        try {
-          String line = null;
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()))) {
+          // While we don't know the mplayer language, patternEndOfFile matches any language end of file pattern : .*... (.*)
+          Pattern patternEndOfFile = patternEndOfFileGeneric;
           while (!bStop) {
+            final String line;
             try {
               line = in.readLine();
               if (line == null) {
@@ -200,7 +197,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                 lTime = (int) (Float.parseFloat(st.nextToken()) * 1000);
               } catch (NumberFormatException nfe) {
                 Log.error(nfe);
-                lTime = 0l;
+                lTime = 0L;
               }
               pauseCount = 0;
               pauseCountStamp = -1;
@@ -213,14 +210,14 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               UtilFeatures.storePersistedPlayingPosition(getCurrentPosition());
               // Cross-Fade test
               if (!bFading && iFadeDuration > 0
-              // Length = 0 for some buggy audio headers
-                  && lDuration > 0
-                  // Does fading time happened ?
-                  && lTime > (lDuration - iFadeDuration)
-                  // Do not fade if the track is very short
-                  && (lDuration > 3 * iFadeDuration)
-                  //Do not fade if bit perfect mode
-                  && !Conf.getBoolean(CONF_BIT_PERFECT)) {
+                      // Length = 0 for some buggy audio headers
+                      && lDuration > 0
+                      // Does fading time happened ?
+                      && lTime > (lDuration - iFadeDuration)
+                      // Do not fade if the track is very short
+                      && (lDuration > 3 * iFadeDuration)
+                      //Do not fade if bit perfect mode
+                      && !Conf.getBoolean(CONF_BIT_PERFECT)) {
                 bFading = true;
                 fadingVolume = fVolume;
                 // Call finish (do not leave thread to allow cross fading)
@@ -231,11 +228,11 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                 // computes the volume we have to sub to reach zero
                 // at last progress()
                 float fVolumeStep = fadingVolume
-                // we double the refresh period to make sure to
-                // reach 0 at the end of iterations because
-                // we don't as many mplayer response as queries,
-                // tested on 10 & 20 sec of fading
-                    * ((float) PROGRESS_STEP / iFadeDuration);
+                        // we double the refresh period to make sure to
+                        // reach 0 at the end of iterations because
+                        // we don't as many mplayer response as queries,
+                        // tested on 10 & 20 sec of fading
+                        * ((float) PROGRESS_STEP / iFadeDuration);
                 float fNewVolume = fVolume - fVolumeStep;
                 // decrease volume by n% of initial volume
                 if (fNewVolume < 0) {
@@ -250,17 +247,17 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               // Test end of length for intro mode
               // Length=-1 means there is no max length
               if (length != TO_THE_END
-              // Duration = 0 in rare case due to header issue
-                  && lDuration > 0
-                  // Is intro length fully played ?
-                  && (lTime - (fPosition * lDuration)) > length) {
+                      // Duration = 0 in rare case due to header issue
+                      && lDuration > 0
+                      // Is intro length fully played ?
+                      && (lTime - (fPosition * lDuration)) > length) {
                 // No fading in intro mode
                 bFading = false;
                 // Call finish and terminate current thread
                 callFinish();
                 return;
               }
-            } else if (line.indexOf("ANS_LENGTH") != -1) {
+            } else if (line.contains("ANS_LENGTH")) {
               /*
                * To compute the current track length (used by the information panel to display
                * remaining time and position), we use the tag duration first and the mplayer
@@ -270,7 +267,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                */
               StringTokenizer st = new StringTokenizer(line, "=");
               st.nextToken();
-              long mplayerDuration = 0l;
+              long mplayerDuration = 0L;
               try {
                 mplayerDuration = (long) (Float.parseFloat(st.nextToken()) * 1000);
               } catch (NumberFormatException nfe) {
@@ -318,10 +315,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               break;
             }
           }
-        } finally {
-          // can reach this point at the end of file
-          in.close();
         }
+        // can reach this point at the end of file
       } catch (IOException e) {
         Log.error(e);
       }
@@ -376,7 +371,20 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     if (bOpening || bEOF) {
       // try to kill the mplayer process if still alive
       if (proc != null) {
-        Log.warn("OOT Mplayer process, try to kill it (Opening: " + bOpening + ", EOF: " + bEOF + ")");
+        // try to collect stdout and stderr
+        String output = "";
+        try {
+          output += IOUtils.toString(proc.getInputStream());
+        } catch (IOException e) {
+          // ignore if stream is already closed
+        }
+        try {
+          output += IOUtils.toString(proc.getErrorStream());
+        } catch (IOException e) {
+          // ignore if stream is already closed
+        }
+
+        Log.warn("OOT Mplayer process, try to kill it (Opening: " + bOpening + ", EOF: " + bEOF + ", Output: " + output + ")");
         proc.destroy();
         Log.warn("OK, the process should have been killed now");
       }
@@ -403,10 +411,10 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /**
    * Launch mplayer.
-   * 
+   *
      * @param startPositionSec the position in the track when starting in secs (0 means we plat from the begining)
    * @throws IOException Signals that an I/O exception has occurred.
-   * 
+   *
    */
   private void launchMplayer(int startPositionSec) throws IOException {
     // Build the file url. Under windows, we convert path to short
@@ -450,7 +458,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#getCurrentPosition()
    */
   @Override
@@ -463,7 +471,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#getElapsedTimeMillis()
    */
   @Override
@@ -524,7 +532,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#getDurationSec()
    */
   @Override

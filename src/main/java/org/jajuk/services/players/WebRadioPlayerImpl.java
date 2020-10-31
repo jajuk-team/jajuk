@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.services.players;
 
@@ -61,16 +61,15 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
     public void run() {
       try {
         BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-        String line = null;
         for (;;) {
-          line = in.readLine();
+          String line = in.readLine();
           if (line == null) {
             break;
           }
           if (line.startsWith(("ICY Info:"))) {
             //Send an event that web radio info has been updated
             Properties pDetails = new Properties();
-            String radioTrackDetail = "";
+            final String radioTrackDetail;
             // Some stations doesn't include the StreamUrl in the ICY line. Sample :
             //ICY Info: StreamTitle='-- Now On Air: URB Non-Stop :: Playing: xxx Cilmi - Sweet About Me :: Email the station xxx@yyy.uk --';
             if (line.contains("';StreamUrl")) {
@@ -102,7 +101,6 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
         // can reach this point at the end of file
         in.close();
         bEOF = true;
-        return;
       } catch (Exception e) {
         Log.error(e);
       }
@@ -111,14 +109,11 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
 
   /**
    * (non-Javadoc).
-   * 
-   * @param radio 
-   * @param fVolume 
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    * @throws JajukException the jajuk exception
-   * 
-   * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
+   *
+   * @see org.jajuk.services.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
    * float)
    */
   @Override
@@ -185,7 +180,7 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.AbstractMPlayerImpl#play(org.jajuk.base.File, float,
    *      long, float)
    */

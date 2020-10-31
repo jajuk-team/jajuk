@@ -1,8 +1,8 @@
 /*
  * aTunes 1.14.0 code adapted by Jajuk team
- * 
- * Original copyright notice bellow : 
- * 
+ *
+ * Original copyright notice bellow :
+ *
  * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
  *
  * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
@@ -32,6 +32,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import javax.imageio.ImageIO;
 
@@ -52,12 +53,9 @@ public final class NetworkUtils {
 
   /**
    * Gets the connection.
-   * 
-   * @param urlString 
-   * @param proxy 
-   * 
+   *
    * @return the connection
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static HttpURLConnection getConnection(String urlString, Proxy proxy) throws IOException {
@@ -75,12 +73,9 @@ public final class NetworkUtils {
 
   /**
    * Gets the connection.
-   * 
-   * @param url 
-   * @param proxy 
-   * 
+   *
    * @return the connection
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static HttpURLConnection getConnection(URL url, Proxy proxy) throws IOException {
@@ -108,7 +103,7 @@ public final class NetworkUtils {
 
   /**
    * Sets the configuration.
-   * 
+   *
    * @param connection the new configuration
    */
   private static void setConfiguration(HttpURLConnection connection) {
@@ -124,13 +119,12 @@ public final class NetworkUtils {
 
   /**
    * Read url.
-   * 
-   * 
-   * @param connection 
-   * @param charset 
-   * 
+   *
+   * @param connection The connection to use for reading data
+   * @param charset the character encoding to use for the received text
+   *
    * @return the string
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static String readURL(URLConnection connection, String charset) throws IOException {
@@ -141,27 +135,21 @@ public final class NetworkUtils {
       return null;
     }
     StringBuilder builder = new StringBuilder();
-    InputStream input = connection.getInputStream();
-    try {
+    try (InputStream input = connection.getInputStream()) {
       byte[] array = new byte[1024];
       int read;
       while ((read = input.read(array)) > 0) {
         builder.append(new String(array, 0, read, charset));
       }
-    } finally {
-      input.close();
     }
     return builder.toString();
   }
 
   /**
    * Read url.
-   * 
-   * 
-   * @param connection 
-   * 
+   *
    * @return the string
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static String readURL(URLConnection connection) throws IOException {
@@ -170,13 +158,9 @@ public final class NetworkUtils {
 
   /**
    * Read post url.
-   * 
-   * 
-   * @param connection 
-   * @param post 
-   * 
+   *
    * @return the string
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static String readPostURL(HttpURLConnection connection, String post) throws IOException {
@@ -187,37 +171,29 @@ public final class NetworkUtils {
       return null;
     }
     OutputStream out = connection.getOutputStream();
-    DataOutputStream writer = new DataOutputStream(out);
-    try {
+    try (DataOutputStream writer = new DataOutputStream(out)) {
       writer.writeBytes(post);
       writer.flush();
-    } finally {
-      writer.close();
     }
     if (connection.getResponseCode() != 200) {
       throw new IllegalArgumentException("Invalid HTTP return code");
     }
     StringBuilder builder = new StringBuilder();
-    InputStream input = connection.getInputStream();
-    try {
+    try (InputStream input = connection.getInputStream()) {
       byte[] array = new byte[1024];
       int read;
       while ((read = input.read(array)) > 0) {
-        builder.append(new String(array, 0, read, "UTF-8"));
+        builder.append(new String(array, 0, read, StandardCharsets.UTF_8));
       }
-    } finally {
-      input.close();
     }
     return builder.toString();
   }
 
   /**
    * Gets the image.
-   * 
-   * @param connection 
-   * 
+   *
    * @return the image
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static Image getImage(URLConnection connection) throws IOException {
@@ -233,9 +209,7 @@ public final class NetworkUtils {
 
   /**
    * Encodes a string in a format suitable to send a http request.
-   * 
-   * @param s 
-   * 
+   *
    * @return the string
    */
   public static String encodeString(String s) {

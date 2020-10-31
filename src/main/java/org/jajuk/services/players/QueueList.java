@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.services.players;
 
@@ -33,13 +33,13 @@ import org.jajuk.base.File;
  */
 public class QueueList implements List<StackItem> {
   /** Fifo itself, contains jajuk File objects. */
-  private static volatile List<StackItem> alQueue = new ArrayList<StackItem>(50);
+  private static volatile List<StackItem> alQueue = new ArrayList<>(50);
   /** Planned tracks, played if the normal queue is exhausted. */
-  private static volatile List<StackItem> alPlanned = new ArrayList<StackItem>(10);
+  private static volatile List<StackItem> alPlanned = new ArrayList<>(10);
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#add(java.lang.Object)
    */
   @Override
@@ -49,7 +49,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#add(int, java.lang.Object)
    */
   @Override
@@ -59,7 +59,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#addAll(java.util.Collection)
    */
   @Override
@@ -69,7 +69,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#addAll(int, java.util.Collection)
    */
   @Override
@@ -79,7 +79,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#clear()
    */
   @Override
@@ -89,7 +89,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#contains(java.lang.Object)
    */
   @Override
@@ -99,7 +99,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#containsAll(java.util.Collection)
    */
   @Override
@@ -109,7 +109,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#get(int)
    */
   @Override
@@ -119,7 +119,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#indexOf(java.lang.Object)
    */
   @Override
@@ -129,7 +129,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#isEmpty()
    */
   @Override
@@ -139,7 +139,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#iterator()
    */
   @Override
@@ -149,7 +149,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#lastIndexOf(java.lang.Object)
    */
   @Override
@@ -159,7 +159,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#listIterator()
    */
   @Override
@@ -169,7 +169,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#listIterator(int)
    */
   @Override
@@ -179,7 +179,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#remove(java.lang.Object)
    */
   @Override
@@ -189,7 +189,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#remove(int)
    */
   @Override
@@ -199,7 +199,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#removeAll(java.util.Collection)
    */
   @Override
@@ -209,7 +209,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#retainAll(java.util.Collection)
    */
   @Override
@@ -219,7 +219,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#set(int, java.lang.Object)
    */
   @Override
@@ -229,7 +229,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#size()
    */
   @Override
@@ -239,7 +239,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#subList(int, int)
    */
   @Override
@@ -249,7 +249,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#toArray()
    */
   @Override
@@ -259,7 +259,7 @@ public class QueueList implements List<StackItem> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.util.List#toArray(T[])
    */
   @Override
@@ -269,7 +269,7 @@ public class QueueList implements List<StackItem> {
 
   /**
    * Gets a copy of the queue.
-   * 
+   *
    * @return the queue
    */
   @SuppressWarnings("unchecked")
@@ -281,7 +281,7 @@ public class QueueList implements List<StackItem> {
   // Methods for Planned tracks
   /**
    * Number of planned items.
-   * 
+   *
    * @return the current number of planned items.
    */
   public int sizePlanned() {
@@ -290,9 +290,9 @@ public class QueueList implements List<StackItem> {
 
   /**
    * Adds the item to the list of planned tracks.
-   * 
+   *
    * @param e The StackItem to add.
-   * 
+   *
    * @return true always.
    */
   public boolean addPlanned(StackItem e) {
@@ -301,9 +301,6 @@ public class QueueList implements List<StackItem> {
 
   /**
    * Adds the planned.
-   * 
-   * 
-   * @param c 
    */
   public void addPlanned(Collection<? extends StackItem> c) {
     for (StackItem item : c) {
@@ -314,9 +311,9 @@ public class QueueList implements List<StackItem> {
 
   /**
    * Retrieve the planned track on a specified position.
-   * 
+   *
    * @param index The position in the list of planned items to retrieve.
-   * 
+   *
    * @return The StackItem at position index.
    */
   public StackItem getPlanned(int index) {
@@ -325,7 +322,7 @@ public class QueueList implements List<StackItem> {
 
   /**
    * Gets a copy of the list of planned items.
-   * 
+   *
    * @return The planned items.
    */
   @SuppressWarnings("unchecked")
@@ -335,8 +332,6 @@ public class QueueList implements List<StackItem> {
 
   /**
    * Removes the planned from list.
-   * 
-   * @param alFiles 
    */
   public void removePlannedFromList(List<File> alFiles) {
     for (StackItem item : alPlanned) {
@@ -347,7 +342,7 @@ public class QueueList implements List<StackItem> {
 
   /**
    * Clear planned.
-   * 
+   *
    */
   public void clearPlanned() {
     alPlanned.clear();
@@ -357,8 +352,8 @@ public class QueueList implements List<StackItem> {
   // Additional Methods for Queue handling
   /**
    * Contains repeat.
-   * 
-   * 
+   *
+   *
    * @return true if...
    */
   public boolean containsRepeat() {
@@ -372,8 +367,8 @@ public class QueueList implements List<StackItem> {
 
   /**
    * Pop next planned.
-   * 
-   * 
+   *
+   *
    * @return the stack item
    */
   public StackItem popNextPlanned() {
@@ -387,8 +382,8 @@ public class QueueList implements List<StackItem> {
 
   /**
    * Contains only repeat.
-   * 
-   * 
+   *
+   *
    * @return true if...
    */
   public boolean containsOnlyRepeat() {

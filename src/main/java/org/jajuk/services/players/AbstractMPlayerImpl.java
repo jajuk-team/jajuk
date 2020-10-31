@@ -16,13 +16,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.services.players;
 
 import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -109,7 +110,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   @Override
   public void setVolume(float fVolume) {
     this.fVolume = fVolume;
-    // Fix for a issue under Linux (at least with pulseaudio) : if a track is started in bitperfect mode (no volume specified), then 
+    // Fix for a issue under Linux (at least with pulseaudio) : if a track is started in bitperfect mode (no volume specified), then
     // the mode is unset when the same track is playing. When the fade out occurs, the volume commands sent to mplayer are propagated for some reasons
     // directly to the pulsaudio mixer and the next track sound volume is affected (muted most of times).
     if (bitPerfect) {
@@ -125,8 +126,6 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /**
    * Send a command to mplayer slave.
-   * 
-   * @param command 
    */
   protected void sendCommand(String command) {
     if (proc != null) {
@@ -142,7 +141,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /*
   * (non-Javadoc)
-  * 
+  *
   * @see org.jajuk.players.IPlayerImpl#getCurrentVolume()
   */
   @Override
@@ -152,10 +151,10 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /**
    * Build the mplayer command line.
-   * 
+   *
    * @param url the url to play
    * @param startPositionSec the position in the track when starting in secs (0 means we plat from the begining)
-   * 
+   *
    * @return command line as a String array
    */
   List<String> buildCommand(String url, int startPositionSec) {
@@ -173,7 +172,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     }
     String sAdditionalArgs = Conf.getString(Const.CONF_MPLAYER_ARGS);
     // Build command
-    List<String> cmd = new ArrayList<String>(10);
+    List<String> cmd = new ArrayList<>(10);
     cmd.add(sCommand);
     // Start at given position
     cmd.add("-ss");
@@ -205,9 +204,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     if (!StringUtils.isBlank(sAdditionalArgs)) {
       // Add any additional arguments provided by user
       String[] sArgs = sAdditionalArgs.split(" ");
-      for (String element : sArgs) {
-        cmd.add(element);
-      }
+      Collections.addAll(cmd, sArgs);
     }
     // If it is a playlist, add the -playlist option, must be the last option
     // because options after -playlist are ignored (see mplayer man page).
@@ -223,7 +220,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /**
    * Build the -af audio filters command part.
-   * 
+   *
    * @return the string
    */
   private String buildAudioFilters() {
@@ -240,7 +237,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
       // Gain = 10 * log(fVolume)
       volume = (int) (10 * Math.log(fVolume));
     }
-    audiofilters.append("volume=" + volume);
+    audiofilters.append("volume=").append(volume);
     // Add karaoke state if required
     if (Conf.getBoolean(CONF_STATE_KARAOKE)) {
       audiofilters.append(",karaoke");
@@ -308,7 +305,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
 
   /**
    * Gets the state.
-   * 
+   *
    * @return player state, -1 if player is null.
    */
   @Override
@@ -322,7 +319,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    * @see org.jajuk.players.IPlayerImpl#pause()
    */
   @Override
-  public void pause() throws Exception {
+  public void pause() {
     bPaused = true;
     sendCommand("pause");
   }
