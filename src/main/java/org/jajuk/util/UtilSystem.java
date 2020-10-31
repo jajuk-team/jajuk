@@ -52,11 +52,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import javax.swing.ImageIcon;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jajuk.Main;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
@@ -1276,5 +1278,46 @@ public final class UtilSystem {
    */
   public static boolean isUnderKDE() {
     return UtilSystem.UNDER_KDE;
+  }
+
+
+  /**
+   * Walks the given sorted list of integer and invokes the given
+   * consumer for all ranges, combining calls as much as possible.
+   *
+   * I.e. an array of [ 1, 2, 3, 5, 6, 7, 9 ]
+   * would result in calls with <1,3>, <5,7> and <9,9>
+   *
+   * An empty list leads to no invocation of the consumer.
+   *
+   * A list with one entry leads to one invocation of the consumer with start/end set to the integer.
+   *
+   * Note: The array is expected to be sorted in the order in
+   * which the values should be listed.
+   *
+   * @param numbers The array of numbers
+   */
+  public static void combineRanges(int[] numbers, Consumer<Pair<Integer, Integer>> consumeRange) {
+    int prev = Integer.MIN_VALUE;
+    int start = Integer.MIN_VALUE;
+
+    for(int nr : numbers) {
+      // check if the streak continues
+      if(prev != nr - 1) {
+        // do not detect a streak just on first iteration
+        if(prev != Integer.MIN_VALUE) {
+          consumeRange.accept(Pair.of(start, prev));
+        }
+
+        // new streak starts
+        start = nr;
+      }
+      prev = nr;
+    }
+
+    // add the last range/nr
+    if(prev != Integer.MIN_VALUE) {
+      consumeRange.accept(Pair.of(start, prev));
+    }
   }
 }

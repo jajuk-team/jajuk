@@ -55,6 +55,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilGUI;
 import org.jajuk.util.UtilString;
+import org.jajuk.util.UtilSystem;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.CompoundHighlighter;
 import org.jdesktop.swingx.decorator.Highlighter;
@@ -436,9 +437,12 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
   public void setSelectedRows(int[] indexes) {
     try {
       manualSelectionRequired = true;
-      for (int element : indexes) {
-        addRowSelectionInterval(element, element);
-      }
+
+      // if there is a large number of selected items, we should not
+      // invoke addRowSelectionInterval() for each one of them, so
+      // let's combine as many indices as possible as we most often
+      // will have a consecutive selection anyway
+      UtilSystem.combineRanges(indexes, pair -> addRowSelectionInterval(pair.getLeft(), pair.getRight()));
     } finally {
       manualSelectionRequired = false;
     }

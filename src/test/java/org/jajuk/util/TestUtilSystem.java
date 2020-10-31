@@ -26,9 +26,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Random;
+import java.util.function.Consumer;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jajuk.ConstTest;
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
@@ -484,6 +486,7 @@ public class TestUtilSystem extends JajukTestCase {
    * Test method for {@link org.jajuk.util.UtilSystem#isUnderWindows32bits()}.
    */
   public void testIsUnderWindows32bits() {
+    //noinspection ResultOfMethodCallIgnored
     UtilSystem.isUnderWindows32bits(); // cannot check
   }
 
@@ -491,6 +494,7 @@ public class TestUtilSystem extends JajukTestCase {
    * Test method for {@link org.jajuk.util.UtilSystem#isUnderWindows64bits()}.
    */
   public void testIsUnderWindows64bits() {
+    //noinspection ResultOfMethodCallIgnored
     UtilSystem.isUnderWindows64bits(); // cannot check
   }
 
@@ -679,8 +683,6 @@ public class TestUtilSystem extends JajukTestCase {
 
     /**
      * Instantiates a new mock process.
-     *
-     * @param throwInWait
      */
     public MockProcess(boolean throwInWait) {
       super();
@@ -748,5 +750,39 @@ public class TestUtilSystem extends JajukTestCase {
   public void testPrivateConstructor() throws Exception {
     // For EMMA code-coverage tests
     TestHelpers.executePrivateConstructor(UtilSystem.class);
+  }
+
+  public void testCombineRanges() {
+    final StringBuilder str = new StringBuilder();
+    // use a consumer which appends all consumed ranges to a string so we can verify the resulting ranges fully
+    Consumer<Pair<Integer, Integer>> consumer = pair -> str.append(pair.getLeft()).append("-").append(pair.getRight()).append(",");
+
+    UtilSystem.combineRanges(new int[] {}, consumer);
+    assertEquals("", str.toString());
+
+    UtilSystem.combineRanges(new int[] {1}, consumer);
+    assertEquals("1-1,", str.toString());
+    str.setLength(0);
+
+    UtilSystem.combineRanges(new int[] {1,2}, consumer);
+    assertEquals("1-2,", str.toString());
+    str.setLength(0);
+
+    UtilSystem.combineRanges(new int[] {1,2,-3}, consumer);
+    assertEquals("1-2,-3--3,", str.toString());
+    str.setLength(0);
+
+    UtilSystem.combineRanges(new int[] {1,2,3,4,5,6,7,8,10,11,12,13,14,15}, consumer);
+    assertEquals("1-8,10-15,", str.toString());
+    str.setLength(0);
+
+    int[] array = new int[1000];
+    for (int i = 0;i < 1000;i++) {
+      array[i] = i;
+    }
+
+    UtilSystem.combineRanges(array, consumer);
+    assertEquals("0-999,", str.toString());
+    str.setLength(0);
   }
 }
