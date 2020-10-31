@@ -498,6 +498,12 @@ public class JajukTable extends JXTable implements Observer, ListSelectionListen
     int[] rows = getSelectedRows();
     for (int element : rows) {
       Item o = model.getItemAt(convertRowIndexToModel(element));
+      if (o == null) {
+        // don't add null-items, they can happen if rows are selected and then
+        // the filter value is changed so that the selected row is not visible any
+        // more
+        continue;
+      }
       selection.add(o);
     }
     return selection;
