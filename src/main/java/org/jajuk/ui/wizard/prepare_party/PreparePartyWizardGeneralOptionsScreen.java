@@ -478,7 +478,7 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
     if (e.getSource() == jlConvertMedia) {
       try {
         Desktop.getDesktop().browse(
-            new URI("http://jajuk.info/index.php/Installing_Perl_Audio_Converter"));
+            new URI("https://www.jajuk.info/manual/pacpl.html"));
       } catch (IOException | URISyntaxException ex) {
         Log.error(ex);
       }
