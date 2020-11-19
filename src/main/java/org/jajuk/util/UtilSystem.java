@@ -77,8 +77,6 @@ import ext.MersenneTwister;
 public final class UtilSystem {
   /** The Constant LOCAL_IP.   */
   private static final String LOCAL_IP = "127.0.0.1";
-  /** Is browser supported ?. */
-  private static Boolean browserSupported;
   /** Size of the short names converter in bytes. */
   private static final int CONVERTER_FILE_SIZE = 23;
 
@@ -427,8 +425,6 @@ public final class UtilSystem {
   /**
    * Copy recursively files and directories.
    *
-   * @param src
-   * @param dst
    * @throws JajukException the jajuk exception
    * @throws IOException Signals that an I/O exception has occurred.
    */
@@ -469,8 +465,6 @@ public final class UtilSystem {
 
   /**
    * Create empty file.
-   *
-   * @param file
    *
    * @throws IOException Signals that an I/O exception has occurred.
    */
@@ -523,8 +517,6 @@ public final class UtilSystem {
   /**
    * Get a file extension.
    *
-   * @param file
-   *
    * @return the extension
    */
   public static String getExtension(final File file) {
@@ -558,8 +550,6 @@ public final class UtilSystem {
    * bytes read at the middle of the file
    * <p>
    * uses nio api for performances
-   *
-   * @param fio
    *
    * @return the file checksum
    *
@@ -610,9 +600,6 @@ public final class UtilSystem {
 
   /**
    * Return url of jar we are executing.
-   *
-   *
-   * @param cClass
    *
    * @return URL of jar we are executing
    */
@@ -671,13 +658,11 @@ public final class UtilSystem {
   /**
    * Gets the mplayer status.
    *
-   * @param mplayerPATH
-   *
    * @return the mplayer status
    */
   public static UtilSystem.MPlayerStatus getMplayerStatus(final String mplayerPATH) {
     final Process proc;
-    UtilSystem.MPlayerStatus mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
+    UtilSystem.MPlayerStatus mplayerStatus;
     try {
       final String fullPath;
       if ("".equals(mplayerPATH)) {
@@ -689,7 +674,7 @@ public final class UtilSystem {
       // check MPlayer release : 1.0pre8 min
       proc = Runtime.getRuntime().exec(new String[] { fullPath, "-input", "cmdlist" }); //$NON-NLS-2$
       try (BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()))) {
-        String line = null;
+        String line;
         mplayerStatus = MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION;
         for (; ; ) {
           line = in.readLine();
@@ -717,20 +702,21 @@ public final class UtilSystem {
    * @return filename with forbidden characters replaced at best
    */
   public static String getNormalizedFilename(final String in) {
-    String out = in.trim();
     // Replace / : < > and \ by -
-    out = in.replaceAll("[/:<>\\\\]", "-");
+    String out = in.replaceAll("[/:<>\\\\]", "-");
+
     // Replace * and | by spaces
     out = out.replaceAll("[*|]", " ");
+
     // Remove " and ? characters
     out = out.replaceAll("[\"?]", "");
-    return out;
+
+    // finally remove leading and trailing whitespaces
+    return out.trim();
   }
 
   /**
    * Return only the name of a file from a complete URL.
-   *
-   * @param sPath
    *
    * @return the only file
    */
@@ -742,8 +728,6 @@ public final class UtilSystem {
    * Resource loading is done this way to meet the requirements for Web Start.
    * http
    * ://java.sun.com/j2se/1.5.0/docs/guide/javaws/developersguide/faq.html#211
-   *
-   * @param name
    *
    * @return the resource
    */
@@ -774,9 +758,6 @@ public final class UtilSystem {
 
   /**
    * Checks if is descendant.
-   *
-   * @param file1
-   * @param file2
    *
    * @return whether file1 is a file2 descendant
    */
@@ -927,8 +908,6 @@ public final class UtilSystem {
    * Open a file from current jar and return a string buffer with the file
    * content.
    *
-   * @param sURL
-   *
    * @return StringBuilder - File content.
    *
    * @throws JajukException -Throws a JajukException if a problem occurs during the file
@@ -961,8 +940,6 @@ public final class UtilSystem {
 
   /**
    * Remove an extension from a file name.
-   *
-   * @param sFilename
    *
    * @return filename without extension
    */
@@ -1052,8 +1029,6 @@ public final class UtilSystem {
    * use the JDIC Desktop class if supported by the platform</li>
    *
    * Inspired from an aTunes method
-   *
-   * @param directory
    */
   public static void openInExplorer(File directory) {
     final File directoryToOpen;
@@ -1247,10 +1222,6 @@ public final class UtilSystem {
    * @return true, if checks if is browser supported
    */
   public static boolean isBrowserSupported() {
-    // value stored for perf
-    if (browserSupported != null) {
-      return browserSupported;
-    }
     // In server UT mode, just return false
     if (GraphicsEnvironment.isHeadless()) {
       return false;

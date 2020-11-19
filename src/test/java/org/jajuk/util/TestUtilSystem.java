@@ -410,14 +410,13 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for.
-   *
-   * {@link org.jajuk.util.UtilSystem#getNormalizedFilename(java.lang.String)}.
+   * Test method for {@link org.jajuk.util.UtilSystem#getNormalizedFilename(java.lang.String)}.
    */
   public void testGetNormalizedFilename() {
-    // assertEquals(file1.getAbsolutePath(),
-    // UtilSystem.getNormalizedFilename(file1.getAbsolutePath()));
-    assertEquals("-tmp  -test1----", UtilSystem.getNormalizedFilename("/tmp*|/te\"?st1<>\\:"));
+    assertEquals("-tmp  -test1----", UtilSystem.getNormalizedFilename("/tmp*|/te\"?st1<>\\: "));
+    assertEquals("blabla", UtilSystem.getNormalizedFilename("blabla"));
+    assertEquals("bla \t bla", UtilSystem.getNormalizedFilename("bla \t bla"));
+    assertEquals("bla\u1234bla", UtilSystem.getNormalizedFilename("bla\u1234bla"));
   }
 
   /**
