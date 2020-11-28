@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.actions;
 
@@ -69,7 +69,7 @@ public class UnsetPreferenceSelectionAction extends SelectionAction {
           List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(selection, false);
           // Set the preference
           for (Track track : tracks) {
-            track.setPreference(0l);
+            track.setPreference(0L);
           }
           // Request a GUI refresh
           ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));

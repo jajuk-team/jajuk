@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.wizard.prepare_party;
 
@@ -42,15 +42,15 @@ public class PreparePartyConvertSettings extends JajukJDialog implements ActionL
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
   /** Listener which is informed about changes to the settings. */
-  private ChangeListener listener;
+  private final ChangeListener listener;
   /** Text field for the input of the command. */
-  private JTextField jtfPACPLCommand;
+  private final JTextField jtfPACPLCommand;
   /** OK/Cancel buttons. */
-  private OKCancelPanel okp;
+  private final OKCancelPanel okp;
 
   /**
    * Instantiates a new prepare party convert settings.
-   * 
+   *
    * @param listener Listener for changes
    * @param command The current command
    * @param parent Parent frame

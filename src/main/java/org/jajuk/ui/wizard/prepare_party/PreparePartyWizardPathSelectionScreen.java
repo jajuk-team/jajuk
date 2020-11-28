@@ -22,14 +22,12 @@ package org.jajuk.ui.wizard.prepare_party;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Comparator;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.border.BevelBorder;
 
-import org.jajuk.base.Type;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.ui.wizard.prepare_party.PreparePartyWizard.Variable;
 import org.jajuk.util.IconLoader;
@@ -111,20 +109,5 @@ public class PreparePartyWizardPathSelectionScreen extends Screen implements Act
   @Override
   public String getName() {
     return Messages.getString("PreparePartyWizard.18");
-  }
-}
-
-/**
- * Compare two types.
- */
-final class TypeComparator implements Comparator<Type> {
-  @Override
-  public int compare(Type o1, Type o2) {
-    // handle null, always equal
-    if (o1 == null || o2 == null) {
-      return 0;
-    }
-    // otherwise sort on extension here
-    return o1.getExtension().compareTo(o2.getExtension());
   }
 }

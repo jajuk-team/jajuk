@@ -91,8 +91,7 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
   /** Enable limit on specific audio type. */
   private JCheckBox jcbOneMedia;
   /** Limit to one type of audo file. */
-  @SuppressWarnings("rawtypes")
-  private JComboBox jcbMedia;
+  private JComboBox<String> jcbMedia;
   /** Enable conversion to the selected audio type. */
   private JCheckBox jcbConvertMedia;
   /** Audio conversion. */
@@ -123,7 +122,6 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
   /**
    * Create panel UI.
    */
-  @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
   public void initUI() {
     { // Max Tracks
@@ -168,10 +166,19 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
     { // Choose Media
       jcbOneMedia = new JCheckBox(Messages.getString("PreparePartyWizard.16"));
       jcbOneMedia.setToolTipText(Messages.getString("PreparePartyWizard.17"));
-      jcbMedia = new JComboBox();
+      jcbMedia = new JComboBox<>();
       List<Type> types = TypeManager.getInstance().getTypes();
+
       // sort the list on extension here
-      types.sort(new TypeComparator());
+      types.sort((o1, o2) -> {
+        // handle null, always equal
+        if (o1 == null || o2 == null) {
+          return 0;
+        }
+        // otherwise sort on extension here
+        return o1.getExtension().compareTo(o2.getExtension());
+      });
+
       for (Type type : types) {
         // exclude playlists and web-radios from selection as we cannot copy
         // those.

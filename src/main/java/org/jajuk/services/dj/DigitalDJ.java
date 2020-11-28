@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.services.dj;
 
@@ -48,7 +48,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
   /**
    * Constructor with ID.
-   * 
+   *
    * @param sID DJ ID
    */
   DigitalDJ(String sID) {
@@ -57,7 +57,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
   /**
    * toString method.
-   * 
+   *
    * @return String representation of this object
    */
   @Override
@@ -67,14 +67,12 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
   /**
    * Compare to method, sorted alphaticaly.
-   * 
-   * @param other 
-   * 
+   *
    * @return the int
    */
   @Override
   public int compareTo(DigitalDJ other) {
-    // 
+    //
     if (other == null) {
       return -1;
     }
@@ -83,38 +81,34 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
   /**
    * To xml.
-   * 
+   *
    * @return XML representation of this DJ
    */
   public abstract String toXML();
 
   /**
    * To xml general parameters.
-   * 
+   *
    * @return DJ common parameters
    */
   protected String toXMLGeneralParameters() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("<?xml version='1.0' encoding='UTF-8'?>\n");
-    sb.append("<" + Const.XML_DJ_DJ + " " + Const.XML_VERSION + "='" + Const.JAJUK_VERSION + "' "
-        + Const.XML_ID + "='" + sID + "' " + Const.XML_NAME + "='" + sName + "' " + Const.XML_TYPE
-        + "='" + this.getClass().getName() + "'>\n");
-    sb.append("\t<" + Const.XML_DJ_GENERAL + " ");
-    sb.append(Const.XML_DJ_RATING_LEVEL + "='" + iRatingLevel + "' ");
-    sb.append(Const.XML_DJ_UNICITY + "='" + bUnicity + "' ");
-    sb.append(Const.XML_DJ_FADE_DURATION + "='" + iFadingDuration + "' ");
-    sb.append(Const.XML_DJ_MAX_TRACKS + "='" + iMaxTracks + "'/>\n");
-    return sb.toString();
+    return "<?xml version='1.0' encoding='UTF-8'?>\n" +
+            "<" + Const.XML_DJ_DJ + " " + Const.XML_VERSION + "='" + Const.JAJUK_VERSION + "' "
+            + Const.XML_ID + "='" + sID + "' " + Const.XML_NAME + "='" + sName + "' " + Const.XML_TYPE
+            + "='" + this.getClass().getName() + "'>\n" +
+            "\t<" + Const.XML_DJ_GENERAL + " " +
+            Const.XML_DJ_RATING_LEVEL + "='" + iRatingLevel + "' " +
+            Const.XML_DJ_UNICITY + "='" + bUnicity + "' " +
+            Const.XML_DJ_FADE_DURATION + "='" + iFadingDuration + "' " +
+            Const.XML_DJ_MAX_TRACKS + "='" + iMaxTracks + "'/>\n";
   }
 
   /**
    * Filter by rate and remove duplicates (unicity).
-   * 
-   * @param files 
    */
   void filterFilesByRate(List<File> files) {
     // this set stores already used tracks
-    Set<Track> selectedTracks = new HashSet<Track>(files.size());
+    Set<Track> selectedTracks = new HashSet<>(files.size());
     // Select by rate if needed
     if (iRatingLevel > 0) {
       Iterator<File> it = files.iterator();
@@ -132,9 +126,6 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
   /**
    * Filter files by max track.
-   * 
-   * 
-   * @param files 
    */
   void filterFilesByMaxTrack(List<File> files) {
     // cut off some tracks if less are selected for queuing
@@ -152,7 +143,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
   /**
    * Gets the name.
-   * 
+   *
    * @return DJ name
    */
   public String getName() {
@@ -161,9 +152,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
   /**
    * equals method.
-   * 
-   * @param other 
-   * 
+   *
    * @return whether two object are equals
    */
   @Override
@@ -186,8 +175,6 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
   /**
    * Sets the name.
-   * 
-   * @param name 
    */
   public void setName(String name) {
     this.sName = name;
@@ -195,7 +182,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
   /**
    * Gets the fading duration.
-   * 
+   *
    * @return DJ fade duration
    */
   public int getFadingDuration() {
@@ -204,8 +191,6 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
   /**
    * Sets the fading duration.
-   * 
-   * @param fadingDuration 
    */
   public void setFadingDuration(int fadingDuration) {
     this.iFadingDuration = fadingDuration;
@@ -213,7 +198,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
   /**
    * Gets the rating level.
-   * 
+   *
    * @return Returns the iRatingFloor.
    */
   public int getRatingLevel() {
@@ -222,7 +207,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
   /**
    * Sets the rating level.
-   * 
+   *
    * @param ratingFloor The iRatingFloor to set.
    */
   public void setRatingLevel(int ratingFloor) {
@@ -231,14 +216,14 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
   /**
    * Generate playlist.
-   * 
+   *
    * @return Generated playlist
    */
   public abstract List<File> generatePlaylist();
 
   /**
    * Gets the iD.
-   * 
+   *
    * @return the iD
    */
   public String getID() {
@@ -247,7 +232,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
   /**
    * Checks if is track unicity.
-   * 
+   *
    * @return true, if is track unicity
    */
   public boolean isTrackUnicity() {
@@ -256,7 +241,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
   /**
    * Sets the track unicity.
-   * 
+   *
    * @param trackUnicity the new track unicity
    */
   public void setTrackUnicity(boolean trackUnicity) {
@@ -265,7 +250,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
   /**
    * Gets the max tracks.
-   * 
+   *
    * @return The configured number of max tracks to queue for this DJ. -1
    * denotes infinity.
    */
@@ -275,7 +260,7 @@ public abstract class DigitalDJ implements Comparable<DigitalDJ> {
 
   /**
    * Set the new max number of tracks to queue.
-   * 
+   *
    * @param iMaxTracks The new max number of tracks to queue for this DJ. -1 for infinity
    */
   public void setMaxTracks(int iMaxTracks) {

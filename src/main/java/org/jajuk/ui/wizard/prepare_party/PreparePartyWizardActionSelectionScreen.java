@@ -55,18 +55,15 @@ public class PreparePartyWizardActionSelectionScreen extends Screen implements A
   /** DJ. */
   private JRadioButton jrbDJ;
   /** DJ. */
-  @SuppressWarnings("rawtypes")
-  private JComboBox jcbDJ;
+  private JComboBox<String> jcbDJ;
   /** Ambience. */
   private JRadioButton jrbAmbience;
   /** Ambience. */
-  @SuppressWarnings("rawtypes")
-  private JComboBox jcbAmbience;
+  private JComboBox<String> jcbAmbience;
   /** Playlist. */
   private JRadioButton jrbPlaylist;
   /** Playlist. */
-  @SuppressWarnings("rawtypes")
-  private JComboBox jcbPlaylist;
+  private JComboBox<String> jcbPlaylist;
   /** Shuffle. */
   private JRadioButton jrbShuffle;
   /** Shuffle. */
@@ -81,7 +78,6 @@ public class PreparePartyWizardActionSelectionScreen extends Screen implements A
   /**
    * Create panel UI.
    */
-  @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
   public void initUI() {
     bgActions = new ButtonGroup();
@@ -89,7 +85,7 @@ public class PreparePartyWizardActionSelectionScreen extends Screen implements A
     jrbDJ.addActionListener(this);
     // populate DJs
     List<DigitalDJ> djs = DigitalDJManager.getInstance().getDJsSorted();
-    jcbDJ = new JComboBox();
+    jcbDJ = new JComboBox<>();
     for (DigitalDJ dj : djs) {
       jcbDJ.addItem(dj.getName());
     }
@@ -97,14 +93,14 @@ public class PreparePartyWizardActionSelectionScreen extends Screen implements A
     jrbAmbience = new JRadioButton(Messages.getString("PreparePartyWizard.7"));
     jrbAmbience.addActionListener(this);
     List<Ambience> ambiences = AmbienceManager.getInstance().getAmbiences();
-    jcbAmbience = new JComboBox();
+    jcbAmbience = new JComboBox<>();
     for (Ambience amb : ambiences) {
       jcbAmbience.addItem(amb.getName());
     }
     jcbAmbience.addActionListener(this);
     jrbPlaylist = new JRadioButton(Messages.getString("PreparePartyWizard.8"));
     jrbPlaylist.addActionListener(this);
-    jcbPlaylist = new JComboBox();
+    jcbPlaylist = new JComboBox<>();
     Playlist tempPlaylist = (Playlist) data.get(Variable.TEMP_PLAYLIST);
     if (tempPlaylist != null) {
       // check if this is a "temporary" playlist that is provided by the
