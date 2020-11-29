@@ -235,7 +235,7 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
     jsRatingLevel.addMouseWheelListener(new DefaultMouseWheelListener(jsRatingLevel));
     jsRatingLevel.addChangeListener(this);
     jcbNormalizeFilename.addActionListener(this);
-    setLayout(new MigLayout("insets 10,gapx 10,gapy 15", "[][grow]"));
+    setLayout(new MigLayout("insets 10,gapx 10,gapy 12", "[][grow]"));
     add(jcbMaxTracks);
     {
       JPanel panel = new JPanel();
