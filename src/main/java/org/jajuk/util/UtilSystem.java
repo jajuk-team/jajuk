@@ -149,8 +149,9 @@ public final class UtilSystem {
       try {
         ProcessBuilder pb = new ProcessBuilder("ps", "-eaf");
         Process proc = pb.start();
-        stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-        proc.waitFor(5, TimeUnit.SECONDS);
+        stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()), 1024*1024);
+
+        // read all the output
         String s;
         while ((s = stdInput.readLine()) != null) {
           if (s.matches(".*ksmserver.*")) {
@@ -158,6 +159,9 @@ public final class UtilSystem {
             break;
           }
         }
+
+        // finally try to wait for the process to fully finish
+        proc.waitFor(5, TimeUnit.SECONDS);
       } catch (Throwable e) {
         Log.error(e);
       } finally {
