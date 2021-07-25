@@ -132,6 +132,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     if (proc != null) {
       PrintStream out = new PrintStream(proc.getOutputStream());
       // Do not use println() : it doesn't work under windows
+      //Log.debug("Command mplayer: "+command);
       out.print(command + '\n');
       out.flush();
       // don't close out here otherwise the output stream of the Process
@@ -175,6 +176,8 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     // Build command
     List<String> cmd = new ArrayList<String>(10);
     cmd.add(sCommand);
+    cmd.add("-vo");
+    cmd.add("null");
     // Start at given position
     cmd.add("-ss");
     cmd.add(Integer.toString(startPositionSec));
