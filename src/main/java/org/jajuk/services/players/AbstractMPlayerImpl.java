@@ -176,8 +176,8 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     // Build command
     List<String> cmd = new ArrayList<String>(10);
     cmd.add(sCommand);
-    cmd.add("-vo");
-    cmd.add("null");
+    // -novideo is required by https://trac.mplayerhq.hu/ticket/2378
+    cmd.add("-novideo");
     // Start at given position
     cmd.add("-ss");
     cmd.add(Integer.toString(startPositionSec));

@@ -116,9 +116,10 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                         pauseCountStamp = System.currentTimeMillis();
                     }
                     if (!bPaused) {
-                        // Get current time. Due to https://trac.mplayerhq.hu/ticket/2378, we use a the less precised % command
+                        // Get current time. Due to https://trac.mplayerhq.hu/ticket/2378, we use a
+                        // the less precised % command
                         // for flac files
-                        sendCommand(runningFlacFile() ? "get_percent_pos" : "get_time_pos");
+                        sendCommand("get_time_pos");
                         // Get track length if required. Do not launch "get_time_length" only
                         // once because some fast computer makes mplayer start too fast and
                         // the slave mode is not yet opened so this command is not token into
@@ -147,13 +148,10 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                 }
             }
         }
-        private boolean runningFlacFile() {
-            return Const.EXT_FLAC.equals(fCurrent.getType().getExtension());
-        }
+
+        
     }
 
-    
-    
     /**
      * Reader : read information from mplayer like position.
      */
@@ -196,25 +194,18 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
                             break;
                         }
                         // Very verbose :
-                        //Log.debug("Output from MPlayer: " + line);
+                        // Log.debug("Output from MPlayer: " + line);
                         // Detect mplayer language
                         if (line.indexOf("Starting playback") != -1) {
                             patternEndOfFile = patternEndOfFileEnglish;
-                        } else if (line.indexOf("ANS_PERCENT_POSITION") != -1
-                                || line.indexOf("ANS_TIME_POSITION") != -1) {
+                        } else if (line.indexOf("ANS_TIME_POSITION") != -1) {
                             // Stream is actually opened now
                             bOpening = false;
                             StringTokenizer st = new StringTokenizer(line, "=");
                             st.nextToken();
                             String value = st.nextToken();
                             try {
-                                // due to bug https://trac.mplayerhq.hu/ticket/2378 , we use a different 
-                                // position detection method for flac files. 
-                                if (line.indexOf("ANS_TIME_POSITION") != -1) {
-                                    lTime = (int) (Float.parseFloat(value) * 1000);
-                                } else {
-                                    lTime = (int) (Float.parseFloat(value) * lDuration / 100);
-                                }
+                                lTime = (int) (Float.parseFloat(value) * 1000);
                             } catch (NumberFormatException nfe) {
                                 Log.error(nfe);
                                 lTime = 0l;
