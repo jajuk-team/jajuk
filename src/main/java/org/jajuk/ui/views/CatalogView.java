@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.views;
 
@@ -33,7 +33,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -51,7 +50,6 @@ import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.jajuk.base.Album;
@@ -131,7 +129,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
   /** Number of page in current selection. */
   int iNbPages = 0;
   /** Utility list used by size selector. */
-  private final List<String> sizes = new ArrayList<String>(10);
+  private final List<String> sizes = new ArrayList<>(10);
   /** Thumbs list *. */
   private List<LocalAlbumThumbnail> thumbs;
   /** Last scrollbar position *. */
@@ -249,12 +247,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
     // compute size string for slider tooltip
     String sizeToDisplay = "" + (50 + 50 * index) + "x" + "" + (50 + 50 * index);
     jsSize.setToolTipText(Messages.getString("CatalogView.4") + " " + sizeToDisplay);
-    jsSize.addChangeListener(new ChangeListener() {
-      @Override
-      public void stateChanged(ChangeEvent arg0) {
-        sliderValueChanged();
-      }
-    });
+    jsSize.addChangeListener(arg0 -> sliderValueChanged());
     jpControlBottom = new JPanel(new MigLayout("gapx 20"));
     jpControlBottom.add(jcbShowCover);
     jpControlBottom.add(jlSize, "split 2");
@@ -274,7 +267,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
    * Inits the meta information.
    **/
   private void initMetaInformation() {
-    alFilters = new ArrayList<PropertyMetaInformation>(10);
+    alFilters = new ArrayList<>(10);
     alFilters.add(null); // All
     alFilters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_GENRE));
     alFilters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_ARTIST));
@@ -282,7 +275,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
     alFilters.add(TrackManager.getInstance().getMetaInformation(Const.XML_YEAR));
     // please note: this needs to be kept in-sync with what we do in
     // AlbumComparator!
-    alSorters = new ArrayList<PropertyMetaInformation>(10);
+    alSorters = new ArrayList<>(10);
     alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_GENRE));
     alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_ARTIST));
     alSorters.add(TrackManager.getInstance().getMetaInformation(Const.XML_TRACK_ALBUM));
@@ -353,7 +346,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
    */
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
-    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<>();
     eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
     eventSubjectSet.add(JajukEvents.DEVICE_MOUNT);
     eventSubjectSet.add(JajukEvents.DEVICE_UNMOUNT);
@@ -377,7 +370,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
     bPopulating = true;
     // Store current state
     scrollPosition = jsp.getVerticalScrollBar().getValue();
-    thumbs = new ArrayList<LocalAlbumThumbnail>(100);
+    thumbs = new ArrayList<>(100);
     // Clear all the view and show a busy label instead
     showBusyLabel();
     // Show the page
@@ -394,9 +387,9 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
   @Override
   public Object longCall() {
     // Every albums
-    List<Album> albums = null;
+    final List<Album> albums;
     // The final album list we will display
-    List<Album> pageAlbums = new ArrayList<Album>(Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE));
+    List<Album> pageAlbums = new ArrayList<>(Conf.getInt(Const.CONF_CATALOG_PAGE_SIZE));
     try {
       Filter filter = null;
       if (jtfValue.getText().length() > 0) {
@@ -407,7 +400,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
       List<Track> alAllTracks = TrackManager.getInstance().getTracks();
       alAllTracks = Filter.filterItems(alAllTracks, filter, Track.class);
       // keep matching albums
-      HashSet<Album> hsAlbums = new HashSet<Album>(alAllTracks.size() / 10);
+      HashSet<Album> hsAlbums = new HashSet<>(alAllTracks.size() / 10);
       for (Item item : alAllTracks) {
         Track track = (Track) item;
         Album album = track.getAlbum();
@@ -425,12 +418,12 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
           itAlbums.remove();
         }
       }
-      albums = new ArrayList<Album>(hsAlbums);
+      albums = new ArrayList<>(hsAlbums);
       // sort albums
       final int index = jcbSorter.getSelectedIndex();
-      Collections.sort(albums, new AlbumComparator(index));
+      albums.sort(new AlbumComparator(index));
       // Now process each album
-      Set<Directory> directories = new HashSet<Directory>(albums.size());
+      Set<Directory> directories = new HashSet<>(albums.size());
       Iterator<Album> it = albums.iterator();
       while (it.hasNext()) {
         Album album = it.next();
@@ -512,7 +505,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
   /**
    * Catalog page display (must be called from the EDT).
    *
-   * @param in 
+   * @param in
    */
   @Override
   public void shortCall(Object in) {
@@ -528,7 +521,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
       thumbs.add(thumb);
       // restore previous selected item if still set
       if (item != null) {
-        if (((Album) thumb.getItem()).equals(item.getItem())) {
+        if (thumb.getItem().equals(item.getItem())) {
           CatalogView.this.item = thumb;
           CatalogView.this.item.setSelected(true);
         }
@@ -567,12 +560,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
     // The scrollbar must be set after current EDT work to be
     // effective,
     // so queue it
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        jsp.getVerticalScrollBar().setValue(scrollPosition);
-      }
-    });
+    SwingUtilities.invokeLater(() -> jsp.getVerticalScrollBar().setValue(scrollPosition));
     jtfValue.requestFocusInWindow();
     UtilGUI.stopWaiting();
   }
@@ -589,12 +577,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
         || JajukEvents.COVER_DEFAULT_CHANGED.equals(subject)
         || JajukEvents.DEVICE_MOUNT.equals(subject) || JajukEvents.DEVICE_UNMOUNT.equals(subject)
         || JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
-      SwingUtilities.invokeLater(new Runnable() {
-        @Override
-        public void run() {
-          populateCatalog();
-        }
-      });
+      SwingUtilities.invokeLater(this::populateCatalog);
     }
     // In all cases, update the facts
     showFacts();
@@ -694,7 +677,7 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
     /**
      * Instantiates a new catalog view mouse wheel listener.
      *
-     * @param js 
+     * @param js
      */
     public CatalogViewMouseWheelListener(JSlider js) {
       super(js);

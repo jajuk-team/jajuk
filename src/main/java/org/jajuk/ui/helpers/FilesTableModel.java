@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.helpers;
 
@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
@@ -47,7 +46,7 @@ public class FilesTableModel extends JajukTableModel {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
   /** Associated view ID. */
-  private String viewID;
+  private final String viewID;
 
   /**
    * Model constructor.
@@ -133,28 +132,24 @@ public class FilesTableModel extends JajukTableModel {
     // option if needed
     final boolean syncTreeTable = Conf.getBoolean(Const.CONF_SYNC_TABLE_TREE + "." + viewID);
     oItems = new Item[iRowNum];
-    CollectionUtils.filter(alToShow, new Predicate() {
-      @Override
-      public boolean evaluate(Object o) {
-        File file = (File) o;
-        // show it if no sync option or if item is in the selection
-        boolean bShowWithTree = !syncTreeTable
-        // tree selection = null means none selection have been
-        // done in tree so far
-            || treeSelection == null
-            // check if the tree selection contains the current file
-            || (treeSelection.size() > 0 && treeSelection.contains(file));
-        return (!file.shouldBeHidden() && bShowWithTree);
-      }
+    CollectionUtils.filter(alToShow, o -> {
+      File file = (File) o;
+      // show it if no sync option or if item is in the selection
+      boolean bShowWithTree = !syncTreeTable
+      // tree selection = null means none selection have been
+      // done in tree so far
+          || treeSelection == null
+          // check if the tree selection contains the current file
+          || (treeSelection.size() > 0 && treeSelection.contains(file));
+      return (!file.shouldBeHidden() && bShowWithTree);
     });
     // Filter files
     Filter filter = new Filter(sPropertyName, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));
     alToShow = Filter.filterItems(alToShow, filter, File.class);
-    Iterator<File> it = alToShow.iterator();
     int iColNum = iNumberStandardCols + FileManager.getInstance().getCustomProperties().size()
         + TrackManager.getInstance().getCustomProperties().size();
     iRowNum = alToShow.size();
-    it = alToShow.iterator();
+    Iterator<File> it = alToShow.iterator();
     oValues = new Object[iRowNum][iColNum];
     oItems = new Item[iRowNum];
     bCellEditable = new boolean[iRowNum][iColNum];
@@ -186,7 +181,7 @@ public class FilesTableModel extends JajukTableModel {
       // Id
       oItems[iRow] = file;
       // Play
-      IconLabel il = null;
+      final IconLabel il;
       if (file.isReady()) {
         il = getIcon(false);
       } else {
@@ -276,14 +271,14 @@ public class FilesTableModel extends JajukTableModel {
         long lQuality = file.getQuality();
         oValues[iRow][11] = lQuality;
       } else {
-        oValues[iRow][11] = 0l;
+        oValues[iRow][11] = 0L;
       }
       bCellEditable[iRow][11] = false;
       // Size, we want to keep 2 decimals to the value in MB
       if (bSize) {
         oValues[iRow][12] = Math.round(file.getSize() / 10485.76) / 100f;
       } else {
-        oValues[iRow][12] = 0l;
+        oValues[iRow][12] = 0L;
       }
       bCellEditable[iRow][12] = false;
       // Order

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.helpers;
 
@@ -35,13 +35,13 @@ import org.jajuk.util.Messages;
 
 /**
  * Jajuk table model, adds identifier to model.
- * 
+ *
  * <p>Note that we don't synchronize this class because all calls have to be done in the EDT.</p>
  */
 @SuppressWarnings("serial")
 public abstract class JajukTableModel extends DefaultTableModel {
   /** Column identifiers. */
-  volatile protected List<String> idList = new ArrayList<String>(10);
+  volatile protected List<String> idList = new ArrayList<>(10);
   /** Rows number. */
   protected int iRowNum;
   /** Values table*. */
@@ -59,7 +59,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
   /** Cell editable flag. */
   protected boolean[][] bCellEditable;
   /** Column names. */
-  protected List<String> vColNames = new ArrayList<String>(10);
+  protected List<String> vColNames = new ArrayList<>(10);
   /** Last value used for undo. */
   private Object oLast = null;
   /** Editable flag. */
@@ -73,7 +73,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /**
    * Checks if is refreshing.
-   * 
+   *
    * @return the refreshing
    */
   public boolean isRefreshing() {
@@ -82,7 +82,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /**
    * Sets the refreshing.
-   * 
+   *
    * @param refreshing the refreshing to set
    */
   public void setRefreshing(boolean refreshing) {
@@ -91,7 +91,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /**
    * The Constructor.
-   * 
+   *
    * @param iNumberStandardCols Number of columns of this model (without custom properties)
    */
   public JajukTableModel(int iNumberStandardCols) {
@@ -109,9 +109,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /**
    * Gets the identifier.
-   * 
-   * @param sColName 
-   * 
+   *
    * @return Column identifier for a given column title
    */
   public String getIdentifier(String sColName) {
@@ -120,9 +118,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /**
    * Return item at given position.
-   * 
-   * @param iRow 
-   * 
+   *
    * @return the item at
    */
   public Item getItemAt(int iRow) {
@@ -131,9 +127,6 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /**
    * Set item at given position.
-   * 
-   * @param iRow 
-   * @param item 
    */
   public void setItemAt(int iRow, Item item) {
     oItems[iRow] = item;
@@ -141,7 +134,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see javax.swing.table.DefaultTableModel#getValueAt(int, int)
    */
   @Override
@@ -155,7 +148,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see javax.swing.table.DefaultTableModel#setValueAt(java.lang.Object, int, int)
    */
   @Override
@@ -167,7 +160,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see javax.swing.table.TableModel#getColumnCount()
    */
   @Override
@@ -177,9 +170,6 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /**
    * Undo last change.
-   * 
-   * @param rowIndex 
-   * @param columnIndex 
    */
   public void undo(int rowIndex, int columnIndex) {
     if (oLast != null) {
@@ -189,7 +179,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see javax.swing.table.DefaultTableModel#getColumnName(int)
    */
   @Override
@@ -199,9 +189,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /**
    * Gets the identifier.
-   * 
-   * @param column 
-   * 
+   *
    * @return the identifier
    */
   public String getIdentifier(int column) {
@@ -210,7 +198,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see javax.swing.table.DefaultTableModel#getRowCount()
    */
   @Override
@@ -221,7 +209,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see javax.swing.table.DefaultTableModel#isCellEditable(int, int)
    */
   @Override
@@ -231,11 +219,11 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see javax.swing.table.AbstractTableModel#getColumnClass(int)
    */
   @Override
-  public Class<? extends Object> getColumnClass(int columnIndex) {
+  public Class<?> getColumnClass(int columnIndex) {
     Object o = getValueAt(0, columnIndex);
     if (o != null) {
       return o.getClass();
@@ -246,7 +234,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /**
    * Fill model with data using an optional filter property and pattern.
-   * 
+   *
    * @param sProperty Property (column) to filter
    * @param sPattern pattern
    * @param columnsToShow List of elements to show in the table (like files,hits...). This
@@ -257,8 +245,6 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /**
    * Fill model with data.
-   * 
-   * @param columnsToShow 
    */
   public synchronized void populateModel(List<String> columnsToShow) {
     populateModel(null, null, columnsToShow);
@@ -266,7 +252,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /**
    * Set this model editable state.
-   * 
+   *
    * @param b whether model is editable or not
    */
   public void setEditable(boolean b) {
@@ -275,7 +261,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /**
    * Gets the tree selection.
-   * 
+   *
    * @return the tree selection
    */
   public Set<Item> getTreeSelection() {
@@ -284,7 +270,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /**
    * Sets the tree selection.
-   * 
+   *
    * @param treeSelection the new tree selection
    */
   public void setTreeSelection(Set<Item> treeSelection) {
@@ -302,9 +288,7 @@ public abstract class JajukTableModel extends DefaultTableModel {
 
   /**
    * Gets the icon.
-   * 
-   * @param unmount 
-   * 
+   *
    * @return the icon
    */
   protected IconLabel getIcon(boolean unmount) {

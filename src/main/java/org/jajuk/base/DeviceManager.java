@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
@@ -46,11 +46,11 @@ import org.jajuk.util.log.Log;
  */
 public final class DeviceManager extends ItemManager {
   /** Self instance. */
-  private static DeviceManager singleton = new DeviceManager();
+  private static final DeviceManager singleton = new DeviceManager();
   /** Date last global refresh. */
   private long lDateLastGlobalRefresh = 0;
   /** List of deep-refresh devices after an upgrade. */
-  private final Set<Device> devicesDeepRefreshed = new HashSet<Device>();
+  private final Set<Device> devicesDeepRefreshed = new HashSet<>();
   /** Auto-refresh thread. */
   private final Thread tAutoRefresh = new Thread("Device Auto Refresh Thread") {
     @Override
@@ -104,7 +104,7 @@ public final class DeviceManager extends ItemManager {
 
   /**
    * Start auto refresh thread.
-   * 
+   *
    */
   public void startAutoRefreshThread() {
     if (!tAutoRefresh.isAlive()) {
@@ -115,7 +115,7 @@ public final class DeviceManager extends ItemManager {
 
   /**
    * Gets the instance.
-   * 
+   *
    * @return singleton
    */
   public static DeviceManager getInstance() {
@@ -124,11 +124,7 @@ public final class DeviceManager extends ItemManager {
 
   /**
    * Register a device.
-   * 
-   * @param sName 
-   * @param deviceType 
-   * @param sUrl 
-   * 
+   *
    * @return device
    */
   public Device registerDevice(String sName, Device.Type deviceType, String sUrl) {
@@ -139,10 +135,6 @@ public final class DeviceManager extends ItemManager {
   /**
    * Register a device with a known id.
    *
-   * @param sId 
-   * @param sName 
-   * @param deviceType 
-   * @param sUrl 
    * @return device
    */
   Device registerDevice(String sId, String sName, Device.Type deviceType, String sUrl) {
@@ -160,10 +152,6 @@ public final class DeviceManager extends ItemManager {
   /**
    * Check none device already has this name or is a parent directory.
    *
-   * @param sName 
-   * @param deviceType 
-   * @param sUrl 
-   * @param bNew 
    * @return 0:ok or error code
    */
   public int checkDeviceAvailablity(String sName, Device.Type deviceType, String sUrl, boolean bNew) {
@@ -204,9 +192,7 @@ public final class DeviceManager extends ItemManager {
 
   /**
    * Return first device found being parent of the provided path.
-   * 
-   * @param path 
-   * 
+   *
    * @return  first device found being parent of the provided path
    */
   Device getDeviceByPath(File path) {
@@ -220,8 +206,6 @@ public final class DeviceManager extends ItemManager {
 
   /**
   * Remove a device.
-  * 
-  * @param device 
   */
   public void removeDevice(Device device) {
     lock.writeLock().lock();
@@ -278,7 +262,7 @@ public final class DeviceManager extends ItemManager {
 
   /**
    * Checks if is any device refreshing.
-   * 
+   *
    * @return whether any device is currently refreshing
    */
   public boolean isAnyDeviceRefreshing() {
@@ -294,7 +278,7 @@ public final class DeviceManager extends ItemManager {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
@@ -304,7 +288,7 @@ public final class DeviceManager extends ItemManager {
 
   /**
    * Gets the date last global refresh.
-   * 
+   *
    * @return the date last global refresh
    */
   public long getDateLastGlobalRefresh() {
@@ -378,9 +362,9 @@ public final class DeviceManager extends ItemManager {
 
   /**
    * Gets the device by id.
-   * 
+   *
    * @param sID Item ID
-   * 
+   *
    * @return Element
    */
   public Device getDeviceByID(String sID) {
@@ -389,9 +373,9 @@ public final class DeviceManager extends ItemManager {
 
   /**
    * Gets the device by name.
-   * 
+   *
    * @param sName device name
-   * 
+   *
    * @return device by given name or null if no match
    */
   public Device getDeviceByName(String sName) {
@@ -405,7 +389,7 @@ public final class DeviceManager extends ItemManager {
 
   /**
    * Gets the devices.
-   * 
+   *
    * @return ordered devices list
    */
   @SuppressWarnings("unchecked")
@@ -415,11 +399,11 @@ public final class DeviceManager extends ItemManager {
 
   /**
    * Gets the devices iterator.
-   * 
+   *
    * @return devices iterator
    */
   @SuppressWarnings("unchecked")
   public ReadOnlyIterator<Device> getDevicesIterator() {
-    return new ReadOnlyIterator<Device>((Iterator<Device>) getItemsIterator());
+    return new ReadOnlyIterator<>((Iterator<Device>) getItemsIterator());
   }
 }

@@ -111,7 +111,7 @@ public final class StartupControlsService {
     for (int i = 0; i <= 4; i++) {
       final File star = SessionService.getConfFileByPath("cache/internal/star" + i + "_16x16.png");
       if (!star.exists()) {
-        ImageIcon ii = null;
+        final ImageIcon ii;
         switch (i) {
         case 0:
           ii = IconLoader.getIcon(JajukIcons.STAR_0);

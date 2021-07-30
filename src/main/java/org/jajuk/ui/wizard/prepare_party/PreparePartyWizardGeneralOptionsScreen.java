@@ -27,7 +27,6 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -92,16 +91,13 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
   /** Enable limit on specific audio type. */
   private JCheckBox jcbOneMedia;
   /** Limit to one type of audo file. */
-  @SuppressWarnings("rawtypes")
-  private JComboBox jcbMedia;
+  private JComboBox<String> jcbMedia;
   /** Enable conversion to the selected audio type. */
   private JCheckBox jcbConvertMedia;
   /** Audio conversion. */
   private JLabel jlConvertMedia;
   /** Button to configure audio conversion. */
   private JButton jbConvertConfig;
-  /** Limit on rate of tracks. */
-  private JLabel jlRatingLevel;
   /** The min. number of stars a track needs to have */
   private JSlider jsRatingLevel;
   /** Enable normalizing filenames so they can be stored on windows fileshares. */
@@ -126,7 +122,6 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
   /**
    * Create panel UI.
    */
-  @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
   public void initUI() {
     { // Max Tracks
@@ -171,10 +166,19 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
     { // Choose Media
       jcbOneMedia = new JCheckBox(Messages.getString("PreparePartyWizard.16"));
       jcbOneMedia.setToolTipText(Messages.getString("PreparePartyWizard.17"));
-      jcbMedia = new JComboBox();
+      jcbMedia = new JComboBox<>();
       List<Type> types = TypeManager.getInstance().getTypes();
+
       // sort the list on extension here
-      Collections.sort(types, new TypeComparator());
+      types.sort((o1, o2) -> {
+        // handle null, always equal
+        if (o1 == null || o2 == null) {
+          return 0;
+        }
+        // otherwise sort on extension here
+        return o1.getExtension().compareTo(o2.getExtension());
+      });
+
       for (Type type : types) {
         // exclude playlists and web-radios from selection as we cannot copy
         // those.
@@ -190,6 +194,8 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
       jlConvertMedia = new JLabel(Messages.getString("PreparePartyWizard.37"));
       jbConvertConfig = new JButton(Messages.getString("PreparePartyWizard.40"));
     }
+    // Limit on rate of tracks.
+    JLabel jlRatingLevel;
     { // Rating Level
       jlRatingLevel = new JLabel(Messages.getString("DigitalDJWizard.8"));
       jlRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.53"));
@@ -229,7 +235,7 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
     jsRatingLevel.addMouseWheelListener(new DefaultMouseWheelListener(jsRatingLevel));
     jsRatingLevel.addChangeListener(this);
     jcbNormalizeFilename.addActionListener(this);
-    setLayout(new MigLayout("insets 10,gapx 10,gapy 15", "[][grow]"));
+    setLayout(new MigLayout("insets 10,gapx 10,gapy 12", "[][grow]"));
     add(jcbMaxTracks);
     {
       JPanel panel = new JPanel();
@@ -328,35 +334,23 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
       jcbConvertMedia.setEnabled(false);
     }
     // don't set Convert to on from data if PACPL became unavailable
-    if (isTrue(Variable.CONVERT_MEDIA) && bPACPLAvailable) {
-      jcbConvertMedia.setSelected(true);
-    } else {
-      jcbConvertMedia.setSelected(false);
-    }
-    if (data.containsKey(Variable.ONE_MEDIA)) {
-      jcbMedia.setSelectedItem(data.get(Variable.ONE_MEDIA));
-    } else {
-      // default to MP3 initially
-      jcbMedia.setSelectedItem("mp3");
-    }
+    jcbConvertMedia.setSelected(isTrue(Variable.CONVERT_MEDIA) && bPACPLAvailable);
+    // default to MP3 initially
+    jcbMedia.setSelectedItem(data.getOrDefault(Variable.ONE_MEDIA, "mp3"));
     if (data.containsKey(Variable.RATING_LEVEL)) {
       jsRatingLevel.setValue((Integer) data.get(Variable.RATING_LEVEL));
     }
-    if (isTrue(Variable.NORMALIZE_FILENAME)) {
-      jcbNormalizeFilename.setSelected(true);
-    } else {
-      jcbNormalizeFilename.setSelected(false);
-    }
+    jcbNormalizeFilename.setSelected(isTrue(Variable.NORMALIZE_FILENAME));
   }
 
   /**
    * Return if the specified element is true in the data-map.
-   * 
+   *
    * @param key The key to look up in the data-object.
-   * 
+   *
    * @return true if the value was stored as boolean true, false otherwise.
    */
-  private final boolean isTrue(final Variable key) {
+  private boolean isTrue(final Variable key) {
     return data.containsKey(key) && Boolean.TRUE.equals(data.get(key));
   }
 
@@ -385,7 +379,7 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
   /**
    * Helper to handle a checkbox/slider combination. It also updates an
    * associated Label with the value from the Slider.
-   * 
+   *
    * @param cb The checkbox to check for selected/deselected state
    * @param slider The slider to get the value from
    * @param label The Label to populate with the current value from the Slider.
@@ -412,7 +406,7 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
    */
@@ -432,28 +426,25 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
     } else if (ae.getSource() == jbConvertConfig) {
       // create the settings dialog, it will display itself and inform us when
       // the value is changed with "Ok"
-      new PreparePartyConvertSettings(new ChangeListener() {
-        @Override
-        public void stateChanged(ChangeEvent e) {
-          // no need for re-checking if the same command is chosen as before
-          if (e.getSource().toString().equals(data.get(Variable.CONVERT_COMMAND))) {
-            Log.debug("Same pacpl-command as before: " + e.getSource().toString());
-            return;
-          }
-          Log.debug("New pacpl-command: " + e.getSource().toString());
-          data.put(Variable.CONVERT_COMMAND, e.getSource().toString());
-          // re-check if pacpl can be called now
-          boolean bPACPLAvailable = UtilPrepareParty.checkPACPL((String) data
-              .get(Variable.CONVERT_COMMAND));
-          // disable media conversion if pacpl is not found
-          if (bPACPLAvailable) {
-            Log.debug("Updated settings for media conversion allow pacpl to be used.");
-            jcbConvertMedia.setEnabled(true);
-          } else {
-            Log.warn("Updated settings for media conversion do not allow pacpl to be used!");
-            jcbConvertMedia.setEnabled(false);
-            jcbConvertMedia.setSelected(false);
-          }
+      new PreparePartyConvertSettings(e -> {
+        // no need for re-checking if the same command is chosen as before
+        if (e.getSource().toString().equals(data.get(Variable.CONVERT_COMMAND))) {
+          Log.debug("Same pacpl-command as before: " + e.getSource().toString());
+          return;
+        }
+        Log.debug("New pacpl-command: " + e.getSource().toString());
+        data.put(Variable.CONVERT_COMMAND, e.getSource().toString());
+        // re-check if pacpl can be called now
+        boolean bPACPLAvailable = UtilPrepareParty.checkPACPL((String) data
+            .get(Variable.CONVERT_COMMAND));
+        // disable media conversion if pacpl is not found
+        if (bPACPLAvailable) {
+          Log.debug("Updated settings for media conversion allow pacpl to be used.");
+          jcbConvertMedia.setEnabled(true);
+        } else {
+          Log.warn("Updated settings for media conversion do not allow pacpl to be used!");
+          jcbConvertMedia.setEnabled(false);
+          jcbConvertMedia.setSelected(false);
         }
       }, (String) data.get(Variable.CONVERT_COMMAND), JajukMainWindow.getInstance());
     }
@@ -462,7 +453,7 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent
    * )
@@ -486,7 +477,7 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
    */
   @Override
@@ -494,10 +485,8 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
     if (e.getSource() == jlConvertMedia) {
       try {
         Desktop.getDesktop().browse(
-            new URI("http://jajuk.info/index.php/Installing_Perl_Audio_Converter"));
-      } catch (IOException ex) {
-        Log.error(ex);
-      } catch (URISyntaxException ex) {
+            new URI("https://www.jajuk.info/manual/pacpl.html"));
+      } catch (IOException | URISyntaxException ex) {
         Log.error(ex);
       }
     }
@@ -505,7 +494,7 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
    */
   @Override
@@ -515,7 +504,7 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
    */
   @Override
@@ -525,7 +514,7 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
    */
   @Override
@@ -535,7 +524,7 @@ public class PreparePartyWizardGeneralOptionsScreen extends Screen implements Ac
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
    */

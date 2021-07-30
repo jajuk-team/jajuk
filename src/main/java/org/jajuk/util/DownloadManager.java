@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.util;
 
@@ -63,15 +63,13 @@ public final class DownloadManager {
 
   /**
    * Gets the remote covers list.
-   * 
-   * @param search 
-   * 
+   *
    * @return a list of urls
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static List<URL> getRemoteCoversList(String search) throws IOException {
-    List<URL> alOut = new ArrayList<URL>(20); // URL list
+    List<URL> alOut = new ArrayList<>(20); // URL list
     // check void searches
     if (search == null || search.trim().equals("")) {
       return alOut;
@@ -110,29 +108,23 @@ public final class DownloadManager {
 
   /**
    * Download the resource at the given url.
-   * 
+   *
    * @param url url to download
    * @param fDestination destination file
-   * 
+   *
    * @throws IOException If a network problem occurs.
    */
   public static void download(URL url, File fDestination) throws IOException {
     HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
-    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fDestination));
-    try {
-      BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
-      try {
-        int bytesRead = -1;
+    try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fDestination))) {
+      try (BufferedInputStream bis = new BufferedInputStream(connection.getInputStream())) {
+        int bytesRead;
         byte[] buffer = new byte[BUFFER_SIZE];
         while ((bytesRead = bis.read(buffer)) != -1) {
           bos.write(buffer, 0, bytesRead);
         }
-      } finally {
-        bis.close();
       }
       bos.flush();
-    } finally {
-      bos.close();
     }
     connection.disconnect();
   }
@@ -140,11 +132,11 @@ public final class DownloadManager {
   /**
    * Download the resource at the given url and cache it <br>
    * If the file is already in cache, it is returned immediately <br>
-   *  
+   *
    * @param url url to download
-   * 
+   *
    * @return cached file or null if a problem occurred
-   * 
+   *
    * @throws IOException If a network problem occurs or a temporary file cannot be
    * written.
    */
@@ -170,12 +162,12 @@ public final class DownloadManager {
 
   /**
    * Download the cover list.
-   * 
+   *
    * @param url to download
-   * @param charset 
-   * 
+   * @param charset the character encoding to use for the received text
+   *
    * @return result as an array of bytes, null if a problem occurred
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static String downloadText(URL url, String charset) throws IOException {
@@ -195,11 +187,9 @@ public final class DownloadManager {
 
   /**
    * Download text with the default charset UTF-8.
-   * 
-   * @param url 
-   * 
+   *
    * @return the string
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static String downloadText(URL url) throws IOException {
@@ -209,12 +199,12 @@ public final class DownloadManager {
   /**
    * Return a string for a given URL and encoding, used to retrieve text from a
    * cached file.
-   * 
+   *
    * @param url url to read
    * @param encoding encoding of the content of the file
-   * 
+   *
    * @return a string for a given URL and encoding
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static String getTextFromCachedFile(URL url, String encoding) throws IOException {
@@ -226,15 +216,12 @@ public final class DownloadManager {
     }
     File file = downloadToCache(url);
     StringBuilder builder = new StringBuilder();
-    InputStream input = new BufferedInputStream(new FileInputStream(file));
-    try {
+    try (InputStream input = new BufferedInputStream(new FileInputStream(file))) {
       byte[] array = new byte[1024];
       int read;
       while ((read = input.read(array)) > 0) {
         builder.append(new String(array, 0, read, encoding));
       }
-    } finally {
-      input.close();
     }
     return builder.toString();
   }
@@ -287,7 +274,7 @@ public final class DownloadManager {
 
   /**
    * Gets the proxy.
-   * 
+   *
    * @return the proxy
    */
   public static Proxy getProxy() {

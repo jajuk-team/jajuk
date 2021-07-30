@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.services.players;
 
@@ -31,17 +31,17 @@ public class StackItem implements Cloneable {
   /** Associated file. */
   private final File file;
   /** Repeat flag. */
-  private boolean bRepeat = false;
+  private boolean bRepeat;
   /** User launch flag. */
-  private boolean bUserLaunch = false;
+  private boolean bUserLaunch;
   /** Planned track ?. */
-  private boolean bPlanned = false;
+  private boolean bPlanned;
 
   /**
    * Constructor.
-   * 
+   *
    * @param file associated file
-   * 
+   *
    * @throws JajukException the jajuk exception
    */
   public StackItem(File file) throws JajukException {
@@ -50,10 +50,7 @@ public class StackItem implements Cloneable {
 
   /**
    * Constructor.
-   * 
-   * @param file 
-   * @param bUserLauched 
-   * 
+   *
    * @throws JajukException the jajuk exception
    */
   public StackItem(File file, boolean bUserLauched) throws JajukException {
@@ -63,9 +60,6 @@ public class StackItem implements Cloneable {
   /**
    * Constructor.
    *
-   * @param file 
-   * @param bRepeat 
-   * @param bUserLauched 
    * @throws JajukException the jajuk exception
    */
   public StackItem(File file, boolean bRepeat, boolean bUserLauched) throws JajukException {
@@ -80,7 +74,7 @@ public class StackItem implements Cloneable {
 
   /**
    * Checks if is repeat.
-   * 
+   *
    * @return Returns the bRepeat.
    */
   public boolean isRepeat() {
@@ -89,7 +83,7 @@ public class StackItem implements Cloneable {
 
   /**
    * Sets the repeat.
-   * 
+   *
    * @param repeat The bRepeat to set.
    */
   public void setRepeat(boolean repeat) {
@@ -98,7 +92,7 @@ public class StackItem implements Cloneable {
 
   /**
    * Gets the file.
-   * 
+   *
    * @return Returns the file.
    */
   public File getFile() {
@@ -107,7 +101,7 @@ public class StackItem implements Cloneable {
 
   /**
    * Checks if is user launch.
-   * 
+   *
    * @return Returns the bUserLaunch.
    */
   public boolean isUserLaunch() {
@@ -116,7 +110,7 @@ public class StackItem implements Cloneable {
 
   /**
    * Sets the user launch.
-   * 
+   *
    * @param userLaunch The bUserLaunch to set.
    */
   public void setUserLaunch(boolean userLaunch) {
@@ -125,7 +119,7 @@ public class StackItem implements Cloneable {
 
   /**
    * Checks if is planned.
-   * 
+   *
    * @return Returns the bPlanned.
    */
   public boolean isPlanned() {
@@ -134,7 +128,7 @@ public class StackItem implements Cloneable {
 
   /**
    * Sets the planned.
-   * 
+   *
    * @param planned The bPlanned to set.
    */
   public void setPlanned(boolean planned) {
@@ -143,9 +137,9 @@ public class StackItem implements Cloneable {
 
   /**
    * Clone method.
-   * 
+   *
    * @return a cloned stack item
-   * 
+   *
    * @throws CloneNotSupportedException the clone not supported exception
    */
   @Override
@@ -163,9 +157,7 @@ public class StackItem implements Cloneable {
 
   /**
    * Equals method.
-   * 
-   * @param o 
-   * 
+   *
    * @return whether both items are equals. Condition : file is the same and
    * planned flag is the same
    */
@@ -185,7 +177,7 @@ public class StackItem implements Cloneable {
 
   /**
    * Hash code method to go along with equals.
-   * 
+   *
    * @return the int
    */
   @Override
@@ -197,7 +189,7 @@ public class StackItem implements Cloneable {
 
   /**
    * toString method.
-   * 
+   *
    * @return the string
    */
   @Override

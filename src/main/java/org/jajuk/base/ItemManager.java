@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
@@ -46,17 +46,17 @@ import org.jajuk.util.log.Log;
  */
 public abstract class ItemManager {
   /** Maps item classes -> instance, must be a linked map for ordering (mandatory in commited collection). */
-  private static Map<Class<?>, ItemManager> hmItemManagers = new LinkedHashMap<Class<?>, ItemManager>(
-      10);
+  private static final Map<Class<?>, ItemManager> hmItemManagers = new LinkedHashMap<>(
+          10);
   /** Maps properties meta information name and object. */
-  private final Map<String, PropertyMetaInformation> hmPropertiesMetaInformation = new LinkedHashMap<String, PropertyMetaInformation>(
-      10);
+  private final Map<String, PropertyMetaInformation> hmPropertiesMetaInformation = new LinkedHashMap<>(
+          10);
   /** The Lock. */
   ReadWriteLock lock = new ReentrantReadWriteLock();
   /** Use an array list during startup which is faster during loading the collection. */
-  private List<Item> startupItems = new ArrayList<Item>(100);
+  private List<Item> startupItems = new ArrayList<>(100);
   /** Stores the items by ID to have quick access if necessary. */
-  private final Map<String, Item> internalMap = new HashMap<String, Item>(100);
+  private final Map<String, Item> internalMap = new HashMap<>(100);
   /** Collection pointer : at the beginning point to the ArrayList, later this is replaced by a TreeSet to have correct ordering. */
   private Collection<Item> items = startupItems;
 
@@ -89,7 +89,7 @@ public abstract class ItemManager {
     try {
       // populate a new TreeSet with the startup-items
       if (startupItems != null) {
-        items = new TreeSet<Item>(startupItems);
+        items = new TreeSet<>(startupItems);
         // Free startup memory
         startupItems = null;
       }
@@ -102,7 +102,7 @@ public abstract class ItemManager {
    * Registers a new item manager.
    *
    * @param c Managed item class
-   * @param itemManager 
+   * @param itemManager Manager responsible for this type of item
    */
   public static void registerItemManager(Class<?> c, ItemManager itemManager) {
     hmItemManagers.put(c, itemManager);
@@ -110,15 +110,13 @@ public abstract class ItemManager {
 
   /**
    * Gets the XML tag.
-   * 
+   *
    * @return identifier used for XML generation
    */
   public abstract String getXMLTag();
 
   /**
    * Gets the meta information.
-   *
-   * @param sPropertyName 
    *
    * @return meta data for given property
    */
@@ -128,8 +126,6 @@ public abstract class ItemManager {
 
   /**
    * Remove a property *.
-   *
-   * @param sProperty 
    */
   public void removeProperty(String sProperty) {
     PropertyMetaInformation meta = getMetaInformation(sProperty);
@@ -139,8 +135,6 @@ public abstract class ItemManager {
 
   /**
    * Remove a custom property from all items for the given manager.
-   *
-   * @param meta 
    */
   void applyRemoveProperty(PropertyMetaInformation meta) {
     lock.readLock().lock();
@@ -153,15 +147,6 @@ public abstract class ItemManager {
     }
   }
 
-  /**
-   * Generic method to access to a parameterized list of items.
-   *
-   * @param meta 
-   *
-   * @return the item-parameterized list
-   *
-   * protected abstract HashMap<String, Item> getItemsMap();
-   */
   /** Add a custom property to all items for the given manager */
   public void applyNewProperty(PropertyMetaInformation meta) {
     lock.readLock().lock();
@@ -181,12 +166,10 @@ public abstract class ItemManager {
    * @return (partial) XML representation of this manager
    */
   String toXML() {
-    StringBuilder sb = new StringBuilder("<").append(getXMLTag() + ">");
-    Iterator<String> it = hmPropertiesMetaInformation.keySet().iterator();
-    while (it.hasNext()) {
-      String sProperty = it.next();
+    StringBuilder sb = new StringBuilder("<").append(getXMLTag()).append(">");
+    for (String sProperty : hmPropertiesMetaInformation.keySet()) {
       PropertyMetaInformation meta = hmPropertiesMetaInformation.get(sProperty);
-      sb.append('\n' + meta.toXML());
+      sb.append('\n').append(meta.toXML());
     }
     return sb.append('\n').toString();
   }
@@ -243,10 +226,8 @@ public abstract class ItemManager {
    * @return custom properties Meta informations
    */
   public Collection<PropertyMetaInformation> getCustomProperties() {
-    List<PropertyMetaInformation> col = new ArrayList<PropertyMetaInformation>();
-    Iterator<PropertyMetaInformation> it = hmPropertiesMetaInformation.values().iterator();
-    while (it.hasNext()) {
-      PropertyMetaInformation meta = it.next();
+    List<PropertyMetaInformation> col = new ArrayList<>();
+    for (PropertyMetaInformation meta : hmPropertiesMetaInformation.values()) {
       if (meta.isCustom()) {
         col.add(meta);
       }
@@ -260,10 +241,8 @@ public abstract class ItemManager {
    * @return custom properties Meta informations
    */
   public Collection<PropertyMetaInformation> getUserCustomProperties() {
-    List<PropertyMetaInformation> col = new ArrayList<PropertyMetaInformation>();
-    Iterator<PropertyMetaInformation> it = hmPropertiesMetaInformation.values().iterator();
-    while (it.hasNext()) {
-      PropertyMetaInformation meta = it.next();
+    List<PropertyMetaInformation> col = new ArrayList<>();
+    for (PropertyMetaInformation meta : hmPropertiesMetaInformation.values()) {
       if (meta.isCustom() && !Tag.getActivatedExtraTags().contains(meta.getName())) {
         col.add(meta);
       }
@@ -277,10 +256,8 @@ public abstract class ItemManager {
    * @return visible properties Meta informations
    */
   public Collection<PropertyMetaInformation> getVisibleProperties() {
-    List<PropertyMetaInformation> col = new ArrayList<PropertyMetaInformation>();
-    Iterator<PropertyMetaInformation> it = hmPropertiesMetaInformation.values().iterator();
-    while (it.hasNext()) {
-      PropertyMetaInformation meta = it.next();
+    List<PropertyMetaInformation> col = new ArrayList<>();
+    for (PropertyMetaInformation meta : hmPropertiesMetaInformation.values()) {
       if (meta.isVisible()) {
         col.add(meta);
       }
@@ -325,8 +302,6 @@ public abstract class ItemManager {
   /**
    * Get ItemManager manager for given item class.
    *
-   * @param c 
-   *
    * @return associated item manager or null if none was found
    */
   public static ItemManager getItemManager(Class<?> c) {
@@ -353,7 +328,7 @@ public abstract class ItemManager {
         managerType = 3;
       }
       // build used items set
-      List<Item> lItems = new ArrayList<Item>(100);
+      List<Item> lItems = new ArrayList<>(100);
       List<Track> tracks = TrackManager.getInstance().getTracks();
       for (Track track : tracks) {
         switch (managerType) {
@@ -400,8 +375,6 @@ public abstract class ItemManager {
 
   /**
    * Remove a given item.
-   *
-   * @param item 
    */
   public void removeItem(Item item) {
     lock.writeLock().lock();
@@ -416,7 +389,7 @@ public abstract class ItemManager {
     }
   }
 
-  private final void notifyCollectionChange(Item item) {
+  private void notifyCollectionChange(Item item) {
     // Ignore this if the persistence service is not yet started to speed up startup
     if (!PersistenceService.getInstance().isAlive()) {
       return;
@@ -451,8 +424,6 @@ public abstract class ItemManager {
 
   /**
    * Register a new property.
-   *
-   * @param meta 
    */
   public void registerProperty(PropertyMetaInformation meta) {
     hmPropertiesMetaInformation.put(meta.getName(), meta);
@@ -461,10 +432,10 @@ public abstract class ItemManager {
   /**
    * Change any item.
    *
-   * @param itemToChange 
-   * @param sKey 
-   * @param oValue 
-   * @param filter : files we want to deal with
+   * @param itemToChange the item that should be changed
+   * @param sKey the key of the property to set
+   * @param oValue the value of the property to set
+   * @param filter filter for files we want to deal with
    *
    * @return the changed item
    *
@@ -632,7 +603,7 @@ public abstract class ItemManager {
     // doing the copying. Usage of the list afterwards is save without locking
     lock.readLock().lock();
     try {
-      return new ArrayList<Item>(items);
+      return new ArrayList<>(items);
     } finally {
       lock.readLock().unlock();
     }
@@ -673,7 +644,7 @@ public abstract class ItemManager {
     lock.writeLock().lock();
     try {
       // first create a copy
-      ArrayList<Item> itemsCopy = new ArrayList<Item>(items);
+      ArrayList<Item> itemsCopy = new ArrayList<>(items);
       // then remove all elements
       clear();
       // and then re-add all items again to make them correctly sorted again

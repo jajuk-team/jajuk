@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
@@ -59,9 +59,9 @@ public final class TypeManager extends ItemManager {
   /** The Constant ICONS_16X16_TYPE_MP3 for the supported media types. */
   private static final String ICONS_16X16_TYPE_MP3 = "icons/16x16/type_mp3_16x16.png";
   /** extensions->types. */
-  private final Map<String, Type> hmSupportedTypes = new HashMap<String, Type>(10);
+  private final Map<String, Type> hmSupportedTypes = new HashMap<>(10);
   /** Self instance. */
-  private static TypeManager singleton = new TypeManager();
+  private static final TypeManager singleton = new TypeManager();
 
   /**
    * No constructor available, only static access.
@@ -97,7 +97,7 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Gets the instance.
-   * 
+   *
    * @return singleton
    */
   public static TypeManager getInstance() {
@@ -106,14 +106,14 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Register a type jajuk can read.
-   * 
+   *
    * @param sName The human readable name of the type.
    * @param sExtension The extension for the type, without a dot.
    * @param cPlayerImpl The class used to play files of this type. Needs to implement the
    * interface IPlayerImpl, @see IPlayerImpl
    * @param cTagImpl The class used to retrieve and write tags for this file type.
    * Needs to implement the interface ITagImpl, @see ITagImpl
-   * 
+   *
    * @return the type
    */
   @SuppressWarnings("unchecked")
@@ -138,9 +138,9 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Tells if the type is supported.
-   * 
+   *
    * @param sExt The extension to check (without leading dot)
-   * 
+   *
    * @return true, if checks if is extension supported
    */
   public boolean isExtensionSupported(String sExt) {
@@ -149,9 +149,9 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Return type for a given extension.
-   * 
+   *
    * @param sExtension The extension to retrieve (without leading dot)
-   * 
+   *
    * @return the type by extension
    */
   public Type getTypeByExtension(String sExtension) {
@@ -160,14 +160,12 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Return all music types.
-   * 
+   *
    * @return the all music types
    */
   public List<Type> getAllMusicTypes() {
-    List<Type> alResu = new ArrayList<Type>(5);
-    Iterator<Type> it = hmSupportedTypes.values().iterator();
-    while (it.hasNext()) {
-      Type type = it.next();
+    List<Type> alResu = new ArrayList<>(5);
+    for (Type type : hmSupportedTypes.values()) {
       if (type.getBooleanValue(Const.XML_TYPE_IS_MUSIC)) {
         alResu.add(type);
       }
@@ -177,7 +175,7 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Return a list "a,b,c" of registered extensions, used by FileChooser.
-   * 
+   *
    * @return the types as one string.
    */
   public String getTypeListString() {
@@ -185,9 +183,8 @@ public final class TypeManager extends ItemManager {
       return "";
     }
     StringBuilder sb = new StringBuilder();
-    Iterator<String> it = hmSupportedTypes.keySet().iterator();
-    while (it.hasNext()) {
-      sb.append(it.next());
+    for (String s : hmSupportedTypes.keySet()) {
+      sb.append(s);
       sb.append(',');
     }
     sb.deleteCharAt(sb.length() - 1); // remove last ','
@@ -206,9 +203,9 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Gets the type by id.
-   * 
+   *
    * @param sID Item ID
-   * 
+   *
    * @return item
    */
   Type getTypeByID(String sID) {
@@ -217,7 +214,7 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Gets the types.
-   * 
+   *
    * @return types list
    */
   @SuppressWarnings("unchecked")
@@ -227,12 +224,12 @@ public final class TypeManager extends ItemManager {
 
   /**
    * Gets the types iterator.
-   * 
+   *
    * @return types iterator
    */
   @SuppressWarnings("unchecked")
   public ReadOnlyIterator<Type> getTypesIterator() {
-    return new ReadOnlyIterator<Type>((Iterator<Type>) getItemsIterator());
+    return new ReadOnlyIterator<>((Iterator<Type>) getItemsIterator());
   }
 
   /**
@@ -241,7 +238,7 @@ public final class TypeManager extends ItemManager {
    * Note that we use explicite strings for icon location. It's to avoid loading
    * all icons at startup, we do it asynchronously to accelerate startup
    * </p>
-   * 
+   *
    * @throws ClassNotFoundException the class not found exception
    */
   public static void registerTypesNoMplayer() throws ClassNotFoundException {

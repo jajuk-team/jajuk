@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.helpers;
 
@@ -42,16 +42,14 @@ import org.jajuk.util.JajukIcons;
 public class StarsHelper {
   /** Cache iconLabel for each different rate to save memory and CPU. Map at index 0 stores banned tracks. */
   @SuppressWarnings("rawtypes")
-  private static Map map[] = { new HashMap<Long, StarIconLabel>(),
+  private static final Map[] map = { new HashMap<Long, StarIconLabel>(),
       new HashMap<Long, StarIconLabel>(), new HashMap<Long, StarIconLabel>(),
       new HashMap<Long, StarIconLabel>(), new HashMap<Long, StarIconLabel>(),
       new HashMap<Long, StarIconLabel>() };
 
   /**
    * Gets the icon.
-   * 
-   * @param starsNumber 
-   * 
+   *
    * @return the icon
    */
   static public ImageIcon getIcon(int starsNumber) {
@@ -75,9 +73,7 @@ public class StarsHelper {
 
   /**
    * Gets the stars number.
-   * 
-   * @param item 
-   * 
+   *
    * @return Number of stars based on the rate of this item
    */
   static public int getStarsNumber(Item item) {
@@ -104,15 +100,13 @@ public class StarsHelper {
 
   /**
    * Gets the stars.
-   * 
-   * @param item 
-   * 
+   *
    * @return the stars icon or ban icon if banned
    */
   @SuppressWarnings("unchecked")
   static public StarIconLabel getStarIconLabel(Item item) {
     long rate = item.getRate();
-    StarIconLabel sil = null;
+    StarIconLabel sil;
     int starsNumber;
     if (item instanceof Track && item.getBooleanValue(Const.XML_TRACK_BANNED)) {
       starsNumber = -1;

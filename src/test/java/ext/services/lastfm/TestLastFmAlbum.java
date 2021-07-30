@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package ext.services.lastfm;
 
@@ -55,21 +55,21 @@ public class TestLastFmAlbum extends TestCase {
 
   /**
    * Test get album playlist.
-   * 
+   *
    */
   public void testGetAlbumPlaylist() {
     Album a = Album.getInfo("Red Hot Chili Peppers", "By The Way", UtilString.rot13(API_KEY));
     assertNotNull(a);
     try { // may fail if internet is not available
       Playlist p = Playlist.fetchAlbumPlaylist(a.getId(), UtilString.rot13(API_KEY));
-      assertNotNull(p);
+      assertNotNull("Should have a playlist with API_KEY: " + API_KEY, p);
     } catch (CallException e) {
       // ignore for now if it contains an UnknownHostException inside
       assertTrue(e.getMessage(), e.getCause() instanceof UnknownHostException);
     }
     /**
      * TODO: find out how to get a Session here...
-     * 
+     *
      * <code>
     Session session = null;
     Playlist.addTrack(p.getId(), "Red Hot Chilli Peppers", "By The Way", null);
@@ -148,7 +148,7 @@ public class TestLastFmAlbum extends TestCase {
 
   /**
    * Test get release date invalid.
-   * 
+   *
    */
   public void testGetReleaseDateInvalid() {
     LastFmAlbum album = new LastFmAlbum();

@@ -16,13 +16,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -56,7 +55,6 @@ import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
-import org.jajuk.ui.helpers.ILaunchCommand;
 import org.jajuk.ui.helpers.IndexHighlighterPredicate;
 import org.jajuk.ui.helpers.JajukTableModel;
 import org.jajuk.ui.helpers.PlaylistEditorTransferHandler;
@@ -74,7 +72,6 @@ import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.decorator.ColorHighlighter;
-import org.jdesktop.swingx.decorator.ComponentAdapter;
 import org.jdesktop.swingx.decorator.HighlightPredicate;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -96,14 +93,14 @@ public class QueueView extends PlaylistView {
   /** Stop after button. */
   private JajukToggleButton jtbStopAfter;
   /** Action when user clicks on stop after. */
-  private ActionListener alStopAfter = new ActionListener() {
+  private final ActionListener alStopAfter = new ActionListener() {
     @Override
     public void actionPerformed(ActionEvent e) {
       QueueModel.setStopAfter(jtbStopAfter.isSelected());
     }
   };
   /** Action for auto scrolling. */
-  private ActionListener alAutoScroll = new ActionListener() {
+  private final ActionListener alAutoScroll = new ActionListener() {
     @Override
     public void actionPerformed(ActionEvent e) {
       Conf.setProperty(Const.CONF_AUTO_SCROLL, Boolean.toString(jtbAutoScroll.isSelected()));
@@ -115,7 +112,7 @@ public class QueueView extends PlaylistView {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.IView#display()
    */
   @Override
@@ -188,18 +185,13 @@ public class QueueView extends PlaylistView {
     // We don't use regular action for the play because it has very special
     // behavior here in the queue view : it must go to selection without
     // keeping previous FIFO
-    jmiFilePlay.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        goToSelection();
-      }
-    });
+    jmiFilePlay.addActionListener(e -> goToSelection());
     initMenuItems();
     //handle track removing for the queue when deleting it
     jmiDelete.addActionListener(this);
     SubstanceSkin theme = SubstanceLookAndFeel.getCurrentSkin();
     SubstanceColorScheme scheme = theme.getActiveColorScheme(DecorationAreaType.NONE);
-    Color queueHighlighterColor = null;
+    final Color queueHighlighterColor;
     if (scheme.isDark()) {
       queueHighlighterColor = scheme.getUltraLightColor();
     } else {
@@ -208,12 +200,9 @@ public class QueueView extends PlaylistView {
     ColorHighlighter colorHighlighter = new ColorHighlighter(new IndexHighlighterPredicate(),
         queueHighlighterColor, null);
     editorTable.addHighlighter(colorHighlighter);
-    HighlightPredicate hpPlaying = new HighlightPredicate() {
-      @Override
-      public boolean isHighlighted(Component renderer, ComponentAdapter adapter) {
-        int convertedRow = editorTable.convertRowIndexToModel(adapter.row);
-        return QueueModel.isPlayingTrack() && convertedRow == QueueModel.getIndex();
-      }
+    HighlightPredicate hpPlaying = (renderer, adapter) -> {
+      int convertedRow = editorTable.convertRowIndexToModel(adapter.row);
+      return QueueModel.isPlayingTrack() && convertedRow == QueueModel.getIndex();
     };
     ColorHighlighter playHighlighter = new ColorHighlighter(hpPlaying, Color.ORANGE, null);
     editorTable.addHighlighter(playHighlighter);
@@ -231,25 +220,22 @@ public class QueueView extends PlaylistView {
       }
     });
     // Add specific behavior on left click
-    editorTable.setCommand(new ILaunchCommand() {
-      @Override
-      public void launch(int nbClicks) {
-        int iSelectedCol = editorTable.getSelectedColumn();
-        // Convert column selection as columns may have been moved
-        iSelectedCol = editorTable.convertColumnIndexToModel(iSelectedCol);
-        // double click, launches selected track and all after
-        if (nbClicks == 2
-        // click on play icon
-            || (nbClicks == 1 && iSelectedCol == 0)) {
-          StackItem item = editorModel.getStackItem(editorTable.getSelectedRow());
-          if (item.isPlanned()) {
-            item.setPlanned(false);
-            item.setRepeat(Conf.getBoolean(Const.CONF_STATE_REPEAT));
-            item.setUserLaunch(true);
-            QueueModel.push(item, Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
-          } else { // non planned items
-            goToSelection();
-          }
+    editorTable.setCommand(nbClicks -> {
+      int iSelectedCol = editorTable.getSelectedColumn();
+      // Convert column selection as columns may have been moved
+      iSelectedCol = editorTable.convertColumnIndexToModel(iSelectedCol);
+      // double click, launches selected track and all after
+      if (nbClicks == 2
+      // click on play icon
+          || (nbClicks == 1 && iSelectedCol == 0)) {
+        StackItem item = editorModel.getStackItem(editorTable.getSelectedRow());
+        if (item.isPlanned()) {
+          item.setPlanned(false);
+          item.setRepeat(Conf.getBoolean(Const.CONF_STATE_REPEAT));
+          item.setUserLaunch(true);
+          QueueModel.push(item, Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
+        } else { // non planned items
+          goToSelection();
         }
       }
     });
@@ -266,33 +252,30 @@ public class QueueView extends PlaylistView {
    * the GUI
    */
   private void goToSelection() {
-    new Thread("Queue Selection Thread") {
-      @Override
-      public void run() {
-        try {
-          QueueModel.goTo(editorTable.getSelectedRow());
-          // remove selection for planned tracks
-          ListSelectionModel lsm = editorTable.getSelectionModel();
-          editorModel.setRefreshing(true);
-          editorTable.getSelectionModel().removeSelectionInterval(lsm.getMinSelectionIndex(),
-              lsm.getMaxSelectionIndex());
-        } catch (Exception e) {
-          Log.error(e);
-        } finally {
-          editorModel.setRefreshing(false);
-        }
+    SwingUtilities.invokeLater(() -> {
+      try {
+        QueueModel.goTo(editorTable.getSelectedRow());
+        // remove selection for planned tracks
+        ListSelectionModel lsm = editorTable.getSelectionModel();
+        editorModel.setRefreshing(true);
+        editorTable.getSelectionModel().removeSelectionInterval(lsm.getMinSelectionIndex(),
+                lsm.getMaxSelectionIndex());
+      } catch (Exception e) {
+        Log.error(e);
+      } finally {
+        editorModel.setRefreshing(false);
       }
-    }.start();
+    });
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.views.PlaylistView#getRegistrationKeys()
    */
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
-    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<>();
     eventSubjectSet.add(JajukEvents.QUEUE_NEED_REFRESH);
     eventSubjectSet.add(JajukEvents.DEVICE_REFRESH);
     eventSubjectSet.add(JajukEvents.DEVICE_MOUNT);
@@ -308,7 +291,7 @@ public class QueueView extends PlaylistView {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.IView#getDesc()
    */
   @Override
@@ -318,84 +301,81 @@ public class QueueView extends PlaylistView {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   @Override
   public void update(final JajukEvent event) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          JajukEvents subject = event.getSubject();
-          editorTable.setAcceptColumnsEvents(false); // flag reloading
-          if (JajukEvents.QUEUE_NEED_REFRESH.equals(subject)
-              || JajukEvents.DEVICE_REFRESH.equals(subject)
-              || JajukEvents.DEVICE_MOUNT.equals(subject)
-              || JajukEvents.DEVICE_UNMOUNT.equals(subject)
-              || JajukEvents.RATE_CHANGED.equals(subject)
-              || JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
-            refreshQueue();
-            // Only scroll if song actually changed, otherwise, any
-            // queue refresh
-            // would scroll and annoy users
-            if (Conf.getBoolean(CONF_AUTO_SCROLL) && QueueModel.getCurrentItem() != null
-                && !QueueModel.getCurrentItem().equals(lastScrolledItem)) {
-              autoScroll();
-              lastScrolledItem = QueueModel.getCurrentItem();
-            }
-          } else if (JajukEvents.CUSTOM_PROPERTIES_ADD.equals(subject)) {
-            Properties properties = event.getDetails();
-            if (properties == null) {
-              // can be null at view populate
-              return;
-            }
-            // create a new model
-            editorModel = new PlaylistTableModel(true);
-            editorModel.populateModel(editorTable.getColumnsConf());
-            editorTable.setModel(editorModel);
-            setRenderers();
-            editorTable.addColumnIntoConf((String) properties.get(Const.DETAIL_CONTENT));
-            editorTable.showColumns(editorTable.getColumnsConf());
-            editorModel.getItems().clear();
-            editorModel.getPlanned().clear();
-            refreshQueue();
-          } else if (JajukEvents.CUSTOM_PROPERTIES_REMOVE.equals(subject)) {
-            Properties properties = event.getDetails();
-            if (properties == null) { // can be null at view
-              // populate
-              return;
-            }
-            editorModel = new PlaylistTableModel(true);
-            editorModel.populateModel(editorTable.getColumnsConf());
-            editorTable.setModel(editorModel);
-            setRenderers();
-            // remove item from configuration cols
-            editorTable.removeColumnFromConf((String) properties.get(Const.DETAIL_CONTENT));
-            editorTable.showColumns(editorTable.getColumnsConf());
-            editorModel.getItems().clear();
-            editorModel.getPlanned().clear();
-            refreshQueue();
-          } else if (JajukEvents.VIEW_REFRESH_REQUEST.equals(subject)) {
-            // force filter to refresh if the events has been
-            // triggered by the table itself after a column change
-            JTable table = (JTable) event.getDetails().get(Const.DETAIL_CONTENT);
-            if (table.equals(editorTable)) {
-              editorModel.getItems().clear();
-              editorModel.getPlanned().clear();
-              refreshQueue();
-            }
-          } else if (JajukEvents.PLAYER_STOP.equals(subject)) {
-            // Reset stop after button on a player stop
-            jtbStopAfter.setSelected(false);
+    SwingUtilities.invokeLater(() -> {
+      try {
+        JajukEvents subject = event.getSubject();
+        editorTable.setAcceptColumnsEvents(false); // flag reloading
+        if (JajukEvents.QUEUE_NEED_REFRESH.equals(subject)
+            || JajukEvents.DEVICE_REFRESH.equals(subject)
+            || JajukEvents.DEVICE_MOUNT.equals(subject)
+            || JajukEvents.DEVICE_UNMOUNT.equals(subject)
+            || JajukEvents.RATE_CHANGED.equals(subject)
+            || JajukEvents.PARAMETERS_CHANGE.equals(subject)) {
+          refreshQueue();
+          // Only scroll if song actually changed, otherwise, any
+          // queue refresh
+          // would scroll and annoy users
+          if (Conf.getBoolean(CONF_AUTO_SCROLL) && QueueModel.getCurrentItem() != null
+              && !QueueModel.getCurrentItem().equals(lastScrolledItem)) {
+            autoScroll();
+            lastScrolledItem = QueueModel.getCurrentItem();
           }
-        } catch (Exception e) {
-          Log.error(e);
-        } finally {
-          editorTable.setAcceptColumnsEvents(true);
-          // Update number of tracks remaining
-          jlTitle.setText(" [" + QueueModel.getQueue().size() + "]");
+        } else if (JajukEvents.CUSTOM_PROPERTIES_ADD.equals(subject)) {
+          Properties properties = event.getDetails();
+          if (properties == null) {
+            // can be null at view populate
+            return;
+          }
+          // create a new model
+          editorModel = new PlaylistTableModel(true);
+          editorModel.populateModel(editorTable.getColumnsConf());
+          editorTable.setModel(editorModel);
+          setRenderers();
+          editorTable.addColumnIntoConf((String) properties.get(Const.DETAIL_CONTENT));
+          editorTable.showColumns(editorTable.getColumnsConf());
+          editorModel.getItems().clear();
+          editorModel.getPlanned().clear();
+          refreshQueue();
+        } else if (JajukEvents.CUSTOM_PROPERTIES_REMOVE.equals(subject)) {
+          Properties properties = event.getDetails();
+          if (properties == null) { // can be null at view
+            // populate
+            return;
+          }
+          editorModel = new PlaylistTableModel(true);
+          editorModel.populateModel(editorTable.getColumnsConf());
+          editorTable.setModel(editorModel);
+          setRenderers();
+          // remove item from configuration cols
+          editorTable.removeColumnFromConf((String) properties.get(Const.DETAIL_CONTENT));
+          editorTable.showColumns(editorTable.getColumnsConf());
+          editorModel.getItems().clear();
+          editorModel.getPlanned().clear();
+          refreshQueue();
+        } else if (JajukEvents.VIEW_REFRESH_REQUEST.equals(subject)) {
+          // force filter to refresh if the events has been
+          // triggered by the table itself after a column change
+          JTable table = (JTable) event.getDetails().get(Const.DETAIL_CONTENT);
+          if (table.equals(editorTable)) {
+            editorModel.getItems().clear();
+            editorModel.getPlanned().clear();
+            refreshQueue();
+          }
+        } else if (JajukEvents.PLAYER_STOP.equals(subject)) {
+          // Reset stop after button on a player stop
+          jtbStopAfter.setSelected(false);
         }
+      } catch (Exception e) {
+        Log.error(e);
+      } finally {
+        editorTable.setAcceptColumnsEvents(true);
+        // Update number of tracks remaining
+        jlTitle.setText(" [" + QueueModel.getQueue().size() + "]");
       }
     });
   }
@@ -404,30 +384,27 @@ public class QueueView extends PlaylistView {
    * Auto scroll to played track if option is enabled.
    */
   private void autoScroll() {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        if (QueueModel.getQueueSize() > 0) {
-          double index = QueueModel.getIndex();
-          double size = QueueModel.getQueueSize() + QueueModel.getPlanned().size();
-          double factor = (index / size);
-          int value = (int) (factor * jsp.getVerticalScrollBar().getMaximum());
-          // 'center' played track
-          value -= (jsp.getVerticalScrollBar().getHeight() / 2) - (editorTable.getRowHeight() / 2);
-          if (value < 0) {
-            value = 0;
-          }
-          if (value >= jsp.getVerticalScrollBar().getMinimum()
-              && value <= jsp.getVerticalScrollBar().getMaximum()) {
-            jsp.getVerticalScrollBar().setValue(value);
-          }
+    SwingUtilities.invokeLater(() -> {
+      if (QueueModel.getQueueSize() > 0) {
+        double index = QueueModel.getIndex();
+        double size = QueueModel.getQueueSize() + QueueModel.getPlanned().size();
+        double factor = (index / size);
+        int value = (int) (factor * jsp.getVerticalScrollBar().getMaximum());
+        // 'center' played track
+        value -= (jsp.getVerticalScrollBar().getHeight() / 2) - (editorTable.getRowHeight() / 2);
+        if (value < 0) {
+          value = 0;
+        }
+        if (value >= jsp.getVerticalScrollBar().getMinimum()
+            && value <= jsp.getVerticalScrollBar().getMaximum()) {
+          jsp.getVerticalScrollBar().setValue(value);
         }
       }
     });
   }
 
   /**
-   * Refresh queue. 
+   * Refresh queue.
    */
   private synchronized void refreshQueue() {
     // when nothing is selected, set default button state
@@ -447,7 +424,7 @@ public class QueueView extends PlaylistView {
         // set saved selection after a refresh
         editorTable.getSelectionModel().addSelectionInterval(element, element);
       }
-      // Refresh menu item along with preference icon. This is only useful when 
+      // Refresh menu item along with preference icon. This is only useful when
       // a user change the preference and display again the menu (right click) again
       // without changing the selection.
       pjmFilesEditor.resetUI(editorTable.getSelection());
@@ -476,7 +453,7 @@ public class QueueView extends PlaylistView {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see
    * org.jajuk.ui.views.PlaylistView#actionPerformed(java.awt.event.ActionEvent
    * )
@@ -485,7 +462,7 @@ public class QueueView extends PlaylistView {
   public void actionPerformed(ActionEvent ae) {
     try {
       if (ae.getSource() == jbSave) {
-        // special playlist, same behavior than a save as 
+        // special playlist, same behavior than a save as
         // (to be done in a thread because saveAs() uses invokeAndWait())
         new Thread("SaveAsAction") {
           @Override
@@ -535,7 +512,7 @@ public class QueueView extends PlaylistView {
           iRow = QueueModel.getQueue().size();
         }
         File file = FileManager.getInstance().getShuffleFile();
-        List<File> files = new ArrayList<File>();
+        List<File> files = new ArrayList<>();
         files.add(file);
         QueueModel.insert(
             UtilFeatures.createStackItems(files, Conf.getBoolean(Const.CONF_STATE_REPEAT), true),
@@ -573,21 +550,18 @@ public class QueueView extends PlaylistView {
 
   protected void removeItems(int[] selectedRows) {
     // Remove items
-    HashSet<Integer> rows = new HashSet<Integer>();
+    HashSet<Integer> rows = new HashSet<>();
     for (Integer i : selectedRows) {
       rows.add(i);
     }
     plf.remove(rows);
-    // Refresh queue asynchronously to serialize refresh due to remove() call. This is necessary only for the case where 
+    // Refresh queue asynchronously to serialize refresh due to remove() call. This is necessary only for the case where
     // we drop a non-playing track.
     ObservationManager.notify(new JajukEvent(JajukEvents.QUEUE_NEED_REFRESH));
   }
 
   /**
    * Called when table selection changed.
-   * 
-   * @param e
-   *            
    */
   @Override
   public void valueChanged(ListSelectionEvent e) {
@@ -600,10 +574,9 @@ public class QueueView extends PlaylistView {
   private void updateButtonsStateForSelection(int min, int max) {
     // Refresh the preference menu according to the selection
     pjmFilesEditor.resetUI(editorTable.getSelection());
-    int selectedRow = max;
     // true if selected line is a planned track
     boolean bPlanned = false;
-    if (selectedRow > editorModel.getItems().size() - 1) {
+    if (max > editorModel.getItems().size() - 1) {
       // means it is a planned track
       bPlanned = true;
     }
@@ -616,7 +589,7 @@ public class QueueView extends PlaylistView {
     jbAddShuffle.setEnabled(!bPlanned);
     // Up button
     if (min != max) {
-      // check if several rows have been selected 
+      // check if several rows have been selected
       jbUp.setEnabled(false);
       jmiFileUp.setEnabled(false);
     } else {

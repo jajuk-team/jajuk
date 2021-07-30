@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.services.players;
 
@@ -55,7 +55,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
   /** Time elapsed in ms. */
   private long lTime = 0;
   /** Actually played time */
-  private long actuallyPlayedTimeMillis = 0l;
+  private long actuallyPlayedTimeMillis = 0L;
   private long lastPlayTimeUpdate = System.currentTimeMillis();
   /** Date of last elapsed time update. */
   private long lDateLastUpdate = System.currentTimeMillis();
@@ -88,7 +88,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
    *      float)
    */
@@ -130,7 +130,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.IPlayerImpl#stop()
    */
   @Override
@@ -147,7 +147,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.IPlayerImpl#setVolume(float)
    */
   @Override
@@ -163,7 +163,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
 
   /*
     * (non-Javadoc)
-    * 
+    *
     * @see org.jajuk.players.IPlayerImpl#getCurrentPosition()
     */
   @Override
@@ -173,7 +173,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#getCurrentVolume()
    */
   @Override
@@ -183,7 +183,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#getElapsedTimeMillis()
    */
   @Override
@@ -193,7 +193,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#pause()
    */
   @Override
@@ -212,7 +212,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#seek(float) Ogg vorbis seek not yet
    *      supported
    */
@@ -240,25 +240,23 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
       // Seek support for MP3. and WAVE
       if (type != null && type.getBooleanValue(Const.XML_TYPE_SEEK_SUPPORTED)
           && mPlayingData.containsKey(AUDIO_LENGTH_BYTES)) {
-        int iAudioLength = ((Integer) mPlayingData.get(AUDIO_LENGTH_BYTES)).intValue();
+        int iAudioLength = (Integer) mPlayingData.get(AUDIO_LENGTH_BYTES);
         long skipBytes = Math.round(iAudioLength * posValue);
         try {
           player.seek(skipBytes);
           setVolume(fVolume); // need this because a seek reset volume
         } catch (Exception e) {
           Log.error(e);
-          return;
         }
       } else {
         Messages.showErrorMessage(126);
-        return;
       }
     }
   }
 
   /**
    * Gets the state.
-   * 
+   *
    * @return player state, -1 if player is null.
    */
   @Override
@@ -274,9 +272,6 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
 
   /**
    * Opened listener implementation.
-   * 
-   * @param arg0 
-   * @param arg1 
    */
   @Override
   @SuppressWarnings("unchecked")
@@ -289,11 +284,6 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
 
   /**
    * Progress listener implementation. Called several times by sec
-   * 
-   * @param iBytesread 
-   * @param lMicroseconds 
-   * @param bPcmdata 
-   * @param mProperties 
    */
   @Override
   public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata,
@@ -331,7 +321,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
       comp++;
       // computes read time
       if (mPlayingData.containsKey(AUDIO_LENGTH_BYTES)) {
-        int byteslength = ((Integer) mPlayingData.get(AUDIO_LENGTH_BYTES)).intValue();
+        int byteslength = (Integer) mPlayingData.get(AUDIO_LENGTH_BYTES);
         fPos = (byteslength != 0) ? (float) iBytesread / (float) byteslength : 0;
         UtilFeatures.storePersistedPlayingPosition(fPos);
         lTime = (long) (lDuration * fPos);
@@ -392,8 +382,6 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
 
   /**
    * State updated implementation.
-   * 
-   * @param bpe 
    */
   @Override
   public void stateUpdated(BasicPlayerEvent bpe) {
@@ -420,8 +408,6 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
 
   /**
    * Set controler implementation.
-   * 
-   * @param arg0 
    */
   @Override
   public void setController(BasicController arg0) {
@@ -430,7 +416,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#getCurrentLength()
    */
   @Override
@@ -440,8 +426,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
 
   /**
    * Scrobble.
-   * 
-   * 
+   *
+   *
    * @return the int
    */
   public int scrobble() {
@@ -450,11 +436,11 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, Const, BasicPlayerListe
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.WebRadio, float)
    */
   @Override
-  public void play(WebRadio radio, float fVolume) throws Exception {
+  public void play(WebRadio radio, float fVolume) {
     // not needed right now
   }
 

@@ -16,13 +16,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -42,9 +41,9 @@ import org.jajuk.util.error.JajukException;
  */
 public final class ArtistManager extends ItemManager {
   /** Self instance. */
-  private static ArtistManager singleton = new ArtistManager();
+  private static final ArtistManager singleton = new ArtistManager();
   /** List of all known artists. */
-  private Vector<String> artistsList = new Vector<String>(100); // NOPMD
+  private final Vector<String> artistsList = new Vector<>(100); // NOPMD
   /** note if we have already fully loaded the Collection to speed up initial startup */
   private volatile boolean orderedState = false;
 
@@ -68,7 +67,7 @@ public final class ArtistManager extends ItemManager {
 
   /**
    * Gets the instance.
-   * 
+   *
    * @return singleton
    */
   public static ArtistManager getInstance() {
@@ -77,9 +76,9 @@ public final class ArtistManager extends ItemManager {
 
   /**
    * Register an artist.
-   * 
+   *
    * @param sName The name of the artist to search for.
-   * 
+   *
    * @return the artist
    */
   public Artist registerArtist(String sName) {
@@ -115,12 +114,7 @@ public final class ArtistManager extends ItemManager {
 
   private void sortArtistList() {
     // Sort items ignoring case
-    Collections.sort(artistsList, new Comparator<String>() {
-      @Override
-      public int compare(String o1, String o2) {
-        return o1.compareToIgnoreCase(o2);
-      }
-    });
+    artistsList.sort(String::compareToIgnoreCase);
   }
 
   /* (non-Javadoc)
@@ -136,12 +130,12 @@ public final class ArtistManager extends ItemManager {
 
   /**
    * Change the item name.
-   * 
+   *
    * @param old The name of the artist to update.
    * @param sNewName The new name of the artist.
-   * 
+   *
    * @return The new Album-Instance.
-   * 
+   *
    * @throws JajukException Thrown if adjusting the name fails for some reason.
    */
   Artist changeArtistName(Artist old, String sNewName) throws JajukException {
@@ -183,7 +177,7 @@ public final class ArtistManager extends ItemManager {
 
   /**
    * Gets the artists list.
-   * 
+   *
    * @return artists as a string list (used for artists combos)
    */
   public static Vector<String> getArtistsList() {
@@ -192,9 +186,9 @@ public final class ArtistManager extends ItemManager {
 
   /**
    * Gets the artist by id.
-   * 
+   *
    * @param sID Item ID
-   * 
+   *
    * @return Element
    */
   Artist getArtistByID(String sID) {
@@ -203,7 +197,7 @@ public final class ArtistManager extends ItemManager {
 
   /**
    * Gets the artists.
-   * 
+   *
    * @return ordered albums list
    */
   @SuppressWarnings("unchecked")
@@ -213,19 +207,19 @@ public final class ArtistManager extends ItemManager {
 
   /**
    * Gets the artists iterator.
-   * 
+   *
    * @return artists iterator
    */
   @SuppressWarnings("unchecked")
   public ReadOnlyIterator<Artist> getArtistsIterator() {
-    return new ReadOnlyIterator<Artist>((Iterator<Artist>) getItemsIterator());
+    return new ReadOnlyIterator<>((Iterator<Artist>) getItemsIterator());
   }
 
   /**
    * Get ordered list of artists associated with this item.
-   * 
+   *
    * @param item The artist item to look for.
-   * 
+   *
    * @return the associated artists
    */
   public List<Artist> getAssociatedArtists(Item item) {
@@ -233,17 +227,17 @@ public final class ArtistManager extends ItemManager {
     try {
       List<Artist> out;
       if (item instanceof Track) {
-        out = new ArrayList<Artist>(1);
+        out = new ArrayList<>(1);
         out.add(((Track) item).getArtist());
       } else {
         // [Perf] If item is a track, just return its artist
-        // Use a set to avoid dups
-        Set<Artist> artistSet = new HashSet<Artist>();
+        // Use a set to avoid duplicates
+        Set<Artist> artistSet = new HashSet<>();
         List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(item, true);
         for (Track track : tracks) {
           artistSet.add(track.getArtist());
         }
-        out = new ArrayList<Artist>(artistSet);
+        out = new ArrayList<>(artistSet);
         Collections.sort(out);
       }
       return out;
@@ -254,9 +248,9 @@ public final class ArtistManager extends ItemManager {
 
   /**
    * Gets the artist by name.
-   * 
+   *
    * @param name The name of the artist.
-   * 
+   *
    * @return associated artist (case insensitive) or null if no match
    */
   public Artist getArtistByName(String name) {

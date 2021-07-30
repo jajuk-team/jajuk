@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.wizard;
 
@@ -25,8 +25,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -77,30 +75,19 @@ public class TipOfTheDayWizard extends JFrame {
     lCounter = new JLabel("999/999");
     JButton bNext = new JButton(IconLoader.getIcon(JajukIcons.PLAYER_NEXT_SMALL));
     bNext.setMargin(new Insets(1, 1, 1, 1));
-    bNext.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent actionevent) {
-        incIndex();
-        updateTip();
-      }
+    bNext.addActionListener(actionevent -> {
+      incIndex();
+      updateTip();
     });
     JButton bPrevious = new JButton(IconLoader.getIcon(JajukIcons.PLAYER_PREVIOUS_SMALL));
     bPrevious.setMargin(new Insets(1, 1, 1, 1));
-    bPrevious.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent actionevent) {
-        decIndex();
-        updateTip();
-      }
+    bPrevious.addActionListener(actionevent -> {
+      decIndex();
+      updateTip();
     });
     JButton bClose = new JButton(IconLoader.getIcon(JajukIcons.OK));
     bClose.setMaximumSize(bClose.getPreferredSize());
-    bClose.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent actionevent) {
-        dispose();
-      }
-    });
+    bClose.addActionListener(actionevent -> dispose());
     JScrollPane scroll = new JScrollPane(tipArea);
     scroll.setPreferredSize(new Dimension(200, 100));
     JLabel lTitle = new JLabel(Messages.getString("TipOfTheDayView.1"), SwingConstants.LEFT);
@@ -132,14 +119,14 @@ public class TipOfTheDayWizard extends JFrame {
     add(pTop, BorderLayout.NORTH);
     add(pCenter, BorderLayout.CENTER);
     add(pBottom, BorderLayout.SOUTH);
-    
+
     addComponentListener(new ComponentAdapter() {
       @Override
       public void componentHidden(ComponentEvent e) {
         dispose();
       }
     });
-    
+
     // Display a shuffled tip of the day
     shuffleIndex();
     updateTip();
@@ -177,16 +164,16 @@ public class TipOfTheDayWizard extends JFrame {
   /**
    * Update the TOTD with index from Conf.
    */
-  private final void updateTip() {
+  private void updateTip() {
     tipArea.setText(TIPS[currentIndex]);
-    lCounter.setText(new StringBuilder().append("").append(currentIndex + 1).append("/")
-        .append(TIPS.length).toString());
+    lCounter.setText((currentIndex + 1) + "/" +
+            TIPS.length);
     tipArea.setCaretPosition(0);
   }
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.Window#setVisible(boolean)
    */
   @Override

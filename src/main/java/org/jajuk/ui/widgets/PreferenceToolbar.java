@@ -16,17 +16,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.widgets;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.SwingUtilities;
@@ -58,7 +58,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 3869208492725759632L;
   JajukButton jbBan;
-  JComboBox jcbPreference;
+  JComboBox<ImageIcon> jcbPreference;
   ActionListener listener;
 
   /**
@@ -73,7 +73,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
      * +2=love +3=crazy). The preference is a factor given by the user to
      * increase or decrease a track rate.
      */
-    jcbPreference = new JComboBox();
+    jcbPreference = new JComboBox<>();
     // Add tooltips on combo items
     jcbPreference.setRenderer(new ComboBoxRenderer());
     jcbPreference.setMinimumSize(new Dimension(45, 0));
@@ -93,17 +93,14 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
     } else {
       jcbPreference.setSelectedIndex(3);
     }
-    listener = new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        File file = QueueModel.getPlayingFile();
-        if (file != null) {
-          Track track = file.getTrack();
-          track.setPreference(3 - jcbPreference.getSelectedIndex());
-        }
-        // Force immediate rating refresh (without using the rating manager)
-        ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
+    listener = e -> {
+      File file = QueueModel.getPlayingFile();
+      if (file != null) {
+        Track track = file.getTrack();
+        track.setPreference(3 - jcbPreference.getSelectedIndex());
       }
+      // Force immediate rating refresh (without using the rating manager)
+      ObservationManager.notify(new JajukEvent(JajukEvents.RATE_CHANGED));
     };
     jcbPreference.addActionListener(listener);
     add(jbBan);
@@ -120,7 +117,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
    */
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
-    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<>();
     eventSubjectSet.add(JajukEvents.RATE_CHANGED);
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.ZERO);
@@ -132,8 +129,6 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
 
   /**
    * Set right combo selection for given selection.
-   * 
-   * @param preference 
    */
   public final void setPreference(long preference) {
     jcbPreference.removeActionListener(listener);
@@ -148,36 +143,33 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
    */
   @Override
   public final void update(final JajukEvent event) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        // current is null when stopped or when playing web radios, disable the
-        // preference controls
-        if (!QueueModel.isPlayingTrack()) {
-          jbBan.setEnabled(false);
-          jcbPreference.setEnabled(false);
-          return;
+    SwingUtilities.invokeLater(() -> {
+      // current is null when stopped or when playing web radios, disable the
+      // preference controls
+      if (!QueueModel.isPlayingTrack()) {
+        jbBan.setEnabled(false);
+        jcbPreference.setEnabled(false);
+        return;
+      }
+      File current = QueueModel.getPlayingFile();
+      if (current != null && JajukEvents.RATE_CHANGED.equals(event.getSubject())) {
+        setPreference(current.getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
+      } else if (JajukEvents.FILE_LAUNCHED.equals(event.getSubject())) {
+        // Update evaluation toolbar
+        jcbPreference.setEnabled(true);
+        jbBan.setEnabled(true);
+        updateBanIcon();
+        File file = QueueModel.getPlayingFile();
+        if (file != null) {
+          setPreference(file.getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
         }
-        File current = QueueModel.getPlayingFile();
-        if (current != null && JajukEvents.RATE_CHANGED.equals(event.getSubject())) {
-          setPreference(current.getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
-        } else if (JajukEvents.FILE_LAUNCHED.equals(event.getSubject())) {
-          // Update evaluation toolbar
-          jcbPreference.setEnabled(true);
-          jbBan.setEnabled(true);
-          updateBanIcon();
-          File file = QueueModel.getPlayingFile();
-          if (file != null) {
-            setPreference(file.getTrack().getLongValue(Const.XML_TRACK_PREFERENCE));
-          }
-        } else if (JajukEvents.ZERO.equals(event.getSubject())
-            || JajukEvents.PLAYER_STOP.equals(event.getSubject())) {
-          jcbPreference.setEnabled(false);
-          jbBan.setEnabled(false);
-          setPreference(0);
-        } else if (JajukEvents.BANNED.equals(event.getSubject())) {
-          updateBanIcon();
-        }
+      } else if (JajukEvents.ZERO.equals(event.getSubject())
+          || JajukEvents.PLAYER_STOP.equals(event.getSubject())) {
+        jcbPreference.setEnabled(false);
+        jbBan.setEnabled(false);
+        setPreference(0);
+      } else if (JajukEvents.BANNED.equals(event.getSubject())) {
+        updateBanIcon();
       }
     });
   }
@@ -204,7 +196,7 @@ public class PreferenceToolbar extends JajukJToolbar implements Observer {
   /**
    * .
    */
-  private class ComboBoxRenderer extends BasicComboBoxRenderer {
+  private static class ComboBoxRenderer extends BasicComboBoxRenderer {
     /** Generated serialVersionUID. */
     private static final long serialVersionUID = -6943363556191659895L;
 

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.wizard.prepare_party;
 
@@ -44,9 +44,9 @@ import org.qdwizard.Wizard;
  * Wizard to select a set of files and write them to a separate directory
  * outside of the collection in order to use them in a MP3 device or any other
  * media player.
- * 
+ *
  * TODO: progress bar is not done yet
- * 
+ *
  * TODO: a "cancel" button in the progress bar would be nice to let the user
  * cancel if he finds out that too many were selected
  */
@@ -83,8 +83,8 @@ public class PreparePartyWizard extends Wizard {
     NORMALIZE_FILENAME,
     /** Ratings level. */
     RATING_LEVEL,
-    /** store a temporary playlist that is provided by the PlaylistView without storing it in the PlaylistManager we keep it 
-     * here to be able to re-display it in the Pages later on  
+    /** store a temporary playlist that is provided by the PlaylistView without storing it in the PlaylistManager we keep it
+     * here to be able to re-display it in the Pages later on
      * We need to keep it outside the ActionSelectionPanel because the panel is re-created during back-forward operations. */
     TEMP_PLAYLIST
   }
@@ -116,7 +116,7 @@ public class PreparePartyWizard extends Wizard {
   /**
    * Default constructor that lets the user choose where the tracks are taken
    * from.
-   * 
+   *
    * @param bProvidedPlaylist Indicates that a playlist was provided to the dialog and thus the
    * first page is not displayed
    */
@@ -134,10 +134,10 @@ public class PreparePartyWizard extends Wizard {
 
   /**
    * Set the provided playlist so that the first page can be skipped if wanted.
-   * 
+   *
    * This needs to be done as static method as the Wizard-constructor already
    * needs to have this data available!
-   * 
+   *
    * @param playlist The playlist to use for the party
    */
   public void setPlaylist(Playlist playlist) {
@@ -177,9 +177,9 @@ public class PreparePartyWizard extends Wizard {
 
   /**
    * Return if the specified element is true in the data-map.
-   * 
+   *
    * @param key The key to look up in the data-object.
-   * 
+   *
    * @return true if the value was stored as boolean true, false otherwise.
    */
   private boolean isTrue(final Variable key) {
@@ -188,7 +188,7 @@ public class PreparePartyWizard extends Wizard {
 
   /**
    * Gets the list of files to copy depending on the current mode.
-   * 
+   *
    * @return the files
    */
   private List<org.jajuk.base.File> getFiles() {
@@ -286,7 +286,7 @@ public class PreparePartyWizard extends Wizard {
 
   /**
    * Store one value as String.
-   * 
+   *
    * @param key The name of the property to store in the overall configuration
    */
   private void storeValue(final Variable key) {
@@ -324,7 +324,7 @@ public class PreparePartyWizard extends Wizard {
 
   /**
    * Restore one string value from the configuration.
-   * 
+   *
    * @param key The key to restore.
    */
   private void restoreStringValue(final Variable key) {
@@ -338,7 +338,7 @@ public class PreparePartyWizard extends Wizard {
 
   /**
    * Restore one integer value from the configuration.
-   * 
+   *
    * @param key The key to restore.
    */
   private void restoreIntValue(final Variable key) {
@@ -351,7 +351,7 @@ public class PreparePartyWizard extends Wizard {
 
   /**
    * Restore one boolean value from the configuration.
-   * 
+   *
    * @param key The key to restore.
    */
   private void restoreBooleanValue(final Variable key) {

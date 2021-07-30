@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.widgets;
 
@@ -31,6 +31,7 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -81,9 +82,6 @@ public class JajukHtmlPanel extends HtmlPanel {
   /**
    * Display a wikipedia url given a cache file.
    * <p>Download the url to cache if not already in cache</p>
-   *
-   * @param url 
-   * @param lang 
    */
   public void setURL(final URL url, final String lang) {
     SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
@@ -105,14 +103,12 @@ public class JajukHtmlPanel extends HtmlPanel {
             return null;
           }
           // Remove scripting
-          int index = -1;
-          int lastindex = -1;
           StringBuilder sb = new StringBuilder(sPage);
           // only the part between <!-- start content --> and <!-- end content
           // --> is
           // important to us
-          index = sb.indexOf("<!-- start content -->");
-          lastindex = sb.indexOf("</body></html>");
+          int index = sb.indexOf("<!-- start content -->");
+          int lastindex = sb.indexOf("</body></html>");
           if (index > 0) {
             sb.delete(0, index);
             sb.delete(sb.indexOf("<!-- end content -->") + 20, lastindex);
@@ -129,9 +125,7 @@ public class JajukHtmlPanel extends HtmlPanel {
           Log.debug("Could not read page: {{" + url.toString() + " Cache: " + page + "}}");
           try {
             setFailedToLoad(Messages.getString("WikipediaView.9") + ": " + url.toString());
-          } catch (IOException e1) {
-            Log.error(e1);
-          } catch (SAXException e1) {
+          } catch (IOException | SAXException e1) {
             Log.error(e1);
           }
         } catch (IOException e) {
@@ -142,9 +136,7 @@ public class JajukHtmlPanel extends HtmlPanel {
           try {
             setFailedToLoad(URL_COLON + url + COLON + e.getClass().getSimpleName() + COLON
                 + e.getMessage());
-          } catch (IOException e1) {
-            Log.error(e1);
-          } catch (SAXException e1) {
+          } catch (IOException | SAXException e1) {
             Log.error(e1);
           }
         } catch (Exception e) {
@@ -152,9 +144,7 @@ public class JajukHtmlPanel extends HtmlPanel {
           try {
             setFailedToLoad(URL_COLON + url + COLON + e.getClass().getSimpleName() + COLON
                 + e.getMessage());
-          } catch (IOException e1) {
-            Log.error(e1);
-          } catch (SAXException e1) {
+          } catch (IOException | SAXException e1) {
             Log.error(e1);
           }
         } finally {
@@ -183,9 +173,9 @@ public class JajukHtmlPanel extends HtmlPanel {
 
   /**
    * Sets the loading.
-   * 
+   *
    * @param url the new loading
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    * @throws SAXException the SAX exception
    */
@@ -199,9 +189,9 @@ public class JajukHtmlPanel extends HtmlPanel {
 
   /**
    * Sets the failed to load.
-   * 
+   *
    * @param msg the new failed to load
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    * @throws SAXException the SAX exception
    */
@@ -215,27 +205,20 @@ public class JajukHtmlPanel extends HtmlPanel {
 
   /**
    * Make the internal operations.
-   * 
-   * @param sPage 
-   * @param page 
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    * @throws SAXException the SAX exception
    */
   private void showPage(String sPage, File page) throws IOException, SAXException {
     // Write the page itself
-    Writer bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(page), "UTF-8"));
-    try {
+    try (Writer bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(page), StandardCharsets.UTF_8))) {
       bw.write(sPage);
       bw.flush();
-    } finally {
-      bw.close();
     }
     // A Reader should be created with the correct charset,
     // which may be obtained from the Content-Type header
     // of an HTTP response.
-    Reader reader = new InputStreamReader(new FileInputStream(page), "UTF-8");
-    try {
+    try (Reader reader = new InputStreamReader(new FileInputStream(page), StandardCharsets.UTF_8)) {
       // InputSourceImpl constructor with URI recommended
       // so the renderer can resolve page component URLs.
       InputSource is = new InputSourceImpl(reader, "file://" + page.getAbsolutePath());
@@ -245,14 +228,12 @@ public class JajukHtmlPanel extends HtmlPanel {
       // Now set document in panel. This is what causes the
       // document to render.
       setDocument(document, rcontext);
-    } finally {
-      reader.close();
     }
   }
 
   /**
    * Back.
-   * 
+   *
    */
   public void back() {
     rcontext.back();

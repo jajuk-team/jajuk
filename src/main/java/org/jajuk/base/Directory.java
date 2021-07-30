@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
@@ -58,15 +58,10 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   private final Device device;
   /** IO file for optimizations*. */
   private java.io.File fio;
-  private long discID = -1l;
+  private long discID = -1L;
 
   /**
    * Directory constructor.
-   *
-   * @param sId 
-   * @param sName 
-   * @param dParent 
-   * @param device 
    */
   Directory(String sId, String sName, Directory dParent, Device device) {
     super(sId, sName);
@@ -83,7 +78,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
@@ -93,7 +88,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * toString method.
-   * 
+   *
    * @return the string
    */
   @Override
@@ -104,17 +99,16 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Gets the absolute path.
-   * 
+   *
    * @return the absolute path
    */
   public String getAbsolutePath() {
-    StringBuilder sbOut = new StringBuilder(getDevice().getUrl()).append(getRelativePath());
-    return sbOut.toString();
+    return getDevice().getUrl() + getRelativePath();
   }
 
   /**
    * Gets the device.
-   * 
+   *
    * @return the device
    */
   public Device getDevice() {
@@ -123,7 +117,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Gets the parent directory (null if this directory is a top directory).
-   * 
+   *
    * @return the parent directory
    */
   public Directory getParentDirectory() {
@@ -132,12 +126,12 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Gets the sub-directories.
-   * 
+   *
    * @return all sub directories
    */
   public Set<Directory> getDirectories() {
-    Set<Directory> out = new LinkedHashSet<Directory>(2);
-    // Iterate against a copy of directories, not a ReadOnlyIterator to avoid handling 
+    Set<Directory> out = new LinkedHashSet<>(2);
+    // Iterate against a copy of directories, not a ReadOnlyIterator to avoid handling
     // synchronization issues, this method is not in a critical sequence
     List<Directory> dirs = DirectoryManager.getInstance().getDirectories();
     for (Directory directory : dirs) {
@@ -154,11 +148,11 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * return child files.
-   * 
+   *
    * @return child files
    */
   public Set<org.jajuk.base.File> getFiles() {
-    Set<org.jajuk.base.File> out = new LinkedHashSet<org.jajuk.base.File>(2);
+    Set<org.jajuk.base.File> out = new LinkedHashSet<>(2);
     for (org.jajuk.base.File file : FileManager.getInstance().getFiles()) {
       if (file.getFIO().getParentFile().equals(this.getFio())) {
         out.add(file);
@@ -169,11 +163,11 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * return playlists.
-   * 
+   *
    * @return playlists
    */
   public Set<Playlist> getPlaylistFiles() {
-    Set<Playlist> out = new LinkedHashSet<Playlist>(2);
+    Set<Playlist> out = new LinkedHashSet<>(2);
     for (Playlist plf : PlaylistManager.getInstance().getPlaylists()) {
       if (plf.getFIO().getParentFile().equals(this.getFio())) {
         out.add(plf);
@@ -184,14 +178,12 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * return ordered sibling files from the given file index.
-   * 
-   * @param fileStart 
-   * 
+   *
    * @return files or null if the given file is unknown
    */
   public List<org.jajuk.base.File> getFilesFromFile(org.jajuk.base.File fileStart) {
     Set<org.jajuk.base.File> files = getFiles();
-    List<org.jajuk.base.File> alOut = new ArrayList<org.jajuk.base.File>(files);
+    List<org.jajuk.base.File> alOut = new ArrayList<>(files);
     int indexOfStartingItem = alOut.indexOf(fileStart);
     if (indexOfStartingItem < 0) {
       return null;
@@ -201,11 +193,11 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * return ordered child files recursively.
-   * 
+   *
    * @return child files recursively
    */
   public List<org.jajuk.base.File> getFilesRecursively() {
-    List<org.jajuk.base.File> alFiles = new ArrayList<org.jajuk.base.File>(100);
+    List<org.jajuk.base.File> alFiles = new ArrayList<>(100);
     for (Item item : FileManager.getInstance().getFiles()) {
       org.jajuk.base.File file = (org.jajuk.base.File) item;
       if (file.hasAncestor(this)) {
@@ -217,11 +209,11 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * return ordered child directories recursively.
-   * 
+   *
    * @return child directories recursively
    */
   public List<Directory> getDirectoriesRecursively() {
-    List<Directory> alDirs = new ArrayList<Directory>(10);
+    List<Directory> alDirs = new ArrayList<>(10);
     for (Item item : DirectoryManager.getInstance().getDirectories()) {
       Directory dir = (Directory) item;
       if (dir.hasAncestor(this)) {
@@ -233,9 +225,9 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Return true is the specified directory is an ancestor for this directory.
-   * 
+   *
    * @param directory directory to check
-   * 
+   *
    * @return true, if given directory is a parent directory of this directory
    */
   boolean hasAncestor(Directory directory) {
@@ -254,11 +246,11 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * return ordered child playlists recursively.
-   * 
+   *
    * @return child playlists recursively
    */
   public List<Playlist> getPlaylistsRecursively() {
-    List<Playlist> alPlaylists = new ArrayList<Playlist>(100);
+    List<Playlist> alPlaylists = new ArrayList<>(100);
     for (Item item : PlaylistManager.getInstance().getPlaylists()) {
       Playlist playlist = (Playlist) item;
       if (playlist.hasAncestor(this)) {
@@ -270,7 +262,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Scan all files in a directory.
-   * 
+   *
    * @param bDeepScan :
    * force files tag read
    * @param reporter Refresh handler
@@ -282,50 +274,51 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     if (filelist == null || filelist.length == 0) { // none file, leave
       return;
     }
+
     // Create a list of music files and playlist files to consider
-    List<File> musicFiles = new ArrayList<File>(filelist.length);
-    List<File> playlistFiles = new ArrayList<File>(1 + filelist.length / 10);
-    for (int i = 0; i < filelist.length; i++) {
+    List<File> musicFiles = new ArrayList<>(filelist.length);
+    List<File> playlistFiles = new ArrayList<>(1 + filelist.length / 10);
+    for (File file : filelist) {
       // Leave ASAP if exit request
       if (ExitService.isExiting()) {
         return;
       }
       // Check file name is correct (useful to fix name encoding
       // issues)
-      if (!new File(filelist[i].getAbsolutePath()).exists()) {
-        Log.warn("Cannot read file name (please rename it): {{" + filelist[i].getAbsolutePath()
-            + "}}");
+      if (!new File(file.getAbsolutePath()).exists()) {
+        Log.warn("Cannot read file name (please rename it): {{" + file.getAbsolutePath()
+                + "}}");
         continue;
       }
       // Ignore iTunes files
-      if (filelist[i].getName().startsWith("._")) {
+      if (file.getName().startsWith("._")) {
         continue;
       }
       // check if we recognize the file as music file
-      String extension = UtilSystem.getExtension(filelist[i]);
+      String extension = UtilSystem.getExtension(file);
       Type type = TypeManager.getInstance().getTypeByExtension(extension);
-      // Now, compute disc ID and cache tags 
+      // Now, compute disc ID and cache tags
       if (type.getBooleanValue(Const.XML_TYPE_IS_MUSIC)) {
-        musicFiles.add(filelist[i]);
+        musicFiles.add(file);
       } else { // playlist
-        playlistFiles.add(filelist[i]);
+        playlistFiles.add(file);
       }
     }
-    // Compute the disc id 
+    // Compute the disc id
     this.discID = computeDiscID();
     // Perform actual scan and check errors for each file
     for (File musicFile : musicFiles) {
       try {
         scanMusic(musicFile, bDeepScan, reporter);
       } catch (Exception e) {
-        Log.error(103, filelist.length > 0 ? "{{" + musicFile.toString() + "}}" : "", e);
+        Log.error(103, "{{" + musicFile.toString() + "}}", e);
       }
     }
     for (File playlistFile : playlistFiles) {
       try {
         scanPlaylist(playlistFile, bDeepScan, reporter);
       } catch (Exception e) {
-        Log.error(103, filelist.length > 0 ? "{{" + playlistFile.toString() + "}}" : "", e);
+        Log.error(103, "{{" + playlistFile.toString() + "}}", e);
       }
     }
     // Clear the tag cache so tags are actually read at next deep refresh
@@ -363,7 +356,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    * @return list of albums for current directory
    */
   public Set<Album> getAlbums() {
-    Set<Album> out = new HashSet<Album>(1);
+    Set<Album> out = new HashSet<>(1);
     Set<org.jajuk.base.File> files = this.getFiles();
     for (org.jajuk.base.File file : files) {
       out.add(file.getTrack().getAlbum());
@@ -374,9 +367,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /**
    * Scan music.
    *
-   * @param music 
-   * @param bDeepScan 
-   * @param reporter 
    * @throws JajukException the jajuk exception
    */
   private void scanMusic(java.io.File music, boolean bDeepScan, RefreshReporter reporter)
@@ -477,7 +467,6 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Force to reset track properties if the track name has been changed so its associated track has been moved to a the attic
-   * @param track
    */
   private void cloneTrackPropertiesIfRemovedMeanwhile(Track track) {
     Track removedTrack = TrackManager.getInstance().getTrackFromAttic(track.getID());
@@ -531,12 +520,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Scan playlist.
-   * 
-   * 
-   * @param file 
-   * @param bDeepScan 
-   * @param reporter 
-   * 
+   *
    * @throws JajukException the jajuk exception
    */
   private void scanPlaylist(final java.io.File file, final boolean bDeepScan,
@@ -566,7 +550,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Return full directory path name relative to device url.
-   * 
+   *
    * @return String
    */
   public final String getRelativePath() {
@@ -578,7 +562,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     StringBuilder sbOut = new StringBuilder().append(java.io.File.separatorChar).append(getName());
     boolean bTop = false;
     Directory dCurrent = this;
-    while (!bTop && dCurrent != null) {
+    while (!bTop) {
       dCurrent = dCurrent.getParentDirectory();
       if (dCurrent != null && !dCurrent.getName().equals("")) {
         // if it is the root directory, no parent
@@ -592,7 +576,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Gets the fio.
-   * 
+   *
    * @return Returns the IO file reference to this directory.
    */
   public File getFio() {
@@ -604,9 +588,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Alphabetical comparator used to display ordered lists of directories
-   * 
-   * @param otherDirectory 
-   * 
+   *
    * @return comparison result
    */
   @Override
@@ -618,9 +600,9 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
     if (otherDirectory.equals(this)) {
       return 0;
     }
-    String abs = new StringBuilder(getDevice().getName()).append(getAbsolutePath()).toString();
-    String otherAbs = new StringBuilder(otherDirectory.getDevice().getName()).append(
-        otherDirectory.getAbsolutePath()).toString();
+    String abs = getDevice().getName() + getAbsolutePath();
+    String otherAbs = otherDirectory.getDevice().getName() +
+            otherDirectory.getAbsolutePath();
     // should ignore case to get a B c ... and not Bac
     // We must be consistent with equals, see
     // http://java.sun.com/javase/6/docs/api/java/lang/Comparable.html
@@ -634,14 +616,11 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /**
    * Return whether this item should be hidden with hide option.
-   * 
+   *
    * @return whether this item should be hidden with hide option
    */
   public boolean shouldBeHidden() {
-    if (getDevice().isMounted() || !Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
-      return false;
-    }
-    return true;
+    return !getDevice().isMounted() && Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED);
   }
 
   /* (non-Javadoc)
@@ -649,7 +628,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
    */
   @Override
   public String getTitle() {
-    String sName = null;
+    final String sName;
     if (getParentDirectory() == null) {
       sName = getDevice().getUrl();
     } else {
@@ -660,7 +639,7 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
    */
   @Override
@@ -694,12 +673,12 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#getIconRepresentation()
    */
   @Override
   public ImageIcon getIconRepresentation() {
-    ImageIcon icon = null;
+    final ImageIcon icon;
     // is this device synchronized?
     if (getBooleanValue(Const.XML_DIRECTORY_SYNCHRONIZED)) {
       icon = IconLoader.getIcon(JajukIcons.DIRECTORY_SYNCHRO);
@@ -712,20 +691,20 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /**
    * Refresh the directory synchronously, no dialog. <br>
    * This method is only a wrapper to Device.refreshCommand() method
-   * 
+   *
    * @param bDeepScan whether it is a deep refresh request or only fast
-   * 
+   *
    * @return true if some changes occurred in device
    */
   public synchronized boolean refresh(final boolean bDeepScan) {
-    List<Directory> dirsToRefresh = new ArrayList<Directory>(1);
+    List<Directory> dirsToRefresh = new ArrayList<>(1);
     dirsToRefresh.add(this);
     return getDevice().refreshCommand(bDeepScan, false, dirsToRefresh);
   }
 
   /**
    * Scan directory to cleanup removed files and playlists.
-   * 
+   *
    * @return whether some items have been removed
    */
   public boolean cleanRemovedFiles() {
@@ -784,9 +763,9 @@ public class Directory extends PhysicalItem implements Comparable<Directory> {
   /**
 
    * Return true is this is a child directory of the specified directory.
-   * 
+   *
    * @param directory ancestor directory
-   * 
+   *
    * @return true, if checks if is child of
    */
   public boolean isChildOf(Directory directory) {

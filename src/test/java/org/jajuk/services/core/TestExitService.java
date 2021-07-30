@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.services.core;
 
@@ -30,11 +30,11 @@ public class TestExitService extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.core.ExitService#run()}.
    *
-   * @throws Exception the exception
    */
-  public void testRun() throws Exception {
+  public void testRun() {
     StartupCollectionService.registerItemManagers();
     ExitService service = new ExitService();
+    //noinspection CallToThreadRun
     service.run();
   }
 

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.services.players;
 
@@ -46,8 +46,6 @@ import javazoom.jlgui.basicplayer.BasicPlayer;
 public final class Player {
   /** The Constant PLAYER_0.   */
   private static final String PLAYER_0 = "Player.0";
-  /** Current file read. */
-  private static File fCurrent;
   /** Current player used. */
   private static IPlayerImpl playerImpl;
   /** Current player used nb 1. */
@@ -71,7 +69,7 @@ public final class Player {
    * Asynchronous play for specified file with specified time interval.
    *
    * @param file to play
-   * @param fPosition 
+   * @param fPosition position in % of the file
    * @param length in ms
    * @return true if play is OK
    */
@@ -98,7 +96,8 @@ public final class Player {
         throw new JajukRuntimeException("Device not mounted");
       }
     }
-    fCurrent = file;
+
+    // Current file read.
     try {
       // Choose the player
       Class<IPlayerImpl> cPlayer = file.getTrack().getType().getPlayerClass();
@@ -133,9 +132,9 @@ public final class Player {
       while (bWaitingLine) {
         try {
           if (bMute) {
-            playerImpl.play(fCurrent, fPosition, length, 0.0f);
+            playerImpl.play(file, fPosition, length, 0.0f);
           } else {
-            playerImpl.play(fCurrent, fPosition, length, Conf.getFloat(Const.CONF_VOLUME));
+            playerImpl.play(file, fPosition, length, Conf.getFloat(Const.CONF_VOLUME));
           }
           bWaitingLine = false;
         } catch (Exception bpe) {
@@ -150,23 +149,21 @@ public final class Player {
           QueueModel.class.wait(Const.WAIT_AFTER_ERROR);
         }
       }
-      // Save playing state    
+      // Save playing state
       Conf.setProperty(Const.CONF_STARTUP_STOPPED, "false");
       return true;
     } catch (final Throwable t) {
       Properties pDetails = new Properties();
       pDetails.put(Const.DETAIL_CONTENT, file);
       ObservationManager.notifySync(new JajukEvent(JajukEvents.PLAY_ERROR, pDetails));
-      Log.error(7, Messages.getString(PLAYER_0) + "{{" + fCurrent.getName() + "}}", t);
+      Log.error(7, Messages.getString(PLAYER_0) + "{{" + file.getName() + "}}", t);
       return false;
     }
   }
 
   /**
    * Play a web radio stream.
-   * 
-   * @param radio 
-   * 
+   *
    * @return true, if play
    */
   public static boolean play(WebRadio radio) {
@@ -210,7 +207,7 @@ public final class Player {
           }
         }
       }
-      // Save playing state    
+      // Save playing state
       Conf.setProperty(Const.CONF_STARTUP_STOPPED, "false");
       return true;
     } catch (final Throwable t) {
@@ -224,7 +221,7 @@ public final class Player {
 
   /**
    * Stop the played track.
-   * 
+   *
    * @param bAll stop fading tracks as well ?
    */
   public static void stop(boolean bAll) {
@@ -262,8 +259,6 @@ public final class Player {
 
   /**
    * Mute/unmute the player.
-   *
-   * @param pMute 
    */
   public static void mute(boolean pMute) {
     // Ignore mute changes if Bit-perfect mode is enabled
@@ -304,8 +299,6 @@ public final class Player {
 
   /**
    * Set the gain.
-   *
-   * @param pVolume 
    */
   public static void setVolume(float pVolume) {
     // Ignore volume changes if Bit-perfect mode is enabled
@@ -341,7 +334,7 @@ public final class Player {
 
   /**
    * Gets the elapsed time.
-   * 
+   *
    * @return Returns the lTime in ms
    */
   public static long getElapsedTimeMillis() {
@@ -354,7 +347,7 @@ public final class Player {
 
   /**
    * Gets the elapsed time.
-   * 
+   *
    * @return Returns the lTime in ms
    */
   public static long getActuallyPlayedTimeMillis() {
@@ -395,8 +388,8 @@ public final class Player {
       if (!isMuted()) {
         playerImpl.setVolume(Conf.getFloat(Const.CONF_VOLUME));
       }
-      // If we are playing a webradio, we stop and restart because players 
-      // like mplayer can't deal with resuming a stream (it cant restart under 
+      // If we are playing a webradio, we stop and restart because players
+      // like mplayer can't deal with resuming a stream (it cant restart under
       // mplayer when the resume is done after the end of the buffer)
       if (QueueModel.isPlayingRadio()) {
         WebRadio radio = QueueModel.getCurrentRadio();
@@ -414,7 +407,7 @@ public final class Player {
 
   /**
    * Checks if is paused.
-   * 
+   *
    * @return whether player is paused
    */
   public static boolean isPaused() {
@@ -423,8 +416,6 @@ public final class Player {
 
   /**
    * Seek to a given position in %. ex : 0.2 for 20%
-   * 
-   * @param pfPosition 
    */
   public static void seek(float pfPosition) {
     float fPosition = pfPosition;
@@ -447,7 +438,7 @@ public final class Player {
 
   /**
    * Gets the current position.
-   * 
+   *
    * @return position in track in % [0;1]
    */
   public static float getCurrentPosition() {
@@ -460,20 +451,20 @@ public final class Player {
 
   /**
    * Gets the current track total duration (secs).
-   * 
+   *
    * @return current track total duration in secs
    */
   public static long getDurationSec() {
     if (playerImpl != null) {
       return playerImpl.getDurationSec();
     } else {
-      return 0l;
+      return 0L;
     }
   }
 
   /**
    * Gets the current volume.
-   * 
+   *
    * @return volume in track in %, ex : 0.2 for 20%
    */
   public static float getCurrentVolume() {
@@ -486,7 +477,7 @@ public final class Player {
 
   /**
    * Checks if is playing.
-   * 
+   *
    * @return Returns the bPlaying.
    */
   public static boolean isPlaying() {
@@ -495,7 +486,7 @@ public final class Player {
 
   /**
    * Checks if is seeking.
-   * 
+   *
    * @return whether current player is seeking
    */
   public static boolean isSeeking() {

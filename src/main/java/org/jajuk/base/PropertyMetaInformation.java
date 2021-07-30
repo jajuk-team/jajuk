@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
@@ -38,25 +38,25 @@ public class PropertyMetaInformation {
   /** Property name. */
   private final String sName;
   /** Is property a custom property?. */
-  private boolean bCustom = false;
+  private final boolean bCustom;
   /** Is property element of associated item constructor? (and so used in the checksum ID hash). */
-  private boolean bConstructor = false;
+  private final boolean bConstructor;
   /** Property Type (java.lang.String for ie) */
   private final Class<?> cType;
   /** Default value (null: no default). */
   private Object oDefaultValue;
   /** This property should be displayed to UI?. */
-  private boolean bShouldBeDisplayed = true;
+  private final boolean bShouldBeDisplayed;
   /** Editable?. */
-  private boolean bEditable = true;
+  private final boolean bEditable;
   /** Unique?. */
-  private boolean bMergeable = false;
+  private final boolean bMergeable;
   /** Human Type. */
   private String sHumanType;
 
   /**
   * constructor.
-  * 
+  *
   * @param sName Property name
   * @param bCustom Is custom property
   * @param bConstructor Is constructor property
@@ -91,7 +91,7 @@ public class PropertyMetaInformation {
       this.sHumanType = Messages.getString("Property_Format_String");
     } else if (cType.equals(Long.class)) {
       if (oDefaultValue == null) {
-        this.oDefaultValue = 0l; // if no default is given, 0
+        this.oDefaultValue = 0L; // if no default is given, 0
       }
       this.sHumanType = Messages.getString("Property_Format_Number");
     } else if (cType.equals(Double.class)) {
@@ -128,7 +128,7 @@ public class PropertyMetaInformation {
 
   /**
    * Checks if is constructor.
-   * 
+   *
    * @return true, if is constructor
    */
   public boolean isConstructor() {
@@ -137,7 +137,7 @@ public class PropertyMetaInformation {
 
   /**
    * Checks if is custom.
-   * 
+   *
    * @return true, if is custom
    */
   public boolean isCustom() {
@@ -146,7 +146,7 @@ public class PropertyMetaInformation {
 
   /**
    * Gets the type.
-   * 
+   *
    * @return the type
    */
   public Class<?> getType() {
@@ -155,7 +155,7 @@ public class PropertyMetaInformation {
 
   /**
    * Gets the name.
-   * 
+   *
    * @return the name
    */
   public String getName() {
@@ -165,7 +165,7 @@ public class PropertyMetaInformation {
   /**
    * <property name='toto' custom ='true' constructor='true' type='date'
    * format='YYYYMMDD'/>.
-   * 
+   *
    * @return property meta information XML description
    */
   String toXML() {
@@ -187,7 +187,7 @@ public class PropertyMetaInformation {
 
   /**
    * Gets the default value.
-   * 
+   *
    * @return the default value
    */
   public Object getDefaultValue() {
@@ -210,7 +210,7 @@ public class PropertyMetaInformation {
 
   /**
    * Checks if is visible.
-   * 
+   *
    * @return true, if is visible
    */
   public boolean isVisible() {
@@ -219,7 +219,7 @@ public class PropertyMetaInformation {
 
   /**
    * Checks if is editable.
-   * 
+   *
    * @return true, if is editable
    */
   public boolean isEditable() {
@@ -228,7 +228,7 @@ public class PropertyMetaInformation {
 
   /**
    * Checks if is mergeable.
-   * 
+   *
    * @return true, if is mergeable
    */
   public boolean isMergeable() {
@@ -237,7 +237,7 @@ public class PropertyMetaInformation {
 
   /**
    * Gets the human type.
-   * 
+   *
    * @return a human representation for a property type
    */
   public String getHumanType() {
@@ -246,7 +246,7 @@ public class PropertyMetaInformation {
 
   /**
    * Gets the human name.
-   * 
+   *
    * @return the human name
    */
   public String getHumanName() {

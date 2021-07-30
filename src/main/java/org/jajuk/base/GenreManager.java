@@ -16,13 +16,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -42,7 +41,7 @@ import org.jajuk.util.error.JajukException;
  */
 public final class GenreManager extends ItemManager {
   /** Self instance. */
-  private static GenreManager singleton = new GenreManager();
+  private static final GenreManager singleton = new GenreManager();
   /* List of all known genres */
   private Vector<String> genresList; // NOPMD
   /** note if we have already fully loaded the Collection to speed up initial startup */
@@ -69,7 +68,7 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Gets the instance.
-   * 
+   *
    * @return singleton
    */
   public static GenreManager getInstance() {
@@ -78,9 +77,7 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Register a genre.
-   * 
-   * @param sName 
-   * 
+   *
    * @return the genre
    */
   public Genre registerGenre(String sName) {
@@ -91,8 +88,6 @@ public final class GenreManager extends ItemManager {
   /**
    * Register a genre with a known id.
    *
-   * @param sId 
-   * @param sName 
    * @return the genre
    */
   Genre registerGenre(String sId, String sName) {
@@ -114,16 +109,11 @@ public final class GenreManager extends ItemManager {
   }
 
   /**
-   * 
+   *
    */
   private void sortGenreList() {
     // Sort items ignoring case
-    Collections.sort(genresList, new Comparator<String>() {
-      @Override
-      public int compare(String o1, String o2) {
-        return o1.compareToIgnoreCase(o2);
-      }
-    });
+    genresList.sort(String::compareToIgnoreCase);
   }
 
   /* (non-Javadoc)
@@ -139,11 +129,11 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Register preset genres.
-   * 
+   *
    */
   private void registerPresetGenres() {
     // create default genre list
-    genresList = new Vector<String>(Arrays.asList(UtilFeatures.GENRES));
+    genresList = new Vector<>(Arrays.asList(UtilFeatures.GENRES));
     Collections.sort(genresList);
     for (String genre : genresList) {
       registerGenre(genre.intern());
@@ -152,9 +142,7 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Return genre by name.
-   * 
-   * @param name 
-   * 
+   *
    * @return the genre by name
    */
   public Genre getGenreByName(String name) {
@@ -170,12 +158,9 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Change the item name.
-   * 
-   * @param old 
-   * @param sNewName 
-   * 
+   *
    * @return new item
-   * 
+   *
    * @throws JajukException the jajuk exception
    */
   Genre changeGenreName(Genre old, String sNewName) throws JajukException {
@@ -189,9 +174,7 @@ public final class GenreManager extends ItemManager {
     // update tracks
     List<Track> alTracks = TrackManager.getInstance().getTracks();
     // we need to create a new list to avoid concurrent exceptions
-    Iterator<Track> it = alTracks.iterator();
-    while (it.hasNext()) {
-      Track track = it.next();
+    for (Track track : alTracks) {
       if (track.getGenre().equals(old)) {
         TrackManager.getInstance().changeTrackGenre(track, sNewName, null);
       }
@@ -215,9 +198,7 @@ public final class GenreManager extends ItemManager {
    * -All in upper case
    * <p>
    * example: "ROCK".
-   * 
-   * @param sName 
-   * 
+   *
    * @return the string
    */
   public static String format(String sName) {
@@ -241,7 +222,7 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Gets the genres list.
-   * 
+   *
    * @return Human readable list of registrated genres <br>
    * ordered (alphabeticaly)
    */
@@ -251,9 +232,9 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Gets the genre by id.
-   * 
+   *
    * @param sID Item ID
-   * 
+   *
    * @return item
    */
   public Genre getGenreByID(String sID) {
@@ -262,7 +243,7 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Gets the genres.
-   * 
+   *
    * @return ordered genres list
    */
   @SuppressWarnings("unchecked")
@@ -272,11 +253,11 @@ public final class GenreManager extends ItemManager {
 
   /**
    * Gets the genres iterator.
-   * 
+   *
    * @return genres iterator
    */
   @SuppressWarnings("unchecked")
   public ReadOnlyIterator<Genre> getGenresIterator() {
-    return new ReadOnlyIterator<Genre>((Iterator<Genre>) getItemsIterator());
+    return new ReadOnlyIterator<>((Iterator<Genre>) getItemsIterator());
   }
 }

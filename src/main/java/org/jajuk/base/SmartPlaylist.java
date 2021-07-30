@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
@@ -31,11 +31,6 @@ package org.jajuk.base;
 public class SmartPlaylist extends Playlist {
   /**
    * The Constructor.
-   * 
-   * @param type 
-   * @param sId 
-   * @param sName 
-   * @param dParentDirectory 
    */
   public SmartPlaylist(Type type, String sId, String sName, Directory dParentDirectory) {
     super(type, sId, sName, dParentDirectory);

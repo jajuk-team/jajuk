@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.views;
 
@@ -215,7 +215,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     }
     // set chosen track in file selection
     String conf = Conf.getString(Const.CONF_STARTUP_ITEM);
-    String item = conf.substring(conf.indexOf('/') + 1, conf.length());
+    String item = conf.substring(conf.indexOf('/') + 1);
     if (!StringUtils.isBlank(item)) {
       if (conf.matches(SearchResultType.FILE.name() + ".*")) {
         File file = FileManager.getInstance().getFileByID(item);

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
@@ -35,15 +35,15 @@ import org.jajuk.util.UtilSystem;
  */
 public final class DirectoryManager extends ItemManager {
   /** Self instance. */
-  private static DirectoryManager singleton = new DirectoryManager();
+  private static final DirectoryManager singleton = new DirectoryManager();
 
   /**
    * Return hashcode for this item.
-   * 
+   *
    * @param sName directory name
    * @param device device
    * @param dParent parent directory
-   * 
+   *
    * @return ItemManager ID
    */
   protected static String createID(final String sName, final Device device, final Directory dParent) {
@@ -66,7 +66,7 @@ public final class DirectoryManager extends ItemManager {
 
   /**
    * Gets the instance.
-   * 
+   *
    * @return singleton
    */
   public static DirectoryManager getInstance() {
@@ -104,7 +104,7 @@ public final class DirectoryManager extends ItemManager {
 
   /**
    * Clean all references for the given device.
-   * 
+   *
    * @param sId :
    * Device id
    */
@@ -123,7 +123,7 @@ public final class DirectoryManager extends ItemManager {
 
   /**
    * Gets a defensive copy of all directories.
-   * 
+   *
    * @return ordered directories list
    */
   @SuppressWarnings("unchecked")
@@ -133,19 +133,19 @@ public final class DirectoryManager extends ItemManager {
 
   /**
    * Gets the directories iterator.
-   * 
+   *
    * @return directories iterator
    */
   @SuppressWarnings("unchecked")
   public ReadOnlyIterator<Directory> getDirectoriesIterator() {
-    return new ReadOnlyIterator<Directory>((Iterator<Directory>) getItemsIterator());
+    return new ReadOnlyIterator<>((Iterator<Directory>) getItemsIterator());
   }
 
   /**
    * Gets the directory by id.
-   * 
+   *
    * @param sID Item ID
-   * 
+   *
    * @return Directory matching the id
    */
   Directory getDirectoryByID(final String sID) {
@@ -155,7 +155,7 @@ public final class DirectoryManager extends ItemManager {
   /**
    * Gets the directory for io.
    *
-   * @param fio 
+   * @param fio The file to look for
    * @param device Associated device
    * @return Directory matching the io file
    */
@@ -171,7 +171,7 @@ public final class DirectoryManager extends ItemManager {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
@@ -181,9 +181,7 @@ public final class DirectoryManager extends ItemManager {
 
   /**
    * Register a root device directory.
-   * 
-   * @param device 
-   * 
+   *
    * @return the directory
    */
   public Directory registerDirectory(final Device device) {
@@ -192,11 +190,7 @@ public final class DirectoryManager extends ItemManager {
 
   /**
    * Register a directory.
-   * 
-   * @param sName 
-   * @param dParent 
-   * @param device 
-   * 
+   *
    * @return the directory
    */
   public Directory registerDirectory(final String sName, final Directory dParent,
@@ -208,10 +202,6 @@ public final class DirectoryManager extends ItemManager {
   /**
    * Register a directory with a known id.
    *
-   * @param sId 
-   * @param sName 
-   * @param dParent 
-   * @param device 
    * @return the directory
    */
   Directory registerDirectory(final String sId, final String sName, final Directory dParent,
@@ -228,8 +218,6 @@ public final class DirectoryManager extends ItemManager {
   /**
    * Remove a directory and all subdirectories from main directory repository.
    * Remove reference from parent directories as well.
-   * 
-   * @param sId 
    */
   public void removeDirectory(final String sId) {
     lock.writeLock().lock();
@@ -241,7 +229,7 @@ public final class DirectoryManager extends ItemManager {
       }
       // remove all files
       // need to use a defensive copy to avoid concurrent exceptions
-      final List<File> alFiles = new ArrayList<File>(dir.getFiles());
+      final List<File> alFiles = new ArrayList<>(dir.getFiles());
       for (final File file : alFiles) {
         FileManager.getInstance().removeFile(file);
       }

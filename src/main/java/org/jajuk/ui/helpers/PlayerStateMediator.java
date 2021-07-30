@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.helpers;
 
@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
@@ -77,7 +78,7 @@ public class PlayerStateMediator implements Observer {
 
   /**
    * Gets the single instance of PlayerStateMediator.
-   * 
+   *
    * @return single instance of PlayerStateMediator
    */
   public static PlayerStateMediator getInstance() {
@@ -86,7 +87,7 @@ public class PlayerStateMediator implements Observer {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   @Override
@@ -110,7 +111,7 @@ public class PlayerStateMediator implements Observer {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#update(org.jajuk.events.Event)
    */
   @Override
@@ -218,10 +219,25 @@ public class PlayerStateMediator implements Observer {
               Log.debug("No id found on FILE_LAUNCHED");
               return;
             }
-            File file = FileManager.getInstance().getFileByID(id);
-            Log.debug("Got update for new file launched, item: {{" + file + "}}. Sending text: {{"
-                + QueueModel.getCurrentFileTitle() + "}}");
-            notifier.notify(file);
+
+            // the following work is costly so we should not run it as
+            // part of the UI thread
+            // the code here is not depending on it, so we can just fire this off
+            SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
+              @Override
+              protected Void doInBackground() {
+                File file = FileManager.getInstance().getFileByID(id);
+
+                Log.debug("Got update for new file launched, item: {{" + file + "}}. Sending text: {{"
+                        + QueueModel.getCurrentFileTitle() + "}}");
+
+                // this may start an external process to trigger the notificatoin on the desktop
+                notifier.notify(file);
+
+                return null;
+              }
+            };
+            sw.execute();
           }
         } else if (subject.equals(JajukEvents.SHOW_CURRENTLY_PLAYING)) {
           INotificator notifier = NotificatorFactory.getNotificator();

@@ -16,13 +16,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -60,21 +58,10 @@ public class Track extends LogicalItem implements Comparable<Track> {
   /** Album Artist. */
   private AlbumArtist albumArtist;
   /** Track associated files. */
-  private final List<File> alFiles = new ArrayList<File>(1);
+  private final List<File> alFiles = new ArrayList<>(1);
 
   /**
    * Track constructor.
-   *
-   * @param sId 
-   * @param sName 
-   * @param album 
-   * @param genre 
-   * @param artist 
-   * @param length 
-   * @param year 
-   * @param lOrder 
-   * @param type 
-   * @param lDiscNumber 
    */
   Track(String sId, String sName, Album album, Genre genre, Artist artist, long length, Year year,
       long lOrder, Type type, long lDiscNumber) {
@@ -93,8 +80,8 @@ public class Track extends LogicalItem implements Comparable<Track> {
     setProperty(Const.XML_YEAR, year.getID());
     setProperty(Const.XML_TRACK_ORDER, lOrder);
     setProperty(Const.XML_TRACK_DISC_NUMBER, lDiscNumber);
-    setProperty(Const.XML_TRACK_RATE, 0l);
-    setProperty(Const.XML_TRACK_HITS, 0l);
+    setProperty(Const.XML_TRACK_RATE, 0L);
+    setProperty(Const.XML_TRACK_HITS, 0L);
   }
 
   /**
@@ -112,8 +99,8 @@ public class Track extends LogicalItem implements Comparable<Track> {
         .append(getDiscoveryDate()).append(" Comment=").append(getComment()).append(" order=")
         .append(getOrder()).append(" Nb of files=").append(alFiles.size()).append(" Album artist=")
         .append(getAlbumArtist()).append(" Disc=").append(getDiscNumber()).append("]");
-    for (int i = 0; i < alFiles.size(); i++) {
-      sOut.append('\n').append(alFiles.get(i).toString());
+    for (File alFile : alFiles) {
+      sOut.append('\n').append(alFile.toString());
     }
     return sOut.toString();
   }
@@ -139,8 +126,6 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * Default comparator for tracks, not used for actual sorting (use TrackComparator
    * for that), only for storage purpose.
    *
-   * @param otherTrack 
-   *
    * @return comparison result
    */
   @Override
@@ -163,7 +148,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @return a copy of associated files
    */
   public List<org.jajuk.base.File> getFiles() {
-    return new ArrayList<File>(alFiles);
+    return new ArrayList<>(alFiles);
   }
 
   /**
@@ -181,7 +166,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   * @return ready files
   */
   public List<File> getReadyFiles() {
-    List<File> alReadyFiles = new ArrayList<File>(alFiles.size());
+    List<File> alReadyFiles = new ArrayList<>(alFiles.size());
     for (File file : alFiles) {
       if (file.isReady()) {
         alReadyFiles.add(file);
@@ -198,7 +183,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @return ready files with given filter
    */
   List<File> getReadyFiles(Set<File> filter) {
-    List<File> alReadyFiles = new ArrayList<File>(alFiles.size());
+    List<File> alReadyFiles = new ArrayList<>(alFiles.size());
     for (File file : alFiles) {
       if (file.isReady() && (filter == null || filter.contains(file))) {
         alReadyFiles.add(file);
@@ -229,7 +214,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    */
   public File getBestFile(boolean bIgnoreUnmounted) {
     File fileOut = null;
-    final List<File> alMountedFiles = new ArrayList<File>(2);
+    final List<File> alMountedFiles = new ArrayList<>(2);
     // firstly, filter mounted files if needed
     for (final File file : alFiles) {
       if (!bIgnoreUnmounted || file.isReady()) {
@@ -240,25 +225,22 @@ public class Track extends LogicalItem implements Comparable<Track> {
       fileOut = alMountedFiles.get(0);
     } else if (alMountedFiles.size() > 0) {
       // then keep best quality and mounted first
-      Collections.sort(alMountedFiles, new Comparator<File>() {
-        @Override
-        public int compare(File file1, File file2) {
+      alMountedFiles.sort((file1, file2) -> {
           long lQuality1 = file1.getQuality();
           boolean bMounted1 = file1.isReady();
           long lQuality2 = file2.getQuality(); // quality for
           // out file
           boolean bMounted2 = file2.isReady();
           if (bMounted1 && !bMounted2) {// first item mounted,
-            // not second
-            return 1;
+              // not second
+              return 1;
           } else if (!bMounted1 && bMounted2) { // second
-            // mounted, not
-            // the first
-            return -1;
+              // mounted, not
+              // the first
+              return -1;
           } else { // both mounted or unmounted, compare quality
-            return (int) (lQuality1 - lQuality2);
+              return (int) (lQuality1 - lQuality2);
           }
-        }
       });
       fileOut = alMountedFiles.get(alMountedFiles.size() - 1);
     }
@@ -402,8 +384,6 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Add an associated file.
-   *
-   * @param file 
    */
   public void addFile(File file) {
     // make sure a file will be referenced by only one track (first found)
@@ -442,10 +422,10 @@ public class Track extends LogicalItem implements Comparable<Track> {
    */
   public void setPreference(long preference) {
     Log.debug("Changed preference of " + getID() + "=" + preference);
-    if (preference >= -3l && preference <= 3l) {
+    if (preference >= -3L && preference <= 3L) {
       setProperty(Const.XML_TRACK_PREFERENCE, preference);
     } else {
-      setProperty(Const.XML_TRACK_PREFERENCE, 0l);
+      setProperty(Const.XML_TRACK_PREFERENCE, 0L);
       Log.debug("Out of bounds preference for : " + getID());
     }
     updateRate();
@@ -454,7 +434,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
   /**
    * Compute final track rate.
    *
-   * @see #1179
+   * See #1179
    */
   public void updateRate() {
     try {
@@ -463,10 +443,9 @@ public class Track extends LogicalItem implements Comparable<Track> {
         long preference = getLongValue(Const.XML_TRACK_PREFERENCE);
         long rate = RatingService.getRateForPreference(preference);
         setRate(rate);
-        // -- Semi-Automatic (standard) rating 
+        // -- Semi-Automatic (standard) rating
       } else {
         // rate contains final rate [0,100]
-        long rate = 0;
         // Normalize values to avoid division by zero
         long duration = getDuration();
         long playcount = getHits();
@@ -509,7 +488,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
         // -3 (hate) to 3 (adore)
         long preference = getLongValue(Const.XML_TRACK_PREFERENCE);
         long absPreference = Math.abs(preference);
-        rate = Math.round(100 * (intermediateRate + (preference + absPreference) / 2)
+        long rate = Math.round(100 * (intermediateRate + (preference + absPreference) / 2)
             / (absPreference + 1));
         // Apply new rate
         setRate(rate);
@@ -533,8 +512,6 @@ public class Track extends LogicalItem implements Comparable<Track> {
 
   /**
    * Sets the comment.
-   *
-   * @param sComment 
    */
   public void setComment(String sComment) {
     setProperty(Const.XML_TRACK_COMMENT, sComment);
@@ -566,10 +543,7 @@ public class Track extends LogicalItem implements Comparable<Track> {
    * @return whether this item should be hidden with hide option
    */
   public boolean shouldBeHidden() {
-    if (getBestFile(true) != null || !Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
-      return false;
-    }
-    return true;
+    return getBestFile(true) == null && Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED);
   }
 
   /*

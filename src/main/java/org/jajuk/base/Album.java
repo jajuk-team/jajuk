@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
@@ -25,10 +25,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -58,16 +56,12 @@ import org.jajuk.util.log.Log;
  */
 public class Album extends LogicalItem implements Comparable<Album> {
   /** For perfs, we cache the associated tracks. This cache is filled by the TrackManager using the getTracksCache() method */
-  private final List<Track> cache = new ArrayList<Track>(15);
+  private final List<Track> cache = new ArrayList<>(15);
   /** This array stores thumbnail presence for all the available size (performance) By default all booleans are false. */
   private boolean[] availableTumbs;
 
   /**
    * Album constructor.
-   *
-   * @param sId 
-   * @param sName 
-   * @param discID 
    */
   Album(String sId, String sName, long discID) {
     super(sId, sName);
@@ -76,7 +70,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Gets the disc id.
-   * 
+   *
    * @return the discID
    */
   public long getDiscID() {
@@ -85,7 +79,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Return album name, dealing with unknown for any language.
-   * 
+   *
    * @return album name
    */
   public String getName2() {
@@ -98,7 +92,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * toString method.
-   * 
+   *
    * @return the string
    */
   @Override
@@ -111,9 +105,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    * Alphabetical comparator on the name
    * <p>
    * Used to display ordered lists.
-   * 
-   * @param otherAlbum 
-   * 
+   *
    * @return comparison result
    */
   @Override
@@ -122,11 +114,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
       return -1;
     }
     // compare using name and id to differentiate unknown items
-    StringBuilder current = new StringBuilder(getName2());
-    current.append(getID());
-    StringBuilder other = new StringBuilder(otherAlbum.getName2());
-    other.append(otherAlbum.getID());
-    return current.toString().compareToIgnoreCase(other.toString());
+    return (getName2() + getID()).compareToIgnoreCase(otherAlbum.getName2() + otherAlbum.getID());
   }
 
   /**
@@ -150,7 +138,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#getIdentifier()
    */
   @Override
@@ -168,7 +156,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
    */
   @Override
@@ -202,8 +190,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Handle artist.
-   * 
-   * 
+   *
+   *
    * @return the string
    */
   private String handleArtist() {
@@ -218,8 +206,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Handle genre.
-   * 
-   * 
+   *
+   *
    * @return the string
    */
   private String handleGenre() {
@@ -234,8 +222,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Handle year.
-   * 
-   * 
+   *
+   *
    * @return the string
    */
   private String handleYear() {
@@ -249,7 +237,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Gets the any.
-   * 
+   *
    * @return a human representation of all concatenated properties
    */
   @Override
@@ -263,7 +251,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
       sb.append(artist.getName2());
     }
     // Try to add album artist
-    Track first = null;
+    final Track first;
     List<Track> cache = getTracksCache();
     synchronized (cache) {
       first = cache.get(0);
@@ -291,7 +279,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
   /**
    * Gets the best associated cover as a file.
    * <p>Can be a long action</p>
-   * 
+   *
    * @return Associated best cover file available or null if none. The returned
    * file is not guarantee to exist, so use a try/catch around a future access to this method.
    */
@@ -312,7 +300,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
       // Check if discovered cover still exist. There is an overhead
       // drawback but otherwise, the album's cover
       // property may be stuck to an old device's cover url.
-      // Moreover, cover tags are extracted to cache directory so they are 
+      // Moreover, cover tags are extracted to cache directory so they are
       // Regularly dropped.
       Device device = DeviceManager.getInstance().getDeviceByPath(new File(discoveredCoverPath));
       // If the device is not mounted, do not perform this existence check up
@@ -336,7 +324,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
       return null;
     }
     // List at directories we have to look in
-    Set<Directory> dirs = new HashSet<Directory>(2);
+    Set<Directory> dirs = new HashSet<>(2);
     for (Track track : lTracks) {
       for (org.jajuk.base.File file : track.getReadyFiles()) {
         // note that hashset ensures directory unicity
@@ -358,11 +346,11 @@ public class Album extends LogicalItem implements Comparable<Album> {
     if (cover == null) {
       cover = findCoverFile(dirs, false);
     }
-    // [PERF] Still nothing ? ok, set no cover to avoid further searches 
+    // [PERF] Still nothing ? ok, set no cover to avoid further searches
     if (cover == null) {
       setProperty(XML_ALBUM_DISCOVERED_COVER, COVER_NONE);
-    } else { //[PERF] if we found a cover, we store it to avoid further covers 
-      // searches including a full tags picture extraction  
+    } else { //[PERF] if we found a cover, we store it to avoid further covers
+      // searches including a full tags picture extraction
       setProperty(XML_ALBUM_DISCOVERED_COVER, cover.getAbsolutePath());
     }
     return cover;
@@ -370,7 +358,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Return whether this album owns a cover (this method doesn't check
-   * cover file existence). 
+   * cover file existence).
    * @return whether this album owns a cover.
    */
   public boolean containsCover() {
@@ -379,15 +367,15 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   * Return a tag cover file from given directories. If a cover tags are found, 
-   * they are extracted to the cache directory. 
-   * 
+   * Return a tag cover file from given directories. If a cover tags are found,
+   * they are extracted to the cache directory.
+   *
    * @return a tag cover file or null if none.
    */
   private File findTagCover() {
     //Make sure to sort the cache
-    List<Track> sortedTracks = new ArrayList<Track>(cache);
-    Collections.sort(sortedTracks, new TrackComparator(TrackComparatorType.ALBUM));
+    List<Track> sortedTracks = new ArrayList<>(cache);
+    sortedTracks.sort(new TrackComparator(TrackComparatorType.ALBUM));
     for (Track track : sortedTracks) {
       for (org.jajuk.base.File file : track.getReadyFiles()) {
         try {
@@ -408,10 +396,10 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Return a cover file matching criteria or null.
-   * 
+   *
    * @param dirs : list of directories to search in
    * @param onlyStandardCovers to we consider only standard covers ?
-   * 
+   *
    * @return a cover file matching criteria or null
    */
   private File findCoverFile(Set<Directory> dirs, boolean onlyStandardCovers) {
@@ -451,7 +439,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.Item#getIconRepresentation()
    */
   @Override
@@ -461,7 +449,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Gets the rate.
-   * 
+   *
    * @return album rating
    */
   @Override
@@ -475,9 +463,9 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Gets the thumbnail.
-   * 
+   *
    * @param size size using format width x height
-   * 
+   *
    * @return album thumb for given size
    */
   public ImageIcon getThumbnail(int size) {
@@ -505,12 +493,12 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Gets the genre.
-   * 
+   *
    * @return genre for the album. Return null if the album contains tracks with
    * different genres
    */
   public Genre getGenre() {
-    Set<Genre> genres = new HashSet<Genre>(1);
+    Set<Genre> genres = new HashSet<>(1);
     for (Track track : cache) {
       genres.add(track.getGenre());
     }
@@ -524,7 +512,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Gets the artist.
-   * 
+   *
    * @return artist for the album. <br>
    * Return null if the album contains tracks with different artists
    */
@@ -543,13 +531,13 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Gets the artist or the album artist if not available
-   * 
+   *
    * <u>Used algorithm is following :
    * <li>If none available tags : return "unknown artist"</li>
    * <li>If the album contains tracks with different artists, display the first album artist found if any</li>
    * <li>In this case, if no album artist is available, display the first artist found</li>
    * </u>.
-   * 
+   *
    * @return artist for the album. <br>
    * Return Always an artist, eventually a "Unknown Artist" one
    */
@@ -574,12 +562,12 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Gets the year.
-   * 
+   *
    * @return year for the album. Return null if the album contains tracks with
    * different years
    */
   public Year getYear() {
-    Set<Year> years = new HashSet<Year>(1);
+    Set<Year> years = new HashSet<>(1);
     for (Track track : cache) {
       years.add(track.getYear());
     }
@@ -593,7 +581,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Return full album length in secs.
-   * 
+   *
    * @return the duration
    */
   public long getDuration() {
@@ -606,7 +594,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Gets the nb of tracks.
-   * 
+   *
    * @return album nb of tracks
    */
   public int getNbOfTracks() {
@@ -615,7 +603,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Gets the hits.
-   * 
+   *
    * @return album total nb of hits
    */
   public long getHits() {
@@ -628,7 +616,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Contains ready files.
-   * 
+   *
    * @return whether the album contains a least one available track
    */
   public boolean containsReadyFiles() {
@@ -642,7 +630,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Gets the discovery date.
-   * 
+   *
    * @return First found track discovery date
    */
   public Date getDiscoveryDate() {
@@ -655,7 +643,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Gets the tracks cache.
-   * 
+   *
    * @return ordered tracks cache for this album (perf)
    */
   public List<Track> getTracksCache() {
@@ -664,7 +652,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Gets the any track.
-   * 
+   *
    * @return a track from this album
    */
   public Track getAnyTrack() {
@@ -677,9 +665,9 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Set that the thumb for given size is available.
-   * 
+   *
    * @param size (thumb size like 50)
-   * @param available 
+   * @param available the state to set for the given size
    */
   public void setAvailableThumb(int size, boolean available) {
     if (availableTumbs == null) {
@@ -690,9 +678,9 @@ public class Album extends LogicalItem implements Comparable<Album> {
 
   /**
    * Return whether a thumb is available for given size.
-   * 
+   *
    * @param size (thumb size like 50)
-   * 
+   *
    * @return whether a thumb is available for given size
    */
   public boolean isThumbAvailable(int size) {
@@ -708,8 +696,8 @@ public class Album extends LogicalItem implements Comparable<Album> {
   }
 
   /**
-   *  Force any new cover search before displaying it if the album is set "none" cover (for example, if the album contains no cover at all, 
-   *  the album is stuck as NONE_COVER while a thumb refresh is not done manually by the user). 
+   *  Force any new cover search before displaying it if the album is set "none" cover (for example, if the album contains no cover at all,
+   *  the album is stuck as NONE_COVER while a thumb refresh is not done manually by the user).
    *  If a new cover is added from outside jajuk and no save or save as action is done, the new thumb is not built from the new cover so we force it.
    */
   public void resetCoverCache() {
@@ -724,13 +712,7 @@ public class Album extends LogicalItem implements Comparable<Album> {
    */
   protected void cleanupCache() {
     synchronized (cache) {
-      Iterator<Track> it = cache.iterator();
-      while (it.hasNext()) {
-        Track track = it.next();
-        if (track.getFiles().size() == 0) {
-          it.remove();
-        }
-      }
+      cache.removeIf(track -> track.getFiles().size() == 0);
     }
   }
 }

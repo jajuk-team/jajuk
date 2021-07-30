@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.wizard;
 
@@ -58,7 +58,7 @@ import net.miginfocom.swing.MigLayout;
 
 /**
  * Alarm Clock Dialog window.
- * 
+ *
  * TODO : add validation on fields
  */
 public class AlarmClockDialog extends JajukJDialog implements ActionListener, ItemListener, Const {
@@ -183,8 +183,8 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
 
   /**
    * Handle action.
-   * 
-   * @param playAction 
+   *
+   * @param playAction
    */
   private void handleAction(boolean playAction) {
     jlChoice.setEnabled(playAction);
@@ -197,8 +197,8 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
 
   /**
    * Handle time checkbox.
-   * 
-   * @param playAction 
+   *
+   * @param playAction
    */
   private void handleTimeCheckbox(boolean playAction) {
     // Enable/ disable all widgets if user enables or disables the entire
@@ -300,7 +300,7 @@ public class AlarmClockDialog extends JajukJDialog implements ActionListener, It
     } else if (Const.STARTUP_MODE_ITEM.equals(Conf.getString(CONF_ALARM_MODE))) {
       jrbFile.setSelected(true);
       String conf = Conf.getString(Const.CONF_ALARM_FILE);
-      String item = conf.substring(conf.indexOf('/') + 1, conf.length());
+      String item = conf.substring(conf.indexOf('/') + 1);
       if (conf.matches(SearchResultType.FILE.name() + ".*")) {
         File file = FileManager.getInstance().getFileByID(item);
         if (file != null) {

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.views;
 
@@ -35,7 +35,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -107,7 +106,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
   /** No cover cover. */
-  private static Cover nocover = new Cover(Const.IMAGES_SPLASHSCREEN, CoverType.NO_COVER);
+  private static final Cover nocover = new Cover(Const.IMAGES_SPLASHSCREEN, CoverType.NO_COVER);
   /** Error counter to check connection availability. */
   private volatile static int iErrorCounter = 0;
   /** Connected one flag : true if jajuk managed once to connect to the web to bring covers. */
@@ -117,7 +116,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   /** File directory used as a cache for perfs. */
   private volatile Directory dirReference;
   /** List of available covers for the current file. */
-  private final LinkedList<Cover> alCovers = new LinkedList<Cover>();
+  private final LinkedList<Cover> alCovers = new LinkedList<>();
   // control panel
   private JPanel jpControl;
   private JajukButton jbPrevious;
@@ -145,11 +144,11 @@ public class CoverView extends ViewAdapter implements ActionListener {
   private boolean includeControls;
   /** Whether the view has not yet been displayed for its first time */
   private volatile boolean initEvent = true;
-  /** Used to lock access to covers collection, we don't synchronize this as this may create thread 
+  /** Used to lock access to covers collection, we don't synchronize this as this may create thread
    * starvations because the EDT requires this lock as well in ViewAdater.stopAllBusyLabels() method. */
   private final Lock listLock = new ReentrantLock(true);
   /** Parent of this view. */
-  private JDialog parentJDialog; 
+  private JDialog parentJDialog;
 
   /**
    * Constructor.
@@ -160,8 +159,8 @@ public class CoverView extends ViewAdapter implements ActionListener {
 
   /**
    * Constructor.
-   * 
-   * @param file Reference file. Used to display cover for a particular file, null if the cover view is used in the "reular" way as a view, not 
+   *
+   * @param file Reference file. Used to display cover for a particular file, null if the cover view is used in the "reular" way as a view, not
    * as a dialog from catalog view for ie.
    */
   public CoverView(final org.jajuk.base.File file) {
@@ -171,10 +170,10 @@ public class CoverView extends ViewAdapter implements ActionListener {
 
   /**
    * Constructor.
-   * 
-   * @param file Reference file. Used to display cover for a particular file, null if the cover view is used in the "reular" way as a view, not 
+   *
+   * @param file Reference file. Used to display cover for a particular file, null if the cover view is used in the "reular" way as a view, not
    * as a dialog from catalog view for ie.
-   * @param jd parent dialog (closed after a default cover is selected) 
+   * @param jd parent dialog (closed after a default cover is selected)
    */
   public CoverView(final org.jajuk.base.File file, JDialog jd) {
     super();
@@ -194,8 +193,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
 
   /**
    * Inits the ui.
-   *  
-   * @param includeControls 
    */
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public void initUI(boolean includeControls) {
@@ -284,7 +281,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
       ObservationManager.register(this);
     }
     // global layout
-    MigLayout globalLayout = null;
+    final MigLayout globalLayout;
     if (includeControls) {
       globalLayout = new MigLayout("ins 0,gapy 10", "[grow]", "[30!][grow]");
     } else {
@@ -459,8 +456,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
           Log.debug("Try to save a local cover");
           return;
         }
-        String sFilePath = null;
-        sFilePath = dirReference.getFio().getPath() + "/"
+        String sFilePath = dirReference.getFio().getPath() + "/"
             + UtilSystem.getOnlyFile(cover.getURL().toString());
         sFilePath = convertCoverPath(sFilePath);
         try {
@@ -523,7 +519,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
       if (pos == -1) {
         ext = "";
       } else {
-        ext = sFilePath.substring(pos, sFilePath.length());
+        ext = sFilePath.substring(pos);
       }
       String parent = new File(sFilePath).getParent();
       return parent + System.getProperty("file.separator") + "Folder" + ext;
@@ -563,9 +559,8 @@ public class CoverView extends ViewAdapter implements ActionListener {
             + UtilSystem.getOnlyFile(cover.getURL().toString()));
         jfchooser.setSelectedFile(finalFile);
         final int returnVal = jfchooser.showSaveDialog(JajukMainWindow.getInstance());
-        File fNew = null;
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-          fNew = jfchooser.getSelectedFile();
+          File fNew = jfchooser.getSelectedFile();
           // if user try to save as without changing file name
           if (fNew.getAbsolutePath().equals(cover.getFile().getAbsolutePath())) {
             return;
@@ -618,7 +613,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
           File destFile = new File(destPath);
           try {
             // Copy cached file to music directory
-            // Note that the refreshCover() methods automatically 
+            // Note that the refreshCover() methods automatically
             // extract any track cover tag to an image file in the cache
             UtilSystem.copy(cover.getFile(), destFile);
             Cover cover2 = new Cover(destFile, CoverType.SELECTED_COVER);
@@ -684,46 +679,41 @@ public class CoverView extends ViewAdapter implements ActionListener {
       return;
     }
     final long lCurrentDate = System.currentTimeMillis(); // adjusting code
-    if (lCurrentDate - lDateLastResize < 500) { // Do consider only one event every 
+    if (lCurrentDate - lDateLastResize < 500) { // Do consider only one event every
       // 500 ms to avoid race conditions and lead to unexpected states (verified)
       return;
     }
     lDateLastResize = lCurrentDate;
     Log.debug("Cover resized, view=" + getID() + " size=" + getSize());
     // Run this in another thread to accelerate the component resize events processing and filter by time
-    new Thread() {
-      @Override
-      public void run() {
-        if (fileReference == null) { // regular cover view
-          if (QueueModel.isStopped()) {
-            update(new JajukEvent(JajukEvents.ZERO));
-          }
-          // check if a track has already been launched
-          else if (QueueModel.isPlayingRadio()) {
-            update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED,
-                ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
-            // If the view is displayed for the first time, a ComponentResized event is launched at its first display but
-            // we want to perform the full process : update past launches files (FILE_LAUNCHED). 
-            // But if it is no more the initial resize event, we only want to refresh the cover, not the full story.
-          } else if (!initEvent) {
-            displayCurrentCover();
-          } else {
-            update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
-          }
-        } else { // cover view used as dialog
-          update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
+    new Thread(() -> {
+      if (fileReference == null) { // regular cover view
+        if (QueueModel.isStopped()) {
+          update(new JajukEvent(JajukEvents.ZERO));
         }
-        // It will never more be the first time ...
-        CoverView.this.initEvent = false;
+        // check if a track has already been launched
+        else if (QueueModel.isPlayingRadio()) {
+          update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED,
+              ObservationManager.getDetailsLastOccurence(JajukEvents.WEBRADIO_LAUNCHED)));
+          // If the view is displayed for the first time, a ComponentResized event is launched at its first display but
+          // we want to perform the full process : update past launches files (FILE_LAUNCHED).
+          // But if it is no more the initial resize event, we only want to refresh the cover, not the full story.
+        } else if (!initEvent) {
+          displayCurrentCover();
+        } else {
+          update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
+        }
+      } else { // cover view used as dialog
+        update(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
       }
-    }.start();
+      // It will never more be the first time ...
+      CoverView.this.initEvent = false;
+    }).start();
   }
 
   /**
    * Creates the query.
-   * 
-   * @param file 
-   * 
+   *
    * @return an accurate google search query for a file
    */
   public String createQuery(final org.jajuk.base.File file) {
@@ -803,12 +793,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
   private void displayCurrentCover() {
     UtilGUI.showBusyLabel(CoverView.this); // lookup icon
     findRightCover();
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        displayCover(index);
-      }
-    });
+    SwingUtilities.invokeLater(() -> displayCover(index));
   }
 
   private void findRightCover() {
@@ -876,7 +861,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
 
   /**
    * Gets the cover number.
-   * 
+   *
    * @return number of real covers (not default) covers found
    */
   private int getCoverNumber() {
@@ -900,7 +885,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
    */
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
-    final Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    final Set<JajukEvents> eventSubjectSet = new HashSet<>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
     eventSubjectSet.add(JajukEvents.ZERO);
@@ -911,15 +896,13 @@ public class CoverView extends ViewAdapter implements ActionListener {
 
   /**
    * Long action to compute image to display (download, resizing...)
-   * 
-   * @param index 
-   * 
+   *
    * @throws JajukException the jajuk exception
    */
   private void prepareDisplay(final int index) throws JajukException {
     // find next correct cover
     Cover cover = null;
-    ImageIcon icon = null;
+    final ImageIcon icon;
     try {
       cover = alCovers.get(index); // take image at the given index
       Log.debug("Display cover: " + cover + " at index :" + index);
@@ -941,22 +924,13 @@ public class CoverView extends ViewAdapter implements ActionListener {
       if (icon.getIconHeight() == 0 || icon.getIconWidth() == 0) {
         throw new JajukException(0, "Wrong picture, size is null");
       }
-    } catch (final FileNotFoundException e) {
+    } catch (final FileNotFoundException | UnknownHostException e) {
       // do not display a stacktrace for FileNotfound as we expect this in cases
       // where the picture is gone on the net
       Log.warn("Cover image not found at URL: "
           + (cover == null ? "<null>" : cover.getURL().toString()));
       throw new JajukException(0, e);
-    } catch (final UnknownHostException e) {
-      // do not display a stacktrace for HostNotFound as we expect this in cases
-      // where the whole server is gone on the net
-      Log.warn("Cover image not found at URL: "
-          + (cover == null ? "<null>" : cover.getURL().toString()));
-      throw new JajukException(0, e);
-    } catch (final IOException e) { // this cover cannot be loaded
-      Log.error(e);
-      throw new JajukException(0, e);
-    } catch (final InterruptedException e) { // this cover cannot be loaded
+    } catch (final IOException | InterruptedException e) { // this cover cannot be loaded
       Log.error(e);
       throw new JajukException(0, e);
     }
@@ -1004,7 +978,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
 
   /**
   * Display given cover.
-  * 
+  *
   * @param index index of the cover to display
   */
   private void displayCover(final int index) {
@@ -1049,19 +1023,23 @@ public class CoverView extends ViewAdapter implements ActionListener {
       if (indexPrevious > alCovers.size() - 1) {
         indexPrevious = 0;
       }
-      final URL urlPrevious = alCovers.get(indexPrevious).getURL();
-      if (urlPrevious != null) {
-        jbPrevious.setToolTipText("<html>" + Messages.getString("CoverView.4") + "<br>"
-            + urlPrevious.toString() + "</html>");
+      if(indexPrevious < alCovers.size()) {
+        final URL urlPrevious = alCovers.get(indexPrevious).getURL();
+        if (urlPrevious != null) {
+          jbPrevious.setToolTipText("<html>" + Messages.getString("CoverView.4") + "<br>"
+                  + urlPrevious.toString() + "</html>");
+        }
       }
       int indexNext = index - 1;
       if (indexNext < 0) {
         indexNext = alCovers.size() - 1;
       }
-      final URL urlNext = alCovers.get(indexNext).getURL();
-      if (urlNext != null) {
-        jbNext.setToolTipText("<html>" + Messages.getString("CoverView.5") + "<br>"
-            + urlNext.toString() + "</html>");
+      if(indexNext >= 0 && indexNext < alCovers.size()) {
+        final URL urlNext = alCovers.get(indexNext).getURL();
+        if (urlNext != null) {
+          jbNext.setToolTipText("<html>" + Messages.getString("CoverView.5") + "<br>"
+                  + urlNext.toString() + "</html>");
+        }
       }
     } catch (final Exception e) { // the url code can throw out of bounds
       // exception for unknown reasons so check it
@@ -1101,8 +1079,6 @@ public class CoverView extends ViewAdapter implements ActionListener {
 
   /**
    * Refresh default cover thumb (used in catalog view).
-   * 
-   * @param cover 
    */
   private void refreshThumbs(final Cover cover) {
     if (dirReference == null) {
@@ -1125,57 +1101,42 @@ public class CoverView extends ViewAdapter implements ActionListener {
   * Set the cover Found text.
   */
   private void setFoundText() {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        // make sure not to display negative indexes
-        int i = getCoverNumber() - index;
-        if (i < 0) {
-          Log.debug("Negative cover index: " + i);
-          i = 0;
-        }
-        jlFound.setText(i + "/" + getCoverNumber());
+    SwingUtilities.invokeLater(() -> {
+      // make sure not to display negative indexes
+      int i = getCoverNumber() - index;
+      if (i < 0) {
+        Log.debug("Negative cover index: " + i);
+        i = 0;
       }
+      jlFound.setText(i + "/" + getCoverNumber());
     });
   }
 
   /**
    * Set the cover Found text.
-   * 
+   *
    * @param sFound specified text
    */
   private void setFoundText(final String sFound) {
     if (sFound != null) {
-      SwingUtilities.invokeLater(new Runnable() {
-        @Override
-        public void run() {
-          jlFound.setText(sFound);
-        }
-      });
+      SwingUtilities.invokeLater(() -> jlFound.setText(sFound));
     }
   }
 
   /**
    * Set the cover size text.
-   * 
-   * @param sSize 
    */
   private void setSizeText(final String sSize) {
     if (sSize != null) {
-      SwingUtilities.invokeLater(new Runnable() {
-        @Override
-        public void run() {
-          jlSize.setText(sSize);
-        }
-      });
+      SwingUtilities.invokeLater(() -> jlSize.setText(sSize));
     }
   }
 
   /**
    * Gets the current image.
-   * 
+   *
    * @return the current image
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    * @throws InterruptedException the interrupted exception
    * @throws JajukException the jajuk exception
@@ -1218,7 +1179,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
 
   /**
    * Update stop or web radio launched.
-   * 
+   *
    */
   private void reset() {
     // Ignore this event if a reference file has been set
@@ -1240,9 +1201,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
 
   /**
    * Update file launched.
-   * 
-   * @param event 
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   private void updateFileLaunched(final JajukEvent event) throws IOException {
@@ -1261,8 +1220,8 @@ public class CoverView extends ViewAdapter implements ActionListener {
     }
     // if we are always in the same directory, just leave to
     // save cpu
-    boolean dirChanged = last == null ? true : !last.getDirectory().equals(
-        QueueModel.getPlayingFile().getDirectory());
+    boolean dirChanged = last == null || !last.getDirectory().equals(
+            QueueModel.getPlayingFile().getDirectory());
     if (bForceCoverReload) {
       dirChanged = true;
     }
@@ -1281,22 +1240,17 @@ public class CoverView extends ViewAdapter implements ActionListener {
 
   /**
    * Convenient method to massively enable/disable this view buttons.
-   * 
-   * @param enable 
    */
   private void enableCommands(final boolean enable) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        jcbAccuracy.setEnabled(enable);
-        jbDefault.setEnabled(enable);
-        jbDelete.setEnabled(enable);
-        jbNext.setEnabled(enable);
-        jbPrevious.setEnabled(enable);
-        jbSave.setEnabled(enable);
-        jlFound.setVisible(enable);
-        jlSize.setVisible(enable);
-      }
+    SwingUtilities.invokeLater(() -> {
+      jcbAccuracy.setEnabled(enable);
+      jbDefault.setEnabled(enable);
+      jbDelete.setEnabled(enable);
+      jbNext.setEnabled(enable);
+      jbPrevious.setEnabled(enable);
+      jbSave.setEnabled(enable);
+      jlFound.setVisible(enable);
+      jlSize.setVisible(enable);
     });
   }
 
@@ -1305,9 +1259,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
    * <p>
    * Must be called outside the EDT, contains network access
    * </p>.
-   * 
-   * @param dirChanged 
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   private void refreshCovers(boolean dirChanged) throws IOException {
@@ -1336,16 +1288,10 @@ public class CoverView extends ViewAdapter implements ActionListener {
       throw new IllegalArgumentException("Internal Error: Unexpected value, "
           + "variable fCurrent should not be empty. dirReference: " + dirReference);
     }
-    // We only need to refresh the other covers if the directory changed 
+    // We only need to refresh the other covers if the directory changed
     // but we still clear tag-based covers even if directory didn't change
-    // so the song-specific tag is taken into account. 
-    Iterator<Cover> it = alCovers.iterator();
-    while (it.hasNext()) {
-      Cover cover = it.next();
-      if (cover.getType() == CoverType.TAG_COVER) {
-        it.remove();
-      }
-    }
+    // so the song-specific tag is taken into account.
+    alCovers.removeIf(cover -> cover.getType() == CoverType.TAG_COVER);
     if (dirChanged) {
       // remove all existing covers
       alCovers.clear();
@@ -1383,7 +1329,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
           }
           final JajukFileFilter filter = ImageFilter.getInstance();
           if (filter.accept(files[i])) {
-            Cover cover = null;
+            final Cover cover;
             if (UtilFeatures.isStandardCover(files[i])) {
               cover = new Cover(files[i], CoverType.STANDARD_COVER);
             } else {
@@ -1414,16 +1360,14 @@ public class CoverView extends ViewAdapter implements ActionListener {
             // user managed once to connect to the web
             if (alUrls.size() > Const.MAX_REMOTE_COVERS) {
               // limit number of remote covers
-              alUrls = new ArrayList<URL>(alUrls.subList(0, Const.MAX_REMOTE_COVERS));
+              alUrls = new ArrayList<>(alUrls.subList(0, Const.MAX_REMOTE_COVERS));
             }
             Collections.reverse(alUrls);
             // set best results to be displayed first
-            final Iterator<URL> it2 = alUrls.iterator();
             // add found covers
-            while (it2.hasNext()) {
+            for (URL url : alUrls) {
               // load each cover (pre-load or post-load)
               // and stop if a signal has been emitted
-              final URL url = it2.next();
               final Cover cover = new Cover(url, CoverType.REMOTE_COVER);
               // Create a cover with given url ( image
               // will be really downloaded when
@@ -1449,7 +1393,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
         }
       }
     }
-    // Check for tag covers 
+    // Check for tag covers
     try {
       Tag tag = new Tag(fCurrent.getFIO(), false);
       List<Cover> tagCovers = tag.getCovers();

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.thumbnails;
 
@@ -33,11 +33,11 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Item;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
+import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.IconLoader;
@@ -87,11 +87,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
    */
   @Override
   public Item getItem() {
-    Album item = AlbumManager.getInstance().getAlbumByName(album.getTitle());
-    if (item != null) {
-      return item;
-    }
-    return null;
+    return AlbumManager.getInstance().getAlbumByName(album.getTitle());
   }
 
   /*
@@ -219,7 +215,24 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
    */
   @Override
   public void populate() {
-    preLoad();
+    // preLoad() downloads files from the internet and thus can block
+    // for a long time, so we should not run it in the AWT Event Queue
+    UtilGUI.populate(new TwoStepsDisplayable() {
+      @Override
+      public Object longCall() {
+        preLoad();
+
+        return null;
+      }
+
+      @Override
+      public void shortCall(Object in) {
+        finishPopulate();
+      }
+    });
+  }
+
+  private void finishPopulate() {
     if (ii == null) {
       return;
     }
@@ -242,7 +255,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
     if (bKnown) {
       // Album known in collection, display its name in bold
       jlTitle = new JLabel(UtilString.getLimitedString(fullTitle, textLength),
-          IconLoader.getIcon(JajukIcons.ALBUM), SwingConstants.CENTER);
+              IconLoader.getIcon(JajukIcons.ALBUM), SwingConstants.CENTER);
       jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
     } else {
       jlTitle = new JLabel(UtilString.getLimitedString(fullTitle, textLength));

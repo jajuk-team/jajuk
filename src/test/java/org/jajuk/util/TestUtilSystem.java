@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.util;
 
@@ -26,16 +26,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Random;
+import java.util.function.Consumer;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jajuk.ConstTest;
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.util.error.JajukException;
-import org.junit.Test;
 
 /**
  * .
@@ -51,15 +52,15 @@ public class TestUtilSystem extends JajukTestCase {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see junit.framework.TestCase#tearDown()
    */
   @Override
   protected void tearDown() throws Exception {
     // just try to remove those and ignore errors as the file might not have
     // been created
-    file1.delete();
-    file2.delete();
+    assertTrue(!file1.exists() || file1.delete());
+    assertTrue(!file2.exists() || file2.delete());
     super.tearDown();
   }
 
@@ -78,7 +79,6 @@ public class TestUtilSystem extends JajukTestCase {
     // TODO: create a huge file and make sure it is truncated during backup
   }
 
-  @Test
   public void testGetDeviceForFio() {
     org.jajuk.base.File file = TestHelpers.getFile();
     Device device = file.getDevice();
@@ -86,7 +86,7 @@ public class TestUtilSystem extends JajukTestCase {
     assertEquals(device, UtilSystem.getDeviceForFio(file.getFIO()));
     // Case where it is not the case
     java.io.File fioOutsideAnyKnownDevice = new java.io.File("/tmp/toto");
-    assertEquals(null, UtilSystem.getDeviceForFio(fioOutsideAnyKnownDevice));
+    assertNull(UtilSystem.getDeviceForFio(fioOutsideAnyKnownDevice));
   }
 
   /**
@@ -109,7 +109,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test copy file file not exists.
-   * 
+   *
    *
    * @throws Exception the exception
    */
@@ -168,7 +168,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test copy url string empty.
-   * 
+   *
    *
    * @throws Exception the exception
    */
@@ -180,7 +180,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test copy url string not exists.
-   * 
+   *
    */
   public void testCopyURLStringNotExists() {
     try {
@@ -206,7 +206,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test copy recursively.
-   * 
+   *
    *
    * @throws Exception the exception
    */
@@ -238,7 +238,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test copy to dir exception.
-   * 
+   *
    *
    * @throws Exception the exception
    */
@@ -294,7 +294,7 @@ public class TestUtilSystem extends JajukTestCase {
   public void testDeleteDirDir() throws Exception {
     Directory top = TestHelpers.getDirectory();
     File fileChild = new File(top.getAbsolutePath() + "/child");
-    fileChild.mkdirs();
+    assertTrue(fileChild.mkdirs());
     UtilSystem.deleteDir(fileChild);
     assertFalse(fileChild.exists());
     assertTrue(top.getFio().exists());
@@ -322,7 +322,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test get extension file none.
-   * 
+   *
    */
   public void testGetExtensionFileNone() {
     assertEquals("", UtilSystem.getExtension("/tmp/testfile"));
@@ -330,7 +330,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test get extension file dot.
-   * 
+   *
    */
   public void testGetExtensionFileDot() {
     // TODO: why do we return the full filename in this case? I.e. if there is a
@@ -363,7 +363,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test get file checksum error.
-   * 
+   *
    */
   public void testGetFileChecksumError() {
     try {
@@ -410,14 +410,13 @@ public class TestUtilSystem extends JajukTestCase {
   }
 
   /**
-   * Test method for.
-   *
-   * {@link org.jajuk.util.UtilSystem#getNormalizedFilename(java.lang.String)}.
+   * Test method for {@link org.jajuk.util.UtilSystem#getNormalizedFilename(java.lang.String)}.
    */
   public void testGetNormalizedFilename() {
-    // assertEquals(file1.getAbsolutePath(),
-    // UtilSystem.getNormalizedFilename(file1.getAbsolutePath()));
-    assertEquals("-tmp  -test1----", UtilSystem.getNormalizedFilename("/tmp*|/te\"?st1<>\\:"));
+    assertEquals("-tmp  -test1----", UtilSystem.getNormalizedFilename("/tmp*|/te\"?st1<>\\: "));
+    assertEquals("blabla", UtilSystem.getNormalizedFilename("blabla"));
+    assertEquals("bla \t bla", UtilSystem.getNormalizedFilename("bla \t bla"));
+    assertEquals("bla\u1234bla", UtilSystem.getNormalizedFilename("bla\u1234bla"));
   }
 
   /**
@@ -427,7 +426,8 @@ public class TestUtilSystem extends JajukTestCase {
    */
   public void testGetOnlyFile() {
     assertEquals("name.txt", UtilSystem.getOnlyFile("file:///tmp/some/name.txt"));
-    assertEquals("imagesqtbnANd9GcR3oc63qGvD-UNIESfnOD3ABwJ9JeFdhzE6eEZZFTzw-PBNyOZWdw", UtilSystem.getOnlyFile("images?q=tbn:ANd9GcR3oc63qGvD-UNIESfnOD3ABwJ9JeFdhzE6eEZZFTzw-PBNyOZWdw"));
+    assertEquals("images_q=tbn_ANd9GcR3oc63qGvD-UNIESfnOD3ABwJ9JeFdhzE6eEZZFTzw-PBNyOZWdw",
+            UtilSystem.getOnlyFile("images?q=tbn:ANd9GcR3oc63qGvD-UNIESfnOD3ABwJ9JeFdhzE6eEZZFTzw-PBNyOZWdw"));
   }
 
   /**
@@ -485,6 +485,7 @@ public class TestUtilSystem extends JajukTestCase {
    * Test method for {@link org.jajuk.util.UtilSystem#isUnderWindows32bits()}.
    */
   public void testIsUnderWindows32bits() {
+    //noinspection ResultOfMethodCallIgnored
     UtilSystem.isUnderWindows32bits(); // cannot check
   }
 
@@ -492,6 +493,7 @@ public class TestUtilSystem extends JajukTestCase {
    * Test method for {@link org.jajuk.util.UtilSystem#isUnderWindows64bits()}.
    */
   public void testIsUnderWindows64bits() {
+    //noinspection ResultOfMethodCallIgnored
     UtilSystem.isUnderWindows64bits(); // cannot check
   }
 
@@ -535,7 +537,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test read file error.
-   * 
+   *
    */
   public void testReadFileError() {
     try {
@@ -621,7 +623,7 @@ public class TestUtilSystem extends JajukTestCase {
 
   /**
    * Test replace in file replaced.
-   * 
+   *
    *
    * @throws Exception the exception
    */
@@ -680,8 +682,6 @@ public class TestUtilSystem extends JajukTestCase {
 
     /**
      * Instantiates a new mock process.
-     *
-     * @param throwInWait 
      */
     public MockProcess(boolean throwInWait) {
       super();
@@ -692,7 +692,7 @@ public class TestUtilSystem extends JajukTestCase {
      * @see java.lang.Process#waitFor()
      */
     @Override
-    public int waitFor() throws InterruptedException {
+    public int waitFor() {
       return 0;
     }
 
@@ -742,12 +742,46 @@ public class TestUtilSystem extends JajukTestCase {
   // helper method to emma-coverage of the unused constructor
   /**
    * Test private constructor.
-   * 
+   *
    *
    * @throws Exception the exception
    */
   public void testPrivateConstructor() throws Exception {
     // For EMMA code-coverage tests
     TestHelpers.executePrivateConstructor(UtilSystem.class);
+  }
+
+  public void testCombineRanges() {
+    final StringBuilder str = new StringBuilder();
+    // use a consumer which appends all consumed ranges to a string so we can verify the resulting ranges fully
+    Consumer<Pair<Integer, Integer>> consumer = pair -> str.append(pair.getLeft()).append("-").append(pair.getRight()).append(",");
+
+    UtilSystem.combineRanges(new int[] {}, consumer);
+    assertEquals("", str.toString());
+
+    UtilSystem.combineRanges(new int[] {1}, consumer);
+    assertEquals("1-1,", str.toString());
+    str.setLength(0);
+
+    UtilSystem.combineRanges(new int[] {1,2}, consumer);
+    assertEquals("1-2,", str.toString());
+    str.setLength(0);
+
+    UtilSystem.combineRanges(new int[] {1,2,-3}, consumer);
+    assertEquals("1-2,-3--3,", str.toString());
+    str.setLength(0);
+
+    UtilSystem.combineRanges(new int[] {1,2,3,4,5,6,7,8,10,11,12,13,14,15}, consumer);
+    assertEquals("1-8,10-15,", str.toString());
+    str.setLength(0);
+
+    int[] array = new int[1000];
+    for (int i = 0;i < 1000;i++) {
+      array[i] = i;
+    }
+
+    UtilSystem.combineRanges(array, consumer);
+    assertEquals("0-999,", str.toString());
+    str.setLength(0);
   }
 }

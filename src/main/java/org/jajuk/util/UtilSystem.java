@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.util;
 
@@ -50,11 +50,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import javax.swing.ImageIcon;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jajuk.Main;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
@@ -73,15 +76,13 @@ import com.google.common.io.Files;
 public final class UtilSystem {
   /** The Constant LOCAL_IP.   */
   private static final String LOCAL_IP = "127.0.0.1";
-  /** Is browser supported ?. */
-  private static Boolean browserSupported;
   /** Size of the short names converter in bytes. */
   private static final int CONVERTER_FILE_SIZE = 23;
 
   /**
    * MPlayer status possible values *.
    */
-  public static enum MPlayerStatus {
+  public enum MPlayerStatus {
     MPLAYER_STATUS_OK, MPLAYER_STATUS_NOT_FOUND, MPLAYER_STATUS_WRONG_VERSION, MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
   }
 
@@ -136,9 +137,9 @@ public final class UtilSystem {
         && ((sArch != null) && sArch.matches(".*86.*"));
   }
 
-  /**
+  /*
   * Are we running in a KDE environment ?
-  * 
+  *
   * We check it by using ps command + a grep searching 'ksmserver' process*/
   static {
     boolean underKDE = false;
@@ -147,8 +148,9 @@ public final class UtilSystem {
       try {
         ProcessBuilder pb = new ProcessBuilder("ps", "-eaf");
         Process proc = pb.start();
-        stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-        proc.waitFor();
+        stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()), 1024*1024);
+
+        // read all the output
         String s;
         while ((s = stdInput.readLine()) != null) {
           if (s.matches(".*ksmserver.*")) {
@@ -156,6 +158,9 @@ public final class UtilSystem {
             break;
           }
         }
+
+        // finally try to wait for the process to fully finish
+        proc.waitFor(5, TimeUnit.SECONDS);
       } catch (Throwable e) {
         Log.error(e);
       } finally {
@@ -171,7 +176,7 @@ public final class UtilSystem {
     UNDER_KDE = underKDE;
   }
   /** Icons cache. */
-  static Map<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>(200);
+  static Map<String, ImageIcon> iconCache = new HashMap<>(200);
   /** Mplayer exe path. */
   private static File mplayerPath = null;
   /** current class loader. */
@@ -186,9 +191,9 @@ public final class UtilSystem {
   /**
    * Save a file in the same directory with name <filename>_YYYYmmddHHMM.xml and
    * with a given maximum Mb size for the file and its backup files
-   * 
+   *
    * @param file The file to back up
-   * @param iMB 
+   * @param iMB The maximum size of the file in mega-bytes
    */
   public static void backupFile(final File file, final int iMB) {
     try {
@@ -199,11 +204,11 @@ public final class UtilSystem {
       // calculates total size in MB for the file to backup and its
       // backup files
       long lUsedMB = 0;
-      final List<File> alFiles = new ArrayList<File>(10);
+      final List<File> alFiles = new ArrayList<>(10);
       final File[] files = new File(file.getAbsolutePath()).getParentFile().listFiles();
       if (files != null) {
         for (final File element : files) {
-          if (element.getName().indexOf(UtilSystem.removeExtension(file.getName())) != -1) {
+          if (element.getName().contains(UtilSystem.removeExtension(file.getName()))) {
             lUsedMB += element.length();
             alFiles.add(element);
           }
@@ -226,16 +231,10 @@ public final class UtilSystem {
       final String sExt = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
       final File fileNew = new File(UtilSystem.removeExtension(file.getAbsolutePath()) + "-backup-"
           + sExt + "." + UtilSystem.getExtension(file));
-      final FileChannel fcSrc = new FileInputStream(file).getChannel();
-      try {
-        final FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
-        try {
+      try (FileChannel fcSrc = new FileInputStream(file).getChannel()) {
+        try (FileChannel fcDest = new FileOutputStream(fileNew).getChannel()) {
           fcDest.transferFrom(fcSrc, 0, fcSrc.size());
-        } finally {
-          fcDest.close();
         }
-      } finally {
-        fcSrc.close();
       }
     } catch (final IOException ie) {
       Log.error(ie);
@@ -244,10 +243,10 @@ public final class UtilSystem {
 
   /**
    * Copy a file to another file.
-   * 
+   *
    * @param file : file to copy
    * @param fNew : destination file
-   * 
+   *
    * @throws JajukException the jajuk exception
    * @throws IOException Signals that an I/O exception has occurred.
    */
@@ -279,14 +278,14 @@ public final class UtilSystem {
 
   /**
    * Move a file to another file (directories are not supported).
-   * 
+   *
    * Note that it may be better to use this method than java.io.File.renameTo() method that
    * doesn't seem to work always under windows (in special directories) and because this method
    * always return an exception in case of problem.
-   * 
+   *
    * @param file : file to move
    * @param fNew : destination file
-   * 
+   *
    * @throws JajukException the jajuk exception
    * @throws IOException Signals that an I/O exception has occurred.
    */
@@ -299,18 +298,18 @@ public final class UtilSystem {
 
   /**
    * Copy a file.
-   * 
+   *
    * @param file : source file
    * @param sNewName : dest file
-   * 
+   *
    * @throws JajukException the jajuk exception
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void copy(final File file, final String sNewName) throws JajukException,
       IOException {
     Log.debug("Renaming: {{" + file.getAbsolutePath() + "}}  to : " + sNewName);
-    final File fileNew = new File(new StringBuilder(file.getParentFile().getAbsolutePath())
-        .append('/').append(sNewName).toString());
+    final File fileNew = new File(file.getParentFile().getAbsolutePath() +
+            '/' + sNewName);
     if (!file.exists() || !file.canRead()) {
       throw new JajukException(9, file.getAbsolutePath(), null);
     }
@@ -321,18 +320,16 @@ public final class UtilSystem {
    * Copy a URL resource to a file We don't use nio but Buffered Reader / writer
    * because we can only get channels from a FileInputStream that can be or not
    * be in a Jar (production / test).
-   * 
+   *
    * @param src source designed by URL
    * @param dest destination file full path
-   * 
+   *
    * @throws IOException If the src or dest cannot be opened/created.
    */
   public static void copy(final URL src, final String dest) throws IOException {
-    final BufferedReader br = new BufferedReader(new InputStreamReader(src.openStream()));
-    try {
-      final BufferedWriter bw = new BufferedWriter(new FileWriter(dest));
-      try {
-        String sLine = null;
+    try (BufferedReader br = new BufferedReader(new InputStreamReader(src.openStream()))) {
+      try (BufferedWriter bw = new BufferedWriter(new FileWriter(dest))) {
+        String sLine;
         do {
           sLine = br.readLine();
           if (sLine != null) {
@@ -341,17 +338,13 @@ public final class UtilSystem {
           }
         } while (sLine != null);
         bw.flush();
-      } finally {
-        bw.close();
       }
-    } finally {
-      br.close();
     }
   }
 
   /**
-   * Activate recovery support for a file than has been written into the the collection so it can be gratefully recover 
-   * in case of breakdown during the save operation. This method must be called after the file.xml.sav has been successfully written. 
+   * Activate recovery support for a file than has been written into the the collection so it can be gratefully recover
+   * in case of breakdown during the save operation. This method must be called after the file.xml.sav has been successfully written.
    * <pre>The steps are the following (every step can fail, all files in the same (collection) directory, thus on the same disk) :
    * 1) Write file.xml.saving (already done when calling this method)
    * 2) Write the proof file file.xml.proof (void)
@@ -360,7 +353,7 @@ public final class UtilSystem {
    * 5) Rename file.xml.saving to file.xml</pre>
    * </p>
    * @param finalFile : the final file (like collection.xml)
-   * @throws IOException
+   * @throws IOException If the file does not exist or deleting the file fails
    */
   public static void saveFileWithRecoverySupport(File finalFile) throws IOException {
     // Check saving file existence
@@ -379,12 +372,12 @@ public final class UtilSystem {
   }
 
   /**
-   * Recover a file after a breakdown (at next jajuk session) if required. Most of the time, this does nothing but 
+   * Recover a file after a breakdown (at next jajuk session) if required. Most of the time, this does nothing but
    * if a file has been partially saved using the @see saveFileWithRecoverySupport() method, the previous version is revored.
    * This is guarantee to work always, except if the filesystem can't be read or written.
-   *  
+   *
    * Note that this generic method doesn't handle the special collection.xml backup files.
-   * 
+   *
    * <pre>Recovery actions and files existence when failure at step :
   * No failure : only file.xml file
     -> no recovery action
@@ -435,8 +428,6 @@ public final class UtilSystem {
   /**
    * Copy recursively files and directories.
    *
-   * @param src 
-   * @param dst 
    * @throws JajukException the jajuk exception
    * @throws IOException Signals that an I/O exception has occurred.
    */
@@ -446,7 +437,7 @@ public final class UtilSystem {
       if (!dst.mkdirs()) {
         Log.warn("Could not create directory structure " + dst.toString());
       }
-      final String list[] = src.list();
+      final String[] list = src.list();
       for (final String element : list) {
         final String dest1 = dst.getAbsolutePath() + '/' + element;
         final String src1 = src.getAbsolutePath() + '/' + element;
@@ -459,12 +450,10 @@ public final class UtilSystem {
 
   /**
    * Copy a file to given directory.
-   * 
+   *
    * @param file : file to copy
    * @param directory : destination directory
-   * 
-   * @return destination file
-   * 
+   *
    * @throws JajukException the jajuk exception
    * @throws IOException Signals that an I/O exception has occurred.
    */
@@ -479,25 +468,20 @@ public final class UtilSystem {
 
   /**
    * Create empty file.
-   * 
-   * @param file 
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void createEmptyFile(final File file) throws IOException {
-    final OutputStream fos = new FileOutputStream(file);
-    try {
+    try (OutputStream fos = new FileOutputStream(file)) {
       fos.write(new byte[0]);
-    } finally {
-      fos.close();
     }
   }
 
   /**
    * Delete recursively a directory (use with caution!).
-   * 
+   *
    * @param dir : source directory
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void deleteDir(final File dir) throws IOException {
@@ -506,14 +490,13 @@ public final class UtilSystem {
     if (dir.exists()) {
       throw new IOException("Directory" + dir.getAbsolutePath() + " still exists");
     }
-    return;
   }
 
   /**
    * Delete a file that exists.
-   * 
+   *
    * @param file : source file
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void deleteFile(final File file) throws IOException {
@@ -530,16 +513,13 @@ public final class UtilSystem {
     // check that file has been really deleted (sometimes,
     // we get no exception)
     if (file.exists()) {
-      throw new IOException("File" + file.getAbsolutePath() + " still exists");
+      throw new IOException("File '" + file.getAbsolutePath() + "' still exists");
     }
-    return;
   }
 
   /**
    * Get a file extension.
-   * 
-   * @param file 
-   * 
+   *
    * @return the extension
    */
   public static String getExtension(final File file) {
@@ -548,9 +528,9 @@ public final class UtilSystem {
 
   /**
    * Get a file extension (without the dot!).
-   * 
+   *
    * @param filename The file to examine.
-   * 
+   *
    * @return The actual file extension or an empty string if no extension is
    * found (i.e. no dot in the filename).
    */
@@ -561,7 +541,7 @@ public final class UtilSystem {
       return "";
     }
     if (dotIndex > 0) {
-      return filename.substring(dotIndex + 1, filename.length());
+      return filename.substring(dotIndex + 1);
     } else {
       // File beginning by a point (unix hidden file)
       return filename;
@@ -573,23 +553,18 @@ public final class UtilSystem {
    * bytes read at the middle of the file
    * <p>
    * uses nio api for performances
-   * 
-   * @param fio 
-   * 
+   *
    * @return the file checksum
-   * 
+   *
    * @throws JajukException the jajuk exception
    */
   public static String getFileChecksum(final File fio) throws JajukException {
     try {
-      String sOut = "";
-      final FileChannel fc = new FileInputStream(fio).getChannel();
-      try {
+      final String sOut;
+      try (FileChannel fc = new FileInputStream(fio).getChannel()) {
         final ByteBuffer bb = ByteBuffer.allocate(500);
         fc.read(bb, fio.length() / 2);
         sOut = new String(bb.array());
-      } finally {
-        fc.close();
       }
       return MD5Processor.hash(sOut);
     } catch (final IOException e) {
@@ -599,7 +574,7 @@ public final class UtilSystem {
 
   /**
    * Gets the host name.
-   * 
+   *
    * @return This box hostname
    */
   public static String getHostName() {
@@ -628,19 +603,15 @@ public final class UtilSystem {
 
   /**
    * Return url of jar we are executing.
-   * 
-   * 
-   * @param cClass 
-   * 
+   *
    * @return URL of jar we are executing
    */
   public static URL getJarLocation(final Class<?> cClass) {
-    return cClass.getProtectionDomain().getCodeSource().getLocation();    
+    return cClass.getProtectionDomain().getCodeSource().getLocation();
   }
 
   /**
    * Gets the mplayer windows path.
-   * 
    * @return MPlayer exe file
    */
   public static File getMPlayerWindowsPath() {
@@ -648,7 +619,7 @@ public final class UtilSystem {
     if (UtilSystem.mplayerPath != null) {
       return UtilSystem.mplayerPath;
     }
-    File file = null;
+    final File file;
     // Check in ~/.jajuk directory (used by JNLP distribution
     // as well). Test exe size as well to detect unfinished downloads of
     // mplayer.exe in JNLP mode
@@ -656,14 +627,14 @@ public final class UtilSystem {
     if (file.exists() && file.length() == Const.MPLAYER_WINDOWS_EXE_SIZE) {
       UtilSystem.mplayerPath = file;
       return UtilSystem.mplayerPath;
-    } 
+    }
     return UtilSystem.mplayerPath; // can be null if none suitable file found
   }
 
   /**
    * Gets the mplayer OSX path.
    * It is mainly based upon Windows getWindowsPath() path method, see comments over there
-   * 
+   *
    * @return MPLayer binary MAC full path
    */
   public static File getMPlayerOSXPath() {
@@ -682,22 +653,20 @@ public final class UtilSystem {
     if (file.exists() && file.length() == Const.MPLAYER_OSX_EXE_SIZE) {
       UtilSystem.mplayerPath = file;
       return UtilSystem.mplayerPath;
-    } 
+    }
     return UtilSystem.mplayerPath; // can be null if none suitable file found
   }
 
   /**
    * Gets the mplayer status.
-   * 
-   * @param mplayerPATH 
-   * 
+   *
    * @return the mplayer status
    */
   public static UtilSystem.MPlayerStatus getMplayerStatus(final String mplayerPATH) {
-    Process proc = null;
-    UtilSystem.MPlayerStatus mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
+    final Process proc;
+    UtilSystem.MPlayerStatus mplayerStatus;
     try {
-      String fullPath = null;
+      final String fullPath;
       if ("".equals(mplayerPATH)) {
         fullPath = "mplayer";
       } else {
@@ -705,23 +674,20 @@ public final class UtilSystem {
       }
       Log.debug("Testing path: " + fullPath);
       // check MPlayer release : 1.0pre8 min
-      proc = Runtime.getRuntime().exec(new String[] { fullPath, "-input", "cmdlist" }); //$NON-NLS-2$ 
-      final BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-      try {
-        String line = null;
-        mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION;
-        for (;;) {
+      proc = Runtime.getRuntime().exec(new String[] { fullPath, "-input", "cmdlist" }); //$NON-NLS-2$
+      try (BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()))) {
+        String line;
+        mplayerStatus = MPlayerStatus.MPLAYER_STATUS_WRONG_VERSION;
+        for (; ; ) {
           line = in.readLine();
           if (line == null) {
             break;
           }
           if (line.matches("get_time_pos.*")) {
-            mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK;
+            mplayerStatus = MPlayerStatus.MPLAYER_STATUS_OK;
             break;
           }
         }
-      } finally {
-        in.close();
       }
     } catch (final IOException e) {
       mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;
@@ -732,40 +698,39 @@ public final class UtilSystem {
   /**
    * This method intends to cleanup a future filename so it can be created on
    * all operating systems. Windows forbids characters : /\"<>|:*?
-   * 
+   *
    * @param in filename
-   * 
+   *
    * @return filename with forbidden characters replaced at best
    */
   public static String getNormalizedFilename(final String in) {
-    String out = in.trim();
     // Replace / : < > and \ by -
-    out = in.replaceAll("[/:<>\\\\]", "-");
+    String out = in.replaceAll("[/:<>\\\\]", "-");
+
     // Replace * and | by spaces
-    out = out.replaceAll("[\\*|]", " ");
+    out = out.replaceAll("[*|]", " ");
+
     // Remove " and ? characters
-    out = out.replaceAll("[\"\\?]", "");
-    return out;
+    out = out.replaceAll("[\"?]", "");
+
+    // finally remove leading and trailing whitespaces
+    return out.trim();
   }
 
   /**
    * Return only the name of a file from a complete URL.
-   * 
-   * @param sPath 
-   * 
+   *
    * @return the only file
    */
   public static String getOnlyFile(final String sPath) {
-    return new File(sPath).getName().replaceAll("[\\?:]", "_");
+    return new File(sPath).getName().replaceAll("[?:]", "_");
   }
 
   /**
    * Resource loading is done this way to meet the requirements for Web Start.
    * http
    * ://java.sun.com/j2se/1.5.0/docs/guide/javaws/developersguide/faq.html#211
-   * 
-   * @param name 
-   * 
+   *
    * @return the resource
    */
   public static URL getResource(final String name) {
@@ -774,10 +739,10 @@ public final class UtilSystem {
 
   /**
    * Checks if is ancestor.
-   * 
+   *
    * @param file1 potential ancestor
    * @param file2 potential child
-   * 
+   *
    * @return whether file1 is a file2 ancestor
    */
   public static boolean isAncestor(final File file1, final File file2) {
@@ -795,10 +760,7 @@ public final class UtilSystem {
 
   /**
    * Checks if is descendant.
-   * 
-   * @param file1 
-   * @param file2 
-   * 
+   *
    * @return whether file1 is a file2 descendant
    */
   public static boolean isDescendant(final File file1, final File file2) {
@@ -809,7 +771,7 @@ public final class UtilSystem {
 
   /**
    * Checks if is under linux.
-   * 
+   *
    * @return whether we are under Linux
    */
   public static boolean isUnderLinux() {
@@ -819,7 +781,7 @@ public final class UtilSystem {
 
   /**
    * Checks if is under OSX (Intel or PowerPC).
-   * 
+   *
    * @return whether we are under OS X
    */
   public static boolean isUnderOSX() {
@@ -828,7 +790,7 @@ public final class UtilSystem {
 
   /**
    * Checks if is under windows.
-   * 
+   *
    * @return whether we are under Windows
    */
   public static boolean isUnderWindows() {
@@ -837,7 +799,7 @@ public final class UtilSystem {
 
   /**
    * Checks if is under windows32bits.
-   * 
+   *
    * @return whether we are under Windows 32 bits
    */
   public static boolean isUnderWindows32bits() {
@@ -846,7 +808,7 @@ public final class UtilSystem {
 
   /**
    * Checks if is under windows64bits.
-   * 
+   *
    * @return whether we are under Windows 64 bits
    */
   public static boolean isUnderWindows64bits() {
@@ -855,10 +817,10 @@ public final class UtilSystem {
 
   /**
    * Checks if is valid file name.
-   * 
+   *
    * @param parent parent directory
    * @param name file name
-   * 
+   *
    * @return whether the file name is correct on the current filesystem
    */
   public static boolean isValidFileName(final File parent, final String name) {
@@ -899,7 +861,7 @@ public final class UtilSystem {
 
   /**
    * Need full fc.
-   * 
+   *
    * @return whether we need a full gc or not
    */
   public static boolean needFullFC() {
@@ -911,11 +873,11 @@ public final class UtilSystem {
 
   /**
    * Open a file and return a string buffer with the file content.
-   * 
+   *
    * @param path -File path
-   * 
+   *
    * @return StringBuilder - File content.
-   * 
+   *
    * @throws JajukException - Throws a JajukException if a problem occurs during the file
    * access.
    */
@@ -929,19 +891,16 @@ public final class UtilSystem {
       throw new JajukException(9, path, e);
     }
     try {
-      final BufferedReader input = new BufferedReader(fileReader);
-      try {
+      try (BufferedReader input = new BufferedReader(fileReader)) {
         // Read
         final StringBuilder strColl = new StringBuilder();
-        String line = null;
+        String line;
         while ((line = input.readLine()) != null) {
           strColl.append(line);
         }
         return strColl;
-      } finally {
-        // Close the bufferedReader
-        input.close();
       }
+      // Close the bufferedReader
     } catch (final IOException e) {
       throw new JajukException(9, path, e);
     }
@@ -950,25 +909,23 @@ public final class UtilSystem {
   /**
    * Open a file from current jar and return a string buffer with the file
    * content.
-   * 
-   * @param sURL 
-   * 
+   *
    * @return StringBuilder - File content.
-   * 
+   *
    * @throws JajukException -Throws a JajukException if a problem occurs during the file
    * access.
    */
   public static StringBuilder readJarFile(final String sURL) throws JajukException {
     // Read
     InputStream is;
-    StringBuilder sb = null;
+    final StringBuilder sb;
     try {
       is = Main.class.getResourceAsStream(sURL);
       try {
         // Read
         final byte[] b = new byte[200];
         sb = new StringBuilder();
-        int i = 0;
+        int i;
         do {
           i = is.read(b, 0, b.length);
           sb.append(new String(b));
@@ -985,9 +942,7 @@ public final class UtilSystem {
 
   /**
    * Remove an extension from a file name.
-   * 
-   * @param sFilename 
-   * 
+   *
    * @return filename without extension
    */
   public static String removeExtension(final String sFilename) {
@@ -996,7 +951,7 @@ public final class UtilSystem {
 
   /**
    * Gets the class loader.
-   * 
+   *
    * @return the class loader
    */
   public static ClassLoader getClassLoader() {
@@ -1008,7 +963,7 @@ public final class UtilSystem {
 
   /**
    * Gets the dir filter.
-   * 
+   *
    * @return the dir filter
    */
   public static JajukFileFilter getDirFilter() {
@@ -1020,7 +975,7 @@ public final class UtilSystem {
 
   /**
    * Gets the file filter.
-   * 
+   *
    * @return the file filter
    */
   public static JajukFileFilter getFileFilter() {
@@ -1032,25 +987,22 @@ public final class UtilSystem {
 
   /**
    * Replace a string inside a given file.
-   * 
+   *
    * @param file the file
    * @param oldS the string to replace
    * @param newS the new string
    * @param encoding the encoding of the file
-   * 
+   *
    * @return whether some replacements occurred
    */
   public static boolean replaceInFile(File file, String oldS, String newS, String encoding) {
     try {
       String s = FileUtils.readFileToString(file);
-      if (s.indexOf(oldS) != -1) {
+      if (s.contains(oldS)) {
         s = s.replaceAll(oldS, newS);
-        Writer bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), encoding));
-        try {
+        try (Writer bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), encoding))) {
           bw.write(s);
           bw.flush();
-        } finally {
-          bw.close();
         }
         return true;
       }
@@ -1066,7 +1018,7 @@ public final class UtilSystem {
    * object are seeded by default with current nano date but in some cases, two
    * random could be created at the same exact date in different threads or the
    * same.
-   * 
+   *
    * @return Jajuk singleton random object
    */
   public static Random getRandom() {
@@ -1077,10 +1029,8 @@ public final class UtilSystem {
    * Opens a directory with the associated explorer program. <li>Start by trying
    * to open the directory with any provided explorer path</li> <li>Then, try to
    * use the JDIC Desktop class if supported by the platform</li>
-   * 
+   *
    * Inspired from an aTunes method
-   * 
-   * @param directory 
    */
   public static void openInExplorer(File directory) {
     final File directoryToOpen;
@@ -1137,9 +1087,9 @@ public final class UtilSystem {
 
   /**
    * Return whether a process is still running.
-   * 
+   *
    * @param process the process
-   * 
+   *
    * @return whether the process is still running
    */
   public static boolean isRunning(Process process) {
@@ -1153,9 +1103,9 @@ public final class UtilSystem {
 
   /**
    * Return a process exit value, -100 if the process is still running.
-   * 
+   *
    * @param process the process
-   * 
+   *
    * @return the process exit value, -100 if the process is still running
    */
   public static int getExitValue(Process process) {
@@ -1168,7 +1118,7 @@ public final class UtilSystem {
 
   /**
    * Returns current user home directory handling Windows issues on JRE.
-   * 
+   *
    * @return current user home directory
    */
   public static String getUserHome() {
@@ -1176,12 +1126,12 @@ public final class UtilSystem {
     if (cachedUserHomeDir != null) {
       return cachedUserHomeDir;
     }
-    /**
+    /*
      * We search first in USERPROFILE env directory before than user.home.
-     * 
+     *
      * But we give priority to user.home if it already contains a suitable jajuk
      * collection to maintain backward compatibility
-     * 
+     *
      * See #1473 and
      * http://bugs.sun.com/view_bug.do?bug_id=4787931
      **/
@@ -1195,9 +1145,9 @@ public final class UtilSystem {
 
   /**
    * Convert a full regular Windows path to 8.3 DOS format
-   * 
+   *
    * @param longname the regular absolute path
-   * 
+   *
    * @return the shortname absolute path
    */
   public static String getShortPathNameW(String longname) {
@@ -1222,21 +1172,21 @@ public final class UtilSystem {
       Process process = pc.start();
       /*
        * dir /x parsing : Sample output (in French but should work with any language):
-       * 
+       *
        * Le volume dans le lecteur D s'appelle DonnÃ©es
-       * 
+       *
        * Le numÃ©ro de sÃ©rie du volume est C880-0321
-       * 
+       *
        * RÃ©pertoire de D:\MESDOC~1\MAMUSI~1\FILES_~1\1F19~1
-       * 
+       *
        * 07/06/2010 21:49 <REP> .
-       * 
+       *
        * 07/06/2010 21:49 <REP> ..
-       * 
+       *
        * 07/06/2010 14:41 20Â 108 -(_)~1.MP3 ÂµÃ—Ã¹Ã•â”‚Â» - ÂµÃ¿Ã„Ã•Ã±Â®Ãµâ•—Ã‘Ã•Â¥Ã® (ÂµÃ—Ã¹Ã•â”‚Â»+Âµâ”‚Ã•Ã Ã†Ã•Ã‰ÃªÃ•Ã¶â–’).mp3
        */
       BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-      String line = "";
+      String line;
       String lineDirectory = null;
       while ((line = br.readLine()) != null) {
         String ext = UtilSystem.getExtension(new File(longname));
@@ -1254,7 +1204,7 @@ public final class UtilSystem {
             break;
           } else if (indexExtension != -1) {
             // We get parent directory full path in shortname thanks the %~s1 in the script
-            lineDirectory = line.substring(indexExtension, line.length()).trim();
+            lineDirectory = line.substring(indexExtension).trim();
           }
         }
       }
@@ -1270,14 +1220,10 @@ public final class UtilSystem {
    * Return whether the Desktop BROWSE action is actually supported
    * Note this bug : http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6486393
    * under KDE : isSupported returns true but we get an exception when actually browsing
-   * 
+   *
    * @return true, if checks if is browser supported
    */
   public static boolean isBrowserSupported() {
-    // value stored for perf
-    if (browserSupported != null) {
-      return browserSupported;
-    }
     // In server UT mode, just return false
     if (GraphicsEnvironment.isHeadless()) {
       return false;
@@ -1298,12 +1244,53 @@ public final class UtilSystem {
 
   /**
    * Are we running in a KDE environment ?
-   * 
+   *
    * We check it by using ps command + a grep searching 'ksmserver' process.
-   * 
+   *
    * @return whether we are running in a KDE environment
    */
   public static boolean isUnderKDE() {
     return UtilSystem.UNDER_KDE;
+  }
+
+
+  /**
+   * Walks the given sorted list of integer and invokes the given
+   * consumer for all ranges, combining calls as much as possible.
+   *
+   * I.e. an array of [ 1, 2, 3, 5, 6, 7, 9 ]
+   * would result in calls with <1,3>, <5,7> and <9,9>
+   *
+   * An empty list leads to no invocation of the consumer.
+   *
+   * A list with one entry leads to one invocation of the consumer with start/end set to the integer.
+   *
+   * Note: The array is expected to be sorted in the order in
+   * which the values should be listed.
+   *
+   * @param numbers The array of numbers
+   */
+  public static void combineRanges(int[] numbers, Consumer<Pair<Integer, Integer>> consumeRange) {
+    int prev = Integer.MIN_VALUE;
+    int start = Integer.MIN_VALUE;
+
+    for(int nr : numbers) {
+      // check if the streak continues
+      if(prev != nr - 1) {
+        // do not detect a streak just on first iteration
+        if(prev != Integer.MIN_VALUE) {
+          consumeRange.accept(Pair.of(start, prev));
+        }
+
+        // new streak starts
+        start = nr;
+      }
+      prev = nr;
+    }
+
+    // add the last range/nr
+    if(prev != Integer.MIN_VALUE) {
+      consumeRange.accept(Pair.of(start, prev));
+    }
   }
 }

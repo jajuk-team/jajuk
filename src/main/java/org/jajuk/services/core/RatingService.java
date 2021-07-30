@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.services.core;
 
@@ -47,11 +47,11 @@ import org.jajuk.util.log.Log;
  * <p>
  */
 public final class RatingService extends Thread implements Observer {
-  private static RatingService self = new RatingService();
+  private static final RatingService self = new RatingService();
   /** Flag the fact a rate has change for a track, used by bestof view refresh for perfs. */
   private static boolean bRateHasChanged = true;
   /** Max rate. */
-  private static long lMaxPlaycount = 0l;
+  private static long lMaxPlaycount = 0L;
 
   /**
    * Instantiates a new rating manager.
@@ -66,7 +66,7 @@ public final class RatingService extends Thread implements Observer {
 
   /**
    * Gets the single instance of RatingManager.
-   * 
+   *
    * @return single instance of RatingManager
    */
   public static RatingService getInstance() {
@@ -75,7 +75,7 @@ public final class RatingService extends Thread implements Observer {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.lang.Thread#run()
    */
   @Override
@@ -99,7 +99,7 @@ public final class RatingService extends Thread implements Observer {
 
   /**
    * Gets the max playcount.
-   * 
+   *
    * @return maximum rating between all tracks
    */
   public static long getMaxPlaycount() {
@@ -117,7 +117,7 @@ public final class RatingService extends Thread implements Observer {
 
   /**
    * Set max playcount.
-   * 
+   *
    * @param value the playcount value
    */
   public static void setMaxPlaycount(long value) {
@@ -131,7 +131,7 @@ public final class RatingService extends Thread implements Observer {
 
   /**
    * Sets the rate has changed.
-   * 
+   *
    * @param rateHasChanged The bRateHasChanged to set.
    */
   public static void setRateHasChanged(boolean rateHasChanged) {
@@ -140,12 +140,12 @@ public final class RatingService extends Thread implements Observer {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#getRegistrationKeys()
    */
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
-    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<>();
     eventSubjectSet.add(JajukEvents.RATE_RESET);
     eventSubjectSet.add(JajukEvents.PREFERENCES_RESET);
     eventSubjectSet.add(JajukEvents.RATING_MODE_CHANGED);
@@ -154,7 +154,7 @@ public final class RatingService extends Thread implements Observer {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.events.Observer#update(org.jajuk.events.Event)
    */
   @Override
@@ -169,9 +169,9 @@ public final class RatingService extends Thread implements Observer {
        * cause a ConcurrentModificationException
        */
       for (Track track : TrackManager.getInstance().getTracks()) {
-        track.setProperty(Const.XML_TRACK_RATE, 0l);
-        track.setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, 0l);
-        track.setHits(0l);
+        track.setProperty(Const.XML_TRACK_RATE, 0L);
+        track.setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, 0L);
+        track.setHits(0L);
       }
       ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));
       // Force suggestion view refresh. Not that the suggestion view doesn't
@@ -189,7 +189,7 @@ public final class RatingService extends Thread implements Observer {
       ReadOnlyIterator<Track> it = TrackManager.getInstance().getTracksIterator();
       while (it.hasNext()) {
         Track track = it.next();
-        track.setProperty(Const.XML_TRACK_PREFERENCE, 0l);
+        track.setProperty(Const.XML_TRACK_PREFERENCE, 0L);
         track.updateRate();
       }
       ObservationManager.notify(new JajukEvent(JajukEvents.DEVICE_REFRESH));

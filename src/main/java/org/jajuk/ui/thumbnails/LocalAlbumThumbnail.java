@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.thumbnails;
 
@@ -26,7 +26,6 @@ import java.awt.Color;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.Action;
@@ -71,15 +70,12 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = -282669695411453802L;
   /** Associated album. */
-  private Album album;
-  private JLabel jlArtist;
-  private JLabel jlAlbum;
+  private final Album album;
   private final boolean bShowFullText;
-  private PreferencesJMenu pjmFiles;
 
   /**
    * Constructor.
-   * 
+   *
    * @param album :
    * associated album
    * @param size :
@@ -96,7 +92,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.thumbnails.AbstractThumbnail#populate()
    */
   @Override
@@ -116,12 +112,12 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     if (bShowFullText) {
       int iRows = 7 + 7 * ((size / 50) - 1);
       String artistName = album.getArtistOrALbumArtist();
-      jlArtist = new JLabel(UtilString.getLimitedString(artistName, iRows));
+      JLabel jlArtist = new JLabel(UtilString.getLimitedString(artistName, iRows));
       jlArtist.setToolTipText(artistName);
       jlArtist.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
       // we have to use a empty border to avoid getting default border
       jlArtist.setBorder(new EmptyBorder(0, 0, 0, 0));
-      jlAlbum = new JLabel(UtilString.getLimitedString(album.getName2(), iRows));
+      JLabel jlAlbum = new JLabel(UtilString.getLimitedString(album.getName2(), iRows));
       jlAlbum.setToolTipText(album.getName2());
       jlAlbum.setBorder(new EmptyBorder(0, 0, 0, 0));
       jlIcon.setToolTipText(artistName + "/" + album.getName2());
@@ -144,7 +140,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     jlIcon.setTransferHandler(new CatalogViewTransferHandler(this));
     postPopulate();
     // Add the preference menu in popup
-    pjmFiles = new PreferencesJMenu(getItem());
+    PreferencesJMenu pjmFiles = new PreferencesJMenu(getItem());
     jmenu.add(pjmFiles, 9);
     // disable inadequate menu items
     if (UtilSystem.isBrowserSupported()) {
@@ -156,7 +152,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 
   /**
    * Gets the cover file.
-   * 
+   *
    * @return the cover file
    */
   public File getCoverFile() {
@@ -165,7 +161,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.thumbnails.AbstractThumbnail#getItem()
    */
   @Override
@@ -175,7 +171,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.thumbnails.AbstractThumbnail#getDescription()
    */
   @Override
@@ -183,9 +179,9 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     int lSize = 200;
     ThumbnailManager.refreshThumbnail(album, lSize);
     java.io.File cover = ThumbnailManager.getThumbBySize(album, lSize);
-    List<Track> tracks = new ArrayList<Track>(TrackManager.getInstance().getAssociatedTracks(album,
-        true));
-    Collections.sort(tracks, new TrackComparator(TrackComparatorType.ORDER));
+    List<Track> tracks = new ArrayList<>(TrackManager.getInstance().getAssociatedTracks(album,
+            true));
+    tracks.sort(new TrackComparator(TrackComparatorType.ORDER));
     Track firstTrack = tracks.iterator().next();
     Color bgcolor = UtilGUI.getUltraLightColor();
     Color fgcolor = UtilGUI.getForegroundColor();
@@ -256,7 +252,7 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.thumbnails.AbstractThumbnail#launch()
    */
   @Override

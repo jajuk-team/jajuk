@@ -35,9 +35,9 @@ import ext.services.network.NetworkUtils;
  */
 public class LyricsManiaWebLyricsProvider extends GenericWebLyricsProvider {
   /** URL pattern used by jajuk to retrieve lyrics. */
-  private static final String URL = "http://www.lyricsmania.com/%title_lyrics_%artist.html";
+  private static final String URL = "https://www.lyricsmania.com/%title_lyrics_%artist.html";
   /** URL pattern to web page (see ILyricsProvider interface for details). */
-  private static final String WEB_URL = "http://www.lyricsmania.com/%title_lyrics_%artist.html";
+  private static final String WEB_URL = "https://www.lyricsmania.com/%title_lyrics_%artist.html";
 
   /**
    * Instantiates a new lyricsmania web lyrics provider.
@@ -100,9 +100,9 @@ public class LyricsManiaWebLyricsProvider extends GenericWebLyricsProvider {
       int startIndex = html.indexOf(searchString);
       if (startIndex > -1) {
         ret = html.substring(startIndex + searchString.length());
-        int secondIndex = ret.indexOf("</strong>");
+        int secondIndex = ret.indexOf("</div>");
         if (secondIndex > -1) {
-          ret = ret.substring(secondIndex + 10);
+          ret = ret.substring(secondIndex + 7);
           int stopIndex = ret.indexOf("</div>");
           ret = ret.substring(0, stopIndex);
           ret = ret.replace('\r', '\n');

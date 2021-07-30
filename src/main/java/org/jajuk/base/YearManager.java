@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.base;
 
@@ -31,7 +31,7 @@ import org.jajuk.util.ReadOnlyIterator;
  */
 public final class YearManager extends ItemManager {
   /** Self instance. */
-  private static YearManager singleton = new YearManager();
+  private static final YearManager singleton = new YearManager();
 
   /**
    * No constructor available, only static access.
@@ -52,7 +52,7 @@ public final class YearManager extends ItemManager {
 
   /**
    * Gets the instance.
-   * 
+   *
    * @return singleton
    */
   public static YearManager getInstance() {
@@ -61,22 +61,16 @@ public final class YearManager extends ItemManager {
 
   /**
    * Register a year.
-   * 
-   * @param pYear 
-   * 
+   *
    * @return the year
    */
   public Year registerYear(String pYear) {
-    String sId = pYear;
-    return registerYear(sId, pYear);
+    return registerYear(pYear, pYear);
   }
 
   /**
    * Register a year with a known id.
-   * 
-   * @param sId 
-   * @param pYear 
-   * 
+   *
    * @return the year
    */
   Year registerYear(String sId, String pYear) {
@@ -91,7 +85,7 @@ public final class YearManager extends ItemManager {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.base.ItemManager#getIdentifier()
    */
   @Override
@@ -101,9 +95,9 @@ public final class YearManager extends ItemManager {
 
   /**
    * Gets the year by id.
-   * 
+   *
    * @param sID Item ID
-   * 
+   *
    * @return Element
    */
   Year getYearByID(String sID) {
@@ -112,7 +106,7 @@ public final class YearManager extends ItemManager {
 
   /**
    * Gets the years.
-   * 
+   *
    * @return ordered years list
    */
   @SuppressWarnings("unchecked")
@@ -122,11 +116,11 @@ public final class YearManager extends ItemManager {
 
   /**
    * Gets the years iterator.
-   * 
+   *
    * @return years iterator
    */
   @SuppressWarnings("unchecked")
   public ReadOnlyIterator<Year> getYearsIterator() {
-    return new ReadOnlyIterator<Year>((Iterator<Year>) getItemsIterator());
+    return new ReadOnlyIterator<>((Iterator<Year>) getItemsIterator());
   }
 }

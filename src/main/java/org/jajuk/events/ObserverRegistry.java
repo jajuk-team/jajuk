@@ -16,14 +16,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.events;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -36,17 +35,17 @@ import org.jajuk.util.log.Log;
  */
 class ObserverRegistry {
   /** The list of Observers per JajukEvents. */
-  private final Map<JajukEvents, List<Observer>> hEventComponents = new Hashtable<JajukEvents, List<Observer>>(
-      10);
+  private final Map<JajukEvents, List<Observer>> hEventComponents = new Hashtable<>(
+          10);
   /** Number of current executions for a given event. */
-  private static Map<JajukEvent, Integer> canals = new HashMap<JajukEvent, Integer>(10);
+  private static final Map<JajukEvent, Integer> canals = new HashMap<>(10);
 
   /**
    * Calls the update method for each observer <br>
    * We manage execution canals to limit the number of concurrent executions for
    * a given event type. This allow to avoid thread number explosion in some
    * error cases
-   * 
+   *
    * @param event The event to execute
    */
   @SuppressWarnings("unchecked")
@@ -72,9 +71,7 @@ class ObserverRegistry {
       }
       // Iterate on a cloned list to avoid concurrent exceptions
       observers = (List<Observer>) ((ArrayList<Observer>) observers).clone();
-      Iterator<Observer> it = observers.iterator();
-      while (it.hasNext()) {
-        Observer obs = it.next();
+      for (Observer obs : observers) {
         if (obs != null) {
           try {
             obs.update(event);
@@ -101,19 +98,14 @@ class ObserverRegistry {
 
   /**
    * Register an Observer for an event.
-   * 
+   *
    * @param subject The event to register for.
    * @param observer The Observer that should be informed about
    * the event as soon as it is reported somewhere else.
    */
   synchronized void register(JajukEvents subject, Observer observer) {
-    List<Observer> observers = hEventComponents.get(subject);
-    if (observers == null) {
-      observers = new ArrayList<Observer>(1);
-      hEventComponents.put(subject, observers);
-    }
-    // Add the observer, if it is a high priority observer, put it first in
-    // queue
+    List<Observer> observers = hEventComponents.computeIfAbsent(subject, k -> new ArrayList<>(1));
+    // Add the observer, if it is a high priority observer, put it first in queue
     if (!observers.contains(observer)) {
       if (observer instanceof HighPriorityObserver) {
         observers.add(0, observer);
@@ -125,10 +117,10 @@ class ObserverRegistry {
 
   /**
    * Unregister the Observer from an event.
-   * 
+   *
    * @param subject The event to unregister from.
    * @param observer The Observer that is no longer interested in this event.
-   * 
+   *
    * @return true if the event was unregistered, false if it was not
    * registered (any more) and thus did not need to be removed
    */

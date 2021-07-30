@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.events;
 
@@ -33,9 +33,6 @@ public class JajukEvent {
 
   /**
    * Event constructor.
-   *
-   * @param subject 
-   * @param pDetails 
    */
   public JajukEvent(JajukEvents subject, Properties pDetails) {
     this.subject = subject;
@@ -46,8 +43,6 @@ public class JajukEvent {
 
   /**
    * Event constructor.
-   * 
-   * @param subject 
    */
   public JajukEvent(JajukEvents subject) {
     this(subject, null);
@@ -55,7 +50,7 @@ public class JajukEvent {
 
   /**
    * Gets the details.
-   * 
+   *
    * @return Returns the pDetails.
    */
   public Properties getDetails() {
@@ -64,7 +59,7 @@ public class JajukEvent {
 
   /**
    * Gets the subject.
-   * 
+   *
    * @return Returns the sSubject.
    */
   public JajukEvents getSubject() {
@@ -73,7 +68,7 @@ public class JajukEvent {
 
   /**
    * ToString method.
-   * 
+   *
    * @return the string
    */
   @Override
@@ -88,9 +83,7 @@ public class JajukEvent {
 
   /**
    * event equals method.
-   * 
-   * @param obj 
-   * 
+   *
    * @return true, if equals
    */
   @Override

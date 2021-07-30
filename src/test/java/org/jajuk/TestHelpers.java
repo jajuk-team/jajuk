@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk;
 
@@ -29,7 +29,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -71,9 +71,12 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.junit.Assert;
 
+import static java.lang.Integer.signum;
+
 /**
  * Small helper class with functionality that is used in multiple unit tests.
  */
+@SuppressWarnings("EqualsWithItself")
 public class TestHelpers {
   /**
    * Helper method for removing emma-reports for classes with only static
@@ -82,20 +85,20 @@ public class TestHelpers {
    * see
    * http://sourceforge.net/tracker/index.php?func=detail&aid=1173251&group_id
    * =108932&atid=651900
-   * 
+   *
    * add this to the test case for any class that has only static methods where
    * EMMA reports the default constructor as not covered
-   * 
+   *
    * Template: <code>
-   * 
+   *
    * // helper method to emma-coverage of the unused constructor
    * public void testPrivateConstructor() throws Exception {
    * JUnitHelpers.executePrivateConstructor(<yourclass>.class);
    * }
    * </code>
    *
-   * @param <T> 
-   * @param targetClass 
+   * @param <T>
+   * @param targetClass
    * @return the t
    * @throws Exception the exception
    */
@@ -107,12 +110,13 @@ public class TestHelpers {
 
   /**
    * Equals test.
-   * 
    *
-   * @param obj 
-   * @param equal 
-   * @param notequal 
+   *
+   * @param obj
+   * @param equal
+   * @param notequal
    */
+  @SuppressWarnings({"EqualsWithItself", "ObjectEqualsNull", "SimplifiableJUnitAssertion", "ConstantConditions"})
   public static void EqualsTest(final Object obj, final Object equal, final Object notequal) {
     // none of the three should be null
     Assert.assertNotNull("Object in EqualsTest should not be null!", obj);
@@ -150,6 +154,8 @@ public class TestHelpers {
     // not equals to a different type of object
     Assert.assertFalse("Object should not be equal to an arbitrary string in EqualsTest!",
         obj.equals("TestString"));
+    Assert.assertFalse("Object should not be equal to an arbitrary string in EqualsTest!",
+            "TestString".equals(obj));
     // then test some things with another object that should be equal
     // symmetric, if one is (not) equal to another then the reverse must be true
     Assert.assertTrue("Symmetric: Object should be equal to equal-object in EqualsTest",
@@ -175,16 +181,16 @@ public class TestHelpers {
 
   /**
    * Compare to test.
-   * 
    *
-   * @param <T> 
-   * @param obj 
-   * @param equal 
-   * @param notequal 
+   *
+   * @param <T>
+   * @param obj
+   * @param equal
+   * @param notequal
    */
-  @SuppressWarnings("unchecked")
-  public static <T> void CompareToTest(final Comparable<T> obj, final Comparable<T> equal,
-      final Comparable<T> notequal) {
+  @SuppressWarnings({"ConstantConditions", "SimplifiableJUnitAssertion"})
+  public static <T extends Comparable<T>> void CompareToTest(final T obj, final T equal,
+      final T notequal) {
     // none of the three should be null
     Assert.assertNotNull("Object in CompareToTest should not be null!", obj);
     Assert.assertNotNull("Equals-object in CompareToTest should not be null!", equal);
@@ -197,17 +203,19 @@ public class TestHelpers {
     // make sure correct parameters are passed
     // equal should be equal to obj, not-equal should not be equal to obj!
     Assert.assertEquals("Object and equal-object should compare in CompareToTest!", 0,
-        obj.compareTo((T) equal));
+        obj.compareTo(equal));
+    Assert.assertFalse("Object and non-equal-object should not compare in CompareToTest!", 0 == obj	// NOPMD
+            .compareTo(notequal));
     Assert.assertFalse("Object and non-equal-object should not compare in CompareToTest!",
-        0 == obj.compareTo((T) notequal));
+        0 == obj.compareTo(notequal));
     // first test some general things that should be true with equals
     // reflexive: equals to itself
     Assert.assertEquals("Reflexive: object should be equal to itself in CompareToTest!", 0,
-        obj.compareTo((T) obj));
+        obj.compareTo(obj));
     Assert.assertEquals("Reflexive: equal-object should be equal to itself in CompareToTest!", 0,
-        equal.compareTo((T) equal));
+        equal.compareTo(equal));
     Assert.assertEquals("Reflexive: non-equal-object should be equal to itself in CompareToTest!",
-        0, notequal.compareTo((T) notequal));
+        0, notequal.compareTo(notequal));
     // not equals to null
     Assert.assertFalse("Object should not be equal to null in CompareToTest!",
         0 == obj.compareTo(null));
@@ -223,17 +231,123 @@ public class TestHelpers {
     // then test some things with another object that should be equal
     // symmetric, if one is (not) equal to another then the reverse must be true
     Assert.assertEquals("Symmetric: Object should be equal to equal-object in CompareToTest", 0,
-        obj.compareTo((T) equal));
+        obj.compareTo(equal));
     Assert.assertEquals("Symmetric: Equals-object should be equal to object in CompareToTest!", 0,
-        equal.compareTo((T) obj));
+        equal.compareTo(obj));
     Assert.assertFalse(
         "Symmetric: Object should NOT be equal to non-equal-object in CompareToTest",
-        0 == obj.compareTo((T) notequal));
+        0 == obj.compareTo(notequal));
     Assert.assertFalse(
         "Symmetric: Non-equals-object should NOT be equal to object in CompareToTest!",
-        0 == notequal.compareTo((T) obj));
+        0 == notequal.compareTo(obj));
+    Assert.assertEquals("Symmetric: Comparing object and non-equal-object in both directions should lead to the same result.",
+            signum(obj.compareTo(notequal)), (-1)*signum(notequal.compareTo(obj)));
+
     // transitive: if a.equals(b) and b.equals(c) then a.equals(c)
     // not tested right now
+    Assert.assertEquals("Congruence: Comparing object and non-equal-object should have the same result as comparing the equal object and the non-equal-object",
+            signum(obj.compareTo(notequal)), signum(equal.compareTo(notequal)));
+
+    // ensure equals() and hashCode() are implemented as well here
+
+    // these are violated a lot currently, thus the checks are not enabled until we have adjusted the implementation
+
+    // Assert.assertTrue("Findbugs: Comparable objects should implement equals() the same way as compareTo().", obj.equals(equal));
+    // Assert.assertFalse("Findbugs: Comparable objects should implement equals() the same way as compareTo().", obj.equals(notequal));
+    // EqualsTest(obj, equal, notequal);
+    // Assert.assertEquals("Findbugs: Comparable objects should implement hashCode() the same way as compareTo().", obj.hashCode(), equal.hashCode());
+    // HashCodeTest(obj, equal);
+  }
+
+  /**
+   * Helper method to verify some basic assumptions about implementations of the Comparator interface.
+   *
+   * This can be used.
+   *
+   * @param <T> The type of Comparator to test
+   * @param comparator
+   *            The implementation of the Comparator.
+   * @param obj
+   *            The object to use.
+   * @param equal
+   *            An object which is equal to "obj", but not the same object!
+   * @param notequal
+   *            An object which is not equal to "obj"
+   * @param notEqualIsLess True if the notequal object should be less than obj.
+   */
+  @SuppressWarnings("SimplifiableJUnitAssertion")
+  public static <T> void ComparatorTest(final Comparator<T> comparator, final T obj, final T equal,
+                                        final T notequal, boolean notEqualIsLess) {
+    // none of the three should be null
+    Assert.assertNotNull("Object in ComparatorTest should not be null!", obj);
+    Assert.assertNotNull("Equals-object in ComparatorTest should not be null!", equal);	// NOPMD
+    Assert.assertNotNull("Non-equal-object in ComparatorTest should not be null!", notequal);	// NOPMD
+
+    // make sure different objects are passed in
+    Assert.assertFalse("Object and equals-object in ComparatorTest should not be identical", obj == equal);	// NOPMD
+    Assert.assertFalse("Object and non-equals-object in ComparatorTest should not be identical", obj == notequal);	// NOPMD
+
+    // make sure correct parameters are passed
+    // equal should be equal to obj, not-equal should not be equal to obj!
+    Assert.assertEquals("Object and equal-object should compare in ComparatorTest!", 0, comparator.compare(obj, equal));
+    Assert.assertFalse("Object and non-equal-object should not compare in ComparatorTest!", 0 == comparator.compare(obj	// NOPMD
+            , notequal));
+
+    // first test some general things that should be true with equals
+
+    // reflexive: equals to itself
+    Assert.assertEquals("Reflexive: object should be equal to itself in ComparatorTest!", 0, comparator.compare(obj, obj));
+    Assert.assertEquals("Reflexive: equal-object should be equal to itself in ComparatorTest!", 0, comparator.compare(equal
+            , equal));
+    Assert.assertEquals("Reflexive: non-equal-object should be equal to itself in ComparatorTest!", 0, comparator.compare(notequal
+            , notequal));
+
+    // not equals to null, not checked currently as most Comparators expect non-null input at all times
+		/*assertTrue("Object should not be equal to null in ComparatorTest!",
+				0 != comparator.compare(obj, null));
+		assertTrue("Equal-object should not be equal to null in ComparatorTest!",
+				0 != comparator.compare(equal, null));
+		assertTrue("Non-equal-object should not be equal to null in ComparatorTest!",
+				0 != comparator.compare(notequal, null));*/
+
+    // not equals to a different type of object
+		/* Cannot happen due to Generics
+		assertFalse("Object should not be equal to an arbitrary string in ComparatorTest!" , 0 ==
+			obj, "TestString"));
+		 */
+
+    // then test some things with another object that should be equal
+
+    // symmetric, if one is (not) equal to another then the reverse must be true
+    Assert.assertEquals("Symmetric: Object should be equal to equal-object in ComparatorTest", 0, comparator.compare(obj	// NOPMD
+            , equal));
+    Assert.assertEquals("Symmetric: Equals-object should be equal to object in ComparatorTest!", 0, comparator.compare(equal	// NOPMD
+            , obj));
+    Assert.assertFalse("Symmetric: Object should NOT be equal to non-equal-object in ComparatorTest", 0 == comparator.compare(obj	// NOPMD
+            , notequal));
+    Assert.assertFalse("Symmetric: Non-equals-object should NOT be equal to object in ComparatorTest!",	// NOPMD
+            0 == comparator.compare(notequal, obj));
+    Assert.assertEquals("Symmetric: Comparing object and non-equal-object in both directions should lead to the same result.",
+            signum(comparator.compare(obj, notequal)), (-1)*signum(comparator.compare(notequal, obj)));
+
+    // transitive: if a.equals(b) and b.equals(c) then a.equals(c)
+    // not tested right now
+
+    Assert.assertEquals("Congruence: Comparing object and non-equal-object should have the same result as comparing the equal object and the non-equal-object",
+            signum(comparator.compare(obj, notequal)), signum(comparator.compare(equal, notequal)));
+
+    if(notEqualIsLess) {
+      Assert.assertTrue("Item 'notequal' should be less than item 'equal' in ComparatorTest, but compare was: " + comparator.compare(notequal, obj),
+              comparator.compare(notequal, obj) < 0);
+    } else {
+      Assert.assertTrue("Item 'notequal' should be higher than item 'equal' in ComparatorTest, but compare was: " + comparator.compare(notequal, obj),
+              comparator.compare(notequal, obj) > 0);
+    }
+
+    // additionally test with null
+    Assert.assertEquals("compare(null,null) should have 0 as compare-result", 0, comparator.compare(null, null));
+    Assert.assertTrue("compare(obj,null) should not have 0 as compare-result", comparator.compare(obj, null) != 0);
+    Assert.assertTrue("compare(null,obj) should not have 0 as compare-result", comparator.compare(null, obj) != 0);
   }
 
   /**
@@ -245,6 +359,7 @@ public class TestHelpers {
    *          that overwrites toString()
    *
    */
+  @SuppressWarnings("SimplifiableJUnitAssertion")
   public static void ToStringTest(final Object obj) {
     // toString should not return null
     Assert.assertNotNull("A derived toString() should not return null!", obj.toString());
@@ -262,13 +377,14 @@ public class TestHelpers {
 
   /**
    * Run some generic tests on the derived clone-method.
-   * 
+   *
    * We need to do this via reflection as the clone()-method in Object is
    * protected and the Cloneable interface does not include a public "clone()".
    *
    * @param obj The object to test clone for.
    * @throws Exception the exception
    */
+  @SuppressWarnings("SimplifiableJUnitAssertion")
   public static void CloneTest(final Cloneable obj) throws Exception {
     final Method m = obj.getClass().getMethod("clone", new Class[] {});
     Assert.assertNotNull("Need to find a method called 'clone' in object of type '"
@@ -294,8 +410,9 @@ public class TestHelpers {
    * Checks certain assumption that are made for the hashCode() method.
    *
    * @param obj An Object that override the hasCode() method.
-   * @param equ 
+   * @param equ
    */
+  @SuppressWarnings("SimplifiableJUnitAssertion")
   public static void HashCodeTest(final Object obj, final Object equ) {
     Assert
         .assertFalse(
@@ -326,11 +443,11 @@ public class TestHelpers {
 
   /**
    * Enum test.
-   * 
    *
-   * @param enumtype 
-   * @param enumclass 
-   * @param element 
+   *
+   * @param enumtype
+   * @param enumclass
+   * @param element
    * @throws NoSuchMethodException the no such method exception
    * @throws InvocationTargetException the invocation target exception
    * @throws IllegalAccessException the illegal access exception
@@ -361,7 +478,7 @@ public class TestHelpers {
 
   /**
    * Clear swing utilities queue.
-   * 
+   *
    *
    * @throws InterruptedException the interrupted exception
    * @throws InvocationTargetException the invocation target exception
@@ -384,7 +501,7 @@ public class TestHelpers {
 
   /**
    * Wait for a specific thread to finish.
-   * @param name 
+   * @param name
    * @throws InterruptedException the interrupted exception
    */
   public static void waitForThreadToFinish(final String name) throws InterruptedException {
@@ -425,7 +542,7 @@ public class TestHelpers {
 
   /**
    * Wait for all threads to finish.
-   * 
+   *
    *
   * @throws InterruptedException the interrupted exception
    */
@@ -444,7 +561,7 @@ public class TestHelpers {
 
   /**
    * Cleanup all the environment
-   * 
+   *
    *
    * @throws InterruptedException the interrupted exception
    * @throws InvocationTargetException the invocation target exception
@@ -475,13 +592,7 @@ public class TestHelpers {
       Field exitingField = ExitService.class.getDeclaredField("bExiting");
       exitingField.setAccessible(true);
       exitingField.setBoolean(null, state);
-    } catch (SecurityException e) {
-      Log.error(e);
-    } catch (NoSuchFieldException e) {
-      Log.error(e);
-    } catch (IllegalArgumentException e) {
-      Log.error(e);
-    } catch (IllegalAccessException e) {
+    } catch (SecurityException | IllegalAccessException | IllegalArgumentException | NoSuchFieldException e) {
       Log.error(e);
     }
   }
@@ -506,7 +617,7 @@ public class TestHelpers {
   /**
      * Return a file named "test.tst" on a mounted device.
      * @return a file named "test.tst" on a mounted device.
-   * @throws IOException 
+   * @throws IOException
      */
   public static org.jajuk.base.File getFile() {
     return getFile("test.tst", true);
@@ -549,10 +660,10 @@ public class TestHelpers {
   /**
    * Gets the file.
    *
-   * @param name 
-   * @param mount 
+   * @param name
+   * @param mount
    * @return the file
-   * @throws IOException 
+   * @throws IOException
    */
   public static org.jajuk.base.File getFile(String name, boolean mount) {
     Directory dir = TestHelpers.getDirectory();
@@ -563,7 +674,7 @@ public class TestHelpers {
    * Gets a playlist listing the default file and located in the default directory
    *
    * @return the playlist
-   * @throws IOException 
+   * @throws IOException
    */
   public static Playlist getPlaylist() throws IOException {
     Device device = getDevice();
@@ -576,8 +687,8 @@ public class TestHelpers {
     bw.write(file2.getAbsolutePath());
     bw.flush();
     bw.close();
-    String id = MD5Processor.hash(new StringBuilder(device.getName()).append(dir.getRelativePath())
-        .append(playlistFile.getName()).toString());
+    String id = MD5Processor.hash(device.getName() + dir.getRelativePath() +
+            playlistFile.getName());
     org.jajuk.base.Playlist playlist = PlaylistManager.getInstance().registerPlaylistFile(id,
         playlistFile.getName(), dir);
     // Force playlist loading
@@ -593,24 +704,23 @@ public class TestHelpers {
    * Gets a void playlist
    *
    * @return the playlist
-   * @throws IOException 
+   * @throws IOException
    */
   public static Playlist getVoidPlaylist() throws IOException {
     Device device = getDevice();
     Directory dir = TestHelpers.getDirectory();
     File playlistFile = new File(dir.getAbsolutePath() + "/sample_playlist.m3u");
-    String id = MD5Processor.hash(new StringBuilder(device.getName()).append(dir.getRelativePath())
-        .append(playlistFile.getName()).toString());
-    org.jajuk.base.Playlist playlist = PlaylistManager.getInstance().registerPlaylistFile(id,
+    String id = MD5Processor.hash(device.getName() + dir.getRelativePath() +
+            playlistFile.getName());
+    return PlaylistManager.getInstance().registerPlaylistFile(id,
         playlistFile.getName(), dir);
-    return playlist;
   }
 
   /**
    * Gets the album.
    *
-   * @param name 
-   * @param discID 
+   * @param name
+   * @param discID
    * @return the album
    */
   public static Album getAlbum(String name, int discID) {
@@ -625,7 +735,7 @@ public class TestHelpers {
   public static Album getAlbum() {
     return getAlbum("name", 0);
   }
-  
+
   /**
    * Gets the album artist.
    *
@@ -647,7 +757,7 @@ public class TestHelpers {
   /**
    * Gets the artist.
    *
-   * @param name 
+   * @param name
    * @return the artist
    */
   public static Artist getArtist(String name) {
@@ -666,7 +776,7 @@ public class TestHelpers {
   /**
    * Gets the genre.
    *
-   * @param name 
+   * @param name
    * @return the genre
    */
   public static Genre getGenre(String name) {
@@ -685,7 +795,7 @@ public class TestHelpers {
   /**
    * Gets the year.
    *
-   * @param year 
+   * @param year
    * @return the year
    */
   public static Year getYear(int year) {
@@ -704,9 +814,9 @@ public class TestHelpers {
   /**
    * Gets the device.
    *
-   * @param name 
-   * @param type 
-   * @param url 
+   * @param name
+   * @param type
+   * @param url
    * @return the device
    */
   public static Device getDevice(String name, Device.Type type, String url) {
@@ -737,9 +847,9 @@ public class TestHelpers {
   /**
    * Gets the directory, create it on disk if required
    *
-   * @param name 
-   * @param parent 
-   * @param device 
+   * @param name
+   * @param parent
+   * @param device
    * @return the directory
    */
   public static Directory getDirectory(String name, Directory parent, Device device) {
@@ -758,7 +868,7 @@ public class TestHelpers {
   }
 
   /**
-   * The "any" directory is the top dir of the device 
+   * The "any" directory is the top dir of the device
    *, create it on disk if required
    * @return the directory
    */
@@ -796,8 +906,8 @@ public class TestHelpers {
     //Reset radios
     WebRadioManager.getInstance().cleanup();
     WebRadio custom1 = getWebRadio("Custom 1", "http://custom1", WebRadioOrigin.CUSTOM);
-    custom1.setProperty(Const.XML_BITRATE, Long.valueOf(127));
-    custom1.setProperty(Const.XML_FREQUENCY, Long.valueOf(45000));
+    custom1.setProperty(Const.XML_BITRATE, 127L);
+    custom1.setProperty(Const.XML_FREQUENCY, 45000L);
     custom1.setProperty(Const.XML_KEYWORDS, "foo,bar");
     custom1.setProperty(Const.XML_GENRE, "Pop");
     custom1.setProperty(Const.XML_DESC, "a cool radio");
@@ -832,7 +942,6 @@ public class TestHelpers {
 
   /**
   * Gets the type with provided mplayer implementation class
-  * @param playerImpl
   *
   * @return the type
   */
@@ -843,7 +952,6 @@ public class TestHelpers {
   /**
    * Gets the track.
    *
-   * @param i 
    * @return the track
    */
   public static Track getTrack(int i) {
@@ -883,13 +991,11 @@ public class TestHelpers {
    */
   public static void dumpThreads() {
     Map<Thread, StackTraceElement[]> traces = Thread.getAllStackTraces();
-    Iterator<Thread> i = traces.keySet().iterator();
-    while (i.hasNext()) {
-      Thread thd = i.next();
+    for (Thread thd : traces.keySet()) {
       System.out.println("*** Thread id" + thd.getId() + ":" + thd.getName() + " ***");
       StackTraceElement[] trace = traces.get(thd);
-      for (int j = 0; j < trace.length; ++j) {
-        System.out.println(trace[j]);
+      for (StackTraceElement stackTraceElement : trace) {
+        System.out.println(stackTraceElement);
       }
       System.out.println();
     }
