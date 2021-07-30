@@ -20,8 +20,6 @@
  */
 package org.jajuk.util;
 
-import com.google.common.io.Files;
-
 import java.awt.Desktop;
 import java.awt.GraphicsEnvironment;
 import java.io.BufferedReader;
@@ -42,6 +40,7 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,7 +65,7 @@ import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.filters.KnownTypeFilter;
 import org.jajuk.util.log.Log;
 
-import ext.MersenneTwister;
+import com.google.common.io.Files;
 
 /**
  * Set of convenient methods for system and IO.
@@ -89,7 +88,7 @@ public final class UtilSystem {
   /** Current date cached (for performances) *. */
   public static final Date TODAY = new Date();
   /** Central random object for all Jajuk *. */
-  private static final Random RANDOM = MersenneTwister.getInstance();
+  private static final Random RANDOM = new SecureRandom();
   /** Cached user home directory *. */
   private static String cachedUserHomeDir;
   /** Are we under Linux ? *. */
