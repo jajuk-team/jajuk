@@ -150,7 +150,6 @@ public class ParameterView extends ViewAdapter {
   JCheckBox jcbDefaultActionDrop;
   JLabel jlNotificationType;
   JComboBox jcbNotificationType;
-  JCheckBox jcbShowVideos;
   JCheckBox jcbPreserveFileDates;
   JCheckBox jcbUseParentDir;
   JFormattedTextField jtfRefactorPattern;
@@ -596,8 +595,6 @@ public class ParameterView extends ViewAdapter {
     scbLanguage.addActionListener(updateHelper);
     jcbUseParentDir = new JCheckBox(Messages.getString("ParameterView.101"));
     jcbUseParentDir.setToolTipText(Messages.getString("ParameterView.102"));
-    jcbShowVideos = new JCheckBox(Messages.getString("ParameterView.301"));
-    jcbShowVideos.setToolTipText(Messages.getString("ParameterView.302"));
     jcbPreserveFileDates = new JCheckBox(Messages.getString("ParameterView.305"));
     jcbPreserveFileDates.setToolTipText(Messages.getString("ParameterView.306"));
     JPanel jpOptions = new JPanel(new MigLayout("insets 10, gapy 15, wrap 1"));
@@ -607,7 +604,6 @@ public class ParameterView extends ViewAdapter {
     jpOptions.add(jcbDefaultActionClick);
     jpOptions.add(jcbDefaultActionDrop);
     jpOptions.add(jcbUseParentDir);
-    jpOptions.add(jcbShowVideos);
     jpOptions.add(jcbPreserveFileDates);
     return jpOptions;
   }

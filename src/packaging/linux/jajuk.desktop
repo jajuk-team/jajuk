@@ -5,6 +5,6 @@ Exec=/usr/local/bin/jajuk
 Icon=jajuk
 Terminal=false
 Type=Application
-Categories=Audio;AudioVideo;
+Categories=Audio;
 StartupNotify=true
 NoDisplay=false

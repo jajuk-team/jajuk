@@ -73,8 +73,6 @@ public class CDDBSelectionAction extends SelectionAction {
       // a SwingWorker.
       // Build a list of tracks from various items
       List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(selection, true);
-      // Remove video tracks found (clips)
-      CollectionUtils.filter(tracks, new JajukPredicates.NotVideoPredicate());
       // Display the wizard
       new CDDBWizard(tracks);
     } catch (Exception ex) {

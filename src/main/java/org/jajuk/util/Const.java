@@ -118,7 +118,6 @@ public interface Const {
   String TEST_VERSION = "12dev";
   String JAJUK_VERSION_DATE = "Build: @DATE_REPLACED_BY_ANT@";
   String JAJUK_COPYRIGHT = "Copyright 2003-2019 The Jajuk Team";
-  String TYPE_VIDEO = "Type.video";
   // -- Files and paths --
   String FILE_SAVING_FILE_EXTENSION = "saving";
   String FILE_SAVED_PROOF_FILE_EXTENSION = "proof";
@@ -704,7 +703,6 @@ public interface Const {
   String CONF_EXPLORER_PATH = "jajuk.explorer_path";
   /** Option name. */
   String CONF_BIT_PERFECT = "jajuk.bit_perfect";
-  String CONF_SHOW_VIDEOS = "jajuk.show_videos";
   String CONF_PRESERVE_FILE_DATES = "jajuk.preserve_date";
   // Alarm actions
   String ALARM_START_ACTION = "Start Playing";

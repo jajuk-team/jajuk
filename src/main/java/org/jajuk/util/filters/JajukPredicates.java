@@ -136,17 +136,5 @@ public class JajukPredicates {
       return ambience.getGenres().contains(tested.getTrack().getGenre());
     }
   }
-
-  /**
-   * Not Video predicate on tracks, filter video files.
-   */
-  public static class NotVideoPredicate implements Predicate {
-    @Override
-    public boolean evaluate(Object o) {
-      Track tested = (Track) o;
-      List<File> files = tested.getFiles();
-      File fileTested = files.get(0);
-      return !fileTested.getType().isVideo();
-    }
-  }
+  
 }
