@@ -123,8 +123,6 @@ public final class TypeManager extends ItemManager {
     if (type != null) {
       return type;
     }
-    // TODO: can this happen at all?? I think the previous "if" already covers
-    // this case...
     if (hmSupportedTypes.containsKey(sExtension)) {
       // if the type is already in memory, use it
       return hmSupportedTypes.get(sExtension);

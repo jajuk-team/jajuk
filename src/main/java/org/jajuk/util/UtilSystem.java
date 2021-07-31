@@ -83,7 +83,7 @@ public final class UtilSystem {
    * MPlayer status possible values *.
    */
   public enum MPlayerStatus {
-    MPLAYER_STATUS_OK, MPLAYER_STATUS_NOT_FOUND, MPLAYER_STATUS_WRONG_VERSION, MPLAYER_STATUS_JNLP_DOWNLOAD_PBM
+    MPLAYER_STATUS_OK, MPLAYER_STATUS_NOT_FOUND, MPLAYER_STATUS_WRONG_VERSION
   }
 
   /** Current date cached (for performances) *. */

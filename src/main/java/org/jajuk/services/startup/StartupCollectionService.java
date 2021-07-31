@@ -22,8 +22,6 @@ package org.jajuk.services.startup;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,7 +48,6 @@ import org.jajuk.services.core.SessionService;
 import org.jajuk.services.webradio.WebRadioManager;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
-import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UpgradeManager;
 import org.jajuk.util.UtilSystem;
@@ -98,44 +95,12 @@ public final class StartupCollectionService {
     try {
       // test mplayer presence in PATH
       mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_OK;
-      if (UtilSystem.isUnderWindows()) {
+      if (UtilSystem.isUnderWindows() || UtilSystem.isUnderOSX()) {
         final File mplayerPath = UtilSystem.getMPlayerWindowsPath();
         // try to find mplayer executable in know locations first
         if (mplayerPath == null) {
-          try {
-            Log.debug("Download Mplayer from: " + Const.URL_MPLAYER_WINDOWS);
-            File fMPlayer = SessionService.getConfFileByPath(Const.FILE_MPLAYER_WINDOWS_EXE);
-            DownloadManager.download(new URL(Const.URL_MPLAYER_WINDOWS), fMPlayer);
-            // make sure to delete corrupted mplayer in case of
-            // download problem
-            if (fMPlayer.length() != Const.MPLAYER_WINDOWS_EXE_SIZE) {
-              if (!fMPlayer.delete()) { //NOSONAR
-                Log.warn("Could not delete file " + fMPlayer);
-              }
-              mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
-            }
-          } catch (IOException e) {
-            mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
-          }
-        }
-      } else if (UtilSystem.isUnderOSX()) {
-        final File mplayerPath = UtilSystem.getMPlayerOSXPath();
-        // try to find mplayer executable in known locations first
-        if (mplayerPath == null) {
-          try {
-            Log.debug("Download Mplayer from: " + Const.URL_MPLAYER_OSX);
-            File fMPlayer = SessionService.getConfFileByPath(Const.FILE_MPLAYER_OSX_EXE);
-            DownloadManager.download(new URL(Const.URL_MPLAYER_OSX), fMPlayer);
-            fMPlayer.setExecutable(true);
-            if (fMPlayer.length() != Const.MPLAYER_OSX_EXE_SIZE) {
-              if (!fMPlayer.delete()) { //NOSONAR
-                Log.warn("Could not delete file " + fMPlayer);
-              }
-              mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
-            }
-          } catch (IOException e) {
-            mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM;
-          }
+            Log.warn("Mplayer not found, installation probably corrupted, please reinstall");
+            mplayerStatus = UtilSystem.MPlayerStatus.MPLAYER_STATUS_NOT_FOUND;          
         }
       }
       // Under others OS, we assume mplayer has been installed
@@ -170,10 +135,6 @@ public final class StartupCollectionService {
               Messages.showHideableWarningMessage(Messages.getString("Warning.1"),
                   Const.CONF_NOT_SHOW_AGAIN_PLAYER);
             }
-          } else if (mplayerStatus == UtilSystem.MPlayerStatus.MPLAYER_STATUS_JNLP_DOWNLOAD_PBM) {
-            // wrong mplayer release
-            Messages.showHideableWarningMessage(Messages.getString("Warning.3"),
-                Const.CONF_NOT_SHOW_AGAIN_PLAYER);
           }
         }
         TypeManager.registerTypesNoMplayer();
