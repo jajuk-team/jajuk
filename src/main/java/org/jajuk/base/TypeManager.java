@@ -29,7 +29,6 @@ import java.util.Map;
 
 import org.jajuk.services.players.IPlayerImpl;
 import org.jajuk.services.tags.ITagImpl;
-import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.Messages;
 import org.jajuk.util.ReadOnlyIterator;
