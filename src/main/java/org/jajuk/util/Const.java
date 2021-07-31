@@ -105,10 +105,6 @@ public interface Const {
       * HOURS_IN_A_DAY;
   /** Last elapsed time display mode format + 1 *. */
   int FORMAT_TIME_ELAPSED_MAX = 4;
-  /** Mplayer windows exe size in bytes. */
-  long MPLAYER_WINDOWS_EXE_SIZE = 21718016l;
-  /** Mplayer windows exe size in bytes. */
-  long MPLAYER_OSX_EXE_SIZE = 21490476l;
   /** Update URL = PAD file URL. */
   String CHECK_FOR_UPDATE_URL = "http://jajuk.info/repository/pad/jajuk_pad.xml";
   // Jajuk version

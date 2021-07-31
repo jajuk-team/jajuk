@@ -620,11 +620,10 @@ public final class UtilSystem {
       return UtilSystem.mplayerPath;
     }
     final File file;
-    // Check in ~/.jajuk directory (used by JNLP distribution
-    // as well). Test exe size as well to detect unfinished downloads of
-    // mplayer.exe in JNLP mode
+    // Check in ~/.jajuk directory. 
+    // Test exe size 
     file = SessionService.getConfFileByPath(Const.FILE_MPLAYER_WINDOWS_EXE);
-    if (file.exists() && file.length() == Const.MPLAYER_WINDOWS_EXE_SIZE) {
+    if (file.exists()) {
       UtilSystem.mplayerPath = file;
       return UtilSystem.mplayerPath;
     }
@@ -644,13 +643,13 @@ public final class UtilSystem {
     // Search in /Applications first
     File file = new File("/Applications/Jajuk.app/Contents/MacOS/"
         + Const.FILE_MPLAYER_OSX_EXE);
-    if (file.canExecute() && file.length() == Const.MPLAYER_OSX_EXE_SIZE) {
+    if (file.canExecute()) {
       UtilSystem.mplayerPath = file;
       return UtilSystem.mplayerPath;
     }
     // Search in collection path
     file = SessionService.getConfFileByPath(Const.FILE_MPLAYER_OSX_EXE);
-    if (file.exists() && file.length() == Const.MPLAYER_OSX_EXE_SIZE) {
+    if (file.exists()) {
       UtilSystem.mplayerPath = file;
       return UtilSystem.mplayerPath;
     }
