@@ -27,7 +27,7 @@ SetDatablockOptimize On
 
 !define AppID "{23131D94-868A-4F2D-935A-6E89A7F19D00}"; a unique ID (It's real GUID)
 !define Title "Jajuk"; the installer title
-!define InstallDir "$PROGRAMFILES\Jajuk"; the *default* destination directory
+!define InstallDir "$PROGRAMFILES64\Jajuk"; the *default* destination directory
 !define OutFile "jajuk-@VERSION_REPLACED_BY_ANT@-setup.exe"; the file to save the installer EXE to
 !define IconFile "Modern-Default"; the installer icon
 !define HeaderImage "NSIS"; the header image

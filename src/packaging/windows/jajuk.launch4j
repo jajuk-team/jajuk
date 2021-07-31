@@ -6,8 +6,8 @@
   <outfile>jajuk.exe</outfile>
   <cmdLine>-@TEST_FLAG_REPLACED_BY_ANT@</cmdLine>
   <priority>normal</priority>
-  <downloadUrl>http://java.com/download</downloadUrl>
-  <supportUrl>http://www.java.com/en/download/help/</supportUrl>
+  <downloadUrl>https://adoptopenjdk.net/</downloadUrl>
+  <supportUrl>https://adoptopenjdk.net/faq.html</supportUrl>
   <!-- icon path is relative to .launch4j config file -->
   <icon>jajuk-icon.ico</icon>
   <classPath>
