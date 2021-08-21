@@ -358,7 +358,6 @@ public class StatView extends ViewAdapter {
       double[][] data = new double[1][iMonthsNumber + 1];
       // cannot use System.arraycopy() here because we have different types in
       // the arrays...
-      // System.arraycopy(iTracksByMonth, 0, data[0], 0, iMonthsNumber);
       for (int i = 0; i < iMonthsNumber + 1; i++) {
         data[0][i] = iTracksByMonth[i];
       }

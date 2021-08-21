@@ -385,7 +385,6 @@ public class File extends PhysicalItem implements Comparable<File> {
    * Reset pre-calculated paths*.
    */
   protected void reset() {
-    // sAbs = null;
     fio = null;
   }
 

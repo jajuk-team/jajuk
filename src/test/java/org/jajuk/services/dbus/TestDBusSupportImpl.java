@@ -154,8 +154,6 @@ public class TestDBusSupportImpl extends JajukTestCase {
    */
   public final void testExit() {
     // cannot test this as it stops the process:
-    // DBusSupportImpl impl = new DBusSupportImpl();
-    // impl.exit();
   }
 
   /**

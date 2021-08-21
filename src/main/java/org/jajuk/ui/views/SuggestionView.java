@@ -217,7 +217,6 @@ public class SuggestionView extends ViewAdapter {
       busyLocal2.setBusy(true);
       busyLocal3.setBusy(true);
       // stop all existing busy labels before we add the new ones...
-      //stopAllBusyLabels();
       tabs.setComponentAt(0, UtilGUI.getCentredPanel(busyLocal1));
       tabs.setComponentAt(1, UtilGUI.getCentredPanel(busyLocal2));
       tabs.setComponentAt(2, UtilGUI.getCentredPanel(busyLocal3));

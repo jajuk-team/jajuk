@@ -457,7 +457,6 @@ public class TestHelpers {
     DirectoryManager.getInstance().clear();
     cleanAllDevices();
     History.getInstance().clear();
-    //TestHelpers.clearSwingUtilitiesQueue();
     //Reset everything again as it could have been changed during threads finishing
     ObservationManager.clear();
     // Reset everything

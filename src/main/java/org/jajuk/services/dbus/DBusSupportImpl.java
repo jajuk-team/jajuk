@@ -353,9 +353,6 @@ public class DBusSupportImpl implements DBusSupport, Observer {
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
     Set<JajukEvents> keys = new HashSet<JajukEvents>();
-    // keys.add(JajukEvents.PLAYER_STOP);
-    // keys.add(JajukEvents.PLAYER_PAUSE);
-    // keys.add(JajukEvents.PLAYER_RESUME);
     keys.add(JajukEvents.FILE_LAUNCHED);
     return keys;
   }

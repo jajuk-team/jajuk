@@ -651,7 +651,6 @@ public final class Collection extends DefaultHandler {
    */
   private void handleDirectories(Attributes attributes, int idIndex) {
     Directory dParent = null;
-    // dParent = null;
     String sParentID = attributes.getValue(Const.XML_DIRECTORY_PARENT).intern();
     // UPGRADE
     if ((hmWrongRightDirectoryID.size() > 0) && (hmWrongRightDirectoryID.containsKey(sParentID))) {

@@ -146,7 +146,6 @@ public final class UtilGUI {
       Container container = null;
       IPerspective perspective = PerspectiveManager.getCurrentPerspective();
       if (perspective != null) {
-        // Log.debug("** Set cursor: " + currentCursor);
         container = perspective.getContentPane();
         container.setCursor(currentCursor);
         CommandJPanel.getInstance().setCursor(currentCursor);

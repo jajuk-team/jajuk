@@ -187,7 +187,6 @@ public class TestUtilSystem extends JajukTestCase {
       UtilSystem.copy(file1.toURI().toURL(), "testfile/foo");
       fail("Should throw exception");
     } catch (IOException e) {
-      // assertEquals(9, e.getCode());
     }
   }
 

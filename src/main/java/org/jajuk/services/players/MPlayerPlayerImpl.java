@@ -186,8 +186,6 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               // ie)
               break;
             }
-            // Very verbose :
-            //Log.debug("Output from MPlayer: " + line);
             // Detect mplayer language
             if (line.indexOf("Starting playback") != -1) {
               patternEndOfFile = patternEndOfFileEnglish;

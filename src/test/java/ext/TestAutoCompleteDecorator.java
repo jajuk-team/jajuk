@@ -37,7 +37,6 @@ public class TestAutoCompleteDecorator extends TestCase {
    */
   public void testDecorateJTextComponentListOfObjectBoolean() {
     // TODO: make working
-    // AutoCompleteDecorator.decorate(null, null, false);
   }
 
   /**
@@ -45,7 +44,6 @@ public class TestAutoCompleteDecorator extends TestCase {
    */
   public void testDecorateJTextComponentListOfObjectBooleanObjectToStringConverter() {
     // TODO: make working
-    // AutoCompleteDecorator.decorate(null, null, false, null);
   }
 
   /**
@@ -79,7 +77,6 @@ public class TestAutoCompleteDecorator extends TestCase {
    */
   public void testDecorateJComboBox() {
     // TODO: make working
-    // AutoCompleteDecorator.decorate(null);
   }
 
   /**
@@ -87,7 +84,6 @@ public class TestAutoCompleteDecorator extends TestCase {
    */
   public void testDecorateJComboBoxObjectToStringConverter() {
     // TODO: make working
-    // AutoCompleteDecorator.decorate((JComboBox)null, null);
   }
 
   /**
@@ -95,7 +91,6 @@ public class TestAutoCompleteDecorator extends TestCase {
    */
   public void testDecorateJTextComponentAutoCompleteDocumentAbstractAutoCompleteAdaptor() {
     // TODO: make working
-    // AutoCompleteDecorator.decorate((JTextComponent)null, null, null);
   }
 
   ///////////////////////7
@@ -119,7 +114,6 @@ public class TestAutoCompleteDecorator extends TestCase {
     //redecorating should not increase listener count
     AutoCompleteDecorator.decorate(combo);
     // TODO: make working
-    // assertEquals(expectedFocusListenerCount, editor.getFocusListeners().length);
   }
 
   /**
@@ -134,7 +128,6 @@ public class TestAutoCompleteDecorator extends TestCase {
     //redecorating should not increase listener count
     AutoCompleteDecorator.decorate(combo);
     // TODO: make working
-    // assertEquals(expectedKeyListenerCount, editor.getKeyListeners().length);
   }
 
   /**
@@ -148,6 +141,5 @@ public class TestAutoCompleteDecorator extends TestCase {
     //redecorating should not increase listener count
     AutoCompleteDecorator.decorate(combo);
     // TODO: make working
-    // assertEquals(expectedPropListenerCount, combo.getPropertyChangeListeners("editor").length);
   }
 }

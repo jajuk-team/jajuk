@@ -738,7 +738,6 @@ public class TestQueueModel extends JajukTestCase {
   public void testGetPlayingFile() throws Exception {
     assertNull(QueueModel.getPlayingFile());
     addItems(10);
-    // QueueModel.finished(true);
     QueueModel.goTo(0);
     assertFalse(QueueModel.isStopped());
     assertNotNull(QueueModel.getPlayingFile());
@@ -755,7 +754,6 @@ public class TestQueueModel extends JajukTestCase {
   public void testGetPlayingFileTitle() throws Exception {
     assertNull(QueueModel.getPlayingFileTitle());
     addItems(10);
-    // QueueModel.finished(true);
     QueueModel.goTo(0);
     assertFalse(QueueModel.isStopped());
     assertNotNull(QueueModel.getPlayingFileTitle());
@@ -968,8 +966,6 @@ public class TestQueueModel extends JajukTestCase {
         + ", item: " + QueueModel.getCurrentItem(), 0, QueueModel.getQueueSize());
     assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize()
         + ", item: " + QueueModel.getCurrentItem(), -1, QueueModel.getIndex());
-    //System.out.println("Thread dump at failure");
-    //TestHelpers.dumpThreads();
     QueueModel.goTo(0);
     assertEquals("Index: " + QueueModel.getIndex() + ", size: " + QueueModel.getQueueSize()
         + ", item: " + QueueModel.getCurrentItem(), 0, QueueModel.getQueueSize());

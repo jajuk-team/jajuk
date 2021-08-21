@@ -39,10 +39,6 @@ public class TestSearchResult extends JajukTestCase {
     SearchResult res = new SearchResult(TestHelpers.getFile("file2", true), "");
     SearchResult equ = new SearchResult(TestHelpers.getFile("file2", true), "");
     assertEquals(res.hashCode(), equ.hashCode());
-    //JUnitHelpers.HashCodeTest(res, equ);
-    //    res = new SearchResult(new WebRadio("web", "url"), "webradio");
-    //    equ = new SearchResult(new WebRadio("web", "url"), "webradio");
-    //    JUnitHelpers.HashCodeTest(res, equ);
   }
 
   /**

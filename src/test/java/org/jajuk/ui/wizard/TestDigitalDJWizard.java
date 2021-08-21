@@ -243,7 +243,6 @@ public class TestDigitalDJWizard extends JajukTestCase {
     screen.initUI();
     assertNotNull(screen.getDescription());
     assertNotNull(screen.getName());
-    // JUnitHelpers.ToStringTest(screen);
   }
 
   /**

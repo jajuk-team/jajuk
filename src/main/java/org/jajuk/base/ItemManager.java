@@ -533,9 +533,6 @@ public abstract class ItemManager {
       }
     } else if (itemToChange instanceof Directory) {
       if (!Const.XML_NAME.equals(sKey)) { // file name
-        // TBI newItem =
-        // DirectoryManager.getInstance().changeDirectoryName((Directory)itemToChange,(String)oValue);
-        // } else { // others properties
         itemToChange.setProperty(sKey, oValue);
       }
     } else if (itemToChange instanceof Device) {
