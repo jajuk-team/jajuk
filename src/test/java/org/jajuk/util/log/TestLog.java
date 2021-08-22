@@ -78,7 +78,6 @@ public class TestLog extends JajukTestCase {
    */
   public void testDebugStringThrowableNull() {
     Log.debug(null, new Throwable("testthrowable2"));
-    // verifySpool("testlog2");
     // this is anonymonized: verifySpool("testthrowable2");
     verifySpool("***");
   }

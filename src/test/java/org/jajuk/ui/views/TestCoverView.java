@@ -174,7 +174,6 @@ public class TestCoverView extends JajukTestCase {
    */
   public final void testCreateQuery() {
     CoverView view = new CoverView();
-    // NPE: view.createQuery(null);
     view.createQuery(getFile());
   }
 

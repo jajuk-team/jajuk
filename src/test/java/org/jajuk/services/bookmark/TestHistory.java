@@ -522,7 +522,6 @@ public class TestHistory extends JajukTestCase {
     // in Eclipse as well as in a local Hudson instance that I did set up, so I
     // can only
     // disable this check for now...
-    // assertEquals(0, History.getInstance().getHistory().size());
   }
 
   /**
@@ -584,7 +583,6 @@ public class TestHistory extends JajukTestCase {
     // in Eclipse as well as in a local Hudson instance that I did set up, so I
     // can only
     // disable this check for now...
-    // assertEquals("3", History.getInstance().getHistoryItem(0).getFileId());
   }
 
   /**

@@ -265,7 +265,6 @@ public class TestUtilString extends JajukTestCase {
     long start = System.currentTimeMillis();
     for (int i = 0; i < MATCHES_PER_TEST * 10; i++) {
       UtilString.padNumber(random.nextInt(10000), 5);
-      //StringUtils.leftPad(Long.toString(random.nextInt(10000)), 5, '0');
     }
     return System.currentTimeMillis() - start;
   }

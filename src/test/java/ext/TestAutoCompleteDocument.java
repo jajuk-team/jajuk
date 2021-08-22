@@ -50,7 +50,6 @@ public class TestAutoCompleteDocument extends TestCase {
     Document document = new AutoCompleteDocument(adaptor, true);
     document.insertString(0, "test", null);
     // TODO: this does not work for some reason....
-    // document.remove(0, 2);
   }
 
   /**

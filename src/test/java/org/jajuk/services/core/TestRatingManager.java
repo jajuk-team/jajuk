@@ -52,7 +52,6 @@ public class TestRatingManager extends JajukTestCase {
    */
   public void testRun() {
     // cannot be tested, is an endless loop:
-    // RatingManager.getInstance().run();
   }
 
   /**

@@ -103,8 +103,6 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
     // this test
     Artist artist = TestHelpers.getArtist("name");
     Year year = TestHelpers.getYear(2000);
-    // IPlayerImpl imp = new MockPlayer();
-    // Class<IPlayerImpl> cl = (Class<IPlayerImpl>) imp.getClass();
     Type type = TestHelpers.getType();
     Track track = TrackManager.getInstance().registerTrack("name", album, genre, artist, 120, year,
         1, type, 1);

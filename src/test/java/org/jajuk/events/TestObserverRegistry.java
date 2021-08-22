@@ -164,8 +164,6 @@ public class TestObserverRegistry extends JajukTestCase {
         registry.notifySync(new JajukEvent(JajukEvents.FILE_FINISHED));
       }
     });
-    // can not test this as we have overflows here!
-    // assertEquals(NUMBER_OF_THREADS * NUMBER_OF_TESTS, called.get());
     // then unregister again
     registry.unregister(JajukEvents.FILE_FINISHED, observer);
   }

@@ -205,8 +205,7 @@ public class TestPlaylist extends JajukTestCase {
     assertEquals(1, QueueModel.getQueueSize());
     assertNotNull(QueueModel.getQueue().get(0));
     assertNotNull(QueueModel.getQueue().get(0).getFile());
-    /*assertNotNull(QueueModel.getQueue().get(0).getFile().getType());
-    assertEquals(MockPlayer.class, QueueModel.getQueue().get(0).getFile().getType().getClass());*/
+    
     file = TestHelpers.getFile("file1", false);
     play.addFile(1, file);
     // wait a bit to let the "push" be done in a separate thread

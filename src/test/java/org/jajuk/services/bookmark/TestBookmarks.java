@@ -52,8 +52,6 @@ public class TestBookmarks extends JajukTestCase {
    * @throws Exception the exception
    */
   public void testToString() throws Exception {
-    // TODO: this fails currently because it returns an empty string:
-    // JUnitHelpers.ToStringTest(Bookmarks.getInstance());
     assertNotNull(Bookmarks.getInstance().toString());
     // test with some files
     Bookmarks.getInstance().addFile(TestHelpers.getFile("file1", true));

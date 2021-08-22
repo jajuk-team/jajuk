@@ -152,7 +152,6 @@ public class TestStartupEngineService extends JajukTestCase {
     Thread.sleep(100);
     assertEquals(QueueModel.getPlayingFile(), file3);
     // Cannot test actual position, the mock player always return zero
-    //assertTrue(Player.getCurrentPosition() >= POSITION);
   }
 
   /**
