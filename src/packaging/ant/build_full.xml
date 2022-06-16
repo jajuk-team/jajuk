@@ -8,7 +8,7 @@
 	<!-- ======================= -->
 
 	<!--Distribution release-->
-	<property name='version' value='11.0' />
+	<property name='version' value='12.0dev' />
 
 	<!--Test flag: values: 'test' or 'notest'
     'test' for 'unstable' branches, 'notest' for master, pre-release and maintenance branches -->
