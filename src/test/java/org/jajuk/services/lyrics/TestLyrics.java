@@ -33,7 +33,6 @@ import org.jajuk.services.lyrics.providers.AzLyricsWebLyricsProvider;
 import org.jajuk.services.lyrics.providers.GenericWebLyricsProvider;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;
 import org.jajuk.services.lyrics.providers.LyricsManiaWebLyricsProvider;
-import org.jajuk.services.lyrics.providers.LyricsWikiaWebLyricsProvider;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.log.Log;
 
@@ -84,24 +83,6 @@ public class TestLyrics extends JajukTestCase {
     testWebService(provider);
   }
 
-  /**
-   * Test LyricsWikia provider response to get lyrics.
-   */
-  public void testLyricsWikiaService() {
-    GenericWebLyricsProvider provider = new LyricsWikiaWebLyricsProvider();
-    testWebService(provider);
-  }
-
-  /**
-   * Test LyricWiki web url availability.
-   *
-   * @throws Exception the exception
-   */
-  public void testLyricsWikiaWeb() throws Exception {
-    GenericWebLyricsProvider provider = new LyricsWikiaWebLyricsProvider();
-    testWeb(provider);
-  }
-
   // helper method to emma-coverage of the unused constructor
   /**
    * Test private constructor.
@@ -127,7 +108,7 @@ public class TestLyrics extends JajukTestCase {
   /**
    * Test provider web site url (shared code).
    *
-   * @param provider 
+   * @param provider the JajukLyricsProvider
    * @throws IOException Signals that an I/O exception has occurred.
    */
   private void testWeb(GenericWebLyricsProvider provider) throws IOException {
@@ -146,7 +127,7 @@ public class TestLyrics extends JajukTestCase {
   /**
    * Test provider response to get lyrics (shared code).
    *
-   * @param provider 
+   * @param provider the JajukLyricsProvider
    */
   private void testWebService(GenericWebLyricsProvider provider) {
     String lyrics = provider.getLyrics(ARTIST, TITLE);
@@ -158,6 +139,6 @@ public class TestLyrics extends JajukTestCase {
     assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics,
         StringUtils.isNotBlank(lyrics));
     assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics,
-        lyrics.indexOf(TESTED_WORD) != -1);
+            lyrics.contains(TESTED_WORD));
   }
 }

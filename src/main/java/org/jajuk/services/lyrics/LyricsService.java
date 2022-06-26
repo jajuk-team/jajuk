@@ -47,14 +47,13 @@ public final class LyricsService {
   private static ILyricsProvider current = null;
   private static List<ILyricsPersister> persisters = null;
   /** Providers list. */
-  private static String[] providersClasses = new String[] {
+  private static final String[] providersClasses = new String[] {
     "org.jajuk.services.lyrics.providers.TagLyricsProvider",
     "org.jajuk.services.lyrics.providers.TxtLyricsProvider",
     "org.jajuk.services.lyrics.providers.AzLyricsWebLyricsProvider",
-    "org.jajuk.services.lyrics.providers.LyricsManiaWebLyricsProvider",
-    "org.jajuk.services.lyrics.providers.LyricsWikiaWebLyricsProvider", };
+    "org.jajuk.services.lyrics.providers.LyricsManiaWebLyricsProvider", };
   /** Persisters list. */
-  private static String[] persisterClasses = new String[] {
+  private static final String[] persisterClasses = new String[] {
       "org.jajuk.services.lyrics.persisters.TagPersister",
       "org.jajuk.services.lyrics.persisters.TxtPersister" };
 
@@ -67,19 +66,18 @@ public final class LyricsService {
   /**
    * Loads the appropriate providers from the properties file. For now,
    * providers order is static and the providersClasses array reflect jajuk
-   * artists service preferred ordering
-   * 
-   * @TODO this behavior could eventually be switched to a shuffle provider list
+   * artists service preferred ordering.
+   * This behavior could eventually be switched to a shuffle provider list
    * for performance or better resources usage reasons
    */
   @SuppressWarnings("unchecked")
   public static void loadProviders() {
-    providers = new ArrayList<ILyricsProvider>(2);
+    providers = new ArrayList<>(2);
     try {
       for (String providerClass : providersClasses) {
         if (!StringUtils.isBlank(providerClass)) {
           Class<ILyricsProvider> clazz = (Class<ILyricsProvider>) Class.forName(providerClass);
-          ILyricsProvider provider = clazz.newInstance();
+          ILyricsProvider provider = clazz.getDeclaredConstructor().newInstance();
           providers.add(provider);
           Log.debug("Added Lyrics provider " + providerClass);
         }
@@ -95,12 +93,12 @@ public final class LyricsService {
    */
   @SuppressWarnings("unchecked")
   public static void loadPersisters() {
-    persisters = new ArrayList<ILyricsPersister>(2);
+    persisters = new ArrayList<>(2);
     try {
       for (String persisterClass : persisterClasses) {
         if (!StringUtils.isBlank(persisterClass)) {
           Class<ILyricsPersister> clazz = (Class<ILyricsPersister>) Class.forName(persisterClass);
-          ILyricsPersister persister = clazz.newInstance();
+          ILyricsPersister persister = clazz.getDeclaredConstructor().newInstance();
           persisters.add(persister);
           Log.debug("Added Lyrics persister " + persisterClass);
         }
@@ -113,7 +111,7 @@ public final class LyricsService {
   /**
    * Cycles through lyrics providers to return the best matching lyrics.
    * 
-   * @param audioFile 
+   * @param audioFile the audio file
    * 
    * @return the song's lyrics
    */
@@ -170,7 +168,7 @@ public final class LyricsService {
   /**
    * Delete lyrics from any persister support.
    * 
-   * @param provider 
+   * @param provider the JajukLyricsProvider
    * 
    * @throws LyricsPersistenceException if the lyrics cannot be removed
    */
