@@ -20,38 +20,34 @@
  */
 package org.jajuk.services.players;
 
-import java.io.PrintStream;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
-import org.jajuk.base.File;
-import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Mplayer player implementation.
  */
 public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
+  /** pause flag *. */
+  protected boolean bPaused = false;
   /** Stored Volume. */
   float fVolume;
   /** Mplayer process. */
-  volatile Process proc;
+  Process proc;
   /** End of file flag *. */
-  volatile boolean bEOF = false;
+  boolean bEOF = false;
   /** File is opened flag *. */
-  volatile boolean bOpening = false;
+  boolean bOpening = false;
   /** Stop position thread flag. */
-  volatile boolean bStop = false;
+  boolean bStop = false;
   /** Fading state. */
-  volatile boolean bFading = false;
-  /** pause flag *. */
-  protected volatile boolean bPaused = false;
+  boolean bFading = false;
   /** Whether the track has been started in bitperfect mode **/
   boolean bitPerfect = false;
 
@@ -71,34 +67,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     this.bStop = true;
     Log.debug("Stop");
     if (proc != null) {
-      if (UtilSystem.isUnderLinux()) {
-        /*
-         * Under linux (not sure if it may happen on others Unix and never
-         * reproduced under Windows), mplayer process can "zombified" after
-         * destroy() method call for unknown reason (linked with the mplayer
-         * slave mode ?). Even worse, these processes block the dsp audio line
-         * and then all new mplayer processes fail. To avoid this, we force a
-         * kill on every process call under Linux.
-         *
-         * Note also that mplayer slave mode opens two processes with different
-         * pids. When we try to kill them with -9 (abruptly) only the parent
-         * process dies and the second process is left hanging in the
-         * background. The solution is to just use kill (without -9) to let both
-         * mplayer processes die gracefully. I guess the destroy() method
-         * internally also tries to use -9 and so both pids are never killed.
-         */
-        Field field = proc.getClass().getDeclaredField("pid");
-        field.setAccessible(true);
-        int pid = field.getInt(proc);
-        try {
-          ProcessBuilder pb = new ProcessBuilder("kill", Integer.toString(pid));
-          pb.start();
-        } catch (Error error) {
-          Log.error(error);
-        }
-      } else {
         proc.destroy();
-      }
     }
   }
 
@@ -131,7 +100,6 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     if (proc != null) {
       PrintStream out = new PrintStream(proc.getOutputStream());
       // Do not use println() : it doesn't work under windows
-      //Log.debug("Command mplayer: "+command);
       out.print(command + '\n');
       out.flush();
       // don't close out here otherwise the output stream of the Process
@@ -277,24 +245,6 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   public long getElapsedTimeMillis() {
     return 0;
   }
-
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
-   *      float)
-   */
-  @Override
-  public abstract void play(File file, float fPosition, long length, float fVolume)
-      throws Exception;
-
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.WebRadio, float)
-   */
-  @Override
-  public abstract void play(WebRadio radio, float fVolume) throws Exception;
 
   /*
    * (non-Javadoc)
