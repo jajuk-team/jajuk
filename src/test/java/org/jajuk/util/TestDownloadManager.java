@@ -35,7 +35,7 @@ public class TestDownloadManager extends JajukTestCase {
   private static final String ALBUM = "Collected";
 
   /**
-   * Test method for {@link org.jajuk.util.DownloadManager#getRemoteCoversList()}.
+   * Test method for {@link org.jajuk.util.DownloadManager#getRemoteCoversList(String)}.
    *
    * @throws Exception the exception
    * {@link org.jajuk.util.DownloadManager#getRemoteCoversList(String)}.

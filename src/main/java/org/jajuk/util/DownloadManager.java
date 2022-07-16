@@ -91,12 +91,12 @@ public final class DownloadManager {
     }
 
     // Analyse response with a pattern to extract image url
-    final Pattern pattern = Pattern.compile("data-src=\"https://[^ ]*\"");
+    final Pattern pattern = Pattern.compile("src=\"https://[^ ]*\"");
     final Matcher matcher = pattern.matcher(builder);
     while (matcher.find()) {
       final String sUrl = matcher.group();
-      if (sUrl.length() > 11) {
-        url = new URL(sUrl.substring(10, sUrl.length() - 1));
+      if (sUrl.length() > 6) {
+        url = new URL(sUrl.substring(5, sUrl.length() - 1));
         // Remove duplicates
         if (!alOut.contains(url)) {
           alOut.add(url);
