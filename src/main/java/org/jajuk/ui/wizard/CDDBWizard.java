@@ -56,6 +56,7 @@ import entagged.freedb.FreedbAlbum;
 import entagged.freedb.FreedbException;
 import entagged.freedb.FreedbQueryResult;
 import entagged.freedb.FreedbReadResult;
+import entagged.freedb.FreedbSettings;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -220,7 +221,10 @@ public class CDDBWizard extends JajukJDialog implements ActionListener {
    * occurred.
    */
   public int performQuery(CDDBTrack[] cddbtracks) {
-    fdb = new Freedb();
+    // Fix freedb.freedb.org redirects to https://gnudb.org
+    FreedbSettings freedbSettings = new FreedbSettings();
+    freedbSettings.setServer("gnudb.gnudb.org");
+    fdb = new Freedb(freedbSettings);
     FreedbAlbum fdbAlbum = new FreedbAlbum(cddbtracks);
     try {
       foundAlbums = fdb.query(fdbAlbum);
