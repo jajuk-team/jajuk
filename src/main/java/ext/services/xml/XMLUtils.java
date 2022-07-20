@@ -30,12 +30,13 @@ import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.CharArrayReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -52,7 +53,10 @@ import org.xml.sax.InputSource;
  */
 public final class XMLUtils {
   /** The x stream. */
-  private static XStream xStream = new XStream(new DomDriver());
+  private static final XStream xStream = new XStream(new DomDriver());
+  static {
+    xStream.allowTypesByWildcard(new String[] {XMLUtils.class.getPackage().getName()+".*" });
+  }
 
   /**
    * private constructor to avoid instantiating utility class.
@@ -63,8 +67,8 @@ public final class XMLUtils {
   /**
    * Gets the child element.
    * 
-   * @param el 
-   * @param tagName 
+   * @param el element
+   * @param tagName tag name
    * 
    * @return the child element
    */
@@ -73,7 +77,7 @@ public final class XMLUtils {
       return null;
     }
     NodeList list = el.getElementsByTagName(tagName);
-    if (list != null && list.getLength() > 0) {
+    if (list.getLength() > 0) {
       return (Element) list.item(0);
     }
     return null;
@@ -82,8 +86,8 @@ public final class XMLUtils {
   /**
    * Gets the attribute value.
    * 
-   * @param el 
-   * @param attributeName 
+   * @param el element
+   * @param attributeName attribute name
    * 
    * @return the attribute value
    */
@@ -94,8 +98,8 @@ public final class XMLUtils {
   /**
    * Gets the child element content.
    * 
-   * @param el 
-   * @param tagName 
+   * @param el element
+   * @param tagName tag name
    * 
    * @return the child element content
    */
@@ -113,14 +117,8 @@ public final class XMLUtils {
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void writeBeanToFile(Object bean, String filename) throws IOException {
-    XMLEncoder encoder = null;
-    try {
-      encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(filename)));
+    try (XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(Paths.get(filename))))) {
       encoder.writeObject(bean);
-    } finally {
-      if (encoder != null) {
-        encoder.close();
-      }
     }
   }
 
@@ -134,14 +132,8 @@ public final class XMLUtils {
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static Object readBeanFromFile(String filename) throws IOException {
-    XMLDecoder decoder = null;
-    try {
-      decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(filename)));
+    try (XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(Files.newInputStream(Paths.get(filename))))) {
       return decoder.readObject();
-    } finally {
-      if (decoder != null) {
-        decoder.close();
-      }
     }
   }
 
@@ -155,14 +147,8 @@ public final class XMLUtils {
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static Object readObjectFromFile(String filename) throws IOException {
-    InputStreamReader inputStreamReader = null;
-    try {
-      inputStreamReader = new InputStreamReader(new FileInputStream(filename), "UTF-8");
+    try (InputStreamReader inputStreamReader = new InputStreamReader(Files.newInputStream(Paths.get(filename)), StandardCharsets.UTF_8)) {
       return xStream.fromXML(inputStreamReader);
-    } finally {
-      if (inputStreamReader != null) {
-        inputStreamReader.close();
-      }
     }
   }
 
@@ -177,7 +163,7 @@ public final class XMLUtils {
   public static void writeObjectToFile(Object object, String filename) throws IOException {
     OutputStreamWriter outputStreamWriter = null;
     try {
-      outputStreamWriter = new OutputStreamWriter(new FileOutputStream(filename), "UTF-8");
+      outputStreamWriter = new OutputStreamWriter(Files.newOutputStream(Paths.get(filename)), StandardCharsets.UTF_8);
       xStream.toXML(object, outputStreamWriter);
     } finally {
       if (outputStreamWriter != null) {
