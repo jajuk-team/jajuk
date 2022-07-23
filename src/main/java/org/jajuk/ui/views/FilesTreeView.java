@@ -28,12 +28,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -104,7 +99,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
   /** Directories selection. */
-  List<Directory> alDirs = new ArrayList<Directory>(10);
+  List<Directory> alDirs = new ArrayList<>(10);
   JMenuItem jmiDirRefresh;
   JMenuItem jmiDirDesynchro;
   JMenuItem jmiDirResynchro;
@@ -223,10 +218,10 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
     populateTree();
     // create tree
     createTree(true);
-    /**
-     * CAUTION ! we register several listeners against this tree Swing can't
-     * ensure the order where listeners will treat them so don't count in the
-     * mouse listener to get correct selection from selection listener
+    /*
+      CAUTION ! we register several listeners against this tree Swing can't
+      ensure the order where listeners will treat them so don't count in the
+      mouse listener to get correct selection from selection listener
      */
     jtree.setCellRenderer(new FilesTreeCellRenderer());
     // Tree selection listener to detect a selection (single click
@@ -432,7 +427,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
    * @param sync whether the directories should be synchronized
    */
   private void setSynchonizationStateRecursively(boolean sync) {
-    Set<Directory> directories = new HashSet<Directory>();
+    Set<Directory> directories = new HashSet<>();
     for (Item item : alSelected) {
       Directory dir = (Directory) item;
       directories.add(dir);
@@ -559,7 +554,7 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
     boolean stopLoop = false;
     // Keep tree path list here, do not put this call in the loop as
     // it would change at each node expand
-    List<TreePath> paths = new ArrayList<TreePath>();
+    List<TreePath> paths = new ArrayList<>();
     for (int i = 0; i < jtree.getRowCount(); i++) {
       TreePath path = jtree.getPathForRow(i);
       paths.add(path);
@@ -1019,7 +1014,11 @@ public class FilesTreeView extends AbstractTreeView implements ActionListener {
       list.add(new DirectoryNode(directory));
     }
     // then files
-    for (File file : parent.getFiles()) {
+    Set<File> files = parent.getFiles();
+    // The Set interface does not provide any ordering guarantees so we need to add a sort on file name
+    List<File> orderedFiles = new ArrayList<>(files);
+    Collections.sort(orderedFiles, (file1, file2) -> file1.getName().compareToIgnoreCase(file2.getName()));
+    for (File file : orderedFiles) {
       if (file.shouldBeHidden()) {
         continue;
       }
@@ -1103,7 +1102,7 @@ class DeviceNode extends LazyLoadingTreeNode {
    */
   @Override
   public MutableTreeNode[] loadChildren(DefaultTreeModel model) {
-    List<MutableTreeNode> list = new ArrayList<MutableTreeNode>();
+    List<MutableTreeNode> list = new ArrayList<>();
     // first level is the directory of the device itself, usually only one
     for (Directory parent : getDevice().getDirectories()) {
       // so for each directory that is listed for that Device we build up the
@@ -1122,8 +1121,7 @@ class DirectoryNode extends LazyLoadingTreeNode {
 
   /**
    * Constructor
-   * 
-   * @param Directory
+   * @param directory directory of the node
    */
   public DirectoryNode(Directory directory) {
     super(directory);
@@ -1151,7 +1149,7 @@ class DirectoryNode extends LazyLoadingTreeNode {
    */
   @Override
   public MutableTreeNode[] loadChildren(DefaultTreeModel model) {
-    List<MutableTreeNode> list = new ArrayList<MutableTreeNode>();
+    List<MutableTreeNode> list = new ArrayList<>();
     // simply collect all items one level below that directory
     FilesTreeView.populateFromDirectory(getDirectory(), list);
     return list.toArray(new MutableTreeNode[list.size()]);
@@ -1166,8 +1164,8 @@ class PlaylistFileNode extends DefaultMutableTreeNode {
 
   /**
    * Constructor
-   * 
-   * @param Playlist
+   *
+   * @param playlistFile playlist of the node
    */
   public PlaylistFileNode(Playlist playlistFile) {
     super(playlistFile);
