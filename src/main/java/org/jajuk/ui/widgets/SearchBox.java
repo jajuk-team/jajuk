@@ -87,8 +87,6 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
   private static final long serialVersionUID = 1L;
   /** Do search panel need a search. */
   private boolean bNeedSearch = false;
-  /** Default time in ms before launching a search automatically. */
-  private static final int WAIT_TIME = 1000;
   /** Minimum number of characters to start a search. */
   private static final int MIN_CRITERIA_LENGTH = 2;
   /** Search result. */
@@ -102,7 +100,7 @@ public class SearchBox extends JTextField implements KeyListener, ListSelectionL
   Timer timer = new Timer(100, new ActionListener() {
     @Override
     public void actionPerformed(ActionEvent arg0) {
-      if (bNeedSearch && (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
+      if (bNeedSearch && (System.currentTimeMillis() - lDateTyped >= Conf.getInt(Const.CONF_SEARCH_AUTO_SEARCH_DELAY))) {
         search();
       }
     }
