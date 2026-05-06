@@ -317,6 +317,10 @@ public final class Conf implements Const {
     defaults.put(CONF_NOT_SHOW_AGAIN_LAF_CHANGE, FALSE);
     defaults.put(CONF_STATS_MIN_VALUE_GENRE_DISPLAY, "2");
     defaults.put(CONF_TARGET_WORKSPACE_PATH, UtilSystem.getUserHome());
+    // Search auto-search delay in milliseconds (default 1 second)
+    defaults.put(CONF_SEARCH_AUTO_SEARCH_DELAY, "1000");
+    // Catalog auto-search delay in milliseconds (default 1 second)
+    defaults.put(CONF_CATALOG_AUTO_SEARCH_DELAY, "1000");
     // Make a copy of default values
     properties = (Properties) defaults.clone();
   }

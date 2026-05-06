@@ -118,8 +118,6 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
   private boolean bNeedSearch = false;
   /** Populating flag. */
   private boolean bPopulating = false;
-  /** Default time in ms before launching a search automatically. */
-  private static final int WAIT_TIME = 600;
   /** Date last key pressed. */
   private long lDateTyped;
   /** Last selected item. */
@@ -135,10 +133,10 @@ public class CatalogView extends ViewAdapter implements ActionListener, TwoSteps
   /** Last scrollbar position *. */
   private int scrollPosition;
   /** Swing Timer to refresh the component. */
-  private final Timer timerSearch = new Timer(WAIT_TIME, new ActionListener() {
+  private final Timer timerSearch = new Timer(100, new ActionListener() {
     @Override
     public void actionPerformed(ActionEvent e) {
-      if (bNeedSearch && !bPopulating && (System.currentTimeMillis() - lDateTyped >= WAIT_TIME)) {
+      if (bNeedSearch && !bPopulating && (System.currentTimeMillis() - lDateTyped >= Conf.getInt(Const.CONF_CATALOG_AUTO_SEARCH_DELAY))) {
         // reset paging
         page = 0;
         populateCatalog();
