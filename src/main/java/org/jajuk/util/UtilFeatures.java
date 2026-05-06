@@ -20,8 +20,8 @@
  */
 package org.jajuk.util;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -137,7 +137,7 @@ public final class UtilFeatures {
   public static List<org.jajuk.base.File> filterByAmbience(final List<org.jajuk.base.File> al,
       final Ambience ambience) {
     // If track list is null, return a void list
-    if (al == null || al.size() == 0) {
+    if (al == null || al.isEmpty()) {
       return new ArrayList<>(0);
     }
     // Void filter, return the input
@@ -180,7 +180,7 @@ public final class UtilFeatures {
   public static List<org.jajuk.base.File> getPlayableFiles(List<Item> selection) {
     // computes selection
     List<org.jajuk.base.File> files = new ArrayList<>(100);
-    if (selection == null || selection.size() == 0) {
+    if (selection == null || selection.isEmpty()) {
       return files;
     }
     for (Item item : selection) {
@@ -218,7 +218,7 @@ public final class UtilFeatures {
    * provided collection
    */
   public static <T> T getShuffleItem(final Collection<T> col) {
-    if (col.size() == 0) {
+    if (col.isEmpty()) {
       return null;
     }
     final List<T> list;
@@ -325,7 +325,7 @@ public final class UtilFeatures {
    */
   public static long getPreferenceForSelection(List<? extends Item> selection) {
     // We compute preference of first item selection) {
-    if (selection.size() == 0) {
+    if (selection.isEmpty()) {
       return Const.PREFERENCE_UNSET;
     }
     List<Item> items = new ArrayList<>(selection);
@@ -335,7 +335,7 @@ public final class UtilFeatures {
     List<Track> trackList = TrackManager.getInstance().getAssociatedTracks(items, false);
     // List shouldn't be void (except on collection node selection in tree view
     // for ie)
-    if (trackList.size() == 0) {
+    if (trackList.isEmpty()) {
       return Const.PREFERENCE_UNSET;
     }
     long sum = 0;
@@ -469,8 +469,10 @@ public final class UtilFeatures {
     // Note that the position file is written by the player during playing
     if (positionFile.exists()) {
       try {
-        String content = Files.readFirstLine(positionFile, Charsets.UTF_8);
-        out = Float.parseFloat(content);
+        java.util.List<String> lines = Files.readAllLines(positionFile.toPath(), StandardCharsets.UTF_8);
+        if (!lines.isEmpty()) {
+          out = Float.parseFloat(lines.get(0));
+        }
       } catch (Exception e) {
         Log.error(e);
       }
@@ -485,7 +487,8 @@ public final class UtilFeatures {
   public static void storePersistedPlayingPosition(float position) {
     java.io.File positionFile = SessionService.getConfFileByPath(Const.FILE_PLAYING_POSITION);
     try {
-      Files.write(Float.toString(position).getBytes(), positionFile);
+      java.util.List<String> lines = java.util.Collections.singletonList(Float.toString(position));
+      Files.write(positionFile.toPath(), lines, StandardCharsets.UTF_8);
     } catch (Exception e) {
       Log.error(e);
     }

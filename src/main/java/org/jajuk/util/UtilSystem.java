@@ -41,6 +41,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
@@ -69,8 +70,6 @@ import org.jajuk.util.error.JajukRuntimeException;
 import org.jajuk.util.filters.DirectoryFilter;
 import org.jajuk.util.filters.KnownTypeFilter;
 import org.jajuk.util.log.Log;
-
-import com.google.common.io.Files;
 
 /**
  * Set of convenient methods for system and IO.
@@ -208,7 +207,7 @@ public final class UtilSystem {
                 alFiles.remove(file);
                 Collections.sort(alFiles);
                 // too much backup files, delete older
-                if (((lUsedMB - file.length()) / 1048576 > iMB) && (alFiles.size() > 0)) {
+                if (((lUsedMB - file.length()) / 1048576 > iMB) && (!alFiles.isEmpty())) {
                     final File fileToDelete = alFiles.get(0);
                     if (fileToDelete != null) { // NOSONAR
                         if (!fileToDelete.delete()) {
@@ -271,7 +270,7 @@ public final class UtilSystem {
 
     /**
      * Move a file to another file (directories are not supported).
-     *
+     * <br>
      * Note that it may be better to use this method than java.io.File.renameTo() method that
      * doesn't seem to work always under windows (in special directories) and because this method
      * always return an exception in case of problem.
@@ -360,9 +359,16 @@ public final class UtilSystem {
                     "Saving file does not exist for file : " + finalFile.getAbsolutePath());
         }
         // Create the proof file
-        File proof = new File(
-                finalFile.getAbsoluteFile() + "." + Const.FILE_SAVED_PROOF_FILE_EXTENSION);
-        Files.touch(proof);
+         File proof = new File(
+                 finalFile.getAbsoluteFile() + "." + Const.FILE_SAVED_PROOF_FILE_EXTENSION);
+         try {
+             // Create the file if it doesn't exist
+             if (!proof.exists()) {
+                 proof.createNewFile();
+             }
+         } catch (IOException e) {
+             throw new IOException("Cannot create proof file: " + proof.getAbsolutePath(), e);
+         }
         if (finalFile.exists()) {
             deleteFile(finalFile);
         }
@@ -375,7 +381,7 @@ public final class UtilSystem {
      * does nothing but if a file has been partially saved using the @see
      * saveFileWithRecoverySupport() method, the previous version is revored. This is guarantee to
      * work always, except if the filesystem can't be read or written.
-     *
+     * <br>
      * Note that this generic method doesn't handle the special collection.xml backup files.
      *
      * <pre>
@@ -440,7 +446,7 @@ public final class UtilSystem {
             throws JajukException, IOException {
         if (src.isDirectory()) {
             if (!dst.mkdirs()) {
-                Log.warn("Could not create directory structure " + dst.toString());
+                Log.warn("Could not create directory structure " + dst);
             }
             final String[] list = src.list();
             for (final String element : list) {
@@ -478,7 +484,7 @@ public final class UtilSystem {
      * @throws IOException Signals that an I/O exception has occurred.
      */
     public static void createEmptyFile(final File file) throws IOException {
-        try (OutputStream fos = new FileOutputStream(file)) {
+        try (OutputStream fos = Files.newOutputStream(file.toPath())) {
             fos.write(new byte[0]);
         }
     }
@@ -988,7 +994,7 @@ public final class UtilSystem {
             if (s.contains(oldS)) {
                 s = s.replaceAll(oldS, newS);
                 try (Writer bw = new BufferedWriter(
-                        new OutputStreamWriter(new FileOutputStream(file), encoding))) {
+                        new OutputStreamWriter(Files.newOutputStream(file.toPath()), encoding))) {
                     bw.write(s);
                     bw.flush();
                 }
@@ -1234,7 +1240,7 @@ public final class UtilSystem {
 
     /**
      * Are we running in a KDE environment ?
-     *
+     * <br>
      * We check it by using ps command + a grep searching 'ksmserver' process.
      *
      * @return whether we are running in a KDE environment
@@ -1246,14 +1252,14 @@ public final class UtilSystem {
     /**
      * Walks the given sorted list of integer and invokes the given consumer for all ranges,
      * combining calls as much as possible.
-     *
+     * <br>
      * I.e. an array of [ 1, 2, 3, 5, 6, 7, 9 ] would result in calls with <1,3>, <5,7> and <9,9>
-     *
+     * <br>
      * An empty list leads to no invocation of the consumer.
-     *
+     * <br>
      * A list with one entry leads to one invocation of the consumer with start/end set to the
      * integer.
-     *
+     * <br>
      * Note: The array is expected to be sorted in the order in which the values should be listed.
      *
      * @param numbers The array of numbers

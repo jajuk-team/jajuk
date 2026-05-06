@@ -20,14 +20,11 @@
  */
 package org.jajuk.ui.helpers;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.jajuk.base.Device;
@@ -83,9 +80,9 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
    * complexity reasons. This may be implemented in the future if required
    * </p>
    *
-   * @param sPropertyName 
-   * @param sPattern 
-   * @param columnsToShow 
+   * @param sPropertyName property to use
+   * @param sPattern pattern filter
+   * @param columnsToShow columns to be visible
    */
   @Override
   public void populateModel(final String sPropertyName, final String sPattern,
@@ -98,34 +95,26 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
       alToShow = Filter.filterItems(alToShow, filter, Playlist.class);
       // Filter against the device attribute
     } else if (Const.XML_DEVICE.equals(sPropertyName)) {
-      alToShow = new ArrayList<Playlist>(Collections2.filter(alToShow, new Predicate<Playlist>() {
-        @Override
-        public boolean apply(Playlist playlist) {
-          return playlist.getDirectory().getDevice().getName().toLowerCase()
-              .contains(sPattern.toLowerCase());
-        }
-      }));
+      alToShow = alToShow.stream()
+          .filter(playlist -> playlist.getDirectory().getDevice().getName().toLowerCase()
+              .contains(sPattern.toLowerCase()))
+          .collect(Collectors.toList());
       // Filter against the PATH attribute
     } else if (Const.XML_PATH.equals(sPropertyName)) {
-      alToShow = new ArrayList<Playlist>(Collections2.filter(alToShow, new Predicate<Playlist>() {
-        @Override
-        public boolean apply(Playlist playlist) {
-          return playlist.getAbsolutePath().toLowerCase().contains(sPattern.toLowerCase());
-        }
-      }));
+      alToShow = alToShow.stream()
+          .filter(playlist -> playlist.getAbsolutePath().toLowerCase().contains(sPattern.toLowerCase()))
+          .collect(Collectors.toList());
       // Filter against "any"
     } else if (Const.XML_ANY.equals(sPropertyName)) {
-      alToShow = new ArrayList<Playlist>(Collections2.filter(alToShow, new Predicate<Playlist>() {
-        @Override
-        public boolean apply(Playlist playlist) {
-          return playlist.getAny().toLowerCase().contains(sPattern.toLowerCase());
-        }
-      }));
-    } // filter unavailable playlists
+      alToShow = alToShow.stream()
+          .filter(playlist -> playlist.getAny().toLowerCase().contains(sPattern.toLowerCase()))
+          .collect(Collectors.toList());
+    }
+    // filter unavailable playlists
     if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
       CollectionUtils.filter(alToShow, new JajukPredicates.ReadyPlaylistPredicate());
     }
-    Iterator<Playlist> it = null;
+    Iterator<Playlist> it;
     int iColNum = iNumberStandardCols + PlaylistManager.getInstance().getCustomProperties().size();
     iRowNum = alToShow.size();
     oValues = new Object[iRowNum][iColNum];
@@ -145,7 +134,7 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
       // Id
       oItems[iRow] = plf;
       // Play
-      IconLabel il = null;
+      IconLabel il;
       if (plf.getDirectory().getDevice().isMounted()) {
         il = getIcon(false);
       } else {

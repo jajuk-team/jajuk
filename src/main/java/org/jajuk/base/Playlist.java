@@ -20,14 +20,13 @@
  */
 package org.jajuk.base;
 
-import com.google.common.io.Files;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -65,8 +64,7 @@ import org.jajuk.util.log.Log;
  * A playlist
  * <p>
  * Physical item
- *
- *
+ * <br>
  * TODO: refactoring items for this class:
  * - split up the code into separate implementations for the different types
  * - create a base abstract playlist class that is used in the various places and
@@ -503,7 +501,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
         // make a local cache of filenames to speed up searching
         Map<String, File> map = getFileMapByFIO();
         while ((sLine = br.readLine()) != null) {
-          if (sLine.length() == 0) { // void line
+          if (sLine.isEmpty()) { // void line
             continue;
           }
           // replace '\' by '/'
@@ -525,12 +523,13 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
             // take a look relatively to playlist directory to check if the file exists
             fio = new java.io.File(sbFileDir.append(sLine).toString());
             String fioAbsPath = fio.getAbsolutePath();
-            // Check for file existence in jajuk collection using Guava Files.simplyPath
+            // Check for file existence in jajuk collection using path normalization
             // Don't use File.getAbsolutePath() because its result can contain ./ or ../
             // Don't use File.getCanonicalPath() because it resolves symlinks under unix.
-            File jajukFile = map.get(Files.simplifyPath(fioAbsPath));
+            String simplifiedPath = Paths.get(fioAbsPath).normalize().toString();
+            File jajukFile = map.get(simplifiedPath);
             if (jajukFile == null) {
-              jajukFile = map.get(Files.simplifyPath(fioAbsPath).toLowerCase());
+              jajukFile = map.get(simplifiedPath.toLowerCase());
             }
             if (jajukFile == null) { // check if this file is known in collection
               fio = new java.io.File(sLine); // check if given url is not absolute
@@ -588,7 +587,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
    */
   public void play() throws JajukException {
     alFiles = getFiles();
-    if ((alFiles == null) || (alFiles.size() == 0)) {
+    if ((alFiles == null) || (alFiles.isEmpty())) {
       Messages.showErrorMessage(18);
     } else {
       QueueModel.push(
@@ -890,7 +889,7 @@ public class Playlist extends PhysicalItem implements Comparable<Playlist> {
         String sPlaylist = Const.DEFAULT_PLAYLIST_FILE;
         // computes new playlist
         alFiles = getFiles();
-        if (alFiles.size() > 0) {
+        if (!alFiles.isEmpty()) {
           final File file = alFiles.get(0);
           if (getType() == Type.BESTOF) {
             sPlaylist = file.getDevice().getUrl() + java.io.File.separatorChar
