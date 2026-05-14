@@ -41,6 +41,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
@@ -990,7 +992,9 @@ public final class UtilSystem {
      */
     public static boolean replaceInFile(File file, String oldS, String newS, String encoding) {
         try {
-            String s = FileUtils.readFileToString(file);
+            // Use of Files.readString() - available since Java 11
+            String s = Files.readString(file.toPath(), Charset.forName(encoding));
+
             if (s.contains(oldS)) {
                 s = s.replaceAll(oldS, newS);
                 try (Writer bw = new BufferedWriter(
