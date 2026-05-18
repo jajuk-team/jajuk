@@ -1,8 +1,8 @@
 /*
  * aTunes 1.14.0 code adapted by Jajuk team
- * 
- * Original copyright notice bellow : 
- * 
+ *
+ * Original copyright notice bellow :
+ *
  * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
  *
  * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
@@ -20,7 +20,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package ext.services.lastfm;
+package org.jajuk.services.lastfm.model;
 
 /**
  * .
@@ -29,28 +29,32 @@ public class FullSubmissionData {
   private String artist;
   private String title;
   private String album;
-  private int duration;
+  private int duration; // The length of the track in seconds.
   private int trackNumber;
-  private String source;
-  private int startTime;
+  private long startTime; // The time the track started playing, in UNIX timestamp format (integer number of seconds since 00:00:00, January 1st 1970 UTC). This must be in the UTC time zone.
+  private String recommendationKey;
+  private int length;
+  private String rating;
 
   /**
    * Instantiates a new full submission data.
-   * 
-   * @param artist 
-   * @param title 
-   * @param album 
-   * @param duration 
-   * @param trackNumber 
-   * @param source 
-   * @param startTime 
+   *
+   * @param artist
+   * @param title
+   * @param album
+   * @param duration
+   * @param trackNumber
+   * @param startTime
    */
-  public FullSubmissionData(String artist, String title, String album, int duration,
-      int trackNumber, String source, int startTime) {
+  public FullSubmissionData(String artist,
+                            String title,
+                            String album,
+                            int duration,
+                            int trackNumber,
+                            long startTime) {
     this.album = album;
     this.artist = artist;
     this.duration = duration;
-    this.source = source;
     this.startTime = startTime;
     this.title = title;
     this.trackNumber = trackNumber;
@@ -58,7 +62,7 @@ public class FullSubmissionData {
 
   /**
    * Gets the artist.
-   * 
+   *
    * @return the artist
    */
   public String getArtist() {
@@ -67,7 +71,7 @@ public class FullSubmissionData {
 
   /**
    * Sets the artist.
-   * 
+   *
    * @param artist the artist to set
    */
   public void setArtist(String artist) {
@@ -76,7 +80,7 @@ public class FullSubmissionData {
 
   /**
    * Gets the title.
-   * 
+   *
    * @return the title
    */
   public String getTitle() {
@@ -85,7 +89,7 @@ public class FullSubmissionData {
 
   /**
    * Sets the title.
-   * 
+   *
    * @param title the title to set
    */
   public void setTitle(String title) {
@@ -94,7 +98,7 @@ public class FullSubmissionData {
 
   /**
    * Gets the album.
-   * 
+   *
    * @return the album
    */
   public String getAlbum() {
@@ -103,7 +107,7 @@ public class FullSubmissionData {
 
   /**
    * Sets the album.
-   * 
+   *
    * @param album the album to set
    */
   public void setAlbum(String album) {
@@ -112,7 +116,7 @@ public class FullSubmissionData {
 
   /**
    * Gets the duration.
-   * 
+   *
    * @return the duration
    */
   public int getDuration() {
@@ -121,7 +125,7 @@ public class FullSubmissionData {
 
   /**
    * Sets the duration.
-   * 
+   *
    * @param duration the duration to set
    */
   public void setDuration(int duration) {
@@ -130,7 +134,7 @@ public class FullSubmissionData {
 
   /**
    * Gets the track number.
-   * 
+   *
    * @return the trackNumber
    */
   public int getTrackNumber() {
@@ -139,7 +143,7 @@ public class FullSubmissionData {
 
   /**
    * Sets the track number.
-   * 
+   *
    * @param trackNumber the trackNumber to set
    */
   public void setTrackNumber(int trackNumber) {
@@ -147,38 +151,45 @@ public class FullSubmissionData {
   }
 
   /**
-   * Gets the source.
-   * 
-   * @return the source
-   */
-  public String getSource() {
-    return source;
-  }
-
-  /**
-   * Sets the source.
-   * 
-   * @param source the source to set
-   */
-  public void setSource(String source) {
-    this.source = source;
-  }
-
-  /**
    * Gets the start time.
-   * 
+   *
    * @return the startTime
    */
-  public int getStartTime() {
+  public long getStartTime() {
     return startTime;
   }
 
   /**
    * Sets the start time.
-   * 
+   *
    * @param startTime the startTime to set
    */
-  public void setStartTime(int startTime) {
+  public void setStartTime(long startTime) {
     this.startTime = startTime;
+  }
+
+
+  public int getLength() {
+    return length;
+  }
+
+  public void setLength(int length) {
+    this.length = length;
+  }
+
+  public String getRating() {
+    return rating;
+  }
+
+  public void setRating(String rating) {
+    this.rating = rating;
+  }
+
+  public String getRecommendationKey() {
+    return recommendationKey;
+  }
+
+  public void setRecommendationKey(String recommendationKey) {
+    this.recommendationKey = recommendationKey;
   }
 }

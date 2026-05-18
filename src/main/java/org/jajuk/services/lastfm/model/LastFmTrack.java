@@ -20,37 +20,73 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package ext.services.lastfm;
+package org.jajuk.services.lastfm.model;
 
 /**
- * .
+ * The Class LastFmTrack.
  */
-public interface TrackInfo {
+public class LastFmTrack implements TrackInfo {
+
+  /** The name of the track. */
+  private String title;
+
+  /** The duration of the track in milliseconds. */
+  private String duration;
+
+  /** The URL to the track page. */
+  private String url;
+
+  /**
+   * Gets the track.
+   * 
+   * @param t 
+   * 
+   * @return the track
+  protected static LastFmTrack getTrack(Track t) {
+    LastFmTrack track = new LastFmTrack();
+    track.title = t.getName();
+    track.url = t.getUrl();
+    return track;
+  }
+   */
+
   /**
    * Gets the title.
    * 
    * @return the title
    */
-  public String getTitle();
+  @Override
+  public String getTitle() {
+    return title;
+  }
 
   /**
    * Gets the url.
    * 
    * @return the url
    */
-  public String getUrl();
+  @Override
+  public String getUrl() {
+    return url;
+  }
 
   /**
    * Sets the title.
    * 
    * @param title the title to set
    */
-  public void setTitle(String title);
+  @Override
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
   /**
    * Sets the url.
    * 
    * @param url the url to set
    */
-  public void setUrl(String url);
+  @Override
+  public void setUrl(String url) {
+    this.url = url;
+  }
 }

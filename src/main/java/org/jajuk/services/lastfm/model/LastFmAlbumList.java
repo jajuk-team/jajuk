@@ -20,39 +20,57 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package ext.services.lastfm;
+package org.jajuk.services.lastfm.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * .
+ * The Class LastFmAlbumList.
  */
-public interface AlbumListInfo {
+public class LastFmAlbumList implements AlbumListInfo {
+  /** The artist. */
+  private String artist;
+  /** The albums. */
+  private List<AlbumInfo> albums;
+
   /**
    * Gets the albums.
    * 
    * @return the albums
    */
-  public List<AlbumInfo> getAlbums();
+  @Override
+  public List<AlbumInfo> getAlbums() {
+    return albums;
+  }
 
   /**
    * Gets the artist.
    * 
    * @return the artist
    */
-  public String getArtist();
+  @Override
+  public String getArtist() {
+    return artist;
+  }
 
   /**
    * Sets the albums.
    * 
    * @param albums the albums to set
    */
-  public void setAlbums(List<? extends AlbumInfo> albums);
+  @Override
+  public void setAlbums(List<? extends AlbumInfo> albums) {
+    this.albums = albums != null ? new ArrayList<>(albums) : null;
+  }
 
   /**
    * Sets the artist.
    * 
    * @param artist the artist to set
    */
-  public void setArtist(String artist);
+  @Override
+  public void setArtist(String artist) {
+    this.artist = artist;
+  }
 }

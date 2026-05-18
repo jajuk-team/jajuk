@@ -46,9 +46,9 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.border.DropShadowBorder;
 
-import ext.services.lastfm.AlbumInfo;
-import ext.services.lastfm.ArtistInfo;
-import ext.services.lastfm.LastFmService;
+import org.jajuk.services.lastfm.model.AlbumInfo;
+import org.jajuk.services.lastfm.model.ArtistInfo;
+import org.jajuk.services.lastfm.LastFmService;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -84,10 +84,7 @@ public class LastFmArtistThumbnail extends AbstractThumbnail {
   @Override
   public Item getItem() {
     org.jajuk.base.Artist item = ArtistManager.getInstance().getArtistByName(artist.getName());
-    if (item != null) {
-      return item;
-    }
-    return null;
+    return item;
   }
 
   /*
@@ -167,7 +164,8 @@ public class LastFmArtistThumbnail extends AbstractThumbnail {
       ImageIcon downloadedImage = new ImageIcon(image);
       // In artist view, do not reduce artist picture
       if (isArtistView()) {
-        ii = downloadedImage;
+        // If no size is given, the image may hide the text below
+        ii = UtilGUI.getScaledImage(downloadedImage, 200);
       } else {
         ii = UtilGUI.getScaledImage(downloadedImage, 100);
       }

@@ -37,7 +37,6 @@ import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Item;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.IconLoader;
@@ -49,9 +48,9 @@ import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.border.DropShadowBorder;
 
-import ext.services.lastfm.AlbumInfo;
-import ext.services.lastfm.LastFmService;
-import ext.services.lastfm.TrackInfo;
+import org.jajuk.services.lastfm.model.AlbumInfo;
+import org.jajuk.services.lastfm.LastFmService;
+import org.jajuk.services.lastfm.model.TrackInfo;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -72,7 +71,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
    * The Constructor.
    *
    * @param album :
-   * associated album
+   *              associated album
    */
   public LastFmAlbumThumbnail(AlbumInfo album) {
     super(100);
@@ -100,7 +99,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
     // populate album detail
     if (album.getTracks() == null) {
       AlbumInfo lAlbum = LastFmService.getInstance().getAlbum(this.album.getArtist(),
-          this.album.getTitle());
+              this.album.getTitle());
       if (lAlbum != null) {
         this.album = lAlbum;
       }
@@ -108,14 +107,14 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
     Color bgcolor = UtilGUI.getUltraLightColor();
     Color fgcolor = UtilGUI.getForegroundColor();
     String sOut = "<html bgcolor='#" + UtilGUI.getHTMLColor(bgcolor) + "'><TABLE color='"
-        + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + "<a href='file://"
-        + Const.XML_URL + '?' + album.getUrl() + "'>" + album.getTitle() + "</a>" + "</b><br><br>";
+            + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + "<a href='file://"
+            + Const.XML_URL + '?' + album.getUrl() + "'>" + album.getTitle() + "</a>" + "</b><br><br>";
     // display cover
     sOut += "<img src='" + album.getBigCoverURL() + "'><br>";
     // Display artist as global value only if it is a single artist album
     // We use file://<item type>?<item id> as HTML hyperlink format
     sOut += "<br>" + Messages.getHumanPropertyName(Const.XML_ARTIST) + " : " + "<a href='file://"
-        + Const.XML_URL + '?' + album.getArtistUrl() + "'>" + album.getArtist() + "</a>";
+            + Const.XML_URL + '?' + album.getArtistUrl() + "'>" + album.getArtist() + "</a>";
     // Display year if available
     String year = album.getYear();
     if (!StringUtils.isBlank(year)) {
@@ -126,7 +125,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
     if (album.getTracks() != null) {
       for (TrackInfo track : album.getTracks()) {
         sOut += "<b>" + "<a href='file://" + Const.XML_URL + '?' + track.getUrl() + "'>"
-            + track.getTitle() + "</a></b><br>";
+                + track.getTitle() + "</a></b><br>";
       }
     }
     sOut += "</TD></TR></TABLE></html>";
@@ -166,6 +165,10 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
       // Download image and store file reference (to generate the
       // popup thumb for ie)
       fCover = DownloadManager.downloadToCache(remote);
+      if (fCover == null) {
+        Log.warn("No cache file for {{" + albumUrl + "}}");
+        return;
+      }
       if (!fCover.exists()) {
         Log.warn("Cache file not found: {{" + fCover.getAbsolutePath() + "}}");
         return;
@@ -215,24 +218,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
    */
   @Override
   public void populate() {
-    // preLoad() downloads files from the internet and thus can block
-    // for a long time, so we should not run it in the AWT Event Queue
-    UtilGUI.populate(new TwoStepsDisplayable() {
-      @Override
-      public Object longCall() {
-        preLoad();
-
-        return null;
-      }
-
-      @Override
-      public void shortCall(Object in) {
-        finishPopulate();
-      }
-    });
-  }
-
-  private void finishPopulate() {
+    preLoad();
     if (ii == null) {
       return;
     }

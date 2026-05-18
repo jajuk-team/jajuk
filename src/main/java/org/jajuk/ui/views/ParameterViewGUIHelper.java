@@ -20,21 +20,6 @@
  */
 package org.jajuk.ui.views;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Properties;
-
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.SwingWorker;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.DeviceManager;
@@ -46,6 +31,8 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.core.RatingService;
 import org.jajuk.services.core.SessionService;
+import org.jajuk.services.lastfm.LastFmAuthenticator;
+import org.jajuk.services.lastfm.LastFmClient;
 import org.jajuk.services.notification.NotificatorTypes;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioHelper;
@@ -54,15 +41,20 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.widgets.InformationJPanel;
-import org.jajuk.util.Conf;
-import org.jajuk.util.Const;
-import org.jajuk.util.DownloadManager;
-import org.jajuk.util.LocaleManager;
-import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
-import org.jajuk.util.UtilString;
-import org.jajuk.util.UtilSystem;
+import org.jajuk.util.*;
 import org.jajuk.util.log.Log;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Properties;
 
 /**
  * Helper class containing GUI update code from and to configuration.
@@ -315,13 +307,8 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     pv.jtfDefaultCoverSearchPattern.setText(Conf.getString(Const.FILE_DEFAULT_COVER));
     pv.jcbAudioScrobbler.setSelected(Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE));
     pv.jcbEnableLastFMInformation.setSelected(Conf.getBoolean(Const.CONF_LASTFM_INFO));
-    pv.jtfASUser.setText(Conf.getString(Const.CONF_LASTFM_USER));
-    pv.jpfASPassword.setText(UtilString.rot13(Conf.getString(Const.CONF_LASTFM_PASSWORD)));
     if (!Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE)) {
-      pv.jlASUser.setEnabled(false);
-      pv.jtfASUser.setEnabled(false);
-      pv.jlASPassword.setEnabled(false);
-      pv.jpfASPassword.setEnabled(false);
+      pv.jbLastFmAuthenticate.setEnabled(false);
     }
   }
 
@@ -346,7 +333,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
   *
   */
   private void updateConfFromGUIOptions() {
-    HashMap<String, String> properties = new HashMap<String, String>(10);
+    HashMap<String, String> properties = new HashMap<>(10);
     properties.put(Const.CONF_OPTIONS_HIDE_UNMOUNTED,
         Boolean.toString(pv.jcbDisplayUnmounted.isSelected()));
     properties.put(Const.CONF_OPTIONS_PUSH_ON_CLICK,
@@ -357,9 +344,6 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         Boolean.toString(pv.jcbAudioScrobbler.isSelected()));
     properties.put(Const.CONF_LASTFM_INFO,
         Boolean.toString(pv.jcbEnableLastFMInformation.isSelected()));
-    properties.put(Const.CONF_LASTFM_USER, pv.jtfASUser.getText());
-    properties.put(Const.CONF_LASTFM_PASSWORD,
-        UtilString.rot13(new String(pv.jpfASPassword.getPassword())));
     final int iLogLevel = pv.scbLogLevel.getSelectedIndex();
     Log.setVerbosity(iLogLevel);
     properties.put(Const.CONF_OPTIONS_LOG_LEVEL, Integer.toString(iLogLevel));
@@ -402,7 +386,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
    *
    */
   private void updateConfFromGUIStartup() {
-    HashMap<String, String> properties = new HashMap<String, String>(10);
+    HashMap<String, String> properties = new HashMap<>(10);
     if (pv.jrbNothing.isSelected()) {
       properties.put(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOTHING);
     } else if (pv.jrbLast.isSelected()) {
@@ -426,7 +410,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
    *
    */
   private void updateConfFromGUIConfirmation() {
-    HashMap<String, String> properties = new HashMap<String, String>(10);
+    HashMap<String, String> properties = new HashMap<>(10);
     properties.put(Const.CONF_CONFIRMATIONS_DELETE_FILE,
         Boolean.toString(pv.jcbBeforeDelete.isSelected()));
     properties.put(Const.CONF_CONFIRMATIONS_EXIT, Boolean.toString(pv.jcbBeforeExit.isSelected()));
@@ -467,7 +451,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
    *
    */
   private void updateConfFromGUIPatterns() {
-    HashMap<String, String> properties = new HashMap<String, String>(10);
+    HashMap<String, String> properties = new HashMap<>(10);
     properties.put(Const.CONF_PATTERN_REFACTOR, pv.jtfRefactorPattern.getText());
     properties.put(Const.CONF_PATTERN_ANIMATION, pv.jtfAnimationPattern.getText());
     properties.put(Const.CONF_PATTERN_FRAME_TITLE, pv.jtfFrameTitle.getText());
@@ -481,7 +465,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
    *
    */
   private void updateConfFromGUIAdvanced() {
-    HashMap<String, String> properties = new HashMap<String, String>(10);
+    HashMap<String, String> properties = new HashMap<>(10);
     properties.put(Const.CONF_BACKUP_SIZE, Integer.toString(pv.backupSize.getValue()));
     properties.put(Const.CONF_REGEXP, Boolean.toString(pv.jcbRegexp.isSelected()));
     properties.put(Const.CONF_CHECK_FOR_UPDATE, Boolean.toString(pv.jcbCheckUpdates.isSelected()));
@@ -503,7 +487,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
    *
    */
   private void updateConfFromGUIGUI() {
-    HashMap<String, String> properties = new HashMap<String, String>(10);
+    HashMap<String, String> properties = new HashMap<>(10);
     properties.put(Const.CONF_CATALOG_PAGE_SIZE, Integer.toString(pv.jsCatalogPages.getValue()));
     properties.put(Const.CONF_SHOW_POPUPS, Boolean.toString(pv.jcbShowPopups.isSelected()));
     properties.put(Const.CONF_SPLASH_SCREEN, Boolean.toString(pv.jcbSplashscreen.isSelected()));
@@ -547,7 +531,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
   *
   */
   private void updateConfFromGUINetwork() {
-    HashMap<String, String> properties = new HashMap<String, String>(10);
+    HashMap<String, String> properties = new HashMap<>(10);
     properties.put(Const.CONF_NETWORK_NONE_INTERNET_ACCESS,
         Boolean.toString(pv.jcbNoneInternetAccess.isSelected()));
     properties.put(Const.CONF_NETWORK_USE_PROXY, Boolean.toString(!pv.jcbProxyNone.isSelected()));
@@ -572,7 +556,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
    *
    */
   private void updateConfFromGUICover() {
-    HashMap<String, String> properties = new HashMap<String, String>(10);
+    HashMap<String, String> properties = new HashMap<>(10);
     properties.put(Const.CONF_COVERS_MIRROW_COVER, Boolean.toString(pv.jcb3dCover.isSelected()));
     properties.put(Const.CONF_COVERS_MIRROW_COVER_FS_MODE,
         Boolean.toString(pv.jcb3dCoverFS.isSelected()));
@@ -598,7 +582,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         // Check workspace presence and create it if required
         final java.io.File fWorkspace = new java.io.File(pv.psJajukWorkspace.getUrl());
         if (!fWorkspace.exists() && !fWorkspace.mkdirs()) {
-          Log.warn("Could not create directory " + fWorkspace.toString());
+          Log.warn("Could not create directory " + fWorkspace);
         }
         if (!fWorkspace.canRead()) {
           Messages.showErrorMessage(165);
@@ -755,17 +739,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         pv.jcbCoverSize.setEnabled(false);
       }
     } else if (e.getSource() == pv.jcbAudioScrobbler) {
-      if (pv.jcbAudioScrobbler.isSelected()) {
-        pv.jlASUser.setEnabled(true);
-        pv.jtfASUser.setEnabled(true);
-        pv.jlASPassword.setEnabled(true);
-        pv.jpfASPassword.setEnabled(true);
-      } else {
-        pv.jlASUser.setEnabled(false);
-        pv.jtfASUser.setEnabled(false);
-        pv.jlASPassword.setEnabled(false);
-        pv.jpfASPassword.setEnabled(false);
-      }
+      pv.jbLastFmAuthenticate.setEnabled(pv.jcbAudioScrobbler.isSelected());
     } else if (e.getSource() == pv.scbLanguage) {
       Locale locale = LocaleManager.getLocaleForDesc(((JLabel) pv.scbLanguage.getSelectedItem())
           .getText());
@@ -805,9 +779,9 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
       }
       pv.crossFadeDuration.setEnabled(!pv.jcbEnableBitPerfect.isSelected());
     } else if (e.getSource().equals(pv.jbReloadRadiosPreset)) {
-      SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
+      SwingWorker<Boolean, Void> worker = new SwingWorker<>() {
         @Override
-        protected Boolean doInBackground() throws Exception {
+        protected Boolean doInBackground() {
           try {
             java.io.File fPresets = SessionService.getConfFileByPath(Const.FILE_WEB_RADIOS_PRESET);
             DownloadManager.download(new URL(Const.URL_WEBRADIO_PRESETS), fPresets);
@@ -835,6 +809,8 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         }
       };
       worker.execute();
+    } else if (e.getSource().equals(pv.jbLastFmAuthenticate)) {
+      onAuthenticateLastFm();
     }
   }
 
@@ -861,4 +837,41 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     // when changing tab, store it for future jajuk sessions
     Conf.setProperty(Const.CONF_OPTIONS_TAB, Integer.toString(pv.jtpMain.getSelectedIndex()));
   }
+
+  /**
+   * Get a Last.Fm session key and store it in configuration file.
+   */
+  private void onAuthenticateLastFm() {
+    // TODO : should be stored in external file, but it requires allowing the user to change them also
+    String apiKey = LastFmClient.API_KEY;
+    String apiSecret = LastFmClient.API_SECRET;
+
+    // Launched in SwingWorker process to prevent freezing UI
+    SwingWorker<String, Void> worker = new SwingWorker<>() {
+      @Override
+      protected String doInBackground() throws Exception {
+        LastFmAuthenticator auth = new LastFmAuthenticator(apiKey, apiSecret);
+        return auth.authenticate();
+      }
+
+      @Override
+      protected void done() {
+        try {
+          String sessionKey = get();
+          if (sessionKey != null) {
+            // Storing session key
+            Conf.setProperty(Const.CONF_LASTFM_SESSION_KEY, sessionKey);
+            Messages.showInfoMessage("Authentification Last.fm successful !\nScrobbling is now active.", "Success");
+          } else {
+            Messages.showInfoMessage("Authentification failed. Please try again.", "Error");
+          }
+        } catch (Exception e) {
+          Log.info("Error during Last.fm authentification : " + e.getMessage());
+          Messages.showInfoMessage("An unexpected error occured : " + e.getMessage(), "Error");
+        }
+      }
+    };
+    worker.execute();
+  }
+
 }

@@ -18,53 +18,23 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-package ext.services.lastfm;
+package org.jajuk.services.lastfm;
+
+import junit.framework.TestCase;
+import org.jajuk.services.lastfm.model.AlbumInfo;
+import org.jajuk.services.lastfm.model.LastFmAlbum;
+import org.jajuk.services.lastfm.model.LastFmAlbumList;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import junit.framework.TestCase;
-import de.umass.lastfm.Album;
-
-import org.jajuk.util.UtilString;
 
 /**
  * .
  */
 public class TestLastFmAlbumList extends TestCase {
-  /** The Constant API_KEY.   */
-  private static final String API_KEY = "711591ss6q695ps349o6681pr1oq1467";
 
   /**
-   * Test method for.
-   *
-   * {@link ext.services.lastfm.LastFmAlbumList#getAlbumList(java.util.Collection, java.lang.String)}
-   * .
-   */
-  public void testGetAlbumList() {
-    List<Album> list = getAlbumList();
-    AlbumListInfo info = LastFmAlbumList.getAlbumList(list, "Red Hot Chili Peppers");
-    assertNotNull(info);
-    assertEquals(2, info.getAlbums().size());
-  }
-
-  /**
-   * Gets the album list.
-   *
-   * @return the album list
-   */
-  private List<Album> getAlbumList() {
-    Album a1 = Album.getInfo("Red Hot Chili Peppers", "By The Way", UtilString.rot13(API_KEY));
-    Album a2 = Album.getInfo("Red Hot Chili Peppers", "Stadium Arcadium",
-        UtilString.rot13(API_KEY));
-    List<Album> list = new ArrayList<Album>();
-    list.add(a1);
-    list.add(a2);
-    return list;
-  }
-
-  /**
-   * Test method for {@link ext.services.lastfm.LastFmAlbumList#getAlbums()}.
+   * Test method for {@link org.jajuk.services.lastfm.model.LastFmAlbumList#getAlbums()}.
    */
   public void testGetAlbums() {
     LastFmAlbumList list = new LastFmAlbumList();
@@ -79,7 +49,7 @@ public class TestLastFmAlbumList extends TestCase {
   }
 
   /**
-   * Test method for {@link ext.services.lastfm.LastFmAlbumList#getArtist()}.
+   * Test method for {@link org.jajuk.services.lastfm.model.LastFmAlbumList#getArtist()}.
    */
   public void testGetArtist() {
     LastFmAlbumList list = new LastFmAlbumList();
@@ -91,7 +61,7 @@ public class TestLastFmAlbumList extends TestCase {
   /**
    * Test method for.
    *
-   * {@link ext.services.lastfm.LastFmAlbumList#setAlbums(java.util.List)}.
+   * {@link org.jajuk.services.lastfm.model.LastFmAlbumList#setAlbums(java.util.List)}.
    */
   public void testSetAlbums() {
     // tested above
@@ -100,7 +70,7 @@ public class TestLastFmAlbumList extends TestCase {
   /**
    * Test method for.
    *
-   * {@link ext.services.lastfm.LastFmAlbumList#setArtist(java.lang.String)}.
+   * {@link org.jajuk.services.lastfm.model.LastFmAlbumList#setArtist(java.lang.String)}.
    */
   public void testSetArtist() {
     // tested above

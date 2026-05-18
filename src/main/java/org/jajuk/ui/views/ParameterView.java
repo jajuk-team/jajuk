@@ -20,38 +20,7 @@
  */
 package org.jajuk.ui.views;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.InputVerifier;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JSlider;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.plaf.basic.BasicComboBoxRenderer;
-
+import net.miginfocom.swing.MigLayout;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.SearchResult.SearchResultType;
 import org.jajuk.events.JajukEvent;
@@ -63,20 +32,9 @@ import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.DefaultMouseWheelListener;
 import org.jajuk.ui.helpers.PatternInputVerifier;
-import org.jajuk.ui.widgets.InformationJPanel;
+import org.jajuk.ui.widgets.*;
 import org.jajuk.ui.widgets.InformationJPanel.MessageType;
-import org.jajuk.ui.widgets.JajukButton;
-import org.jajuk.ui.widgets.PathSelector;
-import org.jajuk.ui.widgets.SearchBox;
-import org.jajuk.ui.widgets.SteppedComboBox;
-import org.jajuk.ui.widgets.ToggleLink;
-import org.jajuk.util.Conf;
-import org.jajuk.util.Const;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukIcons;
-import org.jajuk.util.LocaleManager;
-import org.jajuk.util.Messages;
-import org.jajuk.util.UtilSystem;
+import org.jajuk.util.*;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.JXCollapsiblePane;
@@ -84,7 +42,18 @@ import org.jdesktop.swingx.VerticalLayout;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.SkinInfo;
 
-import net.miginfocom.swing.MigLayout;
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.plaf.basic.BasicComboBoxRenderer;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * View used to set Jajuk parameters.
@@ -128,10 +97,6 @@ public class ParameterView extends ViewAdapter {
   JCheckBox jcbDisplayUnmounted;
   JCheckBox jcbAudioScrobbler;
   JButton jbResetDontShowAgain;
-  JLabel jlASUser;
-  JTextField jtfASUser;
-  JLabel jlASPassword;
-  JPasswordField jpfASPassword;
   SteppedComboBox scbLanguage;
   JTextField jtfFrameTitle;
   /** Balloon notifier pattern text field. */
@@ -187,6 +152,7 @@ public class ParameterView extends ViewAdapter {
   JLabel jlFonts;
   JSlider jsFonts;
   JCheckBox jcbEnableLastFMInformation;
+  JButton jbLastFmAuthenticate;
   JButton jbOK;
   JButton jbDefault;
   JCheckBox jcbCheckUpdates;
@@ -834,22 +800,16 @@ public class ParameterView extends ViewAdapter {
     jcbAudioScrobbler = new JCheckBox(Messages.getString("ParameterView.199"));
     jcbAudioScrobbler.setToolTipText(Messages.getString("ParameterView.200"));
     jcbAudioScrobbler.addActionListener(updateHelper);
-    jlASUser = new JLabel(Messages.getString("ParameterView.201"));
-    jtfASUser = new JTextField();
-    jtfASUser.setToolTipText(Messages.getString("ParameterView.202"));
-    jlASPassword = new JLabel(Messages.getString("ParameterView.203"));
-    jpfASPassword = new JPasswordField();
-    jpfASPassword.setToolTipText(Messages.getString("ParameterView.204"));
     jcbEnableLastFMInformation = new JCheckBox(Messages.getString("ParameterView.240"));
     jcbEnableLastFMInformation.setToolTipText(Messages.getString("ParameterView.241"));
+    jbLastFmAuthenticate = new JButton(Messages.getString("ParameterView.312"));
+    jbLastFmAuthenticate.addActionListener(updateHelper);
+
     // Add items
     JPanel jpLastFM = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[grow]"));
     jpLastFM.add(jcbEnableLastFMInformation, "wrap");
     jpLastFM.add(jcbAudioScrobbler, "wrap");
-    jpLastFM.add(jlASUser);
-    jpLastFM.add(jtfASUser, "wrap,grow,width 100:300:300");
-    jpLastFM.add(jlASPassword);
-    jpLastFM.add(jpfASPassword, "wrap,grow,width 100:300:300");
+    jpLastFM.add(jbLastFmAuthenticate, "wrap");
     return jpLastFM;
   }
 

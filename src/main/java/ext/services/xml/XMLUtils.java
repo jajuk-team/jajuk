@@ -1,8 +1,8 @@
-/*
+/*    // UTF-8 is guaranteedti, aucune exception vérifiée n'est levée
  * aTunes 1.14.0 code adapted by Jajuk team
- * 
- * Original copyright notice bellow : 
- * 
+ *
+ * Original copyright notice bellow :
+ *
  * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
  *
  * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
@@ -54,8 +54,13 @@ import org.xml.sax.InputSource;
 public final class XMLUtils {
   /** The x stream. */
   private static final XStream xStream = new XStream(new DomDriver());
+
   static {
-    xStream.allowTypesByWildcard(new String[] {XMLUtils.class.getPackage().getName()+".*" });
+    xStream.allowTypesByWildcard(new String[]{
+            XMLUtils.class.getPackage().getName() + ".*",
+            // Add Last.fm model package
+            "org.jajuk.services.lastfm.model.*"
+    });
   }
 
   /**
@@ -66,10 +71,9 @@ public final class XMLUtils {
 
   /**
    * Gets the child element.
-   * 
-   * @param el element
+   *
+   * @param el      element
    * @param tagName tag name
-   * 
    * @return the child element
    */
   public static Element getChildElement(Element el, String tagName) {
@@ -85,10 +89,9 @@ public final class XMLUtils {
 
   /**
    * Gets the attribute value.
-   * 
-   * @param el element
+   *
+   * @param el            element
    * @param attributeName attribute name
-   * 
    * @return the attribute value
    */
   public static String getAttributeValue(Element el, String attributeName) {
@@ -97,10 +100,9 @@ public final class XMLUtils {
 
   /**
    * Gets the child element content.
-   * 
-   * @param el element
+   *
+   * @param el      element
    * @param tagName tag name
-   * 
    * @return the child element content
    */
   public static String getChildElementContent(Element el, String tagName) {
@@ -110,10 +112,9 @@ public final class XMLUtils {
 
   /**
    * Writes an object to an XML file.
-   * 
-   * @param bean the bean
+   *
+   * @param bean     the bean
    * @param filename the filename
-   * 
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void writeBeanToFile(Object bean, String filename) throws IOException {
@@ -124,11 +125,10 @@ public final class XMLUtils {
 
   /**
    * Reads an object from an XML file.
-   * 
+   *
    * @param filename the filename
-   * 
    * @return the object
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static Object readBeanFromFile(String filename) throws IOException {
@@ -139,11 +139,10 @@ public final class XMLUtils {
 
   /**
    * Reads an object from a file as xml.
-   * 
+   *
    * @param filename filename
-   * 
    * @return The object read from the xml file
-   * 
+   *
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static Object readObjectFromFile(String filename) throws IOException {
@@ -154,10 +153,9 @@ public final class XMLUtils {
 
   /**
    * Writes an object to a file as xml.
-   * 
-   * @param object Object that should be writen to a xml file
+   *
+   * @param object   Object that should be writen to a xml file
    * @param filename filename
-   * 
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void writeObjectToFile(Object object, String filename) throws IOException {
@@ -177,9 +175,8 @@ public final class XMLUtils {
    * Return a DOM document for a given string <br>
    * In case of parsing error, this method handles the exception and null is
    * returned.
-   * 
+   *
    * @param xml the string to parse
-   * 
    * @return a DOM document for a given string
    */
   public static Document getDocument(String xml) {

@@ -20,7 +20,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package ext.services.lastfm;
+package org.jajuk.services.lastfm.model;
 
 /**
  * Interface for all audio objects (e.g. AudioFile, Radio, PodcastFeedEntry)

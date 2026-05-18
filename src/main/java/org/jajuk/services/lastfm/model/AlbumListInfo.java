@@ -20,79 +20,39 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package ext.services.lastfm;
+package org.jajuk.services.lastfm.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import de.umass.lastfm.Album;
-
 /**
- * The Class LastFmAlbumList.
+ * .
  */
-public class LastFmAlbumList implements AlbumListInfo {
-  /** The artist. */
-  private String artist;
-  /** The albums. */
-  private List<AlbumInfo> albums;
-
-  /**
-   * Gets the album list.
-   * 
-   * @param as 
-   * @param artist 
-   * 
-   * @return the album list
-   */
-  public static AlbumListInfo getAlbumList(Collection<Album> as, String artist) {
-    List<AlbumInfo> albums = new ArrayList<AlbumInfo>();
-    AlbumListInfo albumList = new LastFmAlbumList();
-    for (Album a : as) {
-      AlbumInfo album = LastFmAlbum.getAlbum(a, null);
-      albums.add(album);
-    }
-    albumList.setAlbums(albums);
-    return albumList;
-  }
-
+public interface AlbumListInfo {
   /**
    * Gets the albums.
    * 
    * @return the albums
    */
-  @Override
-  public List<AlbumInfo> getAlbums() {
-    return albums;
-  }
+  List<AlbumInfo> getAlbums();
 
   /**
    * Gets the artist.
    * 
    * @return the artist
    */
-  @Override
-  public String getArtist() {
-    return artist;
-  }
+  String getArtist();
 
   /**
    * Sets the albums.
    * 
    * @param albums the albums to set
    */
-  @Override
-  public void setAlbums(List<? extends AlbumInfo> albums) {
-    this.albums = albums != null ? new ArrayList<AlbumInfo>(albums) : null;
-  }
+  void setAlbums(List<? extends AlbumInfo> albums);
 
   /**
    * Sets the artist.
    * 
    * @param artist the artist to set
    */
-  @Override
-  public void setArtist(String artist) {
-    this.artist = artist;
-  }
+  void setArtist(String artist);
 }

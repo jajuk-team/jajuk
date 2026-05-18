@@ -56,7 +56,7 @@ public final class StartupAsyncService {
   /**
    * Asynchronous tasks executed at startup at the same time (for perf).
    * 
-   * @param bCollectionLoadRecover 
+   * We do not execute these tasks in the main thread to avoid perturbations of
    */
   public static void startupAsyncAfterCollectionLoad() {
     Thread startup = new Thread("Startup Async After Collection Load Thread") {

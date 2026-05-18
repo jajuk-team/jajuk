@@ -20,7 +20,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package ext.services.lastfm;
+package org.jajuk.services.lastfm.model;
 
 import javax.swing.ImageIcon;
 
@@ -29,86 +29,93 @@ import javax.swing.ImageIcon;
  */
 public interface ArtistInfo {
   /**
+   * Gets the id.
+   *
+   * @return the id
+   */
+  String getId();
+
+  /**
    * Gets the image.
    * 
    * @return the image
    */
-  public ImageIcon getImage();
+  ImageIcon getImage();
 
   /**
    * Gets the image url.
    * 
    * @return the image url
    */
-  public String getImageUrl();
+  String getImageUrl();
 
   /**
    * Gets the match.
    * 
    * @return the match
    */
-  public String getMatch();
+  String getMatch();
 
   /**
    * Gets the name.
    * 
    * @return the name
    */
-  public String getName();
+  String getName();
 
   /**
    * Gets the url.
    * 
    * @return the url
    */
-  public String getUrl();
+  String getUrl();
 
   /**
    * Sets the image.
    * 
    * @param image the new image
    */
-  public void setImage(ImageIcon image);
+  void setImage(ImageIcon image);
 
   /**
    * Sets the image url.
    * 
    * @param imageUrl the imageUrl to set
    */
-  public void setImageUrl(String imageUrl);
+  void setImageUrl(String imageUrl);
 
   /**
    * Sets the match.
    * 
    * @param match the match to set
    */
-  public void setMatch(String match);
+  void setMatch(String match);
 
   /**
    * Sets the name.
    * 
    * @param name the name to set
    */
-  public void setName(String name);
+  void setName(String name);
 
   /**
    * Sets the url.
    * 
    * @param url the url to set
    */
-  public void setUrl(String url);
+  void setUrl(String url);
 
   /**
    * Sets the available property.
    * 
    * @param available 
    */
-  public void setAvailable(boolean available);
+  void setAvailable(boolean available);
 
   /**
    * Returns if available.
    * 
    * @return true if the available property is set
    */
-  public boolean isAvailable();
+  boolean isAvailable();
 }

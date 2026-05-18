@@ -20,7 +20,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package ext.services.lastfm;
+package org.jajuk.services.lastfm.model;
 
 import java.util.List;
 
@@ -33,40 +33,40 @@ public interface SimilarArtistsInfo {
    * 
    * @return the artist name
    */
-  public String getArtistName();
+  String getArtistName();
 
   /**
    * Gets the artists.
    * 
    * @return the artists
    */
-  public List<ArtistInfo> getArtists();
+  List<ArtistInfo> getArtists();
 
   /**
    * Gets the picture.
    * 
    * @return the picture
    */
-  public String getPicture();
+//  public String getPicture();
 
   /**
    * Sets the artist name.
    * 
    * @param artistName the artistName to set
    */
-  public void setArtistName(String artistName);
+  void setArtistName(String artistName);
 
   /**
    * Sets the artists.
    * 
    * @param artists the artists to set
    */
-  public void setArtists(List<ArtistInfo> artists);
+  void setArtists(List<ArtistInfo> artists);
 
   /**
    * Sets the picture.
    * 
    * @param picture the picture to set
    */
-  public void setPicture(String picture);
+//  public void setPicture(String picture);
 }

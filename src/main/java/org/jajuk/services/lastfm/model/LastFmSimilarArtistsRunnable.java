@@ -20,12 +20,13 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package ext.services.lastfm;
+package org.jajuk.services.lastfm.model;
 
 import java.awt.Image;
 
 import javax.swing.SwingUtilities;
 
+import org.jajuk.services.lastfm.LastFmService;
 import org.apache.commons.lang3.StringUtils;
 import org.jajuk.util.Messages;
 
@@ -34,15 +35,15 @@ import org.jajuk.util.Messages;
  */
 public class LastFmSimilarArtistsRunnable implements Runnable {
   /** The listener. */
-  ContextListener listener;
+  private final ContextListener listener;
   /** The service. */
-  private LastFmService service;
+  private final LastFmService service;
   /** The artist. */
-  private String artist;
+  private final String artist;
   /** The interrupted. */
   private volatile boolean interrupted;
   /** The id. */
-  long id;
+  private final long id;
 
   /**
    * Instantiates a new audio scrobbler similar artists runnable.
@@ -53,7 +54,7 @@ public class LastFmSimilarArtistsRunnable implements Runnable {
    * @param id the id
    */
   public LastFmSimilarArtistsRunnable(ContextListener listener, LastFmService service,
-      String artist, long id) {
+                                      String artist, long id) {
     this.listener = listener;
     this.service = service;
     this.artist = artist;
@@ -76,39 +77,22 @@ public class LastFmSimilarArtistsRunnable implements Runnable {
   public void run() {
     if (!interrupted && StringUtils.isNotBlank(artist)
         && !artist.equalsIgnoreCase(Messages.getString("unknown_artist"))) {
-      SimilarArtistsInfo artists = service.getSimilarArtists(artist);
-      if (!interrupted && artists != null) {
-        SwingUtilities.invokeLater(new Runnable() {
-          @Override
-          public void run() {
-            listener.notifyStartRetrievingArtistImages(id);
+      SimilarArtistsInfo similarArtistsInfo = service.getSimilarArtists(artist);
+      if (!interrupted && similarArtistsInfo != null) {
+        SwingUtilities.invokeLater(() -> listener.notifyStartRetrievingArtistImages(id));
+        final ArtistInfo artistInfo = service.getArtist(artist);
+        if (artistInfo != null) {
+          final Image artistImage = service.getImage(artistInfo);
+          if (!interrupted && artistImage != null) {
+            SwingUtilities.invokeLater(() -> listener.notifyArtistImage(artistImage, id));
           }
-        });
-        final Image artistImage = service.getImage(artists);
-        if (!interrupted && artistImage != null) {
-          SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-              listener.notifyArtistImage(artistImage, id);
-            }
-          });
         }
-        for (int i = 0; i < artists.getArtists().size(); i++) {
-          final Image img;
-          final ArtistInfo a = artists.getArtists().get(i);
-          if (!interrupted) {
-            img = service.getImage(a);
-          } else {
-            img = null;
+        for (ArtistInfo a : similarArtistsInfo.getArtists()) {
+          if (interrupted) {
+            break;
           }
-          if (!interrupted) {
-            SwingUtilities.invokeLater(new Runnable() {
-              @Override
-              public void run() {
-                listener.notifyFinishGetSimilarArtist(a, img, id);
-              }
-            });
-          }
+          final Image img = service.getImage(a);
+          SwingUtilities.invokeLater(() -> listener.notifyFinishGetSimilarArtist(a, img, id));
         }
       }
     }

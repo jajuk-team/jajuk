@@ -1,8 +1,8 @@
 /*
  * aTunes 1.14.0 code adapted by Jajuk team
- * 
- * Original copyright notice bellow : 
- * 
+ *
+ * Original copyright notice bellow :
+ *
  * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
  *
  * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
@@ -20,17 +20,18 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package ext.services.lastfm;
+package org.jajuk.services.lastfm.model;
 
-import javax.swing.ImageIcon;
-
-import de.umass.lastfm.Artist;
-import de.umass.lastfm.ImageSize;
+import javax.swing.*;
 
 /**
  * The Class LastFmArtist.
  */
 public class LastFmArtist implements ArtistInfo {
+
+  /** The Music Brainz id. */
+  private String id;
+
   /** The name. */
   private String name;
   /** The match. */
@@ -47,25 +48,30 @@ public class LastFmArtist implements ArtistInfo {
 
   /**
    * Gets the artist.
-   * 
-   * @param a 
-   * 
+   *
+   * @param a
+   *
    * @return the artist
-   */
   public static LastFmArtist getArtist(Artist a) {
-    LastFmArtist artist = new LastFmArtist();
-    artist.name = a.getName();
-    artist.match = String.valueOf(a.getSimilarityMatch());
-    String url2 = a.getUrl();
-    artist.url = url2.startsWith("http") ? url2 : "http://" + url2;
-    // SMALL images have low quality when scaling. Better to get largest image
-    artist.imageUrl = a.getImageURL(ImageSize.LARGE);
-    return artist;
+  LastFmArtist artist = new LastFmArtist();
+  artist.name = a.getName();
+  artist.match = String.valueOf(a.getSimilarityMatch());
+  String url2 = a.getUrl();
+  artist.url = url2.startsWith("http") ? url2 : "http://" + url2;
+  // SMALL images have low quality when scaling. Better to get largest image
+  artist.imageUrl = a.getImageURL(ImageSize.LARGE);
+  return artist;
+  }
+   */
+
+  @Override
+  public String getId() {
+    return id;
   }
 
   /**
    * Gets the image.
-   * 
+   *
    * @return the image
    */
   @Override
@@ -75,7 +81,7 @@ public class LastFmArtist implements ArtistInfo {
 
   /**
    * Gets the image url.
-   * 
+   *
    * @return the image url
    */
   @Override
@@ -85,7 +91,7 @@ public class LastFmArtist implements ArtistInfo {
 
   /**
    * Gets the match.
-   * 
+   *
    * @return the match
    */
   @Override
@@ -95,7 +101,7 @@ public class LastFmArtist implements ArtistInfo {
 
   /**
    * Gets the name.
-   * 
+   *
    * @return the name
    */
   @Override
@@ -105,7 +111,7 @@ public class LastFmArtist implements ArtistInfo {
 
   /**
    * Gets the url.
-   * 
+   *
    * @return the url
    */
   @Override
@@ -113,9 +119,13 @@ public class LastFmArtist implements ArtistInfo {
     return url;
   }
 
+  public void setId(String id) {
+    this.id = id;
+  }
+
   /**
    * Sets the image.
-   * 
+   *
    * @param image the new image
    */
   @Override
@@ -125,7 +135,7 @@ public class LastFmArtist implements ArtistInfo {
 
   /**
    * Sets the image url.
-   * 
+   *
    * @param imageUrl the imageUrl to set
    */
   @Override
@@ -135,7 +145,7 @@ public class LastFmArtist implements ArtistInfo {
 
   /**
    * Sets the match.
-   * 
+   *
    * @param match the match to set
    */
   @Override
@@ -145,7 +155,7 @@ public class LastFmArtist implements ArtistInfo {
 
   /**
    * Sets the name.
-   * 
+   *
    * @param name the name to set
    */
   @Override
@@ -155,7 +165,7 @@ public class LastFmArtist implements ArtistInfo {
 
   /**
    * Sets the url.
-   * 
+   *
    * @param url the url to set
    */
   @Override
@@ -165,7 +175,7 @@ public class LastFmArtist implements ArtistInfo {
 
   /**
    * Checks if is available.
-   * 
+   *
    * @return the available
    */
   @Override
@@ -175,11 +185,26 @@ public class LastFmArtist implements ArtistInfo {
 
   /**
    * Sets the available.
-   * 
+   *
    * @param available the available to set
    */
   @Override
   public void setAvailable(boolean available) {
     this.available = available;
+  }
+
+  /**
+   * Loads the ImageIcon from the extracted URL.
+   * Call this after setting imageUrl if you need the icon immediately.
+   */
+  public void loadImage() {
+    if (imageUrl != null && !imageUrl.isEmpty()) {
+      try {
+        this.image = new ImageIcon(new java.net.URL(imageUrl));
+      } catch (Exception e) {
+        System.err.println("Failed to load artist image: " + e.getMessage());
+        this.image = null;
+      }
+    }
   }
 }

@@ -18,7 +18,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  
  */
-package ext.services.lastfm;
+package org.jajuk.services.lastfm;
 
 import java.awt.Image;
 import java.util.List;
@@ -28,6 +28,7 @@ import javax.swing.SwingUtilities;
 import junit.framework.TestCase;
 
 import org.jajuk.TestHelpers;
+import org.jajuk.services.lastfm.model.*;
 
 /**
  * .
@@ -36,7 +37,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
   /**
    * Test method for.
    *
-   * {@link ext.services.lastfm.LastFmAlbumsRunnable#LastFmAlbumsRunnable(ext.services.lastfm.ContextListener, ext.services.lastfm.LastFmService, ext.services.lastfm.AudioObject, long)}
+   * {@link LastFmAlbumsRunnable#LastFmAlbumsRunnable(ContextListener, LastFmService, AudioObject, long)}
    * .
    */
   public void testLastFmAlbumsRunnable() {
@@ -46,7 +47,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
   /**
    * Test method for.
    *
-   * {@link ext.services.lastfm.LastFmAlbumsRunnable#interrupt()}.
+   * {@link LastFmAlbumsRunnable#interrupt()}.
    */
   public void testInterrupt() {
     LastFmAlbumsRunnable runnable = new LastFmAlbumsRunnable(null, LastFmService.getInstance(),
@@ -55,7 +56,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
   }
 
   /**
-   * Test method for {@link ext.services.lastfm.LastFmAlbumsRunnable#run()}.
+   * Test method for {@link LastFmAlbumsRunnable#run()}.
    *
    * @throws Exception the exception
    */
@@ -76,7 +77,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
   /**
    * Test method for.
    *
-   * {@link ext.services.lastfm.LastFmAlbumsRunnable#setRetrieveArtistInfo(boolean)}
+   * {@link LastFmAlbumsRunnable#setRetrieveArtistInfo(boolean)}
    * .
    */
   public void testSetRetrieveArtistInfo() {
@@ -90,91 +91,91 @@ public class TestLastFmAlbumsRunnable extends TestCase {
    */
   private final class MyContextListener implements ContextListener {
     /* (non-Javadoc)
-     * @see ext.services.lastfm.ContextListener#setLastArtistRetrieved(java.lang.String, long)
+     * @see org.jajuk.services.lastfm.model.ContextListener#setLastArtistRetrieved(java.lang.String, long)
      */
     @Override
     public void setLastArtistRetrieved(String artist, long id) {
     }
 
     /* (non-Javadoc)
-     * @see ext.services.lastfm.ContextListener#setLastAlbumRetrieved(java.lang.String, long)
+     * @see org.jajuk.services.lastfm.model.ContextListener#setLastAlbumRetrieved(java.lang.String, long)
      */
     @Override
     public void setLastAlbumRetrieved(String album, long id) {
     }
 
     /* (non-Javadoc)
-     * @see ext.services.lastfm.ContextListener#setImage(java.awt.Image, ext.services.lastfm.AudioObject, long)
+     * @see org.jajuk.services.lastfm.model.ContextListener#setImage(java.awt.Image, org.jajuk.services.lastfm.model.AudioObject, long)
      */
     @Override
     public void setImage(Image img, AudioObject ao, long id) {
     }
 
     /* (non-Javadoc)
-     * @see ext.services.lastfm.ContextListener#setAlbums(java.util.List, long)
+     * @see org.jajuk.services.lastfm.model.ContextListener#setAlbums(java.util.List, long)
      */
     @Override
     public void setAlbums(List<? extends AlbumInfo> album, long id) {
     }
 
     /* (non-Javadoc)
-     * @see ext.services.lastfm.ContextListener#setAlbum(ext.services.lastfm.AlbumInfo, long)
+     * @see org.jajuk.services.lastfm.model.ContextListener#setAlbum(org.jajuk.services.lastfm.model.AlbumInfo, long)
      */
     @Override
     public void setAlbum(AlbumInfo album, long id) {
     }
 
     /* (non-Javadoc)
-     * @see ext.services.lastfm.ContextListener#notifyWikiInfoRetrieved(java.lang.String, java.lang.String, long)
+     * @see org.jajuk.services.lastfm.model.ContextListener#notifyWikiInfoRetrieved(java.lang.String, java.lang.String, long)
      */
     @Override
     public void notifyWikiInfoRetrieved(String wikiText, String wikiURL, long id) {
     }
 
     /* (non-Javadoc)
-     * @see ext.services.lastfm.ContextListener#notifyStartRetrievingCovers(long)
+     * @see org.jajuk.services.lastfm.model.ContextListener#notifyStartRetrievingCovers(long)
      */
     @Override
     public void notifyStartRetrievingCovers(long id) {
     }
 
     /* (non-Javadoc)
-     * @see ext.services.lastfm.ContextListener#notifyStartRetrievingArtistImages(long)
+     * @see org.jajuk.services.lastfm.model.ContextListener#notifyStartRetrievingArtistImages(long)
      */
     @Override
     public void notifyStartRetrievingArtistImages(long id) {
     }
 
     /* (non-Javadoc)
-     * @see ext.services.lastfm.ContextListener#notifyFinishGetSimilarArtist(ext.services.lastfm.ArtistInfo, java.awt.Image, long)
+     * @see org.jajuk.services.lastfm.model.ContextListener#notifyFinishGetSimilarArtist(org.jajuk.services.lastfm.model.ArtistInfo, java.awt.Image, long)
      */
     @Override
     public void notifyFinishGetSimilarArtist(ArtistInfo a, Image img, long id) {
     }
 
     /* (non-Javadoc)
-     * @see ext.services.lastfm.ContextListener#notifyCoverRetrieved(ext.services.lastfm.AlbumInfo, java.awt.Image, long)
+     * @see org.jajuk.services.lastfm.model.ContextListener#notifyCoverRetrieved(org.jajuk.services.lastfm.model.AlbumInfo, java.awt.Image, long)
      */
     @Override
     public void notifyCoverRetrieved(AlbumInfo album, Image cover, long id) {
     }
 
     /* (non-Javadoc)
-     * @see ext.services.lastfm.ContextListener#notifyArtistImage(java.awt.Image, long)
+     * @see org.jajuk.services.lastfm.model.ContextListener#notifyArtistImage(java.awt.Image, long)
      */
     @Override
     public void notifyArtistImage(Image img, long id) {
     }
 
     /* (non-Javadoc)
-     * @see ext.services.lastfm.ContextListener#notifyAlbumRetrieved(ext.services.lastfm.AudioObject, long)
+     * @see org.jajuk.services.lastfm.model.ContextListener#notifyAlbumRetrieved(org.jajuk.services.lastfm.model.AudioObject, long)
      */
     @Override
     public void notifyAlbumRetrieved(AudioObject file, long id) {
     }
 
     /* (non-Javadoc)
-     * @see ext.services.lastfm.ContextListener#getAlbums()
+     * @see org.jajuk.services.lastfm.model.ContextListener#getAlbums()
      */
     @Override
     public List<AlbumInfo> getAlbums() {
@@ -189,7 +190,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see ext.services.lastfm.AudioObject#getAlbum()
+     * @see org.jajuk.services.lastfm.model.AudioObject#getAlbum()
      */
     @Override
     public String getAlbum() {
@@ -199,7 +200,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see ext.services.lastfm.AudioObject#getAlbumArtist()
+     * @see org.jajuk.services.lastfm.model.AudioObject#getAlbumArtist()
      */
     @Override
     public String getAlbumArtist() {
@@ -209,7 +210,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see ext.services.lastfm.AudioObject#getArtist()
+     * @see org.jajuk.services.lastfm.model.AudioObject#getArtist()
      */
     @Override
     public String getArtist() {
@@ -219,7 +220,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see ext.services.lastfm.AudioObject#getBitrate()
+     * @see org.jajuk.services.lastfm.model.AudioObject#getBitrate()
      */
     @Override
     public long getBitrate() {
@@ -229,7 +230,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see ext.services.lastfm.AudioObject#getComposer()
+     * @see org.jajuk.services.lastfm.model.AudioObject#getComposer()
      */
     @Override
     public String getComposer() {
@@ -239,7 +240,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see ext.services.lastfm.AudioObject#getDiscNumber()
+     * @see org.jajuk.services.lastfm.model.AudioObject#getDiscNumber()
      */
     @Override
     public Integer getDiscNumber() {
@@ -249,7 +250,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see ext.services.lastfm.AudioObject#getDuration()
+     * @see org.jajuk.services.lastfm.model.AudioObject#getDuration()
      */
     @Override
     public long getDuration() {
@@ -259,7 +260,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see ext.services.lastfm.AudioObject#getFrequency()
+     * @see org.jajuk.services.lastfm.model.AudioObject#getFrequency()
      */
     @Override
     public int getFrequency() {
@@ -269,7 +270,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see ext.services.lastfm.AudioObject#getGenre()
+     * @see org.jajuk.services.lastfm.model.AudioObject#getGenre()
      */
     @Override
     public String getGenre() {
@@ -279,7 +280,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see ext.services.lastfm.AudioObject#getLyrics()
+     * @see org.jajuk.services.lastfm.model.AudioObject#getLyrics()
      */
     @Override
     public String getLyrics() {
@@ -289,7 +290,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see ext.services.lastfm.AudioObject#getStars()
+     * @see org.jajuk.services.lastfm.model.AudioObject#getStars()
      */
     @Override
     public int getStars() {
@@ -299,7 +300,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see ext.services.lastfm.AudioObject#getTitle()
+     * @see org.jajuk.services.lastfm.model.AudioObject#getTitle()
      */
     @Override
     public String getTitle() {
@@ -309,7 +310,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see ext.services.lastfm.AudioObject#getTitleOrFileName()
+     * @see org.jajuk.services.lastfm.model.AudioObject#getTitleOrFileName()
      */
     @Override
     public String getTitleOrFileName() {
@@ -319,7 +320,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see ext.services.lastfm.AudioObject#getTrackNumber()
+     * @see org.jajuk.services.lastfm.model.AudioObject#getTrackNumber()
      */
     @Override
     public Integer getTrackNumber() {
@@ -329,7 +330,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see ext.services.lastfm.AudioObject#getUrl()
+     * @see org.jajuk.services.lastfm.model.AudioObject#getUrl()
      */
     @Override
     public String getUrl() {
@@ -339,7 +340,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see ext.services.lastfm.AudioObject#getYear()
+     * @see org.jajuk.services.lastfm.model.AudioObject#getYear()
      */
     @Override
     public String getYear() {
@@ -349,7 +350,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see ext.services.lastfm.AudioObject#isSeekable()
+     * @see org.jajuk.services.lastfm.model.AudioObject#isSeekable()
      */
     @Override
     public boolean isSeekable() {
@@ -359,7 +360,7 @@ public class TestLastFmAlbumsRunnable extends TestCase {
     /*
      * (non-Javadoc)
      * 
-     * @see ext.services.lastfm.AudioObject#setStars(int)
+     * @see org.jajuk.services.lastfm.model.AudioObject#setStars(int)
      */
     @Override
     public void setStars(int stars) {

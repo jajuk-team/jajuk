@@ -20,7 +20,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package ext.services.lastfm;
+package org.jajuk.services.lastfm.model;
 
 import java.awt.Image;
 import java.util.List;
@@ -30,6 +30,7 @@ import java.util.StringTokenizer;
 import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jajuk.services.lastfm.LastFmService;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
@@ -59,7 +60,7 @@ public class LastFmAlbumsRunnable implements Runnable {
    * @param id the id
    */
   public LastFmAlbumsRunnable(ContextListener listener, LastFmService service,
-      AudioObject audioObject, long id) {
+                              AudioObject audioObject, long id) {
     this.listener = listener;
     this.service = service;
     this.audioObject = audioObject;

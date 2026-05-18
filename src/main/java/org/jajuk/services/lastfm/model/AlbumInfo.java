@@ -20,7 +20,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package ext.services.lastfm;
+package org.jajuk.services.lastfm.model;
 
 import java.util.Date;
 import java.util.List;
@@ -30,153 +30,139 @@ import javax.swing.ImageIcon;
 /**
  * .
  */
-public interface AlbumInfo {
+public interface AlbumInfo extends LastFmInfo {
   /**
    * Gets the artist.
    * 
    * @return the artist
    */
-  public String getArtist();
+  String getArtist();
 
   /**
    * Gets the artist url.
    * 
    * @return the artist url
    */
-  public String getArtistUrl();
+  String getArtistUrl();
 
   /**
    * Gets the big cover url.
    * 
    * @return the bigCoverURL
    */
-  public String getBigCoverURL();
+  String getBigCoverURL();
 
   /**
    * Gets the cover.
    * 
    * @return the cover
    */
-  public ImageIcon getCover();
+  ImageIcon getCover();
 
   /**
    * Gets the cover url.
    * 
    * @return the cover url
    */
-  public String getCoverURL();
+  String getCoverURL();
 
   /**
    * Gets the release date.
    * 
    * @return the release date
    */
-  public Date getReleaseDate();
+  Date getReleaseDate();
 
   /**
    * Gets the release date string.
    * 
    * @return the releaseDateString
    */
-  public String getReleaseDateString();
+  String getReleaseDateString();
 
   /**
    * Gets the small cover url.
    * 
    * @return the small cover url
    */
-  public String getSmallCoverURL();
+  String getSmallCoverURL();
 
   /**
    * Gets the title.
    * 
    * @return the title
    */
-  public String getTitle();
+  String getTitle();
 
   /**
    * Gets the tracks.
    * 
    * @return the tracks
    */
-  public List<TrackInfo> getTracks();
+  List<TrackInfo> getTracks();
 
   /**
    * Gets the url.
    * 
    * @return the url
    */
-  public String getUrl();
+  String getUrl();
 
   /**
    * Gets the year.
    * 
    * @return the year
    */
-  public String getYear();
+  String getYear();
 
   /**
    * Sets the artist.
    * 
    * @param artist the artist to set
    */
-  public void setArtist(String artist);
-
-  /**
-   * Sets the big cover url.
-   * 
-   * @param bigCoverURL the bigCoverURL to set
-   */
-  public void setBigCoverURL(String bigCoverURL);
+  void setArtist(String artist);
 
   /**
    * Sets the cover.
    * 
    * @param cover the cover to set
    */
-  public void setCover(ImageIcon cover);
-
-  /**
-   * Sets the cover url.
-   * 
-   * @param coverURL the coverURL to set
-   */
-  public void setCoverURL(String coverURL);
+  void setCover(ImageIcon cover);
 
   /**
    * Sets the release date string.
    * 
    * @param releaseDateString the releaseDateString to set
    */
-  public void setReleaseDateString(String releaseDateString);
-
-  /**
-   * Sets the small cover url.
-   * 
-   * @param smallCoverURL the smallCoverURL to set
-   */
-  public void setSmallCoverURL(String smallCoverURL);
+  void setReleaseDateString(String releaseDateString);
 
   /**
    * Sets the title.
    * 
    * @param title the title to set
    */
-  public void setTitle(String title);
+  void setTitle(String title);
 
   /**
    * Sets the tracks.
    * 
    * @param tracks the tracks to set
    */
-  public void setTracks(List<? extends TrackInfo> tracks);
+  void setTracks(List<TrackInfo> tracks);
+
+  /**
+   * Sets the artist url.
+   *
+   * @param artistUrl the url of the artist to set
+   */
+  void setArtistUrl(String artistUrl);
 
   /**
    * Sets the url.
    * 
    * @param url the url to set
    */
-  public void setUrl(String url);
+  void setUrl(String url);
 
   /*
    * (non-Javadoc)
@@ -190,5 +176,5 @@ public interface AlbumInfo {
    * @return the string
    */
   @Override
-  public String toString();
+  String toString();
 }

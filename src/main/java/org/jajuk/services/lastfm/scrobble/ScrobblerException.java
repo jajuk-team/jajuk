@@ -1,8 +1,8 @@
 /*
  * aTunes 1.14.0 code adapted by Jajuk team
- * 
- * Original copyright notice bellow : 
- * 
+ *
+ * Original copyright notice bellow :
+ *
  * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
  *
  * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
@@ -20,7 +20,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package ext.services.lastfm;
+package org.jajuk.services.lastfm.scrobble;
 
 import org.jajuk.util.UtilString;
 
@@ -34,7 +34,7 @@ public class ScrobblerException extends Exception {
 
   /**
    * Instantiates a new scrobbler exception.
-   * 
+   *
    * @param cause the cause
    */
   public ScrobblerException(String cause) {
@@ -43,8 +43,8 @@ public class ScrobblerException extends Exception {
 
   /**
    * Instantiates a new scrobbler exception.
-   * 
-   * @param status 
+   *
+   * @param status
    */
   public ScrobblerException(int status) {
     super(UtilString.concat("Error submitting to Last.fm. Status: ", Integer.valueOf(status)));
@@ -53,7 +53,7 @@ public class ScrobblerException extends Exception {
 
   /**
    * Returns the status (-1 if no status was set).
-   * 
+   *
    * @return the status
    */
   public int getStatus() {

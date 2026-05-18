@@ -20,21 +20,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package ext.services.lastfm;
+package org.jajuk.services.lastfm.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-
-import de.umass.lastfm.Artist;
-import de.umass.lastfm.ImageSize;
 
 /**
  * The Class LastFmSimilarArtists.
  */
 public class LastFmSimilarArtists implements SimilarArtistsInfo {
   /** The Constant MAX_SIMILAR_ARTISTS. */
-  private static final int MAX_SIMILAR_ARTISTS = 15;
+  public static final int MAX_SIMILAR_ARTISTS = 15;
   /** The artist name. */
   private String artistName;
   /** The picture. */
@@ -42,27 +38,10 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
   /** The artists. */
   private List<ArtistInfo> artists;
 
-  /**
-   * Gets the similar artists.
-   *
-   * @param as
-   * @param a
-   *
-   * @return the similar artists
-   */
-  public static SimilarArtistsInfo getSimilarArtists(Collection<Artist> as, Artist a) {
-    List<Artist> list = new ArrayList<>(as);
-    LastFmSimilarArtists similar = new LastFmSimilarArtists();
-    similar.setArtistName(a.getName());
-    similar.setPicture(a.getImageURL(ImageSize.LARGE));
-    List<ArtistInfo> artists = new ArrayList<>();
-    for (int i = 0; i < list.size(); i++) {
-      if (i == MAX_SIMILAR_ARTISTS) {
-        break;
-      }
-      artists.add(LastFmArtist.getArtist(list.get(i)));
-    }
-    similar.setArtists(artists);
+  public static SimilarArtistsInfo getSimilarArtists(List<ArtistInfo> similarArtists, ArtistInfo artistInfo) {
+    SimilarArtistsInfo similar = new LastFmSimilarArtists();
+    similar.setArtistName(artistInfo.getName());
+    similar.setArtists(new ArrayList<>(similarArtists));
     return similar;
   }
 
@@ -96,10 +75,10 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
    *
    * @return the picture
    */
-  @Override
-  public String getPicture() {
-    return picture;
-  }
+  //@Override
+  //public String getPicture() {
+  //  return picture;
+  //}
 
   /**
    * Sets the artist name.
@@ -126,8 +105,8 @@ public class LastFmSimilarArtists implements SimilarArtistsInfo {
    *
    * @param picture the picture to set
    */
-  @Override
-  public void setPicture(String picture) {
-    this.picture = picture;
-  }
+  //@Override
+  //public void setPicture(String picture) {
+  //  this.picture = picture;
+  //}
 }

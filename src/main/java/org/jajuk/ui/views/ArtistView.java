@@ -49,8 +49,8 @@ import org.jajuk.util.UtilGUI;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
 
-import ext.services.lastfm.ArtistInfo;
-import ext.services.lastfm.LastFmService;
+import org.jajuk.services.lastfm.model.ArtistInfo;
+import org.jajuk.services.lastfm.LastFmService;
 import net.miginfocom.swing.MigLayout;
 
 /**

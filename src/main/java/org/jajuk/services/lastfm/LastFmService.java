@@ -20,91 +20,61 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package ext.services.lastfm;
+package org.jajuk.services.lastfm;
 
-import java.awt.Image;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-
+import ext.services.network.Proxy;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.Track;
-import org.jajuk.util.Conf;
-import org.jajuk.util.Const;
-import org.jajuk.util.DownloadManager;
-import org.jajuk.util.LocaleManager;
-import org.jajuk.util.Messages;
-import org.jajuk.util.UtilString;
+import org.jajuk.services.lastfm.model.*;
+import org.jajuk.services.lastfm.scrobble.ScrobblerException;
+import org.jajuk.util.*;
 import org.jajuk.util.log.Log;
 
-import de.umass.lastfm.Album;
-import de.umass.lastfm.Artist;
-import de.umass.lastfm.Caller;
-import de.umass.lastfm.ImageSize;
-import de.umass.lastfm.PaginatedResult;
-import de.umass.lastfm.Playlist;
-import de.umass.lastfm.scrobble.ResponseStatus;
-import de.umass.lastfm.scrobble.Scrobbler;
-import de.umass.lastfm.scrobble.Source;
-import de.umass.lastfm.scrobble.SubmissionData;
-import ext.services.network.Proxy;
+import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * The Class LastFmService.
- *
+ * <br>
  * This class is responsible of retrieve information from Last.fm web services.
  * <singleton>
  */
 public class LastFmService {
-  /*
-   * DO NOT USE THESE KEYS FOR OTHER APPLICATIONS THAN Jajuk!
-   */
-  /** The Constant API_KEY.   */
-  private static final String API_KEY = "711591ss6q695ps349o6681pr1oq1467";
-  /** The Constant CLIENT_ID.   */
-  private static final String CLIENT_ID = "jaj";
-  /** The Constant CLIENT_VERSION.   */
-  private static final String CLIENT_VERSION = "0.2"; // Assigned by Last.FM
   // team
-  /** The Constant ARTIST_WILDCARD.   */
+  /** The Constant ARTIST_WILDCARD. */
   private static final String ARTIST_WILDCARD = "(%ARTIST%)";
-  /** The Constant LANGUAGE_PARAM.   */
+  /** The Constant LANGUAGE_PARAM. */
   private static final String LANGUAGE_PARAM = "?setlang=";
-  /** The Constant LANGUAGE_WILDCARD.   */
+  /** The Constant LANGUAGE_WILDCARD. */
   private static final String LANGUAGE_WILDCARD = "(%LANGUAGE%)";
-  /** The Constant ARTIST_WIKI_URL.   */
-  private static final String ARTIST_WIKI_URL = UtilString.concat("http://www.lastfm.com/music/",
-      ARTIST_WILDCARD, "/+wiki", LANGUAGE_PARAM, LANGUAGE_WILDCARD);
-  /** The Constant VARIOUS_ARTISTS.   */
+  /** The Constant ARTIST_WIKI_URL. */
+  private static final String ARTIST_WIKI_URL = UtilString.concat("https://www.lastfm.com/music/",
+          ARTIST_WILDCARD, "/+wiki", LANGUAGE_PARAM, LANGUAGE_WILDCARD);
+  /** The Constant VARIOUS_ARTISTS. */
   private static final String VARIOUS_ARTISTS = "Various Artists";
-  /** The Constant MIN_DURATION_TO_SUBMIT.   */
+  /** The Constant MIN_DURATION_TO_SUBMIT. */
   private static final int MIN_DURATION_TO_SUBMIT = 30;
-  /** The Constant MAX_SUBMISSIONS.   */
+  /** The Constant MAX_SUBMISSIONS. */
   private static final int MAX_SUBMISSIONS = 50;
-  private final Scrobbler scrobbler;
-  private boolean handshakePerformed;
   private final Locale locale;
   private final LastFmCache lastFmCache;
   /** The singleton. */
   private static LastFmService self;
+
+  /** Last FM client */
+  private final static LastFmClient lastFmClient = new LastFmClient();
+  private final static MusicBrainzClient musicBrainzClient = new MusicBrainzClient();
 
   /**
    * Instantiates a new Last.fm service
    */
   private LastFmService(Locale locale, LastFmCache lastFmCache) {
     Proxy proxy = DownloadManager.getProxy();
-    Caller.getInstance().setCache(null);
-    Caller.getInstance().setProxy(proxy);
-    Caller.getInstance().setUserAgent(CLIENT_ID);
-    String user = Conf.getString(Const.CONF_LASTFM_USER);
     // Use encoded version name to avoid errors from server
-    scrobbler = Scrobbler.newScrobbler(CLIENT_ID,
-        ext.services.network.NetworkUtils.encodeString(CLIENT_VERSION), user);
-    this.handshakePerformed = false;
     this.locale = locale;
     this.lastFmCache = lastFmCache;
   }
@@ -133,9 +103,9 @@ public class LastFmService {
       // Try to get from cache
       ArtistInfo artistInfo = lastFmCache.retrieveArtistInfo(artist);
       if (artistInfo == null) {
-        Artist a = Artist.getInfo(artist, UtilString.rot13(API_KEY));
-        if (a != null) {
-          artistInfo = LastFmArtist.getArtist(a);
+        artistInfo = lastFmClient.getArtist(artist);
+        if (artistInfo != null) {
+          musicBrainzClient.checkArtistImageUrl(artistInfo);
           lastFmCache.storeArtistInfo(artist, artistInfo);
         }
       }
@@ -150,8 +120,7 @@ public class LastFmService {
    * Gets the album.
    *
    * @param artist the artist
-   * @param album the album
-   *
+   * @param album  the album
    * @return the album
    */
   public AlbumInfo getAlbum(String artist, String album) {
@@ -159,10 +128,8 @@ public class LastFmService {
       // Try to get from cache
       AlbumInfo albumObject = lastFmCache.retrieveAlbumInfo(artist, album);
       if (albumObject == null) {
-        Album a = Album.getInfo(artist, album, UtilString.rot13(API_KEY));
-        if (a != null) {
-          Playlist pl = Playlist.fetchAlbumPlaylist(a.getId(), UtilString.rot13(API_KEY));
-          albumObject = LastFmAlbum.getAlbum(a, pl);
+        albumObject = lastFmClient.getAlbumInfo(artist, album);
+        if (albumObject != null) {
           lastFmCache.storeAlbumInfo(artist, album, albumObject);
         }
       }
@@ -176,11 +143,10 @@ public class LastFmService {
   /**
    * Gets the album list.
    *
-   * @param artist the artist
+   * @param artist             the artist
    * @param hideVariousArtists if <code>true</code> albums with artist name "Various Artists"
-   * are nor returned
-   * @param minimumSongNumber albums with less songs than this argument won't be returned
-   *
+   *                           are nor returned
+   * @param minimumSongNumber  albums with less songs than this argument won't be returned
    * @return the album list
    */
   public AlbumListInfo getAlbumList(String artist, boolean hideVariousArtists, int minimumSongNumber) {
@@ -188,11 +154,14 @@ public class LastFmService {
       // Try to get from cache
       AlbumListInfo albumList = lastFmCache.retrieveAlbumList(artist);
       if (albumList == null) {
-        Collection<Album> as = Artist.getTopAlbums(artist, UtilString.rot13(API_KEY));
-        if (as != null) {
-          AlbumListInfo albums = LastFmAlbumList.getAlbumList(as, artist);
+        //Collection<Album> as = Artist.getTopAlbums(artist, UtilString.rot13(API_KEY));
+        //if (as != null) {
+        List<AlbumInfo> albums = lastFmClient.getTopAlbums(artist, 10);
+        if (albums != null) {
+          //AlbumListInfo albums = LastFmAlbumList.getAlbumList(as, artist);
           List<AlbumInfo> result = new ArrayList<>();
-          for (AlbumInfo a : albums.getAlbums()) {
+          //for (AlbumInfo a : albums.getAlbums()) {
+          for (AlbumInfo a : albums) {
             if (a.getBigCoverURL() != null && !a.getBigCoverURL().isEmpty()) { //NOSONAR
               result.add(a);
             }
@@ -221,7 +190,7 @@ public class LastFmService {
           for (AlbumInfo albumInfo : albumList.getAlbums()) {
             AlbumInfo extendedAlbumInfo = getAlbum(artist, albumInfo.getTitle());
             if (extendedAlbumInfo != null && extendedAlbumInfo.getTracks() != null //NOSONAR
-                && extendedAlbumInfo.getTracks().size() >= minimumSongNumber) {
+                    && extendedAlbumInfo.getTracks().size() >= minimumSongNumber) {
               albumsFiltered.add(albumInfo);
             }
           }
@@ -237,11 +206,10 @@ public class LastFmService {
     return null;
   }
 
-   /**
+  /**
    * Gets the image.
    *
    * @param album the album
-   *
    * @return the image
    */
   public Image getImage(AlbumInfo album) {
@@ -251,7 +219,7 @@ public class LastFmService {
       Image img = lastFmCache.retrieveAlbumCover(album);
       if (img == null && album.getBigCoverURL() != null && !album.getBigCoverURL().isEmpty()) {
         img = ext.services.network.NetworkUtils.getImage(ext.services.network.NetworkUtils
-            .getConnection(album.getBigCoverURL(), proxy));
+                .getConnection(album.getBigCoverURL(), proxy));
         lastFmCache.storeAlbumCover(album, img);
       }
       return img;
@@ -265,7 +233,6 @@ public class LastFmService {
    * Gets the image of an artist.
    *
    * @param artist the artist
-   *
    * @return the image
    */
   public Image getImage(ArtistInfo artist) {
@@ -279,44 +246,9 @@ public class LastFmService {
         // if not then get from artist info
         if (img == null) {
           img = ext.services.network.NetworkUtils.getImage(ext.services.network.NetworkUtils
-              .getConnection(artist.getImageUrl(), proxy));
+                  .getConnection(artist.getImageUrl(), proxy));
         }
         lastFmCache.storeArtistThumbImage(artist, img);
-      }
-      return img;
-    } catch (Exception e) {
-      Log.error(e);
-    }
-    return null;
-  }
-
-  /**
-   * Gets the image of the artist.
-   *
-   * @param similar the similar
-   *
-   * @return the image
-   */
-  public Image getImage(SimilarArtistsInfo similar) {
-    try {
-      // Try to retrieve from cache
-      Image img = lastFmCache.retrieveArtistImage(similar);
-      Proxy proxy = DownloadManager.getProxy();
-      if (img != null) {
-        return img;
-      }
-      // Try to get from LastFM
-      img = getArtistImageFromLastFM(similar.getArtistName());
-      // Get from similar artist info
-      if (img == null) {
-        String similarUrl = similar.getPicture();
-        if (!similarUrl.trim().isEmpty()) {
-          img = ext.services.network.NetworkUtils.getImage(ext.services.network.NetworkUtils
-              .getConnection(similarUrl, proxy));
-        }
-      }
-      if (img != null) {
-        lastFmCache.storeArtistImage(similar, img);
       }
       return img;
     } catch (Exception e) {
@@ -332,21 +264,21 @@ public class LastFmService {
    */
   private Image getArtistImageFromLastFM(String artistName) {
     try {
-      Proxy proxy = DownloadManager.getProxy();
       // Try to get from Artist.getImages() method
-      PaginatedResult<de.umass.lastfm.Image> images = Artist.getImages(artistName, 1, 1,
-          UtilString.rot13(API_KEY));
-      List<de.umass.lastfm.Image> imageList = new ArrayList<>(
-              images.getPageResults());
+      List<LastFmImage> imageList = lastFmClient.getLastFmImages(artistName, 10);
       if (!imageList.isEmpty()) {
-        Set<ImageSize> sizes = imageList.get(0).availableSizes();
+        //Set<ImageSize> sizes = imageList.get(0).availableSizes();
         // Try to get original
-        if (sizes.contains(ImageSize.ORIGINAL)) {
-          return ext.services.network.NetworkUtils.getImage(ext.services.network.NetworkUtils
-              .getConnection(imageList.get(0).getImageURL(ImageSize.ORIGINAL), proxy));
-        }
+        //if (sizes.contains(ImageSize.ORIGINAL)) {
+        Proxy proxy = DownloadManager.getProxy();
+        //  return ext.services.network.NetworkUtils.getImage(ext.services.network.NetworkUtils
+        //      .getConnection(imageList.get(0).getImageURL(ImageSize.ORIGINAL), proxy));
+        //}
+        LastFmImage image = imageList.get(0);
+        return ext.services.network.NetworkUtils.getImage(ext.services.network.NetworkUtils
+                .getConnection(image.getUrl(), proxy));
       }
-    } catch (IOException e) {
+    } catch (Exception e) {
       Log.error(e);
     }
     return null;
@@ -356,7 +288,6 @@ public class LastFmService {
    * Gets the similar artists.
    *
    * @param artist the artist
-   *
    * @return the similar artists
    */
   public SimilarArtistsInfo getSimilarArtists(String artist) {
@@ -364,10 +295,16 @@ public class LastFmService {
       // Try to get from cache
       SimilarArtistsInfo similar = lastFmCache.retrieveArtistSimilar(artist);
       if (similar == null) {
-        Collection<Artist> as = Artist.getSimilar(artist, UtilString.rot13(API_KEY));
-        Artist a = Artist.getInfo(artist, UtilString.rot13(API_KEY));
-        if (a != null) {
-          similar = LastFmSimilarArtists.getSimilarArtists(as, a);
+        ArtistInfo artistInfo = lastFmClient.getArtist(artist);
+        if (artistInfo != null) {
+          // Get (max) 15 similar artists
+          List<ArtistInfo> similarArtists = lastFmClient.getSimilar(artistInfo, LastFmSimilarArtists.MAX_SIMILAR_ARTISTS);
+          // Replace place holder image
+          for (ArtistInfo similarArtist : similarArtists) {
+            musicBrainzClient.checkArtistImageUrl(similarArtist);
+          }
+          // Build similar object
+          similar = LastFmSimilarArtists.getSimilarArtists(similarArtists, artistInfo);
           lastFmCache.storeArtistSimilar(artist, similar);
         }
       }
@@ -382,7 +319,6 @@ public class LastFmService {
    * Gets the wiki text.
    *
    * @param artist the artist
-   *
    * @return the wiki text
    */
   public String getWikiText(String artist) {
@@ -390,9 +326,18 @@ public class LastFmService {
       // Try to get from cache
       String wikiText = lastFmCache.retrieveArtistWiki(artist);
       if (wikiText == null) {
-        String userName = null;
-        Artist a = Artist.getInfo(artist, locale, userName, UtilString.rot13(API_KEY));
-        wikiText = a != null ? a.getWikiSummary() : "";
+        //Artist a = Artist.getInfo(artist, locale, null, UtilString.rot13(API_KEY));
+        ArtistInfo info = lastFmClient.getArtist(artist);
+        LastFmArtistDetail a;
+        if (info != null) {
+          a = lastFmClient.getArtistDetail(info.getId(), true);
+        } else {
+          a = lastFmClient.getArtistDetail(artist, false);
+        }
+        if (a != null && a.getWikiContent() != null) {
+          wikiText = a.getWikiContent();
+        }
+        //wikiText = a != null ? a.getWikiSummary() : "";
         if (wikiText != null) {
           wikiText = wikiText.replaceAll("<.*?>", "");
           wikiText = StringEscapeUtils.unescapeHtml3(wikiText);
@@ -410,54 +355,48 @@ public class LastFmService {
    * Gets the wiki url.
    *
    * @param artist the artist
-   *
    * @return the wiki url
    */
   public String getWikiURL(String artist) {
     return ARTIST_WIKI_URL.replace(ARTIST_WILDCARD,
-        ext.services.network.NetworkUtils.encodeString(artist)).replace(LANGUAGE_WILDCARD,
-        locale.getLanguage());
+            ext.services.network.NetworkUtils.encodeString(artist)).replace(LANGUAGE_WILDCARD,
+            locale.getLanguage());
   }
 
   /**
-   * Submits song to Last.fm
+   * Submits song to Last.fm using the modern API 2.0 (updateNowPlaying).
    *
-   * @param track The track that was played
+   * @param track        The track that was played
    * @param millisPlayed ms the audio file has already played
    * @throws ScrobblerException the scrobbler exception
    */
   public void submit(Track track, long millisPlayed) throws ScrobblerException {
-    // Do all necessary checks
-    if (!checkUser() || !checkPassword() || !checkArtist(track) || !checkTitle(track)
-        || !checkDuration(track)) {
+    // 1. Perform necessary checks (same as old logic)
+    if (!checkSessionKey() || !checkArtist(track) || !checkTitle(track)
+            || !checkDuration(track)) {
+      //Log.warn("Last.fm for track: " + track.getName());
       return;
     }
-    // Get started to play in secs UTC and not in MS (lastfm-bindings API was unclear about it)
-    long startedToPlay = (System.currentTimeMillis() - millisPlayed) / 1000;
-    Log.info("Trying to submit song to Last.fm, play time=" + millisPlayed / 1000 + " secs");
     try {
-      performHandshakeIfNeeded();
-      SubmissionData submissionData = new SubmissionData(track.getArtist().getName2(),
-          track.getName(), track.getAlbum().getName2(), (int) track.getDuration(),
-          (int) track.getOrder(), Source.USER, null, startedToPlay);
-      ResponseStatus status = scrobbler.submit(submissionData);
-      if (status.ok()) {
-        Log.info("Song submitted to Last.fm");
-      } else {
-        handshakePerformed = false;
-        lastFmCache.addSubmissionData(new FullSubmissionData(track.getArtist().getName2(), track
-            .getName(), track.getAlbum().getName2(), (int) track.getDuration(), (int) track
-            .getOrder(), Source.USER.toString(), (int) startedToPlay));
-        throw new ScrobblerException(status.getStatus());
+      lastFmClient.updateNowPlaying(track);
+    } catch (ScrobblerException e) {
+      if (e.getMessage().contains("Invalid session key") || e.getMessage().contains("Error 9")) {
+        Conf.removeProperty(Const.CONF_LASTFM_SESSION_KEY);
       }
-    } catch (IOException e) {
-      Log.error(e);
-      handshakePerformed = false;
-      lastFmCache.addSubmissionData(new FullSubmissionData(track.getArtist().getName2(), track
-          .getName(), track.getAlbum().getName2(), (int) track.getDuration(), (int) track
-          .getOrder(), Source.USER.toString(), (int) startedToPlay));
-      throw new ScrobblerException(e.getMessage());
+      throw e;
     }
+  }
+
+  public void addSubmission(FullSubmissionData fullSubmissionData) throws ScrobblerException {
+    if (!checkSessionKey()) {
+      return;
+    }
+    lastFmCache.addSubmissionData(fullSubmissionData);
+  }
+
+  public void removeSubmission(FullSubmissionData fullSubmissionData) throws ScrobblerException {
+    // TODO instead of clearing all, should remove only the data from parameter
+    lastFmCache.removeSubmissionData();
   }
 
   /**
@@ -467,7 +406,7 @@ public class LastFmService {
    */
   public void submitCache() throws ScrobblerException {
     // Do all necessary checks
-    if (!checkUser() || !checkPassword()) {
+    if (!checkSessionKey()) {
       return;
     }
     List<FullSubmissionData> collectionWithSubmissionData = lastFmCache.getSubmissionData();
@@ -476,103 +415,36 @@ public class LastFmService {
       int size = collectionWithSubmissionData.size();
       if (size > MAX_SUBMISSIONS) {
         collectionWithSubmissionData = collectionWithSubmissionData.subList(size - MAX_SUBMISSIONS,
-            size);
+                size);
       }
       Log.info("Trying to submit cache to Last.fm");
       try {
-        performHandshakeIfNeeded();
-        List<SubmissionData> submissionDataList = new ArrayList<>();
-        for (ext.services.lastfm.FullSubmissionData submissionData : collectionWithSubmissionData) {
-          SubmissionData sd = new SubmissionData(submissionData.getArtist(),
-              submissionData.getTitle(), submissionData.getAlbum(), submissionData.getDuration(),
-              submissionData.getTrackNumber(), Source.valueOf(submissionData.getSource()), null,
-              submissionData.getStartTime());
-          submissionDataList.add(sd);
+        lastFmClient.scrobble(collectionWithSubmissionData);
+        lastFmCache.removeSubmissionData();
+        Log.info("Cache submitted to Last.fm");
+      } catch (ScrobblerException e) {
+        // If it's an invalid session, clear it and re-throw to trigger re-auth
+        if (e.getMessage().contains("Invalid session key") || e.getMessage().contains("Error 9")) {
+          Conf.removeProperty(Const.CONF_LASTFM_SESSION_KEY);
+
         }
-        ResponseStatus status = scrobbler.submit(submissionDataList);
-        if (status.ok()) {
-          lastFmCache.removeSubmissionData();
-          Log.info("Cache submitted to Last.fm");
-        } else {
-          handshakePerformed = false;
-          throw new ScrobblerException(status.getStatus());
-        }
+        throw e;
       } catch (IOException e) {
         Log.error(e);
-        handshakePerformed = false;
         throw new ScrobblerException(e.getMessage());
       }
     }
   }
 
   /**
-   * Submits now playing info to Last.fm
+   * Checks session key.
    *
-   * @throws ScrobblerException the scrobbler exception
+   * @return true, if session key is present in config
    */
-  public void submitNowPlayingInfo(Track track) throws ScrobblerException {
-    // Do all necessary checks
-    if (!checkUser() || !checkPassword() || !checkArtist(track) || !checkTitle(track)) {
-      return;
-    }
-    Log.info("Trying to submit now playing info to Last.fm");
-    try {
-      performHandshakeIfNeeded();
-      ResponseStatus status = scrobbler.nowPlaying(track.getArtist().getName2(), track.getName(),
-          track.getAlbum().getName2(), (int) track.getDuration(), (int) track.getOrder());
-      if (status.ok()) {
-        Log.info("Now playing info submitted to Last.fm");
-      } else {
-        handshakePerformed = false;
-        throw new ScrobblerException(status.getStatus());
-      }
-    } catch (IOException e) {
-      Log.error(e);
-      handshakePerformed = false;
-      throw new ScrobblerException(e.getMessage());
-    }
-  }
-
-  /**
-   * Performs handshake for submissions if needed.
-   *
-   * @throws IOException Signals that an I/O exception has occurred.
-   * @throws ScrobblerException the scrobbler exception
-   */
-  private void performHandshakeIfNeeded() throws IOException, ScrobblerException {
-    if (!handshakePerformed) {
-      String password = UtilString.rot13(Conf.getString(Const.CONF_LASTFM_PASSWORD));
-      ResponseStatus status = scrobbler.handshake(password);
-      if (!status.ok()) {
-        throw new ScrobblerException(status.getStatus());
-      }
-      handshakePerformed = true;
-    }
-  }
-
-  /**
-   * Checks user.
-   *
-   * @return true, if check user
-   */
-  private boolean checkUser() {
-    String user = Conf.getString(Const.CONF_LASTFM_USER);
-    if (user == null || user.equals("")) {
-      Log.debug("Don't submit to Last.fm: Empty user");
-      return false;
-    }
-    return true;
-  }
-
-  /**
-   * Check password.
-   *
-   * @return true, if check password
-   */
-  private boolean checkPassword() {
-    String password = UtilString.rot13(Conf.getString(Const.CONF_LASTFM_PASSWORD));
-    if (StringUtils.isBlank(password)) {
-      Log.debug("Don't submit to Last.fm: Empty password");
+  private boolean checkSessionKey() {
+    String key = Conf.getString(Const.CONF_LASTFM_SESSION_KEY);
+    if (key == null || key.isEmpty()) {
+      Log.debug("Don't submit to Last.fm: Empty session key");
       return false;
     }
     return true;
@@ -586,7 +458,7 @@ public class LastFmService {
   private boolean checkArtist(Track track) {
     String sArtist = track.getArtist().getName2();
     if (StringUtils.isBlank(sArtist)
-        || sArtist.equalsIgnoreCase(Messages.getString("unknown_artist"))) {
+            || sArtist.equalsIgnoreCase(Messages.getString("unknown_artist"))) {
       Log.debug("Don't submit to Last.fm: Unknown artist");
       return false;
     }

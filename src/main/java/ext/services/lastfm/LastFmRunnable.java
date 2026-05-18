@@ -26,6 +26,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import org.jajuk.services.lastfm.LastFmService;
+import org.jajuk.services.lastfm.model.LastFmSimilarArtistsRunnable;
+import org.jajuk.services.lastfm.model.AudioObject;
+import org.jajuk.services.lastfm.model.ContextListener;
+import org.jajuk.services.lastfm.model.LastFmAlbumsRunnable;
 import org.jajuk.util.log.Log;
 
 /**

@@ -22,6 +22,11 @@
  */
 package ext.services.lastfm;
 
+import org.jajuk.services.lastfm.LastFmService;
+import org.jajuk.services.lastfm.model.AlbumInfo;
+import org.jajuk.services.lastfm.model.AudioObject;
+import org.jajuk.services.lastfm.model.ContextListener;
+
 import java.awt.Image;
 import java.util.List;
 
