@@ -23,6 +23,7 @@ package org.jajuk.ui.views;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.io.IOException;
+import java.io.Serial;
 import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Set;
@@ -58,6 +59,7 @@ import net.miginfocom.swing.MigLayout;
  */
 public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
   /** Generated serialVersionUID. */
+  @Serial
   private static final long serialVersionUID = 1L;
   private String bio;
   private ArtistInfo artistInfo;
@@ -198,6 +200,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     // Prefetch artist thumbs
     try {
       preFetchOthersAlbum();
+      // TODO too slow
       preFetchSimilarArtists();
     } catch (UnknownHostException e) {
       Log.warn("Could not contact host for loading album information: {{" + e.getMessage() + "}}");
@@ -241,8 +244,6 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     // existing border
     // The artist bio (from last.fm wiki)
     JTextArea jtaArtistDesc = new JTextArea(bio) {
-      private static final long serialVersionUID = 9217998016482118852L;
-
       // We set the margin this way, setMargin() doesn't work due to
       // existing border
       @Override

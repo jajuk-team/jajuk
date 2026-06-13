@@ -31,8 +31,7 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.core.RatingService;
 import org.jajuk.services.core.SessionService;
-import org.jajuk.services.lastfm.LastFmAuthenticator;
-import org.jajuk.services.lastfm.LastFmClient;
+import org.jajuk.services.lastfm.*;
 import org.jajuk.services.notification.NotificatorTypes;
 import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.services.webradio.WebRadioHelper;
@@ -75,8 +74,8 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
   }
 
   /**
-  * Apply parameters from GUI to configuration.
-  */
+   * Apply parameters from GUI to configuration.
+   */
   void updateConfFromGUI() {
     // Options
     updateConfFromGUIOptions();
@@ -94,13 +93,15 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     updateConfFromGUIGUI();
     // If jajuk home changes, write new path in bootstrap file
     handleWorkspaceChange();
+    // LastFM
+    updateConfFromGUILastFM();
     // Network
     updateConfFromGUINetwork();
     // Covers
     updateConfFromGUICover();
     // display a message
     InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.109"),
-        InformationJPanel.MessageType.INFORMATIVE);
+            InformationJPanel.MessageType.INFORMATIVE);
   }
 
   /**
@@ -113,6 +114,8 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     updateGUIFromConfConfirmations();
     // Options
     updateGUIFromConfOptions();
+    // LastFM
+    updateGUIFromConfLastFM();
     // Advanced
     updateGUIFromConfAdvanced();
     //Startup
@@ -144,22 +147,39 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     pv.jcbBeforeRemoveDevice.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE));
     pv.jcbBeforeDeleteCover.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_DELETE_COVER));
     pv.jcbBeforeClearingHistory
-        .setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY));
+            .setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY));
     pv.jcbBeforeResetingRatings
-        .setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS));
+            .setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS));
     pv.jcbBeforeRefactorFiles.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_REFACTOR_FILES));
     pv.jcbBeforeWritingTag.setSelected(Conf.getBoolean(Const.CONF_CONFIRMATIONS_BEFORE_TAG_WRITE));
   }
 
   /**
-   * Update "Options", "LastFM" and "Modes" tabs.
+   * Update LastFM tab.
+   */
+  private void updateGUIFromConfLastFM() {
+    pv.jcbAudioScrobbler.setSelected(Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE));
+    pv.jcbEnableLastFMInformation.setSelected(Conf.getBoolean(Const.CONF_LASTFM_INFO));
+    if (!Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE)) {
+      pv.jbLastFmAuthenticate.setEnabled(false);
+    }
+    pv.jtfLastFmSessionKey.setText(Conf.getString(Const.CONF_LASTFM_SESSION_KEY));
+    pv.jtfLastFmAPIKey.setText(Conf.getString(Const.CONF_LASTFM_API_KEY));
+    pv.jtfLastFmAPISecret.setText(Conf.getString(Const.CONF_LASTFM_SECRET));
+    if (! Conf.getString(Const.CONF_LASTFM_SECRET).isBlank()) {
+      pv.jbLastFmAuthenticate.setEnabled(true);
+    }
+  }
+
+  /**
+   * Update "Options" and "Modes" tabs.
    */
   private void updateGUIFromConfOptions() {
     pv.jcbDisplayUnmounted.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
     pv.jcbDefaultActionClick.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_CLICK));
     pv.jcbDefaultActionDrop.setSelected(Conf.getBoolean(Const.CONF_OPTIONS_PUSH_ON_DROP));
     String rightLanguageDesc = LocaleManager.getDescForLocale(Conf
-        .getString(Const.CONF_OPTIONS_LANGUAGE));
+            .getString(Const.CONF_OPTIONS_LANGUAGE));
     // Select the right language
     int index = 0;
     for (String desc : LocaleManager.getLocalesDescs()) {
@@ -181,7 +201,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     pv.jcbEnableBitPerfect.setSelected(Conf.getBoolean(Const.CONF_BIT_PERFECT));
     // Disable features incompatible with Bit-perfect mode
     pv.jcbUseVolnorm.setEnabled(!pv.jcbEnableBitPerfect.isSelected());
-    pv.crossFadeDuration.setEnabled(!pv.jcbEnableBitPerfect.isSelected());    
+    pv.crossFadeDuration.setEnabled(!pv.jcbEnableBitPerfect.isSelected());
     pv.jcbPreserveFileDates.setSelected(Conf.getBoolean(Const.CONF_PRESERVE_FILE_DATES));
   }
 
@@ -303,13 +323,8 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     pv.jcbCoverSize.setSelectedIndex(Conf.getInt(Const.CONF_COVERS_SIZE));
     pv.jcbShuffleCover.setSelected(Conf.getBoolean(Const.CONF_COVERS_SHUFFLE));
     pv.jcbSaveExplorerFriendly.setSelected(Conf
-        .getBoolean(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY));
+            .getBoolean(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY));
     pv.jtfDefaultCoverSearchPattern.setText(Conf.getString(Const.FILE_DEFAULT_COVER));
-    pv.jcbAudioScrobbler.setSelected(Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE));
-    pv.jcbEnableLastFMInformation.setSelected(Conf.getBoolean(Const.CONF_LASTFM_INFO));
-    if (!Conf.getBoolean(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE)) {
-      pv.jbLastFmAuthenticate.setEnabled(false);
-    }
   }
 
   /**
@@ -317,7 +332,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
    */
   private void updateGUIFromConfGUI() {
     String notificatorType = Messages.getString(ParameterView.NOTIFICATOR_PREFIX
-        + Conf.getString(Const.CONF_UI_NOTIFICATOR_TYPE));
+            + Conf.getString(Const.CONF_UI_NOTIFICATOR_TYPE));
     pv.jcbNotificationType.setSelectedItem(notificatorType);
     pv.jcbSplashscreen.setSelected(Conf.getBoolean(Const.CONF_SPLASH_SCREEN));
     pv.scbLAF.removeActionListener(this);
@@ -328,35 +343,30 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
   }
 
   /**
-  * Apply parameters options.
-  * Options for "Options", "LastFM", "Sound" and "Modes" tabs
-  *
-  */
+   * Apply parameters options.
+   * Options for "Options", "Sound" and "Modes" tabs
+   */
   private void updateConfFromGUIOptions() {
     HashMap<String, String> properties = new HashMap<>(10);
     properties.put(Const.CONF_OPTIONS_HIDE_UNMOUNTED,
-        Boolean.toString(pv.jcbDisplayUnmounted.isSelected()));
+            Boolean.toString(pv.jcbDisplayUnmounted.isSelected()));
     properties.put(Const.CONF_OPTIONS_PUSH_ON_CLICK,
-        Boolean.toString(pv.jcbDefaultActionClick.isSelected()));
+            Boolean.toString(pv.jcbDefaultActionClick.isSelected()));
     properties.put(Const.CONF_OPTIONS_PUSH_ON_DROP,
-        Boolean.toString(pv.jcbDefaultActionDrop.isSelected()));
-    properties.put(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE,
-        Boolean.toString(pv.jcbAudioScrobbler.isSelected()));
-    properties.put(Const.CONF_LASTFM_INFO,
-        Boolean.toString(pv.jcbEnableLastFMInformation.isSelected()));
+            Boolean.toString(pv.jcbDefaultActionDrop.isSelected()));
     final int iLogLevel = pv.scbLogLevel.getSelectedIndex();
     Log.setVerbosity(iLogLevel);
     properties.put(Const.CONF_OPTIONS_LOG_LEVEL, Integer.toString(iLogLevel));
     properties.put(Const.CONF_OPTIONS_INTRO_BEGIN, Integer.toString(pv.introPosition.getValue()));
     properties.put(Const.CONF_OPTIONS_INTRO_LENGTH, Integer.toString(pv.introLength.getValue()));
     properties.put(Const.CONF_TAGS_USE_PARENT_DIR,
-        Boolean.toString(pv.jcbUseParentDir.isSelected()));
+            Boolean.toString(pv.jcbUseParentDir.isSelected()));
     final String sBestofSize = pv.jtfBestofSize.getText();
     if (!sBestofSize.isEmpty()) {
       properties.put(Const.CONF_BESTOF_TRACKS_SIZE, sBestofSize);
     }
     Locale locale = LocaleManager.getLocaleForDesc(((JLabel) pv.scbLanguage.getSelectedItem())
-        .getText());
+            .getText());
     final String sLocal = locale.getLanguage();
     properties.put(Const.CONF_OPTIONS_LANGUAGE, sLocal);
     // force refresh of bestof files
@@ -369,15 +379,15 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     // Show an hideable message if user set cross fade under linux for sound
     // server information
     if (UtilSystem.isUnderLinux() && (oldDuration == 0)
-        && (oldDuration != pv.crossFadeDuration.getValue())) {
+            && (oldDuration != pv.crossFadeDuration.getValue())) {
       Messages.showHideableWarningMessage(Messages.getString("ParameterView.210"),
-          Const.CONF_NOT_SHOW_AGAIN_CROSS_FADE);
+              Const.CONF_NOT_SHOW_AGAIN_CROSS_FADE);
     }
     properties.put(Const.CONF_FADE_DURATION, Integer.toString(pv.crossFadeDuration.getValue()));
     properties.put(Const.CONF_USE_VOLNORM, Boolean.toString(pv.jcbUseVolnorm.isSelected()));
     properties.put(Const.CONF_BIT_PERFECT, Boolean.toString(pv.jcbEnableBitPerfect.isSelected()));
     properties.put(Const.CONF_PRESERVE_FILE_DATES,
-        Boolean.toString(pv.jcbPreserveFileDates.isSelected()));
+            Boolean.toString(pv.jcbPreserveFileDates.isSelected()));
     Conf.setProperties(properties);
   }
 
@@ -412,20 +422,20 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
   private void updateConfFromGUIConfirmation() {
     HashMap<String, String> properties = new HashMap<>(10);
     properties.put(Const.CONF_CONFIRMATIONS_DELETE_FILE,
-        Boolean.toString(pv.jcbBeforeDelete.isSelected()));
+            Boolean.toString(pv.jcbBeforeDelete.isSelected()));
     properties.put(Const.CONF_CONFIRMATIONS_EXIT, Boolean.toString(pv.jcbBeforeExit.isSelected()));
     properties.put(Const.CONF_CONFIRMATIONS_REMOVE_DEVICE,
-        Boolean.toString(pv.jcbBeforeRemoveDevice.isSelected()));
+            Boolean.toString(pv.jcbBeforeRemoveDevice.isSelected()));
     properties.put(Const.CONF_CONFIRMATIONS_DELETE_COVER,
-        Boolean.toString(pv.jcbBeforeDeleteCover.isSelected()));
+            Boolean.toString(pv.jcbBeforeDeleteCover.isSelected()));
     properties.put(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY,
-        Boolean.toString(pv.jcbBeforeClearingHistory.isSelected()));
+            Boolean.toString(pv.jcbBeforeClearingHistory.isSelected()));
     properties.put(Const.CONF_CONFIRMATIONS_RESET_RATINGS,
-        Boolean.toString(pv.jcbBeforeResetingRatings.isSelected()));
+            Boolean.toString(pv.jcbBeforeResetingRatings.isSelected()));
     properties.put(Const.CONF_CONFIRMATIONS_REFACTOR_FILES,
-        Boolean.toString(pv.jcbBeforeRefactorFiles.isSelected()));
+            Boolean.toString(pv.jcbBeforeRefactorFiles.isSelected()));
     properties.put(Const.CONF_CONFIRMATIONS_BEFORE_TAG_WRITE,
-        Boolean.toString(pv.jcbBeforeWritingTag.isSelected()));
+            Boolean.toString(pv.jcbBeforeWritingTag.isSelected()));
     Conf.setProperties(properties);
   }
 
@@ -441,7 +451,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     boolean oldManualValue = Conf.getBoolean(Const.CONF_MANUAL_RATINGS);
     if (pv.jcbManualRatings.isSelected() != oldManualValue) {
       Conf.setProperty(Const.CONF_MANUAL_RATINGS,
-          Boolean.toString(pv.jcbManualRatings.isSelected()));
+              Boolean.toString(pv.jcbManualRatings.isSelected()));
       ObservationManager.notify(new JajukEvent(JajukEvents.RATING_MODE_CHANGED));
     }
   }
@@ -501,7 +511,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     String notificatorTypeDisplayed = (String) pv.jcbNotificationType.getSelectedItem();
     for (NotificatorTypes notificatorType : NotificatorTypes.values()) {
       if (Messages.getString(ParameterView.NOTIFICATOR_PREFIX + notificatorType).equals(
-          notificatorTypeDisplayed)) {
+              notificatorTypeDisplayed)) {
         properties.put(Const.CONF_UI_NOTIFICATOR_TYPE, notificatorType.name());
       }
     }
@@ -513,27 +523,43 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
       this.someOptionsAppliedAtNextStartup = true;
     }
     properties.put(Const.CONF_PERSPECTIVE_ICONS_SIZE,
-        Integer.toString(pv.jsPerspectiveSize.getValue()));
+            Integer.toString(pv.jsPerspectiveSize.getValue()));
     // LAF change
     final String oldTheme = Conf.getString(Const.CONF_OPTIONS_LNF);
     properties.put(Const.CONF_OPTIONS_LNF, (String) pv.scbLAF.getSelectedItem());
     if (!oldTheme.equals(pv.scbLAF.getSelectedItem())) {
       // theme will be applied at next startup
       Messages.showHideableWarningMessage(Messages.getString("ParameterView.233"),
-          Const.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
+              Const.CONF_NOT_SHOW_AGAIN_LAF_CHANGE);
       pv.bLAFMessage = true;
     }
     Conf.setProperties(properties);
   }
 
   /**
-  * Apply parameters network.
-  *
-  */
+   * Apply parameters LastFM.
+   */
+  private void updateConfFromGUILastFM() {
+    HashMap<String, String> properties = new HashMap<>(10);
+    properties.put(Const.CONF_LASTFM_AUDIOSCROBBLER_ENABLE,
+            Boolean.toString(pv.jcbAudioScrobbler.isSelected()));
+    properties.put(Const.CONF_LASTFM_INFO,
+            Boolean.toString(pv.jcbEnableLastFMInformation.isSelected()));
+    properties.put(Const.CONF_LASTFM_API_KEY,
+            pv.jtfLastFmAPIKey.getText());
+    properties.put(Const.CONF_LASTFM_SECRET,
+            pv.jtfLastFmAPISecret.getText());
+    Conf.setProperties(properties);
+  }
+
+  /**
+   * Apply parameters network.
+   *
+   */
   private void updateConfFromGUINetwork() {
     HashMap<String, String> properties = new HashMap<>(10);
     properties.put(Const.CONF_NETWORK_NONE_INTERNET_ACCESS,
-        Boolean.toString(pv.jcbNoneInternetAccess.isSelected()));
+            Boolean.toString(pv.jcbNoneInternetAccess.isSelected()));
     properties.put(Const.CONF_NETWORK_USE_PROXY, Boolean.toString(!pv.jcbProxyNone.isSelected()));
     if (pv.jcbProxyHttp.isSelected()) {
       properties.put(Const.CONF_NETWORK_PROXY_TYPE, Const.PROXY_TYPE_HTTP);
@@ -544,7 +570,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     properties.put(Const.CONF_NETWORK_PROXY_PORT, pv.jtfProxyPort.getText());
     properties.put(Const.CONF_NETWORK_PROXY_LOGIN, pv.jtfProxyLogin.getText());
     properties.put(Const.CONF_NETWORK_PROXY_PWD,
-        UtilString.rot13(new String(pv.jtfProxyPwd.getPassword())));
+            UtilString.rot13(new String(pv.jtfProxyPwd.getPassword())));
     properties.put(Const.CONF_NETWORK_CONNECTION_TO, Integer.toString(pv.connectionTO.getValue()));
     Conf.setProperties(properties);
     // Force global reload of proxy variables
@@ -559,21 +585,21 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     HashMap<String, String> properties = new HashMap<>(10);
     properties.put(Const.CONF_COVERS_MIRROW_COVER, Boolean.toString(pv.jcb3dCover.isSelected()));
     properties.put(Const.CONF_COVERS_MIRROW_COVER_FS_MODE,
-        Boolean.toString(pv.jcb3dCoverFS.isSelected()));
+            Boolean.toString(pv.jcb3dCoverFS.isSelected()));
     ObservationManager.notify(new JajukEvent(JajukEvents.COVER_NEED_REFRESH));
     properties.put(Const.CONF_COVERS_AUTO_COVER, Boolean.toString(pv.jcbAutoCover.isSelected()));
     properties.put(Const.CONF_COVERS_SHUFFLE, Boolean.toString(pv.jcbShuffleCover.isSelected()));
     properties.put(Const.CONF_COVERS_SAVE_EXPLORER_FRIENDLY,
-        Boolean.toString(pv.jcbSaveExplorerFriendly.isSelected()));
+            Boolean.toString(pv.jcbSaveExplorerFriendly.isSelected()));
     properties.put(Const.CONF_COVERS_SIZE, Integer.toString(pv.jcbCoverSize.getSelectedIndex()));
     properties.put(Const.FILE_DEFAULT_COVER, pv.jtfDefaultCoverSearchPattern.getText());
     Conf.setProperties(properties);
   }
 
   /**
-  * Handle workspace change.
-  *
-  */
+   * Handle workspace change.
+   *
+   */
   private void handleWorkspaceChange() {
     if (!Conf.getString(Const.CONF_TARGET_WORKSPACE_PATH).equals(pv.psJajukWorkspace.getUrl())) {
       Conf.setProperty(Const.CONF_TARGET_WORKSPACE_PATH, pv.psJajukWorkspace.getUrl());
@@ -600,12 +626,12 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         // exists,
         // it is then only a workspace switch
         if (!new java.io.File(pv.psJajukWorkspace.getUrl() + '/'
-            + (SessionService.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk"))
-            .exists()) {
+                + (SessionService.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk"))
+                .exists()) {
           UtilGUI.waiting();
           final java.io.File from = SessionService.getConfFileByPath("");
           final java.io.File dest = new java.io.File(newWorkspace + '/'
-              + (SessionService.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk"));
+                  + (SessionService.isTestMode() ? ".jajuk_test_" + Const.TEST_VERSION : ".jajuk"));
           UtilSystem.copyRecursively(from, dest);
           bPreviousPathExist = false;
         }
@@ -621,10 +647,10 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         // Display a warning message and restart Jajuk
         if (bPreviousPathExist) {
           Messages.getChoice(Messages.getString("ParameterView.247"), JOptionPane.DEFAULT_OPTION,
-              JOptionPane.INFORMATION_MESSAGE);
+                  JOptionPane.INFORMATION_MESSAGE);
         } else {
           Messages.getChoice(Messages.getString("ParameterView.209"), JOptionPane.DEFAULT_OPTION,
-              JOptionPane.INFORMATION_MESSAGE);
+                  JOptionPane.INFORMATION_MESSAGE);
         }
         // Exit Jajuk
         try {
@@ -640,17 +666,17 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
   }
 
   /*
-  * (non-Javadoc)
-  *
-  * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-  */
+   * (non-Javadoc)
+   *
+   * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   */
   @Override
   public void actionPerformed(final ActionEvent e) {
     if (e.getSource() == pv.jbClearHistory) {
       // show confirmation message if required
       if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_CLEAR_HISTORY)) {
         final int iResu = Messages.getChoice(Messages.getString("Confirmation_clear_history"),
-            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
         if (iResu != JOptionPane.YES_OPTION) {
           return;
         }
@@ -664,7 +690,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
       // show confirmation message if required
       if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS)) {
         final int iResu = Messages.getChoice(Messages.getString("Confirmation_reset_ratings"),
-            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
         if (iResu != JOptionPane.YES_OPTION) {
           return;
         }
@@ -674,7 +700,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
       // show confirmation message if required
       if (Conf.getBoolean(Const.CONF_CONFIRMATIONS_RESET_RATINGS)) {
         final int iResu = Messages.getChoice(Messages.getString("Confirmation_reset_preferences"),
-            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
         if (iResu != JOptionPane.YES_OPTION) {
           return;
         }
@@ -698,15 +724,15 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
       }
       // Update Mute state according to bit-perfect mode
       ActionManager.getAction(JajukActions.MUTE_STATE).setEnabled(
-          !Conf.getBoolean(Const.CONF_BIT_PERFECT));
+              !Conf.getBoolean(Const.CONF_BIT_PERFECT));
     } else if (e.getSource() == pv.jbDefault) {
       int resu = Messages.getChoice(Messages.getString("Confirmation_defaults"),
-          JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+              JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
       if (resu == JOptionPane.OK_OPTION) {
         Conf.setDefaultProperties();
         updateGUIFromConf();// update UI
         InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.110"),
-            InformationJPanel.MessageType.INFORMATIVE);
+                InformationJPanel.MessageType.INFORMATIVE);
         updateConfFromGUI();
         Messages.showInfoMessage(Messages.getString("ParameterView.198"));
       }
@@ -720,7 +746,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
         pv.backupSize.setValue(0);
       }
     } else if ((e.getSource() == pv.jcbProxyNone) || (e.getSource() == pv.jcbProxyHttp)
-        || (e.getSource() == pv.jcbProxySocks)) {
+            || (e.getSource() == pv.jcbProxySocks)) {
       final boolean bUseProxy = !pv.jcbProxyNone.isSelected();
       pv.jtfProxyHostname.setEnabled(bUseProxy);
       pv.jtfProxyPort.setEnabled(bUseProxy);
@@ -742,7 +768,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
       pv.jbLastFmAuthenticate.setEnabled(pv.jcbAudioScrobbler.isSelected());
     } else if (e.getSource() == pv.scbLanguage) {
       Locale locale = LocaleManager.getLocaleForDesc(((JLabel) pv.scbLanguage.getSelectedItem())
-          .getText());
+              .getText());
       final String sLocal = locale.getLanguage();
       final String sPreviousLocal = LocaleManager.getLocale().getLanguage();
       if (!sPreviousLocal.equals(sLocal)) {
@@ -811,14 +837,16 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
       worker.execute();
     } else if (e.getSource().equals(pv.jbLastFmAuthenticate)) {
       onAuthenticateLastFm();
+    } else if (e.getSource().equals(pv.jbLastFmResetCache)) {
+      LastFmService.getInstance().clearCache();
     }
   }
 
   /*
-  * (non-Javadoc)
-  *
-  * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
-  */
+   * (non-Javadoc)
+   *
+   * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+   */
   @Override
   public void itemStateChanged(final ItemEvent e) {
     if (e.getSource() == pv.jrbFile) { // jrbFile has been selected or
@@ -842,15 +870,11 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
    * Get a Last.Fm session key and store it in configuration file.
    */
   private void onAuthenticateLastFm() {
-    // TODO : should be stored in external file, but it requires allowing the user to change them also
-    String apiKey = LastFmClient.API_KEY;
-    String apiSecret = LastFmClient.API_SECRET;
-
     // Launched in SwingWorker process to prevent freezing UI
     SwingWorker<String, Void> worker = new SwingWorker<>() {
       @Override
       protected String doInBackground() throws Exception {
-        LastFmAuthenticator auth = new LastFmAuthenticator(apiKey, apiSecret);
+        LastFmAuthenticator auth = LastFmService.getInstance().getLastFmAuthenticator();
         return auth.authenticate();
       }
 
@@ -861,6 +885,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
           if (sessionKey != null) {
             // Storing session key
             Conf.setProperty(Const.CONF_LASTFM_SESSION_KEY, sessionKey);
+            pv.jtfLastFmSessionKey.setText(sessionKey);
             Messages.showInfoMessage("Authentification Last.fm successful !\nScrobbling is now active.", "Success");
           } else {
             Messages.showInfoMessage("Authentification failed. Please try again.", "Error");

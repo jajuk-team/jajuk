@@ -30,11 +30,11 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class MusicBrainzClient {
+public class WikipediaClient {
   private final HttpClient client;
   private final ObjectMapper mapper;
 
-  public MusicBrainzClient() {
+  public WikipediaClient() {
     this.client = HttpClient.newHttpClient();
     this.mapper = new ObjectMapper();
   }
@@ -42,12 +42,12 @@ public class MusicBrainzClient {
   /**
    * Looking for an image for an artist.
    * 1. First try with images Last.fm (filtering placeholders).
-   * 2. If no valid image found, try MusicBrainz.
+   * 2. If no valid image found, try Wikipedia.
    */
   public void checkArtistImageUrl(ArtistInfo artistInfo) {
     // Vérifier si c'est un placeholder (hash connu)
     if (isPlaceholderImage(artistInfo.getImageUrl())) {
-      Log.debug("No valid image Last.fm. Trying MusicBrainz...");
+      Log.debug(String.format("No valid image Last.fm for '%s'. Trying Wikipedia...", artistInfo.getName()));
       String url = fetchImageFromWikimediaDirect(artistInfo.getName());
       if (url != null) {
         artistInfo.setImageUrl(url);
@@ -119,7 +119,7 @@ public class MusicBrainzClient {
             Log.debug("Image found directly from Wikipedia : " + imageUrl);
             return imageUrl;
           } else {
-            Log.debug("Wikipedia Page foun but without main image.");
+            Log.debug("Wikipedia Page found but without main image.");
           }
         }
       }

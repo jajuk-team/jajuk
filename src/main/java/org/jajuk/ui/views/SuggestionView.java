@@ -48,6 +48,7 @@ import org.jajuk.base.File;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.lastfm.LastFmInvalidKeyException;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.thumbnails.AbstractThumbnail;
@@ -60,6 +61,7 @@ import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Messages;
 import org.jajuk.util.UtilGUI;
+import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
 
 import ext.FlowScrollPanel;
@@ -302,21 +304,19 @@ public class SuggestionView extends ViewAdapter {
 
     // Use a swing worker as construct takes a lot of time
     // --- WORKER For other albums (Panel 3) ---
-    SwingWorker<Void, AlbumInfo> albumWorker = new SwingWorker<Void, AlbumInfo>() {
+    SwingWorker<Void, AlbumInfo> albumWorker = new SwingWorker<>() {
       @Override
       protected Void doInBackground() throws Exception {
         albums = LastFmService.getInstance().getAlbumList(artist, true, 0);
         if (albums != null && !albums.getAlbums().isEmpty()) {
           for (AlbumInfo album : albums.getAlbums()) {
             String albumUrl = album.getBigCoverURL();
-            if (StringUtils.isBlank(albumUrl))
-              continue;
-
-            // 1. Heavy task / download
-            URL remote = new URL(albumUrl);
-            DownloadManager.downloadToCache(remote);
-
-            // 2. Publish raw data
+            if (StringUtils.isNotBlank(albumUrl)) {
+              // 1 Download
+              URL remote = new URL(albumUrl);
+              DownloadManager.downloadToCache(remote);
+            }
+            // 2 Publish raw data
             publish(album);
           }
         }
@@ -368,8 +368,8 @@ public class SuggestionView extends ViewAdapter {
 
             if (thumb.getIcon() != null) {
               thumb.getIcon().addMouseListener(new ThumbMouseListener());
-              flowPanel.add(thumb);
             }
+            flowPanel.add(thumb);
           }
           flowPanel.revalidate();
           flowPanel.repaint();
@@ -383,23 +383,27 @@ public class SuggestionView extends ViewAdapter {
     };
 
     // --- WORKER for similar artists (Panel 4) ---
-    SwingWorker<Void, ArtistInfo> artistWorker = new SwingWorker<Void, ArtistInfo>() {
+    SwingWorker<Void, ArtistInfo> artistWorker = new SwingWorker<>() {
       @Override
       protected Void doInBackground() throws Exception {
-        similar = LastFmService.getInstance().getSimilarArtists(artist);
-        if (similar != null && similar.getArtists() != null && !similar.getArtists().isEmpty()) {
-          for (ArtistInfo similarArtist : similar.getArtists()) {
-            String artistUrl = similarArtist.getImageUrl();
-            if (StringUtils.isBlank(artistUrl))
-              continue;
+        try {
+          similar = LastFmService.getInstance().getSimilarArtists(artist);
+          if (similar != null && similar.getArtists() != null && !similar.getArtists().isEmpty()) {
+            for (ArtistInfo similarArtist : similar.getArtists()) {
+              String artistUrl = similarArtist.getImageUrl();
+              if (StringUtils.isBlank(artistUrl))
+                continue;
 
-            // 1. Heavy task / download
-            URL remote = new URL(artistUrl);
-            DownloadManager.downloadToCache(remote);
+              // 1. Heavy task / download
+              URL remote = new URL(artistUrl);
+              DownloadManager.downloadToCache(remote);
 
-            // 2. Publish raw data
-            publish(similarArtist);
+              // 2. Publish raw data
+              publish(similarArtist);
+            }
           }
+        } catch (LastFmInvalidKeyException e) {
+          Log.error(e);
         }
         return null;
       }
@@ -480,15 +484,7 @@ public class SuggestionView extends ViewAdapter {
     if (albums != null && !albums.getAlbums().isEmpty()) {
       for (AlbumInfo album : albums.getAlbums()) {
         // stop this list of albums if there was another file launched in the meantime
-        String albumUrl = album.getBigCoverURL();
-        if (StringUtils.isBlank(albumUrl)) {
-          continue;
-        }
-        // Download thumb
-        URL remote = new URL(albumUrl);
-        // Download image and store file reference (to generate the
-        // popup thumb for ie)
-        DownloadManager.downloadToCache(remote);
+        LastFmService.getInstance().getImage(album);
       }
     }
   }
@@ -506,15 +502,7 @@ public class SuggestionView extends ViewAdapter {
       List<ArtistInfo> artists = similar.getArtists();
       for (ArtistInfo similarArtist : artists) {
         // stop this list of albums if there was another file launched in the meantime, another refresh will take place anyway
-        String artistUrl = similarArtist.getImageUrl();
-        if (StringUtils.isBlank(artistUrl)) {
-          continue;
-        }
-        // Download thumb
-        URL remote = new URL(artistUrl);
-        // Download the picture and store file reference (to
-        // generate the popup thumb for ie)
-        DownloadManager.downloadToCache(remote);
+        LastFmService.getInstance().getImage(similarArtist);
       }
     }
   }

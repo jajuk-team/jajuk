@@ -21,32 +21,7 @@
 package org.jajuk.ui.thumbnails;
 
 import com.vlsolutions.swing.docking.ShadowBorder;
-
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.Timer;
-import javax.swing.TransferHandler;
-import javax.swing.WindowConstants;
-
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
@@ -56,14 +31,23 @@ import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.JajukMouseAdapter;
 import org.jajuk.ui.views.CoverView;
 import org.jajuk.ui.windows.JajukMainWindow;
-import org.jajuk.util.Conf;
-import org.jajuk.util.Const;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukIcons;
-import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
-import org.jajuk.util.UtilSystem;
+import org.jajuk.util.*;
 import org.jajuk.util.log.Log;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.Serial;
+import java.net.URL;
+import java.util.List;
 
 /**
  * Album thumb represented as album cover + (optionally) others text information
@@ -72,6 +56,7 @@ import org.jajuk.util.log.Log;
  */
 public abstract class AbstractThumbnail extends JPanel implements ActionListener, Transferable {
   /** Generated serialVersionUID. */
+  @Serial
   private static final long serialVersionUID = -6396225563540281695L;
   /** Size. */
   int size;
@@ -100,7 +85,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
   private boolean artistView;
   /** Associated file. */
   File fCover;
-  /** Timer used to launch popup */
+  /* Timer used to launch popup. */
   static {
     Timer timerPopup = new Timer(200, new ActionListener() {
       @Override
@@ -109,7 +94,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
           // Close popup ASAP when over none catalog item
           if (mouseOverItem == null) {
             if (details != null) {
-              details.dispose();
+              details.closeIfAutoclose();
               details = null;
             }
             last = null;
@@ -253,82 +238,90 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
     }
     jmenu.addSeparator();
     jmenu.add(jmiProperties);
-    jlIcon.addMouseMotionListener(new MouseMotionAdapter() {
-      @Override
-      public void mouseDragged(MouseEvent e) {
-        // Notify the mouse listener that we are dragging
-        bDragging = true;
-        JComponent c = (JComponent) e.getSource();
-        TransferHandler handler = c.getTransferHandler();
-        handler.exportAsDrag(c, e, TransferHandler.COPY);
-      }
-
-      @Override
-      public void mouseMoved(MouseEvent e) {
-        super.mouseMoved(e);
-        lDateLastMove = System.currentTimeMillis();
-        lastPosition = e.getPoint();
-      }
-    });
-    jlIcon.addMouseListener(new JajukMouseAdapter() {
-      @Override
-      public void handlePopup(MouseEvent e) {
-        if (e.getSource() == jlIcon) {
-          // Show contextual menu
-          jmenu.show(jlIcon, e.getX(), e.getY());
-          // Hide any details frame
-          if (details != null) {
-            details.dispose();
-            details = null;
+    if (jlIcon != null) {
+      jlIcon.addMouseMotionListener(new MouseMotionAdapter() {
+        @Override
+        public void mouseDragged(MouseEvent e) {
+          // Notify the mouse listener that we are dragging
+          bDragging = true;
+          JComponent c = (JComponent) e.getSource();
+          TransferHandler handler = c.getTransferHandler();
+          // handler may be null for thumbnails that don't support DnD
+          if (handler != null) {
+            handler.exportAsDrag(c, e, TransferHandler.COPY);
+          } else {
+            // No transfer handler: ignore drag action to avoid NPE
+            Log.debug("No TransferHandler for component " + c + ", skipping exportAsDrag");
           }
         }
-      }
 
-      @Override
-      public void handleActionSeveralClicks(MouseEvent e) {
-        launch();
-      }
-
-      @Override
-      public void mousePressed(MouseEvent e) {
-        if (bDragging) {
-          return;
+        @Override
+        public void mouseMoved(MouseEvent e) {
+          super.mouseMoved(e);
+          lDateLastMove = System.currentTimeMillis();
+          lastPosition = e.getPoint();
         }
-        super.mousePressed(e);
-      }
-
-      @Override
-      public void mouseEntered(MouseEvent e) {
-        mouseOverItem = AbstractThumbnail.this;
-      }
-
-      @Override
-      public void mouseExited(MouseEvent e) {
-        // Consider an exit only if mouse really moved to avoid
-        // closing popup when popup appears over the mouse cursor
-        // (then, a mouseExit event is thrown)
-        if (!e.getPoint().equals(lastPosition) &&
-        // Don't close popup if user is still over it
-            !(details != null && details.contains(e.getPoint()))) {
-          mouseOverItem = null;
+      });
+      jlIcon.addMouseListener(new JajukMouseAdapter() {
+        @Override
+        public void handlePopup(MouseEvent e) {
+          if (e.getSource() == jlIcon) {
+            // Show contextual menu
+            jmenu.show(jlIcon, e.getX(), e.getY());
+            // Hide any details frame
+            if (details != null) {
+              details.dispose();
+              details = null;
+            }
+          }
         }
-      }
 
-      @Override
-      public void mouseReleased(MouseEvent e) {
-        // Leave if already dragging
-        if (bDragging) {
-          return;
+        @Override
+        public void handleActionSeveralClicks(MouseEvent e) {
+          launch();
         }
-        super.mouseReleased(e);
-      }
-    });
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+          if (bDragging) {
+            return;
+          }
+          super.mousePressed(e);
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+          mouseOverItem = AbstractThumbnail.this;
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+          // Consider an exit only if mouse really moved to avoid
+          // closing popup when popup appears over the mouse cursor
+          // (then, a mouseExit event is thrown)
+          if (!e.getPoint().equals(lastPosition) &&
+                  // Don't close popup if user is still over it
+                  !(details != null && details.contains(e.getPoint()))) {
+            mouseOverItem = null;
+          }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+          // Leave if already dragging
+          if (bDragging) {
+            return;
+          }
+          super.mouseReleased(e);
+        }
+      });
+    }
   }
 
   /**
    * Sets the selected.
    * 
-   * @param b 
+   * @param b is selected ?
    */
   public final void setSelected(boolean b) {
     requestFocusInWindow();
@@ -370,12 +363,12 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
       // We sort associated tracks because we want to analyze the first file of the set
       // as it is more likely to contain global cover tag.
       List<Track> tracks = TrackManager.getInstance().getAssociatedTracks(getItem(), true);
-      if (tracks.size() > 0) {
+      if (!tracks.isEmpty()) {
         // Take first track found
         Track track = tracks.iterator().next();
         file = track.getBestFile(false);
       }
-      CoverView cv = null;
+      CoverView cv;
       if (file != null) {
         cv = new CoverView(file, jd);
         cv.setID("catalog/0");
@@ -402,7 +395,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
    * @see java.awt.datatransfer.Transferable#getTransferData(java.awt.datatransfer.DataFlavor)
    */
   @Override
-  public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+  public Object getTransferData(DataFlavor flavor) {
     return null;
   }
 
@@ -433,5 +426,102 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
    */
   public JLabel getIcon() {
     return jlIcon;
+  }
+
+  /**
+   * Download a remote URL to cache and perform basic validation.
+   * The cached file is stored in the protected field {@link #fCover}.
+   *
+   * @param remote remote URL to download
+   * @return the cached File or null if unavailable or invalid
+   */
+  protected java.io.File downloadToCache(URL remote) {
+    try {
+      fCover = DownloadManager.downloadToCache(remote);
+      if (fCover == null) {
+        Log.warn("No cache file for {{" + remote.toString() + "}}");
+        return null;
+      }
+      if (!fCover.exists()) {
+        Log.warn("Cache file not found: {{" + fCover.getAbsolutePath() + "}}");
+        return null;
+      }
+      if (fCover.length() == 0) {
+        Log.warn("Cache file has zero bytes: {{" + fCover.getAbsolutePath() + "}}");
+        return null;
+      }
+      return fCover;
+    } catch (Exception e) {
+      Log.warn("Could not read remote file: {{" + (remote != null ? remote.toString() : "null") + "}}", e.getMessage());
+      return null;
+    }
+  }
+
+  /**
+   * Create a scaled ImageIcon from a remote URL. The method downloads the
+   * remote resource to the cache (using {@link #downloadToCache(URL)}), reads
+   * it as an image and returns a scaled icon using {@link UtilGUI#getScaledImage}.
+   *
+   * @param remote remote image URL
+   * @param size desired icon size (passed to UtilGUI.getScaledImage)
+   * @return scaled ImageIcon or null if unavailable
+   */
+  protected ImageIcon createScaledIconFromRemote(URL remote, int size) {
+    if (remote == null) {
+      return null;
+    }
+    try {
+      java.io.File cache = downloadToCache(remote);
+      if (cache == null) {
+        return null;
+      }
+      BufferedImage image = ImageIO.read(cache);
+      if (image == null) {
+        Log.warn("Could not read image data in file: {{" + cache + "}}");
+        return null;
+      }
+      return createScaledIcon(image, size);
+    } catch (Exception e) {
+      Log.warn("Could not load image from remote: {{" + remote + "}}", e.getMessage());
+      return null;
+    }
+  }
+
+  protected ImageIcon createScaledIcon(Image image, int size) {
+    ImageIcon downloadedImage = new ImageIcon(image);
+    ImageIcon scaled = UtilGUI.getScaledImage(downloadedImage, size);
+    // Free images memory
+    downloadedImage.getImage().flush();
+    image.flush();
+    return scaled;
+  }
+
+  /**
+   * Escapes HTML special characters to prevent XSS vulnerabilities.
+   *
+   * @param input the input string to escape
+   * @return escaped HTML string
+   */
+  protected String escapeHtml(String input) {
+    if (StringUtils.isBlank(input)) {
+      return "";
+    }
+    return input.replace("&", "&amp;")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+            .replace("\"", "&quot;")
+            .replace("'", "&#39;");
+  }
+
+  /**
+   * Helper method to create HTML hyperlinks in Last.FM format.
+   *
+   * @param text the display text
+   * @param url  the Last.FM url (item id)
+   * @return HTML link in format: &lt;a href='file://URL_SCHEME?url'&gt;text&lt;/a&gt;
+   */
+  protected String createLink(String text, String url) {
+    return "<a href='file://" + Const.XML_URL + '?' + url + "'>" + escapeHtml(text) + "</a>";
+    //return "<a href='" + url + "'>" + escapeHtml(text) + "</a>";
   }
 }

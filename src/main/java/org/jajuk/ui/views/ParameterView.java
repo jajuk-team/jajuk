@@ -151,8 +151,16 @@ public class ParameterView extends ViewAdapter {
   JCheckBox jcbShowPopups;
   JLabel jlFonts;
   JSlider jsFonts;
+  /** Last.FM items*/
   JCheckBox jcbEnableLastFMInformation;
   JButton jbLastFmAuthenticate;
+  JButton jbLastFmResetCache;
+  JTextField jtfLastFmSessionKey;
+  JLabel jlLastFmAPIKey;
+  JTextField jtfLastFmAPIKey;
+  JLabel jlLastFmAPISecret;
+  JTextField jtfLastFmAPISecret;
+
   JButton jbOK;
   JButton jbDefault;
   JCheckBox jcbCheckUpdates;
@@ -804,12 +812,33 @@ public class ParameterView extends ViewAdapter {
     jcbEnableLastFMInformation.setToolTipText(Messages.getString("ParameterView.241"));
     jbLastFmAuthenticate = new JButton(Messages.getString("ParameterView.312"));
     jbLastFmAuthenticate.addActionListener(updateHelper);
+    // Will be enabled only if a secret is not empty
+    jbLastFmAuthenticate.setEnabled(false);
+    jtfLastFmSessionKey = new JTextField();
+    jtfLastFmSessionKey.setToolTipText(Messages.getString("ParameterView.316"));
+    jtfLastFmSessionKey.setEditable(false);
+    jtfLastFmSessionKey.setOpaque(true);
+    jbLastFmResetCache = new JButton(Messages.getString("ParameterView.313"));
+    jbLastFmResetCache.addActionListener(updateHelper);
+    jlLastFmAPIKey = new JLabel(Messages.getString("ParameterView.314"));
+    jtfLastFmAPIKey = new JTextField();
+    jtfLastFmAPIKey.setToolTipText(Messages.getString("ParameterView.314"));
+    jtfLastFmAPIKey.setOpaque(true);
+    jlLastFmAPISecret = new JLabel(Messages.getString("ParameterView.315"));
+    jtfLastFmAPISecret = new JTextField();
+    jtfLastFmAPISecret.setToolTipText(Messages.getString("ParameterView.315"));
 
     // Add items
-    JPanel jpLastFM = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[grow]"));
+    JPanel jpLastFM = new JPanel(new MigLayout("insets 10,gapy 15,gapx 10", "[][grow]"));
     jpLastFM.add(jcbEnableLastFMInformation, "wrap");
+    jpLastFM.add(jlLastFmAPIKey);
+    jpLastFM.add(jtfLastFmAPIKey, "grow, wrap");
     jpLastFM.add(jcbAudioScrobbler, "wrap");
-    jpLastFM.add(jbLastFmAuthenticate, "wrap");
+    jpLastFM.add(jlLastFmAPISecret);
+    jpLastFM.add(jtfLastFmAPISecret, "grow, wrap");
+    jpLastFM.add(jbLastFmAuthenticate);
+    jpLastFM.add(jtfLastFmSessionKey, "wrap, grow");
+    jpLastFM.add(jbLastFmResetCache, "wrap");
     return jpLastFM;
   }
 

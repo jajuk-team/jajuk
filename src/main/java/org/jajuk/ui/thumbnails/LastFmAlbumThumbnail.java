@@ -20,38 +20,23 @@
  */
 package org.jajuk.ui.thumbnails;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-
+import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Item;
+import org.jajuk.services.lastfm.LastFmInvalidKeyException;
+import org.jajuk.services.lastfm.LastFmService;
+import org.jajuk.services.lastfm.model.AlbumInfo;
+import org.jajuk.services.lastfm.model.TrackInfo;
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
-import org.jajuk.util.Const;
-import org.jajuk.util.DownloadManager;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukIcons;
-import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
-import org.jajuk.util.UtilString;
-import org.jajuk.util.UtilSystem;
+import org.jajuk.util.*;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.border.DropShadowBorder;
 
-import org.jajuk.services.lastfm.model.AlbumInfo;
-import org.jajuk.services.lastfm.LastFmService;
-import org.jajuk.services.lastfm.model.TrackInfo;
-import net.miginfocom.swing.MigLayout;
+import javax.swing.*;
+import java.awt.*;
+import java.io.Serial;
 
 /**
  * Last.FM Album thumb represented as album cover + (optionally) others text
@@ -59,6 +44,7 @@ import net.miginfocom.swing.MigLayout;
  */
 public class LastFmAlbumThumbnail extends AbstractThumbnail {
   /** Generated serialVersionUID. */
+  @Serial
   private static final long serialVersionUID = -804471264407148566L;
   /** Associated album. */
   private AlbumInfo album;
@@ -70,8 +56,7 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
   /**
    * The Constructor.
    *
-   * @param album :
-   *              associated album
+   * @param album : associated album
    */
   public LastFmAlbumThumbnail(AlbumInfo album) {
     super(100);
@@ -79,64 +64,76 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
     bKnown = (AlbumManager.getInstance().getAlbumByName(album.getTitle()) != null);
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.ui.thumbnails.AbstractThumbnail#getItem()
-   */
+  @Override
+  public String getDescription() {
+    // Populate album detail with tracks if not already loaded
+    if (album.getTracks() == null) {
+      try {
+        AlbumInfo lAlbum = LastFmService.getInstance().getAlbum(this.album.getArtist(),
+                this.album.getTitle());
+        if (lAlbum != null) {
+          this.album = lAlbum;
+        }
+      } catch (LastFmInvalidKeyException e) {
+        Log.error(e);
+      }
+    }
+
+    // Cache color values to avoid repeated method calls
+    String bgColorHex = UtilGUI.getHTMLColor(UtilGUI.getUltraLightColor());
+    String fgColorHex = UtilGUI.getHTMLColor(UtilGUI.getForegroundColor());
+
+    // Wrap content in a container with constrained width so very large images don't blow up the dialog
+    StringBuilder html = new StringBuilder();
+    html.append("<html>");
+    html.append("<body bgcolor='#").append(bgColorHex).append("'>");
+    html.append("<div style='width:400px; height:400px; margin:0 auto; border:1px solid #ccc;'>");
+    html.append("<table style='color:#").append(fgColorHex).append(";'>");
+    html.append("<tr><td style='vertical-align: top;'>");
+
+    // Album title as link
+    html.append("<b>").append(createLink(album.getTitle(), album.getUrl())).append("</b>");
+    html.append("<br><br>");
+
+    // Album cover (constrained)
+    String coverUrl = album.getBigCoverURL();
+    if (StringUtils.isNotBlank(coverUrl)) {
+      html.append("<img src='")
+              .append(coverUrl)
+              .append("' width='400'>") // Fixed width
+              .append("<br>");
+    }
+
+    // Artist information
+    html.append("<br>").append(Messages.getHumanPropertyName(Const.XML_ARTIST)).append(" : ");
+    html.append(createLink(album.getArtist(), album.getArtistUrl()));
+
+    // Year information (if available)
+    String year = album.getYear();
+    if (StringUtils.isNotBlank(year)) {
+      html.append("<br>").append(Messages.getHumanPropertyName(Const.XML_YEAR)).append(" : ")
+              .append(year);
+    }
+
+    // Track listing
+    html.append("</td><td>");
+    if (album.getTracks() != null && !album.getTracks().isEmpty()) {
+      for (TrackInfo track : album.getTracks()) {
+        html.append("<b>").append(createLink(track.getTitle(), track.getUrl())).append("</b><br>");
+      }
+    }
+    html.append("</td></tr></table>");
+    html.append("</div>");
+    html.append("</body>");
+    html.append("</html>");
+    return html.toString();
+  }
+
   @Override
   public Item getItem() {
     return AlbumManager.getInstance().getAlbumByName(album.getTitle());
   }
 
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.ui.thumbnails.AbstractThumbnail#getDescription()
-   */
-  @Override
-  public String getDescription() {
-    // populate album detail
-    if (album.getTracks() == null) {
-      AlbumInfo lAlbum = LastFmService.getInstance().getAlbum(this.album.getArtist(),
-              this.album.getTitle());
-      if (lAlbum != null) {
-        this.album = lAlbum;
-      }
-    }
-    Color bgcolor = UtilGUI.getUltraLightColor();
-    Color fgcolor = UtilGUI.getForegroundColor();
-    String sOut = "<html bgcolor='#" + UtilGUI.getHTMLColor(bgcolor) + "'><TABLE color='"
-            + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'> <b>" + "<a href='file://"
-            + Const.XML_URL + '?' + album.getUrl() + "'>" + album.getTitle() + "</a>" + "</b><br><br>";
-    // display cover
-    sOut += "<img src='" + album.getBigCoverURL() + "'><br>";
-    // Display artist as global value only if it is a single artist album
-    // We use file://<item type>?<item id> as HTML hyperlink format
-    sOut += "<br>" + Messages.getHumanPropertyName(Const.XML_ARTIST) + " : " + "<a href='file://"
-            + Const.XML_URL + '?' + album.getArtistUrl() + "'>" + album.getArtist() + "</a>";
-    // Display year if available
-    String year = album.getYear();
-    if (!StringUtils.isBlank(year)) {
-      sOut += "<br>" + Messages.getHumanPropertyName(Const.XML_YEAR) + " : " + year;
-    }
-    sOut += "</TD><TD>";
-    // Show each track detail if available
-    if (album.getTracks() != null) {
-      for (TrackInfo track : album.getTracks()) {
-        sOut += "<b>" + "<a href='file://" + Const.XML_URL + '?' + track.getUrl() + "'>"
-                + track.getTitle() + "</a></b><br>";
-      }
-    }
-    sOut += "</TD></TR></TABLE></html>";
-    return sOut;
-  }
-
-  /*
-   * (non-Javadoc)
-   *
-   * @see org.jajuk.ui.thumbnails.AbstractThumbnail#launch()
-   */
   @Override
   public void launch() {
     if (getItem() != null) {
@@ -156,60 +153,16 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
   private void preLoad() {
     try {
       // Check if album image is null
-      String albumUrl = album.getBigCoverURL();
-      if (StringUtils.isBlank(albumUrl)) {
+      Image remote = LastFmService.getInstance().getImage(album);
+      if (remote == null) {
+        // No remote cover available: use bundled no-cover icon sized to the thumbnail
+        ii = IconLoader.getNoCoverIcon(100);
         return;
       }
-      // Download thumb
-      URL remote = new URL(albumUrl);
-      // Download image and store file reference (to generate the
-      // popup thumb for ie)
-      fCover = DownloadManager.downloadToCache(remote);
-      if (fCover == null) {
-        Log.warn("No cache file for {{" + albumUrl + "}}");
-        return;
-      }
-      if (!fCover.exists()) {
-        Log.warn("Cache file not found: {{" + fCover.getAbsolutePath() + "}}");
-        return;
-      }
-      if (fCover.length() == 0) {
-        Log.warn("Cache file has zero bytes: {{" + fCover.getAbsolutePath() + "}}");
-        return;
-      }
-      BufferedImage image = ImageIO.read(fCover);
-      if (image == null) {
-        Log.warn("Could not read cover from: {{" + fCover.getAbsolutePath() + "}}");
-        return;
-      }
-      ImageIcon downloadedImage = new ImageIcon(image);
-      ii = UtilGUI.getScaledImage(downloadedImage, 100);
-      // Free images memory
-      downloadedImage.getImage().flush();
-      image.flush();
-    } catch (FileNotFoundException e) {
-      // only report a warning for FileNotFoundException and do not show a
-      // stack trace in the logfile as it is happening frequently
-      Log.warn("Could not load image, no content found at address: {{" + e.getMessage() + "}}");
-    } catch (SocketTimeoutException e) {
-      // only report a warning for FileNotFoundException and do not show a
-      // stacktrace in the logfile as it is happening frequently
-      Log.warn("Could not load image, timed out while reading address: {{" + e.getMessage() + "}}");
-    } catch (IOException e) {
-      if (e.getMessage().contains(" 403 ")) {
-        Log.warn("Could not access webpage, returned error 403: " + e.getMessage());
-      } else {
-        Log.error(e);
-      }
+      // Download thumb and create scaled icon
+      ii = createScaledIcon(remote, 100);
     } catch (Exception e) {
       Log.error(e);
-      // check for empty file to remove invalid cache entries
-      if (fCover.exists() && fCover.length() == 0) {
-        Log.warn("Removing empty file from cache: " + fCover.getAbsolutePath());
-        if (!fCover.delete()) {
-          Log.warn("Error removing file: " + fCover.getAbsolutePath());
-        }
-      }
     }
   }
 
@@ -219,14 +172,19 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
   @Override
   public void populate() {
     preLoad();
-    if (ii == null) {
-      return;
+
+    // Album Icon
+    if (ii != null) {
+      jlIcon = new JLabel();
+      jlIcon.setIcon(ii);
+      setLayout(new MigLayout("ins 0,gapy 2"));
+      add(jlIcon, "center,wrap");
+      jlIcon.setToolTipText(album.getTitle());
+      jlIcon.setBorder(new DropShadowBorder(Color.BLACK, 5, 0.5f, 5, false, true, false, true));
     }
-    jlIcon = new JLabel();
     postPopulate();
-    jlIcon.setIcon(ii);
-    setLayout(new MigLayout("ins 0,gapy 2"));
-    add(jlIcon, "center,wrap");
+
+    // Title
     JLabel jlTitle;
     String fullTitle = album.getTitle();
     // Add year if available
@@ -234,23 +192,32 @@ public class LastFmAlbumThumbnail extends AbstractThumbnail {
     if (StringUtils.isNotBlank(releaseDate)) {
       fullTitle += " (" + releaseDate + ")";
     }
-    int textLength = 15;
+    // Increase default text length and allow wrapping on multiple lines using HTML.
+    // We keep a larger limit for artist view.
+    int textLength = 30;
     if (isArtistView()) {
-      textLength = 50;
+      textLength = 100;
     }
+    // Use HTML with a fixed width so Swing will wrap the text into multiple lines
+    // (not strictly limited to 2 lines but will naturally wrap).
+    int labelWidthPx = isArtistView() ? 300 : 140;
+    String labelText = "<html><div style='text-align:center;width:" + labelWidthPx + "px;'>"
+            + UtilString.getLimitedString(fullTitle, textLength) + "</div></html>";
     if (bKnown) {
-      // Album known in collection, display its name in bold
-      jlTitle = new JLabel(UtilString.getLimitedString(fullTitle, textLength),
-              IconLoader.getIcon(JajukIcons.ALBUM), SwingConstants.CENTER);
+      // Album known in collection, display its name in bold with album icon
+      // Place the text below the icon and center both to reduce horizontal gap
+      jlTitle = new JLabel(labelText, IconLoader.getIcon(JajukIcons.ALBUM), SwingConstants.CENTER);
       jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.BOLD));
+      jlTitle.setHorizontalTextPosition(SwingConstants.CENTER);
+      jlTitle.setVerticalTextPosition(SwingConstants.BOTTOM);
+      jlTitle.setIconTextGap(4);
     } else {
-      jlTitle = new JLabel(UtilString.getLimitedString(fullTitle, textLength));
+      jlTitle = new JLabel(labelText, SwingConstants.CENTER);
       jlTitle.setFont(FontManager.getInstance().getFont(JajukFont.PLAIN));
     }
     jlTitle.setToolTipText(album.getTitle());
-    jlIcon.setToolTipText(album.getTitle());
     add(jlTitle, "center");
-    jlIcon.setBorder(new DropShadowBorder(Color.BLACK, 5, 0.5f, 5, false, true, false, true));
+
     // disable inadequate menu items
     jmiCDDBWizard.setEnabled(false);
     jmiGetCovers.setEnabled(false);

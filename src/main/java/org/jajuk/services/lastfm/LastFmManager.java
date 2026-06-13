@@ -20,9 +20,6 @@
  */
 package org.jajuk.services.lastfm;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.events.JajukEvent;
@@ -30,11 +27,13 @@ import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.events.Observer;
 import org.jajuk.services.lastfm.model.FullSubmissionData;
+import org.jajuk.services.lastfm.scrobble.ScrobblerException;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
-import org.jajuk.services.lastfm.scrobble.ScrobblerException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * LastFM Manager, handle file launch events to submit informations among others
@@ -111,15 +110,15 @@ public final class LastFmManager implements Observer, Const {
             try {
               //service.submit(file.getTrack(), playedTime);
               data = new FullSubmissionData(file.getTrack().getAlbumArtistOrArtist(),
-                      file.getTrack().getTitle(),
-                      file.getTrack().getAlbum().getTitle(),
+                      file.getTrack().getName(),
+                      file.getTrack().getAlbum().getName(),
                       (int) file.getTrack().getDuration(),
                       (int) file.getTrack().getDiscNumber(),
                       0);
 
               service.addSubmission(data);
               service.submitCache();
-            } catch (ScrobblerException e) {
+            } catch (LastFmInvalidKeyException | ScrobblerException e) {
               if (!e.getMessage().contains("Network")) {
                 // To avoid infinite list in case of technical issue.
                 try {
@@ -155,7 +154,7 @@ public final class LastFmManager implements Observer, Const {
           long playedTime = (Long) event.getDetails().get(Const.DETAIL_CURRENT_DATE);
           try {
             service.submit(file.getTrack(), playedTime);
-          } catch (ScrobblerException e) {
+          } catch (LastFmInvalidKeyException | ScrobblerException e) {
             Log.error(e);
           }
         }

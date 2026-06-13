@@ -60,7 +60,6 @@ public class LastFmAlbum implements AlbumInfo {
   private ImageIcon cover;
 
   // --- Internal Helper Classes for JSON Mapping ---
-
   /**
    * Helper class to map the 'image' array from Last.fm JSON.
    * Structure: [{"size": "small", "#text": "url"}, ...]
@@ -172,6 +171,11 @@ public class LastFmAlbum implements AlbumInfo {
   @Override
   public String getId() {
     return id;
+  }
+
+  @Override
+  public List<ImageData> getImages() {
+    return images;
   }
 
   /**

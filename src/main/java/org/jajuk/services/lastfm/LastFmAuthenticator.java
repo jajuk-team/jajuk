@@ -30,6 +30,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -158,7 +159,68 @@ public class LastFmAuthenticator {
 
   /**
    * Manual mode: Displays a dialog box to copy/paste the token.
+   * This method must be called from a non-EDT thread (e.g., SwingWorker doInBackground()).
+   * The UI components are created on the EDT using SwingUtilities.invokeAndWait().
    */
+  private String attemptManualAuth() {
+    final String[] resultToken = new String[1];
+
+    try {
+      SwingUtilities.invokeAndWait(() -> {
+        String authUrl = String.format("https://www.last.fm/api/auth?api_key=%s", apiKey);
+
+        // Formater avec <br> au lieu de \n, et envelopper dans balises HTML
+        StringBuilder messageBuilder = new StringBuilder();
+        messageBuilder.append("<html><body style='font-family:sans-serif;'>");
+        messageBuilder.append("Automatic browser opening failed (firewall or restriction?).<br><br>");
+        messageBuilder.append("Please perform the following steps:<br><br>");
+        messageBuilder.append("&nbsp;&nbsp;1. Copy this URL and paste it into your browser:<br>");
+        messageBuilder.append("&nbsp;&nbsp;&nbsp;&nbsp;<b>").append(authUrl).append("</b><br><br>");
+        messageBuilder.append("&nbsp;&nbsp;2. Log in to Last.fm and click \"Allow\".<br>");
+        messageBuilder.append("&nbsp;&nbsp;3. You will be redirected to a page containing a code (token).<br>");
+        messageBuilder.append("&nbsp;&nbsp;4. Copy this code and paste it below:<br>");
+        messageBuilder.append("</body></html>");
+
+        JLabel messageLabel = new JLabel(messageBuilder.toString());
+
+        JTextField textField = new JTextField(30);
+        JPanel panel = new JPanel(new BorderLayout(5, 5));
+        panel.add(messageLabel, BorderLayout.NORTH);
+        panel.add(textField, BorderLayout.CENTER);
+
+        int result = JOptionPane.showConfirmDialog(
+                null,
+                panel,
+                "Last.fm Authentication - Manual Mode",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (result == JOptionPane.OK_OPTION) {
+          String token = textField.getText().trim();
+          if (token.isEmpty()) {
+            Messages.showInfoMessage("Token is empty. Authentication cancelled.", "Error");
+            resultToken[0] = null;
+          } else {
+            resultToken[0] = token;
+          }
+        } else {
+          resultToken[0] = null;
+        }
+      });
+
+      return resultToken[0];
+
+    } catch (InterruptedException | InvocationTargetException e) {
+      Log.error(e);
+      Thread.currentThread().interrupt();
+      return null;
+    }
+  }
+
+  /**
+   * Manual mode: Displays a dialog box to copy/paste the token.
+
   private String attemptManualAuth() {
     String authUrl = String.format("https://www.last.fm/api/auth?api_key=%s", apiKey);
 
@@ -200,6 +262,7 @@ public class LastFmAuthenticator {
     }
     return null;
   }
+   */
 
   /**
    * Exchanges the temporary token for the permanent session_key.
@@ -311,7 +374,7 @@ public class LastFmAuthenticator {
       debugSb.append(entry.getKey()).append("=").append(entry.getValue()).append(" | ");
     }
     debugSb.append("SECRET=").append(apiSecret);
-    Log.info("String to hash: " + debugSb);
+    //Log.info("String to hash: " + debugSb);
 
     // 3. Concatenate key+value pairs WITHOUT any separator (RAW values)
     StringBuilder sb = new StringBuilder();
@@ -322,7 +385,7 @@ public class LastFmAuthenticator {
     sb.append(apiSecret);
 
     String stringToHash = sb.toString();
-    Log.info("Raw string for MD5: " + stringToHash);
+    // Log.info("Raw string for MD5: " + stringToHash);
 
     // 4. Calculate MD5 hash
     try {
@@ -338,7 +401,7 @@ public class LastFmAuthenticator {
         hexString.append(hex);
       }
       String signature = hexString.toString().toLowerCase();
-      Log.info("MD5 Hash (lowercase): " + signature);
+      // Log.info("MD5 Hash (lowercase): " + signature);
       return signature;
     } catch (NoSuchAlgorithmException e) {
       throw new RuntimeException("MD5 algorithm not found", e);

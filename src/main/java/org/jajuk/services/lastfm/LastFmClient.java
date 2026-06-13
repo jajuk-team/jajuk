@@ -47,8 +47,7 @@ public class LastFmClient {
    */
   /** The Constant API_KEY. */
   public static final String API_KEY = "8b8fc3115c8e40531393af7225ff5ee4";
-  public static final String API_SECRET = "795ef26174e2bbac9ceb407395bd5fe9";
-
+  public static final String INVALID_API_KEY_FOR_LAST_FM = "Invalid API key for Last.fm. Please check your configuration.";
 
   private final HttpClient httpClient;
   private final ObjectMapper mapper;
@@ -58,6 +57,17 @@ public class LastFmClient {
     this.mapper = new ObjectMapper();
   }
 
+  public String getApiKey() {
+    String personalLastFmApiKey = Conf.getString(Const.CONF_LASTFM_API_KEY);
+    if (personalLastFmApiKey != null && !personalLastFmApiKey.isBlank()) {
+      return personalLastFmApiKey;
+    } else {
+      // Jajuk Key - DO NOT USE THIS KEY FOR OTHER APPLICATIONS THAN JAJUK!
+      Log.debug("Using default Jajuk API key for Last.fm. Please set your own API key in the configuration for better performance and to avoid hitting rate limits.");
+      return API_KEY;
+    }
+  }
+
   /**
    * Search album info.
    *
@@ -65,12 +75,12 @@ public class LastFmClient {
    * @param album  the album title
    * @return the album
    */
-  public AlbumInfo getAlbumInfo(String artist, String album) throws Exception {
+  public AlbumInfo getAlbumInfo(String artist, String album) throws LastFmInvalidKeyException, Exception {
     String url = LastFmUtils.BASE_URL +
             "?method=album.getinfo" +
             "&artist=" + LastFmUtils.encode(artist) +
             "&album=" + LastFmUtils.encode(album) +
-            "&api_key=" + API_KEY +
+            "&api_key=" + getApiKey() +
             "&format=json";
 
     HttpRequest request = HttpRequest.newBuilder()
@@ -81,7 +91,11 @@ public class LastFmClient {
     HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
     if (response.statusCode() != 200) {
-      throw new RuntimeException("Erreur API Last.fm: " + response.statusCode() + " - " + response.body());
+      if (response.statusCode() == 403) {
+        throw new LastFmInvalidKeyException(INVALID_API_KEY_FOR_LAST_FM);
+      } else {
+        throw new RuntimeException("Erreur API Last.fm: " + response.statusCode() + " - " + response.body());
+      }
     }
 
     // Last.fm returns a root object with a key "album"
@@ -106,12 +120,9 @@ public class LastFmClient {
     LastFmAlbum.WikiData wikiData = new LastFmAlbum.WikiData();
     if (albumNode.has("wiki")) {
       JsonNode wikiNode = albumNode.get("wiki");
-      wikiData.setPublished(wikiNode.get("published").asText());
+      wikiData.setPublished(wikiNode.get("published").asText()); // This date it the wiki page publication date, not the release date of the album
       wikiData.setSummary(wikiNode.get("summary").asText());
       wikiData.setContent(wikiNode.get("content").asText());
-    }
-    if (lastFmAlbum.getReleaseDate() == null && !wikiData.getPublished().isEmpty()) {
-      lastFmAlbum.setReleaseDateString(wikiData.getPublished());
     }
 
     // Mapping images
@@ -138,8 +149,6 @@ public class LastFmClient {
     }
     lastFmAlbum.setTracks(trackList);
 
-    // Loading of cover image
-    //lastFmAlbum.loadCoverImage();
     return lastFmAlbum;
   }
 
@@ -148,14 +157,15 @@ public class LastFmClient {
    *
    * @return the artist
    */
-  public ArtistInfo getArtist(String artistName) throws Exception {
+  public ArtistInfo getArtist(String artistName) throws LastFmInvalidKeyException,
+          Exception {
     // Building URL for artist.search
     // Limitation to one result to get better result
     String url = LastFmUtils.BASE_URL +
             "?method=artist.search" +
             "&artist=" + LastFmUtils.encode(artistName) +
             "&limit=1" +
-            "&api_key=" + API_KEY +
+            "&api_key=" + getApiKey() +
             "&format=json";
 
     HttpRequest request = HttpRequest.newBuilder()
@@ -166,7 +176,11 @@ public class LastFmClient {
     HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
     if (response.statusCode() != 200) {
-      throw new RuntimeException("Error API Last.fm: " + response.statusCode() + " - " + response.body());
+      if (response.statusCode() == 403) {
+        throw new LastFmInvalidKeyException(INVALID_API_KEY_FOR_LAST_FM);
+      } else {
+        throw new RuntimeException("Error API Last.fm: " + response.statusCode() + " - " + response.body());
+      }
     }
 
     JsonNode rootNode = mapper.readTree(response.body());
@@ -262,7 +276,7 @@ public class LastFmClient {
    *
    * @throws Exception if API call fails or no results found
    */
-  public LastFmArtistDetail getArtistDetail(String artistName, boolean useMbid) throws Exception {
+  public LastFmArtistDetail getArtistDetail(String artistName, boolean useMbid) throws LastFmInvalidKeyException, Exception {
     // Validate input
     if (artistName == null || artistName.trim().isEmpty()) {
       throw new IllegalArgumentException("Artist name or MBID cannot be null or empty");
@@ -272,7 +286,7 @@ public class LastFmClient {
     String url = LastFmUtils.BASE_URL +
             "?method=artist.getinfo" +
             "&" + (useMbid ? "mbid=" : "artist=") + LastFmUtils.encode(artistName) +
-            "&api_key=" + API_KEY +
+            "&api_key=" + getApiKey() +
             "&format=json";
 
     HttpRequest request = HttpRequest.newBuilder()
@@ -283,7 +297,11 @@ public class LastFmClient {
     HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
     if (response.statusCode() != 200) {
-      throw new RuntimeException("Error API Last.fm (getinfo): " + response.statusCode() + " - " + response.body());
+      if (response.statusCode() == 403) {
+        throw new LastFmInvalidKeyException(INVALID_API_KEY_FOR_LAST_FM);
+      } else {
+        throw new RuntimeException("Error API Last.fm (getinfo): " + response.statusCode() + " - " + response.body());
+      }
     }
 
     JsonNode rootNode = mapper.readTree(response.body());
@@ -441,9 +459,6 @@ public class LastFmClient {
         if (trackNode.has("url")) {
           track.setUrl(trackNode.get("url").asText());
         }
-        if (trackNode.has("playcount")) {
-          // Could store playcount for display
-        }
         trackList.add(track);
       }
     }
@@ -461,7 +476,8 @@ public class LastFmClient {
    *
    * @throws Exception if the API call fails or the MBID is invalid
    */
-  public List<LastFmImage> getLastFmImages(String mbid, int limit) throws Exception {
+  public List<LastFmImage> getLastFmImages(String mbid, int limit) throws LastFmInvalidKeyException,
+          Exception {
     // Validate input
     if (mbid == null || mbid.trim().isEmpty()) {
       throw new IllegalArgumentException("MBID cannot be null or empty");
@@ -473,7 +489,7 @@ public class LastFmClient {
             "?method=artist.getimages" +
             "&mbid=" + LastFmUtils.encode(mbid) +
             "&limit=" + limit +
-            "&api_key=" + API_KEY +
+            "&api_key=" + getApiKey() +
             "&format=json";
 
     HttpRequest request = HttpRequest.newBuilder()
@@ -484,7 +500,11 @@ public class LastFmClient {
     HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
     if (response.statusCode() != 200) {
-      throw new RuntimeException("Error API Last.fm (getimages): " + response.statusCode() + " - " + response.body());
+      if (response.statusCode() == 403) {
+        throw new LastFmInvalidKeyException(INVALID_API_KEY_FOR_LAST_FM);
+      } else {
+        throw new RuntimeException("Error API Last.fm (getimages): " + response.statusCode() + " - " + response.body());
+      }
     }
 
     JsonNode rootNode = mapper.readTree(response.body());
@@ -582,12 +602,13 @@ public class LastFmClient {
     return image;
   }
 
-  public List<AlbumInfo> getTopAlbums(String artist, int limit) throws Exception {
+  public List<AlbumInfo> getTopAlbums(String artist, int limit) throws LastFmInvalidKeyException,
+          Exception {
     String url = LastFmUtils.BASE_URL +
             "?method=artist.getTopAlbums" +
             "&artist=" + LastFmUtils.encode(artist) +
             "&limit=" + limit +
-            "&api_key=" + API_KEY +
+            "&api_key=" + getApiKey() +
             "&format=json";
 
     HttpRequest request = HttpRequest.newBuilder()
@@ -598,7 +619,11 @@ public class LastFmClient {
     HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
     if (response.statusCode() != 200) {
-      throw new RuntimeException("Error Last.fm API: " + response.statusCode() + " - " + response.body());
+      if (response.statusCode() == 403) {
+        throw new LastFmInvalidKeyException(INVALID_API_KEY_FOR_LAST_FM);
+      } else {
+        throw new RuntimeException("Error Last.fm API: " + response.statusCode() + " - " + response.body());
+      }
     }
 
     // Last.fm returns a root object with a key "topalbums" containing an array of albums
@@ -639,29 +664,10 @@ public class LastFmClient {
         }
         lastFmAlbum.setImages(imageList);
 
-        // Map playcount and listeners if available
-        if (albumNode.has("playcount")) {
-          // Could store playcount if needed in AlbumInfo
-        }
-        if (albumNode.has("listeners")) {
-          // Could store listeners count if needed
-        }
-
-        // Release date and year - often in "mbid" or separate fields
-        if (albumNode.has("releasedate")) {
-          lastFmAlbum.setReleaseDateString(albumNode.get("releasedate").asText());
-        }
-
-        if (albumNode.has("year")) {
-        }
-
         // Map artist URL
         if (albumNode.has("artist") && albumNode.get("artist").has("url")) {
           lastFmAlbum.setArtistUrl(albumNode.get("artist").get("url").asText());
         }
-
-        // Note: Top albums endpoint doesn't typically include release date or tracks
-        // These fields may remain null or need separate API calls
 
         albumInfos.add(lastFmAlbum);
       }
@@ -679,13 +685,13 @@ public class LastFmClient {
    *
    * @throws Exception if the API call fails or no similar artists are found
    */
-  public List<ArtistInfo> getSimilar(ArtistInfo artist, int limit) throws Exception {
+  public List<ArtistInfo> getSimilar(ArtistInfo artist, int limit) throws Exception, LastFmInvalidKeyException {
     // Build URL for artist.getSimilar method
     // Using the artist name from the provided LastFmArtist object
     String url = LastFmUtils.BASE_URL +
             "?method=artist.getSimilar" +
             "&artist=" + LastFmUtils.encode(artist.getName()) +
-            "&api_key=" + API_KEY +
+            "&api_key=" + getApiKey() +
             "&limit=" + limit +
             "&autocorrect=1" +  // Enable autocorrection for better matching
             "mbid=" + artist.getId() +
@@ -699,7 +705,11 @@ public class LastFmClient {
     HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
     if (response.statusCode() != 200) {
-      throw new RuntimeException("Error API Last.fm: " + response.statusCode() + " - " + response.body());
+      if (response.statusCode() == 403) {
+        throw new LastFmInvalidKeyException(INVALID_API_KEY_FOR_LAST_FM);
+      } else {
+        throw new RuntimeException("Error API Last.fm: " + response.statusCode() + " - " + response.body());
+      }
     }
 
     JsonNode rootNode = mapper.readTree(response.body());
@@ -796,15 +806,15 @@ public class LastFmClient {
    * @param submissions List of FullSubmissionData to submit.
    * @throws ScrobblerException if the submission fails.
    */
-  public void scrobble(List<FullSubmissionData> submissions) throws ScrobblerException, IOException {
+  public void scrobble(List<FullSubmissionData> submissions) throws LastFmInvalidKeyException, ScrobblerException, IOException {
     if (submissions == null || submissions.isEmpty()) {
       return;
     }
 
     // 1. Retrieve Credentials
     String sessionKey = Conf.getString(Const.CONF_LASTFM_SESSION_KEY);
-    String apiKey = API_KEY;
-    String apiSecret = API_SECRET;
+    String apiKey = Conf.getString(Const.CONF_LASTFM_API_KEY);
+    String apiSecret = Conf.getString(Const.CONF_LASTFM_SECRET);
 
     if (sessionKey == null || sessionKey.trim().isEmpty()) {
       throw new ScrobblerException("No session key found. Please authenticate first.");
@@ -825,7 +835,7 @@ public class LastFmClient {
    * Internal method to submit a single batch of tracks.
    */
   private void submitBatch(List<FullSubmissionData> batch, String sessionKey, String apiKey, String apiSecret)
-          throws ScrobblerException {
+          throws LastFmInvalidKeyException, ScrobblerException {
 
     // Build parameters map
     // Note: We use a TreeMap for sorting keys for the signature, but we need to build the body carefully
@@ -838,72 +848,58 @@ public class LastFmClient {
     Map<String, String> paramsForSignature = new TreeMap<>();
 
     // Base params
+    bodyBuilder.append("method=track.scrobble");
     paramsForSignature.put("method", "track.scrobble");
+    bodyBuilder.append("&api_key=").append(URLEncoder.encode(apiKey, StandardCharsets.UTF_8));
     paramsForSignature.put("api_key", apiKey);
+    bodyBuilder.append("&sk=").append(URLEncoder.encode(sessionKey, StandardCharsets.UTF_8));
     paramsForSignature.put("sk", sessionKey);
-    paramsForSignature.put("format", "json"); // Excluded from hash later
-
-    boolean firstParam = true;
 
     // Add batch data
     for (int i = 0; i < batch.size(); i++) {
       FullSubmissionData data = batch.get(i);
       String idx = String.valueOf(i);
-
-      // Add to body builder (order matters for indices)
-      if (!firstParam) {
-        bodyBuilder.append("&");
+      // Required
+      bodyBuilder.append("&artist[").append(idx).append("]=")
+              .append(URLEncoder.encode(data.getArtist(), StandardCharsets.UTF_8));
+      paramsForSignature.put("artist[" + idx + "]", data.getArtist());
+      // Required
+      bodyBuilder.append("&track[").append(idx).append("]=")
+              .append(URLEncoder.encode(data.getTitle(), StandardCharsets.UTF_8));
+      paramsForSignature.put("track[" + idx + "]", data.getTitle());
+      // Required
+      long startTime = data.getStartTime();
+      if (data.getStartTime() <= 0) {
+        // Prevent missing value / test
+        startTime = System.currentTimeMillis();
       }
-      bodyBuilder.append("a[").append(idx).append("]=").append(URLEncoder.encode(data.getArtist(), StandardCharsets.UTF_8));
-      firstParam = false;
-
-      bodyBuilder.append("&t[").append(idx).append("]=").append(URLEncoder.encode(data.getTitle(), StandardCharsets.UTF_8));
-
-      bodyBuilder.append("&i[").append(idx).append("]=").append(data.getStartTime()); // Unix timestamp
-
+      bodyBuilder.append("&timestamp[").append(idx).append("]=")
+              .append(startTime); // Unix timestamp
+      paramsForSignature.put("timestamp[" + idx + "]", String.valueOf(startTime));
+      // Optional
       if (data.getAlbum() != null && !data.getAlbum().isEmpty()) {
-        bodyBuilder.append("&b[").append(idx).append("]=").append(URLEncoder.encode(data.getAlbum(), StandardCharsets.UTF_8));
+        bodyBuilder.append("&album[").append(idx).append("]=")
+                .append(URLEncoder.encode(data.getAlbum(), StandardCharsets.UTF_8));
+        paramsForSignature.put("album[" + idx + "]", data.getAlbum());
       }
-
+      // Optional
       if (data.getDuration() > 0) {
-        bodyBuilder.append("&l[").append(idx).append("]=").append(data.getDuration());
+        bodyBuilder.append("&duration[").append(idx).append("]=")
+                .append(data.getDuration());
+        paramsForSignature.put("duration[" + idx + "]", String.valueOf(data.getDuration()));
       }
-
+      // Optional
       if (data.getTrackNumber() > 0) {
-        bodyBuilder.append("&n[").append(idx).append("]=").append(data.getTrackNumber());
+        bodyBuilder.append("&trackNumber[").append(idx).append("]=")
+                .append(data.getTrackNumber());
+        paramsForSignature.put("trackNumber[" + idx + "]", String.valueOf(data.getTrackNumber()));
       }
     }
 
     // Now, we need to calculate the signature.
     // The signature requires ALL parameters (including the indexed ones) sorted alphabetically.
     // However, building a TreeMap with keys like "a[0]", "a[1]" works fine for sorting.
-
-    // Re-build the params map specifically for signing (including all indexed params)
-    Map<String, String> allParamsForSign = new TreeMap<>();
-    allParamsForSign.put("method", "track.scrobble");
-    allParamsForSign.put("api_key", apiKey);
-    allParamsForSign.put("sk", sessionKey);
-    // Note: 'format' is added later for the request but excluded from hash
-
-    for (int i = 0; i < batch.size(); i++) {
-      FullSubmissionData data = batch.get(i);
-      String idx = String.valueOf(i);
-      allParamsForSign.put("a[" + idx + "]", data.getArtist());
-      allParamsForSign.put("t[" + idx + "]", data.getTitle());
-      allParamsForSign.put("i[" + idx + "]", String.valueOf(data.getStartTime()));
-      if (data.getAlbum() != null && !data.getAlbum().isEmpty()) {
-        allParamsForSign.put("b[" + idx + "]", data.getAlbum());
-      }
-      if (data.getDuration() > 0) {
-        allParamsForSign.put("l[" + idx + "]", String.valueOf(data.getDuration()));
-      }
-      if (data.getTrackNumber() > 0) {
-        allParamsForSign.put("n[" + idx + "]", String.valueOf(data.getTrackNumber()));
-      }
-    }
-
-    // Generate Signature (excluding 'format')
-    String apiSig = LastFmAuthenticator.generateSignature(allParamsForSign, apiSecret);
+    String apiSig = LastFmAuthenticator.generateSignature(paramsForSignature, apiSecret);
 
     // Add signature and format to the body
     bodyBuilder.append("&api_sig=").append(URLEncoder.encode(apiSig, StandardCharsets.UTF_8));
@@ -911,7 +907,7 @@ public class LastFmClient {
 
     String body = bodyBuilder.toString();
 
-    Log.debug("Sending scrobble batch. Body : " + body);
+    Log.debug("Sending scrobble batch. body=" + body);
 
     // Send Request
     HttpRequest request = HttpRequest.newBuilder()
@@ -925,11 +921,15 @@ public class LastFmClient {
       HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
       if (response.statusCode() != 200) {
-        Log.warn(String.format("Last.fm Scrobble Error: %s - %s", response.statusCode(), response.body()));
-        if (response.body().contains("\"error\":9") || response.body().contains("Invalid session key")) {
-          throw new ScrobblerException("Invalid session key (Error 9).");
+        if (response.statusCode() == 403) {
+          throw new LastFmInvalidKeyException(INVALID_API_KEY_FOR_LAST_FM);
+        } else {
+          Log.warn(String.format("Last.fm Scrobble Error: %s - %s", response.statusCode(), response.body()));
+          if (response.body().contains("\"error\":9") || response.body().contains("Invalid session key")) {
+            throw new ScrobblerException("Invalid session key (Error 9).");
+          }
+          throw new ScrobblerException("Last.fm API Error: " + response.body());
         }
-        throw new ScrobblerException("Last.fm API Error: " + response.body());
       }
 
       // Check response JSON
@@ -955,11 +955,12 @@ public class LastFmClient {
    * @param track The track that was played
    * @throws ScrobblerException the scrobbler exception
    */
-  public void updateNowPlaying(Track track) throws ScrobblerException {
+  public void updateNowPlaying(Track track) throws LastFmInvalidKeyException,
+          ScrobblerException {
     // 1. Prepare data
-    String artist = track.getArtist().getName2();
+    String artist = track.getAlbumArtistOrArtist();
     String title = track.getName();
-    String album = track.getAlbum() != null ? track.getAlbum().getName2() : "";
+    String album = track.getAlbum() != null ? track.getAlbum().getName() : "";
     long durationSecs = track.getDuration() / 1000;
 
     Log.info(String.format("Updating Now Playing: %s - %s (%ss)", artist, title, durationSecs));
@@ -975,7 +976,7 @@ public class LastFmClient {
     // Note: 'duration' is required for updateNowPlaying in seconds
     Map<String, String> params = new TreeMap<>();
     params.put("method", "track.updateNowPlaying");
-    params.put("api_key", API_KEY);
+    params.put("api_key", getApiKey());
     params.put("sk", sessionKey); // sk = session key
     params.put("artist", artist);
     params.put("track", title);
@@ -986,7 +987,7 @@ public class LastFmClient {
     // Optional: trackNumber, mbid, etc. if available
 
     // 5. Generate Signature (excluding 'format')
-    String apiSecret = API_SECRET;
+    String apiSecret = Conf.getString(Const.CONF_LASTFM_SECRET);
     String apiSig = LastFmAuthenticator.generateSignature(params, apiSecret);
     params.put("api_sig", apiSig);
     params.put("format", "json"); // Added for request, not for hash
@@ -1015,19 +1016,22 @@ public class LastFmClient {
 
     try {
       HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
       String responseBody = response.body();
 
       if (response.statusCode() != 200) {
-        Log.warn(String.format("Last.fm API Error (updateNowPlaying): %d - %s", response.statusCode(), responseBody));
-
-        // Handle Invalid Session Key (Error 9)
-        if (responseBody.contains("\"error\":9") || responseBody.contains("Invalid session key")) {
-          Log.warn("Session key invalid. Clearing session and forcing re-authentication.");
-          Conf.removeProperty(Const.CONF_LASTFM_SESSION_KEY);
-          throw new ScrobblerException("Session expired. Please re-authenticate in preferences.");
+        if (response.statusCode() == 403) {
+          throw new LastFmInvalidKeyException(INVALID_API_KEY_FOR_LAST_FM);
+        } else {
+          Log.warn(String.format("Last.fm API Error (updateNowPlaying): %d - %s", response.statusCode(), responseBody));
+          // Handle Invalid Session Key (Error 9)
+          if (responseBody.contains("\"error\":9") || responseBody.contains("Invalid session key")) {
+            Log.warn("Session key invalid. Clearing session and forcing re-authentication.");
+            Conf.removeProperty(Const.CONF_LASTFM_SESSION_KEY);
+            throw new ScrobblerException("Session expired. Please re-authenticate in preferences.");
+          }
+          throw new ScrobblerException("Last.fm API Error: " + responseBody);
         }
-
-        throw new ScrobblerException("Last.fm API Error: " + responseBody);
       }
 
       // Parse JSON response (expected: {"nowplaying":{"track":"...", "status":"Now playing..."}})

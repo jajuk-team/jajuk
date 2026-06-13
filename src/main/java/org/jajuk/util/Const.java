@@ -468,8 +468,12 @@ public interface Const {
   String CONF_TITLE_ANIMATION = "jajuk.title_animation";
   /** Enable Last.FM information queries */
   String CONF_LASTFM_INFO = "jajuk.lastfm_information";
+  /** Last.FM API key */
+  String CONF_LASTFM_API_KEY = "jajuk.lastfm_api_key";
   /** Last.FM session key */
   String CONF_LASTFM_SESSION_KEY = "jajuk.lastfm_session_key";
+  /** Last.FM session key */
+  String CONF_LASTFM_SECRET = "jajuk.lastfm_secret";
   /** Webradio playing at jajuk stop ?. */
   String CONF_WEBRADIO_WAS_PLAYING = "jajuk.webradio.was_playing";
   /** Font size. */
