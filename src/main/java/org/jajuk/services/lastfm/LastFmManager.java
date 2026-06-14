@@ -119,7 +119,7 @@ public final class LastFmManager implements Observer, Const {
               service.addSubmission(data);
               service.submitCache();
             } catch (LastFmInvalidKeyException | ScrobblerException e) {
-              if (!e.getMessage().contains("Network")) {
+              if (e.getMessage() != null && !e.getMessage().contains("Network")) {
                 // To avoid infinite list in case of technical issue.
                 try {
                   service.removeSubmission(data);
