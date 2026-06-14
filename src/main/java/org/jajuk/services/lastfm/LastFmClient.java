@@ -813,7 +813,7 @@ public class LastFmClient {
 
     // 1. Retrieve Credentials
     String sessionKey = Conf.getString(Const.CONF_LASTFM_SESSION_KEY);
-    String apiKey = Conf.getString(Const.CONF_LASTFM_API_KEY);
+    String apiKey = getApiKey();
     String apiSecret = Conf.getString(Const.CONF_LASTFM_SECRET);
 
     if (sessionKey == null || sessionKey.trim().isEmpty()) {

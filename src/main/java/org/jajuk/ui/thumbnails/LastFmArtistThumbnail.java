@@ -35,6 +35,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.io.Serial;
 import java.util.List;
 
@@ -88,22 +89,10 @@ public class LastFmArtistThumbnail extends AbstractThumbnail {
     html.append("</b><br><br>");
 
     // display picture -- prefer local cached file if available (preLoad())
-    String imageUrl;
-    if (fCover != null && fCover.exists()) {
-      try {
-        imageUrl = fCover.toURI().toURL().toString();
-      } catch (Exception e) {
-        // fallback to remote url
-        imageUrl = artist.getImageUrl();
-      }
-    } else {
-      imageUrl = artist.getImageUrl();
-    }
-    if (!StringUtils.isBlank(imageUrl)) {
-      // do not escape the URL attribute value (some characters must remain as-is)
-      // constrain image size to avoid overly large dialogs
-      html.append("<img src='")
-              .append(imageUrl)
+    File localArtistFile = LastFmService.getInstance().getLocalImageFile(artist);
+    if (localArtistFile != null) {
+      html.append("<img src='file:")
+              .append(localArtistFile.getAbsolutePath())
               .append("' width='400'>"); // Fixed width
     }
     html.append("</td>");

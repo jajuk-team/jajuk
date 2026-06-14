@@ -54,8 +54,7 @@ public class LastFmService {
   /** The Constant LANGUAGE_WILDCARD. */
   private static final String LANGUAGE_WILDCARD = "(%LANGUAGE%)";
   /** The Constant ARTIST_WIKI_URL. */
-  private static final String ARTIST_WIKI_URL = UtilString.concat("https://www.lastfm.com/music/",
-          ARTIST_WILDCARD, "/+wiki", LANGUAGE_PARAM, LANGUAGE_WILDCARD);
+  private static final String ARTIST_WIKI_URL = UtilString.concat("https://www.lastfm.com/music/", ARTIST_WILDCARD, "/+wiki", LANGUAGE_PARAM, LANGUAGE_WILDCARD);
   /** The Constant VARIOUS_ARTISTS. */
   private static final String VARIOUS_ARTISTS = "Various Artists";
   /** The Constant MIN_DURATION_TO_SUBMIT. */
@@ -152,8 +151,7 @@ public class LastFmService {
    * @param minimumSongNumber  albums with less songs than this argument won't be returned
    * @return the album list
    */
-  public AlbumListInfo getAlbumList(String artist, boolean hideVariousArtists, int minimumSongNumber)
-          throws LastFmInvalidKeyException {
+  public AlbumListInfo getAlbumList(String artist, boolean hideVariousArtists, int minimumSongNumber) throws LastFmInvalidKeyException {
     try {
       // Try to get from cache
       AlbumListInfo albumList = lastFmCache.retrieveAlbumList(artist);
@@ -350,9 +348,7 @@ public class LastFmService {
    * @return the wiki url
    */
   public String getWikiURL(String artist) {
-    return ARTIST_WIKI_URL.replace(ARTIST_WILDCARD,
-            ext.services.network.NetworkUtils.encodeString(artist)).replace(LANGUAGE_WILDCARD,
-            locale.getLanguage());
+    return ARTIST_WIKI_URL.replace(ARTIST_WILDCARD, ext.services.network.NetworkUtils.encodeString(artist)).replace(LANGUAGE_WILDCARD, locale.getLanguage());
   }
 
   /**
@@ -364,8 +360,7 @@ public class LastFmService {
    */
   public void submit(Track track, long millisPlayed) throws LastFmInvalidKeyException, ScrobblerException {
     // 1. Perform necessary checks (same as old logic)
-    if (!checkSessionKey() || !checkArtist(track) || !checkTitle(track)
-            || !checkDuration(track)) {
+    if (!checkSessionKey() || !checkArtist(track) || !checkTitle(track) || !checkDuration(track)) {
       //Log.warn("Last.fm for track: " + track.getName());
       return;
     }
@@ -406,8 +401,7 @@ public class LastFmService {
       // More than MAX_SUBMISSIONS submissions at once are not allowed
       int size = collectionWithSubmissionData.size();
       if (size > MAX_SUBMISSIONS) {
-        collectionWithSubmissionData = collectionWithSubmissionData.subList(size - MAX_SUBMISSIONS,
-                size);
+        collectionWithSubmissionData = collectionWithSubmissionData.subList(size - MAX_SUBMISSIONS, size);
       }
       Log.info("Trying to submit cache to Last.fm");
       try {
@@ -448,8 +442,7 @@ public class LastFmService {
    */
   private boolean checkArtist(Track track) {
     String sArtist = track.getArtist().getName2();
-    if (StringUtils.isBlank(sArtist)
-            || sArtist.equalsIgnoreCase(Messages.getString("unknown_artist"))) {
+    if (StringUtils.isBlank(sArtist) || sArtist.equalsIgnoreCase(Messages.getString("unknown_artist"))) {
       Log.debug("Don't submit to Last.fm: Unknown artist");
       return false;
     }
@@ -492,5 +485,27 @@ public class LastFmService {
   public LastFmAuthenticator getLastFmAuthenticator() {
     String apiSecret = Conf.getString(Const.CONF_LASTFM_SECRET);
     return new LastFmAuthenticator(lastFmClient.getApiKey(), apiSecret);
+  }
+
+  /**
+   * Gets the image file of an artist from the cache.
+   *
+   * @param artist the artist
+   * @return the image file if exists, null otherwise
+   */
+  public File getLocalImageFile(ArtistInfo artist) {
+    try {
+      // Try to retrieve from cache
+      String filePath = lastFmCache.getFileNameForArtistThumbAtCache(artist);
+      if (filePath != null) {
+        File localFile = new File(filePath);
+        if (localFile.exists()) {
+          return localFile;
+        }
+      }
+    } catch (IOException e) {
+      //
+    }
+    return null;
   }
 }

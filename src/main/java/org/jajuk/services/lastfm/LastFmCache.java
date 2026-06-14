@@ -435,7 +435,7 @@ public class LastFmCache {
    *
    * @throws IOException Signals that an I/O exception has occurred.
    */
-  private String getFileNameForArtistThumbAtCache(ArtistInfo artist) throws IOException {
+  public String getFileNameForArtistThumbAtCache(ArtistInfo artist) throws IOException {
     File artistThumbCacheDirFile = getArtistThumbsCacheDir();
     if (artistThumbCacheDirFile == null) {
       return null;
