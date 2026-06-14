@@ -29,6 +29,9 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class WikipediaClient {
   private final HttpClient client;
@@ -64,10 +67,41 @@ public class WikipediaClient {
   }
 
   private String fetchImageFromWikimediaDirect(String artistName) {
+    // Languages to try
+    List<String> languagesToTry = new ArrayList<>();
+
+    // Get System Language
+    String userLang = Locale.getDefault().getLanguage(); // "en", "de", "es", etc.
+    if (!"fr".equals(userLang)) {
+      languagesToTry.add(userLang);
+    }
+
+    // English as fallback
+    languagesToTry.add("en");
+
+    // French as second fallback
+    if (!languagesToTry.contains("fr")) {
+      languagesToTry.add("fr");
+    }
+
+    // Looking for image in each language until we find one
+    for (String lang : languagesToTry) {
+      String imageUrl = tryFetchFromLanguage(lang, artistName);
+      if (imageUrl != null) {
+        Log.debug("Found image from Wikipedia " + lang + ": " + imageUrl);
+        return imageUrl;
+      }
+    }
+
+    return null; // No image found
+  }
+
+  private String tryFetchFromLanguage(String lang, String artistName) {
+    String imageQueryUrl = null;
     try {
       // Step 1 : Looking for Wikipedia page with search API
-      String searchUrl = "https://fr.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + LastFmUtils.encode(artistName) +
-              "&srlimit=1&format=json&origin=*";
+      String searchUrl = String.format("https://%s.wikipedia.org/w/api.php?action=query&list=search&srsearch=%s" +
+              "&srlimit=1&format=json&origin=*", lang, LastFmUtils.encode(artistName));
 
       HttpRequest searchReq = HttpRequest.newBuilder()
               .uri(URI.create(searchUrl))
@@ -94,11 +128,15 @@ public class WikipediaClient {
       // Take the first result
       String wikiTitle = searchResults.get(0).get("title").asText();
 
-      // ÉTAPE 2 : Récupérer l'image principale de cette page
+      // Get the image as a thumb with 400 px height from the page
+      // The thumb is calculated by wikipedia, thus reduce Jajuk work.
       String encodedTitle = wikiTitle.replace(" ", "_");
-      String imageQueryUrl = "https://fr.wikipedia.org/w/api.php?action=query&titles=" + encodedTitle +
-              "&prop=pageimages&piprop=original&format=json&origin=*";
-
+      imageQueryUrl = String.format(
+              "https://%s.wikipedia.org/w/api.php?action=query&titles=%s"+
+                      "&prop=pageimages&piprop=thumbnail&pithumbsize=%s"+
+                      "&format=json&origin=*",
+              lang, encodedTitle, "400"
+      );
       HttpRequest imageReq = HttpRequest.newBuilder()
               .uri(URI.create(imageQueryUrl))
               .header("User-Agent", LastFmUtils.USER_AGENT)
@@ -114,18 +152,22 @@ public class WikipediaClient {
 
         if (pages != null && !pages.isEmpty()) {
           JsonNode firstPage = pages.iterator().next();
-          if (firstPage.has("original")) {
-            String imageUrl = firstPage.get("original").get("source").asText();
-            Log.debug("Image found directly from Wikipedia : " + imageUrl);
-            return imageUrl;
-          } else {
-            Log.debug("Wikipedia Page found but without main image.");
+          // Check that the page exists (-1 is the error pageid)
+          if (firstPage.has("pageid") && firstPage.get("pageid").asInt() != -1) {
+            if (firstPage.has("original")) {
+              return firstPage.get("original").get("source").asText();
+            } else {
+              // Essaie la version thumbnail (plus petite mais toujours utile)
+              if (firstPage.has("thumbnail")) {
+                return firstPage.get("thumbnail").get("source").asText();
+              }
+            }
           }
         }
       }
 
     } catch (Exception e) {
-      Log.warn("Error Wikimedia : " + e.getMessage());
+      Log.warn("Error Wikimedia : " + imageQueryUrl + " : " +  e.getMessage());
     }
     return null;
   }
