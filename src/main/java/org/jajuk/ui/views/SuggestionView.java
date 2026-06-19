@@ -78,7 +78,6 @@ import net.miginfocom.swing.MigLayout;
  */
 public class SuggestionView extends ViewAdapter {
   private JTabbedPane tabs;
-  protected String artist;
 
   //Remove tab border, see
   // http://forum.java.sun.com/thread.jspa?threadID=260746&messageID=980405
@@ -111,6 +110,9 @@ public class SuggestionView extends ViewAdapter {
   JXBusyLabel busyLocal3 = new JXBusyLabel();
   JXBusyLabel busyLastFM1 = new JXBusyLabel();
   JXBusyLabel busyLastFM2 = new JXBusyLabel();
+
+  // volatile is necessary for thread management between EDT and SwingWorkers
+  private volatile String lastProcessedArtist = null;
 
   private class ThumbMouseListener extends MouseAdapter {
     @Override
@@ -215,6 +217,7 @@ public class SuggestionView extends ViewAdapter {
       tabs.setComponentAt(1, UtilGUI.getCentredPanel(busyLocal2));
       tabs.setComponentAt(2, UtilGUI.getCentredPanel(busyLocal3));
     }
+
     SwingWorker<Void, Void> sw = new SwingWorker<>() {
       JScrollPane jsp1;
       JScrollPane jsp2;
@@ -288,11 +291,14 @@ public class SuggestionView extends ViewAdapter {
       return;
     }
     // Check if artist changed, otherwise, just leave
-    if (newArtist.equals(this.artist)) {
+    if (newArtist.equals(lastProcessedArtist)) {
       return;
     }
-    // Save current artist
-    artist = newArtist;
+    // Refresh immediately context before launching heavy task
+    this.lastProcessedArtist = newArtist;
+
+    // Capture the current context locally to compare against the volatile variable later
+    final String artistContext = newArtist;
 
     // Display a busy panel in the mean-time
     SwingUtilities.invokeLater(() -> {
@@ -307,9 +313,25 @@ public class SuggestionView extends ViewAdapter {
     SwingWorker<Void, AlbumInfo> albumWorker = new SwingWorker<>() {
       @Override
       protected Void doInBackground() throws Exception {
-        albums = LastFmService.getInstance().getAlbumList(artist, true, 0);
+        // Check if the artist context has change
+        if (!artistContext.equals(lastProcessedArtist)) {
+          return null; // Stop everything, new artist is given priority
+        }
+
+        albums = LastFmService.getInstance().getAlbumList(artistContext, true, 0);
+
+        // Check post API call
+        if (!artistContext.equals(lastProcessedArtist)) {
+          return null;
+        }
+
         if (albums != null && !albums.getAlbums().isEmpty()) {
           for (AlbumInfo album : albums.getAlbums()) {
+            // Real IMPORTANT check
+            if (!artistContext.equals(lastProcessedArtist)) {
+              break; // Stopping download loop
+            }
+
             String albumUrl = album.getBigCoverURL();
             if (StringUtils.isNotBlank(albumUrl)) {
               // 1 Download
@@ -387,9 +409,19 @@ public class SuggestionView extends ViewAdapter {
       @Override
       protected Void doInBackground() throws Exception {
         try {
-          similar = LastFmService.getInstance().getSimilarArtists(artist);
+          // Check if the artist context has change
+          if (!artistContext.equals(lastProcessedArtist)) {
+            return null; // Stop everything, new artist is given priority
+          }
+
+          similar = LastFmService.getInstance().getSimilarArtists(artistContext);
           if (similar != null && similar.getArtists() != null && !similar.getArtists().isEmpty()) {
             for (ArtistInfo similarArtist : similar.getArtists()) {
+              // Real IMPORTANT check
+              if (!artistContext.equals(lastProcessedArtist)) {
+                break; // Stopping download loop
+              }
+
               String artistUrl = similarArtist.getImageUrl();
               if (StringUtils.isBlank(artistUrl))
                 continue;
@@ -470,41 +502,6 @@ public class SuggestionView extends ViewAdapter {
 
     albumWorker.execute();
     artistWorker.execute();
-  }
-
-
-  /**
-   * Pre-load other album (done outside the EDT).
-   *
-   * @throws Exception the exception
-   */
-  void preFetchOthersAlbum() throws Exception {
-    albums = LastFmService.getInstance().getAlbumList(artist, true, 0);
-    // Perform images downloads and caching
-    if (albums != null && !albums.getAlbums().isEmpty()) {
-      for (AlbumInfo album : albums.getAlbums()) {
-        // stop this list of albums if there was another file launched in the meantime
-        LastFmService.getInstance().getImage(album);
-      }
-    }
-  }
-
-  /**
-   * Pre-load other album (done outside the EDT).
-   *
-   * @throws Exception the exception
-   */
-  void preFetchSimilarArtists() throws Exception {
-    // Perform last.fm calls
-    similar = LastFmService.getInstance().getSimilarArtists(artist);
-    // artists is null for void (unknown) similar artists
-    if (similar != null && similar.getArtists() != null) {
-      List<ArtistInfo> artists = similar.getArtists();
-      for (ArtistInfo similarArtist : artists) {
-        // stop this list of albums if there was another file launched in the meantime, another refresh will take place anyway
-        LastFmService.getInstance().getImage(similarArtist);
-      }
-    }
   }
 
   /**
