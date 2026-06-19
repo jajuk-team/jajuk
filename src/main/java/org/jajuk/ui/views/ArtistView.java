@@ -20,27 +20,15 @@
  */
 package org.jajuk.ui.views;
 
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.io.IOException;
-import java.io.Serial;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
-
+import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.Artist;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.lastfm.LastFmService;
 import org.jajuk.services.lastfm.model.AlbumInfo;
-import org.jajuk.services.lastfm.model.AlbumListInfo;
+import org.jajuk.services.lastfm.model.ArtistInfo;
 import org.jajuk.services.lastfm.model.SimilarArtistsInfo;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
@@ -50,9 +38,14 @@ import org.jajuk.util.*;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
 
-import org.jajuk.services.lastfm.model.ArtistInfo;
-import org.jajuk.services.lastfm.LastFmService;
-import net.miginfocom.swing.MigLayout;
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+import java.io.Serial;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Display Artist bio and albums.
@@ -241,9 +234,9 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
       }
 
       // 2. Download cover images for other albums
-      AlbumListInfo otherAlbums = LastFmService.getInstance().getAlbumList(artistContext, true, 0);
-      if (otherAlbums != null && !otherAlbums.getAlbums().isEmpty()) {
-        for (AlbumInfo album : otherAlbums.getAlbums()) {
+      albums = LastFmService.getInstance().getAlbumList(artistContext, true, 0);
+      if (albums != null && !albums.getAlbums().isEmpty()) {
+        for (AlbumInfo album : albums.getAlbums()) {
           // CRITICAL CHECK: Stop immediately if artist changed
           if (!lastProcessedArtist.equals(artistContext)) {
             break;
@@ -337,7 +330,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
   public void shortCall(Object in) {
     removeAll();
     JScrollPane jspAlbums = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, true);
-    // Artist unknown from last.fm, leave
+    // Artist unknown from last.fm, leav    JScrollPane jspAlbums = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, true);e
     if (artistInfo == null
             // If image url is void, last.fm doesn't provide enough data about this
             // artist, we reset the view

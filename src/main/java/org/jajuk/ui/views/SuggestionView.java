@@ -103,7 +103,8 @@ public class SuggestionView extends ViewAdapter {
   List<Album> albumsRare;
   /** Currently selected thumb. */
   AbstractThumbnail selectedThumb;
-  private AlbumListInfo albums;
+  /** albums is protected to allow ArtistView to load them */
+  protected AlbumListInfo albums;
   private SimilarArtistsInfo similar;
   JXBusyLabel busyLocal1 = new JXBusyLabel();
   JXBusyLabel busyLocal2 = new JXBusyLabel();
