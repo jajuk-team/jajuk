@@ -303,11 +303,14 @@ public final class DownloadManager {
     if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)) {
       return null;
     }
-    HttpURLConnection connection = NetworkUtils.getConnection(url, proxy);
+    HttpURLConnection connection = null;
     try {
+      connection = NetworkUtils.getConnection(url, proxy);
       return NetworkUtils.readURL(connection, charset);
     } finally {
-      connection.disconnect();
+      if (connection != null) {
+        connection.disconnect();
+      }
     }
   }
 
