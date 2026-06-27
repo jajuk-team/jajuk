@@ -76,16 +76,7 @@ import org.jajuk.ui.widgets.JajukButton;
 import org.jajuk.ui.widgets.JajukFileChooser;
 import org.jajuk.ui.widgets.JajukJToolbar;
 import org.jajuk.ui.windows.JajukMainWindow;
-import org.jajuk.util.Conf;
-import org.jajuk.util.Const;
-import org.jajuk.util.DownloadManager;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.JajukIcons;
-import org.jajuk.util.Messages;
-import org.jajuk.util.UtilFeatures;
-import org.jajuk.util.UtilGUI;
-import org.jajuk.util.UtilSystem;
+import org.jajuk.util.*;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.filters.GIFFilter;
 import org.jajuk.util.filters.ImageFilter;
@@ -716,6 +707,7 @@ public class CoverView extends ViewAdapter implements ActionListener {
    *
    * @return an accurate google search query for a file
    */
+  @Deprecated
   public String createQuery(final org.jajuk.base.File file) {
     String query = "";
     int iAccuracy = getCurrentAccuracy();
@@ -772,6 +764,97 @@ public class CoverView extends ViewAdapter implements ActionListener {
       break;
     }
     return query;
+  }
+
+  /**
+   * Creates the query components as a structured list.
+   * <p>
+   * Returns a List with exactly 2 elements:
+   * - Index 0: Artist name (empty string if unknown)
+   * - Index 1: Album name OR Track name (depending on accuracy mode)
+   * </p>
+   *
+   * @param file The track file containing metadata
+   * @return List<String> with [artist, album_or_track]
+   */
+  public List<String> createQueryComponents(final org.jajuk.base.File file) {
+    List<String> artistParts = new ArrayList<>(2);
+    int iAccuracy = getCurrentAccuracy();
+    final Track track = file.getTrack();
+    final Artist artist = track.getArtist();
+    final Album album = track.getAlbum();
+
+    // Initialize both slots
+    artistParts.add(""); // Default to empty artist
+    artistParts.add(""); // Default to empty album/tracks
+
+    switch (iAccuracy) {
+      case 0: // low, default - use all available info
+        if (!artist.seemsUnknown()) {
+          artistParts.set(0, artist.getName());
+        } else if (!track.getAlbumArtist().seemsUnknown()) {
+          artistParts.set(0, track.getAlbumArtist().getName());
+        }
+        if (!album.seemsUnknown()) {
+          artistParts.set(1, album.getName());
+        }
+        break;
+
+      case 1: // medium - quoted versions for precision search
+        if (!artist.seemsUnknown()) {
+          artistParts.set(0, artist.getName());
+        } else if (!track.getAlbumArtist().seemsUnknown()) {
+          artistParts.set(0, track.getAlbumArtist().getName());
+        }
+        if (!album.seemsUnknown()) {
+          artistParts.set(1, album.getName());
+        }
+        break;
+
+      case 2: // high - plus-quoted for strict matching
+        if (!artist.seemsUnknown()) {
+          artistParts.set(0, artist.getName());
+        } else if (!track.getAlbumArtist().seemsUnknown()) {
+          artistParts.set(0, track.getAlbumArtist().getName());
+        }
+        if (!album.seemsUnknown()) {
+          artistParts.set(1, album.getName());
+        }
+        break;
+
+      case 3: // by artist only
+        if (!artist.seemsUnknown()) {
+          artistParts.set(0, artist.getName());
+        } else if (!track.getAlbumArtist().seemsUnknown()) {
+          artistParts.set(0, track.getAlbumArtist().getName());
+        }
+        // Artist slot filled, album remains empty
+        break;
+
+      case 4: // by album only
+        if (!album.seemsUnknown()) {
+          artistParts.set(1, album.getName());
+        }
+        // Album slot filled, artist remains empty
+        break;
+
+      case 5: // by track name only
+        artistParts.set(1, track.getName());
+        // Track name goes in slot 1, artist remains empty
+        break;
+
+      default:
+        // Fallback to default behavior
+        if (!artist.seemsUnknown()) {
+          artistParts.set(0, artist.getName());
+        }
+        if (!album.seemsUnknown()) {
+          artistParts.set(1, album.getName());
+        }
+        break;
+    }
+
+    return artistParts;
   }
 
   private int getCurrentAccuracy() {
@@ -1349,13 +1432,13 @@ public class CoverView extends ViewAdapter implements ActionListener {
           && !Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)
           && (CoverView.bOnceConnected || (CoverView.iErrorCounter < Const.STOP_TO_SEARCH))) {
         try {
-          final String sQuery = createQuery(fCurrent);
-          Log.debug("Query={{" + sQuery + "}}");
+          final List<String> sQuery = createQueryComponents(fCurrent);
+          Log.debug("Query={{" + String.join(" ", sQuery) + "}}");
           if (!sQuery.isEmpty()) {
             // there is not enough information in tags
             // for a web search
             List<URL> alUrls;
-            alUrls = DownloadManager.getRemoteCoversList(sQuery);
+            alUrls = CoverManager.getRemoteCoversList(sQuery, 10);
             CoverView.bOnceConnected = true;
             // user managed once to connect to the web
             if (alUrls.size() > Const.MAX_REMOTE_COVERS) {

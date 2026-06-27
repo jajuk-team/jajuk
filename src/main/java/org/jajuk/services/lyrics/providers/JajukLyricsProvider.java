@@ -48,16 +48,6 @@ public class JajukLyricsProvider implements ILyricsProvider {
   }
 
   /**
-   * Gets the response encoding.
-   * 
-   * @return the response encoding
-   */
-  @Override
-  public String getResponseEncoding() {
-    return "UTF-8";
-  }
-
-  /**
    * Gets the artist.
    * 
    * @return the artist

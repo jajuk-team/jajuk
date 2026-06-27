@@ -574,7 +574,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     properties.put(Const.CONF_NETWORK_CONNECTION_TO, Integer.toString(pv.connectionTO.getValue()));
     Conf.setProperties(properties);
     // Force global reload of proxy variables
-    DownloadManager.setDefaultProxySettings();
+    UtilProxy.setDefaultProxySettings();
   }
 
   /**

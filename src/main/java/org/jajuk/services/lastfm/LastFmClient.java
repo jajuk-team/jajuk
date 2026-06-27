@@ -25,20 +25,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jajuk.base.Track;
 import org.jajuk.services.lastfm.model.*;
 import org.jajuk.services.lastfm.scrobble.ScrobblerException;
+import org.jajuk.services.network.HttpClientService;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URLEncoder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.util.*;
 
 public class LastFmClient {
@@ -49,11 +46,9 @@ public class LastFmClient {
   public static final String API_KEY = "8b8fc3115c8e40531393af7225ff5ee4";
   public static final String INVALID_API_KEY_FOR_LAST_FM = "Invalid API key for Last.fm. Please check your configuration.";
 
-  private final HttpClient httpClient;
   private final ObjectMapper mapper;
 
   public LastFmClient() {
-    this.httpClient = HttpClient.newHttpClient();
     this.mapper = new ObjectMapper();
   }
 
@@ -75,20 +70,19 @@ public class LastFmClient {
    * @param album  the album title
    * @return the album
    */
-  public AlbumInfo getAlbumInfo(String artist, String album) throws LastFmInvalidKeyException, Exception {
+  public AlbumInfo getAlbumInfo(String artist, String album) throws Exception {
     String url = LastFmUtils.BASE_URL +
             "?method=album.getinfo" +
-            "&artist=" + LastFmUtils.encode(artist) +
-            "&album=" + LastFmUtils.encode(album) +
+            "&artist=" + HttpClientService.getInstance().encode(artist) +
+            "&album=" + HttpClientService.getInstance().encode(album) +
             "&api_key=" + getApiKey() +
             "&format=json";
 
-    HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(url))
-            .GET()
-            .build();
+    HttpResponse<String> response = HttpClientService.getInstance().executeGetRequest(url);
 
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    if (response == null) {
+      return null; // Internet disabled, ignore
+    }
 
     if (response.statusCode() != 200) {
       if (response.statusCode() == 403) {
@@ -157,23 +151,20 @@ public class LastFmClient {
    *
    * @return the artist
    */
-  public ArtistInfo getArtist(String artistName) throws LastFmInvalidKeyException,
-          Exception {
+  public ArtistInfo getArtist(String artistName) throws Exception {
     // Building URL for artist.search
     // Limitation to one result to get better result
     String url = LastFmUtils.BASE_URL +
-            "?method=artist.search" +
-            "&artist=" + LastFmUtils.encode(artistName) +
-            "&limit=1" +
-            "&api_key=" + getApiKey() +
+            "?method=artist.search" + "&artist=" +
+            HttpClientService.getInstance().encode(artistName) +
+            "&limit=1" + "&api_key=" + getApiKey() +
             "&format=json";
 
-    HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(url))
-            .GET()
-            .build();
+    HttpResponse<String> response = HttpClientService.getInstance().executeGetRequest(url);
 
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    if (response == null) {
+      return null; // Internet disabled, ignore
+    }
 
     if (response.statusCode() != 200) {
       if (response.statusCode() == 403) {
@@ -193,7 +184,8 @@ public class LastFmClient {
     JsonNode artistMatches = rootNode.get("results").get("artistmatches");
 
     // Checking minimum of one artist
-    if (!artistMatches.has("artist") || artistMatches.get("artist").isArray() && artistMatches.get("artist").isEmpty()) {
+    if (!artistMatches.has("artist")
+            || artistMatches.get("artist").isArray() && artistMatches.get("artist").isEmpty()) {
       // Cas où artist est un objet unique ou une liste vide
       if (artistMatches.get("artist").isArray() && artistMatches.get("artist").isEmpty()) {
         throw new RuntimeException("No results found for artist: " + artistName);
@@ -276,7 +268,7 @@ public class LastFmClient {
    *
    * @throws Exception if API call fails or no results found
    */
-  public LastFmArtistDetail getArtistDetail(String artistName, boolean useMbid) throws LastFmInvalidKeyException, Exception {
+  public LastFmArtistDetail getArtistDetail(String artistName, boolean useMbid) throws Exception {
     // Validate input
     if (artistName == null || artistName.trim().isEmpty()) {
       throw new IllegalArgumentException("Artist name or MBID cannot be null or empty");
@@ -284,17 +276,16 @@ public class LastFmClient {
 
     // Building URL for artist.getinfo
     String url = LastFmUtils.BASE_URL +
-            "?method=artist.getinfo" +
-            "&" + (useMbid ? "mbid=" : "artist=") + LastFmUtils.encode(artistName) +
+            "?method=artist.getinfo" + "&" + (useMbid ? "mbid=" : "artist=") +
+            HttpClientService.getInstance().encode(artistName) +
             "&api_key=" + getApiKey() +
             "&format=json";
 
-    HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(url))
-            .GET()
-            .build();
+    HttpResponse<String> response = HttpClientService.getInstance().executeGetRequest(url);
 
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    if (response == null) {
+      return null; // Internet disabled, ignore
+    }
 
     if (response.statusCode() != 200) {
       if (response.statusCode() == 403) {
@@ -476,8 +467,7 @@ public class LastFmClient {
    *
    * @throws Exception if the API call fails or the MBID is invalid
    */
-  public List<LastFmImage> getLastFmImages(String mbid, int limit) throws LastFmInvalidKeyException,
-          Exception {
+  public List<LastFmImage> getLastFmImages(String mbid, int limit) throws Exception {
     // Validate input
     if (mbid == null || mbid.trim().isEmpty()) {
       throw new IllegalArgumentException("MBID cannot be null or empty");
@@ -487,17 +477,16 @@ public class LastFmClient {
     // Note: Last.fm uses 'mbid' parameter for this method
     String url = LastFmUtils.BASE_URL +
             "?method=artist.getimages" +
-            "&mbid=" + LastFmUtils.encode(mbid) +
+            "&mbid=" + HttpClientService.getInstance().encode(mbid) +
             "&limit=" + limit +
             "&api_key=" + getApiKey() +
             "&format=json";
 
-    HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(url))
-            .GET()
-            .build();
+    HttpResponse<String> response = HttpClientService.getInstance().executeGetRequest(url);
 
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    if (response == null) {
+      return null; // Internet disabled, ignore
+    }
 
     if (response.statusCode() != 200) {
       if (response.statusCode() == 403) {
@@ -602,21 +591,19 @@ public class LastFmClient {
     return image;
   }
 
-  public List<AlbumInfo> getTopAlbums(String artist, int limit) throws LastFmInvalidKeyException,
-          Exception {
+  public List<AlbumInfo> getTopAlbums(String artist, int limit) throws Exception {
     String url = LastFmUtils.BASE_URL +
             "?method=artist.getTopAlbums" +
-            "&artist=" + LastFmUtils.encode(artist) +
+            "&artist=" + HttpClientService.getInstance().encode(artist) +
             "&limit=" + limit +
             "&api_key=" + getApiKey() +
             "&format=json";
 
-    HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(url))
-            .GET()
-            .build();
+    HttpResponse<String> response = HttpClientService.getInstance().executeGetRequest(url);
 
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    if (response == null) {
+      return null; // Internet disabled, ignore
+    }
 
     if (response.statusCode() != 200) {
       if (response.statusCode() == 403) {
@@ -685,24 +672,23 @@ public class LastFmClient {
    *
    * @throws Exception if the API call fails or no similar artists are found
    */
-  public List<ArtistInfo> getSimilar(ArtistInfo artist, int limit) throws Exception, LastFmInvalidKeyException {
+  public List<ArtistInfo> getSimilar(ArtistInfo artist, int limit) throws Exception {
     // Build URL for artist.getSimilar method
     // Using the artist name from the provided LastFmArtist object
     String url = LastFmUtils.BASE_URL +
             "?method=artist.getSimilar" +
-            "&artist=" + LastFmUtils.encode(artist.getName()) +
+            "&artist=" + HttpClientService.getInstance().encode(artist.getName()) +
             "&api_key=" + getApiKey() +
             "&limit=" + limit +
             "&autocorrect=1" +  // Enable autocorrection for better matching
             "mbid=" + artist.getId() +
             "&format=json";
 
-    HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(url))
-            .GET()
-            .build();
+    HttpResponse<String> response = HttpClientService.getInstance().executeGetRequest(url);
 
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    if (response == null) {
+      return null; // Internet disabled, ignore
+    }
 
     if (response.statusCode() != 200) {
       if (response.statusCode() == 403) {
@@ -834,8 +820,7 @@ public class LastFmClient {
   /**
    * Internal method to submit a single batch of tracks.
    */
-  private void submitBatch(List<FullSubmissionData> batch, String sessionKey, String apiKey, String apiSecret)
-          throws LastFmInvalidKeyException, ScrobblerException {
+  private void submitBatch(List<FullSubmissionData> batch, String sessionKey, String apiKey, String apiSecret) throws LastFmInvalidKeyException, ScrobblerException {
 
     // Build parameters map
     // Note: We use a TreeMap for sorting keys for the signature, but we need to build the body carefully
@@ -909,16 +894,14 @@ public class LastFmClient {
 
     Log.debug("Sending scrobble batch. body=" + body);
 
-    // Send Request
-    HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(LastFmUtils.BASE_URL))
-            .header("User-Agent", LastFmUtils.USER_AGENT)
-            .header("Content-Type", "application/x-www-form-urlencoded")
-            .POST(HttpRequest.BodyPublishers.ofString(body, StandardCharsets.UTF_8))
-            .timeout(Duration.ofSeconds(15)) // Slightly longer for batch
-            .build();
     try {
-      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+      // Send Request
+      HttpResponse<String> response = HttpClientService.getInstance()
+              .executePostRequest(LastFmUtils.BASE_URL, body);
+
+      if (response == null) {
+        return; // Internet disabled, ignore
+      }
 
       if (response.statusCode() != 200) {
         if (response.statusCode() == 403) {
@@ -940,11 +923,8 @@ public class LastFmClient {
       }
 
       Log.info("Successfully scrobbled " + batch.size() + " tracks. ");
-    } catch (IOException | InterruptedException e) {
+    } catch (IOException e) {
       Log.warn("Network error : " + e.getMessage());
-      if (e instanceof InterruptedException) {
-        Thread.currentThread().interrupt();
-      }
       throw new ScrobblerException("Network error: " + e.getMessage());
     }
   }
@@ -955,9 +935,8 @@ public class LastFmClient {
    * @param track The track that was played
    * @throws ScrobblerException the scrobbler exception
    */
-  public void updateNowPlaying(Track track) throws LastFmInvalidKeyException,
-          ScrobblerException {
-    // 1. Prepare data
+  public void updateNowPlaying(Track track) throws LastFmInvalidKeyException, ScrobblerException {
+    // Prepare data
     String artist = track.getAlbumArtistOrArtist();
     String title = track.getName();
     String album = track.getAlbum() != null ? track.getAlbum().getName() : "";
@@ -965,14 +944,14 @@ public class LastFmClient {
 
     Log.info(String.format("Updating Now Playing: %s - %s (%ss)", artist, title, durationSecs));
 
-    // 2. Retrieve Session Key (from config or memory)
+    // Retrieve Session Key (from config or memory)
     String sessionKey = Conf.getString(Const.CONF_LASTFM_SESSION_KEY);
     if (sessionKey == null || sessionKey.trim().isEmpty()) {
       Log.warn("No Last.fm session key found. Please authenticate first.");
       throw new ScrobblerException("No session key found. Authenticate in preferences.");
     }
 
-    // 3. Prepare parameters for updateNowPlaying
+    // Prepare parameters for updateNowPlaying
     // Note: 'duration' is required for updateNowPlaying in seconds
     Map<String, String> params = new TreeMap<>();
     params.put("method", "track.updateNowPlaying");
@@ -986,13 +965,13 @@ public class LastFmClient {
     }
     // Optional: trackNumber, mbid, etc. if available
 
-    // 5. Generate Signature (excluding 'format')
+    // Generate Signature (excluding 'format')
     String apiSecret = Conf.getString(Const.CONF_LASTFM_SECRET);
     String apiSig = LastFmAuthenticator.generateSignature(params, apiSecret);
     params.put("api_sig", apiSig);
     params.put("format", "json"); // Added for request, not for hash
 
-    // 6. Build Request Body
+    // Build Request Body
     StringBuilder bodyBuilder = new StringBuilder();
     boolean first = true;
     for (Map.Entry<String, String> entry : params.entrySet()) {
@@ -1005,17 +984,14 @@ public class LastFmClient {
     }
     String body = bodyBuilder.toString();
 
-    // 7. Send POST Request
-    HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(LastFmUtils.BASE_URL))
-            .header("User-Agent", LastFmUtils.USER_AGENT)
-            .header("Content-Type", "application/x-www-form-urlencoded")
-            .POST(HttpRequest.BodyPublishers.ofString(body, StandardCharsets.UTF_8))
-            .timeout(Duration.ofSeconds(10))
-            .build();
-
     try {
-      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+      // Send POST Request
+      HttpResponse<String> response = HttpClientService.getInstance()
+              .executePostRequest(LastFmUtils.BASE_URL, body);
+
+      if (response == null) {
+        return; // Internet disabled, ignore
+      }
 
       String responseBody = response.body();
 
@@ -1042,11 +1018,8 @@ public class LastFmClient {
         // Not throwing exception here as "ok" might be implicit in some responses
       }
 
-    } catch (IOException | InterruptedException e) {
+    } catch (IOException e) {
       Log.warn("Network error while updating Now Playing : " + e.getMessage());
-      if (e instanceof InterruptedException) {
-        Thread.currentThread().interrupt();
-      }
       throw new ScrobblerException("Network error: " + e.getMessage());
     }
   }

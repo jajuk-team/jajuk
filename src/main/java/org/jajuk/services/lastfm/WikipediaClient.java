@@ -23,22 +23,19 @@ package org.jajuk.services.lastfm;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jajuk.services.lastfm.model.ArtistInfo;
+import org.jajuk.services.network.HttpClientService;
 import org.jajuk.util.log.Log;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
+import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class WikipediaClient {
-  private final HttpClient client;
   private final ObjectMapper mapper;
 
   public WikipediaClient() {
-    this.client = HttpClient.newHttpClient();
     this.mapper = new ObjectMapper();
   }
 
@@ -101,23 +98,22 @@ public class WikipediaClient {
     try {
       // Step 1 : Looking for Wikipedia page with search API
       String searchUrl = String.format("https://%s.wikipedia.org/w/api.php?action=query&list=search&srsearch=%s" +
-              "&srlimit=1&format=json&origin=*", lang, LastFmUtils.encode(artistName));
+              "&srlimit=1&format=json&origin=*", lang, HttpClientService.getInstance().encode(artistName));
 
-      HttpRequest searchReq = HttpRequest.newBuilder()
-              .uri(URI.create(searchUrl))
-              .header("User-Agent", LastFmUtils.USER_AGENT)
-              .timeout(java.time.Duration.ofSeconds(10))
-              .GET()
-              .build();
+      HttpResponse<String> response = HttpClientService.getInstance().executeGetRequest(searchUrl);
 
-      HttpResponse<String> searchResp = client.send(searchReq, HttpResponse.BodyHandlers.ofString());
-
-      if (searchResp.statusCode() != 200) {
-        Log.warn("Error Wikipedia search : " + searchResp.statusCode());
-        return null;
+      if (response == null) {
+        return null; // Internet disabled, ignore
       }
 
-      JsonNode json = mapper.readTree(searchResp.body());
+      if (response.statusCode() != 200) {
+        Log.warn("Error Wikipedia search : " + response.statusCode() + " url=" + searchUrl);
+        if (response.statusCode() == 429) {
+          throw new IOException("Wikipedia API rate limit exceeded. Consider adding a delay between requests.");
+        }
+      }
+
+      JsonNode json = mapper.readTree(response.body());
       JsonNode searchResults = json.get("query").get("search");
 
       if (searchResults == null || searchResults.isEmpty()) {
@@ -132,22 +128,20 @@ public class WikipediaClient {
       // The thumb is calculated by wikipedia, thus reduce Jajuk work.
       String encodedTitle = wikiTitle.replace(" ", "_");
       imageQueryUrl = String.format(
-              "https://%s.wikipedia.org/w/api.php?action=query&titles=%s"+
-                      "&prop=pageimages&piprop=thumbnail&pithumbsize=%s"+
+              "https://%s.wikipedia.org/w/api.php?action=query&titles=%s" +
+                      "&prop=pageimages&piprop=thumbnail&pithumbsize=%s" +
                       "&format=json&origin=*",
               lang, encodedTitle, "400"
       );
-      HttpRequest imageReq = HttpRequest.newBuilder()
-              .uri(URI.create(imageQueryUrl))
-              .header("User-Agent", LastFmUtils.USER_AGENT)
-              .timeout(java.time.Duration.ofSeconds(10))
-              .GET()
-              .build();
 
-      HttpResponse<String> imageResp = client.send(imageReq, HttpResponse.BodyHandlers.ofString());
+      HttpResponse<String> responseImage = HttpClientService.getInstance().executeGetRequest(imageQueryUrl);
 
-      if (imageResp.statusCode() == 200) {
-        JsonNode imgJson = mapper.readTree(imageResp.body());
+      if (responseImage == null) {
+        return null; // Internet disabled, ignore
+      }
+
+      if (responseImage.statusCode() == 200) {
+        JsonNode imgJson = mapper.readTree(responseImage.body());
         JsonNode pages = imgJson.get("query").get("pages");
 
         if (pages != null && !pages.isEmpty()) {
@@ -167,7 +161,7 @@ public class WikipediaClient {
       }
 
     } catch (Exception e) {
-      Log.warn("Error Wikimedia : " + imageQueryUrl + " : " +  e.getMessage());
+      Log.warn("Error Wikimedia : " + imageQueryUrl + " : " + e.getMessage());
     }
     return null;
   }

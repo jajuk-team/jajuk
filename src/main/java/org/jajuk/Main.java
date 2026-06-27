@@ -42,14 +42,7 @@ import org.jajuk.services.startup.StartupEngineService;
 import org.jajuk.services.startup.StartupGUIService;
 import org.jajuk.services.webradio.WebRadioHelper;
 import org.jajuk.ui.helpers.FontManager;
-import org.jajuk.util.Conf;
-import org.jajuk.util.Const;
-import org.jajuk.util.DownloadManager;
-import org.jajuk.util.LocaleManager;
-import org.jajuk.util.UpgradeManager;
-import org.jajuk.util.UtilGUI;
-import org.jajuk.util.UtilString;
-import org.jajuk.util.UtilSystem;
+import org.jajuk.util.*;
 import org.jajuk.util.log.Log;
 import org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel;
 
@@ -133,7 +126,7 @@ public final class Main {
 				StartupGUIService.launchSplashScreen();
 			}
 			// Apply any proxy (requires load conf)
-			DownloadManager.setDefaultProxySettings();
+			UtilProxy.setDefaultProxySettings();
 			// Registers ItemManager managers
 			StartupCollectionService.registerItemManagers();
 			// Upgrade configuration from previous releases

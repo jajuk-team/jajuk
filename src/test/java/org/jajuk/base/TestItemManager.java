@@ -20,7 +20,7 @@
  */
 package org.jajuk.base;
 
-import ext.services.xml.XMLUtils;
+import org.jajuk.util.XMLUtils;
 
 import java.util.Date;
 import java.util.Iterator;

@@ -1,24 +1,22 @@
 /*
- * aTunes 1.14.0 code adapted by Jajuk team
+ *  Jajuk
+ *  Copyright (C) The Jajuk Team
+ *  http://jajuk.info
  *
- * Original copyright notice bellow :
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
  *
- * Copyright (C) 2006-2009 Alex Aranda, Sylvain Gaudard, Thomas Beckers and contributors
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * http://www.atunes.org
- * http://sourceforge.net/projects/atunes
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
  */
 package org.jajuk.services.lastfm;
 
@@ -27,6 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.Track;
 import org.jajuk.services.lastfm.model.*;
 import org.jajuk.services.lastfm.scrobble.ScrobblerException;
+import org.jajuk.services.network.HttpClientService;
 import org.jajuk.util.*;
 import org.jajuk.util.log.Log;
 
@@ -218,12 +217,9 @@ public class LastFmService {
    */
   public Image getImage(AlbumInfo album) {
     try {
-      //Proxy proxy = DownloadManager.getProxy();
       // Try to retrieve from cache
       Image img = lastFmCache.retrieveAlbumCover(album);
       if (img == null && album.getBigCoverURL() != null && !album.getBigCoverURL().isEmpty()) {
-        //img = ext.services.network.NetworkUtils.getImage(ext.services.network.NetworkUtils
-        //        .getConnection(album.getBigCoverURL(), proxy));
         File imageFile = DownloadManager.downloadToCache(new URL(album.getBigCoverURL()));
         if (imageFile == null) {
           return null;
@@ -249,20 +245,12 @@ public class LastFmService {
     try {
       // Try to retrieve from cache
       Image img = lastFmCache.retrieveArtistThumbImage(artist);
-      //Proxy proxy = DownloadManager.getProxy();
       if (img == null && artist.getImageUrl() != null && !artist.getImageUrl().isEmpty()) {
-        // Try to get from Artist.getImages() method - Not Possible With Jajuk Key
-        // img = getArtistImageFromLastFM(artist.getName());
-        // if not then get from artist info
-        //if (img == null) {
-        //img = ext.services.network.NetworkUtils.getImage(ext.services.network.NetworkUtils
-        //        .getConnection(artist.getImageUrl(), proxy));
         File imageFile = DownloadManager.downloadToCache(new URL(artist.getImageUrl()));
         if (imageFile == null) {
           return null;
         }
         img = ImageIO.read(imageFile);
-        //}
         lastFmCache.storeArtistThumbImage(artist, img);
       }
       return img;
@@ -339,16 +327,6 @@ public class LastFmService {
       Log.error(e);
     }
     return null;
-  }
-
-  /**
-   * Gets the wiki url.
-   *
-   * @param artist the artist
-   * @return the wiki url
-   */
-  public String getWikiURL(String artist) {
-    return ARTIST_WIKI_URL.replace(ARTIST_WILDCARD, ext.services.network.NetworkUtils.encodeString(artist)).replace(LANGUAGE_WILDCARD, locale.getLanguage());
   }
 
   /**

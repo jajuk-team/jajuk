@@ -23,6 +23,7 @@ package org.jajuk.services.lastfm;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import org.jajuk.services.network.HttpClientService;
 import org.jajuk.util.Messages;
 import org.jajuk.util.log.Log;
 
@@ -34,13 +35,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URLEncoder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.Duration;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
@@ -54,7 +51,6 @@ import java.util.concurrent.TimeoutException;
 public class LastFmAuthenticator {
   private final String apiKey;
   private final String apiSecret;
-  private final HttpClient httpClient;
 
   // Variables for the local server
   private volatile String receivedToken = null;
@@ -63,9 +59,6 @@ public class LastFmAuthenticator {
   public LastFmAuthenticator(String apiKey, String apiSecret) {
     this.apiKey = apiKey;
     this.apiSecret = apiSecret;
-    this.httpClient = HttpClient.newBuilder()
-            .connectTimeout(Duration.ofSeconds(10))
-            .build();
   }
 
   /**
@@ -219,52 +212,6 @@ public class LastFmAuthenticator {
   }
 
   /**
-   * Manual mode: Displays a dialog box to copy/paste the token.
-
-  private String attemptManualAuth() {
-    String authUrl = String.format("https://www.last.fm/api/auth?api_key=%s", apiKey);
-
-    String message = String.format(
-            """
-                    Automatic browser opening failed (firewall or restriction?).
-                    
-                    Please perform the following steps:
-                    
-                    1. Copy this URL and paste it into your browser:
-                    %s
-                    
-                    2. Log in to Last.fm and click "Allow".
-                    3. You will be redirected to a page containing a code (token).
-                    4. Copy this code and paste it below:""",
-            authUrl
-    );
-
-    JTextField textField = new JTextField(30);
-    JPanel panel = new JPanel(new BorderLayout(5, 5));
-    panel.add(new JLabel(message), BorderLayout.NORTH);
-    panel.add(textField, BorderLayout.CENTER);
-
-    int result = JOptionPane.showConfirmDialog(
-            null,
-            panel,
-            "Last.fm Authentication - Manual Mode",
-            JOptionPane.OK_CANCEL_OPTION,
-            JOptionPane.PLAIN_MESSAGE
-    );
-
-    if (result == JOptionPane.OK_OPTION) {
-      String token = textField.getText().trim();
-      if (token.isEmpty()) {
-        Messages.showInfoMessage("Token is empty. Authentication cancelled.", "Error");
-        return null;
-      }
-      return token;
-    }
-    return null;
-  }
-   */
-
-  /**
    * Exchanges the temporary token for the permanent session_key.
    */
   private String exchangeTokenForSession(String token) throws IOException, InterruptedException {
@@ -320,39 +267,30 @@ public class LastFmAuthenticator {
     Log.info("Sending POST request to: " + LastFmUtils.BASE_URL);
     Log.info("Request body: " + body);
 
-    HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(LastFmUtils.BASE_URL))
-            .header("User-Agent", LastFmUtils.USER_AGENT)
-            .header("Content-Type", "application/x-www-form-urlencoded")
-            .POST(HttpRequest.BodyPublishers.ofString(body, StandardCharsets.UTF_8))
-            .build();
+    String sessionKey;
+    try {
+      String json = HttpClientService.getInstance().postUrl(LastFmUtils.BASE_URL, body);
+      //        .header("Content-Type", "application/x-www-form-urlencoded")
 
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+      int keyStart = json.indexOf("\"key\":\"");
+      if (keyStart == -1) {
+        Log.warn("Unable to find session_key in JSON response: " + json);
+        throw new IOException("Invalid JSON response from Last.fm: " + json);
+      }
 
-    Log.info("Response Status: " + response.statusCode());
-    Log.info("Response Body: " + response.body());
+      keyStart += 7;
+      int keyEnd = json.indexOf("\"", keyStart);
+      if (keyEnd == -1) {
+        Log.warn("Unable to find end of session_key in JSON response: " + json);
+        throw new IOException("Malformed JSON response.");
+      }
 
-    if (response.statusCode() != 200) {
-      Log.warn("Last.fm API error (token exchange): " + response.statusCode() + " - " + response.body());
-      throw new IOException("Last.fm API Error: " + response.body());
+      sessionKey = json.substring(keyStart, keyEnd);
+      Log.info("Session Key obtained successfully: " + sessionKey);
+    } catch (IOException e) {
+      Log.warn("Last.fm API error (token exchange): " + e.getMessage());
+      throw new IOException("Last.fm API Error: " + e.getMessage());
     }
-
-    String json = response.body();
-    int keyStart = json.indexOf("\"key\":\"");
-    if (keyStart == -1) {
-      Log.warn("Unable to find session_key in JSON response: " + json);
-      throw new IOException("Invalid JSON response from Last.fm: " + json);
-    }
-
-    keyStart += 7;
-    int keyEnd = json.indexOf("\"", keyStart);
-    if (keyEnd == -1) {
-      Log.warn("Unable to find end of session_key in JSON response: " + json);
-      throw new IOException("Malformed JSON response.");
-    }
-
-    String sessionKey = json.substring(keyStart, keyEnd);
-    Log.info("Session Key obtained successfully: " + sessionKey);
     return sessionKey;
   }
 

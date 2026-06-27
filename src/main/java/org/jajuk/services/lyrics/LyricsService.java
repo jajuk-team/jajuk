@@ -50,7 +50,6 @@ public final class LyricsService {
   private static final String[] providersClasses = new String[] {
     "org.jajuk.services.lyrics.providers.TagLyricsProvider",
     "org.jajuk.services.lyrics.providers.TxtLyricsProvider",
-    "org.jajuk.services.lyrics.providers.AzLyricsWebLyricsProvider",
     "org.jajuk.services.lyrics.providers.LyricsManiaWebLyricsProvider", };
   /** Persisters list. */
   private static final String[] persisterClasses = new String[] {

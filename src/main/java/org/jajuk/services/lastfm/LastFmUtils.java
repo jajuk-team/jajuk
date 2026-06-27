@@ -20,18 +20,8 @@
  */
 package org.jajuk.services.lastfm;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-
 public class LastFmUtils {
-  public static final String BASE_URL = "https://ws.audioscrobbler.com/2.0/";
-  // IMPORTANT: MusicBrainz REQUIRES a unique and descriptive User-Agent.
-  public static final String USER_AGENT = "Jajuk/12.0 (contact jajuk-developers@lists.sourceforge.net)";
 
-  public static String encode(String s) {
-    if (s == null) {
-      return null;
-    }
-    return URLEncoder.encode(s, StandardCharsets.UTF_8);
-  }
+  public static final String BASE_URL = "https://ws.audioscrobbler.com/2.0/";
+
 }
