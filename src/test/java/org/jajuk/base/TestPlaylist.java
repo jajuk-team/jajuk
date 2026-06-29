@@ -20,12 +20,10 @@
  */
 package org.jajuk.base;
 
-import com.google.common.io.Files;
-
 import java.awt.HeadlessException;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +40,7 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+import org.junit.Assert;
 
 /**
  * .
@@ -154,7 +153,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for.
-   *
+   * <br>
    * {@link org.jajuk.base.Playlist#Playlist(org.jajuk.base.Playlist.Type, java.lang.String, java.lang.String, org.jajuk.base.Directory)}
    * .
    */
@@ -164,7 +163,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for.
-   *
+   * <br>
    * {@link org.jajuk.base.Playlist#Playlist(java.lang.String, java.lang.String, org.jajuk.base.Directory)}
    * .
    */
@@ -262,7 +261,7 @@ public class TestPlaylist extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Playlist#addFiles(java.util.List)}.
+   * Test method for {@link org.jajuk.base.Playlist#addFiles(List, int)}.
    *
    * @throws Exception the exception
    */
@@ -270,7 +269,7 @@ public class TestPlaylist extends JajukTestCase {
     Playlist play = TestHelpers.getPlaylist();
     play.remove(0);
     play.remove(0);
-    List<File> files = new ArrayList<File>();
+    List<File> files = new ArrayList<>();
     // empty add does not do anything
     play.addFiles(files, 0);
     assertEquals(0, play.getFiles().size());
@@ -347,7 +346,7 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test method for.
-   *
+   * <br>
    * {@link org.jajuk.base.Playlist#compareTo(org.jajuk.base.Playlist)}.
    */
   public final void testCompareTo() {
@@ -450,8 +449,8 @@ public class TestPlaylist extends JajukTestCase {
 
   /**
    * Test down queue.
-   * @throws JajukException 
-   * 
+   *
+   * @throws JajukException the jajuk exception
    */
   public final void testDownQueue() throws JajukException {
     // 1 track
@@ -460,7 +459,7 @@ public class TestPlaylist extends JajukTestCase {
     TestHelpers.push(new StackItem(TestHelpers.getFile("2.mp3", false)), true, false);
     StackItem st1 = QueueModel.getItem(0);
     StackItem st2 = QueueModel.getItem(1);
-    assertEquals(st2.getFile().getName(), "2.mp3");
+    assertEquals("2.mp3", st2.getFile().getName());
     play.down(0);
     assertEquals(st1, QueueModel.getItem(1));
     assertEquals(st2, QueueModel.getItem(0));
@@ -493,7 +492,7 @@ public class TestPlaylist extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.base.Playlist#forceRefresh()}.
+   * Test method for forceRefresh
    *
    * @throws Exception the exception
    */
@@ -520,9 +519,8 @@ public class TestPlaylist extends JajukTestCase {
   /**
    * Test get absolute path not normal.
    * 
-   * @throws IOException 
    */
-  public final void testGetAbsolutePathNotNormal() throws IOException {
+  public final void testGetAbsolutePathNotNormal() {
     Playlist play = new Playlist(Playlist.Type.BESTOF, "1", "name", null);
     assertTrue(StringUtils.isBlank(play.getAbsolutePath()));
     play.setFIO(TestHelpers.getFile().getFIO());
@@ -639,8 +637,8 @@ public class TestPlaylist extends JajukTestCase {
     {
       Playlist play = TestHelpers.getPlaylist();
       play.addFile(TestHelpers.getFile("file1", false));
-      new java.io.File(TestHelpers.getDevice().getUrl() + java.io.File.separator + "testdir")
-          .mkdirs();
+      Assert.assertTrue(new java.io.File(TestHelpers.getDevice().getUrl() + java.io.File.separator + "testdir")
+              .mkdirs());
       play.setFIO(new java.io.File(TestHelpers.getDevice().getUrl() + java.io.File.separator
           + "testdir" + java.io.File.separator + "playlist.m3u"));
       play.commit();
@@ -682,7 +680,7 @@ public class TestPlaylist extends JajukTestCase {
     } catch (HeadlessException e) {
       // this tries to open a FileChooser...
     }
-    play.setFiles(new ArrayList<File>());
+    play.setFiles(new ArrayList<>());
     try {
       play.play();
     } catch (HeadlessException e) {
@@ -704,10 +702,8 @@ public class TestPlaylist extends JajukTestCase {
   /**
    * Test remove bookmark.
    * 
-   *
-   * @throws Exception the exception
    */
-  public final void testRemoveBookmark() throws Exception {
+  public final void testRemoveBookmark() {
     Bookmarks.getInstance().addFile(TestHelpers.getFile("file1", false));
     Playlist play = getPlaylistBookmark();
     play.remove(0);
@@ -716,9 +712,8 @@ public class TestPlaylist extends JajukTestCase {
   /**
    * Test remove queue.
    * 
-   * @throws JajukException 
    */
-  public final void testRemoveQueue() throws JajukException {
+  public final void testRemoveQueue() {
     Playlist play = getPlaylistQueue();
     play.remove(0);
   }
@@ -784,7 +779,7 @@ public class TestPlaylist extends JajukTestCase {
     Playlist play = new Playlist("1", "name", null);
     Directory dir = TestHelpers.getDirectory();
     TestHelpers.setAttribute(play, "dParentDirectory", dir);
-    dir.setProperty(Const.XML_DIRECTORY, dir == null ? "-1" : dir.getID());
+    dir.setProperty(Const.XML_DIRECTORY, dir.getID());
     play.setFIO(new java.io.File("testfile"));
     play.reset();
     assertNotNull(play.getFIO()); // recreated again...
@@ -799,9 +794,7 @@ public class TestPlaylist extends JajukTestCase {
     Playlist play = TestHelpers.getPlaylist();
     try {
       play.saveAs();
-    } catch (InvocationTargetException e) {
-      // this tries to open a FileChooser...
-    } catch (HeadlessException e) {
+    } catch (InvocationTargetException | HeadlessException e) {
       // this tries to open a FileChooser...
     }
   }
@@ -815,15 +808,13 @@ public class TestPlaylist extends JajukTestCase {
   public final void testSaveAsBestOf() throws Exception {
     Directory dir = TestHelpers.getDirectory();
     Playlist play = new Playlist(Playlist.Type.BESTOF, "1", "playlist.m3u", dir);
-    List<File> list = new ArrayList<File>();
+    List<File> list = new ArrayList<>();
     list.add(TestHelpers.getFile("file1", false));
     list.add(TestHelpers.getFile("file1", false));
     play.setFiles(list);
     try {
       play.saveAs();
-    } catch (InvocationTargetException e) {
-      // this tries to open a FileChooser...
-    } catch (HeadlessException e) {
+    } catch (InvocationTargetException | HeadlessException e) {
       // this tries to open a FileChooser...
     }
   }
@@ -838,9 +829,7 @@ public class TestPlaylist extends JajukTestCase {
     Playlist play = getPlaylistBookmark();
     try {
       play.saveAs();
-    } catch (InvocationTargetException e) {
-      // this tries to open a FileChooser...
-    } catch (HeadlessException e) {
+    } catch (InvocationTargetException | HeadlessException e) {
       // this tries to open a FileChooser...
     }
   }
@@ -854,15 +843,13 @@ public class TestPlaylist extends JajukTestCase {
   public final void testSaveAsNovelities() throws Exception {
     Directory dir = TestHelpers.getDirectory();
     Playlist play = new Playlist(Playlist.Type.NOVELTIES, "1", "playlist.m3u", dir);
-    List<File> list = new ArrayList<File>();
+    List<File> list = new ArrayList<>();
     list.add(TestHelpers.getFile("file1", false));
     list.add(TestHelpers.getFile("file1", false));
     play.setFiles(list);
     try {
       play.saveAs();
-    } catch (InvocationTargetException e) {
-      // this tries to open a FileChooser...
-    } catch (HeadlessException e) {
+    } catch (InvocationTargetException | HeadlessException e) {
       // this tries to open a FileChooser...
     }
   }
@@ -877,9 +864,7 @@ public class TestPlaylist extends JajukTestCase {
     Playlist play = getPlaylistQueue();
     try {
       play.saveAs();
-    } catch (InvocationTargetException e) {
-      // this tries to open a FileChooser...
-    } catch (HeadlessException e) {
+    } catch (InvocationTargetException | HeadlessException e) {
       // this tries to open a FileChooser...
     }
   }
@@ -891,7 +876,7 @@ public class TestPlaylist extends JajukTestCase {
    */
   public final void testSetFiles() throws Exception {
     Playlist play = TestHelpers.getPlaylist();
-    List<File> list = new ArrayList<File>();
+    List<File> list = new ArrayList<>();
     list.add(TestHelpers.getFile("file1", false));
     play.setFiles(list);
     assertEquals(1, play.getFiles().size());
@@ -1064,7 +1049,7 @@ public class TestPlaylist extends JajukTestCase {
     // Now, don't add the files using setFiles but create the playlist content instead 
     // and  load it. This way, we can write relative paths like ../dir
     String content = "file1\n" + "./file11\n" + "dir1/file2\n" + "../file3";
-    Files.write(content, play.getFIO(), Charset.defaultCharset());
+    Files.write(play.getFIO().toPath(), content.getBytes(Charset.defaultCharset()));
     play.load();
     assertEquals(4, play.getNbOfTracks());
   }

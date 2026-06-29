@@ -20,15 +20,14 @@
  */
 package org.jajuk.services.lyrics.providers;
 
-import java.net.MalformedURLException;
-import java.text.Normalizer;
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang3.StringUtils;
+import org.jajuk.services.network.HttpClientService;
 import org.jajuk.util.Const;
 import org.jajuk.util.log.Log;
 
-import ext.services.network.NetworkUtils;
+import java.net.MalformedURLException;
+import java.text.Normalizer;
+import java.util.regex.Pattern;
 
 /**
  * Lyrics Provider extracting lyrics from lyricsmania.com
@@ -49,7 +48,7 @@ public class LyricsManiaWebLyricsProvider extends GenericWebLyricsProvider {
   /**
    * {@inheritDoc}
    * 
-   * @see ext.services.lyrics.providers.GenericProvider#getLyrics(java.lang.String,
+   * @see org.jajuk.services.lyrics.providers.GenericWebLyricsProvider#getLyrics(java.lang.String,
    * java.lang.String)
    */
   @Override
@@ -99,12 +98,10 @@ public class LyricsManiaWebLyricsProvider extends GenericWebLyricsProvider {
       String searchString = "<div class=\"lyrics-body\"";
       int startIndex = html.indexOf(searchString);
       if (startIndex > -1) {
-        ret = html.substring(startIndex + searchString.length());
+        ret = html.substring(startIndex + searchString.length() + 1);
         int secondIndex = ret.indexOf("</div>");
         if (secondIndex > -1) {
-          ret = ret.substring(secondIndex + 7);
-          int stopIndex = ret.indexOf("</div>");
-          ret = ret.substring(0, stopIndex);
+          ret = ret.substring(0, secondIndex);
           ret = ret.replace('\r', '\n');
           ret = ret.replace("<div class=\"p402_premium\">", "");
           ret += "\n<-- LyricsMania -->";
@@ -120,18 +117,7 @@ public class LyricsManiaWebLyricsProvider extends GenericWebLyricsProvider {
   /**
    * {@inheritDoc}
    * 
-   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getResponseEncoding()
-   */
-  @Override
-  public String getResponseEncoding() {
-    return "UTF-8";
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getWebURL(java.lang .String,
-   * java.lang.String)
+   * @see org.jajuk.services.lyrics.providers.GenericWebLyricsProvider#getWebURL(String, String)
    */
   @Override
   public java.net.URL getWebURL(final String pArtist, final String pTitle) {
@@ -141,9 +127,9 @@ public class LyricsManiaWebLyricsProvider extends GenericWebLyricsProvider {
     String title = removeAccent(pTitle).replaceAll(" ", "").replace("(", "").replace(")", "")
         .toLowerCase();
     queryString = queryString.replace(Const.PATTERN_ARTIST,
-        (artist != null) ? NetworkUtils.encodeString(artist) : "");
+        (artist != null) ? HttpClientService.getInstance().encode(artist) : "");
     queryString = queryString.replace(Const.PATTERN_TRACKNAME,
-        (title != null) ? NetworkUtils.encodeString(title) : "");
+        (title != null) ? HttpClientService.getInstance().encode(title) : "");
     java.net.URL out = null;
     try {
       out = new java.net.URL(queryString);

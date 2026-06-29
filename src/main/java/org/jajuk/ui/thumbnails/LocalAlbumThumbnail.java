@@ -21,28 +21,9 @@
 package org.jajuk.ui.thumbnails;
 
 import com.vlsolutions.swing.docking.ShadowBorder;
-
-import java.awt.Color;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.Action;
-import javax.swing.ActionMap;
-import javax.swing.ImageIcon;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.KeyStroke;
-import javax.swing.border.EmptyBorder;
-
-import org.jajuk.base.Album;
-import org.jajuk.base.Item;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackComparator;
+import net.miginfocom.swing.MigLayout;
+import org.jajuk.base.*;
 import org.jajuk.base.TrackComparator.TrackComparatorType;
-import org.jajuk.base.TrackManager;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
@@ -51,15 +32,16 @@ import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.helpers.PreferencesJMenu;
 import org.jajuk.ui.helpers.StarsHelper;
-import org.jajuk.util.Conf;
-import org.jajuk.util.Const;
-import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
-import org.jajuk.util.UtilString;
-import org.jajuk.util.UtilSystem;
+import org.jajuk.util.*;
 import org.jajuk.util.log.Log;
 
-import net.miginfocom.swing.MigLayout;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.io.Serial;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Album thumb represented as album cover + (optionally) others text information
@@ -68,6 +50,7 @@ import net.miginfocom.swing.MigLayout;
  */
 public class LocalAlbumThumbnail extends AbstractThumbnail {
   /** Generated serialVersionUID. */
+  @Serial
   private static final long serialVersionUID = -282669695411453802L;
   /** Associated album. */
   private final Album album;
@@ -76,12 +59,12 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
   /**
    * Constructor.
    *
-   * @param album :
-   * associated album
-   * @param size :
-   * size of the thumbnail
+   * @param album     :
+   *                  associated album
+   * @param size      :
+   *                  size of the thumbnail
    * @param bShowText :
-   * Display full album / artist information under the icon or not ?
+   *                  Display full album / artist information under the icon or not ?
    */
   public LocalAlbumThumbnail(Album album, int size, boolean bShowText) {
     super(size);
@@ -150,15 +133,6 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     setKeystrokes();
   }
 
-  /**
-   * Gets the cover file.
-   *
-   * @return the cover file
-   */
-  public File getCoverFile() {
-    return fCover;
-  }
-
   /*
    * (non-Javadoc)
    *
@@ -176,6 +150,10 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
    */
   @Override
   public String getDescription() {
+    // Cache color values to avoid repeated method calls
+    String bgColorHex = UtilGUI.getHTMLColor(UtilGUI.getUltraLightColor());
+    String fgColorHex = UtilGUI.getHTMLColor(UtilGUI.getForegroundColor());
+
     int lSize = 200;
     ThumbnailManager.refreshThumbnail(album, lSize);
     java.io.File cover = ThumbnailManager.getThumbBySize(album, lSize);
@@ -185,69 +163,83 @@ public class LocalAlbumThumbnail extends AbstractThumbnail {
     Track firstTrack = tracks.iterator().next();
     Color bgcolor = UtilGUI.getUltraLightColor();
     Color fgcolor = UtilGUI.getForegroundColor();
-    String sOut = "<html bgcolor='#" + UtilGUI.getHTMLColor(bgcolor) + "'> <b>" + album.getName2()
-        + "</b><br><TABLE color='" + UtilGUI.getHTMLColor(fgcolor) + "'><TR><TD VALIGN='TOP'>";
+    // Wrap description in a constrained container so very large covers don't make the popup huge
+    StringBuilder html = new StringBuilder();
+    html.append("<html>");
+    html.append("<body style='background-color: #").append(bgColorHex).append("'>");
+    html.append("<div style='width:400px; height:400px; margin:0 auto; border:1px solid #ccc;'>");
+
+    html.append("<b>").append(album.getName2()).append("</b>");
+    html.append("<br><table style='color:#").append(fgColorHex).append(";'>");
+    html.append("<tr><td style='vertical-align: top;'>");
+
     // display cover
     if (cover.exists()) {
-      sOut += "<img src='file:" + cover.getAbsolutePath() + "'><br>";
+      html.append("<img src='file:")
+              .append(cover.getAbsolutePath())
+              .append("' width='300'/>") // Fixed width
+              .append("<br>");
     }
-    // TODO : add AlbumArtist value and hyperlink here
+
     // Display artist as global value only if it is a single artist album
     // We use file://<item type>?<item id> as HTML hyperlink format
     if (album.getArtist() != null) {
-      sOut += "<br>" + Messages.getHumanPropertyName(Const.XML_ARTIST) + ": <a href='file://"
-          + Const.XML_ARTIST + '?' + firstTrack.getArtist().getID() + "'>"
-          + firstTrack.getArtist().getName2() + "</a>";
+      html.append("<br>").append(Messages.getHumanPropertyName(Const.XML_ARTIST)).append(": <a href='file://");
+      html.append(Const.XML_ARTIST).append('?').append(firstTrack.getArtist().getID()).append("'>");
+      html.append(firstTrack.getArtist().getName2()).append("</a>");
     }
     // Display genre
     if (album.getGenre() != null) {
-      sOut += "<br>" + Messages.getHumanPropertyName(Const.XML_GENRE) + ": <a href='file://"
-          + Const.XML_GENRE + '?' + firstTrack.getGenre().getID() + "'>"
-          + UtilString.getLimitedString(firstTrack.getGenre().getName2(), 20) + "</a>";
+      html.append("<br>").append(Messages.getHumanPropertyName(Const.XML_GENRE)).append(": <a href='file://");
+      html.append(Const.XML_GENRE).append('?').append(firstTrack.getGenre().getID()).append("'>");
+      html.append(UtilString.getLimitedString(firstTrack.getGenre().getName2(), 20)).append("</a>");
     }
     // Display year
     if (album.getYear() != null) {
-      sOut += "<br>" + Messages.getHumanPropertyName(Const.XML_YEAR) + ": <a href='file://"
-          + Const.XML_YEAR + '?' + firstTrack.getYear().getID() + "'>"
-          + firstTrack.getYear().getName() + "</a>";
+      html.append("<br>").append(Messages.getHumanPropertyName(Const.XML_YEAR)).append(": <a href='file://");
+      html.append(Const.XML_YEAR).append('?').append(firstTrack.getYear().getID()).append("'>");
+      html.append(firstTrack.getYear().getName()).append("</a>");
     }
     // display rating (sum of all tracks rating)
     try {
-      sOut += "<br>"
-          + Messages.getHumanPropertyName(Const.XML_TRACK_RATE)
-          + ": <img src='"
-          + SessionService
-              .getConfFileByPath(
-                  "cache/internal/star" + StarsHelper.getStarsNumber(album) + "_16x16.png").toURI()
-              .toURL().toExternalForm() + "'> (" + album.getRate() + ")";
+      html.append("<br>").append(Messages.getHumanPropertyName(Const.XML_TRACK_RATE));
+      html.append(": <img src='");
+      html.append(SessionService.getConfFileByPath(
+                      "cache/internal/star" + StarsHelper.getStarsNumber(album) + "_16x16.png").toURI()
+              .toURL().toExternalForm());
+      html.append("' style='max-width:200px;height:auto;vertical-align:middle;'> (").append(album.getRate()).append(")");
     } catch (MalformedURLException e) {
       Log.error(e);
     }
     // Compute total length in secs
     long length = album.getDuration();
-    sOut += "<br>" + Messages.getHumanPropertyName(Const.XML_TRACK_LENGTH) + ": "
-        + UtilString.formatTimeBySec(length) + "</TD><TD VALIGN='TOP'><br>";
+    html.append("<br>").append(Messages.getHumanPropertyName(Const.XML_TRACK_LENGTH)).append(": ");
+    html.append(UtilString.formatTimeBySec(length)).append("</td>");
+    html.append("<td style='vertical-align: top;'><br>");
     // Show each track detail
     for (Track track : tracks) {
-      sOut += "<br>";
+      html.append("<br>");
       if (track.getOrder() > 0) {
-        sOut += UtilString.padNumber(track.getOrder(), 2) + ": ";
+        html.append(UtilString.padNumber(track.getOrder(), 2)).append(": ");
       }
-      sOut += "<b>" + "<a href='file://" + Const.XML_TRACK + '?' + track.getID() + "'>"
-          + UtilString.getLimitedString(track.getName(), 50) + "</a>" + " (";
-      sOut += UtilString.formatTimeBySec(track.getDuration()) + ") </b>";
+      html.append("<b>").append("<a href='file://").append(Const.XML_TRACK).append('?').append(track.getID()).append("'>");
+      html.append(UtilString.getLimitedString(track.getName(), 50)).append("</a>").append(" (");
+      html.append(UtilString.formatTimeBySec(track.getDuration())).append(") </b>");
       if (album.getYear() == null && track.getYear().getValue() != 0) {
-        sOut += " - " + track.getYear().getValue() + "   ";
+        html.append(" - ").append(track.getYear().getValue()).append("   ");
       }
       // Show artist if known and if it is not already shown at album
       // level
       if (album.getArtist() == null
-          && !track.getArtist().getName2().equals(Messages.getString(Const.UNKNOWN_ARTIST))) {
-        sOut += " - " + UtilString.getLimitedString(track.getArtist().getName2(), 20) + "   ";
+              && !track.getArtist().getName2().equals(Messages.getString(Const.UNKNOWN_ARTIST))) {
+        html.append(" - ").append(UtilString.getLimitedString(track.getArtist().getName2(), 20)).append("   ");
       }
     }
-    sOut += "</TD></TR></TABLE></html>";
-    return sOut;
+    html.append("</td></tr></table>");
+    html.append("</div>");
+    html.append("</body>");
+    html.append("</html>");
+    return html.toString();
   }
 
   /*

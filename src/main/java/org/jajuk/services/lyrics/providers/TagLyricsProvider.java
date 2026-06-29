@@ -39,7 +39,7 @@ public class TagLyricsProvider implements ILyricsProvider {
    */
   @Override
   public String getLyrics() {
-    String lyrics = null;
+    String lyrics;
     try {
       Tag g = Tag.getTagForFio(audioFile.getFIO(), true);
       lyrics = g.getLyrics();
@@ -52,15 +52,6 @@ public class TagLyricsProvider implements ILyricsProvider {
       return null;
     }
     return lyrics;
-  }
-
-  /**
-   * {@inheritDoc}
-   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getResponseEncoding()
-   */
-  @Override
-  public String getResponseEncoding() {
-    return "UTF-8";
   }
 
   /**

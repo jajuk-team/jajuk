@@ -20,47 +20,49 @@
  */
 package org.jajuk.ui.views;
 
-import java.awt.Dimension;
-import java.awt.Insets;
-import java.io.IOException;
-import java.net.UnknownHostException;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
-
+import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.Artist;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.lastfm.LastFmService;
+import org.jajuk.services.lastfm.model.AlbumInfo;
+import org.jajuk.services.lastfm.model.ArtistInfo;
+import org.jajuk.services.lastfm.model.SimilarArtistsInfo;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.services.players.StackItem;
 import org.jajuk.ui.helpers.TwoStepsDisplayable;
 import org.jajuk.ui.thumbnails.LastFmArtistThumbnail;
-import org.jajuk.util.Conf;
-import org.jajuk.util.Const;
-import org.jajuk.util.Messages;
-import org.jajuk.util.UtilFeatures;
-import org.jajuk.util.UtilGUI;
+import org.jajuk.util.*;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
 
-import ext.services.lastfm.ArtistInfo;
-import ext.services.lastfm.LastFmService;
-import net.miginfocom.swing.MigLayout;
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+import java.io.Serial;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Display Artist bio and albums.
  */
 public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
   /** Generated serialVersionUID. */
+  @Serial
   private static final long serialVersionUID = 1L;
+
   private String bio;
   private ArtistInfo artistInfo;
+
+  // Current artist name displayed (used for UI checks and equality)
+  private String currentArtistName = null;
+
+  // volatile is necessary for thread management between EDT and SwingWorkers
+  private volatile String lastProcessedArtist = null;
 
   /*
    * (non-Javadoc)
@@ -121,13 +123,13 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     SwingUtilities.invokeLater(() -> {
       // If internet access or lastfm is disable, just reset
       if (Conf.getBoolean(Const.CONF_NETWORK_NONE_INTERNET_ACCESS)
-          || !Conf.getBoolean(Const.CONF_LASTFM_INFO)) {
+              || !Conf.getBoolean(Const.CONF_LASTFM_INFO)) {
         reset();
         return;
       }
       JajukEvents subject = event.getSubject();
       if (JajukEvents.WEBRADIO_LAUNCHED.equals(subject)
-          || JajukEvents.ZERO.equals(event.getSubject())) {
+              || JajukEvents.ZERO.equals(event.getSubject())) {
         reset();
       } else if (JajukEvents.FILE_LAUNCHED.equals(subject)) {
         // If no playing track, reset the view
@@ -137,27 +139,39 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
           return;
         }
         Artist artist = currentItem.getFile().getTrack().getArtist();
-        // If we already display the artist, leave
-        if (artist.getName().equals(ArtistView.this.artist)) {
+
+        String newArtistName = artist.getName();
+
+        // If we already display the artist, leave (avoid redundant updates)
+        if (newArtistName.equals(currentArtistName)) {
           return;
-        } else {
-          // Display a busy panel in the mean-time
-          setLayout(new MigLayout("ins 5", "[grow]", "[grow]"));
-          JXBusyLabel busy1 = new JXBusyLabel(new Dimension(50, 50));
-          busy1.setBusy(true);
-          removeAll();
-          add(busy1, "center");
-          revalidate();
-          repaint();
-          ArtistView.this.artist = artist.getName();
-          // Display the panel only if the artist is not unknown
-          if (!artist.seemsUnknown()) {
-            // This is done in a swing worker
-            displayArtist();
-          } else {
-            reset();
-          }
         }
+
+        // New artist detected
+        currentArtistName = newArtistName;
+
+        // Display a busy panel in the mean-time
+        setLayout(new MigLayout("ins 5", "[grow]", "[grow]"));
+        JXBusyLabel busy1 = new JXBusyLabel(new Dimension(50, 50));
+        busy1.setBusy(true);
+        removeAll();
+        add(busy1, "center");
+        revalidate();
+        repaint();
+
+        // CRITICAL: Update the volatile context BEFORE triggering heavy work.
+        // This ensures that if the user switches tracks again quickly,
+        // the running task will detect the change via 'lastProcessedArtist'.
+        lastProcessedArtist = newArtistName;
+
+        // Display the panel only if the artist is not unknown
+        if (!artist.seemsUnknown()) {
+          // This is done in a swing worker
+          displayArtist();
+        } else {
+          reset();
+        }
+
       }
     });
   }
@@ -177,7 +191,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
    * </p>.
    */
   private void reset() {
-    ArtistView.this.artist = null;
+    this.lastProcessedArtist = null;
     removeAll();
     setLayout(new MigLayout("ins 5,gapy 5", "[grow]"));
     add(getNothingFoundPanel());
@@ -185,11 +199,101 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     repaint();
   }
 
+  /* (non-Javadoc)
+   * @see org.jajuk.ui.helpers.TwoStepsDisplayable#longCall()
+   */
+  @Override
+  public Object longCall() {
+    // Capture the current context locally to compare against the volatile variable later
+    String artistContext = lastProcessedArtist;
+
+    // Basic validation
+    if (artistContext == null || StringUtils.isBlank(artistContext)) {
+      return null;
+    }
+
+    try {
+      // 1. Fetch main Last.fm data (wiki and basic info)
+      bio = LastFmService.getInstance().getWikiText(artistContext);
+
+      // Verify context is still valid after API calls
+      if (!lastProcessedArtist.equals(artistContext)) {
+        return null;
+      }
+
+      artistInfo = LastFmService.getInstance().getArtist(artistContext);
+
+      // Abort if no data available
+      if (artistInfo == null || StringUtils.isBlank(artistInfo.getImageUrl())) {
+        return null;
+      }
+
+      // Verify context is still valid after API calls
+      if (!lastProcessedArtist.equals(artistContext)) {
+        return null;
+      }
+
+      // 2. Download cover images for other albums
+      albums = LastFmService.getInstance().getAlbumList(artistContext, true, 0);
+      if (albums != null && !albums.getAlbums().isEmpty()) {
+        for (AlbumInfo album : albums.getAlbums()) {
+          // CRITICAL CHECK: Stop immediately if artist changed
+          if (!lastProcessedArtist.equals(artistContext)) {
+            break;
+          }
+
+          String coverUrl = album.getBigCoverURL();
+          if (StringUtils.isNotBlank(coverUrl)) {
+            URL remote = new URL(coverUrl);
+            DownloadManager.downloadToCache(remote);
+          }
+        }
+      }
+
+      // Verify context again before moving to similar artists
+      if (!lastProcessedArtist.equals(artistContext)) {
+        return null;
+      }
+
+      // 3. Download cover images for similar artists
+      SimilarArtistsInfo similarArtists = LastFmService.getInstance().getSimilarArtists(artistContext);
+      if (similarArtists != null && similarArtists.getArtists() != null) {
+        for (ArtistInfo similar : similarArtists.getArtists()) {
+          // CRITICAL CHECK: Stop immediately if artist changed
+          if (!lastProcessedArtist.equals(artistContext)) {
+            break;
+          }
+
+          String similarUrl = similar.getImageUrl();
+          if (StringUtils.isNotBlank(similarUrl)) {
+            URL remote = new URL(similarUrl);
+            DownloadManager.downloadToCache(remote);
+          }
+        }
+      }
+
+    } catch (UnknownHostException e) {
+      Log.warn("Could not contact host for loading album information: " + e.getMessage());
+    } catch (IOException e) {
+      if (e.getMessage().contains(" 403 ")) {
+        // Server returned error while fetching images
+        Log.warn("Server returned an error while fetching images: " + e.getMessage());
+      } else {
+        // Other exception
+        Log.error(e);
+      }
+    } catch (Exception e) {
+      Log.error(e);
+    }
+
+    return null;
+  }
+
   /*
    * (non-Javadoc)
    *
    * @see org.jajuk.ui.helpers.TwoStepsDisplayable#longCall()
-   */
+
   @Override
   public Object longCall() {
     // Call last.fm wiki
@@ -198,6 +302,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     // Prefetch artist thumbs
     try {
       preFetchOthersAlbum();
+      // TODO too slow
       preFetchSimilarArtists();
     } catch (UnknownHostException e) {
       Log.warn("Could not contact host for loading album information: {{" + e.getMessage() + "}}");
@@ -214,6 +319,7 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     }
     return null;
   }
+   */
 
   /*
    * (non-Javadoc)
@@ -224,11 +330,11 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
   public void shortCall(Object in) {
     removeAll();
     JScrollPane jspAlbums = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, true);
-    // Artist unknown from last.fm, leave
+    // Artist unknown from last.fm, leav    JScrollPane jspAlbums = getLastFMSuggestionsPanel(SuggestionType.OTHERS_ALBUMS, true);e
     if (artistInfo == null
-    // If image url is void, last.fm doesn't provide enough data about this
-    // artist, we reset the view
-        || StringUtils.isBlank(artistInfo.getImageUrl())) {
+            // If image url is void, last.fm doesn't provide enough data about this
+            // artist, we reset the view
+            || StringUtils.isBlank(artistInfo.getImageUrl())) {
       reset();
       return;
     }
@@ -241,8 +347,6 @@ public class ArtistView extends SuggestionView implements TwoStepsDisplayable {
     // existing border
     // The artist bio (from last.fm wiki)
     JTextArea jtaArtistDesc = new JTextArea(bio) {
-      private static final long serialVersionUID = 9217998016482118852L;
-
       // We set the margin this way, setMargin() doesn't work due to
       // existing border
       @Override

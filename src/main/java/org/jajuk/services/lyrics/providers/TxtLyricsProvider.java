@@ -75,15 +75,6 @@ public class TxtLyricsProvider implements ILyricsProvider {
   }
 
   /**
-   * {@inheritDoc}
-   * @see org.jajuk.services.lyrics.providers.ILyricsProvider#getResponseEncoding()
-   */
-  @Override
-  public String getResponseEncoding() {
-    return "UTF-8";
-  }
-
-  /**
    * Gets the lyrics reader.
    * 
    * @return the lyrics reader

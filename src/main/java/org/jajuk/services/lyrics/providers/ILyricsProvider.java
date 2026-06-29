@@ -36,13 +36,6 @@ public interface ILyricsProvider {
   String getLyrics();
 
   /**
-   * Return lyrics provider response encoding (ISO8859-1, UTF-8..)
-   * 
-   * @return lyrics provider response encoding (ISO8859-1, UTF-8..)
-   */
-  String getResponseEncoding();
-
-  /**
    * Sets the audio file to search lyrics for.
    * 
    * @param file the audio file

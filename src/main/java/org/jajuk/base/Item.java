@@ -20,8 +20,7 @@
  */
 package org.jajuk.base;
 
-import com.google.common.collect.Lists;
-
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -55,9 +54,15 @@ public abstract class Item implements Const {
   /** Cache-string which holds the filter-string for the default "any"-Searches, this is filled during the first search and
    * cleaned on all points where the properties are adjusted. */
   private String any = null;
-  private static final List<String> lowPriorityCollectionProperties = Lists.asList(XML_TRACK_HITS,
-      new String[] { XML_TRACK_TOTAL_PLAYTIME, XML_EXPANDED, XML_ALBUM_DISCOVERED_COVER,
-          XML_TRACK_RATE, XML_ORIGIN });
+  private static final List<String> lowPriorityCollectionProperties = new ArrayList<>();
+  static {
+    lowPriorityCollectionProperties.add(XML_TRACK_HITS);
+    lowPriorityCollectionProperties.add(XML_TRACK_TOTAL_PLAYTIME);
+    lowPriorityCollectionProperties.add(XML_EXPANDED);
+    lowPriorityCollectionProperties.add(XML_ALBUM_DISCOVERED_COVER);
+    lowPriorityCollectionProperties.add(XML_TRACK_RATE);
+    lowPriorityCollectionProperties.add(XML_ORIGIN);
+  }
 
   /**
    * Constructor.
@@ -102,7 +107,7 @@ public abstract class Item implements Const {
   /**
    * Item hashcode (used by the equals method) See
    * http://www.geocities.com/technofundo/tech/java/equalhash.html
-   *
+   * <br>
    * Note that the hashCode is already cached in String class, no need to do it again.
    *
    * @return the int

@@ -20,7 +20,7 @@
  */
 package org.jajuk.services.dj;
 
-import ext.services.xml.XMLUtils;
+import org.jajuk.util.XMLUtils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jajuk.JajukTestCase;

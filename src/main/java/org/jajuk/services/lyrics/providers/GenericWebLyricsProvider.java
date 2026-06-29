@@ -20,16 +20,16 @@
  */
 package org.jajuk.services.lyrics.providers;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
+import org.jajuk.services.network.HttpClientService;
 import org.jajuk.util.Const;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.log.Log;
 
-import ext.services.network.NetworkUtils;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 /**
  * GenericProvider is a basic processor for web-based lyrics providers. It
@@ -67,7 +67,7 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
     String text = null;
     try {
       URL url = getActualURL(artist, title);
-      text = DownloadManager.getTextFromCachedFile(url, getResponseEncoding());
+      text = DownloadManager.getTextFromCachedFile(url, StandardCharsets.UTF_8.name());
     } catch (final Exception e) {
       Log.warn("Could not retrieve URL {{" + getProviderHostname() + "}}", "{{" + e.getMessage()
           + "}}");
@@ -113,9 +113,9 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
     try {
       String queryString = getQueryURLTemplate();
       queryString = queryString.replace(Const.PATTERN_ARTIST,
-          (artist != null) ? NetworkUtils.encodeString(artist) : "");
+          (artist != null) ? HttpClientService.getInstance().encode(artist) : "");
       queryString = queryString.replace(Const.PATTERN_TRACKNAME,
-          (title != null) ? NetworkUtils.encodeString(title) : "");
+          (title != null) ? HttpClientService.getInstance().encode(title) : "");
       return new URL(queryString);
     } catch (MalformedURLException e) {
       Log.error(e);

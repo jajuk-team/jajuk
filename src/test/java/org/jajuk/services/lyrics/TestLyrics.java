@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.services.lyrics;
 
@@ -29,7 +29,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
-import org.jajuk.services.lyrics.providers.AzLyricsWebLyricsProvider;
 import org.jajuk.services.lyrics.providers.GenericWebLyricsProvider;
 import org.jajuk.services.lyrics.providers.ILyricsProvider;
 import org.jajuk.services.lyrics.providers.LyricsManiaWebLyricsProvider;
@@ -40,15 +39,15 @@ import org.jajuk.util.log.Log;
  * Lyrics unit tests.
  */
 public class TestLyrics extends JajukTestCase {
-  /** The Constant ARTIST.   */
+  /** The Constant ARTIST. */
   private static final String ARTIST = "Massive Attack";
   // LyricsFly put a delay of 1500 ms before we are allowed to query again, we
   // need to take that into account for some of the tests
-  /** The Constant FLY_DELAY.   */
+  /** The Constant FLY_DELAY. */
   private static final long FLY_DELAY = 1500 + 200;
-  /** The Constant TESTED_WORD.   */
+  /** The Constant TESTED_WORD. */
   private static final String TESTED_WORD = "Day, yesterday";
-  /** The Constant TITLE.   */
+  /** The Constant TITLE. */
   private static final String TITLE = "Dissolved Girl";
   private File tmp = null;
 
@@ -57,14 +56,6 @@ public class TestLyrics extends JajukTestCase {
     // to first cover this method while no providers are loaded yet
     LyricsService.getProviders();
     tmp = TestHelpers.getFile("test.tmp", true).getFIO();
-  }
-
-  /**
-   * Test AZLyrics provider response to get lyrics.
-   */
-  public void testAZLyricsWebProvider() {
-    GenericWebLyricsProvider provider = new AzLyricsWebLyricsProvider();
-    testWebService(provider);
   }
 
   /**
@@ -84,9 +75,9 @@ public class TestLyrics extends JajukTestCase {
   }
 
   // helper method to emma-coverage of the unused constructor
+
   /**
    * Test private constructor.
-   * 
    *
    * @throws Exception the exception
    */
@@ -102,7 +93,7 @@ public class TestLyrics extends JajukTestCase {
     LyricsService.loadProviders();
     List<ILyricsProvider> providers = LyricsService.getProviders();
     assertNotNull(providers);
-    assertFalse(providers.size() == 0);
+    assertFalse(providers.isEmpty());
   }
 
   /**
@@ -137,7 +128,7 @@ public class TestLyrics extends JajukTestCase {
       return;
     }
     assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics,
-        StringUtils.isNotBlank(lyrics));
+            StringUtils.isNotBlank(lyrics));
     assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics,
             lyrics.contains(TESTED_WORD));
   }

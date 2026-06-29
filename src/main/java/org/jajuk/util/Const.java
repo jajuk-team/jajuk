@@ -366,8 +366,6 @@ public interface Const {
   String CONF_NETWORK_PROXY_LOGIN = "jajuk.network.proxy_login";
   String CONF_NETWORK_PROXY_PWD = "jajuk.network.proxy_pwd";
   String CONF_LASTFM_AUDIOSCROBBLER_ENABLE = "jajuk.network.audioscrobbler";
-  String CONF_LASTFM_USER = "jajuk.network.ASUser";
-  String CONF_LASTFM_PASSWORD = "jajuk.network.ASPassword";
   String CONF_COVERS_AUTO_COVER = "jajuk.covers.auto_cover";
   String CONF_COVERS_MIRROW_COVER = "jajuk.covers.mirrow_cover";
   String CONF_COVERS_MIRROW_COVER_FS_MODE = "jajuk.covers.mirrow_cover_fs_mode";
@@ -470,6 +468,12 @@ public interface Const {
   String CONF_TITLE_ANIMATION = "jajuk.title_animation";
   /** Enable Last.FM information queries */
   String CONF_LASTFM_INFO = "jajuk.lastfm_information";
+  /** Last.FM API key */
+  String CONF_LASTFM_API_KEY = "jajuk.lastfm_api_key";
+  /** Last.FM session key */
+  String CONF_LASTFM_SESSION_KEY = "jajuk.lastfm_session_key";
+  /** Last.FM session key */
+  String CONF_LASTFM_SECRET = "jajuk.lastfm_secret";
   /** Webradio playing at jajuk stop ?. */
   String CONF_WEBRADIO_WAS_PLAYING = "jajuk.webradio.was_playing";
   /** Font size. */

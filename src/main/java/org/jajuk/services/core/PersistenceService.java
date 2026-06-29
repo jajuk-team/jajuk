@@ -238,10 +238,10 @@ public final class PersistenceService extends Thread {
     for (StackItem item : QueueModel.getQueue()) {
       sb.append(item.getFile().getID());
     }
-    // Do not use MD5Processor class here to avoid the intern() method that 
+    // Do not use MD5Processor class here to avoid the intern() method that
     // could create a permgen memory leak
-    byte[] checksum = DigestUtils.md5(sb.toString());
-    return new String(checksum);
+    // Use md5Hex to get a stable string representation with recent commons-codec
+    return DigestUtils.md5Hex(sb.toString());
   }
 
   public static PersistenceService getInstance() {
