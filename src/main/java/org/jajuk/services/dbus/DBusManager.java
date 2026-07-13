@@ -16,52 +16,120 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.services.dbus;
 
+import org.freedesktop.dbus.connections.impl.DBusConnection;
+import org.freedesktop.dbus.connections.impl.DBusConnectionBuilder;
+import org.freedesktop.dbus.exceptions.DBusException;
+import org.jajuk.services.mpris.MprisService;
+import org.jajuk.services.mpris.MprisService2;
+import org.jajuk.util.log.Log;
+
+import java.io.IOException;
+
 /**
- * Base class to connect/disconnect to the session wide DBus daemon.
+ * Base class to connect/disconnect to the session-wide DBus daemon.
+ * Adapted for <a href="https://github.com/hypfvieh/dbus-java">dbus-java 5.2</a>
  */
 public final class DBusManager {
-  /** Support for D-Bus remote control of Jajuk. */
-  private static DBusSupportImpl dbus;
+
+  private static DBusConnection sessionConnection;
+  private static DBusSupportImpl serviceImplementation;
+
+  //private static final String BUS_NAME = "org.jajuk.dbus.DBusSupport";
+  private static final String BUS_NAME = "org.mpris.MediaPlayer2.jajuk";
+  private static MprisService2 mprisService;
 
   /**
-   * Gets the instance. This is usually called during startup to initialize the
-   * connection to D-Bus.
-   * 
-   * This call will usually not return an exception if there is a problem with
-   * D-Bus, but will only report problems to the Log.
-   * 
-   * @throws Exception the exception
-   * 
-   * @see disconnect()
+   * Initialize D-Bus connection to the session bus.
    */
-  public static void connect() throws Exception {
+  public static synchronized void connect() throws IOException, InterruptedException {
+    if (sessionConnection != null && sessionConnection.isConnected()) {
+      Log.info("D-Bus already connected");
+      return;
+    }
+
+    Log.info("Attempting to establish D-Bus session connection...");
+
+    // Build and get session connection using builder pattern
+    //
+    try (DBusConnection sessionConnection = DBusConnectionBuilder.forSessionBus().build()) {
+      // Request unique bus name
+      sessionConnection.requestBusName(BUS_NAME);
+
+      // Create service implementation instance
+      serviceImplementation = new DBusSupportImpl(sessionConnection);
+
+      // Export object - use registerRemoteObject instead of exportObject
+      //sessionConnection.registerRemoteObject( OBJECT_PATH,              DBusSupport.class,              serviceImplementation      );
+
+      Log.info("D-Bus support started successfully on Session Bus (" + BUS_NAME + ")");
+
+    } catch (DBusException e) {
+      Log.error("Failed to initialize D-Bus connection: " + e.getMessage(), e);
+      throw new IOException("DBCbus initialization failed", e);
+    }
+  }
+
+  public static synchronized void connect2() throws IOException, DBusException {
     try {
-      if (dbus == null) {
-        dbus = new DBusSupportImpl();
-        // The connect method will internally catch errors and report them to the
-        // logfile
-        dbus.connect();
-      }
-    } catch (Throwable t) {
-      throw new Exception("DBus not available", t);
+      Log.info("Attempting to establish D-Bus session connection...");
+
+      // Build session connection
+      sessionConnection = DBusConnectionBuilder.forSessionBus().build();
+
+      // Export BOTH Media Player 2 interfaces at once
+      mprisService = new MprisService2("Jajuk", sessionConnection);
+
+      Log.info("D-Bus support started successfully on Session Bus (" + BUS_NAME + ")");
+    } catch (Exception e) {
+      Log.error("Failed to initialize D-Bus connection: " + e.getMessage(), e);
+      throw e;
     }
   }
 
   /**
-   * De-initialize the D-Bus connection. Nothing is done here if the connection
-   * is not established (yet).
-   * 
-   * @see connect()
+   * Disconnect cleanly from D-Bus.
    */
-  public static void disconnect() {
-    if (dbus != null) {
-      dbus.disconnect();
-      // reset to let initialize work correctly in all cases
-      dbus = null;
+  public static synchronized void disconnect() {
+    if (mprisService != null) {
+      mprisService.cleanup();
+      mprisService = null;
+    }
+
+    if (sessionConnection != null) {
+      try {
+        Log.info("Disconnecting from D-Bus...");
+        try {
+          sessionConnection.releaseBusName(BUS_NAME);
+        } catch (org.freedesktop.dbus.exceptions.DBusException e) {
+          if ("Not Connected".equals(e.getMessage())) {
+            // Normal : proxy distant déjà fermé, release automatique au disconnect
+            Log.debug("Bus name already released or connection closing");
+          } else {
+            Log.error("Error releasing bus name: " + e.getMessage(), e);
+          }
+        }
+        if (sessionConnection.isConnected()) {
+          sessionConnection.disconnect();
+        }
+        sessionConnection.close();
+      } catch (Exception e) {
+        Log.warn("Error during D-Bus disconnection: " + e.getMessage());
+      } finally {
+        sessionConnection = null;
+      }
+
+    /*
+    if (serviceImplementation != null) {
+      serviceImplementation.cleanup();
+      serviceImplementation = null;
+    }
+    */
+      Log.info("D-Bus disconnected");
     }
   }
+
 }

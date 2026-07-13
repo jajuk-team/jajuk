@@ -114,7 +114,7 @@ public class LastFmArtistThumbnail extends AbstractThumbnail {
         html.append("</td>");
       }
     } catch (Exception e) {
-      Log.warn("Error retrieving albums for artist: {{" + artist.getName() + "}}", e.getMessage());
+      Log.warn("Error retrieving albums for artist: {} {}", artist.getName() , e.getMessage());
     }
     html.append("</tr></table>");
     html.append("</div>");

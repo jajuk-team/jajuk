@@ -452,7 +452,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
       }
       return fCover;
     } catch (Exception e) {
-      Log.warn("Could not read remote file: {{" + (remote != null ? remote.toString() : "null") + "}}", e.getMessage());
+      Log.warn("Could not read remote file: {} {}", (remote != null ? remote.toString() : "null"), e.getMessage());
       return null;
     }
   }
@@ -482,7 +482,7 @@ public abstract class AbstractThumbnail extends JPanel implements ActionListener
       }
       return createScaledIcon(image, size);
     } catch (Exception e) {
-      Log.warn("Could not load image from remote: {{" + remote + "}}", e.getMessage());
+      Log.warn("Could not load image from remote: {} {}", remote, e.getMessage());
       return null;
     }
   }

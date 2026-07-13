@@ -16,27 +16,39 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.util.log;
 
+import org.jajuk.util.error.JajukException;
+import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
+
 import java.util.List;
 
-import org.jajuk.JajukTestCase;
-import org.jajuk.util.error.JajukException;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * .
  */
-public class TestLog extends JajukTestCase {
-  @Override
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class TestLog {
+
+  @BeforeAll
   protected void specificSetUp() throws Exception {
     // make sure we have logging initialized for these tests
     Log.init();
   }
 
+  @BeforeEach
+  void clearSpool() {
+    Log.clearSpool();
+  }
+
   /**
-   * Test method for {@link org.jajuk.util.log.Log#getInstance()}.
+   * Test method for {@link Log#init()} ()}.
    */
   public void testGetInstance() {
     Log.init();
@@ -45,6 +57,7 @@ public class TestLog extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.log.Log#debug(java.lang.String)}.
    */
+  @Test
   public void testDebugString() {
     Log.debug("testlog1");
     verifySpool("testlog1");
@@ -53,6 +66,7 @@ public class TestLog extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.log.Log#debug(java.lang.Throwable)}.
    */
+  @Test
   public void testDebugThrowable() {
     Log.debug(new Throwable("testthrowable2"));
     // this is anonymonized: verifySpool("testthrowable2");
@@ -61,10 +75,11 @@ public class TestLog extends JajukTestCase {
 
   /**
    * Test method for.
-   *
-   * {@link org.jajuk.util.log.Log#debug(java.lang.String, java.lang.Throwable)}
+   * <p>
+   * {@link org.jajuk.util.log.Log#debug(String, Object...)}
    * .
    */
+  @Test
   public void testDebugStringThrowable() {
     Log.debug("testlog2", new Throwable("testthrowable2"));
     verifySpool("testlog2");
@@ -74,12 +89,10 @@ public class TestLog extends JajukTestCase {
 
   /**
    * Test debug string throwable null.
-   * 
+   *
    */
   public void testDebugStringThrowableNull() {
     Log.debug(null, new Throwable("testthrowable2"));
-    // verifySpool("testlog2");
-    // this is anonymonized: verifySpool("testthrowable2");
     verifySpool("***");
   }
 
@@ -101,23 +114,23 @@ public class TestLog extends JajukTestCase {
 
   /**
    * Test method for.
-   *
-   * {@link org.jajuk.util.log.Log#warn(java.lang.String, java.lang.String)}.
+   * <p>
+   * {@link org.jajuk.util.log.Log#warn(String, Object...)}.
    */
   public void testWarnStringString() {
-    Log.warn("warn5", "addinfo");
+    Log.warn("warn5 {}", "addinfo");
     verifySpool("warn5");
     verifySpool("addinfo");
   }
 
   /**
    * Test method for.
-   *
+   * <p>
    * {@link org.jajuk.util.log.Log#warn(int, java.lang.String, java.lang.Throwable)}
    * .
    */
   public void testWarnIntStringThrowable() {
-    Log.warn(10, "warntext6", new Throwable("testthrowable"));
+    Log.warn(10, "warntext6", new Throwable(Log.protect("testthrowable")));
     verifySpool("warntext6");
     // this is anonymonized: verifySpool("testthrowable2");
     verifySpool("***");
@@ -125,24 +138,23 @@ public class TestLog extends JajukTestCase {
 
   /**
    * Test warn int string throwable null.
-   * 
+   *
    */
   public void testWarnIntStringThrowableNull() {
     Log.warn(10, null, new Throwable("testthrowable"));
-    // this is anonymonized: verifySpool("testthrowable2");
     verifySpool("***");
   }
 
   /**
    * Test method for.
-   *
+   * <p>
    * {@link org.jajuk.util.log.Log#error(int, java.lang.String, java.lang.Throwable)}
    * .
    */
+  @Test
   public void testErrorIntStringThrowable() {
     Log.error(30, "errortext7", new Throwable("errorthrowable"));
     verifySpool("errortext7");
-    // this is anonymonized: verifySpool("testthrowable2");
     verifySpool("***");
   }
 
@@ -159,13 +171,12 @@ public class TestLog extends JajukTestCase {
    */
   public void testErrorThrowable() {
     Log.error(new Throwable("testerror8"));
-    // this is anonymonized: verifySpool("testthrowable2");
     verifySpool("***");
   }
 
   /**
    * Test method for.
-   *
+   * <p>
    * {@link org.jajuk.util.log.Log#error(int, java.lang.Throwable)}.
    */
   public void testErrorIntThrowable() {
@@ -177,8 +188,8 @@ public class TestLog extends JajukTestCase {
 
   /**
    * Test method for.
-   *
-   * {@link org.jajuk.util.log.Log#error(java.lang.String, org.jajuk.util.error.JajukException)}
+   * <p>
+   * {@link org.jajuk.util.log.Log#error(String, Throwable)}
    * .
    */
   public void testErrorStringJajukException() {
@@ -187,8 +198,7 @@ public class TestLog extends JajukTestCase {
 
   /**
    * Test method for.
-   *
-   * {@link org.jajuk.util.log.Log#error(org.jajuk.util.error.JajukException)}.
+   * {@link org.jajuk.util.log.Log#error(Throwable)}.
    */
   public void testErrorJajukException() {
     Log.error(new JajukException(34));
@@ -230,7 +240,7 @@ public class TestLog extends JajukTestCase {
   }
 
   /**
-   * Test method for {@link org.jajuk.util.log.Log#stack(java.lang.Exception)}.
+   * Test method for {@link org.jajuk.util.log.Log#stack(Throwable)}.
    */
   public void testStack() {
     Log.stack(new Exception("teststacktraceexception"));
@@ -252,10 +262,9 @@ public class TestLog extends JajukTestCase {
 
   /**
    * Verify spool.
-   * 
    *
-   * @param substring 
-   * @param expected 
+   * @param substring
+   * @param expected
    */
   private void verifySpool(String substring, boolean expected) {
     List<String> list = Log.getSpool(true);
@@ -265,20 +274,21 @@ public class TestLog extends JajukTestCase {
         if (expected) {
           return;
         } else {
-          fail("Should not find string '" + substring + "' in spool: " + list.toString());
+          fail("Should not find string '" + substring + "' in spool: " + list);
         }
       }
     }
     // if we expected the string, but did not find it we need to fail here
     if (expected) {
-      fail("List does not contain expected string '" + substring + "' in spool: " + list.toString());
+      fail("List does not contain expected string '" + substring + "' in spool: " + list);
     }
   }
 
   /**
    * Test anonymization.
-   * 
+   *
    */
+  @Test
   public void testAnonymization() {
     // things in {{...}} are replaced in the spool. Verify that this happens
     Log.info("this is {{sensitive}} data...");
@@ -291,11 +301,11 @@ public class TestLog extends JajukTestCase {
 
   /**
    * Test anonymization player state.
-   * 
+   *
    */
   public void testAnonymizationPlayerState() {
     // special replacement that is done to not show personal data in the spool
-    Log.info("Player state changed: OPENING this is secret personal information");
+    Log.info("Player state changed: OPENING this is "+ Log.protect("secret personal information"));
     verifySpool("Player");
     verifySpool("OPENING");
     verifySpool("secret", false);

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.services.startup;
 
@@ -32,6 +32,7 @@ import org.jajuk.services.core.RatingService;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.dbus.DBusManager;
 import org.jajuk.services.lastfm.LastFmManager;
+import org.jajuk.services.mpris.MprisService2;
 import org.jajuk.services.players.QueueController;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.wizard.FirstTimeWizard;
@@ -55,7 +56,7 @@ public final class StartupAsyncService {
 
   /**
    * Asynchronous tasks executed at startup at the same time (for perf).
-   * 
+   *
    * We do not execute these tasks in the main thread to avoid perturbations of
    */
   public static void startupAsyncAfterCollectionLoad() {
@@ -83,11 +84,24 @@ public final class StartupAsyncService {
           // implemented on Linux
           if (UtilSystem.isUnderLinux()) {
             try {
-              DBusManager.connect();
+              DBusManager.connect2();
             } catch (Exception e) {
               // Make sure to catch this error properly, otherwise the rest of the initialization is
               // not done
               Log.error(e);
+            }
+            try {
+              /*
+              MprisService2 mpris = new MprisService2("jajuk");
+              mpris.init();
+              Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                mpris.shutdown();
+              }));
+              Log.info("MPRIS service registered");
+              */
+            } catch (Exception e) {
+              Log.error("Failed to initialize MPRIS: " + e.getMessage(), e);
+              Log.info("Continuing without MPRIS support");
             }
           }
           // Wait few secs to avoid GUI startup perturbations

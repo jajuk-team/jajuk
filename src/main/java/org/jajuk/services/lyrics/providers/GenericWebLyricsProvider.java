@@ -69,8 +69,7 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
       URL url = getActualURL(artist, title);
       text = DownloadManager.getTextFromCachedFile(url, StandardCharsets.UTF_8.name());
     } catch (final Exception e) {
-      Log.warn("Could not retrieve URL {{" + getProviderHostname() + "}}", "{{" + e.getMessage()
-          + "}}");
+      Log.warn("Could not retrieve URL {} {}", getProviderHostname(), e.getMessage());
     }
     return text;
   }
@@ -95,7 +94,7 @@ public abstract class GenericWebLyricsProvider implements ILyricsProvider {
       try {
         source = new URL(queryUrlTemplate).getHost();
       } catch (final MalformedURLException e) {
-        Log.warn("Invalid lyrics provider [" + queryUrlTemplate + "]", e.getMessage());
+        Log.warn("Invalid lyrics provider [{}}] {}", queryUrlTemplate, e.getMessage());
       }
     }
     return source;

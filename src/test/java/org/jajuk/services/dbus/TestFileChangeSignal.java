@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.services.dbus;
 
@@ -25,28 +25,19 @@ import org.jajuk.JajukTestCase;
 /**
  * .
  */
-public class TestDBusSignalImpl extends JajukTestCase {
+public class TestFileChangeSignal extends JajukTestCase {
   @Override
   protected void specificSetUp() throws Exception {
   }
 
   /**
-   * Test method for {@link org.jajuk.services.dbus.DBusSignalImpl#isRemote()}.
-   */
-  public final void testIsRemote() {
-    // currently false
-    assertFalse(new DBusSignalImpl().isRemote());
-  }
-
   /**
    * Test file changed signal.
-   * 
    *
    * @throws Exception the exception
    */
   public final void testFileChangedSignal() throws Exception {
-    DBusSignalImpl.FileChangedSignal signal = new DBusSignalImpl.FileChangedSignal("testfile",
-        "/path/test");
-    assertEquals("testfile", signal.getFilename());
+    FileChangedSignal signal = new FileChangedSignal("/path/test/testfile");
+    assertEquals("/path/test/testfile", signal.getFilepath());
   }
 }
