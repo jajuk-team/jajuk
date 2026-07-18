@@ -28,6 +28,9 @@ import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
+
+import java.nio.charset.StandardCharsets;
+
 import org.jajuk.base.Track;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -79,7 +82,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   private boolean bForcedShortnames = false;
   /** English-specific end of file pattern */
   private static final Pattern patternEndOfFileEnglish = Pattern
-      .compile("Exiting\\x2e\\x2e\\x2e.*\\(End of file\\)");
+          .compile("Exiting\\x2e\\x2e\\x2e.*\\(End of file\\)");
   /** Language-agnostic end of file pattern */
   private static final Pattern patternEndOfFileGeneric = Pattern.compile(".*\\x2e\\x2e\\x2e.*\\(.*\\)");
 
@@ -134,7 +137,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
               // Perf note : this full action takes less much than 1 ms
               long trackPlaytime = current.getLongValue(Const.XML_TRACK_TOTAL_PLAYTIME);
               long newValue = (PROGRESS_STEP * TOTAL_PLAYTIME_UPDATE_INTERVAL / 1000)
-                  + trackPlaytime;
+                      + trackPlaytime;
               current.setProperty(Const.XML_TRACK_TOTAL_PLAYTIME, newValue);
             }
           }
@@ -186,9 +189,9 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
             // Very verbose :
             //Log.debug("Output from MPlayer: " + line);
             // Detect mplayer language
-            if (line.indexOf("Starting playback") != -1) {
+            if (line.contains("Starting playback")) {
               patternEndOfFile = patternEndOfFileEnglish;
-            } else if (line.indexOf("ANS_TIME_POSITION") != -1) {
+            } else if (line.contains("ANS_TIME_POSITION")) {
               // Stream is actually opened now
               bOpening = false;
               StringTokenizer st = new StringTokenizer(line, "=");
@@ -345,7 +348,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
    */
   @Override
   public void play(org.jajuk.base.File file, float fPosition, long length, float fVolume)
-      throws IOException, JajukException {
+          throws IOException, JajukException {
     this.fVolume = fVolume;
     this.length = length;
     this.fPosition = fPosition;
@@ -374,12 +377,12 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
         // try to collect stdout and stderr
         String output = "";
         try {
-          output += IOUtils.toString(proc.getInputStream());
+          output += IOUtils.toString(proc.getInputStream(), StandardCharsets.UTF_8);
         } catch (IOException e) {
           // ignore if stream is already closed
         }
         try {
-          output += IOUtils.toString(proc.getErrorStream());
+          output += IOUtils.toString(proc.getErrorStream(), StandardCharsets.UTF_8);
         } catch (IOException e) {
           // ignore if stream is already closed
         }
@@ -412,11 +415,23 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   /**
    * Launch mplayer.
    *
-     * @param startPositionSec the position in the track when starting in secs (0 means we plat from the begining)
+   * @param startPositionSec the position in the track when starting in secs (0 means we plat from the begining)
    * @throws IOException Signals that an I/O exception has occurred.
    *
    */
   private void launchMplayer(int startPositionSec) throws IOException {
+    // ⭐ CHECK IF PREVIOUS PROCESS STILL EXISTS
+    if (proc != null && proc.isAlive()) {
+      Log.warn("[LAUNCH] Previous process still alive! Cleaning up first...");
+      try {
+        stop();  // Clean up old process
+        Thread.sleep(200);  // Wait for cleanup
+      } catch (Exception e) {
+        Log.error("[LAUNCH] Error cleaning up previous process + " + e.getMessage());
+      }
+      proc = null;  // Reset reference
+    }
+
     // Build the file url. Under windows, we convert path to short
     // version to fix a mplayer bug when reading some pathnames including
     // special characters (see #1267)
@@ -439,6 +454,17 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     }
     // Start mplayer
     proc = pb.start();
+
+    // Initialize the persistent PrintStream IMMEDIATELY after process start
+    initMPlayerInputStream();
+    // Delay before starting threads to ensure stream is ready
+    try {
+      Thread.sleep(50);  // Time to let Java 17+ stabilize buffers
+    } catch (InterruptedException e) {
+      Log.warn("Interrupted during stream initialization delay : " + e.getMessage());
+      Thread.currentThread().interrupt();
+    }
+
     // start mplayer replies reader thread
     new ReaderThread("MPlayer reader thread").start();
     // start writer to mplayer thread
@@ -447,7 +473,7 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
     long time = System.currentTimeMillis();
     // Try to open the file during several secs
     while (UtilSystem.isRunning(proc) && !bStop && bOpening && !bEOF
-        && (System.currentTimeMillis() - time) < MPLAYER_START_TIMEOUT) {
+            && (System.currentTimeMillis() - time) < MPLAYER_START_TIMEOUT) {
       try {
         Thread.sleep(50);
       } catch (InterruptedException e) {
@@ -480,8 +506,8 @@ public class MPlayerPlayerImpl extends AbstractMPlayerImpl {
   }
 
   /* (non-Javadoc)
-  * @see org.jajuk.services.players.IPlayerImpl#getActuallyPlayedTimeMillis()
-  */
+   * @see org.jajuk.services.players.IPlayerImpl#getActuallyPlayedTimeMillis()
+   */
   @Override
   public long getActuallyPlayedTimeMillis() {
     return actuallyPlayedTimeMillis;

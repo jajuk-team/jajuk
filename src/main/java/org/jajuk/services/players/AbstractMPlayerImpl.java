@@ -25,10 +25,13 @@ import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilSystem;
 import org.jajuk.util.log.Log;
+
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Mplayer player implementation.
@@ -51,6 +54,9 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   /** Whether the track has been started in bitperfect mode **/
   boolean bitPerfect = false;
 
+  /** OutputStream to MPlayer stdin (keep open) */
+  private PrintStream mplayerInput;
+
   /*
    *
    * Kill abruptly the mplayer process (this way, killing is synchronous, and
@@ -67,7 +73,35 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     this.bStop = true;
     Log.debug("Stop");
     if (proc != null) {
-        proc.destroy();
+      proc.destroy();
+
+      // Wait briefly for graceful shutdown (2 seconds max)
+      if (!proc.waitFor(2, TimeUnit.SECONDS)) {
+        Log.warn("[STOP] Graceful destroy failed, forcing termination...");
+        proc.destroyForcibly();
+
+        // Wait for forcibly killed process (another 2 seconds)
+        if (proc.waitFor(2, TimeUnit.SECONDS)) {
+          Log.info("[STOP] Process terminated after destroyForcibly()");
+        } else if (UtilSystem.isUnderLinux() || UtilSystem.isUnderOSX()) {
+          Log.warn("[STOP] Process still alive after destroyForcibly()! Trying kill -9...");
+          // Last resort: kill by PID
+          try {
+            Runtime.getRuntime().exec(new String[]{"kill", "-9", String.valueOf(proc.pid())});
+            proc.waitFor();
+            Log.info("[STOP] Forced kill -9 successful");
+          } catch (Exception e) {
+            Log.warn("[STOP] Could not send kill -9 : " + e.getMessage());
+          }
+        }
+      } else {
+        Log.info("[STOP] Process terminated gracefully");
+      }
+    }
+    // Close the stream
+    if (mplayerInput != null) {
+      mplayerInput.close();
+      mplayerInput = null;
     }
   }
 
@@ -97,22 +131,28 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
    * Send a command to mplayer slave.
    */
   protected void sendCommand(String command) {
-    if (proc != null) {
-      PrintStream out = new PrintStream(proc.getOutputStream());
+    if (mplayerInput == null) {
+      Log.warn("MPlayer input stream is null, cannot send command: " + command);
+      return;
+    }
+
+    try {
       // Do not use println() : it doesn't work under windows
-      out.print(command + '\n');
-      out.flush();
+      mplayerInput.print(command + '\n');
+      mplayerInput.flush();
       // don't close out here otherwise the output stream of the Process
       // will be closed as well and subsequent sendCommand() calls will silently
       // fail!!
+    } catch (Exception e) {
+      Log.warn("Failed to send command '" + command.trim() + "' : " + e.getMessage());
     }
   }
 
   /*
-  * (non-Javadoc)
-  *
-  * @see org.jajuk.players.IPlayerImpl#getCurrentVolume()
-  */
+   * (non-Javadoc)
+   *
+   * @see org.jajuk.players.IPlayerImpl#getCurrentVolume()
+   */
   @Override
   public float getCurrentVolume() {
     return fVolume;
@@ -121,9 +161,8 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   /**
    * Build the mplayer command line.
    *
-   * @param url the url to play
+   * @param url              the url to play
    * @param startPositionSec the position in the track when starting in secs (0 means we plat from the begining)
-   *
    * @return command line as a String array
    */
   List<String> buildCommand(String url, int startPositionSec) {
@@ -180,9 +219,7 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
     // If it is a playlist, add the -playlist option, must be the last option
     // because options after -playlist are ignored (see mplayer man page).
     // Moreover, we only use this option if we are about to play line-based stream like m3u or the playback will fail.
-    if (url.matches(".*://.*")
-        && (url.toLowerCase().endsWith(".m3u") || url.toLowerCase().endsWith(".asx") || url
-            .toLowerCase().endsWith(".pls"))) {
+    if (url.matches(".*://.*") && (url.toLowerCase().endsWith(".m3u") || url.toLowerCase().endsWith(".asx") || url.toLowerCase().endsWith(".pls"))) {
       cmd.add("-playlist");
     }
     cmd.add(url);
@@ -264,6 +301,15 @@ public abstract class AbstractMPlayerImpl implements IPlayerImpl, Const {
   @Override
   public int getState() {
     return -1;
+  }
+
+  /**
+   * Initialize MPlayer stdin stream. Called once after process start.
+   */
+  protected void initMPlayerInputStream() {
+    if (proc != null) {
+      mplayerInput = new PrintStream(proc.getOutputStream(), true, StandardCharsets.UTF_8);
+    }
   }
 
   /*

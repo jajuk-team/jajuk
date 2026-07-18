@@ -76,24 +76,6 @@ public class HttpClientService {
     return instance;
   }
 
-  public String getContent(String url) {
-    try {
-      // Le service gère automatiquement le proxy configuré via DownloadManager.setDefaultProxySettings()
-      // et renvoie directement le corps de la réponse en String.
-      String content = readUrl(url);
-
-      if (content == null) {
-        Log.warn("Unable to fetch content from '" + url + "': Null response or non-200 status.");
-      }
-
-      return content;
-    } catch (IOException e) {
-      // Gère les erreurs réseau, timeouts, etc.
-      Log.warn("Error fetching from '" + url + "' : " + e.getMessage());
-      return null;
-    }
-  }
-
   /**
    * Updates or sets the proxy configuration for all future requests.
    * Rebuilds the internal HttpClient with the new proxy settings.
@@ -403,6 +385,7 @@ public class HttpClientService {
    * @param urlString the URL to post to
    * @param postData  the POST body (URL-encoded)
    * @return HttpResponse with status, headers, and body, or null if disabled
+   *
    * @throws IOException if an I/O error occurs
    */
   public HttpResponse<String> executePostRequest(String urlString, String postData)

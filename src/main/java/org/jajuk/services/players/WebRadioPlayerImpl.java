@@ -33,10 +33,13 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.webradio.WebRadio;
+import org.jajuk.services.webradio.WebRadioUrlResolver;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
+import org.jajuk.util.Messages;
 import org.jajuk.util.UtilString;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.error.WebRadioUnavailableException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -52,6 +55,7 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
      */
     public ReaderThread() {
       super("WebRadio Reader Thread");
+      setDaemon(true);  // ← IMPORTANT: Daemon thread won't block JVM shutdown
     }
 
     /* (non-Javadoc)
@@ -59,31 +63,30 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
      */
     @Override
     public void run() {
+      Log.debug("[READER] Thread started");
+      BufferedReader in = null;
       try {
-        BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-        for (;;) {
-          String line = in.readLine();
+        if (proc == null) {
+          Log.warn("[READER] Process is null, cannot read");
+          return;
+        }
+        in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+        while (!bStop) {  // ← CHECK bStop ON EVERY LOOP!
+          String line;
+          try {
+            line = in.readLine();
+          } catch (IOException e) {
+            Log.debug("[READER] Stream closed or interrupted");
+            break;  // ← Exit loop on error
+          }
           if (line == null) {
+            Log.debug("[READER] EOF reached");
             break;
           }
           if (line.startsWith(("ICY Info:"))) {
             //Send an event that web radio info has been updated
             Properties pDetails = new Properties();
-            final String radioTrackDetail;
-            // Some stations doesn't include the StreamUrl in the ICY line. Sample :
-            //ICY Info: StreamTitle='-- Now On Air: URB Non-Stop :: Playing: xxx Cilmi - Sweet About Me :: Email the station xxx@yyy.uk --';
-            if (line.contains("';StreamUrl")) {
-              radioTrackDetail = line.substring(line.indexOf("StreamTitle='") + 13,
-                  line.indexOf("';StreamUrl"));
-              // Otherwise, the line should ends with ','
-            } else if (line.endsWith("';")) {
-              radioTrackDetail = line.substring(line.indexOf("StreamTitle='") + 13,
-                  line.length() - 2);
-            } else {
-              // Just in case, we also handle the case where the line doesn't ends with ';
-              radioTrackDetail = line.substring(line.indexOf("StreamTitle='") + 13,
-                  line.length() - 2);
-            }
+            final String radioTrackDetail = getRadioTrackDetail(line);
             String currentRadioTrack = QueueModel.getCurrentRadio().getName();
             if (StringUtils.isNotEmpty(radioTrackDetail)) {
               currentRadioTrack += ":: " + radioTrackDetail;
@@ -92,27 +95,67 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
             pDetails.put(Const.CURRENT_RADIO_TRACK, currentRadioTrack);
             ObservationManager.notify(new JajukEvent(JajukEvents.WEBRADIO_INFO_UPDATED, pDetails));
           }
-          bOpening = false;
+
+          // Set bOpening only ONCE, not on every line
+          if (bOpening) {
+            bOpening = false;
+            Log.debug("[READER] Stream opened");
+          }
+
           // Search for Exiting (...) pattern
           if (line.matches(".*\\x2e\\x2e\\x2e.*\\(.*\\).*")) {
             bEOF = true;
           }
         }
+        Log.debug("[READER] Loop ended, bStop=" + bStop + ", bEOF=" + bEOF);
+
         // can reach this point at the end of file
-        in.close();
-        bEOF = true;
+        //in.close();
+        //bEOF = true;
       } catch (Exception e) {
         Log.error(e);
+      } finally {
+        // Close the stream
+        if (in != null) {
+          try {
+            in.close();
+          } catch (IOException e) {
+            Log.debug("[READER] Error closing reader", e);
+          }
+        }
+        if (!bEOF) {
+          bEOF = true;
+          Log.debug("[READER] Setting bEOF=true in finally");
+        }
+        Log.debug("[READER] Thread terminated");
       }
+    }
+
+    private static String getRadioTrackDetail(String line) {
+      final String radioTrackDetail;
+      // Some stations doesn't include the StreamUrl in the ICY line. Sample :
+      //ICY Info: StreamTitle='-- Now On Air: URB Non-Stop :: Playing: xxx Cilmi - Sweet About Me :: Email the station xxx@yyy.uk --';
+      if (line.contains("';StreamUrl")) {
+        radioTrackDetail = line.substring(line.indexOf("StreamTitle='") + 13,
+                line.indexOf("';StreamUrl"));
+        // Otherwise, the line should ends with ','
+      } else if (line.endsWith("';")) {
+        radioTrackDetail = line.substring(line.indexOf("StreamTitle='") + 13,
+                line.length() - 2);
+      } else {
+        // Just in case, we also handle the case where the line doesn't ends with ';
+        radioTrackDetail = line.substring(line.indexOf("StreamTitle='") + 13,
+                line.length() - 2);
+      }
+      return radioTrackDetail;
     }
   }
 
   /**
    * (non-Javadoc).
    *
-   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws IOException    Signals that an I/O exception has occurred.
    * @throws JajukException the jajuk exception
-   *
    * @see org.jajuk.services.players.IPlayerImpl#play(org.jajuk.base.File, float, long,
    * float)
    */
@@ -122,8 +165,21 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
     this.bOpening = true;
     this.bEOF = false;
     this.bitPerfect = Conf.getBoolean(Const.CONF_BIT_PERFECT);
+
+    // RESOLVE RADIO URL - HANDLE REDIRECTS AND PLAYLISTS
+    String originalUrl = radio.getUrl();
+    String resolvedUrl;
+    try {
+      resolvedUrl = WebRadioUrlResolver.resolveUrl(originalUrl);
+    } catch (WebRadioUnavailableException e) {
+      Messages.showErrorMessage(136, e.getMessage());
+      return;
+    }
+    Log.info("[WEBRADIO] Original URL: " + originalUrl);
+    Log.info("[WEBRADIO] Resolved URL: " + resolvedUrl);
+
     // Start
-    ProcessBuilder pb = new ProcessBuilder(buildCommand(radio.getUrl(), 0));
+    ProcessBuilder pb = new ProcessBuilder(buildCommand(resolvedUrl, 0));
     Log.debug("Using this Mplayer command: {{" + pb.command() + "}}");
     // Set all environment variables format: var1=xxx var2=yyy
     try {
@@ -158,6 +214,22 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
     }
     // Start mplayer
     proc = pb.start();
+    // Verify process is alive
+    if (!proc.isAlive()) {
+      Log.warn("[WEBRADIO] Process died immediately after start!");
+      throw new JajukException(7, "MPlayer process died immediately");
+    }
+
+    // Initialize the persistent PrintStream IMMEDIATELY after process start
+    initMPlayerInputStream();
+    // Delay before starting threads to ensure stream is ready
+    try {
+      Thread.sleep(50);  // Time to let Java 17+ stabilize buffers
+    } catch (InterruptedException e) {
+      Log.warn("Interrupted during stream initialization delay : " + e.getMessage());
+      Thread.currentThread().interrupt();
+    }
+
     // start mplayer replies reader thread
     new ReaderThread().start();
     // if opening, wait, 30 secs max
@@ -190,8 +262,8 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
   }
 
   /* (non-Javadoc)
-  * @see org.jajuk.services.players.IPlayerImpl#getActuallyPlayedTimeMillis()
-  */
+   * @see org.jajuk.services.players.IPlayerImpl#getActuallyPlayedTimeMillis()
+   */
   @Override
   public long getActuallyPlayedTimeMillis() {
     // makes no sense for webradios

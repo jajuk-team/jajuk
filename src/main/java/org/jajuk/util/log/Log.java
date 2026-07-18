@@ -288,6 +288,21 @@ public final class Log {
 
   /**
    * Log an error-level message.
+   *
+   * @param s message
+   */
+  public static synchronized void error(String s) {
+    // Just display the message if Log is not yet enabled
+    if (logger == null) {
+      System.out.println("[ERROR] " + s);
+      return;
+    }
+    spool("<font color='red'>[ERROR] " + s + FONT_END);
+    logger.log(FULL_QUALIFIED_CLASS_NAME, Level.DEBUG, s, null);
+  }
+
+  /**
+   * Log an error-level message.
    * 
    * @param sInfosup 
    * @param je 
