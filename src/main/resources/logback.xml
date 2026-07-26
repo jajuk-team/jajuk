@@ -42,6 +42,9 @@
     <!-- Silence Apache Commons HttpClient (was FATAL in log4j) -->
     <logger name="org.apache.commons.httpclient" level="OFF" additivity="false"/>
 
+    <!-- DBus log level -->
+    <logger name="org.freedesktop.dbus" level="INFO" additivity="true"/>
+
     <!-- Detailed logging for Jajuk's own logging utility -->
     <logger name="org.jajuk.util.log.Log" level="DEBUG" additivity="false">
         <appender-ref ref="CONSOLE"/>

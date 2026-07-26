@@ -32,7 +32,6 @@ import org.jajuk.services.core.RatingService;
 import org.jajuk.services.core.SessionService;
 import org.jajuk.services.dbus.DBusManager;
 import org.jajuk.services.lastfm.LastFmManager;
-import org.jajuk.services.mpris.MprisService2;
 import org.jajuk.services.players.QueueController;
 import org.jajuk.ui.thumbnails.ThumbnailManager;
 import org.jajuk.ui.wizard.FirstTimeWizard;
@@ -80,28 +79,13 @@ public final class StartupAsyncService {
           for (int size = 50; size <= 300; size += 50) {
             ThumbnailManager.populateCache(size);
           }
-          // try to start up D-Bus support if available. Currently this is only
-          // implemented on Linux
+          // try to start up D-Bus support if available. Currently this is only implemented on Linux
           if (UtilSystem.isUnderLinux()) {
             try {
-              DBusManager.connect2();
+              DBusManager.connect();
             } catch (Exception e) {
-              // Make sure to catch this error properly, otherwise the rest of the initialization is
-              // not done
+              // Make sure to catch this error properly, otherwise the rest of the initialization is not done
               Log.error(e);
-            }
-            try {
-              /*
-              MprisService2 mpris = new MprisService2("jajuk");
-              mpris.init();
-              Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                mpris.shutdown();
-              }));
-              Log.info("MPRIS service registered");
-              */
-            } catch (Exception e) {
-              Log.error("Failed to initialize MPRIS: " + e.getMessage(), e);
-              Log.info("Continuing without MPRIS support");
             }
           }
           // Wait few secs to avoid GUI startup perturbations

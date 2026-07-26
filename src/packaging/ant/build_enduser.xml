@@ -20,7 +20,7 @@
 
     <target name='compile' depends="clean">
         <echo message='Compile the code'/>
-        <javac destdir='${dist.dir}' source='8' target='8' includeantruntime="false" deprecation='false' debug='true' debuglevel="lines,vars,source"
+        <javac destdir='${dist.dir}' source='17' target='17' includeantruntime="false" deprecation='false' debug='true' debuglevel="lines,vars,source"
                encoding='UTF-8'>
             <src>
                 <pathelement path='src/main'>
@@ -30,13 +30,16 @@
                 <fileset dir='lib'>
                     <include name='*.jar'/>
                 </fileset>
+                <fileset dir='lib/build'>
+                    <include name='*.jar'/>
+                </fileset>
             </classpath>
         </javac>
     </target>
 
     <target name='compile_all' depends="clean">
         <echo message='Compile the code and the tests'/>
-        <javac destdir='${dist.dir}' source='8' target='8' includeantruntime="false" deprecation='false' debug='true' debuglevel="lines,vars,source"
+        <javac destdir='${dist.dir}' source='17' target='17' includeantruntime="false" deprecation='false' debug='true' debuglevel="lines,vars,source"
                encoding='UTF-8'>
             <src>
                 <pathelement path='src'>
@@ -44,6 +47,9 @@
             </src>
             <classpath>
                 <fileset dir='lib'>
+                    <include name='*.jar'/>
+                </fileset>
+                <fileset dir='lib/build'>
                     <include name='*.jar'/>
                 </fileset>
             </classpath>
@@ -83,6 +89,9 @@
             </batchtest>
             <classpath>
                 <fileset dir='lib'>
+                    <include name='*.jar'/>
+                </fileset>
+                <fileset dir='lib/build'>
                     <include name='*.jar'/>
                 </fileset>
                 <pathelement location="bin"/>

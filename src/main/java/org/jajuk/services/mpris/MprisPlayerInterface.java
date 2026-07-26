@@ -18,26 +18,31 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
-package org.jajuk.services.dbus;
+package org.jajuk.services.mpris;
 
-import org.jajuk.JajukTestCase;
+import org.freedesktop.dbus.annotations.DBusInterfaceName;
+import org.freedesktop.dbus.interfaces.DBusInterface;
 
 /**
- * .
+ * D-Bus interface definition for MPRIS Player methods.
+ * This tells dbus-java which methods to expose remotely.
  */
-public class TestFileChangeSignal extends JajukTestCase {
-  @Override
-  protected void specificSetUp() throws Exception {
-  }
+@DBusInterfaceName("org.mpris.MediaPlayer2.Player")
+public interface MprisPlayerInterface extends DBusInterface {
 
-  /**
-  /**
-   * Test file changed signal.
-   *
-   * @throws Exception the exception
-   */
-  public final void testFileChangedSignal() throws Exception {
-    FileChangedSignal signal = new FileChangedSignal("/path/test/testfile");
-    assertEquals("/path/test/testfile", signal.getFilepath());
-  }
+  void Next();
+
+  void Previous();
+
+  void Pause();
+
+  void PlayPause();
+
+  void Stop();
+
+  void Play();
+
+  void Seek(long offset);
+
+  void SetPosition(String trackId, long position);
 }

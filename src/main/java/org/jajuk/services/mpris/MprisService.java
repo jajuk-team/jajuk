@@ -1,224 +1,566 @@
+/*
+ *  Jajuk
+ *  Copyright (C) The Jajuk Team
+ *  http://jajuk.info
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ */
 package org.jajuk.services.mpris;
 
-import org.freedesktop.dbus.annotations.DBusProperties;
 import org.freedesktop.dbus.connections.impl.DBusConnection;
+import org.freedesktop.dbus.exceptions.DBusException;
+import org.freedesktop.dbus.interfaces.Introspectable;
 import org.freedesktop.dbus.interfaces.Properties;
 import org.freedesktop.dbus.types.Variant;
-import org.freedesktop.dbus.exceptions.DBusException;
+import org.jajuk.base.File;
+import org.jajuk.base.Track;
+import org.jajuk.events.JajukEvent;
+import org.jajuk.events.JajukEvents;
+import org.jajuk.events.ObservationManager;
+import org.jajuk.events.Observer;
+import org.jajuk.services.players.Player;
+import org.jajuk.services.players.QueueModel;
+import org.jajuk.services.webradio.WebRadio;
+import org.jajuk.ui.actions.ActionManager;
+import org.jajuk.ui.actions.JajukActions;
+import org.jajuk.ui.helpers.JajukTimer;
 import org.jajuk.util.log.Log;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 
 /**
- * MPRIS 2.3 compliant media controller for Jajuk.
- * Implementation compatible with dbus-java 5.2.0 using @DBusExposed annotation.
+ * Implements MPRIS 2.3 specification for Linux desktop integration.
+ * Provides standardized D-Bus interface for media playback control.
  */
-public class MprisService implements Properties {
+public class MprisService implements Observer {
 
+  private final String busName;
+  private final String objectPath = "/org/mpris/MediaPlayer2";
   private final DBusConnection connection;
-  private static final String OBJECT_PATH = "/org/mpris/MediaPlayer2";
-  private static final String BUS_NAME = "org.mpris.MediaPlayer2.jajuk";
+  private final MprisCompliantObject mprisCompliantObject;
 
-  // State
-  private final Map<String, Object> metadata = new ConcurrentHashMap<>();
-  private volatile String playbackState = "Stopped";
-  private volatile String loopStatus = "None";
-  private volatile double volume = 1.0;
-  private volatile boolean shuffle = false;
+  // MPRIS MediaPlayer2 properties state
+  private boolean canQuit = true;
+  private boolean canRaise = false;  // Swing apps cannot raise
+  private boolean hasTrackList = false;
+  private String identity = "Jajuk Music Player";
+  private String desktopEntry = "jajuk";
+  private String[] supportedUriSchemes = {"file", "http"};
+  private String[] supportedMimeTypes = {"audio/mpeg", "audio/flac", "audio/ogg", "audio/wav"};
 
-  public MprisService(DBusConnection connection) throws DBusException {
+  // MPRIS Player properties state
+  private double volume = 0.5;
+  private double rate = 1.0;
+  private double minimumRate = 1;
+  private double maximumRate = 1;
+  private String loopStatus = "None";
+  private boolean shuffle = false;
+
+  public MprisService(String busName, DBusConnection connection) throws DBusException {
     this.connection = connection;
-    Log.info("Initializing MPRIS service...");
+    this.busName = busName;
 
-    resetMetadata();
+    // Request unique bus name (will fail if another instance runs)
+    connection.requestBusName(busName);
 
+    // Export ONLY ONE combined object
+    mprisCompliantObject = new MprisCompliantObject();
+    connection.exportObject(objectPath, mprisCompliantObject);
+
+    // Register as observer for player events
+    ObservationManager.register(this);
+  }
+
+  // =====================================================
+  // SINGLE COMBINED CLASS WITH ALL INTERFACES
+  // =====================================================
+  protected class MprisCompliantObject implements Introspectable, Properties, MprisPlayerInterface {
+
+    @Override
+    public String getObjectPath() {
+      return objectPath;
+    }
+
+    @Override
+    public String Introspect() {
+      return """
+              <?xml version="1.0" encoding="utf-8"?>
+              <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+               "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+              <node>
+                <interface name="org.freedesktop.DBus.Introspectable">
+                  <method name="Introspect">
+                    <arg direction="out" type="s"/>
+                  </method>
+                </interface>
+                <interface name="org.freedesktop.DBus.Peer">
+                  <method name="Ping"/>
+                  <method name="GetMachineId">
+                    <arg direction="out" type="s"/>
+                  </method>
+                </interface>
+                <interface name="org.freedesktop.DBus.Properties">
+                  <method name="Get">
+                    <arg direction="in" type="s"/>
+                    <arg direction="in" type="s"/>
+                    <arg direction="out" type="v"/>
+                  </method>
+                  <method name="Set">
+                    <arg direction="in" type="s"/>
+                    <arg direction="in" type="s"/>
+                    <arg direction="in" type="v"/>
+                  </method>
+                  <method name="GetAll">
+                    <arg direction="in" type="s"/>
+                    <arg direction="out" type="a{sv}"/>
+                  </method>
+                  <signal name="PropertiesChanged">
+                    <arg type="s"/>
+                    <arg type="a{sv}"/>
+                    <arg type="as"/>
+                  </signal>
+                </interface>
+                <interface name="org.mpris.MediaPlayer2">
+                  <method name="Raise"/>
+                  <method name="Quit"/>
+                  <property name="CanQuit" type="b" access="read"/>
+                  <property name="CanRaise" type="b" access="read"/>
+                  <property name="HasTrackList" type="b" access="read"/>
+                  <property name="Identity" type="s" access="read"/>
+                  <property name="DesktopEntry" type="s" access="read"/>
+                  <property name="SupportedUriSchemes" type="as" access="read"/>
+                  <property name="SupportedMimeTypes" type="as" access="read"/>
+                </interface>
+                <interface name="org.mpris.MediaPlayer2.Player">
+                  <method name="Next"/>
+                  <method name="Previous"/>
+                  <method name="Pause"/>
+                  <method name="PlayPause"/>
+                  <method name="Stop"/>
+                  <method name="Play"/>
+                  <method name="Seek"><arg direction="in" type="x"/></method>
+                  <method name="SetPosition"><arg direction="in" type="o"/><arg direction="in" type="x"/></method>
+                  <signal name="Seeked"><arg type="x"/></signal>
+                  <property name="PlaybackStatus" type="s" access="read"/>
+                  <property name="LoopStatus" type="s" access="readwrite"/>
+                  <property name="Shuffle" type="b" access="readwrite"/>
+                  <property name="Rate" type="d" access="readwrite"/>
+                  <property name="MinimumRate" type="d" access="read"/>
+                  <property name="MaximumRate" type="d" access="read"/>
+                  <property name="Volume" type="d" access="readwrite"/>
+                  <property name="Position" type="x" access="read"/>
+                  <property name="Metadata" type="a{sv}" access="read"/>
+                  <property name="CanGoNext" type="b" access="read"/>
+                  <property name="CanGoPrevious" type="b" access="read"/>
+                  <property name="CanPlay" type="b" access="read"/>
+                  <property name="CanPause" type="b" access="read"/>
+                  <property name="CanSeek" type="b" access="read"/>
+                  <property name="CanControl" type="b" access="read"/>
+                </interface>
+              </node>
+              """;
+    }
 
     // =====================================================
-    // EXPLOITATION DES SOURCES FOURNIES - EXPORT CORRECT
+    // Properties INTERFACE
     // =====================================================
-    try {
-      // ÉTAPE 1 : Obtenir le champ 'exportedObjects' de AbstractConnection (parent)
-      Field exportedObjectsField = connection.getClass()
-              .getSuperclass()  // AbstractConnection
-              .getDeclaredField("exportedObjects");
-      exportedObjectsField.setAccessible(true);
 
-      // ÉTAPE 2 : Récupérer la map d'objets exportés
-      @SuppressWarnings("unchecked")
-      Map<String, Object> exportedObjects =
-              (Map<String, Object>) exportedObjectsField.get(connection);
-
-      // ÉTAPE 3 : Créer l'objet ExportedObject wrapper
-      // Import depuis vos sources : org.freedesktop.dbus.messages.ExportedObject
-      Class<?> exportedObjectClass = Class.forName("org.freedesktop.dbus.messages.ExportedObject");
-      Object exported = exportedObjectClass.getDeclaredConstructor(
-              org.freedesktop.dbus.interfaces.DBusInterface.class
-      ).newInstance(this);
-
-      // ÉTAPE 4 : Ajouter à la map
-      exportedObjects.put(OBJECT_PATH, exported);
-
-      Log.info("MPRIS service registered at " + OBJECT_PATH);
-
-    } catch (Exception e) {
-      Log.error("Failed to export MPRIS service via reflection", e);
-      throw new DBusException("Export failed: " + e.getMessage(), e);
+    @Override
+    @SuppressWarnings("unchecked")
+    public <A> A Get(String _interfaceName, String _propertyName) {
+      try {
+        if ("org.mpris.MediaPlayer2".equals(_interfaceName)) {
+          return (A) getMediaPlayer2Property(_propertyName);
+        } else if ("org.mpris.MediaPlayer2.Player".equals(_interfaceName)) {
+          return (A) getPlayerProperty(_propertyName);
+        } else {
+          throw new RuntimeException("Unknown interface: " + _interfaceName);
+        }
+      } catch (Exception e) {
+        Log.error("Error in Get(): " + e.getMessage());
+        throw new RuntimeException(e);
+      }
     }
 
-    Log.info("MPRIS service exported at " + OBJECT_PATH);
-  }
+    @Override
+    public <A> void Set(String _interfaceName, String _propertyName, A _value) {
+      try {
+        if (!"org.mpris.MediaPlayer2.Player".equals(_interfaceName)) {
+          throw new RuntimeException("Cannot set properties on " + _interfaceName);
+        }
 
-  private void resetMetadata() {
-    metadata.put("mpris:length", 0L);
-    metadata.put("xesam:title", "");
-    metadata.put("xesam:artist", new String[0]);
-  }
-
-  // ============================================
-  // DBusInterface Required Method
-  // ============================================
-
-  @Override
-  public String getObjectPath() {
-    return OBJECT_PATH;
-  }
-
-  // ============================================
-  // Properties Interface - SIGNATURES EXACTES
-  // ============================================
-
-  @Override
-  public Map<String, Variant<?>> GetAll(String interfaceName) {
-    if (interfaceName == null || !interfaceName.contains("org.mpris")) {
-      return new HashMap<>();
-    }
-
-    Map<String, Variant<?>> props = new HashMap<>();
-
-    if ("org.mpris.MediaPlayer2".equals(interfaceName)) {
-      props.put("CanQuit", new Variant<>(true));
-      props.put("CanRaise", new Variant<>(true));
-      props.put("HasTrackList", new Variant<>(false));
-      props.put("Identity", new Variant<>("Jajuk Music Player"));
-      props.put("DesktopEntry", new Variant<>("jajuk"));
-    }
-
-    if ("org.mpris.MediaPlayer2.Player".equals(interfaceName)) {
-      props.put("PlaybackStatus", new Variant<>(playbackState));
-      props.put("LoopStatus", new Variant<>(loopStatus));
-      props.put("Shuffle", new Variant<>(shuffle));
-      props.put("Volume", new Variant<>(volume));
-      props.put("Position", new Variant<>(0L));
-      props.put("Metadata", new Variant<>(metadata));
-      props.put("CanControl", new Variant<>(true));
-      props.put("CanPlay", new Variant<>(true));
-      props.put("CanPause", new Variant<>(true));
-      props.put("CanGoNext", new Variant<>(true));
-      props.put("CanGoPrevious", new Variant<>(true));
-      props.put("CanSeek", new Variant<>(false));
-    }
-
-    return props;
-  }
-
-  @Override
-  public <A> A Get(String _interfaceName, String _propertyName) {
-    Map<String, Variant<?>> all = GetAll(_interfaceName);
-    Variant<?> variant = all.get(_propertyName);
-    if (variant == null) {
-      return null;
-    }
-    return (A) variant.getValue();
-  }
-
-  @Override
-  public <A> void Set(String _interfaceName, String _propertyName, A _value) {
-    Log.info("Property set: " + _propertyName + " = " + _value);
-
-    if ("org.mpris.MediaPlayer2.Player".equals(_interfaceName)) {
-      switch (_propertyName) {
-        case "Volume":
-          volume = ((Number) _value).doubleValue();
-          updateVolume(volume);
-          break;
-        case "Shuffle":
+        if ("Volume".equals(_propertyName)) {
+          volume = Math.max(0.0, Math.min(1.0, (Double) _value));
+          syncVolumeToJajuk((float) volume);
+        } else if ("Shuffle".equals(_propertyName)) {
           shuffle = (Boolean) _value;
-          break;
-        case "LoopStatus":
+          syncShuffleToJajuk(shuffle);
+        } else if ("LoopStatus".equals(_propertyName)) {
           loopStatus = (String) _value;
-          break;
+          syncLoopToJajuk(loopStatus);
+        } else {
+          throw new RuntimeException("Cannot set property: " + _propertyName);
+        }
+      } catch (Exception e) {
+        Log.error("Error in Set(): " + e.getMessage());
+        throw new RuntimeException(e);
       }
     }
 
-    Log.debug("Property changed: " + _propertyName + " in " + _interfaceName);
-    // Note: Signal emission optionnel pour les fonctionnalités de base
-  }
+    @Override
+    public Map<String, Variant<?>> GetAll(String _interfaceName) {
+      Map<String, Variant<?>> props = new HashMap<>();
 
-  // ============================================
-  // MediaPlayer2 Interface Methods (@DBusExposed automatic)
-  // ============================================
+      try {
+        if ("org.mpris.MediaPlayer2".equals(_interfaceName)) {
+          props.put("CanQuit", new Variant<>(canQuit));
+          props.put("CanRaise", new Variant<>(canRaise));
+          props.put("HasTrackList", new Variant<>(hasTrackList));
+          props.put("Identity", new Variant<>(identity));
+          props.put("DesktopEntry", new Variant<>(desktopEntry));
+          props.put("SupportedUriSchemes", new Variant<>(supportedUriSchemes));
+          props.put("SupportedMimeTypes", new Variant<>(supportedMimeTypes));
+        } else if ("org.mpris.MediaPlayer2.Player".equals(_interfaceName)) {
+          props.put("PlaybackStatus", getPlayerPlaybackStatus());
+          props.put("Metadata", getPlayerMetadata());
+          props.put("Volume", getPlayerVolume());
+          props.put("Position", getPlayerPosition());
+          props.put("Rate", new Variant<>(rate));
+          props.put("Shuffle", new Variant<>(shuffle));
+          props.put("LoopStatus", new Variant<>(loopStatus));
+          props.put("MinimumRate", new Variant<>(minimumRate));
+          props.put("MaximumRate", new Variant<>(maximumRate));
+          props.put("CanGoNext", new Variant<>(true));
+          props.put("CanGoPrevious", new Variant<>(true));
+          props.put("CanPlay", new Variant<>(true));
+          props.put("CanPause", new Variant<>(true));
+          props.put("CanSeek", new Variant<>(false));
+          props.put("CanControl", new Variant<>(true));
+        } else {
+          throw new RuntimeException("Unknown interface: " + _interfaceName);
+        }
+      } catch (Exception e) {
+        Log.error("Error in GetAll(): " + e.getMessage());
+        throw new RuntimeException(e);
+      }
 
-  public void Quit() {
-    Log.info("Quit() called via MPRIS");
-  }
+      return props;
+    }
 
-  public void Raise() {
-    Log.info("Raise() called via MPRIS");
-  }
+    // =====================================================
+    // PROPERTY HELPERS - Returns Variant or primitive
+    // =====================================================
 
-  public void PlayPause() {
-    Log.info("PlayPause() called via MPRIS");
-    // TODO: Delegate to actual player
-    if ("Playing".equals(playbackState)) {
-      playbackState = "Paused";
-    } else {
-      playbackState = "Playing";
+    private Variant<?> getMediaPlayer2Property(String propertyName) {
+      return switch (propertyName) {
+        case "CanQuit" -> new Variant<>(canQuit);
+        case "CanRaise" -> new Variant<>(canRaise);
+        case "HasTrackList" -> new Variant<>(hasTrackList);
+        case "Identity" -> new Variant<>(identity);
+        case "DesktopEntry" -> new Variant<>(desktopEntry);
+        case "SupportedUriSchemes" -> new Variant<>(supportedUriSchemes);
+        case "SupportedMimeTypes" -> new Variant<>(supportedMimeTypes);
+        default -> throw new RuntimeException("Unknown property: " + propertyName);
+      };
+    }
+
+    private Variant<?> getPlayerProperty(String propertyName) {
+      return switch (propertyName) {
+        case "PlaybackStatus" -> getPlayerPlaybackStatus();
+        case "Metadata" -> getPlayerMetadata();
+        case "Volume" -> getPlayerVolume();
+        case "Position" -> getPlayerPosition();
+        case "Rate" -> new Variant<>(rate);
+        case "Shuffle" -> new Variant<>(shuffle);
+        case "LoopStatus" -> new Variant<>(loopStatus);
+        case "MinimumRate" -> new Variant<>(minimumRate);
+        case "MaximumRate" -> new Variant<>(maximumRate);
+        case "CanGoNext",
+             "CanGoPrevious",
+             "CanPlay",
+             "CanPause",
+             "CanControl" -> new Variant<>(true);
+        case "CanSeek" -> new Variant<>(false);
+        default -> throw new RuntimeException("Unknown property: " + propertyName);
+      };
+    }
+
+    // =====================================================
+    // CONTROL METHODS - Both Interfaces
+    // =====================================================
+
+    // MediaPlayer2 methods
+    public void Quit() {
+      Log.info("MPRIS Quit requested");
+      invokeAction(JajukActions.EXIT);
+    }
+
+    public void Raise() {
+      Log.info("MPRIS Raise requested");
+      // Bring window to front
+    }
+
+    // Player methods
+    public void Next() {
+      invokeAction(JajukActions.NEXT_TRACK);
+      emitPlaybackStatusChanged();
+    }
+
+    public void Previous() {
+      invokeAction(JajukActions.PREVIOUS_TRACK);
+      emitPlaybackStatusChanged();
+    }
+
+    public void Pause() {
+      invokeAction(JajukActions.PAUSE_RESUME_TRACK);
+      emitPlaybackStatusChanged();
+    }
+
+    public void PlayPause() {
+      invokeAction(JajukActions.PAUSE_RESUME_TRACK);
+      emitPlaybackStatusChanged();
+    }
+
+    public void Stop() {
+      invokeAction(JajukActions.STOP_TRACK);
+      emitPlaybackStatusChanged();
+    }
+
+    public void Play() {
+      if (QueueModel.isStopped()) {
+        invokeAction(JajukActions.PAUSE_RESUME_TRACK);
+      }
+      emitPlaybackStatusChanged();
+    }
+
+    public void Seek(long offset) {
+      Log.info("MPRIS Seek Not Implemented");
+    }
+
+    public void SetPosition(String trackId, long position) {
+      Log.info("MPRIS SetPosition Not Implemented");
+    }
+
+    // =====================================================
+    // STATE ACCESSORS
+    // =====================================================
+
+    private Variant<String> getPlayerPlaybackStatus() {
+      return new Variant<>(
+              QueueModel.isStopped() ? "Stopped" :
+                      QueueModel.isPlayingTrack() ? "Playing" : "Paused"
+      );
+    }
+
+    private Variant<Double> getPlayerVolume() {
+      try {
+        float vol = Player.getCurrentVolume() / 100.0f;
+        volume = vol;
+        return new Variant<>((double) vol);
+      } catch (Exception e) {
+        return new Variant<>(volume);
+      }
+    }
+
+    private Variant<Long> getPlayerPosition() {
+      try {
+        long seconds = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
+        return new Variant<>(seconds * 1000000L);
+      } catch (Exception e) {
+        return new Variant<>(0L);
+      }
+    }
+
+    // =====================================================
+    // SIGNALS & SYNCHRONIZATION
+    // =====================================================
+
+    private void syncVolumeToJajuk(float volume) {
+      Log.debug("Syncing volume: " + (volume * 100) + "%");
+      // Implement your volume control API
+      Player.setVolume(volume);
+    }
+
+    private void syncShuffleToJajuk(boolean shuffle) {
+      Log.debug("Syncing shuffle: " + shuffle);
+      invokeAction(JajukActions.SHUFFLE_GLOBAL);
+    }
+
+    private void syncLoopToJajuk(String loopStatus) {
+      Log.debug("Syncing loop: " + loopStatus);
+      // Sync with repeat mode
+    }
+
+    private void invokeAction(JajukActions action) {
+      try {
+        // Retrieve the action and guard against null (tests may mock static method
+        // to return null to verify graceful handling).
+        org.jajuk.ui.actions.JajukAction jajukAction = ActionManager.getAction(action);
+        if (jajukAction == null) {
+          Log.error("Action not found: " + action);
+          return;
+        }
+        jajukAction.perform(null);
+      } catch (Exception e) {
+        Log.error("Action failed: " + e.getMessage());
+      }
     }
   }
 
-  public void Play() {
-    Log.info("Play() called via MPRIS");
-    playbackState = "Playing";
+  // =====================================================
+  // OBSERVER
+  // =====================================================
+
+  @Override
+  public Set<JajukEvents> getRegistrationKeys() {
+    Set<JajukEvents> keys = new HashSet<>();
+    keys.add(JajukEvents.FILE_LAUNCHED);
+    keys.add(JajukEvents.TRACK_CHANGED);
+    keys.add(JajukEvents.VOLUME_CHANGED);
+    keys.add(JajukEvents.PLAYER_PAUSE);
+    keys.add(JajukEvents.PLAYER_RESUME);
+    keys.add(JajukEvents.PLAYER_STOP);
+    keys.add(JajukEvents.WEBRADIO_LAUNCHED);
+    return keys;
   }
 
-  public void Pause() {
-    Log.info("Pause() called via MPRIS");
-    playbackState = "Paused";
-  }
-
-  public void Stop() {
-    Log.info("Stop() called via MPRIS");
-    playbackState = "Stopped";
-  }
-
-  public void Next() {
-    Log.info("Next() called via MPRIS");
-  }
-
-  public void Previous() {
-    Log.info("Previous() called via MPRIS");
-  }
-
-  // ============================================
-  // Helper Methods
-  // ============================================
-
-  private void updateVolume(double newVolume) {
-    Log.info("Volume updated to: " + newVolume);
-  }
-
-  public void cleanup() {
+  /**
+   * Emit PropertiesChanged signal when playback status changes.
+   */
+  protected void emitPlaybackStatusChanged() {
     try {
-      if (connection != null && connection.isConnected()) {
-        connection.disconnect();
-        connection.close();
-      }
-      Log.info("MPRIS service cleaned up");
+      Map<String, Variant<?>> changed = new HashMap<>();
+      changed.put("PlaybackStatus", getPlayerPlaybackStatus());
+      List<String> removed = new ArrayList<>();
+      Properties.PropertiesChanged signal =
+              new Properties.PropertiesChanged(objectPath, "org.mpris.MediaPlayer2.Player", changed, removed);
+      connection.sendMessage(signal);
+      Log.debug("Emitted PropertiesChanged for PlaybackStatus");
     } catch (Exception e) {
-      Log.error("Error during cleanup", e);
+      Log.error("Failed to emit signal: " + e.getMessage());
     }
   }
+
+  /**
+   * Emit PropertiesChanged signal when metadata changes.
+   */
+  protected void emitMetadataChanged() {
+    try {
+      Map<String, Variant<?>> changed = new HashMap<>();
+      changed.put("Metadata", getPlayerMetadata());
+      List<String> removed = new ArrayList<>();
+      Properties.PropertiesChanged signal =
+              new Properties.PropertiesChanged(objectPath, "org.mpris.MediaPlayer2.Player", changed, removed);
+      connection.sendMessage(signal);
+      Log.debug("Emitted PropertiesChanged for Metadata");
+    } catch (DBusException e) {
+      Log.error("Failed to emit metadata signal: " + e.getMessage());
+    }
+  }
+
+  // =====================================================
+  // HELPER METHODS (Moved to outer class for accessibility)
+  // =====================================================
+
+  protected Variant<String> getPlayerPlaybackStatus() {
+    return new Variant<>(
+            QueueModel.isStopped() ? "Stopped" :
+                    QueueModel.isPlayingTrack() ? "Playing" : "Paused"
+    );
+  }
+
+  protected Variant<Map<String, Variant<?>>> getPlayerMetadata() {
+    if (QueueModel.isPlayingTrack()) {
+      File currentFile = QueueModel.getPlayingFile();
+      if (currentFile != null) {
+        return new Variant<>(buildMetadataVariantMap(currentFile), "a{sv}");
+      }
+    } else if (QueueModel.isPlayingRadio()) {
+      return new Variant<>(buildMetadataVariantMapWebRadio(), "a{sv}");
+    }
+    return new Variant<>(new HashMap<>(), "a{sv}");
+  }
+
+  protected Map<String, Variant<?>> buildMetadataVariantMap(File file) {
+    Track track = file.getTrack();
+    Map<String, Variant<?>> metadata = new HashMap<>();
+
+    metadata.put("mpris:trackid", new Variant<>(objectPath + "/track/" + track.getID()));
+    metadata.put("mpris:length", new Variant<>(track.getDuration() * 1000000L));
+    metadata.put("xesam:title", new Variant<>(track.getName()));
+
+    if (track.getArtist() != null && !track.getArtist().seemsUnknown()) {
+      metadata.put("xesam:artist", new Variant<>(new String[]{track.getArtist().getName()}));
+    }
+
+    if (track.getAlbum() != null && !track.getAlbum().seemsUnknown()) {
+      metadata.put("xesam:album", new Variant<>(track.getAlbum().getName()));
+    }
+
+    // Get album cover art URL for MPRIS notification display
+    if (track.getAlbum() != null) {
+      java.io.File cover = track.getAlbum().findCover();
+      if (cover != null) {
+        try {
+          String artUrl = cover.toURI().toURL().toString();
+          metadata.put("mpris:artUrl", new Variant<>(artUrl));
+        } catch (java.net.MalformedURLException e) {
+          Log.warn("Cannot build artUrl for cover: " + cover, e);
+        }
+      }
+    }
+    return metadata;
+  }
+
+  protected Map<String, Variant<?>> buildMetadataVariantMapWebRadio() {
+    WebRadio webRadio = QueueModel.getCurrentRadio();
+    Map<String, Variant<?>> metadata = new HashMap<>();
+    // Empty information
+    metadata.put("mpris:trackid", new Variant<>(objectPath + "/track/" + 0));
+    // Empty information
+    metadata.put("mpris:length", new Variant<>(0));
+    // The name of the web radio
+    metadata.put("xesam:title", new Variant<>(webRadio.getName()));
+    // Use of the title of the web radio as artist, and genre as album for MPRIS metadata
+    metadata.put("xesam:artist", new Variant<>(new String[]{webRadio.getTitle()}));
+    metadata.put("xesam:album", new Variant<>(webRadio.getGenre()));
+    return metadata;
+  }
+
+  @Override
+  public void update(JajukEvent event) {
+    JajukEvents subject = event.getSubject();
+
+    if (subject.equals(JajukEvents.FILE_LAUNCHED) ||
+            subject.equals(JajukEvents.PLAYER_STOP) ||
+            subject.equals(JajukEvents.WEBRADIO_LAUNCHED)) {
+      emitMetadataChanged();
+    } else if (subject.equals(JajukEvents.PLAYER_PAUSE) ||
+            subject.equals(JajukEvents.PLAYER_RESUME)) {
+      emitPlaybackStatusChanged();
+    }
+  }
+
+  /**
+   * Expose the MprisCompliantObject for testing purposes.
+   *
+   * @return the MprisCompliantObject instance
+   */
+  protected MprisCompliantObject getMprisCompliantObject() {
+    return mprisCompliantObject;
+  }
+
 }

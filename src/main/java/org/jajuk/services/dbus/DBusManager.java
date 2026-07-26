@@ -24,10 +24,7 @@ import org.freedesktop.dbus.connections.impl.DBusConnection;
 import org.freedesktop.dbus.connections.impl.DBusConnectionBuilder;
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.jajuk.services.mpris.MprisService;
-import org.jajuk.services.mpris.MprisService2;
 import org.jajuk.util.log.Log;
-
-import java.io.IOException;
 
 /**
  * Base class to connect/disconnect to the session-wide DBus daemon.
@@ -37,43 +34,14 @@ public final class DBusManager {
 
   private static DBusConnection sessionConnection;
   private static DBusSupportImpl serviceImplementation;
+  private static MprisService mprisService;
 
-  //private static final String BUS_NAME = "org.jajuk.dbus.DBusSupport";
   private static final String BUS_NAME = "org.mpris.MediaPlayer2.jajuk";
-  private static MprisService2 mprisService;
 
   /**
    * Initialize D-Bus connection to the session bus.
    */
-  public static synchronized void connect() throws IOException, InterruptedException {
-    if (sessionConnection != null && sessionConnection.isConnected()) {
-      Log.info("D-Bus already connected");
-      return;
-    }
-
-    Log.info("Attempting to establish D-Bus session connection...");
-
-    // Build and get session connection using builder pattern
-    //
-    try (DBusConnection sessionConnection = DBusConnectionBuilder.forSessionBus().build()) {
-      // Request unique bus name
-      sessionConnection.requestBusName(BUS_NAME);
-
-      // Create service implementation instance
-      serviceImplementation = new DBusSupportImpl(sessionConnection);
-
-      // Export object - use registerRemoteObject instead of exportObject
-      //sessionConnection.registerRemoteObject( OBJECT_PATH,              DBusSupport.class,              serviceImplementation      );
-
-      Log.info("D-Bus support started successfully on Session Bus (" + BUS_NAME + ")");
-
-    } catch (DBusException e) {
-      Log.error("Failed to initialize D-Bus connection: " + e.getMessage(), e);
-      throw new IOException("DBCbus initialization failed", e);
-    }
-  }
-
-  public static synchronized void connect2() throws IOException, DBusException {
+  public static synchronized void connect() throws DBusException {
     try {
       Log.info("Attempting to establish D-Bus session connection...");
 
@@ -81,7 +49,7 @@ public final class DBusManager {
       sessionConnection = DBusConnectionBuilder.forSessionBus().build();
 
       // Export BOTH Media Player 2 interfaces at once
-      mprisService = new MprisService2("Jajuk", sessionConnection);
+      mprisService = new MprisService(BUS_NAME, sessionConnection);
 
       Log.info("D-Bus support started successfully on Session Bus (" + BUS_NAME + ")");
     } catch (Exception e) {
@@ -94,11 +62,6 @@ public final class DBusManager {
    * Disconnect cleanly from D-Bus.
    */
   public static synchronized void disconnect() {
-    if (mprisService != null) {
-      mprisService.cleanup();
-      mprisService = null;
-    }
-
     if (sessionConnection != null) {
       try {
         Log.info("Disconnecting from D-Bus...");
@@ -122,14 +85,17 @@ public final class DBusManager {
         sessionConnection = null;
       }
 
-    /*
-    if (serviceImplementation != null) {
-      serviceImplementation.cleanup();
-      serviceImplementation = null;
-    }
-    */
+      if (serviceImplementation != null) {
+        serviceImplementation.cleanup();
+        serviceImplementation = null;
+      }
+      mprisService = null;
       Log.info("D-Bus disconnected");
     }
+  }
+
+  public static MprisService getMprisService() {
+    return mprisService;
   }
 
 }
