@@ -101,21 +101,22 @@ public final class Player {
     try {
       // Choose the player
       Class<IPlayerImpl> cPlayer = file.getTrack().getType().getPlayerClass();
+
       // player 1 null ?
       if (playerImpl1 == null) {
-        playerImpl1 = cPlayer.newInstance();
+        playerImpl1 = cPlayer.getDeclaredConstructor().newInstance();
         playerImpl = playerImpl1;
       }
       // player 1 not null, test if it is fading
       else if (playerImpl1.getState() != Const.FADING_STATUS) {
         // stop it
         playerImpl1.stop();
-        playerImpl1 = cPlayer.newInstance();
+        playerImpl1 = cPlayer.getDeclaredConstructor().newInstance();
         playerImpl = playerImpl1;
       }
       // player 1 fading, test player 2
       else if (playerImpl2 == null) {
-        playerImpl2 = cPlayer.newInstance();
+        playerImpl2 = cPlayer.getDeclaredConstructor().newInstance();
         playerImpl = playerImpl2;
       }
       // if here, the only normal case is player 1 is fading and
@@ -123,7 +124,7 @@ public final class Player {
       else {
         // stop it
         playerImpl2.stop();
-        playerImpl2 = cPlayer.newInstance();
+        playerImpl2 = cPlayer.getDeclaredConstructor().newInstance();
         playerImpl = playerImpl2;
       }
       bPlaying = true;
@@ -178,7 +179,7 @@ public final class Player {
           .getPlayerClass();
       // Stop all streams
       stop(true);
-      playerImpl1 = cPlayer.newInstance();
+      playerImpl1 = cPlayer.getDeclaredConstructor().newInstance();
       playerImpl = playerImpl1;
       bPlaying = true;
       bPaused = false;
