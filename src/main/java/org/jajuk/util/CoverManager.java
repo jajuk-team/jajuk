@@ -166,7 +166,7 @@ public final class CoverManager {
 
     try {
       Log.debug("Fetching from Wikimedia Commons: " + searchUrl);
-      String json = HttpClientService.getInstance().getContent(searchUrl);
+      String json = HttpClientService.getInstance().readUrl(searchUrl);
 
       if (json == null || json.isEmpty()) {
         return urls;
@@ -259,7 +259,7 @@ public final class CoverManager {
       query.append(URLEncoder.encode(artist, StandardCharsets.UTF_8));
     }
 
-    String jsonResponse = HttpClientService.getInstance().getContent(query.toString());
+    String jsonResponse = HttpClientService.getInstance().readUrl(query.toString());
     if (jsonResponse == null) {
       return urls;
     }
@@ -312,7 +312,7 @@ public final class CoverManager {
 
     try {
       Log.debug("Fetching from Wikimedia Commons: " + searchUrl);
-      String json = HttpClientService.getInstance().getContent(searchUrl);
+      String json = HttpClientService.getInstance().readUrl(searchUrl);
 
       if (json == null || json.isEmpty()) {
         return urls;
