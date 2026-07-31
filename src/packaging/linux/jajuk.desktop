@@ -8,3 +8,4 @@ Type=Application
 Categories=Audio;
 StartupNotify=true
 NoDisplay=false
+StartupWMClass=org-jajuk-Main
