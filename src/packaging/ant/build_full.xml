@@ -90,6 +90,10 @@
 		<echo message='Create all packages, source archive in:  ${sources_dist.dir}' />
 	</target>
 
+	<target name='package_all_no_tests' depends='startup,build_sources_dist,build_jajuk,build_nsis,build_windows_portable,build_macos,tarball_linux'>
+		<echo message='Create all packages WITHOUT running tests' />
+	</target>
+
 	<target name='build_sources_dist' depends="clean">
 		<echo message='Prepare the source package' />
 		<copy todir='${sources_dist.dir}'>
@@ -123,14 +127,18 @@
 			<fileset file='src/main/java/org/jajuk/util/Const.java' />
 		</copy>
 
-		<!-- Copy the junit jar used for junit tests performed by the end users.
-        Also copy all jajuk dependencies (this copy must not use filtering)-->
+		<!-- Copy runtime dependencies to lib/ -->
 		<copy todir='${sources_dist.dir}/lib'>
 			<fileset dir="lib">
 				<include name="*.jar" />
 			</fileset>
+		</copy>
+
+		<!-- Copy build-time dependencies (junit ...) specifically to lib/build/ -->
+		<mkdir dir='${sources_dist.dir}/lib/build' />
+		<copy todir='${sources_dist.dir}/lib/build'>
 			<fileset dir="lib/build">
-				<include name="junit*.jar" />
+				<include name="*.jar" />
 			</fileset>
 		</copy>
 
@@ -273,6 +281,7 @@
 		<copy todir='${linux_tarball.dir}/lib'>
 			<fileset dir='lib/native' />
 			<fileset file='lib/*.jar' />
+			<fileset file='lib/linux/*.jar' />
 		</copy>
 		<copy todir='${linux_tarball.dir}'>
 			<fileset file='${packages.dir}/jajuk.jar' />
