@@ -32,17 +32,21 @@ public interface MprisPlayerInterface extends DBusInterface {
 
   void Next();
 
-  void Previous();
-
   void Pause();
+
+  void Play();
 
   void PlayPause();
 
-  void Stop();
+  void Previous();
 
-  void Play();
+  void Quit();
+
+  void Raise();
 
   void Seek(long offset);
 
   void SetPosition(String trackId, long position);
+
+  void Stop();
 }

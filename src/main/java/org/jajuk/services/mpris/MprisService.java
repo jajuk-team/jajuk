@@ -37,8 +37,10 @@ import org.jajuk.services.webradio.WebRadio;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukActions;
 import org.jajuk.ui.helpers.JajukTimer;
+import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.log.Log;
 
+import javax.swing.*;
 import java.util.*;
 
 /**
@@ -47,31 +49,29 @@ import java.util.*;
  */
 public class MprisService implements Observer {
 
-  private final String busName;
   private final String objectPath = "/org/mpris/MediaPlayer2";
   private final DBusConnection connection;
   private final MprisCompliantObject mprisCompliantObject;
 
   // MPRIS MediaPlayer2 properties state
-  private boolean canQuit = true;
-  private boolean canRaise = false;  // Swing apps cannot raise
-  private boolean hasTrackList = false;
-  private String identity = "Jajuk Music Player";
-  private String desktopEntry = "jajuk";
-  private String[] supportedUriSchemes = {"file", "http"};
-  private String[] supportedMimeTypes = {"audio/mpeg", "audio/flac", "audio/ogg", "audio/wav"};
+  private final boolean canQuit = true;
+  private final boolean canRaise = true;
+  private final boolean hasTrackList = false;
+  private final String identity = "Jajuk Music Player";
+  private final String desktopEntry = "jajuk";
+  private final String[] supportedUriSchemes = {"file", "http"};
+  private final String[] supportedMimeTypes = {"audio/mpeg", "audio/flac", "audio/ogg", "audio/wav"};
 
   // MPRIS Player properties state
   private double volume = 0.5;
-  private double rate = 1.0;
-  private double minimumRate = 1;
-  private double maximumRate = 1;
+  private final double rate = 1.0;
+  private final double minimumRate = 1;
+  private final double maximumRate = 1;
   private String loopStatus = "None";
   private boolean shuffle = false;
 
   public MprisService(String busName, DBusConnection connection) throws DBusException {
     this.connection = connection;
-    this.busName = busName;
 
     // Request unique bus name (will fail if another instance runs)
     connection.requestBusName(busName);
@@ -305,12 +305,47 @@ public class MprisService implements Observer {
     // MediaPlayer2 methods
     public void Quit() {
       Log.info("MPRIS Quit requested");
-      invokeAction(JajukActions.EXIT);
+      // Asynchronous call
+      SwingUtilities.invokeLater(() -> {
+        try {
+          Thread.sleep(100); // Delay to allow D-Bus anwser
+          Log.info("Closing Jajuk after MPRIS Quit...");
+          invokeAction(JajukActions.EXIT);
+        } catch (Exception e) {
+          Log.error("Error during quit: " + e.getMessage());
+        }
+      });
     }
 
     public void Raise() {
       Log.info("MPRIS Raise requested");
       // Bring window to front
+      SwingUtilities.invokeLater(() -> {
+        try {
+          // Obtenir la fenêtre principale de Jajuk
+          JFrame mainWindow = JajukMainWindow.getInstance();
+
+          if (mainWindow != null) {
+            // Rendre la fenêtre visible si elle ne l'est pas
+            mainWindow.setVisible(true);
+
+            // Déminimiser si nécessaire
+            if (mainWindow.getExtendedState() == JFrame.ICONIFIED) {
+              mainWindow.setExtendedState(JFrame.NORMAL);
+            }
+
+            // Demander le focus et mettre au premier plan
+            mainWindow.toFront();
+            mainWindow.requestFocusInWindow();
+
+            Log.debug("Jajuk window brought to front successfully");
+          } else {
+            Log.warn("Main window not found, cannot raise Jajuk");
+          }
+        } catch (Exception e) {
+          Log.error("Failed to raise Jajuk window: " + e.getMessage());
+        }
+      });
     }
 
     // Player methods
@@ -443,12 +478,13 @@ public class MprisService implements Observer {
   protected void emitPlaybackStatusChanged() {
     try {
       Map<String, Variant<?>> changed = new HashMap<>();
-      changed.put("PlaybackStatus", getPlayerPlaybackStatus());
+      Variant<String> playerPlaybackStatus = getPlayerPlaybackStatus();
+      changed.put("PlaybackStatus", playerPlaybackStatus);
       List<String> removed = new ArrayList<>();
       Properties.PropertiesChanged signal =
               new Properties.PropertiesChanged(objectPath, "org.mpris.MediaPlayer2.Player", changed, removed);
       connection.sendMessage(signal);
-      Log.debug("Emitted PropertiesChanged for PlaybackStatus");
+      Log.debug("Emitted PropertiesChanged for PlaybackStatus : " + playerPlaybackStatus.getValue());
     } catch (Exception e) {
       Log.error("Failed to emit signal: " + e.getMessage());
     }
@@ -478,7 +514,7 @@ public class MprisService implements Observer {
   protected Variant<String> getPlayerPlaybackStatus() {
     return new Variant<>(
             QueueModel.isStopped() ? "Stopped" :
-                    QueueModel.isPlayingTrack() ? "Playing" : "Paused"
+                    Player.isPaused() ? "Paused" : "Playing"
     );
   }
 
@@ -548,6 +584,7 @@ public class MprisService implements Observer {
             subject.equals(JajukEvents.PLAYER_STOP) ||
             subject.equals(JajukEvents.WEBRADIO_LAUNCHED)) {
       emitMetadataChanged();
+      emitPlaybackStatusChanged();
     } else if (subject.equals(JajukEvents.PLAYER_PAUSE) ||
             subject.equals(JajukEvents.PLAYER_RESUME)) {
       emitPlaybackStatusChanged();
