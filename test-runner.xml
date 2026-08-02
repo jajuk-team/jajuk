@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="test-runner" default="test-one" basedir=".">
+  <!-- Ant build file to run targeted JUnit5 tests quickly.
+       Usage: ant -f test-runner.xml -Dtest.class=org.jajuk.services.mpris.TestMprisService test-one
+  -->
+
+  <property name="test.class" value=""/>
+
+  <target name="test-one">
+    <fail unless="test.class" message="ERROR: test.class property not set. Usage: ant -f test-runner.xml -Dtest.class=org.package.TestClass test-one"/>
+
+    <echo message="Running test class: ${test.class}"/>
+    <echo message="============================================"/>
+
+    <!-- Use Maven Surefire / Gradle integration via Maven-style exec -->
+    <java jar="lib/build/junit-platform-console-standalone-1.8.2.jar" fork="true" failonerror="true">
+      <jvmarg value="-Dfile.encoding=UTF-8"/>
+      <arg value="--classpath"/>
+      <arg value="lib/*:lib/build/*:bin:src/main/resources"/>
+      <arg value="--select-class"/>
+      <arg value="${test.class}"/>
+    </java>
+  </target>
+</project>
+
+

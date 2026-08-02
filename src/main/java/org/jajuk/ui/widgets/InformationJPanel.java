@@ -35,6 +35,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.Album;
 import org.jajuk.base.File;
 import org.jajuk.events.JajukEvent;
@@ -324,10 +325,15 @@ public final class InformationJPanel extends JXPanel implements Observer {
             if (file != null) {
               String message = "";
               String pattern = Conf.getString(Const.CONF_PATTERN_INFORMATION);
-              try {
-                message = UtilString.applyPattern(file, pattern, false, false);
-              } catch (JajukException e) {
-                Log.error(e);
+              if (StringUtils.isBlank(pattern)) {
+                // This is to avoid no information in Title view
+                message = Messages.getString("InformationJPanel.8");
+              } else {
+                try {
+                  message = UtilString.applyPattern(file, pattern, false, false);
+                } catch (JajukException e) {
+                  Log.error(e);
+                }
               }
               setMessage(message, InformationJPanel.MessageType.INFORMATIVE);
             }

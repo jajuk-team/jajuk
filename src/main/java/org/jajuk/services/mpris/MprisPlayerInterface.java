@@ -16,37 +16,37 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
-package org.jajuk.services.dbus;
+package org.jajuk.services.mpris;
 
-import org.jajuk.JajukTestCase;
+import org.freedesktop.dbus.annotations.DBusInterfaceName;
+import org.freedesktop.dbus.interfaces.DBusInterface;
 
 /**
- * .
+ * D-Bus interface definition for MPRIS Player methods.
+ * This tells dbus-java which methods to expose remotely.
  */
-public class TestDBusSignalImpl extends JajukTestCase {
-  @Override
-  protected void specificSetUp() throws Exception {
-  }
+@DBusInterfaceName("org.mpris.MediaPlayer2.Player")
+public interface MprisPlayerInterface extends DBusInterface {
 
-  /**
-   * Test method for {@link org.jajuk.services.dbus.DBusSignalImpl#isRemote()}.
-   */
-  public final void testIsRemote() {
-    // currently false
-    assertFalse(new DBusSignalImpl().isRemote());
-  }
+  void Next();
 
-  /**
-   * Test file changed signal.
-   * 
-   *
-   * @throws Exception the exception
-   */
-  public final void testFileChangedSignal() throws Exception {
-    DBusSignalImpl.FileChangedSignal signal = new DBusSignalImpl.FileChangedSignal("testfile",
-        "/path/test");
-    assertEquals("testfile", signal.getFilename());
-  }
+  void Pause();
+
+  void Play();
+
+  void PlayPause();
+
+  void Previous();
+
+  void Quit();
+
+  void Raise();
+
+  void Seek(long offset);
+
+  void SetPosition(String trackId, long position);
+
+  void Stop();
 }

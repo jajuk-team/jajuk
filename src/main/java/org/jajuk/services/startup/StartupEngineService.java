@@ -129,7 +129,35 @@ public final class StartupEngineService {
     new Thread("Track Startup Thread") {
       @Override
       public void run() {
-        QueueModel.goTo(index);
+        try {
+          // Wait for EDT stabilization
+          Log.debug("Delaying track launch for 1000ms to allow EDT stabilization");
+          Thread.sleep(1000);  // 1000 ms delay
+
+          QueueModel.goTo(index);
+        } catch (Exception e) {
+          Log.error(e);
+        }
+      }
+    }.start();
+  }
+
+  /**
+   * Launch the startup webradio.
+   */
+  private static void launchRadio() {
+    new Thread("WebRadio Startup Thread") {
+      @Override
+      public void run() {
+        try {
+          // Wait for EDT stabilization
+          Log.debug("Delaying webradio launch for 1000ms to allow EDT stabilization");
+          Thread.sleep(1000);  // 1000 ms delay
+
+          QueueModel.launchRadio(radio);
+        } catch (Exception e) {
+          Log.error(e);
+        }
       }
     }.start();
   }
@@ -346,18 +374,6 @@ public final class StartupEngineService {
         index = 0;
       }
     }
-  }
-
-  /**
-   * Launch the startup webradio.
-   */
-  private static void launchRadio() {
-    new Thread("WebRadio launch thread") {
-      @Override
-      public void run() {
-        QueueModel.launchRadio(radio);
-      }
-    }.start();
   }
 
   /**

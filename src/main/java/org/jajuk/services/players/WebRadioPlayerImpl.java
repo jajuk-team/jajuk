@@ -240,6 +240,8 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
         i++;
       } catch (InterruptedException e) {
         Log.error(e);
+        // Stop the loop to avoid waiting 30s when interruption is called
+        break;
       }
     }
     // If end of file already reached, it means that file cannot be read

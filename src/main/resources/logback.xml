@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- ======================================== -->
+    <!-- Properties -->
+    <!-- ======================================== -->
+    <property name="LOG_PATH" value="${jajuk.log:-logs}"/>
+
+    <!-- ======================================== -->
+    <!-- Appenders -->
+    <!-- ======================================== -->
+
+    <!-- File Appender - Equivalent to RollingFileAppender -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/jajuk.log</file>
+        <append>true</append>
+
+        <!-- Rolling Policy: Size-based (5MB max, no backups like MaxBackupIndex=0) -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/jajuk-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>5MB</maxFileSize>
+            <maxHistory>7</maxHistory>
+            <totalSizeCap>50MB</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{yyyy/MM/dd HH:mm:ss} [%p] %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- Console Appender -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss} [%p] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ======================================== -->
+    <!-- Loggers / Categories -->
+    <!-- ======================================== -->
+
+    <!-- Silence Apache Commons HttpClient (was FATAL in log4j) -->
+    <logger name="org.apache.commons.httpclient" level="OFF" additivity="false"/>
+
+    <!-- DBus log level -->
+    <logger name="org.freedesktop.dbus" level="INFO" additivity="true"/>
+
+    <!-- Detailed logging for Jajuk's own logging utility -->
+    <logger name="org.jajuk.util.log.Log" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <!-- Root Logger - Default level (was WARN in log4j) -->
+    <root level="WARN">
+        <appender-ref ref="CONSOLE"/>
+        <!-- Uncomment if you want root logs also written to file -->
+        <!-- <appender-ref ref="FILE" /> -->
+    </root>
+
+    <!-- ======================================== -->
+    <!-- Optional: Debug Mode during migration -->
+    <!-- Set to true to see internal Logback diagnostics -->
+    <!-- ======================================== -->
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
+
+</configuration>
