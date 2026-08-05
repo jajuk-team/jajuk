@@ -166,7 +166,7 @@ public class ParameterViewGUIHelper implements ActionListener, ItemListener, Cha
     pv.jtfLastFmSessionKey.setText(Conf.getString(Const.CONF_LASTFM_SESSION_KEY));
     pv.jtfLastFmAPIKey.setText(Conf.getString(Const.CONF_LASTFM_API_KEY));
     pv.jtfLastFmAPISecret.setText(Conf.getString(Const.CONF_LASTFM_SECRET));
-    if (! Conf.getString(Const.CONF_LASTFM_SECRET).isBlank()) {
+    if (StringUtils.isNotBlank(Conf.getString(Const.CONF_LASTFM_SECRET))) {
       pv.jbLastFmAuthenticate.setEnabled(true);
     }
   }
