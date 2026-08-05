@@ -20,26 +20,22 @@
  */
 package org.jajuk.ui.wizard;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
-
-import org.jajuk.ui.widgets.JajukJDialog;
-import org.jajuk.util.Const;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukIcons;
-import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
-import org.jfree.ui.about.Licences;
-import org.jfree.ui.about.SystemPropertiesPanel;
-
 import net.miginfocom.swing.MigLayout;
+import org.jajuk.ui.widgets.JajukJDialog;
+import org.jajuk.util.*;
+import org.jajuk.util.log.Log;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Properties;
 
 /**
  * View used to show the Jajuk about and contributors.
@@ -52,7 +48,7 @@ public class AboutWindow extends JajukJDialog {
   /** License panel. */
   private JPanel jpLicence;
   /** JVM properties panel. */
-  private SystemPropertiesPanel spp;
+  private JPanel spp;
   /** Tabbed pane with previous panels. */
   private JTabbedPane jtp;
   /** Additional informations. */
@@ -76,6 +72,122 @@ public class AboutWindow extends JajukJDialog {
     });
   }
 
+  /**
+   * Creates the system properties panel manually (replacement for SystemPropertiesPanel).
+   *
+   * @return the panel with system properties table
+   */
+  private JPanel createSystemPropertiesPanel() {
+    JPanel panel = new JPanel(new BorderLayout());
+
+    // Collect system properties
+    Properties props = System.getProperties();
+    Object[] propNames = props.keySet().toArray();
+
+    // Sort property names alphabetically
+    Arrays.sort(propNames, (a, b) -> a.toString().compareTo(b.toString()));
+
+    // Create table model: Property Name | Value
+    DefaultTableModel model = new DefaultTableModel(
+            new String[] { Messages.getString("AboutView.1"), Messages.getString("AboutView.2") },
+            0
+    ) {
+      @Override
+      public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+    };
+
+    // Populate table
+    for (Object propNameObj : propNames) {
+      String propName = propNameObj.toString();
+      String propValue = props.getProperty(propName);
+
+      // Mask sensitive properties
+      if (propName.toLowerCase().contains("password") ||
+              propName.toLowerCase().contains("secret") ||
+              propName.toLowerCase().contains("key")) {
+        propValue = "***";
+      }
+
+      // Truncate very long values
+      if (propValue != null && propValue.length() > 500) {
+        propValue = propValue.substring(0, 497) + "...";
+      }
+
+      model.addRow(new Object[] { propName, propValue != null ? propValue : "" });
+    }
+
+    // Create table
+    JTable table = new JTable(model);
+    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    table.getColumnModel().getColumn(0).setPreferredWidth(300);
+    table.getColumnModel().getColumn(1).setPreferredWidth(350);
+    table.setRowHeight(24);
+
+    // Add horizontal scroll
+    table.getTableHeader().setReorderingAllowed(false);
+
+    JScrollPane scrollPane = new JScrollPane(table);
+    scrollPane.setBorder(null);
+
+    panel.add(scrollPane, BorderLayout.CENTER);
+
+    return panel;
+  }
+
+  /**
+   * Loads the GPL license text from resources.
+   * Tries multiple locations to ensure compatibility across different deployment modes.
+   *
+   * @return the license text or a fallback message
+   */
+  private String loadLicenseText() {
+    StringBuilder license = new StringBuilder();
+    String[] possibleLocations = {
+            "/src/legals/LICENSE-GPL.txt",           // During development
+            "/org/jajuk/legals/LICENSE-GPL.txt",     // After packaging
+            "/LICENSE-GPL.txt",                      // Root of JAR
+            "LICENSE-GPL.txt"                        // Fallback (filesystem)
+    };
+
+    // Try loading from ClassLoader resources first
+    for (String location : possibleLocations) {
+      try {
+        InputStream is = getClass().getResourceAsStream(location);
+        if (is != null) {
+          license.append(new String(is.readAllBytes(), StandardCharsets.UTF_8));
+          return license.toString();
+        }
+      } catch (IOException e) {
+        Log.debug("Could not load license from: " + location);
+        // Continue to next location
+      }
+    }
+
+    // Fallback: try filesystem path relative to workspace
+    try {
+      java.io.File licenseFile = new java.io.File("src/legals/LICENSE-GPL.txt");
+      if (licenseFile.exists()) {
+        license.append(Files.readString(Paths.get(licenseFile.toURI()), StandardCharsets.UTF_8));
+        return license.toString();
+      }
+    } catch (IOException e) {
+      Log.error("Could not load license from filesystem: " + e.getMessage());
+    }
+
+    // Last resort: display error message
+    return "GNU GENERAL PUBLIC LICENSE\n" +
+            "Version 2, June 1991\n\n" +
+            "Unable to load complete license text from resources.\n" +
+            "Please refer to http://www.gnu.org/licenses/gpl-2.0.html\n\n" +
+            "Jajuk is free software licensed under the GPL v2.\n" +
+            "You can redistribute it and/or modify it under the terms\n" +
+            "of the GNU General Public License as published by the\n" +
+            "Free Software Foundation; either version 2 of the License,\n" +
+            "or (at your option) any later version.";
+  }
+
   /*
    * (non-Javadoc)
    * 
@@ -88,7 +200,7 @@ public class AboutWindow extends JajukJDialog {
   public void initUI() {
     // license panel
     jpLicence = new JPanel(new BorderLayout());
-    JTextArea jta = new JTextArea(Licences.getInstance().getGPL());
+    JTextArea jta = new JTextArea(loadLicenseText());
     jta.setLineWrap(true);
     jta.setWrapStyleWord(true);
     jta.setCaretPosition(0);
@@ -101,7 +213,7 @@ public class AboutWindow extends JajukJDialog {
         + Const.JAJUK_VERSION_DATE), "wrap");
     jpAbout.add(new JLabel(Messages.getString("AboutView.11")), "center,wrap,grow");
     jpAbout.add(new JLabel(INFOS), "center,grow,wrap");
-    spp = new SystemPropertiesPanel();
+    spp = createSystemPropertiesPanel();
     jtp.addTab(Messages.getString("AboutView.7"), jpAbout);
     jtp.addTab(Messages.getString("AboutView.8"), jpLicence);
     jtp.addTab(Messages.getString("AboutView.9"), spp);
