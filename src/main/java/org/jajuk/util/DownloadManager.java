@@ -75,10 +75,12 @@ public final class DownloadManager {
 
   /** Downloads a resource with rate limiting and retry logic for 429 errors. */
   public static void download(URL url, File fDestination) throws IOException {
+    if (!HttpClientService.getInstance().isInternetAccessAllowed()) {
+      return;
+    }
     if (url == null || !isValidProtocol(url)) {
       throw new IOException("Invalid URL: " + (url != null ? url.toString() : "null"));
     }
-
     String urlString = url.toString();
     int attempt = 0;
     long retryDelay = INITIAL_RETRY_DELAY_MS;
@@ -254,6 +256,7 @@ public final class DownloadManager {
           try {
             Thread.sleep(retryDelay);
           } catch (InterruptedException ie) {
+            // Restore interrupt status and abort
             Thread.currentThread().interrupt();
             throw new IOException("Download interrupted during retry wait", ie);
           }
@@ -262,9 +265,10 @@ public final class DownloadManager {
           continue;
         }
         throw e;
+      } finally {
+        rateLimiter.release();
       }
     }
-
     throw new IOException("Download failed after retries for URL: " + url);
   }
 
