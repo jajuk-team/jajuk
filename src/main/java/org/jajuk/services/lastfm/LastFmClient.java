@@ -47,6 +47,7 @@ public class LastFmClient {
   public static final String INVALID_API_KEY_FOR_LAST_FM = "Invalid API key for Last.fm. Please check your configuration.";
 
   private final ObjectMapper mapper;
+  private boolean firstAccess = true;
 
   public LastFmClient() {
     this.mapper = new ObjectMapper();
@@ -57,8 +58,11 @@ public class LastFmClient {
     if (personalLastFmApiKey != null && !personalLastFmApiKey.isBlank()) {
       return personalLastFmApiKey;
     } else {
-      // Jajuk Key - DO NOT USE THIS KEY FOR OTHER APPLICATIONS THAN JAJUK!
-      Log.debug("Using default Jajuk API key for Last.fm. Please set your own API key in the configuration for better performance and to avoid hitting rate limits.");
+      if (firstAccess) {
+        // Jajuk Key - DO NOT USE THIS KEY FOR OTHER APPLICATIONS THAN JAJUK!
+        Log.debug("Using default Jajuk API key for Last.fm. Please set your own API key in the configuration for better performance and to avoid hitting rate limits.");
+        firstAccess = false;
+      }
       return API_KEY;
     }
   }
