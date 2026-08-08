@@ -34,6 +34,7 @@ import java.util.TreeSet;
 
 import javax.swing.JOptionPane;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.Album;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
@@ -134,10 +135,8 @@ public final class QueueModel {
    * index, i.e. remove all tracks before and after the current one that have
    * the same album.
    *
-   * @param index
-   *            The index from where to remove.
-   * @param album
-   *            The album to remove.
+   * @param index The index from where to remove.
+   * @param album The album to remove.
    */
   public static void resetAround(int index, Album album) {
     Set<Integer> indexesToRemove = new TreeSet<>();
@@ -159,8 +158,7 @@ public final class QueueModel {
   /**
    * Set given repeat mode to all in FIFO.
    *
-   * @param bRepeat
-   *            True, if repeat mode should be turned on, false otherwise.
+   * @param bRepeat True, if repeat mode should be turned on, false otherwise.
    */
   public static void setRepeatModeToAll(boolean bRepeat) {
     for (StackItem item : queue) {
@@ -172,10 +170,8 @@ public final class QueueModel {
    * Asynchronous version of push (needed to perform long-task out of awt
    * dispatcher thread).
    *
-   * @param alItems
-   *            The list of items to push.
-   * @param bKeepPrevious
-   *            keep previous files or stop them to start a new one ?
+   * @param alItems       The list of items to push.
+   * @param bKeepPrevious keep previous files or stop them to start a new one ?
    */
   public static void push(final List<StackItem> alItems, final boolean bKeepPrevious) {
     push(alItems, bKeepPrevious, false);
@@ -185,16 +181,13 @@ public final class QueueModel {
    * Asynchronous version of push (needed to perform long-task out of awt
    * dispatcher thread).
    *
-   * @param alItems
-   *            The list of items to push.
-   * @param bKeepPrevious
-   *            keep previous files or stop them to start a new one ?
-   * @param bPushNext
-   *            whether the selection is added after playing track (mutual
-   *            exclusive with simple push)
+   * @param alItems       The list of items to push.
+   * @param bKeepPrevious keep previous files or stop them to start a new one ?
+   * @param bPushNext     whether the selection is added after playing track (mutual
+   *                      exclusive with simple push)
    */
   public static void push(final List<StackItem> alItems, final boolean bKeepPrevious,
-      final boolean bPushNext) {
+                          final boolean bPushNext) {
     Thread t = new Thread("Queue Push Thread") { // do it in a thread to
       // make
       // UI more reactive
@@ -220,10 +213,8 @@ public final class QueueModel {
    * Asynchronous version of push (needed to perform long-task out of awt
    * dispatcher thread).
    *
-   * @param item
-   *            The item to push.
-   * @param bKeepPrevious
-   *            keep previous files or stop them to start a new one ?
+   * @param item          The item to push.
+   * @param bKeepPrevious keep previous files or stop them to start a new one ?
    */
   public static void push(final StackItem item, final boolean bKeepPrevious) {
     push(item, bKeepPrevious, false);
@@ -233,13 +224,10 @@ public final class QueueModel {
    * Asynchronous version of push (needed to perform long-task out of awt
    * dispatcher thread).
    *
-   * @param item
-   *            The item to push.
-   * @param bKeepPrevious
-   *            keep previous files or stop them to start a new one ?
-   * @param bPushNext
-   *            whether the selection is added after playing track (mutual
-   *            exclusive with simple push)
+   * @param item          The item to push.
+   * @param bKeepPrevious keep previous files or stop them to start a new one ?
+   * @param bPushNext     whether the selection is added after playing track (mutual
+   *                      exclusive with simple push)
    */
   public static void push(final StackItem item, final boolean bKeepPrevious, final boolean bPushNext) {
     Thread t = new Thread("Queue Push Thread") {
@@ -265,8 +253,7 @@ public final class QueueModel {
   /**
    * Launch a web radio.
    *
-   * @param radio
-   *            webradio to launch
+   * @param radio webradio to launch
    */
   public static void launchRadio(WebRadio radio) {
     try {
@@ -292,12 +279,12 @@ public final class QueueModel {
         ObservationManager.notify(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, pDetails));
         //If Webradio info had been updated for current station by WebRadioPlayerImpl then notify again with the updated info
         Properties webradioInfoUpdatedEvent = ObservationManager
-            .getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED);
+                .getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED);
         if (webradioInfoUpdatedEvent != null) {
           WebRadio updatedWebRadio = (WebRadio) webradioInfoUpdatedEvent.get(Const.DETAIL_CONTENT);
           if (radio.getName().equals(updatedWebRadio.getName())) {
             ObservationManager.notify(new JajukEvent(JajukEvents.WEBRADIO_INFO_UPDATED,
-                webradioInfoUpdatedEvent));
+                    webradioInfoUpdatedEvent));
           }
         }
         bStop = false;
@@ -313,13 +300,10 @@ public final class QueueModel {
   /**
    * Push some files in the fifo.
    *
-   * @param item
-   *            , item to be played
-   * @param bKeepPrevious
-   *            keep previous files or stop them to start a new one ?
-   * @param bPushNext
-   *            whether the selection is added after playing track (mutual
-   *            exclusive with simple push)
+   * @param item          item to be played
+   * @param bKeepPrevious keep previous files or stop them to start a new one ?
+   * @param bPushNext     whether the selection is added after playing track (mutual
+   *                      exclusive with simple push)
    */
   private static void pushCommand(StackItem item, boolean bKeepPrevious, final boolean bPushNext) {
     List<StackItem> alFiles = new ArrayList<>(1);
@@ -330,15 +314,12 @@ public final class QueueModel {
   /**
    * Push some stack items in the fifo.
    *
-   * @param alItems
-   *            , list of items to be played
-   * @param bKeepPrevious
-   *            keep previous files or stop them to start a new one ?
-   * @param bPushNext
-   *            whether the selection is added in first in queue
+   * @param alItems       , list of items to be played
+   * @param bKeepPrevious keep previous files or stop them to start a new one ?
+   * @param bPushNext     whether the selection is added in first in queue
    */
   private static void pushCommand(List<StackItem> alItems, boolean bKeepPrevious,
-      final boolean bPushNext) {
+                                  final boolean bPushNext) {
     try {
       // wake up FIFO if stopped
       bStop = false;
@@ -356,9 +337,9 @@ public final class QueueModel {
           if (!bNoMount) {
             // not mounted, ok let them a chance to mount it:
             final String sMessage = Messages.getString("Error.025") + " ("
-                + item.getFile().getDevice().getName() + Messages.getString("FIFO.4");
+                    + item.getFile().getDevice().getName() + Messages.getString("FIFO.4");
             int i = Messages.getChoice(sMessage, JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.INFORMATION_MESSAGE);
             if (i == JOptionPane.YES_OPTION) {
               try {
                 item.getFile().getDevice().mount(true);
@@ -445,9 +426,7 @@ public final class QueueModel {
   /**
    * Contains repeated item.
    *
-   * @param items
-   *            The items to check for repeat.
-   *
+   * @param items The items to check for repeat.
    * @return whether a stack item list contains a least one repeated item
    */
   private static boolean containsRepeatedItem(List<StackItem> items) {
@@ -481,8 +460,7 @@ public final class QueueModel {
    * should be finished (in case of intro mode, crass fade, previous/next
    * track ...).
    *
-   * @param forceNext
-   *            whether to play the next track, even in single repeat.
+   * @param forceNext whether to play the next track, even in single repeat.
    */
   public static void finished(boolean forceNext) {
     try {
@@ -542,7 +520,7 @@ public final class QueueModel {
 
   /**
    * Drop the repeat properties of single tracks in single repeat mode to make
-   *  sure already played tracks are no longer in repeat mode
+   * sure already played tracks are no longer in repeat mode
    */
   private static void unsetRepeatModeIfRequired(StackItem current) {
     if (Conf.getBoolean(Const.CONF_STATE_REPEAT) && current.isRepeat()) {
@@ -555,8 +533,8 @@ public final class QueueModel {
    */
   private static synchronized void computeNewIndex(boolean forceNext, StackItem current) {
     if (Conf.getBoolean(Const.CONF_STATE_SHUFFLE) && queue.size() > 1
-    // In repeat mode, shuffle has no effect
-        && !Conf.getBoolean(Const.CONF_STATE_REPEAT)) {
+            // In repeat mode, shuffle has no effect
+            && !Conf.getBoolean(Const.CONF_STATE_REPEAT)) {
       index = UtilSystem.getRandom().nextInt(queue.size() - 1);
     } else if (current.isRepeat()) {
       // if the track was in repeat mode, don't remove it from the
@@ -640,7 +618,7 @@ public final class QueueModel {
       // to another file. We think that it doesn't worth making things
       // more complicated.
       if (bFirstFile && !Conf.getBoolean(Const.CONF_STATE_INTRO)
-          && Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)) {
+              && Conf.getString(Const.CONF_STARTUP_MODE).equals(Const.STARTUP_MODE_LAST_KEEP_POS)) {
         // if it is the first played file of the session and we are in
         // startup mode keep position
         float fPos = UtilFeatures.readPersistedPlayingPosition();
@@ -650,8 +628,8 @@ public final class QueueModel {
         if (Conf.getBoolean(Const.CONF_STATE_INTRO)) {
           // intro mode enabled
           bPlayOK = Player.play(toPlay,
-              Float.parseFloat(Conf.getString(Const.CONF_OPTIONS_INTRO_BEGIN)) / 100,
-              1000 * Integer.parseInt(Conf.getString(Const.CONF_OPTIONS_INTRO_LENGTH)));
+                  Float.parseFloat(Conf.getString(Const.CONF_OPTIONS_INTRO_BEGIN)) / 100,
+                  1000 * Integer.parseInt(Conf.getString(Const.CONF_OPTIONS_INTRO_LENGTH)));
         } else {
           // normal mode
           bPlayOK = Player.play(toPlay, 0.0f, Const.TO_THE_END);
@@ -720,14 +698,13 @@ public final class QueueModel {
   /**
    * Computes planned tracks.
    *
-   * @param bClear
-   *            : clear planned tracks stack
+   * @param bClear : clear planned tracks stack
    */
   public static void computesPlanned(boolean bClear) {
     // Check if we are in continue mode and we have some tracks in FIFO, if
     // not : no planned tracks
     if (!Conf.getBoolean(Const.CONF_STATE_CONTINUE) || containsRepeat() || queue.size() == 0
-        || Conf.getBoolean(Const.CONF_STATE_SHUFFLE)) {
+            || Conf.getBoolean(Const.CONF_STATE_SHUFFLE)) {
       queue.clearPlanned();
       return;
     }
@@ -832,9 +809,9 @@ public final class QueueModel {
           // than current track, now check if it is the
           // FIRST track from this new directory
           if (FileManager.getInstance().isVeryfirstFile(file) ||
-          // this was the very first file from collection
-              (FileManager.getInstance().getPreviousFile(file) != null && FileManager.getInstance()
-                  .getPreviousFile(file).getDirectory() != file.getDirectory())) {
+                  // this was the very first file from collection
+                  (FileManager.getInstance().getPreviousFile(file) != null && FileManager.getInstance()
+                          .getPreviousFile(file).getDirectory() != file.getDirectory())) {
             // if true, it was the first track from the dir
             bOK = true;
           }
@@ -866,7 +843,7 @@ public final class QueueModel {
         File file = FileManager.getInstance().getShuffleFile();
         if (file != null) {
           pushCommand(new StackItem(file, Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), false),
-              false, false);
+                  false, false);
         }
       }
     } catch (Exception e) {
@@ -917,7 +894,7 @@ public final class QueueModel {
         Album album = fileNext.getTrack().getAlbum();
         List<File> files = UtilFeatures.getPlayableFiles(album);
         List<StackItem> stack = UtilFeatures.createStackItems(UtilFeatures.applyPlayOption(files),
-            Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true);
+                Conf.getBoolean(Const.CONF_STATE_REPEAT_ALL), true);
         // Find index to go to (first index with a file whose dir is
         // different
         // from current one)
@@ -960,10 +937,14 @@ public final class QueueModel {
     if (file != null) {
       String pattern = Conf.getString(Const.CONF_PATTERN_FRAME_TITLE);
       String title = null;
-      try {
-        title = UtilString.applyPattern(file, pattern, false, false);
-      } catch (JajukException e) {
-        Log.error(e);
+      if (StringUtils.isNotBlank(pattern)) {
+        try {
+          title = UtilString.applyPattern(file, pattern, false, false);
+        } catch (JajukException e) {
+          Log.error(e);
+        }
+      } else {
+        title = "Empty pattern, check property " + Const.CONF_PATTERN_FRAME_TITLE;
       }
       return title;
     }
@@ -986,9 +967,7 @@ public final class QueueModel {
   /**
    * Get an item at given index in FIFO.
    *
-   * @param index
-   *            : index
-   *
+   * @param index : index
    * @return stack item
    */
   public static StackItem getItem(int index) {
@@ -1016,9 +995,7 @@ public final class QueueModel {
    * Return true if none file is playing or planned to play for the given
    * device.
    *
-   * @param device
-   *            device to unmount
-   *
+   * @param device device to unmount
    * @return true, if can unmount
    */
   public static boolean canUnmount(Device device) {
@@ -1087,10 +1064,8 @@ public final class QueueModel {
   /**
    * Insert a file to play in FIFO at specified position.
    *
-   * @param item
-   *            the item to insert.
-   * @param iPos
-   *            The position where the item is inserted.
+   * @param item the item to insert.
+   * @param iPos The position where the item is inserted.
    */
   public static void insert(StackItem item, int iPos) {
     List<StackItem> alStack = new ArrayList<>(1);
@@ -1102,10 +1077,8 @@ public final class QueueModel {
    * Insert a file at specified position, any existing item at this position
    * is shifted on the right.
    *
-   * @param alFiles
-   *            The list of items to insert.
-   * @param iPos
-   *            The position where the items are inserted.
+   * @param alFiles The list of items to insert.
+   * @param iPos    The position where the items are inserted.
    */
   public static void insert(List<StackItem> alFiles, int iPos) {
     if (iPos <= queue.size()) {
@@ -1126,8 +1099,7 @@ public final class QueueModel {
   /**
    * Put up an item from given index to index-1.
    *
-   * @param lIndex
-   *            The index to move up in the queue.
+   * @param lIndex The index to move up in the queue.
    */
   public static void up(int lIndex) {
     if (lIndex == 0 || lIndex >= queue.size()) {
@@ -1149,8 +1121,7 @@ public final class QueueModel {
   /**
    * Put down an item from given index to index+1.
    *
-   * @param lIndex
-   *            The index to move down in the queue.
+   * @param lIndex The index to move down in the queue.
    */
   public static void down(int lIndex) {
     if (lIndex >= queue.size() - 1) {
@@ -1169,8 +1140,7 @@ public final class QueueModel {
   /**
    * Go to given index and launch it.
    *
-   * @param pIndex
-   *            The index to go to in the queue.
+   * @param pIndex The index to go to in the queue.
    */
   public static void goTo(final int pIndex) {
     bStop = false;
@@ -1188,8 +1158,7 @@ public final class QueueModel {
   /**
    * Remove a track at specified index from the queue model.
    *
-   * @param index
-   *            index of the item to remove
+   * @param index index of the item to remove
    *
    **/
   public static void remove(final int index) {
@@ -1200,8 +1169,8 @@ public final class QueueModel {
 
   /**
    * Remove files at specified indexes.
-     * @param initialIndexes
-   *            set of index to drop. We expect the array to contain integers sorted by ascendent order. The set may be void (a warning is then logged) but not null
+   *
+   * @param initialIndexes set of index to drop. We expect the array to contain integers sorted by ascendent order. The set may be void (a warning is then logged) but not null
    */
   public static void remove(final Set<Integer> initialIndexes) {
     List<Integer> indexes = new ArrayList<>(initialIndexes);
@@ -1213,12 +1182,12 @@ public final class QueueModel {
     for (int indexToRemove : indexes) {
       if (indexToRemove < 0 || indexToRemove >= queue.size()) {
         throw new IllegalStateException("Illegal removal index : " + index + " / " + queue.size()
-            + " / " + queue.sizePlanned());
+                + " / " + queue.sizePlanned());
       }
     }
     boolean removePlayedTrack = isPlayingTrack() && initialIndexes.contains(QueueModel.index);
     boolean removePlayedTrackThatIsLastInQueue = removePlayedTrack
-        && indexes.get(indexes.size() - 1) == (queue.size() - 1);
+            && indexes.get(indexes.size() - 1) == (queue.size() - 1);
     StackItem firstPlannedTrack = null;
     List<StackItem> plannedQueue = QueueModel.getPlanned();
     if (plannedQueue.size() > 0) {
@@ -1318,12 +1287,11 @@ public final class QueueModel {
   /**
    * Store current FIFO as a list.
    *
-   * @throws IOException
-   *             Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static void commit() throws IOException {
     java.io.File out = SessionService.getConfFileByPath(Const.FILE_FIFO + "."
-        + Const.FILE_SAVING_FILE_EXTENSION);
+            + Const.FILE_SAVING_FILE_EXTENSION);
     PrintWriter writer = new PrintWriter(new BufferedOutputStream(new FileOutputStream(out, false)));
     for (StackItem st : queue) {
       writer.println(st.getFile().getID());
@@ -1375,7 +1343,7 @@ public final class QueueModel {
     File file = getPlayingFile();
     if (isPlayingRadio()) {
       Properties webradioInfoUpdatedEvent = ObservationManager
-          .getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED);
+              .getDetailsLastOccurence(JajukEvents.WEBRADIO_INFO_UPDATED);
       if (webradioInfoUpdatedEvent != null) {
         WebRadio updatedWebRadio = (WebRadio) webradioInfoUpdatedEvent.get(Const.DETAIL_CONTENT);
         if (getCurrentRadio().getName().equals(updatedWebRadio.getName())) {
