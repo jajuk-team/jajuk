@@ -538,7 +538,7 @@ public final class UpgradeManager implements Const {
                 WebRadioHelper.loadPresetsRadios(fPresets);
             }
         } catch (Exception e) {
-            Log.debug("Can't upgrade Webradio file", e);
+            Log.debug("Can't upgrade Webradio file {}", e);
         }
     }
 
@@ -554,7 +554,7 @@ public final class UpgradeManager implements Const {
                 UtilSystem.move(oldFile, newCollectionFile);
             }
         } catch (Exception e) {
-            Log.debug("Can't migrate collection_exit.xml file", e);
+            Log.debug("Can't migrate collection_exit.xml file {}", e);
         }
     }
     
@@ -653,14 +653,14 @@ public final class UpgradeManager implements Const {
             sPadRelease = pad.substring(beginIndex + 17, endIndex);
             if (!Const.JAJUK_VERSION.equals(sPadRelease)
                     // Don't use this in test
-                    && Const.JAJUK_VERSION.indexOf("VERSION_REPLACED_BY_ANT") != -1
+                    && Const.JAJUK_VERSION.contains("VERSION_REPLACED_BY_ANT")
                     // We display the upgrade icon only if PAD release is newer than current release
                     && isNewer(sPadRelease, Const.JAJUK_VERSION)) {
                 newVersionName = sPadRelease;
                 return;
             }
         } catch (Exception e) {
-            Log.debug("Cannot check for updates", e);
+            Log.debug("Cannot check for updates {}", e);
         }
         return;
     }
@@ -688,7 +688,7 @@ public final class UpgradeManager implements Const {
     /**
      * Return whether two releases switch is a major upgrade or not.
      *
-     * @param currentRelease
+     * @param codeRelease
      * @param comparedRelease
      * @return whether two releases switch is a major upgrade or not
      */
@@ -720,8 +720,8 @@ public final class UpgradeManager implements Const {
      */
     protected static boolean isOlder(String comparedRelease, String currentRelease) {
         // Manage dev case
-        if (comparedRelease.indexOf("VERSION_REPLACED_BY_ANT") != -1
-                || currentRelease.indexOf("VERSION_REPLACED_BY_ANT") != -1) {
+        if (comparedRelease.contains("VERSION_REPLACED_BY_ANT")
+                || currentRelease.contains("VERSION_REPLACED_BY_ANT")) {
             return false;
         }
         int iCurrentRelease = getNumberRelease(currentRelease);

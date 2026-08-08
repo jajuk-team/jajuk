@@ -120,7 +120,7 @@ public class WebRadioPlayerImpl extends AbstractMPlayerImpl {
           try {
             in.close();
           } catch (IOException e) {
-            Log.debug("[READER] Error closing reader", e);
+            Log.debug("[READER] Error closing reader {}", e);
           }
         }
         if (!bEOF) {

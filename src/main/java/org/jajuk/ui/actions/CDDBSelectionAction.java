@@ -20,18 +20,16 @@
  */
 package org.jajuk.ui.actions;
 
-import java.awt.event.ActionEvent;
-import java.util.List;
-
-import org.apache.commons.collections.CollectionUtils;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.ui.wizard.CDDBWizard;
 import org.jajuk.util.IconLoader;
 import org.jajuk.util.JajukIcons;
 import org.jajuk.util.Messages;
-import org.jajuk.util.filters.JajukPredicates;
 import org.jajuk.util.log.Log;
+
+import java.awt.event.ActionEvent;
+import java.util.List;
 
 /**
  * Find tags from CDDB on selection

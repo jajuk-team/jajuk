@@ -25,7 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
+// Replaced commons-collections4 CollectionUtils usage with JDK collection utilities
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Item;
@@ -132,16 +132,14 @@ public class FilesTableModel extends JajukTableModel {
     // option if needed
     final boolean syncTreeTable = Conf.getBoolean(Const.CONF_SYNC_TABLE_TREE + "." + viewID);
     oItems = new Item[iRowNum];
-    CollectionUtils.filter(alToShow, o -> {
+    // keep only files that should be shown
+    alToShow.removeIf(o -> {
       File file = (File) o;
-      // show it if no sync option or if item is in the selection
       boolean bShowWithTree = !syncTreeTable
-      // tree selection = null means none selection have been
-      // done in tree so far
           || treeSelection == null
-          // check if the tree selection contains the current file
           || (treeSelection.size() > 0 && treeSelection.contains(file));
-      return (!file.shouldBeHidden() && bShowWithTree);
+      // remove if hidden or not matching tree selection
+      return file.shouldBeHidden() || !bShowWithTree;
     });
     // Filter files
     Filter filter = new Filter(sPropertyName, sPattern, true, Conf.getBoolean(Const.CONF_REGEXP));

@@ -27,6 +27,7 @@ import org.jajuk.util.log.Log;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.util.concurrent.Semaphore;
 
@@ -74,10 +75,12 @@ public final class DownloadManager {
 
   /** Downloads a resource with rate limiting and retry logic for 429 errors. */
   public static void download(URL url, File fDestination) throws IOException {
+    if (!HttpClientService.getInstance().isInternetAccessAllowed()) {
+      return;
+    }
     if (url == null || !isValidProtocol(url)) {
       throw new IOException("Invalid URL: " + (url != null ? url.toString() : "null"));
     }
-
     String urlString = url.toString();
     int attempt = 0;
     long retryDelay = INITIAL_RETRY_DELAY_MS;
@@ -190,7 +193,83 @@ public final class DownloadManager {
     if (!HttpClientService.getInstance().isInternetAccessAllowed()) {
       return null;
     }
-    return HttpClientService.getInstance().readUrl(url.toString());
+    if (url == null || !isValidProtocol(url)) {
+      throw new IOException("Invalid URL: " + (url != null ? url.toString() : "null"));
+    }
+    String urlString = url.toString();
+    int attempt = 0;
+    long retryDelay = INITIAL_RETRY_DELAY_MS;
+
+    while (attempt < MAX_RETRIES_FOR_429) {
+      acquireRateLimit();
+
+      try {
+        HttpResponse<String> response = HttpClientService.getInstance().executeGetRequest(urlString);
+
+        if (response == null) {
+          throw new IOException("Request failed or internet access disabled");
+        }
+
+        if (response.statusCode() == 429) {
+          attempt++;
+          if (attempt >= MAX_RETRIES_FOR_429) {
+            throw new IOException("Server returned 429 after " + MAX_RETRIES_FOR_429 + " attempts");
+          }
+
+          // Respect Retry-After header if present
+          String retryAfter = response.headers().firstValue("Retry-After").orElse(null);
+          if (retryAfter != null) {
+            try {
+              retryDelay = Long.parseLong(retryAfter) * 1000;
+            } catch (NumberFormatException e) {
+              // Ignore, use default exponential backoff
+            }
+          }
+
+          Log.warn("Rate limit hit (429) for text download. Retrying in " + retryDelay + "ms (Attempt " + attempt + ")");
+
+          // Sleep for retry delay - MUST handle InterruptedException here
+          try {
+            Thread.sleep(retryDelay);
+          } catch (InterruptedException ie) {
+            // Restore interrupt status and abort
+            Thread.currentThread().interrupt();
+            throw new IOException("Download interrupted during retry wait", ie);
+          }
+
+          retryDelay *= 2;
+          continue;
+        }
+
+        if (response.statusCode() != 200) {
+          throw new IOException("HTTP Error: " + response.statusCode() + " url=" + urlString);
+        }
+
+        return response.body();
+
+      } catch (IOException e) {
+        if (e.getMessage() != null && e.getMessage().contains("429")) {
+          attempt++;
+          if (attempt >= MAX_RETRIES_FOR_429)
+            throw e;
+
+          try {
+            Thread.sleep(retryDelay);
+          } catch (InterruptedException ie) {
+            // Restore interrupt status and abort
+            Thread.currentThread().interrupt();
+            throw new IOException("Download interrupted during retry wait", ie);
+          }
+
+          retryDelay *= 2;
+          continue;
+        }
+        throw e;
+      } finally {
+        rateLimiter.release();
+      }
+    }
+    throw new IOException("Download failed after retries for URL: " + url);
   }
 
   /** Reads text from a cached file. */

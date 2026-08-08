@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.views;
 
@@ -36,6 +36,7 @@ import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.File;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
@@ -60,11 +61,11 @@ import net.miginfocom.swing.MigLayout;
 public class AnimationView extends ViewAdapter {
   /** Generated serialVersionUID. */
   private static final long serialVersionUID = 1L;
-  /** The Constant DEFAULT_FRAME_RATE.   */
+  /** The Constant DEFAULT_FRAME_RATE. */
   private static final int DEFAULT_FRAME_RATE = 25;
-  /** The Constant DEFAULT_DURATION.   */
+  /** The Constant DEFAULT_DURATION. */
   private static final int DEFAULT_DURATION = 5000;
-  /** The Constant DEFAULT_PAUSE.   */
+  /** The Constant DEFAULT_PAUSE. */
   private static final int DEFAULT_PAUSE = 500;
   /** Current panel width*. */
   private int iSize;
@@ -80,7 +81,7 @@ public class AnimationView extends ViewAdapter {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.views.IView#getDesc()
    */
   @Override
@@ -90,7 +91,7 @@ public class AnimationView extends ViewAdapter {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.views.IView#populate()
    */
   @Override
@@ -135,8 +136,8 @@ public class AnimationView extends ViewAdapter {
 
   /**
    * Set the text to be displayed*.
-   * 
-   * @param sText 
+   *
+   * @param sText
    */
   public void setText(final String sText) {
     SwingUtilities.invokeLater(new Runnable() {
@@ -149,6 +150,15 @@ public class AnimationView extends ViewAdapter {
         }
         btl1.setText("");
         iSize = AnimationView.this.getWidth();
+
+        // Extrem cases management
+        if (iSize <= 150 || sText == null || sText.trim().isEmpty()) {
+          Font fallbackFont = new Font("verdana", Font.BOLD, 12);
+          btl1.setFont(fallbackFont);
+          btl1.setText(sText != null ? sText : "");
+          return;
+        }
+
         Font font = null;
         // Find optimal target font size
         boolean bOk = false;
@@ -173,15 +183,15 @@ public class AnimationView extends ViewAdapter {
         } else {
           int iShuffle = (int) (Math.random() * 3); //NOSONAR
           switch (iShuffle) {
-          case 0:
-            anim = BasicTextAnimation.defaultScale(btl1, DEFAULT_DURATION, sText, Color.darkGray);
-            break;
-          case 1:
-            anim = BasicTextAnimation.defaultSpace(btl1, DEFAULT_DURATION, sText, Color.darkGray);
-            break;
-          case 2:
-            anim = BasicTextAnimation.defaultFade(btl1, DEFAULT_DURATION, sText, Color.darkGray);
-            break;
+            case 0:
+              anim = BasicTextAnimation.defaultScale(btl1, DEFAULT_DURATION, sText, Color.darkGray);
+              break;
+            case 1:
+              anim = BasicTextAnimation.defaultSpace(btl1, DEFAULT_DURATION, sText, Color.darkGray);
+              break;
+            case 2:
+              anim = BasicTextAnimation.defaultFade(btl1, DEFAULT_DURATION, sText, Color.darkGray);
+              break;
           }
         }
         Animation animAll = Animations.sequential(anim, animPause);
@@ -211,7 +221,7 @@ public class AnimationView extends ViewAdapter {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   @Override
@@ -220,12 +230,16 @@ public class AnimationView extends ViewAdapter {
     if (subject.equals(JajukEvents.FILE_LAUNCHED)) {
       File file = QueueModel.getPlayingFile();
       if (file != null) {
+        String pattern = Conf.getString(Const.CONF_PATTERN_ANIMATION);
         String s = "";
-        try {
-          s = UtilString.applyPattern(file, Conf.getString(Const.CONF_PATTERN_ANIMATION), false,
-              false);
-        } catch (JajukException e) {
-          Log.error(e);
+        if (StringUtils.isNotBlank(pattern)) {
+          try {
+            s = UtilString. applyPattern(file, pattern, false, false);
+          } catch (JajukException e) {
+            Log.error(e);
+          }
+        } else {
+          s = "Empty pattern, check property " + Const.CONF_PATTERN_ANIMATION;
         }
         setText(s);
       }
@@ -246,7 +260,7 @@ public class AnimationView extends ViewAdapter {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
    */
   @Override

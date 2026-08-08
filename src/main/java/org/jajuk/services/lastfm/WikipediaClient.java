@@ -24,10 +24,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jajuk.services.lastfm.model.ArtistInfo;
 import org.jajuk.services.network.HttpClientService;
+import org.jajuk.util.DownloadManager;
 import org.jajuk.util.log.Log;
 
-import java.io.IOException;
-import java.net.http.HttpResponse;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -50,6 +50,7 @@ public class WikipediaClient {
       Log.debug(String.format("No valid image Last.fm for '%s'. Trying Wikipedia...", artistInfo.getName()));
       String url = fetchImageFromWikimediaDirect(artistInfo.getName());
       if (url != null) {
+        // TODO to be analysed if the new url can be persisted to avoid calling next time Jajuk runs for the same resource
         artistInfo.setImageUrl(url);
       }
     }
@@ -100,20 +101,12 @@ public class WikipediaClient {
       String searchUrl = String.format("https://%s.wikipedia.org/w/api.php?action=query&list=search&srsearch=%s" +
               "&srlimit=1&format=json&origin=*", lang, HttpClientService.getInstance().encode(artistName));
 
-      HttpResponse<String> response = HttpClientService.getInstance().executeGetRequest(searchUrl);
-
-      if (response == null) {
-        return null; // Internet disabled, ignore
+      String responseBody = DownloadManager.downloadText(new URL(searchUrl));
+      if (responseBody == null) {
+        return null; // Network error or rate limited
       }
 
-      if (response.statusCode() != 200) {
-        Log.warn("Error Wikipedia search : " + response.statusCode() + " url=" + searchUrl);
-        if (response.statusCode() == 429) {
-          throw new IOException("Wikipedia API rate limit exceeded. Consider adding a delay between requests.");
-        }
-      }
-
-      JsonNode json = mapper.readTree(response.body());
+      JsonNode json = mapper.readTree(responseBody);
       JsonNode searchResults = json.get("query").get("search");
 
       if (searchResults == null || searchResults.isEmpty()) {
@@ -134,27 +127,24 @@ public class WikipediaClient {
               lang, encodedTitle, "400"
       );
 
-      HttpResponse<String> responseImage = HttpClientService.getInstance().executeGetRequest(imageQueryUrl);
-
-      if (responseImage == null) {
-        return null; // Internet disabled, ignore
+      String responseBodyImage = DownloadManager.downloadText(new URL(imageQueryUrl));
+      if (responseBodyImage == null) {
+        return null; // Network error or rate limited
       }
 
-      if (responseImage.statusCode() == 200) {
-        JsonNode imgJson = mapper.readTree(responseImage.body());
-        JsonNode pages = imgJson.get("query").get("pages");
+      JsonNode imgJson = mapper.readTree(responseBodyImage);
+      JsonNode pages = imgJson.get("query").get("pages");
 
-        if (pages != null && !pages.isEmpty()) {
-          JsonNode firstPage = pages.iterator().next();
-          // Check that the page exists (-1 is the error pageid)
-          if (firstPage.has("pageid") && firstPage.get("pageid").asInt() != -1) {
-            if (firstPage.has("original")) {
-              return firstPage.get("original").get("source").asText();
-            } else {
-              // Essaie la version thumbnail (plus petite mais toujours utile)
-              if (firstPage.has("thumbnail")) {
-                return firstPage.get("thumbnail").get("source").asText();
-              }
+      if (pages != null && !pages.isEmpty()) {
+        JsonNode firstPage = pages.iterator().next();
+        // Check that the page exists (-1 is the error pageid)
+        if (firstPage.has("pageid") && firstPage.get("pageid").asInt() != -1) {
+          if (firstPage.has("original")) {
+            return firstPage.get("original").get("source").asText();
+          } else {
+            // Essaie la version thumbnail (plus petite mais toujours utile)
+            if (firstPage.has("thumbnail")) {
+              return firstPage.get("thumbnail").get("source").asText();
             }
           }
         }

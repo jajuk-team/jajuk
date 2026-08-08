@@ -21,9 +21,9 @@
 package org.jajuk.util.log;
 
 import org.jajuk.util.error.JajukException;
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import java.util.List;
@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestLog {
 
   @BeforeAll
-  protected void specificSetUp() throws Exception {
+  protected static void specificSetUp() throws Exception {
     // make sure we have logging initialized for these tests
     Log.init();
   }
@@ -45,13 +45,6 @@ public class TestLog {
   @BeforeEach
   void clearSpool() {
     Log.clearSpool();
-  }
-
-  /**
-   * Test method for {@link Log#init()} ()}.
-   */
-  public void testGetInstance() {
-    Log.init();
   }
 
   /**
@@ -68,7 +61,7 @@ public class TestLog {
    */
   @Test
   public void testDebugThrowable() {
-    Log.debug(new Throwable("testthrowable2"));
+    Log.debug(new Throwable(Log.protect("testthrowable2")));
     // this is anonymonized: verifySpool("testthrowable2");
     verifySpool("***");
   }
@@ -81,7 +74,7 @@ public class TestLog {
    */
   @Test
   public void testDebugStringThrowable() {
-    Log.debug("testlog2", new Throwable("testthrowable2"));
+    Log.debug("testlog2 {}", new Throwable(Log.protect("testthrowable2")));
     verifySpool("testlog2");
     // this is anonymonized: verifySpool("testthrowable2");
     verifySpool("***");
@@ -91,14 +84,16 @@ public class TestLog {
    * Test debug string throwable null.
    *
    */
+  @Test
   public void testDebugStringThrowableNull() {
-    Log.debug(null, new Throwable("testthrowable2"));
+    Log.debug("{}", new Throwable(Log.protect("testthrowable2")));
     verifySpool("***");
   }
 
   /**
    * Test method for {@link org.jajuk.util.log.Log#info(java.lang.String)}.
    */
+  @Test
   public void testInfo() {
     Log.info("testloginfo3");
     verifySpool("testloginfo3");
@@ -107,6 +102,7 @@ public class TestLog {
   /**
    * Test method for {@link org.jajuk.util.log.Log#warn(java.lang.String)}.
    */
+  @Test
   public void testWarnString() {
     Log.warn("testwarn4");
     verifySpool("testwarn4");
@@ -117,6 +113,7 @@ public class TestLog {
    * <p>
    * {@link org.jajuk.util.log.Log#warn(String, Object...)}.
    */
+  @Test
   public void testWarnStringString() {
     Log.warn("warn5 {}", "addinfo");
     verifySpool("warn5");
@@ -129,10 +126,11 @@ public class TestLog {
    * {@link org.jajuk.util.log.Log#warn(int, java.lang.String, java.lang.Throwable)}
    * .
    */
+  @Test
   public void testWarnIntStringThrowable() {
     Log.warn(10, "warntext6", new Throwable(Log.protect("testthrowable")));
     verifySpool("warntext6");
-    // this is anonymonized: verifySpool("testthrowable2");
+    // this is anonymonized: verifySpool("testthrowable");
     verifySpool("***");
   }
 
@@ -140,8 +138,10 @@ public class TestLog {
    * Test warn int string throwable null.
    *
    */
+  @Test
   public void testWarnIntStringThrowableNull() {
-    Log.warn(10, null, new Throwable("testthrowable"));
+    Log.warn(10, null, new Throwable(Log.protect("testthrowable")));
+    // this is anonymonized: verifySpool("testthrowable");
     verifySpool("***");
   }
 
@@ -153,14 +153,16 @@ public class TestLog {
    */
   @Test
   public void testErrorIntStringThrowable() {
-    Log.error(30, "errortext7", new Throwable("errorthrowable"));
+    Log.error(30, "errortext7", new Throwable(Log.protect("errorthrowable")));
     verifySpool("errortext7");
+    // this is anonymonized: verifySpool("errorthrowable");
     verifySpool("***");
   }
 
   /**
    * Test method for {@link org.jajuk.util.log.Log#error(int)}.
    */
+  @Test
   public void testErrorInt() {
     Log.error(31);
     verifySpool("31");
@@ -169,8 +171,10 @@ public class TestLog {
   /**
    * Test method for {@link org.jajuk.util.log.Log#error(java.lang.Throwable)}.
    */
+  @Test
   public void testErrorThrowable() {
-    Log.error(new Throwable("testerror8"));
+    Log.error(new Throwable(Log.protect("testerror8")));
+    // this is anonymonized: verifySpool("testerror8");
     verifySpool("***");
   }
 
@@ -179,10 +183,11 @@ public class TestLog {
    * <p>
    * {@link org.jajuk.util.log.Log#error(int, java.lang.Throwable)}.
    */
+  @Test
   public void testErrorIntThrowable() {
-    Log.error(32, new Throwable("testerror9"));
+    Log.error(32, new Throwable(Log.protect("testerror9")));
     verifySpool("32");
-    // this is anonymonized: verifySpool("testthrowable2");
+    // this is anonymonized: verifySpool("testerror9");
     verifySpool("***");
   }
 
@@ -192,6 +197,7 @@ public class TestLog {
    * {@link org.jajuk.util.log.Log#error(String, Throwable)}
    * .
    */
+  @Test
   public void testErrorStringJajukException() {
     Log.error("teststring", new JajukException(33));
   }
@@ -200,6 +206,7 @@ public class TestLog {
    * Test method for.
    * {@link org.jajuk.util.log.Log#error(Throwable)}.
    */
+  @Test
   public void testErrorJajukException() {
     Log.error(new JajukException(34));
   }
@@ -207,6 +214,7 @@ public class TestLog {
   /**
    * Test method for {@link org.jajuk.util.log.Log#fatal(java.lang.String)}.
    */
+  @Test
   public void testFatal() {
     Log.fatal("testfataltext");
   }
@@ -214,6 +222,7 @@ public class TestLog {
   /**
    * Test method for {@link org.jajuk.util.log.Log#getVerbosity()}.
    */
+  @Test
   public void testGetVerbosity() {
     // set verbosity first as we can not rely on INFO being set because other
     // tests might have adjusted it somehow
@@ -235,6 +244,7 @@ public class TestLog {
   /**
    * Test method for {@link org.jajuk.util.log.Log#setVerbosity(int)}.
    */
+  @Test
   public void testSetVerbosity() {
     // tested above
   }
@@ -242,6 +252,7 @@ public class TestLog {
   /**
    * Test method for {@link org.jajuk.util.log.Log#stack(Throwable)}.
    */
+  @Test
   public void testStack() {
     Log.stack(new Exception("teststacktraceexception"));
   }
@@ -249,6 +260,7 @@ public class TestLog {
   /**
    * Test method for {@link org.jajuk.util.log.Log#isDebugEnabled()}.
    */
+  @Test
   public void testIsDebugEnabled() {
     Log.setVerbosity(Log.DEBUG);
     assertTrue(Log.isDebugEnabled());
@@ -263,8 +275,9 @@ public class TestLog {
   /**
    * Verify spool.
    *
-   * @param substring
-   * @param expected
+   * @param substring the substring to check
+   * @param expected if true and substring not found in the spool fails the test
+   *                 if false and substring found in the spool fails the test
    */
   private void verifySpool(String substring, boolean expected) {
     List<String> list = Log.getSpool(true);
@@ -303,6 +316,7 @@ public class TestLog {
    * Test anonymization player state.
    *
    */
+  @Test
   public void testAnonymizationPlayerState() {
     // special replacement that is done to not show personal data in the spool
     Log.info("Player state changed: OPENING this is "+ Log.protect("secret personal information"));

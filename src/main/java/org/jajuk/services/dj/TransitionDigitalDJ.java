@@ -16,24 +16,18 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.services.dj;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.collections.CollectionUtils;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Genre;
 import org.jajuk.util.Const;
 import org.jajuk.util.UtilFeatures;
 import org.jajuk.util.filters.JajukPredicates;
+
+import java.util.*;
 
 /**
  * Type description.
@@ -44,8 +38,8 @@ public class TransitionDigitalDJ extends DigitalDJ {
 
   /**
    * The Constructor.
-   * 
-   * @param sID 
+   *
+   * @param sID
    */
   public TransitionDigitalDJ(String sID) {
     super(sID);
@@ -54,7 +48,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
 
   /**
    * Gets the transitions.
-   * 
+   *
    * @return DJ transitions
    */
   public List<Transition> getTransitions() {
@@ -63,8 +57,8 @@ public class TransitionDigitalDJ extends DigitalDJ {
 
   /**
    * Delete a transition at given offset.
-   * 
-   * @param offset 
+   *
+   * @param offset
    */
   public void deleteTransition(int offset) {
     this.transitions.remove(offset);
@@ -72,9 +66,9 @@ public class TransitionDigitalDJ extends DigitalDJ {
 
   /**
    * Add a transition.
-   * 
-   * @param transition 
-   * @param offset 
+   *
+   * @param transition
+   * @param offset
    */
   public void addTransition(Transition transition, int offset) {
     this.transitions.add(offset, transition);
@@ -82,15 +76,30 @@ public class TransitionDigitalDJ extends DigitalDJ {
 
   /**
    * Gets the transition.
-   * 
-   * @param ambience 
-   * 
+   *
+   * @param ambience
    * @return transition mapping this FROM ambience or null if none maps it
    */
   public Transition getTransition(Ambience ambience) {
+    if (transitions == null || ambience == null) {
+      return null;
+    }
+
+    // Fast Conversion to Set for O(1) search
+    Set<String> ambienceGenreNames = new HashSet<>();
+    for (Genre genre : ambience.getGenres()) {
+      if (genre != null) {
+        ambienceGenreNames.add(genre.getName());
+      }
+    }
+
     for (Transition transition : transitions) {
-      if (CollectionUtils.containsAny(transition.getFrom().getGenres(), ambience.getGenres())) {
-        return transition;
+      Set<Genre> transitionGenres = transition.getFrom().getGenres();
+      // Optimized manual check
+      for (Genre genre : transitionGenres) {
+        if (genre != null && ambienceGenreNames.contains(genre.getName())) {
+          return transition;
+        }
       }
     }
     return null;
@@ -183,9 +192,8 @@ public class TransitionDigitalDJ extends DigitalDJ {
 
   /**
    * Returns a map ambience -> set of files.
-   * 
+   *
    * @param global initial set of files to consider
-   * 
    * @return a map ambience -> set of files
    */
   @SuppressWarnings("unchecked")
@@ -203,7 +211,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
     // Fill all ambiences
     for (Ambience ambience : ambiences) {
       List<File> all = (List<File>) ((ArrayList<File>) global).clone();
-      CollectionUtils.filter(all, new JajukPredicates.AmbiencePredicate(ambience));
+      all.removeIf(new JajukPredicates.AmbiencePredicate(ambience).negate());
       hmAmbienceFiles.put(ambience, all);
     }
     return hmAmbienceFiles;
@@ -211,9 +219,8 @@ public class TransitionDigitalDJ extends DigitalDJ {
 
   /**
    * Gets the ambience.
-   * 
-   * @param genre 
-   * 
+   *
+   * @param genre
    * @return ambience associated with a genre known in transitions or null if
    * none
    */
@@ -228,10 +235,9 @@ public class TransitionDigitalDJ extends DigitalDJ {
 
   /**
    * (non-Javadoc).
-   * 
+   *
    * @return the string
-   * 
-   * @see dj.DigitalDJ#toXML()
+   *
    */
   @Override
   public String toXML() {
@@ -240,9 +246,9 @@ public class TransitionDigitalDJ extends DigitalDJ {
     sb.append("\t<" + Const.XML_DJ_TRANSITIONS + ">\n");
     for (Transition transition : transitions) {
       sb.append("\t\t<" + Const.XML_DJ_TRANSITION + " " + Const.XML_DJ_FROM + "='"
-          + transition.getFrom().toXML() + "' " + Const.XML_DJ_TO + "='"
-          + transition.getTo().toXML() + "' " + Const.XML_DJ_NUMBER + "='"
-          + transition.getNbTracks() + "'/>\n");
+              + transition.getFrom().toXML() + "' " + Const.XML_DJ_TO + "='"
+              + transition.getTo().toXML() + "' " + Const.XML_DJ_NUMBER + "='"
+              + transition.getNbTracks() + "'/>\n");
     }
     sb.append("\t</" + Const.XML_DJ_TRANSITIONS + ">\n");
     sb.append("</" + Const.XML_DJ_DJ + ">\n");
@@ -251,7 +257,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
 
   /**
    * Sets the transitions.
-   * 
+   *
    * @param transitions the new transitions
    */
   public void setTransitions(List<Transition> transitions) {
