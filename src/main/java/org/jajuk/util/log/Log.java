@@ -149,7 +149,7 @@ public final class Log {
    * @param t Exception to include
    */
   public static void debug(Throwable t) {
-    debug("", t);
+    debug("{}", t);
   }
 
   /**

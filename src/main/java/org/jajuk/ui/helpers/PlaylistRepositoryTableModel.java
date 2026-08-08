@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.apache.commons.collections.CollectionUtils;
+// Replaced commons-collections4 CollectionUtils usage with JDK collection utilities
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Item;
@@ -112,7 +112,7 @@ public class PlaylistRepositoryTableModel extends JajukTableModel {
     }
     // filter unavailable playlists
     if (Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED)) {
-      CollectionUtils.filter(alToShow, new JajukPredicates.ReadyPlaylistPredicate());
+      alToShow.removeIf(new JajukPredicates.ReadyPlaylistPredicate().negate());
     }
     Iterator<Playlist> it;
     int iColNum = iNumberStandardCols + PlaylistManager.getInstance().getCustomProperties().size();

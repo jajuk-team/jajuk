@@ -20,15 +20,14 @@
  */
 package org.jajuk.util.filters;
 
-import java.util.Date;
-import java.util.List;
-
-import org.apache.commons.collections.Predicate;
+import java.util.function.Predicate;
 import org.jajuk.base.File;
 import org.jajuk.base.Playlist;
 import org.jajuk.base.Track;
 import org.jajuk.services.dj.Ambience;
 import org.jajuk.util.Const;
+
+import java.util.Date;
 
 /**
  * List of Predicates (filter criteria)
@@ -40,7 +39,7 @@ public class JajukPredicates {
   /**
    * Age-filtering predicate
    */
-  public static class AgePredicate implements Predicate {
+  public static class AgePredicate implements Predicate<Track> {
     private int iAge = 0;
 
     public AgePredicate(int iAge) {
@@ -48,91 +47,94 @@ public class JajukPredicates {
     }
 
     @Override
-    public boolean evaluate(Object o) {
-      if (!(o instanceof Track)) {
+    public boolean test(Track track) {
+      if (track == null) {
         return false;
       }
-      Track track = (Track) o;
       Date now = new Date();
       int iTrackAge = (int) ((now.getTime() - track.getDiscoveryDate().getTime()) / Const.MILLISECONDS_IN_A_DAY);
-      if (iTrackAge <= iAge) {
-        return true;
-      }
-      return false;
+      return iTrackAge <= iAge;
     }
   }
 
   /**
    * Ready (mounted) filtering predicate Applied on files only.
    */
-  public static class ReadyFilePredicate implements Predicate {
+  public static class ReadyFilePredicate implements Predicate<File> {
     @Override
-    public boolean evaluate(Object o) {
-      return ((File) o).isReady();
+    public boolean test(File f) {
+      return f != null && f.isReady();
     }
   }
 
   /**
    * Banned filtering predicate Applied against tracks only.
    */
-  public static class BannedTrackPredicate implements Predicate {
+  public static class BannedTrackPredicate implements Predicate<Track> {
     @Override
-    public boolean evaluate(Object o) {
-      Track track = (Track) o;
-      return !(track.getBooleanValue(Const.XML_TRACK_BANNED));
+    public boolean test(Track track) {
+      return track != null && !track.getBooleanValue(Const.XML_TRACK_BANNED);
     }
   }
 
   /**
    * Banned filtering predicate Applied against files only.
    */
-  public static class BannedFilePredicate implements Predicate {
+  public static class BannedFilePredicate implements Predicate<File> {
     @Override
-    public boolean evaluate(Object o) {
-      Track track = ((File) o).getTrack();
-      return !(track.getBooleanValue(Const.XML_TRACK_BANNED));
+    public boolean test(File f) {
+      if (f == null) {
+        return false;
+      }
+      Track track = f.getTrack();
+      return track != null && !track.getBooleanValue(Const.XML_TRACK_BANNED);
     }
   }
 
   /**
    * Any file available predicate, applies against tracks only.
    */
-  public static class AnyFileReady implements Predicate {
+  public static class AnyFileReady implements Predicate<File> {
     @Override
-    public boolean evaluate(Object o) {
-      Track track = ((File) o).getTrack();
-      return track.getBestFile(true) != null;
+    public boolean test(File f) {
+      if (f == null) {
+        return false;
+      }
+      Track track = f.getTrack();
+      return track != null && track.getBestFile(true) != null;
     }
   }
 
   /**
    * Playlist predicate, filter playlists located on unmounted devices.
    */
-  public static class ReadyPlaylistPredicate implements Predicate {
+  public static class ReadyPlaylistPredicate implements Predicate<Playlist> {
     @Override
-    public boolean evaluate(Object o) {
-      return ((Playlist) o).isReady();
+    public boolean test(Playlist p) {
+      return p != null && p.isReady();
     }
   }
 
   /**
    * Ambience predicate on files, filter by provided ambience.
    */
-  public static class AmbiencePredicate implements Predicate {
+  public static class AmbiencePredicate implements Predicate<File> {
     private final Ambience ambience;
 
     /**
      * Instantiates a new ambience predicate.
      * 
-     * @param ambience 
+     * @param ambience the ambience
      */
     public AmbiencePredicate(Ambience ambience) {
       this.ambience = ambience;
     }
 
     @Override
-    public boolean evaluate(Object o) {
-      File tested = (File) o;
+    public boolean test(File tested) {
+      if (tested == null || tested.getTrack() == null) {
+        return false;
+      }
       return ambience.getGenres().contains(tested.getTrack().getGenre());
     }
   }

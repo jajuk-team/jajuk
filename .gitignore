@@ -18,3 +18,5 @@ build
 /out/
 /src/main/main.iml
 /src/test/test.iml
+/logs/*.log
+/test-reports/*.xml

@@ -31,7 +31,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.collections.CollectionUtils;
+// Removed dependency on commons-collections4 CollectionUtils: use JDK collections instead
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
@@ -364,7 +364,8 @@ public final class FileManager extends ItemManager {
    */
   public List<File> getReadyFiles() {
     List<File> files = getFiles();
-    CollectionUtils.filter(files, new JajukPredicates.ReadyFilePredicate());
+    // keep only ready files
+    files.removeIf(new JajukPredicates.ReadyFilePredicate().negate());
     return files;
   }
 
@@ -377,7 +378,7 @@ public final class FileManager extends ItemManager {
   public File getShuffleFile() {
     List<File> alEligibleFiles = getReadyFiles();
     // filter banned files
-    CollectionUtils.filter(alEligibleFiles, new JajukPredicates.BannedFilePredicate());
+    alEligibleFiles.removeIf(new JajukPredicates.BannedFilePredicate().negate());
     if (alEligibleFiles.size() > 0) {
       int index = UtilSystem.getRandom().nextInt(alEligibleFiles.size() - 1);
       return alEligibleFiles.get(index);
@@ -395,7 +396,7 @@ public final class FileManager extends ItemManager {
   public List<File> getGlobalShufflePlaylist() {
     List<File> alEligibleFiles = getReadyFiles();
     // filter banned files
-    CollectionUtils.filter(alEligibleFiles, new JajukPredicates.BannedFilePredicate());
+    alEligibleFiles.removeIf(new JajukPredicates.BannedFilePredicate().negate());
     // We filter recently played tracks to improve the quality of the randomness
     filterRecentlyPlayedTracks(alEligibleFiles);
     // shuffle
@@ -493,10 +494,9 @@ public final class FileManager extends ItemManager {
     List<File> alEligibleFiles = new ArrayList<>(1000);
     List<Track> tracks = TrackManager.getInstance().getTracks();
     // Filter by age
-    CollectionUtils.filter(tracks,
-        new JajukPredicates.AgePredicate(Conf.getInt(Const.CONF_OPTIONS_NOVELTIES_AGE)));
+    tracks.removeIf(new JajukPredicates.AgePredicate(Conf.getInt(Const.CONF_OPTIONS_NOVELTIES_AGE)).negate());
     // filter banned tracks
-    CollectionUtils.filter(tracks, new JajukPredicates.BannedTrackPredicate());
+    tracks.removeIf(new JajukPredicates.BannedTrackPredicate().negate());
     for (Track track : tracks) {
       if (alEligibleFiles.size() > Const.NB_TRACKS_ON_ACTION) {
         break;
@@ -591,7 +591,7 @@ public final class FileManager extends ItemManager {
   public List<File> getGlobalBestofPlaylist() {
     List<File> al = getSortedByRate();
     // Filter banned files
-    CollectionUtils.filter(al, new JajukPredicates.BannedFilePredicate());
+    al.removeIf(new JajukPredicates.BannedFilePredicate().negate());
     List<File> alBest = null;
     if (al.size() > 0) {
       // find superior interval value
@@ -631,7 +631,7 @@ public final class FileManager extends ItemManager {
     List<File> alEligibleFiles = new ArrayList<>(iNbBestofFiles);
     List<Track> tracks = TrackManager.getInstance().getTracks();
     // filter banned tracks
-    CollectionUtils.filter(tracks, new JajukPredicates.BannedTrackPredicate());
+    tracks.removeIf(new JajukPredicates.BannedTrackPredicate().negate());
     for (Track track : tracks) {
       File file = track.getBestFile(Conf.getBoolean(Const.CONF_OPTIONS_HIDE_UNMOUNTED));
       if (file != null) {
