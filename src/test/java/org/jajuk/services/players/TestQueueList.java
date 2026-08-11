@@ -254,7 +254,9 @@ public class TestQueueList extends JajukTestCase {
       assertNull(impl.remove(2));
       fail("Should catch an Exception here");
     } catch (IndexOutOfBoundsException e) {
-      assertTrue(e.getMessage(), e.getMessage().contains("Index: 2, Size: 2"));
+      // The wording of the JDK message changed over time ("Index: 2, Size: 2" up to Java 8,
+      // "Index 2 out of bounds for length 2" since Java 9), only check the index and the size
+      assertTrue(e.getMessage(), e.getMessage().matches(".*\\b2\\b.*\\b2\\b.*"));
     }
   }
 

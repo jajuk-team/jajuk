@@ -63,8 +63,9 @@ public class TestQueueModel extends JajukTestCase {
     QueueModel.stopRequest();
     // reset conf changes to default
     Conf.setProperty(Const.CONF_STATE_CONTINUE, "false");
-    Conf.setProperty(Const.CONF_STATE_CONTINUE, "false");
     Conf.setProperty(Const.CONF_STATE_SHUFFLE, "false");
+    Conf.setProperty(Const.CONF_STATE_REPEAT, "false");
+    Conf.setProperty(Const.CONF_STATE_REPEAT_ALL, "false");
     // remove any registered files
     for (File file : FileManager.getInstance().getFiles()) {
       FileManager.getInstance().removeFile(file);

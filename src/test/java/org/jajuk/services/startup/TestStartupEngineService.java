@@ -25,6 +25,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.function.BooleanSupplier;
 
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
@@ -48,6 +49,25 @@ public class TestStartupEngineService extends JajukTestCase {
   private WebRadio radio1;
   /** The Constant POSITION.   */
   private static final float POSITION = 0.5f;
+  /** Max time we wait for an item to be actually launched. */
+  private static final long LAUNCH_TIMEOUT_MS = 10000;
+  /** Time we wait to make sure that nothing gets launched asynchronously. */
+  private static final long NO_LAUNCH_WAIT_MS = 2000;
+
+  /**
+   * StartupEngineService launches the item asynchronously and delays it to let the EDT stabilize
+   * (see launchFile() and launchRadio()), so we cannot check the result right after
+   * launchInitialTrack() returns.
+   *
+   * @param condition the expected state once the item is launched
+   * @throws InterruptedException the interrupted exception
+   */
+  private static void waitForLaunch(BooleanSupplier condition) throws InterruptedException {
+    long deadline = System.currentTimeMillis() + LAUNCH_TIMEOUT_MS;
+    while (!condition.getAsBoolean() && System.currentTimeMillis() < deadline) {
+      Thread.sleep(20);
+    }
+  }
 
   @Override
   protected void specificSetUp() throws Exception {
@@ -95,8 +115,8 @@ public class TestStartupEngineService extends JajukTestCase {
     fifo.delete();
     fifo.createNewFile();
     StartupEngineService.launchInitialTrack();
-    // Wait for track to be actually launched
-    Thread.sleep(100);
+    // Make sure nothing gets launched
+    Thread.sleep(NO_LAUNCH_WAIT_MS);
     assertEquals(QueueModel.getPlayingFile(), null);
   }
 
@@ -104,8 +124,8 @@ public class TestStartupEngineService extends JajukTestCase {
     java.io.File fifo = SessionService.getConfFileByPath(Const.FILE_FIFO);
     fifo.delete();
     StartupEngineService.launchInitialTrack();
-    // Wait for track to be actually launched
-    Thread.sleep(100);
+    // Make sure nothing gets launched
+    Thread.sleep(NO_LAUNCH_WAIT_MS);
     assertEquals(QueueModel.getPlayingFile(), null);
   }
 
@@ -118,8 +138,8 @@ public class TestStartupEngineService extends JajukTestCase {
   public final void testNothing() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOTHING);
     StartupEngineService.launchInitialTrack();
-    // Wait for track to be actually launched
-    Thread.sleep(100);
+    // Make sure nothing gets launched
+    Thread.sleep(NO_LAUNCH_WAIT_MS);
     assertEquals(QueueModel.getPlayingFile(), null);
     // Check that queue is filled up
     assertTrue(QueueModel.getQueue().size() == 3);
@@ -135,7 +155,7 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST);
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
-    Thread.sleep(100);
+    waitForLaunch(() -> QueueModel.getPlayingFile() != null);
     assertEquals(QueueModel.getPlayingFile(), file3);
   }
 
@@ -149,7 +169,7 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
-    Thread.sleep(100);
+    waitForLaunch(() -> QueueModel.getPlayingFile() != null);
     assertEquals(QueueModel.getPlayingFile(), file3);
     // Cannot test actual position, the mock player always return zero
     //assertTrue(Player.getCurrentPosition() >= POSITION);
@@ -165,7 +185,7 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOVELTIES);
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
-    Thread.sleep(100);
+    waitForLaunch(QueueModel::isPlayingTrack);
     assertTrue(QueueModel.isPlayingTrack());
   }
 
@@ -179,7 +199,7 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_BESTOF);
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
-    Thread.sleep(100);
+    waitForLaunch(QueueModel::isPlayingTrack);
     assertTrue(QueueModel.isPlayingTrack());
   }
 
@@ -194,8 +214,8 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     Conf.removeProperty(Const.CONF_STARTUP_QUEUE_INDEX);
     StartupEngineService.launchInitialTrack();
-    // Wait for track to be actually launched
-    Thread.sleep(100);
+    // Make sure nothing gets launched
+    Thread.sleep(NO_LAUNCH_WAIT_MS);
     assertEquals(QueueModel.getPlayingFile(), null);
   }
 
@@ -209,7 +229,7 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_SHUFFLE);
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
-    Thread.sleep(100);
+    waitForLaunch(QueueModel::isPlayingTrack);
     assertTrue(QueueModel.isPlayingTrack());
   }
 
@@ -223,8 +243,8 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     Conf.setProperty(Const.CONF_STARTUP_STOPPED, "true");
     StartupEngineService.launchInitialTrack();
-    // Wait for track to be actually launched
-    Thread.sleep(100);
+    // Make sure nothing gets launched
+    Thread.sleep(NO_LAUNCH_WAIT_MS);
     assertFalse(QueueModel.isPlayingRadio());
     assertFalse(QueueModel.isPlayingTrack());
     // Check that queue is filled up
@@ -241,8 +261,8 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     Conf.setProperty(Const.CONF_STARTUP_STOPPED, "true");
     StartupEngineService.launchInitialTrack();
-    // Wait for track to be actually launched
-    Thread.sleep(100);
+    // Make sure nothing gets launched
+    Thread.sleep(NO_LAUNCH_WAIT_MS);
     assertFalse(QueueModel.isPlayingRadio());
     assertFalse(QueueModel.isPlayingTrack());
   }
@@ -257,8 +277,8 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "true");
     StartupEngineService.launchInitialTrack();
-    // Wait for track to be actually launched
-    Thread.sleep(100);
+    // Wait for the radio to be actually launched
+    waitForLaunch(() -> QueueModel.getCurrentRadio() != null);
     assertEquals(QueueModel.getCurrentRadio(), radio1);
   }
 
@@ -274,13 +294,13 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "true");
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
-    Thread.sleep(100);
+    waitForLaunch(() -> QueueModel.getPlayingFile() != null);
     assertEquals(QueueModel.getPlayingFile(), file1);
     // Same without playing radio
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "false");
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
-    Thread.sleep(100);
+    waitForLaunch(() -> QueueModel.getPlayingFile() != null);
     assertEquals(QueueModel.getPlayingFile(), file1);
   }
 
@@ -296,14 +316,14 @@ public class TestStartupEngineService extends JajukTestCase {
     // Radio was playing but we don't care, we should launch the file
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "true");
     StartupEngineService.launchInitialTrack();
-    // Wait for track to be actually launched
-    Thread.sleep(100);
+    // Wait for the radio to be actually launched
+    waitForLaunch(() -> QueueModel.getCurrentRadio() != null);
     assertEquals(QueueModel.getCurrentRadio(), radio1);
     // Same without playing radio
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "false");
     StartupEngineService.launchInitialTrack();
-    // Wait for track to be actually launched
-    Thread.sleep(100);
+    // Wait for the radio to be actually launched
+    waitForLaunch(() -> QueueModel.getCurrentRadio() != null);
     assertEquals(QueueModel.getCurrentRadio(), radio1);
   }
 
@@ -318,8 +338,8 @@ public class TestStartupEngineService extends JajukTestCase {
         SearchResultType.WEBRADIO.name() + "/" + radio1.getName());
     Conf.setProperty(Const.CONF_STARTUP_STOPPED, "true");
     StartupEngineService.launchInitialTrack();
-    // Wait for track to be actually launched
-    Thread.sleep(100);
+    // Make sure nothing gets launched
+    Thread.sleep(NO_LAUNCH_WAIT_MS);
     assertEquals(QueueModel.getCurrentRadio(), null);
   }
 
@@ -334,8 +354,8 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "true");
     StartupEngineService.launchInitialTrack();
-    // Wait for track to be actually launched
-    Thread.sleep(100);
+    // Make sure no file gets launched
+    Thread.sleep(NO_LAUNCH_WAIT_MS);
     assertEquals(QueueModel.getPlayingFile(), null);
   }
 
@@ -350,7 +370,7 @@ public class TestStartupEngineService extends JajukTestCase {
     Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
     StartupEngineService.launchInitialTrack();
     // Wait for track to be actually launched
-    Thread.sleep(100);
+    waitForLaunch(() -> QueueModel.getPlayingFile() != null);
     assertEquals(QueueModel.getPlayingFile(), file3);
   }
 }

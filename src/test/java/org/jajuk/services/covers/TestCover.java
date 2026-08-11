@@ -22,6 +22,7 @@ package org.jajuk.services.covers;
 
 import java.awt.HeadlessException;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
@@ -171,8 +172,9 @@ public class TestCover extends JajukTestCase {
     try {
       cover.getImage();
       fail("Should throw an exception here...");
-    } catch (IllegalArgumentException e) {
-      // ok here
+    } catch (IOException e) {
+      // ok here : the local file is missing and its file:// URL cannot be downloaded
+      assertTrue(e.getMessage(), e.getMessage().contains("notexists"));
     }
     // TODO: more testing is necessary here...
   }
