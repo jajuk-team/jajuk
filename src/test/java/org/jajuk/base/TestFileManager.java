@@ -20,6 +20,9 @@
  */
 package org.jajuk.base;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,7 +33,6 @@ import org.jajuk.TestHelpers;
 import org.jajuk.services.bookmark.History;
 import org.jajuk.util.Const;
 import org.jajuk.util.error.JajukException;
-import org.junit.Test;
 
 public class TestFileManager extends JajukTestCase {
   /**
@@ -91,14 +93,12 @@ public class TestFileManager extends JajukTestCase {
   }
 
   private void testWithFile(File file) {
-    assertNotNull("file " + file.getFIO() + " is not found if we look for the actual file name",
-        FileManager.getInstance().getFileByPath(file.getFIO().getAbsolutePath()));
-    assertNotNull("file " + file.getFIO() + " is not found if we look for the lowercase file name",
-        FileManager.getInstance().getFileByPath(file.getFIO().getAbsolutePath().toLowerCase()));
-    assertNotNull("file " + file.getFIO() + " is not found if we look for the uppercase file name",
-        FileManager.getInstance().getFileByPath(file.getFIO().getAbsolutePath().toUpperCase()));
+    assertNotNull(FileManager.getInstance().getFileByPath(file.getFIO().getAbsolutePath()), "file " + file.getFIO() + " is not found if we look for the actual file name");
+    assertNotNull(FileManager.getInstance().getFileByPath(file.getFIO().getAbsolutePath().toLowerCase()), "file " + file.getFIO() + " is not found if we look for the lowercase file name");
+    assertNotNull(FileManager.getInstance().getFileByPath(file.getFIO().getAbsolutePath().toUpperCase()), "file " + file.getFIO() + " is not found if we look for the uppercase file name");
   }
 
+  @Test
   public void testFilterRecentlyPlayedTracksEnoughTracks() {
     int totalTracksNb = 500; // the 150 first tracks are recent and should be dropped
     List<File> files = populateHistory(totalTracksNb);
@@ -106,6 +106,7 @@ public class TestFileManager extends JajukTestCase {
     assertEquals(350, files.size());
   }
 
+  @Test
   public void testFilterRecentlyPlayedTracksLessThanActionNumber() {
     int totalTracksNb = 100; // all the 100 are recent but will not be dropped because 
     // we are under the lower of tracks
@@ -114,6 +115,7 @@ public class TestFileManager extends JajukTestCase {
     assertEquals(100, files.size());
   }
 
+  @Test
   public void testFilterRecentlyPlayedTracksABitMoreThanActionNumber() {
     int totalTracksNb = 250; // the first 150 are recent but not all of them will be
     // dropped to deal with the lower limit

@@ -20,6 +20,9 @@
  */
 package org.jajuk.util;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +39,7 @@ public class TestFilter extends JajukTestCase {
    * {@link org.jajuk.util.Filter#Filter(java.lang.String, java.lang.String, boolean, boolean)}
    * .
    */
+  @Test
   public final void testFilter() {
     Filter filter = new Filter("test", "test", true, false);
     assertTrue(filter.isHuman());
@@ -48,6 +52,7 @@ public class TestFilter extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.Filter#getProperty()}.
    */
+  @Test
   public final void testGetProperty() {
     Filter filter = new Filter("test1", "test2", true, false);
     assertEquals("test1", filter.getProperty());
@@ -56,6 +61,7 @@ public class TestFilter extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.Filter#getValue()}.
    */
+  @Test
   public final void testGetValue() {
     Filter filter = new Filter("test1", "test2", true, false);
     assertEquals("test2", filter.getValue());
@@ -67,6 +73,7 @@ public class TestFilter extends JajukTestCase {
    * {@link org.jajuk.util.Filter#filterItems(java.util.List, org.jajuk.util.Filter)}
    * .
    */
+  @Test
   public final void testFilterItems() {
     // works with empty filter
     assertNull(Filter.filterItems(null, null, Item.class));

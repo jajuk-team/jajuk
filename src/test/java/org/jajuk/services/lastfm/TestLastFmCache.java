@@ -20,21 +20,23 @@
  */
 package org.jajuk.services.lastfm;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
 import org.jajuk.services.lastfm.model.*;
 
 /**
  * .
  */
-public class TestLastFmCache extends TestCase {
-  @Override
-  protected void setUp() throws Exception {
-    super.setUp();
+public class TestLastFmCache {
+  @BeforeEach
+  public void setUp() throws Exception {
     // make sure the cache is cleaned up front to not find items from previous
     // runs
     LastFmCache cache = new LastFmCache();
@@ -44,6 +46,7 @@ public class TestLastFmCache extends TestCase {
   /**
    * Test method for {@link LastFmCache#clearCache()}.
    */
+  @Test
   public void testClearCache() {
     LastFmCache cache = new LastFmCache();
     cache.clearCache();
@@ -55,6 +58,7 @@ public class TestLastFmCache extends TestCase {
    * {@link LastFmCache#retrieveAlbumCover(AlbumInfo)}
    * .
    */
+  @Test
   public void testRetrieveAlbumCover() {
     LastFmCache cache = new LastFmCache();
     LastFmAlbum album = getAlbumWithBigCover();
@@ -67,6 +71,7 @@ public class TestLastFmCache extends TestCase {
    * {@link LastFmCache#retrieveAlbumInfo(java.lang.String, java.lang.String)}
    * .
    */
+  @Test
   public void testRetrieveAlbumInfo() {
     LastFmCache cache = new LastFmCache();
     assertNull(cache.retrieveAlbumInfo("Red Hot Chili Peppers", "By the way"));
@@ -78,6 +83,7 @@ public class TestLastFmCache extends TestCase {
    * {@link LastFmCache#retrieveArtistInfo(java.lang.String)}
    * .
    */
+  @Test
   public void testRetrieveArtistInfo() {
     LastFmCache cache = new LastFmCache();
     assertNull(cache.retrieveArtistInfo("Red Hot Chili Peppers"));
@@ -89,6 +95,7 @@ public class TestLastFmCache extends TestCase {
    * {@link LastFmCache#retrieveArtistImage(SimilarArtistsInfo)}
    * .
    */
+  @Test
   public void testRetrieveArtistImage() {
     LastFmCache cache = new LastFmCache();
     LastFmSimilarArtists artists = new LastFmSimilarArtists();
@@ -102,6 +109,7 @@ public class TestLastFmCache extends TestCase {
    * {@link LastFmCache#retrieveAlbumList(java.lang.String)}
    * .
    */
+  @Test
   public void testRetrieveAlbumList() {
     LastFmCache cache = new LastFmCache();
     assertNull(cache.retrieveAlbumList("Red Hot Chili Peppers"));
@@ -113,6 +121,7 @@ public class TestLastFmCache extends TestCase {
    * {@link LastFmCache#retrieveArtistSimilar(java.lang.String)}
    * .
    */
+  @Test
   public void testRetrieveArtistSimilar() {
     LastFmCache cache = new LastFmCache();
     assertNull(cache.retrieveArtistSimilar("Red Hot Chili Peppers"));
@@ -124,6 +133,7 @@ public class TestLastFmCache extends TestCase {
    * {@link LastFmCache#retrieveArtistThumbImage(ArtistInfo)}
    * .
    */
+  @Test
   public void testRetrieveArtistThumbImage() {
     LastFmCache cache = new LastFmCache();
     LastFmArtist artist = new LastFmArtist();
@@ -137,6 +147,7 @@ public class TestLastFmCache extends TestCase {
    * {@link LastFmCache#retrieveArtistWiki(java.lang.String)}
    * .
    */
+  @Test
   public void testRetrieveArtistWiki() {
     LastFmCache cache = new LastFmCache();
     assertNull(cache.retrieveArtistWiki("Red Hot Chili Peppers"));
@@ -148,6 +159,7 @@ public class TestLastFmCache extends TestCase {
    * {@link LastFmCache#storeAlbumCover(AlbumInfo, java.awt.Image)}
    * .
    */
+  @Test
   public void testStoreAlbumCover() {
     LastFmCache cache = new LastFmCache();
     LastFmAlbum album = getAlbumWithBigCover();
@@ -163,6 +175,7 @@ public class TestLastFmCache extends TestCase {
    * {@link LastFmCache#storeAlbumInfo(java.lang.String, java.lang.String, AlbumInfo)}
    * .
    */
+  @Test
   public void testStoreAlbumInfo() {
     LastFmCache cache = new LastFmCache();
     LastFmAlbum album = getAlbumWithBigCover();
@@ -176,6 +189,7 @@ public class TestLastFmCache extends TestCase {
    * {@link LastFmCache#storeArtistInfo(java.lang.String, ArtistInfo)}
    * .
    */
+  @Test
   public void testStoreArtistInfo() {
     LastFmCache cache = new LastFmCache();
     LastFmArtist artist = new LastFmArtist();
@@ -192,6 +206,7 @@ public class TestLastFmCache extends TestCase {
    * {@link LastFmCache#storeArtistImage(SimilarArtistsInfo, java.awt.Image)}
    * .
    */
+  @Test
   public void testStoreArtistImage() {
     LastFmCache cache = new LastFmCache();
     LastFmSimilarArtists artists = new LastFmSimilarArtists();
@@ -208,6 +223,7 @@ public class TestLastFmCache extends TestCase {
    * {@link LastFmCache#storeAlbumList(java.lang.String, AlbumListInfo)}
    * .
    */
+  @Test
   public void testStoreAlbumList() {
     LastFmCache cache = new LastFmCache();
     LastFmAlbumList list = new LastFmAlbumList();
@@ -222,17 +238,15 @@ public class TestLastFmCache extends TestCase {
     cache.storeAlbumList("Red Hot Chili Peppers", list);
     assertNotNull(cache.retrieveAlbumList("Red Hot Chili Peppers"));
     assertNotNull(cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums());
-    assertEquals(cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().toString(), 2, cache
-            .retrieveAlbumList("Red Hot Chili Peppers").getAlbums().size());
+    assertEquals(2, cache
+            .retrieveAlbumList("Red Hot Chili Peppers").getAlbums().size(), cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().toString());
     /*
-     * assertTrue(cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().toString
-     * (),
-     * cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().contains(
-     * album1));
-     * assertTrue(cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums
-     * ().toString(),
-     * cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums(
-     * ).contains(album2));
+     * assertTrue(* cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().contains(
+     * album1), cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums().toString
+     * ());
+     * assertTrue(* cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums(
+     * ).contains(album2), cache.retrieveAlbumList("Red Hot Chili Peppers").getAlbums
+     * ().toString());
      */
   }
 
@@ -242,6 +256,7 @@ public class TestLastFmCache extends TestCase {
    * {@link LastFmCache#storeArtistSimilar(java.lang.String, SimilarArtistsInfo)}
    * .
    */
+  @Test
   public void testStoreArtistSimilar() {
     LastFmCache cache = new LastFmCache();
     LastFmSimilarArtists artists = new LastFmSimilarArtists();
@@ -258,6 +273,7 @@ public class TestLastFmCache extends TestCase {
    * {@link LastFmCache#storeArtistThumbImage(ArtistInfo, java.awt.Image)}
    * .
    */
+  @Test
   public void testStoreArtistThumbImage() {
     LastFmCache cache = new LastFmCache();
     LastFmArtist artist = new LastFmArtist();
@@ -274,6 +290,7 @@ public class TestLastFmCache extends TestCase {
    * {@link LastFmCache#storeArtistWiki(java.lang.String, java.lang.String)}
    * .
    */
+  @Test
   public void testStoreArtistWiki() {
     LastFmCache cache = new LastFmCache();
     cache.storeArtistWiki("Red Hot Chili Peppers", "TestWikiText");
@@ -287,6 +304,7 @@ public class TestLastFmCache extends TestCase {
    * {@link LastFmCache#addSubmissionData(FullSubmissionData)}
    * .
    */
+  @Test
   public void testAddSubmissionData() {
     LastFmCache cache = new LastFmCache();
     FullSubmissionData data = new FullSubmissionData("Red Hot Chili Peppers", "title",
@@ -298,6 +316,7 @@ public class TestLastFmCache extends TestCase {
    * Test method for {@link LastFmCache#getSubmissionData()}
    * .
    */
+  @Test
   public void testGetSubmissionData() {
     // TODO: currently this fails because library xpp3 is not found for XML Pull
     // Parsing, not sure why that is not part of
@@ -321,6 +340,7 @@ public class TestLastFmCache extends TestCase {
    *
    * {@link LastFmCache#removeSubmissionData()}.
    */
+  @Test
   public void testRemoveSubmissionData() {
     // TODO: currently this fails because library xpp3 is not found for XML Pull
     // Parsing, not sure why that is not part of

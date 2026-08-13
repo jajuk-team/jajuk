@@ -20,6 +20,8 @@
  */
 package ext;
 
+import org.junit.jupiter.api.Test;
+
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Font;
@@ -46,14 +48,13 @@ import java.net.URL;
 import java.text.AttributedCharacterIterator;
 import java.util.Map;
 
-import junit.framework.TestCase;
 
 import org.jajuk.util.Const;
 
 /**
  * .
  */
-public class TestJSplashLabel extends TestCase {
+public class TestJSplashLabel {
   /**
    * Test method for.
    *
@@ -61,6 +62,7 @@ public class TestJSplashLabel extends TestCase {
    * {@link ext.JSplashLabel#JSplashLabel(java.net.URL, java.lang.String, java.lang.String, java.awt.Font)}
    * .
    */
+  @Test
   public void testJSplashLabel() throws Exception {
     new JSplashLabel(new URL("http://www.example.com/"), "copyright", "teststring", null);
   }
@@ -71,6 +73,7 @@ public class TestJSplashLabel extends TestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testJSplashLabelURL() throws Exception {
     new JSplashLabel(Const.IMAGES_SPLASHSCREEN, "copyright", "teststring", null);
   }
@@ -81,6 +84,7 @@ public class TestJSplashLabel extends TestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testJSplashLabelFont() throws Exception {
     new JSplashLabel(Const.IMAGES_SPLASHSCREEN, "copyright", "teststring", new Font("Roman",
         Font.ITALIC, 10));
@@ -91,6 +95,7 @@ public class TestJSplashLabel extends TestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testPaintGraphics() throws Exception {
     JSplashLabel label = new JSplashLabel(Const.IMAGES_SPLASHSCREEN, "copyright", "teststring",
         null);

@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.cddb;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.base.Album;
@@ -42,6 +45,7 @@ public class TestCDDBTrack extends JajukTestCase {
    *
    * {@link org.jajuk.services.cddb.CDDBTrack#CDDBTrack(org.jajuk.base.Track)}.
    */
+  @Test
   public final void testCDDBTrack() {
     new CDDBTrack(null);
   }
@@ -49,6 +53,7 @@ public class TestCDDBTrack extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.cddb.CDDBTrack#getLength()}.
    */
+  @Test
   public final void testGetLength() {
     CDDBTrack track = new CDDBTrack(getTrack(1));
     assertEquals(120, track.getLength());
@@ -59,6 +64,7 @@ public class TestCDDBTrack extends JajukTestCase {
    *
    * {@link org.jajuk.services.cddb.CDDBTrack#getPreciseLength()}.
    */
+  @Test
   public final void testGetPreciseLength() {
     CDDBTrack track = new CDDBTrack(getTrack(1));
     assertEquals(120f, track.getPreciseLength());
@@ -67,6 +73,7 @@ public class TestCDDBTrack extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.cddb.CDDBTrack#getTrack()}.
    */
+  @Test
   public final void testGetTrack() {
     CDDBTrack track = new CDDBTrack(getTrack(1));
     assertNotNull(track.getTrack());
@@ -75,6 +82,7 @@ public class TestCDDBTrack extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.cddb.CDDBTrack#toString()}.
    */
+  @Test
   public final void testToString() {
     StartupCollectionService.registerItemManagers();
     CDDBTrack track = new CDDBTrack(getTrack(1));

@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.tags;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.File;
 
 import org.jajuk.JajukTestCase;
@@ -32,6 +35,7 @@ public class TestTag extends JajukTestCase {
    * Test method for {@link org.jajuk.services.tags.Tag#Tag(java.io.File, boolean)}.
    * @throws Exception 
    */
+  @Test
   public void testTag() throws Exception {
     // can read tag-type
     assertNotNull(TypeManager.getInstance().registerType("testtag", "tst", null,
@@ -53,6 +57,7 @@ public class TestTag extends JajukTestCase {
     assertTrue(tag.isCorrupted());
   }
 
+  @Test
   public void testTagInvalidTypes() throws Exception {
     // null, do not ignore errors
     try {
@@ -80,6 +85,7 @@ public class TestTag extends JajukTestCase {
    * Test method for {@link org.jajuk.services.tags.Tag#hashCode()}.
    * @throws Exception 
    */
+  @Test
   public void testHashCode() throws Exception {
     // can read tag-type
     assertNotNull(TypeManager.getInstance().registerType("testtag", "tst", null,
@@ -96,6 +102,7 @@ public class TestTag extends JajukTestCase {
    * Test method for {@link org.jajuk.services.tags.Tag#getTrackName()}.
    * @throws Exception 
    */
+  @Test
   public void testGetTrackName() throws Exception {
     assertNotNull(TypeManager.getInstance().registerType("testtag", "tst", null,
         NoTagsTagImpl.class));
@@ -109,6 +116,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#getAlbumName()}.
    */
+  @Test
   public void testGetAlbumName() {
     // TODO: implement test
   }
@@ -116,6 +124,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#getArtistName()}.
    */
+  @Test
   public void testGetArtistName() {
     // TODO: implement test
   }
@@ -123,6 +132,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#getAlbumArtist()}.
    */
+  @Test
   public void testGetAlbumArtist() {
     // TODO: implement test
   }
@@ -130,6 +140,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#getGenreName()}.
    */
+  @Test
   public void testGetGenreName() {
     // TODO: implement test
   }
@@ -137,6 +148,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#getLength()}.
    */
+  @Test
   public void testGetLength() {
     // TODO: implement test
   }
@@ -144,6 +156,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#getDiscNumber()}.
    */
+  @Test
   public void testGetDiscNumber() {
     // TODO: implement test
   }
@@ -151,6 +164,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#getYear()}.
    */
+  @Test
   public void testGetYear() {
     // TODO: implement test
   }
@@ -158,6 +172,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#getQuality()}.
    */
+  @Test
   public void testGetQuality() {
     // TODO: implement test
   }
@@ -165,6 +180,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#getComment()}.
    */
+  @Test
   public void testGetComment() {
     // TODO: implement test
   }
@@ -172,6 +188,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#getOrder()}.
    */
+  @Test
   public void testGetOrder() {
     // TODO: implement test
   }
@@ -179,6 +196,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#getLyrics()}.
    */
+  @Test
   public void testGetLyrics() {
     // TODO: implement test
   }
@@ -186,6 +204,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#getCovers()}.
    */
+  @Test
   public void testGetCovers() {
     // TODO: implement test
   }
@@ -193,6 +212,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#setTrackName(java.lang.String)}.
    */
+  @Test
   public void testSetTrackName() {
     // TODO: implement test
   }
@@ -200,6 +220,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#setAlbumName(java.lang.String)}.
    */
+  @Test
   public void testSetAlbumName() {
     // TODO: implement test
   }
@@ -207,6 +228,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#setArtistName(java.lang.String)}.
    */
+  @Test
   public void testSetArtistName() {
     // TODO: implement test
   }
@@ -214,6 +236,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#setAlbumArtist(java.lang.String)}.
    */
+  @Test
   public void testSetAlbumArtist() {
     // TODO: implement test
   }
@@ -221,6 +244,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#setGenreName(java.lang.String)}.
    */
+  @Test
   public void testSetGenreName() {
     // TODO: implement test
   }
@@ -228,6 +252,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#setOrder(long)}.
    */
+  @Test
   public void testSetOrder() {
     // TODO: implement test
   }
@@ -235,6 +260,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#setYear(java.lang.String)}.
    */
+  @Test
   public void testSetYear() {
     // TODO: implement test
   }
@@ -242,6 +268,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#setDiscNumber(long)}.
    */
+  @Test
   public void testSetDiscNumber() {
     // TODO: implement test
   }
@@ -249,6 +276,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#setComment(java.lang.String)}.
    */
+  @Test
   public void testSetComment() {
     // TODO: implement test
   }
@@ -256,6 +284,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#setLyrics(java.lang.String)}.
    */
+  @Test
   public void testSetLyrics() {
     // TODO: implement test
   }
@@ -263,6 +292,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#deleteLyrics()}.
    */
+  @Test
   public void testDeleteLyrics() {
     // TODO: implement test
   }
@@ -270,6 +300,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#commit()}.
    */
+  @Test
   public void testCommit() {
     // TODO: implement test
   }
@@ -277,6 +308,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#isCorrupted()}.
    */
+  @Test
   public void testIsCorrupted() {
     // TODO: implement test
   }
@@ -284,6 +316,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#setCorrupted(boolean)}.
    */
+  @Test
   public void testSetCorrupted() {
     // TODO: implement test
   }
@@ -291,6 +324,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#getFio()}.
    */
+  @Test
   public void testGetFio() {
     // TODO: implement test
   }
@@ -299,6 +333,7 @@ public class TestTag extends JajukTestCase {
    * Test method for {@link org.jajuk.services.tags.Tag#equals(java.lang.Object)}.
    * @throws Exception 
    */
+  @Test
   public void testEqualsObject() throws Exception {
     assertNotNull(TypeManager.getInstance().registerType("testtag", "tst", null,
         NoTagsTagImpl.class));
@@ -318,6 +353,7 @@ public class TestTag extends JajukTestCase {
    * Test method for {@link org.jajuk.services.tags.Tag#toString()}.
    * @throws Exception 
    */
+  @Test
   public void testToString() throws Exception {
     assertNotNull(TypeManager.getInstance().registerType("testtag", "tst", null,
         NoTagsTagImpl.class));
@@ -330,6 +366,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#getTagForFio(java.io.File, boolean)}.
    */
+  @Test
   public void testGetTagForFio() {
     // TODO: implement test
   }
@@ -337,6 +374,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#clearCache()}.
    */
+  @Test
   public void testClearCache() {
     // TODO: implement test
   }
@@ -344,6 +382,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#getTagField(java.lang.String)}.
    */
+  @Test
   public void testGetTagField() {
     // TODO: implement test
   }
@@ -351,6 +390,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#getSupportedTagFields()}.
    */
+  @Test
   public void testGetSupportedTagFields() {
     // TODO: implement test
   }
@@ -358,6 +398,7 @@ public class TestTag extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.tags.Tag#getActivatedExtraTags()}.
    */
+  @Test
   public void testGetActivatedExtraTags() {
     // TODO: implement test
   }

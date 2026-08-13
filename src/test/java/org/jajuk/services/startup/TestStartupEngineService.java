@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.startup;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -110,6 +113,7 @@ public class TestStartupEngineService extends JajukTestCase {
     index.set(null, 0);
   }
 
+  @Test
   public final void testVoidFIFO() throws IOException, InterruptedException {
     java.io.File fifo = SessionService.getConfFileByPath(Const.FILE_FIFO);
     fifo.delete();
@@ -120,6 +124,7 @@ public class TestStartupEngineService extends JajukTestCase {
     assertEquals(QueueModel.getPlayingFile(), null);
   }
 
+  @Test
   public final void testNoFIFO() throws InterruptedException {
     java.io.File fifo = SessionService.getConfFileByPath(Const.FILE_FIFO);
     fifo.delete();
@@ -135,6 +140,7 @@ public class TestStartupEngineService extends JajukTestCase {
    *
    * @throws InterruptedException the interrupted exception
    */
+  @Test
   public final void testNothing() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOTHING);
     StartupEngineService.launchInitialTrack();
@@ -151,6 +157,7 @@ public class TestStartupEngineService extends JajukTestCase {
    *
    * @throws InterruptedException the interrupted exception
    */
+  @Test
   public final void testLastItem() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST);
     StartupEngineService.launchInitialTrack();
@@ -165,6 +172,7 @@ public class TestStartupEngineService extends JajukTestCase {
    *
    * @throws InterruptedException the interrupted exception
    */
+  @Test
   public final void testLastItemLastPos() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     StartupEngineService.launchInitialTrack();
@@ -181,6 +189,7 @@ public class TestStartupEngineService extends JajukTestCase {
    *
    * @throws InterruptedException the interrupted exception
    */
+  @Test
   public final void testNovelties() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_NOVELTIES);
     StartupEngineService.launchInitialTrack();
@@ -195,6 +204,7 @@ public class TestStartupEngineService extends JajukTestCase {
    *
    * @throws InterruptedException the interrupted exception
    */
+  @Test
   public final void testBestof() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_BESTOF);
     StartupEngineService.launchInitialTrack();
@@ -209,6 +219,7 @@ public class TestStartupEngineService extends JajukTestCase {
    *
    * @throws InterruptedException the interrupted exception
    */
+  @Test
   public final void testFirstSession() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_ITEM, "");
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
@@ -225,6 +236,7 @@ public class TestStartupEngineService extends JajukTestCase {
    *
    * @throws InterruptedException the interrupted exception
    */
+  @Test
   public final void testShuffle() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_SHUFFLE);
     StartupEngineService.launchInitialTrack();
@@ -239,6 +251,7 @@ public class TestStartupEngineService extends JajukTestCase {
    *
    * @throws InterruptedException the interrupted exception
    */
+  @Test
   public final void testStoppedFile() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     Conf.setProperty(Const.CONF_STARTUP_STOPPED, "true");
@@ -257,6 +270,7 @@ public class TestStartupEngineService extends JajukTestCase {
    *
    * @throws InterruptedException the interrupted exception
    */
+  @Test
   public final void testStoppedRadio() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     Conf.setProperty(Const.CONF_STARTUP_STOPPED, "true");
@@ -273,6 +287,7 @@ public class TestStartupEngineService extends JajukTestCase {
    *
    * @throws InterruptedException the interrupted exception
    */
+  @Test
   public final void testStartWebRadio() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "true");
@@ -287,6 +302,7 @@ public class TestStartupEngineService extends JajukTestCase {
    *
    * @throws InterruptedException the interrupted exception
    */
+  @Test
   public final void testStartGivenFile() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_ITEM);
     Conf.setProperty(Const.CONF_STARTUP_ITEM, SearchResultType.FILE.name() + "/" + file1.getID());
@@ -309,6 +325,7 @@ public class TestStartupEngineService extends JajukTestCase {
    *
    * @throws InterruptedException the interrupted exception
    */
+  @Test
   public final void testStartGivenRadio() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_ITEM);
     Conf.setProperty(Const.CONF_STARTUP_ITEM,
@@ -332,6 +349,7 @@ public class TestStartupEngineService extends JajukTestCase {
    *
    * @throws InterruptedException the interrupted exception
    */
+  @Test
   public final void testStartGivenRadioStopped() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_ITEM);
     Conf.setProperty(Const.CONF_STARTUP_ITEM,
@@ -350,6 +368,7 @@ public class TestStartupEngineService extends JajukTestCase {
    *
    * @throws InterruptedException the interrupted exception
    */
+  @Test
   public final void test1() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     Conf.setProperty(Const.CONF_WEBRADIO_WAS_PLAYING, "true");
@@ -365,6 +384,7 @@ public class TestStartupEngineService extends JajukTestCase {
    *
    * @throws InterruptedException the interrupted exception
    */
+  @Test
   public final void test2() throws InterruptedException {
     Conf.setProperty(Const.CONF_STARTUP_MODE, Const.STARTUP_MODE_LAST_KEEP_POS);
     Conf.setProperty(Const.CONF_STARTUP_ITEM, "");

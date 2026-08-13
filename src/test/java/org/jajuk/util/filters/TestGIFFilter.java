@@ -20,6 +20,9 @@
  */
 package org.jajuk.util.filters;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.File;
 
 import org.jajuk.JajukTestCase;
@@ -31,6 +34,7 @@ public class TestGIFFilter extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.filters.GIFFilter#getInstance()}.
    */
+  @Test
   public void testGetInstance() {
     assertNotNull(GIFFilter.getInstance());
   }
@@ -39,6 +43,7 @@ public class TestGIFFilter extends JajukTestCase {
    * Test accept.
    * 
    */
+  @Test
   public void testAccept() {
     assertTrue(GIFFilter.getInstance().accept(new File("test.gif")));
     assertFalse(GIFFilter.getInstance().accept(new File("test.tst")));

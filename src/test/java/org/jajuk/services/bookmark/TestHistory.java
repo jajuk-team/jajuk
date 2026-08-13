@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.bookmark;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -43,6 +46,7 @@ public class TestHistory extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.bookmark.History#getInstance()}.
    */
+  @Test
   public final void testGetInstance() {
     assertNotNull(History.getInstance());
   }
@@ -52,6 +56,7 @@ public class TestHistory extends JajukTestCase {
    *
    * {@link org.jajuk.services.bookmark.History#getRegistrationKeys()}.
    */
+  @Test
   public final void testGetRegistrationKeys() {
     assertNotNull(History.getInstance().getRegistrationKeys());
     assertTrue(History.getInstance().getRegistrationKeys().contains(JajukEvents.CLEAR_HISTORY));
@@ -62,6 +67,7 @@ public class TestHistory extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testGetHistory() throws Exception {
     assertNotNull(History.getInstance().getItems());
     // has size 0 at the beginning
@@ -97,8 +103,8 @@ public class TestHistory extends JajukTestCase {
     // size the same, not one higher
     assertEquals(4, History.getInstance().getItems().size());
     // new item should be found in history now
-    assertEquals("Item: " + History.getInstance().getHistoryItem(0).getDate(), 124, History
-        .getInstance().getHistoryItem(0).getDate());
+    assertEquals(124, History
+        .getInstance().getHistoryItem(0).getDate(), "Item: " + History.getInstance().getHistoryItem(0).getDate());
   }
 
   /**
@@ -107,6 +113,7 @@ public class TestHistory extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testGetHistoryMaxSize() throws Exception {
     // enable history, should still not be added unless we have the file in the
     // FileManager
@@ -130,14 +137,13 @@ public class TestHistory extends JajukTestCase {
     // size should be equal as the oldest item was purged
     assertEquals(Const.MAX_HISTORY_SIZE, History.getInstance().getItems().size());
     // new element should be in the History at position 0 now
-    assertEquals(History.getInstance().getItems().toString(), max.getID(), History.getInstance()
-        .getHistoryItem(0).getFileId());
+    assertEquals(max.getID(), History.getInstance()
+        .getHistoryItem(0).getFileId(), History.getInstance().getItems().toString());
     // check that the existing items were moved by one (items are always added at the front, so 
     // we have to check in reverse order, i.e. the one before the last added one is at pos 1
     for (int i = 1; i < Const.MAX_HISTORY_SIZE; i++) {
-      assertEquals(History.getInstance().getItems().toString(),
-          files[Const.MAX_HISTORY_SIZE - i].getID(), History.getInstance().getHistoryItem(i)
-              .getFileId());
+      assertEquals(files[Const.MAX_HISTORY_SIZE - i].getID(), History.getInstance().getHistoryItem(i)
+              .getFileId(), History.getInstance().getItems().toString());
     }
     // also check clear
     History.getInstance().clear();
@@ -153,6 +159,7 @@ public class TestHistory extends JajukTestCase {
    * {@link org.jajuk.services.bookmark.History#addItem(java.lang.String, long)}
    * .
    */
+  @Test
   public final void testAddItem() {
     // tested as part of getHistoryMaxSize() above
   }
@@ -160,6 +167,7 @@ public class TestHistory extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.bookmark.History#clear()}.
    */
+  @Test
   public final void testClear() {
     // tested as part of getHistoryMaxSize() above
   }
@@ -169,6 +177,7 @@ public class TestHistory extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testCleanup() throws Exception {
     // enable history
     Conf.setProperty(Const.CONF_HISTORY, "1");
@@ -209,6 +218,7 @@ public class TestHistory extends JajukTestCase {
    * {@link org.jajuk.services.bookmark.History#changeID(java.lang.String, java.lang.String)}
    * .
    */
+  @Test
   public final void testChangeID() throws Exception {
     // enable history
     Conf.setProperty(Const.CONF_HISTORY, "1");
@@ -233,6 +243,7 @@ public class TestHistory extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testClearInt() throws Exception {
     // enable history
     Conf.setProperty(Const.CONF_HISTORY, "1");
@@ -261,6 +272,7 @@ public class TestHistory extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testClearIntKeep() throws Exception {
     addHistoryItem(2, System.currentTimeMillis());
     // now it is there
@@ -278,6 +290,7 @@ public class TestHistory extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testClearIntRemoved() throws Exception {
     addHistoryItem(2, System.currentTimeMillis());
     // now it is there
@@ -295,6 +308,7 @@ public class TestHistory extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testCommit() throws Exception {
     long date = System.currentTimeMillis();
     addHistoryItem(2, date);
@@ -337,6 +351,7 @@ public class TestHistory extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.bookmark.History#load()}.
    */
+  @Test
   public final void testLoad() {
     // tested as part of "testCommit()"
   }
@@ -347,6 +362,7 @@ public class TestHistory extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testLoadCorruptFile() throws Exception {
     // first try when no file is available
     java.io.File frt = SessionService.getConfFileByPath(Const.FILE_HISTORY);
@@ -365,6 +381,7 @@ public class TestHistory extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.services.bookmark.History#getHistoryItem(int)}.
    */
+  @Test
   public final void testGetHistoryItem() throws NumberFormatException, Exception {
     // null without any history
     assertNull(History.getInstance().getHistoryItem(0));
@@ -390,12 +407,13 @@ public class TestHistory extends JajukTestCase {
    * {@link org.jajuk.services.bookmark.History#warning(org.xml.sax.SAXParseException)}
    * .
    */
+  @Test
   public final void testWarningSAXParseException() {
     try {
       History.getInstance().warning(new SAXParseException("testmessage", null));
       fail("Will throw exception");
     } catch (SAXException e) {
-      assertTrue(e.getMessage(), e.getMessage().contains("testmessage"));
+      assertTrue(e.getMessage().contains("testmessage"), e.getMessage());
     }
   }
 
@@ -405,12 +423,13 @@ public class TestHistory extends JajukTestCase {
    * {@link org.jajuk.services.bookmark.History#error(org.xml.sax.SAXParseException)}
    * .
    */
+  @Test
   public final void testErrorSAXParseException() {
     try {
       History.getInstance().error(new SAXParseException("testmessage", null));
       fail("Will throw exception");
     } catch (SAXException e) {
-      assertTrue(e.getMessage(), e.getMessage().contains("testmessage"));
+      assertTrue(e.getMessage().contains("testmessage"), e.getMessage());
     }
   }
 
@@ -420,12 +439,13 @@ public class TestHistory extends JajukTestCase {
    * {@link org.jajuk.services.bookmark.History#fatalError(org.xml.sax.SAXParseException)}
    * .
    */
+  @Test
   public final void testFatalErrorSAXParseException() {
     try {
       History.getInstance().fatalError(new SAXParseException("testmessage", null));
       fail("Will throw exception");
     } catch (SAXException e) {
-      assertTrue(e.getMessage(), e.getMessage().contains("testmessage"));
+      assertTrue(e.getMessage().contains("testmessage"), e.getMessage());
     }
   }
 
@@ -435,6 +455,7 @@ public class TestHistory extends JajukTestCase {
    * {@link org.jajuk.services.bookmark.History#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)}
    * .
    */
+  @Test
   public final void testStartElementStringStringStringAttributes() {
     // tested as part of "commit/load"
   }
@@ -445,6 +466,7 @@ public class TestHistory extends JajukTestCase {
    * {@link org.jajuk.services.bookmark.History#endElement(java.lang.String, java.lang.String, java.lang.String)}
    * .
    */
+  @Test
   public final void testEndElementStringStringString() {
     // tested as part of "commit/load"
   }
@@ -456,6 +478,7 @@ public class TestHistory extends JajukTestCase {
    * {@link org.jajuk.services.bookmark.History#update(org.jajuk.events.JajukEvent)}
    * .
    */
+  @Test
   public final void testUpdateFileLaunched() throws Exception {
     // enable history
     Conf.setProperty(Const.CONF_HISTORY, "1");
@@ -479,6 +502,7 @@ public class TestHistory extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testUpdateDeviceRefresh() throws Exception {
     // enable history
     Conf.setProperty(Const.CONF_HISTORY, "1");
@@ -504,6 +528,7 @@ public class TestHistory extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testUpdateClearHistory() throws Exception {
     // enable history
     Conf.setProperty(Const.CONF_HISTORY, "1");
@@ -529,6 +554,7 @@ public class TestHistory extends JajukTestCase {
    * Test update language changed.
    * 
    */
+  @Test
   public final void testUpdateLanguageChanged() {
     History.getInstance().update(new JajukEvent(JajukEvents.LANGUAGE_CHANGED, null));
   }
@@ -539,6 +565,7 @@ public class TestHistory extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testUpdateFileNameChanged() throws Exception {
     // it seems there are some rare cases where we still have some threads doing
     // some updates,
@@ -553,8 +580,8 @@ public class TestHistory extends JajukTestCase {
     // add the file
     History.getInstance().addItem(file11.getID(), 123);
     // now it is there
-    assertEquals(History.getInstance().getItems().toString(), 1, History.getInstance().getItems()
-        .size());
+    assertEquals(1, History.getInstance().getItems()
+        .size(), History.getInstance().getItems().toString());
     // change from id 11 to 3
     Properties detail = new Properties();
     File file = FileManager.getInstance().getFileByID(file11.getID());
@@ -591,6 +618,7 @@ public class TestHistory extends JajukTestCase {
    * Test update unhandled event.
    * 
    */
+  @Test
   public final void testUpdateUnhandledEvent() {
     History.getInstance().update(new JajukEvent(JajukEvents.BANNED, null));
   }
@@ -600,6 +628,7 @@ public class TestHistory extends JajukTestCase {
    *
    * {@link org.jajuk.services.bookmark.History#getDateFormatter()}.
    */
+  @Test
   public final void testGetDateFormatter() {
     assertNotNull(History.getInstance().getDateFormatter());
   }
@@ -610,6 +639,7 @@ public class TestHistory extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testConstructorAlreadyLaunched() throws Exception {
     // it seems there are some cases where we still have some Queues doing some
     // updates,
@@ -638,7 +668,7 @@ public class TestHistory extends JajukTestCase {
     assertEquals(file3.getID(), ObservationManager.getDetailLastOccurence(
         JajukEvents.FILE_LAUNCHED, Const.DETAIL_CURRENT_FILE_ID));
     // now the file should be in the history already
-    assertEquals(hist.getItems().toString(), 1, hist.getItems().size());
+    assertEquals(1, hist.getItems().size(), hist.getItems().toString());
     assertEquals(file3.getID(), hist.getHistoryItem(0).getFileId());
   }
 }

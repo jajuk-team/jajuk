@@ -20,15 +20,17 @@
  */
 package ext;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.awt.HeadlessException;
 import java.net.URL;
 
-import junit.framework.TestCase;
 
 /**
  * .
  */
-public class TestJSplash extends TestCase {
+public class TestJSplash {
   /**
    * Test method for.
    *
@@ -36,6 +38,7 @@ public class TestJSplash extends TestCase {
    * {@link ext.JSplash#JSplash(java.net.URL, boolean, boolean, boolean, java.lang.String, java.lang.String, java.awt.Font)}
    * .
    */
+  @Test
   public void testJSplash() throws Exception {
     try {
       new JSplash(new URL("http://www.example.com"), true, true, true, "copyright", "version", null);
@@ -50,6 +53,7 @@ public class TestJSplash extends TestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testJSplash2() throws Exception {
     try {
       new JSplash(new URL("http://www.example.com"), true, false, false, "copyright", "version",
@@ -65,12 +69,13 @@ public class TestJSplash extends TestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testJSplashNullURL() throws Exception {
     try {
       new JSplash(null, true, false, false, "copyright", "version", null);
       fail("Should throw exception with null-URL");
     } catch (IllegalArgumentException e) {
-      assertTrue(e.getMessage(), e.getMessage().contains("Invalid URL specified for Splashscreen"));
+      assertTrue(e.getMessage().contains("Invalid URL specified for Splashscreen"), e.getMessage());
     } catch (HeadlessException e) {
       // expected when tests are executed without UI support
     }
@@ -81,6 +86,7 @@ public class TestJSplash extends TestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testSplashOn() throws Exception {
     try {
       JSplash splash = new JSplash(new URL("http://www.example.com"), true, true, true,
@@ -97,6 +103,7 @@ public class TestJSplash extends TestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testSplashOff() throws Exception {
     try {
       JSplash splash = new JSplash(new URL("http://www.example.com"), true, true, true,
@@ -112,6 +119,7 @@ public class TestJSplash extends TestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testSetProgressInt() throws Exception {
     try {
       JSplash splash = new JSplash(new URL("http://www.example.com"), true, true, true,
@@ -128,6 +136,7 @@ public class TestJSplash extends TestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testSetProgressIntString() throws Exception {
     try {
       JSplash splash = new JSplash(new URL("http://www.example.com"), true, true, true,
@@ -145,6 +154,7 @@ public class TestJSplash extends TestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testSetProgressIntString2() throws Exception {
     try {
       JSplash splash = new JSplash(new URL("http://www.example.com"), true, true, false,

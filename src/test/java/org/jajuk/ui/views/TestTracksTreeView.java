@@ -20,6 +20,9 @@
  */
 package org.jajuk.ui.views;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.awt.Component;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
@@ -62,6 +65,7 @@ public class TestTracksTreeView extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.ui.views.TracksTreeView#initUI()}.
    */
+  @Test
   public final void testInitUI() {
     TracksTreeView view = new TracksTreeView();
     tryInitUI(view);
@@ -89,6 +93,7 @@ public class TestTracksTreeView extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.ui.views.TracksTreeView#populateTree()}.
    */
+  @Test
   public final void testPopulateTree() {
     TracksTreeView view = new TracksTreeView();
     tryInitUI(view);
@@ -151,6 +156,7 @@ public class TestTracksTreeView extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.ui.views.TracksTreeView#expand()}.
    */
+  @Test
   public final void testExpand() {
     TracksTreeView view = new TracksTreeView();
     try {
@@ -163,6 +169,7 @@ public class TestTracksTreeView extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.ui.views.TracksTreeView#getDesc()}.
    */
+  @Test
   public final void testGetDesc() {
     TracksTreeView view = new TracksTreeView();
     assertNotNull(view.getDesc());
@@ -171,6 +178,7 @@ public class TestTracksTreeView extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.ui.views.TracksTreeView#TracksTreeView()}.
    */
+  @Test
   public final void testTracksTreeView() {
     new TracksTreeView();
   }
@@ -180,6 +188,7 @@ public class TestTracksTreeView extends JajukTestCase {
    *
    * {@link org.jajuk.ui.views.TracksTreeView#getRegistrationKeys()}.
    */
+  @Test
   public final void testGetRegistrationKeys() {
     TracksTreeView view = new TracksTreeView();
     Set<JajukEvents> set = view.getRegistrationKeys();
@@ -192,6 +201,7 @@ public class TestTracksTreeView extends JajukTestCase {
    *
    * {@link org.jajuk.ui.views.TracksTreeView#populateTreeByGenre()}.
    */
+  @Test
   public final void testPopulateTreeByGenre() {
     TracksTreeView view = new TracksTreeView();
     try {
@@ -206,6 +216,7 @@ public class TestTracksTreeView extends JajukTestCase {
    *
    * {@link org.jajuk.ui.views.TracksTreeView#populateTreeByArtist()}.
    */
+  @Test
   public final void testPopulateTreeByArtist() {
     TracksTreeView view = new TracksTreeView();
     try {
@@ -220,6 +231,7 @@ public class TestTracksTreeView extends JajukTestCase {
    *
    * {@link org.jajuk.ui.views.TracksTreeView#populateTreeByYear()}.
    */
+  @Test
   public final void testPopulateTreeByYear() {
     TracksTreeView view = new TracksTreeView();
     try {
@@ -234,6 +246,7 @@ public class TestTracksTreeView extends JajukTestCase {
    *
    * {@link org.jajuk.ui.views.TracksTreeView#populateTreeByAlbum()}.
    */
+  @Test
   public final void testPopulateTreeByAlbum() {
     TracksTreeView view = new TracksTreeView();
     try {
@@ -248,6 +261,7 @@ public class TestTracksTreeView extends JajukTestCase {
    *
    * {@link org.jajuk.ui.views.TracksTreeView#populateTreeByDiscovery()}.
    */
+  @Test
   public final void testPopulateTreeByDiscovery() {
     TracksTreeView view = new TracksTreeView();
     try {
@@ -262,6 +276,7 @@ public class TestTracksTreeView extends JajukTestCase {
    *
    * {@link org.jajuk.ui.views.TracksTreeView#populateTreeByRate()}.
    */
+  @Test
   public final void testPopulateTreeByRate() {
     TracksTreeView view = new TracksTreeView();
     try {
@@ -276,6 +291,7 @@ public class TestTracksTreeView extends JajukTestCase {
    *
    * {@link org.jajuk.ui.views.TracksTreeView#populateTreeByHits()}.
    */
+  @Test
   public final void testPopulateTreeByHits() {
     TracksTreeView view = new TracksTreeView();
     try {
@@ -291,6 +307,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * {@link org.jajuk.ui.views.TracksTreeView#actionPerformed(java.awt.event.ActionEvent)}
    * .
    */
+  @Test
   public final void testActionPerformed() {
     TracksTreeView view = new TracksTreeView();
     view.actionPerformed(new ActionEvent(this, 1, ""));
@@ -300,6 +317,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * Test tracks tree selection listener.
    * 
    */
+  @Test
   public final void testTracksTreeSelectionListener() {
     TracksTreeView view = new TracksTreeView();
     TracksTreeView.TracksTreeSelectionListener task = view.new TracksTreeSelectionListener();
@@ -314,6 +332,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * Test tracks mouse adapter.
    * 
    */
+  @Test
   public final void testTracksMouseAdapter() {
     TracksTreeView view = new TracksTreeView();
     TracksMouseAdapter ad = view.new TracksMouseAdapter(null);
@@ -356,6 +375,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * Test genre node.
    * 
    */
+  @Test
   public final void testGenreNode() {
     GenreNode ad = new GenreNode(getGenre());
     assertNotNull(ad);
@@ -377,6 +397,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * Test artist node.
    * 
    */
+  @Test
   public final void testArtistNode() {
     ArtistNode ad = new ArtistNode(getArtist());
     assertNotNull(ad);
@@ -398,6 +419,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * Test year node.
    * 
    */
+  @Test
   public final void testYearNode() {
     YearNode ad = new YearNode(getYear());
     assertNotNull(ad);
@@ -419,6 +441,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * Test album node.
    * 
    */
+  @Test
   public final void testAlbumNode() {
     AlbumNode ad = new AlbumNode(getAlbum());
     assertNotNull(ad);
@@ -440,6 +463,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * Test track node.
    * 
    */
+  @Test
   public final void testTrackNode() {
     TrackNode ad = new TrackNode(getTrack());
     assertNotNull(ad);
@@ -463,6 +487,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * Test discovery date node.
    * 
    */
+  @Test
   public final void testDiscoveryDateNode() {
     DiscoveryDateNode ad = new DiscoveryDateNode(null);
     assertNotNull(ad);
@@ -472,6 +497,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * Test tracks tree cell renderer.
    * 
    */
+  @Test
   public final void testTracksTreeCellRenderer() {
     TracksTreeCellRenderer ad = new TracksTreeCellRenderer();
     assertNotNull(ad);
@@ -511,6 +537,7 @@ public class TestTracksTreeView extends JajukTestCase {
    * Test tracks tree expansion listener.
    * 
    */
+  @Test
   public final void testTracksTreeExpansionListener() {
     TracksTreeExpansionListener ad = new TracksTreeExpansionListener();
     assertNotNull(ad);

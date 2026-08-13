@@ -59,9 +59,11 @@
 	<!-- | Tasks definition    | -->
 	<!-- ======================= -->
 
-	<!-- Windows executable creation from jar -->
-	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
-	        :${launch4j.dir}/lib/xstream.jar" />
+	<!-- Note: the launch4j taskdef is declared inside the 'launch4j' target rather than
+	     here, because it is the only one that needs an external installation
+	     (${launch4j.dir}). At the top level it was resolved for every target, so targets
+	     that have nothing to do with Windows packaging - 'test_jajuk' in particular -
+	     failed on a machine without launch4j. -->
 
 	<!--NSIS installer Windows package creation -->
 	<taskdef name="nsis" classname="com.danielreese.nsisant.Task">
@@ -134,6 +136,16 @@
 			</fileset>
 		</copy>
 
+		<!-- Copy Linux-specific runtime dependencies to lib/linux/. The Linux package flattens
+		     them into lib/ (see tarball_linux), but the source distribution needs them too:
+		     they carry the D-Bus transport, without which TestDBusManager fails. -->
+		<mkdir dir='${sources_dist.dir}/lib/linux' />
+		<copy todir='${sources_dist.dir}/lib/linux'>
+			<fileset dir="lib/linux">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+
 		<!-- Copy build-time dependencies (junit ...) specifically to lib/build/ -->
 		<mkdir dir='${sources_dist.dir}/lib/build' />
 		<copy todir='${sources_dist.dir}/lib/build'>
@@ -165,6 +177,9 @@
 
 	<!-- Windows jajuk.exe creation using launch4j-->
 	<target name='launch4j' depends='build_jajuk'>
+		<!-- Windows executable creation from jar. Needs launch4j installed in ${launch4j.dir}. -->
+		<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
+		        :${launch4j.dir}/lib/xstream.jar" />
 		<echo message='Prepare files to build Windows executable' />
 		<mkdir dir='${windows_dist.dir}' />
 		<!--Windows specific -->

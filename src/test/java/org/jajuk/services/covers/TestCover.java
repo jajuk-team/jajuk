@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.covers;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.awt.HeadlessException;
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +46,7 @@ public class TestCover extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testHashCode() throws Exception {
     Cover cover = new Cover(new URL("http://www.example.com/"), CoverType.STANDARD_COVER);
     Cover equal = new Cover(new URL("http://www.example.com/"), CoverType.STANDARD_COVER);
@@ -62,6 +66,7 @@ public class TestCover extends JajukTestCase {
    * {@link org.jajuk.services.covers.Cover#Cover(java.net.URL, org.jajuk.services.covers.Cover.CoverType)}
    * .
    */
+  @Test
   public final void testCoverURLCoverType() throws Exception {
     new Cover(new URL("http://www.example.com/"), CoverType.STANDARD_COVER);
   }
@@ -73,6 +78,7 @@ public class TestCover extends JajukTestCase {
    * {@link org.jajuk.services.covers.Cover#Cover(java.io.File, org.jajuk.services.covers.Cover.CoverType)}
    * .
    */
+  @Test
   public final void testCoverFileCoverType() throws Exception {
     new Cover(new File("testfile.cov"), CoverType.STANDARD_COVER);
   }
@@ -84,6 +90,7 @@ public class TestCover extends JajukTestCase {
    * {@link org.jajuk.services.covers.Cover#compareTo(org.jajuk.services.covers.Cover)}
    * .
    */
+  @Test
   public final void testCompareTo() throws Exception {
     Cover cover = new Cover(new File("/tmp/foo.jpg"), CoverType.STANDARD_COVER);
     Cover equal = new Cover(new File("/tmp/bar.jpg"), CoverType.STANDARD_COVER);
@@ -102,6 +109,7 @@ public class TestCover extends JajukTestCase {
    * {@link org.jajuk.services.covers.Cover#compareTo(org.jajuk.services.covers.Cover)}
    * .
    */
+  @Test
   public final void testOrderStandardCovers() throws Exception {
     Conf.setProperty(Const.FILE_DEFAULT_COVER, "front;back");
     Cover cover1 = new Cover(new File("/tmp/front_foo.png"), CoverType.STANDARD_COVER);
@@ -122,6 +130,7 @@ public class TestCover extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testGetType() throws Exception {
     Cover cover = new Cover(new URL("http://www.example.com/"), CoverType.STANDARD_COVER);
     assertEquals(CoverType.STANDARD_COVER, cover.getType());
@@ -132,6 +141,7 @@ public class TestCover extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testGetURL() throws Exception {
     Cover cover = new Cover(new URL("http://www.example.com/"), CoverType.STANDARD_COVER);
     assertEquals("http://www.example.com/", cover.getURL().toString());
@@ -142,6 +152,7 @@ public class TestCover extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testGetSize() throws Exception {
     File file = File.createTempFile("test", ".txt", new java.io.File(ConstTest.TECH_TESTS_PATH));
     // remove it and re-create it with some content
@@ -156,6 +167,7 @@ public class TestCover extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testGetImage() throws Exception {
     File file = File.createTempFile("test", ".txt", new java.io.File(ConstTest.DEVICES_BASE_PATH));
     Cover cover = new Cover(file, CoverType.NO_COVER);
@@ -174,7 +186,7 @@ public class TestCover extends JajukTestCase {
       fail("Should throw an exception here...");
     } catch (IOException e) {
       // ok here : the local file is missing and its file:// URL cannot be downloaded
-      assertTrue(e.getMessage(), e.getMessage().contains("notexists"));
+      assertTrue(e.getMessage().contains("notexists"), e.getMessage());
     }
     // TODO: more testing is necessary here...
   }
@@ -184,6 +196,7 @@ public class TestCover extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testToString() throws Exception {
     // standard toString
     Cover cover = new Cover(new URL("http://www.example.com/"), CoverType.STANDARD_COVER);
@@ -199,6 +212,7 @@ public class TestCover extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.services.covers.Cover#equals(java.lang.Object)}.
    */
+  @Test
   public final void testEqualsObject() throws Exception {
     Cover cover = new Cover(new URL("http://www.example.com/"), CoverType.STANDARD_COVER);
     Cover equal = new Cover(new URL("http://www.example.com/"), CoverType.STANDARD_COVER);
@@ -215,6 +229,7 @@ public class TestCover extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testGetFile() throws Exception {
     Cover cover = new Cover(new URL("http://www.example.com/"), CoverType.REMOTE_COVER);
     Cover cover2 = new Cover(TestHelpers.getFile().getFIO(), CoverType.STANDARD_COVER);

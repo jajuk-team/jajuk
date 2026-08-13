@@ -20,6 +20,9 @@
  */
 package org.jajuk.util.error;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.jajuk.JajukTestCase;
 
 /**
@@ -31,6 +34,7 @@ public class TestJajukException extends JajukTestCase {
    *
    * {@link org.jajuk.util.error.JajukException#JajukException(int)}.
    */
+  @Test
   public void testJajukExceptionInt() {
     new JajukException(25);
   }
@@ -41,6 +45,7 @@ public class TestJajukException extends JajukTestCase {
    * {@link org.jajuk.util.error.JajukException#JajukException(int, java.lang.Throwable)}
    * .
    */
+  @Test
   public void testJajukExceptionIntThrowable() {
     new JajukException(26, new Throwable("Testexception"));
   }
@@ -48,6 +53,7 @@ public class TestJajukException extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.error.JajukException#getCode()}.
    */
+  @Test
   public void testGetCode() {
     JajukException exc = new JajukException(27);
     assertEquals(27, exc.getCode());
@@ -59,15 +65,17 @@ public class TestJajukException extends JajukTestCase {
    * {@link org.jajuk.util.error.JajukException#JajukException(int, java.lang.String, java.lang.Throwable)}
    * .
    */
+  @Test
   public void testJajukExceptionIntStringThrowable() {
     JajukException exc = new JajukException(28, "testexceptiontext", new Throwable("Testthrowable"));
-    assertTrue(exc.getMessage(), exc.getMessage().contains("testexceptiontext"));
+    assertTrue(exc.getMessage().contains("testexceptiontext"), exc.getMessage());
   }
 
   /**
    * Test jajuk exception int string throwable null.
    * 
    */
+  @Test
   public void testJajukExceptionIntStringThrowableNull() {
     new JajukException(28, null, new Throwable("Testthrowable"));
   }
@@ -78,15 +86,17 @@ public class TestJajukException extends JajukTestCase {
    * {@link org.jajuk.util.error.JajukException#JajukException(int, java.lang.String)}
    * .
    */
+  @Test
   public void testJajukExceptionIntString() {
     JajukException exc = new JajukException(29, "testexceptiontext2");
-    assertTrue(exc.getMessage(), exc.getMessage().contains("testexceptiontext2"));
+    assertTrue(exc.getMessage().contains("testexceptiontext2"), exc.getMessage());
   }
 
   /**
    * Test jajuk exception int string null.
    * 
    */
+  @Test
   public void testJajukExceptionIntStringNull() {
     new JajukException(29, (String) null);
   }

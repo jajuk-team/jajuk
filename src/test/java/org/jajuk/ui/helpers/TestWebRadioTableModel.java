@@ -20,6 +20,9 @@
  */
 package org.jajuk.ui.helpers;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -28,7 +31,6 @@ import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.services.webradio.WebRadioOrigin;
 import org.jajuk.util.Const;
-import org.junit.Test;
 
 /**
  * Test methods for {@link org.jajuk.ui.helpers.WebRadioTableModel}.

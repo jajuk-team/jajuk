@@ -19,6 +19,9 @@
  */
 package org.jajuk.ui.actions;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -37,6 +40,7 @@ import org.jajuk.util.error.JajukException;
 import org.xml.sax.SAXException;
 
 public class TestRatingsImportExport extends JajukTestCase {
+  @Test
   public void testExportImport() throws IOException, SAXException, JajukException,
       ParserConfigurationException {
     ExportRatingsAction exportRatings = new ExportRatingsAction();
@@ -53,9 +57,9 @@ public class TestRatingsImportExport extends JajukTestCase {
     // now it should exist and have some content
     assertTrue(file.exists());
     String str = FileUtils.readFileToString(file);
-    assertTrue(str, StringUtils.isNotBlank(str));
-    assertTrue(str, str.contains("<" + Const.XML_TRACKS));
-    assertFalse(str, str.contains(" " + Const.XML_TRACK_HITS));
+    assertTrue(StringUtils.isNotBlank(str), str);
+    assertTrue(str.contains("<" + Const.XML_TRACKS), str);
+    assertFalse(str.contains(" " + Const.XML_TRACK_HITS), str);
     // now with some content
     String id = TestHelpers.getTrack(5).getID();
     Track track = TrackManager.getInstance().getTrackByID(id);
@@ -69,11 +73,11 @@ public class TestRatingsImportExport extends JajukTestCase {
     // now it should exist and have some content
     assertTrue(file.exists());
     str = FileUtils.readFileToString(file);
-    assertTrue(str, StringUtils.isNotBlank(str));
-    assertTrue(str, str.contains("<" + Const.XML_TRACKS));
+    assertTrue(StringUtils.isNotBlank(str), str);
+    assertTrue(str.contains("<" + Const.XML_TRACKS), str);
     // it should contain the track id and the rate that we set
-    assertFalse(str, str.contains("id=\"" + id + "\""));
-    assertFalse(str, str.contains(" " + Const.XML_TRACK_HITS + "=\"29\""));
+    assertFalse(str.contains("id=\"" + id + "\""), str);
+    assertFalse(str.contains(" " + Const.XML_TRACK_HITS + "=\"29\""), str);
     // change the rate that we use internally and set it banned
     assertEquals(29l, track.getHits());
     assertEquals(true, track.getValue(Const.XML_TRACK_BANNED));

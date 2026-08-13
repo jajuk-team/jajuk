@@ -20,6 +20,9 @@
  */
 package org.jajuk.base;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +39,7 @@ public class TestAlbum extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Album#getTitle()}.
    */
+  @Test
   public final void testGetDesc() {
     Album album = new Album("1", "name", 123);
     assertNotNull(album.getTitle());
@@ -45,6 +49,7 @@ public class TestAlbum extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Album#getAny()}.
    */
+  @Test
   public final void testGetAny() {
     // need item managers to do this step
     StartupCollectionService.registerItemManagers();
@@ -58,6 +63,7 @@ public class TestAlbum extends JajukTestCase {
    * Test get any album artist.
    * 
    */
+  @Test
   public final void testGetAnyAlbumArtist() {
     // need item managers to do this step
     StartupCollectionService.registerItemManagers();
@@ -74,8 +80,7 @@ public class TestAlbum extends JajukTestCase {
     album.getTracksCache().add(track);
     assertFalse(album.getAny().isEmpty());
     /*
-     * assertFalse("getAny() should return differently as soon as we have genre and year" ,
-     * str.equals(album.getAny()));
+     * assertFalse(* str.equals(album.getAny()), "getAny() should return differently as soon as we have genre and year");
      */
   }
 
@@ -120,6 +125,7 @@ public class TestAlbum extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Album#getXMLTag()}.
    */
+  @Test
   public final void testGetLabel() {
     Album album = new Album("1", "name", 123);
     assertFalse(album.getXMLTag().isEmpty());
@@ -130,6 +136,7 @@ public class TestAlbum extends JajukTestCase {
    *
    * {@link org.jajuk.base.Album#getHumanValue(java.lang.String)}.
    */
+  @Test
   public final void testGetHumanValue() {
     // some of the lines below can require the ItemManagers to be registered
     // correctly
@@ -151,8 +158,7 @@ public class TestAlbum extends JajukTestCase {
     assertFalse(album.getHumanValue(Const.XML_TRACK_LENGTH).isEmpty());
     assertFalse(album.getHumanValue(Const.XML_TRACKS).isEmpty());
     assertFalse(album.getHumanValue(Const.XML_TRACK_DISCOVERY_DATE).isEmpty());
-    assertEquals("Value: " + album.getHumanValue(Const.XML_TRACK_HITS), "0",
-        album.getHumanValue(Const.XML_TRACK_HITS));
+    assertEquals("0", album.getHumanValue(Const.XML_TRACK_HITS), "Value: " + album.getHumanValue(Const.XML_TRACK_HITS));
     assertFalse(album.getHumanValue(Const.XML_ANY).isEmpty());
     assertTrue(album.getHumanValue(Const.XML_ALBUM_ARTIST).isEmpty());
     assertTrue(album.getHumanValue(Const.XML_ALBUM_DISCOVERED_COVER).isEmpty());
@@ -161,6 +167,7 @@ public class TestAlbum extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Album#getIconRepresentation()}.
    */
+  @Test
   public final void testGetIconRepresentation() {
     Album album = new Album("1", "name", 123);
     assertNotNull(album.getIconRepresentation());
@@ -169,6 +176,7 @@ public class TestAlbum extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Album#getRate()}.
    */
+  @Test
   public final void testGetRate() {
     Album album = new Album("1", "name", 123);
     assertEquals(0, album.getRate());
@@ -185,6 +193,7 @@ public class TestAlbum extends JajukTestCase {
    * {@link org.jajuk.base.Album#Album(java.lang.String, java.lang.String, java.lang.String, long)}
    * .
    */
+  @Test
   public final void testAlbum() {
     new Album("1", "name", 123);
   }
@@ -192,6 +201,7 @@ public class TestAlbum extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Album#getDiscID()}.
    */
+  @Test
   public final void testGetDiscID() {
     Album album = new Album("1", "name", 123);
     assertEquals(123, album.getDiscID());
@@ -200,6 +210,7 @@ public class TestAlbum extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Album#getName2()}.
    */
+  @Test
   public final void testGetName2() {
     Album album = new Album("1", "name", 123);
     assertEquals("name", album.getName2());
@@ -210,6 +221,7 @@ public class TestAlbum extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Album#toString()}.
    */
+  @Test
   public final void testToString() {
     Album album = new Album("1", "name", 123);
     TestHelpers.ToStringTest(album);
@@ -220,6 +232,7 @@ public class TestAlbum extends JajukTestCase {
    *
    * {@link org.jajuk.base.Album#compareTo(org.jajuk.base.Album)}.
    */
+  @Test
   public final void testCompareTo() {
     Album album = new Album("1", "name", 123);
     Album equal = new Album("1", "name", 123);
@@ -230,6 +243,7 @@ public class TestAlbum extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Album#isUnknown()}.
    */
+  @Test
   public final void testIsUnknown() {
     Album album = new Album("1", "name", 123);
     assertFalse(album.isUnknown());
@@ -242,6 +256,7 @@ public class TestAlbum extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testFindCover1() throws Exception {
     Album album = new Album("1", "name", 123);
     // no file at first
@@ -272,31 +287,32 @@ public class TestAlbum extends JajukTestCase {
     DeviceManager.getInstance().removeDevice(tmpDevice);
   }
 
+  @Test
   public final void testFindCover2() throws Exception {
     // need item managers to do this step
     StartupCollectionService.registerItemManagers();
     Album album = new Album("1", "name", 123);
-    assertNull("null for new empty album", album.findCover());
+    assertNull(album.findCover(), "null for new empty album");
     assertFalse(album.containsCover());
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, Const.COVER_NONE);
-    assertNull("still null if we have 'none' set as cover", album.findCover());
+    assertNull(album.findCover(), "still null if we have 'none' set as cover");
     assertFalse(album.containsCover());
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, "notexist");
-    assertNull("still null if we have an invalid file set as cover", album.findCover());
+    assertNull(album.findCover(), "still null if we have an invalid file set as cover");
     album.removeProperty(Const.XML_ALBUM_DISCOVERED_COVER);
     album.getTracksCache().add(getTrack(album));
     assertFalse(album.getAny().isEmpty());
-    assertNull("still null with a track which has no cover in the directory", album.findCover());
+    assertNull(album.findCover(), "still null with a track which has no cover in the directory");
     assertFalse(album.containsCover());
     java.io.File file = java.io.File.createTempFile("jajuk_test", ".png", new java.io.File(
         ConstTest.TECH_TESTS_PATH));
     album.setProperty(Const.XML_ALBUM_DISCOVERED_COVER, file.getAbsolutePath());
-    assertNotNull("now we should find the cover", album.findCover());
+    assertNotNull(album.findCover(), "now we should find the cover");
     assertTrue(album.containsCover());
     album.removeProperty(Const.XML_ALBUM_DISCOVERED_COVER);
     album.setProperty(Const.XML_ALBUM_SELECTED_COVER, file.getAbsolutePath());
-    assertNotNull("now we should find the selected cover", album.findCover());
-    assertFalse("Still not a discovered cover now", album.containsCover());
+    assertNotNull(album.findCover(), "now we should find the selected cover");
+    assertFalse(album.containsCover(), "Still not a discovered cover now");
   }
 
   /**
@@ -304,6 +320,7 @@ public class TestAlbum extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testGetThumbnail() throws Exception {
     Album album = new Album("1", "name", 123);
     assertNotNull(album.getThumbnail(100));
@@ -314,6 +331,7 @@ public class TestAlbum extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Album#getGenre()}.
    */
+  @Test
   public final void testGetGenre() {
     Album album = new Album("1", "name", 123);
     // now genre without track
@@ -326,6 +344,7 @@ public class TestAlbum extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Album#getArtist()}.
    */
+  @Test
   public final void testGetArtist() {
     Album album = new Album("1", "name", 123);
     // no artist without track
@@ -343,6 +362,7 @@ public class TestAlbum extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Album#getYear()}.
    */
+  @Test
   public final void testGetYear() {
     Album album = new Album("1", "name", 123);
     // no artist without track
@@ -360,6 +380,7 @@ public class TestAlbum extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Album#getDuration()}.
    */
+  @Test
   public final void testGetDuration() {
     Album album = new Album("1", "name", 123);
     // zero without any track
@@ -375,6 +396,7 @@ public class TestAlbum extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Album#getNbOfTracks()}.
    */
+  @Test
   public final void testGetNbOfTracks() {
     Album album = new Album("1", "name", 123);
     // zero without any track
@@ -390,6 +412,7 @@ public class TestAlbum extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Album#getHits()}.
    */
+  @Test
   public final void testGetHits() {
     Album album = new Album("1", "name", 123);
     // zero without any track
@@ -431,6 +454,7 @@ public class TestAlbum extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testContainsReadyFiles() throws Exception {
     Album album = new Album("1", "name", 123);
     // no files
@@ -445,6 +469,7 @@ public class TestAlbum extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Album#getDiscoveryDate()}.
    */
+  @Test
   public final void testGetDiscoveryDate() {
     Album album = new Album("1", "name", 123);
     assertNull(album.getDiscoveryDate());
@@ -461,6 +486,7 @@ public class TestAlbum extends JajukTestCase {
    * @throws NoSuchFieldException the no such field exception
    */
   @SuppressWarnings("unchecked")
+  @Test
   public final void testResetTracks() throws IllegalAccessException, NoSuchFieldException {
     Album album = new Album("1", "name", 123);
     // nothing happens without tracks
@@ -480,6 +506,7 @@ public class TestAlbum extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Album#getTracksCache()}.
    */
+  @Test
   public final void testGetTracksCache() {
     // tested in the other tests
   }
@@ -487,6 +514,7 @@ public class TestAlbum extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Album#getAnyTrack()}.
    */
+  @Test
   public final void testGetAnyTrack() {
     Album album = new Album("1", "name", 123);
     // nothing to return without tracks
@@ -503,6 +531,7 @@ public class TestAlbum extends JajukTestCase {
    *
    * {@link org.jajuk.base.Album#setAvailableThumb(int, boolean)}.
    */
+  @Test
   public final void testSetAndIsAvailableThumb() {
     Album album = new Album("1", "name", 123);
     assertFalse(album.isThumbAvailable(50));
@@ -517,6 +546,7 @@ public class TestAlbum extends JajukTestCase {
    * Test get artist or album artist_ unknown.
    * 
    */
+  @Test
   public final void testGetArtistOrAlbumArtist_Unknown() {
     StartupCollectionService.registerItemManagers();
     Album album = new Album("1", "name", 123);
@@ -528,6 +558,7 @@ public class TestAlbum extends JajukTestCase {
    * Test get artist or album artist_ album artist.
    * 
    */
+  @Test
   public final void testGetArtistOrAlbumArtist_AlbumArtist() {
     // need item managers to do this step
     StartupCollectionService.registerItemManagers();
@@ -548,6 +579,7 @@ public class TestAlbum extends JajukTestCase {
    * Test get artist or album artist_ track artist.
    * 
    */
+  @Test
   public final void testGetArtistOrAlbumArtist_TrackArtist() {
     // need item managers to do this step
     StartupCollectionService.registerItemManagers();
@@ -563,6 +595,7 @@ public class TestAlbum extends JajukTestCase {
    * Test get artist or album artist_ track artist2.
    * 
    */
+  @Test
   public final void testGetArtistOrAlbumArtist_TrackArtist2() {
     // need item managers to do this step
     StartupCollectionService.registerItemManagers();
@@ -579,6 +612,7 @@ public class TestAlbum extends JajukTestCase {
    * Test get artist or album artist_ album artist unknown.
    * 
    */
+  @Test
   public final void testGetArtistOrAlbumArtist_AlbumArtistUnknown() {
     // need item managers to do this step
     StartupCollectionService.registerItemManagers();
@@ -594,6 +628,7 @@ public class TestAlbum extends JajukTestCase {
     assertEquals("artistname", album.getArtistOrALbumArtist());
   }
 
+  @Test
   public final void testSeemsUnknown() {
     // need item managers to do this step
     StartupCollectionService.registerItemManagers();

@@ -20,10 +20,13 @@
  */
 package org.jajuk;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import junit.framework.TestCase;
 
 import org.jajuk.services.core.SessionService;
 import org.jajuk.util.UtilSystem;
@@ -36,20 +39,19 @@ import org.jajuk.util.log.Log;
  * <br/> Note that this test only work
  * when redirecting stdin et stderr to a file named /tmp/jajuk_out.log
  */
-public class LogChecker extends TestCase {
+public class LogChecker {
   /** The Constant FILE_PATH.   */
   private static final File FILE_PATH = SessionService.getConfFileByPath("jajuk.log");
   private String logs;
 
-  @Override
+  @BeforeEach
   public void setUp() throws Exception {
     try {
       logs = UtilSystem.readFile(FILE_PATH.getAbsolutePath()).toString();
     } catch (JajukException e) {
       // if an exception occurs, ensure it is a "FileNotFound"
-      assertNotNull("Should have an underlying cause when catching JajukException", e.getCause());
-      assertTrue("We only accept FileNotFoundException as valid exception in this test",
-          e.getCause() instanceof FileNotFoundException);
+      assertNotNull(e.getCause(), "Should have an underlying cause when catching JajukException");
+      assertTrue(e.getCause() instanceof FileNotFoundException, "We only accept FileNotFoundException as valid exception in this test");
       // set string to empty to not fail any of the tests in this case
       logs = "";
       // also log a warning to indicate that this test did not do anything
@@ -60,6 +62,7 @@ public class LogChecker extends TestCase {
   /**
    * Check for "Overflow" string.
    */
+  @Test
   public void testOverflow() {
     assertFalse(logs.matches(".*Event overflow for.*"));
   }
@@ -67,6 +70,7 @@ public class LogChecker extends TestCase {
   /**
    * Check for playtime rate issue.
    */
+  @Test
   public void testPreferences() {
     assertFalse(logs.matches(".*Playtime rate > 1 for.*"));
   }
@@ -74,6 +78,7 @@ public class LogChecker extends TestCase {
   /**
    * Check for play time outs.
    */
+  @Test
   public void testPlayOOT() {
     assertFalse(logs.matches("OOT Mplayer process.*"));
   }
@@ -82,6 +87,7 @@ public class LogChecker extends TestCase {
    * Check for EDT violations (this test is required but far not enough as most
    * of the time, we don't log this kind of errors).
    */
+  @Test
   public void testOutEDT() {
     assertFalse(logs.matches("creation must be done on Event Dispatch Thread "));
   }

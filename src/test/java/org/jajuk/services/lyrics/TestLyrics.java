@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.lyrics;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -61,6 +64,7 @@ public class TestLyrics extends JajukTestCase {
   /**
    * Test Lyricsmania provider response to get lyrics.
    */
+  @Test
   public void testLyricsManiaWeb() throws Exception {
     GenericWebLyricsProvider provider = new LyricsManiaWebLyricsProvider();
     testWeb(provider);
@@ -69,6 +73,7 @@ public class TestLyrics extends JajukTestCase {
   /**
    * Test Lyricsmania provider response to get lyrics.
    */
+  @Test
   public void testLyricsManiaWebService() {
     GenericWebLyricsProvider provider = new LyricsManiaWebLyricsProvider();
     testWebService(provider);
@@ -81,6 +86,7 @@ public class TestLyrics extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testPrivateConstructor() throws Exception {
     // For EMMA code-coverage tests
     TestHelpers.executePrivateConstructor(LyricsService.class);
@@ -89,6 +95,7 @@ public class TestLyrics extends JajukTestCase {
   /**
    * Test provider loading.
    */
+  @Test
   public void testProvidersLoading() {
     LyricsService.loadProviders();
     List<ILyricsProvider> providers = LyricsService.getProviders();
@@ -127,9 +134,7 @@ public class TestLyrics extends JajukTestCase {
       Log.fatal("In Sonar this can happen, seems we do not have internet access there...");
       return;
     }
-    assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics,
-            StringUtils.isNotBlank(lyrics));
-    assertTrue("Lyrics(" + provider.getProviderHostname() + "): " + lyrics,
-            lyrics.contains(TESTED_WORD));
+    assertTrue(StringUtils.isNotBlank(lyrics), "Lyrics(" + provider.getProviderHostname() + "): " + lyrics);
+    assertTrue(lyrics.contains(TESTED_WORD), "Lyrics(" + provider.getProviderHostname() + "): " + lyrics);
   }
 }

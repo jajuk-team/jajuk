@@ -20,11 +20,13 @@
  */
 package org.jajuk.base;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.IOException;
 
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
-import org.junit.Test;
 
 public class TestTrack extends JajukTestCase {
   /**

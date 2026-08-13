@@ -20,6 +20,9 @@
  */
 package org.jajuk.util.filters;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -38,6 +41,7 @@ public class TestDirectoryFilter extends JajukTestCase {
    * {@link org.jajuk.util.filters.DirectoryFilter#accept(java.io.File)}.
    * @throws IOException 
    */
+  @Test
   public void testAcceptFile() throws IOException {
     assertTrue(DirectoryFilter.getInstance().accept(new File(ConstTest.TEMP_PATH)));
     assertFalse(DirectoryFilter.getInstance().accept(TestHelpers.getFile().getFIO()));
@@ -48,6 +52,7 @@ public class TestDirectoryFilter extends JajukTestCase {
    *
    * {@link org.jajuk.util.filters.DirectoryFilter#getDescription()}.
    */
+  @Test
   public void testGetDescription() {
     // contents is locale specific
     assertTrue(StringUtils.isNotBlank(DirectoryFilter.getInstance().getDescription()));
@@ -58,6 +63,7 @@ public class TestDirectoryFilter extends JajukTestCase {
    *
    * {@link org.jajuk.util.filters.DirectoryFilter#getInstance()}.
    */
+  @Test
   public void testGetInstance() {
     assertNotNull(DirectoryFilter.getInstance());
   }

@@ -20,6 +20,8 @@
  */
 package org.jajuk.util.error;
 
+import org.junit.jupiter.api.Test;
+
 import org.jajuk.JajukTestCase;
 
 /**
@@ -32,6 +34,7 @@ public class TestNoneAccessibleFileException extends JajukTestCase {
    * {@link org.jajuk.util.error.NoneAccessibleFileException#NoneAccessibleFileException(int)}
    * .
    */
+  @Test
   public void testNoneAccessibleFileExceptionInt() {
     new NoneAccessibleFileException(101);
   }
@@ -42,6 +45,7 @@ public class TestNoneAccessibleFileException extends JajukTestCase {
    * {@link org.jajuk.util.error.NoneAccessibleFileException#NoneAccessibleFileException(int, java.lang.Throwable)}
    * .
    */
+  @Test
   public void testNoneAccessibleFileExceptionIntThrowable() {
     new NoneAccessibleFileException(23, new Throwable("testexception"));
   }

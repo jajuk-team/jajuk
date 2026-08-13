@@ -1,17 +1,21 @@
 package org.jajuk.base;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.jajuk.TestHelpers;
 import org.jajuk.services.startup.StartupCollectionService;
 
-public class TestTrackComparator extends TestCase {
-    @Override
+public class TestTrackComparator {
+    @BeforeEach
     public void setUp() {
         StartupCollectionService.registerItemManagers();
     }
 
+    @Test
     public void testBuildIdenticalTestFootprint() {
         TrackComparator comparator = new TrackComparator(TrackComparator.TrackComparatorType.ALBUM);
         Track track = createTrack();
@@ -19,6 +23,7 @@ public class TestTrackComparator extends TestCase {
         assertEquals("74namename2202010163album-artist", comparator.buildIdenticalTestFootprint(track));
     }
 
+    @Test
     public void testBuildIdenticalTestFootprintUnknown() {
         TrackComparator comparator = new TrackComparator(TrackComparator.TrackComparatorType.ALBUM);
         Track track = createUnknownTrack();
@@ -26,6 +31,7 @@ public class TestTrackComparator extends TestCase {
         assertEquals("unknown10163", comparator.buildIdenticalTestFootprint(track));
     }
 
+    @Test
     public void testCompareEqualsForAllTypes() {
         Track track = createTrack();
         for (TrackComparator.TrackComparatorType type : TrackComparator.TrackComparatorType.values()) {
@@ -35,6 +41,7 @@ public class TestTrackComparator extends TestCase {
         }
     }
 
+    @Test
     public void testCompareNotEqualsForAllTypes() {
         Track track = createTrack();
         Track trackUnknown = createUnknownTrack();
@@ -45,6 +52,7 @@ public class TestTrackComparator extends TestCase {
         }
     }
 
+    @Test
     public void testCompareRandom() {
         for (int i = 0;i < 1000;i++) {
             compareRandom();
@@ -67,32 +75,27 @@ public class TestTrackComparator extends TestCase {
             // the contract is always correctly implemented
 
             if (ret12 < 0 && ret23 < 0) {
-                assertTrue("If track1 < track2 < track3 also track1 < track3 should hold, but" +
+                assertTrue(ret13 < 0, "If track1 < track2 < track3 also track1 < track3 should hold, but" +
                                 "failed for " + type + ": \n" +
                                 track1 + "\"" +
                                 track2 + "\"" +
-                                track3 + "\n",
-                        ret13 < 0);
+                                track3 + "\n");
             } else if (ret12 > 0 && ret23 > 0) {
-                assertTrue("If track1 > track2 > track3 also track1 > track3 should hold, but" +
+                assertTrue(ret13 > 0, "If track1 > track2 > track3 also track1 > track3 should hold, but" +
                                 "failed for " + type + ": \n" +
                                 track1 + "\"" +
                                 track2 + "\"" +
-                                track3 + "\n",
-                        ret13 > 0);
+                                track3 + "\n");
             } else if (ret12 == 0 && ret23 == 0) {
-                assertEquals("If track1 == track2 == track3 also track1 == track3 should hold, but" +
+                assertEquals(0, ret13, "If track1 == track2 == track3 also track1 == track3 should hold, but" +
                         "failed for " + type + ": \n" +
                         track1 + "\"" +
                         track2 + "\"" +
-                        track3 + "\n",
-                        0, ret13);
+                        track3 + "\n");
             }
 
-            assertEquals("Comparing track1 to track2 should result in the same as comparing track2 to track1",
-                    ret12 * -1, comparator.compare(track2, track1));
-            assertEquals("Comparing track2 to track3 should result in the same as comparing track3 to track2",
-                    ret23 * -1, comparator.compare(track3, track2));
+            assertEquals(ret12 * -1, comparator.compare(track2, track1), "Comparing track1 to track2 should result in the same as comparing track2 to track1");
+            assertEquals(ret23 * -1, comparator.compare(track3, track2), "Comparing track2 to track3 should result in the same as comparing track3 to track2");
 
         }
     }
@@ -123,6 +126,7 @@ public class TestTrackComparator extends TestCase {
         }
     }
 
+    @Test
     public void testComparator() {
         for (TrackComparator.TrackComparatorType type : TrackComparator.TrackComparatorType.values()) {
             TrackComparator comparator = new TrackComparator(type);

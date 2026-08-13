@@ -20,6 +20,9 @@
  */
 package org.jajuk.util;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.jajuk.JajukTestCase;
 
 import java.net.URL;
@@ -37,6 +40,7 @@ public class TestCoverManager extends JajukTestCase {
    * @throws Exception the exception
    *                   {@link org.jajuk.util.CoverManager#getRemoteCoversList(List, int)}.
    */
+  @Test
   public void testGetRemoteCoversList() throws Exception {
     List<String> artistsParts = List.of(ARTIST, ALBUM);
     List<URL> urls = CoverManager.getRemoteCoversList(artistsParts, 5);
@@ -44,25 +48,24 @@ public class TestCoverManager extends JajukTestCase {
     assertTrue(urls.size() <= 5);
     // Act & Assert
     for (int i = 0; i < urls.size(); i++) {
-      assertNotNull("URL at index " + i + " must not be null", urls.get(i));
+      assertNotNull(urls.get(i), "URL at index " + i + " must not be null");
 
       String urlStr = urls.get(i).toString();
-      assertTrue("URL at index " + i + " must use http or https protocol: " + urlStr,
-              urlStr.startsWith("http://") || urlStr.startsWith("https://"));
+      assertTrue(urlStr.startsWith("http://") || urlStr.startsWith("https://"), "URL at index " + i + " must use http or https protocol: " + urlStr);
     }
   }
 
+  @Test
   public void testFetchFromWikimedia() throws Exception {
     List<URL> urls = CoverManager.fetchFromWikimedia("Ben Harper", "The Will to Live", 5);
     assertFalse(urls.isEmpty());
     assertTrue(urls.size() <= 5);
     // Act & Assert
     for (int i = 0; i < urls.size(); i++) {
-      assertNotNull("URL at index " + i + " must not be null", urls.get(i));
+      assertNotNull(urls.get(i), "URL at index " + i + " must not be null");
 
       String urlStr = urls.get(i).toString();
-      assertTrue("URL at index " + i + " must use http or https protocol: " + urlStr,
-              urlStr.startsWith("http://") || urlStr.startsWith("https://"));
+      assertTrue(urlStr.startsWith("http://") || urlStr.startsWith("https://"), "URL at index " + i + " must use http or https protocol: " + urlStr);
     }
   }
 

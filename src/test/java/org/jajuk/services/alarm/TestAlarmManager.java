@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.alarm;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.Calendar;
 import java.util.Set;
 
@@ -49,6 +52,7 @@ public class TestAlarmManager extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testGetInstance() throws Exception {
     Conf.setProperty(Const.CONF_ALARM_ENABLED, "true");
     assertNotNull(AlarmManager.getInstance());
@@ -62,6 +66,7 @@ public class TestAlarmManager extends JajukTestCase {
    * {@link org.jajuk.services.alarm.AlarmManager#update(org.jajuk.events.JajukEvent)}
    * .
    */
+  @Test
   public void testUpdate() {
     AlarmManager.getInstance().update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
   }
@@ -70,6 +75,7 @@ public class TestAlarmManager extends JajukTestCase {
    * Test update2.
    * 
    */
+  @Test
   public void testUpdate2() {
     Conf.setProperty(Const.CONF_ALARM_ENABLED, "true");
     AlarmManager.getInstance().update(new JajukEvent(JajukEvents.ALARMS_CHANGE));
@@ -79,6 +85,7 @@ public class TestAlarmManager extends JajukTestCase {
    * Test update3.
    * 
    */
+  @Test
   public void testUpdate3() {
     Conf.setProperty(Const.CONF_ALARM_ENABLED, "true");
     Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_ITEM);
@@ -89,6 +96,7 @@ public class TestAlarmManager extends JajukTestCase {
    * Test update4.
    * 
    */
+  @Test
   public void testUpdate4() {
     Conf.setProperty(Const.CONF_ALARM_ENABLED, "true");
     Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_BESTOF);
@@ -99,6 +107,7 @@ public class TestAlarmManager extends JajukTestCase {
    * Test update5.
    * 
    */
+  @Test
   public void testUpdate5() {
     Conf.setProperty(Const.CONF_ALARM_ENABLED, "true");
     Conf.setProperty(Const.CONF_ALARM_MODE, Const.STARTUP_MODE_NOVELTIES);
@@ -110,6 +119,7 @@ public class TestAlarmManager extends JajukTestCase {
    *
    * {@link org.jajuk.services.alarm.AlarmManager#getRegistrationKeys()}.
    */
+  @Test
   public void testGetRegistrationKeys() {
     Set<JajukEvents> set = AlarmManager.getInstance().getRegistrationKeys();
     assertTrue(set.contains(JajukEvents.ALARMS_CHANGE));
@@ -121,6 +131,7 @@ public class TestAlarmManager extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testTriggerAlarm() throws Exception {
     Calendar cal = Calendar.getInstance();
     // add one second to let it be triggered immedately

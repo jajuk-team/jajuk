@@ -20,6 +20,9 @@
  */
 package org.jajuk.base;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.jajuk.JajukTestCase;
 import org.jajuk.services.startup.StartupCollectionService;
 import org.jajuk.util.Const;
@@ -37,6 +40,7 @@ public class TestTypeManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.TypeManager#getXMLTag()}.
    */
+  @Test
   public void testGetLabel() {
     assertEquals(Const.XML_TYPES, TypeManager.getInstance().getXMLTag());
   }
@@ -44,6 +48,7 @@ public class TestTypeManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.TypeManager#getInstance()}.
    */
+  @Test
   public void testGetInstance() {
     assertNotNull(TypeManager.getInstance());
   }
@@ -54,6 +59,7 @@ public class TestTypeManager extends JajukTestCase {
    * {@link org.jajuk.base.TypeManager#registerType(java.lang.String, java.lang.String, java.lang.Class, java.lang.Class)}
    * .
    */
+  @Test
   public void testRegisterType() {
     Type type = TypeManager.getInstance().registerType("testtype", "tst", null, null);
     assertNotNull(type);
@@ -68,6 +74,7 @@ public class TestTypeManager extends JajukTestCase {
    *
    * {@link org.jajuk.base.TypeManager#isExtensionSupported(java.lang.String)}.
    */
+  @Test
   public void testIsExtensionSupported() {
     // not supported initially
     assertFalse(TypeManager.getInstance().isExtensionSupported("tst"));
@@ -82,6 +89,7 @@ public class TestTypeManager extends JajukTestCase {
    *
    * {@link org.jajuk.base.TypeManager#getTypeByExtension(java.lang.String)}.
    */
+  @Test
   public void testGetTypeByExtension() {
     // not supported initially
     assertNull(TypeManager.getInstance().getTypeByExtension("tst"));
@@ -96,6 +104,7 @@ public class TestTypeManager extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testGetAllMusicTypes() throws Exception {
     // we need the ItemManagers when using properties
     StartupCollectionService.registerItemManagers();
@@ -121,6 +130,7 @@ public class TestTypeManager extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testGetTypeListString() throws Exception {
     // no type initially
     assertEquals("", TypeManager.getInstance().getTypeListString());
@@ -139,6 +149,7 @@ public class TestTypeManager extends JajukTestCase {
    *
    * {@link org.jajuk.base.TypeManager#getTypeByID(java.lang.String)}.
    */
+  @Test
   public void testGetTypeByID() {
     // not available initially
     assertNull(TypeManager.getInstance().getTypeByID("tst"));
@@ -155,6 +166,7 @@ public class TestTypeManager extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testGetTypes() throws Exception {
     // no type initially
     assertEquals(0, TypeManager.getInstance().getTypes().size());
@@ -173,6 +185,7 @@ public class TestTypeManager extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testGetTypesIterator() throws Exception {
     // no type initially
     assertFalse(TypeManager.getInstance().getTypesIterator().hasNext());
@@ -192,6 +205,7 @@ public class TestTypeManager extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testRegisterTypesNoMplayer() throws Exception {
     TypeManager.registerTypesNoMplayer();
     assertTrue(TypeManager.getInstance().getTypes().size() > 1);
@@ -203,6 +217,7 @@ public class TestTypeManager extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.base.TypeManager#registerTypesMplayerAvailable()}.
    */
+  @Test
   public void testRegisterTypesMplayerAvailable() throws Exception {
     TypeManager.registerTypesMplayerAvailable();
     assertTrue(TypeManager.getInstance().getTypes().size() > 1);

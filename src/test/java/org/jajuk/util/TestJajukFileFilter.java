@@ -20,12 +20,14 @@
  */
 package org.jajuk.util;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.File;
 
 import org.jajuk.ConstTest;
 import org.jajuk.JajukTestCase;
 import org.jajuk.util.filters.AnyFileFilter;
-import org.junit.Test;
 
 public class TestJajukFileFilter extends JajukTestCase {
   /**
@@ -90,8 +92,8 @@ public class TestJajukFileFilter extends JajukTestCase {
   @Test
   public final void testGetDescription() {
     JajukFileFilter filter = new JajukFileFilter(new String[] { "mp3", "ogg" });
-    assertTrue(filter.getDescription(), filter.getDescription().contains("mp3"));
-    assertTrue(filter.getDescription(), filter.getDescription().contains("ogg"));
+    assertTrue(filter.getDescription().contains("mp3"), filter.getDescription());
+    assertTrue(filter.getDescription().contains("ogg"), filter.getDescription());
     JajukFileFilter filter2 = new JajukFileFilter(true,
         new JajukFileFilter[] { AnyFileFilter.getInstance() });
     assertEquals("", filter2.getDescription());

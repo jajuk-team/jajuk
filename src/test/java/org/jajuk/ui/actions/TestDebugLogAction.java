@@ -20,6 +20,8 @@
  */
 package org.jajuk.ui.actions;
 
+import org.junit.jupiter.api.Test;
+
 import java.awt.HeadlessException;
 
 import org.jajuk.JajukTestCase;
@@ -35,6 +37,7 @@ public class TestDebugLogAction extends JajukTestCase {
    * {@link org.jajuk.ui.actions.DebugLogAction#perform(java.awt.event.ActionEvent)}
    * .
    */
+  @Test
   public void testPerform() {
     // initialize Log
     Log.init();
@@ -52,6 +55,7 @@ public class TestDebugLogAction extends JajukTestCase {
    *
    * {@link org.jajuk.ui.actions.DebugLogAction#DebugLogAction()}.
    */
+  @Test
   public void testDebugLogAction() {
     new DebugLogAction();
   }

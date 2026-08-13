@@ -74,9 +74,9 @@ Useful command line options:
 
 ## Tests
 
-The test suite lives in `src/test/java`. Every Jajuk test **must** extend
-`org.jajuk.JajukTestCase` (except those in the `ext` package): it wipes and recreates a
-throw-away workspace, resets the collection and forces a dummy MPlayer before each test.
+The test suite lives in `src/test/java` and is **JUnit 5 (Jupiter)** throughout. It is run
+by the JUnit Platform through Ant's `junitlauncher` task (Ant 1.10.3+), not by the legacy
+JUnit 4 `<junit>` task.
 
 Tests must run **headless**, otherwise the Swing code will try to open windows:
 
@@ -85,26 +85,43 @@ unset DISPLAY
 ant -f src/packaging/ant/build_full.xml test_jajuk
 ```
 
-JUnit XML reports are written to `test-reports/` of the generated source distribution.
+JUnit XML and plain-text reports are written to `test-reports/`.
 
-The following files match the `**/*Test*.java` pattern but are helpers, not tests, and are
-excluded by the Ant script: `ConstTest.java`, `JajukTestCase.java`, `TestHelpers.java`,
-`ThreadTestHelper.java`. `TestDBusSupportImpl.java` is excluded as system-specific.
+### Writing a test
+
+Every Jajuk test **must** extend `org.jajuk.JajukTestCase` (except those in the `ext`
+package). Before each test it wipes and recreates a throw-away workspace, resets the
+collection and forces a dummy MPlayer.
+
+Its `setUp`/`tearDown` are `final` on purpose. Use the hooks instead:
+
+| Hook | Purpose |
+| --- | --- |
+| `protected void specificSetUp()` | Per-test initialisation |
+| `protected void specificTearDown()` | Per-test clean up |
+
+Do **not** declare your own `@BeforeEach`/`@AfterEach` method named `setUp`/`tearDown`:
+overriding an annotated superclass lifecycle method stops JUnit 5 from running it, which
+would silently disable the shared workspace reset and the leftover-thread check.
+
+Beware that a lot of state is static in Jajuk (`QueueModel`, `Conf`, the item managers...)
+and the whole suite runs in a **single forked JVM**. A test that leaves a configuration
+property modified can make a later one fail, so reset whatever you change in
+`specificSetUp()`.
+
+The following files match the `**/*Test*` pattern but are helpers, not tests, and are
+excluded by the Ant script: `ConstTest`, `JajukTestCase`, `TestHelpers`,
+`ThreadTestHelper`.
 
 ### Running the suite without Ant
 
-The suite mixes JUnit 3/4 (`junit.framework.TestCase`) and JUnit 5 tests
-(`org.jajuk.services.mpris.TestMprisService`, `org.jajuk.services.lastfm.TestLastFmClient`
-and `org.jajuk.util.log.TestLog`, which also use Mockito). The JUnit Platform console
-launcher runs both families in one go through its Jupiter and Vintage engines.
-
-Put `junit-platform-console-standalone`, `junit` 4.13+, `mockito-core` and
-`mockito-junit-jupiter` in a directory (`$TESTLIBS` below), then:
+The JUnit Platform console launcher is not vendored (only the launcher API that Ant needs
+is, in `lib/build/`). Drop a `junit-platform-console-standalone` jar in `$TESTLIBS` and:
 
 ```bash
 unset DISPLAY
 
-CP="$(ls lib/*.jar lib/linux/*.jar "$TESTLIBS"/*.jar | tr '\n' ':')"
+CP="$(ls lib/*.jar lib/linux/*.jar lib/build/*.jar "$TESTLIBS"/*.jar | tr '\n' ':')"
 
 # Compile the application and the tests
 mkdir -p bin/main bin/test
@@ -123,17 +140,8 @@ java -Djava.awt.headless=true -Dfile.encoding=UTF-8 \
 To run a single class, replace `--scan-classpath bin/test` with
 `--select-class org.jajuk.services.mpris.TestMprisService`.
 
-Beware that a lot of state is static in Jajuk (`QueueModel`, `Conf`, the item managers...).
-The Ant `<junit>` task forks one JVM per test class, so a test class that leaves a
-configuration property modified can make another one fail when the whole suite is run in a
-single JVM. Reset what you change in `specificSetUp()`.
-
-### Known limitation
-
-`lib/build/` only contains JUnit 4.8.1, so the Ant `tests` target cannot compile nor run
-the three JUnit 5 test classes listed above. Add the JUnit 5 and Mockito jars to
-`lib/build/` (and switch the target to the JUnit Platform launcher) to get the whole suite
-under Ant.
+Note that `lib/linux/` must be on the classpath: the Linux package flattens it into `lib/`,
+and the D-Bus transport used by `TestDBusManager` is loaded from there.
 
 ## Logs
 

@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.players;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -39,6 +42,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testAddStackItem() throws Exception {
     QueueList impl = new QueueList();
     impl.add(new StackItem(TestHelpers.getFile("file1", false)));
@@ -50,6 +54,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testAddIntStackItem() throws Exception {
     QueueList impl = new QueueList();
     File file1 = TestHelpers.getFile("file1", false);
@@ -67,6 +72,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testAddAllCollectionOfQextendsStackItem() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -78,6 +84,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testAddAllIntCollectionOfQextendsStackItem() throws Exception {
     QueueList impl = new QueueList();
     impl.add(new StackItem(TestHelpers.getFile("file10", false)));
@@ -99,6 +106,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testClear() throws Exception {
     QueueList impl = new QueueList();
     impl.add(new StackItem(TestHelpers.getFile("file10", false)));
@@ -112,6 +120,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testContains() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -125,6 +134,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testContainsAll() throws Exception {
     QueueList impl = new QueueList();
     List<StackItem> set = prepareQueueImpl(impl);
@@ -140,6 +150,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testGet() throws Exception {
     // tested above
   }
@@ -149,6 +160,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testIndexOf() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -162,6 +174,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testIsEmpty() throws Exception {
     QueueList impl = new QueueList();
     assertTrue(impl.isEmpty());
@@ -174,6 +187,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testIterator() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -193,6 +207,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testLastIndexOf() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -205,6 +220,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testListIterator() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -217,6 +233,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testListIteratorInt() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -229,6 +246,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testRemoveObject() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -244,6 +262,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testRemoveInt() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -256,7 +275,7 @@ public class TestQueueList extends JajukTestCase {
     } catch (IndexOutOfBoundsException e) {
       // The wording of the JDK message changed over time ("Index: 2, Size: 2" up to Java 8,
       // "Index 2 out of bounds for length 2" since Java 9), only check the index and the size
-      assertTrue(e.getMessage(), e.getMessage().matches(".*\\b2\\b.*\\b2\\b.*"));
+      assertTrue(e.getMessage().matches(".*\\b2\\b.*\\b2\\b.*"), e.getMessage());
     }
   }
 
@@ -265,6 +284,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testRemoveAll() throws Exception {
     QueueList impl = new QueueList();
     List<StackItem> set = prepareQueueImpl(impl);
@@ -279,6 +299,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testRetainAll() throws Exception {
     QueueList impl = new QueueList();
     List<StackItem> set = prepareQueueImpl(impl);
@@ -293,6 +314,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testSet() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -305,6 +327,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testSize() throws Exception {
     // tested above
   }
@@ -314,6 +337,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testSubList() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -326,6 +350,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testToArray() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -338,6 +363,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testToArrayTArray() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -350,6 +376,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testGetQueue() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -362,6 +389,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testSizePlanned() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -375,6 +403,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testAddPlannedStackItem() throws Exception {
     // tested above
   }
@@ -384,6 +413,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testAddPlannedListOfStackItem() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -396,6 +426,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testGetPlannedInt() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -409,6 +440,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testGetPlanned() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -421,6 +453,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testRemovePlannedFromList() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -443,6 +476,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testClearPlanned() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -457,6 +491,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testContainsRepeat() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -473,6 +508,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testPopNextPlanned() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);
@@ -487,6 +523,7 @@ public class TestQueueList extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testContainsOnlyRepeat() throws Exception {
     QueueList impl = new QueueList();
     prepareQueueImpl(impl);

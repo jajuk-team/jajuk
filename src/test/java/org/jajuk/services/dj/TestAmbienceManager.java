@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.dj;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.lang.reflect.Field;
 import java.util.Enumeration;
 import java.util.Properties;
@@ -51,6 +54,7 @@ public class TestAmbienceManager extends JajukTestCase {
    *
    * {@link org.jajuk.services.dj.AmbienceManager#getRegistrationKeys()}.
    */
+  @Test
   public final void testGetRegistrationKeys() {
     java.util.Set<JajukEvents> set = AmbienceManager.getInstance().getRegistrationKeys();
     assertTrue(set.contains(JajukEvents.GENRE_NAME_CHANGED));
@@ -60,6 +64,7 @@ public class TestAmbienceManager extends JajukTestCase {
    * Test method for {@link org.jajuk.services.dj.AmbienceManager#getInstance()}
    * .
    */
+  @Test
   public final void testGetInstance() {
     assertNotNull(AmbienceManager.getInstance());
   }
@@ -69,6 +74,7 @@ public class TestAmbienceManager extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testLoad() throws Exception {
     // make sure "UpgradeManager.bFirstSession" is not set
     {
@@ -117,7 +123,7 @@ public class TestAmbienceManager extends JajukTestCase {
           nMatch++;
         }
       }
-      assertEquals(properties.toString(), 1, nMatch);
+      assertEquals(1, nMatch, properties.toString());
     }
     AmbienceManager.getInstance().load();
     assertEquals(1, AmbienceManager.getInstance().getAmbiences().size());
@@ -143,6 +149,7 @@ public class TestAmbienceManager extends JajukTestCase {
    *
    * {@link org.jajuk.services.dj.AmbienceManager#getAmbiences()}.
    */
+  @Test
   public final void testGetAmbiences() {
     // tested above
   }
@@ -153,6 +160,7 @@ public class TestAmbienceManager extends JajukTestCase {
    * {@link org.jajuk.services.dj.AmbienceManager#getAmbience(java.lang.String)}
    * .
    */
+  @Test
   public final void testGetAmbience() {
     // this creates the 14 default ambiences
     AmbienceManager.getInstance().createDefaultAmbiences();
@@ -165,6 +173,7 @@ public class TestAmbienceManager extends JajukTestCase {
    * {@link org.jajuk.services.dj.AmbienceManager#getAmbienceByName(java.lang.String)}
    * .
    */
+  @Test
   public final void testGetAmbienceByName() {
     // this creates the 14 default ambiences
     AmbienceManager.getInstance().createDefaultAmbiences();
@@ -175,6 +184,7 @@ public class TestAmbienceManager extends JajukTestCase {
    * Test get ambience by name invalid.
    * 
    */
+  @Test
   public final void testGetAmbienceByNameInvalid() {
     // this creates the 14 default ambiences
     AmbienceManager.getInstance().createDefaultAmbiences();
@@ -187,6 +197,7 @@ public class TestAmbienceManager extends JajukTestCase {
    * {@link org.jajuk.services.dj.AmbienceManager#registerAmbience(org.jajuk.services.dj.Ambience)}
    * .
    */
+  @Test
   public final void testRegisterAmbience() {
     assertEquals(0, AmbienceManager.getInstance().getAmbiences().size());
     AmbienceManager.getInstance().registerAmbience(new Ambience("20", "ambience1"));
@@ -198,6 +209,7 @@ public class TestAmbienceManager extends JajukTestCase {
    *
    * {@link org.jajuk.services.dj.AmbienceManager#getSelectedAmbience()}.
    */
+  @Test
   public final void testGetSelectedAmbience() {
     // first with no ambience and no default set
     assertNull(AmbienceManager.getInstance().getSelectedAmbience());
@@ -214,6 +226,7 @@ public class TestAmbienceManager extends JajukTestCase {
    * {@link org.jajuk.services.dj.AmbienceManager#update(org.jajuk.events.JajukEvent)}
    * .
    */
+  @Test
   public final void testUpdate() {
     Properties prop = new Properties();
     Genre genre1 = GenreManager.getInstance().registerGenre("genre1");
@@ -233,6 +246,7 @@ public class TestAmbienceManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dj.AmbienceManager#commit()}.
    */
+  @Test
   public final void testCommit() {
     // this creates the 14 default ambiences
     AmbienceManager.getInstance().createDefaultAmbiences();
@@ -247,6 +261,7 @@ public class TestAmbienceManager extends JajukTestCase {
    * {@link org.jajuk.services.dj.AmbienceManager#removeAmbience(java.lang.String)}
    * .
    */
+  @Test
   public final void testRemoveAmbience() {
     assertEquals(0, AmbienceManager.getInstance().getAmbiences().size());
     AmbienceManager.getInstance().registerAmbience(new Ambience("30", "nextone"));
@@ -260,6 +275,7 @@ public class TestAmbienceManager extends JajukTestCase {
    *
    * {@link org.jajuk.services.dj.AmbienceManager#createDefaultAmbiences()}.
    */
+  @Test
   public final void testCreateDefaultAmbiences() {
     assertEquals(0, AmbienceManager.getInstance().getAmbiences().size());
     AmbienceManager.getInstance().createDefaultAmbiences();

@@ -20,6 +20,9 @@
  */
 package org.jajuk.ui.actions;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.List;
 
 import org.jajuk.JajukTestCase;
@@ -71,6 +74,7 @@ public class TestFindDuplicateTracksAction extends JajukTestCase {
    * .
    * Test 1 : none dups
    */
+  @Test
   public void testPopulateDups1() {
     Track track11 = TrackManager.getInstance().registerTrack("track11", album, genre, artist, 10l,
         year, 1l, type, 1l, albumArtist);
@@ -100,6 +104,7 @@ public class TestFindDuplicateTracksAction extends JajukTestCase {
    * .
    * Test 2 : multi-files track : filex1 and filex2 are in the same track
    */
+  @Test
   public void testPopulateDups2() {
     Track track11 = TrackManager.getInstance().registerTrack("track11", album, genre, artist, 10l,
         year, 1l, type, 1l, albumArtist);
@@ -125,6 +130,7 @@ public class TestFindDuplicateTracksAction extends JajukTestCase {
    * .
    * Test 3 : single dup : track11 and track12 have fuzzy match
    */
+  @Test
   public void testPopulateDups3() {
     Track track11 = TrackManager.getInstance().registerTrack("track", album, genre, artist, 10l,
         year, 1l, type, 1l, albumArtist);
@@ -148,6 +154,7 @@ public class TestFindDuplicateTracksAction extends JajukTestCase {
    * file21/file22 have the same track : track2,
    * track1 =~ track2
    */
+  @Test
   public void testPopulateDups4() {
     Track track1 = TrackManager.getInstance().registerTrack("track", album, genre, artist, 10l,
         year, 1l, type, 1l, albumArtist);
@@ -173,6 +180,7 @@ public class TestFindDuplicateTracksAction extends JajukTestCase {
    * file21/file22 have different tracks ; track21 and track 21,
    * track1 =~ track21 != track22
    */
+  @Test
   public void testPopulateDups5() {
     Track track1 = TrackManager.getInstance().registerTrack("track", album, genre, artist, 10l,
         year, 1l, type, 1l, albumArtist);

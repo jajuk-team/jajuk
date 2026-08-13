@@ -20,19 +20,22 @@
  */
 package org.jajuk.services.lastfm;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.jajuk.services.lastfm.model.FullSubmissionData;
 
 /**
  * .
  */
-public class TestFullSubmissionData extends TestCase {
+public class TestFullSubmissionData {
   /**
    * Test method for.
    *
    * {@link FullSubmissionData(java.lang.String, java.lang.String, java.lang.String, int, int, java.lang.String, long)}
    * .
    */
+  @Test
   public void testFullSubmissionData() {
     new FullSubmissionData("artist", "title", "album", 120, 3, 4);
   }
@@ -40,6 +43,7 @@ public class TestFullSubmissionData extends TestCase {
   /**
    * Test method for {@link FullSubmissionData#getArtist()}.
    */
+  @Test
   public void testGetAndSetArtist() {
     FullSubmissionData sub = new FullSubmissionData("artist", "title", "album", 120, 3, 4);
     assertEquals("artist", sub.getArtist());
@@ -52,6 +56,7 @@ public class TestFullSubmissionData extends TestCase {
    *
    * {@link FullSubmissionData#setArtist(java.lang.String)}.
    */
+  @Test
   public void testSetArtist() {
     // tested above
   }
@@ -59,6 +64,7 @@ public class TestFullSubmissionData extends TestCase {
   /**
    * Test method for {@link FullSubmissionData#getTitle()}.
    */
+  @Test
   public void testGetTitle() {
     FullSubmissionData sub = new FullSubmissionData("artist", "title", "album", 120, 3, 4);
     assertEquals("title", sub.getTitle());
@@ -71,6 +77,7 @@ public class TestFullSubmissionData extends TestCase {
    *
    * {@link FullSubmissionData#setTitle(java.lang.String)}.
    */
+  @Test
   public void testSetTitle() {
     // tested above
   }
@@ -78,6 +85,7 @@ public class TestFullSubmissionData extends TestCase {
   /**
    * Test method for {@link FullSubmissionData#getAlbum()}.
    */
+  @Test
   public void testGetAlbum() {
     FullSubmissionData sub = new FullSubmissionData("artist", "title", "album", 120, 3, 4);
     assertEquals("album", sub.getAlbum());
@@ -90,6 +98,7 @@ public class TestFullSubmissionData extends TestCase {
    *
    * {@link FullSubmissionData#setAlbum(java.lang.String)}.
    */
+  @Test
   public void testSetAlbum() {
     // tested above
   }
@@ -99,6 +108,7 @@ public class TestFullSubmissionData extends TestCase {
    *
    * {@link FullSubmissionData#getDuration()}.
    */
+  @Test
   public void testGetDuration() {
     FullSubmissionData sub = new FullSubmissionData("artist", "title", "album", 120, 3, 4);
     assertEquals(120, sub.getDuration());
@@ -111,6 +121,7 @@ public class TestFullSubmissionData extends TestCase {
    *
    * {@link FullSubmissionData#setDuration(int)}.
    */
+  @Test
   public void testSetDuration() {
     // tested above
   }
@@ -120,6 +131,7 @@ public class TestFullSubmissionData extends TestCase {
    *
    * {@link FullSubmissionData#getTrackNumber()}.
    */
+  @Test
   public void testGetTrackNumber() {
     FullSubmissionData sub = new FullSubmissionData("artist", "title", "album", 120, 3, 4);
     assertEquals(3, sub.getTrackNumber());
@@ -132,6 +144,7 @@ public class TestFullSubmissionData extends TestCase {
    *
    * {@link FullSubmissionData#setTrackNumber(int)}.
    */
+  @Test
   public void testSetTrackNumber() {
     // tested above
   }
@@ -141,6 +154,7 @@ public class TestFullSubmissionData extends TestCase {
    *
    * {@link FullSubmissionData#getStartTime()}.
    */
+  @Test
   public void testGetStartTime() {
     FullSubmissionData sub = new FullSubmissionData("artist", "title", "album", 120, 3, 4);
     assertEquals(4, sub.getStartTime());
@@ -153,6 +167,7 @@ public class TestFullSubmissionData extends TestCase {
    *
    * {@link FullSubmissionData#setStartTime(long)}.
    */
+  @Test
   public void testSetStartTime() {
     // tested above
   }

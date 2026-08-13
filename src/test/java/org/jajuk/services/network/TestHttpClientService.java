@@ -19,10 +19,11 @@
  */
 package org.jajuk.services.network;
 
-import static org.junit.Assert.*;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class TestHttpClientService {
 
   private HttpClientService service;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     // Reset the singleton instance to ensure clean state
     HttpClientService.resetInstance();
@@ -57,7 +58,7 @@ public class TestHttpClientService {
     service.setProxyConfig(null);
   }
 
-  @After
+  @AfterEach
   public void tearDown() {
     HttpClientService.resetInstance();
     // Restore original config if needed
@@ -72,7 +73,7 @@ public class TestHttpClientService {
     Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, "true");
     service.updateInternetAccessSetting();
 
-    assertFalse("Internet access should be disabled", service.isInternetAccessAllowed());
+    assertFalse(service.isInternetAccessAllowed(), "Internet access should be disabled");
 
     // Calls should return null immediately without network call
     try {
@@ -92,19 +93,19 @@ public class TestHttpClientService {
     Conf.setProperty(Const.CONF_NETWORK_NONE_INTERNET_ACCESS, "false");
     service.updateInternetAccessSetting();
 
-    assertNotNull("Service should be initialized", service);
+    assertNotNull(service, "Service should be initialized");
 
     String content = service.readUrl(URL);
-    assertNotNull("Content should not be null for valid URL", content);
-    assertTrue("Content should not be empty", StringUtils.isNotBlank(content));
+    assertNotNull(content, "Content should not be null for valid URL");
+    assertTrue(StringUtils.isNotBlank(content), "Content should not be empty");
   }
 
   /**
    * Test invalid URL handling.
    */
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testInvalidUrl() throws IOException {
-    service.readUrl(INVALID_URL);
+    assertThrows(IllegalArgumentException.class, () -> service.readUrl(INVALID_URL));
   }
 
   /**
@@ -132,7 +133,7 @@ public class TestHttpClientService {
     String githubLogoUrl = "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png";
 
     java.awt.Image img = service.getImage(githubLogoUrl);
-    assertNotNull("Image should not be null", img);
+    assertNotNull(img, "Image should not be null");
   }
 
   /**
@@ -146,8 +147,8 @@ public class TestHttpClientService {
     String url = "http://jajuk.info";
     service.downloadToFile(url, tempFile);
 
-    assertTrue("File should exist after download", tempFile.exists());
-    assertTrue("File should not be empty", tempFile.length() > 0);
+    assertTrue(tempFile.exists(), "File should exist after download");
+    assertTrue(tempFile.length() > 0, "File should not be empty");
   }
 
   /**
@@ -167,11 +168,11 @@ public class TestHttpClientService {
     service.setProxyConfig(config);
 
     ProxyConfig retrieved = service.getProxyConfig();
-    assertNotNull("Proxy config should be set", retrieved);
-    assertEquals("Host should match", "localhost", retrieved.getHost());
-    assertEquals("Port should match", 8080, retrieved.getPort());
-    assertTrue("User should be present", retrieved.getUsername().isPresent());
-    assertTrue("Password should be present", retrieved.getPassword().isPresent());
+    assertNotNull(retrieved, "Proxy config should be set");
+    assertEquals("localhost", retrieved.getHost(), "Host should match");
+    assertEquals(8080, retrieved.getPort(), "Port should match");
+    assertTrue(retrieved.getUsername().isPresent(), "User should be present");
+    assertTrue(retrieved.getPassword().isPresent(), "Password should be present");
   }
 
   /**
@@ -182,7 +183,7 @@ public class TestHttpClientService {
     assertEquals("teststring", service.encode("teststring"));
     // Check encoding of special characters
     String encoded = service.encode("test&!@#");
-    assertTrue("Encoded string should contain %26 for &", encoded.contains("%26"));
+    assertTrue(encoded.contains("%26"), "Encoded string should contain %26 for &");
   }
 
   /**
@@ -191,7 +192,7 @@ public class TestHttpClientService {
   @Test
   public void testHeadRequest() throws IOException {
     var response = service.headRequest(URL);
-    assertNotNull("HEAD response should not be null", response);
-    assertTrue("Status code should be valid (e.g., 200)", response.statusCode() >= 200 && response.statusCode() < 400);
+    assertNotNull(response, "HEAD response should not be null");
+    assertTrue(response.statusCode() >= 200 && response.statusCode() < 400, "Status code should be valid (e.g., 200)");
   }
 }

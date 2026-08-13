@@ -20,7 +20,9 @@
  */
 package org.jajuk.services.lastfm;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.jajuk.services.lastfm.model.AlbumInfo;
 import org.jajuk.services.lastfm.model.LastFmAlbum;
 import org.jajuk.services.lastfm.model.LastFmAlbumList;
@@ -31,11 +33,12 @@ import java.util.List;
 /**
  * .
  */
-public class TestLastFmAlbumList extends TestCase {
+public class TestLastFmAlbumList {
 
   /**
    * Test method for {@link org.jajuk.services.lastfm.model.LastFmAlbumList#getAlbums()}.
    */
+  @Test
   public void testGetAlbums() {
     LastFmAlbumList list = new LastFmAlbumList();
     List<AlbumInfo> info = new ArrayList<AlbumInfo>();
@@ -51,6 +54,7 @@ public class TestLastFmAlbumList extends TestCase {
   /**
    * Test method for {@link org.jajuk.services.lastfm.model.LastFmAlbumList#getArtist()}.
    */
+  @Test
   public void testGetArtist() {
     LastFmAlbumList list = new LastFmAlbumList();
     assertNull(list.getArtist());
@@ -63,6 +67,7 @@ public class TestLastFmAlbumList extends TestCase {
    *
    * {@link org.jajuk.services.lastfm.model.LastFmAlbumList#setAlbums(java.util.List)}.
    */
+  @Test
   public void testSetAlbums() {
     // tested above
   }
@@ -72,6 +77,7 @@ public class TestLastFmAlbumList extends TestCase {
    *
    * {@link org.jajuk.services.lastfm.model.LastFmAlbumList#setArtist(java.lang.String)}.
    */
+  @Test
   public void testSetArtist() {
     // tested above
   }

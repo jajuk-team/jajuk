@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.notification;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.awt.HeadlessException;
 
 import org.jajuk.JajukTestCase;
@@ -35,6 +38,7 @@ public class TestToastNotificator extends JajukTestCase {
    * {@link org.jajuk.services.notification.ToastNotificator#ToastNotificator()}
    * .
    */
+  @Test
   public void testToastNotificator() {
     try {
       INotificator notificator = ToastNotificator.getInstance();
@@ -52,6 +56,7 @@ public class TestToastNotificator extends JajukTestCase {
    * {@link org.jajuk.services.notification.JavaBalloonNotificator#isAvailable()}
    * .
    */
+  @Test
   public void testIsAvailable() {
     // tested above
   }
@@ -62,6 +67,7 @@ public class TestToastNotificator extends JajukTestCase {
    * {@link org.jajuk.services.notification.JavaBalloonNotificator#notify(org.jajuk.base.File)}
    * .
    */
+  @Test
   public void testNotifyFile() {
     try {
       StartupCollectionService.registerItemManagers();
@@ -81,6 +87,7 @@ public class TestToastNotificator extends JajukTestCase {
    * {@link org.jajuk.services.notification.JavaBalloonNotificator#notify(org.jajuk.services.webradio.WebRadio)}
    * .
    */
+  @Test
   public void testNotifyWebradio() {
     try {
       ToastNotificator notificator = ToastNotificator.getInstance();

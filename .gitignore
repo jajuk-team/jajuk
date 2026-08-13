@@ -12,11 +12,13 @@ target/
 jajuk.iml
 src/*/*.iml
 /.settings/
-build
+# Ant build output. Anchored: a bare "build" would also shadow the versioned lib/build/ jars
+/build/
 /packages/
 /.gradle/
 /out/
 /src/main/main.iml
 /src/test/test.iml
 /logs/*.log
-/test-reports/*.xml
+# junitlauncher writes both XML and plain-text reports here
+/test-reports/

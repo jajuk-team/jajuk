@@ -20,6 +20,9 @@
  */
 package org.jajuk.base;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.jajuk.ConstTest;
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
@@ -40,6 +43,7 @@ public class TestDeviceManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.DeviceManager#getXMLTag()}.
    */
+  @Test
   public final void testGetLabel() {
     assertEquals(Const.XML_DEVICES, DeviceManager.getInstance().getXMLTag());
   }
@@ -49,6 +53,7 @@ public class TestDeviceManager extends JajukTestCase {
    *
    * {@link org.jajuk.base.DeviceManager#startAutoRefreshThread()}.
    */
+  @Test
   public final void testStartAutoRefreshThread() {
     DeviceManager.getInstance().startAutoRefreshThread();
     // what happens if done twice?
@@ -58,6 +63,7 @@ public class TestDeviceManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.DeviceManager#getInstance()}.
    */
+  @Test
   public final void testGetInstance() {
     assertNotNull(DeviceManager.getInstance());
   }
@@ -68,6 +74,7 @@ public class TestDeviceManager extends JajukTestCase {
    * {@link org.jajuk.base.DeviceManager#registerDevice(java.lang.String, long, java.lang.String)}
    * .
    */
+  @Test
   public final void testRegisterDeviceStringLongString() {
     assertNotNull(TestHelpers.getDevice());
     assertNotNull(DeviceManager.getInstance().getDeviceByName("sample_device"));
@@ -77,6 +84,7 @@ public class TestDeviceManager extends JajukTestCase {
    * Test register device twice.
    * 
    */
+  @Test
   public final void testRegisterDeviceTwice() {
     assertNotNull(DeviceManager.getInstance().registerDevice("device", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/dev"));
@@ -90,6 +98,7 @@ public class TestDeviceManager extends JajukTestCase {
   *
   * {@link org.jajuk.base.DeviceManager#createID(java.lang.String)}.
   */
+  @Test
   public final void testCreateID() {
     assertNotNull(ItemManager.createID("device123"));
   }
@@ -100,6 +109,7 @@ public class TestDeviceManager extends JajukTestCase {
    * {@link org.jajuk.base.DeviceManager#checkDeviceAvailablity(java.lang.String, int, java.lang.String, boolean)}
    * .
    */
+  @Test
   public final void testCheckDeviceAvailablityCD() {
     assertEquals(
         0,
@@ -111,6 +121,7 @@ public class TestDeviceManager extends JajukTestCase {
    * Test check device availablity existing name.
    * 
    */
+  @Test
   public final void testCheckDeviceAvailablityExistingName() {
     assertNotNull(DeviceManager.getInstance().registerDevice("device4", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/dev"));
@@ -124,6 +135,7 @@ public class TestDeviceManager extends JajukTestCase {
   /**
    * Test check device availability existing name not new.
    **/
+  @Test
   public final void testCheckDeviceAvailablityExistingNameNotNew() {
     assertNotNull(TestHelpers.getDevice("device4", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/dev"));
@@ -138,6 +150,7 @@ public class TestDeviceManager extends JajukTestCase {
    * Test check device availability parent or descendant.
    * 
    */
+  @Test
   public final void testCheckDeviceAvailablityParentOrDescendant() {
     assertNotNull(TestHelpers.getDevice("device5", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/dev"));
@@ -162,6 +175,7 @@ public class TestDeviceManager extends JajukTestCase {
    * Test check device availability not exists.
    * 
    */
+  @Test
   public final void testCheckDeviceAvailablityNotExists() {
     assertEquals(
         143,
@@ -173,6 +187,7 @@ public class TestDeviceManager extends JajukTestCase {
    * Test check device availability exists.
    * 
    */
+  @Test
   public final void testCheckDeviceAvailablityExists() {
     assertEquals(
         0,
@@ -183,6 +198,7 @@ public class TestDeviceManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.DeviceManager#getDeviceTypes()}.
    */
+  @Test
   public final void testGetDeviceTypes() {
     // tested above
   }
@@ -190,6 +206,7 @@ public class TestDeviceManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.DeviceManager#getDeviceType(long)}.
    */
+  @Test
   public final void testGetDeviceType() {
     // tested above
   }
@@ -199,6 +216,7 @@ public class TestDeviceManager extends JajukTestCase {
    *
    * {@link org.jajuk.base.DeviceManager#removeDevice(org.jajuk.base.Device)}.
    */
+  @Test
   public final void testRemoveDevice() {
     assertNotNull(DeviceManager.getInstance().registerDevice("5", "device5", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/dev"));
@@ -213,6 +231,7 @@ public class TestDeviceManager extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testRemoveDeviceMounted() throws Exception {
     TestHelpers.getDevice();
     String id = DeviceManager.createID("sample_device");
@@ -226,6 +245,7 @@ public class TestDeviceManager extends JajukTestCase {
    *
    * {@link org.jajuk.base.DeviceManager#isAnyDeviceRefreshing()}.
    */
+  @Test
   public final void testIsAnyDeviceRefreshing() {
     assertNotNull(DeviceManager.getInstance().registerDevice("device8", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/dev8"));
@@ -237,6 +257,7 @@ public class TestDeviceManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.DeviceManager#cleanAllDevices()}.
    */
+  @Test
   public final void testCleanAllDevices() {
     DeviceManager.getInstance().registerDevice("device6", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/dev6");
@@ -250,6 +271,7 @@ public class TestDeviceManager extends JajukTestCase {
    *
    * {@link org.jajuk.base.DeviceManager#getDateLastGlobalRefresh()}.
    */
+  @Test
   public final void testGetDateLastGlobalRefresh() {
     StartupCollectionService.registerItemManagers();
     DeviceManager.getInstance().registerDevice("device6", Device.Type.DIRECTORY,
@@ -265,6 +287,7 @@ public class TestDeviceManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.DeviceManager#refreshAllDevices()}.
    */
+  @Test
   public final void testRefreshAllDevices() {
     StartupCollectionService.registerItemManagers();
     DeviceManager.getInstance().registerDevice("device6", Device.Type.DIRECTORY,
@@ -279,6 +302,7 @@ public class TestDeviceManager extends JajukTestCase {
    *
    * {@link org.jajuk.base.DeviceManager#getDeviceByID(java.lang.String)}.
    */
+  @Test
   public final void testGetDeviceByID() {
     // tested above
   }
@@ -288,6 +312,7 @@ public class TestDeviceManager extends JajukTestCase {
    *
    * {@link org.jajuk.base.DeviceManager#getDeviceByName(java.lang.String)}.
    */
+  @Test
   public final void testGetDeviceByName() {
     DeviceManager.getInstance().registerDevice("device10", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/dev10");
@@ -300,6 +325,7 @@ public class TestDeviceManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.DeviceManager#getDevices()}.
    */
+  @Test
   public final void testGetDevices() {
     assertEquals(0, DeviceManager.getInstance().getDevices().size());
     DeviceManager.getInstance().registerDevice("device12", Device.Type.DIRECTORY,
@@ -312,6 +338,7 @@ public class TestDeviceManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.DeviceManager#getDevicesIterator()}.
    */
+  @Test
   public final void testGetDevicesIterator() {
     assertFalse(DeviceManager.getInstance().getDevicesIterator().hasNext());
     DeviceManager.getInstance().registerDevice("device12", Device.Type.DIRECTORY,

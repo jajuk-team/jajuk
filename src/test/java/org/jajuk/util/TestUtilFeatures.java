@@ -20,6 +20,9 @@
  */
 package org.jajuk.util;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +40,7 @@ public class TestUtilFeatures extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.util.UtilFeatures#forcedShuffle(List<StackItem>)}.
    */
+  @Test
   public void testCopyFileFile() throws Exception {
     StackItem si1 = new StackItem(TestHelpers.getFile("1", true));
     StackItem si2 = new StackItem(TestHelpers.getFile("2", true));
@@ -54,6 +58,7 @@ public class TestUtilFeatures extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testPrivateConstructor() throws Exception {
     // For EMMA code-coverage tests
     TestHelpers.executePrivateConstructor(UtilFeatures.class);

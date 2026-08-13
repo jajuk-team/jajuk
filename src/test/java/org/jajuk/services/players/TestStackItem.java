@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.players;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.base.File;
@@ -31,6 +34,7 @@ public class TestStackItem extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testHashCode() throws Exception {
     File file = TestHelpers.getFile("file1", true);
     StackItem item1 = new StackItem(file);
@@ -45,6 +49,7 @@ public class TestStackItem extends JajukTestCase {
    * {@link org.jajuk.services.players.StackItem#StackItem(org.jajuk.base.File)}
    * .
    */
+  @Test
   public void testStackItemFile() throws Exception {
     new StackItem(TestHelpers.getFile("file1", true));
     // test null input
@@ -63,6 +68,7 @@ public class TestStackItem extends JajukTestCase {
    * {@link org.jajuk.services.players.StackItem#StackItem(org.jajuk.base.File, boolean)}
    * .
    */
+  @Test
   public void testStackItemFileBoolean() throws Exception {
     new StackItem(TestHelpers.getFile("file2", true), true);
     // test null input
@@ -81,6 +87,7 @@ public class TestStackItem extends JajukTestCase {
    * {@link org.jajuk.services.players.StackItem#StackItem(org.jajuk.base.File, boolean, boolean)}
    * .
    */
+  @Test
   public void testStackItemFileBooleanBoolean() throws Exception {
     new StackItem(TestHelpers.getFile("file2", true), true, true);
     // test null input
@@ -97,6 +104,7 @@ public class TestStackItem extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testIsAndSetRepeat() throws Exception {
     StackItem item = new StackItem(TestHelpers.getFile("file1", true));
     assertFalse(item.isRepeat());
@@ -109,6 +117,7 @@ public class TestStackItem extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testgetFile() throws Exception {
     StackItem item = new StackItem(TestHelpers.getFile("file1", true));
     assertNotNull(item.getFile());
@@ -120,6 +129,7 @@ public class TestStackItem extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testIsAndSetUserLaunch() throws Exception {
     StackItem item = new StackItem(TestHelpers.getFile("file1", true));
     assertFalse(item.isUserLaunch());
@@ -132,6 +142,7 @@ public class TestStackItem extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testIsAndSetPlanned() throws Exception {
     StackItem item = new StackItem(TestHelpers.getFile("file1", true));
     assertFalse(item.isPlanned());
@@ -144,6 +155,7 @@ public class TestStackItem extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testClone() throws Exception {
     StackItem item = new StackItem(TestHelpers.getFile("file1", true));
     TestHelpers.CloneTest(item);
@@ -155,6 +167,7 @@ public class TestStackItem extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.services.players.StackItem#equals(java.lang.Object)}.
    */
+  @Test
   public void testEqualsObject() throws Exception {
     File file = TestHelpers.getFile("file1", true);
     StackItem item1 = new StackItem(file);
@@ -168,6 +181,7 @@ public class TestStackItem extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testToString() throws Exception {
     StackItem item = new StackItem(TestHelpers.getFile("file1", true));
     TestHelpers.ToStringTest(item);

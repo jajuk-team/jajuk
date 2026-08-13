@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.webradio;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -56,6 +59,7 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
    * @throws ParserConfigurationException 
    * @throws SAXException 
    */
+  @Test
   public void testDownloadPresets() throws MalformedURLException, IOException, SAXException,
       ParserConfigurationException {
     // Check for preset file, delete it if it exist
@@ -78,6 +82,7 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
    * @throws ParserConfigurationException 
    * @throws SAXException 
    */
+  @Test
   public void testLoadRepository() throws MalformedURLException, IOException, SAXException,
       ParserConfigurationException {
     // Make sure the repository has been cleared during the setUp()
@@ -127,6 +132,7 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
     return cachedPreset;
   }
 
+  @Test
   public void testPresetRadiosCommit() throws Exception {
     // Add a few radios and commit the preset file
     // Fill few radio
@@ -152,6 +158,7 @@ public class TestPresetPersistenceHelper extends JajukTestCase {
     assertEquals("foo;bar", radio1.getKeywords());
   }
 
+  @Test
   public void testCheckGenres() throws Exception {
     // Check for preset file, delete it if it exist
     File cachedPreset = DownloadManager.downloadToCache(new URL(Const.URL_WEBRADIO_PRESETS));

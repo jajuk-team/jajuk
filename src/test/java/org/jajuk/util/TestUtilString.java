@@ -20,6 +20,9 @@
  */
 package org.jajuk.util;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -51,6 +54,7 @@ public class TestUtilString extends JajukTestCase {
    * Test method for {@link org.jajuk.util.UtilString#applyPattern(org.jajuk.base.File, java.lang.String, boolean, boolean)}.
    * @throws Exception
    */
+  @Test
   public void testApplyPattern() throws Exception {
     UtilString.applyPattern(TestHelpers.getFile(), "somepattern", false, false);
   }
@@ -58,10 +62,12 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#containsNonDigitOrLetters(java.lang.String)}.
    */
+  @Test
   public void testContainsNonDigitOrLetters() {
     // TODO: implement test
   }
 
+  @Test
   public void testCustomTrackCustomPropertyPattern() throws JajukException {
     try {
       TrackManager.getInstance().registerProperty(
@@ -77,6 +83,7 @@ public class TestUtilString extends JajukTestCase {
     }
   }
 
+  @Test
   public void testCustomFileCustomPropertyPattern() throws JajukException {
     try {
       FileManager.getInstance().registerProperty(
@@ -92,6 +99,7 @@ public class TestUtilString extends JajukTestCase {
   }
 
   // Files and track have the same custom property
+  @Test
   public void testCustomFileAndTrackCustomPropertyPattern() throws JajukException {
     try {
       FileManager.getInstance().registerProperty(
@@ -112,6 +120,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#encodeURL(java.lang.String)}.
    */
+  @Test
   public void testEncodeURL() {
     // TODO: implement test
   }
@@ -119,6 +128,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#escapeString(java.lang.String)}.
    */
+  @Test
   public void testEscapeString() {
     // TODO: implement test
   }
@@ -126,6 +136,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#format(java.lang.Object, org.jajuk.base.PropertyMetaInformation, boolean)}.
    */
+  @Test
   public void testFormat() {
     // TODO: implement test
   }
@@ -133,10 +144,12 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#getLocaleDateFormatter()}.
    */
+  @Test
   public void testGetLocaleDateFormatter() {
     assertNotNull(UtilString.getLocaleDateFormatter());
   }
 
+  @Test
   public void testMultipleThreads() throws Exception {
     ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS, NUMBER_OF_TESTS);
     helper.executeTest(new ThreadTestHelper.TestRunnable() {
@@ -156,6 +169,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#formatPropertyDesc(java.lang.String)}.
    */
+  @Test
   public void testFormatPropertyDesc() {
     // TODO: implement test
   }
@@ -163,6 +177,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#formatGenre(java.lang.String)}.
    */
+  @Test
   public void testFormatGenre() {
     // TODO: implement test
   }
@@ -170,6 +185,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#formatTag(java.lang.String)}.
    */
+  @Test
   public void testFormatTag() {
     // TODO: implement test
   }
@@ -177,6 +193,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#formatTimeBySec(long)}.
    */
+  @Test
   public void testFormatTimeBySec() {
     // TODO: implement test
   }
@@ -184,6 +201,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#formatXML(java.lang.String)}.
    */
+  @Test
   public void testFormatXML() {
     // TODO: implement test
   }
@@ -191,6 +209,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#getAdditionDateFormatter()}.
    */
+  @Test
   public void testGetAdditionDateFormatter() {
     // TODO: implement test
   }
@@ -198,6 +217,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#getAnonymizedJajukProperties()}.
    */
+  @Test
   public void testGetAnonymizedJajukProperties() {
     // TODO: implement test
   }
@@ -205,6 +225,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#getAnonymizedSystemProperties()}.
    */
+  @Test
   public void testGetAnonymizedSystemProperties() {
     // TODO: implement test
   }
@@ -212,6 +233,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#getLimitedString(java.lang.String, int)}.
    */
+  @Test
   public void testGetLimitedString() {
     // TODO: implement test
   }
@@ -219,6 +241,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#isChar(int)}.
    */
+  @Test
   public void testIsChar() {
     // TODO: implement test
   }
@@ -226,6 +249,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#isXMLValid(java.lang.String)}.
    */
+  @Test
   public void testIsXMLValid() {
     // TODO: implement test
   }
@@ -233,6 +257,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#padNumber(long, int)}.
    */
+  @Test
   public void testPadNumber() {
     assertEquals("00099", UtilString.padNumber(99, 5));
     assertEquals("00011", UtilString.padNumber(11, 5));
@@ -246,6 +271,7 @@ public class TestUtilString extends JajukTestCase {
     assertEquals("113", UtilString.padNumber(113, 3));
   }
 
+  @Test
   public void testPadNumberBenchmark() {
     testPadNumber();
     long overall = 0;
@@ -273,6 +299,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#parse(java.lang.String, java.lang.Class)}.
    */
+  @Test
   public void testParse() {
     // TODO: implement test
   }
@@ -280,6 +307,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#fastLongParser(java.lang.String)}.
    */
+  @Test
   public void testFastLongParser() {
     // TODO: implement test
   }
@@ -287,6 +315,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#fastBooleanParser(java.lang.String)}.
    */
+  @Test
   public void testFastBooleanParser() {
     // TODO: implement test
   }
@@ -294,6 +323,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#rot13(java.lang.String)}.
    */
+  @Test
   public void testRot13() {
     // TODO: implement test
   }
@@ -301,6 +331,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#matchesIgnoreCaseAndOrder(java.lang.String, java.lang.String)}.
    */
+  @Test
   public void testMatchesIgnoreCaseAndOrder() {
     assertTrue(UtilString.matchesIgnoreCaseAndOrder("", ""));
     assertTrue(UtilString.matchesIgnoreCaseAndOrder("", "123"));
@@ -342,6 +373,7 @@ public class TestUtilString extends JajukTestCase {
     assertFalse(UtilString.matchesIgnoreCaseAndOrder("3te 3te1", "12 3toe1 23"));
   }
 
+  @Test
   public void testMatchesIgnoreCaseAndOrderBenchmark() {
     long overall = 0;
     for (int i = 0; i < NUMBER_OF_MATCH_TESTS; i++) {
@@ -395,6 +427,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#encodeToUnicode(java.lang.String)}.
    */
+  @Test
   public void testEncodeToUnicode() {
     // TODO: implement test
   }
@@ -402,6 +435,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#byteToHex(byte)}.
    */
+  @Test
   public void testByteToHex() {
     // TODO: implement test
   }
@@ -409,6 +443,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#concat(java.lang.Object[])}.
    */
+  @Test
   public void testConcat() {
     // TODO: implement test
   }
@@ -416,6 +451,7 @@ public class TestUtilString extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.UtilString#getTextBetweenChars(java.lang.String, char, char)}.
    */
+  @Test
   public void testGetTextBetweenChars() {
     // TODO: implement test
   }

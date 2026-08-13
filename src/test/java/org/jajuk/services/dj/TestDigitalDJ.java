@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.dj;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.jajuk.util.XMLUtils;
 
 import java.util.ArrayList;
@@ -55,6 +58,7 @@ public class TestDigitalDJ extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dj.DigitalDJ#hashCode()}.
    */
+  @Test
   public final void testHashCode() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
@@ -68,6 +72,7 @@ public class TestDigitalDJ extends JajukTestCase {
    *
    * {@link org.jajuk.services.dj.DigitalDJ#DigitalDJ(java.lang.String)}.
    */
+  @Test
   public final void testDigitalDJ() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     assertNotNull(dj);
@@ -76,6 +81,7 @@ public class TestDigitalDJ extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dj.DigitalDJ#toString()}.
    */
+  @Test
   public final void testToString() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
@@ -92,6 +98,7 @@ public class TestDigitalDJ extends JajukTestCase {
    * {@link org.jajuk.services.dj.DigitalDJ#compareTo(org.jajuk.services.dj.DigitalDJ)}
    * .
    */
+  @Test
   public final void testCompareTo() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
@@ -106,11 +113,12 @@ public class TestDigitalDJ extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dj.DigitalDJ#toXML()}.
    */
+  @Test
   public final void testToXML() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
     // abstract in DigitalDJ anyway, so no need to test this in detail here...
-    assertTrue(dj.toXML(), StringUtils.isNotBlank(dj.toXML()));
+    assertTrue(StringUtils.isNotBlank(dj.toXML()), dj.toXML());
   }
 
   /**
@@ -118,10 +126,11 @@ public class TestDigitalDJ extends JajukTestCase {
    *
    * {@link org.jajuk.services.dj.DigitalDJ#toXMLGeneralParameters()}.
    */
+  @Test
   public final void testToXMLGeneralParameters() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
-    assertTrue(dj.toXMLGeneralParameters(), StringUtils.isNotBlank(dj.toXMLGeneralParameters()));
+    assertTrue(StringUtils.isNotBlank(dj.toXMLGeneralParameters()), dj.toXMLGeneralParameters());
     // test xml-validity, need to add closing tag to build complete xml
     String xml = dj.toXMLGeneralParameters() + "</" + Const.XML_DJ_DJ + ">";
     Document document = XMLUtils.getDocument(xml);
@@ -134,6 +143,7 @@ public class TestDigitalDJ extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.services.dj.DigitalDJ#filterFilesByRate(java.util.List)}.
    */
+  @Test
   public final void testFilterFilesByRate() throws Exception {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
@@ -162,6 +172,7 @@ public class TestDigitalDJ extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testFilterFilesByMaxTrack() throws Exception {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
@@ -218,6 +229,7 @@ public class TestDigitalDJ extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dj.DigitalDJ#getName()}.
    */
+  @Test
   public final void testGetAndSetName() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     assertNull(dj.getName());
@@ -230,6 +242,7 @@ public class TestDigitalDJ extends JajukTestCase {
    *
    * {@link org.jajuk.services.dj.DigitalDJ#equals(java.lang.Object)}.
    */
+  @Test
   public final void testEqualsObject() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
@@ -246,6 +259,7 @@ public class TestDigitalDJ extends JajukTestCase {
    *
    * {@link org.jajuk.services.dj.DigitalDJ#setName(java.lang.String)}.
    */
+  @Test
   public final void testSetName() {
     // tested above
   }
@@ -254,6 +268,7 @@ public class TestDigitalDJ extends JajukTestCase {
    * Test method for {@link org.jajuk.services.dj.DigitalDJ#getFadingDuration()}
    * .
    */
+  @Test
   public final void testGetAndSetFadingDuration() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
@@ -267,6 +282,7 @@ public class TestDigitalDJ extends JajukTestCase {
    *
    * {@link org.jajuk.services.dj.DigitalDJ#setFadingDuration(int)}.
    */
+  @Test
   public final void testSetFadingDuration() {
     // tested above
   }
@@ -274,6 +290,7 @@ public class TestDigitalDJ extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dj.DigitalDJ#getRatingLevel()}.
    */
+  @Test
   public final void testGetAndSetRatingLevel() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
@@ -286,6 +303,7 @@ public class TestDigitalDJ extends JajukTestCase {
    * Test method for {@link org.jajuk.services.dj.DigitalDJ#setRatingLevel(int)}
    * .
    */
+  @Test
   public final void testSetRatingLevel() {
     // tested above
   }
@@ -293,6 +311,7 @@ public class TestDigitalDJ extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dj.DigitalDJ#generatePlaylist()}.
    */
+  @Test
   public final void testGeneratePlaylist() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
@@ -303,6 +322,7 @@ public class TestDigitalDJ extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dj.DigitalDJ#getID()}.
    */
+  @Test
   public final void testGetID() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
@@ -312,6 +332,7 @@ public class TestDigitalDJ extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dj.DigitalDJ#isTrackUnicity()}.
    */
+  @Test
   public final void testIsAndSetTrackUnicity() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
@@ -325,6 +346,7 @@ public class TestDigitalDJ extends JajukTestCase {
    *
    * {@link org.jajuk.services.dj.DigitalDJ#setTrackUnicity(boolean)}.
    */
+  @Test
   public final void testSetTrackUnicity() {
     // tested above
   }
@@ -332,6 +354,7 @@ public class TestDigitalDJ extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dj.DigitalDJ#getRatingLevel()}.
    */
+  @Test
   public final void testGetAndSetMaxTracks() {
     DigitalDJ dj = new AmbienceDigitalDJ("3");
     dj.setName("ambience1");
@@ -344,6 +367,7 @@ public class TestDigitalDJ extends JajukTestCase {
    * Test method for {@link org.jajuk.services.dj.DigitalDJ#setRatingLevel(int)}
    * .
    */
+  @Test
   public final void testSetMaxTracks() {
     // tested above
   }

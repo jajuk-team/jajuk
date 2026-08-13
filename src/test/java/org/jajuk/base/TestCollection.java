@@ -20,6 +20,9 @@
  */
 package org.jajuk.base;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jajuk.JajukTestCase;
@@ -39,6 +42,7 @@ public class TestCollection extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Collection#startDocument()}.
    */
+  @Test
   public final void testStartDocument() {
     Collection coll = Collection.getInstance();
     assertNotNull(coll);
@@ -49,6 +53,7 @@ public class TestCollection extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Collection#endDocument()}.
    */
+  @Test
   public final void testEndDocument() {
     Collection coll = Collection.getInstance();
     assertNotNull(coll);
@@ -59,6 +64,7 @@ public class TestCollection extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Collection#getInstance()}.
    */
+  @Test
   public final void testGetInstance() {
     Collection coll = Collection.getInstance();
     assertNotNull(coll);
@@ -69,6 +75,7 @@ public class TestCollection extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testCommit() throws Exception {
     StartupCollectionService.registerItemManagers();
     Collection coll = Collection.getInstance();
@@ -81,8 +88,8 @@ public class TestCollection extends JajukTestCase {
     // now it should exist and have some content
     assertTrue(file.exists());
     String str = FileUtils.readFileToString(file);
-    assertTrue(str, StringUtils.isNotBlank(str));
-    assertTrue(str, str.contains("<" + Const.XML_COLLECTION));
+    assertTrue(StringUtils.isNotBlank(str), str);
+    assertTrue(str.contains("<" + Const.XML_COLLECTION), str);
     //Add a sample track and files
     TestHelpers.getFile();
     TestHelpers.getTrack(5);
@@ -93,10 +100,10 @@ public class TestCollection extends JajukTestCase {
     // now it should exist and have some content
     assertTrue(file.exists());
     str = FileUtils.readFileToString(file);
-    assertTrue(str, StringUtils.isNotBlank(str));
-    assertTrue(str, str.contains("<" + Const.XML_COLLECTION));
+    assertTrue(StringUtils.isNotBlank(str), str);
+    assertTrue(str.contains("<" + Const.XML_COLLECTION), str);
     // it should also contain the content that we added
-    assertTrue(str, str.contains("sample_device"));
+    assertTrue(str.contains("sample_device"), str);
     // add test for strange error in this testcase on hudson
     assertNotNull(UtilString.getAdditionDateFormatter());
     // also test loading here
@@ -108,6 +115,7 @@ public class TestCollection extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Collection#load(java.io.File)}.
    */
+  @Test
   public final void testLoad() {
     // tested above
   }
@@ -118,18 +126,20 @@ public class TestCollection extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testLoadNotExists() throws Exception {
     try {
       Collection.load(new java.io.File("Notexistingfile"));
       fail("Should throw an exception here.");
     } catch (JajukException e) {
-      assertTrue(e.getMessage(), e.getMessage().contains("Notexistingfile"));
+      assertTrue(e.getMessage().contains("Notexistingfile"), e.getMessage());
     }
   }
 
   /**
    * Test method for {@link org.jajuk.base.Collection#cleanupLogical()}.
    */
+  @Test
   public final void testCleanupLogical() {
     Collection.cleanupLogical();
   }
@@ -137,6 +147,7 @@ public class TestCollection extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Collection#clearCollection()}.
    */
+  @Test
   public final void testClearCollection() {
     Collection.clearCollection();
   }
@@ -146,13 +157,14 @@ public class TestCollection extends JajukTestCase {
    *
    * {@link org.jajuk.base.Collection#warning(org.xml.sax.SAXParseException)}.
    */
+  @Test
   public final void testWarningSAXParseException() {
     Collection coll = Collection.getInstance();
     try {
       coll.warning(new SAXParseException("Testexception", null));
       fail("Should throw exception here...");
     } catch (SAXException e) {
-      assertTrue(e.getMessage(), e.getMessage().contains("Testexception"));
+      assertTrue(e.getMessage().contains("Testexception"), e.getMessage());
     }
   }
 
@@ -162,13 +174,14 @@ public class TestCollection extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.base.Collection#error(org.xml.sax.SAXParseException)}.
    */
+  @Test
   public final void testErrorSAXParseException() throws Exception {
     Collection coll = Collection.getInstance();
     try {
       coll.error(new SAXParseException("Testexception", null));
       fail("Should throw exception here...");
     } catch (SAXException e) {
-      assertTrue(e.getMessage(), e.getMessage().contains("Testexception"));
+      assertTrue(e.getMessage().contains("Testexception"), e.getMessage());
     }
   }
 
@@ -179,13 +192,14 @@ public class TestCollection extends JajukTestCase {
    * {@link org.jajuk.base.Collection#fatalError(org.xml.sax.SAXParseException)}
    * .
    */
+  @Test
   public final void testFatalErrorSAXParseException() throws Exception {
     Collection coll = Collection.getInstance();
     try {
       coll.fatalError(new SAXParseException("Testexception", null));
       fail("Should throw exception here...");
     } catch (SAXException e) {
-      assertTrue(e.getMessage(), e.getMessage().contains("Testexception"));
+      assertTrue(e.getMessage().contains("Testexception"), e.getMessage());
     }
   }
 
@@ -195,6 +209,7 @@ public class TestCollection extends JajukTestCase {
    * {@link org.jajuk.base.Collection#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)}
    * .
    */
+  @Test
   public final void testStartElementStringStringStringAttributes() {
     // tested as part of commit/load
   }
@@ -202,6 +217,7 @@ public class TestCollection extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Collection#getHmWrongRightFileID()}.
    */
+  @Test
   public final void testGetHmWrongRightFileID() {
     Collection coll = Collection.getInstance();
     assertNotNull(coll.getHmWrongRightFileID());
@@ -210,6 +226,7 @@ public class TestCollection extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Collection#getWrongRightAlbumIDs()}.
    */
+  @Test
   public final void testGetWrongRightAlbumIDs() {
     Collection coll = Collection.getInstance();
     assertNotNull(coll.getWrongRightAlbumIDs());
