@@ -20,6 +20,9 @@
  */
 package org.jajuk.util.filters;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.File;
 
 import org.jajuk.JajukTestCase;
@@ -31,6 +34,7 @@ public class TestHTMLFilter extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.filters.HTMLFilter#getInstance()}.
    */
+  @Test
   public void testGetInstance() {
     assertNotNull(HTMLFilter.getInstance());
   }
@@ -39,6 +43,7 @@ public class TestHTMLFilter extends JajukTestCase {
    * Test accept.
    * 
    */
+  @Test
   public void testAccept() {
     assertTrue(HTMLFilter.getInstance().accept(new File("test.html")));
     assertTrue(HTMLFilter.getInstance().accept(new File("test.HTML"))); // uppercase

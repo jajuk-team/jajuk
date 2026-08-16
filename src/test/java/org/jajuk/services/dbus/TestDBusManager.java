@@ -20,6 +20,8 @@
  */
 package org.jajuk.services.dbus;
 
+import org.junit.jupiter.api.Test;
+
 import org.jajuk.JajukTestCase;
 
 /**
@@ -29,6 +31,7 @@ public class TestDBusManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dbus.DBusManager#connect()}.
    */
+  @Test
   public final void testGetInstance() {
     // DBus requires the environment variable DBUS_SESSION_BUS_ADDRESS
     // but this is typically only set on machines that support D-Bus
@@ -43,6 +46,7 @@ public class TestDBusManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dbus.DBusManager#disconnect()}.
    */
+  @Test
   public final void testDisconnect() {
     // first run it without connecting in getInstance()
     DBusManager.disconnect();

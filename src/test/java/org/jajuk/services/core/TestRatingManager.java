@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.core;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.Set;
 
 import org.jajuk.JajukTestCase;
@@ -51,6 +54,7 @@ public class TestRatingManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.core.RatingService#run()}.
    */
+  @Test
   public void testRun() {
     // cannot be tested, is an endless loop:
     // RatingManager.getInstance().run();
@@ -60,6 +64,7 @@ public class TestRatingManager extends JajukTestCase {
    * Test method for {@link org.jajuk.services.core.RatingService#getInstance()}
    * .
    */
+  @Test
   public void testGetInstance() {
     assertNotNull(RatingService.getInstance());
   }
@@ -69,6 +74,7 @@ public class TestRatingManager extends JajukTestCase {
    *
    * {@link org.jajuk.services.core.RatingService#getMaxPlaycount()}.
    */
+  @Test
   public void testGetAndSetMaxPlaycount() {
     // Reset the rating manager
     RatingService.getInstance().update(new JajukEvent(JajukEvents.RATE_RESET, null));
@@ -84,6 +90,7 @@ public class TestRatingManager extends JajukTestCase {
    *
    * {@link org.jajuk.services.core.RatingService#setMaxPlaycount(long)}.
    */
+  @Test
   public void testSetMaxPlaycount() {
     // tested above
   }
@@ -93,9 +100,10 @@ public class TestRatingManager extends JajukTestCase {
    *
    * {@link org.jajuk.services.core.RatingService#getRegistrationKeys()}.
    */
+  @Test
   public void testGetRegistrationKeys() {
     Set<JajukEvents> set = RatingService.getInstance().getRegistrationKeys();
-    assertTrue(set.toString(), set.contains(JajukEvents.RATE_RESET));
+    assertTrue(set.contains(JajukEvents.RATE_RESET), set.toString());
   }
 
   /**
@@ -105,6 +113,7 @@ public class TestRatingManager extends JajukTestCase {
    * {@link org.jajuk.services.core.RatingService#update(org.jajuk.events.JajukEvent)}
    * .
    */
+  @Test
   public void testUpdate() throws Exception {
     StartupCollectionService.registerItemManagers();
     // update uses some Tracks
@@ -146,6 +155,7 @@ public class TestRatingManager extends JajukTestCase {
     return track;
   }
 
+  @Test
   public void testGetRateForPreference() {
     assertEquals(RatingService.getRateForPreference(-3l), 0);
     assertEquals(RatingService.getRateForPreference(-2l), 17);

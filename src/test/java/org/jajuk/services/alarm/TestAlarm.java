@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.alarm;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +42,7 @@ public class TestAlarm extends JajukTestCase {
    * {@link org.jajuk.services.alarm.Alarm#Alarm(java.util.Date, java.util.List, java.lang.String)}
    * .
    */
+  @Test
   public void testAlarm() {
     new Alarm(new Date(), new ArrayList<File>(), "mode");
   }
@@ -46,6 +50,7 @@ public class TestAlarm extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.alarm.Alarm#wakeUpSleeper()}.
    */
+  @Test
   public void testWakeUpSleeper() {
     Alarm alarm = new Alarm(new Date(), new ArrayList<File>(), "mode");
     alarm.wakeUpSleeper();
@@ -57,6 +62,7 @@ public class TestAlarm extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.alarm.Alarm#getAlarmTime()}.
    */
+  @Test
   public void testGetAlarmTime() {
     Date date = new Date();
     Alarm alarm = new Alarm(date, new ArrayList<File>(), "mode");
@@ -66,6 +72,7 @@ public class TestAlarm extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.alarm.Alarm#nextDay()}.
    */
+  @Test
   public void testNextDay() {
     Date date = new Date();
     Alarm alarm = new Alarm(date, new ArrayList<File>(), "mode");

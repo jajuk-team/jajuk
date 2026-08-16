@@ -20,21 +20,25 @@
  */
 package ext;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.awt.Component;
 
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.text.JTextComponent;
 
-import junit.framework.TestCase;
 
 /**
  * .
  */
-public class TestAutoCompleteDecorator extends TestCase {
+public class TestAutoCompleteDecorator {
   /**
    * Test method for {@link ext.AutoCompleteDecorator#decorate(javax.swing.text.JTextComponent, java.util.List, boolean)}.
    */
+  @Test
   public void testDecorateJTextComponentListOfObjectBoolean() {
     // TODO: make working
     // AutoCompleteDecorator.decorate(null, null, false);
@@ -43,6 +47,7 @@ public class TestAutoCompleteDecorator extends TestCase {
   /**
    * Test method for {@link ext.AutoCompleteDecorator#decorate(javax.swing.text.JTextComponent, java.util.List, boolean, org.jdesktop.swingx.autocomplete.ObjectToStringConverter)}.
    */
+  @Test
   public void testDecorateJTextComponentListOfObjectBooleanObjectToStringConverter() {
     // TODO: make working
     // AutoCompleteDecorator.decorate(null, null, false, null);
@@ -51,6 +56,7 @@ public class TestAutoCompleteDecorator extends TestCase {
   /**
    * Test method for {@link ext.AutoCompleteDecorator#decorate(javax.swing.JList, javax.swing.text.JTextComponent)}.
    */
+  @Test
   public void testDecorateJListJTextComponent() {
     AutoCompleteDecorator.decorate(new JList(), new JTextComponent() {
       private static final long serialVersionUID = 1L;
@@ -68,6 +74,7 @@ public class TestAutoCompleteDecorator extends TestCase {
   /**
    * Test method for {@link ext.AutoCompleteDecorator#decorate(javax.swing.JList, javax.swing.text.JTextComponent, org.jdesktop.swingx.autocomplete.ObjectToStringConverter)}.
    */
+  @Test
   public void testDecorateJListJTextComponentObjectToStringConverter() {
     // TODO: make working
     //AutoCompleteDecorator.decorate(new JList(), new JTextComponent() {
@@ -77,6 +84,7 @@ public class TestAutoCompleteDecorator extends TestCase {
   /**
    * Test method for {@link ext.AutoCompleteDecorator#decorate(javax.swing.JComboBox)}.
    */
+  @Test
   public void testDecorateJComboBox() {
     // TODO: make working
     // AutoCompleteDecorator.decorate(null);
@@ -85,6 +93,7 @@ public class TestAutoCompleteDecorator extends TestCase {
   /**
    * Test method for {@link ext.AutoCompleteDecorator#decorate(javax.swing.JComboBox, org.jdesktop.swingx.autocomplete.ObjectToStringConverter)}.
    */
+  @Test
   public void testDecorateJComboBoxObjectToStringConverter() {
     // TODO: make working
     // AutoCompleteDecorator.decorate((JComboBox)null, null);
@@ -93,6 +102,7 @@ public class TestAutoCompleteDecorator extends TestCase {
   /**
    * Test method for {@link ext.AutoCompleteDecorator#decorate(javax.swing.text.JTextComponent, ext.AutoCompleteDocument, org.jdesktop.swingx.autocomplete.AbstractAutoCompleteAdaptor)}.
    */
+  @Test
   public void testDecorateJTextComponentAutoCompleteDocumentAbstractAutoCompleteAdaptor() {
     // TODO: make working
     // AutoCompleteDecorator.decorate((JTextComponent)null, null, null);
@@ -102,14 +112,15 @@ public class TestAutoCompleteDecorator extends TestCase {
   // Tests from singx itself
   private JComboBox combo;
 
-  @Override
-  protected void setUp() throws Exception {
+  @BeforeEach
+  public void setUp() throws Exception {
     combo = new JComboBox(new String[] { "Alpha", "Bravo", "Charlie", "Delta" });
   }
 
   /**
    * SwingX Issue #299.
    */
+  @Test
   public void testDecorationFocusListeners() {
     Component editor = combo.getEditor().getEditorComponent();
     //current count plus 2 from UI delegate and 1 from AutoComplete
@@ -125,6 +136,7 @@ public class TestAutoCompleteDecorator extends TestCase {
   /**
    * SwingX Issue #299.
    */
+  @Test
   public void testDecorationKeyListeners() {
     Component editor = combo.getEditor().getEditorComponent();
     //current count 1 from AutoComplete
@@ -140,6 +152,7 @@ public class TestAutoCompleteDecorator extends TestCase {
   /**
    * SwingX Issue #299.
    */
+  @Test
   public void testDecorationPropertyListeners() {
     //current count 1 from AutoComplete
     int expectedPropListenerCount = combo.getPropertyChangeListeners("editor").length + 1;

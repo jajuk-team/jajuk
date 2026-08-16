@@ -20,6 +20,9 @@
  */
 package org.jajuk.util.filters;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.File;
 
 import org.jajuk.JajukTestCase;
@@ -33,6 +36,7 @@ public class TestAnyFileFilter extends JajukTestCase {
    *
    * {@link org.jajuk.util.filters.AnyFileFilter#getDescription()}.
    */
+  @Test
   public void testGetDescription() {
     AnyFileFilter filter = AnyFileFilter.getInstance();
     assertEquals("*.*", filter.getDescription());
@@ -44,6 +48,7 @@ public class TestAnyFileFilter extends JajukTestCase {
    * {@link org.jajuk.util.filters.AnyFileFilter#isKnownExtension(java.io.File)}
    * .
    */
+  @Test
   public void testIsKnownExtension() {
     AnyFileFilter filter = AnyFileFilter.getInstance();
     assertTrue(filter.isKnownExtension(new File("anyfile.something")));
@@ -53,6 +58,7 @@ public class TestAnyFileFilter extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.filters.AnyFileFilter#getInstance()}.
    */
+  @Test
   public void testGetInstance() {
     assertNotNull(AnyFileFilter.getInstance());
   }

@@ -233,12 +233,12 @@ public final class StartupEngineService {
       if (conf.matches(SearchResultType.FILE.name() + ".*")) {
         fileToPlay = FileManager.getInstance().getFileByID(item);
         if (fileToPlay == null) {
-          Log.warn("Unknown startup file : " + fileToPlay.getAbsolutePath());
+          Log.warn("Unknown startup file : " + item);
         }
       } else if (conf.matches(SearchResultType.WEBRADIO.name() + ".*")) {
         radio = WebRadioManager.getInstance().getWebRadioByName(item);
         if (radio == null) {
-          Log.warn("Unknown startup webradio : " + radio.getName());
+          Log.warn("Unknown startup webradio : " + item);
         }
       }
     }

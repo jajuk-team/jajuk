@@ -20,6 +20,9 @@
  */
 package org.jajuk.base;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +49,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#getTitle()}.
    */
+  @Test
   public void testGetDesc() {
     Device device = new Device("1", "testname");
     assertNotNull(device.getTitle());
@@ -55,6 +59,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#getXMLTag()}.
    */
+  @Test
   public void testGetLabel() {
     Device device = TestHelpers.getDevice();
     assertEquals(Const.XML_DEVICE, device.getXMLTag());
@@ -65,6 +70,7 @@ public class TestDevice extends JajukTestCase {
    *
    * {@link org.jajuk.base.Device#populateProperties(org.xml.sax.Attributes)}.
    */
+  @Test
   public void testPopulateProperties() {
     StartupCollectionService.registerItemManagers();
     Device device = new Device("1", "name");
@@ -97,6 +103,7 @@ public class TestDevice extends JajukTestCase {
    *
    * {@link org.jajuk.base.Device#getHumanValue(java.lang.String)}.
    */
+  @Test
   public void testGetHumanValue() {
     // we need the managers registered here
     StartupCollectionService.registerItemManagers();
@@ -123,6 +130,7 @@ public class TestDevice extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testGetIconRepresentation() throws Exception {
     // we need the managers registered here
     StartupCollectionService.registerItemManagers();
@@ -149,6 +157,7 @@ public class TestDevice extends JajukTestCase {
    *
    * {@link org.jajuk.base.Device#addDirectory(org.jajuk.base.Directory)}.
    */
+  @Test
   public void testAddDirectory() {
     Device device = TestHelpers.getDevice();
     Directory dir1 = DirectoryManager.getInstance().registerDirectory("dir1",
@@ -167,6 +176,7 @@ public class TestDevice extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testCleanRemovedFiles() throws Exception {
     Device device = TestHelpers.getDevice();
     Playlist playlist = TestHelpers.getPlaylist();
@@ -185,6 +195,7 @@ public class TestDevice extends JajukTestCase {
    *
    * {@link org.jajuk.base.Device#compareTo(org.jajuk.base.Device)}.
    */
+  @Test
   public void testCompareTo() {
     Device device = new Device("1", "name");
     Device equal = new Device("1", "name");
@@ -197,6 +208,7 @@ public class TestDevice extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testGetDateLastRefresh() throws Exception {
     Device device = TestHelpers.getDevice();
     assertEquals(0, device.getDateLastRefresh());
@@ -209,6 +221,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#getDeviceTypeS()}.
    */
+  @Test
   public void testGetDeviceTypeS() {
     Device device = TestHelpers.getDevice();
     assertNotNull(device.getDeviceTypeS());
@@ -217,6 +230,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#getDirectories()}.
    */
+  @Test
   public void testGetDirectories() {
     Device device = TestHelpers.getDevice();
     assertEquals(0, device.getDirectories().size());
@@ -228,6 +242,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#getFilesRecursively()}.
    */
+  @Test
   public void testGetFilesRecursively() {
     Device device = TestHelpers.getDevice();
     device.setUrl(ConstTest.DEVICES_BASE_PATH + "/" + System.currentTimeMillis());
@@ -271,6 +286,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#getFIO()}.
    */
+  @Test
   public void testGetFio() {
     Device device = TestHelpers.getDevice();
     device.setUrl(ConstTest.TEMP_PATH);
@@ -282,6 +298,7 @@ public class TestDevice extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testGetRootDirectory() throws Exception {
     // create a unique id here...
     Device device = DeviceManager.getInstance().registerDevice("getRootDirectory",
@@ -297,6 +314,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#getType()}.
    */
+  @Test
   public void testGetType() {
     Device device = TestHelpers.getDevice();
     assertEquals(Device.Type.DIRECTORY, device.getType());
@@ -307,6 +325,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#getUrl()}.
    */
+  @Test
   public void testGetUrl() {
     Device device = new Device("1", "name");
     assertNull(device.getUrl());
@@ -319,6 +338,7 @@ public class TestDevice extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testIsMounted() throws Exception {
     Device device = TestHelpers.getDevice();
     device.unmount();
@@ -333,6 +353,7 @@ public class TestDevice extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testIsReady() throws Exception {
     Device device = new Device("1", "name");
     device.setUrl(ConstTest.DEVICES_BASE_PATH + "/dev");
@@ -347,6 +368,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#isRefreshing()}.
    */
+  @Test
   public void testIsRefreshing() {
     Device device = TestHelpers.getDevice();
     assertFalse(device.isRefreshing());
@@ -355,6 +377,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#isSynchronizing()}.
    */
+  @Test
   public void testIsSynchronizing() {
     Device device = TestHelpers.getDevice();
     assertFalse(device.isSynchronizing());
@@ -365,6 +388,7 @@ public class TestDevice extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testPrepareRefresh() throws Exception {
     Device device = TestHelpers.getDevice();
     device.prepareRefresh(false);
@@ -375,6 +399,7 @@ public class TestDevice extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testMount() throws Exception {
     Device device = TestHelpers.getDevice();
     device.mount(true);
@@ -400,13 +425,14 @@ public class TestDevice extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testRefreshBoolean() throws Exception {
     Device device = TestHelpers.getDevice();
     try {
       device.refresh(false, false, false, null);
     } catch (RuntimeException e) {
       // there can be a hidden HeadlessException here
-      assertTrue(e.getCause().getMessage(), e.getCause() instanceof InvocationTargetException);
+      assertTrue(e.getCause() instanceof InvocationTargetException, e.getCause().getMessage());
     }
     device.refresh(true, false, false, null);
   }
@@ -416,13 +442,14 @@ public class TestDevice extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testRefreshBooleanBoolean() throws Exception {
     Device device = TestHelpers.getDevice();
     try {
       device.refresh(false, false, false, null);
     } catch (RuntimeException e) {
       // there can be a hidden HeadlessException here
-      assertTrue(e.getCause().getMessage(), e.getCause() instanceof InvocationTargetException);
+      assertTrue(e.getCause() instanceof InvocationTargetException, e.getCause().getMessage());
     }
     device.refresh(true, false, false, null);
   }
@@ -430,6 +457,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#refreshCommand(boolean)}.
    */
+  @Test
   public void testRefreshCommand() {
     Device device = TestHelpers.getDevice();
     try {
@@ -446,6 +474,7 @@ public class TestDevice extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testRefreshCommandNoMoreAvailable() throws Exception {
     // We check that a device mounted but no more available cannot be refreshed
     Device device = new Device("1", "name");
@@ -470,6 +499,7 @@ public class TestDevice extends JajukTestCase {
    * 
    * @throws Exception the exception
    */
+  @Test
   public void testRefreshCommandDontReaddTopDirectory() throws Exception {
     Device device = TestHelpers.getDevice();
     device.mount(true);
@@ -496,6 +526,7 @@ public class TestDevice extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testSetUrl() throws Exception {
     Device device = TestHelpers.getDevice();
     // add some directory, then the remove should kick in!
@@ -510,6 +541,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#synchronize(boolean)}.
    */
+  @Test
   public void testSynchronize() {
     Device device = TestHelpers.getDevice();
     device.synchronize(true);
@@ -521,6 +553,7 @@ public class TestDevice extends JajukTestCase {
    * Test synchronize conf set.
    * 
    */
+  @Test
   public void testSynchronizeConfSet() {
     Device device = TestHelpers.getDevice();
     Device dSrc = TestHelpers.getDevice("src", Device.Type.DIRECTORY, ConstTest.DEVICES_BASE_PATH
@@ -543,6 +576,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#synchronizeCommand()}.
    */
+  @Test
   public void testSynchronizeCommand() {
     Device device = TestHelpers.getDevice();
     device.synchronizeCommand();
@@ -553,6 +587,7 @@ public class TestDevice extends JajukTestCase {
    * Test synchronize command sync device.
    * 
    */
+  @Test
   public void testSynchronizeCommandSyncDevice() {
     Device device = TestHelpers.getDevice();
     try {
@@ -572,6 +607,7 @@ public class TestDevice extends JajukTestCase {
    * Test synchronize command sync device bidi.
    * 
    */
+  @Test
   public void testSynchronizeCommandSyncDeviceBidi() {
     Device device = TestHelpers.getDevice();
     try {
@@ -606,6 +642,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#test()}.
    */
+  @Test
   public void testTest() {
     Device device = DeviceManager.getInstance().registerDevice("name", Device.Type.DIRECTORY,
         ConstTest.DEVICES_BASE_PATH + "/device");
@@ -616,6 +653,7 @@ public class TestDevice extends JajukTestCase {
    * Test test mounted.
    * 
    */
+  @Test
   public void testTestMounted() {
     Device device = TestHelpers.getDevice();
     assertTrue(device.test());
@@ -624,6 +662,7 @@ public class TestDevice extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Device#toString()}.
    */
+  @Test
   public void testToString() {
     Device device = TestHelpers.getDevice();
     TestHelpers.ToStringTest(device);
@@ -638,6 +677,7 @@ public class TestDevice extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testUnmount() throws Exception {
     Device device = TestHelpers.getDevice();
     assertFalse(device.isMounted());
@@ -653,6 +693,7 @@ public class TestDevice extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testUnmountBooleanBoolean() throws Exception {
     Device device = TestHelpers.getDevice();
     assertFalse(device.isMounted());
@@ -669,6 +710,7 @@ public class TestDevice extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testUnmountBooleanBooleanQueue() throws Exception {
     Device device = TestHelpers.getDevice();
     device.mount(true);

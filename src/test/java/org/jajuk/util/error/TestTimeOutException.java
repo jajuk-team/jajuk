@@ -20,6 +20,8 @@
  */
 package org.jajuk.util.error;
 
+import org.junit.jupiter.api.Test;
+
 import org.jajuk.JajukTestCase;
 
 /**
@@ -31,6 +33,7 @@ public class TestTimeOutException extends JajukTestCase {
    *
    * {@link org.jajuk.util.error.TimeOutException#TimeOutException(int)}.
    */
+  @Test
   public void testTimeOutExceptionInt() {
     new TimeOutException(11);
   }
@@ -41,6 +44,7 @@ public class TestTimeOutException extends JajukTestCase {
    * {@link org.jajuk.util.error.TimeOutException#TimeOutException(int, java.lang.Throwable)}
    * .
    */
+  @Test
   public void testTimeOutExceptionIntThrowable() {
     new TimeOutException(24, new Throwable("TestException"));
   }

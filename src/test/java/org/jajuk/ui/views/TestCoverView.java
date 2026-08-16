@@ -20,6 +20,9 @@
  */
 package org.jajuk.ui.views;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -56,6 +59,7 @@ public class TestCoverView extends JajukTestCase {
    * {@link org.jajuk.ui.views.CoverView#componentResized(java.awt.event.ComponentEvent)}
    * .
    */
+  @Test
   public final void testComponentResized() {
     CoverView view = new CoverView();
     // this expects the UI to be available
@@ -72,6 +76,7 @@ public class TestCoverView extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.ui.views.CoverView#CoverView()}.
    */
+  @Test
   public final void testCoverView() {
     new CoverView();
   }
@@ -81,6 +86,7 @@ public class TestCoverView extends JajukTestCase {
    *
    * {@link org.jajuk.ui.views.CoverView#CoverView(org.jajuk.base.File)}.
    */
+  @Test
   public final void testCoverViewFile() {
     new CoverView(getFile());
   }
@@ -108,6 +114,7 @@ public class TestCoverView extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.ui.views.CoverView#initUI()}.
    */
+  @Test
   public final void testInitUI() {
     CoverView view = new CoverView();
     view.initUI();
@@ -116,6 +123,7 @@ public class TestCoverView extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.ui.views.CoverView#initUI(boolean)}.
    */
+  @Test
   public final void testInitUIBoolean() {
     {
       CoverView view = new CoverView();
@@ -133,6 +141,7 @@ public class TestCoverView extends JajukTestCase {
    * {@link org.jajuk.ui.views.CoverView#actionPerformed(java.awt.event.ActionEvent)}
    * .
    */
+  @Test
   public final void testActionPerformed() {
     CoverView view = new CoverView();
     view.initUI();
@@ -174,6 +183,7 @@ public class TestCoverView extends JajukTestCase {
    *
    * {@link org.jajuk.ui.views.CoverView#createQuery(org.jajuk.base.File)}.
    */
+  @Test
   public final void testCreateQuery() {
     CoverView view = new CoverView();
     // NPE: view.createQuery(null);
@@ -183,6 +193,7 @@ public class TestCoverView extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.ui.views.CoverView#getDesc()}.
    */
+  @Test
   public final void testGetDesc() {
     CoverView view = new CoverView();
     assertNotNull(view.getDesc());
@@ -192,6 +203,7 @@ public class TestCoverView extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.ui.views.CoverView#getRegistrationKeys()}.
    */
+  @Test
   public final void testGetRegistrationKeys() {
     CoverView view = new CoverView();
     Set<JajukEvents> eventSubjectSet = view.getRegistrationKeys();
@@ -204,6 +216,7 @@ public class TestCoverView extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testGetCurrentImage() throws Exception {
     CoverView view = new CoverView();
     // need to cover initialized
@@ -217,6 +230,7 @@ public class TestCoverView extends JajukTestCase {
    *
    * {@link org.jajuk.ui.views.CoverView#update(org.jajuk.events.JajukEvent)}.
    */
+  @Test
   public final void testUpdateJajukEvent() {
     CoverView view = new CoverView();
     // this expects the UI to be available

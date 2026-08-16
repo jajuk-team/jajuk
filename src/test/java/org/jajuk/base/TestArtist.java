@@ -20,6 +20,9 @@
  */
 package org.jajuk.base;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
@@ -33,6 +36,7 @@ public class TestArtist extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Artist#getTitle()}.
    */
+  @Test
   public final void testGetDesc() {
     Artist artist = TestHelpers.getArtist();
     assertTrue(StringUtils.isNotBlank(artist.getTitle()));
@@ -41,6 +45,7 @@ public class TestArtist extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Artist#getXMLTag()}.
    */
+  @Test
   public final void testGetLabel() {
     Artist artist = TestHelpers.getArtist();
     assertEquals(Const.XML_ARTIST, artist.getXMLTag());
@@ -51,6 +56,7 @@ public class TestArtist extends JajukTestCase {
    *
    * {@link org.jajuk.base.Artist#getHumanValue(java.lang.String)}.
    */
+  @Test
   public final void testGetHumanValue() {
     // need ArtistManager for MetaInformation here...
     StartupCollectionService.registerItemManagers();
@@ -61,6 +67,7 @@ public class TestArtist extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Artist#getIconRepresentation()}.
    */
+  @Test
   public final void testGetIconRepresentation() {
     Artist artist = TestHelpers.getArtist();
     assertNotNull(artist.getIconRepresentation());
@@ -71,6 +78,7 @@ public class TestArtist extends JajukTestCase {
    *
    * {@link org.jajuk.base.Artist#Artist(java.lang.String, java.lang.String)}.
    */
+  @Test
   public final void testArtist() {
     TestHelpers.getArtist();
   }
@@ -78,6 +86,7 @@ public class TestArtist extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Artist#getName2()}.
    */
+  @Test
   public final void testGetName2() {
     Artist artist = TestHelpers.getArtist();
     // usually equal to getName()
@@ -91,6 +100,7 @@ public class TestArtist extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Artist#toString()}.
    */
+  @Test
   public final void testToString() {
     Artist artist = new Artist("1", "name");
     TestHelpers.ToStringTest(artist);
@@ -103,6 +113,7 @@ public class TestArtist extends JajukTestCase {
    *
    * {@link org.jajuk.base.Artist#compareTo(org.jajuk.base.Artist)}.
    */
+  @Test
   public final void testCompareTo() {
     Artist artist = new Artist("1", "name");
     Artist equal = new Artist("1", "name");
@@ -115,6 +126,7 @@ public class TestArtist extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Artist#isUnknown()}.
    */
+  @Test
   public final void testIsUnknown() {
     Artist artist = TestHelpers.getArtist();
     assertFalse(artist.isUnknown());

@@ -20,6 +20,9 @@
  */
 package org.jajuk.events;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -33,22 +36,13 @@ import org.jajuk.TestHelpers;
 public class TestObservationManager extends JajukTestCase {
   AtomicInteger called = new AtomicInteger(0);
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see junit.framework.TestCase#tearDown()
-   */
-  @Override
-  protected void tearDown() throws Exception {
-    super.tearDown();
-  }
-
   /**
    * Test method for.
    *
    * {@link org.jajuk.events.ObservationManager#register(org.jajuk.events.Observer)}
    * .
    */
+  @Test
   public void testRegister() {
     ObservationManager.register(new TestObserverRegistry.LocalObserver(called));
   }
@@ -59,6 +53,7 @@ public class TestObservationManager extends JajukTestCase {
    * {@link org.jajuk.events.ObservationManager#unregister(org.jajuk.events.JajukEvents, org.jajuk.events.Observer)}
    * .
    */
+  @Test
   public void testUnregister() {
     ObservationManager.unregister(new TestObserverRegistry.LocalObserver(called));
   }
@@ -67,6 +62,7 @@ public class TestObservationManager extends JajukTestCase {
    * Test unregister null.
    * 
    */
+  @Test
   public void testUnregisterNull() {
     ObservationManager.unregister(new Observer() {
       @Override
@@ -89,6 +85,7 @@ public class TestObservationManager extends JajukTestCase {
    * {@link org.jajuk.events.ObservationManager#notify(org.jajuk.events.JajukEvent)}
    * .
    */
+  @Test
   public void testNotifyJajukEvent() {
     ObservationManager.notify(new JajukEvent(JajukEvents.VOLUME_CHANGED));
   }
@@ -99,6 +96,7 @@ public class TestObservationManager extends JajukTestCase {
    * {@link org.jajuk.events.ObservationManager#notifySync(org.jajuk.events.JajukEvent)}
    * .
    */
+  @Test
   public void testNotifySync() {
     ObservationManager.notifySync(new JajukEvent(JajukEvents.PLAY_ERROR));
   }
@@ -109,6 +107,7 @@ public class TestObservationManager extends JajukTestCase {
    * {@link org.jajuk.events.ObservationManager#containsEvent(org.jajuk.events.JajukEvents)}
    * .
    */
+  @Test
   public void testContainsEvent() {
     assertFalse(ObservationManager.containsEvent(JajukEvents.CDDB_WIZARD));
     ObservationManager.notifySync(new JajukEvent(JajukEvents.CDDB_WIZARD));
@@ -121,6 +120,7 @@ public class TestObservationManager extends JajukTestCase {
    * {@link org.jajuk.events.ObservationManager#notify(org.jajuk.events.JajukEvent, boolean)}
    * .
    */
+  @Test
   public void testNotifyJajukEventBoolean() {
     ObservationManager.notify(new JajukEvent(JajukEvents.VOLUME_CHANGED));
     ObservationManager.notifySync(new JajukEvent(JajukEvents.VOLUME_CHANGED));
@@ -132,6 +132,7 @@ public class TestObservationManager extends JajukTestCase {
    * {@link org.jajuk.events.ObservationManager#getDetailLastOccurence(org.jajuk.events.JajukEvents, java.lang.String)}
    * .
    */
+  @Test
   public void testGetDetailLastOccurence() {
     assertNull(ObservationManager.getDetailLastOccurence(JajukEvents.ALARMS_CHANGE, "notexists"));
     Properties prop = new Properties();
@@ -147,6 +148,7 @@ public class TestObservationManager extends JajukTestCase {
    * {@link org.jajuk.events.ObservationManager#getDetail(org.jajuk.events.JajukEvent, java.lang.String)}
    * .
    */
+  @Test
   public void testGetDetail() {
     Properties prop = new Properties();
     prop.setProperty("test", "value");
@@ -158,6 +160,7 @@ public class TestObservationManager extends JajukTestCase {
    * Test get detail null.
    * 
    */
+  @Test
   public void testGetDetailNull() {
     Properties prop = new Properties();
     prop.setProperty("test", "value");
@@ -173,6 +176,7 @@ public class TestObservationManager extends JajukTestCase {
    * {@link org.jajuk.events.ObservationManager#getDetailsLastOccurence(org.jajuk.events.JajukEvents)}
    * .
    */
+  @Test
   public void testGetDetailsLastOccurence() {
     assertNull(ObservationManager.getDetailLastOccurence(JajukEvents.ALARMS_CHANGE, "notexists"));
     Properties prop = new Properties();
@@ -190,6 +194,7 @@ public class TestObservationManager extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testPrivateConstructor() throws Exception {
     // For EMMA code-coverage tests
     TestHelpers.executePrivateConstructor(ObservationManager.class);
@@ -199,6 +204,7 @@ public class TestObservationManager extends JajukTestCase {
    * Test exception.
    * 
    */
+  @Test
   public void testException() {
     Observer observer = new TestObserverRegistry.LocalObserver(true, called);
     ObservationManager.register(observer);

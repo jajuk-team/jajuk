@@ -20,11 +20,17 @@
  */
 package org.jajuk;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.File;
 import java.net.URL;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
 
 import org.apache.commons.io.FileUtils;
 import org.jajuk.base.Collection;
@@ -45,7 +51,7 @@ import org.jajuk.util.log.Log;
  * Common behavior for every jajuk test.
  * <p>EVERY JAJUK UNIT TEST *MUST* EXTEND THIS CLASS (except from the "ext" package).</p>
  */
-public abstract class JajukTestCase extends TestCase {
+public abstract class JajukTestCase {
   /** The Constant JAVA_PROCESS.   */
   private static final String JAVA_PROCESS = "java";
   /** The Constant MAIN_CLASS.   */
@@ -70,8 +76,8 @@ public abstract class JajukTestCase extends TestCase {
    * @return the string
    */
   private String findJavaExecutable() {
-    assertNotNull("Need to have a property 'java.home' to run this test!",
-        System.getProperty(PROPERTY_JAVA_HOME));
+    assertNotNull(System.getProperty(PROPERTY_JAVA_HOME),
+        "Need to have a property 'java.home' to run this test!");
     return "\"" + System.getProperty(PROPERTY_JAVA_HOME) + java.io.File.separator + "bin"
         + java.io.File.separator + JAVA_PROCESS + "\"";
   }
@@ -83,9 +89,45 @@ public abstract class JajukTestCase extends TestCase {
     // Does nothing by default
   }
 
-  @Override
-  protected final void setUp() throws Exception {
-    Log.info("Setting up testcase: " + getClass() + "." + getName() + "()");
+  /**
+   * Wipe the test workspace, retrying a few times.
+   * <p>waitForAllThreadToFinish() only joins threads whose class lives in an org.jajuk
+   * package, so a plain {@code new Thread(runnable)} started by a previous test can still
+   * be writing under the workspace. When that happens the recursive delete walks a
+   * directory that gets repopulated underneath it and fails with
+   * DirectoryNotEmptyException, which used to make an unrelated test fail at random.</p>
+   *
+   * @param basedir the test workspace root
+   * @throws Exception if the workspace could not be removed after several attempts
+   */
+  private static void deleteWorkspace(File basedir) throws Exception {
+    for (int attempt = 1; basedir.exists(); attempt++) {
+      try {
+        UtilSystem.deleteDir(basedir);
+      } catch (java.io.IOException e) {
+        if (attempt >= 5) {
+          throw e;
+        }
+        Log.warn("Could not wipe the test workspace (attempt " + attempt + "), retrying: "
+            + e.getMessage());
+        Thread.sleep(200);
+      }
+    }
+  }
+
+  /**
+   * Counterpart of {@link #specificSetUp()} for specific clean up if any.
+   * <p>Subclasses must use this hook rather than declaring their own {@code @AfterEach}
+   * method named tearDown(): overriding an annotated superclass lifecycle method silently
+   * prevents JUnit 5 from running it.</p>
+   */
+  protected void specificTearDown() throws Exception {
+    // Does nothing by default
+  }
+
+  @BeforeEach
+  protected final void setUp(TestInfo testInfo) throws Exception {
+    Log.info("Setting up testcase: " + getClass() + "." + testInfo.getDisplayName());
     // Set the exiting state flag to force still running threads to suspend
     TestHelpers.forceExitState(true);
     // Wait for all threads to finish
@@ -110,9 +152,7 @@ public abstract class JajukTestCase extends TestCase {
     File sample_devices = new File(ConstTest.DEVICES_BASE_PATH);
     File tech_tests = new File(ConstTest.TECH_TESTS_PATH);
     // Make sure to clear totally the workspace and sample devices and recreate it
-    if (basedir.exists()) {
-      UtilSystem.deleteDir(basedir);
-    }
+    deleteWorkspace(basedir);
     assertTrue(workspace.mkdirs());
     assertTrue(sample_devices.mkdirs());
     assertTrue(tech_tests.mkdirs());
@@ -135,11 +175,9 @@ public abstract class JajukTestCase extends TestCase {
     specificSetUp();
   }
 
-  /* (non-Javadoc)
-   * @see junit.framework.TestCase#tearDown()
-   */
-  @Override
-  protected void tearDown() throws Exception {
+  @AfterEach
+  protected final void tearDown() throws Exception {
+    specificTearDown();
     Map<Thread, StackTraceElement[]> traces = Thread.getAllStackTraces();
     for (Thread thd : traces.keySet()) {
       if (thd.getName().contains("MPlayer reader thread")
@@ -148,6 +186,5 @@ public abstract class JajukTestCase extends TestCase {
         throw new IllegalStateException("Had leftover MPlayer thread: " + thd.getName());
       }
     }
-    super.tearDown();
   }
 }

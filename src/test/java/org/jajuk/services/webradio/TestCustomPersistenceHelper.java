@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.webradio;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -57,6 +60,7 @@ public class TestCustomPersistenceHelper extends JajukTestCase {
    * @throws IOException 
    * @throws MalformedURLException 
    */
+  @Test
   public void testLoadRepository() throws Exception {
     // Make sure the repository has been cleared during the setUp()
     assertTrue(man.getElementCount() == 0);
@@ -91,6 +95,7 @@ public class TestCustomPersistenceHelper extends JajukTestCase {
     return radio;
   }
 
+  @Test
   public void testCustomRadiosCommit() throws Exception {
     // Load the sample file (written in setUp())
     WebRadioHelper.loadCustomRadios();
@@ -102,6 +107,7 @@ public class TestCustomPersistenceHelper extends JajukTestCase {
     assertTrue(man.getWebRadioByName("Bayern 1") != null);
   }
 
+  @Test
   public void testVoidCustomRadiosCommit() throws Exception {
     // Write void collection 
     CustomRadiosPersistenceHelper.commit();

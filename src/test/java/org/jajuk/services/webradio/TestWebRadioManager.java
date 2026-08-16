@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.webradio;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.List;
 
 import org.jajuk.JajukTestCase;
@@ -42,6 +45,7 @@ public class TestWebRadioManager extends JajukTestCase {
     radio4 = TestHelpers.getWebRadio("Custom2", "http://custom2", WebRadioOrigin.CUSTOM);
   }
 
+  @Test
   public void testGetWebRadiosByOrigin() throws Exception {
     List<WebRadio> shouldBeCustom = man.getWebRadiosByOrigin(WebRadioOrigin.CUSTOM);
     List<WebRadio> shouldBePreset = man.getWebRadiosByOrigin(WebRadioOrigin.PRESET);

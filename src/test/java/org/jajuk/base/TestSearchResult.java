@@ -20,6 +20,9 @@
  */
 package org.jajuk.base;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.base.SearchResult.SearchResultType;
@@ -33,6 +36,7 @@ public class TestSearchResult extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testHashCode() throws Exception {
     // TODO: this fails currently because there is no equals in SearchResult, should we add one? For now we just cover hashCode()
     // hashcode only looks at "sResu" parameter
@@ -50,6 +54,7 @@ public class TestSearchResult extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testSearchResultFile() throws Exception {
     SearchResult res = new SearchResult(TestHelpers.getFile("file2", true), "");
     assertNotNull(res);
@@ -60,6 +65,7 @@ public class TestSearchResult extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testSearchResultFileString() throws Exception {
     SearchResult res = new SearchResult(TestHelpers.getFile("file2", true), "testresult");
     assertNotNull(res);
@@ -68,6 +74,7 @@ public class TestSearchResult extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.SearchResult#SearchResult(org.jajuk.services.webradio.WebRadio, java.lang.String)}.
    */
+  @Test
   public void testSearchResultWebRadioString() {
     SearchResult res = new SearchResult(TestHelpers.getWebRadio(), "testresult");
     assertNotNull(res);
@@ -78,6 +85,7 @@ public class TestSearchResult extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testCompareTo() throws Exception {
     // compareTo only looks at sResu-parameter
     SearchResult res = new SearchResult(TestHelpers.getFile("file2", true), "testresu");
@@ -91,6 +99,7 @@ public class TestSearchResult extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testGetFile() throws Exception {
     SearchResult res = new SearchResult(TestHelpers.getFile("file2", true), "testresu");
     assertEquals("file2", res.getFile().getName());
@@ -101,6 +110,7 @@ public class TestSearchResult extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testGetType() throws Exception {
     SearchResult res = new SearchResult(TestHelpers.getFile("file2", true), "testresu");
     assertEquals(SearchResultType.FILE, res.getType());

@@ -20,6 +20,9 @@
  */
 package ext;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.Arrays;
 
 import javax.swing.JComboBox;
@@ -27,7 +30,6 @@ import javax.swing.JTextField;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 
-import junit.framework.TestCase;
 
 import org.jdesktop.swingx.autocomplete.AbstractAutoCompleteAdaptor;
 import org.jdesktop.swingx.autocomplete.ComboBoxAdaptor;
@@ -37,12 +39,13 @@ import org.jdesktop.swingx.autocomplete.TextComponentAdaptor;
 /**
  * .
  */
-public class TestAutoCompleteDocument extends TestCase {
+public class TestAutoCompleteDocument {
   /**
    * Test method for {@link ext.AutoCompleteDocument#remove(int, int)}.
    *
    * @throws Exception the exception
    */
+  @Test
   public void testRemove() throws Exception {
     String[] items = new String[] { "exact", "exacter", "exactest" };
     JTextComponent textComponent = new JTextField();
@@ -59,6 +62,7 @@ public class TestAutoCompleteDocument extends TestCase {
    * {@link ext.AutoCompleteDocument#AutoCompleteDocument(org.jdesktop.swingx.autocomplete.AbstractAutoCompleteAdaptor, boolean, org.jdesktop.swingx.autocomplete.ObjectToStringConverter)}
    * .
    */
+  @Test
   public void testAutoCompleteDocumentAbstractAutoCompleteAdaptorBooleanObjectToStringConverter() {
     new AutoCompleteDocument(new ComboBoxAdaptor(new JComboBox()), false, null);
   }
@@ -67,6 +71,7 @@ public class TestAutoCompleteDocument extends TestCase {
    * Test auto complete document abstract auto complete adaptor boolean object to string converter selected.
    * 
    */
+  @Test
   public void testAutoCompleteDocumentAbstractAutoCompleteAdaptorBooleanObjectToStringConverterSelected() {
     AbstractAutoCompleteAdaptor adaptor = new ComboBoxAdaptor(new JComboBox(new Object[] {
         "string1", "string2", "string3" }));
@@ -88,6 +93,7 @@ public class TestAutoCompleteDocument extends TestCase {
    * {@link ext.AutoCompleteDocument#AutoCompleteDocument(org.jdesktop.swingx.autocomplete.AbstractAutoCompleteAdaptor, boolean)}
    * .
    */
+  @Test
   public void testAutoCompleteDocumentAbstractAutoCompleteAdaptorBoolean() {
     new AutoCompleteDocument(new ComboBoxAdaptor(new JComboBox()), false);
   }
@@ -95,6 +101,7 @@ public class TestAutoCompleteDocument extends TestCase {
   /**
    * Test method for {@link ext.AutoCompleteDocument#isStrictMatching()}.
    */
+  @Test
   public void testIsStrictMatching() {
     AutoCompleteDocument document = new AutoCompleteDocument(new ComboBoxAdaptor(new JComboBox()),
         false);
@@ -110,6 +117,7 @@ public class TestAutoCompleteDocument extends TestCase {
    * {@link ext.AutoCompleteDocument#insertString(int, java.lang.String, javax.swing.text.AttributeSet)}
    * .
    */
+  @Test
   public void testInsertStringIntStringAttributeSetStrictMatching() throws Exception {
     String[] items = new String[] { "exact", "exacter", "exactest" };
     JTextComponent textComponent = new JTextField();
@@ -124,6 +132,7 @@ public class TestAutoCompleteDocument extends TestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testInsertStringIntStringAttributeSet() throws Exception {
     String[] items = new String[] { "exact", "exacter", "exactest" };
     JTextComponent textComponent = new JTextField("012345");
@@ -138,6 +147,7 @@ public class TestAutoCompleteDocument extends TestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testPreferExactMatchOverCurrentlySelected() throws Exception {
     String[] items = new String[] { "exact", "exacter", "exactest" };
     JTextComponent textComponent = new JTextField();

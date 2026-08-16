@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.core;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.jajuk.JajukTestCase;
 import org.jajuk.services.startup.StartupCollectionService;
 
@@ -31,6 +34,7 @@ public class TestExitService extends JajukTestCase {
    * Test method for {@link org.jajuk.services.core.ExitService#run()}.
    *
    */
+  @Test
   public void testRun() {
     StartupCollectionService.registerItemManagers();
     ExitService service = new ExitService();
@@ -41,6 +45,7 @@ public class TestExitService extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.core.ExitService#ExitService()}.
    */
+  @Test
   public void testExitService() {
     new ExitService();
   }
@@ -48,6 +53,7 @@ public class TestExitService extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.core.ExitService#exit(int)}.
    */
+  @Test
   public void testExit() {
     ExitService service = new ExitService();
     assertNotNull(service);
@@ -57,6 +63,7 @@ public class TestExitService extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.core.ExitService#isExiting()}.
    */
+  @Test
   public void testIsExiting() {
     assertFalse(ExitService.isExiting());
   }

@@ -19,13 +19,14 @@
  */
 package org.jajuk.services.network; // ou org.jajuk.services.network selon votre choix final
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
 
-import static org.junit.Assert.*;
 
 /**
  * Unit tests for the immutable ProxyConfig class.
@@ -45,14 +46,14 @@ public class TestProxyConfig {
 
     ProxyConfig config = new ProxyConfig(Proxy.Type.HTTP, host, port, user, pass);
 
-    assertEquals("Host mismatch", host, config.getHost());
-    assertEquals("Port mismatch", port, config.getPort());
-    assertEquals("User mismatch", user, config.getUsername().orElse(null));
-    assertEquals("Password mismatch", pass, config.getPassword().orElse(null));
-    assertEquals("Type mismatch", Proxy.Type.HTTP, config.getType());
+    assertEquals(host, config.getHost(), "Host mismatch");
+    assertEquals(port, config.getPort(), "Port mismatch");
+    assertEquals(user, config.getUsername().orElse(null), "User mismatch");
+    assertEquals(pass, config.getPassword().orElse(null), "Password mismatch");
+    assertEquals(Proxy.Type.HTTP, config.getType(), "Type mismatch");
 
-    assertTrue("Username should be present", config.getUsername().isPresent());
-    assertTrue("Password should be present", config.getPassword().isPresent());
+    assertTrue(config.getUsername().isPresent(), "Username should be present");
+    assertTrue(config.getPassword().isPresent(), "Password should be present");
   }
 
   /**
@@ -65,9 +66,9 @@ public class TestProxyConfig {
 
     ProxyConfig config = new ProxyConfig(Proxy.Type.HTTP, host, port, null, null);
 
-    assertEquals("Host mismatch", host, config.getHost());
-    assertFalse("Username should be empty", config.getUsername().isPresent());
-    assertFalse("Password should be empty", config.getPassword().isPresent());
+    assertEquals(host, config.getHost(), "Host mismatch");
+    assertFalse(config.getUsername().isPresent(), "Username should be empty");
+    assertFalse(config.getPassword().isPresent(), "Password should be empty");
   }
 
   /**
@@ -76,39 +77,39 @@ public class TestProxyConfig {
   @Test
   public void testEmptyUsername() {
     ProxyConfig config = new ProxyConfig(Proxy.Type.HTTP, "host", 8080, "", "pass");
-    assertFalse("Empty username should result in Optional.empty()", config.getUsername().isPresent());
+    assertFalse(config.getUsername().isPresent(), "Empty username should result in Optional.empty()");
   }
 
   /**
    * Test invalid host (null) throws IllegalArgumentException.
    */
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testInvalidHostNull() {
-    new ProxyConfig(Proxy.Type.HTTP, null, 8080, "user", "pass");
+    assertThrows(IllegalArgumentException.class, () -> new ProxyConfig(Proxy.Type.HTTP, null, 8080, "user", "pass"));
   }
 
   /**
    * Test invalid host (empty string) throws IllegalArgumentException.
    */
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testInvalidHostEmpty() {
-    new ProxyConfig(Proxy.Type.HTTP, "", 8080, "user", "pass");
+    assertThrows(IllegalArgumentException.class, () -> new ProxyConfig(Proxy.Type.HTTP, "", 8080, "user", "pass"));
   }
 
   /**
    * Test invalid port (negative) throws IllegalArgumentException.
    */
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testInvalidPortNegative() {
-    new ProxyConfig(Proxy.Type.HTTP, "host", -1, "user", "pass");
+    assertThrows(IllegalArgumentException.class, () -> new ProxyConfig(Proxy.Type.HTTP, "host", -1, "user", "pass"));
   }
 
   /**
    * Test invalid port (too high) throws IllegalArgumentException.
    */
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testInvalidPortHigh() {
-    new ProxyConfig(Proxy.Type.HTTP, "host", 65536, "user", "pass");
+    assertThrows(IllegalArgumentException.class, () -> new ProxyConfig(Proxy.Type.HTTP, "host", 65536, "user", "pass"));
   }
 
   /**
@@ -121,11 +122,11 @@ public class TestProxyConfig {
     ProxyConfig config = new ProxyConfig(Proxy.Type.HTTP, host, port, null, null);
 
     InetSocketAddress addr = config.getSocketAddress();
-    assertNotNull("Address should not be null", addr);
-    assertEquals("Host mismatch in socket address", host, addr.getHostString());
-    assertEquals("Port mismatch in socket address", port, addr.getPort());
+    assertNotNull(addr, "Address should not be null");
+    assertEquals(host, addr.getHostString(), "Host mismatch in socket address");
+    assertEquals(port, addr.getPort(), "Port mismatch in socket address");
     // Verify it is unresolved (hostname based) as per implementation
-    assertTrue("Socket address should be unresolved (hostname)", addr.isUnresolved() || addr.getAddress() == null);
+    assertTrue(addr.isUnresolved() || addr.getAddress() == null, "Socket address should be unresolved (hostname)");
   }
 
   /**
@@ -138,7 +139,7 @@ public class TestProxyConfig {
     ProxyConfig config = new ProxyConfig(Proxy.Type.SOCKS, host, port, null, null);
 
     ProxySelector selector = config.toProxySelector();
-    assertNotNull("ProxySelector should not be null", selector);
+    assertNotNull(selector, "ProxySelector should not be null");
     // We cannot easily test the selection logic without a real URL,
     // but we ensure the object is created.
   }
@@ -151,11 +152,11 @@ public class TestProxyConfig {
     ProxyConfig config = new ProxyConfig(Proxy.Type.HTTP, "my.proxy", 9090, "admin", "secret");
     String str = config.toString();
 
-    assertTrue("toString should contain host", str.contains("my.proxy"));
-    assertTrue("toString should contain port", str.contains("9090"));
-    assertTrue("toString should contain type", str.contains("HTTP"));
+    assertTrue(str.contains("my.proxy"), "toString should contain host");
+    assertTrue(str.contains("9090"), "toString should contain port");
+    assertTrue(str.contains("HTTP"), "toString should contain type");
     // Security: verify password is NOT printed in toString (though our impl doesn't print it)
-    assertFalse("toString should NOT contain password", str.contains("secret"));
+    assertFalse(str.contains("secret"), "toString should NOT contain password");
   }
 
   /**
@@ -164,6 +165,6 @@ public class TestProxyConfig {
   @Test
   public void testDefaultType() {
     ProxyConfig config = new ProxyConfig(null, "host", 8080, null, null);
-    assertEquals("Default type should be HTTP", Proxy.Type.HTTP, config.getType());
+    assertEquals(Proxy.Type.HTTP, config.getType(), "Default type should be HTTP");
   }
 }

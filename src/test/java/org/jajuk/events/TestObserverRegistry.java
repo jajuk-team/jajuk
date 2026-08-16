@@ -20,6 +20,9 @@
  */
 package org.jajuk.events;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -44,6 +47,7 @@ public class TestObserverRegistry extends JajukTestCase {
    * {@link org.jajuk.events.ObserverRegistry#notifySync(org.jajuk.events.JajukEvent)}
    * .
    */
+  @Test
   public void testNotifySync() {
     ObserverRegistry registry = new ObserverRegistry();
     registry.notifySync(new JajukEvent(JajukEvents.PLAYER_PLAY));
@@ -55,6 +59,7 @@ public class TestObserverRegistry extends JajukTestCase {
    * {@link org.jajuk.events.ObserverRegistry#register(org.jajuk.events.JajukEvents, org.jajuk.events.Observer)}
    * .
    */
+  @Test
   public void testRegister() {
     ObserverRegistry registry = new ObserverRegistry();
     registry.register(JajukEvents.PLAYER_PLAY, new LocalObserver(called));
@@ -66,6 +71,7 @@ public class TestObserverRegistry extends JajukTestCase {
    * {@link org.jajuk.events.ObserverRegistry#unregister(org.jajuk.events.JajukEvents, org.jajuk.events.Observer)}
    * .
    */
+  @Test
   public void testUnregister() {
     ObserverRegistry registry = new ObserverRegistry();
     registry.unregister(JajukEvents.PLAYER_PLAY, new LocalObserver(called));
@@ -75,6 +81,7 @@ public class TestObserverRegistry extends JajukTestCase {
    * Test below zero.
    * 
    */
+  @Test
   public void testBelowZero() {
     ObserverRegistry registry = new ObserverRegistry();
     Observer observer = new LocalObserver(called);
@@ -92,6 +99,7 @@ public class TestObserverRegistry extends JajukTestCase {
    * Test exception.
    * 
    */
+  @Test
   public void testException() {
     ObserverRegistry registry = new ObserverRegistry();
     Observer observer = new LocalObserver(true, called);
@@ -112,6 +120,7 @@ public class TestObserverRegistry extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testMultipleThreads() throws Exception {
     final ObserverRegistry registry = new ObserverRegistry();
     Observer observer = new LocalObserver(called);
@@ -142,6 +151,7 @@ public class TestObserverRegistry extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testMultipleThreadsWait() throws Exception {
     final ObserverRegistry registry = new ObserverRegistry();
     // set 100ms wait time to reach event queue size on normal speed machines
@@ -176,6 +186,7 @@ public class TestObserverRegistry extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testMultipleThreadsMultipleObservers() throws Exception {
     final ObserverRegistry registry = new ObserverRegistry();
     Observer observer1 = new LocalObserver(called);
@@ -210,6 +221,7 @@ public class TestObserverRegistry extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testHighPriorityObserver() throws Exception {
     final ObserverRegistry registry = new ObserverRegistry();
     LocalObserver observer1 = new LocalObserver(called);

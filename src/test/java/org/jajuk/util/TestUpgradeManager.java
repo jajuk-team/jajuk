@@ -20,6 +20,9 @@
  */
 package org.jajuk.util;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.jajuk.JajukTestCase;
 
 /**
@@ -43,6 +46,7 @@ public class TestUpgradeManager extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.util.UpgradeManager#getNumberRelease(String)}.
    */
+  @Test
   public void testGetNumberRelease() throws Exception {
     assertEquals(10804, UpgradeManager.getNumberRelease(v1));
     assertEquals(10901, UpgradeManager.getNumberRelease(v2));
@@ -58,6 +62,7 @@ public class TestUpgradeManager extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.util.UpgradeManager#isMajorMigration(String,String)}.
    */
+  @Test
   public void testIsMajorMigration() throws Exception {
     assertEquals(true, UpgradeManager.isMajorMigration(v1, v2));
     assertEquals(false, UpgradeManager.isMajorMigration(v1, v4));
@@ -74,6 +79,7 @@ public class TestUpgradeManager extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.util.UpgradeManager#isNewer(String,String)}.
    */
+  @Test
   public void testIsNewer() throws Exception {
     assertTrue(UpgradeManager.isNewer(v2, v1));
     assertTrue(UpgradeManager.isNewer(v4, v1));

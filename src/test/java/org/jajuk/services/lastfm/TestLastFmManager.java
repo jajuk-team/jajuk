@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.lastfm;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.Set;
 
 import org.jajuk.JajukTestCase;
@@ -38,6 +41,7 @@ public class TestLastFmManager extends JajukTestCase {
    *
    * {@link org.jajuk.services.lastfm.LastFmManager#getInstance()}.
    */
+  @Test
   public void testGetInstance() {
     assertNotNull(LastFmManager.getInstance());
   }
@@ -47,6 +51,7 @@ public class TestLastFmManager extends JajukTestCase {
    *
    * {@link org.jajuk.services.lastfm.LastFmManager#getRegistrationKeys()}.
    */
+  @Test
   public void testGetRegistrationKeys() {
     Set<JajukEvents> keys = LastFmManager.getInstance().getRegistrationKeys();
     assertTrue(keys.contains(JajukEvents.FILE_FINISHED));
@@ -59,6 +64,7 @@ public class TestLastFmManager extends JajukTestCase {
    * {@link org.jajuk.services.lastfm.LastFmManager#update(org.jajuk.events.JajukEvent)}
    * .
    */
+  @Test
   public void testUpdate() throws Exception {
     // nothing happens if
     {

@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.bookmark;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.jajuk.ConstTest;
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
@@ -52,6 +55,7 @@ public class TestHistoryItem extends JajukTestCase {
    * {@link org.jajuk.services.bookmark.HistoryItem#HistoryItem(java.lang.String, long)}
    * .
    */
+  @Test
   public final void testHistoryItem() {
     new HistoryItem("1", 123);
   }
@@ -59,6 +63,7 @@ public class TestHistoryItem extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.bookmark.HistoryItem#getDate()}.
    */
+  @Test
   public final void testGetAndSetDate() {
     long date = System.currentTimeMillis();
     HistoryItem item = new HistoryItem("1", date);
@@ -71,6 +76,7 @@ public class TestHistoryItem extends JajukTestCase {
    * Test method for {@link org.jajuk.services.bookmark.HistoryItem#getFileId()}
    * .
    */
+  @Test
   public final void testGetAndSetFileId() {
     long date = System.currentTimeMillis();
     HistoryItem item = new HistoryItem("1", date);
@@ -82,6 +88,7 @@ public class TestHistoryItem extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.bookmark.HistoryItem#toString()}.
    */
+  @Test
   public final void testToStringNull() {
     long date = System.currentTimeMillis();
     HistoryItem item = new HistoryItem("1", date);
@@ -92,6 +99,7 @@ public class TestHistoryItem extends JajukTestCase {
    * Test to string file.
    * 
    */
+  @Test
   public final void testToStringFile() {
     File file;
     Genre genre = TestHelpers.getGenre("genrename");
@@ -113,7 +121,7 @@ public class TestHistoryItem extends JajukTestCase {
     // verify toString in general
     TestHelpers.ToStringTest(item);
     // verify that the necessary information is contained
-    assertTrue(item.toString(), item.toString().contains("trackname"));
-    assertTrue(item.toString(), item.toString().contains("artistname"));
+    assertTrue(item.toString().contains("trackname"), item.toString());
+    assertTrue(item.toString().contains("artistname"), item.toString());
   }
 }

@@ -20,6 +20,9 @@
  */
 package org.jajuk.base;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.util.Const;
@@ -31,6 +34,7 @@ public class TestYear extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Year#getTitle()}.
    */
+  @Test
   public void testGetDesc() {
     Year year = new Year("1", "1998");
     assertNotNull(year.getTitle());
@@ -40,6 +44,7 @@ public class TestYear extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Year#getXMLTag()}.
    */
+  @Test
   public void testGetLabel() {
     Year year = new Year("1", "1998");
     assertEquals(Const.XML_YEAR, year.getXMLTag());
@@ -48,6 +53,7 @@ public class TestYear extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Year#getIconRepresentation()}.
    */
+  @Test
   public void testGetIconRepresentation() {
     Year year = new Year("1", "1998");
     assertNotNull(year.getIconRepresentation());
@@ -58,6 +64,7 @@ public class TestYear extends JajukTestCase {
    *
    * {@link org.jajuk.base.Year#Year(java.lang.String, java.lang.String)}.
    */
+  @Test
   public void testYear() {
     Year year = new Year("1", "1998");
     assertNotNull(year);
@@ -66,6 +73,7 @@ public class TestYear extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Year#toString()}.
    */
+  @Test
   public void testToString() {
     TestHelpers.ToStringTest(new Year("1", "1998"));
     TestHelpers.ToStringTest(new Year("1", null));
@@ -76,6 +84,7 @@ public class TestYear extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Year#getValue()}.
    */
+  @Test
   public void testGetValue() {
     Year year = new Year("1", "1998");
     assertEquals(1998l, year.getValue());
@@ -84,6 +93,7 @@ public class TestYear extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Year#compareTo(org.jajuk.base.Year)}.
    */
+  @Test
   public void testCompareTo() {
     Year year = new Year("1", "1998");
     Year yeareq = new Year("2", "1998");
@@ -94,6 +104,7 @@ public class TestYear extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Year#getName2()}.
    */
+  @Test
   public void testGetName2() {
     Year year = new Year("1", "1998");
     assertNotNull(year.getName2());
@@ -105,6 +116,7 @@ public class TestYear extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.Year#looksValid()}.
    */
+  @Test
   public void testLooksValid() {
     // we currently check > 1000 and < 3000
     assertTrue(new Year("1", "1998").looksValid());

@@ -20,11 +20,13 @@
  */
 package org.jajuk;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.LinkedList;
 import java.util.List;
 
 import org.jajuk.util.log.Log;
-import org.junit.Assert;
 
 /**
  * Helper class to test with many threads.
@@ -33,6 +35,7 @@ import org.junit.Assert;
  *
  * <code>
 
+  @Test
   public void testMultipleThreads() throws Exception {
     ThreadTestHelper helper = new ThreadTestHelper(NUMBER_OF_THREADS, NUMBER_OF_TESTS);
 
@@ -85,11 +88,10 @@ public class ThreadTestHelper {
     // make sure the resulting number of executions is correct
     for (int i = 0; i < threadCount; i++) {
       // check if enough items were performed
-      Assert.assertEquals("Thread " + i + " did not execute all iterations", testsPerThread,
-          executions[i]);
+      assertEquals(testsPerThread, executions[i], "Thread " + i + " did not execute all iterations");
     }
     // check that we did not fail in any thread, i.e. no exception occurred...
-    Assert.assertFalse(failed);
+    assertFalse(failed);
   }
 
   /**
@@ -166,6 +168,7 @@ public class ThreadTestHelper {
    * Test dummy.
    * 
    */
+  @Test
   public void testDummy() {
     // small empty test to not fail if this class is executed as test case by
     // Hudson/Sonar

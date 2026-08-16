@@ -70,33 +70,51 @@
         <echo message='jajuk.jar had been successfully built in: ${dist.dir}/jajuk.jar'/>
     </target>
 
+    <!-- Classpath shared by the test compilation and the test execution -->
+    <path id="test.classpath">
+        <fileset dir='lib'>
+            <include name='*.jar'/>
+        </fileset>
+        <fileset dir='lib/build'>
+            <include name='*.jar'/>
+        </fileset>
+        <!-- The Linux package flattens lib/linux/ into lib/ (see tarball_linux), so these
+             jars are on the classpath at runtime. The D-Bus transport is loaded from them,
+             and TestDBusManager needs it. -->
+        <fileset dir='lib/linux' erroronmissingdir="false">
+            <include name='*.jar'/>
+        </fileset>
+        <pathelement location="${dist.dir}"/>
+        <pathelement location="src/main/resources"/>
+    </path>
+
+    <!-- The tests are JUnit 5 (Jupiter), so they are run by the JUnit Platform through the
+         junitlauncher task (Ant 1.10.3+) and not by the legacy JUnit 4 <junit> task.
+         Tests must run headless, otherwise the Swing code tries to open windows. -->
     <target name="tests" depends="compile_all">
-        <junit printsummary="on" fork="true" haltonfailure="no" timeout="60000">
-            <formatter type="xml"/>
-            <batchtest todir="${test.report.dir}">
-                <fileset dir="src/test/java">
-                    <include name="**/*Test*.java"/>
+        <junitlauncher printSummary="true" failureProperty="tests.failed">
+            <classpath refid="test.classpath"/>
+            <testclasses outputdir="${test.report.dir}">
+                <fileset dir="${dist.dir}">
+                    <include name="**/*Test*.class"/>
 
-                    <!-- Exclude test helpers, not test themselve -->
-                    <exclude name="**/ConstTest.java"/>
-                    <exclude name="**/JajukTestCase.java"/>
-                    <exclude name="**/TestHelpers.java"/>
-                    <exclude name="**/ThreadTestHelper.java"/>
+                    <!-- Inner and anonymous classes are not tests -->
+                    <exclude name="**/*$*.class"/>
 
-                    <!-- exclude system-specific tests -->
-                    <exclude name="**/TestDBusSupportImpl.java"/>
+                    <!-- Exclude test helpers, not tests themselves -->
+                    <exclude name="**/ConstTest.class"/>
+                    <exclude name="**/JajukTestCase.class"/>
+                    <exclude name="**/TestHelpers.class"/>
+                    <exclude name="**/ThreadTestHelper.class"/>
                 </fileset>
-            </batchtest>
-            <classpath>
-                <fileset dir='lib'>
-                    <include name='*.jar'/>
-                </fileset>
-                <fileset dir='lib/build'>
-                    <include name='*.jar'/>
-                </fileset>
-                <pathelement location="bin"/>
-                <pathelement location="src/main/resources"/>
-            </classpath>
-        </junit>
+                <fork dir="${basedir}" timeout="1800000">
+                    <jvmarg value="-Djava.awt.headless=true"/>
+                    <jvmarg value="-Dfile.encoding=UTF-8"/>
+                </fork>
+                <listener type="legacy-xml" sendSysOut="true" sendSysErr="true"/>
+                <listener type="legacy-plain" sendSysOut="false" sendSysErr="false"/>
+            </testclasses>
+        </junitlauncher>
+        <fail if="tests.failed" message="Some tests failed, see the reports in ${test.report.dir}"/>
     </target>
 </project>

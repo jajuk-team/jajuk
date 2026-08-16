@@ -20,6 +20,8 @@
  */
 package org.jajuk.util.error;
 
+import org.junit.jupiter.api.Test;
+
 import org.jajuk.JajukTestCase;
 
 /**
@@ -32,6 +34,7 @@ public class TestCannotRenameException extends JajukTestCase {
    * {@link org.jajuk.util.error.CannotRenameException#CannotRenameException(int)}
    * .
    */
+  @Test
   public void testCannotRenameExceptionInt() {
     new CannotRenameException(10);
   }
@@ -42,6 +45,7 @@ public class TestCannotRenameException extends JajukTestCase {
    * {@link org.jajuk.util.error.CannotRenameException#CannotRenameException(int, java.lang.Throwable)}
    * .
    */
+  @Test
   public void testCannotRenameExceptionIntThrowable() {
     new CannotRenameException(22, new Throwable());
   }

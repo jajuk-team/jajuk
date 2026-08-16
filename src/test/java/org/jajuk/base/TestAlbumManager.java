@@ -20,6 +20,9 @@
  */
 package org.jajuk.base;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -46,6 +49,7 @@ public class TestAlbumManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.AlbumManager#getXMLTag()}.
    */
+  @Test
   public void testGetLabel() {
     assertEquals(Const.XML_ALBUMS, AlbumManager.getInstance().getXMLTag());
   }
@@ -53,6 +57,7 @@ public class TestAlbumManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.AlbumManager#getRegistrationKeys()}.
    */
+  @Test
   public void testGetRegistrationKeys() {
     Set<JajukEvents> events = AlbumManager.getInstance().getRegistrationKeys();
     assertTrue(events.contains(JajukEvents.FILE_LAUNCHED));
@@ -61,6 +66,7 @@ public class TestAlbumManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.AlbumManager#getInstance()}.
    */
+  @Test
   public void testGetInstance() {
     assertNotNull(AlbumManager.getInstance());
   }
@@ -71,6 +77,7 @@ public class TestAlbumManager extends JajukTestCase {
    * {@link org.jajuk.base.AlbumManager#createID(java.lang.String, java.lang.String, long)}
    * .
    */
+  @Test
   public void testCreateID() {
     assertNotNull(AlbumManager.createID("name", 3));
     // other cases...
@@ -83,6 +90,7 @@ public class TestAlbumManager extends JajukTestCase {
    * {@link org.jajuk.base.AlbumManager#registerAlbum(java.lang.String, java.lang.String, long)}
    * .
    */
+  @Test
   public void testRegisterAlbumStringStringStringLong() {
     assertNotNull(AlbumManager.getInstance().registerAlbum("1", "name1", 1));
     assertNotNull(AlbumManager.getInstance().getAlbumByID("1"));
@@ -92,6 +100,7 @@ public class TestAlbumManager extends JajukTestCase {
    * Test register album empty artist.
    * 
    */
+  @Test
   public void testRegisterAlbumEmptyArtist() {
     AlbumManager.getInstance().clear();
     assertNotNull(AlbumManager.getInstance().registerAlbum("1", "name1", 1));
@@ -103,6 +112,7 @@ public class TestAlbumManager extends JajukTestCase {
    * {@link org.jajuk.base.AlbumManager#registerAlbum(java.lang.String, java.lang.String, long)}
    * .
    */
+  @Test
   public void testRegisterAlbumStringStringLong() {
     assertNotNull(AlbumManager.getInstance().registerAlbum("2", "name2", 1));
     assertNotNull(AlbumManager.getInstance().getAlbumByName("name2"));
@@ -115,6 +125,7 @@ public class TestAlbumManager extends JajukTestCase {
    * {@link org.jajuk.base.AlbumManager#changeAlbumName(org.jajuk.base.Album, java.lang.String)}
    * .
    */
+  @Test
   public void testChangeAlbumName() throws Exception {
     StartupCollectionService.registerItemManagers();
     Album album = AlbumManager.getInstance().registerAlbum("name3", 1);
@@ -130,6 +141,7 @@ public class TestAlbumManager extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testChangeAlbumNameWithTrack() throws Exception {
     Album album = AlbumManager.getInstance().registerAlbum("name3", 1);
     assertNotNull(album);
@@ -146,6 +158,7 @@ public class TestAlbumManager extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testChangeAlbumNameWithQueue() throws Exception {
     StartupCollectionService.registerItemManagers();
     Album album = AlbumManager.getInstance().registerAlbum("name3", 1);
@@ -165,6 +178,7 @@ public class TestAlbumManager extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testChangeAlbumNameSameName() throws Exception {
     StartupCollectionService.registerItemManagers();
     Album album = AlbumManager.getInstance().registerAlbum("3", "name3", 1);
@@ -172,7 +186,7 @@ public class TestAlbumManager extends JajukTestCase {
     // nothing happens if we use the same name
     Album album2 = AlbumManager.getInstance().changeAlbumName(album, "name3");
     // we expect the same physical item
-    assertTrue(album2.toString(), album == album2);
+    assertTrue(album == album2, album2.toString());
   }
 
   /**
@@ -180,6 +194,7 @@ public class TestAlbumManager extends JajukTestCase {
    *
    * {@link org.jajuk.base.AlbumManager#format(java.lang.String)}.
    */
+  @Test
   public void testFormat() {
     Album album = AlbumManager.getInstance().registerAlbum("3", "name3", 1);
     assertNotNull(album);
@@ -197,6 +212,7 @@ public class TestAlbumManager extends JajukTestCase {
    *
    * {@link org.jajuk.base.AlbumManager#getAlbumByID(java.lang.String)}.
    */
+  @Test
   public void testGetAlbumByID() {
     // tested above
   }
@@ -204,6 +220,7 @@ public class TestAlbumManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.AlbumManager#getAlbums()}.
    */
+  @Test
   public void testGetAlbums() {
     AlbumManager.getInstance().clear();
     assertNotNull(AlbumManager.getInstance().registerAlbum("1", "name1", 1));
@@ -214,6 +231,7 @@ public class TestAlbumManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.AlbumManager#getAlbumsIterator()}.
    */
+  @Test
   public void testGetAlbumsIterator() {
     AlbumManager.getInstance().clear();
     assertNotNull(AlbumManager.getInstance().registerAlbum("1", "name1", 1));
@@ -228,24 +246,25 @@ public class TestAlbumManager extends JajukTestCase {
    * {@link org.jajuk.base.AlbumManager#getAssociatedAlbums(org.jajuk.base.Item)}
    * .
    */
+  @Test
   public void testGetAssociatedAlbums() throws Exception {
     Album album = AlbumManager.getInstance().registerAlbum("1", "name1", 1);
     Track track = getTrack(1, album);
     List<Album> albums = AlbumManager.getInstance().getAssociatedAlbums(track);
     assertNotNull(albums);
-    assertEquals(albums.toString(), 1, albums.size());
+    assertEquals(1, albums.size(), albums.toString());
     Genre genre = track.getGenre();
     Artist artist = track.getArtist();
     Year year = track.getYear();
     albums = AlbumManager.getInstance().getAssociatedAlbums(genre);
     assertNotNull(albums);
-    assertEquals(albums.toString(), 1, albums.size());
+    assertEquals(1, albums.size(), albums.toString());
     albums = AlbumManager.getInstance().getAssociatedAlbums(artist);
     assertNotNull(albums);
-    assertEquals(albums.toString(), 1, albums.size());
+    assertEquals(1, albums.size(), albums.toString());
     albums = AlbumManager.getInstance().getAssociatedAlbums(year);
     assertNotNull(albums);
-    assertEquals(albums.toString(), 1, albums.size());
+    assertEquals(1, albums.size(), albums.toString());
   }
 
   /**
@@ -254,6 +273,7 @@ public class TestAlbumManager extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.base.AlbumManager#getBestOfAlbums(boolean, int)}.
    */
+  @Test
   public void testGetBestOfAlbums() throws Exception {
     AlbumManager.getInstance().clear();
     Album album = AlbumManager.getInstance().registerAlbum("1", "name1", 1);
@@ -272,7 +292,7 @@ public class TestAlbumManager extends JajukTestCase {
     getTrack(4, album);
     getTrack(5, album);
     List<Album> albums = AlbumManager.getInstance().getBestOfAlbums(false, 3);
-    assertEquals(albums.toString(), 3, albums.size());
+    assertEquals(3, albums.size(), albums.toString());
     // TODO verify with many albums and actual data
   }
 
@@ -282,6 +302,7 @@ public class TestAlbumManager extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testGetBestOfAlbumsLess() throws Exception {
     AlbumManager.getInstance().clear();
     Album album = AlbumManager.getInstance().registerAlbum("1", "name1", 1);
@@ -302,17 +323,18 @@ public class TestAlbumManager extends JajukTestCase {
     // check if we request more than we have, currently we get back some less
     // for some reason...
     List<Album> albums = AlbumManager.getInstance().getBestOfAlbums(false, 10);
-    assertEquals(albums.toString(), 4, albums.size());
+    assertEquals(4, albums.size(), albums.toString());
   }
 
   /**
    * Test get best of album zero.
    * 
    */
+  @Test
   public void testGetBestOfAlbumZero() {
     AlbumManager.getInstance().clear();
     List<Album> albums = AlbumManager.getInstance().getBestOfAlbums(false, 3);
-    assertEquals(albums.toString(), 0, albums.size());
+    assertEquals(0, albums.size(), albums.toString());
   }
 
   /**
@@ -321,6 +343,7 @@ public class TestAlbumManager extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.base.AlbumManager#getNewestAlbums(boolean, int)}.
    */
+  @Test
   public void testGetNewestAlbums() throws Exception {
     Album album = AlbumManager.getInstance().registerAlbum("name1", 1);
     getTrack(2, album);
@@ -338,7 +361,7 @@ public class TestAlbumManager extends JajukTestCase {
     getTrack(10, album);
     getTrack(11, album);
     List<Album> albums = AlbumManager.getInstance().getNewestAlbums(false, 3);
-    assertEquals(albums.toString(), 3, albums.size());
+    assertEquals(3, albums.size(), albums.toString());
     // TODO verify with many albums and actual data
   }
 
@@ -348,6 +371,7 @@ public class TestAlbumManager extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.base.AlbumManager#getRarelyListenAlbums(boolean, int)}.
    */
+  @Test
   public void testGetRarelyListenAlbums() throws Exception {
     AlbumManager.getInstance().clear();
     Album album = AlbumManager.getInstance().registerAlbum("name1", 1);
@@ -366,7 +390,7 @@ public class TestAlbumManager extends JajukTestCase {
     getTrack(10, album);
     getTrack(11, album);
     List<Album> albums = AlbumManager.getInstance().getRarelyListenAlbums(false, 3);
-    assertEquals(albums.toString(), 3, albums.size());
+    assertEquals(3, albums.size(), albums.toString());
     // TODO verify with many albums and actual data
   }
 
@@ -375,6 +399,7 @@ public class TestAlbumManager extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testGetMaxRate() throws Exception {
     AlbumManager.getInstance().clear();
     Album album = AlbumManager.getInstance().registerAlbum("name1", 1);
@@ -413,6 +438,7 @@ public class TestAlbumManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.AlbumManager#refreshMaxRating()}.
    */
+  @Test
   public void testRefreshMaxRating() {
     // tested above
   }
@@ -422,6 +448,7 @@ public class TestAlbumManager extends JajukTestCase {
    *
    * {@link org.jajuk.base.AlbumManager#update(org.jajuk.events.JajukEvent)}.
    */
+  @Test
   public void testUpdate() {
     // do it a number of times to trigger the refreshMax after 10 times
     AlbumManager.getInstance().update(new JajukEvent(JajukEvents.FILE_LAUNCHED, null));
@@ -447,6 +474,7 @@ public class TestAlbumManager extends JajukTestCase {
    *
    * {@link org.jajuk.base.AlbumManager#getAlbumByName(java.lang.String)}.
    */
+  @Test
   public void testGetAlbumByName() {
     // tested above
   }
@@ -456,6 +484,7 @@ public class TestAlbumManager extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testOrderCache() throws Exception {
     AlbumManager.getInstance().clear();
     Album album = AlbumManager.getInstance().registerAlbum("1", "name1", 1);

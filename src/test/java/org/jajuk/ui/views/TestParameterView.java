@@ -20,6 +20,9 @@
  */
 package org.jajuk.ui.views;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.awt.ItemSelectable;
 import java.awt.event.ItemListener;
 import java.util.Properties;
@@ -40,6 +43,7 @@ public class TestParameterView extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.ui.views.ParameterView#ParameterView()}.
    */
+  @Test
   public void testParameterView() {
     new ParameterView();
   }
@@ -51,6 +55,7 @@ public class TestParameterView extends JajukTestCase {
    * {@link org.jajuk.ui.views.ParameterView#actionPerformed(java.awt.event.ActionEvent)}
    * .
    */
+  @Test
   public void testActionPerformed() throws Exception {
     ParameterView view = new ParameterView();
     view.initUI();
@@ -62,6 +67,7 @@ public class TestParameterView extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.ui.views.ParameterView#getDesc()}.
    */
+  @Test
   public void testGetDesc() {
     ParameterView view = new ParameterView();
     assertTrue(StringUtils.isNotBlank(view.getDesc()));
@@ -72,15 +78,17 @@ public class TestParameterView extends JajukTestCase {
    *
    * {@link org.jajuk.ui.views.ParameterView#getRegistrationKeys()}.
    */
+  @Test
   public void testGetRegistrationKeys() {
     ParameterView view = new ParameterView();
     Set<JajukEvents> set = view.getRegistrationKeys();
-    assertTrue(set.toString(), set.contains(JajukEvents.PARAMETERS_CHANGE));
+    assertTrue(set.contains(JajukEvents.PARAMETERS_CHANGE), set.toString());
   }
 
   /**
    * Test method for {@link org.jajuk.ui.views.ParameterView#initUI()}.
    */
+  @Test
   public void testInitUI() {
     ParameterView view = new ParameterView();
     view.initUI();
@@ -92,6 +100,7 @@ public class TestParameterView extends JajukTestCase {
    * {@link org.jajuk.ui.views.ParameterView#itemStateChanged(java.awt.event.ItemEvent)}
    * .
    */
+  @Test
   public void testItemStateChanged() {
     ParameterView view = new ParameterView();
     view.initUI();
@@ -104,6 +113,7 @@ public class TestParameterView extends JajukTestCase {
    * {@link org.jajuk.ui.views.ParameterView#update(org.jajuk.events.JajukEvent)}
    * .
    */
+  @Test
   public void testUpdateJajukEvent() throws Exception {
     ParameterView view = new ParameterView();
     view.initUI();

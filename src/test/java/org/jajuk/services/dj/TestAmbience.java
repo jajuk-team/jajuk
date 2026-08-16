@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.dj;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,6 +39,7 @@ public class TestAmbience extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dj.Ambience#hashCode()}.
    */
+  @Test
   public final void testHashCode() {
     Ambience amb = new Ambience("1", "name");
     Ambience equal = new Ambience("1", "name");
@@ -48,6 +52,7 @@ public class TestAmbience extends JajukTestCase {
    * {@link org.jajuk.services.dj.Ambience#Ambience(java.lang.String, java.lang.String, java.util.Set)}
    * .
    */
+  @Test
   public final void testAmbienceStringStringSetOfGenre() {
     Set<Genre> genres = new HashSet<Genre>();
     genres.add(TestHelpers.getGenre("mygenre"));
@@ -60,6 +65,7 @@ public class TestAmbience extends JajukTestCase {
    * {@link org.jajuk.services.dj.Ambience#Ambience(java.lang.String, java.lang.String, java.lang.String[])}
    * .
    */
+  @Test
   public final void testAmbienceStringStringStringArray() {
     GenreManager.getInstance().registerGenre("anothergenre");
     GenreManager.getInstance().registerGenre("yetanothergenre");
@@ -73,6 +79,7 @@ public class TestAmbience extends JajukTestCase {
    * {@link org.jajuk.services.dj.Ambience#Ambience(java.lang.String, java.lang.String)}
    * .
    */
+  @Test
   public final void testAmbienceStringString() {
     new Ambience("1", "name");
   }
@@ -80,6 +87,7 @@ public class TestAmbience extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dj.Ambience#Ambience()}.
    */
+  @Test
   public final void testAmbience() {
     new Ambience();
   }
@@ -89,6 +97,7 @@ public class TestAmbience extends JajukTestCase {
    *
    * {@link org.jajuk.services.dj.Ambience#addGenre(org.jajuk.base.Genre)}.
    */
+  @Test
   public final void testAddGenre() {
     Ambience amb = new Ambience("1", "name");
     amb.addGenre(TestHelpers.getGenre("anothergenre"));
@@ -99,6 +108,7 @@ public class TestAmbience extends JajukTestCase {
    *
    * {@link org.jajuk.services.dj.Ambience#removeGenre(org.jajuk.base.Genre)}.
    */
+  @Test
   public final void testRemoveGenre() {
     Ambience amb = new Ambience("1", "name");
     Genre genre = TestHelpers.getGenre("anothergenre");
@@ -115,6 +125,7 @@ public class TestAmbience extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dj.Ambience#getName()}.
    */
+  @Test
   public final void testGetName() {
     Ambience amb = new Ambience("7", "name123");
     assertEquals("name123", amb.getName());
@@ -125,6 +136,7 @@ public class TestAmbience extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dj.Ambience#getID()}.
    */
+  @Test
   public final void testGetID() {
     Ambience amb = new Ambience("8", "name1234");
     assertEquals("8", amb.getID());
@@ -135,6 +147,7 @@ public class TestAmbience extends JajukTestCase {
    *
    * {@link org.jajuk.services.dj.Ambience#setName(java.lang.String)}.
    */
+  @Test
   public final void testSetName() {
     // tested above
   }
@@ -142,6 +155,7 @@ public class TestAmbience extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dj.Ambience#getGenres()}.
    */
+  @Test
   public final void testGetGenres() {
     // tested above
   }
@@ -151,6 +165,7 @@ public class TestAmbience extends JajukTestCase {
    *
    * {@link org.jajuk.services.dj.Ambience#setGenres(java.util.Set)}.
    */
+  @Test
   public final void testSetGenres() {
     Ambience amb = new Ambience("1", "name");
     assertEquals(0, amb.getGenres().size());
@@ -165,6 +180,7 @@ public class TestAmbience extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dj.Ambience#getGenresDesc()}.
    */
+  @Test
   public final void testGetGenresDesc() {
     Ambience amb = new Ambience("1", "name");
     // first an empty string results without any genre set
@@ -179,6 +195,7 @@ public class TestAmbience extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dj.Ambience#toString()}.
    */
+  @Test
   public final void testToString() {
     Ambience amb = new Ambience("1", "name");
     TestHelpers.ToStringTest(amb);
@@ -201,6 +218,7 @@ public class TestAmbience extends JajukTestCase {
    *
    * {@link org.jajuk.services.dj.Ambience#equals(java.lang.Object)}.
    */
+  @Test
   public final void testEqualsObject() {
     Ambience amb = new Ambience("1", "name");
     Ambience equal = new Ambience("1", "name");
@@ -217,6 +235,7 @@ public class TestAmbience extends JajukTestCase {
    * Test equals object2.
    * 
    */
+  @Test
   public final void testEqualsObject2() {
     Ambience amb = new Ambience("1", "name");
     amb.addGenre(TestHelpers.getGenre("mygenre4"));
@@ -237,6 +256,7 @@ public class TestAmbience extends JajukTestCase {
    * {@link org.jajuk.services.dj.Ambience#compareTo(org.jajuk.services.dj.Ambience)}
    * .
    */
+  @Test
   public final void testCompareTo() {
     Ambience amb = new Ambience("1", "name");
     Ambience equal = new Ambience("1", "name");
@@ -248,6 +268,7 @@ public class TestAmbience extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.services.dj.Ambience#toXML()}.
    */
+  @Test
   public final void testToXML() {
     Ambience amb = new Ambience("1", "name");
     // just returns a comma-separated list, not a full XML here...

@@ -20,6 +20,8 @@
  */
 package org.jajuk.ui.actions;
 
+import org.junit.jupiter.api.Test;
+
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -58,6 +60,7 @@ public class TestPreparePartyAction extends JajukTestCase {
    * {@link org.jajuk.ui.actions.PreparePartyAction#perform(java.awt.event.ActionEvent)}
    * .
    */
+  @Test
   public void testPerform() {
     new PreparePartyAction();
   }
@@ -68,6 +71,7 @@ public class TestPreparePartyAction extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.ui.actions.PreparePartyAction#PreparePartyAction()}.
    */
+  @Test
   public void testPreparePartyAction() throws Exception {
     PreparePartyAction action = new PreparePartyAction();
     // once with empty properties, this is called from the menu

@@ -20,6 +20,9 @@
  */
 package org.jajuk.ui.wizard;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.awt.HeadlessException;
 
 import org.jajuk.JajukTestCase;
@@ -49,6 +52,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
    * {@link org.jajuk.ui.wizard.digital_dj.DigitalDJWizard#getPreviousScreen(java.lang.Class)}
    * .
    */
+  @Test
   public void testGetPreviousScreenClassOfQextendsScreen() throws Exception {
     try {
       DigitalDJWizard wizard = new DigitalDJWizard();
@@ -72,6 +76,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.ui.wizard.digital_dj.DigitalDJWizard#getNextScreen(java.lang.Class)}.
    */
+  @Test
   public void testGetNextScreenClassOfQextendsScreen() throws Exception {
     try {
       DigitalDJWizard wizard = new DigitalDJWizard();
@@ -89,6 +94,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
    *
    * {@link org.jajuk.ui.wizard.digital_dj.DigitalDJWizard#DigitalDJWizard()}.
    */
+  @Test
   public void testDigitalDJWizard() {
     try {
       new DigitalDJWizard();
@@ -101,6 +107,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
    * Test panels action selection.
    * 
    */
+  @Test
   public void testPanelsActionSelection() {
     try {
       // to initialize static data...,
@@ -117,6 +124,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
    * Test panels ambience.
    * 
    */
+  @Test
   public void testPanelsAmbience() {
     try {
       // to initialize static data...,
@@ -135,6 +143,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
    * Test panels change.
    * 
    */
+  @Test
   public void testPanelsChange() {
     try {
       // to initialize static data...,
@@ -155,6 +164,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
    * Test panels general option.
    * 
    */
+  @Test
   public void testPanelsGeneralOption() {
     try {
       // to initialize static data...,
@@ -171,6 +181,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
    * Test panels proportions.
    * 
    */
+  @Test
   public void testPanelsProportions() {
     try {
       // to initialize static data...,
@@ -187,6 +198,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
    * Test panels remove.
    * 
    */
+  @Test
   public void testPanelsRemove() {
     try {
       // to initialize static data...,
@@ -205,6 +217,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
    * Test panels transition.
    * 
    */
+  @Test
   public void testPanelsTransition() {
     try {
       // to initialize static data...,
@@ -221,6 +234,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
    * Test panels type selection.
    * 
    */
+  @Test
   public void testPanelsTypeSelection() {
     try {
       // to initialize static data...,
@@ -249,6 +263,7 @@ public class TestDigitalDJWizard extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.ui.wizard.digital_dj.DigitalDJWizard#finish()}.
    */
+  @Test
   public void testFinish() {
     // TODO: find out how to test this...
     /*

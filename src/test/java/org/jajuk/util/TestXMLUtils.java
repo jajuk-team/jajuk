@@ -20,6 +20,9 @@
  */
 package org.jajuk.util;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -43,6 +46,7 @@ public class TestXMLUtils extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testSerializableUtilitiesPrivateConstructor() throws Exception {
     // For EMMA code-coverage tests
     TestHelpers.executePrivateConstructor(XMLUtils.class);
@@ -54,6 +58,7 @@ public class TestXMLUtils extends JajukTestCase {
    * {@link XMLUtils#getChildElement(org.w3c.dom.Element, java.lang.String)}
    * .
    */
+  @Test
   public void testGetChildElement() {
     Document doc = XMLUtils.getDocument("<xml><test/></xml>");
     assertNotNull(doc);
@@ -64,6 +69,7 @@ public class TestXMLUtils extends JajukTestCase {
    * Test get child element null.
    * 
    */
+  @Test
   public void testGetChildElementNull() {
     assertNull(XMLUtils.getChildElement(null, "test"));
   }
@@ -72,6 +78,7 @@ public class TestXMLUtils extends JajukTestCase {
    * Test get child element not existing.
    * 
    */
+  @Test
   public void testGetChildElementNotExisting() {
     Document doc = XMLUtils.getDocument("<xml><test/></xml>");
     assertNotNull(doc);
@@ -84,6 +91,7 @@ public class TestXMLUtils extends JajukTestCase {
    * {@link XMLUtils#getAttributeValue(org.w3c.dom.Element, java.lang.String)}
    * .
    */
+  @Test
   public void testGetAttributeValue() {
     Document doc = XMLUtils.getDocument("<xml><test value=\"1\"/></xml>");
     assertNotNull(doc);
@@ -98,6 +106,7 @@ public class TestXMLUtils extends JajukTestCase {
    * Test get attribute value null.
    * 
    */
+  @Test
   public void testGetAttributeValueNull() {
     assertNull(XMLUtils.getAttributeValue(null, "value"));
   }
@@ -108,6 +117,7 @@ public class TestXMLUtils extends JajukTestCase {
    * {@link XMLUtils#getChildElementContent(org.w3c.dom.Element, java.lang.String)}
    * .
    */
+  @Test
   public void testGetChildElementContent() {
     Document doc = XMLUtils.getDocument("<xml><test value=\"1\">testcontent</test></xml>");
     assertNotNull(doc);
@@ -118,6 +128,7 @@ public class TestXMLUtils extends JajukTestCase {
    * Test get child element content null.
    * 
    */
+  @Test
   public void testGetChildElementContentNull() {
     assertEquals("", XMLUtils.getChildElementContent(null, "test"));
   }
@@ -125,6 +136,7 @@ public class TestXMLUtils extends JajukTestCase {
   /**
    * Test method for {@link XMLUtils#getDocument(java.lang.String)}.
    */
+  @Test
   public void testGetDocument() {
     Document doc = XMLUtils.getDocument("<xml><test value=\"1\"/></xml>");
     assertNotNull(doc);
@@ -135,6 +147,7 @@ public class TestXMLUtils extends JajukTestCase {
    * Test get document parse error.
    * 
    */
+  @Test
   public void testGetDocumentParseError() {
     Document doc = XMLUtils.getDocument("<xmlinvalid>adsasd<asdksdtest value=\"1\"/></xml>");
     assertNull(doc);
@@ -151,6 +164,7 @@ public class TestXMLUtils extends JajukTestCase {
    * {@link XMLUtils#writeBeanToFile(java.lang.Object, java.lang.String)}
    * .
    */
+  @Test
   public final void testWriteBeanToFile() throws Exception {
     PersonBean bean = new PersonBean();
     bean.setName("testvalue");
@@ -163,13 +177,14 @@ public class TestXMLUtils extends JajukTestCase {
     assertTrue(file.exists());
     String contents = FileUtils.readFileToString(file);
     Log.debug("Contents: " + contents);
-    assertTrue(contents, file.length() > 0);
+    assertTrue(file.length() > 0, contents);
   }
 
   /**
    * Test write bean to file invalid file.
    * 
    */
+  @Test
   public final void testWriteBeanToFileInvalidFile() {
     PersonBean bean = new PersonBean();
     bean.setName("testvalue");
@@ -238,6 +253,7 @@ public class TestXMLUtils extends JajukTestCase {
    *
    * {@link XMLUtils#readBeanFromFile(java.lang.String)}.
    */
+  @Test
   public final void testReadBeanFromFile() {
     // tested above
   }
@@ -247,6 +263,7 @@ public class TestXMLUtils extends JajukTestCase {
    *
    * {@link XMLUtils#readObjectFromFile(java.lang.String)}.
    */
+  @Test
   public final void testReadObjectFromFile() {
     // tested above
   }
@@ -257,6 +274,7 @@ public class TestXMLUtils extends JajukTestCase {
    * @throws Exception the exception
    * {@link XMLUtils#getDocument(java.lang.String)}.
    */
+  @Test
   public final void testReadObjectFromString() throws Exception {
     String str = "teststring";
     File file = File.createTempFile("test", ".bean", new java.io.File(ConstTest.TECH_TESTS_PATH));
@@ -276,6 +294,7 @@ public class TestXMLUtils extends JajukTestCase {
    * {@link XMLUtils#writeObjectToFile(java.lang.Object, java.lang.String)}
    * .
    */
+  @Test
   public final void testWriteObjectToFile() throws Exception {
     String str = "teststring";
     File file = File.createTempFile("test", ".bean", new java.io.File(ConstTest.TECH_TESTS_PATH));
@@ -289,6 +308,7 @@ public class TestXMLUtils extends JajukTestCase {
    * Test write object to file invalid file.
    * 
    */
+  @Test
   public final void testWriteObjectToFileInvalidFile() {
     String str = "teststring";
     try {

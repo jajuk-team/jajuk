@@ -20,6 +20,9 @@
  */
 package org.jajuk.base;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.Date;
 
 import org.jajuk.JajukTestCase;
@@ -44,6 +47,7 @@ public class TestAlbumComparator extends JajukTestCase {
    * Test method for {@link org.jajuk.base.AlbumComparator#AlbumComparator(int)}
    * .
    */
+  @Test
   public final void testAlbumComparator() {
     new AlbumComparator(0);
   }
@@ -58,6 +62,7 @@ public class TestAlbumComparator extends JajukTestCase {
    * {@link org.jajuk.base.AlbumComparator#compare(org.jajuk.base.Album, org.jajuk.base.Album)}
    * .
    */
+  @Test
   public final void testCompareGenre() {
     AlbumComparator compare = new AlbumComparator(0);
     Album album = new Album("1", "name", 2);
@@ -77,6 +82,7 @@ public class TestAlbumComparator extends JajukTestCase {
    * Test compare genre2.
    * 
    */
+  @Test
   public final void testCompareGenre2() {
     AlbumComparator compare = new AlbumComparator(0);
     Album album = new Album("1", "name", 2);
@@ -97,6 +103,7 @@ public class TestAlbumComparator extends JajukTestCase {
    * Test compare genre4 album artist different.
    * 
    */
+  @Test
   public final void testCompareGenre4AlbumArtistDifferent() {
     AlbumComparator compare = new AlbumComparator(0);
     Album album = new Album("1", "name", 2);
@@ -117,6 +124,7 @@ public class TestAlbumComparator extends JajukTestCase {
    * Test compare genre3 same year.
    * 
    */
+  @Test
   public final void testCompareGenre3SameYear() {
     AlbumComparator compare = new AlbumComparator(0);
     Album album = new Album("1", "name", 2);
@@ -138,6 +146,7 @@ public class TestAlbumComparator extends JajukTestCase {
    * Test compare artist.
    * 
    */
+  @Test
   public final void testCompareArtist() {
     AlbumComparator compare = new AlbumComparator(1);
     Album album = new Album("1", "name", 2);
@@ -160,6 +169,7 @@ public class TestAlbumComparator extends JajukTestCase {
    * Test compare artist same year.
    * 
    */
+  @Test
   public final void testCompareArtistSameYear() {
     AlbumComparator compare = new AlbumComparator(1);
     Album album = new Album("1", "name", 2);
@@ -184,6 +194,7 @@ public class TestAlbumComparator extends JajukTestCase {
    * Test compare album.
    * 
    */
+  @Test
   public final void testCompareAlbum() {
     AlbumComparator compare = new AlbumComparator(2);
     Album album = new Album("1", "name", 2);
@@ -197,6 +208,7 @@ public class TestAlbumComparator extends JajukTestCase {
    * Test compare year.
    * 
    */
+  @Test
   public final void testCompareYear() {
     AlbumComparator compare = new AlbumComparator(3);
     Album album = new Album("1", "name", 2);
@@ -216,6 +228,7 @@ public class TestAlbumComparator extends JajukTestCase {
    * Test compare year same year.
    * 
    */
+  @Test
   public final void testCompareYearSameYear() {
     AlbumComparator compare = new AlbumComparator(3);
     Album album = new Album("1", "name", 2);
@@ -237,6 +250,7 @@ public class TestAlbumComparator extends JajukTestCase {
    * Test compare year same year diff artist.
    * 
    */
+  @Test
   public final void testCompareYearSameYearDiffArtist() {
     AlbumComparator compare = new AlbumComparator(3);
     Album album = new Album("1", "name", 2);
@@ -258,6 +272,7 @@ public class TestAlbumComparator extends JajukTestCase {
    * Test compare discovery date.
    * 
    */
+  @Test
   public final void testCompareDiscoveryDate() {
     AlbumComparator compare = new AlbumComparator(4);
     Album album = new Album("1", "name", 2);
@@ -280,6 +295,7 @@ public class TestAlbumComparator extends JajukTestCase {
    * Test compare rate.
    * 
    */
+  @Test
   public final void testCompareRate() {
     AlbumComparator compare = new AlbumComparator(5);
     Album album = new Album("1", "name", 2);
@@ -300,6 +316,7 @@ public class TestAlbumComparator extends JajukTestCase {
    * Test compare rate gt.
    * 
    */
+  @Test
   public final void testCompareRateGT() {
     AlbumComparator compare = new AlbumComparator(5);
     Album album = new Album("1", "name", 2);
@@ -320,6 +337,7 @@ public class TestAlbumComparator extends JajukTestCase {
    * Test compare hits.
    * 
    */
+  @Test
   public final void testCompareHits() {
     AlbumComparator compare = new AlbumComparator(6);
     Album album = new Album("1", "name", 2);
@@ -340,6 +358,7 @@ public class TestAlbumComparator extends JajukTestCase {
    * Test compare hits gt.
    * 
    */
+  @Test
   public final void testCompareHitsGT() {
     AlbumComparator compare = new AlbumComparator(6);
     Album album = new Album("1", "name", 2);
@@ -396,6 +415,7 @@ public class TestAlbumComparator extends JajukTestCase {
    * Test compare no track.
    * 
    */
+  @Test
   public final void testCompareNoTrack() {
     AlbumComparator compare = new AlbumComparator(0);
     Album album = new Album("1", "name", 2);
@@ -410,6 +430,7 @@ public class TestAlbumComparator extends JajukTestCase {
    * Test compare criteria outside.
    * 
    */
+  @Test
   public final void testCompareCriteriaOutside() {
     AlbumComparator compare = new AlbumComparator(99);
     Album album = new Album("1", "name", 2);

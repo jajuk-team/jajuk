@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.notification;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.jajuk.JajukTestCase;
 import org.jajuk.util.Conf;
 import org.jajuk.util.Const;
@@ -34,6 +37,7 @@ public class TestNotificatorFactory extends JajukTestCase {
    * {@link org.jajuk.services.notification.NotificatorFactory#getNotificator()}
    * .
    */
+  @Test
   public void testNoneNotificator() {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.NONE.name());
@@ -49,6 +53,7 @@ public class TestNotificatorFactory extends JajukTestCase {
    * {@link org.jajuk.services.notification.NotificatorFactory#getNotificator()}
    * .
    */
+  @Test
   public void testBalloonNotificator() {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.BALLOON.name());
@@ -64,6 +69,7 @@ public class TestNotificatorFactory extends JajukTestCase {
    * {@link org.jajuk.services.notification.NotificatorFactory#getNotificator()}
    * .
    */
+  @Test
   public void testToastNotificator() {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
@@ -75,6 +81,7 @@ public class TestNotificatorFactory extends JajukTestCase {
    * Test get system notificator false.
    * 
    */
+  @Test
   public void testGetSystemNotificatorFalse() {
     // disable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.NONE.name());

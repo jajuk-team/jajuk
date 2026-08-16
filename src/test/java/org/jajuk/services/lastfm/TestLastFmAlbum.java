@@ -20,8 +20,10 @@
  */
 package org.jajuk.services.lastfm;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.jajuk.services.lastfm.model.TrackInfo;
-import junit.framework.TestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.services.lastfm.model.LastFmAlbum;
 import org.jajuk.util.IconLoader;
@@ -34,7 +36,7 @@ import java.util.Locale;
 /**
  * .
  */
-public class TestLastFmAlbum extends TestCase {
+public class TestLastFmAlbum {
 
   private LastFmAlbum getAlbumWithCover(String large, String url) {
     LastFmAlbum album = new LastFmAlbum();
@@ -48,6 +50,7 @@ public class TestLastFmAlbum extends TestCase {
   /**
    * Test method for {@link org.jajuk.services.lastfm.model.LastFmAlbum#getArtist()}.
    */
+  @Test
   public void testGetArtist() {
     LastFmAlbum album = new LastFmAlbum();
     assertNull(album.getArtist());
@@ -58,6 +61,7 @@ public class TestLastFmAlbum extends TestCase {
   /**
    * Test method for {@link org.jajuk.services.lastfm.model.LastFmAlbum#getArtistUrl()}.
    */
+  @Test
   public void testGetArtistUrl() {
     LastFmAlbum album = new LastFmAlbum();
     assertNull(album.getArtistUrl());
@@ -71,6 +75,7 @@ public class TestLastFmAlbum extends TestCase {
   /**
    * Test method for {@link org.jajuk.services.lastfm.model.LastFmAlbum#getBigCoverURL()}.
    */
+  @Test
   public void testGetBigCoverURL() {
     LastFmAlbum album = getAlbumWithCover("extralarge", "bigurl");
     assertEquals("bigurl", album.getBigCoverURL());
@@ -79,6 +84,7 @@ public class TestLastFmAlbum extends TestCase {
   /**
    * Test method for {@link org.jajuk.services.lastfm.model.LastFmAlbum#getCover()}.
    */
+  @Test
   public void testGetCover() {
     LastFmAlbum album = new LastFmAlbum();
     assertNull(album.getCover());
@@ -90,6 +96,7 @@ public class TestLastFmAlbum extends TestCase {
   /**
    * Test method for {@link org.jajuk.services.lastfm.model.LastFmAlbum#getCoverURL()}.
    */
+  @Test
   public void testGetCoverURL() {
     LastFmAlbum album = getAlbumWithCover("large", "coverurl");
     assertEquals("coverurl", album.getCoverURL());
@@ -100,6 +107,7 @@ public class TestLastFmAlbum extends TestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public void testGetReleaseDate() throws Exception {
     LastFmAlbum album = new LastFmAlbum();
     assertNull(album.getReleaseDate());
@@ -113,6 +121,7 @@ public class TestLastFmAlbum extends TestCase {
    * Test get release date invalid.
    *
    */
+  @Test
   public void testGetReleaseDateInvalid() {
     LastFmAlbum album = new LastFmAlbum();
     assertNull(album.getReleaseDate());
@@ -125,6 +134,7 @@ public class TestLastFmAlbum extends TestCase {
    *
    * {@link org.jajuk.services.lastfm.model.LastFmAlbum#getReleaseDateString()}.
    */
+  @Test
   public void testGetReleaseDateString() {
     LastFmAlbum album = new LastFmAlbum();
     assertNull(album.getReleaseDateString());
@@ -135,6 +145,7 @@ public class TestLastFmAlbum extends TestCase {
   /**
    * Test method for {@link org.jajuk.services.lastfm.model.LastFmAlbum#getSmallCoverURL()}.
    */
+  @Test
   public void testGetSmallCoverURL() {
     LastFmAlbum album = getAlbumWithCover("small", "smallurl");
     assertEquals("smallurl", album.getSmallCoverURL());
@@ -143,6 +154,7 @@ public class TestLastFmAlbum extends TestCase {
   /**
    * Test method for {@link org.jajuk.services.lastfm.model.LastFmAlbum#getTitle()}.
    */
+  @Test
   public void testGetTitle() {
     LastFmAlbum album = new LastFmAlbum();
     assertNull(album.getTitle());
@@ -153,6 +165,7 @@ public class TestLastFmAlbum extends TestCase {
   /**
    * Test method for {@link org.jajuk.services.lastfm.model.LastFmAlbum#getTracks()}.
    */
+  @Test
   public void testGetTracks() {
     LastFmAlbum album = new LastFmAlbum();
     assertNull(album.getTracks());
@@ -166,6 +179,7 @@ public class TestLastFmAlbum extends TestCase {
   /**
    * Test method for {@link org.jajuk.services.lastfm.model.LastFmAlbum#getUrl()}.
    */
+  @Test
   public void testGetUrl() {
     LastFmAlbum album = new LastFmAlbum();
     assertNull(album.getUrl());
@@ -176,6 +190,7 @@ public class TestLastFmAlbum extends TestCase {
   /**
    * Test method for {@link org.jajuk.services.lastfm.model.LastFmAlbum#getYear()}.
    */
+  @Test
   public void testGetYear() {
     LastFmAlbum album = new LastFmAlbum();
     assertEquals("", album.getYear());
@@ -188,6 +203,7 @@ public class TestLastFmAlbum extends TestCase {
    *
    * {@link org.jajuk.services.lastfm.model.LastFmAlbum#setArtist(java.lang.String)}.
    */
+  @Test
   public void testSetArtist() {
     // tested above
   }
@@ -195,6 +211,7 @@ public class TestLastFmAlbum extends TestCase {
   /**
    * Test method for {@link org.jajuk.services.lastfm.model.LastFmAlbum#toString()}.
    */
+  @Test
   public void testToString() {
     LastFmAlbum album = new LastFmAlbum();
     TestHelpers.ToStringTest(album);

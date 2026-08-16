@@ -20,6 +20,8 @@
  */
 package org.jajuk.services.notification;
 
+import org.junit.jupiter.api.Test;
+
 import org.jajuk.JajukTestCase;
 import org.jajuk.TestHelpers;
 import org.jajuk.base.File;
@@ -35,6 +37,7 @@ public class TestNotifySendBalloonNotificator extends JajukTestCase {
    * {@link org.jajuk.services.notification.NotifySendBalloonNotificator#isAvailable()}
    * .
    */
+  @Test
   public void testIsAvailable() {
     // should be constructed correctly, however we cannot guarantee if
     // "isAvailable" will return true or false, it depends
@@ -51,6 +54,7 @@ public class TestNotifySendBalloonNotificator extends JajukTestCase {
    * {@link org.jajuk.services.notification.NotifySendBalloonNotificator#notif(org.jajuk.base.File)}
    * .
    */
+  @Test
   public void testNotifyFile() {
     // should be constructed correctly, however we cannot guarantee if
     // "isAvailable" will return true or false, it depends
@@ -70,6 +74,7 @@ public class TestNotifySendBalloonNotificator extends JajukTestCase {
    * {@link org.jajuk.services.notification.JavaBalloonNotificator#notify(org.jajuk.services.webradio.WebRadio)}
    * .
    */
+  @Test
   public void testNotifyWebradio() {
     // should be constructed correctly, however we cannot guarantee if
     // "isAvailable" will return true or false, it depends

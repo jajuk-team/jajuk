@@ -20,6 +20,9 @@
  */
 package org.jajuk.util.filters;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.File;
 
 import org.apache.commons.lang3.StringUtils;
@@ -37,6 +40,7 @@ public class TestAudioFilter extends JajukTestCase {
    *
    * {@link org.jajuk.util.filters.AudioFilter#accept(java.io.File)}.
    */
+  @Test
   public void testAcceptFile() {
     StartupCollectionService.registerTypes();
     // normal files
@@ -60,12 +64,11 @@ public class TestAudioFilter extends JajukTestCase {
    * Test method for {@link org.jajuk.util.filters.AudioFilter#getDescription()}
    * .
    */
+  @Test
   public void testGetDescription() {
     StartupCollectionService.registerTypes();
-    assertTrue(AudioFilter.getInstance().getDescription(),
-        StringUtils.containsIgnoreCase(AudioFilter.getInstance().getDescription(), "mp3"));
-    assertTrue(AudioFilter.getInstance().getDescription(),
-        StringUtils.containsIgnoreCase(AudioFilter.getInstance().getDescription(), "ogg"));
+    assertTrue(StringUtils.containsIgnoreCase(AudioFilter.getInstance().getDescription(), "mp3"), AudioFilter.getInstance().getDescription());
+    assertTrue(StringUtils.containsIgnoreCase(AudioFilter.getInstance().getDescription(), "ogg"), AudioFilter.getInstance().getDescription());
     // try removing all types
     TypeManager.getInstance().clear();
     assertEquals("", AudioFilter.getInstance().getDescription());
@@ -74,6 +77,7 @@ public class TestAudioFilter extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.util.filters.AudioFilter#getInstance()}.
    */
+  @Test
   public void testGetInstance() {
     assertNotNull(AudioFilter.getInstance());
   }

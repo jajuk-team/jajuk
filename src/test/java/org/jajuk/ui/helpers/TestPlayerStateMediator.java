@@ -20,6 +20,9 @@
  */
 package org.jajuk.ui.helpers;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -65,6 +68,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
    *
    * {@link org.jajuk.ui.helpers.PlayerStateMediator#getInstance()}.
    */
+  @Test
   public final void testGetInstance() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     assertNotNull(med);
@@ -78,12 +82,13 @@ public class TestPlayerStateMediator extends JajukTestCase {
    *
    * {@link org.jajuk.ui.helpers.PlayerStateMediator#getRegistrationKeys()}.
    */
+  @Test
   public final void testGetRegistrationKeys() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     Set<JajukEvents> set = med.getRegistrationKeys();
-    assertTrue(set.toString(), set.contains(JajukEvents.PLAYER_PLAY));
-    assertTrue(set.toString(), set.contains(JajukEvents.VOLUME_CHANGED));
-    assertTrue(set.toString(), set.contains(JajukEvents.MUTE_STATE));
+    assertTrue(set.contains(JajukEvents.PLAYER_PLAY), set.toString());
+    assertTrue(set.contains(JajukEvents.VOLUME_CHANGED), set.toString());
+    assertTrue(set.contains(JajukEvents.MUTE_STATE), set.toString());
   }
 
   /**
@@ -93,6 +98,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
    * {@link org.jajuk.ui.helpers.PlayerStateMediator#update(org.jajuk.events.JajukEvent)}
    * .
    */
+  @Test
   public final void testUpdatePlay() throws Exception {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.PLAYER_PLAY, null));
@@ -102,6 +108,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
    * Test update stop.
    * 
    */
+  @Test
   public final void testUpdateStop() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.PLAYER_STOP, null));
@@ -113,6 +120,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testUpdateStopQueueModel() throws Exception {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     // test with queue size > 0
@@ -123,7 +131,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
     Directory dir = DirectoryManager.getInstance().registerDirectory(device);
     File file = getFile(9, dir);
     QueueModel.insert(new StackItem(file), 0);
-    assertTrue(QueueModel.getQueue().toString(), QueueModel.getQueue().size() > 0);
+    assertTrue(QueueModel.getQueue().size() > 0, QueueModel.getQueue().toString());
     // run the method
     med.update(new JajukEvent(JajukEvents.PLAYER_STOP, null));
   }
@@ -154,6 +162,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
    * Test update paused.
    * 
    */
+  @Test
   public final void testUpdatePaused() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.PLAYER_PAUSE, null));
@@ -163,6 +172,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
    * Test update resume.
    * 
    */
+  @Test
   public final void testUpdateResume() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.PLAYER_RESUME, null));
@@ -172,6 +182,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
    * Test update opening error.
    * 
    */
+  @Test
   public final void testUpdateOpeningError() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.PLAY_OPENING, null));
@@ -181,6 +192,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
    * Test update zero.
    * 
    */
+  @Test
   public final void testUpdateZero() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.ZERO, null));
@@ -190,6 +202,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
    * Test update webradio.
    * 
    */
+  @Test
   public final void testUpdateWebradio() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.WEBRADIO_LAUNCHED, null));
@@ -199,6 +212,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
    * Test update webradio notifcator.
    * 
    */
+  @Test
   public final void testUpdateWebradioNotifcator() {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
@@ -215,6 +229,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testUpdateFileLaunched() throws Exception {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
@@ -231,6 +246,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
    * Test update file launched null.
    * 
    */
+  @Test
   public final void testUpdateFileLaunchedNull() {
     // enable Tooltip/Notification
     Conf.setProperty(Const.CONF_UI_NOTIFICATOR_TYPE, NotificatorTypes.TOAST.name());
@@ -244,6 +260,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
    * Test update volume.
    * 
    */
+  @Test
   public final void testUpdateVolume() {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.VOLUME_CHANGED, null));
@@ -255,6 +272,7 @@ public class TestPlayerStateMediator extends JajukTestCase {
    *
    * @throws Exception the exception
    */
+  @Test
   public final void testUpdateMute() throws Exception {
     PlayerStateMediator med = PlayerStateMediator.getInstance();
     med.update(new JajukEvent(JajukEvents.MUTE_STATE, null));

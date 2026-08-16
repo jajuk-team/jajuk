@@ -20,6 +20,9 @@
  */
 package org.jajuk.services.dj;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.jajuk.util.XMLUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -49,6 +52,7 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
   /**
   * Test method for {@link org.jajuk.services.dj.AmbienceDigitalDJ#toXML()}.
   */
+  @Test
   public final void testToXML() {
     AmbienceDigitalDJ dj = new AmbienceDigitalDJ("3");
     assertTrue(StringUtils.isNotBlank(dj.toXML()));
@@ -67,6 +71,7 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
    * @throws Exception the exception
    * {@link org.jajuk.services.dj.AmbienceDigitalDJ#generatePlaylist()}.
    */
+  @Test
   public final void testGeneratePlaylist() throws Exception {
     StartupCollectionService.registerItemManagers();
     AmbienceDigitalDJ dj = new AmbienceDigitalDJ("4");
@@ -123,6 +128,7 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
    * {@link org.jajuk.services.dj.AmbienceDigitalDJ#AmbienceDigitalDJ(java.lang.String)}
    * .
    */
+  @Test
   public final void testAmbienceDigitalDJ() {
     new AmbienceDigitalDJ("9");
   }
@@ -132,6 +138,7 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
    *
    * {@link org.jajuk.services.dj.AmbienceDigitalDJ#getAmbience()}.
    */
+  @Test
   public final void testGetAndSetAmbience() {
     AmbienceDigitalDJ dj = new AmbienceDigitalDJ("4");
     // empty without Ambience set
@@ -148,6 +155,7 @@ public class TestAmbienceDigitalDJ extends JajukTestCase {
    * {@link org.jajuk.services.dj.AmbienceDigitalDJ#setAmbience(org.jajuk.services.dj.Ambience)}
    * .
    */
+  @Test
   public final void testSetAmbience() {
     // tested above
   }

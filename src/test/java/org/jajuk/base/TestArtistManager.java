@@ -20,6 +20,9 @@
  */
 package org.jajuk.base;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -51,6 +54,7 @@ public class TestArtistManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.ArtistManager#getXMLTag()}.
    */
+  @Test
   public final void testGetLabel() {
     assertEquals(Const.XML_ARTISTS, ArtistManager.getInstance().getXMLTag());
   }
@@ -58,6 +62,7 @@ public class TestArtistManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.ArtistManager#getInstance()}.
    */
+  @Test
   public final void testGetInstance() {
     assertNotNull(ArtistManager.getInstance());
   }
@@ -67,6 +72,7 @@ public class TestArtistManager extends JajukTestCase {
    *
    * {@link org.jajuk.base.ArtistManager#registerArtist(java.lang.String)}.
    */
+  @Test
   public final void testRegisterArtistString() {
     Artist artist = ArtistManager.getInstance().registerArtist("name");
     assertNotNull(artist);
@@ -79,6 +85,7 @@ public class TestArtistManager extends JajukTestCase {
    *
    * {@link org.jajuk.base.ArtistManager#createID(java.lang.String)}.
    */
+  @Test
   public final void testCreateID() {
     String id = ItemManager.createID("name");
     // same for same name
@@ -93,6 +100,7 @@ public class TestArtistManager extends JajukTestCase {
    * {@link org.jajuk.base.ArtistManager#registerArtist(java.lang.String, java.lang.String)}
    * .
    */
+  @Test
   public final void testRegisterArtistStringString() {
     Artist artist = ArtistManager.getInstance().registerArtist("4", "name");
     assertNotNull(artist);
@@ -107,6 +115,7 @@ public class TestArtistManager extends JajukTestCase {
    * {@link org.jajuk.base.ArtistManager#changeArtistName(org.jajuk.base.Artist, java.lang.String)}
    * .
    */
+  @Test
   public final void testChangeArtistName() throws Exception {
     StartupCollectionService.registerItemManagers();
     Artist artistold = TestHelpers.getArtist("nameold");
@@ -175,6 +184,7 @@ public class TestArtistManager extends JajukTestCase {
    *
    * {@link org.jajuk.base.ArtistManager#format(java.lang.String)}.
    */
+  @Test
   public final void testFormat() {
     assertEquals("Testname", ItemManager.format("testname"));
     // trim spaces
@@ -190,6 +200,7 @@ public class TestArtistManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.ArtistManager#getArtistsList()}.
    */
+  @Test
   public final void testGetArtistsList() {
     List<String> list = ArtistManager.getArtistsList();
     assertNotNull(list);
@@ -209,6 +220,7 @@ public class TestArtistManager extends JajukTestCase {
    *
    * {@link org.jajuk.base.ArtistManager#getArtistByID(java.lang.String)}.
    */
+  @Test
   public final void testGetArtistByID() {
     Artist artist = ArtistManager.getInstance().registerArtist("anothernewartist");
     Artist artist2 = ArtistManager.getInstance().getArtistByID(artist.getID());
@@ -218,6 +230,7 @@ public class TestArtistManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.ArtistManager#getArtists()}.
    */
+  @Test
   public final void testGetArtists() {
     List<Artist> list = ArtistManager.getInstance().getArtists();
     assertNotNull(list);
@@ -234,6 +247,7 @@ public class TestArtistManager extends JajukTestCase {
   /**
    * Test method for {@link org.jajuk.base.ArtistManager#getArtistsIterator()}.
    */
+  @Test
   public final void testGetArtistsIterator() {
     ArtistManager.getInstance().registerArtist("anothernewname");
     ReadOnlyIterator<Artist> it = ArtistManager.getInstance().getArtistsIterator();
@@ -249,6 +263,7 @@ public class TestArtistManager extends JajukTestCase {
    * {@link org.jajuk.base.ArtistManager#getAssociatedArtists(org.jajuk.base.Item)}
    * .
    */
+  @Test
   public final void testGetAssociatedArtists() throws Exception {
     // empty list with invalid item
     List<Artist> list = ArtistManager.getInstance().getAssociatedArtists(null);
@@ -273,6 +288,7 @@ public class TestArtistManager extends JajukTestCase {
    *
    * {@link org.jajuk.base.ArtistManager#getArtistByName(java.lang.String)}.
    */
+  @Test
   public final void testGetArtistByName() {
     Artist artist = ArtistManager.getInstance().registerArtist("anothernewartist");
     Artist artist2 = ArtistManager.getInstance().getArtistByName("anothernewartist");
@@ -283,6 +299,7 @@ public class TestArtistManager extends JajukTestCase {
    * Test sorting.
    * 
    */
+  @Test
   public final void testSorting() {
     // make sure we have "ordered state"
     ArtistManager.getInstance().switchToOrderState();
@@ -302,7 +319,7 @@ public class TestArtistManager extends JajukTestCase {
     assertFalse(it.hasNext());
     // make sure we can fetch all of these by ID
     for (String id : ids) {
-      assertNotNull("Did not find ID: " + id, ArtistManager.getInstance().getArtistByID(id));
+      assertNotNull(ArtistManager.getInstance().getArtistByID(id), "Did not find ID: " + id);
     }
     assertNull(ArtistManager.getInstance().getArtistByID("notexisting"));
     assertNull(ArtistManager.getInstance().getArtistByID("number 12"));
