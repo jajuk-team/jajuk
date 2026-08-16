@@ -25,7 +25,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.Track;
 import org.jajuk.services.lastfm.model.*;
 import org.jajuk.services.lastfm.scrobble.ScrobblerException;
-import org.jajuk.services.network.HttpClientService;
 import org.jajuk.util.*;
 import org.jajuk.util.log.Log;
 
@@ -52,8 +51,6 @@ public class LastFmService {
   private static final String LANGUAGE_PARAM = "?setlang=";
   /** The Constant LANGUAGE_WILDCARD. */
   private static final String LANGUAGE_WILDCARD = "(%LANGUAGE%)";
-  /** The Constant ARTIST_WIKI_URL. */
-  private static final String ARTIST_WIKI_URL = UtilString.concat("https://www.lastfm.com/music/", ARTIST_WILDCARD, "/+wiki", LANGUAGE_PARAM, LANGUAGE_WILDCARD);
   /** The Constant VARIOUS_ARTISTS. */
   private static final String VARIOUS_ARTISTS = "Various Artists";
   /** The Constant MIN_DURATION_TO_SUBMIT. */
@@ -68,6 +65,8 @@ public class LastFmService {
   /** Last FM client */
   private final static LastFmClient lastFmClient = new LastFmClient();
   private final static WikipediaClient wikipediaClient = new WikipediaClient();
+  /** Single thread for similar artists image lookup */
+  private static volatile Thread currentSimilarArtistsThread = null;
 
   /**
    * Instantiates a new Last.fm service
@@ -275,13 +274,51 @@ public class LastFmService {
         if (artistInfo != null) {
           // Get (max) 15 similar artists
           List<ArtistInfo> similarArtists = lastFmClient.getSimilar(artistInfo, LastFmSimilarArtists.MAX_SIMILAR_ARTISTS);
-          // Replace place holder image
-          for (ArtistInfo similarArtist : similarArtists) {
-            wikipediaClient.checkArtistImageUrl(similarArtist);
-          }
-          // Build similar object
+          // Build similar object and store it immediately in cache (first pass)
           similar = LastFmSimilarArtists.getSimilarArtists(similarArtists, artistInfo);
           lastFmCache.storeArtistSimilar(artist, similar);
+
+          // Image lookup can be slow. Do it asynchronously and update cache again when done.
+          // This ensures we have a fast first cache entry with similar artists and a
+          // second updated entry containing image URLs when available.
+          final SimilarArtistsInfo similarToEnrich = similar;
+          final String artistKey = artist;
+
+          // Interrupt previous thread if still running
+          if (currentSimilarArtistsThread != null && currentSimilarArtistsThread.isAlive()) {
+            currentSimilarArtistsThread.interrupt();
+            Log.debug("Interrupting previous similar artists lookup thread");
+          }
+
+          Thread t = new Thread(() -> {
+            try {
+              if (similarToEnrich.getArtists() != null) {
+                for (ArtistInfo similarArtist : similarToEnrich.getArtists()) {
+                  // Check if thread was interrupted
+                  if (Thread.currentThread().isInterrupted()) {
+                    Log.debug("Similar artists lookup thread interrupted for: " + artistKey);
+                    break;
+                  }
+                  try {
+                    wikipediaClient.checkArtistImageUrl(similarArtist);
+                  } catch (Exception e) {
+                    // Don't stop on single failure
+                    Log.error(e);
+                  }
+                }
+                // Store enriched similar info (second pass) only if not interrupted
+                if (!Thread.currentThread().isInterrupted()) {
+                  lastFmCache.storeArtistSimilar(artistKey, similarToEnrich);
+                  Log.debug("Similar artists enriched and cached for: " + artistKey);
+                }
+              }
+            } catch (Exception e) {
+              Log.error(e);
+            }
+          }, "LastFm-SimilarImageLookup-" + artist.replaceAll("\\s+", "_"));
+          t.setDaemon(true);
+          currentSimilarArtistsThread = t;
+          t.start();
         }
       }
       return similar;
@@ -318,7 +355,7 @@ public class LastFmService {
         //wikiText = a != null ? a.getWikiSummary() : "";
         if (wikiText != null) {
           wikiText = wikiText.replaceAll("<.*?>", "");
-          wikiText = StringEscapeUtils.unescapeHtml3(wikiText);
+          wikiText = StringEscapeUtils.unescapeHtml4(wikiText);
         }
         lastFmCache.storeArtistWiki(artist, wikiText);
       }

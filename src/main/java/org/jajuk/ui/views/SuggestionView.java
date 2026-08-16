@@ -20,27 +20,7 @@
  */
 package org.jajuk.ui.views;
 
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.BoxLayout;
-import javax.swing.JEditorPane;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
+import ext.FlowScrollPanel;
 import org.apache.commons.lang3.StringUtils;
 import org.jajuk.base.Album;
 import org.jajuk.base.AlbumManager;
@@ -49,28 +29,29 @@ import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
 import org.jajuk.services.lastfm.LastFmInvalidKeyException;
-import org.jajuk.services.players.QueueModel;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.thumbnails.AbstractThumbnail;
-import org.jajuk.ui.thumbnails.LastFmAlbumThumbnail;
-import org.jajuk.ui.thumbnails.LastFmArtistThumbnail;
-import org.jajuk.ui.thumbnails.LocalAlbumThumbnail;
-import org.jajuk.ui.thumbnails.ThumbnailManager;
-import org.jajuk.util.Conf;
-import org.jajuk.util.Const;
-import org.jajuk.util.DownloadManager;
-import org.jajuk.util.Messages;
-import org.jajuk.util.UtilGUI;
-import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.JXBusyLabel;
-
-import ext.FlowScrollPanel;
+import org.jajuk.services.lastfm.LastFmService;
 import org.jajuk.services.lastfm.model.AlbumInfo;
 import org.jajuk.services.lastfm.model.AlbumListInfo;
 import org.jajuk.services.lastfm.model.ArtistInfo;
-import org.jajuk.services.lastfm.LastFmService;
 import org.jajuk.services.lastfm.model.SimilarArtistsInfo;
-import net.miginfocom.swing.MigLayout;
+import org.jajuk.services.players.QueueModel;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.thumbnails.*;
+import org.jajuk.util.*;
+import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.JXBusyLabel;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Show suggested albums based on current collection (bestof, novelties) and
@@ -103,8 +84,7 @@ public class SuggestionView extends ViewAdapter {
   List<Album> albumsRare;
   /** Currently selected thumb. */
   AbstractThumbnail selectedThumb;
-  /** albums is protected to allow ArtistView to load them */
-  protected AlbumListInfo albums;
+  private AlbumListInfo albums;
   private SimilarArtistsInfo similar;
   JXBusyLabel busyLocal1 = new JXBusyLabel();
   JXBusyLabel busyLocal2 = new JXBusyLabel();
@@ -268,7 +248,6 @@ public class SuggestionView extends ViewAdapter {
 
   /**
    * Refresh last fm collection tabs.
-   *
    */
   private void refreshLastFMCollectionTabs() {
     String newArtist = null;
@@ -285,10 +264,8 @@ public class SuggestionView extends ViewAdapter {
             // If unknown artist
             || (newArtist == null || newArtist.equals(Messages.getString(UNKNOWN_ARTIST)))) {
       // Set empty panels
-      SwingUtilities.invokeLater(() -> {
-        tabs.setComponentAt(3, new JLabel(Messages.getString("SuggestionView.7")));
-        tabs.setComponentAt(4, new JLabel(Messages.getString("SuggestionView.7")));
-      });
+      tabs.setComponentAt(3, new JLabel(Messages.getString("SuggestionView.7")));
+      tabs.setComponentAt(4, new JLabel(Messages.getString("SuggestionView.7")));
       return;
     }
     // Check if artist changed, otherwise, just leave
@@ -302,12 +279,10 @@ public class SuggestionView extends ViewAdapter {
     final String artistContext = newArtist;
 
     // Display a busy panel in the mean-time
-    SwingUtilities.invokeLater(() -> {
-      busyLastFM1.setBusy(true);
-      busyLastFM2.setBusy(true);
-      tabs.setComponentAt(3, UtilGUI.getCentredPanel(busyLastFM1));
-      tabs.setComponentAt(4, UtilGUI.getCentredPanel(busyLastFM2));
-    });
+    busyLastFM1.setBusy(true);
+    busyLastFM2.setBusy(true);
+    tabs.setComponentAt(3, UtilGUI.getCentredPanel(busyLastFM1));
+    tabs.setComponentAt(4, UtilGUI.getCentredPanel(busyLastFM2));
 
     // Use a swing worker as construct takes a lot of time
     // --- WORKER For other albums (Panel 3) ---
@@ -480,7 +455,6 @@ public class SuggestionView extends ViewAdapter {
         if (flowPanel != null) {
           // Step 3 component creation in UI (EDT)
           for (ArtistInfo similarArtist : chunks) {
-            // 3. CRÉATION DU COMPOSANT UI ICI (dans l'EDT)
             AbstractThumbnail thumb = new LastFmArtistThumbnail(similarArtist);
             thumb.setArtistView(false);
             thumb.populate();
@@ -538,54 +512,6 @@ public class SuggestionView extends ViewAdapter {
     return jsp;
   }
 
-  /**
-   * Return the result panel for lastFM information.
-   *
-   * @return the last fm suggestions panel
-   */
-  JScrollPane getLastFMSuggestionsPanel(SuggestionType type, boolean artistView) {
-    FlowScrollPanel flowPanel = new FlowScrollPanel();
-    JScrollPane jsp = new JScrollPane(flowPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-    jsp.setBorder(null);
-    flowPanel.setScroller(jsp);
-    flowPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-    if (type == SuggestionType.OTHERS_ALBUMS) {
-      if (albums != null && !albums.getAlbums().isEmpty()) {
-        for (AlbumInfo album : albums.getAlbums()) {
-          AbstractThumbnail thumb = new LastFmAlbumThumbnail(album);
-          thumb.setArtistView(artistView);
-          thumb.populate();
-          if (thumb.getIcon() != null) {
-            thumb.getIcon().addMouseListener(new ThumbMouseListener());
-            flowPanel.add(thumb);
-          }
-        }
-      }
-      // No result found
-      else {
-        return new JScrollPane(getNothingFoundPanel());
-      }
-    } else if (type == SuggestionType.SIMILAR_ARTISTS) {
-      if (similar != null) {
-        List<ArtistInfo> artists = similar.getArtists();
-        for (ArtistInfo similarArtist : artists) {
-          AbstractThumbnail thumb = new LastFmArtistThumbnail(similarArtist);
-          thumb.setArtistView(artistView);
-          thumb.populate();
-          if (thumb.getIcon() != null) {
-            thumb.getIcon().addMouseListener(new ThumbMouseListener());
-            flowPanel.add(thumb);
-          }
-        }
-      }
-      // No result found
-      else {
-        return new JScrollPane(getNothingFoundPanel());
-      }
-    }
-    return jsp;
-  }
 
   @Override
   public void update(JajukEvent event) {
@@ -597,11 +523,11 @@ public class SuggestionView extends ViewAdapter {
       }
       comp++;
       // update last.fm panels
-      refreshLastFMCollectionTabs();
+      SwingUtilities.invokeLater(this::refreshLastFMCollectionTabs);
     } else if (subject.equals(JajukEvents.PARAMETERS_CHANGE) && isLastFMTabsVisible()) {
       // The show/hide unmounted may have changed, refresh local
       // collection panels
-      refreshLastFMCollectionTabs();
+      SwingUtilities.invokeLater(this::refreshLastFMCollectionTabs);
     } else if (subject.equals(JajukEvents.COVER_DEFAULT_CHANGED)
             || subject.equals(JajukEvents.SUGGESTIONS_REFRESH)) {
       // New default cover, refresh the view
@@ -629,19 +555,4 @@ public class SuggestionView extends ViewAdapter {
     refreshLastFMCollectionTabs();
   }
 
-  /**
-   * Gets the nothing found panel.
-   *
-   * @return a panel with text explaining why no item has been found
-   */
-  JPanel getNothingFoundPanel() {
-    JPanel out = new JPanel(new MigLayout("ins 5", "grow"));
-    JEditorPane jteNothing = new JEditorPane("text/html", Messages.getString("SuggestionView.7"));
-    jteNothing.setBorder(null);
-    jteNothing.setEditable(false);
-    jteNothing.setOpaque(false);
-    jteNothing.setToolTipText(Messages.getString("SuggestionView.7"));
-    out.add(jteNothing, "center,grow");
-    return out;
-  }
 }
