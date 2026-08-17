@@ -20,63 +20,6 @@
  */
 package org.jajuk.util;
 
-import com.jhlabs.image.PerspectiveFilter;
-
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.Toolkit;
-import java.awt.Window;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.PixelGrabber;
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.concurrent.ExecutionException;
-
-import javax.imageio.ImageIO;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JToolBar;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
 import org.jajuk.ui.helpers.FontManager;
 import org.jajuk.ui.helpers.FontManager.JajukFont;
 import org.jajuk.ui.helpers.TwoStepsDisplayable;
@@ -89,6 +32,7 @@ import org.jajuk.ui.widgets.PerspectiveBarJPanel;
 import org.jajuk.ui.windows.JajukFullScreenWindow;
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.ui.windows.JajukSlimbar;
+import org.jajuk.util.image.PerspectiveTransformer;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXBusyLabel;
 import org.jdesktop.swingx.JXPanel;
@@ -101,16 +45,31 @@ import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.skin.SkinInfo;
 import org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.PixelGrabber;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.concurrent.ExecutionException;
+
 /**
  * Set of GUI convenient methods.
  */
 public final class UtilGUI {
   /* different types of Cursors that are available */
-  /** The Constant WAIT_CURSOR.  */
+  /** The Constant WAIT_CURSOR. */
   public static final Cursor WAIT_CURSOR = new Cursor(Cursor.WAIT_CURSOR);
-  /** The Constant LINK_CURSOR.  */
+  /** The Constant LINK_CURSOR. */
   public static final Cursor LINK_CURSOR = new Cursor(Cursor.HAND_CURSOR);
-  /** The Constant DEFAULT_CURSOR.  */
+  /** The Constant DEFAULT_CURSOR. */
   public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
   // Current cursor that is displayed
   private static Cursor currentCursor = DEFAULT_CURSOR;
@@ -184,11 +143,11 @@ public final class UtilGUI {
    */
   public static GraphicsDevice getGraphicsDeviceOfMainFrame() {
     GraphicsEnvironment localGraphicsEnvironment = GraphicsEnvironment
-        .getLocalGraphicsEnvironment();
+            .getLocalGraphicsEnvironment();
     for (int i = 0; i < GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length; i++) {
       GraphicsDevice graphicsDevice = localGraphicsEnvironment.getScreenDevices()[i];
       if (graphicsDevice.getDefaultConfiguration().getBounds()
-          .contains(JajukMainWindow.getInstance().getLocation())) {
+              .contains(JajukMainWindow.getInstance().getLocation())) {
         return graphicsDevice;
       }
     }
@@ -209,8 +168,7 @@ public final class UtilGUI {
    *
    * @param jc
    * @param iOrientation : vertical or horizontal orientation, use BoxLayout.X_AXIS or
-   * BoxLayout.Y_AXIS
-   *
+   *                     BoxLayout.Y_AXIS
    * @return a centred panel
    */
   public static JPanel getCentredPanel(final JComponent jc, final int iOrientation) {
@@ -232,12 +190,11 @@ public final class UtilGUI {
    * Gets the html color.
    *
    * @param color java color
-   *
    * @return HTML RGB color ex: FF0000
    */
   public static String getHTMLColor(final Color color) {
     return Long.toString(color.getRed(), 16) + Long.toString(color.getGreen(), 16)
-        + Long.toString(color.getBlue(), 16);
+            + Long.toString(color.getBlue(), 16);
   }
 
   /**
@@ -266,7 +223,6 @@ public final class UtilGUI {
    *
    * @param sText text to display, lines separated by \n characters
    * @param limit : max number of lines to be displayed without scroller
-   *
    * @return formated message: either a string, or a textarea
    */
   public static Object getLimitedMessage(final String sText, final int limit) {
@@ -313,16 +269,15 @@ public final class UtilGUI {
   /**
    * Resize an image.
    *
-   * @param img image to resize
+   * @param img        image to resize
    * @param iNewWidth
    * @param iNewHeight
-   *
    * @return resized image
    */
   public static ImageIcon getResizedImage(final ImageIcon img, final int iNewWidth,
-      final int iNewHeight) {
+                                          final int iNewHeight) {
     Image scaleImg = img.getImage().getScaledInstance(iNewWidth, iNewHeight,
-        Image.SCALE_AREA_AVERAGING);
+            Image.SCALE_AREA_AVERAGING);
     // Leave source image cache here as we may want to keep original image
     // but free the new image
     scaleImg.flush();
@@ -330,9 +285,10 @@ public final class UtilGUI {
   }
 
   /**
-  * Show busy label when searching lyrics over provided panel.
-  * @param panel panel to override.
-  */
+   * Show busy label when searching lyrics over provided panel.
+   *
+   * @param panel panel to override.
+   */
   public static void showBusyLabel(final JXPanel panel) {
     SwingUtilities.invokeLater(() -> {
       panel.removeAll();
@@ -421,14 +377,14 @@ public final class UtilGUI {
     UIManager.put("InternalFrame.activeTitleBackground", backgroundActive);
     UIManager.put("InternalFrame.inactiveTitleBackground", backgroundInactive);
     UIManager.put("DockViewTitleBar.titleFont",
-        FontManager.getInstance().getFont(JajukFont.VIEW_FONT));
+            FontManager.getInstance().getFont(JajukFont.VIEW_FONT));
   }
 
   /**
    * Display given container at given position.
    *
    * @param window
-   * @param iFromTop max number of pixels from top
+   * @param iFromTop  max number of pixels from top
    * @param iFromLeft max number of pixels from left
    */
   public static void setShuffleLocation(final Window window, final int iFromTop, final int iFromLeft) {
@@ -459,7 +415,6 @@ public final class UtilGUI {
    * To buffered image.
    *
    * @param image the input image
-   *
    * @return the buffered image
    */
   public static BufferedImage toBufferedImage(final Image image) {
@@ -469,14 +424,13 @@ public final class UtilGUI {
   /**
    * Create a buffered image without forced alpha channel.
    *
-   * @param image the input image
+   * @param image        the input image
    * @param targetWidth
    * @param targetHeight
-   *
    * @return the buffered image
    */
   public static BufferedImage toBufferedImage(final Image image, final int targetWidth,
-      final int targetHeight) {
+                                              final int targetHeight) {
     return UtilGUI.toBufferedImage(image, targetWidth, targetHeight, false);
   }
 
@@ -486,15 +440,14 @@ public final class UtilGUI {
    * Code adapted from from http://today.java.net/pub/a/today/2007/04/03/perils-of-image-getscaledinstance.html
    * </p>
    *
-   * @param image the input image
+   * @param image        the input image
    * @param targetWidth
    * @param targetHeight
-   * @param forcedAlpha Force using an alpha channel for target image
-   *
+   * @param forcedAlpha  Force using an alpha channel for target image
    * @return buffered image from an image
    */
   public static BufferedImage toBufferedImage(final Image image, final int targetWidth,
-      final int targetHeight, boolean forcedAlpha) {
+                                              final int targetHeight, boolean forcedAlpha) {
     if (image instanceof BufferedImage) {
       return ((BufferedImage) image);
     } else {
@@ -538,7 +491,7 @@ public final class UtilGUI {
         BufferedImage tmp = new BufferedImage(w, h, type);
         Graphics2D g2 = tmp.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-            RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         // If the input buffered image doesn't yet exist, use the input image
         if (ret != null) {
           g2.drawImage(ret, 0, 0, w, h, null);
@@ -564,34 +517,40 @@ public final class UtilGUI {
     int gap = 10;
     float opacity = 0.3f;
     float fadeHeight = 0.6f;
+
     // cover
     BufferedImage coverImage = UtilGUI.toBufferedImage(img, Const.MIRROW_COVER_SIZE,
-        Const.MIRROW_COVER_SIZE, true);
-    PerspectiveFilter filter1 = new PerspectiveFilter(0, angle,
-        Const.MIRROW_COVER_SIZE - angle / 2, (int) (angle * (5.0 / 3.0)), Const.MIRROW_COVER_SIZE
-            - angle / 2, Const.MIRROW_COVER_SIZE, 0, Const.MIRROW_COVER_SIZE + angle);
-    coverImage = filter1.filter(coverImage, null);
+            Const.MIRROW_COVER_SIZE, true);
+
+    coverImage = PerspectiveTransformer.applyPerspective(coverImage,
+            0, angle,
+            Const.MIRROW_COVER_SIZE - angle / 2.0f, (int) (angle * (5.0 / 3.0)),
+            Const.MIRROW_COVER_SIZE - angle / 2.0f, Const.MIRROW_COVER_SIZE,
+            0, Const.MIRROW_COVER_SIZE + angle);
+
     // reflection
     int imageWidth = coverImage.getWidth();
     int imageHeight = coverImage.getHeight();
     BufferedImage reflection = new BufferedImage(imageWidth, imageHeight,
-        BufferedImage.TYPE_INT_ARGB);
+            BufferedImage.TYPE_INT_ARGB);
     Graphics2D rg = reflection.createGraphics();
     rg.drawRenderedImage(coverImage, null);
     rg.setComposite(AlphaComposite.getInstance(AlphaComposite.DST_IN));
     rg.setPaint(new GradientPaint(0, imageHeight * fadeHeight, new Color(0.0f, 0.0f, 0.0f, 0.0f),
-        0, imageHeight, new Color(0.0f, 0.0f, 0.0f, opacity)));
+            0, imageHeight, new Color(0.0f, 0.0f, 0.0f, opacity)));
     rg.fillRect(0, 0, imageWidth, imageHeight);
     rg.dispose();
-    PerspectiveFilter filter2 = new PerspectiveFilter(0, 0, coverImage.getHeight() - angle / 2,
-        angle * 2, coverImage.getHeight() - angle / 2, coverImage.getHeight() + angle * 2, 0,
-        coverImage.getHeight());
-    BufferedImage reflectedImage = filter2.filter(reflection, null);
+
+    BufferedImage reflectedImage = PerspectiveTransformer.applyPerspective(reflection,
+            0, 0,
+            coverImage.getHeight() - angle / 2.0f, angle * 2,
+            coverImage.getHeight() - angle / 2.0f, coverImage.getHeight() + angle * 2,
+            0, coverImage.getHeight());
+
     // now draw everything on one bufferedImage
     BufferedImage finalImage = new BufferedImage(imageWidth, (int) (1.4 * imageHeight),
-        BufferedImage.TYPE_INT_ARGB);
-    Graphics g = finalImage.getGraphics();
-    Graphics2D g2d = (Graphics2D) g;
+            BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = (Graphics2D) finalImage.getGraphics();
     g2d.drawRenderedImage(coverImage, null);
     g2d.translate(0, 2 * imageHeight + gap);
     g2d.scale(1, -1);
@@ -691,7 +650,7 @@ public final class UtilGUI {
    * <code>Window</code>.
    *
    * @param window The <code>Window</code> for which the look and feel update has to
-   * be performed against.
+   *               be performed against.
    */
   public static void updateWindowUI(final Window window) {
     try {
@@ -734,7 +693,7 @@ public final class UtilGUI {
       return false;
     }
     return (p.getX() < (dimension.getWidth() + location.getX()) && p.getY() < (dimension
-        .getHeight() + location.getY()));
+            .getHeight() + location.getY()));
   }
 
   /**
@@ -781,7 +740,7 @@ public final class UtilGUI {
       // For some reasons (under Linux at least), pressing escape only trigger PRESSED
       // and RELEASED key events
       if (e.getKeyCode() == KeyEvent.VK_ESCAPE && e.getID() == KeyEvent.KEY_PRESSED
-          && window.isFocused()) {
+              && window.isFocused()) {
         window.dispose();
         return true;
       }
@@ -847,7 +806,7 @@ public final class UtilGUI {
     int screenHeight = screenSize.height;
     int screenWidth = screenSize.width;
     window.setLocation((screenWidth / 2) - (window.getWidth() / 2),
-        (screenHeight / 2) - (window.getHeight() / 2));
+            (screenHeight / 2) - (window.getHeight() / 2));
   }
 
   /**
@@ -871,7 +830,6 @@ public final class UtilGUI {
    * Gets the given component's parent view.
    *
    * @param component the component
-   *
    * @return the parent view or null if none IView is among its ancestors
    */
   public static IView getParentView(Component component) {
