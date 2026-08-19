@@ -23,8 +23,11 @@ package org.jajuk.util;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -39,14 +42,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.ui.windows.JajukMainWindow;
 import org.jajuk.util.log.Log;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -56,7 +54,7 @@ import net.miginfocom.swing.MigLayout;
  * Singleton
  * </p>.
  */
-public class Messages extends DefaultHandler {
+public class Messages {
   /** Messages initialized flag. */
   protected static boolean bInitialized = false;
   /** All choice option, completes JDialog options. */
@@ -190,16 +188,17 @@ public class Messages extends DefaultHandler {
   }
 
   /**
-   * ***************************************************************************
-   * Parse a fake properties file inside an XML file as CDATA.
+   * Load a langpack.
    *
+   * <p>These are plain UTF-8 .properties files. Values may carry a significant leading
+   * space (message fragments concatenated after a number, e.g. "Device.27=\\ new files"),
+   * which is why such spaces are escaped in the files.</p>
+   *
+   * @param locale the locale to load
    * @return a properties with all entries
-   * @throws SAXException the SAX exception
    * @throws IOException Signals that an I/O exception has occurred.
-   * @throws ParserConfigurationException the parser configuration exception
    */
-  private static Properties parseLangpack(final Locale locale) throws SAXException, IOException,
-      ParserConfigurationException {
+  private static Properties parseLangpack(final Locale locale) throws IOException {
     final Properties lProperties = new Properties();
     // Choose right jajuk_<lang>.properties file to load
     final StringBuilder sbFilename = new StringBuilder(Const.FILE_LANGPACK_PART1);
@@ -216,43 +215,11 @@ public class Messages extends DefaultHandler {
     if (url == null) {
       throw new IOException("Could not read resource: " + resource);
     }
-    // parse it, actually it is a big properties file as CDATA in an XML
-    // file
-    final SAXParserFactory spf = SAXParserFactory.newInstance();
-    spf.setValidating(false);
-    spf.setNamespaceAware(false);
-    final SAXParser saxParser = spf.newSAXParser();
-    saxParser.parse(url.openStream(), new DefaultHandler() {
-      // this buffer will contain the entire properties strings
-      final StringBuilder sb = new StringBuilder(15000);
-
-      // call for each element strings, actually will be called
-      // several time if the element is large (our case : large CDATA)
-      @Override
-      public void characters(final char[] ch, final int start, final int length) {
-        sb.append(ch, start, length);
-      }
-
-      // call when closing the tag (</body> in our case )
-      @Override
-      public void endElement(final String uri, final String localName, final String qName) {
-        final String sWhole = sb.toString();
-        // ok, parse it ( comments start with #)
-        final StringTokenizer st = new StringTokenizer(sWhole, "\n");
-        while (st.hasMoreTokens()) {
-          final String sLine = st.nextToken();
-          if ((sLine.length() > 0) && !sLine.startsWith("#") && (sLine.indexOf('=') != -1)) {
-            final StringTokenizer stLine = new StringTokenizer(sLine, "=");
-            // get full value after the '=', we don't use the
-            // stringtokenizer to allow
-            // using = characters in the value
-            final String sValue = sLine.substring(sLine.indexOf('=') + 1);
-            // trim to ignore space at begin end end of lines
-            lProperties.put(stLine.nextToken().trim(), sValue);
-          }
-        }
-      }
-    });
+    // Properties.load(Reader) honours the reader charset, so the files are read as UTF-8
+    // whatever the platform default encoding is.
+    try (Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
+      lProperties.load(reader);
+    }
     return lProperties;
   }
 
@@ -433,12 +400,9 @@ public class Messages extends DefaultHandler {
    * Gets the properties.
    *
    * @return Returns the properties.
-   * @throws SAXException the SAX exception
    * @throws IOException Signals that an I/O exception has occurred.
-   * @throws ParserConfigurationException the parser configuration exception
    */
-  public static Properties getProperties() throws SAXException, IOException,
-      ParserConfigurationException {
+  public static Properties getProperties() throws IOException {
     if (properties == null) {
       // reuse English if possible
       if (Locale.ENGLISH.equals(LocaleManager.getLocale())) {

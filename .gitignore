@@ -8,17 +8,34 @@ target/
 
 /_CurrentlySelectedTest.launch
 
-.idea/
-jajuk.iml
-src/*/*.iml
+# --- IntelliJ IDEA, directory-based format ---
+# JetBrains recommendation: put the project configuration under VCS and ignore only
+# the user-specific state. See
+# https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+# Shared on purpose: encodings.xml (the langpacks are UTF-8, not ISO-8859-1),
+# misc.xml, modules.xml, vcs.xml, libraries/ and the .iml module files - this is an
+# Ant project with vendored jars, so those library definitions are real project
+# structure, not generated metadata as they would be with Maven or Gradle.
+# .idea/.gitignore is maintained by the IDE itself and already excludes
+# workspace.xml and shelf/. Listed below are only the extras it does not know about.
+.idea/tasks.xml
+.idea/usage.statistics.xml
+.idea/httpRequests/
+.idea/dictionaries/
+.idea/dataSources/
+.idea/dataSources.local.xml
+.idea/contentModel.xml
+# Plugin- and tool-local state, not everyone has these installed
+.idea/sonarlint/
+.idea/git_toolbox_prj.xml
+.idea/claudeCodeTabState.xml
+*.iws
 /.settings/
 # Ant build output. Anchored: a bare "build" would also shadow the versioned lib/build/ jars
 /build/
 /packages/
 /.gradle/
 /out/
-/src/main/main.iml
-/src/test/test.iml
 /logs/*.log
 # junitlauncher writes both XML and plain-text reports here
 /test-reports/

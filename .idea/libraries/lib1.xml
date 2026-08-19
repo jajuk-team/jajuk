@@ -1,0 +1,52 @@
+<component name="libraryTable">
+  <library name="lib1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/animation-1.4.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/basicplayer-3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/cobra_jajuk-0.98.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-codec-1.16.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-io-2.22.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-lang3-3.20.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/dbus-java-core-5.2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/entagged-freedb-0.04.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/filters-2.0.235.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/hexdump-0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-annotations-2.21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-core-2.21.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-databind-2.21.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jaudiotagger-2.2.6-20170406.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jfreechart-1.5.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgoodies-common-1.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jlayer-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jogg-0.0.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jorbis-0.0.13.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jspeex-0.9.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/laf-plugin-7.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/laf-widget-7.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/logback-classic-1.5.37.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/logback-core-1.5.37.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/miglayout-swing-3.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/mp3spi-1.9.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/qdwizard-5.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-2.0.18.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/substance-8.0.00-dev.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/swingx-1.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/trident-1.5.00-dev.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/tritonus_share-release.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/vldocking-2.1.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/vorbisspi-1.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xstream-1.4.19.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/linux/asm-9.10.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/linux/dbus-java-transport-jnr-unixsocket-5.2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/linux/jffi-1.4.0-native.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/linux/jffi-1.4.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/linux/jnr-constants-0.11.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/linux/jnr-enxio-0.33.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/linux/jnr-ffi-2.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/linux/jnr-posix-3.2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/linux/jnr-unixsocket-0.39.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

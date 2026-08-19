@@ -1,0 +1,13 @@
+# Editor configuration shared by the whole team.
+# https://editorconfig.org - honoured natively by IntelliJ IDEA, VS Code, Eclipse, vim...
+root = true
+
+[*]
+charset = utf-8
+
+# The langpacks (src/main/resources/org/jajuk/i18n/*.properties) are plain UTF-8
+# .properties files, read with Properties.load(Reader, UTF-8) by Messages.parseLangpack.
+# They are NOT ISO-8859-1 and must not go through native-to-ASCII conversion:
+# they hold Cyrillic, Greek, Korean and Chinese text directly.
+[*.properties]
+charset = utf-8
