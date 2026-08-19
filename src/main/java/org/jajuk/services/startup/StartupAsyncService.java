@@ -25,11 +25,7 @@ import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.ItemManager;
 import org.jajuk.services.alarm.AlarmManager;
-import org.jajuk.services.core.CleanupService;
-import org.jajuk.services.core.ExitService;
-import org.jajuk.services.core.PersistenceService;
-import org.jajuk.services.core.RatingService;
-import org.jajuk.services.core.SessionService;
+import org.jajuk.services.core.*;
 import org.jajuk.services.dbus.DBusManager;
 import org.jajuk.services.lastfm.LastFmManager;
 import org.jajuk.services.players.QueueController;
@@ -92,8 +88,6 @@ public final class StartupAsyncService {
           Thread.sleep(5000);
           // Start persistence service
           PersistenceService.getInstance().start();
-          // Startup cleanup thread
-          CleanupService.getInstance().start();
           // Switch to sorted mode, must be done before starting auto-refresh
           // thread !
           ItemManager.switchAllManagersToOrderState();
