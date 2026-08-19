@@ -96,7 +96,7 @@ public class AnimationView extends ViewAdapter {
    */
   @Override
   public void initUI() {
-    setLayout(new MigLayout("", "[cente,grow]", "[center,grow]"));
+    setLayout(new MigLayout("", "[center,grow]", "[center,grow]"));
     btl1 = new BasicTextLabel(" ");
     // Allow to stop animation by left clicking on it
     btl1.addMouseListener(new JajukMouseAdapter() {
