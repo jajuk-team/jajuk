@@ -380,7 +380,9 @@ public final class FileManager extends ItemManager {
     // filter banned files
     alEligibleFiles.removeIf(new JajukPredicates.BannedFilePredicate().negate());
     if (alEligibleFiles.size() > 0) {
-      int index = UtilSystem.getRandom().nextInt(alEligibleFiles.size() - 1);
+      // nextInt() bound is exclusive: pass the size itself, otherwise the last file could
+      // never be drawn and a single eligible file raised IllegalArgumentException (bound 0)
+      int index = UtilSystem.getRandom().nextInt(alEligibleFiles.size());
       return alEligibleFiles.get(index);
     } else {
       return null;
