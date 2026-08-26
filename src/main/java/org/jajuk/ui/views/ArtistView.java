@@ -47,6 +47,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serial;
 import java.net.URL;
+import java.text.Normalizer;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -254,6 +255,24 @@ public class ArtistView extends ViewAdapter {
     repaint();
   }
 
+  /**
+   * Sanitize bio text to prevent Swing layout crashes with special Unicode characters.
+   * Normalizes accented characters that can cause RuleBasedBreakIterator offset errors.
+   *
+   * @param bio Original bio text from LastFM
+   * @return Normalized text safe for Swing components
+   */
+  private String sanitizeBioText(String bio) {
+    if (bio == null) return "";
+    try {
+      // Normalize Unicode characters (e.g., "é" → "é" in NFC form)
+      return Normalizer.normalize(bio, Normalizer.Form.NFC);
+    } catch (Exception e) {
+      Log.warn("Failed to normalize bio text, using original", e);
+      return bio; // Return original on failure
+    }
+  }
+
   public void callWiki() {
     Log.info("Get Wiki for artist: " + lastProcessedArtist);
     final String artistContext = lastProcessedArtist;
@@ -336,7 +355,7 @@ public class ArtistView extends ViewAdapter {
     // Check if we have wiki text
     if (StringUtils.isNotBlank(bio)) {
 
-      JTextArea jtaArtistDesc = new JTextArea(bio) {
+      JTextArea jtaArtistDesc = new JTextArea(sanitizeBioText(bio)) {
         @Override
         public Insets getInsets() {
           return new Insets(2, 4, 0, 4);
@@ -429,8 +448,14 @@ public class ArtistView extends ViewAdapter {
    * Helper method to update the albums panel with fresh thumbnails.
    * Must be called from EDT.
    */
-  private void updateAlbumsPanel() {
+  private void  updateAlbumsPanel() {
     if (albums == null) {
+      return;
+    }
+
+    // CRITICAL: Check that occurs on EDT
+    if (!SwingUtilities.isEventDispatchThread()) {
+      SwingUtilities.invokeLater(this::updateAlbumsPanel);
       return;
     }
 
