@@ -16,49 +16,33 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  
+ *
  */
 package org.jajuk.ui.views;
 
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.net.URL;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
-
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JToggleButton;
-import javax.swing.JToolBar;
-
+import net.miginfocom.swing.MigLayout;
 import org.jajuk.base.Track;
 import org.jajuk.events.JajukEvent;
 import org.jajuk.events.JajukEvents;
 import org.jajuk.events.ObservationManager;
+import org.jajuk.services.lastfm.WikipediaClient;
 import org.jajuk.services.players.QueueModel;
 import org.jajuk.ui.actions.ActionManager;
 import org.jajuk.ui.actions.JajukAction;
 import org.jajuk.ui.actions.JajukActions;
-import org.jajuk.ui.widgets.JajukHtmlPanel;
+import org.jajuk.ui.widgets.JajukHtmlJPanel;
 import org.jajuk.ui.widgets.JajukJToolbar;
-import org.jajuk.util.Conf;
-import org.jajuk.util.Const;
-import org.jajuk.util.IconLoader;
-import org.jajuk.util.JajukIcons;
-import org.jajuk.util.LocaleManager;
-import org.jajuk.util.Messages;
-import org.jajuk.util.UtilFeatures;
-import org.jajuk.util.UtilSystem;
+import org.jajuk.util.*;
 import org.jajuk.util.log.Log;
 
-import net.miginfocom.swing.MigLayout;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 /**
  * Wikipedia view.
@@ -68,16 +52,14 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
   private static final long serialVersionUID = 1L;
   JLabel jlLanguage;
   JComboBox<String> jcbLanguage;
-  /** Cobra web browser. */
-  JajukHtmlPanel browser;
+  /** Jajuk Html JPanel. */
+  JajukHtmlJPanel browser;
   JButton jbCopy;
   JButton jbLaunchInExternalBrowser;
   JToggleButton jbArtistSearch;
   JToggleButton jbAlbumSearch;
   JToggleButton jbAlbumArtistSearch;
   JToggleButton jbTrackSearch;
-  /** Language index. */
-  int indexLang = 0;
 
   /**
    * .
@@ -90,9 +72,12 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
   /** Current search. */
   String search = null;
 
+  // Wikipedia client to fetch article content via API
+  private final WikipediaClient wikiClient = new WikipediaClient();
+
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.views.IView#getDesc()
    */
   @Override
@@ -102,26 +87,26 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.views.IView#populate()
    */
   @Override
   public void initUI() {
     jlLanguage = new JLabel(Messages.getString("WikipediaView.1"));
-    jcbLanguage = new JComboBox<String>();
+    jcbLanguage = new JComboBox<>();
     for (String sDesc : LocaleManager.getLocalesDescs()) {
       jcbLanguage.addItem(sDesc);
     }
     // get stored language
     jcbLanguage.setSelectedItem(LocaleManager.getDescForLocale(Conf
-        .getString(Const.CONF_WIKIPEDIA_LANGUAGE)));
+            .getString(Const.CONF_WIKIPEDIA_LANGUAGE)));
     jcbLanguage.addActionListener(this);
     // Buttons
     JajukAction aCopy = ActionManager.getAction(JajukActions.COPY_TO_CLIPBOARD);
     jbCopy = new JButton(aCopy);
     if (UtilSystem.isBrowserSupported()) {
       jbLaunchInExternalBrowser = new JButton(
-          ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER));
+              ActionManager.getAction(JajukActions.LAUNCH_IN_BROWSER));
       // Remove text inside the buttons
       jbLaunchInExternalBrowser.setText(null);
     }
@@ -166,7 +151,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
     jpCommand.add(jtb);
     // global layout
     setLayout(new MigLayout("ins 0", "[grow]", "[][grow]"));
-    browser = new JajukHtmlPanel();
+    browser = new JajukHtmlJPanel();
     add(jpCommand, "growx,wrap");
     add(browser, "grow");
     // Display default page at startup is none track launch
@@ -186,7 +171,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
    */
   @Override
   public Set<JajukEvents> getRegistrationKeys() {
-    Set<JajukEvents> eventSubjectSet = new HashSet<JajukEvents>();
+    Set<JajukEvents> eventSubjectSet = new HashSet<>();
     eventSubjectSet.add(JajukEvents.FILE_LAUNCHED);
     eventSubjectSet.add(JajukEvents.ZERO);
     eventSubjectSet.add(JajukEvents.WEBRADIO_LAUNCHED);
@@ -199,7 +184,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see org.jajuk.ui.Observer#update(java.lang.String)
    */
   @Override
@@ -207,8 +192,8 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
     JajukEvents subject = event.getSubject();
     // Make a search after a stop period
     if (subject.equals(JajukEvents.FILE_LAUNCHED)
-        || subject.equals(JajukEvents.PERSPECTIVE_CHANGED)
-        || subject.equals(JajukEvents.WEBRADIO_LAUNCHED)) {
+            || subject.equals(JajukEvents.PERSPECTIVE_CHANGED)
+            || subject.equals(JajukEvents.WEBRADIO_LAUNCHED)) {
       // If current state is stopped, reset page
       if (!QueueModel.isPlayingTrack()) {
         reset();
@@ -224,14 +209,14 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
     // User changed current track tags, so we have to reload
     // new artist wikipedia page
     else if (subject.equals(JajukEvents.ARTIST_CHANGED)
-        || subject.equals(JajukEvents.ALBUM_CHANGED) || subject.equals(JajukEvents.TRACK_CHANGED)) {
+            || subject.equals(JajukEvents.ALBUM_CHANGED) || subject.equals(JajukEvents.TRACK_CHANGED)) {
       update(new JajukEvent(JajukEvents.FILE_LAUNCHED));
     }
   }
 
   /**
    * Perform wikipedia search.
-   * 
+   *
    * @param bForceReload force the page display
    */
   private void launchSearch(final boolean bForceReload) {
@@ -253,24 +238,24 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
           if (QueueModel.getPlayingFile() != null) {
             Track track = QueueModel.getPlayingFile().getTrack();
             switch (type) {
-              case ARTIST :
+              case ARTIST:
                 lSearch = track.getArtist().getName2();
                 // don't display page if item is unknown
                 if (Messages.getString(UNKNOWN_ARTIST).equals(lSearch)) {
                   lSearch = null;
                 }
                 break;
-              case ALBUM :
+              case ALBUM:
                 lSearch = track.getAlbum().getName2();
                 // don't display page if item is unknown
                 if (Messages.getString(UNKNOWN_ALBUM).equals(lSearch)) {
                   lSearch = null;
                 }
                 break;
-              case TRACK :
+              case TRACK:
                 lSearch = track.getName();
                 break;
-              case ALBUM_ARTIST :
+              case ALBUM_ARTIST:
                 lSearch = track.getAlbumArtist().getName2();
                 break;
             }
@@ -288,22 +273,35 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
           WikipediaView.this.search = lSearch;
           // Wikipedia now redirect to HTTPS automatically so we need to use the
           // HTTPS URL
-          URL url = new URL(("https://"
-              + LocaleManager.getLocaleForDesc((String) jcbLanguage.getSelectedItem())
-              + ".wikipedia.org/wiki/" + lSearch).replaceAll(" ", "_"));
+          Locale locale = LocaleManager.getLocaleForDesc((String) jcbLanguage.getSelectedItem());
+          if (locale == null) {
+            Log.error("Failed to get locale for description: " + jcbLanguage.getSelectedItem());
+            return;
+          }
+          URL url = new URL(("https://" + locale
+                  + ".wikipedia.org/wiki/" + lSearch).replace(" ", "_"));
           Log.debug("Wikipedia search: {{" + url + "}}");
           jbCopy.putClientProperty(Const.DETAIL_CONTENT, url.toExternalForm());
           if (UtilSystem.isBrowserSupported()) {
             jbLaunchInExternalBrowser.putClientProperty(Const.DETAIL_CONTENT, url.toExternalForm());
           }
-          browser.setURL(url, LocaleManager
-              .getLocaleForDesc((String) jcbLanguage.getSelectedItem()).toString());
-        } catch (FileNotFoundException e) {
-          // only report a warning for FileNotFoundException and do not show a
-          // stacktrace in the logfile as it is expected in many cases where the
-          // name is not found on Wikipedia
-          Log.warn("Could not load URL, no content found at specified address: {{" + e.getMessage()
-              + "}}");
+          browser.setLoading(url);
+
+          // NEW: Fetch and display article content via API
+          String extractedHtml = wikiClient.fetchArticleContent(lSearch,
+                  locale.getLanguage());
+          if (extractedHtml != null) {
+            // Wrap content in proper HTML structure for JajukHtmlJPanel
+            String fullHtml = "<html><head><style>" +
+                    "body{font-family:sans-serif;margin:10px;color:#333;} " +
+                    "p{margin:8px 0;line-height:1.4;}</style></head>" +
+                    "<body>" + extractedHtml + "</body></html>";
+
+            browser.setText(fullHtml);
+            browser.setToolTipText(lSearch);
+          } else {
+            browser.setFailedToLoad(Messages.getString("WikipediaView.9") + ": " + url);
+          }
         } catch (Exception e) {
           Log.error(e);
         }
@@ -316,9 +314,10 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
   /*
    * Reset view
    */
+
   /**
    * Reset.
-   * 
+   *
    */
   private void reset() {
     // Reset current search
@@ -330,7 +329,6 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
         if (browser != null) {
           try {
             browser.clearDocument();
-            browser.setToolTipText("");
           } catch (Exception e) {
             Log.error(e);
           }
@@ -341,7 +339,7 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
 
   /*
    * (non-Javadoc)
-   * 
+   *
    * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
    */
   @Override
@@ -349,6 +347,10 @@ public class WikipediaView extends ViewAdapter implements ActionListener {
     if (arg0.getSource() == jcbLanguage) {
       // update index
       Locale locale = LocaleManager.getLocaleForDesc((String) jcbLanguage.getSelectedItem());
+      if (locale == null) {
+        Log.error("Failed to get locale for description: " + jcbLanguage.getSelectedItem());
+        return;
+      }
       Conf.setProperty(Const.CONF_WIKIPEDIA_LANGUAGE, locale.getLanguage());
       // force launch wikipedia search for this language
       launchSearch(true);

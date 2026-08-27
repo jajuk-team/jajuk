@@ -156,4 +156,55 @@ public class WikipediaClient {
     return null;
   }
 
+  /**
+   * Fetches the HTML content of a Wikipedia article for display in a panel.
+   * Returns null if no article is found or on network error.
+   */
+  public String fetchArticleContent(String artistName, String lang) {
+    try {
+      // Search for the article first
+      String searchUrl = String.format(
+              "https://%s.wikipedia.org/w/api.php?action=query&list=search&srsearch=%s" +
+                      "&srlimit=1&format=json&origin=*",
+              lang, HttpClientService.getInstance().encode(artistName)
+      );
+
+      String responseBody = DownloadManager.downloadText(new URL(searchUrl));
+      if (responseBody == null) return null;
+
+      JsonNode json = mapper.readTree(responseBody);
+      JsonNode searchResults = json.get("query").get("search");
+
+      if (searchResults == null || searchResults.isEmpty()) {
+        Log.debug("No Wikipedia article found for: " + artistName);
+        return null;
+      }
+
+      String title = searchResults.get(0).get("title").asText();
+
+      // Fetch the article in HTML format
+      String articleUrl = String.format(
+              "https://%s.wikipedia.org/w/api.php?action=query&titles=%s" +
+                      "&prop=extracts&format=json&origin=*",
+              lang, title.replace(" ", "_")
+      );
+
+      String articleBody = DownloadManager.downloadText(new URL(articleUrl));
+      if (articleBody == null) return null;
+
+      JsonNode articleJson = mapper.readTree(articleBody);
+      JsonNode pages = articleJson.get("query").get("pages");
+
+      if (pages != null && !pages.isEmpty()) {
+        JsonNode page = pages.iterator().next();
+        if (page.has("extract")) {
+          return page.get("extract").asText();
+        }
+      }
+    } catch (Exception e) {
+      Log.warn("Error fetching Wikipedia article: " + e.getMessage());
+    }
+    return null;
+  }
+
 }
